@@ -5,8 +5,11 @@ subtitle: Personal website
 email: your.email@example.com
 description: >-
   Notes and projects about high-performance computing, software engineering, and everything in between.
+# Hosted as a project site under the owner "sirotenkogeorgii"
+# Adjust these to match the actual GitHub Pages URL structure.
+# baseurl: "/georgiisirotenko.github.io"
 baseurl: ""
-url: "https://georgiisirotenko.github.io"
+url: "https://sirotenkogeorgii.github.io"
 
 # Build settings
 markdown: kramdown
