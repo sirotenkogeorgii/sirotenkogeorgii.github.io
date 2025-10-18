@@ -6,7 +6,7 @@ email: your.email@example.com
 description: >-
   Notes and projects about high-performance computing, software engineering, and everything in between.
 baseurl: ""
-url: "https://example.github.io"
+url: "https://georgiisirotenko.github.io"
 
 # Build settings
 markdown: kramdown
