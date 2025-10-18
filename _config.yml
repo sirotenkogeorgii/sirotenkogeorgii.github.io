@@ -1,0 +1,52 @@
+# Basic site metadata
+# Update "url" to match the production GitHub Pages hostname once the repository is public.
+title: Georgii Sirotenko
+subtitle: Personal website
+email: your.email@example.com
+description: >-
+  Notes and projects about high-performance computing, software engineering, and everything in between.
+baseurl: ""
+url: "https://example.github.io"
+
+# Build settings
+markdown: kramdown
+timezone: Europe/Berlin
+
+# Theme & plugins provided by GitHub Pages
+# See https://pages.github.com/versions/ for the supported plugin versions on GitHub Pages.
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  notes:
+    output: true
+    permalink: /notes/:path/
+
+# Default front matter values
+defaults:
+  - scope:
+      path: ""
+      type: "notes"
+    values:
+      layout: note
+      author: Georgii Sirotenko
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+
+# Include directories that should be copied to _site verbatim.
+include:
+  - assets
+
+# Exclude development-only artifacts from the resulting site.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - tmp
