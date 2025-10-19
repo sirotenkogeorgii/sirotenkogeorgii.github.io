@@ -9,6 +9,7 @@ gem 'webrick', '~> 1.8'
 gem 'kramdown-parser-gfm'
 gem 'jekyll-seo-tag'
 gem 'jekyll-feed'
+gem 'jekyll-last-modified-at'
 
 # Optional: faster file watching
 gem 'listen', '~> 3.9'

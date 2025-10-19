@@ -8,6 +8,7 @@ ruby "3.1.4"
 # with the production environment on GitHub Pages.
 group :jekyll_plugins do
   gem 'github-pages', '~> 232'
+  gem 'jekyll-last-modified-at'
 end
 
 # Ensure Jekyll `serve` works on Ruby 3.x

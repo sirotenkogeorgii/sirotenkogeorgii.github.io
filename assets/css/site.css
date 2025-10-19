@@ -137,3 +137,17 @@ blockquote {
 .note-content ol {
   margin-left: 1.25rem;
 }
+
+.note-callout {
+  border: 1px solid rgba(15, 23, 42, 0.25);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  background: rgba(59, 130, 246, 0.08);
+  margin: 1.5rem 0;
+}
+
+.note-callout__title {
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
