@@ -1,4 +1,5 @@
 ---
+layout: default
 title: Computability and Complexity
 date: 2024-10-20
 excerpt: A deep-dive into the formal foundations of computability, classic machine models, and the time-hierarchy lens on complexity theory.
@@ -14,8 +15,8 @@ tags:
   <p class="note-callout__title">Remark</p>
   <p>
     Classical deterministic mathematics emerges as the special case of
-    probability theory where the sample space \(\Omega\) contains only a single
-    outcome. With \(P(\{\omega\}) = 1\) every random variable collapses to a
+    probability theory where the sample space $\Omega$ contains only a single
+    outcome. With $P(\{\omega\}) = 1$ every random variable collapses to a
     deterministic quantity. This perspective is helpful later when we discuss
     probabilistic computation: the usual discrete models are simply the
     zero-entropy corner of the same formalism.

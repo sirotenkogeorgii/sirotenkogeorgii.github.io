@@ -1,4 +1,5 @@
 ---
+layout: default
 title: GPU Computing
 date: 2025-10-16
 excerpt: A concise walkthrough of the GPU Computing course, updated with modern CUDA idioms, profiling tips, and cross-platform notes.
@@ -32,9 +33,7 @@ Two conclusions follow immediately:
 
 - **Moore's law** (transistor density) explains the historical cadence of GPU improvements, but modern gains come from specialized accelerators, denser packaging, and software optimizations rather than pure frequency bumps.
 - **Amdahl's law** bounds speedup when a fraction `S` of a workload is serial:
-  \[
-    \text{Speedup}_\text{max} = \frac{1}{S + \frac{P}{N}}
-  \]
+  $\text{Speedup}_\text{max} = \frac{1}{S + \frac{P}{N}}$
   Diminishing returns appear once additional streaming multiprocessors (SMs) sit idle.
 - **Gustafson's law** complements Amdahl by emphasizing that larger problem sizes often unlock additional parallelism. When scaling to larger datasets, GPUs can achieve near-linear speedups.
 - **Roofline analysis** combines arithmetic intensity (FLOPs per byte) and achievable bandwidth to reveal whether a kernel is compute-bound or memory-bound. Move kernels up and right on the roofline by tiling, fusion, and mixed precision.
