@@ -1,16 +1,13 @@
 :root {
   color-scheme: light;
-  --page-bg: #f3f4f7;
+  --page-bg: #eef0f4;
   --surface: #ffffff;
-  --text: #1f232b;
-  --muted: #4b5563;
+  --text: #1f2430;
+  --muted: #5b6270;
   --accent: #1d4ed8;
-  --accent-muted: rgba(29, 78, 216, 0.12);
+  --accent-muted: rgba(29, 78, 216, 0.1);
   --line: rgba(15, 23, 42, 0.12);
-  --nav-line: rgba(15, 23, 42, 0.16);
-  --toc-surface: #f6f7fb;
-  --toc-border: rgba(15, 23, 42, 0.14);
-  --shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  --nav-line: rgba(15, 23, 42, 0.18);
 }
 
 *,
@@ -50,7 +47,7 @@ a:focus {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(10px);
-  background: rgba(243, 244, 247, 0.9);
+  background: rgba(238, 240, 244, 0.95);
   border-bottom: 1px solid var(--line);
 }
 
@@ -107,98 +104,60 @@ a:focus {
   padding-top: 3.5rem;
 }
 
-.note-layout {
-  display: grid;
-  gap: 3rem;
-  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
-}
-
-.note-toc {
-  position: sticky;
-  top: 7rem;
-  align-self: start;
-  border: 1px solid var(--toc-border);
-  background: var(--toc-surface);
-  border-radius: 1rem;
-  padding: 2rem 1.75rem;
-  max-height: calc(100vh - 8rem);
-  overflow-y: auto;
-}
-
-.note-toc__title {
-  margin: 0 0 1.5rem;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--muted);
-}
-
-.note-toc nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.note-toc nav li {
-  margin-bottom: 0.65rem;
-}
-
-.note-toc nav li:last-child {
-  margin-bottom: 0;
-}
-
-.note-toc nav .toc-level-2 > a {
-  font-weight: 600;
-  color: var(--text);
-}
-
-.note-toc nav .toc-level-3 {
-  font-size: 0.95rem;
-  color: var(--muted);
-}
-
-.note-toc nav li ul {
-  margin-top: 0.4rem;
-  margin-left: 1rem;
-  border-left: 2px solid var(--line);
-  padding-left: 0.75rem;
+.note-container {
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .note {
   background: var(--surface);
-  border-radius: 1.25rem;
-  box-shadow: var(--shadow);
-  padding: 3.25rem 3.5rem;
+  border-radius: 1.2rem;
+  box-shadow: 0 20px 40px rgba(16, 24, 40, 0.06);
+  padding: 3.5rem 3.75rem;
 }
 
 .note-header h1 {
   margin: 0 0 0.75rem;
-  font-size: 2.4rem;
-  line-height: 1.32;
-  letter-spacing: 0.02em;
+  font-size: 2.6rem;
+  line-height: 1.28;
+  letter-spacing: 0.015em;
 }
 
 .note-meta {
   margin: 0;
-  font-size: 0.95rem;
   color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.note-meta__categories {
+  margin-top: 0.2rem;
+}
+
+.note-meta__categories span {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.note-content {
+  margin-top: 2.5rem;
+  font-size: 1.05rem;
 }
 
 .note-content h2,
 .note-content h3,
 .note-content h4 {
-  margin-top: 3rem;
-  margin-bottom: 1rem;
+  margin-top: 3.25rem;
+  margin-bottom: 1.1rem;
   line-height: 1.45;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.01em;
 }
 
 .note-content h2 {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
 }
 
 .note-content h3 {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
 }
 
 .note-content h4 {
@@ -207,12 +166,12 @@ a:focus {
 }
 
 .note-content p {
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.75rem;
 }
 
 .note-content ul,
 .note-content ol {
-  margin: 1.2rem 0 1.6rem 1.5rem;
+  margin: 1.5rem 0 1.75rem 1.65rem;
 }
 
 .note-content li + li {
@@ -223,9 +182,17 @@ a:focus {
   font-weight: 600;
 }
 
+.note-content em {
+  font-style: italic;
+}
+
+.note-content a {
+  font-weight: 500;
+}
+
 .note-content code {
   font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
-  padding: 0.15rem 0.35rem;
+  padding: 0.2rem 0.45rem;
   border-radius: 0.35rem;
   background: var(--accent-muted);
   color: var(--text);
@@ -233,34 +200,51 @@ a:focus {
 
 pre {
   overflow-x: auto;
-  padding: 1.35rem 1.5rem;
+  padding: 1.4rem 1.6rem;
   border-radius: 1rem;
   background: #0f172a;
   color: #f8fafc;
   font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 blockquote {
-  margin: 2.5rem 0;
-  padding-left: 1.5rem;
+  margin: 2.75rem 0;
+  padding-left: 1.7rem;
   border-left: 3px solid var(--line);
   color: var(--muted);
   font-style: italic;
 }
 
+figure {
+  margin: 2.5rem 0;
+}
+
+figure img {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  box-shadow: 0 14px 24px rgba(30, 41, 59, 0.15);
+}
+
+figure figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-align: center;
+}
+
 .note-callout {
   border: 1px solid var(--accent-muted);
   border-radius: 1rem;
-  padding: 1.75rem;
+  padding: 1.8rem;
   background: rgba(29, 78, 216, 0.08);
-  margin: 2.5rem 0;
+  margin: 2.75rem 0;
 }
 
 .note-callout__title {
   font-weight: 700;
   margin-top: 0;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -287,28 +271,17 @@ blockquote {
   font-size: 0.95rem;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 960px) {
   .wrapper {
     padding: 2rem 2rem 3rem;
   }
 
-  .note-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .note-toc {
-    position: relative;
-    top: auto;
-    max-height: none;
-    margin-bottom: 2.5rem;
-  }
-
   .note {
-    padding: 2.75rem 2.5rem;
+    padding: 3rem 2.75rem;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   body {
     font-size: 17px;
     line-height: 1.7;
@@ -333,11 +306,15 @@ blockquote {
   }
 
   .note {
-    padding: 2.25rem 1.75rem;
     border-radius: 1rem;
+    padding: 2.35rem 1.85rem;
   }
 
   .note-header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+  }
+
+  .note-tags {
+    gap: 0.35rem;
   }
 }
