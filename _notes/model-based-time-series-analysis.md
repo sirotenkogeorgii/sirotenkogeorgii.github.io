@@ -1,4 +1,5 @@
 ---
+layout: default
 title: Model-Based Time Series Analysis
 date: 2024-11-01
 excerpt: A survey of state-space models, Kalman filtering, and spectral tools for forecasting structured time-evolving data.
@@ -6,6 +7,7 @@ tags:
   - time-series
   - statistics
   - modeling
+# math: true
 ---
 
 ## 1. The Language of Probability
