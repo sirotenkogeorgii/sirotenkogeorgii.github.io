@@ -18,7 +18,8 @@ To reason about uncertainty in a mathematically sound way, we begin with the con
 
 An experiment is a process that yields an observation. The mathematical abstraction for this is the probability space, a tuple \((\Omega, \mathcal{A}, P)\).
 
-* **Sample Space \((\Omega)\):** The set of all possible indecomposable outcomes of an experiment. These are called simple events.
+<!-- * **Sample Space \((\Omega)\):** The set of all possible indecomposable outcomes of an experiment. These are called simple events. -->
+* **Sample Space $\Omega$:** The set of all possible indecomposable outcomes of an experiment. These are called simple events.
   * *Example (Die Toss):* \(\Omega = \{1, 2, 3, 4, 5, 6\}\)
 * **\(\sigma\)-algebra \((\mathcal{A})\):** A collection of subsets of \(\Omega\) (called events) about which we can ask probabilistic questions. A valid \(\sigma\)-algebra must satisfy three properties:
   1. It contains the sample space: \(\Omega \in \mathcal{A}\).
