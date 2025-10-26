@@ -1,15 +1,73 @@
----
 layout: default
----
-<article class="note">
-  <header class="note-header">
-    <h1>{{ page.title }}</h1>
-    {% assign updated = page.last_modified_at | default: page.date %}
-    {% if updated %}
-    <p class="note-meta">Updated {{ updated | date: '%B %-d, %Y' }}</p>
-    {% endif %}
-  </header>
-  <div class="note-content">
-    {{ content }}
-  </div>
-</article>
+<div class="note-layout">
+  <aside class="note-toc" id="note-toc">
+    <h2 class="note-toc__title">Contents</h2>
+    <nav class="note-toc__nav">
+      <ul></ul>
+    </nav>
+  </aside>
+  <article class="note">
+    <header class="note-header">
+      <h1>{{ page.title }}</h1>
+      {% assign updated = page.last_modified_at | default: page.date %}
+      {% if updated %}
+      <p class="note-meta">Updated {{ updated | date: '%B %-d, %Y' }}</p>
+      {% endif %}
+    </header>
+    <div class="note-content">
+      {{ content }}
+    </div>
+  </article>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tocAside = document.getElementById("note-toc");
+    const tocList = tocAside?.querySelector("ul");
+    const content = document.querySelector(".note-content");
+    if (!tocAside || !tocList || !content) {
+      return;
+    }
+
+    const headings = content.querySelectorAll("h2, h3");
+    if (!headings.length) {
+      tocAside.style.display = "none";
+      return;
+    }
+
+    let currentSection = null;
+    headings.forEach((heading) => {
+      const level = heading.tagName;
+      if (!heading.id) {
+        const slug = heading.textContent
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, "")
+          .replace(/\s+/g, "-");
+        heading.id = slug || "section";
+      }
+
+      const link = document.createElement("a");
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent;
+
+      const item = document.createElement("li");
+      item.appendChild(link);
+
+      if (level === "H2") {
+        tocList.appendChild(item);
+        currentSection = item;
+      } else if (level === "H3") {
+        if (!currentSection) {
+          tocList.appendChild(item);
+          return;
+        }
+        let nested = currentSection.querySelector("ul");
+        if (!nested) {
+          nested = document.createElement("ul");
+          currentSection.appendChild(nested);
+        }
+        nested.appendChild(item);
+      }
+    });
+  });
+</script>
