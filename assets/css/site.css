@@ -9,6 +9,15 @@
   --accent-muted: rgba(29, 78, 216, 0.12);
   --line: rgba(15, 23, 42, 0.12);
   --shadow: 0 26px 48px rgba(15, 23, 42, 0.08);
+  --code-bg: #10172a;
+  --code-text: #e2e8f0;
+  --code-border: rgba(15, 23, 42, 0.22);
+  --code-comment: #94a3b8;
+  --code-keyword: #f472b6;
+  --code-string: #bef264;
+  --code-number: #38bdf8;
+  --code-function: #fb923c;
+  --code-punctuation: #e2e8f0;
 }
 
 *,
@@ -135,6 +144,57 @@ a:focus {
 .note-list__meta {
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.note-container {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.note {
+  background: var(--surface);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 3.25rem 3.5rem 3.75rem;
+}
+
+.note-header {
+  margin-bottom: 2.75rem;
+}
+
+.note-header h1 {
+  margin: 0 0 0.85rem;
+  font-size: 2.65rem;
+  letter-spacing: 0.015em;
+}
+
+.note-meta {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.note-content {
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.note-content > :first-child {
+  margin-top: 0;
+}
+
+.note-content > :last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .note {
+    padding: 2.5rem 2.2rem 3rem;
+    border-radius: 18px;
+  }
+
+  .note-header h1 {
+    font-size: 2.1rem;
+  }
 }
 
 /* Note layout ---------------------------------------------------------------- */
@@ -346,21 +406,122 @@ a:focus {
   visibility: visible;
 }
 
+.highlight {
+  position: relative;
+  margin: 2.25rem 0;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 1.1rem;
+  border: 1px solid var(--code-border);
+  box-shadow: 0 26px 48px rgba(15, 23, 42, 0.22);
+}
+
+.highlight::after {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.85rem;
+  right: 1.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(224, 231, 255, 0.5);
+}
+
+.highlighter-rouge {
+  position: relative;
+}
+
+.highlighter-rouge > .highlight {
+  margin: 0;
+}
+
+.highlight pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 1.6rem 1.75rem 1.75rem;
+  background: transparent;
+  color: inherit;
+  font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.highlight code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+}
+
+.highlight .c {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.highlight .k,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr {
+  color: var(--code-keyword);
+}
+
+.highlight .s,
+.highlight .sb,
+.highlight .sc,
+.highlight .s1,
+.highlight .s2,
+.highlight .sd {
+  color: var(--code-string);
+}
+
+.highlight .mi,
+.highlight .mf,
+.highlight .mh,
+.highlight .il {
+  color: var(--code-number);
+}
+
+.highlight .na,
+.highlight .nb,
+.highlight .nc,
+.highlight .no,
+.highlight .nv {
+  color: var(--code-text);
+}
+
+.highlight .nf,
+.highlight .nt {
+  color: var(--code-function);
+}
+
+.highlight .o,
+.highlight .p,
+.highlight .pi {
+  color: var(--code-punctuation);
+}
+
+.highlight .err {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+}
+
 pre {
   overflow-x: auto;
   padding: 1.4rem 1.6rem;
   border-radius: 1rem;
-  background: #0f172a;
-  color: #f8fafc;
+  background: var(--code-bg);
+  color: var(--code-text);
   font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
   font-size: 0.92rem;
 }
 
 code {
   font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
-  background: var(--accent-muted);
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.35rem;
+  background: rgba(15, 23, 42, 0.08);
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.4rem;
+  font-size: 0.94em;
 }
 
 blockquote {
@@ -447,9 +608,18 @@ thead {
 /* Marginalia helpers -------------------------------------------------------- */
 
 .marginalia-row {
-  position: relative;
-  margin: 1rem 0;
-  padding-top: 0.35rem;
+  display: grid;
+  grid-template-columns: minmax(0, 210px) minmax(0, 1fr) minmax(0, 210px);
+  gap: 0 2.5rem;
+  align-items: start;
+  margin: 2.75rem 0;
+}
+
+.marginalia-text {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow);
 }
 
 .marginalia-text > :first-child {
@@ -461,29 +631,60 @@ thead {
 }
 
 .marginalia-note {
-  position: absolute;
-  top: 0;
-  right: calc(100% + 1.5rem);
-  width: 220px;
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--muted);
+  position: relative;
+}
+
+.marginalia-note > :first-child {
+  margin-top: 0;
+}
+
+.marginalia-note > :last-child {
+  margin-bottom: 0;
+}
+
+.marginalia-note--left {
   text-align: right;
-  font-size: 0.92em;
-  line-height: 1.45;
-  color: #555;
-  border-right: 2px solid #e5e7eb;
-  padding-right: 0.75rem;
+  border-right: 2px solid var(--line);
+  padding-right: 1.1rem;
+}
+
+.marginalia-note--right {
+  text-align: left;
+  border-left: 2px solid var(--line);
+  padding-left: 1.1rem;
+}
+
+.marginalia-note:empty {
+  display: none;
 }
 
 @media (max-width: 1200px) {
+  .marginalia-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .marginalia-text {
+    box-shadow: none;
+    padding: 1.35rem 1.5rem;
+    border: 1px solid var(--line);
+  }
+
   .marginalia-note {
-    position: static;
-    width: auto;
     text-align: left;
-    border-right: none;
-    border-top: 1px solid #e5e7eb;
-    padding-right: 0;
-    padding-top: 0.5rem;
-    margin-top: 0.5rem;
-    color: #444;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    padding: 1rem 1.15rem;
+    background: var(--surface-muted);
+  }
+
+  .marginalia-note--left,
+  .marginalia-note--right {
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
   }
 }
 

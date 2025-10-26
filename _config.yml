@@ -15,6 +15,11 @@ url: "https://sirotenkogeorgii.github.io"
 markdown: kramdown
 timezone: Europe/Berlin
 
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
 # Theme & plugins provided by GitHub Pages
 # See https://pages.github.com/versions/ for the supported plugin versions on GitHub Pages.
 theme: minima
@@ -37,6 +42,7 @@ defaults:
     values:
       layout: note
       author: Georgii Sirotenko
+      math: true
   - scope:
       path: ""
       type: "posts"
@@ -54,4 +60,3 @@ exclude:
   - README.md
   - vendor
   - tmp
-
