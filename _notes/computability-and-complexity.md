@@ -1,11 +1,11 @@
 ---
 title: Computability and Complexity
-# date: 2025-10-16
-# excerpt: A concise walkthrough of the GPU Computing course, updated with modern CUDA idioms, profiling tips, and cross-platform notes.
-# tags:
-#   - cuda
-#   - parallelism
-#   - high-performance-computing
+date: 2024-10-20
+excerpt: A deep-dive into the formal foundations of computability, classic machine models, and the time-hierarchy lens on complexity theory.
+tags:
+  - computability
+  - complexity
+  - theory
 ---
 
 ## Turing Machines
@@ -187,4 +187,3 @@ In total, M' simulates m steps of M in a constant number of its own steps (e.g.,
 This monograph has traced the theoretical arc of the Turing machine, from its rigorous mathematical definition to its central role in the theories of computability and complexity. We began with the formal 6-tuple (Q, Σ, Γ, ∆, s, F ) that precisely defines the machine's components. From there, we explored the critical distinction between deterministic machines, which follow a single computational path, and nondeterministic machines, which explore a tree of possibilities.
 
 The mechanics of computation were formalized through the concepts of configurations and computation steps, providing the language necessary to define decidable languages and computable functions. This foundation in computability—what is theoretically possible to compute—led directly to the principles of complexity theory, which asks what is efficiently computable. By introducing running time as a key resource, we established the framework of time complexity classes like P and EXP. Finally, the Linear Speedup Theorem reinforced the validity of these broad classes by showing that constant-factor efficiencies are not fundamental properties of a computational problem. The Turing machine remains the essential, enduring model in theoretical computer science, providing the formal basis for reasoning about the ultimate limits and practical efficiency of computation and framing seminal questions like the P versus NP problem.
-
