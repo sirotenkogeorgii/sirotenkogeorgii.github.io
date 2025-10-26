@@ -1,11 +1,16 @@
 :root {
-  color-scheme: dark;
-  --background: #2b2d33;
-  --foreground: #f5f7fa;
-  --accent: #9ac8ff;
-  --muted: rgba(245, 247, 250, 0.7);
-  --line: rgba(245, 247, 250, 0.18);
-  --toc-surface: rgba(45, 47, 54, 0.85);
+  color-scheme: light;
+  --page-bg: #f3f4f7;
+  --surface: #ffffff;
+  --text: #1f232b;
+  --muted: #4b5563;
+  --accent: #1d4ed8;
+  --accent-muted: rgba(29, 78, 216, 0.12);
+  --line: rgba(15, 23, 42, 0.12);
+  --nav-line: rgba(15, 23, 42, 0.16);
+  --toc-surface: #f6f7fb;
+  --toc-border: rgba(15, 23, 42, 0.14);
+  --shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
 }
 
 *,
@@ -16,107 +21,115 @@
 
 body {
   margin: 0;
-  font-family: "Source Serif Pro", "Iowan Old Style", "Charter", "Georgia", serif;
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.75;
   letter-spacing: 0.01em;
-  background: var(--background);
-  color: var(--foreground);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
 }
 
 .wrapper {
-  max-width: 1100px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 4rem;
+  padding: 2.5rem 2.5rem 4rem;
 }
 
 .site-header {
-  border-bottom: 1px solid var(--line);
-  background: transparent;
   position: sticky;
   top: 0;
   z-index: 20;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(10px);
+  background: rgba(243, 244, 247, 0.9);
+  border-bottom: 1px solid var(--line);
 }
 
 .site-header .wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  gap: 1rem;
+  gap: 1.35rem;
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
 }
 
 .site-title {
+  font-size: 1.4rem;
   font-weight: 600;
-  text-decoration: none;
-  color: var(--foreground);
-  font-size: 1.35rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--text);
 }
 
 .site-nav {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 1.25rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--line);
+  align-items: center;
+  gap: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--nav-line);
 }
 
 .site-nav a {
   position: relative;
   padding: 0 0.75rem;
-  text-decoration: none;
   color: var(--muted);
   font-variant-caps: all-small-caps;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
 }
 
 .site-nav a + a::before {
   content: "";
   position: absolute;
-  left: 0;
+  left: -0.875rem;
   top: 50%;
   transform: translateY(-50%);
-  height: 1.4em;
-  border-left: 1px solid var(--line);
+  height: 1.6em;
+  border-left: 1px solid var(--nav-line);
 }
 
 .site-nav a:hover,
 .site-nav a:focus {
-  color: var(--foreground);
+  color: var(--text);
 }
 
 .page-content {
-  padding-top: 3rem;
+  padding-top: 3.5rem;
 }
 
 .note-layout {
   display: grid;
-  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
   gap: 3rem;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
 }
 
 .note-toc {
   position: sticky;
-  top: 6.5rem;
+  top: 7rem;
   align-self: start;
+  border: 1px solid var(--toc-border);
   background: var(--toc-surface);
-  border: 1px solid var(--line);
-  border-radius: 0.8rem;
-  padding: 1.75rem 1.5rem;
-  max-height: calc(100vh - 7.5rem);
+  border-radius: 1rem;
+  padding: 2rem 1.75rem;
+  max-height: calc(100vh - 8rem);
   overflow-y: auto;
 }
 
 .note-toc__title {
-  margin: 0 0 1.25rem;
-  font-size: 1.05rem;
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   color: var(--muted);
 }
 
@@ -127,139 +140,156 @@ body {
 }
 
 .note-toc nav li {
-  margin-bottom: 0.5rem;
-  font-size: 0.98rem;
+  margin-bottom: 0.65rem;
+}
+
+.note-toc nav li:last-child {
+  margin-bottom: 0;
+}
+
+.note-toc nav .toc-level-2 > a {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.note-toc nav .toc-level-3 {
+  font-size: 0.95rem;
+  color: var(--muted);
 }
 
 .note-toc nav li ul {
-  margin-top: 0.35rem;
+  margin-top: 0.4rem;
   margin-left: 1rem;
-}
-
-.note-toc a {
-  text-decoration: none;
-  color: var(--foreground);
-}
-
-.note-toc a:hover,
-.note-toc a:focus {
-  color: var(--accent);
+  border-left: 2px solid var(--line);
+  padding-left: 0.75rem;
 }
 
 .note {
-  max-width: 720px;
+  background: var(--surface);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow);
+  padding: 3.25rem 3.5rem;
 }
 
 .note-header h1 {
-  margin-bottom: 0.4rem;
-  font-size: 2.25rem;
+  margin: 0 0 0.75rem;
+  font-size: 2.4rem;
+  line-height: 1.32;
   letter-spacing: 0.02em;
 }
 
 .note-meta {
-  margin-top: 0;
-  color: var(--muted);
+  margin: 0;
   font-size: 0.95rem;
-}
-
-.note-content {
-  font-size: 1.05rem;
+  color: var(--muted);
 }
 
 .note-content h2,
 .note-content h3,
 .note-content h4 {
-  margin-top: 2.75rem;
-  margin-bottom: 0.75rem;
-  letter-spacing: 0.02em;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.45;
+  letter-spacing: 0.015em;
+}
+
+.note-content h2 {
+  font-size: 1.75rem;
+}
+
+.note-content h3 {
+  font-size: 1.35rem;
+}
+
+.note-content h4 {
+  font-size: 1.15rem;
+  color: var(--muted);
 }
 
 .note-content p {
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.6rem;
 }
 
 .note-content ul,
 .note-content ol {
-  margin-left: 1.25rem;
+  margin: 1.2rem 0 1.6rem 1.5rem;
 }
 
-.note-content a {
-  color: var(--accent);
+.note-content li + li {
+  margin-top: 0.4rem;
+}
+
+.note-content strong {
+  font-weight: 600;
 }
 
 .note-content code {
-  padding: 0.15rem 0.4rem;
-  border-radius: 0.3rem;
-  background: rgba(154, 200, 255, 0.12);
-  color: var(--foreground);
+  font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.35rem;
+  background: var(--accent-muted);
+  color: var(--text);
 }
 
 pre {
   overflow-x: auto;
-  padding: 1.25rem;
-  border-radius: 0.8rem;
-  background: rgba(20, 22, 28, 0.85);
-  color: var(--foreground);
-  border: 1px solid var(--line);
+  padding: 1.35rem 1.5rem;
+  border-radius: 1rem;
+  background: #0f172a;
+  color: #f8fafc;
+  font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
+  font-size: 0.9rem;
 }
 
 blockquote {
-  margin: 2rem 0;
+  margin: 2.5rem 0;
   padding-left: 1.5rem;
   border-left: 3px solid var(--line);
   color: var(--muted);
+  font-style: italic;
 }
 
 .note-callout {
-  border: 1px solid var(--line);
-  border-radius: 0.9rem;
-  padding: 1.5rem;
-  background: rgba(154, 200, 255, 0.08);
-  margin: 2rem 0;
+  border: 1px solid var(--accent-muted);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  background: rgba(29, 78, 216, 0.08);
+  margin: 2.5rem 0;
 }
 
 .note-callout__title {
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 0;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
 .site-footer {
   border-top: 1px solid var(--line);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--muted);
-  padding-top: 2rem;
+  padding-top: 2.5rem;
 }
 
 .note-list {
   list-style: none;
-  margin: 2.5rem 0 0;
+  margin: 2.75rem 0 0;
   padding: 0;
 }
 
 .note-list li {
-  margin-bottom: 1.75rem;
+  margin-bottom: 2rem;
 }
 
 .note-list__meta {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
-a {
-  color: var(--accent);
-}
-
-a:hover,
-a:focus {
-  color: var(--foreground);
-}
-
-@media (max-width: 960px) {
+@media (max-width: 1080px) {
   .wrapper {
-    padding: 2rem 1.25rem 3rem;
+    padding: 2rem 2rem 3rem;
   }
 
   .note-layout {
@@ -273,22 +303,41 @@ a:focus {
     margin-bottom: 2.5rem;
   }
 
-  .site-header .wrapper {
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
+  .note {
+    padding: 2.75rem 2.5rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   body {
     font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .wrapper {
+    padding: 1.75rem 1.25rem 2.5rem;
+  }
+
+  .site-header .wrapper {
+    gap: 1rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
   }
 
   .site-nav {
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .site-nav a {
     padding: 0 0.5rem;
+  }
+
+  .note {
+    padding: 2.25rem 1.75rem;
+    border-radius: 1rem;
+  }
+
+  .note-header h1 {
+    font-size: 2rem;
   }
 }

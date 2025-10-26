@@ -51,6 +51,7 @@ layout: default
       link.textContent = heading.textContent;
 
       const item = document.createElement("li");
+      item.classList.add(level === "H2" ? "toc-level-2" : "toc-level-3");
       item.appendChild(link);
 
       if (level === "H2") {
