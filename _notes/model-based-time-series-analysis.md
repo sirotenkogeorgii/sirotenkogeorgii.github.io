@@ -25,7 +25,7 @@ An experiment is a process that yields an observation. The mathematical abstract
   1. It contains the sample space: \(\Omega \in \mathcal{A}\).
   2. It is closed under complementation: If \(A \in \mathcal{A}\), then its complement \(A^c\) is also in \(\mathcal{A}\).
   3. It is closed under countable unions: If \(A_1, A_2, \dots \in \mathcal{A}\), then their union \(\bigcup_{i=1}^{\infty} A_i\) is also in \(\mathcal{A}\).
-  * For a finite sample space \(\Omega\), the \(\sigma\)-algebra is often the power set \(\mathcal{P}(\Omega)\), which is the set of all possible subsets of \(\Omega\).
+  * For a finite sample space \(\Omega\), the \(\sigma\)-algebra is often the power set \(\mathcal{P}(\Omega)\), which is the set of all possible subsets of $\Omega$, $$\Omega$$.
 * **Probability Measure \(P\):** A function \(P: \mathcal{A} \to [0, 1]\) that assigns a likelihood to each event in the \(\sigma\)-algebra. It must satisfy:
   1. \(P(\emptyset) = 0\).
   2. \(P(\Omega) = 1\).
