@@ -1,3 +1,4 @@
+---
 title: Dynamical Systems Theory in Machine Learning
 date: 2024-11-01
 excerpt: Connecting differential equations, stability analysis, and attractor theory to the training dynamics of modern machine learning models.
