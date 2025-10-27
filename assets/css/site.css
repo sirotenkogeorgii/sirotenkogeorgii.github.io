@@ -688,6 +688,33 @@ thead {
   color: var(--muted);
 }
 
+.gd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem;
+  margin: 2rem 0 0;
+}
+
+.gd-grid figure {
+  background: var(--surface);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.4rem 1.4rem;
+  text-align: center;
+}
+
+.gd-grid img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+.gd-grid figcaption {
+  margin-top: 0.7rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
 @media (max-width: 1200px) {
   .marginalia-row {
     grid-template-columns: 1fr;
@@ -716,6 +743,11 @@ thead {
 
   .pmf-grid {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .gd-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.4rem;
   }
 }

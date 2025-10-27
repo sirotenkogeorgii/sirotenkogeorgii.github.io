@@ -88,15 +88,15 @@ Common Discrete Distributions:
 <div class="pmf-grid">
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_bernoulli.png' | relative_url }}" alt="Bernoulli PMF" loading="lazy">
-    <figcaption>Bernoulli PMF.</figcaption>
+    <figcaption>Bernoulli PMF</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_binomial.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <figcaption>Binomial PMF.</figcaption>
+    <figcaption>Binomial PMF</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_poisson.png' | relative_url }}" alt="Poisson PMF" loading="lazy">
-    <figcaption>Poisson PMF.</figcaption>
+    <figcaption>Poisson PMF</figcaption>
   </figure>
 </div>
 
@@ -123,15 +123,15 @@ Common Continuous Distributions:
 <div class="pmf-grid">
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pdf_normal.png' | relative_url }}" alt="Normal PDF" loading="lazy">
-    <figcaption>Normal PDF.</figcaption>
+    <figcaption>Normal PDF</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pdf_exp.png' | relative_url }}" alt="Exponential PDF" loading="lazy">
-    <figcaption>Exponential PDF.</figcaption>
+    <figcaption>Exponential PDF</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pdf_uniform.png' | relative_url }}" alt="Uniform PDF" loading="lazy">
-    <figcaption>Uniform PDF.</figcaption>
+    <figcaption>Uniform PDF</figcaption>
   </figure>
 </div>
 
@@ -153,7 +153,7 @@ Common Continuous Distributions:
 
 This section covers essential rules for manipulating probabilities and two cornerstone theorems of probability theory.
 
-### 1.6.1 Rules of Probability
+#### 1.6.1 Rules of Probability
 
 Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
 
@@ -172,7 +172,7 @@ Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
   P(x \mid y) = P(x), \quad
   P(y \mid x) = P(y).$
 
-### 1.6.2 Asymptotic Theorems
+#### 1.6.2 Asymptotic Theorems
 
 These theorems describe the behavior of the sum of a large number of random variables.
 
@@ -181,7 +181,7 @@ $\frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
 \quad \text{as } n \to \infty.$ -->
 
 **Theorem (Strong Law of Large Numbers — SLLN):**  
-Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $E[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
+Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $\mathbb{E}[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
 
 $$
 \frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
@@ -189,57 +189,49 @@ $$
 $$
 
 
-**Theorem (Central Limit Theorem — CLT):** Let $(X_i)_{i=1}^\infty$ be a sequence of i.i.d. random variables with mean $\mu$ and finite variance $\sigma^2$. Then the distribution of the standardized sample mean converges to a standard Normal distribution:
-$\frac{\sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n X_i - \mu\right)}{\sigma}
+**Theorem (Central Limit Theorem — CLT):** 
+Let $(X_i)_{i=1}^\infty$ be a sequence of i.i.d. random variables with mean $\mu$ and finite variance $\sigma^2$. Then the distribution of the standardized sample mean converges to a standard Normal distribution:
+
+$$
+\frac{\sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n X_i - \mu\right)}{\sigma}
 \xrightarrow{d} \mathcal{N}(0, 1)
-\quad \text{as } n \to \infty.$
-
-**Key Takeaway: The Power of the CLT**
-
-The Central Limit Theorem is remarkable because it holds regardless of the underlying distribution of the $X_i$. It explains why the Normal distribution appears so frequently in nature and statistics. In machine learning, it motivates modeling errors or noise as normally distributed, simplifying both analysis and inference.
-
-**Exercises**
-
-1. A disease has a prevalence of 0.01. A test for the disease is 98% accurate for those who have it (sensitivity) and 95% accurate for those who do not (specificity). If a person tests positive, what is the probability they actually have the disease? Use Bayes' rule.
-
+\quad \text{as } n \to \infty.
+$$
 
 ---
 
-## 4. The Theory of Parameter Estimation
+## 2. Review on Parameter Estimation
 
-Statistical inference aims to deduce properties of an underlying population or data-generating process from a finite sample of data.
+### 2.1 Statistical Inference
 
-### 4.1 Parametric Models
+Statistical inference aims to deduce properties of an underlying population or data-generating process from a finite sample of data. To do so, we often assume that our data is drawn from a family of distributions parametrized by a finite set of parameters.
 
-We often assume that our data is drawn from a family of distributions indexed by a finite set of parameters.
-
-**Definition (Parametric Model):** A family of probability distributions $\{P_\theta\}_{\theta \in \Theta}$ indexed by a parameter vector $\theta$ from a parameter space $\Theta \subseteq \mathbb{R}^n$.
+**Definition (Parametric Model):** Let $\Theta \subseteq \mathbb{R}^n$. A family of probability distributions $\mathcal{P}_{\Theta} = \lbrace p_{\theta}$ on a measurable space is called a parametric model. $\Theta$ is called a parameter space.
 
 Our goal is to estimate the true, unknown parameter $\theta$ that generated the data. We distinguish between:
 
 * **Parameter $\theta$:** The true, fixed (in the frequentist view) but unknown value.
-* **Estimator $\hat{\theta}$:** A function of the data sample used to estimate $\theta$. It is a random variable.
-* Estimate: A specific numerical value of the estimator realized from a specific data sample.
+* **Estimator $\hat{\theta}$:** A function of our data that is used to estimate $\theta$. It is a random variable.
+* **Estimate**: A specific numerical value of the estimator realized from a specific data sample.
 
-The distribution of the estimator $\hat{\theta}$ over repeated sampling is called the sampling distribution. The standard deviation of this distribution is the **standard error**.
+If I recompute samples and each time evaluate my estimate, I obtain a distribution over these estimates. This is called the **sampling distribution** of my estimator. The standard deviation of sampling distribution is the **standard error**.
 
-### 4.2 Properties of Estimators
+### 2.2 Properties of Estimators
 
 * **Bias:** The difference between the expected value of the estimator and the true parameter:
-  $\operatorname{Bias}(\hat{\theta}) = E[\hat{\theta}] - \theta.$
+  $\text{Bias}(\hat{\theta}) = \mathbb{E}[\hat{\theta}] - \theta.$
   An estimator is unbiased if its bias is zero.
 * **Efficiency:** An estimator is more efficient than another if it has a smaller variance (i.e., a smaller standard error).
 
-### 4.3 Frequentist vs. Bayesian Viewpoints
-
+**Definition (Frequentist vs. Bayesian Viewpoints):**
 * **Frequentist View:** Parameters $\theta$ are fixed, unknown constants. Randomness arises solely from the data sampling process.
 * **Bayesian View:** Parameters are random variables themselves, possessing their own probability distributions $p(\theta)$. Data is used to update our beliefs about the parameters.
 
-## 5. Paradigms of Parameter Estimation
+### 2.3. Paradigms of Parameter Estimation
 
 There are three primary approaches to estimating parameters from data.
 
-### 5.1 Method of Least Squares (LS)
+#### 2.3.1 Method of Least Squares (LS)
 
 The LS method estimates parameters by minimizing the sum of the squared differences between observed values and the values predicted by the model. It requires no assumptions about the underlying distribution of the data.
 
@@ -254,7 +246,7 @@ $\hat{\theta}_{\text{LS}} = \arg\min_{\theta} \sum_{i=1}^N \epsilon_i^2 = \arg\m
     $\sum_i X_i - N\mu = 0 \implies \hat{\mu} = \frac{1}{N} \sum_{i=1}^N X_i.$
   * The LS estimate for the population mean is the sample mean.
 
-### 5.2 Maximum Likelihood Estimation (MLE)
+#### 2.3.2 Maximum Likelihood Estimation (MLE)
 
 MLE selects the parameter values that make the observed data most probable under the assumed parametric model.
 
@@ -277,7 +269,7 @@ Let $X = \{x_1, \dots, x_N\}$ be observed data drawn from a model with density $
     $\sum_i X_i - N\mu = 0 \implies \hat{\mu}_{\text{MLE}} = \frac{1}{N} \sum_{i=1}^N X_i.$
   * For this model, the MLE and LS estimates for the mean coincide.
 
-### 5.3 Bayesian Inference (BI)
+#### 2.3.3 Bayesian Inference (BI)
 
 Bayesian inference uses Bayes' rule to update knowledge about parameters after observing data. It produces a posterior distribution for the parameters, not just a point estimate.
 
@@ -298,44 +290,49 @@ This is often summarized as: Posterior $\propto$ Likelihood $\times$ Prior.
   * The posterior $p(\mu \mid X)$ is also a Normal distribution.
   * A common challenge is that the evidence $p(X)$ is often an intractable integral, requiring numerical methods such as MCMC or variational inference.
 
-**Exercises**
-
-1. Consider a series of $N$ coin flips with outcomes $X = \{x_1, \dots, x_N\}$ where $x_i \in \{0, 1\}$. Assume the coin has a probability of heads $p$. Derive the Maximum Likelihood Estimator for $p$.
-
-
----
-
-## 6. Optimization for Estimation
+### 2.4. Parameter Estimation for Intractable Problems
 
 When closed-form solutions for estimators are not available, we turn to numerical optimization algorithms to find the parameters that minimize a cost function (e.g., sum of squared errors, negative log-likelihood).
 
-### 6.1 Gradient Descent (GD)
+#### 2.4.1 Gradient Descent (GD)
 
 Gradient Descent is an iterative first-order optimization algorithm for finding a local minimum of a differentiable function. The core idea is to take repeated steps in the opposite direction of the gradient of the function at the current point, as this is the direction of steepest descent.
 
 **Algorithm:**
 
 1. Initialize parameter guess $\theta_0$.
-2. Repeat for iterations $n = 0, 1, 2, \dots$:
-   $\theta_{n+1} = \theta_n - \gamma \nabla J(\theta_n)$
-   where $J(\theta)$ is the cost function and $\gamma > 0$ is the learning rate.
-3. Stop when convergence is reached (e.g., $\|\nabla J(\theta_n)\| < \epsilon$).
+2. Repeat for $n$ iterations:
+   * $\theta_{n+1} = \theta_n - \gamma \nabla J(\theta_n)$, 
+   * where $J(\theta)$ is the cost function and $\gamma > 0$ is the learning rate.
+1. Stop when convergence is reached (e.g., $\|J(\theta_{i}) - J(\theta_{i+1})\| < \epsilon$) or no more iterations.
 
 * *Example: GD for LS Estimation of the Mean*
-  * Cost: $J(\mu) = \sum_i (X_i - \mu)^2$
-  * Gradient: $\nabla J(\mu) = \frac{\partial J}{\partial \mu} = -2\sum_i (X_i - \mu)$
-  * Update Rule: $\mu_{n+1} = \mu_n - \gamma (-2\sum_i (X_i - \mu_n)) = \mu_n + 2\gamma \sum_i (X_i - \mu_n)$
+  * Model: $X_i = \mu + \epsilon_i$
+  * Cost: $J(\mu) = \frac{1}{2} \sum_i (X_i - \mu)^2$
+  * Gradient: $\nabla J(\mu) = \frac{\partial J}{\partial \mu} = -\sum_i (X_i - \mu)$
+  * Update Rule: $\mu_{n+1} = \mu_n - \gamma (-\sum_i (X_i - \mu_n)) = \mu_n + \gamma \sum_i (X_i - \mu_n)$
 
 **Challenges and Solutions:**
-
+* Local minima.
 * Slow convergence in flat regions of the cost landscape.
 * Overshooting the minimum if the learning rate $\gamma$ is too large.
 * Practical remedies:
+  * **Random Restarts:** Run the algorithm from multiple random initial conditions to increase the chance of finding a global minimum.
   * **Stochastic Gradient Descent (SGD):** Compute the gradient on a small random subset of data (a minibatch) at each step, leading to faster but noisier updates.
   * **Adaptive Learning Rates:** Algorithms like Momentum, Adagrad, and Adam dynamically adjust the learning rate to navigate varying curvatures in the cost landscape.
-  * **Random Restarts:** Run the algorithm from multiple random initial conditions to increase the chance of finding a global minimum.
 
-### 6.2 Newton-Raphson Method
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/gd_localMinima.png' | relative_url }}" alt="Gradient descent stuck in local minima" loading="lazy">
+    <figcaption>Gradient descent trapped in local minima and saddle regions.</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/gd_slowConvergence.png' | relative_url }}" alt="Gradient descent slow convergence" loading="lazy">
+    <figcaption>Slow convergence in flat valleys or overshooting due to poorly scaled gradients.</figcaption>
+  </figure>
+</div>
+
+#### 2.4.2 Newton-Raphson Method
 
 The Newton-Raphson method is a second-order optimization algorithm that uses the curvature of the loss landscape to take more informed steps. It adapts the learning rate by incorporating the Hessian matrix (the matrix of second partial derivatives).
 
