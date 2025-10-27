@@ -462,7 +462,11 @@ a:focus {
 .highlight .kd,
 .highlight .kn,
 .highlight .kp,
-.highlight .kr {
+.highlight .kr,
+.highlight .kc,
+.highlight .kt,
+.highlight .kv,
+.highlight .ow {
   color: var(--code-keyword);
 }
 
@@ -471,14 +475,20 @@ a:focus {
 .highlight .sc,
 .highlight .s1,
 .highlight .s2,
-.highlight .sd {
+.highlight .sd,
+.highlight .sh,
+.highlight .si,
+.highlight .sr,
+.highlight .sx,
+.highlight .ss {
   color: var(--code-string);
 }
 
 .highlight .mi,
 .highlight .mf,
 .highlight .mh,
-.highlight .il {
+.highlight .il,
+.highlight .mo {
   color: var(--code-number);
 }
 
@@ -491,7 +501,10 @@ a:focus {
 }
 
 .highlight .nf,
-.highlight .nt {
+.highlight .nt,
+.highlight .fm,
+.highlight .nx,
+.highlight .py {
   color: var(--code-function);
 }
 
