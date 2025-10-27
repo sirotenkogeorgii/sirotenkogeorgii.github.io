@@ -33,24 +33,24 @@ An **experiment** is a process that yields an observation. The mathematical abst
 
 The pair $(\Omega, \mathcal{A})$ is called a **measurable space**. Elements of $\mathcal{A}$ are **measurable sets**.
 *Example (Die Toss):*
-  * $\Omega = {1, 2, 3, 4, 5, 6}$
-  * $\mathcal{A} = \mathcal{P}(\Omega)$ or $\mathcal{A} = {\emptyset, {1,3,5}, {2,4,5}, \Omega}$.
+  * $\Omega = \lbrace 1, 2, 3, 4, 5, 6 \rbrace$
+  * $\mathcal{A} = \mathcal{P}(\Omega)$ or $\mathcal{A} = \lbrace \emptyset, \lbrace 1,3,5 \rbrace, \lbrace 2,4,5 \rbrace, \Omega \rbrace$.
 
 ### 1.2. Random Variables and Probability Distributions
 
 Random variables allow us to map outcomes from the sample space to the real numbers, enabling the use of powerful mathematical tools.
 
-### 2.1 Random Variables
+<!-- ### 2.1 Random Variables -->
 
 **Definition (Random Variable):** A Random Variable (RV) is a measurable function $X: \Omega \to \mathbb{R}$ that assigns a real number to each outcome in the sample space.
 
-The mapping itself is deterministic; the randomness is induced by the underlying probability measure on $\Omega$. Random variables induce probability distributions on the real line.
+* *Example (Coin Toss):* For a coin toss where $\Omega = \lbrace \text{Heads}, \text{Tails} \rbrace$, we can define an RV $X$ such that $X(\text{Heads}) = 1$ and $X(\text{Tails}) = 0$.
 
-* *Example (Coin Toss):* For a coin toss where $\Omega = \{\text{Heads}, \text{Tails}\}$, we can define an RV $X$ such that $X(\text{Heads}) = 1$ and $X(\text{Tails}) = 0$.
+The mapping itself is deterministic; the randomness is induced by the underlying probability measure on $\Omega$. Random variables induce probability distributions.
 
-### 2.2 Cumulative Distribution Function (CDF)
+<!-- ### 2.2 Cumulative Distribution Function (CDF) -->
 
-The CDF uniquely characterizes the distribution of any random variable.
+The **Cumulative Distribution Function (CDF)** uniquely characterizes the distribution of any random variable.
 
 **Definition (CDF):** A function $F: \mathbb{R} \to [0, 1]$ is a CDF if it satisfies:
 
@@ -61,16 +61,18 @@ The CDF uniquely characterizes the distribution of any random variable.
 
 The CDF connects directly to the probability measure: $F(x) = P(X \le x)$.
 
-### 2.3 Discrete Distributions and PMFs
+### 1.3 Discrete Distributions and PMFs
 
 For a discrete RV, the probability is concentrated on a countable set of points.
 
 **Definition (Probability Mass Function — PMF):** Let $a_1, a_2, \dots$ be the values a discrete RV $X$ can take. A function $f: \mathbb{R} \to [0, 1]$ is a PMF if $f(x) = P(X=x)$. Specifically, if $p_k = P(X=a_k)$ with $\sum_k p_k = 1$, then
-$f(x) =
+$$
+f(x) =
 \begin{cases}
   p_k & \text{if } x = a_k,\\
   0   & \text{otherwise}.
-\end{cases}$
+\end{cases}
+$$
 The CDF for a discrete RV is a step function: $F(t) = \sum_{k: a_k \le t} p_k$.
 
 Common Discrete Distributions:
@@ -81,7 +83,22 @@ Common Discrete Distributions:
 | Binomial | $n \in \mathbb{N},\ p \in [0, 1]$ | $\binom{n}{x} p^x (1-p)^{n-x}$ for $x \in \{0, \dots, n\}$ | Models the number of successes in $n$ independent Bernoulli trials. |
 | Poisson | $\lambda > 0$ | $\dfrac{\lambda^x e^{-\lambda}}{x!}$ for $x \in \{0, 1, 2, \dots\}$ | Models the number of events occurring in a fixed interval of time or space. |
 
-### 2.4 Continuous Distributions and PDFs
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_bernoulli.png' | relative_url }}" alt="Bernoulli PMF" loading="lazy">
+    <figcaption>Bernoulli PMF with support $\{0, 1\}$.</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_binomial.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <figcaption>Binomial PMF illustrating aggregate Bernoulli trials.</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_poisson.png' | relative_url }}" alt="Poisson PMF" loading="lazy">
+    <figcaption>Poisson PMF modeling event counts per interval.</figcaption>
+  </figure>
+</div>
+
+### 1.4 Continuous Distributions and PDFs
 
 For a continuous RV, the probability of any single point is zero. Probability is defined over intervals.
 
