@@ -6,13 +6,11 @@ excerpt: ...
 tags:
   - machine-learning
   - high-performance-computing
+---
+
+<!-- This study book serves as a comprehensive guide to the introductory concepts of Embedded Machine Learning, designed for students with no prior background in the field. It synthesizes the core ideas from the initial lecture, explaining all fundamental concepts, terminology, and mathematical principles from the ground up. -->
 
 # Embedded Machine Learning
-
-> This study book serves as a comprehensive guide to the introductory concepts of Embedded Machine Learning, designed for students with no prior background in the field. It synthesizes the core ideas from the initial lecture, explaining all fundamental concepts, terminology, and mathematical principles from the ground up.
-
-
----
 
 
 ## 1. Introduction to Embedded Machine Learning
