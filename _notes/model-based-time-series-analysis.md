@@ -10,40 +10,33 @@ tags:
 # math: true
 ---
 
-## 1. The Language of Probability
+## 1. Review on Statistical Inference
 
 To reason about uncertainty in a mathematically sound way, we begin with the concept of a probability space. This structure consists of three essential components that formalize an experiment and its outcomes.
 
 ### 1.1 The Probability Space
 
-An experiment is a process that yields an observation. The mathematical abstraction for this is the probability space, a tuple $(\Omega, \mathcal{A}, P)$.
+An **experiment** is a process that yields an observation. The mathematical abstraction for this is the **probability space**, a tuple $(\Omega, \mathcal{A}, P)$. 
 
-<!-- * **Sample Space $(\Omega)$:** The set of all possible indecomposable outcomes of an experiment. These are called simple events. -->
 * **Sample Space $\Omega$:** The set of all possible indecomposable outcomes of an experiment. These are called simple events.
-  * *Example (Die Toss):* $\Omega = \{1, 2, 3, 4, 5, 6\}$
+  * *Example (Die Toss):* $\Omega = {1, 2, 3, 4, 5, 6}$
 * **$\sigma$-algebra $(\mathcal{A})$:** A collection of subsets of $\Omega$ (called events) about which we can ask probabilistic questions. A valid $\sigma$-algebra must satisfy three properties:
   1. It contains the sample space: $\Omega \in \mathcal{A}$.
   2. It is closed under complementation: If $A \in \mathcal{A}$, then its complement $A^c$ is also in $\mathcal{A}$.
   3. It is closed under countable unions: If $A_1, A_2, \dots \in \mathcal{A}$, then their union $\bigcup_{i=1}^{\infty} A_i$ is also in $\mathcal{A}$.
-  * For a finite sample space $\Omega$, the $\sigma$-algebra is often the power set $\mathcal{P}(\Omega)$, which is the set of all possible subsets of $\Omega$, $$\Omega$$.
+  * For a finite sample space $\Omega$, the $\sigma$-algebra is often the power set $\mathcal{P}(\Omega)$, which is the set of all possible subsets of $\Omega$.
 * **Probability Measure $P$:** A function $P: \mathcal{A} \to [0, 1]$ that assigns a likelihood to each event in the $\sigma$-algebra. It must satisfy:
   1. $P(\emptyset) = 0$.
   2. $P(\Omega) = 1$.
   3. For any sequence of pairwise disjoint events $A_1, A_2, \dots$, the probability of their union is the sum of their probabilities:
      $P\!\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i).$
 
-The pair $(\Omega, \mathcal{A})$ is called a **measurable space**.
+The pair $(\Omega, \mathcal{A})$ is called a **measurable space**. Elements of $\mathcal{A}$ are **measurable sets**.
+*Example (Die Toss):*
+  * $\Omega = {1, 2, 3, 4, 5, 6}$
+  * $\mathcal{A} = \mathcal{P}(\Omega)$ or $\mathcal{A} = {\emptyset, {1,3,5}, {2,4,5}, \Omega}$.
 
-**Exercises**
-
-1. Consider an experiment of tossing a coin twice. Define the sample space $\Omega$, take the power set $\mathcal{P}(\Omega)$ as the $\sigma$-algebra, and specify a valid probability measure for a fair coin.
-2. Let $\mathcal{A}_1 = \{\emptyset, \{1, 3, 5\}, \{2, 4, 6\}, \Omega\}$ for the die toss example. Verify that $\mathcal{A}_1$ is a valid $\sigma$-algebra. Let $\mathcal{A}_2 = \{\emptyset, \{1\}, \{2,3,4,5,6\}, \Omega\}$. Is $\mathcal{A}_2$ a valid $\sigma$-algebra? Why or why not?
-
-
----
-
-
-## 2. Random Variables and Probability Distributions
+### 1.2. Random Variables and Probability Distributions
 
 Random variables allow us to map outcomes from the sample space to the real numbers, enabling the use of powerful mathematical tools.
 
