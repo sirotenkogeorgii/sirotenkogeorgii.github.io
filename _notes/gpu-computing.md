@@ -9,6 +9,141 @@ tags:
   - high-performance-computing
 ---
 
+# Chapter 1: An Introduction to GPU Computing
+
+> Welcome to the world of GPU Computing. This study guide is designed to take you from the fundamentals of parallel processing to writing your first high-performance programs on a Graphics Processing Unit (GPU). We will explore the unique architecture of modern GPUs, learn the CUDA programming model, and understand the core principles that unlock immense computational power for a wide range of applications, from scientific research to machine learning.
+>
+> This introductory chapter sets the stage by answering a fundamental question: Why do we need parallel computing? We will explore the historical context, compare the design philosophies of CPUs and GPUs, and introduce the foundational laws that govern performance scaling in parallel systems.
+
+## The Need for Massive Parallelism
+
+For decades, the engine driving computational progress was Moore's Law. Originally stated in 1965 and revised in 1975, it famously observed that the number of transistors on an integrated circuit doubles approximately every two years. This exponential growth allowed single-processor performance to increase at a staggering rate, primarily by increasing clock frequencies.
+
+However, this era of "free" performance scaling came to an end due to physical limitations, a phenomenon known as the end of Dennard Scaling. As transistors became smaller and denser, the power required to run them at ever-higher frequencies became unsustainable, generating too much heat. The industry hit a "power wall."
+
+To continue advancing performance, computer architects shifted their focus from making a single processing core faster to using more cores working in parallel. This transition from complex, latency-optimized cores to numerous, simpler, throughput-oriented cores is the defining characteristic of the post-Dennard era and the primary reason for the rise of massively parallel architectures like the GPU.
+
+**Performance can be viewed through two primary lenses:**
+
+- **Instruction-Level Performance:** This classical view measures performance as the product of instructions executed per cycle and the clock frequency. \( \text{Perf}(\mathrm{ops/s}) = \frac{\text{Instructions}}{\text{cycle}} \times \text{frequency} \)
+- **Power-Constrained Performance:** In the modern era, a more critical view is performance per watt, or energy efficiency. \( \text{Perf}(\mathrm{ops/s}) = \text{Power}(\mathrm{W}) \times \text{Efficiency}(\mathrm{ops/Joule}) \)
+
+GPUs are designed to excel in the second paradigm. By replicating many smaller, energy-efficient processing units and often running them at lower frequencies, they achieve massive parallelism and superior overall throughput and efficiency for suitable workloads.
+
+## From Gaming Graphics to General-Purpose Computing
+
+The Graphics Processing Unit, or GPU, began its life with a singular purpose: rendering graphics for video games. The core task of graphics involves performing the same mathematical operations (like matrix transformations and color calculations) on millions of pixels simultaneously. This inherently parallel workload led to the development of highly specialized, parallel hardware.
+
+The graphics pipeline consists of several key stages:
+
+| Stage | Purpose |
+| --- | --- |
+| Vertex Shader | A programmable stage that transforms the 3D position and texture coordinates of vertices. |
+| Triangle Assembly | Connects vertices to form triangles. |
+| Rasterization | Determines which pixels on the screen are covered by each triangle. |
+| Fragment Shader | A programmable stage that calculates the final color for each affected pixel. |
+
+Since the number of pixels (fragments) is vastly greater than the number of vertices, the fragment shader stage required immense parallel processing power. Around 2007, innovators realized that this powerful, programmable parallel engine could be harnessed for tasks beyond graphics. This marked the birth of General-Purpose GPU (GPGPU) computing. NVIDIA's CUDA (Compute Unified Device Architecture) platform was a pioneering effort that provided a software layer allowing developers to program the GPU directly for general-purpose tasks, unlocking its power for scientific computing, climate research, molecular dynamics, and, most notably, machine learning.
+
+The impact has been profound, enabling computational milestones to be reached years ahead of schedule. For instance, the leap from Tera-FLOP/s (trillion floating-point operations per second) systems in 1997 to Peta-FLOP/s (quadrillion) in 2012 took 15 years. The subsequent jump to Exa-FLOP/s (quintillion) took only 10 years, largely driven by the adoption of GPU accelerators.
+
+## CPU vs. GPU: A Tale of Two Architectures
+
+At first glance, a Central Processing Unit (CPU) and a GPU are both silicon chips with processing cores. However, their internal architectures are fundamentally different, reflecting their distinct design philosophies.
+
+- **A CPU is a latency-oriented device.** It is designed to execute a single thread of instructions as fast as possible. To achieve this, a significant portion of its die area is dedicated to sophisticated control logic, large caches, branch predictors, and speculative execution units. This complexity minimizes the time (latency) for any given task, making it ideal for general-purpose, sequential workloads like operating systems and desktop applications.
+- **A GPU is a throughput-oriented device.** Its goal is to execute thousands of parallel threads simultaneously to maximize the total amount of work done. To achieve this, it dedicates the vast majority of its silicon to a massive number of simpler arithmetic logic units (ALUs). It sacrifices single-thread performance and complex control logic in favor of raw parallel processing power. Instead of minimizing latency, a GPU tolerates latency by having so many threads that while some are waiting for data from memory, others can be actively executing.
+
+The following table provides a comparative overview of representative CPU and GPU architectures over time, highlighting these key differences.
+
+| Feature | Intel Broadwell (CPU, 2016) | NVIDIA Kepler (GPU, 2012) | NVIDIA Pascal (GPU, 2016) | NVIDIA Volta (GPU, 2017) |
+| --- | --- | --- | --- | --- |
+| Core Count | 22 cores | 13 SMs (192 SP, 64 DP / SM) | 56 SMs (64 SP, 32 DP / SM) | 84 SMs (64 SP, 32 DP / SM) |
+| Frequency | 2.2 - 3.6 GHz | 0.7 GHz | 1.328 - 1.480 GHz | 1.455 GHz |
+| Peak Performance | 633.6 GF/s (DP) | 1,165 GF/s (DP), x3 SP | 5.3 TF/s (DP), x2 SP | 7.5 TF/s (DP), x2 SP |
+| Use Mode | Latency-Oriented | Throughput-Oriented | Throughput-Oriented | Throughput-Oriented |
+| Latency Treatment | Minimization | Toleration | Toleration | Toleration |
+| Programming | 10s of threads | 10,000s+ of threads | 10,000s+ of threads | 10,000s+ of threads |
+| Memory Bandwidth | 76.8 GB/s | 250 GB/s | 720 GB/s | Not Specified in Source |
+| Memory Capacity | 1.54 TB | 5 GB | 16 GB | 32 GB |
+| Die Size | 456 mm² | 550 mm² | 610 mm² | 815 mm² |
+| Transistor Count | 7.2 billion | 7.1 billion | 15.3 billion | 21.1 billion |
+| Technology | 14nm | 28nm | 16nm FinFET | 12nm FFN |
+| Power | 145W | 250W | 300W | 300W |
+| Power Efficiency | 4.37 GF/Watt (DP) | 4.66 GF/Watt (DP) | 17.66 GF/Watt (DP) | 25 GF/Watt (DP) |
+
+> **Note:** SM stands for Streaming Multiprocessor, the basic building block of an NVIDIA GPU. SP and DP refer to Single-Precision and Double-Precision floating-point performance, respectively.
+
+### Mind the Memory Hierarchy
+
+The architectural differences extend to the memory system. A diagram of a typical CPU memory hierarchy shows a large main memory (TBs) with relatively low bandwidth (e.g., 20 GB/s), supported by several layers of increasingly fast and small caches (LLC, L2, L1) and a tiny set of registers.
+
+A GPU memory hierarchy, in contrast, is designed for massive bandwidth to feed its thousands of threads. It features its own dedicated high-bandwidth memory (HBM) on the device, with bandwidth reaching nearly 2 TB/s in modern architectures. Within the GPU, a diagram would illustrate that each thread has private registers, threads within a block share a fast on-chip Shared Memory (or L1 cache), and all threads on the GPU can access a larger L2 cache and the main global GPU memory. The bandwidth at the register file level can be enormous, reaching tens of TB/s, which is essential for keeping the parallel execution units fed with data.
+
+### Fundamental Laws of Performance Scaling
+
+When moving from serial to parallel computing, it is crucial to understand the theoretical limits of performance improvement. Two laws are fundamental: Moore's Law, which we have discussed, and Amdahl's Law.
+
+#### Amdahl's Law
+
+Amdahl's Law is a model used to find the maximum expected improvement to an overall system when only a part of the system is improved. In parallel computing, it helps us understand the limits of speed-up.
+
+The central idea is that every program contains a serial part and a parallel part.
+
+- **The parallel fraction (p):** The portion of the program's execution time that can be perfectly parallelized.
+- **The serial fraction (s):** The portion that must be run sequentially on a single processor.
+- **Relationship:** By definition, s + p = 1.
+
+If we use N parallel execution units (e.g., processor cores), the parallel part of the program can be sped up by a factor of N. The serial part, however, receives no speed-up. The overall speed-up, a, is therefore given by the formula:
+
+\[
+a = \frac{1}{s + \frac{p}{N}} = \frac{1}{(1 - p) + \frac{p}{N}}
+\]
+
+
+The key insight from Amdahl's Law is that the serial fraction s places a hard limit on the maximum possible speed-up, regardless of how many processors N you add. As N approaches infinity, the term p/N approaches zero, and the maximum speed-up converges to 1/s. For example, if 90% of your program is parallel (p = 0.9), the serial fraction is 10% (s = 0.1). The maximum speed-up you can ever achieve is 1 / 0.1 = 10x, even with a million cores.
+
+Gene Amdahl, who formulated this law in 1967, originally used it to argue that the single-processor approach was superior. However, his law can be viewed from different perspectives:
+
+- **Optimistic View:** The law, as stated, doesn't account for the overhead of parallelization (e.g., communication, synchronization), which in reality makes achieving the theoretical speed-up even harder.
+- **Pessimistic View:** The law assumes a fixed problem size. In practice, as we get more processors (N), we often want to solve larger problems. Gustafson's Law (1988) offers an alternative perspective, suggesting that for larger problems, the parallel fraction p can increase, leading to better scalability. Furthermore, sometimes using more processors can lead to superlinear speed-up (a > N) due to caching effects, where a larger total cache size allows the problem to fit entirely in faster memory.
+
+#### The GPU Programming Model: A Glimpse
+
+To manage the immense parallelism, GPUs employ a specific execution and programming model. While the hardware itself is a multi-core vector architecture (SIMD - Single Instruction, Multiple Data), it presents a simpler abstraction to the programmer.
+
+- **Hardware View (SIMD):** The hardware groups threads together and executes them on wide vector units. A single instruction is fetched and executed simultaneously on multiple data elements.
+- **Software View (SIMT):** The programmer writes code for a single scalar thread, and the hardware and compiler manage the complexity of grouping these threads into "warps" or "wavefronts" for execution. This is known as SIMT (Single Instruction, Multiple Thread). It gives the programmer the illusion of writing simple scalar code while the hardware provides the efficiency of a vector architecture.
+
+This model is a near-perfect incarnation of the Bulk-Synchronous Parallel (BSP) model proposed by Leslie Valiant in 1990. The BSP model structures parallel computation into a sequence of "supersteps," where each step consists of:
+
+1. Compute: All processors perform local computations in parallel.
+2. Communicate: Processors exchange necessary data.
+3. Synchronize: A barrier synchronization ensures all processors have completed the step before moving to the next.
+
+A key concept in this model is parallel slackness, which refers to having many more virtual processors (threads) than physical processors. This slackness (v >> p) is precisely what GPUs leverage to hide memory latency and schedule computation efficiently.
+
+### Summary: The GPU Computing Paradigm
+
+GPU computing represents a fundamental shift in how we approach high-performance computation. It is not a replacement for the CPU but a powerful co-processor for massively parallel tasks.
+
+#### Key Differences from CPUs
+
+- **Massive Parallelism:** GPUs are designed for tens of thousands of threads, whereas CPUs are optimized for a few dozen.
+- **Throughput over Latency:** GPUs tolerate memory latency by switching between threads, whereas CPUs use complex caches and prediction to minimize it.
+- **Energy Efficiency:** For parallel workloads, GPUs offer significantly better performance per watt.
+- **Offload Model:** A host CPU offloads computationally intensive, parallel portions of a program to the GPU device.
+
+#### Challenges to Consider
+
+- **Limited Memory:** GPU on-board memory is smaller than system RAM.
+- **Low Single-Thread Performance:** A single GPU thread is significantly slower than a CPU core.
+- **Programming Complexity:** Not all problems are easily parallelizable, and efficient GPU programming requires understanding the underlying architecture.
+
+By embracing this new paradigm, we can unlock unprecedented levels of performance and solve computational problems that were once intractable. The following chapters will equip you with the knowledge and skills to do just that.
+
+---
+
 # Chapter 1: The GPU Computing Model
 
 Welcome to the world of GPU computing! This study book will guide you, from first principles, through the architecture of modern Graphics Processing Units (GPUs) and teach you how to harness their massive parallel processing power using the CUDA programming model. We will begin by exploring why GPUs are so effective for certain computational problems and how their fundamental design differs from that of a traditional Central Processing Unit (CPU).
@@ -171,7 +306,7 @@ int main() {
 }
 ```
 
-Key Improvements:
+#### Key Improvements
 
 1. Global Index Calculation: The kernel now correctly computes global `i` and `j` indices, allowing threads from different blocks to work on different parts of the matrix.
 2. Boundary Check: The `if (i < N && j < N)` statement is crucial. Because we must launch a whole number of blocks, the total number of threads launched might be greater than the number of elements in our matrix. This check ensures that only threads corresponding to valid matrix elements perform a write, preventing memory corruption.
@@ -189,7 +324,7 @@ A key feature of the CUDA model is that threads within the same block can cooper
 - Shared Memory: A small, fast, on-chip memory that is shared by all threads in a block. Access to shared memory is much faster than global memory, making it ideal for caching frequently used data or for intermediate results.
 - Barrier Synchronization: Threads in a block can be synchronized by calling the `__syncthreads()` intrinsic. When a thread reaches this function, it pauses until every other thread in its block has also reached the same point. This is essential for coordinating memory accesses, for example, ensuring all threads have finished loading data into shared memory before any thread starts consuming it.
 
-Important Limitation: Threads from different blocks cannot directly communicate or synchronize with each other. They operate independently. The only way they can "communicate" is by reading and writing to global memory. However, the guarantees for when writes from one block become visible to another are very weak. If you need global synchronization across all threads, you must terminate the current kernel and launch a new one.
+> **Important Limitation:** Threads from different blocks cannot directly communicate or synchronize with each other. They operate independently. The only way they can "communicate" is by reading and writing to global memory. However, the guarantees for when writes from one block become visible to another are very weak. If you need global synchronization across all threads, you must terminate the current kernel and launch a new one.
 
 ## 2.5 The CUDA Memory Hierarchy
 
@@ -199,9 +334,9 @@ A diagram of the memory hierarchy shows that each Thread has its own private Reg
 
 ### Global Memory
 
-- Scope: Accessible by all threads in the grid, as well as the host (CPU).
-- Lifetime: Persists for the lifetime of the application, beyond the execution of any single kernel.
-- Characteristics: Large (often many gigabytes) but has high latency. This is the primary memory used for transferring data between the host and the device. Accesses to global memory are very sensitive to access patterns, and uncoalesced (scattered) accesses can severely degrade performance.
+- **Scope:** Accessible by all threads in the grid, as well as the host (CPU).
+- **Lifetime:** Persists for the lifetime of the application, beyond the execution of any single kernel.
+- **Characteristics:** Large (often many gigabytes) but has high latency. This is the primary memory used for transferring data between the host and the device. Accesses to global memory are very sensitive to access patterns, and uncoalesced (scattered) accesses can severely degrade performance.
 
 You manage global memory from the host using the CUDA runtime API:
 
@@ -233,13 +368,13 @@ cudaFree(d_mem);
 free(h_mem);
 ```
 
-Note: When calling a kernel, you can only pass pointers to device memory (like `d_mem`), not host memory.
+> **Note:** When calling a kernel, you can only pass pointers to device memory (like `d_mem`), not host memory.
 
 ### Shared Memory
 
-- Scope: Accessible only by threads within the same block.
-- Lifetime: Persists only for the lifetime of the block. Once a block finishes executing, its shared memory is gone.
-- Characteristics: Very fast on-chip memory. In the best case, access latency is similar to registers. It is organized into banks, and parallel access is possible as long as threads do not access addresses in the same bank (a "bank conflict"). Bank conflicts cause accesses to be serialized, reducing performance.
+- **Scope:** Accessible only by threads within the same block.
+- **Lifetime:** Persists only for the lifetime of the block. Once a block finishes executing, its shared memory is gone.
+- **Characteristics:** Very fast on-chip memory. In the best case, access latency is similar to registers. It is organized into banks, and parallel access is possible as long as threads do not access addresses in the same bank (a "bank conflict"). Bank conflicts cause accesses to be serialized, reducing performance.
 
 ## 2.6 CUDA Language Extensions
 
@@ -376,20 +511,20 @@ You can query the properties of the GPU in your system to make informed decision
 
 ### Common CUDA Errors
 
-- CUDA Error: the launch timed out and was terminated: The kernel took too long to execute. This often happens on systems with a graphical display, where the OS will kill a kernel to prevent the screen from freezing. A common solution is to stop the X11 server.
-- CUDA Error: unspecified launch failure: This is a generic error that often indicates a segmentation fault inside the kernel, such as accessing an array out of bounds or dereferencing an invalid pointer.
-- CUDA Error: invalid configuration argument: The kernel launch configuration is invalid. Common causes include requesting too many threads per block (e.g., > 1024) or requesting more resources (shared memory, registers) per thread than are available on the SM.
-- error: identifier "__eh_curr_region" is undefined: A compiler problem often related to using non-static allocation for shared memory. Ensure shared memory arrays are declared with static sizes.
+- **CUDA Error: the launch timed out and was terminated:** The kernel took too long to execute. This often happens on systems with a graphical display, where the OS will kill a kernel to prevent the screen from freezing. A common solution is to stop the X11 server.
+- **CUDA Error: unspecified launch failure:** This is a generic error that often indicates a segmentation fault inside the kernel, such as accessing an array out of bounds or dereferencing an invalid pointer.
+- **CUDA Error: invalid configuration argument:** The kernel launch configuration is invalid. Common causes include requesting too many threads per block (e.g., > 1024) or requesting more resources (shared memory, registers) per thread than are available on the SM.
+- **error: identifier "__eh_curr_region" is undefined:** A compiler problem often related to using non-static allocation for shared memory. Ensure shared memory arrays are declared with static sizes.
 
 ## 2.10 Summary
 
 This introduction to CUDA has covered the fundamental concepts needed to start writing parallel programs for GPUs. Compared to traditional CPU programming, the CUDA model presents a new paradigm.
 
-Main differences from CPU programming:
+### Main Differences from CPU Programming
 
-- Sophisticated Resource Planning: You must manually manage the hierarchy of threads, blocks, and grids.
-- Manual Data Movements: Data must be explicitly transferred between the host and device.
-- Limited Memory Capacity: GPU memory, while fast, is often smaller than system RAM.
-- Direct Hardware Control: The model gives an experienced user direct control over the hardware, offering plenty of opportunities for performance optimization.
+- **Sophisticated Resource Planning:** You must manually manage the hierarchy of threads, blocks, and grids.
+- **Manual Data Movements:** Data must be explicitly transferred between the host and device.
+- **Limited Memory Capacity:** GPU memory, while fast, is often smaller than system RAM.
+- **Direct Hardware Control:** The model gives an experienced user direct control over the hardware, offering plenty of opportunities for performance optimization.
 
 Once understood, the programming model is remarkably straightforward and powerful, allowing you to unlock massive parallelism for a wide range of computational problems.
