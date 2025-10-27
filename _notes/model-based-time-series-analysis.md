@@ -10,6 +10,8 @@ tags:
 # math: true
 ---
 
+# Model-Based Time Series Analysis
+
 ## 1. Review on Statistical Inference
 
 To reason about uncertainty in a mathematically sound way, we begin with the concept of a probability space. This structure consists of three essential components that formalize an experiment and its outcomes.
@@ -32,8 +34,8 @@ An **experiment** is a process that yields an observation. The mathematical abst
      $P\!\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i).$
 
 The pair $(\Omega, \mathcal{A})$ is called a **measurable space**. Elements of $\mathcal{A}$ are **measurable sets**.
-*Example (Die Toss):*
-  * $\Omega = \lbrace 1, 2, 3, 4, 5, 6 \rbrace$
+* *Example (Die Toss):*
+  * $\Omega = \lbrace 1, 2, 3, 4, 5, 6 \rbrace$.
   * $\mathcal{A} = \mathcal{P}(\Omega)$ or $\mathcal{A} = \lbrace \emptyset, \lbrace 1,3,5 \rbrace, \lbrace 2,4,5 \rbrace, \Omega \rbrace$.
 
 ### 1.2. Random Variables and Probability Distributions
@@ -86,15 +88,15 @@ Common Discrete Distributions:
 <div class="pmf-grid">
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_bernoulli.png' | relative_url }}" alt="Bernoulli PMF" loading="lazy">
-    <figcaption>Bernoulli PMF with support $\{0, 1\}$.</figcaption>
+    <figcaption>Bernoulli PMF.</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_binomial.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <figcaption>Binomial PMF illustrating aggregate Bernoulli trials.</figcaption>
+    <figcaption>Binomial PMF.</figcaption>
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pmf_poisson.png' | relative_url }}" alt="Poisson PMF" loading="lazy">
-    <figcaption>Poisson PMF modeling event counts per interval.</figcaption>
+    <figcaption>Poisson PMF.</figcaption>
   </figure>
 </div>
 
@@ -118,37 +120,40 @@ Common Continuous Distributions:
 | Exponential | $\lambda > 0$ | $\lambda e^{-\lambda x}$ for $x \ge 0$ |
 | Uniform | $a, b \in \mathbb{R},\ a < b$ | $\dfrac{1}{b-a}$ for $x \in [a, b]$ |
 
-### 2.5 Properties of Random Variables
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pdf_normal.png' | relative_url }}" alt="Normal PDF" loading="lazy">
+    <figcaption>Normal PDF.</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pdf_exp.png' | relative_url }}" alt="Exponential PDF" loading="lazy">
+    <figcaption>Exponential PDF.</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/pdf_uniform.png' | relative_url }}" alt="Uniform PDF" loading="lazy">
+    <figcaption>Uniform PDF.</figcaption>
+  </figure>
+</div>
 
-Expected Value (Mean):
+### 1.5 Properties of Random Variables
 
-* Continuous: $E[X] = \int_{-\infty}^{\infty} x f(x)\,dx$
-* Discrete: $E[X] = \sum_{i} x_i P(X=x_i)$
+**Expected Value** (Mean):
 
-Moments and Variance:
+* Continuous: $\mathbb{E}[X] = \int_{-\infty}^{\infty} x f(x)\,dx$
+* Discrete: $\mathbb{E}[X] = \sum_{i} x_i P(X=x_i)$
 
-* The $k$-th moment of an RV $X$ is $E[X^k]$. The expected value is the first moment.
+**Moments** and **Variance**:
+
+* The $k$-th moment of an RV $X$ is $\mathbb{E}[X^k]$. The expected value is the first moment.
 * The variance measures the spread of the distribution:
-  $\operatorname{Var}(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2.$
-
-Key Takeaway: The Role of Distributions in Modeling
-
-In machine learning, selecting a probability distribution is equivalent to making a fundamental assumption about the data-generating process. A Normal distribution assumes data clusters around a mean with symmetric decay, while an Exponential distribution models wait times, and a Bernoulli models binary outcomes. The choice of distribution is a critical part of model specification.
-
-**Exercises**
-
-1. Let $X \sim \text{Binomial}(n=3, p=0.5)$. Calculate $P(X=2)$ and the expected value $E[X]$.
-2. For a Uniform distribution $X \sim \mathcal{U}(0, 10)$, what is $P(2 \le X \le 5)$?
-3. Derive the expected value of a random variable $X$ following an Exponential distribution with parameter $\lambda$.
+  $\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2.$
 
 
----
-
-## 3. Fundamental Laws and Theorems
+### 1.6 Rules and Laws of Probability
 
 This section covers essential rules for manipulating probabilities and two cornerstone theorems of probability theory.
 
-### 3.1 Rules of Probability
+### 1.6.1 Rules of Probability
 
 Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
 
@@ -157,22 +162,32 @@ Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
 * **Chain Rule:** Decomposes a joint probability into a product of conditional probabilities.
   $P(x_1, x_2, \dots, x_n)
   = P(x_1) P(x_2 \mid x_1) P(x_3 \mid x_1, x_2) \dots P(x_n \mid x_1, \dots, x_{n-1}).$
-* **Marginalization:** The probability of one variable can be found by summing (or integrating) over all possible values of other variables.
+* **Marginalization:** The probability of one variable can be found by summing (or integrating) over all possible values of other variables. 
   $P(x) = \sum_y P(x, y) = \sum_y P(x \mid y) P(y).$
 * **Bayes' Rule:** Relates a conditional probability to its inverse and underpins Bayesian inference.
   $P(y \mid x) = \frac{P(x \mid y) P(y)}{P(x)}.$
 * **Independence:** Two RVs $X$ and $Y$ are independent if learning the value of one provides no information about the other. This holds iff
   $P(x, y) = P(x) P(y)
   \quad \text{or equivalently} \quad
-  P(x \mid y) = P(x).$
+  P(x \mid y) = P(x), \quad
+  P(y \mid x) = P(y).$
 
-### 3.2 Asymptotic Theorems
+### 1.6.2 Asymptotic Theorems
 
 These theorems describe the behavior of the sum of a large number of random variables.
 
-**Theorem (Strong Law of Large Numbers — SLLN):** Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $E[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
+<!-- **Theorem (Strong Law of Large Numbers — SLLN):** Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $E[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
 $\frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
-\quad \text{as } n \to \infty.$
+\quad \text{as } n \to \infty.$ -->
+
+**Theorem (Strong Law of Large Numbers — SLLN):**  
+Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $E[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
+
+$$
+\frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
+\quad \text{as } n \to \infty.
+$$
+
 
 **Theorem (Central Limit Theorem — CLT):** Let $(X_i)_{i=1}^\infty$ be a sequence of i.i.d. random variables with mean $\mu$ and finite variance $\sigma^2$. Then the distribution of the standardized sample mean converges to a standard Normal distribution:
 $\frac{\sqrt{n}\left(\frac{1}{n}\sum_{i=1}^n X_i - \mu\right)}{\sigma}
