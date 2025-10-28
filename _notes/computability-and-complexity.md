@@ -110,39 +110,61 @@ Using this representation for tape contents, we can formally define a configurat
 
 A computation unfolds as a sequence of configurations, where each transition from one configuration to the next is governed by an instruction from $\Delta$. This transition is called a computation step.
 
-**Definition 8**: Computation Step Let C = (q, u_1, $\dots$, u_k, j_1, $\dots$, j_k) be a configuration of a k-tape Turing machine M. An instruction of M of the form (q, a_1, $\dots$, a_k, q', a'_1, $\dots$, a'_k, Z_1, $\dots$, Z_k) is applicable to C if for i=1, $\dots$, k, the symbol at position j_i of u_i is equal to a_i. A configuration C' = (q', u'_1, $\dots$, u'_k, j'_1, $\dots$, j'_k) is a successor configuration of C, written C $\xrightarrow{M}$ C', if there is an applicable instruction as above such that for i=1, $\dots$, k:
+**Definition 8**: Computation Step Let $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ be a configuration of a $k$-tape Turing machine $M$. An instruction of $M$ of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ is applicable to $C$ if for $i=1, \dots, k$, the symbol at position $j_i$ of $u_i$ is equal to $a_i$. A configuration $C' = (q', u'_1, \dots, u'_k, j'_1, \dots, j'_k)$ is a successor configuration of $C$, written $C \xrightarrow{M} C'$, if there is an applicable instruction as above such that for $i=1, \dots, k$:
 
-* u'_i = $\begin{cases}$ $\square$ $\tilde{u}_i$ & $\text{if }$ Z_i = L $\text{ and }$ j_i = 1, \\ $\tilde{u}_i$ $\square$ & $\text{if }$ Z_i = R $\text{ and }$ j_i = |u_i|, \\ $\tilde{u}_i$ & $\text{otherwise}$, $\end{cases}$
-* j'_i = $\begin{cases}$ 1 & $\text{if }$ Z_i = L $\text{ and }$ j_i = 1, \\ j_i - 1 & $\text{if }$ Z_i = L $\text{ and }$ j_i $\neq$ 1, \\ j_i & $\text{if }$ Z_i = S, \\ j_i + 1 & $\text{if }$ Z_i = R, $\end{cases}$ where $\tilde{u}_i$ is the word obtained from u_i by replacing the symbol a_i at position j_i with a'_i.
+* $u'_i$ is defined by
 
-The relation $\xrightarrow{M}$ is known as the successor relation or 1-step relation of M. A sequence of such steps forms a partial computation.
+  $$
+  u'_i =
+  \begin{cases}
+    \square \tilde{u}_i & \text{if } Z_i = L \text{ and } j_i = 1, \\
+    \tilde{u}_i \square & \text{if } Z_i = R \text{ and } j_i = |u_i|, \\
+    \tilde{u}_i & \text{otherwise},
+  \end{cases}
+  $$
 
-**Definition 9:** Partial Computations Let M be a Turing machine. A finite partial computation of M of length t is a finite sequence of configurations C_0, $\dots$, C_t such that C_i $\xrightarrow{M}$ C_{i+1} for all i = 0, $\dots$, t-1. An infinite partial computation is an infinite sequence C_0, C_1, $\dots$ where this condition holds for all i $\ge$ 0. We write C $\xrightarrow$[M]{t} C' if there is a finite partial computation of length t from C to C', and C $\xrightarrow$[M]{*} C' if such a computation exists for some length t.
+* $j'_i$ is defined by
+
+  $$
+  j'_i =
+  \begin{cases}
+    1 & \text{if } Z_i = L \text{ and } j_i = 1, \\
+    j_i - 1 & \text{if } Z_i = L \text{ and } j_i \neq 1, \\
+    j_i & \text{if } Z_i = S, \\
+    j_i + 1 & \text{if } Z_i = R.
+  \end{cases}
+  $$
+
+  Here $\tilde{u}_i$ denotes the word obtained from $u_i$ by replacing the symbol $a_i$ at position $j_i$ with $a'_i$.
+
+The relation $\xrightarrow{M}$ is known as the successor relation or $1$-step relation of $M$. A sequence of such steps forms a partial computation.
+
+**Definition 9:** Partial Computations Let $M$ be a Turing machine. A finite partial computation of $M$ of length $t$ is a finite sequence of configurations $C_0, \dots, C_t$ such that $C_i \xrightarrow{M} C_{i+1}$ for all $i = 0, \dots, t-1$. An infinite partial computation is an infinite sequence $C_0, C_1, \dots$ where this condition holds for all $i \ge 0$. We write $C \xrightarrow[M]{t} C'$ if there is a finite partial computation of length $t$ from $C$ to $C'$, and $C \xrightarrow[M]{*} C'$ if such a computation exists for some length $t$.
 
 ### The Full Computation Process
 
 A full computation is a special type of partial computation that begins in a standardized initial configuration and proceeds until it can no longer continue.
 
-**Definition 10:** Initial and Halting Configuration, Computation Let M = (Q, $\Sigma$, $\Gamma$, $\Delta$, s, F) be a Turing machine and let w be a word over $\Sigma$.
+**Definition 10:** Initial and Halting Configuration, Computation Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a Turing machine and let $w$ be a word over $\Sigma$.
 
-* The initial configuration of M on input w is (s, w$\square$, $\square$, $\dots$, $\square$, 1, $\dots$, 1).
-* A halting configuration is a configuration (q, u_1, $\dots$, u_k, j_1, $\dots$, j_k) to which no instruction in $\Delta$ is applicable, meaning (q, u_1(j_1), $\dots$, u_k(j_k)) is not the condition part of any instruction in $\Delta$.
-* An accepting configuration is a halting configuration whose state is an accepting state (i.e., is in F).
-* A computation of M is a partial computation that starts with an initial configuration and is either infinite or ends in a halting configuration.
+* The initial configuration of $M$ on input $w$ is $(s, w\square, \square, \dots, \square, 1, \dots, 1)$.
+* A halting configuration is a configuration $(q, u_1, \dots, u_k, j_1, \dots, j_k)$ to which no instruction in $\Delta$ is applicable, meaning $(q, u_1(j_1), \dots, u_k(j_k))$ is not the condition part of any instruction in $\Delta$.
+* An accepting configuration is a halting configuration whose state is an accepting state (i.e., is in $F$).
+* A computation of $M$ is a partial computation that starts with an initial configuration and is either infinite or ends in a halting configuration.
 * A terminating computation is a finite computation.
 * An accepting computation is a terminating computation that ends in an accepting configuration.
 
 ### The Computation Tree
 
-For a nondeterministic machine, the set of all possible computations on a given input w can be visualized as a tree.
+For a nondeterministic machine, the set of all possible computations on a given input $w$ can be visualized as a tree.
 
-**Definition 11:** Computation Tree The computation tree of a Turing machine M on input w is a finite or infinite rooted tree labelled with configurations of M such that:
+**Definition 11:** Computation Tree The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of M such that:
 
-* The root is labelled with the initial configuration of M on input w.
-* The children of an internal node labelled with configuration C are labelled with the successor configurations of C. If there are t > 0 applicable instructions, the node has t children, one for each resulting successor configuration.
+* The root is labelled with the initial configuration of $M$ on input $w$.
+* The children of an internal node labelled with configuration $C$ are labelled with the successor configurations of $C$. If there are $t > 0$ applicable instructions, the node has $t$ children, one for each resulting successor configuration.
 * Leaf nodes are labelled exclusively with halting configurations.
 
-A branch of the computation tree (a path starting at the root) corresponds to a single computation of M on input w. Finite branches correspond to terminating computations, while infinite branches correspond to non-terminating computations. Since a TM has a finite number of instructions, its computation tree is always finitely branching. For a deterministic TM, the computation tree is simply a single path, as there is only one possible successor at each step.
+A branch of the computation tree (a path starting at the root) corresponds to a single computation of $M$ on input $w$. Finite branches correspond to terminating computations, while infinite branches correspond to non-terminating computations. Since a TM has a finite number of instructions, its computation tree is always finitely branching. For a deterministic TM, the computation tree is simply a single path, as there is only one possible successor at each step.
 
 ### Recognizing and Deciding Languages
 
@@ -152,9 +174,9 @@ Turing machines can be used to define classes of languages based on their comput
 
 A Turing machine accepts an input word if at least one of its possible computational paths leads to an accepting state.
 
-**Definition 12:** Acceptance and Recognized Language Let M be a Turing machine with input alphabet $\Sigma$, and let w be a word over $\Sigma$. The Turing machine M accepts the word w if one of its computations on input w is accepting. The language recognized by M is  L(M) = \{ w $\in$ $\Sigma$^* : M $\text{ accepts }$ w \}
+**Definition 12:** Acceptance and Recognized Language Let $M$ be a Turing machine with input alphabet $\Sigma$, and let $w$ be a word over $\Sigma$. The Turing machine $M$ accepts the word $w$ if one of its computations on input $w$ is accepting. The language recognized by $M$ is  $L(M) = \lbrace w \in \Sigma^* : M \text{ accepts } w \rbrace$.
 
-For a word w to be in L(M), the computation tree of M on w must have at least one accepting branch. It is possible for other branches to be infinite (non-terminating). This class of languages is known in computability theory as the recursively enumerable languages.
+For a word w to be in $L(M)$, the computation tree of $M$ on $w$ must have at least one accepting branch. It is possible for other branches to be infinite (non-terminating). This class of languages is known in computability theory as the recursively enumerable languages.
 
 #### Decidable Languages and Total Turing Machines
 
@@ -162,19 +184,19 @@ A stronger condition is that a machine must halt on all inputs, whether it accep
 
 **Definition 13:** Total Turing Machine A Turing machine is total if for all inputs all of its computations terminate.
 
-**Definition 14:** Decidable Language A language is decidable if it is recognized by a total Turing machine. In this case, we also say that the language is decided by the Turing machine.
+**Definition 14:** Decidable Language $A$ language is decidable if it is recognized by a total Turing machine. In this case, we also say that the language is decided by the Turing machine.
 
 It will later be shown that the class of decidable languages is a strict subclass of the recursively enumerable languages.
 
 ### The Power of Nondeterminism
 
-A central question in complexity theory is whether nondeterministic machines are more powerful than deterministic ones (the famous P vs. NP problem). In the context of computability without resource bounds, the answer is no: every language that can be decided by a nondeterministic TM can also be decided by a deterministic one.
+A central question in complexity theory is whether nondeterministic machines are more powerful than deterministic ones (the famous $P$ vs. $NP$ problem). In the context of computability without resource bounds, the answer is no: every language that can be decided by a nondeterministic TM can also be decided by a deterministic one.
 
 The proof of this relies on the insight that for a total nondeterministic TM, the computation tree for any input must be finite. This can be shown using König's Lemma.
 
 **Theorem 15:** König’s Lemma A finitely branching rooted tree is infinite if and only if it has an infinite branch.
 
-**Proof sketch.**: A tree with an infinite branch is clearly infinite. For the converse, let T be an infinite, finitely branching rooted tree. We can inductively construct an infinite branch v_0, v_1, $\dots$. The key is to maintain the invariant that the subtree rooted at v_i is infinite.
+**Proof sketch.**: A tree with an infinite branch is clearly infinite. For the converse, let T be an infinite, finitely branching rooted tree. We can inductively construct an infinite branch $v_0, v_1, \dots$. The key is to maintain the invariant that the subtree rooted at v_i is infinite.
 
 * Let v_0 be the root of T. The subtree at v_0 is T itself, which is infinite.
 * Assuming v_i has been defined such that its subtree is infinite, we choose v_{i+1} from its children. Since v_i has only finitely many children, and the subtree at v_i is infinite, at least one of its children must be the root of an infinite subtree. We choose such a child to be v_{i+1}. This process can be continued indefinitely, constructing an infinite branch.
@@ -200,28 +222,36 @@ Beyond recognizing languages, Turing machines can also compute functions by tran
 
 To ensure a unique output for every input, function computation is defined using only total deterministic Turing machines. The output is defined based on the content of a designated tape when the machine halts.
 
-**Definition 17:** Computable Functions For a configuration C = (q, u_1, $\dots$, u_k, j_1, $\dots$, j_k) of a k-tape TM, let $\text{out}$(C) be the longest word on tape k that starts at the current head position and extends to the right without containing any blank symbols. Formally, $\text{out}$(C) = u_k(j_k)u_k(j_k+1) $\cdots$ u_k(t) where t = $\max$\{i $\le$ |u_k| : u_k(j_k), $\dots$, u_k(i) $\text{ all differ from }$ $\square$\}. If u_k(j_k) is the blank symbol, $\text{out}$(C) is the empty word.
+**Definition 17:** Computable Functions  
+For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\operatorname{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
 
-The function f_M computed by a total deterministic Turing machine M is defined by f_M(w) = $\text{out}$(C) for the halting configuration C reached by M on input w.
+$$
+\text{out}(C) = u_k(j_k) u_k(j_k + 1) \cdots u_k(t)
+$$
 
-For alphabets $\Sigma$ and $\Sigma$', a function f: $\Sigma$^* $\to$ $\Sigma$'^* is computable if it is computed by some total deterministic Turing machine.
+where $t = \max \{\, i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \,\}$. If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
+
+The function $f_M$ computed by a total deterministic Turing machine $M$ is defined by $f_M(w) = \operatorname{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
+
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is computable if it is computed by some total deterministic Turing machine.
 
 ### Extending Computability to Other Domains
 
 The concepts of decidable sets and computable functions, defined for words, can be extended to other domains like the natural numbers through the use of representations.
 
-**Definition 18:** Decidable sets and computable functions on other domains A representation of a set A is an injective function $\text{repr}$: A $\to$ $\Sigma$^* for some alphabet $\Sigma$ such that the set of representations \{$\text{repr}$(x) : x $\in$ A\} is decidable. With respect to such a representation:
+**Definition 18:** Decidable sets and computable functions on other domains  
+A representation of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\{\text{repr}(x) : x \in A\}$ is decidable. With respect to such a representation:
 
-* a subset X of A is decidable if the set \{$\text{repr}$(a) : a $\in$ X\} is decidable.
-* a function f: A $\to$ A is computable if there is a computable function f_{$\text{repr}$}: $\Sigma$^* $\to$ $\Sigma$^* that maps the representation of any x $\in$ A to the representation of f(x). That is, for all x $\in$ A, we have f_{$\text{repr}$}($\text{repr}$(x)) = $\text{repr}$(f(x)).
+* a subset $X \subseteq A$ is decidable if the set $\{\text{repr}(a) : a \in X\}$ is decidable.
+* a function $f : A \to A$ is computable if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
 
-For example, the set of prime numbers is decidable because we can represent the natural number n by the unary word 1^n, and the language \{1^n : n $\text{ is prime}$\} is decidable.
+For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\{1^n : n \text{ is prime}\}$ is decidable.
 
-**Remark 19:** Representations of natural numbers by binary words A natural number n can be represented by its binary expansion $\text{bin}$(n), such as $\text{bin}$(5) = 101. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word z_n, where z_0, z_1, z_2, $\dots$ is the sequence of all binary words sorted in length-lexicographic order ($\lambda$, 0, 1, 00, 01, $\dots$). This establishes an order isomorphism between ($\mathbb{N}$, $\le$) and ($\{0,1\}$^*, $\le$_{$\text{llex}$}).
+**Remark 19:** Representations of natural numbers by binary words A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\{0,1\}^*, \le_{\text{llex}})$.
 
 **Remark 20:** Sets, languages, and problems The terminology used often depends on the context of study:
 
-* In computability theory, where resource bounds are not a concern, it is common to use unary representations (e.g., n is represented by 1^n). Turing machines are viewed as recognizing subsets of natural numbers, leading to terms like "decidable sets of natural numbers."
+* In computability theory, where resource bounds are not a concern, it is common to use unary representations (e.g., $n$ is represented by $1^n$). Turing machines are viewed as recognizing subsets of natural numbers, leading to terms like "decidable sets of natural numbers."
 * In complexity theory, where computations are resource-bounded, inputs are typically binary words representing instances of a computational problem. Here, Turing machines are seen as recognizing languages or problems, both of which refer to arbitrary sets of binary words. (Note that in a general context, a "language" is any set of words over some alphabet).
 
 
@@ -233,11 +263,22 @@ For example, the set of prime numbers is decidable because we can represent the 
 
 The analysis of algorithms and computational problems often centers on the resources they consume. One of the most critical resources is time. In the context of Turing machines, we formalize this by measuring the number of steps a machine takes to complete its computation.
 
-**Definition 21:** Running time The running time of a deterministic Turing machine M on input w is defined as:  $\text{time}_M$(w) = $\begin{cases}$ t & $\text{the computation of }$ M $\text{ on input }$ w $\text{ terminates and has length }$ t, \ $\uparrow$ & $\text{otherwise}$, $\end{cases}$  where the symbol $\uparrow$ denotes that the function value is undefined (i.e., the machine does not halt).
+**Definition 21:** Running time  
+The running time of a deterministic Turing machine $M$ on input $w$ is defined as
+
+$$
+\text{time}_M(w) =
+\begin{cases}
+t & \text{if the computation of } M \text{ on input } w \text{ terminates and has length } t, \\
+\uparrow & \text{otherwise},
+\end{cases}
+$$
+
+where the symbol $\uparrow$ denotes that the function value is undefined (i.e., the machine does not halt).
 
 This definition allows us to quantify the performance of a specific machine on a specific input. To create broader complexity classes, we generalize this notion to a function of the input length, defining what it means for a machine to be bounded by a certain time complexity function.
 
-**Definition 22:** Time-bounded deterministic Turing machine A time bound is a computable function t : $\mathbb{N}$ $\to$ $\mathbb{N}$ with t(n) $\ge$ n for all n. For a time bound t, a deterministic Turing machine M is t(n)-time-bounded or runs in time t(n) if M is total (halts on all inputs) and for almost all inputs w, it holds that:  $\text{time}_M$(w) $\le$ t(|w|).
+**Definition 22:** Time-bounded deterministic Turing machine A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(|w|)$.
 
 The phrase "for almost all inputs" means the condition must hold for all but a finite number of inputs. This provides flexibility, allowing us to disregard a small number of exceptional cases, typically short inputs, which can be handled separately.
 
@@ -251,31 +292,40 @@ Convention 24 In the part about complexity theory, all languages are languages o
 
 Using the concept of time-bounded Turing machines, we can group languages and functions into complexity classes based on the resources required to decide or compute them.
 
-**Definition 25:** Deterministic time classes Let t be a time bound.
+**Definition 25:** Deterministic time classes Let $t$ be a time bound.
 
-The class of languages decidable in deterministic time t(n) is:  $\text{DTIME}$(t(n)) = {L $\subseteq$ {0, 1}^* : L = L(M) $\text{ for some deterministic }$ t(n)$\text{-time-bounded Turing machine }$ M}.  The class of functions computable in time t(n) is:  $\text{FTIME}$(t(n)) = {f : {0, 1}^* $\to$ {0, 1}^* : f = f_M $\text{ for some deterministic }$ t(n)$\text{-time-bounded Turing machine }$ M}.  For a set F of time bounds, we define:  $\text{DTIME}$(F) = $\bigcup_{t(n) \in F}$ $\text{DTIME}$(t(n)) $\quad$ $\text{and}$ $\quad$ $\text{FTIME}$(F) = $\bigcup_{t(n) \in F}$ $\text{FTIME}$(t(n)). 
+The class of languages decidable in deterministic time $t(n)$ is
+$\text{DTIME}(t(n)) = \{\, L \subseteq \{0, 1\}^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \,\}$.
+The class of functions computable in time $t(n)$ is
+$\text{FTIME}(t(n)) = \{\, f : \{0, 1\}^* \to \{0, 1\}^* : f = f_M \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \,\}$.
+For a set $F$ of time bounds, we define
+$$
+\text{DTIME}(F) = \bigcup_{t(n) \in F} \text{DTIME}(t(n))
+\quad\text{and}\quad
+\text{FTIME}(F) = \bigcup_{t(n) \in F} \text{FTIME}(t(n)).
+$$
 
-The notation $\text{DTIME}_k$(t(n)) is used to specify the class of languages decidable by a t(n)-time-bounded k-tape Turing machine. These definitions can also be extended from languages over strings to subsets of natural numbers by using a standard representation, such as binary encoding.
+The notation $\text{DTIME}_k(t(n))$ is used to specify the class of languages decidable by a $t(n)$-time-bounded $k$-tape Turing machine. These definitions can also be extended from languages over strings to subsets of natural numbers by using a standard representation, such as binary encoding.
 
-**Definition 26** Let t be a time bound. A subset A of the natural numbers is decidable in time t(n) if there is a t(n)-time-bounded Turing machine that decides the set \{$\text{bin}$(n) : n $\in$ A\}. A function f : $\mathbb{N}$ $\to$ $\mathbb{N}$ is computable in time t(n) if there is a t(n)-time-bounded Turing machine that computes a function that maps $\text{bin}$(n) to $\text{bin}$(f(n)).
+**Definition 26** Let $t$ be a time bound. A subset $A$ of the natural numbers is decidable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that decides the set $\{\text{bin}(n) : n \in A\}$. A function $f : \mathbb{N} \to \mathbb{N}$ is computable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that computes a function that maps $\text{bin}(n)$ to $\text{bin}(f(n))$.
 
 This framework allows us to define some of the most fundamental and widely studied complexity classes.
 
-**Definition 27: Some deterministic time classes Using the function classes:**
+**Definition 27:** Some deterministic time classes Using the function classes:
 
-* $\text{lin}$ = \{n $\mapsto$ c $\cdot$ n + c : c $\in$ $\mathbb{N}$ $\setminus$ $\{0\}$\}
-* $\text{poly}$ = \{n $\mapsto$ n^c + c : c $\in$ $\mathbb{N}$ $\setminus$ $\{0\}$\}
-* 2^{$\text{lin}$} = \{n $\mapsto$ 2^{c $\cdot$ n + c} : c $\in$ $\mathbb{N}$ $\setminus$ $\{0\}$\}
-* 2^{$\text{poly}$} = \{n $\mapsto$ 2^{n^c + c} : c $\in$ $\mathbb{N}$ $\setminus$ $\{0\}$\}
+* $\text{lin} = \{\, n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \{0\} \,\}$
+* $\text{poly} = \{\, n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \,\}$
+* $2^{\text{lin}} = \{\, n \mapsto 2^{c \cdot n + c} : c \in \mathbb{N} \setminus \{0\} \,\}$
+* $2^{\text{poly}} = \{\, n \mapsto 2^{n^c + c} : c \in \mathbb{N} \setminus \{0\} \,\}$
 
 we define the complexity classes:
 
-* $\text{LIN}$ = $\text{DTIME}$($\text{lin}$)
-* $\text{P}$ = $\text{DTIME}$($\text{poly}$)
-* $\text{E}$ = $\text{DTIME}$(2^{$\text{lin}$})
-* $\text{EXP}$ = $\text{DTIME}$(2^{$\text{poly}$})
+* $\text{LIN} = \text{DTIME}(\text{lin})$
+* $\text{P} = \text{DTIME}(\text{poly})$
+* $\text{E} = \text{DTIME}(2^{\text{lin}})$
+* $\text{EXP} = \text{DTIME}(2^{\text{poly}})$
 
-We refer, for instance, to P as the class of problems decidable in deterministic polynomial time and E as the class of problems decidable in deterministic linear exponential time.
+We refer, for instance, to $P$ as the class of problems decidable in deterministic polynomial time and $E$ as the class of problems decidable in deterministic linear exponential time.
 
 ### Properties of Deterministic Time Classes
 
@@ -285,32 +335,42 @@ The definitions of complexity classes depend on a specific model of computation 
 
 The first theorem shows that constant factors in the running time do not change the fundamental complexity of a problem. We can always build a faster machine that solves the same problem, effectively making any constant-factor speedup possible.
 
-**Theorem 28:** Linear speedup Let t be a time bound, and let $\alpha$ > 0 be a real number, and let k $\ge$ 2. Then it holds that  $\text{DTIME}_k$(t(n)) $\subseteq$ $\text{DTIME}_k$($\alpha$ $\cdot$ t(n) + n) $\quad$ (2.1)  and hence, in particular,  $\text{DTIME}$(t(n)) $\subseteq$ $\text{DTIME}$($\alpha$ $\cdot$ t(n) + n) $\quad$ (2.2)  Furthermore, every function f in $\text{FTIME}$(t(n)) is in  $\text{FTIME}$($\alpha$ $\cdot$ t(n) + n + |f(n)|). $\quad$ (2.3)
+**Theorem 28:** Linear speedup Let $t$ be a time bound, and let $\alpha > 0$ be a real number, and let $k \ge 2$. Then it holds that
+$$
+\text{DTIME}_k(t(n)) \subseteq \text{DTIME}_k(\alpha \cdot t(n) + n)
+\tag{2.1}
+$$
+and hence, in particular,
+$$
+\text{DTIME}(t(n)) \subseteq \text{DTIME}(\alpha \cdot t(n) + n).
+\tag{2.2}
+$$
+Furthermore, every function $f$ in $\text{FTIME}(t(n))$ is in $\text{FTIME}(\alpha \cdot t(n) + n + \lvert f(n) \rvert)$. $\tag{2.3}$
 
-**Proof.**: We will demonstrate the inclusion (2.1), from which (2.2) immediately follows. Given a language L $\in$ $\text{DTIME}$(t(n)), there exists a t(n)-time-bounded Turing machine with some number of tapes, say k $\ge$ 2, that recognizes L. By showing L $\in$ $\text{DTIME}_k$($\alpha$ $\cdot$ t(n) + n), it follows that L $\in$ $\text{DTIME}$($\alpha$ $\cdot$ t(n) + n).
+**Proof.**: We will demonstrate the inclusion (2.1), from which (2.2) immediately follows. Given a language $L \in \text{DTIME}(t(n))$, there exists a $t(n)$-time-bounded Turing machine with some number of tapes, say $k \ge 2$, that recognizes $L$. By showing $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$, it follows that $L \in \text{DTIME}(\alpha \cdot t(n) + n)$.
 
-To prove (2.1), let L be a language recognized by a t(n)-time-bounded k-tape Turing machine M, where k $\ge$ 2. We construct a new k-tape machine M' that simulates M but runs faster. The core idea is to have M' process larger chunks of data at each step.
+To prove (2.1), let $L$ be a language recognized by a $t(n)$-time-bounded $k$-tape Turing machine $M$, where $k \ge 2$. We construct a new $k$-tape machine $M'$ that simulates $M$ but runs faster. The core idea is to have $M'$ process larger chunks of data at each step.
 
 Each symbol in the tape alphabet of M' will represent a block of d symbols from the tape alphabet of M, where d is a constant we will choose later.
 
-#### The computation of M' proceeds in two phases:
+#### The computation of $M'$ proceeds in two phases:
 
 1. Initialization Phase:
-  * M' translates its input from M's alphabet $\Sigma$ to its own compressed alphabet $\Sigma$'.
+  * $M'$ translates its input from $M$'s alphabet $\Sigma$ to its own compressed alphabet $\Sigma'$.
   * It writes this new, compressed input onto its second tape.
   * Simultaneously, it overwrites the original input on the first tape with blank symbols.
   * Finally, it positions the head of the second tape at the beginning of the compressed input.
-  * This phase takes n + $\lceil$ n/d $\rceil$ + 2 steps. After this, M' will simulate M, treating its second tape as the primary input tape.
+  * This phase takes $n + \lceil n/d \rceil + 2$ steps. After this, $M'$ will simulate $M$, treating its second tape as the primary input tape.
 2. Simulation Phase:
-  * M' simulates d steps of M using just 7 of its own steps. To do this, M' uses its finite control (its state) to store key information about M's current configuration: M's current state, and for each tape, the head position of M within the larger macro-symbol that M' is currently scanning.
-  * In each simulation cycle, M' needs to know the contents of the cells M's heads are on, as well as the adjacent cells, to determine M's next d moves. A "relevant" cell for M' is one that is currently scanned or is immediately to its left or right.
-  * M' first reads all symbols on its relevant cells by moving one step left and two steps right (3 steps total), storing this information in its state.
-  * With the complete local information (M's state, head positions, and relevant cell contents), M' can determine the outcome of the next d steps of M. Since d is a constant, all possible outcomes can be pre-computed and stored in M''s transition function (a finite table lookup). This information includes M's new state, the new content of the relevant cells, and the new head positions.
-  * M' then uses another 4 steps to update its tape cells and move its heads to the new positions corresponding to M's configuration after d steps.
+  * $M'$ simulates $d$ steps of $M$ using just $7$ of its own steps. To do this, $M'$ uses its finite control (its state) to store key information about $M$'s current configuration: $M$'s current state, and for each tape, the head position of $M$ within the larger macro-symbol that $M$' is currently scanning.
+  * In each simulation cycle, $M'$ needs to know the contents of the cells $M$'s heads are on, as well as the adjacent cells, to determine $M$'s next $d$ moves. A "relevant" cell for $M'$ is one that is currently scanned or is immediately to its left or right.
+  * $M'$ first reads all symbols on its relevant cells by moving one step left and two steps right ($3$ steps total), storing this information in its state.
+  * With the complete local information ($M$'s state, head positions, and relevant cell contents), $M'$ can determine the outcome of the next $d$ steps of $M$. Since $d$ is a constant, all possible outcomes can be pre-computed and stored in $M'$'s transition function (a finite table lookup). This information includes $M$'s new state, the new content of the relevant cells, and the new head positions.
+  * $M'$ then uses another $4$ steps to update its tape cells and move its heads to the new positions corresponding to $M'$s configuration after d steps.
 
-Timing Analysis: The initialization takes n + $\lceil$ n/d $\rceil$ + 2 steps. The simulation of M takes at most t(n) steps. Since M' simulates d steps of M in 7 steps, this phase requires at most 7 $\lceil$ t(n)/d $\rceil$ + 7 steps.
+Timing Analysis: The initialization takes $n + \lceil n/d \rceil + 2$ steps. The simulation of $M$ takes at most $t(n)$ steps. Since $M'$ simulates $d$ steps of $M$ in $7$ steps, this phase requires at most $7 \lceil t(n)/d \rceil + 7$ steps.
 
-The total time for M' is at most n + $\frac{n}${d} + 2 + $\frac{7 t(n)}${d} + 7. Since the time bound t(n) $\ge$ n, for almost all n, this is bounded by:  $\frac{8 t(n)}${d} + n + 9 $\le$ $\frac{9 t(n)}${d} + n  We want this to be less than $\alpha$ t(n) + n. We can achieve this by choosing a large enough constant d such that $\frac{9}${d} < $\alpha$. With such a d, the running time of M' is bounded by $\alpha$ t(n) + n, proving that L $\in$ $\text{DTIME}_k$($\alpha$ $\cdot$ t(n) + n).
+The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $\frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$.
 
 #### Alphabet Reduction
 
@@ -323,11 +383,11 @@ The size of the tape alphabet is another parameter of the Turing machine model. 
 The core idea is to encode each symbol a_j from M's alphabet as a unique binary string. We can use the encoding where a_j is represented by the string 1^j0^{r-j}.
 
 1. Initialization Phase: On input w, M' first translates w into its binary-encoded form. Using a second tape, this can be done in 2r|w| steps.
-2. Simulation Phase: M' simulates the computation of M step-by-step. To simulate a single step of M, M' must:
+2. Simulation Phase: M' simulates the computation of M step-by-step. To simulate a single step of $M$, $M'$ must:
   * Read: Identify the symbol under each of M's heads. This requires M' to read the corresponding block of r binary symbols on each of its tapes. While reading a block, M' uses its state to remember its position within the block and the binary pattern it has seen so far.
   * Write/Move: Based on M's transition function, M' overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the r cells of the block.
 
-Simulating one step of M requires reading and potentially writing k blocks of r symbols each. This takes a constant number of steps proportional to r. Thus, a single step of M can be simulated in d $\cdot$ r steps of M' for some constant d. The total running time of M' is therefore bounded by a constant multiple of t(n), as required.
+Simulating one step of M requires reading and potentially writing k blocks of r symbols each. This takes a constant number of steps proportional to r. Thus, a single step of M can be simulated in d $\cdot$ $r$ steps of $M'$ for some constant $d$. The total running time of M' is therefore bounded by a constant multiple of t(n), as required.
 
 #### Tape Reduction
 
@@ -341,7 +401,7 @@ Conceptually, the tape of M' is partitioned into 2k tracks. Each cell on the tap
 
 #### The simulation proceeds as follows:
 
-1. Initialization: On input w, M' first initializes its tape to represent the initial configuration of M. This involves writing w onto the first track and placing head markers (*) at the beginning of all head-position tracks.
+1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of M. This involves writing w onto the first track and placing head markers (*) at the beginning of all head-position tracks.
 2. Simulation of a Single Step: To simulate one step of M, M' performs a subroutine:
   * (i) Scan and Read: M' sweeps its single head across the entire active portion of its tape to find the k head markers (*). As it passes each marker, it notes the corresponding tape symbol from the content track and stores all k symbols in its state.
   * (ii) Update and Write: After collecting all necessary information, M' knows what transition M will make. It then performs a second sweep across the tape to update the tape contents and move the head markers (*) one position left or right, as dictated by M's transition function. It also updates the state of M, which is stored in its own finite control.
@@ -354,7 +414,7 @@ Since M makes at most t(n) steps in total, the entire simulation on M' requires 
 
 #### On the Requirement for Time Bounds
 
-**Remark 31: By definition, a time bound t must satisfy t(n)** $\ge$ n. The latter requirement indeed makes sense because for other t, a t(n)-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let t be a function where t(n) < n for infinitely many n. Let M be a Turing machine that is t(n)-bounded in the sense that for almost all n or, equivalently, for some n_0 and all n $\ge$ n_0, on inputs of length n, the running time of M is at most t(n). Pick n_1 $\ge$ n_0 such that t(n_1) < n_1. Then on all inputs of length greater than n_1, M reads at most the first n_1 symbols of its input. For a proof by contradiction, assume there is a word w of length |w| > n_1 such that M on input w reads at least the first n_1 + 1 symbols of its input. Let u be the prefix of w of length n_1. Then M scans on input u at least n_1 + 1 cells of its input tape, hence makes at least n_1 > t(n_1) = t(|u|) steps, which contradicts the choice of n_0 and n_1.
+**Remark 31: By definition, a time bound $t$ must satisfy $t(n)$** $\ge n$. The latter requirement indeed makes sense because for other t, a t(n)-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let t be a function where t(n) < n for infinitely many n. Let M be a Turing machine that is t(n)-bounded in the sense that for almost all n or, equivalently, for some n_0 and all n $\ge$ n_0, on inputs of length n, the running time of M is at most t(n). Pick n_1 $\ge$ n_0 such that t(n_1) < n_1. Then on all inputs of length greater than n_1, M reads at most the first n_1 symbols of its input. For a proof by contradiction, assume there is a word w of length |w| > n_1 such that M on input w reads at least the first n_1 + 1 symbols of its input. Let u be the prefix of w of length n_1. Then M scans on input u at least n_1 + 1 cells of its input tape, hence makes at least n_1 > t(n_1) = t(|u|) steps, which contradicts the choice of n_0 and n_1.
 
 ### Nondeterministic Time Complexity
 
@@ -375,8 +435,8 @@ Similar to the deterministic case, we can define major complexity classes based 
 **Definition 33: Examples of nondeterministic time classes We define the complexity classes:**
 
 * NP = $\text{NTIME}$($\text{poly}$)
-* NE = $\text{NTIME}$(2^{$\text{lin}$}) = $\bigcup$_{c $\in$ $\mathbb{N}$} $\text{NTIME}$(2^{cn+c})
-* NEXP = $\text{NTIME}$(2^{$\text{poly}$}) = $\bigcup$_{c $\in$ $\mathbb{N}$} $\text{NTIME}$(2^{n^c+c})
+* $\text{NE} = \text{NTIME}(2^{\text{lin}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{c n + c})$
+* $\text{NEXP} = \text{NTIME}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{n^c + c})$
 
 We refer, for example, to NP as the class of problems decidable in nondeterministic polynomial time and to NE as the class of problems decidable in nondeterministic linear exponential time.
 
@@ -386,7 +446,7 @@ We refer, for example, to NP as the class of problems decidable in nondeterminis
 
 To compare the relative difficulty of problems, we use the concept of reduction. A reduction is a way to solve one problem using an algorithm for another. If problem A can be reduced to problem B, it means that A is "no harder than" B.
 
-**Definition 35** A language A is many-one reducible in polynomial time to a language B, denoted A $\le_p^m$ B, if there exists a function g $\in$ $\text{FP}$ (i.e., computable in deterministic polynomial time) such that for all x $\in$ $\{0, 1\}$^*, it holds that:  x $\in$ A $\iff$ g(x) $\in$ B.
+**Definition 35** A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \{0, 1\}^*$ it holds that $x \in A \iff g(x) \in B$.
 
 This type of reduction, often called a p-m-reduction or Karp reduction, acts as a translation. To solve an instance x of problem A, we can first compute g(x) in polynomial time and then use a decider for B to determine if g(x) $\in$ B. If B can be decided in polynomial time, then so can A. This relationship transfers difficulty upward: if A is known to be hard, then B must also be hard. Conversely, it transfers simplicity downward: if B is easy, then A must also be easy.
 
@@ -394,21 +454,21 @@ This type of reduction, often called a p-m-reduction or Karp reduction, acts as 
 
 Complexity classes often exhibit closure properties with respect to reductions.
 
-**Definition 36** A set of languages is closed downward under p-m-reducibility if for every language B in the class, every language A $\le_p^m$ B is in the class, too. A set of languages is closed upward under p-m-reducibility if for every language A in the class, every language B with A $\le_p^m$ B is in the class, too.
+**Definition 36** A set of languages is closed downward under p-m-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under p-m-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
 
 Many important complexity classes, such as P and NP, are closed downward. This means that if a problem B is in the class, any problem that is polynomially reducible to B is also in that class.
 
-**Proposition 37:** Downward closure of P and NP under p-m-reducibility Let A and B be languages such that A $\le_p^m$ B. Then it holds that:
+**Proposition 37:** Downward closure of P and NP under p-m-reducibility Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
 
-* B $\in$ $\text{P}$ implies A $\in$ $\text{P}$,
-* B $\in$ $\text{NP}$ implies A $\in$ $\text{NP}$.
+* $B \in \text{P}$ implies $A \in \text{P}$,
+* $B \in \text{NP}$ implies $A \in \text{NP}$.
 
 These implications are logically equivalent to their contrapositions, i.e., to:
 
-* A $\notin$ $\text{P}$ implies B $\notin$ $\text{P}$,
-* A $\notin$ $\text{NP}$ implies B $\notin$ $\text{NP}$.
+* $A \notin \text{P}$ implies $B \notin \text{P}$,
+* $A \notin \text{NP}$ implies $B \notin \text{NP}$.
 
-**Proof.**: We prove the first implication, B $\in$ $\text{P}$ $\implies$ A $\in$ $\text{P}$. The proof for NP is very similar. Let A $\le_p^m$ B via a function g $\in$ $\text{FP}$. Let M_g be a deterministic Turing machine that computes g in time p_g(n) for some polynomial p_g. Since B $\in$ $\text{P}$, there is a deterministic Turing machine M_B that decides B in time p_B(n) for some polynomial p_B.
+**Proof.**: We prove the first implication, $B \in \text{P} \implies A \in \text{P}$. The proof for NP is very similar. Let $A \le_p^m B$ via a function $g \in \text{FP}$. Let $M_g$ be a deterministic Turing machine that computes $g$ in time $p_g(n)$ for some polynomial $p_g$. Since $B \in \text{P}$, there is a deterministic Turing machine $M_B$ that decides $B$ in time $p_B(n)$ for some polynomial $p_B$.
 
 We can construct a deterministic Turing machine M_A to decide A as follows:
 
@@ -416,7 +476,7 @@ We can construct a deterministic Turing machine M_A to decide A as follows:
 2. Next, M_A simulates M_B on the input g(x). This takes p_B(|g(x)|) $\le$ p_B(p_g(|x|)) time.
 3. M_A accepts if and only if M_B accepts g(x).
 
-The total running time for M_A is bounded by p_g(|x|) + p_B(p_g(|x|)). Since the composition of two polynomials is a polynomial, M_A is a polynomially time-bounded machine. Therefore, A $\in$ $\text{P}$.
+The total running time for $M_A$ is bounded by $p_g(|x|) + p_B(p_g(|x|))$. Since the composition of two polynomials is a polynomial, $M_A$ is a polynomially time-bounded machine. Therefore, $A \in \text{P}$.
 
 ### Properties of Reducibility
 
@@ -426,8 +486,8 @@ The $\le_p^m$ relation behaves like a partial order on languages.
 
 **Proof.**:
 
-* Reflexivity: For any language A, A $\le_p^m$ A via the identity function g(x) = x, which is computable in polynomial (linear) time.
-* Transitivity: Suppose A $\le_p^m$ B via function g_B and B $\le_p^m$ C via function g_C. Let g_B be computable in time p_B(n) and g_C be computable in time p_C(n). The reduction from A to C is the composition g_C $\circ$ g_B. We have:  x $\in$ A $\iff$ g_B(x) $\in$ B $\iff$ g_C(g_B(x)) $\in$ C.  The time to compute g_C(g_B(x)) is the time to compute g_B(x) (which is p_B(n)) plus the time to compute g_C on the result (which is p_C(|g_B(x)|) $\le$ p_C(p_B(n))). The total time is p_B(n) + p_C(p_B(n)), which is a polynomial. Thus, A $\le_p^m$ C.
+* Reflexivity: For any language $A$, $A \le_p^m A$ via the identity function $g(x) = x$, which is computable in polynomial (linear) time.
+* Transitivity: Suppose $A \le_p^m B$ via function $g_B$ and $B \le_p^m C$ via function $g_C$. Let $g_B$ be computable in time $p_B(n)$ and $g_C$ be computable in time $p_C(n)$. The reduction from $A$ to $C$ is the composition $g_C \circ g_B$. We have $x \in A \iff g_B(x) \in B \iff g_C(g_B(x)) \in C$. The time to compute $g_C(g_B(x))$ is the time to compute $g_B(x)$ (which is $p_B(n)$) plus the time to compute $g_C$ on the result (which is $p_C(|g_B(x)|) \le p_C(p_B(n))$). The total time is $p_B(n) + p_C(p_B(n))$, which is a polynomial. Thus, $A \le_p^m C$.
 
 ### NP-Hardness and NP-Completeness
 
@@ -445,13 +505,13 @@ There are further, provably different notions of NP-hardness and NP-completeness
 
 The existence of NP-complete problems provides a powerful way to frame one of the most significant open questions in computer science: whether P equals NP.
 
-**Theorem 40 The following statements are equivalent. (i)** $\text{P}$ = $\text{NP}$. (ii) All NP-complete sets are in $\text{P}$. (iii) There is an NP-complete set in $\text{P}$.
+**Theorem 40 The following statements are equivalent. (i)** $\text{P} = \text{NP}$. (ii) All NP-complete sets are in $\text{P}$. (iii) There is an NP-complete set in $\text{P}$.
 
 **Proof.**:
 
 * (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in NP is also in P. By definition, NP-complete languages are in NP, so they must also be in P.
 * (ii) $\implies$ (iii): This implication is trivial, assuming that NP-complete languages exist (which will be proven later).
-* (iii) $\implies$ (i): We need to show that if some NP-complete language L is in P, then $\text{NP}$ $\subseteq$ $\text{P}$. (The inclusion $\text{P}$ $\subseteq$ $\text{NP}$ is true by definition). Let L be an NP-complete language such that L $\in$ $\text{P}$. Since L is NP-hard, every language A $\in$ $\text{NP}$ is p-m-reducible to L (A $\le_p^m$ L). From Proposition 37, we know that if A $\le_p^m$ L and L $\in$ $\text{P}$, then A $\in$ $\text{P}$. Since this holds for any arbitrary language A $\in$ $\text{NP}$, it follows that $\text{NP}$ $\subseteq$ $\text{P}$. Therefore, $\text{P}$ = $\text{NP}$.
+* (iii) $\implies$ (i): We need to show that if some NP-complete language $L$ is in P, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an NP-complete language such that $L \in \text{P}$. Since $L$ is NP-hard, every language $A \in \text{NP}$ is p-m-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$.
 
 The Significance of the P vs. NP Problem
 
@@ -492,7 +552,7 @@ The formal definition of p-m-reducibility leads to some unusual properties, part
 
 **Remark 46:** Since the class P is downward closed under p-m-reducibility, no language outside of P can be p-m-reduced to a language in P. Conversely, every language in P is p-m-reducible to any other language, with the exception of $\emptyset$ and $\{0, 1\}$^*.
 
-To prove this, let A be a language in P and let B be any language such that B $\ne$ $\emptyset$ and B $\ne$ $\{0, 1\}$^*. Since B is not trivial, we can select an element x_1 $\in$ B and an element x_0 $\notin$ B. The p-m-reduction from A to B can be defined by the function that maps every x $\in$ A to x_1 and every x $\notin$ A to x_0. This function is computable in polynomial time because A is in P.
+To prove this, let $A$ be a language in P and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \{0, 1\}^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The p-m-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in P.
 
 **Remark 47:** By definition, only the empty set can be p-m-reduced to the empty set. A similar restriction applies to the language $\{0, 1\}$^*. As noted in Remark 46, every language in P is reducible to all other languages. The special behavior of $\emptyset$ and $\{0, 1\}$^* is often considered an anomaly of the definition. For this reason, alternative definitions of p-m-reducibility are sometimes used to avoid these edge cases.
 
@@ -504,26 +564,25 @@ To prove that a language is NP-hard, the standard method is to show that a known
 
 We begin by formally defining the components of propositional logic.
 
-**Definition 48: Propositional Formula: Let $\Lambda$ = $\{$\neg$, $\land$, (, )** \}$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet Var $\cup$ $\Lambda$, defined inductively:
+**Definition 48: Propositional Formula.** Let $\Lambda = \{\neg, \land, (, )\}$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
 
 * Base case: Every element of Var is a propositional formula.
-* Inductive step: If $\phi$ and $\phi$' are propositional formulas, then so are $\neg$$\phi$ and ($\phi$ $\land$ $\phi$').
+* Inductive step: If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
 
-In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: X $\lor$ Y is shorthand for $\neg$($\neg$ X $\land$ $\neg$ Y). Constants for true (1) and false (0) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
+In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true (1) and false (0) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
 
-The truth value of a formula, denoted val($\phi$), is either true (1) or false (0). This value is determined relative to an assignment b: Var $\to$ $\{0, 1\}$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
+The truth value of a formula, denoted $\text{val}(\phi)$, is either true (1) or false (0). This value is determined relative to an assignment $b : \text{Var} \to \{0, 1\}$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
 
-* Base case: For a variable X $\in$ Var, val(X) = b(X).
-* Inductive step: For formulas $\phi$ and $\phi$',
-  * val($\neg$$\phi$) = 1 - val($\phi$)
-  * val($\phi$ $\land$ $\phi$') = $\min$$\{val($\phi$), val($\phi$')\}$
+* Base case: For a variable $X \in \text{Var}$, $\text{val}(X) = b(X)$.
+* Inductive step: For formulas $\phi$ and $\phi'$:
+  * $\text{val}(\neg \phi) = 1 - \text{val}(\phi)$
+  * $\text{val}(\phi \land \phi') = \min\{\text{val}(\phi), \text{val}(\phi')\}$
 
-The set of variables that appear in a formula $\phi$ is denoted by var($\phi$). The truth value of $\phi$ depends only on the assignment of values to the variables in var($\phi$). The set var($\phi$) is defined inductively as:
+The set of variables that appear in a formula $\phi$ is denoted by $\text{var}(\phi)$. The truth value of $\phi$ depends only on the assignment of values to the variables in $\text{var}(\phi)$. The set $\text{var}(\phi)$ is defined inductively as:
 
-* var(X) = $\{X\}$ for any X $\in$ Var.
-* var($\neg$$\phi$) = var($\phi$).
-* var($\phi$ $\land$ $\phi$') = var($\phi$) $\cup$ var($\phi$').
-
+* $\text{var}(X) = \{X\}$ for any $X \in \text{Var}$.
+* $\text{var}(\neg \phi) = \text{var}(\phi)$.
+* $\text{var}(\phi \land \phi') = \text{var}(\phi) \cup \text{var}(\phi')$.
 ### Satisfiability and Normal Forms
 
 The central question of the satisfiability problem is whether a formula can be true.
@@ -531,20 +590,20 @@ The central question of the satisfiability problem is whether a formula can be t
 **Definition 49:**
 
 * A propositional formula is satisfiable if there exists an assignment of its variables that makes the formula true.
-* A literal is a propositional variable or a negated propositional variable (e.g., X or $\neg$ X).
-* A clause (specifically, a disjunctive clause) is a disjunction of literals (e.g., X $\lor$ $\neg$ Y $\lor$ Z).
+* A literal is a propositional variable or a negated propositional variable (e.g., $X$ or $\neg X$).
+* A clause (specifically, a disjunctive clause) is a disjunction of literals (e.g., $X \lor \neg Y \lor Z$).
 * A propositional formula is in conjunctive normal form (CNF) if it is a nonempty conjunction of clauses.
 * A formula is in k-conjunctive normal form (k-CNF) if it is in CNF and each clause contains at most k literals.
 
-For example, the formula ($\neg$ X $\lor$ Y $\lor$ Z ) $\land$ (X $\lor$ Z ) $\land$ (X $\lor$ $\neg$ Y $\lor$ $\neg$ Z ) is in 3-CNF.
+For example, the formula $(\neg X \lor Y \lor Z) \land (X \lor Z) \land (X \lor \neg Y \lor \neg Z)$ is in 3-CNF.
 
 This leads to the formal definition of the satisfiability problems as languages.
 
-**Definition 50: The Satisfiability Problem:** Assuming an appropriate representation of propositional formulas as binary strings, we define the following languages for any k > 0:
+**Definition 50: The Satisfiability Problem:** Assuming an appropriate representation of propositional formulas as binary strings, we define the following languages for any $k > 0$:
 
-SAT = \{$\phi$ $\mid$ $\phi$ $\text{ is a satisfiable propositional formula in CNF}$\}
+$\text{SAT} = \{\, \phi \mid \phi \text{ is a satisfiable propositional formula in CNF} \,\}$
 
-k-SAT = \{$\phi$ $\mid$ $\phi$ $\text{ is a satisfiable propositional formula in k-CNF}$\}
+$k\text{-SAT} = \{\, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\}$
 
 ### NP-Completeness of SAT and k-SAT
 
@@ -569,11 +628,11 @@ The proof that SAT is not just in NP but is NP-hard is a landmark result in comp
 
 **Theorem 52 (Cook’s Theorem)** : The language SAT is NP-complete.
 
-**Proof.**: We have already established in Remark 51 that SAT is in NP. To prove that it is NP-complete, we must show it is NP-hard. This requires showing that every language A $\in$ $\text{NP}$ is p-m-reducible to SAT.
+**Proof.**: We have already established in Remark 51 that SAT is in NP. To prove that it is NP-complete, we must show it is NP-hard. This requires showing that every language $A \in \text{NP}$ is p-m-reducible to SAT.
 
-Let A be any language in NP. We will construct a function g: x $\mapsto$ $\phi_x$, computable in polynomial time (i.e., g $\in$ $\text{FP}$), that maps any binary word x to a propositional formula $\phi_x$ in CNF. This construction will ensure that x $\in$ A if and only if $\phi_x$ is satisfiable.
+Let $A$ be any language in NP. We will construct a function $g : x \mapsto \phi_x$, computable in polynomial time (i.e., $g \in \text{FP}$), that maps any binary word $x$ to a propositional formula $\phi_x$ in CNF. This construction will ensure that $x \in A$ if and only if $\phi_x$ is satisfiable.
 
-Since A $\in$ $\text{NP}$, there exists a nondeterministic Turing machine (NTM) M = (Q, $\Sigma$, $\Gamma$, $\Delta$, s, F) and a polynomial p such that M recognizes A within a time bound of p(n), where n is the input length. For simplicity, we can assume M has only a single tape. Any multi-tape NTM can be converted to an equivalent single-tape NTM with only a polynomial increase in runtime, similar to the tape reduction construction in Theorem 30.
+Since $A \in \text{NP}$, there exists a nondeterministic Turing machine (NTM) $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ and a polynomial $p$ such that $M$ recognizes $A$ within a time bound of $p(n)$, where $n$ is the input length. For simplicity, we can assume $M$ has only a single tape. Any multi-tape NTM can be converted to an equivalent single-tape NTM with only a polynomial increase in runtime, similar to the tape reduction construction in Theorem 30.
 
 Given an input x of length n, our goal is to construct a formula $\phi_x$ that is satisfiable if and only if M accepts x. The formula will essentially describe the behavior of M on input x. A satisfying assignment for $\phi_x$ will correspond directly to an accepting computation of M on x.
 
@@ -586,15 +645,15 @@ An accepting computation is a sequence of configurations, starting with the init
 3. The formula $\phi_x$ will be a conjunction of subformulas, each of which can be expressed in CNF. Therefore, $\phi_x$ itself can be written in CNF.
 4. The construction of $\phi_x$ can be carried out in polynomial time with respect to n = |x|, because the number and size of the subformulas are polynomially bounded in n.
 
-Together, these points establish that A $\le_p^m$ $\text{SAT}$, proving that SAT is NP-hard.
+Together, these points establish that $A \le_p^m \text{SAT}$, proving that SAT is NP-hard.
 
 #### Technical Note on Logical Notation
 
 In the construction, we will frequently express clauses as implications. The following logical equivalences are useful:
 
-* An implication $\alpha$ $\to$ $\beta$ is equivalent to $\neg$ $\alpha$ $\lor$ $\beta$.
-* The negation of a conjunction $\neg$($\gamma_1$ $\land$ $\dots$ $\land$ $\gamma_r$) is equivalent to a disjunction of negations $\neg$ $\gamma_1$ $\lor$ $\dots$ $\lor$ $\neg$ $\gamma_r$.
-* A clause of the form L_1 $\land$ $\dots$ $\land$ L_r $\to$ L_{r+1} (where each L_i is a literal) is equivalent to the disjunctive clause $\neg$ L_1 $\lor$ $\dots$ $\lor$ $\neg$ L_r $\lor$ L_{r+1}.
+* An implication $\alpha \to \beta$ is equivalent to $\neg \alpha \lor \beta$.
+* The negation of a conjunction $\neg(\gamma_1 \land \dots \land \gamma_r)$ is equivalent to a disjunction of negations $\neg \gamma_1 \lor \dots \lor \neg \gamma_r$.
+* A clause of the form $L_1 \land \dots \land L_r \to L_{r+1}$ (where each $L_i$ is a literal) is equivalent to the disjunctive clause $\neg L_1 \lor \dots \lor \neg L_r \lor L_{r+1}$.
 
 #### Formalization of the Turing Machine Computation
 
@@ -606,11 +665,11 @@ A computation of M on input x is a sequence of configurations over p(n)+1 time s
 * Tape cells: J = $\{-p(n)+1, $\dots$, p(n)+1\}$ (covers all cells the head can possibly reach)
 * States: K = $\{1, $\dots$, t\}$, where t = |Q| and Q=$\{q_1, $\dots$, q_t\}$
 * Instructions/Choices: L = $\{0, 1, $\dots$, d\}$, where d is the number of instructions in $\Delta$. The index 0 represents the "choice" of repeating a halting configuration.
-* We also define I^- = I $\setminus$ $\{p(n)\}$ and L^- = L $\setminus$ $\{0\}$.
+* We also define $I^- = I \setminus \{p(n)\}$ and $L^- = L \setminus \{0\}$.
 
 We introduce the following propositional variables to describe the computation. The intended meaning of each variable being true is given below:
 
-* B_{i,j,a}: At time step i $\in$ I, tape cell j $\in$ J contains symbol a $\in$ $\Gamma$.
+* $B_{i,j,a}$: At time step $i \in I$, tape cell $j \in J$ contains symbol $a \in \Gamma$.
 * P_{i,j}: At time step i $\in$ I, the tape head is positioned on cell j $\in$ J.
 * Z_{i,k}: At time step i $\in$ I, the machine is in state q_k $\in$ Q.
 * A_{i,0}: At time step i $\in$ I, the configuration is a halting configuration (i.e., the computation has already terminated).
@@ -650,9 +709,9 @@ Building on Cook's Theorem, we can show that variants of SAT are also NP-complet
 
 **Proof.**: As established in Remark 51, all k-SAT languages are in NP. We need to show they are NP-hard for k $\ge$ 3. We will demonstrate this for the case k=3. The result for k>3 follows because 3-SAT can be easily p-m-reduced to k-SAT (by padding clauses with dummy variables, or more simply, noting that any instance of 3-SAT is already an instance of k-SAT for k > 3).
 
-To show that 3-SAT is NP-hard, we use the transitivity of p-m-reducibility. By Cook's Theorem, SAT is NP-hard. Therefore, if we can show that $\text{SAT}$ $\le_p^m$ $\text{3-SAT}$, it follows that 3-SAT is also NP-hard.
+To show that 3-SAT is NP-hard, we use the transitivity of p-m-reducibility. By Cook's Theorem, SAT is NP-hard. Therefore, if we can show that $\text{SAT} \le_p^m \text{3-SAT}$, it follows that 3-SAT is also NP-hard.
 
-We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi$' such that $\phi$ $\in$ $\text{SAT}$ if and only if $\phi$' $\in$ $\text{3-SAT}$.
+We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi'$ such that $\phi \in \text{SAT}$ if and only if $\phi' \in \text{3-SAT}$.
 
 Let $\phi$ be a given propositional formula.
 

@@ -160,7 +160,6 @@ $$ \mathcal{L}_{RMS} = \sqrt{\frac{2\mathcal{L}(w)}{N}} $$
 
 A large gap between a low training error and a high test error is a clear sign of overfitting.
 
-[Placeholder: Graph showing the relationship between Model "complexity" and Error. The y-axis is "Error" and the x-axis is "Model 'complexity'". The "Training error" curve consistently decreases as complexity increases. The "Test error" curve decreases initially, hits a minimum ("Best fit"), and then starts to increase, indicating the regions of "Underfitting" and "Overfitting".]
 
 The ideal model complexity also depends on the size of the dataset. A more complex model can be justified if there is a sufficiently large amount of data to prevent it from overfitting.
 
@@ -181,22 +180,20 @@ Where:
 This specific type of regularization is known as ridge regression, weight decay, or L2 regularization. Finding the optimal value for $M$ or $\lambda$ is typically done using a third dataset called a validation set.
 
 
----
+### Summary and Next Steps
 
-
-## 5. Summary and Next Steps
-
-### Key Takeaways
+**Key Takeaways**
 
 * This course aims to bridge the gap between complex Deep Neural Networks (DNNs) and the constraints of real-world hardware (HW).
 * The linear regression example introduced fundamental concepts: learning model parameters, the importance of generalization and model selection, and the problems of overfitting and how to combat it with regularization.
 * The Hardware Lottery hypothesis suggests that the prevalence of specialized hardware (like GPUs) can prevent algorithmic innovation by favoring models that fit the existing hardware paradigm.
 * While linear models are foundational, they are not universal approximators—they cannot represent any arbitrary function.
 
-### Looking Ahead: Artificial Neural Networks
+**Looking Ahead: Artificial Neural Networks**
 
 Artificial Neural Networks (ANNs) are universal approximators. They have the capacity to learn extremely complex, non-linear relationships in data. However, this power comes at a price: increased complexity, a need for vast amounts of data and computation, and reduced interpretability. The following lectures will delve into the architecture and application of these powerful models.
 
+---
 
 
 ## Embedded Machine Learning Lecture 02: Massively Parallel Architectures
