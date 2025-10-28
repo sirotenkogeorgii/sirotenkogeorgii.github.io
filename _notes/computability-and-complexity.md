@@ -37,7 +37,7 @@ The Turing machine serves as a foundational abstract model of a computing device
 - $Q$ is the finite set of states,
 - $\Sigma$ is the input alphabet,
 - $\Gamma$ is the tape or working alphabet, where $\Sigma \subseteq \Gamma$ and the blank symbol $\square \in \Gamma \setminus \Sigma$,
-- $\Delta$ is the transition relation of $M$, where for $\text{Mov} = \{L, R, S\}$, the relation $\Delta$ is a subset of $Q \times \Gamma^k \times Q \times \Gamma^k \times \text{Mov}^k$,
+- $\Delta$ is the transition relation of $M$, where for $\text{Mov} = \lbrace , R, S \rbrace$, the relation $\Delta$ is a subset of $Q \times \Gamma^k \times Q \times \Gamma^k \times \text{Mov}^k$,
 - $s \in Q$ is the initial state,
 - $F \subseteq Q$ is the set of accepting states.
 
@@ -64,18 +64,18 @@ A computation is a sequence of steps, where each step involves executing an inst
 
 #### Instructions
 
-The "program" of a Turing machine is its transition relation $\Delta$, which is a set of tuples called instructions. For a k-tape TM, an instruction has the form:  (q, a_1, $\dots$, a_k, q', a'_1, $\dots$, a'_k, Z_1, $\dots$, Z_k) $\in$ Q $\times$ $\Gamma^k$ $\times$ Q $\times$ $\Gamma^k$ $\times$ $\text{Mov}^k$ 
+The "program" of a Turing machine is its transition relation $\Delta$, which is a set of tuples called instructions. For a k-tape TM, an instruction has the form: $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k) \in Q \times \Gamma^k \times Q \times$ \Gamma^k \times \text{Mov}^k$ 
 
 #### The intuitive meaning of such an instruction is as follows:
 
-* Condition: The instruction can be executed if the machine is currently in state q and the symbols being read by the heads on tapes 1 through k are a_1 through a_k, respectively.
-* Action: When executed, the machine transitions to state q'. Simultaneously, for each tape i (from 1 to k), the symbol a_i under the head is overwritten with a'_i, and the head then performs the movement Z_i $\in$ $\{L, R, S\}$.
+* Condition: The instruction can be executed if the machine is currently in state$ q$ and the symbols being read by the heads on tapes $1$ through $k$ are $a_1$ through $a_k$, respectively.
+* Action: When executed, the machine transitions to state $q'$. Simultaneously, for each tape $i$ (from $1$ to $k$), the symbol $a_i$ under the head is overwritten with $a'_i$, and the head then performs the movement $Z_i \in \lbrace L, R, S \rbrace$.
 
 To formalize this, we distinguish between the two parts of an instruction.
 
-**Definition 2:** For an instruction of the form (q, a_1, $\dots$, a_k, q', a'_1, $\dots$, a'_k, Z_1, $\dots$, Z_k), we refer to (q, a_1, $\dots$, a_k) as its condition part, and to (q', a'_1, $\dots$, a'_k, Z_1, $\dots$, Z_k) as its instruction part.
+**Definition 2:** For an instruction of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$, we refer to $(q, a_1, \dots, a_k)$ as its condition part, and to $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ as its instruction part.
 
-**Remark 3:** The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a k-tape Turing machine, $\Delta$ is thus a binary relation of the form  $\Delta$ $\subseteq$ (Q $\times$ $\Gamma^k$) $\times$ (Q $\times$ $\Gamma^k$ $\times$ $\text{Mov}^k$)  which can be written in infix notation as  (q, a_1, $\dots$, a_k) $\Delta$ (q', a'_1, $\dots$, a'_k, Z_1, $\dots$, Z_k)  The relation $\Delta$ is called right-unique if for each condition part (q, a_1, $\dots$, a_k) there is at most one instruction part (q', a'_1, $\dots$, a'_k, Z_1, $\dots$, Z_k) that satisfies the relation.
+**Remark 3:** The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a $k$-tape Turing machine, $\Delta$ is thus a binary relation of the form  $\Delta \subseteq (Q \times \Gamma^k) \times (Q \times \Gamma^k \times \text{Mov}^k)$  which can be written in infix notation as  $(q, a_1, \dots, a_k) \Delta (q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$. The relation $\Delta$ is called right-unique if for each condition part $(q, a_1, \dots, a_k)$ there is at most one instruction part $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ that satisfies the relation.
 
 ### Deterministic vs. Nondeterministic Machines
 
@@ -87,7 +87,7 @@ A general Turing machine, as defined above, does not require $\Delta$ to be righ
 
 In contrast, a deterministic Turing machine has a transition relation that is right-unique. At any point in its computation, there is at most one applicable instruction. This ensures that for any given input, the machine follows a single, uniquely determined computational path.
 
-**Definition 4:** Deterministic Turing Machine A Turing machine M is deterministic if its transition relation is right-unique. A k-tape Turing machine (Q, $\Sigma$, $\Gamma$, $\Delta$, s, F) is deterministic if and only if for every state q $\in$ Q and every sequence of k symbols a_1, $\dots$, a_k from $\Gamma$, there is at most one instruction in $\Delta$ with condition part (q, a_1, $\dots$, a_k).
+**Definition 4:** Deterministic Turing Machine A Turing machine $M$ is deterministic if its transition relation is right-unique. A $k$-tape Turing machine $(Q, \Sigma, \Gamma, \Delta, s, F)$ is deterministic if and only if for every state $q \in Q$ and every sequence of $k$ symbols $a_1, \dots, a_k from \Gamma$, there is at most one instruction in $\Delta$ with condition part $(q, a_1, \dots, a_k)$.
 
 ### The Mechanics of Computation
 
@@ -97,16 +97,16 @@ To formally analyze Turing machine computations, we need precise definitions for
 
 A configuration is a complete snapshot of a Turing machine's status, capturing its current state, all tape contents, and the positions of all heads. Since a tape is infinite but can only contain a finite number of non-blank symbols, we need a way to represent its contents.
 
-**Definition 6:** Tape Inscriptions Let M be a Turing machine with tape alphabet $\Gamma$. A tape inscription of M is a function f: $\mathbb{Z}$ $\to$ $\Gamma$ such that f(i) = $\square$ for all but finitely many integers i. The relevant part u_f of a tape inscription f is a word over $\Gamma$. We let u_f = $\square$ if f is the constant function with value $\square$. Otherwise, we let  u_f = f($\min$ I_f) $\cdots$ f($\max$ I_f) $\quad$ $\text{where}$ $\quad$ I_f = \{ i $\in$ $\mathbb{Z}$ : f(i) $\neq$ $\square$ \}  A tape inscription f is represented by any word u of the form u = $\square^{r_1}$ u_f $\square^{r_2}$ with r_1, r_2 $\in$ $\mathbb{N}$.
+**Definition 6:** Tape Inscriptions Let $M$ be a Turing machine with tape alphabet $\Gamma$. A tape inscription of $M$ is a function $f: $\mathbb{Z} \to \Gamma$ such that $f(i) = \square$ for all but finitely many integers $i$. The relevant part u_f of a tape inscription f is a word over $\Gamma$. We let $u_f = \square$ if $f$ is the constant function with value $\square$. Otherwise, we let  $u_f = f(\min I_f) \cdots f(\max I_f) \quad \text{where} \quad I_f = \lbrace i \in \mathbb{Z} : f(i) \neq \square \rbrace$  A tape inscription $f$ is represented by any word $u$ of the form $u = \square^{r_1} u_f \square^{r_2}$ with $r_1, r_2 \in \mathbb{N}$.
 
 Using this representation for tape contents, we can formally define a configuration.
 
-**Definition 7:** Configuration Let k be a nonzero natural number and let M = (Q, $\Sigma$, $\Gamma$, $\Delta$, s, F) be a k-tape Turing machine. A configuration of M is a tuple  (q, u_1, $\dots$, u_k, j_1, $\dots$, j_k) $\in$ Q $\times$ ($\Gamma$^+)^k $\times$ $\prod_{i=1,\dots,k}$ $\{1, $\dots$, |u_i|\}$  This tuple represents a situation where q is the current state, and for each tape i=1, $\dots$, k:
+**Definition 7:** Configuration Let $k$ be a nonzero natural number and let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $k$-tape Turing machine. A configuration of $M$ is a tuple  $(q, u_1, \dots, u_k, j_1, \dots, j_k) \in Q \times (\Gamma^+)^k \times \prod_{i=1,\dots,k} \lbrace 1, \dots, \left|u_i\right| \rbrace$  This tuple represents a situation where $q$ is the current state, and for each tape $i=1, \dots, k$:
 
-* the word u_i represents the relevant part of the inscription on tape i,
-* the number j_i indicates the head position on tape i, corresponding to the j_i-th symbol of u_i.
+* the word $u_i$ represents the relevant part of the inscription on tape $i$,
+* the number $j_i$ indicates the head position on tape $i$, corresponding to the $j_i$-th symbol of $u_i$.
 
-#### Computation Steps and Sequences
+#### c
 
 A computation unfolds as a sequence of configurations, where each transition from one configuration to the next is governed by an instruction from $\Delta$. This transition is called a computation step.
 
