@@ -32,7 +32,7 @@ In theoretical computer science, the abstract concept of computability is given 
 
 The Turing machine serves as a foundational abstract model of a computing device. It consists of a finite set of states and one or more tapes that serve as its memory.
 
-**Turing Machine (TM).** Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also called a $k$-tape Turing machine or $k$-tape TM, is a $6$-tuple of the form $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ where
+**Definition 1 (Turing Machine):** Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also called a $k$-tape Turing machine or $k$-tape TM, is a $6$-tuple of the form $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ where
 
 - $Q$ is the finite set of states,
 - $\Sigma$ is the input alphabet,
@@ -196,23 +196,23 @@ The proof of this relies on the insight that for a total nondeterministic TM, th
 
 **Theorem 15:** König’s Lemma A finitely branching rooted tree is infinite if and only if it has an infinite branch.
 
-**Proof sketch.**: A tree with an infinite branch is clearly infinite. For the converse, let T be an infinite, finitely branching rooted tree. We can inductively construct an infinite branch $v_0, v_1, \dots$. The key is to maintain the invariant that the subtree rooted at v_i is infinite.
+**Proof sketch.**: A tree with an infinite branch is clearly infinite. For the converse, let $T$ be an infinite, finitely branching rooted tree. We can inductively construct an infinite branch $v_0, v_1, \dots$. The key is to maintain the invariant that the subtree rooted at $v_i$ is infinite.
 
-* Let v_0 be the root of T. The subtree at v_0 is T itself, which is infinite.
-* Assuming v_i has been defined such that its subtree is infinite, we choose v_{i+1} from its children. Since v_i has only finitely many children, and the subtree at v_i is infinite, at least one of its children must be the root of an infinite subtree. We choose such a child to be v_{i+1}. This process can be continued indefinitely, constructing an infinite branch.
+* Let $v_0$ be the root of $T$. The subtree at $v_0$ is $T$ itself, which is infinite.
+* Assuming $v_i$ has been defined such that its subtree is infinite, we choose $v_{i+1}$ from its children. Since $v_i$ has only finitely many children, and the subtree at $v_i$ is infinite, at least one of its children must be the root of an infinite subtree. We choose such a child to be v_{i+1}. This process can be continued indefinitely, constructing an infinite branch.
 
 Using this lemma, we can prove that nondeterminism adds no power for deciding languages.
 
 **Theorem 16:** Every decidable language is recognized by a total deterministic Turing machine.
 
-**Proof sketch.**: Let L be a decidable language. By definition, there is a total Turing machine M that recognizes L.
+**Proof sketch.**: Let $L$ be a decidable language. By definition, there is a total Turing machine M that recognizes $L$.
 
-1. Since M is total, all of its computations terminate. This means that for any input w, all branches in the computation tree of M on w are finite.
+1. Since $M$ is total, all of its computations terminate. This means that for any input $w$, all branches in the computation tree of $M$ on $w$ are finite.
 2. The computation tree of any TM is finitely branching.
-3. By König's Lemma, a finitely branching tree with only finite branches must be a finite tree. Therefore, the computation tree of M on any input w is finite.
-4. We can construct a deterministic Turing machine M' that, on input w, systematically explores the entire computation tree of M on w (e.g., via breadth-first or depth-first search).
-5. Since the tree is finite, this search is guaranteed to terminate. Thus, M' is a total machine.
-6. M' is designed to accept if and only if its search finds an accepting configuration of M. Therefore, L(M') = L(M) = L. This shows that L is recognized by a total deterministic Turing machine.
+3. By König's Lemma, a finitely branching tree with only finite branches must be a finite tree. Therefore, the computation tree of $M$ on any input w is finite.
+4. We can construct a deterministic Turing machine $M'$ that, on input $w$, systematically explores the entire computation tree of $M$ on $w$ (e.g., via breadth-first or depth-first search).
+5. Since the tree is finite, this search is guaranteed to terminate. Thus, $M'$ is a total machine.
+6. $M'$ is designed to accept if and only if its search finds an accepting configuration of $M$. Therefore, $L(M') = L(M) = L$. This shows that $L$ is recognized by a total deterministic Turing machine.
 
 ### Computable Functions
 
@@ -223,15 +223,15 @@ Beyond recognizing languages, Turing machines can also compute functions by tran
 To ensure a unique output for every input, function computation is defined using only total deterministic Turing machines. The output is defined based on the content of a designated tape when the machine halts.
 
 **Definition 17:** Computable Functions  
-For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\operatorname{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
+For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
 
 $$
 \text{out}(C) = u_k(j_k) u_k(j_k + 1) \cdots u_k(t)
 $$
 
-where $t = \max \{\, i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \,\}$. If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
+where $t = \max \lbrace, i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \rbrace$. If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
 
-The function $f_M$ computed by a total deterministic Turing machine $M$ is defined by $f_M(w) = \operatorname{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
+The function $f_M$ computed by a total deterministic Turing machine $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
 
 For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is computable if it is computed by some total deterministic Turing machine.
 
@@ -278,11 +278,11 @@ where the symbol $\uparrow$ denotes that the function value is undefined (i.e., 
 
 This definition allows us to quantify the performance of a specific machine on a specific input. To create broader complexity classes, we generalize this notion to a function of the input length, defining what it means for a machine to be bounded by a certain time complexity function.
 
-**Definition 22:** Time-bounded deterministic Turing machine A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(|w|)$.
+**Definition 22:** Time-bounded deterministic Turing machine A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(\lvert w \rvert)$.
 
 The phrase "for almost all inputs" means the condition must hold for all but a finite number of inputs. This provides flexibility, allowing us to disregard a small number of exceptional cases, typically short inputs, which can be handled separately.
 
-**Remark 23 For a t(n)** -time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant b. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language L, and the new machine runs in time at most t(n) + 2b on all inputs. For the proof, call inputs of length at most b-1 small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first b symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in L. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table lookup or hard-wiring.
+**Remark 23 For a $t(n)$** -time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table lookup or hard-wiring.
 
 By default, time complexity is a measure of the machine's performance in the most demanding scenario for a given input length. This is known as worst-case time complexity. An alternative approach, average-case time complexity, considers the average running time over all inputs of a certain length. While potentially relevant for specific practical applications, the theory of average-case complexity is more intricate and less developed. Therefore, our focus will remain on worst-case complexity.
 
@@ -295,9 +295,9 @@ Using the concept of time-bounded Turing machines, we can group languages and fu
 **Definition 25:** Deterministic time classes Let $t$ be a time bound.
 
 The class of languages decidable in deterministic time $t(n)$ is
-$\text{DTIME}(t(n)) = \{\, L \subseteq \{0, 1\}^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \,\}$.
+$\text{DTIME}(t(n)) = \lbrace L \subseteq \{0, 1\}^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
 The class of functions computable in time $t(n)$ is
-$\text{FTIME}(t(n)) = \{\, f : \{0, 1\}^* \to \{0, 1\}^* : f = f_M \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \,\}$.
+$\text{FTIME}(t(n)) = \lbrace f : \{0, 1\}^* \to \{0, 1\}^* : f = f_M \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
 For a set $F$ of time bounds, we define
 $$
 \text{DTIME}(F) = \bigcup_{t(n) \in F} \text{DTIME}(t(n))
@@ -313,10 +313,10 @@ This framework allows us to define some of the most fundamental and widely studi
 
 **Definition 27:** Some deterministic time classes Using the function classes:
 
-* $\text{lin} = \{\, n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \{0\} \,\}$
-* $\text{poly} = \{\, n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \,\}$
-* $2^{\text{lin}} = \{\, n \mapsto 2^{c \cdot n + c} : c \in \mathbb{N} \setminus \{0\} \,\}$
-* $2^{\text{poly}} = \{\, n \mapsto 2^{n^c + c} : c \in \mathbb{N} \setminus \{0\} \,\}$
+* $\text{lin} = \lbrace n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \{0\} \rbrace$
+* $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \rbrace$
+* $2^{\text{lin}} = \lbrace n \mapsto 2^{c \cdot n + c} : c \in \mathbb{N} \setminus \{0\} \rbrace$
+* $2^{\text{poly}} = \lbrace n \mapsto 2^{n^c + c} : c \in \mathbb{N} \setminus \{0\} \rbrace$
 
 we define the complexity classes:
 
@@ -351,7 +351,7 @@ Furthermore, every function $f$ in $\text{FTIME}(t(n))$ is in $\text{FTIME}(\alp
 
 To prove (2.1), let $L$ be a language recognized by a $t(n)$-time-bounded $k$-tape Turing machine $M$, where $k \ge 2$. We construct a new $k$-tape machine $M'$ that simulates $M$ but runs faster. The core idea is to have $M'$ process larger chunks of data at each step.
 
-Each symbol in the tape alphabet of M' will represent a block of d symbols from the tape alphabet of M, where d is a constant we will choose later.
+Each symbol in the tape alphabet of $M'$ will represent a block of d symbols from the tape alphabet of $M$, where $d$ is a constant we will choose later.
 
 #### The computation of $M'$ proceeds in two phases:
 
@@ -376,18 +376,18 @@ The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$.
 
 The size of the tape alphabet is another parameter of the Turing machine model. The following theorem shows that any computation can be performed by a Turing machine with a minimal binary alphabet, at the cost of only a constant factor slowdown.
 
-**Theorem 29:** Alphabet reduction Let t be a time bound, let k $\ge$ 2, and let L be a language in $\text{DTIME}_k$(t(n)). There exists a deterministic k-tape Turing machine M with tape alphabet $\{0, 1, $\square$\}$ that recognizes L and runs in time d $\cdot$ t(n) for some constant d.
+**Theorem 29:** Alphabet reduction Let $t$ be a time bound, let $k \ge 2$, and let $L$ be a language in $\text{DTIME}_k$(t(n)). There exists a deterministic $k$-tape Turing machine $M$ with tape alphabet $\lbrace0, 1, \square \rbrace$ that recognizes $L$ and runs in time $d \cdot t(n)$ for some constant $d$.
 
-**Proof.**: Let L be recognized by a deterministic t(n)-time-bounded k-tape machine M with a tape alphabet $\{a_1, $\dots$, a_r\}$ of size r. We construct a machine M' with a binary tape alphabet that simulates M.
+**Proof.**: Let $L$ be recognized by a deterministic $t(n)$-time-bounded $k$-tape machine $M$ with a tape alphabet $\lbrace a_1, \dots, a_r \rbrace$ of size $r$. We construct a machine $M'$ with a binary tape alphabet that simulates $M$.
 
-The core idea is to encode each symbol a_j from M's alphabet as a unique binary string. We can use the encoding where a_j is represented by the string 1^j0^{r-j}.
+The core idea is to encode each symbol $a_j$ from $M'$s alphabet as a unique binary string. We can use the encoding where $a_j$ is represented by the string $1^j0^{r-j}$.
 
-1. Initialization Phase: On input w, M' first translates w into its binary-encoded form. Using a second tape, this can be done in 2r|w| steps.
-2. Simulation Phase: M' simulates the computation of M step-by-step. To simulate a single step of $M$, $M'$ must:
-  * Read: Identify the symbol under each of M's heads. This requires M' to read the corresponding block of r binary symbols on each of its tapes. While reading a block, M' uses its state to remember its position within the block and the binary pattern it has seen so far.
-  * Write/Move: Based on M's transition function, M' overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the r cells of the block.
+1. Initialization Phase: On input $w, M'$ first translates $w$ into its binary-encoded form. Using a second tape, this can be done in $2r \lvert w \rvert$ steps.
+2. Simulation Phase: $M'$ simulates the computation of M step-by-step. To simulate a single step of $M$, $M'$ must:
+  * Read: Identify the symbol under each of $M$'s heads. This requires $M'$ to read the corresponding block of $r$ binary symbols on each of its tapes. While reading a block, $M'$ uses its state to remember its position within the block and the binary pattern it has seen so far.
+  * Write/Move: Based on $M'$s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
 
-Simulating one step of M requires reading and potentially writing k blocks of r symbols each. This takes a constant number of steps proportional to r. Thus, a single step of M can be simulated in d $\cdot$ $r$ steps of $M'$ for some constant $d$. The total running time of M' is therefore bounded by a constant multiple of t(n), as required.
+Simulating one step of $M$ requires reading and potentially writing $k$ blocks of $r$ symbols each. This takes a constant number of steps proportional to $r$. Thus, a single step of $M$ can be simulated in $d \cdot r$ steps of $M'$ for some constant $d$. The total running time of $M'$ is therefore bounded by a constant multiple of $t(n)$, as required.
 
 #### Tape Reduction
 
