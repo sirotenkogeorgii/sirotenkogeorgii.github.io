@@ -15,26 +15,7 @@ tags:
 
 ## 1. Introduction to Embedded Machine Learning
 
-This course explores the intersection of state-of-the-art Deep Neural Networks (DNNs) and resource-constrained embedded devices. A central theme is the challenge of not only making complex models run on small hardware but also embedding these models in the real world, which necessitates a robust understanding and treatment of uncertainty.
-
-### About the Instructor and Research
-
-The course is taught by Professor Dr. Holger Fröning from Heidelberg University. His academic and research journey includes a PhD from Mannheim University, a Post-Doc at TU Valencia & Heidelberg University focusing on FPGAs & ASICs, and various professorships and visiting scientist roles at institutions like TU Graz and NVIDIA Research.
-
-Professor Fröning leads the Hardware and Artificial Intelligence (HAWAII) Lab at Heidelberg University. The lab consists of a post-doc, six PhD students, and around 25 bachelor and master students. It is well-equipped with a Compute Lab (~50 GPUs), an Embedded Lab, a Systems Lab, and the Energy-Efficient Systems and AI Lab (ESAIL).
-
-The HAWAII Lab's research focuses on a vertically integrated approach, spanning from Neural Architectures and Compilers down to a wide array of hardware platforms. Key research areas include:
-
-- Resource-efficient deep neural networks and Green Machine Learning.
-- Uncertainty and robustness in machine learning.
-- Advanced hardware architectures like GPUs, FPGAs, and IPUs.
-- Novel technologies such as analog electrical and photonic processors and emerging memory technologies.
-
-The lab's work is grounded in fundamental hardware principles, captured by the equations for performance, power consumption, and neural network layer computation:
-
-- **Performance:** \( \text{perf} \; [\mathrm{ops/s}] = p[\mathrm{Watt}] \cdot e[\mathrm{ops/J}] \)
-- **Power:** \( P = afCV^2 + V I_{\text{leakage}} \)
-- **Neural Network Layer:** \( x_l = \Phi(W \oplus x_{l-1} + b_l) \)
+This course explores the intersection of state-of-the-art Deep Neural Networks (DNNs) and resource-constrained embedded devices. A central theme is the challenge of not only making complex models run on resource-constraint embedded devices but also embedding these models in the real world, which necessitates a robust understanding and treatment of uncertainty and resource-efficient deep neural networks.
 
 
 ---
@@ -42,61 +23,11 @@ The lab's work is grounded in fundamental hardware principles, captured by the e
 
 ## 2. The Landscape of Modern Machine Learning
 
-Machine learning (ML), particularly the use of Artificial Neural Networks (ANNs), has become the state-of-the-art solution for a vast number of artificial intelligence tasks.
-
-### Modern ML Applications
-
-The impact of ML is seen across numerous domains, enabling powerful capabilities in:
-
-* Image & Video Processing: Including classification, object localization, and detection.
-* Speech and Language: Powering speech recognition and Natural Language Processing (NLP).
-* Medical Fields: Aiding in medical imaging analysis, genetics research, and disease prediction.
-* Augmented Reality (AR) and Robotics.
-* Near-Sensor Processing, where data is analyzed directly on or near the device that collected it.
-* Other complex tasks like playing video games.
-
-### The Dominance of Deep Neural Networks
-
-The success of modern ML is largely driven by the exceptional performance of ANNs. A clear example of this progress is the ImageNet challenge, a benchmark for image classification with 1000 distinct classes.
-
-[Placeholder: Bar chart showing the dramatic decrease in ImageNet Top-1 Error from over 25% pre-2012 to under 5% by 2019, highlighting the introduction of groundbreaking models like AlexNet (2012), ResNet-152 (2015), Inception v4 (2016), and Vision Transformers like OmniVec (2024).]
-
-Training these large models requires immense computational power. For example, the FixResNeXt-101 32x48d model required on the order of \( O(10^{20}) \) operations for training and \( O(10^{12}) \) operations for a single inference (prediction).
-
-### Understanding Common Datasets
+### The Challenge: Mismatch Between ANNs and Embedded Hardware
 
 The scale of data used to train these models is massive and growing. The complexity ranges from smaller datasets that can be trained on a laptop to enormous collections that require supercomputing resources.
 
-| Dataset Name | Type | Size (Samples) | Size (Storage) | SOTA Error / Accuracy |
-| --- | --- | --- | --- | --- |
-| MNIST | Image | 60,000 + 10,000 | ~ 45 MB | 0.21% (error) |
-| SVHN | Image | 73,257 + 26,032 | - | 1.69% (error) |
-| CIFAR-10 | Image | 50,000 + 10,000 | ~ 176 MB | 96.53% (accuracy) |
-| CIFAR-100 | Image | 50,000 + 10,000 | - | 75.72% (accuracy) |
-| ILSVRC2015 | Image | 1.38M | ~ 150 GB | 4.49% (TOP-5 error) |
-
-The trend towards larger and more complex datasets is clear, especially in video and text domains.
-
-| Dataset Name | Type | Size (Samples) | Size (Storage) | Training Notes |
-| --- | --- | --- | --- | --- |
-| MNIST | Image | 60k train + 10k test | ~ 45 MB | Trains on a wimpy laptop in ~10min |
-| CIFAR-10 | Image | 50k train + 10k test | ~ 176 MB | Trains on a reasonable laptop in ~10min |
-| ILSVRC2015 | Image | 1.38M | ~ 150 GB | Trains in ~10min on 2k M40 GPUs (ResNet-50) |
-| FineVideo | Video | 43k | ~ 600 GB (3.4k hours) | - |
-| The Pile | Text | 211M (documents) | ~ 825 GB | - |
-| LLAMA Pretraining | Text | - | ~ 4.7 TB | Trains in ~3 weeks on 2k A100 GPUs (~449 MWh) |
-
-### The Challenge: Mismatch Between ANNs and Embedded Hardware
-
 There is an extreme mismatch between the computational demands of modern ANNs and the capabilities of mobile or embedded processors. Large models like ResNet-50, which perform well on high-power servers, are difficult to deploy on devices with strict power and memory constraints.
-
-| Device | Wattage | Peak Performance (GFLOP/s) | Total Memory | In-Core Memory for ResNet-50 (Weights) |
-| --- | --- | --- | --- | --- |
-| NVIDIA Xavier | 30W | 1,300 | 16GB | 2.9MB (2.8%) |
-| XILINX Zynq Ultrascale+ | ~10W | difficult | 2GB | 4.3MB (4.2%) |
-| Raspberry Pi 3 B+ | 6W | 5.6 | 1GB | 2.3MB (2.3%) |
-
-This table illustrates that while the devices have gigabytes of total memory, the amount of fast, on-chip memory (in-core) is tiny, often insufficient to hold the weights of even a moderately sized neural network like ResNet-50.
 
 ### The Hardware Lottery Hypothesis
 
@@ -106,74 +37,15 @@ The "Hardware Lottery" suggests that tooling has played a disproportionately lar
 
 Because ANNs fundamentally rely on matrix-matrix operations, they perform exceptionally well on GPUs, which are designed for exactly this kind of computation. As a result, most ML researchers tend to ignore hardware constraints and focus on architectures that fit this paradigm, such as Convolutions and Transformers. This has led to massive models like GPT-3 (175B parameters, 800GB of state) and AlphaFold-2 (23TB of training data).
 
-This raises an important question: what if a different type of processor existed, one that excelled at processing large graphs? This could have led to the dominance of alternative models like probabilistic graphical models, sum-product networks, or graph neural networks. In this sense, processor specialization is considered harmful for innovation because it can prevent alternative algorithmic approaches from being explored.
+This raises an important question: what if a different type of processor existed, e.g. one that excelled at processing large graphs? This could have led to the dominance of alternative models like probabilistic graphical models, sum-product networks, or graph neural networks. 
+
+**Processor specialization is considered harmful for innovation because it can prevent alternative algorithmic approaches from being explored.**
 
 
 ---
 
 
-## 3. Course Organization
-
-### Objectives & Prerequisites
-
-By the end of this course, students will:
-
-* Know the basics of machine learning (ML).
-* Be familiar with neural network architectures for image, signal, and speech processing.
-* Be able to design simple model architectures for relevant problems.
-* Understand the computational requirements of these architectures.
-* Know different processor and system architectures for executing ML models.
-* Be capable of finding solutions to deploy ML models on resource-constrained processors.
-
-**Prerequisites**
-
-* Required: Basics of computer architecture, Python/C programming, and operating systems.
-* Recommended: Previous courses in "Parallel Computer Architecture", "GPU Computing", or "Introduction to HPC".
-
-### Logistics
-
-* Lectures: 2 hours/week, taught by Holger Fröning.
-* Tutorials: 2 hours/week, led by Runan Duan and Niklas Summ.
-* Groups: Allowed for up to 3 students, but individual work must be visible.
-* Coursework: A mixture of reading, exercises, programming, and experiments.
-* Exam: A final oral or written exam (6 CPs). To qualify, students must achieve 75% of all exercise points. Bonus points are available for willingness to present.
-
-### Course Schedule
-
-| Date | Lecture # | Lecture Topic | Tutorial Topic |
-| --- | --- | --- | --- |
-| 16.10.2025 | 1+2 | Introduction/ML basics/ML processors | GPU Intro & Generalization of simple regression |
-| 23.10.2025 | 3 | Neural networks from scratch, CONVs | PyTorch basics |
-| 30.10.2025 | - | Traveling | - |
-| 06.11.2025 | 4 | Automatic differentiation & Optimization | MNIST/CIFAR-10 Training I |
-| 13.11.2025 | 5 | Regularization (DropOut, L1/L2, BN, etc.) | MNIST/CIFAR-10 Training II |
-| 20.11.2025 | - | Traveling | - |
-| 27.11.2025 | 6 | Neural architecture design (residuals, pooling) | MNIST/CIFAR-10 Training III |
-| 04.12.2025 | 7 | Unsafe optimizations - basics | Quantization and Pruning I |
-| 11.12.2025 | 8 | Unsafe optimizations - advanced (incl NAS) | Quantization and Pruning II |
-| 18.12.2025 | 9 | Safe optimizations & Array processors | Galen |
-| 25.12.2025 | - | XMAS | - |
-| 01.01.2026 | - | XMAS | - |
-| 08.01.2026 | 10 | Review of ML processors | Quantization - TTQ |
-| 15.01.2026 | 11 | Advanced Neural Architectures | - |
-| 22.01.2026 | 12 | Probabilistic Modeling & Scaling | Exam examples |
-
-### Additional Reading
-
-* Recommended Textbooks:
-  * Goodfellow et al. - Deep Learning
-  * Bishop - Pattern Recognition and Machine Learning
-  * Bishop & Bishop - Deep Learning
-* Other Information Sources:
-  * medium.com
-  * openreview.net
-  * paperswithcode.com
-
-
----
-
-
-## 4. Fundamentals of Supervised Learning: Regression
+## 3. Fundamentals of Supervised Learning: Regression
 
 This section covers the foundational concepts of machine learning, including learning, generalization, model selection, regularization, and overfitting, using the example of regression.
 
@@ -181,55 +53,53 @@ This section covers the foundational concepts of machine learning, including lea
 
 In supervised learning, the goal is to learn a predictive function from a labeled dataset. We are given a set of examples and asked to predict an output for new, unseen data.
 
-Supervised Learning Problem: Given a training set of N samples, \( (x^{(i)}, t^{(i)}) \), find a good prediction function, \( y = h_{\theta}(x) \), that can generalize to new data.
+Supervised Learning Problem: Given a training set of $N$ samples, $(x^{(i)}, t^{(i)})$, find a good prediction function, $y = h_{\theta}(x)$, that can generalize to new data.
 
 #### Key Terminology
 
-* \( x^{(i)} \): The input features of the i-th training sample.
-* \( t^{(i)} \): The target variable (or label) of the i-th sample.
-* \( (x^{(i)}, t^{(i)}) \): A single training sample or observation.
-* Training Set: The complete set of N training samples.
-* \( h_{\theta}(x) \): The prediction function (or hypothesis) we are trying to learn.
-* \( \theta \): The parameters (or weights) of the model that the learning algorithm will adjust.
+* $x^{(i)}$: The input features of the $i$-th training sample.
+* $t^{(i)}$: The target variable (or label) of the $i$-th sample.
+* $(x^{(i)}, t^{(i)})$: A single training sample or observation.
+* Training Set: The complete set of $N$ training samples.
+* $h_{\theta}(x)$: The prediction function (or hypothesis) we are trying to find (learn).
+* $\theta$: The parameters (or weights) of the model that the learning algorithm will adjust.
 
 Problems in supervised learning can be categorized as:
 
-* Classification: When the target variable \( t^{(i)} \) is discrete (e.g., 'cat', 'dog', 'bird').
-* Regression: When the target variable \( t^{(i)} \) is continuous (e.g., the price of a house).
-
-[Placeholder: Diagram showing the supervised learning process: a Training Set is fed into a Learning Algorithm, which produces a hypothesis function h. This function h takes a new input x and produces a predicted output y.]
+* Classification: When the target variable $t^{(i)}$ is discrete (e.g., 'cat', 'dog', 'bird').
+* Regression: When the target variable $t^{(i)}$ is continuous (e.g., the price of a house).
 
 ### Linear Regression
 
-The simplest form of regression is linear regression. Here, we assume the relationship between the input features and the output is linear. For an input \( x \) with \( D \) features, the model is:
+The simplest form of regression is linear regression. Here, we assume the relationship between the input features and the output is linear. For an input $x$ with $D$ features, the model is:
 
 $$ h_{\theta}(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \dots + \theta_Dx_D $$
 
-This can be written more compactly using vector notation. By setting \( x_0 = 1 \), we can absorb the \( \theta_0 \) term (known as the model intercept or bias):
+This can be written more compactly using vector notation. By setting $x_0 = 1$, we can absorb the $\theta_0$ term (known as the model intercept or bias):
 
 $$ h_{\theta}(x) = \sum_{d=1}^{D} \theta_d x_d = \theta^T x $$
 
-The goal of learning is to find the optimal parameters \( \theta \) that make our model's predictions, \( h(x) \), as close as possible to the true target values, \( t \), for all \( N \) samples in our training set. To measure "how close" we are, we use a cost function (also known as an error function or loss function).
+The goal of learning is to find the optimal parameters $\theta$ that make our model's predictions, $h(x)$, as close as possible to the true target values, $t$, for all $N$ samples in our training set. To measure "how close" we are, we use a cost function (also known as an error function or loss function).
 
 A common choice is the sum of squared residuals, which forms the basis of the least-squares method. The cost function for linear regression is defined as:
 
 $$ \mathcal{L}(\theta) = \frac{1}{2} \sum_{n=1}^{N} \left(h_{\theta}\left(x^{(n)}\right) - t^{(n)}\right)^2 $$
 
-The \( \frac{1}{2} \) factor is included for mathematical convenience to simplify the derivative later.
+The $\frac{1}{2}$ factor is included for mathematical convenience to simplify the derivative later.
 
 #### Minimizing Error with Gradient Descent
 
-To find the best parameters \( \theta \), we need to find the values that minimize the cost function \( \mathcal{L}(\theta) \). The most common algorithm for this is gradient descent.
+To find the best parameters $\theta$, we need to find the values that minimize the cost function $\mathcal{L}(\theta)$. The most common algorithm for this is gradient descent.
 
-Gradient Descent is an iterative optimization algorithm that starts with an initial guess for \( \theta \) and repeatedly adjusts the parameters in the direction that most steeply decreases the cost function.
+Gradient Descent is an iterative optimization algorithm that starts with an initial guess for $\theta$ and repeatedly adjusts the parameters in the direction that most steeply decreases the cost function.
 
-The update rule for each parameter \( \theta_d \) is:
+The update rule for each parameter $\theta_d$ is:
 
 $$ \theta_d := \theta_d - \alpha \frac{\partial}{\partial\theta_d} \mathcal{L}(\theta) $$
 
-Here, \( \alpha \) is the learning rate, a small positive number that controls the size of each step. The term \( \frac{\partial}{\partial\theta_d} \mathcal{L}(\theta) \) is the partial derivative of the cost function, which tells us the slope (or gradient) of the cost function with respect to that parameter.
+Here, $\alpha$ is the learning rate. The term $\frac{\partial}{\partial\theta_d} \mathcal{L}(\theta)$ is the partial derivative of the cost function, which tells us the slope (or gradient) of the cost function with respect to that parameter.
 
-Using the chain rule of calculus, we can compute this derivative:
+Using the chain rule:
 
 $$ \frac{\partial}{\partial\theta_d} \mathcal{L}(\theta) = \sum_{n=1}^{N} (h_{\theta}(x) - t)x_d $$
 
@@ -237,21 +107,21 @@ Plugging this back into the update rule gives us the final update equation:
 
 $$ \theta_d := \theta_d + \alpha \sum_{n} \left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right)x_d^{(n)} $$
 
-This rule shows that the magnitude of the update for each parameter is proportional to the error term \( \left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right) \).
+This rule shows that the magnitude of the update for each parameter is proportional to the error term $\left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right)$.
 
 #### Batch vs. Stochastic Gradient Descent
 
 There are different strategies for deciding which training samples to use for each update step.
 
 1. **Batch Gradient Descent**
-    - In each step, the algorithm looks at every training sample (\( \forall n \in N \)) to compute the gradient.
-    - The update rule is: \( \theta_d := \theta_d + \alpha \sum_{n=1}^{N} \left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right)x_d^{(n)} \) for all parameters \( d \).
+    - In each step, the algorithm looks at every training sample ($\forall n \in N$) to compute the gradient.
+    - The update rule is: $\theta_d := \theta_d + \alpha \sum_{n=1}^{N} \left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right)x_d^{(n)}$ for all parameters $d$.
     - This is repeated until the algorithm converges.
     - Advantage: Guaranteed to find the optimal solution for convex functions like our linear regression cost function.
     - Disadvantage: Very expensive computationally, as the entire dataset must be processed for a single update.
 2. **Stochastic (or Incremental) Gradient Descent (SGD)**
     - Instead of the entire dataset, the algorithm randomly selects one training sample at a time to perform an update.
-    - The update rule is performed for each sample \( n \) in the dataset: \( \theta_d := \theta_d + \alpha\left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right)x_d^{(n)} \) for all \( d \).
+    - The update rule is performed for each sample $n$ in the dataset: $\theta_d := \theta_d + \alpha\left(t^{(n)} - h_{\theta}\left(x^{(n)}\right)\right)x_d^{(n)}$ for all $d$.
     - Advantage: Makes progress much faster, as parameters are updated after every single sample. It is much more efficient for large datasets.
     - Disadvantage: The path to the minimum is "noisier" and may not converge to the exact minimum, but it usually gets very close.
 
@@ -259,27 +129,25 @@ There are different strategies for deciding which training samples to use for ea
 
 ### Polynomial Curve Fitting
 
-While linear regression is simple, many real-world relationships are not linear. We can extend our model to fit more complex data by using a polynomial function.
+Consider a training set of $N$ observations of an input $x$ and a target $t$. Our goal is to predict new values $\hat{y}$ for new inputs $\hat{x}$.
 
-Consider a training set of \( N \) observations of an input \( x \) and a target \( t \). Our goal is to predict new values \( \hat{y} \) for new inputs \( \hat{x} \). Often, real-world data has an underlying regularity (e.g., \( t = \sin(2\pi x) \)) but is corrupted by random noise.
-
-Our model can be a polynomial of order \( M \):
+Our model can be a polynomial of order $M$:
 
 $$ h(x, w) = w_0 + w_1x + w_2x^2 + \dots + w_Mx^M = \sum_{m=0}^{M} w_m x^m $$
 
-Although this function is nonlinear with respect to the input \( x \), it is still a linear model because it is a linear function of its coefficients \( w \). This means we can use the same least-squares method to find the optimal coefficients \( w \) by minimizing the loss function:
+Although this function is nonlinear with respect to the input $x$, it is still a linear model because it is a linear function of its coefficients $w$.
 
 $$ \mathcal{L}(w) = \frac{1}{2} \sum_{n=1}^{N} \left(h(x_n, w) - t_n\right)^2 $$
 
-Because this is a quadratic function of the coefficients \( w \), it has a unique solution.
+Because this is a quadratic function of the coefficients $w$, it has a unique solution $w^*$.
 
-### The Problem of Overfitting and the Importance of Generalization
+#### The Problem of Overfitting and the Importance of Generalization
 
-A critical decision in polynomial fitting is choosing the order of the polynomial, \( M \). This is a problem of model selection.
+A critical decision in polynomial fitting is choosing the order of the polynomial, $M$. This is a problem of model selection.
 
 Generalization refers to a model's ability to make accurate predictions for new, unseen data. A model that generalizes well has learned the underlying pattern in the data, not just the noise.
 
-Overfitting occurs when a model is too complex (e.g., a high-order polynomial \( M \)) and starts to fit the random noise in the training data instead of the true underlying relationship. Such a model performs very well on the training data but fails to generalize to new data.
+Overfitting occurs when a model is too complex (e.g., a high-order polynomial $M$) and starts to fit the random noise in the training data instead of the true underlying relationship. Such a model performs very well on the training data but fails to generalize to new data.
 
 To identify overfitting, we split our data into a training set and a test set. The model is trained only on the training set. We then evaluate its performance on both sets.
 
@@ -296,7 +164,7 @@ A large gap between a low training error and a high test error is a clear sign o
 
 The ideal model complexity also depends on the size of the dataset. A more complex model can be justified if there is a sufficiently large amount of data to prevent it from overfitting.
 
-### Controlling Overfitting with Regularization
+#### Controlling Overfitting with Regularization
 
 A common technique to control overfitting is regularization.
 
@@ -308,10 +176,9 @@ $$ \tilde{\mathcal{L}}(w) = \frac{1}{2} \sum_{n=1}^{N} \left(h(x_n, w) - t_n\rig
 
 Where:
 
-- \( \|w\|^2 = w^T w = w_0^2 + w_1^2 + \dots + w_M^2 \) is the penalty term.
-- \( \lambda \) is the regularization parameter, which controls the relative importance of the penalty term.
+- $\lambda$ is the regularization parameter, which controls the relative importance of the penalty term.
 
-This specific type of regularization is known as ridge regression, weight decay, or L2 regularization. Finding the optimal value for \( M \) or \( \lambda \) is typically done using a third dataset called a validation set.
+This specific type of regularization is known as ridge regression, weight decay, or L2 regularization. Finding the optimal value for $M$ or $\lambda$ is typically done using a third dataset called a validation set.
 
 
 ---
