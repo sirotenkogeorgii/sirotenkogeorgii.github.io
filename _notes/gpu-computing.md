@@ -105,14 +105,14 @@ A key concept in this model is parallel slackness, which refers to having many m
 
 ### CUDA and GPU Overview
 
+In a typical computer system, the CPU and GPU are distinct components with their own dedicated memory systems, connected via an I/O bridge.
+
 <div class="gd-grid">
   <figure>
     <img src="{{ '/assets/images/notes/gpu-computing/cpu-gpu-diagram.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
     <figcaption>CPU + GPU System</figcaption>
   </figure>
 </div>
-
-In a typical computer system, the CPU and GPU are distinct components with their own dedicated memory systems, connected via an I/O bridge.
 
 A diagram of a modern system illustrates this separation: The CPU is connected to its Host Memory (system RAM) through a high-speed memory interface. The GPU, a separate component on the peripheral bus (like PCIe), is connected to its own dedicated, high-bandwidth GPU Memory.
 
@@ -124,11 +124,11 @@ The performance differences, particularly in memory bandwidth and computational 
 
 <div class="gd-grid">
   <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/gpu-graphics.png' | relative_url }}" alt="G80 Architecture for graphics processing" loading="lazy">
+    <img src="{{ '/assets/images/notes/gpu-computing/gpu-graphics.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
     <figcaption>G80 Architecture for graphics processing</figcaption>
   </figure>
   <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/gpu-general.png' | relative_url }}" alt="G80 Architecture for general-purpose processing" loading="lazy">
+    <img src="{{ '/assets/images/notes/gpu-computing/gpu-general.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
     <figcaption>G80 Architecture for general-purpose processing</figcaption>
   </figure>
 </div>
@@ -147,28 +147,44 @@ All SMs on the GPU can access a large, shared Global Memory through a system of 
 
 ### CUDA Programming
 
-CUDA is an extension of the C programming language created by NVIDIA that exposes the GPU's parallel architecture directly to the developer.
+CUDA is an extension of the C programming language created by NVIDIA that exposes the GPU's parallel architecture directly to the developer. CUDA extends C with three main abstractions:
+1. **hierarchy of threads**
+2. **shared memory**
+3. **barrier synchronization**
 
-#### The CUDA Programming Model
+#### CUDA Programming Model
 
 A CUDA program is a hybrid program consisting of two parts: a host part that runs on the CPU and a device part that runs on the GPU.
 
-- The CPU (host) part is responsible for serial or low-parallelism tasks, such as setting up data, managing memory transfers, and launching computations on the GPU.
-- The GPU (device) part handles massively parallel operations by executing kernels across many threads.
+- The **CPU (host) part** is responsible for serial or low-parallelism tasks, such as setting up data, managing memory transfers, and launching computations on the GPU.
+- The **GPU (device) part** handles massively parallel operations by executing kernels across many threads.
 
-## 2.2 The Thread Hierarchy
+#### Thread Hierarchy
 
 The most fundamental concept in CUDA is the thread hierarchy. When you launch a computation on the GPU, you are launching a kernel function that is executed by a grid of threads. This hierarchy is organized into three levels:
 
-- Thread: The smallest unit of execution. A single thread executes one instance of the kernel code.
-- Block: A group of threads. Threads within the same block can cooperate by sharing data through a fast, on-chip shared memory and can synchronize their execution using barriers.
-- Grid: A group of blocks. A kernel is launched as a single grid of thread blocks. Blocks within a grid are executed independently and in any order, and they cannot directly synchronize with each other.
-
-The following diagram illustrates this structure. A Grid is composed of multiple Blocks, which can be arranged in one, two, or three dimensions. Each Block, in turn, contains multiple Threads, which can also be arranged in one, two, or three dimensions. For example, the diagram shows a Grid of Blocks arranged in a 2x2 configuration. One of these blocks, Block (1,1), is shown expanded, containing an array of Threads.
+- **Thread**: The smallest unit of execution. A single thread executes one instance of the kernel code.
+- **Block**: 
+  - A group of threads. All blocks are equal size. 
+  - Threads within the same block can cooperate by sharing data through a fast, on-chip **shared memory** and can synchronize their execution using **barriers**. 
+  - Threads from different blocks cannot interact. Exception: **global memory**. 
+- **Grid**: A group of blocks. A kernel is launched as a single grid of thread blocks. Blocks within a grid are executed independently and in any order, and they cannot directly synchronize with each other.
 
 This hierarchical structure allows you to naturally map the parallelism in your problem onto the GPU hardware. For example, to process a 2D image, you might launch a 2D grid of blocks, where each block processes a tile of the image and each thread within a block processes a single pixel.
 
-## 2.3 Launching a Kernel
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/thread_hierarchy.png' | relative_url }}" alt="Thread hierarchy 1" loading="lazy">
+    <figcaption>Thread hierarchy 1</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/thread_communication.png' | relative_url }}" alt="Thread hierarchy 2" loading="lazy">
+    <figcaption>Thread hierarchy 2</figcaption>
+  </figure>
+</div>
+
+
+#### Launching a Kernel
 
 A CUDA kernel is a function that runs on the device. You define it in your C/C++ code using the `__global__` declaration specifier.
 
@@ -190,7 +206,7 @@ kernel_name<<<numBlocks, threadsPerBlock>>>(arguments);
 - `numBlocks`: The number of thread blocks to launch in the grid.
 - `threadsPerBlock`: The number of threads to launch in each block.
 
-### Unique Thread Identification
+**Unique Thread Identification**
 
 Inside a kernel, each thread needs a way to identify itself so it can work on a unique piece of data. CUDA provides built-in variables for this purpose:
 
@@ -218,7 +234,7 @@ int main() {
 
 In this simple case, we launch a single block (1) with NxN threads (`dimBlock`). Each thread uses its `threadIdx.x` and `threadIdx.y` to find its unique (i, j) coordinate and computes a single element `C[i][j]`.
 
-### Scaling Up with Grids
+**Scaling Up with Grids**
 
 The previous example only works if the matrix size `N` is small enough to fit within a single thread block (e.g., up to 1024 threads total). To handle larger problems, we must launch a grid of multiple blocks.
 
@@ -236,6 +252,7 @@ Let's break this down:
 Here is the revised `matAdd` kernel that can handle any size matrix by using a grid of blocks.
 
 ```c++
+// Super fine-grained: one thread computes one element
 __global__ void matAdd(float A[N][N], float B[N][N], float C[N][N]) {
   // Calculate the global row and column index
   int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -252,43 +269,58 @@ int main() {
   dim3 dimBlock(16, 16);
 
   // Calculate the grid size needed to cover the entire N x N matrix
+  // For N=50, grid size = (50+16-1)/16 = 4.0625 => 4.
   dim3 dimGrid((N + dimBlock.x - 1) / dimBlock.x,
                  (N + dimBlock.y - 1) / dimBlock.y);
 
   // Launch the kernel
   matAdd<<<dimGrid, dimBlock>>>(A, B, C);
+  //     grid size, block size
 }
 ```
 
-#### Key Improvements
+**Key Improvements**
 
 1. Global Index Calculation: The kernel now correctly computes global `i` and `j` indices, allowing threads from different blocks to work on different parts of the matrix.
 2. Boundary Check: The `if (i < N && j < N)` statement is crucial. Because we must launch a whole number of blocks, the total number of threads launched might be greater than the number of elements in our matrix. This check ensures that only threads corresponding to valid matrix elements perform a write, preventing memory corruption.
 3. Grid Calculation: The formula `(N + dimBlock.x - 1) / dimBlock.x` is a standard C/C++ integer arithmetic trick for calculating the ceiling of a division. It ensures we launch enough blocks to cover all `N` elements. For example, if `N=50` and `dimBlock.x=16`, the calculation is `(50 + 16 - 1) / 16 = 65 / 16`, which results in 4 in integer division, correctly launching 4 blocks to cover the 50 elements.
 
-### Choosing Block and Grid Sizes
+**Choosing Block and Grid Sizes**
 
 - Threads per Block: This should be a multiple of the warp size (typically 32, a concept we'll cover later). A common starting point is 128, 256, or 512 threads per block. The ideal number balances resource usage with the ability to hide memory latency. A range of 100-1000 threads is often optimal.
 - Blocks per Grid: You should launch enough blocks to keep all the SMs on the GPU busy. A good heuristic is to launch at least twice as many blocks as there are SMs on your GPU.
+- Number of blocks is limited: $512 \times 512 \times 64 \to 1024 \times 1024 \times 64$. Depends on GPU.
+- Number of blocks is limited. Depends on GPU.
 
-## 2.4 Thread Communication and Synchronization
+#### Thread Communication and Synchronization
 
 A key feature of the CUDA model is that threads within the same block can cooperate. This is achieved through two main mechanisms:
 
-- Shared Memory: A small, fast, on-chip memory that is shared by all threads in a block. Access to shared memory is much faster than global memory, making it ideal for caching frequently used data or for intermediate results.
-- Barrier Synchronization: Threads in a block can be synchronized by calling the `__syncthreads()` intrinsic. When a thread reaches this function, it pauses until every other thread in its block has also reached the same point. This is essential for coordinating memory accesses, for example, ensuring all threads have finished loading data into shared memory before any thread starts consuming it.
+- **Shared Memory**: A small, fast, on-chip memory that is shared by all threads in a block. Access to shared memory is much faster than global memory, making it ideal for caching frequently used data or for intermediate results.
+- **Barrier Synchronization**: Threads in a block can be synchronized by calling the `__syncthreads()` intrinsic. When a thread reaches this function, it pauses until every other thread in its block has also reached the same point. This is essential for coordinating memory accesses, for example, ensuring all threads have finished loading data into shared memory before any thread starts consuming it.
 
 > **Important Limitation:** Threads from different blocks cannot directly communicate or synchronize with each other. They operate independently. The only way they can "communicate" is by reading and writing to global memory. However, the guarantees for when writes from one block become visible to another are very weak. If you need global synchronization across all threads, you must terminate the current kernel and launch a new one.
 
-## 2.5 The CUDA Memory Hierarchy
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/gpu_global_memory.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <figcaption>GPU global memory</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/gpu_shared_memory.png' | relative_url }}" alt="GPU shared memory" loading="lazy">
+    <figcaption>GPU shared memory</figcaption>
+  </figure>
+</div>
+
+### The CUDA Memory Hierarchy
 
 Understanding the memory hierarchy is critical for writing high-performance CUDA code. A thread has access to several distinct memory spaces, each with different characteristics regarding scope, lifetime, and speed.
 
 A diagram of the memory hierarchy shows that each Thread has its own private Registers. A group of threads in a Block shares a common Shared Memory. All blocks in the Grid can access the larger but slower Global Memory. The Host (CPU) also interacts with the device via this Global Memory.
 
-### Global Memory
+**Global Memory**
 
-- **Scope:** Accessible by all threads in the grid, as well as the host (CPU).
+- **Scope:** Accessible by all threads in the grid (R/W), as well as the host (CPU), communication between host and device.
 - **Lifetime:** Persists for the lifetime of the application, beyond the execution of any single kernel.
 - **Characteristics:** Large (often many gigabytes) but has high latency. This is the primary memory used for transferring data between the host and the device. Accesses to global memory are very sensitive to access patterns, and uncoalesced (scattered) accesses can severely degrade performance.
 
@@ -324,17 +356,17 @@ free(h_mem);
 
 > **Note:** When calling a kernel, you can only pass pointers to device memory (like `d_mem`), not host memory.
 
-### Shared Memory
+**Shared Memory**
 
 - **Scope:** Accessible only by threads within the same block.
 - **Lifetime:** Persists only for the lifetime of the block. Once a block finishes executing, its shared memory is gone.
 - **Characteristics:** Very fast on-chip memory. In the best case, access latency is similar to registers. It is organized into banks, and parallel access is possible as long as threads do not access addresses in the same bank (a "bank conflict"). Bank conflicts cause accesses to be serialized, reducing performance.
 
-## 2.6 CUDA Language Extensions
+#### CUDA Language Extensions
 
 CUDA extends C/C++ with special specifiers for declaring variables and functions.
 
-### Variable Declaration Specifiers
+**Variable Declaration Specifiers**
 
 These specifiers determine where a variable is stored and its scope.
 
@@ -345,9 +377,11 @@ These specifiers determine where a variable is stored and its scope.
 | `__shared__ float var;` | Shared Memory | All threads in block | Block |
 | `texture <float> ref;` | Texture Memory | All threads + Host API | Application |
 
+`__device__` can be combined with others.
+
 A key function related to shared memory is `__syncthreads()`. This intrinsic creates a barrier, forcing all threads in a block to wait until everyone has reached this point. It is essential for managing dependencies when using shared memory, ensuring that data is fully written before it is read by other threads.
 
-### Function Declaration Specifiers
+**Function Declaration Specifiers**
 
 These specifiers determine where a function is executed and where it can be called from.
 
@@ -362,14 +396,14 @@ These specifiers determine where a function is executed and where it can be call
 - `__host__` is the default and can be combined with `__device__` to create a function that can be compiled for and called from both the CPU and GPU.
 - Device functions have several restrictions: they do not support recursion, variable numbers of arguments, or non-static variable declarations inside the function.
 
-### Type Specifiers
+**Type Specifiers**
 
 CUDA introduces several built-in types:
 
 - Vector types: Such as `float2`, `float4`, `int2`, `int4`, which are simple structs containing 2 or 4 components. These are useful for representing coordinates or colors and can lead to more efficient memory access.
 - `dim3` type: A struct based on `uint3` used for specifying dimensions for grids and blocks. Unspecified components are automatically initialized to 1.
 
-## 2.7 Compilation and Execution
+#### Compilation and Execution
 
 CUDA code is compiled using the `nvcc` (NVIDIA C Compiler) driver. `nvcc` is a powerful tool that separates the host and device code.
 
