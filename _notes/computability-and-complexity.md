@@ -22,6 +22,7 @@ tags:
     zero-entropy corner of the same formalism.
   </p>
 </div>
+
 ## Computability and Complexity
 
 ### Formalizing Computability
@@ -73,7 +74,7 @@ The "program" of a Turing machine is its transition relation $\Delta$, which is 
 
 To formalize this, we distinguish between the two parts of an instruction.
 
-**Definition 2:** For an instruction of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$, we refer to $(q, a_1, \dots, a_k)$ as its condition part, and to $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ as its instruction part.
+**Definition 2 (Condition Part, Instruction part):** For an instruction of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$, we refer to $(q, a_1, \dots, a_k)$ as its condition part, and to $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ as its instruction part.
 
 **Remark 3:** The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a $k$-tape Turing machine, $\Delta$ is thus a binary relation of the form  $\Delta \subseteq (Q \times \Gamma^k) \times (Q \times \Gamma^k \times \text{Mov}^k)$  which can be written in infix notation as  $(q, a_1, \dots, a_k) \Delta (q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$. The relation $\Delta$ is called right-unique if for each condition part $(q, a_1, \dots, a_k)$ there is at most one instruction part $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ that satisfies the relation.
 
@@ -83,11 +84,11 @@ The nature of the transition relation $\Delta$ determines whether a Turing machi
 
 A general Turing machine, as defined above, does not require $\Delta$ to be right-unique. This means that for a given state and set of tape symbols, there might be multiple applicable instructions. Such a machine is called a nondeterministic Turing machine. When a computation reaches a point with multiple choices, it can branch, exploring several computational paths simultaneously.
 
-**Remark 5:** In the literature, the term nondeterministic Turing machine is used in two different senses. It may refer either to a general Turing machine, i.e., one that may or may not be deterministic, or to a Turing machine that is indeed not deterministic, i.e., has a transition relation that is not right-unique.
+**Remark 5:** In the literature, the term *nondeterministic Turing machine* is used in two different senses. It may refer either to a *general Turing machine*, i.e., one that may or may not be deterministic, or to a Turing machine that is indeed not deterministic, i.e., has a transition relation that is not right-unique.
 
 In contrast, a deterministic Turing machine has a transition relation that is right-unique. At any point in its computation, there is at most one applicable instruction. This ensures that for any given input, the machine follows a single, uniquely determined computational path.
 
-**Definition 4:** Deterministic Turing Machine A Turing machine $M$ is deterministic if its transition relation is right-unique. A $k$-tape Turing machine $(Q, \Sigma, \Gamma, \Delta, s, F)$ is deterministic if and only if for every state $q \in Q$ and every sequence of $k$ symbols $a_1, \dots, a_k$ from $\Gamma$, there is at most one instruction in $\Delta$ with condition part $(q, a_1, \dots, a_k)$.
+**Definition 4 (Deterministic Turing Machine):** A Turing machine $M$ is deterministic if its transition relation is right-unique. A $k$-tape Turing machine $(Q, \Sigma, \Gamma, \Delta, s, F)$ is deterministic if and only if for every state $q \in Q$ and every sequence of $k$ symbols $a_1, \dots, a_k$ from $\Gamma$, there is at most one instruction in $\Delta$ with condition part $(q, a_1, \dots, a_k)$.
 
 ### The Mechanics of Computation
 
@@ -97,11 +98,25 @@ To formally analyze Turing machine computations, we need precise definitions for
 
 A configuration is a complete snapshot of a Turing machine's status, capturing its current state, all tape contents, and the positions of all heads. Since a tape is infinite but can only contain a finite number of non-blank symbols, we need a way to represent its contents.
 
-**Definition 6:** Tape Inscriptions Let $M$ be a Turing machine with tape alphabet $\Gamma$. A tape inscription of $M$ is a function $f: \mathbb{Z} \to \Gamma$ such that $f(i) = \square$ for all but finitely many integers $i$. The relevant part $u_f$ of a tape inscription $f$ is a word over $\Gamma$. We let $u_f = \square$ if $f$ is the constant function with value $\square$. Otherwise, we let  $u_f = f(\min I_f) \cdots f(\max I_f) \quad \text{where} \quad I_f = \lbrace i \in \mathbb{Z} : f(i) \neq \square \rbrace$  A tape inscription $f$ is represented by any word $u$ of the form $u = \square^{r_1} u_f \square^{r_2}$ with $r_1, r_2 \in \mathbb{N}$.
+**Definition 6 (Tape Inscriptions):** Let $M$ be a Turing machine with tape alphabet $\Gamma$. A *tape inscription* of $M$ is a function $f: \mathbb{Z} \to \Gamma$ such that $f(i) = \square$ for all but finitely many integers $i$. The *relevant part* $u_f$ of a tape inscription $f$ is a word over $\Gamma$. We let $u_f = \square$ if $f$ is the constant function with value $\square$. Otherwise, we let  
+$$
+u_f = f(\min I_f) \cdots f(\max I_f) \quad \text{where} \quad I_f = \lbrace i \in \mathbb{Z} : f(i) \neq \square \rbrace
+$$
+A tape inscription $f$ is represented by any word $u$ of the form 
+$$
+u = \square^{r_1} u_f \square^{r_2} \quad \text{with} \quad r_1, r_2 \in \mathbb{N}
+$$
+
+i.e., by any word u that equals the relevant part of the tape inscription f plus at most
+finitely many leading and trailing blank symbols.
 
 Using this representation for tape contents, we can formally define a configuration.
 
-**Definition 7:** Configuration Let $k$ be a nonzero natural number and let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $k$-tape Turing machine. A configuration of $M$ is a tuple  $(q, u_1, \dots, u_k, j_1, \dots, j_k) \in Q \times (\Gamma^+)^k \times \prod_{i=1,\dots,k} \lbrace 1, \dots, \lvert u_i \rvert \rbrace$  This tuple represents a situation where $q$ is the current state, and for each tape $i=1, \dots, k$:
+**Definition 7 (Configuration):** Let $k$ be a nonzero natural number and let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $k$-tape Turing machine. A configuration of $M$ is a tuple  
+$$
+(q, u_1, \dots, u_k, j_1, \dots, j_k) \in Q \times (\Gamma^+)^k \times \prod_{i=1,\dots,k} \lbrace 1, \dots, \lvert u_i \rvert \rbrace
+$$
+This tuple represents a situation where $q$ is the current state, and for each tape $i=1, \dots, k$:
 
 * the word $u_i$ represents the relevant part of the inscription on tape $i$,
 * the number $j_i$ indicates the head position on tape $i$, corresponding to the $j_i$-th symbol of $u_i$.
@@ -110,7 +125,7 @@ Using this representation for tape contents, we can formally define a configurat
 
 A computation unfolds as a sequence of configurations, where each transition from one configuration to the next is governed by an instruction from $\Delta$. This transition is called a computation step.
 
-**Definition 8**: Computation Step Let $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ be a configuration of a $k$-tape Turing machine $M$. An instruction of $M$ of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ is applicable to $C$ if for $i=1, \dots, k$, the symbol at position $j_i$ of $u_i$ is equal to $a_i$. A configuration $C' = (q', u'_1, \dots, u'_k, j'_1, \dots, j'_k)$ is a successor configuration of $C$, written $C \xrightarrow{M} C'$, if there is an applicable instruction as above such that for $i=1, \dots, k$:
+**Definition 8 (Computation Step)**: Let $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ be a configuration of a $k$-tape Turing machine $M$. An instruction of $M$ of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ is *applicable* to $C$ if for $i=1, \dots, k$, the symbol at position $j_i$ of $u_i$ is equal to $a_i$. A configuration $C' = (q', u'_1, \dots, u'_k, j'_1, \dots, j'_k)$ is a *successor configuration* of $C$, written $C \xrightarrow{M} C'$, if there is an applicable instruction as above such that for $i=1, \dots, k$:
 
 * $u'_i$ is defined by
 
@@ -139,26 +154,26 @@ A computation unfolds as a sequence of configurations, where each transition fro
 
 The relation $\xrightarrow{M}$ is known as the successor relation or $1$-step relation of $M$. A sequence of such steps forms a partial computation.
 
-**Definition 9:** Partial Computations Let $M$ be a Turing machine. A finite partial computation of $M$ of length $t$ is a finite sequence of configurations $C_0, \dots, C_t$ such that $C_i \xrightarrow{M} C_{i+1}$ for all $i = 0, \dots, t-1$. An infinite partial computation is an infinite sequence $C_0, C_1, \dots$ where this condition holds for all $i \ge 0$. We write $C \xrightarrow[M]{t} C'$ if there is a finite partial computation of length $t$ from $C$ to $C'$, and $C \xrightarrow[M]{*} C'$ if such a computation exists for some length $t$.
+**Definition 9 (Partial Computations):** Let $M$ be a Turing machine. A *finite partial computation* of $M$ of *length $t$* is a finite sequence of configurations $C_0, \dots, C_t$ such that $C_i \xrightarrow{M} C_{i+1}$ for all $i = 0, \dots, t-1$. An *infinite partial computation* is an infinite sequence $C_0, C_1, \dots$ where this condition holds for all $i \ge 0$. We write $C \xrightarrow[M]{t} C'$ if there is a finite partial computation of length $t$ from $C$ to $C'$, and $C \xrightarrow[M]{*} C'$ if such a computation exists for some length $t$.
 
 ### The Full Computation Process
 
 A full computation is a special type of partial computation that begins in a standardized initial configuration and proceeds until it can no longer continue.
 
-**Definition 10:** Initial and Halting Configuration, Computation Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a Turing machine and let $w$ be a word over $\Sigma$.
+**Definition 10 (Initial and Halting Configuration, Computation):** Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a Turing machine and let $w$ be a word over $\Sigma$.
 
-* The initial configuration of $M$ on input $w$ is $(s, w\square, \square, \dots, \square, 1, \dots, 1)$.
-* A halting configuration is a configuration $(q, u_1, \dots, u_k, j_1, \dots, j_k)$ to which no instruction in $\Delta$ is applicable, meaning $(q, u_1(j_1), \dots, u_k(j_k))$ is not the condition part of any instruction in $\Delta$.
-* An accepting configuration is a halting configuration whose state is an accepting state (i.e., is in $F$).
-* A computation of $M$ is a partial computation that starts with an initial configuration and is either infinite or ends in a halting configuration.
-* A terminating computation is a finite computation.
-* An accepting computation is a terminating computation that ends in an accepting configuration.
+* The *initial configuration* of $M$ on input $w$ is $(s, w\square, \square, \dots, \square, 1, \dots, 1)$.
+* A *halting configuration* is a configuration $(q, u_1, \dots, u_k, j_1, \dots, j_k)$ to which no instruction in $\Delta$ is applicable, meaning $(q, u_1(j_1), \dots, u_k(j_k))$ is not the condition part of any instruction in $\Delta$.
+* An *accepting configuration* is a halting configuration whose state is an accepting state (i.e., is in $F$).
+* A *computation* of $M$ is a partial computation that starts with an initial configuration and is either infinite or ends in a halting configuration.
+* A *terminating computation* is a finite computation.
+* An *accepting computation* is a terminating computation that ends in an accepting configuration.
 
 ### The Computation Tree
 
 For a nondeterministic machine, the set of all possible computations on a given input $w$ can be visualized as a tree.
 
-**Definition 11:** Computation Tree The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of M such that:
+**Definition 11 (Computation Tree):** The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of M such that:
 
 * The root is labelled with the initial configuration of $M$ on input $w$.
 * The children of an internal node labelled with configuration $C$ are labelled with the successor configurations of $C$. If there are $t > 0$ applicable instructions, the node has $t$ children, one for each resulting successor configuration.
@@ -174,19 +189,19 @@ Turing machines can be used to define classes of languages based on their comput
 
 A Turing machine accepts an input word if at least one of its possible computational paths leads to an accepting state.
 
-**Definition 12:** Acceptance and Recognized Language Let $M$ be a Turing machine with input alphabet $\Sigma$, and let $w$ be a word over $\Sigma$. The Turing machine $M$ accepts the word $w$ if one of its computations on input $w$ is accepting. The language recognized by $M$ is  $L(M) = \lbrace w \in \Sigma^* : M \text{ accepts } w \rbrace$.
+**Definition 12 (Acceptance and Recognized Language):** Let $M$ be a Turing machine with input alphabet $\Sigma$, and let $w$ be a word over $\Sigma$. The Turing machine $M$ *accepts* the word $w$ if one of its computations on input $w$ is accepting. The language *recognized* by $M$ is  $L(M) = \lbrace w \in \Sigma^* : M \text{ accepts } w \rbrace$.
 
-For a word w to be in $L(M)$, the computation tree of $M$ on $w$ must have at least one accepting branch. It is possible for other branches to be infinite (non-terminating). This class of languages is known in computability theory as the recursively enumerable languages.
+For a word $w$ to be in $L(M)$ (be accepted), the computation tree of $M$ on $w$ must have at least one accepting branch. It is possible for other branches to be infinite (non-terminating). The latter possibility is relevant in computability theory. This class of languages is known in computability theory as the recursively enumerable languages.
 
 #### Decidable Languages and Total Turing Machines
 
 A stronger condition is that a machine must halt on all inputs, whether it accepts them or not. This leads to the notion of a decidable language.
 
-**Definition 13:** Total Turing Machine A Turing machine is total if for all inputs all of its computations terminate.
+**Definition 13 (Total Turing Machine):** A Turing machine is *total* if for all inputs all of its computations terminate.
 
-**Definition 14:** Decidable Language $A$ language is decidable if it is recognized by a total Turing machine. In this case, we also say that the language is decided by the Turing machine.
+**Definition 14 (Decidable Language):** A language is *decidable* if it is recognized by a total Turing machine (possibly nondeterministic). In this case, we also say that the language is *decided* by the Turing machine.
 
-It will later be shown that the class of decidable languages is a strict subclass of the recursively enumerable languages.
+In the part on computation theory, languages that are recognized by some, not necessarily total Turing machine will be called recursively enumerable, and it will be shown that these languages form a strict superclass of the class of decidable languages.
 
 ### The Power of Nondeterminism
 
@@ -194,25 +209,45 @@ A central question in complexity theory is whether nondeterministic machines are
 
 The proof of this relies on the insight that for a total nondeterministic TM, the computation tree for any input must be finite. This can be shown using König's Lemma.
 
-**Theorem 15:** König’s Lemma A finitely branching rooted tree is infinite if and only if it has an infinite branch.
+**Theorem 15 (König’s Lemma):** A finitely branching rooted tree is infinite if and only if it has an infinite branch.
 
 **Proof sketch.**: A tree with an infinite branch is clearly infinite. For the converse, let $T$ be an infinite, finitely branching rooted tree. We can inductively construct an infinite branch $v_0, v_1, \dots$. The key is to maintain the invariant that the subtree rooted at $v_i$ is infinite.
 
 * Let $v_0$ be the root of $T$. The subtree at $v_0$ is $T$ itself, which is infinite.
-* Assuming $v_i$ has been defined such that its subtree is infinite, we choose $v_{i+1}$ from its children. Since $v_i$ has only finitely many children, and the subtree at $v_i$ is infinite, at least one of its children must be the root of an infinite subtree. We choose such a child to be v_{i+1}. This process can be continued indefinitely, constructing an infinite branch.
+* Assuming $v_i$ has been defined such that its subtree is infinite, we choose $v_{i+1}$ from its children. Since $v_i$ has only finitely many children, and the subtree at $v_i$ is infinite, at least one of its children must be the root of an infinite subtree. We choose such a child to be $v_{i+1}$. This process can be continued indefinitely, constructing an infinite branch.
 
 Using this lemma, we can prove that nondeterminism adds no power for deciding languages.
 
 **Theorem 16:** Every decidable language is recognized by a total deterministic Turing machine.
 
-**Proof sketch.**: Let $L$ be a decidable language. By definition, there is a total Turing machine M that recognizes $L$.
+**Proof sketch.**: Let $L$ be a decidable language. By definition, there is a total Turing machine $M$ that recognizes $L$.
 
 1. Since $M$ is total, all of its computations terminate. This means that for any input $w$, all branches in the computation tree of $M$ on $w$ are finite.
 2. The computation tree of any TM is finitely branching.
-3. By König's Lemma, a finitely branching tree with only finite branches must be a finite tree. Therefore, the computation tree of $M$ on any input w is finite.
-4. We can construct a deterministic Turing machine $M'$ that, on input $w$, systematically explores the entire computation tree of $M$ on $w$ (e.g., via breadth-first or depth-first search).
+3. By König's Lemma, a finitely branching tree with only finite branches must be a finite tree. Therefore, the computation tree of $M$ on any input $w$ is finite.
+4. We can construct a deterministic Turing machine $M'$ that, on input $w$, exhaustively explores the entire computation tree of $M$ on $w$ (e.g., via breadth-first or depth-first search) for an accepting computation by simulating all computations of $M$ on input $w$.
 5. Since the tree is finite, this search is guaranteed to terminate. Thus, $M'$ is a total machine.
 6. $M'$ is designed to accept if and only if its search finds an accepting configuration of $M$. Therefore, $L(M') = L(M) = L$. This shows that $L$ is recognized by a total deterministic Turing machine.
+
+<div class="note-callout">
+  <p class="note-callout__title">Comment on the 4th step (Why the search is deterministic)</p>
+  <p>
+    Even though $M$ may be *nondeterministic*, the **simulation algorithm** that $M'$ runs is **deterministic** because:
+
+    1. $M'$ doesn’t “choose” among nondeterministic transitions.
+      Instead, it **enumerates them** in a *fixed, deterministic order*.
+    2. For example:
+      * Each configuration of $M$ can be represented as a finite string (encoding of the state, tape contents, and head position).
+      * $M'$ maintains a queue or stack of configurations to explore.
+      * It processes them one by one — e.g., breadth-first or depth-first search.
+    3. Whenever $M'$ encounters a configuration that has multiple possible next configurations (because $M$ is nondeterministic), it just **adds all of them** to the queue in a **predetermined order** (say, lexicographic order of configurations or transition indices).
+
+    Thus, although the *simulated machine* $M$ is nondeterministic, the *simulating machine* $M'$ follows a fully **deterministic algorithm** for enumerating and checking all branches.*
+  </p>
+</div>
+
+<!-- *Comment on the 4th step (Why the search is deterministic)* -->
+
 
 ### Computable Functions
 
@@ -222,28 +257,26 @@ Beyond recognizing languages, Turing machines can also compute functions by tran
 
 To ensure a unique output for every input, function computation is defined using only total deterministic Turing machines. The output is defined based on the content of a designated tape when the machine halts.
 
-**Definition 17:** Computable Functions  
-For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
+**Definition 17 (Computable Functions):** For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
 
 $$
 \text{out}(C) = u_k(j_k) u_k(j_k + 1) \cdots u_k(t)
 $$
 
-where $t = \max \lbrace, i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \rbrace$. If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
+where $t = \max \lbrace i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \rbrace$. If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
 
-The function $f_M$ computed by a total deterministic Turing machine $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
+The *function $f_M$ computed by a total deterministic Turing machine* $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
 
-For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is computable if it is computed by some total deterministic Turing machine.
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is *computable* if it is computed by some total deterministic Turing machine.
 
 ### Extending Computability to Other Domains
 
 The concepts of decidable sets and computable functions, defined for words, can be extended to other domains like the natural numbers through the use of representations.
 
-**Definition 18:** Decidable sets and computable functions on other domains  
-A representation of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\{\text{repr}(x) : x \in A\}$ is decidable. With respect to such a representation:
+**Definition 18 (Decidable sets and computable functions on other domains):** A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\{\text{repr}(x) : x \in A\}$ is decidable. With respect to such a representation:
 
 * a subset $X \subseteq A$ is decidable if the set $\{\text{repr}(a) : a \in X\}$ is decidable.
-* a function $f : A \to A$ is computable if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
+* a function $f : A \to A$ is *computable* if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
 
 For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\{1^n : n \text{ is prime}\}$ is decidable.
 
@@ -255,16 +288,13 @@ For example, the set of prime numbers is decidable because we can represent the 
 * In complexity theory, where computations are resource-bounded, inputs are typically binary words representing instances of a computational problem. Here, Turing machines are seen as recognizing languages or problems, both of which refer to arbitrary sets of binary words. (Note that in a general context, a "language" is any set of words over some alphabet).
 
 
-## Computability and Complexity
-
 ## Time Complexity
 
 ### Deterministic Time
 
 The analysis of algorithms and computational problems often centers on the resources they consume. One of the most critical resources is time. In the context of Turing machines, we formalize this by measuring the number of steps a machine takes to complete its computation.
 
-**Definition 21:** Running time  
-The running time of a deterministic Turing machine $M$ on input $w$ is defined as
+**Definition 21 (Running time):** The running time of a deterministic Turing machine $M$ on input $w$ is defined as
 
 $$
 \text{time}_M(w) =
@@ -278,11 +308,11 @@ where the symbol $\uparrow$ denotes that the function value is undefined (i.e., 
 
 This definition allows us to quantify the performance of a specific machine on a specific input. To create broader complexity classes, we generalize this notion to a function of the input length, defining what it means for a machine to be bounded by a certain time complexity function.
 
-**Definition 22:** Time-bounded deterministic Turing machine A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(\lvert w \rvert)$.
+**Definition 22 (Time-bounded deterministic Turing machine):** A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(\lvert w \rvert)$.
 
 The phrase "for almost all inputs" means the condition must hold for all but a finite number of inputs. This provides flexibility, allowing us to disregard a small number of exceptional cases, typically short inputs, which can be handled separately.
 
-**Remark 23 For a $t(n)$** -time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table lookup or hard-wiring.
+**Remark 23** For a $t(n)$-time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table *lookup* or *hard-wiring*.
 
 By default, time complexity is a measure of the machine's performance in the most demanding scenario for a given input length. This is known as worst-case time complexity. An alternative approach, average-case time complexity, considers the average running time over all inputs of a certain length. While potentially relevant for specific practical applications, the theory of average-case complexity is more intricate and less developed. Therefore, our focus will remain on worst-case complexity.
 
@@ -292,7 +322,7 @@ Convention 24 In the part about complexity theory, all languages are languages o
 
 Using the concept of time-bounded Turing machines, we can group languages and functions into complexity classes based on the resources required to decide or compute them.
 
-**Definition 25:** Deterministic time classes Let $t$ be a time bound.
+**Definition 25 (Deterministic time classes):** Let $t$ be a time bound.
 
 The class of languages decidable in deterministic time $t(n)$ is
 $\text{DTIME}(t(n)) = \lbrace L \subseteq \{0, 1\}^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
@@ -311,7 +341,7 @@ The notation $\text{DTIME}_k(t(n))$ is used to specify the class of languages de
 
 This framework allows us to define some of the most fundamental and widely studied complexity classes.
 
-**Definition 27:** Some deterministic time classes Using the function classes:
+**Definition 27 (Some deterministic time classes):** Using the function classes:
 
 * $\text{lin} = \lbrace n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \{0\} \rbrace$
 * $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \rbrace$
@@ -335,7 +365,7 @@ The definitions of complexity classes depend on a specific model of computation 
 
 The first theorem shows that constant factors in the running time do not change the fundamental complexity of a problem. We can always build a faster machine that solves the same problem, effectively making any constant-factor speedup possible.
 
-**Theorem 28:** Linear speedup Let $t$ be a time bound, and let $\alpha > 0$ be a real number, and let $k \ge 2$. Then it holds that
+**Theorem 28 (Linear speedup):** Linear speedup Let $t$ be a time bound, and let $\alpha > 0$ be a real number, and let $k \ge 2$. Then it holds that
 $$
 \text{DTIME}_k(t(n)) \subseteq \text{DTIME}_k(\alpha \cdot t(n) + n)
 \tag{2.1}
@@ -345,15 +375,19 @@ $$
 \text{DTIME}(t(n)) \subseteq \text{DTIME}(\alpha \cdot t(n) + n).
 \tag{2.2}
 $$
-Furthermore, every function $f$ in $\text{FTIME}(t(n))$ is in $\text{FTIME}(\alpha \cdot t(n) + n + \lvert f(n) \rvert)$. $\tag{2.3}$
+Furthermore, every function $f$ in $\text{FTIME}(t(n))$ is in 
+$$
+\text{FTIME}(\alpha \cdot t(n) + n + \lvert f(n) \rvert).
+\tag{2.3}
+$$
 
 **Proof.**: We will demonstrate the inclusion (2.1), from which (2.2) immediately follows. Given a language $L \in \text{DTIME}(t(n))$, there exists a $t(n)$-time-bounded Turing machine with some number of tapes, say $k \ge 2$, that recognizes $L$. By showing $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$, it follows that $L \in \text{DTIME}(\alpha \cdot t(n) + n)$.
 
-To prove (2.1), let $L$ be a language recognized by a $t(n)$-time-bounded $k$-tape Turing machine $M$, where $k \ge 2$. We construct a new $k$-tape machine $M'$ that simulates $M$ but runs faster. The core idea is to have $M'$ process larger chunks of data at each step.
+To prove (2.1), let $L$ be a language recognized by a $t(n)$-time-bounded $k$-tape Turing machine $M$, where $k \ge 2$. We construct a new $k$-tape machine $M'$ that simulates $M$ (recognize the same language $L$), but runs faster. The core idea is to have $M'$ process larger chunks of data at each step.
 
-Each symbol in the tape alphabet of $M'$ will represent a block of d symbols from the tape alphabet of $M$, where $d$ is a constant we will choose later.
+Each symbol in the tape alphabet of $M'$ will represent a block of $d$ symbols from the tape alphabet of $M$, where $d$ is a constant we will choose later.
 
-#### The computation of $M'$ proceeds in two phases:
+##### The computation of $M'$ proceeds in two phases:
 
 1. Initialization Phase:
   * $M'$ translates its input from $M$'s alphabet $\Sigma$ to its own compressed alphabet $\Sigma'$.
@@ -362,15 +396,42 @@ Each symbol in the tape alphabet of $M'$ will represent a block of d symbols fro
   * Finally, it positions the head of the second tape at the beginning of the compressed input.
   * This phase takes $n + \lceil n/d \rceil + 2$ steps. After this, $M'$ will simulate $M$, treating its second tape as the primary input tape.
 2. Simulation Phase:
-  * $M'$ simulates $d$ steps of $M$ using just $7$ of its own steps. To do this, $M'$ uses its finite control (its state) to store key information about $M$'s current configuration: $M$'s current state, and for each tape, the head position of $M$ within the larger macro-symbol that $M$' is currently scanning.
+  * $M'$ simulates $d$ steps of $M$ using just $7$ of its own steps. To do this, $M'$ uses its finite control (its state) to store key information about $M$'s current configuration: $M$'s current state, and for each tape, the head position of $M$ within the larger macro-symbol that $M'$ is currently scanning.
   * In each simulation cycle, $M'$ needs to know the contents of the cells $M$'s heads are on, as well as the adjacent cells, to determine $M$'s next $d$ moves. A "relevant" cell for $M'$ is one that is currently scanned or is immediately to its left or right.
   * $M'$ first reads all symbols on its relevant cells by moving one step left and two steps right ($3$ steps total), storing this information in its state.
   * With the complete local information ($M$'s state, head positions, and relevant cell contents), $M'$ can determine the outcome of the next $d$ steps of $M$. Since $d$ is a constant, all possible outcomes can be pre-computed and stored in $M'$'s transition function (a finite table lookup). This information includes $M$'s new state, the new content of the relevant cells, and the new head positions.
-  * $M'$ then uses another $4$ steps to update its tape cells and move its heads to the new positions corresponding to $M'$s configuration after d steps.
+  * $M'$ then uses another $4$ steps to update its tape cells and move its heads to the new positions corresponding to $M'$s configuration after $d$ steps.
 
 Timing Analysis: The initialization takes $n + \lceil n/d \rceil + 2$ steps. The simulation of $M$ takes at most $t(n)$ steps. Since $M'$ simulates $d$ steps of $M$ in $7$ steps, this phase requires at most $7 \lceil t(n)/d \rceil + 7$ steps.
 
 The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $\frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$.
+
+<div class="note-callout">
+  <p class="note-callout__title">Comment on the simulation phase (Why to scan left/right cells and Why is $M'$ deterministic)</p>
+  <p>
+    We compress $M$’s tape into **blocks of $d$ symbols**, so $M'$ sees one **macro-cell** per block. In the next $d$ *real* steps of $M$:
+
+    * Each head can move at most $d$ squares.
+    * Starting anywhere inside the current block, after $d$ moves the head can only be in **the same block** or **one of its immediate neighbors** (it can’t skip two blocks).
+    * Moreover, $M$ can **read and write** anywhere it visits during those $d$ moves. That set of positions is contained within **the current block plus at most one block to the left and one to the right**.
+
+
+    $M$ is **deterministic**. So if we know:
+
+    * $M$’s **current state**,
+    * for each tape: the **head’s offset** inside its current block,
+    * for each tape: the **contents** of the three relevant macro-cells (left, current, right),
+
+    then the next $d$ moves of $M$ are **completely determined** by its transition function. There are only **finitely many** possibilities for that local information (finite state set, finite alphabet, fixed $d$, finite offsets $0,\dots,d-1$), so $M'$ can precompute a **macro-transition table**:
+
+    $$
+    \text{(state, offsets, 3-block contents per tape)} ;\longmapsto; \text{(new state, updated 3-block contents, new offsets, which block is current)}
+    $$
+
+    During simulation, $M'$ just **table-looks-up** the outcome and then writes the updated macro-cells and moves its heads accordingly—this is why simulating $d$ steps costs $O(1)$ steps for $M'$
+
+  </p>
+</div>
 
 #### Alphabet Reduction
 
@@ -424,7 +485,7 @@ The concept of time complexity can be extended from deterministic to nondetermin
 
 When analyzing the time complexity of a nondeterministic machine, we consider the length of the longest possible computation path.
 
-**Definition 32: Nondeterministic time classes Let t be a time bound. A Turing machine M is t(n)** -time bounded if M is total (all computation paths halt) and for almost all inputs w, all computations of M have length at most t(|w|). The class of languages decidable in nondeterministic time t(n) is:  $\text{NTIME}$(t(n)) = {L $\subseteq$ {0, 1}^* : L = L(M) $\text{ for a }$ t(n)$\text{-time bounded Turing machine }$ M}.
+**Definition 32: Nondeterministic time classes Let t be a time bound. A Turing machine M is t(n)** -time bounded if M is total (all computation paths halt) and for almost all inputs w, all computations of M have length at most t(|w|). The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}$(t(n)) = {L $\subseteq$ {0, 1}^* : L = L(M) $\text{ for a }$ t(n)$\text{-time bounded Turing machine }$ M}.
 
 **Remark 34 In the literature, one also finds a variant of the notion t(n)** -time bounded Turing machine where the length bound t(|w|) is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds t with t(n) $\ge$ 2n, the alternative definition is essentially equivalent to the one presented here. Here a function t is time-constructible if the function 1^n $\mapsto$ 1^{t(n)} can be computed in time t(n). For such t, it is possible to equip a Turing machine that is t(n)-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after t(n) steps on all computations such that the recognized language remains the same and the clocked Turing machine is t(n)-time bounded according to Definition 32.
 
@@ -634,16 +695,16 @@ Let $A$ be any language in NP. We will construct a function $g : x \mapsto \phi_
 
 Since $A \in \text{NP}$, there exists a nondeterministic Turing machine (NTM) $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ and a polynomial $p$ such that $M$ recognizes $A$ within a time bound of $p(n)$, where $n$ is the input length. For simplicity, we can assume $M$ has only a single tape. Any multi-tape NTM can be converted to an equivalent single-tape NTM with only a polynomial increase in runtime, similar to the tape reduction construction in Theorem 30.
 
-Given an input x of length n, our goal is to construct a formula $\phi_x$ that is satisfiable if and only if M accepts x. The formula will essentially describe the behavior of M on input x. A satisfying assignment for $\phi_x$ will correspond directly to an accepting computation of M on x.
+Given an input $x$ of length $n$, our goal is to construct a formula $\phi_x$ that is satisfiable if and only if $M$ accepts $x$. The formula will essentially describe the behavior of $M$ on input $x$. A satisfying assignment for $\phi_x$ will correspond directly to an accepting computation of $M$ on $x$.
 
-An accepting computation is a sequence of configurations, starting with the initial configuration for input x and ending in an accepting configuration. The length of this sequence is at most p(n) + 1. We will formalize a sequence of exactly p(n)+1 configurations, repeating the final configuration if the computation halts early. The formula $\phi_x$ will encode the rules of M's transition relation, $\Delta$, to ensure that each configuration in the sequence legally follows from the previous one.
+An accepting computation is a sequence of configurations, starting with the initial configuration for input $x$ and ending in an accepting configuration. The length of this sequence is at most $p(n) + 1$. We will formalize a sequence of exactly $p(n)+1$ configurations, repeating the final configuration if the computation halts early. The formula $\phi_x$ will encode the rules of $M$'s transition relation, $\Delta$, to ensure that each configuration in the sequence legally follows from the previous one.
 
 #### The overall structure of the proof is as follows:
 
-1. If M accepts x, there exists a valid sequence of configurations representing an accepting computation. This sequence will directly provide a satisfying assignment for the variables in $\phi_x$.
-2. Conversely, if $\phi_x$ is satisfiable, any satisfying assignment can be used to decode a valid, accepting computation of M on input x.
+1. If $M$ accepts $x$, there exists a valid sequence of configurations representing an accepting computation. This sequence will directly provide a satisfying assignment for the variables in $\phi_x$.
+2. Conversely, if $\phi_x$ is satisfiable, any satisfying assignment can be used to decode a valid, accepting computation of M on input $x$.
 3. The formula $\phi_x$ will be a conjunction of subformulas, each of which can be expressed in CNF. Therefore, $\phi_x$ itself can be written in CNF.
-4. The construction of $\phi_x$ can be carried out in polynomial time with respect to n = |x|, because the number and size of the subformulas are polynomially bounded in n.
+4. The construction of $\phi_x$ can be carried out in polynomial time with respect to $n = \lvert x \rvert$, because the number and size of the subformulas are polynomially bounded in n.
 
 Together, these points establish that $A \le_p^m \text{SAT}$, proving that SAT is NP-hard.
 
@@ -661,11 +722,11 @@ A computation of M on input x is a sequence of configurations over p(n)+1 time s
 
 #### We define index sets to refer to time steps, tape cells, states, and nondeterministic choices:
 
-* Time steps: I = $\{0, 1, $\dots$, p(n)\}$
-* Tape cells: J = $\{-p(n)+1, $\dots$, p(n)+1\}$ (covers all cells the head can possibly reach)
-* States: K = $\{1, $\dots$, t\}$, where t = |Q| and Q=$\{q_1, $\dots$, q_t\}$
-* Instructions/Choices: L = $\{0, 1, $\dots$, d\}$, where d is the number of instructions in $\Delta$. The index 0 represents the "choice" of repeating a halting configuration.
-* We also define $I^- = I \setminus \{p(n)\}$ and $L^- = L \setminus \{0\}$.
+* Time steps: $I = \lbrace 0,1, \dots, p(n) \rbrace$
+* Tape cells: $J = \lbrace -p(n)+1, \dots, p(n)+1 \rbrace$ (covers all cells the head can possibly reach)
+* States: $K = \lbrace 0 1, \dots, t \rbrace$, where $t = \lvert Q \rvert$ and $Q= \lbrace q_1, \dots, q_t \rbrace$
+* Instructions/Choices: $L = \lbrace 0, 1, \dots, d \rbrace$, where $d$ is the number of instructions in $\Delta$. The index $0$ represents the "choice" of repeating a halting configuration.
+* We also define $I^- = I \setminus \lbrace p(n) \rbrace$ and $L^- = L \setminus \lbrace 0 \rbrace$.
 
 We introduce the following propositional variables to describe the computation. The intended meaning of each variable being true is given below:
 
@@ -699,37 +760,37 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
 
 The full formula $\phi_x$ is the conjunction of all subformulas (2.4) through (2.18). Every accepting computation of M on input x defines a satisfying assignment for the variables in $\phi_x$. Conversely, any satisfying assignment for $\phi_x$ encodes a valid sequence of configurations. The values of the A_{i,$\ell$} variables determine which instruction is executed at each step. Starting from the initial configuration (enforced by 2.4), one can inductively determine the entire sequence of configurations. The subformulas ensure this sequence represents a valid computation that eventually reaches an accepting state.
 
-Thus, x $\in$ A if and only if $\phi_x$ is satisfiable. This completes the proof of Theorem 52. ∎
+Thus, $x \in A$ if and only if $\phi_x$ is satisfiable. This completes the proof of Theorem 52. ∎
 
-k-SAT is NP-Complete for k $\ge$ 3
+$\text{k-SAT}$ is $NP$-Complete for $k \ge 3$
 
-Building on Cook's Theorem, we can show that variants of SAT are also NP-complete.
+Building on Cook's Theorem, we can show that variants of $\text{SAT}$ are also $NP$-complete.
 
-**Corollary 53:** For all k $\ge$ 3, the language k-SAT is NP-complete.
+**Corollary 53:** For all $k \ge 3$, the language $\text{k-SAT}$ is $NP$-complete.
 
-**Proof.**: As established in Remark 51, all k-SAT languages are in NP. We need to show they are NP-hard for k $\ge$ 3. We will demonstrate this for the case k=3. The result for k>3 follows because 3-SAT can be easily p-m-reduced to k-SAT (by padding clauses with dummy variables, or more simply, noting that any instance of 3-SAT is already an instance of k-SAT for k > 3).
+**Proof.**: As established in Remark 51, all $\text{k-SAT}$ languages are in $NP$. We need to show they are $NP$-hard for $k \ge 3$. We will demonstrate this for the case $k=3$. The result for $k > 3$ follows because $\text{3-SAT}$ can be easily $p$-$m$-reduced to $\text{k-SAT}$ (by padding clauses with dummy variables, or more simply, noting that any instance of $\text{3-SAT}$ is already an instance of $\text{k-SAT}$ for $k > 3$).
 
-To show that 3-SAT is NP-hard, we use the transitivity of p-m-reducibility. By Cook's Theorem, SAT is NP-hard. Therefore, if we can show that $\text{SAT} \le_p^m \text{3-SAT}$, it follows that 3-SAT is also NP-hard.
+To show that $\text{3-SAT}$ is $NP$-hard, we use the transitivity of $p$-$m$-reducibility. By Cook's Theorem, $\text{SAT}$ is $NP$-hard. Therefore, if we can show that $\text{SAT} \le_p^m \text{3-SAT}$, it follows that $\text{3-SAT}$ is also $NP$-hard.
 
 We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi'$ such that $\phi \in \text{SAT}$ if and only if $\phi' \in \text{3-SAT}$.
 
 Let $\phi$ be a given propositional formula.
 
-* If $\phi$ is not in CNF, it cannot be in SAT. In this case, we map it to a fixed, unsatisfiable 3-CNF formula (e.g., (X) $\land$ ($\neg$ X)).
-* If $\phi$ is in CNF, it has the form $\phi$ $\equiv$ C_1 $\land$ C_2 $\land$ $\dots$ $\land$ C_m, where each C_i is a clause. The formula $\phi$' is obtained by replacing each clause C_i in $\phi$ with a new set of clauses $\kappa_i$, constructed as follows.
+* If $\phi$ is not in CNF, it cannot be in $\text{SAT}$. In this case, we map it to a fixed, unsatisfiable $3$-CNF formula (e.g., $(X) \land (\neg X)$).
+* If $\phi$ is in CNF, it has the form $\phi \equiv C_1 \land C_2 \land \dots \land C_m$, where each $C_i$ is a clause. The formula $\phi$' is obtained by replacing each clause $C_i$ in $\phi$ with a new set of clauses $\kappa_i$, constructed as follows.
 
-Let a clause C_i be (L_1^i $\lor$ L_2^i $\lor$ $\dots$ $\lor$ L_{k_i}^i), where L_j^i are literals.
+Let a clause $C_i$ be $(L_1^i \lor L_2^i \lor \dots \lor L_{k_i}^i)$, where $L_j^i$ are literals.
 
-* If k_i $\le$ 3, the clause is already in 3-CNF form, so we can let $\kappa_i$ $\equiv$ C_i.
-* If k_i > 3, we replace C_i with a conjunction of new clauses that collectively are satisfiable if and only if C_i is. We introduce k_i - 3 new, unique variables Z_1^i, Z_2^i, $\dots$, Z_{k_i-3}^i. The replacement formula $\kappa_i$ is:  (L_1^i $\lor$ L_2^i $\lor$ Z_1^i) $\land$ ($\neg$ Z_1^i $\lor$ L_3^i $\lor$ Z_2^i) $\land$ $\dots$ $\land$ ($\neg$ Z_{k_i-2}^i $\lor$ L_{k_i-1}^i $\lor$ Z_{k_i-1}^i) $\land$ ($\neg$ Z_{k_i-1}^i $\lor$ L_{k_i}^i)  (The source document presents a slightly different but equivalent construction, which we will analyze): Let C_i = (L_1^i $\lor$ $\dots$ $\lor$ L_{k_i}^i). We introduce k_i-1 new variables Z_1^i, $\dots$, Z_{k_i-1}^i. The clause C_i is replaced by $\kappa_i$:  $\kappa_i$ $\equiv$ (L_1^i $\lor$ Z_1^i) $\land$ $\left$( $\bigwedge_{j=2}^{k_i-1}$ ($\neg$ Z_{j-1}^i $\lor$ L_j^i $\lor$ Z_j^i) $\right$) $\land$ ($\neg$ Z_{k_i-1}^i $\lor$ L_{k_i}^i)  The final formula is $\phi$' = $\kappa_1$ $\land$ $\kappa_2$ $\land$ $\dots$ $\land$ $\kappa_m$. This transformation introduces a polynomial number of new variables and clauses and is computable in polynomial time.
+* If $k_i \le 3$, the clause is already in $3$-CNF form, so we can let $\kappa_i \equiv C_i$.
+* If $k_i > 3$, we replace $C_i$ with a conjunction of new clauses that collectively are satisfiable if and only if $C_i$ is. We introduce $k_i - 3$ new, unique variables $Z_1^i, Z_2^i, \dots, Z_{k_i-3}^i$. The replacement formula $\kappa_i$ is:  $(L_1^i \lor L_2^i \lor Z_1^i) \land (\neg Z_1^i \lor L_3^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-2}^i \lor L_{k_i-1}^i \lor Z_{k_i-1}^i) \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$  (The source document presents a slightly different but equivalent construction, which we will analyze): Let $C_i = (L_1^i \lor \dots \lor L_{k_i}^i)$. We introduce $k_i-1$ new variables $Z_1^i, \dots, Z_{k_i-1}^i$. The clause $C_i$ is replaced by $\kappa_i$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) land \left( \bigwedge_{j=2}^{k_i-1} (\neg Z_{j-1}^i \lor L_j^i \lor Z_j^i) \right) \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$  The final formula is $\phi' = \kappa_1 \land \kappa_2 \land \dots \land \kappa_m$. This transformation introduces a polynomial number of new variables and clauses and is computable in polynomial time.
 
 Now, we must show that $\phi$ is satisfiable if and only if $\phi$' is satisfiable.
 
-($\Rightarrow$) Assume $\phi$ is satisfiable. Let b be a satisfying assignment for $\phi$. For each clause C_i = (L_1^i $\lor$ $\dots$ $\lor$ L_{k_i}^i) in $\phi$, at least one literal must be true under b. Let t_i be the index of the first true literal in C_i. We can extend the assignment b to the new variables Z_j^i as follows:
+($\Rightarrow$) Assume $\phi$ is satisfiable. Let b be a satisfying assignment for $\phi$. For each clause $C_i = (L_1^i \lor \dots \lor L_{k_i}^i)$ in $\phi$, at least one literal must be true under $b$. Let $t_i$ be the index of the first true literal in $C_i$. We can extend the assignment $b$ to the new variables $Z_j^i$ as follows:
 
-* Set Z_j^i to true for all j < t_i.
-* Set Z_j^i to false for all j $\ge$ t_i. Under this extended assignment, every clause in every $\kappa_i$ becomes true, thus satisfying $\phi$'.
+* Set $Z_j^i$ to true for all $j < t_i$.
+* Set $Z_j^i$ to false for all $j \ge t_i$. Under this extended assignment, every clause in every $\kappa_i$ becomes true, thus satisfying $\phi$'.
 
-($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi$' must also be unsatisfiable. Let b be an arbitrary assignment for the variables in $\phi$'. Since $\phi$ is unsatisfiable, under the restriction of b to the original variables, at least one clause C_i in $\phi$ must be false. This means all literals L_1^i, $\dots$, L_{k_i}^i are false. Now consider the corresponding formula $\kappa_i$ under assignment b:  $\kappa_i$ $\equiv$ (L_1^i $\lor$ Z_1^i) $\land$ ($\neg$ Z_1^i $\lor$ L_2^i $\lor$ Z_2^i) $\land$ $\dots$ $\land$ ($\neg$ Z_{k_i-1}^i $\lor$ L_{k_i}^i)  Since L_1^i is false, the first clause (L_1^i $\lor$ Z_1^i) implies that Z_1^i must be true to satisfy $\kappa_i$. Now consider the second clause ($\neg$ Z_1^i $\lor$ L_2^i $\lor$ Z_2^i). Since Z_1^i is true and L_2^i is false, this clause implies Z_2^i must be true. Propagating this logic forward, we find that for $\kappa_i$ to be true, Z_1^i, Z_2^i, $\dots$, Z_{k_i-1}^i must all be true. However, the final clause is ($\neg$ Z_{k_i-1}^i $\lor$ L_{k_i}^i). Since Z_{k_i-1}^i must be true and L_{k_i}^i is false, this final clause evaluates to false. Therefore, $\kappa_i$ is false. Since $\phi$' is a conjunction containing $\kappa_i$, $\phi$' is also false. As b was an arbitrary assignment, this shows that $\phi$' is unsatisfiable.
+($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi$' must also be unsatisfiable. Let $b$ be an arbitrary assignment for the variables in $\phi$'. Since $\phi$ is unsatisfiable, under the restriction of $b$ to the original variables, at least one clause $C_i$ in $\phi$ must be false. This means all literals $L_1^i$, $\dots$, L_{k_i}^i are false. Now consider the corresponding formula $\kappa_i$ under assignment $b$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) \land (\neg Z_1^i \lor L_2^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$.  Since $L_1^i$ is false, the first clause $(L_1^i \lor Z_1^i)$ implies that $Z_1^i$ must be true to satisfy $\kappa_i$. Now consider the second clause $(\neg Z_1^i \lor L_2^i \lor Z_2^i)$. Since $Z_1^i$ is true and $L_2^i$ is false, this clause implies $Z_2^i$ must be true. Propagating this logic forward, we find that for $\kappa_i$ to be true, $Z_1^i, Z_2^i, \dots, Z_{k_i-1}^i$ must all be true. However, the final clause is $(\neg Z_{k_i-1}^i \lor L_{k_i}^i)$. Since $Z_{k_i-1}^i$ must be true and $L_{k_i}^i$ is false, this final clause evaluates to false. Therefore, $\kappa_i$ is false. Since $\phi$' is a conjunction containing $\kappa_i$, $\phi$' is also false. As $b$ was an arbitrary assignment, this shows that $\phi$' is unsatisfiable.
 
 Thus, we have shown that $\text{SAT}$ $\le_p^m$ $\text{3-SAT}$, which completes the proof. ∎
