@@ -258,7 +258,7 @@ $$
 
 MLE selects the parameter values that make the observed data most probable under the assumed parametric model.
 
-Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn from a model with density $p(x \mid \theta)$ ($X \sim P_(\Theta)^{(N)}$).
+Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn from a model with density $p(x \mid \theta)$ ($X \sim P(\Theta)^{(N)}$).
 
 * **Likelihood Function:** The joint density of the observed data, viewed as a function of the parameter $\theta$:
   $\mathcal{L}(\theta \mid X) = p(x_1, \dots, x_N \mid \theta).$
@@ -274,8 +274,13 @@ Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn f
   * **Log-Likelihood:**
     $\ell(\mu \mid X) = \log \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(X_i-\mu)^2}{2\sigma^2}\right) = \sum_{i=1}^N \left( -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(X_i-\mu)^2}{2\sigma^2} \right).$
   * **Maximization:** Differentiate with respect to $\mu$ and set to zero.
+    * $\displaystyle \frac{\partial \ell}{\partial \mu} = \sum_{i=1}^N \frac{X_i-\mu}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^N (X_i-\mu) = 0$
+    * $\displaystyle \sum_{i=1}^N X_i - N\mu = 0 \implies \hat{\mu}_{\text{MLE}} = \frac{1}{N} \sum_{i=1}^N X_i.$
+  
     * $\frac{\partial \ell}{\partial \mu} = \sum_{i=1}^N \frac{X_i-\mu}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^N (X_i-\mu) = 0$
     * $\sum_i X_i - N\mu = 0 \implies \hat{\mu}_{MLE} = \frac{1}{N} \sum_{i=1}^N X_i$.
+
+  
   * For this model, the MLE and LS estimates for the mean coincide.
 
 #### 2.3.3 Bayesian Inference (BI)
