@@ -97,43 +97,41 @@ This model is a near-perfect incarnation of the Bulk-Synchronous Parallel (BSP) 
 2. Communicate: Processors exchange necessary data.
 3. Synchronize: A barrier synchronization ensures all processors have completed the step before moving to the next.
 
-A key concept in this model is parallel slackness, which refers to having many more virtual processors (threads) than physical processors. This slackness ($v >> p$) is precisely what GPUs leverage to hide memory latency and schedule computation efficiently.
+A key concept in this model is parallel slackness, which refers to having many more virtual processors (threads) than physical processors. This slackness ($v ≫ p$) is precisely what GPUs leverage to hide memory latency and schedule computation efficiently.
 
 > GPUs hide long memory latencies by running many more independent threads ($v$) than they have execution lanes/pipelines ($p$). When some threads stall on memory, the hardware instantly swaps to other ready threads—so the lanes stay busy. That “excess” of runnable work over hardware lanes is the slackness $v ≫ p$.
 
-### Summary: The GPU Computing Paradigm
+## CUDA
 
-GPU computing represents a fundamental shift in how we approach high-performance computation. It is not a replacement for the CPU but a powerful co-processor for massively parallel tasks.
+### CUDA and GPU Overview
 
-
-## 1.1 Why Use a GPU? CPU vs. GPU Architectures
-
-At first glance, CPUs and GPUs are both processors built from silicon. However, their internal architectures are designed to solve problems in fundamentally different ways. A CPU is a master of latency-sensitive tasks, designed to execute a single sequence of instructions (a thread) as quickly as possible. A GPU, in contrast, is a master of throughput-sensitive tasks, designed to execute thousands of parallel threads simultaneously.
-
-This design philosophy is visible in their physical layouts, or "die shots."
-
-- A CPU die is typically composed of a small number of very powerful, complex cores. A significant portion of the silicon is dedicated to sophisticated control logic and large caches to minimize the time it takes to fetch data and instructions, thereby reducing latency for a single task.
-- A GPU die is packed with hundreds or even thousands of smaller, simpler cores. Less silicon is devoted to complex control logic and large caches; instead, the architecture prioritizes raw computational units to maximize throughput—the total number of calculations performed across the entire chip per second.
-
-### System-Level Integration and Performance
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/cpu-gpu-diagram.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+    <figcaption>CPU + GPU System</figcaption>
+  </figure>
+</div>
 
 In a typical computer system, the CPU and GPU are distinct components with their own dedicated memory systems, connected via an I/O bridge.
 
 A diagram of a modern system illustrates this separation: The CPU is connected to its Host Memory (system RAM) through a high-speed memory interface. The GPU, a separate component on the peripheral bus (like PCIe), is connected to its own dedicated, high-bandwidth GPU Memory.
 
-The performance differences, particularly in memory bandwidth and computational throughput, are staggering. Consider a comparison between a high-end server CPU and a data center GPU:
+The performance differences, particularly in memory bandwidth and computational throughput, are staggering. The GPU's memory bandwidth can be over 7 times higher than the CPU's, and its computational throughput can be an order of magnitude greater. This massive throughput is precisely what we aim to leverage with GPU computing. The CUDA (Compute Unified Device Architecture) platform allows us to use this power not just for graphics, but for general-purpose computing tasks.
 
-| Component | Metric | Performance |
-| --- | --- | --- |
-| CPU (e.g., AMD EPYC 9754) | Host Memory Bandwidth | ~460 GB/s |
-| CPU (e.g., AMD EPYC 9754) | Double Precision (DP) TFLOP/s | ~6 TFLOP/s |
-| GPU (e.g., NVIDIA H100) | GPU Memory Bandwidth | ~3.3 TB/s |
-| GPU (e.g., NVIDIA H100) | Double Precision (DP) TFLOP/s | ~34-67 TFLOP/s |
-| GPU (e.g., NVIDIA H100) | Single Precision (SP) TFLOP/s | ~67-490 TFLOP/s |
 
-The GPU's memory bandwidth can be over 7 times higher than the CPU's, and its computational throughput can be an order of magnitude greater. This massive throughput is precisely what we aim to leverage with GPU computing. The CUDA (Compute Unified Device Architecture) platform allows us to use this power not just for graphics, but for general-purpose computing tasks.
 
-## 1.2 The GPU Architecture for General-Purpose Computing
+#### The GPU Architecture for General-Purpose Computing
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/gpu-graphics.png' | relative_url }}" alt="G80 Architecture for graphics processing" loading="lazy">
+    <figcaption>G80 Architecture for graphics processing</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/gpu-general.png' | relative_url }}" alt="G80 Architecture for general-purpose processing" loading="lazy">
+    <figcaption>G80 Architecture for general-purpose processing</figcaption>
+  </figure>
+</div>
 
 While originally designed for the graphics pipeline (processing vertices, pixels, etc.), the architecture of GPUs has been generalized for computation. The NVIDIA G80 architecture was a pivotal step in this evolution.
 
@@ -147,13 +145,11 @@ A Streaming Multiprocessor (SM) is the fundamental processing unit of a CUDA-cap
 
 All SMs on the GPU can access a large, shared Global Memory through a system of parallel data caches. The host CPU initiates data transfers to and from this Global Memory to set up computations and retrieve results. This load/store architecture, where data is explicitly moved between different memory spaces, is a central concept in GPU programming.
 
----
+### CUDA Programming
 
-# Chapter 2: Introduction to CUDA Programming
+CUDA is an extension of the C programming language created by NVIDIA that exposes the GPU's parallel architecture directly to the developer.
 
-Now that we understand the hardware philosophy behind GPUs, let's explore how to program them. CUDA is an extension of the C programming language created by NVIDIA that exposes the GPU's parallel architecture directly to the developer.
-
-## 2.1 The CUDA Programming Model
+#### The CUDA Programming Model
 
 A CUDA program is a hybrid program consisting of two parts: a host part that runs on the CPU and a device part that runs on the GPU.
 
