@@ -133,7 +133,7 @@ A computation unfolds as a sequence of configurations, where each transition fro
   u'_i =
   \begin{cases}
     \square \tilde{u}_i & \text{if } Z_i = L \text{ and } j_i = 1, \\
-    \tilde{u}_i \square & \text{if } Z_i = R \text{ and } j_i = |u_i|, \\
+    \tilde{u}_i \square & \text{if } Z_i = R \text{ and } j_i = \lvert u_i \rvert, \\
     \tilde{u}_i & \text{otherwise},
   \end{cases}
   $$
@@ -462,32 +462,32 @@ Conceptually, the tape of M' is partitioned into 2k tracks. Each cell on the tap
 
 #### The simulation proceeds as follows:
 
-1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of M. This involves writing w onto the first track and placing head markers (*) at the beginning of all head-position tracks.
+1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of $M$. This involves writing w onto the first track and placing head markers $(*)$ at the beginning of all head-position tracks.
 2. Simulation of a Single Step: To simulate one step of M, M' performs a subroutine:
   * (i) Scan and Read: M' sweeps its single head across the entire active portion of its tape to find the k head markers (*). As it passes each marker, it notes the corresponding tape symbol from the content track and stores all k symbols in its state.
-  * (ii) Update and Write: After collecting all necessary information, M' knows what transition M will make. It then performs a second sweep across the tape to update the tape contents and move the head markers (*) one position left or right, as dictated by M's transition function. It also updates the state of M, which is stored in its own finite control.
+  * (ii) Update and Write: After collecting all necessary information, M' knows what transition M will make. It then performs a second sweep across the tape to update the tape contents and move the head markers $(*)$ one position left or right, as dictated by M's transition function. It also updates the state of M, which is stored in its own finite control.
 
 Timing Analysis: The machine M runs for at most t(n) steps. This means that on any of its tapes, it can access at most t(n) cells to the left and t(n) cells to the right of the starting position. Therefore, the active portion of M''s tape has a length of at most 2t(n)+1.
 
-Each simulation of a single step of M requires M' to make two full passes over this active portion. The time required for this is proportional to the length of the active tape, which is O(t(n)). So, simulating one step of M takes at most d $\cdot$ t(n) steps for M', for some constant d.
+Each simulation of a single step of $M$ requires $M'$ to make two full passes over this active portion. The time required for this is proportional to the length of the active tape, which is $O(t(n))$. So, simulating one step of $M$ takes at most $d \cdot t(n)$ steps for $M'$, for some constant $d$.
 
-Since M makes at most t(n) steps in total, the entire simulation on M' requires at most t(n) $\times$ (d $\cdot$ t(n)) = d $\cdot$ t^2(n) steps. Thus, M' runs in time O(t^2(n)).
+Since M makes at most $t(n)$ steps in total, the entire simulation on $M'$ requires at most $t(n) \times (d \cdot t(n)) = d \cdot t^2(n)$ steps. Thus, $M'$ runs in time $O(t^2(n))$.
 
 #### On the Requirement for Time Bounds
 
-**Remark 31: By definition, a time bound $t$ must satisfy $t(n)$** $\ge n$. The latter requirement indeed makes sense because for other t, a t(n)-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let t be a function where t(n) < n for infinitely many n. Let M be a Turing machine that is t(n)-bounded in the sense that for almost all n or, equivalently, for some n_0 and all n $\ge$ n_0, on inputs of length n, the running time of M is at most t(n). Pick n_1 $\ge$ n_0 such that t(n_1) < n_1. Then on all inputs of length greater than n_1, M reads at most the first n_1 symbols of its input. For a proof by contradiction, assume there is a word w of length |w| > n_1 such that M on input w reads at least the first n_1 + 1 symbols of its input. Let u be the prefix of w of length n_1. Then M scans on input u at least n_1 + 1 cells of its input tape, hence makes at least n_1 > t(n_1) = t(|u|) steps, which contradicts the choice of n_0 and n_1.
+**Remark 31: By definition, a time bound $t$ must satisfy $t(n)$** $\ge n$. The latter requirement indeed makes sense because for other t, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length n_1. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
 
 ### Nondeterministic Time Complexity
 
 ### Nondeterministic Time-Bounded Turing Machines
 
-The concept of time complexity can be extended from deterministic to nondeterministic Turing machines. A nondeterministic Turing machine may have multiple possible transitions from a given configuration, leading to a tree of possible computations. A word w is accepted if at least one of these computational paths leads to an accepting state.
+The concept of time complexity can be extended from deterministic to nondeterministic Turing machines. A nondeterministic Turing machine may have multiple possible transitions from a given configuration, leading to a tree of possible computations. A word $w$ is accepted if at least one of these computational paths leads to an accepting state.
 
 When analyzing the time complexity of a nondeterministic machine, we consider the length of the longest possible computation path.
 
-**Definition 32: Nondeterministic time classes Let t be a time bound. A Turing machine M is t(n)** -time bounded if M is total (all computation paths halt) and for almost all inputs w, all computations of M have length at most t(|w|). The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}$(t(n)) = {L $\subseteq$ {0, 1}^* : L = L(M) $\text{ for a }$ t(n)$\text{-time bounded Turing machine }$ M}.
+**Definition 32 (Nondeterministic time classes):** Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, all computations of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq {0, 1}^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
 
-**Remark 34 In the literature, one also finds a variant of the notion t(n)** -time bounded Turing machine where the length bound t(|w|) is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds t with t(n) $\ge$ 2n, the alternative definition is essentially equivalent to the one presented here. Here a function t is time-constructible if the function 1^n $\mapsto$ 1^{t(n)} can be computed in time t(n). For such t, it is possible to equip a Turing machine that is t(n)-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after t(n) steps on all computations such that the recognized language remains the same and the clocked Turing machine is t(n)-time bounded according to Definition 32.
+**Remark 34** In the literature, one also finds a variant of the notion $t(n)$-time bounded Turing machine where the length bound $t(\lvert w \rvert)$ is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds $t$ with $t(n) \ge 2n$, the alternative definition is essentially equivalent to the one presented here. Here a function $t$ is time-constructible if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $t(n)$. For such $t$, it is possible to equip a Turing machine that is $t(n)$-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after $t(n)$ steps on all computations such that the recognized language remains the same and the clocked Turing machine is $t(n)$-time bounded according to Definition 32.
 
 ### Nondeterministic Time Complexity Classes
 
@@ -499,13 +499,13 @@ Similar to the deterministic case, we can define major complexity classes based 
 * $\text{NE} = \text{NTIME}(2^{\text{lin}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{c n + c})$
 * $\text{NEXP} = \text{NTIME}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{n^c + c})$
 
-We refer, for example, to NP as the class of problems decidable in nondeterministic polynomial time and to NE as the class of problems decidable in nondeterministic linear exponential time.
+We refer, for example, to $NP$ as the class of problems decidable in nondeterministic polynomial time and to NE as the class of problems decidable in nondeterministic linear exponential time.
 
-### Reducibility and NP-Completeness
+### Reducibility and $NP$-Completeness
 
 ### Polynomial-Time Many-One Reducibility
 
-To compare the relative difficulty of problems, we use the concept of reduction. A reduction is a way to solve one problem using an algorithm for another. If problem A can be reduced to problem B, it means that A is "no harder than" B.
+To compare the relative difficulty of problems, we use the concept of reduction. A reduction is a way to solve one problem using an algorithm for another. If problem $A$ can be reduced to problem $B$, it means that $A$ is "no harder than" $B$.
 
 **Definition 35** A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \{0, 1\}^*$ it holds that $x \in A \iff g(x) \in B$.
 
@@ -515,11 +515,11 @@ This type of reduction, often called a p-m-reduction or Karp reduction, acts as 
 
 Complexity classes often exhibit closure properties with respect to reductions.
 
-**Definition 36** A set of languages is closed downward under p-m-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under p-m-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
+**Definition 36** A set of languages is closed downward under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
 
-Many important complexity classes, such as P and NP, are closed downward. This means that if a problem B is in the class, any problem that is polynomially reducible to B is also in that class.
+Many important complexity classes, such as $P$ and $NP$, are closed downward. This means that if a problem $B$ is in the class, any problem that is polynomially reducible to $B$ is also in that class.
 
-**Proposition 37:** Downward closure of P and NP under p-m-reducibility Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
+**Proposition 37:** Downward closure of $P$ and $NP$ under $p$-$m$-reducibility Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
 
 * $B \in \text{P}$ implies $A \in \text{P}$,
 * $B \in \text{NP}$ implies $A \in \text{NP}$.
@@ -533,11 +533,11 @@ These implications are logically equivalent to their contrapositions, i.e., to:
 
 We can construct a deterministic Turing machine M_A to decide A as follows:
 
-1. On input x, M_A first runs M_g to compute g(x). This takes p_g(|x|) time. The length of the output g(x) is at most p_g(|x|).
-2. Next, M_A simulates M_B on the input g(x). This takes p_B(|g(x)|) $\le$ p_B(p_g(|x|)) time.
-3. M_A accepts if and only if M_B accepts g(x).
+1. On input $x$, $M_A$ first runs $M_g$ to compute $g(x)$. This takes $p_g(\lvert x \rvert)$ time. The length of the output $g(x)$ is at most $p_g(\lvert x \rvert)$.
+2. Next, $M_A$ simulates $M_B$ on the input $g(x)$. This takes $p_B(\lvert g(x) \rvert) \le p_B(p_g(\lvert x \rvert))$ time.
+3. $M_A$ accepts if and only if $M_B$ accepts $g(x)$.
 
-The total running time for $M_A$ is bounded by $p_g(|x|) + p_B(p_g(|x|))$. Since the composition of two polynomials is a polynomial, $M_A$ is a polynomially time-bounded machine. Therefore, $A \in \text{P}$.
+The total running time for $M_A$ is bounded by $p_g(\lvert x \rvert) + p_B(p_g(\lvert x \rvert))$. Since the composition of two polynomials is a polynomial, $M_A$ is a polynomially time-bounded machine. Therefore, $A \in \text{P}$.
 
 ### Properties of Reducibility
 
@@ -548,37 +548,37 @@ The $\le_p^m$ relation behaves like a partial order on languages.
 **Proof.**:
 
 * Reflexivity: For any language $A$, $A \le_p^m A$ via the identity function $g(x) = x$, which is computable in polynomial (linear) time.
-* Transitivity: Suppose $A \le_p^m B$ via function $g_B$ and $B \le_p^m C$ via function $g_C$. Let $g_B$ be computable in time $p_B(n)$ and $g_C$ be computable in time $p_C(n)$. The reduction from $A$ to $C$ is the composition $g_C \circ g_B$. We have $x \in A \iff g_B(x) \in B \iff g_C(g_B(x)) \in C$. The time to compute $g_C(g_B(x))$ is the time to compute $g_B(x)$ (which is $p_B(n)$) plus the time to compute $g_C$ on the result (which is $p_C(|g_B(x)|) \le p_C(p_B(n))$). The total time is $p_B(n) + p_C(p_B(n))$, which is a polynomial. Thus, $A \le_p^m C$.
+* Transitivity: Suppose $A \le_p^m B$ via function $g_B$ and $B \le_p^m C$ via function $g_C$. Let $g_B$ be computable in time $p_B(n)$ and $g_C$ be computable in time $p_C(n)$. The reduction from $A$ to $C$ is the composition $g_C \circ g_B$. We have $x \in A \iff g_B(x) \in B \iff g_C(g_B(x)) \in C$. The time to compute $g_C(g_B(x))$ is the time to compute $g_B(x)$ (which is $p_B(n)$) plus the time to compute $g_C$ on the result (which is $p_C(\lvert g_B(x) \rvert) \le p_C(p_B(n))$). The total time is $p_B(n) + p_C(p_B(n))$, which is a polynomial. Thus, $A \le_p^m C$.
 
-### NP-Hardness and NP-Completeness
+### $NP$-Hardness and $NP$-Completeness
 
-Reducibility allows us to identify the "hardest" problems within a complexity class. For the class NP, these are the NP-complete problems.
+Reducibility allows us to identify the "hardest" problems within a complexity class. For the class $NP$, these are the $NP$-complete problems.
 
-**Definition 39:** NP-complete languages A language B is NP-hard if all languages in NP are p-m-reducible to B. A language is NP-complete if it is NP-hard and belongs to NP.
+**Definition 39:** $NP$-complete languages $A$ language $B$ is $NP$-hard if all languages in $NP$ are $p$-$m$-reducible to $B$. A language is $NP$-complete if it is $NP$-hard and belongs to $NP$.
 
-An NP-complete problem is thus a problem that is both in NP and is at least as hard as every other problem in NP.
+An $NP$-complete problem is thus a problem that is both in $NP$ and is at least as hard as every other problem in $NP$.
 
-There are further, provably different notions of NP-hardness and NP-completeness, which are defined in terms of reducibilities different from p-m-reducibility. For example, A is Turing reducible to B in polynomial time if A can be decided by a polynomially time-bounded Turing machine that for arbitrary words y can access the information whether y is in B by writing y onto a special oracle tape. Accordingly, the notions just defined may be referred to more precisely as NP-hardness and NP-completeness with respect to p-m-reducibility.
+There are further, provably different notions of $NP$-hardness and $NP$-completeness, which are defined in terms of reducibilities different from $p$-$m$-reducibility. For example, $A$ is Turing reducible to $B$ in polynomial time if $A$ can be decided by a polynomially time-bounded Turing machine that for arbitrary words $y$ can access the information whether $y$ is in $B$ by writing $y$ onto a special oracle tape. Accordingly, the notions just defined may be referred to more precisely as $NP$-hardness and $NP$-completeness with respect to $p$-$m$-reducibility.
 
-### The P versus NP Problem
+### The $P$ versus $NP$ Problem
 
-### Relationship Between P, NP, and NP-Complete Problems
+### Relationship Between $P$, $NP$, and $NP$-Complete Problems
 
-The existence of NP-complete problems provides a powerful way to frame one of the most significant open questions in computer science: whether P equals NP.
+The existence of $NP$-complete problems provides a powerful way to frame one of the most significant open questions in computer science: whether $P$ equals $NP$.
 
-**Theorem 40 The following statements are equivalent. (i)** $\text{P} = \text{NP}$. (ii) All NP-complete sets are in $\text{P}$. (iii) There is an NP-complete set in $\text{P}$.
+**Theorem 40 The following statements are equivalent. (i)** $\text{P} = \text{NP}$. (ii) All $NP$-complete sets are in $\text{P}$. (iii) There is an $NP$-complete set in $\text{P}$.
 
 **Proof.**:
 
-* (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in NP is also in P. By definition, NP-complete languages are in NP, so they must also be in P.
-* (ii) $\implies$ (iii): This implication is trivial, assuming that NP-complete languages exist (which will be proven later).
-* (iii) $\implies$ (i): We need to show that if some NP-complete language $L$ is in P, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an NP-complete language such that $L \in \text{P}$. Since $L$ is NP-hard, every language $A \in \text{NP}$ is p-m-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$.
+* (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in $NP$ is also in $P$. By definition, $NP$-complete languages are in $NP$, so they must also be in $P$.
+* (ii) $\implies$ (iii): This implication is trivial, assuming that $NP$-complete languages exist (which will be proven later).
+* (iii) $\implies$ (i): We need to show that if some $NP$-complete language $L$ is in $P$, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an NP-complete language such that $L \in \text{P}$. Since $L$ is NP-hard, every language $A \in \text{NP}$ is p-m-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$.
 
-The Significance of the P vs. NP Problem
+The Significance of the $P$ vs. $NP$ Problem
 
 **Remark 41** The class P is a subclass of NP, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as P versus NP problem. By Theorem 40, the two classes coincide if and only if some NP-complete language is in P. Common ways to express that a language is in P are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are NP-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
 
-### A Criterion for Proving NP-Completeness
+### A Criterion for Proving $NP$-Completeness
 
 The property of transitivity provides a practical method for proving that new problems are NP-complete. Once we have one known NP-complete problem, we can use it as a starting point.
 
@@ -746,7 +746,7 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
   * Unique Inscription: Each tape cell contains at most one symbol.  $\bigwedge_{(i,j,a,a') \in I \times J \times \Gamma \times \Gamma : a < a'}$ (B_{i,j,a} $\to$ $\neg$ B_{i,j,a'}) $\quad$ (2.6) 
   * Unique Head Position: The head is at most at one position.  $\bigwedge_{(i,j,j') \in I \times J \times J : j < j'}$ (P_{i,j} $\to$ $\neg$ P_{i,j'}) $\quad$ (2.7) 
   * Unique State: The machine is in at most one state.  $\bigwedge_{(i,k,k') \in I \times K \times K : k < k'}$ (Z_{i,k} $\to$ $\neg$ Z_{i,k'}) $\quad$ (2.8) 
-  * Unique Instruction: At most one instruction is executed. No instruction is executed if and only if the configuration is halting (A_{i,0} is true).  $\bigwedge_{(i,\ell,\ell') \in I \times L \times L : \ell < \ell'}$ (A_{i,$\ell$} $\to$ $\neg$ A_{i,$\ell$'}) $\quad$ (2.9) 
+  * Unique Instruction: At most one instruction is executed. No instruction is executed if and only if the configuration is halting ($A_{i,0}$ is true).  $\bigwedge_{(i,\ell,\ell') \in I \times L \times L : \ell < \ell'}$ (A_{i,$\ell$} $\to$ $\neg$ A_{i,$\ell$'}) $\quad$ (2.9) 
 4. Valid Transitions: The configuration at step i+1 must follow legally from the configuration at step i.
   * Writing only at the head position: Tape cells not under the head do not change.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma}$ (B_{i,j,a} $\land$ $\neg$ P_{i,j} $\to$ B_{i+1,j,a}) $\quad$ (2.10) 
   * Halting configurations remain unchanged: If a configuration is halting, all subsequent configurations are identical.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma}$ (A_{i,0} $\land$ B_{i,j,a} $\to$ B_{i+1,j,a}) $\quad$ (2.11)   $\bigwedge_{(i,j) \in I^- \times J}$ (A_{i,0} $\land$ P_{i,j} $\to$ P_{i+1,j}) $\land$ $\bigwedge_{(i,k) \in I^- \times K}$ (A_{i,0} $\land$ Z_{i,k} $\to$ Z_{i+1,k}) $\quad$ (2.12) 
@@ -758,7 +758,7 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
 
 ### Conclusion of the Proof
 
-The full formula $\phi_x$ is the conjunction of all subformulas (2.4) through (2.18). Every accepting computation of M on input x defines a satisfying assignment for the variables in $\phi_x$. Conversely, any satisfying assignment for $\phi_x$ encodes a valid sequence of configurations. The values of the A_{i,$\ell$} variables determine which instruction is executed at each step. Starting from the initial configuration (enforced by 2.4), one can inductively determine the entire sequence of configurations. The subformulas ensure this sequence represents a valid computation that eventually reaches an accepting state.
+The full formula $\phi_x$ is the conjunction of all subformulas (2.4) through (2.18). Every accepting computation of $M$ on input $x$ defines a satisfying assignment for the variables in $\phi_x$. Conversely, any satisfying assignment for $\phi_x$ encodes a valid sequence of configurations. The values of the $A_{i,\ell}$ variables determine which instruction is executed at each step. Starting from the initial configuration (enforced by 2.4), one can inductively determine the entire sequence of configurations. The subformulas ensure this sequence represents a valid computation that eventually reaches an accepting state.
 
 Thus, $x \in A$ if and only if $\phi_x$ is satisfiable. This completes the proof of Theorem 52. ∎
 
@@ -791,6 +791,6 @@ Now, we must show that $\phi$ is satisfiable if and only if $\phi$' is satisfiab
 * Set $Z_j^i$ to true for all $j < t_i$.
 * Set $Z_j^i$ to false for all $j \ge t_i$. Under this extended assignment, every clause in every $\kappa_i$ becomes true, thus satisfying $\phi$'.
 
-($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi$' must also be unsatisfiable. Let $b$ be an arbitrary assignment for the variables in $\phi$'. Since $\phi$ is unsatisfiable, under the restriction of $b$ to the original variables, at least one clause $C_i$ in $\phi$ must be false. This means all literals $L_1^i$, $\dots$, L_{k_i}^i are false. Now consider the corresponding formula $\kappa_i$ under assignment $b$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) \land (\neg Z_1^i \lor L_2^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$.  Since $L_1^i$ is false, the first clause $(L_1^i \lor Z_1^i)$ implies that $Z_1^i$ must be true to satisfy $\kappa_i$. Now consider the second clause $(\neg Z_1^i \lor L_2^i \lor Z_2^i)$. Since $Z_1^i$ is true and $L_2^i$ is false, this clause implies $Z_2^i$ must be true. Propagating this logic forward, we find that for $\kappa_i$ to be true, $Z_1^i, Z_2^i, \dots, Z_{k_i-1}^i$ must all be true. However, the final clause is $(\neg Z_{k_i-1}^i \lor L_{k_i}^i)$. Since $Z_{k_i-1}^i$ must be true and $L_{k_i}^i$ is false, this final clause evaluates to false. Therefore, $\kappa_i$ is false. Since $\phi$' is a conjunction containing $\kappa_i$, $\phi$' is also false. As $b$ was an arbitrary assignment, this shows that $\phi$' is unsatisfiable.
+($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi$' must also be unsatisfiable. Let $b$ be an arbitrary assignment for the variables in $\phi$'. Since $\phi$ is unsatisfiable, under the restriction of $b$ to the original variables, at least one clause $C_i$ in $\phi$ must be false. This means all literals $L_1^i$, $\dots$, $L_{k_i}^i$ are false. Now consider the corresponding formula $\kappa_i$ under assignment $b$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) \land (\neg Z_1^i \lor L_2^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$.  Since $L_1^i$ is false, the first clause $(L_1^i \lor Z_1^i)$ implies that $Z_1^i$ must be true to satisfy $\kappa_i$. Now consider the second clause $(\neg Z_1^i \lor L_2^i \lor Z_2^i)$. Since $Z_1^i$ is true and $L_2^i$ is false, this clause implies $Z_2^i$ must be true. Propagating this logic forward, we find that for $\kappa_i$ to be true, $Z_1^i, Z_2^i, \dots, Z_{k_i-1}^i$ must all be true. However, the final clause is $(\neg Z_{k_i-1}^i \lor L_{k_i}^i)$. Since $Z_{k_i-1}^i$ must be true and $L_{k_i}^i$ is false, this final clause evaluates to false. Therefore, $\kappa_i$ is false. Since $\phi$' is a conjunction containing $\kappa_i$, $\phi$' is also false. As $b$ was an arbitrary assignment, this shows that $\phi$' is unsatisfiable.
 
 Thus, we have shown that $\text{SAT}$ $\le_p^m$ $\text{3-SAT}$, which completes the proof. ∎
