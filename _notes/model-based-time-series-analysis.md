@@ -206,7 +206,7 @@ $$
 
 Statistical inference aims to deduce properties of an underlying population or data-generating process from a finite sample of data. To do so, we often assume that our data is drawn from a family of distributions parametrized by a finite set of parameters.
 
-**Definition (Parametric Model):** Let $\Theta \subseteq \mathbb{R}^n$ is a parameter space. A family of probability distributions $\mathcal{P}_{\Theta} = \{ p_{\theta} \mid \theta \in \Theta \}$ on a measurable space is called a parametric model.
+**Definition (Parametric Model):** Let $\Theta \subseteq \mathbb{R}^n$ is a parameter space. A family of probability distributions $P(\Theta) = \lbrace p_{\theta} \mid \theta \in \Theta \rbrace $ on a measurable space is called a parametric model.
 
 Our goal is to estimate the true, unknown parameter $\theta$ that generated the data. We distinguish between:
 
@@ -265,17 +265,17 @@ Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn f
 * If the data are i.i.d., the likelihood factorizes:
   $\mathcal{L}(\theta \mid X) = \prod_{i=1}^N p(x_i \mid \theta).$
 * **MLE Definition:** The MLE is the value of $\theta$ that maximizes the likelihood function:
-  <!-- $\hat{\theta}_{\text{MLE}} = \arg\max_{\theta \in \Theta} \mathcal{L}(\theta \mid X)$. -->
   * $$\hat{\theta}_{\text{MLE}} = \arg\max_{\theta \in \Theta} \mathcal{L}(\theta \mid X)$$
+
 In practice, it is often easier to maximize the log-likelihood $\ell(\theta \mid X) = \log \mathcal{L}(\theta \mid X)$, since the logarithm is monotonic and the resulting sums are easier to differentiate.
 
 * *Example: Estimating the Mean of a Normal Distribution*
-  * **Model:** $X_i \sim \mathcal{N}(\mu, \sigma^2)$ i.i.d., with $\sigma^2$ known.
+  * **Model:** $x_i = \mu + \epsilon_i$ with $\epsilon_i \sim \mathcal{N}(0, \sigma^2)$ or equivalently $X_i \sim \mathcal{N}(\mu, \sigma^2)$ i.i.d., with $\sigma^2$ known.
   * **Log-Likelihood:**
     $\ell(\mu \mid X) = \log \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(X_i-\mu)^2}{2\sigma^2}\right) = \sum_{i=1}^N \left( -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(X_i-\mu)^2}{2\sigma^2} \right).$
   * **Maximization:** Differentiate with respect to $\mu$ and set to zero.
-    * $\frac{\partial \ell}{\partial \mu} = \sum_{i=1}^N \frac{X_i-\mu}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^N (X_i-\mu) = 0$
-    * $$\sum_i X_i - N\mu = 0 \implies \hat{\mu}_{\text{MLE}} = \frac{1}{N} \sum_{i=1}^N X_i$$
+    $$\frac{\partial \ell}{\partial \mu} = \sum_{i=1}^N \frac{X_i-\mu}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^N (X_i-\mu) = 0$$
+    $$\sum_i X_i - N\mu = 0 \implies \hat{\mu}_{\text{MLE}} = \frac{1}{N} \sum_{i=1}^N X_i$$
   
   * For this model, the MLE and LS estimates for the mean coincide.
 

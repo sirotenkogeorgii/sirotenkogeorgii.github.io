@@ -9,11 +9,7 @@ tags:
   - high-performance-computing
 ---
 
-# Chapter 1: An Introduction to GPU Computing
-
-> Welcome to the world of GPU Computing. This study guide is designed to take you from the fundamentals of parallel processing to writing your first high-performance programs on a Graphics Processing Unit (GPU). We will explore the unique architecture of modern GPUs, learn the CUDA programming model, and understand the core principles that unlock immense computational power for a wide range of applications, from scientific research to machine learning.
->
-> This introductory chapter sets the stage by answering a fundamental question: Why do we need parallel computing? We will explore the historical context, compare the design philosophies of CPUs and GPUs, and introduce the foundational laws that govern performance scaling in parallel systems.
+# GPU Computing
 
 ## The Need for Massive Parallelism
 
@@ -25,8 +21,8 @@ To continue advancing performance, computer architects shifted their focus from 
 
 **Performance can be viewed through two primary lenses:**
 
-- **Instruction-Level Performance:** This classical view measures performance as the product of instructions executed per cycle and the clock frequency. \( \text{Perf}(\mathrm{ops/s}) = \frac{\text{Instructions}}{\text{cycle}} \times \text{frequency} \)
-- **Power-Constrained Performance:** In the modern era, a more critical view is performance per watt, or energy efficiency. \( \text{Perf}(\mathrm{ops/s}) = \text{Power}(\mathrm{W}) \times \text{Efficiency}(\mathrm{ops/Joule}) \)
+- **Instruction-Level Performance:** This classical view measures performance as the product of instructions executed per cycle and the clock frequency. $$\text{Perf}(\mathrm{ops/s}) = \frac{\text{Instructions}}{\text{cycle}} \times \text{frequency}$$
+- **Power-Constrained Performance:** In the modern era, a more critical view is performance per watt, or energy efficiency. $$\text{Perf}(\mathrm{ops/s}) = \underbrace{\text{Power}(\mathrm{W})}_{\text{fixed}} \times \text{Efficiency}(\mathrm{ops/Joule})$$
 
 GPUs are designed to excel in the second paradigm. By replicating many smaller, energy-efficient processing units and often running them at lower frequencies, they achieve massive parallelism and superior overall throughput and efficiency for suitable workloads.
 
@@ -43,7 +39,7 @@ The graphics pipeline consists of several key stages:
 | Rasterization | Determines which pixels on the screen are covered by each triangle. |
 | Fragment Shader | A programmable stage that calculates the final color for each affected pixel. |
 
-Since the number of pixels (fragments) is vastly greater than the number of vertices, the fragment shader stage required immense parallel processing power. Around 2007, innovators realized that this powerful, programmable parallel engine could be harnessed for tasks beyond graphics. This marked the birth of General-Purpose GPU (GPGPU) computing. NVIDIA's CUDA (Compute Unified Device Architecture) platform was a pioneering effort that provided a software layer allowing developers to program the GPU directly for general-purpose tasks, unlocking its power for scientific computing, climate research, molecular dynamics, and, most notably, machine learning.
+Around 2007, innovators realized that this powerful, programmable parallel engine could be harnessed for tasks beyond graphics. This marked the birth of General-Purpose GPU (GPGPU) computing. NVIDIA's CUDA (Compute Unified Device Architecture) platform was a pioneering effort that provided a software layer allowing developers to program the GPU directly for general-purpose tasks, unlocking its power for scientific computing, climate research, molecular dynamics, and, most notably, machine learning.
 
 The impact has been profound, enabling computational milestones to be reached years ahead of schedule. For instance, the leap from Tera-FLOP/s (trillion floating-point operations per second) systems in 1997 to Peta-FLOP/s (quadrillion) in 2012 took 15 years. The subsequent jump to Exa-FLOP/s (quintillion) took only 10 years, largely driven by the adoption of GPU accelerators.
 
@@ -53,26 +49,6 @@ At first glance, a Central Processing Unit (CPU) and a GPU are both silicon chip
 
 - **A CPU is a latency-oriented device.** It is designed to execute a single thread of instructions as fast as possible. To achieve this, a significant portion of its die area is dedicated to sophisticated control logic, large caches, branch predictors, and speculative execution units. This complexity minimizes the time (latency) for any given task, making it ideal for general-purpose, sequential workloads like operating systems and desktop applications.
 - **A GPU is a throughput-oriented device.** Its goal is to execute thousands of parallel threads simultaneously to maximize the total amount of work done. To achieve this, it dedicates the vast majority of its silicon to a massive number of simpler arithmetic logic units (ALUs). It sacrifices single-thread performance and complex control logic in favor of raw parallel processing power. Instead of minimizing latency, a GPU tolerates latency by having so many threads that while some are waiting for data from memory, others can be actively executing.
-
-The following table provides a comparative overview of representative CPU and GPU architectures over time, highlighting these key differences.
-
-| Feature | Intel Broadwell (CPU, 2016) | NVIDIA Kepler (GPU, 2012) | NVIDIA Pascal (GPU, 2016) | NVIDIA Volta (GPU, 2017) |
-| --- | --- | --- | --- | --- |
-| Core Count | 22 cores | 13 SMs (192 SP, 64 DP / SM) | 56 SMs (64 SP, 32 DP / SM) | 84 SMs (64 SP, 32 DP / SM) |
-| Frequency | 2.2 - 3.6 GHz | 0.7 GHz | 1.328 - 1.480 GHz | 1.455 GHz |
-| Peak Performance | 633.6 GF/s (DP) | 1,165 GF/s (DP), x3 SP | 5.3 TF/s (DP), x2 SP | 7.5 TF/s (DP), x2 SP |
-| Use Mode | Latency-Oriented | Throughput-Oriented | Throughput-Oriented | Throughput-Oriented |
-| Latency Treatment | Minimization | Toleration | Toleration | Toleration |
-| Programming | 10s of threads | 10,000s+ of threads | 10,000s+ of threads | 10,000s+ of threads |
-| Memory Bandwidth | 76.8 GB/s | 250 GB/s | 720 GB/s | Not Specified in Source |
-| Memory Capacity | 1.54 TB | 5 GB | 16 GB | 32 GB |
-| Die Size | 456 mm² | 550 mm² | 610 mm² | 815 mm² |
-| Transistor Count | 7.2 billion | 7.1 billion | 15.3 billion | 21.1 billion |
-| Technology | 14nm | 28nm | 16nm FinFET | 12nm FFN |
-| Power | 145W | 250W | 300W | 300W |
-| Power Efficiency | 4.37 GF/Watt (DP) | 4.66 GF/Watt (DP) | 17.66 GF/Watt (DP) | 25 GF/Watt (DP) |
-
-> **Note:** SM stands for Streaming Multiprocessor, the basic building block of an NVIDIA GPU. SP and DP refer to Single-Precision and Double-Precision floating-point performance, respectively.
 
 ### Mind the Memory Hierarchy
 
@@ -90,23 +66,23 @@ Amdahl's Law is a model used to find the maximum expected improvement to an over
 
 The central idea is that every program contains a serial part and a parallel part.
 
-- **The parallel fraction (p):** The portion of the program's execution time that can be perfectly parallelized.
-- **The serial fraction (s):** The portion that must be run sequentially on a single processor.
-- **Relationship:** By definition, s + p = 1.
+- **The parallel fraction ($p$):** The portion of the program's execution time that can be perfectly parallelized.
+- **The serial fraction ($s$):** The portion that must be run sequentially on a single processor.
+- **Relationship:** By definition, $s + p = 1$.
 
-If we use N parallel execution units (e.g., processor cores), the parallel part of the program can be sped up by a factor of N. The serial part, however, receives no speed-up. The overall speed-up, a, is therefore given by the formula:
+If we use $N$ parallel execution units (e.g., processor cores), the parallel part of the program can be sped up by a factor of $N$. The serial part, however, receives no speed-up. The overall speed-up, a, is therefore given by the formula:
 
-\[
-a = \frac{1}{s + \frac{p}{N}} = \frac{1}{(1 - p) + \frac{p}{N}}
-\]
+$$
+a = \frac{s + p}{s + \frac{p}{N}} = \frac{1}{s + \frac{p}{N}} = \frac{1}{(1 - p) + \frac{p}{N}}
+$$
 
 
-The key insight from Amdahl's Law is that the serial fraction s places a hard limit on the maximum possible speed-up, regardless of how many processors N you add. As N approaches infinity, the term p/N approaches zero, and the maximum speed-up converges to 1/s. For example, if 90% of your program is parallel (p = 0.9), the serial fraction is 10% (s = 0.1). The maximum speed-up you can ever achieve is 1 / 0.1 = 10x, even with a million cores.
+The key insight from Amdahl's Law is that the serial fraction s places a hard limit on the maximum possible speed-up, regardless of how many processors $N$ you add. As $N$ approaches infinity, the term $p/N$ approaches zero, and the maximum speed-up converges to $1/s$. For example, if $90$% of your program is parallel ($p = 0.9$), the serial fraction is $10$% ($s = 0.1$). The maximum speed-up you can ever achieve is $1 / 0.1 = 10 \times$, even with a million cores.
 
 Gene Amdahl, who formulated this law in 1967, originally used it to argue that the single-processor approach was superior. However, his law can be viewed from different perspectives:
 
 - **Optimistic View:** The law, as stated, doesn't account for the overhead of parallelization (e.g., communication, synchronization), which in reality makes achieving the theoretical speed-up even harder.
-- **Pessimistic View:** The law assumes a fixed problem size. In practice, as we get more processors (N), we often want to solve larger problems. Gustafson's Law (1988) offers an alternative perspective, suggesting that for larger problems, the parallel fraction p can increase, leading to better scalability. Furthermore, sometimes using more processors can lead to superlinear speed-up (a > N) due to caching effects, where a larger total cache size allows the problem to fit entirely in faster memory.
+- **Pessimistic View:** The law assumes a fixed problem size. In practice, as we get more processors ($N$), we often want to solve larger problems. Gustafson's Law (1988) offers an alternative perspective, suggesting that for larger problems, the parallel fraction $p$ can increase, leading to better scalability. Furthermore, sometimes using more processors can lead to superlinear speed-up ($a > N$) due to caching effects, where a larger total cache size allows the problem to fit entirely in faster memory.
 
 #### The GPU Programming Model: A Glimpse
 
@@ -121,32 +97,14 @@ This model is a near-perfect incarnation of the Bulk-Synchronous Parallel (BSP) 
 2. Communicate: Processors exchange necessary data.
 3. Synchronize: A barrier synchronization ensures all processors have completed the step before moving to the next.
 
-A key concept in this model is parallel slackness, which refers to having many more virtual processors (threads) than physical processors. This slackness (v >> p) is precisely what GPUs leverage to hide memory latency and schedule computation efficiently.
+A key concept in this model is parallel slackness, which refers to having many more virtual processors (threads) than physical processors. This slackness ($v >> p$) is precisely what GPUs leverage to hide memory latency and schedule computation efficiently.
+
+> GPUs hide long memory latencies by running many more independent threads ($v$) than they have execution lanes/pipelines ($p$). When some threads stall on memory, the hardware instantly swaps to other ready threads—so the lanes stay busy. That “excess” of runnable work over hardware lanes is the slackness $v ≫ p$.
 
 ### Summary: The GPU Computing Paradigm
 
 GPU computing represents a fundamental shift in how we approach high-performance computation. It is not a replacement for the CPU but a powerful co-processor for massively parallel tasks.
 
-#### Key Differences from CPUs
-
-- **Massive Parallelism:** GPUs are designed for tens of thousands of threads, whereas CPUs are optimized for a few dozen.
-- **Throughput over Latency:** GPUs tolerate memory latency by switching between threads, whereas CPUs use complex caches and prediction to minimize it.
-- **Energy Efficiency:** For parallel workloads, GPUs offer significantly better performance per watt.
-- **Offload Model:** A host CPU offloads computationally intensive, parallel portions of a program to the GPU device.
-
-#### Challenges to Consider
-
-- **Limited Memory:** GPU on-board memory is smaller than system RAM.
-- **Low Single-Thread Performance:** A single GPU thread is significantly slower than a CPU core.
-- **Programming Complexity:** Not all problems are easily parallelizable, and efficient GPU programming requires understanding the underlying architecture.
-
-By embracing this new paradigm, we can unlock unprecedented levels of performance and solve computational problems that were once intractable. The following chapters will equip you with the knowledge and skills to do just that.
-
----
-
-# Chapter 1: The GPU Computing Model
-
-Welcome to the world of GPU computing! This study book will guide you, from first principles, through the architecture of modern Graphics Processing Units (GPUs) and teach you how to harness their massive parallel processing power using the CUDA programming model. We will begin by exploring why GPUs are so effective for certain computational problems and how their fundamental design differs from that of a traditional Central Processing Unit (CPU).
 
 ## 1.1 Why Use a GPU? CPU vs. GPU Architectures
 
