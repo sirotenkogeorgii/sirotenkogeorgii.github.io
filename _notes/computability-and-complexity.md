@@ -437,7 +437,7 @@ The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$.
 
 The size of the tape alphabet is another parameter of the Turing machine model. The following theorem shows that any computation can be performed by a Turing machine with a minimal binary alphabet, at the cost of only a constant factor slowdown.
 
-**Theorem 29:** Alphabet reduction Let $t$ be a time bound, let $k \ge 2$, and let $L$ be a language in $\text{DTIME}_k$(t(n)). There exists a deterministic $k$-tape Turing machine $M$ with tape alphabet $\lbrace0, 1, \square \rbrace$ that recognizes $L$ and runs in time $d \cdot t(n)$ for some constant $d$.
+**Theorem 29:** Alphabet reduction Let $t$ be a time bound, let $k \ge 2$, and let $L$ be a language in $\text{DTIME}_k(t(n))$. There exists a deterministic $k$-tape Turing machine $M$ with tape alphabet $\lbrace0, 1, \square \rbrace$ that recognizes $L$ and runs in time $d \cdot t(n)$ for some constant $d$.
 
 **Proof.**: Let $L$ be recognized by a deterministic $t(n)$-time-bounded $k$-tape machine $M$ with a tape alphabet $\lbrace a_1, \dots, a_r \rbrace$ of size $r$. We construct a machine $M'$ with a binary tape alphabet that simulates $M$.
 
@@ -454,20 +454,20 @@ Simulating one step of $M$ requires reading and potentially writing $k$ blocks o
 
 A more significant change to the machine model is reducing the number of tapes. A multi-tape Turing machine can be simulated by a single-tape machine, but this incurs a more substantial, quadratic, increase in computation time.
 
-**Theorem 30:** Tape reduction Let t be a time bound and let L be a language in $\text{DTIME}_k$(t(n)), i.e., L is recognized by a deterministic total k-tape Turing machine M that runs in time t(n). Then there exists a deterministic 1-tape Turing machine M' that recognizes L and runs in time d $\cdot$ t^2(n) for some constant d.
+**Theorem 30:** Tape reduction Let $t$ be a time bound and let $L$ be a language in $\text{DTIME}_k(t(n))$, i.e., $L$ is recognized by a deterministic total $k$-tape Turing machine $M$ that runs in time $t(n)$. Then there exists a deterministic $1$-tape Turing machine $M'$ that recognizes $L$ and runs in time $d \cdot t^2(n)$ for some constant $d$.
 
-**Proof.**: We construct a single-tape Turing machine M' that simulates a k-tape machine M. The single tape of M' is structured to represent all k tapes of M simultaneously using a system of "tracks".
+**Proof.**: We construct a single-tape Turing machine $M'$ that simulates a $k$-tape machine $M$. The single tape of $M'$ is structured to represent all $k$ tapes of $M$ simultaneously using a system of "tracks".
 
-Conceptually, the tape of M' is partitioned into 2k tracks. Each cell on the tape of M' contains a 2k-tuple. For each of M's tapes (say, tape i), two tracks on M' are used: one to store the content of tape i and another to mark the position of tape i's head. The tape alphabet $\Gamma$' of M' consists of tuples containing k symbols from M's alphabet $\Gamma$ and k symbols from $\{$\square$, *\}$, where * is used as the head marker.
+Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma$' of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, *\rbrace$, where $*$ is used as the head marker.
 
 #### The simulation proceeds as follows:
 
 1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of $M$. This involves writing w onto the first track and placing head markers $(*)$ at the beginning of all head-position tracks.
-2. Simulation of a Single Step: To simulate one step of M, M' performs a subroutine:
-  * (i) Scan and Read: M' sweeps its single head across the entire active portion of its tape to find the k head markers (*). As it passes each marker, it notes the corresponding tape symbol from the content track and stores all k symbols in its state.
-  * (ii) Update and Write: After collecting all necessary information, M' knows what transition M will make. It then performs a second sweep across the tape to update the tape contents and move the head markers $(*)$ one position left or right, as dictated by M's transition function. It also updates the state of M, which is stored in its own finite control.
+2. Simulation of a Single Step: To simulate one step of $M$, $M'$ performs a subroutine:
+  * (i) Scan and Read: $M'$ sweeps its single head across the entire active portion of its tape to find the $k$ head markers $(*)$. As it passes each marker, it notes the corresponding tape symbol from the content track and stores all $k$ symbols in its state.
+  * (ii) Update and Write: After collecting all necessary information, $M'$ knows what transition $M$ will make. It then performs a second sweep across the tape to update the tape contents and move the head markers $(*)$ one position left or right, as dictated by $M$'s transition function. It also updates the state of $M$, which is stored in its own finite control.
 
-Timing Analysis: The machine M runs for at most t(n) steps. This means that on any of its tapes, it can access at most t(n) cells to the left and t(n) cells to the right of the starting position. Therefore, the active portion of M''s tape has a length of at most 2t(n)+1.
+Timing Analysis: The machine $M$ runs for at most $t(n)$ steps. This means that on any of its tapes, it can access at most $t(n)$ cells to the left and $t(n)$ cells to the right of the starting position. Therefore, the active portion of $M'$'s tape has a length of at most $2t(n)+1$.
 
 Each simulation of a single step of $M$ requires $M'$ to make two full passes over this active portion. The time required for this is proportional to the length of the active tape, which is $O(t(n))$. So, simulating one step of $M$ takes at most $d \cdot t(n)$ steps for $M'$, for some constant $d$.
 
@@ -475,7 +475,7 @@ Since M makes at most $t(n)$ steps in total, the entire simulation on $M'$ requi
 
 #### On the Requirement for Time Bounds
 
-**Remark 31: By definition, a time bound $t$ must satisfy $t(n)$** $\ge n$. The latter requirement indeed makes sense because for other t, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length n_1. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
+**Remark 31: By definition, a time bound $t$ must satisfy $t(n)$** $\ge n$. The latter requirement indeed makes sense because for other t, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length $n_1$. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
 
 ### Nondeterministic Time Complexity
 
@@ -499,7 +499,7 @@ Similar to the deterministic case, we can define major complexity classes based 
 * $\text{NE} = \text{NTIME}(2^{\text{lin}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{c n + c})$
 * $\text{NEXP} = \text{NTIME}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{n^c + c})$
 
-We refer, for example, to $NP$ as the class of problems decidable in nondeterministic polynomial time and to NE as the class of problems decidable in nondeterministic linear exponential time.
+We refer, for example, to $NP$ as the class of problems decidable in nondeterministic polynomial time and to $NE$ as the class of problems decidable in nondeterministic linear exponential time.
 
 ### Reducibility and $NP$-Completeness
 
@@ -509,7 +509,7 @@ To compare the relative difficulty of problems, we use the concept of reduction.
 
 **Definition 35** A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \{0, 1\}^*$ it holds that $x \in A \iff g(x) \in B$.
 
-This type of reduction, often called a p-m-reduction or Karp reduction, acts as a translation. To solve an instance x of problem A, we can first compute g(x) in polynomial time and then use a decider for B to determine if g(x) $\in$ B. If B can be decided in polynomial time, then so can A. This relationship transfers difficulty upward: if A is known to be hard, then B must also be hard. Conversely, it transfers simplicity downward: if B is easy, then A must also be easy.
+This type of reduction, often called a $p$-$m$-reduction or Karp reduction, acts as a translation. To solve an instance $x$ of problem $A$, we can first compute $g(x)$ in polynomial time and then use a decider for $B$ to determine if $g(x) \in B$. If $B$ can be decided in polynomial time, then so can $A$. This relationship transfers difficulty upward: if $A$ is known to be hard, then $B$ must also be hard. Conversely, it transfers simplicity downward: if $B$ is easy, then $A$ must also be easy.
 
 ### Downward and Upward Closure
 
@@ -566,28 +566,26 @@ There are further, provably different notions of $NP$-hardness and $NP$-complete
 
 The existence of $NP$-complete problems provides a powerful way to frame one of the most significant open questions in computer science: whether $P$ equals $NP$.
 
-**Theorem 40 The following statements are equivalent. (i)** $\text{P} = \text{NP}$. (ii) All $NP$-complete sets are in $\text{P}$. (iii) There is an $NP$-complete set in $\text{P}$.
+**Theorem 40 The following statements are equivalent. (i)** $P = NP$. (ii) All $NP$-complete sets are in $P$. (iii) There is an $NP$-complete set in $P$.
 
 **Proof.**:
 
-* (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in $NP$ is also in $P$. By definition, $NP$-complete languages are in $NP$, so they must also be in $P$.
+* (i) $\implies$ (ii): If $P$ = $NP$, then every language in $NP$ is also in $P$. By definition, $NP$-complete languages are in $NP$, so they must also be in $P$.
 * (ii) $\implies$ (iii): This implication is trivial, assuming that $NP$-complete languages exist (which will be proven later).
-* (iii) $\implies$ (i): We need to show that if some $NP$-complete language $L$ is in $P$, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an NP-complete language such that $L \in \text{P}$. Since $L$ is NP-hard, every language $A \in \text{NP}$ is p-m-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$.
+* (iii) $\implies$ (i): We need to show that if some $NP$-complete language $L$ is in $P$, then $NP \subseteq P$. (The inclusion $P \subseteq NP$ is true by definition). Let $L$ be an NP-complete language such that $L \in P$. Since $L$ is $NP$-hard, every language $A \in NP$ is $p$-$m$-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in P$, then $A \in P$. Since this holds for any arbitrary language $A \in NP$, it follows that $NP \subseteq P$. Therefore, $P = NP$.
 
 The Significance of the $P$ vs. $NP$ Problem
 
-**Remark 41** The class P is a subclass of NP, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as P versus NP problem. By Theorem 40, the two classes coincide if and only if some NP-complete language is in P. Common ways to express that a language is in P are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are NP-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
+**Remark 41** The class $P$ is a subclass of $NP$, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as $P$ versus $NP$ problem. By Theorem 40, the two classes coincide if and only if some $NP$-complete language is in $P$. Common ways to express that a language is in $P$ are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are $NP$-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
 
 ### A Criterion for Proving $NP$-Completeness
 
-The property of transitivity provides a practical method for proving that new problems are NP-complete. Once we have one known NP-complete problem, we can use it as a starting point.
+The property of transitivity provides a practical method for proving that new problems are $NP$-complete. Once we have one known $NP$-complete problem, we can use it as a starting point.
 
-**Remark 42** A language B is NP-hard if and only if there is an NP-hard language A with A $\le_p^m$ B. In the special case of a language B in NP, this implies that B is NP-complete if and only if there is an NP-complete language A such that A $\le_p^m$ B. Both statements follow easily from the fact that p-m-reducibility is reflexive and transitive.
+**Remark 42** A language $B$ is $NP$-hard if and only if there is an $NP$-hard language $A$ with $A \le_p^m B$. In the special case of a language $B$ in $NP$, this implies that $B$ is $NP$-complete if and only if there is an $NP$-complete language $A$ such that $A \le_p^m B$. Both statements follow easily from the fact that $p$-$m$-reducibility is reflexive and transitive.
 
-To establish that the first NP-complete problem exists, it will be shown that the satisfiability problem for propositional formulas (SAT) is NP-complete. Subsequently, the NP-completeness of other problems can be established by demonstrating a polynomial-time reduction from SAT (or any other known NP-complete problem) to the new problem in question.
+To establish that the first $NP$-complete problem exists, it will be shown that the satisfiability problem for propositional formulas ($\text{SAT}$) is $NP$-complete. Subsequently, the $NP$-completeness of other problems can be established by demonstrating a polynomial-time reduction from $\text{SAT}$ (or any other known $NP$-complete problem) to the new problem in question.
 
-
-## Computability and Complexity
 
 ### Reducibility and Completeness
 
@@ -595,31 +593,31 @@ To establish that the first NP-complete problem exists, it will be shown that th
 
 The concept of reducibility allows us to compare the relative difficulty of computational problems. When two problems can be reduced to each other, they are considered equivalent in terms of their computational complexity. This equivalence can be formalized into distinct classes.
 
-p-m-equivalence: Two languages A and B are p-m-equivalent, denoted A $\equiv_p^m$ B, if A $\le_p^m$ B and B $\le_p^m$ A.
+**p-m-equivalence**: Two languages $A$ and $B$ are $p$-$m$-equivalent, denoted $A \equiv_p^m B$, if $A \le_p^m B$ and $B \le_p^m A$.
 
-p-m-degree: The p-m-degree of a language A is the class of all languages that are p-m-equivalent to it:  $\text{deg}_p^m$(A) = $\{B $\subseteq$ \{0, 1\}$^* : A $\equiv_p^m$ B\} 
+**p-m-degree**: The $p$-$m$-degree of a language $A$ is the class of all languages that are $p$-$m$-equivalent to it:  $\text{deg}_p^m(A) = \lbrace B \subseteq \lbrace 0, 1 \rbrace ^* : A \equiv_p^m B\rbrace$ 
 
-**Remark 44:** The p-m-equivalence is an equivalence relation. Consequently, the p-m-degrees are the equivalence classes of this relation. This means that the p-m-degrees form a partition of the class of all binary languages. Recall that for any equivalence relation on a set A, its equivalence classes are mutually disjoint, and their union is equal to A. The relation of p-m-reducibility ($\le_p^m$) induces a nonstrict partial order on these p-m-degrees, where one degree is considered "smaller" than another if a language from the first degree can be p-m-reduced to a language in the second.
+**Remark 44:** The $p$-$m$-equivalence is an equivalence relation. Consequently, the $p$-$m$-degrees are the equivalence classes of this relation. This means that the $p$-$m$-degrees form a partition of the class of all binary languages. Recall that for any equivalence relation on a set $A$, its equivalence classes are mutually disjoint, and their union is equal to $A$. The relation of $p$-$m$-reducibility ($\le_p^m$) induces a nonstrict partial order on these $p$-$m$-degrees, where one degree is considered "smaller" than another if a language from the first degree can be $p$-$m$-reduced to a language in the second.
 
-### Degrees within P and NP
+### Degrees within $P$ and $NP$
 
-Within the class NP, the structure of p-m-degrees reveals important insights into the relationship between complexity classes.
+Within the class $NP$, the structure of $p$-$m$-degrees reveals important insights into the relationship between complexity classes.
 
-**Remark 45:** The set of all NP-complete languages forms a single p-m-degree. Similarly, the class P, excluding the trivial languages $\emptyset$ and $\{0, 1\}$^*, also forms a p-m-degree. It has been shown that if P $\ne$ NP, then the class NP contains infinitely many distinct p-m-degrees. In fact, under this assumption, every finite partial order can be embedded into the structure of these degrees.
+**Remark 45:** The set of all $NP$-complete languages forms a single $p$-$m$-degree. Similarly, the class $P$, excluding the trivial languages $\emptyset$ and $\{0, 1\}$^*, also forms a $p$-$m$-degree. It has been shown that if $P \ne NP$, then the class $NP$ contains infinitely many distinct $p$-$m$-degrees. In fact, under this assumption, every finite partial order can be embedded into the structure of these degrees.
 
-### An Anomaly of P-M-Reducibility
+### An Anomaly of $P$-$M$-Reducibility
 
-The formal definition of p-m-reducibility leads to some unusual properties, particularly concerning languages in P and the two trivial languages, the empty set ($\emptyset$) and the set of all strings ($\{0, 1\}$^*).
+The formal definition of $p$-$m$-reducibility leads to some unusual properties, particularly concerning languages in $P$ and the two trivial languages, the empty set ($\emptyset$) and the set of all strings ($\lbrace 0, 1\rbrace ^*$).
 
-**Remark 46:** Since the class P is downward closed under p-m-reducibility, no language outside of P can be p-m-reduced to a language in P. Conversely, every language in P is p-m-reducible to any other language, with the exception of $\emptyset$ and $\{0, 1\}$^*.
+**Remark 46:** Since the class $P$ is downward closed under $p$-$m$-reducibility, no language outside of $P$ can be $p$-$m$-reduced to a language in $P$. Conversely, every language in $P$ is $p$-$m$-reducible to any other language, with the exception of $\emptyset$ and $\{0, 1\}$^*.
 
-To prove this, let $A$ be a language in P and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \{0, 1\}^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The p-m-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in P.
+To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \{0, 1\}^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
 
-**Remark 47:** By definition, only the empty set can be p-m-reduced to the empty set. A similar restriction applies to the language $\{0, 1\}$^*. As noted in Remark 46, every language in P is reducible to all other languages. The special behavior of $\emptyset$ and $\{0, 1\}$^* is often considered an anomaly of the definition. For this reason, alternative definitions of p-m-reducibility are sometimes used to avoid these edge cases.
+**Remark 47:** By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0, 1\rbrace^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0, 1\rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
 
-### The Satisfiability Problem (SAT)
+### The Satisfiability Problem ($\text{SAT}$)
 
-To prove that a language is NP-hard, the standard method is to show that a known NP-hard language can be p-m-reduced to it. However, this technique requires a starting point: a first problem that is proven to be NP-hard from fundamental principles. The canonical first NP-hard problem is the Boolean Satisfiability Problem, or SAT.
+To prove that a language is $NP$-hard, the standard method is to show that a known $NP$-hard language can be $p$-$m$-reduced to it. However, this technique requires a starting point: a first problem that is proven to be $NP$-hard from fundamental principles. The canonical first $NP$-hard problem is the Boolean Satisfiability Problem, or $\text{SAT}$.
 
 ### Propositional Formulas
 
@@ -630,9 +628,9 @@ We begin by formally defining the components of propositional logic.
 * Base case: Every element of Var is a propositional formula.
 * Inductive step: If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
 
-In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true (1) and false (0) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
+In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true ($1$) and false ($0$) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
 
-The truth value of a formula, denoted $\text{val}(\phi)$, is either true (1) or false (0). This value is determined relative to an assignment $b : \text{Var} \to \{0, 1\}$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
+The truth value of a formula, denoted $\text{val}(\phi)$, is either true ($1$) or false ($0$). This value is determined relative to an assignment $b : \text{Var} \to \{0, 1\}$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
 
 * Base case: For a variable $X \in \text{Var}$, $\text{val}(X) = b(X)$.
 * Inductive step: For formulas $\phi$ and $\phi'$:
@@ -644,6 +642,7 @@ The set of variables that appear in a formula $\phi$ is denoted by $\text{var}(\
 * $\text{var}(X) = \{X\}$ for any $X \in \text{Var}$.
 * $\text{var}(\neg \phi) = \text{var}(\phi)$.
 * $\text{var}(\phi \land \phi') = \text{var}(\phi) \cup \text{var}(\phi')$.
+
 ### Satisfiability and Normal Forms
 
 The central question of the satisfiability problem is whether a formula can be true.
@@ -654,9 +653,9 @@ The central question of the satisfiability problem is whether a formula can be t
 * A literal is a propositional variable or a negated propositional variable (e.g., $X$ or $\neg X$).
 * A clause (specifically, a disjunctive clause) is a disjunction of literals (e.g., $X \lor \neg Y \lor Z$).
 * A propositional formula is in conjunctive normal form (CNF) if it is a nonempty conjunction of clauses.
-* A formula is in k-conjunctive normal form (k-CNF) if it is in CNF and each clause contains at most k literals.
+* A formula is in $k$-conjunctive normal form ($k$-CNF) if it is in CNF and each clause contains at most $k$ literals.
 
-For example, the formula $(\neg X \lor Y \lor Z) \land (X \lor Z) \land (X \lor \neg Y \lor \neg Z)$ is in 3-CNF.
+For example, the formula $(\neg X \lor Y \lor Z) \land (X \lor Z) \land (X \lor \neg Y \lor \neg Z)$ is in $3$-CNF.
 
 This leads to the formal definition of the satisfiability problems as languages.
 
@@ -666,32 +665,32 @@ $\text{SAT} = \{\, \phi \mid \phi \text{ is a satisfiable propositional formula 
 
 $k\text{-SAT} = \{\, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\}$
 
-### NP-Completeness of SAT and k-SAT
+### $NP$-Completeness of $\text{SAT}$ and $\text{k-SAT}$
 
-The languages SAT and k-SAT (for k $\ge$ 3) are cornerstone examples of NP-complete problems.
+The languages $\text{SAT}$ and $\text{k-SAT}$ (for $k \ge 3$) are cornerstone examples of $NP$-complete problems.
 
-#### SAT is in NP
+#### $\text{SAT}$ is in $NP$
 
-First, we must establish that these problems belong to the class NP.
+First, we must establish that these problems belong to the class $NP$.
 
-**Remark 51:** The language SAT and the languages k-SAT for k > 0 are members of the class NP.
+**Remark 51:** The language $\text{SAT}$ and the languages $\text{k-SAT}$ for $k > 0$ are members of the class $NP$.
 
-A proof for this involves a nondeterministic Turing machine (NTM) that operates in polynomial time. Given an input string, the NTM first deterministically checks if it represents a valid formula $\phi$ in CNF (or k-CNF). If it is a valid formula, the machine proceeds to:
+A proof for this involves a nondeterministic Turing machine (NTM) that operates in polynomial time. Given an input string, the NTM first deterministically checks if it represents a valid formula $\phi$ in CNF (or $k$-CNF). If it is a valid formula, the machine proceeds to:
 
-1. Guess: Nondeterministically guess an assignment for all variables occurring in $\phi$. This involves creating branches for each variable, assigning it 0 in one branch and 1 in another, effectively exploring all possible assignments.
+1. Guess: Nondeterministically guess an assignment for all variables occurring in $\phi$. This involves creating branches for each variable, assigning it $0$ in one branch and $1$ in another, effectively exploring all possible assignments.
 2. Check: Deterministically evaluate the formula $\phi$ with the guessed assignment to see if it results in true.
 
-If any assignment makes the formula true, at least one computational path of the NTM will accept. The length of an assignment is linear in the size of the formula, so both the guessing and checking phases can be completed in polynomial time. Therefore, SAT and k-SAT are in NP.
+If any assignment makes the formula true, at least one computational path of the NTM will accept. The length of an assignment is linear in the size of the formula, so both the guessing and checking phases can be completed in polynomial time. Therefore, $\text{SAT}$ and $\text{k-SAT}$ are in $NP$.
 
-### Cook's Theorem: SAT is NP-Complete
+### Cook's Theorem: $\text{SAT}$ is $NP$-Complete
 
-The proof that SAT is not just in NP but is NP-hard is a landmark result in computer science.
+The proof that $\text{SAT}$ is not just in $NP$ but is $NP$-hard is a landmark result in computer science.
 
-**Theorem 52 (Cook’s Theorem)** : The language SAT is NP-complete.
+**Theorem 52 (Cook’s Theorem)** : The language $\text{SAT}$ is $NP$-complete.
 
-**Proof.**: We have already established in Remark 51 that SAT is in NP. To prove that it is NP-complete, we must show it is NP-hard. This requires showing that every language $A \in \text{NP}$ is p-m-reducible to SAT.
+**Proof.**: We have already established in Remark 51 that $\text{SAT}$ is in $NP$. To prove that it is $NP$-complete, we must show it is $NP$-hard. This requires showing that every language $A \in \text{NP}$ is $p$-$m$-reducible to $\text{SAT}$.
 
-Let $A$ be any language in NP. We will construct a function $g : x \mapsto \phi_x$, computable in polynomial time (i.e., $g \in \text{FP}$), that maps any binary word $x$ to a propositional formula $\phi_x$ in CNF. This construction will ensure that $x \in A$ if and only if $\phi_x$ is satisfiable.
+Let $A$ be any language in $NP$. We will construct a function $g : x \mapsto \phi_x$, computable in polynomial time (i.e., $g \in \text{FP}$), that maps any binary word $x$ to a propositional formula $\phi_x$ in CNF. This construction will ensure that $x \in A$ if and only if $\phi_x$ is satisfiable.
 
 Since $A \in \text{NP}$, there exists a nondeterministic Turing machine (NTM) $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ and a polynomial $p$ such that $M$ recognizes $A$ within a time bound of $p(n)$, where $n$ is the input length. For simplicity, we can assume $M$ has only a single tape. Any multi-tape NTM can be converted to an equivalent single-tape NTM with only a polynomial increase in runtime, similar to the tape reduction construction in Theorem 30.
 
@@ -704,9 +703,9 @@ An accepting computation is a sequence of configurations, starting with the init
 1. If $M$ accepts $x$, there exists a valid sequence of configurations representing an accepting computation. This sequence will directly provide a satisfying assignment for the variables in $\phi_x$.
 2. Conversely, if $\phi_x$ is satisfiable, any satisfying assignment can be used to decode a valid, accepting computation of M on input $x$.
 3. The formula $\phi_x$ will be a conjunction of subformulas, each of which can be expressed in CNF. Therefore, $\phi_x$ itself can be written in CNF.
-4. The construction of $\phi_x$ can be carried out in polynomial time with respect to $n = \lvert x \rvert$, because the number and size of the subformulas are polynomially bounded in n.
+4. The construction of $\phi_x$ can be carried out in polynomial time with respect to $n = \lvert x \rvert$, because the number and size of the subformulas are polynomially bounded in $n$.
 
-Together, these points establish that $A \le_p^m \text{SAT}$, proving that SAT is NP-hard.
+Together, these points establish that $A \le_p^m \text{SAT}$, proving that $\text{SAT}$ is $NP$-hard.
 
 #### Technical Note on Logical Notation
 
@@ -718,7 +717,7 @@ In the construction, we will frequently express clauses as implications. The fol
 
 #### Formalization of the Turing Machine Computation
 
-A computation of M on input x is a sequence of configurations over p(n)+1 time steps. Each configuration is defined by the tape content, head position, and current state.
+A computation of $M$ on input $x$ is a sequence of configurations over $p(n)+1$ time steps. Each configuration is defined by the tape content, head position, and current state.
 
 #### We define index sets to refer to time steps, tape cells, states, and nondeterministic choices:
 
@@ -731,30 +730,30 @@ A computation of M on input x is a sequence of configurations over p(n)+1 time s
 We introduce the following propositional variables to describe the computation. The intended meaning of each variable being true is given below:
 
 * $B_{i,j,a}$: At time step $i \in I$, tape cell $j \in J$ contains symbol $a \in \Gamma$.
-* P_{i,j}: At time step i $\in$ I, the tape head is positioned on cell j $\in$ J.
-* Z_{i,k}: At time step i $\in$ I, the machine is in state q_k $\in$ Q.
-* A_{i,0}: At time step i $\in$ I, the configuration is a halting configuration (i.e., the computation has already terminated).
-* A_{i',$\ell$}: At time step i' $\in$ I^-, the $\ell$-th instruction in $\Delta$ is executed to transition from configuration i' to i'+1.
+* $P_{i,j}$: At time step $i \in I$, the tape head is positioned on cell $j \in J$.
+* $Z_{i,k}$: At time step $i \in I$, the machine is in state $q_k \in Q$.
+* $A_{i,0}$: At time step $i \in I$, the configuration is a halting configuration (i.e., the computation has already terminated).
+* $A_{i',\ell}$: At time step $i' \in I^-$, the $\ell$-th instruction in $\Delta$ is executed to transition from configuration $i'$ to $i'+1$.
 
 Constructing the Formula $\phi_x$
 
 The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a specific property of a valid accepting computation.
 
-1. Start Configuration: The machine must start in the correct initial configuration at time 0. The state is the start state s = q_{k_0}, the head is at cell 1, the input x=x(1)$\dots$ x(n) is on the tape, and other cells are blank ($\Box$).  Z_{0,k_0} $\land$ P_{0,1} $\land$ $\left$( $\bigwedge_{j=1}^{n}$ B_{0,j,x(j)} $\right$) $\land$ $\left$( $\bigwedge$_{j $\in$ J $\setminus$ $\{1,...,n\}$} B_{0,j,$\Box$} $\right$) $\quad$ (2.4) 
-2. Termination and Acceptance: The computation must terminate, and the state at the final time step p(n) must be an accepting state.  A_{p(n),0} $\land$ $\left$( $\bigvee_{k \in K : q_k \in F}$ Z_{p(n),k} $\right$) $\quad$ (2.5) 
-3. Uniqueness Constraints: At any time step i, the configuration must be well-defined.
-  * Unique Inscription: Each tape cell contains at most one symbol.  $\bigwedge_{(i,j,a,a') \in I \times J \times \Gamma \times \Gamma : a < a'}$ (B_{i,j,a} $\to$ $\neg$ B_{i,j,a'}) $\quad$ (2.6) 
-  * Unique Head Position: The head is at most at one position.  $\bigwedge_{(i,j,j') \in I \times J \times J : j < j'}$ (P_{i,j} $\to$ $\neg$ P_{i,j'}) $\quad$ (2.7) 
-  * Unique State: The machine is in at most one state.  $\bigwedge_{(i,k,k') \in I \times K \times K : k < k'}$ (Z_{i,k} $\to$ $\neg$ Z_{i,k'}) $\quad$ (2.8) 
-  * Unique Instruction: At most one instruction is executed. No instruction is executed if and only if the configuration is halting ($A_{i,0}$ is true).  $\bigwedge_{(i,\ell,\ell') \in I \times L \times L : \ell < \ell'}$ (A_{i,$\ell$} $\to$ $\neg$ A_{i,$\ell$'}) $\quad$ (2.9) 
-4. Valid Transitions: The configuration at step i+1 must follow legally from the configuration at step i.
-  * Writing only at the head position: Tape cells not under the head do not change.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma}$ (B_{i,j,a} $\land$ $\neg$ P_{i,j} $\to$ B_{i+1,j,a}) $\quad$ (2.10) 
-  * Halting configurations remain unchanged: If a configuration is halting, all subsequent configurations are identical.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma}$ (A_{i,0} $\land$ B_{i,j,a} $\to$ B_{i+1,j,a}) $\quad$ (2.11)   $\bigwedge_{(i,j) \in I^- \times J}$ (A_{i,0} $\land$ P_{i,j} $\to$ P_{i+1,j}) $\land$ $\bigwedge_{(i,k) \in I^- \times K}$ (A_{i,0} $\land$ Z_{i,k} $\to$ Z_{i+1,k}) $\quad$ (2.12) 
-  * Instruction Execution: In every non-halting configuration, exactly one instruction must be executed.  $\bigwedge_{i \in I}$ $\left$( $\bigvee_{\ell \in L}$ A_{i,$\ell$} $\right$) $\quad$ (2.13) 
-  * For the $\ell$-th instruction in $\Delta$, let it be (q_{k_$\ell$}, a_$\ell$, q_{k'_$\ell$}, a'_$\ell$, B_$\ell$), where B_$\ell$ is the head movement (L, R, S). Let $\delta$_$\ell$ be -1, 1, 0 for L, R, S respectively.
-  * A configuration is not halting if an instruction applies to it.  $\bigwedge_{(i,j,\ell) \in I \times J \times L^-}$ (Z_{i,k_$\ell$} $\land$ P_{i,j} $\land$ B_{i,j,a_$\ell$} $\to$ $\neg$ A_{i,0}) $\quad$ (2.14) 
-  * If instruction $\ell$ is chosen, its preconditions must be met by configuration i.  $\bigwedge_{(i,\ell) \in I^- \times L^-}$ (A_{i,$\ell$} $\to$ Z_{i,k_$\ell$}) $\land$ $\bigwedge_{(i,j,\ell) \in I^- \times J \times L^-}$ (A_{i,$\ell$} $\land$ P_{i,j} $\to$ B_{i,j,a_$\ell$}) $\quad$ (2.15) 
-  * If instruction $\ell$ is chosen at step i, the successor configuration i+1 must reflect its execution.  $\bigwedge_{(i,\ell) \in I^- \times L^-}$ (A_{i,$\ell$} $\to$ Z_{i+1,k'_$\ell$}) $\quad$ (2.16)   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J}$ (A_{i,$\ell$} $\land$ P_{i,j} $\to$ B_{i+1,j,a'_$\ell$}) $\quad$ (2.17)   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J}$ (A_{i,$\ell$} $\land$ P_{i,j} $\to$ P_{i+1,j+$\delta$_$\ell$}) $\quad$ (2.18) 
+1. Start Configuration: The machine must start in the correct initial configuration at time $0$. The state is the start state $s = q_{k_0}$, the head is at cell $1$, the input $x=x(1)\dots x(n)$ is on the tape, and other cells are blank ($\Box$).  $Z_{0,k_0} \land P_{0,1} \land \left( \bigwedge_{j=1}^{n} B_{0,j,x(j)} \right) \land \left( \bigwedge_{j \in J \setminus \lbrace 1,...,n \rbrace} B_{0,j,\Box} \right) \quad (2.4) $
+2. Termination and Acceptance: The computation must terminate, and the state at the final time step p(n) must be an accepting state.  $A_{p(n),0} \land \left( \bigvee_{k \in K : q_k \in F} Z_{p(n),k} \right) \quad (2.5)$ 
+3. Uniqueness Constraints: At any time step $i$, the configuration must be well-defined.
+  * Unique Inscription: Each tape cell contains at most one symbol.  $\bigwedge_{(i,j,a,a') \in I \times J \times \Gamma \times \Gamma : a < a'} (B_{i,j,a} \to \neg B_{i,j,a'}) \quad (2.6)$ 
+  * Unique Head Position: The head is at most at one position.  $\bigwedge_{(i,j,j') \in I \times J \times J : j < j'} (P_{i,j} \to \neg P_{i,j'}) \quad (2.7)$ 
+  * Unique State: The machine is in at most one state.  $\bigwedge_{(i,k,k') \in I \times K \times K : k < k'} (Z_{i,k} \to \neg Z_{i,k'}) \quad (2.8)$ 
+  * Unique Instruction: At most one instruction is executed. No instruction is executed if and only if the configuration is halting ($A_{i,0}$ is true).  $\bigwedge_{(i,\ell,\ell') \in I \times L \times L : \ell < \ell'} (A_{i,\ell} \to \ne A_{i,\ell'}) \quad (2.9)$
+4. Valid Transitions: The configuration at step $i+1$ must follow legally from the configuration at step $i$.
+  * Writing only at the head position: Tape cells not under the head do not change.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma} (B_{i,j,a} \land \neg P_{i,j} \to B_{i+1,j,a}) \quad (2.10)$ 
+  * Halting configurations remain unchanged: If a configuration is halting, all subsequent configurations are identical.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma} (A_{i,0} \land B_{i,j,a} \to B_{i+1,j,a}) \quad (2.11)$   $\bigwedge_{(i,j) \in I^- \times J} (A_{i,0} \land P_{i,j} \to P_{i+1,j}) \land \bigwedge_{(i,k) \in I^- \times K} (A_{i,0} \land Z_{i,k} \to Z_{i+1,k}) \quad (2.12)$ 
+  * Instruction Execution: In every non-halting configuration, exactly one instruction must be executed. $\bigwedge_{i \in I} \left( \bigvee_{\ell \in L} A_{i,\ell} \right) \quad (2.13)$ 
+  * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_\ell}, a_\ell, q_{k'_\ell}, a'_\ell, B_\ell$), where $B_\ell$ is the head movement ($L$, $R$, $S$). Let $\delta_\ell$ be $-1$, $1$, $0$ for $L$, $R$, $S$ respectively.
+  * A configuration is not halting if an instruction applies to it.  $\bigwedge_{(i,j,\ell) \in I \times J \times L^-} (Z_{i,k_\ell} \land P_{i,j} \land B_{i,j,a_\ell} \to \neg A_{i,0}) \quad (2.14)$ 
+  * If instruction $\ell$ is chosen, its preconditions must be met by configuration $i$.  $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i,k_\ell}) \land \bigwedge_{(i,j,\ell) \in I^- \times J \times L^-} (A_{i,\ell} \land P_{i,j} \to B_{i,j,a_\ell}) \quad (2.15)$ 
+  * If instruction $\ell$ is chosen at step $i$, the successor configuration $i+1$ must reflect its execution.  $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i+1,k'_\ell}) \quad (2.16)$   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to B_{i+1,j,a'_\ell}) \quad (2.17)$   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to P_{i+1,j+\delta_\ell}) \quad (2.18)$ 
 
 ### Conclusion of the Proof
 
