@@ -21,22 +21,7 @@ Dynamical Systems Theory (DST) provides a rigorous mathematical framework for an
 - **Recurrent Neural Networks (RNNs).** These architectures are explicitly defined as discrete-time dynamical systems. Their internal "hidden state" evolves at each time step based on the previous state and current input, making their behavior—including phenomena like memory, stability, and convergence—directly analyzable with DST.
 - **Scientific Machine Learning.** A frontier in AI involves "dynamical systems reconstruction," where the goal is to reverse-engineer the governing equations $ f(x) $ of a physical, biological, or economic system directly from observational data. Models like Neural ODEs and Physics-Informed Neural Networks are designed for this purpose, aiming to automate a core part of the scientific discovery process.
 
-Key concepts from DST, such as the stability of equilibria, the existence of attractors, and the possibility of bifurcations (sudden, qualitative changes in system behavior, analogous to "tipping points"), are crucial for analyzing the performance, robustness, and failure modes of complex machine learning systems. For instance, the analysis of line attractors—continuous sets of stable points—provides a theoretical basis for how neural systems might implement memory by maintaining information as a persistent state of activity. By applying DST, we move from treating machine learning models as black boxes to understanding them as structured systems with predictable and analyzable dynamics.
-
 ---
-
-<!-- ## Table of Contents
-
-- [1. Fundamentals of Dynamical Systems](#1-fundamentals-of-dynamical-systems)
-- [2. Fundamental Properties and Transformations](#2-fundamental-properties-and-transformations)
-- [3. Linear Dynamical Systems](#3-linear-dynamical-systems)
-- [4. A Taxonomy of Linear Equilibria in Two Dimensions](#4-a-taxonomy-of-linear-equilibria-in-two-dimensions)
-- [Exercises for Chapter 1](#exercises-for-chapter-1)
-- [Exercises for Chapter 2](#exercises-for-chapter-2)
-- [Exercises for Chapter 3](#exercises-for-chapter-3)
-- [Exercises for Chapter 4](#exercises-for-chapter-4)
-
---- -->
 
 ## 1. Fundamentals of Dynamical Systems
 
@@ -44,13 +29,17 @@ Key concepts from DST, such as the stability of equilibria, the existence of att
 
 A dynamical system is a mathematical formalization for any system that evolves along a dimension, which is typically time. The theory provides a set of principles and tools to describe how a system's state changes according to a fixed rule.
 
+**Definition (Dynamical system)**: Let $I \times R \subseteq \mathbb{R} \times \mathbb{R}^n$.
+A map $\Phi : I \times R \to R$ is called a dynamical system or flow if:
+1. $\Phi(0, x) = x, \quad \forall x \in M,$
+2. $\Phi(t + s, x) = \Phi(t, \Phi(s, x)), \quad \forall s, t \in \mathbb{R}, , x \in M,$
+3. $\Phi$ is continuous in $(t, x)$.
+
+There is also a discrete formulation of a dynamical system. We will see later that a recurrent neural network is a discrete dynamical system.
+
 Dynamical systems are broadly classified into two categories based on how time is treated:
 
-#### Continuous-Time Systems
-
 **Continuous-Time Systems.** The system's state evolves continuously. These are typically described by differential equations.
-
-#### Discrete-Time Systems
 
 **Discrete-Time Systems.** The system's state evolves in discrete steps. These are described by iterative functions or maps.
 
@@ -59,7 +48,9 @@ Dynamical systems are broadly classified into two categories based on how time i
 The most common representation for continuous-time dynamical systems is a system of first-order ordinary differential equations (ODEs).
 
 > **Definition: Continuous-Time Dynamical System.** A continuous-time dynamical system is often expressed in the form  
-> $$\dot{x} = f(x)$$  
+> $$
+> \dot{x} = f(x)
+> $$  
 > where the state vector, derivative, and vector field satisfy the following:
 
 - $ x $ is the state vector, a point in a $ p $-dimensional state space, typically $ \mathbb{R}^p $. Its components are $ x = (x_1, x_2, \ldots, x_p) $.
@@ -67,6 +58,7 @@ The most common representation for continuous-time dynamical systems is a system
 - $ f(x) $ is a function, often called the vector field, that maps the state space to itself ($ f: \mathbb{R}^p \to \mathbb{R}^p $). It determines the velocity of the system's state at every point $ x $.
 
 This compact vector notation represents a system of $ p $ coupled differential equations:
+
 $$
 \begin{align*}
 \dot{x}_1 &= f_1(x_1, x_2, \ldots, x_p) \\
@@ -75,6 +67,7 @@ $$
 \dot{x}_p &= f_p(x_1, x_2, \ldots, x_p)
 \end{align*}
 $$
+
 While more complex systems can be described by Partial Differential Equations (PDEs), which involve derivatives with respect to multiple variables (e.g., time and space), this course will focus primarily on ODEs.
 
 ---

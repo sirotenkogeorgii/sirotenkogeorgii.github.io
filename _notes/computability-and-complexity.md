@@ -257,7 +257,7 @@ Beyond recognizing languages, Turing machines can also compute functions by tran
 
 To ensure a unique output for every input, function computation is defined using only total deterministic Turing machines. The output is defined based on the content of a designated tape when the machine halts.
 
-**Definition 17 (Computable Functions):** For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
+$\textbf{Definition 17 (Computable Functions):}$ For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
 
 $$
 \text{out}(C) = u_k(j_k) u_k(j_k + 1) \cdots u_k(t)
@@ -267,14 +267,7 @@ where $t = \max \lbrace i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text
 
 The *function $f_M$ computed by a total deterministic Turing machine* $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
 
-For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^{*} \to \Sigma'^{*}$ is **computable** if it is computed by some total deterministic Turing machine.
-
 For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is **computable** if it is computed by some total deterministic Turing machine.
-
-For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma^*$ is **computable** if it is computed by some total deterministic Turing machine.
-
-For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma^{\prime *}$ is **computable** if it is computed by some total deterministic Turing machine.
-
 
 
 
