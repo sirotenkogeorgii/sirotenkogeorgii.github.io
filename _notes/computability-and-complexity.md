@@ -267,7 +267,7 @@ where $t = \max \lbrace i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text
 
 The *function $f_M$ computed by a total deterministic Turing machine* $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
 
-For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is *computable* if it is computed by some total deterministic Turing machine.
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^* $ is *computable* if it is computed by some total deterministic Turing machine.
 
 ### Extending Computability to Other Domains
 
@@ -278,7 +278,7 @@ The concepts of decidable sets and computable functions, defined for words, can 
 * a subset $X \subseteq A$ is decidable if the set $\{\text{repr}(a) : a \in X\}$ is decidable.
 * a function $f : A \to A$ is *computable* if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
 
-For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\{1^n : n \text{ is prime}\}$ is decidable.
+For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\lbrace 1^n : n \text{ is prime}\rbrace$ is decidable.
 
 **Remark 19:** Representations of natural numbers by binary words A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\{0,1\}^*, \le_{\text{llex}})$.
 
@@ -407,31 +407,39 @@ Timing Analysis: The initialization takes $n + \lceil n/d \rceil + 2$ steps. The
 The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $\frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$.
 
 <div class="note-callout">
-  <p class="note-callout__title">Comment on the simulation phase (Why to scan left/right cells and Why is $M'$ deterministic)</p>
+  <p class="note-callout__title">
+    Comment on the simulation phase (Why to scan left/right cells and Why is M′ deterministic)
+  </p>
+
   <p>
-    We compress $M$’s tape into **blocks of $d$ symbols**, so $M'$ sees one **macro-cell** per block. In the next $d$ *real* steps of $M$:
+    We compress M’s tape into blocks of <code>d</code> symbols, so M′ sees one macro-cell per block.
+    In the next <code>d</code> real steps of M:
+  </p>
+  <ul>
+    <li>Each head can move at most <code>d</code> squares.</li>
+    <li>Starting anywhere inside the current block, after <code>d</code> moves the head can only be in the same block or one of its immediate neighbors (it can’t skip two blocks).</li>
+    <li>Moreover, M can read and write anywhere it visits during those <code>d</code> moves. That set of positions is contained within the current block plus at most one block to the left and one to the right.</li>
+  </ul>
 
-    * Each head can move at most $d$ squares.
-    * Starting anywhere inside the current block, after $d$ moves the head can only be in **the same block** or **one of its immediate neighbors** (it can’t skip two blocks).
-    * Moreover, $M$ can **read and write** anywhere it visits during those $d$ moves. That set of positions is contained within **the current block plus at most one block to the left and one to the right**.
+  <p>M is deterministic. So if we know:</p>
+  <ul>
+    <li>M’s current state,</li>
+    <li>for each tape: the head’s offset inside its current block,</li>
+    <li>for each tape: the contents of the three relevant macro-cells (left, current, right),</li>
+  </ul>
 
+  <p>
+    then the next <code>d</code> moves of M are completely determined by its transition function. There are only finitely many possibilities for that local information (finite state set, finite alphabet, fixed <code>d</code>, finite offsets <code>0,…,d−1</code>), so M′ can precompute a macro-transition table:
+  </p>
 
-    $M$ is **deterministic**. So if we know:
+  <pre><code>(state, offsets, 3-block contents per tape)
+→ (new state, updated 3-block contents, new offsets, which block is current)</code></pre>
 
-    * $M$’s **current state**,
-    * for each tape: the **head’s offset** inside its current block,
-    * for each tape: the **contents** of the three relevant macro-cells (left, current, right),
-
-    then the next $d$ moves of $M$ are **completely determined** by its transition function. There are only **finitely many** possibilities for that local information (finite state set, finite alphabet, fixed $d$, finite offsets $0,\dots,d-1$), so $M'$ can precompute a **macro-transition table**:
-
-    $$
-    \text{(state, offsets, 3-block contents per tape)} ;\longmapsto; \text{(new state, updated 3-block contents, new offsets, which block is current)}
-    $$
-
-    During simulation, $M'$ just **table-looks-up** the outcome and then writes the updated macro-cells and moves its heads accordingly—this is why simulating $d$ steps costs $O(1)$ steps for $M'$
-
+  <p>
+    During simulation, M′ just looks up the outcome and then writes the updated macro-cells and moves its heads accordingly — this is why simulating <code>d</code> steps costs <code>O(1)</code> steps for M′.
   </p>
 </div>
+
 
 #### Alphabet Reduction
 
@@ -458,7 +466,7 @@ A more significant change to the machine model is reducing the number of tapes. 
 
 **Proof.**: We construct a single-tape Turing machine $M'$ that simulates a $k$-tape machine $M$. The single tape of $M'$ is structured to represent all $k$ tapes of $M$ simultaneously using a system of "tracks".
 
-Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma$' of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, *\rbrace$, where $*$ is used as the head marker.
+Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma$' of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, * \rbrace $, where $*$ is used as the head marker.
 
 #### The simulation proceeds as follows:
 
@@ -471,7 +479,7 @@ Timing Analysis: The machine $M$ runs for at most $t(n)$ steps. This means that 
 
 Each simulation of a single step of $M$ requires $M'$ to make two full passes over this active portion. The time required for this is proportional to the length of the active tape, which is $O(t(n))$. So, simulating one step of $M$ takes at most $d \cdot t(n)$ steps for $M'$, for some constant $d$.
 
-Since M makes at most $t(n)$ steps in total, the entire simulation on $M'$ requires at most $t(n) \times (d \cdot t(n)) = d \cdot t^2(n)$ steps. Thus, $M'$ runs in time $O(t^2(n))$.
+Since $M$ makes at most $t(n)$ steps in total, the entire simulation on $M'$ requires at most $t(n) \times (d \cdot t(n)) = d \cdot t^2(n)$ steps. Thus, $M'$ runs in time $O(t^2(n))$.
 
 #### On the Requirement for Time Bounds
 
@@ -495,7 +503,7 @@ Similar to the deterministic case, we can define major complexity classes based 
 
 **Definition 33: Examples of nondeterministic time classes We define the complexity classes:**
 
-* NP = $\text{NTIME}$($\text{poly}$)
+* $NP$ = $\text{NTIME}$($\text{poly}$)
 * $\text{NE} = \text{NTIME}(2^{\text{lin}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{c n + c})$
 * $\text{NEXP} = \text{NTIME}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{n^c + c})$
 
@@ -507,7 +515,7 @@ We refer, for example, to $NP$ as the class of problems decidable in nondetermin
 
 To compare the relative difficulty of problems, we use the concept of reduction. A reduction is a way to solve one problem using an algorithm for another. If problem $A$ can be reduced to problem $B$, it means that $A$ is "no harder than" $B$.
 
-**Definition 35** A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \{0, 1\}^*$ it holds that $x \in A \iff g(x) \in B$.
+**Definition 35** A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \lbrace 0, 1\rbrace ^*$ it holds that $x \in A \iff g(x) \in B$.
 
 This type of reduction, often called a $p$-$m$-reduction or Karp reduction, acts as a translation. To solve an instance $x$ of problem $A$, we can first compute $g(x)$ in polynomial time and then use a decider for $B$ to determine if $g(x) \in B$. If $B$ can be decided in polynomial time, then so can $A$. This relationship transfers difficulty upward: if $A$ is known to be hard, then $B$ must also be hard. Conversely, it transfers simplicity downward: if $B$ is easy, then $A$ must also be easy.
 
@@ -613,7 +621,7 @@ The formal definition of $p$-$m$-reducibility leads to some unusual properties, 
 
 To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \{0, 1\}^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
 
-**Remark 47:** By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0, 1\rbrace^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0, 1\rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
+**Remark 47:** By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0, 1 \rbrace ^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0, 1\rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
 
 ### The Satisfiability Problem ($\text{SAT}$)
 
@@ -750,7 +758,7 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
   * Writing only at the head position: Tape cells not under the head do not change.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma} (B_{i,j,a} \land \neg P_{i,j} \to B_{i+1,j,a}) \quad (2.10)$ 
   * Halting configurations remain unchanged: If a configuration is halting, all subsequent configurations are identical.  $\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma} (A_{i,0} \land B_{i,j,a} \to B_{i+1,j,a}) \quad (2.11)$   $\bigwedge_{(i,j) \in I^- \times J} (A_{i,0} \land P_{i,j} \to P_{i+1,j}) \land \bigwedge_{(i,k) \in I^- \times K} (A_{i,0} \land Z_{i,k} \to Z_{i+1,k}) \quad (2.12)$ 
   * Instruction Execution: In every non-halting configuration, exactly one instruction must be executed. $\bigwedge_{i \in I} \left( \bigvee_{\ell \in L} A_{i,\ell} \right) \quad (2.13)$ 
-  * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_\ell}, a_\ell, q_{k'_\ell}, a'_\ell, B_\ell$), where $B_\ell$ is the head movement ($L$, $R$, $S$). Let $\delta_\ell$ be $-1$, $1$, $0$ for $L$, $R$, $S$ respectively.
+  * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_{\ell}}, a_{\ell}, q_{k'_{\ell}}, a'_{\ell}, B_{\ell}$), where $B_{\ell}$ is the head movement ($L$, $R$, $S$). Let $\delta_{\ell}$ be $-1$, $1$, $0$ for $L$, $R$, $S$ respectively.
   * A configuration is not halting if an instruction applies to it.  $\bigwedge_{(i,j,\ell) \in I \times J \times L^-} (Z_{i,k_\ell} \land P_{i,j} \land B_{i,j,a_\ell} \to \neg A_{i,0}) \quad (2.14)$ 
   * If instruction $\ell$ is chosen, its preconditions must be met by configuration $i$.  $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i,k_\ell}) \land \bigwedge_{(i,j,\ell) \in I^- \times J \times L^-} (A_{i,\ell} \land P_{i,j} \to B_{i,j,a_\ell}) \quad (2.15)$ 
   * If instruction $\ell$ is chosen at step $i$, the successor configuration $i+1$ must reflect its execution.  $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i+1,k'_\ell}) \quad (2.16)$   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to B_{i+1,j,a'_\ell}) \quad (2.17)$   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to P_{i+1,j+\delta_\ell}) \quad (2.18)$ 
