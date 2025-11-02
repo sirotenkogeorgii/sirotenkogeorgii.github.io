@@ -267,7 +267,16 @@ where $t = \max \lbrace i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text
 
 The *function $f_M$ computed by a total deterministic Turing machine* $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
 
-For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^{*} \to \Sigma'^{*} $ is *computable* if it is computed by some total deterministic Turing machine.
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^{*} \to \Sigma'^{*}$ is *computable* if it is computed by some total deterministic Turing machine.
+
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is *computable* if it is computed by some total deterministic Turing machine.
+
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma^*$ is *computable* if it is computed by some total deterministic Turing machine.
+
+For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma^{\prime *}$ is *computable* if it is computed by some total deterministic Turing machine.
+
+
+
 
 ### Extending Computability to Other Domains
 
