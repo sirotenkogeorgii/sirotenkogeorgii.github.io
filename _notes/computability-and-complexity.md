@@ -275,14 +275,14 @@ For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is
 
 The concepts of decidable sets and computable functions, defined for words, can be extended to other domains like the natural numbers through the use of representations.
 
-**Definition 18 (Decidable sets and computable functions on other domains):** A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\{\text{repr}(x) : x \in A\}$ is decidable. With respect to such a representation:
+$\textbf{Definition 18 (Decidable sets and computable functions on other domains)}$: A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\{\text{repr}(x) : x \in A\}$ is decidable. With respect to such a representation:
 
 * a subset $X \subseteq A$ is decidable if the set $\{\text{repr}(a) : a \in X\}$ is decidable.
 * a function $f : A \to A$ is *computable* if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
 
 For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\lbrace 1^n : n \text{ is prime}\rbrace$ is decidable.
 
-**Remark 19:** Representations of natural numbers by binary words A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\{0,1\}^*, \le_{\text{llex}})$.
+$\textbf{Remark 19: Representations of natural numbers by binary words}$ A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\{0,1\}^*, \le_{\text{llex}})$.
 
 **Remark 20:** Sets, languages, and problems The terminology used often depends on the context of study:
 
@@ -296,7 +296,7 @@ For example, the set of prime numbers is decidable because we can represent the 
 
 The analysis of algorithms and computational problems often centers on the resources they consume. One of the most critical resources is time. In the context of Turing machines, we formalize this by measuring the number of steps a machine takes to complete its computation.
 
-**Definition 21 (Running time):** The running time of a deterministic Turing machine $M$ on input $w$ is defined as
+$\textbf{Definition 21 (Running time):}$ The running time of a deterministic Turing machine $M$ on input $w$ is defined as
 
 $$
 \text{time}_M(w) =
@@ -763,7 +763,10 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
   * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_{\ell}}, a_{\ell}, q_{k'_{\ell}}, a'_{\ell}, B_{\ell}$), where $B_{\ell}$ is the head movement ($L$, $R$, $S$). Let $\delta_{\ell}$ be $-1$, $1$, $0$ for $L$, $R$, $S$ respectively.
   * A configuration is not halting if an instruction applies to it.  $\bigwedge_{(i,j,\ell) \in I \times J \times L^-} (Z_{i,k_\ell} \land P_{i,j} \land B_{i,j,a_\ell} \to \neg A_{i,0}) \quad (2.14)$ 
   * If instruction $\ell$ is chosen, its preconditions must be met by configuration $i$.  $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i,k_\ell}) \land \bigwedge_{(i,j,\ell) \in I^- \times J \times L^-} (A_{i,\ell} \land P_{i,j} \to B_{i,j,a_\ell}) \quad (2.15)$ 
-  * If instruction $\ell$ is chosen at step $i$, the successor configuration $i+1$ must reflect its execution.  $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i+1,k'_\ell}) \quad (2.16)$   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to B_{i+1,j,a'_\ell}) \quad (2.17)$   $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to P_{i+1,j+\delta_\ell}) \quad (2.18)$ 
+  * If instruction $\ell$ is chosen at step $i$, the successor configuration $i+1$ must reflect its execution.
+    * $\bigwedge_{(i,\ell) \in I^- \times L^-} (A_{i,\ell} \to Z_{i+1,k'_\ell}) \quad (2.16)$
+    * $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to B_{i+1,j,a'_\ell}) \quad (2.17)$
+    * $\bigwedge_{(i,\ell,j) \in I^- \times L^- \times J} (A_{i,\ell} \land P_{i,j} \to P_{i+1,j+\delta_\ell}) \quad (2.18)$
 
 ### Conclusion of the Proof
 
@@ -791,7 +794,7 @@ Let $\phi$ be a given propositional formula.
 Let a clause $C_i$ be $(L_1^i \lor L_2^i \lor \dots \lor L_{k_i}^i)$, where $L_j^i$ are literals.
 
 * If $k_i \le 3$, the clause is already in $3$-CNF form, so we can let $\kappa_i \equiv C_i$.
-* If $k_i > 3$, we replace $C_i$ with a conjunction of new clauses that collectively are satisfiable if and only if $C_i$ is. We introduce $k_i - 3$ new, unique variables $Z_1^i, Z_2^i, \dots, Z_{k_i-3}^i$. The replacement formula $\kappa_i$ is:  $(L_1^i \lor L_2^i \lor Z_1^i) \land (\neg Z_1^i \lor L_3^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-2}^i \lor L_{k_i-1}^i \lor Z_{k_i-1}^i) \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$  (The source document presents a slightly different but equivalent construction, which we will analyze): Let $C_i = (L_1^i \lor \dots \lor L_{k_i}^i)$. We introduce $k_i-1$ new variables $Z_1^i, \dots, Z_{k_i-1}^i$. The clause $C_i$ is replaced by $\kappa_i$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) land \left( \bigwedge_{j=2}^{k_i-1} (\neg Z_{j-1}^i \lor L_j^i \lor Z_j^i) \right) \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$  The final formula is $\phi' = \kappa_1 \land \kappa_2 \land \dots \land \kappa_m$. This transformation introduces a polynomial number of new variables and clauses and is computable in polynomial time.
+* If $k_i > 3$, we replace $C_i$ with a conjunction of new clauses that collectively are satisfiable if and only if $C_i$ is. We introduce $k_i - 3$ new, unique variables $Z_1^i, Z_2^i, \dots, Z_{k_i-3}^i$. The replacement formula $\kappa_i$ is:  $(L_1^i \lor L_2^i \lor Z_1^i) \land (\neg Z_1^i \lor L_3^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-2}^i \lor L_{k_i-1}^i \lor Z_{k_i-1}^i) \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$  (The source document presents a slightly different but equivalent construction, which we will analyze): Let $C_i = (L_1^i \lor \dots \lor L_{k_i}^i)$. We introduce $k_i-1$ new variables $Z_1^i, \dots, Z_{k_i-1}^i$. The clause $C_i$ is replaced by $\kappa_i$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) \land \left( \bigwedge_{j=2}^{k_i-1} (\neg Z_{j-1}^i \lor L_j^i \lor Z_j^i) \right) \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$  The final formula is $\phi' = \kappa_1 \land \kappa_2 \land \dots \land \kappa_m$. This transformation introduces a polynomial number of new variables and clauses and is computable in polynomial time.
 
 Now, we must show that $\phi$ is satisfiable if and only if $\phi$' is satisfiable.
 
