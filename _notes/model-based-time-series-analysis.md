@@ -350,3 +350,271 @@ The Newton-Raphson method is a second-order optimization algorithm that uses the
 **Update Rule:**
 $\theta_{n+1} = \theta_n - H_{f(\theta_n)}^{-1} \nabla f(\theta_n),$
 where $H_{f(\theta_n)}$ is the Hessian matrix of the function $f$ evaluated at $\theta_n$. The term $H^{-1}$ acts as an adaptive, matrix-valued learning rate. While Newton-Raphson can converge much faster than GD, computing and inverting the Hessian is computationally expensive for the high-dimensional parameter spaces common in deep learning.
+
+
+#### 2.4.2 Newton-Raphson Method
+
+The Newton-Raphson method is an iterative algorithm for finding the roots of a function $f(x)$, i.e., finding $x$ such that $f(x)=0$. In the context of model optimization, the goal is often to find the roots of the *derivative* of the loss function, which correspond to potential minima or maxima.
+
+The update rule is derived from the first-order Taylor expansion of the function $f$ around an initial guess $\theta_0$:
+$f(\theta_1) \approx f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
+To find the root, we set $f(\theta_1) = 0$:
+$0 = f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
+Rearranging the terms to solve for the next guess, $\theta_1$:
+$(\theta_1 - \theta_0)f'(\theta_0) = -f(\theta_0)$
+$\theta_1 f'(\theta_0) - \theta_0 f'(\theta_0) = -f(\theta_0)$
+$\theta_1 f'(\theta_0) = \theta_0 f'(\theta_0) - f(\theta_0)$
+$\theta_1 = \theta_0 - \frac{f(\theta_0)}{f'(\theta_0)}$
+
+The general iterative update equation is:
+$$
+\theta_n = \theta_{n-1} - [f'(\theta_{n-1})]^{-1} f(\theta_{n-1})
+$$
+This can be viewed as an analogue to Gradient Descent (GD), but with an adaptive learning rate determined by the inverse of the derivative. For a multivariate function $f$, the first derivative $f'$ becomes the gradient, and the second derivative (used to find the root of the first derivative) is the matrix of second partial derivatives known as the **Hessian**.
+
+**Remarks:**
+* While Gradient Descent searches linearly, the Newton-Raphson method, using the Hessian, searches quadratically. This requires the computation of second derivatives and matrix inversions.
+* The method converges more quickly than Gradient Descent.
+* Newton-Raphson will find both minima and maxima, as it seeks any point where the gradient is zero.
+
+#### 2.4.3 Parameter Estimation for Intractable Bayesian Problems
+
+In Bayesian inference, we are interested in the posterior distribution of parameters $\theta$ given data $X$, which is given by Bayes' theorem:
+$p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$
+A significant problem arises when the normalizing constant, or model evidence, $p(X) = \int p(X \mid \theta)p(\theta) d\theta$, is intractable to compute. This intractability gives rise to a class of powerful simulation-based methods known as **Markov Chain Monte Carlo (MCMC)**.
+
+**Core Concepts of MCMC**
+
+* **Monte Carlo Integration:** This principle states that we can estimate expectations by sampling. For a function $h(\theta)$, its expectation with respect to a probability distribution $p(\theta \mid X)$ is:
+    $$
+    E[h(\theta) \mid X] = \int p(\theta \mid X) h(\theta) d\theta
+    $$
+    By drawing $N$ samples $\theta^{(i)}$ from the posterior $p(\theta \mid X)$, we can approximate this expectation using the law of large numbers:
+    $$
+    E[h(\theta) \mid X] \approx \frac{1}{N} \sum_{i=1}^{N} h(\theta^{(i)})
+    $$
+* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as:
+    $p(\theta_t \mid \theta_{t-1}, ..., \theta_0) = p(\theta_t \mid \theta_{t-1})$
+
+**Posterior Sampling with Metropolis-Hastings**
+
+The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, \theta^{(1)}, ..., \theta^{(N)}$, that form a Markov chain whose stationary distribution is the target posterior distribution $p(\theta \mid X)$. We can work with the unnormalized posterior density, as the algorithm only depends on the ratio of densities, where the normalizing constant cancels out.
+$\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
+
+**Metropolis-Hastings Algorithm with a Symmetric Proposal:**
+
+1.  **Initialization:** Choose an initial parameter value $\theta^{(0)}$ and specify the number of samples $N$.
+2.  **Iteration:** Loop for $i = 1, ..., N$:
+    * **Propose:** Generate a new candidate sample $\theta_{prop}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{prop} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
+    * **Compute Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
+        $r_{prop} := p(X \mid \theta_{prop})p(\theta_{prop})$
+        $r_{curr} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
+        The acceptance ratio is $r = \frac{r_{prop}}{r_{curr}}$.
+    * **Accept or Reject:** Draw a random number $u$ from a uniform distribution, $u \sim \text{Unif}(0, 1)$.
+        * If $u < \min(1, r)$, accept the proposal: $\theta^{(i)} = \theta_{prop}$.
+        * Else, reject the proposal and stay at the current state: $\theta^{(i)} = \theta^{(i-1)}$.
+
+Under mild conditions, the resulting sequence of samples $\{\theta^{(i)}\}_{i=1}^N$ will be drawn from the target posterior distribution $p(\theta \mid X)$.
+
+**Challenges in MCMC**
+
+* **Choice of Proposal Density:**
+    * A proposal density that is too wide (high variance) will often generate proposals in regions of low probability, leading to a high rejection rate.
+    * A proposal density that is too narrow will lead to a very high acceptance rate, but the chain will explore the parameter space very slowly, potentially undersampling important regions.
+* **Initial Conditions and Burn-in:** The initial samples of the chain are biased by the starting condition $\theta^{(0)}$. To mitigate this bias, an initial "burn-in" period is defined, where the first $M$ samples are discarded from the final estimate.
+* **Convergence:** To assess whether the chain has converged to its stationary distribution, it is common practice to run multiple chains from different, overdispersed initial conditions and check if they converge to the same distribution.
+* **Parameter Constraints:** If parameters must conform to certain constraints (e.g., positivity), proposals that violate these constraints must be rejected, or transformations must be applied.
+* **Autocorrelation:** Consecutive samples in the chain are often highly correlated. To obtain nearly independent samples, a technique called **thinning** is used, which involves keeping only every $n$-th sample and discarding the rest.
+
+Different MCMC algorithms exist for different problem structures. For instance, **Gibbs Sampling** is highly effective when dealing with models that have dependent parameters and where conditional distributions are easy to sample from.
+
+**Parameter Inference for Latent Variable Models**
+
+When the data generating process depends on both parameters $\theta$ and unobserved **latent variables** $z$, the model is specified as $p_\theta(X, z)$. The log-likelihood of the observed data $X$ requires marginalizing out these latent variables:
+$$
+\log p_\theta(X) = \log \int p_\theta(X, z) dz
+$$
+This integration is often intractable, necessitating methods like MCMC or Variational Inference.
+
+---
+
+## 3. Fundamental Concepts of Time Series Analysis
+
+### 3.1 Stochastic Processes and Time Series
+
+Intuitively, a time series is a realization or **sample path** of a random process, such as $\{X_1, X_2, ..., X_T\}$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
+
+**Definition (Stochastic Process):** Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \{X_t\}_{t \in I}$ with values in $E$ is called a **stochastic process**.
+
+**Definition (Time Series):** A **time series** is a stochastic process $X = \{X_t\}_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
+
+**Definition (Sample Path (Realization)):** A **sample path** is a single outcome or sequence of observations $\{x_t\}_{t \in I}$ from a stochastic process. For example, $\{x_1, x_2, ..., x_T\}$.
+
+**Definition (Discrete vs. Continuous Time):**
+* If the index set $I$ is countable (e.g., $I = \mathbb{Z}$ or $I = \mathbb{N}$), the process is a **discrete-time process**.
+* If the index set $I$ is an interval (e.g., $I = [0, T]$), the process is a **continuous-time process**.
+
+**Definition (Ensemble):** The **ensemble** is the population of all possible realizations that a stochastic process can generate. For a process $X_t = A \sin(\omega t + \phi) + \epsilon_t$, the ensemble would be the set of all possible sine waves generated by different values of the random variables $A$, $\phi$, and $\epsilon_t$.
+
+#### 3.1.1 Example: White Noise Process
+
+**Definition (White Noise Process):** Let $\sigma^2 > 0$. A time series $X = \{X_t\}_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
+1.  $E[X_t] = 0$ for all $t \in I$.
+2.  $\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$
+
+This property is often imposed on the error terms $\epsilon_t$ of statistical models. If, additionally, $X_t \sim \mathcal{N}(0, \sigma^2)$, the process is called a **Gaussian white noise process**.
+
+### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
+
+**Definition (Autocovariance Function (ACVF)):** Let $X=\{X_t\}_{t \in I}$ be a stochastic process with $E[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+$$
+\gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = E[(X_s - E[X_s])(X_t - E[X_t])]
+$$
+Using the property $\text{Cov}(X, Y) = E[XY] - E[X]E[Y]$, and letting $\mu_t = E[X_t]$, this can be written as:
+$\gamma_{XX}(s, t) = E[X_s X_t] - \mu_s \mu_t$
+
+**Basic Properties of ACVF:**
+* **Symmetry:** $\gamma_{XX}(s, t) = \gamma_{XX}(t, s)$
+* **Variance:** $\gamma_{XX}(t, t) = \text{Var}(X_t)$
+* **Cauchy-Schwarz Inequality:** $|\gamma_{XX}(s, t)| \leq \sqrt{\text{Var}(X_s)\text{Var}(X_t)}$
+* The autocovariance function for a white noise process $X_t \sim WN(0, \sigma^2)$ is:
+    $\gamma_{XX}(s, t) = \sigma^2 \delta_{st}$ where $\delta_{st}$ is the Kronecker delta.
+
+**Definition (Autocorrelation Function (ACF)):** The **autocorrelation function** is the normalized version of the autocovariance function, mapping $\rho_{XX}: I \times I \to [-1, 1]$:
+$$
+\rho_{XX}(s, t) = \frac{\gamma_{XX}(s, t)}{\sqrt{\gamma_{XX}(s, s)\gamma_{XX}(t, t)}} = \frac{\text{Cov}(X_s, X_t)}{\sqrt{\text{Var}(X_s)\text{Var}(X_t)}}
+$$
+
+**Definition (Cross-Covariance and Cross-Correlation Functions):** For two stochastic processes $X=\{X_t\}_{t \in I}$ and $Y=\{Y_t\}_{t \in I}$, the **cross-covariance function** is:
+$$
+\gamma_{XY}(s, t) = \text{Cov}(X_s, Y_t) = E[(X_s - \mu_{X,s})(Y_t - \mu_{Y,t})]
+$$
+The **cross-correlation function** is its normalized version:
+$$
+\rho_{XY}(s, t) = \frac{\gamma_{XY}(s, t)}{\sqrt{\text{Var}(X_s)\text{Var}(Y_t)}}
+$$
+
+### 3.3 Stationarity and Ergodicity
+
+#### 3.3.1 Strong (Strict) Stationarity
+
+**Definition (Strong Stationarity):** Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \{X_t\}_{t \in I}$ is **strongly stationary** if for any choice of time points $t_1, ..., t_m \in I$, the joint probability distribution of $(X_{t_1}, ..., X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, ..., X_{t_m+h})$, provided all time points remain in $I$.
+$$
+(X_{t_1}, ..., X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, ..., X_{t_m+h})
+$$
+where $\stackrel{d}{=}$ denotes equality in distribution.
+
+* Strong stationarity is a statement about the entire joint distribution ("laws") of the process, which must be invariant to shifts in time.
+* This is a foundational assumption for many time series models.
+* In practice, verifying the equality of all moments and distributions is impossible from a single finite realization.
+
+#### 3.3.2 Weak Stationarity
+
+**Definition (Weak Stationarity):** A stochastic process $X = \{X_t\}_{t \in I}$ is **weakly stationary** (or covariance stationary) if it satisfies the following three conditions:
+1.  The mean is constant for all $t$: $E[X_t] = \mu$.
+2.  The variance is finite for all $t$: $E[X_t^2] < \infty$.
+3.  The autocovariance between any two points depends only on their time lag $h = t-s$:
+    $\gamma_{XX}(s, t) = \gamma_{XX}(s, s+h) = \gamma_X(h)$
+
+* Strong stationarity implies weak stationarity (provided the first two moments exist). The reverse is not generally true.
+* For a Gaussian process, weak stationarity implies strong stationarity, because the entire distribution is defined by its first two moments (mean and covariance).
+* For a weakly stationary process, the autocovariance function simplifies to $\gamma_X(h) = E[(X_{t+h} - \mu)(X_t - \mu)]$.
+
+#### 3.3.3 Ergodicity
+
+**Definition (Ergodicity):** A stationary process is **ergodic** if its time average converges to its ensemble average (expected value) almost surely as the time horizon grows to infinity. For the mean:
+$$
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = E[X_t] = \mu
+$$
+
+* Ergodicity allows us to infer properties of the entire process (the ensemble) from a single, sufficiently long sample path.
+* Ergodicity requires stationarity. It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
+
+### 3.4 Computing Properties from a Time Series
+
+Under the assumptions of weak stationarity and ergodicity, we can estimate the moments of the stochastic process from a single time series realization $\{x_t\}_{t=1}^T$.
+
+* **Sample Mean:** $\hat{\mu} = \bar{x} = \frac{1}{T} \sum_{t=1}^T x_t$
+* **Sample Variance:** $\hat{\gamma}(0) = \hat{\sigma}^2 = \frac{1}{T} \sum_{t=1}^T (x_t - \bar{x})^2$
+* **Sample Autocovariance at lag $h$:** $\hat{\gamma}(h) = \frac{1}{T} \sum_{t=1}^{T-h} (x_t - \bar{x})(x_{t+h} - \bar{x})$
+
+### 3.5 Dealing with Non-stationarity
+
+If a time series is non-stationary, it must often be transformed before standard models can be applied. Common techniques include:
+
+* **High-pass filtering:** Transforming the series from the time domain to the frequency domain to remove low-frequency (trending) components.
+* **Differencing:** Creating a new series by taking the difference between consecutive observations, e.g., $y_t = x_t - x_{t-1}$.
+* **Detrending:** Fitting a deterministic trend (e.g., a linear function of time) and subtracting it from the data. For a linear trend $y_t = \beta_0 + \beta_1 t$, the detrended series is:
+    $x_t^* = x_t - (\hat{\beta}_0 + \hat{\beta}_1 t)$
+
+---
+
+## 4. Linear Regression
+
+### 4.1 Model Components
+
+A complete statistical model generally consists of four key components:
+
+1.  **Model Architecture:** The mathematical form of the relationship between variables.
+2.  **Loss Function:** A function that quantifies the error between model predictions and actual data.
+3.  **Training Algorithm:** An optimization procedure to find the parameters that minimize the loss function.
+4.  **Data:** The observations used to train and evaluate the model.
+
+### 4.2 Model Architecture
+
+Given a dataset $D = \{(x_t, y_t)\}_{t=1}^T$ where $y_t$ are responses and $x_t$ are predictors, the univariate linear regression model assumes a linear relationship:
+$y_t = \beta_0 + \beta_1 x_t + \epsilon_t$
+The error term $\epsilon_t$ is typically assumed to be a white noise process, often Gaussian:
+$\epsilon_t \sim \mathcal{N}(0, \sigma^2)$
+This implies a conditional distribution for the response variable:
+$y_t \mid x_t \sim \mathcal{N}(\beta_0 + \beta_1 x_t, \sigma^2)$
+
+For a model with $p$ predictors, this can be vectorized. Let $y$ be a $T \times 1$ vector of responses, $X$ be a $T \times (p+1)$ design matrix (with a column of ones for the intercept), and $\beta$ be a $(p+1) \times 1$ vector of parameters. The model is:
+$$
+y = X\beta + \epsilon
+$$
+
+### 4.3 Loss Function
+
+The most common loss function for linear regression is the **Sum of Squared Errors (SSE)**, also known as the **Least Squares Error (LSE)**. The objective is to find the parameter vector $\beta$ that minimizes this quantity:
+$$
+\text{LSE}(\beta) = \sum_{t=1}^T (y_t - \hat{y}_t)^2 = \sum_{t=1}^T (y_t - x_t^T \beta)^2
+$$
+In vector notation, this is:
+$$
+\text{LSE}(\beta) = (y - X\beta)^T(y - X\beta)
+$$
+
+### 4.4 Training Algorithm
+
+The optimal parameters $\hat{\beta}$ are found by minimizing the LSE loss function. This is achieved by taking the derivative of the loss function with respect to $\beta$ and setting it to zero.
+
+Expanding the LSE expression:
+$\text{LSE}(\beta) = y^Ty - y^TX\beta - \beta^TX^Ty + \beta^TX^TX\beta$
+Since $y^TX\beta$ is a scalar, it is equal to its transpose $(\beta^TX^Ty)$. Therefore:
+$$
+\text{LSE}(\beta) = y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta
+$$
+Now, we take the derivative with respect to the vector $\beta$:
+$$
+\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta)
+$$
+Using the matrix calculus rules:
+* $\frac{\partial(a^Tx)}{\partial x} = a$
+* $\frac{\partial(x^TAx)}{\partial x} = (A + A^T)x$
+
+The derivative is:
+$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + (X^TX + (X^TX)^T)\beta$
+Since $X^TX$ is a symmetric matrix, $(X^TX)^T = X^TX$. The derivative simplifies to:
+$$
+\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + 2X^TX\beta
+$$
+Setting the derivative to zero to find the minimum:
+$-2X^Ty + 2X^TX\hat{\beta} = 0$
+$2X^TX\hat{\beta} = 2X^Ty$
+$X^TX\hat{\beta} = X^Ty$
+
+The solution for $\hat{\beta}$, known as the ordinary least squares (OLS) estimator, is:
+$$
+\hat{\beta} = (X^TX)^{-1}X^Ty
+$$
