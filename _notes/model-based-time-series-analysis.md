@@ -537,11 +537,10 @@ This integration is often intractable, necessitating methods like MCMC or Variat
 Intuitively, a time series is a realization or **sample path** of a random process, such as $\lbrace X_1, X_2, ..., X_T\rbrace$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
 
 $\textbf{Definition (Stochastic Process):}$ Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \lbrace X_t\rbrace_{t \in I}$ with values in $E$ is called a **stochastic process**.
-$\textbf{Definition (Stochastic Process):}$ Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \lbrace X_t\rbrace _{t \in I}$ with values in $E$ is called a **stochastic process**.
 
-$\textbf{Definition (Time Series):}$ A **time series** is a stochastic process $X = \{X_t\}_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
+$\textbf{Definition (Time Series):}$ A **time series** is a stochastic process $X = \lbrace X_t\rbrace_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
 
-$\textbf{Definition (Sample Path (Realization)):}$ A **sample path** is a single outcome or sequence of observations $\{x_t\}_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, ..., x_T\rbrace$.
+$\textbf{Definition (Sample Path (Realization)):}$ A **sample path** is a single outcome or sequence of observations $\lbrace x_t\rbrace_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, ..., x_T\rbrace$.
 
 $\textbf{Definition (Discrete vs. Continuous Time):}$
 * If the index set $I$ is countable (e.g., $I = \mathbb{Z}$ or $I = \mathbb{N}$), the process is a **discrete-time process**.
@@ -551,27 +550,33 @@ $\textbf{Definition (Discrete vs. Continuous Time):}$
 
 #### 3.1.1 Example: White Noise Process
 
-**Definition (White Noise Process):** Let $\sigma^2 > 0$. A time series $X = \{X_t\}_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
-1.  $E[X_t] = 0$ for all $t \in I$.
+**Definition (White Noise Process):** Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
+1.  $\mathbb{E}[X_t] = 0$ for all $t \in I$.
 2.  $\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$
 
 This property is often imposed on the error terms $\epsilon_t$ of statistical models. If, additionally, $X_t \sim \mathcal{N}(0, \sigma^2)$, the process is called a **Gaussian white noise process**.
 
 ### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
 
-**Definition (Autocovariance Function (ACVF)):** Let $X=\lbrace X_t\rbrace _{t \in I}$ be a stochastic process with $E[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+**Definition (Autocovariance Function (ACVF)):** Let $X=\lbrace X_t\rbrace_{t \in I}$ be a stochastic process with $\mathbb{E}[X_t^2] < \infty$. The autocovariance function is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+
 $$
-\gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = E[(X_s - E[X_s])(X_t - E[X_t])]
+\gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])]
 $$
-Using the property $\text{Cov}(X, Y) = E[XY] - E[X]E[Y]$, and letting $\mu_t = E[X_t]$, this can be written as:
-$\gamma_{XX}(s, t) = E[X_s X_t] - \mu_s \mu_t$
+
+Using the property $\text{Cov}(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$, and letting $\mu_t = \mathbb{E}[X_t]$, this can be written as:
+
+$$
+\gamma_{XX}(s, t) = \mathbb{E}[X_s X_t] - \mu_s \mu_t
+$$
 
 **Basic Properties of ACVF:**
 * **Symmetry:** $\gamma_{XX}(s, t) = \gamma_{XX}(t, s)$
 * **Variance:** $\gamma_{XX}(t, t) = \text{Var}(X_t)$
 * **Cauchy-Schwarz Inequality:** $\lvert \gamma_{XX}(s, t)\rvert \leq \sqrt{\text{Var}(X_s)\text{Var}(X_t)}$
 * The autocovariance function for a white noise process $X_t \sim WN(0, \sigma^2)$ is:
-    $\gamma_{XX}(s, t) = \sigma^2 \delta_{st}$ where $\delta_{st}$ is the Kronecker delta.
+    * $\gamma_{XX}(s, t) = \sigma^2 \delta_{s,t}$
+    * where $\delta_{s,t}$ is the Kronecker delta.
 
 **Definition (Autocorrelation Function (ACF)):** The **autocorrelation function** is the normalized version of the autocovariance function, mapping $\rho_{XX}: I \times I \to [-1, 1]$:
 $$
@@ -591,10 +596,12 @@ $$
 
 #### 3.3.1 Strong (Strict) Stationarity
 
-**Definition (Strong Stationarity):** Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace _{t \in I}$ is **strongly stationary** if for any choice of time points $t_1, ..., t_m \in I$, the joint probability distribution of $(X_{t_1}, ..., X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, ..., X_{t_m+h})$, provided all time points remain in $I$.
+**Definition (Strong Stationarity):** Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is strongly stationary if for any choice of time points $t_1, \dots, t_m \in I$, the joint probability distribution of $(X_{t_1}, \dots, X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, \dots, X_{t_m+h})$, provided all time points remain in $I$.
+
 $$
-(X_{t_1}, ..., X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, ..., X_{t_m+h})
+(X_{t_1}, \dots, X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, \dots, X_{t_m+h})
 $$
+
 where $\stackrel{d}{=}$ denotes equality in distribution.
 
 * Strong stationarity is a statement about the entire joint distribution ("laws") of the process, which must be invariant to shifts in time.
@@ -603,21 +610,22 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 #### 3.3.2 Weak Stationarity
 
-**Definition (Weak Stationarity):** A stochastic process $X = \{X_t\}_{t \in I}$ is **weakly stationary** (or covariance stationary) if it satisfies the following three conditions:
-1.  The mean is constant for all $t$: $E[X_t] = \mu$.
-2.  The variance is finite for all $t$: $E[X_t^2] < \infty$.
+**Definition (Weak Stationarity):** A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is **weakly stationary** (or covariance stationary) if it satisfies the following three conditions:
+1.  The mean is constant for all $t$: $\mathbb{E}[X_t] = \mu$.
+2.  The variance is finite for all $t$: $\mathbb{E}[X_t^2] < \infty$.
 3.  The autocovariance between any two points depends only on their time lag $h = t-s$:
-    $\gamma_{XX}(s, t) = \gamma_{XX}(s, s+h) = \gamma_X(h)$
+    * $\gamma_{XX}(s, t) = \gamma_{XX}(s, s+h) = \gamma_X(h)$
 
 * Strong stationarity implies weak stationarity (provided the first two moments exist). The reverse is not generally true.
 * For a Gaussian process, weak stationarity implies strong stationarity, because the entire distribution is defined by its first two moments (mean and covariance).
-* For a weakly stationary process, the autocovariance function simplifies to $\gamma_X(h) = E[(X_{t+h} - \mu)(X_t - \mu)]$.
+* For a weakly stationary process, the autocovariance function simplifies to $\gamma_X(h) = \mathbb{E}[(X_{t+h} - \mu)(X_t - \mu)]$.
 
 #### 3.3.3 Ergodicity
 
 **Definition (Ergodicity):** A stationary process is **ergodic** if its time average converges to its ensemble average (expected value) almost surely as the time horizon grows to infinity. For the mean:
+
 $$
-\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = E[X_t] = \mu
+\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu
 $$
 
 * Ergodicity allows us to infer properties of the entire process (the ensemble) from a single, sufficiently long sample path.
@@ -625,7 +633,7 @@ $$
 
 ### 3.4 Computing Properties from a Time Series
 
-Under the assumptions of weak stationarity and ergodicity, we can estimate the moments of the stochastic process from a single time series realization $\{x_t\}_{t=1}^T$.
+Under the assumptions of weak stationarity and ergodicity, we can estimate the moments of the stochastic process from a single time series realization $\lbrace x_t\rbrace_{t=1}^T$.
 
 * **Sample Mean:** $\hat{\mu} = \bar{x} = \frac{1}{T} \sum_{t=1}^T x_t$
 * **Sample Variance:** $\hat{\gamma}(0) = \hat{\sigma}^2 = \frac{1}{T} \sum_{t=1}^T (x_t - \bar{x})^2$
