@@ -352,19 +352,21 @@ $\theta_{n+1} = \theta_n - H_{f(\theta_n)}^{-1} \nabla f(\theta_n),$
 where $H_{f(\theta_n)}$ is the Hessian matrix of the function $f$ evaluated at $\theta_n$. The term $H^{-1}$ acts as an adaptive, matrix-valued learning rate. While Newton-Raphson can converge much faster than GD, computing and inverting the Hessian is computationally expensive for the high-dimensional parameter spaces common in deep learning.
 
 The update rule is derived from the first-order Taylor expansion of the function $f$ around an initial guess $\theta_0$:
-$f(\theta_1) \approx f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
-To find the root, we set $f(\theta_1) = 0$:
-$0 = f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
-Rearranging the terms to solve for the next guess, $\theta_1$:
-$(\theta_1 - \theta_0)f'(\theta_0) = -f(\theta_0)$
-$\theta_1 f'(\theta_0) - \theta_0 f'(\theta_0) = -f(\theta_0)$
-$\theta_1 f'(\theta_0) = \theta_0 f'(\theta_0) - f(\theta_0)$
-$\theta_1 = \theta_0 - \frac{f(\theta_0)}{f'(\theta_0)}$
+1. $f(\theta_1) \approx f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
+2.  To find the root, we set $f(\theta_1) = 0$:
+    * $0 = f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
+3. Rearranging the terms to solve for the next guess, $\theta_1$:
+    * $(\theta_1 - \theta_0)f'(\theta_0) = -f(\theta_0)$
+    * $\theta_1 f'(\theta_0) - \theta_0 f'(\theta_0) = -f(\theta_0)$
+    * $\theta_1 f'(\theta_0) = \theta_0 f'(\theta_0) - f(\theta_0)$
+    * $\theta_1 = \theta_0 - \frac{f(\theta_0)}{f'(\theta_0)}$
 
 The general iterative update equation is:
+
 $$
 \theta_n = \theta_{n-1} - [f'(\theta_{n-1})]^{-1} f(\theta_{n-1})
 $$
+
 This can be viewed as an analogue to Gradient Descent (GD), but with an adaptive learning rate determined by the inverse of the derivative. For a multivariate function $f$, the first derivative $f'$ becomes the gradient, and the second derivative (used to find the root of the first derivative) is the matrix of second partial derivatives known as the **Hessian**.
 
 **Remarks:**
@@ -461,7 +463,7 @@ This property is often imposed on the error terms $\epsilon_t$ of statistical mo
 
 ### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
 
-**Definition (Autocovariance Function (ACVF)):** Let $X=\lbrace X_t\lbrace _{t \in I}$ be a stochastic process with $E[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+**Definition (Autocovariance Function (ACVF)):** Let $X=\lbrace X_t\rbrace _{t \in I}$ be a stochastic process with $E[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
 $$
 \gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = E[(X_s - E[X_s])(X_t - E[X_t])]
 $$
@@ -557,7 +559,7 @@ A complete statistical model generally consists of four key components:
 
 ### 4.2 Model Architecture
 
-Given a dataset $D = \{(x_t, y_t)\}_{t=1}^T$ where $y_t$ are responses and $x_t$ are predictors, the univariate linear regression model assumes a linear relationship:
+Given a dataset $D = \lbrace(x_t, y_t)\rbrace_{t=1}^T$ where $y_t$ are responses and $x_t$ are predictors, the univariate linear regression model assumes a linear relationship:
 $y_t = \beta_0 + \beta_1 x_t + \epsilon_t$
 The error term $\epsilon_t$ is typically assumed to be a white noise process, often Gaussian:
 $\epsilon_t \sim \mathcal{N}(0, \sigma^2)$
