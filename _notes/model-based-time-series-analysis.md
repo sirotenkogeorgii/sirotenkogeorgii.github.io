@@ -12,6 +12,16 @@ tags:
 
 # Model-Based Time Series Analysis
 
+<div class="accordion">
+  <details>
+    <summary>What happens if the noise forgets to be random?</summary>
+    <p>
+      Even a whimsical placeholder answer can reassure us that the accordion renders
+      correctly; replace this text with a proper explanation when you have real content.
+    </p>
+  </details>
+</div>
+
 ## 1. Review on Statistical Inference
 
 To reason about uncertainty in a mathematically sound way, we begin with the concept of a probability space. This structure consists of three essential components that formalize an experiment and its outcomes.
@@ -377,21 +387,23 @@ This can be viewed as an analogue to Gradient Descent (GD), but with an adaptive
 #### 2.4.3 Parameter Estimation for Intractable Bayesian Problems
 
 In Bayesian inference, we are interested in the posterior distribution of parameters $\theta$ given data $X$, which is given by Bayes' theorem:
-$p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$
-A significant problem arises when the normalizing constant, or model evidence, $p(X) = \int p(X \mid \theta)p(\theta) d\theta$, is intractable to compute. This intractability gives rise to a class of powerful simulation-based methods known as **Markov Chain Monte Carlo (MCMC)**.
+$p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem arises when the normalizing constant, or model evidence, $p(X) = \int p(X \mid \theta)p(\theta) d\theta$, is intractable to compute. This intractability gives rise to a class of powerful simulation-based methods known as **Markov Chain Monte Carlo (MCMC)**.
 
 **Core Concepts of MCMC**
 
 * **Monte Carlo Integration:** This principle states that we can estimate expectations by sampling. For a function $h(\theta)$, its expectation with respect to a probability distribution $p(\theta \mid X)$ is:
+
     $$
-    E[h(\theta) \mid X] = \int p(\theta \mid X) h(\theta) d\theta
+    \mathbb{E}[h(\theta) \mid X] = \int p(\theta \mid X) h(\theta) d\theta
     $$
+
     By drawing $N$ samples $\theta^{(i)}$ from the posterior $p(\theta \mid X)$, we can approximate this expectation using the law of large numbers:
+    
     $$
-    E[h(\theta) \mid X] \approx \frac{1}{N} \sum_{i=1}^{N} h(\theta^{(i)})
+    \mathbb{E}[h(\theta) \mid X] \approx \frac{1}{N} \sum_{i=1}^{N} h(\theta^{(i)})
     $$
-* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as:
-    $p(\theta_t \mid \theta_{t-1}, ..., \theta_0) = p(\theta_t \mid \theta_{t-1})$
+
+* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as $p(\theta_t \mid \theta_{t-1}, ..., \theta_0) = p(\theta_t \mid \theta_{t-1})$.
 
 **Posterior Sampling with Metropolis-Hastings**
 
@@ -404,14 +416,18 @@ $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 2.  **Iteration:** Loop for $i = 1, ..., N$:
     * **Propose:** Generate a new candidate sample $\theta_{prop}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{prop} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
     * **Compute Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
-        $r_{prop} := p(X \mid \theta_{prop})p(\theta_{prop})$
-        $r_{curr} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
-        The acceptance ratio is $r = \frac{r_{prop}}{r_{curr}}$.
+        * $r_{prop} := p(X \mid \theta_{prop})p(\theta_{prop})$
+        * $r_{curr} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
+        * The acceptance ratio is $r = \frac{r_{prop}}{r_{curr}}$.
     * **Accept or Reject:** Draw a random number $u$ from a uniform distribution, $u \sim \text{Unif}(0, 1)$.
         * If $u < \min(1, r)$, accept the proposal: $\theta^{(i)} = \theta_{prop}$.
         * Else, reject the proposal and stay at the current state: $\theta^{(i)} = \theta^{(i-1)}$.
 
-Under mild conditions, the resulting sequence of samples $\{\theta^{(i)}\}_{i=1}^N$ will be drawn from the target posterior distribution $p(\theta \mid X)$.
+Under mild conditions, the resulting sequence of samples $\{\theta^{(i)}\}_{i=1}^N$ will be drawn from the target posterior distribution $p(\theta \mid X)$. MCMC “walks around” the space in a way that favors high-probability regions but still occasionally explores others. Over time, the visited points represent the true distribution.
+
+In practice, MCMC is used for 
+* **Bayesian inference**: Sampling from posterior distributions when they can’t be computed analytically.
+* **Machine learning**: Training latent-variable models like topic models or VAEs.
 
 **Challenges in MCMC**
 
