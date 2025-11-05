@@ -345,16 +345,11 @@ Gradient Descent is an iterative first-order optimization algorithm for finding 
 
 #### 2.4.2 Newton-Raphson Method
 
-The Newton-Raphson method is a second-order optimization algorithm that uses the curvature of the loss landscape to take more informed steps. It adapts the learning rate by incorporating the Hessian matrix (the matrix of second partial derivatives).
+The Newton-Raphson method is an iterative algorithm for finding the roots of a function $f(x)$, i.e., finding $x$ such that $f(x)=0$. In the context of model optimization, the goal is often to find the roots of the *derivative* of the loss function, which correspond to potential minima or maxima. This method is a second-order optimization algorithm that uses the curvature of the loss landscape to take more informed steps. It adapts the learning rate by incorporating the Hessian matrix (the matrix of second partial derivatives).
 
 **Update Rule:**
 $\theta_{n+1} = \theta_n - H_{f(\theta_n)}^{-1} \nabla f(\theta_n),$
 where $H_{f(\theta_n)}$ is the Hessian matrix of the function $f$ evaluated at $\theta_n$. The term $H^{-1}$ acts as an adaptive, matrix-valued learning rate. While Newton-Raphson can converge much faster than GD, computing and inverting the Hessian is computationally expensive for the high-dimensional parameter spaces common in deep learning.
-
-
-#### 2.4.2 Newton-Raphson Method
-
-The Newton-Raphson method is an iterative algorithm for finding the roots of a function $f(x)$, i.e., finding $x$ such that $f(x)=0$. In the context of model optimization, the goal is often to find the roots of the *derivative* of the loss function, which correspond to potential minima or maxima.
 
 The update rule is derived from the first-order Taylor expansion of the function $f$ around an initial guess $\theta_0$:
 $f(\theta_1) \approx f(\theta_0) + (\theta_1 - \theta_0)f'(\theta_0)$
@@ -466,7 +461,7 @@ This property is often imposed on the error terms $\epsilon_t$ of statistical mo
 
 ### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
 
-**Definition (Autocovariance Function (ACVF)):** Let $X=\{X_t\}_{t \in I}$ be a stochastic process with $E[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+**Definition (Autocovariance Function (ACVF)):** Let $X=\lbrace X_t\lbrace _{t \in I}$ be a stochastic process with $E[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
 $$
 \gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = E[(X_s - E[X_s])(X_t - E[X_t])]
 $$
@@ -476,7 +471,7 @@ $\gamma_{XX}(s, t) = E[X_s X_t] - \mu_s \mu_t$
 **Basic Properties of ACVF:**
 * **Symmetry:** $\gamma_{XX}(s, t) = \gamma_{XX}(t, s)$
 * **Variance:** $\gamma_{XX}(t, t) = \text{Var}(X_t)$
-* **Cauchy-Schwarz Inequality:** $|\gamma_{XX}(s, t)| \leq \sqrt{\text{Var}(X_s)\text{Var}(X_t)}$
+* **Cauchy-Schwarz Inequality:** $\lvert \gamma_{XX}(s, t)\rvert \leq \sqrt{\text{Var}(X_s)\text{Var}(X_t)}$
 * The autocovariance function for a white noise process $X_t \sim WN(0, \sigma^2)$ is:
     $\gamma_{XX}(s, t) = \sigma^2 \delta_{st}$ where $\delta_{st}$ is the Kronecker delta.
 
@@ -498,7 +493,7 @@ $$
 
 #### 3.3.1 Strong (Strict) Stationarity
 
-**Definition (Strong Stationarity):** Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \{X_t\}_{t \in I}$ is **strongly stationary** if for any choice of time points $t_1, ..., t_m \in I$, the joint probability distribution of $(X_{t_1}, ..., X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, ..., X_{t_m+h})$, provided all time points remain in $I$.
+**Definition (Strong Stationarity):** Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace _{t \in I}$ is **strongly stationary** if for any choice of time points $t_1, ..., t_m \in I$, the joint probability distribution of $(X_{t_1}, ..., X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, ..., X_{t_m+h})$, provided all time points remain in $I$.
 $$
 (X_{t_1}, ..., X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, ..., X_{t_m+h})
 $$
