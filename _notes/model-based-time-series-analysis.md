@@ -554,6 +554,20 @@ $\textbf{Definition (Discrete vs. Continuous Time):}$
 1.  $\mathbb{E}[X_t] = 0$ for all $t \in I$.
 2.  $\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$
 
+<div class="accordion">
+  <details>
+    <summary>Short explanation of the second point.</summary>
+    <p>
+    <strong>“same distribution” ≠ “same random variable”</strong> and doesn’t imply any <strong>dependence</strong>.
+    </p>
+
+    $$
+    \mathrm{Cov}(X_s,X_t)=\mathbb{E}\big[(X_s-\mu)(X_t-\mu)\big].
+    $$
+
+  </details>
+</div>
+
 This property is often imposed on the error terms $\epsilon_t$ of statistical models. If, additionally, $X_t \sim \mathcal{N}(0, \sigma^2)$, the process is called a **Gaussian white noise process**.
 
 ### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
@@ -578,14 +592,29 @@ $$
     * $\gamma_{XX}(s, t) = \sigma^2 \delta_{s,t}$
     * where $\delta_{s,t}$ is the Kronecker delta.
 
+<div class="accordion">
+  <details>
+    <summary>Kronecker delta function</summary>
+    <p>
+      $$
+      \delta_{ij} =
+      \begin{cases}
+      1 & \text{if } i = j \
+      0 & \text{if } i \neq j
+      \end{cases}
+      $$
+    </p>
+  </details>
+</div>
+
 **Definition (Autocorrelation Function (ACF)):** The **autocorrelation function** is the normalized version of the autocovariance function, mapping $\rho_{XX}: I \times I \to [-1, 1]$:
 $$
 \rho_{XX}(s, t) = \frac{\gamma_{XX}(s, t)}{\sqrt{\gamma_{XX}(s, s)\gamma_{XX}(t, t)}} = \frac{\text{Cov}(X_s, X_t)}{\sqrt{\text{Var}(X_s)\text{Var}(X_t)}}
 $$
 
-**Definition (Cross-Covariance and Cross-Correlation Functions):** For two stochastic processes $X=\{X_t\}_{t \in I}$ and $Y=\{Y_t\}_{t \in I}$, the **cross-covariance function** is:
+**Definition (Cross-Covariance and Cross-Correlation Functions):** For two stochastic processes $X=\lbrace X_t\rbrace_{t \in I}$ and $Y=\lbrace Y_t\rbrace_{t \in I}$, the **cross-covariance function** is:
 $$
-\gamma_{XY}(s, t) = \text{Cov}(X_s, Y_t) = E[(X_s - \mu_{X,s})(Y_t - \mu_{Y,t})]
+\gamma_{XY}(s, t) = \text{Cov}(X_s, Y_t) = \mathbb{E}[(X_s - \mu_{X,s})(Y_t - \mu_{Y,t})]
 $$
 The **cross-correlation function** is its normalized version:
 $$
