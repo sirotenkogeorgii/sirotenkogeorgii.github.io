@@ -10,17 +10,18 @@ tags:
 # math: true
 ---
 
-# Model-Based Time Series Analysis
+<style>
+  .accordion summary {
+    font-weight: 600;
+    color: var(--accent-strong, #2c3e94);
+    background-color: var(--accent-soft, #f5f6ff);
+    padding: 0.35rem 0.6rem;
+    border-left: 3px solid var(--accent-strong, #2c3e94);
+    border-radius: 0.25rem;
+  }
+</style>
 
-<div class="accordion">
-  <details>
-    <summary>What happens if the noise forgets to be random?</summary>
-    <p>
-      Even a whimsical placeholder answer can reassure us that the accordion renders
-      correctly; replace this text with a proper explanation when you have real content.
-    </p>
-  </details>
-</div>
+# Model-Based Time Series Analysis
 
 ## 1. Review on Statistical Inference
 
@@ -424,6 +425,32 @@ $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
         * Else, reject the proposal and stay at the current state: $\theta^{(i)} = \theta^{(i-1)}$.
 
 Under mild conditions, the resulting sequence of samples $\{\theta^{(i)}\}_{i=1}^N$ will be drawn from the target posterior distribution $p(\theta \mid X)$. MCMC “walks around” the space in a way that favors high-probability regions but still occasionally explores others. Over time, the visited points represent the true distribution.
+
+<div class="accordion">
+  <details>
+    <summary>Does this method depend on the proposal distribution?</summary>
+    <p>
+      However, the beauty of Metropolis–Hastings is that it <strong>does not need the proposal to be a perfect guess of the target</strong>. The proposal just defines how the chain moves around, and the acceptance step ensures that — in the long run — the chain still samples from the true target distribution $p(x)$.
+    </p>
+    <p>That said:</p>
+    <ul>
+      <li>If $q(x' \mid x_t)$ is <strong>too narrow</strong>, the chain moves slowly (samples are highly correlated).</li>
+      <li>If it’s <strong>too wide</strong>, the chain proposes jumps into low-probability regions often — so many proposals get rejected.</li>
+      <li>If it’s <strong>reasonably tuned</strong>, you get efficient mixing and faster convergence.</li>
+    </ul>
+    <p>So, the proposal influences <strong>efficiency</strong>, not <strong>correctness</strong> (assuming detailed balance holds).</p>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>So, we sample new data from the proposal, but judge it based on the true target distribution?</summary>
+    <p>
+      <strong>Exactly.</strong> The proposal generates <strong>candidates</strong>, and the <strong>target distribution</strong> determines whether they are “good enough” to accept.This acceptance rule corrects any bias introduced by the proposal and ensures that the long-run distribution of samples is the true target $p(x)$. That balance between exploration and exploitation is what makes MCMC powerful.
+    </p>
+  </details>
+</div>
+
 
 In practice, MCMC is used for 
 * **Bayesian inference**: Sampling from posterior distributions when they can’t be computed analytically.
