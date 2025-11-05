@@ -408,6 +408,8 @@ $p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem ari
 
 **Posterior Sampling with Metropolis-Hastings**
 
+We can evaluate $p(⋅)$ for individual points but don’t know its normalization constant. Since we only care about the shape of the posterior, MCMC methods let us bypass computing the normalization constant and still approximate the posterior.
+
 The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, \theta^{(1)}, ..., \theta^{(N)}$, that form a Markov chain whose stationary distribution is the target posterior distribution $p(\theta \mid X)$. We can work with the unnormalized posterior density, as the algorithm only depends on the ratio of densities, where the normalizing constant cancels out.
 $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
@@ -466,15 +468,65 @@ In practice, MCMC is used for
 * **Parameter Constraints:** If parameters must conform to certain constraints (e.g., positivity), proposals that violate these constraints must be rejected, or transformations must be applied.
 * **Autocorrelation:** Consecutive samples in the chain are often highly correlated. To obtain nearly independent samples, a technique called **thinning** is used, which involves keeping only every $n$-th sample and discarding the rest.
 
+<div class="accordion">
+  <details>
+    <summary>Why does autocorrelation matter?</summary>
+    <p>
+      When you run an MCMC sampler, each sample depends on the <strong>previous one</strong> — that’s the <em>Markov chain</em> property. This dependence means that <strong>successive samples are correlated</strong>, especially if the chain moves slowly through the space. This is called <strong>autocorrelation</strong>.
+    </p>
+    <p>
+      Formally, for a sequence of samples $x^{(1)}, x^{(2)}, \dots$, the <strong>lag-\(k\)</strong> autocorrelation is:
+    </p>
+    $$
+    \rho_k = \frac{\operatorname{Cov}(x^{(t)}, x^{(t+k)})}{\operatorname{Var}(x)}
+    $$
+    <ul>
+      <li>If $\rho_k$ is high (close to 1), it means samples $k$ steps apart are <strong>very similar</strong>.</li>
+      <li>If $\rho_k$ drops to 0 quickly, your chain is <strong>mixing well</strong> — it’s exploring the target distribution efficiently.</li>
+    </ul>
+    <p><strong>Why it matters</strong></p>
+    <p>High autocorrelation means:</p>
+    <ul>
+      <li>You have <strong>less independent information</strong> per sample.</li>
+      <li>You need <strong>more samples</strong> to get a good estimate of expectations.</li>
+    </ul>
+    <p>
+      For example, if you have 10 000 samples but strong autocorrelation, your <strong>effective sample size (ESS)</strong> might only be a few hundred.
+    </p>
+    <p><strong>Thinning</strong></p>
+    <p><strong>Thinning</strong> is a simple (though not always ideal) technique to reduce autocorrelation.</p>
+    <p>
+      You keep only every $k$-th sample and discard the rest:
+    </p>
+    $$
+    x^{(1)},\; x^{(k+1)},\; x^{(2k+1)},\; \dots
+    $$
+    <p>
+      The idea: if the chain is correlated over short lags, spacing samples apart might make them <em>approximately independent</em>.
+    </p>
+  </details>
+</div>
+
 Different MCMC algorithms exist for different problem structures. For instance, **Gibbs Sampling** is highly effective when dealing with models that have dependent parameters and where conditional distributions are easy to sample from.
 
 **Parameter Inference for Latent Variable Models**
 
 When the data generating process depends on both parameters $\theta$ and unobserved **latent variables** $z$, the model is specified as $p_\theta(X, z)$. The log-likelihood of the observed data $X$ requires marginalizing out these latent variables:
+
 $$
 \log p_\theta(X) = \log \int p_\theta(X, z) dz
 $$
+
 This integration is often intractable, necessitating methods like MCMC or Variational Inference.
+
+<div class="accordion">
+  <details>
+    <summary>How is MCMC applied in Latent Variable Models?</summary>
+    <p>
+      #TODO
+    </p>
+  </details>
+</div>
 
 ---
 
@@ -482,15 +534,16 @@ This integration is often intractable, necessitating methods like MCMC or Variat
 
 ### 3.1 Stochastic Processes and Time Series
 
-Intuitively, a time series is a realization or **sample path** of a random process, such as $\{X_1, X_2, ..., X_T\}$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
+Intuitively, a time series is a realization or **sample path** of a random process, such as $\lbrace X_1, X_2, ..., X_T\rbrace$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
 
-**Definition (Stochastic Process):** Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \{X_t\}_{t \in I}$ with values in $E$ is called a **stochastic process**.
+$\textbf{Definition (Stochastic Process):}$ Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \lbrace X_t\rbrace_{t \in I}$ with values in $E$ is called a **stochastic process**.
+$\textbf{Definition (Stochastic Process):}$ Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \lbrace X_t\rbrace _{t \in I}$ with values in $E$ is called a **stochastic process**.
 
-**Definition (Time Series):** A **time series** is a stochastic process $X = \{X_t\}_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
+$\textbf{Definition (Time Series):}$ A **time series** is a stochastic process $X = \{X_t\}_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
 
-**Definition (Sample Path (Realization)):** A **sample path** is a single outcome or sequence of observations $\{x_t\}_{t \in I}$ from a stochastic process. For example, $\{x_1, x_2, ..., x_T\}$.
+$\textbf{Definition (Sample Path (Realization)):}$ A **sample path** is a single outcome or sequence of observations $\{x_t\}_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, ..., x_T\rbrace$.
 
-**Definition (Discrete vs. Continuous Time):**
+$\textbf{Definition (Discrete vs. Continuous Time):}$
 * If the index set $I$ is countable (e.g., $I = \mathbb{Z}$ or $I = \mathbb{N}$), the process is a **discrete-time process**.
 * If the index set $I$ is an interval (e.g., $I = [0, T]$), the process is a **continuous-time process**.
 
