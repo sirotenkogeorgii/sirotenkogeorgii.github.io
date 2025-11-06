@@ -230,23 +230,32 @@ $\textbf{Theorem 16:}$ Every decidable language is recognized by a total determi
 6. $M'$ is designed to accept if and only if its search finds an accepting configuration of $M$. Therefore, $L(M') = L(M) = L$. This shows that $L$ is recognized by a total deterministic Turing machine.
 
 <div class="note-callout">
-  <p class="note-callout__title">Comment on the 4th step (Why the search is deterministic)</p>
+  <p class="note-callout__title">Comment on the 4th step (Why is the search is deterministic)</p>
   <p>
-    Even though $M$ may be *nondeterministic*, the **simulation algorithm** that $M'$ runs is **deterministic** because:
-
-    1. $M'$ doesn’t “choose” among nondeterministic transitions.
-      Instead, it **enumerates them** in a *fixed, deterministic order*.
-    2. For example:
-      * Each configuration of $M$ can be represented as a finite string (encoding of the state, tape contents, and head position).
-      * $M'$ maintains a queue or stack of configurations to explore.
-      * It processes them one by one — e.g., breadth-first or depth-first search.
-    3. Whenever $M'$ encounters a configuration that has multiple possible next configurations (because $M$ is nondeterministic), it just **adds all of them** to the queue in a **predetermined order** (say, lexicographic order of configurations or transition indices).
-
-    Thus, although the *simulated machine* $M$ is nondeterministic, the *simulating machine* $M'$ follows a fully **deterministic algorithm** for enumerating and checking all branches.*
+    Even though $M$ may be <em>nondeterministic</em>, the <strong>simulation algorithm</strong> that $M'$ runs is <strong>deterministic</strong> because:
+  </p>
+  <ol>
+    <li>
+      $M'$ doesn’t “choose” among nondeterministic transitions. Instead, it <strong>enumerates them</strong> in a <em>fixed, deterministic order</em>.
+    </li>
+    <li>
+      For example:
+      <ul>
+        <li>Each configuration of $M$ can be represented as a finite string (encoding of the state, tape contents, and head position).</li>
+        <li>$M'$ maintains a queue or stack of configurations to explore.</li>
+        <li>It processes them one by one — e.g., breadth-first or depth-first search.</li>
+      </ul>
+    </li>
+    <li>
+      Whenever $M'$ encounters a configuration that has multiple possible next configurations (because $M$ is nondeterministic), it just <strong>adds all of them</strong> to the queue in a <strong>predetermined order</strong> (say, lexicographic order of configurations or transition indices).
+    </li>
+  </ol>
+  <p>
+    Thus, although the <em>simulated machine</em> $M$ is nondeterministic, the <em>simulating machine</em> $M'$ follows a fully <strong>deterministic algorithm</strong> for enumerating and checking all branches.
   </p>
 </div>
 
-<!-- *Comment on the 4th step (Why the search is deterministic)* -->
+<!-- *Comment on the 4th step (Why is the search deterministic)* -->
 
 
 ### Computable Functions
@@ -408,38 +417,38 @@ Timing Analysis: The initialization takes $n + \lceil n/d \rceil + 2$ steps. The
 
 The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $\frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$.
 
-<div class="note-callout">
-  <p class="note-callout__title">
-    Comment on the simulation phase (Why to scan left/right cells and Why is M′ deterministic)
-  </p>
+<div class="accordion">
+  <details>
+    <summary>Comment on the simulation phase (Why to scan left/right cells and Why is M′ deterministic)</summary>
 
-  <p>
-    We compress M’s tape into blocks of <code>d</code> symbols, so M′ sees one macro-cell per block.
-    In the next <code>d</code> real steps of M:
-  </p>
-  <ul>
-    <li>Each head can move at most <code>d</code> squares.</li>
-    <li>Starting anywhere inside the current block, after <code>d</code> moves the head can only be in the same block or one of its immediate neighbors (it can’t skip two blocks).</li>
-    <li>Moreover, M can read and write anywhere it visits during those <code>d</code> moves. That set of positions is contained within the current block plus at most one block to the left and one to the right.</li>
-  </ul>
+    <p>
+      We compress M’s tape into blocks of <code>d</code> symbols, so M′ sees one macro-cell per block.
+      In the next <code>d</code> real steps of M:
+    </p>
+    <ul>
+      <li>Each head can move at most <code>d</code> squares.</li>
+      <li>Starting anywhere inside the current block, after <code>d</code> moves the head can only be in the same block or one of its immediate neighbors (it can’t skip two blocks).</li>
+      <li>Moreover, M can read and write anywhere it visits during those <code>d</code> moves. That set of positions is contained within the current block plus at most one block to the left and one to the right.</li>
+    </ul>
 
-  <p>M is deterministic. So if we know:</p>
-  <ul>
-    <li>M’s current state,</li>
-    <li>for each tape: the head’s offset inside its current block,</li>
-    <li>for each tape: the contents of the three relevant macro-cells (left, current, right),</li>
-  </ul>
+    <p>M is deterministic. So if we know:</p>
+    <ul>
+      <li>M’s current state,</li>
+      <li>for each tape: the head’s offset inside its current block,</li>
+      <li>for each tape: the contents of the three relevant macro-cells (left, current, right),</li>
+    </ul>
 
-  <p>
-    then the next <code>d</code> moves of M are completely determined by its transition function. There are only finitely many possibilities for that local information (finite state set, finite alphabet, fixed <code>d</code>, finite offsets <code>0,…,d−1</code>), so M′ can precompute a macro-transition table:
-  </p>
+    <p>
+      then the next <code>d</code> moves of M are completely determined by its transition function. There are only finitely many possibilities for that local information (finite state set, finite alphabet, fixed <code>d</code>, finite offsets <code>0,…,d−1</code>), so M′ can precompute a macro-transition table:
+    </p>
 
-  <pre><code>(state, offsets, 3-block contents per tape)
+    <pre><code>(state, offsets, 3-block contents per tape)
 → (new state, updated 3-block contents, new offsets, which block is current)</code></pre>
 
-  <p>
-    During simulation, M′ just looks up the outcome and then writes the updated macro-cells and moves its heads accordingly — this is why simulating <code>d</code> steps costs <code>O(1)</code> steps for M′.
-  </p>
+    <p>
+      During simulation, M′ just looks up the outcome and then writes the updated macro-cells and moves its heads accordingly — this is why simulating <code>d</code> steps costs <code>O(1)</code> steps for M′.
+    </p>
+  </details>
 </div>
 
 
@@ -454,7 +463,7 @@ $\textbf{Theorem 29:}$ Alphabet reduction Let $t$ be a time bound, let $k \ge 2$
 The core idea is to encode each symbol $a_j$ from $M'$s alphabet as a unique binary string. We can use the encoding where $a_j$ is represented by the string $1^j0^{r-j}$.
 
 1. Initialization Phase: On input $w, M'$ first translates $w$ into its binary-encoded form. Using a second tape, this can be done in $2r \lvert w \rvert$ steps.
-2. Simulation Phase: $M'$ simulates the computation of M step-by-step. To simulate a single step of $M$, $M'$ must:
+2. Simulation Phase: $M'$ simulates the computation of $M$ step-by-step. To simulate a single step of $M$, $M'$ must:
   * Read: Identify the symbol under each of $M$'s heads. This requires $M'$ to read the corresponding block of $r$ binary symbols on each of its tapes. While reading a block, $M'$ uses its state to remember its position within the block and the binary pattern it has seen so far.
   * Write/Move: Based on $M'$s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
 
@@ -539,9 +548,9 @@ These implications are logically equivalent to their contrapositions, i.e., to:
 * $A \notin \text{P}$ implies $B \notin \text{P}$,
 * $A \notin \text{NP}$ implies $B \notin \text{NP}$.
 
-**Proof.**: We prove the first implication, $B \in \text{P} \implies A \in \text{P}$. The proof for NP is very similar. Let $A \le_p^m B$ via a function $g \in \text{FP}$. Let $M_g$ be a deterministic Turing machine that computes $g$ in time $p_g(n)$ for some polynomial $p_g$. Since $B \in \text{P}$, there is a deterministic Turing machine $M_B$ that decides $B$ in time $p_B(n)$ for some polynomial $p_B$.
+**Proof.**: We prove the first implication, $B \in \text{P} \implies A \in \text{P}$. The proof for $NP$ is very similar. Let $A \le_p^m B$ via a function $g \in \text{FP}$. Let $M_g$ be a deterministic Turing machine that computes $g$ in time $p_g(n)$ for some polynomial $p_g$. Since $B \in \text{P}$, there is a deterministic Turing machine $M_B$ that decides $B$ in time $p_B(n)$ for some polynomial $p_B$.
 
-We can construct a deterministic Turing machine M_A to decide A as follows:
+We can construct a deterministic Turing machine $M_A$ to decide $A$ as follows:
 
 1. On input $x$, $M_A$ first runs $M_g$ to compute $g(x)$. This takes $p_g(\lvert x \rvert)$ time. The length of the output $g(x)$ is at most $p_g(\lvert x \rvert)$.
 2. Next, $M_A$ simulates $M_B$ on the input $g(x)$. This takes $p_B(\lvert g(x) \rvert) \le p_B(p_g(\lvert x \rvert))$ time.
@@ -576,7 +585,10 @@ There are further, provably different notions of $NP$-hardness and $NP$-complete
 
 The existence of $NP$-complete problems provides a powerful way to frame one of the most significant open questions in computer science: whether $P$ equals $NP$.
 
-$\textbf{Theorem 40 The following statements are equivalent. (i)}$ $P = NP$. (ii) All $NP$-complete sets are in $P$. (iii) There is an $NP$-complete set in $P$.
+$\textbf{Theorem 40 The following statements are equivalent.}$ 
+* (i) $P = NP$. 
+* (ii) All $NP$-complete sets are in $P$. 
+* (iii) There is an $NP$-complete set in $P$.
 
 **Proof.**:
 
@@ -617,11 +629,11 @@ $\textbf{Remark 45:}$ The set of all $NP$-complete languages forms a single $p$-
 
 ### An Anomaly of $P$-$M$-Reducibility
 
-The formal definition of $p$-$m$-reducibility leads to some unusual properties, particularly concerning languages in $P$ and the two trivial languages, the empty set ($\emptyset$) and the set of all strings ($\lbrace 0, 1\rbrace ^*$).
+The formal definition of $p$-$m$-reducibility leads to some unusual properties, particularly concerning languages in $P$ and the two trivial languages, the empty set $\emptyset$ and the set of all strings $\lbrace 0, 1\rbrace ^*$.
 
-$\textbf{Remark 46:}$ Since the class $P$ is downward closed under $p$-$m$-reducibility, no language outside of $P$ can be $p$-$m$-reduced to a language in $P$. Conversely, every language in $P$ is $p$-$m$-reducible to any other language, with the exception of $\emptyset$ and $\{0, 1\}$^*.
+$\textbf{Remark 46:}$ Since the class $P$ is downward closed under $p$-$m$-reducibility, no language outside of $P$ can be $p$-$m$-reduced to a language in $P$. Conversely, every language in $P$ is $p$-$m$-reducible to any other language, with the exception of $\emptyset$ and $\lbrace 0, 1\rbrace^*$.
 
-To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \{0, 1\}^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
+To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \lbrace0, 1\rbrace^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
 
 $\textbf{Remark 47:}$ By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0, 1 \rbrace ^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0, 1\rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
 
@@ -633,7 +645,7 @@ To prove that a language is $NP$-hard, the standard method is to show that a kno
 
 We begin by formally defining the components of propositional logic.
 
-$\textbf{Definition 48: Propositional Formula.}$ Let $\Lambda = \{\neg, \land, (, )\}$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
+$\textbf{Definition 48: Propositional Formula.}$ Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
 
 * Base case: Every element of Var is a propositional formula.
 * Inductive step: If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
