@@ -9,7 +9,16 @@ tags:
   - theory
 ---
 
-
+<style>
+  .accordion summary {
+    font-weight: 600;
+    color: var(--accent-strong, #2c3e94);
+    background-color: var(--accent-soft, #f5f6ff);
+    padding: 0.35rem 0.6rem;
+    border-left: 3px solid var(--accent-strong, #2c3e94);
+    border-radius: 0.25rem;
+  }
+</style>
 
 <div class="note-callout">
   <p class="note-callout__title">Remark</p>
@@ -107,8 +116,7 @@ $$
 u = \square^{r_1} u_f \square^{r_2} \quad \text{with} \quad r_1, r_2 \in \mathbb{N}
 $$
 
-i.e., by any word u that equals the relevant part of the tape inscription f plus at most
-finitely many leading and trailing blank symbols.
+i.e., by any word u that equals the relevant part of the tape inscription $f$ plus at most finitely many leading and trailing blank symbols.
 
 Using this representation for tape contents, we can formally define a configuration.
 
@@ -173,7 +181,7 @@ $\textbf{Definition 10 (Initial and Halting Configuration, Computation):}$ Let $
 
 For a nondeterministic machine, the set of all possible computations on a given input $w$ can be visualized as a tree.
 
-$\textbf{Definition 11 (Computation Tree):}$ The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of M such that:
+$\textbf{Definition 11 (Computation Tree):}$ The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of $M$ such that:
 
 * The root is labelled with the initial configuration of $M$ on input $w$.
 * The children of an internal node labelled with configuration $C$ are labelled with the successor configurations of $C$. If there are $t > 0$ applicable instructions, the node has $t$ children, one for each resulting successor configuration.
@@ -229,30 +237,32 @@ $\textbf{Theorem 16:}$ Every decidable language is recognized by a total determi
 5. Since the tree is finite, this search is guaranteed to terminate. Thus, $M'$ is a total machine.
 6. $M'$ is designed to accept if and only if its search finds an accepting configuration of $M$. Therefore, $L(M') = L(M) = L$. This shows that $L$ is recognized by a total deterministic Turing machine.
 
-<div class="note-callout">
-  <p class="note-callout__title">Comment on the 4th step (Why is the search is deterministic)</p>
-  <p>
-    Even though $M$ may be <em>nondeterministic</em>, the <strong>simulation algorithm</strong> that $M'$ runs is <strong>deterministic</strong> because:
-  </p>
-  <ol>
-    <li>
-      $M'$ doesn’t “choose” among nondeterministic transitions. Instead, it <strong>enumerates them</strong> in a <em>fixed, deterministic order</em>.
-    </li>
-    <li>
-      For example:
-      <ul>
-        <li>Each configuration of $M$ can be represented as a finite string (encoding of the state, tape contents, and head position).</li>
-        <li>$M'$ maintains a queue or stack of configurations to explore.</li>
-        <li>It processes them one by one — e.g., breadth-first or depth-first search.</li>
-      </ul>
-    </li>
-    <li>
-      Whenever $M'$ encounters a configuration that has multiple possible next configurations (because $M$ is nondeterministic), it just <strong>adds all of them</strong> to the queue in a <strong>predetermined order</strong> (say, lexicographic order of configurations or transition indices).
-    </li>
-  </ol>
-  <p>
-    Thus, although the <em>simulated machine</em> $M$ is nondeterministic, the <em>simulating machine</em> $M'$ follows a fully <strong>deterministic algorithm</strong> for enumerating and checking all branches.
-  </p>
+<div class="accordion">
+  <details>
+    <summary>Comment on the 4th step (Why the search is deterministic)</summary>
+    <p>
+      Even though $M$ may be <em>nondeterministic</em>, the <strong>simulation algorithm</strong> that $M'$ runs is <strong>deterministic</strong> because:
+    </p>
+    <ol>
+      <li>
+        $M'$ doesn’t “choose” among nondeterministic transitions. Instead, it <strong>enumerates them</strong> in a <em>fixed, deterministic order</em>.
+      </li>
+      <li>
+        For example:
+        <ul>
+          <li>Each configuration of $M$ can be represented as a finite string (encoding of the state, tape contents, and head position).</li>
+          <li>$M'$ maintains a queue or stack of configurations to explore.</li>
+          <li>It processes them one by one — e.g., breadth-first or depth-first search.</li>
+        </ul>
+      </li>
+      <li>
+        Whenever $M'$ encounters a configuration that has multiple possible next configurations (because $M$ is nondeterministic), it just <strong>adds all of them</strong> to the queue in a <strong>predetermined order</strong> (say, lexicographic order of configurations or transition indices).
+      </li>
+    </ol>
+    <p>
+      Thus, although the <em>simulated machine</em> $M$ is nondeterministic, the <em>simulating machine</em> $M'$ follows a fully <strong>deterministic algorithm</strong> for enumerating and checking all branches.
+    </p>
+  </details>
 </div>
 
 <!-- *Comment on the 4th step (Why is the search deterministic)* -->
@@ -405,11 +415,11 @@ Each symbol in the tape alphabet of $M'$ will represent a block of $d$ symbols f
   * It writes this new, compressed input onto its second tape.
   * Simultaneously, it overwrites the original input on the first tape with blank symbols.
   * Finally, it positions the head of the second tape at the beginning of the compressed input.
-  * This phase takes $n + \lceil n/d \rceil + 2$ steps. After this, $M'$ will simulate $M$, treating its second tape as the primary input tape.
+  * This phase takes $\underbrace{n}_{\text{read →}} + \underbrace{\lceil n/d \rceil}_{\text{go back ←}} + 2$ steps. After this, $M'$ will simulate $M$, treating its second tape as the primary input tape.
 2. Simulation Phase:
   * $M'$ simulates $d$ steps of $M$ using just $7$ of its own steps. To do this, $M'$ uses its finite control (its state) to store key information about $M$'s current configuration: $M$'s current state, and for each tape, the head position of $M$ within the larger macro-symbol that $M'$ is currently scanning.
   * In each simulation cycle, $M'$ needs to know the contents of the cells $M$'s heads are on, as well as the adjacent cells, to determine $M$'s next $d$ moves. A "relevant" cell for $M'$ is one that is currently scanned or is immediately to its left or right.
-  * $M'$ first reads all symbols on its relevant cells by moving one step left and two steps right ($3$ steps total), storing this information in its state.
+  * $M'$ first reads all symbols on its relevant cells by moving one step left and two steps right ($3$ steps total), **storing this information in its state**.
   * With the complete local information ($M$'s state, head positions, and relevant cell contents), $M'$ can determine the outcome of the next $d$ steps of $M$. Since $d$ is a constant, all possible outcomes can be pre-computed and stored in $M'$'s transition function (a finite table lookup). This information includes $M$'s new state, the new content of the relevant cells, and the new head positions.
   * $M'$ then uses another $4$ steps to update its tape cells and move its heads to the new positions corresponding to $M'$s configuration after $d$ steps.
 
@@ -462,10 +472,10 @@ $\textbf{Theorem 29:}$ Alphabet reduction Let $t$ be a time bound, let $k \ge 2$
 
 The core idea is to encode each symbol $a_j$ from $M'$s alphabet as a unique binary string. We can use the encoding where $a_j$ is represented by the string $1^j0^{r-j}$.
 
-1. Initialization Phase: On input $w, M'$ first translates $w$ into its binary-encoded form. Using a second tape, this can be done in $2r \lvert w \rvert$ steps.
+1. Initialization Phase: On input $w, M'$ first translates $w$ into its binary-encoded form. Using a second tape, this can be done in $2r \lvert w \rvert$ steps: each symbol of $w$ is encoded with the sequence of the length $r$.
 2. Simulation Phase: $M'$ simulates the computation of $M$ step-by-step. To simulate a single step of $M$, $M'$ must:
   * Read: Identify the symbol under each of $M$'s heads. This requires $M'$ to read the corresponding block of $r$ binary symbols on each of its tapes. While reading a block, $M'$ uses its state to remember its position within the block and the binary pattern it has seen so far.
-  * Write/Move: Based on $M'$s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
+  * Write/Move: Based on $M$'s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
 
 Simulating one step of $M$ requires reading and potentially writing $k$ blocks of $r$ symbols each. This takes a constant number of steps proportional to $r$. Thus, a single step of $M$ can be simulated in $d \cdot r$ steps of $M'$ for some constant $d$. The total running time of $M'$ is therefore bounded by a constant multiple of $t(n)$, as required.
 
@@ -477,11 +487,11 @@ $\textbf{Theorem 30:}$ Tape reduction Let $t$ be a time bound and let $L$ be a l
 
 **Proof.**: We construct a single-tape Turing machine $M'$ that simulates a $k$-tape machine $M$. The single tape of $M'$ is structured to represent all $k$ tapes of $M$ simultaneously using a system of "tracks".
 
-Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma$' of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, * \rbrace $, where $*$ is used as the head marker.
+Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma'$ of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, * \rbrace $, where $*$ is used as the head marker.
 
 #### The simulation proceeds as follows:
 
-1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of $M$. This involves writing w onto the first track and placing head markers $(*)$ at the beginning of all head-position tracks.
+1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of $M$. This involves writing $w$ onto the first track and placing head markers $(*)$ at the beginning of all head-position tracks.
 2. Simulation of a Single Step: To simulate one step of $M$, $M'$ performs a subroutine:
   * (i) Scan and Read: $M'$ sweeps its single head across the entire active portion of its tape to find the $k$ head markers $(*)$. As it passes each marker, it notes the corresponding tape symbol from the content track and stores all $k$ symbols in its state.
   * (ii) Update and Write: After collecting all necessary information, $M'$ knows what transition $M$ will make. It then performs a second sweep across the tape to update the tape contents and move the head markers $(*)$ one position left or right, as dictated by $M$'s transition function. It also updates the state of $M$, which is stored in its own finite control.
@@ -494,7 +504,7 @@ Since $M$ makes at most $t(n)$ steps in total, the entire simulation on $M'$ req
 
 #### On the Requirement for Time Bounds
 
-$\textbf{Remark 31: By definition, a time bound $t$ must satisfy $t(n)$}$ $\ge n$. The latter requirement indeed makes sense because for other t, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length $n_1$. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
+$\textbf{Remark 31: By definition, a time bound $t$ must satisfy $t(n)$}$ $\ge n$. The latter requirement indeed makes sense because for other $t$, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length $n_1$. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
 
 ### Nondeterministic Time Complexity
 
@@ -514,7 +524,7 @@ Similar to the deterministic case, we can define major complexity classes based 
 
 $\textbf{Definition 33: Examples of nondeterministic time classes We define the complexity classes:}$
 
-* $NP$ = $\text{NTIME}$($\text{poly}$)
+* $\text{NP}$ = $\text{NTIME}$($\text{poly}$)
 * $\text{NE} = \text{NTIME}(2^{\text{lin}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{c n + c})$
 * $\text{NEXP} = \text{NTIME}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{n^c + c})$
 
@@ -534,11 +544,11 @@ This type of reduction, often called a $p$-$m$-reduction or Karp reduction, acts
 
 Complexity classes often exhibit closure properties with respect to reductions.
 
-$\textbf{Definition 36}$ A set of languages is closed downward under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
+$\textbf{Definition 36 (Closed Downward, Closed Upward):}$ A set of languages is closed downward under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
 
 Many important complexity classes, such as $P$ and $NP$, are closed downward. This means that if a problem $B$ is in the class, any problem that is polynomially reducible to $B$ is also in that class.
 
-$\textbf{Proposition 37:}$ Downward closure of $P$ and $NP$ under $p$-$m$-reducibility Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
+$\textbf{Proposition 37 (Downward closure of $P$ and $NP$ under $p$-$m$-reducibility):}$ Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
 
 * $B \in \text{P}$ implies $A \in \text{P}$,
 * $B \in \text{NP}$ implies $A \in \text{NP}$.
@@ -573,7 +583,9 @@ $\textbf{Proposition 38}$ The relation $\le_p^m$ is reflexive and transitive.
 
 Reducibility allows us to identify the "hardest" problems within a complexity class. For the class $NP$, these are the $NP$-complete problems.
 
-$\textbf{Definition 39:}$ $NP$-complete languages $A$ language $B$ is $NP$-hard if all languages in $NP$ are $p$-$m$-reducible to $B$. A language is $NP$-complete if it is $NP$-hard and belongs to $NP$.
+$\textbf{Definition 39 (NP-complete languages):}$ 
+* A language $B$ is $NP$-hard if all languages in $NP$ are $p$-$m$-reducible to 
+* $B$ A language is $NP$-complete if it is $NP$-hard and belongs to $NP$.
 
 An $NP$-complete problem is thus a problem that is both in $NP$ and is at least as hard as every other problem in $NP$.
 
@@ -625,17 +637,17 @@ $\textbf{Remark 44:}$ The $p$-$m$-equivalence is an equivalence relation. Conseq
 
 Within the class $NP$, the structure of $p$-$m$-degrees reveals important insights into the relationship between complexity classes.
 
-$\textbf{Remark 45:}$ The set of all $NP$-complete languages forms a single $p$-$m$-degree. Similarly, the class $P$, excluding the trivial languages $\emptyset$ and $\{0, 1\}$^*, also forms a $p$-$m$-degree. It has been shown that if $P \ne NP$, then the class $NP$ contains infinitely many distinct $p$-$m$-degrees. In fact, under this assumption, every finite partial order can be embedded into the structure of these degrees.
+$\textbf{Remark 45:}$ The set of all $NP$-complete languages forms a single $p$-$m$-degree. Similarly, the class $P$, excluding the trivial languages $\emptyset$ and $\lbrace 0, 1\rbrace^*$, also forms a $p$-$m$-degree. It has been shown that if $P \ne NP$, then the class $NP$ contains infinitely many distinct $p$-$m$-degrees. In fact, under this assumption, every finite partial order can be embedded into the structure of these degrees.
 
 ### An Anomaly of $P$-$M$-Reducibility
 
-The formal definition of $p$-$m$-reducibility leads to some unusual properties, particularly concerning languages in $P$ and the two trivial languages, the empty set $\emptyset$ and the set of all strings $\lbrace 0, 1\rbrace ^*$.
+The formal definition of $p$-$m$-reducibility leads to some unusual properties, particularly concerning languages in $P$ and the two trivial languages, the empty set $\emptyset$ and the set of all strings $\lbrace 0, 1\rbrace^*$.
 
 $\textbf{Remark 46:}$ Since the class $P$ is downward closed under $p$-$m$-reducibility, no language outside of $P$ can be $p$-$m$-reduced to a language in $P$. Conversely, every language in $P$ is $p$-$m$-reducible to any other language, with the exception of $\emptyset$ and $\lbrace 0, 1\rbrace^*$.
 
 To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \lbrace0, 1\rbrace^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
 
-$\textbf{Remark 47:}$ By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0, 1 \rbrace ^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0, 1\rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
+$\textbf{Remark 47:}$ By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0, 1\rbrace^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0, 1\rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
 
 ### The Satisfiability Problem ($\text{SAT}$)
 
@@ -645,9 +657,9 @@ To prove that a language is $NP$-hard, the standard method is to show that a kno
 
 We begin by formally defining the components of propositional logic.
 
-$\textbf{Definition 48: Propositional Formula.}$ Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
+$\textbf{Definition 48 (Propositional Formula):}$ Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
 
-* Base case: Every element of Var is a propositional formula.
+* Base case: Every element of $\text{Var}$ is a propositional formula.
 * Inductive step: If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
 
 In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true ($1$) and false ($0$) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
