@@ -830,3 +830,657 @@ Now, we must show that $\phi$ is satisfiable if and only if $\phi$' is satisfiab
 ($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi$' must also be unsatisfiable. Let $b$ be an arbitrary assignment for the variables in $\phi$'. Since $\phi$ is unsatisfiable, under the restriction of $b$ to the original variables, at least one clause $C_i$ in $\phi$ must be false. This means all literals $L_1^i$, $\dots$, $L_{k_i}^i$ are false. Now consider the corresponding formula $\kappa_i$ under assignment $b$:  $\kappa_i \equiv (L_1^i \lor Z_1^i) \land (\neg Z_1^i \lor L_2^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$.  Since $L_1^i$ is false, the first clause $(L_1^i \lor Z_1^i)$ implies that $Z_1^i$ must be true to satisfy $\kappa_i$. Now consider the second clause $(\neg Z_1^i \lor L_2^i \lor Z_2^i)$. Since $Z_1^i$ is true and $L_2^i$ is false, this clause implies $Z_2^i$ must be true. Propagating this logic forward, we find that for $\kappa_i$ to be true, $Z_1^i, Z_2^i, \dots, Z_{k_i-1}^i$ must all be true. However, the final clause is $(\neg Z_{k_i-1}^i \lor L_{k_i}^i)$. Since $Z_{k_i-1}^i$ must be true and $L_{k_i}^i$ is false, this final clause evaluates to false. Therefore, $\kappa_i$ is false. Since $\phi$' is a conjunction containing $\kappa_i$, $\phi$' is also false. As $b$ was an arbitrary assignment, this shows that $\phi$' is unsatisfiable.
 
 Thus, we have shown that $\text{SAT}$ $\le_p^m$ $\text{3-SAT}$, which completes the proof. ∎
+
+-----
+
+### Further NP-Complete Languages
+
+Many practical computational problems are known to correspond to $\text{NP}$-complete languages. Proving a problem is $\text{NP}$-complete demonstrates that it is among the hardest problems in the class $\text{NP}$, and an efficient (polynomial-time) algorithm for it is unlikely to exist. This section will demonstrate the $\text{NP}$-completeness of the clique problem.
+
+#### The Clique Problem
+
+A common problem in graph theory is identifying a "clique," which is a subgraph where every vertex is connected to every other vertex.
+
+$\textbf{Definition 54 (Clique problem):}$ A subset $C$ of the vertex set $V$ of an undirected graph $G$ is called a **clique** of $G$ if there is an edge between all pairs of distinct vertices in $C$. The clique problem is the language
+
+$$
+\text{CLIQUE} = \{ \langle G, k \rangle : \text{there is a clique of size } k \text{ in the graph } G \}
+$$where pairs of the form $\langle G, k \rangle$ are suitably represented by binary words, e.g., in the form $1^{k+1}0u$ where $u$ is the concatenation of the rows of the adjacency matrix of $G$.
+
+#### NP-Completeness of CLIQUE
+
+We will now prove that the $\text{CLIQUE}$ problem is not only in $\text{NP}$ but is also $\text{NP}$-hard, making it $\text{NP}$-complete.
+
+$\textbf{Theorem 55:}$ The language $\text{CLIQUE}$ is $\text{NP}$-complete.
+
+**Proof.**: The proof consists of two main parts:
+
+1.  Show that $\text{CLIQUE} \in \text{NP}$.
+2.  Show that $\text{CLIQUE}$ is $\text{NP}$-hard by demonstrating that a known $\text{NP}$-complete problem, $\text{3-SAT}$, is polynomial-time many-one reducible to $\text{CLIQUE}$ (i.e., $\text{3-SAT} \le_p^m \text{CLIQUE}$).
+
+**Part 1: $\text{CLIQUE} \in \text{NP}$**
+
+To show that $\text{CLIQUE}$ is in $\text{NP}$, we can construct a nondeterministic Turing machine that decides it in polynomial time. For an input of the form $\langle G, k \rangle$:
+
+1.  The machine nondeterministically guesses a set of $k$ vertices from the graph $G$.
+2.  It then deterministically checks if this set of $k$ vertices forms a clique. This involves checking for an edge between every pair of the $k$ chosen vertices, which can be done in polynomial time.
+
+Since a potential solution (a set of $k$ vertices) can be verified in polynomial time, the language $\text{CLIQUE}$ is in the class $\text{NP}$.
+
+**Part 2: $\text{CLIQUE}$ is $\text{NP}$-hard**
+
+To demonstrate that $\text{CLIQUE}$ is $\text{NP}$-hard, we will construct a polynomial-time computable function that maps instances of $\text{3-SAT}$ to instances of $\text{CLIQUE}$. Let this function map a Boolean formula $\phi$ to a pair $\langle G_\phi, m \rangle$.
+
+* If a formula $\phi$ is not in $3$-CNF (and thus not in $\text{3-SAT}$), it is mapped to a fixed pair $\langle G, m \rangle$ that is known not to be in $\text{CLIQUE}$.
+* If a formula $\phi$ is in $3$-CNF with $m \ge 1$ clauses, it is mapped to a pair $\langle G_\phi, m \rangle$ constructed as follows:
+* The vertex set of the graph $G_\phi$ consists of all occurrences of literals in $\phi$. Since there are $m$ clauses each with at most $3$ literals, there are at most $3m$ vertices.
+* An edge is drawn between two vertices in $G_\phi$ **unless** one of two conditions is met:
+1.  The two corresponding literal occurrences are in the same clause.
+2.  The two literals are complementary (e.g., $x$ and $\neg x$).
+
+This mapping is clearly computable in polynomial time. We must now show that $\phi$ is satisfiable if and only if $G_\phi$ contains a clique of size $m$.
+
+($\Rightarrow$) **If $\phi$ is satisfiable, then $G_\phi$ has a clique of size $m$.** If $\phi$ is satisfiable, there exists a satisfying assignment. This assignment must make at least one literal true in each of the $m$ clauses. We can select one such true literal from each clause. This gives us a set of $m$ literal occurrences.
+
+* These literals cannot be in the same clause (by our selection method).
+* They cannot be complementary, because a single assignment cannot make both a variable and its negation true.
+Therefore, by the construction of $G_\phi$, there is an edge between every pair of these $m$ selected literals. This set of $m$ vertices forms a clique of size $m$ in $G_\phi$.
+
+($\Leftarrow$) **If $G_\phi$ has a clique of size $m$, then $\phi$ is satisfiable.** Suppose $G_\phi$ contains a clique of size $m$.
+
+* By construction, no two vertices in a clique can come from the same clause. Since there are $m$ vertices in the clique and $m$ clauses in $\phi$, the clique must contain exactly one literal from each clause.
+* Furthermore, by construction, no two literals in a clique can be complementary.
+This means we have a set of $m$ literals (one from each clause) that are mutually consistent. We can construct an assignment that makes all literals in the clique true. This assignment satisfies at least one literal in every clause, and therefore, it satisfies the entire formula $\phi$.
+
+Since we have shown that $\phi \in \text{3-SAT} \iff \langle G_\phi, m \rangle \in \text{CLIQUE}$, and the reduction is computable in polynomial time, we have established that $\text{3-SAT} \le_p^m \text{CLIQUE}$. Because $\text{CLIQUE}$ is in $\text{NP}$ and is $\text{NP}$-hard, it is $\text{NP}$-complete. ∎
+
+-----
+
+### An Alternative Characterization of NP
+
+Languages in $\text{NP}$ like $\text{SAT}$ or $\text{CLIQUE}$ can be viewed as problems that check whether an instance possesses a certain property based on the existence of an "admissible solution."
+
+* For $\text{CLIQUE}$, an instance is a graph $G$ and a number $k$. The **possible solutions** are all subsets of nodes. An **admissible solution** is a subset that is a clique of size $k$.
+* For $\text{SAT}$, an instance is a $3$-CNF formula. The **possible solutions** are all possible variable assignments. An **admissible solution** is an assignment that makes the formula true.
+
+In both cases, and for all problems in $\text{NP}$, two key properties hold:
+
+1.  An instance has the property if and only if some possible solution is admissible.
+2.  The admissibility of any given solution can be verified efficiently (in deterministic polynomial time).
+
+This pattern provides a fundamental characterization of the class $\text{NP}$.
+
+$\textbf{Proposition 56:}$ A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
+
+$$w \\in L \\text{ if and only if } \\exists z \\in {0, 1}^\* ; [(w, z) \\in B \\text{ & } |z| \\le p(|w|)]
+$$In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(|w|)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
+
+**Proof sketch.**:
+
+($\Rightarrow$) **If $L \in \text{NP}$, then such a $B$ and $p$ exist.**
+Let $L$ be a language in $\text{NP}$. By definition, there is a nondeterministic Turing machine $M$ that recognizes $L$ and is $p_M(n)$-time-bounded for some polynomial $p_M$. Let the instruction set of $M$ have size $d$. We can represent each instruction $j$ (for $j = 1, \dots, d$) by the binary word $1^j0^{d-j}$.
+
+A nondeterministic computation of $M$ on an input $w$ can be represented by a sequence of choices, which corresponds to the sequence of instructions executed. We can concatenate the binary representations of these instructions to form a single binary word $z$. For an input $w$ of length $n$, the length of any computation is at most $p_M(n)$. Thus, the length of the corresponding witness string $z$ is at most $p(n) = d \cdot p_M(n)$, which is a polynomial in $n$.
+
+We can now define the language $B$ as:
+$B = \{ \langle w, z \rangle : z \text{ represents an accepting computation of } M \text{ on input } w \}$
+The language $B$ is in $\text{P}$ because a deterministic machine can take $\langle w, z \rangle$ and simply simulate the single computational path of $M$ on $w$ dictated by the choices encoded in $z$, verifying in polynomial time whether it is an accepting computation.
+
+Therefore, $w \in L$ if and only if there exists an accepting computation, which is equivalent to saying there exists a witness $z$ with $|z| \le p(|w|)$ such that $\langle w, z \rangle \in B$.
+
+($\Leftarrow$) **If such a $B$ and $p$ exist, then $L \in \text{NP}$.**
+Let $L$ be a language for which there exists a language $B \in \text{P}$ and a polynomial $p$ satisfying the condition. We can construct a nondeterministic Turing machine $M_L$ that recognizes $L$ in polynomial time:
+
+On input $w$ of length $n$:
+
+1.  Nondeterministically guess a length $\ell \le p(n)$ and a binary word $z$ of length $\ell$. This is analogous to how assignments were guessed for propositional formulas.
+2.  Deterministically check whether $\langle w, z \rangle \in B$. Since $B \in \text{P}$, this check is performed by a deterministic polynomial-time Turing machine.
+3.  Accept $w$ if and only if the check in step 2 succeeds.
+
+This nondeterministic machine $M_L$ runs in polynomial time and recognizes $L$. Therefore, $L \in \text{NP}$. ∎
+
+-----
+
+## Space-Bounded Computation
+
+While time complexity measures the number of steps a Turing machine takes, space complexity measures the amount of memory (tape cells) it uses. For space-bounded computations, especially those with sublinear bounds (e.g., $\log n$), it is essential to distinguish the memory used for input and output from the memory used for computation (work tapes). This leads to the model of an off-line Turing machine.
+
+$\textbf{Definition 57 (Off-line Turing Machine):}$ An **off-line Turing machine** is a Turing machine with a separate input and output tape.
+
+  * The **input tape** is read-only. The head can only access cells containing the input symbols and the two adjacent blank cells.
+  * On the **output tape**, the head can only move to the right. Whenever a symbol is written, the head must advance one position to the right.
+  * A Turing machine is called a **$k$-tape Turing machine** if it has $k$ work tapes in addition to the input and output tapes.
+
+$\textbf{Remark 58 (Configurations of Off-line Turing machines):}$ Configurations for off-line Turing machines are defined as before (state, work tape contents, work tape head positions), but with adjustments for the special tapes:
+
+  * **Output Tape:** Neither its content nor its head position is part of a configuration, as this information cannot influence future computational steps.
+  * **Input Tape:** Only the position of the head is part of a configuration. For an input of length $n$, this position is an integer in $\{0, \dots, n+1\}$.
+
+This definition ensures that configurations remain snapshots of all information needed to proceed with a computation. For sublinear space bounds, this allows the representation of a configuration to be smaller than the input itself, which is advantageous in certain constructions.
+
+$\textbf{Convention 59 (Space-Bounds and Off-line Turing machines):}$ In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
+
+-----
+
+### Deterministic Space Complexity
+
+We can now formally define space usage and the corresponding complexity classes.
+
+$\textbf{Definition 60 (Space Usage):}$ The space usage of a deterministic Turing machine $M$ on input $w$ is:
+
+$$
+\text{space}_M(w) =
+\begin{cases}
+s & \text{if } M \text{ terminates on input } w \text{ and } s \text{ is the maximum} \\
+& \text{number of cells accessed on a single work tape,} \\
+\uparrow & \text{otherwise.}
+\end{cases}
+$$$\textbf{Remark 61:}$ We write $\log x$ for the binary logarithm $\log_2 x$. When used in complexity bounds, $\log x$ may also refer to $\lceil \log_2 x \rceil$ or $\lfloor \log_2 x \rfloor$. For space bounds, we define $\log 0 = 1$.
+
+$\textbf{Definition 62 (Space-Bounded Deterministic Turing Machine):}$ A **space bound** is a computable function $s: \mathbb{N} \to \mathbb{N}$ with $s(n) \ge \log n$ for all $n > 0$.
+
+$\textbf{Definition 63 (Deterministic Space Classes):}$ Let $s$ be a space bound.
+
+* A deterministic Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and for all but finitely many inputs $w$, it holds that $\text{space}_M(w) \le s(|w|)$.
+* The class of languages decidable in deterministic space $s(n)$ is:
+$$
+
+```
+$$\\text{DSPACE}(s(n)) = { L \\subseteq {0, 1}^\* : L = L(M) \\text{ for a deterministic } s(n)\\text{-space-bounded Turing machine } M }
+$$
+$$
+```
+
+  * The class $\text{DSPACE}_k(s(n))$ is defined similarly but restricts machines to at most $k$ work tapes.
+  * For a set $F$ of space bounds, we define $\text{DSPACE}(F) = \bigcup_{s \in F} \text{DSPACE}(s(n))$.
+
+-----
+
+### Key Deterministic Space Classes
+
+Using standard function classes, we define some of the most important space complexity classes.
+
+$\textbf{Definition 64 (Examples of Deterministic Space Classes):}$ Using the function classes
+
+  * $\text{log} = \{ n \mapsto c \cdot \log n + c : c \in \mathbb{N} \setminus \{0\} \}$
+  * $\text{poly} = \{ n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \}$
+
+we define the complexity classes:
+
+  * $\text{LOG} = \text{DSPACE}(\text{log})$
+  * $\text{PSPACE} = \text{DSPACE}(\text{poly})$
+  * $\text{EXPSPACE} = \text{DSPACE}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{DTIME}(2^{n^c+c})$
+
+We refer to $\text{PSPACE}$ as the class of problems decidable in deterministic polynomial space.
+
+-----
+
+### Space-Bounded Function Computation
+
+Off-line Turing machines can also be used to compute functions. The output is simply the word written on the output tape upon termination.
+
+$\textbf{Definition 65 (Functions computed by space-bounded Turing machines):}$ Let $s$ be a space bound.
+
+  * The class of functions computable in deterministic space $s(n)$ is:
+    $$
+    $$$$\\text{FSPACE}(s(n)) = { f : {0, 1}^\* \\to {0, 1}^\* : f = f\_M \\text{ for a deterministic } s(n)\\text{-space-bounded Turing machine } M }
+    $$
+    $$$$
+    $$
+  * For a set $F$ of space bounds, $\text{FSPACE}(F) = \bigcup_{s \in F} \text{FSPACE}(s(n))$.
+
+Similar to time complexity, space complexity classes are robust against changes in machine specifics like the number of tapes or constant factors in the space bound.
+
+$\textbf{Theorem 66 (Linear Compression):}$ For every space bound $s$, it holds for all natural numbers $c$ and $k$ that
+
+$$
+\text{DSPACE}_k(c \cdot s(n)) \subseteq \text{DSPACE}_k(s(n))
+$$and therefore, in particular,
+
+$$\\text{DSPACE}(c \\cdot s(n)) \\subseteq \\text{DSPACE}(s(n))
+$$$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape... [source context cuts off]
+
+-----
+
+### Nondeterministic Space Complexity
+
+The concept of space bounds extends naturally to nondeterministic Turing machines.
+
+$\textbf{Definition 68 (Nondeterministic Space Classes):}$ Let $s$ be a space bound.
+
+  * A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(|w|)$ cells on each work tape.
+  * The class of languages decidable in nondeterministic space $s(n)$ is:
+    $$
+    $$$$\\text{NSPACE}(s(n)) = { L \\subseteq {0, 1}^\* : L = L(M) \\text{ for an } s(n)\\text{-space-bounded Turing machine } M }
+    $$
+    $$$$
+    $$
+
+-----
+
+### Key Nondeterministic Space Classes
+
+$\textbf{Definition 69 (Examples of Nondeterministic Space Classes):}$ We define the complexity classes:
+
+  * $\text{NLOG} = \text{NSPACE}(\text{log})$
+  * $\text{NPSPACE} = \text{NSPACE}(\text{poly})$
+  * $\text{NEXP} = \text{NSPACE}(2^{\text{poly}})$
+
+We refer to $\text{NPSPACE}$ as the class of problems decidable in nondeterministic polynomial space.
+
+-----
+
+### Example: The Directed Path Problem (DirPath)
+
+A canonical problem in $\text{NLOG}$ is determining reachability in a directed graph.
+
+The problem is formalized as the language:
+
+$$
+\text{DirPath} = \{ \langle A, s, t \rangle : A \text{ is the adjacency matrix of a directed graph } G \text{ in which there exists a path from node } s \text{ to node } t \}
+$$An instance $\langle A, s, t \rangle$ for a graph with $n$ nodes can be represented as $1^n0z_1z_2 \dots z_n01^s01^t$, where $z_i$ are the rows of the adjacency matrix.
+
+To show that $\text{DirPath}$ is in $\text{NLOG}$, we can construct a $(c \log n + c)$-space bounded nondeterministic Turing machine. On input $\langle A, s, t \rangle$:
+
+1.  The machine stores the current node, starting with $s$. Storing a node index from $1$ to $n$ requires $O(\log n)$ space.
+2.  It nondeterministically guesses a next node to visit by following an edge from the current node.
+3.  It keeps a counter to track the number of steps taken, also requiring $O(\log n)$ space.
+4.  If the machine reaches node $t$ within $n$ steps, it accepts. If it takes more than $n$ steps without reaching $t$, it rejects, preventing infinite loops in cyclic graphs.
+
+The machine only needs to store the current node and a step counter, both of which require $O(\log n)$ space. Thus, $\text{DirPath} \in \text{NLOG}$.
+
+-----
+
+### Bounding Computations of Space-Bounded Machines
+
+For a time-bounded machine, the length of any computation is naturally bounded by the time limit. For a space-bounded machine, we can derive a powerful bound on the number of computational steps by considering the number of unique configurations.
+
+$\textbf{Lemma 71 (Configurations of Space-Bounded Turing Machines):}$ Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s(n)$-space bounded Turing machine. Then there exists a constant $d$ that depends only on $M$ such that the following two statements hold for all $n$:
+
+* (i) The number of possible configurations of $M$ on an input of length $n$ is at most $2^{d \cdot s(n)}$.
+* (ii) The depth of the computation tree of $M$ on an input of length $n$ is less than $2^{d \cdot s(n)}$.
+
+**Proof.**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
+
+For part (ii), let $\ell = 2^{d \cdot s(n)}$, which is the upper bound on the number of distinct configurations for an input of length $n$. We will prove (ii) by contradiction. Assume that on some input $w$ of length $n$, the computation tree of $M$ has a branch of length $\ell$. This branch corresponds to a computation path with $\ell + 1$ configurations.
+
+By the pigeonhole principle, since there are more configurations in the sequence ($\ell+1$) than there are distinct possible configurations ($\le \ell$), at least one configuration must appear twice. Let's say configuration $C$ appears at step $i$ and again at a later step $j > i$.
+
+This means the machine has entered a loop. The sequence of steps from configuration $C$ at step $i$ to the same configuration $C$ at step $j$ can be repeated infinitely. This implies that $M$ has a non-terminating computation on input $w$.
+
+However, an $s(n)$-space bounded machine is required by definition to be total, meaning it must terminate on all inputs. This is a contradiction. Therefore, our initial assumption must be false, and no computation path can have a length of $\ell$ or more. The depth of the computation tree must be less than $2^{d \cdot s(n)}$. ∎
+
+-----
+
+### Relationships Between Time and Space Complexity
+
+A fundamental aspect of complexity theory is understanding the relationships between different resource bounds (time vs. space) and computational modes (deterministic vs. nondeterministic).
+
+$\textbf{Remark 72:}$ Let $t$ be any time bound. A $t(n)$-time bounded Turing machine can access at most $t(n)+1$ cells on each work tape. With minor adjustments, we can ensure it is $t(n)$-space-bounded. This gives the immediate inclusions:
+
+$$\\text{DTIME}(t(n)) \\subseteq \\text{DSPACE}(t(n))
+$$$$
+\\text{NTIME}(t(n)) \\subseteq \\text{NSPACE}(t(n))
+$$The following theorem summarizes the key relationships between deterministic and nondeterministic time and space classes.
+
+$\textbf{Theorem 73:}$ Let $t$ be a time bound. Then the following inclusions hold.
+The relationships in the second and third columns also hold for an arbitrary space bound $s$ instead of $t$.
+
+**Proof.**: The inclusions in the diagram can be justified as follows:
+
+1.  **Vertical Inclusions:** The inclusions from the first row to the second row (e.g., $\text{DTIME}(t(n)) \subseteq \text{NTIME}(t(n))$) hold by definition, as any deterministic Turing machine is a special case of a nondeterministic one.
+2.  **First Horizontal Inclusions:** The inclusions from the first column to the second (e.g., $\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$) are immediate from Remark 72.
+3.  **Second Horizontal Inclusions:** The inclusions from the second column to the third (e.g., $\text{DSPACE}(t(n)) \subseteq \text{DTIME}(2^{O(t(n))})$) are a direct consequence of Lemma 71. A deterministic machine can simulate a space-bounded machine by exploring its entire configuration graph. The number of configurations is bounded by $2^{O(t(n))}$, so the simulation takes time exponential in the space bound.
+4.  **Diagonal Inclusions:** The diagonal inclusions are statements of other lemmas (Lemmas 75 and 76, not provided in the source context). ∎
+
+These relationships give rise to a chain of inclusions among the major complexity classes.
+
+$\textbf{Corollary 74:}$ The following inclusions hold.
+
+$$
+\text{LOG} \subseteq \text{NLOG} \subseteq \text{P} \subseteq \text{NP} \subseteq \text{PSPACE} \subseteq \text{NPSPACE} \subseteq \text{EXP} \subseteq \text{NEXP}
+$$This chain represents our current understanding of the hierarchy of these classes. While these inclusions are known, the strictness of many of them remains one of the greatest open questions in computer science.
+
+* It is known from Savitch's Theorem that $\text{PSPACE} = \text{NPSPACE}$.
+* It is known from hierarchy theorems (not covered here) that some of these inclusions are strict:
+* $\text{LOG} \neq \text{PSPACE}$
+* $\text{NLOG} \neq \text{NPSPACE}$
+* $\text{P} \neq \text{EXP}$
+* $\text{NP} \neq \text{NEXP}$
+* Beyond these results and their direct consequences (like $\text{P} \neq \text{NEXP}$), it is not known which of the other inclusion relations are strict. The most famous of these is the $\text{P}$ versus $\text{NP}$ problem.
+$$
+
+---
+
+### Relationships Between Time and Space Complexity Classes
+
+This chapter explores the fundamental relationships between deterministic and nondeterministic complexity classes, focusing on how time-bounded and space-bounded computations relate to one another. We will establish key inclusions, such as showing that any problem solvable in nondeterministic time can be solved in deterministic space. These relationships culminate in Savitch's Theorem, a landmark result demonstrating that nondeterministic polynomial space is equivalent to deterministic polynomial space (PSPACE = NPSPACE).
+
+#### Nondeterministic Time vs. Deterministic Space
+
+A foundational result connects nondeterministic time complexity with deterministic space complexity. It establishes that any language recognizable by a nondeterministic Turing machine within a time bound $t(n)$ can also be recognized by a deterministic Turing machine using a space bound of $t(n)$. This suggests that the parallelism inherent in nondeterminism can be simulated deterministically, provided sufficient memory is available.
+
+$\textbf{Lemma 75:}$ Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$.
+
+**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \{y_1, \dots, y_d\}$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
+
+The core idea is to represent a specific computation path of $M$ on an input $w$ as a sequence of instructions. A word $u = u(1) \dots u(t)$ over the alphabet $Y$ is said to **code a partial computation** $C_0, C_1, \dots, C_t$ on input $w$ if $C_0$ is the initial configuration and for each step $i$ from $1$ to $t-1$, the instruction $u(i)$ is applicable in configuration $C_{i-1}$ and yields configuration $C_i$. If a word $u$ codes a partial computation, we call it a **coding word**. Let $C_u$ denote the final configuration of the computation coded by $u$. Note that all prefixes of a coding word are also coding words. The empty word, $\lambda$, is a coding word, and $C_\lambda$ is the initial configuration.
+
+The computation tree of $M$ on input $w$ represents all possible computation paths. The nodes are labeled with configurations, and the children of a node with configuration $C$ correspond to the configurations reachable from $C$ in one step. There is a natural bijection, $\pi$, between **coding words** and the nodes of this computation tree. The empty word $\lambda$ maps to the root. For a coding word $uy$, $\pi(uy)$ is the child of $\pi(u)$ corresponding to the application of instruction $y$. Thus, for any coding word $u$, the node $\pi(u)$ is labeled by the configuration $C_u$.
+
+The DTM $D$ works by determining if any node in $M$'s computation tree is labeled with an accepting configuration. To do this, $D$ can simulate the partial computation of $M$ corresponding to any given word $u$ over $Y$. By using $k$ separate tapes to simulate the tapes of $M$, this simulation requires space proportional to the length of the computation, which is at most $t(n)$. During this simulation, $D$ can also detect if $u$ is not a valid coding word.
+
+We present two constructions for the DTM $D$.
+
+**First Construction of D**
+
+This construction performs a **breadth-first-style search** on the computation tree.
+
+1.  **Compute Tree Depth:** $D$ first determines the maximum depth of the computation tree, which is equivalent to the maximum length of a coding word. It initializes a counter $i=0$.
+2.  **Iterate by Length:** For a given value of $i$, $D$ systematically generates all words $u$ over $Y$ of length $i$.
+3.  **Simulate and Check:** For each generated word $u$, $D$ checks if it is a coding word by simulating the corresponding partial computation of $M$. If it is, $D$ obtains the final configuration $C_u$.
+4.  **Termination Condition:** The process of incrementing $i$ stops when a length $i$ is found such that all words $u$ of that length are either non-coding or lead to a halting configuration $C_u$. This value of $i$ is set as the depth, $d$.
+5.  **Final Search:** Once the maximum depth $d$ is determined, $D$ generates all words over $Y$ of length up to $d$. It accepts the input $w$ if and only if it finds a word that has a coding word prefix $u$ for which the configuration $C_u$ is accepting.
+
+This process systematically checks all possible computation paths up to the maximum time bound $t(n)$.
+
+**Second Construction of D**
+
+This construction is more efficient and performs an exhaustive **depth-first search** on the computation tree of $M$, using a backtracking algorithm.
+
+1.  **State Management:** $D$ uses a special **index tape** to store the current coding word $u$ being explored. Initially, the index tape contains the empty word, $\lambda$.
+2.  **Iteration Process:** With a coding word $u$ on the index tape, $D$ computes the configuration $C_u$ and proceeds as follows:
+    * If $C_u$ is an **accepting configuration**, $D$ terminates and accepts the input.
+    * If $C_u$ is a **non-accepting halting configuration**, $D$ backtracks from $u$.
+    * If $C_u$ is a **non-halting configuration**, $D$ finds the "least" instruction $y$ applicable in $C_u$, writes the new coding word $uy$ on the index tape, and iterates.
+3.  **Backtracking Process:** To backtrack on a word $u = vy$, $D$ considers the configuration $C_v$.
+    * It checks if there is an instruction $y' > y$ that is also applicable in $C_v$.
+    * If such a $y'$ exists, $D$ chooses the least one, writes the new word $vy'$ on the index tape, and iterates from there.
+    * If no such $y'$ exists, it means all branches from $C_v$ have been explored, so $D$ backtracks further on $v$.
+4.  **Termination:** The entire search terminates either when an accepting configuration is found (and $D$ accepts) or when the process backtracks on the empty word (meaning all paths have been exhausted without finding an accepting state, and $D$ rejects).
+
+To determine $C_u$ and $C_v$, $D$ simulates the partial computations of $M$ coded by $u$ and $v$. This depth-first search guarantees that all configurations in the computation tree are visited. The machine $D$ is deterministic and recognizes the same language as $M$. The space required is dominated by the need to store a configuration of $M$ and the current path (coding word) on the index tape, both of which are bounded by $O(t(n))$. Therefore, $L \in \text{DSPACE}(t(n))$. ∎
+
+#### Nondeterministic Space vs. Deterministic Time
+
+The next major result, known as Savitch's Theorem, provides a relationship in the other direction: from nondeterministic space to deterministic time. It shows that any problem solvable in nondeterministic space can be solved in deterministic time, though with an exponential increase in the time bound.
+
+$\textbf{Lemma 76:}$ Let $s$ be a space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DTIME}(2^{O(s(n))})$.
+
+**Proof.**: Let $L$ be a language in $\text{NSPACE}(s(n))$, recognized by an $s(n)$-space-bounded NTM $M$. We will construct a DTM $D$ that recognizes $L$ in $2^{c \cdot s(n)}$ time for some constant $c$.
+
+A critical observation is that the computation trees of $M$ on an input $w$ of length $n$ can be extremely large. The depth could be as large as $2^{s(n)}$, and the total number of nodes could exceed $2^{2^{s(n)}}$. A simple depth-first search, as used in the previous proof, would be too slow for our deterministic time bound.
+
+Instead of exploring the computation tree, $D$ constructs and analyzes the **configuration graph** of $M$ on input $w$. The nodes of this graph are the possible configurations of $M$, and a directed edge exists from configuration $C_1$ to $C_2$ if $C_2$ is a successor configuration of $C_1$. The problem of acceptance is then reduced to finding a path from the initial configuration to an accepting configuration within this graph.
+
+By Lemma 71, the number of distinct configurations of $M$ on an input of length $n$ is at most $2^{d \cdot s(n)}$ for some constant $d$. We can represent each configuration by a word of length $d \cdot s(n)$ over a fixed alphabet of size $k$.
+
+The algorithm for $D$ on input $w$ is as follows:
+
+1.  **Generate All Configurations:** $D$ writes a list of all possible configuration representations (all words of length $d \cdot s(n)$) onto a special tape. This list contains $k^{d \cdot s(n)}$ entries, requiring at most $2^{d' \cdot s(n)}$ space for some constant $d'$.
+2.  **Initialization:** All configurations in the list are initially marked as **unreached** and **unexpanded**, except for the initial configuration on input $w$, which is marked as **reached**.
+3.  **Expansion Loop:** $D$ repeatedly performs the following expansion step as long as there is any configuration marked as **reached** and **unexpanded**:
+    i.  Find the first configuration $C$ on the tape that is marked as **reached** and **unexpanded**.
+    ii. Compute all successor configurations of $C$. For each successor, find it in the list and mark it as **reached**.
+    iii. Mark configuration $C$ as **expanded**.
+4.  **Final Decision:** When the loop terminates (i.e., all reached configurations have been expanded), $D$ scans the list. It accepts $w$ if and only if any accepting configuration is marked as **reached**.
+
+By a straightforward induction on path length, any configuration that is reachable from the initial state (i.e., any configuration that appears in the computation tree) will eventually be marked as **reached**. Therefore, $D$ recognizes the same language as $M$.
+
+For the complexity analysis, there are at most $2^{d \cdot s(n)}$ configurations, so there will be at most $2^{d \cdot s(n)}$ expansion steps. A single expansion step involves searching and updating the list of configurations. The time for one step is polynomial in the size of the list, which is $2^{d' \cdot s(n)}$. Thus, the total running time of $D$ is bounded by $2^{d \cdot s(n)} \cdot (2^{d' \cdot s(n)})^t = 2^{(d+td') \cdot s(n)}$. This is of the form $2^{O(s(n))}$, completing the proof. ∎
+
+#### Savitch's Theorem and Its Consequences
+
+The previous results establish relationships between nondeterministic time and deterministic space, and between nondeterministic space and deterministic time. We now turn to a more direct comparison: nondeterministic space versus deterministic space. This leads to Savitch's Theorem, a cornerstone of complexity theory.
+
+First, we must formally address some technical prerequisites for simulating space-bounded machines.
+
+$\textbf{Definition 77 (Space-Constructible Functions):}$ A space bound $s$ is **space-constructible** if there exists an $s(n)$-space-bounded Turing machine $M$ that computes the function $1^n \mapsto 1^{s(n)}$.
+
+$\textbf{Theorem 78 (Space-constructible Functions):}$ The functions in the function classes $\log$, $\text{lin}$, and $\text{poly}$ are all space-constructible. If the space bound $s(n)$ is space-constructible, then so is $n \mapsto 2^{s(n)}$.
+
+Another important technical result is that constant factors in space bounds do not affect the power of the computational model.
+
+$\textbf{Remark 79 (Linear compression):}$ Linear compression refers to the following fact: for all space bounds $s$ and all constants $c$, every $c \cdot s(n)$-space-bounded Turing machine can be transformed into an $s(n)$-space-bounded Turing machine that recognizes the same language; in case the given Turing machine is deterministic, the new one can be chosen to be deterministic, too. Consequently, it holds for all such $s$ and $c \ge 1$ that
+$$
+\text{NSPACE}(c \cdot s(n)) = \text{NSPACE}(s(n))
+$$
+$$
+\text{DSPACE}(c \cdot s(n)) = \text{DSPACE}(s(n))
+$$
+This is achieved by encoding blocks of symbols from the original machine's tapes into single, more complex symbols on the new machine's tapes, or by using multiple work tapes to simulate one.
+
+$\textbf{Theorem 80 (Savitch’s Theorem):}$ Let $s$ be a space-constructible space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DSPACE}(s^2(n))$.
+
+This theorem has a profound corollary for polynomial space complexity classes.
+
+$\textbf{Corollary 81:}$ It holds that PSPACE = NPSPACE.
+
+**Proof of the Corollary.**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}((p(n))^2)$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. ∎
+
+**Proof of Savitch’s Theorem.**: Let $L \in \text{NSPACE}(s(n))$ be recognized by an NTM $N$. We can assume without loss of generality that for any input $x$ of length $n$:
+
+* There is a unique accepting configuration, $K_{accept}(x)$.
+* All computations have a length of at most $2^{\ell(n)}$, where $\ell(n) = d \cdot s(n)$ for some constant $d$. This is because there are at most $2^{d \cdot s(n)}$ distinct configurations, so any longer computation must contain a cycle.
+
+The NTM $N$ accepts an input $x$ if and only if there is a computation path from the initial configuration $K_{initial}(x)$ to the accepting configuration $K_{accept}(x)$ of length at most $2^{\ell(n)}$. We denote this as:
+$$
+K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x) \quad (3.1)
+$$
+where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length at most $t$ from configuration $K$ to $K'$.
+
+We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if $K_1 \xrightarrow{\le 2^i}_N K_2$, the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
+$$
+K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2
+$$
+The machine $M$ checks this by iterating through all possible configurations $K_{mid}$ that obey the space bound $s(n)$. For each candidate $K_{mid}$, it recursively checks the two subproblems.
+
+The process unfolds as follows:
+
+1.  To solve the main problem (3.1), which is $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x)$, $M$ iterates through all configurations $K$ and checks if both:
+    i.  $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K$
+    ii. $K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)$
+2.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
+    iii. $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$
+    iv. $K' \xrightarrow{\le 2^{\ell(n)-2}}_N K$
+3.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
+
+The depth of this recursion is $\ell(n) = d \cdot s(n)$. At each level of the recursion, the machine $M$ needs to store the configurations that form the start and end points of the current subproblem (e.g., $K_{initial}, K_{accept}, K, K'$, etc.). Since the recursion depth is $\ell(n)$, and each configuration of $N$ requires $O(s(n))$ space to store, the total space required for the recursion stack is $O(\ell(n) \cdot s(n)) = O(s(n) \cdot s(n)) = O(s^2(n))$.
+
+By linear compression, any $O(s^2(n))$-space bounded DTM can be converted to a $\text{DSPACE}(s^2(n))$ machine. This completes the proof. ∎
+
+#### The P versus NP Problem and PSPACE
+
+The famous **P versus NP problem** asks whether deterministic polynomial-time computation is as powerful as nondeterministic polynomial-time computation.
+
+A. Do the classes P and NP coincide?
+
+This remains one of the greatest unsolved problems in computer science. It is not even known if PSPACE, the class of languages decidable in deterministic polynomial space, coincides with P or NP. A related open question concerns the closure of NP under complement.
+
+B. Is the class NP closed under complement, i.e., does the complement $\{0, 1\}^* \setminus L$ of any language $L$ in NP also belong to NP?
+
+In the context of polynomial space, the analogous questions have been answered in the affirmative. Savitch's Theorem directly answers the space analogue of question A, showing PSPACE = NPSPACE. The answer to the space analogue of question B is also yes, a result proven by Immerman and Szelepcsényi.
+
+#### A Complete Language for PSPACE
+
+To study the intrinsic difficulty of a complexity class, we identify languages that are "hardest" within that class. This is formalized through the concepts of hardness and completeness.
+
+$\textbf{Definition 82:}$ A **complexity class** is a set of languages over the binary alphabet. A language $B$ is **hard** for a complexity class if every language in the class is $p$-$m$-reducible to $B$. A language is **complete** for a complexity class if it is hard for the class and belongs to the class. A language that is complete for a complexity class $C$ is called **C-complete**.
+
+We now introduce a type of logical formula whose evaluation problem is complete for PSPACE. This language, TQBF (True Quantified Boolean Formulas), serves a role for PSPACE similar to what SAT serves for NP.
+
+$\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \{\neg, \land, (, ), \exists, \forall\}$ and let Var be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over Var is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
+
+* **Base case.** All elements of Var are quantified propositional formulas.
+* **Inductive step.** If $\psi$ and $\psi'$ are quantified propositional formulas and $X$ is in Var, then $\neg\psi$, $(\psi \land \psi')$, and $\exists X \psi$ are quantified propositional formulas.
+
+
+---
+
+### Relationships Between Time and Space Complexity Classes
+
+This chapter explores the fundamental relationships between deterministic and nondeterministic complexity classes, focusing on how time-bounded and space-bounded computations relate to one another. We will establish key inclusions, such as showing that any problem solvable in nondeterministic time can be solved in deterministic space. These relationships culminate in Savitch's Theorem, a landmark result demonstrating that nondeterministic polynomial space is equivalent to deterministic polynomial space (PSPACE = NPSPACE).
+
+#### Nondeterministic Time vs. Deterministic Space
+
+A foundational result connects nondeterministic time complexity with deterministic space complexity. It establishes that any language recognizable by a nondeterministic Turing machine within a time bound $t(n)$ can also be recognized by a deterministic Turing machine using a space bound of $t(n)$. This suggests that the parallelism inherent in nondeterminism can be simulated deterministically, provided sufficient memory is available.
+
+$\textbf{Lemma 75:}$ Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$.
+
+**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \{y_1, \dots, y_d\}$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
+
+The core idea is to represent a specific computation path of $M$ on an input $w$ as a sequence of instructions. A word $u = u(1) \dots u(t)$ over the alphabet $Y$ is said to **code a partial computation** $C_0, C_1, \dots, C_t$ on input $w$ if $C_0$ is the initial configuration and for each step $i$ from $1$ to $t-1$, the instruction $u(i)$ is applicable in configuration $C_{i-1}$ and yields configuration $C_i$. If a word $u$ codes a partial computation, we call it a **coding word**. Let $C_u$ denote the final configuration of the computation coded by $u$. Note that all prefixes of a coding word are also coding words. The empty word, $\lambda$, is a coding word, and $C_\lambda$ is the initial configuration.
+
+The computation tree of $M$ on input $w$ represents all possible computation paths. The nodes are labeled with configurations, and the children of a node with configuration $C$ correspond to the configurations reachable from $C$ in one step. There is a natural bijection, $\pi$, between **coding words** and the nodes of this computation tree. The empty word $\lambda$ maps to the root. For a coding word $uy$, $\pi(uy)$ is the child of $\pi(u)$ corresponding to the application of instruction $y$. Thus, for any coding word $u$, the node $\pi(u)$ is labeled by the configuration $C_u$.
+
+The DTM $D$ works by determining if any node in $M$'s computation tree is labeled with an accepting configuration. To do this, $D$ can simulate the partial computation of $M$ corresponding to any given word $u$ over $Y$. By using $k$ separate tapes to simulate the tapes of $M$, this simulation requires space proportional to the length of the computation, which is at most $t(n)$. During this simulation, $D$ can also detect if $u$ is not a valid coding word.
+
+We present two constructions for the DTM $D$.
+
+**First Construction of D**
+
+This construction performs a **breadth-first-style search** on the computation tree.
+
+1.  **Compute Tree Depth:** $D$ first determines the maximum depth of the computation tree, which is equivalent to the maximum length of a coding word. It initializes a counter $i=0$.
+2.  **Iterate by Length:** For a given value of $i$, $D$ systematically generates all words $u$ over $Y$ of length $i$.
+3.  **Simulate and Check:** For each generated word $u$, $D$ checks if it is a coding word by simulating the corresponding partial computation of $M$. If it is, $D$ obtains the final configuration $C_u$.
+4.  **Termination Condition:** The process of incrementing $i$ stops when a length $i$ is found such that all words $u$ of that length are either non-coding or lead to a halting configuration $C_u$. This value of $i$ is set as the depth, $d$.
+5.  **Final Search:** Once the maximum depth $d$ is determined, $D$ generates all words over $Y$ of length up to $d$. It accepts the input $w$ if and only if it finds a word that has a coding word prefix $u$ for which the configuration $C_u$ is accepting.
+
+This process systematically checks all possible computation paths up to the maximum time bound $t(n)$.
+
+**Second Construction of D**
+
+This construction is more efficient and performs an exhaustive **depth-first search** on the computation tree of $M$, using a backtracking algorithm.
+
+1.  **State Management:** $D$ uses a special **index tape** to store the current coding word $u$ being explored. Initially, the index tape contains the empty word, $\lambda$.
+2.  **Iteration Process:** With a coding word $u$ on the index tape, $D$ computes the configuration $C_u$ and proceeds as follows:
+    * If $C_u$ is an **accepting configuration**, $D$ terminates and accepts the input.
+    * If $C_u$ is a **non-accepting halting configuration**, $D$ backtracks from $u$.
+    * If $C_u$ is a **non-halting configuration**, $D$ finds the "least" instruction $y$ applicable in $C_u$, writes the new coding word $uy$ on the index tape, and iterates.
+3.  **Backtracking Process:** To backtrack on a word $u = vy$, $D$ considers the configuration $C_v$.
+    * It checks if there is an instruction $y' > y$ that is also applicable in $C_v$.
+    * If such a $y'$ exists, $D$ chooses the least one, writes the new word $vy'$ on the index tape, and iterates from there.
+    * If no such $y'$ exists, it means all branches from $C_v$ have been explored, so $D$ backtracks further on $v$.
+4.  **Termination:** The entire search terminates either when an accepting configuration is found (and $D$ accepts) or when the process backtracks on the empty word (meaning all paths have been exhausted without finding an accepting state, and $D$ rejects).
+
+To determine $C_u$ and $C_v$, $D$ simulates the partial computations of $M$ coded by $u$ and $v$. This depth-first search guarantees that all configurations in the computation tree are visited. The machine $D$ is deterministic and recognizes the same language as $M$. The space required is dominated by the need to store a configuration of $M$ and the current path (coding word) on the index tape, both of which are bounded by $O(t(n))$. Therefore, $L \in \text{DSPACE}(t(n))$. ∎
+
+#### Nondeterministic Space vs. Deterministic Time
+
+The next major result, known as Savitch's Theorem, provides a relationship in the other direction: from nondeterministic space to deterministic time. It shows that any problem solvable in nondeterministic space can be solved in deterministic time, though with an exponential increase in the time bound.
+
+$\textbf{Lemma 76:}$ Let $s$ be a space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DTIME}(2^{O(s(n))})$.
+
+**Proof.**: Let $L$ be a language in $\text{NSPACE}(s(n))$, recognized by an $s(n)$-space-bounded NTM $M$. We will construct a DTM $D$ that recognizes $L$ in $2^{c \cdot s(n)}$ time for some constant $c$.
+
+A critical observation is that the computation trees of $M$ on an input $w$ of length $n$ can be extremely large. The depth could be as large as $2^{s(n)}$, and the total number of nodes could exceed $2^{2^{s(n)}}$. A simple depth-first search, as used in the previous proof, would be too slow for our deterministic time bound.
+
+Instead of exploring the computation tree, $D$ constructs and analyzes the **configuration graph** of $M$ on input $w$. The nodes of this graph are the possible configurations of $M$, and a directed edge exists from configuration $C_1$ to $C_2$ if $C_2$ is a successor configuration of $C_1$. The problem of acceptance is then reduced to finding a path from the initial configuration to an accepting configuration within this graph.
+
+By Lemma 71, the number of distinct configurations of $M$ on an input of length $n$ is at most $2^{d \cdot s(n)}$ for some constant $d$. We can represent each configuration by a word of length $d \cdot s(n)$ over a fixed alphabet of size $k$.
+
+The algorithm for $D$ on input $w$ is as follows:
+
+1.  **Generate All Configurations:** $D$ writes a list of all possible configuration representations (all words of length $d \cdot s(n)$) onto a special tape. This list contains $k^{d \cdot s(n)}$ entries, requiring at most $2^{d' \cdot s(n)}$ space for some constant $d'$.
+2.  **Initialization:** All configurations in the list are initially marked as **unreached** and **unexpanded**, except for the initial configuration on input $w$, which is marked as **reached**.
+3.  **Expansion Loop:** $D$ repeatedly performs the following expansion step as long as there is any configuration marked as **reached** and **unexpanded**:
+    i.  Find the first configuration $C$ on the tape that is marked as **reached** and **unexpanded**.
+    ii. Compute all successor configurations of $C$. For each successor, find it in the list and mark it as **reached**.
+    iii. Mark configuration $C$ as **expanded**.
+4.  **Final Decision:** When the loop terminates (i.e., all reached configurations have been expanded), $D$ scans the list. It accepts $w$ if and only if any accepting configuration is marked as **reached**.
+
+By a straightforward induction on path length, any configuration that is reachable from the initial state (i.e., any configuration that appears in the computation tree) will eventually be marked as **reached**. Therefore, $D$ recognizes the same language as $M$.
+
+For the complexity analysis, there are at most $2^{d \cdot s(n)}$ configurations, so there will be at most $2^{d \cdot s(n)}$ expansion steps. A single expansion step involves searching and updating the list of configurations. The time for one step is polynomial in the size of the list, which is $2^{d' \cdot s(n)}$. Thus, the total running time of $D$ is bounded by $2^{d \cdot s(n)} \cdot (2^{d' \cdot s(n)})^t = 2^{(d+td') \cdot s(n)}$. This is of the form $2^{O(s(n))}$, completing the proof. ∎
+
+#### Savitch's Theorem and Its Consequences
+
+The previous results establish relationships between nondeterministic time and deterministic space, and between nondeterministic space and deterministic time. We now turn to a more direct comparison: nondeterministic space versus deterministic space. This leads to Savitch's Theorem, a cornerstone of complexity theory.
+
+First, we must formally address some technical prerequisites for simulating space-bounded machines.
+
+$\textbf{Definition 77 (Space-Constructible Functions):}$ A space bound $s$ is **space-constructible** if there exists an $s(n)$-space-bounded Turing machine $M$ that computes the function $1^n \mapsto 1^{s(n)}$.
+
+$\textbf{Theorem 78 (Space-constructible Functions):}$ The functions in the function classes $\log$, $\text{lin}$, and $\text{poly}$ are all space-constructible. If the space bound $s(n)$ is space-constructible, then so is $n \mapsto 2^{s(n)}$.
+
+Another important technical result is that constant factors in space bounds do not affect the power of the computational model.
+
+$\textbf{Remark 79 (Linear compression):}$ Linear compression refers to the following fact: for all space bounds $s$ and all constants $c$, every $c \cdot s(n)$-space-bounded Turing machine can be transformed into an $s(n)$-space-bounded Turing machine that recognizes the same language; in case the given Turing machine is deterministic, the new one can be chosen to be deterministic, too. Consequently, it holds for all such $s$ and $c \ge 1$ that
+$$
+\text{NSPACE}(c \cdot s(n)) = \text{NSPACE}(s(n))
+$$
+$$
+\text{DSPACE}(c \cdot s(n)) = \text{DSPACE}(s(n))
+$$
+This is achieved by encoding blocks of symbols from the original machine's tapes into single, more complex symbols on the new machine's tapes, or by using multiple work tapes to simulate one.
+
+$\textbf{Theorem 80 (Savitch’s Theorem):}$ Let $s$ be a space-constructible space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DSPACE}(s^2(n))$.
+
+This theorem has a profound corollary for polynomial space complexity classes.
+
+$\textbf{Corollary 81:}$ It holds that PSPACE = NPSPACE.
+
+**Proof of the Corollary.**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}((p(n))^2)$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. ∎
+
+**Proof of Savitch’s Theorem.**: Let $L \in \text{NSPACE}(s(n))$ be recognized by an NTM $N$. We can assume without loss of generality that for any input $x$ of length $n$:
+
+* There is a unique accepting configuration, $K_{accept}(x)$.
+* All computations have a length of at most $2^{\ell(n)}$, where $\ell(n) = d \cdot s(n)$ for some constant $d$. This is because there are at most $2^{d \cdot s(n)}$ distinct configurations, so any longer computation must contain a cycle.
+
+The NTM $N$ accepts an input $x$ if and only if there is a computation path from the initial configuration $K_{initial}(x)$ to the accepting configuration $K_{accept}(x)$ of length at most $2^{\ell(n)}$. We denote this as:
+$$
+K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x) \quad (3.1)
+$$
+where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length at most $t$ from configuration $K$ to $K'$.
+
+We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if $K_1 \xrightarrow{\le 2^i}_N K_2$, the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
+$$
+K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2
+$$
+The machine $M$ checks this by iterating through all possible configurations $K_{mid}$ that obey the space bound $s(n)$. For each candidate $K_{mid}$, it recursively checks the two subproblems.
+
+The process unfolds as follows:
+
+1.  To solve the main problem (3.1), which is $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x)$, $M$ iterates through all configurations $K$ and checks if both:
+    i.  $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K$
+    ii. $K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)$
+2.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
+    iii. $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$
+    iv. $K' \xrightarrow{\le 2^{\ell(n)-2}}_N K$
+3.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
+
+The depth of this recursion is $\ell(n) = d \cdot s(n)$. At each level of the recursion, the machine $M$ needs to store the configurations that form the start and end points of the current subproblem (e.g., $K_{initial}, K_{accept}, K, K'$, etc.). Since the recursion depth is $\ell(n)$, and each configuration of $N$ requires $O(s(n))$ space to store, the total space required for the recursion stack is $O(\ell(n) \cdot s(n)) = O(s(n) \cdot s(n)) = O(s^2(n))$.
+
+By linear compression, any $O(s^2(n))$-space bounded DTM can be converted to a $\text{DSPACE}(s^2(n))$ machine. This completes the proof. ∎
+
+#### The P versus NP Problem and PSPACE
+
+The famous **P versus NP problem** asks whether deterministic polynomial-time computation is as powerful as nondeterministic polynomial-time computation.
+
+A. Do the classes P and NP coincide?
+
+This remains one of the greatest unsolved problems in computer science. It is not even known if PSPACE, the class of languages decidable in deterministic polynomial space, coincides with P or NP. A related open question concerns the closure of NP under complement.
+
+B. Is the class NP closed under complement, i.e., does the complement $\{0, 1\}^* \setminus L$ of any language $L$ in NP also belong to NP?
+
+In the context of polynomial space, the analogous questions have been answered in the affirmative. Savitch's Theorem directly answers the space analogue of question A, showing PSPACE = NPSPACE. The answer to the space analogue of question B is also yes, a result proven by Immerman and Szelepcsényi.
+
+#### A Complete Language for PSPACE
+
+To study the intrinsic difficulty of a complexity class, we identify languages that are "hardest" within that class. This is formalized through the concepts of hardness and completeness.
+
+$\textbf{Definition 82:}$ A **complexity class** is a set of languages over the binary alphabet. A language $B$ is **hard** for a complexity class if every language in the class is $p$-$m$-reducible to $B$. A language is **complete** for a complexity class if it is hard for the class and belongs to the class. A language that is complete for a complexity class $C$ is called **C-complete**.
+
+We now introduce a type of logical formula whose evaluation problem is complete for PSPACE. This language, TQBF (True Quantified Boolean Formulas), serves a role for PSPACE similar to what SAT serves for NP.
+
+$\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \{\neg, \land, (, ), \exists, \forall\}$ and let Var be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over Var is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
+
+* **Base case.** All elements of Var are quantified propositional formulas.
+* **Inductive step.** If $\psi$ and $\psi'$ are quantified propositional formulas and $X$ is in Var, then $\neg\psi$, $(\psi \land \psi')$, and $\exists X \psi$ are quantified propositional formulas.
+
+---
+
+I hope this reformatting aligns perfectly with your existing notes!
+
+Would you like me to help you add or reformat any other sections of your notes?
