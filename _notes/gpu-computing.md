@@ -415,17 +415,17 @@ PTX is a virtual machine and instruction set architecture (ISA) for GPUs. It act
 
 Finally, `nvcc` links the compiled host and device code with the necessary CUDA libraries (`cudart`, `cuda`) to produce the final executable.
 
-## 2.8 A Complete Example: SAXPY
+### A Complete Example: SAXPY
 
 SAXPY stands for Scalar Alpha X Plus Y. It is a common, simple vector operation used to benchmark computational performance. The operation is defined by the formula:
 
-```text
+$$
  y[i] = \alpha \cdot x[i] + y[i] 
-```
+$$
 
 Here, `x` and `y` are vectors, α (alpha) is a scalar, and `i` is the index of the element. This is an ideal problem for GPU acceleration because the calculation for each element `y[i]` is completely independent of all other elements.
 
-### Serial CPU Implementation
+#### Serial CPU Implementation
 
 A standard C implementation of SAXPY uses a simple `for` loop.
 
@@ -438,7 +438,7 @@ void saxpy_serial(int n, float alpha, float *x, float *y) {
 }
 ```
 
-### Parallel CUDA Implementation
+#### Parallel CUDA Implementation
 
 The CUDA version replaces the loop with a kernel where each thread processes one element.
 
@@ -457,7 +457,7 @@ __global__ void saxpy_parallel(int n, float alpha, float *x, float *y) {
 
 This is a perfect demonstration of the SPMD model. Every thread runs this exact same code, but because each thread has a unique `i` calculated from `blockIdx.x` and `threadIdx.x`, each thread operates on a different element of the vectors `x` and `y`.
 
-### Performance Considerations: Pinned Memory
+#### Performance Considerations: Pinned Memory
 
 Initial performance tests often show that even for large vectors, the GPU version can be slower than the CPU version. This is usually because the time taken to transfer data between host and device memory (`cudaMemcpy`) dominates the total runtime.
 
@@ -479,11 +479,9 @@ cudaMallocHost((void**)&h_y, N * sizeof(float));
 
 Using `cudaMallocHost` instead of `malloc` can lead to a significant reduction in data transfer times, making the GPU's computational advantage more apparent.
 
-## 2.9 Device Properties and Common Errors
+### Device Properties and Common Errors
 
 You can query the properties of the GPU in your system to make informed decisions about kernel launch configurations. The `deviceQuery` utility provides a survey of these properties.
-
-### GPU Property Survey (Examples)
 
 | Property | GeForce GTX 480 (CC 2.0) | Tesla K20c (CC 3.5) | RTX 2080Ti (CC 7.5) |
 | --- | --- | --- | --- |
@@ -504,15 +502,276 @@ You can query the properties of the GPU in your system to make informed decision
 - **CUDA Error: invalid configuration argument:** The kernel launch configuration is invalid. Common causes include requesting too many threads per block (e.g., > 1024) or requesting more resources (shared memory, registers) per thread than are available on the SM.
 - **error: identifier "__eh_curr_region" is undefined:** A compiler problem often related to using non-static allocation for shared memory. Ensure shared memory arrays are declared with static sizes.
 
-## 2.10 Summary
 
-This introduction to CUDA has covered the fundamental concepts needed to start writing parallel programs for GPUs. Compared to traditional CPU programming, the CUDA model presents a new paradigm.
+Here is a reformatted version of your new notes, styled to be coherent with the structure and tone of your existing `gpu-computing.md` file.
 
-### Main Differences from CPU Programming
+I've adjusted the headings, removed the conversational "book-like" introductions, and formatted key concepts like definitions and takeaways to match your previous notes.
 
-- **Sophisticated Resource Planning:** You must manually manage the hierarchy of threads, blocks, and grids.
-- **Manual Data Movements:** Data must be explicitly transferred between the host and device.
-- **Limited Memory Capacity:** GPU memory, while fast, is often smaller than system RAM.
-- **Direct Hardware Control:** The model gives an experienced user direct control over the hardware, offering plenty of opportunities for performance optimization.
+-----
 
-Once understood, the programming model is remarkably straightforward and powerful, allowing you to unlock massive parallelism for a wide range of computational problems.
+## The Parallel Computing Paradigm
+
+### The GPU Computing Model: A Blend of Perspectives
+
+A GPU is a specialized processor for massive parallel work, which can be understood from two perspectives:
+
+  * **Software View (SIMT):** From a programming perspective, a GPU is a **programmable many-core scalar architecture**. You write code for a single **thread** (a single sequence of instructions). The GPU runs a huge number of these scalar threads simultaneously. This model is called **SIMT (Single Instruction, Multiple Threads)**: you write one program, and the GPU executes it across many data elements using thousands of threads. This use of far more threads than physical cores is known as **parallel slackness**.
+  * **Hardware View (SIMD):** From a hardware perspective, the GPU is a **programmable multi-core vector architecture**. The hardware creates the *illusion* of thousands of scalar threads by cleverly grouping them. Under the hood, the GPU is a **SIMD (Single Instruction, Multiple Data)** machine, executing a single instruction across multiple data points (a vector) at the same time.
+
+The GPU model hides the complexity of its vector units. This provides the ease of writing simple, single-thread code (SIMT) while benefiting from the power and efficiency of a vector machine (SIMD).
+
+### The Bulk-Synchronous Parallel (BSP) Model
+
+The **Bulk-Synchronous Parallel (BSP)** model, described by Leslie G. Valiant in 1990, captures how GPUs work. It structures algorithms into a sequence of **supersteps**, each with three ordered phases:
+
+1.  **Compute:** Every processor works independently on its local data.
+2.  **Communicate:** The processors exchange data with each other.
+3.  **Synchronize:** All processors wait at a barrier until every other processor has finished its communication phase before proceeding.
+
+**Parallel slackness** is a crucial concept in this model. It is the ratio of virtual processors (threads, $v$) to physical processors (cores, $p$):
+
+  * If $v = 1$, you have a serial program.
+  * If $v = p$, performance is unpromising, as a processor stall leaves hardware idle.
+  * If $v \gg p$, you have significant parallel slack. This is the sweet spot, allowing the system to hide memory latency by scheduling other work.
+
+GPUs are a near-perfect incarnation of the BSP model, using a high $v \gg p$ ratio to hide latency and keep hardware busy. This model is best suited for structured parallelism.
+
+### Vector Architectures: The Foundation of Efficiency
+
+The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (Instruction Set Architectures)**, which are efficient in three key ways:
+
+  * **Compact:** A single instruction defines many operations, amortizing the cost of instruction fetch/decode and reducing branches.
+  * **Parallel:** The operations are data-parallel (no dependencies), simplifying the hardware.
+  * **Expressive:** Vector memory instructions describe regular access patterns, allowing the hardware to prefetch data and amortize memory latency.
+
+-----
+
+## The Modern GPU Architecture
+
+We will use the NVIDIA GK110 "Kepler" architecture (Compute Capability 3.5) as a representative example.
+
+### The GK110 Architecture: A High-Level View
+
+The GK110 chip consists of up to 15 **Streaming Multiprocessors (SMX)**, which are the main computational engines.  These are connected to Memory Controllers (MCs) and a large L2 cache, communicating with the CPU and host memory via a PCIe 3.0 interface.
+
+### The Streaming Multiprocessor (SMX): The "GPU Core"
+
+The **Streaming Multiprocessor**, often abbreviated as **SM** (or **SMX** in the Kepler architecture), is the true "core" of the GPU where threads are scheduled and instructions are executed. Each GK110 SMX contains:
+
+  * **192 SP** (Single-Precision) units
+  * **64 DP** (Double-Precision) units
+  * **32 Load/Store (LD/ST)** units
+  * **32 Special Function Units (SFUs)** (for sine, cosine, etc.)
+
+To manage execution, each SMX also contains **4 warp schedulers**. A key design philosophy of the GK110 was optimizing for **performance-per-watt** by reducing clock frequency (which has a cubic relationship with power) while increasing parallelism.
+
+-----
+
+## The GPU Memory Hierarchy
+
+Understanding the memory hierarchy is critical for high-performance GPU programming. Unlike CPUs with deep, transparent cache hierarchies, GPUs feature a complex, multi-level memory hierarchy that is **manually controlled by the programmer**. On a GPU, caches are used less for reducing latency and more for reducing memory contention and **coalescing** memory accesses.
+
+### A Collaborative Approach
+
+The GPU philosophy is built on collaboration:
+
+  * **Collaborative Computing:** In CUDA, you typically launch one thread per output element, grouped into **thread blocks**. Schedulers use the massive number of threads (parallel slack) to keep hardware busy.
+  * **Collaborative Memory Access:** Memory access should be a team sport. Threads within a block work together to load data efficiently. The memory controllers are optimized to exploit this, especially through **memory coalescing**.
+
+> **Key Takeaway:** If you do something on a GPU, do it collaboratively with all threads.
+
+### The Levels of Memory
+
+The GPU memory hierarchy can be understood by its scope—what threads can "see" which memory.
+
+| Memory Space | Scope | GK110 Size (Per SM/Device) | Description |
+| :--- | :--- | :--- | :--- |
+| **Registers** | Per Thread | 64k total per thread block | Fastest memory. Private to a single thread. |
+| **Local Memory** | Per Thread | Part of Global Memory | Slow, off-chip memory. Private to a thread. Used for **register spilling**. |
+| **Shared Memory** | Per Thread Block | 16-48 kB per SM | Fast, on-chip memory. Shared by all threads in a block. Acts as a user-managed **scratchpad**. |
+| **L1 Cache** | Per Thread Block | 16-48 kB per SM | On-chip cache. Shares physical hardware with Shared Memory. |
+| **Read-Only Cache** | Per Device | 48 kB per SM | Cache for constant and texture data. |
+| **L2 Cache** | Per Device | 1.5 MB | Large on-chip cache shared by all SMs. Acts as a victim cache. |
+| **Global Memory** | Per Device | \~6 GB (GDDR, off-chip) | Main GPU memory. Large but slow (400-600 cycle latency). |
+| **Host Memory** | System-wide | Multiple TBs (off-device) | Main system RAM, connected to the CPU. Accessible via PCIe. |
+
+### Deeper Dive into Memory Types
+
+#### Registers and Local Memory
+
+Each thread has private **registers**, the fastest memory. The total number of registers on an SM is finite (64k per block on GK110). If a thread requires too many registers (max 255), the compiler performs **register spilling**, moving some variables to **Local Memory**.
+
+Despite its name, **Local Memory** is not on-chip; it is a private section of the slow, off-chip **Global Memory**. Stores to local memory are cached in the L1 cache.
+
+#### Shared Memory and L1 Cache
+
+Each thread block has access to fast, on-chip **Shared Memory**. This is a critical optimization tool, used as an explicit, user-controlled cache (**scratchpad**) to orchestrate data movement, reduce global memory traffic, and enable inter-thread communication.
+
+On Kepler, the L1 Cache and Shared Memory are backed by the same physical hardware and can be configured in different size ratios (e.g., 48kB Shared/16kB L1). The L1 cache is not coherent and also serves spills from registers.
+
+#### Global Memory and L2 Cache
+
+**Global Memory** refers to the large pool of GDDR memory on the graphics card. It has very high bandwidth but also very high latency (400-600 cycles). The **L2 Cache** is a large, on-chip cache shared by all SMs, designed to reduce contention on the global memory subsystem. The GPU's memory subsystem is fully featured, with support for virtual addresses, an MMU, and a TLB.
+
+#### Host Memory
+
+This is the main system RAM attached to the CPU. Data must be transferred between host and GPU global memory.
+
+  * `cudaMemcpy`: This function explicitly transfers data using the GPU's DMA (Direct Memory Access) engines.
+  * **Pinned Memory:** Standard host memory is "pageable" (unpinned). The GPU must copy it to a "staging buffer" first. **Pinning** memory (e.g., with `cudaMallocHost`) locks it in physical RAM, allowing for autonomous device access and faster transfers.
+  * **Zero Copy:** On modern GPUs (Compute Capability \>= 2.0), threads can directly operate on pinned host memory.
+
+A system diagram shows the CPU/Host Memory connection (\~64 GB/s) is vastly different from the GPU-GDDR connection (\~460 GB/s) and internal GPU memory bandwidth (\~3.3 TB/s).
+
+### Global Memory Coalescing: The Key to Bandwidth
+
+**Coalescing** is the process of combining many fine-grained memory accesses from multiple threads in a warp into a single, large GDDR memory transaction. This is paramount for achieving high bandwidth.
+
+On Kepler, the L1 cache line size is 128 bytes (latency-optimized) and the L2 cache line size is 32 bytes (bandwidth-optimized). When threads in a warp access memory, the ideal pattern is for them to access contiguous, aligned locations.
+
+#### Access Penalties
+
+  * **Offset Access:** `data[addr + offset]`. If a warp's access crosses a cache line boundary, it may require fetching 5 cache lines instead of 4, reducing effective bandwidth.
+  * **Strided Access:** `data[addr * stride]`. A stride of 2 means only half the data loaded into a cache line is used, resulting in 50% load/store efficiency.
+
+The solution is to **manually control data movement**. A common pattern is to have threads collaboratively load a "tile" of data from global memory into shared memory in a coalesced manner, then perform computation using the fast shared memory.
+
+> One of the GPU’s main advantages is memory bandwidth: **coalescing is of utmost importance\!**
+
+-----
+
+## GPU Execution and Scheduling
+
+GPU execution is designed to manage hundreds of thousands of threads to hide the massive latencies of memory access.
+
+### Latency Hiding and Tolerance
+
+Latency is the delay between requesting and receiving data (e.g., 400-600 cycles for global memory). GPUs primarily use **multi-threading** to tolerate this latency.
+
+| Property | Relaxed Consistency Models | Prefetching | Multi-Threading | Block Data Transfer |
+| :--- | :--- | :--- | :--- | :--- |
+| Types of latency | Write | Write | Write, Read | Write, Read |
+| Synchronization | Write | Read | Read | - |
+| Software requirements | Labeling sync ops | Predictability | **Explicit extra concurrency** | Identifying and orchestrating block transfers |
+| Extra hardware support | Little | Little | **Substantial** | Not in processor, but in memory system |
+| Supported in systems? | Yes | Yes | **Yes** | (Yes) |
+
+As the table shows, multi-threading requires substantial hardware support but relies on the software providing explicit extra concurrency—which is the massive number of threads launched in a CUDA kernel.
+
+### The Warp: The Unit of Scheduling
+
+The GPU hardware does not manage individual threads. Instead, it groups them into a **warp**.
+
+  * A **warp** is a group of **32 consecutive threads** from a thread block.
+  * This size (32) is an NVIDIA implementation detail but is fundamental to performance.
+  * Warps are the fundamental units for the scheduler.
+  * All threads in a warp execute the same instruction at the same time in lock-step.
+
+On Kepler:
+
+  * Up to 1024 threads can be in a **thread block**.
+  * One thread block executes entirely on **one SM**.
+  * Each thread block is divided into **warps** of 32 threads.
+  * One SM can hold multiple thread blocks (up to 4) and up to 32 warps per block.
+
+### The SM Scheduler at Work
+
+Each SM has its own scheduler(s) to keep its execution units busy. This is called **Fine-Grained Multi-Threading (FGMT)**. The scheduling loop is:
+
+1.  Select a thread block and allocate its resources (registers, shared memory).
+2.  From that block's warps, select one that is **ready** (operands are available).
+3.  Fetch and issue the instruction for the selected warp.
+4.  Repeat, allocating resources to new blocks until the SM is full.
+5.  If an executing warp **stalls** (e.g., on a memory access), the scheduler **immediately switches context** to another ready warp (this switch is zero-cost).
+6.  When all warps in a block finish, its resources are deallocated.
+
+The goal of FGMT is **latency hiding**. With enough active warps, the scheduler can almost always find work, keeping the functional units busy. This process interleaves execution, ensuring the pipeline is always full.
+
+### Hardware Multi-Threading Example (G80)
+
+An older G80 architecture provides a clear example. Assume 4 warp contexts, a 50-cycle memory stall, and a memory access every 20 cycles. You need at least 3 warps to hide latency and **4 warps for full utilization**.
+
+A timing diagram for this G80 example shows four warps (T0, T1, T2, T3).
+
+1.  At time 0, warp T0 begins execution.
+2.  After 20 cycles, it issues a memory access and enters a **stall** state.
+3.  The scheduler immediately switches to warp T1, which executes for 20 cycles and stalls.
+4.  The scheduler switches to T2, and then T3.
+5.  By the time T3 stalls, 60 cycles have passed, and the 50-cycle memory access for T0 is complete. T0 is now in a **waiting** state, ready to be scheduled again.
+
+This cycle of executing, stalling, and switching between ready warps ensures the ALUs are constantly fed with instructions.
+
+### Scoreboarding and Instruction Issue
+
+Modern schedulers use a **scoreboard**, a hardware table that tracks the status of instructions for all active warps. It tracks dependencies, resource availability, and outputs. This allows for **Out-of-Order (OOO) execution** *among warps*, preventing data hazards. The scheduler can pick any warp whose dependencies are resolved.
+
+The Kepler scheduler checks the scoreboard and issues an instruction to a ready warp using a prioritized round-robin scheme. The instruction is then broadcast to all 32 threads in that warp.
+
+### The Challenge of Branch Divergence
+
+Since all 32 threads in a warp execute the same instruction, `if-else` statements can cause **branch divergence**.
+
+If some threads in a warp take the `if` path and others take the `else` path, the hardware serializes the execution:
+
+1.  It disables the `else` threads using a **write-mask**.
+2.  All threads in the warp traverse the `if` block.
+3.  The write-mask is inverted: `if` threads are disabled, `else` threads are enabled.
+4.  All threads in the warp traverse the `else` block.
+
+The total execution time is the *sum* of both paths.
+
+```c++
+// Kernel 1: High divergence within a warp
+// Thread 0 takes 'if', threads 1-31 take 'else'.
+// This is slow due to serialization.
+__global__ void kernel1(float* out) {
+  int id = threadIdx.x;
+  if (id % 32 == 0) {
+    out[id] = complex_function_call();
+  } else {
+    out[id] = 0;
+  }
+}
+
+// Kernel 2: No divergence within a warp
+// All threads in the first warp (0-31) take the 'if' path together.
+// All threads in other warps take the 'else' path together.
+// This is fast.
+__global__ void kernel2(float* out) {
+  int id = threadIdx.x + blockIdx.x * blockDim.x;
+  if (id < 32) {
+    out[id] = complex_function_call();
+  } else {
+    out[id] = 0;
+  }
+}
+```
+
+-----
+
+## Performance and Optimization Summary
+
+### Key Performance Considerations
+
+The most common CUDA performance issues are:
+
+  * **Memory Coalescing:** Failing to access global memory in a coalesced pattern (due to strides or offsets) wastes memory bandwidth.
+  * **Latency Hiding:** Not launching enough threads/warps leaves the scheduler with no work when a stall occurs, idling the hardware. Conversely, too many threads/block can cause **register spilling** to slow local memory.
+  * **Divergent Branching:** When threads within a warp follow different control flow paths, their execution is serialized, nullifying parallelism.
+
+### Summary of Key Concepts
+
+  * **Memory Hierarchy:** GPUs feature a manually-controlled, flat memory hierarchy. Caches are primarily for coalescing accesses, not hiding latency.
+  * **Parallel Slackness:** The BSP model's concept of $v \gg p$ is key to the GPU's latency hiding capabilities.
+  * **The Warp:** The instruction stream on a GPU corresponds to a **thread warp** (32 threads), not a single thread.
+  * **Optimization:** Performance optimization revolves around maximizing memory coalescing, ensuring sufficient active warps, and minimizing branch divergence.
+
+### Advanced Memory Analysis: Pointer Chasing
+
+It is possible to empirically analyze a GPU's memory subsystem using **pointer chasing**. This involves creating a long linked list in memory and measuring the time to traverse it. By varying the stride and total size, you can infer properties of the caches and TLB.
+
+An analysis of the GeForce 8800 GTX revealed:
+
+  * **L1 Cache:** A sharp latency increase at 5.5 kB (implying a 5 kB L1 cache) and at a 32-byte stride (implying a 32-byte cache line).
+  * **L2 Cache:** Similar analysis suggested a 24-way set-associative L2.
+  * **TLB:** A latency increase at 128 MB pointed to a TLB. Saturation at a 512 kB size indicated a 512 kB page size, and further tests suggested a 16-entry, fully-associative TLB.
