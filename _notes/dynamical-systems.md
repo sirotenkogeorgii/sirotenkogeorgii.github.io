@@ -9,6 +9,17 @@ tags:
   - theory
 ---
 
+<style>
+  .accordion summary {
+    font-weight: 600;
+    color: var(--accent-strong, #2c3e94);
+    background-color: var(--accent-soft, #f5f6ff);
+    padding: 0.35rem 0.6rem;
+    border-left: 3px solid var(--accent-strong, #2c3e94);
+    border-radius: 0.25rem;
+  }
+</style>
+
 # Dynamical Systems Theory in Machine Learning: A Foundational Overview
 
 ## Executive Summary
@@ -268,3 +279,47 @@ An equilibrium point is called hyperbolic if none of the eigenvalues of the matr
    b) $ A = \begin{pmatrix} 1 & 1 \\ 4 & 1 \end{pmatrix} $  
    c) $ A = \begin{pmatrix} 0 & 2 \\ -2 & 0 \end{pmatrix} $
 2. Manifolds: Consider a system with eigenvalues $ \lambda_1 = -2 $ and $ \lambda_2 = 1 $. Describe the behavior of a trajectory that starts very close to, but not exactly on, the stable manifold.
+
+---
+
+## Nonlinear Systems
+
+### One-dimensional nonlinear ODEs
+
+### Multi-dimensional nonlinear ODEs
+
+$\text{Remark:}$ TODO: put remark between two lotka-volterras
+
+$\text{Example (Lotka-Volterra):}$ ...
+
+$\text{Definition (Homeomorphism):}$ Let $X$ be a topoligical space and $A,B \subseteq X$. A map $h: A \to B$ is called homeomorphism, if
+
+* $h$ is bijective and continuous.
+* the inverse $h^{-1}: B \to A$ is continuous.
+
+Two topological spaces $A$ and $B$ are homeomorphic if there is a homeomorphism $h: A \to B$.
+
+> Note: Homeomorphism is also called **a continuous deformation with a continuous inverse**, or **topological isomorphism**, or **bicontinuous function**. Examples: A square and a circle are homeomorphic because one can be continuously deformed into the other. Non-examples: A line segment cannot be continuously deformed into a point, so this is not a homeomorphism. Similarly, a sphere and a torus are not homeomorphic because they have different topological properties (e.g., the number of holes) and cannot be continuously deformed into each other. 
+
+<div class="accordion">
+  <details>
+    <summary>Topological Space</summary>
+    <p>
+    A topological space is a set whose elements are called points, along with an additional structure called a topology, which can be defined as a set of neighbourhoods for each point that satisfy some axioms formalizing the concept of closeness. There are several equivalent definitions of a topology, the most commonly used of which is the definition through open sets.
+    </p>
+    <ul>
+      <li>Each head can move at most <code>d</code> squares.</li>
+      <li>Starting anywhere inside the current block, after <code>d</code> moves the head can only be in the same block or one of its immediate neighbors (it can’t skip two blocks).</li>
+      <li>Moreover, M can read and write anywhere it visits during those <code>d</code> moves. That set of positions is contained within the current block plus at most one block to the left and one to the right.</li>
+    </ul>
+    <p><strong>Definition via neighbourhoods</strong></p>
+    <p><strong>Definition via open sets</strong></p>
+    <p><strong>Definition via closed sets</strong></p>
+    <p><strong>Examples of topologies</strong></p>
+    <p><strong>Examples of topological spaces</strong></p>
+    <p>... Every manifold has a natural topology since it is locally Euclidean. Similarly, every simplex and every simplicial complex inherits a natural topology from. ...</p>
+    <p><strong>Classification of topological spaces</strong></p>
+    <p>Topological spaces can be broadly classified, up to homeomorphism, by their topological properties(?). A topological property is a property of spaces that is invariant under homeomorphisms. To prove that two spaces are not homeomorphic it is sufficient to find a topological property not shared by them. Examples of such properties include connectedness, compactness, and various separation axioms. For algebraic invariants see algebraic topology.</p>
+
+  </details>
+</div>
