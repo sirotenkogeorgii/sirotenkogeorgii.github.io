@@ -1045,7 +1045,7 @@ $$
 \text{DSPACE}(c \cdot s(n)) \subseteq \text{DSPACE}(s(n))
 $$
 
-\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\brace 0, 1, \square \rbrace$ that recognizes $L$.
+$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\brace 0, 1, \square \rbrace$ that recognizes $L$.
 
 -----
 
@@ -1053,7 +1053,7 @@ $$
 
 The concept of space bounds extends naturally to nondeterministic Turing machines.
 
-$\textbf{Definition 68 (Nondeterministic Space Classes):}$ Let $s$ be a space bound. A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(|w|)$ cells on each work tape. The class of languages decidable in nondeterministic space $s(n)$ is:
+$\textbf{Definition 68 (Nondeterministic Space Classes):}$ Let $s$ be a space bound. A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(\lvert w \rvert)$ cells on each work tape. The class of languages decidable in nondeterministic space $s(n)$ is:
 
 $$
 \text{NSPACE}(s(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for an } s(n)\text{-space-bounded Turing machine } M \rbrace
@@ -1080,8 +1080,10 @@ A canonical problem in $\text{NLOG}$ is determining reachability in a directed g
 The problem is formalized as the language:
 
 $$
-\text{DirPath} = \{ \langle A, s, t \rangle : A \text{ is the adjacency matrix of a directed graph } G \text{ in which there exists a path from node } s \text{ to node } t \}
-$$An instance $\langle A, s, t \rangle$ for a graph with $n$ nodes can be represented as $1^n0z_1z_2 \dots z_n01^s01^t$, where $z_i$ are the rows of the adjacency matrix.
+\text{DirPath} = \lbrace \langle A, s, t \rangle : A \text{ is the adjacency matrix of a directed graph } G \text{ in which there exists a path from node } s \text{ to node } t \rbrace
+$$
+
+An instance $\langle A, s, t \rangle$ for a graph with $n$ nodes can be represented as $1^n0z_1z_2 \dots z_n01^s01^t$, where $z_i$ are the rows of the adjacency matrix.
 
 To show that $\text{DirPath}$ is in $\text{NLOG}$, we can construct a $(c \log n + c)$-space bounded nondeterministic Turing machine. On input $\langle A, s, t \rangle$:
 
@@ -1121,10 +1123,11 @@ A fundamental aspect of complexity theory is understanding the relationships bet
 
 $\textbf{Remark 72:}$ Let $t$ be any time bound. A $t(n)$-time bounded Turing machine can access at most $t(n)+1$ cells on each work tape. With minor adjustments, we can ensure it is $t(n)$-space-bounded. This gives the immediate inclusions:
 
-$$\\text{DTIME}(t(n)) \\subseteq \\text{DSPACE}(t(n))
-$$$$
-\\text{NTIME}(t(n)) \\subseteq \\text{NSPACE}(t(n))
-$$The following theorem summarizes the key relationships between deterministic and nondeterministic time and space classes.
+$$
+\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n)) \text{ and } \text{NTIME}(t(n)) \subseteq \text{NSPACE}(t(n))
+$$
+
+The following theorem summarizes the key relationships between deterministic and nondeterministic time and space classes.
 
 $\textbf{Theorem 73:}$ Let $t$ be a time bound. Then the following inclusions hold.
 The relationships in the second and third columns also hold for an arbitrary space bound $s$ instead of $t$.
@@ -1267,15 +1270,19 @@ $\textbf{Corollary 81:}$ It holds that PSPACE = NPSPACE.
 * All computations have a length of at most $2^{\ell(n)}$, where $\ell(n) = d \cdot s(n)$ for some constant $d$. This is because there are at most $2^{d \cdot s(n)}$ distinct configurations, so any longer computation must contain a cycle.
 
 The NTM $N$ accepts an input $x$ if and only if there is a computation path from the initial configuration $K_{initial}(x)$ to the accepting configuration $K_{accept}(x)$ of length at most $2^{\ell(n)}$. We denote this as:
+
 $$
 K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x) \quad (3.1)
 $$
+
 where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length at most $t$ from configuration $K$ to $K'$.
 
 We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if $K_1 \xrightarrow{\le 2^i}_N K_2$, the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
+
 $$
 K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2
 $$
+
 The machine $M$ checks this by iterating through all possible configurations $K_{mid}$ that obey the space bound $s(n)$. For each candidate $K_{mid}$, it recursively checks the two subproblems.
 
 The process unfolds as follows:
@@ -1300,7 +1307,7 @@ A. Do the classes P and NP coincide?
 
 This remains one of the greatest unsolved problems in computer science. It is not even known if PSPACE, the class of languages decidable in deterministic polynomial space, coincides with P or NP. A related open question concerns the closure of NP under complement.
 
-B. Is the class NP closed under complement, i.e., does the complement $\{0, 1\}^* \setminus L$ of any language $L$ in NP also belong to NP?
+B. Is the class NP closed under complement, i.e., does the complement $\lbrace 0, 1\rbrace^* \setminus L$ of any language $L$ in NP also belong to NP?
 
 In the context of polynomial space, the analogous questions have been answered in the affirmative. Savitch's Theorem directly answers the space analogue of question A, showing PSPACE = NPSPACE. The answer to the space analogue of question B is also yes, a result proven by Immerman and Szelepcsényi.
 
@@ -1312,7 +1319,7 @@ $\textbf{Definition 82:}$ A **complexity class** is a set of languages over the 
 
 We now introduce a type of logical formula whose evaluation problem is complete for PSPACE. This language, TQBF (True Quantified Boolean Formulas), serves a role for PSPACE similar to what SAT serves for NP.
 
-$\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \{\neg, \land, (, ), \exists, \forall\}$ and let Var be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over Var is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
+$\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \lbrace \neg, \land, (, ), \exists, \forall\rbrace$ and let Var be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over Var is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
 
 * **Base case.** All elements of Var are quantified propositional formulas.
 * **Inductive step.** If $\psi$ and $\psi'$ are quantified propositional formulas and $X$ is in Var, then $\neg\psi$, $(\psi \land \psi')$, and $\exists X \psi$ are quantified propositional formulas.
@@ -1330,7 +1337,7 @@ A foundational result connects nondeterministic time complexity with determinist
 
 $\textbf{Lemma 75:}$ Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$.
 
-**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \{y_1, \dots, y_d\}$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
+**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \lbrace y_1, \dots, y_d\rbrace$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
 
 The core idea is to represent a specific computation path of $M$ on an input $w$ as a sequence of instructions. A word $u = u(1) \dots u(t)$ over the alphabet $Y$ is said to **code a partial computation** $C_0, C_1, \dots, C_t$ on input $w$ if $C_0$ is the initial configuration and for each step $i$ from $1$ to $t-1$, the instruction $u(i)$ is applicable in configuration $C_{i-1}$ and yields configuration $C_i$. If a word $u$ codes a partial computation, we call it a **coding word**. Let $C_u$ denote the final configuration of the computation coded by $u$. Note that all prefixes of a coding word are also coding words. The empty word, $\lambda$, is a coding word, and $C_\lambda$ is the initial configuration.
 
@@ -1410,12 +1417,15 @@ $\textbf{Theorem 78 (Space-constructible Functions):}$ The functions in the func
 Another important technical result is that constant factors in space bounds do not affect the power of the computational model.
 
 $\textbf{Remark 79 (Linear compression):}$ Linear compression refers to the following fact: for all space bounds $s$ and all constants $c$, every $c \cdot s(n)$-space-bounded Turing machine can be transformed into an $s(n)$-space-bounded Turing machine that recognizes the same language; in case the given Turing machine is deterministic, the new one can be chosen to be deterministic, too. Consequently, it holds for all such $s$ and $c \ge 1$ that
+
 $$
 \text{NSPACE}(c \cdot s(n)) = \text{NSPACE}(s(n))
 $$
+
 $$
 \text{DSPACE}(c \cdot s(n)) = \text{DSPACE}(s(n))
 $$
+
 This is achieved by encoding blocks of symbols from the original machine's tapes into single, more complex symbols on the new machine's tapes, or by using multiple work tapes to simulate one.
 
 $\textbf{Theorem 80 (Savitch’s Theorem):}$ Let $s$ be a space-constructible space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DSPACE}(s^2(n))$.
@@ -1432,15 +1442,19 @@ $\textbf{Corollary 81:}$ It holds that PSPACE = NPSPACE.
 * All computations have a length of at most $2^{\ell(n)}$, where $\ell(n) = d \cdot s(n)$ for some constant $d$. This is because there are at most $2^{d \cdot s(n)}$ distinct configurations, so any longer computation must contain a cycle.
 
 The NTM $N$ accepts an input $x$ if and only if there is a computation path from the initial configuration $K_{initial}(x)$ to the accepting configuration $K_{accept}(x)$ of length at most $2^{\ell(n)}$. We denote this as:
+
 $$
 K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x) \quad (3.1)
 $$
+
 where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length at most $t$ from configuration $K$ to $K'$.
 
 We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if $K_1 \xrightarrow{\le 2^i}_N K_2$, the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
+
 $$
 K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2
 $$
+
 The machine $M$ checks this by iterating through all possible configurations $K_{mid}$ that obey the space bound $s(n)$. For each candidate $K_{mid}$, it recursively checks the two subproblems.
 
 The process unfolds as follows:
