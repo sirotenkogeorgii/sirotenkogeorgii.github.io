@@ -1165,6 +1165,13 @@ $$
 
 The following theorem summarizes the key relationships between deterministic and nondeterministic time and space classes.
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/coco_theorem_73.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+    <figcaption>Illustration for Theorem 73</figcaption>
+  </figure>
+</div>
+
 $\textbf{Theorem 73:}$ Let $t$ be a time bound. Then the following inclusions hold.
 The relationships in the second and third columns also hold for an arbitrary space bound $s$ instead of $t$.
 
