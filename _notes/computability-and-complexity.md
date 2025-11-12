@@ -954,7 +954,7 @@ $\textbf{Definition 57 (Off-line Turing Machine):}$ An **off-line Turing machine
 $\textbf{Remark 58 (Configurations of Off-line Turing machines):}$ Configurations for off-line Turing machines are defined as before (state, work tape contents, work tape head positions), but with adjustments for the special tapes:
 
   * **Output Tape:** Neither its content nor its head position is part of a configuration, as this information cannot influence future computational steps.
-  * **Input Tape:** Only the position of the head is part of a configuration. For an input of length $n$, this position is an integer in $\{0, \dots, n+1\}$.
+  * **Input Tape:** Only the position of the head is part of a configuration. For an input of length $n$, this position is an integer in $\lbrace 0, \dots, n+1\rbrace$.
 
 This definition ensures that configurations remain snapshots of all information needed to proceed with a computation. For sublinear space bounds, this allows the representation of a configuration to be smaller than the input itself, which is advantageous in certain constructions.
 
@@ -975,26 +975,26 @@ s & \text{if } M \text{ terminates on input } w \text{ and } s \text{ is the max
 & \text{number of cells accessed on a single work tape,} \\
 \uparrow & \text{otherwise.}
 \end{cases}
-$$$\textbf{Remark 61:}$ We write $\log x$ for the binary logarithm $\log_2 x$. When used in complexity bounds, $\log x$ may also refer to $\lceil \log_2 x \rceil$ or $\lfloor \log_2 x \rfloor$. For space bounds, we define $\log 0 = 1$.
+$$
+
+$\textbf{Remark 61:}$ We write $\log x$ for the binary logarithm $\log_2 x$. When used in complexity bounds, $\log x$ may also refer to $\lceil \log_2 x \rceil$ or $\lfloor \log_2 x \rfloor$. For space bounds, we define $\log 0 = 1$.
 
 $\textbf{Definition 62 (Space-Bounded Deterministic Turing Machine):}$ A **space bound** is a computable function $s: \mathbb{N} \to \mathbb{N}$ with $s(n) \ge \log n$ for all $n > 0$.
 
 $\textbf{Definition 63 (Deterministic Space Classes):}$ Let $s$ be a space bound.
 
-* A deterministic Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and for all but finitely many inputs $w$, it holds that $\text{space}_M(w) \le s(|w|)$.
+A deterministic Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and for all but finitely many inputs $w$, it holds that $\text{space}_M(w) \le s(\lvert w\rvert)$.
 * The class of languages decidable in deterministic space $s(n)$ is:
+
+$$
+\text{DSPACE}(s(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace ^* : L = L(M) \text{ for a deterministic } s(n)\text{-space-bounded Turing machine } M \rbrace
 $$
 
-```
-$$\\text{DSPACE}(s(n)) = { L \\subseteq {0, 1}^\* : L = L(M) \\text{ for a deterministic } s(n)\\text{-space-bounded Turing machine } M }
-$$
-$$
-```
+The class $\text{DSPACE}_k(s(n))$ is defined similarly but restricts machines to at most $k$ work tapes. For a set $F$ of space bounds, we define
 
-  * The class $\text{DSPACE}_k(s(n))$ is defined similarly but restricts machines to at most $k$ work tapes.
-  * For a set $F$ of space bounds, we define $\text{DSPACE}(F) = \bigcup_{s \in F} \text{DSPACE}(s(n))$.
-
------
+$$
+\text{DSPACE}(F) = \bigcup_{s \in F} \text{DSPACE}(s(n)).
+$$
 
 ### Key Deterministic Space Classes
 
@@ -1002,8 +1002,8 @@ Using standard function classes, we define some of the most important space comp
 
 $\textbf{Definition 64 (Examples of Deterministic Space Classes):}$ Using the function classes
 
-  * $\text{log} = \{ n \mapsto c \cdot \log n + c : c \in \mathbb{N} \setminus \{0\} \}$
-  * $\text{poly} = \{ n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \}$
+  * $\text{log} = \lbrace n \mapsto c \cdot \log n + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
+  * $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
 
 we define the complexity classes:
 
@@ -1019,15 +1019,17 @@ We refer to $\text{PSPACE}$ as the class of problems decidable in deterministic 
 
 Off-line Turing machines can also be used to compute functions. The output is simply the word written on the output tape upon termination.
 
-$\textbf{Definition 65 (Functions computed by space-bounded Turing machines):}$ Let $s$ be a space bound.
+$\textbf{Definition 65 (Functions computed by space-bounded Turing machines):}$ Let $s$ be a space bound. The class of functions computable in deterministic space $s(n)$ is:
 
-  * The class of functions computable in deterministic space $s(n)$ is:
-    $$
-    $$$$\\text{FSPACE}(s(n)) = { f : {0, 1}^\* \\to {0, 1}^\* : f = f\_M \\text{ for a deterministic } s(n)\\text{-space-bounded Turing machine } M }
-    $$
-    $$$$
-    $$
-  * For a set $F$ of space bounds, $\text{FSPACE}(F) = \bigcup_{s \in F} \text{FSPACE}(s(n))$.
+$$
+\text{FSPACE}(s(n)) = \lbrace f : \lbrace 0, 1\rbrace^* \to \lbrace 0, 1\rbrace^* : f = f_M \text{ for a deterministic } s(n)\text{-space-bounded Turing machine } M \rbrace
+$$
+
+For a set $F$ of space bounds,
+
+$$
+\text{FSPACE}(F) = \bigcup_{s \in F} \text{FSPACE}(s(n))
+$$
 
 Similar to time complexity, space complexity classes are robust against changes in machine specifics like the number of tapes or constant factors in the space bound.
 
@@ -1035,10 +1037,15 @@ $\textbf{Theorem 66 (Linear Compression):}$ For every space bound $s$, it holds 
 
 $$
 \text{DSPACE}_k(c \cdot s(n)) \subseteq \text{DSPACE}_k(s(n))
-$$and therefore, in particular,
+$$
 
-$$\\text{DSPACE}(c \\cdot s(n)) \\subseteq \\text{DSPACE}(s(n))
-$$$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape... [source context cuts off]
+and therefore, in particular,
+
+$$
+\text{DSPACE}(c \cdot s(n)) \subseteq \text{DSPACE}(s(n))
+$$
+
+\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\brace 0, 1, \square \rbrace$ that recognizes $L$.
 
 -----
 
@@ -1046,15 +1053,11 @@ $$$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k 
 
 The concept of space bounds extends naturally to nondeterministic Turing machines.
 
-$\textbf{Definition 68 (Nondeterministic Space Classes):}$ Let $s$ be a space bound.
+$\textbf{Definition 68 (Nondeterministic Space Classes):}$ Let $s$ be a space bound. A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(|w|)$ cells on each work tape. The class of languages decidable in nondeterministic space $s(n)$ is:
 
-  * A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(|w|)$ cells on each work tape.
-  * The class of languages decidable in nondeterministic space $s(n)$ is:
-    $$
-    $$$$\\text{NSPACE}(s(n)) = { L \\subseteq {0, 1}^\* : L = L(M) \\text{ for an } s(n)\\text{-space-bounded Turing machine } M }
-    $$
-    $$$$
-    $$
+$$
+\text{NSPACE}(s(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for an } s(n)\text{-space-bounded Turing machine } M \rbrace
+$$
 
 -----
 
