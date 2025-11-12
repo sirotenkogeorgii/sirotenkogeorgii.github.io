@@ -1337,12 +1337,21 @@ The machine $M$ checks this by iterating through all possible configurations $K_
 The process unfolds as follows:
 
 1.  To solve the main problem (which is 3.1), $M$ iterates through all configurations $K$ and checks if both:
-    i.  $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K$
-    ii. $K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)$
-3.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
+
+$$
+i. K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K
+$$
+
+and
+
+$$
+ii. K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)
+$$
+
+2.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
     iii. $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$
     iv. $K' \xrightarrow{\le 2^{\ell(n)-2}}_N K$
-4.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
+3.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
 
 The depth of this recursion is $\ell(n) = d \cdot s(n)$. At each level of the recursion, the machine $M$ needs to store the configurations that form the start and end points of the current subproblem (e.g., $K_{initial}, K_{accept}, K, K'$, etc.). Since the recursion depth is $\ell(n)$, and each configuration of $N$ requires $O(s(n))$ space to store, the total space required for the recursion stack is $O(\ell(n) \cdot s(n)) = O(s(n) \cdot s(n)) = O(s^2(n))$.
 
