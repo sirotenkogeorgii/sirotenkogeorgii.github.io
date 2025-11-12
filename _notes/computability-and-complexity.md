@@ -1320,7 +1320,13 @@ $$
 
 where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length at most $t$ from configuration $K$ to $K'$.
 
-We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if $K_1 \xrightarrow{\le 2^i}_N K_2$, the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
+We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if
+
+$$
+K_1 \xrightarrow{\le 2^i}_N K_2,
+$$
+
+the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
 
 $$
 K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2
@@ -1330,15 +1336,13 @@ The machine $M$ checks this by iterating through all possible configurations $K_
 
 The process unfolds as follows:
 
-1.  To solve the main problem (3.1), which is $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x)$, $M$ iterates through all configurations $K$ and checks if both:
-2.  To solve the main problem (3.1), which is $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_{N} {K}_{accept}(x)$, $M$ iterates through all configurations $K$ and checks if both:
-3.  To solve the main problem (3.1), which is $K_{\text{initial}}(x) \xrightarrow{\le 2^{\ell(n)}}_{N} {K}_{\text{accept}}(x)$, $M$ iterates through all configurations $K$ and checks if both:
+1.  To solve the main problem (which is 3.1), $M$ iterates through all configurations $K$ and checks if both:
     i.  $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K$
     ii. $K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)$
-4.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
+3.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
     iii. $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$
     iv. $K' \xrightarrow{\le 2^{\ell(n)-2}}_N K$
-5.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
+4.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
 
 The depth of this recursion is $\ell(n) = d \cdot s(n)$. At each level of the recursion, the machine $M$ needs to store the configurations that form the start and end points of the current subproblem (e.g., $K_{initial}, K_{accept}, K, K'$, etc.). Since the recursion depth is $\ell(n)$, and each configuration of $N$ requires $O(s(n))$ space to store, the total space required for the recursion stack is $O(\ell(n) \cdot s(n)) = O(s(n) \cdot s(n)) = O(s^2(n))$.
 
