@@ -514,7 +514,7 @@ The concept of time complexity can be extended from deterministic to nondetermin
 
 When analyzing the time complexity of a nondeterministic machine, we consider the length of the longest possible computation path.
 
-$\textbf{Definition 32 (Nondeterministic time classes):}$ Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, all computations of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq {0, 1}^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
+$\textbf{Definition 32 (Nondeterministic time classes):}$ Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, **all computations** of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq {0, 1}^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
 
 $\textbf{Remark 34}$ In the literature, one also finds a variant of the notion $t(n)$-time bounded Turing machine where the length bound $t(\lvert w \rvert)$ is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds $t$ with $t(n) \ge 2n$, the alternative definition is essentially equivalent to the one presented here. Here a function $t$ is time-constructible if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $t(n)$. For such $t$, it is possible to equip a Turing machine that is $t(n)$-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after $t(n)$ steps on all computations such that the recognized language remains the same and the clocked Turing machine is $t(n)$-time bounded according to Definition 32.
 
@@ -984,7 +984,8 @@ $\textbf{Definition 62 (Space-Bounded Deterministic Turing Machine):}$ A **space
 $\textbf{Definition 63 (Deterministic Space Classes):}$ Let $s$ be a space bound.
 
 A deterministic Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and for all but finitely many inputs $w$, it holds that $\text{space}_M(w) \le s(\lvert w\rvert)$.
-* The class of languages decidable in deterministic space $s(n)$ is:
+
+The class of languages decidable in deterministic space $s(n)$ is:
 
 $$
 \text{DSPACE}(s(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace ^* : L = L(M) \text{ for a deterministic } s(n)\text{-space-bounded Turing machine } M \rbrace
@@ -1045,7 +1046,7 @@ $$
 \text{DSPACE}(c \cdot s(n)) \subseteq \text{DSPACE}(s(n))
 $$
 
-$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\brace 0, 1, \square \rbrace$ that recognizes $L$.
+$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\lbrace 0, 1, \square \rbrace$ that recognizes $L$.
 
 -----
 
@@ -1107,6 +1108,39 @@ $\textbf{Lemma 71 (Configurations of Space-Bounded Turing Machines):}$ Let $s$ b
 
 **Proof.**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
 
+<div class="accordion">
+  <details>
+    <summary>Proof of ($i$)</summary>
+    <p>
+    Let $Q$ be the set of states, $\Gamma$ the working alphabet, $n$ the input length, and $k$ the number of work tapes.
+    A configuration of an off-line TM consists of the current state ($|Q|$ choices),
+    the position of the input head ($n+2$ choices, allowing for end markers), and,
+    for each work tape, both the tape contents and the head position within those contents.
+
+    On any work tape the machine ever scans at most $s(n)$ cells, so the number of
+    admissible strings on that tape is $\sum_{i=0}^{s(n)} |\Gamma|^i \le c_{\text{tape}}|\Gamma|^{s(n)}$ for a constant $c_{\text{tape}}$ that depends only on $\Gamma$.
+    The $s(n)+1$ possible head locations multiply this by another factor of $s(n)+1$.
+    Hence one tape contributes at most $c_{\text{tape}}|\Gamma|^{s(n)}(s(n)+1)$ configurations, and all $k$ tapes together contribute at most $\big(c_{\text{tape}}|\Gamma|^{s(n)}(s(n)+1)\big)^k$.
+    Including the choice of state and input-head position gives the bound
+    \[
+      |Q|(n+2) c_{\text{tape}}^k |\Gamma|^{k s(n)} (s(n)+1)^k.
+    \]
+
+    The exercise further notes that configurations on inputs of length $n$ can be encoded as binary words of length $c \cdot s(n)$ for some machine-dependent constant $c$.
+    Because every input of length $n$ yields at least $n+2$ configurations (one per input-head position),
+    we obtain $n+2 \le 2^{c s(n)}$ once $s(n) \ge \log_2(n+2)/c$; this is true for space bounds of interest.
+    Moreover $(s(n)+1)^k \le 2^{c_1 s(n)}$ for a constant $c_1$ and all sufficiently large $n$, and $|\Gamma|^{k s(n)} = 2^{(\log_2 |\Gamma|) k s(n)}$.
+    Combining these inequalities we get
+    \[
+      |Q|(n+2) c_{\text{tape}}^k |\Gamma|^{k s(n)} (s(n)+1)^k
+      \le \underbrace{|Q| c_{\text{tape}}^k}_{\text{constant}} 2^{c s(n)} 2^{c_1 s(n)} 2^{(\log_2 |\Gamma|) k s(n)}
+      = 2^{d s(n)}
+    \]
+    for $d = c + c_1 + (\log_2 |\Gamma|)k$.
+    </p>
+  </details>
+</div>
+
 For part (ii), let $\ell = 2^{d \cdot s(n)}$, which is the upper bound on the number of distinct configurations for an input of length $n$. We will prove (ii) by contradiction. Assume that on some input $w$ of length $n$, the computation tree of $M$ has a branch of length $\ell$. This branch corresponds to a computation path with $\ell + 1$ configurations.
 
 By the pigeonhole principle, since there are more configurations in the sequence ($\ell+1$) than there are distinct possible configurations ($\le \ell$), at least one configuration must appear twice. Let's say configuration $C$ appears at step $i$ and again at a later step $j > i$.
@@ -1114,6 +1148,8 @@ By the pigeonhole principle, since there are more configurations in the sequence
 This means the machine has entered a loop. The sequence of steps from configuration $C$ at step $i$ to the same configuration $C$ at step $j$ can be repeated infinitely. This implies that $M$ has a non-terminating computation on input $w$.
 
 However, an $s(n)$-space bounded machine is required by definition to be total, meaning it must terminate on all inputs. This is a contradiction. Therefore, our initial assumption must be false, and no computation path can have a length of $\ell$ or more. The depth of the computation tree must be less than $2^{d \cdot s(n)}$. ∎
+
+
 
 -----
 
@@ -1479,7 +1515,7 @@ A. Do the classes P and NP coincide?
 
 This remains one of the greatest unsolved problems in computer science. It is not even known if PSPACE, the class of languages decidable in deterministic polynomial space, coincides with P or NP. A related open question concerns the closure of NP under complement.
 
-B. Is the class NP closed under complement, i.e., does the complement $\{0, 1\}^* \setminus L$ of any language $L$ in NP also belong to NP?
+B. Is the class NP closed under complement, i.e., does the complement $\lbrace 0, 1\rbrace^* \setminus L$ of any language $L$ in NP also belong to NP?
 
 In the context of polynomial space, the analogous questions have been answered in the affirmative. Savitch's Theorem directly answers the space analogue of question A, showing PSPACE = NPSPACE. The answer to the space analogue of question B is also yes, a result proven by Immerman and Szelepcsényi.
 
