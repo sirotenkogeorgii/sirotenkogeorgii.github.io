@@ -1412,8 +1412,8 @@ $\textbf{Definition 87 (The Language QBF):}$ $\text{QBF} = \{\psi : \psi \text{ 
 
 $\textbf{Theorem 88 (QBF is PSPACE-Complete):}$ $\text{QBF}$ is $\text{PSPACE}$-complete, as captured by the following lemmas.
 
-- $\textbf{Lemma 89:}$ $\text{QBF} \in \text{PSPACE}$.
-- $\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
+$\textbf{Lemma 89:}$ $\text{QBF} \in \text{PSPACE}$.
+$\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
 
 ##### Proof of PSPACE-Completeness for QBF
 
@@ -1427,9 +1427,9 @@ Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is t
 
 **Lemma 90 (Hardness).** For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
 
-- the current state $q_k \in Q = \{q_1, \dots, q_k\}$,
-- the input-head position $j \in J = \{0, 1, \dots, n + 1\}$,
-- the work-tape head position $j' \in J' = \{1, \dots, p(n)\}$,
+- the current state $q_k \in Q = \lbrace q_1, \dots, q_k\rbrace$,
+- the input-head position $j \in J = \lbrace 0, 1, \dots, n + 1\rbrace$,
+- the work-tape head position $j' \in J' = \lbrace 1, \dots, p(n)\rbrace$,
 - the work-tape contents $w \in \Gamma^{p(n)}$.
 
 Introduce propositional variables $Z_k$, $P_j$, $P'_{j'}$, and $B_{j', a}$ to encode these components, and let $V_{conf}$ be the full set of such variables. For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $V_{conf}$.
@@ -1443,25 +1443,30 @@ Following the Cook-Levin blueprint, create formulas $\text{Konf}_n$, $\text{Equa
 Define $\text{Comp}_n^i(K, K')$ to state that a computation path of length at most $2^i$ connects $K$ to $K'$:
 
 - **Base case ($i = 0$):**
+
   $$
   \text{Comp}_n^0(K, K') \equiv \text{Konf}_n(K) \land \text{Konf}_n(K') \land (\text{Equal}_n(K, K') \lor \text{Succ}_n(K, K')).
   $$
+
 - **Inductive step:**
+
   $$
   \text{Comp}_n^{i+1}(K, K') \equiv \exists \tilde{K} \forall K_1 \forall K_2 (\text{Konf}_n(\tilde{K}) \land ((\text{Equal}_n(K_1, K) \land \text{Equal}_n(K_2, \tilde{K})) \lor (\text{Equal}_n(K_1, \tilde{K}) \land \text{Equal}_n(K_2, K'))) \rightarrow \text{Comp}_n^i(K_1, K_2)).
   $$
 
 This reuse of $\text{Comp}_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K_{initial}(x)$ and $K_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
+
 $$
 \phi_x \equiv \text{Comp}_n^{d \cdot p(n)}(K_{initial}(x), K_{accept}(x)).
 $$
+
 Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in polynomial time, so $\text{QBF}$ is $\text{PSPACE}$-hard. ∎
 
 #### Nondeterministic Space and Closure Under Complement
 
 **Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi.
 
-$\textbf{Definition (Closure Under Complement):}$ A complexity class is **closed under complement** if $L$ in the class implies $\bar{L} = \{0, 1\}^* \setminus L$ is also in the class.
+$\textbf{Definition (Closure Under Complement):}$ A complexity class is **closed under complement** if $L$ in the class implies $\bar{L} = \lbrace 0, 1\rbrace^* \setminus L$ is also in the class.
 
 $\textbf{Theorem 91 (Immerman-Szelepcsényi):}$ Let $s$ be space-constructible. Then $\text{NSPACE}(s(n))$ is closed under complement.
 
@@ -1469,9 +1474,9 @@ $\textbf{Theorem 91 (Immerman-Szelepcsényi):}$ Let $s$ be space-constructible. 
 
 **Proof of the Corollary.** Over a binary alphabet the context-sensitive languages coincide with $\text{NSPACE}(n)$, so the corollary is an immediate special case of Theorem 91. The same holds for arbitrary alphabets after adjusting the definition of $\text{NSPACE}(s(n))$. ∎
 
-**Proof of Theorem 91.** Let $L \in \text{NSPACE}(s(n))$ and let $N$ be an $s(n)$-space-bounded NTM recognizing $L$. Assume each $x \in L$ has a unique accepting configuration $K_{accept}(x)$. We will build an $O(s(n))$-space NTM $M$ for $\bar{L}$. For input $x$ of length $n$, configurations of $N$ consist of the input-head position, the work-tape contents (length at most $s(n)$), and the work-tape head position. Denote the set of configurations by $\text{Conf}_N(n)$. There exists a constant $d$ so each configuration can be encoded by a binary word of length $\ell(n) = d \cdot s(n)$, implying $|\text{Conf}_N(n)| \le 2^{\ell(n)}$. It is decidable in deterministic $O(s(n))$ space whether a word encodes a valid configuration and whether one configuration yields another in one step.
+**Proof of Theorem 91.** Let $L \in \text{NSPACE}(s(n))$ and let $N$ be an $s(n)$-space-bounded NTM recognizing $L$. Assume each $x \in L$ has a unique accepting configuration $K_{accept}(x)$. We will build an $O(s(n))$-space NTM $M$ for $\bar{L}$. For input $x$ of length $n$, configurations of $N$ consist of the input-head position, the work-tape contents (length at most $s(n)$), and the work-tape head position. Denote the set of configurations by $\text{Conf}_N(n)$. There exists a constant $d$ so each configuration can be encoded by a binary word of length $\ell(n) = d \cdot s(n)$, implying $\lvert \text{Conf}_N(n)\rvert \le 2^{\ell(n)}$. It is decidable in deterministic $O(s(n))$ space whether a word encodes a valid configuration and whether one configuration yields another in one step.
 
-Let $\text{Conf}_N(x, t)$ be the configurations reachable from $K_{start}(x)$ within $t$ steps, and write $k_t = |\text{Conf}_N(x, t)|$. Define four $O(s(n))$-space NTMs $N_1, N_2, N_3, N_4$ for nondeterministic function computation:
+Let $\text{Conf}_N(x, t)$ be the configurations reachable from $K_{start}(x)$ within $t$ steps, and write $k_t = \lvert \text{Conf}_N(x, t)\rvert$. Define four $O(s(n))$-space NTMs $N_1, N_2, N_3, N_4$ for nondeterministic function computation:
 
 - **$N_1$:** On input $(t, k_t, K)$ iterate over all configurations $K'$, checking (i) $K' \in \text{Conf}_N(x, t)$ and (ii) $K' \xrightarrow[N]{1} K$. Maintain a counter $a$ of the successful $K'$. If $a \ne k_t$, report an error. Otherwise output $1$ iff at least one $K'$ satisfies both properties, and $0$ otherwise. At least one computation path correctly guesses every subcomputation and produces the right answer without errors.
 - **$N_2$:** On input $(t, k_t)$ iterate over all configurations $K$ and invoke $N_1(t, k_t, K)$ to determine whether $K \in \text{Conf}_N(x, t+1)$. Count the number of configurations for which $N_1$ returns $1$. Errors from $N_1$ propagate; otherwise the count equals $k_{t+1}$.
