@@ -1456,6 +1456,16 @@ Define $\text{Comp}_n^i(K, K')$ to state that a computation path of length at mo
 
 This reuse of $\text{Comp}_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K_{initial}(x)$ and $K_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
 
+This reuse of $\text{Comp}_n^i$ keeps the overall formula size polynomial in $i$. 
+For input $x$ of length $n$, let $K_{initial}(x)$ and $K_{accept}(x)$ denote the start and accepting configurations. 
+Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
+
+This reuse of $\text{Comp}\_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K\_{initial}(x)$ and $K\_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
+
+
+This reuse of $`\text{Comp}_n^i`$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $`K_{initial}(x)`$ and $`K_{accept}(x)`$ denote the start and accepting configurations. Since $`M$ runs in at most $2^{d \cdot p(n)}`$ steps for some constant $d$, define
+
+
 $$
 \phi_x \equiv \text{Comp}_n^{d \cdot p(n)}(K_{initial}(x), K_{accept}(x)).
 $$
