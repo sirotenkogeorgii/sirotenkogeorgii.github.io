@@ -1432,7 +1432,7 @@ $\textbf{Lemma 90 (Hardness).}$ For hardness, reduce any language $A \in \text{P
 - the work-tape head position $j' \in J' = \lbrace 1, \dots, p(n)\rbrace$,
 - the work-tape contents $w \in \Gamma^{p(n)}$.
 
-Introduce propositional variables $Z_k$, $P_j$, $P'_{j'}$, and $B_{j', a}$ to encode these components, and let $V_{conf}$ be the full set of such variables. For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $V_{conf}$.
+Introduce propositional variables $Z_k$, $P_j$, $P'\_{j'}$, and $B_{j', a}$ to encode these components, and let $V\_{conf}$ be the full set of such variables. For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $\_{conf}$.
 
 Following the Cook-Levin blueprint, create formulas $\text{Konf}_n$, $\text{Equal}_n$, and $\text{Succ}_n$ with the properties:
 
@@ -1454,16 +1454,7 @@ Define $\text{Comp}_n^i(K, K')$ to state that a computation path of length at mo
   \text{Comp}_n^{i+1}(K, K') \equiv \exists \tilde{K} \forall K_1 \forall K_2 (\text{Konf}_n(\tilde{K}) \land ((\text{Equal}_n(K_1, K) \land \text{Equal}_n(K_2, \tilde{K})) \lor (\text{Equal}_n(K_1, \tilde{K}) \land \text{Equal}_n(K_2, K'))) \rightarrow \text{Comp}_n^i(K_1, K_2)).
   $$
 
-This reuse of $\text{Comp}_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K_{initial}(x)$ and $K_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
-
-This reuse of $\text{Comp}_n^i$ keeps the overall formula size polynomial in $i$. 
-For input $x$ of length $n$, let $K_{initial}(x)$ and $K_{accept}(x)$ denote the start and accepting configurations. 
-Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
-
 This reuse of $\text{Comp}\_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K\_{initial}(x)$ and $K\_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
-
-
-This reuse of $`\text{Comp}_n^i`$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $`K_{initial}(x)`$ and $`K_{accept}(x)`$ denote the start and accepting configurations. Since $`M$ runs in at most $2^{d \cdot p(n)}`$ steps for some constant $d$, define
 
 
 $$
@@ -1486,10 +1477,10 @@ $\textbf{Corollary 92:}$ The class of context-sensitive languages is closed unde
 
 **Proof of Theorem 91.** Let $L \in \text{NSPACE}(s(n))$ and let $N$ be an $s(n)$-space-bounded NTM recognizing $L$. Assume each $x \in L$ has a unique accepting configuration $K_{accept}(x)$. We will build an $O(s(n))$-space NTM $M$ for $\bar{L}$. For input $x$ of length $n$, configurations of $N$ consist of the input-head position, the work-tape contents (length at most $s(n)$), and the work-tape head position. Denote the set of configurations by $\text{Conf}_N(n)$. There exists a constant $d$ so each configuration can be encoded by a binary word of length $\ell(n) = d \cdot s(n)$, implying $\lvert \text{Conf}_N(n)\rvert \le 2^{\ell(n)}$. It is decidable in deterministic $O(s(n))$ space whether a word encodes a valid configuration and whether one configuration yields another in one step.
 
-Let $\text{Conf}_N(x, t)$ be the configurations reachable from $K_{start}(x)$ within $t$ steps, and write $k_t = \lvert \text{Conf}_N(x, t)\rvert$. Define four $O(s(n))$-space NTMs $N_1, N_2, N_3, N_4$ for nondeterministic function computation:
+Let $\text{Conf}\_N(x, t)$ be the configurations reachable from $K_{start}(x)$ within $t$ steps, and write $k_t = \lvert \text{Conf}\_N(x, t)\rvert$. Define four $O(s(n))$-space NTMs $N_1, N_2, N_3, N_4$ for nondeterministic function computation:
 
 - **$N_1$:** On input $(t, k_t, K)$ iterate over all configurations $K'$, checking (i) $K' \in \text{Conf}_N(x, t)$ and (ii) $K' \xrightarrow[N]{1} K$. Maintain a counter $a$ of the successful $K'$. If $a \ne k_t$, report an error. Otherwise output $1$ iff at least one $K'$ satisfies both properties, and $0$ otherwise. At least one computation path correctly guesses every subcomputation and produces the right answer without errors.
-- **$N_2$:** On input $(t, k_t)$ iterate over all configurations $K$ and invoke $N_1(t, k_t, K)$ to determine whether $K \in \text{Conf}_N(x, t+1)$. Count the number of configurations for which $N_1$ returns $1$. Errors from $N_1$ propagate; otherwise the count equals $k_{t+1}$.
+- **$N_2$:** On input $(t, k_t)$ iterate over all configurations $K$ and invoke $N_1(t, k_t, K)$ to determine whether $K \in \text{Conf}\_N(x, t+1)$. Count the number of configurations for which $N_1$ returns $1$. Errors from $N_1$ propagate; otherwise the count equals $k_{t+1}$.
 - **$N_3$:** Starting from $k_0 = 1$ (only $K_{start}(x)$ is reachable in zero steps), repeatedly call $N_2$ to compute $k_1, k_2, \dots, k_{2^{\ell(n)}}$. Finally, call $N_1$ to check if $K_{accept}(x) \in \text{Conf}_N(x, 2^{\ell(n)})$ and output that result. Some computation path of $N_3$ therefore recognizes $L$.
 - **$N_4$:** Replicate $N_3$ but flip the final output bit, swapping the accepting and rejecting halts on all error-free paths. This machine recognizes $\bar{L}$ within $O(s(n))$ space.
 
