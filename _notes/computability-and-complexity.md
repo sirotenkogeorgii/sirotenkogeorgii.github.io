@@ -1384,7 +1384,7 @@ $\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \lb
 
 ---
 
-##### Quantified Propositional Formulas and PSPACE
+#### Quantified Propositional Formulas and PSPACE
 
 **Quantifier Primer.** Building on standard propositional logic, quantified propositional formulas extend the language with existential and universal quantifiers in addition to the usual connectives such as disjunction $(\lor)$ and implication $(\rightarrow)$. A universal quantification $\forall X \phi$ is shorthand for $\neg(\exists X \neg \phi)$. We also use the constants $0$ and $1$ for the logical values false and true, respectively, and assume conventional precedence so parentheses can be dropped when the intent is clear.
 
@@ -1417,7 +1417,7 @@ $\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
 
 ##### Proof of PSPACE-Completeness for QBF
 
-**Lemma 89 (Membership).** To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-space TM $M$ that evaluates any sentence $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ of length $n$. Inputs that are not sentences in prenex normal form are rejected outright. The machine maintains three binary words $w_1, w_2, w_3$, each of length $m$, on separate tapes:
+$\textbf{Lemma 89 (Membership):}$ To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-space TM $M$ that evaluates any sentence $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ of length $n$. Inputs that are not sentences in prenex normal form are rejected outright. The machine maintains three binary words $w_1, w_2, w_3$, each of length $m$, on separate tapes:
 
 - Tape 1 ($w_1$) encodes the quantifier prefix, with bit $i$ equal to $1$ iff $Q_i$ is existential.
 - Tape 2 ($w_2$) is a pointer of the form $1^i 0^{m-i}$ indicating the current quantifier.
@@ -1425,7 +1425,7 @@ $\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
 
 Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. ∎
 
-**Lemma 90 (Hardness).** For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
+$\textbf{Lemma 90 (Hardness).}$ For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
 
 - the current state $q_k \in Q = \lbrace q_1, \dots, q_k\rbrace$,
 - the input-head position $j \in J = \lbrace 0, 1, \dots, n + 1\rbrace$,
@@ -1462,7 +1462,7 @@ $$
 
 Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in polynomial time, so $\text{QBF}$ is $\text{PSPACE}$-hard. ∎
 
-#### Nondeterministic Space and Closure Under Complement
+### Nondeterministic Space and Closure Under Complement
 
 **Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi.
 
@@ -1470,7 +1470,7 @@ $\textbf{Definition (Closure Under Complement):}$ A complexity class is **closed
 
 $\textbf{Theorem 91 (Immerman-Szelepcsényi):}$ Let $s$ be space-constructible. Then $\text{NSPACE}(s(n))$ is closed under complement.
 
-**Corollary 92.** The class of context-sensitive languages is closed under complement.
+$\textbf{Corollary 92:}$ The class of context-sensitive languages is closed under complement.
 
 **Proof of the Corollary.** Over a binary alphabet the context-sensitive languages coincide with $\text{NSPACE}(n)$, so the corollary is an immediate special case of Theorem 91. The same holds for arbitrary alphabets after adjusting the definition of $\text{NSPACE}(s(n))$. ∎
 
