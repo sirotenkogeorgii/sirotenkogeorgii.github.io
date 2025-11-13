@@ -1382,101 +1382,104 @@ $\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \lb
 * **Base case.** All elements of Var are quantified propositional formulas.
 * **Inductive step.** If $\psi$ and $\psi'$ are quantified propositional formulas and $X$ is in Var, then $\neg\psi$, $(\psi \land \psi')$, and $\exists X \psi$ are quantified propositional formulas.
 
+---
+
+##### Quantified Propositional Formulas and PSPACE
+
+**Quantifier Primer.** Building on standard propositional logic, quantified propositional formulas extend the language with existential and universal quantifiers in addition to the usual connectives such as disjunction $(\lor)$ and implication $(\rightarrow)$. A universal quantification $\forall X \phi$ is shorthand for $\neg(\exists X \neg \phi)$. We also use the constants $0$ and $1$ for the logical values false and true, respectively, and assume conventional precedence so parentheses can be dropped when the intent is clear.
+
+**Free and Bound Variables.** $\textbf{Remark 84:}$ When quantifiers are present we distinguish between free and bound occurrences of variables. For the formula $\neg X \lor \exists X \forall Y (X \land Y)$ the variable $X$ appears three times: the first occurrence is free, the third is bound, and the second (immediately after the quantifier) is neither free nor bound. Formal definitions are omitted because the intuition is immediate for the prenex normal forms used below.
+
+**Evaluating Truth Values.** The truth value of a quantified propositional formula $\psi$, denoted $\text{val}(\psi)$, is either $0$ (false) or $1$ (true). Evaluation follows two principles:
+
+- Truth values are defined inductively over the structure of $\psi$.
+- The value of $\psi$ is always relative to an assignment for its free variables.
+
+Given a formula $\phi$ with free variable $X$ and an assignment $b$ to the other free variables, define $\phi_i$ as the result of replacing each free occurrence of $X$ by the constant $i \in \{0, 1\}$. Then
+
+- $\exists X \phi$ is true under $b$ iff at least one of $\phi_0$ or $\phi_1$ is true under $b$.
+- $\forall X \phi$ is true under $b$ iff both $\phi_0$ and $\phi_1$ are true under $b$.
+
+**Prenex Normal Form.** A standardized structure streamlines reasoning about quantified formulas.
+
+$\textbf{Definition 85 (Prenex Normal Form):}$ A quantified propositional formula is in **prenex normal form** if it has the shape $Q_1 X_1 \cdots Q_m X_m \phi$ where the $X_i$ are mutually distinct variables, every $Q_i$ belongs to $\{\exists, \forall\}$, and $\phi$ is a quantifier-free propositional formula in conjunctive normal form (CNF).
+
+Writing $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ in prenex normal form assumes $\phi$ is in CNF and all occurrences of each variable inside $\phi$ are free. Any quantified propositional formula can be converted into an equivalent prenex normal form in deterministic polynomial time.
+
+**The QBF Language.** The central decision problem for these formulas asks whether a sentence (a quantifier prefix followed by a quantifier-free matrix) is true.
+
+$\textbf{Definition 87 (The Language QBF):}$ $\text{QBF} = \{\psi : \psi \text{ is a true sentence in prenex normal form}\}$.
+
+$\textbf{Theorem 88 (QBF is PSPACE-Complete):}$ $\text{QBF}$ is $\text{PSPACE}$-complete, as captured by the following lemmas.
+
+- $\textbf{Lemma 89:}$ $\text{QBF} \in \text{PSPACE}$.
+- $\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
+
+##### Proof of PSPACE-Completeness for QBF
+
+**Lemma 89 (Membership).** To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-space TM $M$ that evaluates any sentence $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ of length $n$. Inputs that are not sentences in prenex normal form are rejected outright. The machine maintains three binary words $w_1, w_2, w_3$, each of length $m$, on separate tapes:
+
+- Tape 1 ($w_1$) encodes the quantifier prefix, with bit $i$ equal to $1$ iff $Q_i$ is existential.
+- Tape 2 ($w_2$) is a pointer of the form $1^i 0^{m-i}$ indicating the current quantifier.
+- Tape 3 ($w_3$) stores the current truth assignment for $X_1, \dots, X_m$.
+
+Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. ∎
+
+**Lemma 90 (Hardness).** For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
+
+- the current state $q_k \in Q = \{q_1, \dots, q_k\}$,
+- the input-head position $j \in J = \{0, 1, \dots, n + 1\}$,
+- the work-tape head position $j' \in J' = \{1, \dots, p(n)\}$,
+- the work-tape contents $w \in \Gamma^{p(n)}$.
+
+Introduce propositional variables $Z_k$, $P_j$, $P'_{j'}$, and $B_{j', a}$ to encode these components, and let $V_{conf}$ be the full set of such variables. For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $V_{conf}$.
+
+Following the Cook-Levin blueprint, create formulas $\text{Konf}_n$, $\text{Equal}_n$, and $\text{Succ}_n$ with the properties:
+
+- $\text{Konf}_n(K)$ is true iff $K$ represents a valid configuration.
+- $\text{Equal}_n(K, K')$ is true iff $K$ and $K'$ coincide.
+- $\text{Succ}_n(K, K')$ is true iff $K'$ is the successor of $K$ (provided both are valid).
+
+Define $\text{Comp}_n^i(K, K')$ to state that a computation path of length at most $2^i$ connects $K$ to $K'$:
+
+- **Base case ($i = 0$):**
+  $$
+  \text{Comp}_n^0(K, K') \equiv \text{Konf}_n(K) \land \text{Konf}_n(K') \land (\text{Equal}_n(K, K') \lor \text{Succ}_n(K, K')).
+  $$
+- **Inductive step:**
+  $$
+  \text{Comp}_n^{i+1}(K, K') \equiv \exists \tilde{K} \forall K_1 \forall K_2 (\text{Konf}_n(\tilde{K}) \land ((\text{Equal}_n(K_1, K) \land \text{Equal}_n(K_2, \tilde{K})) \lor (\text{Equal}_n(K_1, \tilde{K}) \land \text{Equal}_n(K_2, K'))) \rightarrow \text{Comp}_n^i(K_1, K_2)).
+  $$
+
+This reuse of $\text{Comp}_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K_{initial}(x)$ and $K_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
+$$
+\phi_x \equiv \text{Comp}_n^{d \cdot p(n)}(K_{initial}(x), K_{accept}(x)).
+$$
+Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in polynomial time, so $\text{QBF}$ is $\text{PSPACE}$-hard. ∎
+
+#### Nondeterministic Space and Closure Under Complement
+
+**Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi.
+
+$\textbf{Definition (Closure Under Complement):}$ A complexity class is **closed under complement** if $L$ in the class implies $\bar{L} = \{0, 1\}^* \setminus L$ is also in the class.
+
+$\textbf{Theorem 91 (Immerman-Szelepcsényi):}$ Let $s$ be space-constructible. Then $\text{NSPACE}(s(n))$ is closed under complement.
+
+**Corollary 92.** The class of context-sensitive languages is closed under complement.
+
+**Proof of the Corollary.** Over a binary alphabet the context-sensitive languages coincide with $\text{NSPACE}(n)$, so the corollary is an immediate special case of Theorem 91. The same holds for arbitrary alphabets after adjusting the definition of $\text{NSPACE}(s(n))$. ∎
+
+**Proof of Theorem 91.** Let $L \in \text{NSPACE}(s(n))$ and let $N$ be an $s(n)$-space-bounded NTM recognizing $L$. Assume each $x \in L$ has a unique accepting configuration $K_{accept}(x)$. We will build an $O(s(n))$-space NTM $M$ for $\bar{L}$. For input $x$ of length $n$, configurations of $N$ consist of the input-head position, the work-tape contents (length at most $s(n)$), and the work-tape head position. Denote the set of configurations by $\text{Conf}_N(n)$. There exists a constant $d$ so each configuration can be encoded by a binary word of length $\ell(n) = d \cdot s(n)$, implying $|\text{Conf}_N(n)| \le 2^{\ell(n)}$. It is decidable in deterministic $O(s(n))$ space whether a word encodes a valid configuration and whether one configuration yields another in one step.
+
+Let $\text{Conf}_N(x, t)$ be the configurations reachable from $K_{start}(x)$ within $t$ steps, and write $k_t = |\text{Conf}_N(x, t)|$. Define four $O(s(n))$-space NTMs $N_1, N_2, N_3, N_4$ for nondeterministic function computation:
+
+- **$N_1$:** On input $(t, k_t, K)$ iterate over all configurations $K'$, checking (i) $K' \in \text{Conf}_N(x, t)$ and (ii) $K' \xrightarrow[N]{1} K$. Maintain a counter $a$ of the successful $K'$. If $a \ne k_t$, report an error. Otherwise output $1$ iff at least one $K'$ satisfies both properties, and $0$ otherwise. At least one computation path correctly guesses every subcomputation and produces the right answer without errors.
+- **$N_2$:** On input $(t, k_t)$ iterate over all configurations $K$ and invoke $N_1(t, k_t, K)$ to determine whether $K \in \text{Conf}_N(x, t+1)$. Count the number of configurations for which $N_1$ returns $1$. Errors from $N_1$ propagate; otherwise the count equals $k_{t+1}$.
+- **$N_3$:** Starting from $k_0 = 1$ (only $K_{start}(x)$ is reachable in zero steps), repeatedly call $N_2$ to compute $k_1, k_2, \dots, k_{2^{\ell(n)}}$. Finally, call $N_1$ to check if $K_{accept}(x) \in \text{Conf}_N(x, 2^{\ell(n)})$ and output that result. Some computation path of $N_3$ therefore recognizes $L$.
+- **$N_4$:** Replicate $N_3$ but flip the final output bit, swapping the accepting and rejecting halts on all error-free paths. This machine recognizes $\bar{L}$ within $O(s(n))$ space.
+
+Adjusting $N_4$ so that output $1$ leads to an accepting halt and output $0$ to rejection yields an NTM that decides $\bar{L}$, establishing closure under complement for $\text{NSPACE}(s(n))$. ∎
+
 
 ---
 
-### Quantified Propositional Formulas and PSPACE
-
-#### Extending Propositional Logic
-
-Quantified propositional formulas extend the usual Boolean connectives with quantifiers. In addition to the operators for disjunction ($\lor$), implication ($\rightarrow$), and negation, we admit the existential quantifier ($\exists$) and the universal quantifier ($\forall$). A universal prefix $\forall X\,\phi$ is taken as syntactic sugar for $\neg(\exists X\,\neg\phi)$. We work with the constants $0$ and $1$ for false and true, respectively, and rely on the standard precedence rules so that parentheses can be omitted whenever the meaning is clear.
-
-#### Free and Bound Variables
-
-$\textbf{Remark 84 (Free vs. Bound).}$ In quantified propositional formulas it is useful to distinguish free from bound occurrences of a variable. For instance, in $\neg X \lor \exists X \forall Y (X \land Y)$ the first occurrence of $X$ is free, the third is bound, and the middle occurrence is the mandatory placeholder immediately after the quantifier. Because we focus on formulas in prenex normal form, the intuitive meaning of “free” and “bound” is unambiguous and the formal inductive definition can be safely omitted here.
-
-#### Evaluating Truth Values
-
-Every quantified propositional formula $\psi$ has a truth value $\text{val}(\psi) \in \lbrace 0, 1\rbrace$ that is defined inductively over the syntax tree of $\psi$ relative to an assignment for its free variables. If $\phi$ has a free variable $X$ and $b$ is an assignment to the remaining free variables, we let $\phi_i$ denote the formula obtained by substituting the constant $i \in \lbrace 0,1\rbrace$ for every free occurrence of $X$. The quantifiers are then evaluated by the familiar rules:
-
-- $\exists X\,\phi$ is true under $b$ iff one of $\phi_0$ or $\phi_1$ is true under $b$.
-- $\forall X\,\phi$ is true under $b$ iff both $\phi_0$ and $\phi_1$ are true under $b$.
-
-#### Prenex Normal Form
-
-$\textbf{Definition 85 (Prenex Normal Form).}$ A quantified propositional formula is in **prenex normal form** if it has the shape $Q_1 X_1 \cdots Q_m X_m\,\phi$ where the variables $X_i$ are pairwise distinct, each $Q_i \in \lbrace\exists,\forall\rbrace$, and $\phi$ is a quantifier-free propositional formula in conjunctive normal form (CNF).
-
-Whenever $\psi = Q_1 X_1 \cdots Q_m X_m\,\phi$ is in prenex normal form, all occurrences of the variables within the matrix $\phi$ are free. Any quantified propositional formula can be converted, in deterministic polynomial time, into an equivalent sentence in this standardized shape.
-
-#### QBF as a PSPACE-Complete Language
-
-The central decision task for quantified propositional formulas is to determine if a closed formula—i.e., one without free variables—is true.
-
-$\textbf{Definition 87 (The Language QBF).}$ $\text{QBF} = \lbrace\psi : \psi \text{ is a true sentence in prenex normal form}\lbrace$.
-
-The following result makes QBF the canonical “complete problem” for polynomial space.
-
-$\textbf{Theorem 88 (QBF is PSPACE-Complete).}$ The language $\text{QBF}$ is PSPACE-complete.
-
-To establish the theorem we show both containment and hardness.
-
-$\textbf{Lemma 89.}$ $\text{QBF} \in \text{PSPACE}$.
-
-**Proof.** Let $\psi = Q_1 X_1 \cdots Q_m X_m\,\phi$ be a sentence of length $n$. A deterministic Turing machine $M$ verifies that the input is a well-formed prenex sentence and then evaluates $\psi$ recursively. The machine maintains three length-$m$ binary words:
-
-- $w_1$ encodes the quantifier prefix with $w_1[i] = 1$ iff $Q_i = \exists$.
-- $w_2 = 1^i 0^{m-i}$ is a unary pointer indicating the active quantifier $Q_i$.
-- $w_3$ stores the partial assignment for $X_1,\dots,X_m$.
-
-Starting with $w_2 = 10^{m-1}$ and $w_3 = 0^m$, $M$ simulates the recursive evaluation tree. For each quantifier it flips the corresponding bit in $w_3$ to explore the branches $X_i = 0$ and $X_i = 1$, evaluates the remaining matrix under the assignment, and combines the results according to $Q_i$. The recursion depth is $m \le n$, and each frame only stores the current pointer and assignment, so the total work tape usage is polynomial in $n$. ∎
-
-$\textbf{Lemma 90.}$ $\text{QBF}$ is PSPACE-hard.
-
-**Proof.** Let $A \in \text{PSPACE}$ and let $M = (Q,\Sigma,\Gamma,\Delta,s,F)$ be a $p(n)$-space-bounded DTM (with a single work tape) deciding $A$. For each input length $n$, a configuration of $M$ is determined by its state, input-head position, work-head position, and work-tape contents of length $p(n)$. Introduce propositional variables
-
-- $Z_k$ meaning “the state is $q_k$,”
-- $P_j$ for the input-head position $j$,
-- $P'_{j'}$ for the work-head position,
-- $B_{j',a}$ indicating that cell $j'$ of the work tape carries symbol $a$.
-
-Let $V_{\text{conf}}$ denote this set of variables. Formulas $\text{Konf}_n(K)$, $\text{Equal}_n(K,K')$, and $\text{Succ}_n(K,K')$—analogous to the Cook-Levin gadgets—respectively test whether $K$ encodes a valid configuration, whether two encodings are identical, and whether $K'$ is the immediate successor of $K$.
-
-We now define formulas $\text{Comp}_n^i(K,K')$ expressing that $K'$ is reachable from $K$ in at most $2^i$ steps:
-
-- **Base.** $\text{Comp}_n^0(K,K') \equiv \text{Konf}_n(K) \land \text{Konf}_n(K') \land (\text{Equal}_n(K,K') \lor \text{Succ}_n(K,K'))$.
-- **Induction.** $\text{Comp}_n^{i+1}(K,K') \equiv \exists \tilde K\, \forall K_1\, \forall K_2\, \Big(\text{Konf}_n(\tilde K) \land \Phi(K,K',\tilde K,K_1,K_2) \rightarrow \text{Comp}_n^i(K_1,K_2)\Big)$,
-
-where $\Phi$ enforces that $(K_1,K_2)$ equals either $(K,\tilde K)$ or $(\tilde K,K')$. The universal quantifiers allow the formula to reuse a single copy of $\text{Comp}_n^i$, keeping the overall size polynomial in $i$.
-
-For an input $x$ of length $n$, let $K_{\text{init}}(x)$ and $K_{\text{acc}}(x)$ encode the initial and accepting configurations; the total number of steps is at most $2^{d \cdot p(n)}$ for some constant $d$. Define
-
-$$
-\phi_x = \text{Comp}_n^{d \cdot p(n)}\big(K_{\text{init}}(x), K_{\text{acc}}(x)\big).
-$$
-
-Then $\phi_x$ is true iff $x \in A$, and $\phi_x$ is computable in time polynomial in $|x|$. Thus every language in PSPACE reduces to QBF. ∎
-
-Combining Lemmas 89 and 90 yields Theorem 88.
-
-### Nondeterministic Space and Closure Under Complement
-
-Whether a complexity class is closed under complement—i.e., $L \in \mathcal{C} \Rightarrow \overline{L} \in \mathcal{C}$—is a recurring structural question. For deterministic time and space the answer is trivially yes: swap the accepting and rejecting states of the machine. For nondeterministic models this argument fails because acceptance depends on the existence of a single accepting branch. While the analogous question for NP remains open, nondeterministic space classes surprisingly do enjoy closure under complement thanks to the Immerman-Szelepcsényi theorem.
-
-$\textbf{Definition (Closure Under Complement).}$ A class $\mathcal{C}$ is **closed under complement** if $L \in \mathcal{C}$ implies $\overline{L} = \lbrace 0,1\rbrace^* \setminus L \in \mathcal{C}$.
-
-$\textbf{Theorem 91 (Immerman-Szelepcsényi).}$ Let $s$ be a space-constructible function. Then $\text{NSPACE}(s(n))$ is closed under complement.
-
-$\textbf{Corollary 92.}$ Context-sensitive languages (i.e., $\text{NSPACE}(n)$) are closed under complement. ∎
-
-#### Proof Idea via Inductive Counting
-
-Let $L \in \text{NSPACE}(s(n))$ and let $N$ be an $s(n)$-space-bounded NTM deciding $L$. Without loss of generality, $N$ uses a single work tape and has a unique accepting configuration $K_{\text{acc}}(x)$ for each input $x$. Each configuration on inputs of length $n$ can be encoded by $\ell(n) = d \cdot s(n)$ bits, so there are at most $2^{\ell(n)}$ distinct configurations. From this, two basic predicates can be tested in deterministic $O(s(n))$ space: whether a string encodes a valid configuration and whether $K \xrightarrow{1}_N K'$.
-
-For a fixed input $x$, let $\text{Conf}_N(x,t)$ denote the configurations reachable from the start configuration $K_{\text{start}}(x)$ within $t$ steps, and write $k_t = \lvert \text{Conf}_N(x,t)\rvert$. Immerman and Szelepcsényi define four auxiliary machines that perform “nondeterministic function computation” while using only $O(s(n))$ space:
-
-- **$N_1(t,k_t,K)$** verifies whether $K \in \text{Conf}_N(x,t+1)$ given the correct count $k_t$. It iterates over all candidate predecessors $K'$; whenever it finds a path of length at most $t$ from $K_{\text{start}}(x)$ to $K'$ and a single transition from $K'$ to $K$, it increments a counter. Any discrepancy between the counter and the promised value $k_t$ is reported as an error.
-- **$N_2(t,k_t)$** enumerates every configuration $K$ and invokes $N_1$ to decide membership in $\text{Conf}_N(x,t+1)$. The number of positive responses is $k_{t+1}$.
-- **$N_3(x)$** starts with $k_0 = 1$ and repeatedly applies $N_2$ to obtain $k_1, k_2, \dots, k_{2^{\ell(n)}}$. It finally calls $N_1$ to test whether $K_{\text{acc}}(x)$ is reachable within $2^{\ell(n)}$ steps, outputting that Boolean value.
-- **$N_4(x)$** mirrors $N_3$ but flips the final bit on every error-free computation, yielding a machine for $\overline{L}$ that still uses $O(s(n))$ space.
-
-Because each stage only stores the current configuration, counters of size $\ell(n)$, and bookkeeping information, the overall space consumption remains $O(s(n))$. Therefore the complement of $L$ is also in $\text{NSPACE}(s(n))$, completing the proof. ∎
