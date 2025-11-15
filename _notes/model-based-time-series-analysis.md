@@ -812,56 +812,62 @@ The most common method for estimating the parameters $\beta$ in a linear regress
 
 **Definition (Least Squares Loss Function):** The LSE loss function for the parameter vector $\beta$ is the sum of squared residuals:
 
-$$L\_{\\text{LSE}}(\\beta) = \\sum\_{t=1}^T (x\_t - u\_t^T \\beta)^2
-$$In vector form, this is expressed as:
+$$
+L\_{\text{LSE}}(\beta) = \sum\_{t=1}^T (x\_t - u\_t^T \beta)^2
+$$
+
+In vector form, this is expressed as:
 
 $$
 L_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta)
-$$The training algorithm consists of finding the value of $\beta$ that minimizes this loss function. This can be achieved by taking the derivative of $L_{\text{LSE}}(\beta)$ with respect to $\beta$ and setting it to zero.
+$$
+
+The training algorithm consists of finding the value of $\beta$ that minimizes this loss function. This can be achieved by taking the derivative of $L_{\text{LSE}}(\beta)$ with respect to $\beta$ and setting it to zero.
 
 To find the estimator $\hat{\beta}_{\text{LS}}$ that minimizes the loss, we compute the gradient of the loss function with respect to $\beta$.
 
 1.  **Expand the loss function:**
+
+$$
+L\_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta) = X^T X - X^T U \beta - \beta^T U^T X + \beta^T U^T U \beta
 $$
 
-```
-$$L\_{\\text{LSE}}(\\beta) = (X - U\\beta)^T(X - U\\beta) = X^T X - X^T U \\beta - \\beta^T U^T X + \\beta^T U^T U \\beta
-$$
-$$
-```
 
-2.  **Compute the derivative with respect to $\beta$:**
-      * Note that $X^T U \beta$ is a scalar, so it equals its transpose $\beta^T U^T X$. Using this, the loss is $L_{\text{LSE}}(\beta) = X^T X - 2\beta^T U^T X + \beta^T U^T U \beta$.
-      * Using the matrix calculus rules $\frac{\partial(a^T x)}{\partial x} = a$ and $\frac{\partial(x^T A x)}{\partial x} = (A + A^T)x$:
-        $$
-        $$$$\\frac{\\partial L\_{\\text{LSE}}(\\beta)}{\\partial \\beta} = \\frac{\\partial}{\\partial \\beta} (X^T X - 2\\beta^T U^T X + \\beta^T U^T U \\beta)
-        $$
-        $$$$$$
-        $$\\frac{\\partial L\_{\\text{LSE}}(\\beta)}{\\partial \\beta} = 0 - 2U^T X + (U^T U + (U^T U)^T)\\beta
-        $$
-        $$$$
-        $$
-      * Since $U^T U$ is symmetric, $(U^T U)^T = U^T U$.
-        $$
-        $$$$\\frac{\\partial L\_{\\text{LSE}}(\\beta)}{\\partial \\beta} = -2U^T X + 2U^T U \\beta
-        $$
-        $$$$
-        $$
-3.  **Set the derivative to zero and solve for $\beta$:**
+2. **Compute the derivative with respect to $\beta$:**
+   * Note that $X^T U \beta$ is a scalar, so it equals its transpose $\beta^T U^T X$. Using this, the loss is $L_{\text{LSE}}(\beta) = X^T X - 2\beta^T U^T X + \beta^T U^T U \beta$.
+   * Using the matrix calculus rules $\frac{\partial(a^T x)}{\partial x} = a$ and $\frac{\partial(x^T A x)}{\partial x} = (A + A^T)x$:
+     $$
+     \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (X^T X - 2\beta^T U^T X + \beta^T U^T U \beta)
+     $$
+
+     $$
+     \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = 0 - 2U^T X + (U^T U + (U^T U)^T)\beta
+     $$
+
+   * Since $U^T U$ is symmetric, $(U^T U)^T = U^T U$.
+     $$
+     \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = -2U^T X + 2U^T U \beta
+     $$
+
+3. **Set the derivative to zero and solve for $\beta$:**
     $$
-    $$$$-2U^T X + 2U^T U \\hat{\\beta} = 0
+    -2U^T X + 2U^T U \hat{\beta} = 0
     $$
-    $$$$$$
-    $$2U^T U \\hat{\\beta} = 2U^T X
+    
     $$
-    $$$$$$
-    $$U^T U \\hat{\\beta} = U^T X
+    2U^T U \hat{\beta} = 2U^T X
     $$
-    $$$$  \* Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
+    
     $$
-    $$$$\\hat{\\beta}\_{\\text{LS}} = (U^T U)^{-1} U^T X
+    U^T U \hat{\beta} = U^T X
     $$
-    $$$$This is the celebrated **normal equation** solution for ordinary least squares.
+
+4. Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
+    $$
+    \hat{\beta}\_{\text{LS}} = (U^T U)^{-1} U^T X
+    $$
+
+This is the celebrated **normal equation** solution for ordinary least squares.
 
 #### 5.1.3 Parameter Estimation: Maximum Likelihood
 
@@ -871,19 +877,28 @@ An alternative framework for parameter estimation is **Maximum Likelihood Estima
 
 $$
 \mathcal{L}(\beta, \sigma^2) = p(X \mid U, \beta, \sigma^2) = \prod_{t=1}^T p(x_t \mid u_t, \beta, \sigma^2)
-$$$$
-\mathcal{L}(\beta, \sigma^2) = \prod_{t=1}^T \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_t - u_t^T \beta)^2}{2\sigma^2}\right)
-$$It is often more convenient to work with the **log-likelihood function**:
+$$
 
-$$l(\\beta, \\sigma^2) = \\log \\mathcal{L}(\\beta, \\sigma^2) = \\sum\_{t=1}^T \\left[ -\\frac{1}{2}\\log(2\\pi\\sigma^2) - \\frac{1}{2\\sigma^2}(x\_t - u\_t^T \\beta)^2 \\right]
-$$To find the MLE for $\beta$, we maximize $l(\beta, \sigma^2)$ with respect to $\beta$. Notice that the terms involving $\sigma^2$ and $2\pi$ are constant with respect to $\beta$. Therefore, maximizing the log-likelihood is equivalent to minimizing the sum of squared errors:
+$$
+\mathcal{L}(\beta, \sigma^2) = \prod_{t=1}^T \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_t - u_t^T \beta)^2}{2\sigma^2}\right)
+$$
+
+It is often more convenient to work with the **log-likelihood function**:
+
+$$
+l(\beta, \sigma^2) = \log \mathcal{L}(\beta, \sigma^2) = \sum\_{t=1}^T \left[ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(x\_t - u\_t^T beta)^2 \right]
+$$
+
+To find the MLE for $\beta$, we maximize $l(\beta, \sigma^2)$ with respect to $\beta$. Notice that the terms involving $\sigma^2$ and $2\pi$ are constant with respect to $\beta$. Therefore, maximizing the log-likelihood is equivalent to minimizing the sum of squared errors:
 
 $$
 \arg\max_\beta l(\beta, \sigma^2) \equiv \arg\min_\beta \sum_{t=1}^T (x_t - u_t^T \beta)^2
-$$For the linear regression model with the assumption of i.i.d. Gaussian errors, the Least Squares Estimator (LSE) and the Maximum Likelihood Estimator (MLE) for the regression coefficients $\beta$ are identical.
+$$
 
-$$\\hat{\\beta}*{\\text{LS}} = \\hat{\\beta}*{\\text{MLE}}
+For the linear regression model with the assumption of i.i.d. Gaussian errors, the Least Squares Estimator (LSE) and the Maximum Likelihood Estimator (MLE) for the regression coefficients $\beta$ are identical.
 
+$$
+\hat{\beta}*{\text{LS}} = \hat{\beta}*{\text{MLE}}
 $$
 
 -----
@@ -894,8 +909,10 @@ After fitting a model, it is crucial to assess its validity by examining the **r
 
 The model decomposes the observed data $x_t$ into a fitted signal $\hat{x}_t$ and a residual component $res_t$:
 
-$$x\_t = \\hat{x}\_t + res\_t
-$$where $\hat{x}_t = u_t^T \hat{\beta}$ is the predicted value.
+$$x\_t = \hat{x}\_t + res\_t
+$$
+
+where $\hat{x}_t = u_t^T \hat{\beta}$ is the predicted value.
 
 The core assumptions of the linear regression model (linearity, normality of errors, constant variance, independence of errors) should be checked by analyzing the residuals.
 
@@ -924,7 +941,9 @@ Suppose we have a set of predictors $u_t = (u_{1t}, \dots, u_{pt})^T$.
 
 $$
 x_t = \beta_0 + \sum_{k=1}^K \beta_k \phi_k(u_t) + \epsilon_t
-$$where $\phi_k(\cdot)$ are chosen functions that transform the original predictor vector $u_t$. This model is still linear in the parameters $\beta_k$, so the standard LSE and MLE solutions still apply, but with a new design matrix whose columns are the transformed predictors $\phi_k(u_t)$.
+$$
+
+where $\phi_k(\cdot)$ are chosen functions that transform the original predictor vector $u_t$. This model is still linear in the parameters $\beta_k$, so the standard LSE and MLE solutions still apply, but with a new design matrix whose columns are the transformed predictors $\phi_k(u_t)$.
 
 **Common Choices for Basis Functions:**
 
@@ -946,8 +965,11 @@ In many scenarios, we want to predict multiple response variables simultaneously
 
 **Model:** The model is a direct extension of the univariate case, written in matrix form:
 
-$$X = UB + E
-$$where:
+$$
+X = UB + E
+$$
+
+where:
 
   * $X$ is the $T \times q$ matrix of response variables.
   * $U$ is the $T \times (p+1)$ design matrix.
@@ -958,7 +980,9 @@ $$where:
 
 $$
 \hat{B} = (U^T U)^{-1} U^T X
-$$This is equivalent to performing $q$ separate univariate linear regressions, one for each response variable.
+$$
+
+This is equivalent to performing $q$ separate univariate linear regressions, one for each response variable.
 
 -----
 
@@ -970,19 +994,18 @@ GLMs are composed of three components:
 
 1.  **Random Component:** The response variable $y_t$ follows a probability distribution from the exponential family (e.g., Bernoulli, Poisson, Gamma).
 2.  **Systematic Component:** A **linear predictor**, $\eta_t$, is constructed as a linear combination of the predictors:
-$$
 
-```
-$$\\eta\_t = u\_t^T \\beta
 $$
+\eta\_t = u\_t^T \beta
 $$
-```
 
 3.  **Link Function:** A function $g(\cdot)$ that links the expected value of the response, $\mu_t = E[y_t]$, to the linear predictor:
-    $$
-    $$$$g(\\mu\_t) = \\eta\_t
-    $$
-    $$$$The inverse of the link function, $g^{-1}(\cdot)$, maps the linear predictor back to the mean of the response: $\mu_t = g^{-1}(\eta_t)$.
+
+$$
+g(\mu\_t) = \eta\_t
+$$
+
+The inverse of the link function, $g^{-1}(\cdot)$, maps the linear predictor back to the mean of the response: $\mu_t = g^{-1}(\eta_t)$.
 
 The standard linear regression model is a special case of a GLM.
 
@@ -998,21 +1021,25 @@ Logistic regression is a GLM used for modeling binary response variables.
 
   * **Data:** Observed binary response variable $x_t \in \lbrace 0, 1 \rbrace$ for $t=1, \dots, T$, with predictor vector $u_t$.
   * **Random Component:** The response is assumed to follow a Bernoulli distribution:
+    
     $$
-    $$$$x\_t \\sim \\text{Bernoulli}(\\pi\_t)
+    x\_t \sim \text{Bernoulli}(\pi\_t)
     $$
-    $$$$where $\pi_t = P(x_t=1 \mid u_t)$ is the "success" probability.
+    
+    where $\pi_t = P(x_t=1 \mid u_t)$ is the "success" probability.
   * **Systematic Component:** The linear predictor is $\eta_t = u_t^T \beta$.
   * **Link Function:** The **logit** link function is used, which is the natural logarithm of the odds:
+    
     $$
-    $$$$g(\\pi\_t) = \\log\\left(\\frac{\\pi\_t}{1-\\pi\_t}\\right) = \\eta\_t
+    g(\pi\_t) = \log\left(\frac{\pi\_t}{1-\pi\_t}\right) = \eta\_t
     $$
-    $$$$The inverse link function is the **sigmoid** (or logistic) function, which maps the linear predictor to a probability between 0 and 1:
+    
+    The inverse link function is the **sigmoid** (or logistic) function, which maps the linear predictor to a probability between 0 and 1:
+    
     $$
-    $$$$\\pi\_t = g^{-1}(\\eta\_t) = \\frac{e^{\\eta\_t}}{1+e^{\\eta\_t}} = \\frac{1}{1+e^{-\\eta\_t}} = \\sigma(\\eta\_t)
+    \pi\_t = g^{-1}(\eta\_t) = \frac{e^{\eta\_t}}{1+e^{\eta\_t}} = \frac{1}{1+e^{-\eta\_t}} = \sigma(\eta\_t)
     $$
-    $$$$
-    $$
+
 #### 5.5.2 Maximum Likelihood Estimation for Logistic Regression
 
 Parameters in a GLM are typically estimated using MLE.
@@ -1021,24 +1048,39 @@ Parameters in a GLM are typically estimated using MLE.
 
 $$
 \mathcal{L}(\beta) = \prod_{t=1}^T p(x_t \mid u_t, \beta) = \prod_{t=1}^T \pi_t^{x_t} (1-\pi_t)^{1-x_t}
-$$The log-likelihood is:
+$$
 
-$$l(\\beta) = \\sum\_{t=1}^T \\left[ x\_t \\log(\\pi\_t) + (1-x\_t)\\log(1-\\pi\_t) \\right]
-$$Substituting $\pi_t = \sigma(u_t^T \beta)$, we can express the log-likelihood in a form common to the exponential family:
+The log-likelihood is:
+
+$$
+l(\beta) = \sum\_{t=1}^T \left[ x\_t \log(\pi\_t) + (1-x\_t)\log(1-\pi\_t) \right]
+$$
+
+Substituting $\pi_t = \sigma(u_t^T \beta)$, we can express the log-likelihood in a form common to the exponential family:
 
 $$
 l(\beta) = \sum_{t=1}^T \left[ x_t (u_t^T \beta) - \log(1+e^{u_t^T \beta}) \right]
-$$**Training Algorithm:** We maximize the log-likelihood by taking its derivative with respect to $\beta$ and setting it to zero.
+$$
 
-$$\\nabla\_\\beta l(\\beta) = \\nabla\_\\beta \\sum\_{t=1}^T \\left[ x\_t \\log(\\sigma(u\_t^T\\beta)) + (1-x\_t)\\log(1-\\sigma(u\_t^T\\beta)) \\right]
-$$The derivative of the log-likelihood for a single observation with respect to $\beta$ is:
+**Training Algorithm:** We maximize the log-likelihood by taking its derivative with respect to $\beta$ and setting it to zero.
+
+$$
+\nabla\_\beta l(\beta) = \nabla\_\beta \sum\_{t=1}^T \left[ x\_t \log(\sigma(u\_t^T\beta)) + (1-x\_t)\log(1-\sigma(u\_t^T\beta)) \right]
+$$
+
+The derivative of the log-likelihood for a single observation with respect to $\beta$ is:
 
 $$
 \nabla_\beta l_t(\beta) = \left(x_t - \sigma(u_t^T\beta)\right)u_t = (x_t - \pi_t)u_t
-$$Summing over all observations gives the full gradient:
+$$
 
-$$\\nabla\_\\beta l(\\beta) = \\sum\_{t=1}^T (x\_t - \\pi\_t) u\_t
-$$Unlike in linear regression, setting this equation to zero does not yield a closed-form solution for $\beta$. Therefore, iterative optimization algorithms like **gradient ascent** are used.
+Summing over all observations gives the full gradient:
+
+$$
+\nabla\_\beta l(\beta) = \sum\_{t=1}^T (x\_t - \pi\_t) u\_t
+$$
+
+Unlike in linear regression, setting this equation to zero does not yield a closed-form solution for $\beta$. Therefore, iterative optimization algorithms like **gradient ascent** are used.
 
 The gradient ascent update rule is:
 
@@ -1046,8 +1088,8 @@ $$
 \beta_{\text{new}} = \beta_{\text{old}} + \alpha \nabla_\beta l(\beta_{\text{old}})
 $$where $\alpha$ is the learning rate. For a single data point (stochastic gradient ascent), the rule is:
 
-$$\\beta\_{\\text{new}} = \\beta\_{\\text{old}} + \\alpha (x\_t - \\pi\_t) u\_t
-
+$$
+\beta\_{\text{new}} = \beta\_{\text{old}} + \alpha (x\_t - \pi\_t) u\_t
 $$
 
 -----
@@ -1073,14 +1115,21 @@ This approach models datasets where each observation consists of multiple types 
 
 A key assumption is **conditional independence**: the different modalities are independent of each other, given the predictors.
 
-$$p(x\_{1t}, x\_{2t} \\mid u\_t) = p(x\_{1t} \\mid u\_t) p(x\_{2t} \\mid u\_t)
-$$**Loss Function (MLE):** Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:
+$$
+p(x\_{1t}, x\_{2t} \mid u\_t) = p(x\_{1t} \mid u\_t) p(x\_{2t} \mid u\_t)
+$$
+
+**Loss Function (MLE):** Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:
 
 $$
 l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T \log p(x_{1t} \mid u_t) + \sum_{t=1}^T \log p(x_{2t} \mid u_t)
-$$$$
+$$
+
+$$
 l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T [x_{1t}\eta_{1t} - \log(1+e^{\eta_{1t}})] + \sum_{t=1}^T \left[-\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(x_{2t} - \eta_{2t})^2 \right]
-$$This loss function can be maximized jointly to find the parameters for both models.
+$$
+
+This loss function can be maximized jointly to find the parameters for both models.
 
 If the assumption of conditional independence between modalities is not reasonable, a common approach is to introduce a shared **latent variable** $\epsilon_t$ that captures common dynamics or unobserved factors influencing all modalities. Conditional on both the predictors $u_t$ and the latent variable $\epsilon_t$, the modalities are then assumed to be independent.
 
@@ -1090,8 +1139,11 @@ Hierarchical (or multilevel) models are designed for datasets with a nested or g
 
 **Data:** We have $N$ independent datasets, one for each subject $j=1, \dots, N$:
 
-$$D\_j = \\lbrace (u\_{1j}, x\_{1j}), \\dots, (u\_{T\_j j}, x\_{T\_j j}) \\rbrace
-$$**Modeling Strategies:**
+$$
+D\_j = \lbrace (u\_{1j}, x\_{1j}), \dots, (u\_{T\_j j}, x\_{T\_j j}) \rbrace
+$$
+
+**Modeling Strategies:**
 
   * **Separate Models (No Sharing):** Fit a completely separate model with parameters $\theta_j$ for each subject $j$ using only their data $D_j$.
       * **Pros:** Captures individual differences perfectly.
@@ -1104,16 +1156,18 @@ $$**Modeling Strategies:**
 
   * **Subject-Specific Parameters:** Each subject $j$ has their own parameter vector, $\theta_j$.
   * **Parent Distribution:** These parameters are not arbitrary but are assumed to be drawn from a common parent distribution, which is governed by hyperparameters $\xi$:
+    
     $$
-    $$$$\\theta\_j \\sim p(\\theta \\mid \\xi)
+    \theta\_j \sim p(\theta \mid \xi)
     $$
-    $$$$
-    $$
+
   * **Hyperprior:** To complete the Bayesian formulation, a prior distribution (a **hyperprior**) is placed on the hyperparameters $\xi$:
+    
     $$
-    $$$$\\xi \\sim p(\\xi)
+    \xi \sim p(\xi)
     $$
-    $$$$This creates a hierarchical chain of dependencies:
+    
+    This creates a hierarchical chain of dependencies:
 
 $$
 \xi \to \theta_j \to D_j \quad \text{for } j=1, \dots, N
