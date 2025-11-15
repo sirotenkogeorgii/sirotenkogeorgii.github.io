@@ -1497,6 +1497,11 @@ Let $\text{Conf}\_N(x, t)$ be the configurations reachable from $K_{start}(x)$ w
 Adjusting $N_4$ so that output $1$ leads to an accepting halt and output $0$ to rejection yields an NTM that decides $\bar{L}$, establishing closure under complement for $\text{NSPACE}(s(n))$. ∎
 
 
+
+---
+
+
+
 ## Probabilistic Turing Machines
 
 ### Introduction: The Auxiliary Tape Model
@@ -1506,6 +1511,293 @@ To understand randomized computation, we first introduce a more general model: a
 $\textbf{Definition (Turing machine with auxiliary tape):}$ A Turing machine with auxiliary tape is a deterministic Turing machine that has a special read-only **one-way** tape, its **auxiliary tape**. Initially, the cells of the auxiliary tape contain an infinite binary sequence, the **auxiliary sequence**, and the reading head is positioned on the first bit of this sequence. A Turing machine with auxiliary tape is **total** if it terminates on all inputs and auxiliary sequences, and it is **$t(n)$-time-bounded** for some time-bound $t(n)$ if it is total and runs for at most $t(\lvert w \rvert)$ steps on almost all inputs $w$ and all auxiliary sequences.
 
 The key feature of the auxiliary tape is that it is **one-way**, meaning the head can only move to the right. This makes it suitable for modeling a stream of information, such as guesses or random bits.
+
+<div class="accordion">
+  <details>
+    <summary>Note to the definition</summary>
+    <p>
+    So formally you can think of it as:
+    <ul>
+      <li>Input tape: contains the main input word $w$.</li>
+      <li>Auxiliary tape: contains another word $a$ (the auxiliary sequence), read-only.</li>
+      <li>Work tape: blank at the beginning, read/write, used for computation.</li>
+    </ul>
+    The machine’s behavior is then a function of <strong>both</strong> $a$ and $w$. We write it as $M(a,w)$.
+    </p>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Why do we use an auxiliary tape?</summary>
+    <p>We don’t “need” it in the sense of computability (a standard TM can simulate it), but we introduce this model because it’s very handy for definitions and proofs.</p>
+    <p>Typical uses:</p>
+
+    <ol>
+      <li>
+        <p><strong>Conditional Kolmogorov complexity</strong><br />
+        When we define conditional complexity $K(x \mid y)$, the string $y$ is usually placed on a
+        <strong>read-only auxiliary tape</strong>.<br />
+        Intuition: “shortest program that outputs $x$ when it is given $y$ as extra information.”<br />
+        Here:</p>
+        <ul>
+          <li>$x$ is the main output of the machine.</li>
+          <li>$y$ is on auxiliary tape.</li>
+          <li>The program (description) is on the normal input tape.</li>
+        </ul>
+      </li>
+
+      <li>
+        <p><strong>Advice / non-uniform complexity</strong><br />
+        In $\text{P/poly}$, a polynomial-time machine gets an <strong>advice string</strong> that depends only on the input length $n$, not on the specific input:</p>
+        <ul>
+          <li>For inputs of length $n$, the same advice string $a_n$ is written on the auxiliary tape.</li>
+          <li>The TM reads both the actual input $w$ and the advice $a_n$.</li>
+        </ul>
+      </li>
+
+      <li>
+        <p><strong>Parameterized algorithms</strong><br />
+        Sometimes you want to model algorithms that take a main input $w$ and a parameter $k$.<br />
+        You can view $k$ (or some encoding of it) as sitting on the auxiliary tape.</p>
+      </li>
+    </ol>
+
+    <p>So: the auxiliary tape is a clean way to say <em>“the machine gets some additional read-only information besides the usual input.”</em></p>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>What does it mean to terminate on all inputs and auxiliary sequences?</summary>
+    <p>Normally, a TM is <strong>total</strong> if it halts on <strong>every input word</strong> $w$.</p>
+
+    <p>
+      Here, because the machine’s computation depends on <strong>two strings</strong> $w$ and $a$:
+    </p>
+    <ul>
+      <li>$w$: input word on the normal input tape.</li>
+      <li>$a$: auxiliary word on the auxiliary tape.</li>
+    </ul>
+
+    <p>“Total” now means:</p>
+
+    <blockquote>
+      <p>For <strong>every</strong> input word $w$ and for <strong>every</strong> auxiliary sequence $a$, the computation $M(w,a)$ halts after finitely many steps.</p>
+    </blockquote>
+
+    <p>So “terminates on auxiliary sequence” just means:</p>
+
+    <ul>
+      <li>If you fix some particular auxiliary tape content $a$ (any $a\in{0,1}^*$), then <strong>for every input $w$</strong> the machine still halts.</li>
+      <li>It cannot loop forever for some unpleasant choice of auxiliary sequence.</li>
+    </ul>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Time-boundedness and “run on auxiliary sequences”</summary>
+
+    <p>The statement was:</p>
+
+    <blockquote>
+      <p>A Turing machine with auxiliary tape is time-bounded for some time bound if it is total and runs at most $t(\lvert w\rvert)$ steps on almost all inputs $w$ and <strong>all auxiliary sequences</strong>.</p>
+    </blockquote>
+
+    <p>Breakdown:</p>
+
+    <ul>
+      <li><strong>“all auxiliary sequences”</strong>:<br />
+        For <em>every</em> possible string $a$ that could be written on the auxiliary tape.
+      </li>
+      <li><strong>“run on auxiliary sequences”</strong>:<br />
+        For each choice of $a$, you consider the computation of the machine on input $w$ with that particular $a$ on its auxiliary tape. That whole computation is a “run” of the machine.
+      </li>
+    </ul>
+
+    <p>
+      Concretely:<br />
+      Fix $a$. Then look at the function $w \mapsto M(w,a)$.<br />
+      The time-boundedness condition says: for every such $a$, for all but finitely many $w$, the number of steps in this run is at most $t(\lvert w \rvert)$.
+    </p>
+
+    <ul>
+      <li><strong>“almost all inputs $w$”</strong> = all but finitely many $w$.</li>
+    </ul>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Does the content of the auxiliary tape typically depend on the content of the input tape?</summary>
+    <p>Short answer: <strong>both models exist</strong>, but <strong>in most standard uses the auxiliary tape content is fixed independently of the input</strong>.</p>
+
+    <p>Let’s go through the common cases.</p>
+
+    <hr />
+
+    <h1>✔ Two possible relationships between input and auxiliary tape</h1>
+
+    <h3><strong>Case 1 — Auxiliary tape is <em>independent</em> of the input (most common)</strong></h3>
+
+    <p>The auxiliary tape contains a string (a) that is the same for <strong>all inputs (w)</strong>.</p>
+
+    <p>This is the case in:</p>
+
+    <h3><strong>1. Kolmogorov complexity (conditional complexity)</strong></h3>
+
+    <p>In (K(x \mid y)):</p>
+    <ul>
+      <li>The program is on the input tape.</li>
+      <li>(y) (the condition) is on the auxiliary tape.</li>
+      <li>The machine sees <strong>both</strong>.</li>
+    </ul>
+
+    <p>
+      But <strong>(y) is <em>fixed</em> for the whole computation</strong>; it does <em>not</em> depend on the program or output.
+      Every possible program (p) must work with the same fixed auxiliary string (y).
+    </p>
+
+    <hr />
+
+    <h3><strong>2. Advice classes (P/poly)</strong></h3>
+
+    <p>For all inputs of length (n):</p>
+    <ul>
+      <li>The advice string (a_n) is the same for <em>every</em> input of length (n).</li>
+      <li>The machine computes (M(w, a_n)).</li>
+    </ul>
+
+    <p>Here the auxiliary tape content <strong>depends only on input length</strong>, not on the actual input.</p>
+
+    <hr />
+
+    <h3><strong>3. Machines in proofs (e.g., optimal universal machines)</strong></h3>
+
+    <p>Often the auxiliary tape contains a universal constant, e.g.:</p>
+    <ul>
+      <li>A fixed description of a universal interpreter</li>
+      <li>A fixed encoding of rules</li>
+      <li>A fixed oracle string</li>
+      <li>A parameter (k) that does not change with (w)</li>
+    </ul>
+
+    <p>Again, <strong>the same auxiliary string for all runs</strong>.</p>
+
+    <hr />
+
+    <h1>✔ Case 2 — Auxiliary tape depends on the input</h1>
+
+    <p>This is also allowed <strong>in the definition</strong>, but is used less frequently.</p>
+
+    <p>You are allowed to think of a TM as taking <strong>two inputs</strong>:</p>
+
+    <p>[<br />
+      M(w, a)<br />
+    ]</p>
+
+    <p>Both are arbitrary. You can choose (a) depending on (w).</p>
+
+    <p>
+      But this is usually <em>not</em> the intention when talking about:
+    </p>
+    <ul>
+      <li>Turing machines with advice</li>
+      <li>Conditional Kolmogorov complexity</li>
+      <li>Universal machines</li>
+      <li>Complexity classes</li>
+    </ul>
+
+    <p>In those contexts, the auxiliary string plays the role of:</p>
+    <ul>
+      <li>fixed additional information, or</li>
+      <li>a length-dependent advice string.</li>
+    </ul>
+
+    <hr />
+
+    <h1>✔ So which is the “typical” model?</h1>
+
+    <p><strong>Typical default interpretation:</strong></p>
+
+    <blockquote>
+      <p>The auxiliary tape contains a fixed string (or a fixed family of strings depending only on input length), and the input tape contains the varying input.</p>
+    </blockquote>
+
+    <p>This matches:</p>
+    <ul>
+      <li>Kolmogorov complexity</li>
+      <li>P/poly advice classes</li>
+      <li>Universal simulation constructions</li>
+      <li>Parameterized reductions</li>
+      <li>Machines with oracle answers encoded on read-only tapes</li>
+    </ul>
+
+    <p>In other words:</p>
+
+    <h3>➤ <strong>Auxiliary tape: fixed data</strong></h3>
+    <h3>➤ <strong>Input tape: varying data</strong></h3>
+
+    <p>
+      This also explains why definitions often say:<br />
+      “total on all inputs and all auxiliary sequences”
+    </p>
+
+    <p>
+      —because mathematically the machine is a function of two arguments, even though in applications we fix one of them.
+    </p>
+
+    <hr />
+
+    <h1>✔ Summary</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Context</th>
+          <th>Does auxiliary tape depend on input?</th>
+          <th>Typical?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Conditional Kolmogorov complexity</td>
+          <td><strong>No</strong>, fixed (y)</td>
+          <td>✔ Yes</td>
+        </tr>
+        <tr>
+          <td>Advice classes (P/poly)</td>
+          <td>Depends only on length (n)</td>
+          <td>✔ Yes</td>
+        </tr>
+        <tr>
+          <td>Universal machines</td>
+          <td>Fixed interpreter string</td>
+          <td>✔ Yes</td>
+        </tr>
+        <tr>
+          <td>General TM-with-aux definition</td>
+          <td>Allowed</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>TM as a 2-argument machine</td>
+          <td>Allowed (M(w,a))</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>So <strong>typically the auxiliary tape is fixed</strong>, and the input tape varies.</p>
+
+    <hr />
+
+    <p>
+      If you want, I can explain how this relates to the “almost all inputs” condition in the definition of optimal (prefix-free) Kolmogorov complexity.
+    </p>
+  </details>
+</div>
 
 $\textbf{Remark:}$ In what follows, we restrict attention to Turing machines with auxiliary tape that are time-bounded. Such a Turing machine can store all bits it reads from the auxiliary tape on some work tape while still obeying its time bound. So in connection with time bounds it is no real restriction to require the auxiliary tape to be read-only and one-way. In contrast, a space-bounded Turing machine can read more bits from the auxiliary tape than it can store on its tapes. More precisely, an $s(n)$-space-bounded Turing machine may, for example, run for as many as $2^{s(n)}$ steps and may read up to the same number of bits from the auxiliary tape.
 
@@ -1547,7 +1839,17 @@ $\textbf{Remark:}$ Probabilistic Turing machines can also be defined in terms of
 
 Based on these definitions, we can define two fundamental complexity classes for probabilistic polynomial-time computation.
 
-$\textbf{Definition (Probabilistic Complexity Classes):}$ The class of languages decidable in **probabilistic polynomial time** is $\text{PP} = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some polynomially time-bounded probabilistic Turing machine}\rbrace$. The class of languages decidable in **probabilistic polynomial time with bounded error** is $\text{BPP} = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some polynomially time-bounded probabilistic Turing machine with error probability at most } \frac{1}{3}\rbrace$.
+$\textbf{Definition (Probabilistic Complexity Classes):}$ The class of languages decidable in **probabilistic polynomial time** is 
+
+$$
+\text{PP} = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some polynomially time-bounded probabilistic Turing machine}\rbrace
+$$ 
+
+The class of languages decidable in **probabilistic polynomial time with bounded error** is 
+
+$$
+\text{BPP} = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some polynomially time-bounded probabilistic Turing machine with error probability at most } \frac{1}{3}\rbrace
+$$
 
 The class $\text{PP}$ allows the acceptance probability for a correct answer to be arbitrarily close to $\frac{1}{2}$, whereas $\text{BPP}$ requires a constant gap (e.g., between $\frac{1}{3}$ and $\frac{2}{3}$), making it a more "reliable" class of computation.
 
@@ -1620,7 +1922,11 @@ $\textbf{Remark:}$ It is not known whether there are complete languages for $\te
 
 The defining feature of $\text{BPP}$ is its bounded error. A remarkable property of this class is that this error can be made arbitrarily small through a process called **probability amplification**.
 
-$\textbf{Theorem 117 (Probability amplification):}$ *For a language $L$ the following assertions are equivalent. (i) The language $L$ is in $\text{BPP}$. (ii) The language $L$ is recognized by a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{2} - \epsilon$ for some $\epsilon > 0$. (iii) For every polynomial $p$ there is a polynomially time-bounded probabilistic Turing machine with error probability at most $2^{-p(n)}$ that recognizes $L$.*
+$\textbf{Theorem 117 (Probability amplification):}$ *For a language $L$ the following assertions are equivalent.* 
+
+* The language $L$ is in $\text{BPP}$.
+* The language $L$ is recognized by a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{2} - \epsilon$ for some $\epsilon > 0$.
+* For every polynomial $p$ there is a polynomially time-bounded probabilistic Turing machine with error probability at most $2^{-p(n)}$ that recognizes $L$.
 
 **Proof.**: By definition, (iii) implies (i) and (i) implies (ii). In order to show that (ii) implies (iii), let $M$ be a probabilistic Turing machine as asserted to exist in (ii).
 
