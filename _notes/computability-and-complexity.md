@@ -1869,7 +1869,18 @@ The connection between $\text{NP}$ and $\text{PP}$ is also well-defined.
 
 $\textbf{Theorem 110:}$ *It holds that $\text{NP} \subseteq \text{PP}$.*
 
-**Proof.**: Let $L$ be any language in $\text{NP}$. By Remark 102, there is a polynomial $p$ and a deterministic $p(n)$-time-bounded Turing machine $M$ with auxiliary tape such that $w$ is in $L$ if and only if $M$ accepts $w$ for some auxiliary word $z$. Then $L$ is recognized by the polynomially time-bounded probabilistic Turing machine that on input $w$ always accepts in case the first bit of the random word is $1$ and, otherwise, in case the random word has the form $0z$, accepts if and only if $M$ accepts $w$ with auxiliary word $z$. ∎
+**Proof.**: Let $L$ be any language in $\text{NP}$. By Remark 102, there is a polynomial $p$ and a deterministic $p(n)$-time-bounded Turing machine $M$ with auxiliary tape such that $w$ is in $L$ if and only if $M$ accepts $w$ for some auxiliary word $z$. Now we construct a new probabilistic TM $\text{P}$ that uses $\text{M}$ as a subroutine, plus a trick.  On input $w$, $P$ does:
+
+1. Take a random word $r \in \lbrace 0,1\rbrace^{t(\lvert w \rvert)}$.
+   * We pick $t(\lvert w \rvert) = p(\lvert w \rvert) + 1$ so that we can split it as: $r = b z, \quad b \in \lbrace 0,1 \rbrace,\ z \in \lbrace 0,1 \rbrace^{p(\lvert w\rvert)}.$
+
+2. If the **first bit** $b = 1$, $P$ **always accepts**.
+
+3. If the **first bit** $b = 0$, then $P$ runs $M$ on input $w$ with auxiliary word $z$, and accepts iff $M$ accepts.
+
+The key is step 2: *“always accepts in case the first bit of the random word is 1”*. That’s the “probability boosting” trick increasing the probability of acceptance to $\frac{1}{2}$ regardless of the problem $w$ itself, then adjustment of the probability based on the problem $w$.
+
+Then $L$ is recognized by the polynomially time-bounded probabilistic Turing machine $P$ that on input $w$ always accepts in case the first bit of the random word is $1$ and, otherwise, in case the random word has the form $0z$, accepts if and only if $M$ accepts $w$ with auxiliary word $z$. ∎
 
 ### Properties of the Class PP
 

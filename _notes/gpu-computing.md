@@ -503,38 +503,7 @@ You can query the properties of the GPU in your system to make informed decision
 - **error: identifier "__eh_curr_region" is undefined:** A compiler problem often related to using non-static allocation for shared memory. Ensure shared memory arrays are declared with static sizes.
 
 
-Here is a reformatted version of your new notes, styled to be coherent with the structure and tone of your existing `gpu-computing.md` file.
-
-I've adjusted the headings, removed the conversational "book-like" introductions, and formatted key concepts like definitions and takeaways to match your previous notes.
-
------
-
-## The Parallel Computing Paradigm
-
-### The GPU Computing Model: A Blend of Perspectives
-
-A GPU is a specialized processor for massive parallel work, which can be understood from two perspectives:
-
-  * **Software View (SIMT):** From a programming perspective, a GPU is a **programmable many-core scalar architecture**. You write code for a single **thread** (a single sequence of instructions). The GPU runs a huge number of these scalar threads simultaneously. This model is called **SIMT (Single Instruction, Multiple Threads)**: you write one program, and the GPU executes it across many data elements using thousands of threads. This use of far more threads than physical cores is known as **parallel slackness**.
-  * **Hardware View (SIMD):** From a hardware perspective, the GPU is a **programmable multi-core vector architecture**. The hardware creates the *illusion* of thousands of scalar threads by cleverly grouping them. Under the hood, the GPU is a **SIMD (Single Instruction, Multiple Data)** machine, executing a single instruction across multiple data points (a vector) at the same time.
-
-The GPU model hides the complexity of its vector units. This provides the ease of writing simple, single-thread code (SIMT) while benefiting from the power and efficiency of a vector machine (SIMD).
-
-### The Bulk-Synchronous Parallel (BSP) Model
-
-The **Bulk-Synchronous Parallel (BSP)** model, described by Leslie G. Valiant in 1990, captures how GPUs work. It structures algorithms into a sequence of **supersteps**, each with three ordered phases:
-
-1.  **Compute:** Every processor works independently on its local data.
-2.  **Communicate:** The processors exchange data with each other.
-3.  **Synchronize:** All processors wait at a barrier until every other processor has finished its communication phase before proceeding.
-
-**Parallel slackness** is a crucial concept in this model. It is the ratio of virtual processors (threads, $v$) to physical processors (cores, $p$):
-
-  * If $v = 1$, you have a serial program.
-  * If $v = p$, performance is unpromising, as a processor stall leaves hardware idle.
-  * If $v \gg p$, you have significant parallel slack. This is the sweet spot, allowing the system to hide memory latency by scheduling other work.
-
-GPUs are a near-perfect incarnation of the BSP model, using a high $v \gg p$ ratio to hide latency and keep hardware busy. This model is best suited for structured parallelism.
+## The Modern GPU Architecture
 
 ### Vector Architectures: The Foundation of Efficiency
 
@@ -544,13 +513,10 @@ The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (I
   * **Parallel:** The operations are data-parallel (no dependencies), simplifying the hardware.
   * **Expressive:** Vector memory instructions describe regular access patterns, allowing the hardware to prefetch data and amortize memory latency.
 
------
-
-## The Modern GPU Architecture
-
-We will use the NVIDIA GK110 "Kepler" architecture (Compute Capability 3.5) as a representative example.
 
 ### The GK110 Architecture: A High-Level View
+
+> **Note:** We will use the NVIDIA GK110 "Kepler" architecture as a representative example.
 
 The GK110 chip consists of up to 15 **Streaming Multiprocessors (SMX)**, which are the main computational engines.  These are connected to Memory Controllers (MCs) and a large L2 cache, communicating with the CPU and host memory via a PCIe 3.0 interface.
 
