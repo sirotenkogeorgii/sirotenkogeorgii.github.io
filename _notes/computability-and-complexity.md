@@ -1593,7 +1593,7 @@ It is not known whether the complexity class $\text{PP}$ is closed under union o
 
 $\textbf{Theorem 114:}$ *The complexity class $\text{PP}$ is closed under symmetric difference.*
 
-**Proof.**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form $\text{error}_M(w) = \frac{1}{2} - \epsilon_w \quad \text{and} \quad \text{error}_{M'}(w) = \frac{1}{2} - \epsilon'_w$, where we can assume by Lemma 111 that $\epsilon_w$ and $\epsilon'_w$ both are strictly larger than $0$.
+**Proof.**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form $\text{error}\_M(w) = \frac{1}{2} - \epsilon\_w \quad \text{and} \quad \text{error}\_{M'}(w) = \frac{1}{2} - \epsilon'\_w$, where we can assume by Lemma 111 that $\epsilon\_w$ and $\epsilon'\_w$ both are strictly larger than $0$.
 
 Now consider a probabilistic Turing machine $\tilde{M}$ that on input $w$ simulates $M$ and $M'$ on the same input while using independent random bits for the two simulations, and then accepts if and only if exactly one of the simulations accepted.
 
