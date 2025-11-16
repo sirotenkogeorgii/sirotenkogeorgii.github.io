@@ -647,7 +647,7 @@ $\textbf{Remark 46:}$ Since the class $P$ is downward closed under $p$-$m$-reduc
 
 To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \lbrace0, 1\rbrace^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
 
-$\textbf{Remark 47:}$ By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0,1 \rbrace^*$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0,1 \rbrace^*$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
+$\textbf{Remark 47:}$ By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0,1 \rbrace^{*}$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0,1 \rbrace^{*}$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
 
 ### The Satisfiability Problem ($\text{SAT}$)
 
@@ -1893,7 +1893,7 @@ Then $L$ is recognized by the polynomially time-bounded probabilistic Turing mac
 
 ### Properties of the Class PP
 
-The definition of $\text{PP}$ allows for an acceptance and error probability of exactly $\frac{1}{2}$, which is ambiguous. However, this can be avoided.
+The definition of $\text{PP}$ allows for an acceptance and error probability of exactly $\frac{1}{2}$, which is ambiguous: it could happend that the PTM accepts some input word $w$ with exactly a half of all random words. It means that $\text{accept}_M(w)=\text{reject}_M(w)=\frac{1}{2} \implies \text{error}^L_M(w) = \frac{1}{2}$. However, this can be avoided.
 
 $\textbf{Lemma 111:}$ *Every language in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$.*
 
@@ -1903,13 +1903,159 @@ On an input $w$ of length $n$, the Turing machine $M'$ first computes $p(n)$ and
 
 In case $w$ is not in $L(M)$, by construction either $\text{reject}\_{M'}(w) = \text{reject}\_M(w) = 1 \quad \text{or} \quad \text{reject}\_{M'}(w) > \text{reject}\_M(w) \ge \frac{1}{2}$. In case the word $w$ is in $L(M)$, it is accepted by $M$ on strictly more than half of all random words of length $p(n)$, hence is accepted by $M'$ for at least $(2^{p(n)-1} + 1)(2^{p(n)} - 1) = \underbrace{2^{2p(n)-1} + 2^{p(n)} - 1}_{>0}$ many random words of length $2p(n)$, i.e., for strictly more than half of the latter words. In summary, the polynomially time-bounded probabilistic Turing machine $M'$ recognizes the same language as $M$ and has error probability strictly less than $\frac{1}{2}$. ∎
 
+<div class="accordion">
+  <details>
+    <summary>Alternative explanation</summary>
+    <p>Let (L \in \text{PP}).<br />
+    Then there exists a probabilistic Turing machine (M) and a polynomial (p(n)) such that</p>
+
+    <ul>
+      <li>(M) runs in time at most (p(n)) on all inputs of length (n),</li>
+      <li>and for every input (w),<br />
+        [<br />
+        w \in L \iff \Pr[M(w) \text{ accepts}] &gt; \frac12 .<br />
+        ]</li>
+    </ul>
+
+    <p>Because (M) runs for at most (p(n)) steps, it can use at most (p(n)) random bits.<br />
+    Thus, on inputs of length (n), (M) examines only the first (p(n)) bits of its random tape.</p>
+
+    <p>We now construct a new machine (M') that reduces the error below (1/2).</p>
+
+    <hr />
+
+    <h2>Construction of (M')</h2>
+
+    <p>On input (w) of length (n), (M') does the following:</p>
+
+    <ol>
+      <li><strong>Compute (p(n))</strong> and read <strong>exactly (2p(n))</strong> random bits.</li>
+
+      <li><strong>Split</strong> these random bits into two blocks:
+        <ul>
+          <li>Block A (length (p(n))) — this block will be used exactly as the random tape for simulating (M).</li>
+          <li>Block B (length (p(n))) — this block will serve as an extra check.</li>
+        </ul>
+      </li>
+
+      <li><strong>Simulate (M)</strong> on input (w) using Block A as the source of random bits.</li>
+
+      <li><strong>Acceptance rule of (M'):</strong><br />
+        (M') accepts iff
+        <ul>
+          <li>(M) accepts (based on Block A), <strong>and</strong></li>
+          <li>Block B is <strong>not the all-zero string</strong>.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <p>Thus, compared to (M), (M') rejects some additional random strings (specifically those with Block B = (0^{p(n)})).</p>
+
+    <hr />
+
+    <h2>Correctness: error drops below (1/2)</h2>
+
+    <h3>Case 1: (w \notin L)</h3>
+
+    <p>Then (M) accepts at most half of the Block-A strings:</p>
+
+    <p>[
+    \Pr_A[M(w) \text{ accepts}] \le \frac12 .
+    ]</p>
+
+    <p>For (M') to accept, both conditions must hold:</p>
+
+    <ol>
+      <li>(M) accepts (probability ≤ 1/2),</li>
+      <li>Block B is not all-zero (probability (1 - 2^{-p(n)})).</li>
+    </ol>
+
+    <p>Therefore,</p>
+
+    <p>[
+    \Pr[M'(w)\text{ accepts}]
+    = \Pr[M(w)\text{ accepts}] \cdot (1 - 2^{-p(n)})
+    \le \tfrac12 .
+    ]</p>
+
+    <p>In fact, because ((1 - 2^{-p(n)}) &lt; 1), we even have</p>
+
+    <p>[
+    \Pr[M'(w)\text{ accepts}] &lt; \frac12.
+    ]</p>
+
+    <p>So on non-members, the acceptance probability stays ≤ 1/2 (and even drops).</p>
+
+    <hr />
+
+    <h3>Case 2: (w \in L)</h3>
+
+    <p>Then (M) accepts <strong>strictly more than half</strong> of the Block-A bitstrings:</p>
+
+    <p>[
+    #{A : M(w) \text{ accepts on } A} = 2^{p(n)-1} + k
+    \qquad \text{for some } k\ge 1.
+    ]</p>
+
+    <p>For each such Block-A string, (M') accepts unless Block B is all zeros.<br />
+    Thus, for each good (A), exactly ((2^{p(n)} - 1)) choices of Block B lead to acceptance.</p>
+
+    <p>Hence the total number of accepting random strings of length (2p(n)) is:</p>
+
+    <p>[
+    (2^{p(n)-1} + 1)(2^{p(n)} - 1)
+    = 2^{2p(n)-1} + 2^{p(n)} - 1.
+    ]</p>
+
+    <p>This quantity is <strong>greater than half</strong> of all (2^{2p(n)}) possible random strings, because:</p>
+
+    <p>[
+    2^{2p(n)-1} + 2^{p(n)} - 1
+    <br /><br />
+    &gt; 2^{2p(n)-1}.
+    ]</p>
+
+    <p>Thus,</p>
+
+    <p>[
+    \Pr[M'(w) \text{ accepts}] &gt; \frac12.
+    ]</p>
+
+    <hr />
+
+    <h2>Conclusion</h2>
+
+    <p>For every input (w):</p>
+
+    <ul>
+      <li>If (w \notin L), then (M') accepts with probability <em>at most</em> (in fact, <em>less than</em>) (1/2).</li>
+      <li>If (w \in L), then (M') accepts with probability <em>strictly more</em> than (1/2).</li>
+    </ul>
+
+    <p>The running time of (M') remains polynomial.</p>
+
+    <p>Therefore, (M') is a polynomial-time probabilistic Turing machine with error probability <strong>strictly below (1/2)</strong> that recognizes the same language (L). ∎</p>
+
+  </details>
+</div>
+
 $\textbf{Remark:}$ Recall that a time bound $t(n)$ is **time-constructible** if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $O(t(n))$. For such $t$, every language that is recognized by a $t(n)$-time-bounded probabilistic Turing machine is recognized by an $O(t(n))$-time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. The latter assertion follows by essentially the same proof as Lemma 111.
 
 This lemma allows us to prove an important closure property for $\text{PP}$.
 
 $\textbf{Theorem 113:}$ *The complexity class $\text{PP}$ is closed under complement.*
 
-**Proof.**: By Lemma 111, every language $L$ in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. Swapping acceptance and rejection in this machine yields a polynomially time-bounded probabilistic Turing machine that recognizes the complement of $L$. ∎
+**Proof.**: By Lemma 111, every language $L$ in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. 
+
+$$
+\text{P}[M \text{accepts} w \mid w \notin L] < \frac{1}{2} \implies \text{P}[M \text{rejects} w \mid w \notin L] > \frac{1}{2}
+$$
+
+$$
+\text{P}[M \text{accepts} w \mid w \in L] > \frac{1}{2} \implies \text{P}[M \text{rejects} w \mid w \in L] < \frac{1}{2}
+$$
+
+Swapping acceptance and rejection in this machine yields a polynomially time-bounded probabilistic Turing machine that recognizes the complement of $L$. ∎
 
 It is not known whether the complexity class $\text{PP}$ is closed under union or intersection. However, it is closed under another important set operation.
 
