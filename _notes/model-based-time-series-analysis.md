@@ -996,13 +996,13 @@ GLMs are composed of three components:
 2.  **Systematic Component:** A **linear predictor**, $\eta_t$, is constructed as a linear combination of the predictors:
 
 $$
-\eta\_t = u\_t^T \beta
+\eta_t = u_t^T \beta
 $$
 
 3.  **Link Function:** A function $g(\cdot)$ that links the expected value of the response, $\mu_t = E[y_t]$, to the linear predictor:
 
 $$
-g(\mu\_t) = \eta\_t
+g(\mu_t) = \eta_t
 $$
 
 The inverse of the link function, $g^{-1}(\cdot)$, maps the linear predictor back to the mean of the response: $\mu_t = g^{-1}(\eta_t)$.
@@ -1023,7 +1023,7 @@ Logistic regression is a GLM used for modeling binary response variables.
   * **Random Component:** The response is assumed to follow a Bernoulli distribution:
     
     $$
-    x\_t \sim \text{Bernoulli}(\pi\_t)
+    x_t \sim \text{Bernoulli}(\pi_t)
     $$
     
     where $\pi_t = P(x_t=1 \mid u_t)$ is the "success" probability.
@@ -1031,13 +1031,13 @@ Logistic regression is a GLM used for modeling binary response variables.
   * **Link Function:** The **logit** link function is used, which is the natural logarithm of the odds:
     
     $$
-    g(\pi\_t) = \log\left(\frac{\pi\_t}{1-\pi\_t}\right) = \eta\_t
+    g(\pi_t) = \log\left(\frac{\pi_t}{1-\pi_t}\right) = \eta_t
     $$
     
     The inverse link function is the **sigmoid** (or logistic) function, which maps the linear predictor to a probability between 0 and 1:
     
     $$
-    \pi\_t = g^{-1}(\eta\_t) = \frac{e^{\eta\_t}}{1+e^{\eta\_t}} = \frac{1}{1+e^{-\eta\_t}} = \sigma(\eta\_t)
+    \pi_t = g^{-1}(\eta_t) = \frac{e^{\eta_t}}{1+e^{\eta_t}} = \frac{1}{1+e^{-\eta_t}} = \sigma(\eta_t)
     $$
 
 #### 5.5.2 Maximum Likelihood Estimation for Logistic Regression
@@ -1053,7 +1053,7 @@ $$
 The log-likelihood is:
 
 $$
-l(\beta) = \sum\_{t=1}^T \left[ x\_t \log(\pi\_t) + (1-x\_t)\log(1-\pi\_t) \right]
+l(\beta) = \sum_{t=1}^T \left[ x_t \log(\pi_t) + (1-x_t)\log(1-\pi_t) \right]
 $$
 
 Substituting $\pi_t = \sigma(u_t^T \beta)$, we can express the log-likelihood in a form common to the exponential family:
@@ -1065,7 +1065,7 @@ $$
 **Training Algorithm:** We maximize the log-likelihood by taking its derivative with respect to $\beta$ and setting it to zero.
 
 $$
-\nabla\_\beta l(\beta) = \nabla\_\beta \sum\_{t=1}^T \left[ x\_t \log(\sigma(u\_t^T\beta)) + (1-x\_t)\log(1-\sigma(u\_t^T\beta)) \right]
+\nabla_\beta l(\beta) = \nabla_\beta \sum_{t=1}^T \left[ x_t \log(\sigma(u_t^T\beta)) + (1-x_t)\log(1-\sigma(u_t^T\beta)) \right]
 $$
 
 The derivative of the log-likelihood for a single observation with respect to $\beta$ is:
@@ -1077,7 +1077,7 @@ $$
 Summing over all observations gives the full gradient:
 
 $$
-\nabla\_\beta l(\beta) = \sum\_{t=1}^T (x\_t - \pi\_t) u\_t
+\nabla_\beta l(\beta) = \sum_{t=1}^T (x_t - \pi_t) u_t
 $$
 
 Unlike in linear regression, setting this equation to zero does not yield a closed-form solution for $\beta$. Therefore, iterative optimization algorithms like **gradient ascent** are used.
@@ -1089,7 +1089,7 @@ $$
 $$where $\alpha$ is the learning rate. For a single data point (stochastic gradient ascent), the rule is:
 
 $$
-\beta\_{\text{new}} = \beta\_{\text{old}} + \alpha (x\_t - \pi\_t) u\_t
+\beta_{\text{new}} = \beta_{\text{old}} + \alpha (x_t - \pi_t) u_t
 $$
 
 -----
@@ -1116,7 +1116,7 @@ This approach models datasets where each observation consists of multiple types 
 A key assumption is **conditional independence**: the different modalities are independent of each other, given the predictors.
 
 $$
-p(x\_{1t}, x\_{2t} \mid u\_t) = p(x\_{1t} \mid u\_t) p(x\_{2t} \mid u\_t)
+p(x_{1t}, x_{2t} \mid u_t) = p(x_{1t} \mid u_t) p(x_{2t} \mid u_t)
 $$
 
 **Loss Function (MLE):** Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:
@@ -1140,7 +1140,7 @@ Hierarchical (or multilevel) models are designed for datasets with a nested or g
 **Data:** We have $N$ independent datasets, one for each subject $j=1, \dots, N$:
 
 $$
-D\_j = \lbrace (u\_{1j}, x\_{1j}), \dots, (u\_{T\_j j}, x\_{T\_j j}) \rbrace
+D_j = \lbrace (u_{1j}, x_{1j}), \dots, (u_{T_j j}, x_{T_j j}) \rbrace
 $$
 
 **Modeling Strategies:**
@@ -1158,7 +1158,7 @@ $$
   * **Parent Distribution:** These parameters are not arbitrary but are assumed to be drawn from a common parent distribution, which is governed by hyperparameters $\xi$:
     
     $$
-    \theta\_j \sim p(\theta \mid \xi)
+    \theta_j \sim p(\theta \mid \xi)
     $$
 
   * **Hyperprior:** To complete the Bayesian formulation, a prior distribution (a **hyperprior**) is placed on the hyperparameters $\xi$:
@@ -1176,7 +1176,7 @@ $$
 The joint distribution over all data and parameters is:
 
 $$
-p(\xi, \lbrace\theta\_j\rbrace\_{j=1}^N, \lbrace D\_j\rbrace\_{j=1}^N) = p(\xi) \prod\_{j=1}^N \left[ p(\theta\_j \mid \xi) p(D\_j \mid \theta\_j) \right]
+p(\xi, \lbrace\theta_j\rbrace_{j=1}^N, \lbrace D_j\rbrace_{j=1}^N) = p(\xi) \prod_{j=1}^N \left[ p(\theta_j \mid \xi) p(D_j \mid \theta_j) \right]
 $$
 
 The goal of hierarchical Bayesian analysis is to compute the posterior distribution of the subject-level parameters and group-level hyperparameters, given the observed data:
