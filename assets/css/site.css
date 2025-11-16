@@ -598,6 +598,28 @@ thead {
   letter-spacing: 0.1em;
 }
 
+.accordion {
+  margin: 2rem 0;
+  padding: 0.9rem 1.1rem 1.1rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 22px 42px rgba(15, 23, 42, 0.08);
+}
+
+.accordion details {
+  margin: 0;
+}
+
+.accordion summary {
+  margin-top: 0;
+  cursor: pointer;
+}
+
+.accordion details > *:not(summary) {
+  margin-top: 0.85rem;
+}
+
 .footnotes {
   margin-top: 3rem;
   font-size: 0.95rem;
