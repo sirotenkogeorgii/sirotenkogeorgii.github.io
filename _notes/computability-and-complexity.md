@@ -2048,11 +2048,11 @@ $\textbf{Theorem 113:}$ *The complexity class $\text{PP}$ is closed under comple
 **Proof.**: By Lemma 111, every language $L$ in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. 
 
 $$
-\text{P}[M \text{accepts} w \mid w \notin L] < \frac{1}{2} \implies \text{P}[M \text{rejects} w \mid w \notin L] > \frac{1}{2}
+\text{P}[M \text{ accepts } w \mid w \notin L] < \frac{1}{2} \implies \text{P}[M \text{ rejects } w \mid w \notin L] > \frac{1}{2}
 $$
 
 $$
-\text{P}[M \text{accepts} w \mid w \in L] > \frac{1}{2} \implies \text{P}[M \text{rejects} w \mid w \in L] < \frac{1}{2}
+\text{P}[M \text{ accepts } w \mid w \in L] > \frac{1}{2} \implies \text{P}[M \text{ rejects } w \mid w \in L] < \frac{1}{2}
 $$
 
 Swapping acceptance and rejection in this machine yields a polynomially time-bounded probabilistic Turing machine that recognizes the complement of $L$. ∎
@@ -2063,9 +2063,23 @@ $\textbf{Theorem 114:}$ *The complexity class $\text{PP}$ is closed under symmet
 
 **Proof.**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form $\text{error}\_M(w) = \frac{1}{2} - \epsilon\_w \quad \text{and} \quad \text{error}\_{M'}(w) = \frac{1}{2} - \epsilon'\_w$, where we can assume by Lemma 111 that $\epsilon\_w$ and $\epsilon'\_w$ both are strictly larger than $0$.
 
-Now consider a probabilistic Turing machine $\tilde{M}$ that on input $w$ simulates $M$ and $M'$ on the same input while using independent random bits for the two simulations, and then accepts if and only if exactly one of the simulations accepted.
+Now consider a probabilistic Turing machine $\tilde{M}$ that on input $w$ simulates $M$ and $M'$ on the same input while using independent random bits for the two simulations (both auxiliary tapes are bounded by some polynomials), and then accepts if and only if exactly one of the simulations accepted.
 
-Then $\tilde{M}$ accepts or rejects correctly with respect to the symmetric difference of $L$ and $L'$ if and only if both or neither of the simulations are correct with respect to $L$ and $L'$. The latter happens with probability $\left(\frac{1}{2} + \epsilon_w\right)\left(\frac{1}{2} + \epsilon'\_w\right) + \left(\frac{1}{2} - \epsilon_w\right)\left(\frac{1}{2} - \epsilon'\_w\right) = \frac{1}{2} + 2\epsilon_w \epsilon'\_w > \frac{1}{2}$, hence $\tilde{M}$ recognizes the symmetric difference of $L$ and $L'$. ∎
+Then $\tilde{M}$ accepts or rejects correctly with respect to the symmetric difference of $L$ and $L'$ $iff$ both or neither of the simulations are correct with respect to $L$ and $L'$. The reason is that $\tilde{M}$ works as XOR over outputs of $M$ and $M'$ and XOR is invariant to all bits flip, but sensetive if only some bits are fliped (bit flipping is analogy to incorrect results of $M$,$M'$). Both are correct or both are incorrect happens with the probability
+
+$$
+\text{P}[M,M' \text{ correct } \lor M,M' \text{ incorrect }] = \left(\frac{1}{2} + \epsilon_w\right)\left(\frac{1}{2} + \epsilon'\_w\right) + \left(\frac{1}{2} - \epsilon_w\right)\left(\frac{1}{2} - \epsilon'\_w\right) = \frac{1}{2} + 2\epsilon_w \epsilon'\_w > \frac{1}{2},
+$$
+
+$$
+\implies \text{P}[M \text{ accepts } w \mid w \in L] > \frac{1}{2}
+$$
+
+$$
+\implies \text{P}[M \text{ rejects } w \mid w \notin L] > \frac{1}{2} \implies \text{P}[M \text{ accepts } w \mid w \notin L] = \text{error}_{\tilde{M}}^{\tilde{L}}(w) < \frac{1}{2}
+$$
+
+hence $\tilde{M}$ recognizes the symmetric difference of $L$ and $L'$. ∎
 
 Like $\text{NP}$ has $\text{SAT}$, $\text{PP}$ also has a natural complete problem.
 
@@ -2096,7 +2110,7 @@ $\textbf{Theorem 117 (Probability amplification):}$ *For a language $L$ the foll
 
 **Proof.**: By definition, (iii) implies (i) and (i) implies (ii). In order to show that (ii) implies (iii), let $M$ be a probabilistic Turing machine as asserted to exist in (ii).
 
-For a function $t$ to be specified later, let $M'$ be a probabilistic Turing machine that on an input $w$ of length $n$ runs $2t(n) + 1$ many simulations of $M$ on input $w$ while using independent random bits for each simulation. Then $M'$ accepts according to a majority vote among the simulations, i.e., $M'$ accepts if and only if at least $t(n) + 1$ simulations resulted in acceptance, and a similar equivalence holds for rejection. Accordingly, $M'$ makes an error with respect to recognizing $L$ if and only if at most $t(n)$ simulations are correct.
+For a function $t$ to be specified later, let $M'$ be a probabilistic Turing machine that on an input $w$ of length $n$ runs $2t(n) + 1$ many simulations of $M$ on input $w$ while using independent random bits for each simulation. Then $M'$ accepts according to a majority vote among the simulations, i.e., $M'$ accepts if and only if at least $t(n) + 1$ simulations resulted in acceptance, and a similar equivalence holds for rejection. Accordingly, $M'$ makes an error with respect to recognizing $L$ $iff$ at most $t(n)$ simulations are correct.
 
 If we let $m = 2t(n) + 1$, then the probability that such an error occurs for a given input of length $n$ is at most
 
@@ -2110,7 +2124,19 @@ $$
 
 where the first inequality follows because of $j \le m/2$ and the last one because of $0 < \epsilon \le \frac{1}{2}$.
 
-By the latter, fix a constant $c > 0$ such that $(1 - 4\epsilon^2)^c < \frac{1}{2}$, and given a polynomial $p$, let $t(n) = cp(n)$. Then $M'$ is polynomially time-bounded, has error probability at most $2^{-p(n)}$ and by construction recognizes $L$. ∎
+By the latter, fix a constant $c > 0$ such that $(1 - 4\epsilon^2)^c < \frac{1}{2}$, and given a polynomial $p$, let $t(n) = cp(n)$. Then $M'$ is polynomially time-bounded, has error probability at most $2^{-p(n)}$, because $(1 - 4\epsilon^2)^{cp(n)} < (\frac{1}{2})^{p(n)}=2^{-p(n)}$ and by construction recognizes $L$. ∎
+
+<div class="accordion">
+  <details>
+    <summary>Comment 1</summary>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Comment 2</summary>
+  </details>
+</div>
 
 The ability to amplify probability makes $\text{BPP}$ a very robust class with strong closure properties.
 
@@ -2119,6 +2145,15 @@ $\textbf{Theorem 118:}$ *The complexity class $\text{BPP}$ is closed under compl
 **Proof.**: Closure under complement follows by swapping acceptance and rejection of a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{3}$ that recognizes a given language in $\text{BPP}$.
 
 In order to demonstrate the closure under binary set-theoretical operators, let $L$ and $L'$ be languages in $\text{BPP}$. By the third item in Theorem 117, choose polynomially time-bounded probabilistic Turing machines $M$ and $M'$ that both have error probability of at most $\frac{1}{6}$ and recognize $L$ and $L'$, respectively. Now consider a polynomially time-bounded probabilistic Turing machine that on input $w$ simulates $M$ and $M'$ on input $w$ and then applies the given operator to the results of the simulations, e.g., in the case of intersection, accepts if and only if both simulations accepted. The error probability of this probabilistic Turing machine is at most the sum of the error probabilities of $M$ and $M'$, hence is at most $\frac{1}{3}$. ∎
+
+<div class="accordion">
+  <details>
+    <summary>Comment on intersction proof</summary>
+    <p>Yes, intersection can tolerate some individual errors.</p>
+    <p>The proof knows that but doesn’t use this extra structure; it just gives a safe upper bound.</p>
+    <p>$\text{Pr}[\text{Err}_{\text{intersection}}]\ge \text{Pr}[M]+\text{Pr}[M']$</p>
+  </details>
+</div>
 
 ### Relationship to Non-Uniform Complexity
 
