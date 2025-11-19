@@ -912,8 +912,10 @@ This pattern provides a fundamental characterization of the class $\text{NP}$.
 
 $\textbf{Proposition 56:}$ A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
 
-$$w \\in L \\text{ if and only if } \\exists z \\in {0, 1}^\* ; [(w, z) \\in B \\text{ & } |z| \\le p(|w|)]
-$$In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(|w|)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
+$$w \in L \text{ if and only if } \exists z \in {0, 1}^\* ; [(w, z) \in B \text{ & } \lvert z\rvert \le p(\lvert w \rvert)]
+$$
+
+In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(\lvert w \rvert)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
 
 **Proof sketch.**:
 
@@ -926,7 +928,7 @@ We can now define the language $B$ as:
 $B = \{ \langle w, z \rangle : z \text{ represents an accepting computation of } M \text{ on input } w \}$
 The language $B$ is in $\text{P}$ because a deterministic machine can take $\langle w, z \rangle$ and simply simulate the single computational path of $M$ on $w$ dictated by the choices encoded in $z$, verifying in polynomial time whether it is an accepting computation.
 
-Therefore, $w \in L$ if and only if there exists an accepting computation, which is equivalent to saying there exists a witness $z$ with $|z| \le p(|w|)$ such that $\langle w, z \rangle \in B$.
+Therefore, $w \in L$ if and only if there exists an accepting computation, which is equivalent to saying there exists a witness $z$ with $\lvert z \rvert \le p(\lvert w \rvert)$ such that $\langle w, z \rangle \in B$.
 
 ($\Leftarrow$) **If such a $B$ and $p$ exist, then $L \in \text{NP}$.**
 Let $L$ be a language for which there exists a language $B \in \text{P}$ and a polynomial $p$ satisfying the condition. We can construct a nondeterministic Turing machine $M_L$ that recognizes $L$ in polynomial time:
@@ -1113,30 +1115,30 @@ $\textbf{Lemma 71 (Configurations of Space-Bounded Turing Machines):}$ Let $s$ b
     <summary>Proof of ($i$)</summary>
     <p>
     Let $Q$ be the set of states, $\Gamma$ the working alphabet, $n$ the input length, and $k$ the number of work tapes.
-    A configuration of an off-line TM consists of the current state ($|Q|$ choices),
+    A configuration of an off-line TM consists of the current state ($\lvert Q \rvert$ choices),
     the position of the input head ($n+2$ choices, allowing for end markers), and,
     for each work tape, both the tape contents and the head position within those contents.
 
     On any work tape the machine ever scans at most $s(n)$ cells, so the number of
-    admissible strings on that tape is $\sum_{i=0}^{s(n)} |\Gamma|^i \le c_{\text{tape}}|\Gamma|^{s(n)}$ for a constant $c_{\text{tape}}$ that depends only on $\Gamma$.
+    admissible strings on that tape is $\sum_{i=0}^{s(n)} \lvert \Gamma \rvert^i \le c_{\text{tape}}\lvert \Gamma \rvert^{s(n)}$ for a constant $c_{\text{tape}}$ that depends only on $\Gamma$.
     The $s(n)+1$ possible head locations multiply this by another factor of $s(n)+1$.
-    Hence one tape contributes at most $c_{\text{tape}}|\Gamma|^{s(n)}(s(n)+1)$ configurations, and all $k$ tapes together contribute at most $\big(c_{\text{tape}}|\Gamma|^{s(n)}(s(n)+1)\big)^k$.
+    Hence one tape contributes at most $c_{\text{tape}}\lvert \Gamma \rvert^{s(n)}(s(n)+1)$ configurations, and all $k$ tapes together contribute at most $\big(c_{\text{tape}}\lvert \Gamma \rvert^{s(n)}(s(n)+1)\big)^k$.
     Including the choice of state and input-head position gives the bound
     \[
-      |Q|(n+2) c_{\text{tape}}^k |\Gamma|^{k s(n)} (s(n)+1)^k.
+      \lvert Q\rvert(n+2) c_{\text{tape}}^k \lvert \Gamma \rvert^{k s(n)} (s(n)+1)^k.
     \]
 
     The exercise further notes that configurations on inputs of length $n$ can be encoded as binary words of length $c \cdot s(n)$ for some machine-dependent constant $c$.
     Because every input of length $n$ yields at least $n+2$ configurations (one per input-head position),
     we obtain $n+2 \le 2^{c s(n)}$ once $s(n) \ge \log_2(n+2)/c$; this is true for space bounds of interest.
-    Moreover $(s(n)+1)^k \le 2^{c_1 s(n)}$ for a constant $c_1$ and all sufficiently large $n$, and $|\Gamma|^{k s(n)} = 2^{(\log_2 |\Gamma|) k s(n)}$.
+    Moreover $(s(n)+1)^k \le 2^{c_1 s(n)}$ for a constant $c_1$ and all sufficiently large $n$, and $\lvert \Gamma \rvert^{k s(n)} = 2^{(\log_2 \lvert \Gamma \rvert) k s(n)}$.
     Combining these inequalities we get
     \[
-      |Q|(n+2) c_{\text{tape}}^k |\Gamma|^{k s(n)} (s(n)+1)^k
-      \le \underbrace{|Q| c_{\text{tape}}^k}_{\text{constant}} 2^{c s(n)} 2^{c_1 s(n)} 2^{(\log_2 |\Gamma|) k s(n)}
+      \lvert Q\rvert(n+2) c_{\text{tape}}^k \lvert \Gamma \rvert^{k s(n)} (s(n)+1)^k
+      \le \underbrace{\lvert Q\rvert c_{\text{tape}}^k}_{\text{constant}} 2^{c s(n)} 2^{c_1 s(n)} 2^{(\log_2 \lvert \Gamma \rvert) k s(n)}
       = 2^{d s(n)}
     \]
-    for $d = c + c_1 + (\log_2 |\Gamma|)k$.
+    for $d = c + c_1 + (\log_2 \lvert \Gamma \rvert)k$.
     </p>
   </details>
 </div>
@@ -2178,16 +2180,21 @@ This section explores the **polynomial hierarchy**, a hierarchy of complexity cl
 
 The polynomial hierarchy is constructed using alternating existential and universal quantifiers, bounded by a polynomial in the input size.
 
-$\textbf{Definition 120 (Polynomial-Time Hierarchy):}$ Let $k$ be a natural number. Then $\Sigma_k^p$ is the class of all languages $L$ over the binary alphabet for which there is a language $B$ in **P** and a polynomial $p$ such that a binary word $w$ of length $n$ is in $L$ if and only if
+$\textbf{Definition 120 (Polynomial-Time Hierarchy):}$ Let $k$ be a natural number. Then $\Sigma_k^p$ is the class of all languages $L$ over the binary alphabet for which there is a language $B$ in $\textbf{P}$ and a polynomial $p$ such that a binary word $w$ of length $n$ is in $L$ if and only if
 
 $$
 \exists_{y_1}^{p(n)} \forall_{y_2}^{p(n)} \exists_{y_3}^{p(n)} \cdots Q_k^{p(n)} y_k ((w , y_1, \ldots , y_k) \in B) \quad (4.1)
-$$where $Q_k$ is equal to $\exists$ if $k$ is odd and to $\forall$ if $k$ is even. Here $\exists_{y}^{\ell}$ is a short form of existential quantification over a binary word $y$ of length $\ell$, and similarly for $\forall^{\ell}$ and universal quantification.
+$$
+
+where $Q_k$ is equal to $\exists$ if $k$ is odd and to $\forall$ if $k$ is even. Here $\exists_{y}^{\ell}$ is a short form of existential quantification over a binary word $y$ of length $\ell$, and similarly for $\forall^{\ell}$ and universal quantification.
 
 The class $\Pi_k^p$ is defined literally the same except that (4.1) is replaced by
 
-$$\\forall\_{y\_1}^{p(n)} \\exists\_{y\_2}^{p(n)} \\forall\_{y\_3}^{p(n)} \\cdots Q\_k^{p(n)} y\_k ((w , y\_1, \\ldots , y\_k) \\in B) \\quad (4.2)
-$$where now $Q_k$ is equal to $\forall$ if $k$ is odd and to $\exists$ if $k$ is even.
+$$
+\forall\_{y\_1}^{p(n)} \exists\_{y\_2}^{p(n)} \forall\_{y\_3}^{p(n)} \cdots Q\_k^{p(n)} y\_k ((w , y\_1, \ldots , y\_k) \in B) \quad (4.2)
+$$
+
+where now $Q_k$ is equal to $\forall$ if $k$ is odd and to $\exists$ if $k$ is even.
 
 #### Levels and Properties of the Hierarchy
 
@@ -2203,12 +2210,12 @@ $\textbf{Theorem 122:}$ The class **PH** is a subset of **PSPACE**.
 
 A significant open question in complexity theory is whether this hierarchy is infinite or if it "collapses" to a specific level.
 
-\<div class="note-callout"\>
-\<p class="note-callout\_\_title"\>Remark 123 (Collapse of the Hierarchy)\</p\>
-\<p\>
-In case $\Sigma_k^p$ and $\Sigma_{k+1}^p$ coincide, then $\Sigma_k^p$ coincides with \<strong\>PH\</strong\>; this is referred to as a \<strong\>collapse of the polynomial hierarchy\</strong\> to $\Sigma_k^p$. It is not known whether \<strong\>PH\</strong\> coincides with \<strong\>PSPACE\</strong\>. If the latter were the case, then the polynomial hierarchy would collapse. The latter follows because the classes $\Sigma_k^p$ are all closed downwards under $p$-$m$-reducibility. In case the two classes were equal, some class $\Sigma_k^p$ would contain a \<strong\>PSPACE\</strong\>-complete language and thus the whole class \<strong\>PSPACE\</strong\>. Everything said about the classes $\Sigma^p$ holds accordingly also for the classes $\Pi^p$.
-\</p\>
-\</div\>
+<div class="note-callout">
+<p class="note-callout__title">Remark 123 (Collapse of the Hierarchy)</p>
+<p>
+In case $\Sigma_k^p$ and $\Sigma_{k+1}^p$ coincide, then $\Sigma_k^p$ coincides with <strong>PH</strong>; this is referred to as a <strong>collapse of the polynomial hierarchy</strong> to $\Sigma_k^p$. It is not known whether <strong>PH</strong> coincides with <strong>PSPACE</strong>. If the latter were the case, then the polynomial hierarchy would collapse. The latter follows because the classes $\Sigma_k^p$ are all closed downwards under $p$-$m$-reducibility. In case the two classes were equal, some class $\Sigma_k^p$ would contain a <strong>PSPACE</strong>-complete language and thus the whole class <strong>PSPACE</strong>. Everything said about the classes $\Sigma^p$ holds accordingly also for the classes $\Pi^p$.
+</p>
+</div>
 
 ### BPP and the Polynomial Hierarchy
 
@@ -2217,8 +2224,10 @@ The complexity class **BPP** (Bounded-error Probabilistic Polynomial time) also 
 $\textbf{Theorem 124:}$ It holds that $\textbf{BPP} \subseteq \Sigma_2^p$, that is, for every language $L$ in **BPP** there is a language $B$ in **P** and a polynomial $p$ such that for all binary words $w$ it holds that
 
 $$
-w \in L \text{ if and only if } \exists_{x}^{p(|w|)} \forall_{y}^{p(|w|)} ((w, x, y) \in B).
-$$As a direct consequence of this theorem and the fact that **BPP** is closed under complement, we can place **BPP** more precisely within the hierarchy.
+w \in L \text{ if and only if } \exists_{x}^{p(\lvert w \rvert)} \forall_{y}^{p(\lvert w \rvert)} ((w, x, y) \in B).
+$$
+
+As a direct consequence of this theorem and the fact that **BPP** is closed under complement, we can place **BPP** more precisely within the hierarchy.
 
 $\textbf{Corollary 125:}$ The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_2^p$.
 
@@ -2230,8 +2239,11 @@ $\textbf{Corollary 125:}$ The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_
 
 Fix an input word $w$ of length $n \ge n_0$. Let $U$ be the set of random words that cause $M$ to accept $w$:
 
-$$U = {r \\in {0, 1}^{p(n)} : M \\text{ accepts } w \\text{ on random word } r}
-$$For the remainder of this proof, "word" will refer to a binary word of length $p(n)$ unless stated otherwise. We use the operator $\oplus$, which represents bitwise exclusive-or (parity). For any word $v$, the function $u \mapsto u \oplus v$ is a bijection on the set of all words. Let $U \oplus v = \{u \oplus v : u \in U\}$. Note that $|U| = |U \oplus v|$.
+$$
+U = \{r \in {0, 1}^{p(n)} : M \text{ accepts } w \text{ on random word } r\}
+$$
+
+For the remainder of this proof, "word" will refer to a binary word of length $p(n)$ unless stated otherwise. We use the operator $\oplus$, which represents bitwise exclusive-or (parity). For any word $v$, the function $u \mapsto u \oplus v$ is a bijection on the set of all words. Let $U \oplus v = \{u \oplus v : u \in U\}$. Note that $\lvert U \rvert = \lvert U \oplus v \rvert$.
 
 **Case 1: $w$ is not in $L$.**
 In this case, the set $U$ (and thus any set $U \oplus v$) contains at most a fraction of $2^{-n}$ of all possible words. The union of $p(n)$ such sets cannot comprise all words, because by our choice of $n_0$, we have $p(n) < 2^n$. Consequently, the following statement is **false**:
@@ -2243,32 +2255,35 @@ In this case, we show that statement (4.3) is **true**. Fix some word $z$. Consi
 
 Now, assume the bits of words $v_1, \ldots, v_{p(n)}$ are determined by fair coin tosses. The probability that a fixed word $z$ is in none of the sets $U \oplus v_i$ is at most $(2^{-n})^{p(n)} = 2^{-np(n)}$. The probability that *some* word $z$ among all $2^{p(n)}$ words is in none of the sets $U \oplus v_1$ through $U \oplus v_{p(n)}$ is at most:
 
-$$2^{p(n)} \\cdot 2^{-np(n)} = 2^{-(n-1)p(n)} \< 1.
-$$Since this probability is less than 1, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than 0. This means there must exist such words $v_1, \ldots, v_{p(n)}$.
+$$
+2^{p(n)} \cdot 2^{-np(n)} = 2^{-(n-1)p(n)} \< 1.
+$$
 
-\<div class="accordion"\>
-\<details\>
-\<summary\>Constructing the Language B\</summary\>
-\<p\>
+Since this probability is less than 1, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than 0. This means there must exist such words $v_1, \ldots, v_{p(n)}$.
+
+<div class="accordion">
+<details>
+<summary>Constructing the Language B</summary>
+<p>
 The condition $(*)$ inside the quantifiers is decidable in polynomial time. Note that $z \in U \oplus v_i$ is equivalent to $z \oplus v_i \in U$. To check if a word is in $U$, we can simulate $M$ on input $w$ with that word as the random tape, which takes polynomial time.
-\</p\>
-\<p\>
+</p>
+<p>
 We can now define the required language $B \in \textbf{P}$.
-\</p\>
-\<ul\>
-\<li\>
-For all binary words $w$ of length $n \ge n_0$, a tuple $(w, v_1, \ldots, v_{p(n)}, z)$ is in $B$ if and only if the components $v_1, \ldots, v_{p(n)}, z$ are words of length $p(|w|)$ that satisfy condition $(*)$ for the set $U$ corresponding to $w$.
-\</li\>
-\<li\>
+</p>
+<ul>
+<li>
+For all binary words $w$ of length $n \ge n_0$, a tuple $(w, v_1, \ldots, v_{p(n)}, z)$ is in $B$ if and only if the components $v_1, \ldots, v_{p(n)}, z$ are words of length $p(\lvert w \rvert)$ that satisfy condition $(*)$ for the set $U$ corresponding to $w$.
+</li>
+<li>
 For the finitely many words $w$ with length less than $n_0$:
-\<ul\>
-\<li\>If $w$ is not in $L$, $B$ contains no tuple with $w$ as the first component.\</li\>
-\<li\>If $w$ is in $L$, $B$ contains all tuples of the form $(w, 0^{p(|w|)}, \ldots, 0^{p(|w|)}, z)$ where $z$ is any binary word of length $p(|w|)$.\</li\>
-\</ul\>
-\</li\>
-\</ul\>
-\</details\>
-\</div\>
+<ul>
+<li>If $w$ is not in $L$, $B$ contains no tuple with $w$ as the first component.</li>
+<li>If $w$ is in $L$, $B$ contains all tuples of the form $(w, 0^{p(\lvert w \rvert)}, \ldots, 0^{p(\lvert w \rvert)}, z)$ where $z$ is any binary word of length $p(\lvert w \rvert)$.</li>
+</ul>
+</li>
+</ul>
+</details>
+</div>
 
 This construction fulfills the requirements of Theorem 124. ∎
 
@@ -2282,7 +2297,9 @@ $\textbf{Definition 126 (The Majority Satisfiability Problem):}$ The **majority 
 
 $$
 \textbf{MAJ} = \{\phi : \phi \text{ is a propositional formula in CNF that is satisfied by strictly more than half of the assignments to its variables}\}
-$$$\textbf{Theorem 127:}$ The majority satisfiability problem **MAJ** is complete for **PP**.
+$$
+
+$\textbf{Theorem 127:}$ The majority satisfiability problem **MAJ** is complete for **PP**.
 
 **Proof.** The proof has two parts: showing **MAJ** is in **PP** and showing **MAJ** is **PP**-hard.
 
@@ -2307,12 +2324,10 @@ Let the variables of $\phi_w$ be $Y_1, \ldots, Y_m$, where $m = m(n)$ is polynom
 Define $\phi'_w$ as:
 
 $$
-
-```
-$$\\phi'\_w = (Z \\land \\phi\_w(Y\_1, \\ldots, Y\_m)) \\lor (\\neg Z \\land \\neg \\tau(Y\_1, \\ldots, Y\_m))
-
+\phi'\_w = (Z \land \phi\_w(Y\_1, \ldots, Y\_m)) \lor (\neg Z \land \neg \tau(Y\_1, \ldots, Y\_m))
 $$
-$$This formula has $m+1$ variables.
+
+This formula has $m+1$ variables.
 
   * If $Z$ is true, $\phi'_w$ is satisfied if $\phi_w$ is satisfied. There are $a(w)$ such assignments.
   * If $Z$ is false, $\phi'_w$ is satisfied if $\neg \tau$ is satisfied. There are $2^m - 2^{r-1}$ such assignments.
@@ -2320,15 +2335,15 @@ $$This formula has $m+1$ variables.
 The total number of satisfying assignments for $\phi'_w$ is $a(w) + (2^m - 2^{r-1})$. The formula $\phi'_w$ is in **MAJ** if this number is greater than half of the total $2^{m+1}$ assignments:
 
 $$
-$$a(w) + 2^m - 2^{r-1} \> \\frac{1}{2} 2^{m+1} = 2^m
+a(w) + 2^m - 2^{r-1} \> \frac{1}{2} 2^{m+1} = 2^m
+$$
 
 $$
-$$$$
-$$a(w) - 2^{r-1} \> 0 \\implies a(w) \> 2^{r-1}
-
+a(w) - 2^{r-1} \> 0 \implies a(w) \> 2^{r-1}
 $$
-$$This is exactly the condition for $w \in L$. Thus, $w \in L \iff \phi'_w \in \textbf{MAJ}$. Finally, $\phi'_w$ can be transformed into an equivalent CNF formula in polynomial time using distributive laws. This completes the reduction. ∎
-```
+
+This is exactly the condition for $w \in L$. Thus, $w \in L \iff \phi'_w \in \textbf{MAJ}$. Finally, $\phi'_w$ can be transformed into an equivalent CNF formula in polynomial time using distributive laws. This completes the reduction. ∎
+
 
 ### A Generic Technique for Constructing Complete Languages
 
@@ -2341,7 +2356,7 @@ $\textbf{Remark 128:}$ By the results on tape reduction and on alphabet reductio
 We fix a binary representation for these special TMs. For a representation word $w$, we write $M_w$ for the machine it represents. This representation scheme has the following properties:
 
   * Given a binary word of length $n$, it can be checked in polynomial time whether it represents a TM and whether that TM is deterministic.
-  * There exists a fixed universal Turing machine $U$ that can simulate any $M_w$ on a given input. The simulating computation's length exceeds the simulated one by at most a factor of $|w|$.
+  * There exists a fixed universal Turing machine $U$ that can simulate any $M_w$ on a given input. The simulating computation's length exceeds the simulated one by at most a factor of $\lvert w\rvert$.
 
 #### Examples of Generic Complete Languages
 
@@ -2353,19 +2368,24 @@ Let
 
 $$
 C_{\text{EXP}} = \{\tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that is deterministic and accepts } x \text{ in at most } 2^t \text{ steps}\}.
-$$$\textbf{Proposition 129:}$ The language $C_{\text{EXP}}$ is **EXP**-complete.
+$$
+
+$\textbf{Proposition 129:}$ The language $C_{\text{EXP}}$ is **EXP**-complete.
 
 **Proof sketch.**
 
-* **Membership in EXP:** We must show that $C_{\text{EXP}}$ can be recognized by a $2^{poly(n)}$-time-bounded deterministic TM, let's call it $M_{\text{decider}}$. On an input of length $n$ of the form $\tilde{w}01\tilde{x}01t$, $M_{\text{decider}}$ first checks if $w$ represents a deterministic TM. If not, it rejects. Otherwise, it simulates the computation of $M_w$ on input $x$ for up to $2^t$ steps. It accepts if $M_w$ reaches an accepting configuration within this step bound. The simulation of $2^t$ steps of $M_w$ can be done in at most $|w| \cdot 2^t < 2^{2n-1}$ steps of $M_{\text{decider}}$. For some polynomial $p$, the total computation time on an input of length $n$ is at most $p(n) + 2^{2n-1}$, which is at most $2^{2n}$ for sufficiently large $n$. This is within the class **EXP**.
-* **EXP-hardness:** Let $L$ be any language in **EXP**. By Remark 128, there is a polynomial $p$ such that $L$ is recognized by a $2^{p(n)}$-time-bounded deterministic special Turing machine, represented by a word $w$. Then $L$ is $p$-$m$-reducible to $C_{\text{EXP}}$ via the function $x \mapsto \tilde{w}01\tilde{x}01p(|x|)$. ∎
+* **Membership in EXP:** We must show that $C_{\text{EXP}}$ can be recognized by a $2^{poly(n)}$-time-bounded deterministic TM, let's call it $M_{\text{decider}}$. On an input of length $n$ of the form $\tilde{w}01\tilde{x}01t$, $M_{\text{decider}}$ first checks if $w$ represents a deterministic TM. If not, it rejects. Otherwise, it simulates the computation of $M_w$ on input $x$ for up to $2^t$ steps. It accepts if $M_w$ reaches an accepting configuration within this step bound. The simulation of $2^t$ steps of $M_w$ can be done in at most $\lvert w \rvert \cdot 2^t < 2^{2n-1}$ steps of $M_{\text{decider}}$. For some polynomial $p$, the total computation time on an input of length $n$ is at most $p(n) + 2^{2n-1}$, which is at most $2^{2n}$ for sufficiently large $n$. This is within the class **EXP**.
+* **EXP-hardness:** Let $L$ be any language in **EXP**. By Remark 128, there is a polynomial $p$ such that $L$ is recognized by a $2^{p(n)}$-time-bounded deterministic special Turing machine, represented by a word $w$. Then $L$ is $p$-$m$-reducible to $C_{\text{EXP}}$ via the function $x \mapsto \tilde{w}01\tilde{x}01p(\lvert x\rvert)$. ∎
 
 **An NP-Complete Language**
 
-A similar construction yields an **NP**-complete language. Let
+A similar construction yields an $\textbf{NP}$-complete language. Let
 
-$$C\_{\\text{NP}} = {\\tilde{w}01\\tilde{x}01t : \\text{the word } w \\text{ represents a Turing machine that on input } x \\text{ has an accepting computation of length at most } t}.
-$$$\textbf{Proposition 130:}$ The language $C_{\text{NP}}$ is **NP**-complete.
+$$
+C\_{\text{NP}} = \{\tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\}.
+$$
+
+$\textbf{Proposition 130:}$ The language $C_{\text{NP}}$ is **NP**-complete.
 
 **A PP-Complete Language**
 
@@ -2373,7 +2393,8 @@ This construction can be extended to probabilistic classes like **PP**. Here, we
 
 $$
 C_{\text{PP}} = \{\tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a probabilistic Turing machine that accepts input } x \text{ when all computations are pruned to length } t\}.
-$$$\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is **PP**-complete.
+$$
+
+$\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-complete.
 
 *(Note: The proof is omitted here but was covered in the lecture.)*
-$$
