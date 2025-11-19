@@ -741,3 +741,239 @@ An analysis of the GeForce 8800 GTX revealed:
   * **L1 Cache:** A sharp latency increase at 5.5 kB (implying a 5 kB L1 cache) and at a 32-byte stride (implying a 32-byte cache line).
   * **L2 Cache:** Similar analysis suggested a 24-way set-associative L2.
   * **TLB:** A latency increase at 128 MB pointed to a TLB. Saturation at a 512 kB size indicated a 512 kB page size, and further tests suggested a 16-entry, fully-associative TLB.
+
+
+# Optimizing with Shared Memory
+
+## Matrix Multiplication: A Case Study
+
+Matrix multiplication is one of the most fundamental operations in scientific computing and artificial intelligence. While simple in principle, it serves as the perfect case study for mastering the advanced optimization techniques required to unlock the true power of a GPU.
+
+We focus on this operation because:
+* **Ubiquity:** It is the computational core of Deep Learning and physical simulations.
+* **Optimization Depth:** It features complex memory access patterns that highlight critical performance differences between naive and optimized code.
+* **Balance:** It is complex enough to require sophisticated optimization (tiling, shared memory) but simple enough to understand comprehensively.
+
+### Analyzing the Problem
+
+The goal is to compute a result matrix, $C$, by multiplying two input matrices, $A$ and $B$:
+
+$$
+C = A \cdot B
+$$
+
+For this analysis, we assume square matrices with dimensions $n \times n$, stored in **row-major order**. This means an element at `[row][column]` is accessed in a flat memory array as `M[row * width + column]`.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/matrix_mult_diagram.png' | relative_url }}" alt="Matrix multiplication row-column dot product" loading="lazy">
+    <figcaption>Row-Column Dot Product Visualization</figcaption>
+  </figure>
+</div>
+
+#### Computational Cost (FLOPs)
+
+To calculate a single element $C[i][j]$, we perform a dot product of the $i$-th row of $A$ and the $j$-th column of $B$. This requires $n$ multiplications and $n-1$ additions, approximated as $2n$ Floating-Point Operations (FLOPs).
+
+With $n^2$ elements in the output matrix, the total computational cost $f$ is:
+
+$$
+f = n^2 \text{ elements} \times 2n \text{ FLOPs/element} = 2n^3 \text{ FLOPs}
+$$
+
+#### Memory Access Cost and Intensity
+
+Performance is rarely limited by pure math; it is limited by memory.
+
+* **Unique Accesses:** ideally, we load each element of $A$, $B$, and $C$ exactly once. This yields $3n^2$ unique elements.
+* **Total Accesses (Naive):** Without caching, every calculation fetches data from main memory. To compute $n^2$ elements, we perform $2n^3$ reads.
+
+**Computational Intensity ($r$)** is the ratio of arithmetic operations to memory operations (FLOPs/Byte). A high ratio indicates a compute-bound algorithm (good); a low ratio indicates a memory-bound algorithm (bad).
+
+Assuming a perfect cache, the intensity is:
+
+$$
+r = \frac{f}{m_{unique}} = \frac{2n^3}{3n^2} = O(n)
+$$
+
+This linear relationship suggests that as matrix size $n$ grows, the algorithm *should* become increasingly compute-intensive. However, this is only true if we can effectively utilize the memory hierarchy to avoid re-fetching data from slow global memory.
+
+## CPU Baseline and Tiling
+
+### The Naive CPU Approach
+
+A standard implementation uses three nested loops.
+
+```c++
+void MatrixMulOnHost(float* M, float* N, float* P, int Width) {
+    for (int i = 0; i < Width; ++i) {
+        for (int j = 0; j < Width; ++j) {
+            float sum = 0;
+            for (int k = 0; k < Width; ++k) {
+                float a = M[i * Width + k];
+                float b = N[k * Width + j];
+                sum += a * b;
+            }
+            P[i * Width + j] = sum;
+        }
+    }
+}
+````
+
+This code hits the **Memory Wall**. For small matrices fitting in the CPU cache, performance is high. As matrices grow larger than the cache (e.g., \> 1500 $\times$ 1500), the CPU stalls waiting for data from the main system RAM.
+
+### The Tiling (Blocking) Strategy
+
+To overcome the memory wall, we use **tiling**. We divide the matrices into small sub-matrices (tiles) that fit into the cache. We load a tile from $A$ and $B$, perform all possible multiplications between them, and then move to the next tile.
+
+\<div class="gd-grid"\>
+\<figure\>
+\<img src="{{ '/assets/images/notes/gpu-computing/tiling\_strategy.png' | relative\_url }}" alt="Matrix tiling strategy visualization" loading="lazy"\>
+\<figcaption\>Matrix Tiling Strategy\</figcaption\>
+\</figure\>
+\</div\>
+
+This maximizes **Locality of Reference**:
+
+  * **Temporal Locality:** Reusing data while it is in the cache.
+  * **Spatial Locality:** Accessing data elements physically close to each other.
+
+<!-- end list -->
+
+```c++
+// Blocked Matrix Multiplication (Simplified)
+void MatrixMulOnHostBlocked(float* M, float* N, float* P, int Width, int blockSize) {
+    for (int ii = 0; ii < Width; ii += blockSize) {
+        for (int jj = 0; jj < Width; jj += blockSize) {
+            for (int kk = 0; kk < Width; kk += blockSize) {
+                // Process small blockSize x blockSize tiles here
+                // ...
+            }
+        }
+    }
+}
+```
+
+## Porting to the GPU
+
+### Naive CUDA Implementation
+
+Our first GPU attempt assigns one thread to compute one element of the output matrix $P$.
+
+```c++
+__global__ void MatrixMulKernel(float* Md, float* Nd, float* Pd, int Width) {
+    // Calculate global row and column
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
+
+    float Pvalue = 0;
+
+    // Each thread reads entire row of A and col of B from Global Memory
+    for (int k = 0; k < Width; ++k) {
+        Pvalue += Md[row * Width + k] * Nd[k * Width + col];
+    }
+
+    Pd[row * Width + col] = Pvalue;
+}
+```
+
+### The Memory Bandwidth Bottleneck
+
+While this kernel runs in parallel, it suffers from **abysmal computational intensity**.
+
+  * Every multiply-add (2 FLOPs) requires two float reads (8 Bytes).
+  * Intensity = 0.25 FLOPs/Byte.
+  * Required Bandwidth for 13 TFLOP/s (RTX 2080 Ti) $\approx$ **52 TB/s**.
+  * Actual Hardware Bandwidth $\approx$ **616 GB/s**.
+
+The hardware provides nearly 100x less bandwidth than this naive algorithm requires. The GPU spends almost all its time waiting for data from global memory.
+
+## Optimizing with Shared Memory
+
+To solve the bandwidth bottleneck, we must program the **Shared Memory**. This is a user-managed L1 cache (scratchpad) that is orders of magnitude faster than global memory.
+
+\<div class="gd-grid"\>
+\<figure\>
+\<img src="{{ '/assets/images/notes/gpu-computing/shared\_memory\_tiling.png' | relative\_url }}" alt="Tiling with Shared Memory" loading="lazy"\>
+\<figcaption\>Collaborative Loading into Shared Memory\</figcaption\>
+\</figure\>
+\</div\>
+
+### The Algorithm
+
+We adapt the tiling strategy for the GPU architecture:
+
+1.  **Collaborative Load:** A thread block collectively loads a tile of $A$ and a tile of $B$ from Global Memory into Shared Memory.
+2.  **Synchronize:** `__syncthreads()` ensures the tile is fully loaded.
+3.  **Compute:** Threads perform dot products using the fast data in Shared Memory.
+4.  **Repeat:** Move to the next tile.
+
+This increases computational intensity by a factor of `TILE_WIDTH`. For a $16 \times 16$ tile, we reduce global memory traffic by 16x.
+
+### Shared Memory Kernel
+
+```c++
+#define TILE_WIDTH 16
+
+__global__ void MM_SM(float* Md, float* Nd, float* Pd, int Width) {
+    // static shared memory allocation
+    __shared__ float Mds[TILE_WIDTH][TILE_WIDTH];
+    __shared__ float Nds[TILE_WIDTH][TILE_WIDTH];
+
+    int bx = blockIdx.x;  int by = blockIdx.y;
+    int tx = threadIdx.x; int ty = threadIdx.y;
+
+    // Identify the row and column of the Pd element to work on
+    int row = by * TILE_WIDTH + ty;
+    int col = bx * TILE_WIDTH + tx;
+
+    float Pvalue = 0;
+
+    // Loop over the Md and Nd tiles required to compute the Pd element
+    for (int m = 0; m < Width / TILE_WIDTH; ++m) {
+
+        // --- Phase 1: Collaborative Loading ---
+        // Each thread loads one element of Mds and Nds
+        Mds[ty][tx] = Md[row * Width + (m * TILE_WIDTH + tx)];
+        Nds[ty][tx] = Nd[(m * TILE_WIDTH + ty) * Width + col];
+
+        // Ensure all threads have loaded data before computing
+        __syncthreads();
+
+        // --- Phase 2: Compute ---
+        for (int k = 0; k < TILE_WIDTH; ++k) {
+            Pvalue += Mds[ty][k] * Nds[k][tx];
+        }
+
+        // Ensure computation is done before overwriting shared mem in next iter
+        __syncthreads();
+    }
+
+    Pd[row * Width + col] = Pvalue;
+}
+```
+
+### Bank Conflicts
+
+Shared memory is divided into 32 banks (like parallel filing cabinets). Ideally, threads in a warp (32 threads) access different banks simultaneously.
+
+  * **Conflict-Free:** Thread $i$ accesses Bank $i$.
+  * **Bank Conflict:** Multiple threads in a warp access the *same* bank. The hardware serializes these requests, destroying performance.
+
+A common cause is strided access. If threads access `array[threadIdx.x * 2]`, they only hit even banks, potentially causing 2-way conflicts. The implementation above generally avoids this by loading $16 \times 16$ tiles where `tx` maps directly to columns.
+
+## Advanced Optimizations
+
+To close the gap to theoretical peak performance, further techniques are required:
+
+  * **Data Dependencies:** We use `__syncthreads()` to handle Read-After-Write (RAW) and Write-After-Read (WAR) hazards.
+  * **Dynamic Allocation:** Using `extern __shared__` allows sizing shared memory at runtime rather than compile time.
+  * **Thread Coarsening:** Having one thread compute multiple output elements (e.g., a $4 \times 4$ patch) increases register reuse.
+  * **Double Buffering:** Loading the *next* tile into registers while computing the *current* tile hides memory latency completely.
+
+## Summary
+
+  * **Performance is Memory-Bound:** High-performance computing is often less about math and more about data movement.
+  * **Hierarchy is King:** Tiling (blocking) is the fundamental technique to exploit the memory hierarchy.
+  * **Shared Memory:** This is the programmer's primary tool for maximizing computational intensity ($O(n)$ data reuse).
+  * **Synchronization:** When using shared memory, `__syncthreads()` is essential for correctness to manage RAW and WAR hazards.
