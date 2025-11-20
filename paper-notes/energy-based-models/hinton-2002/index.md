@@ -66,7 +66,7 @@ noindex: true
 * Instead of minimizing just the KL divergence between data distribution $Q_0$ and equilibrium model distribution $Q_\infty$, the paper minimizes the **contrastive divergence**:
   
   $$
-  \text{CD} = Q_0 !\parallel! Q_1 ;-; Q_1 !\parallel! Q_\infty
+  \text{CD} = Q_0 \| Q_1 ;-; Q_1 \| Q_\infty
   $$
 
   where:
@@ -146,7 +146,7 @@ noindex: true
 * Trains **separate PoE/RBM models per digit class** (e.g., only “2” images vs only “3” images).
 * For classification:
 
-  * Compute **unnormalized log probability** (log p(t|model) + constant) under each class model.
+  * Compute **unnormalized log probability** ($\log p(t\mid \text{model}) + \text{constant}$) under each class model.
   * Since partition function differences between models are global constants, they can be estimated discriminatively or absorbed into a discriminative layer. 
 * Demonstrations:
 
