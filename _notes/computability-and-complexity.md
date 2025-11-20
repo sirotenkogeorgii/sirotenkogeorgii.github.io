@@ -51,11 +51,58 @@ $\textbf{Definition 1 (Turing Machine):}$ Let $k$ be a nonzero natural number. A
 - $s \in Q$ is the initial state,
 - $F \subseteq Q$ is the set of accepting states.
 
+<div class="accordion">
+  <details>
+    <summary>"States" in CPU</summary>
+
+## 1. “State” in the sense of complexity theory / automata
+
+When I compared a Turing machine’s **state** to a CPU, I was talking about the **control logic** of the CPU, which you can model as a **finite-state machine**:
+
+* The control unit has a **state register** (a bunch of flip-flops).
+* On each clock cycle, this state register + some inputs (like parts of the instruction) determine:
+
+  * what control signals to assert (read from register file, write to memory, etc.),
+  * what the **next state** of the control unit will be.
+
+Here:
+
+* The set of possible control states is **finite** and **fixed by the design** of the CPU.
+* Each state typically corresponds to a “phase” of instruction processing:
+
+  * e.g. `FETCH`, `DECODE`, `EXECUTE`, `MEM_READ`, `MEM_WRITE`, `WRITE_BACK`, or finer-grained micro-steps.
+
+This is the analog of a Turing machine’s (or DFA’s) **q ∈ Q**:
+
+> A small piece of control info that decides “what kind of step am I doing now?”, **not** the entire memory contents.
+
+In complexity theory, when we say “a machine has finitely many states”, we mean this *control* part, **not** the whole RAM/register contents.
+
+## 2. How this connects back to Turing machines
+
+For a Turing machine, you can think of:
+
+* **Finite control state** (the “q” in TM formalism) ↔ CPU control unit’s FSM state (e.g. `FETCH`, `EXECUTE_ADD`, etc.).
+* **Tape contents + head positions** ↔ CPU’s registers + main memory + program counter.
+
+When we talk about space complexity and say **“the machine has only finitely many states”**, we mean:
+
+* The **control states** are finite and don’t grow with input size.
+* The “unbounded” or input-dependent information lives in **tape cells** (for TM) or **RAM/registers** (for a real CPU).
+
+So:
+
+* **In complexity theory**: “state” = the control state, a small, constant-sized piece of info.
+  </details>
+</div>
+
 #### Structure of a $k$-tape Turing Machine
 
 - **Memory.** The machine's memory consists of $k$ work tapes. Each tape is a doubly infinite sequence of cells, and each cell holds a single symbol from the tape alphabet $\Gamma$.
 - **Heads.** Each tape has an associated read-write head. At any given time, each head is positioned on one cell of its tape. It can read the symbol in that cell and overwrite it with a new symbol.
 - **Movement.** The heads on the $k$ tapes can move independently of one another. In a single step, a head can move one cell to the left ($L$), one cell to the right ($R$), or stay in the same position ($S$).
+
+
 
 ### How Turing Machines Compute
 
@@ -514,7 +561,7 @@ The concept of time complexity can be extended from deterministic to nondetermin
 
 When analyzing the time complexity of a nondeterministic machine, we consider the length of the longest possible computation path.
 
-$\textbf{Definition 32 (Nondeterministic time classes):}$ Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, **all computations** of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq {0, 1}^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
+$\textbf{Definition 32 (Nondeterministic time classes):}$ Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, **all computations** of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
 
 $\textbf{Remark 34}$ In the literature, one also finds a variant of the notion $t(n)$-time bounded Turing machine where the length bound $t(\lvert w \rvert)$ is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds $t$ with $t(n) \ge 2n$, the alternative definition is essentially equivalent to the one presented here. Here a function $t$ is time-constructible if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $t(n)$. For such $t$, it is possible to equip a Turing machine that is $t(n)$-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after $t(n)$ steps on all computations such that the recognized language remains the same and the clocked Turing machine is $t(n)$-time bounded according to Definition 32.
 
@@ -1442,6 +1489,282 @@ $\textbf{Lemma 89 (Membership):}$ To place $\text{QBF}$ inside $\text{PSPACE}$, 
 
 Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. ∎
 
+<div class="accordion">
+  <details>
+    <summary>States vs tapes intuition</summary>
+
+1. **States vs tapes in space-bounded TMs**
+
+Think of a (space-bounded) Turing machine like a very dumb CPU with:
+
+* a **finite control** = *the set of states*, and
+* one or more **tapes** = *its RAM*.
+
+The key points:
+
+* **States are finite.**
+  For a fixed TM, the set of states is some *fixed* finite set that does **not depend on the input length** (n). So the amount of information you can encode in the state is **O(1)** bits.
+
+* **Tapes are where all “growing” information lives.**
+  Anything whose size must grow with the input (counters up to (n), pointers into the input, partial solutions, stacks, assignments to variables, etc.) must be written on a tape, because that’s the only place where you can have **unbounded** memory.
+
+So, informally:
+
+* **In states you store:**
+
+  * The current *phase* of the algorithm (“initializing”, “processing next quantifier”, “evaluating (\phi)”, “returning from recursion”, etc.).
+  * A small constant number of *flags* (“I’m currently in the branch (X_i = 0)” vs “(X_i = 1)”, “so far the universal quantifier is satisfied” vs “already failed”, etc.).
+  * Which transition rule to apply next.
+
+  All of this is constant-size control info — it doesn’t scale with (n).
+
+* **On tapes you store:**
+
+  * Anything whose size **might depend on (n)**:
+
+    * indices or pointers that can go up to (n) or (m),
+    * counters that can be as big as (n),
+    * strings/words of length up to polynomial in (n),
+    * encodings of assignments to variables,
+    * encodings of stacks / recursion information, if needed.
+
+When we do **space complexity**, we **only** count the number of tape cells used (usually on the work tapes). The states are considered “free” in the sense that they’re a fixed constant for that machine.
+
+---
+
+2. **Applying this to Lemma 89 (QBF ∈ PSPACE)**
+
+You have the lemma:
+
+> Build a deterministic polynomial-space TM (M) that evaluates a QBF
+> (\psi = Q_1 X_1 \cdots Q_m X_m ,\phi) of length (n).
+> It maintains three binary words (w_1, w_2, w_3) of length (m) on three tapes:
+>
+> * Tape 1 ((w_1)): quantifier types (existential or universal)
+> * Tape 2 ((w_2)): pointer to current quantifier
+> * Tape 3 ((w_3)): current truth assignment to (X_1,\dots,X_m)
+
+Let’s classify what is stored where.
+
+### What is on tapes?
+
+Besides the **input tape** (holding the formula (\psi)), we have 3 work tapes:
+
+1. **Tape 1: (w_1) = quantifier prefix**
+
+   * Length (m) word.
+   * Bit (i = 1) iff (Q_i) is (\exists), and bit (i = 0) iff (Q_i) is (\forall).
+   * This is information that depends on the input formula, so it must live on a tape.
+
+2. **Tape 2: (w_2) = pointer to “where we are” in the prefix**
+
+   * Encoding (1^i 0^{m-i}) means: “we are currently processing quantifier (Q_i)”.
+   * Again, (i) can be as large as (m) (which is (O(n))), so it must be represented on a tape.
+
+3. **Tape 3: (w_3) = current assignment to variables**
+
+   * Length (m) word.
+   * Bit (i) is the current truth value chosen for (X_i).
+   * As we recurse/branch on quantifiers, we change bits in (w_3).
+   * This is clearly input-dependent and unbounded in general; must be on a tape.
+
+Additionally, when evaluating the propositional part (\phi) under the assignment in (w_3), the TM might use:
+
+* A few extra **work cells** to scan (\phi): e.g., a small counter or a current “truth value so far”.
+  All of those are again stored on tapes and take (O(\log n)) or (O(1)) space each.
+
+Crucially: all these words/tapes have length (O(m) \le O(n)), so the total space is **polynomial in (n)**.
+
+### What lives in the *states* here?
+
+The states implement the **control flow** of the recursive “algorithm”:
+
+* Whether we are:
+
+  * checking that the input is in prenex normal form,
+  * initializing (w_1, w_2, w_3),
+  * processing a quantifier (Q_i),
+  * at “leaf level” with all variables assigned and now evaluating (\phi),
+  * combining results of two branches for a quantifier (existential / universal case),
+  * moving the pointer to the next quantifier, or backtracking.
+
+Concretely, the machine’s states might encode things like:
+
+* `STATE_INIT` – set up (w_1, w_2, w_3).
+* `STATE_AT_QI` – we are about to branch on quantifier (Q_i).
+* `STATE_BRANCH_0` / `STATE_BRANCH_1` – we are exploring the subtree with (X_i = 0) or (X_i = 1).
+* `STATE_EVAL_PHI` – evaluate (\phi) under current assignment (w_3).
+* `STATE_RETURN_EXIST_OK` / `STATE_RETURN_EXIST_FAIL` – existential quantifier result is true/false.
+* `STATE_RETURN_UNIV_OK` / `STATE_RETURN_UNIV_FAIL` – universal quantifier result is true/false.
+* Plus a few states to move the heads around, reset bits, etc.
+
+There are **finitely many** such states, independent of (n). They only encode:
+
+* *Which phase* of the algorithm we’re in,
+* A few *Boolean flags* (e.g., “did we already find a satisfying branch?”),
+* Which operation should be done next (toggle a bit, move pointer, etc.).
+
+All the “big” information — which quantifier index (i) we’re on, the actual quantifier types, the assignment to variables — is represented explicitly on tapes.
+
+### And what about “recursion depth = m ≤ n”?
+
+The lemma informally describes a **recursive** evaluation:
+
+* For quantifier (Q_i):
+
+  * Try assignment (X_i = 0) and recursively evaluate the rest,
+  * Try (X_i = 1) and recursively evaluate the rest,
+  * Combine according to ∃ or ∀.
+
+In the actual TM:
+
+* The **“depth”** is encoded just by:
+
+  * where the pointer (w_2) currently points (which (i)), and
+  * the current contents of (w_3) (current partial assignment).
+* We **don’t** keep a separate call stack like in a programming language. We do a depth-first search:
+
+  * modify (w_3) to set (X_i = 0),
+  * move the pointer forward (update (w_2)),
+  * evaluate the rest,
+  * come back, modify (w_3) to set (X_i = 1),
+  * evaluate again, etc.
+
+All of this reuses the same (O(m)) space on tapes. The fact that the recursion depth is (m) explains why **time** can be exponential, but **space** stays linear in (m).
+
+---
+
+**Summary in one sentence:**
+
+* In space-bounded TMs, *states* store only constant-size control information (phase, a few flags), while all data that can grow with input size — like the quantifier prefix, index of the current quantifier, and the current variable assignment in the QBF lemma — must be stored on the tapes, and that’s exactly how the QBF→PSPACE proof is structured.
+
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Evaluating $\phi$ still fits in polynomial space</summary>
+
+Good question — this is *exactly* where people get suspicious about “are we really just using polynomial space?”.
+
+Short answer:
+Yes, we do need some extra memory to evaluate (\phi) and store intermediate results — **but**:
+
+* we only ever evaluate (\phi) for **one assignment at a time**,
+* we only need to keep intermediate results for **one path in (\phi)** at a time,
+* and that all fits in **(O(|\phi|) \le O(n))** extra space.
+
+So we’re still safely in PSPACE.
+
+---
+
+## 1. What does “evaluating (\phi)” actually involve?
+
+(\phi) is a *quantifier-free* Boolean formula over variables (X_1,\dots,X_m).
+On a given assignment (w_3) (a bitstring telling you which (X_i) are true/false), the job of the machine is:
+
+> Given (\phi) on the **input tape** + assignment (w_3) on **tape 3**, compute whether (\phi(w_3) = 1) or (0).
+
+The input tape is read-only and **does not count** towards space complexity.
+All extra “intermediate results” must go on work tapes, and we must show that’s only polynomially many cells.
+
+---
+
+## 2. Two ways to see that evaluating (\phi) is poly-space
+
+### View A: Recursive evaluation / stack
+
+Think of (\phi) as a syntax tree: leaves are literals, internal nodes are (\land,\lor,\lnot), etc.
+
+A very natural algorithm:
+
+1. Start at the root of (\phi).
+2. Recursively evaluate its children.
+3. Combine child values using the operator ((\land,\lor,\lnot), …).
+4. Return a single bit (true/false).
+
+To implement this on a Turing machine, you keep something like a **stack** of:
+
+* “Where am I in (\phi)?” (position or subformula),
+* “Have I already evaluated the left child?”,
+* “What was the result of the child?” (just 1 bit),
+* “What operator is this node?” ((\land,\lor,\lnot), etc.)
+
+The key facts:
+
+* The **depth** of this recursion/stack is at most the **size of (\phi)** (number of symbols), hence ≤ (n).
+* Each stack frame is **constant-size** (a few bits/flags + maybe an index into the input).
+
+So the total work-tape space for evaluating (\phi) is:
+
+[
+O(\text{depth}(\phi)) \cdot O(1) \le O(|\phi|) \le O(n).
+]
+
+Plus the assignment (w_3) (length (m \le n)). So overall still (O(n)) space.
+
+Time can be exponential (because of the branching over quantifiers), but PSPACE cares only about **space**, not time.
+
+---
+
+### View B: Super-space-frugal evaluation by rescanning
+
+If we want to be *extra* stingy with space, we can even avoid storing a big stack:
+
+* For example, if (\phi) is in CNF (AND of clauses), we can:
+
+  * scan the input, clause by clause,
+  * for each clause, keep just:
+
+    * one “clause is satisfied?” bit,
+    * maybe an index while scanning,
+  * use assignment (w_3) to tell if each literal is true.
+
+We *never* need to store all clause truth values at once — we can:
+
+* immediately reject if we find an unsatisfied clause,
+* otherwise, keep going until the end.
+
+Again, this uses **constant or logarithmic extra space** on top of the assignment, just at the cost of potentially rescanning the input multiple times.
+
+---
+
+## 3. How this fits back into the lemma
+
+The lemma’s machine uses:
+
+* Tape 1: (w_1) – quantifier types, length (m \le n)
+* Tape 2: (w_2) – pointer, length (m \le n)
+* Tape 3: (w_3) – assignment, length (m \le n)
+* Plus **some extra cells** to evaluate (\phi) for the current (w_3), as above:
+
+  * either a recursion stack of depth ≤ (|\phi| \le n), or
+  * a few bits for a streaming check.
+
+Total work-tape space used at any moment:
+
+[
+O(m) + O(\text{space for evaluating }\phi) \le O(n) + O(n) = O(n),
+]
+
+which is **polynomial** in the input length (n).
+
+We do *not* store:
+
+* all intermediate results for **all** assignments,
+* or a full truth table,
+* or a big DP table over subformulas × assignments,
+
+because that would explode space. Instead, we:
+
+* only keep data for **one assignment** (w_3) at a time (depth-first search through quantifiers),
+* only keep data for **one “path” in (\phi)** at a time (recursive evaluation, or multiple rescans).
+
+This is the classic **time–space tradeoff**: we’re happy to redo work (evaluate (\phi) again and again) to save space.
+
+  </details>
+</div>
+
 $\textbf{Lemma 90 (Hardness).}$ For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
 
 - the current state $q_k \in Q = \lbrace q_1, \dots, q_k\rbrace$,
@@ -1449,7 +1772,14 @@ $\textbf{Lemma 90 (Hardness).}$ For hardness, reduce any language $A \in \text{P
 - the work-tape head position $j' \in J' = \lbrace 1, \dots, p(n)\rbrace$,
 - the work-tape contents $w \in \Gamma^{p(n)}$.
 
-Introduce propositional variables $Z_k$, $P_j$, $P'\_{j'}$, and $B_{j', a}$ to encode these components, and let $V\_{conf}$ be the full set of such variables. For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $\_{conf}$.
+Introduce propositional variables $Z_k$, $P_j$, $P'\_{j'}$, and $B_{j', a}$ to encode these components, and let $V\_{conf}$ be the full set of such variables:
+
+- $Z_k$: the state is $q_k$ , 
+- $P_j$: the head on the input tape is at position $j$,
+- $P_{j'}$: the head on the work tape reads position $j'$of $w$,
+- $B_{j',a}$: $w(j)$ is equal to $a$.
+
+For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $V\_{conf}$.
 
 Following the Cook-Levin blueprint, create formulas $\text{Konf}_n$, $\text{Equal}_n$, and $\text{Succ}_n$ with the properties:
 
@@ -1480,9 +1810,178 @@ $$
 
 Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in polynomial time, so $\text{QBF}$ is $\text{PSPACE}$-hard. ∎
 
+<div class="accordion">
+  <details>
+    <summary>Why the $\text{Comp}$ definition looks so strange</summary>
+
+Your Savitch-style definition is *logically* fine, but as a **QBF encoding** it blows up the formula size exponentially, so it doesn’t give a polynomial-time reduction. The weird-looking definition in the notes is exactly a trick to avoid this blow-up while keeping the same meaning.
+
+---
+
+### 1. What you “expect” vs what they actually do
+
+What you intuitively expect is something like (fixing the index to $i+1$):
+
+\[
+\text{Comp}_n^{i+1}(K,K')
+\equiv
+\exists \tilde{K}\Big(
+\text{Konf}_n(\tilde{K})
+\land \text{Comp}_n^{i}(K,\tilde{K})
+\land \text{Comp}_n^{i}(\tilde{K},K')
+\Big).
+\tag{*}
+\]
+
+This is exactly analogous to Savitch:
+
+> “There is a path of length $\le 2^{i+1}$ from $K$ to $K'$ iff there exists a middle configuration $\tilde{K}$ such that there is a path of length $\le 2^i$ from $K$ to $\tilde{K}$ and from $\tilde{K}$ to $K'$.”
+
+**Semantically, this is totally correct.** So the issue is *not* that your definition is wrong logically. The issue is **size**.
+
+---
+
+### 2. Why your recursive definition is a problem for QBF
+
+Let $\lvert\text{Comp}_n^i\rvert$ be the syntactic size (number of symbols) of the formula $\text{Comp}_n^i$.
+
+* In your version $(*)$, $\text{Comp}_n^{i+1}$ **contains two copies** of $\text{Comp}_n^{i}$ as subformulas: one with arguments $(K,\tilde{K})$ and one with $(\tilde{K},K')$.
+
+So the size satisfies roughly
+
+\[
+\lvert\text{Comp}_n^{i+1}\rvert = O(1) + 2 \cdot \lvert\text{Comp}_n^i\rvert.
+\]
+
+This solves to
+
+\[
+\lvert\text{Comp}_n^i\rvert = O(2^i).
+\]
+
+But we need to go up to $i = d \cdot p(n)$ so that paths of length up to $2^{d p(n)}$ are allowed. That gives
+
+\[
+\lvert\text{Comp}_n^{d p(n)}\rvert = 2^{\Theta(p(n))},
+\]
+
+i.e. *exponential* in the input size $n$.
+
+And that is fatal: our reduction $g(x)$ must output a QBF formula $\phi_x$ of size **polynomial** in $\lvert x\rvert$. You cannot even *print* an exponentially long formula in polynomial time.
+
+So:
+
+* Your definition gives a **correct** specification of reachability,
+* but it leads to an **exponentially large** formula, so it’s **not a valid polynomial-time reduction**.
+
+This is the same “recursion tree vs DAG” phenomenon as in Savitch’s theorem, but now we care about **formula length**, not about space. Savitch’s algorithm is allowed to do exponentially many recursive calls, as long as it only uses polynomial *space*. Here, the QBF formula must be a *static object* whose length directly reflects how much “computation” we hard-wire into it.
+
+---
+
+### 3. What the weird $\text{Comp}$-definition is doing
+
+Their inductive step is:
+
+\[
+\begin{aligned}
+\text{Comp}_n^{i+1}(K, K') \equiv\;&
+\exists \tilde{K}\;
+\forall K_1 \forall K_2 \Big(
+\big(
+\text{Konf}_n(\tilde{K}) \land
+(
+(\text{Equal}_n(K_1, K) \land \text{Equal}_n(K_2, \tilde{K})) \\
+&\qquad \lor
+(\text{Equal}_n(K_1, \tilde{K}) \land \text{Equal}_n(K_2, K'))
+)
+\big)
+\rightarrow
+\text{Comp}_n^i(K_1, K_2)
+\Big).
+\end{aligned}
+\]
+
+The key idea: **only one syntactic occurrence** of $\text{Comp}_n^i$ appears — namely $\text{Comp}_n^i(K_1,K_2)$.
+
+So now we have the size recurrence
+
+\[
+\lvert\text{Comp}_n^{i+1}\rvert = \lvert\text{Comp}_n^{i}\rvert + \text{poly}(n),
+\]
+
+hence
+
+\[
+\lvert\text{Comp}_n^{i}\rvert = \text{poly}(n) \cdot i = \text{poly}(n) \cdot p(n) = \text{poly}(n).
+\]
+
+Exactly what we need.
+
+---
+
+### 4. Why this formula has the *same meaning* as yours
+
+Intuitively, they encode *both* requirements
+
+* $\text{Comp}^i_n(K,\tilde{K})$
+* and $\text{Comp}^i_n(\tilde{K},K')$
+
+using the **same** subformula $\text{Comp}^i_n(K_1,K_2)$, and use universal quantifiers and implications to “route” the appropriate pair $(K_1,K_2)$ into that subformula.
+
+Let’s unpack:
+
+* We pick some $\tilde{K}$ (existential quantifier).
+* Then we require that for **every** choice of configurations $(K_1,K_2)$, whenever
+
+  * either $(K_1,K_2) = (K,\tilde{K})$, or
+  * $(K_1,K_2) = (\tilde{K},K')$,
+
+  then $\text{Comp}_n^i(K_1,K_2)$ holds.
+
+Formally:
+
+1. Consider the assignment where $K_1 = K$, $K_2 = \tilde{K}$. Then the antecedent of the implication becomes true (the $\text{Konf}_n$ and $\text{Equal}_n$ checks pass), so the implication forces $\text{Comp}_n^i(K,\tilde{K})$ to hold.
+2. Consider the assignment where $K_1 = \tilde{K}$, $K_2 = K'$. Same story, it forces $\text{Comp}_n^i(\tilde{K},K')$ to hold.
+3. For all other pairs $(K_1,K_2)$, the antecedent is false, so the implication is trivially true and imposes no extra constraints.
+
+So from a *model-theoretic* point of view, their definition asserts exactly:
+
+> There exists a configuration $\tilde{K}$ such that $\text{Comp}_n^i(K,\tilde{K})$ and $\text{Comp}_n^i(\tilde{K},K')$ both hold.
+
+i.e. precisely what you wrote in $(*)$. The difference is purely **syntactic**: one copy of the big subformula vs two copies.
+
+A much simpler toy version of the same trick:
+
+* We want to encode $P(a) \land P(b)$ but we are only allowed one occurrence of $P(\cdot)$.
+* We can write instead
+
+  \[
+  \forall x\,((x = a \lor x = b) \rightarrow P(x)).
+  \]
+
+  This is logically equivalent to $P(a)\land P(b)$ but only uses $P$ once.
+
+Their construction is the same idea, lifted to configurations and to the reachability predicate $\text{Comp}_n^i$.
+
+---
+
+### 5. Summary
+
+* Your Savitch-inspired definition of $\text{Comp}_n^{i+1}$ is **semantically correct**.
+* The **problem** is that it causes the *formula length* to grow exponentially with $i$, so the reduction would not be polynomial-time.
+* The given definition with $\exists \tilde{K}\,\forall K_1\forall K_2 (\dots \rightarrow \text{Comp}_n^i(K_1,K_2))$ is a clever syntactic trick:
+
+  * it is **logically equivalent** to your intuitive version,
+  * but uses only **one** copy of $\text{Comp}_n^i$, so the formula size stays **polynomial** in $\lvert x\rvert$.
+
+If you like, next we can write both definitions side-by-side and explicitly derive the size recurrence and the equivalence in more formal detail.
+
+  </details>
+</div>
+
 ### Nondeterministic Space and Closure Under Complement
 
-**Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi.
+**Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi. Both used a proof technique now known as $\text{inductive counting}$.
 
 $\textbf{Definition (Closure Under Complement):}$ A complexity class is **closed under complement** if $L$ in the class implies $\bar{L} = \lbrace 0, 1\rbrace^* \setminus L$ is also in the class.
 
