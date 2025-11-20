@@ -24,9 +24,11 @@ noindex: true
 * **Product of experts**:
 
   * Overall distribution is proportional to the **product** of expert distributions:
-    [
+    
+    $$
     p(d \mid \theta_1,\dots,\theta_n) \propto \prod_m p_m(d\mid\theta_m)
-    ]
+    $$
+
   * Each expert can focus on enforcing a **low-dimensional constraint** or pattern; the product enforces *all* constraints simultaneously. 
   * Allows **much sharper** distributions than any single expert; bad configurations get ruled out if any expert assigns them low probability.
 
@@ -43,15 +45,12 @@ noindex: true
 
 ## 3. Maximum Likelihood Learning and Its Problems
 
-* Log-likelihood gradient for expert (m) in a PoE:
-  [
-  \frac{\partial \log p(d)}{\partial \theta_m}
-  ============================================
+* Log-likelihood gradient for expert $m$ in a PoE:
 
-  ## \underbrace{\frac{\partial \log p_m(d)}{\partial \theta_m}}_{\text{data term}}
-
-  \underbrace{\mathbb{E}*{c\sim p(\cdot)}\frac{\partial \log p_m(c)}{\partial \theta_m}}*{\text{model (negative) term}}
-  ]
+  $$
+  \frac{\partial \log p(d)}{\partial \theta_m} = \underbrace{\frac{\partial \log p_m(d)}{\partial \theta_m}}_{\text{data term}} - \underbrace{\mathbb{E}*{c\sim p(\cdot)}\frac{\partial \log p_m(c)}{\partial \theta_m}}*{\text{model (negative) term}}
+  $$
+  
   where the expectation is over “fantasy” samples from the current PoE. 
 * Main difficulty:
 
@@ -64,14 +63,16 @@ noindex: true
 
 ### Objective
 
-* Instead of minimizing just the KL divergence between data distribution (Q_0) and equilibrium model distribution (Q_\infty), the paper minimizes the **contrastive divergence**:
-  [
+* Instead of minimizing just the KL divergence between data distribution $Q_0$ and equilibrium model distribution $Q_\infty$, the paper minimizes the **contrastive divergence**:
+  
+  $$
   \text{CD} = Q_0 !\parallel! Q_1 ;-; Q_1 !\parallel! Q_\infty
-  ]
+  $$
+
   where:
 
-  * (Q_0): empirical data distribution.
-  * (Q_1): distribution of **one-step reconstructions** obtained by one full Gibbs step (hidden update + visible update) starting from data. 
+  * $Q_0$: empirical data distribution.
+  * $Q_1$: distribution of **one-step reconstructions** obtained by one full Gibbs step (hidden update + visible update) starting from data. 
 * Intuition:
 
   * We want the Markov chain (Gibbs sampler) to **leave the data distribution unchanged**.
@@ -79,20 +80,18 @@ noindex: true
 
 ### Approximate Gradient
 
-* The gradient of CD decomposes into three terms; two are tractable expectations over data and reconstructions, and one term involving how (Q_1) itself changes with parameters is **ignored**.
-* Resulting practical update rule for expert (m):
-  [
-  \Delta \theta_m \propto
-  \mathbb{E}_{d\sim Q_0}\left[\frac{\partial \log p_m(d)}{\partial \theta_m}\right]
-  ---------------------------------------------------------------------------------
+* The gradient of CD decomposes into three terms; two are tractable expectations over data and reconstructions, and one term involving how $Q_1$ itself changes with parameters is **ignored**.
+* Resulting practical update rule for expert $m$:
+  
+  $$
+  \Delta \theta_m \propto \mathbb{E}_{d\sim Q_0}\left[\frac{\partial \log p_m(d)}{\partial \theta_m}\right] - \mathbb{E}_{\hat d\sim Q_1}\left[\frac{\partial \log p_m(\hat d)}{\partial \theta_m}\right]
+  $$
 
-  \mathbb{E}_{\hat d\sim Q_1}\left[\frac{\partial \log p_m(\hat d)}{\partial \theta_m}\right]
-  ]
-  where (\hat d) is a one-step reconstruction of (d). 
+  where $\hat d$ is a one-step reconstruction of $d$. 
 
 ### Properties
 
-* **Low-variance learning**: reconstructions (\hat d) are close to data (d) when the model is reasonable → difference of terms has low variance.
+* **Low-variance learning**: reconstructions $\hat d$ are close to data $d$ when the model is reasonable → difference of terms has low variance.
 * Allows **online or mini-batch learning**.
 * Empirically, ignoring the third term still tends to **improve** CD and often also improves log-likelihood. 
 
@@ -104,16 +103,14 @@ noindex: true
 
   * No visible–visible or hidden–hidden connections (bipartite graph).
 * Each hidden unit can be seen as an **expert** that defines a distribution over visible units when it is on vs off → RBM = product of such experts. 
-* The **standard RBM learning rule** (data statistics minus model statistics for (\langle s_i s_j\rangle)) is exactly the PoE maximum likelihood gradient.
-* Under CD with one Gibbs step (CD-1), the weight update for visible unit (i) and hidden unit (j) is:
-  [
-  \Delta w_{ij} \propto
-  \langle s_i s_j \rangle_{\text{data}}
-  -------------------------------------
-
-  \langle s_i s_j \rangle_{\text{one-step reconstructions}}
-  ]
-  (or using probabilities (p_i, p_j) for real-valued inputs). 
+* The **standard RBM learning rule** (data statistics minus model statistics for $\langle s_i s_j\rangle$) is exactly the PoE maximum likelihood gradient.
+* Under CD with one Gibbs step (CD-1), the weight update for visible unit $i$ and hidden unit $j$ is:
+  
+  $$
+  \Delta w_{ij} \propto \langle s_i s_j \rangle_{\text{data}} - \langle s_i s_j \rangle_{\text{one-step reconstructions}}
+  $$
+  
+  (or using probabilities $p_i, p_j$ for real-valued inputs). 
 
 ---
 
@@ -181,7 +178,7 @@ noindex: true
   * For single weights, the approximate CD gradient sometimes has the wrong sign.
   * But **for the full parameter vector**, a parallel weight update using CD almost always improves the contrastive divergence.
   * Log-likelihood usually improves as well; occasional small decreases are observed.
-* Scatter plots show that the **ignored term** in the CD gradient (due to change in (Q_1)) typically **helps** rather than harms the optimization.
+* Scatter plots show that the **ignored term** in the CD gradient (due to change in $Q_1$) typically **helps** rather than harms the optimization.
 
 ---
 
