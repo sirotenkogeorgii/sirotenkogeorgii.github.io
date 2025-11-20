@@ -294,14 +294,14 @@ For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is
 
 The concepts of decidable sets and computable functions, defined for words, can be extended to other domains like the natural numbers through the use of representations.
 
-$\textbf{Definition 18 (Decidable sets and computable functions on other domains)}$: A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\{\text{repr}(x) : x \in A\}$ is decidable. With respect to such a representation:
+$\textbf{Definition 18 (Decidable sets and computable functions on other domains)}$: A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\lbrace\text{repr}(x) : x \in A\rbrace$ is decidable. With respect to such a representation:
 
-* a subset $X \subseteq A$ is decidable if the set $\{\text{repr}(a) : a \in X\}$ is decidable.
+* a subset $X \subseteq A$ is decidable if the set $\lbrace \text{repr}(a) : a \in X\rbrace$ is decidable.
 * a function $f : A \to A$ is *computable* if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
 
 For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\lbrace 1^n : n \text{ is prime}\rbrace$ is decidable.
 
-$\textbf{Remark 19: Representations of natural numbers by binary words}$ A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\{0,1\}^*, \le_{\text{llex}})$.
+$\textbf{Remark 19: Representations of natural numbers by binary words}$ A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\lbrace 0,1\rbrace^*, \le_{\text{llex}})$.
 
 $\textbf{Remark 20:}$ Sets, languages, and problems The terminology used often depends on the context of study:
 
@@ -346,9 +346,9 @@ Using the concept of time-bounded Turing machines, we can group languages and fu
 $\textbf{Definition 25 (Deterministic time classes):}$ Let $t$ be a time bound.
 
 The class of languages decidable in deterministic time $t(n)$ is
-$\text{DTIME}(t(n)) = \lbrace L \subseteq \{0, 1\}^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
+$\text{DTIME}(t(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
 The class of functions computable in time $t(n)$ is
-$\text{FTIME}(t(n)) = \lbrace f : \{0, 1\}^* \to \{0, 1\}^* : f = f_M \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
+$\text{FTIME}(t(n)) = \lbrace f : \lbrace 0, 1\rbrace^* \to \lbrace 0, 1\rbrace^* : f = f_M \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
 For a set $F$ of time bounds, we define
 $$
 \text{DTIME}(F) = \bigcup_{t(n) \in F} \text{DTIME}(t(n))
@@ -358,16 +358,16 @@ $$
 
 The notation $\text{DTIME}_k(t(n))$ is used to specify the class of languages decidable by a $t(n)$-time-bounded $k$-tape Turing machine. These definitions can also be extended from languages over strings to subsets of natural numbers by using a standard representation, such as binary encoding.
 
-$\textbf{Definition 26}$ Let $t$ be a time bound. A subset $A$ of the natural numbers is decidable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that decides the set $\{\text{bin}(n) : n \in A\}$. A function $f : \mathbb{N} \to \mathbb{N}$ is computable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that computes a function that maps $\text{bin}(n)$ to $\text{bin}(f(n))$.
+$\textbf{Definition 26}$ Let $t$ be a time bound. A subset $A$ of the natural numbers is decidable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that decides the set $\lbrace \text{bin}(n) : n \in A\rbrace$. A function $f : \mathbb{N} \to \mathbb{N}$ is computable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that computes a function that maps $\text{bin}(n)$ to $\text{bin}(f(n))$.
 
 This framework allows us to define some of the most fundamental and widely studied complexity classes.
 
 $\textbf{Definition 27 (Some deterministic time classes):}$ Using the function classes:
 
-* $\text{lin} = \lbrace n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \{0\} \rbrace$
-* $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \{0\} \rbrace$
-* $2^{\text{lin}} = \lbrace n \mapsto 2^{c \cdot n + c} : c \in \mathbb{N} \setminus \{0\} \rbrace$
-* $2^{\text{poly}} = \lbrace n \mapsto 2^{n^c + c} : c \in \mathbb{N} \setminus \{0\} \rbrace$
+* $\text{lin} = \lbrace n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
+* $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
+* $2^{\text{lin}} = \lbrace n \mapsto 2^{c \cdot n + c} : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
+* $2^{\text{poly}} = \lbrace n \mapsto 2^{n^c + c} : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
 
 we define the complexity classes:
 
@@ -664,16 +664,16 @@ $\textbf{Definition 48 (Propositional Formula):}$ Let $\Lambda = \lbrace \neg, \
 
 In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true ($1$) and false ($0$) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
 
-The truth value of a formula, denoted $\text{val}(\phi)$, is either true ($1$) or false ($0$). This value is determined relative to an assignment $b : \text{Var} \to \{0, 1\}$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
+The truth value of a formula, denoted $\text{val}(\phi)$, is either true ($1$) or false ($0$). This value is determined relative to an assignment $b : \text{Var} \to \lbrace 0, 1\rbrace$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
 
 * Base case: For a variable $X \in \text{Var}$, $\text{val}(X) = b(X)$.
 * Inductive step: For formulas $\phi$ and $\phi'$:
   * $\text{val}(\neg \phi) = 1 - \text{val}(\phi)$
-  * $\text{val}(\phi \land \phi') = \min\{\text{val}(\phi), \text{val}(\phi')\}$
+  * $\text{val}(\phi \land \phi') = \min\lbrace \text{val}(\phi), \text{val}(\phi')\rbrace$
 
 The set of variables that appear in a formula $\phi$ is denoted by $\text{var}(\phi)$. The truth value of $\phi$ depends only on the assignment of values to the variables in $\text{var}(\phi)$. The set $\text{var}(\phi)$ is defined inductively as:
 
-* $\text{var}(X) = \{X\}$ for any $X \in \text{Var}$.
+* $\text{var}(X) = \lbrace X\rbrace$ for any $X \in \text{Var}$.
 * $\text{var}(\neg \phi) = \text{var}(\phi)$.
 * $\text{var}(\phi \land \phi') = \text{var}(\phi) \cup \text{var}(\phi')$.
 
@@ -695,9 +695,9 @@ This leads to the formal definition of the satisfiability problems as languages.
 
 $\textbf{Definition 50: The Satisfiability Problem:}$ Assuming an appropriate representation of propositional formulas as binary strings, we define the following languages for any $k > 0$:
 
-$\text{SAT} = \{\, \phi \mid \phi \text{ is a satisfiable propositional formula in CNF} \,\}$
+$\text{SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in CNF} \,\rbrace$
 
-$k\text{-SAT} = \{\, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\}$
+$k\text{-SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\rbrace$
 
 ### $NP$-Completeness of $\text{SAT}$ and $\text{k-SAT}$
 
@@ -844,8 +844,10 @@ A common problem in graph theory is identifying a "clique," which is a subgraph 
 $\textbf{Definition 54 (Clique problem):}$ A subset $C$ of the vertex set $V$ of an undirected graph $G$ is called a **clique** of $G$ if there is an edge between all pairs of distinct vertices in $C$. The clique problem is the language
 
 $$
-\text{CLIQUE} = \{ \langle G, k \rangle : \text{there is a clique of size } k \text{ in the graph } G \}
-$$where pairs of the form $\langle G, k \rangle$ are suitably represented by binary words, e.g., in the form $1^{k+1}0u$ where $u$ is the concatenation of the rows of the adjacency matrix of $G$.
+\text{CLIQUE} = \lbrace \langle G, k \rangle : \text{there is a clique of size } k \text{ in the graph } G \rbrace
+$$
+
+where pairs of the form $\langle G, k \rangle$ are suitably represented by binary words, e.g., in the form $1^{k+1}0u$ where $u$ is the concatenation of the rows of the adjacency matrix of $G$.
 
 #### NP-Completeness of CLIQUE
 
@@ -912,7 +914,8 @@ This pattern provides a fundamental characterization of the class $\text{NP}$.
 
 $\textbf{Proposition 56:}$ A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
 
-$$w \in L \text{ if and only if } \exists z \in {0, 1}^\* ; [(w, z) \in B \text{ & } \lvert z\rvert \le p(\lvert w \rvert)]
+$$
+w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* ; [(w, z) \in B \text{ & } \lvert z\rvert \le p(\lvert w \rvert)]
 $$
 
 In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(\lvert w \rvert)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
@@ -925,7 +928,11 @@ Let $L$ be a language in $\text{NP}$. By definition, there is a nondeterministic
 A nondeterministic computation of $M$ on an input $w$ can be represented by a sequence of choices, which corresponds to the sequence of instructions executed. We can concatenate the binary representations of these instructions to form a single binary word $z$. For an input $w$ of length $n$, the length of any computation is at most $p_M(n)$. Thus, the length of the corresponding witness string $z$ is at most $p(n) = d \cdot p_M(n)$, which is a polynomial in $n$.
 
 We can now define the language $B$ as:
-$B = \{ \langle w, z \rangle : z \text{ represents an accepting computation of } M \text{ on input } w \}$
+
+$$
+B = \lbrace \langle w, z \rangle : z \text{ represents an accepting computation of } M \text{ on input } w \rbrace
+$$
+
 The language $B$ is in $\text{P}$ because a deterministic machine can take $\langle w, z \rangle$ and simply simulate the single computational path of $M$ on $w$ dictated by the choices encoded in $z$, verifying in polynomial time whether it is an accepting computation.
 
 Therefore, $w \in L$ if and only if there exists an accepting computation, which is equivalent to saying there exists a witness $z$ with $\lvert z \rvert \le p(\lvert w \rvert)$ such that $\langle w, z \rangle \in B$.
@@ -1214,7 +1221,7 @@ A foundational result connects nondeterministic time complexity with determinist
 
 $\textbf{Lemma 75:}$ Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$.
 
-**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \{y_1, \dots, y_d\}$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
+**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \lbrace y_1, \dots, y_d\rbrace$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
 
 The core idea is to represent a specific computation path of $M$ on an input $w$ as a sequence of instructions. A word $u = u(1) \dots u(t)$ over the alphabet $Y$ is said to **code a partial computation** $C_0, C_1, \dots, C_t$ on input $w$ if $C_0$ is the initial configuration and for each step $i$ from $1$ to $t-1$, the instruction $u(i)$ is applicable in configuration $C_{i-1}$ and yields configuration $C_i$. If a word $u$ codes a partial computation, we call it a **coding word**. Let $C_u$ denote the final configuration of the computation coded by $u$. Note that all prefixes of a coding word are also coding words. The empty word, $\lambda$, is a coding word, and $C_\lambda$ is the initial configuration.
 
@@ -1318,7 +1325,7 @@ This theorem has a profound corollary for polynomial space complexity classes.
 
 $\textbf{Corollary 81:}$ It holds that $\text{PSPACE} = \text{NPSPACE}$.
 
-**Proof of the Corollary.**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}((p(n))^2)$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. ∎
+**Proof of the Corollary.**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}(p^2(n))$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. ∎
 
 **Proof of Savitch’s Theorem.**: Let $L \in \text{NSPACE}(s(n))$ be recognized by an NTM $N$. We can assume without loss of generality that for any input $x$ of length $n$:
 
@@ -1390,8 +1397,6 @@ $\textbf{Definition 82:}$ A **complexity class** is a set of languages over the 
 
 We now introduce a type of logical formula whose evaluation problem is complete for $\text{PSPACE}$. This language, TQBF (True Quantified Boolean Formulas), serves a role for $\text{PSPACE}$ similar to what $\text{SAT}$ serves for $\text{NP}$.
 
----
-
 $\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \lbrace \neg, \land, (, ), \exists, \forall\rbrace$ and let $\text{Var}$ be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over $\text{Var}$ is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
 
 * **Base case.** All elements of $\text{Var}$ are quantified propositional formulas.
@@ -1399,27 +1404,27 @@ $\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \lb
 
 **Quantifier Primer.** Building on standard propositional logic, quantified propositional formulas extend the language with existential and universal quantifiers in addition to the usual connectives such as disjunction $(\lor)$ and implication $(\rightarrow)$. A universal quantification $\forall X \phi$ is shorthand for $\neg(\exists X \neg \phi)$. We also use the constants $0$ and $1$ for the logical values false and true, respectively, and assume conventional precedence so parentheses can be dropped when the intent is clear.
 
-**Free and Bound Variables. $\textbf{Remark 84 (Free and Bound Variables):}$ When quantifiers are present we distinguish between free and bound occurrences of variables. For the formula $\neg X \lor \exists X \forall Y (X \land Y)$ the variable $X$ appears three times: the first occurrence is free, the third is bound, and the second (immediately after the quantifier) is neither free nor bound. Formal definitions are omitted because the intuition is immediate for the prenex normal forms used below.
+$\textbf{Remark 84 (Free and Bound Variables):}$ When quantifiers are present we distinguish between free and bound occurrences of variables. For the formula $\neg X \lor \exists X \forall Y (X \land Y)$ the variable $X$ appears three times: the first occurrence is free, the third is bound, and the second (immediately after the quantifier) is neither free nor bound. Formal definitions are omitted because the intuition is immediate for the prenex normal forms used below.
 
 **Evaluating Truth Values.** The truth value of a quantified propositional formula $\psi$, denoted $\text{val}(\psi)$, is either $0$ (false) or $1$ (true). Evaluation follows two principles:
 
 - Truth values are defined inductively over the structure of $\psi$.
 - The value of $\psi$ is always relative to an assignment for its free variables.
 
-Given a formula $\phi$ with free variable $X$ and an assignment $b$ to the other free variables, define $\phi_i$ as the result of replacing each free occurrence of $X$ by the constant $i \in \{0, 1\}$. Then
+Given a formula $\phi$ with free variable $X$ and an assignment $b$ to the other free variables, define $\phi_i$ as the result of replacing each free occurrence of $X$ by the constant $i \in \lbrace 0, 1\rbrace$. Then
 
 - $\exists X \phi$ is true under $b$ iff at least one of $\phi_0$ or $\phi_1$ is true under $b$.
 - $\forall X \phi$ is true under $b$ iff both $\phi_0$ and $\phi_1$ are true under $b$.
 
 **Prenex Normal Form.** A standardized structure streamlines reasoning about quantified formulas.
 
-$\textbf{Definition 85 (Prenex Normal Form):}$ A quantified propositional formula is in **prenex normal form** if it has the shape $Q_1 X_1 \cdots Q_m X_m \phi$ where the $X_i$ are mutually distinct variables, every $Q_i$ belongs to $\{\exists, \forall\}$, and $\phi$ is a quantifier-free propositional formula in conjunctive normal form (CNF).
+$\textbf{Definition 85 (Prenex Normal Form):}$ A quantified propositional formula is in **prenex normal form** if it has the shape $Q_1 X_1 \cdots Q_m X_m \phi$ where the $X_i$ are mutually distinct variables, every $Q_i$ belongs to $\lbrace \exists, \forall\rbrace$, and $\phi$ is a quantifier-free propositional formula in conjunctive normal form (CNF).
 
 Writing $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ in prenex normal form assumes $\phi$ is in CNF and all occurrences of each variable inside $\phi$ are free. Any quantified propositional formula can be converted into an equivalent prenex normal form in deterministic polynomial time.
 
 **The QBF Language.** The central decision problem for these formulas asks whether a sentence (a quantifier prefix followed by a quantifier-free matrix) is true.
 
-$\textbf{Definition 87 (The Language QBF):}$ $\text{QBF} = \{\psi : \psi \text{ is a true sentence in prenex normal form}\}$.
+$\textbf{Definition 87 (The Language QBF):}$ $\text{QBF} = \lbrace \psi : \psi \text{ is a true sentence in prenex normal form}\rbrace$.
 
 $\textbf{Theorem 88 (QBF is PSPACE-Complete):}$ $\text{QBF}$ is $\text{PSPACE}$-complete, as captured by the following lemmas.
 
@@ -1427,7 +1432,7 @@ $\textbf{Lemma 89:}$ $\text{QBF} \in \text{PSPACE}$.
 
 $\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
 
-##### Proof of PSPACE-Completeness for QBF
+**Proof of PSPACE-Completeness for QBF.**
 
 $\textbf{Lemma 89 (Membership):}$ To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-space TM $M$ that evaluates any sentence $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ of length $n$. Inputs that are not sentences in prenex normal form are rejected outright. The machine maintains three binary words $w_1, w_2, w_3$, each of length $m$, on separate tapes:
 
@@ -2240,23 +2245,25 @@ $\textbf{Corollary 125:}$ The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_
 Fix an input word $w$ of length $n \ge n_0$. Let $U$ be the set of random words that cause $M$ to accept $w$:
 
 $$
-U = \{r \in {0, 1}^{p(n)} : M \text{ accepts } w \text{ on random word } r\}
+U = \lbrace r \in \lbrace 0, 1\rbrace^{p(n)} : M \text{ accepts } w \text{ on random word } r \rbrace
 $$
 
-For the remainder of this proof, "word" will refer to a binary word of length $p(n)$ unless stated otherwise. We use the operator $\oplus$, which represents bitwise exclusive-or (parity). For any word $v$, the function $u \mapsto u \oplus v$ is a bijection on the set of all words. Let $U \oplus v = \{u \oplus v : u \in U\}$. Note that $\lvert U \rvert = \lvert U \oplus v \rvert$.
+For the remainder of this proof, "word" will refer to a binary word of length $p(n)$ unless stated otherwise. We use the operator $\oplus$, which represents bitwise exclusive-or (parity). For any word $v$, the function $u \mapsto u \oplus v$ is a bijection on the set of all words. Let $U \oplus v = \lbrace u \oplus v : u \in U\rbrace$. Note that $\lvert U \rvert = \lvert U \oplus v \rvert$.
 
 **Case 1: $w$ is not in $L$.**
 In this case, the set $U$ (and thus any set $U \oplus v$) contains at most a fraction of $2^{-n}$ of all possible words. The union of $p(n)$ such sets cannot comprise all words, because by our choice of $n_0$, we have $p(n) < 2^n$. Consequently, the following statement is **false**:
 
 $$
 \exists_{v_1}^{p(n)} \cdots \exists_{v_{p(n)}}^{p(n)} \forall_{z}^{p(n)} (z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)}) \quad (*) \quad (4.3)
-$$**Case 2: $w$ is in $L$.**
+$$
+
+**Case 2: $w$ is in $L$.**
 In this case, we show that statement (4.3) is **true**. Fix some word $z$. Consider a random experiment where the bits of a word $v$ are determined by fair coin tosses. The word $z \oplus v$ is uniformly distributed among all words. Therefore, the probability that $z \oplus v$ is not in $U$ (or equivalently, that $z$ is not in $U \oplus v$) is at most $2^{-n}$.
 
 Now, assume the bits of words $v_1, \ldots, v_{p(n)}$ are determined by fair coin tosses. The probability that a fixed word $z$ is in none of the sets $U \oplus v_i$ is at most $(2^{-n})^{p(n)} = 2^{-np(n)}$. The probability that *some* word $z$ among all $2^{p(n)}$ words is in none of the sets $U \oplus v_1$ through $U \oplus v_{p(n)}$ is at most:
 
 $$
-2^{p(n)} \cdot 2^{-np(n)} = 2^{-(n-1)p(n)} \< 1.
+2^{p(n)} \cdot 2^{-np(n)} = 2^{-(n-1)p(n)} < 1.
 $$
 
 Since this probability is less than 1, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than 0. This means there must exist such words $v_1, \ldots, v_{p(n)}$.
@@ -2296,7 +2303,7 @@ A key technique for understanding complexity classes is to identify **complete l
 $\textbf{Definition 126 (The Majority Satisfiability Problem):}$ The **majority satisfiability problem** is the language
 
 $$
-\textbf{MAJ} = \{\phi : \phi \text{ is a propositional formula in CNF that is satisfied by strictly more than half of the assignments to its variables}\}
+\textbf{MAJ} = \lbrace \phi : \phi \text{ is a propositional formula in CNF that is satisfied by strictly more than half of the assignments to its variables}\rbrace
 $$
 
 $\textbf{Theorem 127:}$ The majority satisfiability problem **MAJ** is complete for **PP**.
@@ -2319,7 +2326,7 @@ An assignment to the random variables $Y_1, \ldots, Y_r$ corresponds to a specif
 
 The machine $M$ accepts $w$ if its acceptance probability is greater than $1/2$. This means $w \in L$ if and only if $a(w) / 2^r > 1/2$, which is equivalent to $a(w) > 2^{r-1}$.
 
-Let the variables of $\phi_w$ be $Y_1, \ldots, Y_m$, where $m = m(n)$ is polynomially bounded. We can construct a new formula $\phi'_w$. Let $Z$ be a new variable not in $\phi_w$. Let $\tau$ be the formula $Y_1 \land \cdots \land Y_{m-(r-1)}$. The formula $\tau$ is satisfied by exactly $2^{m - (m-(r-1))} = 2^{r-1}$ of the $2^m$ assignments to its variables.
+Let the variables of $\phi_w$ be $Y_1, \ldots, Y_m$, where $m = m(n)$ is polynomially bounded. We can construct a new formula $\phi'\_w$. Let $Z$ be a new variable not in $\phi_w$. Let $\tau$ be the formula $Y_1 \land \cdots \land Y_{m-(r-1)}$. The formula $\tau$ is satisfied by exactly $2^{m - (m-(r-1))} = 2^{r-1}$ of the $2^m$ assignments to its variables.
 
 Define $\phi'_w$ as:
 
@@ -2349,7 +2356,7 @@ This is exactly the condition for $w \in L$. Thus, $w \in L \iff \phi'_w \in \te
 
 A general approach for creating complete languages involves simulating Turing machines that recognize languages within a given complexity class. To simplify these simulations, we can standardize the machines.
 
-For this purpose, we define a **special Turing machine** as one having a single work tape and a tape alphabet of $\{0, 1, \square\}$.
+For this purpose, we define a **special Turing machine** as one having a single work tape and a tape alphabet of $\brace 0, 1, \square\rbrace$.
 
 $\textbf{Remark 128:}$ By the results on tape reduction and on alphabet reduction, for every $t(n)$-time-bounded Turing machine there is a special Turing machine that is $c \cdot t^2(n)$-time-bounded for some constant $c$ such that both machines recognize the same language. Furthermore, if the given Turing machine is deterministic, the special Turing machine can be chosen to be deterministic, too.
 
@@ -2367,7 +2374,7 @@ Using this framework, we can construct complete languages for several major comp
 Let
 
 $$
-C_{\text{EXP}} = \{\tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that is deterministic and accepts } x \text{ in at most } 2^t \text{ steps}\}.
+C_{\text{EXP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that is deterministic and accepts } x \text{ in at most } 2^t \text{ steps}\rbrace.
 $$
 
 $\textbf{Proposition 129:}$ The language $C_{\text{EXP}}$ is **EXP**-complete.
@@ -2382,7 +2389,7 @@ $\textbf{Proposition 129:}$ The language $C_{\text{EXP}}$ is **EXP**-complete.
 A similar construction yields an $\textbf{NP}$-complete language. Let
 
 $$
-C\_{\text{NP}} = \{\tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\}.
+C\_{\text{NP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\rbrace.
 $$
 
 $\textbf{Proposition 130:}$ The language $C_{\text{NP}}$ is **NP**-complete.
@@ -2392,7 +2399,7 @@ $\textbf{Proposition 130:}$ The language $C_{\text{NP}}$ is **NP**-complete.
 This construction can be extended to probabilistic classes like **PP**. Here, we consider probabilistic Turing machines with an auxiliary tape. We define **pruning** a computation to length $t$ as a variant of the machine where a computation accepts if and only if an accepting configuration is reached within the first $t$ steps. Let
 
 $$
-C_{\text{PP}} = \{\tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a probabilistic Turing machine that accepts input } x \text{ when all computations are pruned to length } t\}.
+C_{\text{PP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a probabilistic Turing machine that accepts input } x \text{ when all computations are pruned to length } t\rbrace.
 $$
 
 $\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-complete.
