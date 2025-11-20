@@ -9,4 +9,4 @@ tags:
   - artificial-intelligence
 ---
 
-- [Training Products of Experts by Minimizing Contrastive Divergence](/paper-notes/energy-based-models/hinton-2002.md)
+- [Training Products of Experts by Minimizing Contrastive Divergence](/paper-notes/energy-based-models/hinton-2002/)
