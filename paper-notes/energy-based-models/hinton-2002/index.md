@@ -32,30 +32,41 @@ noindex: true
   * Each expert can focus on enforcing a **low-dimensional constraint** or pattern; the product enforces *all* constraints simultaneously. 
   * Allows **much sharper** distributions than any single expert; bad configurations get ruled out if any expert assigns them low probability.
 
+> If the individual distributions are uni- or multivariate gaussians, their product will also be a multivariate gaussian so, unlike mixtures of gaussians, products of gaussians cannot approximate arbitrary smooth distributions. If, however, the individual models are a bit more complicated and each contains one or more latent (i.e., hidden) variables, multiplying their distributions together (and renormalizing) can be very powerful. Individual models of this kind will be called “experts.”
+
 ### Intuition
 
-* For images:
+* For images: One expert may capture coarse shape, others local stroke segments, others contrast/edges.
+* For language: One expert enforces tense agreement, another subject–verb number agreement, another adjective order, etc. 
 
-  * One expert may capture coarse shape, others local stroke segments, others contrast/edges.
-* For language:
-
-  * One expert enforces tense agreement, another subject–verb number agreement, another adjective order, etc. 
 
 ---
 
 ## 3. Maximum Likelihood Learning and Its Problems
 
+* Prediction with $n$ combined experts:
+  
+  $$
+  p(d\mid \theta_1, \dots, \theta_n) = \frac{\prod_m f_m(d\mid \theta_m)}{\sum_c \prod_m f_m(c\mid \theta_m)}
+  $$
+
+  Here:
+  * $d$ represents a data vector.
+  * $f_m$ is the (unnormalized) probability of the data under expert model m with parameters $\theta_m$.
+  * The denominator is a partition function summing over all possible data vectors $c$.
+
 * Log-likelihood gradient for expert $m$ in a PoE:
 
   $$
-  \frac{\partial \log p(d)}{\partial \theta_m} = \underbrace{\frac{\partial \log p_m(d)}{\partial \theta_m}}_{\text{data term}} - \underbrace{\mathbb{E}*{c\sim p(\cdot)}\frac{\partial \log p_m(c)}{\partial \theta_m}}*{\text{model (negative) term}}
+  \frac{\partial \log p(\mathbf{d} \mid \theta_1, \dots, \theta_n)}{\partial \theta_m} = \frac{\partial \log f_m(\mathbf{d} \mid \theta_m)}{\partial \theta_m} - \sum_\mathbf{c} p(\mathbf{c} \mid \theta_1, \dots, \theta_n) \frac{\partial \log f_m(\mathbf{c} \mid \theta_m)}{\partial \theta_m}
   $$
   
-  where the expectation is over “fantasy” samples from the current PoE. 
 * Main difficulty:
 
-  * **Sampling from the equilibrium distribution** of the PoE (via Gibbs sampling, etc.) is expensive.
-  * The model samples have **high variance** and this variance depends on parameters → unstable learning (“sand accumulating in the still regions of a vibrating sheet” analogy). 
+  * **Sampling from the equilibrium distribution** of the PoE (via rejection sampling, Gibbs sampling, etc.) is expensive.
+  * The model samples have **high variance** and this variance depends on parameters → unstable learning. This high variance can completely "swamp the estimate of the derivative," making the learning signal unreliable.
+
+These challenges with maximum likelihood training established the primary motivation for developing an alternative, more tractable objective function.
 
 ---
 
@@ -66,7 +77,7 @@ noindex: true
 * Instead of minimizing just the KL divergence between data distribution $Q_0$ and equilibrium model distribution $Q_\infty$, the paper minimizes the **contrastive divergence**:
   
   $$
-  \text{CD} = Q_0 \| Q_1 ;-; Q_1 \| Q_\infty
+  \text{CD} = Q_0 \| Q_1 - Q_1 \| Q_\infty
   $$
 
   where:
@@ -77,6 +88,8 @@ noindex: true
 
   * We want the Markov chain (Gibbs sampler) to **leave the data distribution unchanged**.
   * Instead of running to equilibrium, measure and reduce how much the chain moves on its **first step** away from data.
+  
+> Fitting a PoE to data appears difficult because it appears to be necessary to compute the derivatives, with repect to the parameters, of the partition function that is used in the renormalization. As we shall see, however, these derivatives can be finessed by optimizing a less obvious objective function than the log likelihood of the data.
 
 ### Approximate Gradient
 
