@@ -9,6 +9,17 @@ tags:
   - high-performance-computing
 ---
 
+<style>
+  .accordion summary {
+    font-weight: 600;
+    color: var(--accent-strong, #2c3e94);
+    background-color: var(--accent-soft, #f5f6ff);
+    padding: 0.35rem 0.6rem;
+    border-left: 3px solid var(--accent-strong, #2c3e94);
+    border-radius: 0.25rem;
+  }
+</style>
+
 # GPU Computing
 
 ## The Need for Massive Parallelism
@@ -520,6 +531,17 @@ The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (I
 
 The GK110 chip consists of up to 15 **Streaming Multiprocessors (SMX)**, which are the main computational engines.  These are connected to Memory Controllers (MCs) and a large L2 cache, communicating with the CPU and host memory via a PCIe 3.0 interface.
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/GK110-arch.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <figcaption>GK110 architecture</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/GK110-sm.png' | relative_url }}" alt="GPU shared memory" loading="lazy">
+    <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption>
+  </figure>
+</div>
+
 ### The Streaming Multiprocessor (SMX): The "GPU Core"
 
 The **Streaming Multiprocessor**, often abbreviated as **SM** (or **SMX** in the Kepler architecture), is the true "core" of the GPU where threads are scheduled and instructions are executed. Each GK110 SMX contains:
@@ -541,8 +563,8 @@ Understanding the memory hierarchy is critical for high-performance GPU programm
 
 The GPU philosophy is built on collaboration:
 
-  * **Collaborative Computing:** In CUDA, you typically launch one thread per output element, grouped into **thread blocks**. Schedulers use the massive number of threads (parallel slack) to keep hardware busy.
-  * **Collaborative Memory Access:** Memory access should be a team sport. Threads within a block work together to load data efficiently. The memory controllers are optimized to exploit this, especially through **memory coalescing**.
+  * **Collaborative Computing:** In CUDA, you typically launch one thread per output element, grouped into **thread blocks**. Schedulers use the massive number of threads (parallel slack) to keep hardware busy. SIMT – Single Instruction, Multiple Threads.
+  * **Collaborative Memory Access:** Memory access should be a team sport. Thread-collective computation and memory accesses. Threads within a block work together to load data efficiently. The memory controllers (MCs) are optimized to exploit that concurrency, especially through **memory coalescing**.
 
 > **Key Takeaway:** If you do something on a GPU, do it collaboratively with all threads.
 
@@ -561,6 +583,13 @@ The GPU memory hierarchy can be understood by its scope—what threads can "see"
 | **Global Memory** | Per Device | \~6 GB (GDDR, off-chip) | Main GPU memory. Large but slow (400-600 cycle latency). |
 | **Host Memory** | System-wide | Multiple TBs (off-device) | Main system RAM, connected to the CPU. Accessible via PCIe. |
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/GK110-memory-hierarchy.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <figcaption>GK110 Memory Hierarchy</figcaption>
+  </figure>
+</div>
+
 ### Deeper Dive into Memory Types
 
 #### Registers and Local Memory
@@ -568,6 +597,44 @@ The GPU memory hierarchy can be understood by its scope—what threads can "see"
 Each thread has private **registers**, the fastest memory. The total number of registers on an SM is finite (64k per block on GK110). If a thread requires too many registers (max 255), the compiler performs **register spilling**, moving some variables to **Local Memory**.
 
 Despite its name, **Local Memory** is not on-chip; it is a private section of the slow, off-chip **Global Memory**. Stores to local memory are cached in the L1 cache.
+
+<div class="accordion">
+  <details>
+    <summary>Register spilling</summary>
+    <p><strong>Register spilling</strong> is the process where a computer's compiler moves data from CPU registers to slower memory (like RAM) because it has run out of registers to store all the necessary temporary variables. This is done to allow program execution to continue, but it negatively impacts performance because accessing memory is much slower than using registers.</p>
+
+    <h3>How register spilling works</h3>
+    <ul>
+      <li><strong>Insufficient registers:</strong> A program needs to store more temporary variables than the CPU has available registers to hold them all at a given time.</li>
+      <li><strong>Compiler's solution:</strong> The compiler selects one or more variables to "spill" to memory.</li>
+      <li><strong>Data transfer:</strong> The compiler generates "spill code" to move the variable's data from a register to main memory.</li>
+      <li><strong>Register reuse:</strong> The freed register can now be used for another variable.</li>
+      <li><strong>Data retrieval:</strong> When the program needs the spilled variable again, the compiler generates more code to move the data back from memory into a register.</li>
+    </ul>
+
+    <h3>When is happens</h3>
+    <p>The decision of which variables to spill is primarily made during compile time, but the actual act of moving the data to and from memory happens at runtime when the program executes.</p>
+    <ol>
+      <li><strong>Compile time decision:</strong> The compiler analyzes the code's register pressure (how many variables are needed at once) and determines that not all variables can fit into the physical registers. It then generates machine code with explicit instructions to store (spill) data to stack memory and reload it when needed.</li>
+      <li><strong>Runtime execution:</strong> When the program runs, the processor executes those specific "load" and "store" instructions inserted by the compiler, moving the data between registers and main memory as necessary.</li>
+    </ol>
+    <p>Therefore, the planning occurs at compile time, and the execution of the spill operations occurs at runtime.</p>
+
+    <h3>Why register spilling is a performance bottleneck</h3>
+    <ul>
+      <li><strong>Speed difference:</strong> Register access is significantly faster than memory access, which is why compilers try to keep as many variables as possible in registers.</li>
+      <li><strong>Performance hit:</strong> Each time data is spilled to memory and then loaded back, it introduces a delay, slowing down the program.</li>
+    </ul>
+
+    <h3>How to avoid or reduce register spilling</h3>
+    <ul>
+      <li><strong>Compiler optimizations:</strong> Use different compiler flags or settings to try and guide the compiler to reduce spilling, though the effectiveness can vary.</li>
+      <li><strong>Code structure:</strong> Rewriting code to use fewer temporary variables can help.</li>
+      <li><strong>Shared memory:</strong> On GPUs, using shared memory (which is faster than global memory) for variables that would otherwise be spilled is a common optimization strategy.</li>
+    </ul>
+  </details>
+</div>
+
 
 #### Shared Memory and L1 Cache
 
@@ -743,9 +810,9 @@ An analysis of the GeForce 8800 GTX revealed:
   * **TLB:** A latency increase at 128 MB pointed to a TLB. Saturation at a 512 kB size indicated a 512 kB page size, and further tests suggested a 16-entry, fully-associative TLB.
 
 
-# Optimizing with Shared Memory
+## Optimizing with Shared Memory
 
-## Matrix Multiplication: A Case Study
+### Matrix Multiplication: A Case Study
 
 Matrix multiplication is one of the most fundamental operations in scientific computing and artificial intelligence. While simple in principle, it serves as the perfect case study for mastering the advanced optimization techniques required to unlock the true power of a GPU.
 
@@ -754,7 +821,7 @@ We focus on this operation because:
 * **Optimization Depth:** It features complex memory access patterns that highlight critical performance differences between naive and optimized code.
 * **Balance:** It is complex enough to require sophisticated optimization (tiling, shared memory) but simple enough to understand comprehensively.
 
-### Analyzing the Problem
+#### Analyzing the Problem
 
 The goal is to compute a result matrix, $C$, by multiplying two input matrices, $A$ and $B$:
 
@@ -798,9 +865,9 @@ $$
 
 This linear relationship suggests that as matrix size $n$ grows, the algorithm *should* become increasingly compute-intensive. However, this is only true if we can effectively utilize the memory hierarchy to avoid re-fetching data from slow global memory.
 
-## CPU Baseline and Tiling
+### CPU Baseline and Tiling
 
-### The Naive CPU Approach
+#### The Naive CPU Approach
 
 A standard implementation uses three nested loops.
 
@@ -822,7 +889,7 @@ void MatrixMulOnHost(float* M, float* N, float* P, int Width) {
 
 This code hits the **Memory Wall**. For small matrices fitting in the CPU cache, performance is high. As matrices grow larger than the cache (e.g., \> 1500 $\times$ 1500), the CPU stalls waiting for data from the main system RAM.
 
-### The Tiling (Blocking) Strategy
+#### The Tiling (Blocking) Strategy
 
 To overcome the memory wall, we use **tiling**. We divide the matrices into small sub-matrices (tiles) that fit into the cache. We load a tile from $A$ and $B$, perform all possible multiplications between them, and then move to the next tile.
 
@@ -854,9 +921,9 @@ void MatrixMulOnHostBlocked(float* M, float* N, float* P, int Width, int blockSi
 }
 ```
 
-## Porting to the GPU
+### Porting to the GPU
 
-### Naive CUDA Implementation
+#### Naive CUDA Implementation
 
 Our first GPU attempt assigns one thread to compute one element of the output matrix $P$.
 
@@ -877,7 +944,7 @@ __global__ void MatrixMulKernel(float* Md, float* Nd, float* Pd, int Width) {
 }
 ```
 
-### The Memory Bandwidth Bottleneck
+#### The Memory Bandwidth Bottleneck
 
 While this kernel runs in parallel, it suffers from **abysmal computational intensity**.
 
@@ -899,7 +966,7 @@ To solve the bandwidth bottleneck, we must program the **Shared Memory**. This i
 \</figure\>
 \</div\>
 
-### The Algorithm
+#### The Algorithm
 
 We adapt the tiling strategy for the GPU architecture:
 
@@ -910,7 +977,7 @@ We adapt the tiling strategy for the GPU architecture:
 
 This increases computational intensity by a factor of `TILE_WIDTH`. For a $16 \times 16$ tile, we reduce global memory traffic by 16x.
 
-### Shared Memory Kernel
+#### Shared Memory Kernel
 
 ```c++
 #define TILE_WIDTH 16
@@ -953,7 +1020,7 @@ __global__ void MM_SM(float* Md, float* Nd, float* Pd, int Width) {
 }
 ```
 
-### Bank Conflicts
+#### Bank Conflicts
 
 Shared memory is divided into 32 banks (like parallel filing cabinets). Ideally, threads in a warp (32 threads) access different banks simultaneously.
 
@@ -962,7 +1029,7 @@ Shared memory is divided into 32 banks (like parallel filing cabinets). Ideally,
 
 A common cause is strided access. If threads access `array[threadIdx.x * 2]`, they only hit even banks, potentially causing 2-way conflicts. The implementation above generally avoids this by loading $16 \times 16$ tiles where `tx` maps directly to columns.
 
-## Advanced Optimizations
+#### Advanced Optimizations
 
 To close the gap to theoretical peak performance, further techniques are required:
 
@@ -971,7 +1038,7 @@ To close the gap to theoretical peak performance, further techniques are require
   * **Thread Coarsening:** Having one thread compute multiple output elements (e.g., a $4 \times 4$ patch) increases register reuse.
   * **Double Buffering:** Loading the *next* tile into registers while computing the *current* tile hides memory latency completely.
 
-## Summary
+#### Summary
 
   * **Performance is Memory-Bound:** High-performance computing is often less about math and more about data movement.
   * **Hierarchy is King:** Tiling (blocking) is the fundamental technique to exploit the memory hierarchy.
