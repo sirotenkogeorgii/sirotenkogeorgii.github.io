@@ -889,46 +889,48 @@ This code hits the **Memory Wall**. For small matrices fitting in the CPU cache,
       <p>See the original post: <a href="https://siboehm.com/articles/22/Fast-MMM-on-CPU" target="_blank" rel="noopener">https://siboehm.com/articles/22/Fast-MMM-on-CPU</a></p>
     </blockquote>
 
-    <p>Multidimensional matrices are represented in memory using a strided representation. For a more detailed explanation, see this blogpost. In most programming languages you expect the matrix to be row-continuous, meaning that iterating through a single row by incrementing the column results in sequential memory access.</p>
+    <p>Multidimensional matrices are represented in memory using a strided representation. In most programming languages you expect the matrix to be row-continuous, meaning that iterating through a single row by incrementing the column results in sequential memory access.</p>
 
-    <figure>
+    <div class="note-figure">
       <img src="{{ '/assets/images/notes/gpu-computing/physical-logical-matrix-layout.png' | relative_url }}" alt="Physical vs. logical matrix layout" loading="lazy">
-      <figcaption>Physical vs. logical view of a matrix in row-major order.</figcaption>
-    </figure>
+      <p class="caption">Physical vs. logical view of a matrix in row-major order.</p>
+    </div>
 
     <p>This makes it clear why the inner, most important loop of our matrix multiplication is very cache unfriendly. Normally, the processor loads data from memory using fixed-size cache lines, commonly 64 Byte large. When iterating over the row of A, we incur a cache miss on the first entry. However, for matrix B, we walk down the rows, occurring a cache-miss at every step.</p>
 
-    <figure>
+    <div class="note-figure">
       <img src="{{ '/assets/images/notes/gpu-computing/column-miss.png' | relative_url }}" alt="Cache misses when iterating down a matrix column" loading="lazy">
-      <figcaption>Walking down a column triggers a cache miss per step.</figcaption>
-    </figure>
+      <p class="caption">Walking down a column triggers a cache miss per step.</p>
+    </div>
 
     <p>To fix this, we reorder the two inner-most loops:</p>
 
-    <pre><code class="language-cpp">template &lt;int rows, int columns, int inners&gt;
+    {% highlight cpp %}
+template <int rows, int columns, int inners>
 inline void matmulImplLoopOrder(const float *left, const float *right,
                                 float *result) {
-  for (int row = 0; row &lt; rows; row++) {
-    for (int inner = 0; inner &lt; inners; inner++) {
-      for (int col = 0; col &lt; columns; col++) {
+  for (int row = 0; row < rows; row++) {
+    for (int inner = 0; inner < inners; inner++) {
+      for (int col = 0; col < columns; col++) {
         result[row * columns + col] +=
           left[row * columns + inner] * right[inner * columns + col];
       }
     }
   }
 }
-</code></pre>
+    {% endhighlight %}
 
     <p>The improvement is quite spectacular, bringing runtime down to 89ms. A 16x improvement! Our inner loops now iterate through B &amp; C in a memory sequential manner. The only time we do a large jump in memory access is when our middle loop finishes and we need to fetch the first row of B again. Since we’re now only computing a partial result in the inner loop, we cannot perform the accumulation in a single register anymore.</p>
 
-    <figure>
+    <div class="note-figure">
       <img src="{{ '/assets/images/notes/gpu-computing/seq-column.png' | relative_url }}" alt="Sequential column access after loop reordering" loading="lazy">
-      <figcaption>Loop reordering makes column access sequential and cache friendly.</figcaption>
-    </figure>
+      <p class="caption">Loop reordering makes column access sequential and cache friendly.</p>
+    </div>
 
     <p>Looking at the compiled output on <a href="https://godbolt.org/#z:OYLghAFBqd5TKALEBjA9gEwKYFFMCWALugE4A0BIEAZgQDbYB2AhgLbYgDkAjF%2BTXRMiAZVQtGIHgBYBQogFUAztgAKAD24AGfgCsp5eiyahUAUgBMAIUtXyKxqiIEh1ZpgDC6egFc2TA3cAGQImbAA5PwAjbFIDAAd0JWIXJi9ffwSklKEQsMi2GLiee2xHZyERIhZSInS/AJKHbCdUqpqiPIjo2IMlatr6zKaBztDuwt6eAEp7dB9SVE4uADd0AkwAajYWIgBZH3oASTZ4%2Blp6dF2AKk3SAmAkInJNmkubzcYaZ9f3olvSNglIciNMzAB2GxaACCm1eZE2EFCRDu6AA7pszABmAAimy02KsqIx2I8mx4Wgs0kJxNstmmmMhZhhcLhglIiORm1CYQ52LxBKxRJ5sUxWLJFKpNJFpDp1gZEKhsNZKvZnOEmwwGSYYoFNK1DTFEsp1KFmu8DTlVgVTJZKvtcMBwPoRDMAFYrKR0ZtbpLpJjrObte68XTcczlQ77V9XR6vRjfSaA8KmLyQz67g8nu6rDKM37k0HLW6cYSIw6IaW7XDK%2BXGVXoZWuLN6Nw3fwAlwdOR0NwPFbNkp5otsAGsXxyERtM3ZgBrEBurSGbjSfhsBdLzvd3tcfhKEBLqdd5vkOCwFDYdQtHwkChUCA1YBKVTGMoiJDozsTjCnBi7VIvmE9Dvp%2B07kD%2B8QML0wA8BYJQQVBpAAPI3iBaJbvwl4tNCpBPtwmFXqgVSEJ2/CCMIYgSJwMhyMIyhqJox7kPoJRGCYaBWoYBBRPukCzOg8QVEw%2B67nMCxLH0RAkYBb4fuh3ATkQgLLBOaKkCw8QKSerZcO25AYT23C4IRN4IuoAAcABsAC0ln%2BsAqCoOSFgAHQ8Ii/bWLYLz4MQCKWOO0z8EeOjTLMSDYCwOBxBALYrmuG76WBO57gek7TmF5Dzouy5cFiHbJfh6XHrMZ7IGg6C/owd7UAh1VoGxMHSFoS50C6sT7hAURgVEoQ1AAnlp4GVRwwhIUw9CDUxOA7CYkjTQQgKtCsQJgVhqA3ip/DImUYH0Nx6mkP1Xg4GBSkEOuvAnm8LBPgAagQ2Bokh8TMEN5GiOIkg0R99EaGBLGGMYpicftPHwPxgmpCJ1lIVimzWTQNAsP01k7EQSAIzsixIPySAo2iZT0Jse5lC0QluEwngWsM5DBOMBRFFkyRCUMjTkIkLOpF0jNTKU5RtKMbN9GTrSVKMPM9MU9hCzT7P9B0kuTMUsxDuJ1GTspQ1osYRAvUQRxMIIWlxbpBVMTuFk2XZmqNeS0guVojseZxmy%2BbeY4lJsXhVaKAUzMFGXhZF0XUHOiU6auSUW0V%2B6HkHuUWOb25FSFM7kCtpDJK40hAA%3D%3D" target="_blank" rel="noopener">compiler explorer</a>, the loop reordering also enabled vectorization. With the naive loop order the compiler was already using the VFMADD instruction, but only on a single fp32 at a time. The relevant parts of the assembly look like this:</p>
 
-    <pre><code class="language-asm">; In the loop setup, load a single fp32 from the current A row
+    {% highlight asm %}
+; In the loop setup, load a single fp32 from the current A row
 ; and broadcast it to all 8 entries of the ymm0 register
 ; vbroadcastss ymm0, dword ptr [rsi + 4*r8]
 
@@ -949,7 +951,7 @@ vmovups ymmword ptr [rcx + 4*rbp - 96], ymm1
 vmovups ymmword ptr [rcx + 4*rbp - 64], ymm2
 vmovups ymmword ptr [rcx + 4*rbp - 32], ymm3
 vmovups ymmword ptr [rcx + 4*rbp], ymm4
-</code></pre>
+    {% endhighlight %}
   </details>
 </div>
 
@@ -971,7 +973,17 @@ void MatrixMulOnHostBlocked(float* M, float* N, float* P, int Width, int blockSi
         for (int jj = 0; jj < Width; jj += blockSize) {
             for (int kk = 0; kk < Width; kk += blockSize) {
                 // Process small blockSize x blockSize tiles here
-                // ...
+                for (int i = ii; i < min(ii+blockSize, matWidth); ++i) {
+                  for (int j = jj; j < min(jj+blockSize, matWidth); ++j){
+                    float sum = 0;
+                    for (int k = kk; k < Width; ++k) {
+                      float a = M[i * width + k];
+                      float b = N[k * width + j];
+                      sum += a * b;
+                    }
+                    P[i * Width + j] += sum;
+                  }
+                }
             }
         }
     }
