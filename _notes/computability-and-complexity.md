@@ -1812,7 +1812,7 @@ Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in p
 
 <div class="accordion">
   <details>
-    <summary>Why the $\text{Comp}$ definition looks so strange</summary>
+    <summary>Why not the Savitch-style definition of $\text{Comp}$</summary>
 
 Your Savitch-style definition is *logically* fine, but as a **QBF encoding** it blows up the formula size exponentially, so it doesn’t give a polynomial-time reduction. The weird-looking definition in the notes is exactly a trick to avoid this blow-up while keeping the same meaning.
 
@@ -2695,7 +2695,7 @@ where $Q_k$ is equal to $\exists$ if $k$ is odd and to $\forall$ if $k$ is even.
 The class $\Pi_k^p$ is defined literally the same except that (4.1) is replaced by
 
 $$
-\forall\_{y\_1}^{p(n)} \exists\_{y\_2}^{p(n)} \forall\_{y\_3}^{p(n)} \cdots Q\_k^{p(n)} y\_k ((w , y\_1, \ldots , y\_k) \in B) \quad (4.2)
+\forall_{y_1}^{p(n)} \exists_{y_2}^{p(n)} \forall_{y_3}^{p(n)} \cdots Q_k^{p(n)} y_k ((w , y_1, \ldots , y_k) \in B) \quad (4.2)
 $$
 
 where now $Q_k$ is equal to $\forall$ if $k$ is odd and to $\exists$ if $k$ is even.
@@ -2830,7 +2830,7 @@ Let the variables of $\phi_w$ be $Y_1, \ldots, Y_m$, where $m = m(n)$ is polynom
 Define $\phi'_w$ as:
 
 $$
-\phi'\_w = (Z \land \phi\_w(Y\_1, \ldots, Y\_m)) \lor (\neg Z \land \neg \tau(Y\_1, \ldots, Y\_m))
+\phi'_w = (Z \land \phi\_w(Y_1, \ldots, Y_m)) \lor (\neg Z \land \neg \tau(Y_1, \ldots, Y_m))
 $$
 
 This formula has $m+1$ variables.
@@ -2855,7 +2855,7 @@ This is exactly the condition for $w \in L$. Thus, $w \in L \iff \phi'_w \in \te
 
 A general approach for creating complete languages involves simulating Turing machines that recognize languages within a given complexity class. To simplify these simulations, we can standardize the machines.
 
-For this purpose, we define a **special Turing machine** as one having a single work tape and a tape alphabet of $\brace 0, 1, \square\rbrace$.
+For this purpose, we define a **special Turing machine** as one having a single work tape and a tape alphabet of $\lbrace 0, 1, \square \rbrace$.
 
 $\textbf{Remark 128:}$ By the results on tape reduction and on alphabet reduction, for every $t(n)$-time-bounded Turing machine there is a special Turing machine that is $c \cdot t^2(n)$-time-bounded for some constant $c$ such that both machines recognize the same language. Furthermore, if the given Turing machine is deterministic, the special Turing machine can be chosen to be deterministic, too.
 
@@ -2888,7 +2888,7 @@ $\textbf{Proposition 129:}$ The language $C_{\text{EXP}}$ is **EXP**-complete.
 A similar construction yields an $\textbf{NP}$-complete language. Let
 
 $$
-C\_{\text{NP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\rbrace.
+C_{\text{NP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\rbrace.
 $$
 
 $\textbf{Proposition 130:}$ The language $C_{\text{NP}}$ is **NP**-complete.
