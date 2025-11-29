@@ -4,6 +4,878 @@ layout: default
 noindex: true
 ---
 
+Here’s a version of your page with clearer sections, highlighted definitions/lemmas, structured algorithms, and nicer formula formatting for the web. 
+
+````markdown
+---
+title: Fourier Transform
+layout: default
+noindex: true
+---
+
+# Fourier Transform
+
+> What does polynomial multiplication have in common with audio compression?  
+> Or with image recognition?  
+> Behind all these questions lies a common algebraic structure, known as the **Discrete Fourier Transform (DFT)**.  
+> We will derive an efficient algorithm for calculating this transform and show some of its interesting consequences.
+
+---
+
+## 17.1 Polynomials and Their Multiplication
+
+First, let us briefly recall how to work with polynomials.
+
+> **Definition (Polynomial).**  
+> A polynomial is an expression of the form  
+> $$
+> P(x) = \sum_{i=0}^{n-1} p_i x^i,
+> $$
+> where $x$ is a variable and $p_0, \dots, p_{n-1}$ are numbers called the **coefficients** of the polynomial.
+
+We will:
+
+- denote polynomials by **capital letters** ($P, Q, R, \dots$),
+- denote their coefficients by the corresponding **lowercase letters with indices** ($p_0, p_1, \dots$),
+- assume for now that all numbers are **real** (but they could live in any commutative ring).
+
+In algorithms, we usually represent polynomials by their **coefficient vector**
+$(p_0, \dots, p_{n-1})$.  
+Contrary to linear algebra conventions, we index components **from 0**.
+
+- The number of coefficients $n$ is the **size** of the polynomial, denoted $\|P\|$.
+- We express time complexity in terms of the **sizes of the input polynomials**.
+- We assume we can work with real numbers in constant time per basic operation.
+
+If we add a new coefficient $p_n = 0$, the value of the polynomial does not change for any $x$.  
+Similarly, if the highest coefficient $p_{n-1} = 0$, we can omit it.  
+
+Thus we can reduce any polynomial to a **normal form**, in which:
+
+- it has a non-zero highest coefficient, or  
+- it has *no* coefficients at all (the **zero polynomial**), equal to $0$ for every $x$.
+
+> **Definition (Degree).**  
+> The highest power with a non-zero coefficient is the **degree** of the polynomial, denoted $\deg P$.  
+> We assign degree $-1$ to the zero polynomial.
+
+### Polynomial addition and multiplication
+
+Addition and subtraction are straightforward. For multiplication:
+
+$$
+P(x) \cdot Q(x)
+ = \left( \sum_{i=0}^{n-1} p_i x^i \right)
+   \left( \sum_{j=0}^{m-1} q_j x^j \right)
+ = \sum_{i,j} p_i q_j x^{i+j}.
+$$
+
+We can write this product as a new polynomial $R(x)$, whose coefficient at $x^k$ is
+
+$$
+r_k = p_0 q_k + p_1 q_{k-1} + \dots + p_k q_0.
+$$
+
+We see:
+
+- $\deg R = \deg P + \deg Q$,
+- $\|R\| = \|P\| + \|Q\| - 1$.
+
+A direct algorithm to compute the product of two polynomials of size $n$ needs:
+
+- $\Theta(n)$ time to compute each coefficient of $R$,
+- for a total of $\Theta(n^2)$ time.
+
+We will search for a **more efficient method**, analogous to fast number multiplication.
+
+---
+
+### Graphs of Polynomials
+
+When do we regard two polynomials as the same?
+
+1. **As expressions:**  
+   Compare symbolic notation / coefficient vectors (after normalization).  
+   We say $P$ and $Q$ are **identical** if their coefficient vectors coincide, denoted
+   $P \equiv Q$.
+
+2. **As real functions:**  
+   Polynomials $P$ and $Q$ are equal as functions, written $P = Q$, if
+   $P(x) = Q(x)$ for all $x \in \mathbb{R}$.
+
+Identically equal polynomials are also equal as functions. The following theorem shows the **converse** is essentially true and that equality on finitely many points suffices.
+
+> **Theorem.**  
+> Let $P$ and $Q$ be polynomials of degree at most $d$.  
+> If for mutually distinct numbers $x_0, \dots, x_d$ we have
+> $P(x_i) = Q(x_i)$ for all $i$, then $P$ and $Q$ are identical: $P \equiv Q$.
+
+To prove this, we use an important lemma about roots of polynomials.
+
+> **Lemma (Bound on roots).**  
+> A polynomial $R$ of degree $t \ge 0$ has at most $t$ roots (numbers $\alpha$ with $R(\alpha) = 0$).
+
+*Proof sketch.*  
+Divide $R$ by $(x - \alpha)$ (see Exercise 1):
+
+$$
+R(x) \equiv (x - \alpha) R'(x) + \beta,
+$$
+
+where $\beta$ is constant. If $\alpha$ is a root, then $\beta = 0$, and $R'$ has degree $t-1$ and the same roots as $R$ except possibly $\alpha$. Repeating this process $t$ times, we either run out of roots or end with a non-zero constant polynomial, which has no roots. ∎
+
+*Proof of the theorem.*  
+Consider $R(x) \equiv P(x) - Q(x)$. Then:
+
+- $\deg R \le d$,
+- each $x_0, \dots, x_d$ is a root of $R$.
+
+By the lemma, $R$ must be identically zero, hence $P \equiv Q$. ∎
+
+Because of this theorem, we can represent a polynomial not only by its **coefficients** but also by its **values at fixed points**, its “graph”:
+
+- choose points $x_0, \dots, x_{n-1}$,
+- store $(P(x_0), \dots, P(x_{n-1}))$.
+
+If we choose enough points, this completely determines the polynomial.
+
+In this representation, **multiplying polynomials is easy**:
+
+- At a point $x$, $(P \cdot Q)(x) = P(x) \cdot Q(x)$,
+- So we can multiply their graphs **component-wise** in linear time.
+
+We just have to remember: the product has **higher degree**, so we need **twice as many points**.
+
+---
+
+### Algorithm: Polynomial Multiplication via Graphs
+
+> **Algorithm: `PolynomialMultiplication` (conceptual)**
+
+```text
+Input:
+  - Polynomials P and Q of size n, given by their coefficients.
+Assumption:
+  - The upper n/2 coefficients of both P and Q are zero.
+    Thus their product R = P · Q also has size at most n.
+
+Steps:
+  1. Choose mutually distinct numbers x_0, ..., x_{n-1}.
+  2. Compute the graphs of P and Q:
+       (P(x_0), ..., P(x_{n-1})) and (Q(x_0), ..., Q(x_{n-1})).
+  3. Compute the graph of the product R by component-wise multiplication:
+       R(x_i) = P(x_i) · Q(x_i) for all i.
+  4. Recover the coefficients of R from its graph.
+Output:
+  - Coefficients of R.
+````
+
+Step 3 is $\Theta(n)$; the bottleneck is:
+
+* converting **coefficients → values**, and
+* converting **values → coefficients**.
+
+In general this is at best **quadratic**, but here we are free to **choose the points** $x_0, \dots, x_{n-1}$ smartly. With a clever choice, the conversion can be done in **$\Theta(n \log n)$** time via the FFT.
+
+---
+
+### Evaluating a Polynomial by Divide and Conquer
+
+Consider a polynomial $P$ of size $n$ that we want to evaluate at $n$ points.
+We choose the points to come in sign pairs:
+
+$$
+\pm x_0,\ \pm x_1,\ \dots,\ \pm x_{n/2 - 1}.
+$$
+
+Split $P$ into **even** and **odd** parts:
+
+$$
+\begin{aligned}
+P(x)
+&= (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2})
++ (p_1x^1 + p_3x^3 + \dots + p_{n-1}x^{n-1}) \
+&= (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2})
++ x (p_1x^0 + p_3x^2 + \dots + p_{n-1}x^{n-2}).
+\end{aligned}
+$$
+
+Now only **even powers** of $x$ appear inside the parentheses.
+Define new polynomials in a variable $t$:
+
+$$
+\begin{aligned}
+P_s(t) &= p_0 t^0 + p_2 t^1 + \dots + p_{n-2} t^{(n-2)/2}, \
+P_\ell(t) &= p_1 t^0 + p_3 t^1 + \dots + p_{n-1} t^{(n-2)/2}.
+\end{aligned}
+$$
+
+Then:
+
+$$
+P(x) = P_s(x^2) + x , P_\ell(x^2),
+$$
+
+and similarly:
+
+$$
+P(-x) = P_s(x^2) - x , P_\ell(x^2).
+$$
+
+So evaluating $P$ at $\pm x_0, \dots, \pm x_{n/2 - 1}$ reduces to evaluating $P_s$ and $P_\ell$ (each of size $n/2$) at $x_0^2, \dots, x_{n/2 - 1}^2$.
+
+This suggests a recurrence:
+
+$$
+T(n) = 2T(n/2) + \Theta(n) \quad \Rightarrow \quad T(n) = \Theta(n \log n)
+$$
+
+by the Master Theorem.
+
+However, over the **reals** this breaks: the squares $x_j^2$ are always **non-negative**, so the sign pairing is lost in recursion.
+This changes if we move to **complex numbers**, where we can choose special points (roots of unity) that remain well paired under squaring.
+
+---
+
+## 17.2 Intermezzo on Complex Numbers
+
+In this chapter, we will compute with **complex numbers**. Let’s quickly review the basics.
+
+### Basic Operations
+
+> **Definition.**
+> $$
+> \mathbb{C} = { a + bi \mid a, b \in \mathbb{R} }, \quad i^2 = -1.
+> $$
+
+* **Addition / subtraction**
+  $$
+  (a + bi) \pm (p + qi) = (a \pm p) + (b \pm q)i.
+  $$
+
+* **Multiplication**
+  $$
+  (a + bi)(p + qi) = (ap - bq) + (aq + bp)i.
+  $$
+
+* **Scalar multiplication** (for $\alpha \in \mathbb{R}$)
+  $$
+  \alpha (a + bi) = \alpha a + \alpha bi.
+  $$
+
+* **Complex conjugation**
+  $$
+  \overline{a + bi} = a - bi.
+  $$
+  Properties:
+
+  * $\overline{x} = x$ for real $x$,
+  * $\overline{x \pm y} = \overline{x} \pm \overline{y}$,
+  * $\overline{x \cdot y} = \overline{x} \cdot \overline{y}$,
+  * $x \cdot \overline{x} = a^2 + b^2 \in \mathbb{R}$.
+
+* **Absolute value**
+  $$
+  \rvert x\rvert = \sqrt{x \cdot \overline{x}} = \sqrt{a^2 + b^2}.
+  $$
+  For $\alpha \in \mathbb{R}$,
+  $\lvert \alpha x\rvert = \lvert \alpha\rvert \cdot \lvert x\rvert$.
+
+* **Division**
+  To compute $\dfrac{x}{y}$, multiply numerator and denominator by $\overline{y}$:
+
+  $$
+  \frac{x}{y} = \frac{x \cdot \overline{y}}{y \cdot \overline{y}},
+  $$
+
+  where the denominator is real, so we can divide the real and imaginary parts separately.
+
+---
+
+### Gaussian Plane and Trigonometric Form
+
+We can associate complex numbers with points in $\mathbb{R}^2$:
+
+$$
+a + bi \leftrightarrow (a, b).
+$$
+
+* $\|x\|$ is the distance from $(0, 0)$.
+* $\|x\| = 1$ describes the **unit circle** (the **complex units**).
+
+Any complex unit can be written as:
+
+$$
+x = \cos \phi + i \sin \phi, \quad \phi \in [0, 2\pi).
+$$
+
+For any $x \in \mathbb{C}$:
+
+$$
+x = \|x\| \big( \cos \phi(x) + i \sin \phi(x) \big),
+$$
+
+where $\phi(x)$ is the **argument** of $x$, denoted $\arg x$ (modulo $2\pi$).
+
+* $\phi(\overline{x}) = -\phi(x)$ (mod $2\pi$).
+
+---
+
+### Exponential Form
+
+> **Euler’s formula**
+> $$
+> e^{i\phi} = \cos \phi + i \sin \phi.
+> $$
+
+Thus any $x \in \mathbb{C}$ can be written as
+
+$$
+x = \|x\| e^{i\phi(x)}.
+$$
+
+* **Multiplication**
+  $$
+  xy = \|x\| \|y\| e^{i(\phi(x)+\phi(y))}.
+  $$
+
+  So absolute values multiply, and arguments add.
+
+* **Exponentiation** (for $\alpha \in \mathbb{R}$)
+  $$
+  x^\alpha = \|x\|^\alpha e^{i \alpha \phi(x)}.
+  $$
+
+---
+
+### Roots of Unity
+
+We now look at solutions of $x^n = 1$ in $\mathbb{C}$.
+
+* Since $\lvert x^n\rvert = \lvert x\rvert^n$, we must have $\|x\| = 1$, so $x = e^{i\phi}$.
+* Then
+  $$
+  1 = x^n = e^{i\phi n} = \cos(\phi n) + i \sin(\phi n),
+  $$
+  which holds when $\phi n = 2k\pi$ for some $k \in \mathbb{Z}$.
+
+Thus the **$n$-th roots of unity** are:
+
+$$
+e^{2k\pi i / n}, \quad k = 0, \dots, n-1.
+$$
+
+> **Definition (Primitive root of unity).**
+> A complex number $x$ is a **primitive $n$-th root of unity** if
+> $x^n = 1$ and none of $x^1, x^2, \dots, x^{n-1}$ equals $1$.
+
+For $n = 4$, the 4-th roots of unity are $1, -1, i, -i$.
+Among them, $i$ and $-i$ are primitive.
+
+In general, for $n > 2$, there are at least two primitive roots:
+
+* $\omega = e^{2\pi i / n}$,
+* $\overline{\omega} = e^{-2\pi i / n}$.
+
+Their powers traverse the unit circle:
+
+$$
+\omega^j = e^{2\pi i j / n} = 1 \iff j \equiv 0 \pmod{n}.
+$$
+
+> **Observation (Properties of primitive roots).**
+> Let $n$ be even and $\omega$ a primitive $n$-th root of unity.
+>
+> 1. All powers are distinct:
+>    $$
+>    \omega^j \ne \omega^k \quad \text{for } 0 \le j < k < n.
+>    $$
+>    This follows from $\omega^{k-j} = 1$ only if $k-j$ is a multiple of $n$.
+> 2. $\omega^{n/2} = -1$.
+>    Since $(\omega^{n/2})^2 = \omega^n = 1$, $\omega^{n/2}$ is a square root of 1, so it is either $1$ or $-1$.
+>    It cannot be $1$ (that would contradict primitivity), hence $\omega^{n/2} = -1$.
+
+---
+
+## 17.3 The Fast Fourier Transform (FFT)
+
+We now revisit the divide-and-conquer evaluation of polynomials, but this time using **primitive roots of unity** in the complex plane.
+
+We:
+
+1. Pad polynomials with zeros so their size $n$ is a power of two.
+2. Choose a **primitive $n$-th root of unity** $\omega$.
+3. Evaluate $P$ at the points
+   $$
+   \omega^0, \omega^1, \dots, \omega^{n-1}.
+   $$
+
+These points are:
+
+* distinct complex numbers,
+* paired nicely: for $0 \le j < n/2$,
+  $$
+  \omega^{n/2 + j} = \omega^{n/2} \omega^j = -\omega^j.
+  $$
+
+Moreover, $\omega^2$ is a primitive $(n/2)$-th root of unity, so we can recurse on a **similar problem** of half the size.
+
+This yields a divide-and-conquer algorithm with complexity:
+
+$$
+\Theta(n \log n)
+$$
+
+for evaluating polynomials at these special points. When implemented on coefficient vectors, this becomes the **Fast Fourier Transform (FFT)**.
+
+---
+
+### Algorithm: FFT (Recursive)
+
+> **FFT Algorithm**
+> Input:
+>
+> * $n = 2^k$ (a power of 2)
+> * a primitive $n$-th root of unity $\omega$
+> * a vector of coefficients $(p_0, \dots, p_{n-1})$ of a polynomial $P$
+
+```text
+FFT(n, ω, (p_0, ..., p_{n-1})):
+
+1. If n = 1:
+       y_0 ← p_0
+       return (y_0)
+
+2. Split coefficients into even and odd indices:
+
+       (s_0, ..., s_{n/2-1}) ← FFT(n/2, ω^2, (p_0, p_2, ..., p_{n-2}))
+       (ℓ_0, ..., ℓ_{n/2-1}) ← FFT(n/2, ω^2, (p_1, p_3, ..., p_{n-1}))
+
+3. Combine:
+
+       For j = 0, ..., n/2 - 1:
+           t  ← ω^j · ℓ_j   (ω^j can be updated iteratively)
+           y_j       ← s_j + t
+           y_{j+n/2} ← s_j - t
+
+4. Return (y_0, ..., y_{n-1}).
+```
+
+Output:
+
+* $(y_0, \dots, y_{n-1})$ where
+  $$
+  y_j = P(\omega^j).
+  $$
+
+---
+
+### Discrete Fourier Transform (DFT)
+
+It is convenient to think of polynomial evaluation as a **linear transform** on vectors.
+
+> **Definition (Discrete Fourier Transform).**
+> Fix a primitive $n$-th root of unity $\omega$.
+> The **DFT** is a map $F : \mathbb{C}^n \to \mathbb{C}^n$ that transforms a vector
+> $\mathbf{x} = (x_0, \dots, x_{n-1})$ into $\mathbf{y} = (y_0, \dots, y_{n-1})$:
+> $$
+> y_j = \sum_{k=0}^{n-1} x_k \omega^{jk}.
+> $$
+
+If $\mathbf{p}$ is the coefficient vector of a polynomial $P$, then:
+
+* $F(\mathbf{p})$ is exactly the vector of values
+  $$
+  (P(\omega^0), P(\omega^1), \dots, P(\omega^{n-1})).
+  $$
+
+Thus the FFT computes the DFT in $\Theta(n \log n)$ time.
+
+The DFT is linear and can be written as a matrix multiplication.
+Let $\Omega$ be the matrix with entries:
+
+$$
+\Omega_{jk} = \omega^{jk}.
+$$
+
+Then:
+
+$$
+F(\mathbf{p}) = \Omega \mathbf{p}.
+$$
+
+To invert the transform, we need $\Omega^{-1}$.
+
+Let $\bar{\omega} = \omega^{-1}$ and $\bar{\Omega}$ the matrix with entries $\bar{\Omega}_{jk} = \bar{\omega}^{jk}$.
+
+> **Claim.**
+> $$
+> \Omega \cdot \bar{\Omega} = n E,
+> $$
+> where $E$ is the identity matrix.
+
+*Proof sketch.*
+Compute each entry:
+
+$$
+(\Omega \bar{\Omega})*{jk}
+= \sum*{\ell=0}^{n-1} \Omega_{j\ell} \bar{\Omega}*{\ell k}
+= \sum*{\ell=0}^{n-1} \omega^{j\ell} \bar{\omega}^{\ell k}
+= \sum_{\ell=0}^{n-1} \omega^{\ell(j-k)}.
+$$
+
+This is a geometric series:
+
+* If $j = k$, all terms are $1$, so the sum is $n$.
+* If $j \ne k$, the ratio is $q = \omega^{j-k} \ne 1$, and
+  $$
+  \sum_{\ell=0}^{n-1} q^\ell = \frac{q^n - 1}{q - 1} = 0,
+  $$
+  since $q^n = \omega^{(j-k)n} = 1$.
+
+Thus $(\Omega \bar{\Omega})_{jk}$ is $n$ for $j=k$ and $0$ otherwise. ∎
+
+Therefore:
+
+$$
+\Omega^{-1} = \frac{1}{n} \bar{\Omega}.
+$$
+
+Note that $\bar{\omega}$ is also a primitive $n$-th root of unity, so the **inverse DFT** is (up to scaling) another DFT and can be computed via the same FFT algorithm.
+
+> **Conclusion.**
+>
+> * If $n$ is a power of two, both the DFT and its inverse on $\mathbb{C}^n$ can be computed in $\Theta(n \log n)$ time.
+> * Polynomials of size $n$ over $\mathbb{C}$ can be multiplied in $\Theta(n \log n)$ time.
+
+*Sketch of fast polynomial multiplication.*
+
+1. Pad the coefficient vectors of both polynomials with zeros so that the total length is a power of two and long enough to hold the product.
+2. Apply DFT (via FFT) to both vectors: $\Theta(n \log n)$.
+3. Multiply the resulting vectors component-wise: $\Theta(n)$.
+4. Apply the inverse DFT (via FFT) to get the coefficients of the product: $\Theta(n \log n)$.
+
+The DFT/FFT also underlies many applications in:
+
+* audio and image compression (e.g. MP3, JPEG),
+* audio filtering,
+* speech recognition,
+* and many algebraic algorithms.
+
+---
+
+### Exercises (Section 17.1 – 17.3)
+
+1. **Polynomial division.**
+   Derive polynomial division with remainder: for polynomials $P, Q$ with $\deg Q > 0$, show that there exist polynomials $R, S$ such that
+   $$
+   P \equiv Q R + S, \quad \deg S < \deg Q.
+   $$
+   Design the most efficient algorithm for this division.
+
+2. **Lagrange interpolation.**
+   Given mutually distinct $x_0, \dots, x_n$ and values $y_0, \dots, y_n$, define
+   $$
+   A_j(x) = \prod_{k \ne j} (x - x_k), \qquad
+   B_j(x) = \frac{A_j(x)}{\prod_{k \ne j} (x_j - x_k)}, \qquad
+   P(x) = \sum_j y_j B_j(x).
+   $$
+   Prove $\deg P \le n$ and $P(x_j) = y_j$ for all $j$.
+
+3. **Fast Lagrange interpolation.**
+   Construct the fastest possible algorithm for Lagrange interpolation.
+
+4. **Vandermonde matrix.**
+   Consider the matrix $V$ with entries $V_{jk} = x_j^k$.
+   Show that if the $x_j$ are mutually distinct, then $V$ is non-singular, so the system
+   
+   $$
+   Vp = y
+   $$
+
+   has a unique solution.
+
+5. **Secret sharing.**
+   To launch a nuclear bomb, at least $k$ of $n$ generals must agree.
+   Devise a way to derive $n$ keys from the launch code so that:
+
+   * any group of $k$ generals can reconstruct the code, and
+   * any smaller group learns nothing about the code except its length.
+
+---
+
+## 17.4* Spectral Decomposition
+
+This section connects FFT with **digital signal processing**, focusing on 1D signals (like audio).
+
+Consider a real function $f$ on $[0, 1)$. Sample it at $n$ evenly spaced points:
+
+$$
+f_j = f(j/n), \quad j = 0, \dots, n-1.
+$$
+
+This gives a real vector $\mathbf{f} \in \mathbb{R}^n$.
+We ask: *What does the Fourier image of $\mathbf{f}$ tell us about $f$?*
+
+### DFT of Real Vectors
+
+Let $\mathbf{x} \in \mathbb{R}^n$ and $\mathbf{y} = F(\mathbf{x})$ its DFT.
+
+> **Lemma (Conjugate symmetry).**
+> If $\mathbf{x}$ is real, then $\mathbf{y}$ satisfies:
+> $$
+> y_j = \overline{y_{n-j}} \quad \text{for all } j.
+> $$
+
+In particular, $y_0$ and $y_{n/2}$ are real (for even $n$).
+
+Conjugate symmetric vectors in $\mathbb{C}^n$ form a vector space of dimension $n$ over $\mathbb{R}$:
+
+* $y_0, y_{n/2}$ are real,
+* for $y_1, \dots, y_{n/2 - 1}$ we may choose real and imaginary parts freely,
+* the rest is determined by $y_j = \overline{y_{n-j}}$.
+
+Counting parameters:
+
+$$
+2 \ (\text{real}) + 2 \cdot (n/2 - 1) = n.
+$$
+
+---
+
+### Fourier Basis
+
+Fix $n$ and set $\omega = e^{2\pi i / n}$.
+Define vectors by sampling over $[0, 1)$:
+
+* $\mathbf{e}_k$: samples of $e^{2k\pi i x}$,
+* $\mathbf{s}_k$: samples of $\sin(2k\pi x)$,
+* $\mathbf{c}_k$: samples of $\cos(2k\pi x)$.
+
+For $0 < k < n/2$:
+
+* $F(\mathbf{e}_k)$ has a single non-zero component at position $k$:
+  $$
+  F(\mathbf{e}_k) = (0, \dots, 0, n, 0, \dots, 0).
+  $$
+* $F(\mathbf{s}_k)$ has two imaginary components at $k$ and $n-k$.
+* $F(\mathbf{c}_k)$ has two real components at $k$ and $n-k$.
+
+At the boundaries:
+
+* $\mathbf{s}*0$ and $\mathbf{s}*{n/2}$ are zero (and so are their transforms).
+* $\mathbf{c}_0$ is the all-ones vector with
+  $$
+  F(\mathbf{c}_0) = (n, 0, \dots, 0).
+  $$
+* $\mathbf{c}*{n/2} = (1, -1, \dots, 1, -1)$ with
+  $$
+  F(\mathbf{c}*{n/2}) = (0, \dots, 0, n, 0, \dots, 0)
+  $$
+  having $n$ at position $n/2$.
+
+---
+
+### Discrete Fourier Series
+
+Any conjugate symmetric vector can be expressed as a real linear combination of:
+
+* $F(\mathbf{s}*1), \dots, F(\mathbf{s}*{n/2 - 1})$,
+* $F(\mathbf{c}*0), \dots, F(\mathbf{c}*{n/2})$.
+
+Because the DFT is linear and invertible, any real vector $\mathbf{x} \in \mathbb{R}^n$ can be expressed as:
+
+$$
+\mathbf{x}
+= \sum_{k=0}^{n/2} \alpha_k \mathbf{c}_k
+
+* \sum_{k=1}^{n/2 - 1} \beta_k \mathbf{s}_k,
+  $$
+
+for suitable real coefficients $\alpha_k, \beta_k$.
+
+Let $\mathbf{y} = F(\mathbf{x}) = (a_0 + ib_0, \dots, a_{n-1} + ib_{n-1})$.
+Then:
+
+* $\alpha_0 = a_0 / n$,
+* $\alpha_k = 2 a_k / n$ for $k = 1, \dots, n/2$,
+* $\beta_k = -2 b_k / n$ for $k = 1, \dots, n/2 - 1$,
+* $\beta_0 = \beta_{n/2} = 0$ (since $\mathbf{s}*0$ and $\mathbf{s}*{n/2}$ are zero).
+
+Thus:
+
+> **Interpretation.**
+> For any real function $f$ on $[0, 1)$, there exists a combination of sines and cosines,
+> $\sin(2k\pi x)$ and $\cos(2k\pi x)$, whose sampled values at $n$ points match $f$ exactly.
+
+In audio processing:
+
+* $\alpha \cos x + \beta \sin x = A \sin(x + \phi)$ for some amplitude $A$ and phase $\phi$,
+* Each Fourier coefficient describes a **frequency**, with:
+
+  * amplitude $A$ (from $\lvert y_k\rvert$),
+  * phase shift $\phi$ (from $\arg y_k$).
+* This is the **spectral decomposition** of the signal.
+
+FFT makes spectral decomposition **computationally efficient**.
+
+---
+
+### Exercises (Section 17.4)
+
+1. Prove the converse of the conjugate symmetry lemma:
+   The DFT of a conjugate symmetric vector is real.
+
+2. Finish the proof of the formulas for $F(\mathbf{s}_k)$ and $F(\mathbf{c}_k)$.
+
+3. **Discrete Cosine Transform (DCT).**
+   Given $(x_0, \dots, x_{n/2})$, extend it to a real symmetric vector
+   $\mathbf{x} = (x_0, \dots, x_{n/2}, x_{n/2-1}, \dots, x_1)$.
+   Show that the first $n/2+1$ components of $F(\mathbf{x})$ describe a decomposition into cosine vectors $\mathbf{c}_k$.
+
+4. **Convolution.**
+   Define convolution $\mathbf{z} = \mathbf{x} * \mathbf{y}$ by
+   $$
+   z_j = \sum_k x_k y_{j-k} \quad (\text{indices mod } n).
+   $$
+   Prove:
+
+   * commutativity,
+   * associativity,
+   * bilinearity,
+   * and that $F(\mathbf{x} * \mathbf{y}) = F(\mathbf{x}) \odot F(\mathbf{y})$, where $\odot$ is component-wise multiplication.
+
+5. **Signal smoothing.**
+   Consider smoothing
+   $$
+   y_j = \tfrac14 x_{j-1} + \tfrac12 x_j + \tfrac14 x_{j+1}.
+   $$
+   Interpret this as a convolution with a mask $\mathbf{z}$ and analyze the effect using $F(\mathbf{z})$.
+
+6. **Back to polynomials.**
+   Note that coefficient-wise operations in polynomial multiplication form a convolution. Show how the FFT-based convolution algorithm gives fast polynomial multiplication.
+
+7. **Diagonalization.**
+   Interpret $F(\mathbf{x} * \mathbf{y}) = F(\mathbf{x}) \odot F(\mathbf{y})$ as diagonalization of convolution via the Fourier basis.
+
+8. **2D DFT.**
+   Define the 2D DFT for $X \in \mathbb{C}^{n \times n}$:
+   $$
+   Y_{jk} = \sum_{u,v} X_{uv} \omega^{ju + kv}.
+   $$
+   Show it is a bijection and derive a fast algorithm via 1D FFTs along rows/columns.
+
+---
+
+## 17.5* Other FFT Variants
+
+### FFT as a Gate Network
+
+The recursive FFT can be visualized as a **network of “butterfly” gates**:
+
+* inputs on the left, outputs on the right,
+* each layer computes linear combinations of the form $a + \omega^k b$,
+* there are $\log_2 n$ layers, each with $\Theta(n)$ operations.
+
+This can be implemented as a **parallel circuit**:
+
+* time $\Theta(\log n)$,
+* space $\Theta(n \log n)$.
+
+The input order corresponds to a **bit-reversal permutation**.
+
+---
+
+### Non-Recursive FFT
+
+We can evaluate the circuit layer by layer (iterative FFT).
+
+> **Algorithm: `FFT2` (Non-recursive FFT)**
+
+```text
+Input:
+  - Complex numbers x_0, ..., x_{n-1}
+  - A primitive n-th root of unity ω
+
+1. Precompute ω^0, ω^1, ..., ω^{n-1}.
+2. For k = 0, ..., n-1:
+       y_k ← x_{r(k)}    // r(k) is the bit-reversal of k
+3. b ← 1                // current block size
+
+4. While b < n:
+       For j = 0, ..., n-1 in steps of 2b:
+           For k = 0, ..., b-1:
+               α ← ω^{n k / (2b)}
+               (y_{j+k}, y_{j+k+b}) ←
+                   (y_{j+k} + α · y_{j+k+b},
+                    y_{j+k} - α · y_{j+k+b})
+       b ← 2b
+
+Output:
+  - y_0, ..., y_{n-1}
+```
+
+---
+
+### FFT in Finite Fields
+
+The Fourier transform can also be defined over certain **finite fields** $\mathbb{Z}_p$ if a suitable primitive $n$-th root of unity exists.
+
+Recall:
+
+* The multiplicative group of non-zero elements of $\mathbb{Z}_p$ is **cyclic**.
+* So there exists a generator $g$ such that
+  $$
+  { g^0, g^1, \dots, g^{p-2} }
+  $$
+  is the set of all non-zero elements.
+
+Thus $g$ is a primitive $(p-1)$-st root of unity.
+If $p-1$ is divisible by $n$, then:
+
+* $\omega = g^{(p-1)/n}$ is a primitive $n$-th root of unity in $\mathbb{Z}_p$,
+* we can perform FFT modulo $p$.
+
+Practical choices:
+
+* $p = 2^{16} + 1 = 65537$, $g = 3$ (works for $n = 2^{16}$),
+* $p = 15 \cdot 2^{27} + 1$, $g = 31$ ($n = 2^{27}$ with $\omega = g^{15} \bmod p$),
+* $p = 3 \cdot 2^{30} + 1$, $g = 5$ ($n = 2^{30}$ with $\omega = g^{3} \bmod p$).
+
+We don’t even need a field; a commutative ring with:
+
+* a primitive $n$-th root of unity $\omega$,
+* its multiplicative inverse,
+* and the inverse of $n$,
+
+is enough.
+
+The advantage: **no floating-point rounding errors**, which is valuable for algorithms like **large integer multiplication**.
+
+---
+
+### Exercises (Section 17.5)
+
+1. Devise an efficient method for computing the bit-reversal permutation $r(k)$ used in `FFT2`.
+
+2. **Fast integer multiplication via FFT.**
+   To multiply two $N$-bit numbers $x, y$:
+
+   * break them into $k$-bit blocks (base $B = 2^k$),
+   * represent them as polynomials $X(t), Y(t)$ with $X(B) = x$, $Y(B) = y$,
+   * compute $Z = X \cdot Y$ via FFT in a suitable finite field,
+   * evaluate $Z(B)$ to get $xy$.
+
+   With an appropriate choice of field and $k = \Theta(\log N)$:
+
+   * show this yields a nearly linear-time multiplication algorithm,
+   * analyze the size of coefficients in $Z$,
+   * and show that evaluating $Z(B)$ can be done efficiently.
+
+
+
+<!-- # Fourier Transform
+
 What does polynomial multiplication have in common with audio compression? Or with image recognition? In this chapter, we will show that behind all these questions lies a common algebraic structure, known to mathematicians as the Discrete Fourier Transform. We will derive an efficient algorithm for calculating this transform and show some of its interesting consequences.
 
 17.1 Polynomials and Their Multiplication
@@ -237,7 +1109,7 @@ Specifically, $y_0 = \bar{y}_0$ and $y_{n/2} = \bar{y}_{n/2}$, which implies tha
 
 The conjugate symmetric vectors in $\mathbb{C}^n$ form a vector space of dimension $n$ over the field of real numbers, $\mathbb{R}$.
 
-Proof: We verify the vector space axioms. It is important that the space is constructed over \mathbb{R} and not \mathbb{C}, as multiplying a conjugate symmetric vector by a complex scalar does not generally preserve the symmetry.
+Proof: We verify the vector space axioms. It is important that the space is constructed over $\mathbb{R}$ and not $\mathbb{C}$, as multiplying a conjugate symmetric vector by a complex scalar does not generally preserve the symmetry.
 
 Regarding the dimension: in a conjugate symmetric vector $\mathbf{y}$, the components $y_0$ and $y_{n/2}$ are real. For the components $y_1, \dots, y_{n/2-1}$, we can choose both their real and imaginary parts freely. The remaining components are then uniquely determined by the symmetry property. The vector is therefore determined by $2 + 2(n/2-1) = n$ independent real parameters. ∎
 
@@ -342,4 +1214,4 @@ The advantage of these forms of the Fourier transform is that, unlike the classi
 Exercises
 
 1. Propose a method for calculating the bit-reversal permutation in the FFT2 algorithm.
-2. Fast Number Multiplication using FFT: To multiply two $N$-bit numbers, $x$ and $y$, we can break them into $k$-bit blocks. This is equivalent to writing them in a base $B=2^k$: $x = \sum_j x_j B^j$. We associate each number with a polynomial, e.g., $X(t) = \sum_j x_j t^j$, such that $X(B) = x$. We can then multiply numbers by multiplying their corresponding polynomials. We construct polynomials $X$ and $Y$, compute their product $Z = X \cdot Y$ using FFT, and then evaluate $Z(B)$ to get the final result $Z(B) = X(B) \cdot Y(B) = xy$. By choosing an appropriate finite field and setting $k=\Theta(\log N)$, show how this approach leads to an algorithm for multiplying $N$-bit numbers in nearly linear time. Analyze the size of the coefficients of polynomial $Z$ and show that the final evaluation of $Z(B)$ can be done efficiently.
+2. Fast Number Multiplication using FFT: To multiply two $N$-bit numbers, $x$ and $y$, we can break them into $k$-bit blocks. This is equivalent to writing them in a base $B=2^k$: $x = \sum_j x_j B^j$. We associate each number with a polynomial, e.g., $X(t) = \sum_j x_j t^j$, such that $X(B) = x$. We can then multiply numbers by multiplying their corresponding polynomials. We construct polynomials $X$ and $Y$, compute their product $Z = X \cdot Y$ using FFT, and then evaluate $Z(B)$ to get the final result $Z(B) = X(B) \cdot Y(B) = xy$. By choosing an appropriate finite field and setting $k=\Theta(\log N)$, show how this approach leads to an algorithm for multiplying $N$-bit numbers in nearly linear time. Analyze the size of the coefficients of polynomial $Z$ and show that the final evaluation of $Z(B)$ can be done efficiently. -->
