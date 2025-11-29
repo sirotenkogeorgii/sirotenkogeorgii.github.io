@@ -1189,7 +1189,7 @@ $$
 This approach allows for "partial pooling," where information is shared across subjects through the parent distribution, leading to more robust estimates while still allowing for individual variation.
 
 
----
+<!-- ---
 
 ## 6. Hierarchical Modeling for Multiple Time Series
 
@@ -1392,7 +1392,7 @@ We require $k_i > 0$ and $\beta_i > 0$, so we model their **logarithms** as Gaus
 
 #### 6.2.4 Full Bayesian Formulation
 
-Let $k = \rbracek_i\lbrace_{i=1}^N$ and $\beta = \lbrace\beta_i\rbrace_{i=1}^N$, and let $Y = \lbraceY_i\rbrace_{i=1}^N$.
+Let $k = \rbrace k_i\lbrace_{i=1}^N$ and $\beta = \lbrace\beta_i\rbrace_{i=1}^N$, and let $Y = \lbraceY_i\rbrace_{i=1}^N$.
 
 We seek the posterior
 
@@ -1888,7 +1888,403 @@ $$
 
 must lie **outside** the unit circle, where $A(z)$ encodes the lag structure.
 
-This generalizes the AR(1) condition $\lvert a_1\rvert < 1$ and the AR($p$) “roots outside unit circle” criterion to the multivariate case.
+This generalizes the AR(1) condition $\lvert a_1\rvert < 1$ and the AR($p$) “roots outside unit circle” criterion to the multivariate case. -->
 
+Here are the new notes reformatted to match the style and structure of your previous lecture notes. I have added the front matter, the CSS for the accordions, and integrated specific image tags and LaTeX formatting to ensure consistency.
+
+
+## 6. Hierarchical Modeling for Multiple Time Series
+
+When analyzing data from multiple subjects or independent sources, we often face a modeling choice between two extremes. This section introduces hierarchical modeling as a powerful intermediate approach that balances individual specificity with group-level stability.
+
+### 1.1 Hierarchical Modeling
+
+#### 1.1.1 Problem Formulation
+
+Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, we have a time series dataset $D_i$.
+
+  * The data for subject $i$ consists of $T_i$ time steps: $D_i = \lbrace x_{i1}, x_{i2}, \dots, x_{iT_i} \rbrace$.
+  * For simplicity, we can assume all time series have the same length, $T_i = T$.
+  * Each observation may also be associated with inputs: $W_i = \lbrace w_{i1}, w_{i2}, \dots, w_{iT_i} \rbrace$.
+
+#### 1.1.2 Two Extreme Modeling Strategies
+
+1.  **Separate Models:**
+    Fit a completely independent model with parameters $\theta_i$ to each dataset $D_i$.
+
+      * **Advantage:** This approach is excellent for capturing individual differences, as each model is tailored specifically to its own data.
+      * **Disadvantage:** If the number of time steps $T$ is small and the model is complex, the estimates for $\theta_i$ can be noisy and highly prone to overfitting. There is no sharing of information across subjects.
+
+2.  **Fully Pooled Model:**
+    Concatenate all data into a single large dataset: $D_{\text{pooled}} = \lbrace D_1, D_2, \dots, D_N \rbrace$. Fit a single parameter vector $\theta$ to all the data.
+
+      * **Advantage:** This method yields more stable parameter estimates because it leverages the entire data pool.
+      * **Disadvantage:** It completely ignores inter-individual differences, assuming all subjects are governed by the exact same process.
+
+#### 1.1.3 The Hierarchical Approach
+
+Hierarchical modeling provides a principled compromise between these two extremes.
+
+**Core Idea:** We introduce subject-specific parameters $\theta_1, \theta_2, \dots, \theta_N$, but we assume they are not arbitrary. Instead, they are drawn from a common parent distribution, which is itself described by hyperparameters.
+
+**Mathematical Formulation:**
+Each subject's parameter $\theta_i$ is drawn from a parent distribution parameterized by $\beta$:
+$$\theta_i \sim p(\theta \mid \beta)$$
+
+We then place a prior distribution, known as a **hyperprior**, on the hyperparameters $\beta$:
+$$\beta \sim p(\beta)$$
+
+This creates a hierarchical chain of dependencies:
+$$\beta \rightarrow \theta_i \rightarrow D_i \quad \text{for } i=1, \dots, N$$
+
+The goal of hierarchical Bayesian inference is to compute the joint posterior distribution of all subject-level parameters and group-level hyperparameters given the observed data from all subjects.
+
+The joint distribution over all data ($D_{1:N}$), parameters ($\theta_{1:N}$), and hyperparameters ($\beta$) is given by:
+
+$$
+p(\beta, \lbrace\theta_i\rbrace_{i=1}^N, \lbrace D_i\rbrace_{i=1}^N) = p(\beta) \prod_{i=1}^N \left[ p(\theta_i \mid \beta) p(D_i \mid \theta_i) \right]
+$$
+
+Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \beta \mid D_1, \dots, D_N)$. This structure allows the model to "borrow statistical strength" across subjects. The data from subject $j$ informs the posterior of $\theta_j$, which in turn informs the posterior of the group hyperparameter $\beta$. This updated knowledge about $\beta$ then helps to regularize and improve the estimates for all other subjects' parameters $\theta_i$ where $i \neq j$.
+
+### 1.2 Example: Hierarchical Delay Discounting
+
+Let's consider a concrete example of hierarchical modeling applied to a delay discounting task in cognitive science.
+
+#### 1.2.1 Data and Task Structure
+
+We have data from $N$ individuals. Subject $i$ performs $T_i$ trials, indexed by $t=1, \dots, T_i$. In each trial, the subject chooses between two options:
+
+1.  An immediate reward of value $A_{I,it}$.
+2.  A delayed reward of value $A_{D,it}$ available after a delay $D_{it}$.
+
+The observed data for each trial is a binary choice $y_{it}$:
+
+$$
+y_{it} = \begin{cases} 1 & \text{if delayed choice is selected} \\ 0 & \text{if immediate choice is selected} \end{cases}
+$$
+
+The full dataset for subject $i$ is $Y_i = \lbrace y_{it}\rbrace_{t=1}^{T_i}$.
+
+#### 1.2.2 Model Architecture: Hyperbolic Delay Discounting
+
+The subjective value of the options is modeled as follows:
+
+  * **Value of Immediate Option:** $V_{I,it} = A_{I,it}$
+  * **Value of Delayed Option:** The value of the delayed reward is discounted hyperbolically based on the delay duration.
+    $$V_{D,it} = \frac{A_{D,it}}{1 + k_i D_{it}}$$
+    Here, $k_i > 0$ is the subject-specific **discount rate**. A higher $k_i$ means the subject devalues future rewards more steeply.
+
+The choice is then modeled based on the utility difference, $\Delta V_{it} = V_{D,it} - V_{I,it}$. A positive $\Delta V_{it}$ indicates a preference for the delayed option.
+
+The probability of choosing the delayed option is modeled using a logistic function (i.e., logistic regression):
+
+$$
+p_{it} := P(y_{it} = 1 \mid k_i, \beta_i) = \sigma(\beta_i \Delta V_{it}) = \frac{1}{1 + \exp(-\beta_i \Delta V_{it})}
+$$
+
+where $\beta_i$ is a subject-specific "softmax" temperature parameter controlling the steepness of the decision boundary. The likelihood for the observed choices of a single individual $i$ follows a Bernoulli distribution:
+
+$$
+\mathcal{L}(k_i, \beta_i \mid Y_i) = \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}
+$$
+
+#### 1.2.3 Hierarchical Priors
+
+Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-level structure. Since $k_i$ and $\beta_i$ must be positive, we model their logarithms as being drawn from a Normal distribution.
+
+  * **Individual Parameters:** $k = \lbrace k_i\rbrace_{i=1}^N$ and $\beta = \lbrace \beta_i\rbrace_{i=1}^N$.
+    $$
+    $$
+    $$
+    $$
+    \\begin{aligned}
+    \\log(k\_i) &\\sim \\mathcal{N}(\\mu\_k, \\sigma\_k^2) \\
+    \\log(\\beta\_i) &\\sim \\mathcal{N}(\\mu\_\\beta, \\sigma\_\\beta^2)
+    \\end{aligned}
+    $$
+    $$
+    $$
+    $$
+  * **Group-level Hyperparameters:** The means $(\mu_k, \mu_\beta)$ and variances $(\sigma_k^2, \sigma_\beta^2)$ of the parent distributions.
+  * **Hyperpriors:** We place priors on the hyperparameters themselves.
+      * *Priors on Means:* $\mu_k \sim \mathcal{N}(\mu_{k0}, \sigma_{k0}^2)$ and $\mu_\beta \sim \mathcal{N}(\mu_{\beta 0}, \sigma_{\beta 0}^2)$.
+      * *Priors on Variances:* $\sigma_k^2 \sim \text{Inverse-Gamma}(a_k, b_k)$ and $\sigma_\beta^2 \sim \text{Inverse-Gamma}(a_\beta, b_\beta)$.
+
+#### 1.2.4 Full Bayesian Formulation
+
+The goal is to obtain the full posterior distribution over all parameters and hyperparameters given the data $Y$:
+$$P(k, \beta, \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2 \mid Y)$$
+
+By Bayes' theorem, this is proportional to the product of the likelihood and the priors:
+$$\propto P(Y \mid k, \beta) P(k, \beta \mid \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2) P(\mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2)$$
+
+  * **Joint Likelihood:** Assuming independence across subjects given their parameters:
+    $$P(Y \mid k, \beta) = \prod_{i=1}^N P(Y_i \mid k_i, \beta_i)$$
+  * **Joint Prior on Individual Parameters:**
+    $$P(k, \beta \mid \dots) = \left[ \prod_{i=1}^N P(\log(k_i) \mid \mu_k, \sigma_k^2) \right] \left[ \prod_{i=1}^N P(\log(\beta_i) \mid \mu_\beta, \sigma_\beta^2) \right]$$
+  * **Joint Hyperprior:** Assuming independence of the hyperparameters:
+    $$P(\mu_k, \mu_\beta, \sigma_k^2, \sigma_\beta^2) = P(\mu_k) P(\mu_\beta) P(\sigma_k^2) P(\sigma_\beta^2)$$
+
+By combining these expressions, we define the full model. Inference is typically performed using sampling techniques like Markov Chain Monte Carlo (MCMC).
+
+### 1.3 Alternative: Hierarchical Modeling with a Parent Matrix
+
+An alternative parametrization for hierarchical models, particularly useful in high-dimensional settings, involves a shared parent matrix.
+
+  * **Naive Parametrization:** Each subject $i$ has a parameter vector $\theta_i \in \mathbb{R}^p$. The total number of parameters to estimate for the subject level is $p \times N$.
+  * **Parent Matrix Parametrization:** We introduce a shared parent matrix $W \in \mathbb{R}^{p \times k}$ (with $k < p$) and individual subject vectors $h_i \in \mathbb{R}^k$. The subject-specific parameter vector $\theta_i$ is then constructed as a linear combination of the columns of $W$:
+    $$\theta_i = W h_i$$
+    The total number of parameters is now $(p \times k) + (k \times N)$, which can be significantly smaller than $p \times N$ if $k$ is chosen well. This acts as a form of dimensionality reduction.
+  * **Hierarchical Chain:** The dependency structure becomes: $W, h_i \rightarrow \theta_i \rightarrow D_i$.
+
+-----
+
+## 2\. Autoregressive Moving Average (ARMA) Models
+
+ARMA models are a fundamental class of models for analyzing stationary time series. They are built on the principle that the current value of a series can be explained by a combination of its own past values and past random shocks.
+
+### 2.1 Motivation and Components
+
+If the residuals of a regression model on time series data are found to be autocorrelated or cross-correlated, it implies that the model is missing important temporal structure. ARMA models are designed to capture this very structure.
+
+  * **Autoregressive (AR) Part:** This component regresses the time series on its own past values. It captures the "memory" or persistence in the series.
+  * **Moving Average (MA) Part:** This component models the current value as a function of past random perturbations or "shocks". It can be thought of as a sequence of weighted random shocks.
+
+#### 2.1.1 The Autoregressive AR(p) Model
+
+An **Autoregressive model of order p**, denoted **AR(p)**, is defined as:
+
+$$
+X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t
+$$
+
+where $\epsilon_t$ is a white noise process, typically $\epsilon_t \sim \mathcal{WN}(0, \sigma^2)$.
+
+#### 2.1.2 The Moving Average MA(q) Model
+
+A **Moving Average model of order q**, denoted **MA(q)**, is defined as:
+
+$$
+X_t = b_0 + \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}
+$$
+
+Note that $X_t$ depends on past **error terms**, not past values of $X$ itself.
+
+#### 2.1.3 The ARMA(p,q) Model
+
+Combining these two components gives the **ARMA(p,q)** model:
+
+$$
+X_t = c + \sum_{i=1}^p a_i X_{t-i} + \sum_{j=1}^q b_j \epsilon_{t-j} + \epsilon_t
+$$
+
+This can also be extended to include external inputs $u_t$. The full set of model parameters to be estimated is $\theta = \{c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \}$.
+
+### 2.2 Duality and Stationarity
+
+#### 2.2.1 Duality of AR and MA Processes
+
+There is a fundamental duality between AR and MA processes. Under certain stability conditions, any finite-order AR process can be represented as an infinite-order MA process, and vice-versa.
+
+Let's examine this with a simple AR(1) process: $X_t = a_0 + a_1 X_{t-1} + \epsilon_t$. We can recursively expand this expression:
+
+$$
+\begin{aligned}
+X_t &= a_0 + a_1(a_0 + a_1 X_{t-2} + \epsilon_{t-1}) + \epsilon_t \\
+&= a_0 + a_1 a_0 + a_1^2 X_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
+&= a_0(1 + a_1) + a_1^2 (a_0 + a_1 X_{t-3} + \epsilon_{t-2}) + a_1 \epsilon_{t-1} + \epsilon_t \\
+&= a_0(1 + a_1 + a_1^2) + a_1^3 X_{t-3} + a_1^2 \epsilon_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
+&\dots \\
+&= a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}
+\end{aligned}
+$$
+
+This infinite expansion is only valid if the series converges.
+
+#### 2.2.2 Stationarity in the Mean for AR(1)
+
+For the process to be stationary in the mean, its expected value must be constant and finite. Taking the expectation of the expanded form:
+
+$$
+E[X_t] = E\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]
+$$
+
+$$
+E[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k E[\epsilon_{t-k}]
+$$
+
+Since $E[\epsilon_{t-k}]=0$, the second term vanishes. The first term is a geometric series which converges if and only if $\lvert a_1 \rvert < 1$.
+
+$$
+E[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1
+$$
+
+Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
+
+\<div class="accordion"\>
+\<details\>
+\<summary\>Why must \|a\| \< 1?\</summary\>
+\<p\>
+This condition arises from the convergence of the geometric series. If $\lvert a_1 \rvert \ge 1$, the influence of past shocks ($\epsilon_{t-k}$) does not diminish over time. Instead, it persists or explodes, meaning the mean and variance of the process would not be constant, violating the definition of stationarity.
+\</p\>
+\</details\>
+\</div\>
+
+#### 2.2.3 State-Space Representation and Stability
+
+A powerful technique for analyzing AR models is to write them in a state-space (or vector) form. Any scalar AR(p) process can be represented as a p-variate VAR(1) process.
+
+Consider an AR(p) process $X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$. We can define a $p$-dimensional state vector $\mathbf{X}_t$:
+
+$$
+\mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}
+$$
+
+The process can then be written in the form $\mathbf{X}_t = \mathbf{a} + A \mathbf{X}_{t-1} + \mathbf{\epsilon}_t$, where:
+
+$$
+\mathbf{a} = \begin{pmatrix} a_0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
+A = \begin{pmatrix}
+a_1 & a_2 & \dots & a_p \\
+1 & 0 & \dots & 0 \\
+\vdots & \ddots & & \vdots \\
+0 & \dots & 1 & 0
+\end{pmatrix}, \quad
+\mathbf{\epsilon}_t = \begin{pmatrix} \epsilon_t \\ 0 \\ \vdots \\ 0 \end{pmatrix}
+$$
+
+The stability and stationarity of the entire process can then be assessed by examining the eigenvalues of the companion matrix $A$. For the process to be stationary, the spectral radius of $A$ must be less than 1.
+
+$$
+\max_i \lvert \lambda_i(A) \rvert < 1
+$$
+
+where $\lambda_i(A)$ are the eigenvalues of $A$.
+
+### 2.3 Model Identification Using Autocorrelation
+
+A key step in ARMA modeling is identifying the orders $p$ and $q$. The Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) are the primary tools for this task.
+
+#### 2.3.1 Autocorrelation in AR(1) Processes
+
+Consider a zero-mean ($a_0=0$) AR(1) process: $X_t = a_1 X_{t-1} + \epsilon_t$. The autocovariance at lag $k$, $\gamma(k)$, can be calculated.
+
+  * **Lag 1:** $E[X_t X_{t-1}] = E[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 E[X_{t-1}^2] + E[\epsilon_t X_{t-1}]$. Since $\epsilon_t$ is uncorrelated with past values of $X$, $E[\epsilon_t X_{t-1}]=0$. Thus, $\gamma(1) = a_1 \gamma(0)$.
+  * **Lag 2:** $E[X_t X_{t-2}] = E[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 E[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$.
+  * **General Lag $k$:** $\gamma(k) = a_1^k \gamma(0)$.
+
+The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rho(k) = a_1^k$. The ACF of an AR(1) process **decays exponentially** to zero.
+
+#### 2.3.2 Autocorrelation in MA(q) Processes
+
+Consider a zero-mean MA(q) process: $X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$. Let's calculate the autocovariance at lag $k > q$.
+
+Because the error terms are white noise, $E[\epsilon_i \epsilon_j] = \sigma^2$ if $i=j$ and 0 otherwise. For the expectation $E[X_t X_{t-k}]$ to be non-zero, there must be at least one pair of matching indices in the sums. If we consider a lag $k>q$, it is impossible to satisfy the matching index condition. Therefore, for any $k>q$, all cross-product terms have an expectation of zero.
+
+$$
+\text{ACF}(k) = 0 \quad \text{for all } k > q
+$$
+
+This provides a clear signature: the ACF of an MA(q) process **sharply cuts off** to zero after lag $q$.
+
+#### 2.3.3 The Partial Autocorrelation Function (PACF)
+
+The PACF at lag $k$ measures the correlation between $X_t$ and $X_{t-k}$ after removing the linear dependence on the intervening variables ($X_{t-1}, X_{t-2}, \dots, X_{t-k+1}$). A key property of the PACF for an AR(p) process is:
+
+$$
+\text{PACF}(k) = 0 \quad \text{for all } k > p
+$$
+
+This is because in an AR(p) model, the direct relationship between $X_t$ and $X_{t-k}$ (for $k>p$) is fully mediated by the first $p$ lags.
+
+#### 2.3.4 Summary for Model Identification
+
+| Process | Autocorrelation Function (ACF) | Partial Autocorrelation Function (PACF) |
+| :--- | :--- | :--- |
+| **AR(p)** | Decays exponentially or sinusoidally | Cuts off to zero after lag $p$ |
+| **MA(q)** | Cuts off to zero after lag $q$ | Decays exponentially or sinusoidally |
+
+### 2.4 Modeling with ARMA
+
+#### 2.4.1 Parameter Estimation
+
+For a pure AR(p) model, parameter estimation is equivalent to a linear regression problem. We can construct a predictor matrix $X$ and a target vector $y$:
+
+$$
+y = \begin{pmatrix} X_T \\ X_{T-1} \\ \vdots \\ X_{p+1} \end{pmatrix} \quad
+X = \begin{pmatrix}
+1 & X_{T-1} & \dots & X_{T-p} \\
+1 & X_{T-2} & \dots & X_{T-p-1} \\
+\vdots & \vdots & \ddots & \vdots \\
+1 & X_p & \dots & X_1
+\end{pmatrix}
+$$
+
+The parameters can then be estimated using ordinary least squares. For ARMA models with an MA component, estimation is more complex and typically requires numerical optimization methods like maximum likelihood estimation.
+
+#### 2.4.2 Goals of ARMA Modeling
+
+Once an ARMA model is fitted, it can be used for:
+
+  * **Goodness-of-Fit:** Assess how well the model describes the temporal structure of the process.
+  * **Stationarity Analysis:** Determine if the process properties are stable over time.
+  * **Memory and Dependence:** The orders $p$ and $q$ define a "memory horizon."
+  * **Hypothesis Testing:** Test the significance of specific coefficients (e.g., $H_0: a_i = 0$).
+  * **Forecasting:** Predict future values of the time series.
+  * **Control:** Understand how to steer the system towards a desired state.
+
+-----
+
+## 3\. Vector Autoregressive (VAR) Models
+
+Vector Autoregressive (VAR) models are a direct extension of the univariate AR models to multivariate time series.
+
+### 3.1 Model Architecture
+
+A VAR model is used for analyzing a set of $N$ time series variables recorded simultaneously.
+
+  * **Data:** At each time point $t$, we have a vector $\mathbf{X}_t = (X_{1t}, X_{2t}, \dots, X_{Nt})^\top \in \mathbb{R}^N$.
+  * **New Phenomenon:** The primary interest in VAR modeling is to capture not only the autocorrelation within each series but also the **cross-correlation** (or cross-covariance) between different series.
+
+A **VAR(p) model** is defined as:
+
+$$
+\mathbf{X}_t = \mathbf{c} + \sum_{i=1}^p A_i \mathbf{X}_{t-i} + \mathbf{\epsilon}_t
+$$
+
+  * $\mathbf{c}$ is an $N \times 1$ intercept vector.
+  * $A_i$ are $N \times N$ coefficient matrices for each lag $i$.
+  * $\mathbf{\epsilon}_t$ is an $N \times 1$ white noise vector process with mean zero and a covariance matrix $\Sigma_\epsilon$. Importantly, the covariance matrix $\Sigma_\epsilon$ is generally not diagonal, allowing for contemporaneous correlation between the shocks to different variables.
+
+The structure of a coefficient matrix $A_i$ is informative:
+
+$$
+A_i = \begin{pmatrix}
+a_{11}^{(i)} & a_{12}^{(i)} & \dots & a_{1N}^{(i)} \\
+a_{21}^{(i)} & a_{22}^{(i)} & \dots & a_{2N}^{(i)} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{N1}^{(i)} & a_{N2}^{(i)} & \dots & a_{NN}^{(i)}
+\end{pmatrix}
+$$
+
+  * **Diagonal entries** ($a_{jj}^{(i)}$) relate the past of variable $j$ to its own current value.
+  * **Off-diagonal entries** ($a_{jk}^{(i)}$) quantify how the past of variable $k$ influences the current value of variable $j$. This is the basis for concepts like Granger causality.
+
+### 3.2 State-Space Representation and Stationarity
+
+Similar to the univariate case, VAR(p) models can be compactly represented as VAR(1) models. Any VAR(p) process in $N$ variables can be written as an $Np$-variate VAR(1) process by stacking the lagged vectors into a larger state vector.
+
+For a VAR(1) process defined by $\mathbf{X}_t = \mathbf{c} + A \mathbf{X}_{t-1} + \mathbf{\epsilon}_t$, a necessary and sufficient condition for stationarity is that all eigenvalues of the matrix $A$ have a modulus less than 1.
+
+$$
+\max_i \lvert\lambda_i(A)\rvert < 1
+$$
+
+where $\lambda_i$ are the eigenvalues of $A$. This is equivalent to saying all roots of the characteristic polynomial $\det(I_N - Az) = 0$ lie outside the unit circle.
+
+-----
+
+Would you like me to generate a specific TikZ diagram or Python plotting code for the ACF/PACF visual referenced in section 2.3?
 
 [Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
