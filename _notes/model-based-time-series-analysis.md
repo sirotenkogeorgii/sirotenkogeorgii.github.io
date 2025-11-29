@@ -2079,7 +2079,7 @@ $$
 X_t = c + \sum_{i=1}^p a_i X_{t-i} + \sum_{j=1}^q b_j \epsilon_{t-j} + \epsilon_t
 $$
 
-This can also be extended to include external inputs $u_t$. The full set of model parameters to be estimated is $\theta = \{c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \}$.
+This can also be extended to include external inputs $u_t$. The full set of model parameters to be estimated is $\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$.
 
 ### 2.2 Duality and Stationarity
 
@@ -2122,14 +2122,14 @@ $$
 
 Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
 
-\<div class="accordion"\>
-\<details\>
-\<summary\>Why must \|a\| \< 1?\</summary\>
-\<p\>
+<div class="accordion"\>
+<details\>
+<summary\>Why must \|a\| \< 1?\</summary\>
+<p\>
 This condition arises from the convergence of the geometric series. If $\lvert a_1 \rvert \ge 1$, the influence of past shocks ($\epsilon_{t-k}$) does not diminish over time. Instead, it persists or explodes, meaning the mean and variance of the process would not be constant, violating the definition of stationarity.
-\</p\>
-\</details\>
-\</div\>
+</p\>
+</details\>
+</div\>
 
 #### 2.2.3 State-Space Representation and Stability
 
@@ -2244,7 +2244,7 @@ Vector Autoregressive (VAR) models are a direct extension of the univariate AR m
 
 A VAR model is used for analyzing a set of $N$ time series variables recorded simultaneously.
 
-  * **Data:** At each time point $t$, we have a vector $\mathbf{X}_t = (X_{1t}, X_{2t}, \dots, X_{Nt})^\top \in \mathbb{R}^N$.
+  * **Data:** At each time point $t$, we have a vector $\mathbf{X}\_t = (X\_{1t}, X\_{2t}, \dots, X\_{Nt})^\top \in \mathbb{R}^N$.
   * **New Phenomenon:** The primary interest in VAR modeling is to capture not only the autocorrelation within each series but also the **cross-correlation** (or cross-covariance) between different series.
 
 A **VAR(p) model** is defined as:
@@ -2275,7 +2275,7 @@ $$
 
 Similar to the univariate case, VAR(p) models can be compactly represented as VAR(1) models. Any VAR(p) process in $N$ variables can be written as an $Np$-variate VAR(1) process by stacking the lagged vectors into a larger state vector.
 
-For a VAR(1) process defined by $\mathbf{X}_t = \mathbf{c} + A \mathbf{X}_{t-1} + \mathbf{\epsilon}_t$, a necessary and sufficient condition for stationarity is that all eigenvalues of the matrix $A$ have a modulus less than 1.
+For a VAR(1) process defined by $\mathbf{X}\_t = \mathbf{c} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$, a necessary and sufficient condition for stationarity is that all eigenvalues of the matrix $A$ have a modulus less than 1.
 
 $$
 \max_i \lvert\lambda_i(A)\rvert < 1
