@@ -1392,7 +1392,7 @@ We require $k_i > 0$ and $\beta_i > 0$, so we model their **logarithms** as Gaus
 
 #### 6.2.4 Full Bayesian Formulation
 
-Let $k = \{k_i\}_{i=1}^N$ and $\beta = \{\beta_i\}_{i=1}^N$, and let $Y = \{Y_i\}_{i=1}^N$.
+Let $k = \rbracek_i\lbrace_{i=1}^N$ and $\beta = \lbrace\beta_i\rbrace_{i=1}^N$, and let $Y = \lbraceY_i\rbrace_{i=1}^N$.
 
 We seek the posterior
 
@@ -1555,17 +1555,11 @@ $$
 
 We can iteratively substitute $X_{t-1}$:
 
-\[
-\begin{aligned}
-X_t
-&= a_0 + a_1 X_{t-1} + \epsilon_t \\
-&= a_0 + a_1 (a_0 + a_1 X_{t-2} + \epsilon_{t-1}) + \epsilon_t \\
-&= a_0(1 + a_1) + a_1^2 X_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
-&= a_0(1 + a_1 + a_1^2) + a_1^3 X_{t-3} + a_1^2 \epsilon_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
-&\;\;\vdots \\
-&= a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}.
-\end{aligned}
-\]
+$$X_t = a_0 + a_1 X_{t-1} + \epsilon_t$$
+$$= a_0 + a_1 (a_0 + a_1 X_{t-2} + \epsilon_{t-1}) + \epsilon_t$$
+$$= a_0(1 + a_1) + a_1^2 X_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t$$
+$$= a_0(1 + a_1 + a_1^2) + a_1^3 X_{t-3} + a_1^2 \epsilon_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t$$
+$$= a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}$$
 
 This infinite expansion is valid only if the geometric series converges.
 
@@ -1824,7 +1818,7 @@ where:
 
 * $\mathbf{c} \in \mathbb{R}^N$ is an intercept vector,
 * $A_i \in \mathbb{R}^{N \times N}$ are coefficient matrices,
-* $\boldsymbol{\epsilon}_t \sim WN(0, \Sigma_\epsilon)$ is a white noise vector with covariance matrix $\Sigma_\epsilon$ (not necessarily diagonal).
+* $\epsilon_t \sim WN(0, \Sigma_\epsilon)$ is a white noise vector with covariance matrix $\Sigma_\epsilon$ (not necessarily diagonal).
 
 The structure of $A_i$ is informative:
 
@@ -1896,3 +1890,5 @@ must lie **outside** the unit circle, where $A(z)$ encodes the lag structure.
 
 This generalizes the AR(1) condition $\lvert a_1\rvert < 1$ and the AR($p$) “roots outside unit circle” criterion to the multivariate case.
 
+
+[Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/index.md)
