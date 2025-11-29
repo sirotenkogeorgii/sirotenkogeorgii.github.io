@@ -5,7 +5,7 @@ noindex: true
 ---
 
 
-# Fourier Transform
+<!-- # Fourier Transform
 
 > What does polynomial multiplication have in common with audio compression?  
 > Or with image recognition?  
@@ -713,51 +713,6 @@ FFT makes spectral decomposition **computationally efficient**.
 
 ---
 
-### Exercises (Section 17.4)
-
-1. Prove the converse of the conjugate symmetry lemma:
-   The DFT of a conjugate symmetric vector is real.
-
-2. Finish the proof of the formulas for $F(\mathbf{s}_k)$ and $F(\mathbf{c}_k)$.
-
-3. **Discrete Cosine Transform (DCT).**
-   Given $(x_0, \dots, x_{n/2})$, extend it to a real symmetric vector
-   $\mathbf{x} = (x_0, \dots, x_{n/2}, x_{n/2-1}, \dots, x_1)$.
-   Show that the first $n/2+1$ components of $F(\mathbf{x})$ describe a decomposition into cosine vectors $\mathbf{c}_k$.
-
-4. **Convolution.**
-   Define convolution $\mathbf{z} = \mathbf{x} * \mathbf{y}$ by
-   $$
-   z_j = \sum_k x_k y_{j-k} \quad (\text{indices mod } n).
-   $$
-   Prove:
-
-   * commutativity,
-   * associativity,
-   * bilinearity,
-   * and that $F(\mathbf{x} * \mathbf{y}) = F(\mathbf{x}) \odot F(\mathbf{y})$, where $\odot$ is component-wise multiplication.
-
-5. **Signal smoothing.**
-   Consider smoothing
-   $$
-   y_j = \tfrac14 x_{j-1} + \tfrac12 x_j + \tfrac14 x_{j+1}.
-   $$
-   Interpret this as a convolution with a mask $\mathbf{z}$ and analyze the effect using $F(\mathbf{z})$.
-
-6. **Back to polynomials.**
-   Note that coefficient-wise operations in polynomial multiplication form a convolution. Show how the FFT-based convolution algorithm gives fast polynomial multiplication.
-
-7. **Diagonalization.**
-   Interpret $F(\mathbf{x} * \mathbf{y}) = F(\mathbf{x}) \odot F(\mathbf{y})$ as diagonalization of convolution via the Fourier basis.
-
-8. **2D DFT.**
-   Define the 2D DFT for $X \in \mathbb{C}^{n \times n}$:
-   $$
-   Y_{jk} = \sum_{u,v} X_{uv} \omega^{ju + kv}.
-   $$
-   Show it is a bijection and derive a fast algorithm via 1D FFTs along rows/columns.
-
----
 
 ## 17.5* Other FFT Variants
 
@@ -842,31 +797,12 @@ We don’t even need a field; a commutative ring with:
 
 is enough.
 
-The advantage: **no floating-point rounding errors**, which is valuable for algorithms like **large integer multiplication**.
-
----
-
-### Exercises (Section 17.5)
-
-1. Devise an efficient method for computing the bit-reversal permutation $r(k)$ used in `FFT2`.
-
-2. **Fast integer multiplication via FFT.**
-   To multiply two $N$-bit numbers $x, y$:
-
-   * break them into $k$-bit blocks (base $B = 2^k$),
-   * represent them as polynomials $X(t), Y(t)$ with $X(B) = x$, $Y(B) = y$,
-   * compute $Z = X \cdot Y$ via FFT in a suitable finite field,
-   * evaluate $Z(B)$ to get $xy$.
-
-   With an appropriate choice of field and $k = \Theta(\log N)$:
-
-   * show this yields a nearly linear-time multiplication algorithm,
-   * analyze the size of coefficients in $Z$,
-   * and show that evaluating $Z(B)$ can be done efficiently.
+The advantage: **no floating-point rounding errors**, which is valuable for algorithms like **large integer multiplication**. -->
 
 
 
-<!-- # Fourier Transform
+
+# Fourier Transform
 
 What does polynomial multiplication have in common with audio compression? Or with image recognition? In this chapter, we will show that behind all these questions lies a common algebraic structure, known to mathematicians as the Discrete Fourier Transform. We will derive an efficient algorithm for calculating this transform and show some of its interesting consequences.
 
@@ -899,9 +835,9 @@ Let $P$ and $Q$ be polynomials of degree at most $d$. If $P(x_i) = Q(x_i)$ for m
 
 Let us first recall the following standard lemma about the roots of polynomials:
 
-Lemma: A polynomial $R$ of degree $t \ge 0$ has at most $t$ roots (numbers $\alpha$ for which $R(\alpha) = 0$).
+$\textbf{Lemma:}$ A polynomial $R$ of degree $t \ge 0$ has at most $t$ roots (numbers $\alpha$ for which $R(\alpha) = 0$).
 
-Proof of Lemma: If we divide the polynomial $R$ by the polynomial $x - \alpha$ (see exercise 1), we get $R(x) \equiv (x - \alpha) \cdot R'(x) + \beta$, where $\beta$ is a constant. If $\alpha$ is a root of $R$, then $\beta$ must be 0. Furthermore, the polynomial $R' has degree $t-1$ and the same roots as $R$, with the possible exception of the root $\alpha$.
+**Proof of Lemma:** If we divide the polynomial $R$ by the polynomial $x - \alpha$ (see exercise 1), we get $R(x) \equiv (x - \alpha) \cdot R'(x) + \beta$, where $\beta$ is a constant. If $\alpha$ is a root of $R$, then $\beta$ must be 0. Furthermore, the polynomial $R' has degree $t-1$ and the same roots as $R$, with the possible exception of the root $\alpha$.
 
 If we repeat this process $t$ times, we will either run out of roots in the process (in which case the lemma certainly holds), or we will obtain the equality $R(x) \equiv (x - \alpha_1) \cdot \dots \cdot (x - \alpha_t) \cdot R''(x)$, where $R''$ is a polynomial of degree zero. Such a polynomial, however, cannot have any roots, and therefore $R$ cannot have any additional roots either.
 
@@ -932,15 +868,6 @@ We can decompose the polynomial $P$ into terms with even exponents and those wit
 This suggests an algorithm with a time complexity of $T(n) = 2T(n/2) + \Theta(n)$, and from the Master Theorem, we know that such a recurrence has the solution $T(n) = \Theta(n \log n)$. But alas, this algorithm does not work: the squares that we pass to the recursive call are always non-negative, so they can no longer be properly paired. That is... at least as long as we are computing with real numbers.
 
 We will show that in the domain of complex numbers, we can choose points that will remain correctly paired even after being squared several times.
-
-Exercises
-
-1. Derive polynomial division with a remainder: If $P$ and $Q$ are polynomials and $\deg Q > 0$, then there exist polynomials $R$ and $S$ such that $P \equiv QR + S$ and $\deg S < \deg Q$. Try to find the most efficient algorithm for this division.
-2. Converting a graph to a polynomial in the general case: We are looking for a polynomial of degree at most $n$ that passes through the points $(x_0, y_0), \dots, (x_n, y_n)$ for mutually distinct $x_i$. Lagrange interpolation helps: define the polynomials $A_j(x) = \prod_{k \ne j} (x - x_k)$, $\quad B_j(x) = \frac{A_j(x)}{\prod_{k \ne j}(x_j - x_k)}$, $\quad P(x) = \sum_j y_j B_j(x)$. Prove that $\deg P \le n$ and $P(x_j) = y_j$ for all $j$. It will help to consider the values of $A_j(x_k)$ and $B_j(x_k)$.
-3. Construct the fastest possible algorithm for Lagrange interpolation from the previous exercise.
-4. Another perspective on polynomial interpolation: If we are looking for a polynomial $P(x) = \sum_{k=0}^n p_k x^k$ passing through points $(x_0, y_0), \dots, (x_n, y_n)$, we are actually solving a system of equations of the form $\sum_k p_k x_j^k = y_j$ for $j = 0, \dots, n$. The equations are linear in the unknowns $p_0, \dots, p_n$, so we are looking for a vector $p$ satisfying $Vp = y$, where $V$ is the so-called Vandermonde matrix with $V_{jk} = x_j^k$. Prove that for mutually distinct $x_j$, the matrix $V$ is non-singular, so the system of equations has exactly one solution.
-5. To launch a nuclear bomb, at least $k$ out of a total of $n$ generals must agree. Devise a way to derive $n$ keys for the generals from the launch code such that any group of $k$ generals can compute the code from their keys, but no smaller group can learn anything about the code other than its length.
-
 
 --------------------------------------------------------------------------------
 
@@ -1202,8 +1129,3 @@ Practical values include:
 A closer examination reveals that a field is not strictly necessary. Any commutative ring in which the required primitive root of unity exists, along with its multiplicative inverse and the multiplicative inverse of $n$, will suffice.
 
 The advantage of these forms of the Fourier transform is that, unlike the classic complex version, they are not burdened by floating-point rounding errors. This is particularly useful in algorithms for multiplying large numbers.
-
-Exercises
-
-1. Propose a method for calculating the bit-reversal permutation in the FFT2 algorithm.
-2. Fast Number Multiplication using FFT: To multiply two $N$-bit numbers, $x$ and $y$, we can break them into $k$-bit blocks. This is equivalent to writing them in a base $B=2^k$: $x = \sum_j x_j B^j$. We associate each number with a polynomial, e.g., $X(t) = \sum_j x_j t^j$, such that $X(B) = x$. We can then multiply numbers by multiplying their corresponding polynomials. We construct polynomials $X$ and $Y$, compute their product $Z = X \cdot Y$ using FFT, and then evaluate $Z(B)$ to get the final result $Z(B) = X(B) \cdot Y(B) = xy$. By choosing an appropriate finite field and setting $k=\Theta(\log N)$, show how this approach leads to an algorithm for multiplying $N$-bit numbers in nearly linear time. Analyze the size of the coefficients of polynomial $Z$ and show that the final evaluation of $Z(B)$ can be done efficiently. -->
