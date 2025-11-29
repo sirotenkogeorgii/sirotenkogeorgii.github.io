@@ -4,14 +4,6 @@ layout: default
 noindex: true
 ---
 
-Here’s a version of your page with clearer sections, highlighted definitions/lemmas, structured algorithms, and nicer formula formatting for the web. 
-
-````markdown
----
-title: Fourier Transform
-layout: default
-noindex: true
----
 
 # Fourier Transform
 
@@ -440,23 +432,23 @@ for evaluating polynomials at these special points. When implemented on coeffici
 > * a vector of coefficients $(p_0, \dots, p_{n-1})$ of a polynomial $P$
 
 ```text
-FFT(n, ω, (p_0, ..., p_{n-1})):
+FFT$(n, ω, (p_0, ..., p_{n-1}))$:
 
 1. If n = 1:
-       y_0 ← p_0
-       return (y_0)
+       $y_0 ← p_0$
+       return $y_0$
 
 2. Split coefficients into even and odd indices:
 
-       (s_0, ..., s_{n/2-1}) ← FFT(n/2, ω^2, (p_0, p_2, ..., p_{n-2}))
-       (ℓ_0, ..., ℓ_{n/2-1}) ← FFT(n/2, ω^2, (p_1, p_3, ..., p_{n-1}))
+       $(s_0, ..., s_{n/2-1}) ← FFT(n/2, ω^2, (p_0, p_2, ..., p_{n-2}))$
+       $(ℓ_0, ..., ℓ_{n/2-1}) ← FFT(n/2, ω^2, (p_1, p_3, ..., p_{n-1}))$
 
 3. Combine:
 
-       For j = 0, ..., n/2 - 1:
-           t  ← ω^j · ℓ_j   (ω^j can be updated iteratively)
-           y_j       ← s_j + t
-           y_{j+n/2} ← s_j - t
+       For $j = 0, \dots, n/2 - 1$:
+           $t  ← ω^j · ℓ_j   (ω^j \text{ can be updated iteratively})$
+           $y_j       ← s_j + t$
+           $y_{j+n/2} ← s_j - t$
 
 4. Return (y_0, ..., y_{n-1}).
 ```
