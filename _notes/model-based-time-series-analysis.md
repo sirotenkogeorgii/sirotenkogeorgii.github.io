@@ -1891,4 +1891,4 @@ must lie **outside** the unit circle, where $A(z)$ encodes the lag structure.
 This generalizes the AR(1) condition $\lvert a_1\rvert < 1$ and the AR($p$) “roots outside unit circle” criterion to the multivariate case.
 
 
-[Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/index.md)
+[Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
