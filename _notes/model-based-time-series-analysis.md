@@ -1897,6 +1897,52 @@ Here are the new notes reformatted to match the style and structure of your prev
 
 When analyzing data from multiple subjects or independent sources, we often face a modeling choice between two extremes. This section introduces hierarchical modeling as a powerful intermediate approach that balances individual specificity with group-level stability.
 
+<div class="accordion">
+  <details>
+    <summary>Framework of Bayesian hierarchical model</summary>
+    <p>
+      Let $y_j$ be an observation and $\theta_j$ a parameter governing the data generating process for $y_j$. Assume further that the parameters $\theta_1, \theta_2, \dots, \theta_j$ are generated exchangeably from a common population, with distribution governed by a hyperparameter $\phi$.
+    </p>
+    <p>The Bayesian hierarchical model contains the following stages:</p>
+    <p><strong>Stage I:</strong> $y_j \mid \theta_j, \phi \sim P(y_j \mid \theta_j, \phi)$</p>
+    <p><strong>Stage II:</strong> $\theta_j \mid \phi \sim P(\theta_j \mid \phi)$</p>
+    <p><strong>Stage III:</strong> $\phi \sim P(\phi)$</p>
+    <p>
+      The likelihood, as seen in stage I is $P(y_j \mid \theta_j, \phi)$, with $P(\theta_j, \phi)$ as its prior distribution. Note that the likelihood depends on $\phi$ only through $\theta_j$.
+    </p>
+    <p>The prior distribution from stage I can be broken down into:</p>
+    $$P(\theta_j, \phi) = P(\theta_j \mid \phi)P(\phi) \quad \textit{[from the definition of conditional probability]}$$
+    <p>With $\phi$ as its hyperparameter with hyperprior distribution, $P(\phi)$.</p>
+    <p>Thus, the posterior distribution is proportional to:</p>
+    $$P(\phi, \theta_j \mid y) \propto P(y_j \mid \theta_j, \phi)P(\theta_j, \phi) \quad \textit{[using Bayes' Theorem]}$$
+    $$P(\phi, \theta_j \mid y) \propto P(y_j \mid \theta_j)P(\theta_j \mid \phi)P(\phi)$$
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Example calculation of Bayesian hierarchical modeling in two variants</summary>
+    <h4>Example calculation</h4>
+    <p>
+      As an example, a teacher wants to estimate how well a student did on the SAT. The teacher uses the current grade point average (GPA) of the student for an estimate. Their current GPA, denoted by $Y$, has a likelihood given by some probability function with parameter $\theta$, i.e. $Y \mid \theta \sim P(Y \mid \theta)$. This parameter $\theta$ is the SAT score of the student. The SAT score is viewed as a sample coming from a common population distribution indexed by another parameter $\phi$, which is the high school grade of the student (freshman, sophomore, junior or senior).$^{[14]}$ That is, $\theta \mid \phi \sim P(\theta \mid \phi)$. Moreover, the hyperparameter $\phi$ follows its own distribution given by $P(\phi)$, a hyperprior.
+    </p>
+    <p>These relationships can be used to calculate the likelihood of a specific SAT score relative to a particular GPA:</p>
+    $$P(\theta, \phi \mid Y) \propto P(Y \mid \theta, \phi)P(\theta, \phi)$$
+    $$P(\theta, \phi \mid Y) \propto P(Y \mid \theta)P(\theta \mid \phi)P(\phi)$$
+    <p>
+      All information in the problem will be used to solve for the posterior distribution. Instead of solving only using the prior distribution and the likelihood function, using hyperpriors allows a more nuanced distinction of relationships between given variables.$^{[15]}$
+    </p>
+    <h4>2-stage hierarchical model</h4>
+    <p>In general, the joint posterior distribution of interest in 2-stage hierarchical models is:</p>
+    $$P(\theta, \phi \mid Y) = \frac{P(Y \mid \theta, \phi)P(\theta, \phi)}{P(Y)} = \frac{P(Y \mid \theta)P(\theta \mid \phi)P(\phi)}{P(Y)}$$
+    $$P(\theta, \phi \mid Y) \propto P(Y \mid \theta)P(\theta \mid \phi)P(\phi)^{[15]}$$
+    <h4>3-stage hierarchical model</h4>
+    <p>For 3-stage hierarchical models, the posterior distribution is given by:</p>
+    $$P(\theta, \phi, X \mid Y) = \frac{P(Y \mid \theta)P(\theta \mid \phi)P(\phi \mid X)P(X)}{P(Y)}$$
+    $$P(\theta, \phi, X \mid Y) \propto P(Y \mid \theta)P(\theta \mid \phi)P(\phi \mid X)P(X)^{[15]}$$
+  </details>
+</div>
+
 ### 1.1 Hierarchical Modeling
 
 #### 1.1.1 Problem Formulation
@@ -1920,6 +1966,8 @@ Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, w
 
       * **Advantage:** This method yields more stable parameter estimates because it leverages the entire data pool.
       * **Disadvantage:** It completely ignores inter-individual differences, assuming all subjects are governed by the exact same process.
+
+We want to find a middle ground that finds a compromise between these extremes – **partial pooling**. This brings us to Bayesian hierarchical modeling, also known as multilevel modeling.
 
 #### 1.1.3 The Hierarchical Approach
 
@@ -1952,6 +2000,21 @@ p(\beta, \lbrace\theta_i\rbrace_{i=1}^N, \lbrace D_i\rbrace_{i=1}^N) = p(\beta) 
 $$
 
 Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \beta \mid D_1, \dots, D_N)$. This structure allows the model to "borrow statistical strength" across subjects. The data from subject $j$ informs the posterior of $\theta_j$, which in turn informs the posterior of the group hyperparameter $\beta$. This updated knowledge about $\beta$ then helps to regularize and improve the estimates for all other subjects' parameters $\theta_i$ where $i \neq j$.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/hier_model1.png' | relative_url }}" alt="hier_model1" loading="lazy">
+    <!-- <figcaption>GK110 architecture</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/hier_model2.png' | relative_url }}" alt="hier_model2" loading="lazy">
+    <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/hier_model3.png' | relative_url }}" alt="hier_model3" loading="lazy">
+    <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
+  </figure>
+</div>
 
 ### 1.2 Example: Hierarchical Delay Discounting
 
@@ -2002,7 +2065,7 @@ Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-l
   * **Individual Parameters:** $k = \lbrace k_i\rbrace_{i=1}^N$ and $\beta = \lbrace \beta_i\rbrace_{i=1}^N$.
 
     $$
-    \log(k\_i) \sim \mathcal{N}(\mu\_k, \sigma\_k^2) \quad \log(\beta\_i) \sim \mathcal{N}(\mu\_\beta, \sigma\_\beta^2)
+    \log(k_i) \sim \mathcal{N}(\mu_k, \sigma_k^2) \quad \log(\beta_i) \sim \mathcal{N}(\mu_\beta, \sigma_\beta^2)
     $$
 
   * **Group-level Hyperparameters:** The means $(\mu_k, \mu_\beta)$ and variances $(\sigma_k^2, \sigma_\beta^2)$ of the parent distributions.
@@ -2262,6 +2325,123 @@ where $\lambda_i(A)$ are the eigenvalues of $A$.
     <p>
       In a normal (symmetric) matrix, eigenvectors are orthogonal. In this shear matrix, they are nearly parallel. To represent the initial state, you subtract two large, nearly collinear eigenvector components; as time evolves one decays slightly faster, the cancellation breaks, and the large magnitude is revealed before it decays. Singular values flag this transient spike, while eigenvalues certify eventual stability.
     </p>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>How non-normal shear squeezes eigenvectors</summary>
+    <p>This happens because <strong>Non-Normal</strong> matrices (matrices that do not commute with their transpose, $A^T A \neq A A^T$) contain <em>shear</em>.</p>
+    <p>In a Symmetric (Normal) matrix, the transformation is pure stretching along orthogonal axes. In a Non-Normal matrix, the transformation includes a sliding or shearing motion that corrupts orthogonality. Here is the geometric and mathematical reason why this squeezes the eigenvectors together.</p>
+    <h4>1. The Geometric Intuition: Stretching vs. Shearing</h4>
+    <p>Imagine painting a grid on a rubber sheet and applying a matrix transformation.</p>
+    <ul>
+      <li><strong>Symmetric Matrix (Stretch):</strong> You pull the sheet north/south and squash it east/west. The grid lines remain at 90 degrees to each other. These lines are your eigenvectors; they are orthogonal.</li>
+      <li><strong>Non-Normal Matrix (Shear):</strong> You place your hand on the top of the sheet and slide it to the right while holding the bottom fixed. The vertical lines tilt over while the horizontal lines stay horizontal.
+        <ul>
+          <li>One eigenvector is still horizontal.</li>
+          <li>The other eigenvector (which used to be vertical) tilts to chase the shear.</li>
+          <li><strong>Result:</strong> The two eigenvectors are no longer at 90 degrees; they are squeezed toward each other.</li>
+        </ul>
+      </li>
+    </ul>
+    <h4>2. The $2 \times 2$ Proof</h4>
+    <p>Consider a simple upper triangular matrix and its eigenvectors:</p>
+    $$
+    A = \begin{bmatrix} 1 & k \\ 0 & 2 \end{bmatrix}
+    $$
+    <p>Here, $k$ represents the shear (non-normality).</p>
+    <ul>
+      <li><strong>Eigenvalues:</strong> The diagonal entries, $\lambda_1 = 1$ and $\lambda_2 = 2$.</li>
+      <li><strong>Eigenvector 1 ($v_1$):</strong> Associated with $\lambda_1 = 1$, $v_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$ (horizontal).</li>
+      <li><strong>Eigenvector 2 ($v_2$):</strong> Associated with $\lambda_2 = 2$. Solving $(A - 2I)v = 0$ gives $v_2 = \begin{bmatrix} k \\ 1 \end{bmatrix}$.</li>
+    </ul>
+    <p><strong>Observe the angle:</strong></p>
+    <ul>
+      <li>$v_1$ points East $(1, 0)$.</li>
+      <li>$v_2$ points North-East $(k, 1)$.</li>
+    </ul>
+    <p>As the shear $k$ grows (or as the difference between eigenvalues shrinks), $v_2$ tilts toward the horizontal axis.</p>
+    <ul>
+      <li>If $k = 100$, $v_2 = (100, 1)$, almost parallel to $v_1 = (1, 0)$.</li>
+      <li>The angle between them is nearly zero—they are squeezed.</li>
+    </ul>
+    <h4>3. Why is this ill-conditioned? (The cancellation problem)</h4>
+    <p>This squeezing creates a numerical nightmare called <strong>ill-conditioning</strong>. To represent a simple state vector, like vertical <em>Up</em> $\begin{bmatrix} 0 \\ 1 \end{bmatrix}$, using these eigenvectors, you must use a linear combination: $x = c_1 v_1 + c_2 v_2$.</p>
+    <p>If $v_1$ and $v_2$ are nearly parallel (e.g., $v_1 = [1, 0]$ and $v_2 = [1, 0.01]$), you need massive coefficients to describe a small vertical vector:</p>
+    $$
+    \begin{bmatrix} 0 \\ 1 \end{bmatrix} = -100 \cdot \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 100 \cdot \begin{bmatrix} 1 \\ 0.01 \end{bmatrix}
+    $$
+    <ul>
+      <li><strong>Physically:</strong> Hidden energy; the system looks quiet but internally fights with massive opposing modes.</li>
+      <li><strong>Numerically:</strong> Unstable; tiny rounding errors ruin the cancellation, causing transient growth.</li>
+    </ul>
+    <p>The condition number of the eigenvector matrix $\kappa(V)$ measures this. If eigenvectors are orthogonal, $\kappa(V) = 1$. As they squeeze together, $\kappa(V) \to \infty$.</p>
+    <h4>Summary</h4>
+    <p>Eigenvectors are directions that do not change orientation. When you apply shear (non-normality), you tilt the space. The eigenvectors tilt with it, losing their orthogonality and clamping together like a closing pair of scissors.</p>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Why non-normal weights trigger exploding gradients (deep nets)</summary>
+    <p>This is the exact mathematical reason why exploding gradients are so dangerous in deep learning, especially in recurrent neural networks (RNNs). In deep learning, <em>depth</em> plays the role of <em>time</em>: layer 1, layer 2, layer 3 are steps $t=1, t=2, t=3$.</p>
+    <p>During backpropagation, the gradient is multiplied by the weight matrix $W$ at every layer. If $W$ acts like a shear matrix, gradients follow the same transient-growth curve: they explode in middle layers even if the network is theoretically stable.</p>
+    <h4>1. The finite-time trap</h4>
+    <p>Control theory cares about $t \to \infty$; deep nets care about $t \approx 50$ or $100$ (network depth).</p>
+    <ul>
+      <li>At step 100: values are near 0 because stable eigenvalues eventually dominate.</li>
+      <li>At step 10: values are huge because unstable singular values dominate.</li>
+      <li>If a network is only 10 layers deep, it lives inside that spike; it never reaches the safe asymptotic zone, so gradients blow up and updates can become NaN.</li>
+    </ul>
+    <h4>2. The mechanics of backpropagation</h4>
+    <p>Backpropagation forms a long product of Jacobian matrices. Even if $W$ is initialized so eigenvalues are small (e.g., $\lambda = 0.9$), a non-normal $W$ can have large singular values.</p>
+    <ul>
+      <li>The gradient aligns with the top singular vector.</li>
+      <li>The gradient grows by $\sigma_{\max}$ at every layer.</li>
+      <li>Example: if $\sigma_{\max} = 5$, by layer 5 the gradient is $5^5 = 3125$ times larger, overwhelming earlier layers.</li>
+    </ul>
+    <h4>3. Why weight matrices are "sheared"</h4>
+    <p>Randomly initialized high-dimensional matrices are rarely normal; they are typically highly non-normal, which means their eigenvectors are squeezed and ill-conditioned—perfect conditions for transient growth.</p>
+    <p>This motivates <strong>orthogonal initialization</strong> ($W^T W = I$):</p>
+    <ul>
+      <li>For orthogonal matrices, singular values equal eigenvalues and both equal 1.</li>
+      <li>No hidden shear, no transient growth; signals travel deep without exploding or vanishing.</li>
+    </ul>
+    <h4>Summary</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>In Control Theory</th>
+          <th>In Deep Learning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Goal</td>
+          <td>Stability as $t \to \infty$</td>
+          <td>Stability at finite depth $L$</td>
+        </tr>
+        <tr>
+          <td>Danger</td>
+          <td>Unstable eigenvalues ($|\lambda| &gt; 1$)</td>
+          <td>Non-normal weights with large $\sigma_{\max}$ causing transient spikes</td>
+        </tr>
+        <tr>
+          <td>The Trap</td>
+          <td>System looks unstable initially but settles</td>
+          <td>Gradient explodes before reaching the input</td>
+        </tr>
+        <tr>
+          <td>The Fix</td>
+          <td>Wait longer</td>
+          <td>Gradient clipping or orthogonal init</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Want a quick visual? See “Vanishing AND Exploding Gradient Problem Explained” (video) for animations of how gradients shrink or blow up as they flow backward.</p>
+    <p>Would you like an extra note here explaining gradient clipping—the brute-force way to chop off that transient spike?</p>
   </details>
 </div>
 
