@@ -5,7 +5,8 @@ noindex: true
 ---
 
 
-<!-- # Fourier Transform
+<!-- ---
+# Fourier Transform
 
 > What does polynomial multiplication have in common with audio compression?  
 > Or with image recognition?  
@@ -186,9 +187,10 @@ $$
 \begin{aligned}
 P(x)
 &= (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2})
-+ (p_1x^1 + p_3x^3 + \dots + p_{n-1}x^{n-1}) \
-&= (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2})
-+ x (p_1x^0 + p_3x^2 + \dots + p_{n-1}x^{n-2}).
+\\
+&\quad + (p_1x^1 + p_3x^3 + \dots + p_{n-1}x^{n-1}) \\
+&= (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2}) \\
+&\quad + x (p_1x^0 + p_3x^2 + \dots + p_{n-1}x^{n-2}).
 \end{aligned}
 $$
 
@@ -197,7 +199,7 @@ Define new polynomials in a variable $t$:
 
 $$
 \begin{aligned}
-P_s(t) &= p_0 t^0 + p_2 t^1 + \dots + p_{n-2} t^{(n-2)/2}, \
+P_s(t) &= p_0 t^0 + p_2 t^1 + \dots + p_{n-2} t^{(n-2)/2}, \\
 P_\ell(t) &= p_1 t^0 + p_3 t^1 + \dots + p_{n-1} t^{(n-2)/2}.
 \end{aligned}
 $$
@@ -205,13 +207,13 @@ $$
 Then:
 
 $$
-P(x) = P_s(x^2) + x , P_\ell(x^2),
+P(x) = P_s(x^2) + x \, P_\ell(x^2).
 $$
 
 and similarly:
 
 $$
-P(-x) = P_s(x^2) - x , P_\ell(x^2).
+P(-x) = P_s(x^2) - x \, P_\ell(x^2).
 $$
 
 So evaluating $P$ at $\pm x_0, \dots, \pm x_{n/2 - 1}$ reduces to evaluating $P_s$ and $P_\ell$ (each of size $n/2$) at $x_0^2, \dots, x_{n/2 - 1}^2$.
@@ -237,7 +239,7 @@ In this chapter, we will compute with **complex numbers**. Let’s quickly revie
 
 > **Definition.**
 > $$
-> \mathbb{C} = { a + bi \mid a, b \in \mathbb{R} }, \quad i^2 = -1.
+> \mathbb{C} = \{ a + bi \mid a, b \in \mathbb{R} \}, \quad i^2 = -1.
 > $$
 
 * **Addition / subtraction**
@@ -510,9 +512,9 @@ Let $\bar{\omega} = \omega^{-1}$ and $\bar{\Omega}$ the matrix with entries $\ba
 Compute each entry:
 
 $$
-(\Omega \bar{\Omega})*{jk}
-= \sum*{\ell=0}^{n-1} \Omega_{j\ell} \bar{\Omega}*{\ell k}
-= \sum*{\ell=0}^{n-1} \omega^{j\ell} \bar{\omega}^{\ell k}
+(\Omega \bar{\Omega})_{jk}
+= \sum_{\ell=0}^{n-1} \Omega_{j\ell} \bar{\Omega}_{\ell k}
+= \sum_{\ell=0}^{n-1} \omega^{j\ell} \bar{\omega}^{\ell k}
 = \sum_{\ell=0}^{n-1} \omega^{\ell(j-k)}.
 $$
 
@@ -655,14 +657,14 @@ For $0 < k < n/2$:
 
 At the boundaries:
 
-* $\mathbf{s}*0$ and $\mathbf{s}*{n/2}$ are zero (and so are their transforms).
+* $\mathbf{s}_0$ and $\mathbf{s}_{n/2}$ are zero (and so are their transforms).
 * $\mathbf{c}_0$ is the all-ones vector with
   $$
   F(\mathbf{c}_0) = (n, 0, \dots, 0).
   $$
-* $\mathbf{c}*{n/2} = (1, -1, \dots, 1, -1)$ with
+* $\mathbf{c}_{n/2} = (1, -1, \dots, 1, -1)$ with
   $$
-  F(\mathbf{c}*{n/2}) = (0, \dots, 0, n, 0, \dots, 0)
+  F(\mathbf{c}_{n/2}) = (0, \dots, 0, n, 0, \dots, 0)
   $$
   having $n$ at position $n/2$.
 
@@ -672,17 +674,16 @@ At the boundaries:
 
 Any conjugate symmetric vector can be expressed as a real linear combination of:
 
-* $F(\mathbf{s}*1), \dots, F(\mathbf{s}*{n/2 - 1})$,
-* $F(\mathbf{c}*0), \dots, F(\mathbf{c}*{n/2})$.
+* $F(\mathbf{s}_1), \dots, F(\mathbf{s}_{n/2 - 1})$,
+* $F(\mathbf{c}_0), \dots, F(\mathbf{c}_{n/2})$.
 
 Because the DFT is linear and invertible, any real vector $\mathbf{x} \in \mathbb{R}^n$ can be expressed as:
 
 $$
 \mathbf{x}
 = \sum_{k=0}^{n/2} \alpha_k \mathbf{c}_k
-
-* \sum_{k=1}^{n/2 - 1} \beta_k \mathbf{s}_k,
-  $$
++ \sum_{k=1}^{n/2 - 1} \beta_k \mathbf{s}_k.
+$$
 
 for suitable real coefficients $\alpha_k, \beta_k$.
 
@@ -692,7 +693,7 @@ Then:
 * $\alpha_0 = a_0 / n$,
 * $\alpha_k = 2 a_k / n$ for $k = 1, \dots, n/2$,
 * $\beta_k = -2 b_k / n$ for $k = 1, \dots, n/2 - 1$,
-* $\beta_0 = \beta_{n/2} = 0$ (since $\mathbf{s}*0$ and $\mathbf{s}*{n/2}$ are zero).
+* $\beta_0 = \beta_{n/2} = 0$ (since $\mathbf{s}_0$ and $\mathbf{s}_{n/2}$ are zero).
 
 Thus:
 
@@ -773,7 +774,7 @@ Recall:
 * The multiplicative group of non-zero elements of $\mathbb{Z}_p$ is **cyclic**.
 * So there exists a generator $g$ such that
   $$
-  { g^0, g^1, \dots, g^{p-2} }
+  \{ g^0, g^1, \dots, g^{p-2} \}
   $$
   is the set of all non-zero elements.
 
@@ -802,6 +803,7 @@ The advantage: **no floating-point rounding errors**, which is valuable for algo
 
 
 
+
 # Fourier Transform
 
 What does polynomial multiplication have in common with audio compression? Or with image recognition? In this chapter, we will show that behind all these questions lies a common algebraic structure, known to mathematicians as the Discrete Fourier Transform. We will derive an efficient algorithm for calculating this transform and show some of its interesting consequences.
@@ -818,7 +820,7 @@ If we add a new coefficient $p_n = 0$, the value of the polynomial does not chan
 
 We treat polynomials as expressions. Addition and subtraction are straightforward, but let's look at what happens with multiplication:
 
-$P(x) \cdot Q(x) = \left( \sum_{i=0}^{n-1} p_i \cdot x^i \right) \cdot \left( \sum_{j=0}^{m-1} q_j \cdot x^j \right) = \sum_{i,j} p_i q_j x^{i+j}.$
+$$P(x) \cdot Q(x) = \left( \sum_{i=0}^{n-1} p_i \cdot x^i \right) \cdot \left( \sum_{j=0}^{m-1} q_j \cdot x^j \right) = \sum_{i,j} p_i q_j x^{i+j}.$$
 
 
 We can write this product as a polynomial $R(x)$, whose coefficient for $x^k$ is equal to $r_k = p_0q_k + p_1q_{k-1} + \dots + p_kq_0$. We can see that the polynomial $R$ has a degree of $\deg P + \deg Q$ and a size of $\|P\| + \|Q\| - 1$.
@@ -837,7 +839,7 @@ Let us first recall the following standard lemma about the roots of polynomials:
 
 $\textbf{Lemma:}$ A polynomial $R$ of degree $t \ge 0$ has at most $t$ roots (numbers $\alpha$ for which $R(\alpha) = 0$).
 
-**Proof of Lemma:** If we divide the polynomial $R$ by the polynomial $x - \alpha$ (see exercise 1), we get $R(x) \equiv (x - \alpha) \cdot R'(x) + \beta$, where $\beta$ is a constant. If $\alpha$ is a root of $R$, then $\beta$ must be 0. Furthermore, the polynomial $R' has degree $t-1$ and the same roots as $R$, with the possible exception of the root $\alpha$.
+**Proof of Lemma:** If we divide the polynomial $R$ by the polynomial $x - \alpha$ (see exercise 1), we get $R(x) \equiv (x - \alpha) \cdot R'(x) + \beta$, where $\beta$ is a constant. If $\alpha$ is a root of $R$, then $\beta$ must be 0. Furthermore, the polynomial $R'$ has degree $t-1$ and the same roots as $R$, with the possible exception of the root $\alpha$.
 
 If we repeat this process $t$ times, we will either run out of roots in the process (in which case the lemma certainly holds), or we will obtain the equality $R(x) \equiv (x - \alpha_1) \cdot \dots \cdot (x - \alpha_t) \cdot R''(x)$, where $R''$ is a polynomial of degree zero. Such a polynomial, however, cannot have any roots, and therefore $R$ cannot have any additional roots either.
 
@@ -863,7 +865,15 @@ Now let's try to construct an algorithm for polynomial evaluation based on the D
 
 Consider a polynomial $P$ of size $n$ that we want to evaluate at $n$ points. We will choose the points to be paired, i.e., to form pairs differing only in sign: $\pm x_0, \pm x_1, \dots, \pm x_{n/2-1}$.
 
-We can decompose the polynomial $P$ into terms with even exponents and those with odd exponents: $P(x) = (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2}) + (p_1x^1 + p_3x^3 + \dots + p_{n-1}x^{n-1})$. Furthermore, we can factor out $x$ from the second parenthesis: $P(x) = (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2}) + x \cdot (p_1x^0 + p_3x^2 + \dots + p_{n-1}x^{n-2})$. Now, only even powers of $x$ appear in both parentheses. Therefore, we can consider each parenthesis as the evaluation of some polynomial of size $n/2$ at the point $x^2$, i.e.: $P(x) = P_s(x^2) + x \cdot P_\ell(x^2)$, where: $P_s(t) = p_0t^0 + p_2t^1 + \dots + p_{n-2}t^{\frac{n-2}{2}}$, $P_\ell(t) = p_1t^0 + p_3t^1 + \dots + p_{n-1}t^{\frac{n-2}{2}}$. Moreover, if we substitute the value $-x$ into $P$ in a similar way, we get: $P(-x) = P_s(x^2) - x \cdot P_\ell(x^2)$. Evaluating the polynomial $P$ at the points $\pm x_0, \dots, \pm x_{n/2-1}$ can thus be reduced to evaluating the polynomials $P_s$ and $P_\ell$ of half the size at the points $x_0^2, \dots, x_{n/2-1}^2$.
+We can decompose the polynomial $P$ into terms with even exponents and those with odd exponents: 
+
+$$P(x) = (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2}) + (p_1x^1 + p_3x^3 + \dots + p_{n-1}x^{n-1})$$. 
+
+Furthermore, we can factor out $x$ from the second parenthesis: 
+
+$$P(x) = (p_0x^0 + p_2x^2 + \dots + p_{n-2}x^{n-2}) + x \cdot (p_1x^0 + p_3x^2 + \dots + p_{n-1}x^{n-2})$$. 
+
+Now, only even powers of $x$ appear in both parentheses. Therefore, we can consider each parenthesis as the evaluation of some polynomial of size $n/2$ at the point $x^2$, i.e.: $P(x) = P_s(x^2) + x \cdot P_\ell(x^2)$, where: $P_s(t) = p_0t^0 + p_2t^1 + \dots + p_{n-2}t^{\frac{n-2}{2}}$, $P_\ell(t) = p_1t^0 + p_3t^1 + \dots + p_{n-1}t^{\frac{n-2}{2}}$. Moreover, if we substitute the value $-x$ into $P$ in a similar way, we get: $P(-x) = P_s(x^2) - x \cdot P_\ell(x^2)$. Evaluating the polynomial $P$ at the points $\pm x_0, \dots, \pm x_{n/2-1}$ can thus be reduced to evaluating the polynomials $P_s$ and $P_\ell$ of half the size at the points $x_0^2, \dots, x_{n/2-1}^2$.
 
 This suggests an algorithm with a time complexity of $T(n) = 2T(n/2) + \Theta(n)$, and from the Master Theorem, we know that such a recurrence has the solution $T(n) = \Theta(n \log n)$. But alas, this algorithm does not work: the squares that we pass to the recursive call are always non-negative, so they can no longer be properly paired. That is... at least as long as we are computing with real numbers.
 

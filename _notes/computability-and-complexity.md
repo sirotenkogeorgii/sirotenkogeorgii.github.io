@@ -2830,7 +2830,7 @@ Let the variables of $\phi_w$ be $Y_1, \ldots, Y_m$, where $m = m(n)$ is polynom
 Define $\phi'_w$ as:
 
 $$
-\phi'_w = (Z \land \phi\_w(Y_1, \ldots, Y_m)) \lor (\neg Z \land \neg \tau(Y_1, \ldots, Y_m))
+\phi'_w = (Z \land \phi_w(Y_1, \ldots, Y_m)) \lor (\neg Z \land \neg \tau(Y_1, \ldots, Y_m))
 $$
 
 This formula has $m+1$ variables.
