@@ -2003,15 +2003,15 @@ Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \
 
 <div class="gd-grid">
   <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/hier_model1.png' | relative_url }}" alt="hier_model1" loading="lazy">
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model1.png' | relative_url }}" alt="hier_model1" loading="lazy">
     <!-- <figcaption>GK110 architecture</figcaption> -->
   </figure>
   <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/hier_model2.png' | relative_url }}" alt="hier_model2" loading="lazy">
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model2.png' | relative_url }}" alt="hier_model2" loading="lazy">
     <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
   </figure>
   <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/hier_model3.png' | relative_url }}" alt="hier_model3" loading="lazy">
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model3.png' | relative_url }}" alt="hier_model3" loading="lazy">
     <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
   </figure>
 </div>
@@ -2175,17 +2175,17 @@ This infinite expansion is only valid if the series converges.
 For the process to be stationary in the mean, its expected value must be constant and finite. Taking the expectation of the expanded form:
 
 $$
-E[X_t] = E\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]
+\mathbb{E}[X_t] = \mathbb{E}\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]
 $$
 
 $$
-E[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k E[\epsilon_{t-k}]
+\mathbb{E}[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \mathbb{E}[\epsilon_{t-k}]
 $$
 
-Since $E[\epsilon_{t-k}]=0$, the second term vanishes. The first term is a geometric series which converges if and only if $\lvert a_1 \rvert < 1$.
+Since $\mathbb{E}[\epsilon_{t-k}]=0$, the second term vanishes. The first term is a geometric series which converges if and only if $\lvert a_1 \rvert < 1$.
 
 $$
-E[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1
+\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1
 $$
 
 Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
@@ -2453,8 +2453,8 @@ A key step in ARMA modeling is identifying the orders $p$ and $q$. The Autocorre
 
 Consider a zero-mean ($a_0=0$) AR(1) process: $X_t = a_1 X_{t-1} + \epsilon_t$. The autocovariance at lag $k$, $\gamma(k)$, can be calculated.
 
-  * **Lag 1:** $E[X_t X_{t-1}] = E[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 E[X_{t-1}^2] + E[\epsilon_t X_{t-1}]$. Since $\epsilon_t$ is uncorrelated with past values of $X$, $E[\epsilon_t X_{t-1}]=0$. Thus, $\gamma(1) = a_1 \gamma(0)$.
-  * **Lag 2:** $E[X_t X_{t-2}] = E[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 E[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$.
+  * **Lag 1:** $\mathbb{E}[X_t X_{t-1}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 \mathbb{E}[X_{t-1}^2] + \mathbb{E}[\epsilon_t X_{t-1}]$. Since $\epsilon_t$ is uncorrelated with past values of $X$, $\mathbb{E}[\epsilon_t X_{t-1}]=0$. Thus, $\gamma(1) = a_1 \gamma(0)$.
+  * **Lag 2:** $\mathbb{E}[X_t X_{t-2}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 \mathbb{E}[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$.
   * **General Lag $k$:** $\gamma(k) = a_1^k \gamma(0)$.
 
 The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rho(k) = a_1^k$. The ACF of an AR(1) process **decays exponentially** to zero.
@@ -2463,7 +2463,7 @@ The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rh
 
 Consider a zero-mean MA(q) process: $X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$. Let's calculate the autocovariance at lag $k > q$.
 
-Because the error terms are white noise, $E[\epsilon_i \epsilon_j] = \sigma^2$ if $i=j$ and 0 otherwise. For the expectation $E[X_t X_{t-k}]$ to be non-zero, there must be at least one pair of matching indices in the sums. If we consider a lag $k>q$, it is impossible to satisfy the matching index condition. Therefore, for any $k>q$, all cross-product terms have an expectation of zero.
+Because the error terms are white noise, $\mathbb{E}[\epsilon_i \epsilon_j] = \sigma^2$ if $i=j$ and 0 otherwise. For the expectation $\mathbb{E}[X_t X_{t-k}]$ to be non-zero, there must be at least one pair of matching indices in the sums. If we consider a lag $k>q$, it is impossible to satisfy the matching index condition. Therefore, for any $k>q$, all cross-product terms have an expectation of zero.
 
 $$
 \text{ACF}(k) = 0 \quad \text{for all } k > q
