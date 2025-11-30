@@ -1928,6 +1928,12 @@ Hierarchical modeling provides a principled compromise between these two extreme
 **Core Idea:** We introduce subject-specific parameters $\theta_1, \theta_2, \dots, \theta_N$, but we assume they are not arbitrary. Instead, they are drawn from a common parent distribution, which is itself described by hyperparameters.
 
 **Mathematical Formulation:**
+
+Bayesian hierarchical modeling makes use of two important concepts in deriving the posterior distribution, namely:
+
+* **Hyperparameters:** parameters of the prior distribution
+* **Hyperpriors:** distributions of Hyperparameters
+
 Each subject's parameter $\theta_i$ is drawn from a parent distribution parameterized by $\beta$:
 $$\theta_i \sim p(\theta \mid \beta)$$
 
@@ -1994,18 +2000,11 @@ $$
 Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-level structure. Since $k_i$ and $\beta_i$ must be positive, we model their logarithms as being drawn from a Normal distribution.
 
   * **Individual Parameters:** $k = \lbrace k_i\rbrace_{i=1}^N$ and $\beta = \lbrace \beta_i\rbrace_{i=1}^N$.
+
     $$
+    \log(k\_i) \sim \mathcal{N}(\mu\_k, \sigma\_k^2) \quad \log(\beta\_i) \sim \mathcal{N}(\mu\_\beta, \sigma\_\beta^2)
     $$
-    $$
-    $$
-    \\begin{aligned}
-    \\log(k\_i) &\\sim \\mathcal{N}(\\mu\_k, \\sigma\_k^2) \\
-    \\log(\\beta\_i) &\\sim \\mathcal{N}(\\mu\_\\beta, \\sigma\_\\beta^2)
-    \\end{aligned}
-    $$
-    $$
-    $$
-    $$
+
   * **Group-level Hyperparameters:** The means $(\mu_k, \mu_\beta)$ and variances $(\sigma_k^2, \sigma_\beta^2)$ of the parent distributions.
   * **Hyperpriors:** We place priors on the hyperparameters themselves.
       * *Priors on Means:* $\mu_k \sim \mathcal{N}(\mu_{k0}, \sigma_{k0}^2)$ and $\mu_\beta \sim \mathcal{N}(\mu_{\beta 0}, \sigma_{\beta 0}^2)$.
@@ -2038,9 +2037,15 @@ An alternative parametrization for hierarchical models, particularly useful in h
     The total number of parameters is now $(p \times k) + (k \times N)$, which can be significantly smaller than $p \times N$ if $k$ is chosen well. This acts as a form of dimensionality reduction.
   * **Hierarchical Chain:** The dependency structure becomes: $W, h_i \rightarrow \theta_i \rightarrow D_i$.
 
+#### 1.2.5 Additional Sources
+
+* [Introduction to hierarchical modeling](https://towardsdatascience.com/introduction-to-hierarchical-modeling-a5c7b2ebb1ca/)
+* [Bayesian hierarchical modeling](https://en.wikipedia.org/wiki/Bayesian_hierarchical_modeling)
+* [Hierarchical Modeling](https://betanalpha.github.io/assets/case_studies/hierarchical_modeling.html)
+
 -----
 
-## 2\. Autoregressive Moving Average (ARMA) Models
+## 7\. Autoregressive Moving Average (ARMA) Models
 
 ARMA models are a fundamental class of models for analyzing stationary time series. They are built on the principle that the current value of a series can be explained by a combination of its own past values and past random shocks.
 
@@ -2122,14 +2127,14 @@ $$
 
 Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
 
-<div class="accordion"\>
-<details\>
-<summary\>Why must \|a\| \< 1?\</summary\>
-<p\>
+<div class="accordion">
+<details>
+<summary>Why must $\lvert a_1 \rvert < 1$?</summary>
+<p>
 This condition arises from the convergence of the geometric series. If $\lvert a_1 \rvert \ge 1$, the influence of past shocks ($\epsilon_{t-k}$) does not diminish over time. Instead, it persists or explodes, meaning the mean and variance of the process would not be constant, violating the definition of stationarity.
-</p\>
-</details\>
-</div\>
+</p>
+</details>
+</div>
 
 #### 2.2.3 State-Space Representation and Stability
 
@@ -2141,7 +2146,7 @@ $$
 \mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}
 $$
 
-The process can then be written in the form $\mathbf{X}_t = \mathbf{a} + A \mathbf{X}_{t-1} + \mathbf{\epsilon}_t$, where:
+The process can then be written in the form $\mathbf{X}\_t = \mathbf{a} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$, where:
 
 $$
 \mathbf{a} = \begin{pmatrix} a_0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
@@ -2161,6 +2166,104 @@ $$
 $$
 
 where $\lambda_i(A)$ are the eigenvalues of $A$.
+
+<div class="accordion">
+  <details>
+    <summary>Why eigenvalues (not singular values) determine stationarity</summary>
+    <p>
+      This is a profound question that touches on the subtle difference between <strong>transient behavior</strong> (short-term) and <strong>asymptotic behavior</strong> (long-term).
+    </p>
+    <p>
+      You are absolutely correct that Singular Value Decomposition (SVD) gives a clearer picture of how a matrix distorts space in the immediate, orthogonal sense. However, for stationarity, we rely on eigenvalues.
+    </p>
+    <hr>
+    <h4>1. The Time Horizon: "Eventually" vs. "Immediately"</h4>
+    <ul>
+      <li><strong>Stationarity</strong> asks: "If I run this process for infinite time ($t \to \infty$), does it blow up?"</li>
+      <li><strong>Singular values</strong> ask: "What is the maximum possible stretch this matrix causes in a <em>single</em> step?"</li>
+    </ul>
+    <p>A system can be stationary even if it stretches vectors significantly in the short run, provided that it eventually shrinks them back down.</p>
+    <h4>2. The Math of Iteration: $A^k$</h4>
+    <p>Stationary conditions usually involve iterating a transition matrix $A$. We look at the state vector evolving over time: $x_t = A^t x_0$.</p>
+    <p>Let's look at what happens to the powers of the matrix using both decompositions.</p>
+    <h5>The Eigendecomposition (Spectral Analysis)</h5>
+    <p>
+      If $A$ is diagonalizable, write $A = P \Lambda P^{-1}$. Then:
+    </p>
+    $$
+    A^t = (P \Lambda P^{-1})(P \Lambda P^{-1}) \dots = P \Lambda^t P^{-1}
+    $$
+    <ul>
+      <li>If $\lvert \lambda_i \rvert < 1$ for all $i$, then $\lambda_i^t \to 0$ as $t \to \infty$.</li>
+      <li>Therefore, $A^t \to 0$ and the system is stable/stationary.</li>
+    </ul>
+    <h5>The SVD (Singular Values)</h5>
+    <p>If we use SVD, $A = U \Sigma V^T$, then</p>
+    $$
+    A^t = (U \Sigma V^T)(U \Sigma V^T) \dots
+    $$
+    <ul>
+      <li>$V^T U$ is <em>not</em> the identity (unless $A$ is normal/symmetric), so the rotations do not cancel.</li>
+      <li>Therefore, $A^t \neq U \Sigma^t V^T$ and singular values cannot be simply raised to $t$ to predict the future.</li>
+    </ul>
+    <blockquote><strong>Key takeaway:</strong> Eigenvalues dictate the "fate" of the system because they survive repeated multiplication. Singular values describe the matrix right now, but that description gets scrambled during iteration.</blockquote>
+    <hr>
+    <h4>3. The "Strictness" Trap: Sufficient vs. Necessary</h4>
+    <p>Forcing all singular values below 1 is a sufficient but not necessary condition.</p>
+    <ul>
+      <li><strong>$\sigma_{\text{max}} &lt; 1$</strong>: the system contracts in Euclidean length at every step (monotonic decay).</li>
+      <li><strong>$\lvert \lambda_{\text{max}} \rvert &lt; 1$</strong>: the system contracts eventually; it may expand transiently before it dies out.</li>
+    </ul>
+    <p>If we required $\sigma_{\text{max}} &lt; 1$, we would reject many valid stationary models that merely experience transient growth.</p>
+    <hr>
+    <h4>4. A Concrete Counter-Example (Non-Normal Matrix)</h4>
+    <p>Consider a shear matrix that is stable overall but stretches space heavily in the short term:</p>
+    $$
+    A = \begin{bmatrix} 0.5 & 100 \\ 0 & 0.5 \end{bmatrix}
+    $$
+    <p><strong>Eigenvalues ($\lambda$):</strong> Since it is upper triangular, $\lambda_1 = 0.5, \lambda_2 = 0.5$. Because $0.5 &lt; 1$, the system is stationary; $A^t \to 0$ as $t \to \infty$.</p>
+    <p><strong>Singular values ($\sigma$):</strong> $\sigma_1 \approx 100$ and $\sigma_2 \approx 0.0025$, so $\sigma_{\max} \gg 1$.</p>
+    <p>If we enforced $\sigma_{\max} &lt; 1$, we would incorrectly label this stable system as unstable. The matrix can grow vectors 100x in step 1, but by step 50 the $0.5^{50}$ factor dominates and the vector collapses.</p>
+    <h4>Conclusion</h4>
+    <p>Stationarity is an asymptotic property ($t \to \infty$). Eigenvalues track that long-run fate; singular values measure single-step gain. Singular values are great for understanding numerical stability and transient spikes, but eigenvalues are the gatekeepers of whether a process explodes or stabilizes over time.</p>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>Transient growth (stable eigenvalues, large singular values)</summary>
+    <p>
+      Here is a Python demonstration of <strong>transient growth</strong>: a system that is asymptotically stable (eigenvalues &lt; 1) but effectively unstable in the short term (singular values &gt;&gt; 1). Energy humps upward before eventually decaying.
+    </p>
+    <h4>The setup</h4>
+    <p>Use a non-normal shear matrix:</p>
+    $$
+    A = \begin{bmatrix} 0.9 & 5 \\ 0 & 0.9 \end{bmatrix}
+    $$
+    <ul>
+      <li><strong>Eigenvalues:</strong> $\lambda = 0.9$ (eventually decays to 0).</li>
+      <li><strong>Singular values:</strong> $\sigma_{\max} \approx 5.3$ (can grow $5\times$ in one step).</li>
+    </ul>
+    <p>
+      <img src="{{ '/assets/images/notes/model-based-time-series-analysis/transient_growth.png' | relative_url }}" alt="Transient growth demo: shear matrix with stable eigenvalues and large singular values" loading="lazy">
+    </p>
+    <h4>What the graph shows</h4>
+    <h5>Phase 1: the SVD phase (steps 0–~20)</h5>
+    <p>The line shoots upward; magnitude grows from about 1.0 to nearly 15.0 even though long-term decay is 0.9.</p>
+    <ul>
+      <li><strong>Why?</strong> The shear term (5) dominates the diagonal decay (0.9), stretching the vector into a high-gain direction.</li>
+    </ul>
+    <h5>Phase 2: the eigen phase (steps 20+)</h5>
+    <p>The curve peaks and crashes toward zero.</p>
+    <ul>
+      <li><strong>Why?</strong> Once the transient shear is exhausted, repeated multiplication by 0.9 takes over; the eigenvalue constraint wins and the system stabilizes.</li>
+    </ul>
+    <h4>The geometric reason: non-orthogonal eigenvectors</h4>
+    <p>
+      In a normal (symmetric) matrix, eigenvectors are orthogonal. In this shear matrix, they are nearly parallel. To represent the initial state, you subtract two large, nearly collinear eigenvector components; as time evolves one decays slightly faster, the cancellation breaks, and the large magnitude is revealed before it decays. Singular values flag this transient spike, while eigenvalues certify eventual stability.
+    </p>
+  </details>
+</div>
 
 ### 2.3 Model Identification Using Autocorrelation
 
@@ -2255,7 +2358,7 @@ $$
 
   * $\mathbf{c}$ is an $N \times 1$ intercept vector.
   * $A_i$ are $N \times N$ coefficient matrices for each lag $i$.
-  * $\mathbf{\epsilon}_t$ is an $N \times 1$ white noise vector process with mean zero and a covariance matrix $\Sigma_\epsilon$. Importantly, the covariance matrix $\Sigma_\epsilon$ is generally not diagonal, allowing for contemporaneous correlation between the shocks to different variables.
+  * $\mathbf{\epsilon}\_t$ is an $N \times 1$ white noise vector process with mean zero and a covariance matrix $\Sigma_\epsilon$. Importantly, the covariance matrix $\Sigma_\epsilon$ is generally not diagonal, allowing for contemporaneous correlation between the shocks to different variables.
 
 The structure of a coefficient matrix $A_i$ is informative:
 
@@ -2283,8 +2386,5 @@ $$
 
 where $\lambda_i$ are the eigenvalues of $A$. This is equivalent to saying all roots of the characteristic polynomial $\det(I_N - Az) = 0$ lie outside the unit circle.
 
------
-
-Would you like me to generate a specific TikZ diagram or Python plotting code for the ACF/PACF visual referenced in section 2.3?
 
 [Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
