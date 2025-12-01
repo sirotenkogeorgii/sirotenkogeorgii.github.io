@@ -25,6 +25,16 @@ In rejection sampling, we:
 
 $c$ is exactly the factor that "lifts" $f_Z$ enough so that $cf_Z$ dominates $f_X$ everywhere. Smaller $c$ (as close as possible to $\sup_x \frac{f_X(x)}{f_Z(x)}$) means fewer rejections and a more efficient algorithm.
 
+**Algorithm 4.5 — Acceptance–rejection sampling**
+
+1. **repeat**
+   * Draw $Y \sim g$.
+   * Draw $U \sim \mathcal{U}(0,1)$.
+2. **until** $U \le \dfrac{f(Y)}{c,g(Y)}$.
+3. Set $X \leftarrow Y$.
+4. Output $X$.
+
+
 <div class="accordion">
   <details>
     <summary>Code</summary>
