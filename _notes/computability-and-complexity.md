@@ -2010,7 +2010,7 @@ Adjusting $N_4$ so that output $1$ leads to an accepting halt and output $0$ to 
 
 ## Probabilistic Turing Machines
 
-[Alternative Definition of Probabilistic Turing Machines](subpages/computability-and-complexity/probabilistic-turing-machine/)
+[Alternative Definition of Probabilistic Turing Machines](/subpages/computability-and-complexity/probabilistic-turing-machine/)
 
 ### Introduction: The Auxiliary Tape Model
 

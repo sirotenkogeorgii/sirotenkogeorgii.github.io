@@ -8,7 +8,7 @@ permalink: /notes/
 
 Long-form write-ups and study notes. Subscribe to stay in the loop:
 
-- <a href="{{ '/feed.xml' | relative_url }}">RSS feed</a>
+<!-- - <a href="{{ '/feed.xml' | relative_url }}">RSS feed</a> -->
 
 {% assign notes = site.notes | sort: 'date' | reverse %}
 {% if notes.size > 0 %}
