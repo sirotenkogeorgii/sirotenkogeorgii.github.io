@@ -133,17 +133,36 @@ a:focus {
 
 .note-list {
   list-style: none;
-  margin: 2.75rem 0 0;
+  margin: 2.25rem 0 0;
   padding: 0;
+  border-top: 1px solid var(--line);
 }
 
-.note-list li {
-  margin-bottom: 2rem;
+.note-list__item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.note-list__meta {
+.note-list__date {
+  min-width: 11ch;
+  font-family: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   color: var(--muted);
-  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.note-list__title {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.note-list__title:hover,
+.note-list__title:focus {
+  color: var(--accent);
 }
 
 .note-container {

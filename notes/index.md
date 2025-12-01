@@ -14,10 +14,9 @@ Long-form write-ups and study notes. Subscribe to stay in the loop:
 {% if notes.size > 0 %}
 <ul class="note-list">
   {% for note in notes %}
-  <li>
-    <a href="{{ note.url | relative_url }}">{{ note.title }}</a>
-    {% if note.date %}<span class="note-list__meta">— {{ note.date | date: '%B %-d, %Y' }}</span>{% endif %}
-    {% if note.excerpt %}<p>{{ note.excerpt | strip_html }}</p>{% endif %}
+  <li class="note-list__item">
+    {% if note.date %}<span class="note-list__date">{{ note.date | date: '%d %b, %Y' }}</span>{% endif %}
+    <a class="note-list__title" href="{{ note.url | relative_url }}">{{ note.title }}</a>
   </li>
   {% endfor %}
 </ul>
