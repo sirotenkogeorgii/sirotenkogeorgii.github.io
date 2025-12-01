@@ -2010,6 +2010,8 @@ Adjusting $N_4$ so that output $1$ leads to an accepting halt and output $0$ to 
 
 ## Probabilistic Turing Machines
 
+[Alternative Definition of Probabilistic Turing Machines](subpages/computability-and-complexity/probabilistic-turing-machine/)
+
 ### Introduction: The Auxiliary Tape Model
 
 To understand randomized computation, we first introduce a more general model: a Turing machine equipped with an additional, special-purpose tape. This model serves as a foundation for both nondeterministic and probabilistic computation by reinterpreting the contents of this extra tape.
@@ -2147,32 +2149,32 @@ The key feature of the auxiliary tape is that it is **one-way**, meaning the hea
 
     <h3><strong>Case 1 — Auxiliary tape is <em>independent</em> of the input (most common)</strong></h3>
 
-    <p>The auxiliary tape contains a string (a) that is the same for <strong>all inputs (w)</strong>.</p>
+    <p>The auxiliary tape contains a string $a$ that is the same for <strong>all inputs $w$</strong>.</p>
 
     <p>This is the case in:</p>
 
     <h3><strong>1. Kolmogorov complexity (conditional complexity)</strong></h3>
 
-    <p>In (K(x \mid y)):</p>
+    <p>In $K(x \mid y)$:</p>
     <ul>
       <li>The program is on the input tape.</li>
-      <li>(y) (the condition) is on the auxiliary tape.</li>
+      <li>$y$ (the condition) is on the auxiliary tape.</li>
       <li>The machine sees <strong>both</strong>.</li>
     </ul>
 
     <p>
-      But <strong>(y) is <em>fixed</em> for the whole computation</strong>; it does <em>not</em> depend on the program or output.
-      Every possible program (p) must work with the same fixed auxiliary string (y).
+      But <strong>$y$ is <em>fixed</em> for the whole computation</strong>; it does <em>not</em> depend on the program or output.
+      Every possible program $p$ must work with the same fixed auxiliary string $y$.
     </p>
 
     <hr />
 
     <h3><strong>2. Advice classes (P/poly)</strong></h3>
 
-    <p>For all inputs of length (n):</p>
+    <p>For all inputs of length $n$:</p>
     <ul>
-      <li>The advice string (a_n) is the same for <em>every</em> input of length (n).</li>
-      <li>The machine computes (M(w, a_n)).</li>
+      <li>The advice string $a_n$ is the same for <em>every</em> input of length $n$.</li>
+      <li>The machine computes $M(w, a_n)$.</li>
     </ul>
 
     <p>Here the auxiliary tape content <strong>depends only on input length</strong>, not on the actual input.</p>
@@ -2186,7 +2188,7 @@ The key feature of the auxiliary tape is that it is **one-way**, meaning the hea
       <li>A fixed description of a universal interpreter</li>
       <li>A fixed encoding of rules</li>
       <li>A fixed oracle string</li>
-      <li>A parameter (k) that does not change with (w)</li>
+      <li>A parameter $k$ that does not change with $w$</li>
     </ul>
 
     <p>Again, <strong>the same auxiliary string for all runs</strong>.</p>
@@ -2199,11 +2201,9 @@ The key feature of the auxiliary tape is that it is **one-way**, meaning the hea
 
     <p>You are allowed to think of a TM as taking <strong>two inputs</strong>:</p>
 
-    <p>[<br />
-      M(w, a)<br />
-    ]</p>
+    <p>$$M(w, a)$$</p>
 
-    <p>Both are arbitrary. You can choose (a) depending on (w).</p>
+    <p>Both are arbitrary. You can choose $a$ depending on $w$.</p>
 
     <p>
       But this is usually <em>not</em> the intention when talking about:
@@ -2269,12 +2269,12 @@ The key feature of the auxiliary tape is that it is **one-way**, meaning the hea
       <tbody>
         <tr>
           <td>Conditional Kolmogorov complexity</td>
-          <td><strong>No</strong>, fixed (y)</td>
+          <td><strong>No</strong>, fixed $y$</td>
           <td>✔ Yes</td>
         </tr>
         <tr>
           <td>Advice classes (P/poly)</td>
-          <td>Depends only on length (n)</td>
+          <td>Depends only on length $n$</td>
           <td>✔ Yes</td>
         </tr>
         <tr>
@@ -2289,7 +2289,7 @@ The key feature of the auxiliary tape is that it is **one-way**, meaning the hea
         </tr>
         <tr>
           <td>TM as a 2-argument machine</td>
-          <td>Allowed (M(w,a))</td>
+          <td>Allowed $M(w,a)$</td>
           <td>—</td>
         </tr>
       </tbody>
@@ -2412,135 +2412,133 @@ In case $w$ is not in $L(M)$, by construction either $\text{reject}\_{M'}(w) = \
 <div class="accordion">
   <details>
     <summary>Alternative explanation</summary>
-    <p>Let (L \in \text{PP}).<br />
-    Then there exists a probabilistic Turing machine (M) and a polynomial (p(n)) such that</p>
+    <p>Let $L \in \text{PP}$. Then there exists a probabilistic Turing machine $M$ and a polynomial $p(n)$ such that</p>
 
     <ul>
-      <li>(M) runs in time at most (p(n)) on all inputs of length (n),</li>
-      <li>and for every input (w),<br />
-        [<br />
-        w \in L \iff \Pr[M(w) \text{ accepts}] &gt; \frac12 .<br />
-        ]</li>
+      <li>$M$ runs in time at most $p(n)$ on all inputs of length $n$.</li>
+      <li>and for every input $w$,
+        $$
+        w \in L \iff \Pr[M(w) \text{ accepts}] > \tfrac12 .
+        $$
+      </li>
     </ul>
 
-    <p>Because (M) runs for at most (p(n)) steps, it can use at most (p(n)) random bits.<br />
-    Thus, on inputs of length (n), (M) examines only the first (p(n)) bits of its random tape.</p>
+    <p>Because $M$ runs for at most $p(n)$ steps, it can use at most $p(n)$ random bits.
+    Thus, on inputs of length $n$, $M$ examines only the first $p(n)$ bits of its random tape.</p>
 
-    <p>We now construct a new machine (M') that reduces the error below (1/2).</p>
+    <p>We now construct a new machine $M'$ that reduces the error below $1/2$.</p>
 
     <hr />
 
-    <h2>Construction of (M')</h2>
+    <h2>Construction of $M'$</h2>
 
-    <p>On input (w) of length (n), (M') does the following:</p>
+    <p>On input $w$ of length $n$, $M'$ does the following:</p>
 
     <ol>
-      <li><strong>Compute (p(n))</strong> and read <strong>exactly (2p(n))</strong> random bits.</li>
+      <li><strong>Compute $p(n)$</strong> and read <strong>exactly $2p(n)$</strong> random bits.</li>
 
       <li><strong>Split</strong> these random bits into two blocks:
         <ul>
-          <li>Block A (length (p(n))) — this block will be used exactly as the random tape for simulating (M).</li>
-          <li>Block B (length (p(n))) — this block will serve as an extra check.</li>
+          <li>Block A (length $p(n)$) — this block will be used exactly as the random tape for simulating $M$.</li>
+          <li>Block B (length $p(n)$) — this block will serve as an extra check.</li>
         </ul>
       </li>
 
-      <li><strong>Simulate (M)</strong> on input (w) using Block A as the source of random bits.</li>
+      <li><strong>Simulate $M$</strong> on input $w$ using Block A as the source of random bits.</li>
 
-      <li><strong>Acceptance rule of (M'):</strong><br />
-        (M') accepts iff
+      <li><strong>Acceptance rule of $M'$:</strong>
+        $M'$ accepts iff
         <ul>
-          <li>(M) accepts (based on Block A), <strong>and</strong></li>
+          <li>$M$ accepts (based on Block A), <strong>and</strong></li>
           <li>Block B is <strong>not the all-zero string</strong>.</li>
         </ul>
       </li>
     </ol>
 
-    <p>Thus, compared to (M), (M') rejects some additional random strings (specifically those with Block B = (0^{p(n)})).</p>
+    <p>Thus, compared to $M$, $M'$ rejects some additional random strings (specifically those with Block B $= 0^{p(n)}$).</p>
 
     <hr />
 
-    <h2>Correctness: error drops below (1/2)</h2>
+    <h2>Correctness: error drops below $1/2$</h2>
 
-    <h3>Case 1: (w \notin L)</h3>
+    <h3>Case 1: $w \notin L$</h3>
 
-    <p>Then (M) accepts at most half of the Block-A strings:</p>
+    <p>Then $M$ accepts at most half of the Block-A strings:</p>
 
-    <p>[
-    \Pr_A[M(w) \text{ accepts}] \le \frac12 .
-    ]</p>
+    <p>$$
+    \Pr_A[M(w) \text{ accepts}] \le \tfrac12 .
+    $$</p>
 
-    <p>For (M') to accept, both conditions must hold:</p>
+    <p>For $M'$ to accept, both conditions must hold:</p>
 
     <ol>
-      <li>(M) accepts (probability ≤ 1/2),</li>
-      <li>Block B is not all-zero (probability (1 - 2^{-p(n)})).</li>
+      <li>$M$ accepts (probability $\le \tfrac12$),</li>
+      <li>Block B is not all-zero (probability $1 - 2^{-p(n)}$).</li>
     </ol>
 
     <p>Therefore,</p>
 
-    <p>[
+    <p>$$
     \Pr[M'(w)\text{ accepts}]
     = \Pr[M(w)\text{ accepts}] \cdot (1 - 2^{-p(n)})
     \le \tfrac12 .
-    ]</p>
+    $$</p>
 
-    <p>In fact, because ((1 - 2^{-p(n)}) &lt; 1), we even have</p>
+    <p>In fact, because $1 - 2^{-p(n)} < 1$, we even have</p>
 
-    <p>[
-    \Pr[M'(w)\text{ accepts}] &lt; \frac12.
-    ]</p>
+    <p>$$
+    \Pr[M'(w)\text{ accepts}] < \tfrac12.
+    $$</p>
 
-    <p>So on non-members, the acceptance probability stays ≤ 1/2 (and even drops).</p>
+    <p>So on non-members, the acceptance probability stays $\le 1/2$ (and even drops).</p>
 
     <hr />
 
-    <h3>Case 2: (w \in L)</h3>
+    <h3>Case 2: $w \in L$</h3>
 
-    <p>Then (M) accepts <strong>strictly more than half</strong> of the Block-A bitstrings:</p>
+    <p>Then $M$ accepts <strong>strictly more than half</strong> of the Block-A bitstrings:</p>
 
-    <p>[
-    #{A : M(w) \text{ accepts on } A} = 2^{p(n)-1} + k
+    <p>$$
+    \#\{A : M(w) \text{ accepts on } A\} = 2^{p(n)-1} + k
     \qquad \text{for some } k\ge 1.
-    ]</p>
+    $$</p>
 
-    <p>For each such Block-A string, (M') accepts unless Block B is all zeros.<br />
-    Thus, for each good (A), exactly ((2^{p(n)} - 1)) choices of Block B lead to acceptance.</p>
+    <p>For each such Block-A string, $M'$ accepts unless Block B is all zeros.
+    Thus, for each good $A$, exactly $2^{p(n)} - 1$ choices of Block B lead to acceptance.</p>
 
-    <p>Hence the total number of accepting random strings of length (2p(n)) is:</p>
+    <p>Hence the total number of accepting random strings of length $2p(n)$ is:</p>
 
-    <p>[
+    <p>$$
     (2^{p(n)-1} + 1)(2^{p(n)} - 1)
     = 2^{2p(n)-1} + 2^{p(n)} - 1.
-    ]</p>
+    $$</p>
 
-    <p>This quantity is <strong>greater than half</strong> of all (2^{2p(n)}) possible random strings, because:</p>
+    <p>This quantity is <strong>greater than half</strong> of all $2^{2p(n)}$ possible random strings, because:</p>
 
-    <p>[
-    2^{2p(n)-1} + 2^{p(n)} - 1
-    <br /><br />
-    &gt; 2^{2p(n)-1}.
-    ]</p>
+    <p>$$
+    2^{2p(n)-1} + 2^{p(n)} - 1 > 2^{2p(n)-1}.
+    $$</p>
 
     <p>Thus,</p>
 
-    <p>[
-    \Pr[M'(w) \text{ accepts}] &gt; \frac12.
-    ]</p>
+    <p>$$
+    \Pr[M'(w) \text{ accepts}] > \tfrac12.
+    $$</p>
 
     <hr />
 
     <h2>Conclusion</h2>
 
-    <p>For every input (w):</p>
+    <p>For every input $w$:</p>
 
     <ul>
-      <li>If (w \notin L), then (M') accepts with probability <em>at most</em> (in fact, <em>less than</em>) (1/2).</li>
-      <li>If (w \in L), then (M') accepts with probability <em>strictly more</em> than (1/2).</li>
+      <li>If $w \notin L$, then $M'$ accepts with probability <em>at most</em> (in fact, <em>less than</em>) $1/2$.</li>
+      <li>If $w \in L$, then $M'$ accepts with probability <em>strictly more</em> than $1/2$.</li>
     </ul>
 
-    <p>The running time of (M') remains polynomial.</p>
+    <p>The running time of $M'$ remains polynomial.</p>
 
-    <p>Therefore, (M') is a polynomial-time probabilistic Turing machine with error probability <strong>strictly below (1/2)</strong> that recognizes the same language (L). ∎</p>
+    <p>Therefore, $M'$ is a polynomial-time probabilistic Turing machine with error probability <strong>strictly below $1/2$</strong> that recognizes the same language $L$. ∎</p>
 
   </details>
 </div>
