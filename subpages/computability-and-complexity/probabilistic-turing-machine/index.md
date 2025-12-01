@@ -24,7 +24,7 @@ Sure, here’s a rephrased version with the same meaning:
 A probabilistic Turing machine is defined as a 7-tuple $M = (Q, \Sigma, \Gamma, q_0, A, \delta_1, \delta_2)$, where
 
 * $Q$ is a finite set of states.
-* $\Sigm$ is the input alphabet.
+* $\Sigma$ is the input alphabet.
 * $\Gamma$ is the tape alphabet and contains the blank symbol (#).
 * $q_0 \in Q$ is the start state.
 * $A \subseteq Q$ is the set of accepting (final) states.
@@ -75,7 +75,7 @@ Computational complexity theory models **randomized algorithms** as **probabilis
 
 The most basic randomized complexity class is **RP**. It consists of all decision problems for which there exists an efficient (polynomial-time) randomized algorithm (i.e., a probabilistic Turing machine) that:
 
-* always correctly identifies NO-instances ($w \noin L$), and
+* always correctly identifies NO-instances ($w \notin L$), and
 * correctly identifies YES-instances ($w \in L$) with probability at least $\dfrac{1}{2}$.
 
 The complementary class is **co-RP**, where YES-instances are always accepted correctly and NO-instances may be misclassified with probability at most $\dfrac{1}{2}$.

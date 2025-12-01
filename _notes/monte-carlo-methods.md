@@ -9,8 +9,8 @@ tags:
   - algorithms
 ---
 
-- [Markov Chain Monte Carlo](/paper-notes/monte-carlo-methods/mcmc/index.md)
+- [Markov Chain Monte Carlo](/subpages/monte-carlo-methods/mcmc/index.md)
 
-- [Rejection Sampling](/paper-notes/monte-carlo-methods/mcmc/index.md)
+- [Rejection Sampling](/subpages/monte-carlo-methods/mcmc/index.md)
 
-- [Inverse Transform Sampling](/paper-notes/monte-carlo-methods/mcmc/index.md)
+- [Inverse Transform Sampling](/subpages/monte-carlo-methods/mcmc/index.md)
