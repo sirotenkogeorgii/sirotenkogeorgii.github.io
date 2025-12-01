@@ -25,17 +25,17 @@ In rejection sampling, we:
 
 $c$ is exactly the factor that "lifts" $f_Z$ enough so that $cf_Z$ dominates $f_X$ everywhere. Smaller $c$ (as close as possible to $\sup_x \frac{f_X(x)}{f_Z(x)}$) means fewer rejections and a more efficient algorithm.
 
-**Algorithm 4.5 — Acceptance–rejection sampling**
+**Algorithm (Acceptance–rejection sampling)**
 
 1. **repeat**
-   * Draw $Y \sim g$.
+   * Draw $Y \sim f_Z$.
    * Draw $U \sim \mathcal{U}(0,1)$.
-2. **until** $U \le \dfrac{f(Y)}{c,g(Y)}$.
+2. **until** $U \le \dfrac{f_X(Y)}{cf_Z(Y)}$.
 3. Set $X \leftarrow Y$.
 4. Output $X$.
 
 
-<div class="accordion">
+<!-- <div class="accordion">
   <details>
     <summary>Code</summary>
 
@@ -52,5 +52,25 @@ def rejection_sample(sample_z, f_x, f_z, c, n_samples):
 
     return samples
 ```
+  </details>
+</div> -->
+
+
+<div class="accordion">
+  <details>
+    <summary>Code</summary>
+    <pre><code class="language-python">
+def rejection_sample(sample_z, f_x, f_z, c, n_samples):
+    samples = []
+    while len(samples) < n_samples:
+        z = sample_z()          # 1. sample from proposal Z
+        u = random.random()     # 2. sample U ~ Uniform(0,1)
+
+        # 3. accept with probability f_x(z) / (c * f_z(z))
+        if u < f_x(z) / (c * f_z(z)):
+            samples.append(z)
+
+    return samples
+    </code></pre>
   </details>
 </div>
