@@ -9,10 +9,8 @@ tags:
   - algorithms
 ---
 
-- [Markov Chain Monte Carlo](/subpages/monte-carlo-methods/mcmc/index.md)
+- [Markov Chain Monte Carlo](/subpages/monte-carlo-methods/mcmc/)
 
 - [Rejection Sampling](/subpages/monte-carlo-methods/acceptance-rejection-sampling/)
-
-<!-- - [Gibbs Sampling](/subpages/monte-carlo-methods/mcmc/acceptance-rejection-sampling/) -->
 
 - [Inverse Transform Sampling](/subpages/monte-carlo-methods/mcmc/index.md)

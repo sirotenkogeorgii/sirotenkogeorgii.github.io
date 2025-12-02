@@ -2910,19 +2910,21 @@ $\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-comple
 
 An interactive proof system establishes membership in a language through a dialogue between a computationally bounded verifier and a computationally unbounded prover. The verifier is a probabilistic Turing machine that runs in polynomial time, while the prover can perform arbitrary computation. Messages are polynomially bounded in the input size.
 
-$\textbf{Definition 132 (Verifiers and provers):}$ A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(|w|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
+$\textbf{Definition 132 (Verifiers and provers):}$ A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(\|w\|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
 
 For a verifier $V$ and a prover $P$, the messages exchanged on input $w$ and random word $r$ are $m_1, m_2, \ldots$ with
+
 $$
 m_1 = V^r(w), \quad m_2 = P(w, m_1), \quad m_3 = V^r(w, m_1, m_2), \ldots
 $$
+
 The interaction terminates at round $t$ if $t$ is minimal such that $V$ reaches either its accepting or rejecting state on computing $V^r(w, m_1, \ldots, m_{2t})$.
 
-Let $t : \mathbb{N} \to \mathbb{N}$. A verifier $V$ is **total** and **$t(n)$-bounded** if for all inputs $w$, all random words, and all provers $P$, the interaction terminates by round $t(|w|)$.
+Let $t : \mathbb{N} \to \mathbb{N}$. A verifier $V$ is **total** and **$t(n)$-bounded** if for all inputs $w$, all random words, and all provers $P$, the interaction terminates by round $t(\|w\|)$.
 
 Key consequences:
 
-* Message lengths, number of rounds, and verifier computation per message are polynomially bounded in $|w|$.
+* Message lengths, number of rounds, and verifier computation per message are polynomially bounded in $\|w\|$.
 * The prover cannot see the verifier’s random word; its replies depend only on the input and previous messages.
 * Any total verifier is $t(n)$-bounded for some computable $t$ (by bounding the computation tree depth).
 
@@ -2990,16 +2992,19 @@ $\textbf{Remark 139:}$ The optimal prover computed in Theorem 138 can be impleme
 We arithmetize logical formulas to design interactive proofs for PSPACE-complete problems.
 
 $\textbf{Definition 140:}$ The counting $3$-satisfiability problem is
+
 $$
 \#3\text{-SAT} = \{(\phi, k) : \phi \text{ is a 3-CNF formula with exactly } k \text{ satisfying assignments}\}.
 $$
 
-$\textbf{Theorem 141:}$ $\#3\text{-SAT} \in \text{IP}$.
+$\textbf{Theorem 141:}$ #$3\text{-SAT} \in \text{IP}$.
 
 *Proof sketch.* Map $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$ over a field $\mathbb{F}$ by sending $X_i \mapsto x_i$ and $\neg X_i \mapsto (1 - x_i)$, and clauses $(L_1 \vee L_2 \vee L_3)$ to $1 - (1 - p_{L_1})(1 - p_{L_2})(1 - p_{L_3})$. Then
+
 $$
 k_\phi = \sum_{x_1 \in \{0,1\}} \cdots \sum_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) \quad (5.2)
 $$
+
 The protocol iteratively reduces claims about $h_i(x_i) = \sum_{x_{i+1},\ldots,x_n} p_\phi(r_1, \ldots, r_{i-1}, x_i, \ldots, x_n)$ using random evaluations over a large prime field. Consistency checks ensure a cheating prover is caught with high probability; an honest prover succeeds with probability $1$. ∎
 
 $\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
@@ -3009,9 +3014,11 @@ $\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
 $\textbf{Theorem 143:}$ $3\text{-QBF} \in \text{IP}$.
 
 *Proof sketch.* Arithmetize the quantified formula $\Psi = \forall X_1 \exists X_2 \ldots Q_n X_n \phi$ into an expression
+
 $$
 \prod_{x_1 \in \{0,1\}} \coprod_{x_2 \in \{0,1\}} \cdots \coprod_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)
 $$
+
 where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\{0,1\}^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus 3-QBF has an interactive proof, and by completeness of 3-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
 
 ### Public Coins and Perfect Completeness

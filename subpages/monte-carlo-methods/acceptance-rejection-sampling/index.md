@@ -136,11 +136,12 @@ Here is a **clean, clear, and well-structured rephrasing** of the text:
 At each iteration, the probability of accepting a sample is
 
 $$\mathbb{P}(U' , c f_Z(Z) < f_X(Z))= \int_{-\infty}^{\infty} dzf_Z(z)\mathbb{P}(U' , c f_Z(z) < f_X(z)\mid Z=z)$$
-$$= \int_{-\infty}^{\infty} dz\frac{f_X(z)}{c}= \frac{1}{c}.$$
+
+$$= \int_{-\infty}^{\infty} dz\frac{f_X(z)}{c}= \frac{1}{c}$$
 
 Therefore, the number of iterations required to obtain a single accepted sample is a random variable $N \ge 1$ with probability mass function
 
-$$p_N(n) = \frac{1}{c}\left(1 - \frac{1}{c}\right)^{n-1}.$$
+$$p_N(n) = \frac{1}{c}\left(1 - \frac{1}{c}\right)^{n-1}$$
 
 This is a **geometric distribution** with success probability $1/c$.
 Its expected value is
