@@ -962,7 +962,7 @@ This pattern provides a fundamental characterization of the class $\text{NP}$.
 $\textbf{Proposition 56:}$ A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
 
 $$
-w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* ; [(w, z) \in B \text{ & } \lvert z\rvert \le p(\lvert w \rvert)]
+w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w, z) \in B \text{ and } \lvert z\rvert \le p(\lvert w \rvert)]
 $$
 
 In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(\lvert w \rvert)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
@@ -2902,3 +2902,145 @@ $$
 $\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-complete.
 
 *(Note: The proof is omitted here but was covered in the lecture.)*
+
+
+## Interactive Proof Systems
+
+### Verifiers and Provers
+
+An interactive proof system establishes membership in a language through a dialogue between a computationally bounded verifier and a computationally unbounded prover. The verifier is a probabilistic Turing machine that runs in polynomial time, while the prover can perform arbitrary computation. Messages are polynomially bounded in the input size.
+
+$\textbf{Definition 132 (Verifiers and provers):}$ A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(|w|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
+
+For a verifier $V$ and a prover $P$, the messages exchanged on input $w$ and random word $r$ are $m_1, m_2, \ldots$ with
+$$
+m_1 = V^r(w), \quad m_2 = P(w, m_1), \quad m_3 = V^r(w, m_1, m_2), \ldots
+$$
+The interaction terminates at round $t$ if $t$ is minimal such that $V$ reaches either its accepting or rejecting state on computing $V^r(w, m_1, \ldots, m_{2t})$.
+
+Let $t : \mathbb{N} \to \mathbb{N}$. A verifier $V$ is **total** and **$t(n)$-bounded** if for all inputs $w$, all random words, and all provers $P$, the interaction terminates by round $t(|w|)$.
+
+Key consequences:
+
+* Message lengths, number of rounds, and verifier computation per message are polynomially bounded in $|w|$.
+* The prover cannot see the verifier’s random word; its replies depend only on the input and previous messages.
+* Any total verifier is $t(n)$-bounded for some computable $t$ (by bounding the computation tree depth).
+
+$\textbf{Definition 133:}$ A language $L$ is recognized (interactively) by a total verifier $V$ if
+
+1. For each $w \in L$, there exists a prover such that $V$ accepts with probability at least $\tfrac{2}{3}$.
+2. For each $w \notin L$, for all provers, $V$ rejects with probability at least $\tfrac{2}{3}$.
+
+Let $k \in \mathbb{N}$. The class $\text{IP}[k]$ contains all languages recognized by some $k$-bounded verifier; IP contains those recognized by some polynomially bounded verifier.
+
+Completeness is condition (1); soundness is condition (2). The $\tfrac{2}{3}$ bound can be amplified arbitrarily close to $1$ via repetition. It is immediate that $\text{BPP} = \text{IP}[0]$ and $\text{NP} \subseteq \text{IP}[1]$.
+
+$\textbf{Remark 134:}$ If $L$ is recognized by a verifier $V$, there is a single prover $P$ (independent of the input) that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
+
+### An Interactive Proof for Graph Non-Isomorphism
+
+We adopt a fixed node-labeling convention.
+
+Convention 136: All graphs with $n$ nodes have the node set $\{1, \ldots, n\}$.
+
+$\textbf{Definition 135:}$ Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
+
+Languages:
+
+* $\text{GI} = \{(G, G') \mid G \text{ and } G' \text{ are isomorphic}\}$
+* $\text{GNI} = \{(G, G') \mid G \text{ and } G' \text{ are nonisomorphic}\}$
+
+GI is in NP; GNI is not known to be in NP. Yet GNI has a simple interactive proof.
+
+$\textbf{Theorem 137:}$ $\text{GNI} \in \text{IP}[1]$.
+
+*Proof.* Let the input be $(G_0, G_1)$ with the same number of nodes (otherwise reject immediately). The protocol is a single round:
+
+1. **Verifier:** Choose $i \in \{0,1\}$ uniformly and a random permutation $\pi$ of the nodes. Compute $H = \pi(G_i)$ and send $H$.
+2. **Prover:** Return a bit $j'$ claiming whether $H$ is isomorphic to $G_{j'}$.
+3. **Verifier:** Accept iff $j' = i$.
+
+Completeness: If $(G_0, G_1) \in \text{GNI}$, $H$ is isomorphic to exactly one of $G_0$ or $G_1$. An unbounded prover can identify which and always answer correctly, so acceptance probability is $1$.
+
+Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveals no information about $i$. The prover can do no better than guessing; acceptance probability is $\tfrac{1}{2}$. Two parallel repetitions drive rejection to $\tfrac{3}{4}$ while remaining 1-bounded. ∎
+
+### The Equivalence of IP and PSPACE
+
+The landmark result: $\text{IP} = \text{PSPACE}$.
+
+#### Proving IP is a Subset of PSPACE
+
+$\textbf{Theorem 138:}$ $\text{IP} \subseteq \text{PSPACE}$.
+
+*Proof.* Let $L \in \text{IP}$ with polynomially bounded verifier $V$ (bound $p$). On input $w$ of length $n$, the interaction can be represented as a game tree $T$ of depth $2p(n)$ whose nodes encode partial transcripts $m_1 \ldots m_t$. Each node has at most $2^{p(n)}$ children (all possible next messages).
+
+Let $k(u)$ be the number of verifier random strings that lead to partial communication $u$ and eventual acceptance assuming an optimal prover from there. Then $w \in L$ iff $k(z) \ge \tfrac{2}{3} \cdot 2^{p(n)}$ for the root $z$.
+
+Compute $k(u)$ recursively in polynomial space:
+
+* If $u$ is at even depth (verifier turn), $k(u) = \sum_{v \text{ child of } u} k(v)$.
+* If $u$ is at odd depth (prover turn), $k(u) = \max_{v \text{ child of } u} k(v)$.
+
+Leaves can be evaluated by simulating $V$ on all $2^{p(n)}$ random strings using polynomial space. A depth-first traversal reuses space, so the overall computation fits in PSPACE. ∎
+
+$\textbf{Remark 139:}$ The optimal prover computed in Theorem 138 can be implemented in deterministic polynomial space. Thus every $L \in \text{IP}$ has a polynomial-space prover.
+
+#### Proving PSPACE is a Subset of IP
+
+We arithmetize logical formulas to design interactive proofs for PSPACE-complete problems.
+
+$\textbf{Definition 140:}$ The counting $3$-satisfiability problem is
+$$
+\#3\text{-SAT} = \{(\phi, k) : \phi \text{ is a 3-CNF formula with exactly } k \text{ satisfying assignments}\}.
+$$
+
+$\textbf{Theorem 141:}$ $\#3\text{-SAT} \in \text{IP}$.
+
+*Proof sketch.* Map $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$ over a field $\mathbb{F}$ by sending $X_i \mapsto x_i$ and $\neg X_i \mapsto (1 - x_i)$, and clauses $(L_1 \vee L_2 \vee L_3)$ to $1 - (1 - p_{L_1})(1 - p_{L_2})(1 - p_{L_3})$. Then
+$$
+k_\phi = \sum_{x_1 \in \{0,1\}} \cdots \sum_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) \quad (5.2)
+$$
+The protocol iteratively reduces claims about $h_i(x_i) = \sum_{x_{i+1},\ldots,x_n} p_\phi(r_1, \ldots, r_{i-1}, x_i, \ldots, x_n)$ using random evaluations over a large prime field. Consistency checks ensure a cheating prover is caught with high probability; an honest prover succeeds with probability $1$. ∎
+
+$\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
+
+*Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a PSPACE-complete language has an interactive proof. QBF in 3-CNF form (3-QBF) is PSPACE-complete.
+
+$\textbf{Theorem 143:}$ $3\text{-QBF} \in \text{IP}$.
+
+*Proof sketch.* Arithmetize the quantified formula $\Psi = \forall X_1 \exists X_2 \ldots Q_n X_n \phi$ into an expression
+$$
+\prod_{x_1 \in \{0,1\}} \coprod_{x_2 \in \{0,1\}} \cdots \coprod_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)
+$$
+where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\{0,1\}^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus 3-QBF has an interactive proof, and by completeness of 3-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
+
+### Public Coins and Perfect Completeness
+
+Interactive proofs can be made public-coin (all verifier randomness revealed) and perfectly complete (accept with probability $1$ on yes-instances).
+
+$\textbf{Remark 144:}$ The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to 3-QBF, every language in IP has a public-coin, perfectly complete interactive proof.
+
+### Interactive Proof Systems with the Zero-Knowledge Property
+
+Zero-knowledge proofs allow authentication without revealing secrets: the verifier learns nothing beyond the validity of the statement.
+
+$\textbf{Definition 145:}$ An interactive proof system $(V, P)$ for $L$ is *zero-knowledge* if for every verifier $V'$ there is a probabilistic Turing machine $S$ (the simulator) running in expected polynomial time such that for every $w \in L$, the output distribution of $S$ equals the distribution of transcripts from the interaction of $V'$ with $P$ on input $w$.
+
+The simulator shows that any transcript could have been generated without access to the prover’s secret, so no knowledge is leaked (perfect zero-knowledge).
+
+GI, despite lacking a known NP certificate, admits a zero-knowledge interactive proof.
+
+$\textbf{Theorem 146:}$ GI has a zero-knowledge interactive proof system.
+
+*Proof.* For input $(G_0, G_1)$, the prover’s secret is an isomorphism if it exists.
+
+1. **Prover:** Pick random $i \in \{0,1\}$ and random permutation $\pi$. Send $H = \pi(G_i)$.
+2. **Verifier:** Send random challenge bit $j$.
+3. **Prover:** Return a permutation $\pi_P$ showing $H = \pi_P(G_j)$.
+4. **Verifier:** Accept if $\pi_P$ is valid.
+
+Completeness: If $G_0 \cong G_1$ via $\pi_0$, the prover always responds with a correct isomorphism (using $\pi$, $\pi \circ \pi_0$, or $\pi \circ \pi_0^{-1}$ depending on $i, j$), so acceptance probability is $1$.
+
+Soundness: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error.
+
+Zero-knowledge: A simulator $S$ produces transcripts indistinguishable from real interactions without knowing an isomorphism. $S$ guesses a challenge $j$, chooses random $\pi$, sets $H = \pi(G_j)$, sends $H$, receives actual challenge $j'$, and restarts unless $j' = j$. Since $j' = j$ with probability $\tfrac{1}{2}$, expected retries are constant; when $j' = j$, $\pi$ is a valid witness, so the transcript distribution matches the real protocol. ∎
