@@ -2710,7 +2710,12 @@ $\textbf{Theorem 122:}$ The class **PH** is a subset of **PSPACE**.
 
 *(Note: The proof of this theorem is similar to the proof that QBF is PSPACE-complete and is omitted here.)*
 
-A significant open question in complexity theory is whether this hierarchy is infinite or if it "collapses" to a specific level.
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/Polynomial_time_hierarchy.svg.png' | relative_url }}" alt="Polynomial time hierarchy" loading="lazy">
+  </figure>
+</div>
+
 
 <div class="note-callout">
 <p class="note-callout__title">Remark 123 (Collapse of the Hierarchy)</p>
@@ -2737,22 +2742,72 @@ $\textbf{Corollary 125:}$ The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_
 
 #### Proof of Theorem 124
 
-**Proof.** Let $L$ be a language in **BPP**. Let $M$ be a polynomially time-bounded probabilistic Turing machine with an error probability of at most $2^{-n}$ that recognizes $L$. We can assume that the random words used by $M$ have a length of $p(n)$ for some polynomial $p$. We fix a value $n_0$ such that for all $n \ge n_0$, it holds that $p(n) < 2^n$.
+**Proof.** Let $L$ be a language in **BPP**. Let $M$ be a polynomially time-bounded probabilistic Turing machine with an error probability of at most $2^{-n}$ that recognizes $L$. In other words 
 
-Fix an input word $w$ of length $n \ge n_0$. Let $U$ be the set of random words that cause $M$ to accept $w$:
+* For all $w \in L$: $\text{Pr}[\text{(M) accepts (w)}] \ge 1 - 2^{-n}$,
+* For all $w \notin L$: $\text{Pr}[\text{(M) accepts (w)}] \le 2^{-n}$,
 
-$$
-U = \lbrace r \in \lbrace 0, 1\rbrace^{p(n)} : M \text{ accepts } w \text{ on random word } r \rbrace
-$$
+We can assume that the random words used by $M$ have a length of $p(n)$ for some polynomial $p$. We fix a value $n_0$ such that for all $n \ge n_0$, it holds that $p(n) < 2^n$.
+
+Fix an input word $w$ of length $n \ge n_0$. Let
+
+$$U = \{r \in {0,1}^{p(n)\} : M \text{ accepts } w \text{ when its random tape is } r }$$
+
+So:
+
+* $U$ is the set of random strings that make $M$ accept $w$.
+* If $w \in L$, then $\|U\|$ is **almost all** of ${0,1}^{p(n)}$.
+* If $w \notin L$, then $\|U\|$ is **tiny** (at most a $2^{-n}$-fraction).
 
 For the remainder of this proof, "word" will refer to a binary word of length $p(n)$ unless stated otherwise. We use the operator $\oplus$, which represents bitwise exclusive-or (parity). For any word $v$, the function $u \mapsto u \oplus v$ is a bijection on the set of all words. Let $U \oplus v = \lbrace u \oplus v : u \in U\rbrace$. Note that $\lvert U \rvert = \lvert U \oplus v \rvert$.
 
-**Case 1: $w$ is not in $L$.**
-In this case, the set $U$ (and thus any set $U \oplus v$) contains at most a fraction of $2^{-n}$ of all possible words. The union of $p(n)$ such sets cannot comprise all words, because by our choice of $n_0$, we have $p(n) < 2^n$. Consequently, the following statement is **false**:
+We will consider the following statement:
 
-$$
-\exists_{v_1}^{p(n)} \cdots \exists_{v_{p(n)}}^{p(n)} \forall_{z}^{p(n)} (z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)}) \quad (*) \quad (4.3)
-$$
+
+$$\exists v_1^{p(n)} \cdots \exists v_{p(n)}^{p(n)}\ \forall z^{p(n)} \bigl( z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)} \bigr) (4.3)$$
+
+
+Informally:
+
+> There exist $p(n)$ “shifts” $v_1,\ldots,v_{p(n)}$ such that **every** word $z$ is contained in at least one of the shifted good sets $U \oplus v_i$.
+
+We will show:
+
+* If $w \notin L$, then (4.3) is **false**.
+* If $w \in L$, then (4.3) is **true**.
+
+Thus, membership in $L$ is equivalent to the truth of this $\exists\forall$-statement about $U$.
+
+**Case 1: $w$ is not in $L$.**
+In this case, the set $U$ (and thus any set $U \oplus v$) contains at most $\dfrac\{2^{-n}}{2^n}$, because the acceptance probability is at most $2^{-n}$:
+
+$$\frac{\|U\|}{2^{p(n)}} \le 2^{-n} \quad\Longrightarrow\quad \|U\| \le 2^{p(n)} \cdot 2^{-n}$$
+
+Consider **any** choice of $v_1,\dots,v_{p(n)}$. The union
+
+$$(U \oplus v_1) \cup \cdots \cup (U \oplus v_{p(n)})$$
+
+has at most
+
+$$p(n) \cdot \|U\| \le p(n) \cdot 2^{p(n)} \cdot 2^{-n}$$
+
+elements.
+
+Since we chose $n_0$ so that $p(n) < 2^n$ for $n \ge n_0$, we get:
+
+$$p(n) \cdot \|U\| < 2^{p(n)}$$
+
+Thus, even after taking the union of all $p(n)$ sets $U \oplus v_i$, we still **do not cover the entire space** ${0,1}^{p(n)}$, which has size $2^{p(n)}$.
+
+The union of $p(n)$ such sets cannot comprise all words, because by our choice of $n_0$, we have $p(n) < 2^n$. Consequently, the following statement is **false**:
+
+So for any choice of $v_1,\ldots,v_{p(n)}$, there is some word $z$ that is **not** in any $U \oplus v_i$. Therefore, the universal statement
+
+$$\forall z\ (z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)})$$
+
+is false for that particular choice of the $v_i$, and hence the whole formula (4.3) is false.
+
+So: $w \notin L \quad\Rightarrow\quad \text{formula (4.3) is false.}$
 
 **Case 2: $w$ is in $L$.**
 In this case, we show that statement (4.3) is **true**. Fix some word $z$. Consider a random experiment where the bits of a word $v$ are determined by fair coin tosses. The word $z \oplus v$ is uniformly distributed among all words. Therefore, the probability that $z \oplus v$ is not in $U$ (or equivalently, that $z$ is not in $U \oplus v$) is at most $2^{-n}$.
@@ -2776,10 +2831,10 @@ We can now define the required language $B \in \textbf{P}$.
 </p>
 <ul>
 <li>
-For all binary words $w$ of length $n \ge n_0$, a tuple $(w, v_1, \ldots, v_{p(n)}, z)$ is in $B$ if and only if the components $v_1, \ldots, v_{p(n)}, z$ are words of length $p(\lvert w \rvert)$ that satisfy condition $(*)$ for the set $U$ corresponding to $w$.
+For all binary words $w$ of length $n \ge n_0$, a tuple $(w, v_1, \ldots, v_{p(n)}, z)$ is in $B$ if and only if the components $v_1, \ldots, v_{p(n)}, z$ are words of length $p(\lvert w \rvert)$ that satisfy condition $(*)$ for the set $U$ corresponding to $w$. We basically encode the existential choices into a single string. The tuple ($v_1,\ldots,v_{p(n)}$) consists of $p(n)$ words, each of length $p(n)$. So in total it has $p(n)^2$ bits. That’s still polynomial in $n$. We can encode this whole tuple as a single word $x \in {0,1}^{p'(n)} \quad\text{for some polynomial } p'$.
 </li>
 <li>
-For the finitely many words $w$ with length less than $n_0$:
+For the finitely many words $w$ with $\|w\| < n_0$, we can hard-wire their behavior into $B$:
 <ul>
 <li>If $w$ is not in $L$, $B$ contains no tuple with $w$ as the first component.</li>
 <li>If $w$ is in $L$, $B$ contains all tuples of the form $(w, 0^{p(\lvert w \rvert)}, \ldots, 0^{p(\lvert w \rvert)}, z)$ where $z$ is any binary word of length $p(\lvert w \rvert)$.</li>
