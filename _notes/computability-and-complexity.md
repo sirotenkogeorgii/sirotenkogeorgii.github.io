@@ -2972,6 +2972,8 @@ $\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-comple
 
 ## Interactive Proof Systems
 
+[Some additional notes on Interactive Proof Systems](/subpages/computability-and-complexity/interactive-proof-systems/)
+
 ### Verifiers and Provers
 
 An **interactive proof system** provides a framework for establishing the truth of a mathematical statement through a structured dialogue. It involves two distinct computational entities: a **prover** and a **verifier**. These parties communicate by exchanging messages regarding a common input string, with the goal of having the verifier decide whether the input belongs to a specific language.
