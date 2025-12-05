@@ -2712,7 +2712,7 @@ $\textbf{Theorem 122:}$ The class **PH** is a subset of **PSPACE**.
 
 <div class="gd-grid">
   <figure>
-    <img src="{{ '/assets/images/notes/computability-and-complexity/Polynomial_time_hierarchy.svg.png' | relative_url }}" alt="Polynomial time hierarchy" loading="lazy">
+    <img src="{{ '/assets/images/notes/computability-and-complexity/Polynomial_time_hierarchy.png' | relative_url }}" alt="Polynomial time hierarchy" loading="lazy">
   </figure>
 </div>
 
@@ -2747,11 +2747,11 @@ $\textbf{Corollary 125:}$ The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_
 * For all $w \in L$: $\text{Pr}[\text{(M) accepts (w)}] \ge 1 - 2^{-n}$,
 * For all $w \notin L$: $\text{Pr}[\text{(M) accepts (w)}] \le 2^{-n}$,
 
-We can assume that the random words used by $M$ have a length of $p(n)$ for some polynomial $p$. We fix a value $n_0$ such that for all $n \ge n_0$, it holds that $p(n) < 2^n$.
+We can assume that the random words used by $M$ have a length of $p(n)$ for some polynomial $p$. We fix a value $n_0$ such that for all $n \ge n_0$, it holds that $p(n) < 2^n$. It must happen at some $n_0$, because exponential function $2^n$ and $p(n)$ is polynomial.
 
 Fix an input word $w$ of length $n \ge n_0$. Let
 
-$$U = \{r \in {0,1}^{p(n)\} : M \text{ accepts } w \text{ when its random tape is } r }$$
+$$U = \{r \in \{0,1\}^{p(n)} : M \text{ accepts } w \text{ when its random tape is } r \}$$
 
 So:
 
@@ -2824,6 +2824,9 @@ Since this probability is less than 1, the probability that the chosen $v_i$ are
 <details>
 <summary>Constructing the Language B</summary>
 <p>
+The given machine $M$ (the probabilistic one) does not decide the language $B$. We define $B$ using $M$, and then argue that there exists a deterministic polynomial-time Turing machine (call it $D_B$) that decides $B$.
+</p>
+<p>
 The condition $(*)$ inside the quantifiers is decidable in polynomial time. Note that $z \in U \oplus v_i$ is equivalent to $z \oplus v_i \in U$. To check if a word is in $U$, we can simulate $M$ on input $w$ with that word as the random tape, which takes polynomial time.
 </p>
 <p>
@@ -2841,6 +2844,14 @@ For the finitely many words $w$ with $\|w\| < n_0$, we can hard-wire their behav
 </ul>
 </li>
 </ul>
+</details>
+</div>
+
+<div class="accordion">
+<details>
+<summary>TODO: The fact that probability that some word $z$ is not in the sets is not 100%, does imply that such $v_1, ..., v_{p(n)}$ exist, because the probability that something exists does not mean that it actually exists?</summary>
+<p>
+</p>
 </details>
 </div>
 
@@ -2963,6 +2974,9 @@ $\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-comple
 
 ### Verifiers and Provers
 
+An **interactive proof system** provides a framework for establishing the truth of a mathematical statement through a structured dialogue. It involves two distinct computational entities: a **prover** and a **verifier**. These parties communicate by exchanging messages regarding a common input string, with the goal of having the verifier decide whether the input belongs to a specific language.
+The prover is conceptualized as a computationally unrestricted entity, capable of performing any calculation necessary to persuade the verifier. In contrast, the verifier is a computationally bounded machine—specifically, a probabilistic Turing machine that must operate within polynomial time. The verifier uses randomness to pose challenges to the prover and to evaluate its responses. The messages exchanged are polynomially bounded in the length of the input.
+
 An interactive proof system establishes membership in a language through a dialogue between a computationally bounded verifier and a computationally unbounded prover. The verifier is a probabilistic Turing machine that runs in polynomial time, while the prover can perform arbitrary computation. Messages are polynomially bounded in the input size.
 
 $\textbf{Definition 132 (Verifiers and provers):}$ A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(\|w\|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
@@ -3000,47 +3014,51 @@ We adopt a fixed node-labeling convention.
 
 Convention 136: All graphs with $n$ nodes have the node set $\{1, \ldots, n\}$.
 
-$\textbf{Definition 135:}$ Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
+$\textbf{Definition 135:}$ Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* between graphs is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
 
 Languages:
 
-* $\text{GI} = \{(G, G') \mid G \text{ and } G' \text{ are isomorphic}\}$
-* $\text{GNI} = \{(G, G') \mid G \text{ and } G' \text{ are nonisomorphic}\}$
+* $\text{GI} = \lbrace (G, G') \mid G \text{ and } G' \text{ are isomorphic}\rbrace$
+* $\text{GNI} = \lbrace (G, G') \mid G \text{ and } G' \text{ are nonisomorphic}\rbrace$
 
-GI is in NP; GNI is not known to be in NP. Yet GNI has a simple interactive proof.
+The language GI is in NP since for isomorphic graphs, it can be checked in deterministic polynomial time whether a given mapping between their node sets is an isomorphism. The problem GI is one of the few languages in NP arising naturally in practice that is neither known to be NP-complete nor known to be in P. The language GNI is not known to be in NP.
 
 $\textbf{Theorem 137:}$ $\text{GNI} \in \text{IP}[1]$.
 
 *Proof.* Let the input be $(G_0, G_1)$ with the same number of nodes (otherwise reject immediately). The protocol is a single round:
 
-1. **Verifier:** Choose $i \in \{0,1\}$ uniformly and a random permutation $\pi$ of the nodes. Compute $H = \pi(G_i)$ and send $H$.
+1. **Verifier:** Choose $i \in \lbrace 0,1\rbrace$ uniformly and a random permutation $\pi$ of the nodes. Compute $H = \pi(G_i)$ and send $H$.
 2. **Prover:** Return a bit $j'$ claiming whether $H$ is isomorphic to $G_{j'}$.
 3. **Verifier:** Accept iff $j' = i$.
 
 Completeness: If $(G_0, G_1) \in \text{GNI}$, $H$ is isomorphic to exactly one of $G_0$ or $G_1$. An unbounded prover can identify which and always answer correctly, so acceptance probability is $1$.
 
-Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveals no information about $i$. The prover can do no better than guessing; acceptance probability is $\tfrac{1}{2}$. Two parallel repetitions drive rejection to $\tfrac{3}{4}$ while remaining 1-bounded. ∎
+Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveals no information about $i$. The prover can do no better than guessing; acceptance probability is $\tfrac{1}{2}$. To meet the soundness requirement of $\ge \frac{2}{3}$ rejection probability, the protocol can be repeated twice in parallel.  The verifier accepts only if the prover answers correctly for both independent interactions. The probability of the prover succeeding twice is $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$. Thus, the rejection probability is $1−\frac{1}{4}=\frac{3}{4}$, which satisfies the condition. Since the repetitions can be done in parallel, the protocol remains 1-bounded.
 
 ### The Equivalence of IP and PSPACE
 
-The landmark result: $\text{IP} = \text{PSPACE}$.
+A landmark result in complexity theory is the characterization of $\textbf{IP}$ as being exactly equal to the class of problems solvable in polynomial space, $\textbf{PSPACE}$.
 
 #### Proving IP is a Subset of PSPACE
+
+We first show that any problem with an interactive proof can be solved by a polynomial-space Turing machine.
 
 $\textbf{Theorem 138:}$ $\text{IP} \subseteq \text{PSPACE}$.
 
 *Proof.* Let $L \in \text{IP}$ with polynomially bounded verifier $V$ (bound $p$). On input $w$ of length $n$, the interaction can be represented as a game tree $T$ of depth $2p(n)$ whose nodes encode partial transcripts $m_1 \ldots m_t$. Each node has at most $2^{p(n)}$ children (all possible next messages).
 
-Let $k(u)$ be the number of verifier random strings that lead to partial communication $u$ and eventual acceptance assuming an optimal prover from there. Then $w \in L$ iff $k(z) \ge \tfrac{2}{3} \cdot 2^{p(n)}$ for the root $z$.
+Let $k(u)$ be the number of verifier random strings that lead to partial communication $u$ and eventual acceptance assuming an optimal prover from there. Then $w \in L$ iff $k(z) \ge \tfrac{2}{3} \cdot 2^{p(n)}$ for the root $z$ (root $z$ is the initial message computation: $z = m_1 = V^r(w)$).
 
 Compute $k(u)$ recursively in polynomial space:
 
-* If $u$ is at even depth (verifier turn), $k(u) = \sum_{v \text{ child of } u} k(v)$.
+* If $u$ is at even depth (verifier turn, we count depth from 0), $k(u) = \sum_{v \text{ child of } u} k(v)$.
 * If $u$ is at odd depth (prover turn), $k(u) = \max_{v \text{ child of } u} k(v)$.
 
 Leaves can be evaluated by simulating $V$ on all $2^{p(n)}$ random strings using polynomial space. A depth-first traversal reuses space, so the overall computation fits in PSPACE. ∎
 
-$\textbf{Remark 139:}$ The optimal prover computed in Theorem 138 can be implemented in deterministic polynomial space. Thus every $L \in \text{IP}$ has a polynomial-space prover.
+<!-- $\textbf{Remark 139:}$ The optimal prover computed in Theorem 138 can be implemented in deterministic polynomial space. Thus every $L \in \text{IP}$ has a polynomial-space prover. -->
+
+$\textbf{Remark 139:}$ Let $L$ be a language in IP, and let V be a polynomially bounded verifier that recognizes $L$. Then there is a polynomially space-bounded prover P such that the interactive proof system (V,P) recognizes $L$, i.e., V accepts all inputs in L with probability at least $\frac{3}{2}$ when interacting with P. This follows because the optimal prover described in the proof of Theorem 138 makes decisions by computing the function $k(u)$, which we have shown can be done in deterministic polynomial space.
 
 #### Proving PSPACE is a Subset of IP
 
@@ -3054,7 +3072,7 @@ $$
 
 $\textbf{Theorem 141:}$ #$3\text{-SAT} \in \text{IP}$.
 
-*Proof sketch.* Map $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$ over a field $\mathbb{F}$ by sending $X_i \mapsto x_i$ and $\neg X_i \mapsto (1 - x_i)$, and clauses $(L_1 \vee L_2 \vee L_3)$ to $1 - (1 - p_{L_1})(1 - p_{L_2})(1 - p_{L_3})$. Then
+*Proof sketch.* TODO: rewrite  Map $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$ over a field $\mathbb{F}$ by sending $X_i \mapsto x_i$ and $\neg X_i \mapsto (1 - x_i)$, and clauses $(L_1 \vee L_2 \vee L_3)$ to $1 - (1 - p_{L_1})(1 - p_{L_2})(1 - p_{L_3})$. Then
 
 $$
 k_\phi = \sum_{x_1 \in \{0,1\}} \cdots \sum_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) \quad (5.2)
