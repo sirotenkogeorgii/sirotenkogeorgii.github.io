@@ -56,7 +56,7 @@ the posterior predictive distribution at a new point (x_*) is Gaussian:
 
 $$p(f_* \mid x_*, X, y) = \mathcal{N}(\mu_*, \sigma_*^2)$$
 
-where $\mu_*$ and $\sigma_*^2$ come from kernel-based linear algebra.
+where $\mu_{*}$ and $\sigma_{*}^2$ come from kernel-based linear algebra.
 
 #### Why kernels matter
 
@@ -74,18 +74,13 @@ The kernel determines the shape properties of sampled functions:
 * Very flexible via kernel design
 * Naturally Bayesian
 
-
+---
 ### Algorithm (Gaussian Process Generator)
-
 1. Form the mean vector $\mu = (\mu_1,\dots,\mu_n)^\top$ and covariance matrix $\Sigma = (\Sigma_{ij})$ by setting $\mu_i = \tilde\mu_{t_i}$ and $\Sigma_{ij} = \tilde\Sigma_{t_i,t_j}$.
-
 2. Compute the Cholesky factorization $\Sigma = AA^\top$.
-
 3. Sample independent standard normal variables $Z_1,\dots,Z_n \sim \mathcal N(0,1)$, and define $Z = (Z_1,\dots,Z_n)^\top$.
-
 4. Produce the sample $X = \mu + AZ$.
-
-
+---
 
 
 <div class="accordion">
