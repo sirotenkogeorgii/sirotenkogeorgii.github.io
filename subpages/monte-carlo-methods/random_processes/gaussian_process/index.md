@@ -89,7 +89,6 @@ The kernel determines the shape properties of sampled functions:
   </figure>
 </div>
 
-### TODO: Add my own sketch
 
 <div class="accordion">
   <details>

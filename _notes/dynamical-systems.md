@@ -10,4 +10,5 @@ date: 2024-11-01
 ---
 
 
-[Dynamical Systems Theory in Machine Learning](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/)
+- [Dynamical Systems Theory in Machine Learning Course](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/)
+- [Neural Differential Equations](/subpages/dynamical-systems/neural-differential-equations/)

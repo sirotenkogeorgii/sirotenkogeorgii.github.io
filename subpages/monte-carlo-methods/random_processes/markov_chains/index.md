@@ -28,6 +28,12 @@ A direct implication of the Markov property is that the chain can be simulated *
 
 ---
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ 'assets/images/notes/monte-carlo-methods/Markov_chain_sketch.jpg' | relative_url }}" alt="Markov chain sketch" loading="lazy">
+  </figure>
+</div>
+
 The conditional distribution of $X_{t+1}$ given $X_t$ is commonly specified in one of two ways:
 
 * **Via a recurrence form:**
@@ -55,12 +61,6 @@ Thus, if $X_n=i$, the distribution of $X_{n+1}$ is the discrete distribution giv
 3. Set $t=t+1$ and repeat Step 2.
 
 ---
-
-<div class="gd-grid">
-  <figure>
-    <img src="{{ 'assets/images/notes/monte-carlo-methods/Markov_chain_sketch.jpg' | relative_url }}" alt="Markov chain sketch" loading="lazy">
-  </figure>
-</div>
 
 ## Random Walks on an $n$-Dimensional Hypercube
 
@@ -93,8 +93,6 @@ The chain moves to one of the $n$ adjacent vertices with equal probability.
     <figcaption>Random Walk on a 3-Dimensional Hypercube</figcaption>
   </figure>
 </div>
-
-### TODO: Add my own sketch
 
 ### TODO: Add PAS2 source
 
