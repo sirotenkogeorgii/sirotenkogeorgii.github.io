@@ -80,8 +80,16 @@ The kernel determines the shape properties of sampled functions:
 2. Compute the Cholesky factorization $\Sigma = AA^\top$.
 3. Sample independent standard normal variables $Z_1,\dots,Z_n \sim \mathcal N(0,1)$, and define $Z = (Z_1,\dots,Z_n)^\top$.
 4. Produce the sample $X = \mu + AZ$.
+
 ---
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ 'assets/images/notes/monte-carlo-methods/GP_sketch.jpg' | relative_url }}" alt="GP sketch" loading="lazy">
+  </figure>
+</div>
+
+### TODO: Add my own sketch
 
 <div class="accordion">
   <details>
@@ -145,6 +153,3 @@ Cholesky gives a matrix $A$ that acts like a covariance “square root,” so wh
 
   </details>
 </div>
-
-
-## Markovian Gaussian Processes
