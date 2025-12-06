@@ -9,11 +9,8 @@ tags:
   - algorithms
 ---
 
-- [Random Processes](/subpages/monte-carlo-methods/random-processes/)
-
+- [Random Processes](/subpages/monte-carlo-methods/random_processes/)
 - [Markov Chain Monte Carlo](/subpages/monte-carlo-methods/mcmc/)
-
 - [Rejection Sampling](/subpages/monte-carlo-methods/acceptance-rejection-sampling/)
-
 - [Inverse Transform Sampling](/subpages/monte-carlo-methods/mcmc/index.md)
 
