@@ -81,7 +81,7 @@ for sample points $t_i\in[0,T]$. In this approach, solving the differential equa
 This framework is known as a **physics-informed neural network (PINN)**. PINNs can be especially useful for certain PDEs—particularly nonlocal or high-dimensional ones—where classical solvers may be very expensive, though in many settings traditional methods remain more efficient.
 
 <div class="accordion">
-  <details>
+  <details markdown="1">
     <summary>Toy example: learn $y_\theta$ (PINN?)</summary>
 
 Sure — here’s a concrete **toy example** of learning $y_\theta$ directly.
@@ -102,7 +102,7 @@ y_\theta(t) = 1 + t\cdot \text{NN}_\theta(t)
 $$
 This automatically enforces $y_\theta(0)=1$.
 
-> Note: not every function $y_\theta(t)$ that you put in, for example, $[dy\dt](t)=const+y_\theta(t)$ will give this equality. Such function $y_\theta(t)$ that satisfies this equality must be learned.
+> Note: not every function $y_\theta(t)$ that you put in, for example, $\frac{dy_{\theta}}{dt}(t)=const+y_\theta(t)$ will give this equality. Such function $y_\theta(t)$ that satisfies this equality must be learned.
 
 ### ODE residual
 
@@ -118,8 +118,6 @@ $$
 $$
 
 Train with SGD/Adam. After training, $y_\theta(t)\approx e^{-t}$.
-
----
 
 ### Minimal PyTorch sketch
 
