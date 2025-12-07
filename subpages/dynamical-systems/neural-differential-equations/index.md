@@ -80,6 +80,7 @@ for sample points $t_i\in[0,T]$. In this approach, solving the differential equa
 
 This framework is known as a **physics-informed neural network (PINN)**. PINNs can be especially useful for certain PDEs—particularly nonlocal or high-dimensional ones—where classical solvers may be very expensive, though in many settings traditional methods remain more efficient.
 
+**Toy example: learning $y_\theta$ (PINN?):**
 <div class="accordion">
   <details markdown="1">
     <summary>Toy example: learn $y_\theta$ (PINN?)</summary>
