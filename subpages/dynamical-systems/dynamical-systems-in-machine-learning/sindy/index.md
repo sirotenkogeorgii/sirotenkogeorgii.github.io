@@ -81,17 +81,29 @@ where $\mathbf{y}$ is a column of $\dot{\mathbf{X}}$ and $\lambda$ is the sparsi
 
 ### Extensions
 
-#### Discrete-Time Systems: For systems of the form 
+#### Discrete-Time Systems
+
+For systems of the form 
 
 $$\mathbf{x}_{k+1} = \mathbf{f}(\mathbf{x}_k)$$
 
-the data matrices are constructed as:
+The data collection will now involve two matrices $\mathbf{X}_{1}^{m-1}$ and $\mathbf{X}_{2}^{m}$:
 
 $$
-\mathbf{X}_{1}^{m-1} = \begin{bmatrix} \mathbf{x}_{2}^{m} \end{bmatrix} =\mathbf{\Theta}\!\left(\mathbf{X}_{1}^{m-1}\right)\mathbf{\Xi}
+\mathbf{X}_{1}^{\,m-1} = \left[ \begin{array}{c} \text{— } \mathbf{x}_{1}^{T} \text{ —} \\ \text{— } \mathbf{x}_{2}^{T} \text{ —} \\ \vdots \\ \text{— } \mathbf{x}_{m-1}^{T} \text{ —} \end{array} \right], \qquad \mathbf{X}_{2}^{\,m} = \left[
+\begin{array}{c} \text{— } \mathbf{x}_{2}^{T} \text{ —} \\ \text{— } \mathbf{x}_{3}^{T} \text{ —} \\ \vdots \\ \text{— } \mathbf{x}_{m}^{T} \text{ —} \end{array} \right]. 
 $$
 
-For a linear library $\mathbf{\Theta}(\mathbf{x}) = \mathbf{x}$, this reduces to $\mathbf{X}\_{2}^{m} = \mathbf{X}\_{1}^{m-1} \mathbf{\Xi}$, which is equivalent to the Dynamic Mode Decomposition (DMD) formulation.
+
+$$
+\mathbf{X}_{1}^{m-1} =\mathbf{\Theta}\!\left(\mathbf{X}_{1}^{m-1}\right)\mathbf{\Xi}
+$$
+
+For a linear library $\mathbf{\Theta}(\mathbf{x}) = \mathbf{x}$, *that corresponds to the linear dynamics*, this reduces to
+
+$$\mathbf{X}\_{2}^{m} = \mathbf{X}\_{1}^{m-1} \mathbf{\Xi} \implies (\mathbf{X}\_{2}^{m})^\top = \mathbf{\Xi}^\top (\mathbf{X}\_{1}^{m-1})^\top,$$
+
+which is equivalent to the Dynamic Mode Decomposition (DMD) formulation.
 
 #### High-Dimensional Systems (PDEs)
 
@@ -114,6 +126,8 @@ Bifurcation parameters $\mu$ and external forcing $u(t)$ can be incorporated by 
 * For a parameter $\mu$
   
   $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}; \mu) \\  \dot{\mu} = 0$$
+
+  Imposing restrction on the predictor ($\mu$ here) means we are *treating that quantity as a constant-in-time parameter*, not a dynamical state. How it allows to enable bifurcation-aware model? Because it lets SINDy learn the vector field as a function of a control/bifurcation parameter, instead of learning a separate unrelated model for each regime. With $\dot \mu=0$, SINDy is forced to treat $\mu$ as: an input-like constant within each run, but a variable across runs. The key in training here is feeding SINDy multiple trajectories collected at different parameter values: $\lbrace (\mathbf{x}(t;\mu_1), \mathbf{x}(t;\mu_2), \dots) \rbrace$. Because $μ$ changes across datasets but not within each dataset, the regression can identify which terms scale with $μ$. Yes, to make SINDy “bifurcation-aware,” you typically do one regression using data from multiple runs, each run collected at a different parameter value.
 
 * For time-dependence or forcing $u(t)$:  
   
