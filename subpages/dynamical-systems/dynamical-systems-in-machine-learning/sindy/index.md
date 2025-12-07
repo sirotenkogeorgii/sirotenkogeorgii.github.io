@@ -87,7 +87,7 @@ For systems of the form
 
 $$\mathbf{x}_{k+1} = \mathbf{f}(\mathbf{x}_k)$$
 
-The data collection will now involve two matrices $\mathbf{X}_{1}^{m-1}$ and $\mathbf{X}_{2}^{m}$:
+The data collection will now involve two matrices $\mathbf{X}\_{1}^{m-1}$ and $\mathbf{X}\_{2}^{m}$:
 
 $$
 \mathbf{X}_{1}^{\,m-1} = \left[ \begin{array}{c} \text{— } \mathbf{x}_{1}^{T} \text{ —} \\ \text{— } \mathbf{x}_{2}^{T} \text{ —} \\ \vdots \\ \text{— } \mathbf{x}_{m-1}^{T} \text{ —} \end{array} \right], \qquad \mathbf{X}_{2}^{\,m} = \left[
@@ -96,12 +96,12 @@ $$
 
 
 $$
-\mathbf{X}_{1}^{m-1} =\mathbf{\Theta}\!\left(\mathbf{X}_{1}^{m-1}\right)\mathbf{\Xi}
+\mathbf{X}_{1}^{m-1} = \mathbf{\Theta}\!\left(\mathbf{X}_{1}^{m-1}\right)\mathbf{\Xi}
 $$
 
 For a linear library $\mathbf{\Theta}(\mathbf{x}) = \mathbf{x}$, *that corresponds to the linear dynamics*, this reduces to
 
-$$\mathbf{X}\_{2}^{m} = \mathbf{X}\_{1}^{m-1} \mathbf{\Xi} \implies (\mathbf{X}\_{2}^{m})^\top = \mathbf{\Xi}^\top (\mathbf{X}\_{1}^{m-1})^\top,$$
+$$\mathbf{X}_{2}^{m} = \mathbf{X}_{1}^{m-1} \mathbf{\Xi} \implies (\mathbf{X}_{2}^{m})^\top = \mathbf{\Xi}^\top (\mathbf{X}_{1}^{m-1})^\top,$$
 
 which is equivalent to the Dynamic Mode Decomposition (DMD) formulation.
 
