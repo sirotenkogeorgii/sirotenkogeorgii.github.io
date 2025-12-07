@@ -10,7 +10,7 @@ noindex: true
 
 ## Symbolic regression
 
-Deep learning models (including neural differential equations) are often accurate but hard to interpret, and in science understanding the model can be as important as performance. That motivates seeking **symbolic expressions** — compact formulas built from simple operations like (+), (\times), exponentiation, etc.
+Deep learning models (including neural differential equations) are often accurate but hard to interpret, and in science understanding the model can be as important as performance. That motivates seeking **symbolic expressions** — compact formulas built from simple operations like $+$, $\times$, exponentiation, etc.
 
 **Symbolic regression** aims to automatically discover such expressions from data. But it’s difficult because the space of possible expressions is not smoothly differentiable (so search often relies on *genetic algorithms*) and it is **combinatorially huge** — the number of possible expression trees grows extremely fast with size: $\frac{(2n)!}{(n+1)!n!}$ binary trees with $n$ vertices and so as a rough approximation we may expect there to be a similar number of possible expressions to consider. 
 
@@ -32,7 +32,7 @@ SINDy is widely regarded as a leading approach for symbolic regression in dynami
 
 However, SINDy relies on two strong assumptions:
 * that matched measurements of both $y$ and $\frac{dy}{dt}(t)$ are available, and
-* $f$ can be expressed as a shallow formula—specifically, a sparse linear combination of a preselected set of candidate functions.
+* $f$ can be expressed as a shallow formula — specifically, a sparse linear combination of a preselected set of candidate functions.
 
 > SINDy sometimes works around the first assumption by approximating $\frac{dy}{dt(t)}$ using finite diﬀerences. However this requires densely-packed observations.
 

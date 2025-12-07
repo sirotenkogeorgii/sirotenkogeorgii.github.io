@@ -32,6 +32,8 @@ $$
 \dot{\mathbf{X}} = \begin{bmatrix} \dot{\mathbf{x}}^T(t_1) \\ \dot{\mathbf{x}}^T(t_2) \\ \vdots \\ \dot{\mathbf{x}}^T(t_m) \end{bmatrix} = \begin{bmatrix} \dot{x}_1(t_1) & \dot{x}_2(t_1) & \dots & \dot{x}_n(t_1) \\ \dot{x}_1(t_2) & \dot{x}_2(t_2) & \dots & \dot{x}_n(t_2) \\ \vdots & \vdots & \ddots & \vdots \\ \dot{x}_1(t_m) & \dot{x}_2(t_m) & \dots & \dot{x}_n(t_m) \end{bmatrix}
 $$
 
+*(state horizontally, time vertically)*
+
 **Candidate Function Library:** A library matrix $\mathbf{\Theta}(\mathbf{X}) \in \mathbb{R}^{m \times p}$ is constructed, where each of the $p$ columns is a candidate nonlinear function evaluated on the states in $\mathbf{X}$.
 
 $$
@@ -44,7 +46,7 @@ $$
 \mathbf{X}^{P_2} = \begin{bmatrix} x_1^2(t_1) & x_1(t_1)x_2(t_1) & \dots & x_n^2(t_1) \\ x_1^2(t_2) & x_1(t_2)x_2(t_2) & \dots & x_n^2(t_2) \\ \vdots & \vdots & \ddots & \vdots \\ x_1^2(t_m) & x_1(t_m)x_2(t_m) & \dots & x_n^2(t_m) \end{bmatrix}
 $$
 
-Sparse Regression Problem: The problem is cast as a linear system, seeking a sparse coefficient matrix $\mathbf{\Xi} \in \mathbb{R}^{p \times n}$ that relates the library to the measured derivatives.  
+**Sparse Regression Problem:** The problem is cast as a linear system, seeking a sparse coefficient matrix $\mathbf{\Xi} \in \mathbb{R}^{p \times n}$ that relates the library to the measured derivatives.  
 
 $$\dot{\mathbf{X}} = \mathbf{\Theta}(\mathbf{X})\mathbf{\Xi}$$
 
@@ -52,15 +54,15 @@ The matrix $\mathbf{\Xi} = [\boldsymbol{\xi}_1, \boldsymbol{\xi}_2, \dots, \bold
 
 $$\dot{x}_k = f_k(\mathbf{x}) = \mathbf{\Theta}(\mathbf{x}^T)\boldsymbol{\xi}_k$$
 
-The complete identified model is then:  
+Note that $\mathbf{\Theta}(x^T)$ is a vector of symbolic functions of elements of $x$, as opposed to $\mathbf{\Theta}(X)$, which is a data matrix. This results in the overall model
 
 $$
 \dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}) = \mathbf{\Xi}^T (\mathbf{\Theta}(\mathbf{x}^T))^T
 $$
 
-Handling Noisy Data: When derivatives $\dot{\mathbf{X}}$ are contaminated with noise, the model becomes:
+**Handling Noisy Data:** When derivatives $\dot{\mathbf{X}}$ are contaminated with noise, the model becomes:
 
-$$\dot{\mathbf{X}} = \mathbf{\Theta}(\mathbf{X})\mathbf{\Xi} + \eta\mathbf{Z} \quad (10)$$
+$$\dot{\mathbf{X}} = \mathbf{\Theta}(\mathbf{X})\mathbf{\Xi} + \eta\mathbf{Z}$$
 
 where $\mathbf{Z}$ is a matrix of i.i.d. Gaussian entries and $\eta$ is the noise magnitude. This overdetermined system is solved via sparse regression. One method is LASSO, which adds an $L_1$ regularization term:  
 
@@ -69,6 +71,13 @@ $$
 $$
 
 where $\mathbf{y}$ is a column of $\dot{\mathbf{X}}$ and $\lambda$ is the sparsity-promoting parameter.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/SINDy_demo.png' | relative_url }}" alt="SINDy" loading="lazy">
+    <figcaption>Schematic of the algorithm for sparse identification of nonlinear dynamics demonstrated on the Lorenz equations.</figcaption>
+  </figure>
+</div>
 
 ### Extensions
 
@@ -82,7 +91,7 @@ $$
 \mathbf{X}_{1}^{m-1} = \begin{bmatrix} \mathbf{x}_{2}^{m} \end{bmatrix} =\mathbf{\Theta}\!\left(\mathbf{X}_{1}^{m-1}\right)\mathbf{\Xi}
 $$
 
-For a linear library $\mathbf{\Theta}(\mathbf{x}) = \mathbf{x}$, this reduces to $\mathbf{X}_{2}^{m} = \mathbf{X}_{1}^{m-1} \mathbf{\Xi}$, which is equivalent to the Dynamic Mode Decomposition (DMD) formulation.
+For a linear library $\mathbf{\Theta}(\mathbf{x}) = \mathbf{x}$, this reduces to $\mathbf{X}\_{2}^{m} = \mathbf{X}\_{1}^{m-1} \mathbf{\Xi}$, which is equivalent to the Dynamic Mode Decomposition (DMD) formulation.
 
 #### High-Dimensional Systems (PDEs)
 
@@ -102,33 +111,65 @@ $$\dot{\mathbf{a}} = \mathbf{f}_P(\mathbf{a})$$
 
 Bifurcation parameters $\mu$ and external forcing $u(t)$ can be incorporated by augmenting the state vector.
 
-* For a parameter 
-  $$\mu:  \dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}; \mu) \\  \dot{\mu} = 0$$
-* For time-dependence or forcing $u(t)$:  $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}, u(t), t)  \\ \dot{t} = 1$$ 
+* For a parameter $\mu$
+  
+  $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}; \mu) \\  \dot{\mu} = 0$$
+
+* For time-dependence or forcing $u(t)$:  
+  
+  $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}, u(t), t)  \\ \dot{t} = 1$$ 
+
     The library $\mathbf{\Theta}$ is then constructed from the augmented state vector (e.g., $[\mathbf{x}, \mu]$).
 
 ## Methodology/Algorithm
 
 The primary algorithm employed is Sequential Thresholded Least-Squares, which is computationally efficient.
 
-1. **Data Preparation:** Collect time-series measurement data for the state vector $\mathbf{x}(t)$. Numerically differentiate the data to obtain $\dot{\mathbf{x}}(t)$, potentially using a noise-robust method such as total variation regularized differentiation. Assemble the data into matrices $\mathbf{X}$ and $\dot{\mathbf{X}}$.
-2. **Library Construction:** Construct the library matrix $\mathbf{\Theta}(\mathbf{X})$ containing a comprehensive set of candidate nonlinear functions of the state variables (e.g., polynomials, trigonometric functions).
-3. **Sparse Regression:** Solve for each column $\boldsymbol{\xi}_k$ of the coefficient matrix $\mathbf{\Xi}$ independently using the following iterative procedure:
-  * a. Initial Guess: Compute an initial full solution for the coefficients using standard least-squares: Xi = Theta\dXdt
-  * b. Iterative Thresholding and Refitting (Loop for k=1:10):
-    * i. Thresholding: Identify coefficients in Xi with a magnitude less than a predefined threshold $\lambda$ and set them to zero. smallinds = (abs(Xi)<lambda) Xi(smallinds)=0
-    * ii. Refitting: For each state dimension ind, identify the remaining non-zero coefficients (biginds). Perform a new least-squares regression of dXdt(:,ind) onto only the columns of Theta corresponding to these biginds. Update Xi with this new, smaller set of coefficients. Xi(biginds,ind) = Theta(:,biginds)\dXdt(:,ind)
-    * iii. Repeat: Continue this process until the set of non-zero coefficients in $X_i$ converges.
-4. **Model Selection:** The sparsification parameter $\lambda$ is a critical knob. It is determined using cross-validation on held-out test data. An optimal $\lambda$ is chosen from the "elbow" of the Pareto front, which plots model accuracy versus model complexity (number of non-zero terms).
+1. **Data Preparation:**  
+   Collect time-series measurement data for the state vector $\mathbf{x}(t)$.  
+   Numerically differentiate the data to obtain $\dot{\mathbf{x}}(t)$, preferably using a  
+   noise-robust method such as total-variation regularized differentiation.  
+   Assemble the data into matrices $\mathbf{X}$ and $\dot{\mathbf{X}}$.
+
+2. **Library Construction:**  
+   Construct the library matrix $\mathbf{\Theta}(\mathbf{X})$ containing a comprehensive set  
+   of candidate nonlinear functions of the state variables (e.g., polynomials, trigonometric functions).
+
+3. **Sparse Regression (for each column $\boldsymbol{\xi}_k$ of the coefficient matrix $\mathbf{\Xi}$):**
+
+   a. **Initial Guess:**  
+      Compute an initial full least-squares solution:  
+      
+      $$\mathbf{\Xi} = \mathbf{\Theta}^\dagger \, \dot{\mathbf{X}}$$
+      
+
+   b. **Iterative Thresholding and Refitting** (repeat for $k = 1,\dots,10$):  
+
+      i. **Thresholding:**  
+         Identify coefficients in $\mathbf{\Xi}$ with magnitude below a threshold $\lambda$  
+         and set them to zero.
+
+      ii. **Refitting:**  
+          Once the indices of the remaining non-zero coefficients are identified, we obtain another least-squares solution for $\mathbf{\Xi}$ onto the remaining indices.
+
+      iii. **Repeat:**  
+           These new coefficients are again thresholded using $\lambda$, and the procedure is continued until the non-zero coefficients converge.
+
+4. **Model Selection:**  
+   The sparsification parameter $\lambda$ is a critical hyperparameter.  
+   It is determined using cross-validation on held-out test data.  
+   The optimal $\lambda$ is selected from the “elbow” of the Pareto front, which plots  
+   model accuracy versus model complexity (number of non-zero terms).
+
 
 ## Key Results (Quantified)
 
 | System           | Key Findings |
 |------------------|--------------|
-| **Lorenz System** | The algorithm correctly identified the seven true terms $(x, y, z, xy, xz)$ in the dynamics from a library of polynomials up to 5th order.<br>- With sensor noise of η = 1.0 applied to derivatives, the recovered coefficients were close to the true values ($\sigma$ = 10, $\rho$ = 28, $\beta$ = 8/3 ≈ 2.667):<br> &nbsp;&nbsp;• **ẋ:** x term = -9.9996 (true: -10), y term = 9.9998 (true: 10)<br> &nbsp;&nbsp;• **ẏ:** x term = 27.9980 (true: 28), y term = -0.9997 (true: -1), xz term = -0.9999 (true: -1)<br> &nbsp;&nbsp;• **ż:** xy term = 1.0000 (true: 1), z term = -2.6665 (true: -2.6667)<br>- In low-noise scenarios, coefficients were identified to within **0.03%** of their true values. |
+| **Lorenz System** | The algorithm correctly identified the seven true terms $(x, y, z, xy, xz)$ in the dynamics from a library of polynomials up to 5th order.<br>- With sensor noise of $η$ = 1.0 applied to derivatives, the recovered coefficients were close to the true values ($\sigma$ = 10, $\rho$ = 28, $\beta$ = 8/3 ≈ 2.667):<br> &nbsp;&nbsp;• **$ẋ$:** $x$ term = -9.9996 (true: -10), $y$ term = 9.9998 (true: 10)<br> &nbsp;&nbsp;• **$ẏ$:** $x$ term = 27.9980 (true: 28), $y$ term = -0.9997 (true: -1), $xz$ term = -0.9999 (true: -1)<br> &nbsp;&nbsp;• **$ż$:** $xy$ term = 1.0000 (true: 1), $z$ term = -2.6665 (true: -2.6667)<br>- In low-noise scenarios, coefficients were identified to within **0.03%** of their true values. |
 | **Fluid Wake**    | - Applied to data from a direct numerical simulation (state dimension: 292,500) of flow past a cylinder, after dimensionality reduction to a 3-mode system.<br>- Correctly identified a model with **quadratic nonlinearities**, consistent with the Navier–Stokes equations.<br>- Avoided incorrectly identifying an approximate **cubic Hopf normal form**, which is only valid on the system’s slow manifold. |
-| **Hopf Normal Form** | - Correctly identified the structure of the Hopf normal form, including dependence on the bifurcation parameter μ, from noisy trajectory data.<br>- True dynamics: ẋ = μx − ωy − A x(x² + y²).<br>- Noisy training data caused ~8% error in cubic-term coefficients. Recovered coefficients for ẋ included: xxx = -0.9208 and xyy = -0.9211, where both should equal -A. |
-| **Logistic Map**  | - Identified the discrete-time parameterized dynamics \(x_{k+1} = \mu x_k (1 - x_k)\) from stochastically forced data.<br>- Recovered model: x_{k+1} = 0.9993\,\mu x_k - 0.9989\,\mu x_k^2\, demonstrating high accuracy in structure and parameter recovery. |
+| **Hopf Normal Form** | - Correctly identified the structure of the Hopf normal form, including dependence on the bifurcation parameter μ, from noisy trajectory data.<br>- True dynamics: $ẋ = μx − ωy − A x(x² + y²)$.<br>- Noisy training data caused ~8% error in cubic-term coefficients. |
+| **Logistic Map**  | - Identified the discrete-time parameterized dynamics $x_{k+1} = \mu x_k (1 - x_k)$ from stochastically forced data.<br>- Recovered model demonstrates high accuracy in structure and parameter recovery. |
 
 
 ## Logical Justification
