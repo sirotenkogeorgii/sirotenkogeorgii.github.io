@@ -45,7 +45,7 @@ This is a way to **build** the naturals inside set theory (ZF).
 
 Define:
 * $0 := \varnothing$
-* $S(n) := n \cup {n}$
+* $S(n) := n \cup \lbrace n\rbrace$
 * So $n+1 := S(n)$
 
 Then you get:
@@ -60,12 +60,18 @@ A key property here:
 
 So each natural number is literally the **set of all smaller naturals**.
 
+The **von Neumann naturals are a concrete model of the Peano axioms**. Peano axioms define the naturals **abstractly** (any model is isomorphic). The set-theoretic approach provides a **specific standard model** you can point at.
+
 ### 1.2 DeMorgan's Laws
 
 $\textbf{Theorem (DeMorgan's Laws).}$ Let $A\subset S$, $B\subset S$. Then
+
 $$C(A \cup B) = C(A) \cap C(B)$$
+
 $$C(A \cap B) = C(A) \cup C(B)$$
 
 $\textbf{Theorem (DeMorgan's Laws for indexed families).}$ Let $\lbrace A_{\alpha}\rbrace_{\alpha \in I}$ be an indexed family of subsets of a set $S$. Then
+
 $$C(\bigcup_{\alpha\in I} A_{\alpha}) = \bigcap_{\alpha\in I} C(A_{\alpha})$$
+
 $$C(\bigcap_{\alpha\in I} A_{\alpha}) = \bigcup_{\alpha\in I} C(A_{\alpha})$$
