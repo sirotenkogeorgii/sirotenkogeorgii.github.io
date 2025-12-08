@@ -3149,6 +3149,231 @@ By checking the polynomial at the specific boolean inputs (0 and 1) and then ver
   </details>
 </div>
 
+<div class="accordion">
+  <details markdown="1">
+    <summary>What is the point of choosing value r_i randomly?</summary>
+The point of choosing the value $r_i$ randomly from the large finite field $\mathbb{F}_p$ in the Checksum Protocol (Step 2 of the proof of Theorem 141 for \#3-SAT) is to ensure the **soundness** of the interactive proof system. This randomization is the core mechanism that catches a dishonest prover.
+
+Here is a comprehensive breakdown of the purpose of randomizing $r_i$:
+
+### 1. Ensuring Soundness Against Cheating Provers
+
+The primary goal of using randomness in the verifier's challenges is to guarantee that if the initial statement is false (i.e., if $k \ne k_\phi$), no prover, regardless of its computational power, can convince the verifier of the statement's truth with a high probability.
+
+In the Checksum Protocol, the prover sends a claimed polynomial $h_i^P(x_i)$. If this polynomial is not the true polynomial $h_i(x_i)$, the prover is lying.
+
+*   If $h_i^P(x_i)$ is incorrect, the difference between the true and claimed polynomial, $(h_i^P - h_i)$, is a non-zero polynomial.
+*   A non-zero polynomial of degree $d$ (which is polynomial in $n$ for the Checksum Protocol) has at most $d$ roots.
+*   When the verifier chooses a random $r_i$ from the large finite field $\mathbb{F}_p$, the probability that $r_i$ happens to be a root of the difference polynomial—meaning $h_i^P(r_i) = h_i(r_i)$ even though $h_i^P \ne h_i$—is very small, specifically at most $d/p$.
+
+By choosing $p$ to be sufficiently large, this probability is made negligible, thereby ensuring that if the prover lies, the value $h_i^P(r_i)$ used in the subsequent round (Round $i+1$) will almost certainly be incorrect, leading to rejection in Round $i+1$.
+
+### 2. Transforming Global Identity into Local Spot-Checks
+
+The overall problem is checking if the provided polynomial $h_i^P$ is identical to the true polynomial $h_i$ over the entire field, which is difficult for a polynomial-time verifier. Randomization transforms this difficult global check into a sequence of manageable, probabilistic local checks:
+
+*   The verifier does not need to check the entire structure of the polynomial $h_i^P(x_i)$.
+*   Instead, the verifier focuses only on the claimed value $h_i^P(r_i)$ at a single, random point $r_i$. If the polynomial $h_i^P$ is incorrect, it is highly probable that the evaluation $h_i^P(r_i)$ will also be incorrect.
+
+This process reduces a claim about a high-degree, multi-variable polynomial $p_\phi$ into a set of probabilistic checks on single-variable polynomials across $n$ rounds.
+
+### 3. Maintaining Privacy and Independence
+
+In the general framework of interactive proofs, the verifier uses randomness ("coin flips") to pose challenges and evaluate responses, and these choices are private to the verifier (though public-coin systems exist).
+
+The random selection of $r_i$ ensures that the prover cannot predict the exact point the verifier will use to anchor the next round's verification. The prover's messages are a function of the input and prior messages, but not the verifier's secret random word. This prevents a cheating prover from constructing a fake polynomial $h_i^P$ that specifically agrees with $h_i$ only at predictable points.
+  </details>
+</div>
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>I do not understand why in the proof we evaluate the polynomial h in random points, that are not binary. p_{\phi}(r_1, ..., r_{n-1}, 0) or p_{\phi}(r_1, ..., r_{n-1}, 1) can give us values that is different from 0 or 1, because r_i are not necessary binary and we evaluate arithmetised formula in non binary values</summary>
+This is a fundamental and excellent question about the core mechanism of the Checksum Protocol (Theorem 141) and the arithmetization technique used to prove PSPACE $\subseteq$ IP.
+
+The reason the verifier evaluates the arithmetized formula $p_\phi$ at non-binary, random points ($r_1, \ldots, r_{n-1}$) and the resulting values are often non-zero and non-one is that **the protocol shifts the problem from checking boolean logic to checking polynomial identity over a large finite field $\mathbb{F}_p$**.
+
+Here is a breakdown drawing on the sources:
+
+### 1. The Role of Arithmetization and Boolean Input
+
+The arithmetization step (Step 1 of Theorem 141) maps the boolean formula $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$.
+
+*   **Boolean Inputs:** When $p_\phi$ is evaluated on **boolean inputs** (i.e., $x_i \in \{0, 1\}$), it correctly represents the satisfiability of the formula: $p_\phi$ evaluates to $1$ if the assignment satisfies $\phi$, and $0$ otherwise.
+*   **The Goal:** The number of satisfying assignments, $k_\phi$, is the sum of $p_\phi$ over all possible boolean assignments. The verifier needs to check if the given $k$ equals this sum.
+
+### 2. The Shift from Boolean Logic to Field Arithmetic (Introducing $r_i$)
+
+The interactive proof protocol is designed to check the value of this massive sum iteratively, which requires checking polynomial identities. This is where the non-binary, random values $r_i$ come into play.
+
+*   The goal of the protocol is to verify that the polynomial $h_i^P(x_i)$ submitted by the prover is actually the true polynomial $h_i(x_i)$.
+*   The only way a computationally bounded verifier can probabilistically check this identity is through **randomized spot-checking**.
+
+The verifier does not choose $r_i$ from $\{0, 1\}$ because:
+
+*   **Soundness Requirement:** To detect a cheating prover who has submitted a polynomial $h_i^P$ that is different from the true polynomial $h_i$ (i.e., $h_i^P \ne h_i$), the verifier must choose a random point $r_i$ from the large field $\mathbb{F}_p$. If the verifier only checked points in $\{0, 1\}$, a cheating prover could easily construct a polynomial that agrees with the true polynomial only at the few binary points but is incorrect everywhere else.
+*   **Polynomial Identity Testing:** By choosing $r_i$ randomly from a large field $\mathbb{F}_p$, the probability that a non-zero polynomial $(h_i^P - h_i)$ evaluates to zero at $r_i$ is negligible, ensuring high probability of error detection (soundness).
+
+### 3. Why $p_\phi(r_1, \ldots, r_{n-1}, 0)$ is Not Necessarily 0 or 1
+
+You are absolutely correct that when the polynomial $p_\phi$ is evaluated at inputs that include non-binary values $r_i \in \mathbb{F}_p$, the output will generally be an element of $\mathbb{F}_p$ that is neither 0 nor 1.
+
+In the final step of the protocol, the verifier computes the true value:
+$$p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1) \pmod p$$.
+
+*   This value is **not** meant to be a boolean truth value (0 or 1). Instead, it is the true arithmetic value of the specific polynomial $h_{n-1}(r_{n-1})$, which itself is derived from the arithmetized formula $p_\phi$ evaluated at the fixed random points $r_1, \ldots, r_{n-1}$.
+*   This calculated field element serves as the **final numerical value** that the prover must match to confirm that the chain of algebraic identities (checked over $n$ rounds) holds up to the very end.
+
+In essence, the protocol uses $r_i$ to **algebraically enforce consistency** across rounds, treating the problem purely as one of polynomial arithmetic over $\mathbb{F}_p$, rather than checking boolean assignments.
+
+***
+
+The situation is analogous to a bank audit using sampling. To check if a massive company's accounts balance, an auditor doesn't re-examine every single receipt (the boolean assignments). Instead, the auditor performs a sequence of spot checks on randomly chosen transactions ($r_i$ values). If the books are faked, the random spot check will almost certainly reveal an inconsistency, even though the randomly chosen numbers used for the check might not correspond to standard transaction numbers. The integrity of the entire system is verified by confirming the identity of the underlying mathematical structure across those random samples.
+  </details>
+</div>
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>Do I understand correctly that the main point of evaluating the polynomial given by prover at random points over the field is to verify the given polynomial correct?</summary>
+Yes, your understanding is **correct**. The main point of having the prover evaluate the polynomial $h_i^P$ at a random value $r_i$ chosen from the large finite field $\mathbb{F}_p$ is precisely to **verify the correctness of the given polynomial** $h_i^P(x_i)$.
+
+This process is essential for establishing the **soundness** of the Checksum Protocol.
+
+Here is a detailed explanation of why this randomized evaluation is necessary for verification:
+
+### 1. Verification of Identity via Random Spot-Checking
+
+The fundamental problem the verifier faces is determining if the submitted polynomial $h_i^P$ is identical to the true, intended polynomial $h_i$. Since the verifier is computationally bounded (it operates in polynomial time), it cannot check the polynomial at every possible point in the field $\mathbb{F}_p$.
+
+Instead, the verifier uses a randomized challenge:
+
+*   If the prover submits a polynomial $h_i^P$ that is truly correct ($h_i^P = h_i$), then $h_i^P(r_i)$ will be the correct value, and the protocol maintains its completeness (acceptance probability $\ge 2/3$).
+*   If the prover submits an incorrect polynomial ($h_i^P \ne h_i$), the difference between the two polynomials, $(h_i^P - h_i)$, is a non-zero polynomial.
+
+### 2. The Soundness Guarantee
+
+The randomness of $r_i$ ensures that if the polynomial is incorrect, the prover will be caught with high probability, which is the definition of soundness.
+
+*   A non-zero polynomial of degree $d$ has at most $d$ roots.
+*   Since $r_i$ is chosen uniformly at random from the large field $\mathbb{F}_p$, the probability that the random value $r_i$ is one of the few points where the cheating polynomial accidentally evaluates correctly (i.e., where $h_i^P(r_i) = h_i(r_i)$) is very small, specifically $\le d/p$.
+*   By ensuring the prime $p$ is sufficiently large, the total probability of fooling the verifier across all $n$ rounds is made low.
+
+The evaluation of $h_i^P(r_i)$ transforms the complex global problem of checking polynomial identity into a probabilistic local problem: if the prover can satisfy the next round's consistency check using the value $h_i^P(r_i)$, the verifier is highly confident that $h_i^P$ was the correct polynomial.
+
+In summary, choosing $r_i$ randomly is the method by which the verifier's limited computational power is amplified to ensure that the claimed polynomial is correct with a high degree of probability, fulfilling the requirements for an interactive proof system.
+  </details>
+</div>
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>Does the prover give us new polynomial at each round?</summary>
+Yes, the prover gives the verifier a **new polynomial** in virtually every round of the Checksum Protocol (Step 2 of the proof of Theorem 141) for proving \#3-SAT.
+
+The protocol is structured across $n$ rounds, corresponding to the $n$ variables of the formula $\phi$. In each round $i$, the prover submits a claim about a different intermediate polynomial in the summation process:
+
+1.  **Round 1:** The prover sends the polynomial $\mathbf{h_1^P(x_1)}$, claiming it is equal to the true polynomial $h_1(x_1)$.
+2.  **Round $i$ (where $2 \le i \le n-1$):** The prover sends a different polynomial, $\mathbf{h_i^P(x_i)}$, claiming it equals the true polynomial $h_i(x_i)$.
+
+### Why the Polynomial Must Change
+
+The necessity for a new polynomial in each round stems from the definition of the polynomial sequence $h_i(x_i)$. These polynomials are defined iteratively to reduce the complexity of the original $n$-variable sum:
+
+$$h_i(x_i) = \sum_{x_{i+1}\in\{0,1\}} \cdots \sum_{x_n\in\{0,1\}} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) \quad$$
+
+*   $h_1(x_1)$ is a polynomial only of the variable $x_1$.
+*   $h_2(x_2)$ is a polynomial only of the variable $x_2$, with the variable $x_1$ having been fixed to the random value $r_1$ chosen in the previous round.
+*   In general, $h_i(x_i)$ is a polynomial only of the variable $x_i$, with all preceding variables ($x_1, \ldots, x_{i-1}$) having been substituted with the random field elements ($r_1, \ldots, r_{i-1}$) chosen by the verifier in prior rounds.
+
+Because the summation structure changes and new random field elements are incorporated in the definition of $h_i$ at each step, the polynomial $h_i^P(x_i)$ submitted by the prover must change accordingly to maintain consistency with the claim about $k$.
+
+This process transforms the verification of a massive, $n$-variable polynomial identity into a sequence of polynomially many checks on single-variable polynomials.
+  </details>
+</div>
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>Do I understand correctly that we check all h_i recursively just to verify that prover understand the recursive structure of polynomial h_i?</summary>
+That is an interesting way to frame the goal of the Checksum Protocol, but based on the sources, the primary reason for checking the polynomials $h_i$ recursively is not to verify the prover's "understanding" of the structure. Instead, the recursive checks are performed to ensure the **mathematical consistency** and **soundness** of the claimed solution.
+
+Here is a breakdown of why the recursive structure is used:
+
+### 1. The Prover's Nature
+
+The Checksum Protocol operates under the assumption that the **prover is a computationally unrestricted entity**. The prover is conceptualized as being capable of performing any calculation necessary to persuade the verifier. Therefore, there is no need to test if the prover "understands" the recursive definitions of $h_i$; an optimal prover is assumed to always know the correct definition and the correct resulting polynomials.
+
+### 2. The Goal: Consistency and Completeness
+
+The recursive structure is defined by the necessary mathematical identities that relate the summation of the polynomial $p_\phi$ across variables:
+
+$$h_i(r_i) = h_{i+1}(0) + h_{i+1}(1) \quad \text{for } i=1, \ldots, n-1 \quad$$
+
+The verifier uses this structure to perform local checks in each round:
+
+*   **Initial Consistency (Round 1):** The first check ensures that the initial polynomial $h_1^P$ is consistent with the ultimate claim $k$, checking $k \equiv h_1^P(0) + h_1^P(1) \pmod p$.
+*   **Recursive Consistency (Round $i$):** For subsequent rounds, the check ensures that the polynomial $h_i^P$ submitted in the current round satisfies the identity required by the claimed value from the previous round ($h_{i-1}^P(r_{i-1})$).
+
+This recursive checking guarantees **completeness**: if $k$ truly equals the number of satisfying assignments $k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$, and all these consistency checks will pass, leading to acceptance with probability 1.
+
+### 3. The Main Point: Soundness via Recursive Spot-Checks
+
+The true power of the recursion, combined with the random challenges $r_i$, is to enforce **soundness**.
+
+The recursive structure transforms the hard problem of verifying the huge sum $k_\phi$ into a sequence of probabilistic checks on $n$ different, single-variable polynomials.
+
+If the prover submits an incorrect polynomial $h_i^P$ in Round $i$ (a lie), the verifier detects this lie by relying on the random challenge $r_i$ chosen in that round.
+
+*   The random value $r_i$ ensures that $h_i^P(r_i)$ is incorrect with high probability (unless $r_i$ is one of the few roots of the difference polynomial).
+*   This incorrect value $h_i^P(r_i)$ then becomes the target value for the consistency check in the **next round ($i+1$)**.
+
+By checking the $h_i$ recursively, the verifier ensures that a lie introduced at any point in the polynomial sequence will be caught in a subsequent consistency check, thereby guaranteeing that no cheating prover can maintain a false claim $k \ne k_\phi$ all the way to the final step without being rejected with high probability.
+  </details>
+</div>
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>I mean the h_i has nested (recursive) structure. If we just rely on the polynomial h^P_1, then the sum h^P_1(0)+h^P_1(1) could coincide with k_{\phi} by chance. To make sure that the given h^P_1 is indeed the function h_1, we check it recursively for all h^P_i=h_i. And if it's true for all i, then it's likely that the prover gave us the correct h^P_1</summary>
+You have precisely captured the motivation and mechanism behind the recursive structure of the Checksum Protocol used in the proof of Theorem 141 (that \#3-SAT is in IP).
+
+You are **correct** that relying only on the initial check $k \equiv h_1^P(0) + h_1^P(1) \pmod p$ is insufficient because a cheating prover could submit a polynomial $h_1^P$ that happens to satisfy this sum even though $h_1^P \ne h_1$. This is the central vulnerability that the recursive checking and randomization address.
+
+The protocol uses recursion and randomized challenges to ensure that the initial claimed polynomial $h_1^P$ is correct, not just at the binary points, but across the entire domain of the finite field $\mathbb{F}_p$.
+
+Here is how your interpretation aligns with the principles detailed in the sources:
+
+### 1. The Insufficiency of the Initial Check
+
+The initial check in Round 1 verifies if the claimed number of satisfying assignments, $k$, is consistent with the polynomial $h_1^P$ at the boolean inputs $\{0, 1\}$:
+$$k \equiv h_1^P(0) + h_1^P(1) \pmod p \quad$$
+As you noted, a false polynomial $h_1^P$ might satisfy this equation by chance, or by construction, if the prover ensures $h_1^P(0) + h_1^P(1)$ equals $k$.
+
+### 2. The Verification Goal: Checking Polynomial Identity
+
+The ultimate objective of the entire $n$-round protocol is to verify that $h_1^P$ is the true polynomial $h_1$. This is achieved by transforming the global check ($h_1^P = h_1$) into a sequence of local, verifiable claims over the large finite field $\mathbb{F}_p$.
+
+### 3. Recursive Checks Enforce Consistency and Structure
+
+The recursive structure of the protocol forces the prover to prove that $h_1^P$ is algebraically correct by linking it to the subsequent polynomials $h_2^P, h_3^P, \ldots$ using the fundamental identity $h_{i-1}(r_{i-1}) = h_i(0) + h_i(1)$.
+
+In each Round $i$ (where $i \ge 2$), the consistency check ensures that the values match based on the required recursive structure:
+$$h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) + h_i^P(1) \pmod p \quad \text{}$$
+
+If the prover submits a false $h_1^P$, they must maintain the appearance of correctness throughout the subsequent rounds.
+
+### 4. Soundness and Probability (Making it "Likely")
+
+The recursive checking alone is not enough; it is the **random selection of $r_i$** from the large field $\mathbb{F}_p$ that makes it "likely" that $h_1^P$ is correct, thereby ensuring the protocol's **soundness**.
+
+*   If the prover successfully maintains consistency up to Round $i$ despite $h_i^P \ne h_i$, the verifier chooses a random $r_i$.
+*   The only way a false $h_i^P$ can continue to fool the verifier is if the randomly chosen $r_i$ happens to be a root of the difference polynomial $(h_i^P - h_i)$.
+*   Since the number of roots is small relative to the size of the field $p$, the probability that the prover succeeds is very low.
+
+Therefore, the recursive structure is essential because it:
+1.  **Algebraically enforces** the correct definition of $h_i$ (derived from the summation $k_\phi$) across all variables $x_1$ through $x_n$.
+2.  **Sets up the randomized spot-check:** By checking the value $h_i^P(r_i)$ against the structure of $h_{i+1}^P$, the verifier forces the prover to evaluate the claimed polynomial at a point chosen randomly from the large field, proving global identity with high probability.
+
+If all these checks pass successfully for all $i$ up to the final verifiable check, the verifier can conclude with high confidence that the initial polynomial $h_1^P$ was indeed the correct polynomial $h_1$.
+  </details>
+</div>
+
 $\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
 
 *Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in 3-CNF form (3-QBF) is PSPACE-complete.
