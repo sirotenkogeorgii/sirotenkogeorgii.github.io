@@ -2989,32 +2989,37 @@ $$
 m_1 = V^r(w), \quad m_2 = P(w, m_1), \quad m_3 = V^r(w, m_1, m_2), \ldots
 $$
 
-The interaction terminates at round $t$ if $t$ is minimal such that $V$ reaches either its accepting or rejecting state on computing $V^r(w, m_1, \ldots, m_{2t})$.
+The interaction terminates at round $t$ if $t$ is minimal such that $V$ reaches either its accepting or rejecting state on computing $V^r(w, m_1, \ldots, m_{2t})$. $V^r(w,m_1,\dots,m_i)$ refers to the message that $V$ computes on input tuple $(w,m_1,\dots,m_i)$ and random word $r$. **Communication** is a finite sequence $m_1,\dots,m_{2t}$.
 
 Let $t : \mathbb{N} \to \mathbb{N}$. A verifier $V$ is **total** and **$t(n)$-bounded** if for all inputs $w$, all random words, and all provers $P$, the interaction terminates by round $t(\|w\|)$.
 
 Key consequences:
 
-* Message lengths, number of rounds, and verifier computation per message are polynomially bounded in $\|w\|$.
-* The prover cannot see the verifier’s random word; its replies depend only on the input and previous messages.
+* Message lengths, **number of rounds**, and verifier computation per message are polynomially bounded in $\|w\|$.
+* The messages sent by the prover do not depend on the random word of the verifier (the prover cannot see the verifier’s random word); its replies depend only on the input and previous messages.
 * Any total verifier is $t(n)$-bounded for some computable $t$ (by bounding the computation tree depth).
+
+> Q: In interactive proof systems, if we say that we have some polynomially bounded verifier $V$ that interactively recognizes a language $L$, does this polynomial bound mean that each interaction (round) of the verifier's execution is polynomially bounded, or is it a global bound for all rounds (the verifier's running time over all rounds is bounded by some polynomial)? 
+> A: It is a global bound on the verifier's total running time (as a machine) over the entire interaction $\implies$ the number of rounds is at most polynomial in $n=\|w\|$.
 
 $\textbf{Definition 133:}$ A language $L$ is recognized (interactively) by a total verifier $V$ if
 
-1. For each $w \in L$, there exists a prover such that $V$ accepts with probability at least $\tfrac{2}{3}$.
-2. For each $w \notin L$, for all provers, $V$ rejects with probability at least $\tfrac{2}{3}$.
+1. For each $w \in L$, there **exists** a prover such that $V$ accepts with probability at least $\tfrac{2}{3}$.
+2. For each $w \notin L$, **for all provers**, $V$ rejects with probability at least $\tfrac{2}{3}$.
 
-Let $k \in \mathbb{N}$. The class $\text{IP}[k]$ contains all languages recognized by some $k$-bounded verifier; IP contains those recognized by some polynomially bounded verifier.
+Let $k \in \mathbb{N}$. The class $\text{IP}[k]$ contains all languages recognized by some $k$-bounded verifier; $\text{IP}$ contains those recognized by some polynomially bounded verifier.
 
 Completeness is condition (1); soundness is condition (2). The $\tfrac{2}{3}$ bound can be amplified arbitrarily close to $1$ via repetition. It is immediate that $\text{BPP} = \text{IP}[0]$ and $\text{NP} \subseteq \text{IP}[1]$.
 
-$\textbf{Remark 134:}$ If $L$ is recognized by a verifier $V$, there is a single prover $P$ (independent of the input) that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
+> Proving **completeness** we are allowed (and actually expected) to look for the best possible prover strategy. Proving **soundness** we are expected to consider the most malicious prover.
+
+$\textbf{Remark 134:}$ If $L$ is recognized by a verifier $V$. Then for each input in $L$ some prover must result in an acceptance probability of at least $\frac{2}{3}$, where this prover *may depend on the input*. It can be shown, however, that there is a single prover $P$ *independent of the input* that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
 
 ### An Interactive Proof for Graph Non-Isomorphism
 
 We adopt a fixed node-labeling convention.
 
-Convention 136: All graphs with $n$ nodes have the node set $\{1, \ldots, n\}$.
+Convention 136: All graphs with $n$ nodes have the node set $\lbrace 1, \ldots, n\rbrace$.
 
 $\textbf{Definition 135:}$ Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* between graphs is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
 
@@ -3023,7 +3028,7 @@ Languages:
 * $\text{GI} = \lbrace (G, G') \mid G \text{ and } G' \text{ are isomorphic}\rbrace$
 * $\text{GNI} = \lbrace (G, G') \mid G \text{ and } G' \text{ are nonisomorphic}\rbrace$
 
-The language GI is in NP since for isomorphic graphs, it can be checked in deterministic polynomial time whether a given mapping between their node sets is an isomorphism. The problem GI is one of the few languages in NP arising naturally in practice that is neither known to be NP-complete nor known to be in P. The language GNI is not known to be in NP.
+The language $\text{GI}$ is in $\text{NP}$ since for isomorphic graphs, it can be checked in deterministic polynomial time whether a given mapping between their node sets is an isomorphism. The problem $\text{GI}$ is one of the few languages in $\text{NP}$ arising naturally in practice that is neither known to be $\text{NP}$-complete nor known to be in $\text{P}$. The language $\text{GNI}$ is not known to be in $\text{NP}$.
 
 $\textbf{Theorem 137:}$ $\text{GNI} \in \text{IP}[1]$.
 
@@ -3037,11 +3042,11 @@ Completeness: If $(G_0, G_1) \in \text{GNI}$, $H$ is isomorphic to exactly one o
 
 Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveals no information about $i$. The prover can do no better than guessing; acceptance probability is $\tfrac{1}{2}$. To meet the soundness requirement of $\ge \frac{2}{3}$ rejection probability, the protocol can be repeated twice in parallel.  The verifier accepts only if the prover answers correctly for both independent interactions. The probability of the prover succeeding twice is $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$. Thus, the rejection probability is $1−\frac{1}{4}=\frac{3}{4}$, which satisfies the condition. Since the repetitions can be done in parallel, the protocol remains 1-bounded.
 
-### The Equivalence of IP and PSPACE
+### The Equivalence of $\text{IP}$ and $\text{PSPACE}$
 
 A landmark result in complexity theory is the characterization of $\textbf{IP}$ as being exactly equal to the class of problems solvable in polynomial space, $\textbf{PSPACE}$.
 
-#### Proving IP is a Subset of PSPACE
+#### Proving $\text{IP}$ is a Subset of $\text{PSPACE}$
 
 We first show that any problem with an interactive proof can be solved by a polynomial-space Turing machine.
 
@@ -3056,45 +3061,107 @@ Compute $k(u)$ recursively in polynomial space:
 * If $u$ is at even depth (verifier turn, we count depth from 0), $k(u) = \sum_{v \text{ child of } u} k(v)$.
 * If $u$ is at odd depth (prover turn), $k(u) = \max_{v \text{ child of } u} k(v)$.
 
-Leaves can be evaluated by simulating $V$ on all $2^{p(n)}$ random strings using polynomial space. A depth-first traversal reuses space, so the overall computation fits in PSPACE. ∎
+Leaves can be evaluated by simulating $V$ on all $2^{p(n)}$ random strings using polynomial space. A DFS reuses space, so the overall computation fits in $\text{PSPACE}$. 
 
-<!-- $\textbf{Remark 139:}$ The optimal prover computed in Theorem 138 can be implemented in deterministic polynomial space. Thus every $L \in \text{IP}$ has a polynomial-space prover. -->
+We show by induction on $j$ (from the leaves up) that for any node $u$ at depth $2p(n) - j$, $k(u)$ can be computed in polynomial space.
 
-$\textbf{Remark 139:}$ Let $L$ be a language in IP, and let V be a polynomially bounded verifier that recognizes $L$. Then there is a polynomially space-bounded prover P such that the interactive proof system (V,P) recognizes $L$, i.e., V accepts all inputs in L with probability at least $\frac{3}{2}$ when interacting with P. This follows because the optimal prover described in the proof of Theorem 138 makes decisions by computing the function $k(u)$, which we have shown can be done in deterministic polynomial space.
+* **Base Case** $(j=0)$: The node $u$ is a leaf. To compute $k(u)$, we can iterate through all $2^{p(n)}$ possible random words. For each word, we simulate the verifier to check if it generates the verifier messages in $u$'s label and if it ultimately accepts. This requires space to store the current random word $(p(n))$, a counter (polynomial in $n$), and space to simulate $V$ (also polynomial).
+* **Inductive Step** $(j>0)$: For an internal node $u$, we recursively compute $k(v)$ for each of its children $v$. By the induction hypothesis, each of these computations requires polynomial space. Since we can reuse the space for each recursive call, the total space needed is the space for one child's computation plus the space to manage the summation or maximization, which remains polynomial.
+
+Since the entire computation can be performed in polynomial space, $L \in \text{PSPACE}$. Therefore, $\text{IP} \subseteq \text{PSPACE}$.∎
+
+$\textbf{Remark 139:}$ Let $L$ be a language in $\text{IP}$, and let $V$ be a polynomially bounded verifier that recognizes $L$. Then there is a polynomially space-bounded prover $P$ such that the interactive proof system $(V,P)$ recognizes $L$, i.e., $V$ accepts all inputs in $L$ with probability at least $\frac{3}{2}$ when interacting with $P$. This follows because the optimal prover described in the proof of Theorem 138 makes decisions by computing the function $k(u)$, which we have shown can be done in deterministic polynomial space.
 
 #### Proving PSPACE is a Subset of IP
 
-We arithmetize logical formulas to design interactive proofs for PSPACE-complete problems.
+We arithmetize logical formulas to design interactive proofs for $\text{PSPACE}$-complete problems.
 
 $\textbf{Definition 140:}$ The counting $3$-satisfiability problem is
 
 $$
-\#3\text{-SAT} = \{(\phi, k) : \phi \text{ is a 3-CNF formula with exactly } k \text{ satisfying assignments}\}.
+\#3\text{-SAT} = \lbrace (\phi, k) : \phi \text{ is a 3-CNF formula with exactly } k \text{ satisfying assignments}\rbrace.
 $$
 
 $\textbf{Theorem 141:}$ #$3\text{-SAT} \in \text{IP}$.
 
-*Proof sketch.* TODO: rewrite  Map $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$ over a field $\mathbb{F}$ by sending $X_i \mapsto x_i$ and $\neg X_i \mapsto (1 - x_i)$, and clauses $(L_1 \vee L_2 \vee L_3)$ to $1 - (1 - p_{L_1})(1 - p_{L_2})(1 - p_{L_3})$. Then
+*Proof*: We design an interactive protocol where a prover convinces a verifier that a 3-CNF formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
 
-$$
-k_\phi = \sum_{x_1 \in \{0,1\}} \cdots \sum_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) \quad (5.2)
-$$
+**Step 1: Arithmetization**
 
-The protocol iteratively reduces claims about $h_i(x_i) = \sum_{x_{i+1},\ldots,x_n} p_\phi(r_1, \ldots, r_{i-1}, x_i, \ldots, x_n)$ using random evaluations over a large prime field. Consistency checks ensure a cheating prover is caught with high probability; an honest prover succeeds with probability $1$. ∎
+We map the formula $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$ over a field $\mathbb{F}$. A literal $X_i$ is mapped to the variable $x_i$, and a literal $\neg X_i$ is mapped to $(1-x_i)$. A clause, which is a disjunction of literals, is mapped to a polynomial such that it evaluates to $0$ if the clause is false and non-zero if it's true. For example, a clause $(L_1 \vee L_2 \vee L_3)$ becomes $1 - (1-p_{L_1})(1-p_{L_2})(1-p_{L_3})$. Assuming all clauses have exactly three literals, a clause such as $(\neg X_1 \vee X_4 \vee \neg X_7)$ is mapped to $1 - x_1(1-x_4)x_7$.
+
+The entire formula $\phi = C_1 \wedge \ldots \wedge C_m$ is mapped to the product of the polynomials for its clauses:
+
+$$p_\phi(x_1, \ldots, x_n) = \prod_{j=1}^m p_{C_j}(x_1, \ldots, x_n)$$
+
+For any assignment of $\lbrace 0, 1\rbrace$ values to the variables $x_1, \ldots, x_n, p_\phi$ evaluates to $1$ if the assignment satisfies $\phi$, and $0$ otherwise. Consequently, the number of satisfying assignments, $k_\phi$, is given by the sum over all possible boolean assignments:
+
+$$k_\phi = \sum_{x_1 \in \{0,1\}} \sum_{x_2 \in \{0,1\}} \cdots \sum_{x_n \in \{0,1\}} p_\phi(x_1, x_2, \ldots, x_n) \quad (5.2)$$
+
+**Step 2: The Checksum Protocol**
+
+The verifier needs to check if the given integer $k$ equals $k_\phi$. This is done iteratively. The protocol operates over a large finite field $\mathbb{F}_p$. Let's define a sequence of polynomials:
+
+$$h_i(x_i) = \sum_{x_{i+1}\in\{0,1\}} \cdots \sum_{x_n\in\{0,1\}} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) $$
+
+where $r_1, \ldots, r_{i-1}$ are values chosen in previous rounds. These definitions imply the following identities:
+
+1. $k_\phi = h_1(0) + h_1(1)$
+2. $h_i(r_i) = h_{i+1}(0) + h_{i+1}(1)$ for $i=1, \ldots, n-1$
+
+The protocol proceeds in $n$ rounds. The verifier checks an initial claim from the prover and then, in each round, reduces a claim about a polynomial in $j$ variables to a claim about a polynomial in $j-1$ variables evaluated at a random point.
+
+* **Setup**: On input $(\phi, k)$, the prover sends a large prime $p$. The verifier checks that p is sufficiently large (e.g., $p > 2^{cn}$ for some constant $c$) and rejects if not. All subsequent calculations are modulo $p$.
+* **Round 1**: The prover sends a polynomial $h_1^P(x_1)$, claiming it is equal to $h_1(x_1)$. The verifier checks if $k \equiv h_1^P(0) + h_1^P(1) \pmod p$. If this check fails, the verifier rejects. Otherwise, it chooses a random value $r_1 \in \mathbb{F}_p$ and sends it to the prover. The prover must now convince the verifier that $h_1^P(r_1)$ is the correct value of $h_1(r_1)$.
+* **Round $i$ $(2 \le i \le n-1)$**: The prover sends a polynomial $h_i^P(x_i)$, claiming it equals $h_i(x_i)$ (with previous random values $r_1, \dots, r_{i-1}$ fixed). The verifier checks if the previous round's value is consistent: $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) + h_i^P(1) \pmod p$. If not, it rejects. Otherwise, it picks a new random value $r_i \in \mathbb{F}_p$ and sends it to the prover.
+* **Final Check**: After round $n-1$, the verifier has values $r_1, \ldots, r_{n-1}$ and the prover's last claim $h_{n-1}^P(r_{n-1})$. The verifier can now compute the true value of $h_n(0) + h_n(1)$ by itself, which is $p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1)$. It accepts if and only if the prover's claim matches this computed value.
+
+**Step 3: Analysis**
+
+* Completeness: If $k = k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$. All checks will pass, and the verifier will accept with probability $1$.
+* Soundness: If $k \ne k_\phi$, the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing p to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. ∎
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>Why Round 1 has two checks</summary>
+
+The verification steps in Round 1 of the Checksum Protocol (Step 2 of the proof of Theorem 141) serve two distinct and essential purposes in the interactive proof for $\#3$-SAT, ensuring both **initial consistency** and **soundness** against a cheating prover.
+
+The reason the verifier performs two seemingly related checks—one involving the evaluation of $h_1^P$ at boolean points (0 and 1) and one involving a random point ($r_1$)—is that the core strategy of this interactive proof relies on confirming the global correctness of the polynomial $h_1^P(x_1)$ over a large finite field $\mathbb{F}_p$.
+
+### 1. Verification of Consistency (The Check at 0 and 1)
+
+The first check verifies that the polynomial $h_1^P(x_1)$ provided by the prover is consistent with the initial claim that the formula $\phi$ has exactly $k$ satisfying assignments.
+
+* **The Claim:** The definition of the polynomials $h_i(x_i)$ guarantees that the total number of satisfying assignments, $k_\phi$, is equal to the sum of $h_1(0)$ and $h_1(1)$.
+* **The Check:** The verifier checks if **$k \equiv h_1^P(0) + h_1^P(1) \pmod p$**.
+* **Purpose:** This check is necessary to maintain the connection to the original problem: if the prover submits the correct polynomial $h_1$, the sum of its values at 0 and 1 must equal $k$. If this check fails, the verifier rejects immediately.
+
+### 2. Verification of Soundness (The Check at $r_1$)
+
+After the initial consistency check passes, the verifier must determine if the polynomial $h_1^P(x_1)$ submitted by the prover is actually the true polynomial $h_1(x_1)$, or if it is a different, "cheating" polynomial that just happens to agree with the required sum $k$ at $\{0, 1\}$.
+
+* **The Action:** The verifier chooses a **random value $r_1$** from the large finite field $\mathbb{F}_p$ and sends it to the prover.
+* **The Goal:** The prover must subsequently convince the verifier that the claimed value $h_1^P(r_1)$ is the correct value of the true polynomial $h_1(r_1)$. This value $h_1^P(r_1)$ will then be used as the anchor for the consistency check in the subsequent round.
+* **Purpose:** This randomized spot-check is the basis of the protocol's **soundness**. If the prover had submitted an incorrect polynomial $h_1^P$ (i.e., $h_1^P \ne h_1$), the polynomial representing the difference, $(h_1^P - h_1)$, is non-zero. Since a polynomial of degree $d$ (which is polynomial in $n$) has at most $d$ roots, the probability that the randomly chosen value $r_1$ happens to be one of the few points where $h_1^P(r_1) = h_1(r_1)$ is very small (at most $d/p$) when $p$ is chosen to be sufficiently large.
+
+By checking the polynomial at the specific boolean inputs (0 and 1) and then verifying its value at a random, non-boolean input ($r_1$), the verifier ensures that the prover cannot hide an incorrect polynomial without a high probability of being caught. The verification process is essentially transforming a complex, global check (is $h_1^P$ identical to $h_1$?) into a local check (is $h_1^P$ correct at the random point $r_1$?) which carries a high probability of error detection due to the properties of polynomials over fields.
+  </details>
+</div>
 
 $\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
 
-*Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a PSPACE-complete language has an interactive proof. QBF in 3-CNF form (3-QBF) is PSPACE-complete.
+*Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in 3-CNF form (3-QBF) is PSPACE-complete.
 
 $\textbf{Theorem 143:}$ $3\text{-QBF} \in \text{IP}$.
 
 *Proof sketch.* Arithmetize the quantified formula $\Psi = \forall X_1 \exists X_2 \ldots Q_n X_n \phi$ into an expression
 
 $$
-\prod_{x_1 \in \{0,1\}} \coprod_{x_2 \in \{0,1\}} \cdots \coprod_{x_n \in \{0,1\}} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)
+\prod_{x_1 \in \lbrace 0,1\rbrace} \coprod_{x_2 \in \lbrace 0,1\rbrace} \cdots \coprod_{x_n \in \lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)
 $$
 
-where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\{0,1\}^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus 3-QBF has an interactive proof, and by completeness of 3-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
+where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\lbrace 0,1\rbrace^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus 3-QBF has an interactive proof, and by completeness of 3-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
 
 ### Public Coins and Perfect Completeness
 
@@ -3110,7 +3177,7 @@ $\textbf{Definition 145:}$ An interactive proof system $(V, P)$ for $L$ is *zero
 
 The simulator shows that any transcript could have been generated without access to the prover’s secret, so no knowledge is leaked (perfect zero-knowledge).
 
-GI, despite lacking a known NP certificate, admits a zero-knowledge interactive proof.
+$\text{GI}$, despite lacking a known $\text{NP}$ certificate, admits a zero-knowledge interactive proof.
 
 $\textbf{Theorem 146:}$ GI has a zero-knowledge interactive proof system.
 
