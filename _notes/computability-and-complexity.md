@@ -3478,7 +3478,7 @@ Observe that the partial function $\phi_M$ is defined exactly on the arguments $
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
-$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma_1^*$ to $\Sigma_2^*$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma\_1^{*}$ to $\Sigma\_2^{*}$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
 
 A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function.
 
@@ -3486,7 +3486,7 @@ A partial computable function that is defined for all inputs (i.e., is total) is
 
 To facilitate a more mathematical treatment, we often work with natural numbers rather than strings. This is achieved by a simple encoding.
 
-Remark 153: The words over the unary alphabet $\lbrace 1\rbrace$ can be identified with the set $\mathbb{N}$ of natural numbers by associating a word $w$ with its length: the empty word is identified with $0$, the word $1$ with $1$, and so on.
+> **Remark 153**: The words over the unary alphabet $\lbrace 1\rbrace$ can be identified with the set $\mathbb{N}$ of natural numbers by associating a word $w$ with its length: the empty word is identified with $0$, the word $1$ with $1$, and so on.
 
 Using this identification, we can directly translate our definitions from languages to sets of natural numbers and from functions on strings to functions on numbers.
 
@@ -3748,50 +3748,54 @@ Example 196: The set A = \{e : \text{dom}(\phi_e) \text{ has more than } e \text
 
 ## Oracle Turing Machines and the Jump Operator
 
-We now introduce a more powerful form of reducibility, Turing reducibility, based on a model of computation called an oracle Turing machine. This model allows us to ask "what if we had a magical black box that could solve problem B?" and then explore what other problems (A) we could solve with its help.
+We now introduce a more powerful form of reducibility, Turing reducibility, based on a model of computation called an oracle Turing machine. This model allows us to ask "what if we had a magical black box that could solve problem $B$?" and then explore what other problems ($A$) we could solve with its help.
 
 ### Oracle Turing Machines and Turing Reducibility
 
-Definition 197: An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values B(0)B(1) \dots of the characteristic function of a set B is continuously written. The set B, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit B(0). The notation M(x, B) is used for the result of the computation of the oracle Turing machine M on inputs x and oracle B, if the computation terminates, and M(x, B) \uparrow, if the computation does not terminate. The notations M(x, B) \downarrow and M(x, B) \downarrow = y are defined as for Turing machines. In all these notations, M(x, B) can also be written as M^B(x).
+$\textbf{Definition 197:}$ An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values $B(0)B(1) \dots$ of the characteristic function of a set $B$ is continuously written. The set $B$, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit $B(0)$. The notation $M(x, B)$ is used for the result of the computation of the oracle Turing machine $M$ on inputs $x$ and oracle $B$, if the computation terminates, and $M(x, B) \uparrow$, if the computation does not terminate. The notations $M(x, B) \downarrow and M(x, B) \downarrow = y$ are defined as for Turing machines. In all these notations, $M(x, B)$ can also be written as $M^B(x)$.
 
-If an oracle Turing machine M terminates for all inputs x with a given oracle B, the notation M(B) is used for the uniquely determined set A with the characteristic function c_A : x \mapsto M(x, B).
+If an oracle Turing machine $M$ terminates for all inputs $x$ with a given oracle $B$, the notation $M(B)$ is used for the uniquely determined set $A$ with the characteristic function $c_A : x \mapsto M(x, B)$.
 
-A set A is Turing-reducible to a set B, briefly A is T-reducible to B or A \le_T B, if there is an oracle Turing machine M such that A = M(B), i.e.,  A(x) = M(x, B) \text{ for all } x \in \mathbb{N}. 
+A set $A$ is Turing-reducible to a set $B$, briefly $A$ is T-reducible to $B$ or $A \le_T B$, if there is an oracle Turing machine $M$ such that $A = M(B)$, i.e.,  $A(x) = M(x, B) \text{ for all } x \in \mathbb{N}$. 
 
 Turing reducibility is a more general notion than many-one reducibility.
 
-Theorem 198: For all sets A and B, it holds that A \le_m B implies A \le_T B but the implication in the opposite direction is false in general.
+$\textbf{Theorem 198:}$ For all sets $A$ and $B$, it holds that $A \le_m B$ implies $A \le_T B$ but the implication in the opposite direction is false in general.
 
-Proof:
+*Proof*:
 
-* The implication A \le_m B \implies A \le_T B holds because if f is the computable function for the m-reduction, an oracle Turing machine can compute f(x) and then query the oracle for B at the single location f(x) to get the answer.
-* A counterexample for the reverse is given by the halting problem H and its complement \bar{H}. For any set A, we have A \le_T \bar{A}, because an oracle for \bar{A} can be used to decide membership in A and vice versa. Thus, H \le_T \bar{H}. However, as shown in Corollary 188, we have H \not\le_m \bar{H}.
+* The implication $A \le_m B \implies A \le_T B$ holds because if $f$ is the computable function for the m-reduction, an oracle Turing machine can compute $f(x)$ and then query the oracle for B at the single location $f(x)$ to get the answer.
+* A counterexample for the reverse is given by the halting problem $H$ and its complement $\bar{H}$. For any set $A$, we have $A \le_T \bar{A}$, because an oracle for $\bar{A}$ can be used to decide membership in $A$ and vice versa. Thus, $H \le_T \bar{H}$. However, as shown in Corollary 188, we have $H \not\le_m \bar{H}$.
 
 Like m-reducibility, T-reducibility preserves decidability.
 
-Proposition 199: Let A and B be sets where A \le_T B. (i) If B is decidable, then A is also decidable. (ii) If A is undecidable, then B is also undecidable.
+$\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$. 
+* **(i)** If $B$ is decidable, then $A$ is also decidable. 
+* **(ii)** If $A$ is undecidable, then $B$ is also undecidable.
 
-Proof: See the exercises.
+*Proof*: See the exercises.
 
 ### Relative Computations and the Jump Operator
 
 The concept of an oracle allows us to "relativize" all the fundamental notions of computability. We can speak of sets being decidable or r.e. relative to an oracle.
 
-Definition 200: A set A is decidable with oracle B, if A \le_T B holds. A set A is recursively enumerable or r.e. with oracle B, if there exists an oracle Turing machine M that has domain A when its oracle is B, i.e., if  A = \{x \in \mathbb{N} : M(x, B) \downarrow\}. 
+$\textbf{Definition 200:}$ A set A is decidable with oracle $B$, if $A \le_T B$ holds. A set $A$ is recursively enumerable or r.e. with oracle $B$, if there exists an oracle Turing machine $M$ that has domain $A$ when its oracle is $B$, i.e., if  $A = \lbrace x \in \mathbb{N} : M(x, B) \downarrow\rbrace$. 
 
-If A is decidable with oracle B, we also say A is decidable in B or decidable relative to B. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativized world.
+If $A$ is decidable with oracle $B$, we also say $A$ is decidable in $B$ or decidable relative to $B$. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativized world.
 
-Definition 201: A function f is computable with oracle B if there is an oracle Turing machine that on input i and oracle B outputs f(i). An enumeration x_0, x_1, \dots is effective in B if x_i = f(i) for some function f that is computable with oracle B.
+$\textbf{Definition 201:}$ $A$ function $f$ is computable with oracle $B$ if there is an oracle Turing machine that on input $i$ and oracle $B$ outputs $f(i)$. An enumeration $x_0, x_1, \dots$ is effective in $B$ if $x_i = f(i)$ for some function $f$ that is computable with oracle $B$.
 
-Remark 202: Similar to the unrelativized case, it can be shown that a set A is recursively enumerable with oracle B if and only if there exists an enumeration x_0, x_1, \dots that is effective in B.
+> **Remark 202**: Similar to the unrelativized case, it can be shown that a set $A$ is recursively enumerable with oracle $B$ if and only if there exists an enumeration $x_0, x_1, \dots$ that is effective in $B$.
 
-Theorem 203: Let A and B be sets. (i) A is decidable in B if and only if A and the complement \bar{A} of A are recursively enumerable in B. (ii) A is decidable in B if and only if A has a monotone enumeration x_0 \le x_1 \le x_2 \dots that is effective in B.
+$\textbf{Theorem 203:}$ Let A and B be sets. 
+* **(i)** $A$ is decidable in $B$ if and only if $A$ and the complement $\bar{A}$ of $A$ are recursively enumerable in $B$. 
+* **(ii)** $A$ is decidable in $B$ if and only if $A$ has a monotone enumeration $x_0 \le x_1 \le x_2$ \dots that is effective in $B$.
 
 Just as we can create a standard numbering of all Turing machines, we can create a standard numbering of all oracle Turing machines, which is also a Gödel numbering in the relativized sense. This allows us to define a relativized version of the halting problem.
 
-Definition 205: Let B be a set and M_0, M_1, \dots be the standard enumeration of all oracle Turing machines. The set  H^B = \{e : M_e(e, B) \downarrow \}  is called the (diagonal) halting problem relative to B, or the jump of B. The map X \mapsto H^X is called the jump operator.
+$\textbf{Definition 205:}$ Let $B$ be a set and $M_0, M_1, \dots$ be the standard enumeration of all oracle Turing machines. The set  $H^B = \lbrace e : M_e(e, B) \downarrow \rbrace$  is called the (diagonal) halting problem relative to $B$, or the jump of $B$. The map $X \mapsto H^X$ is called the jump operator.
 
-The jump of B is often denoted B'. The set H^B plays the same role for sets that are r.e. in B as the original halting problem H does for r.e. sets.
+The jump of $B$ is often denoted $B'$. The set $H^B$ plays the same role for sets that are r.e. in $B$ as the original halting problem $H$ does for r.e. sets.
 
 $\textbf{Theorem 206:}$ For all sets $A$ and $B$, $A$ is recursively enumerable relative to the oracle $B$ if and only if $A$ is m-reducible to $H^B$.
 
