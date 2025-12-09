@@ -29,6 +29,7 @@ These definitions lead to some surprising conclusions, as the following examples
 <div class="accordion">
   <details markdown="1">
     <summary>Solution</summary>
+
 We need to find a one-to-one correspondence between $E$ and $N$. Such a correspondence is given by the invertible mapping that pairs each natural number $n$ with the even number $2n$; thus $1 \Leftrightarrow 2, 2 \Leftrightarrow 4, 3 \Leftrightarrow 6$, and so on. 
 
 Hence there are exactly as many even numbers as natural numbers. You might have thought that there would be only **half** as many, since all the odd numbers are missing! 
@@ -41,7 +42,9 @@ There is an equivalent characterization of countable sets which is frequently us
 <div class="accordion">
   <details markdown="1">
     <summary>Solution</summary>
+
 Here’s an algorithm for listing all the integers: We start with $0$ and then work in order of increasing absolute value. Thus the list is $\lbrace 0, 1, 1, 2, 2, 3, –3, \dots \rbrace$. Any particular integer appears eventually, so the integers are countable.
+
   </details>
 </div>
 
@@ -49,7 +52,9 @@ Here’s an algorithm for listing all the integers: We start with $0$ and then w
 <div class="accordion">
   <details markdown="1">
     <summary>Solution</summary>
+
 Here’s a wrong way: we start listing the numbers $\frac{1}{1},\frac{1}{2},\frac{1}{3},\dots$ Unfortunately we never finish the $\frac{1}{n}$’s and so numbers like $\frac{2}{3}$ are never counted! The right way is to make a table where the $pq$-th entry is $p/q$. Then the rationals can be counted by the weaving procedure shown in Figure 11.1.1. Any given $p/q$ is reached after a finite number of steps, so the rationals are countable. 
+  
   </details>
 </div>
 
