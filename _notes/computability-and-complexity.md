@@ -3448,7 +3448,7 @@ $\textbf{Definition 147 (Recursively Enumerable Languages):}$ A language $L$ is 
 
 By this definition, every decidable language is also recursively enumerable. However, as we will see, the converse is not true. While nondeterministic Turing machines can provide significant speed-ups in complexity theory (e.g., the $\text{P}$ versus $\text{NP}$ problem), in computability theory, they offer no additional computational power. Any nondeterministic Turing machine can be simulated by a deterministic one that systematically explores its computation tree. Although this simulation incurs a significant resource cost (e.g., exponential in time), these costs are irrelevant when resource bounds are removed. Therefore, we can simplify our model without loss of generality.
 
-> Convention 148: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
+> **Convention 148**: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
 
 A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
 
@@ -3466,7 +3466,7 @@ $\textbf{Theorem 149:}$ A language is recursively enumerable if and only if it i
 
 Computability theory also extends the notion of computation from recognizing languages to computing functions. Because Turing machines are not guaranteed to halt, the functions they compute may not be defined for all inputs. These are known as partial functions.
 
-> Remark 150: For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place x, written as $\alpha(x) \uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
+> **Remark 150**: For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place x, written as $\alpha(x) \uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
 
 Recall that a total $k$-tape Turing machine computes a function by writing the output on its final tape. We now formalize this for machines that may not halt.
 
@@ -3492,7 +3492,7 @@ Using this identification, we can directly translate our definitions from langua
 
 Definition 154: A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
 
-> Convention 155: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
+> **Convention 155**: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
 
 ### Relations Between Notions of Effectiveness
 
@@ -3500,7 +3500,7 @@ The concepts of decidable sets, r.e. sets, computable functions, and partial com
 
 $\textbf{Definition 156:}$ Let $A$ be a set. The characteristic function $c_A$ and the partial characteristic function $\chi_A$ of $A$ are defined as follows:  
 
-$$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \ \uparrow & \text{if } n \notin A. \end{cases}$$
+$$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ \uparrow & \text{if } n \notin A. \end{cases}$$
 
 These functions provide a direct link between sets and functions.
 
@@ -3523,9 +3523,7 @@ $\textbf{Definition 159:}$ A pairing function is a bijection from $\mathbb{N} \t
 
 The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
 
-$\textbf{Definition:}$ The graph of a partial function 
-
-$$\alpha : A \to B is  \text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$ 
+$\textbf{Definition:}$ The graph of a partial function $\alpha : A \to B$ is  $\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$
 
 $\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
 * **(i)** The partial function $\alpha$ is partial computable. 
@@ -3562,46 +3560,50 @@ $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable if and 
 
 Decidable sets correspond to a special, more structured type of enumeration.
 
-$\textbf{Proposition 164:}$ A nonempty set A is decidable if and only if A has a nondecreasing effective enumeration.
+$\textbf{Proposition 164:}$ A nonempty set $A$ is decidable if and only if $A$ has a nondecreasing effective enumeration.
 
 *Proof*:
 
-* Assume A is decidable. If A is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration z_0, z_1, \dots. Let z_0 be the smallest element of A. For i > 0, let z_i be the smallest element of A that is greater than z_{i-1}. Since A is decidable, we can find these elements effectively. The resulting function i \mapsto z_i is computable.
-* Conversely, assume A has a nondecreasing effective enumeration z_0, z_1, \dots. If A is finite, it is decidable. If A is infinite, to decide membership for an input n, we generate the sequence z_0, z_1, \dots until we find a z_i such that z_i \ge n. Since the sequence is nondecreasing and infinite, such a z_i must exist. We then check if n = z_i. If it is, n \in A; otherwise, n \notin A. This procedure always halts, so A is decidable.
+* Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
+* Conversely, assume $A$ has a nondecreasing effective enumeration $z_0, z_1, \dots$. If $A$ is finite, it is decidable. If $A$ is infinite, to decide membership for an input $n$, we generate the sequence $z_0, z_1, \dots$ until we find a $z_i$ such that $z_i \ge n$. Since the sequence is nondecreasing and infinite, such a $z_i$ must exist. We then check if $n = z_i$. If it is, $n \in A$; otherwise, $n \notin A$. This procedure always halts, so $A$ is decidable.
 
 A final, crucial theorem links decidability to the recursive enumerability of a set and its complement.
 
-Proposition 165: A set $A$ is decidable if and only if both the set itself and its complement $\mathbb{N} \setminus A$ are recursively enumerable.
+$\textbf{Proposition 165:}$ A set $A$ is decidable if and only if both the set itself and its complement $\mathbb{N} \setminus A$ are recursively enumerable.
 
-Proof: See exercises.
+*Proof*: See exercises.
 
-> Remark 166: By the equivalences shown in this section, the four concepts of decidable and recursively enumerable set as well as partial computable and computable functions can be mutually defined in terms of each other via purely set-theoretical definition not involving computability. Consequently, instead of introducing all four concepts separately via Turing machines, we could have done so for any one of them, then defining the other three concept without further use of Turing machines. This indicates that all four concepts formalize the same intuitive notion of effectiveness.
+> **Remark 166**: By the equivalences shown in this section, the four concepts of decidable and recursively enumerable set as well as partial computable and computable functions can be mutually defined in terms of each other via purely set-theoretical definition not involving computability. Consequently, instead of introducing all four concepts separately via Turing machines, we could have done so for any one of them, then defining the other three concept without further use of Turing machines. This indicates that all four concepts formalize the same intuitive notion of effectiveness.
 
 ## Numberings
 
 Having established the class of partial computable functions, we now turn to the question of how to refer to them. Since Turing machines can be described by finite strings, we can assign a unique natural number to every Turing machine, and by extension, to every partial computable function. This leads to the concept of a numbering.
 
-For partial functions \alpha and \beta, we write \alpha(n) \simeq \beta(n) if the function values \alpha(n) and \beta(n) either are both undefined or are both defined and equal.
+For partial functions $\alpha$ and $\beta$, we write $\alpha(n) \simeq \beta(n)$ if the function values $\alpha(n)$ and $\beta(n)$ either are both undefined or are both defined and equal.
 
-Remark 167: For a sequence \alpha_0, \alpha_1, \dots of partial functions, there is a unique partial function \alpha on \mathbb{N}^2 such that  \alpha(e, x) \simeq \alpha_e(x) \text{ for all } e, x \text{ in } \mathbb{N}. \quad (7.1)  Conversely, for every partial function \alpha from \mathbb{N}^2 to \mathbb{N}, there is a unique sequence \alpha_0, \alpha_1, \dots of partial functions such that (7.1) holds.
+> **Remark 167**: For a sequence $\alpha_0, \alpha_1, \dots$ of partial functions, there is a unique partial function $\alpha$ on $\mathbb{N}^2$ such that
+> 
+> $$\alpha(e, x) \simeq \alpha_e(x) \text{ for all } e, x \text{ in } \mathbb{N}. \quad (7.1)$$
+> 
+> Conversely, for every partial function $\alpha$ from $\mathbb{N}^2$ to $\mathbb{N}$, there is a unique sequence $\alpha_0, \alpha_1, \dots$ of partial functions such that (7.1) holds.
 
 This correspondence allows us to treat a sequence of functions and its associated two-argument "principal" function interchangeably.
 
-Numberings of Partial Computable Functions
+### Numberings of Partial Computable Functions
 
-Definition 168: Let \alpha_0, \alpha_1, \dots be a sequence of partial functions on \mathbb{N}. Let \alpha be a partial function on \mathbb{N}^2 such that (7.1) holds. Then \alpha is called the principal function of the sequence \alpha_0, \alpha_1, \dots, and the sequence itself is called determined by \alpha. The sequence \alpha_0, \alpha_1, \dots is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering \alpha is a numbering of or is universal for a set of partial functions if the latter set is equal to \{\alpha(e, \cdot) : e \in \mathbb{N}\}. A universal numbering is a numbering of the set of partial computable functions.
+$\textbf{Definition 168:}$ Let $\alpha_0, \alpha_1, \dots$ be a sequence of partial functions on $\mathbb{N}$. Let $\alpha$ be a partial function on $\mathbb{N}^2$ such that (7.1) holds. Then $\alpha$ is called the principal function of the sequence $\alpha_0, \alpha_1, \dots$, and the sequence itself is called determined by $\alpha$. The sequence $\alpha_0, \alpha_1, \dots$ is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering $\alpha$ is a numbering of or is universal for a set of partial functions if the latter set is equal to $\lbrace\alpha(e, \cdot) : e \in \mathbb{N}\rbrace$. A universal numbering is a numbering of the set of partial computable functions.
 
-Remark 169: For any numbering \alpha_0, \alpha_1, \dots, all \alpha_e are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input x into \langle e, x \rangle before performing the actual computation, we obtain a Turing machine that computes \alpha_e. As a consequence, a numbering \alpha_0, \alpha_1, \dots is universal if and only if all partial computable functions occur among the \alpha_e.
+> **Remark 169**: For any numbering $\alpha_0, \alpha_1, \dots$, all $\alpha_e$ are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input $x$ into $\langle e, x \rangle$ before performing the actual computation, we obtain a Turing machine that computes $\alpha_e$. As a consequence, a numbering $\alpha_0, \alpha_1, \dots$ is universal if and only if all partial computable functions occur among the $\alpha_e$.
 
 Not every sequence of computable functions constitutes a numbering. A numbering requires that the principal function itself be computable.
 
-Remark 170: There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set A and consider the sequence \alpha_0, \alpha_1, \dots of constant functions such that \alpha(e) has constant value 0 if e is not in A, and has constant value 1, otherwise. This sequence is not a numbering, as its principal function \alpha is not partial computable. Otherwise, since \alpha is total, \alpha and then also the function e \mapsto \alpha(e, e) were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set A.
+> **Remark 170**: There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set $A$ and consider the sequence $\alpha_0, \alpha_1, \dots$ of constant functions such that $\alpha(e)$ has constant value $0$ if $e$ is not in $A$, and has constant value $1$, otherwise. This sequence is not a numbering, as its principal function $\alpha$ is not partial computable. Otherwise, since $\alpha$ is total, $\alpha$ and then also the function $e \mapsto \alpha(e, e)$ were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set $A$.
 
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
-Theorem 171: There exists a universal numbering.
+$\text{Theorem 171:}$ There exists a universal numbering.
 
-Proof: See lecture and exercises.
+*Proof*: See lecture and exercises.
 
 The construction in the proof of this theorem gives rise to a canonical numbering.
 
@@ -3613,7 +3615,7 @@ Theorem 173: There exists no numbering of the set of computable functions.
 
 Proof: For a proof by contradiction, assume that there is a numbering \alpha_0, \alpha_1, \dots of the computable functions. The corresponding principal function \alpha is then total and partial computable, hence computable. Consider the function d: \mathbb{N} \to \mathbb{N} defined by d(e) = 1 + \alpha(e, e). Since \alpha is computable, d is also computable. However, by its construction, d cannot be in the sequence \alpha_0, \alpha_1, \dots. For any given index e, the function d differs from the function \alpha_e on the input e, because d(e) = 1 + \alpha_e(e) \ne \alpha_e(e). This contradicts the assumption that \alpha_0, \alpha_1, \dots was a numbering of all computable functions.
 
-Halting Problems
+### Halting Problems
 
 Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
 
@@ -3658,11 +3660,11 @@ Proof: Let \phi_0, \phi_1, \dots be the standard numbering. We define a new sequ
   * If e \notin H, then \phi_e(e) \uparrow. This means \phi_{g(e)}(0) \uparrow. So, \psi_{f(g(e))}(0) \uparrow. This happens only if the second component of f(g(e)) is 0. Then \text{inv}_2(f(g(e))) = 0.
 * This implies that the function \text{inv}_2 \circ f \circ g is the characteristic function of the halting problem H. Since f, g, and \text{inv}_2 are all computable, their composition is also computable. But this would mean H is decidable, which is a contradiction. Therefore, \psi cannot be a Gödel numbering.
 
-Chapter 8: Many-one Reducibility and Rice’s Theorem
+## Many-one Reducibility and Rice’s Theorem
 
 To compare the difficulty of undecidable problems, we introduce the concept of reducibility. One of the most fundamental types is many-one reducibility.
 
-Many-one Reducibility
+### Many-one Reducibility
 
 Definition 180: A set A is many-one reducible to a set B, abbreviated as A is m-reducible to B or A \le_m B, if there exists a computable function f such that for all x \in \mathbb{N}, it holds that  x \in A \text{ if and only if } f(x) \in B. 
 
@@ -3744,11 +3746,11 @@ Example 196: The set A = \{e : \text{dom}(\phi_e) \text{ has more than } e \text
 * Case I: There exists e \in A such that the domain of \phi_e has finite size m. By Corollary 194, there exists an index e' > m such that \phi_e = \phi_{e'}. Then e' \notin A, hence A is not an index set.
 * Case II: For all e \in A the domain of \phi_e is infinite. By definition, A contains all indices e such that W_e is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration e_0, e_1, \dots of A, \phi_{e_0}, \phi_{e_1}, \dots is such a numbering.
 
-Chapter 9: Oracle Turing Machines and the Jump Operator
+## Oracle Turing Machines and the Jump Operator
 
 We now introduce a more powerful form of reducibility, Turing reducibility, based on a model of computation called an oracle Turing machine. This model allows us to ask "what if we had a magical black box that could solve problem B?" and then explore what other problems (A) we could solve with its help.
 
-Oracle Turing Machines and Turing Reducibility
+### Oracle Turing Machines and Turing Reducibility
 
 Definition 197: An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values B(0)B(1) \dots of the characteristic function of a set B is continuously written. The set B, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit B(0). The notation M(x, B) is used for the result of the computation of the oracle Turing machine M on inputs x and oracle B, if the computation terminates, and M(x, B) \uparrow, if the computation does not terminate. The notations M(x, B) \downarrow and M(x, B) \downarrow = y are defined as for Turing machines. In all these notations, M(x, B) can also be written as M^B(x).
 
@@ -3771,7 +3773,7 @@ Proposition 199: Let A and B be sets where A \le_T B. (i) If B is decidable, the
 
 Proof: See the exercises.
 
-Relative Computations and the Jump Operator
+### Relative Computations and the Jump Operator
 
 The concept of an oracle allows us to "relativize" all the fundamental notions of computability. We can speak of sets being decidable or r.e. relative to an oracle.
 
@@ -3791,26 +3793,26 @@ Definition 205: Let B be a set and M_0, M_1, \dots be the standard enumeration o
 
 The jump of B is often denoted B'. The set H^B plays the same role for sets that are r.e. in B as the original halting problem H does for r.e. sets.
 
-Theorem 206: For all sets A and B, A is recursively enumerable relative to the oracle B if and only if A is m-reducible to H^B.
+$\textbf{Theorem 206:}$ For all sets $A$ and $B$, $A$ is recursively enumerable relative to the oracle $B$ if and only if $A$ is m-reducible to $H^B$.
 
-Proof: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
+*Proof*: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
 
-* (\impliedby) If A \le_m H^B via computable function f, we can build an oracle TM for A. On input x with oracle B, it computes f(x) and then simulates the oracle TM M_{f(x)} on input f(x) with oracle B. This machine halts iff f(x) \in H^B, which happens iff x \in A. Thus, A is r.e. in B.
-* (\implies) If A is r.e. in B, there is an oracle TM M such that A is its domain with oracle B. We can create a computable function h such that for any x, M_{h(x)} is an oracle TM that on any input y with any oracle X simulates M on input x with oracle X. The function h is computable as it just hard-wires x into the description of M. Then we have:  x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B.  This shows A \le_m H^B via the computable function h.
+* $(\impliedby)$ If $A \le_m H^B$ via computable function $f$, we can build an oracle TM for $A$. On input $x$ with oracle $B$, it computes $f(x)$ and then simulates the oracle TM $M_{f(x)}$ on input $f(x)$ with oracle $B$. This machine halts iff $f(x) \in H^B$, which happens iff $x \in A$. Thus, $A$ is r.e. in $B$.
+* $(\implies)$ If $A$ is r.e. in $B$, there is an oracle TM $M$ such that $A$ is its domain with oracle $B$. We can create a computable function $h$ such that for any $x, M_{h(x)}$ is an oracle TM that on any input $y$ with any oracle $X$ simulates $M$ on input $x$ with oracle $X$. The function $h$ is computable as it just hard-wires $x$ into the description of $M$. Then we have:  $x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$.  This shows $A \le_m H^B$ via the computable function $h$.
 
-Corollary 207: For all sets B, the halting problem relative to B is recursively enumerable with oracle B.
+$\textbf{Corollary 207:}$ For all sets $B$, the halting problem relative to $B$ is recursively enumerable with oracle $B$.
 
 The jump operator always produces a strictly more complex set. A set is always reducible to its own jump, but the jump is never reducible back to the original set.
 
-Theorem 208: Let B be a set. Then B is m-reducible to H^B and thus decidable with oracle H^B, but H^B is not decidable with oracle B, i.e., it holds  B \le_m H^B \quad \text{and} \quad H^B \not\le_T B. 
+$\textbf{Theorem 208:}$ Let $B$ be a set. Then $B$ is m-reducible to $H^B$ and thus decidable with oracle $H^B$, but $H^B$ is not decidable with oracle $B$, i.e., it holds  $B \le_m H^B \quad \text{and} \quad H^B \not\le_T B$. 
 
-Proof:
+*Proof*:
 
-* To show B \le_m H^B, we need a computable function h. Let h(x) be the index of an oracle TM M_{h(x)} that, on any input y and with any oracle X, halts if and only if x \in X. Then x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B. Thus B \le_m H^B.
-* The proof that H^B \not\le_T B is a relativized diagonalization argument, identical to the proof that the original halting problem is undecidable. If H^B were decidable in B, then the function g(e) = 1 + M_e(e, B) (if e \in H^B) and 0 (otherwise) would be computable in B. But this function cannot be computed by any oracle TM M_e with oracle B, as it differs from the function computed by M_e on input e. This is a contradiction.
+* To show $B \le_m H^B$, we need a computable function $h$. Let $h(x)$ be the index of an oracle TM $M_{h(x)}$ that, on any input $y$ and with any oracle $X$, halts if and only if $x \in X$. Then $x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$. Thus $B \le_m H^B$.
+* The proof that $H^B \not\le_T B$ is a relativized diagonalization argument, identical to the proof that the original halting problem is undecidable. If $H^B$ were decidable in $B$, then the function $g(e) = 1 + M_e(e, B)$ (if $e \in H^B$) and $0$ (otherwise) would be computable in $B$. But this function cannot be computed by any oracle TM $M_e$ with oracle $B$, as it differs from the function computed by $M_e$ on input $e$. This is a contradiction.
 
-Finally, the jump operator is monotone with respect to Turing reducibility. If A is no harder than B, then the jump of A is no harder than the jump of B.
+Finally, the jump operator is monotone with respect to Turing reducibility. If $A$ is no harder than $B$, then the jump of $A$ is no harder than the jump of $B$.
 
-Theorem 209: If a set A is T-reducible to a set B, then the halting problem relative to A is m-reducible to the halting problem relative to B, i.e., it holds  A \le_T B \text{ implies } H^A \le_m H^B. 
+$\textbf{Theorem 209:}$ If a set $A$ is $T$-reducible to a set $B$, then the halting problem relative to $A$ is m-reducible to the halting problem relative to B, i.e., it holds  $A \le_T B \text{ implies } H^A \le_m H^B$. 
 
-Proof: Let A \le_T B via an oracle TM M_{oracle}. We want to show H^A \le_m H^B. We need a computable function h such that e \in H^A \iff h(e) \in H^B. The function h(e) produces the index of a new oracle TM M_{h(e)}. This machine, on input y with oracle X, simulates the oracle TM M_e on input e. Whenever M_e makes an oracle query for some string z (to what it thinks is oracle A), M_{h(e)} pauses and uses its own oracle X to simulate M_{oracle} on input z to get the answer. It then provides this answer back to the simulation of M_e. So, M_{h(e)} with oracle X simulates M_e with oracle M_{oracle}(X). This means M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow. Therefore, we have the desired equivalence:  e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B.  The function h is computable, so this establishes H^A \le_m H^B.
+*Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means $M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$. Therefore, we have the desired equivalence:  $e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  The function $h$ is computable, so this establishes $H^A \le_m H^B$.
