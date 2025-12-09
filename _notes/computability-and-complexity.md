@@ -32,7 +32,9 @@ tags:
   </p>
 </div>
 
-## Computability and Complexity
+# Computability and Complexity
+
+## Complexity
 
 ### Formalizing Computability
 
@@ -3108,18 +3110,29 @@ where $r_1, \ldots, r_{i-1}$ are values chosen in previous rounds. These definit
 
 1. $k_\phi = h_1(0) + h_1(1)$
 2. $h_i(r_i) = h_{i+1}(0) + h_{i+1}(1)$ for $i=1, \ldots, n-1$
+3. $h_{n-1} = p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1)$
 
 The protocol proceeds in $n$ rounds. The verifier checks an initial claim from the prover and then, in each round, reduces a claim about a polynomial in $j$ variables to a claim about a polynomial in $j-1$ variables evaluated at a random point.
 
-* **Setup**: On input $(\phi, k)$, the prover sends a large prime $p$. The verifier checks that p is sufficiently large (e.g., $p > 2^{cn}$ for some constant $c$) and rejects if not. All subsequent calculations are modulo $p$.
-* **Round 1**: The prover sends a polynomial $h_1^P(x_1)$, claiming it is equal to $h_1(x_1)$. The verifier checks if $k \equiv h_1^P(0) + h_1^P(1) \pmod p$. If this check fails, the verifier rejects. Otherwise, it chooses a random value $r_1 \in \mathbb{F}_p$ and sends it to the prover. The prover must now convince the verifier that $h_1^P(r_1)$ is the correct value of $h_1(r_1)$.
+For technial reasons related to the verification of the construction of $V$, choose a constant $c$ such that $72n^4 \le 2^{cn}$ holds for all $n$. We then have for all $p ge 2^{cn}$,
+
+$$\dfrac{nd}{p} \le \dfrac{3mn}{2^{cn}} \le \dfrac{24n^4}{2^{cn}} \le \dfrac{1}{3}$$
+
+where the second to last inequality follows because a formula in $3$-CNF in $n$ variables has not more than $8n^3$ mutually distinct clauses.
+
+* **Setup**: On input $(\phi, k)$, the prover sends a large prime $p$. The verifier checks that $p$ is sufficiently large (e.g., $2^{cn+1} > p > 2^{cn}$ for some constant $c$) and rejects if not. All subsequent calculations are modulo $p$.
+* **Round 1**: The prover sends a polynomial $h_1^P(x_1)$, claiming it is equal to $h_1(x_1)$. The verifier checks if $k \equiv h_1^P(0) + h_1^P(1) \pmod p$. If this check fails, the verifier rejects. Otherwise, it chooses a random value $r_1 \in \mathbb{F}_p$ (uniformly) and sends it to the prover. The prover must now convince the verifier that $h_1^P(r_1)$ is the correct value of $h_1(r_1)$. (Also in all rounds the verifier checks that the polynomial $h_1^P$ is of degree of $d$ and rejects if it is not.)
 * **Round $i$ $(2 \le i \le n-1)$**: The prover sends a polynomial $h_i^P(x_i)$, claiming it equals $h_i(x_i)$ (with previous random values $r_1, \dots, r_{i-1}$ fixed). The verifier checks if the previous round's value is consistent: $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) + h_i^P(1) \pmod p$. If not, it rejects. Otherwise, it picks a new random value $r_i \in \mathbb{F}_p$ and sends it to the prover.
-* **Final Check**: After round $n-1$, the verifier has values $r_1, \ldots, r_{n-1}$ and the prover's last claim $h_{n-1}^P(r_{n-1})$. The verifier can now compute the true value of $h_n(0) + h_n(1)$ by itself, which is $p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1)$. It accepts if and only if the prover's claim matches this computed value.
+* **Round $n$ (Final Check)**: After round $n-1$, the verifier has values $r_1, \ldots, r_{n-1}$ and the prover's last claim $h_{n-1}^P(r_{n-1})$. The verifier can now compute the true value of $h_n(0) + h_n(1)$ by itself, which is $p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1)$. It accepts if and only if the prover's claim matches this computed value. Checking whether $h^{P}_{n-1}=h_{n-1}$ in the last round $n$ is equivalent to checking 
+
+$$h^{P}_{n-1} = p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1),$$
+
+hence can actually be done by the verifier $V$ itself. 
 
 **Step 3: Analysis**
 
-* Completeness: If $k = k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$. All checks will pass, and the verifier will accept with probability $1$.
-* Soundness: If $k \ne k_\phi$, the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing p to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. ∎
+* *Completeness*: If $k = k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$. All checks will pass, and the verifier will accept with probability $1$.
+* *Soundness*: If $k \ne k_\phi$, but the prover sends h^P_{1} such that , then the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing $p$ to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. ∎
 
 <div class="accordion">
   <details markdown="1">
@@ -3151,7 +3164,7 @@ By checking the polynomial at the specific boolean inputs (0 and 1) and then ver
 
 <div class="accordion">
   <details markdown="1">
-    <summary>What is the point of choosing value r_i randomly?</summary>
+    <summary>What is the point of choosing value $r_i$ randomly?</summary>
 The point of choosing the value $r_i$ randomly from the large finite field $\mathbb{F}_p$ in the Checksum Protocol (Step 2 of the proof of Theorem 141 for \#3-SAT) is to ensure the **soundness** of the interactive proof system. This randomization is the core mechanism that catches a dishonest prover.
 
 Here is a comprehensive breakdown of the purpose of randomizing $r_i$:
@@ -3187,7 +3200,7 @@ The random selection of $r_i$ ensures that the prover cannot predict the exact p
 
 <div class="accordion">
   <details markdown="1">
-    <summary>I do not understand why in the proof we evaluate the polynomial h in random points, that are not binary. p_{\phi}(r_1, ..., r_{n-1}, 0) or p_{\phi}(r_1, ..., r_{n-1}, 1) can give us values that is different from 0 or 1, because r_i are not necessary binary and we evaluate arithmetised formula in non binary values</summary>
+    <summary>I do not understand why in the proof we evaluate the polynomial $h$ in random points, that are not binary. $p_{\phi}(r_1, ..., r_{n-1}, 0)$ or $p_{\phi}(r_1, ..., r_{n-1}, 1)$ can give us values that is different from $0$ or $1$, because $r_i$ are not necessary binary and we evaluate arithmetised formula in non binary values</summary>
 This is a fundamental and excellent question about the core mechanism of the Checksum Protocol (Theorem 141) and the arithmetization technique used to prove PSPACE $\subseteq$ IP.
 
 The reason the verifier evaluates the arithmetized formula $p_\phi$ at non-binary, random points ($r_1, \ldots, r_{n-1}$) and the resulting values are often non-zero and non-one is that **the protocol shifts the problem from checking boolean logic to checking polynomial identity over a large finite field $\mathbb{F}_p$**.
@@ -3291,7 +3304,7 @@ This process transforms the verification of a massive, $n$-variable polynomial i
 
 <div class="accordion">
   <details markdown="1">
-    <summary>Do I understand correctly that we check all h_i recursively just to verify that prover understand the recursive structure of polynomial h_i?</summary>
+    <summary>Do I understand correctly that we check all $h_i$ recursively just to verify that prover understand the recursive structure of polynomial $h_i$?</summary>
 That is an interesting way to frame the goal of the Checksum Protocol, but based on the sources, the primary reason for checking the polynomials $h_i$ recursively is not to verify the prover's "understanding" of the structure. Instead, the recursive checks are performed to ensure the **mathematical consistency** and **soundness** of the claimed solution.
 
 Here is a breakdown of why the recursive structure is used:
@@ -3330,7 +3343,7 @@ By checking the $h_i$ recursively, the verifier ensures that a lie introduced at
 
 <div class="accordion">
   <details markdown="1">
-    <summary>I mean the h_i has nested (recursive) structure. If we just rely on the polynomial h^P_1, then the sum h^P_1(0)+h^P_1(1) could coincide with k_{\phi} by chance. To make sure that the given h^P_1 is indeed the function h_1, we check it recursively for all h^P_i=h_i. And if it's true for all i, then it's likely that the prover gave us the correct h^P_1</summary>
+    <summary>I mean the $h_i$ has nested (recursive) structure. If we just rely on the polynomial $h^P_1$, then the sum $h^P_1(0)+h^P_1(1)$ could coincide with $k_{\phi}$ by chance. To make sure that the given $h^P_1$ is indeed the function $h_1$, we check it recursively for all $h^P_i=h_i$. And if it's true for all $i$, then it's likely that the prover gave us the correct $h^P_1$</summary>
 You have precisely captured the motivation and mechanism behind the recursive structure of the Checksum Protocol used in the proof of Theorem 141 (that \#3-SAT is in IP).
 
 You are **correct** that relying only on the initial check $k \equiv h_1^P(0) + h_1^P(1) \pmod p$ is insufficient because a cheating prover could submit a polynomial $h_1^P$ that happens to satisfy this sum even though $h_1^P \ne h_1$. This is the central vulnerability that the recursive checking and randomization address.
@@ -3386,13 +3399,13 @@ $$
 \prod_{x_1 \in \lbrace 0,1\rbrace} \coprod_{x_2 \in \lbrace 0,1\rbrace} \cdots \coprod_{x_n \in \lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)
 $$
 
-where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\lbrace 0,1\rbrace^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus 3-QBF has an interactive proof, and by completeness of 3-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
+where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\lbrace 0,1\rbrace^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus $3$-QBF has an interactive proof, and by completeness of $3$-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
 
 ### Public Coins and Perfect Completeness
 
 Interactive proofs can be made public-coin (all verifier randomness revealed) and perfectly complete (accept with probability $1$ on yes-instances).
 
-$\textbf{Remark 144:}$ The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to 3-QBF, every language in IP has a public-coin, perfectly complete interactive proof.
+$\textbf{Remark 144:}$ The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3$-QBF, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
 
 ### Interactive Proof Systems with the Zero-Knowledge Property
 
@@ -3404,7 +3417,7 @@ The simulator shows that any transcript could have been generated without access
 
 $\text{GI}$, despite lacking a known $\text{NP}$ certificate, admits a zero-knowledge interactive proof.
 
-$\textbf{Theorem 146:}$ GI has a zero-knowledge interactive proof system.
+$\textbf{Theorem 146:}$ $\text{GI}$ has a zero-knowledge interactive proof system.
 
 *Proof.* For input $(G_0, G_1)$, the prover’s secret is an isomorphism if it exists.
 
@@ -3418,3 +3431,386 @@ Completeness: If $G_0 \cong G_1$ via $\pi_0$, the prover always responds with a 
 Soundness: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error.
 
 Zero-knowledge: A simulator $S$ produces transcripts indistinguishable from real interactions without knowing an isomorphism. $S$ guesses a challenge $j$, chooses random $\pi$, sets $H = \pi(G_j)$, sends $H$, receives actual challenge $j'$, and restarts unless $j' = j$. Since $j' = j$ with probability $\tfrac{1}{2}$, expected retries are constant; when $j' = j$, $\pi$ is a valid witness, so the transcript distribution matches the real protocol. ∎
+
+## Computability
+
+## Unbounded Turing Machines
+
+This chapter transitions from the resource-bounded computations central to complexity theory to the foundational principles of computability theory. In this domain, we are not concerned with how efficiently a problem can be solved, but rather with the more fundamental question of whether it can be solved at all. We will explore computations without any constraints on time or space, leading to the study of Turing machines that may not halt on all inputs.
+
+### Recursively Enumerable Sets
+
+In complexity theory, the focus is on decidable languages—those for which a Turing machine exists that halts on every possible input, providing a definitive "yes" or "no" answer. Such machines are called total Turing machines. In computability theory, we broaden our scope to include languages recognized by Turing machines that are not necessarily total.
+
+A Turing machine $M$ accepts a word $w$ if there exists at least one computation path that leads to an accepting state. The set of all words accepted by $M$ constitutes the language it recognizes, denoted $L(M)$.
+
+$\textbf{Definition 147 (Recursively Enumerable Languages):}$ A language $L$ is recursively enumerable, abbreviated as r.e., if $L$ is recognized by a Turing machine.
+
+By this definition, every decidable language is also recursively enumerable. However, as we will see, the converse is not true. While nondeterministic Turing machines can provide significant speed-ups in complexity theory (e.g., the $\text{P}$ versus $\text{NP}$ problem), in computability theory, they offer no additional computational power. Any nondeterministic Turing machine can be simulated by a deterministic one that systematically explores its computation tree. Although this simulation incurs a significant resource cost (e.g., exponential in time), these costs are irrelevant when resource bounds are removed. Therefore, we can simplify our model without loss of generality.
+
+> Convention 148: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
+
+A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
+
+$\textbf{Theorem 149:}$ A language is recursively enumerable if and only if it is equal to the domain of a Turing machine.
+
+*Proof*: Let $L$ be a language.
+
+* First, assume $L$ is the domain of some Turing machine $M$. To show $L$ is recursively enumerable, we can modify $M$ into a new machine $M'$ that recognizes $L$. We do this by defining all of $M$'s halting states to be accepting states in $M'$. Now, $M'$ accepts an input $w$ if and only if M halts on $w$. Thus, $L(M') = \text{dom } M = L$, which means $L$ is recursively enumerable.
+* Conversely, assume $L$ is recursively enumerable, meaning there is a Turing machine $M$ that recognizes it, so $L = L(M)$. For any input to $M$, one of three outcomes is possible:
+  1. $M$ halts in an accepting state (the input is in $L$).
+  2. $M$ halts in a non-accepting state (the input is not in $L$).
+  3. $M$ does not halt (the input is not in $L$). We can construct a new Turing machine $M'$ that halts if and only if the input is in $L$. To do this, we modify $M$ such that whenever it would enter a non-accepting halting configuration, it instead enters an infinite loop. This can be achieved by adding a transition from each non-accepting halt state to itself, leaving the tape unchanged. With this modification, $M'$ halts only on inputs that $M$ accepts. Therefore, $\text{dom } M' = L(M) = L$.
+
+### Partial Computable Functions
+
+Computability theory also extends the notion of computation from recognizing languages to computing functions. Because Turing machines are not guaranteed to halt, the functions they compute may not be defined for all inputs. These are known as partial functions.
+
+> Remark 150: For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place x, written as $\alpha(x) \uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
+
+Recall that a total $k$-tape Turing machine computes a function by writing the output on its final tape. We now formalize this for machines that may not halt.
+
+$\textbf{Definition 151:}$ The partial function $\phi_M$ computed by a Turing machine M is  
+
+$$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \text{ on input } w \text{ reaches the halting configuration } C, \\ \uparrow & \text{otherwise.} \end{cases}$$
+
+Observe that the partial function $\phi_M$ is defined exactly on the arguments $w$ such that $M$ terminates on input $w$.
+
+This leads to the formal definition of what it means for a partial function to be computable.
+
+$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma_1^*$ to $\Sigma_2^*$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+
+A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function.
+
+### Computability on Natural Numbers
+
+To facilitate a more mathematical treatment, we often work with natural numbers rather than strings. This is achieved by a simple encoding.
+
+Remark 153: The words over the unary alphabet $\lbrace 1\rbrace$ can be identified with the set $\mathbb{N}$ of natural numbers by associating a word $w$ with its length: the empty word is identified with $0$, the word $1$ with $1$, and so on.
+
+Using this identification, we can directly translate our definitions from languages to sets of natural numbers and from functions on strings to functions on numbers.
+
+Definition 154: A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
+
+> Convention 155: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
+
+### Relations Between Notions of Effectiveness
+
+The concepts of decidable sets, r.e. sets, computable functions, and partial computable functions are deeply interconnected. We can formalize these relationships using characteristic functions.
+
+$\textbf{Definition 156:}$ Let $A$ be a set. The characteristic function $c_A$ and the partial characteristic function $\chi_A$ of $A$ are defined as follows:  
+
+$$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \ \uparrow & \text{if } n \notin A. \end{cases}$$
+
+These functions provide a direct link between sets and functions.
+
+$\textbf{Proposition 157:}$ A set $A$ is decidable if and only if its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable if and only if its partial characteristic function $\chi_A$ is partial computable.
+
+*Proof*: See exercises.
+
+The domain of a partial computable function provides another characterization of r.e. sets.
+
+$\textbf{Proposition 158:}$ A set is recursively enumerable if and only if it is equal to the domain of a partial computable function.
+
+*Proof*: Let $A$ be a set.
+
+* If $A$ is recursively enumerable, then by Proposition 157, its partial characteristic function $\chi_A$ is partial computable. By definition, the domain of $\chi_A$ is precisely the set $A$.
+* Conversely, if $A$ is the domain of a partial computable function $\alpha$, then there exists a Turing machine $M$ that computes $\alpha$. The domain of $M$ is therefore $A$. By Theorem 149, a language that is the domain of a Turing machine is recursively enumerable.
+
+To handle functions with multiple arguments, such as those on $\mathbb{N} \times \mathbb{N}$, we use a pairing function.
+
+$\textbf{Definition 159:}$ A pairing function is a bijection from $\mathbb{N} \times \mathbb{N}$ to $\mathbb{N}$. Let $\langle \cdot, \cdot \rangle$ be an effective and effectively invertible pairing function (for details, see the exercises). For a subset $A$ of $\mathbb{N} \times \mathbb{N}$, let $\langle A \rangle = \lbrace\langle i, j \rangle : (i, j) \in A\rbrace$. A subset $A$ of $\mathbb{N} \times \mathbb{N}$ is recursively enumerable if $\langle A \rangle$ is recursively enumerable, and $A$ is decidable if $\langle A \rangle$ is decidable. A partial function $\alpha : \mathbb{N} \times \mathbb{N} \to \mathbb{N}$ is partial computable if the function $\langle x, y \rangle \mapsto \alpha(x, y)$ is partial computable, and $\alpha$ is computable if it is partial computable and total.
+
+The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
+
+$\textbf{Definition:}$ The graph of a partial function 
+
+$$\alpha : A \to B is  \text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$ 
+
+$\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
+* **(i)** The partial function $\alpha$ is partial computable. 
+* **(ii)** The set $\text{graph}(\alpha)$ is recursively enumerable.
+
+For a function $f$, the following statements are equivalent. 
+* **(iii)** The function $f$ is computable. 
+* **(iv)** The set $\text{graph}(f)$ is decidable. 
+* **(v)** The set $\text{graph}(f)$ is recursively enumerable.
+
+*Proof*: See exercises.
+
+Recursively enumerable sets can also be characterized as projections of decidable sets. Intuitively, this means an element $n$ is in an r.e. set $A$ if there exists some "witness" $i$ such that the pair $(n, i)$ belongs to a simpler, decidable set $B$.
+
+$\textbf{Proposition 161:}$ A set $A$ is recursively enumerable if and only if $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that  
+
+$$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$ 
+
+*Proof*:
+
+* First, assume $A$ is the projection of a decidable set $B$. A procedure to compute $\chi_A(n)$ would be to search for an $i$ such that $\langle n, i \rangle \in B$. If such an $i$ is found, the procedure outputs $1$; otherwise, it searches forever. This procedure computes the partial characteristic function $\chi_A$, so $\chi_A$ is partial computable, and thus $A$ is recursively enumerable.
+* Conversely, assume $A$ is recursively enumerable. Then $A$ is the domain of some Turing machine $M$. We can define a decidable set $B$ as the set of pairs $\langle n, t \rangle$ where $M$ halts on input $n$ within $t$ steps. $B$ is decidable because we can simulate $M$ on input $n$ for exactly $t$ steps. The set $A$ is then the projection of $B$, since $n \in A$ if and only if there exists some time $t$ such that $M$ halts on $n$ within $t$ steps, i.e., $\langle n, t \rangle \in B$.
+
+Finally, the term "recursively enumerable" comes from an alternative characterization: a set is r.e. if its elements can be generated one by one by an effective procedure.
+
+$\textbf{Definition 162:}$ An enumeration is a sequence $z_0, z_1, \dots$ of natural numbers. For such an enumeration, the set $\lbrace z_0, z_1, \dots\rbrace$ is enumerated by or has the enumeration $z_0, z_1, \dots$, and a natural number $n$ is enumerated if $n$ coincides with some $z_i$. An enumeration $z_0, z_1, \dots$ is effective if the function $i \mapsto z_i$ is computable.
+
+$\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable if and only if $A$ has an effective enumeration.
+
+*Proof*:
+
+* Assume $A$ has an effective enumeration $z_0, z_1, \dots$ produced by a computable function $i \mapsto z_i$. A Turing machine can recognize $A$ as follows: on input $n$, it computes $z_0, z_1, z_2, \dots$ in sequence. If it ever finds a $z_i$ such that $z_i = n$, it accepts. If no such $z_i$ exists, it runs forever. This machine recognizes $A$, so $A$ is r.e.
+* Assume $A$ is a nonempty r.e. set. Let $M$ be a Turing machine that recognizes $A$. Fix an element $a \in A$. We can define an enumeration $z_0, z_1, \dots$ as follows. For each $i$, decode it as a pair $\langle n, t \rangle$. Simulate $M$ on input $n$ for $t$ steps. If $M$ accepts $n$ within $t$ steps, set $z_i = n$. Otherwise, set $z_i = a$. The function $i \mapsto z_i$ is computable, so this is an effective enumeration of $A$.
+
+Decidable sets correspond to a special, more structured type of enumeration.
+
+$\textbf{Proposition 164:}$ A nonempty set A is decidable if and only if A has a nondecreasing effective enumeration.
+
+*Proof*:
+
+* Assume A is decidable. If A is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration z_0, z_1, \dots. Let z_0 be the smallest element of A. For i > 0, let z_i be the smallest element of A that is greater than z_{i-1}. Since A is decidable, we can find these elements effectively. The resulting function i \mapsto z_i is computable.
+* Conversely, assume A has a nondecreasing effective enumeration z_0, z_1, \dots. If A is finite, it is decidable. If A is infinite, to decide membership for an input n, we generate the sequence z_0, z_1, \dots until we find a z_i such that z_i \ge n. Since the sequence is nondecreasing and infinite, such a z_i must exist. We then check if n = z_i. If it is, n \in A; otherwise, n \notin A. This procedure always halts, so A is decidable.
+
+A final, crucial theorem links decidability to the recursive enumerability of a set and its complement.
+
+Proposition 165: A set $A$ is decidable if and only if both the set itself and its complement $\mathbb{N} \setminus A$ are recursively enumerable.
+
+Proof: See exercises.
+
+> Remark 166: By the equivalences shown in this section, the four concepts of decidable and recursively enumerable set as well as partial computable and computable functions can be mutually defined in terms of each other via purely set-theoretical definition not involving computability. Consequently, instead of introducing all four concepts separately via Turing machines, we could have done so for any one of them, then defining the other three concept without further use of Turing machines. This indicates that all four concepts formalize the same intuitive notion of effectiveness.
+
+## Numberings
+
+Having established the class of partial computable functions, we now turn to the question of how to refer to them. Since Turing machines can be described by finite strings, we can assign a unique natural number to every Turing machine, and by extension, to every partial computable function. This leads to the concept of a numbering.
+
+For partial functions \alpha and \beta, we write \alpha(n) \simeq \beta(n) if the function values \alpha(n) and \beta(n) either are both undefined or are both defined and equal.
+
+Remark 167: For a sequence \alpha_0, \alpha_1, \dots of partial functions, there is a unique partial function \alpha on \mathbb{N}^2 such that  \alpha(e, x) \simeq \alpha_e(x) \text{ for all } e, x \text{ in } \mathbb{N}. \quad (7.1)  Conversely, for every partial function \alpha from \mathbb{N}^2 to \mathbb{N}, there is a unique sequence \alpha_0, \alpha_1, \dots of partial functions such that (7.1) holds.
+
+This correspondence allows us to treat a sequence of functions and its associated two-argument "principal" function interchangeably.
+
+Numberings of Partial Computable Functions
+
+Definition 168: Let \alpha_0, \alpha_1, \dots be a sequence of partial functions on \mathbb{N}. Let \alpha be a partial function on \mathbb{N}^2 such that (7.1) holds. Then \alpha is called the principal function of the sequence \alpha_0, \alpha_1, \dots, and the sequence itself is called determined by \alpha. The sequence \alpha_0, \alpha_1, \dots is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering \alpha is a numbering of or is universal for a set of partial functions if the latter set is equal to \{\alpha(e, \cdot) : e \in \mathbb{N}\}. A universal numbering is a numbering of the set of partial computable functions.
+
+Remark 169: For any numbering \alpha_0, \alpha_1, \dots, all \alpha_e are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input x into \langle e, x \rangle before performing the actual computation, we obtain a Turing machine that computes \alpha_e. As a consequence, a numbering \alpha_0, \alpha_1, \dots is universal if and only if all partial computable functions occur among the \alpha_e.
+
+Not every sequence of computable functions constitutes a numbering. A numbering requires that the principal function itself be computable.
+
+Remark 170: There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set A and consider the sequence \alpha_0, \alpha_1, \dots of constant functions such that \alpha(e) has constant value 0 if e is not in A, and has constant value 1, otherwise. This sequence is not a numbering, as its principal function \alpha is not partial computable. Otherwise, since \alpha is total, \alpha and then also the function e \mapsto \alpha(e, e) were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set A.
+
+A fundamental result is that a universal numbering for all partial computable functions indeed exists.
+
+Theorem 171: There exists a universal numbering.
+
+Proof: See lecture and exercises.
+
+The construction in the proof of this theorem gives rise to a canonical numbering.
+
+Definition 172: The sequence M_0, M_1, \dots constructed in the proof of Theorem 171 is called the standard enumeration of Turing machines. The derived universal numbering \phi_1, \phi_2, \dots, where \phi_i = \phi_{M_i}, is called the standard enumeration of partial computable functions.
+
+While we can enumerate all partial computable functions, a famous diagonalization argument shows that we cannot do the same for the set of total computable functions.
+
+Theorem 173: There exists no numbering of the set of computable functions.
+
+Proof: For a proof by contradiction, assume that there is a numbering \alpha_0, \alpha_1, \dots of the computable functions. The corresponding principal function \alpha is then total and partial computable, hence computable. Consider the function d: \mathbb{N} \to \mathbb{N} defined by d(e) = 1 + \alpha(e, e). Since \alpha is computable, d is also computable. However, by its construction, d cannot be in the sequence \alpha_0, \alpha_1, \dots. For any given index e, the function d differs from the function \alpha_e on the input e, because d(e) = 1 + \alpha_e(e) \ne \alpha_e(e). This contradicts the assumption that \alpha_0, \alpha_1, \dots was a numbering of all computable functions.
+
+Halting Problems
+
+Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
+
+Lemma 174: Let \alpha_0, \alpha_1, \dots be a numbering, and let H_\alpha = \{e : \alpha_e(e) \downarrow \}. The set H_\alpha is recursively enumerable. If the numbering \alpha_0, \alpha_1, \dots contains all computable functions, then the set H_\alpha is not decidable.
+
+Proof:
+
+* The principal function \alpha of the numbering is partial computable. Therefore, the function d(e) = \alpha(e, e) is also partial computable. By construction, the domain of d is the set H_\alpha. By Proposition 158, a set is r.e. if and only if it is the domain of a partial computable function. Thus, H_\alpha is recursively enumerable.
+* To prove the second statement by contraposition, assume that H_\alpha is decidable. We will show that the numbering cannot contain all computable functions. Consider the function g(e) defined as:  g(e) = \begin{cases} 1 + \alpha_e(e) & \text{if } \alpha_e(e) \text{ is defined,} \ 0 & \text{otherwise.} \end{cases}  Since H_\alpha is decidable, we can compute g(e). First, decide if e \in H_\alpha. If it is not, output 0. If it is, we know that the computation of \alpha_e(e) will halt, so we can compute its value and output 1 plus that value. Thus, g is a total computable function. However, by its construction, g differs from every function \alpha_e in the numbering. For any e, if \alpha_e(e) is defined, then g(e) \ne \alpha_e(e). If \alpha_e(e) is undefined, then g(e)=0, so g is defined while \alpha_e is not. Therefore, g is not in the numbering, which contradicts the assumption that the numbering contained all computable functions.
+
+Applying this lemma to the standard numbering gives us the classic Halting Problem.
+
+Definition 175: Let \phi_0, \phi_1, \dots be the standard numbering of the partial computable functions. The sets  H = H_{diag} = \{e : \phi_e(e) \downarrow\} \quad \text{and} \quad H_{gen} = \{\langle e, x \rangle : \phi_e(x) \downarrow\}  are called the diagonal halting problem, or simply the halting problem, and the general halting problem, respectively.
+
+Theorem 176: The halting problem H is recursively enumerable but not decidable. The complement \mathbb{N} \setminus H of the halting problem is not recursively enumerable.
+
+Proof: The standard numbering is universal and thus contains all computable functions. By Lemma 174, H is recursively enumerable but not decidable. If the complement of H were also recursively enumerable, then by Proposition 165, H would be decidable, which is a contradiction. Therefore, the complement of H is not recursively enumerable.
+
+Gödel Numberings
+
+Some numberings are "better" than others in the sense that they are general enough to simulate any other numbering. These are called Gödel numberings.
+
+Definition 177: A numbering \beta_0, \beta_1, \dots is called a Gödel numbering or acceptable numbering, if for every other numbering \alpha_0, \alpha_1, \dots there exists a computable function f such that for all e it holds that  \alpha_e = \beta_{f(e)}. 
+
+The function f acts as a "compiler" or "translator" from indices in the \alpha numbering to equivalent indices in the \beta numbering.
+
+Theorem 178: The standard numbering \phi_0, \phi_1, \dots is a Gödel numbering.
+
+Proof: Let \alpha_0, \alpha_1, \dots be an arbitrary numbering, and let its principal function \alpha be computed by a Turing machine M. So, M(\langle e, x \rangle) \simeq \alpha_e(x). For any given e, we can construct a new Turing machine M' that, on input x, first transforms x into the pair \langle e, x \rangle and then simulates M. This new machine M' computes the function \alpha_e. The process of constructing M' from M and e is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index f(e) for this machine M'. Thus, there exists a computable function f such that \phi_{f(e)} = \alpha_e for all e.
+
+Not all universal numberings have this powerful translation property.
+
+Theorem 179: There is a universal numbering that is not a Gödel numbering.
+
+Proof: Let \phi_0, \phi_1, \dots be the standard numbering. We define a new sequence of partial functions \psi_0, \psi_1, \dots. For an index e = \langle i, t \rangle, we define \psi_e as:  \psi_{\langle i, t \rangle}(x) = \begin{cases} \phi_i(x) & \text{in case } x \ne 0, \ \uparrow & \text{in case } x=0 \text{ and } t=0, \ t-1 & \text{in case } x=0 \text{ and } t > 0. \end{cases}  Essentially, \psi_{\langle i, t \rangle} is a copy of \phi_i, except at input 0, where its behavior is independently controlled by t.
+
+* The sequence \psi_0, \psi_1, \dots is a numbering because its principal function \psi(e, x) is partial computable. To compute \psi(e, x), we first decode e into its components i and t. If x > 0, we simulate \phi_i(x). If x=0, we determine the output based on t.
+* This numbering is universal. For any partial computable function \phi_i, we can find an index e such that \psi_e = \phi_i. If \phi_i(0) is undefined, we can choose e = \langle i, 0 \rangle. If \phi_i(0) is defined and equals y, we can choose e = \langle i, y+1 \rangle.
+* This numbering is not a Gödel numbering. We can construct a specific computable function g such that for all e and x:  \phi_{g(e)}(x) = \begin{cases} 0, & \text{in case } \phi_e(e) \downarrow, \\ \uparrow, & \text{otherwise.} \end{cases}  The function g is computable: given e, one can effectively construct the description of a Turing machine that outputs 0 if \phi_e(e) halts, and loops otherwise. g(e) is the index of this machine in the standard enumeration.
+* Now, assume for contradiction that \psi were a Gödel numbering. Then there would be a computable function f such that \phi_e = \psi_{f(e)} for all e. Applying this to our constructed functions, we get \phi_{g(e)} = \psi_{f(g(e))} for all e. Let's examine the behavior at input 0.
+  * If e \in H, then \phi_e(e) \downarrow. This means \phi_{g(e)}(0) = 0. So, \psi_{f(g(e))}(0) = 0. According to the definition of \psi, this happens only if the second component of the index f(g(e)) is 1. Let \text{inv}_2 be the function that gives the second component of a pair (i.e., \text{inv}_2(\langle x, y \rangle) = y). Then \text{inv}_2(f(g(e))) = 1.
+  * If e \notin H, then \phi_e(e) \uparrow. This means \phi_{g(e)}(0) \uparrow. So, \psi_{f(g(e))}(0) \uparrow. This happens only if the second component of f(g(e)) is 0. Then \text{inv}_2(f(g(e))) = 0.
+* This implies that the function \text{inv}_2 \circ f \circ g is the characteristic function of the halting problem H. Since f, g, and \text{inv}_2 are all computable, their composition is also computable. But this would mean H is decidable, which is a contradiction. Therefore, \psi cannot be a Gödel numbering.
+
+Chapter 8: Many-one Reducibility and Rice’s Theorem
+
+To compare the difficulty of undecidable problems, we introduce the concept of reducibility. One of the most fundamental types is many-one reducibility.
+
+Many-one Reducibility
+
+Definition 180: A set A is many-one reducible to a set B, abbreviated as A is m-reducible to B or A \le_m B, if there exists a computable function f such that for all x \in \mathbb{N}, it holds that  x \in A \text{ if and only if } f(x) \in B. 
+
+The function f transforms instances of problem A into instances of problem B while preserving the yes/no answer. This means that if we can solve B, we can use f to solve A.
+
+Remark 181: Let set A be decidable and set B be distinct from \emptyset and \mathbb{N}. Then A is m-reducible to B. In order to obtain a function f that witnesses the latter, fix b_0 \notin B and b_1 \in B, and let  f(x) = \begin{cases} b_0, & \text{if } x \notin A, \ b_1, & \text{if } x \in A. \end{cases}  On the other hand, there is just a single set that is m-reducible to \emptyset since A \le_m \emptyset implies A = \emptyset, and a similar statement holds for \mathbb{N} in place of \emptyset. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets A are m-reducible to \emptyset and \mathbb{N}.
+
+Proposition 182: The relation m-reducibility is reflexive and transitive.
+
+Proof: See the exercises.
+
+M-reducibility allows us to infer properties about sets.
+
+Proposition 183: Let A and B be sets such that A \le_m B. (i) If B is decidable, then A is also decidable. (ii) If A is undecidable, then B is also undecidable.
+
+Proof: See the exercises. Both statements are equivalent to each other since the second one is the contrapositive of the first one.
+
+A key result is that the halting problem H is a "hardest" problem among all r.e. sets with respect to m-reducibility.
+
+Theorem 184: Let A and B be sets. (i) If A \le_m B and B is r.e., then A is also r.e. (ii) For every r.e. set A, it holds that A \le_m H.
+
+Proof: (i) Let A \le_m B via a computable function f, and let B be r.e. Then B is the domain of some partial computable function \alpha. The set A is the domain of the partial computable function \alpha \circ f : x \mapsto \alpha(f(x)). Since A is the domain of a partial computable function, it is r.e. (ii) Let A be an r.e. set. Then A = \text{dom}(\alpha) for some partial computable function \alpha. Let \phi_0, \phi_1, \dots be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering \beta_0, \beta_1, \dots where for a given e, the function \beta_e ignores its own input and simply computes \alpha(e). That is, \beta_e(x) \simeq \alpha(e). The principal function (e,x) \mapsto \beta_e(x) is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function f such that \beta_e = \phi_{f(e)} for all e. This function f witnesses that A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H. 
+
+This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
+
+Corollary 185: A set A is r.e. if and only if A \le_m H.
+
+Proof: Immediate by Theorem 184.
+
+Corollary 186: It holds that H \le_m H_{gen} and H_{gen} \le_m H.
+
+Proof:
+
+* The reduction H \le_m H_{gen} is witnessed by the computable function f(e) = \langle e, e \rangle. We have e \in H \iff \phi_e(e) \downarrow \iff \langle e, e \rangle \in H_{gen}.
+* The reduction H_{gen} \le_m H follows directly from Corollary 185, because H_{gen} is a recursively enumerable set.
+
+M-reducibility also interacts cleanly with set complements. Let \bar{X} = \mathbb{N} \setminus X.
+
+Remark 187: If A \le_m B via a function f, then also \bar{A} \le_m \bar{B} via f because we have  x \in \bar{A} \iff x \notin A \iff f(x) \notin B \iff f(x) \in \bar{B}. 
+
+This leads to an important non-reducibility result.
+
+Corollary 188: Let A be an undecidable r.e. set. Then it holds that A \not\le_m \bar{A} and \bar{A} \not\le_m A. In particular, we have  H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H. 
+
+Proof: The complement \bar{A} cannot be r.e., otherwise A would be decidable by Proposition 165. If we had A \le_m \bar{A}, since \bar{A} is not r.e., this would imply by Theorem 184(i) that A is not r.e., which contradicts that A is an r.e. set. If we had \bar{A} \le_m A, since A is r.e., this would imply that \bar{A} is also r.e., which we know is false.
+
+Index Sets and Rice’s Theorem
+
+Rice's Theorem is a powerful generalization of the undecidability of the halting problem. It states that any non-trivial property of the behavior of Turing machines (i.e., of the partial computable functions they compute) is undecidable. To formalize this, we use the notion of an index set.
+
+Definition 189: An index set is a set I of natural numbers such that for all e and e' it holds that  e \in I \text{ and } \phi_e = \phi_{e'} \implies e' \in I.  An index set is nontrivial if it differs from \emptyset and \mathbb{N}.
+
+Remark 190: An index set can be viewed as a property of partial computable functions. For an index set I and any partial computable function \alpha, either all or none of the indices e with \alpha = \phi_e are in I.
+
+Example 191: The following sets are index sets: \{e \in \mathbb{N} : \phi_e \text{ is total} \}, \{e \in \mathbb{N} : \phi_e(0) \uparrow\}, \{e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \}.
+
+Theorem 192 (Rice's Theorem): Let I be a nontrivial index set. Then it holds that  H \le_m I \quad \text{or} \quad \bar{H} \le_m I. 
+
+Proof of Theorem 192: Let I be a nontrivial index set. Let \phi_\uparrow denote the everywhere undefined partial function. There are two cases for I.
+
+* Case 1: I does not contain an index for \phi_\uparrow. Since I is nontrivial, it is not empty, so there must be some index e_0 \in I. Let \beta = \phi_{e_0}. By our assumption, \beta is not the everywhere undefined function. We will show \bar{H} \le_m I. To do this, we need a computable function g such that e \in \bar{H} \iff g(e) \in I.
+* Consider the function g(e) which gives the index of a new Turing machine. This machine, on any input x, first simulates the computation of \phi_e(e). If this simulation halts, the machine then proceeds to compute \beta(x). If the simulation of \phi_e(e) does not halt, the machine runs forever. The function computed by the machine with index g(e) is:  \phi_{g(e)} = \begin{cases} \beta & \text{if } \phi_e(e)\uparrow \text{ (i.e., } e \in \bar{H}), \ \phi_\uparrow & \text{if } \phi_e(e)\downarrow \text{ (i.e., } e \in H). \end{cases}  The function g is computable. Now we check the reduction:
+  * If e \in \bar{H}, then \phi_{g(e)} = \beta = \phi_{e_0}. Since e_0 \in I and I is an index set, g(e) must be in I.
+  * If e \in H, then \phi_{g(e)} = \phi_\uparrow. By our case assumption, no index for \phi_\uparrow is in I, so g(e) \notin I. Thus, e \in \bar{H} \iff g(e) \in I, so \bar{H} \le_m I.
+* Case 2: I contains an index for \phi_\uparrow. In this case, the complement set \bar{I} does not contain an index for \phi_\uparrow. Since I is nontrivial, \bar{I} is also a nontrivial index set. Applying the logic from Case 1 to \bar{I}, we find that \bar{H} \le_m \bar{I}. By Remark 187, this implies H \le_m I.
+
+Since both H and \bar{H} are undecidable, Rice's theorem directly implies that any nontrivial semantic property of programs is undecidable.
+
+Corollary 193: Nontrivial index sets are not decidable.
+
+Corollary 194: For every partial computable function \alpha the set \{e : \alpha = \phi_e\} is infinite.
+
+Proof: If this set were finite for some \alpha, it would be a decidable set. It is also nontrivial (it's not \emptyset or \mathbb{N}) and is an index set by definition. This would contradict Corollary 193.
+
+Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
+
+Example 196: The set A = \{e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\} is not an index set. The set A is r.e. Given e, we can effectively enumerate \text{dom}(\phi_e) until at least e + 1 elements of W_e have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for s = 0, 1, \dots the computation of \phi_e(x) for all x \le s and for s computation steps, see the exercises for details.
+
+* Case I: There exists e \in A such that the domain of \phi_e has finite size m. By Corollary 194, there exists an index e' > m such that \phi_e = \phi_{e'}. Then e' \notin A, hence A is not an index set.
+* Case II: For all e \in A the domain of \phi_e is infinite. By definition, A contains all indices e such that W_e is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration e_0, e_1, \dots of A, \phi_{e_0}, \phi_{e_1}, \dots is such a numbering.
+
+Chapter 9: Oracle Turing Machines and the Jump Operator
+
+We now introduce a more powerful form of reducibility, Turing reducibility, based on a model of computation called an oracle Turing machine. This model allows us to ask "what if we had a magical black box that could solve problem B?" and then explore what other problems (A) we could solve with its help.
+
+Oracle Turing Machines and Turing Reducibility
+
+Definition 197: An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values B(0)B(1) \dots of the characteristic function of a set B is continuously written. The set B, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit B(0). The notation M(x, B) is used for the result of the computation of the oracle Turing machine M on inputs x and oracle B, if the computation terminates, and M(x, B) \uparrow, if the computation does not terminate. The notations M(x, B) \downarrow and M(x, B) \downarrow = y are defined as for Turing machines. In all these notations, M(x, B) can also be written as M^B(x).
+
+If an oracle Turing machine M terminates for all inputs x with a given oracle B, the notation M(B) is used for the uniquely determined set A with the characteristic function c_A : x \mapsto M(x, B).
+
+A set A is Turing-reducible to a set B, briefly A is T-reducible to B or A \le_T B, if there is an oracle Turing machine M such that A = M(B), i.e.,  A(x) = M(x, B) \text{ for all } x \in \mathbb{N}. 
+
+Turing reducibility is a more general notion than many-one reducibility.
+
+Theorem 198: For all sets A and B, it holds that A \le_m B implies A \le_T B but the implication in the opposite direction is false in general.
+
+Proof:
+
+* The implication A \le_m B \implies A \le_T B holds because if f is the computable function for the m-reduction, an oracle Turing machine can compute f(x) and then query the oracle for B at the single location f(x) to get the answer.
+* A counterexample for the reverse is given by the halting problem H and its complement \bar{H}. For any set A, we have A \le_T \bar{A}, because an oracle for \bar{A} can be used to decide membership in A and vice versa. Thus, H \le_T \bar{H}. However, as shown in Corollary 188, we have H \not\le_m \bar{H}.
+
+Like m-reducibility, T-reducibility preserves decidability.
+
+Proposition 199: Let A and B be sets where A \le_T B. (i) If B is decidable, then A is also decidable. (ii) If A is undecidable, then B is also undecidable.
+
+Proof: See the exercises.
+
+Relative Computations and the Jump Operator
+
+The concept of an oracle allows us to "relativize" all the fundamental notions of computability. We can speak of sets being decidable or r.e. relative to an oracle.
+
+Definition 200: A set A is decidable with oracle B, if A \le_T B holds. A set A is recursively enumerable or r.e. with oracle B, if there exists an oracle Turing machine M that has domain A when its oracle is B, i.e., if  A = \{x \in \mathbb{N} : M(x, B) \downarrow\}. 
+
+If A is decidable with oracle B, we also say A is decidable in B or decidable relative to B. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativized world.
+
+Definition 201: A function f is computable with oracle B if there is an oracle Turing machine that on input i and oracle B outputs f(i). An enumeration x_0, x_1, \dots is effective in B if x_i = f(i) for some function f that is computable with oracle B.
+
+Remark 202: Similar to the unrelativized case, it can be shown that a set A is recursively enumerable with oracle B if and only if there exists an enumeration x_0, x_1, \dots that is effective in B.
+
+Theorem 203: Let A and B be sets. (i) A is decidable in B if and only if A and the complement \bar{A} of A are recursively enumerable in B. (ii) A is decidable in B if and only if A has a monotone enumeration x_0 \le x_1 \le x_2 \dots that is effective in B.
+
+Just as we can create a standard numbering of all Turing machines, we can create a standard numbering of all oracle Turing machines, which is also a Gödel numbering in the relativized sense. This allows us to define a relativized version of the halting problem.
+
+Definition 205: Let B be a set and M_0, M_1, \dots be the standard enumeration of all oracle Turing machines. The set  H^B = \{e : M_e(e, B) \downarrow \}  is called the (diagonal) halting problem relative to B, or the jump of B. The map X \mapsto H^X is called the jump operator.
+
+The jump of B is often denoted B'. The set H^B plays the same role for sets that are r.e. in B as the original halting problem H does for r.e. sets.
+
+Theorem 206: For all sets A and B, A is recursively enumerable relative to the oracle B if and only if A is m-reducible to H^B.
+
+Proof: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
+
+* (\impliedby) If A \le_m H^B via computable function f, we can build an oracle TM for A. On input x with oracle B, it computes f(x) and then simulates the oracle TM M_{f(x)} on input f(x) with oracle B. This machine halts iff f(x) \in H^B, which happens iff x \in A. Thus, A is r.e. in B.
+* (\implies) If A is r.e. in B, there is an oracle TM M such that A is its domain with oracle B. We can create a computable function h such that for any x, M_{h(x)} is an oracle TM that on any input y with any oracle X simulates M on input x with oracle X. The function h is computable as it just hard-wires x into the description of M. Then we have:  x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B.  This shows A \le_m H^B via the computable function h.
+
+Corollary 207: For all sets B, the halting problem relative to B is recursively enumerable with oracle B.
+
+The jump operator always produces a strictly more complex set. A set is always reducible to its own jump, but the jump is never reducible back to the original set.
+
+Theorem 208: Let B be a set. Then B is m-reducible to H^B and thus decidable with oracle H^B, but H^B is not decidable with oracle B, i.e., it holds  B \le_m H^B \quad \text{and} \quad H^B \not\le_T B. 
+
+Proof:
+
+* To show B \le_m H^B, we need a computable function h. Let h(x) be the index of an oracle TM M_{h(x)} that, on any input y and with any oracle X, halts if and only if x \in X. Then x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B. Thus B \le_m H^B.
+* The proof that H^B \not\le_T B is a relativized diagonalization argument, identical to the proof that the original halting problem is undecidable. If H^B were decidable in B, then the function g(e) = 1 + M_e(e, B) (if e \in H^B) and 0 (otherwise) would be computable in B. But this function cannot be computed by any oracle TM M_e with oracle B, as it differs from the function computed by M_e on input e. This is a contradiction.
+
+Finally, the jump operator is monotone with respect to Turing reducibility. If A is no harder than B, then the jump of A is no harder than the jump of B.
+
+Theorem 209: If a set A is T-reducible to a set B, then the halting problem relative to A is m-reducible to the halting problem relative to B, i.e., it holds  A \le_T B \text{ implies } H^A \le_m H^B. 
+
+Proof: Let A \le_T B via an oracle TM M_{oracle}. We want to show H^A \le_m H^B. We need a computable function h such that e \in H^A \iff h(e) \in H^B. The function h(e) produces the index of a new oracle TM M_{h(e)}. This machine, on input y with oracle X, simulates the oracle TM M_e on input e. Whenever M_e makes an oracle query for some string z (to what it thinks is oracle A), M_{h(e)} pauses and uses its own oracle X to simulate M_{oracle} on input z to get the answer. It then provides this answer back to the simulation of M_e. So, M_{h(e)} with oracle X simulates M_e with oracle M_{oracle}(X). This means M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow. Therefore, we have the desired equivalence:  e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B.  The function h is computable, so this establishes H^A \le_m H^B.
