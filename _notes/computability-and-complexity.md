@@ -3690,7 +3690,7 @@ The function $f$ transforms instances of problem $A$ into instances of problem $
 > 
 > $$f(x) = \begin{cases} b_0, & \text{if } x \notin A, \\ b_1, & \text{if } x \in A. \end{cases}$$
 > 
-> On the other hand, there is just a single set that is m-reducible to $\emptyset$ since $A \le_m \emptyset implies A = \emptyset$, and a similar statement holds for $\mathbb{N}$ in place of $\emptyset$. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets $A$ are m-reducible to $\emptyset$ and $\mathbb{N}$.
+> On the other hand, there is just a single set that is m-reducible to $\emptyset$ since $A \le_m \emptyset$ implies $A = \emptyset$, and a similar statement holds for $\mathbb{N}$ in place of $\emptyset$. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets $A$ are m-reducible to $\emptyset$ and $\mathbb{N}$.
 
 $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive.
 
@@ -3766,11 +3766,15 @@ $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
 
 *Proof of Theorem 192*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
 
-* **Case 1**: I does not contain an index for \phi_\uparrow. Since I is nontrivial, it is not empty, so there must be some index e_0 \in I. Let \beta = \phi_{e_0}. By our assumption, \beta is not the everywhere undefined function. We will show \bar{H} \le_m I. To do this, we need a computable function g such that e \in \bar{H} \iff g(e) \in I.
-* Consider the function g(e) which gives the index of a new Turing machine. This machine, on any input x, first simulates the computation of \phi_e(e). If this simulation halts, the machine then proceeds to compute \beta(x). If the simulation of \phi_e(e) does not halt, the machine runs forever. The function computed by the machine with index g(e) is:  \phi_{g(e)} = \begin{cases} \beta & \text{if } \phi_e(e)\uparrow \text{ (i.e., } e \in \bar{H}), \ \phi_\uparrow & \text{if } \phi_e(e)\downarrow \text{ (i.e., } e \in H). \end{cases}  The function g is computable. Now we check the reduction:
-  * If e \in \bar{H}, then \phi_{g(e)} = \beta = \phi_{e_0}. Since e_0 \in I and I is an index set, g(e) must be in I.
-  * If e \in H, then \phi_{g(e)} = \phi_\uparrow. By our case assumption, no index for \phi_\uparrow is in I, so g(e) \notin I. Thus, e \in \bar{H} \iff g(e) \in I, so \bar{H} \le_m I.
-* **Case 2**: I contains an index for \phi_\uparrow. In this case, the complement set \bar{I} does not contain an index for \phi_\uparrow. Since I is nontrivial, \bar{I} is also a nontrivial index set. Applying the logic from Case 1 to \bar{I}, we find that \bar{H} \le_m \bar{I}. By Remark 187, this implies H \le_m I.
+* **Case 1**: I does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, it is not empty, so there must be some index $e_0 \in I$. Let $\beta = \phi_{e_0}$. By our assumption, $\beta$ is not the everywhere undefined function. We will show $\bar{H} \le_m I$. To do this, we need a computable function $g$ such that $e \in \bar{H} \iff g(e) \in I$.
+* Consider the function $g(e)$ which gives the index of a new Turing machine. This machine, on any input $x$, first simulates the computation of $\phi_e(e)$. If this simulation halts, the machine then proceeds to compute $\beta(x)$. If the simulation of $\phi_e(e)$ does not halt, the machine runs forever. The function computed by the machine with index $g(e)$ is:  
+  
+  $$\phi_{g(e)} = \begin{cases} \beta & \text{if } \phi_e(e)\uparrow \text{ (i.e., } e \in \bar{H}), \\ \phi_\uparrow & \text{if } \phi_e(e)\downarrow \text{ (i.e., } e \in H). \end{cases}$$
+  
+  The function $g$ is computable. Now we check the reduction:
+  * If $e \in \bar{H}$, then $\phi_{g(e)} = \beta = \phi_{e_0}$. Since $e_0 \in I$ and $I$ is an index set, $g(e)$ must be in $I$.
+  * If $e \in H$, then $\phi_{g(e)} = \phi_\uparrow$. By our case assumption, no index for $\phi_\uparrow$ is in $I$, so $g(e) \notin I$. Thus, $e \in \bar{H} \iff g(e) \in I$, so $\bar{H} \le_m I$.
+* **Case 2**: I contains an index for $\phi_\uparrow$. In this case, the complement set $\bar{I}$ does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, $\bar{I}$ is also a nontrivial index set. Applying the logic from Case 1 to $\bar{I}$, we find that $\bar{H} \le_m \bar{I}$. By Remark 187, this implies $H \le_m I$.
 
 Since both $H$ and $\bar{H}$ are undecidable, Rice's theorem directly implies that any nontrivial semantic property of programs is undecidable.
 
@@ -3785,7 +3789,7 @@ Not all properties related to Turing machine indices are index sets. For a prope
 $\textbf{Example 196:}$ The set $A = \lbrace e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\rbrace$ is not an index set. The set $A$ is r.e. Given $e$, we can effectively enumerate $\text{dom}(\phi_e)$ until at least $e + 1$ elements of $W_e$ have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for $s = 0, 1, \dots$ the computation of $\phi_e(x)$ for all $x \le s$ and for $s$ computation steps, see the exercises for details.
 
 * **Case I**: There exists $e \in A$ such that the domain of $\phi_e$ has finite size $m$. By Corollary 194, there exists an index $e' > m$ such that $\phi_e = \phi_{e'}$. Then $e' \notin A$, hence $A$ is not an index set.
-* **Case II**: For all $e \in A$ the domain of $\phi_e$ is infinite. By definition, $A$ contains all indices $e$ such that $W_e$ is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration $e_0, e_1, \dots of A, \phi_{e_0}, \phi_{e_1}, \dots$ is such a numbering.
+* **Case II**: For all $e \in A$ the domain of $\phi_e$ is infinite. By definition, $A$ contains all indices $e$ such that $W_e$ is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration $e_0, e_1, \dots$ of $A$, $\phi_{e_0}, \phi_{e_1}, \dots$ is such a numbering.
 
 ## Oracle Turing Machines and the Jump Operator
 
