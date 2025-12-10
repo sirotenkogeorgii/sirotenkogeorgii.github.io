@@ -3601,64 +3601,80 @@ Not every sequence of computable functions constitutes a numbering. A numbering 
 
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
-$\text{Theorem 171:}$ There exists a universal numbering.
+$\textbf{Theorem 171:}$ There exists a universal numbering.
 
 *Proof*: See lecture and exercises.
 
 The construction in the proof of this theorem gives rise to a canonical numbering.
 
-Definition 172: The sequence M_0, M_1, \dots constructed in the proof of Theorem 171 is called the standard enumeration of Turing machines. The derived universal numbering \phi_1, \phi_2, \dots, where \phi_i = \phi_{M_i}, is called the standard enumeration of partial computable functions.
+$\textbf{Definition 172:}$ The sequence $M_0, M_1, \dots$ constructed in the proof of Theorem 171 is called the standard enumeration of Turing machines. The derived universal numbering $\phi_1, \phi_2, \dots$, where $\phi_i = \phi_{M_i}$, is called the standard enumeration of partial computable functions.
 
 While we can enumerate all partial computable functions, a famous diagonalization argument shows that we cannot do the same for the set of total computable functions.
 
-Theorem 173: There exists no numbering of the set of computable functions.
+$\textbf{Theorem 173:}$ There exists no numbering of the set of computable functions.
 
-Proof: For a proof by contradiction, assume that there is a numbering \alpha_0, \alpha_1, \dots of the computable functions. The corresponding principal function \alpha is then total and partial computable, hence computable. Consider the function d: \mathbb{N} \to \mathbb{N} defined by d(e) = 1 + \alpha(e, e). Since \alpha is computable, d is also computable. However, by its construction, d cannot be in the sequence \alpha_0, \alpha_1, \dots. For any given index e, the function d differs from the function \alpha_e on the input e, because d(e) = 1 + \alpha_e(e) \ne \alpha_e(e). This contradicts the assumption that \alpha_0, \alpha_1, \dots was a numbering of all computable functions.
+*Proof*: For a proof by contradiction, assume that there is a numbering $\alpha_0, \alpha_1, \dots$ of the computable functions. The corresponding principal function $\alpha$ is then total and partial computable, hence computable. Consider the function $d: \mathbb{N} \to \mathbb{N}$ defined by $d(e) = 1 + \alpha(e, e)$. Since $\alpha$ is computable, $d$ is also computable. However, by its construction, $d$ cannot be in the sequence $\alpha_0, \alpha_1, \dots$. For any given index $e$, the function $d$ differs from the function $\alpha_e$ on the input $e$, because $d(e) = 1 + \alpha_e(e) \ne \alpha_e(e)$. This contradicts the assumption that $\alpha_0, \alpha_1, \dots$ was a numbering of all computable functions.
 
 ### Halting Problems
 
 Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
 
-Lemma 174: Let \alpha_0, \alpha_1, \dots be a numbering, and let H_\alpha = \{e : \alpha_e(e) \downarrow \}. The set H_\alpha is recursively enumerable. If the numbering \alpha_0, \alpha_1, \dots contains all computable functions, then the set H_\alpha is not decidable.
+$\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H_\alpha = \lbrace e : \alpha_e(e) \downarrow \rbrace$. The set $H_\alpha$ is recursively enumerable. If the numbering $\alpha_0, \alpha_1, \dots$ contains all computable functions, then the set $H_\alpha$ is not decidable.
 
-Proof:
+*Proof*:
 
-* The principal function \alpha of the numbering is partial computable. Therefore, the function d(e) = \alpha(e, e) is also partial computable. By construction, the domain of d is the set H_\alpha. By Proposition 158, a set is r.e. if and only if it is the domain of a partial computable function. Thus, H_\alpha is recursively enumerable.
-* To prove the second statement by contraposition, assume that H_\alpha is decidable. We will show that the numbering cannot contain all computable functions. Consider the function g(e) defined as:  g(e) = \begin{cases} 1 + \alpha_e(e) & \text{if } \alpha_e(e) \text{ is defined,} \ 0 & \text{otherwise.} \end{cases}  Since H_\alpha is decidable, we can compute g(e). First, decide if e \in H_\alpha. If it is not, output 0. If it is, we know that the computation of \alpha_e(e) will halt, so we can compute its value and output 1 plus that value. Thus, g is a total computable function. However, by its construction, g differs from every function \alpha_e in the numbering. For any e, if \alpha_e(e) is defined, then g(e) \ne \alpha_e(e). If \alpha_e(e) is undefined, then g(e)=0, so g is defined while \alpha_e is not. Therefore, g is not in the numbering, which contradicts the assumption that the numbering contained all computable functions.
+* The principal function $\alpha$ of the numbering is partial computable. Therefore, the function $d(e) = \alpha(e, e)$ is also partial computable. By construction, the domain of $d$ is the set $H_\alpha$. By Proposition 158, a set is r.e. if and only if it is the domain of a partial computable function. Thus, $H_\alpha$ is recursively enumerable.
+* To prove the second statement by contraposition, assume that $H_\alpha$ is decidable. We will show that the numbering cannot contain all computable functions. Consider the function $g(e)$ defined as:  
+  
+  $$g(e) = \begin{cases} 1 + \alpha_e(e) & \text{if } \alpha_e(e) \text{ is defined,} \\ 0 & \text{otherwise.} \end{cases}$$
+  
+  Since $H_\alpha$ is decidable, we can compute $g(e)$. First, decide if $e \in H_\alpha$. If it is not, output $0$. If it is, we know that the computation of $\alpha_e(e)$ will halt, so we can compute its value and output $1$ plus that value. Thus, $g$ is a total computable function. However, by its construction, $g$ differs from every function $\alpha_e$ in the numbering. For any $e$, if $\alpha_e(e)$ is defined, then $g(e) \ne \alpha_e(e)$. If $\alpha_e(e)$ is undefined, then $g(e)=0$, so $g$ is defined while $\alpha_e$ is not. Therefore, $g$ is not in the numbering, which contradicts the assumption that the numbering contained all computable functions.
 
 Applying this lemma to the standard numbering gives us the classic Halting Problem.
 
-Definition 175: Let \phi_0, \phi_1, \dots be the standard numbering of the partial computable functions. The sets  H = H_{diag} = \{e : \phi_e(e) \downarrow\} \quad \text{and} \quad H_{gen} = \{\langle e, x \rangle : \phi_e(x) \downarrow\}  are called the diagonal halting problem, or simply the halting problem, and the general halting problem, respectively.
+$\textbf{Definition 175:}$ Let $\phi_0, \phi_1, \dots$ be the standard numbering of the partial computable functions. The sets  
 
-Theorem 176: The halting problem H is recursively enumerable but not decidable. The complement \mathbb{N} \setminus H of the halting problem is not recursively enumerable.
+$$H = H_{diag} = \lbrace e : \phi_e(e) \downarrow\rbrace \quad \text{and} \quad H_{gen} = \lbrace\langle e, x \rangle : \phi_e(x) \downarrow\rbrace$$
 
-Proof: The standard numbering is universal and thus contains all computable functions. By Lemma 174, H is recursively enumerable but not decidable. If the complement of H were also recursively enumerable, then by Proposition 165, H would be decidable, which is a contradiction. Therefore, the complement of H is not recursively enumerable.
+are called the diagonal halting problem, or simply the halting problem, and the general halting problem, respectively.
 
-Gödel Numberings
+$\textbf{Theorem 176:}$ The halting problem $H$ is recursively enumerable but not decidable. The complement $\mathbb{N} \setminus H$ of the halting problem is not recursively enumerable.
+
+*Proof*: The standard numbering is universal and thus contains all computable functions. By Lemma 174, $H$ is recursively enumerable but not decidable. If the complement of $H$ were also recursively enumerable, then by Proposition 165, $H$ would be decidable, which is a contradiction. Therefore, the complement of $H$ is not recursively enumerable.
+
+### Gödel Numberings
 
 Some numberings are "better" than others in the sense that they are general enough to simulate any other numbering. These are called Gödel numberings.
 
-Definition 177: A numbering \beta_0, \beta_1, \dots is called a Gödel numbering or acceptable numbering, if for every other numbering \alpha_0, \alpha_1, \dots there exists a computable function f such that for all e it holds that  \alpha_e = \beta_{f(e)}. 
+$\textbf{Definition 177:}$ A numbering $\beta_0, \beta_1, \dots$ is called a Gödel numbering or acceptable numbering, if for every other numbering $\alpha_0, \alpha_1, \dots$ there exists a computable function $f$ such that for all $e$ it holds that  $\alpha_e = \beta_{f(e)}$. 
 
-The function f acts as a "compiler" or "translator" from indices in the \alpha numbering to equivalent indices in the \beta numbering.
+The function $f$ acts as a "compiler" or "translator" from indices in the $\alpha$ numbering to equivalent indices in the $\beta$ numbering.
 
-Theorem 178: The standard numbering \phi_0, \phi_1, \dots is a Gödel numbering.
+$\textbf{Theorem 178:}$ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
 
-Proof: Let \alpha_0, \alpha_1, \dots be an arbitrary numbering, and let its principal function \alpha be computed by a Turing machine M. So, M(\langle e, x \rangle) \simeq \alpha_e(x). For any given e, we can construct a new Turing machine M' that, on input x, first transforms x into the pair \langle e, x \rangle and then simulates M. This new machine M' computes the function \alpha_e. The process of constructing M' from M and e is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index f(e) for this machine M'. Thus, there exists a computable function f such that \phi_{f(e)} = \alpha_e for all e.
+*Proof*: Let $\alpha_0, \alpha_1, \dots$ be an arbitrary numbering, and let its principal function $\alpha$ be computed by a Turing machine $M$. So, $M(\langle e, x \rangle) \simeq \alpha_e(x)$. For any given $e$, we can construct a new Turing machine $M'$ that, on input $x$, first transforms $x$ into the pair $\langle e, x \rangle$ and then simulates $M$. This new machine $M'$ computes the function $\alpha_e$. The process of constructing $M'$ from $M$ and $e$ is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index $f(e)$ for this machine $M'$. Thus, there exists a computable function $f$ such that $\phi_{f(e)} = \alpha_e$ for all $e$.
 
 Not all universal numberings have this powerful translation property.
 
-Theorem 179: There is a universal numbering that is not a Gödel numbering.
+$\textbf{Theorem 179:}$ There is a universal numbering that is not a Gödel numbering.
 
-Proof: Let \phi_0, \phi_1, \dots be the standard numbering. We define a new sequence of partial functions \psi_0, \psi_1, \dots. For an index e = \langle i, t \rangle, we define \psi_e as:  \psi_{\langle i, t \rangle}(x) = \begin{cases} \phi_i(x) & \text{in case } x \ne 0, \ \uparrow & \text{in case } x=0 \text{ and } t=0, \ t-1 & \text{in case } x=0 \text{ and } t > 0. \end{cases}  Essentially, \psi_{\langle i, t \rangle} is a copy of \phi_i, except at input 0, where its behavior is independently controlled by t.
+*Proof*: Let $\phi_0, \phi_1, \dots$ be the standard numbering. We define a new sequence of partial functions $\psi_0, \psi_1, \dots$. For an index $e = \langle i, t \rangle$, we define $\psi_e$ as:  
 
-* The sequence \psi_0, \psi_1, \dots is a numbering because its principal function \psi(e, x) is partial computable. To compute \psi(e, x), we first decode e into its components i and t. If x > 0, we simulate \phi_i(x). If x=0, we determine the output based on t.
-* This numbering is universal. For any partial computable function \phi_i, we can find an index e such that \psi_e = \phi_i. If \phi_i(0) is undefined, we can choose e = \langle i, 0 \rangle. If \phi_i(0) is defined and equals y, we can choose e = \langle i, y+1 \rangle.
-* This numbering is not a Gödel numbering. We can construct a specific computable function g such that for all e and x:  \phi_{g(e)}(x) = \begin{cases} 0, & \text{in case } \phi_e(e) \downarrow, \\ \uparrow, & \text{otherwise.} \end{cases}  The function g is computable: given e, one can effectively construct the description of a Turing machine that outputs 0 if \phi_e(e) halts, and loops otherwise. g(e) is the index of this machine in the standard enumeration.
-* Now, assume for contradiction that \psi were a Gödel numbering. Then there would be a computable function f such that \phi_e = \psi_{f(e)} for all e. Applying this to our constructed functions, we get \phi_{g(e)} = \psi_{f(g(e))} for all e. Let's examine the behavior at input 0.
-  * If e \in H, then \phi_e(e) \downarrow. This means \phi_{g(e)}(0) = 0. So, \psi_{f(g(e))}(0) = 0. According to the definition of \psi, this happens only if the second component of the index f(g(e)) is 1. Let \text{inv}_2 be the function that gives the second component of a pair (i.e., \text{inv}_2(\langle x, y \rangle) = y). Then \text{inv}_2(f(g(e))) = 1.
-  * If e \notin H, then \phi_e(e) \uparrow. This means \phi_{g(e)}(0) \uparrow. So, \psi_{f(g(e))}(0) \uparrow. This happens only if the second component of f(g(e)) is 0. Then \text{inv}_2(f(g(e))) = 0.
-* This implies that the function \text{inv}_2 \circ f \circ g is the characteristic function of the halting problem H. Since f, g, and \text{inv}_2 are all computable, their composition is also computable. But this would mean H is decidable, which is a contradiction. Therefore, \psi cannot be a Gödel numbering.
+$$\psi_{\langle i, t \rangle}(x) = \begin{cases} \phi_i(x) & \text{in case } x \ne 0, \\ \uparrow & \text{in case } x=0 \text{ and } t=0, \\ t-1 & \text{in case } x=0 \text{ and } t > 0. \end{cases}$$  
+
+Essentially, $\psi_{\langle i, t \rangle}$ is a copy of $\phi_i$, except at input $0$, where its behavior is independently controlled by $t$.
+
+* The sequence $\psi_0, \psi_1, \dots$ is a numbering because its principal function $\psi(e, x)$ is partial computable. To compute $\psi(e, x)$, we first decode $e$ into its components $i$ and $t$. If $x > 0$, we simulate $\phi_i(x)$. If $x=0$, we determine the output based on $t$.
+* This numbering is universal. For any partial computable function $\phi_i$, we can find an index $e$ such that $\psi_e = \phi_i$. If $\phi_i(0)$ is undefined, we can choose $e = \langle i, 0 \rangle$. If $\phi_i(0)$ is defined and equals $y$, we can choose $e = \langle i, y+1 \rangle$.
+* This numbering is not a Gödel numbering. We can construct a specific computable function $g$ such that for all $e$ and $x$:  
+  
+  $$\phi_{g(e)}(x) = \begin{cases} 0, & \text{in case } \phi_e(e) \downarrow, \\ \uparrow, & \text{otherwise.} \end{cases}$$ 
+  
+  The function $g$ is computable: given $e$, one can effectively construct the description of a Turing machine that outputs $0$ if $\phi_e(e)$ halts, and loops otherwise. $g(e)$ is the index of this machine in the standard enumeration.
+* Now, assume for contradiction that $\psi$ were a Gödel numbering. Then there would be a computable function $f$ such that $\phi_e = \psi_{f(e)}$ for all $e$. Applying this to our constructed functions, we get $\phi_{g(e)} = \psi_{f(g(e))}$ for all $e$. Let's examine the behavior at input $0$.
+  * If $e \in H$, then $\phi_e(e) \downarrow$. This means $\phi_{g(e)}(0) = 0$. So, $\psi_{f(g(e))}(0) = 0$. According to the definition of $\psi$, this happens only if the second component of the index $f(g(e))$ is $1$. Let $\text{inv}_2$ be the function that gives the second component of a pair (i.e., $\text{inv}_2(\langle x, y \rangle) = y$). Then $\text{inv}_2(f(g(e))) = 1$.
+  * If $e \notin H$, then $\phi_e(e) \uparrow$. This means $\phi_{g(e)}(0) \uparrow$. So, $\psi_{f(g(e))}(0) \uparrow$. This happens only if the second component of $f(g(e))$ is $0$. Then $\text{inv}_2(f(g(e))) = 0$.
+* This implies that the function $\text{inv}_2 \circ f \circ g$ is the characteristic function of the halting problem $H$. Since $f$, $g$, and $\text{inv}_2$ are all computable, their composition is also computable. But this would mean $H$ is decidable, which is a contradiction. Therefore, $\psi$ cannot be a Gödel numbering.
 
 ## Many-one Reducibility and Rice’s Theorem
 
@@ -3666,85 +3682,110 @@ To compare the difficulty of undecidable problems, we introduce the concept of r
 
 ### Many-one Reducibility
 
-Definition 180: A set A is many-one reducible to a set B, abbreviated as A is m-reducible to B or A \le_m B, if there exists a computable function f such that for all x \in \mathbb{N}, it holds that  x \in A \text{ if and only if } f(x) \in B. 
+$\textbf{Definition 180:}$ A set $A$ is many-one reducible to a set $B$, abbreviated as $A$ is m-reducible to $B$ or $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$, it holds that  $x \in A \text{ if and only if } f(x) \in B$. 
 
-The function f transforms instances of problem A into instances of problem B while preserving the yes/no answer. This means that if we can solve B, we can use f to solve A.
+The function $f$ transforms instances of problem $A$ into instances of problem $B$ while preserving the yes/no answer. This means that if we can solve $B$, we can use $f$ to solve $A$.
 
-Remark 181: Let set A be decidable and set B be distinct from \emptyset and \mathbb{N}. Then A is m-reducible to B. In order to obtain a function f that witnesses the latter, fix b_0 \notin B and b_1 \in B, and let  f(x) = \begin{cases} b_0, & \text{if } x \notin A, \ b_1, & \text{if } x \in A. \end{cases}  On the other hand, there is just a single set that is m-reducible to \emptyset since A \le_m \emptyset implies A = \emptyset, and a similar statement holds for \mathbb{N} in place of \emptyset. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets A are m-reducible to \emptyset and \mathbb{N}.
+> **Remark 181**: Let set $A$ be decidable and set $B$ be distinct from $\emptyset$ and $\mathbb{N}$. Then $A$ is m-reducible to $B$. In order to obtain a function $f$ that witnesses the latter, fix $b_0 \notin B$ and $b_1 \in B$, and let  
+> 
+> $$f(x) = \begin{cases} b_0, & \text{if } x \notin A, \\ b_1, & \text{if } x \in A. \end{cases}$$
+> 
+> On the other hand, there is just a single set that is m-reducible to $\emptyset$ since $A \le_m \emptyset implies A = \emptyset$, and a similar statement holds for $\mathbb{N}$ in place of $\emptyset$. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets $A$ are m-reducible to $\emptyset$ and $\mathbb{N}$.
 
-Proposition 182: The relation m-reducibility is reflexive and transitive.
+$\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive.
 
-Proof: See the exercises.
+*Proof*: See the exercises.
 
 M-reducibility allows us to infer properties about sets.
 
-Proposition 183: Let A and B be sets such that A \le_m B. (i) If B is decidable, then A is also decidable. (ii) If A is undecidable, then B is also undecidable.
+$\textbf{Proposition 183:}$ Let $A$ and $B$ be sets such that $A \le_m B$. 
+* **(i)** If $B$ is decidable, then $A$ is also decidable. 
+* **(ii)** If $A$ is undecidable, then $B$ is also undecidable.
 
 Proof: See the exercises. Both statements are equivalent to each other since the second one is the contrapositive of the first one.
 
-A key result is that the halting problem H is a "hardest" problem among all r.e. sets with respect to m-reducibility.
+A key result is that the halting problem $H$ is a "hardest" problem among all r.e. sets with respect to m-reducibility.
 
-Theorem 184: Let A and B be sets. (i) If A \le_m B and B is r.e., then A is also r.e. (ii) For every r.e. set A, it holds that A \le_m H.
+$\textbf{Theorem 184:}$ Let $A$ and $B$ be sets. 
+* **(i)** If $A \le_m B$ and $B$ is r.e., then $A$ is also r.e. 
+* **(ii)** For every r.e. set $A$, it holds that $A \le_m H$.
 
-Proof: (i) Let A \le_m B via a computable function f, and let B be r.e. Then B is the domain of some partial computable function \alpha. The set A is the domain of the partial computable function \alpha \circ f : x \mapsto \alpha(f(x)). Since A is the domain of a partial computable function, it is r.e. (ii) Let A be an r.e. set. Then A = \text{dom}(\alpha) for some partial computable function \alpha. Let \phi_0, \phi_1, \dots be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering \beta_0, \beta_1, \dots where for a given e, the function \beta_e ignores its own input and simply computes \alpha(e). That is, \beta_e(x) \simeq \alpha(e). The principal function (e,x) \mapsto \beta_e(x) is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function f such that \beta_e = \phi_{f(e)} for all e. This function f witnesses that A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H. 
+*Proof*: 
+
+* **(i)** Let $A \le_m B$ via a computable function $f$, and let $B$ be r.e. Then $B$ is the domain of some partial computable function $\alpha$. The set $A$ is the domain of the partial computable function $\alpha \circ f : x \mapsto \alpha(f(x))$. Since $A$ is the domain of a partial computable function, it is r.e. 
+* **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)} for all e$. This function $f$ witnesses that 
+  
+  $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$
 
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 
-Corollary 185: A set A is r.e. if and only if A \le_m H.
+$\textbf{Corollary 185:}$ A set $A$ is r.e. if and only if $A \le_m H$.
 
-Proof: Immediate by Theorem 184.
+*Proof*: Immediate by Theorem 184.
 
-Corollary 186: It holds that H \le_m H_{gen} and H_{gen} \le_m H.
+$\textbf{Corollary 186:}$ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$.
 
-Proof:
+*Proof*:
 
-* The reduction H \le_m H_{gen} is witnessed by the computable function f(e) = \langle e, e \rangle. We have e \in H \iff \phi_e(e) \downarrow \iff \langle e, e \rangle \in H_{gen}.
-* The reduction H_{gen} \le_m H follows directly from Corollary 185, because H_{gen} is a recursively enumerable set.
+* The reduction $H \le_m H_{gen}$ is witnessed by the computable function $f(e) = \langle e, e \rangle$. We have $e \in H \iff \phi_e(e) \downarrow \iff \langle e, e \rangle \in H_{gen}$.
+* The reduction $H_{gen} \le_m H$ follows directly from Corollary 185, because $H_{gen}$ is a recursively enumerable set.
 
-M-reducibility also interacts cleanly with set complements. Let \bar{X} = \mathbb{N} \setminus X.
+M-reducibility also interacts cleanly with set complements. Let $\bar{X} = \mathbb{N} \setminus X$.
 
-Remark 187: If A \le_m B via a function f, then also \bar{A} \le_m \bar{B} via f because we have  x \in \bar{A} \iff x \notin A \iff f(x) \notin B \iff f(x) \in \bar{B}. 
+> **Remark 187**: If $A \le_m B$ via a function $f$, then also $\bar{A} \le_m \bar{B}$ via $f$ because we have 
+> 
+> $$x \in \bar{A} \iff x \notin A \iff f(x) \notin B \iff f(x) \in \bar{B}$$ 
 
 This leads to an important non-reducibility result.
 
-Corollary 188: Let A be an undecidable r.e. set. Then it holds that A \not\le_m \bar{A} and \bar{A} \not\le_m A. In particular, we have  H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H. 
+$\textbf{Corollary 188:}$ Let $A$ be an undecidable r.e. set. Then it holds that $A \not\le_m \bar{A}$ and $\bar{A} \not\le_m A$. In particular, we have 
 
-Proof: The complement \bar{A} cannot be r.e., otherwise A would be decidable by Proposition 165. If we had A \le_m \bar{A}, since \bar{A} is not r.e., this would imply by Theorem 184(i) that A is not r.e., which contradicts that A is an r.e. set. If we had \bar{A} \le_m A, since A is r.e., this would imply that \bar{A} is also r.e., which we know is false.
+$$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$ 
+
+*Proof*: The complement $\bar{A}$ cannot be r.e., otherwise $A$ would be decidable by Proposition 165. If we had $A \le_m \bar{A}$, since $\bar{A}$ is not r.e., this would imply by Theorem 184(i) that $A$ is not r.e., which contradicts that $A$ is an r.e. set. If we had $\bar{A} \le_m A$, since $A$ is r.e., this would imply that $\bar{A}$ is also r.e., which we know is false.
 
 Index Sets and Rice’s Theorem
 
 Rice's Theorem is a powerful generalization of the undecidability of the halting problem. It states that any non-trivial property of the behavior of Turing machines (i.e., of the partial computable functions they compute) is undecidable. To formalize this, we use the notion of an index set.
 
-Definition 189: An index set is a set I of natural numbers such that for all e and e' it holds that  e \in I \text{ and } \phi_e = \phi_{e'} \implies e' \in I.  An index set is nontrivial if it differs from \emptyset and \mathbb{N}.
+$\textbf{Definition 189:}$ An index set is a set $I$ of natural numbers such that for all $e$ and $e'$ it holds that  
 
-Remark 190: An index set can be viewed as a property of partial computable functions. For an index set I and any partial computable function \alpha, either all or none of the indices e with \alpha = \phi_e are in I.
+$$e \in I \text{ and } \phi_e = \phi_{e'} \implies e' \in I$$  
 
-Example 191: The following sets are index sets: \{e \in \mathbb{N} : \phi_e \text{ is total} \}, \{e \in \mathbb{N} : \phi_e(0) \uparrow\}, \{e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \}.
+An index set is nontrivial if it differs from $\emptyset$ and $\mathbb{N}$.
 
-Theorem 192 (Rice's Theorem): Let I be a nontrivial index set. Then it holds that  H \le_m I \quad \text{or} \quad \bar{H} \le_m I. 
+> **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
 
-Proof of Theorem 192: Let I be a nontrivial index set. Let \phi_\uparrow denote the everywhere undefined partial function. There are two cases for I.
+$\textbf{Example 191:}$ The following sets are index sets: 
 
-* Case 1: I does not contain an index for \phi_\uparrow. Since I is nontrivial, it is not empty, so there must be some index e_0 \in I. Let \beta = \phi_{e_0}. By our assumption, \beta is not the everywhere undefined function. We will show \bar{H} \le_m I. To do this, we need a computable function g such that e \in \bar{H} \iff g(e) \in I.
+$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$
+
+$\textbf{Theorem 192 (Rice's Theorem):}$ Let $I$ be a nontrivial index set. Then it holds that 
+
+$$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$ 
+
+*Proof of Theorem 192*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
+
+* **Case 1**: I does not contain an index for \phi_\uparrow. Since I is nontrivial, it is not empty, so there must be some index e_0 \in I. Let \beta = \phi_{e_0}. By our assumption, \beta is not the everywhere undefined function. We will show \bar{H} \le_m I. To do this, we need a computable function g such that e \in \bar{H} \iff g(e) \in I.
 * Consider the function g(e) which gives the index of a new Turing machine. This machine, on any input x, first simulates the computation of \phi_e(e). If this simulation halts, the machine then proceeds to compute \beta(x). If the simulation of \phi_e(e) does not halt, the machine runs forever. The function computed by the machine with index g(e) is:  \phi_{g(e)} = \begin{cases} \beta & \text{if } \phi_e(e)\uparrow \text{ (i.e., } e \in \bar{H}), \ \phi_\uparrow & \text{if } \phi_e(e)\downarrow \text{ (i.e., } e \in H). \end{cases}  The function g is computable. Now we check the reduction:
   * If e \in \bar{H}, then \phi_{g(e)} = \beta = \phi_{e_0}. Since e_0 \in I and I is an index set, g(e) must be in I.
   * If e \in H, then \phi_{g(e)} = \phi_\uparrow. By our case assumption, no index for \phi_\uparrow is in I, so g(e) \notin I. Thus, e \in \bar{H} \iff g(e) \in I, so \bar{H} \le_m I.
-* Case 2: I contains an index for \phi_\uparrow. In this case, the complement set \bar{I} does not contain an index for \phi_\uparrow. Since I is nontrivial, \bar{I} is also a nontrivial index set. Applying the logic from Case 1 to \bar{I}, we find that \bar{H} \le_m \bar{I}. By Remark 187, this implies H \le_m I.
+* **Case 2**: I contains an index for \phi_\uparrow. In this case, the complement set \bar{I} does not contain an index for \phi_\uparrow. Since I is nontrivial, \bar{I} is also a nontrivial index set. Applying the logic from Case 1 to \bar{I}, we find that \bar{H} \le_m \bar{I}. By Remark 187, this implies H \le_m I.
 
-Since both H and \bar{H} are undecidable, Rice's theorem directly implies that any nontrivial semantic property of programs is undecidable.
+Since both $H$ and $\bar{H}$ are undecidable, Rice's theorem directly implies that any nontrivial semantic property of programs is undecidable.
 
-Corollary 193: Nontrivial index sets are not decidable.
+$\textbf{Corollary 193:}$ Nontrivial index sets are not decidable.
 
-Corollary 194: For every partial computable function \alpha the set \{e : \alpha = \phi_e\} is infinite.
+$\textbf{Corollary 194:}$ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite.
 
-Proof: If this set were finite for some \alpha, it would be a decidable set. It is also nontrivial (it's not \emptyset or \mathbb{N}) and is an index set by definition. This would contradict Corollary 193.
+*Proof*: If this set were finite for some $\alpha$, it would be a decidable set. It is also nontrivial (it's not $\emptyset$ or $\mathbb{N}$) and is an index set by definition. This would contradict Corollary 193.
 
 Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
 
-Example 196: The set A = \{e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\} is not an index set. The set A is r.e. Given e, we can effectively enumerate \text{dom}(\phi_e) until at least e + 1 elements of W_e have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for s = 0, 1, \dots the computation of \phi_e(x) for all x \le s and for s computation steps, see the exercises for details.
+$\textbf{Example 196:}$ The set $A = \lbrace e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\rbrace$ is not an index set. The set $A$ is r.e. Given $e$, we can effectively enumerate $\text{dom}(\phi_e)$ until at least $e + 1$ elements of $W_e$ have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for $s = 0, 1, \dots$ the computation of $\phi_e(x)$ for all $x \le s$ and for $s$ computation steps, see the exercises for details.
 
-* Case I: There exists e \in A such that the domain of \phi_e has finite size m. By Corollary 194, there exists an index e' > m such that \phi_e = \phi_{e'}. Then e' \notin A, hence A is not an index set.
-* Case II: For all e \in A the domain of \phi_e is infinite. By definition, A contains all indices e such that W_e is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration e_0, e_1, \dots of A, \phi_{e_0}, \phi_{e_1}, \dots is such a numbering.
+* **Case I**: There exists $e \in A$ such that the domain of $\phi_e$ has finite size $m$. By Corollary 194, there exists an index $e' > m$ such that $\phi_e = \phi_{e'}$. Then $e' \notin A$, hence $A$ is not an index set.
+* **Case II**: For all $e \in A$ the domain of $\phi_e$ is infinite. By definition, $A$ contains all indices $e$ such that $W_e$ is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration $e_0, e_1, \dots of A, \phi_{e_0}, \phi_{e_1}, \dots$ is such a numbering.
 
 ## Oracle Turing Machines and the Jump Operator
 
