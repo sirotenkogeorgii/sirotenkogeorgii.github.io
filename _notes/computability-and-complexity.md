@@ -3478,7 +3478,7 @@ Observe that the partial function $\phi_M$ is defined exactly on the arguments $
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
-$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma\_1^{*}$ to $\Sigma\_2^{*}$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma^*_1$ to $\Sigma^{*}_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
 
 A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function.
 
