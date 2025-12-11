@@ -4,6 +4,8 @@ title: random
 date: 2024-10-20
 ---
 
+# Random Stuff
+
 ## Edmonds-Karp algorithm analysis
 
 > **Remark**: The name "Ford–Fulkerson" is often also used for the Edmonds–Karp algorithm, which is a fully defined implementation of the Ford–Fulkerson method.
@@ -39,11 +41,11 @@ $\textbf{Corollary from Lemma A}:$ The length of the shortest path from the sour
 
 $\textbf{Lemma B (about flow augmentations)}:$ The number of flow augmentations in the Edmonds-Karp algorithm is $O(VE)$.
 
-*Proof*: The residual graph contains $O(E)$ edges. Consider the edge (u,v). Simple observation is that in general case for capacities having any values, the number of flow augmentations is bounded from above by the number of saturations. We can estimate the number of saturations taking into account that at least one edge is saturated during the flow augmentation:
+*Proof*: The residual graph contains $O(E)$ edges. Consider the edge $(u,v)$. Simple observation is that in general case for capacities having any values, the number of flow augmentations is bounded from above by the number of saturations. We can estimate the number of saturations taking into account that at least one edge is saturated during the flow augmentation:
 * Consider the case where the edge $(v,u)$ is used to push flow back (which is necessary to make $(u,v)$ available for saturation again). Let this occur at some intermediate iteration $k > i$. Since $(v,u)$ is on the shortest path at iteration $k$, we must have: $d_k(s, u) = d_k(s, v) + 1$
-* From Lemma A, we know that distances are monotonically increasing, so $d_k(s, v) \ge d_i(s, v)$. We can substitute the distance relationship from the first iteration $i$ (where $d_i(s, v) = d_i(s, u) + 1$) into our equation for iteration $k$: $d_k(s, u) = 
- 
- $$d_k(s, v) + 1 \ge d_i(s, v) + 1 = (d_i(s, u) + 1) + 1 = d_i(s, u) + 2$$
+* From Lemma A, we know that distances are monotonically increasing, so $d_k(s, v) \ge d_i(s, v)$. We can substitute the distance relationship from the first iteration $i$ (where $d_i(s, v) = d_i(s, u) + 1$) into our equation for iteration $k$:
+  
+  $$d_k(s, u) = d_k(s, v) + 1 \ge d_i(s, v) + 1 = (d_i(s, u) + 1) + 1 = d_i(s, u) + 2$$
 
 * This shows that each time the edge $(u,v)$ becomes saturated (after the first time), the shortest-path distance from the source to $u$ must have increased by at least $2$. The shortest path distance from $s$ to any node $u$ cannot exceed $\|V\| - 1$ (otherwise $u$ is unreachable). Therefore, a specific edge $(u,v)$ can become saturated at most $\frac{\|V\|}{2}$ times.
 
@@ -63,3 +65,7 @@ $\textbf{Theorem (about running time)}:$ The Edmonds-Karp maximum-flow algorithm
 ## Karger's algorithm
 
 ### TODO: Add Karger's algorithm
+
+## Karger–Stein algorithm
+
+### TODO: Add Karger–Stein algorithm

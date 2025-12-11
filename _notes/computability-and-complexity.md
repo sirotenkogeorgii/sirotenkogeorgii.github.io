@@ -3042,7 +3042,7 @@ $\textbf{Theorem 137:}$ $\text{GNI} \in \text{IP}[1]$.
 
 Completeness: If $(G_0, G_1) \in \text{GNI}$, $H$ is isomorphic to exactly one of $G_0$ or $G_1$. An unbounded prover can identify which and always answer correctly, so acceptance probability is $1$.
 
-Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveals no information about $i$. The prover can do no better than guessing; acceptance probability is $\tfrac{1}{2}$. To meet the soundness requirement of $\ge \frac{2}{3}$ rejection probability, the protocol can be repeated twice in parallel.  The verifier accepts only if the prover answers correctly for both independent interactions. The probability of the prover succeeding twice is $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$. Thus, the rejection probability is $1−\frac{1}{4}=\frac{3}{4}$, which satisfies the condition. Since the repetitions can be done in parallel, the protocol remains 1-bounded.
+Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveals no information about $i$. The prover can do no better than guessing; acceptance probability is $\tfrac{1}{2}$. To meet the soundness requirement of $\ge \frac{2}{3}$ rejection probability, the protocol can be repeated twice in parallel.  The verifier accepts only if the prover answers correctly for both independent interactions. The probability of the prover succeeding twice is $\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$. Thus, the rejection probability is $1−\frac{1}{4}=\frac{3}{4}$, which satisfies the condition. Since the repetitions can be done in parallel, the protocol remains 1-bounded. $\square$
 
 ### The Equivalence of $\text{IP}$ and $\text{PSPACE}$
 
@@ -3070,7 +3070,7 @@ We show by induction on $j$ (from the leaves up) that for any node $u$ at depth 
 * **Base Case** $(j=0)$: The node $u$ is a leaf. To compute $k(u)$, we can iterate through all $2^{p(n)}$ possible random words. For each word, we simulate the verifier to check if it generates the verifier messages in $u$'s label and if it ultimately accepts. This requires space to store the current random word $(p(n))$, a counter (polynomial in $n$), and space to simulate $V$ (also polynomial).
 * **Inductive Step** $(j>0)$: For an internal node $u$, we recursively compute $k(v)$ for each of its children $v$. By the induction hypothesis, each of these computations requires polynomial space. Since we can reuse the space for each recursive call, the total space needed is the space for one child's computation plus the space to manage the summation or maximization, which remains polynomial.
 
-Since the entire computation can be performed in polynomial space, $L \in \text{PSPACE}$. Therefore, $\text{IP} \subseteq \text{PSPACE}$.∎
+Since the entire computation can be performed in polynomial space, $L \in \text{PSPACE}$. Therefore, $\text{IP} \subseteq \text{PSPACE}$. $\square$
 
 $\textbf{Remark 139:}$ Let $L$ be a language in $\text{IP}$, and let $V$ be a polynomially bounded verifier that recognizes $L$. Then there is a polynomially space-bounded prover $P$ such that the interactive proof system $(V,P)$ recognizes $L$, i.e., $V$ accepts all inputs in $L$ with probability at least $\frac{3}{2}$ when interacting with $P$. This follows because the optimal prover described in the proof of Theorem 138 makes decisions by computing the function $k(u)$, which we have shown can be done in deterministic polynomial space.
 
@@ -3087,6 +3087,13 @@ $$
 $\textbf{Theorem 141:}$ #$3\text{-SAT} \in \text{IP}$.
 
 *Proof*: We design an interactive protocol where a prover convinces a verifier that a 3-CNF formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ 'assets/images/notes/computability-and-complexity/Arithmetization.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Arithmetization (playing with NotebookLM)</figcaption>
+  </figure>
+</div>
 
 **Step 1: Arithmetization**
 
@@ -3114,7 +3121,7 @@ where $r_1, \ldots, r_{i-1}$ are values chosen in previous rounds. These definit
 
 The protocol proceeds in $n$ rounds. The verifier checks an initial claim from the prover and then, in each round, reduces a claim about a polynomial in $j$ variables to a claim about a polynomial in $j-1$ variables evaluated at a random point.
 
-For technial reasons related to the verification of the construction of $V$, choose a constant $c$ such that $72n^4 \le 2^{cn}$ holds for all $n$. We then have for all $p ge 2^{cn}$,
+For technial reasons related to the verification of the construction of $V$, choose a constant $c$ such that $72n^4 \le 2^{cn}$ holds for all $n$. We then have for all $p \ge 2^{cn}$,
 
 $$\dfrac{nd}{p} \le \dfrac{3mn}{2^{cn}} \le \dfrac{24n^4}{2^{cn}} \le \dfrac{1}{3}$$
 
@@ -3123,7 +3130,7 @@ where the second to last inequality follows because a formula in $3$-CNF in $n$ 
 * **Setup**: On input $(\phi, k)$, the prover sends a large prime $p$. The verifier checks that $p$ is sufficiently large (e.g., $2^{cn+1} > p > 2^{cn}$ for some constant $c$) and rejects if not. All subsequent calculations are modulo $p$.
 * **Round 1**: The prover sends a polynomial $h_1^P(x_1)$, claiming it is equal to $h_1(x_1)$. The verifier checks if $k \equiv h_1^P(0) + h_1^P(1) \pmod p$. If this check fails, the verifier rejects. Otherwise, it chooses a random value $r_1 \in \mathbb{F}_p$ (uniformly) and sends it to the prover. The prover must now convince the verifier that $h_1^P(r_1)$ is the correct value of $h_1(r_1)$. (Also in all rounds the verifier checks that the polynomial $h_1^P$ is of degree of $d$ and rejects if it is not.)
 * **Round $i$ $(2 \le i \le n-1)$**: The prover sends a polynomial $h_i^P(x_i)$, claiming it equals $h_i(x_i)$ (with previous random values $r_1, \dots, r_{i-1}$ fixed). The verifier checks if the previous round's value is consistent: $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) + h_i^P(1) \pmod p$. If not, it rejects. Otherwise, it picks a new random value $r_i \in \mathbb{F}_p$ and sends it to the prover.
-* **Round $n$ (Final Check)**: After round $n-1$, the verifier has values $r_1, \ldots, r_{n-1}$ and the prover's last claim $h_{n-1}^P(r_{n-1})$. The verifier can now compute the true value of $h_n(0) + h_n(1)$ by itself, which is $p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1)$. It accepts if and only if the prover's claim matches this computed value. Checking whether $h^{P}_{n-1}=h_{n-1}$ in the last round $n$ is equivalent to checking 
+* **Round $n$ (Final Check)**: After round $n-1$, the verifier has values $r_1, \ldots, r_{n-1}$ and the prover's last claim $h_{n-1}^P(r_{n-1})$. The verifier can now compute the true value of $h_n(0) + h_n(1)$ by itself, which is $p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1)$. It accepts if and only if the prover's claim matches this computed value. Checking whether $h^{P}\_{n-1}=h_{n-1}$ in the last round $n$ is equivalent to checking 
 
 $$h^{P}_{n-1} = p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1),$$
 
@@ -3132,7 +3139,78 @@ hence can actually be done by the verifier $V$ itself.
 **Step 3: Analysis**
 
 * *Completeness*: If $k = k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$. All checks will pass, and the verifier will accept with probability $1$.
-* *Soundness*: If $k \ne k_\phi$, but the prover sends h^P_{1} such that , then the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing $p$ to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. ∎
+* *Soundness*: If $k \ne k_\phi$, but the prover sends h^P_{1} such that , then the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing $p$ to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. $\square$
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ 'assets/images/notes/computability-and-complexity/soundness_sketch.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Primarily soundness sketch</figcaption>
+  </figure>
+</div>
+
+
+Great explanation of soundness:
+<div class="accordion">
+  <details markdown="1">
+    <summary>Soundness</summary>
+
+Here is an explanation of the **soundness proof** for the theorem stating that **$3$-SAT is in $\text{IP}$**.
+
+The proof you provided describes the **Sumcheck Protocol**, a fundamental technique in interactive proofs. 
+
+We can break the logic down into three key concepts: **The Initial Lie**, **The Forced Hand**, and **The Mathematical Trap**.
+
+**1. The Core Logic: "The Lie Must Propagate"**
+The soundness argument relies on a chain reaction. If the Prover starts with a false claim, they are forced to lie in every subsequent round to maintain consistency. Eventually, this chain of lies leads to a direct mathematical contradiction that the Verifier can easily check.
+
+Here is the step-by-step breakdown:
+
+**A. The Initial Lie (Round 1)**
+Imagine the true number of satisfying assignments is $k_{\phi}$, but the dishonest Prover claims it is $k$ (where $k \neq k_{\phi}$).
+ * The Prover sends a polynomial $h_1^P(x)$.
+ * The Verifier checks: Does $h_1^P(0) + h_1^P(1) = k$?
+ * If the Prover sends the true polynomial $h_1$, the sum would be $k_{\phi}$, and the check would fail immediately (since $k \neq k_{\phi}$).
+ * **Therefore**: To pass this first check, the Prover **must** send a fake polynomial $h_1^P$ that is different from the true polynomial $h_1$.
+
+**B. The Random Challenge (The Trap)**
+The Verifier now picks a random value $r_1$ from the field $\mathbb{F}_p$ and asks the Prover to prove the value of the next round based on this $r_1$.
+The "trap" relies on a fundamental property of polynomials:
+
+> **Fact**: Two distinct polynomials of degree $d$ can equal each other at no more than $d$ points.
+
+Since $h_1^P$ (the fake polynomial) and $h_1$ (the true polynomial) are different, they intersect at very few points relative to the huge size of the field $\mathbb{F}_p$.
+ * **Scenario A (Bad for Verifier)**: The Verifier unluckily picks one of the few $r_1$ values where $h_1^P(r_1) = h_1(r_1)$. The Prover "gets away" with the lie because the values match.
+ * **Scenario B (Good for Verifier)**: The Verifier picks any other $r_1$. Now, $h_1^P(r_1) \neq h_1(r_1)$.
+
+**C. The Forced Hand (Recursion)**
+If **Scenario B** happens (which is highly likely), the Prover is now stuck.
+ * The protocol moves to Round $2$. The Prover must now prove that the sum for the next variable equals $h_1^P(r_1)$.
+ * But we know $h_1^P(r_1)$ is the **wrong** value (it is not equal to the true value $h_1(r_1)$).
+ * Just like in Round 1, to match this "wrong" target value, the Prover must send another fake polynomial $h_2^P$ that differs from the true $h_2$.
+ * **The Result**: The lie propagates from round $i$ to round $i+1$.
+
+**2. The Final Check (Round $n$)**
+This game continues until the very last variable. If the Verifier has not been "unlucky" in any of the rounds, the Prover is forced to make a claim about the final value $h_{n-1}^P(r_{n-1})$ that is **false**.
+
+At this point, there are no more sums to check. The Verifier can compute the true value directly using the original formula:
+
+$$\text{True Value} = p_{\phi}(r_1, \dots, r_{n-1}, 0) + p_{\phi}(r_1, \dots, r_{n-1}, 1)$$
+
+Because the lie propagated all the way to the end, the Prover's claimed value will not match this calculated true value. The Verifier sees the mismatch and **REJECTS**.
+
+**3. The Probability Analysis (Why it works)**
+The only way the Prover can cheat is if the Verifier gets "unlucky" and picks a random $r_i$ that happens to be a root of the difference polynomial ($h_i^P - h_i$).
+ * **Max degree of polynomial**: The degree $d$ is bounded by $3m$ (roughly the size of the formula).
+ * **Field size**: $p$ is chosen to be exponentially large ($2^{cn}$).
+ * **Probability of error in ONE round**: The chance that a random $r_i$ is a "bad" point is at most $\frac{d}{p}$.
+Since there are $n$ rounds, we sum the probabilities of failure (Union Bound). We are calculating the probability that the Verifier gets unlucky in Round $1$ ($E_1$) OR Round $2$ ($E_2$) OR $\dots$ OR Round $n$ ($E_n$) (also known as the Union Bound):
+
+$$\text{Total Probability of Error} = P(E_1 \cup \dots \cup E_n) \le \sum_{i=1}^n \dfrac{d}{p} = \dfrac{nd}{p}$$
+
+Because $p$ is exponentially large ($2^{cn}$) and $nd$ is polynomial in size $n \cdot 3m$, the fraction $\frac{nd}{p}$ is extremely close to $0$.
+**Conclusion**: It is overwhelmingly likely that the Verifier will detect the lie, making the protocol **Sound**.
+  </details>
+</div>
 
 <div class="accordion">
   <details markdown="1">
@@ -3247,6 +3325,7 @@ The situation is analogous to a bank audit using sampling. To check if a massive
 <div class="accordion">
   <details markdown="1">
     <summary>Do I understand correctly that the main point of evaluating the polynomial given by prover at random points over the field is to verify the given polynomial correct?</summary>
+
 Yes, your understanding is **correct**. The main point of having the prover evaluate the polynomial $h_i^P$ at a random value $r_i$ chosen from the large finite field $\mathbb{F}_p$ is precisely to **verify the correctness of the given polynomial** $h_i^P(x_i)$.
 
 This process is essential for establishing the **soundness** of the Checksum Protocol.
@@ -3279,6 +3358,7 @@ In summary, choosing $r_i$ randomly is the method by which the verifier's limite
 <div class="accordion">
   <details markdown="1">
     <summary>Does the prover give us new polynomial at each round?</summary>
+
 Yes, the prover gives the verifier a **new polynomial** in virtually every round of the Checksum Protocol (Step 2 of the proof of Theorem 141) for proving \#3-SAT.
 
 The protocol is structured across $n$ rounds, corresponding to the $n$ variables of the formula $\phi$. In each round $i$, the prover submits a claim about a different intermediate polynomial in the summation process:
@@ -3290,7 +3370,7 @@ The protocol is structured across $n$ rounds, corresponding to the $n$ variables
 
 The necessity for a new polynomial in each round stems from the definition of the polynomial sequence $h_i(x_i)$. These polynomials are defined iteratively to reduce the complexity of the original $n$-variable sum:
 
-$$h_i(x_i) = \sum_{x_{i+1}\in\{0,1\}} \cdots \sum_{x_n\in\{0,1\}} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) \quad$$
+$$h_i(x_i) = \sum_{x_{i+1}\in\{0,1\}} \cdots \sum_{x_n\in\lbrace 0,1\rbrace} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) \quad$$
 
 *   $h_1(x_1)$ is a polynomial only of the variable $x_1$.
 *   $h_2(x_2)$ is a polynomial only of the variable $x_2$, with the variable $x_1$ having been fixed to the random value $r_1$ chosen in the previous round.
@@ -3305,6 +3385,7 @@ This process transforms the verification of a massive, $n$-variable polynomial i
 <div class="accordion">
   <details markdown="1">
     <summary>Do I understand correctly that we check all $h_i$ recursively just to verify that prover understand the recursive structure of polynomial $h_i$?</summary>
+
 That is an interesting way to frame the goal of the Checksum Protocol, but based on the sources, the primary reason for checking the polynomials $h_i$ recursively is not to verify the prover's "understanding" of the structure. Instead, the recursive checks are performed to ensure the **mathematical consistency** and **soundness** of the claimed solution.
 
 Here is a breakdown of why the recursive structure is used:
@@ -3344,6 +3425,7 @@ By checking the $h_i$ recursively, the verifier ensures that a lie introduced at
 <div class="accordion">
   <details markdown="1">
     <summary>I mean the $h_i$ has nested (recursive) structure. If we just rely on the polynomial $h^P_1$, then the sum $h^P_1(0)+h^P_1(1)$ could coincide with $k_{\phi}$ by chance. To make sure that the given $h^P_1$ is indeed the function $h_1$, we check it recursively for all $h^P_i=h_i$. And if it's true for all $i$, then it's likely that the prover gave us the correct $h^P_1$</summary>
+
 You have precisely captured the motivation and mechanism behind the recursive structure of the Checksum Protocol used in the proof of Theorem 141 (that \#3-SAT is in IP).
 
 You are **correct** that relying only on the initial check $k \equiv h_1^P(0) + h_1^P(1) \pmod p$ is insufficient because a cheating prover could submit a polynomial $h_1^P$ that happens to satisfy this sum even though $h_1^P \ne h_1$. This is the central vulnerability that the recursive checking and randomization address.
@@ -3389,17 +3471,29 @@ If all these checks pass successfully for all $i$ up to the final verifiable che
 
 $\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
 
-*Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in 3-CNF form (3-QBF) is PSPACE-complete.
+*Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in $3$-CNF form ($3$-QBF) is PSPACE-complete.
 
 $\textbf{Theorem 143:}$ $3\text{-QBF} \in \text{IP}$.
 
-*Proof sketch.* Arithmetize the quantified formula $\Psi = \forall X_1 \exists X_2 \ldots Q_n X_n \phi$ into an expression
+*Proof:* We adapt the arithmetization protocol from Theorem 141 for quantified formulas. Let $\Psi = \forall X_1 \exists X_2 \ldots \phi(X_1, \ldots, X_n)$. We can arithmetize this structure. The universal quantifier $\forall X_i$ corresponds to a product ($\prod_{x_i \in \lbrace 0,1\rbrace}$), and the existential quantifier $\exists X_i$ corresponds to a logical OR, which can be arithmetized using the operation $\alpha * \beta = 1 - (1-\alpha)(1-\beta)$. Then \Psi is true if and only if the following expression evaluates to $1$: 
 
-$$
-\prod_{x_1 \in \lbrace 0,1\rbrace} \coprod_{x_2 \in \lbrace 0,1\rbrace} \cdots \coprod_{x_n \in \lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)
-$$
+$$\prod_{x_1\in\lbrace 0,1\rbrace} \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)$$
 
-where $\coprod$ denotes arithmetic OR. To control degree growth, apply linearization operators $L_i$ that keep each variable’s degree at most $1$ while preserving values on $\lbrace 0,1\rbrace^n$. The verifier checks claims about these linearized polynomials with consistency checks adapted to $\forall$ (product) and $\exists$ (OR) quantifiers. A cheating prover is caught with probability bounded away from $0$; soundness amplifies via repetition. Thus $3$-QBF has an interactive proof, and by completeness of $3$-QBF, $\text{PSPACE} \subseteq \text{IP}$. ∎
+where \coprod denotes the arithmetic OR operation.
+
+A direct application of the checksum protocol fails because each operator can double the degree of the polynomials involved, leading to an exponential degree overall. The solution is to apply a linearization operator at each step. For a polynomial $p$, let 
+
+$$L_i p(x_1, \ldots, x_n) = x_i p(\ldots, x_{i-1}, 1, x_{i+1}, \ldots) + (1-x_i) p(\ldots, x_{i-1}, 0, x_{i+1}, \ldots)$$
+
+This new polynomial $L_i p$ agrees with $p$ on all boolean inputs $\lbrace 0,1\rbrace^n$, but the degree of $x_i$ in $L_i p$ is at most $1$. By applying these operators repeatedly, we can keep the degree of all variables low throughout the protocol.
+
+The verifier's protocol is modified to check the arithmetized QBF expression with linearization.
+
+* If the current quantifier is $\forall X_i$, the verifier's check becomes $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) \cdot h_i^P(1) \pmod p$.
+* If the current quantifier is $\exists X_i$, the check is $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) * h_i^P(1) \pmod p$.
+* At each step, the prover's claim is about a linearized polynomial. For example, to verify the value of $h_1(r_1)$, which involves $L_1$, the prover sends a polynomial $h_2^P$ and the verifier checks if $h_1^P(r_1) \equiv r_1 h_2^P(1) + (1-r_1)h_2^P(0) \pmod p$.
+
+The soundness analysis remains similar to the #3-SAT proof. At each of the polynomially many steps, a cheating prover is caught unless the verifier makes an unlucky random choice, which happens with a very small, bounded probability. This proves that $3-\text{QBF} \in \text{IP}$, and therefore $\text{PSPACE} \subseteq \text{IP}$.
 
 ### Public Coins and Perfect Completeness
 
@@ -3421,16 +3515,16 @@ $\textbf{Theorem 146:}$ $\text{GI}$ has a zero-knowledge interactive proof syste
 
 *Proof.* For input $(G_0, G_1)$, the prover’s secret is an isomorphism if it exists.
 
-1. **Prover:** Pick random $i \in \{0,1\}$ and random permutation $\pi$. Send $H = \pi(G_i)$.
+1. **Prover:** Pick random $i \in \lbrace 0,1\rbrace$ and random permutation $\pi$. Send $H = \pi(G_i)$.
 2. **Verifier:** Send random challenge bit $j$.
 3. **Prover:** Return a permutation $\pi_P$ showing $H = \pi_P(G_j)$.
 4. **Verifier:** Accept if $\pi_P$ is valid.
 
-Completeness: If $G_0 \cong G_1$ via $\pi_0$, the prover always responds with a correct isomorphism (using $\pi$, $\pi \circ \pi_0$, or $\pi \circ \pi_0^{-1}$ depending on $i, j$), so acceptance probability is $1$.
+*Completeness*: If $G_0 \cong G_1$ via $\pi_0$, the prover always responds with a correct isomorphism (using $\pi$, $\pi \circ \pi_0$, or $\pi \circ \pi_0^{-1}$ depending on $i, j$), so acceptance probability is $1$.
 
-Soundness: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error.
+*Soundness*: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error.
 
-Zero-knowledge: A simulator $S$ produces transcripts indistinguishable from real interactions without knowing an isomorphism. $S$ guesses a challenge $j$, chooses random $\pi$, sets $H = \pi(G_j)$, sends $H$, receives actual challenge $j'$, and restarts unless $j' = j$. Since $j' = j$ with probability $\tfrac{1}{2}$, expected retries are constant; when $j' = j$, $\pi$ is a valid witness, so the transcript distribution matches the real protocol. ∎
+Zero-knowledge: A simulator $S$ produces transcripts indistinguishable from real interactions without knowing an isomorphism. $S$ guesses a challenge $j$, chooses random $\pi$, sets $H = \pi(G_j)$, sends $H$, receives actual challenge $j'$, and restarts unless $j' = j$. Since $j' = j$ with probability $\tfrac{1}{2}$, expected retries are constant; when $j' = j$, $\pi$ is a valid witness, so the transcript distribution matches the real protocol. $\square$
 
 ## Computability
 
@@ -3490,7 +3584,7 @@ To facilitate a more mathematical treatment, we often work with natural numbers 
 
 Using this identification, we can directly translate our definitions from languages to sets of natural numbers and from functions on strings to functions on numbers.
 
-Definition 154: A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
+$\textbf{Definition 154:}$ A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
 
 > **Convention 155**: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
 
@@ -3713,7 +3807,7 @@ $\textbf{Theorem 184:}$ Let $A$ and $B$ be sets.
 *Proof*: 
 
 * **(i)** Let $A \le_m B$ via a computable function $f$, and let $B$ be r.e. Then $B$ is the domain of some partial computable function $\alpha$. The set $A$ is the domain of the partial computable function $\alpha \circ f : x \mapsto \alpha(f(x))$. Since $A$ is the domain of a partial computable function, it is r.e. 
-* **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)} for all e$. This function $f$ witnesses that 
+* **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)}$ for all $e$. This function $f$ witnesses that 
   
   $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$
 
@@ -3797,7 +3891,7 @@ We now introduce a more powerful form of reducibility, Turing reducibility, base
 
 ### Oracle Turing Machines and Turing Reducibility
 
-$\textbf{Definition 197:}$ An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values $B(0)B(1) \dots$ of the characteristic function of a set $B$ is continuously written. The set $B$, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit $B(0)$. The notation $M(x, B)$ is used for the result of the computation of the oracle Turing machine $M$ on inputs $x$ and oracle $B$, if the computation terminates, and $M(x, B) \uparrow$, if the computation does not terminate. The notations $M(x, B) \downarrow and M(x, B) \downarrow = y$ are defined as for Turing machines. In all these notations, $M(x, B)$ can also be written as $M^B(x)$.
+$\textbf{Definition 197:}$ An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values $B(0)B(1) \dots$ of the characteristic function of a set $B$ is continuously written. The set $B$, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit $B(0)$. The notation $M(x, B)$ is used for the result of the computation of the oracle Turing machine $M$ on inputs $x$ and oracle $B$, if the computation terminates, and $M(x, B) \uparrow$, if the computation does not terminate. The notations $M(x, B) \downarrow$ and $M(x, B) \downarrow = y$ are defined as for Turing machines. In all these notations, $M(x, B)$ can also be written as $M^B(x)$.
 
 If an oracle Turing machine $M$ terminates for all inputs $x$ with a given oracle $B$, the notation $M(B)$ is used for the uniquely determined set $A$ with the characteristic function $c_A : x \mapsto M(x, B)$.
 
