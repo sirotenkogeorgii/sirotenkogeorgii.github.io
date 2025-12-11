@@ -3139,11 +3139,11 @@ hence can actually be done by the verifier $V$ itself.
 **Step 3: Analysis**
 
 * *Completeness*: If $k = k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$. All checks will pass, and the verifier will accept with probability $1$.
-* *Soundness*: If $k \ne k_\phi$, but the prover sends h^P_{1} such that , then the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing $p$ to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. $\square$
+* *Soundness*: If $k \ne k_\phi$, but the prover sends $h^P_{1}$ such that , then the prover must lie at some point. Suppose the first incorrect polynomial sent is $h_i^P \ne h_i$. This means that $h_{i-1}^P(r_{i-1})$ (which was correct by assumption) does not equal $h_i^P(0) + h_i^P(1)$. If the prover tries to maintain consistency, then $h_i^P$ must be a different polynomial from $h_i$. The verifier will only fail to detect this lie if its random choice $r_i$ happens to be a root of the non-zero polynomial $(h_i^P - h_i)$. A polynomial of degree $d$ has at most $d$ roots. The degree of $p_\phi$ is at most $d=3m$. The probability of picking such a root is at most $d/p$. By choosing $p$ to be sufficiently large, this probability can be made very small. Summing over all rounds, the total probability of fooling the verifier is low. $\square$
 
 <div class="gd-grid">
   <figure>
-    <img src="{{ 'assets/images/notes/computability-and-complexity/soundness_sketch.png' | relative_url }}" alt="a" loading="lazy">
+    <img src="{{ 'assets/images/notes/computability-and-complexity/soundness_sketch.jpeg' | relative_url }}" alt="a" loading="lazy">
     <figcaption>Primarily soundness sketch</figcaption>
   </figure>
 </div>
@@ -3370,7 +3370,7 @@ The protocol is structured across $n$ rounds, corresponding to the $n$ variables
 
 The necessity for a new polynomial in each round stems from the definition of the polynomial sequence $h_i(x_i)$. These polynomials are defined iteratively to reduce the complexity of the original $n$-variable sum:
 
-$$h_i(x_i) = \sum_{x_{i+1}\in\{0,1\}} \cdots \sum_{x_n\in\lbrace 0,1\rbrace} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) \quad$$
+$$h_i(x_i) = \sum_{x_{i+1}\in\lbrace 0,1\rbrace} \cdots \sum_{x_n\in\lbrace 0,1\rbrace} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) \quad$$
 
 *   $h_1(x_1)$ is a polynomial only of the variable $x_1$.
 *   $h_2(x_2)$ is a polynomial only of the variable $x_2$, with the variable $x_1$ having been fixed to the random value $r_1$ chosen in the previous round.
@@ -3436,7 +3436,7 @@ Here is how your interpretation aligns with the principles detailed in the sourc
 
 ### 1. The Insufficiency of the Initial Check
 
-The initial check in Round 1 verifies if the claimed number of satisfying assignments, $k$, is consistent with the polynomial $h_1^P$ at the boolean inputs $\{0, 1\}$:
+The initial check in Round 1 verifies if the claimed number of satisfying assignments, $k$, is consistent with the polynomial $h_1^P$ at the boolean inputs $\lbrace 0,1\rbrace$:
 $$k \equiv h_1^P(0) + h_1^P(1) \pmod p \quad$$
 As you noted, a false polynomial $h_1^P$ might satisfy this equation by chance, or by construction, if the prover ensures $h_1^P(0) + h_1^P(1)$ equals $k$.
 
@@ -3475,31 +3475,139 @@ $\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
 
 $\textbf{Theorem 143:}$ $3\text{-QBF} \in \text{IP}$.
 
-*Proof:* We adapt the arithmetization protocol from Theorem 141 for quantified formulas. Let $\Psi = \forall X_1 \exists X_2 \ldots \phi(X_1, \ldots, X_n)$. We can arithmetize this structure. The universal quantifier $\forall X_i$ corresponds to a product ($\prod_{x_i \in \lbrace 0,1\rbrace}$), and the existential quantifier $\exists X_i$ corresponds to a logical OR, which can be arithmetized using the operation $\alpha * \beta = 1 - (1-\alpha)(1-\beta)$. Then \Psi is true if and only if the following expression evaluates to $1$: 
+*Proof:* We adapt the arithmetization protocol from Theorem 141 for quantified formulas. Let 
+
+$$\Psi = \forall X_1 \exists X_2 \ldots \phi(X_1, \ldots, X_n)$$
+
+On input $\Psi$, the verifier $V$ can immediately reject in case $\Psi$ is not in 3-CNF prenex normal form, hence we can assume otherwise. Let also $\phi$ has $m$ clauses, $p_\phi$ has the same meaning as in Theorem 141. We can arithmetize this structure. The universal quantifier $\forall X_i$ corresponds to a product ($\prod_{x_i \in \lbrace 0,1\rbrace}$), and the existential quantifier $\exists X_i$ corresponds to a logical OR, which can be arithmetized using the operation $\alpha * \beta = 1 - (1-\alpha)(1-\beta)$. Then $\Psi$ is true if and only if the following expression evaluates to $1$: 
 
 $$\prod_{x_1\in\lbrace 0,1\rbrace} \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)$$
 
-where \coprod denotes the arithmetic OR operation.
+where $\coprod$ denotes the arithmetic OR operation. Here $\prod$ is the usual product of polynomials, and given a polynomial $p$ in variables $x_1,\dots,x_t$, we let
 
-A direct application of the checksum protocol fails because each operator can double the degree of the polynomials involved, leading to an exponential degree overall. The solution is to apply a linearization operator at each step. For a polynomial $p$, let 
+$$\cdots \coprod_{x_t\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_t) = p_\phi(x_1, \ldots, x_{t-1}, 0) * p_\phi(x_1, \ldots, x_{t-1}, 1)$$
+
+A direct application of the checksum protocol fails because each operator ($\prod$ and $\coprod$) can double the degree of the polynomials involved, leading to an exponential degree overall. The solution is to apply a linearization operator at each step. For a polynomial $p$, let 
 
 $$L_i p(x_1, \ldots, x_n) = x_i p(\ldots, x_{i-1}, 1, x_{i+1}, \ldots) + (1-x_i) p(\ldots, x_{i-1}, 0, x_{i+1}, \ldots)$$
 
-This new polynomial $L_i p$ agrees with $p$ on all boolean inputs $\lbrace 0,1\rbrace^n$, but the degree of $x_i$ in $L_i p$ is at most $1$. By applying these operators repeatedly, we can keep the degree of all variables low throughout the protocol.
+<div class="gd-grid">
+  <figure>
+    <img src="{{ 'assets/images/notes/computability-and-complexity/linearization_example.jpeg' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Example of linearization</figcaption>
+  </figure>
+</div>
+
+This new polynomial $L_i p$ agrees with $p$ on all boolean inputs $\lbrace 0,1\rbrace^n$, but the degree of $x_i$ in $L_i p$ is at most $1$. By applying these operators repeatedly, we can keep the degree of all variables low throughout the protocol. By construction, $L_1,\dots,L_n p(x_1,\dots,x_{i-1},0,x_i,\dots,x_n)$ all variables have degree at most $1$. Thus in order to verify that (5.9) is equal to $1$, the checksum protocol can be applied in order to verify that:
+
+$$1 = \prod_{x_1\in\lbrace 0,1\rbrace} \underbrace{  L_1 \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \prod_{x_{n-1}\in\lbrace 0,1\rbrace} L_1 \dots L_{n-1}  \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n)}_{= h_1(x_1)} \quad (5.10)$$
 
 The verifier's protocol is modified to check the arithmetized QBF expression with linearization.
 
-* If the current quantifier is $\forall X_i$, the verifier's check becomes $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) \cdot h_i^P(1) \pmod p$.
-* If the current quantifier is $\exists X_i$, the check is $h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) * h_i^P(1) \pmod p$.
-* At each step, the prover's claim is about a linearized polynomial. For example, to verify the value of $h_1(r_1)$, which involves $L_1$, the prover sends a polynomial $h_2^P$ and the verifier checks if $h_1^P(r_1) \equiv r_1 h_2^P(1) + (1-r_1)h_2^P(0) \pmod p$.
+* **Round 1 and 2**: to convince the verifier that (5.10) holds, the prover sends a prime $p$ (for modulo $p$) and then the prover sends a polynomial $h^P_1$ that is meant to coincide with $h_1$ in (5.10). The verifier checks $h^P_1(0) \cdot h^P_1(1) = 1$. Rejects in case this fails and, otherwise, selects a member $r_1$ in $\mathbb{F}_p$ uniformly at random and sends it to prover. In order to convince the verifier that 
+ 
+  $$h^P_1(r_1) = L_1 \underbrace{ \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \prod_{x_{n-1}\in\lbrace 0,1\rbrace} L_1 \dots L_{n-1}  \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n)}_{= h_2(x_1)}$$
 
-The soundness analysis remains similar to the #3-SAT proof. At each of the polynomially many steps, a cheating prover is caught unless the verifier makes an unlucky random choice, which happens with a very small, bounded probability. This proves that $3-\text{QBF} \in \text{IP}$, and therefore $\text{PSPACE} \subseteq \text{IP}$.
+  is true, the verifier sends the polynomial $h^P_2$ that is meant to coincide with $h_2$. The verifier then checks whether $h^P_1(r_1)$ is equal to $r_1h^P_2(1) + (1−r_1)h^P_2(0)$, rejects in case this fails and, otherwise, selects $r_2$ in $\mathbb{F}_p$ uniformly at random and sends it to the prover, which now has to convince the verifier that $h^P_2(r_2)$ is equal to $h_2(r_2)$.
+* Similarly, in case the first operator of the currently considered expression is $\coprod$, the verifier checks whether $h_{i−1}(r_{i−1})=h^P_i(0)∗h^P_i(1)$. The verification remains essentially the same as in the proof of Theorem 141, in particular, each random choice of a member of $\mathbb{F}_p$ is unfortunate with probability at most $\frac{d}{p}$ for some constant $d$. Observe, however, that now there are more such choices, their number is quadratic instead of linear in $n$, hence the value of $c$ has to be adapted accordingly.
+
+Why quadratic instead of linear in $n$:
+
+$\textbf{Example: } \prod_{x_1\in\lbrace 0,1\rbrace} L_1 \coprod_{x_2\in\lbrace 0,1\rbrace} L_1 L_2 \prod_{x_3\in\lbrace 0,1\rbrace} p(x_1,x_2,x_3)$
+
+$\textbf{Solution:}$
+
+$$
+1
+= \prod_{x_1\in\{0,1\}}
+   \underbrace{
+     L_1\,
+     \underbrace{
+       \coprod_{x_2\in\lbrace 0,1\rbrace}
+       \underbrace{
+         L_1 
+         \underbrace{
+            L_2 
+            \underbrace{
+            \prod_{x_3\in\lbrace 0,1\rbrace} p(x_1,x_2,x_3)
+            }_{h_5}
+         }_{h_4}
+       }_{h_3}
+     }_{h_2}
+   }_{h_1}
+$$
+
+General template (optional, for the $n$-variable case):
+
+$$
+h^P_1(z) 
+= L_1 \underbrace{ \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots 
+\prod_{x_{n-1}\in\lbrace 0,1\rbrace} L_1 \dots L_{n-1}  
+\coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(z, x_2, \ldots, x_n)}_{= h_2(z)}
+$$
+
+$\textbf{Round 1 (Operator: $\prod_{x_1}$)}$
+
+Check: $1 \stackrel{?}{=} h^P_1(0)\cdot h^P_1(1)$
+
+Action: If true, Verifier picks random $r_1$. New target is $h^P_1(r_1)$.
+
+$\textbf{Round 2 (Operator: $L_1$)}$
+
+$h^P_1(r_1) \stackrel{?}{=} r_1 \cdot h^P_2(1) + (1-r_1) \cdot h^P_2(0)$
+
+Note: This uses the Linearization formula; $r_1$ acts as the weight.
+
+Action: If true, Verifier picks a NEW random $r'_1$. New target is $h^P_2(r'_1)$.
+
+$\textbf{Round 3 (Operator: $\coprod_{x_2}$)}$
+
+Check: $h^P_2(r'_1) \stackrel{?}{=} 1 - (1-h^P_3(0))(1-h^P_3(1))$
+
+Note: This uses the arithmetic OR formula $(a \lor b = 1-(1-a)(1-b))$ for $a,b\in\{0,1\}$.
+
+Action: If true, Verifier picks random $r_2$. New target is $h^P_3(r_2)$.
+
+$\textbf{Round 4 (Operator: $L_1$)}$
+
+Check: $h^P_3(r_2) \stackrel{?}{=} r'_1 \cdot h^P_4(1) + (1-r'_1) \cdot h^P_4(0)$
+
+Note: This linearizes again in $x_1$;~ $r'_1$ is the current point for $x_1$.
+
+Action: If true, Verifier picks a NEW random $r''_1$. New target is $h^P_4(r''_1)$.
+
+$\textbf{Round 5 (Operator: $L_2$)}$
+
+Check: $h^P_4(r''_1) \stackrel{?}{=} r_2 \cdot h^P_5(1) + (1-r_2) \cdot h^P_5(0)$
+
+Note: This linearizes in $x_2$;~ $r_2$ is the current point for $x_2$.
+
+Action: If true, Verifier picks a NEW random $r'_2$. New target is $h^P_5(r'_2)$.
+
+$\textbf{Round 6 (Operator: $\prod_{x_3}$)}$
+
+Check: $h^P_5(r'_2) \stackrel{?}{=} h^P_6(0)\cdot h^P_6(1)$
+
+Note: This is the product check for $x_3 \in \{0,1\}$.
+
+Note: Actually we do not need to introduce $h^P_6$ explicitly, because  $h^P_6(x)=p(r''_1,r'_2,x)$.
+
+Action: If true, Verifier picks random $r_3$. New target is $h^P_6(r_3)$.
+
+$\textbf{Final Check}$
+
+Verifier directly evaluates $p(r''_1, r'_2, r_3)$ and checks that $p(r''_1, r'_2, r_3) \stackrel{?}{=} h^P_6(r_3)$.
+
+$\textbf{Note: }$ There is the same amount of computation per round, and the Linearization is made in general by the same template.
+
 
 ### Public Coins and Perfect Completeness
 
 Interactive proofs can be made public-coin (all verifier randomness revealed) and perfectly complete (accept with probability $1$ on yes-instances).
 
-$\textbf{Remark 144:}$ The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3$-QBF, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
+Verifiers as defined in Definition 132 use **private coins**, i.e., there random word is not known to the prover. In the **public coin** model, all random bits read by the verifier are sent to the prover. The random bits need not be revealed all at once but may sent in successive rounds. Furthermore, a interactive proof system is said to have completeness 1 or **perfect** completeness, if every input in the recognized language is accepted with probability 1.
+
+> **Remark 144**: The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3$-QBF, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
 
 ### Interactive Proof Systems with the Zero-Knowledge Property
 
@@ -3520,11 +3628,22 @@ $\textbf{Theorem 146:}$ $\text{GI}$ has a zero-knowledge interactive proof syste
 3. **Prover:** Return a permutation $\pi_P$ showing $H = \pi_P(G_j)$.
 4. **Verifier:** Accept if $\pi_P$ is valid.
 
-*Completeness*: If $G_0 \cong G_1$ via $\pi_0$, the prover always responds with a correct isomorphism (using $\pi$, $\pi \circ \pi_0$, or $\pi \circ \pi_0^{-1}$ depending on $i, j$), so acceptance probability is $1$.
+*Completeness*: If $G_0 \cong G_1$ via $\pi_0$, the prover always responds with a correct isomorphism (using $\pi$, $\pi \circ \pi_0$, or $\pi \circ \pi_0^{-1}$ depending on $i, j$), so acceptance probability is $1$. 
 
-*Soundness*: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error.
+*Soundness*: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error (by iterating the protocol twice, the acceptance probability is at most).
 
-Zero-knowledge: A simulator $S$ produces transcripts indistinguishable from real interactions without knowing an isomorphism. $S$ guesses a challenge $j$, chooses random $\pi$, sets $H = \pi(G_j)$, sends $H$, receives actual challenge $j'$, and restarts unless $j' = j$. Since $j' = j$ with probability $\tfrac{1}{2}$, expected retries are constant; when $j' = j$, $\pi$ is a valid witness, so the transcript distribution matches the real protocol. $\square$
+*Zero-knowledge*: It remains to show that the interactive proof system $(V,P)$ has the zeroknowledge property. Fix some verifer $V′$. Let $S$ be a probabilistic Turing machine that on input $(G_0,G_1)$ first chooses a bit $i$ and a permutation $π$ of the node set of $G_i$ uniformly at random and computes $H= π(G_i)$. Then $S$ computes the response $j$ of $V′ $by simulating $V′$ on receiving $H$ as first message of the prover. In case $j$ is not a bit, we can assume that $P$ responds by the empty word $λ$, and accordingly $S$ outputs $(H,j,λ)$. Now assume that $j$ is a bit. In case $j$ is equal to $i$, the simulator outputs $(H,j,π)$. In case $j$ differs from $i$, the simulator abandons the current simulation and restarts by choosing a new bit iand a new permutation $π$.
+
+When demonstrating that $S$ is a simulator for $(V,P)$, we can assume that $G_0$ and $G_1$ are isomorphic and have the same node sets because there are no requirements on a simulator for inputs not in $\text{GI}$. But then for every graph that is isomorphic to $G_0$, the probability that this graph is sent as $H$ does not depend on the choice of $i$. On receiving the message $H$ from $P$, the verifier $V′$ has thus no information at all about the bit $i$, hence $j$ is chosen indepently of $i$. Since $i$ was chosen by tossing a fair coin, the probability that both bits are equal is exactly $\frac{1}{2}$. Thus a simulation where $i$ is equal to $j$ will occur after an expected number of iterations that is constant, hence the running time of $S$ is in expected polynomial time. Furthermore, the distribution of communications $(H,j,π)$ between $P$ and $V′$ is such that every graph $H$ occurs with a certain probability. The message $j$ is independent of $i$, and $π$ is the unique permutation such that $H= π(G_i)$. This coincides with the distribution of the output of $S$, hence $S$ is a simulator for $(V,P)$.
+
+> **Note**: The distributions match because we do not actually know from the outside what was the graph G_i, that H=\pi(G_i).
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ 'assets/images/notes/computability-and-complexity/gi_has_zero_knowledge_ips.jpeg' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Sketch of the proof</figcaption>
+  </figure>
+</div>
 
 ## Computability
 
