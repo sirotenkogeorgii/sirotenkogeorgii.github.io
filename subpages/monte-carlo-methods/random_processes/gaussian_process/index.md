@@ -46,7 +46,21 @@ So a GP gives:
   </figure>
 </div>
 
-#### Gaussian Process Regression (the classic use)
+#### Stationarity
+
+For general stochastic processes strict-sense stationarity implies wide-sense stationarity but not every wide-sense stationary stochastic process is strict-sense stationary. However, for a Gaussian stochastic process the two concepts are equivalent. 
+
+$\textbf{Property (Stationarity):}$ A Gaussian stochastic process is strict-sense stationary if and only $\iff$ wide-sense stationary.
+
+#### Example
+
+There is an **explicit** representation for stationary Gaussian processes. A simple example of this representation is
+
+$$X_{t}=\cos(at)\xi_{1}+\sin(at)\xi_{2}$$
+
+are independent random variables with the standard normal distribution.
+
+#### Example: Gaussian Process Regression (the classic use)
 
 Given noisy observations:
 
@@ -80,7 +94,6 @@ The kernel determines the shape properties of sampled functions:
 2. Compute the Cholesky factorization $\Sigma = AA^\top$.
 3. Sample independent standard normal variables $Z_1,\dots,Z_n \sim \mathcal N(0,1)$, and define $Z = (Z_1,\dots,Z_n)^\top$.
 4. Produce the sample $X = \mu + AZ$.
-
 ---
 
 <div class="gd-grid">

@@ -12,3 +12,4 @@ noindex: true
 
 - [Markov Chains](/subpages/monte-carlo-methods/random_processes/markov_chains/)
 - [Gaussian Processes](/subpages/monte-carlo-methods/random_processes/gaussian_process/)
+- [Wiener Process and Brownian Motion](/subpages/monte-carlo-methods/random_processes/wiener_process_brownian_motion/)
