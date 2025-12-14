@@ -75,7 +75,7 @@ The key consequences for $W = \lbrace W_t, t \ge 0\rbrace$ include:
 1. **Gaussian process characterization:**
    $W$ is a Gaussian process with
    
-   $$\mathbb{E}[W_t] = 0, \qquad \text{Cov}(W_s, W_t) = \min{s,t}$$
+   $$\mathbb{E}[W_t] = 0, \qquad \text{Cov}(W_s, W_t) = \min(s,t)$$
    
    It is the unique Gaussian process with continuous paths having these mean and covariance properties.
 
@@ -104,6 +104,7 @@ The simulation method below relies on the **Markov** and **Gaussian** properties
    and compute
    
    $$W_{t_k} = \sum_{i=1}^k \sqrt{t_i - t_{i-1}}, Z_i, \quad k = 1,\ldots,n$$
+
 ---
 
 This method is **exact** in the sense that the values $\lbrace W_{t_k}\rbrace$ are sampled from the correct distributions. However, it only produces a **discrete set of points** from the underlying continuous-time process.
@@ -132,6 +133,7 @@ The simulation of Brownian motion at times $t_1,\ldots,t_n$ follows directly fro
 2. Then set
    
    $$B_{t_i} = \mu t_i + \sigma W_{t_i}, \quad i = 1,\ldots,n.$$
+
 ---
 
 If $\lbrace W_{t,i}, t \ge 0\rbrace$ for $i = 1,\ldots,n$ are independent Wiener processes and

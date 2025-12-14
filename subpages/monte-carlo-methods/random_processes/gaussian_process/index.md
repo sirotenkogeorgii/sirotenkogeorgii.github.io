@@ -94,6 +94,7 @@ The kernel determines the shape properties of sampled functions:
 2. Compute the Cholesky factorization $\Sigma = AA^\top$.
 3. Sample independent standard normal variables $Z_1,\dots,Z_n \sim \mathcal N(0,1)$, and define $Z = (Z_1,\dots,Z_n)^\top$.
 4. Produce the sample $X = \mu + AZ$.
+
 ---
 
 <div class="gd-grid">
