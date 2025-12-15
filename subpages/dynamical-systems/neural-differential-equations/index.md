@@ -386,10 +386,10 @@ Once training is finished, we have a generative model for $Y$: to draw approxima
 
 The difficulty is that training is computationally heavy: in general, computing the Jacobian determinant (or its log) scales as $\mathcal{O}(d^3)$. As a result, a lot of research focuses on designing neural architectures $f_\theta$ that (a) have special structure making the Jacobian (log-det) cheap to evaluate, while (b) remaining expressive enough to model complex distributions well.
 
-<div class="gd-grid">
+<figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/normalising_flows.png' | relative_url }}" alt="NFs" loading="lazy">
   <figcaption>Normalising Flows</figcaption>
-</div>
+</figure>
 
 
 #### The Generative Goal
@@ -421,10 +421,10 @@ Here, the right-hand side represents the negative trace of the Jacobian of $f$ (
 
 > **Note:** This equation is familiar to SDE theorists as the Fokker-Planck equation for deterministic dynamics (with random initial conditions), formulated so the right-hand side does not depend on the unknown density $p_\theta$.
 
-<div class="gd-grid">
+<figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/normalising_flows1.png' | relative_url }}" alt="NFs" loading="lazy">
   <figcaption>A continuous normalising flow continuously deforms one distribution into another distribution. The flow lines show how particles from the base distribution are perturbed until they approximate the target distribution.</figcaption>
-</div>
+</figure>
 
 
 #### Training and Evaluation
