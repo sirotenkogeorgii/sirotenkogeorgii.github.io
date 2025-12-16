@@ -1220,7 +1220,7 @@ You can sometimes coordinate **between blocks on the same SM**, but it’s **not
   This can still deadlock if the other block isn’t resident yet (same core issue as global barriers).
 * **Only safe if all participating blocks are guaranteed resident simultaneously**, i.e.
   
-  $$#CTAs \le #SMs \cdot b_r$$
+  $$\#CTAs \le \#SMs \cdot b_r$$
   
   and even then you’re relying on assumptions about progress and scheduling.
 
@@ -1240,7 +1240,6 @@ So: **within one SM**, you can *sometimes hack coordination* if you ensure all r
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">The deadlock example that would the global synchronization cause.</span></p>
-</div>
 
 Close, but the "cycle of CTAs waiting on each other" isn't the usual deadlock mechanism here.
 
@@ -1248,7 +1247,7 @@ The classic deadlock is simpler:
 
 1. You launch **more blocks than can be resident at once**:
    
-   $$#CTAs > #SMs \cdot b_r$$
+   $$\#CTAs > \#SMs \cdot b_r$$
    
 2. The GPU schedules up to $#SMs \cdot b_r$ blocks. These become **resident** and start running.
 3. All resident blocks reach the **global barrier** and **wait** there.
@@ -1263,7 +1262,7 @@ So it's not really a "waiting chain forming a cycle." It's more like:
 
 That's why the text says global synchronization would only be safe if all CTAs can be resident simultaneously:
 
-$$#CTAs \le #SMs \cdot b_r$$
+$$\#CTAs \le \#SMs \cdot b_r$$
 
 </div>
 
@@ -1423,7 +1422,7 @@ __global__ void Reduction0a_kernel( int *out, int *in, size-t N ) {
 * `__syncthreads();`: This is a crucial barrier. It ensures that all threads in the block have completed their load from global memory before any thread proceeds to the reduction phase.
 * `for (unsigned int s = 1; s < blockDim.x; s *= 2)`: This loop performs the reduction. The variable `s` represents the stride between the two elements being added. It doubles in each iteration (1, 2, 4, 8...).
 * `if (tid % ( 2 * s ) == 0)`: This condition selects which threads are active. In the first iteration (`s=1`), threads 0, 2, 4, ... are active. In the second (`s=2`), threads 0, 4, 8, ... are active, and so on.
-* `__syncthreads();`: Another barrier inside the loop is essential. It prevents a race condition where one thread might read a value from sPartials in the next iteration before another thread has finished writing its new sum to that same location in the current iteration.
+* `__syncthreads();`: Another barrier inside the loop is essential. It prevents a race condition where one thread might read a value from `sPartials` in the next iteration before another thread has finished writing its new sum to that same location in the current iteration.
 * `if (tid == 0)`: After the loop, thread 0 of the block holds the partial sum for the entire block, which it writes out to the global output array out.
 
 #### Problem Identified: Branch Divergence
@@ -1691,7 +1690,7 @@ To achieve peak performance on a GPU, an extreme amount of computational intensi
 
 Based on their arithmetic intensity, we can classify algorithms into three broad categories that tell us what is limiting their performance.
 
-* Memory-Bound: These applications are limited by the speed at which they can access memory. They perform very few calculations for each piece of data they fetch. The total execution time is dominated by waiting for data to arrive from memory. A simple vector addition (C[i] = A[i] + B[i]) is a classic example: for every three memory operations (two reads, one write), it performs only one addition.
+* Memory-Bound: These applications are limited by the speed at which they can access memory. They perform very few calculations for each piece of data they fetch. The total execution time is dominated by waiting for data to arrive from memory. A simple vector addition (`C[i] = A[i] + B[i]`) is a classic example: for every three memory operations (two reads, one write), it performs only one addition.
 * Compute-Bound: These applications are limited by the raw computational power of the processor. They perform many floating-point or integer operations for each piece of data they load from memory. The execution time is dominated by the calculations themselves. A dense matrix multiplication is a good example of a compute-bound task, as it reuses data from the input matrices many times.
 * IO-Bound: This category is limited by Input/Output operations, typically related to accessing a disk or a network. In the context of GPU computing, this term is often used to describe the PCIe bottleneck, where the performance is limited by the time it takes to transfer data between the host (CPU) and the device (GPU) over the PCIe bus.
 

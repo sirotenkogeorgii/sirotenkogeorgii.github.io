@@ -776,9 +776,15 @@ thead {
 }
 
 .math-callout--question {
-  --callout-border: #1f2937;
-  --callout-bg: rgba(17, 24, 39, 0.05);
-  --callout-title: #1f2937;
+  --callout-border: #b91c1c;
+  --callout-bg: rgba(239, 68, 68, 0.16);
+  --callout-title: #7f1d1d;
+}
+
+:root[data-theme="dark"] .math-callout--question {
+  --callout-border: #f87171;
+  --callout-bg: rgba(248, 113, 113, 0.24);
+  --callout-title: #fecaca;
 }
 
 .math-callout--remark {
