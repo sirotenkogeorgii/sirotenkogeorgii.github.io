@@ -9,12 +9,12 @@ date: 2024-10-20
 ## Edmonds-Karp algorithm analysis
 
 <div class="math-callout math-callout--remark">
-  <p class="math-callout__title">Remark</p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(naming)</span></p>
   <p>The name "Ford–Fulkerson" is often also used for the Edmonds–Karp algorithm, which is a fully defined implementation of the Ford–Fulkerson method.</p>
 </div>
 
 <div class="math-callout math-callout--info">
-  <p class="math-callout__title">Recall</p>
+  <p class="math-callout__title"><span class="math-callout__label">Recall</span></p>
   <p>Edmonds–Karp is an efficient implementation of the Ford–Fulkerson method that selects shortest augmenting paths in the residual graph. It assigns a weight of $1$ to every edge and runs BFS to find a breadth-first shortest path from $s$ to $t$ in $G_f$.</p>
 </div>
 
@@ -35,7 +35,7 @@ The Edmonds–Karp variant guarantees termination and runs in $O(VE^2)$ time, in
 * Sort vertices in a graph by their distance from the source. We $R_i$ increased the flow in the edges going by one layer ahead, therefore the only edges that are added to $R_{i+1}$ are those going by one layer back in the sorted graph. So, the length of the shortest path from $s$ to $t$ in $R_{i+1}$ is at least the same. -->
 
 <div class="math-callout math-callout--theorem">
-  <p class="math-callout__title">Lemma A (monotonically increasing distances from source)</p>
+  <p class="math-callout__title"><span class="math-callout__label">Lemma A</span><span class="math-callout__name">(monotonically increasing distances from source)</span></p>
   <p>Distances $d_i(s,u)$ increase monotonically, where $s$ is a source, $u$ is any other vertex, and $i$ is the order iteration of augmentation.</p>
 </div>
 
@@ -47,7 +47,7 @@ The Edmonds–Karp variant guarantees termination and runs in $O(VE^2)$ time, in
 $\textbf{Corollary from Lemma A}:$ The length of the shortest path from the source to the target (sink) increases monotonically.
 
 <div class="math-callout math-callout--remark">
-  <p class="math-callout__title">Remark</p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dinic vs Edmonds–Karp)</span></p>
   <p>In the Dinic's algorithm we have a lemma similar to the corollary above, but there we look for a blocking flow, increasing flow in all shortest paths (not in only the shortest path like in Edmonds–Karp), making the shortest path from the source to the target increase strictly (by at least $1$).</p>
 </div>
 
@@ -68,11 +68,11 @@ Since there are $O(E)$ edges in the residual graph, and each can be saturated $O
 </figure>
 
 <div class="math-callout math-callout--theorem">
-  <p class="math-callout__title">Theorem (running time)</p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(running time)</span></p>
   <p>The Edmonds–Karp maximum-flow algorithm runs in $O(VE^2)$ time.</p>
 </div>
 
-*Proof*: BFS runs in $O(E)$ time, and there are $O(VE)$ flow augmentations. All other bookkeeping is $O(V)$ per flow augmentation.
+*Proof.* BFS runs in $O(E)$ time, and there are $O(VE)$ flow augmentations. All other bookkeeping is $O(V)$ per flow augmentation.
 
 
 ## Boltzmann Distribution

@@ -621,7 +621,7 @@ thead {
   --callout-border: var(--line);
   --callout-bg: var(--surface);
   --callout-title: var(--text);
-  border: 1.5px solid var(--callout-border);
+  border: 2.75px solid var(--callout-border);
   border-radius: 1rem;
   background: var(--callout-bg);
   padding: 1.25rem 1.35rem 1.2rem;
@@ -635,9 +635,20 @@ thead {
 
 .math-callout__title {
   margin: 0 0 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: var(--callout-title);
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.math-callout__label {
+  font-weight: 800;
+}
+
+.math-callout__name {
+  font-weight: 600;
 }
 
 .math-callout p {
