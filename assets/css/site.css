@@ -97,6 +97,7 @@ a:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   gap: 1.35rem;
   padding-top: 1.75rem;
   padding-bottom: 1.75rem;
@@ -166,6 +167,9 @@ a:focus {
   cursor: pointer;
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  position: absolute;
+  right: 2.5rem;
+  top: 1.35rem;
 }
 
 .theme-toggle:hover {
@@ -791,8 +795,14 @@ thead {
 
 .math-callout--definition {
   --callout-border: #0f9b6c;
-  --callout-bg: rgba(15, 155, 108, 0.08);
+  --callout-bg: rgba(18, 177, 124, 0.08);
   --callout-title: #0a7c55;
+}
+
+:root[data-theme="dark"] .math-callout--definition {
+  --callout-border: #34d399;
+  --callout-bg: rgba(52, 211, 153, 0.18);
+  --callout-title: #a7f3d0;
 }
 
 .accordion {
@@ -1022,6 +1032,11 @@ thead {
 
   .site-nav a {
     padding: 0 0.5rem;
+  }
+
+  .theme-toggle {
+    top: 1rem;
+    right: 1.25rem;
   }
 
   .layout-note .wrapper {
