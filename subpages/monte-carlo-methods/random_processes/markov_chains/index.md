@@ -8,7 +8,6 @@ noindex: true
 
 In probability theory and statistics, a **Markov chain** or **Markov process** is a stochastic process describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event. Two famous classes of Markov process are the **Markov chain** and **Brownian motion**.
 
-
 Formally, A **Markov chain** is a stochastic process $\lbrace X_t, t \in \mathcal T\rbrace$ indexed by a *countable* set $\mathcal T \subset \mathbb{R}$ that satisfies the **Markov property**:
 
 $$(X_{t+s}\mid X_u,, u \le t) \sim (X_{t+s}\mid X_t).$$
@@ -28,11 +27,9 @@ A direct implication of the Markov property is that the chain can be simulated *
 
 ---
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ 'assets/images/notes/monte-carlo-methods/Markov_chain_sketch.jpg' | relative_url }}" alt="Markov chain sketch" loading="lazy">
-  </figure>
-</div>
+<figure>
+  <img src="{{ 'assets/images/notes/monte-carlo-methods/Markov_chain_sketch.jpg' | relative_url }}" alt="Markov chain sketch" loading="lazy">
+</figure>
 
 The conditional distribution of $X_{t+1}$ given $X_t$ is commonly specified in one of two ways:
 
@@ -42,12 +39,12 @@ The conditional distribution of $X_{t+1}$ given $X_t$ is commonly specified in o
   
   where $g$ is easy to compute, and $U_t$ is a random variable that is easy to generate, *possibly* with a distribution depending on $X_t$ and $t$.
 
-* **Via an explicit conditional distribution P(X_{t+1} \mid X_t)** that is known and straightforward to sample from.
+* **Via an explicit conditional distribution $P(X_{t+1} \mid X_t)$** that is known and straightforward to sample from.
 
 An important example of the second case arises when the chain $\lbrace X_0,X_1,\dots\rbrace$ has a **discrete state space** $E$ and is **time-homogeneous** (a system or process's rules (like transition probabilities) don't change over time). In this setting, the process is fully determined by:
 
 * the distribution of $X_0$, and
-* the **one-step transition matrix** $P = (p_{ij})$, where
+* the **one-step transition matrix** $P = (p_{ij})$ (if the number of states is finite), where
   
   $$p_{ij} = \mathbb P(X_{t+1}=j \mid X_t=i), \quad i,j \in E$$
 
@@ -62,8 +59,124 @@ Thus, if $X_n=i$, the distribution of $X_{n+1}$ is the discrete distribution giv
 
 ---
 
-## Random Walks on an $n$-Dimensional Hypercube
+### Stationary Distribution
 
+A probability mass function $𝜋 ∶ Γ → [0, 1]$ is called a **stationary distribution** if 
+
+$$\pi(\omega_k) = \sum_{j=1}^M \pi(w_j)P_{jk},$$
+
+or equivalently the row-vector $𝜋 = (𝜋(𝜔_1), … , 𝜋(𝜔_𝑀))$ is a right-eigenvector of $𝑃$ with eigenvalue $1$, i.e. $𝜋 = 𝜋𝑃$.
+
+We can make two observations: 
+
+* **Limit Behavior:**
+If the sequence of distributions $\mathbf{p}_n = \mathbf{p}_0 P^n$ converges as $n \to \infty$,  the resulting limit $\pi$ is stationary. This is shown by taking the limit of the evolution equation:
+
+$$\pi(\omega_k) = \lim_{n\to\infty} \sum_{j=1}^{M} \mathbf{p}_{n-1}(\omega_j) P_{jk} = \sum_{j=1}^{M} \pi(\omega_j) P_{jk}$$
+
+* **Spectral Properties & Existence:**
+  * Since $P \mathbf{1} = \mathbf{1}$ (where $\mathbf{1}$ is a column vector of ones), $P$ has an eigenvalue of 1.
+  * All other eigenvalues satisfy $\lvert\lambda\rvert \le 1$.
+  * Since $P$ contains only non-negative entries, the **Perron-Frobenius Theorem** applies. It states that for the eigenvalue 1, there exists a right-eigenvector with non-negative entries. Normalizing this vector yields a stationary probability distribution.
+
+**Code example:**
+<div class="accordion">
+  <details markdown="1">
+    <summary>Code example</summary>
+
+```python
+def stationary_distributions(P):
+    eigenvalues, eigenvectors = np.linalg.eig(np.transpose(P))
+    return [eigenvectors[:,i]/np.sum(eigenvectors[:,i]) for i in range(len(eigenvalues)) if np.abs(eigenvalues[i]-1) < 1e-10]
+
+print("Eigenvalues: ",np.linalg.eig(transition_P)[0])
+for pi in stationary_distributions(transition_P):
+    print("Stationary distribution: ",pi)
+```
+
+  </details>
+</div>
+
+#### Irreducible Transition Matrix
+
+<figure>
+  <img src="{{ 'assets/images/notes/monte-carlo-methods/reducible-matrix.jpg' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Reducible Matrix</figcaption>
+</figure>
+
+> An irreducible matrix is a square matrix that cannot be rearranged (by permuting rows and columns) into a block upper triangular form, meaning it can't be split into smaller, independent matrix blocks along the diagonal, which signifies a "connectedness" in its underlying graph representation where every node can reach every other node. This concept is crucial in Perron-Frobenius theory, Markov chains, and graph theory for understanding system dynamics and connectivity. 
+>
+> Key Characteristics:
+> * **No Block Decomposition**: A matrix is reducible if it can be permuted into [[A, B], [0, C]] form (where A, C are square, and B is some matrix), but an irreducible one cannot.
+> * **Graph Connectivity**: Its associated directed graph (digraph) is strongly connected, meaning there's a path between any two nodes (vertices).
+> * **Permutation Similarity**: It's not similar to any block-triangular matrix (except trivial ones with one block). 
+>
+> **Why it Matters**:
+> * Perron-Frobenius Theorem: Guarantees unique positive eigenvalues and related properties for irreducible, non-negative matrices.
+> * Markov Chains: Irreducible matrices represent systems where all states are mutually reachable, leading to stable long-term behavior (stationary distributions).
+> * Computational Efficiency: Identifying reducibility helps simplify problems by breaking them into smaller, solvable parts, as reducible matrix problems are easier. 
+
+<figure>
+  <img src="{{ 'assets/images/notes/monte-carlo-methods/non-unique-stationary-distribution.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Non-unique stationary distribution</figcaption>
+</figure>
+
+Example above has two linearly independent stationary distribution: 
+* Stationary distribution 1: [0.5 0.5 0. 0. ]
+* Stationary distribution 2: [0. 0. 0.5 0.5 ]
+
+It happens due to the fact that the state space consists of two components that have no transitions among each other. To prevent this phenomenon from happening it is useful
+to consider the property of irreducibility. 
+
+The transition matrix $𝑃$ is **irreducible** if for every pair of states $𝑥, 𝑦 ∈ Γ$ there is a positive chance for the Markov chain started at $𝑥$ to eventually reach $𝑦$. 
+
+In the pictorial representation as a directed graph this property is equivalent to the graph being **strongly connected**, meaning that every vertex is reachable along an oriented path from every other vertex. It can be shown that an irreducible transition matrix $𝑃$ always possesses a unique invariant distribution.
+
+Does this imply that every irreducible Markov chain approaches the invariant distribution? Almost, but not quite! There is one more thing that can go wrong: the Markov chain can be **periodic** with period $𝑡 = 2, 3, …$, meaning that there exists a state $𝑥 ∈ Γ$ such that the Markov chain can only return to $𝑥$ after a number a transitions that is a multiple of $𝑡$. It is not difficult to convince yourself that if the Markov chain is irreducible and this holds for one state $𝑥$, then it holds for every state in $Γ$. An example of a periodic Markov chain with period 2 is the following.
+
+<figure>
+  <img src="{{ 'assets/images/notes/monte-carlo-methods/periodic-markov-chain.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Periodic Markov Chain</figcaption>
+</figure>
+
+A Markov chain cannot converge to a single steady state if it is **periodic**.
+
+Eigenvalues: [-1.0 1.0 0. 0.]
+
+* Consider a chain that strictly alternates between state set $A=\lbrace 0,1\rbrace$ and state set $B=\lbrace 2,3\rbrace$.
+* If you start in set $A$ (at $t=0$), you will be in set $A$ at all even times ($t=2n$) and set $B$ at all odd times ($t=2n+1$).
+* The distribution of $𝑋_𝑛$ cannot converge as $𝑛 → ∞$, because $ℙ(𝑋_{2𝑛} ∈ \lbrace 0, 1\rbrace) = 1$ while $ℙ(𝑋_{2𝑛+1} ∈ \lbrace 0, 1\rbrace) = 0$ for all $𝑛$ and probability oscillates between 0 and 1 rather than settling - the distribution does not converge.
+
+* **Spectral Interpretation:** In linear algebra terms, periodicity means there are multiple eigenvalues located on the unit circle in the complex plane.
+* **The Fix (Aperiodicity):** To ensure convergence, the chain must be **aperiodic**. Practically, if an irreducible chain has even a single state with a "self-loop" (a probability $P_{ii} > 0$ of staying in the same state), the entire chain is guaranteed to be aperiodic.
+
+###2. Convergence Analysis (Spectral Decomposition)
+
+If a transition matrix P is both **irreducible** and **aperiodic**, its eigenvalues behave in a specific way that guarantees convergence:
+
+1. There is a **unique** right-eigenvector with eigenvalue \lambda_1 = 1. This corresponds to the stationary distribution, \pi.
+2. All other eigenvalues have an absolute value strictly less than 1 (|\lambda_i| < 1).
+
+**The Proof Logic:**
+Assuming P is diagonalizable (which is true for chains satisfying detailed balance), we can express the starting distribution \mathbf{p}_0 as a sum of eigenvectors. As time n goes to infinity:
+
+* Because the other eigenvalues are less than 1, their terms decay to zero as n increases (\lambda^n \to 0).
+* The term corresponding to \lambda=1 remains. Since probabilities must sum to 1, the constant c_1 must be 1.
+
+$\textbf{Theorem (Convergence to Stationary Distribution):}$ If a transition matrix $P$ on a finite state space is **irreducible** and **aperiodic**, it has a unique stationary distribution $\pi$. The chain will converge to this distribution $\lim_{n\to\infty} \mathbb{P}(X_n = x) = \pi(x)$ regardless of the starting state $X_0$.
+
+###3. The Ergodic Theorem (Sample Means)
+
+While the previous theorem deals with the distribution of a single state at time n, we are often interested in the **sample mean** (the average of a function over time).
+
+* **The Challenge:** In standard statistics, the Law of Large Numbers applies to independent (i.i.d.) samples. However, Markov chain samples are highly **correlated** (the next state depends on the previous one).
+* **The Solution:** Despite this correlation, an analogue to the Law of Large Numbers exists for Markov chains, known as the Ergodic Theorem.
+
+$\textbb{Theorem (The Ergodic Theorem):}$ If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean converges to the expected value with probability 1.
+
+**Key Distinction:** Unlike the convergence of the distribution (which requires aperiodicity), the Ergodic Theorem generally only requires the chain to be **irreducible**.
+
+## Random Walks on an $n$-Dimensional Hypercube
 
 A typical example of a Markov chain that is specified by a recurrence relation is the **random walk process**.
 
@@ -87,12 +200,10 @@ At each step, choose a coordinate uniformly at random and **flip that bit**.
 **Consequence:**
 The chain moves to one of the $n$ adjacent vertices with equal probability.
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ 'assets/images/notes/monte-carlo-methods/random_walk.jpg' | relative_url }}" alt="Random Walk on a 3-Dimensional Hypercube" loading="lazy">
-    <figcaption>Random Walk on a 3-Dimensional Hypercube</figcaption>
-  </figure>
-</div>
+<figure>
+  <img src="{{ 'assets/images/notes/monte-carlo-methods/random_walk.jpg' | relative_url }}" alt="Random Walk on a 3-Dimensional Hypercube" loading="lazy">
+  <figcaption>Random Walk on a 3-Dimensional Hypercube</figcaption>
+</figure>
 
 ### TODO: Add PAS2 source
 

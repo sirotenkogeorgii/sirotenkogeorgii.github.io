@@ -97,11 +97,9 @@ The kernel determines the shape properties of sampled functions:
 
 ---
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ 'assets/images/notes/monte-carlo-methods/GP_sketch.jpg' | relative_url }}" alt="GP sketch" loading="lazy">
-  </figure>
-</div>
+<figure>
+  <img src="{{ 'assets/images/notes/monte-carlo-methods/GP_sketch.jpg' | relative_url }}" alt="GP sketch" loading="lazy">
+</figure>
 
 
 <div class="accordion">
@@ -110,7 +108,7 @@ The kernel determines the shape properties of sampled functions:
 
 ### Start with independent Gaussians
 
-$$Z \sim \mathcal N(0, I)$$
+$$Z \sim \mathcal{N}(0, I)$$
 
 This means:
 
@@ -124,7 +122,7 @@ This means:
 
 We want
 
-$$X \sim \mathcal N(\mu, \Sigma).$$
+$$X \sim \mathcal{N}(\mu, \Sigma).$$
 
 
 So we look for a matrix $A$ such that
