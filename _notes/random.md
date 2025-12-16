@@ -74,6 +74,73 @@ Since there are $O(E)$ edges in the residual graph, and each can be saturated $O
 
 *Proof.* BFS runs in $O(E)$ time, and there are $O(VE)$ flow augmentations. All other bookkeeping is $O(V)$ per flow augmentation.
 
+## Value of Information
+
+**Value of Information (VOI, or VoI)** is the *expected benefit* you get from acquiring additional information **before** making a decision.
+
+If you must choose an action (e.g., treat vs. wait, ship vs. hold, invest vs. don’t), and outcomes are uncertain, then information (a test, a study, a sensor reading, a survey, running an experiment) can reduce uncertainty, which can lead you to pick a better action on average. So VOI answers: **“How much is it worth to learn X before deciding?”**
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Value of Information, VOI or VoI)</span></p>
+
+  Let:
+
+  * $a \in \mathcal{A}$ be an action
+  * $\theta$ be the unknown “state of the world”
+  * $U(a,\theta)$ be the utility (profit, health benefit, etc.)
+  * current beliefs about $\theta$ are $p(\theta)$
+
+  **Without extra information**, the best expected utility is
+  $$
+  \max_{a} \; \mathbb{E}_{\theta}[U(a,\theta)] .
+  $$
+
+  If you can observe some information $I$ (e.g., a test result) with distribution $p(I \mid \theta)$, then **with information** you choose an action *after seeing $I$*:
+  
+  $$
+  \mathbb{E}_{I}\!\left[\max_{a} \; \mathbb{E}_{\theta \mid I}[U(a,\theta)]\right] .
+  $$
+
+  So the **Value of Information** is
+  $$
+  \operatorname{VOI}
+  = \mathbb{E}_{I}\!\left[\max_{a} \mathbb{E}_{\theta \mid I}[U(a,\theta)]\right]
+  - \max_{a} \mathbb{E}_{\theta}[U(a,\theta)] .
+  $$
+</div>
+
+In words: **(best expected outcome with the info) − (best expected outcome without it)**.
+
+### Important notes
+
+* VOI is an *expected* value: information might not help in every case, but on average it can.
+* You typically compare VOI to the **cost of information** (money, time, risk).
+
+  * If ( \text{VOI} > \text{Cost} ), it’s worth getting the info.
+
+### Common VOI variants
+
+* **EVPI** (Expected Value of Perfect Information): value if you could learn the true state $\theta$ exactly. This is an *upper bound* on any realistic info.
+* **EVSI** (Expected Value of Sample Information): value of a particular imperfect test/study/measurement.
+
+### Tiny intuitive example
+
+Suppose you must decide today whether to **launch** a feature.
+
+* If demand is high: launch gives +100, don’t launch gives 0
+* If demand is low: launch gives −50, don’t launch gives 0
+* You believe high demand is 40% likely.
+
+Without extra info:
+
+* Expected value(launch) = (0.4 \cdot 100 + 0.6 \cdot (-50)=40-30=10)
+* Expected value(don’t) = 0
+  So you launch (value = 10).
+
+Now imagine you can run a market test that sometimes changes your belief, leading you to launch only when it looks promising. If that improves your expected value from 10 to, say, 18, then **VOI = 18 − 10 = 8**. If the test costs 5, it’s worth it; if it costs 20, it isn’t.
+
+If you tell me your setting (medicine, product decisions, ML active learning, trading, etc.), I can map VOI to the exact form people use there and walk through a realistic example.
+
 
 ## Boltzmann Distribution
 
