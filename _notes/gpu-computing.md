@@ -1108,9 +1108,9 @@ To close the gap to theoretical peak performance, further techniques are require
   * **Shared Memory:** This is the programmer's primary tool for maximizing computational intensity ($O(n)$ data reuse).
   * **Synchronization:** When using shared memory, `__syncthreads()` is essential for correctness to manage RAW and WAR hazards.
 
-## GPU Computing: Chapter 5 - Scheduling and Optimization
+## Chapter 5 - Scheduling and Optimization
 
-Welcome to the fifth chapter of our study book on GPU Computing. In our previous discussions, we established the fundamental programming model of CUDA. Now, we will dive deeper into what makes GPU code fast. Performance is not just about running code in parallel; it's about understanding how the hardware schedules and executes that code. This chapter focuses on the crucial topic of scheduling and explores a series of powerful optimization techniques, using a common parallel algorithm—reduction—as our practical, step-by-step example.
+This chapter focuses on the crucial topic of scheduling and explores a series of powerful optimization techniques, using a common parallel algorithm—reduction—as our practical, step-by-step example.
 
 ### A Refresher on GPU Scheduling
 
@@ -1120,9 +1120,9 @@ Before we optimize, we must understand how the GPU executes our code. The CUDA p
 
 As a reminder, the CUDA programming model organizes threads into a three-level hierarchy:
 
-1. A thread is the smallest unit of execution, running a single instance of your kernel function.
-2. A thread block, also known as a Cooperative Thread Array (CTA), is a group of threads that can cooperate by sharing data through a fast, on-chip shared memory and can synchronize their execution.
-3. A grid is composed of all the thread blocks launched by a single kernel call.
+1. A **thread** is the smallest unit of execution, running a single instance of your kernel function.
+2. A **thread block**, also known as a Cooperative Thread Array (**CTA**), is a group of threads that can cooperate by sharing data through a fast, on-chip shared memory and can synchronize their execution.
+3. A **grid** is composed of all the thread blocks launched by a single kernel call.
 
 The GPU scheduler maps these CTAs to the physical processing units on the chip, called Streaming Multiprocessors (SMs). An important concept here is parallel slackness. To achieve high performance, we deliberately launch far more threads and CTAs than there are physical SMs. Why? The primary reason is to hide latency. When a group of threads is stuck waiting for a slow operation, like fetching data from global memory, the SM can instantly switch to executing another group of threads that is ready to run. This keeps the computational units busy and maximizes throughput.
 
@@ -1134,24 +1134,40 @@ While we, as programmers, think in terms of threads and blocks, the GPU hardware
 
 Let's clarify the abstractions:
 
-* CTAs (Thread Blocks): This is a user-defined abstraction. You decide how many threads are in a block and what they do. The execution of CTAs is opaque to the user; you don't control which SM they run on or when.
-* Warps: This is a hardware-level abstraction defined by the Just-In-Time (JIT) compiler and the GPU architecture. The execution of warps is transparent to the user; you don't directly manage them, but their behavior has profound performance implications.
+* **CTAs (Thread Blocks)**: This is a user-defined abstraction. You decide how many threads are in a block and what they do. The execution of CTAs is opaque to the user; you don't control which SM they run on or when.
+* **Warps**: This is a hardware-level abstraction defined by the Just-In-Time (JIT) compiler and the GPU architecture. The execution of warps is transparent to the user; you don't directly manage them, but their behavior has profound performance implications.
 
 Imagine a CTA with 128 threads. The hardware doesn't see 128 individual threads; it sees four warps (warp 0: threads 0-31, warp 1: threads 32-63, etc.). The SM will pick a ready warp and execute one instruction for all 32 of its threads, then pick another ready warp, and so on.
 
 The slide content describes a diagram that visually represents this hierarchy. It shows a Grid composed of multiple CTAs (or thread blocks). Each CTA has access to its own private shared memory. All CTAs in the grid can access the larger, but slower, global memory. Within a CTA, threads are grouped into Warps, and each individual thread has its own private thread-local memory (registers). This illustrates the memory and execution hierarchy of a modern GPU.
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/chapter5_memory_threads_hierarchy.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <figcaption>Memory-Thread hierarchy</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/chapter5_wrap_scheduling.png' | relative_url }}" alt="GPU shared memory" loading="lazy">
+    <figcaption>Wrap Scheduling</figcaption>
+  </figure>
+</div>
+
 ### Common CUDA Performance Issues
 
 Before we can fix problems, we need to know what they are. Several common issues can bottleneck GPU performance:
 
-* Memory Coalescing: Inefficient access patterns to global memory can dramatically slow down data transfers.
-* Latency Hiding: If there isn't enough parallel slackness, the SMs will stall while waiting for memory, leaving the cores idle.
-* Divergent Branching: When threads within the same warp take different paths in an if-else statement, performance suffers because the hardware must execute both paths sequentially.
-* Shared Memory Bank Conflicts: Inefficient access patterns to shared memory by threads within a block can cause access serialization, slowing down computation.
-* Instruction Overhead: Spending too many cycles on control flow (loops, address calculations) instead of actual computation can limit performance.
+* **Memory Coalescing**: Inefficient access patterns to global memory can dramatically slow down data transfers.
+* **Latency Hiding**: If there isn't enough parallel slackness, the SMs will stall while waiting for memory, leaving the cores idle.
+* **Divergent Branching**: When threads within the same warp take different paths in an if-else statement, performance suffers because the hardware must execute both paths sequentially.
+* **Shared Memory Bank Conflicts**: Inefficient access patterns to shared memory by threads within a block can cause access serialization, slowing down computation.
+* **Instruction Overhead**: Spending too many cycles on control flow (loops, address calculations) instead of actual computation can limit performance.
 
 We will see nearly all of these issues in our upcoming example.
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/chapter5_cuda_performance_issues_optimizations.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Memory-Thread hierarchy</figcaption>
+</figure>
 
 ### The Parallel Reduction Problem: A Case Study in Optimization
 
@@ -1159,28 +1175,209 @@ A reduction is a common parallel operation where an array of elements is "reduce
 
 #### Examples of reduction include:
 
-* Calculating a global sum: s = \sum_{i=0}^{N} f(x_i)
-* Calculating a global product: p = \prod_{i=0}^{N} f(x_i)
-* Building a histogram: h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0
+* Calculating a global sum: $s = \sum_{i=0}^{N} f(x_i)$
+* Calculating a global product: $p = \prod_{i=0}^{N} f(x_i)$
+* Building a histogram: $h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0$
 
-Reduction is a perfect candidate for optimization analysis because it is a memory-bound operation. This means its performance is limited by the speed at which it can read data from memory, not by the speed of the calculations. Therefore, our key performance metric will be GB/s (gigabytes per second).
+Reduction is a perfect candidate for optimization analysis because it is a **memory-bound operation**. This means its performance is limited by the speed at which it can read data from memory, not by the speed of the calculations. Therefore, our **key performance metric will be effective bandwidth GB/s** (gigabytes per second). The problem often occuring due to inefficient access patterns,causing the process to wait for data. Also it is an optimization example for scheduling issues that we are considering.
+
+> Remark: **Effective bandwidth** is a real-world measure of data transfer speed, accounting for inefficiencies like latency, protocol overhead, and packet loss, unlike **theoretical (asymptotic) bandwidth**; it quantifies the actual data throughput for specific applications, especially in parallel computing, representing the sustainable rate under typical conditions, often lower than the maximum possible speed.
 
 ### The Multi-CTA Challenge: Global Synchronization
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/chapter5_partial_results_communication.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Partial results communication/synchronization</figcaption>
+</figure>
+
 To process a large array, we must launch many CTAs, each responsible for reducing a chunk of the input data. This produces a partial result for each CTA. But how do we combine these partial results into a final, single value?
 
-This would be simple if we had a global synchronization mechanism that could make all CTAs across the entire GPU wait for each other. However, CUDA provides no such feature.
+This would be simple if we had a global synchronization mechanism that could make all CTAs across the entire GPU wait for each other. However, *CUDA provides no such feature*.
+
+The lecture notes say that there is no mechanism for block synchronisation, but can we synchronise blocks within one SM?
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Question:</span><span class="math-callout__name">The lecture notes say that there is no mechanism for block synchronisation, but can we synchronise blocks within one SM?</span></p>
+
+Not in the way people usually mean by “block synchronization.”
+
+#### What you *can’t* do
+
+There is **no general, safe “block barrier”** even if the blocks happen to be on the **same SM**, because:
+
+* CUDA provides **no primitive** like `__syncblocks()` (within-SM or otherwise).
+* You also have **no guarantee** that two particular blocks are resident on the same SM at the same time (unless you use special features like clusters, and even then it’s not “free-form sync”).
+
+#### What you *can* do (practically)
+
+You can synchronize **within a block**:
+
+* `__syncthreads()` (and the cooperative groups equivalents) is a true barrier **for threads in the same block**.
+
+You can sometimes coordinate **between blocks on the same SM**, but it’s **not a true barrier** and is generally **unsafe unless you can prove residency**:
+
+* **Atomic + polling in global memory**: one block waits until another sets a flag.
+  This can still deadlock if the other block isn’t resident yet (same core issue as global barriers).
+* **Only safe if all participating blocks are guaranteed resident simultaneously**, i.e.
+  
+  $$#CTAs \le #SMs \cdot b_r$$
+  
+  and even then you’re relying on assumptions about progress and scheduling.
+
+#### The “real” supported ways to sync across blocks
+
+* **End the kernel** and start a new kernel (kernel launch boundary is a global sync, assuming default stream / proper stream sync).
+* **Cooperative Groups grid synchronization** (`grid_group::sync`) via *cooperative launch* (supported on certain GPUs and with constraints). This is the “official” in-kernel global barrier, but it requires that all blocks be able to be resident and meet other requirements.
+
+So: **within one SM**, you can *sometimes hack coordination* if you ensure all relevant blocks are resident, but CUDA does **not** provide a general “sync blocks within one SM” mechanism like `__syncthreads()` provides within a block.
+
+</div>
 
 #### Why is there no global synchronization?
 
-1. Scalability: A global barrier would be extremely expensive to implement in hardware across a device with a high SM count.
-2. Scheduling Guarantees: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  nCTAs \leq nSMs \cdot b_r  where b_r is the number of resident blocks per SM.
+1. **Scalability**: A global barrier would be extremely expensive to implement in hardware across a device with a high SM count.
+2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  #CTAs $\leq$ #SMs $\cdot$ $b_r$  where $b_r$ is the number of resident blocks per SM.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">The deadlock example that would the global synchronization cause.</span></p>
+</div>
+
+Close, but the "cycle of CTAs waiting on each other" isn't the usual deadlock mechanism here.
+
+The classic deadlock is simpler:
+
+1. You launch **more blocks than can be resident at once**:
+   
+   $$#CTAs > #SMs \cdot b_r$$
+   
+2. The GPU schedules up to $#SMs \cdot b_r$ blocks. These become **resident** and start running.
+3. All resident blocks reach the **global barrier** and **wait** there.
+4. While waiting, they **still occupy the SM resources** (registers, shared memory, block slots).
+5. Because the SMs are "full" of waiting resident blocks, **no new blocks can become resident**, so the remaining (not-yet-scheduled) CTAs never start.
+6. But the barrier can't release until **all CTAs arrive** → the ones that haven't started can't arrive → **deadlock**.
+
+So it's not really a "waiting chain forming a cycle." It's more like:
+
+* **scheduled/resident CTAs are waiting for unscheduled CTAs** to reach the barrier,
+* but **unscheduled CTAs can't be scheduled** because scheduled CTAs are parked at the barrier holding all resources.
+
+That's why the text says global synchronization would only be safe if all CTAs can be resident simultaneously:
+
+$$#CTAs \le #SMs \cdot b_r$$
+
+</div>
 
 ### The Solution: Kernel Decomposition
 
-The standard solution is kernel decomposition. We write a kernel that performs a partial reduction, where each CTA writes its partial sum to global memory. After this first kernel completes, we launch it again on the smaller array of partial sums. A kernel completion boundary acts as a de facto global synchronization point. Because the reduction operation is the same at each level, we can reuse the same kernel code.
+The standard solution is kernel decomposition. We write a kernel that performs a partial reduction, where each CTA writes its partial sum to global memory. After this first kernel completes, we launch it again on the smaller array of partial sums. **A kernel completion boundary acts as a de facto global synchronization point**. Because the reduction operation is the same at each level, we can reuse the same kernel code. **Negligible HW overhead, low SW overhead**
 
-The slide depicts this as a tree-based reduction. A large array is at the bottom. The first kernel launch has many CTAs (CTA 0, CTA 1, CTA 2, etc.) that each compute a partial sum. These partial sums form a new, smaller array. A second kernel launch then reduces this smaller array, and so on, until a single final value remains.
+<div class="math-callout math-callout--remark">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">"Launch it again on the smaller array … reuse the same kernel code"</span></p>
+  <p>Often true, but in practice people frequently use a different final-stage kernel (or do the last step on CPU) for efficiency. Still, "can reuse the same kernel" is fine as a conceptual statement.</p>
+</div>
+
+The figure depicts this as a tree-based reduction. A large array is at the bottom. The first kernel launch has many CTAs (CTA 0, CTA 1, CTA 2, etc.) that each compute a partial sum. These partial sums form a new, smaller array. A second kernel launch then reduces this smaller array, and so on, until a single final value remains.
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/chapter5_kernel_decomposition.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Kernel decomposition</figcaption>
+</figure>
+
+**Question(s):** Where the intermediate results are stored? Are they returned from the kernel as an output? Could something happend to the global memory of the device between kernel launches?
+<div class="accordion">
+  <details markdown="1">
+    <summary>Intermediate results</summary>
+
+### The first answer
+
+**Intermediate results are stored in GPU global memory (device memory).**
+They are **not “returned” from the kernel** in the function-call sense.
+
+#### How it actually works
+
+A CUDA kernel:
+
+* does **not return values** (its return type is `void`),
+* instead **writes results into memory** that was passed to it as a pointer.
+
+For kernel decomposition in a reduction:
+
+1. **Host code allocates device memory**
+
+   ```c
+   float* d_input;
+   float* d_partial;
+   cudaMalloc(&d_input,   N * sizeof(float));
+   cudaMalloc(&d_partial, numBlocks * sizeof(float));
+   ```
+
+2. **First kernel launch**
+
+   * Each CTA reduces part of `d_input`
+   * Each CTA writes **one partial sum** to `d_partial[blockIdx.x]`
+
+   ```c
+   reduce_kernel<<<numBlocks, blockSize>>>(d_input, d_partial, N);
+   ```
+
+3. **Kernel finishes → implicit synchronization point**
+
+   * When the next kernel is launched **in the same stream**, CUDA guarantees the first kernel is complete.
+
+4. **Second kernel launch**
+
+   * Now `d_partial` becomes the input
+   * Output goes to another (even smaller) buffer, or reused memory
+
+   ```c
+   reduce_kernel<<<numBlocks2, blockSize>>>(d_partial, d_partial2, numBlocks);
+   ```
+
+5. Repeat until one value remains.
+
+6. **Final result**
+
+   * Either copied back to the host with `cudaMemcpy`,
+   * or used directly by another kernel.
+
+#### Key points to remember
+
+* **Kernels communicate only through memory**, not return values.
+* **Global memory persists across kernel launches**, so it’s the natural place to store intermediate results.
+* The **kernel launch boundary** (with proper stream ordering) is what provides the global synchronization.
+* Registers and shared memory **do not persist** after a kernel finishes.
+
+#### Mental model
+
+Think of a kernel like:
+
+> “Run this function *in parallel*, and **write your outputs into this array**.”
+
+### The second answer
+
+#### Could it happen that between kernel runs the global will be cleaned?
+
+No — **device global memory is not automatically “cleaned” between kernel launches.**
+
+If a kernel writes intermediate results into global memory, those values **stay there** until something overwrites them or you free that allocation.
+
+#### What *can* change it
+
+* Another kernel writes into the same memory region.
+* You call something like `cudaMemset()` (or `cudaMemsetAsync`) on that allocation.
+* You free the memory (`cudaFree`) and later reallocate (then its contents are not guaranteed).
+* A device reset or process exit (then everything is gone).
+* Rarely, errors/undefined behavior (out-of-bounds writes) can corrupt memory.
+
+#### Two important “not guaranteed” cases
+
+* **Freshly allocated memory is uninitialized**: after `cudaMalloc`, the contents are unspecified (could look like “old junk”). Don’t assume it’s zeroed.
+* **Freed then reallocated memory**: also unspecified.
+
+So for kernel decomposition reductions, it’s safe to assume intermediate results persist **as long as you keep the allocation alive and don’t overwrite it**.
+
+  </details>
+</div>
 
 ### A Step-by-Step Guide to Optimizing Reduction
 
@@ -1214,19 +1411,24 @@ __global__ void Reduction0a_kernel( int *out, int *in, size-t N ) {
 }
 ```
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/chapter5_interleaved_addressing.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Interleaved Addressing</figcaption>
+</figure>
+
 #### Code Explanation:
 
-* extern __shared__ int sPartials[];: Declares a dynamically sized shared memory array. Its size is specified at kernel launch.
-* sPartials[tid] = in[i];: Each thread loads one element from the global input array in into the shared memory array sPartials.
-* __syncthreads();: This is a crucial barrier. It ensures that all threads in the block have completed their load from global memory before any thread proceeds to the reduction phase.
-* for ( unsigned int s = 1; s < blockDim.x; s *= 2 ): This loop performs the reduction. The variable s represents the stride between the two elements being added. It doubles in each iteration (1, 2, 4, 8...).
-* if ( tid % ( 2 * s ) == 0 ): This condition selects which threads are active. In the first iteration (s=1), threads 0, 2, 4, ... are active. In the second (s=2), threads 0, 4, 8, ... are active, and so on.
-* __syncthreads();: Another barrier inside the loop is essential. It prevents a race condition where one thread might read a value from sPartials in the next iteration before another thread has finished writing its new sum to that same location in the current iteration.
-* if ( tid == 0 ): After the loop, thread 0 of the block holds the partial sum for the entire block, which it writes out to the global output array out.
+* `extern __shared__ int sPartials[];`: Declares a dynamically sized shared memory array. Its size is specified at kernel launch.
+* `sPartials[tid] = in[i];`: Each thread loads one element from the global input array in into the shared memory array `sPartials`.
+* `__syncthreads();`: This is a crucial barrier. It ensures that all threads in the block have completed their load from global memory before any thread proceeds to the reduction phase.
+* `for (unsigned int s = 1; s < blockDim.x; s *= 2)`: This loop performs the reduction. The variable `s` represents the stride between the two elements being added. It doubles in each iteration (1, 2, 4, 8...).
+* `if (tid % ( 2 * s ) == 0)`: This condition selects which threads are active. In the first iteration (`s=1`), threads 0, 2, 4, ... are active. In the second (`s=2`), threads 0, 4, 8, ... are active, and so on.
+* `__syncthreads();`: Another barrier inside the loop is essential. It prevents a race condition where one thread might read a value from sPartials in the next iteration before another thread has finished writing its new sum to that same location in the current iteration.
+* `if (tid == 0)`: After the loop, thread 0 of the block holds the partial sum for the entire block, which it writes out to the global output array out.
 
 #### Problem Identified: Branch Divergence
 
-The if ( tid % ( 2 * s ) == 0 ) check is the source of a major performance problem. Within a warp of 32 threads, some threads will satisfy this condition while others will not. For example, when s=1, half the threads in a warp will pass the check, and half will fail. Since all threads in a warp execute the same instruction, the hardware must execute the if block for the active threads and then wait while the other threads do nothing. This effectively halves the utilization of the SM.
+The `if (tid % (2*s) == 0)` check is the source of a major performance problem. Within a warp of 32 threads, some threads will satisfy this condition while others will not. For example, when `s=1`, half the threads in a warp will pass the check, and half will fail. Since all threads in a warp execute the same instruction, the hardware must execute the if block for the active threads and then wait while the other threads do nothing. This effectively halves the utilization of the SM.
 
 #### Reduction #2: Non-Divergent Interleaved Addressing
 
@@ -1245,12 +1447,12 @@ for ( unsigned int s = 1; s < blockDim.x; s *= 2 ) {
 
 #### Code Explanation:
 
-* int index = 2 * s * tid;: Instead of checking tid % (2 * s), we directly calculate the index each thread will work on.
-* if ( index < blockDim.x ): Now, threads 0, 1, 2, ... are the active threads. Since tid is consecutive, the first few warps will have all their threads pass the condition, while the later warps will have all their threads fail. This avoids intra-warp divergence.
+* `int index = 2 * s * tid;`: Instead of checking `tid % (2 * s)`, we directly calculate the index each thread will work on.
+* `if (index < blockDim.x)`: Now, threads 0, 1, 2, ... are the active threads. Since `tid` is consecutive, the first few warps will have all their threads pass the condition, while the later warps will have all their threads fail. This avoids intra-warp divergence.
 
 #### Problem Identified: Shared Memory Bank Conflicts
 
-We fixed one problem but created another. Shared memory is organized into physical memory banks. To achieve high bandwidth, consecutive threads should access consecutive banks. In this new code, the access pattern is sPartials[index] and sPartials[index + s]. The stride s causes threads in the same warp to access memory locations that fall into the same bank, leading to a bank conflict. The hardware must serialize these requests, reducing the effective shared memory bandwidth. The best access pattern for shared memory is typically for each thread tid to access sPartials[tid].
+We fixed one problem but created another. Shared memory is organized into physical memory banks. To achieve high bandwidth, consecutive threads should access consecutive banks. In this new code, the access pattern is `sPartials[index]` and `sPartials[index + s]`. The stride `s` causes threads in the same warp to access memory locations that fall into the same bank, leading to a bank conflict. The hardware must serialize these requests, reducing the effective shared memory bandwidth. The best access pattern for shared memory is typically for each thread `tid` to access `sPartials[tid]`.
 
 #### Reduction #3: Non-Divergent Sequential Addressing
 
@@ -1268,13 +1470,13 @@ for ( unsigned int s = blockDim.x / 2; s > 0; s >>= 1 ) {
 
 #### Code Explanation:
 
-* for ( unsigned int s = blockDim.x / 2; ... ): The loop now counts down. The variable s represents the number of active threads in each iteration, which is also the offset for the addition. It starts with half the threads in the block being active.
-* if ( tid < s ): This is a simple, non-divergent check. Threads 0 to s-1 are active.
-* sPartials[tid] += sPartials[tid + s];: This is a "block access" pattern. Thread tid reads from tid and tid + s. Since s is large initially, this doesn't cause bank conflicts, and as s gets smaller, the accesses remain efficient.
+* `for (unsigned int s = blockDim.x / 2; ... )`: The loop now counts down. The variable `s` represents the number of active threads in each iteration, which is also the offset for the addition. It starts with half the threads in the block being active.
+* `if (tid < s)`: This is a simple, non-divergent check. Threads `0` to `s-1` are active.
+* `sPartials[tid] += sPartials[tid + s];`: This is a "block access" pattern. Thread `tid` reads from `tid` and `tid + s`. Since `s` is large initially, this doesn't cause bank conflicts, and as `s` gets smaller, the accesses remain efficient.
 
 #### Problem Identified: Idle Threads
 
-This version is much better, but it's still not perfect. In the very first iteration of the loop, half of the threads in the block (tid >= s) are completely idle. In the next iteration, three-quarters are idle, and so on. While we have solved divergence and bank conflicts, we are now underutilizing the computational resources of the SM.
+This version is much better, but it's still not perfect. In the very first iteration of the loop, half of the threads in the block (`tid >= s`) are completely idle. In the next iteration, three-quarters are idle, and so on. While we have solved divergence and bank conflicts, we are now underutilizing the computational resources of the SM.
 
 #### Reduction #4: First Add During Load
 
@@ -1305,8 +1507,8 @@ for ( unsigned int s = blockDim.x / 2; s > 0; s >>= 1 ) {
 
 #### Code Explanation:
 
-* unsigned int i = blockIdx.x*(blockDim.x*2) + threadIdx.x;: Each block now covers a region twice the size of blockDim.x.
-* sPartials[tid] = in[i] + in[i+blockDim.x];: Each thread now performs two loads (in[i] and in[i+blockDim.x]) and one add, storing the result directly into shared memory. This uses all threads in the block productively from the very beginning.
+* `unsigned int i = blockIdx.x*(blockDim.x*2) + threadIdx.x;`: Each block now covers a region twice the size of `blockDim.x`.
+* `sPartials[tid] = in[i] + in[i+blockDim.x];`: Each thread now performs two loads (`in[i]` and `in[i+blockDim.x]`) and one add, storing the result directly into shared memory. This uses all threads in the block productively from the very beginning.
 
 #### Problem Identified: Instruction Overhead
 
@@ -1314,9 +1516,9 @@ We are getting much closer to peak performance, but there is still room for impr
 
 #### Reduction #5: Unrolling the Last Warp
 
-A warp (32 threads) has a special property: all instructions within it are synchronous. The scheduler broadcasts a single instruction to all 32 threads. This means that if we are in a situation where the number of active threads is 32 or fewer (i.e., only one warp is left doing work), we no longer need the __syncthreads() call. The natural lock-step execution of the warp guarantees synchronization. We also no longer need the if (tid < s) check, as the inactive threads in the warp can simply be told to nullify their output.
+A warp (32 threads) has a special property: all instructions within it are synchronous. The scheduler broadcasts a single instruction to all 32 threads. This means that if we are in a situation where the number of active threads is 32 or fewer (i.e., only one warp is left doing work), we no longer need the `__syncthreads()` call. The natural lock-step execution of the warp guarantees synchronization. We also no longer need the `if (tid < s)` check, as the inactive threads in the warp can simply be told to nullify their output.
 
-We can exploit this by "unrolling" the last few iterations of the loop—specifically, the iterations where s <= 32.
+We can exploit this by "unrolling" the last few iterations of the loop—specifically, the iterations where `s <= 32`.
 
 ```c++
 __global__ void Reduction0e_kernel( int *out, int *in, bool echo ) {
@@ -1352,12 +1554,12 @@ __global__ void Reduction0e_kernel( int *out, int *in, bool echo ) {
 
 #### Code Explanation:
 
-* The for loop now only runs for the initial reduction steps where more than one warp is active (s > 32).
-* The subsequent if statements handle the final six reduction steps manually. These lines have no __syncthreads() calls, reducing instruction overhead and removing synchronization latency for the final warp. The extra blockDim.x >= N checks ensure this code works correctly for block sizes smaller than 64.
+* The for loop now only runs for the initial reduction steps where more than one warp is active (`s > 32`).
+* The subsequent if statements handle the final six reduction steps manually. These lines have no `__syncthreads()` calls, reducing instruction overhead and removing synchronization latency for the final warp. The extra `blockDim.x >= N` checks ensure this code works correctly for block sizes smaller than 64.
 
 #### Reduction #6: Complete Unrolling with Templates
 
-Why stop at unrolling the last warp? We could unroll the entire loop. The problem is that the number of loop iterations depends on blockDim.x, which is a runtime parameter. To unroll completely, the compiler needs to know the loop bounds at compile time.
+Why stop at unrolling the last warp? We could unroll the entire loop. The problem is that the number of loop iterations depends on `blockDim.x`, which is a runtime parameter. To unroll completely, the compiler needs to know the loop bounds at compile time.
 
 We can solve this using C++ templates. A template allows us to write a generic function where a parameter (like the block size) can be specified at compile time. The compiler will then generate a specialized, highly optimized version of that function for the specific block size we provide.
 
@@ -1427,7 +1629,7 @@ The techniques we used in the reduction example can be categorized into a broade
 This involves changing the high-level parallel algorithm itself—the global pattern of work and synchronization.
 
 * Hierarchical Tree: Our reduction algorithm is a classic example.
-* Associativity: We exploited the associative property of addition (a + (b + c) = (a + b) + c) to reorder the operations for parallelism.
+* Associativity: We exploited the associative property of addition $a + (b + c) = (a + b) + c$ to reorder the operations for parallelism.
 * Algorithm Cascading: A further optimization (not shown) would be to have each thread sum multiple elements sequentially before starting the parallel reduction. This increases Instruction-Level Parallelism (ILP) and reduces the total number of synchronization steps needed.
 
 2. Code Optimizations
@@ -1467,14 +1669,13 @@ At its core, a program's performance is a balancing act between two fundamental 
 
 Arithmetic Intensity is defined as the ratio of floating-point operations (FLOPs) performed for every byte of data moved from memory. We can express this with a simple formula:
 
-r = \frac{f}{b}
-
+$$r = \frac{f}{b}$$
 
 Where:
 
-* r is the arithmetic intensity in FLOPs/Byte.
-* f is the number of floating-point operations.
-* b is the number of bytes of memory accessed.
+* $r$ is the arithmetic intensity in FLOPs/Byte.
+* $f$ is the number of floating-point operations.
+* $b$ is the number of bytes of memory accessed.
 
 Think of it like a chef in a kitchen. If the chef spends a lot of time chopping, mixing, and cooking (computation) for every ingredient they grab from the pantry (memory access), their arithmetic intensity is high. They are making efficient use of their time at the cooking station. If they constantly run back and forth to the pantry for a single ingredient each time, their intensity is low, and the pantry access becomes the bottleneck.
 
@@ -1502,18 +1703,17 @@ The Roofline Model is a powerful and intuitive tool for visualizing the performa
 
 The model is a simple 2D plot:
 
-* The x-axis is the Arithmetic Intensity (r) of your application (FLOPs/Byte).
-* The y-axis is the Attainable Performance (p) in GFLOP/s (billions of floating-point operations per second).
+* The x-axis is the Arithmetic Intensity $r$ of your application (FLOPs/Byte).
+* The y-axis is the Attainable Performance $p$ in GFLOP/s (billions of floating-point operations per second).
 
 The "roofline" itself consists of two parts:
 
-1. The Slanted Roof: This line represents the peak memory performance, or memory bandwidth (m_p, in GB/s). Its slope is equal to the memory bandwidth. When an application's arithmetic intensity is low, it lies on this part of the roof. Its performance is directly proportional to its intensity: p = m_p \cdot r. To go faster, you must increase your data reuse (move right on the x-axis).
-2. The Flat Roof: This horizontal line represents the peak compute performance of the processor (f_p, in GFLOP/s). Once an application's arithmetic intensity is high enough, it hits this "wall." At this point, the GPU's computational units are fully saturated, and performance is no longer limited by memory access.
+1. The Slanted Roof: This line represents the peak memory performance, or memory bandwidth ($m_p$, in GB/s). Its slope is equal to the memory bandwidth. When an application's arithmetic intensity is low, it lies on this part of the roof. Its performance is directly proportional to its intensity: $p = m_p \cdot r$. To go faster, you must increase your data reuse (move right on the x-axis).
+2. The Flat Roof: This horizontal line represents the peak compute performance of the processor ($f_p$, in GFLOP/s). Once an application's arithmetic intensity is high enough, it hits this "wall." At this point, the GPU's computational units are fully saturated, and performance is no longer limited by memory access.
 
-The attainable performance (p) of an application is therefore the minimum of these two limits:
+The attainable performance $p$ of an application is therefore the minimum of these two limits:
 
-p = \min(m_p \cdot r, f_p)
-
+$$p = \min(m_p \cdot r, f_p)$$
 
 The Roofline model tells you what is limiting you (boundness) and therefore guides your optimization strategy. If you are under the slanted part of the roof, you are memory-bound. If you are under the flat part, you are compute-bound.
 
@@ -1534,7 +1734,7 @@ If your application is Memory-Bound (hitting the slanted part of the roof), you 
 * Ensure memory affinity by having threads access data that is physically close to them (e.g., in NUMA architectures).
 * Avoid non-local data accesses whenever possible.
 
-Critically, the arithmetic intensity (r) of an application is not always fixed; it can vary and often scales with the problem size. Furthermore, effective caching is a primary way to optimize. By keeping frequently used data in fast, on-chip caches, you reduce the number of accesses to slower main memory. This reduction in memory traffic directly increases your application's effective arithmetic intensity, pushing it to the right on the Roofline plot and unlocking higher performance.
+Critically, the arithmetic intensity $r$ of an application is not always fixed; it can vary and often scales with the problem size. Furthermore, effective caching is a primary way to optimize. By keeping frequently used data in fast, on-chip caches, you reduce the number of accesses to slower main memory. This reduction in memory traffic directly increases your application's effective arithmetic intensity, pushing it to the right on the Roofline plot and unlocking higher performance.
 
 ## Chapter 2: Introduction to GPU Profiling
 
