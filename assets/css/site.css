@@ -685,9 +685,9 @@ thead {
 }
 
 .math-callout--info {
-  --callout-border: #0ea5e9;
-  --callout-bg: rgba(14, 165, 233, 0.08);
-  --callout-title: #0369a1;
+  --callout-border: #000000;
+  --callout-bg: rgba(94, 96, 96, 0.08);
+  --callout-title: #000000;
 }
 
 .math-callout--definition {

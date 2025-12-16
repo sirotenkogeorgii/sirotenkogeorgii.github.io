@@ -91,6 +91,7 @@ If you must choose an action (e.g., treat vs. wait, ship vs. hold, invest vs. do
   * current beliefs about $\theta$ are $p(\theta)$
 
   **Without extra information**, the best expected utility is
+
   $$
   \max_{a} \; \mathbb{E}_{\theta}[U(a,\theta)] .
   $$
@@ -102,44 +103,41 @@ If you must choose an action (e.g., treat vs. wait, ship vs. hold, invest vs. do
   $$
 
   So the **Value of Information** is
+
   $$
-  \operatorname{VOI}
-  = \mathbb{E}_{I}\!\left[\max_{a} \mathbb{E}_{\theta \mid I}[U(a,\theta)]\right]
-  - \max_{a} \mathbb{E}_{\theta}[U(a,\theta)] .
+  \text{VOI} = \mathbb{E}_{I}\!\left[\max_{a} \; \mathbb{E}_{\theta \mid I}[U(a,\theta)]\right] - \max_{a} \; \mathbb{E}_{\theta}[U(a,\theta)].
   $$
+
 </div>
 
 In words: **(best expected outcome with the info) − (best expected outcome without it)**.
 
-### Important notes
+#### Important notes
 
-* VOI is an *expected* value: information might not help in every case, but on average it can.
-* You typically compare VOI to the **cost of information** (money, time, risk).
+* $\text{VOI}$ is an *expected* value: information might not help in every case, but on average it can.
+* You typically compare $\text{VOI}$ to the **cost of information** (money, time, risk).
+  * If $\text{VOI} > \text{Cost}$, it’s worth getting the info.
 
-  * If ( \text{VOI} > \text{Cost} ), it’s worth getting the info.
-
-### Common VOI variants
+#### Common $\text{VOI}$ variants
 
 * **EVPI** (Expected Value of Perfect Information): value if you could learn the true state $\theta$ exactly. This is an *upper bound* on any realistic info.
 * **EVSI** (Expected Value of Sample Information): value of a particular imperfect test/study/measurement.
 
-### Tiny intuitive example
+#### Example
 
 Suppose you must decide today whether to **launch** a feature.
 
-* If demand is high: launch gives +100, don’t launch gives 0
-* If demand is low: launch gives −50, don’t launch gives 0
-* You believe high demand is 40% likely.
+* If demand is high: launch gives $+100$, don’t launch gives $0$
+* If demand is low: launch gives $−50$, don’t launch gives $0$
+* You believe high demand is $40%$ likely.
 
 Without extra info:
 
-* Expected value(launch) = (0.4 \cdot 100 + 0.6 \cdot (-50)=40-30=10)
-* Expected value(don’t) = 0
-  So you launch (value = 10).
+* Expected value(launch) = $0.4 \cdot 100 + 0.6 \cdot (-50)=40-30=10$
+* Expected value(don’t) = $0$. So you launch (value = $10$).
 
-Now imagine you can run a market test that sometimes changes your belief, leading you to launch only when it looks promising. If that improves your expected value from 10 to, say, 18, then **VOI = 18 − 10 = 8**. If the test costs 5, it’s worth it; if it costs 20, it isn’t.
+Now imagine you can run a market test that sometimes changes your belief, leading you to launch only when it looks promising. If that improves your expected value from $10$ to, say, $18$, then value of that information that this test gives is $8$: **VOI = 18 − 10 = 8**. If the test costs $5$, it’s worth it; if it costs $20$, it isn’t.
 
-If you tell me your setting (medicine, product decisions, ML active learning, trading, etc.), I can map VOI to the exact form people use there and walk through a realistic example.
 
 
 ## Boltzmann Distribution

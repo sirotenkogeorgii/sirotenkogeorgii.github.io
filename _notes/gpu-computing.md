@@ -118,12 +118,10 @@ A key concept in this model is parallel slackness, which refers to having many m
 
 In a typical computer system, the CPU and GPU are distinct components with their own dedicated memory systems, connected via an I/O bridge.
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/cpu-gpu-diagram.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
-    <figcaption>CPU + GPU System</figcaption>
-  </figure>
-</div>
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/cpu-gpu-diagram.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>CPU + GPU System</figcaption>
+</figure>
 
 A diagram of a modern system illustrates this separation: The CPU is connected to its Host Memory (system RAM) through a high-speed memory interface. The GPU, a separate component on the peripheral bus (like PCIe), is connected to its own dedicated, high-bandwidth GPU Memory.
 
@@ -583,12 +581,10 @@ The GPU memory hierarchy can be understood by its scope—what threads can "see"
 | **Global Memory** | Per Device | \~6 GB (GDDR, off-chip) | Main GPU memory. Large but slow (400-600 cycle latency). |
 | **Host Memory** | System-wide | Multiple TBs (off-device) | Main system RAM, connected to the CPU. Accessible via PCIe. |
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ '/assets/images/notes/gpu-computing/GK110-memory-hierarchy.png' | relative_url }}" alt="GPU global memory" loading="lazy">
-    <figcaption>GK110 Memory Hierarchy</figcaption>
-  </figure>
-</div>
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/GK110-memory-hierarchy.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>GK110 Memory Hierarchy</figcaption>
+</figure>
 
 ### Deeper Dive into Memory Types
 
@@ -967,21 +963,21 @@ This maximizes **Locality of Reference**:
 <!-- end list -->
 
 ```c++
-// Blocked Matrix Multiplication (Simplified)
+// Blocked Matrix Multiplication
 void MatrixMulOnHostBlocked(float* M, float* N, float* P, int Width, int blockSize) {
     for (int ii = 0; ii < Width; ii += blockSize) {
         for (int jj = 0; jj < Width; jj += blockSize) {
             for (int kk = 0; kk < Width; kk += blockSize) {
                 // Process small blockSize x blockSize tiles here
                 for (int i = ii; i < min(ii+blockSize, matWidth); ++i) {
-                  for (int j = jj; j < min(jj+blockSize, matWidth); ++j){
-                    float sum = 0;
-                    for (int k = kk; k < Width; ++k) {
-                      float a = M[i * width + k];
-                      float b = N[k * width + j];
-                      sum += a * b;
-                    }
-                    P[i * Width + j] += sum;
+                    for (int j = jj; j < min(jj+blockSize, matWidth); ++j){
+                        float sum = 0;
+                        for (int k = kk; k < Width; ++k) {
+                            float a = M[i * width + k];
+                            float b = N[k * width + j];
+                            sum += a * b;
+                        }
+                        P[i * Width + j] += sum;
                   }
                 }
             }
@@ -1028,12 +1024,10 @@ The hardware provides nearly 100x less bandwidth than this naive algorithm requi
 
 To solve the bandwidth bottleneck, we must program the **Shared Memory**. This is a user-managed L1 cache (scratchpad) that is orders of magnitude faster than global memory.
 
-\<div class="gd-grid"\>
-\<figure\>
-\<img src="{{ '/assets/images/notes/gpu-computing/shared\_memory\_tiling.png' | relative\_url }}" alt="Tiling with Shared Memory" loading="lazy"\>
-\<figcaption\>Collaborative Loading into Shared Memory\</figcaption\>
-\</figure\>
-\</div\>
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/shared_memory_tiling.png' | relative_url }}" alt="Tiling with Shared Memory" loading="lazy">
+  <figcaption>Collaborative Loading into Shared Memory</figcaption>
+</figure>
 
 #### The Algorithm
 
@@ -1113,3 +1107,761 @@ To close the gap to theoretical peak performance, further techniques are require
   * **Hierarchy is King:** Tiling (blocking) is the fundamental technique to exploit the memory hierarchy.
   * **Shared Memory:** This is the programmer's primary tool for maximizing computational intensity ($O(n)$ data reuse).
   * **Synchronization:** When using shared memory, `__syncthreads()` is essential for correctness to manage RAW and WAR hazards.
+
+## GPU Computing: Chapter 5 - Scheduling and Optimization
+
+Welcome to the fifth chapter of our study book on GPU Computing. In our previous discussions, we established the fundamental programming model of CUDA. Now, we will dive deeper into what makes GPU code fast. Performance is not just about running code in parallel; it's about understanding how the hardware schedules and executes that code. This chapter focuses on the crucial topic of scheduling and explores a series of powerful optimization techniques, using a common parallel algorithm—reduction—as our practical, step-by-step example.
+
+### A Refresher on GPU Scheduling
+
+Before we optimize, we must understand how the GPU executes our code. The CUDA programming model provides abstractions like thread blocks and grids, but the hardware has its own way of managing the work.
+
+#### The Thread Hierarchy and Parallel Slackness
+
+As a reminder, the CUDA programming model organizes threads into a three-level hierarchy:
+
+1. A thread is the smallest unit of execution, running a single instance of your kernel function.
+2. A thread block, also known as a Cooperative Thread Array (CTA), is a group of threads that can cooperate by sharing data through a fast, on-chip shared memory and can synchronize their execution.
+3. A grid is composed of all the thread blocks launched by a single kernel call.
+
+The GPU scheduler maps these CTAs to the physical processing units on the chip, called Streaming Multiprocessors (SMs). An important concept here is parallel slackness. To achieve high performance, we deliberately launch far more threads and CTAs than there are physical SMs. Why? The primary reason is to hide latency. When a group of threads is stuck waiting for a slow operation, like fetching data from global memory, the SM can instantly switch to executing another group of threads that is ready to run. This keeps the computational units busy and maximizes throughput.
+
+A key rule of this model is that there are no dependency guarantees between different CTAs. They can be executed in any order, concurrently or sequentially, which gives the scheduler maximum flexibility.
+
+#### The Warp: The True Unit of Scheduling
+
+While we, as programmers, think in terms of threads and blocks, the GPU hardware schedules threads in groups of 32, known as a warp. A warp is a fundamental, architecture-dependent concept. All 32 threads in a warp execute the same instruction at the same time on an SM. This is a form of SIMT (Single Instruction, Multiple Thread) execution.
+
+Let's clarify the abstractions:
+
+* CTAs (Thread Blocks): This is a user-defined abstraction. You decide how many threads are in a block and what they do. The execution of CTAs is opaque to the user; you don't control which SM they run on or when.
+* Warps: This is a hardware-level abstraction defined by the Just-In-Time (JIT) compiler and the GPU architecture. The execution of warps is transparent to the user; you don't directly manage them, but their behavior has profound performance implications.
+
+Imagine a CTA with 128 threads. The hardware doesn't see 128 individual threads; it sees four warps (warp 0: threads 0-31, warp 1: threads 32-63, etc.). The SM will pick a ready warp and execute one instruction for all 32 of its threads, then pick another ready warp, and so on.
+
+The slide content describes a diagram that visually represents this hierarchy. It shows a Grid composed of multiple CTAs (or thread blocks). Each CTA has access to its own private shared memory. All CTAs in the grid can access the larger, but slower, global memory. Within a CTA, threads are grouped into Warps, and each individual thread has its own private thread-local memory (registers). This illustrates the memory and execution hierarchy of a modern GPU.
+
+### Common CUDA Performance Issues
+
+Before we can fix problems, we need to know what they are. Several common issues can bottleneck GPU performance:
+
+* Memory Coalescing: Inefficient access patterns to global memory can dramatically slow down data transfers.
+* Latency Hiding: If there isn't enough parallel slackness, the SMs will stall while waiting for memory, leaving the cores idle.
+* Divergent Branching: When threads within the same warp take different paths in an if-else statement, performance suffers because the hardware must execute both paths sequentially.
+* Shared Memory Bank Conflicts: Inefficient access patterns to shared memory by threads within a block can cause access serialization, slowing down computation.
+* Instruction Overhead: Spending too many cycles on control flow (loops, address calculations) instead of actual computation can limit performance.
+
+We will see nearly all of these issues in our upcoming example.
+
+### The Parallel Reduction Problem: A Case Study in Optimization
+
+A reduction is a common parallel operation where an array of elements is "reduced" to a single value using an associative operator like addition, multiplication, or finding the maximum value.
+
+#### Examples of reduction include:
+
+* Calculating a global sum: s = \sum_{i=0}^{N} f(x_i)
+* Calculating a global product: p = \prod_{i=0}^{N} f(x_i)
+* Building a histogram: h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0
+
+Reduction is a perfect candidate for optimization analysis because it is a memory-bound operation. This means its performance is limited by the speed at which it can read data from memory, not by the speed of the calculations. Therefore, our key performance metric will be GB/s (gigabytes per second).
+
+### The Multi-CTA Challenge: Global Synchronization
+
+To process a large array, we must launch many CTAs, each responsible for reducing a chunk of the input data. This produces a partial result for each CTA. But how do we combine these partial results into a final, single value?
+
+This would be simple if we had a global synchronization mechanism that could make all CTAs across the entire GPU wait for each other. However, CUDA provides no such feature.
+
+#### Why is there no global synchronization?
+
+1. Scalability: A global barrier would be extremely expensive to implement in hardware across a device with a high SM count.
+2. Scheduling Guarantees: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  nCTAs \leq nSMs \cdot b_r  where b_r is the number of resident blocks per SM.
+
+### The Solution: Kernel Decomposition
+
+The standard solution is kernel decomposition. We write a kernel that performs a partial reduction, where each CTA writes its partial sum to global memory. After this first kernel completes, we launch it again on the smaller array of partial sums. A kernel completion boundary acts as a de facto global synchronization point. Because the reduction operation is the same at each level, we can reuse the same kernel code.
+
+The slide depicts this as a tree-based reduction. A large array is at the bottom. The first kernel launch has many CTAs (CTA 0, CTA 1, CTA 2, etc.) that each compute a partial sum. These partial sums form a new, smaller array. A second kernel launch then reduces this smaller array, and so on, until a single final value remains.
+
+### A Step-by-Step Guide to Optimizing Reduction
+
+We will now analyze six different versions of a reduction kernel, each fixing a performance problem from the previous one. Our test case will be an array of 4 million elements, and we will analyze performance by varying the number of threads per CTA.
+
+#### Reduction #1: Interleaved Addressing with Divergence
+
+This is our naive, starting-point implementation. The basic idea is that in each step of a loop, half of the active threads will fetch a value from a neighboring thread, add it to their own, and store the result. This process repeats until only the first thread holds the final sum.
+
+```c++
+__global__ void Reduction0a_kernel( int *out, int *in, size-t N ) {
+    extern __shared__ int sPartials[];
+    const int tid = threadIdx.x;
+    unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
+    
+    // Each thread loads one element from global to shared mem
+    sPartials[tid] = in[i];
+    __syncthreads();
+    
+    // Do reduction in shared mem
+    for ( unsigned int s = 1; s < blockDim.x; s *= 2 ) {
+        if ( tid % ( 2 * s ) == 0 ) {
+            sPartials[tid] += sPartials[tid + s];
+        }
+        __syncthreads();
+    }
+    
+    if ( tid == 0 ) {
+        out[blockIdx.x] = sPartials[0];
+    }
+}
+```
+
+#### Code Explanation:
+
+* extern __shared__ int sPartials[];: Declares a dynamically sized shared memory array. Its size is specified at kernel launch.
+* sPartials[tid] = in[i];: Each thread loads one element from the global input array in into the shared memory array sPartials.
+* __syncthreads();: This is a crucial barrier. It ensures that all threads in the block have completed their load from global memory before any thread proceeds to the reduction phase.
+* for ( unsigned int s = 1; s < blockDim.x; s *= 2 ): This loop performs the reduction. The variable s represents the stride between the two elements being added. It doubles in each iteration (1, 2, 4, 8...).
+* if ( tid % ( 2 * s ) == 0 ): This condition selects which threads are active. In the first iteration (s=1), threads 0, 2, 4, ... are active. In the second (s=2), threads 0, 4, 8, ... are active, and so on.
+* __syncthreads();: Another barrier inside the loop is essential. It prevents a race condition where one thread might read a value from sPartials in the next iteration before another thread has finished writing its new sum to that same location in the current iteration.
+* if ( tid == 0 ): After the loop, thread 0 of the block holds the partial sum for the entire block, which it writes out to the global output array out.
+
+#### Problem Identified: Branch Divergence
+
+The if ( tid % ( 2 * s ) == 0 ) check is the source of a major performance problem. Within a warp of 32 threads, some threads will satisfy this condition while others will not. For example, when s=1, half the threads in a warp will pass the check, and half will fail. Since all threads in a warp execute the same instruction, the hardware must execute the if block for the active threads and then wait while the other threads do nothing. This effectively halves the utilization of the SM.
+
+#### Reduction #2: Non-Divergent Interleaved Addressing
+
+We can eliminate branch divergence by re-arranging the work so that all threads in a warp either all participate or all do not. We can achieve this by making the active threads contiguous.
+
+```c++
+// do reduction in shared mem
+for ( unsigned int s = 1; s < blockDim.x; s *= 2 ) {
+    int index = 2 * s * tid;
+    if ( index < blockDim.x ) {
+        sPartials[index] += sPartials[index + s];
+    }
+    __syncthreads();
+}
+```
+
+#### Code Explanation:
+
+* int index = 2 * s * tid;: Instead of checking tid % (2 * s), we directly calculate the index each thread will work on.
+* if ( index < blockDim.x ): Now, threads 0, 1, 2, ... are the active threads. Since tid is consecutive, the first few warps will have all their threads pass the condition, while the later warps will have all their threads fail. This avoids intra-warp divergence.
+
+#### Problem Identified: Shared Memory Bank Conflicts
+
+We fixed one problem but created another. Shared memory is organized into physical memory banks. To achieve high bandwidth, consecutive threads should access consecutive banks. In this new code, the access pattern is sPartials[index] and sPartials[index + s]. The stride s causes threads in the same warp to access memory locations that fall into the same bank, leading to a bank conflict. The hardware must serialize these requests, reducing the effective shared memory bandwidth. The best access pattern for shared memory is typically for each thread tid to access sPartials[tid].
+
+#### Reduction #3: Non-Divergent Sequential Addressing
+
+To fix the bank conflicts, we change the indexing logic again. This version ensures that active threads are contiguous and that their memory accesses are sequential, avoiding bank conflicts.
+
+```c++
+// do reduction in shared mem
+for ( unsigned int s = blockDim.x / 2; s > 0; s >>= 1 ) {
+    if ( tid < s ) {
+        sPartials[tid] += sPartials[tid + s];
+    }
+    __syncthreads();
+}
+```
+
+#### Code Explanation:
+
+* for ( unsigned int s = blockDim.x / 2; ... ): The loop now counts down. The variable s represents the number of active threads in each iteration, which is also the offset for the addition. It starts with half the threads in the block being active.
+* if ( tid < s ): This is a simple, non-divergent check. Threads 0 to s-1 are active.
+* sPartials[tid] += sPartials[tid + s];: This is a "block access" pattern. Thread tid reads from tid and tid + s. Since s is large initially, this doesn't cause bank conflicts, and as s gets smaller, the accesses remain efficient.
+
+#### Problem Identified: Idle Threads
+
+This version is much better, but it's still not perfect. In the very first iteration of the loop, half of the threads in the block (tid >= s) are completely idle. In the next iteration, three-quarters are idle, and so on. While we have solved divergence and bank conflicts, we are now underutilizing the computational resources of the SM.
+
+#### Reduction #4: First Add During Load
+
+We can solve the idle thread problem by giving every thread more work to do at the beginning. Instead of each thread loading just one element from global memory, we can have each thread load two elements and perform the first addition right away.
+
+To do this, we launch the kernel with half the number of blocks but twice the grid stride for each thread.
+
+```c++
+// Previous version's load:
+// unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
+// sPartials[tid] = in[i];
+
+// New version:
+unsigned int i = blockIdx.x*(blockDim.x*2) + threadIdx.x;
+
+// Perform first level of reduction
+// read from global memory, write to local memory
+sPartials[tid] = in[i] + in[i+blockDim.x];
+__syncthreads();
+    
+for ( unsigned int s = blockDim.x / 2; s > 0; s >>= 1 ) {
+    if ( tid < s ) {
+        sPartials[tid] += sPartials[tid + s];
+    }
+    __syncthreads();
+}
+```
+
+#### Code Explanation:
+
+* unsigned int i = blockIdx.x*(blockDim.x*2) + threadIdx.x;: Each block now covers a region twice the size of blockDim.x.
+* sPartials[tid] = in[i] + in[i+blockDim.x];: Each thread now performs two loads (in[i] and in[i+blockDim.x]) and one add, storing the result directly into shared memory. This uses all threads in the block productively from the very beginning.
+
+#### Problem Identified: Instruction Overhead
+
+We are getting much closer to peak performance, but there is still room for improvement. The for loop itself, with its address arithmetic and control flow, introduces instruction overhead. These are instructions that don't perform the core computation (the additions) but are necessary to manage the loop. We can reduce this overhead by unrolling the loop.
+
+#### Reduction #5: Unrolling the Last Warp
+
+A warp (32 threads) has a special property: all instructions within it are synchronous. The scheduler broadcasts a single instruction to all 32 threads. This means that if we are in a situation where the number of active threads is 32 or fewer (i.e., only one warp is left doing work), we no longer need the __syncthreads() call. The natural lock-step execution of the warp guarantees synchronization. We also no longer need the if (tid < s) check, as the inactive threads in the warp can simply be told to nullify their output.
+
+We can exploit this by "unrolling" the last few iterations of the loop—specifically, the iterations where s <= 32.
+
+```c++
+__global__ void Reduction0e_kernel( int *out, int *in, bool echo ) {
+    extern __shared__ int sPartials[];
+    const int tid = threadIdx.x;
+    unsigned int i = blockIdx.x*(blockDim.x*2) + threadIdx.x;
+    
+    // Perform first level of reduction
+    sPartials[tid] = in[i] + in[i+blockDim.x];
+    __syncthreads();
+    
+    // Loop for s > 32
+    for ( unsigned int s = blockDim.x / 2; s > 32; s >>= 1 ) {
+        if ( tid < s ) {
+            sPartials[tid] += sPartials[tid + s];
+        }
+        __syncthreads();
+    }
+    
+    // Unrolled additions for the last warp (s <= 32)
+    if ( tid < 32 && blockDim.x >= 64) sPartials[tid] += sPartials[tid + 32];
+    if ( tid < 16 && blockDim.x >= 32) sPartials[tid] += sPartials[tid + 16];
+    if ( tid <  8 && blockDim.x >= 16) sPartials[tid] += sPartials[tid + 8];
+    if ( tid <  4 && blockDim.x >=  8) sPartials[tid] += sPartials[tid + 4];
+    if ( tid <  2 && blockDim.x >=  4) sPartials[tid] += sPartials[tid + 2];
+    if ( tid <  1 && blockDim.x >=  2) sPartials[tid] += sPartials[tid + 1];
+    
+    if ( tid == 0 ) {
+        out[blockIdx.x] = sPartials[0];
+    }
+}
+```
+
+#### Code Explanation:
+
+* The for loop now only runs for the initial reduction steps where more than one warp is active (s > 32).
+* The subsequent if statements handle the final six reduction steps manually. These lines have no __syncthreads() calls, reducing instruction overhead and removing synchronization latency for the final warp. The extra blockDim.x >= N checks ensure this code works correctly for block sizes smaller than 64.
+
+#### Reduction #6: Complete Unrolling with Templates
+
+Why stop at unrolling the last warp? We could unroll the entire loop. The problem is that the number of loop iterations depends on blockDim.x, which is a runtime parameter. To unroll completely, the compiler needs to know the loop bounds at compile time.
+
+We can solve this using C++ templates. A template allows us to write a generic function where a parameter (like the block size) can be specified at compile time. The compiler will then generate a specialized, highly optimized version of that function for the specific block size we provide.
+
+```c++
+template <unsigned int blockSize>
+__global__ void Reduction0f_kernel( int *out, int *in, bool echo ) {
+    extern __shared__ int sPartials[];
+    const int tid = threadIdx.x;
+    unsigned int i = blockIdx.x*(blockSize*2) + threadIdx.x;
+    sPartials[tid] = in[i] + in[i+blockSize];
+    __syncthreads();
+
+    if (blockSize >= 1024) { if (tid < 512) { sPartials[tid] += sPartials[tid + 512]; } __syncthreads(); }
+    if (blockSize >= 512) { if (tid < 256) { sPartials[tid] += sPartials[tid + 256]; } __syncthreads(); }
+    if (blockSize >= 256) { if (tid < 128) { sPartials[tid] += sPartials[tid + 128]; } __syncthreads(); }
+    if (blockSize >= 128) { if (tid < 64) { sPartials[tid] += sPartials[tid + 64]; } __syncthreads(); }
+
+    // No __syncthreads() needed for the last warp
+    if ( tid < 32 && blockSize >= 64) sPartials[tid] += sPartials[tid + 32];
+    if ( tid < 16 && blockSize >= 32) sPartials[tid] += sPartials[tid + 16];
+    // ... and so on for the rest of the unrolled steps ...
+    if ( tid < 1 && blockSize >= 2) sPartials[tid] += sPartials[tid + 1];
+
+    if ( tid == 0 ) {
+       out[blockIdx.x] = sPartials[0];
+    }
+}
+```
+
+Since the kernel now requires the block size at compile time, we need a "wrapper" function on the host to call the correct version based on the runtime dimBlock parameter. A switch statement is perfect for this.
+
+```c++
+void Reduction0f_wrapper ( int dimGrid, int dimBlock, int smemSize, int *out, int *in, bool echo ) {
+    switch ( dimBlock ) {
+        case 1024: Reduction0f_kernel<1024><<< dimGrid, dimBlock, smemSize >>>(out, in, echo); break;
+        case 512:  Reduction0f_kernel<512><<< dimGrid, dimBlock, smemSize >>>(out, in, echo); break;
+        case 256:  Reduction0f_kernel<256><<< dimGrid, dimBlock, smemSize >>>(out, in, echo); break;
+        // ... cases for other power-of-two block sizes ...
+        case 1:    Reduction0f_kernel<1><<< dimGrid, dimBlock, smemSize >>>(out, in, echo); break;
+    }
+}
+```
+
+This version provides the compiler with maximum information, allowing it to generate the most optimized code possible by completely removing the loop structure. Interestingly, the performance data shows this version was slightly slower than the partial unrolling, which might be due to factors like increased code size impacting the instruction cache. This is a great lesson: optimization is experimental, and you must measure the results.
+
+### Performance Summary
+
+The following table summarizes the throughput achieved by each optimization. The maxThr column shows the thread count per block that yielded the peak performance for that version.
+
+| Version | 32 | 64 | 128 | 256 | 512 | 1024 | maxThr | maxBW (GB/s) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1. Interleaved, Divergent (intrlvd div) | 7.39 | 12.57 | 16.77 | 14.67 | 12.33 | 9.05 | 128 | 16.77 |
+| 2. Interleaved, Non-Divergent (intrlvd non-div) | 10.46 | 18.33 | 23.88 | 18.96 | 14.5 | 10.02 | 128 | 23.88 |
+| 3. Sequential, Non-Divergent (seq. non-div) | 11.05 | 19.54 | 30.83 | 27.51 | 23.67 | 17.99 | 128 | 30.83 |
+| 4. First Add During Load (first add) | 21.68 | 37.15 | 58.03 | 51.31 | 43.75 | 33.66 | 128 | 58.03 |
+| 5. Unrolling Last Warp (unrolling) | 22.59 | 36.91 | 68.38 | 62.35 | 53.06 | 43.78 | 128 | 68.38 |
+| 6. Complete Unrolling (templated) | 26.47 | 41.19 | 42.98 | 40.01 | 34.1 | 29.78 | 128 | 42.98 |
+
+This progression clearly shows how systematically identifying and eliminating bottlenecks—from branch divergence to instruction overhead—can lead to massive performance gains (from 16.77 GB/s to a peak of 68.38 GB/s).
+
+### A Framework for Optimization
+
+The techniques we used in the reduction example can be categorized into a broader framework. When you optimize CUDA code, you can make changes at three different levels.
+
+1. Algorithmic Optimizations
+
+This involves changing the high-level parallel algorithm itself—the global pattern of work and synchronization.
+
+* Hierarchical Tree: Our reduction algorithm is a classic example.
+* Associativity: We exploited the associative property of addition (a + (b + c) = (a + b) + c) to reorder the operations for parallelism.
+* Algorithm Cascading: A further optimization (not shown) would be to have each thread sum multiple elements sequentially before starting the parallel reduction. This increases Instruction-Level Parallelism (ILP) and reduces the total number of synchronization steps needed.
+
+2. Code Optimizations
+
+Here, the overall algorithm stays the same, but the implementation of the kernel code is changed for better hardware performance.
+
+* Addressing Changes: We modified our indexing to improve memory coalescing and eliminate shared memory bank conflicts.
+* Loop Unrolling: We unrolled the loop for the last warp (and later, the entire loop) to reduce instruction overhead.
+* Templating: We used C++ templates to generate specialized, highly-optimized code based on compile-time parameters.
+* Warp Shuffle Operations: A more advanced technique (not shown) that allows threads within a warp to exchange data directly without using shared memory, further reducing latency.
+
+3. Scheduling Optimizations
+
+This level of optimization leaves the algorithm and code untouched. Instead, it focuses on how kernels are launched and how work is managed.
+
+* Kernel Launch Parameters: Tuning the grid and block dimensions (dimGrid, dimBlock) can have a huge impact on performance.
+* Overlapped Copy & Execute: Using CUDA streams to overlap data transfers between the host and device with kernel execution to keep all parts of the GPU busy.
+
+### Summary
+
+This chapter provided a deep dive into the world of GPU performance optimization. By understanding the hardware's scheduling behavior and systematically addressing common bottlenecks, you can transform a simple parallel algorithm into a highly efficient one.
+
+Key Takeaways:
+
+1. Set the Right Goal: First, identify whether your application is memory-bound (measure in GB/s) or compute-bound (measure in GFLOP/s). This determines where you should focus your optimization efforts.
+2. Identify Bottlenecks: Systematically look for issues like memory access patterns, branch divergence, instruction overhead, and resource underutilization.
+3. Optimize Systematically: Start with the broadest algorithmic optimizations, then move to fine-grained code optimizations, and finally tune the scheduling optimizations.
+4. Know When to Stop: The goal of optimization is not just raw performance, but performance balanced with code readability, maintainability, and portability. A hyper-optimized but unreadable kernel may be a long-term liability.
+
+## Chapter 1: Understanding and Profiling GPU Performance
+
+Welcome to the world of performance analysis! Writing a parallel program that runs correctly is only the first step. The next, and often more challenging, step is to make it run fast. In high-performance computing, we are constantly chasing the maximum possible speedup. This chapter will introduce you to the fundamental concepts that define and limit the performance of your GPU applications. As one expert noted, “There is no lower bound how bad a baseline can be,” which serves as a humble reminder that there is always room for improvement.
+
+### What is Performance? The Concept of Intensity
+
+At its core, a program's performance is a balancing act between two fundamental activities: computation and memory access. Your GPU can perform trillions of calculations per second, but it can only do so if it has the data it needs. Fetching that data from memory takes time. This relationship is captured by a crucial metric called Arithmetic Intensity.
+
+Arithmetic Intensity is defined as the ratio of floating-point operations (FLOPs) performed for every byte of data moved from memory. We can express this with a simple formula:
+
+r = \frac{f}{b}
+
+
+Where:
+
+* r is the arithmetic intensity in FLOPs/Byte.
+* f is the number of floating-point operations.
+* b is the number of bytes of memory accessed.
+
+Think of it like a chef in a kitchen. If the chef spends a lot of time chopping, mixing, and cooking (computation) for every ingredient they grab from the pantry (memory access), their arithmetic intensity is high. They are making efficient use of their time at the cooking station. If they constantly run back and forth to the pantry for a single ingredient each time, their intensity is low, and the pantry access becomes the bottleneck.
+
+It's important to distinguish between three related concepts:
+
+* Algorithmic Intensity: The inherent ratio of operations to memory accesses in the pure, mathematical algorithm.
+* Computational Intensity: The actual ratio achieved by your specific code implementation. Caching, for example, can reduce memory accesses and therefore increase the computational intensity of your implementation compared to the base algorithm.
+* Machine Intensity: The ratio of a hardware's peak FLOPs/sec to its peak memory bandwidth (Bytes/sec). This represents the intensity an application needs to achieve to be able to fully utilize the processor's computational power.
+
+To achieve peak performance on a GPU, an extreme amount of computational intensity and data reuse is required.
+
+### Memory-Bound vs. Compute-Bound: Where is the Bottleneck?
+
+Based on their arithmetic intensity, we can classify algorithms into three broad categories that tell us what is limiting their performance.
+
+* Memory-Bound: These applications are limited by the speed at which they can access memory. They perform very few calculations for each piece of data they fetch. The total execution time is dominated by waiting for data to arrive from memory. A simple vector addition (C[i] = A[i] + B[i]) is a classic example: for every three memory operations (two reads, one write), it performs only one addition.
+* Compute-Bound: These applications are limited by the raw computational power of the processor. They perform many floating-point or integer operations for each piece of data they load from memory. The execution time is dominated by the calculations themselves. A dense matrix multiplication is a good example of a compute-bound task, as it reuses data from the input matrices many times.
+* IO-Bound: This category is limited by Input/Output operations, typically related to accessing a disk or a network. In the context of GPU computing, this term is often used to describe the PCIe bottleneck, where the performance is limited by the time it takes to transfer data between the host (CPU) and the device (GPU) over the PCIe bus.
+
+Understanding which category your application falls into is the first step toward optimizing it.
+
+### The Roofline Model: A Visual Guide to Performance
+
+The Roofline Model is a powerful and intuitive tool for visualizing the performance limitations of a given processor. It helps you understand whether your application is memory-bound or compute-bound and how close you are to the machine's peak performance.
+
+The model is a simple 2D plot:
+
+* The x-axis is the Arithmetic Intensity (r) of your application (FLOPs/Byte).
+* The y-axis is the Attainable Performance (p) in GFLOP/s (billions of floating-point operations per second).
+
+The "roofline" itself consists of two parts:
+
+1. The Slanted Roof: This line represents the peak memory performance, or memory bandwidth (m_p, in GB/s). Its slope is equal to the memory bandwidth. When an application's arithmetic intensity is low, it lies on this part of the roof. Its performance is directly proportional to its intensity: p = m_p \cdot r. To go faster, you must increase your data reuse (move right on the x-axis).
+2. The Flat Roof: This horizontal line represents the peak compute performance of the processor (f_p, in GFLOP/s). Once an application's arithmetic intensity is high enough, it hits this "wall." At this point, the GPU's computational units are fully saturated, and performance is no longer limited by memory access.
+
+The attainable performance (p) of an application is therefore the minimum of these two limits:
+
+p = \min(m_p \cdot r, f_p)
+
+
+The Roofline model tells you what is limiting you (boundness) and therefore guides your optimization strategy. If you are under the slanted part of the roof, you are memory-bound. If you are under the flat part, you are compute-bound.
+
+### How to Optimize Performance
+
+The Roofline Model clarifies which type of optimization will be most effective.
+
+If your application is Compute-Bound (hitting the flat part of the roof), you should focus on optimizing floating-point performance:
+
+* Balance the number of additions and multiplications.
+* Improve Instruction-Level Parallelism (ILP) to help the processor's superscalar architecture execute more instructions simultaneously.
+* Make effective use of SIMD (Single Instruction, Multiple Data) instructions, which perform the same operation on multiple data points at once.
+
+If your application is Memory-Bound (hitting the slanted part of the roof), you must optimize memory usage:
+
+* Use software prefetching to fetch data from memory before it's actually needed.
+* Structure your code to avoid load stalls, where the processor idles waiting for data.
+* Ensure memory affinity by having threads access data that is physically close to them (e.g., in NUMA architectures).
+* Avoid non-local data accesses whenever possible.
+
+Critically, the arithmetic intensity (r) of an application is not always fixed; it can vary and often scales with the problem size. Furthermore, effective caching is a primary way to optimize. By keeping frequently used data in fast, on-chip caches, you reduce the number of accesses to slower main memory. This reduction in memory traffic directly increases your application's effective arithmetic intensity, pushing it to the right on the Roofline plot and unlocking higher performance.
+
+## Chapter 2: Introduction to GPU Profiling
+
+Once you understand the theoretical limits of performance, the next step is to measure what your application is actually doing. This is the job of a profiler.
+
+### What is Profiling?
+
+Profiling is the process of analyzing an application's behavior to understand its performance characteristics. It involves collecting data about both its static and dynamic properties.
+
+* Static Behavior: This refers to properties of the code itself, independent of any specific run. Examples include the total instruction count or the number of different types of instructions (e.g., floating-point vs. integer).
+* Dynamic Behavior: This refers to what happens when the code is actually executed. Examples include cache hit/miss rates, scheduler decisions, thread occupancy, and memory stalls. This dynamic information is crucial for identifying real-world bottlenecks.
+
+To gather this data, profilers rely on hardware performance counters. These are special registers built into the processor that can count events like cache misses, instructions executed, or cycles the processor was stalled. However, these counters are an expensive and limited resource. Accessing them can be costly and will inevitably affect the performance of the code you are trying to measure. This is known as profiling overhead.
+
+### Levels of Profiling: From C++ to Machine Code
+
+When we write a CUDA C++ program, it goes through several stages of compilation before it can run on the GPU. We can analyze performance at any of these levels:
+
+1. C/C++: The high-level source code we write.
+2. IR (Intermediate Representation): A lower-level, platform-agnostic representation of the code, such as LLVM IR.
+3. PTX (Parallel Thread Execution): An assembly-like language for NVIDIA GPUs. It's a stable instruction set that can be compiled for different GPU architectures.
+4. SASS (Shader Assembly): The native, machine-level assembly language for a specific GPU architecture. This is what the hardware actually executes.
+
+Profiling at the SASS level gives you the most accurate and detailed view of what the hardware is doing, as it's closest to the metal.
+
+### Prerequisites for Profiling
+
+Before you start optimizing for performance, you must follow two critical steps:
+
+1. Ensure Correctness First: Performance profiling is meaningless if your program produces the wrong results. Use tools like cuda-memcheck to find and fix memory errors, such as segmentation faults and memory leaks, before you begin any performance analysis.
+2. Compile with Correct Flags: To get the most accurate and useful profiling data, you need to compile your code correctly.
+  * Enable compiler optimizations (e.g., nvcc -O2). This ensures you are profiling the code as it would run in a production environment.
+  * Include debug information (e.g., nvcc -lineinfo). This allows the profiler to map the low-level SASS instructions back to the original lines in your C++/CUDA source code, making it much easier to identify which parts of your code are causing bottlenecks.
+
+## Chapter 3: NVIDIA's Professional Profiling Toolkit
+
+NVIDIA provides a powerful suite of tools called Nsight for profiling and debugging GPU applications. For performance analysis, we will focus on two key components: Nsight Compute and Nsight Systems.
+
+### Nsight Compute: Deep-Diving into Kernels
+
+Nsight Compute is the primary tool for detailed analysis of individual CUDA kernels. It can collect an immense amount of data—nearly 1,700 different metrics on a modern GPU like the TU102—giving you an unprecedented view into your kernel's execution.
+
+Nsight Compute offers two interfaces:
+
+* A command-line interface (CLI) called ncu.
+* A graphical user interface (GUI) called nv-nsight-cu.
+
+A common workflow is to use ncu on a remote server (where the powerful GPU is) to collect performance data and save it to a report file. You can then download this file and open it with the nv-nsight-cu GUI on your local machine for in-depth visual analysis.
+
+By default, ncu prints its results to the console (stdout). To save the results, you use the --export or -o flag.
+
+```bash
+# To run a profiler on an application and save the report
+ncu --export my_report.ncu-rep ./my_application
+```
+
+### Working with Metrics
+
+Querying all 1,700+ metrics at once is overwhelming and inefficient. Instead, ncu provides predefined sets of metrics for common analysis tasks. You can list these sets with the command:
+
+```bash
+ncu --list-sets
+```
+
+This will display a table of available sets, such as default, detailed, and full, showing how many metrics each set collects.
+
+| Identifier | Sections | Enabled | Estimated Metrics |
+| --- | --- | --- | --- |
+| default | LaunchStats, Occupancy, SpeedOfLight | yes | 36 |
+| detailed | ComputeWorkloadAnalysis, InstructionStats, LaunchStats, MemoryWorkloadAnalysis, Occupancy, SchedulerStats, SourceCounters, SpeedOfLight, SpeedOfLight_RooflineChart, WarpStateStats | no | 172 |
+| full | ComputeWorkloadAnalysis, InstructionStats, LaunchStats, MemoryWorkloadAnalysis, MemoryWorkloadAnalysis_Chart, MemoryWorkloadAnalysis_Tables, Nvlink_Tables, Nvlink_Topology, Occupancy, SchedulerStats, SourceCounters, SpeedOfLight, SpeedOfLight_RooflineChart, WarpStateStats | no | 177 |
+| source | SourceCounters | no | 58 |
+
+You can also create custom profiling runs by combining sets, sections, and individual metrics.
+
+```bash
+# Run with the 'default' set, but also collect the 'SourceCounters' section
+# and one specific metric related to shared memory instructions.
+ncu --set default --section SourceCounters --metrics sm__sass_inst_executed_op_shared ./my_application
+```
+
+### Nsight Systems: Analyzing the Entire Application
+
+While Nsight Compute is for kernels, Nsight Systems is designed to analyze the performance of the entire system, focusing particularly on CPU-GPU interactions. It helps you identify high-level bottlenecks, such as:
+
+* Time spent transferring data over the PCIe bus.
+* Gaps in GPU execution where the GPU is idle waiting for the CPU.
+* How different CUDA API calls and kernel launches overlap (or fail to overlap) over time.
+
+Like Nsight Compute, it has a CLI (nsys) and a GUI (nsight-sys).
+
+A powerful feature of Nsight Systems is the ability to add custom annotations to your host code using the NVTX (NVIDIA Tools Extension) library. This lets you mark specific regions of your C++ code, which will then appear as labeled ranges in the profiler's timeline, making it easy to correlate profiler output with your application's logic.
+
+To use NTX, you need to include the header and link against the library:
+
+```c
+#include <nvToolsExt.h>
+
+// Link your application with -lnvToolsExt
+```
+
+You can then bracket sections of your code with nvtxRangePush and nvtxRangePop:
+
+```c++
+// This code block will appear as a labeled "sleeping" range in the nsys GUI.
+nvtxRangePush("sleeping");
+sleep(100);
+nvtxRangePop();
+```
+
+
+## Chapter 4: Case Study: Profiling a Matrix Multiplication Kernel
+
+Let's apply these concepts to a real-world example: profiling a highly optimized matrix multiplication routine from the cuBLAS library. We'll examine how the performance changes dramatically not just with the size of the matrices, but with their shape.
+
+### The High Cost of Detailed Profiling
+
+First, it is crucial to understand that profiling has an overhead. The more metrics you collect, the more the profiler interferes with the application's execution, slowing it down. This happens because the GPU has a limited number of hardware performance counters. To collect many metrics, the profiler must re-run the kernel multiple times (called "passes" or "replays"), collecting a different subset of metrics each time.
+
+Consider this example of running a test on a 1024x1024 matrix multiplication (SGEMM):
+
+1. Baseline (No Profiling): The application runs extremely fast, achieving over 8,000 GFLOP/s.
+
+```bash
+$ ./cuBLAS-test-sm75 1024 1024 1024
+SGEMM (  1024 x   1024 x   1024):     0.0002 sec,    8363.55 GFLOP/s
+```
+
+2. Profiling with the default set: Using ncu with the default set requires 8 passes. The execution time balloons from 0.2 milliseconds to over half a second, and the measured performance plummets to just 3.46 GFLOP/s.
+
+```bash
+$ ncu -f --set default -o <file> ./cuBLAS-test-sm75 1024 1024 1024
+==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 8 passes
+SGEMM (  1024 x   1024 x   1024):     0.5779 sec,       3.46 GFLOP/s
+```
+
+3. Profiling with the full set: Using the full set is even more expensive, requiring 33 passes. The execution takes 1.7 seconds, and measured performance is a paltry 1.17 GFLOP/s.
+
+```bash
+$ ncu -f --set full --section ComputeWorkloadAnalysis -o <file> ./cuBLAS-test-sm75 1024 1024 1024
+==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 33 passes
+SGEMM (  1024 x   1024 x   1024):     1.7117 sec,       1.17 GFLOP/s
+```
+
+This is a critical lesson: the performance numbers you see during a detailed profiling run are not the true performance of your application; they are the performance under heavy observation. You must always establish a non-profiled baseline first.
+
+### The Challenge of Skewed Matrices
+
+The peak performance of libraries like cuBLAS is often benchmarked using square matrices (e.g., 1024 \times 1024). But what happens if the matrices are "skewed"—for instance, very tall and thin, or very short and wide?
+
+Let's consider the matrix multiplication C = A \cdot B, where the dimensions are m \times k for matrix A and k \times n for matrix B. We will keep the total amount of work roughly the same but dramatically alter the shapes of A and B.
+
+The lecture slide presents a bar chart that illustrates this scenario.
+
+* Description of the Diagram: The chart plots GFLOP/s (y-axis) against various matrix dimensions m-n-k (x-axis). The first bar, representing a square matrix 1024-1024-1024, shows a very high performance of nearly 8400 GFLOP/s. As the matrices become more skewed (e.g., 2048-512-1024, 4096-256-1024, and so on, up to an extreme 1048576-1-1024), the performance drops dramatically, eventually falling below 500 GFLOP/s. This shows a substantial performance loss even though the total number of floating-point operations remains identical.
+
+This massive performance degradation suggests that the skewed shapes are causing a major problem with memory access patterns.
+
+### Using Nsight Compute to Uncover the Truth
+
+To diagnose this, we can use ncu to profile the application for each skewed matrix configuration. A simple shell for loop can automate this process, saving a unique report file for each run.
+
+```bash
+# This loop iterates, making the 'm' dimension larger and 'n' smaller each time,
+# while keeping 'k' and the total work constant.
+for ((i=1;i<=1024;i*=2)); do
+  ncu -f --set full -o cuBLAS-skewed-$((1024*$i))-$((1024/$i))-$((1024)) \
+  ./cuBLAS-test-sm75 $((1024*$i)) $((1024/$i)) $((1024))
+done
+```
+
+After collecting the data, we can import the report files (.ncu-rep) and examine specific metrics related to memory performance. Some key metrics of interest include:
+
+* L1 Cache Hit Rate: l1tex__t_sector_hit_rate.pct
+* L2 Cache Hit Rate: lts__t_sector_hit_rate.pct
+* Shared Memory Accesses: sass__inst_executed_shared_loads, sass__inst_executed_shared_stores
+* Global Memory Traffic (L1 to L2): l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum
+* Global Memory Traffic (L2 to DRAM): dram__sectors_read.sum
+
+### Analyzing Memory Traffic and Cache Performance
+
+By plotting these metrics against the different matrix shapes, the source of the problem becomes clear.
+
+**Global Read Traffic:**
+
+* Description of the Diagram: A line graph shows two metrics: "L1->L2 LD [MB]" and "DRAM RD [MB]". For square-like matrices on the left, both traffic volumes are low. As the matrices become highly skewed to the right, the traffic from the L1 cache to the L2 cache (the blue line) explodes, increasing from a small amount to nearly 3000 MB. In contrast, the traffic from the L2 cache to main DRAM (the red line) stays relatively flat and low. This indicates that data is being constantly evicted from the L1 cache and must be re-fetched from L2, but the L2 cache is large enough to absorb most of this traffic, preventing a complete collapse from DRAM access. The read traffic amplification factor ranges from 1.25x for a moderately skewed case to an enormous 256x for the most skewed case.
+
+**Cache Hit Rates:**
+
+* Description of the Diagram: A line graph plots the L1 and L2 hit rates. For square matrices, both hit rates are very high (L1 at ~95%, L2 at ~85%). As the matrix shape skews, the L1 hit rate plummets dramatically, falling close to 0% for the most extreme cases. The L2 hit rate also declines but remains much higher, confirming that L2 is catching most of the L1 misses.
+
+**Internal Kernel Switching:** An interesting detail revealed by the profiling data is that the cuBLAS library is not using the same kernel for all matrix shapes. It intelligently selects different internal implementations based on the problem size and shape. For example:
+
+* 1024-1024-1024 uses volta_sgemm_128x64_nn
+* 32768-32-1024 uses volta_sgemm_128x32_sliced1x4_nn
+* 524288-2-1024 uses gemmSN_NN_kernel
+* 1048576-1-1024 uses a combination of kernel and splitKreduce_kernel
+
+This shows the complexity of high-performance libraries, which contain multiple specialized algorithms to handle different types of inputs. However, even with these specialized kernels, the fundamental problem of poor data locality in skewed matrices leads to catastrophic cache performance and a massive drop in overall GFLOP/s.
+
+## Chapter 5: Architectural Deep Dive: Independent Thread Scheduling
+
+The way a GPU schedules and executes threads is fundamental to its performance, especially when dealing with complex control flow (like if-else statements). This execution model, known as SIMT (Single Instruction, Multiple Thread), has evolved significantly. Understanding this evolution helps explain why certain programming patterns are more efficient than others.
+
+### The Classic SIMT Model (Pascal and Earlier)
+
+On older architectures like Pascal, a warp (a group of 32 threads) operated like a single unit with one program counter (PC) and one call stack. To handle branches where some threads take an if path and others take the else path, the hardware used an active mask.
+
+1. Divergence: When an if statement is encountered, threads that don't meet the condition are "masked off" (made inactive).
+2. Execution: The GPU executes the entire if block for the active threads.
+3. Mask Inversion: The active mask is then inverted. The threads that just ran are masked off, and the threads that originally failed the condition are made active.
+4. Execution: The GPU executes the else block for the newly active threads.
+5. Reconvergence: After the else block, all threads in the warp become active again and proceed together.
+
+* Description of the Diagram: A flow chart shows a single execution path. At a divergence point (if), the path for A; B; is executed first, followed by the path for X; Y;. Only after both serialized paths are complete does the execution reconverge to execute Z;.
+
+The major drawback of this model is branch serialization. Even though different threads are doing different work, they cannot do it at the same time. The hardware must execute each branch path sequentially, causing a significant performance penalty for divergent code. This model could also lead to deadlock if threads within a warp tried to synchronize with each other across a divergent branch.
+
+### The Modern SIMT Model (Volta and Later)
+
+Starting with the Volta architecture, NVIDIA introduced Independent Thread Scheduling (ITS). This was a major architectural shift.
+
+In the ITS model, the GPU maintains the execution state (like the program counter and register state) for each individual thread. While this is more costly in terms of hardware resources, it provides enormous flexibility.
+
+* A schedule optimizer is now responsible for dynamically grouping active threads from the same warp that are executing the same instruction and issuing that instruction to the SIMT execution units.
+* Threads can now diverge and reconverge at a sub-warp granularity.
+* Description of the Diagram: A flow chart shows the execution path diverging. The A; B; block and the X; Y; block are shown side-by-side, indicating they can be scheduled more flexibly. Crucially, after A; B; finishes, its threads can immediately start executing Z; without waiting for the X; Y; block to complete. Similarly, threads from the other branch can start Z; as soon as they are done.
+
+Execution is still SIMT at the core—the hardware still executes one common instruction across multiple threads at a time. However, the scheduler can now group any threads from a warp that are at the same point in the code, rather than being constrained by a single warp-wide program counter.
+
+One subtlety is that the hardware does not automatically force a full warp reconvergence at the point where the branches would logically meet (e.g., at statement Z in the example). This is a conservative approach because code in one branch might produce data needed by another branch if synchronization were involved.
+
+To force a reconvergence point and ensure all threads in a warp have reached a specific point before any proceed, developers can use the __syncwarp() intrinsic.
+
+### Implications for Developers and Starvation-Free Algorithms
+
+Independent Thread Scheduling enables starvation-free algorithms. This means that if multiple threads are contending for a shared resource (like a lock), the system guarantees that any given thread will eventually be scheduled and make progress.
+
+Consider a lock (mutual exclusion):
+
+* Thread #0 acquires a lock.
+* Thread #1, which needs the lock, is scheduled to run. It spins, waiting for the lock.
+* In the old model, if Thread #0 and #1 were in the same warp, Thread #0 might never be scheduled again to release the lock, causing a deadlock.
+* With ITS, the scheduler will eventually give Thread #0 a chance to run, allowing it to release the lock and ensuring the system makes forward progress.
+
+If you need the old, stricter warp-synchronous behavior for certain algorithms (like a warp-level reduction), you can:
+
+* Use sync-variant primitives like __shfl_down_sync().
+* Explicitly call __syncwarp().
+* Compile your code for an older architecture (e.g., nvcc -arch=compute_60 -code=sm_70) to force the compiler to generate code compatible with the old scheduling model.
+
+## Chapter 6: A Survey of Profiling Tools and Techniques
+
+While NVIDIA's Nsight suite is the industry standard, it's part of a broader ecosystem of tools and research projects for performance analysis. Understanding these alternatives provides a more complete picture of the field.
+
+### An Overview of Available Tools
+
+We can categorize profiling tools based on their underlying technology:
+
+| Category | Examples | Pros | Cons |
+| --- | --- | --- | --- |
+| Hardware Counter-Based | nvprof (legacy), Nsight | Provides detailed hardware metrics (cache hits, etc.) | Heavy performance impact, slowdown due to kernel replays. |
+| GPU Simulators | GPGPU-Sim, Multi2Sim, Barra | Extremely detailed cycle-accurate analysis. | Very slow; often lag behind the latest hardware generations. |
+| Instrumentation-Based | GPU Ocelot, SASSI, NVBit, CUDA Flux | Fast, low overhead, allows for custom profiling logic. | Cannot measure hardware metrics; lifetime of research tools is limited. |
+| CUDA API Trace | Part of Nsight Systems | Traces calls to the CUDA runtime API. | - |
+
+### CUDA Flux: An LLVM-Based Instrumentation Profiler
+
+CUDA Flux is a research tool developed at Heidelberg University that offers a lightweight alternative to hardware counter-based profiling. It works by instrumenting the code at the compiler level.
+
+### The LLVM Framework and CUDA
+
+Modern compilers like clang use the LLVM Compiler Framework. This framework has a modular design:
+
+1. Front-end: Parses source code (like C++) into an Intermediate Representation (IR).
+2. Middle-end: Performs optimizations on the IR. This is where CUDA Flux hooks in.
+3. Back-end: Converts the optimized IR into machine code (PTX and SASS for GPUs).
+
+CUDA Flux adds a custom "pass" to the LLVM middle-end that injects extra instructions into the code to count how many times each basic block is executed.
+
+### How CUDA Flux Works
+
+1. PTX Processing: It first analyzes the PTX assembly for each kernel to create a summary of how many instructions are in each basic block (a straight-line sequence of code with no branches in or out, except at the beginning and end).
+2. Instrumentation: It then instruments the code at the IR level. At the beginning of each basic block, it inserts an instruction to increment a counter specific to that block.
+3. Calculation: After the kernel runs, the tool uses the execution counts for each basic block and the instruction summary to calculate the total number of PTX instructions executed.
+
+This profiling can be done at different granularities: for a single warp, a single CTA (thread block), or the entire grid.
+
+### Advantages and Limitations
+
+Advantages:
+
+* Fine-grained: Provides detailed instruction counts.
+* Low Overhead: The time taken does not depend on the number of metrics being monitored, avoiding the kernel replay issue of ncu.
+* Accessible: PTX is a more stable and accessible target for analysis than the constantly changing SASS.
+
+Limitations:
+
+* PTX, not SASS: It profiles PTX instructions, which is one step removed from what the hardware actually runs. The mapping is not always one-to-one.
+* Build System Modification: It requires changing the build system to use clang++ instead of nvcc, which can be complex.
+* Clang Limitations: It may not support all the newest CUDA features, such as texture memory.
+
+### Excursion: Predictive Performance Modeling
+
+A cutting-edge area of research is predictive performance modeling. The goal is to predict the performance (time, power, energy) of an application on a processor without actually running it, or at least without running it on every possible hardware configuration. This is incredibly useful for:
+
+* Making runtime scheduling decisions.
+* Exploring performance on hardware you don't have access to.
+* Guiding co-design of future hardware and software.
+
+### GPU Mangrove: A Portable Prediction Model
+
+GPU Mangrove is a research project that uses a machine learning approach for performance prediction.
+
+**Methodology:**
+
+1. Feature Extraction: It uses a tool like CUDA Flux to extract a set of portable code features from a kernel. These features depend only on the code and its inputs, not on the target hardware. Examples include:
+    * Instructions executed (total FLOPs, memory ops, etc.)
+    * Memory footprint
+    * Kernel launch configuration (grid and block dimensions)
+    * Computational intensity
+2. Model Training: For a specific GPU, it measures the actual execution time and power consumption of a large suite of diverse kernels (189 unique kernels from benchmarks like Rodinia and SHOC). It then trains a RandomForest machine learning model to learn the relationship between the portable code features and the measured performance on that GPU.
+3. Prediction: To predict the performance of a new kernel on that GPU, it extracts its portable features and feeds them into the trained model.
+
+**Results:** This approach has proven to be quite effective.
+
+* Accuracy: Achieved prediction accuracy of 8.86–52.0% for execution time and an impressive 1.84–2.94% for power consumption across five different GPUs.
+* Speed: Prediction is very fast, taking only 15-108 milliseconds.
+
+This type of learning-based model represents a powerful new way to reason about performance in our increasingly heterogeneous and complex computing landscape.
