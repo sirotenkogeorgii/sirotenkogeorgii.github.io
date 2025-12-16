@@ -18,6 +18,32 @@
   --code-number: #38bdf8;
   --code-function: #fb923c;
   --code-punctuation: #e2e8f0;
+  --code-inline-bg: rgba(15, 23, 42, 0.08);
+  --header-bg: rgba(238, 240, 244, 0.9);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg: #0b1020;
+  --surface: #0f172a;
+  --surface-muted: rgba(17, 24, 39, 0.86);
+  --text: #e7ecf5;
+  --muted: #9aa3b8;
+  --accent: #60a5fa;
+  --accent-muted: rgba(96, 165, 250, 0.18);
+  --line: rgba(148, 163, 184, 0.28);
+  --shadow: 0 28px 48px rgba(0, 0, 0, 0.55);
+  --code-bg: #0a0f1c;
+  --code-text: #e2e8f0;
+  --code-border: rgba(148, 163, 184, 0.32);
+  --code-comment: #9aa3b8;
+  --code-keyword: #f5a3d7;
+  --code-string: #c1ff72;
+  --code-number: #7dd3fc;
+  --code-function: #fbbf77;
+  --code-punctuation: #e2e8f0;
+  --code-inline-bg: rgba(226, 232, 240, 0.08);
+  --header-bg: rgba(11, 18, 32, 0.92);
 }
 
 *,
@@ -34,6 +60,7 @@ body {
   font-size: 18px;
   line-height: 1.7;
   letter-spacing: 0.01em;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 a {
@@ -62,7 +89,7 @@ a:focus {
   top: 0;
   z-index: 30;
   backdrop-filter: blur(12px);
-  background: rgba(238, 240, 244, 0.9);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--line);
 }
 
@@ -83,13 +110,23 @@ a:focus {
   color: var(--text);
 }
 
+.site-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.05rem;
+  width: 100%;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
 .site-nav {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1.75rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(15, 23, 42, 0.18);
+  padding-top: 0;
 }
 
 .site-nav a {
@@ -107,12 +144,74 @@ a:focus {
   top: 50%;
   transform: translateY(-50%);
   height: 1.6em;
-  border-left: 1px solid rgba(15, 23, 42, 0.18);
+  border-left: 1px solid var(--line);
 }
 
 .site-nav a:hover,
 .site-nav a:focus {
   color: var(--text);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.55rem 0.35rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.theme-toggle__track {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.12);
+}
+
+.theme-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #facc15, #fb923c);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.25);
+  transform: translateX(0);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-toggle__label {
+  font-size: 0.95rem;
+}
+
+.theme-toggle.is-dark .theme-toggle__thumb {
+  transform: translateX(22px);
+  background: linear-gradient(135deg, #a78bfa, #60a5fa);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.3);
 }
 
 .site-footer {
@@ -550,7 +649,7 @@ pre {
 
 code {
   font-family: "SFMono-Regular", "Menlo", "Consolas", monospace;
-  background: rgba(15, 23, 42, 0.08);
+  background: var(--code-inline-bg);
   padding: 0.2rem 0.45rem;
   border-radius: 0.4rem;
   font-size: 0.94em;
@@ -598,7 +697,7 @@ td {
 }
 
 thead {
-  background: rgba(15, 23, 42, 0.05);
+  background: var(--surface-muted);
 }
 
 .note-callout {
@@ -699,10 +798,10 @@ thead {
 .accordion {
   margin: 2rem 0;
   padding: 0.9rem 1.1rem 1.1rem;
-  background: #ffffff;
+  background: var(--surface);
   border-radius: 1rem;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  box-shadow: 0 22px 42px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
 }
 
 .accordion details {

@@ -6,6 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
   {% seo %}
+  <script>
+    (function () {
+      var storageKey = 'theme-preference';
+      var root = document.documentElement;
+      var storedTheme = null;
+      try {
+        storedTheme = localStorage.getItem(storageKey);
+      } catch (e) {}
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+      root.dataset.theme = initialTheme;
+    })();
+  </script>
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <script>
     window.MathJax = {
@@ -28,10 +41,18 @@
   <header class="site-header">
     <div class="wrapper">
       <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-      <nav class="site-nav">
-        <a href="{{ '/' | relative_url }}">Home</a>
-        <a href="{{ '/notes/' | relative_url }}">Notes</a>
-      </nav>
+      <div class="site-controls">
+        <nav class="site-nav">
+          <a href="{{ '/' | relative_url }}">Home</a>
+          <a href="{{ '/notes/' | relative_url }}">Notes</a>
+        </nav>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
+          <span class="theme-toggle__track" aria-hidden="true">
+            <span class="theme-toggle__thumb"></span>
+          </span>
+          <span class="theme-toggle__label" id="theme-toggle-label">Dark mode</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -68,6 +89,54 @@
         }
       });
     });
+  </script>
+  <script>
+    (function () {
+      var storageKey = 'theme-preference';
+      var root = document.documentElement;
+
+      function applyTheme(theme, persist) {
+        root.dataset.theme = theme;
+        if (persist !== false) {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch (e) {}
+        }
+
+        var toggle = document.getElementById('theme-toggle');
+        var label = document.getElementById('theme-toggle-label');
+        var isDark = theme === 'dark';
+        if (toggle) {
+          toggle.classList.toggle('is-dark', isDark);
+          toggle.setAttribute('aria-pressed', isDark);
+        }
+        if (label) {
+          label.textContent = isDark ? 'Light mode' : 'Dark mode';
+        }
+      }
+
+      applyTheme(root.dataset.theme || 'light', false);
+
+      var toggleButton = document.getElementById('theme-toggle');
+      if (toggleButton) {
+        toggleButton.addEventListener('click', function () {
+          var nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+          applyTheme(nextTheme, true);
+        });
+      }
+
+      var media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+      if (media && media.addEventListener) {
+        media.addEventListener('change', function (event) {
+          var storedTheme = null;
+          try {
+            storedTheme = localStorage.getItem(storageKey);
+          } catch (e) {}
+          if (storedTheme) return;
+          applyTheme(event.matches ? 'dark' : 'light', false);
+        });
+      }
+    })();
   </script>
 </body>
 </html>
