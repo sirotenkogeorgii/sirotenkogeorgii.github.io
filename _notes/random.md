@@ -8,9 +8,15 @@ date: 2024-10-20
 
 ## Edmonds-Karp algorithm analysis
 
-> **Remark**: The name "Ford–Fulkerson" is often also used for the Edmonds–Karp algorithm, which is a fully defined implementation of the Ford–Fulkerson method.
+<div class="math-callout math-callout--remark">
+  <p class="math-callout__title">Remark</p>
+  <p>The name "Ford–Fulkerson" is often also used for the Edmonds–Karp algorithm, which is a fully defined implementation of the Ford–Fulkerson method.</p>
+</div>
 
-> **Recall**: Edmonds-Karp is an efficient implementation of the Ford-Fulkerson method which selects shortest augmenting paths in the residual graph. It assigns a weight of $1$ to every edge and runs BFS to find a breadth-first shortest path from $s$ to $t$ in $G_f$ .
+<div class="math-callout math-callout--info">
+  <p class="math-callout__title">Recall</p>
+  <p>Edmonds–Karp is an efficient implementation of the Ford–Fulkerson method that selects shortest augmenting paths in the residual graph. It assigns a weight of $1$ to every edge and runs BFS to find a breadth-first shortest path from $s$ to $t$ in $G_f$.</p>
+</div>
 
 ### Complexity
 
@@ -28,7 +34,10 @@ The Edmonds–Karp variant guarantees termination and runs in $O(VE^2)$ time, in
 * How does $R_i$ differ from $R_{i+1}$? We removed all edges edges that were saturated and my removing edges we cannot create new paths. However, we can add new edges to $R_{i+1}$ by increasing the flow in the opposite direction. Let's show that the newly created paths shortest paths from $s$ to $t$ in $R_{i+1}$ are not shorter.
 * Sort vertices in a graph by their distance from the source. We $R_i$ increased the flow in the edges going by one layer ahead, therefore the only edges that are added to $R_{i+1}$ are those going by one layer back in the sorted graph. So, the length of the shortest path from $s$ to $t$ in $R_{i+1}$ is at least the same. -->
 
-$\textbf{Lemma A (about distances from source)}:$ Distances $d_i(s,u)$ increase monotonically, where $s$ is a source, $u$ is any other vertex and $i$ is order iteration of augmentation.
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title">Lemma A (monotonically increasing distances from source)</p>
+  <p>Distances $d_i(s,u)$ increase monotonically, where $s$ is a source, $u$ is any other vertex, and $i$ is the order iteration of augmentation.</p>
+</div>
 
 *Proof*: 
 * Let $R_i$ be a residual graph after the $i$-th flow augmentation and $u$ be some vertex in $R_i$.
@@ -37,9 +46,12 @@ $\textbf{Lemma A (about distances from source)}:$ Distances $d_i(s,u)$ increase 
 
 $\textbf{Corollary from Lemma A}:$ The length of the shortest path from the source to the target (sink) increases monotonically.
 
-> **Remark**: In the Dinic's algorithm we have lemma, which is the same as the corollary above, but there we are looking for a blocking flow, increasing flow in all shortest paths (not in only one the shortest path like in Edmonds–Karp), making the shortest path from the source to the target increase strictly (by at least $1$).
+<div class="math-callout math-callout--remark">
+  <p class="math-callout__title">Remark</p>
+  <p>In the Dinic's algorithm we have a lemma similar to the corollary above, but there we look for a blocking flow, increasing flow in all shortest paths (not in only the shortest path like in Edmonds–Karp), making the shortest path from the source to the target increase strictly (by at least $1$).</p>
+</div>
 
-$\textbf{Lemma B (about flow augmentations)}:$ The number of flow augmentations in the Edmonds-Karp algorithm is $O(VE)$.
+$\textbf{Lemma B (number of flow augmentations)}:$ The number of flow augmentations in the Edmonds-Karp algorithm is $O(VE)$.
 
 *Proof*: The residual graph contains $O(E)$ edges. Consider the edge $(u,v)$. Simple observation is that in general case for capacities having any values, the number of flow augmentations is bounded from above by the number of saturations. We can estimate the number of saturations taking into account that at least one edge is saturated during the flow augmentation:
 * Consider the case where the edge $(v,u)$ is used to push flow back (which is necessary to make $(u,v)$ available for saturation again). Let this occur at some intermediate iteration $k > i$. Since $(v,u)$ is on the shortest path at iteration $k$, we must have: $d_k(s, u) = d_k(s, v) + 1$
@@ -47,20 +59,25 @@ $\textbf{Lemma B (about flow augmentations)}:$ The number of flow augmentations 
   
   $$d_k(s, u) = d_k(s, v) + 1 \ge d_i(s, v) + 1 = (d_i(s, u) + 1) + 1 = d_i(s, u) + 2$$
 
-* This shows that each time the edge $(u,v)$ becomes saturated (after the first time), the shortest-path distance from the source to $u$ must have increased by at least $2$. The shortest path distance from $s$ to any node $u$ cannot exceed $\|V\| - 1$ (otherwise $u$ is unreachable). Therefore, a specific edge $(u,v)$ can become saturated at most $\frac{\|V\|}{2}$ times.
+* This shows that each time the edge $(u,v)$ becomes saturated (after the first time), the shortest-path distance from the source to $u$ must have increased by at least $2$. The shortest path distance from $s$ to any node $u$ cannot exceed $\lvert V\rvert - 1$ (otherwise $u$ is unreachable). Therefore, a specific edge $(u,v)$ can become saturated at most $\frac{\lvert V\rvert}{2}$ times.
 
 Since there are $O(E)$ edges in the residual graph, and each can be saturated $O(V)$ times, the total number of saturations (and thus the total number of flow augmentations) is bounded by $O(VE)$.
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ 'assets/images/notes/random/Edmonds_Karp_proof1.jpeg' | relative_url }}" alt="a" loading="lazy">
-    <!-- <figcaption>Relatively good application of rejection sampling</figcaption> -->
-  </figure>
+<figure>
+  <img src="{{ 'assets/images/notes/random/Edmonds_Karp_proof1.jpeg' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title">Theorem (running time)</p>
+  <p>The Edmonds–Karp maximum-flow algorithm runs in $O(VE^2)$ time.</p>
 </div>
 
-$\textbf{Theorem (about running time)}:$ The Edmonds-Karp maximum-flow algorithm runs in $O(VE^2)$ time.
-
 *Proof*: BFS runs in $O(E)$ time, and there are $O(VE)$ flow augmentations. All other bookkeeping is $O(V)$ per flow augmentation.
+
+
+## Boltzmann Distribution
+
+### TODO: Add Boltzmann Distribution
 
 ## Karger's algorithm
 
@@ -69,3 +86,10 @@ $\textbf{Theorem (about running time)}:$ The Edmonds-Karp maximum-flow algorithm
 ## Karger–Stein algorithm
 
 ### TODO: Add Karger–Stein algorithm
+
+## Randomized Quicksort
+### TODO: Add Randomized Quicksort
+
+## Zero-knowledge protocols
+
+### TODO: Add Zero-knowledge protocols
