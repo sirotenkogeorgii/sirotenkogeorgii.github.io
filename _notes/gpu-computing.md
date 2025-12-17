@@ -1098,6 +1098,7 @@ To close the gap to theoretical peak performance, further techniques are require
 
   * **Data Dependencies:** We use `__syncthreads()` to handle Read-After-Write (RAW) and Write-After-Read (WAR) hazards.
   * **Dynamic Allocation:** Using `extern __shared__` allows sizing shared memory at runtime rather than compile time.
+    * `extern` say: "This shared-memory array is declared here, but its size is not known at compile time; it will be provided at kernel launch."
   * **Thread Coarsening:** Having one thread compute multiple output elements (e.g., a $4 \times 4$ patch) increases register reuse.
   * **Double Buffering:** Loading the *next* tile into registers while computing the *current* tile hides memory latency completely.
 
@@ -1220,7 +1221,7 @@ You can sometimes coordinate **between blocks on the same SM**, but it’s **not
   This can still deadlock if the other block isn’t resident yet (same core issue as global barriers).
 * **Only safe if all participating blocks are guaranteed resident simultaneously**, i.e.
   
-  $$\#CTAs \le \#SMs \cdot b_r$$
+  $$\#\text{CTAs} \le \#\text{SMs} \cdot b_r$$
   
   and even then you’re relying on assumptions about progress and scheduling.
 
@@ -1236,7 +1237,7 @@ So: **within one SM**, you can *sometimes hack coordination* if you ensure all r
 #### Why is there no global synchronization?
 
 1. **Scalability**: A global barrier would be extremely expensive to implement in hardware across a device with a high SM count.
-2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  #CTAs $\leq$ #SMs $\cdot$ $b_r$  where $b_r$ is the number of resident blocks per SM.
+2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  #\text{CTAs} $\leq$ #\text{SMs} $\cdot$ $b_r$  where $b_r$ is the number of resident blocks per SM.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">The deadlock example that would the global synchronization cause.</span></p>
@@ -1247,9 +1248,9 @@ The classic deadlock is simpler:
 
 1. You launch **more blocks than can be resident at once**:
    
-   $$\#CTAs > \#SMs \cdot b_r$$
+   $$\#\text{CTAs} > \#\text{SMs} \cdot b_r$$
    
-2. The GPU schedules up to $#SMs \cdot b_r$ blocks. These become **resident** and start running.
+2. The GPU schedules up to $\#\text{SMs} \cdot b_r$ blocks. These become **resident** and start running.
 3. All resident blocks reach the **global barrier** and **wait** there.
 4. While waiting, they **still occupy the SM resources** (registers, shared memory, block slots).
 5. Because the SMs are "full" of waiting resident blocks, **no new blocks can become resident**, so the remaining (not-yet-scheduled) CTAs never start.
@@ -1262,7 +1263,7 @@ So it's not really a "waiting chain forming a cycle." It's more like:
 
 That's why the text says global synchronization would only be safe if all CTAs can be resident simultaneously:
 
-$$\#CTAs \le \#SMs \cdot b_r$$
+$$\#\text{CTAs} \le \#\text{SMs} \cdot b_r$$
 
 </div>
 
@@ -1282,7 +1283,7 @@ The figure depicts this as a tree-based reduction. A large array is at the botto
   <figcaption>Kernel decomposition</figcaption>
 </figure>
 
-**Question(s):** Where the intermediate results are stored? Are they returned from the kernel as an output? Could something happend to the global memory of the device between kernel launches?
+**Question(s):** Where the intermediate results are stored? Are they returned from the kernel as an output? Could something happen to the global memory of the device between kernel launches?
 <div class="accordion">
   <details markdown="1">
     <summary>Intermediate results</summary>
@@ -1384,10 +1385,10 @@ We will now analyze six different versions of a reduction kernel, each fixing a 
 
 #### Reduction #1: Interleaved Addressing with Divergence
 
-This is our naive, starting-point implementation. The basic idea is that in each step of a loop, half of the active threads will fetch a value from a neighboring thread, add it to their own, and store the result. This process repeats until only the first thread holds the final sum.
+This is our naive, starting-point implementation. The basic idea is that in each step of a loop, half of the active threads will fetch a value from a neighboring thread, add it to their own, and store the result. This process repeats until only the first thread holds the final sum. `blockDim.x` must be a power-of-two.
 
 ```c++
-__global__ void Reduction0a_kernel( int *out, int *in, size-t N ) {
+__global__ void Reduction0a_kernel( int *out, int *in, size_t N ) {
     extern __shared__ int sPartials[];
     const int tid = threadIdx.x;
     unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
@@ -1425,6 +1426,26 @@ __global__ void Reduction0a_kernel( int *out, int *in, size-t N ) {
 * `__syncthreads();`: Another barrier inside the loop is essential. It prevents a race condition where one thread might read a value from `sPartials` in the next iteration before another thread has finished writing its new sum to that same location in the current iteration.
 * `if (tid == 0)`: After the loop, thread 0 of the block holds the partial sum for the entire block, which it writes out to the global output array out.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Multiple Blocks and Shared Memory)</span></p>
+
+The code could be used with multiple blocks, not just one, because **`sPartials` is in shared memory**, and **shared memory is per-block**.
+
+So even though every block has threads with the same `tid` values (0, 1, 2, …), each block has its **own private shared-memory array**:
+
+* Block 0: `sPartials_block0[tid]`
+* Block 1: `sPartials_block1[tid]`
+* Block 2: `sPartials_block2[tid]`
+* …
+
+They do **not** alias each other. What *is* shared across blocks is **global memory**, e.g. `in[i]` and `out[blockIdx.x]`.
+
+So:
+* `sPartials[tid] = in[i];` is safe across blocks (different shared memory instances).
+* `out[blockIdx.x] = ...;` is also safe because each block writes a different `blockIdx.x`.
+
+</div>
+
 #### Problem Identified: Branch Divergence
 
 The `if (tid % (2*s) == 0)` check is the source of a major performance problem. Within a warp of 32 threads, some threads will satisfy this condition while others will not. For example, when `s=1`, half the threads in a warp will pass the check, and half will fail. Since all threads in a warp execute the same instruction, the hardware must execute the if block for the active threads and then wait while the other threads do nothing. This effectively halves the utilization of the SM.
@@ -1443,6 +1464,11 @@ for ( unsigned int s = 1; s < blockDim.x; s *= 2 ) {
     __syncthreads();
 }
 ```
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/chapter5_interleaved_addressing_nondivergent.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Interleaved nondivergent addressing</figcaption>
+</figure>
 
 #### Code Explanation:
 
@@ -1466,6 +1492,11 @@ for ( unsigned int s = blockDim.x / 2; s > 0; s >>= 1 ) {
     __syncthreads();
 }
 ```
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/chapter5_sequential_addressing_nondivergent.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Sequential nondivergent addressing</figcaption>
+</figure>
 
 #### Code Explanation:
 
@@ -1508,6 +1539,7 @@ for ( unsigned int s = blockDim.x / 2; s > 0; s >>= 1 ) {
 
 * `unsigned int i = blockIdx.x*(blockDim.x*2) + threadIdx.x;`: Each block now covers a region twice the size of `blockDim.x`.
 * `sPartials[tid] = in[i] + in[i+blockDim.x];`: Each thread now performs two loads (`in[i]` and `in[i+blockDim.x]`) and one add, storing the result directly into shared memory. This uses all threads in the block productively from the very beginning.
+* We basically just skip the first phase of summation (reducing the problem by two) via the first add, but we still will utilise only the half the threads in the second phrase.
 
 #### Problem Identified: Instruction Overhead
 
@@ -1515,7 +1547,7 @@ We are getting much closer to peak performance, but there is still room for impr
 
 #### Reduction #5: Unrolling the Last Warp
 
-A warp (32 threads) has a special property: all instructions within it are synchronous. The scheduler broadcasts a single instruction to all 32 threads. This means that if we are in a situation where the number of active threads is 32 or fewer (i.e., only one warp is left doing work), we no longer need the `__syncthreads()` call. The natural lock-step execution of the warp guarantees synchronization. We also no longer need the `if (tid < s)` check, as the inactive threads in the warp can simply be told to nullify their output.
+Number of active threads decreases over time. A warp (32 threads) has a special property: all instructions within it are synchronous. The scheduler broadcasts a single instruction to all 32 threads. This means that if we are in a situation where the number of active threads is 32 or fewer (i.e., only one warp is left doing work), we no longer need the `__syncthreads()` call. The natural lock-step execution of the warp guarantees synchronization. We also no longer need the `if (tid < s)` check, as the inactive threads in the warp can simply be told to nullify their output.
 
 We can exploit this by "unrolling" the last few iterations of the loop—specifically, the iterations where `s <= 32`.
 
@@ -1588,7 +1620,7 @@ __global__ void Reduction0f_kernel( int *out, int *in, bool echo ) {
 }
 ```
 
-Since the kernel now requires the block size at compile time, we need a "wrapper" function on the host to call the correct version based on the runtime dimBlock parameter. A switch statement is perfect for this.
+Since the kernel now requires the block size at compile time, we need a "wrapper" function on the host to call the correct version based on the runtime `dimBlock` parameter. A switch statement is perfect for this.
 
 ```c++
 void Reduction0f_wrapper ( int dimGrid, int dimBlock, int smemSize, int *out, int *in, bool echo ) {
@@ -1606,7 +1638,7 @@ This version provides the compiler with maximum information, allowing it to gene
 
 ### Performance Summary
 
-The following table summarizes the throughput achieved by each optimization. The maxThr column shows the thread count per block that yielded the peak performance for that version.
+The following table summarizes the throughput achieved by each optimization. The `maxThr` column shows the thread count per block that yielded the peak performance for that version.
 
 | Version | 32 | 64 | 128 | 256 | 512 | 1024 | maxThr | maxBW (GB/s) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1644,7 +1676,7 @@ Here, the overall algorithm stays the same, but the implementation of the kernel
 
 This level of optimization leaves the algorithm and code untouched. Instead, it focuses on how kernels are launched and how work is managed.
 
-* Kernel Launch Parameters: Tuning the grid and block dimensions (dimGrid, dimBlock) can have a huge impact on performance.
+* Kernel Launch Parameters: Tuning the grid and block dimensions (`dimGrid`, `dimBlock`) can have a huge impact on performance.
 * Overlapped Copy & Execute: Using CUDA streams to overlap data transfers between the host and device with kernel execution to keep all parts of the GPU busy.
 
 ### Summary
@@ -1658,7 +1690,7 @@ Key Takeaways:
 3. Optimize Systematically: Start with the broadest algorithmic optimizations, then move to fine-grained code optimizations, and finally tune the scheduling optimizations.
 4. Know When to Stop: The goal of optimization is not just raw performance, but performance balanced with code readability, maintainability, and portability. A hyper-optimized but unreadable kernel may be a long-term liability.
 
-## Chapter 1: Understanding and Profiling GPU Performance
+## Chapter 6 - Profiling and Understanding GPU Performance
 
 Welcome to the world of performance analysis! Writing a parallel program that runs correctly is only the first step. The next, and often more challenging, step is to make it run fast. In high-performance computing, we are constantly chasing the maximum possible speedup. This chapter will introduce you to the fundamental concepts that define and limit the performance of your GPU applications. As one expert noted, “There is no lower bound how bad a baseline can be,” which serves as a humble reminder that there is always room for improvement.
 
@@ -1882,9 +1914,9 @@ This is a critical lesson: the performance numbers you see during a detailed pro
 
 ### The Challenge of Skewed Matrices
 
-The peak performance of libraries like cuBLAS is often benchmarked using square matrices (e.g., 1024 \times 1024). But what happens if the matrices are "skewed"—for instance, very tall and thin, or very short and wide?
+The peak performance of libraries like cuBLAS is often benchmarked using square matrices (e.g., $1024 \times 1024$). But what happens if the matrices are "skewed"—for instance, very tall and thin, or very short and wide?
 
-Let's consider the matrix multiplication C = A \cdot B, where the dimensions are m \times k for matrix A and k \times n for matrix B. We will keep the total amount of work roughly the same but dramatically alter the shapes of A and B.
+Let's consider the matrix multiplication $C = A \cdot B$, where the dimensions are $m \times k$ for matrix $A$ and $k \times n$ for matrix $B$. We will keep the total amount of work roughly the same but dramatically alter the shapes of $A$ and $B$.
 
 The lecture slide presents a bar chart that illustrates this scenario.
 
