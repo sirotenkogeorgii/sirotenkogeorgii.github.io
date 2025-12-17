@@ -2700,7 +2700,7 @@ The Likelihood Ratio (LR) test provides a framework for comparing nested models.
 
 - Let $\mathcal{M}_0$ be a "restricted" model (null hypothesis, $H_0$) with parameter space $\Theta_0$.
 - Let $\mathcal{M}_1$ be a "full" model (alternative hypothesis, $H_1$) with parameter space $\Theta_1$, where $\Theta_0 \subset \Theta_1$.
-- Let $\ell_{max}(\mathcal{M}_0)$ and $\ell_{max}(\mathcal{M}_1)$ be the maximized log-likelihoods for each model.
+- Let $\ell\_{max}(\mathcal{M}_0)$ and $\ell\_{max}(\mathcal{M}_1)$ be the maximized log-likelihoods for each model.
 
 The LR test statistic is defined as:
 
@@ -3008,7 +3008,7 @@ $$
 \mathcal{E}_{t+1} \approx J(X^*) \mathcal{E}_t
 $$
 
-The fixed point $X^*$ is stable if all eigenvalues of the Jacobian matrix have a modulus less than 1: $\max_i(|\lambda_i(J(X^*))|) < 1$.
+The fixed point $X^*$ is stable if all eigenvalues of the Jacobian matrix have a modulus less than 1: $\max_i(\lvert\lambda_i(J(X^*))\rvert) < 1$.
 
 ### 3.4 Bifurcation and Chaos
 
