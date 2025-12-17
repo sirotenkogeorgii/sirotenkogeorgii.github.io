@@ -2004,15 +2004,12 @@ Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \
 <div class="gd-grid">
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model1.png' | relative_url }}" alt="hier_model1" loading="lazy">
-    <!-- <figcaption>GK110 architecture</figcaption> -->
   </figure>
   <figure>
-    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model2.png' | relative_url }}" alt="hier_model2" loading="lazy">
-    <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model2.jpg' | relative_url }}" alt="hier_model2" loading="lazy">
   </figure>
   <figure>
     <img src="{{ '/assets/images/notes/model-based-time-series-analysis/hier_model3.png' | relative_url }}" alt="hier_model3" loading="lazy">
-    <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
   </figure>
 </div>
 
@@ -2568,3 +2565,477 @@ where $\lambda_i$ are the eigenvalues of $A$. This is equivalent to saying all r
 
 
 [Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
+
+## Chapter 1: Vector Autoregressive (VAR) Models
+
+### 1.1 Introduction to Multivariate Time Series
+
+In contrast to univariate analysis, multivariate time series analysis considers datasets where multiple variables are recorded simultaneously over time.
+
+- **Multivariate Time Series Data:** A vector $X_t$ representing observations at time $t$. $X_t = (X_{1t}, \dots, X_{Nt})^T \in \mathbb{R}^N$. Here, $N$ is the number of simultaneously recorded variables.
+- **New Phenomena of Interest:** The primary advantage of the multivariate approach is the ability to model interactions between time series. A key phenomenon is the cross-correlation between the different component series.
+
+### 1.2 The VAR($p$) Model Architecture
+
+The Vector Autoregressive (VAR) model is a natural extension of the univariate autoregressive (AR) model to multivariate time series. A VAR($p$) model expresses each variable as a linear function of its own past values, the past values of all other variables in the system, and a random error term.
+
+The general form of a VAR($p$) model is:
+
+$$
+X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t
+$$
+
+- **Intercept:** $c \in \mathbb{R}^N$ is the intercept vector.
+- **Coefficient Matrices:** $A_i \in \mathbb{R}^{N \times N}$ are the coefficient matrices for each lag $i=1, \dots, p$.
+- **Error Term:** $\varepsilon_t$ is a vector of white noise error terms, typically assumed to be multivariate normal: $\varepsilon_t \sim \mathcal{N}(0, \Sigma_\varepsilon)$.
+
+The covariance matrix of the error term, $\Sigma_\varepsilon$, is given by:
+
+$$
+\Sigma_\varepsilon = E[\varepsilon_t \varepsilon_t^T] =
+\begin{pmatrix}
+  E[\varepsilon_{1t}^2] & E[\varepsilon_{1t}\varepsilon_{2t}] & \dots \\
+  \vdots & \ddots & \vdots \\
+  E[\varepsilon_{Nt}\varepsilon_{1t}] & \dots & E[\varepsilon_{Nt}^2]
+\end{pmatrix}
+$$
+
+Crucially, the off-diagonal elements of $\Sigma_\varepsilon$ are allowed to be non-zero, meaning the contemporaneous error terms for different variables can be correlated.
+
+#### Structure of Coefficient Matrices
+
+Each coefficient matrix $A_i$ captures the influence of variables at lag $i$ on the current state of the system.
+
+$$
+A_i = \begin{pmatrix}
+a_{11}^{(i)} & \dots & a_{1N}^{(i)} \\
+\vdots & \ddots & \vdots \\
+a_{N1}^{(i)} & \dots & a_{NN}^{(i)}
+\end{pmatrix}
+$$
+
+- **Diagonal Entries ($a_{jj}^{(i)}$):** These entries relate a variable to its own past. They capture the internal time constants and autoregressive properties of each individual series.
+- **Off-Diagonal Entries ($a_{jk}^{(i)}$ for $j \neq k$):** These entries quantify how the past of variable $k$ influences the present of variable $j$. They are the key to understanding the cross-series dynamics and interactions.
+
+### 1.3 Equivalence and Companion Form
+
+A significant theoretical result is that any VAR($p$) process can be rewritten as a VAR(1) process. This is extremely useful for analysis, particularly for assessing model stability.
+
+1. Any scalar AR($p$) process can be written as a p-variate VAR(1) process.
+2. Any VAR($p$) process in $K$ variables can be written as a $Kp$-variate VAR(1) process.
+
+This transformation allows us to study the stability and properties of a high-order model by analyzing a single, larger coefficient matrix corresponding to the VAR(1) representation.
+
+### 1.4 Stationarity of VAR Processes
+
+The stability of a VAR process is determined by the properties of its coefficient matrices. For a VAR(1) process, the condition for stationarity is based on the eigenvalues of the coefficient matrix.
+
+For the VAR(1) process $X_t = c + AX_{t-1} + \varepsilon_t$, a necessary and sufficient condition for stationarity is that all eigenvalues of the matrix $A$ have a modulus less than 1.
+
+$$
+\max_i(\rvert\lambda_i(A)\lvert) < 1
+$$
+
+where $\lambda_i$ are the eigenvalues of $A$.
+
+#### Proof Sketch for Stationarity
+
+1. **Iterative Substitution:** Consider the process without the intercept and noise terms for simplicity: $X_t = AX_{t-1}$. By iterating backwards, we can express $X_t$ in terms of an initial state $X_0$:
+   
+   $$
+   X_t = A X_{t-1} = A (A X_{t-2}) = A^2 X_{t-2} = \dots = A^t X_0
+   $$
+
+2. **Eigendecomposition:** We can decompose the matrix $A$ into its eigenvalues and eigenvectors: $A = V \Lambda V^{-1}$ where $\Lambda$ is a diagonal matrix containing the eigenvalues $\lambda_i$, and $V$ is the matrix of corresponding eigenvectors.
+3. **Power of $A$:** Using the eigendecomposition, the $t$-th power of $A$ is:
+   
+   $$
+   A^t = (V \Lambda V^{-1})^t = (V \Lambda V^{-1})(V \Lambda V^{-1}) \dots = V \Lambda^t V^{-1}
+   $$
+
+4. **System Evolution:** Substituting this back into the expression for $X_t$:
+   
+   $$
+   X_t = V \Lambda^t V^{-1} X_0
+   $$
+
+5. **Condition for Stability:** The system is stable (i.e., stationary) if $X_t \to 0$ as $t \to \infty$. This requires that $A^t \to 0$. This, in turn, depends on the behavior of $\Lambda^t$, which is a diagonal matrix with entries $\lambda_i^t$.
+   - If $\max_i(\lvert\lambda_i\rvert) < 1$, then all $\lambda_i^t \to 0$ as $t \to \infty$. Consequently, $\Lambda^t \to 0$, $A^t \to 0$, and the process is stable and stationary.
+   - If $\max_i(\lvert\lambda_i\rvert) > 1$, at least one eigenvalue has a modulus greater than 1. Its corresponding term $\lambda_i^t$ will grow exponentially, causing $X_t$ to explode along the direction of the corresponding eigenvector. The process is non-stationary (divergent).
+   - If $\max_i(\lvert\lambda_i\rvert) = 1$, the system is marginally stable. This can lead to behaviors like a random walk.
+
+### 1.5 Parameter Estimation
+
+The parameters of a VAR($p$) model $(c, A_1, \dots, A_p, \Sigma_\varepsilon)$ can be estimated using Maximum Likelihood Estimation (MLE), which in the case of Gaussian errors is equivalent to multivariate least squares.
+
+Given a VAR($p$) model:
+
+$$
+X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t, \quad \varepsilon_t \sim \mathcal{N}(0, \Sigma_\varepsilon)
+$$
+
+The conditional probability density of $X_t$ given its past is:
+
+$$
+p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta) = \mathcal{N}\left(c + \sum_{i=1}^{p} A_i X_{t-i}, \Sigma_\varepsilon\right)
+$$
+
+where $\theta$ represents all model parameters.
+
+The log-likelihood for a sequence of observations $X_1, \dots, X_T$ is then:
+
+$$
+\ell(\theta) = \sum_{t=p+1}^{T} \log p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta)
+$$
+
+Maximizing this log-likelihood function provides the parameter estimates. This can be framed as a multivariate linear regression problem.
+
+### 1.6 Model Order Selection
+
+A critical step in VAR modeling is determining the appropriate order, $p$. This is a model selection problem where we aim to balance model fit with model complexity. Common criteria include AIC and BIC, but a formal statistical test is the Likelihood Ratio Test.
+
+#### Likelihood Ratio Test (Wilks' Theorem)
+
+The Likelihood Ratio (LR) test provides a framework for comparing nested models.
+
+- Let $\mathcal{M}_0$ be a "restricted" model (null hypothesis, $H_0$) with parameter space $\Theta_0$.
+- Let $\mathcal{M}_1$ be a "full" model (alternative hypothesis, $H_1$) with parameter space $\Theta_1$, where $\Theta_0 \subset \Theta_1$.
+- Let $\ell_{max}(\mathcal{M}_0)$ and $\ell_{max}(\mathcal{M}_1)$ be the maximized log-likelihoods for each model.
+
+The LR test statistic is defined as:
+
+$$
+D = -2 \log \left(\frac{\sup_{\theta \in \Theta_0} \mathcal{L}(\theta)}{\sup_{\theta \in \Theta_1} \mathcal{L}(\theta)}\right) = -2 (\ell_{max}(\mathcal{M}_0) - \ell_{max}(\mathcal{M}_1))
+$$
+
+Under suitable regularity conditions and assuming $H_0$ is true, the statistic $D$ follows a chi-squared distribution:
+
+$$
+D \sim \chi^2(d_1 - d_0)
+$$
+
+where $d_1$ and $d_0$ are the number of free parameters in the full and restricted models, respectively.
+
+**Decision Rule:** We compare the empirically observed statistic $D_{empirical}$ to the $\chi^2$ distribution. If the probability of observing a value as large as $D_{empirical}$ is small (e.g., $p < \alpha$, where $\alpha=0.05$ by convention), we reject the null hypothesis $H_0$ in favor of the more complex model $\mathcal{M}_1$.
+
+#### Application to VAR($p$) vs. VAR($p+1$)
+
+We can use the LR test to decide if a VAR($p+1$) model provides a significantly better fit than a VAR($p$) model.
+
+- **Restricted Model ($H_0$):** VAR($p$) process, $X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$. This is equivalent to a VAR(p+1) model with the constraint $A_{p+1} = 0$.
+- **Full Model ($H_1$):** VAR($p+1$) process, $X_t = c + \sum_{i=1}^{p+1} A_i X_{t-i} + \varepsilon_t$.
+
+The LR test compares the "explained variation" in the data under both models. The maximized log-likelihood is related to the determinant of the estimated residual covariance matrix, $\hat{\Sigma}_\varepsilon$.
+
+$$
+\ell_{max} \propto -\frac{T_{eff}}{2} \log(\lvert\hat{\Sigma}_\varepsilon\rvert)
+$$
+
+The test statistic becomes:
+
+$$
+D = T_{eff} \left(\log(\lvert\hat{\Sigma}_{restr}\rvert) - \log(\rvert\hat{\Sigma}_{full}\lvert)\right)
+$$
+
+This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR(p+1) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
+
+### 1.7 Granger Causality
+
+Granger causality is a statistical concept of causality based on prediction. It provides a formal method to test for directed influence between time series within the VAR framework.
+
+- **Definition:** If the past of a time series $X$ contains information that improves the prediction of a time series $Y$, beyond the information already contained in the past of $Y$ and all other relevant variables, then we say that $X$ Granger-causes $Y$ (denoted $X \to Y$).
+
+Let $X_t, Y_t$ be two time series processes and $Z_t$ represent all other knowledge in the world. Let $\mathcal{E}[Y_{t+1} \mid \text{past}]$ denote the optimal prediction of $Y_{t+1}$ given information from the past. Then $X \to Y$ if:
+
+$$
+\mathcal{E}[Y_{t+1} \mid Y_{t-\text{past}}, X_{t-\text{past}}, Z_{t-\text{past}}] \neq \mathcal{E}[Y_{t+1} \mid Y_{t-\text{past}}, Z_{t-\text{past}}]
+$$
+
+#### Testing for Granger Causality with VAR Models
+
+To make this concept testable, Granger proposed embedding it within a VAR model. Consider a bivariate system $(X_t, Y_t)$. To test if $X \to Y$, we set up two nested models:
+
+1. **Full Model:** A VAR($p$) model where past values of $X$ are used to predict $Y$. In the equation for $Y_t$, the coefficients on lagged $X_t$ are unrestricted.
+2. **Restricted Model:** A VAR($p$) model where the influence of past $X$ on $Y$ is removed. This is achieved by setting all coefficients that link lagged $X_t$ to $Y_t$ to zero.
+
+We then perform a likelihood ratio test (or an F-test) comparing these two models.
+
+- Let $\hat{\Sigma}_{full}$ and $\hat{\Sigma}_{restr}$ be the estimated residual covariance matrices.
+- The LR test statistic is: $D = T_{eff} (\log(\lvert\hat{\Sigma}_{restr}\rvert) - \log(\lvert\hat{\Sigma}_{full}\rvert))$.
+- Under $H_0$ (no Granger causality), $D \sim \chi^2(q)$, where $q$ is the number of zero-restrictions imposed (in this case, $p \times (\text{dim of } X) \times (\text{dim of } Y)$).
+
+**Interpretation:** If adding the past of $X$ significantly reduces the residual covariance (i.e., the prediction error) for $Y$, then the test statistic will be large, leading to a rejection of the null hypothesis. We conclude that $X$ Granger-causes $Y$.
+
+#### Caveats in Interpretation
+
+It is crucial to interpret "Granger causality" with care, as it is a statement about predictive power, not necessarily true causal influence.
+
+- **Hidden Common Causes:** If an unobserved variable $Z$ drives both $X$ and $Y$, a spurious Granger-causal relationship $X \to Y$ might be detected.
+- **Linearity Assumption:** The standard test is based on linear VAR models and only detects linear forms of dependence. The general definition of Granger causality is not restricted to linear relationships.
+- **Gaussian Assumptions:** The statistical properties of the LR test rely on the assumption of Gaussian-distributed residuals. Strong deviations from this assumption may invalidate the test statistics.
+
+## Chapter 2: Generalized Autoregressive Models
+
+This chapter extends the autoregressive framework to model non-Gaussian time series, such as binary sequences or count data, using the principles of Generalized Linear Models (GLMs).
+
+### 2.1 AR Models for Binary Processes
+
+Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can model this using an autoregressive structure similar to logistic regression.
+
+- **Data:** A binary time series, e.g., $X_t = \lbrace 0, 1, 1, 0, \dots\rbrace$.
+- **Model Architecture:** The probability of a "success" $(X_t=1)$ is conditioned on the past $p$ values.
+- 
+  $$
+  X_t \mid X_{t-1}, \dots, X_{t-p} \sim \text{Bernoulli}(\pi_t)
+  $$
+
+  where $\pi_t = P(X_t = 1 \mid \text{past})$.
+- **Linear Predictor:** The probability $\pi_t$ is related to a linear combination of past observations through a link function (typically the logit function). The linear predictor $\eta_t$ is defined as:
+- 
+  $$
+  \eta_t = c + \sum_{i=1}^{p} \alpha_i X_{t-i}
+  $$
+  
+- **Link Function:** The relationship between $\eta_t$ and $\pi_t$ is given by the inverse link function (sigmoid or logistic function):
+- 
+  $$
+  \pi_t = \frac{e^{\eta_t}}{1 + e^{\eta_t}} = \frac{1}{1 + e^{-\eta_t}}
+  $$
+
+  This is analogous to logistic regression, but the predictors are now the lagged values of the time series itself.
+- **Training:** Model parameters are estimated by maximizing the likelihood, which does not have a closed-form solution. Numerical optimization methods like Gradient Descent or Newton-Raphson are required.
+
+#### Main Limitations of Binary AR Models
+
+- **Unstable Estimates:** For strongly dependent series, certain histories (e.g., a long string of 1s) may lead to perfect prediction, causing the MLE estimates for coefficients to become very large or non-existent.
+- **Limited Dynamical Structure:** These models may struggle to capture complex temporal patterns like "bursts" of activity versus periods of "silence".
+- **Scalability:** Extending this framework to the multivariate case is challenging.
+- **Numerical Inference:** Inference about the model parameters is purely numerical.
+
+A common remedy for instability is to reduce the model order $p$, thereby reducing complexity.
+
+### 2.2 Change Point Models for Binary Time Series
+
+An alternative approach for binary series is to model the success probability $\pi_t$ as an explicit function of time, allowing for a single change point.
+
+- **Problem:** We suspect the underlying success probability $\pi_t$ is not constant over time and want to infer the location of a change.
+- **Goal:** Infer the change point location $\tau$ from the observed data $X_1, \dots, X_T$.
+- **Model:** We model the time-varying probability $\pi_t$ using a sigmoid function of time:
+  
+  $$
+  \pi_t = f(t, \theta) = m + \frac{d}{1 + e^{-a(t-c)}}
+  $$
+
+- **The parameters $\theta = \lbrace m, d, a, c\rbrace$ have clear interpretations:**
+  - $m$: Baseline probability before the change $(0 \le m \le 1)$.
+  - $d$: Amplitude of the change $(0 \le d \le 1-m)$. The success probability after the change is $m+d$.
+  - $a$: Inverse slope of the change $(a \ge 0)$. Smaller values of $a$ correspond to a steeper, more abrupt change.
+  - $c$: Change point location in time $(0 \le c \le T-1)$.
+- **Likelihood:** The likelihood of the observed data given the parameters is the product of Bernoulli probabilities:
+  
+  $$
+  P(X \mid \theta) = \prod_{t=1}^{T} \pi_t^{X_t} (1-\pi_t)^{1-X_t}
+  $$
+
+  The log-likelihood is $\ell(\theta) = \sum_{t=1}^{T} [X_t \log(\pi_t) + (1-X_t)\log(1-\pi_t)]$. These parameters are typically found via MLE.
+- **Challenge:** This specific sigmoid structure only allows for a single, monotonic change point in the success probability.
+
+### 2.3 AR Models for Count Processes (Poisson GLM)
+
+For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a Poisson distribution where the rate is modeled with an autoregressive structure.
+
+- **Data:** A univariate or multivariate count process. For example, the number of customers entering a store per hour, or the number of spikes from $N$ neurons in discrete time bins. $C_t = (C_{1t}, \dots, C_{Nt})^T$.
+- **Model:** For each process $i=1, \dots, N$, we model the count $C_{it}$ conditioned on the past as a Poisson random variable.
+  
+  $$
+  C_{it} \mid \text{past} \sim \text{Poisson}(\lambda_{it})
+  $$
+
+  The Poisson PMF implies that $E[C_{it} \mid \text{past}] = \text{Var}(C_{it} \mid \text{past}) = \lambda_{it}$. The rate $\lambda_{it}$ determines both the mean and variance.
+- **Rate Model:** We model the vector of rates $\lambda_t = (\lambda_{1t}, \dots, \lambda_{Nt})^T$ using an AR structure with an exponential link function to ensure positivity of the rates.
+  
+  $$
+  \lambda_t = \exp\left(c + \sum_{j=1}^{p} A_j C_{t-j}\right)
+  $$
+
+  The $\exp$ is the inverse link function in this Poisson GLM. The coefficient matrices $A_j$ capture the influence of past counts on current rates, representing "effective couplings" between processes.
+- **Maximum Likelihood Estimation:** The log-likelihood, assuming conditional independence of the individual processes given the past, is:
+  
+  $$
+  \ell(\{c, A_j\}) = \sum_{t=p+1}^{T} \sum_{i=1}^{N} \log P(C_{it} \mid \text{past})
+  $$
+
+  Substituting the Poisson PMF, $\log P(C_{it}) = C_{it} \log(\lambda_{it}) - \lambda_{it} - \log(C_{it}!)$, and our model for $\lambda_{it}$:
+  
+  $$
+  \ell(\lbrace c, A_j\rbrace) = \sum_{t, i} \left[ C_{it} \left(c_i + \sum_{j,k} (A_j)_{ik} C_{k,t-j}\right) - \exp\left(c_i + \sum_{j,k} (A_j)_{ik} C_{k,t-j}\right) \right] + \text{const}
+  $$
+
+  Although there is no closed-form solution for the parameters, the Poisson log-likelihood function is concave. This is a significant advantage, as it guarantees that standard numerical optimization methods (like Gradient Descent) will converge to the unique global maximum.
+
+## Chapter 3: Nonlinear Dynamical Systems
+
+This chapter introduces the fundamental concepts of nonlinear dynamical systems, moving beyond the linear framework of VAR models to explore more complex behaviors like fixed points, cycles, and chaos.
+
+### 3.1 Motivation: From Linear to Nonlinear Systems
+
+A VAR(1) model, $X_t = c + AX_{t-1}$, is a Linear Dynamical System (LDS). We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
+
+$$
+X_t = F(X_{t-1})
+$$
+
+This defines a nonlinear dynamical system. Understanding the behavior of simple nonlinear systems provides the foundation for analyzing more complex models.
+
+### 3.2 Analysis of 1D Systems
+
+Let's start with a simple first-order nonlinear difference equation: $x_{t+1} = f(x_t)$.
+
+#### Fixed Points
+
+A central concept is the fixed point (FP), a state where the system remains unchanged over time.
+
+- **Definition:** A point $x^*$ is a fixed point of the map $f$ if it satisfies the equation:
+  
+  $$
+  x^* = f(x^*)
+  $$
+
+- **Example (Linear AR(1)):** For $f(x) = \alpha x + c$, the fixed point equation is $x^* = \alpha x^* + c$.
+  - Solving for $x^*: x^*(1-\alpha) = c$, which gives $x^* = \dfrac{c}{1-\alpha}$ (provided $\alpha \neq 1$).
+
+#### Stability of Fixed Points
+
+The behavior of the system near a fixed point determines its stability.
+
+- A stable fixed point, or attractor, is a point such that trajectories starting in its vicinity converge to it.
+  - Formally, $x^*$ is an attractor if there exists a set $C$, called the basin of attraction, such that for any initial condition $x_0 \in C$, $\lim_{t \to \infty} x_t = x^*$.
+- An unstable fixed point, or repeller, is a point from which nearby trajectories diverge.
+
+For the linear system $x_{t+1} = \alpha x_t + c$, the fixed point $x^*$ is:
+
+- Stable if $\lvert\alpha\rvert < 1$. Trajectories converge to $x^*$.
+- Unstable if $\lvert\alpha\rvert > 1$. Trajectories diverge from $x^*$.
+- Neutrally stable if $\lvert\alpha\rvert = 1$.
+
+#### Cycles
+
+A system may not settle on a single point but may instead visit a set of points periodically.
+
+- **$p$-cycle:** A set of $p$ distinct points $\lbrace x_1^*, \dots, x_p^*\rbrace$ that the system visits in sequence: $f(x_1^*) = x_2^*, \dots, f(x_p^*) = x_1^*$.
+- A point on a $p$-cycle is a fixed point of the $p$-th iterated map, $f^p(\cdot)$. That is, $x^* = f^p(x^*)$.
+- **Example (2-cycle):** For the map $x_{t+1} = -x_t + c$, if we start at $x_0$, then $x_1 = -x_0+c$, and $x_2 = -x_1+c = -(-x_0+c)+c = x_0$. Every point is part of a 2-cycle. This is a neutrally stable cycle.
+
+#### Summary of 1D Linear System Behaviors
+
+1. Convergence to a solitary, stable fixed point (attractor) for $\lvert\alpha\rvert < 1$.
+2. Divergence from an isolated, unstable fixed point for $\lvert\alpha\rvert > 1$.
+3. An infinite set of neutrally stable fixed points (e.g., a line) if $\alpha=1$, $c=0$.
+4. No fixed point or cycle (linear drift) if $\alpha=1$, $c \neq 0$.
+5. An infinite set of neutrally stable cycles if $\alpha=-1$.
+
+#### Multivariate Extension (Linear Case)
+
+For a multivariate linear system $X_t = AX_{t-1} + c$ where $X_t \in \mathbb{R}^N$:
+
+- **Fixed Point:** $X^* = AX^* + c \implies (I-A)X^* = c \implies X^* = (I-A)^{-1}c$, provided $(I-A)$ is invertible.
+- **Stability:** The stability of $X^*$ is determined by the eigenvalues of the Jacobian matrix, which is simply $A$.
+  1. $X^*$ is a stable fixed point if $\max_i(\lvert\lambda_i(A)\rvert) < 1$.
+  2. $X^*$ is unstable if $\max_i(\lvert\lambda_i(A)\rvert) > 1$.
+  3. $X^*$ is neutrally stable if $\max_i(\lvert\lambda_i(A)\rvert) = 1$.
+
+### 3.3 The Logistic Map: A Case Study in Nonlinearity
+
+The logistic map is a simple, archetypal example of a nonlinear system that exhibits complex behavior, including chaos.
+
+- **Equation:**
+  
+  $$
+  x_{t+1} = f(x_t) = \alpha x_t (1 - x_t)
+  $$
+
+- **Constraints:** We consider initial conditions $x_0 \in [0, 1]$ and the parameter $\alpha \in [0, 4]$. These constraints ensure that if $x_t$ is in $[0, 1]$, then $x_{t+1}$ will also be in $[0, 1]$.
+
+#### Fixed Points of the Logistic Map
+
+We solve $x^* = f(x^*) = \alpha x^* (1 - x^*)$.
+
+$$
+x^* - \alpha x^* + \alpha (x^*)^2 = 0 \implies x^*(1 - \alpha + \alpha x^*) = 0
+$$
+
+This gives two fixed points:
+
+1. FP1: $x_1^* = 0$.
+2. FP2: $1 - \alpha + \alpha x^* = 0 \implies x_2^* = \dfrac{\alpha - 1}{\alpha}$. This fixed point is only physically relevant (i.e., in our state space $[0,1]$) when $\alpha \ge 1$.
+
+#### Formal Stability Analysis via Linearization
+
+To analyze the stability of a fixed point $x^*$ for a general nonlinear map $f(x)$, we consider a small perturbation $\varepsilon_t$ around the fixed point: $x_t = x^* + \varepsilon_t$.
+
+$$
+x_{t+1} = x^* + \varepsilon_{t+1} = f(x^* + \varepsilon_t)
+$$
+
+Using a first-order Taylor expansion of $f(x)$ around $x^*$:
+
+$$
+f(x^* + \varepsilon_t) \approx f(x^*) + f'(x^*) \cdot \varepsilon_t
+$$
+
+Since $f(x^*) = x^*$, this simplifies to:
+
+$$
+x^* + \varepsilon_{t+1} \approx x^* + f'(x^*) \cdot \varepsilon_t \implies \varepsilon_{t+1} \approx f'(x^*) \cdot \varepsilon_t
+$$
+
+This is a linear difference equation for the perturbation $\varepsilon_t$. The perturbation will decay to zero (i.e., the FP is stable) if $\lvert f'(x^*)\rvert < 1$.
+
+- **Applying to the Logistic Map:** The derivative is $f'(x) = \alpha(1-2x)$.
+  1. At FP1 ($x_1^*=0$): $f'(0) = \alpha(1-0) = \alpha$.
+     - The fixed point at 0 is stable if $\lvert f'(0)\rvert < 1$, which means $0 \le \alpha < 1$.
+  2. At FP2 ($x_2^* = (\alpha-1)/\alpha$): $f'(x_2^*) = \alpha\left(1 - 2\frac{\alpha-1}{\alpha}\right) = \alpha\left(\frac{\alpha - 2\alpha + 2}{\alpha}\right) = 2-\alpha$.
+     - This fixed point is stable if $\lvert f'(x_2^*)\rvert = \lvert 2-\alpha\rvert < 1$. This inequality holds for $1 < \alpha < 3$.
+- **Stability Summary:**
+  - For $0 \le \alpha < 1$: One stable FP at $x^*=0$.
+  - For $1 < \alpha < 3$: The FP at $x^*=0$ becomes unstable, and a new stable FP appears at $x^*=(\alpha-1)/\alpha$.
+
+#### Multivariate Linearization
+
+For a multivariate system $X_t = F(X_{t-1})$ with fixed point $X^* = F(X^*)$, the stability is determined by linearizing around $X^*$. The evolution of a small perturbation $\mathcal{E}_t$ is governed by the Jacobian matrix $J$ of $F$ evaluated at $X^*$.
+
+$$
+\mathcal{E}_{t+1} \approx J(X^*) \mathcal{E}_t
+$$
+
+The fixed point $X^*$ is stable if all eigenvalues of the Jacobian matrix have a modulus less than 1: $\max_i(|\lambda_i(J(X^*))|) < 1$.
+
+### 3.4 Bifurcation and Chaos
+
+As the parameter $\alpha$ increases beyond 3 in the logistic map, the system's behavior undergoes a series of qualitative changes known as bifurcations.
+
+- **Period-Doubling:** At $\alpha=3$, the fixed point $x_2^*$ becomes unstable, and a stable 2-cycle emerges. As $\alpha$ increases further, this 2-cycle becomes unstable and bifurcates into a stable 4-cycle, then an 8-cycle, and so on. This cascade is known as the "period-doubling route to chaos."
+- **Chaos:** For larger values of $\alpha$ (e.g., $\alpha \gtrsim 3.57$), the system's behavior becomes chaotic.
+  - The trajectory is aperiodic and appears irregular or random, but it is still fully deterministic.
+  - A key feature is sensitivity to initial conditions: two trajectories starting arbitrarily close to each other will diverge exponentially fast.
+
+#### Chaotic Attractors and the Lyapunov Exponent
+
+- **Chaotic Attractor:** A set $A$ is a chaotic attractor if trajectories starting within its basin of attraction converge to $A$, and within $A$, the dynamics are chaotic and sensitive to initial conditions.
+- **Lyapunov Exponent ($\lambda$):** This value quantifies the rate of separation of infinitesimally close trajectories. For a 1D map $f(x)$, it is defined as:
+  
+  $$
+  \lambda(x_0) = \lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T-1} \ln\lvert f'(x_t)\rvert
+  $$
+
+  - $\lambda > 0$: Exponential divergence, a signature of chaos.
+  - $\lambda < 0$: Exponential convergence, corresponding to a stable fixed point or cycle.
+
+### 3.5 Implications for Prediction and Modeling
+
+The existence of chaotic dynamics has profound implications for time series modeling:
+
+1. Prediction Horizon: Sensitivity to initial conditions makes long-term prediction fundamentally impossible, as any tiny error in measuring the current state will be exponentially amplified.
+2. Chaos vs. Noise: It can be extremely difficult to distinguish between a deterministic chaotic process and a stochastic (noisy) process based on observed data alone.
+3. Loss Functions: Traditional loss functions like Mean Squared Error (MSE) may be problematic for evaluating models of chaotic systems, as even a perfect model will produce trajectories that diverge from the data due to initial condition uncertainty.
+4. Parameter Estimation: The loss landscapes for models of chaotic systems can be highly non-convex and irregular, making optimization and parameter estimation very challenging.
