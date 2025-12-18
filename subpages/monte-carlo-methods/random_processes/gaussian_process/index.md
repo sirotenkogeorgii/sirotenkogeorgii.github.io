@@ -19,7 +19,7 @@ is jointly Gaussian. Or equivalently, if any linear combination $\sum_{i=1}^n \a
 A GP is fully specified by:
 
 * a **mean function** $m(x_t)=\tilde{\mu}(x_t) = \mathbb{E}[f(x_t)]$ defined on the index set $\mathcal{T}$.
-* a **covariance (kernel) function** $k(x_t,x_{t'})= \tilde{\Sigma}_{t,t'} = \text{Cov}(f(x_t), f(x_{t'}))$ defined on the index set $\mathcal{T} \times \mathcal{T}$.
+* a **covariance (kernel) function** $k(x_t,x_{t'})= \tilde{\Sigma}\_{t,t'} = \text{Cov}(f(x_t), f(x_{t'}))$ defined on the index set $\mathcal{T} \times \mathcal{T}$.
 
 We write:
 
@@ -70,7 +70,7 @@ the posterior predictive distribution at a new point (x_*) is Gaussian:
 
 $$p(f_* \mid x_*, X, y) = \mathcal{N}(\mu_*, \sigma_*^2)$$
 
-where $\mu_{*}$ and $\sigma_{*}^2$ come from kernel-based linear algebra.
+where $\mu_*$ and $\sigma_*^2$ come from kernel-based linear algebra.
 
 #### Why kernels matter
 
@@ -101,9 +101,9 @@ The kernel determines the shape properties of sampled functions:
   <img src="{{ 'assets/images/notes/monte-carlo-methods/GP_sketch.jpg' | relative_url }}" alt="GP sketch" loading="lazy">
 </figure>
 
-
+**Magic behind Cholsky factorization in this context:**
 <div class="accordion">
-  <details>
+  <details markdown="1">
     <summary>Magic behind Cholsky factorization in this context</summary>
 
 ### Start with independent Gaussians
@@ -148,7 +148,7 @@ $$\text{Cov}(X) = \text{Cov}(A Z)$$
 
 Pull out the constant matrix:
 
-$$\text{Cov}(A Z) = A ,\text{Cov}(Z), A^\top$$
+$$\text{Cov}(A Z) = A \text{Cov}(Z) A^\top$$
 
 
 But $\text{Cov}(Z) = I$, so:
