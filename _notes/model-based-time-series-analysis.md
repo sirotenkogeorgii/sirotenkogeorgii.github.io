@@ -2760,8 +2760,8 @@ To make this concept testable, Granger proposed embedding it within a VAR model.
 
 We then perform a likelihood ratio test (or an F-test) comparing these two models.
 
-- Let $\hat{\Sigma}_{full}$ and $\hat{\Sigma}_{restr}$ be the estimated residual covariance matrices.
-- The LR test statistic is: $D = T_{eff} (\log(\lvert\hat{\Sigma}_{restr}\rvert) - \log(\lvert\hat{\Sigma}_{full}\rvert))$.
+- Let $\hat{\Sigma}\_{full}$ and $\hat{\Sigma}\_{restr}$ be the estimated residual covariance matrices.
+- The LR test statistic is: $D = T_{eff} (\log(\lvert\hat{\Sigma}\_{restr}\rvert) - \log(\lvert\hat{\Sigma}\_{full}\rvert))$.
 - Under $H_0$ (no Granger causality), $D \sim \chi^2(q)$, where $q$ is the number of zero-restrictions imposed (in this case, $p \times (\text{dim of } X) \times (\text{dim of } Y)$).
 
 **Interpretation:** If adding the past of $X$ significantly reduces the residual covariance (i.e., the prediction error) for $Y$, then the test statistic will be large, leading to a rejection of the null hypothesis. We conclude that $X$ Granger-causes $Y$.
@@ -2784,20 +2784,20 @@ Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can
 
 - **Data:** A binary time series, e.g., $X_t = \lbrace 0, 1, 1, 0, \dots\rbrace$.
 - **Model Architecture:** The probability of a "success" $(X_t=1)$ is conditioned on the past $p$ values.
-- 
+  
   $$
   X_t \mid X_{t-1}, \dots, X_{t-p} \sim \text{Bernoulli}(\pi_t)
   $$
 
   where $\pi_t = P(X_t = 1 \mid \text{past})$.
 - **Linear Predictor:** The probability $\pi_t$ is related to a linear combination of past observations through a link function (typically the logit function). The linear predictor $\eta_t$ is defined as:
-- 
+  
   $$
   \eta_t = c + \sum_{i=1}^{p} \alpha_i X_{t-i}
   $$
   
 - **Link Function:** The relationship between $\eta_t$ and $\pi_t$ is given by the inverse link function (sigmoid or logistic function):
-- 
+  
   $$
   \pi_t = \frac{e^{\eta_t}}{1 + e^{\eta_t}} = \frac{1}{1 + e^{-\eta_t}}
   $$
@@ -2922,7 +2922,7 @@ For the linear system $x_{t+1} = \alpha x_t + c$, the fixed point $x^*$ is:
 
 A system may not settle on a single point but may instead visit a set of points periodically.
 
-- **$p$-cycle:** A set of $p$ distinct points $\lbrace x_1^*, \dots, x_p^*\rbrace$ that the system visits in sequence: $f(x_1^*) = x_2^*, \dots, f(x_p^*) = x_1^*$.
+- **$p$-cycle:** A set of $p$ distinct points $\lbrace x_1^*, \dots, x_p^*\rbrace$ that the system visits in sequence: $f(x_1^*^*) = x_2^*, \dots, f(x_p^*) = x_1^*$.
 - A point on a $p$-cycle is a fixed point of the $p$-th iterated map, $f^p(\cdot)$. That is, $x^* = f^p(x^*)$.
 - **Example (2-cycle):** For the map $x_{t+1} = -x_t + c$, if we start at $x_0$, then $x_1 = -x_0+c$, and $x_2 = -x_1+c = -(-x_0+c)+c = x_0$. Every point is part of a 2-cycle. This is a neutrally stable cycle.
 
