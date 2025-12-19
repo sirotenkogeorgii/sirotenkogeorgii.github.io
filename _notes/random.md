@@ -138,23 +138,111 @@ Without extra info:
 
 Now imagine you can run a market test that sometimes changes your belief, leading you to launch only when it looks promising. If that improves your expected value from $10$ to, say, $18$, then value of that information that this test gives is $8$: **VOI = 18 − 10 = 8**. If the test costs $5$, it’s worth it; if it costs $20$, it isn’t.
 
+## The first fundamental theorem of calculus
 
+## The second fundamental theorem of calculus
+
+## Inverse function theorem
+
+## Involution
+
+$\textbf{Definition (Involution):}$ A function $f$ is an **involution** if
+
+$$f(f(x)) = x \quad \text{for all } x \text{ in the domain.}$$
+
+So $f$ is its own inverse: $f^{-1} = f$.
+
+$\textbf{Properties:}$
+1. Any involution is a **bijection**.
+2. The composition $g \circ f$ of two involutions f and g is an involution $\iff$ they commpute ($g \circ f = f \circ g$)
+
+<figure>
+  <img src="{{ 'assets/images/notes/random/involution.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+**Examples**
+
+*Real-valued functions*
+
+* $f(x)= -x$ on $\mathbb{R}: (f(f(x)) = -(-x)=x)$.
+* $f(x)= \frac{1}{x}$ on $\mathbb{R}\setminus{0}: f(f(x))=\frac{1}{1/x}=x$.
+* A swap (permutation) like $(1\ 3)(2\ 5)$: applying it twice restores every element.
+
+*In group theory*
+
+An element $g$ of a group is an **involution** if it has order $2$:
+
+$$g^2 = e,$$
+
+where $e$ is the identity.
+Example: in the multiplicative group $\lbrace \pm 1\rbrace$, the element $-1$ is an involution because $(-1)^2=1$.
+
+*In geometry / linear algebra*
+
+A transformation is an involution if applying it twice is the identity transformation.
+
+* Reflection across a line in the plane (or a plane in 3D).
+* A matrix $A$ such that $A^2 = I$ (the identity matrix) is sometimes called an **involutory matrix**.
+
+*In differential geometry (a bit different usage)*
+
+An **involutive distribution** (or system) is one closed under the Lie bracket; this is the condition in the Frobenius theorem that ensures it comes from a foliation. Different technical meaning, but still “closed under the operation.”
+
+## Orthogonal polynomials
+
+## Legendre polynomials
+
+## Integration by substitution, U-substitution, Reverse chain rule, Change of ariables
+
+### Change of variables in the probability density function
+
+## Pushforward measure
+
+## Riemann integral
+
+## Darboux integral
+
+### Riemann–Stieltjes integral
+
+## Lebesgue integral
+
+$\textbf{Theorem (Lebesgue's Criterion for Riemann Integrability):}$ For any function $f: [a,b] \to \mathbb{R}$ the following equivalence holds 
+
+$$f \in R(a,b) \iff f \text{ is bounded and } DC(f) \text{ has measure zero},$$
+
+where $DC(f) := \lbrace x \in M \mid f \text{ is discontinuous in } x  \rbrace$ for $f: M \to \mathbb{R}$.
+
+*proof*: #TODO:
+
+
+## Lebesgue–Stieltjes integral
+
+## Poisson distribution
+
+### Poisson Process
+
+### Poisson Point Process
 
 ## Boltzmann Distribution
 
-### TODO: Add Boltzmann Distribution
+### Add Boltzmann Distribution
 
 ## Karger's algorithm
 
-### TODO: Add Karger's algorithm
+### Add Karger's algorithm
 
 ## Karger–Stein algorithm
 
-### TODO: Add Karger–Stein algorithm
+### Add Karger–Stein algorithm
 
 ## Randomized Quicksort
-### TODO: Add Randomized Quicksort
+
+### Randomized Quicksort
 
 ## Zero-knowledge protocols
 
-### TODO: Add Zero-knowledge protocols
+### Zero-knowledge protocols
+
+## Integration by substitution
+
+## Measurable function
