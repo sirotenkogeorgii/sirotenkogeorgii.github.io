@@ -119,14 +119,14 @@ Here we will see why we cannot simply use the power set ($2^\Omega$) for complex
 
 In fact, for general spaces such as $\Omega=\mathbb{R}^n$, there’s no way to define a "reasonable" measure on the entire power set $2^\Omega$. (This classic counterexample is known as a **Vitali set**.)
 
-**Example 35.6.1 (Geometric reason why $\mathcal{A}=2^\Omega$ fails).**
+**Example (Geometric reason why $\mathcal{A}=2^\Omega$ fails).**
 Let $\Omega$ be the unit circle in $\mathbb{R}^2$, and suppose $\mathcal{A}=2^\Omega$. We’ll show that any measure $\mu$ on $\Omega$ with $\mu(\Omega)=1$ would behave badly.
 
 Define an equivalence relation on $\Omega$: two points are equivalent if you can rotate one to the other by an angle $q\pi$, where $q$ is a rational number (i.e., a rational multiple of $\pi$). Using choice, select exactly one representative from each equivalence class, and call the set of all these representatives $X$.
 
 Then the whole circle can be written as a countable union of rotated copies of $X$:
 
-$$\Omega=\bigcup_{\substack{q\in\mathbb{Q}\0\le q<2}} \bigl(\text{(X) rotated by } q\pi\bigr).$$
+$$\Omega=\bigcup_{\substack{q\in\mathbb{Q}\ 0\le q<2}} \bigl(\text{(X) rotated by } q\pi\bigr).$$
 
 Since each piece is just a rotation of $X$, they should all have the same measure; call it $m$. But the union covers $\Omega$, so we would get
 
@@ -142,7 +142,7 @@ Because there are countably many rationals in $[0,2)$, this sum is either $0$ (i
 Just as topology focuses on **continuous functions** (which preserve open sets), measure theory focuses on **measurable functions** (which preserve measurable sets).
 
 
-$\textbf{Definition (Measurable function):}$ Let $(X,\mathsrc{A})$ and $(B,\mathsrc{B})$ be measurable spaces. A function $f: X\to Y$ is **measurable** if, whenever you take a "well-behaved" (measurable) set in the destination $Y$, its "source" (the pre-image in $X$) is also a "well-behaved" set.
+$\textbf{Definition (Measurable function):}$ Let $(X,\mathscr{A})$ and $(B,\mathscr{B})$ be measurable spaces. A function $f: X\to Y$ is **measurable** if, whenever you take a "well-behaved" (measurable) set in the destination $Y$, its "source" (the pre-image in $X$) is also a "well-behaved" set.
 
 * **The Prototypical Example:** An indicator function $1_S$ is a measurable function if and only if the set $S$ itself is a measurable set.
 
@@ -160,8 +160,6 @@ There is a very strong link between these two worlds:
 
 ### The Concept of "Almost Everywhere" (a.e.)
 
-$\boxed{\text{In measure theory, we don't care about what happens on "tiny" sets. A "tiny" set is any set with a **measure of zero**.} \linebreak \text{In measure theory, we only care about things up to almost-everywhere.}}$
-
 $$\boxed{\begin{array}{l} \text{In measure theory, we don't care about what happens on "tiny" sets. A "tiny" set is any set with a measure of zero.} \\ \text{In measure theory, we only care about things up to almost-everywhere.} \end{array}}$$
 
 
@@ -174,7 +172,8 @@ $$\mu(\lbrace \omega \in \Omega \mid P \text{ does not hold for } \omega \rbrace
 ### Why this is helpful:
 
 * **Equality:** If $f=g$ almost everywhere, measure theory treats them as the same function.
-* **Integration:** If two functions are equal almost everywhere, their integrals will be identical: $$\int_\Omega fd\omega=\int_\Omega gd\omega$$.
+* **Integration:** If two functions are equal almost everywhere, their integrals will be identical: 
+  $$\int_\Omega fd\omega=\int_\Omega gd\omega$$.
 * **Analogy:** This is similar to "isomorphism" in algebra. The functions might look different at a few specific points, but their "structural" behavior in the eyes of the measure is identical.
 
 <!-- ## 4. Challenge Problems
