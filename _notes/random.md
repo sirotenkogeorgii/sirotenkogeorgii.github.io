@@ -165,7 +165,7 @@ $\textbf{Properties:}$
 *Real-valued functions*
 
 * $f(x)= -x$ on $\mathbb{R}: (f(f(x)) = -(-x)=x)$.
-* $f(x)= \frac{1}{x}$ on $\mathbb{R}\setminus{0}: f(f(x))=\frac{1}{1/x}=x$.
+* $f(x)= \frac{1}{x}$ on $\mathbb{R}\setminus \lbrace 0\rbrace: f(f(x))=\frac{1}{1/x}=x$.
 * A swap (permutation) like $(1\ 3)(2\ 5)$: applying it twice restores every element.
 
 *In group theory*
@@ -214,6 +214,73 @@ where $DC(f) := \lbrace x \in M \mid f \text{ is discontinuous in } x  \rbrace$ 
 
 *proof*: #TODO:
 
+## Partition of an interval
+
+$\textbf{Definition (Partition of an interval):}$ Let $a,b \in \mathbb{R}$ with $a < b$. A **partition** of the interval $[a,b]$ is a finite ordered set
+
+$$P = (a_0,a_1,\dots,a_k)$$
+
+such that
+
+$$a = a_0 < a_1 < \cdots < a_k = b, \qquad k \in \mathbb{N}.$$
+
+## Norm of partition
+
+$\textbf{Definition (Norm of a partition):}$ The **norm** of a partition $P$ is defined by
+
+$$\Delta(P) := \max_{i=1,\dots,k} (a_i - a_{i-1}).$$
+
+## Choice of tags / sample points
+
+$\textbf{Definition (Choice of tags / sample points):}$ Given a partition $P = (a_0,\dots,a_k)$, a **tag vector**
+
+$$\bar t = (t_1,\dots,t_k)$$
+
+is a choice of points such that
+
+$$t_i \in [a_{i-1},a_i], \qquad i=1,\dots,k.$$
+
+## Riemann sum
+
+$\textbf{Definition (Riemann sum):}$ Let $f : [a,b] \to \mathbb{R}$ be an arbitrary function. For a partition $P$ of $[a,b]$ and a corresponding tag vector $\bar t$, the **Riemann sum** of $f$ with respect to $P$ and $\bar t$ is
+
+$$R(P,\bar t,f) := \sum_{i=1}^{k} (a_i - a_{i-1}) f(t_i).$$
+
+## Riemann Integral
+
+$\textbf{Definition (Riemann integral):}$ Let $a<b$ and let $f:[a,b]\to\mathbb{R}$. We say that $f$ is **Riemann integrable** on $[a,b]$, and write $f \in \mathcal{R}(a,b),$ if there exists a real number $L\in\mathbb{R}$ such that $\forall \varepsilon>0\;\exists \delta>0$ s.t. for every partition $P$ of $[a,b]$ and every choice of tags $\bar t$ for $P$,
+
+
+$$\Delta(P)<\delta \Longrightarrow \bigl|R(P,\bar t,f)-L\bigr|<\varepsilon.$$
+
+
+In this case, we define
+
+$$\int_a^b f(x)dx := L,$$
+
+and also write
+
+$$(R)\int_a^b f = L.$$
+
+The number $L$ is called the **(Riemann) integral of $f$ over $[a,b]$**.
+
+
+## Proposition (unbounded functions are bad): 
+Function $f: [a,b] \to \mathbb{R}$ is unbounded $\implies$ $f \notin \mathcal{R}(a,b)$
+
+## Zvana 1
+
+Let $f: [a,b] \to \mathbb{R}$ be in $\mathcal{R}(a,b)$. Then $f\in \mathcal{R}(a,x)$ for every $x \in (a,b]$ and the function $F: [a,b]\to\mathbb{R}$ is given as
+
+$$F(x):=\int_a^x f$$
+
+is Lipschitz continuous and $F'(x)=f(x)$ in every point  $x\in [a,b]$ of continuity $f$.
+
+## Zvana 2
+
+Let $f:(a,b)\to\mathbb{R}$ has primitive function $F:(a,b)\to\mathbb{R}$ and let $f\in \mathcal{R}(a,b)$. Then there exists finite limit $F(a):=\lim_{x\to a}F(x)$ and $F(b):=\lim_{x\to b}F(x)$ and
+
+$$(R)\int_a^b f = F(b)-F(a) = (N)\int_a^b f$$
 
 ## Lebesgue–Stieltjes integral
 
@@ -246,3 +313,36 @@ where $DC(f) := \lbrace x \in M \mid f \text{ is discontinuous in } x  \rbrace$ 
 ## Integration by substitution
 
 ## Measurable function
+
+## Limsup and Liminf
+
+**limsup** and **liminf** are two ways to talk about the “eventual upper” and “eventual lower” behavior of a sequence (or function), even when the ordinary limit doesn’t exist.
+
+For a sequence $(a_n)$
+
+**Step 1**: look at the “tail supremum/infimum”
+
+For each $n$, consider the tail $\lbrace a_n, a_{n+1}, a_{n+2}, \dots\rbrace$.
+* $s_n = \sup \lbrace a_k : k \ge n \rbrace$ = the largest value you can get from the tail (or the least upper bound).
+* $i_n = \inf \lbrace a_k : k \ge n \rbrace$ = the smallest value you can get from the tail (or the greatest lower bound).
+
+These tails shrink as $n$ increases, so:
+* $s_n$ is a **non-increasing** sequence,
+* $i_n$ is a **non-decreasing** sequence.
+
+**Step 2**: take limits of those
+
+$$\limsup_{n\to\infty} a_n := \lim_{n\to\infty} s_n$$
+$$\liminf_{n\to\infty} a_n := \lim_{n\to\infty} i_n$$
+
+These limits always exist in the extended real numbers $(-\infty, +\infty]$.
+
+**Intuition**
+
+Equivalently:
+* $\limsup$ is the **largest subsequential limit**.
+* $\liminf$ is the **smallest subsequential limit**.
+
+<figure>
+  <img src="{{ 'assets/images/notes/random/limsup_liminf.png' | relative_url }}" alt="a" loading="lazy">
+</figure>

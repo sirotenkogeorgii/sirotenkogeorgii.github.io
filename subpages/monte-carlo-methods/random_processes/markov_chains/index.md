@@ -157,7 +157,7 @@ If a transition matrix $P$ is both **irreducible** and **aperiodic**, then its e
 2. All other eigenvalues have an absolute value strictly less than 1 ($\lvert\lambda_i\rvert < 1$).
 
 **The Proof Logic:**
-Assuming $P$ is diagonalizable (which is true for chains satisfying detailed balance), we can express the starting distribution $\mathbf{p}_0$ as a sum of eigenvectors: $\mathbf{p}_0=\sum_i c_i v_i$. eigenvalues $\lamda_i$ are eigenvectors and, where $\lambda_1 = 1$ and $v_1 = \pi$ is the stationary distribution:
+Assuming $P$ is diagonalizable (which is true for chains satisfying detailed balance), we can express the starting distribution $\mathbf{p}_0$ as a sum of eigenvectors: $\mathbf{p}_0=\sum_i c_i v_i$. eigenvalues $\lambda_i$ are eigenvectors and, where $\lambda_1 = 1$ and $v_1 = \pi$ is the stationary distribution:
 
 $$\lim_{n\to \infty} p_0 P^n = \lim_{n\to \infty} v_i \lambda_i^n c_i = c_1 \lambda_1 = c_1 \pi$$
 
@@ -173,7 +173,7 @@ in distribution to 𝑋 as 𝑛 → ∞
 * **The Challenge:** In standard statistics, the Law of Large Numbers applies to independent (i.i.d.) samples. However, Markov chain samples are highly **correlated** (the next state depends on the previous one).
 * **The Solution:** Despite this correlation, an analogue to the Law of Large Numbers exists for Markov chains, known as the Ergodic Theorem.
 
-$\textbb{Theorem (The Ergodic Theorem):}$ If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean $\bar f_n = \frac{1}{n}\sum_{i=1}^n f(X_i)$ converges to the expected value with probability 1.
+$\textbf{Theorem (The Ergodic Theorem):}$ If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean $\bar f_n = \frac{1}{n}\sum_{i=1}^n f(X_i)$ converges to the expected value with probability 1.
 
 **Key Distinction:** Unlike the convergence of the distribution (which requires aperiodicity), the Ergodic Theorem generally only requires the chain to be **irreducible**.
 
@@ -182,8 +182,8 @@ There are two different convergence in Markov chains:
 * **Ergodic Theorem (mean over long time convergence)** (or the Ergodic Theorem for Markov chains): we denote it as $\pi$ as well here and **ergodicity** means $\pi_i = \lim_{n\to\infty} \frac{1}{N}\sum_{i=0}^{N-1} [X_i == i]$. In example from the image above we have $\pi = (0.25, 0.25, 0.25, 0.25)^\top$, meaning the process is ergodic, but not stationary.
  
 > **Intuition** (Stationarity vs. Ergodicity)
-> *Stationarity* = a distribution that looks unchanged after one step. Stationary distribution $π$ is a photograph: what the distribution looks like at a given time if you’re in equilibrium.
-> *Ergodicity* is about the movie: if you follow one trajectory the long-run time averages you measure in that movie match the equilibrium averages.
+> * *Stationarity* = a distribution that looks unchanged after one step. Stationary distribution $π$ is a photograph: what the distribution looks like at a given time if you’re in equilibrium.
+> * *Ergodicity* is about the movie: if you follow one trajectory the long-run time averages you measure in that movie match the equilibrium averages.
 
 ##### Cesàro convergence vs. Ergodicity
 
