@@ -148,33 +148,79 @@ Eigenvalues: [-1.0 1.0 0. 0.]
 * The distribution of $𝑋_𝑛$ cannot converge as $𝑛 → ∞$, because $ℙ(𝑋_{2𝑛} ∈ \lbrace 0, 1\rbrace) = 1$ while $ℙ(𝑋_{2𝑛+1} ∈ \lbrace 0, 1\rbrace) = 0$ for all $𝑛$ and probability oscillates between 0 and 1 rather than settling - the distribution does not converge.
 
 * **Spectral Interpretation:** In linear algebra terms, periodicity means there are multiple eigenvalues located on the unit circle in the complex plane.
-* **The Fix (Aperiodicity):** To ensure convergence, the chain must be **aperiodic**. Practically, if an irreducible chain has even a single state with a "self-loop" (a probability $P_{ii} > 0$ of staying in the same state), the entire chain is guaranteed to be aperiodic.
+* **Aperiodicity in Practice:** Note that in practice it is not a particularly strong assumption on an irreducible Markov chain: $P_{ii} > 0$ for some state $𝜔_𝑖$ already guarantees the Markov chain is aperiodic. It means if an irreducible chain has even a single state with a "self-loop" (a probability $P_{ii} > 0$ of staying in the same state), the entire chain is guaranteed to be aperiodic.
 
-###2. Convergence Analysis (Spectral Decomposition)
+##### Convergence Analysis (Spectral Decomposition)
 
-If a transition matrix P is both **irreducible** and **aperiodic**, its eigenvalues behave in a specific way that guarantees convergence:
-
-1. There is a **unique** right-eigenvector with eigenvalue \lambda_1 = 1. This corresponds to the stationary distribution, \pi.
-2. All other eigenvalues have an absolute value strictly less than 1 (|\lambda_i| < 1).
+If a transition matrix $P$ is both **irreducible** and **aperiodic**, then its eigenvalues behave in a specific way that guarantees convergence:
+1. There is a **unique** right-eigenvector with eigenvalue $\lambda_1 = 1$. This corresponds to the stationary distribution, $\pi$.
+2. All other eigenvalues have an absolute value strictly less than 1 ($\lvert\lambda_i\rvert < 1$).
 
 **The Proof Logic:**
-Assuming P is diagonalizable (which is true for chains satisfying detailed balance), we can express the starting distribution \mathbf{p}_0 as a sum of eigenvectors. As time n goes to infinity:
+Assuming $P$ is diagonalizable (which is true for chains satisfying detailed balance), we can express the starting distribution $\mathbf{p}_0$ as a sum of eigenvectors: $\mathbf{p}_0=\sum_i c_i v_i$. eigenvalues $\lamda_i$ are eigenvectors and, where $\lambda_1 = 1$ and $v_1 = \pi$ is the stationary distribution:
 
-* Because the other eigenvalues are less than 1, their terms decay to zero as n increases (\lambda^n \to 0).
-* The term corresponding to \lambda=1 remains. Since probabilities must sum to 1, the constant c_1 must be 1.
+$$\lim_{n\to \infty} p_0 P^n = \lim_{n\to \infty} v_i \lambda_i^n c_i = c_1 \lambda_1 = c_1 \pi$$
 
 $\textbf{Theorem (Convergence to Stationary Distribution):}$ If a transition matrix $P$ on a finite state space is **irreducible** and **aperiodic**, it has a unique stationary distribution $\pi$. The chain will converge to this distribution $\lim_{n\to\infty} \mathbb{P}(X_n = x) = \pi(x)$ regardless of the starting state $X_0$.
 
-###3. The Ergodic Theorem (Sample Means)
+#### The Ergodic Theorem (Sample Means)
 
-While the previous theorem deals with the distribution of a single state at time n, we are often interested in the **sample mean** (the average of a function over time).
+While the previous theorem deals with the distribution of a single state at time $n$, we are often interested in the **sample mean** (the average of a function over time).
+
+If $𝑋$ is a random variable on $Γ$ with probability density function 𝜋, then this statement is equivalent to $𝑋_𝑛$ converging (𝑑)
+in distribution to 𝑋 as 𝑛 → ∞
 
 * **The Challenge:** In standard statistics, the Law of Large Numbers applies to independent (i.i.d.) samples. However, Markov chain samples are highly **correlated** (the next state depends on the previous one).
 * **The Solution:** Despite this correlation, an analogue to the Law of Large Numbers exists for Markov chains, known as the Ergodic Theorem.
 
-$\textbb{Theorem (The Ergodic Theorem):}$ If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean converges to the expected value with probability 1.
+$\textbb{Theorem (The Ergodic Theorem):}$ If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean $\bar f_n = \frac{1}{n}\sum_{i=1}^n f(X_i)$ converges to the expected value with probability 1.
 
 **Key Distinction:** Unlike the convergence of the distribution (which requires aperiodicity), the Ergodic Theorem generally only requires the chain to be **irreducible**.
+
+There are two different convergence in Markov chains:
+* **Stationarity (snapshot convergence)**: it is denoted as $\pi$ probabiltiy vector over states and $\pi_i = \lim_{n\to\infty} P(X_n = i)$. If $P(X_n = i)$ oscillates for $n\to\infty$, then it will never converge. Like in the image example above, in pendulum case or in any periodic process.
+* **Ergodic Theorem (mean over long time convergence)** (or the Ergodic Theorem for Markov chains): we denote it as $\pi$ as well here and **ergodicity** means $\pi_i = \lim_{n\to\infty} \frac{1}{N}\sum_{i=0}^{N-1} [X_i == i]$. In example from the image above we have $\pi = (0.25, 0.25, 0.25, 0.25)^\top$, meaning the process is ergodic, but not stationary.
+ 
+> **Intuition** (Stationarity vs. Ergodicity)
+> *Stationarity* = a distribution that looks unchanged after one step. Stationary distribution $π$ is a photograph: what the distribution looks like at a given time if you’re in equilibrium.
+> *Ergodicity* is about the movie: if you follow one trajectory the long-run time averages you measure in that movie match the equilibrium averages.
+
+##### Cesàro convergence vs. Ergodicity
+
+They’re related, but they’re **not the same thing**. The cleanest way to separate them is:
+
+* **Cesàro convergence** = a statement about **averaging distributions (or matrices) over time**.
+* **Ergodicity** = a property of the **dynamics** that makes **time averages along a single trajectory** match **space averages under $\pi$** (and in some texts also implies “snapshot convergence”/mixing).
+
+**Cesàro convergence (a.k.a. averaging the snapshots)**
+
+For a Markov chain with transition matrix $P$ and stationary distribution $\pi$, define the rank-one limit matrix
+
+$$\Pi := \mathbf{1},\pi \quad\text{(each row equals }\pi\text{)}.$$
+
+**Cesàro convergence of the chain** typically refers to:
+
+$$\frac{1}{N}\sum_{n=0}^{N-1} P^n \longrightarrow \Pi \quad (N\to\infty).$$
+
+Equivalently, for any initial distribution $\mu$,
+
+$$\frac{1}{N}\sum_{n=0}^{N-1} \mu P^n \longrightarrow \pi.$$
+
+Key point: this can hold even when $P^n$ itself **does not converge** (e.g., periodic chains). *Averaging kills the oscillation*.
+
+**Ergodicity (Markov chains): time averages along one path**
+
+The **ergodic theorem for Markov chains** is about a *single run* $X_0,X_1,\dots$. For a (typically) **irreducible positive recurrent** chain with stationary $\pi$, for any integrable function $f$,
+
+$$\frac{1}{N}\sum_{n=0}^{N-1} f(X_n) \xrightarrow{a.s.} \mathbb{E}_\pi[f].$$
+
+Special case $f=\mathbf 1\lbrace x=i\rbrace$:
+
+$$\frac{1}{N}\sum_{n=0}^{N-1}\mathbf 1{X_n=i} \xrightarrow{a.s.} \pi_i.$$
+
+Key point: this is **stronger in a different direction** than Cesàro convergence:
+* Cesàro convergence averages **probability distributions** $\mu P^n$.
+* The ergodic theorem averages **observations along a sample path**.
 
 ## Random Walks on an $n$-Dimensional Hypercube
 
