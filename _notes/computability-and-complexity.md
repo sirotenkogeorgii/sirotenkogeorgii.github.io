@@ -579,6 +579,8 @@ $\textbf{Definition 33: Examples of nondeterministic time classes We define the 
 
 We refer, for example, to $NP$ as the class of problems decidable in nondeterministic polynomial time and to $NE$ as the class of problems decidable in nondeterministic linear exponential time.
 
+### The theory of NP-completeness (SubMileStone)
+
 ### Reducibility and $NP$-Completeness
 
 ### Polynomial-Time Many-One Reducibility
@@ -3636,7 +3638,7 @@ $\textbf{Theorem 146:}$ $\text{GI}$ has a zero-knowledge interactive proof syste
 
 When demonstrating that $S$ is a simulator for $(V,P)$, we can assume that $G_0$ and $G_1$ are isomorphic and have the same node sets because there are no requirements on a simulator for inputs not in $\text{GI}$. But then for every graph that is isomorphic to $G_0$, the probability that this graph is sent as $H$ does not depend on the choice of $i$. On receiving the message $H$ from $P$, the verifier $V′$ has thus no information at all about the bit $i$, hence $j$ is chosen indepently of $i$. Since $i$ was chosen by tossing a fair coin, the probability that both bits are equal is exactly $\frac{1}{2}$. Thus a simulation where $i$ is equal to $j$ will occur after an expected number of iterations that is constant, hence the running time of $S$ is in expected polynomial time. Furthermore, the distribution of communications $(H,j,π)$ between $P$ and $V′$ is such that every graph $H$ occurs with a certain probability. The message $j$ is independent of $i$, and $π$ is the unique permutation such that $H= π(G_i)$. This coincides with the distribution of the output of $S$, hence $S$ is a simulator for $(V,P)$.
 
-> **Note**: The distributions match because we do not actually know from the outside what was the graph G_i, that H=\pi(G_i).
+> **Note**: The distributions match because we do not actually know from the outside what was the graph $G_i$, that $H=\pi(G_i)$.
 
 <div class="gd-grid">
   <figure>
@@ -3691,7 +3693,7 @@ Observe that the partial function $\phi_M$ is defined exactly on the arguments $
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
-$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma^*_1$ to $\Sigma^{*}_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma^{*}_1$ to $\Sigma^{*}_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
 
 A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function.
 
