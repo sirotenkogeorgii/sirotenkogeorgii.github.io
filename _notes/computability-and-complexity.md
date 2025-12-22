@@ -3657,7 +3657,7 @@ This chapter transitions from the resource-bounded computations central to compl
 
 In complexity theory, the focus is on decidable languages—those for which a Turing machine exists that halts on every possible input, providing a definitive "yes" or "no" answer. Such machines are called total Turing machines. In computability theory, we broaden our scope to include languages recognized by Turing machines that are not necessarily total.
 
-A Turing machine $M$ accepts a word $w$ if there exists at least one computation path that leads to an accepting state. The set of all words accepted by $M$ constitutes the language it recognizes, denoted $L(M)$.
+A Turing machine $M$ accepts a word $w$ if there exists at least one computation path that leads to an accepting state. The set of all words accepted by $M$ constitutes the language it recognizes, denoted $L(M)$. Furthermore, a language is decidable, if it is recognized by some total Turing machine.
 
 $\textbf{Definition 147 (Recursively Enumerable Languages):}$ A language $L$ is recursively enumerable, abbreviated as r.e., if $L$ is recognized by a Turing machine.
 
@@ -3667,25 +3667,25 @@ By this definition, every decidable language is also recursively enumerable. How
 
 A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
 
-$\textbf{Theorem 149:}$ A language is recursively enumerable if and only if it is equal to the domain of a Turing machine.
+$\textbf{Theorem 149:}$ A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine.
 
 *Proof*: Let $L$ be a language.
 
-* First, assume $L$ is the domain of some Turing machine $M$. To show $L$ is recursively enumerable, we can modify $M$ into a new machine $M'$ that recognizes $L$. We do this by defining all of $M$'s halting states to be accepting states in $M'$. Now, $M'$ accepts an input $w$ if and only if M halts on $w$. Thus, $L(M') = \text{dom } M = L$, which means $L$ is recursively enumerable.
+* First, assume $L$ is the domain of some Turing machine $M$. To show $L$ is recursively enumerable, we can modify $M$ into a new machine $M'$ that recognizes $L$. We do this by defining all of $M$'s halting states to be accepting states in $M'$. Now, $M'$ accepts an input $w$ $\iff$ $M$ halts on $w$. Thus, $L(M') = \text{dom } M = L$, which means $L$ is recursively enumerable.
 * Conversely, assume $L$ is recursively enumerable, meaning there is a Turing machine $M$ that recognizes it, so $L = L(M)$. For any input to $M$, one of three outcomes is possible:
   1. $M$ halts in an accepting state (the input is in $L$).
   2. $M$ halts in a non-accepting state (the input is not in $L$).
-  3. $M$ does not halt (the input is not in $L$). We can construct a new Turing machine $M'$ that halts if and only if the input is in $L$. To do this, we modify $M$ such that whenever it would enter a non-accepting halting configuration, it instead enters an infinite loop. This can be achieved by adding a transition from each non-accepting halt state to itself, leaving the tape unchanged. With this modification, $M'$ halts only on inputs that $M$ accepts. Therefore, $\text{dom } M' = L(M) = L$.
+  3. $M$ does not halt (the input is not in $L$). We can construct a new Turing machine $M'$ that halts $\iff$ the input is in $L$. To do this, we modify $M$ such that whenever it would enter a non-accepting halting configuration, it instead enters an infinite loop. This can be achieved by adding a transition from each non-accepting halt state to itself, leaving the tape unchanged. With this modification, $M'$ halts only on inputs that $M$ accepts. Therefore, $\text{dom } M' = L(M) = L$.
 
 ### Partial Computable Functions
 
 Computability theory also extends the notion of computation from recognizing languages to computing functions. Because Turing machines are not guaranteed to halt, the functions they compute may not be defined for all inputs. These are known as partial functions.
 
-> **Remark 150**: For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place x, written as $\alpha(x) \uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
+> **Remark 150**: For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place $x$, written as $\alpha(x) =\uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
 
 Recall that a total $k$-tape Turing machine computes a function by writing the output on its final tape. We now formalize this for machines that may not halt.
 
-$\textbf{Definition 151:}$ The partial function $\phi_M$ computed by a Turing machine M is  
+$\textbf{Definition (Partial function):}$ The partial function $\phi_M$ computed by a Turing machine $M$ is  
 
 $$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \text{ on input } w \text{ reaches the halting configuration } C, \\ \uparrow & \text{otherwise.} \end{cases}$$
 
@@ -3693,7 +3693,7 @@ Observe that the partial function $\phi_M$ is defined exactly on the arguments $
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
-$\textbf{Definition 152:}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma^{*}_1$ to $\Sigma^{*}_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+$\textbf{Definition (Partial computable function):}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma'_1$ to $\Sigma'_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
 
 A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function.
 
@@ -3719,13 +3719,13 @@ $$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \
 
 These functions provide a direct link between sets and functions.
 
-$\textbf{Proposition 157:}$ A set $A$ is decidable if and only if its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable if and only if its partial characteristic function $\chi_A$ is partial computable.
+$\textbf{Proposition 157:}$ A set $A$ is decidable $\iff$ its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable $\iff$ its partial characteristic function $\chi_A$ is partial computable.
 
 *Proof*: See exercises.
 
 The domain of a partial computable function provides another characterization of r.e. sets.
 
-$\textbf{Proposition 158:}$ A set is recursively enumerable if and only if it is equal to the domain of a partial computable function.
+$\textbf{Proposition 158:}$ A set is recursively enumerable $\iff$ it is equal to the domain of a partial computable function.
 
 *Proof*: Let $A$ be a set.
 
@@ -3738,7 +3738,9 @@ $\textbf{Definition 159:}$ A pairing function is a bijection from $\mathbb{N} \t
 
 The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
 
-$\textbf{Definition:}$ The graph of a partial function $\alpha : A \to B$ is  $\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$
+$\textbf{Definition:}$ The graph of a partial function $\alpha : A \to B$ is  
+
+$$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$
 
 $\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
 * **(i)** The partial function $\alpha$ is partial computable. 
@@ -3753,12 +3755,11 @@ For a function $f$, the following statements are equivalent.
 
 Recursively enumerable sets can also be characterized as projections of decidable sets. Intuitively, this means an element $n$ is in an r.e. set $A$ if there exists some "witness" $i$ such that the pair $(n, i)$ belongs to a simpler, decidable set $B$.
 
-$\textbf{Proposition 161:}$ A set $A$ is recursively enumerable if and only if $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that  
+$\textbf{Proposition 161:}$ A set $A$ is recursively enumerable $\iff$ $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that  
 
 $$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$ 
 
 *Proof*:
-
 * First, assume $A$ is the projection of a decidable set $B$. A procedure to compute $\chi_A(n)$ would be to search for an $i$ such that $\langle n, i \rangle \in B$. If such an $i$ is found, the procedure outputs $1$; otherwise, it searches forever. This procedure computes the partial characteristic function $\chi_A$, so $\chi_A$ is partial computable, and thus $A$ is recursively enumerable.
 * Conversely, assume $A$ is recursively enumerable. Then $A$ is the domain of some Turing machine $M$. We can define a decidable set $B$ as the set of pairs $\langle n, t \rangle$ where $M$ halts on input $n$ within $t$ steps. $B$ is decidable because we can simulate $M$ on input $n$ for exactly $t$ steps. The set $A$ is then the projection of $B$, since $n \in A$ if and only if there exists some time $t$ such that $M$ halts on $n$ within $t$ steps, i.e., $\langle n, t \rangle \in B$.
 
@@ -3766,25 +3767,23 @@ Finally, the term "recursively enumerable" comes from an alternative characteriz
 
 $\textbf{Definition 162:}$ An enumeration is a sequence $z_0, z_1, \dots$ of natural numbers. For such an enumeration, the set $\lbrace z_0, z_1, \dots\rbrace$ is enumerated by or has the enumeration $z_0, z_1, \dots$, and a natural number $n$ is enumerated if $n$ coincides with some $z_i$. An enumeration $z_0, z_1, \dots$ is effective if the function $i \mapsto z_i$ is computable.
 
-$\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable if and only if $A$ has an effective enumeration.
+$\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration.
 
 *Proof*:
-
 * Assume $A$ has an effective enumeration $z_0, z_1, \dots$ produced by a computable function $i \mapsto z_i$. A Turing machine can recognize $A$ as follows: on input $n$, it computes $z_0, z_1, z_2, \dots$ in sequence. If it ever finds a $z_i$ such that $z_i = n$, it accepts. If no such $z_i$ exists, it runs forever. This machine recognizes $A$, so $A$ is r.e.
 * Assume $A$ is a nonempty r.e. set. Let $M$ be a Turing machine that recognizes $A$. Fix an element $a \in A$. We can define an enumeration $z_0, z_1, \dots$ as follows. For each $i$, decode it as a pair $\langle n, t \rangle$. Simulate $M$ on input $n$ for $t$ steps. If $M$ accepts $n$ within $t$ steps, set $z_i = n$. Otherwise, set $z_i = a$. The function $i \mapsto z_i$ is computable, so this is an effective enumeration of $A$.
 
 Decidable sets correspond to a special, more structured type of enumeration.
 
-$\textbf{Proposition 164:}$ A nonempty set $A$ is decidable if and only if $A$ has a nondecreasing effective enumeration.
+$\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a nondecreasing effective enumeration.
 
 *Proof*:
-
 * Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
 * Conversely, assume $A$ has a nondecreasing effective enumeration $z_0, z_1, \dots$. If $A$ is finite, it is decidable. If $A$ is infinite, to decide membership for an input $n$, we generate the sequence $z_0, z_1, \dots$ until we find a $z_i$ such that $z_i \ge n$. Since the sequence is nondecreasing and infinite, such a $z_i$ must exist. We then check if $n = z_i$. If it is, $n \in A$; otherwise, $n \notin A$. This procedure always halts, so $A$ is decidable.
 
 A final, crucial theorem links decidability to the recursive enumerability of a set and its complement.
 
-$\textbf{Proposition 165:}$ A set $A$ is decidable if and only if both the set itself and its complement $\mathbb{N} \setminus A$ are recursively enumerable.
+$\textbf{Proposition 165:}$ A set $A$ is decidable $\iff$ both the set itself and its complement $\mathbb{N} \setminus A$ are recursively enumerable.
 
 *Proof*: See exercises.
 
