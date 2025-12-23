@@ -3981,14 +3981,14 @@ $(\Rightarrow)$ Assume $A$ is decidable and nonempty. Since membership in $A$ is
 For $n\ge 1$, define
 
 $$
-z_n ;=;
+z_n =
 \begin{cases}
-n, & \text{if } n\in A,\
+n, & \text{if } n\in A,\\
 z_{n-1}, & \text{if } n\notin A.
 \end{cases}
 $$
 
-Then $(z_n)_{n\in\mathbb{N}}$ is nondecreasing (either it stays the same, or it jumps up to $n$). Moreover, every element of $A$ appears in the sequence (if $n\in A$, then $z_n=n$), and no value outside $A$ ever appears. Finally, the map $n\mapsto z_n$ is computable because we can decide whether $n\in A$ and we already computed $z_{n-1}$. Hence $A$ has a nondecreasing effective enumeration.
+Then $(z_n)\_{n\in\mathbb{N}}$ is nondecreasing (either it stays the same, or it jumps up to $n$). Moreover, every element of $A$ appears in the sequence (if $n\in A$, then $z_n=n$), and no value outside $A$ ever appears. Finally, the map $n\mapsto z_n$ is computable because we can decide whether $n\in A$ and we already computed $z_{n-1}$. Hence $A$ has a nondecreasing effective enumeration.
 
 $(\Leftarrow)$ Conversely, suppose $z_0,z_1,\dots$ is a nondecreasing effective enumeration of $A$. If $A$ is finite, then it is decidable (e.g. compute the finite set of values it takes and hard-code membership).
 
@@ -4031,7 +4031,7 @@ This correspondence allows us to treat a sequence of functions and its associate
 
 Let $(\alpha_e)_{e\in\mathbb{N}}$ be a sequence of partial functions $\alpha_e:\mathbb{N}\rightharpoonup\mathbb{N}$. Define a partial function $\alpha:\mathbb{N}^2\rightharpoonup\mathbb{N}$ by
 
-$$\alpha(e,x)=\alpha_e(x) \qquad \text{for all } e,x\in\mathbb{N}. \quad (7.1)$$
+$$\alpha(e, x) \simeq \alpha_e(x) \text{ for all } e, x \text{ in } \mathbb{N}. \quad (7.1)$$
 
 We call $\alpha$ the **principal (universal) function** of the sequence $(\alpha_e)$, and we say that the sequence $(\alpha_e)$ is **determined by** $\alpha$.
 
@@ -4039,7 +4039,7 @@ The sequence $(\alpha_e)$ is called a **numbering** (of partial functions) if it
 
 A numbering $(\alpha_e)$ is **universal for** a class $\mathcal{F}$ of partial functions if
 
-$$\mathcal{F}={\alpha_e : e\in\mathbb{N}}.$$
+$$\mathcal{F}=\lbrace\alpha_e : e\in\mathbb{N}\rbrace.$$
 
 In particular, a **universal numbering** is a numbering that enumerates *all* partial computable functions.
 </div>
@@ -4053,7 +4053,7 @@ Not every sequence of computable functions constitutes a numbering. A numbering 
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
 <!-- $\textbf{Theorem 171:}$ There exists a universal numbering. -->
-<div class="math-callout math-callout--theorem">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering exists)</span></p>
 
 There exists a universal numbering.
@@ -4068,7 +4068,7 @@ $\textbf{Definition 172:}$ The sequence $M_0, M_1, \dots$ constructed in the pro
 While we can enumerate all partial computable functions, a famous diagonalization argument shows that we cannot do the same for the set of total computable functions.
 
 <!-- $\textbf{Theorem 173:}$ There exists no numbering of the set of computable functions. -->
-<div class="math-callout math-callout--theorem">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Numbering of set of computable functions does not exists)</span></p>
 
 There exists no numbering of the set of computable functions.
@@ -4081,12 +4081,12 @@ There exists no numbering of the set of computable functions.
 Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
 
 <!-- $\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H_\alpha = \lbrace e : \alpha_e(e) \downarrow \rbrace$. The set $H_\alpha$ is recursively enumerable. If the numbering $\alpha_0, \alpha_1, \dots$ contains all computable functions, then the set $H_\alpha$ is not decidable. -->
-<div class="math-callout math-callout--theorem">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(diagonal halting set is r.e.)</span></p>
 
 Let $(\alpha_e)_{e\in\mathbb{N}}$ be a numbering, and define the **diagonal halting set**
 
-$$H_\alpha ;=;{, e\in\mathbb{N} : \alpha_e(e)\downarrow ,}.$$
+$$H_\alpha = \lbrace e\in\mathbb{N} : \alpha_e(e)\downarrow \rbrace.$$
 
 Then $H_\alpha$ is recursively enumerable.
 
@@ -4113,16 +4113,16 @@ are called the diagonal halting problem, or simply the halting problem, and the 
 Let $(\phi_e)_{e\in\mathbb{N}}$ be the standard numbering of the partial computable functions. Define
 
 $$
-H ;=; H*{\mathrm{diag}} ;=;{, e\in\mathbb{N} : \phi_e(e)\downarrow ,},
+H = H_{\mathrm{diag}} =\lbrace, e\in\mathbb{N} : \phi_e(e)\downarrow \rbrace
 \qquad
-H_{\mathrm{gen}} ;=;{, \langle e,x\rangle \in\mathbb{N} : \phi_e(x)\downarrow ,}.
+H_{\mathrm{gen}} =\lbrace \langle e,x\rangle \in\mathbb{N} : \phi_e(x)\downarrow \rbrace.
 $$
 
-The set (H is called the **diagonal halting problem** (often simply the **halting problem**), and $H_{\mathrm{gen}}$ is called the **general halting problem**.
+The set ($H$ is called the **diagonal halting problem** (often simply the **halting problem**), and $H_{\mathrm{gen}}$ is called the **general halting problem**.
 </div>
 
 <!-- $\textbf{Theorem 176:}$ The halting problem $H$ is recursively enumerable but not decidable. The complement $\mathbb{N} \setminus H$ of the halting problem is not recursively enumerable. -->
-<div class="math-callout math-callout--theorem">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The halting problem $H$ is recursively enumerable but not decidable)</span></p>
 
 The halting problem (H) is recursively enumerable but not decidable. Furthermore, its complement $\mathbb{N}\setminus H$ is not recursively enumerable.
@@ -4139,16 +4139,16 @@ Some numberings are "better" than others in the sense that they are general enou
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gödel numbering or acceptable numbering)</span></p>
 
-A numbering $(\beta_e)_{e\in\mathbb{N}}$ is called a **Gödel numbering** (or **acceptable numbering**) if for every numbering $(\alpha_e)_{e\in\mathbb{N}}$ there exists a computable function $f$ such that, for all $e\in\mathbb{N}$,
+A numbering $(\beta_e)\_{e\in\mathbb{N}}$ is called a **Gödel numbering** (or **acceptable numbering**) if for every numbering $(\alpha_e)\_{e\in\mathbb{N}}$ there exists a computable function $f$ such that, for all $e\in\mathbb{N}$,
 
-$$\alpha_e ;=; \beta_{f(e)}.$$
+$$\alpha_e = \beta_{f(e)}.$$
 
 (Equivalently: every other numbering can be effectively translated into $(\beta_e)$.)
 </div>
 
 The function $f$ acts as a "compiler" or "translator" from indices in the $\alpha$ numbering to equivalent indices in the $\beta$ numbering.
 
-<div class="math-callout math-callout--theorem">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Standard numbering is Gödel numbering)</span></p>
 
 The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
@@ -4160,7 +4160,7 @@ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
 Not all universal numberings have this powerful translation property.
 
 <!-- $\textbf{Theorem 179:}$ There is a universal numbering that is not a Gödel numbering. -->
-<div class="math-callout math-callout--theorem">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering is not Gödel numbering)</span></p>
 
 There is a universal numbering that is not a Gödel numbering.
