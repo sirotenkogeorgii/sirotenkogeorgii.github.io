@@ -3755,10 +3755,16 @@ is partial computable. We call $\alpha$ **computable** if it is partial computab
 </div>
 
 The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
+<!-- $\textbf{Definition:}$ The graph of a partial function $\alpha : A \to B$ is  
+$$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$ -->
 
-$\textbf{Definition:}$ The graph of a partial function $\alpha : A \to B$ is  
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Graph of a partial function)</span></p>
+
+The **graph of a partial function** $\alpha : A \to B$ is  
 
 $$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$
+</div>
 
 $\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
 * **(i)** The partial function $\alpha$ is partial computable. 
@@ -3776,7 +3782,7 @@ Recursively enumerable sets can also be characterized as projections of decidabl
 <!-- $\textbf{Proposition 161:}$ A set $A$ is recursively enumerable $\iff$ $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that   -->
 <!-- $$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$  -->
 
-<div class="math-callout math-callout--theorem" markdown="1>
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and decidable set projection)</span></p>
 
 A set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ it is the projection of a decidable set. That is, $A$ is recursively enumerable $\iff$ there exists a decidable set $B\subseteq \mathbb{N}\times\mathbb{N}$ such that
@@ -3815,7 +3821,7 @@ The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_
 
 <!-- $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration. -->
 
-<div class="math-callout math-callout--theorem" markdown="1>
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and effective enumeration)</span></p>
 
 A nonempty set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ $A$ admits an effective enumeration.
@@ -3829,7 +3835,7 @@ Decidable sets correspond to a special, more structured type of enumeration.
 
 <!-- $\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a nondecreasing effective enumeration. -->
 
-<div class="math-callout math-callout--theorem" markdown="1>
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and nondecreasing effective enumeration)</span></p>
 
 A nonempty set $A\subseteq \mathbb{N}$ is decidable $$\iff$$ $A$ has a nondecreasing effective enumeration.
@@ -3843,7 +3849,7 @@ A final, crucial theorem links decidability to the recursive enumerability of a 
 
 <!-- $\textbf{Proposition 165:}$ A set $A$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N} \setminus A$ are recursively enumerable. -->
 
-<div class="math-callout math-callout--theorem" markdown="1>
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and r.e.)</span></p>
 
 A set $A\subseteq \mathbb{N}$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N}\setminus A$ are recursively enumerable.
