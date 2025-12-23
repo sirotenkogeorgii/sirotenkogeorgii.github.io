@@ -3734,7 +3734,25 @@ $\textbf{Proposition 158:}$ A set is recursively enumerable $\iff$ it is equal t
 
 To handle functions with multiple arguments, such as those on $\mathbb{N} \times \mathbb{N}$, we use a pairing function.
 
-$\textbf{Definition 159:}$ A pairing function is a bijection from $\mathbb{N} \times \mathbb{N}$ to $\mathbb{N}$. Let $\langle \cdot, \cdot \rangle$ be an effective and effectively invertible pairing function (for details, see the exercises). For a subset $A$ of $\mathbb{N} \times \mathbb{N}$, let $\langle A \rangle = \lbrace\langle i, j \rangle : (i, j) \in A\rbrace$. A subset $A$ of $\mathbb{N} \times \mathbb{N}$ is recursively enumerable if $\langle A \rangle$ is recursively enumerable, and $A$ is decidable if $\langle A \rangle$ is decidable. A partial function $\alpha : \mathbb{N} \times \mathbb{N} \to \mathbb{N}$ is partial computable if the function $\langle x, y \rangle \mapsto \alpha(x, y)$ is partial computable, and $\alpha$ is computable if it is partial computable and total.
+<!-- $\textbf{Definition 159:}$ A pairing function is a bijection from $\mathbb{N} \times \mathbb{N}$ to $\mathbb{N}$. Let $\langle \cdot, \cdot \rangle$ be an effective and effectively invertible pairing function (for details, see the exercises). For a subset $A$ of $\mathbb{N} \times \mathbb{N}$, let $\langle A \rangle = \lbrace\langle i, j \rangle : (i, j) \in A\rbrace$. A subset $A$ of $\mathbb{N} \times \mathbb{N}$ is recursively enumerable if $\langle A \rangle$ is recursively enumerable, and $A$ is decidable if $\langle A \rangle$ is decidable. A partial function $\alpha : \mathbb{N} \times \mathbb{N} \to \mathbb{N}$ is partial computable if the function $\langle x, y \rangle \mapsto \alpha(x, y)$ is partial computable, and $\alpha$ is computable if it is partial computable and total. -->
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pairing function)</span></p>
+
+A **pairing function** is a bijection $\langle\cdot,\cdot\rangle : \mathbb{N}\times\mathbb{N}\to\mathbb{N}$. Fix a pairing function $\langle\cdot,\cdot\rangle$ that is **effective** and **effectively invertible** (see the exercises).
+
+For $A\subseteq \mathbb{N}\times\mathbb{N}$, define
+
+$$\langle A\rangle = \lbrace\langle i,j\rangle : (i,j)\in A\rbrace\subseteq \mathbb{N}.$$
+
+We call $A$ **recursively enumerable** if $\langle A\rangle$ is recursively enumerable, and **decidable** if $\langle A\rangle$ is decidable.
+
+A partial function $\alpha:\mathbb{N}\times\mathbb{N}\to\mathbb{N}$ is **partial computable** if the (encoded) unary function
+
+$$n \mapsto \alpha(x,y)\quad\text{where } n=\langle x,y\rangle$$
+
+is partial computable. We call $\alpha$ **computable** if it is partial computable and total.
+</div>
 
 The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
 
@@ -3755,19 +3773,53 @@ For a function $f$, the following statements are equivalent.
 
 Recursively enumerable sets can also be characterized as projections of decidable sets. Intuitively, this means an element $n$ is in an r.e. set $A$ if there exists some "witness" $i$ such that the pair $(n, i)$ belongs to a simpler, decidable set $B$.
 
-$\textbf{Proposition 161:}$ A set $A$ is recursively enumerable $\iff$ $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that  
+<!-- $\textbf{Proposition 161:}$ A set $A$ is recursively enumerable $\iff$ $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that   -->
+<!-- $$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$  -->
 
-$$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$ 
+<div class="math-callout math-callout--theorem" markdown="1>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and decidable set projection)</span></p>
+
+A set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ it is the projection of a decidable set. That is, $A$ is recursively enumerable $\iff$ there exists a decidable set $B\subseteq \mathbb{N}\times\mathbb{N}$ such that
+
+$$n\in A \Longleftrightarrow \exists m\in\mathbb{N}; (n,m)\in B.$$
+</div>
 
 *Proof*:
 * First, assume $A$ is the projection of a decidable set $B$. A procedure to compute $\chi_A(n)$ would be to search for an $i$ such that $\langle n, i \rangle \in B$. If such an $i$ is found, the procedure outputs $1$; otherwise, it searches forever. This procedure computes the partial characteristic function $\chi_A$, so $\chi_A$ is partial computable, and thus $A$ is recursively enumerable.
-* Conversely, assume $A$ is recursively enumerable. Then $A$ is the domain of some Turing machine $M$. We can define a decidable set $B$ as the set of pairs $\langle n, t \rangle$ where $M$ halts on input $n$ within $t$ steps. $B$ is decidable because we can simulate $M$ on input $n$ for exactly $t$ steps. The set $A$ is then the projection of $B$, since $n \in A$ if and only if there exists some time $t$ such that $M$ halts on $n$ within $t$ steps, i.e., $\langle n, t \rangle \in B$.
+* Conversely, assume $A$ is recursively enumerable. Then $A$ is the domain of some Turing machine $M$. We can define a decidable set $B$ as the set of pairs $\langle n, t \rangle$ where $M$ halts on input $n$ within $t$ steps. $B$ is decidable because we can simulate $M$ on input $n$ for exactly $t$ steps. The set $A$ is then the projection of $B$, since $n \in A$ $\iff$ there exists some time $t$ such that $M$ halts on $n$ within $t$ steps, i.e., $\langle n, t \rangle \in B$.
 
 Finally, the term "recursively enumerable" comes from an alternative characterization: a set is r.e. if its elements can be generated one by one by an effective procedure.
 
-$\textbf{Definition 162:}$ An enumeration is a sequence $z_0, z_1, \dots$ of natural numbers. For such an enumeration, the set $\lbrace z_0, z_1, \dots\rbrace$ is enumerated by or has the enumeration $z_0, z_1, \dots$, and a natural number $n$ is enumerated if $n$ coincides with some $z_i$. An enumeration $z_0, z_1, \dots$ is effective if the function $i \mapsto z_i$ is computable.
+<!-- $\textbf{Definition 162:}$ An enumeration is a sequence $z_0, z_1, \dots$ of natural numbers. For such an enumeration, the set $\lbrace z_0, z_1, \dots\rbrace$ is enumerated by or has the enumeration $z_0, z_1, \dots$, and a natural number $n$ is enumerated if $n$ coincides with some $z_i$. An enumeration $z_0, z_1, \dots$ is effective if the function $i \mapsto z_i$ is computable. -->
 
-$\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration.
+<!-- $\textbf{Definition 162:}$ An **enumeration** is an infinite sequence $z_0, z_1, \ldots$ of natural numbers. This sequence is said to **enumerate** the set
+
+$${z_0, z_1, \ldots}.$$
+
+A natural number $n$ is **enumerated** by $z_0, z_1, \ldots$ if $n = z_i$ for some $i$.
+
+The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$). -->
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Enumeration, Enumerate, Enumerated, Effective Enumeration)</span></p>
+
+An **enumeration** is an infinite sequence $z_0, z_1, \ldots$ of natural numbers. This sequence is said to **enumerate** the set
+
+$$\lbrace z_0, z_1, \ldots\rbrace.$$
+
+A natural number $n$ is **enumerated** by $z_0, z_1, \ldots$ if $n = z_i$ for some $i$.
+
+The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$). -->
+</div>
+
+
+<!-- $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration. -->
+
+<div class="math-callout math-callout--theorem" markdown="1>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and effective enumeration)</span></p>
+
+A nonempty set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ $A$ admits an effective enumeration.
+</div>
 
 *Proof*:
 * Assume $A$ has an effective enumeration $z_0, z_1, \dots$ produced by a computable function $i \mapsto z_i$. A Turing machine can recognize $A$ as follows: on input $n$, it computes $z_0, z_1, z_2, \dots$ in sequence. If it ever finds a $z_i$ such that $z_i = n$, it accepts. If no such $z_i$ exists, it runs forever. This machine recognizes $A$, so $A$ is r.e.
@@ -3775,7 +3827,13 @@ $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ 
 
 Decidable sets correspond to a special, more structured type of enumeration.
 
-$\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a nondecreasing effective enumeration.
+<!-- $\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a nondecreasing effective enumeration. -->
+
+<div class="math-callout math-callout--theorem" markdown="1>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and nondecreasing effective enumeration)</span></p>
+
+A nonempty set $A\subseteq \mathbb{N}$ is decidable $$\iff$$ $A$ has a nondecreasing effective enumeration.
+</div>
 
 *Proof*:
 * Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
@@ -3783,7 +3841,13 @@ $\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a non
 
 A final, crucial theorem links decidability to the recursive enumerability of a set and its complement.
 
-$\textbf{Proposition 165:}$ A set $A$ is decidable $\iff$ both the set itself and its complement $\mathbb{N} \setminus A$ are recursively enumerable.
+<!-- $\textbf{Proposition 165:}$ A set $A$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N} \setminus A$ are recursively enumerable. -->
+
+<div class="math-callout math-callout--theorem" markdown="1>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and r.e.)</span></p>
+
+A set $A\subseteq \mathbb{N}$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N}\setminus A$ are recursively enumerable.
+</div>
 
 *Proof*: See exercises.
 
