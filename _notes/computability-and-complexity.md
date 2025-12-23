@@ -3815,21 +3815,153 @@ $$\lbrace z_0, z_1, \ldots\rbrace.$$
 
 A natural number $n$ is **enumerated** by $z_0, z_1, \ldots$ if $n = z_i$ for some $i$.
 
-The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$). -->
+The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$).
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Turing Machine $iff$ Algorithm)</span></p>
+
+In standard computability theory, 
+
+$$\exists \text{ TM } \iff \exists \text{ Algorithm}$$
+
+*as long as* “algorithm” means a fully precise, mechanical procedure (not a heuristic, randomized method, or “works in practice” routine).
+
+* **Turing machine $\implies$ algorithm:** A Turing machine describes an effective procedure step by step, so it’s an algorithmic method.
+* **Algorithm $\implies$ Turing machine:** Under the usual, formal interpretation of “algorithm” as an **effective method**, the Church–Turing thesis says any such procedure can be implemented by a Turing machine. So in textbooks, people freely swap:
+  * “there exists an algorithm computing $f$”
+  * “there exists a Turing machine computing $f$”
+  * “$f$ is (partial) recursive / (partial) computable”
+
+Important nuance: this equivalence is not a *theorem* inside mathematics unless you first **define** “algorithm” in one formal model. It’s either:
+1. a matter of definition (“algorithm” = “Turing-computable”), or
+2. an appeal to the Church–Turing thesis.
+
+So: **in the context of r.e./decidable/partial computable, it’s safe to treat them as equivalent.**
+
+</div>
 
 <!-- $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration. -->
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and effective enumeration)</span></p>
 
-A nonempty set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ $A$ admits an effective enumeration.
+A nonempty set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ $A$ has an effective enumeration.
 </div>
 
 *Proof*:
 * Assume $A$ has an effective enumeration $z_0, z_1, \dots$ produced by a computable function $i \mapsto z_i$. A Turing machine can recognize $A$ as follows: on input $n$, it computes $z_0, z_1, z_2, \dots$ in sequence. If it ever finds a $z_i$ such that $z_i = n$, it accepts. If no such $z_i$ exists, it runs forever. This machine recognizes $A$, so $A$ is r.e.
-* Assume $A$ is a nonempty r.e. set. Let $M$ be a Turing machine that recognizes $A$. Fix an element $a \in A$. We can define an enumeration $z_0, z_1, \dots$ as follows. For each $i$, decode it as a pair $\langle n, t \rangle$. Simulate $M$ on input $n$ for $t$ steps. If $M$ accepts $n$ within $t$ steps, set $z_i = n$. Otherwise, set $z_i = a$. The function $i \mapsto z_i$ is computable, so this is an effective enumeration of $A$.
+* Assume $A$ is a nonempty r.e. set. Let $M$ be a Turing machine that recognizes $A$. Fix an element $a \in A$. We can define an enumeration $z_0, z_1, \dots$ as follows. For each $i$, decode it as a pair $\langle n, t \rangle$. Simulate $M$ on input $n$ for $t$ steps. If $M$ accepts $n$ within $t$ steps, set $z_i = n$. Otherwise, set $z_i = a$. The function $i \mapsto z_i$ is computable, so this is an effective enumeration of $A$. $\square$
+
+**More detailed proof:**
+<div class="accordion">
+  <details markdown="1">
+    <summary>More detailed proof</summary>
+
+Sure. The proposition is the classic equivalence:
+
+* **r.e.** (“recursively enumerable”) means: there is a Turing machine $M$ that **halts and accepts** exactly the numbers in $A$ (and may run forever on numbers not in $A$).
+* **effective enumeration** means: there is a **total computable function** $f(i)=z_i$ whose values list elements of $A$ (repetitions allowed).
+
+I’ll unpack both directions and, especially, the second construction.
+
+---
+
+## 1) Effective enumeration $\Rightarrow$ r.e.
+
+Assume $A$ has an effective enumeration $z_0,z_1,\dots$ with computable $i\mapsto z_i$.
+
+We want a recognizer for $A$: a machine that, given input $n$,
+
+* **accepts if $n\in A$**,
+* **never halts if $n\notin A$**.
+
+Algorithm:
+
+1. Compute $z_0$. If $z_0=n$, accept.
+2. Compute $z_1$. If $z_1=n$, accept.
+3. Compute $z_2$. If $z_2=n$, accept.
+4. Continue forever.
+
+Why it works:
+
+* If $n\in A$, then by definition of “enumeration”, $n=z_i$ for some $i$. When we reach that $i$, we accept and halt.
+* If $n\notin A$, then no $z_i$ equals $n$. So we never accept; the machine just keeps going.
+
+That’s exactly the definition of “recognizes $A$”, so $A$ is r.e.
+
+---
+
+## 2) r.e. (nonempty) $\Rightarrow$ effective enumeration
+
+Now assume $A$ is **nonempty** and r.e. Let $M$ be a Turing machine that recognizes $A$.
+
+Key difficulty:
+If you try “enumerate by running $M$ on inputs $0,1,2,\dots$”, you get stuck because $M(n)$ might **never halt**, so you can’t move on. You need a way to “run all computations in parallel”.
+
+### The trick: time-bounded simulation via pairing $\langle n,t\rangle$
+
+For each index $i$, decode it into a pair $\langle n,t\rangle$ (so you range over all inputs $n$ and all time limits $t$).
+
+Then define $z_i$ like this:
+
+* Simulate $M(n)$ for **exactly $t$ steps**.
+* If $M$ accepts within those $t$ steps, output $n$.
+* Otherwise output some fixed $a\in A$.
+
+So:
+
+$$
+z_i =
+\begin{cases}
+n & \text{if (M) accepts (n) within (t) steps}\
+a & \text{otherwise.}
+\end{cases}
+$$
+
+### Why we need $a\in A$ and why $A\neq\emptyset$
+
+If $M$ does *not* accept within $t$ steps, we still need to output **some natural number** (because an enumeration is a total function $i\mapsto z_i$). We also need every output to be an element of $A$, because it’s supposed to enumerate $A$.
+
+So we pick a known element $a\in A$ and use it as a safe fallback. This is exactly why the proof assumes **nonempty**.
+
+### Why $i \mapsto z_i$ is computable
+
+Given $i$:
+
+1. Compute $(n,t)$ from $i$ using the inverse of the pairing function (effective invertibility).
+2. Simulate $M(n)$ for $t$ steps. This is a finite simulation, so it always terminates.
+3. Depending on whether acceptance happened, output $n$ or $a$.
+
+All steps are effective, so $i\mapsto z_i$ is a **total computable function**.
+
+### Why $\lbrace z_0,z_1,\dots\rbrace = A$
+
+Two things to check:
+
+**(i) Every output is in $A$.**
+
+* If $z_i=n$, then $M$ accepted $n$, so $n\in A$.
+* If $z_i=a$, then $a\in A$ by choice.
+
+So all outputs lie in $A$.
+
+**(ii) Every element of $A$ appears somewhere.**
+Take any $x\in A$. Since $M$ recognizes $A$, $M(x)$ accepts after some finite number $T$ of steps.
+
+Now consider the index (i) that decodes to $\langle x, T\rangle$. For that (i), the simulation runs $M(x)$ for $T$ steps, sees acceptance, and outputs $z_i=x$.
+
+So every $x\in A$ appears at least once.
+
+Together, (i) and (ii) mean the sequence effectively enumerates $A$.
+
+---
+
+## Intuition in one sentence
+
+The second direction is “dovetailing”: instead of running $M(0)$, then $M(1)$, etc. (which can get stuck), you run **every input for every finite time bound**, guaranteeing you eventually witness any accepting computation.
+  </details>
+</div>
 
 Decidable sets correspond to a special, more structured type of enumeration.
 
@@ -3842,8 +3974,26 @@ A nonempty set $A\subseteq \mathbb{N}$ is decidable $$\iff$$ $A$ has a nondecrea
 </div>
 
 *Proof*:
-* Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
-* Conversely, assume $A$ has a nondecreasing effective enumeration $z_0, z_1, \dots$. If $A$ is finite, it is decidable. If $A$ is infinite, to decide membership for an input $n$, we generate the sequence $z_0, z_1, \dots$ until we find a $z_i$ such that $z_i \ge n$. Since the sequence is nondecreasing and infinite, such a $z_i$ must exist. We then check if $n = z_i$. If it is, $n \in A$; otherwise, $n \notin A$. This procedure always halts, so $A$ is decidable.
+<!-- * Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
+* Conversely, assume $A$ has a nondecreasing effective enumeration $z_0, z_1, \dots$. If $A$ is finite, it is decidable. If $A$ is infinite, to decide membership for an input $n$, we generate the sequence $z_0, z_1, \dots$ until we find a $z_i$ such that $z_i \ge n$. Since the sequence is nondecreasing and infinite, such a $z_i$ must exist. We then check if $n = z_i$. If it is, $n \in A$; otherwise, $n \notin A$. This procedure always halts, so $A$ is decidable. -->
+$(\Rightarrow)$ Assume $A$ is decidable and nonempty. Since membership in $A$ is decidable, we can effectively find the least element of $A$: search $0,1,2,\dots$ until the first $m$ with $m\in A$, and set $z_0=m$.
+
+For $n\ge 1$, define
+
+$$
+z_n ;=;
+\begin{cases}
+n, & \text{if } n\in A,\
+z_{n-1}, & \text{if } n\notin A.
+\end{cases}
+$$
+
+Then $(z_n)_{n\in\mathbb{N}}$ is nondecreasing (either it stays the same, or it jumps up to $n$). Moreover, every element of $A$ appears in the sequence (if $n\in A$, then $z_n=n$), and no value outside $A$ ever appears. Finally, the map $n\mapsto z_n$ is computable because we can decide whether $n\in A$ and we already computed $z_{n-1}$. Hence $A$ has a nondecreasing effective enumeration.
+
+$(\Leftarrow)$ Conversely, suppose $z_0,z_1,\dots$ is a nondecreasing effective enumeration of $A$. If $A$ is finite, then it is decidable (e.g. compute the finite set of values it takes and hard-code membership).
+
+If $A$ is infinite, then the nondecreasing enumeration cannot get stuck forever at a maximum value, so it must be unbounded: for every $n$ there exists $i$ with $z_i\ge n$. To decide whether a given $n$ lies in $A$, compute $z_0,z_1,\dots$ until you reach the least index $i$ such that $z_i\ge n$ (this search halts by unboundedness). Then accept iff $z_i=n$. Because $i\mapsto z_i$ is computable, this procedure is an algorithm, so $A$ is decidable. $\square$
+
 
 A final, crucial theorem links decidability to the recursive enumerability of a set and its complement.
 
@@ -3875,7 +4025,24 @@ This correspondence allows us to treat a sequence of functions and its associate
 
 ### Numberings of Partial Computable Functions
 
-$\textbf{Definition 168:}$ Let $\alpha_0, \alpha_1, \dots$ be a sequence of partial functions on $\mathbb{N}$. Let $\alpha$ be a partial function on $\mathbb{N}^2$ such that (7.1) holds. Then $\alpha$ is called the principal function of the sequence $\alpha_0, \alpha_1, \dots$, and the sequence itself is called determined by $\alpha$. The sequence $\alpha_0, \alpha_1, \dots$ is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering $\alpha$ is a numbering of or is universal for a set of partial functions if the latter set is equal to $\lbrace\alpha(e, \cdot) : e \in \mathbb{N}\rbrace$. A universal numbering is a numbering of the set of partial computable functions.
+<!-- $\textbf{Definition 168:}$ Let $\alpha_0, \alpha_1, \dots$ be a sequence of partial functions on $\mathbb{N}$. Let $\alpha$ be a partial function on $\mathbb{N}^2$ such that (7.1) holds. Then $\alpha$ is called the principal function of the sequence $\alpha_0, \alpha_1, \dots$, and the sequence itself is called determined by $\alpha$. The sequence $\alpha_0, \alpha_1, \dots$ is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering $\alpha$ is a numbering of or is universal for a set of partial functions if the latter set is equal to $\lbrace\alpha(e, \cdot) : e \in \mathbb{N}\rbrace$. A universal numbering is a numbering of the set of partial computable functions. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Principal (universal) function, Numberings, Universal numbering)</span></p>
+
+Let $(\alpha_e)_{e\in\mathbb{N}}$ be a sequence of partial functions $\alpha_e:\mathbb{N}\rightharpoonup\mathbb{N}$. Define a partial function $\alpha:\mathbb{N}^2\rightharpoonup\mathbb{N}$ by
+
+$$\alpha(e,x)=\alpha_e(x) \qquad \text{for all } e,x\in\mathbb{N}. \quad (7.1)$$
+
+We call $\alpha$ the **principal (universal) function** of the sequence $(\alpha_e)$, and we say that the sequence $(\alpha_e)$ is **determined by** $\alpha$.
+
+The sequence $(\alpha_e)$ is called a **numbering** (of partial functions) if its principal function $\alpha(e,x)$ is **partial computable**.
+
+A numbering $(\alpha_e)$ is **universal for** a class $\mathcal{F}$ of partial functions if
+
+$$\mathcal{F}={\alpha_e : e\in\mathbb{N}}.$$
+
+In particular, a **universal numbering** is a numbering that enumerates *all* partial computable functions.
+</div>
 
 > **Remark 169**: For any numbering $\alpha_0, \alpha_1, \dots$, all $\alpha_e$ are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input $x$ into $\langle e, x \rangle$ before performing the actual computation, we obtain a Turing machine that computes $\alpha_e$. As a consequence, a numbering $\alpha_0, \alpha_1, \dots$ is universal if and only if all partial computable functions occur among the $\alpha_e$.
 
@@ -3885,7 +4052,12 @@ Not every sequence of computable functions constitutes a numbering. A numbering 
 
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
-$\textbf{Theorem 171:}$ There exists a universal numbering.
+<!-- $\textbf{Theorem 171:}$ There exists a universal numbering. -->
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering exists)</span></p>
+
+There exists a universal numbering.
+</div>
 
 *Proof*: See lecture and exercises.
 
@@ -3895,7 +4067,12 @@ $\textbf{Definition 172:}$ The sequence $M_0, M_1, \dots$ constructed in the pro
 
 While we can enumerate all partial computable functions, a famous diagonalization argument shows that we cannot do the same for the set of total computable functions.
 
-$\textbf{Theorem 173:}$ There exists no numbering of the set of computable functions.
+<!-- $\textbf{Theorem 173:}$ There exists no numbering of the set of computable functions. -->
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Numbering of set of computable functions does not exists)</span></p>
+
+There exists no numbering of the set of computable functions.
+</div>
 
 *Proof*: For a proof by contradiction, assume that there is a numbering $\alpha_0, \alpha_1, \dots$ of the computable functions. The corresponding principal function $\alpha$ is then total and partial computable, hence computable. Consider the function $d: \mathbb{N} \to \mathbb{N}$ defined by $d(e) = 1 + \alpha(e, e)$. Since $\alpha$ is computable, $d$ is also computable. However, by its construction, $d$ cannot be in the sequence $\alpha_0, \alpha_1, \dots$. For any given index $e$, the function $d$ differs from the function $\alpha_e$ on the input $e$, because $d(e) = 1 + \alpha_e(e) \ne \alpha_e(e)$. This contradicts the assumption that $\alpha_0, \alpha_1, \dots$ was a numbering of all computable functions.
 
@@ -3903,7 +4080,18 @@ $\textbf{Theorem 173:}$ There exists no numbering of the set of computable funct
 
 Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
 
-$\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H_\alpha = \lbrace e : \alpha_e(e) \downarrow \rbrace$. The set $H_\alpha$ is recursively enumerable. If the numbering $\alpha_0, \alpha_1, \dots$ contains all computable functions, then the set $H_\alpha$ is not decidable.
+<!-- $\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H_\alpha = \lbrace e : \alpha_e(e) \downarrow \rbrace$. The set $H_\alpha$ is recursively enumerable. If the numbering $\alpha_0, \alpha_1, \dots$ contains all computable functions, then the set $H_\alpha$ is not decidable. -->
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(diagonal halting set is r.e.)</span></p>
+
+Let $(\alpha_e)_{e\in\mathbb{N}}$ be a numbering, and define the **diagonal halting set**
+
+$$H_\alpha ;=;{, e\in\mathbb{N} : \alpha_e(e)\downarrow ,}.$$
+
+Then $H_\alpha$ is recursively enumerable.
+
+Moreover, if the numbering $(\alpha_e)$ includes every total computable function, then $H_\alpha$ is not decidable.
+</div>
 
 *Proof*:
 
@@ -3916,13 +4104,29 @@ $\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H
 
 Applying this lemma to the standard numbering gives us the classic Halting Problem.
 
-$\textbf{Definition 175:}$ Let $\phi_0, \phi_1, \dots$ be the standard numbering of the partial computable functions. The sets  
-
+<!-- $\textbf{Definition 175:}$ Let $\phi_0, \phi_1, \dots$ be the standard numbering of the partial computable functions. The sets  
 $$H = H_{diag} = \lbrace e : \phi_e(e) \downarrow\rbrace \quad \text{and} \quad H_{gen} = \lbrace\langle e, x \rangle : \phi_e(x) \downarrow\rbrace$$
+are called the diagonal halting problem, or simply the halting problem, and the general halting problem, respectively. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Standard numbering, Diagonal halting problem, General halting problem)</span></p>
 
-are called the diagonal halting problem, or simply the halting problem, and the general halting problem, respectively.
+Let $(\phi_e)_{e\in\mathbb{N}}$ be the standard numbering of the partial computable functions. Define
 
-$\textbf{Theorem 176:}$ The halting problem $H$ is recursively enumerable but not decidable. The complement $\mathbb{N} \setminus H$ of the halting problem is not recursively enumerable.
+$$
+H ;=; H*{\mathrm{diag}} ;=;{, e\in\mathbb{N} : \phi_e(e)\downarrow ,},
+\qquad
+H_{\mathrm{gen}} ;=;{, \langle e,x\rangle \in\mathbb{N} : \phi_e(x)\downarrow ,}.
+$$
+
+The set (H is called the **diagonal halting problem** (often simply the **halting problem**), and $H_{\mathrm{gen}}$ is called the **general halting problem**.
+</div>
+
+<!-- $\textbf{Theorem 176:}$ The halting problem $H$ is recursively enumerable but not decidable. The complement $\mathbb{N} \setminus H$ of the halting problem is not recursively enumerable. -->
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The halting problem $H$ is recursively enumerable but not decidable)</span></p>
+
+The halting problem (H) is recursively enumerable but not decidable. Furthermore, its complement $\mathbb{N}\setminus H$ is not recursively enumerable.
+</div>
 
 *Proof*: The standard numbering is universal and thus contains all computable functions. By Lemma 174, $H$ is recursively enumerable but not decidable. If the complement of $H$ were also recursively enumerable, then by Proposition 165, $H$ would be decidable, which is a contradiction. Therefore, the complement of $H$ is not recursively enumerable.
 
@@ -3930,17 +4134,37 @@ $\textbf{Theorem 176:}$ The halting problem $H$ is recursively enumerable but no
 
 Some numberings are "better" than others in the sense that they are general enough to simulate any other numbering. These are called Gödel numberings.
 
-$\textbf{Definition 177:}$ A numbering $\beta_0, \beta_1, \dots$ is called a Gödel numbering or acceptable numbering, if for every other numbering $\alpha_0, \alpha_1, \dots$ there exists a computable function $f$ such that for all $e$ it holds that  $\alpha_e = \beta_{f(e)}$. 
+<!-- $\textbf{Definition 177:}$ A numbering $\beta_0, \beta_1, \dots$ is called a Gödel numbering or acceptable numbering, if for every other numbering $\alpha_0, \alpha_1, \dots$ there exists a computable function $f$ such that for all $e$ it holds that  $\alpha_e = \beta_{f(e)}$.  -->
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gödel numbering or acceptable numbering)</span></p>
+
+A numbering $(\beta_e)_{e\in\mathbb{N}}$ is called a **Gödel numbering** (or **acceptable numbering**) if for every numbering $(\alpha_e)_{e\in\mathbb{N}}$ there exists a computable function $f$ such that, for all $e\in\mathbb{N}$,
+
+$$\alpha_e ;=; \beta_{f(e)}.$$
+
+(Equivalently: every other numbering can be effectively translated into $(\beta_e)$.)
+</div>
 
 The function $f$ acts as a "compiler" or "translator" from indices in the $\alpha$ numbering to equivalent indices in the $\beta$ numbering.
 
-$\textbf{Theorem 178:}$ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Standard numbering is Gödel numbering)</span></p>
+
+The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
+</div>
+<!-- $\textbf{Theorem 178:}$ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering. -->
 
 *Proof*: Let $\alpha_0, \alpha_1, \dots$ be an arbitrary numbering, and let its principal function $\alpha$ be computed by a Turing machine $M$. So, $M(\langle e, x \rangle) \simeq \alpha_e(x)$. For any given $e$, we can construct a new Turing machine $M'$ that, on input $x$, first transforms $x$ into the pair $\langle e, x \rangle$ and then simulates $M$. This new machine $M'$ computes the function $\alpha_e$. The process of constructing $M'$ from $M$ and $e$ is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index $f(e)$ for this machine $M'$. Thus, there exists a computable function $f$ such that $\phi_{f(e)} = \alpha_e$ for all $e$.
 
 Not all universal numberings have this powerful translation property.
 
-$\textbf{Theorem 179:}$ There is a universal numbering that is not a Gödel numbering.
+<!-- $\textbf{Theorem 179:}$ There is a universal numbering that is not a Gödel numbering. -->
+<div class="math-callout math-callout--theorem">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering is not Gödel numbering)</span></p>
+
+There is a universal numbering that is not a Gödel numbering.
+</div>
 
 *Proof*: Let $\phi_0, \phi_1, \dots$ be the standard numbering. We define a new sequence of partial functions $\psi_0, \psi_1, \dots$. For an index $e = \langle i, t \rangle$, we define $\psi_e$ as:  
 
