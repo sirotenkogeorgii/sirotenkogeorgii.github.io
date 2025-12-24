@@ -3742,7 +3742,7 @@ These functions provide a direct link between sets and functions.
 
 <!-- $\textbf{Proposition 157:}$ A set $A$ is decidable $\iff$ its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable $\iff$ its partial characteristic function $\chi_A$ is partial computable. -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Decidable set $\iff$ $c_A$ is computable, set r.e $\iff$ $\chi_A$ is p. computable)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Decidable set $\iff$ $c_A$ is computable, set r.e $\iff$ $\chi_A$ is partial computable)</span></p>
 
 1. A set $A$ is **decidable** $\iff$ its **characteristic function $c_A$ is computable**. 
 2. A set $A$ is **recursively enumerable** $\iff$ its **partial characteristic function $\chi_A$ is partial computable**.
@@ -3758,9 +3758,9 @@ The domain of a partial computable function provides another characterization of
 
 A set $A \subseteq \mathbb{N}$ is recursively enumerable $\iff$ if there exists a partial computable function $f$ such that:
 
-$$x \in A \iff f(x) \downarrow$$.
+$$x \in A \iff f(x) \downarrow.$$
 
-That is A is equal to the domain of a partial computable function.
+That is $A$ is equal to the domain of a partial computable function.
 </div>
 
 *Proof*: Let $A$ be a set.
@@ -3802,14 +3802,28 @@ The **graph of a partial function** $\alpha : A \to B$ is
 $$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$
 </div>
 
-$\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
+<!-- $\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
 * **(i)** The partial function $\alpha$ is partial computable. 
 * **(ii)** The set $\text{graph}(\alpha)$ is recursively enumerable.
 
 For a function $f$, the following statements are equivalent. 
 * **(iii)** The function $f$ is computable. 
 * **(iv)** The set $\text{graph}(f)$ is decidable. 
-* **(v)** The set $\text{graph}(f)$ is recursively enumerable.
+* **(v)** The set $\text{graph}(f)$ is recursively enumerable. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
+
+Let $\alpha$ be a partial function. The following are equivalent:
+
+1. $\alpha$ is partial computable.
+2. $\operatorname{graph}(\alpha)$ is recursively enumerable.
+
+Let $f$ be a (total) function. The following are equivalent:
+
+1. $f$ is computable.
+2. $\operatorname{graph}(f)$ is decidable.
+3. $\operatorname{graph}(f)$ is recursively enumerable.
+</div>
 
 *Proof*: See exercises.
 
@@ -3817,7 +3831,6 @@ Recursively enumerable sets can also be characterized as projections of decidabl
 
 <!-- $\textbf{Proposition 161:}$ A set $A$ is recursively enumerable $\iff$ $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that   -->
 <!-- $$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$  -->
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and decidable set projection)</span></p>
 
@@ -4054,7 +4067,7 @@ Having established the class of partial computable functions, we now turn to the
 For partial functions $\alpha$ and $\beta$, we write $\alpha(n) \simeq \beta(n)$ if the function values $\alpha(n)$ and $\beta(n)$ either are both undefined or are both defined and equal.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">((\alpha_e)_{e\in\mathbb{N}}, \alpha)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($(\alpha_e)_{e\in\mathbb{N}}, \alpha$)</span></p>
 
 For a sequence $(\alpha_e)_{e\in\mathbb{N}}=\alpha_0, \alpha_1, \dots$ of partial functions, there is a unique partial function $\alpha$ on $\mathbb{N}^2$ such that
  
@@ -4286,6 +4299,25 @@ $$\alpha_e = \beta_{f(e)}.$$
 
 The function $f$ acts as a "compiler" or "translator" from indices in the $\alpha$ numbering to equivalent indices in the $\beta$ numbering.
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Symbols to unique natural numbers)</span></p>
+
+**Gödel numbering** is a method for encoding symbols, formulas, and even whole proofs from a formal system (like arithmetic or logic) as **unique natural numbers**.
+
+The idea is:
+
+1. Assign each basic symbol (e.g., `0`, `S`, `+`, `=`, `(`, `)`, variables, etc.) a distinct natural number.
+2. Encode a finite sequence of symbols (a string / formula) into a single natural number using a fixed, reversible scheme (commonly using prime powers).
+
+A classic scheme is: if a formula is the symbol sequence $s_1, s_2, \dots, s_k$, and each symbol $s_i$ has code $c(s_i)$, define its Gödel number as
+
+$$G(s_1 \dots s_k) = 2^{c(s_1)} \cdot 3^{c(s_2)} \cdot 5^{c(s_3)} \cdots p_k^{c(s_k)},$$
+
+where $p_k$ is the $k$-th prime.
+
+Because prime factorization is unique, you can decode the number back into the exact original sequence. This is what lets metamathematical statements like “this formula is provable” be translated into statements *about numbers* inside arithmetic.
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Standard numbering is Gödel numbering)</span></p>
 
@@ -4304,7 +4336,78 @@ Not all universal numberings have this powerful translation property.
 There is a universal numbering that is not a Gödel numbering.
 </div>
 
-*Proof*: Let $\phi_0, \phi_1, \dots$ be the standard numbering. We define a new sequence of partial functions $\psi_0, \psi_1, \dots$. For an index $e = \langle i, t \rangle$, we define $\psi_e$ as:  
+Here is a smoother, more standard rewrite of **Theorem 179** and its proof, keeping your exact construction but improving flow, notation, and the logical steps.
+
+---
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Exists universal numbering that is not Gödel numbering)</span></p>
+
+There exists a universal numbering that is not a Gödel numbering.
+
+</div>
+
+*Proof.* Let $(\phi_e)_{e\in\mathbb N}$ be the standard numbering of the partial computable functions. Define a new sequence $(\psi_e)_{e\in\mathbb N}$ as follows. For each $e=\langle i,t\rangle$, set
+
+$$
+\psi_{\langle i,t\rangle}(x)\ \simeq
+\begin{cases}
+\phi_i(x), & x\neq 0, \\
+\uparrow, & x=0\ \text{and}\ t=0,[2pt]
+t-1, & x=0\ \text{and}\ t>0.
+\end{cases}
+$$
+
+In words: $\psi_{\langle i,t\rangle}$ behaves like $\phi_i$ on all inputs $x\neq 0$, while its value at $0$ is independently controlled by $t$.
+
+**Step 1: $(\psi_e)$ is a numbering.**
+Its principal function $\psi(e,x)$ is partial computable: on input $(e,x)$, decode $e$ as $\langle i,t\rangle$. If $x\neq 0$, simulate $\phi_i(x)$. If $x=0$, output $\uparrow$ when $t=0$ and output $t-1$ when $t>0$. Hence $(\psi_e)$ is a numbering.
+
+**Step 2: $(\psi_e)$ is universal.**
+Fix $i$. We show that $\phi_i$ occurs somewhere in the $\psi$-list. Consider the value $\phi_i(0)$.
+
+* If $\phi_i(0)\uparrow$, then we choose $e=\langle i,0\rangle$ and we have $\psi_{\langle i,0\rangle}(0)\uparrow$ and $\psi_{\langle i,0\rangle}(x)=\phi_i(x)$ for $x\neq 0$. Hence $\psi_{\langle i,0\rangle}=\phi_i$.
+* If $\phi_i(0)\downarrow=y$, then we choose $e=\langle i,y+1\rangle$ and we have $\psi_{\langle i,y+1\rangle}(0)=y$ and again $\psi_{\langle i,y+1\rangle}(x)=\phi_i(x)$ for $x\neq 0$. Hence $\psi_{\langle i,y+1\rangle}=\phi_i$.
+
+Thus every $\phi_i$ appears among the $\psi_e$, so $(\psi_e)$ is universal.
+
+**Step 3: $(\psi_e)$ is not a Gödel numbering.**
+Define a computable function $g$ such that, for every $e$,
+
+$$
+\phi_{g(e)}(x)\ \simeq
+\begin{cases}
+0, & \text{if } \phi_e(e)\downarrow,\\
+\uparrow, & \text{if } \phi_e(e)\uparrow.
+\end{cases}
+$$
+
+Such a $g$ exists and is computable: given $e$, effectively construct a Turing machine that ignores its input $x$ and outputs $0$ if $\phi_e(e)$ halts and loops otherwise (I guess such a TM just simulates $\phi_e(e)$ and simulation either diverges or produces some output and the TM outputs zero); Such a TM has its corresponding partial computable function, which is somewhere in the standard numbering. Let $g(e)$ be an index of this machine in the standard enumeration.
+
+Now suppose, for contradiction, that $(\psi_e)$ were a Gödel numbering. Then there would exist a computable translation function $f$ such that
+
+$$\phi_n = \psi_{f(n)}\qquad\text{for all }n.$$
+
+Applying this with $n=g(e)$, we obtain
+
+$$\phi_{g(e)} = \psi_{f(g(e))}\qquad\text{for all }e.$$
+
+Write $f(g(e))=\langle i(e),t(e)\rangle$, and let $\mathrm{inv}_2(\langle u,v\rangle)=v$ denote the second projection. We now look at the value at input $0$.
+
+* If $\phi_e(e)\downarrow$, then by construction $\phi_{g(e)}(0)=0$. Hence $\psi_{f(g(e))}(0)=0$. By the definition of $\psi$, this can happen only when $t(e)=1$, i.e. $\mathrm{inv}_2(f(g(e)))=1$.
+* If $\phi_e(e)\uparrow$, then $\phi_{g(e)}(0)\uparrow$. Hence $\psi_{f(g(e))}(0)\uparrow$, which (by the definition of $\psi$) happens only when $t(e)=0$, i.e. $\mathrm{inv}_2(f(g(e)))=0$.
+
+Therefore the function
+
+$$h(e)\ :=\ \mathrm{inv}_2(f(g(e)))$$
+
+is exactly the characteristic function of the diagonal halting set
+
+$$H=\lbrace e:\phi_e(e)\downarrow\rbrace.$$
+
+But $h$ is computable as a composition of computable functions ($\mathrm{inv}_2$, $f$, and $g$. This would make $H$ decidable, contradicting the undecidability of the halting problem. Hence $(\psi_e)$ cannot be a Gödel numbering. $\square$
+
+<!-- *Proof*: Let $\phi_0, \phi_1, \dots$ be the standard numbering. We define a new sequence of partial functions $\psi_0, \psi_1, \dots$. For an index $e = \langle i, t \rangle$, we define $\psi_e$ as:  
 
 $$\psi_{\langle i, t \rangle}(x) = \begin{cases} \phi_i(x) & \text{in case } x \ne 0, \\ \uparrow & \text{in case } x=0 \text{ and } t=0, \\ t-1 & \text{in case } x=0 \text{ and } t > 0. \end{cases}$$  
 
@@ -4320,7 +4423,7 @@ Essentially, $\psi_{\langle i, t \rangle}$ is a copy of $\phi_i$, except at inpu
 * Now, assume for contradiction that $\psi$ were a Gödel numbering. Then there would be a computable function $f$ such that $\phi_e = \psi_{f(e)}$ for all $e$. Applying this to our constructed functions, we get $\phi_{g(e)} = \psi_{f(g(e))}$ for all $e$. Let's examine the behavior at input $0$.
   * If $e \in H$, then $\phi_e(e) \downarrow$. This means $\phi_{g(e)}(0) = 0$. So, $\psi_{f(g(e))}(0) = 0$. According to the definition of $\psi$, this happens only if the second component of the index $f(g(e))$ is $1$. Let $\text{inv}_2$ be the function that gives the second component of a pair (i.e., $\text{inv}_2(\langle x, y \rangle) = y$). Then $\text{inv}_2(f(g(e))) = 1$.
   * If $e \notin H$, then $\phi_e(e) \uparrow$. This means $\phi_{g(e)}(0) \uparrow$. So, $\psi_{f(g(e))}(0) \uparrow$. This happens only if the second component of $f(g(e))$ is $0$. Then $\text{inv}_2(f(g(e))) = 0$.
-* This implies that the function $\text{inv}_2 \circ f \circ g$ is the characteristic function of the halting problem $H$. Since $f$, $g$, and $\text{inv}_2$ are all computable, their composition is also computable. But this would mean $H$ is decidable, which is a contradiction. Therefore, $\psi$ cannot be a Gödel numbering.
+* This implies that the function $\text{inv}_2 \circ f \circ g$ is the characteristic function of the halting problem $H$. Since $f$, $g$, and $\text{inv}_2$ are all computable, their composition is also computable. But this would mean $H$ is decidable, which is a contradiction. Therefore, $\psi$ cannot be a Gödel numbering. -->
 
 ## Many-one Reducibility and Rice’s Theorem
 
@@ -4329,6 +4432,14 @@ To compare the difficulty of undecidable problems, we introduce the concept of r
 ### Many-one Reducibility
 
 $\textbf{Definition 180:}$ A set $A$ is many-one reducible to a set $B$, abbreviated as $A$ is m-reducible to $B$ or $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$, it holds that  $x \in A \text{ if and only if } f(x) \in B$. 
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+
+A set $A$ is **many-one reducible** to a set $B$ (also: **m-reducible**), written $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$,
+
+$$x \in A \iff f(x) \in B.$$
+</div>
 
 The function $f$ transforms instances of problem $A$ into instances of problem $B$ while preserving the yes/no answer. This means that if we can solve $B$, we can use $f$ to solve $A$.
 
@@ -4342,7 +4453,7 @@ $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transit
 
 *Proof*: See the exercises.
 
-M-reducibility allows us to infer properties about sets.
+### M-reducibility allows us to infer properties about sets.
 
 $\textbf{Proposition 183:}$ Let $A$ and $B$ be sets such that $A \le_m B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
@@ -4384,21 +4495,45 @@ M-reducibility also interacts cleanly with set complements. Let $\bar{X} = \math
 
 This leads to an important non-reducibility result.
 
-$\textbf{Corollary 188:}$ Let $A$ be an undecidable r.e. set. Then it holds that $A \not\le_m \bar{A}$ and $\bar{A} \not\le_m A$. In particular, we have 
+<!-- $\textbf{Corollary 188:}$ Let $A$ be an undecidable r.e. set. Then it holds that $A \not\le_m \bar{A}$ and $\bar{A} \not\le_m A$. In particular, we have 
 
-$$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$ 
+$$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$  -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
+
+Let $A$ be an undecidable r.e. set. Then neither set is many-one reducible to the other’s complement:
+
+$$
+A \not\le_m \overline{A}
+\quad\text{and}\quad
+\overline{A} \not\le_m A.
+
+$$
+In particular, we have
+
+$$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$
+</div>
 
 *Proof*: The complement $\bar{A}$ cannot be r.e., otherwise $A$ would be decidable by Proposition 165. If we had $A \le_m \bar{A}$, since $\bar{A}$ is not r.e., this would imply by Theorem 184(i) that $A$ is not r.e., which contradicts that $A$ is an r.e. set. If we had $\bar{A} \le_m A$, since $A$ is r.e., this would imply that $\bar{A}$ is also r.e., which we know is false.
 
-Index Sets and Rice’s Theorem
+### Index Sets and Rice’s Theorem
 
 Rice's Theorem is a powerful generalization of the undecidability of the halting problem. It states that any non-trivial property of the behavior of Turing machines (i.e., of the partial computable functions they compute) is undecidable. To formalize this, we use the notion of an index set.
 
-$\textbf{Definition 189:}$ An index set is a set $I$ of natural numbers such that for all $e$ and $e'$ it holds that  
+<!-- $\textbf{Definition 189:}$ An index set is a set $I$ of natural numbers such that for all $e$ and $e'$ it holds that  
 
 $$e \in I \text{ and } \phi_e = \phi_{e'} \implies e' \in I$$  
 
-An index set is nontrivial if it differs from $\emptyset$ and $\mathbb{N}$.
+An index set is nontrivial if it differs from $\emptyset$ and $\mathbb{N}$. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+
+A set $I \subseteq \mathbb{N}$ is an **index set** if for all $e,e'$,
+
+$$e \in I \ \text{and}\ \phi_e=\phi_{e'} \ \Longrightarrow\ e' \in I.$$
+
+An index set is **nontrivial** if it is neither $\emptyset$ nor $\mathbb{N}$.
+</div>
 
 > **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
 
@@ -4432,10 +4567,27 @@ $\textbf{Corollary 194:}$ For every partial computable function $\alpha$ the set
 
 Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
 
-$\textbf{Example 196:}$ The set $A = \lbrace e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\rbrace$ is not an index set. The set $A$ is r.e. Given $e$, we can effectively enumerate $\text{dom}(\phi_e)$ until at least $e + 1$ elements of $W_e$ have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for $s = 0, 1, \dots$ the computation of $\phi_e(x)$ for all $x \le s$ and for $s$ computation steps, see the exercises for details.
+<!-- $\textbf{Example 196:}$ The set $A = \lbrace e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\rbrace$ is not an index set. The set $A$ is r.e. Given $e$, we can effectively enumerate $\text{dom}(\phi_e)$ until at least $e + 1$ elements of $W_e$ have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for $s = 0, 1, \dots$ the computation of $\phi_e(x)$ for all $x \le s$ and for $s$ computation steps, see the exercises for details.
 
 * **Case I**: There exists $e \in A$ such that the domain of $\phi_e$ has finite size $m$. By Corollary 194, there exists an index $e' > m$ such that $\phi_e = \phi_{e'}$. Then $e' \notin A$, hence $A$ is not an index set.
-* **Case II**: For all $e \in A$ the domain of $\phi_e$ is infinite. By definition, $A$ contains all indices $e$ such that $W_e$ is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration $e_0, e_1, \dots$ of $A$, $\phi_{e_0}, \phi_{e_1}, \dots$ is such a numbering.
+* **Case II**: For all $e \in A$ the domain of $\phi_e$ is infinite. By definition, $A$ contains all indices $e$ such that $W_e$ is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration $e_0, e_1, \dots$ of $A$, $\phi_{e_0}, \phi_{e_1}, \dots$ is such a numbering. -->
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
+
+Let
+
+$$A=\lbrace e : \operatorname{dom}(\phi_e)\ \text{has more than } e \text{ elements}\rbrace.$$
+
+Then $A$ is **not** an index set.
+
+Moreover, $A$ is r.e.: given $e$, we can effectively enumerate $\operatorname{dom}(\phi_e)$ until at least $e+1$ distinct elements have appeared. This can be done via **dovetailing**: for stages $s=0,1,2,\dots$, simulate the computations $\phi_e(x)$ for all $x\le s$, each for $s$ steps (see the exercises for details).
+
+To show that $A$ is not an index set, distinguish two cases.
+
+* **Case I.** There exists $e\in A$ such that $\operatorname{dom}(\phi_e)$ is finite of size $m$. By Corollary 194, there is an index $e'>m$ with $\phi_{e'}=\phi_e$. But then $e'\notin A$, so membership in $A$ is not preserved under equality of computed functions. Hence $A$ is not an index set.
+
+* **Case II.** For every $e\in A$, the domain $\operatorname{dom}(\phi_e)$ is infinite. Then, by definition, $A$ contains every index $e$ such that $W_e$ is infinite. This would give an effective listing of partial computable functions with infinite domain, contradicting Remark 195: if $e_0,e_1,\dots$ is an effective enumeration of $A$, then $\phi_{e_0},\phi_{e_1},\dots$ would be such a numbering.
+</div>
 
 ## Oracle Turing Machines and the Jump Operator
 
@@ -4443,22 +4595,48 @@ We now introduce a more powerful form of reducibility, Turing reducibility, base
 
 ### Oracle Turing Machines and Turing Reducibility
 
-$\textbf{Definition 197:}$ An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values $B(0)B(1) \dots$ of the characteristic function of a set $B$ is continuously written. The set $B$, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit $B(0)$. The notation $M(x, B)$ is used for the result of the computation of the oracle Turing machine $M$ on inputs $x$ and oracle $B$, if the computation terminates, and $M(x, B) \uparrow$, if the computation does not terminate. The notations $M(x, B) \downarrow$ and $M(x, B) \downarrow = y$ are defined as for Turing machines. In all these notations, $M(x, B)$ can also be written as $M^B(x)$.
-
+<!-- $\textbf{Definition 197:}$ An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values $B(0)B(1) \dots$ of the characteristic function of a set $B$ is continuously written. The set $B$, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit $B(0)$. The notation $M(x, B)$ is used for the result of the computation of the oracle Turing machine $M$ on inputs $x$ and oracle $B$, if the computation terminates, and $M(x, B) \uparrow$, if the computation does not terminate. The notations $M(x, B) \downarrow$ and $M(x, B) \downarrow = y$ are defined as for Turing machines. In all these notations, $M(x, B)$ can also be written as $M^B(x)$.
 If an oracle Turing machine $M$ terminates for all inputs $x$ with a given oracle $B$, the notation $M(B)$ is used for the uniquely determined set $A$ with the characteristic function $c_A : x \mapsto M(x, B)$.
+A set $A$ is Turing-reducible to a set $B$, briefly $A$ is T-reducible to $B$ or $A \le_T B$, if there is an oracle Turing machine $M$ such that $A = M(B)$, i.e.,  $A(x) = M(x, B) \text{ for all } x \in \mathbb{N}$.  -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
 
-A set $A$ is Turing-reducible to a set $B$, briefly $A$ is T-reducible to $B$ or $A \le_T B$, if there is an oracle Turing machine $M$ such that $A = M(B)$, i.e.,  $A(x) = M(x, B) \text{ for all } x \in \mathbb{N}$. 
+An **oracle Turing machine** is a Turing machine that, in addition to its work tapes, has a special **oracle tape**. For a set $B$, the oracle tape contains the infinite binary sequence
+
+$$B(0)B(1)B(2)\dots$$
+
+(the values of the characteristic function of $B$). The set $B$ is called the **oracle**. The oracle tape is read-only, and initially the head scans the cell containing $B(0)$.
+
+For an oracle machine $M$, input $x$, and oracle $B$, write:
+
+* $M(x,B)$ for the output if the computation halts,
+* $M(x,B)\uparrow$ if it does not halt,
+* $M(x,B)\downarrow$ and $M(x,B)\downarrow = y$ with the usual meanings.
+
+We also write $M^B(x)$ instead of $M(x,B)$.
+
+If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (unique) set $A$ whose characteristic function is $x \mapsto M(x,B)$.
+
+A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
+
+$$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}.$$
+</div>
 
 Turing reducibility is a more general notion than many-one reducibility.
 
-$\textbf{Theorem 198:}$ For all sets $A$ and $B$, it holds that $A \le_m B$ implies $A \le_T B$ but the implication in the opposite direction is false in general.
+<!-- $\textbf{Theorem 198:}$ For all sets $A$ and $B$, it holds that $A \le_m B$ implies $A \le_T B$ but the implication in the opposite direction is false in general. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
+
+For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse implication fails.
+</div>
 
 *Proof*:
 
 * The implication $A \le_m B \implies A \le_T B$ holds because if $f$ is the computable function for the m-reduction, an oracle Turing machine can compute $f(x)$ and then query the oracle for B at the single location $f(x)$ to get the answer.
 * A counterexample for the reverse is given by the halting problem $H$ and its complement $\bar{H}$. For any set $A$, we have $A \le_T \bar{A}$, because an oracle for $\bar{A}$ can be used to decide membership in $A$ and vice versa. Thus, $H \le_T \bar{H}$. However, as shown in Corollary 188, we have $H \not\le_m \bar{H}$.
 
-Like m-reducibility, T-reducibility preserves decidability.
+### Like m-reducibility, T-reducibility preserves decidability.
 
 $\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
@@ -4470,37 +4648,92 @@ $\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$.
 
 The concept of an oracle allows us to "relativize" all the fundamental notions of computability. We can speak of sets being decidable or r.e. relative to an oracle.
 
-$\textbf{Definition 200:}$ A set A is decidable with oracle $B$, if $A \le_T B$ holds. A set $A$ is recursively enumerable or r.e. with oracle $B$, if there exists an oracle Turing machine $M$ that has domain $A$ when its oracle is $B$, i.e., if  $A = \lbrace x \in \mathbb{N} : M(x, B) \downarrow\rbrace$. 
+<!-- $\textbf{Definition 200:}$ A set A is decidable with oracle $B$, if $A \le_T B$ holds. A set $A$ is recursively enumerable or r.e. with oracle $B$, if there exists an oracle Turing machine $M$ that has domain $A$ when its oracle is $B$, i.e., if  $A = \lbrace x \in \mathbb{N} : M(x, B) \downarrow\rbrace$.  -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
 
-If $A$ is decidable with oracle $B$, we also say $A$ is decidable in $B$ or decidable relative to $B$. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativized world.
+Let $A,B \subseteq \mathbb{N}$.
 
-$\textbf{Definition 201:}$ $A$ function $f$ is computable with oracle $B$ if there is an oracle Turing machine that on input $i$ and oracle $B$ outputs $f(i)$. An enumeration $x_0, x_1, \dots$ is effective in $B$ if $x_i = f(i)$ for some function $f$ that is computable with oracle $B$.
+* $A$ is **decidable relative to** (or **with oracle**) $B$ if $A \le_T B$.
+* $A$ is **recursively enumerable relative to** $B$ if there exists an oracle Turing machine $M$ such that
+  
+  $$A=\lbrace x\in\mathbb{N} : M(x,B)\downarrow\rbrace.$$
+
+</div>
+
+If $A$ is decidable with oracle $B$, we also say $A$ is decidable in $B$ or decidable relative to $B$. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativised world.
+
+<!-- $\textbf{Definition 201:}$ $A$ function $f$ is computable with oracle $B$ if there is an oracle Turing machine that on input $i$ and oracle $B$ outputs $f(i)$. An enumeration $x_0, x_1, \dots$ is effective in $B$ if $x_i = f(i)$ for some function $f$ that is computable with oracle $B$. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+
+A function $f$ is **computable with oracle** $B$ if there exists an oracle Turing machine that, on input $i$ and oracle $B$, outputs $f(i)$.
+
+An enumeration $x_0,x_1,\dots$ is **effective in** $B$ if $x_i=f(i)$ for some function $f$ computable with oracle $B$.
+</div>
 
 > **Remark 202**: Similar to the unrelativized case, it can be shown that a set $A$ is recursively enumerable with oracle $B$ if and only if there exists an enumeration $x_0, x_1, \dots$ that is effective in $B$.
 
-$\textbf{Theorem 203:}$ Let A and B be sets. 
+<!-- $\textbf{Theorem 203:}$ Let A and B be sets. 
 * **(i)** $A$ is decidable in $B$ if and only if $A$ and the complement $\bar{A}$ of $A$ are recursively enumerable in $B$. 
-* **(ii)** $A$ is decidable in $B$ if and only if $A$ has a monotone enumeration $x_0 \le x_1 \le x_2$ \dots that is effective in $B$.
+* **(ii)** $A$ is decidable in $B$ if and only if $A$ has a monotone enumeration $x_0 \le x_1 \le x_2$ \dots that is effective in $B$. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
+
+Let $A,B$ be sets.
+
+1. $A$ is decidable in $B$ $\iff$ both $A$ and $\overline{A}$ are r.e. in $B$.
+2. $A$ is decidable in $B$ $\iff$ $A$ has a monotone enumeration $x_0 \le x_1 \le x_2 \le \dots$ that is effective in $B$.
+</div>
 
 Just as we can create a standard numbering of all Turing machines, we can create a standard numbering of all oracle Turing machines, which is also a Gödel numbering in the relativized sense. This allows us to define a relativized version of the halting problem.
 
-$\textbf{Definition 205:}$ Let $B$ be a set and $M_0, M_1, \dots$ be the standard enumeration of all oracle Turing machines. The set  $H^B = \lbrace e : M_e(e, B) \downarrow \rbrace$  is called the (diagonal) halting problem relative to $B$, or the jump of $B$. The map $X \mapsto H^X$ is called the jump operator.
+<!-- $\textbf{Definition 205:}$ Let $B$ be a set and $M_0, M_1, \dots$ be the standard enumeration of all oracle Turing machines. The set  $H^B = \lbrace e : M_e(e, B) \downarrow \rbrace$  is called the (diagonal) halting problem relative to $B$, or the jump of $B$. The map $X \mapsto H^X$ is called the jump operator. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of definition)</span></p>
+
+Let $B\subseteq \mathbb{N}$, and let $M_0,M_1,\dots$ be the standard enumeration of all oracle Turing machines. Define
+
+$$H^B=\lbrace e : M_e(e,B)\downarrow\rbrace.$$
+
+This set is called the **(diagonal) halting problem relative to $B$**, or the **jump** of $B$. The map $X \mapsto H^X$ is the **jump operator**.
+</div>
 
 The jump of $B$ is often denoted $B'$. The set $H^B$ plays the same role for sets that are r.e. in $B$ as the original halting problem $H$ does for r.e. sets.
 
-$\textbf{Theorem 206:}$ For all sets $A$ and $B$, $A$ is recursively enumerable relative to the oracle $B$ if and only if $A$ is m-reducible to $H^B$.
+<!-- $\textbf{Theorem 206:}$ For all sets $A$ and $B$, $A$ is recursively enumerable relative to the oracle $B$ if and only if $A$ is m-reducible to $H^B$. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
+
+For all sets $A,B$, the set $A$ is r.e. relative to $B$ $\iff$ $A \le_m H^B$.
+</div>
 
 *Proof*: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
 
 * $(\impliedby)$ If $A \le_m H^B$ via computable function $f$, we can build an oracle TM for $A$. On input $x$ with oracle $B$, it computes $f(x)$ and then simulates the oracle TM $M_{f(x)}$ on input $f(x)$ with oracle $B$. This machine halts iff $f(x) \in H^B$, which happens iff $x \in A$. Thus, $A$ is r.e. in $B$.
 * $(\implies)$ If $A$ is r.e. in $B$, there is an oracle TM $M$ such that $A$ is its domain with oracle $B$. We can create a computable function $h$ such that for any $x, M_{h(x)}$ is an oracle TM that on any input $y$ with any oracle $X$ simulates $M$ on input $x$ with oracle $X$. The function $h$ is computable as it just hard-wires $x$ into the description of $M$. Then we have:  $x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$.  This shows $A \le_m H^B$ via the computable function $h$.
 
-$\textbf{Corollary 207:}$ For all sets $B$, the halting problem relative to $B$ is recursively enumerable with oracle $B$.
+<!-- $\textbf{Corollary 207:}$ For all sets $B$, the halting problem relative to $B$ is recursively enumerable with oracle $B$. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of theorem)</span></p>
+
+For every set $B$, the halting problem $H^B$ is r.e. relative to $B$.
+</div>
 
 The jump operator always produces a strictly more complex set. A set is always reducible to its own jump, but the jump is never reducible back to the original set.
 
-$\textbf{Theorem 208:}$ Let $B$ be a set. Then $B$ is m-reducible to $H^B$ and thus decidable with oracle $H^B$, but $H^B$ is not decidable with oracle $B$, i.e., it holds  $B \le_m H^B \quad \text{and} \quad H^B \not\le_T B$. 
+<!-- $\textbf{Theorem 208:}$ Let $B$ be a set. Then $B$ is m-reducible to $H^B$ and thus decidable with oracle $H^B$, but $H^B$ is not decidable with oracle $B$, i.e., it holds  $B \le_m H^B \quad \text{and} \quad H^B \not\le_T B$.  -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
 
+Let $B$ be a set. Then $B \le_m H^B$, so $B$ is decidable relative to $H^B$. However, $H^B$ is not decidable relative to $B$; that is,
+
+$$
+B \le_m H^B
+\quad\text{and}\quad
+H^B \not\le_T B.
+$$
+</div>
 *Proof*:
 
 * To show $B \le_m H^B$, we need a computable function $h$. Let $h(x)$ be the index of an oracle TM $M_{h(x)}$ that, on any input $y$ and with any oracle $X$, halts if and only if $x \in X$. Then $x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$. Thus $B \le_m H^B$.
@@ -4508,6 +4741,13 @@ $\textbf{Theorem 208:}$ Let $B$ be a set. Then $B$ is m-reducible to $H^B$ and t
 
 Finally, the jump operator is monotone with respect to Turing reducibility. If $A$ is no harder than $B$, then the jump of $A$ is no harder than the jump of $B$.
 
-$\textbf{Theorem 209:}$ If a set $A$ is $T$-reducible to a set $B$, then the halting problem relative to $A$ is m-reducible to the halting problem relative to B, i.e., it holds  $A \le_T B \text{ implies } H^A \le_m H^B$. 
+<!-- $\textbf{Theorem 209:}$ If a set $A$ is $T$-reducible to a set $B$, then the halting problem relative to $A$ is m-reducible to the halting problem relative to B, i.e., it holds  $A \le_T B \text{ implies } H^A \le_m H^B$.  -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
+
+If $A \le_T B$, then the halting problem relative to $A$ is many-one reducible to the halting problem relative to $B$; equivalently,
+
+$$A \le_T B \ \Longrightarrow\ H^A \le_m H^B.$$
+</div>
 
 *Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means $M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$. Therefore, we have the desired equivalence:  $e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  The function $h$ is computable, so this establishes $H^A \le_m H^B$.
