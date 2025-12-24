@@ -3685,17 +3685,31 @@ Computability theory also extends the notion of computation from recognizing lan
 
 Recall that a total $k$-tape Turing machine computes a function by writing the output on its final tape. We now formalize this for machines that may not halt.
 
-$\textbf{Definition (Partial function):}$ The partial function $\phi_M$ computed by a Turing machine $M$ is  
+<!-- $\textbf{Definition (Partial function):}$ The partial function $\phi_M$ computed by a Turing machine $M$ is  
+$$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \text{ on input } w \text{ reaches the halting configuration } C, \\ \uparrow & \text{otherwise.} \end{cases}$$
+Observe that the partial function $\phi_M$ is defined exactly on the arguments $w$ such that $M$ terminates on input $w$. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial function)</span></p>
+
+The **partial function** $\phi_M$ computed by a Turing machine $M$ is  
 
 $$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \text{ on input } w \text{ reaches the halting configuration } C, \\ \uparrow & \text{otherwise.} \end{cases}$$
 
 Observe that the partial function $\phi_M$ is defined exactly on the arguments $w$ such that $M$ terminates on input $w$.
+</div>
+
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
-$\textbf{Definition (Partial computable function):}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma'_1$ to $\Sigma'_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+<!-- $\textbf{Definition (Partial computable function):}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma'_1$ to $\Sigma'_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial computable function)</span></p>
 
-A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function.
+For alphabets $\Sigma_1$ and $\Sigma_2$, a **partial function** from $\Sigma'_1$ to $\Sigma'_2$ is a **partial computable function** if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+
+A partial computable function that is defined for all inputs (i.e., is total) is simply called a **computable function**.
+</div>
 
 ### Computability on Natural Numbers
 
@@ -3713,19 +3727,41 @@ $\textbf{Definition 154:}$ A set $A$ of natural numbers is recursively enumerabl
 
 The concepts of decidable sets, r.e. sets, computable functions, and partial computable functions are deeply interconnected. We can formalize these relationships using characteristic functions.
 
-$\textbf{Definition 156:}$ Let $A$ be a set. The characteristic function $c_A$ and the partial characteristic function $\chi_A$ of $A$ are defined as follows:  
+<!-- $\textbf{Definition 156:}$ Let $A$ be a set. The characteristic function $c_A$ and the partial characteristic function $\chi_A$ of $A$ are defined as follows:  
+
+$$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ \uparrow & \text{if } n \notin A. \end{cases}$$ -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial characteristic function)</span></p>
+
+Let $A$ be a set. The characteristic function $c_A$ and the **partial characteristic function** $\chi_A$ of $A$ are defined as follows:  
 
 $$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ \uparrow & \text{if } n \notin A. \end{cases}$$
+</div>
 
 These functions provide a direct link between sets and functions.
 
-$\textbf{Proposition 157:}$ A set $A$ is decidable $\iff$ its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable $\iff$ its partial characteristic function $\chi_A$ is partial computable.
+<!-- $\textbf{Proposition 157:}$ A set $A$ is decidable $\iff$ its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable $\iff$ its partial characteristic function $\chi_A$ is partial computable. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Decidable set $\iff$ $c_A$ is computable, set r.e $\iff$ $\chi_A$ is p. computable)</span></p>
+
+1. A set $A$ is **decidable** $\iff$ its **characteristic function $c_A$ is computable**. 
+2. A set $A$ is **recursively enumerable** $\iff$ its **partial characteristic function $\chi_A$ is partial computable**.
+</div>
 
 *Proof*: See exercises.
 
 The domain of a partial computable function provides another characterization of r.e. sets.
 
-$\textbf{Proposition 158:}$ A set is recursively enumerable $\iff$ it is equal to the domain of a partial computable function.
+<!-- $\textbf{Proposition 158:}$ A set is recursively enumerable $\iff$ it is equal to the domain of a partial computable function. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Set r.e. $\iff$ set is $\text{dom}$ of partial computable function)</span></p>
+
+A set $A \subseteq \mathbb{N}$ is recursively enumerable $\iff$ if there exists a partial computable function $f$ such that:
+
+$$x \in A \iff f(x) \downarrow$$.
+
+That is A is equal to the domain of a partial computable function.
+</div>
 
 *Proof*: Let $A$ be a set.
 
@@ -3815,11 +3851,11 @@ $$\lbrace z_0, z_1, \ldots\rbrace.$$
 
 A natural number $n$ is **enumerated** by $z_0, z_1, \ldots$ if $n = z_i$ for some $i$.
 
-The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$).
+The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$, mapping the index directly to the element, allowing us to jump to it directly without enumeratign the whole sequence from the beginning one by one).
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Turing Machine $iff$ Algorithm)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Turing Machine $\iff$ Algorithm)</span></p>
 
 In standard computability theory, 
 
@@ -3974,8 +4010,10 @@ A nonempty set $A\subseteq \mathbb{N}$ is decidable $$\iff$$ $A$ has a nondecrea
 </div>
 
 *Proof*:
+
 <!-- * Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
 * Conversely, assume $A$ has a nondecreasing effective enumeration $z_0, z_1, \dots$. If $A$ is finite, it is decidable. If $A$ is infinite, to decide membership for an input $n$, we generate the sequence $z_0, z_1, \dots$ until we find a $z_i$ such that $z_i \ge n$. Since the sequence is nondecreasing and infinite, such a $z_i$ must exist. We then check if $n = z_i$. If it is, $n \in A$; otherwise, $n \notin A$. This procedure always halts, so $A$ is decidable. -->
+  
 $(\Rightarrow)$ Assume $A$ is decidable and nonempty. Since membership in $A$ is decidable, we can effectively find the least element of $A$: search $0,1,2,\dots$ until the first $m$ with $m\in A$, and set $z_0=m$.
 
 For $n\ge 1$, define
@@ -4015,11 +4053,15 @@ Having established the class of partial computable functions, we now turn to the
 
 For partial functions $\alpha$ and $\beta$, we write $\alpha(n) \simeq \beta(n)$ if the function values $\alpha(n)$ and $\beta(n)$ either are both undefined or are both defined and equal.
 
-> **Remark 167**: For a sequence $\alpha_0, \alpha_1, \dots$ of partial functions, there is a unique partial function $\alpha$ on $\mathbb{N}^2$ such that
-> 
-> $$\alpha(e, x) \simeq \alpha_e(x) \text{ for all } e, x \text{ in } \mathbb{N}. \quad (7.1)$$
-> 
-> Conversely, for every partial function $\alpha$ from $\mathbb{N}^2$ to $\mathbb{N}$, there is a unique sequence $\alpha_0, \alpha_1, \dots$ of partial functions such that (7.1) holds.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">((\alpha_e)_{e\in\mathbb{N}}, \alpha)</span></p>
+
+For a sequence $(\alpha_e)_{e\in\mathbb{N}}=\alpha_0, \alpha_1, \dots$ of partial functions, there is a unique partial function $\alpha$ on $\mathbb{N}^2$ such that
+ 
+$$\alpha(e, x) \simeq \alpha_e(x) \text{ for all } e, x \text{ in } \mathbb{N}. \quad (7.1)$$
+ 
+Conversely, for every partial function $\alpha$ from $\mathbb{N}^2$ to $\mathbb{N}$, there is a unique sequence $\alpha_0, \alpha_1, \dots$ of partial functions such that (7.1) holds.
+</div>
 
 This correspondence allows us to treat a sequence of functions and its associated two-argument "principal" function interchangeably.
 
@@ -4050,20 +4092,92 @@ Not every sequence of computable functions constitutes a numbering. A numbering 
 
 > **Remark 170**: There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set $A$ and consider the sequence $\alpha_0, \alpha_1, \dots$ of constant functions such that $\alpha(e)$ has constant value $0$ if $e$ is not in $A$, and has constant value $1$, otherwise. This sequence is not a numbering, as its principal function $\alpha$ is not partial computable. Otherwise, since $\alpha$ is total, $\alpha$ and then also the function $e \mapsto \alpha(e, e)$ were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set $A$.
 
+<!-- <div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Turing Machine $\iff$ Algorithm)</span></p>
+</div> -->
+
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
-<!-- $\textbf{Theorem 171:}$ There exists a universal numbering. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering exists)</span></p>
 
 There exists a universal numbering.
 </div>
 
-*Proof*: See lecture and exercises.
+<!-- *Proof*: See lecture and exercises. -->
+*Proof*:
+
+**Claim.** There exists a numbering $(\alpha_e)_{e\in\mathbb N}$ that enumerates *all* partial computable functions.
+
+**Step 1:** Effectively enumerate Turing machines
+
+Fix once and for all:
+1. a finite alphabet for describing Turing machines (states, tape symbols, directions, etc.), and
+2. a concrete syntax for writing down a machine as a finite string over that alphabet.
+
+Now enumerate **all finite strings** in (say) length-lexicographic order:
+
+$$w_0, w_1, w_2, \dots$$
+
+This enumeration is computable: given $e$, we can compute $w_e$.
+
+Some strings encode a valid Turing machine under the chosen syntax; others do not. Define a sequence of machines $(M_e)_{e\in\mathbb N}$ by:
+
+* if $w_e$ is a valid code of a Turing machine, let $M_e$ be that machine;
+* otherwise, let $M_e$ be a fixed "dummy" machine that never halts on any input.
+
+Then **every** Turing machine $M$ appears as $M_e$ for at least one index $e$ (namely, for any $e$ such that $w_e$ is a code of $M$).
+
+**Step 2:** Define the induced principal function
+
+Let $\phi(e,x)$ be the partial function:
+
+$$\phi(e,x)\ \simeq\ \text{“the output of machine }M_e\text{ on input }x\text{”}.$$
+
+Equivalently, $\phi_e(x) \simeq \phi(e,x)$.
+
+So $\phi$ is the principal function of the sequence $(\phi_e)$ in the sense of (7.1).
+
+**Step 3:** $\phi$ is partial computable (existence of a universal simulator)
+
+We show there is a single Turing machine $U$ that computes $\phi$.
+
+On input $\langle e,x\rangle$ (using any fixed computable pairing function):
+
+1. Compute the string $w_e$. We do not look it up in an already-generated list. Remember that we make the enumeration $w_0, w_1, w_2, \dots$ effective, meaning that mapping $g(e)=w_e$ is computable ((total) computable function $g$).
+2. Check whether $w_e$ is a well-formed code of a Turing machine.
+   * If not, loop forever (so $\phi(e,x)$ is undefined, matching the dummy $M_e$).
+3. If yes, interpret $w_e$ as the transition table of $M_e$, and **simulate** $M_e$ on input $x$, step by step:
+   * maintain a coded representation of the simulated tape contents, head position, and state,
+   * repeatedly apply the transition rule.
+4. If the simulation halts with output $y$, then output $y$.
+
+This simulation procedure is completely mechanical and uses only finite, local operations at each simulated step, so $U$ is a Turing machine. Therefore the function computed by $U$ is partial computable, and by construction it is exactly $\phi$. Hence $\phi$ is a partial computable principal function, so ($\phi_e$) is a **numbering**.
+
+**Step 4:** The numbering is universal
+
+Let $$f:\mathbb N\rightharpoonup\mathbb N$$ be any partial computable function. By definition, some Turing machine $M$ computes $f$.
+
+Since every Turing machine occurs somewhere in the list $(M_e)$, pick $e$ with $M_e = M$. Then for all $x$,
+
+$$\phi_e(x)\ \simeq\ \text{output of }M_e\text{ on }x\ \simeq\ \text{output of }M\text{ on }x\ \simeq\ f(x).$$
+
+So $f = \phi_e$. Thus $\lbrace\phi_e : e\in\mathbb N\rbrace$ is exactly the class of all partial computable functions, i.e. the numbering is **universal**.
+
+This proves Theorem 171. $\square$
+
+This is exactly the construction the Definition 172 refers to: the effective list $(M_e)$ (obtained from enumerating codes) is the “standard enumeration of Turing machines,” and $(\phi_e)$ is the induced standard universal numbering of partial computable functions.
 
 The construction in the proof of this theorem gives rise to a canonical numbering.
 
-$\textbf{Definition 172:}$ The sequence $M_0, M_1, \dots$ constructed in the proof of Theorem 171 is called the standard enumeration of Turing machines. The derived universal numbering $\phi_1, \phi_2, \dots$, where $\phi_i = \phi_{M_i}$, is called the standard enumeration of partial computable functions.
+<!-- $\textbf{Definition 172:}$ The sequence $M_0, M_1, \dots$ constructed in the proof of Theorem 171 is called the standard enumeration of Turing machines. The derived universal numbering $\phi_1, \phi_2, \dots$, where $\phi_i = \phi_{M_i}$, is called the standard enumeration of partial computable functions. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Standard enumeration of Turing machines, Standard enumeration of partial computable functions)</span></p>
+
+Let $M_0, M_1, M_2, \ldots$ be the sequence of Turing machines constructed in the proof of Theorem 171. We call this sequence the **standard enumeration of Turing machines**.
+
+In derived universal numbering for each $i\in\mathbb{N}$, let $\phi_i$ denote the partial function computed by $M_i$ (that is, $\phi_i=\phi_{M_i}$). Then the sequence $\phi_0, \phi_1, \phi_2, \ldots$ is a universal numbering, and it is called the **standard enumeration of partial computable functions**.
+</div>
 
 While we can enumerate all partial computable functions, a famous diagonalization argument shows that we cannot do the same for the set of total computable functions.
 
@@ -4074,7 +4188,7 @@ While we can enumerate all partial computable functions, a famous diagonalizatio
 There exists no numbering of the set of computable functions.
 </div>
 
-*Proof*: For a proof by contradiction, assume that there is a numbering $\alpha_0, \alpha_1, \dots$ of the computable functions. The corresponding principal function $\alpha$ is then total and partial computable, hence computable. Consider the function $d: \mathbb{N} \to \mathbb{N}$ defined by $d(e) = 1 + \alpha(e, e)$. Since $\alpha$ is computable, $d$ is also computable. However, by its construction, $d$ cannot be in the sequence $\alpha_0, \alpha_1, \dots$. For any given index $e$, the function $d$ differs from the function $\alpha_e$ on the input $e$, because $d(e) = 1 + \alpha_e(e) \ne \alpha_e(e)$. This contradicts the assumption that $\alpha_0, \alpha_1, \dots$ was a numbering of all computable functions.
+*Proof*: For a proof by contradiction, assume that there is a numbering $\alpha_0, \alpha_1, \dots$ of the computable functions. The corresponding principal function $\alpha$ is then total and partial computable, hence computable. Consider the function $d: \mathbb{N} \to \mathbb{N}$ defined by $d(e) = 1 + \alpha(e, e)$. Since $\alpha$ is computable, $d$ is also computable. However, by its construction, $d$ cannot be in the sequence $\alpha_0, \alpha_1, \dots$. For any given index $e$, the function $d$ differs from the function $\alpha_e$ on the input $e$, because $d(e) = 1 + \alpha_e(e) \ne \alpha_e(e)$. This contradicts the assumption that $\alpha_0, \alpha_1, \dots$ was a numbering of all computable functions. $\square$
 
 ### Halting Problems
 
@@ -4084,23 +4198,47 @@ Numberings provide a powerful tool for proving the existence of specific, concre
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(diagonal halting set is r.e.)</span></p>
 
-Let $(\alpha_e)_{e\in\mathbb{N}}$ be a numbering, and define the **diagonal halting set**
+Let $(\alpha_e)_{e\in\mathbb N}$ be a numbering, and let $\alpha$ be its principal function, so that
 
-$$H_\alpha = \lbrace e\in\mathbb{N} : \alpha_e(e)\downarrow \rbrace.$$
+$$\alpha(e,x)\simeq \alpha_e(x).$$
 
-Then $H_\alpha$ is recursively enumerable.
+Define the **diagonal halting set**
 
-Moreover, if the numbering $(\alpha_e)$ includes every total computable function, then $H_\alpha$ is not decidable.
+$$H_\alpha=\lbrace e\in\mathbb N : \alpha_e(e)\downarrow\rbrace.$$
+
+Then $H_\alpha$ is recursively enumerable (r.e.). Moreover, if the numbering $(\alpha_e)$ contains every total computable function, then $H_\alpha$ is not decidable.
 </div>
 
 *Proof*:
 
-* The principal function $\alpha$ of the numbering is partial computable. Therefore, the function $d(e) = \alpha(e, e)$ is also partial computable. By construction, the domain of $d$ is the set $H_\alpha$. By Proposition 158, a set is r.e. if and only if it is the domain of a partial computable function. Thus, $H_\alpha$ is recursively enumerable.
-* To prove the second statement by contraposition, assume that $H_\alpha$ is decidable. We will show that the numbering cannot contain all computable functions. Consider the function $g(e)$ defined as:  
-  
-  $$g(e) = \begin{cases} 1 + \alpha_e(e) & \text{if } \alpha_e(e) \text{ is defined,} \\ 0 & \text{otherwise.} \end{cases}$$
-  
-  Since $H_\alpha$ is decidable, we can compute $g(e)$. First, decide if $e \in H_\alpha$. If it is not, output $0$. If it is, we know that the computation of $\alpha_e(e)$ will halt, so we can compute its value and output $1$ plus that value. Thus, $g$ is a total computable function. However, by its construction, $g$ differs from every function $\alpha_e$ in the numbering. For any $e$, if $\alpha_e(e)$ is defined, then $g(e) \ne \alpha_e(e)$. If $\alpha_e(e)$ is undefined, then $g(e)=0$, so $g$ is defined while $\alpha_e$ is not. Therefore, $g$ is not in the numbering, which contradicts the assumption that the numbering contained all computable functions.
+**(1) $H_\alpha$ is r.e.**
+Since $\alpha$ is partial computable, the partial function
+
+$$d(e)\ \simeq\ \alpha(e,e)$$
+
+is also partial computable. By definition,
+
+$$\operatorname{dom}(d)=\lbrace e : \alpha(e,e)\downarrow\rbrace=\lbrace e : \alpha_e(e)\downarrow\rbrace=H_\alpha.$$
+
+A set is r.e. $\iff$ it is the domain of some partial computable function. Hence $H_\alpha$ is r.e.
+
+**(2) If $(\alpha_e)$ contains all total computable functions, then $H_\alpha$ is undecidable.**
+We prove the contrapositive. Assume $H_\alpha$ is decidable. Define a total function $g:\mathbb N\to\mathbb N$ by
+
+$$g(e)=
+\begin{cases}
+1+\alpha_e(e), & \text{if } e\in H_\alpha\ (\text{i.e. }\alpha_e(e)\downarrow), \\
+0, & \text{if } e\notin H_\alpha\ (\text{i.e. }\alpha_e(e)\uparrow).
+\end{cases}$$
+
+Because $H_\alpha$ is decidable, we can compute $g(e)$ effectively: first decide whether $e\in H_\alpha$. If not, output $0$. If yes, then $\alpha_e(e)$ halts, so we simulate it to obtain its value and output one more. Therefore $g$ is total computable.
+
+Now $g$ differs from every $\alpha_e$. Fix $e$.
+
+* If $\alpha_e(e)\downarrow$, then $g(e)=1+\alpha_e(e)\neq \alpha_e(e)$.
+* If $\alpha_e(e)\uparrow$, then $g(e)=0\downarrow$, so $g(e)$ is defined while $\alpha_e(e)$ is not.
+
+In either case, $g\neq \alpha_e$. Thus $g$ is a total computable function not appearing in the numbering. Hence the numbering cannot contain all total computable functions. This proves the contrapositive, and therefore if $(\alpha_e)$ contains all total computable functions, $H_\alpha$ is not decidable. $\square$
 
 Applying this lemma to the standard numbering gives us the classic Halting Problem.
 
@@ -4113,7 +4251,7 @@ are called the diagonal halting problem, or simply the halting problem, and the 
 Let $(\phi_e)_{e\in\mathbb{N}}$ be the standard numbering of the partial computable functions. Define
 
 $$
-H = H_{\mathrm{diag}} =\lbrace, e\in\mathbb{N} : \phi_e(e)\downarrow \rbrace
+H = H_{\mathrm{diag}} =\lbrace e\in\mathbb{N} : \phi_e(e)\downarrow \rbrace
 \qquad
 H_{\mathrm{gen}} =\lbrace \langle e,x\rangle \in\mathbb{N} : \phi_e(x)\downarrow \rbrace.
 $$
@@ -4125,7 +4263,7 @@ The set ($H$ is called the **diagonal halting problem** (often simply the **halt
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The halting problem $H$ is recursively enumerable but not decidable)</span></p>
 
-The halting problem (H) is recursively enumerable but not decidable. Furthermore, its complement $\mathbb{N}\setminus H$ is not recursively enumerable.
+The halting problem $H$ is recursively enumerable but not decidable. Furthermore, its complement $\mathbb{N}\setminus H$ is not recursively enumerable.
 </div>
 
 *Proof*: The standard numbering is universal and thus contains all computable functions. By Lemma 174, $H$ is recursively enumerable but not decidable. If the complement of $H$ were also recursively enumerable, then by Proposition 165, $H$ would be decidable, which is a contradiction. Therefore, the complement of $H$ is not recursively enumerable.
