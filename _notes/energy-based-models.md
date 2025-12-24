@@ -38,3 +38,27 @@ tags:
 - [Your Classifier is Secretly an Energy Based Model and You Should Treat it Like One (2020)]
 - [How to Train Your Energy-Based Models (2021)]
 - [Introduction to Latent Variable Energy-Based Models: A Path Towards Autonomous Machine Intelligence (2023)]
+
+## Videos
+
+- [Yann LeCun,  May 18, 2021, The Energy-Based Learning Model](https://www.youtube.com/watch?v=4lthJd3DNTM)
+- [(SAIF 2020) Day 1: Energy-Based Models for Self-Supervised Learning - Yann LeCun, Samsung](https://www.youtube.com/watch?v=BqgnnrojVBI&t=1386s)
+- [Yann LeCun, Self-Supervised Learning, JEPA, World Models, and the future of AI](https://www.youtube.com/watch?v=yUmDRxV0krg)
+- [Energy-Based Transformers explained, How EBTs and EBMs work](https://www.youtube.com/watch?v=18Fn2m99X1k&t=201s)
+- [Introduction to Energy-Based Models in Deep Learning - The Boltzmann Distribution Explained](https://www.youtube.com/watch?v=cMeddSXDHfo)
+- [Boltzmann Machines: How This Underrated Model is Transforming AI](https://www.youtube.com/watch?v=yrHJ8DA3uJM)
+- [Contrastive Learning with SimCLR, Deep Learning Animated](https://www.youtube.com/watch?v=UqJauYELn6c)
+- [Stanford CS236: Deep Generative Models I 2023 I Lecture 11 - Energy Based Models](https://www.youtube.com/watch?v=m61KiAMCJ5Q)
+- [Stanford CS236: Deep Generative Models I 2023 I Lecture 12 - Energy Based Models](https://www.youtube.com/watch?v=Nci1Bepcy0g)
+- [Stanford CS236: Deep Generative Models I 2023 I Lecture 13 - Score Based Models](https://www.youtube.com/watch?v=8G-OsDs1RLI)
+- [Stanford CS236: Deep Generative Models I 2023 I Lecture 14 - Energy Based Models](https://www.youtube.com/watch?v=E69Lp_T9nVg)
+- [What is an RBM (Restricted Boltzmann Machine)?](https://www.youtube.com/watch?v=L3ynnRgpZwg)
+- [Lecture 11/16 : Hopfield nets and Boltzmann machines](https://www.youtube.com/watch?v=IP3W7cI01VY)
+- [Neural networks [5.1] : Restricted Boltzmann machine - definition](https://www.youtube.com/watch?v=p4Vh_zMw-HQ)
+- [Neural networks [5.2] : Restricted Boltzmann machine - inference](https://www.youtube.com/watch?v=lekCh_i32iE)
+- [Neural networks [5.3] : Restricted Boltzmann machine - free energy](https://www.youtube.com/watch?v=e0Ts_7Y6hZU)
+- [Neural networks [5.4] : Restricted Boltzmann machine - contrastive divergence](https://www.youtube.com/watch?v=MD8qXWucJBY)
+- [Neural networks [5.5] : Restricted Boltzmann machine - contrastive divergence (parameter update)](https://www.youtube.com/watch?v=wMb7cads0go)
+- [Neural networks [5.6] : Restricted Boltzmann machine - persistent CD](https://www.youtube.com/watch?v=S0kFFiHzR8M)
+- [Neural networks [5.7] : Restricted Boltzmann machine - example](https://www.youtube.com/watch?v=n26NdEtma8U)
+- [Neural networks [5.8] : Restricted Boltzmann machine - extensions](https://www.youtube.com/watch?v=iPuqoQih9xk)
