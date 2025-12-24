@@ -16,12 +16,6 @@ date: 2024-11-01
   <figcaption>Hierarchy of vector spaces</figcaption>
 </figure>
 
-Below are **structured lecture-style notes** based on the attached document *“Inner Product Spaces”* (Napkin by Evan Chen, Chapter 13).
-All mathematics is written in **LaTeX**, and **Definitions, Theorems, Lemmas, Propositions, Remarks, Examples** are placed in the **exact callout format** you specified.
-The content closely follows the document, reorganized for clarity and study. 
-
----
-
 ## Inner Product Spaces
 
 ### 1. Inner Products
@@ -31,10 +25,10 @@ The content closely follows the document, reorganized for clarity and study.
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Real inner product)</span></p>
 
-Let ( V ) be a real vector space. A **real inner product** is a function
-[
-\langle \cdot , \cdot \rangle : V \times V \to \mathbb{R}
-]
+Let $V$ be a real vector space. A **real inner product** is a function
+
+$$\langle \cdot , \cdot \rangle : V \times V \to \mathbb{R}$$
+
 satisfying:
 
 1. **Symmetry**:
@@ -153,7 +147,7 @@ $$\lvert v\rvert = \sqrt{\langle v, v \rangle}.$$
 
 For all $v, w \in V$,
 
-$$\lvert \langle v, w \rangle\rvert \le \lvert v \rvert , \lvert w\rvert.$$
+$$\lvert \langle v, w \rangle\rvert \le \lvert v \rvert \lvert w\rvert.$$
 
 Equality holds iff $v$ and $w$ are linearly dependent.
 
@@ -272,7 +266,7 @@ satisfying:
    
 2. **Homogeneity**:
    
-   \lvert \lambda v\rvert = \lvert \lambda\rvert , \lvert v\rvert \quad \text{for all scalars } \lambda
+   $$\lvert \lambda v\rvert = \lvert \lambda\rvert , \lvert v\rvert \quad \text{for all scalars } \lambda$$
 
 3. **Triangle inequality**:
    
@@ -308,7 +302,7 @@ there exist norms which do **not** arise from any inner product.
 
 For $x = (x_1,\dots,x_n) \in \mathbb{R}^n$, define
 
-$$\lvert x\rvert_1 := \sum*{i=1}^n \lvert x_i\rvert.$$
+$$\lvert x\rvert_1 := \sum_{i=1}^n \lvert x_i\rvert.$$
 
 This satisfies all norm axioms, hence makes $\mathbb{R}^n$ a normed vector space.
 
@@ -386,7 +380,7 @@ All norms on a finite-dimensional vector space are equivalent.
 
 Let
 
-$$\ell^2 = \left{ (a_1,a_2,\dots) \mid \sum_{i=1}^\infty a_i^2 < \infty \right}$$
+$$\ell^2 = \lbrace (a_1,a_2,\dots) \mid \sum_{i=1}^\infty a_i^2 < \infty \rbrace$$
 
 with norm
 
