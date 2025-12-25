@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Measure-theoretic probability
+title: Measure-Theoretic Probability
 date: 2024-11-01
 # excerpt: Connecting differential equations, stability analysis, and attractor theory to the training dynamics of modern machine learning models.
 # tags:
@@ -9,7 +9,7 @@ date: 2024-11-01
 #   - theory
 ---
 
-# Measure-theoretic probability
+# Measure-Theoretic Probability
 
 These notes present the measure-theoretic basis of modern probability.
 
@@ -82,7 +82,7 @@ Again: *countable* operations appear automatically.
 
 #### 3. Continuity properties of probability depend on this
 
-A probability measure (\mathbb P) satisfies:
+A probability measure $\mathbb P$ satisfies:
 
 * If $E_n \uparrow E$, then $\mathbb P(E_n)\uparrow \mathbb P(E)$
   
@@ -99,9 +99,6 @@ for all real $x$, and more complicated events like $\lbrace X \in B\rbrace$, pus
 
 Finite closure (an algebra) is good for simple set manipulations;
 **countable** closure (a $\sigma$-algebra) is what makes probability stable under limits — and modern probability is full of limit arguments.
-
-If you want, I can give a tiny concrete example showing an algebra that *fails* to contain a natural limit event, illustrating exactly what breaks.
-
   </details>
 </div>
 
@@ -126,6 +123,5 @@ $$\mathcal B := \sigma(\mathcal O).$$
 Similarly, one defines Borel sets in $\mathbb{R}^d$, and more generally for any topological space $(S,\mathcal O)$:
 
 $$\text{Borel sets} = \sigma(\mathcal O).$$
-
 
 Borel sets can be quite complicated, but it helps to remember they are generated from simple building blocks like open sets.
