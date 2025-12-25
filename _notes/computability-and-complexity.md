@@ -3659,7 +3659,13 @@ In complexity theory, the focus is on decidable languages—those for which a Tu
 
 A Turing machine $M$ accepts a word $w$ if there exists at least one computation path that leads to an accepting state. The set of all words accepted by $M$ constitutes the language it recognizes, denoted $L(M)$. Furthermore, a language is decidable, if it is recognized by some total Turing machine.
 
-$\textbf{Definition 147 (Recursively Enumerable Languages):}$ A language $L$ is recursively enumerable, abbreviated as r.e., if $L$ is recognized by a Turing machine.
+<!-- $\textbf{Definition 147 (Recursively Enumerable Languages):}$ A language $L$ is recursively enumerable, abbreviated as r.e., if $L$ is recognized by a Turing machine. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Recursively Enumerable Languages)</span></p>
+
+A language $L$ is **recursively enumerable**, abbreviated as r.e., if $L$ is recognized by a Turing machine.
+
+</div>
 
 By this definition, every decidable language is also recursively enumerable. However, as we will see, the converse is not true. While nondeterministic Turing machines can provide significant speed-ups in complexity theory (e.g., the $\text{P}$ versus $\text{NP}$ problem), in computability theory, they offer no additional computational power. Any nondeterministic Turing machine can be simulated by a deterministic one that systematically explores its computation tree. Although this simulation incurs a significant resource cost (e.g., exponential in time), these costs are irrelevant when resource bounds are removed. Therefore, we can simplify our model without loss of generality.
 
@@ -3667,7 +3673,13 @@ By this definition, every decidable language is also recursively enumerable. How
 
 A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
 
-$\textbf{Theorem 149:}$ A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine.
+<!-- $\textbf{Theorem 149:}$ A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(L is r.e. $\iff$ L $\text{dom}$ TM)</span></p>
+
+A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine.
+
+</div>
 
 *Proof*: Let $L$ be a language.
 
@@ -3698,6 +3710,55 @@ $$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \te
 Observe that the partial function $\phi_M$ is defined exactly on the arguments $w$ such that $M$ terminates on input $w$.
 </div>
 
+> **Remark:** It is important to separate: 
+> 1. **a partial function as a mathematical object**, from 
+> 2. **a procedure/algorithm that tries to compute it**.
+>
+> **1. The General Case: Partial Functions (Pure Math)**
+> 
+> A **partial function** is a purely mathematical object. It is simply a mapping where some inputs in the domain might not have a corresponding output.
+> * **Does it have a Turing Machine?** Not necessarily.
+> * **How does it "behave" on undefined inputs?** It doesn't "behave" at all. It's just a set of pairs. If $x$ isn't in the domain, the pair simply doesn't exist. There is no "process," no "waiting," and no "machine."
+>
+> **2. The Specific Case: Partial Computable Functions**
+>
+> When we add the word "**computable**," we are specifically talking about the subset of partial functions that do have a Turing Machine associated with them.
+> * For these functions, we do "offload" the logic to a machine.
+> * The definition of a "Partial Computable Function" is literally: "A function for which there exists a Turing Machine that halts and returns the correct value for every $x$ in the domain, and fails to halt for every $x$ outside the domain."
+>
+> So in the case of **partial functions (not computable)**, we apply the pure math definition of "undefined".
+
+> **Remark:** Do we work with general partial (non-computable) functions and therefore without corresponding Turing Machine in computability theory?
+> In computability theory, **usually no**: we mostly work with **partial *computable*** functions, precisely *because* they have a corresponding effective procedure (Turing machine / program / partial recursive definition). But both notions exist, and it’s easy to mix them up:
+> 
+> **General partial functions**
+> A general partial function is just a set-theoretic object
+> 
+> $$\alpha:\subseteq \mathbb{N}\to\mathbb{N},$$
+> 
+> with no promise it’s computable. There are vastly more of these than computable ones (uncountably many vs. countably many). For such an $\alpha$, there may be **no** Turing machine that computes it. 
+> 
+> In that setting, “$\alpha(x)$ is undefined” is purely mathematical: $x\notin\mathrm{dom}(\alpha)$. No “behavior”.
+>
+> Partial computable functions (the default in computability)
+> 
+> Here $\alpha$ is in the class usually denoted by $\varphi_e$, $\Phi_e$, etc.: there exists a TM $M$ such that
+> 
+> * if $\alpha(x)\downarrow$ (defined), $M(x)$ halts with output $\alpha(x)$,
+> * if $\alpha(x)\uparrow$ (undefined), $M(x)$ does not halt.
+> 
+> **This is where “undefined = loops forever” is a correct computational interpretation.**
+
+
+> **Remark:** 
+> * For a **partial function** $\alpha$, saying “$\alpha(x)$ is undefined” simply means **$x$ is not in the domain** of $\alpha$. Formally, $\alpha:\subseteq \mathbb{N}\to\mathbb{N}$ and $x\notin\mathrm{dom}(\alpha)$.
+> * In computability, if $\alpha$ is a **partial computable** function computed by some Turing machine/program $M$ in the standard way (halt = produce output), then:
+> 
+> $$\alpha(x)\ \text{undefined} \quad\Longleftrightarrow\quad M(x)\ \text{does not halt}.$$
+> 
+> So “loops forever on input $x$” is indeed equivalent to “the computed partial function is undefined at $x$”.
+> 
+> So, for a partial function $\alpha$, “$\alpha(x)$ is undefined” means $x\notin\mathrm{dom}(\alpha)$ (no value is assigned). In computability theory, when $\alpha$ is computed by a Turing machine $M$, this is equivalent to saying that $M$ does not halt on input $x$ (diverges/loops forever).
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
@@ -4201,7 +4262,91 @@ While we can enumerate all partial computable functions, a famous diagonalizatio
 There exists no numbering of the set of computable functions.
 </div>
 
-*Proof*: For a proof by contradiction, assume that there is a numbering $\alpha_0, \alpha_1, \dots$ of the computable functions. The corresponding principal function $\alpha$ is then total and partial computable, hence computable. Consider the function $d: \mathbb{N} \to \mathbb{N}$ defined by $d(e) = 1 + \alpha(e, e)$. Since $\alpha$ is computable, $d$ is also computable. However, by its construction, $d$ cannot be in the sequence $\alpha_0, \alpha_1, \dots$. For any given index $e$, the function $d$ differs from the function $\alpha_e$ on the input $e$, because $d(e) = 1 + \alpha_e(e) \ne \alpha_e(e)$. This contradicts the assumption that $\alpha_0, \alpha_1, \dots$ was a numbering of all computable functions. $\square$
+*Proof*: Here’s a cleaner rewrite in a more standard style.
+
+---
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(No numbering of all total computable functions)</span></p>
+
+There is no numbering of the set of (total) computable functions.
+
+</div>
+
+*Proof.* Suppose, for a contradiction, that $(\alpha_e)\_{e\in\mathbb N}$ is a numbering whose range consists exactly of all total computable functions. Let $\alpha$ be its principal function, so
+
+$$\alpha(e,x)=\alpha_e(x)\qquad\text{for all }e,x\in\mathbb N.$$
+
+Because every $\alpha_e$ is total, $\alpha$ is total as well. By definition of “numbering”, $\alpha$ is partial computable; since it is total, it is (total) computable.
+
+Define a new function $d:\mathbb N\to\mathbb N$ by
+
+$$d(e)=\alpha(e,e)+1.$$
+
+Since (\alpha) is computable, so is $d$; moreover d$$ is total.
+
+We claim that $d$ is not equal to any $\alpha_e$. Indeed, fix $e$. Then
+
+$$d(e)=\alpha(e,e)+1=\alpha_e(e)+1\neq \alpha_e(e),$$
+
+so $d$ and $\alpha_e$ differ on input $e$. Therefore $d\neq \alpha_e$ for every $e$, contradicting the assumption that the list $(\alpha_e)$ contains all total computable functions.
+
+
+Question: why cannot we use the same logic to disprove existence of universal numbering?
+
+In the proof above, the *one* property that makes the diagonal argument go through is:
+
+> **$\alpha(e,e)$ is defined for every $e$.**
+
+That is exactly what you get when your list $(\alpha_e)$ contains **only total** functions: the principal function $\alpha(e,x)=\alpha_e(x)$ is then **total**, so $\alpha(e,e)$ always has a value, and the diagonal
+
+$$d(e)=\alpha(e,e)+1$$
+
+is a **total** computable function that disagrees with $\alpha_e$ on input $e$. Contradiction.
+
+**Why it breaks for a universal numbering**
+
+A *universal numbering* (like the standard $(\phi_e)$) enumerates **partial** computable functions. Then the principal function is only **partial**:
+
+$$\alpha(e,x)\simeq \alpha_e(x),$$
+
+and crucially, $\alpha(e,e)$ may be undefined.
+
+If you try the same diagonal definition
+
+$$d(e)\ \simeq\ 1+\alpha(e,e),$$
+
+then:
+
+* $d(e)$ is undefined whenever $\alpha(e,e)$ is undefined.
+* So $d$ is **partial**, not total.
+* And the diagonal “disagreement” step fails exactly in the undefined case:
+  if $\alpha_e(e)\uparrow$, then $d(e)\uparrow$ too, so you do **not** get $d(e)\neq \alpha_e(e)$ at that $e$.
+
+In fact, it is completely consistent for $d$ to appear somewhere in the list. Suppose $d=\alpha_k$. Then at the diagonal point $k$,
+
+$$\alpha(k,k)=\alpha_k(k)=d(k)\simeq 1+\alpha(k,k).$$
+
+This *forces* $\alpha(k,k)\uparrow$ (otherwise you’d get $y=1+y$). And once $\alpha(k,k)\uparrow$, both sides are undefined, so there is **no contradiction**.
+
+**Why you can’t “fix” the diagonal to make it total**
+
+You might try:
+
+$$
+g(e)=
+\begin{cases}
+1+\alpha(e,e) & \text{if }\alpha(e,e)\downarrow,\\
+0 & \text{otherwise.}
+\end{cases}
+$$
+
+This *would* be total and would diagonalize. But computing it requires deciding whether $\alpha(e,e)$ halts—i.e. deciding the diagonal halting set—so $g$ is not computable in general. That “totalization” is exactly where the halting problem blocks you.
+
+**Summary**
+
+* **Total case (no numbering of all total computable functions):** $\alpha$ is total, so the diagonal $d(e)=\alpha(e,e)+1$ is total and forces disagreement → contradiction.
+* **Universal numbering case (partial functions):** $\alpha$ is partial, so the diagonal may be undefined exactly when needed, and the “disagree at $e$” step can fail → no contradiction. $\square$
 
 ### Halting Problems
 
@@ -4270,6 +4415,7 @@ H_{\mathrm{gen}} =\lbrace \langle e,x\rangle \in\mathbb{N} : \phi_e(x)\downarrow
 $$
 
 The set ($H$ is called the **diagonal halting problem** (often simply the **halting problem**), and $H_{\mathrm{gen}}$ is called the **general halting problem**.
+
 </div>
 
 <!-- $\textbf{Theorem 176:}$ The halting problem $H$ is recursively enumerable but not decidable. The complement $\mathbb{N} \setminus H$ of the halting problem is not recursively enumerable. -->
@@ -4318,6 +4464,15 @@ where $p_k$ is the $k$-th prime.
 Because prime factorization is unique, you can decode the number back into the exact original sequence. This is what lets metamathematical statements like “this formula is provable” be translated into statements *about numbers* inside arithmetic.
 </div>
 
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/godel_numbering1.jpg' | relative_url }}" alt="a" loading="lazy">
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/godel_numbering2.jpg' | relative_url }}" alt="a" loading="lazy">
+  </figure>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Standard numbering is Gödel numbering)</span></p>
 
@@ -4336,10 +4491,6 @@ Not all universal numberings have this powerful translation property.
 There is a universal numbering that is not a Gödel numbering.
 </div>
 
-Here is a smoother, more standard rewrite of **Theorem 179** and its proof, keeping your exact construction but improving flow, notation, and the logical steps.
-
----
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Exists universal numbering that is not Gödel numbering)</span></p>
 
@@ -4347,7 +4498,7 @@ There exists a universal numbering that is not a Gödel numbering.
 
 </div>
 
-*Proof.* Let $(\phi_e)_{e\in\mathbb N}$ be the standard numbering of the partial computable functions. Define a new sequence $(\psi_e)_{e\in\mathbb N}$ as follows. For each $e=\langle i,t\rangle$, set
+*Proof.* Let $(\phi_e)\_{e\in\mathbb N}$ be the standard numbering of the partial computable functions. Define a new sequence $(\psi_e)\_{e\in\mathbb N}$ as follows. For each $e=\langle i,t\rangle$, set
 
 $$
 \psi_{\langle i,t\rangle}(x)\ \simeq
@@ -4431,14 +4582,14 @@ To compare the difficulty of undecidable problems, we introduce the concept of r
 
 ### Many-one Reducibility
 
-$\textbf{Definition 180:}$ A set $A$ is many-one reducible to a set $B$, abbreviated as $A$ is m-reducible to $B$ or $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$, it holds that  $x \in A \text{ if and only if } f(x) \in B$. 
-
+<!-- $\textbf{Definition 180:}$ A set $A$ is many-one reducible to a set $B$, abbreviated as $A$ is m-reducible to $B$ or $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$, it holds that  $x \in A \text{ if and only if } f(x) \in B$.  -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
 
 A set $A$ is **many-one reducible** to a set $B$ (also: **m-reducible**), written $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$,
 
 $$x \in A \iff f(x) \in B.$$
+
 </div>
 
 The function $f$ transforms instances of problem $A$ into instances of problem $B$ while preserving the yes/no answer. This means that if we can solve $B$, we can use $f$ to solve $A$.
@@ -4449,23 +4600,46 @@ The function $f$ transforms instances of problem $A$ into instances of problem $
 > 
 > On the other hand, there is just a single set that is m-reducible to $\emptyset$ since $A \le_m \emptyset$ implies $A = \emptyset$, and a similar statement holds for $\mathbb{N}$ in place of $\emptyset$. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets $A$ are m-reducible to $\emptyset$ and $\mathbb{N}$.
 
-$\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive.
+
+<!-- $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
+
+The relation m-reducibility is **reflexive** and **transitive**.
+
+</div>
 
 *Proof*: See the exercises.
 
 ### M-reducibility allows us to infer properties about sets.
 
-$\textbf{Proposition 183:}$ Let $A$ and $B$ be sets such that $A \le_m B$. 
+<!-- $\textbf{Proposition 183:}$ Let $A$ and $B$ be sets such that $A \le_m B$. 
+* **(i)** If $B$ is decidable, then $A$ is also decidable. 
+* **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
+
+Let $A$ and $B$ be sets such that $A \le_m B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
 * **(ii)** If $A$ is undecidable, then $B$ is also undecidable.
 
-Proof: See the exercises. Both statements are equivalent to each other since the second one is the contrapositive of the first one.
+</div>
+
+*Proof*: See the exercises. Both statements are equivalent to each other since the second one is the contrapositive of the first one.
 
 A key result is that the halting problem $H$ is a "hardest" problem among all r.e. sets with respect to m-reducibility.
 
-$\textbf{Theorem 184:}$ Let $A$ and $B$ be sets. 
+<!-- $\textbf{Theorem 184:}$ Let $A$ and $B$ be sets. 
+* **(i)** If $A \le_m B$ and $B$ is r.e., then $A$ is also r.e. 
+* **(ii)** For every r.e. set $A$, it holds that $A \le_m H$. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
+
+Let $A$ and $B$ be sets. 
 * **(i)** If $A \le_m B$ and $B$ is r.e., then $A$ is also r.e. 
 * **(ii)** For every r.e. set $A$, it holds that $A \le_m H$.
+
+</div>
 
 *Proof*: 
 
@@ -4476,11 +4650,23 @@ $\textbf{Theorem 184:}$ Let $A$ and $B$ be sets.
 
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 
-$\textbf{Corollary 185:}$ A set $A$ is r.e. if and only if $A \le_m H$.
+<!-- $\textbf{Corollary 185:}$ A set $A$ is r.e. if and only if $A \le_m H$. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
+
+A set $A$ is r.e. if and only if $A \le_m H$.
+
+</div>
 
 *Proof*: Immediate by Theorem 184.
 
-$\textbf{Corollary 186:}$ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$.
+<!-- $\textbf{Corollary 186:}$ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
+
+It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$.
+
+</div>
 
 *Proof*:
 
@@ -4507,11 +4693,12 @@ $$
 A \not\le_m \overline{A}
 \quad\text{and}\quad
 \overline{A} \not\le_m A.
-
 $$
+
 In particular, we have
 
 $$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$
+
 </div>
 
 *Proof*: The complement $\bar{A}$ cannot be r.e., otherwise $A$ would be decidable by Proposition 165. If we had $A \le_m \bar{A}$, since $\bar{A}$ is not r.e., this would imply by Theorem 184(i) that $A$ is not r.e., which contradicts that $A$ is an r.e. set. If we had $\bar{A} \le_m A$, since $A$ is r.e., this would imply that $\bar{A}$ is also r.e., which we know is false.
@@ -4537,13 +4724,29 @@ An index set is **nontrivial** if it is neither $\emptyset$ nor $\mathbb{N}$.
 
 > **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
 
-$\textbf{Example 191:}$ The following sets are index sets: 
+<!-- $\textbf{Example 191:}$ The following sets are index sets: 
 
-$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$
+$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$ -->
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
-$\textbf{Theorem 192 (Rice's Theorem):}$ Let $I$ be a nontrivial index set. Then it holds that 
+The following sets are index sets: 
 
-$$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$ 
+$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$ -->
+
+</div>
+
+<!-- $\textbf{Theorem 192 (Rice's Theorem):}$ Let $I$ be a nontrivial index set. Then it holds that 
+
+$$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$  -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
+
+Let $I$ be a nontrivial index set. Then it holds that 
+
+$$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
+
+</div>
 
 *Proof of Theorem 192*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
 
@@ -4559,9 +4762,21 @@ $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
 
 Since both $H$ and $\bar{H}$ are undecidable, Rice's theorem directly implies that any nontrivial semantic property of programs is undecidable.
 
-$\textbf{Corollary 193:}$ Nontrivial index sets are not decidable.
+<!-- $\textbf{Corollary 193:}$ Nontrivial index sets are not decidable. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
-$\textbf{Corollary 194:}$ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite.
+Nontrivial index sets are not decidable.
+
+</div>
+
+<!-- $\textbf{Corollary 194:}$ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
+
+For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite.
+
+</div>
 
 *Proof*: If this set were finite for some $\alpha$, it would be a decidable set. It is also nontrivial (it's not $\emptyset$ or $\mathbb{N}$) and is an index set by definition. This would contradict Corollary 193.
 
@@ -4620,6 +4835,7 @@ If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (
 A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
 
 $$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}.$$
+
 </div>
 
 Turing reducibility is a more general notion than many-one reducibility.
@@ -4638,9 +4854,17 @@ For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse im
 
 ### Like m-reducibility, T-reducibility preserves decidability.
 
-$\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$. 
+<!-- $\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$. 
+* **(i)** If $B$ is decidable, then $A$ is also decidable. 
+* **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
+
+Let $A$ and $B$ be sets where $A \le_T B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
 * **(ii)** If $A$ is undecidable, then $B$ is also undecidable.
+  
+</div>
 
 *Proof*: See the exercises.
 
@@ -4748,6 +4972,7 @@ Finally, the jump operator is monotone with respect to Turing reducibility. If $
 If $A \le_T B$, then the halting problem relative to $A$ is many-one reducible to the halting problem relative to $B$; equivalently,
 
 $$A \le_T B \ \Longrightarrow\ H^A \le_m H^B.$$
+
 </div>
 
 *Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means $M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$. Therefore, we have the desired equivalence:  $e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  The function $h$ is computable, so this establishes $H^A \le_m H^B$.
