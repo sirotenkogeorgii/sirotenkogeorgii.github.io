@@ -4155,7 +4155,6 @@ Because both scenarios lead to a logical impossibility (a program that halts if 
 1. **Completeness:** We needed the list to be "Standard" so we could be sure program $D$ was actually in the list.
 2. **Indexing:** We needed to be able to "feed a program its own number" ($D$ looking at index $k$), which is only possible because of universal numbering.
 3. **Existence:** The listing property is what allowed us to treat the set of all programs as a single, organized mathematical object we could "diagonalize" across.
-
   </details>
 </div>
 
@@ -4228,7 +4227,6 @@ Rice's Theorem is why "Formal Verification" (proving a program is bug-free) is s
 ### Summary
 
 If a question is about what a program **does** rather than how it is **formatted**, and the answer isn't "yes" for every single program, then a computer **cannot** answer that question for you.
-
   </details>
 </div>
 
@@ -4290,7 +4288,6 @@ If we were to add these to our conceptual map of computability:
 | **Halting Problem** | "Does this program stop?" | **Undecidable** |
 | **Rice's Theorem** | "Does this program do X?" | **Undecidable** |
 | **Kolmogorov Complexity** | "What is the shortest version of this?" | **Uncomputable** |
-
   </details>
 </div>
 
@@ -4357,7 +4354,6 @@ This leads to **Gödel’s First Incompleteness Theorem**:
 If you find a statement that you can't prove or disprove (an **undecidable statement**), you can actually choose to *add* it as a new axiom. But as soon as you do, Rice's Theorem and the Halting Problem apply to your *new* system, creating a *new* set of true-but-unprovable statements.
 
 **The "hole" in mathematics can be moved, but it can never be filled.**
-
   </details>
 </div>
 
@@ -4398,10 +4394,8 @@ This is captured by the central equivalence:
 
 $$A\text{ is c.e.} \quad\Longleftrightarrow\quad \exists\ \text{a Turing machine that halts exactly on inputs in }A.$$
 
-
 * **YES instances** halt.
 * **NO instances** may loop.
-
 
 ## The key technique: dovetailing
 
@@ -4432,7 +4426,6 @@ Two related uses of the word appear frequently:
 ### One-sentence takeaway
 
 **In our course’s language: a set is c.e. exactly when it admits an effective enumeration—an algorithmic listing of all its members—even though non-membership may not be decidable.**
-
   </details>
 </div>
 
@@ -4633,6 +4626,7 @@ A final, crucial theorem links decidability to the recursive enumerability of a 
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and r.e.)</span></p>
 
 A set $A\subseteq \mathbb{N}$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N}\setminus A$ are recursively enumerable.
+
 </div>
 
 *Proof*: See exercises.
@@ -4694,6 +4688,7 @@ A fundamental result is that a universal numbering for all partial computable fu
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering exists)</span></p>
 
 There exists a universal numbering.
+
 </div>
 
 <!-- *Proof*: See lecture and exercises. -->
@@ -4778,6 +4773,7 @@ While we can enumerate all partial computable functions, a famous diagonalizatio
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Numbering of set of computable functions does not exists)</span></p>
 
 There exists no numbering of the set of computable functions.
+
 </div>
 
 *Proof.* Suppose, for a contradiction, that $(\alpha_e)\_{e\in\mathbb N}$ is a numbering whose range consists exactly of all total computable functions. Let $\alpha$ be its principal function, so
@@ -4872,6 +4868,7 @@ Define the **diagonal halting set**
 $$H_\alpha=\lbrace e\in\mathbb N : \alpha_e(e)\downarrow\rbrace.$$
 
 Then $H_\alpha$ is recursively enumerable (r.e.). Moreover, if the numbering $(\alpha_e)$ contains every total computable function, then $H_\alpha$ is not decidable.
+
 </div>
 
 *Proof*:
@@ -5324,6 +5321,7 @@ A set $I \subseteq \mathbb{N}$ is an **index set** if for all $e,e'$,
 $$e \in I \ \text{and}\ \phi_e=\phi_{e'} \ \Longrightarrow\ e' \in I.$$
 
 An index set is **nontrivial** if it is neither $\emptyset$ nor $\mathbb{N}$.
+
 </div>
 
 > **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
@@ -5406,6 +5404,7 @@ To show that $A$ is not an index set, distinguish two cases.
 * **Case I.** There exists $e\in A$ such that $\operatorname{dom}(\phi_e)$ is finite of size $m$. By Corollary 194, there is an index $e'>m$ with $\phi_{e'}=\phi_e$. But then $e'\notin A$, so membership in $A$ is not preserved under equality of computed functions. Hence $A$ is not an index set.
 
 * **Case II.** For every $e\in A$, the domain $\operatorname{dom}(\phi_e)$ is infinite. Then, by definition, $A$ contains every index $e$ such that $W_e$ is infinite. This would give an effective listing of partial computable functions with infinite domain, contradicting Remark 195: if $e_0,e_1,\dots$ is an effective enumeration of $A$, then $\phi_{e_0},\phi_{e_1},\dots$ would be such a numbering.
+  
 </div>
 
 ## Oracle Turing Machines and the Jump Operator
@@ -5498,6 +5497,7 @@ If $A$ is decidable with oracle $B$, we also say $A$ is decidable in $B$ or deci
 A function $f$ is **computable with oracle** $B$ if there exists an oracle Turing machine that, on input $i$ and oracle $B$, outputs $f(i)$.
 
 An enumeration $x_0,x_1,\dots$ is **effective in** $B$ if $x_i=f(i)$ for some function $f$ computable with oracle $B$.
+
 </div>
 
 > **Remark 202**: Similar to the unrelativized case, it can be shown that a set $A$ is recursively enumerable with oracle $B$ if and only if there exists an enumeration $x_0, x_1, \dots$ that is effective in $B$.
@@ -5525,6 +5525,7 @@ Let $B\subseteq \mathbb{N}$, and let $M_0,M_1,\dots$ be the standard enumeration
 $$H^B=\lbrace e : M_e(e,B)\downarrow\rbrace.$$
 
 This set is called the **(diagonal) halting problem relative to $B$**, or the **jump** of $B$. The map $X \mapsto H^X$ is the **jump operator**.
+
 </div>
 
 The jump of $B$ is often denoted $B'$. The set $H^B$ plays the same role for sets that are r.e. in $B$ as the original halting problem $H$ does for r.e. sets.
@@ -5534,6 +5535,7 @@ The jump of $B$ is often denoted $B'$. The set $H^B$ plays the same role for set
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
 
 For all sets $A,B$, the set $A$ is r.e. relative to $B$ $\iff$ $A \le_m H^B$.
+
 </div>
 
 *Proof*: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
@@ -5561,6 +5563,7 @@ B \le_m H^B
 \quad\text{and}\quad
 H^B \not\le_T B.
 $$
+
 </div>
 *Proof*:
 
