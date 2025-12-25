@@ -346,3 +346,82 @@ Equivalently:
 <figure>
   <img src="{{ 'assets/images/notes/random/limsup_liminf.png' | relative_url }}" alt="a" loading="lazy">
 </figure>
+
+## Cantor’s diagonal argument (classic version)
+
+Cantor’s original diagonal argument was presented for **real numbers**.
+
+Suppose (for contradiction) that you can list *all* real numbers in the interval $(0,1)$ in a sequence:
+
+$$r_0,\ r_1,\ r_2,\ \dots$$
+
+Write each $r_n$ in its decimal expansion:
+
+$$
+\begin{aligned}
+r_0 &= 0.d_{00}d_{01}d_{02}d_{03}\dots\\
+r_1 &= 0.d_{10}d_{11}d_{12}d_{13}\dots\\
+r_2 &= 0.d_{20}d_{21}d_{22}d_{23}\dots\\
+&\ \vdots
+\end{aligned}
+$$
+
+Now **construct a new real number** $s\in(0,1)$ by changing the diagonal digits:
+
+$$s = 0.c_0c_1c_2c_3\dots$$
+
+where, for example,
+
+$$
+c_n =
+\begin{cases}
+1 & \text{if } d_{nn}\neq 1\\
+2 & \text{if } d_{nn}=1
+\end{cases}
+$$
+
+(Any rule that guarantees $c_n \neq d_{nn}$ works.)
+
+Then $s$ differs from $r_n$ in the $n$-th decimal place, so $s \neq r_n$ for every $n$. That means $s$ is **not on the list**, contradicting the assumption that the list contained all reals in $(0,1)$.
+
+So $(0,1)$ (hence $\mathbb R$) is **uncountable**. $\square$
+
+## The set of all partial functions is uncountable
+
+*(The set of **partial computable** functions is **countable**)*
+
+**Step 1: Reduce to total functions**
+
+Every **total** function $f:\mathbb N\to\mathbb N$ is also a **partial** function $\mathbb N\rightharpoonup\mathbb N$ (it’s just defined everywhere). So if we show the set $\mathbb N^\mathbb N$ of total functions is uncountable, then the larger set of partial functions is uncountable too.
+
+**Step 2: Diagonal argument for $\mathbb N^\mathbb N$**
+
+Assume for contradiction that all total functions $\mathbb N\to\mathbb N$ can be listed:
+
+$$f_0, f_1, f_2, \dots$$
+
+Now build a new function $g:\mathbb N\to\mathbb N$ by
+
+$$g(n) = f_n(n) + 1.$$
+
+This $g$ is a perfectly valid total function.
+
+But $g$ cannot equal any $f_k$ in the list:
+
+* Compare $g$ to $f_k$ at input $k$:
+  
+  $$g(k) = f_k(k)+1 \neq f_k(k).$$
+  
+  So $g \neq f_k$ for every $k$, meaning $g$ is not on the supposed complete list. Contradiction.
+
+Therefore, the set of all total functions $\mathbb N\to\mathbb N$ is **uncountable**.
+
+**Step 3: Conclude for partial functions**
+
+Since
+
+$$\mathbb N^\mathbb N \subseteq \lbrace\mathbb N \rightharpoonup \mathbb N\rbrace,$$
+
+and a set that contains an uncountable subset must be uncountable, the collection of all partial functions $\mathbb N\rightharpoonup\mathbb N$ is **uncountable**.
+
+That’s the core reason: you can always “diagonalize” to produce a function not captured by any countable list.
