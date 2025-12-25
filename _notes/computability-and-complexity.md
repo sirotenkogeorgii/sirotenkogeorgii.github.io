@@ -246,7 +246,13 @@ Turing machines can be used to define classes of languages based on their comput
 
 A Turing machine accepts an input word if at least one of its possible computational paths leads to an accepting state.
 
-$\textbf{Definition 12 (Acceptance and Recognized Language):}$ Let $M$ be a Turing machine with input alphabet $\Sigma$, and let $w$ be a word over $\Sigma$. The Turing machine $M$ *accepts* the word $w$ if one of its computations on input $w$ is accepting. The language *recognized* by $M$ is  $L(M) = \lbrace w \in \Sigma^* : M \text{ accepts } w \rbrace$.
+<!-- $\textbf{Definition 12 (Acceptance and Recognized Language):}$ Let $M$ be a Turing machine with input alphabet $\Sigma$, and let $w$ be a word over $\Sigma$. The Turing machine $M$ *accepts* the word $w$ if one of its computations on input $w$ is accepting. The language *recognized* by $M$ is  $L(M) = \lbrace w \in \Sigma^* : M \text{ accepts } w \rbrace$. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Recognized Language and Acceptance)</span></p>
+
+Let $M$ be a Turing machine with input alphabet $\Sigma$, and let $w$ be a word over $\Sigma$. The Turing machine $M$ **accepts** the word $w$ if one of its computations on input $w$ is accepting. The language **recognized** by $M$ is  $L(M) = \lbrace w \in \Sigma^* : M \text{ accepts } w \rbrace$.
+
+</div>
 
 For a word $w$ to be in $L(M)$ (be accepted), the computation tree of $M$ on $w$ must have at least one accepting branch. It is possible for other branches to be infinite (non-terminating). The latter possibility is relevant in computability theory. This class of languages is known in computability theory as the recursively enumerable languages.
 
@@ -254,9 +260,21 @@ For a word $w$ to be in $L(M)$ (be accepted), the computation tree of $M$ on $w$
 
 A stronger condition is that a machine must halt on all inputs, whether it accepts them or not. This leads to the notion of a decidable language.
 
-$\textbf{Definition 13 (Total Turing Machine):}$ A Turing machine is *total* if for all inputs all of its computations terminate.
+<!-- $\textbf{Definition 13 (Total Turing Machine):}$ A Turing machine is *total* if for all inputs all of its computations terminate. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total Turing Machine)</span></p>
 
-$\textbf{Definition 14 (Decidable Language):}$ A language is *decidable* if it is recognized by a total Turing machine (possibly nondeterministic). In this case, we also say that the language is *decided* by the Turing machine.
+A Turing machine is **total** if for all inputs all of its computations terminate.
+
+</div>
+
+<!-- $\textbf{Definition 14 (Decidable Language):}$ A language is *decidable* if it is recognized by a total Turing machine (possibly nondeterministic). In this case, we also say that the language is *decided* by the Turing machine. -->
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Decidable Language)</span></p>
+
+A language is **decidable** if it is *recognized* by a total Turing machine (possibly nondeterministic). In this case, we also say that the language is *decided* by the Turing machine.
+
+</div>
 
 In the part on computation theory, languages that are recognized by some, not necessarily total Turing machine will be called recursively enumerable, and it will be shown that these languages form a strict superclass of the class of decidable languages.
 
@@ -325,7 +343,10 @@ Beyond recognizing languages, Turing machines can also compute functions by tran
 
 To ensure a unique output for every input, function computation is defined using only total deterministic Turing machines. The output is defined based on the content of a designated tape when the machine halts.
 
-$\textbf{Definition 17 (Computable Functions):}$ For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computable Functions)</span></p>
+
+For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
 
 $$
 \text{out}(C) = u_k(j_k) u_k(j_k + 1) \cdots u_k(t)
@@ -337,7 +358,24 @@ The *function $f_M$ computed by a total deterministic Turing machine* $M$ is def
 
 For alphabets $\Sigma$ and $\Sigma'$, a function $f : \Sigma^* \to \Sigma'^*$ is **computable** if it is computed by some total deterministic Turing machine.
 
+</div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Alternative definitons of computable function)</span></p>
+
+A subset $S \subseteq \mathbb{N}$ is **computable** if there exists a **total computable function** $f:\mathbb{N}\to\lbrace 0,1\rbrace$ such that
+
+$$
+f(x)=
+\begin{cases}
+1 & \text{if } x\in S,\\
+0 & \text{if } x\notin S.
+\end{cases}
+$$
+
+Equivalently, $$S$ is computable $\iff$ its **indicator (characteristic) function** $\mathbf{1}_S$ is computable.
+
+</div>
 
 ### Extending Computability to Other Domains
 
@@ -3669,13 +3707,48 @@ A language $L$ is **recursively enumerable**, abbreviated as r.e., if $L$ is rec
 
 By this definition, every decidable language is also recursively enumerable. However, as we will see, the converse is not true. While nondeterministic Turing machines can provide significant speed-ups in complexity theory (e.g., the $\text{P}$ versus $\text{NP}$ problem), in computability theory, they offer no additional computational power. Any nondeterministic Turing machine can be simulated by a deterministic one that systematically explores its computation tree. Although this simulation incurs a significant resource cost (e.g., exponential in time), these costs are irrelevant when resource bounds are removed. Therefore, we can simplify our model without loss of generality.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Alternative definitons of r.e.)</span></p>
+
+In **computability theory**, a set $S$ of natural numbers is called **computably enumerable (c.e.)** — also known as **recursively enumerable (r.e.)**, **semidecidable**, **partially decidable**, **listable**, **provable**, or **Turing-recognizable** — if:
+
+**1. Halting characterization**
+
+* There is an **algorithm** such that the set of input numbers **for which the algorithm halts** is **exactly $S$**:
+
+$$\exists A \quad \text{ such that } S = \lbrace n \in \mathbb{N} : A(n) \text{ halts } \rbrace$$
+
+*Or, equivalently:*
+
+**2. Enumeration characterization**
+
+* There is an **algorithm that enumerates the members of $S$**.
+  That is, its output is a list of all members of $S$:
+  
+  $$s_1, s_2, s_3, \dots$$
+  
+  If $S$ is **infinite**, the algorithm will **run forever**, but **every element of $S$** will appear after a **finite amount of time**.
+  **Note:** the elements **do not have to be listed in any particular order** (e.g., not necessarily from smallest to largest).
+
+The **first condition** explains why the term **semidecidable** is used:
+* If a number **is in** the set, you can **confirm this** by running the algorithm (it will **eventually halt**).
+* If a number **is not in** the set, the algorithm may **run forever**, and **no definitive “no” answer** is returned.
+
+A set that is **fully decidable** is a **decidable set** (or **computable** or **recursive**)**.
+
+The **second condition** explains the term **computably enumerable**.
+
+Finally, the abbreviations **c.e.** and **r.e.** are often used (even in print) instead of the full phrase.
+
+</div>
+
 > **Convention 148**: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
 
 A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
 
 <!-- $\textbf{Theorem 149:}$ A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine. -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(L is r.e. $\iff$ L $\text{dom}$ TM)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">($L$ is r.e. $\iff$ $L$ $\text{dom}$ TM)</span></p>
 
 A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine.
 
@@ -3807,6 +3880,7 @@ These functions provide a direct link between sets and functions.
 
 1. A set $A$ is **decidable** $\iff$ its **characteristic function $c_A$ is computable**. 
 2. A set $A$ is **recursively enumerable** $\iff$ its **partial characteristic function $\chi_A$ is partial computable**.
+
 </div>
 
 *Proof*: See exercises.
@@ -3822,6 +3896,7 @@ A set $A \subseteq \mathbb{N}$ is recursively enumerable $\iff$ if there exists 
 $$x \in A \iff f(x) \downarrow.$$
 
 That is $A$ is equal to the domain of a partial computable function.
+
 </div>
 
 *Proof*: Let $A$ be a set.
@@ -3849,6 +3924,7 @@ A partial function $\alpha:\mathbb{N}\times\mathbb{N}\to\mathbb{N}$ is **partial
 $$n \mapsto \alpha(x,y)\quad\text{where } n=\langle x,y\rangle$$
 
 is partial computable. We call $\alpha$ **computable** if it is partial computable and total.
+
 </div>
 
 The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
@@ -3861,6 +3937,7 @@ $$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = 
 The **graph of a partial function** $\alpha : A \to B$ is  
 
 $$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$
+
 </div>
 
 <!-- $\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
@@ -3884,6 +3961,7 @@ Let $f$ be a (total) function. The following are equivalent:
 1. $f$ is computable.
 2. $\operatorname{graph}(f)$ is decidable.
 3. $\operatorname{graph}(f)$ is recursively enumerable.
+  
 </div>
 
 *Proof*: See exercises.
@@ -3895,9 +3973,11 @@ Recursively enumerable sets can also be characterized as projections of decidabl
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and decidable set projection)</span></p>
 
-A set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ it is the projection of a decidable set. That is, $A$ is recursively enumerable $\iff$ there exists a decidable set $B\subseteq \mathbb{N}\times\mathbb{N}$ such that
+A set $A\subseteq \mathbb{N}$ is **recursively enumerable** $\iff$ it is the **projection of a decidable set**. 
+That is, $A$ is **recursively enumerable** $\iff$ there exists a decidable set $B\subseteq \mathbb{N}\times\mathbb{N}$ such that
 
-$$n\in A \Longleftrightarrow \exists m\in\mathbb{N}; (n,m)\in B.$$
+$$n\in A \Longleftrightarrow \exists m\in\mathbb{N} (n,m)\in B.$$
+
 </div>
 
 *Proof*:
@@ -3926,6 +4006,434 @@ $$\lbrace z_0, z_1, \ldots\rbrace.$$
 A natural number $n$ is **enumerated** by $z_0, z_1, \ldots$ if $n = z_i$ for some $i$.
 
 The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$, mapping the index directly to the element, allowing us to jump to it directly without enumeratign the whole sequence from the beginning one by one).
+
+</div>
+
+**Why is the idea of being able to list something is so important in computability theory?**
+<div class="accordion">
+  <details markdown="1">
+    <summary>Why is the idea of being able to list something is so important in computability theory?</summary>
+
+The importance of "listing" (enumeration) in computability theory cannot be overstated. It is the dividing line between **what we can know eventually** and **what we can never know.**
+
+In a world where some programs run forever, being able to "list" elements is the only way to manage infinite sets without getting stuck in a permanent loop.
+
+### 1. It Defines the "Boundary of Science"
+
+In computability, we categorize sets based on how much "work" it takes to recognize them. The idea of listing things gives us the **three great tiers of knowledge**:
+
+* **Tier 1: Decidable (The Gold Standard).** You can list the members and you can list the non-members. You have a definitive "Yes/No" answer for everything.
+* **Tier 2: Enumerable (The "Wait and See").** You can list the members, but you can't list the non-members. You can confirm something is true, but you can never be certain something is false—you might just be "waiting longer."
+* **Tier 3: Non-Enumerable (The Dark Zone).** You can't even list the members. These sets are completely beyond the reach of any algorithm.
+
+### 2. It Solves the "Stuck Forever" Problem (Dovetailing)
+
+The most practical reason listing is important is that it allows us to handle **partial functions**.
+
+If you have an infinite number of programs and you want to find which ones halt, you cannot check them one by one. If program #1 loops forever, a standard check would "freeze" your computer at step 1.
+
+The "Listing" idea (specifically **Dovetailing**) allows us to run all programs simultaneously in a "round-robin" fashion. Because we can list them, we can explore an infinite search space without ever getting trapped by a single infinite loop.
+
+### 3. It Proves that "Hardware" can be "Software"
+
+The idea of enumeration is what allows for the **Universal Turing Machine**.
+
+* If we can **list** every possible Turing Machine $(\phi_0, \phi_1, \phi_3, \dots)$, then we can treat the "index" (the number in the list) as an input.
+* This means one machine can simulate any other machine just by knowing its position in the list.
+* **Without the ability to list programs, we could not have programmable computers.**
+
+### 4. It Reveals the Gap Between Logic and Truth
+
+The most famous application of enumeration is **Gödel’s Incompleteness Theorem**.
+
+* Gödel showed that in any consistent mathematical system, the set of "Provable Statements" is **enumerable** (we can list them by checking every possible proof).
+* However, he also showed that the set of "True Statements" is **not** enumerable.
+* Because one list is "bigger" or "more complex" than the other, there will always be truths that have no proof. **Listing is the tool that proved the limits of human logic.**
+
+### Summary Table: The Power of the List
+
+| If you can... | Then the set is... | Human Equivalent |
+| --- | --- | --- |
+| **List members AND non-members** | **Decidable** | Perfect Knowledge. |
+| **List members only** | **Enumerable** | "I'll tell you when I find it." |
+| **List nothing** | **Immune/Co-immune** | "I have no idea where to start." |
+
+### A Concrete Example: The Library of Babel
+
+Imagine a library containing every possible book.
+
+* Can you list all the books that contain the word "Apple"? **Yes.** (Eventually, you'll pull them off the shelf).
+* Can you list all the books that **do not** contain the word "Apple"? **No.** Because to confirm a book doesn't have the word, you have to read to the very end. If some books are infinitely long (like a program that never halts), you will never finish checking.
+
+This "one-way" nature of discovery is exactly why **Computably Enumerable** sets are the cornerstone of the field.
+
+
+### It also enables universal machines and self-reference
+
+A universal machine $U(e,x)$ exists because programs can be *numbered* and effectively listed. Then:
+* programs become data (you can feed code to code),
+* you can diagonalize over “the $e$-th program,”
+* you get foundational results like the **Halting problem**, **Rice’s theorem**, and the **Recursion theorem**.
+
+All of those depend on being able to range over *all* programs effectively.
+
+### It gives robust “degrees” of unsolvability
+
+c.e. sets are the first big class beyond decidable sets, and they have rich structure (reductions, completeness, Turing degrees). They’re a natural boundary where:
+* search works (eventually find members),
+* full decision fails (can’t always reject).
+
+  </details>
+</div>
+
+**The "listing" (numbering) idea to prove that the Halting Problem is undecidable via a "Diagonalization" argument**
+<div class="accordion">
+  <details markdown="1">
+    <summary>The "listing" (numbering) idea to prove that the Halting Problem is undecidable via a "Diagonalization" argument</summary>
+
+To prove that the **Halting Problem** is undecidable, we use a "Diagonalization" argument. This technique was originally developed by Georg Cantor to show that some infinities are larger than others, but Alan Turing adapted it to show the limits of what computers can do.
+
+The proof relies entirely on the **Listing (Numbering)** idea we discussed: because we can list every possible program, we can build a table of their behaviors.
+
+### Step 1: The "List of All Programs" Table
+
+Imagine we create a giant table.
+
+* **The Rows** represent every possible program $(\phi_0, \phi_1, \phi_3, \dots)$.
+* **The Columns** represent every possible input $(0, 1, 2, \dots)$.
+* **The Cell $(i,j)$** tells us if program $i$ halts on input $j$.
+
+|  | Input 0 | Input 1 | Input 2 | Input 3 | ... |
+| --- | --- | --- | --- | --- | --- |
+| $\phi_0$ | **Halt** | Loop | Halt | Loop | ... |
+| $\phi_1$ | Halt | **Halt** | Loop | Halt | ... |
+| $\phi_2$ | Loop | Loop | **Loop** | Halt | ... |
+| $\phi_3$ | Halt | Halt | Halt | **Loop** | ... |
+
+### Step 2: The Hypothetical "Halt Decider"
+
+Suppose there exists a program called `Halt(program_index, input)`.
+This program is perfect:
+
+* It returns **True** if the program halts.
+* It returns **False** if the program loops.
+* It **never** loops itself (it is a total computable function).
+
+### Step 3: Constructing the "Troublemaker" (Diagonalization)
+
+Now, we create a new, weird program called $D$ (for Diagonal). $D$ takes an input $i$ and does the exact opposite of what the diagonal of our table says.
+
+**The logic of $D(i)$:**
+
+1. Ask the `Halt` decider: *"Does program $i$ halt on input $i$?"*
+2. If the answer is **Yes** (it halts), $D$ enters an **infinite loop**.
+3. If the answer is **No** (it loops), $D$ **halts** immediately.
+
+Essentially, $D$ is designed to "disagree" with every program in the list at its own index.
+
+### Step 4: The Contradiction
+
+Since $D$ is a program, it must be somewhere in our original list! Let's say D is program number $k$ in the list ($\phi_k=D$).
+
+Now, we ask the million-dollar question: **Does program $D$ halt on input $k$?**
+
+* **Scenario A: $D(k)$ halts.**
+According to $D$'s own code, if it sees that $\phi_k(k)$ halts, it must loop forever.
+*Contradiction: It halted, but it was supposed to loop.*
+* **Scenario B: $D(k)$ loops forever.**
+According to $D$'s own code, if it sees that $\phi_k(k)$ loops, it must halt.
+*Contradiction: It looped, but it was supposed to halt.*
+
+### Conclusion
+
+Because both scenarios lead to a logical impossibility (a program that halts if and only if it doesn't halt), our original assumption must be wrong.
+
+**The assumption that a `Halt` decider exists is false.**
+
+### Why the "Listing" was the key:
+
+1. **Completeness:** We needed the list to be "Standard" so we could be sure program $D$ was actually in the list.
+2. **Indexing:** We needed to be able to "feed a program its own number" ($D$ looking at index $k$), which is only possible because of universal numbering.
+3. **Existence:** The listing property is what allowed us to treat the set of all programs as a single, organized mathematical object we could "diagonalize" across.
+
+  </details>
+</div>
+
+**Rice's Theorem, which uses a similar logic to show that *any* non-trivial property of a program's behavior is undecidable**
+<div class="accordion">
+  <details markdown="1">
+    <summary>Rice's Theorem, which uses a similar logic to show that *any* non-trivial property of a program's behavior is undecidable</summary>
+
+If the Halting Problem is the "Grandfather" of undecidability, **Rice's Theorem** is the "Overlord." It takes the logic we just used for the Halting Problem and generalizes it to almost **everything** else.
+
+Rice's Theorem states that **any non-trivial property of the partial computable functions is undecidable.**
+
+### 1. What does "Non-Trivial Property" mean?
+
+To understand the theorem, we have to define its two main conditions:
+
+* **A Property of the Function (Behavioral):** We are looking at what the program *does* (its input/output mapping), not how it is written.
+* *Example:* "Does this program halt on input 5?" (Behavioral)
+* *Non-example:* "Does this program have more than 10 lines of code?" (Structural—this is actually decidable!)
+
+* **Non-Trivial:** A property is non-trivial if it is true for *some* computable functions but not *all* of them.
+* *Example:* "Does this program return 1 for all inputs?" (Some do, some don't. Non-trivial!)
+* *Trivial example:* "Is this a partial computable function?" (All of them are. Trivial!)
+
+### 2. The Big Revelation
+
+Rice's Theorem tells us that you cannot write a program that takes the source code of another program and answers questions like:
+
+* "Will this program ever output a 0?"
+* "Is this program equivalent to this other program?"
+* "Does this program compute the square of its input?"
+* "Is the domain of this program infinite?"
+
+**All of these are undecidable.** You can never write a "Perfect Debugger" or a "Perfect Compiler Optimizer" that works for all possible programs.
+
+### 3. The Logic: Reduction to the Halting Problem
+
+The proof of Rice's Theorem uses a "reduction." We show that if you could solve *any* non-trivial behavioral property, you could use that solution to solve the Halting Problem.
+
+**The Setup:**
+
+1. Assume we have a property $P$ that is non-trivial.
+2. Suppose there is a program `CheckP(code)` that tells us if a program has property $P$.
+3. We want to know if program $M$ halts on input $x$.
+
+**The Trick:**
+We create a new "wrapper" program $W$:
+
+> **Program $W(y)$:**
+> 1. First, run program $M$ on input $x$.
+> 2. If it halts, run the logic for a function that *definitely has* property $P$.
+> 3. If $M$ never halts, step 2 never happens.
+
+**The Contradiction:**
+If we give the code of $W$ to our assumed `CheckP` tool:
+
+* If `CheckP(W)` says **Yes**, it means $M$ must have halted on $x$.
+* If `CheckP(W)` says **No**, it means $M$ must have looped forever.
+
+Since we already proved the Halting Problem is undecidable, `CheckP` **cannot exist.**
+
+### 4. Why this matters for Computer Science
+
+Rice's Theorem is why "Formal Verification" (proving a program is bug-free) is so difficult. It means:
+
+* **Security:** You cannot write a program that perfectly detects all possible malware behaviors.
+* **Optimization:** You cannot write a compiler that always finds the "most efficient" version of a program.
+* **Education:** An "Auto-Grader" can never perfectly determine if a student's code is mathematically identical to the answer key for all possible inputs.
+
+### Summary
+
+If a question is about what a program **does** rather than how it is **formatted**, and the answer isn't "yes" for every single program, then a computer **cannot** answer that question for you.
+
+  </details>
+</div>
+
+**This relates to "Kolmogorov Complexity"—the idea that some strings are so random they cannot be compressed by any program**
+<div class="accordion">
+  <details markdown="1">
+    <summary>This relates to "Kolmogorov Complexity"—the idea that some strings are so random they cannot be compressed by any program</summary>
+
+**Kolmogorov Complexity** ($K(s)$) is the ultimate limit of data compression. While Rice's Theorem deals with the limits of **what programs can do**, Kolmogorov Complexity deals with the limits of **how concisely information can be represented.**
+
+The connection to the Halting Problem and Rice's Theorem is profound: **The "randomness" (complexity) of a string is uncomputable.**
+
+### 1. What is Kolmogorov Complexity?
+
+The Kolmogorov Complexity of a string $s$ is the **length of the shortest possible program** (in a fixed standard language) that produces $s$ as output and then halts.
+
+* **Simple Strings:** Consider a string of 10,000 "A"s. You don't need 10,000 characters to describe it. You can just say: `print "A" * 10000`. The program is very short, so the complexity is **low**.
+* **Complex (Random) Strings:** Consider a string of 10,000 truly random digits. There is no pattern to exploit. The shortest program to produce it is likely just: `print "4f92j..."`. The program is as long as the string itself. Its complexity is **high**.
+
+### 2. The Berry Paradox: The Connection to Undecidability
+
+The reason $K(s)$ relates to the Halting Problem is because of a logical trap called the **Berry Paradox**.
+
+Imagine a program that tries to find the "first number that cannot be described in fewer than twenty words." But the phrase *"The first number that cannot be described in fewer than twenty words"* is itself a description of that number, and it only has **twelve words**.
+
+In computability terms, this means:
+
+> **You cannot compute $K(s)$.**
+
+If you had a program that could compute the complexity of any string, you could use it to solve the Halting Problem. Conversely, because the Halting Problem is undecidable, you can never be certain if you've found the *shortest* possible program for a string—you might find a short program, but you can never prove that an even shorter one won't eventually halt and produce the same string.
+
+### 3. "Randomness" is Just Lack of Compression
+
+In this theory, a string is defined as **algorithmically random** if its Kolmogorov Complexity is approximately equal to its length ($K(s)\approx \lvert s \rvert$).
+
+This leads to a shocking conclusion: **Most strings are random.**
+Because there are fewer short programs than there are long strings, it is mathematically impossible for every string to have a "short" description. Most information in the universe is "incompressible."
+
+### 4. Chaitin’s Constant ($\Omega$): The Ultimate Uncomputable Number
+
+The bridge between Kolmogorov Complexity and the Halting Problem is **Chaitin’s Constant**, denoted by the Greek letter $\Omega$.
+
+$\Omega$ represents the probability that a randomly constructed program will halt.
+
+* To know the digits of $\Omega$, you would have to solve the Halting Problem for every possible program.
+* Because the Halting Problem is undecidable, $\Omega$ is **transcendental** and **algorithmically random**.
+* Knowing the first $N$ bits of $\Omega$ would allow you to solve the Halting Problem for all programs of length up to $N$.
+
+### How it fits your "Inheritance Graph"
+
+If we were to add these to our conceptual map of computability:
+
+* **Halting Problem:** The "Base Error" (You can't know if it stops).
+* **Rice's Theorem:** The "Generalization" (You can't know *any* behavioral property).
+* **Kolmogorov Complexity:** The "Quantitative Limit" (You can't even know how much information is actually there).
+
+| Concept | Question Asked | Answer Status |
+| --- | --- | --- |
+| **Halting Problem** | "Does this program stop?" | **Undecidable** |
+| **Rice's Theorem** | "Does this program do X?" | **Undecidable** |
+| **Kolmogorov Complexity** | "What is the shortest version of this?" | **Uncomputable** |
+
+  </details>
+</div>
+
+**How to use these ideas to understand the "Incompleteness" of mathematics — specifically why there are true statements that can never be proven**
+<div class="accordion">
+  <details markdown="1">
+    <summary>How to use these ideas to understand the "Incompleteness" of mathematics — specifically why there are true statements that can never be proven</summary>
+
+The bridge between computer science and the "Incompleteness" of mathematics is one of the most beautiful connections in logic. It was Kurt Gödel who first proved this in 1931, but looking at it through the lens of **computability** (specifically the Halting Problem) makes it much easier to see why it *must* be true.
+
+To understand why some truths can never be proven, we have to look at what a "proof" actually is in terms of an algorithm.
+
+### 1. The "Proof Machine" (Enumeration)
+
+In a formal mathematical system (like Arithmetic), a **proof** is just a finite sequence of logical steps following specific rules.
+Because the rules are fixed, we can write a program to **list (enumerate) all possible proofs**:
+
+1. The program starts with the basic axioms.
+2. It applies every possible rule to those axioms to create new theorems.
+3. It then applies the rules to *those* theorems, and so on.
+
+This means the set of all **provable statements** is **computably enumerable (c.e.)**. If a statement has a proof, this "Proof Machine" will eventually find it and print it out.
+
+### 2. The Link: Proofs vs. Halting
+
+We can turn the Halting Problem into a mathematical statement. For any program $e$ and input $x$, the statement **"P_e(x) halts"** is a mathematical assertion.
+
+* If the program **does** halt, we can prove it simply by running the program until it stops. The execution trace *is* the proof.
+* But what if the program **does not** halt? To prove it *never* halts, we need a logical argument that covers an infinite amount of time.
+
+### 3. The "Gap" (Incompleteness)
+
+Now, imagine a mathematical system that is **Complete** (meaning every true statement has a proof). If such a system existed, we could solve the Halting Problem like this:
+
+1. Take a program $M$ and input $x$.
+2. Start two processes at the same time:
+* **Process A:** Simulate the program $M(x)$ and wait for it to halt.
+* **Process B:** Run the "Proof Machine" and look for a formal proof that says *"Program $M(x)$ never halts."*
+
+If the system were complete, one of these two processes **must** eventually win. If the program halts, Process A finds out. If it doesn't halt, Process B finds the proof.
+
+**The Contradiction:** This would give us a way to decide the Halting Problem! But we already proved (via Diagonalization) that no such decider exists. Therefore, **Process B must fail for some programs.** There must be programs that never halt, yet there is no formal proof within the system to prove it.
+
+### 4. The Conclusion: Truth $\neq$ Provability
+
+This leads to **Gödel’s First Incompleteness Theorem**:
+
+> In any sufficiently powerful consistent mathematical system, there are statements that are **true** but **unprovable**.
+
+* **Truth:** The program actually runs forever (a fact of reality).
+* **Provability:** The logical rules of the system are not strong enough to "capture" that infinite behavior in a finite number of steps.
+
+### Summary: The Computability Perspective
+
+| Concept | Computability Equivalent | Mathematical Result |
+| --- | --- | --- |
+| **Provable Statements** | Computably Enumerable (c.e.) | We can list all "Yes" answers. |
+| **True Statements** | Not Computably Enumerable | We cannot list all truths. |
+| **Consistency** | The program doesn't lie. | We can't prove "Yes" and "No" for the same thing. |
+| **Completeness** | Solving the Halting Problem. | **Impossible.** |
+
+### The Final "Mind-Bending" Thought
+
+If you find a statement that you can't prove or disprove (an **undecidable statement**), you can actually choose to *add* it as a new axiom. But as soon as you do, Rice's Theorem and the Halting Problem apply to your *new* system, creating a *new* set of true-but-unprovable statements.
+
+**The "hole" in mathematics can be moved, but it can never be filled.**
+
+  </details>
+</div>
+
+**The idea of enumeration and its connection to recursively enumerable sets**
+<div class="accordion">
+  <details markdown="1">
+    <summary>The idea of enumeration and its connection to recursively enumerable sets</summary>
+
+### Enumeration in computability
+
+In our course’s terminology, an **enumeration** is simply an infinite sequence $z_0,z_1,\ldots$ of natural numbers. In computability theory we are usually interested in **effective enumerations**: sequences whose indexing map $i\mapsto z_i$ is **computable**, so that given $i$ we can algorithmically obtain (z_i). This captures the idea that, *given enough time, we can systematically list the members of a set*, even when we cannot decide membership in one step.
+
+## The core picture: enumerations vs. effective enumerations
+
+An enumeration $z_0,z_1,\ldots$ **enumerates** the set
+
+$$\lbrace z_0,z_1,\ldots\rbrace.$$
+
+It is **effective** if there exists an algorithm computing the function $i\mapsto z_i$. Equivalently, there is a procedure that can “jump” to the $i$-th listed element without having to treat the sequence as a mysterious object.
+
+As usual:
+
+* **Order doesn’t matter**
+* **Duplicates are allowed**
+* If the set is infinite, the process runs forever
+* But each $x$ in the set appears at some finite stage
+
+So instead of answering “is $x\in A$?”, you can “solve” (A) by **systematically listing all the yes-instances**.
+
+## Why it matters: semi-decision and c.e. sets
+
+A set $A\subseteq\mathbb{N}$ is **computably enumerable (c.e.)** (a.k.a. **recursively enumerable**, **semidecidable**) precisely when it has an **effective enumeration** (in the above sense, allowing repetition). Intuitively:
+
+* If $x\in A$, there is a computation that will eventually confirm it (by producing $x$ in the list, or by halting on input $x$).
+* If $x\notin A$, the computation may run forever without ever giving a final “no”.
+
+This is captured by the central equivalence:
+
+$$A\text{ is c.e.} \quad\Longleftrightarrow\quad \exists\ \text{a Turing machine that halts exactly on inputs in }A.$$
+
+
+* **YES instances** halt.
+* **NO instances** may loop.
+
+
+## The key technique: dovetailing
+
+Effective enumeration often uses **dovetailing** (round-robin simulation) to avoid getting stuck on a single non-halting computation.
+
+Classic example: the **halting set**
+
+$$K=\lbrace\langle e,x\rangle:\varphi_e(x)\downarrow\rbrace.$$
+
+Enumerate $K$ by running all computations $\varphi_e(x)$ in stages (one step each, then two steps each, etc.). Whenever one halts, output $\langle e,x\rangle$. This lists every halting pair—so $K$ is **c.e.**—even though $K$ is **not decidable**.
+
+## “Enumeration” vs. “enumerating all programs”
+
+Two related uses of the word appear frequently:
+
+1. **Enumerating a set $A$**: giving an effective enumeration $z_0,z_1,\ldots$ whose range is $A$.
+2. **Enumerating computable objects**: an effective list of programs/functions
+   
+   $$\varphi_0,\varphi_1,\varphi_2,\ldots$$
+   
+   where $e$ is an **index** (code) for a program—crucial for universal simulation and many theorems.
+
+## Decidable vs. enumerable
+
+* **Decidable (computable) set:** an algorithm always halts and answers **Yes/No** correctly.
+* **c.e. (semidecidable) set:** there is an effective procedure that confirms **Yes** (halts / eventually lists $x$), but may run forever on **No**.
+
+### One-sentence takeaway
+
+**In our course’s language: a set is c.e. exactly when it admits an effective enumeration—an algorithmic listing of all its members—even though non-membership may not be decidable.**
+
+  </details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -3957,6 +4465,7 @@ So: **in the context of r.e./decidable/partial computable, it’s safe to treat 
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and effective enumeration)</span></p>
 
 A nonempty set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ $A$ has an effective enumeration.
+
 </div>
 
 *Proof*:
@@ -3977,7 +4486,7 @@ I’ll unpack both directions and, especially, the second construction.
 
 ---
 
-## 1) Effective enumeration $\Rightarrow$ r.e.
+## 1. Effective enumeration $\Rightarrow$ r.e.
 
 Assume $A$ has an effective enumeration $z_0,z_1,\dots$ with computable $i\mapsto z_i$.
 
@@ -4002,7 +4511,7 @@ That’s exactly the definition of “recognizes $A$”, so $A$ is r.e.
 
 ---
 
-## 2) r.e. (nonempty) $\Rightarrow$ effective enumeration
+## 2. r.e. (nonempty) $\Rightarrow$ effective enumeration
 
 Now assume $A$ is **nonempty** and r.e. Let $M$ be a Turing machine that recognizes $A$.
 
@@ -4071,6 +4580,15 @@ Together, (i) and (ii) mean the sequence effectively enumerates $A$.
 
 The second direction is “dovetailing”: instead of running $M(0)$, then $M(1)$, etc. (which can get stuck), you run **every input for every finite time bound**, guaranteeing you eventually witness any accepting computation.
   </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Church–Turing thesis informal definition of r.e.)</span></p>
+
+According to the Church–Turing thesis, every **effectively computable** function can be computed by a **Turing machine**. Consequently, a **recursively enumerable** set $S$ is **computably enumerable** *if and only if* there exists an algorithm that enumerates the elements of $S$.
+
+**However, this characterization cannot be taken as a formal definition**, since the **Church–Turing thesis is an informal conjecture**, not a formally stated axiom.
+
 </div>
 
 Decidable sets correspond to a special, more structured type of enumeration.
@@ -4260,17 +4778,6 @@ While we can enumerate all partial computable functions, a famous diagonalizatio
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Numbering of set of computable functions does not exists)</span></p>
 
 There exists no numbering of the set of computable functions.
-</div>
-
-*Proof*: Here’s a cleaner rewrite in a more standard style.
-
----
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(No numbering of all total computable functions)</span></p>
-
-There is no numbering of the set of (total) computable functions.
-
 </div>
 
 *Proof.* Suppose, for a contradiction, that $(\alpha_e)\_{e\in\mathbb N}$ is a numbering whose range consists exactly of all total computable functions. Let $\alpha$ be its principal function, so
@@ -4504,7 +5011,7 @@ $$
 \psi_{\langle i,t\rangle}(x)\ \simeq
 \begin{cases}
 \phi_i(x), & x\neq 0, \\
-\uparrow, & x=0\ \text{and}\ t=0,[2pt]
+\uparrow, & x=0\ \text{and}\ t=0 \\
 t-1, & x=0\ \text{and}\ t>0.
 \end{cases}
 $$
@@ -4584,7 +5091,7 @@ To compare the difficulty of undecidable problems, we introduce the concept of r
 
 <!-- $\textbf{Definition 180:}$ A set $A$ is many-one reducible to a set $B$, abbreviated as $A$ is m-reducible to $B$ or $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$, it holds that  $x \in A \text{ if and only if } f(x) \in B$.  -->
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Many-one reduction)</span></p>
 
 A set $A$ is **many-one reducible** to a set $B$ (also: **m-reducible**), written $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$,
 
@@ -4603,13 +5110,25 @@ The function $f$ transforms instances of problem $A$ into instances of problem $
 
 <!-- $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive. -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(m-reductions preserve decidability)</span></p>
 
 The relation m-reducibility is **reflexive** and **transitive**.
 
 </div>
 
-*Proof*: See the exercises.
+*Proof*:
+
+**Reflexive.** Let $A\subseteq\mathbb N$. Take the identity function $f(x)=x$. This function is computable and satisfies
+
+$$x\in A \iff f(x)=x\in A.$$
+
+Hence $A\le_m A$.
+
+**Transitive.** Suppose $A\le_m B$ via a computable function $f$, and $B\le_m C$ via a computable function $g$. Define $h=g\circ f$, i.e. $h(x)=g(f(x)$). Since computable functions are closed under composition, $h$ is computable. Moreover, for every $x$,
+
+$$x\in A \iff f(x)\in B \iff g(f(x))\in C \iff h(x)\in C.$$
+
+Thus $A\le_m C$. $\square$
 
 ### M-reducibility allows us to infer properties about sets.
 
@@ -4617,7 +5136,7 @@ The relation m-reducibility is **reflexive** and **transitive**.
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
 * **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(m-reductions preserve decidability/undecidability)</span></p>
 
 Let $A$ and $B$ be sets such that $A \le_m B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
@@ -4625,7 +5144,24 @@ Let $A$ and $B$ be sets such that $A \le_m B$.
 
 </div>
 
-*Proof*: See the exercises. Both statements are equivalent to each other since the second one is the contrapositive of the first one.
+*Proof*:
+
+Assume $A\le_m B$. Then there exists a computable function $f$ such that for all $x$,
+
+$$x\in A \iff f(x)\in B.$$
+
+**(i)** Suppose $B$ is decidable, and let $D_B$ be a decider for $B$. We build a decider $D_A$ for $A$ as follows: on input $x$,
+
+1. compute $y=f(x)$;
+2. run $D_B$ on input $y$ and output the same yes/no answer.
+
+Because $f$ is computable and $D_B$ always halts, this procedure always halts. Correctness follows from the defining property of $f$:
+
+$$D_A \text{ accepts } x \iff D_B \text{ accepts } f(x) \iff f(x)\in B \iff x\in A.$$
+
+Hence $A$ is decidable.
+
+**(ii)** This is the contrapositive of $i$. If $B$ were decidable, then $i$ would imply that $A$ is decidable. Therefore, if $A$ is undecidable, $B$ must be undecidable. $\square$
 
 A key result is that the halting problem $H$ is a "hardest" problem among all r.e. sets with respect to m-reducibility.
 
@@ -4633,7 +5169,7 @@ A key result is that the halting problem $H$ is a "hardest" problem among all r.
 * **(i)** If $A \le_m B$ and $B$ is r.e., then $A$ is also r.e. 
 * **(ii)** For every r.e. set $A$, it holds that $A \le_m H$. -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(r.e. sets and many-one reductions to the halting problem)</span></p>
 
 Let $A$ and $B$ be sets. 
 * **(i)** If $A \le_m B$ and $B$ is r.e., then $A$ is also r.e. 
@@ -4642,11 +5178,79 @@ Let $A$ and $B$ be sets.
 </div>
 
 *Proof*: 
-
+<!-- 
 * **(i)** Let $A \le_m B$ via a computable function $f$, and let $B$ be r.e. Then $B$ is the domain of some partial computable function $\alpha$. The set $A$ is the domain of the partial computable function $\alpha \circ f : x \mapsto \alpha(f(x))$. Since $A$ is the domain of a partial computable function, it is r.e. 
 * **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)}$ for all $e$. This function $f$ witnesses that 
   
-  $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$
+  $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$ -->
+
+**(i)**
+
+Assume $A \le_m B$ via a computable function $f$, and assume $B$ is r.e. Then there exists a partial computable function $\alpha$ such that
+
+$$B = \operatorname{dom}(\alpha).$$
+
+Define a partial function $\gamma$ by
+
+$$\gamma(x)\ \simeq\ \alpha(f(x)).$$
+
+Since $f$ is computable and $\alpha$ is partial computable, their composition $\gamma=\alpha\circ f$ is partial computable. Moreover,
+
+$$x\in A \iff f(x)\in B \iff \alpha(f(x))\downarrow \iff \gamma(x)\downarrow,$$
+
+so $A=\operatorname{dom}(\gamma)$. Hence $A$ is r.e.
+
+**(ii)**
+
+Let (A) be r.e. Then (A=\operatorname{dom}(\alpha)) for some partial computable function (\alpha).
+
+For each (e), define a partial computable function (\beta_e) that ignores its input and simulates (\alpha(e)); formally,
+
+$$\beta_e(x)\ \simeq\ \alpha(e)\qquad(\text{for all }x).$$
+
+Intuitively, (\beta_e(0)) halts iff (\alpha(e)) halts, i.e. iff (e\in A).
+
+Because the standard numbering ((\phi_n)*{n\in\mathbb N}) is a Gödel numbering, there exists a computable function (f) such that
+
+$$\phi_{f(e)}=\beta_e\qquad\text{for all }e.$$
+
+Now compute:
+
+$$
+e\in A
+\iff \alpha(e)\downarrow
+\iff \beta_e(0)\downarrow
+\iff \phi_{f(e)}(0)\downarrow.
+$$
+
+To reduce to the *diagonal* halting set $H=\lbrace n:\phi_n(n)\downarrow\rbrace$, define a computable map $g$ by
+
+$$g(e)=s(f(e)),$$
+
+where $s$ is any computable “padding” function with the property that (\phi_{s(n)}(x)\simeq \phi_n(0)) for all (x). (Equivalently: from an index (n) we can effectively produce an index of a machine that ignores its input and runs (\phi_n) on input (0).)
+
+Then, for all $e$,
+
+$$
+e\in A
+\iff \phi_{f(e)}(0)\downarrow
+\iff \phi_{g(e)}(g(e))\downarrow
+\iff g(e)\in H.
+$$
+
+Thus $A\le_m H$. $\square$
+
+**Optional shorter variant (if you allow reducing to (H_{\mathrm{gen}}) first)**
+
+If your notes define the *general* halting set $H_{\mathrm{gen}}=\lbrace\langle n,x\rangle:\phi_n(x)\downarrow\rbrace$, then (ii) can be written even more cleanly as
+
+$$e\in A \iff \alpha(e)\downarrow \iff \beta_e(0)\downarrow \iff \phi_{f(e)}(0)\downarrow \iff \langle f(e),0\rangle \in H_{\mathrm{gen}},$$
+
+so $A\le_m H_{\mathrm{gen}}$, and then you can cite the standard fact $H_{\mathrm{gen}}\equiv_m H$.
+
+If you tell me whether your text already proved (H_{\mathrm{gen}}\equiv_m H) (or has an (s)-(m)-(n) theorem), I can match the proof exactly to what you’ve introduced so far. $\square$
+
+
 
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 
@@ -4713,7 +5317,7 @@ $$e \in I \text{ and } \phi_e = \phi_{e'} \implies e' \in I$$
 
 An index set is nontrivial if it differs from $\emptyset$ and $\mathbb{N}$. -->
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Index Set)</span></p>
 
 A set $I \subseteq \mathbb{N}$ is an **index set** if for all $e,e'$,
 
@@ -4732,7 +5336,7 @@ $$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mat
 
 The following sets are index sets: 
 
-$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$ -->
+$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$
 
 </div>
 
@@ -4740,7 +5344,7 @@ $$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mat
 
 $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$  -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Rice's Theorem)</span></p>
 
 Let $I$ be a nontrivial index set. Then it holds that 
 
@@ -4748,7 +5352,7 @@ $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
 
 </div>
 
-*Proof of Theorem 192*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
+*Proof of Rice's Theorem*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
 
 * **Case 1**: I does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, it is not empty, so there must be some index $e_0 \in I$. Let $\beta = \phi_{e_0}$. By our assumption, $\beta$ is not the everywhere undefined function. We will show $\bar{H} \le_m I$. To do this, we need a computable function $g$ such that $e \in \bar{H} \iff g(e) \in I$.
 * Consider the function $g(e)$ which gives the index of a new Turing machine. This machine, on any input $x$, first simulates the computation of $\phi_e(e)$. If this simulation halts, the machine then proceeds to compute $\beta(x)$. If the simulation of $\phi_e(e)$ does not halt, the machine runs forever. The function computed by the machine with index $g(e)$ is:  
