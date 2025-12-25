@@ -4009,7 +4009,7 @@ The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_
 
 </div>
 
-**Why is the idea of being able to list something is so important in computability theory?**
+<!-- **Why is the idea of being able to list something is so important in computability theory?**
 <div class="accordion">
   <details markdown="1">
     <summary>Why is the idea of being able to list something is so important in computability theory?</summary>
@@ -4084,7 +4084,7 @@ c.e. sets are the first big class beyond decidable sets, and they have rich stru
 * full decision fails (can’t always reject).
 
   </details>
-</div>
+</div> -->
 
 **The "listing" (numbering) idea to prove that the Halting Problem is undecidable via a "Diagonalization" argument**
 <div class="accordion">
@@ -4381,7 +4381,7 @@ As usual:
 * If the set is infinite, the process runs forever
 * But each $x$ in the set appears at some finite stage
 
-So instead of answering “is $x\in A$?”, you can “solve” (A) by **systematically listing all the yes-instances**.
+So instead of answering “is $x\in A$?”, you can “solve” $A$ by **systematically listing all the yes-instances**.
 
 ## Why it matters: semi-decision and c.e. sets
 
@@ -4392,7 +4392,9 @@ A set $A\subseteq\mathbb{N}$ is **computably enumerable (c.e.)** (a.k.a. **recur
 
 This is captured by the central equivalence:
 
-$$A\text{ is c.e.} \quad\Longleftrightarrow\quad \exists\ \text{a Turing machine that halts exactly on inputs in }A.$$
+$$
+A\text{ is c.e.} \quad\Longleftrightarrow\quad \exists\ \text{a Turing machine that halts exactly on inputs in }A.
+$$
 
 * **YES instances** halt.
 * **NO instances** may loop.
