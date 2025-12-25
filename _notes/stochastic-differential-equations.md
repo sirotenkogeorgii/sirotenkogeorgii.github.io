@@ -87,7 +87,7 @@ The triple $(\Omega, \mathcal{F}, P)$ is a probability space.
 
 $\textbf{Definition (Complete Probability Space):}$ A probability space $(\Omega, \mathcal{F}, P)$ is complete if $\mathcal{F}$ contains all subsets $G$ of $\Omega$ with $P$-outer measure zero, where the outer measure is defined as:  
 
-$$P^*(G) := \inf \lbrace P(F); F \in \mathcal{F}, G \subset F\rbrace = 0$$
+$$P^*(G) := \inf{P(F); F \in \mathcal{F}, G \subset F} = 0$$
 
 > **Remark**: Subsets $F \in \mathcal{F}$ are called $\mathcal{F}$-measurable sets or events. $P(F)$ is the probability that event $F$ occurs. If $P(F)=1$, the event occurs almost surely (a.s.).
 
@@ -115,7 +115,7 @@ For a Borel measurable function $f: \mathbb{R}^n \to \mathbb{R}$, if
 
 $$\int_\Omega \|f(X(\omega))\| dP(\omega) < \infty:  E[f(X)] := \int_\Omega f(X(\omega)) dP(\omega) = \int_{\mathbb{R}^n} f(x) d\mu_X(x)$$
 
-$\textbf{Definition (Independence):}$ Two events $A, B \in \mathcal{F}$ are independent if $P(A \cap B) = P(A) \cdot P(B)$. A collection $\mathcal{A} = \lbrace \mathcal{H}\_i ; i \in I\rbrace$ of families of measurable sets is independent if for any distinct indices $i_1, \dots, i_k$ and any choice of sets $H_{i_j} \in \mathcal{H}_{i_j}$:
+$\textbf{Definition (Independence):}$ Two events $A, B \in \mathcal{F}$ are independent if $P(A \cap B) = P(A) \cdot P(B)$. A collection $\mathcal{A} = \lbrace\mathcal{H}_i ; i \in I\rbrace$ of families of measurable sets is independent if for any distinct indices $i_1, \dots, i_k$ and any choice of sets $H_{i_j} \in \mathcal{H}_{i_j}$:
 
 $$P(H_{i_1} \cap \cdots \cap H_{i_k}) = P(H_{i_1}) \cdots P(H_{i_k})$$
 

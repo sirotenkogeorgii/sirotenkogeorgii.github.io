@@ -4674,46 +4674,6 @@ $$\mathcal{F}=\lbrace\alpha_e : e\in\mathbb{N}\rbrace.$$
 In particular, a **universal numbering** is a numbering that enumerates *all* partial computable functions.
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Numbering)</span></p>
-
-In general, in computability theory, a **numbering** is an assignment of **natural numbers** to a set of objects such as functions, rational numbers, graphs, or words in some formal language. A numbering can be used to transfer the idea of computability and related concepts, which are originally defined on the natural numbers using **computable functions**, to these different types of objects.
-
-Common examples of numberings include **Gödel numberings** in first-order logic, the **description numbers** that arise from **universal Turing machines** and **admissible numberings** of the set of partial computable functions.
-
-In our course, a **numbering** is an effective way to use **natural numbers as indices (codes)** for **a family of partial functions**.
-
-In your course’s setup, a **numbering** is an effective way to use natural numbers as **indices** (codes) for a family of partial functions.
-
-Start with a sequence of partial functions
-
-$$(\alpha_e)_{e\in\mathbb N},\quad \alpha_e:\mathbb N \rightharpoonup \mathbb N.$$
-
-Define its **principal function** (also called the universal function for the sequence)
-
-$$\alpha:\mathbb N^2 \rightharpoonup \mathbb N,\qquad \alpha(e,x)\simeq \alpha_e(x).$$
-
-Then:
-* $(\alpha_e)$ is a **numbering** iff its principal function $\alpha(e,x)$ is **partial computable**.
-
-**Intuition**
-
-A numbering is like a programming system:
-* the index $e$ is the “program code,”
-* $\alpha_e$ is the partial function computed by program $e$,
-* and $\alpha(e,x)$ is the universal interpreter: “run program $e$ on input $x$.”
-
-Saying $\alpha$ is partial computable means there is a single algorithm (a universal machine) that, given $e$ and $x$, simulates what program $e$ does on input $x$.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Numbering)</span></p>
-
-Fix a universal Turing machine $U$. Let $\alpha_e(x)$ be “the output of machine with code $e$ on input $x$” (undefined if it doesn’t halt). Then $$\alpha_e)$ is a numbering because there is a single simulator $U$ computing $\alpha(e,x)$.
-
-</div>
-
 > **Remark 169**: For any numbering $\alpha_0, \alpha_1, \dots$, all $\alpha_e$ are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input $x$ into $\langle e, x \rangle$ before performing the actual computation, we obtain a Turing machine that computes $\alpha_e$. As a consequence, a numbering $\alpha_0, \alpha_1, \dots$ is universal if and only if all partial computable functions occur among the $\alpha_e$.
 
 Not every sequence of computable functions constitutes a numbering. A numbering requires that the principal function itself be computable.
@@ -4726,10 +4686,8 @@ Not every sequence of computable functions constitutes a numbering. A numbering 
 
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
-[Universal Turing Machine](/subpages/computability-and-complexity/universal-turing-machine/)
-
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal Turing Machine theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering exists)</span></p>
 
 There exists a universal numbering.
 
@@ -4830,7 +4788,7 @@ Define a new function $d:\mathbb N\to\mathbb N$ by
 
 $$d(e)=\alpha(e,e)+1.$$
 
-Since (\alpha) is computable, so is $d$; moreover $d$ is total.
+Since (\alpha) is computable, so is $d$; moreover d$$ is total.
 
 We claim that $d$ is not equal to any $\alpha_e$. Indeed, fix $e$. Then
 
@@ -4989,62 +4947,12 @@ A numbering $(\beta_e)\_{e\in\mathbb{N}}$ is called a **Gödel numbering** (or *
 $$\alpha_e = \beta_{f(e)}.$$
 
 (Equivalently: every other numbering can be effectively translated into $(\beta_e)$.)
-
 </div>
 
 The function $f$ acts as a "compiler" or "translator" from indices in the $\alpha$ numbering to equivalent indices in the $\beta$ numbering.
 
-> **Convention**: **“Gödel numbering” is often used as a synonym for “acceptable/admissible numbering”** (including this course), i.e., not *just* any coding, but a coding with the right **effectiveness** properties. Different areas use the word “Gödel numbering” at different strictness levels.
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Admissible numbering)</span></p>
-
-An **admissible numbering** (often also called an **acceptable numbering** or **Gödel numbering** in recursion theory) is a “good” way to assign indices $e\in\mathbb N$ to partial computable functions so that programs can be manipulated **effectively**. In computability theory, **admissible numberings** are **enumerations (numberings)** of the set of partial computable functions that can be converted *to and from* the **standard numbering**. These numberings are also called acceptable numberings and acceptable programming systems.
-
-Rogers' equivalence theorem shows that all acceptable programming systems are equivalent to each other in the formal sense of numbering theory.
-
-In the language of our definition (principal function $\alpha(e,x)$):
-
-**Standard definition**
-
-A numbering $(\alpha_e)_{e\in\mathbb N}$ of partial computable functions is **admissible** if:
-
-1. **Universality:** it enumerates *all* partial computable functions:
-   
-   $$\lbrace\alpha_e : e\in\mathbb N\lbrace = \lbrace\text{all partial computable } \mathbb N\rightharpoonup\mathbb N\rbrace.$$
-
-2. **(s)-(m)-(n) (parameter) property:** there is a **total computable** function $s(e,x)$ such that for all $e,x,y$,
-   
-   $$\alpha_{s(e,x)}(y)\ \simeq\ \alpha_e(\langle x,y\rangle).$$
-   
-   Intuition: from an index $e$ for a 2-argument program and a value $x$, you can **compute an index** for the 1-argument program where $x$ is “hardwired in.”
-
-(Here $\langle x,y\rangle$ is any fixed computable pairing function.)
-
-**Why this matters (intuition)**
-* A *mere* universal numbering lists all computable partial functions, but it might be “unnatural” in the sense that basic operations like “fix the first input” might not be computable at the level of indices.
-* Admissibility guarantees the numbering behaves like a reasonable programming system: you can compile/partial-evaluate effectively.
-
-**Equivalent characterization (Rogers / translation property)**
-A universal numbering $\alpha$ is admissible iff for **every** other numbering $\beta$ of the partial computable functions, there exists a **total computable translator** $t$ such that for all $e$,
-
-$$\beta_e = \alpha_{t(e)}.$$
-
-Meaning: any other effective programming system can be **compiled into** $\alpha$ by a computable map on codes.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Classic Gödel Numbering)</span></p>
-
-In mathematical logic, a **Gödel numbering** is a function that assigns to each symbol and well-formed formula of some formal language a unique natural number, called its **Gödel number**. Kurt Gödel developed the concept for the proof of his incompleteness theorems.
-
-A Gödel numbering can be interpreted as an encoding in which a number is assigned to each symbol of a mathematical notation, after which a sequence of natural numbers can then represent a sequence of symbols. These sequences of natural numbers can again be represented by single natural numbers, facilitating their manipulation in formal theories of arithmetic.
-
-</div>
-
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Symbols to unique natural numbers: classic Gödel numbering)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Symbols to unique natural numbers)</span></p>
 
 **Gödel numbering** is a method for encoding symbols, formulas, and even whole proofs from a formal system (like arithmetic or logic) as **unique natural numbers**.
 
@@ -5060,7 +4968,6 @@ $$G(s_1 \dots s_k) = 2^{c(s_1)} \cdot 3^{c(s_2)} \cdot 5^{c(s_3)} \cdots p_k^{c(
 where $p_k$ is the $k$-th prime.
 
 Because prime factorization is unique, you can decode the number back into the exact original sequence. This is what lets metamathematical statements like “this formula is provable” be translated into statements *about numbers* inside arithmetic.
-
 </div>
 
 <div class="pmf-grid">
@@ -5270,13 +5177,11 @@ Let $A$ and $B$ be sets.
 </div>
 
 *Proof*: 
-
+<!-- 
 * **(i)** Let $A \le_m B$ via a computable function $f$, and let $B$ be r.e. Then $B$ is the domain of some partial computable function $\alpha$. The set $A$ is the domain of the partial computable function $\alpha \circ f : x \mapsto \alpha(f(x))$. Since $A$ is the domain of a partial computable function, it is r.e. 
 * **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)}$ for all $e$. This function $f$ witnesses that 
   
-  $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$
-
-**Another proof:**
+  $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$ -->
 
 **(i)**
 
@@ -5296,15 +5201,15 @@ so $A=\operatorname{dom}(\gamma)$. Hence $A$ is r.e.
 
 **(ii)**
 
-Let $A$ be r.e. Then $A=\operatorname{dom}(\alpha)$ for some partial computable function $\alpha$.
+Let (A) be r.e. Then (A=\operatorname{dom}(\alpha)) for some partial computable function (\alpha).
 
-For each $e$, define a partial computable function $\beta_e$ that ignores its input and simulates $\alpha(e)$; formally,
+For each (e), define a partial computable function (\beta_e) that ignores its input and simulates (\alpha(e)); formally,
 
 $$\beta_e(x)\ \simeq\ \alpha(e)\qquad(\text{for all }x).$$
 
-Intuitively, $\beta_e(0)$ halts iff (\alpha(e)) halts, i.e. iff $e\in A$.
+Intuitively, (\beta_e(0)) halts iff (\alpha(e)) halts, i.e. iff (e\in A).
 
-Because the standard numbering $(\phi_n)\_{n\in\mathbb N}$ is a Gödel numbering, there exists a computable function $f$ such that
+Because the standard numbering ((\phi_n)*{n\in\mathbb N}) is a Gödel numbering, there exists a computable function (f) such that
 
 $$\phi_{f(e)}=\beta_e\qquad\text{for all }e.$$
 
@@ -5321,7 +5226,7 @@ To reduce to the *diagonal* halting set $H=\lbrace n:\phi_n(n)\downarrow\rbrace$
 
 $$g(e)=s(f(e)),$$
 
-where $s$ is any computable “padding” function with the property that $\phi_{s(n)}(x)\simeq \phi_n(0)$ for all $x$. (Equivalently: from an index $n$ we can effectively produce an index of a machine that ignores its input and runs $\phi_n$ on input $0$.)
+where $s$ is any computable “padding” function with the property that (\phi_{s(n)}(x)\simeq \phi_n(0)) for all (x). (Equivalently: from an index (n) we can effectively produce an index of a machine that ignores its input and runs (\phi_n) on input (0).)
 
 Then, for all $e$,
 
@@ -5333,6 +5238,18 @@ e\in A
 $$
 
 Thus $A\le_m H$. $\square$
+
+**Optional shorter variant (if you allow reducing to (H_{\mathrm{gen}}) first)**
+
+If your notes define the *general* halting set $H_{\mathrm{gen}}=\lbrace\langle n,x\rangle:\phi_n(x)\downarrow\rbrace$, then (ii) can be written even more cleanly as
+
+$$e\in A \iff \alpha(e)\downarrow \iff \beta_e(0)\downarrow \iff \phi_{f(e)}(0)\downarrow \iff \langle f(e),0\rangle \in H_{\mathrm{gen}},$$
+
+so $A\le_m H_{\mathrm{gen}}$, and then you can cite the standard fact $H_{\mathrm{gen}}\equiv_m H$.
+
+If you tell me whether your text already proved (H_{\mathrm{gen}}\equiv_m H) (or has an (s)-(m)-(n) theorem), I can match the proof exactly to what you’ve introduced so far. $\square$
+
+
 
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction to Topology
+title: Introduction To Topology
 date: 2024-11-01
 # excerpt: Connecting differential equations, stability analysis, and attractor theory to the training dynamics of modern machine learning models.
 # tags:
@@ -9,7 +9,7 @@ date: 2024-11-01
 #   - theory
 ---
 
-# Introduction to Topology
+# Introduction To Topology
 
 ## 1. Theory of Sets
 
