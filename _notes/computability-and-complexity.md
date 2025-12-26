@@ -4657,7 +4657,7 @@ This correspondence allows us to treat a sequence of functions and its associate
 
 <!-- $\textbf{Definition 168:}$ Let $\alpha_0, \alpha_1, \dots$ be a sequence of partial functions on $\mathbb{N}$. Let $\alpha$ be a partial function on $\mathbb{N}^2$ such that (7.1) holds. Then $\alpha$ is called the principal function of the sequence $\alpha_0, \alpha_1, \dots$, and the sequence itself is called determined by $\alpha$. The sequence $\alpha_0, \alpha_1, \dots$ is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering $\alpha$ is a numbering of or is universal for a set of partial functions if the latter set is equal to $\lbrace\alpha(e, \cdot) : e \in \mathbb{N}\rbrace$. A universal numbering is a numbering of the set of partial computable functions. -->
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Principal (universal) function, Numberings, Universal numbering)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Numberings, Principal (universal) function, Universal numbering)</span></p>
 
 Let $(\alpha_e)_{e\in\mathbb{N}}$ be a sequence of partial functions $\alpha_e:\mathbb{N}\rightharpoonup\mathbb{N}$. Define a partial function $\alpha:\mathbb{N}^2\rightharpoonup\mathbb{N}$ by
 
@@ -4710,7 +4710,7 @@ Saying $\alpha$ is partial computable means there is a single algorithm (a unive
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Numbering)</span></p>
 
-Fix a universal Turing machine $U$. Let $\alpha_e(x)$ be “the output of machine with code $e$ on input $x$” (undefined if it doesn’t halt). Then $$\alpha_e)$ is a numbering because there is a single simulator $U$ computing $\alpha(e,x)$.
+Fix a universal Turing machine $U$. Let $\alpha_e(x)$ be “the output of machine with code $e$ on input $x$” (undefined if it doesn’t halt). Then $(\alpha_e)$ is a numbering because there is a single simulator $U$ computing $\alpha(e,x)$.
 
 </div>
 
@@ -5409,6 +5409,23 @@ An index set is **nontrivial** if it is neither $\emptyset$ nor $\mathbb{N}$.
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Expanded definition of Index set)</span></p>
+
+Let $\varphi_e$ be a computable enumeration of all partial computable functions, and let $W_e$ be a computable enumeration of all computably enumerable (c.e.) sets.
+
+Let $\mathcal{A}$ be a collection of partial computable functions. Define its **index set** by
+
+$$A=\lbrace x:\varphi_x\in\mathcal{A}\rbrace.$$
+
+More generally, a set $A\subseteq\mathbb{N}$ is an **index set** if whenever $x,y\in\mathbb{N}$ satisfy $\varphi_x\simeq \varphi_y$ (i.e., they compute the same partial function), we have
+
+$$x\in A \iff y\in A.$$
+
+Intuitively, index sets are subsets of $\mathbb{N}$ defined purely in terms of the functions their elements index.
+
+</div>
+
 > **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
 
 <!-- $\textbf{Example 191:}$ The following sets are index sets: 
@@ -5451,7 +5468,7 @@ Since both $H$ and $\bar{H}$ are undecidable, Rice's theorem directly implies th
 
 <!-- $\textbf{Corollary 193:}$ Nontrivial index sets are not decidable. -->
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(193)</span></p>
 
 Nontrivial index sets are not decidable.
 
