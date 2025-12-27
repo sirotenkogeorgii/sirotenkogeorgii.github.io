@@ -270,6 +270,13 @@ The final solution is:
 
 $$x(t) = x_0 e^{at}$$
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed point or Equilibrium point)</span></p>
+
+A point $x^*\in\mathbb{R}^n$ is called equilibrium point of a system ODEs, if $f(t,x)=0$ for all $t\in I$.
+
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Analysis</span>(Stability of the Equilibrium (1D case))<span class="math-callout__name"></span></p>
 
@@ -292,11 +299,29 @@ The point $x=0$ is an **equilibrium point** (or **fixed point**) because if the 
 
 ### Higher-Dimensional Linear Systems: $$\dot{x} = Ax$$
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear vector field, Non-linear trajectories)</span></p>
+
+Let a dynamical system be linear and $x\in\mathbb{R}^2$, then
+
+$$\dot x = Ax \implies x(t) = x(0)\exp^{At} \qquad \text{(for constant $A$)},$$
+
+there the transformation $A \in \mathbb{R}^{2\times 2}$ is a lightly **damped rotation** $\implies$ **spiral toward the origin**:
+
+$$A \sim \begin{pmatrix} \lambda_1 & -1 \\ 1 & -0.2 \end{pmatrix}$$
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/linear_vf_nonlinear_trajectory.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>The dynamical system is linear, but the trajectory is not necessarily linear</figcaption>
+</figure>
+
+</div>
+
 Now we consider a system of $m$ coupled linear ODEs, where $x \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix. 
 
 $$\dot{x} = Ax, \quad x(0) = x_0$$
 
-*Proof:* Pedagogical Derivation of the General Solution
+*Proof:* Derivation of the General Solution
 
 To find the solution, we can use an ansatz inspired by the 1D case, proposing a solution of a similar exponential form.
 
@@ -305,7 +330,7 @@ To find the solution, we can use an ansatz inspired by the 1D case, proposing a 
   $$x(t) = v e^{\lambda t}$$
   
   We assume $v \neq 0$ to find a non-trivial solution.
-2. **Substitute the ansatz into the ODE**. First, find the derivative \dot{x}: 
+2. **Substitute the ansatz into the ODE**. First, find the derivative $\dot{x}$: 
    
   $$\dot{x} = \frac{d}{dt}(v e^{\lambda t}) = \lambda v e^{\lambda t}$$
 
@@ -319,7 +344,7 @@ To find the solution, we can use an ansatz inspired by the 1D case, proposing a 
 
 This is the fundamental **eigenvalue problem**. To find the solutions to our differential equation, we need to find the **eigenvalues** $\lambda$ and corresponding **eigenvectors ($v$)** of the matrix $A$.
 
-Remark/Intuition: The General Solution
+**The General Solution**
 
 Assuming the matrix $A$ has $m$ distinct eigenvalues $\lambda_1, \dots, \lambda_m$ with corresponding eigenvectors $v_1, \dots, v_m$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
 
@@ -331,7 +356,7 @@ $$x_0 = \sum_{i=1}^{m} c_i v_i$$
 
 The behavior of the system is a superposition of simple exponential behaviors along each of the eigendirections.
 
-Solution with Complex Eigenvalues
+**Solution with Complex Eigenvalues**
 
 The eigenvalues of a real matrix $A$ can be complex. Since $A$ is real, its complex eigenvalues must come in conjugate pairs: $\lambda = \alpha \pm i\omega$.
 
@@ -354,14 +379,16 @@ The overall behavior is a spiral: the system oscillates while its amplitude grow
 
 The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
 
-Definition: Nullclines
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nullclines)</span></p>
 
 **Nullclines** are curves in the state space where the rate of change of one of the variables is zero.
-
 * The $x_1$-nullcline is the set of points where $\dot{x}_1 = 0$.
 * The $x_2$-nullcline is the set of points where $\dot{x}_2 = 0$.
 
 Equilibrium points must lie at the intersection of all nullclines, as this is where all derivatives are zero simultaneously. For linear systems, nullclines are straight lines passing through the origin. They divide the state space into regions with different flow directions.
+
+</div>
 
 **Case 1: Real Eigenvalues ($\omega_1 = \omega_2 = 0$)**
 
@@ -381,7 +408,7 @@ Equilibrium points must lie at the intersection of all nullclines, as this is wh
     * The line spanned by $v_2$ is the **unstable manifold** ($E^u$): The set of all points that flow away from the equilibrium.
     * Manifolds are **invariant**: any trajectory starting on a manifold stays on that manifold forever.
 
-**Case 2: Complex Conjugate Eigenvalues $(\lambda = \alpha \pm i\omega, with \omega \neq 0)$**
+**Case 2: Complex Conjugate Eigenvalues ($\lambda = \alpha \pm i\omega$, with $\omega \neq 0$)**
 
 * **Stable Spiral (or Focus)**: The real part is negative ($\alpha < 0$).
   * **Geometry**: Trajectories spiral inward toward the origin.
@@ -775,11 +802,14 @@ To formulate a solution that covers all cases, we first introduce the concept of
 
 Similar Matrices and Topological Equivalence
 
-Definition
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Similar Matrices)</span></p>
 
-Two square matrices, $A_1$ and $A_2$, are called similar if there exists an invertible matrix $S$ such that the following relationship holds:
+Two square matrices, $A_1$ and $A_2$, are called **similar** if there exists an *invertible* matrix $S$ such that the following relationship holds:
 
 $$A_1 = S A_2 S^{-1}$$
+
+</div>
 
 Remark/Intuition
 
@@ -809,37 +839,34 @@ For any $2 \times 2$ matrix, it can be shown that it is similar to one of three 
 
 --------------------------------------------------------------------------------
 
-
-The Fundamental Theorem of Linear Dynamical Systems
-
 This theorem provides a single, universal solution for any linear system of ODEs, regardless of its eigenvalue structure.
 
-Theorem
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Fundamental Theorem of Linear Dynamical Systems)</span></p>
 
 Let $A$ be an $m \times m$ matrix and let $\mathbf{x}_0 \in \mathbb{R}^m$ be an initial condition. The initial value problem defined by:
 
-* $\dot{\mathbf{x}} = A \mathbf{x}$
-* $\mathbf{x}(0) = \mathbf{x}_0$
+$$\dot{\mathbf{x}} = A \mathbf{x}$$
 
-has a unique solution of the form:
+$$\mathbf{x}(0) = \mathbf{x}_0$$
 
-$$\mathbf{x}(t) = e^{At} \mathbf{x}_0$$
+has a unique solution $x:\mathbb{R}\to \mathbb{R}^n$ of the form:
 
+$$\mathbf{x}(t) = e^{At} \mathbf{x}_0 = \sum_{k=0}^{\infty} \frac{(At)^k}{k!} x_0,$$
 
 where $e^{At}$ is the matrix exponential.
 
+</div>
 
---------------------------------------------------------------------------------
 
-
-The Matrix Exponential
-
-Definition
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Matrix Exponential)</span></p>
 
 The matrix exponential $e^{At}$ is defined in a manner analogous to the Taylor series expansion of the scalar exponential function:
 
 $$e^{At} = \sum_{k=0}^{\infty} \frac{(At)^k}{k!} = I + At + \frac{(At)^2}{2!} + \frac{(At)^3}{3!} + \dots$$
 
+</div>
 
 Remark/Intuition
 
@@ -848,7 +875,6 @@ It is straightforward to see why this form constitutes a solution to the ODE. If
 $$\frac{d}{dt} \mathbf{x}(t) = \frac{d}{dt} \left( \sum_{k=0}^{\infty} \frac{A^k t^k}{k!} \right) \mathbf{x}_0$$
 
 $$= \left( \sum_{k=1}^{\infty} \frac{A^k k t^{k-1}}{k!} \right) \mathbf{x}_0 = A \left( \sum_{k=1}^{\infty} \frac{A^{k-1} t^{k-1}}{(k-1)!} \right) \mathbf{x}_0$$
-
 
 By re-indexing the sum (let $j=k-1$), we recover the original series:
 
