@@ -4707,10 +4707,50 @@ Saying $\alpha$ is partial computable means there is a single algorithm (a unive
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/computability-and-complexity/numbering_visualization.jpeg' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>A hopeless attempt to visualize what numbering is</figcaption>
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Numbering)</span></p>
 
 Fix a universal Turing machine $U$. Let $\alpha_e(x)$ be “the output of machine with code $e$ on input $x$” (undefined if it doesn’t halt). Then $(\alpha_e)$ is a numbering because there is a single simulator $U$ computing $\alpha(e,x)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Numbering can have duplicates, and in computability we expect it to)</span></p>
+
+**A numbering can have duplicates**, and in computability we *expect* it to.
+
+**Does the definition allow duplicates?**
+
+In your notes, a numbering is just a sequence $(\alpha_e)_{e\in\mathbb N}$ whose principal function $\alpha(e,x)$ is partial computable. There is **no requirement** that $e\mapsto \alpha_e$ is injective.
+
+So duplicates are absolutely allowed.
+
+**Why duplicates are natural**
+
+Think “indices = program codes.” Different programs can compute the same function:
+* add useless steps,
+* add dead code,
+* reorder computations,
+* include an unused constant,
+* etc.
+
+So even with a very concrete “standard” model (Turing machines, RAM programs, λ-terms), you automatically get many syntactically different programs with the same behavior.
+
+**But: duplicates are not *forced* by the definition**
+
+You can design an effective numbering with **no duplicates** (each partial computable function appears exactly once). That would still be a valid numbering (principal function computable), but it would **not** be acceptable/admissible in the Gödel sense.
+
+**What’s special about acceptable/admissible numberings**
+
+For acceptable numberings, duplicates aren’t just “allowed”; they’re essentially **unavoidable**: by the padding lemma, every function has **infinitely many indices**.
+
+* *Numbering* ⇒ duplicates **may** happen.
+* *Acceptable numbering* ⇒ duplicates **must** happen (in fact infinitely many per function).
 
 </div>
 
@@ -5426,10 +5466,24 @@ Intuitively, index sets are subsets of $\mathbb{N}$ defined purely in terms of t
 
 </div>
 
-> **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Another view on index sets)</span></p>
+
+An index set is a union of equivalence classes induced by $\simeq$ relation and some representative set of partial functions.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Index set as property of PCF)</span></p>
+
+An index set can be viewed as a property of partial computable functions. 
+
+For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
+
+</div>
+<!-- > **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$. -->
 
 <!-- $\textbf{Example 191:}$ The following sets are index sets: 
-
 $$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$ -->
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
@@ -5437,6 +5491,65 @@ $$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mat
 The following sets are index sets: 
 
 $$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Padding Lemma)</span></p>
+
+The **Padding Lemma** is the formal way to say:
+
+> From any program/index $e$, you can effectively produce infinitely many *different* indices that compute **the exact same** partial computable function.
+
+**Standard statement (for an acceptable numbering)**
+
+Let $(\varphi_e)\_{e\in\mathbb N}$ be an **acceptable (Gödel/admissible)** numbering of the partial computable functions. Then there exists a **total computable** function
+
+$$p:\mathbb N^2 \to \mathbb N$$
+
+(often chosen so that it’s injective in the second argument) such that for all $e,k$,
+
+$$\varphi_{p(e,k)} = \varphi_e.$$
+
+So $p(e,0), p(e,1), p(e,2),\dots$ are infinitely many “padded versions” of $e$: different indices, same computed function.
+
+**Why it’s called “padding”**
+
+In concrete models (Turing machines/programs), you can literally “pad” a program with useless extra code/comments/no-ops that don’t change its behavior but do change its code number.
+
+### Proof idea (one clean computability-theory version)
+
+Acceptable numberings are usually set up so you have the **s-m-n theorem** available. Define a partial computable 3-argument function that ignores the “padding parameter”:
+[
+g(e,k,x) ;=; \varphi_e(x).
+]
+This (g) is partial computable (it just simulates (e) on input (x), ignoring (k)). By **s-m-n**, there is a total computable function (s(e,k)) such that
+[
+\varphi_{s(e,k)}(x) ;=; g(e,k,x) ;=; \varphi_e(x).
+]
+Now set (p(e,k)=s(e,k)). That’s the padding function.
+
+(If you want injectivity in (k), you can build it in by first pairing ((e,k)) into one number in a reversible computable way.)
+
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Numbering can have duplicates, and in computability we expect it to)</span></p>
+
+In an **acceptable/admissible** numbering, “infinitely many duplicates” is *exactly* the statement that each function’s index set is infinite.
+
+Fix an acceptable numbering $(\varphi_e)$ and a partial computable function $\alpha$. The **index set** of $\alpha$ (sometimes called its *equivalence class* under extensional equality) is
+
+$$E_\alpha = \lbrace e \in \mathbb{N} : \varphi_e = \alpha \rbrace.$$
+
+If the numbering has **infinitely many indices** $e$ with $\varphi_e=\alpha$, then $E_\alpha$ contains infinitely many natural numbers, hence
+
+$$\lvert E_\alpha\rvert = \infty.$$
+
+And conversely, saying “$E_\alpha$ is infinite” means “$\alpha$ has infinitely many duplicate indices.”
+
+Just one precision: the “infinite duplicates” fact isn’t true for *every* numbering; it’s a property of **acceptable** numberings (via the padding lemma).
 
 </div>
 
@@ -5452,19 +5565,90 @@ $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
 
 </div>
 
-*Proof of Rice's Theorem*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
-
+*Proof of Rice's Theorem 1*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
 * **Case 1**: I does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, it is not empty, so there must be some index $e_0 \in I$. Let $\beta = \phi_{e_0}$. By our assumption, $\beta$ is not the everywhere undefined function. We will show $\bar{H} \le_m I$. To do this, we need a computable function $g$ such that $e \in \bar{H} \iff g(e) \in I$.
 * Consider the function $g(e)$ which gives the index of a new Turing machine. This machine, on any input $x$, first simulates the computation of $\phi_e(e)$. If this simulation halts, the machine then proceeds to compute $\beta(x)$. If the simulation of $\phi_e(e)$ does not halt, the machine runs forever. The function computed by the machine with index $g(e)$ is:  
   
   $$\phi_{g(e)} = \begin{cases} \beta & \text{if } \phi_e(e)\uparrow \text{ (i.e., } e \in \bar{H}), \\ \phi_\uparrow & \text{if } \phi_e(e)\downarrow \text{ (i.e., } e \in H). \end{cases}$$
-  
+
   The function $g$ is computable. Now we check the reduction:
   * If $e \in \bar{H}$, then $\phi_{g(e)} = \beta = \phi_{e_0}$. Since $e_0 \in I$ and $I$ is an index set, $g(e)$ must be in $I$.
   * If $e \in H$, then $\phi_{g(e)} = \phi_\uparrow$. By our case assumption, no index for $\phi_\uparrow$ is in $I$, so $g(e) \notin I$. Thus, $e \in \bar{H} \iff g(e) \in I$, so $\bar{H} \le_m I$.
 * **Case 2**: I contains an index for $\phi_\uparrow$. In this case, the complement set $\bar{I}$ does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, $\bar{I}$ is also a nontrivial index set. Applying the logic from Case 1 to $\bar{I}$, we find that $\bar{H} \le_m \bar{I}$. By Remark 187, this implies $H \le_m I$.
 
-Since both $H$ and $\bar{H}$ are undecidable, Rice's theorem directly implies that any nontrivial semantic property of programs is undecidable.
+*Proof of Rice's Theorem 2.* Let $\phi_\uparrow$ denote the everywhere undefined partial computable function. Since $I$ is nontrivial, $I\neq\emptyset$ and $I\neq\mathbb N$. We distinguish two cases depending on whether $I$ contains an index of $\phi_\uparrow$.
+
+**Case 1: $I$ contains no index of $\phi_\uparrow$**
+
+Because $I\neq\emptyset$, choose some $e_0\in I$ and set $\beta=\phi_{e_0}$. In this case $\beta\neq \phi_\uparrow$ (otherwise $e_0$ would be an index of $\phi_\uparrow$, contradicting the case assumption).
+
+We define a computable function $g$ such that
+
+$$e\in \overline{H}\ \Longleftrightarrow\ g(e)\in I.$$
+
+Given $e$, let $g(e)$ be an index of the following machine $M_e$: on input $x$,
+
+1. simulate $\phi_e(e)$;
+2. if the simulation halts, then **diverge** (loop forever);
+3. if the simulation never halts, then compute and output $\beta(x)$.
+
+Formally, the partial function computed by $M_e$ satisfies
+
+$$
+\phi_{g(e)} \simeq
+\begin{cases}
+\beta, & \text{if }\phi_e(e)\uparrow\ \ (e\in \overline{H}), \\
+\phi_\uparrow, & \text{if }\phi_e(e)\downarrow\ \ (e\in H).
+\end{cases}
+$$
+
+The map $e\mapsto g(e)$ is computable because from $e$ we can effectively write down a code for $M_e$ (using the usual indexing of Turing machines / the s-m-n idea).
+
+Now check the reduction:
+* If $e\in\overline{H}$, then $\phi_{g(e)}=\beta=\phi_{e_0}$. Since $e_0\in I$ and $I$ is an index set (membership depends only on the computed function), it follows that $g(e)\in I$.
+* If $e\in H$, then $\phi_{g(e)}=\phi_\uparrow$. By the case assumption, no index of $\phi_\uparrow$ lies in $I$, hence $g(e)\notin I$.
+
+Therefore $e\in\overline{H}\iff g(e)\in I$), so $\overline{H}\le_m I$.
+
+**Case 2: $I$ contains an index of $\phi_\uparrow$**
+
+Then $\overline{I}$ contains no index of $\phi_\uparrow$. Moreover, since $I$ is nontrivial, $\overline{I}$ is also nontrivial; and $\overline{I}$ is an index set because the defining property (“closed under functional equivalence”) is preserved under complement.
+
+Applying Case 1 to $\overline{I}$, we obtain
+
+$$\overline{H}\le_m \overline{I}.$$
+
+By taking complements (equivalently: by composing with a computable Boolean negation of the membership test), this implies
+
+$$H \le_m I.$$
+
+In either case, $H \le_m I$ or $\overline{H}\le_m I$. $\square$
+
+Since both $H$ and $\bar{H}$ are undecidable, **Rice's theorem directly implies that any nontrivial semantic property is undecidable.**
+
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/rice_theorem_visualization.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Sketch of the Rice's theorem proof</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/rice_theorem_simple_mental_model.jpeg' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Simple mental model of reduction function $g$, which maps functions that do not halt to $\beta$, and other functions to $\phi_\uparrow$</figcaption>
+  </figure>
+</div>
+
+**About the right figure:**
+
+**For the purposes of this reduction**, that’s a perfectly good mental note, with two small “precision tweaks”:
+1. It’s not “all functions that do not halt,” it’s **all indices $e$ such that the specific computation $\varphi_e(e)$ does not halt** (i.e. $e \in \overline{H}$).
+2. It’s also not “all functions in standard numbering,” but **all indices $e$ you feed into the reduction $g$**.
+
+With that understood, the picture is exactly:
+* If $\varphi_e(e)\uparrow$ (so $e\in\overline{H}$), then the constructed program $g(e)$ computes **the fixed function** $\beta=\varphi_{e_0}$.
+* If $\varphi_e(e)\downarrow$ (so $e\in H$), then $g(e)$ computes **the fixed function** $\varphi_\uparrow$.
+
+So **the image of $g$** (as a function on indices) is essentially just **two equivalence classes of programs**: those computing $\beta$ and those computing $\varphi_\uparrow$. That’s the whole “two-function” trick that makes the membership in $I$ encode the halting behavior.
+
 
 <!-- $\textbf{Corollary 193:}$ Nontrivial index sets are not decidable. -->
 <div class="math-callout math-callout--theorem" markdown="1">

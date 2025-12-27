@@ -178,7 +178,7 @@ Because:
 
 On a single tape, you typically store something like:
 
-$$\langle M\rangle # \text{encoded simulated tape with a head marker}$$
+$$\langle M\rangle \# \text{encoded simulated tape with a head marker}$$
 
 Then each simulated step involves lots of back-and-forth scanning:
 
