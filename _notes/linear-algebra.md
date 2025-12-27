@@ -404,3 +404,9 @@ such that
 $$d(x,y) = \lvert f(x) - f(y)\rvert  \quad \text{for all } x,y \in M.$$
 
 </div>
+
+
+
+
+
+[Jordan Normal Form](subpages/linear-algebra/jordan-form)

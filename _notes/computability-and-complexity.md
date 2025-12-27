@@ -5520,16 +5520,16 @@ In concrete models (Turing machines/programs), you can literally “pad” a pro
 ### Proof idea (one clean computability-theory version)
 
 Acceptable numberings are usually set up so you have the **s-m-n theorem** available. Define a partial computable 3-argument function that ignores the “padding parameter”:
-[
-g(e,k,x) ;=; \varphi_e(x).
-]
-This (g) is partial computable (it just simulates (e) on input (x), ignoring (k)). By **s-m-n**, there is a total computable function (s(e,k)) such that
-[
-\varphi_{s(e,k)}(x) ;=; g(e,k,x) ;=; \varphi_e(x).
-]
-Now set (p(e,k)=s(e,k)). That’s the padding function.
 
-(If you want injectivity in (k), you can build it in by first pairing ((e,k)) into one number in a reversible computable way.)
+$$g(e,k,x) = \varphi_e(x).$$
+
+This $g$ is partial computable (it just simulates $e$ on input $x$, ignoring $k$). By **s-m-n**, there is a total computable function $s(e,k)$ such that
+
+$$\varphi_{s(e,k)}(x) = g(e,k,x) = \varphi_e(x).$$
+
+Now set $p(e,k)=s(e,k)$. That’s the padding function.
+
+(If you want injectivity in $k$, you can build it in by first pairing $(e,k)$ into one number in a reversible computable way.)
 
 
 </div>
