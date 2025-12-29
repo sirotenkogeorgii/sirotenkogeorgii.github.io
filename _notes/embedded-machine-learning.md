@@ -241,9 +241,9 @@ $$P = a f C V^2 + \frac{V I_{\text{leakage}}}{f^3}$$
 
 
 Where:
-* ( f ): frequency
-* ( V ): voltage
-* ( C ): capacitance
+* $f$: frequency
+* $V$: voltage
+* $C$: capacitance
 
 **Key implication:**
 Power grows too quickly with frequency → performance scaling must come from **parallelism**, not speed.
@@ -809,7 +809,7 @@ An image is a 3D tensor:
 
 $$(\text{Channels}, \text{Width}, \text{Height})$$
 
-A convolution layer applies (M) filters → produces (M) output feature maps.
+A convolution layer applies $M$ filters → produces $M$ output feature maps.
 
 ### Convolution definition
 
@@ -907,39 +907,34 @@ Training an **Artificial Neural Network (ANN)** is an **optimization problem**: 
 ### Dataset and parameters
 
 Let the dataset be
-[
-\mathcal{D} = {(x_1, t_1), \dots, (x_N, t_N)},
-]
-with (N) input–target pairs. The network parameters (weights) are denoted (W) and are typically initialized randomly.
+
+$$\mathcal{D} = {(x_1, t_1), \dots, (x_N, t_N)},$$
+
+with $N$ input–target pairs. The network parameters (weights) are denoted $W$ and are typically initialized randomly.
 
 ### Loss function (objective)
 
 A common formulation is:
 
-[
-\mathcal{L}(W; \mathcal{D})
-===========================
-
-\sum_{n=1}^{N} \ell(y(W, x_n), t_n) + \lambda r(W)
-]
+$$\mathcal{L}(W; \mathcal{D}) = \sum_{n=1}^{N} \ell(y(W, x_n), t_n) + \lambda r(W)$$
 
 #### Components
 
 1. **Data term**
-   [
-   \ell(y(W, x_n), t_n)
-   ]
+   
+   $$\ell(y(W, x_n), t_n)$$
+   
    Penalizes incorrect predictions. The sum aggregates error over the dataset.
 
 2. **Regularizer**
-   [
-   r(W)
-   ]
-   Penalizes large weights (e.g., (\ell_1), (\ell_2)) to reduce overfitting.
-   (\lambda) controls the trade-off between **data fit** and **model simplicity**.
+   
+   $$r(W)$$
+   
+   Penalizes large weights (e.g., $\ell_1$, $\ell_2$) to reduce overfitting.
+   $\lambda$ controls the trade-off between **data fit** and **model simplicity**.
 
 > **Highlight — Training objective**
-> Find parameters (W) that minimize (\mathcal{L}(W; \mathcal{D})).
+> Find parameters $W$ that minimize $\mathcal{L}(W; \mathcal{D})$.
 
 ---
 
@@ -951,55 +946,44 @@ Backpropagation computes the **gradient of the loss** w.r.t. all parameters effi
 
 Training proceeds by iterative updates:
 
-[
-W := W - \eta \nabla_W \mathcal{L}(W; \mathcal{D})
-]
+$$W := W - \eta \nabla_W \mathcal{L}(W; \mathcal{D})$$
 
 **Where**
 
-* (W): weights
-* (\eta): learning rate
-* (\nabla_W \mathcal{L}): gradient of loss w.r.t. (W)
+* $W$: weights
+* $\eta$: learning rate
+* $\nabla_W \mathcal{L}$: gradient of loss w.r.t. $W$
 * Gradient operator:
-  [
-  \nabla_x = \Big(\frac{\partial}{\partial x_1}, \dots, \frac{\partial}{\partial x_n}\Big)
-  ]
+  
+  $$\nabla_x = \Big(\frac{\partial}{\partial x_1}, \dots, \frac{\partial}{\partial x_n}\Big)$$
 
 > **Highlight — Direction of change**
 > Gradients point uphill (steepest ascent). Minimization updates go **against** the gradient.
 
 ### Neural network as a nested function
 
-For an (L)-layer network:
+For an $L$-layer network:
 
-[
-y(W, x_0) = x_L
-===============
+$$y(W, x_0) = x_L =f\Big(W_L \oplus f\big(W_{L-1} \oplus ( \dots \oplus f(W_1 \oplus x_0)\dots )\big)\Big)$$
 
-f\Big(W_L \oplus f\big(W_{L-1} \oplus ( \dots \oplus f(W_1 \oplus x_0)\dots )\big)\Big)
-]
-
-(\oplus) denotes the linear transform (e.g., matrix multiplication + bias add).
+$\oplus$ denotes the linear transform (e.g., matrix multiplication + bias add).
 
 ### Chain rule structure of backprop
 
 To compute gradients back to the input:
 
-[
-\frac{\partial \ell}{\partial x_0}
-==================================
-
-\frac{\partial \ell}{\partial x_L}
+$$
+\frac{\partial \ell}{\partial x_0} =\frac{\partial \ell}{\partial x_L}
 \cdot
 \frac{\partial x_L}{\partial x_{L-1}}
 \cdot
 \dots
 \cdot
 \frac{\partial x_1}{\partial x_0}
-]
+$$
 
 > **Key question (efficiency)**
-> How do we compute gradients for **all** parameters ((W, b)) in a computationally efficient way?
+> How do we compute gradients for **all** parameters $(W, b)$ in a computationally efficient way?
 > This motivates **automatic differentiation**.
 
 ---
@@ -1020,33 +1004,20 @@ Modern frameworks rely on **automatic differentiation (autograd)**.
 
 ### Example model (scalar)
 
-* (z = wx + b)
-* (y = \sigma(z))
+* $z = wx + b$
+* $y = \sigma(z)$
 * Regularized loss:
-  [
-  \mathcal{L}_{reg} = \frac{1}{2}(y-t)^2 + \frac{\lambda}{2}w^2
-  =============================================================
-
-  \frac{1}{2}\big(\sigma(wx+b)-t\big)^2 + \frac{\lambda}{2}w^2
-  ]
+  
+  $$\mathcal{L}_{reg} = \frac{1}{2}(y-t)^2 + \frac{\lambda}{2}w^2=\frac{1}{2}\big(\sigma(wx+b)-t\big)^2 + \frac{\lambda}{2}w^2$$
 
 ### Manual gradients
 
-[
-\frac{\partial \mathcal{L}_{reg}}{\partial w}
-=============================================
+$$\frac{\partial \mathcal{L}_{reg}}{\partial w} = (\sigma(wx+b)-t),\sigma'(wx+b),x + \lambda w$$
 
-(\sigma(wx+b)-t),\sigma'(wx+b),x + \lambda w
-]
-[
-\frac{\partial \mathcal{L}_{reg}}{\partial b}
-=============================================
-
-(\sigma(wx+b)-t),\sigma'(wx+b)
-]
+$$\frac{\partial \mathcal{L}_{reg}}{\partial b}=(\sigma(wx+b)-t),\sigma'(wx+b)$$
 
 > **Highlight — Redundancy**
-> The term ((\sigma(wx+b)-t)\sigma'(wx+b)) appears in multiple derivatives.
+> The term $(\sigma(wx+b)-t)\sigma'(wx+b)$ appears in multiple derivatives.
 > In deep networks, such redundancies multiply dramatically.
 
 Autograd avoids recomputation by:
@@ -1072,18 +1043,17 @@ Backprop traverses the graph **backwards**, applying the chain rule at each node
 
 ---
 
-## 2.3 Chain Rule as a Computation (v-bar notation)
+## 2.3 Chain Rule as a Computation ($v$-bar notation)
 
 Define:
-[
-\bar{v} = \frac{\partial \mathcal{L}}{\partial v}
-]
 
-This emphasizes that (\bar{v}) is a **computed, stored value**.
+$$\bar{v} = \frac{\partial \mathcal{L}}{\partial v}$$
+
+This emphasizes that $\bar{v}$ is a **computed, stored value**.
 
 ### Single-parent case
 
-If (u = u(v)):
+If $u = u(v)$:
 [
 \bar{v}
 =======
@@ -1097,18 +1067,12 @@ If (u = u(v)):
 
 ### Multi-parent case
 
-For (f(a(v), b(v))):
-[
-\bar{v}
-=======
+For $f(a(v), b(v))$:
 
-\bar{a}\frac{\partial a}{\partial v}
-+
-\bar{b}\frac{\partial b}{\partial v}
-]
+$$\bar{v} = \bar{a}\frac{\partial a}{\partial v} + \bar{b}\frac{\partial b}{\partial v}$$
 
 > **Highlight — Efficiency principle**
-> Compute (\bar{a}, \bar{b}) once and reuse them across all dependent gradients.
+> Compute $\bar{a}, \bar{b}$ once and reuse them across all dependent gradients.
 
 ---
 
@@ -1400,9 +1364,9 @@ Consider polynomial regression on noisy samples from a sine wave.
 
 #### Model complexity examples
 
-* **M = 0 or M = 1**: too simple → high training and test error (**underfitting**)
-* **M = 3**: captures the underlying trend → good generalization (**well-fit**)
-* **M = 9**: fits training points almost perfectly but oscillates wildly → poor test performance (**overfitting**)
+* **$M = 0$ or $M = 1$**: too simple → high training and test error (**underfitting**)
+* **$M = 3$**: captures the underlying trend → good generalization (**well-fit**)
+* **$M = 9$**: fits training points almost perfectly but oscillates wildly → poor test performance (**overfitting**)
 
 #### Training vs test error behavior
 
@@ -1438,58 +1402,47 @@ Regularization can be understood as a method for controlling the **bias–varian
 
 ### 2.1 Probability Review: Expectation and Variance
 
-Let (X) be a random variable.
+Let $X$ be a random variable.
 
 #### Expectation
 
 * Discrete:
-  [
-  \mathbb{E}[X] = \sum_x x,p_X(x)
-  ]
+  
+  $$\mathbb{E}[X] = \sum_x x,p_X(x)$$
+  
 * Continuous:
-  [
-  \mathbb{E}[X] = \int_{-\infty}^{\infty} x, f_X(x),dx
-  ]
-
+  
+  $$\mathbb{E}[X] = \int_{-\infty}^{\infty} x, f_X(x),dx$$
+  
 #### Variance
 
-[
-\mathrm{Var}(X)=\mathbb{E}\big[(X-\mathbb{E}[X])^2\big]
-=\mathbb{E}[X^2]-\mathbb{E}[X]^2
-]
+$$\mathrm{Var}(X)=\mathbb{E}\big[(X-\mathbb{E}[X])^2\big] =\mathbb{E}[X^2]-\mathbb{E}[X]^2$$
 
 Standard deviation:
-[
-\mathrm{std}(X)=\sqrt{\mathrm{Var}(X)}
-]
+
+$$\mathrm{std}(X)=\sqrt{\mathrm{Var}(X)}$$
 
 ---
 
 ### 2.2 Decomposing Model Error
 
-For a model estimator (\hat{y}_m):
+For a model estimator $\hat{y}_m$:
 
 * **Bias**
-  [
-  \mathrm{Bias}(\hat{y}_m)=\mathbb{E}[\hat{y}_m]-y
-  ]
+  
+  $$\mathrm{Bias}(\hat{y}_m)=\mathbb{E}[\hat{y}_m]-y$$
+  
   Systematic error; high bias → underfitting.
 
 * **Variance**
-  [
-  \mathrm{Var}(\hat{y}_m)
-  ]
+  
+  $$\mathrm{Var}(\hat{y}_m)$$
+  
   Sensitivity to the training set; high variance → overfitting.
 
 * **MSE decomposition**
-  [
-  \mathrm{MSE}
-  ============
-
-  # \mathbb{E}\big[(\hat{y}_m-y)^2\big]
-
-  \mathrm{Bias}(\hat{y}_m)^2 + \mathrm{Var}(\hat{y}_m) + \text{Bayes Error}
-  ]
+  
+  $$\mathrm{MSE} = \mathbb{E}\big[(\hat{y}_m-y)^2\big] \mathrm{Bias}(\hat{y}_m)^2 + \mathrm{Var}(\hat{y}_m) + \text{Bayes Error}$$
 
 > **Bayes Error**
 > Irreducible error due to inherent noise in the data.
@@ -1669,37 +1622,29 @@ Add penalties on parameter magnitude to control complexity.
 
 ### 5.1 Penalizing Complexity: Regularized Cost Function
 
-[
-\mathcal{J}(w)
-==============
+$$\mathcal{J}(w) = \frac{1}{N}\sum_{n=1}^{N}\mathcal{L}(y(w,x_n),t_n) + \lambda \mathcal{R}(w)$$$$
 
-\frac{1}{N}\sum_{n=1}^{N}\mathcal{L}(y(w,x_n),t_n)
-+
-\lambda \mathcal{R}(w)
-]
-
-* (\lambda): regularization strength
-* (\mathcal{R}(w)): penalty term
+* $\lambda$: regularization strength
+* $\mathcal{R}(w)$: penalty term
 
 > **Key idea**
-> Larger (\lambda) pushes toward simpler (more constrained) solutions.
+> Larger $\lambda$ pushes toward simpler (more constrained) solutions.
 
 ---
 
 ### 5.2 L2 Regularization (Weight Decay / Ridge)
 
 Penalty:
-[
-\mathcal{R}(w)=\frac{1}{2}|w|_2^2=\frac{1}{2}w^Tw=\frac{1}{2}\sum_j w_j^2
-]
+
+$$\mathcal{R}(w)=\frac{1}{2}\lvert w\rvert_2^2=\frac{1}{2}w^Tw=\frac{1}{2}\sum_j w_j^2$$
 
 SGD update:
-[
-w_j := (1-\eta\lambda)w_j - \eta \frac{\partial \mathcal{L}}{\partial w_j}
-]
+
+$$w_j := (1-\eta\lambda)w_j - \eta \frac{\partial \mathcal{L}}{\partial w_j}$$
+
 
 > **Highlight — Weight decay mechanism**
-> Each step shrinks weights by ((1-\eta\lambda)), then applies the standard gradient update.
+> Each step shrinks weights by $(1-\eta\lambda)$, then applies the standard gradient update.
 
 **Intuition:** large weights amplify sensitivity to input → encourages overfitting. L2 promotes smoother, more stable models.
 
@@ -1708,16 +1653,15 @@ w_j := (1-\eta\lambda)w_j - \eta \frac{\partial \mathcal{L}}{\partial w_j}
 ### 5.3 L1 Regularization (LASSO) and Sparsity
 
 Penalty:
-[
-\mathcal{R}(w)=|w|_1=\sum_j |w_j|
-]
+
+$$\mathcal{R}(w)=\lvert w\rvert_1=\sum_j \lvert w_j\rvert$$
 
 Key property: L1 can drive weights to **exactly zero** → **sparsity**.
 
 Why:
 
-* L2 gradient scales with (w) → pull weakens near zero
-* L1 gradient is constant sign (for nonzero (w)) → persistent pull to zero
+* L2 gradient scales with $w$ → pull weakens near zero
+* L1 gradient is constant sign (for nonzero $w$) → persistent pull to zero
 
 > **Embedded ML Pillar — HW–ML Interplay & Resource Constraints**
 > Sparsity enables:
@@ -1769,7 +1713,7 @@ This reduces variance but is computationally expensive.
 
 During training:
 
-* each neuron is dropped with probability (p)
+* each neuron is dropped with probability $p$
 * each batch sees a different “thinned” network
 
 Effects:
@@ -1778,7 +1722,7 @@ Effects:
 2. prevents co-adaptation
 3. implicitly encourages smaller outgoing weights (L2-like effect)
 
-**Inference-time adjustment:** dropout is disabled; weights (or activations) are scaled by ((1-p)).
+**Inference-time adjustment:** dropout is disabled; weights (or activations) are scaled by $(1-p)$.
 
 > **Highlight — Train vs test behavior**
 > Dropout is a training-only perturbation; inference uses the full network with scaling.
@@ -1891,16 +1835,16 @@ $$\mathcal{J}(\mathbf{w}) = \frac{1}{N}\sum_{n=1}^{N}\mathcal{L}(y(\mathbf{w}, \
 
 **Where**
 
-* (\mathcal{L}): task loss (data fit)
-* (\mathcal{R}(\mathbf{w})): complexity penalty
-* (\lambda): penalty strength (regularization parameter)
+* $\mathcal{L}$: task loss (data fit)
+* $\mathcal{R}(\mathbf{w})$: complexity penalty
+* $\lambda$: penalty strength (regularization parameter)
 
 > **Highlight**
 > Regularization typically increases bias slightly to reduce variance substantially, improving generalization.
 
 ### Main regularization techniques (high-level)
 
-* **Weight decay (L1/L2)**
+* **Weight decay ($L1$/$L2$)**
   Penalizes weight magnitude → encourages smaller/simpler solutions.
 * **Data augmentation**
   Creates transformed training samples (rotate/crop/flip, etc.) → encourages invariances and robustness.
@@ -2074,8 +2018,8 @@ $$O[z][u][x][y] \sum_{k=0}^{C-1} \sum_{i=0}^{S-1} \sum_{j=0}^{R-1} I[z][k][U x+i
 
 ### Dimensions
 
-* Input: (N) (batch), (C) (channels), (H,W) (spatial)
-* Filters: (M) (output channels), (R,S) (filter size)
+* Input: $N$ (batch), $C$ (channels), $(H,W)$ (spatial)
+* Filters: $M$ (output channels), $(R,S)$ (filter size)
 * Output:
   
   $$E = \frac{H - R + 2P}{U} + 1, \qquad F = \frac{W - S + 2P}{U} + 1$$
@@ -2199,16 +2143,13 @@ As networks deepen, accuracy can degrade due to optimization difficulty (not nec
 
 ### Residual mapping
 
-Instead of learning (H(x)), learn:
+Instead of learning $H(x)$, learn:
 
 $$\mathcal{F}(x)=H(x)-x, \qquad \text{output}=\mathcal{F}(x,W)+x$$
 
-
 ### Gradient flow benefit
 
-
 $$\frac{\partial \mathcal{L}}{\partial x_l} =\frac{\partial \mathcal{L}}{\partial x_L} \left( 1+\frac{\partial}{\partial x_l}\sum_{i=l}^{L-1}\mathcal{F}(x_i,W_i) \right)$$
-
 
 > **Highlight**
 > The “(1)” term ensures a direct gradient path through the identity shortcut, mitigating vanishing gradients.
@@ -2453,17 +2394,40 @@ Energy and latency depend strongly on:
 
 ## 3.1 Numerical Formats: Floating-Point vs Fixed-Point
 
-### Floating-point arithmetic
+Here we will focus on the **trade-offs between hardware efficiency (energy/area) and numerical precision**. In modern computing — especially for Artificial Intelligence and Deep Learning — we are moving away from high-precision "perfect" math toward "good enough" math because it is significantly cheaper and faster.
 
-Floating-point provides large dynamic range; typical structure:
+Specifically, we will talk about the mechanical difference between how computers represent numbers and how much physical "space" (area) and electricity (energy) those operations consume.
 
-* sign bit $S$
-* exponent $E$
-* significand $F$
+### Floating-point arithmetic (The "Flexible" Way)
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Floating-Point)</span></p>
+
+Floating-point works like **scientific notation** ($1.275 \times 10^1$). The decimal point "floats" to the most significant digit, and we store the "zoom level" (exponent) separately.
+
+To represent **12.75** in standard 32-bit Floating Point (IEEE 754):
+* **Convert to Binary:** $1100.11$
+* **Normalize it:** Shift the point so only one "1" is on the left: $1.10011 \times 2^3$.
+* **The Three Parts:**
+  * **Sign (1 bit):** `0` (it’s positive).
+  * **Exponent (8 bits):** The "3" is stored with a bias (usually +127), so $127 + 3 = 130$. In binary: `10000010`.
+  * **Fraction/Mantissa (23 bits):** We store the digits after the point: `10011` followed by eighteen `0`s.
+
+</div>
+
+Floating-point provides large dynamic range; Below is scientific notation for computers. **Formula:**
 
 $$v = (-1)^S \cdot (1 + F) \cdot 2^{(E-\text{bias})}$$
 
-**Cost:** FPUs are large and power-hungry relative to integer units.
+$$P_s=A_s \bigoplus B_s \qquad P_E = A_E + B_E \qquad P_F = A_F \dot B_F$$
+
+* **Structure**:
+  * **sign bit** $S$ (positive or negative).
+  * **exponent/fraction** $E$ (moves the decimal point, allowing for huge ranges).
+  * **significand** $F$ (the actual digits).
+* **The Distribution Problem:** Floating point is "dense" near zero. The slide notes that half of all representable numbers fall between $−1$ and $1$. This is great for weights in neural networks, which are usually small.
+* Complexity: Floating point hardware is much more complex because to multiply two numbers, you have to add their exponents ($P_E=A_E+B_E$) and multiply their fractions ($P_F=A_F\dot B_F$) separately.
+* **Cost:** FPUs are large and power-hungry relative to integer units.
 
 | Format   | Sign | Exponent | Significand | Dynamic range                     |
 | -------- | ---- | -------- | ----------- | --------------------------------- |
@@ -2472,37 +2436,96 @@ $$v = (-1)^S \cdot (1 + F) \cdot 2^{(E-\text{bias})}$$
 | float16  | 1    | 5        | 10          | $\sim 10^{-4} to 10^{+5}$       |
 | bfloat16 | 1    | 8        | 7           | similar exponent range to float32 |
 
-**bfloat16 relevance:** retains float32-like exponent range with fewer mantissa bits → often sufficient for deep learning workloads.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The "bfloat16" Revolution)</span></p>
 
----
+**bfloat16 relevance:** retains `float32`-like exponent range with fewer mantissa bits → often sufficient for deep learning workloads.
+* **The Innovation:** Developed by Google/Intel for AI.
+* **Why it matters:** Standard `float16` has a small range. `bfloat16` **uses the same 8-bit exponent as** `float32` but chops the fraction down to 7 bits.
+* **The Result:** It has the same "reach" as a big 32-bit number but is much smaller and faster to process. This is the current industry standard for training AI.
 
-### Fixed-point arithmetic
+If you look at the `bfloat16`, it is a "hybrid" designed for AI. It keeps the big "zoom range" of a 32-bit float but uses a very short 7-bit fraction. This gives AI models the ability to handle massive ranges of numbers without the energy cost of high precision.
+
+The primary trade-off of **bfloat16** is that it sacrifices **precision** (fine-grained detail) to give you a massive **dynamic range** (the ability to handle very large and very small numbers).
+
+**The "Precision vs. Range" Trade-off**
+
+Look at how **bfloat16** compares to the standard **float16** (Half Precision):
+
+* **float16:** Has **10 bits** for the fraction. This means it is more precise—it can tell the difference between $0.1234$ and $0.12335$. However, it only has **5 bits** for the exponent, so it can't represent any number larger than **65,504**.
+* **bfloat16:** Has only **7 bits** for the fraction. It is "blurry"—it might see $0.1234$ and $0.12335$ as the same number. But, because it has **8 bits** for the exponent (just like a big 32-bit float), it can represent numbers up to **$3.4\times 10^38$**.
+
+**Why AI prefers this trade-off**
+
+You might wonder: *Why would we want less precision?* In Deep Learning, "Range" is much more important than "Precision" because of a problem called **Gradient Underflow.**
+
+* During training, the computer calculates "gradients" (tiny adjustments to weights). These numbers are often incredibly small (e.g., $0.0000001$).
+* If you use **float16**, that number might be too small for the 5-bit exponent to handle, and it gets rounded to **zero**. If the adjustments become zero, the AI stops learning.
+* **bfloat16** handles these tiny numbers easily. AI researchers found that neural networks are "robust"—they don't mind if the numbers are a little blurry (low precision), as long as the numbers don't disappear entirely (dynamic range).
+
+**The "Hardware Area" Trade-off**
+
+The lecture mentions: `mult: {Energy, Area} ∝ $N^2$[bits]`. This is a hidden win for bfloat16.
+* The physical size of a multiplier on a chip depends mostly on the **significand (fraction)** bits.
+* Since bfloat16 only has **7 bits** of fraction (compared to float16's 10 bits), a bfloat16 multiplier is physically **smaller and uses less energy** on the silicon than a float16 multiplier, even though they both use 16 bits total.
+
+**Summary Table: The Catch**
+
+| Format | The "Pro" | The "Con" (Trade-off) |
+| --- | --- | --- |
+| **float16** | Higher precision; better for "final" models (inference). | Small range; prone to crashing/errors during training. |
+| **bfloat16** | Massive range; makes training stable and easy. | Very low precision (only ~2.5 decimal digits of accuracy). |
+
+> **Pro Tip:** If you are doing **scientific simulations** (like landing a rocket), you would *never* use bfloat16 because the rounding errors would accumulate and the rocket would miss. But for **AI** (recognizing a cat), bfloat16 is the "Goldilocks" format.
+
+</div>
+
+### Fixed-point arithmetic (The "Cheap" Way)
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Fixed-Point)</span></p>
+
+In a fixed-point system, we decide ahead of time exactly where the "point" goes. Imagine we have an **8-bit** system where we decide the first 4 bits are for the whole number and the last 4 bits are for the fraction.
+* **The Number:** $12.75$
+* **Binary of 12:** `1100`
+* **Binary of 0.75:** `1100` (Since $0.75 = 1/2 + 1/4$, which is $2^{-1} + 2^{-2}$)
+* **The Result:** `1100.1100`
+
+**The Hardware Perspective:** The computer doesn't actually store a "point." It just sees the integer `11001100` (which is 204 in decimal). The programmer just remembers to divide by 16 at the end. This makes addition as fast as regular integer math.
+
+</div>
 
 Fixed-point uses integers with an implicit binary point:
 
 * smaller dynamic range than floating point
 * simpler hardware → better energy efficiency
 
-**Bit-width scaling**
-
-* addition cost scales ~linearly: $\propto N$
-* multiplication cost scales ~quadratically: $\propto N^2$
+* **Scaling:** Addition complexity grows linearly with the number of bits ($N$). Multiplication is much harder; it grows quadratically ($N^2$). If you double the bits, a multiplier becomes four times as large/expensive.
+* **The Trade-off:** Fixed point is very energy-efficient but has a **small dynamic range**. You can’t represent a very tiny number and a very huge number at the same time without losing precision.
 
 > **Highlight**
 > Quadratic multiplier scaling creates strong pressure to reduce precision.
 
----
+| Feature | Fixed-Point (e.g., `1100.1100`) | Floating-Point (e.g., $1.10011 \times 2^3$) |
+| :--- | :--- | :--- |
+| **Metaphor** | A **Ruler**: The marks are always the same distance apart. | A **Map**: You can zoom in for high detail or zoom out to see the whole world. |
+| **Precision** | Always the same (e.g., always accurate to 0.01). | High precision for small numbers; low precision for huge numbers. |
+| **Hardware** | Very simple (uses the Integer Unit). | Complex (requires a dedicated Floating Point Unit). |
+| **Best Use** | Money (cents), simple sensors, or low-power microcontrollers. | 3D Graphics, AI training, and complex physics simulations. |
 
 ## 3.2 The Picojoule Economy: Energy Costs
+
+This is the "So What?" table. It uses data from Mark Horowitz (a famous Stanford professor) to show that **energy is the ultimate constraint in computing**.
+
 
 Energy varies dramatically by operation type.
 
 | Operation    | Precision | Energy (pJ) | Note        |
 | ------------ | --------- | ----------- | ----------- |
 | Integer add  | 8-bit     | 0.03        |             |
-|              | 32-bit    | 0.1         | ~3×         |
+|              | 32-bit    | 0.1         | $3×$         |
 | Integer mult | 8-bit     | 0.2         |             |
-|              | 32-bit    | 3.1         | ~15×        |
+|              | 32-bit    | 3.1         | $~15×$        |
 | FP add       | 16-bit    | 0.4         |             |
 |              | 32-bit    | 0.9         |             |
 | FP mult      | 16-bit    | 1.1         |             |
@@ -2510,7 +2533,23 @@ Energy varies dramatically by operation type.
 | SRAM access  | 8 kB      | 10          |             |
 | SRAM access  | 32 kB     | 20          |             |
 | SRAM access  | 1 MB      | 100         |             |
-| DRAM access  | —         | 1300–2600   | ~100× cache |
+| DRAM access  | —         | 1300–2600   | $~100×$ cache |
+
+**1. The Energy Gap (Integer vs. Floating Point)**
+Look at the tables. An 8-bit Integer Add costs **0.03 pJ**, while a 16-bit Floating Point Add costs **0.4 pJ**.
+* **Takeaway:** Floating point operations are roughly **10x more expensive** in terms of energy than integer operations. If you can do your math with integers (Fixed Point), your battery lasts 10x longer.
+
+**2. The Scaling Law**
+The slide reiterates: **ADD scales with $n$, MULT with $n^2$**. A 32-bit integer addition costs **0.1 pJ**.
+* A 32-bit integer multiplication costs **3.1 pJ**.
+* **Takeaway:** Multiplications are the "energy hogs" of computing. This is why researchers try to design neural networks that use more additions and fewer multiplications.
+
+**3. The "Memory Wall" (The Most Important Part)**
+Look at the **Memory** table on the right.
+* A 32-bit Floating Point multiplication costs **3.7 pJ**.
+* Reading that same number from **DRAM (Main Memory)** costs **1300–2600 pJ**.
+* **The Shocking Truth:** It costs **hundreds of times more energy** to simply "fetch" a number from memory than it does to actually perform the math.
+
 
 ### Key takeaways
 
@@ -2521,13 +2560,17 @@ Energy varies dramatically by operation type.
 > **Design rule**
 > Maximize locality/data reuse and reduce operand precision where possible.
 
----
+**Summary: The Big Picture**
+If you are designing a chip or software for something like a smartphone or a data center, these slides tell you three things:
+* **Lower Precision is Better:** Use bfloat16 or 8-bit integers whenever possible to save 10x–30x energy.
+* **Avoid Multiplication:** It’s much more "expensive" than addition because it scales quadratically ($n^2$).
+* **Data Movement is the Enemy:** The real "cost" of AI isn't the math; it's moving data from the RAM to the Processor. You must "exploit locality" (keep data in the small, cheap 8kB Cache) to avoid the massive energy cost of DRAM.
+
+> **The final message:** "Need for reduced precision, avoid memory accesses." If you can follow those two rules, you can run much larger AI models on much smaller devices.
 
 # Chapter 4 — Quantization: Trading Precision for Performance
 
 Quantization maps high-precision values to a discrete low-precision set. It is one of the most effective unsafe optimizations for embedded inference.
-
----
 
 ## 4.1 Core Concepts
 
@@ -2574,7 +2617,7 @@ $$q_{i+1} - q_i = \Delta$$
 $$
 Q(x)=
 \begin{cases}
-+1 & x \ge 0 \
++1 & x \ge 0 \\
 -1 & x < 0
 \end{cases}
 $$
