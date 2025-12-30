@@ -2383,14 +2383,10 @@ Optimizations can be classified by whether they can change the model’s output.
 # Chapter 3 — The Physics of Computation: Energy and Precision
 
 Energy and latency depend strongly on:
-
 * **numerical format (bit-width)**
 * **data movement** (cache vs DRAM)
 
-> **Central principle**
-> Computation is often cheaper than memory access; optimizing data movement is crucial.
-
----
+> **Central principle:** Computation is often cheaper than memory access; optimizing data movement is crucial.
 
 ## 3.1 Numerical Formats: Floating-Point vs Fixed-Point
 
@@ -2419,7 +2415,7 @@ Floating-point provides large dynamic range; Below is scientific notation for co
 
 $$v = (-1)^S \cdot (1 + F) \cdot 2^{(E-\text{bias})}$$
 
-$$P_s=A_s \bigoplus B_s \qquad P_E = A_E + B_E \qquad P_F = A_F \dot B_F$$
+$$P_s=A_s \oplus B_s \qquad P_E = A_E + B_E \qquad P_F = A_F \cdot B_F$$
 
 * **Structure**:
   * **sign bit** $S$ (positive or negative).
@@ -2464,8 +2460,7 @@ You might wonder: *Why would we want less precision?* In Deep Learning, "Range" 
 * **bfloat16** handles these tiny numbers easily. AI researchers found that neural networks are "robust"—they don't mind if the numbers are a little blurry (low precision), as long as the numbers don't disappear entirely (dynamic range).
 
 **The "Hardware Area" Trade-off**
-
-The lecture mentions: `mult: {Energy, Area} ∝ $N^2$[bits]`. This is a hidden win for bfloat16.
+The lecture mentions: `mult: {Energy, Area} ∝ N^2[bits]`. This is a hidden win for bfloat16.
 * The physical size of a multiplier on a chip depends mostly on the **significand (fraction)** bits.
 * Since bfloat16 only has **7 bits** of fraction (compared to float16's 10 bits), a bfloat16 multiplier is physically **smaller and uses less energy** on the silicon than a float16 multiplier, even though they both use 16 bits total.
 
@@ -2570,49 +2565,75 @@ If you are designing a chip or software for something like a smartphone or a dat
 
 # Chapter 4 — Quantization: Trading Precision for Performance
 
-Quantization maps high-precision values to a discrete low-precision set. It is one of the most effective unsafe optimizations for embedded inference.
+While the previous topic compared different "languages" (float vs. fixed), this topic explains how to translate a high-precision model into a low-precision one. **Quantization** maps high-precision values to a discrete low-precision set. It is one of the most effective unsafe optimizations for embedded inference.
 
-## 4.1 Core Concepts
+## 4.1 Core Concept
 
-A quantizer $Q$ maps an input $x$ into discrete levels $\lbrace q_\ell\rbrace$, typically using thresholds $\lbrace\delta^\ell\rbrace$.
+the "Quantizer" ($Q$), which is a mathematical function that maps a continuous range of numbers into a set of discrete "buckets". A quantizer $Q$ maps an input $x$ into discrete levels $\lbrace q_\ell\rbrace$, typically using thresholds $\lbrace\delta^\ell\rbrace$.
 
-### Uniform k-bit quantizer on $[0,1]$
+* **Piece-wise Constant Function:** The quantizer is like a staircase. Any input value falling within a certain "step" (interval) gets snapped to the same value (quantization level).
+* **Uniform vs. Non-Uniform:** 
+  * **Uniform:** All the "steps" on the staircase are exactly the same height/width ($\Delta$). This is easy for hardware to compute but might not fit the data perfectly.
+  * **Non-Uniform:** Steps can be different sizes (useful if you have many numbers near zero and few large numbers).
+* **Binary Quantization Example:** The simplest version is the **Sign Function**. If a number is $\ge 0$, it becomes $+1$. If it’s $< 0$, it becomes $-1$. This turns a complex floating-point number into a single bit ($0$ or $1$).
+* **Neural Network Application:** These functions are applied to three main areas of an AI model: the Weights (stored parameters), the Activations (outputs of each layer), and sometimes the Gradients (used during training).
+* **Trade-off:** Quantization limits "model capacity," meaning the AI might become less "smart" because it can't represent subtle differences in data anymore.
+
+| Type | Uniform | Non-Uniform | Bits |
+| --- | --- | --- | --- |
+| **Binary** | $\lbrace -1, +1 \rbrace$ | $\lbrace W_P, W_N \rbrace$ | 1 |
+| **Ternary** | $\lbrace -1, 0, +1 \rbrace$ | $\lbrace W_P, 0, W_N \rbrace$ | 2 |
+| **Quaternary-** | $\text{Na}$ | $\lbrace W_P, 0, W_N, 0, W_N, 1 \rbrace$ | 2 |
+| **Quaternary+** | $\text{Na}$ | $\lbrace W_P, 0, W_N, 0, W_N, 1 \rbrace$ | 2 |
+
+**Bits Column**: The number of binary bits required to store one value in that format.
+
+### Uniform $k$-bit quantizer on $[0,1]$
 
 For $a_i \in [0,1]$:
 
-$$a_q^i = \frac{1}{2^k - 1}\cdot \mathrm{round}\big((2^k-1)a_i\big)$$
-
+$$a_i^q = \frac{1}{2^k - 1}\cdot \mathrm{round}\big((2^k-1)a_i\big)$$
 
 Example: $k=2$ maps [0,1] into 5 representable values
 $\lbrace 0, 0.25, 0.5, 0.75, 1\rbrace$ (as stated in the notes).
 
-Quantization can be applied to:
 
+Quantization can be applied to:
 * **weights**
 * **activations**
 * (sometimes) **gradients**
 
+**Visualizing Precision ($k$)**:
+* **$k=1$ (Blue):** Shows a "hard" jump at $0.5$. It provides the most energy savings but results in the highest error.
+* **$k=4$ and $k=8$ (Orange/Red):** As k increases, the "staircase" becomes much finer, closely approximating the ideal diagonal line.
+
+**The Trade-off:** By visualizing 10 possible input values on the x-axis, one can mathematically reason about the error — the further the colored line is from the diagonal, the more "knowledge" the AI loses.
+
 > **Optimization goal**
 > Use the smallest bit-width that preserves acceptable accuracy.
 
----
-
 ## 4.2 Uniform Quantization
+Again, Quantizer $Q$: piece-wise constant function
+* Input values in given quantization interval mapped to corresponding quantization level
+* Apply to activations/weights(/gradients)
 
-Uniform quantization uses constant step size:
+$$Q(x) = \underbrace{q_l}_{\text{quantization level } l} \text{ if } x\in \underbrace{(t_l, t_{l+1}]}_{\text{quantization invervals}}$$
 
-$$q_{i+1} - q_i = \Delta$$
+Uniform quantization uses constant step size (all level are equidistant):
+
+$$q_{i+1} - q_i = \Delta \quad \foral i$$
 
 **Advantages**
-
-* simple representation (integers + shared scale)
-* efficient integer arithmetic when weights and activations are aligned
+* **Hardware Efficiency:** Uniform quantization is preferred in hardware design because it makes it "easy to store  and compute" using standard bitwidths (like $\log_2(L)$ bits). Since intervals are equally spaced, you only need to store $\log_2(L)$ bits where $L$ is the number of levels
+* **No need to store thresholds:** Given min/max range and number of levels, you can compute any threshold
 
 **Disadvantages**
-
 * may waste representation capacity when distributions are non-uniform (e.g., bell-shaped weights)
 
-### Binary quantization (extreme uniform case)
+> **Important note:** "Keep activation function in mind when quantizing" - ReLU outputs are $[0,\infty)$ so you'd use asymmetric quantization, while tanh outputs [-1,1] so symmetric quantization works better.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Sign Function \ Binary quantization)</span></p>
 
 $$
 Q(x)=
@@ -2622,92 +2643,185 @@ Q(x)=
 \end{cases}
 $$
 
----
+</div>
 
 ## 4.3 Non-Uniform Quantization
 
 Non-uniform quantization allocates more levels where values are dense.
 
 **Advantages**
-
-* higher accuracy at same bit-width by matching data distribution
+* **Imporves model capacity:** higher accuracy at same bit-width by matching data distribution
 
 **Disadvantages**
+* **Slightly more storage:** requires storing quantization levels (lookup tables) ($\log_2(L)$ bits + the levels)
 
-* requires storing quantization levels (lookup tables)
-* potential runtime overhead
+> **Highlight**
+> Learnable thresholds/scales allow the quantizer to adapt to layer-specific distributions (remmber bell curve figure).
 
-### Example: trainable ternary quantizer
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Trainable ternary quantizer)</span></p>
 
 $$
-w_i^l =
+w^i_l =
 \begin{cases}
-W_p^l & w^l > \Delta^l\
-0 & \lvert w^l\rvert\le \Delta^l\ * W_n^l & w^l < -\Delta^l
+W^p_l : w_l > \Delta_l \\
+0 : \lvert w_l\rvert\le \Delta_l \\ 
+- W_l^n & w_l < -\Delta_l
 \end{cases}
 $$
 
-with $\Delta^l$ defined via a learnable fraction of the maximum weight.
+with $\Delta_l$ defined via a learnable fraction of the maximum weight: 
+$\Delta_l = t\cdot\max(\lvert w\rvert);t\in [0,1]$
 
-> **Highlight**
-> Learnable thresholds/scales allow the quantizer to adapt to layer-specific distributions.
-
----
+</div>
 
 ## 4.4 Hardware Acceleration and Low-Precision MACs
 
-DNNs are dominated by **MAC operations** (matrix multiplication/convolution). Lower precision enables more parallelism per area/energy.
+DNNs are dominated by **MAC operations** (matrix multiplication/convolution): 
+
+```python
+sum = sum + A_ik * B_kj
+```
+
+This **multiply-accumulate (MAC)** is the bottleneck operation repeated billions of times in deep learning. Lower precision enables more parallelism per area/energy.
 
 ### Hardware intuition (bit-width scaling)
 
-* **32-bit MAC:** fewer parallel units; higher energy/area per MAC
-* **8-bit MAC:** many MACs can run in parallel within the same resources
-* **1-bit MAC:** multiplication becomes bitwise logic; accumulation becomes popcount
+* **Cycle count** = How long ONE operation takes (latency)
+* **Throughput** = How many operations you can complete per second (total work done)
 
----
+#### **32-Bit MAC (Standard Precision) - 6 Cycles**
+
+The standard approach uses **full 32-bit floating-point arithmetic**:
+* Takes two 32-bit inputs (int32x1_t shown in blue)
+* Uses a **Fused Multiply-Add (FMA)** unit
+* Completes in **6 clock cycles**
+* This is what happens in typical CPUs/GPUs with FP32 operations
+
+#### **8-Bit MAC - 36 Cycles**
+
+* You need **four 8-bit multiply units (MUL)** running in parallel
+* Intermediate results are stored in wider formats (`2int16x2_t`, then `2int32x1_t`)
+* Multiple **addition (ADD)** stages to accumulate partial products
+* The bit-width doubling occurs: when you multiply two n-bit numbers, you get a 2n-bit result
+* Formula shown: **add: n+1 bits, mult: 2n bits**
+
+The increased cycle count comes from **managing bit-width expansion** and **accumulation overhead**. However, the energy consumption and area are much lower than 32-bit, and you can pack more operations in parallel.
+
+#### **1-Bit MAC (Binary) - 15 Cycles**
+
+This is the most radical optimization using **binary neural networks** (weights are $\mb 1$):
+* Multiplication by $\mb 1$ becomes just a **sign flip**
+* The slide shows **XNOR operations** instead of multiplications
+* Multiple **XOR gates** performing bitwise operations
+* **CNT (count)** operations to accumulate bit patterns
+* Multiple **ADD** stages to combine results
+<!-- * **32-bit MAC:** fewer parallel units; higher energy/area per MAC
+* **8-bit MAC:** many MACs can run in parallel within the same resources
+* **1-bit MAC:** multiplication becomes bitwise logic; accumulation becomes popcount -->
+
+#### In Hardware Terms
+
+**32-bit MAC unit:**
+* 6 cycles per operation
+* Large, power-hungry circuit (lots of transistors for 32-bit multipliers)
+* Maybe you fit **1,000 units** on a chip
+
+**1-bit MAC unit:**
+* 15 cycles per operation (2.5× slower!)
+* Tiny circuit (just XNOR gates and counters)
+* You might fit **100,000 units** on the same chip (100× more!)
+
+**The math:**
+* 32-bit: 1,000 units ÷ 6 cycles = **167 operations per cycle**
+* 1-bit: 100,000 units ÷ 15 cycles = **6,667 operations per cycle**
+
+The 1-bit system is **40× faster overall** despite taking 2.5× longer per individual operation!
+
+**Why This Matters for Neural Networks**
+Neural networks need to do **billions** of MAC operations. What matters is:
+* How many you can do **simultaneously** (parallelism)
+* Total **energy** consumed
+* **Chip area** available
+
+The 1-bit approach wins because:
+* **Massive parallelism:** Fit way more units in parallel
+* **Lower power:** Each XNOR gate uses ~1/100th the power of a 32-bit multiplier
+* **Higher total throughput:** Complete the entire neural network inference faster
+
+So yes, each individual 1-bit operation is slower (15 cycles vs 6), but you're running **thousands more in parallel**, giving you much higher overall performance.
+
+This is why modern AI accelerators (like Google's TPU) use massive arrays of low-precision arithmetic units rather than fewer high-precision ones!
 
 ### XNOR-based binary multiplication
 
-For binary networks with $\lbrace -1,+1\rbrace$, map to $\lbrace 0, 1\rbrace$. Then:
+> **`popc` instruction:** The popcnt instructions, short for population count, are used to count the amount of 1s in a numbers binary representation.
+> **`xnor` instruction:** Exclusive NOR instruction performs logical equality, outputting a high (1) if all inputs are the same (all 0s or all 1s) and a low (0) if inputs differ, essentially checking for similarity; while not a single common instruction in basic x86, it's implemented via XOR/NOT or specific vector instructions
 
-$$c = a \cdot b = 2\cdot \mathrm{popc}(\mathrm{xnor}(a,b)) - N$$
+**Coding (XNOR):**
+| a | b | !(a^b) |
+| --- | --- | --- |
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
 
-where $\mathrm{popc}$ counts set bits, and $N$ is vector length.
+For binary networks with $\lbrace -1,+1\rbrace$, map to $\lbrace 0, 1\rbrace$.
+
+* $c = a\cdot b = popc(xnor(a,b)) - (N - popc(xnor(a,b))) = 2 \cdot popc(xnor(a,b)) - N$
+  * $N$ is a length the vectors $a$ and $b$.
+  * $-1 := 0$, $+1 := 1$
+* Eg. a = [10010], b = [11100]
+  * $c = 1 \cdot 1 + -1 \cdot 1 + -1 \cdot 1 + 1 \cdot -1 + -1 \cdot -1 = -1$
+  * $c = 2 \cdot popc(xnor(a,b)) - N$
+  * $= 2 \cdot popc([10001]) - N = 2 \cdot 2 - 5 = -1$
+* Eg. a = [00000], b = [00000]
+  * $c = 5$
+* Eg. a = [11111], b = [00000]
+  * $c = -5$
+
+* While 15 cycles seems long, the teacher likely emphasized:
+  * **XNOR gates are tiny** compared to multipliers
+  * **Power consumption is orders of magnitude lower**
+  * You can fit **massively more** 1-bit operations on a chip
+  * The cycle count is misleading - throughput matters more
 
 > **Key idea**
 > Replace multiply-add with XNOR + popcount → extremely efficient on suitable hardware.
 
----
-
 ## 4.5 Training Strategies for Quantized Networks
 
-Quantization may harm accuracy unless training accounts for quantization effects.
+Applying quantization naively can significantly degrade accuracy. To counteract this, several training strategies have been developed.
 
 ### 1) Post-Training Quantization (PTQ)
 
-* quantize after training
-* needs calibration data for scale/zero-point
-* can lose accuracy at low bit widths
+This is the simplest method. A fully trained, high-precision model is converted to a lower precision after training is complete. It **requires a small "calibration dataset"** (a representative sample of the training data) to **determine the quantization parameters** (e.g., scale and zero-point). While easy to apply, PTQ often **results in a noticeable loss of accuracy**, especially for very low bit-widths.
 
 ### 2) Quantization-Aware Training (QAT)
 
-* forward pass: fake-quantize (quantize → dequantize) to inject quantization noise
-* backward pass: update full-precision parameters
+This method **simulates the effects of quantization during the training** itself:
+* **Forward Pass:** Weights and/or activations are "fake quantized." They are quantized to a low precision (e.g., 8-bit integer) and then immediately de-quantized back to high precision (e.g., 32-bit float) before being used in the computation. This injects quantization noise into the training, forcing the model to learn weights that are robust to this effect.
+* **Backward Pass:** Gradients are computed using the high-precision values, allowing for stable training updates.
+
+Planner Cypther rejected (forbidden_token); falling back to safe query.
+Planner Cypher rejected (with_clause_forbidden); falling back to safe query.
+Planner Cypher rejected (unknown_schema); falling back to safe query.
 
 ### 3) Straight-Through Estimator (STE)
 
-Quantization is piecewise constant ⇒ true gradient is zero/undefined. STE approximates gradient as identity:
+A significant challenge in QAT is that the quantization function is piece-wise constant, meaning its gradient is zero or undefined everywhere. This would stall training. To overcome this, the **Straight-Through Estimator (STE)** is used. STE simply passes the gradient through the quantization function as if it were an identity function (i.e., assuming a gradient of 1). The gradient for a weight $w$ is approximated as:
 
 $$
 \frac{\partial\mathcal{L}}{\partial w}
 \approx
-\frac{\partial\mathcal{L}}{\partial f},\tilde{f}'(w),
-\quad \tilde{f}'(w)\approx 1
+\frac{\partial\mathcal{L}}{\partial f}\frac{\partial f}{\partial w} \approx \frac{\partial\mathcal{L}}{\partial f} \tilde{f}'(w),
 $$
+
+where $\tilde{f}'(w)$ is a surrogate derivative, often just set to 1. This allows the high-precision weights to be updated based on gradients computed from the quantized weights.
 
 ### 4) Fine-tuning
 
-Quantize a pre-trained model then QAT fine-tune to recover accuracy.
+**Re-training/Fine-tuning:** A hybrid approach where a pre-trained model is quantized and then fine-tuned for a few epochs using QAT. This can often recover much of the accuracy lost during initial quantization.
 
 > **Highlight**
 > QAT + fine-tuning is often necessary for low-bit quantization without major accuracy loss.
@@ -2725,16 +2839,17 @@ Quantize a pre-trained model then QAT fine-tune to recover accuracy.
 | TTQ        | $\lbrace -S_n,0,+S_p\rbrace$ | float32          |
 | HWGQ       | XNOR                       | 2-bit            |
 
-**Empirical trend (from notes):**
+**Empirical trend:**
 
-* 1-bit schemes (BNN/XNOR) lose significant accuracy
-* moderate quantization (e.g., TTQ with low-bit weights + FP activations) approaches FP baseline
-* example: TTQ Top-5 ≈ 79.7% vs baseline 80.3% (AlexNet/ImageNet)
+Performance data for these methods on the AlexNet/ImageNet task shows that while extreme 1-bit quantization (BNN, XNOR) suffers a significant accuracy drop, more moderate schemes can approach the full-precision baseline. For example, TTQ (with 2-bit weights and 32-bit activations) achieves 79.7% Top-5 accuracy, very close to the 80.3% of the 32-bit baseline.
+
+**Graphs in the lecture illustrate these trade-offs:**
+* An "Improvement factor" graph shows that memory footprint improves exponentially as operand bit-width decreases (e.g., a $2^4$ factor improvement going from 16-bit to 1-bit). Latency also improves, though less dramatically.
+* A "Test error" graph shows that as the number of bits increases from 1 to 3, the test error for various methods (Lq-Net, BNN, DoReFa, etc.) drops, approaching the full-precision baseline error rate.
 
 > **Trade-off summary**
 > Lower bits → strong memory/latency improvements, but accuracy recovers substantially by 2–3 bits depending on method.
-
----
+> **Key observation:** DNNs contain plenty of redundancy. Nonuniform quantization outperforms uniform quantization
 
 # Chapter 5 — Pruning: Engineering Sparsity in Neural Networks
 
@@ -2832,7 +2947,7 @@ w_i^{qi}=w_i\cdot v_i(\alpha_i),
 \quad
 v_i(\alpha_i)=
 \begin{cases}
-0 & \lvert \alpha_i\rvert<\epsilon\
+0 & \lvert \alpha_i\rvert<\epsilon\\
 \alpha_i & \lvert \alpha_i\rvert\ge \epsilon
 \end{cases}
 $$
@@ -3539,7 +3654,7 @@ Masking alone does not accelerate inference because:
 
 | Path                    | How it works                                    | Best for                            | Trade-offs                                 |
 | ----------------------- | ----------------------------------------------- | ----------------------------------- | ------------------------------------------ |
-| **Mask-only**           | (W\odot M) then dense kernels                   | research, ablations                 | no speedup                                 |
+| **Mask-only**           | $W\odot M$ then dense kernels                   | research, ablations                 | no speedup                                 |
 | **Structured rewiring** | remove channels/neurons → smaller dense tensors | portable speedups                   | architectural changes                      |
 | **Hardware pattern**    | enforce N:M, pack weights, use sparse kernels   | max speed on supported accelerators | constrained pattern, overhead, limited ops |
 
@@ -3567,12 +3682,12 @@ with thresholding:
 $$
 v_i(\alpha_i)=
 \begin{cases}
-0 & \lvert \alpha_i\rvert <\epsilon \
+0 & \lvert \alpha_i\rvert <\epsilon \\
 \alpha_i & \lvert \alpha_i\rvert \ge\epsilon
 \end{cases}
 $$
 
-Because the threshold is non-differentiable, PSP uses **STE** during backprop to update $\alpha_i. Regularization ($L1$ or $L2$) on $\alpha_i$ encourages sparsity.
+Because the threshold is non-differentiable, PSP uses **STE** during backprop to update $\alpha_i$. Regularization (L1 or L2) on $\alpha_i$ encourages sparsity.
 
 > **Empirical note (from lecture narrative)**
 > PSP with weight decay can outperform heuristic L1 pruning across many sparsity levels, improving the accuracy–compression trade-off.
