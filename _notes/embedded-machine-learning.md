@@ -2826,8 +2826,6 @@ where $\tilde{f}'(w)$ is a surrogate derivative, often just set to 1. This allow
 > **Highlight**
 > QAT + fine-tuning is often necessary for low-bit quantization without major accuracy loss.
 
----
-
 ## 4.6 Survey: Quantization Schemes and Performance
 
 | Method     | Weights $W$     | Activations $A$  |
@@ -2853,120 +2851,117 @@ Performance data for these methods on the AlexNet/ImageNet task shows that while
 
 # Chapter 5 — Pruning: Engineering Sparsity in Neural Networks
 
-Pruning removes unimportant connections by setting weights to zero, reducing model size and potentially compute.
-
----
+**Pruning** is another powerful unsafe optimization technique aimed at reducing model size and computational cost. It operates by removing "unimportant" connections or neurons from a trained network, effectively setting their corresponding weights to zero.
 
 ## 5.1 Principle: Inspired by Nature
 
-Biological analogy: synaptic density peaks early in life and decreases later (“synaptic pruning”).
-Similarly, DNNs are often over-parameterized and contain redundancy that can be removed.
+The concept of pruning is biologically inspired. A diagram titled "Evolution of Human Brain During Life" shows that the density of synaptic connections in the human brain peaks around age 6 and is then gradually reduced by age 14. This process of synaptic pruning is believed to refine and optimize neural circuits. Similarly, DNNs are often over-parameterized, containing significant redundancy that can be removed without harming, and sometimes even improving, generalization.
 
 > **Key hypothesis**
 > Many weights are not critical for prediction and can be eliminated with minimal accuracy loss (especially with retraining).
 
----
-
 ## 5.2 Pruning Workflow and Criteria
 
-Pruning is typically a pipeline:
-
-1. **Train** dense network to convergence
-2. **Prune** weights/structures using a criterion
-3. **Fine-tune** sparse model to recover accuracy
+Pruning is not a single action but a process, typically involving three stages:
+1. **Train:** A standard, dense network is trained to convergence.
+2. **Prune:** A certain fraction of the network's weights are set to zero based on a specific criterion.
+3. **Fine-tune:** The now - sparse network is retrained for a few epochs to allow the remaining weights to adjust and recover any accuracy lost during pruning.
 
 Often performed iteratively:
 
 $$\text{Train} \rightarrow \text{Prune} \rightarrow \text{Fine-tune} \rightarrow \cdots$$
 
-versus one-shot pruning.
+to achieve higher levels of sparsity without catastrophic drops in accuracy. This contrasts with **one-shot pruning**, where the entire pruning process happens at once.
 
 ### Common pruning criteria
 
-* **Magnitude pruning**
+The critical question is which connections to remove. Common criteria include:
+* **Magnitude pruning:** Weights with the smallest absolute values are removed, based on the heuristic that they have the least influence on the network's output.
   
   $$\lvert w_i\rvert \le t \Rightarrow w_i \gets 0$$
   
-* **Gradient-based (saliency) pruning**
+* **Gradient-based (saliency) pruning:** This method considers not just the weight's size but also its impact on the loss function.
   
   $$\lvert w_i g_i\rvert \le t \Rightarrow w_i \gets 0$$
 
 > **Highlight**
 > Magnitude pruning is simple and widely used; gradient-based measures attempt to capture impact on loss.
 
----
-
 ## 5.3 Granularity: Unstructured vs Structured Sparsity
 
 Pruning granularity strongly affects hardware speedups.
 
----
-
 ### Unstructured (fine-grained) pruning
 
-Removes individual weights anywhere.
+This approach removes individual weights anywhere in the network based on the pruning criterion.
 
 **Pros**
-
-* best accuracy–sparsity flexibility
+* Offers the highest potential for accuracy at a given sparsity level, as it provides maximum flexibility.
 
 **Cons**
-
-* difficult to accelerate on CPUs/GPUs
-* requires indices (e.g., CSR format: data $d$, column indices $i$, row pointers $r$)
-* irregular memory access breaks coalescing/locality and can negate speedups
+* Extremely difficult to accelerate on parallel hardware like **GPUs** and **CPUs**.
+* A sparse matrix resulting from unstructured pruning requires an index to store the location of each non-zero element. This leads to indirect memory accesses, which are inefficient and break memory coalescing patterns, often resulting in performance that is no better, or even worse, than the original dense matrix. The **Compressed Sparse Row (CSR)** format, which uses data arrays (d), column indices (i), and row pointers (r), exemplifies this overhead.
+  * requires indices (e.g., CSR format: data $d$, column indices $i$, row pointers $r$)
+  * irregular memory access breaks coalescing/locality and can negate speedups
 
 > **Embedded note**
 > Unstructured sparsity often compresses storage but may not reduce latency unless hardware explicitly supports sparse compute efficiently.
 
----
-
 ### Structured (coarse-grained) pruning
 
-Removes groups:
-
+This approach removes entire groups of weights at once, such as entire filters/channels in a convolutional layer or rows/columns in a fully connected layer:
 * channels/filters in CNNs
 * rows/columns in FC layers
 * blocks/tiles
 
 **Pros**
-
-* results in smaller *dense* tensors
-* preserves regular compute patterns → easier speedups on standard accelerators
+* Creates smaller, **dense matrices** that are perfectly suited for hardware acceleration. It preserves the regular computational patterns that parallel processors are designed for.
 
 **Cons**
-
-* less flexible → may lose more accuracy for the same number of removed weights
+* Less flexible than unstructured pruning, which can lead to a greater loss in accuracy for the same number of removed parameters.
 
 #### Parameterized structured pruning (learnable structure selection)
 
-Associate each structure $w_i$ with $\alpha_i$ and gate via:
+Advanced techniques aim to make this structure learnable. **Parameterized Structured Pruning** divides a weight tensor $W$ into sub-tensors, each representing a structure. Each structure $w_i$ is associated with a learnable parameter $\alpha_i$. The structure is kept or pruned based on whether $\lvert\alpha_i\rvert$ is above a threshold $\epsilon$. This is implemented using a thresholding function $v_i(\alpha_i)$:
 
 $$
 w_i^{qi}=w_i\cdot v_i(\alpha_i),
-\quad
+\qquad \text{where} \qquad 
 v_i(\alpha_i)=
 \begin{cases}
-0 & \lvert \alpha_i\rvert<\epsilon\\
+0 & \lvert \alpha_i\rvert<\epsilon \\
 \alpha_i & \lvert \alpha_i\rvert\ge \epsilon
 \end{cases}
 $$
 
-Non-differentiability handled using **STE** to learn $\alpha_i$.
+Since this function is not differentiable at the threshold, **STE** is used during backpropagation to update the $\alpha_i$ parameters, allowing the network to learn which structures to keep.
 
----
+Thus, gradient of \alpha_i is claculated folllowing the chain rule
+* Trained together with weights using GD based on loss J, but regularized and pruned independently.
+
+**Update rule 1:**
+
+$$\Delta\alpha_i(t+1) := \mu\Delta\alpha_i(t)-\eta\frac{\partial J}{\partial\alpha_i(t)} - \lambda\eta\cdot\alpha_i(t)$$
+
+**Update rule 2:**
+
+$$\Delta\alpha_i(t+1) := \mu\Delta\alpha_i(t)-\eta\frac{\partial J}{\partial\alpha_i(t)} - \lambda\eta\cdot\text{sign}(\alpha_i(t))$$
+
+Surprisingly, **option 1 outperforms option 2**. Different learning dynamics, seen in weight distributions L2 produces unimodal, bimodal and trimodal distributions with clear distinctions, while L1 lacks those distinctions
 
 ## 5.4 Impact of Retraining and Regularization
 
-Fine-tuning after pruning is typically required.
+Fine-tuning after pruning is mandatory to recover model accuracy. The process of pruning and retraining fundamentally alters the weight distribution of the model.
 
 ### Observed weight distribution shift (from notes)
 
-* **before pruning:** narrow Gaussian-like centered around zero
-* **after pruning + retraining:** bimodal distribution; remaining weights move away from zero
-  → surviving connections strengthen to compensate
+A diagram shows two histograms:
+1. **Weight distribution before pruning:** A typical Gaussian-like distribution centered narrowly around zero.
+2. **Weight distribution after pruning and retraining:** The distribution becomes bimodal. The peak at zero is gone (due to pruning), and the remaining weights have been pushed away from zero during retraining, forming two distinct clusters. This shows that retraining strengthens the remaining connections to compensate for those that were removed.
 
 ### Role of regularization
+
+The choice of regularization during training also plays a role.
 
 * **L1**
   
@@ -2977,19 +2972,15 @@ Fine-tuning after pruning is typically required.
   
   $$\mathcal{R}_{L2}(w)=\frac{1}{2}\sum_j w_j^2$$
   
-  encourages small weights but not exact zeros
+  encourages small weights but does not force them to be exactly zero.
 
 **Empirical note:** For AlexNet/ImageNet in the notes:
-
 * with retraining, **L2** ultimately performs best for pruning
 * without retraining, **L1** is better
-* main takeaway: **retraining is essential**
+* but the key takeaway is that **retraining is essential** for achieving high performance with pruned models.
 
 > **Key takeaway**
 > Pruning is not a one-step operation; iterative pruning + fine-tuning is the standard route to high sparsity with acceptable accuracy.
-
----
-
 
 
 
