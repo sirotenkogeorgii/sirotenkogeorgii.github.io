@@ -2936,7 +2936,7 @@ $$
 
 Since this function is not differentiable at the threshold, **STE** is used during backpropagation to update the $\alpha_i$ parameters, allowing the network to learn which structures to keep.
 
-Thus, gradient of \alpha_i is claculated folllowing the chain rule
+Thus, gradient of $\alpha_i$ is claculated folllowing the chain rule
 * Trained together with weights using GD based on loss J, but regularized and pruned independently.
 
 **Update rule 1:**
@@ -2991,375 +2991,375 @@ The choice of regularization during training also plays a role.
 
 
 
-Below is a **formally reformatted, study-ready version** with **highlighting via callouts, bold emphasis, “Key idea / Formula / Practical note” blocks**, and improved structure. Content is preserved; edits are formatting-only.
 
----
+
+
 
 # Unsafe Optimizations II — Quantization
 
-Quantization is a central compression technique for deploying neural networks on **resource-constrained embedded systems**. The core theme is **HW–ML interplay**: the numerical representation (bit-width, format, granularity) must match the target hardware’s constraints in **memory, energy, and latency**.
+This chapter provides a deep dive into **quantization**, a critical model compression technique for deploying machine learning models on resource-constrained embedded systems. The central theme is the interplay between ML algorithms, their numerical representation, and the underlying hardware's limitations in terms of memory, energy, and latency.
 
-> **Learning objective**
-> Understand how quantization changes *representation*, how this changes *compute cost*, and when it changes *accuracy*—and how to mitigate that accuracy loss.
+## 1.1 Introduction to Model Compression
 
----
+Deploying complex neural networks on embedded devices necessitates model compression to meet strict constraints on memory footprint, computational power, and energy consumption. The two primary families of compression techniques are Pruning and Quantization.
 
-## 1.1 Model Compression: Pruning vs. Quantization
+* **Pruning:** This technique involves removing redundant parameters (weights or neurons) from a trained network. The goal is to reduce the model's size and the number of computations required during inference. As described in a diagram, pruning can be **unstructured**, where individual connections (synapses) are removed based on criteria like their magnitude, or **structured**, where entire neurons or filters are removed. While effective, the efficiency gains from pruning are highly dependent on hardware support for sparse computations.
+* A diagram contrasts a fully connected network layer with pruned versions. "Before pruning," all neurons are interconnected. "After pruning" shows two outcomes:
+  1. **Pruning synapses:** Individual connections are removed, leading to a sparse weight matrix.
+  2. **Pruning neurons:** Entire neurons and all their associated connections are eliminated, reducing the layer's dimensions.
+* **Quantization:** This technique reduces the numerical precision of a model's parameters (weights) and, optionally, its intermediate calculations (activations). By representing floating-point numbers (e.g., **Float32**) with lower-bit integers (e.g., **INT8, INT4**, or even binary values), quantization drastically reduces memory footprint and can enable faster, more energy-efficient integer-based arithmetic on compatible hardware.
 
-Deploying modern models on embedded devices requires reducing:
+The choice of data type, number format, and bit width, as well as whether the quantization is applied homogeneously across the model or heterogeneously (per-layer, per-filter, etc.), are key design decisions. Like pruning, the ultimate efficiency of quantization is deeply tied to the target hardware architecture.
 
-* **model storage** (weights),
-* **runtime memory** (activations),
-* **compute** (MAC/FLOP-equivalent),
-* **energy** (dominated by data movement).
+## 1.2 A Hardware-Aware Metric: Bit Operations (BOPS)
 
-### Pruning (structure removal)
+To fairly compare different model compression techniques, especially those using custom or low-precision data types, a suitable hardware-abstract metric is required. The traditional metric of **Multiply-Accumulate operations (MACs)** is often insufficient, as it does not capture the cost variations associated with different bit widths.
 
-**Definition:** remove redundant parameters from a trained model.
+### **Why MACs aren’t enough**
 
-* **Unstructured pruning:** remove individual connections (creates sparse matrices).
-* **Structured pruning:** remove higher-level structures (neurons, channels, filters).
+A MAC count treats every multiply-accumulate as equal:
 
-> **Hardware dependence**
-> Pruning speedups require hardware/runtime support for sparse execution; otherwise, sparse indexing overhead can negate gains.
+* 1 MAC with 32-bit float
+* 1 MAC with 8-bit int
+* 1 MAC with 1-bit XNOR-popcount style arithmetic
 
-### Quantization (precision reduction)
+…all counted the same. But on real hardware, those have drastically different cost/energy/area. So we want a *hardware-abstract but bit-aware* metric.
 
-**Definition:** reduce numerical precision of:
+The **Bit Operations (BOPS)** metric provides a more accurate measure of computational complexity for fixed-point arithmetic. For a standard convolutional layer, the BOPS can be approximated by considering the bit widths of weights and activations.
 
-* **weights**, and optionally
-* **activations** (and rarely gradients during training).
+### **What BOPS is trying to approximate**
 
-Typical conversion: **Float32 → INT8/INT4 → binary/ternary**.
+**BOPS (Bit Operations)** approximates cost by:
+* **Multiplication cost** grows roughly with the *product* of operand bit widths.
+* **Addition/accumulation cost** grows roughly with the accumulator bit width.
 
-> **Why quantization is powerful**
-> Fewer bits reduce memory bandwidth and enable faster, lower-energy arithmetic (integer / bitwise), *if hardware supports it*.
+It’s not a perfect model of every accelerator, but it captures the big effect: **lower precision is cheaper**.
 
----
+Let's define the parameters for a convolutional layer:
+* $b_w$: bit width of weights
+* $b_a$: bit width of activations
+* $n$: number of input channels
+* $m$: number of output channels (filters)
+* $k$: filter size (e.g., $k \times k$)
 
-## 1.2 Hardware-Aware Metric: Bit Operations (BOPS)
+The total number of MACs per output element is $\approx nk^2$:
 
-### Motivation
+$$\underbrace{n k^2}_{\text{products}} \text{ multiplications} \quad + \quad (n k^2 - 1)\text{ additions}$$
 
-Counting MACs alone can be misleading because **compute cost depends on bit-width**. BOPS provides a more hardware-abstract measure of fixed-point compute complexity.
+People usually call that “$nk^2$ MACs”.
 
-### Setup (conv layer)
+### **Where the accumulator bit width $b_o$ comes from**
 
-Let:
+**Max size of one product**
 
-* $b_w$: weight bit-width
-* $b_a$: activation bit-width
-* $n$: input channels
-* $m$: output channels
-* $k$: kernel size (for $k \times k$)
+If activations have bit width $b_a$ and weights have bit width $b_w$, the *maximum magnitude* of each (unsigned) value is about $2^{b_a}$ and $2^{b_w} (more precisely $2^{b_a}-1$, etc.). A product therefore can be as large as roughly:
 
-Per output element, MAC count is $n k^2$. The accumulator width (binary-coded) is approximated by:
+$$2^{b_a} \cdot 2^{b_w} = 2^{b_a + b_w}$$
 
-$$b_o = b_a + b_w + \log_2(nk^2)$$
+So **one multiply produces a value needing about $b_a + b_w$ bits**.
 
-### BOPS for convolution (approx.)
+*(If signed two’s complement is used, you typically need an extra sign bit / careful bounds; more on that at the end.)*
+
+**Summing $nk^2$ products**
+
+Worst case, all products have the same sign and add up. So the max sum is approximately:
+
+$$(nk^2)\cdot 2^{b_a+b_w}$$
+
+To store a value up to $X$, you need about $\log_2(X)$ bits. Therefore:
+
+$$b_o \approx \log_2!\left((nk^2)\cdot 2^{b_a+b_w}\right) = (b_a+b_w) + \log_2(nk^2)$$
+
+So:
+
+$$\boxed{b_o = b_a + b_w + \log_2(nk^2)}$$
+
+In practice you’d use a ceiling:
+
+$$b_o = b_a + b_w + \left\lceil \log_2(nk^2)\right\rceil$$
+
+**Intuition:** every time you double the number of terms you sum, you need about **one more accumulator bit**.
+
+### **Where the BOPS formula comes from**
+
+They model total per-layer bit ops (again per output spatial position) as:
+
+$$\text{BOPS}_{\text{conv}} \approx mnk^2\Big(\underbrace{b_ab_w}*{\text{mult}} + \underbrace{b_o}_{\text{acc}}\Big)$$
+
+### Why multiplication cost $\sim b_a b_w$
+
+**The schoolbook binary view (most intuitive)**
+
+Let
+* $a$ be $b_a$-bit
+* $w$ be $b_w$-bit
+
+Write $a$ in bits:
+
+$$a=\sum_{i=0}^{b_a-1} a_i 2^i,\quad a_i\in{0,1}$$
+
+Then
+
+$$a\cdot w=\left(\sum_{i=0}^{b_a-1} a_i 2^i\right)w=\sum_{i=0}^{b_a-1} a_i (w\ll i)$$
+
+So multiplication becomes:
+
+* For each bit $a_i$, either add **0** or add a **shifted copy of $w$**.
+
+Now, how expensive is “$a_i (w\ll i)$” at the bit level?
+
+* $a_i$ is 0/1, so it “gates” each bit of (w).
+* That’s basically (b_w) AND operations (one per bit of (w)) to form the partial product row.
+* You do that for each of the (b_a) bits of (a).
+
+So just forming partial products costs about:
+
+$$b_a \cdot b_w$$
+
+bit operations (ANDs).
+
+Then you still have to add those rows up (more cost), but many BOPS formulas bundle “multiply cost” as scaling with (b_a b_w) because that’s the dominant size term and matches how multiplier hardware scales.
+
+**Hardware intuition (area/energy scaling)**
+
+Common multiplier circuits (e.g., array multipliers) are literally a 2D grid of bit-cells roughly sized (b_a \times b_w). Even with optimizations (Booth encoding, Wallace trees), the **resource/energy** still grows roughly with operand width product.
+
+So (b_a b_w) is a compact proxy for:
+
+* “how many bit-level interactions do we need between the two numbers?”
+
+Key takeaway: **halve both bit-widths → multiplication cost drops ~4×** (quadratic effect).
+
+**Why accumulation cost $\sim b_o$**
+
+Adding two $b_o$-bit numbers costs work proportional to $b_o$ in basic adder models (ripple-carry $~O(b_o)$, more advanced adders still grow with width in area/energy).
+
+Key takeaway: **halve precision → accumulator work drops ~2×** (linear-ish effect), and you *also* reduced $b_o$ because it contains $b_a+b_w$.
+
+### “HW–ML interplay” from the equation (the trade-off)
+
+This formula highlights the **HW-ML Interplay**: 
+reducing the bit width of weights ($b_w$) and activations ($b_a$) quadratically reduces the multiplication cost and linearly reduces the accumulation cost, leading to significant computational savings. A scatter plot of various models illustrates this trade-off, showing model accuracy versus billions of bit operations. Techniques like UNIQ, QNN, and XNOR aim to push models into the high-accuracy, low-BOPS regime. From
 
 $$
-\text{BOPS}_{\text{conv}} \approx m n k^2\left( \underbrace{b_a b_w}*{\text{multiplication}} + \underbrace{b_o}_{\text{accumulation}} \right)
+mnk^2(b_ab_w + b_o)
+\quad\text{with}\quad
+b_o = b_a+b_w+\log_2(nk^2)
 $$
 
-> **Highlight — scaling behavior**
-> Reducing $b_a$ and $b_w$ yields:
->
-> * **quadratic** reduction in multiplication cost $(b_a b_w)$
-> * **linear** reduction in accumulation cost $(b_o)$
+you can see:
 
----
+* **Multiplication part:** $b_ab_w$ → *quadratic* benefit when reducing both.
+* **Accumulation part:** $b_o$ → roughly *linear* in $b_a+b_w$, plus a fixed-ish $\log_2(nk^2)$ term determined by layer shape.
+
+So quantization buys you large savings mostly because multiplies get way cheaper, and accumulators also shrink but less dramatically.
+
+That’s the “push models into high-accuracy, low-BOPS”: keep accuracy while making $b_a, b_w$ small.
+
 
 ## 1.3 Fundamentals of Quantization
 
-Quantization maps high-precision values to low-precision discrete codes.
+**Quantization** is the process of mapping a continuous or large set of values to a smaller, discrete set. In machine learning, this typically means mapping 32-bit floating-point numbers to low-bit integers.
 
-### Core mapping (affine quantization)
+The core quantization mapping is defined by the following equation:
 
-$$q = Q(x) = \mathrm{clip}\Big(\mathrm{round}\big(\frac{x}{s}+z\big),\ q_{\min},q_{\max}\Big)$$
+$$q = Q(x) = \text{clip}(\text{round}(\frac{x}{s} + z), q_{\text{min}}, q_{\text{max}})$$
 
-**Glossary**
+Where:
+* **Glossary of Terms:**
+  * $x$: The original, continuous (floating-point) value to be quantized.
+  * $q$: The quantized integer representation of $x$.
+  * $s$: The **scale factor**, a positive float that determines the step size or resolution of the quantization.
+  * $z$: The **zero-point**, an integer that specifies which quantized value corresponds to the real value of 0. This allows for an offset in the mapping.
+  * $q_{min}$, $q_{max}$: The minimum and maximum allowed values for the target integer data type (e.g., -128 and 127 for signed `INT8`).
 
-* $x$: original float value
-* $q$: quantized integer code
-* $s>0$: scale (step size)
-* $z$: zero-point (integer code corresponding to real 0)
-* $q_{\min}, q_{\max}$: integer range (e.g., [-128,127] for signed INT8)
+To recover the original value (with some error), a dequantization step is performed:
 
-### Dequantization (reconstruction)
+$$\hat{x} = (q - z) \cdot s$$
 
-$$\hat{x} = (q - z)\cdot s$$
+Here, $\hat{x}$ is the reconstructed floating-point approximation of $x$. The difference between $x$ and $\hat{x}$ is the **quantization error**, which arises from both rounding and clipping.
 
-> **Quantization error sources**
-> * rounding error
-> * clipping/saturation (when values exceed representable range)
+A visual representation of this process is shown in a graph titled "Effect of Int2 Quantization on Function Approximation," where a smooth sine wave (Float32) is approximated by a coarse, step-like function (Int2), clearly showing the information loss inherent in the process.
 
----
+### Symmetric vs. Asymmetric Quantization
 
-### Symmetric vs. Asymmetric quantization
+The choice of $s$ and $z$ defines the quantization scheme.
 
-#### Symmetric (typically for weights)
+* **Symmetric Quantization:** The range of real values is mapped symmetrically around zero. This is achieved by setting the zero-point $z=0$. The scale is typically calculated as:
 
-Set $z=0$; map range symmetrically around zero.
+$$s = \frac{\max(\lvert x\rvert)}{q_{\text{max}}}$$
 
-$$s = \frac{\max(\lvert x\rvert)}{q_{\max}}$$
+This scheme is commonly used for weights, which often have a distribution centered around zero.
+* **Asymmetric Quantization:** The range is not necessarily centered at zero. This requires both a scale and a non-zero zero-point. The parameters are calculated as: 
 
-**Common use-case:** weights often have distributions centered near 0.
+$$s = \frac{x_{\text{max}} - x_{\text{min}}}{q_{\text{max}} - q_{\text{min}}}, \quad z = \text{round}(q_{\text{min}} - \frac{x_{\text{min}}}{s})$$
 
-#### Asymmetric (often for activations)
+This scheme is often used for activations, especially after a ReLU function, where all values are non-negative.
 
-Allow nonzero $z$, useful for nonnegative activations (e.g., after ReLU).
+### Static vs. Dynamic Quantization
 
-$$s = \frac{x_{\max}-x_{\min}}{q_{\max}-q_{\min}}, \qquad z=\mathrm{round}\Big(q_{\min}-\frac{x_{\min}}{s}\Big)$$
+The method for determining the range ($x_{\text{min}}, x_{\text{max}}$) also defines a key characteristic.
 
-> **Practical note**
-> Post-ReLU activations are nonnegative → unsigned quantization is often preferred.
+* **Static Scaling:** The scale ($s$) and zero-point ($z$) are pre-computed offline using a representative **calibration dataset**. These parameters are then fixed and used for all inferences at runtime. This approach has zero runtime overhead but is vulnerable if the deployment data distribution differs from the calibration data.
+* **Dynamic Scaling:** The range ($x_{\text{min}}, x_{\text{max}}$), and thus $s$ and $z$, are computed on-the-fly for each input or batch at runtime. This is more robust to varying input distributions but introduces computational overhead during inference.
 
----
+## 1.4 A Taxonomy of Quantization Techniques
 
-### Static vs. Dynamic quantization
+The design space of quantization is vast. Understanding its taxonomy is crucial for making informed decisions.
 
-#### Static scaling
+| Dimension | Options | Description & Trade-offs |
+| :--- | :--- | :--- |
+| **Procedure (Timing)** | **Post-Training Quantization (PTQ) vs. Quantization-Aware Training (QAT)** | **PTQ** (Post-Training Quantization) is applied to a pre-trained model without retraining; it is fast and simple, often effective for **INT8**. **QAT** (Quantization-Aware Training) simulates quantization effects during the training loop, allowing the model to adapt. It is more complex but necessary for aggressive quantization (e.g., **INT4**). |
+| **Target** | **Weight-Only vs. Weights + Activations** | **Weight-only** reduces model size and memory bandwidth, but computations often remain in higher precision. **Weights + Activations (W+A)** enables fully integer-based pipelines, yielding maximum speedups and energy savings on compatible hardware. |
+| **Range Determination** | **Static vs. Dynamic** | **Static** uses a fixed range from a calibration set, offering fast inference but sensitivity to data shifts. **Dynamic** calculates ranges at runtime, providing robustness at the cost of latency overhead. |
+| **Granularity** | **Per-Tensor vs. Per-Channel vs. Per-Group** | **Per-tensor** uses a single $s$ and $z$ for an entire weight tensor; it is simple but can be suboptimal. **Per-channel** computes separate scales for each output channel, offering better robustness. **Per-group** is a middle-ground trade-off, sharing a scale across small groups of channels. |
 
-* compute $s,z$ offline from a calibration set
-* fixed at inference
-* **no runtime overhead**
-
-**Risk:** distribution shift (calibration ≠ deployment).
-
-#### Dynamic scaling
-
-* compute range (and thus $s,z$) per input/batch at runtime
-* **more robust** to input variation
-* **adds inference overhead**
-
----
-
-## 1.4 Taxonomy of Quantization Techniques
-
-| Dimension               | Options                                | Key trade-offs                                                                                                                |
-| ----------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Procedure**           | PTQ vs QAT                             | PTQ: fast/simple (often good for INT8). QAT: training-time simulation, needed for aggressive low-bit (INT4, ternary, binary). |
-| **Target**              | Weight-only vs Weights+Activations     | Weight-only reduces storage/bandwidth; W+A enables integer-only pipelines for maximum latency/energy gains.                   |
-| **Range determination** | Static vs Dynamic                      | Static is fast but sensitive to mismatch; dynamic is robust but adds overhead.                                                |
-| **Granularity**         | Per-tensor vs Per-channel vs Per-group | Per-tensor is simplest; per-channel is more robust for CNN weights; per-group trades complexity and robustness.               |
-
-### Practical escalation strategy
+A practical escalation strategy for applying quantization is:
 
 1. Start with **INT8 PTQ**.
-2. If accuracy drops: improve calibration (percentile/MSE) and/or use **per-channel** weights.
-3. Use **mixed precision** for sensitive layers.
-4. If still insufficient: apply **QAT**.
+2. If accuracy drops, improve the **calibration** process (e.g., use percentile ranges instead of min/max) or increase **granularity** (e.g., move from per-tensor to per-channel).
+3. Consider using **mixed precision**, keeping sensitive layers at a higher precision.
+4. As a final resort, use the more complex **QAT** process to retrain the model.
 
----
+## 1.5 Practical Quantization: A ResNet Case Study
 
-## 1.5 Practical Quantization: ResNet Case Study
+Let's examine the quantization of the first convolutional layer (`conv1`) of a ResNet model to illustrate these concepts.
 
-### INT8 (often sufficient)
+### INT8 Quantization Example
 
-#### conv1 weights (Float32 → INT8)
+* **ResNet `conv1` Weights:**
+  * A histogram of the original Float32 weights shows a bell-shaped distribution sharply peaked at zero, with values ranging from approximately -1.0 to 1.0.
+  * **Method:** Symmetric `min/max` quantization for a signed **INT8** range `[-128, 127]`.
+  * **Parameters:** `scale = 0.007972`, `zero_point = 0`.
+  * **Result:** The quantized integer codes (shown in an inset plot) mirror the original distribution. The dequantized histogram (overlaid on the original) shows a very close approximation, indicating minimal information loss.
+* **ResNet ReLU Activations:**
+  * A histogram of the **Float32** activations shows a distribution skewed to the right, starting at zero (due to ReLU) with a long tail. Outliers are present.
+  * **Method:** Asymmetric `min/max` quantization for a signed **INT8** range `[-128, 127]` (though values will be positive).
+  * **Parameters:** `scale = 0.01287`, `zero_point = -128`.
+  * **Result:** The dequantized histogram again closely follows the original, demonstrating that **INT8** is often sufficient for both weights and activations in CNNs with proper calibration.
 
-* distribution: bell-shaped around 0
-* method: **symmetric min/max**, signed INT8 ([-128,127])
-* example parameters: $s=0.007972$, $z=0$
-* result: dequantized histogram closely matches original → low error
+### INT4 Quantization Example (Aggressive)
 
-#### ReLU activations (Float32 → INT8)
+* **ResNet `conv1` Weights:**
+  * **Method:** Symmetric min/max for a signed INT4 range `[-7, 7]`.
+  * **Parameters:** scale = 0.1452, zero_point = 0.
+  * **Result:** The dequantized histogram is much coarser. The values are visibly grouped into a few discrete bins, indicating significant precision loss. The large `scale` value means low resolution.
+* **ResNet ReLU Activations:**
+  * **Method:** Asymmetric `min/max` for an unsigned **INT4** range `[0, 15]`.
+  * **Parameters:** `scale = 0.2187`, `zero_point = 0`.
+  * **Result:** The quantization effect is dramatic. The smooth distribution is replaced by a few sharp peaks, showing that many distinct activation values have been mapped to the same integer code. This level of aggressive quantization typically requires QAT to maintain acceptable accuracy.
 
-* distribution: nonnegative, right-skewed, with outliers
-* method: **asymmetric min/max**
-* example parameters: $s=0.01287$, $z=-128$
-* result: good match with proper calibration
+## 1.6 The Challenge of Real-World Data: Calibration Mismatch
 
-> **Interpretation**
-> With reasonable calibration, INT8 preserves most signal for both weights and activations in common CNNs.
+A core assumption of **static activation quantization** is that the data distribution seen during deployment will match the distribution of the calibration set (`calibration ≈ deployment`). When this assumption is violated, the pre-computed scale and zero-point become suboptimal, leading to accuracy degradation.
 
----
+**Sources of Mismatch:**
+* **Lighting/Exposure Shifts:** Changes in lighting can cause the "right tail" of activation distributions to grow, as more high-magnitude activations appear.
+* **Sensor/Optics Changes:** Different cameras have unique noise profiles, color responses, and lens artifacts, altering the overall input distribution.
+* **Compression Artifacts:** Using different image formats (e.g., RAW vs. JPEG) or streaming introduces artifacts like blocking and ringing, which can distort activation histograms.
 
-### INT4 (aggressive)
+**Effect of Mismatch:** An illustration shows activation histograms for ResNet-18 on CIFAR-10 under "Clean calibration" and "Mismatch calib" conditions. Under mismatch, the distribution's tail extends further. This forces a min/max-based calibration to select a larger range, which in turn increases the scale factor. A larger scale means lower resolution for the bulk of the values, increasing quantization error. The example shows the min/max scale increasing from `0.01287` (clean) to `0.01672` (mismatch).
 
-#### conv1 weights (Float32 → INT4)
+**Mitigation Strategies:**
+1. **Diversify the calibration set** to be more representative of real-world conditions.
+2. Use more robust range selection methods like **percentile** or **MSE-based** calibration, which are less sensitive to outliers.
+3. Increase quantization **granularity** (e.g., per-channel scales).
+4. Employ **mixed precision**, keeping sensitive layers (often the first and last) in higher precision.
 
-* method: symmetric min/max, signed INT4 ([-7,7])
-* example parameters: $s=0.1452$, $z=0$
-* effect: coarse binning → visible discretization → higher error
+## 1.7 Advanced Quantization-Aware Training (QAT) Methods
 
-#### ReLU activations (Float32 → INT4)
-
-* method: asymmetric min/max, unsigned INT4 ([0,15])
-* example parameters: $s=0.2187$, $z=0$
-* effect: activation distribution collapses into few peaks → strong information loss
-
-> **Practical conclusion**
-> INT4 usually requires **QAT** or more careful calibration/mixed precision to preserve accuracy.
-
----
-
-## 1.6 Real-World Data Challenge: Calibration Mismatch
-
-Static activation quantization assumes:
-
-$$\text{calibration distribution} \approx \text{deployment distribution}$$
-
-When violated, accuracy can degrade.
-
-### Common mismatch sources
-
-* lighting/exposure shifts (activation tails grow)
-* sensor/optics changes (noise/color response changes)
-* compression artifacts (JPEG/streaming distortions)
-
-### Mechanism of failure
-
-If tails extend, min/max calibration expands range → scale $s$ increases → resolution for typical values decreases → quantization error increases.
-
-Example trend (from notes): scale increases from **0.01287 → 0.01672** under mismatch.
-
-### Mitigation strategies
-
-1. diversify calibration data
-2. use robust range selection (percentile, MSE-based)
-3. increase granularity (per-channel)
-4. mixed precision for sensitive layers (often first/last)
-
-> **Embedded note**
-> Deployment conditions vary; calibration should be designed as an engineering artifact, not an afterthought.
-
----
-
-## 1.7 Quantization-Aware Training (QAT) Methods
-
-When PTQ fails, QAT integrates quantization effects into training to learn robustness.
-
----
+When PTQ is insufficient, QAT methods integrate quantization into the training process. These techniques allow the model to learn weights that are more robust to the effects of low-precision arithmetic.
 
 ### Trained Ternary Quantization (TTQ)
 
-Quantizes weights to three values: $\lbrace +W_p, 0, -W_n\rbrace$ with learned scales.
+TTQ quantizes weights to three values: positive ($W_p$), negative ($-W_n$), and zero. It uniquely learns the optimal scaling factors $W_p$ and $W_n$ during training.
 
-#### Quantization rule
+The process, illustrated in a flow diagram, is as follows:
+1. **Forward Pass (Inference Time):** Full-precision weights are quantized to an intermediate ternary representation $\lbrace -t, 0, +t\rbrace$ based on a threshold $\Delta_l$. This is then scaled by the learned values $W_p$ and $W_n$ to produce the final ternary weight.
+2. **Backward Pass (Training Time):** The loss gradient is backpropagated through the network. Crucially, TTQ computes two sets of gradients:
+  * `gradient1`: Propagates back to the full-precision weights to learn the ternary assignments.
+  * `gradient2`: Propagates back to the scale factors $W_p$ and $W_n$ to learn the optimal ternary values.
 
-$$
-\tilde{w}_i =
-\begin{cases}
-W_p & w_i>\Delta_l\
-0 & \lvert w_i\rvert\le \Delta_l\
--W_n & w_i<-\Delta_l
-\end{cases}
-\quad
-\text{with}\quad
-\Delta_l=t\cdot \max(\lvert w\rvert),\ t\in[0,1]
-$$
+The quantization function is: 
 
-**Training idea:** learn both the ternary assignments and the scale factors $(W_p, W_n)$ via backprop.
+$$\tilde{w}_i = \begin{cases} W_p & : w_i > \Delta_l \\ 0 & : \lvert w_i\rvert \le \Delta_l \\ -W_n & : w_i < -\Delta_l \end{cases}$$  
 
----
+where the threshold $\Delta_l$ is a hyperparameter: $\Delta_l = t \cdot \max(\lvert w\rvert); t \in [0,1]$.
 
 ### DoReFa-Net
 
-A framework for arbitrary bit-widths for:
-
-* weights $W$
-* activations $A$
-* gradients $G$
-
-Uses deterministic quantization for $W/A$ and stochastic quantization for gradients, relying on **STE** for backprop through non-differentiable quantizers.
-
-> **Key point**
-> Gradient precision can significantly influence trainability and final accuracy.
-
----
+DoReFa-Net is a comprehensive framework for training networks with arbitrary bit widths for weights ($W$), activations ($A$), and gradients ($G$). It uses deterministic quantization for weights and activations and stochastic quantization for gradients. It provides a thorough treatment of the **Straight-Through Estimator (STE)**, a key technique for backpropagating gradients through non-differentiable quantization functions. Experimental results on AlexNet show the performance for various W-A-G configurations, highlighting the importance of gradient precision.
 
 ### LQ-Nets (Learned Quantization Networks)
 
-Learns **non-uniform quantization levels** via a trainable basis vector $v\in\mathbb{R}^K$:
+LQ-Nets introduce a **learnable quantizer** that creates data-adaptive, non-uniform quantization levels. This can significantly reduce quantization error compared to uniform methods.
+
+The key idea is to represent a quantized number not with a fixed-power-of-2 basis, but as a linear combination of a trainable basis vector $v \in \mathbb{R}^K$:
 
 $$q_l = v^T b_l$$
 
-where $b_l$ is a binary coding vector.
+where $b_l$ is a binary coding vector. By making $v$ a trainable parameter, the network learns the optimal placement of quantization levels for its specific weight distribution. This combines the benefits of uniform quantization (efficiency) with non-uniform quantization (accuracy). Diagrams illustrate how a 2-bit and 3-bit learned basis can create a non-uniform staircase function of quantization levels.
 
-**Intuition:** learned levels match the weight distribution better than uniform grids, reducing quantization error at fixed bit-width.
+## 1.8 Hardware-Software Interplay: Architectures and Methods
 
----
+The true benefits of quantization are realized when the algorithm is co-designed with the target hardware in mind.
 
-## 1.8 Hardware–Software Interplay: Architectures and Methods
+### HW Excursion: Bit-Serial Multiplication
 
-Quantization gains are maximized only when matched to hardware.
+For hardware designed to handle arbitrary precision, **bit-serial computation** is a viable option. Instead of a parallel multiplier, operations are serialized over the bits of the operands.
 
----
+A multiplication $c = a \cdot b$ can be decomposed into bit-level operations. If $a$ and $b$ are $N$-bit and $M$-bit fixed-point integers respectively, the product is: 
 
-### Bit-serial multiplication (arbitrary precision hardware)
+$$c = a \cdot b = \sum_{n=1}^{N} \sum_{m=1}^{M} 2^{n+m} \cdot \text{popc}(\text{and}(a_n, b_m))$$
 
-If $a$ is N-bit and $b$ is M-bit, multiply via bit-level decomposition:
+The complexity is $O(NM)$, directly proportional to the bit widths. While a single bit-serial operation has high latency, its simple logic is suitable for massive parallelism, enabling competitive throughput. A graph comparing operand bit width to performance improvements shows that for latency with bit-serial logic, the improvement factor scales exponentially as bit width decreases.
 
-$$c=a\cdot b = \sum_{n=1}^{N}\sum_{m=1}^{M}2^{n+m}\cdot \mathrm{popc}\big(\mathrm{and}(a_n,b_m)\big)$$
+### DeepChip's Reduce-and-Scale (RAS) Quantization
 
-Complexity:
+The **DeepChip** project focuses on model compression for resource-constrained devices like mobile **ARM** processors. Its **Reduce-and-Scale (RAS)** method is a prime example of HW-aware quantization.
 
-$$O(NM)$$
+**RAS combines several techniques:**
+1. **Weight Quantization:** Uses a TTQ-like approach to quantize weights to ternary values $\lbrace -W_n, 0, W_p\rbrace$. The scale factors $W_p$ and $W_n$ are independent, asymmetric, and trained via SGD.
+2. **Activation Quantization:** Activations are first bounded using a **Bounded ReLU** function ($a' = \text{clip}(a, 0, 1)$) and then quantized to a $k$-bit fixed-point representation, similar to DoReFa-Net.
+3. **Space-Efficient Data Structures:** Instead of storing the full ternary weight matrix, RAS uses a **parameter converter** to create a compressed representation. This involves run-length encoding principles, storing only the signs and the distances (indices) between non-zero values. This reduces cardinality and is amenable to further compression like Huffman coding.
+4. **Efficient Operator Library:** The core computation is reformulated to avoid costly multiplications. The output is calculated by summing the relevant activations and performing only two multiplications by the scale factors $W_p$ and $W_n$ per output channel.
 
-Latency increases per operation, but logic is simple and can be heavily parallelized.
+$$c = W_p^l \cdot \sum_{i \in i_p^l} a_i + W_n^l \cdot \sum_{i \in i_n^l} a_i$$
 
----
+This leverages the fact that integer additions are significantly cheaper and more energy-efficient than multiplications on typical processors (e.g., on an ARM chip, an int16 ADD is ~2x faster and >30x more energy-efficient than an int16 FMA).
 
-### DeepChip: Reduce-and-Scale (RAS)
+Results on AlexNet/ImageNet show that DeepChip's method achieves higher accuracy (79.0% Top-5) and a smaller memory footprint (25 MB) than a baseline BNN or standard INT8 quantization, while maintaining a competitive inference rate.
 
-A HW-aware quantization approach targeting resource-constrained processors (e.g., mobile ARM).
+## 1.9 Common Pitfalls and Best Practices
 
-**Components**
+Applying quantization effectively requires avoiding common mistakes.
 
-1. **Ternary weight quantization** (TTQ-like): $\lbrace -W_n,0,W_p\rbrace$ with learned asymmetric scales.
-2. **Activation quantization:** bound activations (bounded ReLU) then k-bit fixed-point quantize.
-3. **Space-efficient storage:** store signs and distances between nonzeros (run-length-like), compressible (e.g., Huffman).
-4. **Operator reformulation:** avoid expensive multiplications by turning compute into sums + few scalings:
+**Common Pitfalls:**
+* **Taxonomy Confusion:** Incorrectly assuming PTQ is always weight-only.
+* **Unrepresentative Calibration Data:** Using a calibration set that doesn't reflect real-world deployment conditions (lighting, sensors, etc.).
+* **Blind Min/Max for Activations:** Allowing outliers to inflate the quantization range, which wastes resolution for the majority of values.
+* **Ignoring Signed/Unsigned:** Failing to use unsigned integers for non-negative data like ReLU activations.
+* **Wrong Granularity Default:** Using per-tensor quantization for CNN weights, where per-channel is a much safer and more robust baseline.
+* **Ignoring Sensitive Layers:** Quantizing all layers uniformly, when the first and last layers often require higher precision.
+* **Not Measuring the Right Signals:** Failing to analyze activation histograms, saturation rates, and layer-wise error to diagnose issues.
 
-$$c = W_p^l\cdot \sum_{i\in i_p^l}a_i + W_n^l\cdot \sum_{i\in i_n^l}a_i$$
+**Rule of Thumb:** Start with a simple, robust baseline: uniform **INT8 PTQ**, with **per-channel** granularity for weights and **percentile-based** calibration for activations. Only escalate to finer granularity, mixed precision, or full QAT if this baseline fails.
 
-**Hardware motivation:** integer adds can be far cheaper than integer FMA on many embedded CPUs.
+## 1.10 Automated Search for Compression Parameters
 
-> **Highlight**
-> This is an example of algorithm–hardware co-design: the compression method is shaped by the cost model of the target processor.
+The vast design space of compression (pruning ratios, bit widths per layer, quantization schemes) makes manual tuning difficult. Automated approaches use search algorithms to find the optimal compression policy for a given hardware target.
 
----
+* **GALEN:** Combines quantization and pruning by using reinforcement learning (RL) to predict a compression policy. It performs a layer-wise sensitivity analysis and incorporates real-world hardware latency measurements, going beyond simple metrics like FLOPs or BOPs.
+* **HAQ (Hardware-Aware Automated Quantization):** Also uses RL to find a mixed-precision quantization policy (2-8 bits) under a latency budget, which is approximated using a lookup table.
 
-## 1.9 Pitfalls and Best Practices
+These methods represent the frontier of model compression, where hardware expertise is encoded into an automated algorithm that can navigate the complex trade-offs between accuracy, latency, and model size.
 
-### Common pitfalls
 
-* confusing PTQ with weight-only by default
-* unrepresentative calibration data
-* blind min/max for activations (outliers dominate range)
-* wrong signed/unsigned choice (ReLU activations)
-* per-tensor weights for CNNs (often too brittle)
-* quantizing all layers equally (first/last often sensitive)
-* not monitoring saturation, histograms, and layerwise errors
 
-### Robust baseline (recommended rule-of-thumb)
 
-* **Uniform INT8 PTQ**
-* **Per-channel weights** (CNNs)
-* **Percentile-based activation calibration**
 
-Escalate only if needed:
 
-* finer granularity → mixed precision → QAT.
 
----
-
-## 1.10 Automated Search for Compression Policies
-
-The design space (bit-widths per layer, pruning ratios, calibration methods) is too large for manual tuning.
-
-### Hardware-aware automated approaches
-
-* **GALEN:** reinforcement learning to jointly select pruning + quantization policies, uses sensitivity analysis and real latency measurements.
-* **HAQ:** RL-based mixed-precision quantization (2–8 bits) under a latency budget, often using lookup-table latency models.
-
-> **Direction of the field**
-> Compression is increasingly treated as an optimization problem constrained by real hardware latency/energy, solved via automated search.
-
----
 
 
 
