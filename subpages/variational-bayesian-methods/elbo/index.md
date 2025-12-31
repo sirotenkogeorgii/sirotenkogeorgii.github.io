@@ -15,11 +15,11 @@ noindex: true
 
 In latent-variable probabilistic models, we often define a joint distribution over observed data $x$ and latent variables $z$:
 
-$$p_\theta(x,z) = p_\theta(x\mid z),p(z),$$
+$$p_\theta(x,z) = p_\theta(x\mid z)p(z),$$
 
 and we want the **marginal likelihood** (a.k.a. evidence):
 
-$$p_\theta(x) = \int p_\theta(x,z),dz.$$
+$$p_\theta(x) = \int p_\theta(x,z)dz.$$
 
 For many interesting models (e.g., with neural-network likelihoods), this integral is intractable to compute exactly. ([Wikipedia][1])
 
@@ -51,9 +51,9 @@ Variational inference introduces a tractable approximation $q_\phi(z\mid x)$ to 
 Given any choice of $q_\phi(z\mid x)$, we can rewrite the log evidence:
 
 $$
-\log p_\theta(x) = \log \int p_\theta(x,z),dz
-= \log \int q_\phi(z\mid x),\frac{p_\theta(x,z)}{q_\phi(z\mid x)},dz
-= \log \mathbb{E}_{z\sim q_\phi(z\mid x)}!\left[\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right].
+\log p_\theta(x) = \log \int p_\theta(x,z)dz
+= \log \int q_\phi(z\mid x)\frac{p_\theta(x,z)}{q_\phi(z\mid x)}dz
+= \log \mathbb{E}_{z\sim q_\phi(z\mid x)}\left[\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right].
 $$
 
 This “multiply and divide by $q$” maneuver is explicit in the derivations you linked. ([Yunfan Jiang][3])
@@ -74,7 +74,7 @@ That right-hand side is the **Evidence Lower Bound (ELBO)**. ([Yunfan Jiang][3])
 
 A common equivalent decomposition is:
 
-$$\text{ELBO}(x;\theta,\phi) = \log p_\theta(x) - D_{\mathrm{KL}}!\big(q_\phi(z\mid x)\mid p_\theta(z\mid x)\big),$$
+$$\text{ELBO}(x;\theta,\phi) = \log p_\theta(x) - D_{\mathrm{KL}}\big(q_\phi(z\mid x)\mid p_\theta(z\mid x)\big),$$
 
 and since KL divergence is nonnegative, ELBO is indeed a lower bound on $\log p_\theta(x)$. ([Wikipedia][1])
 
@@ -85,7 +85,7 @@ This equality is the real “semantic payload” of ELBO:
 * **Maximizing ELBO** (with $\theta,\phi$) is equivalent to:
 
   * pushing up $\log p_\theta(x)$ (better generative model), and
-  * pushing down $D_{\mathrm{KL}}(q_\phi(z\mid x)|p_\theta(z\mid x))$ (better inference).
+  * pushing down $D_{\mathrm{KL}}(q_\phi(z\mid x)\mid p_\theta(z\mid x))$ (better inference).
 
 ## 4. The ELBO in the “reconstruction + regularization” form
 
@@ -93,7 +93,7 @@ A version widely used in machine learning expands $\log p_\theta(x,z)$ into $\lo
 
 ### Fact
 
-$$\text{ELBO}(x;\theta,\phi) = \mathbb{E}_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)] - D_{\mathrm{KL}}!\big(q_\phi(z\mid x)\mid p(z)\big).$$
+$$\text{ELBO}(x;\theta,\phi) = \mathbb{E}_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)] - D_{\mathrm{KL}}\big(q_\phi(z\mid x)\mid p(z)\big).$$
 
 This is the form emphasized in the variational autoencoder derivation: an expected “data fit” term minus a KL regularizer that discourages the variational posterior from drifting too far from the prior. ([ar5iv][2])
 
