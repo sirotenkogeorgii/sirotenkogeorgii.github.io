@@ -30,7 +30,7 @@ Bayesian posterior inference is similarly hard because
 
 $$p_\theta(z\mid x) = \frac{p_\theta(x,z)}{p_\theta(x)}$$
 
-depends on the same intractable evidence term $p_\theta(x)$. ([ar5iv][2])
+depends on the same intractable evidence term $p_\theta(x)$.
 
 ### Interpretation (not a new fact)
 
@@ -55,12 +55,11 @@ $$
 
 A Wikipedia-style definition packages the ELBO as
 
-$$\mathcal L(\phi,\theta;x) =  \mathbb E_{z\sim q_\phi(\cdot\mid x)}!\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right] = \mathbb E_{q}\big[\log p_\theta(x,z)\big] + H[q_\phi(\cdot\mid x)].$$
-
+$$\mathcal L(\phi,\theta;x) =  \mathbb E_{z\sim q_\phi(\cdot\mid x)}\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right] = \mathbb E_{q}\big[\log p_\theta(x,z)\big] + H[q_\phi(\cdot\mid x)].$$
 
 This same expression can be rewritten as
 
-$$\mathcal L(\phi,\theta;x) = \log p_\theta(x) - \mathrm{KL}\big(q_\phi(z\mid x),|,p_\theta(z\mid x)\big),$$
+$$\mathcal L(\phi,\theta;x) = \log p_\theta(x) - \mathrm{KL}\big(q_\phi(z\mid x)\mid p_\theta(z\mid x)\big),$$
 
 which immediately implies $\mathcal L(\phi,\theta;x)\le \log p_\theta(x)$ because KL divergence is nonnegative. ([Wikipedia][2])
 
@@ -92,7 +91,7 @@ The Adams note starts from $\mathrm{KL}(q(z)\mid p(z\mid x,\theta))$, expands it
 
 A common teaching path (used in Yunfan’s blog post) inserts $q(z\mid x)/q(z\mid x)$ into the marginal likelihood integral, rewrites it as a log of an expectation under $q$, then applies Jensen:
 
-$$\log p(x) = \log \mathbb E_{z\sim q}!\left[\frac{p(x,z)}{q(z\mid x)}\right] \ge \mathbb E_{z\sim q}\left[\log\frac{p(x,z)}{q(z\mid x)}\right].$$
+$$\log p(x) = \log \mathbb E_{z\sim q}\left[\frac{p(x,z)}{q(z\mid x)}\right] \ge \mathbb E_{z\sim q}\left[\log\frac{p(x,z)}{q(z\mid x)}\right].$$
 
 That right-hand side is the **Evidence Lower Bound (ELBO)**. Yunfan’s write-up explicitly shows the identity $\log p(x)=\mathcal L + \mathrm{KL}(q\mid p)$ and then turns it into the inequality via KL nonnegativity (another equivalent route).
 
@@ -106,24 +105,76 @@ $$v(G)\ge \mathbb E_H[G-H],$$
 
 and identifies this as the ELBO with slack equal to a KL divergence. ([cgad.ski][4])
 
-**FACT.** This perspective explicitly connects ELBO to “tangent-line” style lower bounds from convexity (and links the slack to KL). ([cgad.ski][4])
+This perspective explicitly connects ELBO to “tangent-line” style lower bounds from convexity (and links the slack to KL). ([cgad.ski][4])
 
 **INTERPRETATION.** If you like Legendre transforms, you can read the ELBO as a variational (dual) representation of a log-partition-like quantity. If you don’t, you can ignore this entirely and still do VI.
 
-## 4. The ELBO in the “reconstruction + regularization” form
+## 4. The ELBO as two coupled problems: inference and learning
 
-A version widely used in machine learning expands $\log p_\theta(x,z)$ into $\log p_\theta(x\mid z)+\log p(z)$:
+Write the “main form” (also listed by Wikipedia) as
 
-### Fact
+$$\mathcal L(\phi,\theta;x) = \underbrace{\mathbb E_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)]}_{\text{fit / reconstruction}} - \underbrace{\mathrm{KL}(q_\phi(z\mid x)\mid p_\theta(z))}_{\text{regularize toward prior}}$$
 
-$$\text{ELBO}(x;\theta,\phi) = \mathbb{E}_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)] - D_{\mathrm{KL}}\big(q_\phi(z\mid x)\mid p(z)\big).$$
+This makes the coupled roles explicit:
 
-This is the form emphasized in the variational autoencoder derivation: an expected “data fit” term minus a KL regularizer that discourages the variational posterior from drifting too far from the prior. ([ar5iv][2])
+* Optimize $\phi$: make $q_\phi(z\mid x)$ approximate the posterior (reduce the ELBO gap). Also I like the point of view through **complexity / regularization** penalty that limits how much information $z$ can and should carry about $x$, given the prior $p_\theta$.
+* Optimize $\theta$: make the generative model explain data well under latent samples from $q_\phi$.
 
-### Interpretation
+Wikipedia explicitly connects this to amortized inference: learning $q_\phi(z\mid x)$ lets you infer $z$ cheaply for new $x$.
 
-* The first term is often called **reconstruction** (especially when $p_\theta(x\mid z)$ is a decoder network).
-* The second term is a **complexity / regularization** penalty that limits how much information $z$ can carry about $x$, given the prior.
+**INTERPRETATION.** The “reconstruction vs KL” decomposition encourages an engineering view: you can often diagnose training pathologies by checking which term dominates or collapses. (This is widely used practice, but it’s not a theorem that *every* pathology shows up cleanly here.)
+
+## 5. Notation reconciliation: $q(z)$ vs $q(z\mid x)$, and what the ELBO “really” is
+
+Across the sources:
+* Wikipedia and Yunfan use **amortized** notation $q_\phi(z\mid x)$: one inference model produces a different approximate posterior per datapoint $x$.
+* The Adams note uses $q(z)$ for simplicity, essentially treating $x$ as fixed and focusing on a single posterior approximation.
+* Some Cross Validated discussion is triggered by tutorials that mix measures and densities, or write KL with objects that don’t type-check.
+
+A detailed Cross Validated answer (postylem) points out a recurring notational bug: you can’t meaningfully write “KL between a measure $\mathbb P$ and a pdf $q$”—KL is defined between distributions (or between densities w.r.t. the same base measure), not “distribution vs. density” as mismatched types.
+
+**FACT.** A safe, standard statement is: if both $q$ and $p$ are absolutely continuous w.r.t. a common base measure and have densities $q(z)$ and $p(z)$, then
+
+$$\mathrm{KL}(q\mid p)=\int q(z)\log\frac{q(z)}{p(z)},dz.$$
+
+(That is exactly the kind of correction being emphasized in that answer.)
+
+**Resolution of an apparent contradiction.** One Cross Validated answer writes an ELBO-looking expression as $\log p(x_i\mid\theta,z_i)-\mathrm{KL}(q(z_i)|p(z_i\mid\theta))$. Read this as a *shorthand* for the more standard
+
+$$\mathbb E_{q(z_i)}[\log p(x_i\mid z_i,\theta)] - \mathrm{KL}(q(z_i)\mid p(z_i\mid\theta)),$$
+
+i.e., the “expected log-likelihood minus KL to the prior” form that Wikipedia also lists among “main forms.”
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## 5. Tightness: when is the bound exact?
 
@@ -267,14 +318,184 @@ This KL direction tends to produce **mode-seeking** behavior (it heavily penaliz
 * If you see posterior collapse (encoder ignores $x$), it’s often because the KL term is “too easy” to minimize and overwhelms reconstruction. The ELBO decomposition makes that failure mode unsurprising.
 * When comparing models, treat ELBO as **a training objective and a lower bound**, not a guaranteed proxy for downstream representation quality.
 
-## 12. What I used from each source (narrative attribution)
 
-* From the **Wikipedia** entry, I relied on the clean definitions and the key identity that ELBO equals log evidence minus a KL-to-true-posterior, including the terminology connections (e.g., “variational lower bound,” “negative variational free energy”). ([Wikipedia][1])
-* From **Yunfan’s blog**, I used the pedagogical derivation structure: multiply/divide by (q), take expectations, then apply Jensen; plus the emphasis on the inference–optimization duality and the interpretation of the inference network/variational posterior. ([Yunfan Jiang][3])
-* From **Kingma & Welling’s VAE paper** (via the ar5iv HTML rendering), I used the method-centric details: the variational bound in the VAE form, minibatch stochastic optimization framing, and especially the reparameterization trick / SGVB estimator that makes gradients practical. ([ar5iv][2])
 
 ---
 
-[1]: https://en.wikipedia.org/wiki/Evidence_lower_bound "Evidence lower bound - Wikipedia"
-[2]: https://ar5iv.org/pdf/1312.6114 "[1312.6114] Auto-Encoding Variational Bayes"
-[3]: https://yunfanj.com/blog/2021/01/11/ELBO.html "ELBO — What & Why | Yunfan’s Blog"
+## Appendix
+
+## Appendix (i): Deriving the “expected log-likelihood minus KL-to-prior” form
+
+Start from the **canonical definition** of the ELBO for a latent-variable model $p_\theta(x,z)$ and an auxiliary distribution $q_\phi(z\mid x)$:
+
+$$
+\mathcal L(\phi,\theta;x)
+:=\mathbb E_{z\sim q_\phi(\cdot\mid x)}\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right]
+=\mathbb E_q[\log p_\theta(x,z)]-\mathbb E_q[\log q_\phi(z\mid x)].
+$$
+
+This “log joint plus entropy” view (and its equivalent “evidence minus KL-to-posterior” identity) is stated explicitly in the Wikipedia definition section.
+
+Now apply the **model factorization**:
+
+$$
+p_\theta(x,z)=p_\theta(x\mid z),p_\theta(z)
+\quad\Rightarrow\quad
+\log p_\theta(x,z)=\log p_\theta(x\mid z)+\log p_\theta(z).
+$$
+
+Plugging into the ELBO:
+
+$$\mathcal L(\phi,\theta;x) = \mathbb E_q[\log p_\theta(x\mid z)] \mathbb E_q[\log p_\theta(z)-\log q_\phi(z\mid x)].$$
+
+Recognize the second term as **(minus) a KL divergence to the prior**:
+
+$$
+\mathrm{KL}\big(q_\phi(z\mid x)\mid p_\theta(z)\big)
+= \mathbb E_q\left[\log \frac{q_\phi(z\mid x)}{p_\theta(z)}\right]
+= \mathbb E_q[\log q_\phi(z\mid x)]-\mathbb E_q[\log p_\theta(z)].
+$$
+
+Rearrange:
+
+$$\mathbb E_q[\log p_\theta(z)-\log q_\phi(z\mid x)] = -\mathrm{KL}\big(q_\phi(z\mid x)\mid p_\theta(z)\big).$$
+
+So you get the “main” engineering-friendly decomposition:
+
+$$\boxed{\mathcal L(\phi,\theta;x) = \mathbb E_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)] -\mathrm{KL}!\big(q_\phi(z\mid x),|,p_\theta(z)\big).}$$
+
+### Facts vs opinions about this form
+
+* **FACT.** It is algebraically equivalent to the canonical ELBO definition (no approximations were made).
+* **FACT.** It makes clear which parts need estimation: an expectation under $q_\phi(z\mid x)$ plus a KL term (sometimes closed-form for convenient families). Wikipedia notes that sampling $z\sim q_\phi(\cdot\mid x)$ makes the log-ratio term an unbiased estimator of the ELBO, and also notes a common special case where the KL has a closed form (e.g., Gaussian–Gaussian).
+* **OPINION.** This decomposition is the best one to debug training because you can watch “fit” and “regularize” terms separately (but it can still hide issues like high-variance gradients in the expectation term).
+
+## Appendix (ii): What “amortized inference” changes, mathematically and algorithmically
+
+### 1. Non-amortized (“per-datapoint”) variational inference
+
+A classic VI setup introduces **variational parameters per datapoint**. Write $q_{\lambda_i}(z_i)$ for datapoint $x_i$, with its own parameter $\lambda_i$. You then solve
+
+$$\lambda_i^*(\theta) \in \arg\max_{\lambda_i}; \mathcal L(\lambda_i,\theta; x_i),$$
+
+and separately optimize $\theta$ using those $\lambda_i$’s.
+
+A very common computational pattern is **coordinate ascent / EM-like alternation**:
+
+* **E-step (variational):** hold $\theta$ fixed, improve $q$ (i.e., the $\lambda_i$’s) to increase ELBO, which (for fixed $\theta$) shrinks the KL gap to the true posterior.
+* **M-step:** hold $q$ fixed, improve $\theta$ to increase ELBO (which also pushes up the likelihood term that appears in the ELBO identity).
+
+A Cross Validated answer explains this E-step/M-step interpretation directly: maximizing w.r.t. $q$ at fixed $\theta$ is the “E-step,” then optimizing w.r.t. $\theta$ with $q$ held constant is the “M-step.”
+
+**FACT.** This approach can be accurate within the chosen variational family, but it requires storing and updating $\lambda_i$ for each datapoint, and doing iterative inference for each new $x$. (That’s the cost amortization aims to avoid.)
+
+### 2. Amortized variational inference (AVI)
+
+Amortization replaces $\lambda_i$ with the output of a **shared function** (often a neural net) that maps $x$ to variational parameters:
+
+$$\lambda_i = f_\phi(x_i), \qquad q_{\lambda_i}(z_i)=q_\phi(z_i\mid x_i).$$
+
+Now the optimization is over **global** parameters (\phi) (and (\theta)):
+
+$$\max_{\phi,\theta}; \sum_{i=1}^N \mathcal L(\phi,\theta;x_i).$$
+
+**FACT.** Wikipedia describes exactly this motivation: if you can learn an approximation $q_\phi(z\mid x)\approx p_\theta(z\mid x)$ “for most $x$,” then you can infer $z$ from $x$ cheaply, and it explicitly calls that idea *amortized inference*.
+
+**FACT.** This is also why the ELBO is attractive for large-scale learning: you can estimate it by sampling $z\sim q_\phi(\cdot\mid x)$ and using Monte Carlo to optimize $(\phi,\theta)$ with stochastic gradients; Wikipedia notes the unbiased-estimator point for the log-ratio integrand.
+
+### 3. What changes conceptually: two “gaps” instead of one
+
+* **FACT.** The ELBO identity still holds for whatever $q_\phi(z\mid x)$ you choose: $\log p_\theta(x)=\mathcal L(\phi,\theta;x)+\mathrm{KL}(q_\phi(z\mid x)\mid p_\theta(z\mid x))$. (This is the core definition-level relationship.)
+* **OPINION (standard in the literature, but not spelled out in these pages).** Amortization adds an additional optimization constraint: even if your family $q_\lambda$ could fit the best per-point approximation, your inference network $f_\phi$ might not output those best $\lambda_i$’s. Practitioners often describe this as an “amortization gap” on top of the usual variational approximation gap.
+
+### 4. Practical consequences (clearly labeled)
+
+* **FACT.** **Speed at test time:** Once $\phi$ is learned, you can do “one forward pass” inference of $q_\phi(z\mid x)$ for a new $x$, which is the whole point of amortization.
+* **FACT.** **Memory/scaling:** You don’t maintain separate $\lambda_i$ for every datapoint; you only store $\phi$.
+* **OPINION.** **Accuracy trade-off:** amortization can be less accurate than per-datapoint optimization if $f_\phi$ is underpowered or optimization is imperfect—but in many modern settings the speed/scale win dominates.
+
+
+## Appendix (iii): How amortized VI becomes the VAE objective
+
+### Step 0 — Start from the ELBO you already have
+
+For a single datapoint $x$, the ELBO is
+
+$$
+\mathcal L(\phi,\theta;x)
+=\mathbb E_{z\sim q_\phi(\cdot\mid x)}!\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right]
+=\mathbb E_q[\log p_\theta(x\mid z)]-\mathrm{KL}\big(q_\phi(z\mid x)\mid p_\theta(z)\big),
+$$
+
+and also
+
+$$\mathcal L(\phi,\theta;x)=\log p_\theta(x)-\mathrm{KL}!\big(q_\phi(z\mid x)\mid p_\theta(z\mid x)\big),$$
+
+so it is a lower bound on $\log p_\theta(x)$.
+
+### Step 1 — Identify encoder and decoder (the VAE specialization)
+
+A **VAE** is just the above setup with two neural networks:
+
+* **Encoder (inference network):** $q_\phi(z\mid x)$. In practice this outputs parameters of a simple distribution (most commonly a diagonal Gaussian):
+  
+  $$q_\phi(z\mid x)=\mathcal N!\big(z;\mu_\phi(x),\operatorname{diag}(\sigma_\phi^2(x))\big).$$
+  
+* **Decoder (generative network):** $p_\theta(x\mid z)$, e.g. a Bernoulli for binary pixels or a Gaussian for real-valued data:
+  
+  $$p_\theta(x\mid z)=\text{Bernoulli}(\pi_\theta(z)) \quad \text{or} \quad \mathcal N(x; f_\theta(z),\sigma^2 I).$$
+  
+* **Prior:** typically fixed $p(z)=\mathcal N(0,I)$.
+
+**FACT (from sources):** the ELBO is used as a loss for training deep neural networks and includes the “internal component” $q_\phi(\cdot\mid x)$. ([Wikipedia][1])
+**NOTE (transparent):** the sources you gave don’t spell out “VAE = encoder/decoder”; this mapping is the standard, direct specialization of the ELBO to neural parameterizations.
+
+### Step 2 — The VAE objective in the familiar “reconstruction − regularizer” form
+
+With $p_\theta(x,z)=p_\theta(x\mid z)p(z)$, the per-datapoint VAE objective is
+
+$$
+\boxed{\mathcal L_{\text{VAE}}(\phi,\theta;x)=\underbrace{\mathbb E_{z\sim q_\phi(\cdot\mid x)}[\log p_\theta(x\mid z)]}_{\text{reconstruction / fit}} = \underbrace{\mathrm{KL}\big(q_\phi(z\mid x)\mid p(z)\big)}_{\text{regularize toward prior}}}
+$$
+
+which is exactly one of the “main forms” of the ELBO.
+
+**Implementation fact (standard practice, not discussed in your links):** to differentiate through the expectation efficiently, VAEs usually sample via the reparameterization $z=\mu_\phi(x)+\sigma_\phi(x)\odot \varepsilon$, $\varepsilon\sim\mathcal N(0,I)$. (This is the usual low-variance gradient estimator that makes neural VI work in practice.)
+
+## Appendix (iv): Mini-batching: how the estimator changes (and what stays unbiased)
+
+### Full-data objective
+
+For a dataset ${x_i}_{i=1}^N$, you maximize the sum (or average) of per-point ELBOs:
+
+$$
+\max_{\phi,\theta}\ \sum_{i=1}^N \mathcal L(\phi,\theta;x_i)
+\quad\text{or}\quad
+\max_{\phi,\theta}\ \frac{1}{N}\sum_{i=1}^N \mathcal L(\phi,\theta;x_i).
+$$
+
+### Mini-batch estimator
+
+Pick a mini-batch $B\subset{1,\dots,N}$ of size $\lvert B\rvert=M$, uniformly at random.
+
+* If you use the **sum** objective, a standard unbiased estimator is
+  
+  $$\widehat{\mathcal J}(\phi,\theta;B) =\frac{N}{M}\sum_{i\in B}\mathcal L(\phi,\theta;x_i).$$
+  
+* If you use the **average** objective, a standard estimator is just the mini-batch average
+  
+  $$\widehat{\mathcal J}*{\text{avg}}(\phi,\theta;B) =\frac{1}{M}\sum_{i\in B}\mathcal L(\phi,\theta;x_i),$$
+  
+  which differs only by a constant scaling of gradients compared to the “sum” version.
+
+**FACT (math):** with uniform random batching, $\mathbb E_B[\widehat{\mathcal J}]=\sum_{i=1}^N \mathcal L_i$, and therefore the mini-batch gradient is an unbiased estimator of the full-data gradient (up to the same scaling choice).
+
+### Where Monte Carlo over $z$ enters
+
+Each $\mathcal L(\phi,\theta;x_i)$ itself is usually estimated with $K$ samples from $q_\phi(z\mid x_i)$:
+
+$$\widehat{\mathcal L}(\phi,\theta;x_i)=\frac{1}{K}\sum_{k=1}^K \Big[\log p_\theta(x_i\mid z_{ik})\Big] -\mathrm{KL}!\big(q_\phi(z\mid x_i)\mid p(z)\big), \quad z_{ik}\sim q_\phi(\cdot\mid x_i).$$
+
+Wikipedia explicitly notes that sampling $z\sim q_\phi(\cdot\mid x)$ yields an unbiased Monte Carlo estimator of the ELBO expectation term.
+
+Put together, a practical training step is “double stochastic”: randomness from the mini-batch $B$ and from latent samples $z$.
