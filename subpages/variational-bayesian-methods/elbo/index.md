@@ -6,14 +6,13 @@ noindex: true
 
 # Evidence Lower Bound (ELBO)
 
+In **variational Bayesian methods**, the **evidence lower bound** (often abbreviated **ELBO**, also sometimes called the **variational lower bound** or **negative variational free energy**) is a useful lower bound on the log-likelihood of some observed data.
 
-<!-- # A Technical Chapter on the Evidence Lower Bound (ELBO): From Variational Inference to Variational Autoencoders -->
+The ELBO is useful because it provides a guarantee on the worst-case for the log-likelihood of some distribution (e.g. $p(X)$) which models a set of data. The actual log-likelihood may be higher (indicating an even better fit to the distribution) because the ELBO includes a **Kullback-Leibler divergence** (KL divergence) term which decreases the ELBO due to an internal part of the model being inaccurate despite good fit of the model overall. Thus improving the ELBO score indicates either improving the likelihood of the model $p(X)$ or the fit of a component internal to the model, or both, and the ELBO score makes a good loss function, e.g., for training a deep neural network to improve both the model overall and the internal component. (The internal component is $q_{\phi}(\cdot \mid x)$, defined in detail later in this article.)
 
 ## 1. The core problem ELBO is trying to solve
 
-### Fact
-
-In latent-variable probabilistic models, we often define a joint distribution over observed data $x$ and latent variables $z$:
+In **latent-variable probabilistic models**, we often define a joint distribution over **observed data** $x$ and **latent variables** $z$:
 
 $$p_\theta(x,z) = p_\theta(x\mid z)p(z),$$
 
@@ -21,9 +20,11 @@ and we want the **marginal likelihood** (a.k.a. evidence):
 
 $$p_\theta(x) = \int p_\theta(x,z)dz.$$
 
-For many interesting models (e.g., with neural-network likelihoods), this integral is intractable to compute exactly. ([Wikipedia][1])
+**INTRACTABILITY.** In general, that integral has no closed form and is the bottleneck behind “exact” Bayesian inference in latent-variable models. For many interesting models (e.g., with neural-network likelihoods), this integral is intractable to compute exactly.
 
-### Fact
+**INTERPRETATION.** When practitioners say “$p_\theta(x)$ or $\log p_\theta(x)$  is intractable,” they usually mean “the integral is high-dimensional or ugly enough that exact evaluation (and, crucially, exact *differentiation*) is not practical at scale.” That’s a computational statement, not a theorem about impossibility.
+
+### Connection to Bayesian posterior inference
 
 Bayesian posterior inference is similarly hard because
 
@@ -42,11 +43,7 @@ The ELBO is the standard move that “unblocks” both by turning inference into
 
 ## 2. Introducing a variational approximation
 
-### Fact
-
-Variational inference introduces a tractable approximation $q_\phi(z\mid x)$ to the true posterior $p_\theta(z\mid x)$. This $q_\phi$ can be any distribution family you can sample from / evaluate (often parameterized by a neural net). ([Wikipedia][1])
-
-### Fact
+Variational inference introduces a tractable approximation $q_\phi(z\mid x)$ to the true posterior $p_\theta(z\mid x)$. This $q_\phi$ can be any distribution family you can sample from / evaluate (often parameterized by a neural net). (Some sources write $q(z)$ without conditioning; that’s mostly a notational choice we’ll reconcile later.)
 
 Given any choice of $q_\phi(z\mid x)$, we can rewrite the log evidence:
 
@@ -56,36 +53,62 @@ $$
 = \log \mathbb{E}_{z\sim q_\phi(z\mid x)}\left[\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right].
 $$
 
-This “multiply and divide by $q$” maneuver is explicit in the derivations you linked. ([Yunfan Jiang][3])
+A Wikipedia-style definition packages the ELBO as
 
-## 3. Deriving the ELBO (Jensen’s inequality)
+$$\mathcal L(\phi,\theta;x) =  \mathbb E_{z\sim q_\phi(\cdot\mid x)}!\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right] = \mathbb E_{q}\big[\log p_\theta(x,z)\big] + H[q_\phi(\cdot\mid x)].$$
 
-### Fact
 
-Applying Jensen’s inequality to $\log \mathbb{E}[\cdot]$ yields:
+This same expression can be rewritten as
 
-$$
-\log p_\theta(x) \ge \mathbb{E}_{z\sim q_\phi(z\mid x)}\left[\log p_\theta(x,z) - \log q_\phi(z\mid x)\right].
-$$
+$$\mathcal L(\phi,\theta;x) = \log p_\theta(x) - \mathrm{KL}\big(q_\phi(z\mid x),|,p_\theta(z\mid x)\big),$$
 
-That right-hand side is the **Evidence Lower Bound (ELBO)**. ([Yunfan Jiang][3])
+which immediately implies $\mathcal L(\phi,\theta;x)\le \log p_\theta(x)$ because KL divergence is nonnegative. ([Wikipedia][2])
 
-### Fact
+A Princeton blog note by Ryan Adams presents the key “accounting identity” in the opposite direction:
 
-A common equivalent decomposition is:
+$$\log p_\theta(x)= \mathrm{KL}(q(z)\mid p(z\mid x,\theta)) + \mathrm{ELBO}(q),$$
 
-$$\text{ELBO}(x;\theta,\phi) = \log p_\theta(x) - D_{\mathrm{KL}}\big(q_\phi(z\mid x)\mid p_\theta(z\mid x)\big),$$
+so the ELBO is exactly “log evidence minus a gap,” and the gap is a KL divergence.
 
-and since KL divergence is nonnegative, ELBO is indeed a lower bound on $\log p_\theta(x)$. ([Wikipedia][1])
+**INTERPRETATION.** Mentally, you can treat ELBO maximization as doing two things at once:
+1. pushing $q$ toward the true posterior (shrinking the KL gap),
+2. adjusting $\theta$ to make the model explain the data well. Which of these dominates in practice depends on parameterization and optimization, not on the algebra.
 
-### Interpretation
-
-This equality is the real “semantic payload” of ELBO:
-
-* **Maximizing ELBO** (with $\theta,\phi$) is equivalent to:
-
+or **Maximizing ELBO** (with $\theta,\phi$) is equivalent to:
   * pushing up $\log p_\theta(x)$ (better generative model), and
-  * pushing down $D_{\mathrm{KL}}(q_\phi(z\mid x)\mid p_\theta(z\mid x))$ (better inference).
+  * pushing down $\mathrm{KL}(q_\phi(z\mid x)\mid p_\theta(z\mid x))$ (better inference).
+  
+## 3. Three derivations that look different but are the same proof in different clothing
+
+All sources ultimately cash out to the same inequality $\log p(x)\ge \mathrm{ELBO}$. What differs is *which inequality you “pay for”* to get it.
+
+### 3.1 KL-first derivation (no Jensen required)
+
+The Adams note starts from $\mathrm{KL}(q(z)\mid p(z\mid x,\theta))$, expands it, and rearranges terms to isolate $\log p(x\mid\theta)$ on one side and the ELBO on the other. The only “inequality step” is the nonnegativity of KL.
+
+**FACT.** This route makes the “ELBO gap” explicit: the bound is tight iff $q(z)=p(z\mid x,\theta)$ almost everywhere.
+
+### 3.2 Jensen derivation (log of expectation vs expectation of log)
+
+A common teaching path (used in Yunfan’s blog post) inserts $q(z\mid x)/q(z\mid x)$ into the marginal likelihood integral, rewrites it as a log of an expectation under $q$, then applies Jensen:
+
+$$\log p(x) = \log \mathbb E_{z\sim q}!\left[\frac{p(x,z)}{q(z\mid x)}\right] \ge \mathbb E_{z\sim q}\left[\log\frac{p(x,z)}{q(z\mid x)}\right].$$
+
+That right-hand side is the **Evidence Lower Bound (ELBO)**. Yunfan’s write-up explicitly shows the identity $\log p(x)=\mathcal L + \mathrm{KL}(q\mid p)$ and then turns it into the inequality via KL nonnegativity (another equivalent route).
+
+**INTERPRETATION.** Jensen is pedagogically nice because it highlights the “swap log and integral” issue: $\log\int \cdot \neq \int \log(\cdot)$.
+
+### 3.3 A convex-duality / Hölder-flavored view
+
+A shorter, more geometric blog post (cgad.ski) frames $\log \int e^{H}$ as a convex functional whose tangent lower bounds are expectations under a Gibbs/Boltzmann distribution. After normalizing, it arrives at an inequality of the form
+
+$$v(G)\ge \mathbb E_H[G-H],$$
+
+and identifies this as the ELBO with slack equal to a KL divergence. ([cgad.ski][4])
+
+**FACT.** This perspective explicitly connects ELBO to “tangent-line” style lower bounds from convexity (and links the slack to KL). ([cgad.ski][4])
+
+**INTERPRETATION.** If you like Legendre transforms, you can read the ELBO as a variational (dual) representation of a log-partition-like quantity. If you don’t, you can ignore this entirely and still do VI.
 
 ## 4. The ELBO in the “reconstruction + regularization” form
 
