@@ -1019,7 +1019,7 @@ $$x^* = f(x^*)$$
 
 If the system is initialized at a fixed point, it will remain there for all future time steps. There is no movement at this point.
 
-Remark/Intuition: Geometric View of Fixed Points Geometrically, a fixed point is simply the intersection of the function graph $y = f(x)$ and the bisectrix $y=x$. At this specific point, the input to the function is exactly equal to its output, satisfying the definition $x^* = f(x^*)$.
+Remark/Intuition: Geometric View of Fixed Points Geometrically, a fixed point is simply the intersection of the function graph $y = f(x)$ and the bisectrix $y=x$. At this specific point, the input to the function is exactly equal to its output, satisfying the definition $x^{\ast} = f(x^{\ast})$.
 
 1.3.2 Algebraic Solution
 
@@ -1633,6 +1633,78 @@ $$\mathbf{x}(t) = e^{at} \begin{pmatrix} 1 & t \\ 0 & 1 \end{pmatrix} \mathbf{x}
 Notice the appearance of the linear term $t$ in the solution, a direct result of the degeneracy. In higher-dimensional degenerate systems, higher-order polynomials of $t$ can appear in the solution. This polynomial component is naturally handled by the matrix exponential formulation, highlighting its generality and power.
 
 
+A Study of Dynamical Systems and Recurrent Neural Networks
+
+Table of Contents
+
+1. Revisiting Recurrent Networks and Their Challenges
+  * 1.1. The Exploding and Vanishing Gradient Problem
+  * 1.2. Dynamical Systems Reconstruction (DSR)
+2. Piecewise Linear Recurrent Neural Networks (PL-RNNs)
+  * 2.1. Architecture and Formulation
+  * 2.2. Addressing the Gradient Problem
+  * 2.3. Inducing Stability: Line and Manifold Attractors
+  * 2.4. Learning Slow Time Constants
+3. Training PL-RNNs through Regularization
+  * 3.1. The Regularized Loss Function
+4. Benchmark Application: The Addition Problem
+  * 4.1. Task Definition
+
+
+--------------------------------------------------------------------------------
+
+
+1. Revisiting Recurrent Networks and Their Challenges
+
+This chapter provides a brief review of a fundamental challenge in training Recurrent Neural Networks (RNNs) and introduces the problem setting of Dynamical Systems Reconstruction, which motivates the advanced architectures discussed later.
+
+1.1 The Exploding and Vanishing Gradient Problem
+
+Remark/Intuition
+
+When training Recurrent Neural Networks using gradient descent, the primary objective is to minimize a loss function that quantifies the difference between the network's predictions and the true observed data. A common choice for this is the mean squared error over a time series.
+
+The process of backpropagation through time, which is necessary to compute the gradients for an RNN, involves the chain rule. This results in a long product of Jacobian matrices, each representing the derivative of the latent state at one time step with respect to the latent state at the preceding time step.
+
+The core of the exploding and vanishing gradient problem lies in this product. If the magnitudes (norms) of these Jacobian matrices are consistently greater than one, their product will grow exponentially, leading to an "exploding" gradient. Conversely, if their magnitudes are consistently less than one, the product will shrink exponentially towards zero, causing the gradient to "vanish." Both scenarios severely impede the network's ability to learn long-term dependencies in the data, as the influence of past states on the current loss becomes either overwhelmingly large or negligible.
+
+Definition: Standard Loss Function
+
+The optimization is typically performed on a loss function, $\mathcal{L}$, calculated as the sum of squared differences between the observed time series values, $X_t$, and the estimated values, $\hat{X}_t$, produced by the network's decoder or observation function.
+
+$$\mathcal{L} = \sum_{t=1}^{T} \|X_t - \hat{X}_t\|^2$$
+
+When minimizing this loss via gradient descent, we encounter terms derived from the chain rule involving products of Jacobians of the latent state transition function, $f$:
+
+$$\frac{\partial z_t}{\partial z_{t-k}} = \frac{\partial z_t}{\partial z_{t-1}} \frac{\partial z_{t-1}}{\partial z_{t-2}} \cdots \frac{\partial z_{t-k+1}}{\partial z_{t-k}}$$
+
+These products are the source of the exploding and vanishing gradient problem.
+
+1.2 Dynamical Systems Reconstruction (DSR)
+
+Remark/Intuition
+
+Dynamical Systems Reconstruction (DSR) is the process of inferring the underlying mathematical model that generated an observed time series. The core assumption is that the data we collect is the product of some unknown, underlying dynamical system. We do not observe the true state of this system directly but rather through a measurement or observation function.
+
+The goal of DSR is to use the observed time series data, $X_t$, to find a parameterized function, $f_\lambda$, that serves as a good approximation of the system's true, unknown flow operator. Simultaneously, we often need to estimate the observation function, $g_\lambda$, that maps the system's internal states to the measurements we can see. In the context of machine learning, an RNN is a natural candidate for this task: the network's recursive update rule acts as the approximate flow operator, and its output layer (or decoder) acts as the approximate observation function.
+
+Definition: The DSR Setup
+
+The problem of Dynamical Systems Reconstruction is formally defined by the following components:
+
+1. Data Generating System: An unknown system whose state evolves over time according to a deterministic or stochastic rule. This evolution is governed by an unknown flow operator, $F$.
+2. Observation Function: We do not have direct access to the true state of the system. Instead, we observe it through an unknown measurement function, $G$.
+3. Observed Time Series: The sequence of measurements collected over time forms the time series data, denoted as $X_t$, for a duration of length $T$.
+4. Modeling Goal: The objective is to estimate a parameterized function, $f_\lambda$, that approximates the true flow operator F, and a parameterized function, $g_\lambda$, that approximates the true observation function $G$. The parameters, denoted collectively by $\lambda$, are learned from the observed data $X_t$.
+
+In the RNN framework, this translates to:
+
+* The latent state update is an approximation of the flow operator: $z_t = f_\lambda(z_{t-1}, s_t)$, where $s_t$ are potential external inputs.
+* The network output is generated by the observation function (decoder): $\hat{X}_t = g_\lambda(z_t)$.
+
+The overall aim is to estimate the functions $f_\lambda$ and $g_\lambda$ from the data.
+
+
 A Study Book on Dynamical Systems and Machine Learning
 
 Table of Contents
@@ -1686,20 +1758,20 @@ Consider two dynamical systems, $D$ and $D^*$.
   * $\mathbb{R}$ is the set of time.
   * $\mathcal{R} \subseteq \mathbb{R}^m$ is an open set representing the state space.
   * $\phi$ is the flow operator that governs the system's evolution.
-2. Let $D^* = (\mathbb{R}, \mathcal{R}^*, \phi^*)$ be the candidate reconstruction (e.g., a trained RNN), where:
+2. Let $D^{\ast} = (\mathbb{R}, \mathcal{R}^{\ast}, \phi^{\ast})$ be the candidate reconstruction (e.g., a trained RNN), where:
   * $\mathbb{R}$ is the set of time.
-  * $\mathcal{R}^* \subseteq \mathbb{R}^m$ is an open set representing the model's state space.
-  * $\phi^*$ is the model's transition rule or flow operator.
+  * $\mathcal{R}^{\ast} \subseteq \mathbb{R}^m$ is an open set representing the model's state space.
+  * $\phi^{\ast}$ is the model's transition rule or flow operator.
 
 Further, let $A$ be an attractor of the original system $D$, with a corresponding basin of attraction $B \subseteq \mathcal{R}$.
 
-We call the dynamical system $D^*$ a dynamical systems reconstruction of $D$ on the domain $B$ if the flow $\phi^*$ is topologically conjugate to the flow $\phi$ on $B$.
+We call the dynamical system $D^{\ast}$ a dynamical systems reconstruction of $D$ on the domain $B$ if the flow $\phi^{\ast}$ is topologically conjugate to the flow $\phi$ on $B$.
 
 Remark/Intuition
 
 Recall that topological conjugacy implies a deep structural equivalence between two systems. It means that there exists a homeomorphism $g: B \to \mathcal{R}^*$ (a continuous, invertible function with a continuous inverse) that maps the original state space to the reconstructed one.
 
-This conjugacy ensures that for any initial condition $x_0 \in B$, the trajectory generated by the original system, $x(t) = \phi(t, x_0)$, is topologically equivalent to the trajectory generated by the reconstructed system from the mapped initial condition, $x^*(t) = \phi^*(t, g(x_0))$. This equivalence must also preserve the parameterization by time.
+This conjugacy ensures that for any initial condition $x_0 \in B$, the trajectory generated by the original system, $x(t) = \phi(t, x_0)$, is topologically equivalent to the trajectory generated by the reconstructed system from the mapped initial condition, $x^{\ast}(t) = \phi^{\ast}(t, g(x_0))$. This equivalence must also preserve the parameterization by time.
 
 In simple terms, if a model is topologically conjugate to the real system, it has perfectly captured the qualitative structure of the dynamics—it's like a stretched or compressed, but unbroken, version of the original.
 
@@ -1740,16 +1812,16 @@ Method 1: Grid-Based Estimation (Binning)
 
 A straightforward approach, analogous to the box-counting method for fractal dimension, is to discretize the state space.
 
-1. Place a grid of K bins (or boxes) over the state space.
+1. Place a grid of $K$ bins (or boxes) over the state space.
 2. Approximate the continuous probabilities $P(x)$ by estimating the relative frequencies $\hat{p}$ of observed data points that fall into each bin.
 
 Definition: Binned KL Divergence Estimator
 
-The estimator for the KL divergence becomes a sum over the K bins:
+The estimator for the KL divergence becomes a sum over the $K$ bins:
 
 $$\hat{D}_{KL} \approx \sum_{k=1}^{K} \hat{p}_{true}(k) \log \left( \frac{\hat{p}_{true}(k)}{\hat{p}_{gen}(k)} \right)$$
 
-where $\hat{p}_{true}(k)$ is the estimated probability of the true data being in bin $k$, and $\hat{p}_{gen}(k)$ is the same for the generated data.
+where $\hat{p}\_{true}(k)$ is the estimated probability of the true data being in bin $k$, and $\hat{p}\_{gen}(k)$ is the same for the generated data.
 
 Remark/Intuition
 
@@ -1949,7 +2021,7 @@ where:
 
 * $J(z_r) = \frac{\partial f(z_r)}{\partial z_r} = \frac{\partial z_{r+1}}{\partial z_r}$ is the Jacobian matrix of the map $f$ evaluated at state $z_r$.
 * The product $\prod_{r=0}^{T-2} J(z_r)$ represents the accumulated linearization of the dynamics over $T-1$ steps.
-* $\lvert \cdot \rvert$ denotes a matrix norm, such as the spectral norm, which yields the maximum singular value. Taking the maximum singular value gives us the exponent corresponding to the fastest rate of expansion.
+* $\|\| \cdot \|\|$ denotes a matrix norm, such as the spectral norm, which yields the maximum singular value. Taking the maximum singular value gives us the exponent corresponding to the fastest rate of expansion.
 
 Remark/Intuition: The Product of Jacobians
 
@@ -2001,9 +2073,8 @@ By comparing the definitions, the connection becomes strikingly clear:
 
 | Concept                | Defining Formula                                                                 | Key Component           |
 |------------------------|-----------------------------------------------------------------------------------|-------------------------|
-| Max. Lyapunov Exponent | $\lambda_{max} = \lim_{T \to \infty} \frac{1}{T} \log \left| \prod_{r=0}^{T-2} J(z_r) \right|$ | Product of Jacobians   |
+| Max. Lyapunov Exponent | $\lambda_{max} = \lim_{T \to \infty} \frac{1}{T} \log \lvert \prod_{r=0}^{T-2} J(z_r) \rvert$ | Product of Jacobians   |
 | Loss Gradient Term     | $\frac{\partial L_t}{\partial z_r} = \frac{\partial L_t}{\partial z_t} \left( \prod_{k=r}^{t-1} J(z_k) \right)$ | Product of Jacobians   |
-
 
 Remark/Intuition: The Deep Connection
 
@@ -2265,7 +2336,7 @@ $$\tilde{z}_t = (1 - \alpha) f_{\theta}(\tilde{z}_{t-1}) + \alpha \hat{z}_t$$
 where:
 
 * $\tilde{z}_t$ is the new, "controlled" state at time $t$.
-* $f_{\theta}(\tilde{z}_{t-1})$ is the one-step forward propagation of the previous state using the learned dynamics model $f_{\theta}$.
+* $f_{\theta}(\tilde{z}\_{t-1})$ is the one-step forward propagation of the previous state using the learned dynamics model $f_{\theta}$.
 * $\hat{z}_t$ is the latent state estimated from the real data observation $x_t$ at time $t$, typically obtained by inverting a decoder model.
 * $\alpha$ is a weighting parameter between 0 and 1 that balances the influence of the model's internal dynamics and the guidance from the real data.
 
@@ -2277,21 +2348,19 @@ Derivation: The Product Series of Jacobians
 
 To understand how to choose $\alpha$, we must analyze the product series of Jacobians, which governs gradient flow through time. The Jacobian of the map from $\tilde{z}_{t-1}$ to $\tilde{z}_t$ is crucial.
 
-Let's compute the derivative of $\tilde{z}_t$ with respect to $\tilde{z}_{t-1}$:
+Let's compute the derivative of $\tilde{z}\_t$ with respect to $\tilde{z}\_{t-1}$:
 
 $$J_t = \frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}}$$
-
 
 Applying the chain rule to the definition of $\tilde{z}_t$:
 
 $$\frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}} = \frac{\partial}{\partial \tilde{z}_{t-1}} \left[ (1 - \alpha) f_{\theta}(\tilde{z}_{t-1}) + \alpha \hat{z}_t \right]$$
 
-
-Since $\hat{z}_t$ is derived directly from the data $x_t$ and does not depend on the previous model state $\tilde{z}_{t-1}$, its derivative is zero. This leaves:
+Since $\hat{z}_t$ is derived directly from the data $x_t$ and does not depend on the previous model state $\tilde{z}\_{t-1}$, its derivative is zero. This leaves:
 
 $$J_t = (1 - \alpha) \frac{\partial f_{\theta}(\tilde{z}_{t-1})}{\partial \tilde{z}_{t-1}}$$
 
-Let's call the Jacobian of the underlying dynamics model $G_t = \frac{\partial f_{\theta}(\tilde{z}_{t-1})}{\partial \tilde{z}_{t-1}}$. Then, the Jacobian of the controlled system is simply:
+Let's call the Jacobian of the underlying dynamics model $G_t = \frac{\partial f_{\theta}(\tilde{z}\_{t-1})}{\partial \tilde{z}\_{t-1}}$. Then, the Jacobian of the controlled system is simply:
 
 $$J_t = (1 - \alpha) G_t$$    
 
