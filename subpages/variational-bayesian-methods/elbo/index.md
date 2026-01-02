@@ -173,11 +173,11 @@ $$\mathrm{KL}(q\| p)=\int q(z)\log\frac{q(z)}{p(z)}dz.$$
 
 ## 7. Reverse KL geometry and “mode-seeking” behavior
 
-<!-- Yunfan’s blog spends time on intuition for the *direction* of KL used in standard VI, i.e., $\mathrm{KL}(q\|\|p)$ rather than $\mathrm{KL}(p\|\|q)$. The blog describes a “zero-forcing” effect: minimizing reverse KL penalizes placing mass where the target posterior is near zero, encouraging $q$ to sit under prominent modes. The variational posterior $q_{\phi}(z\mid x)$ is prevented from spanning the whole space relative to the true posterior $p(z\mid x)$. Consider the case where the denominator in $\mathrm{KL}(q_{\pih}(z\mid x)\|\|p(z\mid x))=\int q_{\pih}(z\mid x)\log\frac{q(z\mid x)}{p(z\mid x)}dz$ is zero, the value of $q_{\phi}(z\mid x)$ has to be zero as well otherwise the KL divergence goes to infinity. -->
+<!-- Yunfan’s blog spends time on intuition for the *direction* of KL used in standard VI, i.e., $\mathrm{KL}(q\|\|p)$ rather than $\mathrm{KL}(p\|\|q)$. The blog describes a “zero-forcing” effect: minimizing reverse KL penalizes placing mass where the target posterior is near zero, encouraging $q$ to sit under prominent modes. The variational posterior $q_{\phi}(z\mid x)$ is prevented from spanning the whole space relative to the true posterior $p(z\mid x)$. Consider the case where the denominator in $\mathrm{KL}(q_{\phi}(z\mid x)\|\|p(z\mid x))=\int q_{\phi}(z\mid x)\log\frac{q(z\mid x)}{p(z\mid x)}dz$ is zero, the value of $q_{\phi}(z\mid x)$ has to be zero as well otherwise the KL divergence goes to infinity. -->
 
 The write-up characterizes reverse KL as tending toward “zero-forcing” behavior (a common shorthand for its asymmetry).
 
-This suggests that $q_\phi(z\mid x)$ cannot assign probability mass outside the support of the true posterior $p(z\mid x)$. If the denominator in $\mathrm{KL}(q_{\pih}(z\mid x)\|\|p(z\mid x))=\int q_{\pih}(z\mid x)\log\frac{q(z\mid x)}{p(z\mid x)}dz$ is zero, then $q_\phi(z\mid x)$ must also be zero; otherwise the KL divergence diverges. The figure illustrates this: the left panel’s green region corresponds to $\frac{q_\phi(z\mid x)}{p(z\mid x)}=0$, and the right panel’s red region corresponds to $\frac{q_\phi(z\mid x)}{p(z\mid x)}=\infty$. In short, reverse KL is *zero-forcing*, driving $q_\phi(z\mid x)$ to lie within (and be “squeezed” under) $p(z\mid x)$.
+This suggests that $q_\phi(z\mid x)$ cannot assign probability mass outside the support of the true posterior $p(z\mid x)$. If the denominator in $\mathrm{KL}(q_{\phi}(z\mid x)\|\|p(z\mid x))=\int q_{\phi}(z\mid x)\log\frac{q(z\mid x)}{p(z\mid x)}dz$ is zero, then $q_\phi(z\mid x)$ must also be zero; otherwise the KL divergence diverges. The figure illustrates this: the left panel’s green region corresponds to $\frac{q_\phi(z\mid x)}{p(z\mid x)}=0$, and the right panel’s red region corresponds to $\frac{q_\phi(z\mid x)}{p(z\mid x)}=\infty$. In short, reverse KL is *zero-forcing*, driving $q_\phi(z\mid x)$ to lie within (and be “squeezed” under) $p(z\mid x)$.
 
 <figure>
   <img src="{{ '/assets/images/notes/variational-bayesian-methods/direction_kl_divergence.png' | relative_url }}" alt="a" loading="lazy">
@@ -188,12 +188,12 @@ This suggests that $q_\phi(z\mid x)$ cannot assign probability mass outside the 
 
 In this context, **“zero-forcing”** means:
 
-> **When you minimize the reverse KL** $\mathrm{KL}(q\mid p)$, the optimization **strongly penalizes** any place where $q(z)$ puts probability mass but $p(z)=0$.
+> **When you minimize the reverse KL** $\mathrm{KL}(q\|\| p)$, the optimization **strongly penalizes** any place where $q(z)$ puts probability mass but $p(z)=0$.
 > So the safest way to reduce the objective is for $q$ to **set its density to (near) zero** in those regions.
 
 Why? Because reverse KL is
 
-$$\mathrm{KL}(q\|\|p)=\int q(z)\log\frac{q(z)}{p(z)}dz.$$
+$$\mathrm{KL}(q\|p)=\int q(z)\log\frac{q(z)}{p(z)}dz.$$
 
 If there’s a region where $p(z)=0$ but $q(z)>0$, then $\log\frac{q}{p}=\log(\infty)=\infty$, and the KL becomes **infinite**. So the optimizer “forces” $q(z)$ to be **zero** wherever $p(z)$ is zero (or extremely small).
 

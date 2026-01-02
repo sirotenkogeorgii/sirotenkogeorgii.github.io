@@ -206,7 +206,7 @@ A key insight is that any higher-order ODE can be rewritten as a system of first
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Conversion of Higher-Order ODEs)</span></p>
 
-An $m^{th}$-order one-dimensional ODE of the form $F(\frac{d^m x}{dt^m}, \dots, \frac{dx}{dt}, x, t) = 0$ can always be rewritten as a system of $m$ coupled first-order ODEs in an $m$-dimensional state space.
+An $n^{th}$-order one-dimensional ODE of the form $F(\frac{d^n x}{dt^n}, \dots, \frac{dx}{dt}, x, t) = 0$ can always be rewritten as a system of $m$ coupled first-order ODEs in an $n$-dimensional state space.
 
 </div>
 
@@ -238,7 +238,7 @@ Linear systems are a cornerstone of dynamical systems theory. While they don't e
 1. They are one of the few classes of systems that can be solved completely analytically.
 2. The behavior of a nonlinear system in the close vicinity of an equilibrium point can often be accurately approximated by a linear system.
 
-### The One-Dimensional Case: $$\dot{x} = ax$$
+### The One-Dimensional Case: $\dot{x} = ax$
 
 Let's analyze the simplest linear system, a single variable whose rate of change is proportional to its value, with an initial condition $x(0) = x_0$.
 
@@ -297,7 +297,7 @@ The point $x=0$ is an **equilibrium point** (or **fixed point**) because if the 
 
 </div>
 
-### Higher-Dimensional Linear Systems: $$\dot{x} = Ax$$
+### Higher-Dimensional Linear Systems: $\dot{x} = Ax$
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear vector field, Non-linear trajectories)</span></p>
@@ -317,7 +317,7 @@ $$A \sim \begin{pmatrix} \lambda_1 & -1 \\ 1 & -0.2 \end{pmatrix}$$
 
 </div>
 
-Now we consider a system of $m$ coupled linear ODEs, where $x \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix. 
+Now we consider a system of $n$ coupled linear ODEs, where $x \in \mathbb{R}^n$ and $A$ is an $n \times n$ matrix. 
 
 $$\dot{x} = Ax, \quad x(0) = x_0$$
 
@@ -325,7 +325,7 @@ $$\dot{x} = Ax, \quad x(0) = x_0$$
 
 To find the solution, we can use an ansatz inspired by the 1D case, proposing a solution of a similar exponential form.
 
-1. **Propose a solution form**, where $v$ is a constant vector and $\lambda$ is a scalar: 
+1. **Propose a solution form**, where $v$ is a constant vector (initial position, $x(0)$) and $\lambda$ is a scalar: 
     
   $$x(t) = v e^{\lambda t}$$
   
@@ -342,19 +342,61 @@ To find the solution, we can use an ansatz inspired by the 1D case, proposing a 
   
   $$\lambda v = Av$$
 
-This is the fundamental **eigenvalue problem**. To find the solutions to our differential equation, we need to find the **eigenvalues** $\lambda$ and corresponding **eigenvectors ($v$)** of the matrix $A$.
+This is the fundamental **eigenvalue problem**. To find the solutions to our differential equation, we need to find the **eigenvalues** $\lambda$ and corresponding **eigenvectors $v$** of the matrix $A$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What this calculation actually proves)</span></p>
+
+This calculation actually proves the following statement:
+
+> If $v\neq 0$ and $(\lambda,v)$ is an eigenpair of $A$ (i.e. $Av=\lambda v$), then
+> 
+> $$x(t)=v e^{\lambda t}$$
+> 
+> is a solution of $\dot{x}=Ax$.
+
+So it's a **verification**: you propose a form and check it satisfies the ODE under a condition, which turns into the eigenvalue problem.
+
+It does **not** prove that *every* solution has that form. It only produces a family of solutions (one per eigenpair, when they exist).
+
+</div>
 
 **The General Solution**
 
-Assuming the matrix $A$ has $m$ distinct eigenvalues $\lambda_1, \dots, \lambda_m$ with corresponding eigenvectors $v_1, \dots, v_m$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
+We showed that each eigenpair $(\lambda_i, v_i)$ of $A$ generates a solution of the system: if the initial condition is an eigenvector, $x(0)=v_i$, then
 
-$$x(t) = \sum_{i=1}^{m} c_i v_i e^{\lambda_i t}$$
+$$x(t)=v_i,e^{\lambda_i t}$$
+
+satisfies $\dot x = Ax$.
+
+If $A$ has $n$ linearly independent eigenvectors, then these vectors form a basis of the state space. Consequently, any initial state $x_0=x(0)$ can be written as a linear combination of eigenvectors:
+
+$$x_0=\sum_{i=1}^n c_i v_i.$$
+
+Because the system is linear, it preserves superposition: the derivative of a linear combination of solutions is the same linear combination of their derivatives. Indeed, using $Av_i=\lambda_i v_i$,
+
+$$A\Big(\sum_{i=1}^n c_i v_i\Big)=\sum_{i=1}^n c_i Av_i=\sum_{i=1}^n c_i \lambda_i v_i.$$
+
+Therefore, the solution starting from $x_0$ is obtained by summing the individual eigenvector solutions with the same coefficients:
+
+$$x(t)=\sum_{i=1}^n c_i v_i e^{\lambda_i t}.$$
+
+This gives the general solution, with the constants $c_i$ chosen to match the initial condition.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(General Solution of Linear Systems)</span></p>
+
+Assuming the matrix $A$ has $n$ distinct eigenvalues $\lambda_1, \dots, \lambda_n$ with corresponding eigenvectors $v_1, \dots, v_n$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
+
+$$x(t) = \sum_{i=1}^{n} c_i v_i e^{\lambda_i t}$$
 
 The coefficients $c_i$ are determined by the initial condition $x(0) = x_0$:
 
-$$x_0 = \sum_{i=1}^{m} c_i v_i$$
+$$x_0 = \sum_{i=1}^{n} c_i v_i$$
 
 The behavior of the system is a superposition of simple exponential behaviors along each of the eigendirections.
+
+</div>
 
 **Solution with Complex Eigenvalues**
 
@@ -368,6 +410,13 @@ We can rewrite the exponential term for a complex eigenvalue $\lambda_i = \alpha
 
 $$e^{\lambda_i t} = e^{(\alpha_i + i\omega_i)t} = e^{\alpha_i t} e^{i\omega_i t} = e^{\alpha_i t}(\cos(\omega_i t) + i\sin(\omega_i t))$$
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(General Solution of Linear Systems with Complex Eigenvalues)</span></p>
+
+Assuming the matrix $A$ has $n$ distinct **complex** eigenvalues $\lambda_1, \dots, \lambda_n$ with corresponding eigenvectors $v_1, \dots, v_n$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
+
+$$x(t) = \sum_{i=1}^{n} c_i v_i e^{\alpha_i t} (\cos(\omega_i t) + i\sin(\omega_i t))$$
+
 The solution form reveals that the system's behavior has two components:
 
 * An **exponential growth or decay** component, governed by the real part of the eigenvalue, $e^{\alpha_i t}.$
@@ -375,9 +424,10 @@ The solution form reveals that the system's behavior has two components:
 
 The overall behavior is a spiral: the system oscillates while its amplitude grows or shrinks exponentially.
 
+</div>
+
 ### A Geometric Classification of 2D Linear Equilibria
 
-The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nullclines)</span></p>
@@ -390,45 +440,177 @@ Equilibrium points must lie at the intersection of all nullclines, as this is wh
 
 </div>
 
-**Case 1: Real Eigenvalues ($\omega_1 = \omega_2 = 0$)**
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Node)</span></p>
+
+The *equilibrium point* of a linear system of ODEs is called **node** if $A$ has *two real eigenvalues*.
+
+</div>
+
+
+The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
+
+**Case 1: Node: Real Eigenvalues ($\omega_1 = \omega_2 = 0$)**
 
 * **Stable Node**: Both eigenvalues are real and negative ($\lambda_1 < \lambda_2 < 0$).
-  * **Geometry**: All trajectories move directly toward the origin. The system decays exponentially along all directions.
-  * **Time Series**: Both $x_1(t)$ and $x_2(t)$ decay exponentially to zero.
-  * **Stability**: Stable. Also called a **sink**.
+  * *Geometry*: All trajectories move directly toward the origin. The system decays exponentially along all directions.
+  * *Time Series*: Both $x_1(t)$ and $x_2(t)$ decay exponentially to zero.
+  * *Stability*: Stable. Also called a **sink**.
 * **Unstable Node**: Both eigenvalues are real and positive ($0 < \lambda_1 < \lambda_2$).
-  * **Geometry**: All trajectories move directly away from the origin. The system grows exponentially along all directions.
-  * **Time Series**: Both variables diverge exponentially.
-  * **Stability**: Unstable. Also called a **source** or **repeller**.
+  * *Geometry*: All trajectories move directly away from the origin. The system grows exponentially along all directions.
+  * *Time Series*: Both variables diverge exponentially.
+  * *Stability*: Unstable. Also called a **source** or **repeller**.
 * **Saddle Node**: Eigenvalues are real and have opposite signs ($\lambda_1 < 0 < \lambda_2$).
-  * **Geometry**: This is a critical configuration. There is one special direction (the eigenvector $v_1$ corresponding to $\lambda_1 < 0$) along which trajectories converge toward the origin. There is another special direction (the eigenvector $v_2$ corresponding to $\lambda_2 > 0$) along which trajectories diverge. All other trajectories approach the origin for a time before being swept away along the unstable direction.
-  * **Stability**: Unstable.
-  * **Manifolds**:
+  * *Geometry*: This is a critical configuration. There is one special direction (the eigenvector $v_1$ corresponding to $\lambda_1 < 0$) along which trajectories converge toward the origin. There is another special direction (the eigenvector $v_2$ corresponding to $\lambda_2 > 0$) along which trajectories diverge. All other trajectories approach the origin for a time before being swept away along the unstable direction.
+  * *Stability*: Unstable.
+  * *Manifolds*:
     * The line spanned by $v_1$ is the **stable manifold** ($E^s$): The set of all points that flow to the equilibrium.
     * The line spanned by $v_2$ is the **unstable manifold** ($E^u$): The set of all points that flow away from the equilibrium.
     * Manifolds are **invariant**: any trajectory starting on a manifold stays on that manifold forever.
 
-**Case 2: Complex Conjugate Eigenvalues ($\lambda = \alpha \pm i\omega$, with $\omega \neq 0$)**
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/real_eigen_negative.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Stable Node: For two real eigenvalues with both being smaller than zero we get a convergence to zero in each dimension. All state space trajectories converge to the origin, the stable node.</figcaption>
+</figure>
 
-* **Stable Spiral (or Focus)**: The real part is negative ($\alpha < 0$).
-  * **Geometry**: Trajectories spiral inward toward the origin.
-  * **Time Series**: Variables exhibit damped oscillations, converging to zero.
-  * **Stability**: Stable.
-* **Unstable Spiral (or Focus)**: The real part is positive ($\alpha > 0$).
-  * **Geometry**: Trajectories spiral outward, away from the origin.
-  * **Time Series**: Variables exhibit oscillations with growing amplitude.
-  * **Stability**: Unstable.
-* **Center**: The real part is exactly zero ($\alpha = 0, \lambda = \pm i\omega$).
-  * **Geometry**: This is a very special case. Trajectories are perfect, closed orbits (ellipses or circles) around the equilibrium. The state space is filled with a continuous family of these orbits.
-  * **Time Series**: Variables exhibit perfect, sustained oscillations with constant amplitude.
-  * **Stability**: Neutrally stable. A small perturbation moves the system to a new, nearby orbit; it neither returns nor diverges.
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/real_eigen_positive.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Unstable Node: For two real eigenvalues with both being lager than zero we get a divergence in each dimension. All state space trajectories diverge, except the one starting in origin, the unstable node.</figcaption>
+</figure>
 
-**Case 3: Eigenvalues with Zero Real Part**
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/real_eigen_positive_negative.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Saddle Node: For two real eigenvalues with one being lager and the other being smaller than zero we get a convergence in the dimension which holds the eigenvalue smaller than zero and divergence in the other. The state space trajectories behave accordingly. The dynamical system has a saddle node in the origin.</figcaption>
+</figure>
 
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Attractor or Manifold)</span></p>
+
+If **some eigenvalues equal zero, attractors (manifolds) exist**. These will be introduced in subsequent chapters.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Spiral Point)</span></p>
+
+The *equilibrium point* of a linear system of ODEs is called **spiral point** if $A$ *has complex eigenvalues*.
+
+</div>
+
+**Case 2: Spiral: Complex Conjugate Eigenvalues ($\lambda = \alpha \pm i\omega$, with $\omega \neq 0$)**
+
+* **Stable Spiral (or Focus)**: The real parts of both eigenvalues are negative ($\alpha < 0$).
+  * *Geometry*: Trajectories spiral inward toward the origin.
+  * *Time Series*: Variables exhibit damped oscillations, converging to zero.
+  * *Stability*: Stable.
+* **Unstable Spiral (or Focus)**: The real parts of both eigenvalues are positive ($\alpha > 0$).
+  * *Geometry*: Trajectories spiral outward, away from the origin.
+  * *Time Series*: Variables exhibit oscillations with growing amplitude.
+  * *Stability*: Unstable.
+* **Center**: The real parts of both eigenvalues are exactly zero ($\alpha = 0, \lambda = \pm i\omega$).
+  * *Geometry*: This is a very special case. Trajectories are perfect, closed orbits (ellipses or circles) around the equilibrium. The state space is filled with a continuous family of these orbits.
+  * *Time Series*: Variables exhibit perfect, sustained oscillations with constant amplitude.
+  * *Stability*: Neutrally stable. A small perturbation moves the system to a new, nearby orbit; it neither returns nor diverges.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/complex_negative.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Stable Spiral: We get a damped oscillation in both dimensions. The state space trajectories are a inwards turning spirals converging to the stable spiral point at the origin.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/complex_positive.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Unstable Spiral / Focus: We get a increasing oscillation in both dimensions. The state space trajectories are a outwards turning spirals diverging from the unstable spiral point at the origin.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/complex_zero.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Center: We get an undamped oscillation in both dimensions. The state space trajectory are a circles and the origin is the center of the dynamical system.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Attractor or Manifold)</span></p>
+
+**Case $\lambda_1$, $\lambda_2$ are real and $\lambda_1 = 0 > \lambda_2$:**
+
+For two real eigenvalues with one being smaller and the other being equal to zero we get a convergence in the dimension which holds the eigenvalue smaller than zero and neither a convergence or a divergence in the other. This will be introduces as **attractor (manifold)**.
+
+</div>
+
+**Case: Some Eigenvalues with Zero Real Part**
 * **Line or Plane of Equilibria:** One eigenvalue is zero, and the others are negative (e.g., $\lambda_1 < 0$, $\lambda_2 = 0$).
-  * **Geometry**: There is an entire line (or plane in higher dimensions) of fixed points. This line is the eigenspace corresponding to $\lambda_2 = 0$. Trajectories from off this line will converge toward it along the stable eigendirections.
-  * **Stability**: Marginally stable.
-  * **Remark**: This configuration, sometimes called a **line attractor**, is crucial in neuroscience and machine learning for modeling memory. The system can be placed at any point along the line and will stay there, effectively "remembering" that state.
+  * *Geometry*: There is an entire line (or plane in higher dimensions) of fixed points. This line is the eigenspace corresponding to $\lambda_2 = 0$. Trajectories from off this line will converge toward it along the stable eigendirections.
+  * *Stability*: Marginally stable.
+  * *Remark*: This configuration, sometimes called a **line attractor**, is crucial in neuroscience and machine learning for modeling memory. The system can be placed at any point along the line and will stay there, effectively "remembering" that state.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why only real parts of eigenvalues matter)</span></p>
+
+**Why “real part” specifically?**
+
+Because for any complex $\lambda=\alpha+i\omega$,
+
+$$e^{\lambda t}=e^{(\alpha+i\omega)t}=e^{\alpha t}(\cos\omega t+i\sin\omega t),$$
+
+and the magnitude is
+
+$$\lvert e^{\lambda t}\rvert=e^{\alpha t}.$$
+
+So $\alpha=\operatorname{Re}(\lambda)$ is exactly the **growth/decay rate**.
+
+Because the solution is built from **matrix exponentials**, and exponentials with **negative real exponent** decay.
+
+**The key fact: $x(t)=e^{At}x_0$**
+
+For the linear system $\dot x=Ax$, the unique solution is
+
+$$x(t)=e^{At}x_0.$$
+
+So the long-time behavior is entirely controlled by how $e^{At}$ behaves as $t\to\infty$.
+
+**If $A$ has eigenvalues with negative real part, the exponential factors decay**
+
+1. *Diagonalizable case (clean intuition)*
+
+If $A$ is diagonalizable, $A=V\Lambda V^{-1}$ with $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_n)$. Then
+
+$$e^{At}=V e^{\Lambda t} V^{-1},\qquad e^{\Lambda t}=\mathrm{diag}(e^{\lambda_1 t},\dots,e^{\lambda_n t}).$$
+
+If $\operatorname{Re}(\lambda_i)<0$, then
+
+$$\lvert e^{\lambda_i t}\rvert = e^{\operatorname{Re}(\lambda_i)t}\to 0.$$
+
+So every eigen-direction is multiplied by a decaying factor, which forces $e^{At}x_0\to 0$ for any initial state $x_0$. (The change of basis $V,V^{-1}$ only distorts by constant factors; it doesn’t change “decays to zero” into “doesn’t decay.”)
+
+2. *Complex eigenvalues: spirals are just “oscillation × decay”*
+
+If $\lambda=\alpha\pm i\omega$, the real solutions look like
+
+$$e^{\alpha t}\big(\cos(\omega t),u + \sin(\omega t),w\big),$$
+
+for some real vectors $u,w$. The ($\cos$/$\sin$) part just rotates/oscillates, while the amplitude is scaled by $e^{\alpha t}$. If $\alpha<0$, the amplitude shrinks to 0, so trajectories spiral inward.
+
+**Even if $A$ is not diagonalizable, negative real parts still win**
+
+In general, $A$ can be put into Jordan form $A=VJV^{-1}$. Each Jordan block with eigenvalue $\lambda$ contributes terms like
+
+$$t^k e^{\lambda t}$$
+
+(for some nonnegative integer $k$). Taking magnitudes gives roughly
+
+$$t^k e^{\operatorname{Re}(\lambda)t}.$$
+
+If $\operatorname{Re}(\lambda)<0$, the exponential decay dominates any polynomial factor $t^k$, so these terms still go to 0. Hence $e^{At}\to 0$ and therefore $x(t)\to 0$.
+
+A common way to summarize this is:
+
+> If all eigenvalues satisfy $\max_i \operatorname{Re}(\lambda_i) < 0$, then there exist constants $M,\gamma>0$ such that
+> 
+> $$\lvert\lvert x(t)\rvert\rvert \le M e^{-\gamma t}\lvert\lvert x_0\rvert\rvert \quad \text{for all } t\ge 0,$$
+> 
+> so every trajectory converges to the origin exponentially fast.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hyperbolic equilibrium point, Hyperbolic Systems)</span></p>
@@ -437,344 +619,7 @@ An equilibrium point is called **hyperbolic** if none of its eigenvalues have a 
 
 </div>
 
-<!-- # Dynamical Systems Theory in Machine Learning: A Foundational Overview
-
-## Executive Summary
-
-Dynamical Systems Theory (DST) provides a rigorous mathematical framework for analyzing systems that evolve over time. This field is fundamentally concerned with the geometric and topological properties of a system's "state space," aiming to understand and predict its long-term behavior. At its core, DST models systems using either continuous-time formulations, such as systems of Ordinary Differential Equations (ODEs) of the form $ \dot{x} = f(x) $, or discrete-time formulations, such as iterative maps like $ x_{t} = f(x_{t-1}) $. The function $ f $, known as the vector field, dictates the flow of the system, guiding trajectories through the state space. A primary goal is to identify and characterize "attractors"—the sets of states, such as stable points or cycles, to which the system converges over time.
-
-### Key Connections to Machine Learning
-
-- **Optimization as a Dynamical System.** The process of training a machine learning model, such as gradient descent, can be viewed as a dynamical system where the model's parameters evolve to minimize a loss function. The minima of this function correspond to stable equilibria or attractors of the system.
-- **Recurrent Neural Networks (RNNs).** These architectures are explicitly defined as discrete-time dynamical systems. Their internal "hidden state" evolves at each time step based on the previous state and current input, making their behavior—including phenomena like memory, stability, and convergence—directly analyzable with DST.
-- **Scientific Machine Learning.** A frontier in AI involves "dynamical systems reconstruction," where the goal is to reverse-engineer the governing equations $ f(x) $ of a physical, biological, or economic system directly from observational data. Models like Neural ODEs and Physics-Informed Neural Networks are designed for this purpose, aiming to automate a core part of the scientific discovery process.
-
 ---
-
-## 1. Fundamentals of Dynamical Systems
-
-### 1.1 What is a Dynamical System?
-
-A dynamical system is a mathematical formalization for any system that evolves along a dimension, which is typically time. The theory provides a set of principles and tools to describe how a system's state changes according to a fixed rule.
-
-**Definition (Dynamical system)**: Let $I \times R \subseteq \mathbb{R} \times \mathbb{R}^n$.
-A map $\Phi : I \times R \to R$ is called a dynamical system or flow if:
-1. $\Phi(0, x) = x, \quad \forall x \in M,$
-2. $\Phi(t + s, x) = \Phi(t, \Phi(s, x)), \quad \forall s, t \in \mathbb{R}, , x \in M,$
-3. $\Phi$ is continuous in $(t, x)$.
-
-There is also a discrete formulation of a dynamical system. We will see later that a recurrent neural network is a discrete dynamical system.
-
-Dynamical systems are broadly classified into two categories based on how time is treated:
-
-**Continuous-Time Systems.** The system's state evolves continuously. These are typically described by differential equations.
-
-**Discrete-Time Systems.** The system's state evolves in discrete steps. These are described by iterative functions or maps.
-
-### 1.2 Continuous-Time Systems and Ordinary Differential Equations (ODEs)
-
-The most common representation for continuous-time dynamical systems is a system of first-order ordinary differential equations (ODEs).
-
-> **Definition: Continuous-Time Dynamical System.** A continuous-time dynamical system is often expressed in the form  
-> $$
-> \dot{x} = f(x)
-> $$  
-> where the state vector, derivative, and vector field satisfy the following:
-
-- $ x $ is the state vector, a point in a $ p $-dimensional state space, typically $ \mathbb{R}^p $. Its components are $ x = (x_1, x_2, \ldots, x_p) $.
-- $ \dot{x} $ represents the temporal derivative $ \frac{dx}{dt} $.
-- $ f(x) $ is a function, often called the vector field, that maps the state space to itself ($ f: \mathbb{R}^p \to \mathbb{R}^p $). It determines the velocity of the system's state at every point $ x $.
-
-This compact vector notation represents a system of $ p $ coupled differential equations:
-
-$$
-\begin{align*}
-\dot{x}_1 &= f_1(x_1, x_2, \ldots, x_p) \\
-\dot{x}_2 &= f_2(x_1, x_2, \ldots, x_p) \\
-&\vdots \\
-\dot{x}_p &= f_p(x_1, x_2, \ldots, x_p)
-\end{align*}
-$$
-
-While more complex systems can be described by Partial Differential Equations (PDEs), which involve derivatives with respect to multiple variables (e.g., time and space), this course will focus primarily on ODEs.
-
----
-
-## Exercises for Chapter 1
-
-1. Conceptual: Explain in your own words the relationship between a vector field, a state space, and a trajectory. Why is the uniqueness of trajectories a critical assumption in dynamical systems theory?
-2. ML Connection: A simple RNN without external input is defined by the update rule $ h_t = \tanh(W h_{t-1}) $, where $ h_t $ is the state vector and $ W $ is a weight matrix. Identify the components of this equation that correspond to the general form of a discrete-time dynamical system.
-
----
-
-## 2. Fundamental Properties and Transformations
-
-### 2.1 From Higher-Order to First-Order Systems
-
-Many physical systems are naturally described by higher-order differential equations (involving second or higher derivatives). A powerful technique allows us to convert any such system into an equivalent, larger system of first-order ODEs.
-
-> **Proposition:** Any $ m $-th order one-dimensional ODE can be rewritten as an $ m $-dimensional first-order system of ODEs.
-
-**Example: The Damped Harmonic Oscillator.** Consider the second-order ODE for a damped harmonic oscillator:
-$$\frac{d^2x}{dt^2} + a\frac{dx}{dt} + bx = 0.$$
-To convert this into a first-order system, we introduce a new set of variables. Let:
-
-- $ x_1 = x $ (position)
-- $ x_2 = \dot{x} = \frac{dx}{dt} $ (velocity)
-
-Now, we find the derivatives of these new variables:
-
-- $ \dot{x}_1 = \frac{dx_1}{dt} = \frac{dx}{dt} = x_2 $
-- $ \dot{x}_2 = \frac{dx_2}{dt} = \frac{d^2x}{dt^2} = -a\dot{x} - bx = -ax_2 - bx_1 $
-
-This gives us the equivalent two-dimensional first-order system:
-$$
-\begin{align*}
-\dot{x}_1 &= x_2 \\
-\dot{x}_2 &= -bx_1 - ax_2
-\end{align*}
-$$
-
-**Key Takeaway:** The ability to transform higher-order ODEs into first-order systems is crucial. It means that the theoretical tools developed for first-order systems like $ \dot{x} = f(x) $ are broadly applicable, and we can focus our analysis on this canonical form without loss of generality.
-
-### 2.2 Autonomous vs. Non-Autonomous Systems
-
-The vector field of a dynamical system may or may not depend explicitly on time. This distinction leads to two important classes of systems.
-
-- **Autonomous System.** The vector field depends only on the state $ x $. The governing laws of the system do not change over time.  
-  $$\dot{x} = f(x)$$
-- **Non-Autonomous System.** The vector field depends explicitly on both the state $ x $ and time $ t $. This often occurs when a system is subject to an external influence or forcing.  
-  $$\dot{x} = f(x, t)$$
-  A common example is a system with a forcing function, such as a pendulum being pushed rhythmically:  
-  $$\frac{d^2x}{dt^2} + a\frac{dx}{dt} + bx = F(t).$$
-  The function $ F(t) $ represents an external drive. In climate science, the steady increase in atmospheric CO$_2$ acts as a forcing term on the climate system.
-
-Interestingly, any non-autonomous system can be converted into an autonomous one by augmenting the state space. For a system $ \dot{x}_1 = f(x_1, t) $, we can define a new variable $ x_2 = t $. Its derivative is simply $ \dot{x}_2 = 1 $. The new autonomous system in the augmented state space $ (x_1, x_2) $ is:
-$$
-\begin{align*}
-\dot{x}_1 &= f(x_1, x_2) \\
-\dot{x}_2 &= 1
-\end{align*}
-$$
-While this mathematical trick can be convenient, it can sometimes obscure the underlying physics by treating time as just another state variable.
-
----
-
-## Exercises for Chapter 2
-
-1. Transformation: Rewrite the third-order ODE $ \frac{d^3x}{dt^3} + 2\frac{d^2x}{dt^2} - \frac{dx}{dt} + 5x = \cos(t) $ as a system of first-order ODEs. Is the resulting system autonomous or non-autonomous?
-2. Application: Convert the non-autonomous system from the previous exercise into an autonomous system using the state-space augmentation technique.
-
----
-
-## 3. Linear Dynamical Systems
-
-Linear systems are a class of dynamical systems that, despite their relative simplicity, are fundamental to the entire field. Their behavior is fully understood and can be solved analytically. Furthermore, they form the basis for analyzing the local behavior of more complex nonlinear systems.
-
-### 3.1 The Canonical Form: $ \dot{x} = Ax $
-
-A linear system of ODEs is defined by the equation
-$$\dot{x} = Ax,$$
-where $ x \in \mathbb{R}^m $ is the state vector and $ A $ is a constant $ m \times m $ matrix of coefficients. Each component equation is a linear combination of the state variables:
-$$\dot{x}_i = \sum_{j=1}^{m} A_{ij} x_j.$$
-
-### 3.2 The One-Dimensional Case: Stability of an Equilibrium
-
-The simplest case is the one-dimensional linear system
-$$\dot{x} = ax,$$
-where $ a $ is a scalar. Given an initial condition $ x(0) = x_0 $, the solution can be found by separation of variables to be
-$$x(t) = x_0 e^{at}.$$
-The point $ x = 0 $ is an equilibrium point (or fixed point), because if the system starts there ($ x_0 = 0 $), then $ \dot{x} = 0 $ and the state remains at zero for all time. The stability of this equilibrium is determined entirely by the sign of $ a $.
-
-#### Geometric Interpretation
-
-**Geometric Interpretation.** By plotting $ \dot{x} $ versus $ x $, we get a line through the origin with slope $ a $.
-
-- **Case 1: $ a > 0 $ (Unstable Equilibrium).**
-  - If $ x > 0 $, then $ \dot{x} > 0 $, and $ x $ increases. If $ x < 0 $, then $ \dot{x} < 0 $, and $ x $ decreases.
-  - Any small perturbation away from the origin results in the state moving exponentially away. This is also called a repeller or source.
-- **Case 2: $ a < 0 $ (Stable Equilibrium).**
-  - If $ x > 0 $, then $ \dot{x} < 0 $, and $ x $ decreases towards zero. If $ x < 0 $, then $ \dot{x} > 0 $, and $ x $ increases towards zero.
-  - Any perturbation results in the state returning exponentially to the origin. This is a simple point attractor or sink.
-- **Case 3: $ a = 0 $ (Neutrally or Marginally Stable).**
-  - $ \dot{x} = 0 $ for all $ x $. Every point is a fixed point.
-  - If the system is perturbed, it simply stays at its new position.
-
-| Condition | Type of Equilibrium | Behavior of $ x(t) $ |
-| --- | --- | --- |
-| $ a > 0 $ | Unstable | Exponentially diverges from $ 0 $ |
-| $ a < 0 $ | Stable | Exponentially converges to $ 0 $ |
-| $ a = 0 $ | Marginally Stable | Remains constant at $ x_0 $ |
-
-### 3.3 The Multi-Dimensional Case: The Eigenvalue Problem
-
-To solve the multi-dimensional system $ \dot{x} = Ax $, we generalize the exponential solution from the 1D case. We make an ansatz (an educated guess) that the solution has the form
-$$x(t) = v e^{\lambda t},$$
-where $ v $ is a constant vector and $ \lambda $ is a scalar. Taking the derivative with respect to time gives
-$$\dot{x}(t) = \lambda v e^{\lambda t}.$$
-Substituting both into the original ODE yields
-$$\lambda v e^{\lambda t} = A(v e^{\lambda t}).$$
-Since $ e^{\lambda t} $ is a non-zero scalar, we can cancel it from both sides, yielding the fundamental eigenvalue problem
-$$Av = \lambda v.$$
-This shows that the solutions to the linear dynamical system are constructed from the eigenvalues ($ \lambda $) and eigenvectors ($ v $) of the matrix $ A $.
-
-If the matrix $ A $ has $ m $ distinct eigenvalues $ \lambda_1, \ldots, \lambda_m $ with corresponding eigenvectors $ v_1, \ldots, v_m $, the general solution is a linear combination of these fundamental solutions:
-$$x(t) = \sum_{i=1}^{m} c_i v_i e^{\lambda_i t}.$$
-The coefficients $ c_i $ are constants determined by the system's initial condition, $ x(0) $.
-
-### 3.4 The Role of Complex Eigenvalues
-
-For a real-valued matrix $ A $, its eigenvalues can be complex. Complex eigenvalues always appear in conjugate pairs: $ \lambda = \alpha \pm i\omega $. Using Euler's formula, $ e^{i\theta} = \cos(\theta) + i\sin(\theta) $, we can analyze the solution corresponding to a complex eigenvalue pair:
-$$e^{\lambda t} = e^{(\alpha + i\omega)t} = e^{\alpha t} e^{i\omega t} = e^{\alpha t} \bigl(\cos(\omega t) + i\sin(\omega t)\bigr).$$
-This reveals that the solution has two components:
-
-1. An exponential term $ e^{\alpha t} $, controlled by the real part ($ \alpha $) of the eigenvalue. This governs the growth ($ \alpha > 0 $) or decay ($ \alpha < 0 $) of the solution's amplitude.
-2. An oscillatory term $ \cos(\omega t) + i\sin(\omega t) $, controlled by the imaginary part ($ \omega $). This governs rotation or oscillation in the state space.
-
-**Key Takeaway:** The eigenvalues of the matrix $ A $ completely determine the qualitative behavior of a linear system near its equilibrium. The real part ($ \alpha $) dictates stability (convergence or divergence), while the imaginary part ($ \omega $) dictates rotation (oscillation).
-
----
-
-## Exercises for Chapter 3
-
-1. 1D Analysis: For the system $ \dot{x} = -2x $ with $ x(0) = 5 $, write the explicit solution $ x(t) $. Is the equilibrium at $ x = 0 $ stable, unstable, or marginally stable? Sketch the trajectory $ x(t) $ versus $ t $.
-2. Eigenvalue Problem: Find the eigenvalues and eigenvectors of the matrix $ A = \begin{pmatrix} -3 & 1 \\ 2 & -2 \end{pmatrix} $. Based on the eigenvalues, what do you predict about the long-term behavior of the system $ \dot{x} = Ax $?
-
----
-
-## 4. A Taxonomy of Linear Equilibria in Two Dimensions
-
-The behavior of a two-dimensional linear system near its single equilibrium point (at the origin, assuming $ A $ is invertible) can be classified exhaustively based on the eigenvalues of the matrix $ A $.
-
-### 4.1 Nullclines and Equilibria
-
-An equilibrium point is a state $ x_{eq} $ where the system's velocity is zero: $ \dot{x} = f(x_{eq}) = 0 $. For a linear system $ \dot{x} = Ax $, this occurs at $ x = 0 $.
-
-Nullclines are curves in the state space where one component of the vector field is zero. For a 2D system, the $ x_1 $-nullcline is the set of points where $ \dot{x}_1 = 0 $, and the $ x_2 $-nullcline is where $ \dot{x}_2 = 0 $. Equilibrium points must lie at the intersection of all nullclines.
-
-### 4.2 Classification Based on Eigenvalues ($ \lambda = \alpha \pm i\omega $)
-
-The following classification provides a complete "zoo" of behaviors for 2D linear systems.
-
-#### Case 1: Real Eigenvalues ($ \omega = 0 $)
-
-| Type | Eigenvalue Condition | Description | Phase Portrait |
-| --- | --- | --- | --- |
-| Stable Node | $ \lambda_2 < \lambda_1 < 0 $ | Trajectories converge directly to the origin. The system decays exponentially along all directions. Also called a sink. | Trajectories are straight lines or curves moving inward toward the origin. |
-| Unstable Node | $ 0 < \lambda_1 < \lambda_2 $ | Trajectories diverge directly away from the origin. The system grows exponentially. Also called a source or repeller. | Trajectories are straight lines or curves moving outward from the origin. |
-| Saddle Node | $ \lambda_1 < 0 < \lambda_2 $ | Trajectories converge toward the origin along one direction (the stable manifold) and diverge away along another (the unstable manifold). | Trajectories approach the origin and then are repelled away, except for those exactly on the stable manifold. |
-
-**Stable and Unstable Manifolds.** For a saddle node, the directions of convergence and divergence are determined by the eigenvectors.
-
-- **Stable Manifold ($ E^s $).** The subspace spanned by eigenvectors whose eigenvalues have negative real parts. Trajectories starting on this manifold converge to the equilibrium.
-- **Unstable Manifold ($ E^u $).** The subspace spanned by eigenvectors with positive real parts. Trajectories on this manifold diverge. These manifolds are invariant under the flow, meaning a trajectory that starts on a manifold stays on that manifold for all time. Saddle nodes are of fundamental importance and are a key ingredient for chaotic behavior in nonlinear systems.
-
-#### Case 2: Complex Conjugate Eigenvalues ($ \omega \neq 0 $)
-
-| Type | Eigenvalue Condition | Description | Phase Portrait |
-| --- | --- | --- | --- |
-| Stable Spiral | $ \alpha < 0 $, $ \omega \neq 0 $ | Trajectories spiral inward towards the origin, corresponding to a damped oscillation in time. Also called a stable focus. | Spiraling curves that converge to the origin. |
-| Unstable Spiral | $ \alpha > 0 $, $ \omega \neq 0 $ | Trajectories spiral outward away from the origin, corresponding to a growing oscillation. Also called an unstable focus. | Spiraling curves that diverge from the origin. |
-| Center | $ \alpha = 0 $, $ \omega \neq 0 $ | Trajectories are closed, concentric orbits (ellipses) around the origin. This corresponds to a sustained, perfect oscillation. The system is neutrally stable. | A family of nested closed loops surrounding the origin. |
-
-#### Case 3: Degenerate Cases (Zero Eigenvalues)
-
-| Type | Eigenvalue Condition | Description | ML/Neuroscience Connection |
-| --- | --- | --- | --- |
-| Line Attractor | $ \lambda_1 < 0 $, $ \lambda_2 = 0 $ | The system has a line of fixed points. Trajectories converge to this line. Any point on the line is a marginally stable equilibrium. In higher dimensions, this generalizes to plane or hyperplane attractors. | This structure is hypothesized to be a mechanism for memory in neural networks and the brain. Information can be stored by placing the system's state at a specific point on the attractor, where it will remain. |
-
-### 4.3 Hyperbolic Systems
-
-An equilibrium point is called hyperbolic if none of the eigenvalues of the matrix $ A $ have a real part equal to zero ($ \alpha_i \neq 0 $ for all $ i $). This means the system has no centers and no lines or planes of fixed points. The behavior near a hyperbolic equilibrium is structurally stable—small changes to the matrix $ A $ do not qualitatively change the type of equilibrium.
-
----
-
-## Exercises for Chapter 4
-
-1. Classification: For each of the following matrices $ A $, determine the eigenvalues and classify the type of equilibrium at the origin ($ x = 0 $) for the system $ \dot{x} = Ax $. Sketch a rough phase portrait for each.  
-   a) $ A = \begin{pmatrix} -1 & -4 \\ 1 & -1 \end{pmatrix} $  
-   b) $ A = \begin{pmatrix} 1 & 1 \\ 4 & 1 \end{pmatrix} $  
-   c) $ A = \begin{pmatrix} 0 & 2 \\ -2 & 0 \end{pmatrix} $
-2. Manifolds: Consider a system with eigenvalues $ \lambda_1 = -2 $ and $ \lambda_2 = 1 $. Describe the behavior of a trajectory that starts very close to, but not exactly on, the stable manifold.
-
----
-
-## Nonlinear Systems
-
-### One-dimensional nonlinear ODEs
-
-### Multi-dimensional nonlinear ODEs
-
-$\text{Remark:}$ TODO: put remark between two lotka-volterras
-
-$\text{Example (Lotka-Volterra):}$ ...
-
-$\text{Definition (Homeomorphism):}$ Let $X$ be a topoligical space and $A,B \subseteq X$. A map $h: A \to B$ is called homeomorphism, if
-
-* $h$ is bijective and continuous.
-* the inverse $h^{-1}: B \to A$ is continuous.
-
-Two topological spaces $A$ and $B$ are homeomorphic if there is a homeomorphism $h: A \to B$.
-
-> Note: Homeomorphism is also called **a continuous deformation with a continuous inverse**, or **topological isomorphism**, or **bicontinuous function**. Examples: A square and a circle are homeomorphic because one can be continuously deformed into the other. Non-examples: A line segment cannot be continuously deformed into a point, so this is not a homeomorphism. Similarly, a sphere and a torus are not homeomorphic because they have different topological properties (e.g., the number of holes) and cannot be continuously deformed into each other. 
-
-<div class="accordion">
-  <details>
-    <summary>Topological Space</summary>
-    <p>
-    A topological space is a set whose elements are called points, along with an additional structure called a topology, which can be defined as a set of neighbourhoods for each point that satisfy some axioms formalizing the concept of closeness. There are several equivalent definitions of a topology, the most commonly used of which is the definition through open sets.
-    </p>
-    <ul>
-      <li>Each head can move at most <code>d</code> squares.</li>
-      <li>Starting anywhere inside the current block, after <code>d</code> moves the head can only be in the same block or one of its immediate neighbors (it can’t skip two blocks).</li>
-      <li>Moreover, M can read and write anywhere it visits during those <code>d</code> moves. That set of positions is contained within the current block plus at most one block to the left and one to the right.</li>
-    </ul>
-    <p><strong>Definition via neighbourhoods</strong></p>
-    <p><strong>Definition via open sets</strong></p>
-    <p><strong>Definition via closed sets</strong></p>
-    <p><strong>Examples of topologies</strong></p>
-    <p><strong>Examples of topological spaces</strong></p>
-    <p>... Every manifold has a natural topology since it is locally Euclidean. Similarly, every simplex and every simplicial complex inherits a natural topology from. ...</p>
-    <p><strong>Classification of topological spaces</strong></p>
-    <p>Topological spaces can be broadly classified, up to homeomorphism, by their topological properties(?). A topological property is a property of spaces that is invariant under homeomorphisms. To prove that two spaces are not homeomorphic it is sufficient to find a topological property not shared by them. Examples of such properties include connectedness, compactness, and various separation axioms. For algebraic invariants see algebraic topology.</p>
-
-  </details>
-</div> -->
-
-
-A Study Book on Dynamical Systems
-
-Table of Contents
-
-* Chapter 1: General Solutions for Linear Systems
-  * 1.1 Recap: The Eigenvector-Based Solution
-  * 1.2 A More General Approach: The Fundamental Theorem
-    * Similar Matrices and Topological Equivalence
-    * Canonical Forms for 2x2 Systems
-    * The Fundamental Theorem of Linear Dynamical Systems
-    * The Matrix Exponential
-    * Equivalence of Solutions for Diagonalizable Systems
-    * The Degenerate Case: Repeated Eigenvalues
-* Chapter 2: Inhomogeneous and Non-Autonomous Systems
-  * 2.1 Affine Systems: Shifting the Equilibrium
-  * 2.2 Non-Autonomous Systems: Time-Dependent Forcing
-* Chapter 3: Discrete-Time Dynamics: Linear Maps
-  * 3.1 Introduction to Linear Maps
-  * 3.2 The Scalar Case: Analysis and Geometric Intuition
-  * 3.3 Fixed Points: Stability and Classification
-  * 3.4 Higher-Dimensional Linear Maps
-* Chapter 4: The Bridge Between Continuous and Discrete Systems
-  * 4.1 The Flow Operator and Sampling
-  * 4.2 Equivalence of Linear ODEs and Linear Maps
-  * 4.3 Interlude: Applications in Machine Learning and Neuroscience
-* Chapter 5: Formal Foundations of Dynamical Systems
-  * 5.1 Formal Definition of a Dynamical System and the Flow Operator
-  * 5.2 Trajectories and Orbits
-  * 5.3 Existence and Uniqueness of Solutions
-
-
---------------------------------------------------------------------------------
-
 
 Chapter 1: General Solutions for Linear Systems
 
@@ -824,17 +669,20 @@ For any $2 \times 2$ matrix, it can be shown that it is similar to one of three 
    
    $$A \sim \begin{pmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{pmatrix} $$
 
-  * Dynamics: This form corresponds to dynamics without an oscillatory component, such as saddles and stable/unstable nodes.
-2. Complex Conjugate Eigenvalues: The matrix is similar to a form representing rotation and scaling. 
+  **Eigenvalues:** has the two real eigenvalues $λ_1 = a$ and $λ_2 = b$.
+  **Dynamics:** This form corresponds to dynamics without an oscillatory component, such as saddles and stable/unstable nodes.
+1. Complex Conjugate Eigenvalues: The matrix is similar to a form representing rotation and scaling. 
    
    $$A \sim \begin{pmatrix} a & -b \\ b & a \end{pmatrix}$$
 
-  * Dynamics: Eigenvalues for such a matrix come in complex conjugate pairs. This form can be decomposed into a scaling component (related to $a$) and a rotational component (related to $b$). This gives rise to spirals (stable if $a<0$, unstable if $a>0$) and centers (if $a=0$).
-3. Repeated Eigenvalues (Degenerate Case): This is the case our previous solution did not cover. The matrix is similar to the form:
+  **Eigenvalues:** has the two complex eigenvalues $λ_{1,2} = a\pm ib$.
+  **Dynamics:** Eigenvalues for such a matrix come in complex conjugate pairs. This form can be decomposed into a scaling component (related to $a$) and a rotational component (related to $b$). This gives rise to spirals (stable if $a<0$, unstable if $a>0$) and centers (if $a=0$).
+1. Repeated Eigenvalues (Degenerate Case): This is the case our previous solution did not cover. The matrix is similar to the form:
    
   $$A \sim \begin{pmatrix} a & 1 \\ 0 & a \end{pmatrix}$$
 
-  * Dynamics: This matrix has one eigenvalue, $a$, with a multiplicity of two. However, it only has one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space; instead, two eigenvector directions align. The dynamics ultimately collapse into a one-dimensional space, with all trajectories aligning with the single eigenvector direction. The specific path of convergence or divergence depends on the initial conditions and the value of $a$.
+  **Eigenvalues:** has only the one eigenvalue $λ_1 = a$.
+  **Dynamics:** This matrix has one eigenvalue, $a$, with a multiplicity of two. However, it only has one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space; instead, two eigenvector directions align. The dynamics ultimately collapse into a one-dimensional space, with all trajectories aligning with the single eigenvector direction. The specific path of convergence or divergence depends on the initial conditions and the value of $a$.
 
 
 --------------------------------------------------------------------------------
