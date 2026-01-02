@@ -675,7 +675,7 @@ If a time series is non-stationary, it must often be transformed before standard
 * **High-pass filtering:** Transforming the series from the time domain to the frequency domain to remove low-frequency (trending) components.
 * **Differencing:** Creating a new series by taking the difference between consecutive observations, e.g., $y_t = x_t - x_{t-1}$.
 * **Detrending:** Fitting a deterministic trend (e.g., a linear function of time) and subtracting it from the data. For a linear trend $y_t = \beta_0 + \beta_1 t$, the detrended series is:
-    $x_t^* = x_t - (\hat{\beta}_0 + \hat{\beta}_1 t)$
+    $x_t^{\ast} = x_t - (\hat{\beta}_0 + \hat{\beta}_1 t)$
 
 ---
 
@@ -2881,9 +2881,7 @@ This chapter introduces the fundamental concepts of nonlinear dynamical systems,
 
 A VAR(1) model, $X_t = c + AX_{t-1}$, is a Linear Dynamical System (LDS). We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
 
-$$
-X_t = F(X_{t-1})
-$$
+$$X_t = F(X_{t-1})$$
 
 This defines a nonlinear dynamical system. Understanding the behavior of simple nonlinear systems provides the foundation for analyzing more complex models.
 
@@ -2895,35 +2893,33 @@ Let's start with a simple first-order nonlinear difference equation: $x_{t+1} = 
 
 A central concept is the fixed point (FP), a state where the system remains unchanged over time.
 
-- **Definition:** A point $x^*$ is a fixed point of the map $f$ if it satisfies the equation:
+- **Definition:** A point $x^{\ast}$ is a fixed point of the map $f$ if it satisfies the equation:
   
-  $$
-  x^* = f(x^*)
-  $$
+  $$x^{\ast} = f(x^{\ast})$$
 
-- **Example (Linear AR(1)):** For $f(x) = \alpha x + c$, the fixed point equation is $x^* = \alpha x^* + c$.
-  - Solving for $x^*: x^*(1-\alpha) = c$, which gives $x^* = \dfrac{c}{1-\alpha}$ (provided $\alpha \neq 1$).
+- **Example (Linear AR(1)):** For $f(x) = \alpha x + c$, the fixed point equation is $x^{\ast} = \alpha x^{\ast} + c$.
+  - Solving for $x^{\ast}: x^{\ast}(1-\alpha) = c$, which gives $x^{\ast} = \dfrac{c}{1-\alpha}$ (provided $\alpha \neq 1$).
 
 #### Stability of Fixed Points
 
 The behavior of the system near a fixed point determines its stability.
 
 - A stable fixed point, or attractor, is a point such that trajectories starting in its vicinity converge to it.
-  - Formally, $x^*$ is an attractor if there exists a set $C$, called the basin of attraction, such that for any initial condition $x_0 \in C$, $\lim_{t \to \infty} x_t = x^*$.
+  - Formally, $x^{\ast}$ is an attractor if there exists a set $C$, called the basin of attraction, such that for any initial condition $x_0 \in C$, $\lim_{t \to \infty} x_t = x^{\ast}$.
 - An unstable fixed point, or repeller, is a point from which nearby trajectories diverge.
 
-For the linear system $x_{t+1} = \alpha x_t + c$, the fixed point $x^*$ is:
+For the linear system $x_{t+1} = \alpha x_t + c$, the fixed point $x^{\ast}$ is:
 
-- Stable if $\lvert\alpha\rvert < 1$. Trajectories converge to $x^*$.
-- Unstable if $\lvert\alpha\rvert > 1$. Trajectories diverge from $x^*$.
+- Stable if $\lvert\alpha\rvert < 1$. Trajectories converge to $x^{\ast}$.
+- Unstable if $\lvert\alpha\rvert > 1$. Trajectories diverge from $x^{\ast}$.
 - Neutrally stable if $\lvert\alpha\rvert = 1$.
 
 #### Cycles
 
 A system may not settle on a single point but may instead visit a set of points periodically.
 
-- **$p$-cycle:** A set of $p$ distinct points $\lbrace x_1^*, \dots, x_p^*\rbrace$ that the system visits in sequence: $f(x_1^*^*) = x_2^*, \dots, f(x_p^*) = x_1^*$.
-- A point on a $p$-cycle is a fixed point of the $p$-th iterated map, $f^p(\cdot)$. That is, $x^* = f^p(x^*)$.
+- **$p$-cycle:** A set of $p$ distinct points $\lbrace x_1^{\ast}, \dots, x_p^{\ast}\rbrace$ that the system visits in sequence: $f(x_1^{\ast}) = x_2^{\ast}, \dots, f(x_p^{\ast}) = x_1^{\ast}$.
+- A point on a $p$-cycle is a fixed point of the $p$-th iterated map, $f^p(\cdot)$. That is, $x^{\ast} = f^p(x^{\ast})$.
 - **Example (2-cycle):** For the map $x_{t+1} = -x_t + c$, if we start at $x_0$, then $x_1 = -x_0+c$, and $x_2 = -x_1+c = -(-x_0+c)+c = x_0$. Every point is part of a 2-cycle. This is a neutrally stable cycle.
 
 #### Summary of 1D Linear System Behaviors
@@ -2938,11 +2934,11 @@ A system may not settle on a single point but may instead visit a set of points 
 
 For a multivariate linear system $X_t = AX_{t-1} + c$ where $X_t \in \mathbb{R}^N$:
 
-- **Fixed Point:** $X^* = AX^* + c \implies (I-A)X^* = c \implies X^* = (I-A)^{-1}c$, provided $(I-A)$ is invertible.
-- **Stability:** The stability of $X^*$ is determined by the eigenvalues of the Jacobian matrix, which is simply $A$.
-  1. $X^*$ is a stable fixed point if $\max_i(\lvert\lambda_i(A)\rvert) < 1$.
-  2. $X^*$ is unstable if $\max_i(\lvert\lambda_i(A)\rvert) > 1$.
-  3. $X^*$ is neutrally stable if $\max_i(\lvert\lambda_i(A)\rvert) = 1$.
+- **Fixed Point:** $X^{\ast} = AX^{\ast} + c \implies (I-A)X^{\ast} = c \implies X^{\ast} = (I-A)^{-1}c$, provided $(I-A)$ is invertible.
+- **Stability:** The stability of $X^{\ast}$ is determined by the eigenvalues of the Jacobian matrix, which is simply $A$.
+  1. $X^{\ast}$ is a stable fixed point if $\max_i(\lvert\lambda_i(A)\rvert) < 1$.
+  2. $X^{\ast}$ is unstable if $\max_i(\lvert\lambda_i(A)\rvert) > 1$.
+  3. $X^{\ast}$ is neutrally stable if $\max_i(\lvert\lambda_i(A)\rvert) = 1$.
 
 ### 3.3 The Logistic Map: A Case Study in Nonlinearity
 
@@ -2950,71 +2946,59 @@ The logistic map is a simple, archetypal example of a nonlinear system that exhi
 
 - **Equation:**
   
-  $$
-  x_{t+1} = f(x_t) = \alpha x_t (1 - x_t)
-  $$
+  $$x_{t+1} = f(x_t) = \alpha x_t (1 - x_t)$$
 
 - **Constraints:** We consider initial conditions $x_0 \in [0, 1]$ and the parameter $\alpha \in [0, 4]$. These constraints ensure that if $x_t$ is in $[0, 1]$, then $x_{t+1}$ will also be in $[0, 1]$.
 
 #### Fixed Points of the Logistic Map
 
-We solve $x^* = f(x^*) = \alpha x^* (1 - x^*)$.
+We solve $x^{\ast} = f(x^{\ast}) = \alpha x^{\ast} (1 - x^{\ast})$.
 
-$$
-x^* - \alpha x^* + \alpha (x^*)^2 = 0 \implies x^*(1 - \alpha + \alpha x^*) = 0
-$$
+$$x^{\ast} - \alpha x^{\ast} + \alpha (x^{\ast})^2 = 0 \implies x^{\ast}(1 - \alpha + \alpha x^{\ast}) = 0$$
 
 This gives two fixed points:
 
-1. FP1: $x_1^* = 0$.
-2. FP2: $1 - \alpha + \alpha x^* = 0 \implies x_2^* = \dfrac{\alpha - 1}{\alpha}$. This fixed point is only physically relevant (i.e., in our state space $[0,1]$) when $\alpha \ge 1$.
+1. FP1: $x_1^{\ast} = 0$.
+2. FP2: $1 - \alpha + \alpha x^{\ast} = 0 \implies x_2^{\ast} = \dfrac{\alpha - 1}{\alpha}$. This fixed point is only physically relevant (i.e., in our state space $[0,1]$) when $\alpha \ge 1$.
 
 #### Formal Stability Analysis via Linearization
 
-To analyze the stability of a fixed point $x^*$ for a general nonlinear map $f(x)$, we consider a small perturbation $\varepsilon_t$ around the fixed point: $x_t = x^* + \varepsilon_t$.
+To analyze the stability of a fixed point $x^{\ast}$ for a general nonlinear map $f(x)$, we consider a small perturbation $\varepsilon_t$ around the fixed point: $x_t = x^{\ast} + \varepsilon_t$.
 
-$$
-x_{t+1} = x^* + \varepsilon_{t+1} = f(x^* + \varepsilon_t)
-$$
+$$x_{t+1} = x^{\ast} + \varepsilon_{t+1} = f(x^{\ast} + \varepsilon_t)$$
 
-Using a first-order Taylor expansion of $f(x)$ around $x^*$:
+Using a first-order Taylor expansion of $f(x)$ around $x^{\ast}$:
 
-$$
-f(x^* + \varepsilon_t) \approx f(x^*) + f'(x^*) \cdot \varepsilon_t
-$$
+$$f(x^{\ast} + \varepsilon_t) \approx f(x^{\ast}) + f'(x^{\ast}) \cdot \varepsilon_t$$
 
-Since $f(x^*) = x^*$, this simplifies to:
+Since $f(x^{\ast}) = x^{\ast}$, this simplifies to:
 
-$$
-x^* + \varepsilon_{t+1} \approx x^* + f'(x^*) \cdot \varepsilon_t \implies \varepsilon_{t+1} \approx f'(x^*) \cdot \varepsilon_t
-$$
+$$x^{\ast} + \varepsilon_{t+1} \approx x^{\ast} + f'(x^{\ast}) \cdot \varepsilon_t \implies \varepsilon_{t+1} \approx f'(x^{\ast}) \cdot \varepsilon_t$$
 
-This is a linear difference equation for the perturbation $\varepsilon_t$. The perturbation will decay to zero (i.e., the FP is stable) if $\lvert f'(x^*)\rvert < 1$.
+This is a linear difference equation for the perturbation $\varepsilon_t$. The perturbation will decay to zero (i.e., the FP is stable) if $\lvert f'(x^{\ast})\rvert < 1$.
 
 - **Applying to the Logistic Map:** The derivative is $f'(x) = \alpha(1-2x)$.
-  1. At FP1 ($x_1^*=0$): $f'(0) = \alpha(1-0) = \alpha$.
+  1. At FP1 ($x_1^{\ast}=0$): $f'(0) = \alpha(1-0) = \alpha$.
      - The fixed point at 0 is stable if $\lvert f'(0)\rvert < 1$, which means $0 \le \alpha < 1$.
-  2. At FP2 ($x_2^* = (\alpha-1)/\alpha$): $f'(x_2^*) = \alpha\left(1 - 2\frac{\alpha-1}{\alpha}\right) = \alpha\left(\frac{\alpha - 2\alpha + 2}{\alpha}\right) = 2-\alpha$.
-     - This fixed point is stable if $\lvert f'(x_2^*)\rvert = \lvert 2-\alpha\rvert < 1$. This inequality holds for $1 < \alpha < 3$.
+  2. At FP2 ($x_2^{\ast} = (\alpha-1)/\alpha$): $f'(x_2^{\ast}) = \alpha\left(1 - 2\frac{\alpha-1}{\alpha}\right) = \alpha\left(\frac{\alpha - 2\alpha + 2}{\alpha}\right) = 2-\alpha$.
+     - This fixed point is stable if $\lvert f'(x_2^{\ast})\rvert = \lvert 2-\alpha\rvert < 1$. This inequality holds for $1 < \alpha < 3$.
 - **Stability Summary:**
-  - For $0 \le \alpha < 1$: One stable FP at $x^*=0$.
-  - For $1 < \alpha < 3$: The FP at $x^*=0$ becomes unstable, and a new stable FP appears at $x^*=(\alpha-1)/\alpha$.
+  - For $0 \le \alpha < 1$: One stable FP at $x^{\ast}=0$.
+  - For $1 < \alpha < 3$: The FP at $x^{\ast}=0 becomes unstable, and a new stable FP appears at $x^{\ast}=(\alpha-1)/\alpha$.
 
 #### Multivariate Linearization
 
-For a multivariate system $X_t = F(X_{t-1})$ with fixed point $X^* = F(X^*)$, the stability is determined by linearizing around $X^*$. The evolution of a small perturbation $\mathcal{E}_t$ is governed by the Jacobian matrix $J$ of $F$ evaluated at $X^*$.
+For a multivariate system $X_t = F(X_{t-1})$ with fixed point $X^{\ast} = F(X^{\ast})$, the stability is determined by linearizing around $X^{\ast}$. The evolution of a small perturbation $\mathcal{E}_t$ is governed by the Jacobian matrix $J$ of $F$ evaluated at $X^{\ast}$.
 
-$$
-\mathcal{E}_{t+1} \approx J(X^*) \mathcal{E}_t
-$$
+$$\mathcal{E}_{t+1} \approx J(X^{\ast}) \mathcal{E}_t$$
 
-The fixed point $X^*$ is stable if all eigenvalues of the Jacobian matrix have a modulus less than 1: $\max_i(\lvert\lambda_i(J(X^*))\rvert) < 1$.
+The fixed point $X^{\ast}$ is stable if all eigenvalues of the Jacobian matrix have a modulus less than 1: $\max_i(\lvert\lambda_i(J(X^{\ast}))\rvert) < 1$.
 
 ### 3.4 Bifurcation and Chaos
 
 As the parameter $\alpha$ increases beyond 3 in the logistic map, the system's behavior undergoes a series of qualitative changes known as bifurcations.
 
-- **Period-Doubling:** At $\alpha=3$, the fixed point $x_2^*$ becomes unstable, and a stable 2-cycle emerges. As $\alpha$ increases further, this 2-cycle becomes unstable and bifurcates into a stable 4-cycle, then an 8-cycle, and so on. This cascade is known as the "period-doubling route to chaos."
+- **Period-Doubling:** At $\alpha=3$, the fixed point $x_2^{\ast}$ becomes unstable, and a stable 2-cycle emerges. As $\alpha$ increases further, this 2-cycle becomes unstable and bifurcates into a stable 4-cycle, then an 8-cycle, and so on. This cascade is known as the "period-doubling route to chaos."
 - **Chaos:** For larger values of $\alpha$ (e.g., $\alpha \gtrsim 3.57$), the system's behavior becomes chaotic.
   - The trajectory is aperiodic and appears irregular or random, but it is still fully deterministic.
   - A key feature is sensitivity to initial conditions: two trajectories starting arbitrarily close to each other will diverge exponentially fast.
@@ -3024,9 +3008,7 @@ As the parameter $\alpha$ increases beyond 3 in the logistic map, the system's b
 - **Chaotic Attractor:** A set $A$ is a chaotic attractor if trajectories starting within its basin of attraction converge to $A$, and within $A$, the dynamics are chaotic and sensitive to initial conditions.
 - **Lyapunov Exponent ($\lambda$):** This value quantifies the rate of separation of infinitesimally close trajectories. For a 1D map $f(x)$, it is defined as:
   
-  $$
-  \lambda(x_0) = \lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T-1} \ln\lvert f'(x_t)\rvert
-  $$
+  $$\lambda(x_0) = \lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T-1} \ln\lvert f'(x_t)\rvert$$
 
   - $\lambda > 0$: Exponential divergence, a signature of chaos.
   - $\lambda < 0$: Exponential convergence, corresponding to a stable fixed point or cycle.
