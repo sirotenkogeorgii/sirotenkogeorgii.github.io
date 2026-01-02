@@ -55,13 +55,22 @@ $$
 
 A Wikipedia-style definition packages the ELBO as
 
-$$\mathcal L(\phi,\theta;x) =  \mathbb E_{z\sim q_\phi(\cdot\mid x)}\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right] = \mathbb E_{q}\big[\log p_\theta(x,z)\big] + H[q_\phi(\cdot\mid x)].$$
+$$\mathcal L(\phi,\theta;x) =  \mathbb E_{z\sim q_\phi(\cdot\mid x)}\left[\log\frac{p_\theta(x,z)}{q_\phi(z\mid x)}\right] = \mathbb E_{z\sim q_\phi(\cdot\mid x)}\big[\log p_\theta(x,z)\big] + H[q_\phi(\cdot\mid x)].$$
 
-This same expression can be rewritten as
+Given the approximation $q_\phi(z\mid x)$ we would like to know how good we are approximating the true posterior $p(z\mid x)$. To measure these two distribution we use KL divergence as a "metric" to measure how close is $q(z\mid x)$ to $p(z\mid x)$:
+
+$$\mathrm{KL}\big(q_\phi(z\mid x)\| p_\theta(z\mid x)\big) = \int q_\phi(z\mid x) \log \frac{q_\phi(z\mid x)}{p(z\mid x)} dz$$
+$$= \int q_\phi(z\mid x) \log \frac{q_\phi(z\mid x)}{p(z\mid x)} dz$$
+$$= - \int q_\phi(z\mid x) \log \frac{p(z\mid x)}{q_\phi(z\mid x)} dz$$
+$$= - \int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)p(x)} dz$$
+$$= - (\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz - \int q_\phi(z\mid x) \log p(x) dz)$$
+$$= - \underbrace{\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz}_{\text{ELBO}:=\mathcal L(\phi,\theta;x)} - \log p(x) dz$$
+
+So, ELBO can be rewritten as
 
 $$\mathcal L(\phi,\theta;x) = \log p_\theta(x) - \mathrm{KL}\big(q_\phi(z\mid x)\| p_\theta(z\mid x)\big),$$
 
-which immediately implies $\mathcal L(\phi,\theta;x)\le \log p_\theta(x)$ because KL divergence is nonnegative.
+which immediately implies $\mathcal L(\phi,\theta;x)\le \log p_\theta(x)$ because KL divergence is nonnegative. The KL divergence term can be interpreted as a measure of the additional information required to express the posterior relative to the prior.
 
 A Princeton blog note by Ryan Adams presents the key “accounting identity” in the opposite direction:
 
@@ -75,29 +84,47 @@ so the ELBO is exactly “log evidence minus a gap,” and the gap is a KL diver
 
 or **Maximizing ELBO** (with $\theta,\phi$) is equivalent to:
   * pushing up $\log p_\theta(x)$ (better generative model), and
-  * pushing down $\mathrm{KL}(q_\phi(z\mid x)\| p_\theta(z\mid x))$ (better inference).
+  * pushing down $\mathrm{KL}(q_\phi(z\mid x)\|\| p_\theta(z\mid x))$ (better inference).
   
-## 3. Three derivations that look different but are the same proof in different clothing
+<figure>
+  <img src="{{ '/assets/images/notes/variational-bayesian-methods/sketch_of_vi.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Sketch of variational inference. We look for a distribution $q(Θ)$ ($Θ=Z$) that is close to $p(Θ|X)$. Blob is a prior on distributions (space of $q$). Because simple and more tractlable family of distributions (the blob) does not usually contain the real underlying distribution of latent variables, we have some non-zero KL divergence value.</figcaption>
+</figure>
+
+## 3. Tightness: when is the bound exact?
+
+ELBO becomes equal to $\log p_\theta(x)$ if and only if
+
+$$q_\phi(z\mid x) = p_\theta(z\mid x)$$
+
+(almost everywhere), because the gap is exactly the KL divergence to the true posterior.
+
+Even if you optimize perfectly within your chosen family for $q_\phi$, the bound can remain loose when:
+
+* the true posterior is too complex (multi-modal, heavy-tailed, etc.),
+* but your variational family is restricted (e.g., diagonal Gaussian).
+
+## 4. Three derivations that look different but are the same proof in different clothing
 
 All sources ultimately cash out to the same inequality $\log p(x)\ge \mathrm{ELBO}$. What differs is *which inequality you “pay for”* to get it.
 
-### 3.1 KL-first derivation (no Jensen required)
+### 4.1 KL-first derivation (no Jensen required)
 
-The Adams note starts from $\mathrm{KL}(q(z)\| p(z\mid x,\theta))$, expands it, and rearranges terms to isolate $\log p(x\mid\theta)$ on one side and the ELBO on the other. The only “inequality step” is the nonnegativity of KL.
+The Adams note starts from $\mathrm{KL}(q(z)\|\| p(z\mid x,\theta))$, expands it, and rearranges terms to isolate $\log p(x\mid\theta)$ on one side and the ELBO on the other. The only “inequality step” is the nonnegativity of KL.
 
 This route makes the “ELBO gap” explicit: the bound is tight iff $q(z)=p(z\mid x,\theta)$ almost everywhere.
 
-### 3.2 Jensen derivation (log of expectation vs expectation of log)
+### 4.2 Jensen derivation (log of expectation vs expectation of log)
 
 A common teaching path (used in Yunfan’s blog post) inserts $q(z\mid x)/q(z\mid x)$ into the marginal likelihood integral, rewrites it as a log of an expectation under $q$, then applies Jensen:
 
 $$\log p(x) = \log \mathbb E_{z\sim q}\left[\frac{p(x,z)}{q(z\mid x)}\right] \ge \mathbb E_{z\sim q}\left[\log\frac{p(x,z)}{q(z\mid x)}\right].$$
 
-That right-hand side is the **Evidence Lower Bound (ELBO)**. Yunfan’s write-up explicitly shows the identity $\log p(x)=\mathcal L + \mathrm{KL}(q\| p)$ and then turns it into the inequality via KL nonnegativity (another equivalent route).
+That right-hand side is the **Evidence Lower Bound (ELBO)**. Yunfan’s write-up explicitly shows the identity $\log p(x)=\mathcal L + \mathrm{KL}(q\|\| p)$ and then turns it into the inequality via KL nonnegativity (another equivalent route).
 
 **INTERPRETATION.** Jensen is pedagogically nice because it highlights the “swap log and integral” issue: $\log\int \cdot \neq \int \log(\cdot)$.
 
-### 3.3 A convex-duality / Hölder-flavored view
+### 4.3 A convex-duality / Hölder-flavored view
 
 A shorter, more geometric blog post (cgad.ski) frames $\log \int e^{H}$ as a convex functional whose tangent lower bounds are expectations under a Gibbs/Boltzmann distribution. After normalizing, it arrives at an inequality of the form
 
@@ -109,7 +136,7 @@ This perspective explicitly connects ELBO to “tangent-line” style lower boun
 
 **INTERPRETATION.** If you like Legendre transforms, you can read the ELBO as a variational (dual) representation of a log-partition-like quantity. If you don’t, you can ignore this entirely and still do VI.
 
-## 4. The ELBO as two coupled problems: inference and learning
+## 5. The ELBO as two coupled problems: inference and learning
 
 Write the “main form” (also listed by Wikipedia) as
 
@@ -124,7 +151,7 @@ Wikipedia explicitly connects this to amortized inference: learning $q_\phi(z\mi
 
 **INTERPRETATION.** The “reconstruction vs KL” decomposition encourages an engineering view: you can often diagnose training pathologies by checking which term dominates or collapses. (This is widely used practice, but it’s not a theorem that *every* pathology shows up cleanly here.)
 
-## 5. Notation reconciliation: $q(z)$ vs $q(z\mid x)$, and what the ELBO “really” is
+## 6. Notation reconciliation: $q(z)$ vs $q(z\mid x)$, and what the ELBO “really” is
 
 Across the sources:
 * Wikipedia and Yunfan use **amortized** notation $q_\phi(z\mid x)$: one inference model produces a different approximate posterior per datapoint $x$.
@@ -139,21 +166,15 @@ $$\mathrm{KL}(q\| p)=\int q(z)\log\frac{q(z)}{p(z)},dz.$$
 
 (That is exactly the kind of correction being emphasized in that answer.)
 
-**Resolution of an apparent contradiction.** One Cross Validated answer writes an ELBO-looking expression as $\log p(x_i\mid\theta,z_i)-\mathrm{KL}(q(z_i)\mid p(z_i\mid\theta))$. Read this as a *shorthand* for the more standard
+## 7. Reverse KL geometry and “mode-seeking” behavior
 
-$$\mathbb E_{q(z_i)}[\log p(x_i\mid z_i,\theta)] - \mathrm{KL}(q(z_i)\| p(z_i\mid \theta)),$$
-
-i.e., the “expected log-likelihood minus KL to the prior” form that Wikipedia also lists among “main forms.”
-
-## 6. Reverse KL geometry and “mode-seeking” behavior
-
-Yunfan’s blog spends time on intuition for the *direction* of KL used in standard VI, i.e., $\mathrm{KL}(q\|p)$ rather than $\mathrm{KL}(p\|q)$. The blog describes a “zero-forcing” effect: minimizing reverse KL penalizes placing mass where the target posterior is near zero, encouraging $q$ to sit under prominent modes.
+Yunfan’s blog spends time on intuition for the *direction* of KL used in standard VI, i.e., $\mathrm{KL}(q\|\||p)$ rather than $\mathrm{KL}(p\|\|q)$. The blog describes a “zero-forcing” effect: minimizing reverse KL penalizes placing mass where the target posterior is near zero, encouraging $q$ to sit under prominent modes.
 
 The write-up characterizes reverse KL as tending toward “zero-forcing” behavior (a common shorthand for its asymmetry).
 
 **INTERPRETATION / caution.** “Reverse KL is mode-seeking” is a useful heuristic, but the exact behavior depends on the variational family. With limited families (e.g., mean-field Gaussians), the asymmetry is very visible; with richer families, the distinction can blur.
 
-## 7. A unified mental model: ELBO is a *lower envelope* of the evidence
+## 8. A unified mental model: ELBO is a *lower envelope* of the evidence
 
 All seven sources can be reconciled by one geometric sentence:
 
@@ -165,13 +186,13 @@ All seven sources can be reconciled by one geometric sentence:
 * cgad.ski emphasizes convexity/variational derivatives: ELBO as a tangent lower bound whose slack is KL.
 * Cross Validated emphasizes “type correctness” (measure vs pdf), debunking “ignore the KL,” and practical reasons $\log p(x)$ is nastier than ELBO for estimation and optimization.
 
-## 8. Why $\log p(x)$ is hard but ELBO is “tractable-ish” (and what that really means)
+## 9. Why $\log p(x)$ is hard but ELBO is “tractable-ish” (and what that really means)
 
 A Cross Validated question asks: if $\log p(x)$ is hard, why isn’t ELBO equally hard?
 
 A good way to answer is to separate *computing a number* from *optimizing an objective*.
 
-### 5.1 Estimating $\log p(x)$ directly: importance sampling and the log bias
+### 9.1 Estimating $\log p(x)$ directly: importance sampling and the log bias
 
 One Cross Validated answer (Ben) rewrites the evidence using importance sampling:
 
@@ -179,9 +200,9 @@ $$\log p(x)=\log\left(\mathbb E_{Z\sim g}\left[\frac{p(x\mid Z)p(Z)}{g(Z)}\right
 
 then approximates the expectation with Monte Carlo samples.
 
-**FACT.** Even if the inside expectation can be approximated, the *log of a Monte Carlo estimate* is generally biased (because log is nonlinear). A separate Cross Validated thread on “VI vs maximum likelihood” makes the same point plainly: sampling inside the log doesn’t give an unbiased estimate of $\log p(x)$. ([Cross Validated][7])
+**FACT.** Even if the inside expectation can be approximated, the *log of a Monte Carlo estimate* is generally biased (because log is nonlinear). A separate Cross Validated thread on “VI vs maximum likelihood” makes the same point plainly: sampling inside the log doesn’t give an unbiased estimate of $\log p(x)$.
 
-### 5.2 Estimating the ELBO: expectation of a log-ratio
+### 9.2 Estimating the ELBO: expectation of a log-ratio
 
 The ELBO is
 
@@ -194,9 +215,8 @@ So a key computational difference is:
 * ELBO is **expectation of a log** (straightforward to estimate with Monte Carlo; optimizing it still has variance issues, but it’s structurally friendlier).
 
 **INTERPRETATION.** People often say “the normalizing constant disappears in ELBO gradients.” Sometimes that’s true in the sense that you never need to evaluate $p(x)=\int p(x,z)dz$ explicitly; you only need $p(x,z)$ and $q(z\mid x)$. But “easy” is relative: if $q$ is poorly matched, Monte Carlo variance can still be brutal.
----
 
-## 9. Common misconceptions (and how the sources correct them)
+## 10. Common misconceptions (and how the sources correct them)
 
 ### Misconception A: “ELBO is always non-positive”
 
@@ -206,16 +226,16 @@ A Cross Validated question asked exactly this, and the answer shows why it’s f
 
 ### Misconception B: “We can ignore the KL term to the posterior”
 
-The same Cross Validated answer is blunt: you cannot “ignore” $\mathrm{KL}(q\|p(z\mid x,\theta))$; minimizing that KL is the conceptual starting point, and the ELBO is how we optimize it without needing the (intractable) posterior normalization.
+The same Cross Validated answer is blunt: you cannot “ignore” $\mathrm{KL}(q\|\|p(z\mid x,\theta))$; minimizing that KL is the conceptual starting point, and the ELBO is how we optimize it without needing the (intractable) posterior normalization.
 
-**FACT.** The ELBO–evidence relationship is exactly $\log p(x)=\mathrm{ELBO}+\mathrm{KL}(q\|p)$; dropping the KL-to-posterior conceptually breaks the link to posterior approximation.
+**FACT.** The ELBO–evidence relationship is exactly $\log p(x)=\mathrm{ELBO}+\mathrm{KL}(q\|\|p)$; dropping the KL-to-posterior conceptually breaks the link to posterior approximation.
 
 ### Misconception C: “Why not just do maximum likelihood on $\log p(x)$?”
 
 Another Cross Validated thread (“Why variational inference and not maximum likelihood?”) starts by correcting a classic algebra mistake: you cannot push a log inside an integral/expectation.
 It then points out that naive Monte Carlo inside the log is biased, motivating the use of a lower bound via Jensen—i.e., variational inference.
 
-## 10. VI vs. maximum likelihood: what changes when you remove terms?
+## 11. VI vs. maximum likelihood: what changes when you remove terms?
 
 Here’s the clean conceptual split:
 
@@ -224,14 +244,14 @@ Here’s the clean conceptual split:
 
 A Cross Validated answer in the “understanding ELBO” thread makes a pointed statement: if you drop the KL-to-prior regularizer term in the “expected log-likelihood minus KL-to-prior” form, you stop doing Bayesian inference and move toward ML-style objectives.
 
-**FACT (in the context of that decomposition).** In the $\mathbb E_q[\log p(x\mid z)]-\mathrm{KL}(q|p(z))$ form, removing the KL-to-prior removes the explicit Bayesian regularization toward the prior.
+**FACT (in the context of that decomposition).** In the $\mathbb E_q[\log p(x\mid z)]-\mathrm{KL}(q\|p(z))$ form, removing the KL-to-prior removes the explicit Bayesian regularization toward the prior.
 
 **INTERPRETATION.** Whether that is “good” depends on your goal:
 
 * If you only want point estimates of $\theta$ and don’t care about posterior uncertainty over $z$, ML-ish methods (including EM variants) may be appropriate.
 * If you want fast approximate posteriors for downstream tasks (uncertainty-aware decisions, latent representations, amortized inference), VI gives you a *product* (the learned $q_\phi$) that ML alone doesn’t.
 
-## 11. Practical takeaways (explicitly opinionated)
+## 12. Practical takeaways (explicitly opinionated)
 
 **OPINION 1.** When teaching ELBO, start from the identity
 
@@ -242,174 +262,6 @@ It prevents a lot of confusion because it tells you what the bound *means* (evid
 **OPINION 2.** Use Jensen derivations early only to highlight *why* “log of an expectation” is hard; then pivot to the KL decomposition to clarify what VI is minimizing.
 
 **OPINION 3.** Treat “ELBO is easy” as marketing. ELBO is **easier to Monte Carlo estimate** than $\log p(x)$, and it is **easier to differentiate** in many setups, but it can still be a high-variance objective, especially with weak $q$ families or bad initialization.
-
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## 5. Tightness: when is the bound exact?
-
-### Fact
-
-ELBO becomes equal to $\log p_\theta(x)$ if and only if
-
-$$q_\phi(z\mid x) = p_\theta(z\mid x)$$
-
-(almost everywhere), because the gap is exactly the KL divergence to the true posterior. ([Wikipedia][1])
-
-### Implication (still factual, derived directly from the identity)
-
-Even if you optimize perfectly within your chosen family for $q_\phi$, the bound can remain loose when:
-
-* the true posterior is too complex (multi-modal, heavy-tailed, etc.),
-* but your variational family is restricted (e.g., diagonal Gaussian).
-
-## 6. “Inference becomes optimization”: what you actually optimize
-
-There are two optimization roles:
-
-### Fact (variational step)
-
-For a fixed generative model $p_\theta$, choosing $q_\phi$ to maximize ELBO is equivalent to minimizing
-
-$$D_{\mathrm{KL}}(q_\phi(z\mid x)\mid p_\theta(z\mid x)).$$
-
-This is the variational approximation step.
-
-### Fact (learning step)
-
-For fixed $q_\phi$, maximizing ELBO w.r.t. $\theta$ increases a lower bound on the log marginal likelihood, so it is a principled surrogate objective for learning $\theta$.
-
-### Opinion (practical perspective)
-
-In modern deep learning, people often treat ELBO primarily as a **training objective** rather than a bound whose tightness they rigorously diagnose. This is productive engineering-wise, but it can hide when improvements come from better modeling vs. simply “gaming the bound” with a limited $q$.
-
-## 7. The bottleneck: gradients through expectations
-
-ELBO contains expectations over $z\sim q_\phi(z\mid x)$. Optimizing w.r.t. $\theta$ is often straightforward; optimizing w.r.t. $\phi$ can be hard if you rely on naïve Monte Carlo gradient estimators.
-
-### Fact
-
-The VAE paper highlights that a naïve score-function/REINFORCE-style estimator can have high variance, motivating an alternative estimator.
-
-## 8. The reparameterization trick (SGVB / AEVB)
-
-### Fact
-
-The key idea in *Auto-Encoding Variational Bayes* is to express sampling from $q_\phi(z\mid x)$ as a deterministic transformation of noise:
-
-$$\epsilon \sim p(\epsilon), \qquad z = g_\phi(x,\epsilon),$$
-
-so that expectations over $z$ become expectations over $\epsilon$, and gradients can flow through $g_\phi$.
-
-### Fact
-
-For the common diagonal-Gaussian posterior,
-
-$$z = \mu_\phi(x) + \sigma_\phi(x)\odot \epsilon,\qquad \epsilon\sim\mathcal{N}(0,I),$$
-
-which makes stochastic gradient optimization practical at scale.
-
-### Interpretation
-
-This is why VAEs were a turning point historically: ELBO existed long before, but this trick made it **work smoothly with backprop** and minibatches.
-
-## 9. Amortized inference: why the encoder exists
-
-Classical VI could optimize separate variational parameters per datapoint. The VAE approach “amortizes” by learning a single inference network that maps $x \mapsto q_\phi(z\mid x)$.
-
-### Fact
-
-The VAE paper explicitly frames this as fitting a “recognition model” (encoder) jointly with the generative model (decoder), enabling efficient approximate posterior inference via ancestral sampling, without iterative per-datapoint inference loops.
-
-### Opinion
-
-Amortization is a trade: you get speed and scalability, but you can introduce an **amortization gap** (the encoder family and training dynamics may prevent reaching the best per-datapoint variational optimum).
-
-## 10. Resolving overlaps and apparent contradictions across your sources
-
-Your three sources largely agree; most “contradictions” are actually differences in emphasis or terminology. Here are the main ones people stumble over:
-
-### 10.1 “ELBO is a bound on likelihood” vs “bound on log-likelihood”
-
-### Fact
-
-Mathematically, ELBO is a lower bound on **$\log p_\theta(x)$** (the log evidence / log marginal likelihood), not directly on $p_\theta(x)$. That’s the standard statement in definitions and derivations.
-
-### Resolution
-
-When someone casually says “a lower bound on the likelihood,” they usually mean “on the *log*-likelihood,” because training almost always uses logs.
-
-### 10.2 “ELBO includes a KL term which decreases it” (Wikipedia phrasing)
-
-### Fact
-
-The identity
-
-$$\text{ELBO} = \log p_\theta(x) - D_{\mathrm{KL}}(q_\phi(z\mid x)\mid p_\theta(z\mid x))$$
-
-means the bound is smaller than $\log p_\theta(x)$ by exactly a KL divergence.
-
-### Resolution
-
-This is not saying KL is “bad”; it’s saying **the looseness of the bound** is measured by that KL. If you can make $q$ match the true posterior, KL goes to zero and the bound tightens.
-
-### 10.3 “ELBO as free energy” vs “ELBO as a training loss”
-
-### Fact
-
-ELBO is also referred to as the **negative variational free energy** in some literature, reflecting a connection to entropy and energy-based decompositions. ([Wikipedia][1])
-
-### Resolution
-
-Same object, different coordinate system:
-
-* Physics-ish view: maximize negative free energy.
-* ML view: maximize ELBO or minimize (-)ELBO as a loss.
-
-### 10.4 Direction of KL: why $D_{\mathrm{KL}}(q\mid p)$ and not $D_{\mathrm{KL}}(p\mid q)$?
-
-### Fact
-
-The bound derived via Jensen yields $D_{\mathrm{KL}}(q_\phi(z\mid x)\mid p_\theta(z\mid x))$ (the “exclusive” KL) naturally. ([Wikipedia][1])
-
-### Opinion (common intuition that helps)
-
-This KL direction tends to produce **mode-seeking** behavior (it heavily penalizes placing probability mass where the true posterior has little mass, sometimes under-covering multiple modes). This is not “wrong,” but it explains why simple variational families can miss posterior multi-modality.
-
-## 11. Practical takeaways for technical work
-
-### Fact-backed guidance
-
-* **If you can compute the KL term analytically**, do it: the VAE paper notes this often reduces estimator variance because only the reconstruction expectation needs Monte Carlo. ([ar5iv][2])
-* **The ELBO gap is diagnostic**: the gap to $\log p_\theta(x)$ is a KL to the true posterior, so a poor variational family can make ELBO improvements misleading about true likelihood improvements. ([Wikipedia][1])
-
-### Opinion (engineering heuristics)
-
-* If you see posterior collapse (encoder ignores $x$), it’s often because the KL term is “too easy” to minimize and overwhelms reconstruction. The ELBO decomposition makes that failure mode unsurprising.
-* When comparing models, treat ELBO as **a training objective and a lower bound**, not a guaranteed proxy for downstream representation quality.
-
-
 
 ---
 
@@ -486,7 +338,7 @@ Amortization replaces $\lambda_i$ with the output of a **shared function** (ofte
 
 $$\lambda_i = f_\phi(x_i), \qquad q_{\lambda_i}(z_i)=q_\phi(z_i\mid x_i).$$
 
-Now the optimization is over **global** parameters (\phi) (and (\theta)):
+Now the optimization is over **global** parameters $\phi$ (and $\theta$):
 
 $$\max_{\phi,\theta}; \sum_{i=1}^N \mathcal L(\phi,\theta;x_i).$$
 
@@ -553,6 +405,11 @@ $$
 which is exactly one of the “main forms” of the ELBO.
 
 **Implementation fact (standard practice, not discussed in your links):** to differentiate through the expectation efficiently, VAEs usually sample via the reparameterization $z=\mu_\phi(x)+\sigma_\phi(x)\odot \varepsilon$, $\varepsilon\sim\mathcal N(0,I)$. (This is the usual low-variance gradient estimator that makes neural VI work in practice.)
+
+<figure>
+  <img src="{{ '/assets/images/notes/variational-bayesian-methods/vae_graphical_model.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption></figcaption> -->
+</figure>
 
 ## Appendix (iv): Mini-batching: how the estimator changes (and what stays unbiased)
 
