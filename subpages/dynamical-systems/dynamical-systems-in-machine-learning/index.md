@@ -665,24 +665,26 @@ Canonical Forms for 2x2 Systems
 
 For any $2 \times 2$ matrix, it can be shown that it is similar to one of three distinct canonical forms. These forms represent the fundamental classes of dynamics possible in two-dimensional linear systems.
 
-1. Distinct Real Eigenvalues: The matrix is similar to a diagonal form. 
+1. **Distinct Real Eigenvalues:** The matrix is similar to a diagonal form. 
    
    $$A \sim \begin{pmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{pmatrix} $$
 
-  **Eigenvalues:** has the two real eigenvalues $λ_1 = a$ and $λ_2 = b$.
-  **Dynamics:** This form corresponds to dynamics without an oscillatory component, such as saddles and stable/unstable nodes.
-1. Complex Conjugate Eigenvalues: The matrix is similar to a form representing rotation and scaling. 
+  * **Eigenvalues:** has the two real eigenvalues $λ_1 = a$ and $λ_2 = b$.
+  * **Dynamics:** This form corresponds to dynamics without an oscillatory component, such as saddles and stable/unstable nodes.
+  
+2. **Complex Conjugate Eigenvalues:** The matrix is similar to a form representing rotation and scaling. 
    
    $$A \sim \begin{pmatrix} a & -b \\ b & a \end{pmatrix}$$
 
-  **Eigenvalues:** has the two complex eigenvalues $λ_{1,2} = a\pm ib$.
-  **Dynamics:** Eigenvalues for such a matrix come in complex conjugate pairs. This form can be decomposed into a scaling component (related to $a$) and a rotational component (related to $b$). This gives rise to spirals (stable if $a<0$, unstable if $a>0$) and centers (if $a=0$).
-1. Repeated Eigenvalues (Degenerate Case): This is the case our previous solution did not cover. The matrix is similar to the form:
+  * **Eigenvalues:** has the two complex eigenvalues $λ_{1,2} = a\pm ib$.
+  * **Dynamics:** Eigenvalues for such a matrix come in complex conjugate pairs. This form can be decomposed into a scaling component (related to $a$) and a rotational component (related to $b$). This gives rise to spirals (stable if $a<0$, unstable if $a>0$) and centers (if $a=0$).
+  
+3. **Repeated Eigenvalues (Degenerate Case):** This is the case our previous solution did not cover. The matrix is similar to the form:
    
   $$A \sim \begin{pmatrix} a & 1 \\ 0 & a \end{pmatrix}$$
 
-  **Eigenvalues:** has only the one eigenvalue $λ_1 = a$.
-  **Dynamics:** This matrix has one eigenvalue, $a$, with a multiplicity of two. However, it only has one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space; instead, two eigenvector directions align. The dynamics ultimately collapse into a one-dimensional space, with all trajectories aligning with the single eigenvector direction. The specific path of convergence or divergence depends on the initial conditions and the value of $a$.
+  * **Eigenvalues:** has only the one eigenvalue $λ_1 = a$.
+  * **Dynamics:** This matrix has one eigenvalue, $a$, with a multiplicity of two. However, it only has one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space; instead, two eigenvector directions align. The dynamics ultimately collapse into a one-dimensional space, with all trajectories aligning with the single eigenvector direction. The specific path of convergence or divergence depends on the initial conditions and the value of $a$.
 
 
 --------------------------------------------------------------------------------
@@ -766,14 +768,16 @@ Let's demonstrate that for a diagonalizable matrix $A$, the two solution forms a
 
 4. Recognize the series. The sum in the middle is simply the definition of the matrix exponential for the diagonal matrix $\Lambda$. For a diagonal matrix, this is equivalent to taking the exponential of each diagonal element:
   
-  $$\sum_{k=0}^{\infty} \frac{(\Lambda t)^k}{k!} = \text{diag}(e^{\lambda_i t}) = \begin{pmatrix} e^{\lambda_1 t} & & 0 \ & \ddots & \ 0 & & e^{\lambda_m t} \end{pmatrix}$$
+  $$\sum_{k=0}^{\infty} \frac{(\Lambda t)^k}{k!} = \text{diag}(e^{\lambda_i t}) = \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix}$$
   
   Therefore, the matrix exponential solution is:
   
-  $$\mathbf{x}(t) = e^{At}\mathbf{x}_0 = V \begin{pmatrix} e^{\lambda_1 t} & & 0 \ & \ddots & \ 0 & & e^{\lambda_m t} \end{pmatrix} V^{-1} \mathbf{x}_0$$
+  $$\mathbf{x}(t) = e^{At}\mathbf{x}_0 = V \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix} V^{-1} \mathbf{x}_0$$
 
 This is identical to the matrix form of the eigenvector-based solution. The two forms are fully consistent when the matrix $A$ is diagonalizable.
 
+
+<!-- There is no difference. Yeah. So they are equivalent under the condition that um um all values are distinct. If they are not distinct the first solution doesn't apply because it rest on the assumptions. that our vectors are a basis for our space which is not the case anymore. Yeah. So uh so this is the only the degenerate case is the only case where we can have things like this. Yeah. And the uh the degenerate case is only covered by the more general solution. Yeah. Otherwise everything is fine. -->
 
 --------------------------------------------------------------------------------
 
@@ -794,9 +798,640 @@ $$A = \begin{pmatrix} a & 1 \\ 0 & a \end{pmatrix}$$
 
 The solution for a system governed by this matrix, $\mathbf{x}(t) = e^{At}\mathbf{x}_0$, has the form: 
 
-$$\mathbf{x}(t) = e^{at} \begin{pmatrix} 1 & t \\ 0 & 1 \end{pmatrix} \mathbf{x}_0$$
+$$\mathbf{x}(t) = e^{At}\mathbf{x}_0 = e^{at} \begin{pmatrix} 1 & t \\ 0 & 1 \end{pmatrix} \mathbf{x}_0$$
 
 Notice the appearance of the linear term $t$ in the matrix. For higher-dimensional degenerate systems, higher-order polynomials of $t$ can appear in the solution. This is a direct consequence of the structure of the matrix exponential for non-diagonalizable matrices.
+
+
+1. Analysis of Extended Linear Systems
+
+In our initial exploration, we focused on homogeneous linear systems of the form $\dot{x} = Ax$. We now extend this analysis to two important cases: systems with a constant offset (affine systems) and systems that explicitly depend on time (non-autonomous systems).
+
+1.1 Inhomogeneous (Affine) Systems of ODEs
+
+An affine system introduces a constant vector term, shifting the dynamics in state space.
+
+Definition: Affine System of ODEs
+
+An affine or inhomogeneous linear system of ordinary differential equations is defined by:  $\dot{x} = Ax + b$  where $x, b \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix.
+
+Remark/Intuition: Shifting the Equilibrium
+
+The addition of the constant vector b does not alter the fundamental dynamics of the system, which are dictated by the matrix A. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
+
+To understand this, we first locate the new equilibrium, or fixed point, by finding the point $x^*$ where the flow is zero ($\dot{x}=0$).
+
+Assuming the matrix $A$ is invertible, we solve for the fixed point: 
+
+$$0 = Ax^* + b \implies Ax^* = -b \implies x^* = -A^{-1}b$$ 
+
+This point $x^*$ is our new equilibrium, shifted from the origin.
+
+Proof: Equivalence of Dynamics via Change of Variables
+
+We can formally prove that the dynamics remain the same by defining a new variable y that represents the state relative to the fixed point $x^*$.
+
+1. Define a new variable: Let $y = x - x^*$. This is equivalent to $x = y + x^*$.
+2. Consider the dynamics of the new variable: The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^*$ is a constant and its derivative is zero.
+3. Substitute into the original equation: We can now express $\dot{y}$ in terms of $y$
+   
+   $\dot{y} = \dot{x} = Ax + b$  
+   
+   Substitute $$x = y + x^*: \dot{y} = A(y + x^*) + b = Ay + Ax^* + b$$  
+   
+  Now, substitute the expression for the fixed point, $x^* = -A^{-1}b$:
+   
+  $$\dot{y} = Ay + A(-A^{-1}b) + b = Ay - b + b$$
+
+1. Result: The dynamics for the new variable are:
+   
+  $$\dot{y} = Ay$$
+   
+  This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^*$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers $x(t) = y(t) + x^*$.
+
+Remark/Intuition: The Non-Invertible Case
+
+If the matrix $A$ is not invertible, it possesses at least one zero eigenvalue. In this scenario, a unique fixed point does not exist. This corresponds to the case of a center or, more generally, a line attractor (or plane/hyperplane attractor in higher dimensions). The system has a continuous manifold of equilibrium points along the direction of the eigenvector(s) associated with the zero eigenvalue(s).
+
+
+--------------------------------------------------------------------------------
+
+
+1.2 Non-autonomous Systems with a Forcing Function
+
+We now consider systems where the dynamics are explicitly influenced by time, driven by an external "forcing function."
+
+Definition: Non-autonomous System with Forcing Function
+
+A non-autonomous linear system with a forcing function $f(t)$ is defined as a system that explicitly depends on time. For simplicity, we will analyze the scalar case:
+
+$$\dot{x} = ax + f(t)$$ 
+
+Remark/Intuition: Variation of Parameters
+
+To solve this type of equation, we employ a powerful technique known as variation of parameters. The logic is as follows: we know the solution to the homogeneous part of the equation ($\dot{x} = ax$) is $x(t) = C e^{at}$, where C is a constant. We now "promote" this constant to a time-dependent function, $k(t)$, and propose an ansatz (an educated guess) for the full solution that has a similar form. This allows the solution to adapt to the time-varying influence of $f(t)$.
+
+Proof: Derivation of the Solution
+
+1. Formulate the ansatz: Let the solution be of the form $x(t) = (h(t) + C)e^{at}$, where $h(t)$ is an unknown function we need to determine and $C$ is a constant of integration.
+2. Take the temporal derivative: Using the product rule, the derivative of our ansatz is:
+  
+  $$\dot{x}(t) = \frac{d}{dt}[(h(t) + C)e^{at}] = \dot{h}(t)e^{at} + (h(t) + C)ae^{at}$$ 
+
+3. Equate with the original ODE: The definition of the system states that $\dot{x} = ax + f(t)$. We can substitute our ansatz for $x(t)$ into this definition: 
+   
+  $$\dot{x}(t) = a[(h(t) + C)e^{at}] + f(t)$$
+
+4. Compare the two expressions for $\dot{x}(t)$:
+   
+  $$\dot{h}(t)e^{at} + (h(t) + C)ae^{at} = a(h(t) + C)e^{at} + f(t)$$
+  
+  The term $(h(t) + C)ae^{at}$ appears on both sides and cancels out.
+5. Isolate the derivative of $h(t)$: We are left with a simple expression:
+  
+  $$\dot{h}(t)e^{at} = f(t)$$  
+  
+  Multiplying through by $e^{-at}$ gives:  
+  
+  $$\dot{h}(t) = f(t)e^{-at}$$ 
+
+6. Integrate to find $h(t)$: To find the function $h(t)$, we integrate both sides with respect to time:
+   
+  $$h(t) = \int f(t)e^{-at} dt$$ 
+
+The full solution to the non-autonomous equation is therefore found by computing this integral for $h(t)$ and substituting it back into our original ansatz. This method provides a general recipe for solving first-order linear ODEs with a forcing function.
+
+---
+
+3. Linear Maps (Discrete-Time)
+
+Many dynamical systems, including various types of recurrent neural networks, are defined as maps rather than differential equations. These are discrete-time systems.
+
+System Definition
+
+A discrete-time autonomous dynamical system is defined by a recursive prescription:  
+
+$$\mathbf{x}_t = f(\mathbf{x}_{t-1})$$
+
+We will focus on the affine linear map, which is the discrete-time analogue of the inhomogeneous systems discussed earlier:  
+
+$$\mathbf{x}_t = A \mathbf{x}_{t-1} + \mathbf{b}$$  
+
+Such a map generates a sequence of vector-valued numbers $\lbrace\mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_T\rbrace$ starting from an initial condition $\mathbf{x}_1$. A primary goal is to understand the limiting behavior of this sequence as $t \to \infty$.
+
+Example: Iterative Solution and Limiting Behavior (Scalar Case)
+
+To build intuition, let's analyze the scalar case:
+
+$$x_t = ax_{t-1} + b$$
+
+1. Recursive Expansion: We can expand the expression recursively to understand its structure over time:
+
+* At $t=2: x_2 = ax_1 + b$
+* At $t=3: x_3 = a(x_2) + b = a(ax_1 + b) + b = a^2x_1 + ab + b$ 
+* At $t=4: x_4 = a(x_3) + b = a(a^2x_1 + ab + b) + b = a^3x_1 + a^2b + ab + b$
+
+2. General Form: Observing the pattern, the state at a general time step $T$ is:
+  
+  $$x_T = a^{T-1}x_1 + b(a^{T-2} + a^{T-3} + \dots + a^1 + a^0)$$
+  
+  The second term is a finite geometric series. We can write this more compactly as:
+  
+  $$x_T = a^{T-1}x_1 + b \sum_{i=0}^{T-2} a^i$$
+
+3. Limiting Behavior: We are interested in what happens as $t \to \infty$. The convergence of this sequence depends entirely on the value of $a$.
+
+* Condition for Convergence: The sequence converges only if the absolute value of a is less than one, i.e., $\lvert a\rvert < 1$.
+* Analysis of Terms:
+  * Initial Condition Term: For $\lvert a\rvert<1$, the term $a^{T-1}x_1$ decays to zero as $T \to \infty$. This means the system forgets about the initial condition exponentially fast.
+  * Geometric Series Term: For $\lvert a\rvert <1$, the infinite geometric series converges to a fixed value:
+* The Limit: Combining these results, the limit of $x_t$ as $t \to \infty$ is: 
+  
+  $$\lim_{t \to \infty} x_t = b \left( \frac{1}{1-a} \right)$$
+
+Remark/Intuition: A Different View
+
+Another powerful way to illustrate this solution is to plot $x_{t+1}$ as a function of $x_t$. The fixed points of the map are found where this function intersects the bisectrix line, defined by $x_{t+1} = x_t$.
+
+A Study of Discrete-Time Linear Systems
+
+Table of Contents
+
+1. One-Dimensional Discrete-Time Linear Systems
+
+* 1.1 The Recursive Linear Map
+* 1.2 Geometric Interpretation: The Cobweb Plot
+* 1.3 Fixed Points in One Dimension
+  * 1.3.1 Definition and Geometric Intuition
+  * 1.3.2 Algebraic Solution
+* 1.4 Stability Analysis of Fixed Points
+  * 1.4.1 Stable Fixed Points: |a| < 1
+  * 1.4.2 Unstable Fixed Points: |a| > 1
+  * 1.4.3 Neutrally Stable Points: |a| = 1
+
+2. Higher-Dimensional Discrete-Time Linear Systems
+
+* 2.1 The General Affine Map
+* 2.2 Solving for Fixed Points in m Dimensions
+* 2.3 System Dynamics and Diagonalization
+* 2.4 Stability Analysis via Eigenvalues
+
+
+--------------------------------------------------------------------------------
+
+
+1. One-Dimensional Discrete-Time Linear Systems
+
+We begin our exploration with the simplest case: a one-dimensional, discrete-time linear system. These systems, while seemingly basic, exhibit a rich set of behaviors that provide a foundational understanding for more complex, higher-dimensional systems.
+
+1.1 The Recursive Linear Map
+
+A one-dimensional discrete-time linear system is described by a recursive relationship that maps the state of the system at time $t$, denoted by $x_t$, to its state at the next time step, $t+1$.
+
+Definition: 1D Linear Map The state $x_{t+1}$ of the system at time $t+1$ is given by an affine transformation of its state $x_t$ at time $t$:
+
+$$x_{t+1} = f(x_t) = ax_t + b$$
+
+where a and b are scalar constants. The parameter $a$ represents the slope, and $b$ is the intercept or offset.
+
+1.2 Geometric Interpretation: The Cobweb Plot
+
+To gain a deeper intuition for the system's evolution over time, we can visualize this recursive process graphically. We plot the function $x_{t+1} = ax_t + b$ against the bisectrix, which is the line $x_{t+1} = x_t$. The intersection of these two lines holds special significance, as we will see shortly.
+
+Remark/Intuition: The Cobweb Plot The Cobweb Plot is a powerful geometric technique for visualizing the trajectory of a discrete-time system. It provides an immediate feel for whether the system converges to a specific value, diverges to infinity, or exhibits other behaviors. The procedure is as follows:
+
+1. Initialization: Start with an initial condition, $x_0$, on the horizontal axis.
+2. Evaluation: Move vertically from $x_0$ to the function line $x_{t+1} = ax_t + b$. The height of this point gives the next state, $x_1$.
+3. Iteration: To use $x_1$ as the next input, move horizontally from the point on the function line to the bisectrix ($x_{t+1} = x_t$). This transfers the output value $x_1$ to the horizontal axis, preparing it for the next iteration.
+4. Repeat: From this new point on the bisectrix, move vertically again to the function line to find $x_2$, then horizontally to the bisectrix, and so on.
+
+The path traced by these movements often resembles a spider's web, spiraling inwards or outwards, which gives the method its name.
+
+1.3 Fixed Points in One Dimension
+
+1.3.1 Definition and Geometric Intuition
+
+A central concept in dynamical systems is the notion of a fixed point, which is analogous to an equilibrium in continuous-time systems described by differential equations.
+
+Definition: Fixed Point A point $x^*$ is a fixed point of a discrete-time system $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
+
+$$x^* = f(x^*)$$
+
+If the system is initialized at a fixed point, it will remain there for all future time steps. There is no movement at this point.
+
+Remark/Intuition: Geometric View of Fixed Points Geometrically, a fixed point is simply the intersection of the function graph $y = f(x)$ and the bisectrix $y=x$. At this specific point, the input to the function is exactly equal to its output, satisfying the definition $x^* = f(x^*)$.
+
+1.3.2 Algebraic Solution
+
+We can find the fixed point not only graphically but also by solving the defining equation algebraically.
+
+Proof: Derivation of the 1D Fixed Point To find the fixed point $x^*$, we set the output equal to the input according to the definition:  $$x^* = ax^* + b$$  We then solve for 
+
+$$x^*:x^* - ax^* = b$$
+
+$$(1-a)x^* = b$$
+
+Assuming a \neq 1, we can divide by (1-a) to find the unique fixed point:
+
+$$x^* = \frac{b}{1-a}$$
+
+This algebraic solution precisely matches the limiting solution for convergent systems and identifies the point of intersection on the cobweb plot.
+
+1.4 Stability Analysis of Fixed Points
+
+A fixed point can be stable, unstable, or neutrally stable, depending on the behavior of nearby trajectories. This stability is determined entirely by the slope parameter, $a$.
+
+1.4.1 Stable Fixed Points: $\lvert a\rvert < 1$
+
+If the absolute value of the slope is less than one, any initial condition will lead to a trajectory that converges to the fixed point.
+
+Definition: Stable Fixed Point A fixed point $x^*$ is stable if trajectories starting near $x^*$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
+
+Remark/Intuition On the Cobweb Plot, a slope with $\lvert a\rvert < 1$ is less steep than the bisectrix. This geometric configuration ensures that each step of the cobweb construction brings the state closer to the intersection point, causing the "web" to spiral inwards towards the fixed point.
+
+1.4.2 Unstable Fixed Points: $\lvert a\rvert > 1$
+
+If the absolute value of the slope is greater than one, the system will diverge from the fixed point, unless it starts exactly on it.
+
+Definition: Unstable Fixed Point A fixed point $x^*$ is unstable if trajectories starting near $x^*$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
+
+Remark/Intuition When $\lvert a\rvert > 1$, the function line is steeper than the bisectrix. The Cobweb Plot immediately reveals that each iteration throws the state further away from the intersection point, causing the "web" to spiral outwards. The system still possesses a fixed point, but any infinitesimal perturbation from it will lead to divergence.
+
+1.4.3 Neutrally Stable Points: $\lvert a\rvert = 1$
+
+The case where the slope has an absolute value of exactly one represents a boundary between stability and instability.
+
+Definition: Neutrally Stable Point A point or system is neutrally stable if nearby trajectories neither converge towards nor diverge away from it, but instead remain in a bounded orbit. This occurs when $\lvert a\rvert = 1$.
+
+We must consider two sub-cases:
+
+* Case 1: $a = 1$ 
+  * If $b \neq 0$, the system becomes $x_{t+1} = x_t + b$. This represents linear divergence, as a constant amount $b$ is added at each time step. There is no fixed point.
+  * If $b = 0$, the system is $x_{t+1} = x_t$. In this scenario, every point is a fixed point. This is sometimes referred to as a line attractor, as there is a continuous set of fixed points.
+* Case 2: $a = -1$
+  * The system takes the form $x_{t+1} = -x_t + b$. This leads to oscillatory behavior.
+  * If $b=0$, the system $x_{t+1} = -x_t$ simply flips the sign at each step (e.g., $x_0, -x_0, x_0, \dots$).
+  * If $b \neq 0$, the system oscillates between two distinct values. This is known as a flip oscillation.
+
+Example: Flip Oscillation Consider the system $x_{t+1} = -x_t + 1$. Let the initial state be $x_1 = 2$.
+
+* $x_2 = -x_1 + 1 = -(2) + 1 = -1$
+* $x_3 = -x_2 + 1 = -(-1) + 1 = 2$
+* $x_4 = -x_3 + 1 = -(2) + 1 = -1$ The system enters a stable 2-cycle, oscillating between the values 2 and -1. The amplitude of this oscillation depends on the initial value, but the oscillatory nature is preserved. This behavior is analogous to the center case in systems of linear differential equations, where solutions form a continuous set of stable orbits.
+
+Remark/Intuition: Analogy to Continuous Systems The spectrum of solutions observed in discrete-time linear systems—stable and unstable fixed points, and mutually stable oscillations—is precisely the same class of solutions found in continuous-time linear systems of ordinary differential equations. This parallel provides a powerful conceptual bridge between the two domains.
+
+
+--------------------------------------------------------------------------------
+
+
+2. Higher-Dimensional Discrete-Time Linear Systems
+
+We now generalize our analysis to systems with $m$ dimensions, where the state is represented by a vector and the dynamics are governed by a matrix transformation.
+
+2.1 The General Affine Map
+
+Definition: $m$-Dimensional Linear Map The state of the system is a vector $\vec{x}_t \in \mathbb{R}^m$. The evolution is given by the affine map:
+
+$$\vec{x}_{t+1} = A\vec{x}_t + \vec{b}$$
+
+where $A$ is an $m \times m$ square matrix and $\vec{b} \in \mathbb{R}^m$ is a constant offset vector.
+
+2.2 Solving for Fixed Points in $m$ Dimensions
+
+The definition of a fixed point remains the same: it is a point that is mapped onto itself.
+
+Proof: Derivation of the $m$-Dimensional Fixed Point Let $\vec{x}^*$ be a fixed point. It must satisfy the condition $\vec{x}^* = A\vec{x}^* + \vec{b}$. We solve for $\vec{x}^*$:  
+
+$$\vec{x}^* - A\vec{x}^* = \vec{b}$$
+
+$$(I - A)\vec{x}^* = \vec{b}$$
+
+where $I$ is the $m \times m$ identity matrix. If the matrix $(I-A)$ is invertible, we can find the unique fixed point by multiplying by its inverse:  
+
+$$\vec{x}^* = (I-A)^{-1}\vec{b}$$
+
+If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does not exist. In this case, the system may have no fixed points or a continuous set of fixed points, such as a line attractor or a higher-dimensional manifold attractor.
+
+2.3 System Dynamics and Diagonalization
+
+To understand the system's trajectory, we analyze the behavior of the map when iterated over time. For simplicity, we first consider the homogeneous case where $\vec{b} = \vec{0}$.
+
+Theorem: Iterated Map Dynamics For the system $\vec{x}_{t+1} = A\vec{x}_t$, the state at time $T$ is related to the initial state $\vec{x}_1$ by:  
+
+$$\vec{x}_T = A^{T-1}\vec{x}_1$$ 
+
+Remark/Intuition: The Role of Diagonalization Calculating matrix powers $A^{T-1}$ can be complex. However, if the matrix $A$ is diagonalizable, the calculation simplifies significantly. A diagonalizable matrix can be written as $A = V \Lambda V^{-1}$, where $V$ is the matrix of eigenvectors and $\Lambda$ is a diagonal matrix of the corresponding eigenvalues $\lambda_i$.
+
+Proof: System Solution via Diagonalization If $A = V \Lambda V^{-1}$, then the power $A^{T-1}$ becomes:  
+
+$$A^{T-1} = (V \Lambda V^{-1})^{T-1} = V \Lambda^{T-1} V^{-1}$$
+
+Raising the diagonal matrix $\Lambda$ to a power is trivial; we simply raise each diagonal element (the eigenvalues) to that power. The solution for the system's state at time $T$ is therefore:  
+
+$$\vec{x}_T = V \Lambda^{T-1} V^{-1} \vec{x}_1$$  
+
+This expression reveals that the long-term behavior of the system is governed by the powers of the eigenvalues of $A$.
+
+2.4 Stability Analysis via Eigenvalues
+
+The stability of the fixed point (in this case, the origin, since $\vec{b}=\vec{0}$) is determined by the magnitudes of the eigenvalues of the matrix $A$.
+
+* Convergence: The system converges to the fixed point if all eigenvalues have an absolute value less than 1.  
+  
+  $$\text{If } \max_i \lvert\lambda_i\rvert < 1 \implies \text{Convergence}  $$
+  
+  As $T \to \infty$, $\Lambda^{T-1} \to 0$, causing $\vec{x}_T \to \vec{0}$.
+* Divergence: The system diverges if at least one eigenvalue has an absolute value greater than 1.  
+  
+  $$\text{If } \max_i \lvert\lambda_i\rvert > 1 \implies \text{Divergence}  $$
+  
+  The component of the trajectory along the eigenvector corresponding to this eigenvalue will grow without bound.
+* Neutral Stability / Manifold Attractors: If at least one eigenvalue has an absolute value of exactly 1 (and no eigenvalues have absolute values greater than 1), the system has neutral directions.  
+  
+  $$\text{If } \max_i \lvert\lambda_i\rvert = 1 \implies \text{Line or Manifold Attractor}  $$
+  
+  The system will neither converge to the origin nor diverge to infinity, but will instead move along a stable manifold defined by the eigenvectors associated with the eigenvalues of magnitude one.
+* Saddle-like Behavior: If the matrix $A$ has a mix of eigenvalues with magnitudes greater than and less than one, the system exhibits behavior analogous to a saddle point. Trajectories will converge towards the fixed point along directions spanned by eigenvectors with $\lvert\lambda_i\rvert < 1$ but will diverge along directions spanned by eigenvectors with $\lvert\lambda_i\rvert > 1$.
+
+--------------------------------------------------------------------------------
+
+
+Chapter 1: The Flow of Dynamical Systems
+
+1.1 The Flow Operator in Linear Systems
+
+We begin our formal study by introducing a concept central to understanding how systems evolve over time: the flow operator. Consider a system of linear ordinary differential equations with an initial value.
+
+Definition: The Flow Map (or Flow Operator)
+
+For a linear system of differential equations of the form $\dot{x} = Ax$, with an initial condition $x(0) = x_0$, the solution is given by:
+
+$$x(t) = e^{At} x_0$$
+
+The operator $e^{At}$ that propagates the initial state $x_0$ forward in time is known as the flow operator.
+
+More generally, we can define a flow map, denoted by $\phi$, which is a function of time $t$ and an initial condition $x_0$:
+
+$$\phi(t, x_0) = e^{At} x_0$$
+
+Intuition
+
+You can visualize the flow map as a mechanism that takes a set of initial conditions and "transports" it forward in time by an amount $t$ to a new location in the state space. If you vary the time $t$, the path traced out by a single initial point $x_0$ is called its orbit or trajectory.
+
+
+--------------------------------------------------------------------------------
+
+
+1.2 From Continuous to Discrete Time: The Sampling Equivalence
+
+In many scientific and engineering contexts, particularly in physics, systems are naturally modeled using continuous-time differential equations. However, our observation and measurement of these systems are almost always discrete, taken at specific moments in time. This raises a crucial question: can we find a discrete-time system that is equivalent to a continuous-time one?
+
+1.2.1 Equivalence for Linear Systems
+
+Let us assume we have a continuous-time system that we sample at fixed time steps of duration $\Delta t$. The measurements are taken at times $0, \Delta t, 2\Delta t, \dots, n\Delta t$.
+
+The flow map for this system transports a state from one sample point to the next:
+
+$$x((n+1)\Delta t) = \phi(\Delta t, x(n\Delta t))$$
+
+We can define a new matrix that encapsulates this discrete-time evolution.
+
+Definition: Discrete-Time Equivalent Matrix
+
+Let a continuous-time linear system be defined by $\dot{x} = Ax$. Its equivalent discrete-time evolution matrix, $\tilde{A}$, for a sampling time step $\Delta t$ is defined as:
+
+$$\tilde{A} = e^{A \Delta t}$$
+
+With this definition, we can construct a discrete-time linear map:
+
+$$x_{n+1} = \tilde{A} x_n$$
+
+where $x_n$ represents the state at time $t = n \Delta t$.
+
+Remark
+
+This linear map is equivalent to the continuous-time linear ODE system in a specific sense: for the same initial condition $x_0$, the solutions of the discrete and continuous systems agree exactly at the sampling points $t = n \Delta t$. The construction of $\tilde{A}$ ensures this correspondence, as it is precisely the flow operator for a duration of $\Delta t$.
+
+1.2.2 Equivalence for Affine Systems
+
+This concept of equivalence can be extended to affine systems of differential equations, which include a constant offset term.
+
+Consider the continuous-time affine system:
+
+$$\dot{x} = Ax + c$$ 
+
+We seek an equivalent discrete-time affine system of the form:
+
+$$x_{n+1} = \tilde{A} x_n + b$$
+
+where $\tilde{A}$ is defined as before: $\tilde{A} = e^{A \Delta t}$.
+
+Remark: Determining the Discrete Offset
+
+To find the corresponding offset vector $b$, we can enforce the condition that the fixed points of both the continuous and discrete systems must be identical.
+
+1. Find the fixed point of the continuous system: Set $\dot{x} = 0. 0 = Ax^* + c \implies x^* = -A^{-1}c$
+2. Find the fixed point of the discrete system: Set $x_{n+1} = x_n = x^*$. $x^* = \tilde{A}x^* + b \implies (I - \tilde{A})x^* = b$
+3. Equate and Solve for $b$: By substituting the expression for $x^*$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
+
+
+--------------------------------------------------------------------------------
+
+
+1.3 Applications and Advanced Concepts
+
+The principles of establishing equivalence between continuous and discrete systems are not merely theoretical exercises. They have profound implications in modern machine learning and computational neuroscience.
+
+1.3.1 Piecewise Linear Recurrent Neural Networks
+
+An important class of models in machine learning is the Piecewise Linear Recurrent Neural Network (PL-RNN). These networks are often defined using the Rectified Linear Unit (ReLU) activation function, which is a piecewise linear function.
+
+A typical PL-RNN update rule has the form:
+
+$$x_{n+1} = \tilde{A} g(x_n) + b$$
+
+where $g$ is the ReLU nonlinearity, defined as $g(z) = \max(0, z)$.
+
+Remark
+
+The ideas of state-space dynamics and the equivalence between continuous and discrete forms can be extended to analyze these powerful computational models. For those interested in the details of this connection, the following resources are recommended:
+
+* A paper by Monfared and Durstewitz presented at ICML 2020.
+* The book Time Series Analysis (2013) by Ozaki, which contains a chapter on defining equivalent formulations for some nonlinear systems.
+
+1.3.2 Line Attractors, Time Constants, and Memory
+
+Let's revisit the concept of a line attractor, a continuous set of neutrally stable equilibria. In a 2D system with variables $z_1$ and $z_2$, a line attractor can arise when the nullclines (lines where $\dot{z}_1 = 0$ or $\dot{z}_2 = 0$) precisely overlap.
+
+Intuition: Detuning for Arbitrary Time Constants
+
+What happens if we slightly "detune" the system, so the nullclines no longer perfectly overlap but are very close? The vector field, which was exactly zero on the line attractor, will now be non-zero but very small in the "channel" between the slightly separated nullclines.
+
+This has a profound consequence: by making subtle changes to the system's parameters (e.g., the slopes of the nullclines), we can create dynamics that evolve on arbitrarily long time scales. The system can be made to move extremely slowly without introducing any large physical time constants. This ability to generate a wide range of temporal scales is fundamental for complex information processing.
+
+Example: The Addition Problem in Machine Learning
+
+A classic benchmark for recurrent neural networks is the addition problem. The network receives two input streams:
+
+1. A sequence of real numbers between 0 and 1.
+2. A binary indicator bit (0 or 1).
+
+The task is for the network to sum the real numbers only when the corresponding indicator bit is 1. The challenge lies in the potentially long gaps between periods where the indicator is active. The network must store the intermediate sum in its memory.
+
+A line attractor provides a simple and elegant solution. A two-unit PL-RNN can solve this task:
+
+* Integration and Storage: One unit integrates the input values (when the indicator bit is active) and stores the running total as a state on a line attractor. The system's state remains stable on this line, effectively acting as a memory device.
+* Final Output: Once the sequence is complete, the final state on the line attractor represents the total sum.
+
+Example: Attractors in Natural Intelligence This is not merely a machine learning construct. There is evidence for the existence of line attractors, plane attractors, and even torus attractors (shaped like a donut) in biological brains, for example, in the hippocampus, an area critical for memory and navigation.
+
+
+--------------------------------------------------------------------------------
+
+
+1.4 Formal Definition of a Dynamical System
+
+Having built some intuition, we now proceed to a formal mathematical definition.
+
+Definition: Dynamical System
+
+A dynamical system is a commutative group or semigroup action, $\phi$, defined on a domain $T \times R$. It is composed of the following elements:
+
+1. A Time Domain (T): This is the set from which time values are drawn.
+  * For continuous-time systems defined for all time, $T = \mathbb{R}$ (a group).
+  * For systems defined only in forward time, $T = \mathbb{R}_{\ge 0}$ (a semigroup).
+  * For discrete-time systems, $T = \mathbb{Z}$ (the integers).
+2. A State Space ($R$): This is an open set, $R \subseteq \mathbb{R}^d$, which contains all possible states the system can occupy. It is the space spanned by the dynamical variables.
+3. A Flow Map ($\phi$): An operator that maps a time and a state to a new state.
+   
+  $$\phi: T \times R \to R$$  
+   
+  We write this as $\phi(t, x)$ or sometimes abbreviate it as $\phi_t(x)$.
+
+Properties of the Flow Map
+
+The flow map $\phi$ must satisfy the following properties:
+
+* Identity Property: For any state $x$ in the state space $R$, evolving for zero time leaves the state unchanged.
+  
+$$\forall x \in R, \quad \phi(0, x) = x$$ 
+
+Chapter 1: The Flow Map and Trajectories
+
+Welcome to the study of dynamical systems. At its core, this field is about understanding how systems evolve over time. To do this rigorously, we must first establish a formal mathematical framework. Our journey begins with the central concept that defines a dynamical system: the flow operator, or flow map.
+
+1.1 The Flow Operator: Defining a Dynamical System
+
+Definition: A dynamical system is defined by its flow operator, denoted as $\phi_t(x)$. This operator takes a point $x$ from the state space and maps it to the position it will occupy after an amount of time $t$ has elapsed.
+
+Remark/Intuition: The key insight here is that we use the concept of a map to describe the evolution of a system. Even when dealing with systems of continuous differential equations, we ultimately conceptualize their solutions in terms of this operator, which acts like a discrete time map. This operator, $\phi$, encapsulates all the rules governing the system's dynamics.
+
+1.2 Properties of the Flow
+
+For an operator $\phi_t(x)$ to qualify as the flow of a dynamical system, it must satisfy specific properties. These properties ensure that the evolution of the system is consistent and predictable. Let $x$ be a point in the state space and let $s$, $t$ be elements of the time domain $T$ (e.g., $\mathbb{R}$ for continuous time).
+
+* Neutral Element: Applying the flow for zero time leaves the point unchanged. This is the identity operation.
+  
+$$\phi_0(x) = x$$ 
+
+* Semigroup (or Group) Property: Evolving a point for a time $s+t$ is equivalent to first evolving it for time $t$ and then evolving the result for time $s$ (or vice versa). This property is described as commutative, meaning the order of time evolution operations can be exchanged.
+  
+$$\phi_{s+t}(x) = \phi_s(\phi_t(x)) = \phi_t(\phi_s(x))$$ 
+
+* Remark/Intuition: Imagine a particle tracing a path in the state space. It should not matter whether you calculate its position after 5 seconds by moving it forward 2 seconds and then 3 seconds, or by moving it 3 seconds and then 2 seconds. The final position must be the same as moving it forward for 5 seconds directly. This consistency is fundamental.
+* Inverse Operation (for Groups): As a consequence of the group property, if the system is time-reversible (i.e., time can be negative), we have an inverse operation. Evolving forward by time $t$ and then backward by time $t$ returns the system to its original state.
+  
+$$\phi_t(\phi_{-t}(x)) = x$$ 
+
+1.3 Trajectories and Orbits
+
+With the flow operator established, we can now precisely define the path that a point carves out in the state space over time.
+
+Definition: The trajectory (or orbit) of a dynamical system starting from an initial point $x_0$ is the solution curve, denoted $\gamma(x_0)$. It is the set of all points in the state space that lie on this solution curve for all time $t \in T$.
+
+$$\gamma(x_0) = \lbrace \phi_t(x_0) \mid t \in T \rbrace$$
+
+Remark/Intuition: A critical feature of a well-defined dynamical system is the uniqueness of its trajectories. For any given initial point $x_0$, there can be only one trajectory passing through it. If two different curves could originate from the same starting point, it would imply that the state space is missing crucial information needed to predict the future state, and we would not have a deterministic dynamical system. We will explore the conditions that guarantee this uniqueness in the next chapter.
+
+
+--------------------------------------------------------------------------------
+
+
+Chapter 2: Existence and Uniqueness of Solutions
+
+Having defined the concepts of flows and trajectories, a fundamental question arises: given a system of differential equations, can we always expect it to have a unique solution for a given starting condition? This is the central question of existence and uniqueness.
+
+2.1 The Core Problem: Do Unique Solutions Always Exist?
+
+The unfortunate answer is no, unique solutions are not guaranteed for all systems. However, the fortunate reality is that for the vast majority of well-behaved systems, they almost always do. The conditions where uniqueness fails are quite specific.
+
+Examples: Consider the following initial value problem:
+
+$$\dot{x} = x^{2/3}, \quad x(0) = 0$$
+
+This system has two distinct solutions that satisfy the initial condition:
+
+1. The Trivial Solution: $u(t) = 0$
+2. A Non-trivial Solution: $v(t) = t^3$
+
+Proof: We must verify that both functions satisfy the differential equation and the initial condition.
+
+* For $u(t) = 0$:
+  * Initial Condition: $u(0) = 0$, which is satisfied.
+  * Differential Equation: The time derivative is $\dot{u}(t) = 0$. Plugging into the equation gives $0 = (0)^{2/3} = 0$. The equation holds.
+* For $v(t) = t^3$:
+  * Initial Condition: $v(0) = 0^3 = 0$, which is satisfied.
+  * Differential Equation: The time derivative is $\dot{v}(t) = 3t^2$. We check if this equals $v(t)^{2/3}$.
+* Since the derivative $3t^2$ is not equal to $t^2$, there appears to be a transcription error in the original lecture notes. Let's re-examine the example with a slight correction to match the lecture's conclusion. Let's assume the example was meant to be $x' = 3x^{2/3}$ or the solution was $v(t) = (t/3)^3$. Assuming the intended solution was $v(t) = (t/3)^3$ for $\dot{x}=x^{2/3}$, the derivative would be $\dot{v}(t) = 3(t/3)^2 \cdot (1/3) = t^2/9$, while $v^{2/3} = ((t/3)^3)^{2/3} = (t/3)^2 = t^2/9$. This seems more plausible. Let's proceed with the lecture's reasoning about the function's smoothness, which is the core lesson.
+
+Remark/Intuition: What causes this failure of uniqueness? The problem lies at the point $x=0$. The vector field $f(x) = x^{2/3}$ is continuous at $x=0$, but it is not continuously differentiable there. Let's examine its derivative with respect to the dynamical variable $x$:
+ 
+ $$\frac{df}{dx} = \frac{d}{dx}(x^{2/3}) = \frac{2}{3}x^{-1/3}$$
+ 
+This derivative is undefined at $x=0$. This lack of smoothness in the vector field is precisely what allows for multiple solution paths to emerge from the same point.
+
+2.2 The Fundamental Existence and Uniqueness Theorem
+
+The issue identified in the counterexample is the exact problem that the following powerful theorem resolves. If we can guarantee that our vector field is smooth enough, we can guarantee a unique solution.
+
+Theorem: (Fundamental Existence and Uniqueness Theorem) Let $E \subseteq \mathbb{R}^m$ be an open set (our state space) and let the vector field $f: E \to \mathbb{R}^m$ be a continuously differentiable function (i.e., $f \in C^1(E)$).
+
+Then, for any initial condition $x_0 \in E$, there exists a constant $a > 0$ such that the initial value problem  
+
+$$\dot{x} = f(x), \quad x(0) = x_0$$
+
+has a unique solution, $x(t)$, within the so-called maximum interval of existence $(-a, a)$, which is a subset of $\mathbb{R}$.
+
+Furthermore, this unique solution has the general form:
+
+$$x(t) = x_0 + \int_0^t f(x(s))ds$$     
+
+This integral expression is sometimes referred to as the solution operator.
+
+Remark/Intuition: This theorem is the bedrock for much of dynamical systems theory. It tells us that as long as our system's rules of evolution (the vector field $f$) are smooth, we don't have to worry about non-uniqueness. The solution might not exist for all time (it could "blow up" in finite time), but in some local time interval around our starting point, the path is uniquely determined. While the integral form of the solution is general, it may not be solvable analytically and often requires a numerical solver.
+
+2.3 A Weaker Condition: Lipschitz Continuity
+
+The requirement of being continuously differentiable ($C^1$) is sufficient, but it is actually stronger than necessary. A weaker, more general condition also guarantees uniqueness.
+
+Remark/Intuition: The theorem can be proven under the weaker assumption that the function $f$ is locally Lipschitz continuous. For any two points $x$ and $y$ in some local interval, a function is Lipschitz continuous if the absolute difference in its values is bounded by a constant multiple of the distance between the points.  
+
+$$\lvert f(x) - f(y)\rvert \le L \lvert x - y\rvert$$
+
+Here, $L$ is a positive real number known as the Lipschitz constant. Intuitively, this condition means that the slope of the function is bounded. Every continuously differentiable function is locally Lipschitz, but not every Lipschitz continuous function is differentiable, making this a more general condition.
+
+2.4 On Solving Non-Linear Systems
+
+While the theorem guarantees the existence of a unique solution for a broad class of systems, it does not provide a general method for finding it.
+
+Remark/Intuition: In the most general case, non-linear systems of differential equations cannot be solved analytically. However, for certain scalar cases or systems with special structures, analytical techniques exist. These include:
+
+* Separation of Variables: Rearranging the equation so that all terms involving one variable are on one side and all terms involving the other variable are on the other side, allowing for direct integration.
+* Variational Calculus: A more advanced method for solving certain classes of problems.
+
+For most complex systems encountered in practice, numerical methods are the primary tool for approximating the unique solution trajectories that the theorem guarantees.
+
 
 
 [SINDy](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/sindy/)
