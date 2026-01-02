@@ -831,8 +831,8 @@ Proof: Equivalence of Dynamics via Change of Variables
 
 We can formally prove that the dynamics remain the same by defining a new variable y that represents the state relative to the fixed point $x^*$.
 
-1. Define a new variable: Let $y = x - x^*$. This is equivalent to $x = y + x^*$.
-2. Consider the dynamics of the new variable: The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^*$ is a constant and its derivative is zero.
+1. Define a new variable: Let $y = x - x^{\ast}$. This is equivalent to $x = y + x^{\ast}$.
+2. Consider the dynamics of the new variable: The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^{\ast}$ is a constant and its derivative is zero.
 3. Substitute into the original equation: We can now express $\dot{y}$ in terms of $y$
    
    $\dot{y} = \dot{x} = Ax + b$  
@@ -847,7 +847,7 @@ We can formally prove that the dynamics remain the same by defining a new variab
    
   $$\dot{y} = Ay$$
    
-  This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^*$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers $x(t) = y(t) + x^*$.
+  This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^{\ast}$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers $x(t) = y(t) + x^{\ast}$.
 
 Remark/Intuition: The Non-Invertible Case
 
@@ -955,7 +955,7 @@ Another powerful way to illustrate this solution is to plot $x_{t+1}$ as a funct
 
 A Study of Discrete-Time Linear Systems
 
-Table of Contents
+<!-- Table of Contents
 
 1. One-Dimensional Discrete-Time Linear Systems
 
@@ -974,7 +974,7 @@ Table of Contents
 * 2.1 The General Affine Map
 * 2.2 Solving for Fixed Points in m Dimensions
 * 2.3 System Dynamics and Diagonalization
-* 2.4 Stability Analysis via Eigenvalues
+* 2.4 Stability Analysis via Eigenvalues -->
 
 
 --------------------------------------------------------------------------------
@@ -1045,7 +1045,7 @@ A fixed point can be stable, unstable, or neutrally stable, depending on the beh
 
 If the absolute value of the slope is less than one, any initial condition will lead to a trajectory that converges to the fixed point.
 
-Definition: Stable Fixed Point A fixed point $x^*$ is stable if trajectories starting near $x^*$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
+Definition: Stable Fixed Point A fixed point $x^{\ast}$ is stable if trajectories starting near $x^{\ast}$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
 
 Remark/Intuition On the Cobweb Plot, a slope with $\lvert a\rvert < 1$ is less steep than the bisectrix. This geometric configuration ensures that each step of the cobweb construction brings the state closer to the intersection point, causing the "web" to spiral inwards towards the fixed point.
 
@@ -1053,7 +1053,7 @@ Remark/Intuition On the Cobweb Plot, a slope with $\lvert a\rvert < 1$ is less s
 
 If the absolute value of the slope is greater than one, the system will diverge from the fixed point, unless it starts exactly on it.
 
-Definition: Unstable Fixed Point A fixed point $x^*$ is unstable if trajectories starting near $x^*$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
+Definition: Unstable Fixed Point A fixed point $x^{\ast}$ is unstable if trajectories starting near $x^{\ast}$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
 
 Remark/Intuition When $\lvert a\rvert > 1$, the function line is steeper than the bisectrix. The Cobweb Plot immediately reveals that each iteration throws the state further away from the intersection point, causing the "web" to spiral outwards. The system still possesses a fixed point, but any infinitesimal perturbation from it will lead to divergence.
 
@@ -1101,7 +1101,7 @@ where $A$ is an $m \times m$ square matrix and $\vec{b} \in \mathbb{R}^m$ is a c
 
 The definition of a fixed point remains the same: it is a point that is mapped onto itself.
 
-Proof: Derivation of the $m$-Dimensional Fixed Point Let $\vec{x}^*$ be a fixed point. It must satisfy the condition $\vec{x}^* = A\vec{x}^* + \vec{b}$. We solve for $\vec{x}^*$:  
+Proof: Derivation of the $m$-Dimensional Fixed Point Let $\vec{x}^{\ast}$ be a fixed point. It must satisfy the condition $\vec{x}^{\ast} = A\vec{x}^{\ast} + \vec{b}$. We solve for $\vec{x}^{\ast}$:  
 
 $$\vec{x}^* - A\vec{x}^* = \vec{b}$$
 
@@ -1232,7 +1232,7 @@ Remark: Determining the Discrete Offset
 To find the corresponding offset vector $b$, we can enforce the condition that the fixed points of both the continuous and discrete systems must be identical.
 
 1. Find the fixed point of the continuous system: Set $\dot{x} = 0. 0 = Ax^* + c \implies x^* = -A^{-1}c$
-2. Find the fixed point of the discrete system: Set $x_{n+1} = x_n = x^*$. $x^* = \tilde{A}x^* + b \implies (I - \tilde{A})x^* = b$
+2. Find the fixed point of the discrete system: Set $x_{n+1} = x_n = x^{\ast}$. $x^{\ast} = \tilde{A}x^{\ast} + b \implies (I - \tilde{A})x^{\ast} = b$
 3. Equate and Solve for $b$: By substituting the expression for $x^*$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
 
 
