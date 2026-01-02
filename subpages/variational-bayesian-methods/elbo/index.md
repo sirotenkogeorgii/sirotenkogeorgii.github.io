@@ -60,10 +60,15 @@ $$\mathcal L(\phi,\theta;x) =  \mathbb E_{z\sim q_\phi(\cdot\mid x)}\left[\log\f
 Given the approximation $q_\phi(z\mid x)$ we would like to know how good we are approximating the true posterior $p(z\mid x)$. To measure these two distribution we use KL divergence as a "metric" to measure how close is $q(z\mid x)$ to $p(z\mid x)$:
 
 $$\mathrm{KL}\big(q_\phi(z\mid x)\| p_\theta(z\mid x)\big) = \int q_\phi(z\mid x) \log \frac{q_\phi(z\mid x)}{p(z\mid x)} dz$$
+
 $$= \int q_\phi(z\mid x) \log \frac{q_\phi(z\mid x)}{p(z\mid x)} dz$$
+
 $$= - \int q_\phi(z\mid x) \log \frac{p(z\mid x)}{q_\phi(z\mid x)} dz$$
+
 $$= - \int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)p(x)} dz$$
+
 $$= - (\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz - \int q_\phi(z\mid x) \log p(x) dz)$$
+
 $$= - \underbrace{\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz}_{\text{ELBO}:=\mathcal L(\phi,\theta;x)} - \log p(x) dz$$
 
 So, ELBO can be rewritten as
@@ -88,7 +93,7 @@ or **Maximizing ELBO** (with $\theta,\phi$) is equivalent to:
   
 <figure>
   <img src="{{ '/assets/images/notes/variational-bayesian-methods/sketch_of_vi.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>Sketch of variational inference. We look for a distribution $q(Θ)$ ($Θ=Z$) that is close to $p(Θ|X)$. Blob is a prior on distributions (space of $q$). Because simple and more tractlable family of distributions (the blob) does not usually contain the real underlying distribution of latent variables, we have some non-zero KL divergence value.</figcaption>
+  <figcaption>Sketch of variational inference. We look for a distribution $q(\theta)$ ($\theta=Z$) that is close to $p(\theta|X)$. Blob is a prior on distributions (space of $q$). Because simple and more tractlable family of distributions (the blob) does not usually contain the real underlying distribution of latent variables, we have some non-zero KL divergence value.</figcaption>
 </figure>
 
 ## 3. Tightness: when is the bound exact?
@@ -162,17 +167,40 @@ A detailed Cross Validated answer (postylem) points out a recurring notational b
 
 A safe, standard statement is: if both $q$ and $p$ are absolutely continuous w.r.t. a common base measure and have densities $q(z)$ and $p(z)$, then
 
-$$\mathrm{KL}(q\| p)=\int q(z)\log\frac{q(z)}{p(z)},dz.$$
+$$\mathrm{KL}(q\| p)=\int q(z)\log\frac{q(z)}{p(z)}dz.$$
 
 (That is exactly the kind of correction being emphasized in that answer.)
 
 ## 7. Reverse KL geometry and “mode-seeking” behavior
 
-Yunfan’s blog spends time on intuition for the *direction* of KL used in standard VI, i.e., $\mathrm{KL}(q\|\||p)$ rather than $\mathrm{KL}(p\|\|q)$. The blog describes a “zero-forcing” effect: minimizing reverse KL penalizes placing mass where the target posterior is near zero, encouraging $q$ to sit under prominent modes.
+<!-- Yunfan’s blog spends time on intuition for the *direction* of KL used in standard VI, i.e., $\mathrm{KL}(q\|\|p)$ rather than $\mathrm{KL}(p\|\|q)$. The blog describes a “zero-forcing” effect: minimizing reverse KL penalizes placing mass where the target posterior is near zero, encouraging $q$ to sit under prominent modes. The variational posterior $q_{\phi}(z\mid x)$ is prevented from spanning the whole space relative to the true posterior $p(z\mid x)$. Consider the case where the denominator in $\mathrm{KL}(q_{\pih}(z\mid x)\|\|p(z\mid x))=\int q_{\pih}(z\mid x)\log\frac{q(z\mid x)}{p(z\mid x)}dz$ is zero, the value of $q_{\phi}(z\mid x)$ has to be zero as well otherwise the KL divergence goes to infinity. -->
 
 The write-up characterizes reverse KL as tending toward “zero-forcing” behavior (a common shorthand for its asymmetry).
 
+This suggests that $q_\phi(z\mid x)$ cannot assign probability mass outside the support of the true posterior $p(z\mid x)$. If the denominator in $\mathrm{KL}(q_{\pih}(z\mid x)\|\|p(z\mid x))=\int q_{\pih}(z\mid x)\log\frac{q(z\mid x)}{p(z\mid x)}dz$ is zero, then $q_\phi(z\mid x)$ must also be zero; otherwise the KL divergence diverges. The figure illustrates this: the left panel’s green region corresponds to $\frac{q_\phi(z\mid x)}{p(z\mid x)}=0$, and the right panel’s red region corresponds to $\frac{q_\phi(z\mid x)}{p(z\mid x)}=\infty$. In short, reverse KL is *zero-forcing*, driving $q_\phi(z\mid x)$ to lie within (and be “squeezed” under) $p(z\mid x)$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/variational-bayesian-methods/direction_kl_divergence.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Left: $\frac{q_\phi(z\mid x)}{p(z\mid x)}=0$. Right: $\frac{q_\phi(z\mid x)}{p(z\mid x)}=\infty$</figcaption>
+</figure>
+
 **INTERPRETATION / caution.** “Reverse KL is mode-seeking” is a useful heuristic, but the exact behavior depends on the variational family. With limited families (e.g., mean-field Gaussians), the asymmetry is very visible; with richer families, the distinction can blur.
+
+In this context, **“zero-forcing”** means:
+
+> **When you minimize the reverse KL** $\mathrm{KL}(q\mid p)$, the optimization **strongly penalizes** any place where $q(z)$ puts probability mass but $p(z)=0$.
+> So the safest way to reduce the objective is for $q$ to **set its density to (near) zero** in those regions.
+
+Why? Because reverse KL is
+
+$$\mathrm{KL}(q\|\|p)=\int q(z)\log\frac{q(z)}{p(z)}dz.$$
+
+If there’s a region where $p(z)=0$ but $q(z)>0$, then $\log\frac{q}{p}=\log(\infty)=\infty$, and the KL becomes **infinite**. So the optimizer “forces” $q(z)$ to be **zero** wherever $p(z)$ is zero (or extremely small).
+
+**Intuition:** reverse KL makes $q$ “play it safe” by staying inside the support of $p$. This often leads to **mode-seeking** behavior: $q$ may focus on one high-probability region (one mode) rather than spreading out to cover all modes.
+
+(Contrast: forward KL $\mathrm{KL}(p\|\|q)$ is more “zero-avoiding,” because it heavily penalizes $q(z)=0$ where $p(z)>0$, pushing $q$ to cover all regions that $p$ considers plausible.)
+
 
 ## 8. A unified mental model: ELBO is a *lower envelope* of the evidence
 
