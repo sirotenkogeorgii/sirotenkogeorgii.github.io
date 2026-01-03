@@ -738,3 +738,269 @@ The theorem is the mathematical foundation for **self-replication**.
 #### The "Fixed Point" Intuition
 
 Think of it like this: if you have a map of a park and you drop that map anywhere on the ground inside that park, there is always at least one point on the map that is directly above the actual spot in the park it represents. Kleene's theorem is the "software version" of that geographical fact.
+
+
+## Legendre Transformation
+
+## Rényi entropy
+
+#TODO:FINISH!
+
+**Rényi entropy** is a one-parameter family of entropy measures that generalizes various notions of entropy, including Hartley entropy, Shannon entropy, collision entropy, and min-entropy by letting you “tune” how strongly you care about high-probability vs. low-probability outcomes. In the context of **fractal dimension** estimation, the Rényi entropy forms the basis of the concept of generalized dimensions
+
+### Definition (discrete distribution)
+
+For a discrete random variable $X$ with probabilities $p_1,\dots,p_n$, the Rényi entropy of order $\alpha$ (with $\alpha \ge 0,\ \alpha \ne 1$) is
+
+$$H_\alpha(X) = \frac{1}{1-\alpha}\log \left(\sum_{i=1}^n p_i^\alpha\right).$$
+
+* The log base sets the units: base $2$ → **bits**, base $e$ → **nats**.
+
+### Key special cases
+
+Rényi entropy smoothly connects several common entropy notions:
+
+* **$\alpha \to 1$** gives **Shannon entropy**:
+  
+  $$\lim_{\alpha\to 1} H_\alpha(X) = -\sum_i p_i \log p_i.$$
+
+* **$\alpha = 0$** gives **Hartley entropy** (log of support size):
+  
+  $$H_0(X) = \log\lvert\lbrace i: p_i>0\rbrace\rvert.$$
+
+* **$\alpha = 2$** gives **collision entropy**:
+  
+  $$H_2(X) = -\log\left(\sum_i p_i^2\right),$$
+  
+  related to the probability that two independent samples from $X$ are equal.
+
+* **$\alpha \to \infty$** gives **min-entropy**:
+  
+  $$H_\infty(X) = -\log\left(\max_i p_i\right),$$
+  
+  which focuses entirely on the most likely outcome.
+
+**Derivation of Shannon entropy:**
+<div class="accordion">
+  <details markdown="1">
+    <summary>Derivation of Shannon entropy</summary>
+
+Sure. Start from Rényi entropy (use natural log for clarity):
+
+$$H_\alpha(p)=\frac{1}{1-\alpha}\ln\left(\sum_{i} p_i^\alpha\right),\qquad \alpha\neq 1.$$
+
+Let
+
+$$S(\alpha)=\sum_i p_i^\alpha.$$
+
+Then
+
+$$H_\alpha(p)=\frac{\ln S(\alpha)}{1-\alpha}.$$
+
+### Step 1: Recognize the $0/0$ form
+
+At $\alpha=1$,
+
+$$
+S(1)=\sum_i p_i = 1 \quad\Rightarrow\quad \ln S(1)=\ln 1=0,
+$$
+
+and $1-\alpha \to 0$. So the limit $\alpha\to 1$ is $0/0$, and we can use L’Hôpital’s rule.
+
+### Step 2: Apply L’Hôpital’s rule
+
+$$
+\lim_{\alpha\to 1} H_\alpha(p)
+=\lim_{\alpha\to 1}\frac{\ln S(\alpha)}{1-\alpha}
+=\lim_{\alpha\to 1}\frac{\frac{d}{d\alpha}\ln S(\alpha)}{\frac{d}{d\alpha}(1-\alpha)}.
+$$
+
+Compute derivatives:
+
+* Denominator:
+  
+  $$\frac{d}{d\alpha}(1-\alpha)=-1.$$
+  
+* Numerator:
+  
+  $$\frac{d}{d\alpha}\ln S(\alpha)=\frac{S'(\alpha)}{S(\alpha)}.$$
+  
+  And
+  
+  $$S'(\alpha)=\frac{d}{d\alpha}\sum_i p_i^\alpha=\sum_i \frac{d}{d\alpha}p_i^\alpha=\sum_i p_i^\alpha \ln p_i.$$
+
+So
+
+$$\frac{d}{d\alpha}\ln S(\alpha)=\frac{\sum_i p_i^\alpha \ln p_i}{\sum_i p_i^\alpha}.$$
+
+### Step 3: Evaluate at $\alpha=1$
+
+$$
+\lim_{\alpha\to 1} H_\alpha(p)
+=\lim_{\alpha\to 1}\frac{\frac{\sum_i p_i^\alpha \ln p_i}{\sum_i p_i^\alpha}}{-1}
+= - \frac{\sum_i p_i^1 \ln p_i}{\sum_i p_i^1}.
+$$
+
+But $\sum_i p_i^1=\sum_i p_i=1$, so
+
+$$\lim_{\alpha\to 1} H_\alpha(p)= -\sum_i p_i \ln p_i,$$
+
+which is exactly **Shannon entropy** (in nats).
+
+### If you want log base 2 (bits)
+
+If Rényi uses $\log_2$ instead of $\ln$, then
+
+$$\lim_{\alpha\to 1} H_\alpha(p)= -\sum_i p_i \log_2 p_i.$$
+
+(Equivalently, $-\sum_i p_i \ln p_i$ divided by $\ln 2$.)
+
+*Note:* Terms with $p_i=0$ are handled by continuity: $p\ln p \to 0$ as $p\to 0^+$.
+
+  </details>
+</div>
+
+### Intuition: what $\alpha$ controls
+
+* Larger $\alpha$ puts **more weight on high-probability outcomes** (more “peak-sensitive”).
+* Smaller $\alpha$ puts **more weight on the tail / rare outcomes**.
+
+So Rényi entropy is useful when you want an entropy notion that’s more conservative (large $\alpha$, e.g. security/guessing) or more tail-aware (small $\alpha$, e.g. diversity measures).
+
+### Properties (high-level)
+
+* **Additivity for independent variables**: if $X$ and $Y$ are independent, then
+  
+  $$H_\alpha(X,Y) = H_\alpha(X) + H_\alpha(Y).$$
+  
+* For a fixed distribution, $H_\alpha(X)$ is **non-increasing in $\alpha$** (as $\alpha$ increases, entropy typically decreases).
+
+### Continuous version (note)
+
+For a density $f(x)$, a common “differential Rényi entropy” is
+
+$$h_\alpha(X)=\frac{1}{1-\alpha}\log\left(\int f(x)^\alpha,dx\right),$$
+
+but (like differential Shannon entropy) it depends on the coordinate scaling, so it’s often used via *differences* or related divergences.
+
+If you want, I can show how $H_\alpha$ behaves on a simple distribution (e.g., Bernoulli or a “one big probability + small tail” example) to make the $\alpha$-tuning really concrete.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/renyi_entropy.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Rényi entropy of a random variable with two possible outcomes against $p_1$, where $P = (p_1, 1 − p_1)$. Shown are $Η_0$, $Η_1$, $Η_2$ and $Η_∞$, with the unit on the vertical axis being the shannon.</figcaption>
+</figure>
+
+## Transfer Entropy
+
+**Transfer entropy** is a *nonparametric* measure that quantifies how much information flows in a *directed* (time-asymmetric) way between two random processes. In particular, the transfer entropy from a process $X$ to a process $Y$ captures how much better we can predict the *next* value of $Y$ when we also know the *past* of $X$, beyond what we already learn from the *past* of $Y$ itself.
+
+Let $\lbrace X_t\rbrace$ and $\lbrace Y_t\rbrace$ be two stochastic processes (with $t \in \mathbb{N}$). If information is measured using **Shannon entropy**, the transfer entropy from $X$ to $Y$ with history length $L$ can be expressed as:
+
+$$T_{X\to Y} = H\left(Y_t \mid Y_{t-1:t-L}\right)-H\left(Y_t \mid Y_{t-1:t-L},X_{t-1:t-L}\right),$$
+
+where $H(\cdot)$ denotes Shannon entropy. Variants of this definition can also be built using alternative entropy notions, such as **Rényi entropy**.
+
+An equivalent viewpoint is that transfer entropy is a **conditional mutual information**, where the conditioning includes the past of the affected variable:
+
+$$T_{X\to Y} = I\left(Y_t;,X_{t-1:t-L}\mid Y_{t-1:t-L}\right).$$
+
+For **vector autoregressive (VAR)** processes, transfer entropy aligns with **Granger causality**. This makes it particularly appealing in settings where Granger-style modeling assumptions may be inappropriate—for example, when working with **nonlinear** signals.
+
+## Connection Between Transfer Entropy and Granger Causality
+
+They’re closely related because both ask the same question:
+
+> “Does the past of $X$ help predict $Y$ beyond what $Y$’s own past already explains?”
+
+### Granger causality (GC)
+
+In its standard form (linear VAR models), $X$ *Granger-causes* $Y$ if adding lags of $X$ to a predictive model for $Y_t$ significantly improves prediction (reduces prediction error variance).
+
+### Transfer entropy (TE)
+
+Transfer entropy is an information-theoretic version of that idea:
+
+$$T_{X\to Y} = I\left(Y_t;X_{t-1:t-L}\mid Y_{t-1:t-L}\right),$$
+
+i.e., the extra information $X$’s past provides about $Y_t$, conditioned on $Y$’s past.
+
+### The key connection
+
+For **Gaussian** processes (and with the usual VAR/linear assumptions), **transfer entropy is equivalent to Granger causality up to a constant factor**:
+
+* If variables are (jointly) Gaussian, conditional mutual information reduces to a log-ratio of conditional variances/determinants.
+* Granger causality in a VAR is also a log-ratio of prediction error variances (restricted model without $X$ lags vs. full model with them).
+
+Concretely, in the **scalar Gaussian** case:
+
+$$T_{X\to Y} = \tfrac{1}{2}\ln\left(\frac{\mathrm{Var}(\varepsilon_{\text{restricted}})}{\mathrm{Var}(\varepsilon_{\text{full}})}\right),$$
+
+and the right-hand side is exactly the standard (log-variance) GC measure (sometimes defined without the $1/2$, depending on convention).
+
+For the **multivariate Gaussian** case, the same relationship holds with covariance determinants:
+
+$$T_{X\to Y} = \tfrac{1}{2},\ln\left(\frac{\det \Sigma_{\text{restricted}}}{\det \Sigma_{\text{full}}}\right).$$
+
+So:
+
+* **TE = 0** ⇔ **GC = 0** (under Gaussian/VAR conditions)
+* **TE and GC rank influences the same way** (monotonic relationship)
+
+### Practical takeaway
+
+* **GC** is typically easier and more statistically mature for **linear-Gaussian** settings.
+* **TE** is more general (can capture **nonlinear / non-Gaussian** dependencies), but estimating it well usually requires more data and careful estimators.
+
+For a **linear VAR**, transfer entropy and Granger causality are essentially the *same test* expressed in two languages.
+
+### Setup (VAR with lags)
+
+Let $Z_t = [Y_t^\top, X_t^\top]^\top$. A VAR($L$) for $Y_t$ can be written as:
+
+* **Restricted model** (no $X$ lags):
+  
+  $$Y_t = \sum_{k=1}^L A_k Y_{t-k} + \varepsilon^{(r)}_t$$
+  
+* **Full model** (includes $X$ lags):
+  
+  $$Y_t = \sum_{k=1}^L A_k Y_{t-k} + \sum_{k=1}^L B_k X_{t-k} + \varepsilon^{(f)}_t$$
+  
+
+Granger causality $X \to Y$ means the full model predicts better, i.e. the prediction error covariance shrinks.
+
+### Granger causality measure
+
+For multivariate $Y$, the standard (Geweke) GC magnitude is
+
+$$\mathcal{F}_{X\to Y}=\ln\left(\frac{\det \Sigma_r}{\det \Sigma_f}\right),$$
+
+where $\Sigma_r = \mathrm{Cov}(\varepsilon^{(r)}_t)$ and $\Sigma_f = \mathrm{Cov}(\varepsilon^{(f)}_t)$.
+
+For scalar (Y), (\det) just becomes variance:
+
+$$\mathcal{F}_{X\to Y}=\ln\left(\frac{\sigma_r^2}{\sigma_f^2}\right).$$
+
+### Transfer entropy for linear VAR (Gaussian innovations)
+
+If the VAR innovations are Gaussian (which is the usual assumption behind the likelihood-based VAR estimation), then transfer entropy is:
+
+$$T_{X\to Y}=\tfrac{1}{2}\ln\left(\frac{\det \Sigma_r}{\det \Sigma_f}\right).$$
+
+So the relationship is simply:
+
+$$\boxed{\mathcal{F}_{X\to Y}=2T_{X\to Y}}$$
+
+(up to log base conventions; using $\log_2$ gives bits instead of nats).
+
+### Intuition
+
+* TE is conditional mutual information: “how much uncertainty about $Y_t$ is removed by adding $X$’s past, given $Y$’s past”.
+* In a linear Gaussian VAR, uncertainty = prediction error covariance.
+* So TE becomes the log ratio of restricted vs full residual covariance—exactly what GC measures.
+
+### Practical implication
+
+If you’re already fitting a VAR and doing GC, you **don’t gain anything new** by computing TE—TE is just a rescaled GC number in this setting. You *would* gain something if you move beyond linear/Gaussian assumptions.
+
+
+## Fractal Dimension
