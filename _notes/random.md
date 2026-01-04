@@ -523,7 +523,7 @@ which is exactly the fixed-point property. $\square$
 
 ### How to construct the function $h$?
 
-Given the standard enumeration $M_0,M_1,\dots$, of all Turing Machines, it sufficies to choose $h(e,i)$ such that $M_{h(e,i)}$ on input $x$ first simulates M_e on input $i$, and if this computation terminates with output $t$, simulates $M_t$ on input $x$. This involves hardwaring $e$ and $i$ into $M(e,i)$.
+Given the standard enumeration $M_0,M_1,\dots$, of all Turing Machines, it sufficies to choose $h(e,i)$ such that $M_{h(e,i)}$ on input $x$ first simulates $M_e$ on input $i$, and if this computation terminates with output $t$, simulates $M_t$ on input $x$. This involves hardwaring $e$ and $i$ into $M(e,i)$.
 
 Hardwiring $e$ and $i$ into $M_{h(e,i)}$ just means:
 
@@ -536,7 +536,7 @@ So $M_{h(e,i)}$ is a machine **parameterized** by $e$ and $i$, but the parameter
 For each fixed pair $(e,i)$, define a machine $N_{e,i}$ that on input $x$:
 
 1. Simulate $M_e$ on input $i$.
-2. If that simulation halts with output $t$, then simulate $M_t$ on input $x$ and output whatever it outputs. We can simulate $M_t$ effectively (jump to it), because in standard enumeration of Turing Machines, the function $i \mapto M_i$ is effective (computable) mapping.
+2. If that simulation halts with output $t$, then simulate $M_t$ on input $x$ and output whatever it outputs. We can simulate $M_t$ effectively (jump to it), because in standard enumeration of Turing Machines, the function $i \mapsto M_i$ is effective (computable) mapping.
 3. If $M_e(i)$ never halts, then loop forever.
 
 Here, $e$ and $i$ are not inputs to $N_{e,i}$. They are constants inside its finite control.
@@ -912,6 +912,11 @@ They’re closely related because both ask the same question:
 
 > “Does the past of $X$ help predict $Y$ beyond what $Y$’s own past already explains?”
 
+<figure>
+  <img src="{{ '/assets/images/notes/random/transfer_entropy.jpeg' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>Phase portrait of the degenerate (defective) repeated-eigenvalue system</figcaption> -->
+</figure>
+
 ### Granger causality (GC)
 
 In its standard form (linear VAR models), $X$ *Granger-causes* $Y$ if adding lags of $X$ to a predictive model for $Y_t$ significantly improves prediction (reduces prediction error variance).
@@ -976,7 +981,7 @@ $$\mathcal{F}_{X\to Y}=\ln\left(\frac{\det \Sigma_r}{\det \Sigma_f}\right),$$
 
 where $\Sigma_r = \mathrm{Cov}(\varepsilon^{(r)}_t)$ and $\Sigma_f = \mathrm{Cov}(\varepsilon^{(f)}_t)$.
 
-For scalar (Y), (\det) just becomes variance:
+For scalar $Y$, $\det$ just becomes variance:
 
 $$\mathcal{F}_{X\to Y}=\ln\left(\frac{\sigma_r^2}{\sigma_f^2}\right).$$
 
