@@ -273,7 +273,7 @@ $$x(t) = x_0 e^{at}$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed point or Equilibrium point)</span></p>
 
-A point $x^*\in\mathbb{R}^n$ is called equilibrium point of a system ODEs, if $f(t,x)=0$ for all $t\in I$.
+A point $x^{\ast}\in\mathbb{R}^n$ is called equilibrium point of a system ODEs, if $f(t,x)=0$ for all $t\in I$.
 
 </div>
 
@@ -903,17 +903,17 @@ Remark/Intuition: Shifting the Equilibrium
 
 The addition of the constant vector b does not alter the fundamental dynamics of the system, which are dictated by the matrix A. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
 
-To understand this, we first locate the new equilibrium, or fixed point, by finding the point $x^*$ where the flow is zero ($\dot{x}=0$).
+To understand this, we first locate the new equilibrium, or fixed point, by finding the point $x^{\ast}$ where the flow is zero ($\dot{x}=0$).
 
 Assuming the matrix $A$ is invertible, we solve for the fixed point: 
 
-$$0 = Ax^* + b \implies Ax^* = -b \implies x^* = -A^{-1}b$$ 
+$$0 = Ax^{\ast} + b \implies Ax^{\ast} = -b \implies x^{\ast} = -A^{-1}b$$ 
 
-This point $x^*$ is our new equilibrium, shifted from the origin.
+This point $x^{\ast}$ is our new equilibrium, shifted from the origin.
 
 Proof: Equivalence of Dynamics via Change of Variables
 
-We can formally prove that the dynamics remain the same by defining a new variable y that represents the state relative to the fixed point $x^*$.
+We can formally prove that the dynamics remain the same by defining a new variable y that represents the state relative to the fixed point $x^{\ast}$.
 
 1. Define a new variable: Let $y = x - x^{\ast}$. This is equivalent to $x = y + x^{\ast}$.
 2. Consider the dynamics of the new variable: The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^{\ast}$ is a constant and its derivative is zero.
@@ -921,9 +921,9 @@ We can formally prove that the dynamics remain the same by defining a new variab
    
    $\dot{y} = \dot{x} = Ax + b$  
    
-   Substitute $$x = y + x^*: \dot{y} = A(y + x^*) + b = Ay + Ax^* + b$$  
+   Substitute $$x = y + x^{\ast}: \dot{y} = A(y + x^{\ast}) + b = Ay + Ax^{\ast} + b$$  
    
-  Now, substitute the expression for the fixed point, $x^* = -A^{-1}b$:
+  Now, substitute the expression for the fixed point, $x^{\ast} = -A^{-1}b$:
    
   $$\dot{y} = Ay + A(-A^{-1}b) + b = Ay - b + b$$
 
@@ -1132,9 +1132,9 @@ The path traced by these movements often resembles a spider's web, spiraling inw
 
 A central concept in dynamical systems is the notion of a fixed point, which is analogous to an equilibrium in continuous-time systems described by differential equations.
 
-Definition: Fixed Point A point $x^*$ is a fixed point of a discrete-time system $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
+Definition: Fixed Point A point $x^{\ast}$ is a fixed point of a discrete-time system $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
 
-$$x^* = f(x^*)$$
+$$x^{\ast} = f(x^{\ast})$$
 
 If the system is initialized at a fixed point, it will remain there for all future time steps. There is no movement at this point.
 
@@ -1144,19 +1144,19 @@ Remark/Intuition: Geometric View of Fixed Points Geometrically, a fixed point is
 
 We can find the fixed point not only graphically but also by solving the defining equation algebraically.
 
-Proof: Derivation of the 1D Fixed Point To find the fixed point $x^*$, we set the output equal to the input according to the definition:
+Proof: Derivation of the 1D Fixed Point To find the fixed point $x^{\ast}$, we set the output equal to the input according to the definition:
 
-$$x^* = ax^* + b$$
+$$x^{\ast} = ax^{\ast} + b$$
 
 We then solve for 
 
-$$x^*:x^* - ax^* = b$$
+$$x^{\ast}:x^{\ast} - ax^{\ast} = b$$
 
-$$(1-a)x^* = b$$
+$$(1-a)x^{\ast} = b$$
 
 Assuming $a \neq 1$, we can divide by $(1-a)$ to find the unique fixed point:
 
-$$x^* = \frac{b}{1-a}$$
+$$x^{\ast} = \frac{b}{1-a}$$
 
 This algebraic solution precisely matches the limiting solution for convergent systems and identifies the point of intersection on the cobweb plot.
 
@@ -1226,13 +1226,13 @@ The definition of a fixed point remains the same: it is a point that is mapped o
 
 Proof: Derivation of the $m$-Dimensional Fixed Point Let $\vec{x}^{\ast}$ be a fixed point. It must satisfy the condition $\vec{x}^{\ast} = A\vec{x}^{\ast} + \vec{b}$. We solve for $\vec{x}^{\ast}$:  
 
-$$\vec{x}^* - A\vec{x}^* = \vec{b}$$
+$$\vec{x}^{\ast} - A\vec{x}^{\ast} = \vec{b}$$
 
-$$(I - A)\vec{x}^* = \vec{b}$$
+$$(I - A)\vec{x}^{\ast} = \vec{b}$$
 
 where $I$ is the $m \times m$ identity matrix. If the matrix $(I-A)$ is invertible, we can find the unique fixed point by multiplying by its inverse:  
 
-$$\vec{x}^* = (I-A)^{-1}\vec{b}$$
+$$\vec{x}^{\ast} = (I-A)^{-1}\vec{b}$$
 
 If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does not exist. In this case, the system may have no fixed points or a continuous set of fixed points, such as a line attractor or a higher-dimensional manifold attractor.
 
@@ -1359,9 +1359,9 @@ Remark: Determining the Discrete Offset
 
 To find the corresponding offset vector $b$, we can enforce the condition that the fixed points of both the continuous and discrete systems must be identical.
 
-1. Find the fixed point of the continuous system: Set $\dot{x} = 0. 0 = Ax^* + c \implies x^* = -A^{-1}c$
+1. Find the fixed point of the continuous system: Set $\dot{x} = 0. 0 = Ax^{\ast} + c \implies x^{\ast} = -A^{-1}c$
 2. Find the fixed point of the discrete system: Set $x_{n+1} = x_n = x^{\ast}$. $x^{\ast} = \tilde{A}x^{\ast} + b \implies (I - \tilde{A})x^{\ast} = b$
-3. Equate and Solve for $b$: By substituting the expression for $x^*$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
+3. Equate and Solve for $b$: By substituting the expression for $x^{\ast}$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
 
 
 --------------------------------------------------------------------------------
@@ -1659,11 +1659,11 @@ From this simple graph, we can extract a wealth of information about the system'
 
 Definition: Equilibrium (Fixed Point)
 
-An equilibrium, also known as a fixed point or critical point, of a dynamical system $\dot{x} = f(x)$ is a state $x^*$ where the vector field vanishes.
+An equilibrium, also known as a fixed point or critical point, of a dynamical system $\dot{x} = f(x)$ is a state $x^{\ast}$ where the vector field vanishes.
 
-$$f(x^*) = 0$$
+$$f(x^{\ast}) = 0$$
 
-At an equilibrium, the derivative is zero ($\dot{x}^* = 0$), meaning the state does not change over time.
+At an equilibrium, the derivative is zero ($\dot{x}^{\ast} = 0$), meaning the state does not change over time.
 
 
 --------------------------------------------------------------------------------
@@ -1716,19 +1716,19 @@ The stable fixed points themselves are referred to as point attractors.
 
 While graphical analysis is insightful for 1D systems, we need a more general, analytical method to determine the stability of fixed points, especially in higher dimensions. The key technique is linearization, which involves analyzing the system's behavior in the immediate vicinity of a fixed point.
 
-Let's assume $x^*$ is a fixed point of the system $\dot{x} = f(x)$. To examine its stability, we introduce a small perturbation, $\epsilon$, and observe whether it grows or decays.
+Let's assume $x^{\ast}$ is a fixed point of the system $\dot{x} = f(x)$. To examine its stability, we introduce a small perturbation, $\epsilon$, and observe whether it grows or decays.
 
-Let $x = x^* + \epsilon$. The dynamics of this perturbed state are given by:
+Let $x = x^{\ast} + \epsilon$. The dynamics of this perturbed state are given by:
 
-$$\dot{x} = \frac{d}{dt}(x^* + \epsilon) = f(x^* + \epsilon)$$
+$$\dot{x} = \frac{d}{dt}(x^{\ast} + \epsilon) = f(x^{\ast} + \epsilon)$$
 
-Now, we perform a Taylor series expansion of $f(x)$ around the fixed point $x^*$. We are interested in the behavior for very small $\epsilon$, so we only keep the linear terms.
+Now, we perform a Taylor series expansion of $f(x)$ around the fixed point $x^{\ast}$. We are interested in the behavior for very small $\epsilon$, so we only keep the linear terms.
 
-$$f(x^* + \epsilon) \approx f(x^*) + \frac{df}{dx}\bigg|_{x=x^*} \cdot \epsilon + O(\epsilon^2)$$
+$$f(x^{\ast} + \epsilon) \approx f(x^{\ast}) + \frac{df}{dx}\bigg|_{x=x^{\ast}} \cdot \epsilon + O(\epsilon^2)$$
 
 In higher dimensions, this becomes:
 
-$$\mathbf{f}(\mathbf{x}^* + \boldsymbol{\epsilon}) \approx \mathbf{f}(\mathbf{x}^*) + J(\mathbf{x}^*) \boldsymbol{\epsilon} + O(\|\boldsymbol{\epsilon}\|^2)$$
+$$\mathbf{f}(\mathbf{x}^{\ast} + \boldsymbol{\epsilon}) \approx \mathbf{f}(\mathbf{x}^{\ast}) + J(\mathbf{x}^{\ast}) \boldsymbol{\epsilon} + O(\|\boldsymbol{\epsilon}\|^2)$$
 
 
 Here, $J$ is the Jacobian matrix.
@@ -1757,15 +1757,15 @@ In the 1D case, the Jacobian is simply the scalar derivative $f'(x_0)$.
 
 Now we can formulate a differential equation for the perturbation $\boldsymbol{\epsilon}$.
 
-$$\dot{\boldsymbol{\epsilon}} = \dot{\mathbf{x}} - \dot{\mathbf{x}}^*$$
+$$\dot{\boldsymbol{\epsilon}} = \dot{\mathbf{x}} - \dot{\mathbf{x}}^{\ast}$$
 
-By definition of a fixed point, $\mathbf{x}^*$ is constant, so $\dot{\mathbf{x}}^* = 0$. Furthermore, $\mathbf{f}(\mathbf{x}^*) = 0$. Substituting our Taylor expansion for $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}^* + \boldsymbol{\epsilon})$, we get:
+By definition of a fixed point, $\mathbf{x}^{\ast}$ is constant, so $\dot{\mathbf{x}}^{\ast} = 0$. Furthermore, $\mathbf{f}(\mathbf{x}^{\ast}) = 0$. Substituting our Taylor expansion for $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}^{\ast} + \boldsymbol{\epsilon})$, we get:
 
-$$\dot{\boldsymbol{\epsilon}} \approx (\mathbf{f}(\mathbf{x}^*) + J(\mathbf{x}^*) \boldsymbol{\epsilon}) - 0$$
+$$\dot{\boldsymbol{\epsilon}} \approx (\mathbf{f}(\mathbf{x}^{\ast}) + J(\mathbf{x}^{\ast}) \boldsymbol{\epsilon}) - 0$$
 
-$$\dot{\boldsymbol{\epsilon}} \approx J(\mathbf{x}^*) \boldsymbol{\epsilon}$$
+$$\dot{\boldsymbol{\epsilon}} \approx J(\mathbf{x}^{\ast}) \boldsymbol{\epsilon}$$
 
-This is a linear system of differential equations describing the evolution of the perturbation. We have thus linearized the dynamics around the fixed point. The stability of the original nonlinear system, in the local vicinity of $x^*$, is determined by the stability of this linear system.
+This is a linear system of differential equations describing the evolution of the perturbation. We have thus linearized the dynamics around the fixed point. The stability of the original nonlinear system, in the local vicinity of $x^{\ast}$, is determined by the stability of this linear system.
 
 1.5. Classification of Equilibria in Nonlinear Systems
 
@@ -1932,7 +1932,7 @@ Assembling these into the Jacobian matrix gives:
 
 $$J(x, y) = \begin{pmatrix} \alpha - \beta y & -\beta x \ \gamma y & \gamma x - \lambda \end{pmatrix}$$
 
-To analyze the stability of an equilibrium point $(x^*, y^*)$, we evaluate this matrix at that specific point and then find its eigenvalues.
+To analyze the stability of an equilibrium point $(x^{\ast}, y^{\ast})$, we evaluate this matrix at that specific point and then find its eigenvalues.
 
 1.5 Case Study: Characterizing the Equilibria of a Predator-Prey System
 
@@ -1947,8 +1947,8 @@ Parameters:
 
 Equilibrium Points: Using the formulas derived earlier, the two equilibrium points are:
 
-1. $(x^*_1, y^*_1) = (0, 0)$
-2. $(x^*_2, y^*_2) = (\frac{\lambda}{\gamma}, \frac{\alpha}{\beta}) = (\frac{-2}{-1}, \frac{3}{1}) = (2, 3)$
+1. $(x^{\ast}_1, y^{\ast}_1) = (0, 0)$
+2. $(x^{\ast}_2, y^{\ast}_2) = (\frac{\lambda}{\gamma}, \frac{\alpha}{\beta}) = (\frac{-2}{-1}, \frac{3}{1}) = (2, 3)$
 
 Now, we linearize the system at each of these points.
 
@@ -1976,7 +1976,7 @@ Next, we evaluate the Jacobian at the coexistence equilibrium $(x, y) = (2, 3)$ 
 
 $$J(2, 3) = \begin{pmatrix} \alpha - \beta(3) & -\beta(2) \\ \gamma(3) & \gamma(2) - \lambda \end{pmatrix} = \begin{pmatrix} 3 - 1(3) & -1(2) \\ -1(3) & -1(2) - (-2) \end{pmatrix}$$   
 
-$$J(2, 3) = \begin{pmatrix} 0 & -2 \ -3 & 0 \end{pmatrix}$$  
+$$J(2, 3) = \begin{pmatrix} 0 & -2 \\ -3 & 0 \end{pmatrix}$$  
 
 To find the eigenvalues, we solve the characteristic equation $\text{det}(J - \lambda I) = 0$:  
 
@@ -2015,7 +2015,7 @@ Definition: Asymptotically Stable Equilibrium
 An equilibrium point $x_0$ is asymptotically stable if:
 
 1. It is stable.
-2. There exists a neighborhood \mathcal{W} of x_0 such that every trajectory starting in \mathcal{W} converges to $x_0$ as time goes to infinity.
+2. There exists a neighborhood $\mathcal{W}$ of $x_0$ such that every trajectory starting in $\mathcal{W}$ converges to $x_0$ as time goes to infinity.
 
 Formally: It is stable, and there exists $a \eta > 0$ such that if $\lvert x - x_0\rvert < \eta$, then
 
@@ -2857,7 +2857,7 @@ Definition: Dynamical Systems Reconstruction
 
 Let us formalize the concept of reconstruction.
 
-Consider two dynamical systems, $D$ and $D^*$.
+Consider two dynamical systems, $D$ and $D^{\ast}$.
 
 1. Let $D = (\mathbb{R}, \mathcal{R}, \phi)$ be the original, underlying system, where:
   * $\mathbb{R}$ is the set of time.
@@ -2874,7 +2874,7 @@ We call the dynamical system $D^{\ast}$ a dynamical systems reconstruction of $D
 
 Remark/Intuition
 
-Recall that topological conjugacy implies a deep structural equivalence between two systems. It means that there exists a homeomorphism $g: B \to \mathcal{R}^*$ (a continuous, invertible function with a continuous inverse) that maps the original state space to the reconstructed one.
+Recall that topological conjugacy implies a deep structural equivalence between two systems. It means that there exists a homeomorphism $g: B \to \mathcal{R}^{\ast}$ (a continuous, invertible function with a continuous inverse) that maps the original state space to the reconstructed one.
 
 This conjugacy ensures that for any initial condition $x_0 \in B$, the trajectory generated by the original system, $x(t) = \phi(t, x_0)$, is topologically equivalent to the trajectory generated by the reconstructed system from the mapped initial condition, $x^{\ast}(t) = \phi^{\ast}(t, g(x_0))$. This equivalence must also preserve the parameterization by time.
 
@@ -2886,7 +2886,7 @@ Remark/Intuition
 
 While topological conjugacy provides a powerful definition of equivalence, it does not capture every aspect we might be interested in. Specifically, it is a topological definition and is insensitive to the geometric properties of the attractor. For a reconstruction to be truly useful, we often want the geometry of the generated attractor to be similar to that of the original.
 
-To compare geometric properties, especially when the two systems may live in different state spaces ($\mathcal{R}$ and $\mathcal{R}^*$), we require a measure that can assess the similarity between their structures.
+To compare geometric properties, especially when the two systems may live in different state spaces ($\mathcal{R}$ and $\mathcal{R}^{\ast}$), we require a measure that can assess the similarity between their structures.
 
 1.4.1 The Kullback-Leibler Divergence for State-Space Geometry
 
