@@ -20,8 +20,8 @@ tags:
 * In what way are contrastive divergence and score matching analogous?
 
 ### Papers on Training Methods
-- [On Contrastive Divergence Learning (2005)]
-- [Estimation of Non-Normalized Statistical Models by Score Matching (2005)]
+- [On Contrastive Divergence Learning (2005)](/paper-notes/energy-based-models/carreira-2005/)
+- [Estimation of Non-Normalized Statistical Models by Score Matching (2005)](/paper-notes/energy-based-models/hyvarinen-2005/)
 - [A Connection Between Score Matching and Denoising Autoencoders (2011)]
 - [Interpretation and Generalization of Score Matching (2012)]
 - [Sliced Score Matching: A Scalable Approach to Density and Score Estimation (2019)]
@@ -38,6 +38,7 @@ tags:
 - [Your Classifier is Secretly an Energy Based Model and You Should Treat it Like One (2020)]
 - [How to Train Your Energy-Based Models (2021)]
 - [Introduction to Latent Variable Energy-Based Models: A Path Towards Autonomous Machine Intelligence (2023)]
+- [Generative Modeling by Estimating Gradients of the Data Distribution](https://yang-song.net/blog/2021/score/)
 
 ## Videos
 

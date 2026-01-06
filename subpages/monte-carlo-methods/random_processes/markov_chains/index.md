@@ -161,7 +161,12 @@ Assuming $P$ is diagonalizable (which is true for chains satisfying detailed bal
 
 $$\lim_{n\to \infty} p_0 P^n = \lim_{n\to \infty} v_i \lambda_i^n c_i = c_1 \lambda_1 = c_1 \pi$$
 
-$\textbf{Theorem (Convergence to Stationary Distribution):}$ If a transition matrix $P$ on a finite state space is **irreducible** and **aperiodic**, it has a unique stationary distribution $\pi$. The chain will converge to this distribution $\lim_{n\to\infty} \mathbb{P}(X_n = x) = \pi(x)$ regardless of the starting state $X_0$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Convergence to Stationary Distribution)</span></p>
+
+If a transition matrix $P$ on a finite state space is **irreducible** and **aperiodic**, it has a unique stationary distribution $\pi$. The chain will converge to this distribution $\lim_{n\to\infty} \mathbb{P}(X_n = x) = \pi(x)$ regardless of the starting state $X_0$.
+
+</div>
 
 #### The Ergodic Theorem (Sample Means)
 
@@ -173,7 +178,12 @@ in distribution to 𝑋 as 𝑛 → ∞
 * **The Challenge:** In standard statistics, the Law of Large Numbers applies to independent (i.i.d.) samples. However, Markov chain samples are highly **correlated** (the next state depends on the previous one).
 * **The Solution:** Despite this correlation, an analogue to the Law of Large Numbers exists for Markov chains, known as the Ergodic Theorem.
 
-$\textbf{Theorem (The Ergodic Theorem):}$ If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean $\bar f_n = \frac{1}{n}\sum_{i=1}^n f(X_i)$ converges to the expected value with probability 1.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Ergodic Theorem)</span></p>
+
+If the transition matrix $P$ on a finite state space is **irreducible**, then for any function $f: \Gamma \to \mathbb{R}$, the sample mean $\bar f_n = \frac{1}{n}\sum_{i=1}^n f(X_i)$ converges to the expected value with probability $1$.
+
+</div>
 
 **Key Distinction:** Unlike the convergence of the distribution (which requires aperiodicity), the Ergodic Theorem generally only requires the chain to be **irreducible**.
 
@@ -196,7 +206,7 @@ They’re related, but they’re **not the same thing**. The cleanest way to sep
 
 For a Markov chain with transition matrix $P$ and stationary distribution $\pi$, define the rank-one limit matrix
 
-$$\Pi := \mathbf{1},\pi \quad\text{(each row equals }\pi\text{)}.$$
+$$\Pi := \mathbf{1}\pi \quad\text{(each row equals }\pi\text{)}.$$
 
 **Cesàro convergence of the chain** typically refers to:
 
