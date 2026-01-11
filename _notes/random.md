@@ -1009,3 +1009,267 @@ If you’re already fitting a VAR and doing GC, you **don’t gain anything new*
 
 
 ## Fractal Dimension
+
+## Markov Random Field
+
+A **Markov Random Field (MRF)** is a probabilistic model for a collection of random variables that have a **graph structure** and satisfy a **local “Markov” property**: each variable is conditionally independent of all *non-neighbors* given its *neighbors*. In other words, a random field is said to be a Markov random field if it satisfies Markov properties.
+
+When the joint probability density of the random variables is strictly positive, it is also referred to as a **Gibbs random field**, because, according to the **Hammersley–Clifford theorem**, it can then be represented by a **Gibbs measure** for an appropriate (locally defined) energy function. The prototypical Markov random field is the **Ising model**; indeed, the Markov random field was introduced as the general setting for the Ising model.
+
+### Definition (graphical view)
+
+Let $G=(V,E)$ be an **undirected** graph. Each node $i\in V$ corresponds to a random variable $X_i$. MRF property (one common form):
+
+$$X_i \perp\!\!\!\!\perp X_{V\setminus({i}\cup N(i))}\ \mid\ X_{N(i)}$$
+
+where $N(i)$ is the set of neighbors of node $i$.
+
+### How probabilities are represented (energy / factors)
+
+MRFs are typically written using **clique potentials** (functions over sets of nodes) and normalized into a probability distribution. The key theorem is the **Hammersley–Clifford theorem**, which (under a say “positive distribution” condition) says the joint distribution factorizes over cliques:
+
+$$p(x) = \frac{1}{Z}\prod_{C \in \mathcal{C}} \psi_C(x_C)$$
+
+* $\psi_C(\cdot)$: **potential function** over a clique $C$ (not necessarily a probability)
+* $Z$: **partition function** (normalization constant)
+
+Often it’s convenient to use an **energy form**:
+
+$$p(x) = \frac{1}{Z}\exp(-E(x))$$
+
+### Pairwise MRF (very common)
+
+Most practical MRFs use only node and edge terms:
+
+$$p(x)=\frac{1}{Z}\prod_{i\in V}\psi_i(x_i)\prod_{(i,j)\in E}\psi_{ij}(x_i,x_j)$$
+
+This is common in vision (smoothing labels), spatial statistics, etc.
+
+### What it’s used for
+
+* **Image denoising / segmentation**: neighboring pixels tend to have similar labels → enforce smoothness.
+* **Spatial data**: nearby locations are correlated (disease mapping, geostatistics).
+* **Structured prediction** in ML: assigning labels with dependencies.
+
+### Relationship to other models
+
+* **MRF vs Bayesian network**: MRF uses an **undirected** graph; Bayesian networks use **directed** edges and factorization by parents.
+* **MRF vs Conditional Random Field (CRF)**: an MRF models a **joint** distribution $p(X)$; a CRF models a **conditional** distribution $p(Y\mid X)$ (useful when you have inputs/features $X$ and want structured outputs $Y$).
+
+### Inference tasks (what you typically do with an MRF)
+
+* **Marginals**: $p(x_i)$, $p(x_i,x_j)$
+* **MAP estimate**: $\arg\max_x p(x)$ (most likely configuration)
+
+Exact inference can be hard on loopy graphs, so people use **belief propagation**, **MCMC**, **variational methods**, or **graph cuts** (for some energy forms).
+
+Perfect context: **Boltzmann Machines (BM), RBMs, and Hopfield nets are all special cases / close cousins of Markov Random Fields**, usually written in the **energy-based** form.
+
+### MRFs as energy-based models (the common language here)
+
+An undirected graphical model (MRF) can be written as:
+
+$$p(x)=\frac{1}{Z}\exp(-E(x))$$
+
+* $x$ is a configuration of all variables (e.g., all neuron states).
+* $E(x)$ is an **energy**: lower energy ⇒ higher probability.
+* $Z=\sum_x \exp(-E(x))$ is the **partition function** (normalizer).
+
+This is exactly the statistical mechanics / Boltzmann distribution view that BMs use.
+
+### Boltzmann Machine = pairwise binary MRF
+
+A (general) Boltzmann Machine typically has **binary units** $x_i \in \lbrace 0,1\rbrace$ (sometimes $\lbrace -1,+1\rbrace$) on an **undirected graph** (often fully connected), with energy:
+
+$$E(x) = -\sum_i b_i x_i - \sum_{i<j} w_{ij} x_i x_j = -(\sum_i b_i x_i + \sum_{i<j} w_{ij} x_i x_j)$$
+
+That’s a **pairwise MRF**:
+* node potentials from biases $b_i$
+* edge potentials from weights $w_{ij}$
+
+So a BM **is** an MRF with pairwise interactions (an Ising model / binary pairwise MRF).
+
+The “Markov” part shows up in the conditional:
+
+$$p(x_i=1 \mid x_{-i}) = \sigma\Big(b_i + \sum_{j \in N(i)} w_{ij} x_j\Big)$$
+
+where $N(i)$ are neighbors in the graph. (If it’s fully connected, “neighbors” is everyone else.)
+
+### Restricted Boltzmann Machine = bipartite MRF
+
+An RBM splits units into **visible** $v$ and **hidden** $h$, with edges only across the split (no $v-v$ or $h-h$):
+
+$$E(v,h) = -\sum_i b_i v_i - \sum_j c_j h_j - \sum_{i,j} w_{ij} v_i h_j$$
+
+Graphically: a **bipartite undirected graph** → still an MRF.
+
+The key win: conditional independence becomes trivial:
+
+* Hidden units independent given visibles:
+  
+  $$p(h \mid v)=\prod_j p(h_j \mid v)$$
+  
+* Visible units independent given hiddens:
+  
+  $$p(v \mid h)=\prod_i p(v_i \mid h)$$
+  
+That’s why Gibbs sampling is fast in RBMs (alternate sampling whole layers).
+
+Also, the model over visibles alone is:
+
+$$p(v)=\sum_h p(v,h)$$
+
+which is still an MRF-ish induced distribution, but the nice factorization happens in the **joint**.
+
+### Hopfield network = deterministic (or zero-temperature) cousin of BM
+
+Classic Hopfield nets are usually:
+* binary states $s_i \in \lbrace -1,+1\rbrace$
+* symmetric weights $w_{ij}=w_{ji}$, no self connections $w_{ii}=0$
+* asynchronous updates that *decrease an energy function*
+
+Energy:
+
+$$E(s) = -\frac{1}{2}\sum_{i\neq j} w_{ij} s_i s_j - \sum_i \theta_i s_i$$
+
+Compare that with the BM energy: it’s the same *form*.
+
+Relationship:
+* A **Boltzmann Machine** is like a Hopfield net with **stochastic** updates (finite temperature).
+* A **Hopfield net** is like the **$T\to 0$** (zero temperature) limit: it does greedy descent to a local minimum → “associative memory”.
+
+So: Hopfield = (often fully-connected) pairwise MRF **used for optimization** rather than probabilistic modeling.
+
+### “MRF” vs “Boltzmann distribution” vs “Gibbs distribution”
+
+In this context, these words almost collapse into each other:
+* **MRF**: the *graph + conditional independence structure* (undirected).
+* **Gibbs/Boltzmann distribution**: the *energy-based parameterization* $p \propto e^{-E}$.
+* For positive distributions, “MRF factorization over cliques” $\iff$ “Gibbs energy over cliques”.
+
+### Why RBMs matter: structure makes inference cheap-ish
+
+General BMs (general MRFs with loops / full connectivity) make inference and learning hard because:
+* $Z$ is expensive
+* sampling mixes slowly
+
+RBMs restrict the graph so:
+* conditionals factorize
+* block Gibbs sampling is easy
+  but $Z$ is still hard, so you use approximations like Contrastive Divergence.
+
+Here’s the clean mapping between the two common binary conventions, and how Hopfield / Ising / Boltzmann Machine energies line up.
+
+### Two encodings
+
+* **Spin / Ising / Hopfield convention:**
+  
+  $$s_i \in \lbrace -1,+1\rbrace$$
+
+* **Neuron / RBM convention:**
+  
+  $$x_i \in \lbrace 0,1\rbrace$$
+  
+They’re related by:
+
+$$
+s_i = 2x_i - 1
+\qquad\Longleftrightarrow\qquad
+x_i = \frac{s_i+1}{2}
+$$
+
+### Start from a 0/1 Boltzmann Machine energy
+
+A standard BM (pairwise, binary) energy is:
+
+$$E(x)= -\sum_i b_i x_i -\sum_{i<j} w_{ij} x_i x_j$$
+
+Substitute $x_i=(s_i+1)/2$.
+
+#### Expand the pair term
+
+$$x_i x_j = \frac{(s_i+1)(s_j+1)}{4} = \frac{s_i s_j + s_i + s_j + 1}{4}$$
+
+So
+
+$$
+-\sum_{i<j} w_{ij} x_i x_j
+= -\sum_{i<j}\frac{w_{ij}}{4}s_i s_j
+-\sum_{i<j}\frac{w_{ij}}{4}(s_i+s_j)
+-\sum_{i<j}\frac{w_{ij}}{4}
+$$
+
+#### Expand the bias term
+
+$$-\sum_i b_i x_i = -\sum_i \frac{b_i}{2}s_i -\sum_i \frac{b_i}{2}$$
+
+Now group things into:
+
+* quadratic in spins: $s_i s_j$
+* linear in spins: $s_i$
+* constant (can be dropped for argmin/MAP, but matters for $Z$)
+
+### Resulting spin-form (Ising/Hopfield-style) energy
+
+You get:
+
+$$E(s)= -\sum_{i<j} J_{ij} s_i s_j -\sum_i h_i s_i + \text{const}$$
+
+with the parameter mapping:
+
+#### Couplings
+
+$$J_{ij} = \frac{w_{ij}}{4}$$
+
+#### Fields (effective biases)
+
+Each edge contributes linear terms to both endpoints. The total field at node $i$ becomes:
+
+$$h_i = \frac{b_i}{2} + \frac{1}{4}\sum_{j\neq i} w_{ij}$$
+
+(assuming (w_{ij}) is symmetric and you’re summing over undirected edges)
+
+Constants:
+
+$$\text{const} = -\sum_i \frac{b_i}{2} - \sum_{i<j}\frac{w_{ij}}{4}$$
+
+Often ignored unless you need exact probabilities.
+
+### Where the Hopfield “$\frac{1}{2$” comes from
+
+Hopfield energy is often written as:
+
+$$E_{\text{Hop}}(s)= -\frac{1}{2}\sum_{i\neq j} W_{ij} s_i s_j -\sum_i \theta_i s_i$$
+
+But note:
+
+$$\sum_{i\neq j} = 2\sum_{i<j}$$
+
+So the Hopfield form is just avoiding double counting. If you rewrite Hopfield using $i<j$, it’s:
+
+$$E_{\text{Hop}}(s)= -\sum_{i<j} W_{ij} s_i s_j -\sum_i \theta_i s_i$$
+
+So it matches the Ising/BM spin form with:
+
+$$J_{ij} \leftrightarrow W_{ij},\quad h_i \leftrightarrow \theta_i$$
+
+### Probabilistic vs deterministic update (BM vs Hopfield)
+
+Once you’re in spin form $E(s)$:
+
+* **Boltzmann Machine / Ising MRF**:
+  
+  $$p(s) \propto \exp(-E(s)/T)$$
+  
+  (Temperature $T$ often absorbed into parameters.)
+
+* **Hopfield** is essentially **$T\to 0$**:
+  updates greedily decrease energy → converge to a local minimum (an attractor).
+
+### RBM note (same mapping, just bipartite)
+
+RBM energy in 0/1:
+
+$$E(v,h) = -b^\top v - c^\top h - v^\top W h$$
+
+You can map $v,h$ to $\pm 1$ spins the same way; you’ll get couplings scaled by $1/4$ and extra field terms coming from row/column sums of $W$.
