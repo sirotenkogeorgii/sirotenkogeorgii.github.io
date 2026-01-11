@@ -28,6 +28,8 @@ A PoE combines experts by **multiplication**:
 * Each expert can focus on one “nugget” of constraint (local stroke structure, tense agreement, etc.).
 * Data that satisfies one constraint but violates others gets ruled out because other experts assign low probability.
 * The product can be **much sharper** than any single expert because it effectively represents the **intersection** of constraints. 
+* Metaphorically speaking, a single expert in a **mixture** has the power to pass a bill while a single expert in a **product** has the power to veto it.
+* For an event to be likely under a product model, all constraints must be (approximately) satisfied, while an event is likely under a mixture model if it (approximately) matches with any single template.
 
 ## 2) The PoE model (formal definition)
 
@@ -51,10 +53,14 @@ For a PoE, each expert can “waste” probability mass in different wrong place
 
 ### 3.1 Likelihood gradient for an expert
 
-For one data vector $d$, the log-likelihood gradient wrt expert $m$’s parameters is:
+Given the iid data, one can use the log-likelihood as an objective function to train a PoE:
+
+$$\text{Log-Likelihood}(d_1,\dots,d_N; \theta_1,\dots,\theta_n) = \sum^N_{i=1}\sum^n_{m=1}\log p_m(d_i\mid \theta_m) - N\log Z$$
+
+For one data vector $d$ $(=d_i)$, the log-likelihood gradient wrt expert $m$’s parameters is:
 
 $$
-\frac{\partial \log p(d\mid \theta_{1:n})}{\partial \theta_m}=\frac{\partial \log p_m(d\mid \theta_m)}{\partial \theta_m} - \sum_c p(c\mid \theta_{1:n}) \frac{\partial \log p_m(c\mid \theta_m)}{\partial \theta_m} \quad\text{Eq. 2}
+\frac{\partial \log p(d\mid \theta_{1:n})}{\partial \theta_m}=\frac{\partial \log p_m(d\mid \theta_m)}{\partial \theta_m} - \underbrace{\sum_c p(c\mid \theta_{1:n}) \frac{\partial \log p_m(c\mid \theta_m)}{\partial \theta_m}}_{\mathbb{E}_{c\sim p(\cdot \mid \theta_{1:n})}[\frac{\partial \log p_m(c\mid \theta_m)}{\partial \theta_m}]} \quad\text{Eq. 2}
 $$
 
 Interpretation:
@@ -63,12 +69,12 @@ Interpretation:
 
 ### 3.2 Sampling fantasy data is the bottleneck
 
-To estimate the negative phase you need samples from $p(c\mid \theta_{1:n})$.
+The simplicity of the gradient in $\text{Eq. 2}$ is deceptive, it requires the evaluation of an intractable expectation over $p$ (second term). To estimate the negative phase you need samples from $p(c\mid \theta_{1:n})$.
 
 * Rejection sampling (“each expert samples independently until all agree”) is conceptually helpful but generally hopelessly inefficient.
 * Use **MCMC / Gibbs sampling** instead:
   * Given data, hidden states of different experts are **conditionally independent**, so you can update all experts’ hidden variables in parallel.
-  * If, given its hidden state, each expert makes visible dimensions conditionally independent (bipartite structure), you can also update all visible variables in parallel given all hidden states—leading to alternating parallel updates (hidden ↔ visible). 
+  * If, given its hidden state, each expert makes visible dimensions conditionally independent (bipartite structure), you can also update all visible variables in parallel given all hidden states—leading to alternating parallel updates (hidden $\iff$ visible). 
 
 ### 3.3 Even if you can sample: variance kills you
 
@@ -81,23 +87,25 @@ Even with MCMC convergence, equilibrium samples have:
 
 ### 4.1 Setup: distributions involved
 
-* $Q_0$: data distribution over visibles (think: start of a Markov chain at time 0).
+* $Q_0$: data distribution over visibles (think: start of a Markov chain at time $0$).
 * $Q_\infty$: equilibrium distribution over visibles implied by the PoE after long Gibbs sampling (this is the model distribution).
 * $Q_1$: distribution of visibles after **one full Gibbs step** starting from data (sample a reconstruction). 
 
-### 4.2 ML is minimizing $KL((Q_0) \|\| (Q_\infty))$
+### 4.2 ML is minimizing $\mathrm{KL}(Q_0 \parallel Q_\infty)$
 
-The average log-likelihood objective equals minimizing:
+Maximizing the log likelihood of the data (averaged over the data distribution) is equivalent to minimizing of the KL divergence between the data distribution $Q_0$ and the equilibrium distribution over the visible variables $Q_\infty$ (produced by prolongated Gibbs sampling):
 
 $$
 \mathrm{KL}(Q_0 \| Q_\infty) = H(Q_0) - \mathbb{E}_{d\sim Q_0}[\log Q_\infty(d)] \quad\text{Eq. 3 idea}
 $$
 
-Since $H(Q_0)$ doesn’t depend on parameters, maximizing likelihood is maximizing $\mathbb{E}_{Q_0}[\log Q_\infty(d)]$. 
+Since the entropy of the data distribution $H(Q_0)$ doesn’t depend on parameters, maximizing likelihood is maximizing $\mathbb{E}_{Q_0}[\log Q_\infty(d)]$. Note that $Q_\infty(d)=p(d\mid \theta_{1:n})$. Expectation of LHS over the data distribution $Q_0$ in $\text{Eq. 2}$, can be rewritten as
+
+$$\mathbb{E}_{Q_0}[\frac{\partial \log p(d\mid \theta_m)}{\partial \theta_m}] = \mathbb{E}_{Q_0}[\frac{\partial \log Q_\infty}{\partial \theta_m}] = \mathbb{E}_{Q_0}[\frac{\partial \log p_m(d\mid \theta_m)}{\partial \theta_m}] - \mathbb{E}_{Q_\infty}[\frac{\partial \log p_m(c\mid \theta_m)}{\partial \theta_m}]\quad\text{Eq. 4}$$
 
 ### 4.3 CD objective: compare data to *nearby* reconstructions
 
-Instead of running to equilibrium, minimize the tendency of a Gibbs chain to move away from the data distribution immediately.
+There is a simple and effective alternative approach to maximize likelihood which eliminates almost all of the computation required to get samples from the equilibrium distribution and also eliminates much of the variance that masks the gradient signal. The approach is to optimize a different objective. Instead of minimizing $Q_0\parallel Q_\infty$, we minimize the difference between $Q_0\parallel Q_\infty$ and $Q_1\parallel Q_\infty$. Instead of running to equilibrium, minimize the tendency of a Markov chaim produced by Gibbs sampler to move away from the data distribution immediately.
 
 Define **contrastive divergence (CD-1)** as:
 
@@ -106,29 +114,31 @@ $$\mathrm{CD}_1 = \mathrm{KL}(Q_0 \| Q_\infty) - \mathrm{KL}(Q_1 \| Q_\infty)$$
 Properties emphasized:
 
 * $Q_1$ is “one step closer to equilibrium than $Q_0$”, so $\mathrm{CD}_1 \ge 0$.
-* Under mild conditions (nonzero transition probabilities), $\mathrm{CD}_1=0$ only if the model is perfect (data distribution equals equilibrium). 
+* Under mild conditions (for Markov chains in which all transitions have non-zero probability), $\mathrm{CD}_1=0$ only if the model is perfect (data distribution equals equilibrium) or in other words $Q_0=Q_1$ implies $Q_0=Q_\infty$.
 
 ### 4.4 Why CD is tractable: cancellation in the gradient
 
-The derivative of the CD objective wrt expert parameters yields:
+The mathematical motivation for the contrastive learning is that the intractable expectation over $Q_\infty$ on the RHS of $\text{Eq. 4}$. The derivative of the CD objective wrt expert parameters yields:
+
+$$-\frac{\partial}{\partial \theta_m}(Q_0\parallel Q_\infty - Q_1\parallel Q_\infty) = \mathbb{E}_{Q_0}\Big[\frac{\partial \log p_m(d\mid \theta_m)}{\partial \theta_m}\Big] - \mathbb{E}_{Q_1}\Big[\frac{\partial \log p_m(\hat d\mid \theta_m)}{\partial \theta_m}\Big] + \frac{\partial Q_1}{\partial \theta_m}\frac{\partial Q_1\parallel Q_\infty}{\partial Q_1}\quad\text{Eq. 5}$$
+
 * A **data term** (expectation under $Q_0$)
 * A **reconstruction term** (expectation under $Q_1$)
 * Plus an extra term involving how $Q_1$ changes with parameters (the “problem term”)
 
-The paper argues (empirically, Section 10) that this third term is typically small and rarely opposes the other terms, so you can ignore it. 
+Ifeach expert is chosen to be tractable, it is possible to compute the exact values of the derivative of $\log p_m(d\mid \theta_m)$ and $\log p_m(\hat d\mid \theta_m)$. It is also straightforward to sample from $Q_0$ and $Q_1$, so the first two terms of RHS are tractable.
+
 
 ### 4.5 The practical learning rule (approximate gradient)
 
-Update each expert $m$ by:
+The paper argues (empirically, based on experiments) that this problematic third term is typically small and rarely opposes the other terms, so you can ignore it. Update of each expert $m$ becomes:
 
 $$
 \Delta \theta_m \propto \mathbb{E}_{d\sim Q_0}\Big[\frac{\partial \log p_m(d\mid \theta_m)}{\partial \theta_m}\Big]-\mathbb{E}_{\hat d\sim Q_1}\Big[\frac{\partial \log p_m(\hat d\mid \theta_m)}{\partial \theta_m}\Big]
 \quad\text{Eq. 6}
 $$
 
-This is the “**positive phase minus negative phase**”, but the negative phase uses **one-step reconstructions** rather than equilibrium samples—dramatically reducing computation and variance. 
-
----
+This is the “**positive phase minus negative phase**”, but the negative phase uses **one-step reconstructions** rather than equilibrium samples—dramatically reducing computation and variance. This works very well in practice even if a single reconstruction of each data vector is used in place of the full probability distribution over reconstructions. The difference in the derivatives of the data vectors and their reconstructions has some variance, because the reconstruction procedure is stochastic. But when the PoE is modelling data moderately well, the one step reconstruction will be very similar to the data, so the variance will be very small. The low variance makes it feasible to perform online learning after each data vector is present, though the simulations described in the paper use batch learning. 
 
 ## 5) How to sample a one-step reconstruction $\hat d \sim Q_1$ (general PoE)
 
@@ -192,8 +202,8 @@ Empirical conclusion: **separate specialization early makes poor local optima mo
 
 A **Restricted Boltzmann Machine (RBM)** (one visible layer, one hidden layer, no intra-layer connections) can be seen as a PoE with **one expert per hidden unit**:
 
-* Hidden unit OFF → factorial distribution where each visible bit is equally likely on/off.
-* Hidden unit ON → different factorial distribution; weights specify log-odds of visible bits being on.
+* Hidden unit OFF $\implies$ factorial distribution where each visible bit is equally likely on/off.
+* Hidden unit ON $\implies$ different factorial distribution; weights specify log-odds of visible bits being on.
 * Combining experts corresponds to **adding log-odds** across hidden units. 
 
 Exact inference is tractable in RBMs because hidden units are conditionally independent given visibles. 
@@ -237,11 +247,9 @@ $$
 
 ### 9.2 Result
 
-* Learned **localized** features; for each image $\sim ⅓$ of features active.
+* Learned **localized** features; for each image $\sim \frac{1}{3}$ of features active.
 * Features include on-center/off-surround and vice versa, stroke fragments, Gabor/wavelet-like patterns.
 * **Figure 4 (page 9):** receptive fields (weights) of 100 randomly selected hidden units show these local structures. 
-
----
 
 ## 10) Using PoEs for discrimination (classification)
 
@@ -367,7 +375,7 @@ CD provides a principled stochastic objective; learning is driven by differences
 
 Combining experts via geometric mean has a KL guarantee:
 
-$$\mathrm{KL}\left(P \| \frac{\prod_m Q_m^{w_m}}{Z}\right) \le \sum_m w_m \mathrm{KL}(P\|Q_m) \quad\text{Eq. 12}$$
+$$\mathrm{KL}\left(P \parallel \frac{\prod_m Q_m^{w_m}}{Z}\right) \le \sum_m w_m \mathrm{KL}(P\|Q_m) \quad\text{Eq. 12}$$
 
 and the benefit is tied to $-\log Z$: experts help when they disagree on unobserved data, making $Z<1$. 
 
@@ -388,241 +396,3 @@ Temptation: learn weights $w_m$. But varying $w_m$ makes inference harder (e.g.,
 4. **Learning rule:** “data statistics – reconstruction statistics” (Eq. 6 / Eq. 10 / Eq. 11). 
 5. **RBM is a PoE**, and CD-1 becomes the practical RBM training algorithm; empirically works well for digits and yields useful features + strong discriminative scores. 
 6. The ignored gradient term is **usually safe**; CD improves reliably, though likelihood can occasionally decrease. 
-
-<!-- ## 1. Core Idea
-
-* Introduces **Products of Experts (PoE)**: combine several probabilistic models (“experts”) by **multiplying** their distributions and renormalizing, instead of averaging as in mixtures.
-* Proposes **Contrastive Divergence (CD)** as a practical approximate learning objective for PoE models, avoiding the expensive computation of the partition function’s gradient. 
-* Shows that **restricted Boltzmann machines (RBMs)** are a special case of PoE, and that CD gives an efficient learning rule for RBMs. 
-
----
-
-## 2. Why Products of Experts?
-
-### Mixtures vs Products
-
-* **Mixture of experts**:
-
-  * Overall distribution is a weighted **average** of individual experts’ distributions.
-  * Each expert must individually cover the full high-dimensional space → tends to be **broad and inefficient** in high dimensions. 
-* **Product of experts**:
-
-  * Overall distribution is proportional to the **product** of expert distributions:
-    
-    $$
-    p(d \mid \theta_1,\dots,\theta_n) \propto \prod_m p_m(d\mid\theta_m)
-    $$
-
-  * Each expert can focus on enforcing a **low-dimensional constraint** or pattern; the product enforces *all* constraints simultaneously. 
-  * Allows **much sharper** distributions than any single expert; bad configurations get ruled out if any expert assigns them low probability.
-
-> If the individual distributions are uni- or multivariate gaussians, their product will also be a multivariate gaussian so, unlike mixtures of gaussians, products of gaussians cannot approximate arbitrary smooth distributions. If, however, the individual models are a bit more complicated and each contains one or more latent (i.e., hidden) variables, multiplying their distributions together (and renormalizing) can be very powerful. Individual models of this kind will be called “experts.”
-
-### Intuition
-
-* For images: One expert may capture coarse shape, others local stroke segments, others contrast/edges.
-* For language: One expert enforces tense agreement, another subject–verb number agreement, another adjective order, etc. 
-
-
----
-
-## 3. Maximum Likelihood Learning and Its Problems
-
-* Prediction with $n$ combined experts:
-  
-  $$
-  p(d\mid \theta_1, \dots, \theta_n) = \frac{\prod_m f_m(d\mid \theta_m)}{\sum_c \prod_m f_m(c\mid \theta_m)}
-  $$
-
-  Here:
-  * $d$ represents a data vector.
-  * $f_m$ is the (unnormalized) probability of the data under expert model m with parameters $\theta_m$.
-  * The denominator is a partition function summing over all possible data vectors $c$.
-
-* Log-likelihood gradient for expert $m$ in a PoE:
-
-  $$
-  \frac{\partial \log p(\mathbf{d} \mid \theta_1, \dots, \theta_n)}{\partial \theta_m} = \frac{\partial \log f_m(\mathbf{d} \mid \theta_m)}{\partial \theta_m} - \sum_\mathbf{c} p(\mathbf{c} \mid \theta_1, \dots, \theta_n) \frac{\partial \log f_m(\mathbf{c} \mid \theta_m)}{\partial \theta_m}
-  $$
-  
-* Main difficulty:
-
-  * **Sampling from the equilibrium distribution** of the PoE (via rejection sampling, Gibbs sampling, etc.) is expensive.
-  * The model samples have **high variance** and this variance depends on parameters → unstable learning. This high variance can completely "swamp the estimate of the derivative," making the learning signal unreliable.
-
-These challenges with maximum likelihood training established the primary motivation for developing an alternative, more tractable objective function.
-
----
-
-## 4. Contrastive Divergence (CD)
-
-### Objective
-
-* Instead of minimizing just the KL divergence between data distribution $Q_0$ and equilibrium model distribution $Q_\infty$, the paper minimizes the **contrastive divergence**:
-  
-  $$
-  \text{CD} = Q_0 \| Q_1 - Q_1 \| Q_\infty
-  $$
-
-  where:
-
-  * $Q_0$: empirical data distribution.
-  * $Q_1$: distribution of **one-step reconstructions** obtained by one full Gibbs step (hidden update + visible update) starting from data. 
-* Intuition:
-
-  * We want the Markov chain (Gibbs sampler) to **leave the data distribution unchanged**.
-  * Instead of running to equilibrium, measure and reduce how much the chain moves on its **first step** away from data.
-  
-> Fitting a PoE to data appears difficult because it appears to be necessary to compute the derivatives, with repect to the parameters, of the partition function that is used in the renormalization. As we shall see, however, these derivatives can be finessed by optimizing a less obvious objective function than the log likelihood of the data.
-
-### Approximate Gradient
-
-* The gradient of CD decomposes into three terms; two are tractable expectations over data and reconstructions, and one term involving how $Q_1$ itself changes with parameters is **ignored**.
-* Resulting practical update rule for expert $m$:
-  
-  $$
-  \Delta \theta_m \propto \mathbb{E}_{d\sim Q_0}\left[\frac{\partial \log p_m(d)}{\partial \theta_m}\right] - \mathbb{E}_{\hat d\sim Q_1}\left[\frac{\partial \log p_m(\hat d)}{\partial \theta_m}\right]
-  $$
-
-  where $\hat d$ is a one-step reconstruction of $d$. 
-
-### Properties
-
-* **Low-variance learning**: reconstructions $\hat d$ are close to data $d$ when the model is reasonable → difference of terms has low variance.
-* Allows **online or mini-batch learning**.
-* Empirically, ignoring the third term still tends to **improve** CD and often also improves log-likelihood. 
-
----
-
-## 5. Restricted Boltzmann Machines as PoE
-
-* An **RBM**: visible and hidden units (binary in the basic version), with:
-
-  * No visible–visible or hidden–hidden connections (bipartite graph).
-* Each hidden unit can be seen as an **expert** that defines a distribution over visible units when it is on vs off → RBM = product of such experts. 
-* The **standard RBM learning rule** (data statistics minus model statistics for $\langle s_i s_j\rangle$) is exactly the PoE maximum likelihood gradient.
-* Under CD with one Gibbs step (CD-1), the weight update for visible unit $i$ and hidden unit $j$ is:
-  
-  $$
-  \Delta w_{ij} \propto \langle s_i s_j \rangle_{\text{data}} - \langle s_i s_j \rangle_{\text{one-step reconstructions}}
-  $$
-  
-  (or using probabilities $p_i, p_j$ for real-valued inputs). 
-
----
-
-## 6. Experiments & Examples
-
-### 6.1 Toy 2D Factorized Data
-
-* Uses “**unigauss**” experts: each is a mixture of a uniform distribution and a single axis-aligned Gaussian. 
-* PoE of 15 such experts fits a 2D data distribution with grid-like clusters.
-* Each cluster is explained as the **intersection** of a pair of elongated Gaussians; unnecessary experts stay vague.
-* Gibbs sampling from the learned PoE generates synthetic data matching the observed grid structure (even fills in a missing grid point). 
-
-### 6.2 100D Edge Images
-
-* Data: synthetic 10×10 images (100D) containing a single edge with varying position, orientation, and contrast. 
-* Product of 40 unigauss experts learns:
-
-  * **Edge-like features** at different orientations and positions.
-  * Some even-symmetric features marking edge endpoints.
-* Each expert is broadly tuned across pixels; precision comes from their **intersection** (population coding).
-
-### 6.3 RBM on USPS Handwritten Digits
-
-* Model: RBM with **500 hidden units**, **256 visible units**, trained on 8,000 16×16 real-valued digit images from all 10 classes. 
-* Uses CD learning with probabilities instead of binary states for pixels (but binary for hidden).
-* Learned features:
-
-  * Localized receptive fields: center-surround patterns, stroke fragments, Gabor/wavelet-like filters.
-  * About one-third of features active for a given image. 
-
-### 6.4 Class-Specific PoE Models for Digit Recognition
-
-* Trains **separate PoE/RBM models per digit class** (e.g., only “2” images vs only “3” images).
-* For classification:
-
-  * Compute **unnormalized log probability** ($\log p(t\mid \text{model}) + \text{constant}$) under each class model.
-  * Since partition function differences between models are global constants, they can be estimated discriminatively or absorbed into a discriminative layer. 
-* Demonstrations:
-
-  * Digit “2” vs “3”: reconstructed “2”s look much better under the model trained on 2s than under the 3s model.
-  * Digit “4” vs “6”: with two-hidden-layer models per class and model averaging, achieves **perfect separation** on both training and test sets considered in the paper. 
-  * Digit “7” vs “9”: the hardest pair; still obtains good separation, with errors only near the decision boundary. 
-
-### 6.5 Multi-class Setup
-
-* Trains 10 digit-specific PoEs. For each class, uses **two scores**:
-
-  1. Unnormalized log probability of pixels under first hidden layer PoE.
-  2. Unnormalized log probability of first-layer hidden activations under a **second-layer PoE**. 
-* A multinomial logistic regression maps these 20 scores to class probabilities.
-* Reported performance:
-
-  * **~1.1% error** on the USPS training/test split used in the paper.
-  * With ~7% reject rate (abstaining on low-confidence cases), **zero errors** among the remaining test samples. 
-
----
-
-## 7. Quality of the CD Approximation
-
-* For small RBMs (few visible and hidden units), the paper computes:
-
-  * Exact gradients of log-likelihood and exact CD changes.
-* Empirical result: 
-
-  * For single weights, the approximate CD gradient sometimes has the wrong sign.
-  * But **for the full parameter vector**, a parallel weight update using CD almost always improves the contrastive divergence.
-  * Log-likelihood usually improves as well; occasional small decreases are observed.
-* Scatter plots show that the **ignored term** in the CD gradient (due to change in $Q_1$) typically **helps** rather than harms the optimization.
-
----
-
-## 8. Other Types of Experts
-
-The paper sketches variations beyond simple binary RBMs: 
-
-* **Multinomial or replicated units**:
-
-  * Real-valued intensities modeled by multiple identical binary units (replicas) whose count of “on” states approximates the value.
-* **Unifac experts**:
-
-  * Mixture of a **uniform distribution** and a **single-factor factor analyzer** (one latent factor per expert).
-  * Each expert has a loading vector, mean vector, and variance vector; can capture structured covariance in a low-rank way.
-* **Products of HMMs**:
-
-  * Several HMMs act as experts over sequences; each contributes a constraint, and the product yields exponentially more efficient modeling of mutual information between past and future (linear in number of HMMs rather than exponential in states).
-  * CD learning applied by running forward–backward independently in each HMM, sampling a path, then combining outputs multiplicatively.
-
----
-
-## 9. Conceptual Connections & Discussion
-
-* **Logarithmic opinion pools**:
-
-  * PoE is a special case of combining distributions via a (possibly weighted) geometric mean.
-  * Benefit arises when experts **disagree** on unobserved data, making the normalization constant small and sharpening the distribution. 
-* **Comparison with directed graphical models**:
-
-  * Directed models: easy ancestral sampling, but inference is hard (explaining away, approximate inference needed).
-  * PoE: inference is easy (experts conditionally independent given data), but sampling is hard; CD bypasses the need for long-run sampling during training. 
-* **Greedy multi-layer learning**:
-
-  * In directed models with independent priors on latent variables, learned posteriors tend to be marginally independent → little structure left for higher layers.
-  * In PoEs, latent variables of different experts remain **correlated**, so higher layers can still capture structure in learned features. 
-* **Analysis-by-synthesis**:
-
-  * PoE + CD is framed as a successful instance of the old idea of explaining data by generating it from a model and comparing to near misses, but now with a clear probabilistic objective (contrastive divergence). 
-
----
-
-## 10. Takeaways
-
-* **Products of Experts** provide a powerful alternative to mixtures, especially in high dimensions, by allowing many simple experts to jointly impose strong constraints.
-* **Contrastive Divergence** is a practical and surprisingly effective approximate learning method for such undirected models, avoiding full partition-function gradients while still improving both CD and log-likelihood in practice.
-* The paper lays a theoretical and practical foundation for:
-
-  * Training **RBMs** efficiently.
-  * Using PoEs for **generative modeling** and **classification**, especially in vision and sequence modeling.
-* This work is one of the core stepping stones toward modern deep generative models based on RBMs and energy-based learning. -->
