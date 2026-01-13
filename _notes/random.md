@@ -1235,7 +1235,7 @@ $$\text{const} = -\sum_i \frac{b_i}{2} - \sum_{i<j}\frac{w_{ij}}{4}$$
 
 Often ignored unless you need exact probabilities.
 
-### Where the Hopfield “$\frac{1}{2$” comes from
+### Where the Hopfield “$\frac{1}{2}$” comes from
 
 Hopfield energy is often written as:
 
@@ -1268,8 +1268,149 @@ Once you’re in spin form $E(s)$:
 
 ### RBM note (same mapping, just bipartite)
 
-RBM energy in 0/1:
+RBM energy in $0/1$:
 
 $$E(v,h) = -b^\top v - c^\top h - v^\top W h$$
 
 You can map $v,h$ to $\pm 1$ spins the same way; you’ll get couplings scaled by $1/4$ and extra field terms coming from row/column sums of $W$.
+
+## Independent Component Analysis
+
+### Introduction
+
+Many statistical models are **generative**: they specify a complete probability distribution over all variables involved. A large and important subclass introduces **latent (hidden) variables** to explain how the observed data are produced.
+
+Typical examples include **mixture models** (where the latent variable indicates the unknown mixture component for each data point), **hidden Markov models**, and **factor analysis**.
+
+Even **decoding error-correcting codes** can be formulated as inference in a latent-variable model (see Fig. 34.1). In that setting, the encoding matrix $G$ is usually known beforehand. In most latent-variable modeling problems, however, the parameters analogous to $G$ are **unknown** and must be learned from data together with the latent variables.
+
+Latent variables are often given a **simple** prior distribution, frequently one that factorizes into independent parts. In that sense, fitting a latent-variable model can be viewed as representing the data in terms of “independent components.” The **independent component analysis (ICA)** algorithm can be seen as one of the simplest continuous latent-variable models of this kind.
+
+### Generative model for independent component analysis
+
+Assume we observe $N$ data points $D=\lbrace x^{(n)}\rbrace_{n=1}^N$, where each $x$ is a $J$-dimensional vector. ICA posits that each observation is formed as a **linear mixture** of $I$ underlying source signals $s$:
+
+$$x = Gs \qquad (34.1)$$
+
+where the mixing matrix $G$ is **unknown**.
+
+The most basic setup assumes the number of sources equals the number of observed dimensions, i.e. $I=J$. The goal is then to recover the sources $s$ (typically only **up to** scaling and permutation ambiguities), or equivalently to estimate an inverse (or “unmixing”) transform for $G$ from the samples $\lbrace x^{(n)}\rbrace$.
+
+A key assumption is that the latent components are **independent**, with factorized prior
+
+$$P(s\mid \mathcal H)=\prod_i p_i(s_i),$$
+
+where $\mathcal H$ denotes the modeling assumptions, including the chosen marginal densities $p_i$.
+
+Given $G$ and $\mathcal H$, the joint probability of observations and sources factorizes over samples:
+
+$$P(\lbrace x^{(n)}, s^{(n)}\rbrace_{n=1}^N \mid G,\mathcal H) = \prod_{n=1}^N \Big[ P(x^{(n)}\mid s^{(n)},G,\mathcal H),P(s^{(n)}\mid \mathcal H) \Big] \qquad (34.2)$$
+
+In the **noise-free** ICA model, $x$ is assumed to be generated exactly from $Gs$. This makes the conditional distribution a set of delta constraints:
+
+$$= \prod_{n=1}^N \left[ \left(\prod_j \delta!\left(x^{(n)}_j - \sum_i G_{ji}s^{(n)}_i\right)\right)\left(\prod_i p_i!\left(s^{(n)}_i\right)\right)\right] \qquad (34.3)$$
+
+The assumption of *no observation noise* is not typical in many latent-variable modeling contexts (since real data are rarely noiseless), but it simplifies the inference problem substantially.
+
+### The likelihood function
+
+To estimate the mixing matrix $G$ from the dataset $D$, we focus on the **likelihood**
+
+$$P(D\mid G,\mathcal H)=\prod_n P(x^{(n)}\mid G,\mathcal H). \text{34.4}$$
+
+So the full likelihood is a product over datapoints, and each factor $P(x^{(n)}\mid G,\mathcal H)$ is obtained by **integrating out** the latent sources $s^{(n)}$.
+
+When carrying out the marginalization, we use the delta-function identity
+
+$$\int \delta(\alpha x-y),f(s),ds=\frac{1}{|\alpha|},f(x/\alpha),$$
+
+and we also adopt a summation convention so expressions like (G_{ji}s_i^{(n)}) mean (\sum_i G_{ji}s_i^{(n)}).
+
+For one datapoint, the marginal likelihood is
+
+$$P(x^{(n)}\mid G,\mathcal H)=\int d^I s^{(n)};P(x^{(n)}\mid s^{(n)},G,\mathcal H),P(s^{(n)}\mid\mathcal H), \text{34.5}$$
+
+and under the noiseless ICA model this becomes
+
+$$=\int d^I s^{(n)}\left[\prod_j \delta!\left(x_j^{(n)}-G_{ji}s_i^{(n)}\right)\right] \left[\prod_i p_i!\left(s_i^{(n)}\right)\right]. \text{34.6}$$
+
+Evaluating the integral yields
+
+$$P(x^{(n)}\mid G,\mathcal H)=\frac{1}{\lvert\det G\rvert}\prod_i p_i!\left((G^{-1})*{ij}x_j^{(n)}\right). \text{34.7}$$
+
+Taking logs,
+
+$$\ln P(x^{(n)}\mid G,\mathcal H)= -\ln\lvert\det G\rvert+\sum_i \ln p_i!\left((G^{-1})*{ij}x_j^{(n)}\right). \text{34.8}$$
+
+It is convenient to work with the **unmixing matrix** $W = G^{-1}$. Then the single-sample log-likelihood can be written as
+
+$$\ln P(x^{(n)}\mid G,\mathcal H)= \ln\lvert\det W\rvert+\sum_i \ln p_i!\left(W_{ij}x_j^{(n)}\right). \text{34.9}$$
+
+From here on, we assume $\det W>0$, so we can drop the absolute value.
+
+### Gradients and useful identities
+
+To build a maximum-likelihood learning rule, we differentiate the log-likelihood. The following matrix derivatives are used:
+
+$$\frac{\partial}{\partial G_{ji}}\ln\det G = (G^{-1})_{ij}=W_{ij}, \text{34.10}$$
+
+$$\frac{\partial}{\partial G_{ji}}(G^{-1})_{lm}=-(G^{-1})_{lj}(G^{-1})_{im}=-W_{lj}W_{im}, \text{34.11}$$
+
+$$\frac{\partial f}{\partial W_{ij}} = -G_{jm}\left(\frac{\partial f}{\partial G_{lm}}\right)G_{li}. \text{34.12}$$
+
+Define the current estimated sources (sometimes called “activations”)
+
+$$a_i \equiv W_{ij}x_j,$$
+
+and introduce
+
+$$\phi_i(a_i)\equiv \frac{d}{da_i}\ln p_i(a_i). \text{34.13}$$
+
+With these definitions, the gradient of the single-sample log-likelihood w.r.t. $G_{ji}$ becomes
+
+$$\frac{\partial}{\partial G_{ji}}\ln P(x^{(n)}\mid G,\mathcal H)= -W_{ij}-a_i z_l W_{lj}, \text{34.14}$$
+
+where $z_i=\phi_i(a_i)$. Equivalently, differentiating with respect to $W_{ij}$ gives
+
+$$\frac{\partial}{\partial W_{ij}}\ln P(x^{(n)}\mid G,\mathcal H)= G_{ji}+x_j z_i. \text{34.15}$$
+
+If we update (W) by moving **up** the gradient, we obtain the learning rule
+
+$$\Delta W \propto (W^{\top})^{-1}+ z x^{\top}. \text{34.16}$$
+
+This yields the standard ICA-style iterative procedure.
+
+### Algorithm summar
+
+For each datapoint $x$:
+
+1. **Linear step:** compute
+   
+   $$a = Wx.$$
+   
+2. **Nonlinear step:** apply a componentwise nonlinearity
+   
+   $$z_i=\phi_i(a_i),$$
+   
+   where a common choice is $\phi_i(a_i)=-\tanh(a_i)$.
+3. **Weight update:**
+   
+   $$\Delta W \propto (W^\top)^{-1}+ z x^\top.$$
+
+Intuitively, $z_i=\phi_i(a_i)$ indicates how each component $a_i$ should be nudged to increase the probability of the observed data under the assumed source model.
+
+### Choosing $\phi$
+
+The function $\phi$ effectively encodes the assumed **prior** over the latent sources.
+
+* If we choose a **linear** nonlinearity, $\phi_i(a_i)=-\kappa a_i$, then (through the definition in (34.13)) we are implicitly assuming a **Gaussian** distribution for the sources. But a Gaussian prior is rotationally symmetric, so there is no preferred orientation in latent space—meaning the method cannot identify the true mixing matrix $G$ (or the original sources) from the data. In other words, Gaussian sources are not “separable” by ICA.
+
+* Therefore, ICA relies on the sources being **non-Gaussian** (often with heavier tails than a Gaussian). A widely used choice is
+  
+  $$\phi_i(a_i) = -\tanh(a_i). \text{34.17}$$
+  
+  This corresponds to assuming a source density of the form
+  
+  $$p_i(s_i)\propto \frac{1}{\cosh(s_i)} \propto \frac{1}{e^{s_i}+e^{-s_i}}. \text{34.18}$$
+  
+  This distribution has **heavier tails** than a Gaussian, which is consistent with many real-world source signals.
