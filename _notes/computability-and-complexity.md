@@ -3875,7 +3875,7 @@ $$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \
 These functions provide a direct link between sets and functions.
 
 <!-- $\textbf{Proposition 157:}$ A set $A$ is decidable $\iff$ its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable $\iff$ its partial characteristic function $\chi_A$ is partial computable. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Decidable set $\iff$ $c_A$ is computable, set r.e $\iff$ $\chi_A$ is partial computable)</span></p>
 
 1. A set $A$ is **decidable** $\iff$ its **characteristic function $c_A$ is computable**. 
@@ -3888,7 +3888,7 @@ These functions provide a direct link between sets and functions.
 The domain of a partial computable function provides another characterization of r.e. sets.
 
 <!-- $\textbf{Proposition 158:}$ A set is recursively enumerable $\iff$ it is equal to the domain of a partial computable function. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Set r.e. $\iff$ set is $\text{dom}$ of partial computable function)</span></p>
 
 A set $A \subseteq \mathbb{N}$ is recursively enumerable $\iff$ if there exists a partial computable function $f$ such that:

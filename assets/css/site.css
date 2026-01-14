@@ -780,6 +780,12 @@ thead {
   --callout-title: #7f1d1d;
 }
 
+.math-callout--proposition {
+  --callout-border: #b58900;
+  --callout-bg: rgba(250, 249, 242);
+  --callout-title: #000000;
+}
+
 :root[data-theme="dark"] .math-callout--question {
   --callout-border: #f87171;
   --callout-bg: rgba(248, 113, 113, 0.24);
