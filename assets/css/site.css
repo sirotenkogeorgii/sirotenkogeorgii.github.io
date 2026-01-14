@@ -781,8 +781,8 @@ thead {
 }
 
 .math-callout--proposition {
-  --callout-border: #b58900;
-  --callout-bg: rgba(250, 249, 242);
+  --callout-border: #b58600;
+  --callout-bg: #fff9e6;
   --callout-title: #000000;
 }
 
