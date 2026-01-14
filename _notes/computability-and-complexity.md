@@ -44,7 +44,10 @@ In theoretical computer science, the abstract concept of computability is given 
 
 The Turing machine serves as a foundational abstract model of a computing device. It consists of a finite set of states and one or more tapes that serve as its memory.
 
-$\textbf{Definition 1 (Turing Machine):}$ Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also called a $k$-tape Turing machine or $k$-tape TM, is a $6$-tuple of the form $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ where
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing Machine)</span></p>
+
+Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also called a $k$-tape Turing machine or $k$-tape TM, is a $6$-tuple of the form $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ where
 
 - $Q$ is the finite set of states,
 - $\Sigma$ is the input alphabet,
@@ -52,6 +55,8 @@ $\textbf{Definition 1 (Turing Machine):}$ Let $k$ be a nonzero natural number. A
 - $\Delta$ is the transition relation of $M$, where for $\text{Mov} = \lbrace L, R, S \rbrace$, the relation $\Delta$ is a subset of $Q \times \Gamma^k \times Q \times \Gamma^k \times \text{Mov}^k$,
 - $s \in Q$ is the initial state,
 - $F \subseteq Q$ is the set of accepting states.
+
+</div>
 
 <div class="accordion">
   <details>
@@ -132,9 +137,19 @@ The "program" of a Turing machine is its transition relation $\Delta$, which is 
 
 To formalize this, we distinguish between the two parts of an instruction.
 
-$\textbf{Definition 2 (Condition Part, Instruction part):}$ For an instruction of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$, we refer to $(q, a_1, \dots, a_k)$ as its condition part, and to $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ as its instruction part.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Condition Part, Instruction part)</span></p>
 
-$\textbf{Remark 3:}$ The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a $k$-tape Turing machine, $\Delta$ is thus a binary relation of the form  $\Delta \subseteq (Q \times \Gamma^k) \times (Q \times \Gamma^k \times \text{Mov}^k)$  which can be written in infix notation as  $(q, a_1, \dots, a_k) \Delta (q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$. The relation $\Delta$ is called right-unique if for each condition part $(q, a_1, \dots, a_k)$ there is at most one instruction part $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ that satisfies the relation.
+For an instruction of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$, we refer to $(q, a_1, \dots, a_k)$ as its condition part, and to $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ as its instruction part.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a $k$-tape Turing machine, $\Delta$ is thus a binary relation of the form  $\Delta \subseteq (Q \times \Gamma^k) \times (Q \times \Gamma^k \times \text{Mov}^k)$  which can be written in infix notation as  $(q, a_1, \dots, a_k) \Delta (q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$. The relation $\Delta$ is called right-unique if for each condition part $(q, a_1, \dots, a_k)$ there is at most one instruction part $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ that satisfies the relation.
+
+</div>
 
 ### Deterministic vs. Nondeterministic Machines
 
@@ -142,11 +157,21 @@ The nature of the transition relation $\Delta$ determines whether a Turing machi
 
 A general Turing machine, as defined above, does not require $\Delta$ to be right-unique. This means that for a given state and set of tape symbols, there might be multiple applicable instructions. Such a machine is called a nondeterministic Turing machine. When a computation reaches a point with multiple choices, it can branch, exploring several computational paths simultaneously.
 
-$\textbf{Remark 5:}$ In the literature, the term *nondeterministic Turing machine* is used in two different senses. It may refer either to a *general Turing machine*, i.e., one that may or may not be deterministic, or to a Turing machine that is indeed not deterministic, i.e., has a transition relation that is not right-unique.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+In the literature, the term *nondeterministic Turing machine* is used in two different senses. It may refer either to a *general Turing machine*, i.e., one that may or may not be deterministic, or to a Turing machine that is indeed not deterministic, i.e., has a transition relation that is not right-unique.
+
+</div>
 
 In contrast, a deterministic Turing machine has a transition relation that is right-unique. At any point in its computation, there is at most one applicable instruction. This ensures that for any given input, the machine follows a single, uniquely determined computational path.
 
-$\textbf{Definition 4 (Deterministic Turing Machine):}$ A Turing machine $M$ is deterministic if its transition relation is right-unique. A $k$-tape Turing machine $(Q, \Sigma, \Gamma, \Delta, s, F)$ is deterministic if and only if for every state $q \in Q$ and every sequence of $k$ symbols $a_1, \dots, a_k$ from $\Gamma$, there is at most one instruction in $\Delta$ with condition part $(q, a_1, \dots, a_k)$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Deterministic Turing Machine)</span></p>
+
+A Turing machine $M$ is deterministic if its transition relation is right-unique. A $k$-tape Turing machine $(Q, \Sigma, \Gamma, \Delta, s, F)$ is deterministic if and only if for every state $q \in Q$ and every sequence of $k$ symbols $a_1, \dots, a_k$ from $\Gamma$, there is at most one instruction in $\Delta$ with condition part $(q, a_1, \dots, a_k)$.
+
+</div>
 
 ### The Mechanics of Computation
 
@@ -156,7 +181,10 @@ To formally analyze Turing machine computations, we need precise definitions for
 
 A configuration is a complete snapshot of a Turing machine's status, capturing its current state, all tape contents, and the positions of all heads. Since a tape is infinite but can only contain a finite number of non-blank symbols, we need a way to represent its contents.
 
-$\textbf{Definition 6 (Tape Inscriptions):}$ Let $M$ be a Turing machine with tape alphabet $\Gamma$. A *tape inscription* of $M$ is a function $f: \mathbb{Z} \to \Gamma$ such that $f(i) = \square$ for all but finitely many integers $i$. The *relevant part* $u_f$ of a tape inscription $f$ is a word over $\Gamma$. We let $u_f = \square$ if $f$ is the constant function with value $\square$. Otherwise, we let  
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tape Inscriptions)</span></p>
+
+Let $M$ be a Turing machine with tape alphabet $\Gamma$. A *tape inscription* of $M$ is a function $f: \mathbb{Z} \to \Gamma$ such that $f(i) = \square$ for all but finitely many integers $i$. The *relevant part* $u_f$ of a tape inscription $f$ is a word over $\Gamma$. We let $u_f = \square$ if $f$ is the constant function with value $\square$. Otherwise, we let  
 $$
 u_f = f(\min I_f) \cdots f(\max I_f) \quad \text{where} \quad I_f = \lbrace i \in \mathbb{Z} : f(i) \neq \square \rbrace
 $$
@@ -165,11 +193,16 @@ $$
 u = \square^{r_1} u_f \square^{r_2} \quad \text{with} \quad r_1, r_2 \in \mathbb{N}
 $$
 
-i.e., by any word u that equals the relevant part of the tape inscription $f$ plus at most finitely many leading and trailing blank symbols.
+i.e., by any word $u$ that equals the relevant part of the tape inscription $f$ plus at most finitely many leading and trailing blank symbols.
+
+</div>
 
 Using this representation for tape contents, we can formally define a configuration.
 
-$\textbf{Definition 7 (Configuration):}$ Let $k$ be a nonzero natural number and let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $k$-tape Turing machine. A configuration of $M$ is a tuple  
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Configuration)</span></p>
+
+Let $k$ be a nonzero natural number and let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $k$-tape Turing machine. A configuration of $M$ is a tuple  
 $$
 (q, u_1, \dots, u_k, j_1, \dots, j_k) \in Q \times (\Gamma^+)^k \times \prod_{i=1,\dots,k} \lbrace 1, \dots, \lvert u_i \rvert \rbrace
 $$
@@ -177,12 +210,17 @@ This tuple represents a situation where $q$ is the current state, and for each t
 
 * the word $u_i$ represents the relevant part of the inscription on tape $i$,
 * the number $j_i$ indicates the head position on tape $i$, corresponding to the $j_i$-th symbol of $u_i$.
+  
+</div>
 
 #### Computation Steps and Sequences
 
 A computation unfolds as a sequence of configurations, where each transition from one configuration to the next is governed by an instruction from $\Delta$. This transition is called a computation step.
 
-$\textbf{Definition 8 (Computation Step)}$: Let $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ be a configuration of a $k$-tape Turing machine $M$. An instruction of $M$ of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ is *applicable* to $C$ if for $i=1, \dots, k$, the symbol at position $j_i$ of $u_i$ is equal to $a_i$. A configuration $C' = (q', u'_1, \dots, u'_k, j'_1, \dots, j'_k)$ is a *successor configuration* of $C$, written $C \xrightarrow{M} C'$, if there is an applicable instruction as above such that for $i=1, \dots, k$:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computation Step)</span></p>
+
+Let $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ be a configuration of a $k$-tape Turing machine $M$. An instruction of $M$ of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ is *applicable* to $C$ if for $i=1, \dots, k$, the symbol at position $j_i$ of $u_i$ is equal to $a_i$. A configuration $C' = (q', u'_1, \dots, u'_k, j'_1, \dots, j'_k)$ is a *successor configuration* of $C$, written $C \xrightarrow{M} C'$, if there is an applicable instruction as above such that for $i=1, \dots, k$:
 
 * $u'_i$ is defined by
 
@@ -210,14 +248,24 @@ $\textbf{Definition 8 (Computation Step)}$: Let $C = (q, u_1, \dots, u_k, j_1, \
   Here $\tilde{u}_i$ denotes the word obtained from $u_i$ by replacing the symbol $a_i$ at position $j_i$ with $a'_i$.
 
 The relation $\xrightarrow{M}$ is known as the successor relation or $1$-step relation of $M$. A sequence of such steps forms a partial computation.
+  
+</div>
 
-$\textbf{Definition 9 (Partial Computations):}$ Let $M$ be a Turing machine. A *finite partial computation* of $M$ of *length $t$* is a finite sequence of configurations $C_0, \dots, C_t$ such that $C_i \xrightarrow{M} C_{i+1}$ for all $i = 0, \dots, t-1$. An *infinite partial computation* is an infinite sequence $C_0, C_1, \dots$ where this condition holds for all $i \ge 0$. We write $C \xrightarrow[M]{t} C'$ if there is a finite partial computation of length $t$ from $C$ to $C'$, and $C \xrightarrow[M]{*} C'$ if such a computation exists for some length $t$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial Computations)</span></p>
+
+Let $M$ be a Turing machine. A *finite partial computation* of $M$ of *length $t$* is a finite sequence of configurations $C_0, \dots, C_t$ such that $C_i \xrightarrow{M} C_{i+1}$ for all $i = 0, \dots, t-1$. An *infinite partial computation* is an infinite sequence $C_0, C_1, \dots$ where this condition holds for all $i \ge 0$. We write $C \xrightarrow[M]{t} C'$ if there is a finite partial computation of length $t$ from $C$ to $C'$, and $C \xrightarrow[M]{*} C'$ if such a computation exists for some length $t$.
+
+</div>
 
 ### The Full Computation Process
 
 A full computation is a special type of partial computation that begins in a standardized initial configuration and proceeds until it can no longer continue.
 
-$\textbf{Definition 10 (Initial and Halting Configuration, Computation):}$ Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a Turing machine and let $w$ be a word over $\Sigma$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Initial and Halting Configuration, Computation)</span></p>
+
+Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a Turing machine and let $w$ be a word over $\Sigma$.
 
 * The *initial configuration* of $M$ on input $w$ is $(s, w\square, \square, \dots, \square, 1, \dots, 1)$.
 * A *halting configuration* is a configuration $(q, u_1, \dots, u_k, j_1, \dots, j_k)$ to which no instruction in $\Delta$ is applicable, meaning $(q, u_1(j_1), \dots, u_k(j_k))$ is not the condition part of any instruction in $\Delta$.
@@ -226,15 +274,22 @@ $\textbf{Definition 10 (Initial and Halting Configuration, Computation):}$ Let $
 * A *terminating computation* is a finite computation.
 * An *accepting computation* is a terminating computation that ends in an accepting configuration.
 
+</div>
+
 ### The Computation Tree
 
 For a nondeterministic machine, the set of all possible computations on a given input $w$ can be visualized as a tree.
 
-$\textbf{Definition 11 (Computation Tree):}$ The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of $M$ such that:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computation Tree)</span></p>
+
+The computation tree of a Turing machine $M$ on input $w$ is a finite or infinite rooted tree labelled with configurations of $M$ such that:
 
 * The root is labelled with the initial configuration of $M$ on input $w$.
 * The children of an internal node labelled with configuration $C$ are labelled with the successor configurations of $C$. If there are $t > 0$ applicable instructions, the node has $t$ children, one for each resulting successor configuration.
 * Leaf nodes are labelled exclusively with halting configurations.
+
+</div>
 
 A branch of the computation tree (a path starting at the root) corresponds to a single computation of $M$ on input $w$. Finite branches correspond to terminating computations, while infinite branches correspond to non-terminating computations. Since a TM has a finite number of instructions, its computation tree is always finitely branching. For a deterministic TM, the computation tree is simply a single path, as there is only one possible successor at each step.
 
@@ -284,7 +339,12 @@ A central question in complexity theory is whether nondeterministic machines are
 
 The proof of this relies on the insight that for a total nondeterministic TM, the computation tree for any input must be finite. This can be shown using König's Lemma.
 
-$\textbf{Theorem 15 (König’s Lemma):}$ A finitely branching rooted tree is infinite if and only if it has an infinite branch.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(König’s Lemma)</span></p>
+
+A finitely branching rooted tree is infinite $\iff$ it has an infinite branch.
+
+</div>
 
 **Proof sketch.**: A tree with an infinite branch is clearly infinite. For the converse, let $T$ be an infinite, finitely branching rooted tree. We can inductively construct an infinite branch $v_0, v_1, \dots$. The key is to maintain the invariant that the subtree rooted at $v_i$ is infinite.
 
@@ -293,7 +353,12 @@ $\textbf{Theorem 15 (König’s Lemma):}$ A finitely branching rooted tree is in
 
 Using this lemma, we can prove that nondeterminism adds no power for deciding languages.
 
-$\textbf{Theorem 16:}$ Every decidable language is recognized by a total deterministic Turing machine.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Decidable language)</span></p>
+
+Every decidable language is recognized by a total deterministic Turing machine.
+
+</div>
 
 **Proof sketch.**: Let $L$ be a decidable language. By definition, there is a total Turing machine $M$ that recognizes $L$.
 
@@ -381,20 +446,33 @@ Equivalently, $$S$ is computable $\iff$ its **indicator (characteristic) functio
 
 The concepts of decidable sets and computable functions, defined for words, can be extended to other domains like the natural numbers through the use of representations.
 
-$\textbf{Definition 18 (Decidable sets and computable functions on other domains)}$: A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\lbrace\text{repr}(x) : x \in A\rbrace$ is decidable. With respect to such a representation:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Decidable sets and computable functions on other domains)</span></p>
+
+A *representation* of a set $A$ is an injective function $\text{repr} : A \to \Sigma^*$ for some alphabet $\Sigma$ such that the set of representations $\lbrace\text{repr}(x) : x \in A\rbrace$ is decidable. With respect to such a representation:
 
 * a subset $X \subseteq A$ is decidable if the set $\lbrace \text{repr}(a) : a \in X\rbrace$ is decidable.
 * a function $f : A \to A$ is *computable* if there is a computable function $f_{\text{repr}} : \Sigma^* \to \Sigma^*$ that maps the representation of any $x \in A$ to the representation of $f(x)$. That is, for all $x \in A$, we have $f_{\text{repr}}(\text{repr}(x)) = \text{repr}(f(x))$.
 
+</div>
+
 For example, the set of prime numbers is decidable because we can represent the natural number $n$ by the unary word $1^n$, and the language $\lbrace 1^n : n \text{ is prime}\rbrace$ is decidable.
 
-$\textbf{Remark 19: Representations of natural numbers by binary words}$ A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\lbrace 0,1\rbrace^*, \le_{\text{llex}})$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Representations of natural numbers by binary words)</span></p>
 
-$\textbf{Remark 20:}$ Sets, languages, and problems The terminology used often depends on the context of study:
+A natural number n can be represented by its binary expansion $\text{bin}(n)$, such as $\text{bin}(5) = 101$. A bijective representation (one-to-one and onto) can be useful. One such representation maps the natural number n to the word $z_n$, where $z_0, z_1, z_2, \dots$ is the sequence of all binary words sorted in length-lexicographic order $(\lambda, 0, 1, 00, 01, \dots)$. This establishes an order isomorphism between $(\mathbb{N}, \le)$ and $(\lbrace 0,1\rbrace^*, \le_{\text{llex}})$.
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Sets, languages, and problems The terminology used often depends on the context of study:
 * In computability theory, where resource bounds are not a concern, it is common to use unary representations (e.g., $n$ is represented by $1^n$). Turing machines are viewed as recognizing subsets of natural numbers, leading to terms like "decidable sets of natural numbers."
 * In complexity theory, where computations are resource-bounded, inputs are typically binary words representing instances of a computational problem. Here, Turing machines are seen as recognizing languages or problems, both of which refer to arbitrary sets of binary words. (Note that in a general context, a "language" is any set of words over some alphabet).
 
+</div>
 
 ## Time Complexity
 
@@ -402,7 +480,10 @@ $\textbf{Remark 20:}$ Sets, languages, and problems The terminology used often d
 
 The analysis of algorithms and computational problems often centers on the resources they consume. One of the most critical resources is time. In the context of Turing machines, we formalize this by measuring the number of steps a machine takes to complete its computation.
 
-$\textbf{Definition 21 (Running time):}$ The running time of a deterministic Turing machine $M$ on input $w$ is defined as
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Running time)</span></p>
+
+The running time of a deterministic Turing machine $M$ on input $w$ is defined as
 
 $$
 \text{time}_M(w) =
@@ -414,13 +495,25 @@ $$
 
 where the symbol $\uparrow$ denotes that the function value is undefined (i.e., the machine does not halt).
 
+</div>
+
 This definition allows us to quantify the performance of a specific machine on a specific input. To create broader complexity classes, we generalize this notion to a function of the input length, defining what it means for a machine to be bounded by a certain time complexity function.
 
-$\textbf{Definition 22 (Time-bounded deterministic Turing machine):}$ A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(\lvert w \rvert)$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Time-bounded deterministic Turing machine)</span></p>
+
+A time bound is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $t(n) \ge n$ for all $n$. For a time bound $t$, a deterministic Turing machine $M$ is $t(n)$-time-bounded or runs in time $t(n)$ if $M$ is total (halts on all inputs) and for almost all inputs $w$, it holds that $\text{time}_M(w) \le t(\lvert w \rvert)$.
+
+</div>
 
 The phrase "for almost all inputs" means the condition must hold for all but a finite number of inputs. This provides flexibility, allowing us to disregard a small number of exceptional cases, typically short inputs, which can be handled separately.
 
-$\textbf{Remark 23}$ For a $t(n)$-time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table *lookup* or *hard-wiring*.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+For a $t(n)$-time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table *lookup* or *hard-wiring*.
+
+</div>
 
 By default, time complexity is a measure of the machine's performance in the most demanding scenario for a given input length. This is known as worst-case time complexity. An alternative approach, average-case time complexity, considers the average running time over all inputs of a certain length. While potentially relevant for specific practical applications, the theory of average-case complexity is more intricate and less developed. Therefore, our focus will remain on worst-case complexity.
 
@@ -430,7 +523,10 @@ Convention 24 In the part about complexity theory, all languages are languages o
 
 Using the concept of time-bounded Turing machines, we can group languages and functions into complexity classes based on the resources required to decide or compute them.
 
-$\textbf{Definition 25 (Deterministic time classes):}$ Let $t$ be a time bound.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Deterministic time classes)</span></p>
+
+Let $t$ be a time bound.
 
 The class of languages decidable in deterministic time $t(n)$ is
 $\text{DTIME}(t(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some deterministic } t(n)\text{-time-bounded Turing machine } M \rbrace$.
@@ -443,13 +539,23 @@ $$
 \text{FTIME}(F) = \bigcup_{t(n) \in F} \text{FTIME}(t(n)).
 $$
 
+</div>
+
 The notation $\text{DTIME}_k(t(n))$ is used to specify the class of languages decidable by a $t(n)$-time-bounded $k$-tape Turing machine. These definitions can also be extended from languages over strings to subsets of natural numbers by using a standard representation, such as binary encoding.
 
-$\textbf{Definition 26}$ Let $t$ be a time bound. A subset $A$ of the natural numbers is decidable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that decides the set $\lbrace \text{bin}(n) : n \in A\rbrace$. A function $f : \mathbb{N} \to \mathbb{N}$ is computable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that computes a function that maps $\text{bin}(n)$ to $\text{bin}(f(n))$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
+
+Let $t$ be a time bound. A subset $A$ of the natural numbers is decidable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that decides the set $\lbrace \text{bin}(n) : n \in A\rbrace$. A function $f : \mathbb{N} \to \mathbb{N}$ is computable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that computes a function that maps $\text{bin}(n)$ to $\text{bin}(f(n))$.
+
+</div>
 
 This framework allows us to define some of the most fundamental and widely studied complexity classes.
 
-$\textbf{Definition 27 (Some deterministic time classes):}$ Using the function classes:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Some deterministic time classes)</span></p>
+
+Using the function classes:
 
 * $\text{lin} = \lbrace n \mapsto c \cdot n + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
 * $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
@@ -463,6 +569,8 @@ we define the complexity classes:
 * $\text{E} = \text{DTIME}(2^{\text{lin}})$
 * $\text{EXP} = \text{DTIME}(2^{\text{poly}})$
 
+</div>
+
 We refer, for instance, to $P$ as the class of problems decidable in deterministic polynomial time and $E$ as the class of problems decidable in deterministic linear exponential time.
 
 ### Properties of Deterministic Time Classes
@@ -473,7 +581,11 @@ The definitions of complexity classes depend on a specific model of computation 
 
 The first theorem shows that constant factors in the running time do not change the fundamental complexity of a problem. We can always build a faster machine that solves the same problem, effectively making any constant-factor speedup possible.
 
-$\textbf{Theorem 28 (Linear speedup):}$ Linear speedup Let $t$ be a time bound, and let $\alpha > 0$ be a real number, and let $k \ge 2$. Then it holds that
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Linear speedup)</span></p>
+
+Let $t$ be a time bound, and let $\alpha > 0$ be a real number, and let $k \ge 2$. Then it holds that
+
 $$
 \text{DTIME}_k(t(n)) \subseteq \text{DTIME}_k(\alpha \cdot t(n) + n)
 \tag{2.1}
@@ -488,6 +600,8 @@ $$
 \text{FTIME}(\alpha \cdot t(n) + n + \lvert f(n) \rvert).
 \tag{2.3}
 $$
+
+</div>
 
 **Proof.**: We will demonstrate the inclusion (2.1), from which (2.2) immediately follows. Given a language $L \in \text{DTIME}(t(n))$, there exists a $t(n)$-time-bounded Turing machine with some number of tapes, say $k \ge 2$, that recognizes $L$. By showing $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$, it follows that $L \in \text{DTIME}(\alpha \cdot t(n) + n)$.
 
@@ -553,7 +667,13 @@ The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$.
 
 The size of the tape alphabet is another parameter of the Turing machine model. The following theorem shows that any computation can be performed by a Turing machine with a minimal binary alphabet, at the cost of only a constant factor slowdown.
 
-$\textbf{Theorem 29:}$ Alphabet reduction Let $t$ be a time bound, let $k \ge 2$, and let $L$ be a language in $\text{DTIME}_k(t(n))$. There exists a deterministic $k$-tape Turing machine $M$ with tape alphabet $\lbrace0, 1, \square \rbrace$ that recognizes $L$ and runs in time $d \cdot t(n)$ for some constant $d$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+Alphabet reduction Let $t$ be a time bound, let $k \ge 2$, and let $L$ be a language in $\text{DTIME}_k(t(n))$. There exists a deterministic $k$-tape Turing machine $M$ with tape alphabet $\lbrace0, 1, \square \rbrace$ that recognizes $L$ and runs in time $d \cdot t(n)$ for some constant $d$.
+
+</div>
 
 **Proof.**: Let $L$ be recognized by a deterministic $t(n)$-time-bounded $k$-tape machine $M$ with a tape alphabet $\lbrace a_1, \dots, a_r \rbrace$ of size $r$. We construct a machine $M'$ with a binary tape alphabet that simulates $M$.
 
@@ -570,7 +690,12 @@ Simulating one step of $M$ requires reading and potentially writing $k$ blocks o
 
 A more significant change to the machine model is reducing the number of tapes. A multi-tape Turing machine can be simulated by a single-tape machine, but this incurs a more substantial, quadratic, increase in computation time.
 
-$\textbf{Theorem 30:}$ Tape reduction Let $t$ be a time bound and let $L$ be a language in $\text{DTIME}_k(t(n))$, i.e., $L$ is recognized by a deterministic total $k$-tape Turing machine $M$ that runs in time $t(n)$. Then there exists a deterministic $1$-tape Turing machine $M'$ that recognizes $L$ and runs in time $d \cdot t^2(n)$ for some constant $d$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+Tape reduction Let $t$ be a time bound and let $L$ be a language in $\text{DTIME}_k(t(n))$, i.e., $L$ is recognized by a deterministic total $k$-tape Turing machine $M$ that runs in time $t(n)$. Then there exists a deterministic $1$-tape Turing machine $M'$ that recognizes $L$ and runs in time $d \cdot t^2(n)$ for some constant $d$.
+
+</div>
 
 **Proof.**: We construct a single-tape Turing machine $M'$ that simulates a $k$-tape machine $M$. The single tape of $M'$ is structured to represent all $k$ tapes of $M$ simultaneously using a system of "tracks".
 
@@ -591,7 +716,12 @@ Since $M$ makes at most $t(n)$ steps in total, the entire simulation on $M'$ req
 
 #### On the Requirement for Time Bounds
 
-$\textbf{Remark 31: By definition, a time bound $t$ must satisfy $t(n)$}$ $\ge n$. The latter requirement indeed makes sense because for other $t$, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length $n_1$. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+By definition, a time bound $t$ must satisfy $t(n) \ge n$. The latter requirement indeed makes sense because for other $t$, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length $n_1$. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
+
+</div>
 
 ### Nondeterministic Time Complexity
 
@@ -601,19 +731,34 @@ The concept of time complexity can be extended from deterministic to nondetermin
 
 When analyzing the time complexity of a nondeterministic machine, we consider the length of the longest possible computation path.
 
-$\textbf{Definition 32 (Nondeterministic time classes):}$ Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, **all computations** of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nondeterministic time classes)</span></p>
 
-$\textbf{Remark 34}$ In the literature, one also finds a variant of the notion $t(n)$-time bounded Turing machine where the length bound $t(\lvert w \rvert)$ is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds $t$ with $t(n) \ge 2n$, the alternative definition is essentially equivalent to the one presented here. Here a function $t$ is time-constructible if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $t(n)$. For such $t$, it is possible to equip a Turing machine that is $t(n)$-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after $t(n)$ steps on all computations such that the recognized language remains the same and the clocked Turing machine is $t(n)$-time bounded according to Definition 32.
+Let $t$ be a time bound. A Turing machine $M$ is $t(n)$-time bounded if $M$ is total (all computation paths halt) and for almost all inputs $w$, **all computations** of $M$ have length at most $t(\lvert w \rvert)$. The class of languages decidable in nondeterministic time $t(n)$ is:  $\text{NTIME}(t(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for a } t(n)\text{-time bounded Turing machine } M \rbrace$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+In the literature, one also finds a variant of the notion $t(n)$-time bounded Turing machine where the length bound $t(\lvert w \rvert)$ is required only for accepting computations, while nonaccepting computations may have arbitrary finite or even infinite length. For time-constructible time bounds $t$ with $t(n) \ge 2n$, the alternative definition is essentially equivalent to the one presented here. Here a function $t$ is time-constructible if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $t(n)$. For such $t$, it is possible to equip a Turing machine that is $t(n)$-time bounded in the sense of the variant with a timing mechanism or clock that enforces termination after $t(n)$ steps on all computations such that the recognized language remains the same and the clocked Turing machine is $t(n)$-time bounded according to Definition 32.
+
+</div>
 
 ### Nondeterministic Time Complexity Classes
 
 Similar to the deterministic case, we can define major complexity classes based on nondeterministic time bounds.
 
-$\textbf{Definition 33: Examples of nondeterministic time classes We define the complexity classes:}$
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(nondeterministic time classes)</span></p>
+
+We define the complexity classes:
 
 * $\text{NP}$ = $\text{NTIME}$($\text{poly}$)
 * $\text{NE} = \text{NTIME}(2^{\text{lin}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{c n + c})$
 * $\text{NEXP} = \text{NTIME}(2^{\text{poly}}) = \bigcup_{c \in \mathbb{N}} \text{NTIME}(2^{n^c + c})$
+
+</div>
 
 We refer, for example, to $NP$ as the class of problems decidable in nondeterministic polynomial time and to $NE$ as the class of problems decidable in nondeterministic linear exponential time.
 
@@ -625,7 +770,12 @@ We refer, for example, to $NP$ as the class of problems decidable in nondetermin
 
 To compare the relative difficulty of problems, we use the concept of reduction. A reduction is a way to solve one problem using an algorithm for another. If problem $A$ can be reduced to problem $B$, it means that $A$ is "no harder than" $B$.
 
-$\textbf{Definition 35}$ A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \lbrace 0, 1\rbrace ^*$ it holds that $x \in A \iff g(x) \in B$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(many-one reduction)</span></p>
+
+A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \lbrace 0, 1\rbrace ^*$ it holds that $x \in A \iff g(x) \in B$.
+
+</div>
 
 This type of reduction, often called a $p$-$m$-reduction or Karp reduction, acts as a translation. To solve an instance $x$ of problem $A$, we can first compute $g(x)$ in polynomial time and then use a decider for $B$ to determine if $g(x) \in B$. If $B$ can be decided in polynomial time, then so can $A$. This relationship transfers difficulty upward: if $A$ is known to be hard, then $B$ must also be hard. Conversely, it transfers simplicity downward: if $B$ is easy, then $A$ must also be easy.
 
@@ -633,11 +783,19 @@ This type of reduction, often called a $p$-$m$-reduction or Karp reduction, acts
 
 Complexity classes often exhibit closure properties with respect to reductions.
 
-$\textbf{Definition 36 (Closed Downward, Closed Upward):}$ A set of languages is closed downward under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Closed Downward, Closed Upward)</span></p>
+
+A set of languages is closed downward under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
+
+</div>
 
 Many important complexity classes, such as $P$ and $NP$, are closed downward. This means that if a problem $B$ is in the class, any problem that is polynomially reducible to $B$ is also in that class.
 
-$\textbf{Proposition 37 (Downward closure of $P$ and $NP$ under $p$-$m$-reducibility):}$ Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Downward closure of $P$ and $NP$ under $p$-$m$-reducibility)</span></p>
+
+Let $A$ and $B$ be languages such that $A \le_p^m B$. Then it holds that:
 
 * $B \in \text{P}$ implies $A \in \text{P}$,
 * $B \in \text{NP}$ implies $A \in \text{NP}$.
@@ -646,6 +804,8 @@ These implications are logically equivalent to their contrapositions, i.e., to:
 
 * $A \notin \text{P}$ implies $B \notin \text{P}$,
 * $A \notin \text{NP}$ implies $B \notin \text{NP}$.
+
+</div>
 
 **Proof.**: We prove the first implication, $B \in \text{P} \implies A \in \text{P}$. The proof for $NP$ is very similar. Let $A \le_p^m B$ via a function $g \in \text{FP}$. Let $M_g$ be a deterministic Turing machine that computes $g$ in time $p_g(n)$ for some polynomial $p_g$. Since $B \in \text{P}$, there is a deterministic Turing machine $M_B$ that decides $B$ in time $p_B(n)$ for some polynomial $p_B$.
 
@@ -661,7 +821,12 @@ The total running time for $M_A$ is bounded by $p_g(\lvert x \rvert) + p_B(p_g(\
 
 The $\le_p^m$ relation behaves like a partial order on languages.
 
-$\textbf{Proposition 38}$ The relation $\le_p^m$ is reflexive and transitive.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+The relation $\le_p^m$ is reflexive and transitive.
+
+</div>
 
 **Proof.**:
 
@@ -672,9 +837,13 @@ $\textbf{Proposition 38}$ The relation $\le_p^m$ is reflexive and transitive.
 
 Reducibility allows us to identify the "hardest" problems within a complexity class. For the class $NP$, these are the $NP$-complete problems.
 
-$\textbf{Definition 39 (NP-complete languages):}$ 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(NP-complete languages)</span></p>
+
 * A language $B$ is $NP$-hard if all languages in $NP$ are $p$-$m$-reducible to 
 * $B$ A language is $NP$-complete if it is $NP$-hard and belongs to $NP$.
+
+</div>
 
 An $NP$-complete problem is thus a problem that is both in $NP$ and is at least as hard as every other problem in $NP$.
 
@@ -686,10 +855,15 @@ There are further, provably different notions of $NP$-hardness and $NP$-complete
 
 The existence of $NP$-complete problems provides a powerful way to frame one of the most significant open questions in computer science: whether $P$ equals $NP$.
 
-$\textbf{Theorem 40 The following statements are equivalent.}$ 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The following statements are equivalent:
 * (i) $P = NP$. 
 * (ii) All $NP$-complete sets are in $P$. 
 * (iii) There is an $NP$-complete set in $P$.
+
+</div>
 
 **Proof.**:
 
@@ -699,16 +873,25 @@ $\textbf{Theorem 40 The following statements are equivalent.}$
 
 The Significance of the $P$ vs. $NP$ Problem
 
-$\textbf{Remark 41}$ The class $P$ is a subclass of $NP$, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as $P$ versus $NP$ problem. By Theorem 40, the two classes coincide if and only if some $NP$-complete language is in $P$. Common ways to express that a language is in $P$ are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are $NP$-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The class $P$ is a subclass of $NP$, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as $P$ versus $NP$ problem. By Theorem 40, the two classes coincide if and only if some $NP$-complete language is in $P$. Common ways to express that a language is in $P$ are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are $NP$-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
+
+</div>
 
 ### A Criterion for Proving $NP$-Completeness
 
 The property of transitivity provides a practical method for proving that new problems are $NP$-complete. Once we have one known $NP$-complete problem, we can use it as a starting point.
 
-$\textbf{Remark 42}$ A language $B$ is $NP$-hard if and only if there is an $NP$-hard language $A$ with $A \le_p^m B$. In the special case of a language $B$ in $NP$, this implies that $B$ is $NP$-complete if and only if there is an $NP$-complete language $A$ such that $A \le_p^m B$. Both statements follow easily from the fact that $p$-$m$-reducibility is reflexive and transitive.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+A language $B$ is $NP$-hard if and only if there is an $NP$-hard language $A$ with $A \le_p^m B$. In the special case of a language $B$ in $NP$, this implies that $B$ is $NP$-complete if and only if there is an $NP$-complete language $A$ such that $A \le_p^m B$. Both statements follow easily from the fact that $p$-$m$-reducibility is reflexive and transitive.
+
+</div>
 
 To establish that the first $NP$-complete problem exists, it will be shown that the satisfiability problem for propositional formulas ($\text{SAT}$) is $NP$-complete. Subsequently, the $NP$-completeness of other problems can be established by demonstrating a polynomial-time reduction from $\text{SAT}$ (or any other known $NP$-complete problem) to the new problem in question.
-
 
 ### Reducibility and Completeness
 
@@ -720,23 +903,43 @@ The concept of reducibility allows us to compare the relative difficulty of comp
 
 **p-m-degree**: The $p$-$m$-degree of a language $A$ is the class of all languages that are $p$-$m$-equivalent to it:  $\text{deg}_p^m(A) = \lbrace B \subseteq \lbrace 0, 1 \rbrace ^* : A \equiv_p^m B\rbrace$ 
 
-$\textbf{Remark 44:}$ The $p$-$m$-equivalence is an equivalence relation. Consequently, the $p$-$m$-degrees are the equivalence classes of this relation. This means that the $p$-$m$-degrees form a partition of the class of all binary languages. Recall that for any equivalence relation on a set $A$, its equivalence classes are mutually disjoint, and their union is equal to $A$. The relation of $p$-$m$-reducibility ($\le_p^m$) induces a nonstrict partial order on these $p$-$m$-degrees, where one degree is considered "smaller" than another if a language from the first degree can be $p$-$m$-reduced to a language in the second.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The $p$-$m$-equivalence is an equivalence relation. Consequently, the $p$-$m$-degrees are the equivalence classes of this relation. This means that the $p$-$m$-degrees form a partition of the class of all binary languages. Recall that for any equivalence relation on a set $A$, its equivalence classes are mutually disjoint, and their union is equal to $A$. The relation of $p$-$m$-reducibility ($\le_p^m$) induces a nonstrict partial order on these $p$-$m$-degrees, where one degree is considered "smaller" than another if a language from the first degree can be $p$-$m$-reduced to a language in the second.
+
+</div>
 
 ### Degrees within $P$ and $NP$
 
 Within the class $NP$, the structure of $p$-$m$-degrees reveals important insights into the relationship between complexity classes.
 
-$\textbf{Remark 45:}$ The set of all $NP$-complete languages forms a single $p$-$m$-degree. Similarly, the class $P$, excluding the trivial languages $\emptyset$ and $\lbrace 0, 1\rbrace^*$, also forms a $p$-$m$-degree. It has been shown that if $P \ne NP$, then the class $NP$ contains infinitely many distinct $p$-$m$-degrees. In fact, under this assumption, every finite partial order can be embedded into the structure of these degrees.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The set of all $NP$-complete languages forms a single $p$-$m$-degree. Similarly, the class $P$, excluding the trivial languages $\emptyset$ and $\lbrace 0, 1\rbrace^*$, also forms a $p$-$m$-degree. It has been shown that if $P \ne NP$, then the class $NP$ contains infinitely many distinct $p$-$m$-degrees. In fact, under this assumption, every finite partial order can be embedded into the structure of these degrees.
+
+</div>
 
 ### An Anomaly of $P$-$M$-Reducibility
 
 The formal definition of $p$-$m$-reducibility leads to some unusual properties, particularly concerning languages in $P$ and the two trivial languages, the empty set $\emptyset$ and the set of all strings $\lbrace 0, 1\rbrace^*$.
 
-$\textbf{Remark 46:}$ Since the class $P$ is downward closed under $p$-$m$-reducibility, no language outside of $P$ can be $p$-$m$-reduced to a language in $P$. Conversely, every language in $P$ is $p$-$m$-reducible to any other language, with the exception of $\emptyset$ and $\lbrace 0, 1\rbrace^*$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Since the class $P$ is downward closed under $p$-$m$-reducibility, no language outside of $P$ can be $p$-$m$-reduced to a language in $P$. Conversely, every language in $P$ is $p$-$m$-reducible to any other language, with the exception of $\emptyset$ and $\lbrace 0, 1\rbrace^*$.
 
 To prove this, let $A$ be a language in $P$ and let $B$ be any language such that $B \ne \emptyset$ and $B \ne \lbrace0, 1\rbrace^*$. Since $B$ is not trivial, we can select an element $x_1 \in B$ and an element $x_0 \notin B$. The $p$-$m$-reduction from $A$ to $B$ can be defined by the function that maps every $x \in A$ to $x_1$ and every $x \notin A$ to $x_0$. This function is computable in polynomial time because $A$ is in $P$.
 
-$\textbf{Remark 47:}$ By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0,1 \rbrace^{*}$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0,1 \rbrace^{*}$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+By definition, only the empty set can be $p$-$m$-reduced to the empty set. A similar restriction applies to the language $\lbrace 0,1 \rbrace^{*}$. As noted in Remark 46, every language in $P$ is reducible to all other languages. The special behavior of $\emptyset$ and $\lbrace 0,1 \rbrace^{*}$ is often considered an anomaly of the definition. For this reason, alternative definitions of $p$-$m$-reducibility are sometimes used to avoid these edge cases.
+
+</div>
 
 ### The Satisfiability Problem ($\text{SAT}$)
 
@@ -746,7 +949,10 @@ To prove that a language is $NP$-hard, the standard method is to show that a kno
 
 We begin by formally defining the components of propositional logic.
 
-$\textbf{Definition 48 (Propositional Formula):}$ Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Propositional Formula)</span></p>
+
+Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
 
 * Base case: Every element of $\text{Var}$ is a propositional formula.
 * Inductive step: If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
@@ -766,27 +972,38 @@ The set of variables that appear in a formula $\phi$ is denoted by $\text{var}(\
 * $\text{var}(\neg \phi) = \text{var}(\phi)$.
 * $\text{var}(\phi \land \phi') = \text{var}(\phi) \cup \text{var}(\phi')$.
 
+</div>
+
 ### Satisfiability and Normal Forms
 
 The central question of the satisfiability problem is whether a formula can be true.
 
-$\textbf{Definition 49:}$
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Satisfiability, literal, claude, CNF, $k$-CNF)</span></p>
 
-* A propositional formula is satisfiable if there exists an assignment of its variables that makes the formula true.
-* A literal is a propositional variable or a negated propositional variable (e.g., $X$ or $\neg X$).
-* A clause (specifically, a disjunctive clause) is a disjunction of literals (e.g., $X \lor \neg Y \lor Z$).
-* A propositional formula is in conjunctive normal form (CNF) if it is a nonempty conjunction of clauses.
-* A formula is in $k$-conjunctive normal form ($k$-CNF) if it is in CNF and each clause contains at most $k$ literals.
+* A propositional formula is **satisfiable** if there exists an assignment of its variables that makes the formula true.
+* A **literal** is a propositional variable or a negated propositional variable (e.g., $X$ or $\neg X$).
+* A **clause** (specifically, a disjunctive clause) is a disjunction of literals (e.g., $X \lor \neg Y \lor Z$).
+* A propositional formula is in **conjunctive normal form (CNF)** if it is a nonempty conjunction of clauses.
+* A formula is in **$k$-conjunctive normal form ($k$-CNF)** if it is in CNF and each clause contains at most $k$ literals.
+
+</div>
 
 For example, the formula $(\neg X \lor Y \lor Z) \land (X \lor Z) \land (X \lor \neg Y \lor \neg Z)$ is in $3$-CNF.
 
 This leads to the formal definition of the satisfiability problems as languages.
 
-$\textbf{Definition 50: The Satisfiability Problem:}$ Assuming an appropriate representation of propositional formulas as binary strings, we define the following languages for any $k > 0$:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Satisfiability Problem)</span></p>
+
+Assuming an appropriate representation of propositional formulas as binary strings, we define the following languages for any $k > 0$:
 
 $\text{SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in CNF} \,\rbrace$
 
 $k\text{-SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\rbrace$
+
+</div>
+
 
 ### $NP$-Completeness of $\text{SAT}$ and $\text{k-SAT}$
 
@@ -796,7 +1013,10 @@ The languages $\text{SAT}$ and $\text{k-SAT}$ (for $k \ge 3$) are cornerstone ex
 
 First, we must establish that these problems belong to the class $NP$.
 
-$\textbf{Remark 51:}$ The language $\text{SAT}$ and the languages $\text{k-SAT}$ for $k > 0$ are members of the class $NP$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The language $\text{SAT}$ and the languages $\text{k-SAT}$ for $k > 0$ are members of the class $NP$.
 
 A proof for this involves a nondeterministic Turing machine (NTM) that operates in polynomial time. Given an input string, the NTM first deterministically checks if it represents a valid formula $\phi$ in CNF (or $k$-CNF). If it is a valid formula, the machine proceeds to:
 
@@ -805,11 +1025,18 @@ A proof for this involves a nondeterministic Turing machine (NTM) that operates 
 
 If any assignment makes the formula true, at least one computational path of the NTM will accept. The length of an assignment is linear in the size of the formula, so both the guessing and checking phases can be completed in polynomial time. Therefore, $\text{SAT}$ and $\text{k-SAT}$ are in $NP$.
 
+</div>
+
 ### Cook's Theorem: $\text{SAT}$ is $NP$-Complete
 
 The proof that $\text{SAT}$ is not just in $NP$ but is $NP$-hard is a landmark result in computer science.
 
-$\textbf{Theorem 52 (Cook’s Theorem)}$ : The language $\text{SAT}$ is $NP$-complete.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Cook’s Theorem)</span></p>
+
+The language $\text{SAT}$ is $NP$-complete.
+
+</div>
 
 **Proof.**: We have already established in Remark 51 that $\text{SAT}$ is in $NP$. To prove that it is $NP$-complete, we must show it is $NP$-hard. This requires showing that every language $A \in \text{NP}$ is $p$-$m$-reducible to $\text{SAT}$.
 
@@ -891,7 +1118,12 @@ $\text{k-SAT}$ is $NP$-Complete for $k \ge 3$
 
 Building on Cook's Theorem, we can show that variants of $\text{SAT}$ are also $NP$-complete.
 
-$\textbf{Corollary 53:}$ For all $k \ge 3$, the language $\text{k-SAT}$ is $NP$-complete.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name"></span></p>
+
+For all $k \ge 3$, the language $\text{k-SAT}$ is $NP$-complete.
+
+</div>
 
 **Proof.**: As established in Remark 51, all $\text{k-SAT}$ languages are in $NP$. We need to show they are $NP$-hard for $k \ge 3$. We will demonstrate this for the case $k=3$. The result for $k > 3$ follows because $\text{3-SAT}$ can be easily $p$-$m$-reduced to $\text{k-SAT}$ (by padding clauses with dummy variables, or more simply, noting that any instance of $\text{3-SAT}$ is already an instance of $\text{k-SAT}$ for $k > 3$).
 
@@ -920,8 +1152,6 @@ Now, we must show that $\phi$ is satisfiable if and only if $\phi$' is satisfiab
 
 Thus, we have shown that $\text{SAT}$ $\le_p^m$ $\text{3-SAT}$, which completes the proof. ∎
 
------
-
 ### Further NP-Complete Languages
 
 Many practical computational problems are known to correspond to $\text{NP}$-complete languages. Proving a problem is $\text{NP}$-complete demonstrates that it is among the hardest problems in the class $\text{NP}$, and an efficient (polynomial-time) algorithm for it is unlikely to exist. This section will demonstrate the $\text{NP}$-completeness of the clique problem.
@@ -930,7 +1160,10 @@ Many practical computational problems are known to correspond to $\text{NP}$-com
 
 A common problem in graph theory is identifying a "clique," which is a subgraph where every vertex is connected to every other vertex.
 
-$\textbf{Definition 54 (Clique problem):}$ A subset $C$ of the vertex set $V$ of an undirected graph $G$ is called a **clique** of $G$ if there is an edge between all pairs of distinct vertices in $C$. The clique problem is the language
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Clique problem)</span></p>
+
+A subset $C$ of the vertex set $V$ of an undirected graph $G$ is called a **clique** of $G$ if there is an edge between all pairs of distinct vertices in $C$. The clique problem is the language
 
 $$
 \text{CLIQUE} = \lbrace \langle G, k \rangle : \text{there is a clique of size } k \text{ in the graph } G \rbrace
@@ -938,11 +1171,18 @@ $$
 
 where pairs of the form $\langle G, k \rangle$ are suitably represented by binary words, e.g., in the form $1^{k+1}0u$ where $u$ is the concatenation of the rows of the adjacency matrix of $G$.
 
+</div>
+
 #### NP-Completeness of CLIQUE
 
 We will now prove that the $\text{CLIQUE}$ problem is not only in $\text{NP}$ but is also $\text{NP}$-hard, making it $\text{NP}$-complete.
 
-$\textbf{Theorem 55:}$ The language $\text{CLIQUE}$ is $\text{NP}$-complete.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The language $\text{CLIQUE}$ is $\text{NP}$-complete.
+
+</div>
 
 **Proof.**: The proof consists of two main parts:
 
@@ -1001,13 +1241,18 @@ In both cases, and for all problems in $\text{NP}$, two key properties hold:
 
 This pattern provides a fundamental characterization of the class $\text{NP}$.
 
-$\textbf{Proposition 56:}$ A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
 
 $$
 w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w, z) \in B \text{ and } \lvert z\rvert \le p(\lvert w \rvert)]
 $$
 
 In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(\lvert w \rvert)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
+
+</div>
 
 **Proof sketch.**:
 
@@ -1037,34 +1282,44 @@ On input $w$ of length $n$:
 
 This nondeterministic machine $M_L$ runs in polynomial time and recognizes $L$. Therefore, $L \in \text{NP}$. ∎
 
------
-
 ## Space-Bounded Computation
 
 While time complexity measures the number of steps a Turing machine takes, space complexity measures the amount of memory (tape cells) it uses. For space-bounded computations, especially those with sublinear bounds (e.g., $\log n$), it is essential to distinguish the memory used for input and output from the memory used for computation (work tapes). This leads to the model of an off-line Turing machine.
 
-$\textbf{Definition 57 (Off-line Turing Machine):}$ An **off-line Turing machine** is a Turing machine with a separate input and output tape.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Off-line Turing Machine)</span></p>
+
+An **off-line Turing machine** is a Turing machine with a separate input and output tape.
 
   * The **input tape** is read-only. The head can only access cells containing the input symbols and the two adjacent blank cells.
   * On the **output tape**, the head can only move to the right. Whenever a symbol is written, the head must advance one position to the right.
   * A Turing machine is called a **$k$-tape Turing machine** if it has $k$ work tapes in addition to the input and output tapes.
 
-$\textbf{Remark 58 (Configurations of Off-line Turing machines):}$ Configurations for off-line Turing machines are defined as before (state, work tape contents, work tape head positions), but with adjustments for the special tapes:
+</div>
+
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Configurations of Off-line Turing machines)</span></p>
+
+Configurations for off-line Turing machines are defined as before (state, work tape contents, work tape head positions), but with adjustments for the special tapes:
 
   * **Output Tape:** Neither its content nor its head position is part of a configuration, as this information cannot influence future computational steps.
   * **Input Tape:** Only the position of the head is part of a configuration. For an input of length $n$, this position is an integer in $\lbrace 0, \dots, n+1\rbrace$.
 
 This definition ensures that configurations remain snapshots of all information needed to proceed with a computation. For sublinear space bounds, this allows the representation of a configuration to be smaller than the input itself, which is advantageous in certain constructions.
 
-$\textbf{Convention 59 (Space-Bounds and Off-line Turing machines):}$ In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
+</div>
 
------
+$\textbf{Convention 59 (Space-Bounds and Off-line Turing machines):}$ In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
 
 ### Deterministic Space Complexity
 
 We can now formally define space usage and the corresponding complexity classes.
 
-$\textbf{Definition 60 (Space Usage):}$ The space usage of a deterministic Turing machine $M$ on input $w$ is:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Space Usage)</span></p>
+
+The space usage of a deterministic Turing machine $M$ on input $w$ is:
 
 $$
 \text{space}_M(w) =
@@ -1075,11 +1330,26 @@ s & \text{if } M \text{ terminates on input } w \text{ and } s \text{ is the max
 \end{cases}
 $$
 
-$\textbf{Remark 61:}$ We write $\log x$ for the binary logarithm $\log_2 x$. When used in complexity bounds, $\log x$ may also refer to $\lceil \log_2 x \rceil$ or $\lfloor \log_2 x \rfloor$. For space bounds, we define $\log 0 = 1$.
+</div>
 
-$\textbf{Definition 62 (Space-Bounded Deterministic Turing Machine):}$ A **space bound** is a computable function $s: \mathbb{N} \to \mathbb{N}$ with $s(n) \ge \log n$ for all $n > 0$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-$\textbf{Definition 63 (Deterministic Space Classes):}$ Let $s$ be a space bound.
+We write $\log x$ for the binary logarithm $\log_2 x$. When used in complexity bounds, $\log x$ may also refer to $\lceil \log_2 x \rceil$ or $\lfloor \log_2 x \rfloor$. For space bounds, we define $\log 0 = 1$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Space-Bounded Deterministic Turing Machine)</span></p>
+
+A **space bound** is a computable function $s: \mathbb{N} \to \mathbb{N}$ with $s(n) \ge \log n$ for all $n > 0$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Deterministic Space Classes)</span></p>
+
+Let $s$ be a space bound.
 
 A deterministic Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and for all but finitely many inputs $w$, it holds that $\text{space}_M(w) \le s(\lvert w\rvert)$.
 
@@ -1095,11 +1365,16 @@ $$
 \text{DSPACE}(F) = \bigcup_{s \in F} \text{DSPACE}(s(n)).
 $$
 
+</div>
+
 ### Key Deterministic Space Classes
 
 Using standard function classes, we define some of the most important space complexity classes.
 
-$\textbf{Definition 64 (Examples of Deterministic Space Classes):}$ Using the function classes
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Examples of Deterministic Space Classes)</span></p>
+
+Using the function classes
 
   * $\text{log} = \lbrace n \mapsto c \cdot \log n + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
   * $\text{poly} = \lbrace n \mapsto n^c + c : c \in \mathbb{N} \setminus \lbrace 0\rbrace \rbrace$
@@ -1112,13 +1387,16 @@ we define the complexity classes:
 
 We refer to $\text{PSPACE}$ as the class of problems decidable in deterministic polynomial space.
 
------
+</div>
 
 ### Space-Bounded Function Computation
 
 Off-line Turing machines can also be used to compute functions. The output is simply the word written on the output tape upon termination.
 
-$\textbf{Definition 65 (Functions computed by space-bounded Turing machines):}$ Let $s$ be a space bound. The class of functions computable in deterministic space $s(n)$ is:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Functions computed by space-bounded Turing machines)</span></p>
+
+Let $s$ be a space bound. The class of functions computable in deterministic space $s(n)$ is:
 
 $$
 \text{FSPACE}(s(n)) = \lbrace f : \lbrace 0, 1\rbrace^* \to \lbrace 0, 1\rbrace^* : f = f_M \text{ for a deterministic } s(n)\text{-space-bounded Turing machine } M \rbrace
@@ -1130,9 +1408,14 @@ $$
 \text{FSPACE}(F) = \bigcup_{s \in F} \text{FSPACE}(s(n))
 $$
 
+</div>
+
 Similar to time complexity, space complexity classes are robust against changes in machine specifics like the number of tapes or constant factors in the space bound.
 
-$\textbf{Theorem 66 (Linear Compression):}$ For every space bound $s$, it holds for all natural numbers $c$ and $k$ that
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Linear Compression)</span></p>
+
+For every space bound $s$, it holds for all natural numbers $c$ and $k$ that
 
 $$
 \text{DSPACE}_k(c \cdot s(n)) \subseteq \text{DSPACE}_k(s(n))
@@ -1144,25 +1427,36 @@ $$
 \text{DSPACE}(c \cdot s(n)) \subseteq \text{DSPACE}(s(n))
 $$
 
-$\textbf{Theorem 67 (Alphabet Change):}$ Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\lbrace 0, 1, \square \rbrace$ that recognizes $L$.
+</div>
 
------
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Alphabet Change)</span></p>
+
+Let $s$ be a space bound, and let $k \ge 2$. For every language $L$ in $\text{DSPACE}_k(s(n))$, there exists a deterministic $O(s(n))$-space-bounded $k$-tape Turing machine $M$ with tape alphabet $\lbrace 0, 1, \square \rbrace$ that recognizes $L$.
+
+</div>
 
 ### Nondeterministic Space Complexity
 
 The concept of space bounds extends naturally to nondeterministic Turing machines.
 
-$\textbf{Definition 68 (Nondeterministic Space Classes):}$ Let $s$ be a space bound. A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(\lvert w \rvert)$ cells on each work tape. The class of languages decidable in nondeterministic space $s(n)$ is:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nondeterministic Space Classes)</span></p>
+
+Let $s$ be a space bound. A Turing machine $M$ is **$s(n)$-space-bounded** if $M$ is total and, for almost all inputs $w$, **all computations** of $M$ visit at most $s(\lvert w \rvert)$ cells on each work tape. The class of languages decidable in nondeterministic space $s(n)$ is:
 
 $$
 \text{NSPACE}(s(n)) = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for an } s(n)\text{-space-bounded Turing machine } M \rbrace
 $$
 
------
+</div>
 
 ### Key Nondeterministic Space Classes
 
-$\textbf{Definition 69 (Examples of Nondeterministic Space Classes):}$ We define the complexity classes:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Examples of Nondeterministic Space Classes)</span></p>
+
+We define the complexity classes:
 
   * $\text{NLOG} = \text{NSPACE}(\text{log})$
   * $\text{NPSPACE} = \text{NSPACE}(\text{poly})$
@@ -1170,7 +1464,7 @@ $\textbf{Definition 69 (Examples of Nondeterministic Space Classes):}$ We define
 
 We refer to $\text{NPSPACE}$ as the class of problems decidable in nondeterministic polynomial space.
 
------
+</div>
 
 ### Example: The Directed Path Problem (DirPath)
 
@@ -1199,10 +1493,15 @@ The machine only needs to store the current node and a step counter, both of whi
 
 For a time-bounded machine, the length of any computation is naturally bounded by the time limit. For a space-bounded machine, we can derive a powerful bound on the number of computational steps by considering the number of unique configurations.
 
-$\textbf{Lemma 71 (Configurations of Space-Bounded Turing Machines):}$ Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s(n)$-space bounded Turing machine. Then there exists a constant $d$ that depends only on $M$ such that the following two statements hold for all $n$:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Configurations of Space-Bounded Turing Machines)</span></p>
+
+Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s(n)$-space bounded Turing machine. Then there exists a constant $d$ that depends only on $M$ such that the following two statements hold for all $n$:
 
 * (i) The number of possible configurations of $M$ on an input of length $n$ is at most $2^{d \cdot s(n)}$.
 * (ii) The depth of the computation tree of $M$ on an input of length $n$ is less than $2^{d \cdot s(n)}$.
+
+</div>
 
 **Proof.**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
 
@@ -1247,19 +1546,21 @@ This means the machine has entered a loop. The sequence of steps from configurat
 
 However, an $s(n)$-space bounded machine is required by definition to be total, meaning it must terminate on all inputs. This is a contradiction. Therefore, our initial assumption must be false, and no computation path can have a length of $\ell$ or more. The depth of the computation tree must be less than $2^{d \cdot s(n)}$. ∎
 
-
-
------
-
 ### Relationships Between Time and Space Complexity
 
 A fundamental aspect of complexity theory is understanding the relationships between different resource bounds (time vs. space) and computational modes (deterministic vs. nondeterministic).
 
-$\textbf{Remark 72:}$ Let $t$ be any time bound. A $t(n)$-time bounded Turing machine can access at most $t(n)+1$ cells on each work tape. With minor adjustments, we can ensure it is $t(n)$-space-bounded. This gives the immediate inclusions:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Let $t$ be any time bound. A $t(n)$-time bounded Turing machine can access at most $t(n)+1$ cells on each work tape. With minor adjustments, we can ensure it is $t(n)$-space-bounded. This gives the immediate inclusions:
 
 $$
 \text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n)) \text{ and } \text{NTIME}(t(n)) \subseteq \text{NSPACE}(t(n))
 $$
+
+</div>
+
 
 The following theorem summarizes the key relationships between deterministic and nondeterministic time and space classes.
 
@@ -1270,8 +1571,13 @@ The following theorem summarizes the key relationships between deterministic and
   </figure>
 </div>
 
-$\textbf{Theorem 73:}$ Let $t$ be a time bound. Then the following inclusions hold.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+Let $t$ be a time bound. Then the following inclusions hold.
 The relationships in the second and third columns also hold for an arbitrary space bound $s$ instead of $t$.
+
+</div>
 
 **Proof.**: The inclusions in the diagram can be justified as follows:
 
@@ -1282,11 +1588,16 @@ The relationships in the second and third columns also hold for an arbitrary spa
 
 These relationships give rise to a chain of inclusions among the major complexity classes.
 
-$\textbf{Corollary 74:}$ The following inclusions hold.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name"></span></p>
+
+The following inclusions hold.
 
 $$
 \text{LOG} \subseteq \text{NLOG} \subseteq \text{P} \subseteq \text{NP} \subseteq \text{PSPACE} \subseteq \text{NPSPACE} \subseteq \text{EXP} \subseteq \text{NEXP}
 $$
+
+</div>
 
 This chain represents our current understanding of the hierarchy of these classes. While these inclusions are known, the strictness of many of them remains one of the greatest open questions in computer science.
 
@@ -1308,7 +1619,12 @@ This chapter explores the fundamental relationships between deterministic and no
 
 A foundational result connects nondeterministic time complexity with deterministic space complexity. It establishes that any language recognizable by a nondeterministic Turing machine within a time bound $t(n)$ can also be recognized by a deterministic Turing machine using a space bound of $t(n)$. This suggests that the parallelism inherent in nondeterminism can be simulated deterministically, provided sufficient memory is available.
 
-$\textbf{Lemma 75:}$ Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
+
+Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$.
+
+</div>
 
 **Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \lbrace y_1, \dots, y_d\rbrace$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
 
@@ -1363,7 +1679,12 @@ To determine $C_u$ and $C_v$, $D$ simulates the partial computations of $M$ code
 
 The next major result, known as Savitch's Theorem, provides a relationship in the other direction: from nondeterministic space to deterministic time. It shows that any problem solvable in nondeterministic space can be solved in deterministic time, though with an exponential increase in the time bound.
 
-$\textbf{Lemma 76:}$ Let $s$ be a space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DTIME}(2^{O(s(n))})$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
+
+Let $s$ be a space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DTIME}(2^{O(s(n))})$.
+
+</div>
 
 **Proof.**: Let $L$ be a language in $\text{NSPACE}(s(n))$, recognized by an $s(n)$-space-bounded NTM $M$. We will construct a DTM $D$ that recognizes $L$ in $2^{c \cdot s(n)}$ time for some constant $c$.
 
@@ -1393,26 +1714,54 @@ The previous results establish relationships between nondeterministic time and d
 
 First, we must formally address some technical prerequisites for simulating space-bounded machines.
 
-$\textbf{Definition 77 (Space-Constructible Functions):}$ A space bound $s$ is **space-constructible** if there exists an $s(n)$-space-bounded Turing machine $M$ that computes the function $1^n \mapsto 1^{s(n)}$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Space-Constructible Functions)</span></p>
 
-$\textbf{Theorem 78 (Space-constructible Functions):}$ The functions in the function classes $\log$, $\text{lin}$, and $\text{poly}$ are all space-constructible. If the space bound $s(n)$ is space-constructible, then so is $n \mapsto 2^{s(n)}$.
+A space bound $s$ is **space-constructible** if there exists an $s(n)$-space-bounded Turing machine $M$ that computes the function $1^n \mapsto 1^{s(n)}$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Space-constructible Functions)</span></p>
+
+The functions in the function classes $\log$, $\text{lin}$, and $\text{poly}$ are all space-constructible. If the space bound $s(n)$ is space-constructible, then so is $n \mapsto 2^{s(n)}$.
+
+</div>
 
 Another important technical result is that constant factors in space bounds do not affect the power of the computational model.
 
-$\textbf{Remark 79 (Linear compression):}$ Linear compression refers to the following fact: for all space bounds $s$ and all constants $c$, every $c \cdot s(n)$-space-bounded Turing machine can be transformed into an $s(n)$-space-bounded Turing machine that recognizes the same language; in case the given Turing machine is deterministic, the new one can be chosen to be deterministic, too. Consequently, it holds for all such $s$ and $c \ge 1$ that
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear compression)</span></p>
+
+Linear compression refers to the following fact: for all space bounds $s$ and all constants $c$, every $c \cdot s(n)$-space-bounded Turing machine can be transformed into an $s(n)$-space-bounded Turing machine that recognizes the same language; in case the given Turing machine is deterministic, the new one can be chosen to be deterministic, too. Consequently, it holds for all such $s$ and $c \ge 1$ that
+
 $$
 \text{NSPACE}(c \cdot s(n)) = \text{NSPACE}(s(n))
 $$
+
 $$
 \text{DSPACE}(c \cdot s(n)) = \text{DSPACE}(s(n))
 $$
+
 This is achieved by encoding blocks of symbols from the original machine's tapes into single, more complex symbols on the new machine's tapes, or by using multiple work tapes to simulate one.
 
-$\textbf{Theorem 80 (Savitch’s Theorem):}$ Let $s$ be a space-constructible space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DSPACE}(s^2(n))$.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Savitch’s Theorem)</span></p>
+
+Let $s$ be a space-constructible space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DSPACE}(s^2(n))$.
+
+</div>
 
 This theorem has a profound corollary for polynomial space complexity classes.
 
-$\textbf{Corollary 81:}$ It holds that $\text{PSPACE} = \text{NPSPACE}$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name"></span></p>
+
+It holds that $\text{PSPACE} = \text{NPSPACE}$.
+
+</div>
 
 **Proof of the Corollary.**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}(p^2(n))$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. ∎
 
@@ -1482,18 +1831,31 @@ In the context of polynomial space, the analogous questions have been answered i
 
 To study the intrinsic difficulty of a complexity class, we identify languages that are "hardest" within that class. This is formalized through the concepts of hardness and completeness.
 
-$\textbf{Definition 82:}$ A **complexity class** is a set of languages over the binary alphabet. A language $B$ is **hard** for a complexity class if every language in the class is $p$-$m$-reducible to $B$. A language is **complete** for a complexity class if it is hard for the class and belongs to the class. A language that is complete for a complexity class $C$ is called **C-complete**.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Complexity class, hardness, completness)</span></p>
+
+A **complexity class** is a set of languages over the binary alphabet. A language $B$ is **hard** for a complexity class if every language in the class is $p$-$m$-reducible to $B$. A language is **complete** for a complexity class if it is hard for the class and belongs to the class. A language that is complete for a complexity class $C$ is called **C-complete**.
+
+</div>
 
 We now introduce a type of logical formula whose evaluation problem is complete for $\text{PSPACE}$. This language, TQBF (True Quantified Boolean Formulas), serves a role for $\text{PSPACE}$ similar to what $\text{SAT}$ serves for $\text{NP}$.
 
-$\textbf{Definition 83 (Quantified Propositional Formulas):}$ Let $\Lambda = \lbrace \neg, \land, (, ), \exists, \forall\rbrace$ and let $\text{Var}$ be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over $\text{Var}$ is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Quantified Propositional Formulas)</span></p>
+
+Let $\Lambda = \lbrace \neg, \land, (, ), \exists, \forall\rbrace$ and let $\text{Var}$ be a countable set of variables disjoint from $\Lambda$. The set of **quantified propositional formulas** over $\text{Var}$ is a set of words over the infinite alphabet $\text{Var} \cup \Lambda$ that is defined inductively as follows:
 
 * **Base case.** All elements of $\text{Var}$ are quantified propositional formulas.
 * **Inductive step.** If $\psi$ and $\psi'$ are quantified propositional formulas and $X$ is in $\text{Var}$, then $\neg\psi$, $(\psi \land \psi')$, and $\exists X \psi$ are quantified propositional formulas.
 
+</div>
+
 **Quantifier Primer.** Building on standard propositional logic, quantified propositional formulas extend the language with existential and universal quantifiers in addition to the usual connectives such as disjunction $(\lor)$ and implication $(\rightarrow)$. A universal quantification $\forall X \phi$ is shorthand for $\neg(\exists X \neg \phi)$. We also use the constants $0$ and $1$ for the logical values false and true, respectively, and assume conventional precedence so parentheses can be dropped when the intent is clear.
 
-$\textbf{Remark 84 (Free and Bound Variables):}$ When quantifiers are present we distinguish between free and bound occurrences of variables. For the formula $\neg X \lor \exists X \forall Y (X \land Y)$ the variable $X$ appears three times: the first occurrence is free, the third is bound, and the second (immediately after the quantifier) is neither free nor bound. Formal definitions are omitted because the intuition is immediate for the prenex normal forms used below.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Free and Bound Variables)</span></p>
+
+When quantifiers are present we distinguish between free and bound occurrences of variables. For the formula $\neg X \lor \exists X \forall Y (X \land Y)$ the variable $X$ appears three times: the first occurrence is free, the third is bound, and the second (immediately after the quantifier) is neither free nor bound. Formal definitions are omitted because the intuition is immediate for the prenex normal forms used below.
 
 **Evaluating Truth Values.** The truth value of a quantified propositional formula $\psi$, denoted $\text{val}(\psi)$, is either $0$ (false) or $1$ (true). Evaluation follows two principles:
 
@@ -1505,21 +1867,48 @@ Given a formula $\phi$ with free variable $X$ and an assignment $b$ to the other
 - $\exists X \phi$ is true under $b$ iff at least one of $\phi_0$ or $\phi_1$ is true under $b$.
 - $\forall X \phi$ is true under $b$ iff both $\phi_0$ and $\phi_1$ are true under $b$.
 
+</div>
+
 **Prenex Normal Form.** A standardized structure streamlines reasoning about quantified formulas.
 
-$\textbf{Definition 85 (Prenex Normal Form):}$ A quantified propositional formula is in **prenex normal form** if it has the shape $Q_1 X_1 \cdots Q_m X_m \phi$ where the $X_i$ are mutually distinct variables, every $Q_i$ belongs to $\lbrace \exists, \forall\rbrace$, and $\phi$ is a quantifier-free propositional formula in conjunctive normal form (CNF).
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Prenex Normal Form)</span></p>
+
+A quantified propositional formula is in **prenex normal form** if it has the shape $Q_1 X_1 \cdots Q_m X_m \phi$ where the $X_i$ are mutually distinct variables, every $Q_i$ belongs to $\lbrace \exists, \forall\rbrace$, and $\phi$ is a quantifier-free propositional formula in conjunctive normal form (CNF).
 
 Writing $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ in prenex normal form assumes $\phi$ is in CNF and all occurrences of each variable inside $\phi$ are free. Any quantified propositional formula can be converted into an equivalent prenex normal form in deterministic polynomial time.
 
+</div>
+
 **The QBF Language.** The central decision problem for these formulas asks whether a sentence (a quantifier prefix followed by a quantifier-free matrix) is true.
 
-$\textbf{Definition 87 (The Language QBF):}$ $\text{QBF} = \lbrace \psi : \psi \text{ is a true sentence in prenex normal form}\rbrace$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Language QBF)</span></p>
 
-$\textbf{Theorem 88 (QBF is PSPACE-Complete):}$ $\text{QBF}$ is $\text{PSPACE}$-complete, as captured by the following lemmas.
+$\text{QBF} = \lbrace \psi : \psi \text{ is a true sentence in prenex normal form}\rbrace$.
 
-$\textbf{Lemma 89:}$ $\text{QBF} \in \text{PSPACE}$.
+</div>
 
-$\textbf{Lemma 90:}$ $\text{QBF}$ is $\text{PSPACE}$-hard.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(QBF is PSPACE-Complete)</span></p>
+
+$\text{QBF}$ is $\text{PSPACE}$-complete, as captured by the following lemmas.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
+
+$\text{QBF} \in \text{PSPACE}$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
+
+$\text{QBF}$ is $\text{PSPACE}$-hard.
+
+</div>
 
 **Proof of PSPACE-Completeness for QBF.**
 
@@ -1545,34 +1934,32 @@ Think of a (space-bounded) Turing machine like a very dumb CPU with:
 The key points:
 
 * **States are finite.**
-  For a fixed TM, the set of states is some *fixed* finite set that does **not depend on the input length** (n). So the amount of information you can encode in the state is **O(1)** bits.
+  For a fixed TM, the set of states is some *fixed* finite set that does **not depend on the input length** $n$. So the amount of information you can encode in the state is **O(1)** bits.
 
 * **Tapes are where all “growing” information lives.**
-  Anything whose size must grow with the input (counters up to (n), pointers into the input, partial solutions, stacks, assignments to variables, etc.) must be written on a tape, because that’s the only place where you can have **unbounded** memory.
+  Anything whose size must grow with the input (counters up to $n$, pointers into the input, partial solutions, stacks, assignments to variables, etc.) must be written on a tape, because that’s the only place where you can have **unbounded** memory.
 
 So, informally:
 
 * **In states you store:**
 
-  * The current *phase* of the algorithm (“initializing”, “processing next quantifier”, “evaluating (\phi)”, “returning from recursion”, etc.).
-  * A small constant number of *flags* (“I’m currently in the branch (X_i = 0)” vs “(X_i = 1)”, “so far the universal quantifier is satisfied” vs “already failed”, etc.).
+  * The current *phase* of the algorithm (“initializing”, “processing next quantifier”, “evaluating $\phi$”, “returning from recursion”, etc.).
+  * A small constant number of *flags* (“I’m currently in the branch $X_i = 0$” vs “$X_i = 1$”, “so far the universal quantifier is satisfied” vs “already failed”, etc.).
   * Which transition rule to apply next.
 
-  All of this is constant-size control info — it doesn’t scale with (n).
+  All of this is constant-size control info — it doesn’t scale with $n$.
 
 * **On tapes you store:**
 
-  * Anything whose size **might depend on (n)**:
+  * Anything whose size **might depend on $n$**:
 
-    * indices or pointers that can go up to (n) or (m),
-    * counters that can be as big as (n),
-    * strings/words of length up to polynomial in (n),
+    * indices or pointers that can go up to $n$ or $m$,
+    * counters that can be as big as $n$,
+    * strings/words of length up to polynomial in $n$,
     * encodings of assignments to variables,
     * encodings of stacks / recursion information, if needed.
 
 When we do **space complexity**, we **only** count the number of tape cells used (usually on the work tapes). The states are considered “free” in the sense that they’re a fixed constant for that machine.
-
----
 
 2. **Applying this to Lemma 89 (QBF ∈ PSPACE)**
 
@@ -2025,11 +2412,26 @@ If you like, next we can write both definitions side-by-side and explicitly deri
 
 **Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi. Both used a proof technique now known as $\text{inductive counting}$.
 
-$\textbf{Definition (Closure Under Complement):}$ A complexity class is **closed under complement** if $L$ in the class implies $\bar{L} = \lbrace 0, 1\rbrace^* \setminus L$ is also in the class.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Closure Under Complement)</span></p>
 
-$\textbf{Theorem 91 (Immerman-Szelepcsényi):}$ Let $s$ be space-constructible. Then $\text{NSPACE}(s(n))$ is closed under complement.
+A complexity class is **closed under complement** if $L$ in the class implies $\bar{L} = \lbrace 0, 1\rbrace^* \setminus L$ is also in the class.
 
-$\textbf{Corollary 92:}$ The class of context-sensitive languages is closed under complement.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Immerman-Szelepcsényi)</span></p>
+
+Let $s$ be space-constructible. Then $\text{NSPACE}(s(n))$ is closed under complement.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name"></span></p>
+
+The class of context-sensitive languages is closed under complement.
+
+</div>
 
 **Proof of the Corollary.** Over a binary alphabet the context-sensitive languages coincide with $\text{NSPACE}(n)$, so the corollary is an immediate special case of Theorem 91. The same holds for arbitrary alphabets after adjusting the definition of $\text{NSPACE}(s(n))$. ∎
 
@@ -2044,12 +2446,6 @@ Let $\text{Conf}\_N(x, t)$ be the configurations reachable from $K_{start}(x)$ w
 
 Adjusting $N_4$ so that output $1$ leads to an accepting halt and output $0$ to rejection yields an NTM that decides $\bar{L}$, establishing closure under complement for $\text{NSPACE}(s(n))$. ∎
 
-
-
----
-
-
-
 ## Probabilistic Turing Machines
 
 [Alternative Definition of Probabilistic Turing Machines](/subpages/computability-and-complexity/probabilistic-turing-machine/)
@@ -2058,9 +2454,14 @@ Adjusting $N_4$ so that output $1$ leads to an accepting halt and output $0$ to 
 
 To understand randomized computation, we first introduce a more general model: a Turing machine equipped with an additional, special-purpose tape. This model serves as a foundation for both nondeterministic and probabilistic computation by reinterpreting the contents of this extra tape.
 
-$\textbf{Definition (Turing machine with auxiliary tape):}$ A Turing machine with auxiliary tape is a deterministic Turing machine that has a special read-only **one-way** tape, its **auxiliary tape**. Initially, the cells of the auxiliary tape contain an infinite binary sequence, the **auxiliary sequence**, and the reading head is positioned on the first bit of this sequence. A Turing machine with auxiliary tape is **total** if it terminates on all inputs and auxiliary sequences, and it is **$t(n)$-time-bounded** for some time-bound $t(n)$ if it is total and runs for at most $t(\lvert w \rvert)$ steps on almost all inputs $w$ and all auxiliary sequences.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing machine with auxiliary tape)</span></p>
+
+A Turing machine with auxiliary tape is a deterministic Turing machine that has a special read-only **one-way** tape, its **auxiliary tape**. Initially, the cells of the auxiliary tape contain an infinite binary sequence, the **auxiliary sequence**, and the reading head is positioned on the first bit of this sequence. A Turing machine with auxiliary tape is **total** if it terminates on all inputs and auxiliary sequences, and it is **$t(n)$-time-bounded** for some time-bound $t(n)$ if it is total and runs for at most $t(\lvert w \rvert)$ steps on almost all inputs $w$ and all auxiliary sequences.
 
 The key feature of the auxiliary tape is that it is **one-way**, meaning the head can only move to the right. This makes it suitable for modeling a stream of information, such as guesses or random bits.
+
+</div>
 
 <div class="accordion">
   <details>
@@ -2347,29 +2748,57 @@ The key feature of the auxiliary tape is that it is **one-way**, meaning the hea
   </details>
 </div>
 
-$\textbf{Remark:}$ In what follows, we restrict attention to Turing machines with auxiliary tape that are time-bounded. Such a Turing machine can store all bits it reads from the auxiliary tape on some work tape while still obeying its time bound. So in connection with time bounds it is no real restriction to require the auxiliary tape to be read-only and one-way. In contrast, a space-bounded Turing machine can read more bits from the auxiliary tape than it can store on its tapes. More precisely, an $s(n)$-space-bounded Turing machine may, for example, run for as many as $2^{s(n)}$ steps and may read up to the same number of bits from the auxiliary tape.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+In what follows, we restrict attention to Turing machines with auxiliary tape that are time-bounded. Such a Turing machine can store all bits it reads from the auxiliary tape on some work tape while still obeying its time bound. So in connection with time bounds it is no real restriction to require the auxiliary tape to be read-only and one-way. In contrast, a space-bounded Turing machine can read more bits from the auxiliary tape than it can store on its tapes. More precisely, an $s(n)$-space-bounded Turing machine may, for example, run for as many as $2^{s(n)}$ steps and may read up to the same number of bits from the auxiliary tape.
+
+</div>
 
 For a time-bounded machine, the number of bits it can access from the auxiliary tape is naturally limited by its runtime.
 
-$\textbf{Remark:}$ Let $t(n)$ be a time-bound. A $t(n)$-bounded Turing machine with auxiliary tape can read at most the first $t(n)$ bits on its auxiliary tape. In general, for a total Turing machine with auxiliary tape it follows by König’s lemma that there is a computable function $t$ such that on inputs of length $n$ at most the first $t(n)$ bits of the auxiliary sequence can be read. In these situations and with $t(n)$ understood from the context, we will refer to the prefix of length $t(n)$ of the auxiliary sequence as **auxiliary word**.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Let $t(n)$ be a time-bound. A $t(n)$-bounded Turing machine with auxiliary tape can read at most the first $t(n)$ bits on its auxiliary tape. In general, for a total Turing machine with auxiliary tape it follows by König’s lemma that there is a computable function $t$ such that on inputs of length $n$ at most the first $t(n)$ bits of the auxiliary sequence can be read. In these situations and with $t(n)$ understood from the context, we will refer to the prefix of length $t(n)$ of the auxiliary sequence as **auxiliary word**.
+
+</div>
 
 This model provides a powerful way to re-characterize familiar complexity classes like $\text{NP}$.
 
-$\textbf{Remark 102:}$ Recall that a language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that $w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w , z) \in B \text{ \& } \lvert z \rvert \le p(\lvert w \rvert)]$. This equivalence can be reformulated in terms of Turing machines with auxiliary tape: a language $L$ is in the class $\text{NP}$ if and only if there is a polynomially time-bounded Turing machine $M$ with auxiliary tape such that for all binary words $w$, it holds that $w \in L \text{ if and only if } M \text{ accepts } w \text{ for some auxiliary word } z$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Recall that a language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that $w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w , z) \in B \text{ \& } \lvert z \rvert \le p(\lvert w \rvert)]$. This equivalence can be reformulated in terms of Turing machines with auxiliary tape: a language $L$ is in the class $\text{NP}$ if and only if there is a polynomially time-bounded Turing machine $M$ with auxiliary tape such that for all binary words $w$, it holds that $w \in L \text{ if and only if } M \text{ accepts } w \text{ for some auxiliary word } z$.
+
+</div>
 
 ### Formalizing Probabilistic Computation
 
 We can now define a **probabilistic Turing machine** by treating the auxiliary tape as a source of random bits, as if generated by flipping a fair coin.
 
-$\textbf{Definition (Probabilistic Turing machine):}$ A **probabilistic Turing machine** is a total Turing machine with auxiliary tape. Let $M$ be a probabilistic Turing machine and let $t$ be a computable function such that $M$ reads at most the first $t(n)$ bits on its random tape. The **acceptance probability** of $M$ on input $w$ is $\text{accept}_M(w) = \frac{\lvert \lbrace z \in \lbrace 0, 1\rbrace^{t(n)} : M \text{ accepts on input } w \text{ and random word } z\rbrace \rvert }{2^{t(n)}}$, and the **rejection probability** of $M$ on $w$ is $\text{reject}_M(w) = 1 - \text{accept}_M(w)$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probabilistic Turing machine)</span></p>
+
+A **probabilistic Turing machine** is a total Turing machine with auxiliary tape. Let $M$ be a probabilistic Turing machine and let $t$ be a computable function such that $M$ reads at most the first $t(n)$ bits on its random tape. The **acceptance probability** of $M$ on input $w$ is $\text{accept}_M(w) = \frac{\lvert \lbrace z \in \lbrace 0, 1\rbrace^{t(n)} : M \text{ accepts on input } w \text{ and random word } z\rbrace \rvert }{2^{t(n)}}$, and the **rejection probability** of $M$ on $w$ is $\text{reject}_M(w) = 1 - \text{accept}_M(w)$.
 
 In this model, the machine doesn't simply accept or reject. Instead, it accepts with a certain probability. The decision rule is based on whether this probability crosses a specific threshold.
 
-$\textbf{Definition (Acceptance and Recognized Language):}$ Let $M$ be a total probabilistic Turing machine. Then $M$ **accepts** an input $w$, if $\text{accept}_M(w) > \frac{1}{2}$. The language $L(M)$ **recognized** by $M$ is the set of all inputs that are accepted by $M$.
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Acceptance and Recognized Language)</span></p>
+
+Let $M$ be a total probabilistic Turing machine. Then $M$ **accepts** an input $w$, if $\text{accept}_M(w) > \frac{1}{2}$. The language $L(M)$ **recognized** by $M$ is the set of all inputs that are accepted by $M$.
+
+</div>
 
 This probabilistic nature introduces the possibility of error.
 
-$\textbf{Definition (Error Probability):}$ The **error probability** of $M$ on input $w$ with respect to a language $L$ is
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Error Probability)</span></p>
+
+The **error probability** of $M$ on input $w$ with respect to a language $L$ is
 
 $$
 \text{error}^L_M(w) =
@@ -2381,13 +2810,23 @@ $$
 
 and we say that $M$ recognizes $L$ with error probability $\text{error}^L_M(w)$. The **error probability** $\text{error}_M(w)$ of $M$ on input $w$ is equal to $\text{error}^{L(M)}_M(w)$.
 
-$\textbf{Remark:}$ Probabilistic Turing machines can also be defined in terms of nondeterministic Turing machines that have computation trees where each inner node has exactly two children and for any given input, all leaves have the same depth. For a given input, the probability of acceptance is then defined as the ratio of accepting computations to all computations. This model of probabilistic Turing machine is equivalent to the one introduced above in the sense that the same languages can be recognized in both models with the same time bound up to a constant factor and with the same error probability.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Probabilistic Turing machines can also be defined in terms of nondeterministic Turing machines that have computation trees where each inner node has exactly two children and for any given input, all leaves have the same depth. For a given input, the probability of acceptance is then defined as the ratio of accepting computations to all computations. This model of probabilistic Turing machine is equivalent to the one introduced above in the sense that the same languages can be recognized in both models with the same time bound up to a constant factor and with the same error probability.
+
+</div>
 
 ### Probabilistic Complexity Classes
 
 Based on these definitions, we can define two fundamental complexity classes for probabilistic polynomial-time computation.
 
-$\textbf{Definition (Probabilistic Complexity Classes):}$ The class of languages decidable in **probabilistic polynomial time** is 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probabilistic Complexity Classes)</span></p>
+
+The class of languages decidable in **probabilistic polynomial time** is 
 
 $$
 \text{PP} = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some polynomially time-bounded probabilistic Turing machine}\rbrace
@@ -2399,11 +2838,18 @@ $$
 \text{BPP} = \lbrace L \subseteq \lbrace 0, 1\rbrace^* : L = L(M) \text{ for some polynomially time-bounded probabilistic Turing machine with error probability at most } \frac{1}{3}\rbrace
 $$
 
+</div>
+
 The class $\text{PP}$ allows the acceptance probability for a correct answer to be arbitrarily close to $\frac{1}{2}$, whereas $\text{BPP}$ requires a constant gap (e.g., between $\frac{1}{3}$ and $\frac{2}{3}$), making it a more "reliable" class of computation.
 
 These classes have clear relationships with other major complexity classes.
 
-$\textbf{Theorem 108:}$ *It holds that $\text{BPP} \subseteq \text{PP} \subseteq \text{PSPACE}$.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+It holds that $\text{BPP} \subseteq \text{PP} \subseteq \text{PSPACE}$.
+
+</div>
 
 **Proof sketch.**: The first inclusion, $\text{BPP} \subseteq \text{PP}$, holds by definition. The second inclusion follows because a polynomially time-bounded probabilistic Turing machine can be simulated by a polynomially space-bounded deterministic Turing machine for all random words while counting the number of random words that result in acceptance. ∎
 
@@ -2418,13 +2864,23 @@ After the simulation and counting steps end, we check whether the most significa
 
 Furthermore, these classes are robust under polynomial-time reductions.
 
-$\textbf{Theorem 109:}$ *The complexity classes $\text{PP}$ and $\text{BPP}$ are closed downwards under $p$-$m$-reducibility.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The complexity classes $\text{PP}$ and $\text{BPP}$ are closed downwards under $p$-$m$-reducibility.
+
+</div>
 
 **Proof.**: We give the proof for the case of $\text{PP}$ and omit the essentially identical considerations for $\text{BPP}$. Let $A$ be reduced to a language $B$ in $\text{PP}$ via some function $g$ that is computable in time $p_g(n)$ for some polynomial $p_g$. Let $M$ be a $p_M(n)$-time bounded probabilistic Turing machine that recognizes $B$ where $p_M$ is a polynomial. Then $A$ is recognized by a probabilistic Turing machine $M_A$ that on input $w$ first computes $g(w)$, then simulates $M$ on input $g(w)$, and accepts if and only if $M$ accepts. Observe that $M_A$ can be chosen to be $(p_g(n) + p_M(p_g(n)))$-time-bounded, hence is polynomially time-bounded. ∎
 
 The connection between $\text{NP}$ and $\text{PP}$ is also well-defined.
 
-$\textbf{Theorem 110:}$ *It holds that $\text{NP} \subseteq \text{PP}$.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+It holds that $\text{NP} \subseteq \text{PP}$.
+
+</div>
 
 **Proof.**: Let $L$ be any language in $\text{NP}$. By Remark 102, there is a polynomial $p$ and a deterministic $p(n)$-time-bounded Turing machine $M$ with auxiliary tape such that $w$ is in $L$ if and only if $M$ accepts $w$ for some auxiliary word $z$. Now we construct a new probabilistic TM $\text{P}$ that uses $\text{M}$ as a subroutine, plus a trick.  On input $w$, $P$ does:
 
@@ -2443,7 +2899,12 @@ Then $L$ is recognized by the polynomially time-bounded probabilistic Turing mac
 
 The definition of $\text{PP}$ allows for an acceptance and error probability of exactly $\frac{1}{2}$, which is ambiguous: it could happend that the PTM accepts some input word $w$ with exactly a half of all random words. It means that $\text{accept}_M(w)=\text{reject}_M(w)=\frac{1}{2} \implies \text{error}^L_M(w) = \frac{1}{2}$. However, this can be avoided.
 
-$\textbf{Lemma 111:}$ *Every language in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$.*
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
+
+Every language in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$.
+
+</div>
 
 **Proof.**: Let $L$ be a language in $\text{PP}$ and let $M$ be a probabilistic Turing machine that recognizes $L$ and is $p(n)$-time-bounded for some polynomial $p$. We construct a probabilistic Turing machine $M'$ as required. For almost all $n$, $M$ runs for at most $p(n)$ steps, hence reads at most $p(n)$ bits from its random tape on all inputs of length $n$. We can disregard all other inputs by hard-wiring their acceptance or rejection into $M'$.
 
@@ -2585,11 +3046,22 @@ In case $w$ is not in $L(M)$, by construction either $\text{reject}\_{M'}(w) = \
   </details>
 </div>
 
-$\textbf{Remark:}$ Recall that a time bound $t(n)$ is **time-constructible** if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $O(t(n))$. For such $t$, every language that is recognized by a $t(n)$-time-bounded probabilistic Turing machine is recognized by an $O(t(n))$-time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. The latter assertion follows by essentially the same proof as Lemma 111.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Recall that a time bound $t(n)$ is **time-constructible** if the function $1^n \mapsto 1^{t(n)}$ can be computed in time $O(t(n))$. For such $t$, every language that is recognized by a $t(n)$-time-bounded probabilistic Turing machine is recognized by an $O(t(n))$-time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. The latter assertion follows by essentially the same proof as Lemma 111.
+
+</div>
 
 This lemma allows us to prove an important closure property for $\text{PP}$.
 
-$\textbf{Theorem 113:}$ *The complexity class $\text{PP}$ is closed under complement.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The complexity class $\text{PP}$ is closed under complement.
+
+</div>
 
 **Proof.**: By Lemma 111, every language $L$ in $\text{PP}$ is recognized by a polynomially time-bounded probabilistic Turing machine that has error probability strictly less than $\frac{1}{2}$. 
 
@@ -2605,7 +3077,12 @@ Swapping acceptance and rejection in this machine yields a polynomially time-bou
 
 It is not known whether the complexity class $\text{PP}$ is closed under union or intersection. However, it is closed under another important set operation.
 
-$\textbf{Theorem 114:}$ *The complexity class $\text{PP}$ is closed under symmetric difference.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The complexity class $\text{PP}$ is closed under symmetric difference.
+
+</div>
 
 **Proof.**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form $\text{error}\_M(w) = \frac{1}{2} - \epsilon\_w \quad \text{and} \quad \text{error}\_{M'}(w) = \frac{1}{2} - \epsilon'\_w$, where we can assume by Lemma 111 that $\epsilon\_w$ and $\epsilon'\_w$ both are strictly larger than $0$.
 
@@ -2629,30 +3106,49 @@ hence $\tilde{M}$ recognizes the symmetric difference of $L$ and $L'$. ∎
 
 Like $\text{NP}$ has $\text{SAT}$, $\text{PP}$ also has a natural complete problem.
 
-$\textbf{Definition 115 (The majority satisfiability problem):}$ The **majority satisfiability problem** is the language
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The majority satisfiability problem)</span></p>
+
+The **majority satisfiability problem** is the language
 
 $$
 \text{MAJ} = \lbrace \phi : \phi \text{ is a propositional formula in conjunctive normal form that is satisfied by strictly more than half of the assignments to its variables}\rbrace
 $$
 
-$\textbf{Theorem 116:}$ *The majority satisfiability problem $\text{MAJ}$ is complete for $\text{PP}$.*
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The majority satisfiability problem)</span></p>
+
+The majority satisfiability problem $\text{MAJ}$ is complete for $\text{PP}$.
+
+</div>
 
 **Proof sketch.**:
 First, to see that the language $\text{MAJ}$ is a member of $\text{PP}$, we specify a polynomially time-bounded probabilistic Turing machine $M$ that recognizes $\text{MAJ}$. $M$ rejects every input that is not a propositional formula in conjunctive normal form. Otherwise, in case its input is a formula $\phi$ in conjunctive normal form in $n$ variables, $M$ interprets the prefix of length $n$ of its random word in the natural way as an assignment to the variables of $\phi$ and accepts in case this assignment satisfies $\phi$. So the formula $\phi$ is in $\text{MAJ}$ if and only if it has acceptance probability strictly larger than $\frac{1}{2}$ if and only if it is in $L(M)$.
 
 Second, to show that $\text{MAJ}$ is $\text{PP}$-hard, let $L$ be a language in $\text{PP}$. Fix some polynomially time-bounded probabilistic Turing machine $M$ that recognizes $L$. Similar to the construction in the proof of Cook’s Theorem, we construct a function $w \mapsto \phi_w$ computable in polynomial time such that $\phi_w$ is a propositional formula in conjunctive normal form and there is a one-to-one correspondence between satisfying assignments of $\phi_w$ and random words $z$ such that $M$ accepts on input $w$ and random word $z$. Consequently, $w$ is in $L$ if and only if $\phi$ is in $\text{MAJ}$. ∎
 
-$\textbf{Remark:}$ It is not known whether there are complete languages for $\text{BPP}$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+It is not known whether there are complete languages for $\text{BPP}$.
+
+</div>
 
 ### Properties of the Class BPP
 
 The defining feature of $\text{BPP}$ is its bounded error. A remarkable property of this class is that this error can be made arbitrarily small through a process called **probability amplification**.
 
-$\textbf{Theorem 117 (Probability amplification):}$ *For a language $L$ the following assertions are equivalent.* 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Probability amplification)</span></p>
 
+For a language $L$ the following assertions are equivalent:
 * The language $L$ is in $\text{BPP}$.
 * The language $L$ is recognized by a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{2} - \epsilon$ for some $\epsilon > 0$.
 * For every polynomial $p$ there is a polynomially time-bounded probabilistic Turing machine with error probability at most $2^{-p(n)}$ that recognizes $L$.
+
+</div>
 
 **Proof.**: By definition, (iii) implies (i) and (i) implies (ii). In order to show that (ii) implies (iii), let $M$ be a probabilistic Turing machine as asserted to exist in (ii).
 
@@ -2686,7 +3182,12 @@ By the latter, fix a constant $c > 0$ such that $(1 - 4\epsilon^2)^c < \frac{1}{
 
 The ability to amplify probability makes $\text{BPP}$ a very robust class with strong closure properties.
 
-$\textbf{Theorem 118:}$ *The complexity class $\text{BPP}$ is closed under complement. The complexity class $\text{BPP}$ is closed under all binary set-theoretical operations, including union, intersection and symmetric difference.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The complexity class $\text{BPP}$ is closed under complement. The complexity class $\text{BPP}$ is closed under all binary set-theoretical operations, including union, intersection and symmetric difference.
+
+</div>
 
 **Proof.**: Closure under complement follows by swapping acceptance and rejection of a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{3}$ that recognizes a given language in $\text{BPP}$.
 
@@ -2705,16 +3206,25 @@ In order to demonstrate the closure under binary set-theoretical operators, let 
 
 $\text{BPP}$ also has a fascinating connection to a non-uniform complexity class, $\text{P/poly}$, which allows Turing machines access to an "advice string" that depends only on the input length.
 
-$\textbf{Definition 119 (Advice Function and P/poly):}$ An **advice function** is a function that maps natural numbers to binary words. A Turing machine $M$ with auxiliary tape recognizes a language $L$ with advice function $a(n)$, if $M$ is total and for every input $w$ of length $n$, $M$ reads at most the first $\lvert a(n) \rvert$ bits on its auxiliary tape, and accepts $w$ on auxiliary word $a(n)$ if and only if $w$ is in $L$. The complexity class $\text{P/poly}$ contains exactly the languages over the binary alphabet that are recognized by a polynomially time-bounded Turing machine with auxiliary tape with some advice function.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Advice Function and P/poly)</span></p>
+
+An **advice function** is a function that maps natural numbers to binary words. A Turing machine $M$ with auxiliary tape recognizes a language $L$ with advice function $a(n)$, if $M$ is total and for every input $w$ of length $n$, $M$ reads at most the first $\lvert a(n) \rvert$ bits on its auxiliary tape, and accepts $w$ on auxiliary word $a(n)$ if and only if $w$ is in $L$. The complexity class $\text{P/poly}$ contains exactly the languages over the binary alphabet that are recognized by a polynomially time-bounded Turing machine with auxiliary tape with some advice function.
+
+</div>
 
 In the notation $\text{P/poly}$, the terms $\text{P}$ and $\text{poly}$ refer, respectively, to the polynomial time bound and to the fact that the advice functions $a$ that witness membership in $\text{P/poly}$ can always be chosen such that the advice $a(n)$ has length $p(n)$ for some polynomial $p$.
 
 The power of probability amplification allows us to show that any $\text{BPP}$ language can be solved by a machine with polynomial advice.
 
-$\textbf{Theorem 120:}$ *The complexity class $\text{BPP}$ is a subset of $\text{P/poly}$.*
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The complexity class $\text{BPP}$ is a subset of $\text{P/poly}$.
+
+</div>
 
 **Proof.**: Let $L$ be a language in $\text{BPP}$. Let $M$ be a $p(n)$-time-bounded probabilistic Turing machine that recognizes $L$ with error probability $2^{-2n}$. We construct an advice function $a(n)$ such that $M$ recognizes $L$ with advice $a(n)$. Fix some length $n$ and consider inputs of length $n$ and their corresponding random words of length $p(n)$. Say a random word is **bad** for an input if this random word results in an error of $M$ with respect to deciding whether the input is in $L$. For each of the $2^n$ inputs, at most a fraction of $2^{-2n}$ of all random words are bad. Consequently, at most a fraction of $2^n \cdot 2^{-2n} = 2^{-n}$ of all random words is bad for some input of length $n$. So it suffices to let $a(n)$ be equal to some random word that is **good**, i.e., not bad, for all inputs of length $n$. ∎
-
 
 ## The Polynomial Hierarchy and Complete Languages
 
@@ -2724,7 +3234,10 @@ This section explores the **polynomial hierarchy**, a hierarchy of complexity cl
 
 The polynomial hierarchy is constructed using alternating existential and universal quantifiers, bounded by a polynomial in the input size.
 
-$\textbf{Definition 120 (Polynomial-Time Hierarchy):}$ Let $k$ be a natural number. Then $\Sigma_k^p$ is the class of all languages $L$ over the binary alphabet for which there is a language $B$ in $\textbf{P}$ and a polynomial $p$ such that a binary word $w$ of length $n$ is in $L$ if and only if
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Polynomial-Time Hierarchy)</span></p>
+
+Let $k$ be a natural number. Then $\Sigma_k^p$ is the class of all languages $L$ over the binary alphabet for which there is a language $B$ in $\textbf{P}$ and a polynomial $p$ such that a binary word $w$ of length $n$ is in $L$ if and only if
 
 $$
 \exists_{y_1}^{p(n)} \forall_{y_2}^{p(n)} \exists_{y_3}^{p(n)} \cdots Q_k^{p(n)} y_k ((w , y_1, \ldots , y_k) \in B) \quad (4.1)
@@ -2740,15 +3253,27 @@ $$
 
 where now $Q_k$ is equal to $\forall$ if $k$ is odd and to $\exists$ if $k$ is even.
 
+</div>
+
 #### Levels and Properties of the Hierarchy
 
 The hierarchy is built upon familiar complexity classes and possesses several key properties.
 
-$\textbf{Remark 121:}$ It holds that $\Sigma_0^p = \Pi_0^p = \textbf{P}$ and $\Sigma_1^p = \textbf{NP}$. For every $k$, by definition a language is in $\Sigma_k^p$ if and only if the complement of the language is in $\Pi_k^p$. Furthermore, the classes $\Sigma_k^p$ and $\Pi_k^p$ are both subsets of $\Sigma_{k+1}^p$ and of $\Pi_{k+1}^p$, i.e., we have $\Sigma_k^p \cup \Pi_k^p \subseteq \Sigma_{k+1}^p \cap \Pi_{k+1}^p$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+It holds that $\Sigma_0^p = \Pi_0^p = \textbf{P}$ and $\Sigma_1^p = \textbf{NP}$. For every $k$, by definition a language is in $\Sigma_k^p$ if and only if the complement of the language is in $\Pi_k^p$. Furthermore, the classes $\Sigma_k^p$ and $\Pi_k^p$ are both subsets of $\Sigma_{k+1}^p$ and of $\Pi_{k+1}^p$, i.e., we have $\Sigma_k^p \cup \Pi_k^p \subseteq \Sigma_{k+1}^p \cap \Pi_{k+1}^p$.
+
+</div>
 
 The entire polynomial hierarchy, denoted **PH**, is the union of all its levels: $\text{PH} = \bigcup_k \Sigma_k^p$. This entire structure is contained within **PSPACE**.
 
-$\textbf{Theorem 122:}$ The class **PH** is a subset of **PSPACE**.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The class **PH** is a subset of **PSPACE**.
+
+</div>
 
 *(Note: The proof of this theorem is similar to the proof that QBF is PSPACE-complete and is omitted here.)*
 
@@ -2770,15 +3295,25 @@ In case $\Sigma_k^p$ and $\Sigma_{k+1}^p$ coincide, then $\Sigma_k^p$ coincides 
 
 The complexity class **BPP** (Bounded-error Probabilistic Polynomial time) also has a place within the polynomial hierarchy. It is known to be contained within the second level.
 
-$\textbf{Theorem 124:}$ It holds that $\textbf{BPP} \subseteq \Sigma_2^p$, that is, for every language $L$ in **BPP** there is a language $B$ in **P** and a polynomial $p$ such that for all binary words $w$ it holds that
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+It holds that $\textbf{BPP} \subseteq \Sigma_2^p$, that is, for every language $L$ in **BPP** there is a language $B$ in **P** and a polynomial $p$ such that for all binary words $w$ it holds that
 
 $$
 w \in L \text{ if and only if } \exists_{x}^{p(\lvert w \rvert)} \forall_{y}^{p(\lvert w \rvert)} ((w, x, y) \in B).
 $$
 
+</div>
+
 As a direct consequence of this theorem and the fact that **BPP** is closed under complement, we can place **BPP** more precisely within the hierarchy.
 
-$\textbf{Corollary 125:}$ The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_2^p$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name"></span></p>
+
+The class **BPP** is a subset of $\Sigma_2^p \cap \Pi_2^p$.
+
+</div>
 
 **Proof.** Let $L$ be a language in **BPP**. By Theorem 124, $L$ is in $\Sigma_2^p$. Since **BPP** is closed under complement, the complement language $\bar{L}$ is also in **BPP** and thus is in $\Sigma_2^p$. Consequently, by the definition of the hierarchy (Remark 121), the language $L$ is in $\Pi_2^p$. Therefore, $L$ is in $\Sigma_2^p \cap \Pi_2^p$, and the corollary follows. ∎
 
@@ -2805,9 +3340,7 @@ For the remainder of this proof, "word" will refer to a binary word of length $p
 
 We will consider the following statement:
 
-
 $$\exists v_1^{p(n)} \cdots \exists v_{p(n)}^{p(n)}\ \forall z^{p(n)} \bigl( z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)} \bigr) (4.3)$$
-
 
 Informally:
 
@@ -2905,13 +3438,24 @@ A key technique for understanding complexity classes is to identify **complete l
 
 ### A Complete Language for PP
 
-$\textbf{Definition 126 (The Majority Satisfiability Problem):}$ The **majority satisfiability problem** is the language
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Majority Satisfiability Problem)</span></p>
+
+The **majority satisfiability problem** is the language
 
 $$
 \textbf{MAJ} = \lbrace \phi : \phi \text{ is a propositional formula in CNF that is satisfied by strictly more than half of the assignments to its variables}\rbrace
 $$
 
-$\textbf{Theorem 127:}$ The majority satisfiability problem **MAJ** is complete for **PP**.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+The majority satisfiability problem **MAJ** is complete for **PP**.
+
+</div>
 
 **Proof.** The proof has two parts: showing **MAJ** is in **PP** and showing **MAJ** is **PP**-hard.
 
@@ -2963,7 +3507,12 @@ A general approach for creating complete languages involves simulating Turing ma
 
 For this purpose, we define a **special Turing machine** as one having a single work tape and a tape alphabet of $\lbrace 0, 1, \square \rbrace$.
 
-$\textbf{Remark 128:}$ By the results on tape reduction and on alphabet reduction, for every $t(n)$-time-bounded Turing machine there is a special Turing machine that is $c \cdot t^2(n)$-time-bounded for some constant $c$ such that both machines recognize the same language. Furthermore, if the given Turing machine is deterministic, the special Turing machine can be chosen to be deterministic, too.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+By the results on tape reduction and on alphabet reduction, for every $t(n)$-time-bounded Turing machine there is a special Turing machine that is $c \cdot t^2(n)$-time-bounded for some constant $c$ such that both machines recognize the same language. Furthermore, if the given Turing machine is deterministic, the special Turing machine can be chosen to be deterministic, too.
+
+</div>
 
 We fix a binary representation for these special TMs. For a representation word $w$, we write $M_w$ for the machine it represents. This representation scheme has the following properties:
 
@@ -2982,7 +3531,12 @@ $$
 C_{\text{EXP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that is deterministic and accepts } x \text{ in at most } 2^t \text{ steps}\rbrace.
 $$
 
-$\textbf{Proposition 129:}$ The language $C_{\text{EXP}}$ is **EXP**-complete.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+The language $C_{\text{EXP}}$ is **EXP**-complete.
+
+</div>
 
 **Proof sketch.**
 
@@ -2997,7 +3551,12 @@ $$
 C_{\text{NP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\rbrace.
 $$
 
-$\textbf{Proposition 130:}$ The language $C_{\text{NP}}$ is **NP**-complete.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+The language $C_{\text{NP}}$ is **NP**-complete.
+
+</div>
 
 **A PP-Complete Language**
 
@@ -3007,10 +3566,14 @@ $$
 C_{\text{PP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a probabilistic Turing machine that accepts input } x \text{ when all computations are pruned to length } t\rbrace.
 $$
 
-$\textbf{Proposition 131:}$ The language $C_{\text{PP}}$ is $\textbf{PP}$-complete.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+The language $C_{\text{PP}}$ is $\textbf{PP}$-complete.
+
+</div>
 
 *(Note: The proof is omitted here but was covered in the lecture.)*
-
 
 ## Interactive Proof Systems
 
@@ -3023,7 +3586,10 @@ The prover is conceptualized as a computationally unrestricted entity, capable o
 
 An interactive proof system establishes membership in a language through a dialogue between a computationally bounded verifier and a computationally unbounded prover. The verifier is a probabilistic Turing machine that runs in polynomial time, while the prover can perform arbitrary computation. Messages are polynomially bounded in the input size.
 
-$\textbf{Definition 132 (Verifiers and provers):}$ A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(\|w\|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Verifiers and provers)</span></p>
+
+A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(\|w\|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
 
 For a verifier $V$ and a prover $P$, the messages exchanged on input $w$ and random word $r$ are $m_1, m_2, \ldots$ with
 
@@ -3035,6 +3601,8 @@ The interaction terminates at round $t$ if $t$ is minimal such that $V$ reaches 
 
 Let $t : \mathbb{N} \to \mathbb{N}$. A verifier $V$ is **total** and **$t(n)$-bounded** if for all inputs $w$, all random words, and all provers $P$, the interaction terminates by round $t(\|w\|)$.
 
+</div>
+
 Key consequences:
 
 * Message lengths, **number of rounds**, and verifier computation per message are polynomially bounded in $\|w\|$.
@@ -3044,18 +3612,28 @@ Key consequences:
 > Q: In interactive proof systems, if we say that we have some polynomially bounded verifier $V$ that interactively recognizes a language $L$, does this polynomial bound mean that each interaction (round) of the verifier's execution is polynomially bounded, or is it a global bound for all rounds (the verifier's running time over all rounds is bounded by some polynomial)? 
 > A: It is a global bound on the verifier's total running time (as a machine) over the entire interaction $\implies$ the number of rounds is at most polynomial in $n=\|w\|$.
 
-$\textbf{Definition 133:}$ A language $L$ is recognized (interactively) by a total verifier $V$ if
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Interactive Recognizability)</span></p>
+
+A language $L$ is recognized (interactively) by a total verifier $V$ if
 
 1. For each $w \in L$, there **exists** a prover such that $V$ accepts with probability at least $\tfrac{2}{3}$.
 2. For each $w \notin L$, **for all provers**, $V$ rejects with probability at least $\tfrac{2}{3}$.
 
 Let $k \in \mathbb{N}$. The class $\text{IP}[k]$ contains all languages recognized by some $k$-bounded verifier; $\text{IP}$ contains those recognized by some polynomially bounded verifier.
 
-Completeness is condition (1); soundness is condition (2). The $\tfrac{2}{3}$ bound can be amplified arbitrarily close to $1$ via repetition. It is immediate that $\text{BPP} = \text{IP}[0]$ and $\text{NP} \subseteq \text{IP}[1]$.
+**Completeness** is condition (1); **soundness** is condition (2). The $\tfrac{2}{3}$ bound can be amplified arbitrarily close to $1$ via repetition. It is immediate that $\text{BPP} = \text{IP}[0]$ and $\text{NP} \subseteq \text{IP}[1]$.
+
+</div>
 
 > Proving **completeness** we are allowed (and actually expected) to look for the best possible prover strategy. Proving **soundness** we are expected to consider the most malicious prover.
 
-$\textbf{Remark 134:}$ If $L$ is recognized by a verifier $V$. Then for each input in $L$ some prover must result in an acceptance probability of at least $\frac{2}{3}$, where this prover *may depend on the input*. It can be shown, however, that there is a single prover $P$ *independent of the input* that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+If $L$ is recognized by a verifier $V$. Then for each input in $L$ some prover must result in an acceptance probability of at least $\frac{2}{3}$, where this prover *may depend on the input*. It can be shown, however, that there is a single prover $P$ *independent of the input* that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
+
+</div>
 
 ### An Interactive Proof for Graph Non-Isomorphism
 
@@ -3063,16 +3641,26 @@ We adopt a fixed node-labeling convention.
 
 Convention 136: All graphs with $n$ nodes have the node set $\lbrace 1, \ldots, n\rbrace$.
 
-$\textbf{Definition 135:}$ Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* between graphs is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Graph Isomorphism)</span></p>
+
+Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* between graphs is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
 
 Languages:
 
 * $\text{GI} = \lbrace (G, G') \mid G \text{ and } G' \text{ are isomorphic}\rbrace$
 * $\text{GNI} = \lbrace (G, G') \mid G \text{ and } G' \text{ are nonisomorphic}\rbrace$
 
+</div>
+
 The language $\text{GI}$ is in $\text{NP}$ since for isomorphic graphs, it can be checked in deterministic polynomial time whether a given mapping between their node sets is an isomorphism. The problem $\text{GI}$ is one of the few languages in $\text{NP}$ arising naturally in practice that is neither known to be $\text{NP}$-complete nor known to be in $\text{P}$. The language $\text{GNI}$ is not known to be in $\text{NP}$.
 
-$\textbf{Theorem 137:}$ $\text{GNI} \in \text{IP}[1]$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+$\text{GNI} \in \text{IP}[1]$.
+
+</div>
 
 *Proof.* Let the input be $(G_0, G_1)$ with the same number of nodes (otherwise reject immediately). The protocol is a single round:
 
@@ -3092,7 +3680,12 @@ A landmark result in complexity theory is the characterization of $\textbf{IP}$ 
 
 We first show that any problem with an interactive proof can be solved by a polynomial-space Turing machine.
 
-$\textbf{Theorem 138:}$ $\text{IP} \subseteq \text{PSPACE}$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+$\text{IP} \subseteq \text{PSPACE}$.
+
+</div>
 
 *Proof.* Let $L \in \text{IP}$ with polynomially bounded verifier $V$ (bound $p$). On input $w$ of length $n$, the interaction can be represented as a game tree $T$ of depth $2p(n)$ whose nodes encode partial transcripts $m_1 \ldots m_t$. Each node has at most $2^{p(n)}$ children (all possible next messages).
 
@@ -3112,19 +3705,34 @@ We show by induction on $j$ (from the leaves up) that for any node $u$ at depth 
 
 Since the entire computation can be performed in polynomial space, $L \in \text{PSPACE}$. Therefore, $\text{IP} \subseteq \text{PSPACE}$. $\square$
 
-$\textbf{Remark 139:}$ Let $L$ be a language in $\text{IP}$, and let $V$ be a polynomially bounded verifier that recognizes $L$. Then there is a polynomially space-bounded prover $P$ such that the interactive proof system $(V,P)$ recognizes $L$, i.e., $V$ accepts all inputs in $L$ with probability at least $\frac{3}{2}$ when interacting with $P$. This follows because the optimal prover described in the proof of Theorem 138 makes decisions by computing the function $k(u)$, which we have shown can be done in deterministic polynomial space.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Let $L$ be a language in $\text{IP}$, and let $V$ be a polynomially bounded verifier that recognizes $L$. Then there is a polynomially space-bounded prover $P$ such that the interactive proof system $(V,P)$ recognizes $L$, i.e., $V$ accepts all inputs in $L$ with probability at least $\frac{3}{2}$ when interacting with $P$. This follows because the optimal prover described in the proof of Theorem 138 makes decisions by computing the function $k(u)$, which we have shown can be done in deterministic polynomial space.
+
+</div>
 
 #### Proving PSPACE is a Subset of IP
 
 We arithmetize logical formulas to design interactive proofs for $\text{PSPACE}$-complete problems.
 
-$\textbf{Definition 140:}$ The counting $3$-satisfiability problem is
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
+
+The counting $3$-satisfiability problem is
 
 $$
 \#3\text{-SAT} = \lbrace (\phi, k) : \phi \text{ is a 3-CNF formula with exactly } k \text{ satisfying assignments}\rbrace.
 $$
 
-$\textbf{Theorem 141:}$ #$3\text{-SAT} \in \text{IP}$.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+#$3\text{-SAT} \in \text{IP}$.
+
+</div>
 
 *Proof*: We design an interactive protocol where a prover convinces a verifier that a 3-CNF formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
 
@@ -3509,11 +4117,21 @@ If all these checks pass successfully for all $i$ up to the final verifiable che
   </details>
 </div>
 
-$\textbf{Theorem 142:}$ $\text{IP} = \text{PSPACE}$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+$\text{IP} = \text{PSPACE}$.
+
+</div>
 
 *Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in $3$-CNF form ($3$-QBF) is PSPACE-complete.
 
-$\textbf{Theorem 143:}$ $3\text{-QBF} \in \text{IP}$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+$3\text{-QBF} \in \text{IP}$.
+
+</div>
 
 *Proof:* We adapt the arithmetization protocol from Theorem 141 for quantified formulas. Let 
 
@@ -3553,7 +4171,13 @@ The verifier's protocol is modified to check the arithmetized QBF expression wit
 
 Why quadratic instead of linear in $n$:
 
-$\textbf{Example: } \prod_{x_1\in\lbrace 0,1\rbrace} L_1 \coprod_{x_2\in\lbrace 0,1\rbrace} L_1 L_2 \prod_{x_3\in\lbrace 0,1\rbrace} p(x_1,x_2,x_3)$
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
+
+\prod_{x_1\in\lbrace 0,1\rbrace} L_1 \coprod_{x_2\in\lbrace 0,1\rbrace} L_1 L_2 \prod_{x_3\in\lbrace 0,1\rbrace} p(x_1,x_2,x_3)$
+
+</div>
+
 
 $\textbf{Solution:}$
 
@@ -3653,13 +4277,23 @@ Verifiers as defined in Definition 132 use **private coins**, i.e., there random
 
 Zero-knowledge proofs allow authentication without revealing secrets: the verifier learns nothing beyond the validity of the statement.
 
-$\textbf{Definition 145:}$ An interactive proof system $(V, P)$ for $L$ is *zero-knowledge* if for every verifier $V'$ there is a probabilistic Turing machine $S$ (the simulator) running in expected polynomial time such that for every $w \in L$, the output distribution of $S$ equals the distribution of transcripts from the interaction of $V'$ with $P$ on input $w$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Zero-knowledge IPS)</span></p>
+
+An interactive proof system $(V, P)$ for $L$ is *zero-knowledge* if for every verifier $V'$ there is a probabilistic Turing machine $S$ (the simulator) running in expected polynomial time such that for every $w \in L$, the output distribution of $S$ equals the distribution of transcripts from the interaction of $V'$ with $P$ on input $w$.
+
+</div>
 
 The simulator shows that any transcript could have been generated without access to the prover’s secret, so no knowledge is leaked (perfect zero-knowledge).
 
 $\text{GI}$, despite lacking a known $\text{NP}$ certificate, admits a zero-knowledge interactive proof.
 
-$\textbf{Theorem 146:}$ $\text{GI}$ has a zero-knowledge interactive proof system.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
+
+$\text{GI}$ has a zero-knowledge interactive proof system.
+
+</div>
 
 *Proof.* For input $(G_0, G_1)$, the prover’s secret is an isomorphism if it exists.
 
@@ -3746,7 +4380,6 @@ Finally, the abbreviations **c.e.** and **r.e.** are often used (even in print) 
 
 A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
 
-<!-- $\textbf{Theorem 149:}$ A language is recursively enumerable $\iff$ it is equal to the domain of a Turing machine. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">($L$ is r.e. $\iff$ $L$ $\text{dom}$ TM)</span></p>
 
@@ -3853,7 +4486,12 @@ To facilitate a more mathematical treatment, we often work with natural numbers 
 
 Using this identification, we can directly translate our definitions from languages to sets of natural numbers and from functions on strings to functions on numbers.
 
-$\textbf{Definition 154:}$ A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computability on Natural Numbers)</span></p>
+
+A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
+
+</div>
 
 > **Convention 155**: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
 
@@ -3870,11 +4508,11 @@ $$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \
 Let $A$ be a set. The characteristic function $c_A$ and the **partial characteristic function** $\chi_A$ of $A$ are defined as follows:  
 
 $$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ \uparrow & \text{if } n \notin A. \end{cases}$$
+
 </div>
 
 These functions provide a direct link between sets and functions.
 
-<!-- $\textbf{Proposition 157:}$ A set $A$ is decidable $\iff$ its characteristic function $c_A$ is computable. A set $A$ is recursively enumerable $\iff$ its partial characteristic function $\chi_A$ is partial computable. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Decidable set $\iff$ $c_A$ is computable, set r.e $\iff$ $\chi_A$ is partial computable)</span></p>
 
@@ -3905,8 +4543,6 @@ That is $A$ is equal to the domain of a partial computable function.
 * Conversely, if $A$ is the domain of a partial computable function $\alpha$, then there exists a Turing machine $M$ that computes $\alpha$. The domain of $M$ is therefore $A$. By Theorem 149, a language that is the domain of a Turing machine is recursively enumerable.
 
 To handle functions with multiple arguments, such as those on $\mathbb{N} \times \mathbb{N}$, we use a pairing function.
-
-<!-- $\textbf{Definition 159:}$ A pairing function is a bijection from $\mathbb{N} \times \mathbb{N}$ to $\mathbb{N}$. Let $\langle \cdot, \cdot \rangle$ be an effective and effectively invertible pairing function (for details, see the exercises). For a subset $A$ of $\mathbb{N} \times \mathbb{N}$, let $\langle A \rangle = \lbrace\langle i, j \rangle : (i, j) \in A\rbrace$. A subset $A$ of $\mathbb{N} \times \mathbb{N}$ is recursively enumerable if $\langle A \rangle$ is recursively enumerable, and $A$ is decidable if $\langle A \rangle$ is decidable. A partial function $\alpha : \mathbb{N} \times \mathbb{N} \to \mathbb{N}$ is partial computable if the function $\langle x, y \rangle \mapsto \alpha(x, y)$ is partial computable, and $\alpha$ is computable if it is partial computable and total. -->
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pairing function)</span></p>
@@ -3948,7 +4584,7 @@ For a function $f$, the following statements are equivalent.
 * **(iii)** The function $f$ is computable. 
 * **(iv)** The set $\text{graph}(f)$ is decidable. 
 * **(v)** The set $\text{graph}(f)$ is recursively enumerable. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
 
 Let $\alpha$ be a partial function. The following are equivalent:
@@ -3968,9 +4604,7 @@ Let $f$ be a (total) function. The following are equivalent:
 
 Recursively enumerable sets can also be characterized as projections of decidable sets. Intuitively, this means an element $n$ is in an r.e. set $A$ if there exists some "witness" $i$ such that the pair $(n, i)$ belongs to a simpler, decidable set $B$.
 
-<!-- $\textbf{Proposition 161:}$ A set $A$ is recursively enumerable $\iff$ $A$ is the projection of a decidable set. That is, for some decidable set $B$, it holds that   -->
-<!-- $$A = \lbrace n : \text{there exists an } i \text{ such that } \langle n, i \rangle \text{ is in } B\rbrace$$  -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and decidable set projection)</span></p>
 
 A set $A\subseteq \mathbb{N}$ is **recursively enumerable** $\iff$ it is the **projection of a decidable set**. 
@@ -4456,7 +5090,7 @@ So: **in the context of r.e./decidable/partial computable, it’s safe to treat 
 
 <!-- $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration. -->
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and effective enumeration)</span></p>
 
 A nonempty set $A\subseteq \mathbb{N}$ is recursively enumerable $\iff$ $A$ has an effective enumeration.
@@ -4590,7 +5224,7 @@ Decidable sets correspond to a special, more structured type of enumeration.
 
 <!-- $\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a nondecreasing effective enumeration. -->
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and nondecreasing effective enumeration)</span></p>
 
 A nonempty set $A\subseteq \mathbb{N}$ is decidable $$\iff$$ $A$ has a nondecreasing effective enumeration.
@@ -4624,7 +5258,7 @@ A final, crucial theorem links decidability to the recursive enumerability of a 
 
 <!-- $\textbf{Proposition 165:}$ A set $A$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N} \setminus A$ are recursively enumerable. -->
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and r.e.)</span></p>
 
 A set $A\subseteq \mathbb{N}$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N}\setminus A$ are recursively enumerable.
@@ -4754,11 +5388,21 @@ For acceptable numberings, duplicates aren’t just “allowed”; they’re ess
 
 </div>
 
-> **Remark 169**: For any numbering $\alpha_0, \alpha_1, \dots$, all $\alpha_e$ are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input $x$ into $\langle e, x \rangle$ before performing the actual computation, we obtain a Turing machine that computes $\alpha_e$. As a consequence, a numbering $\alpha_0, \alpha_1, \dots$ is universal if and only if all partial computable functions occur among the $\alpha_e$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+For any numbering $\alpha_0, \alpha_1, \dots$, all $\alpha_e$ are partial computable. To prove this, choose a Turing machine that computes the principal function of the given numbering. By modifying this Turing machine so that it first transforms its input $x$ into $\langle e, x \rangle$ before performing the actual computation, we obtain a Turing machine that computes $\alpha_e$. As a consequence, a numbering $\alpha_0, \alpha_1, \dots$ is universal if and only if all partial computable functions occur among the $\alpha_e$.
+
+</div>
 
 Not every sequence of computable functions constitutes a numbering. A numbering requires that the principal function itself be computable.
 
-> **Remark 170**: There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set $A$ and consider the sequence $\alpha_0, \alpha_1, \dots$ of constant functions such that $\alpha(e)$ has constant value $0$ if $e$ is not in $A$, and has constant value $1$, otherwise. This sequence is not a numbering, as its principal function $\alpha$ is not partial computable. Otherwise, since $\alpha$ is total, $\alpha$ and then also the function $e \mapsto \alpha(e, e)$ were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set $A$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set $A$ and consider the sequence $\alpha_0, \alpha_1, \dots$ of constant functions such that $\alpha(e)$ has constant value $0$ if $e$ is not in $A$, and has constant value $1$, otherwise. This sequence is not a numbering, as its principal function $\alpha$ is not partial computable. Otherwise, since $\alpha$ is total, $\alpha$ and then also the function $e \mapsto \alpha(e, e)$ were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set $A$.
+
+</div>
 
 <!-- <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Turing Machine $\iff$ Algorithm)</span></p>
@@ -4940,7 +5584,7 @@ This *would* be total and would diagonalize. But computing it requires deciding 
 Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
 
 <!-- $\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H_\alpha = \lbrace e : \alpha_e(e) \downarrow \rbrace$. The set $H_\alpha$ is recursively enumerable. If the numbering $\alpha_0, \alpha_1, \dots$ contains all computable functions, then the set $H_\alpha$ is not decidable. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(diagonal halting set is r.e.)</span></p>
 
 Let $(\alpha_e)_{e\in\mathbb N}$ be a numbering, and let $\alpha$ be its principal function, so that
@@ -5241,7 +5885,7 @@ The function $f$ transforms instances of problem $A$ into instances of problem $
 
 
 <!-- $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(m-reductions preserve decidability)</span></p>
 
 The relation m-reducibility is **reflexive** and **transitive**.
@@ -5267,7 +5911,7 @@ Thus $A\le_m C$. $\square$
 <!-- $\textbf{Proposition 183:}$ Let $A$ and $B$ be sets such that $A \le_m B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
 * **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(m-reductions preserve decidability/undecidability)</span></p>
 
 Let $A$ and $B$ be sets such that $A \le_m B$. 
@@ -5377,7 +6021,7 @@ Thus $A\le_m H$. $\square$
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 
 <!-- $\textbf{Corollary 185:}$ A set $A$ is r.e. if and only if $A \le_m H$. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
 A set $A$ is r.e. if and only if $A \le_m H$.
@@ -5387,7 +6031,7 @@ A set $A$ is r.e. if and only if $A \le_m H$.
 *Proof*: Immediate by Theorem 184.
 
 <!-- $\textbf{Corollary 186:}$ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
 It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$.
@@ -5410,7 +6054,7 @@ This leads to an important non-reducibility result.
 <!-- $\textbf{Corollary 188:}$ Let $A$ be an undecidable r.e. set. Then it holds that $A \not\le_m \bar{A}$ and $\bar{A} \not\le_m A$. In particular, we have 
 
 $$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$  -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
 Let $A$ be an undecidable r.e. set. Then neither set is many-one reducible to the other’s complement:
@@ -5651,7 +6295,7 @@ So **the image of $g$** (as a function on indices) is essentially just **two equ
 
 
 <!-- $\textbf{Corollary 193:}$ Nontrivial index sets are not decidable. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(193)</span></p>
 
 Nontrivial index sets are not decidable.
@@ -5659,7 +6303,7 @@ Nontrivial index sets are not decidable.
 </div>
 
 <!-- $\textbf{Corollary 194:}$ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
 For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite.
@@ -5746,7 +6390,7 @@ For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse im
 <!-- $\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$. 
 * **(i)** If $B$ is decidable, then $A$ is also decidable. 
 * **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
 
 Let $A$ and $B$ be sets where $A \le_T B$. 
@@ -5830,7 +6474,7 @@ For all sets $A,B$, the set $A$ is r.e. relative to $B$ $\iff$ $A \le_m H^B$.
 * $(\implies)$ If $A$ is r.e. in $B$, there is an oracle TM $M$ such that $A$ is its domain with oracle $B$. We can create a computable function $h$ such that for any $x, M_{h(x)}$ is an oracle TM that on any input $y$ with any oracle $X$ simulates $M$ on input $x$ with oracle $X$. The function $h$ is computable as it just hard-wires $x$ into the description of $M$. Then we have:  $x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$.  This shows $A \le_m H^B$ via the computable function $h$.
 
 <!-- $\textbf{Corollary 207:}$ For all sets $B$, the halting problem relative to $B$ is recursively enumerable with oracle $B$. -->
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of theorem)</span></p>
 
 For every set $B$, the halting problem $H^B$ is r.e. relative to $B$.
