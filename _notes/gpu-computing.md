@@ -22,6 +22,8 @@ tags:
 
 # GPU Computing
 
+[summary](/subpages/gpu-computing/summary)
+
 ## The Need for Massive Parallelism
 
 For decades, the engine driving computational progress was Moore's Law. Originally stated in 1965 and revised in 1975, it famously observed that the number of transistors on an integrated circuit doubles approximately every two years. This exponential growth allowed single-processor performance to increase at a staggering rate, primarily by increasing clock frequencies.

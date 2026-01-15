@@ -3084,7 +3084,7 @@ $$b_o = b_a + b_w + \left\lceil \log_2(nk^2)\right\rceil$$
 
 They model total per-layer bit ops (again per output spatial position) as:
 
-$$\text{BOPS}_{\text{conv}} \approx mnk^2\Big(\underbrace{b_ab_w}*{\text{mult}} + \underbrace{b_o}_{\text{acc}}\Big)$$
+$$\text{BOPS}_{\text{conv}} \approx mnk^2\Big(\underbrace{b_ab_w}_{\text{mult}} + \underbrace{b_o}_{\text{acc}}\Big)$$
 
 ### Why multiplication cost $\sim b_a b_w$
 
@@ -3108,9 +3108,9 @@ So multiplication becomes:
 
 Now, how expensive is “$a_i (w\ll i)$” at the bit level?
 
-* $a_i$ is 0/1, so it “gates” each bit of (w).
-* That’s basically (b_w) AND operations (one per bit of (w)) to form the partial product row.
-* You do that for each of the (b_a) bits of (a).
+* $a_i$ is 0/1, so it “gates” each bit of $w$.
+* That’s basically $b_w$ AND operations (one per bit of $w$) to form the partial product row.
+* You do that for each of the $b_a$ bits of $a$.
 
 So just forming partial products costs about:
 
@@ -3118,13 +3118,13 @@ $$b_a \cdot b_w$$
 
 bit operations (ANDs).
 
-Then you still have to add those rows up (more cost), but many BOPS formulas bundle “multiply cost” as scaling with (b_a b_w) because that’s the dominant size term and matches how multiplier hardware scales.
+Then you still have to add those rows up (more cost), but many BOPS formulas bundle “multiply cost” as scaling with $b_a b_w$ because that’s the dominant size term and matches how multiplier hardware scales.
 
 **Hardware intuition (area/energy scaling)**
 
-Common multiplier circuits (e.g., array multipliers) are literally a 2D grid of bit-cells roughly sized (b_a \times b_w). Even with optimizations (Booth encoding, Wallace trees), the **resource/energy** still grows roughly with operand width product.
+Common multiplier circuits (e.g., array multipliers) are literally a 2D grid of bit-cells roughly sized $b_a \times b_w$. Even with optimizations (Booth encoding, Wallace trees), the **resource/energy** still grows roughly with operand width product.
 
-So (b_a b_w) is a compact proxy for:
+So $b_a b_w$ is a compact proxy for:
 
 * “how many bit-level interactions do we need between the two numbers?”
 
@@ -3371,407 +3371,819 @@ These methods represent the frontier of model compression, where hardware expert
 
 
 
+# Unsafe Optimization 3
 
-# The Illusion of Sparsity: From Theory to Hardware-Accelerated Pruning
+This chapter bridges the critical gap between the theoretical promise of model compression and the practical realities of hardware performance. We will dissect the concept of sparsity—the introduction of zero-valued weights into a neural network—and explore why simply increasing the number of zeros often fails to deliver corresponding speedups in inference. The central theme is the HW-ML Interplay: the best optimization is not the one with the highest theoretical compression, but the one your hardware can execute efficiently.
 
-This chapter addresses the gap between **theoretical compression** and **real hardware speedups**. Sparsity (many zero weights) only helps if the **runtime kernel** and **hardware** can *skip work efficiently*. The key theme is **HW–ML interplay**: the best pruning method is the one that your target system can execute efficiently.
+## The Sparsity-Speed Fallacy
 
----
+A common misconception in machine learning optimization is that sparsity directly translates to speed. For instance, if a model has 80% of its weights pruned to zero, one might intuitively expect a 5x speedup. However, the practical reality is often closer to 1x—no speedup at all—without substantial, hardware-aware effort.
 
-## 1.1 The Sparsity–Speed Fallacy
+This discrepancy arises because modern processors and ML frameworks are highly optimized for dense, structured computations like GEMM (General Matrix-Matrix Multiplication). The performance of a sparse model depends entirely on how that sparsity is represented and executed.
 
-A common misconception:
+There are three primary approaches to handling sparsity, each with vastly different performance implications:
 
-> **Fallacy:** “80% zeros ⇒ 5× speedup”
-> **Reality:** Often ≈ **1×** without hardware-aware execution.
+1. **Mask-Only Sparsity:** This is the most common method within ML frameworks like PyTorch. A binary mask is applied to the weight tensor, effectively zeroing out certain values during computation (e.g., $y = x \cdot (W ⊙ M)$). However, the underlying weight tensor W remains dense in memory, and the computation is still performed by a dense GEMM kernel. The hardware sees the same tensor shapes and executes the same schedule, resulting in little to no speedup.
+2. **Structured Pruning (Rewiring):** This method removes entire structural components of the network, such as neurons, attention heads, or convolutional channels. This physically alters the model's architecture, resulting in smaller weight matrices and activation tensors. These smaller tensors can then be processed by standard, efficient dense kernels, leading to real, measurable speedups.
+3. **Hardware-Structured Sparsity:** This advanced technique enforces a specific, hardware-friendly sparsity pattern (e.g., N:M sparsity, where N out of M consecutive weights are non-zero). The weights are then packed into a compact format, and a specialized sparse kernel that understands this pattern is used for computation. This provides significant speedups but requires direct hardware support.
 
-### Why sparsity often does not accelerate inference
+The fundamental reason sparsity does not equal speed is that computational work is not skipped unless the kernel is explicitly designed to do so. Overheads associated with sparse formats—such as storing indices, managing indirection, and load imbalance across parallel processing units—can easily negate any savings from reduced computations. Furthermore, in memory-bound scenarios, where performance is limited by data movement rather than computation, removing floating-point operations (FLOPs) provides no benefit.
 
-Modern processors and ML frameworks are optimized for **dense, structured kernels** (e.g., GEMM). If your sparse model still runs **dense kernels**, the FLOPs are not actually skipped.
+## 1.2 Understanding Sparsity Formats and Granularity
 
-### Three practical approaches to sparsity
+The effectiveness of pruning is deeply tied to its granularity, which dictates the scale at which weights are removed. This choice has direct consequences for both model accuracy and hardware efficiency.
 
-#### 1) Mask-only sparsity (framework-level masking)
+* **Fine-Grained (Unstructured) Pruning:** Removes individual weights, offering the highest potential for preserving accuracy. However, the resulting random sparsity pattern is difficult for massively parallel processors like GPUs to exploit. These processors thrive on structured, predictable computation, and the overhead of skipping individual zero-valued weights often outweighs the benefit. See performance bugs for GPUs such as memory coalescing, branch divergence, vectorization for CPUs
+* **Coarse-Grained (Structured) Pruning:** Removes groups of weights (e.g., entire rows, columns, or channels). This structure is highly compatible with parallel hardware, avoiding performance issues like memory access misalignment (coalescing) and branch divergence. This is the key to achieving practical speedups on modern CPUs and GPUs. Coarse-grained pruning is fastest/most effective on processors
 
-Compute is still dense:
+### Compressed Sparse Row (CSR) format
 
-$$y = x \cdot (W \odot M)$$
+To handle unstructured sparsity, specialized data formats are required. A common example is the **Compressed Sparse Row (CSR) format**.
 
-* **Storage:** $W$ is still dense (mask is extra)
-* **Execution:** dense GEMM/conv kernel still runs
-* **Outcome:** typically **no speedup**
+Glossary: Compressed Sparse Row (CSR) A format for storing sparse matrices that avoids storing zero elements. It uses three arrays:
+1. **Data Array ($d$):** A flat array containing all non-zero values.
+2. **Column Index ($i$):** An array storing the column index for each value in $d$.
+3. **Row Pointer ($r$):** An array of size $M+1$ (for $M$ rows) where $\text{r}[k]$ stores the index in $d$ where row $k$ begins.
 
-> **Use-case**
-> Good for *research*, sensitivity analysis, pruning schedules—not for inference acceleration.
+Consider the following dense 4x4 matrix D with 8 non-zero elements: 
 
-#### 2) Structured pruning (rewiring)
+$$D = [[0, 5, 3, 0], [6, 1, 0, 4], [0, 0, 0, 0], [2, 0, 1, 4]]$$
 
-Remove whole structures (channels/neurons/heads), producing **smaller dense tensors**.
+In dense format, this requires 4 × 4 = 16 units of storage. In CSR format, it would be represented as:
+* $d \in \mathbb{R}^8 = (5, 3, 6, 1, 4, 2, 1, 4)$
+* $i \in \mathbb{R}^8 = (1, 2, 0, 1, 3, 0, 2, 3)$
+* $r \in \mathbb{R}^5 = (0, 2, 5, 5, 8)$
 
-* **Storage:** smaller weight matrices
-* **Execution:** standard dense kernels on smaller tensors
-* **Outcome:** real, portable speedups on CPUs/GPUs
+The CSR representation requires 8 (data) + 8 (indices) + 5 (pointers) = 21 units of storage. In this case, the overhead from metadata ($i$ and $r$) makes the sparse format larger than the dense one. Moreover, accessing elements requires indirect, data-dependent lookups, which is inefficient on parallel hardware.
 
-> **Key point**
-> Speed comes from *smaller shapes*, not from zeros.
+### Block Sparse Row (BSR) format
 
-#### 3) Hardware-structured sparsity (pattern-constrained + packed)
+A compromise between dense and fully unstructured sparse formats is the **Block-Sparse Row (BSR) format**:
+* BSR divides the matrix into equally sized dense blocks $o\times p$. 
+* Each block can either be fully zero or contain nonzero entries. 
+* The format is similar to CSR, but $r$ and $i$ refer to blocks, and $d$ is now a list of arrays (each of size $o\times p$). 
 
-Enforce a hardware-friendly pattern (e.g., **N:M**) and use a **specialized sparse kernel**.
+This approach amortizes the metadata overhead over entire blocks, improving computational regularity. Let's consider the same example:
 
-* **Storage:** packed nonzeros + metadata for pattern
-* **Execution:** sparse kernel explicitly skips work
-* **Outcome:** significant speedups if hardware supports it
+$$D = [[0, 5, 3, 0], [6, 1, 0, 4], [0, 0, 0, 0], [2, 0, 1, 4]]$$
 
-> **Trade-off**
-> Pattern constraints may reduce accuracy; operator coverage may be limited.
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/bsr_block_division_examples.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>Examples of BSR block size</figcaption>
+</figure>
 
----
+## The Economics of Sparsity: A Break-Even Model
 
-## 1.2 Sparsity Formats and Granularity
+To formalize the trade-offs, we can model the time taken for a dense vs. a sparse operation. The total time is determined by the maximum of either the compute time or the memory access time.
 
-Pruning granularity determines both:
+The execution time for a dense operation ($T_\text{dense}$) can be modeled as: $T_\text{dense} \approx \max\left( \frac{F}{P}, \frac{B}{BW} \right)$
+The execution time for a sparse operation ($T_\text{sparse}$) is more complex: $T_\text{sparse} \approx \max\left( \frac{(1-s)F}{P_\text{eff}}, \frac{B_\text{sparse}}{BW} \right) + T_\text{overhead}$
 
-* **accuracy retention** (flexibility), and
-* **hardware efficiency** (regularity).
+| Term        | Description |
+|:-----------|:------------|
+| $s$          | Sparsity (fraction of zeros). |
+| $F$          | Total FLOPs for the dense operation. |
+| $P$          | Peak theoretical throughput of the hardware (FLOPs/sec). |
+| $P_\text{eff}$      | Effective sparse throughput, which is often much lower than $P$. |
+| $B$          | Total bytes moved for the dense operation. |
+| $BW$         | Memory bandwidth (bytes/sec). |
+| $B_\text{sparse}$   | Bytes moved for the sparse operation, including metadata ($B_\text{sparse} = B_\text{activations} + B_\text{non-zero-weights} + B_\text{metadata}$). |
+| $T_\text{overhead}$ | Time cost for packing, format conversion, and handling load imbalance. |
 
-### Fine-grained (unstructured) pruning
 
-* Removes individual weights (random “salt-and-pepper” zeros)
-* **Pros:** highest flexibility; accuracy usually best at a given sparsity
-* **Cons:** poor hardware utilization; irregular memory access; low parallel efficiency
+This model reveals critical insights into the HW-ML Interplay:
+* **Memory-Bound Regimes:** If the operation is limited by memory bandwidth ($B$/$BW$ is the dominant term), reducing FLOPs ($F$) through sparsity may have no effect on latency.
+* **Unstructured Sparsity Overheads:** Unstructured sparsity often hurts performance by lowering $P_\text{eff}$ (due to irregular computation) and adding significant metadata $B_\text{meta}$ and overhead $T_\text{overhead}$. This shifts the break-even point—the sparsity level at which $T_\text{sparse}$ becomes less than $T_\text{dense}$—to very high levels, often over 90%.
+* **Structured Sparsity Advantage:** Structured approaches (like block sparsity or N:M patterns) reduce metadata and overhead, leading to a higher $P_\text{eff}$. This allows them to achieve a speedup over dense operations at much lower sparsity levels.
 
-### Coarse-grained (structured) pruning
+A diagram below shows this relationship clearly. A plot with Sparsity on the x-axis and Speedup on the y-axis depicts two curves. The curve for "Unstructured" sparsity remains flat at 1.0 (no speedup) until a high sparsity of ~85%, after which it begins to rise. In contrast, the curve for "Structured" sparsity begins to show a speedup at a much lower sparsity of ~50%, demonstrating its superior hardware efficiency.
 
-* Removes groups (rows/cols/channels/filters)
-* **Pros:** compatible with dense kernels; predictable access; fewer overheads
-* **Cons:** less flexible; may cost more accuracy at same compression
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/speedup_vs_sparsity.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>Speedup vs sparsity: break-even effect</figcaption>
+</figure>
 
-> **Rule of thumb**
-> If you want speed on general hardware: prefer **structured pruning**.
+## Practical Pruning Methodologies in PyTorch
 
----
+### Unstructured Pruning
 
-### CSR format (Compressed Sparse Row)
+This technique removes individual weights based on their magnitude. PyTorch's `torch.nn.utils.prune` module provides a simple interface for this.
+A visual representation of a weight matrix before and after $30%$ unstructured pruning shows a random, salt-and-pepper pattern of zeroed-out (black) elements in the pruned matrix.
 
-**Goal:** store sparse matrices without explicitly storing zeros.
-
-CSR stores:
-
-1. **Data array** $d$: nonzero values
-2. **Column indices** $i$: column index per value in $d$
-3. **Row pointer** $r$: start offsets in $d$ for each row
-
-#### Example dense matrix
-
-$$
-D=
-\begin{bmatrix}
-0&5&3&0\\
-6&1&0&4\\
-0&0&0&0\\
-2&0&1&4
-\end{bmatrix}
-$$
-
-CSR representation:
-
-* $d = (5, 3, 6, 1, 4, 2, 1, 4)$
-* $i = (1, 2, 0, 1, 3, 0, 2, 3)$
-* $r = (0, 2, 5, 5, 8)$
-
-**Storage comparison**
-
-* Dense: $16$ values
-* CSR: $8$ data + $8$ indices + $5$ pointers = $21$ units
-
-> **Highlight — metadata overhead**
-> CSR can be **larger than dense** at moderate sparsity and introduces **indirection**, which is costly on parallel hardware.
-
----
-
-### BSR format (Block Sparse Row)
-
-BSR divides the matrix into **dense blocks** (e.g., $2\times2$) and sparsifies at block granularity.
-
-* **Benefit:** metadata overhead amortized over blocks
-* **Benefit:** better computational regularity than CSR
-* **Trade-off:** less flexible than fully unstructured sparsity
-
----
-
-## 1.3 The Economics of Sparsity: Break-Even Model
-
-Latency is governed by the max of **compute time** and **memory time**.
-
-### Dense operation time
-
-$$T_{\text{dense}} \approx \max\left(\frac{F}{P}, \frac{B}{BW}\right)$$
-
-
-### Sparse operation time
-
-
-$$T_{\text{sparse}} \approx \max\left(\frac{(1-s)F}{P_{\text{eff}}}, \frac{B_{\text{sparse}}}{BW}\right)+T_{\text{overhead}}$$
-
-
-#### Glossary
-
-| Term                  | Meaning                                     |
-| --------------------- | ------------------------------------------- |
-| $s$                   | sparsity fraction (zeros)                   |
-| $F$                   | dense FLOPs                                 |
-| $P$                   | peak throughput                             |
-| $P_{\text{eff}}$      | effective sparse throughput (often $\ll P$) |
-| $B$                   | bytes moved (dense)                         |
-| $BW$                  | memory bandwidth                            |
-| $B_{\text{sparse}}$   | bytes moved incl. metadata                  |
-| $T_{\text{overhead}}$ | packing + conversion + imbalance overhead   |
-
-### Key implications
-
-#### Memory-bound regime
-
-If $\frac{B}{BW}$ dominates, reducing FLOPs may not reduce latency.
-
-> **Practical consequence**
-> “Less compute” does not help when performance is dominated by **data movement**.
-
-#### Unstructured sparsity
-
-* lowers $P_{\text{eff}}$ due to irregular execution
-* increases $B_{\text{sparse}}$ (metadata)
-* increases $T_{\text{overhead}}$
-
-→ break-even sparsity can be extremely high (often **> 90%**).
-
-#### Structured sparsity
-
-* reduces metadata/overhead
-* improves $P_{\text{eff}}$
-
-→ speedups can appear at much lower sparsity (e.g., ~50%).
-
-> **Highlight — break-even effect**
-> Structured sparsity yields earlier speedups than unstructured sparsity.
-
----
-
-## 1.4 Practical Pruning in PyTorch
-
-### Unstructured pruning (mask-based)
-
+Unstructured pruning of a fully-connected layer:
 ```python
 import torch.nn as nn
 import torch.nn.utils.prune as prune
 
 fc = nn.Linear(in_features=10, out_features=6)
 
-# Prune 30% smallest-magnitude weights (L1 criterion)
+# Prune 30% of the weights with the smallest L1 magnitude
 prune.l1_unstructured(fc, name='weight', amount=0.3)
 ```
 
-* Adds a **weight_mask** (and keeps dense tensor)
-* `prune.remove(...)` makes it “permanent” but still **dense with zeros**
+This applies a `weight_mask` to the layer. To make the change permanent (though still stored as a dense tensor with zeros), one would call `prune.remove(fc, 'weight')`.
 
-> **Important**
-> This is typically **mask-only sparsity** → does not imply speedup.
+### Structured Pruning
 
----
+This method removes entire groups of weights. The importance of a group (e.g., a neuron or a filter) is typically determined by calculating a norm over its weights. The choice between L1 and L2 norm can influence which structures are pruned.
 
-### Structured pruning (group removal)
+* **L1 Norm:** $\|w\|_1 = \sum_j \lvert w_j \rvert$. Each weight contributes linearly. This norm is less sensitive to a single large weight within a group.
+* **L2 Norm (Squared):** $\|w\|_2 = \sum_j w_j^2$. Larger weights have a disproportionately greater impact on the norm. A single large weight can "save" its group from being pruned, even if other weights are small.
 
-Structured pruning removes entire rows/cols/channels, determined via a norm criterion.
+Consider two weight vectors, $a = [3, 0, 0, 0]$ and $b = [2, 1, 0, 0]$.
 
-#### $L1$ vs $L2$ sensitivity
+* **Their L1 norms are equal:** $\|a\|_1 = 3$ and $\|b\|_1 = 3$.
+* **Their squared L2 norms differ:** $\|a\|_2^2 = 9$ and $\|b\|_2^2 = 5$. The L2 norm prioritizes vector a due to its single large-magnitude weight.
 
-* $\lvert w\rvert_1 = \sum_j \lvert w_j\rvert$: linear contribution
-* $\lvert w\rvert_2^2 = \sum_j w_j^2$: large weights dominate
-
-Example vectors:
-
-* $a=(3,0,0,0)^\top$
-* $b=(2,1,0,0)^\top$
-
-$$\lvert a\rvert_1=\lvert b\rvert_1=3 \quad\text{but}\quad \lvert a\rvert_2^2=9, \lvert b\rvert_2^2=5$$
-
-
-> **Interpretation**
-> L2 can preserve groups with a single large weight; L1 treats weight mass more evenly.
-
-Structured pruning in code:
+Visualizations of L1-pruned vs. L2-pruned weight matrices show distinct differences. With output neuron pruning, entire rows are zeroed out. The specific rows chosen can differ between L1 and L2-norm criteria, reflecting their different sensitivities to weight distributions.
 
 ```python
-import torch.nn.utils.prune as prune
+# Structured pruning of an FC layer's output neurons (dim=0)
+prune.ln_structured(fc, name='weight', amount=0.3, n=1, dim=0) # n=1 for L1-norm
 
-# Output neuron pruning (rows): dim=0
-prune.ln_structured(fc, name='weight', amount=0.3, n=1, dim=0)  # n=1 → L1
-
-# Input feature pruning (cols): dim=1
+# Structured pruning of an FC layer's input features (dim=1)
 prune.ln_structured(fc, name='weight', amount=0.3, n=1, dim=1)
 
-# Conv output channel pruning: dim=0
+# Structured pruning of a Conv layer's output channels (dim=0)
 conv = nn.Conv2d(16, 32, kernel_size=3)
 prune.ln_structured(conv, name='weight', amount=0.3, n=1, dim=0)
 ```
 
-> **Caution**
-> Pruning first/last layers structurally can break interface dimensions (input/output).
+Note: Pruning the last fully-connected (FC) layer's outputs or the first FC layer's inputs can be problematic as it changes the model's output or input dimensions, respectively.
 
----
+### Threshold-Based Pruning
 
-### Threshold-based pruning (custom mask)
+Instead of removing a fixed fraction of weights, thresholding removes all weights whose magnitude falls below a certain value. This can be implemented in PyTorch by creating a custom mask.
 
 ```python
+# Custom pruning based on an absolute magnitude threshold
 threshold = 0.15
-mask = (fc.weight.data.abs() >= threshold)
+mask = (fc.weight.data.abs() >= threshold) # Create a boolean mask
+
+# Apply the custom mask to the layer
 prune.custom_from_mask(fc, name='weight', mask=mask)
 ```
 
-* Removes all weights below a magnitude threshold
-* Extensible to structured pruning via aggregate scores per group
+This approach can be extended to structured pruning by first aggregating weight magnitudes (e.g., L2 norm of each convolutional filter), applying a threshold to these aggregate scores, and then creating a mask that zeros out all weights belonging to the low-magnitude structures.
+
+## The Path to Real Speedup: Deployment Strategies
+
+As established, simply using PyTorch's default pruning utilities does not yield a speedup. This is because:
+
+1. **Dense Kernels are Used:** The backend still invokes a dense GEMM or conv kernel, as the tensor shapes are unchanged. The operation `weight = weight_orig * weight_mask` is an element-wise multiplication that occurs before the main computation.
+2. **No Sparse Representation:** A mask is not a true sparse format like CSR or BSR. The hardware has no information to skip zero-valued elements.
+3. **`prune.remove` is Deceptive:** This function finalizes the pruning by creating a new dense weight tensor that explicitly contains the zeros, which is then passed to the dense kernel.
+
+To achieve actual performance gains, one must follow a hardware-aware deployment path.
+
+## Deployment Path	Description & How it Works	Best For	Key Trade-offs
+
+* **Mask-Only**
+  * Uses `weight_mask` to zero out weights but runs on dense kernels. The operation is $y = x \cdot (W ⊙ M)$.	Research, ablations, sensitivity analysis, exploring pruning schedules.	No speedup. Must be explicitly reported as running on dense kernels.
+    * **Mask:** $y = x \cdot (W ⊙ M)$
+    * **Dense:** $y = x \cdot W$
+* **Structured Rewiring**	
+  * Physically removes entire channels, neurons, or heads. This reduces the tensor dimensions, creating a smaller, dense model.	Achieving portable latency/throughput gains on general-purpose hardware (CPUs, GPUs).	Requires changes to the network architecture. May need careful fine-tuning and plumbing of tensor shapes.
+* **Hardware Pattern**	
+  * Enforces a specific pattern (e.g., N:M), packs weights into a special format, and uses specialized sparse kernels.	Maximizing speed on accelerators with dedicated structured sparsity support.	Pattern constraints can impact accuracy. Incurs packing/format conversion overhead. Limited operator coverage.
+
+## Case Study: NVIDIA's 2:4 Structured Sparsity
+
+A prime example of the "Hardware Pattern" path is NVIDIA's 2:4 structured sparsity, supported by Ampere and later GPU architectures.
+
+#TODO: what if we have less or more that eactly two non-zero weights or zero weights in a group that does not allow us to separate the matrix in such groups or the weights configurations does not allow us that all rows in the row pointer array must have the same number of blocks?
+
+* **The Pattern:** In every contiguous group of four weights, a maximum of two can be non-zero.
+* **The Mechanism:** Models are trained or fine-tuned to adhere to this constraint. The sparse weights are then compressed, storing only the non-zero data values and their corresponding indices. The diagram shows this compression process, where a sparse weight matrix is converted into a compact representation before the dot product.
+* **The Hardware:** NVIDIA's Sparse Tensor Cores (SPTCs) are designed to process this compressed data format at up to 2x the speed of dense Tensor Cores.
+* **The Format:** The underlying storage format is a variant like Blocked-Ellpack (Blocked-ELL), which, similar to CSR/BSR, is optimized for regular memory access patterns on the GPU.
+
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/NVIDIASparsityPattern.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>NVIDIA’s 2:4 Sparsity Pattern</figcaption>
+</figure>
+
+## Benchmarking and Measurement: A Practical Guide
+
+Accurate and honest performance measurement is non-negotiable in embedded ML. As the German adage says, "Wer misst, misst Mist" (He who measures, measures rubbish). Rigorous benchmarking is essential to avoid misleading results.
+
+### What to Report (Minimum Set)
+
+* **Quality:** Accuracy/loss, with the evaluation protocol specified.
+* **Latency:** p50 (median) and p90 (90th percentile) latency in milliseconds for a fixed batch size and input shape.
+* **Throughput:** Samples per second or tokens per second.
+* **Memory:** Peak GPU memory usage.
+* **Energy (Optional):** Joules per inference or per training step.
+
+It is crucial to be explicit about the scope of the timing:
+
+* **Kernel-only:** Timing just the matmul or conv operation.
+* **Layer:** Timing the full layer forward pass.
+* **End-to-end:** Timing the entire inference pipeline, including data transfers, pre/post-processing, and any format conversions (e.g., packing for sparse execution). Only an end-to-end measurement under a fixed, stated workload can be trusted.
+
+### Measurement Protocol (Rules of Thumb)
+
+1. **Fix the Environment:** Use the same hardware, data type (`dtype`), batch size, and input shape for all comparisons.
+2. **Warmup:** Run 20–100 iterations before starting measurements to let the GPU reach a stable state.
+3. **Measure Many Iterations:** Average results over 200–1000 iterations for statistical stability.
+4. **Synchronize GPU:** On GPUs, kernel launches are asynchronous. Wrap timers with a synchronization call (e.g., `torch.cuda.synchronize()`) to ensure the measurement captures the full execution time.
+  * `torch.cuda.synchronize()`: wait for all kernels in all streams on a CUDA device to complete.
+5. **Report Variability:** Report mean and standard deviation, or p50/p90 percentiles, not just a single number.
+
+### Common Measurement Traps
+
+* **No GPU Synchronization:** This times only the kernel launch, not its execution, leading to artificially low latency numbers.
+* **Comparing Different Workloads:** Comparing results with different batch sizes, input shapes, or data types is invalid.
+* **Ignoring Overheads:** Timing only the matrix multiplication while ignoring the cost of packing data into a sparse format.
+* **Ignoring Memory-Bound Effects:** Assuming fewer FLOPs automatically means less time, which is false in memory-bound scenarios.
+
+## Case Study: Pruning a Simple CNN on MNIST
+
+To demonstrate these concepts, a simple CNN is trained on the MNIST dataset.
+
+```python
+class SimpleCNN(nn.Module):
+    def __init__(self):
+        super(SimpleCNN, self).__init__()
+        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
+        self.fc1 = nn.Linear(32 * 7 * 7, 128)
+        self.fc2 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = torch.relu(self.conv1(x))
+        x = torch.max_pool2d(x, 2)
+        x = torch.relu(self.conv2(x))
+        x = torch.max_pool2d(x, 2)
+        x = x.view(-1, 32 * 7 * 7)
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+```
+
+
+With standard training (5 epochs, Adam optimizer, lr=0.001), the model achieves a baseline accuracy of 99.02%.
+
+| Scenario                         | Sparsity | Accuracy |
+|:---------------------------------|:--------:|:--------:|
+| Baseline                         |   0%     |  99.02%  |
+| Pruning (No Fine-Tuning)         |  49.96%  |  90.14%  |
+| Pruning (1 Epoch Fine-Tuning)    |  49.96%  |  98.91%  |
+
+Pruning nearly 50% of the weights without fine-tuning causes a significant accuracy drop of ~9%. However, just one epoch of fine-tuning (FT) restores accuracy to near-baseline levels. Histograms of weight distributions show that after pruning, many weights are clustered at zero. Fine-tuning allows the remaining weights to adjust and recover their original distribution shape, restoring the model's representational capacity.
+
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/weights_distribution_pruning_ft.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>Weights Distribution</figcaption>
+</figure>
+
+A comprehensive plot comparing unstructured, L1, L2, and threshold pruning with varying epochs of fine-tuning across a spectrum of sparsities shows that fine-tuning is universally critical. All methods experience a sharp accuracy drop-off as sparsity increases, but fine-tuning consistently pushes this "cliff" to higher sparsity levels, enabling more aggressive compression without sacrificing performance.
+
+## Strategic Pruning: Layer-Wise Sparsity Allocation
+
+Why uniform sparsity is rarely optimal:
+* **Layers differ in sensitivity (some are brittle, some redundant)**
+* Layers differ in compute share (**prune where FLOPs/time actually are**)
+* Layers differ in kernel/shape constraints (**some pruning creates real size reduction, some doesn’t**)
+
+Applying a uniform sparsity ratio across all layers is rarely optimal. Different layers have varying degrees of redundancy and sensitivity to pruning. A more effective strategy is to allocate sparsity non-uniformly based on layer characteristics:
+1. **Sensitivity-Based Allocation (Quality-Driven):** The goal is to maximize accuracy for a given global sparsity budget. This involves measuring the sensitivity of each layer (e.g., by observing the accuracy drop when pruning it slightly). More sparsity is allocated to robust, redundant layers, while sensitive, brittle layers are pruned less aggressively.
+2. **Compute-Aware Allocation (Efficiency-Driven):** The goal is to maximize latency or energy savings for a target accuracy. This strategy prioritizes pruning layers that are computationally expensive (*high FLOPs or long execution time*) and where pruning leads to tangible changes in tensor shapes or enables specialized kernels.
+
+A practical rule of thumb is to **prune large fully-connected layers heavily, as they are often over-parameterized**, and to be **more cautious with early convolutional layers, which tend to learn fundamental features**.
+
+## Advanced Techniques: Learning Sparsity with PSP
+
+Traditional pruning methods are often a multi-stage process: train a dense model, apply a heuristic criterion to prune, and then fine-tune to recover accuracy. **Parameterized Structured Pruning (PSP)** offers a more integrated approach by learning the sparsity pattern during training.
+
+The core idea of PSP is to parametrize the pruning decision for entire structures (e.g., weights, columns, channels). The different levels of structure are visualized in a diagram showing (a) individual weights, (b) columns, (c) channels, (d) shapes, and (e) layers.
+
+For each structural sub-tensor $w_i$, a learnable parameter $\alpha_i$ is introduced. During the forward pass, the sub-tensor is dynamically masked: 
+
+$$q_i = w_i \cdot v_i(\alpha_i) $$
+
+where $v_i(\alpha_i)$ is a thresholding function: 
+
+$$v_i(\alpha_i) = \begin{cases} 0 & \text{if } \lvert \alpha_i\rvert < \epsilon \\ \alpha_i & \text{if } \lvert \alpha_i\rvert \geq \epsilon \end{cases}$$
+
+Since this thresholding is non-differentiable, the Straight-Through Estimator (STE) is used to approximate its gradient during backpropagation. The gradients update the $\alpha_i$ parameters, allowing the network to learn which structures are important. A regularization term (L1 or L2) is applied to the $\alpha_i$ parameters to encourage sparsity.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/embedded-machine-learning/PSP1.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <!-- <figcaption>GK110 architecture</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/embedded-machine-learning/PSP2.png' | relative_url }}" alt="GPU shared memory" loading="lazy">
+    <!-- <figcaption>GK110 SM (Streaming Multiprocessor)</figcaption> -->
+  </figure>
+</div>
+
+Update rules for $\alpha_i$, using gradient descent with momentum $\mu$ and a learning rate $\eta$, can incorporate L2 weight decay ($-\lambda \eta \cdot \alpha_i(t)$) or L1 regularization ($-\lambda \eta \cdot \text{sign}(\alpha_i(t))$). L2 regularization tends to produce better-separated weight distributions and has shown superior performance.
+
+A validation error plot for ResNet-56 on CIFAR-10 with column pruning demonstrates PSP's effectiveness. The plot shows that "PSP (weight decay)" achieves a lower validation error than "L1 norm" pruning across a wide range of sparsity levels, indicating it finds a better trade-off between accuracy and compression.
+
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/PSP_plot.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>NVIDIA’s 2:4 Sparsity Pattern</figcaption>
+</figure>
+
+## Conclusion: A Systems-Level View of Compression
+
+Pruning and other model compression techniques like quantization are not purely algorithmic problems; they are optimization problems under a strict systems constraint. The effectiveness of any compression method is determined by the interplay between the algorithm, the model architecture, and the target hardware.
+
+The optimal strategy depends entirely on the end goal:
+* If the goal is minimum model size for storage or transmission, unstructured pruning is sufficient, provided the model is stored and loaded in an efficient sparse format.
+* If the goal is portable latency reduction on general-purpose hardware, structured pruning that physically rewires the network to create smaller, dense tensors is the most reliable path.
+* If the goal is maximum performance on specialized hardware, one must enforce kernel-supported patterns like N:M sparsity and leverage dedicated hardware acceleration.
+
+Ultimately, successful model compression for embedded systems requires a holistic view, recognizing that performance is a function of the entire tuple: {data, neural architecture, hardware architecture}.
+
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/pruning_landscape.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>Pruning Landscape</figcaption>
+</figure>
 
 ---
 
-## 1.5 Path to Real Speedup: Deployment Strategies
+(lecture 10)
+Chapter 1: The Optimization Imperative in Embedded ML
 
-Masking alone does not accelerate inference because:
+The core challenge in Embedded Machine Learning is bridging the gap between computationally intensive ML algorithms and the severe resource constraints of edge devices. This involves a deep understanding of how both software and hardware can be co-designed to achieve efficiency in terms of energy, memory, and latency.
 
-1. **dense kernels** still execute
-2. masks are not sparse formats (CSR/BSR)
-3. `prune.remove` produces dense tensors with zeros
+The "Simplicity Wall" of Deep Neural Networks
 
-### Deployment options
+Deep Neural Networks (DNNs), despite their complex behavior, are computationally uniform. They spend the vast majority of their execution time performing matrix multiplications and convolutions, which are fundamentally composed of Multiply-Accumulate (MAC) operations. This phenomenon is known as the "Simplicity Wall." This computational regularity, characterized by static loop-trip counts and minimal control overhead, makes DNNs highly predictable and an ideal target for hardware acceleration. It allows architects to design specialized processors that excel at this one task, leading to significant performance and efficiency gains.
 
-| Path                    | How it works                                    | Best for                            | Trade-offs                                 |
-| ----------------------- | ----------------------------------------------- | ----------------------------------- | ------------------------------------------ |
-| **Mask-only**           | $W\odot M$ then dense kernels                   | research, ablations                 | no speedup                                 |
-| **Structured rewiring** | remove channels/neurons → smaller dense tensors | portable speedups                   | architectural changes                      |
-| **Hardware pattern**    | enforce N:M, pack weights, use sparse kernels   | max speed on supported accelerators | constrained pattern, overhead, limited ops |
+The Energy Cost of Computation and Data Movement
+
+A foundational principle in embedded systems design is that moving data is far more expensive than computing on it. This is especially true when data has to be fetched from off-chip memory. As documented by M. Horowitz in "Computing's energy problem," the energy cost increases exponentially as data moves further from the processing unit.
+
+The following table, derived from this research, illustrates the orders-of-magnitude difference in energy consumption for various operations and memory accesses.
+
+Operation / Memory Access	Energy (pJ)	Location
+8-bit Integer MULT	0.2	On-Die
+32-bit Float MULT	3.7	On-Die
+8KB SRAM Read (64 bit)	10	On-Die
+32KB SRAM Read (64 bit)	20	On-Die
+1MB SRAM Read (64 bit)	100	On-Die
+DRAM Read	2,000	Off-Die
+
+This stark reality highlights a primary goal of Embedded ML optimization: minimize data movement. The most effective hardware architectures are those that maximize data reuse, keeping operands and intermediate results in fast, low-power SRAM (Static Random-Access Memory) close to the compute units, and avoiding costly trips to off-chip DRAM (Dynamic Random-Access Memory).
+
+Safe vs. Unsafe Optimizations
+
+Optimizations in ML can be categorized into two main types based on their impact on model accuracy.
+
+Safe Optimizations
+
+Safe optimizations are techniques that improve performance without any impact on the model's accuracy. These are purely architectural or data-layout improvements that exploit the structure of the ML workload.
+
+* Shorter communication paths: Designing hardware to keep compute and local memory physically close.
+* Data reuse: Structuring computation to use each piece of data loaded from memory multiple times before discarding it.
+
+These principles directly lead to the development of dedicated architectures, such as array-based processors, which are designed from the ground up to minimize data transfer volume.
+
+Unsafe Optimizations
+
+Unsafe optimizations are techniques that can potentially alter the model's accuracy. They achieve efficiency by modifying the model itself or the precision of its calculations. While they risk a drop in accuracy, the performance gains can be substantial, making them essential for deployment on highly constrained devices.
+
+* Pruning: Reducing the model size and operation count by removing redundant weights or connections.
+* Quantization: Reducing the precision of operations and operands. This is a powerful technique where, for instance, 32-bit floating-point numbers are converted to 8-bit fixed-point integers (Quantization) or even single bits (Binarization). This dramatically reduces memory footprint and energy consumption, as lower-precision arithmetic is much cheaper.
+
+Chapter 2: The Rise of Array Processors for ML Acceleration
+
+The "Simplicity Wall" of DNNs has driven a paradigm shift in processor design, moving away from general-purpose cores towards highly specialized, parallel architectures. This trend is visible across the industry, with a plethora of ML accelerators being developed in both research and commercial sectors.
+
+Processor Specialization Driven by ML
+
+The demand for efficient ML execution has led to an explosion of specialized hardware. A survey of ML accelerators reveals a clear trend: specialization leads to greater efficiency. A plot of speed (GOP/s) versus power (W) shows that ASICs (Application-Specific Integrated Circuits) consistently achieve a higher ratio of Tera-Operations per second per Watt (TOPs/W) compared to more general-purpose platforms like FPGAs and CPUs.
+
+This landscape includes a wide range of devices:
+
+* Research Accelerators: Eyeriss, EIE/ESE, NeuroCube, DianNao
+* Commercial Products: Google TPU/Edge TPU, NVIDIA TensorCores, Intel Nervana, Apple Neural Engine, ARM Trillium, GraphCore IPU.
+
+One notable research architecture, Neurocube, exemplifies the focus on memory. It uses 3D die stacking with Through-Silicon Vias (TSVs) to place multiple DRAM dies directly on top of a logic die. This vertically integrated design drastically shortens the path between memory and computation, directly addressing the high energy cost of data movement.
+
+The Systolic Array: A Paradigm for Data Reuse
+
+The most successful architectural pattern to emerge for DNN acceleration is the systolic array. This architecture replaces a single complex processing element (PE) with an array of many simpler, interconnected PEs.
+
+Key Principle: Data is "pumped" through the array of PEs in a rhythmic, systolic fashion, similar to how blood is pumped by the heart. Each PE performs a small computation (typically a MAC operation) on the data it receives and then passes the result to its neighbor. This structure allows for immense data reuse, achieving high throughput without proportionally increasing memory bandwidth requirements. For example, replacing a single PE capable of 5 MOP/s with a 4-PE array can achieve 20 MOP/s with the same memory interface.
+
+A visual inspection of a modern ML accelerator chip, such as the one developed by the Eyeriss project at MIT, reveals this regularity. The die is dominated by a large, grid-like Spatial PE Array, with a significant portion of the remaining area dedicated to an On-Chip Buffer to feed this array.
+
+How Systolic Arrays Perform Matrix Multiplication
+
+Consider the matrix multiplication C = A \cdot B. In a systolic array, the elements of matrices A and B are streamed into the array from different directions (e.g., A from the left, B from the top). As the data waves intersect within the array, each PE accumulates a partial product. For instance, at a specific time step t, a PE might multiply a_ij and b_jk. In the next time step, a_ij moves to the next PE in its row, and b_jk moves to the next PE in its column. The partial sums for the output matrix C remain stationary within the PEs, accumulating values over time until the computation is complete. This orchestrated flow ensures that each value fetched from memory is used in multiple computations across the array.
+
+Architectural Comparison: Array vs. Multi-Core
+
+Array-based processors represent a fundamentally different design philosophy compared to traditional multi-core vector processors.
+
+Feature	Multi-core Vector Processor	Array-based Processor
+Control	Complex control logic per core	Simple, often centralized control
+Processing Units	Few, powerful ALUs per core	Many simple ALUs (PEs)
+Memory	Deep memory hierarchy (L1/L2/L3 caches)	Flat, large scratchpad memory (On-Chip Buffer)
+Register File	Large Register File (RF) per core	Minimal or no RF per PE
+Data Flow	Programmer-managed data movement	Implicit, hardware-managed dataflow
+
+This specialization makes array processors incredibly efficient for their target workload (matrix multiplication) but less flexible for general-purpose tasks.
+
+Chapter 3: Case Study: Google's Tensor Processing Unit (TPU)
+
+The Google TPU is one of the first and most prominent production-class ML accelerators. It is essentially a coprocessor designed to offload matrix multiplications from a host CPU, and its design philosophy provides valuable insights into building hardware tailored to real-world ML workloads.
+
+The Roofline Model: Analyzing Performance Bottlenecks
+
+To understand the performance of a given architecture, the Roofline Model is an invaluable tool. It plots the attainable performance of a processor (in GFLOP/s or TOP/s) as a function of an application's operational intensity.
+
+* Operational Intensity (r): The ratio of floating-point operations (FLOPs) to bytes of data moved from memory. It is calculated as r = \frac{[FLOPs]}{[Bytes]}. This metric quantifies how much computation is done per byte of data.
+* Peak Compute Performance (f): The theoretical maximum performance of the processor's compute units (the "flat" part of the roofline).
+* Peak Memory Bandwidth (m): The maximum rate at which the processor can access memory (the "sloped" part of the roofline).
+
+The attainable performance (a) is given by the formula: a = \min(m \cdot r, f)
+
+An application is compute-bound if its operational intensity is high enough that its performance is limited by f. It is memory-bound if its performance is limited by the sloped line, m \cdot r. The Roofline model visually indicates whether an application's performance would benefit more from faster compute or higher memory bandwidth.
+
+A Roofline plot comparing a Google TPU, an NVIDIA K80 GPU, and an Intel Haswell CPU on various ML workloads (MLP, LSTM, CNN) clearly demonstrates the TPU's advantage. For workloads with high operational intensity, the TPU's "roof" is significantly higher, allowing it to achieve over an order of magnitude more TeraOps/sec than the GPU or CPU. This shows it is exceptionally well-designed for compute-bound ML inference tasks.
+
+TPU v1 Architecture Deep Dive
+
+The architecture of the first-generation TPU (TPU v1) is a direct implementation of the systolic array concept.
+
+A block diagram of the TPU v1 reveals the following data flow:
+
+1. Host Interface: Instructions and data enter from the host system via a PCIe Gen3 x16 Interface.
+2. Unified Buffer: Data (primarily activations) is stored in a large on-chip buffer (24 MiB of SRAM). This acts as the local storage to feed the compute engine.
+3. Weight Fetcher: Weights are streamed from off-chip DDR3 DRAM into a Weight FIFO buffer.
+4. Matrix Multiply Unit: The heart of the TPU is a 256x256 Systolic Array, capable of performing 64K MAC operations per cycle. Activations from the Unified Buffer and weights from the Weight FIFO are fed into this array.
+5. Post-processing: The results from the systolic array are passed to Accumulators and then through hardware units for Activation functions (e.g., ReLU), Normalization, and Pooling.
+6. The final results are written back to the Unified Buffer and eventually sent back to the host.
+
+The key is the massive internal bandwidth. The Unified Buffer can supply data to the Matrix Multiply Unit at 167 GiB/s, keeping the systolic array fed and achieving high utilization. This architecture is purpose-built to maximize computation while minimizing off-chip memory access, directly aligning with the energy cost principles.
+
+Workload Evolution Across TPU Generations
+
+Google's internal workloads have evolved significantly, and subsequent TPU versions have adapted to these changes. The distribution of model types running on TPUs highlights shifting priorities in the ML field.
+
+DNN Model	TPU v1 (Inference)	TPU v3 (Train & Inf.)	TPU v4 Lite (Inference)	TPU v4 (Training)
+MLP/DLRM	61%	27%	25%	24%
+RNN	29%	21%	29%	2%
+CNN	5%	24%	18%	12%
+Transformer	--	21%	28% (BERT)	57% (LLM)
+
+Data for TPU v4 Training is from a 30-day period in Oct 2022. Over 90% of training at Google now runs on TPUs.
+
+The most dramatic shift is the rise of Transformer models, which grew from non-existent on v1 to dominating the v4 training workload (57%). In response, newer TPUs like the v4 have introduced specialized hardware such as the SparseCore for efficiently handling embeddings common in these models and Optical Circuit Switches (OSC) for high-speed interconnects in large-scale training pods.
+
+Chapter 4: Field-Programmable Gate Arrays (FPGA) for Flexible Acceleration
+
+While ASICs like the TPU offer peak performance and efficiency, they lack flexibility. Field-Programmable Gate Arrays (FPGAs) offer a middle ground, providing customizable hardware acceleration with the ability to be reconfigured after manufacturing.
+
+Core Architecture of an FPGA
+
+An FPGA is an integrated circuit containing an array of programmable hardware blocks. Its primary components are:
+
+* Configurable Logic Blocks (CLBs): These are the fundamental building blocks of an FPGA. A typical CLB, or logic cell, contains one or more Look-Up Tables (LUTs), a Full Adder (FA), and a D-type Flip-Flop (DFF). LUTs can be programmed to implement any boolean logic function of a few inputs (e.g., a 4-input LUT can implement any function of 4 variables).
+* Programmable Interconnect: A rich network of programmable wiring that allows CLBs and other resources to be connected in arbitrary ways.
+* Specialized Modules: Modern FPGAs also include hardened, high-performance blocks for common tasks:
+  * BRAM (Block RAM): Dedicated blocks of on-chip SRAM for efficient data storage.
+  * DSP (Digital Signal Processor): Specialized slices designed to perform arithmetic operations, like multiplication and accumulation, very efficiently. These are critical for ML workloads.
+* I/O Blocks: Interfaces for connecting the FPGA to the outside world (e.g., PCIe, Ethernet, DDR memory).
+
+FPGAs are programmed using Hardware Description Languages (HDLs) like Verilog or VHDL, although High-Level Synthesis (HLS) tools that compile C/C++ into hardware designs are becoming increasingly common.
+
+FPGA vs. GPU: A Comparison for ML Workloads
+
+FPGAs and GPUs are both highly parallel processors, but they have distinct strengths and weaknesses for ML acceleration.
+
+Feature	GPU	FPGA
+Concurrency	High concurrency at reduced frequency	High concurrency at reduced frequency
+Memory Hierarchy	Flat memory hierarchy (Scratchpad/Shared Memory)	Flat memory hierarchy (BRAM)
+Programming Model	Data-parallel kernels (e.g., CUDA)	Partly data-parallel, via HLS or HDL
+Latency Tolerance	BSP-like block data transfer	BSP-like block data transfer
+Efficiency Driver	Extreme specialization (e.g., TensorCores)	Flexible specialization (custom data paths)
+Network-on-Chip (NOC)	Non-blocking	Blocking
+3D Die Stacking	Difficult	Possible
+Main Benefit	Raw performance	Power efficiency (wattage) and I/O flexibility
+Main Drawback	Amount of data movements required	Memory performance can be a bottleneck
+
+The key advantage of an FPGA is its flexibility. It allows designers to create custom data paths and precision for their specific neural network, avoiding the overhead of a fixed instruction set. This is particularly beneficial for highly quantized models.
+
+Chapter 5: FINN: An End-to-End FPGA Deployment Framework
+
+To bridge the gap between high-level ML frameworks and the complexity of FPGA programming, tools like FINN have been developed. FINN is an open-source, end-to-end framework from AMD/Xilinx for deploying quantized neural networks on Xilinx FPGAs.
+
+The FINN Tool Flow
+
+The FINN framework provides a complete pipeline from model training to hardware deployment, composed of three key open-source projects:
+
+1. Brevitas (Training): A PyTorch library for quantization-aware training (QAT). It allows developers to train neural networks while simulating the effects of low-precision arithmetic, ensuring that the model maintains high accuracy after quantization.
+2. FINN Compiler (Synthesis): This is the core of the framework. It takes a pretrained, quantized model (in ONNX format) and translates it into a hardware design. It performs a series of automated transformations and optimizations, generates High-Level Synthesis (HLS) C++ code, and drives the synthesis process to create the final hardware bitstream.
+3. PYNQ (Deployment): Python on Zynq (PYNQ) is an open-source project that provides a Python-based execution environment on Xilinx FPGAs. It simplifies interacting with the custom-generated accelerator from a host processor, making it easy to integrate into larger applications.
+
+FPGA Execution Models: Loopback vs. Dataflow
+
+The FINN framework supports two primary architectural patterns for executing neural networks on an FPGA.
+
+Option 1: Loopback Architecture
+
+Also known as a "multi-layer offload architecture," this model uses a single, maximally-sized, homogeneous compute array. The network is executed layer-by-layer. For each layer, the weights are loaded from off-chip memory, a batch of input images (or activations from the previous layer) is processed, and the results are written back to off-chip memory.
+
+* Pros: Can support arbitrarily deep networks since weights are not stored permanently on-chip.
+* Cons: High traffic to external memory, which can become a performance and energy bottleneck.
+
+Option 2: Dataflow Architecture
+
+This is the original architecture proposed in the FINN paper and is highly efficient for streaming applications. In this model, a custom, pipelined hardware architecture is created for the entire network. Each layer gets its own dedicated, heterogeneously-sized compute array tailored to its specific requirements.
+
+* How it works: Input images are streamed into the pipeline. Intermediate activations are passed directly from one layer's compute array to the next via on-chip FIFOs or BRAM, without ever touching external memory. All model weights are stored in on-chip memory.
+* Pros: Extremely high throughput and low latency, as it avoids the off-chip memory bottleneck. Very power efficient.
+* Cons: The entire network must fit within the FPGA's on-chip resources (BRAM for weights, logic for compute), which limits the maximum model size.
+
+The dataflow architecture is a prime example of HW-ML Interplay, where the hardware is perfectly tailored to the structure of a specific neural network, leading to massive efficiency gains, particularly for highly quantized networks (< 5 bits) that can leverage the FPGA's integer processing capabilities.
+
+Key Steps in the FINN Compiler
+
+The FINN compiler automates the complex process of hardware generation through a series of steps:
+
+1. Import Model: A pretrained network is imported in the ONNX format, using custom operators to represent quantized layers.
+2. Network Preparation & Transformation: A series of "streamlining" passes are performed to prepare the graph for HLS. This includes converting nodes into a hardware-friendly representation and setting performance parameters like parallelism.
+3. HLS Code Generation: The compiler generates C++ code from templates using a dedicated HLS library (finn-hlslib). This code describes the behavior of the custom dataflow accelerator.
+4. HLS Synthesis & Deployment: The generated code is synthesized using the Vitis HLS tool to produce a hardware bitstream, which can then be deployed to a PYNQ-enabled board like the Xilinx Ultra96.
+
+Chapter 6: Performance Analysis and Conclusion
+
+The ultimate goal of these advanced architectures and frameworks is to deliver high performance within a strict power budget. Analysis using emulators and real-world benchmarks demonstrates the effectiveness of these hardware-aware optimization strategies.
+
+Optimizing Dataflow with the CAMUY Emulator
+
+The performance of a systolic array is highly dependent on its dimensions (height and width). The CAMUY Emulator is a tool used to analyze the performance of different systolic array configurations for various DNN architectures (e.g., AlexNet, VGG-16, ResNet, MobileNetV3).
+
+By simulating the execution of these networks, CAMUY can generate heatmaps showing the normalized data movement cost for different array dimensions. The results consistently show that there is a "sweet spot" for the array shape. For many popular CNNs, square-like or slightly rectangular dimensions (e.g., 128x128, 256x64) result in the lowest data movement cost, while extremely skewed "vector-like" dimensions (e.g., 8x2048, 2048x8) are highly inefficient. This analysis is crucial for designing optimal ASICs or configuring FPGA overlays.
+
+Comparative Benchmark: ResNet on a 5W Power Budget
+
+A performance comparison for a ResNet variant on the CIFAR-10 dataset, constrained to a 5 Watt power budget, powerfully illustrates the trade-offs between different platforms and optimization techniques.
+
+The plot of Test Accuracy vs. Throughput (frames per second) reveals several key insights:
+
+* FPGA (Xilinx Ultra96) with Quantization: Achieves very high accuracy (~95.5%) at a moderate throughput (~500 fps). This highlights the strength of FPGAs in executing low-bit precision models with minimal accuracy loss.
+* CPU (ARM Cortex-A57) with Optimizations:
+  * Using the Gemmlowp library, it achieves low throughput.
+  * With binarization, throughput is high (~1800 fps) but accuracy drops significantly (to ~87%).
+  * With reduce-and-scale, it offers a balance between the two.
+* GPU (NVIDIA Nano) with Structured Pruning: Shows a clear trade-off curve. Higher throughput can be achieved by increasing pruning, but this comes at the cost of reduced accuracy. It occupies a space between the high-accuracy FPGA and the high-throughput, low-accuracy CPU methods.
+
+This benchmark demonstrates the core principle of Embedded ML: there is no single "best" solution. The optimal choice of hardware (FPGA, GPU, CPU) and optimization strategy (quantization, pruning, binarization) depends entirely on the specific application's requirements for accuracy, throughput, and power consumption. The tight coupling of ML model design and hardware architecture is essential for pushing the boundaries of what is possible on edge devices.
 
 ---
 
-### Case study: NVIDIA 2:4 structured sparsity
+Chapter 1: The New Era of Specialized ML Processors
 
-* Pattern: in each group of 4 weights, at most **2** nonzero
-* Weights are packed and processed by **Sparse Tensor Cores**
-* Potential: up to **~2×** throughput vs dense tensor cores (for supported ops/pattern)
+This chapter introduces the rapidly expanding landscape of hardware designed specifically for machine learning and explores the fundamental principle that hardware capabilities often dictate which algorithmic ideas thrive.
 
-> **Key constraint**
-> Speedups only materialize when you satisfy the pattern *and* execute with the appropriate sparse kernel.
+The Cambrian Explosion of AI Hardware
 
-## 1.6 Learning Sparsity During Training: PSP
+The field of machine learning is no longer confined to the domain of software and algorithms. A vast and diverse ecosystem of specialized processors has emerged, each designed to accelerate AI workloads with unprecedented efficiency. This hardware landscape includes a wide array of architectures from academic research projects to commercial silicon deployed at scale.
 
-Parameterized Structured Pruning (PSP) learns the sparsity pattern by introducing trainable parameters $\alpha_i$ for each structure.
+Notable examples of these specialized processors include:
 
-For a structural sub-tensor $w_i$:
+* Data Center & High Performance: Google TPU, NVIDIA TensorCore, Tesla Dojo (D1), GraphCore IPU, Habana Gaudi 2, Cerebras WSE-2, Groq TSP, Huawei Davinci, Baidu Kunlun.
+* Edge & Embedded Devices: Google Edge TPU (Coral), Apple NeuralEngine, ARM Helium, GreenWaves GAP9, Kinara Ara-1, Samsung Neural Processing Unit.
+* Research & Novel Architectures: MIT Eyeriss, DianNao and its variants, UC Berkeley Gemmini, GT NeuroCube, LightOn OPU, LightMatter.
 
-$$q_i = w_i \cdot v_i(\alpha_i)$$
+This proliferation signifies a fundamental shift in computing: general-purpose architectures are no longer sufficient to meet the demands of modern AI.
 
-with thresholding:
+The Hardware Lottery Hypothesis
 
-$$
-v_i(\alpha_i)=
-\begin{cases}
-0 & \lvert \alpha_i\rvert <\epsilon \\
-\alpha_i & \lvert \alpha_i\rvert \ge\epsilon
-\end{cases}
-$$
+The success of certain machine learning models, particularly Deep Neural Networks (DNNs), is not solely a result of their algorithmic elegance. It is deeply intertwined with the available hardware. This concept is captured by the Hardware Lottery Hypothesis, which posits that "Tooling […] has played a disproportionately large role in deciding which ideas succeed and which fail."
 
-Because the threshold is non-differentiable, PSP uses **STE** during backprop to update $\alpha_i$. Regularization (L1 or L2) on $\alpha_i$ encourages sparsity.
+* Embedded ML Pillar (HW-ML Interplay): The dominance of DNNs is a prime example of this hypothesis. DNNs rely heavily on matrix-matrix operations, a task for which Graphics Processing Units (GPUs) are exceptionally well-suited due to their massively parallel architecture. This perfect match between algorithm and hardware accelerated the deep learning revolution.
 
-> **Empirical note (from lecture narrative)**
-> PSP with weight decay can outperform heuristic L1 pruning across many sparsity levels, improving the accuracy–compression trade-off.
+However, this creates a feedback loop where researchers, often ignoring the underlying hardware, gravitate towards models that perform well on existing systems. This raises a critical question: what if a different type of processor, one excelling at processing large graphs, had been widely available? Perhaps models like probabilistic graphical models, sum-product networks, or graph neural networks would dominate the field today.
 
-## 1.7 Benchmarking and Measurement
+The enormous scale of modern models like GPT-3 (175 billion parameters, requiring 800GB of state) and Alphafold-2 (trained on 23TB of data) further underscores the critical dependence on hardware that can efficiently manage such resource demands.
 
-Performance reporting must be precise and reproducible.
+Chapter 2: Why General-Purpose Processors Fall Short for Deep Learning
 
-### Minimum reporting set
+To understand the need for specialization, we must first analyze why the sophisticated architectures of modern Central Processing Units (CPUs), honed over decades by Moore's Law and Dennard Scaling, are fundamentally ill-suited for the computational patterns of deep learning.
 
-* **Quality:** accuracy/loss + evaluation protocol
-* **Latency:** p50 and p90 (ms), fixed batch size and shape
-* **Throughput:** samples/s (or tokens/s)
-* **Memory:** peak usage
-* **Energy (optional):** J/inference
+A Look Inside a Modern CPU Microarchitecture
 
-### Timing scope (must be explicit)
+A modern high-performance CPU is a marvel of complexity designed for general-purpose, single-thread performance. A typical microarchitecture, as illustrated in the lecture diagrams, includes an intricate pipeline with numerous components dedicated to optimizing the execution of varied and unpredictable code.
 
-* **Kernel-only** vs **Layer** vs **End-to-end**
-* End-to-end must include:
+Key features include:
 
-  * preprocessing / postprocessing
-  * transfers
-  * packing/format conversion
+* Instruction Fetch & Branch Prediction: An Instruction Fetch unit retrieves instructions from an Instruction Cache. A sophisticated Branch Predictor guesses the outcome of conditional branches (bne, beq) to keep the pipeline full.
+* Decoding and Reordering: Instructions are decoded and placed into an Issue Buffer. A Reorder Buffer and Reservation Stations manage out-of-order execution, allowing the CPU to execute instructions as their data becomes available, not just in their programmed sequence.
+* Speculative Execution: The CPU performs speculative execution, executing instructions before it's certain they are needed (e.g., past a predicted branch). It later checks for correctness and discards results if the speculation was wrong.
+* Complex Memory Hierarchy: A multi-level cache system (L1, L2, L3 Caches) and DRAM are managed with complex replacement strategies and speculative pre-fetchers to hide memory latency.
 
-> **Trustworthy comparisons require end-to-end measurements under fixed workload.**
+These innovations—speculation, out-of-order execution, and deep pipelines—are essential for accelerating programs with complex, data-dependent control flow but represent significant overhead in terms of energy and die area.
 
----
+The Unique Properties of Deep Neural Network Workloads
 
-### Measurement protocol (rules of thumb)
+In stark contrast to general-purpose code, DNN workloads exhibit a set of highly regular and predictable properties:
 
-1. Fix hardware, dtype, batch size, input shape
-2. Warm up 20–100 iterations
-3. Measure 200–1000 iterations
-4. **Synchronize GPU** (e.g., `torch.cuda.synchronize()`)
-5. Report variability (std or p50/p90)
+1. High Computational Intensity: DNNs are dominated by large linear algebra kernels, primarily matrix multiplications and convolutions. This means there are many arithmetic operations for each memory access.
+2. Massive Data-Level Parallelism: The same operation is performed independently on vast amounts of data (e.g., applying a filter to every patch of an image).
+3. Associativity: The mathematical properties of these operations provide flexibility in the ordering and scheduling of computations.
+4. Predictable Control Flow: During inference, the computational graph is static. There are no data-dependent branches, meaning the entire sequence of operations is known in advance.
 
-### Common traps
+Shedding the Architectural Baggage
 
-* timing without GPU sync (measures launch, not execution)
-* comparing different workloads (invalid)
-* ignoring packing overhead
-* assuming fewer FLOPs ⇒ less time (false when memory-bound)
+* Embedded ML Pillar (Resource Constraints & HW-ML Interplay): The predictable and parallel nature of DNNs means that most of the architectural innovations of the last few decades are not only unnecessary but actively detrimental to efficiency.
 
----
+For a DNN accelerator, there is no need for:
 
-## 1.8 Case Study: Pruning a Simple CNN on MNIST
+* Speculation and Branch Prediction: Control flow is known ahead of time.
+* Complex Cache Agents: Data access patterns can be explicitly managed by a compiler to optimize for locality, rendering complex pre-fetching and replacement policies redundant.
+* Out-of-Order (OOO) Execution: The massive available parallelism provides more than enough work to keep functional units busy without reordering instructions.
+* Complex Multi-threading (SMT): Data-level parallelism is a more direct and efficient way to achieve high utilization than instruction-level multi-threading.
 
-Baseline training yields ~99% accuracy. After ~50% pruning:
+By eliminating this overhead, specialized processors can dedicate more silicon area and power budget to what truly matters for ML: raw computational units and high-bandwidth on-chip memory.
 
-* without fine-tuning: large accuracy drop
-* with fine-tuning: accuracy recovers close to baseline
+Chapter 3: The Philosophy of Processor Specialization
 
-> **Key takeaway**
-> **Fine-tuning is mandatory** to recover accuracy after pruning.
+Having established the mismatch between general-purpose CPUs and ML workloads, we now explore the principles and benefits of designing specialized hardware tailored specifically for AI.
 
----
+Benefits of Tailored Hardware Design
 
-## 1.9 Layer-Wise Sparsity Allocation
+Specialization allows architects to rethink the entire processor stack, from the instruction set to the memory system, to achieve maximum efficiency for a target domain.
 
-Uniform sparsity across layers is rarely optimal.
+* Instruction Set Architecture (ISA): Designers can create simple ISAs optimized for tensor and vector operations, reducing the energy and complexity of fetching and decoding instructions. In some cases, instructions can be avoided entirely in favor of configurable finite state machines.
+* Data Types: There is no need to adhere to legacy data types. Specialized processors heavily utilize quantization, a process of reducing the numerical precision of model weights and activations (e.g., from 32-bit floating-point to 8-bit fixed-point integers). This drastically reduces memory footprint and energy consumption for both storage and computation.
+* Memory Structures: General-purpose caches, designed to handle unpredictable access patterns, can be replaced with software-managed memories like scratchpads, queues, and FIFOs. These structures give the compiler direct control over data placement and movement, enabling optimal data reuse and minimizing power-hungry off-chip DRAM accesses.
 
-### (1) Sensitivity-based (quality-driven)
+The Efficiency-Flexibility Trade-off
 
-* prune robust layers more
-* prune sensitive layers less
-* objective: maximize accuracy for a global sparsity budget
+Processor design exists on a spectrum between flexibility and efficiency.
 
-### (2) Compute-aware (efficiency-driven)
+* Software-Only: A pure software solution on a general-purpose CPU is highly flexible but offers the lowest performance and efficiency.
+* Hardware-Only (ASIC): A fully custom Application-Specific Integrated Circuit (ASIC) offers the highest performance and efficiency but is completely inflexible.
+* Co-design: The goal of modern ML accelerators is to find a sweet spot, creating programmable hardware that sacrifices general-purpose flexibility for massive gains in the target ML domain. This co-design approach avoids sacrificing either innovation (flexibility) or performance (efficiency).
 
-* prioritize pruning where it reduces **real latency**
-* target layers with high execution time and kernel support
-* objective: maximize speed/energy benefit under accuracy constraint
+A Multi-Layered Approach to Specialization
 
-> **Practical heuristic**
-> Prune large FC layers aggressively; be cautious with early conv layers.
+Optimizing for ML is not a single-step process. It involves a holistic approach that spans algorithms, architecture, and circuits.
 
----
+Optimization Layer	Technique	Hardware/Software Implication
+Algorithms	Data Types (Quantization, Approx. Computing)	Requires architectural support for special data types and non-standard forms of computing.
+	Model Sparsity (Pruning, Efficient Coding)	Benefits from architectural support for compression and sparse data formats.
+Architecture	Mapping & Scheduling (Compiler)	High-level optimizations like data reuse and scheduling map the algorithm to the hardware.
+	Data Movement (Compiler)	The compiler must explicitly manage the memory hierarchy to minimize energy.
+Circuits	Energy Efficiency	Techniques like clock gating ensure energy proportionality (no work, no power).
+	Novel Technologies	Emerging solutions like analog circuits, memristor arrays, and 3D die stacking push efficiency further.
 
-## 1.10 Conclusion: Compression as a Systems Problem
+Example of Extreme Specialization: The FINN Framework
 
-Pruning effectiveness is determined by the tuple:
+The FINN framework is an example of pushing specialization to its logical extreme.
 
-$$(\text{data}, \text{architecture}, \text{hardware})$$
+* Core Idea: It compiles a neural network architecture directly onto the fabric of an FPGA (Field-Programmable Gate Array) using a dataflow execution model.
+* HW-ML Interplay: It specifically targets highly quantized networks (often with fewer than 5 bits of precision) to fully leverage the integer-processing capabilities of FPGA logic blocks (CLBs) and on-chip memory (BRAMs).
+* Architecture: The framework uses predefined, modular building blocks for different neural network layers (convolution, pooling, fully connected). The diagram shows these units chained together: an input stream flows through a sliding window unit into a Matrix-vector-threshold unit (for convolution), then to a Pool unit, and finally to another Matrix-vector-threshold unit (for the fully connected layer). This creates a physical pipeline on the FPGA that perfectly mirrors the model's structure.
 
+Chapter 4: Architectural Deep Dive: Google Edge TPU
 
-### Strategy selection depends on goal
+The Google Edge TPU, the accelerator inside Coral devices, is a prime example of a commercial product built on the principles of specialization for edge inference.
 
-* **min model size:** unstructured sparse storage may be sufficient
-* **portable latency gains:** structured rewiring (smaller dense tensors)
-* **max accelerator speed:** pattern-constrained sparsity (N:M) + sparse kernels
+System Overview and Architecture
 
-> **Final principle**
-> Sparsity is valuable only when it is **representable, executable, and benchmarked** end-to-end on the target system.
+The Edge TPU is an ASIC designed to accelerate Convolutional Neural Networks (CNNs). Its core is a systolic array, a grid of interconnected Processing Elements (PEs) optimized for matrix multiplication.
 
----
+The architecture diagram reveals a chip organized around this PE array:
+
+* A Controller fetches instructions and manages the flow of data.
+* On-chip Memory (Activation, Instruction, Parameter Memory) acts as a high-bandwidth buffer to feed the PEs. This is likely fast SRAM.
+* The chip communicates with slower, off-chip DRAM for storing the main model parameters and larger activation maps.
+* Each PE in the (nx, ny) grid contains its own local memory (Core Memory) and multiple Compute Lanes, which perform the fundamental Multiply-Accumulate (MAC) operations.
+
+The operational flow involves activations flowing through the array, being multiplied by weights stored in the PEs, and accumulating partial results. These results are then either stored in PE memory for further processing or written back to DRAM.
+
+The Mandatory Development Workflow
+
+The high degree of specialization in the Edge TPU imposes a strict and mandatory workflow for model deployment. Users cannot simply run any ML model; it must be specifically prepared for the hardware.
+
+* Embedded ML Pillar (HW-ML Interplay): The toolchain is designed to transform a standard model into a format the hardware can execute efficiently. The official documentation states: “It supports only TensorFlow Lite models that are fully 8-bit quantized and then compiled specifically for the Edge TPU.”
+
+The workflow is as follows:
+
+1. Train Model: A model is trained in TensorFlow using standard 32-bit floating-point numbers.
+2. Quantize: The model undergoes quantization. This can be done post-training or, for better accuracy, through quantization-aware training. The result is a TensorFlow Lite model with 8-bit fixed-point numbers.
+3. Compile: The quantized TensorFlow Lite model is passed to the Edge TPU compiler, which generates a .tflite file containing operations optimized for the systolic array.
+4. Deploy: The compiled model is deployed to Coral hardware, where it is executed by the Edge TPU runtime.
+
+The diagram of the software stack shows two primary paths for application development:
+
+* Option A (Python): A Python application uses the TensorFlow Lite Python API and optionally the PyCoral API to interact with the Edge TPU runtime (libedgetpu.so).
+* Option B (C/C++): A C/C++ application links directly against the Edge TPU runtime API (edgetpu.h) and optionally the libcoral API.
+
+Hardware Specifications and Performance
+
+Analysis of the Edge TPU reveals that its performance is often bound by memory bandwidth, not raw compute power. The compiler uses a technique called "parameter caching" by allocating a scratchpad memory to reduce expensive DRAM accesses, though this benefit diminishes for larger models. Consequently, inference latency is primarily determined by memory bandwidth, with the PE count having less impact.
+
+The following table compares different internal versions of the Edge TPU, highlighting the design trade-offs:
+
+Parameter	V1	V2	V3
+Clock Frequency (MHz)	800	1066	1066
+# of (X, Y)-PEs	(4, 4)	(4, 4)	(4, 1)
+PE Memory	2MB	384kB	2MB
+# of Cores per PE	4	1	8
+Core Memory	32kB	32kB	8kB
+# of Compute Lanes	64	64	32
+Mem Bandwidth (GB/s)	17	32	32
+Peak TOP/s	26.2	8.73	8.73
+
+Chapter 5: Architectural Deep Dive: MIT Eyeriss and Dataflow Optimization
+
+The MIT Eyeriss project provides a deep dive into one of the most critical aspects of accelerator design: optimizing the dataflow, which is the orchestration of data movement between memory and compute units.
+
+The Primacy of Data Movement
+
+* Embedded ML Pillar (Resource Constraints): In any modern processor, data movement is far more expensive in terms of energy and latency than computation. An arithmetic operation like a Multiply-Accumulate (MAC) is orders of magnitude more efficient than reading the operands from off-chip DRAM. Therefore, the primary goal of an efficient accelerator is to minimize memory traffic by maximizing data reuse.
+
+A basic dot product operation involves reading a filter weight and an input feature map (ifmap) activation, performing a MAC operation, and writing back the updated partial sum (psum). To improve efficiency, data must be kept as close to the ALUs as possible in the memory hierarchy.
+
+Exploiting Data Reuse in Convolutions
+
+Convolutional layers, which dominate many vision models, offer significant opportunities for data reuse. A diagram illustrating these opportunities shows three primary types:
+
+1. Convolutional Reuse: In standard convolutions, the sliding window operation means the same filter weights are applied to overlapping input ifmaps, and the same input activations are multiplied by different weights. This allows for the reuse of both activations and weights.
+2. Fmap Reuse: Across different filters applied to the same input, the entire input activation fmap can be reused. This applies to both CONV and Fully Connected (FC) layers.
+3. Filter Reuse: When processing a batch of inputs (batch size > 1), the same filter weights can be reused across multiple different input fmaps.
+
+A Taxonomy of Dataflow Strategies
+
+The way data is moved and reused is defined by the accelerator's dataflow. Different strategies prioritize the reuse of different data types by making them "stationary" (i.e., holding them in a PE's local memory for multiple cycles).
+
+Dataflow Strategy	Description	Key Characteristic	Examples
+Weight Stationary (WS)	Each PE holds a weight stationary and processes a stream of input activations broadcast to it.	Maximizes weight reuse.	neuFlow, Google Edge TPU
+Output Stationary (OS)	Each PE is responsible for accumulating a specific partial sum (psum) and holds it stationary.	Minimizes psum movement.	ShiDianNao
+No Local Reuse (NLR)	Forgoes complex local reuse logic to dedicate more area to a larger shared buffer.	Area-efficient, but less energy-efficient.	Google TPU, DianNao
+Row Stationary (RS)	A novel approach that aims to maximize reuse for all data types simultaneously.	Decomposes convolutions into 1D primitives.	MIT Eyeriss
+
+The Eyeriss Innovation: Row Stationary (RS) Dataflow
+
+The Row Stationary (RS) dataflow was developed to overcome the limitations of previous strategies, which were often optimal only for specific layer shapes. The core idea is to maximize data reuse for all three data types: filter weights, ifmaps, and psums.
+
+* Mechanism: RS achieves this by processing convolutions one row of filter weights at a time. A row of filter weights is kept stationary within a PE's register file. Input activations are multicast to the PEs, and partial sums are accumulated spatially across the PE array.
+* Benefit: This approach maximizes the use of the smallest, most energy-efficient memory—the register file—for filter data. It also facilitates reuse of ifmap data that is passed between adjacent PEs and allows psums to be accumulated locally before being sent to the global buffer.
+* Spatial Unrolling: The process is spatially unrolled across the PE array. As shown in the diagrams, each PE processes a single row of a convolution. Multiple PEs work in parallel on different rows of the same filter or on different output columns. This can be extended to handle multiple channels, filters, and ifmaps in a batch, fully exploiting all available parallelism.
+
+Eyeriss Hardware Architecture
+
+The Eyeriss chip is a physical embodiment of the Row Stationary dataflow. The architecture diagram shows:
+
+* A 14x12 PE Array forms the computational core.
+* A Global Buffer (108KB SRAM) serves as the central on-chip memory, buffering data to and from the PE array. This minimizes access to the much slower off-chip DRAM.
+* Data paths for Filter, Input Fmap, and Output Fmap feed into and out of the Global Buffer. The input path includes a decompression (Decomp) unit, while the output path has compression (Comp) and ReLU activation units.
+* The entire accelerator communicates with Off-Chip DRAM via a 64-bit interface.
+
+The key feature is the inter-PE communication network, which allows ifmaps and psums to be passed directly between neighboring PEs, which is essential for the efficiency of the RS dataflow.
+
+TPU vs. Eyeriss: A Philosophical Comparison
+
+While both are DNN accelerators, they represent different design philosophies:
+
+* Google TPU: A commercial, general-purpose ML accelerator designed for usability and broad applicability (NLR dataflow). It uses a systolic array without direct inter-PE communication, relying on a unified buffer.
+* MIT Eyeriss: A research accelerator focused on maximizing energy efficiency through sophisticated dataflow optimization (RS dataflow). It features a more complex memory hierarchy with inter-PE communication to support its advanced data reuse strategy.
+
+Chapter 6: A Survey of the Modern Accelerator Landscape
+
+Beyond the deep dives into the Edge TPU and Eyeriss, the field is rich with other innovative architectures.
+
+Graphcore's Intelligence Processing Unit (IPU)
+
+The Graphcore IPU is designed for both training and inference in data centers. Its architecture diverges significantly from GPU-like designs.
+
+* Massive Parallelism: A diagram of the IPU shows it is composed of 1472 independent IPU-Tiles, each with its own IPU-Core and dedicated In-Processor-Memory.
+* SRAM-centric Design: It replaces the traditional cache hierarchy with 900MB of distributed on-chip SRAM, providing extremely high memory bandwidth (47.5 TB/s per IPU). This design choice is based on the premise that ML workloads have predictable memory access patterns that can be managed by a compiler, making complex caches unnecessary.
+* MIMD Architecture: Each core can run its own program thread in parallel (supporting 8832 independent threads per IPU), making it a Multiple Instruction, Multiple Data (MIMD) machine. This provides great flexibility for complex and irregular models, such as those with high sparsity.
+* Software: The IPU is programmed using the Poplar C++ framework, which represents computations as a graph of vertices (code) and edges (data dependencies on tensors).
+
+Tenstorrent Wormhole
+
+Tenstorrent's architecture is another example of extreme specialization, tailored for neural networks like convolutions and transformers.
+
+* Specialized Cores: It uses an array of simple "Baby-RISC V" cores, stripping away unnecessary features to focus on raw NN performance.
+* Scalability: The Wormhole chip is designed to be extendable into a multi-chip mesh, allowing for the construction of very large systems.
+* Open Software: Tenstorrent emphasizes an open software ecosystem, aiming to provide greater flexibility and community involvement.
+
+Chapter 7: Summary and Future Directions
+
+This review of machine learning processors reveals several key themes and points toward future trends in hardware-aware AI.
+
+Key Takeaways:
+
+* Specialization is Key: Processor specialization provides significant performance and efficiency gains for ML workloads but requires sacrificing general-purpose flexibility and often imposes specific software toolchains.
+* Tensor Operations Dominate: As of today, tensor and matrix operations are the most critical computations in deep learning. This has led to the prevalence of array-based processors (systolic arrays, spatial arrays) with ISAs that natively support these operations.
+* Data Reuse is Paramount: The high cost of data movement makes dataflow optimization the most important challenge in accelerator design. Strategies like Weight Stationary, Output Stationary, and Row Stationary are all attempts to maximize data reuse and minimize off-chip memory access.
+
+Future Trends and Unsafe Optimizations: The pursuit of ever-greater efficiency is leading researchers to explore more aggressive, or "unsafe," optimizations at the circuit and device level:
+
+* Reduced Precision Data Types: Moving beyond 8-bit integers to even lower precision formats.
+* Analog Computing: Performing computation in the analog domain to potentially reduce power consumption, though this introduces challenges with noise and precision.
+* Emerging Memory Technologies: Utilizing novel memory devices like memristors for in-memory computing, where computation happens directly where data is stored, eliminating the memory-compute bottleneck entirely.
