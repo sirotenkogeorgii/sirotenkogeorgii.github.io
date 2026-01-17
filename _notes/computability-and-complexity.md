@@ -58,7 +58,7 @@ Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also calle
 
 </div>
 
-<div class="accordion">
+<!-- <div class="accordion">
   <details markdown="1">
     <summary>"States" in CPU</summary>
 
@@ -94,7 +94,7 @@ So:
 * **In complexity theory**: “state” = the control state, a small, constant-sized piece of info.
 
   </details>
-</div>
+</div> -->
 
 #### Structure of a $k$-tape Turing Machine
 
@@ -907,7 +907,7 @@ An $\text{NP}$-complete problem is thus a problem that is both in $\text{NP}$ an
 
 There are further, provably different notions of $\text{NP}$-hardness and $\text{NP}$-completeness, which are defined in terms of reducibilities different from $p$-$m$-reducibility. For example, $A$ is Turing reducible to $B$ in polynomial time if $A$ can be decided by a polynomially time-bounded Turing machine that for arbitrary words $y$ can access the information whether $y$ is in $B$ by writing $y$ onto a special oracle tape. Accordingly, the notions just defined may be referred to more precisely as $\text{NP}$-hardness and $\text{NP}$-completeness with respect to $p$-$m$-reducibility.
 
-### The $P$ versus $\text{NP}$ Problem
+### The $\text{P}$ versus $\text{NP}$ Problem
 
 ### Relationship Between $P$, $\text{NP}$, and $\text{NP}$-Complete Problems
 
@@ -917,7 +917,7 @@ The existence of $\text{NP}$-complete problems provides a powerful way to frame 
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
 
 The following statements are equivalent:
-* (i) $P = NP$. 
+* (i) $\text{P} = \text{NP}$. 
 * (ii) All $\text{NP}$-complete sets are in $\text{P}$. 
 * (iii) There is an $\text{NP}$-complete set in $\text{P}$.
 
@@ -925,16 +925,16 @@ The following statements are equivalent:
 
 **Proof.**:
 
-* (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in $\text{NP}$ is also in $\text{P}$. By definition, $\text{NP}$-complete languages are in $\text{NP}$, so they must also be in $P$.
+* (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in $\text{NP}$ is also in $\text{P}$. By definition, $\text{NP}$-complete languages are in $\text{NP}$, so they must also be in $\text{P}$.
 * (ii) $\implies$ (iii): This implication is trivial, assuming that $\text{NP}$-complete languages exist (which will be proven later).
 * (iii) $\implies$ (i): We need to show that if some $\text{NP}$-complete language $L$ is in $\text{P}$, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an $\text{NP}$-complete language such that $L \in \text{P}$. Since $L$ is $\text{NP}$-hard, every language $A \in \text{NP}$ is $p$-$m$-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$.
 
-The Significance of the $P$ vs. $\text{NP}$ Problem
+The Significance of the $\text{P}$ vs. $\text{NP}$ Problem
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-The class $\text{P}$ is a subclass of $\text{NP}$, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as $P$ versus $\text{NP}$ problem. By Theorem 40, the two classes coincide if and only if some $\text{NP}$-complete language is in $\text{P}$. Common ways to express that a language is in $\text{P}$ are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are $\text{NP}$-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
+The class $\text{P}$ is a subclass of $\text{NP}$, but it is not known whether this inclusion is proper. Whether the two classes coincide is referred to as $\text{P}$ versus $\text{NP}$ problem. By Theorem 40, the two classes coincide if and only if some $\text{NP}$-complete language is in $\text{P}$. Common ways to express that a language is in $\text{P}$ are to say that the corresponding problem is feasible, can be solved efficiently, or has an efficient algorithm. Note that all three notions are also used in other contexts with different meanings. There are hundreds of practically relevant problems that are $\text{NP}$-complete, and for none of them an efficient algorithms is known. In fact, not even algorithms are known that are significantly faster than an exhaustive search over all possible solutions.
 
 </div>
 
@@ -1288,7 +1288,7 @@ where pairs of the form $\langle G, k \rangle$ are suitably represented by binar
 
 </div>
 
-#### NP-Completeness of CLIQUE
+#### $\text{NP}$-Completeness of CLIQUE
 
 We will now prove that the $\text{CLIQUE}$ problem is not only in $\text{NP}$ but is also $\text{NP}$-hard, making it $\text{NP}$-complete.
 
@@ -1340,7 +1340,7 @@ This means we have a set of $m$ literals (one from each clause) that are mutuall
 
 Since we have shown that $\phi \in \text{3-SAT} \iff \langle G_\phi, m \rangle \in \text{CLIQUE}$, and the reduction is computable in polynomial time, we have established that $\text{3-SAT} \le_p^m \text{CLIQUE}$. Because $\text{CLIQUE}$ is in $\text{NP}$ and is $\text{NP}$-hard, it is $\text{NP}$-complete. $\square$
 
-### An Alternative Characterization of NP
+### An Alternative Characterization of $\text{NP}$
 
 Languages in $\text{NP}$ like $\text{SAT}$ or $\text{CLIQUE}$ can be viewed as problems that check whether an instance possesses a certain property based on the existence of an "admissible solution."
 
@@ -1605,7 +1605,7 @@ Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s
 **Proof.**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
 
 <div class="accordion">
-  <details markdown="1">
+  <details>
     <summary>Proof of ($i$)</summary>
     <p>
     Let $Q$ be the set of states, $\Gamma$ the working alphabet, $n$ the input length, and $k$ the number of work tapes.
@@ -1912,15 +1912,15 @@ The depth of this recursion is $\ell(n) = d \cdot s(n)$. At each level of the re
 
 By linear compression, any $O(s^2(n))$-space bounded DTM can be converted to a $\text{DSPACE}(s^2(n))$ machine. This completes the proof. $\square$
 
-#### The P versus NP Problem and PSPACE
+#### The $\text{P}$ versus $\text{NP}$ Problem and PSPACE
 
-The famous **P versus NP problem** asks whether deterministic polynomial-time computation is as powerful as nondeterministic polynomial-time computation.
+The famous **$\text{P}$ versus $\text{NP}$ problem** asks whether deterministic polynomial-time computation is as powerful as nondeterministic polynomial-time computation.
 
-A. Do the classes P and NP coincide?
+A. Do the classes $\text{P}$ and $\text{NP}$ coincide?
 
-This remains one of the greatest unsolved problems in computer science. It is not even known if PSPACE, the class of languages decidable in deterministic polynomial space, coincides with P or NP. A related open question concerns the closure of NP under complement.
+This remains one of the greatest unsolved problems in computer science. It is not even known if $\text{PSPACE}$, the class of languages decidable in deterministic polynomial space, coincides with $\text{P}$ or $\text{NP}$. A related open question concerns the closure of $\text{NP}$ under complement.
 
-B. Is the class NP closed under complement, i.e., does the complement $\lbrace 0, 1\rbrace^* \setminus L$ of any language $L$ in NP also belong to $\text{NP}$?
+B. Is the class $\text{NP}$ closed under complement, i.e., does the complement $\lbrace 0, 1\rbrace^* \setminus L$ of any language $L$ in $\text{NP}$ also belong to $\text{NP}$?
 
 In the context of polynomial space, the analogous questions have been answered in the affirmative. Savitch's Theorem directly answers the space analogue of question A, showing $\text{PSPACE} = \text{NPSPACE}$. The answer to the space analogue of question B is also yes, a result proven by Immerman and Szelepcsényi.
 
@@ -1931,7 +1931,7 @@ To study the intrinsic difficulty of a complexity class, we identify languages t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Complexity class, hardness, completness)</span></p>
 
-A **complexity class** is a set of languages over the binary alphabet. A language $B$ is **hard** for a complexity class if every language in the class is $p$-$m$-reducible to $B$. A language is **complete** for a complexity class if it is hard for the class and belongs to the class. A language that is complete for a complexity class $C$ is called **C-complete**.
+A **complexity class** is a set of languages over the binary alphabet. A language $B$ is **hard** for a complexity class if every language in the class is $p$-$m$-reducible to $B$. A language is **complete** for a complexity class if it is hard for the class and belongs to the class. A language that is complete for a complexity class $C$ is called **$\text{C}$-complete**.
 
 </div>
 
@@ -3325,7 +3325,7 @@ The complexity class $\text{BPP}$ is a subset of $\text{P/poly}$.
 
 ## The Polynomial Hierarchy and Complete Languages
 
-This section explores the **polynomial hierarchy**, a hierarchy of complexity classes that generalizes the classes **P**, **NP**, and **co-NP**. It serves to classify problems that are not known to be in **NP** but are still solvable in polynomial space. We will also investigate the relationship between the probabilistic class **BPP** and this hierarchy, and conclude by examining methods for constructing complete languages for various complexity classes.
+This section explores the **polynomial hierarchy**, a hierarchy of complexity classes that generalizes the classes **$\text{P}$**, **$\text{NP}$**, and **co-$\text{NP}$**. It serves to classify problems that are not known to be in **$\text{NP}$** but are still solvable in polynomial space. We will also investigate the relationship between the probabilistic class **BPP** and this hierarchy, and conclude by examining methods for constructing complete languages for various complexity classes.
 
 ### The Polynomial-Time Hierarchy
 
