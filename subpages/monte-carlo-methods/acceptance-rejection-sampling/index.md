@@ -12,7 +12,7 @@ Suppose we want to generate samples from a continuous random variable $X$ with d
 
 A more broadly applicable—though not always efficient—approach is **acceptance–rejection sampling**. Assume there is another random variable $Z$ with density $f_Z(x)$ that we already know how to sample from efficiently, and that $f_Z(x)$ and $f_X(x)$ are reasonably similar. More precisely, suppose we can find a constant $c \ge 1$ such that
 
-$$f_X(x) \le c, f_Z(x) \quad \text{for all } x \in \mathbb{R}$$
+$$f_X(x) \le c \cdot f_Z(x) \quad \text{for all } x \in \mathbb{R}$$
 
 Then we can obtain samples from $X$ using the following simple algorithm. Here `sample_z` is a procedure that generates samples from $Z$, and `accept_probability` is the function
 
@@ -27,7 +27,8 @@ In rejection sampling, we:
 
 $c$ is exactly the factor that "lifts" $f_Z$ enough so that $cf_Z$ dominates $f_X$ everywhere. Smaller $c$ (as close as possible to $\sup_x \frac{f_X(x)}{f_Z(x)}$) means fewer rejections and a more efficient algorithm.
 
-**Algorithm (Acceptance–rejection sampling)**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Acceptance–rejection sampling)</span></p>
 
 1. **repeat**
    * Draw $Y \sim f_Z$.
@@ -36,6 +37,7 @@ $c$ is exactly the factor that "lifts" $f_Z$ enough so that $cf_Z$ dominates $f_
 3. Set $X \leftarrow Y$.
 4. Output $X$.
 
+</div>
 
 <!-- <div class="accordion">
   <details>
@@ -88,9 +90,36 @@ def rejection_sample(sample_z, f_x, f_z, c, n_samples):
   </figure>
 </div>
 
-Here is a **cleanly rewritten and reformatted** version of the explanation from the image.
-I’ve kept all the mathematical meaning but made it clearer and easier to read.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Is acceptance-rejection sampling a Markov chain algorithm?)</span></p>
 
+Not in the usual sense.
+
+**Classic acceptance–rejection (AR)** sampling is typically an **i.i.d. sampling** method: each proposal is generated independently, and once you accept, that accepted draw does **not** depend on previously accepted draws. So the sequence of accepted samples is not a Markov chain you “run”; it’s just independent samples from the target.
+
+That said, you *can* force a Markov-chain viewpoint:
+
+* If you define a “state” that includes the current proposal and whether it was accepted (or include the running count / the RNG state), then the *full process* is Markov. But that’s kind of trivial—almost any algorithm becomes Markov if you include enough internal variables.
+* If you look only at the **accepted samples**, they are i.i.d., so they *do* satisfy the Markov property (the next sample is independent of the past), but then calling it “a Markov chain algorithm” is misleading because there’s no dependence structure to exploit.
+
+**In contrast, MCMC (e.g., Metropolis–Hastings)** is specifically designed so that
+
+$$X_{t+1} \sim \kappa(\cdot \mid X_t),$$
+
+and dependence between successive $X_t$’s is essential—stationarity and convergence arguments rely on that Markov structure.
+
+So: **AR is primarily an independent sampling method, not an MCMC/Markov-chain sampling algorithm**, even though it can be described as a Markov process in an expanded state space.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Basic rejection sampling suffers fromthe curse of dimensionality)</span></p>
+
+Most simple **rejection sampling** techniques run into the **curse of dimensionality**: as the number of dimensions increases, the rejection rate typically rises **exponentially**, making these methods quickly impractical.
+
+Metropolis–Hastings and other **MCMC** approaches are generally **less severely affected** by this issue. Because of that, when the target distribution is high-dimensional, MCMC methods are often among the few workable options. For this reason, they are widely used to generate samples for **hierarchical Bayesian models** and many other modern high-dimensional statistical models across a range of fields.
+
+</div>
 
 ## Why it works
 

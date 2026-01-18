@@ -55,9 +55,19 @@ Random variables allow us to map outcomes from the sample space to the real numb
 
 <!-- ### 2.1 Random Variables -->
 
-**Definition (Random Variable):** A Random Variable (RV) is a measurable function $X: \Omega \to \mathbb{R}$ that assigns a real number to each outcome in the sample space.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Random Variable)</span></p>
 
-* *Example (Coin Toss):* For a coin toss where $\Omega = \lbrace \text{Heads}, \text{Tails} \rbrace$, we can define an RV $X$ such that $X(\text{Heads}) = 1$ and $X(\text{Tails}) = 0$.
+A **Random Variable** (RV) is a measurable function $X: \Omega \to \mathbb{R}$ that assigns a real number to each outcome in the sample space.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Coin Toss)</span></p>
+
+For a coin toss where $\Omega = \lbrace \text{Heads}, \text{Tails} \rbrace$, we can define an RV $X$ such that $X(\text{Heads}) = 1$ and $X(\text{Tails}) = 0$.
+
+</div>
 
 The mapping itself is deterministic; the randomness is induced by the underlying probability measure on $\Omega$. Random variables induce probability distributions.
 
@@ -65,7 +75,10 @@ The mapping itself is deterministic; the randomness is induced by the underlying
 
 The **Cumulative Distribution Function (CDF)** uniquely characterizes the distribution of any random variable.
 
-**Definition (CDF):** A function $F: \mathbb{R} \to [0, 1]$ is a CDF if it satisfies:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cumulative Distribution Function)</span></p>
+
+A function $F: \mathbb{R} \to [0, 1]$ is a CDF if it satisfies:
 
 1. $0 \le F(x) \le 1$ for all $x \in \mathbb{R}$.
 2. $F$ is non-decreasing.
@@ -74,11 +87,17 @@ The **Cumulative Distribution Function (CDF)** uniquely characterizes the distri
 
 The CDF connects directly to the probability measure: $F(x) = P(X \le x)$.
 
+</div>
+
 ### 1.3 Discrete Distributions and PMFs
 
 For a discrete RV, the probability is concentrated on a countable set of points.
 
-**Definition (Probability Mass Function — PMF):** Let $a_1, a_2, \dots$ be the values a discrete RV $X$ can take. A function $f: \mathbb{R} \to [0, 1]$ is a PMF if $f(x) = P(X=x)$. Specifically, if $p_k = P(X=a_k)$ with $\sum_k p_k = 1$, then
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probability Mass Function)</span></p>
+
+Let $a_1, a_2, \dots$ be the values a discrete RV $X$ can take. A function $f: \mathbb{R} \to [0, 1]$ is a PMF if $f(x) = P(X=x)$. Specifically, if $p_k = P(X=a_k)$ with $\sum_k p_k = 1$, then
+
 $$
 f(x) =
 \begin{cases}
@@ -86,15 +105,18 @@ f(x) =
   0   & \text{otherwise}.
 \end{cases}
 $$
+
 The CDF for a discrete RV is a step function: $F(t) = \sum_{k: a_k \le t} p_k$.
+
+</div>
 
 Common Discrete Distributions:
 
 | Distribution | Parameters | PMF $P(X=x)$ | Description |
 | --- | --- | --- | --- |
-| Bernoulli | $p \in [0, 1]$ | $p^x (1-p)^{1-x}$ for $x \in \{0, 1\}$ | Models a single trial with two outcomes (e.g., success/failure). |
-| Binomial | $n \in \mathbb{N},\ p \in [0, 1]$ | $\binom{n}{x} p^x (1-p)^{n-x}$ for $x \in \{0, \dots, n\}$ | Models the number of successes in $n$ independent Bernoulli trials. |
-| Poisson | $\lambda > 0$ | $\dfrac{\lambda^x e^{-\lambda}}{x!}$ for $x \in \{0, 1, 2, \dots\}$ | Models the number of events occurring in a fixed interval of time or space. |
+| Bernoulli | $p \in [0, 1]$ | $p^x (1-p)^{1-x}$ for $x \in \lbrace 0, 1\rbrace$ | Models a single trial with two outcomes (e.g., success/failure). |
+| Binomial | $n \in \mathbb{N},\ p \in [0, 1]$ | $\binom{n}{x} p^x (1-p)^{n-x}$ for $x \in \lbrace0, \dots, n\rbrace$ | Models the number of successes in $n$ independent Bernoulli trials. |
+| Poisson | $\lambda > 0$ | $\dfrac{\lambda^x e^{-\lambda}}{x!}$ for $x \in \lbrace0, 1, 2, \dots\rbrace$ | Models the number of events occurring in a fixed interval of time or space. |
 
 <div class="pmf-grid">
   <figure>
@@ -115,10 +137,15 @@ Common Discrete Distributions:
 
 For a continuous RV, the probability of any single point is zero. Probability is defined over intervals.
 
-**Definition (Probability Density Function — PDF):** A function $f: \mathbb{R} \to [0, \infty)$ is a PDF if:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probability Density Function)</span></p>
+
+A function $f: \mathbb{R} \to [0, \infty)$ is a PDF if:
 
 1. $f(x) \ge 0$ for all $x \in \mathbb{R}$ (non-negativity).
 2. $\int_{-\infty}^{\infty} f(x)\,dx = 1$.
+
+</div>
 
 The probability over an interval is given by the integral of the PDF: $P(a \le X \le b) = \int_a^b f(x)\,dx$. The corresponding CDF is $F(t) = \int_{-\infty}^{t} f(x)\,dx$.
 
@@ -190,8 +217,9 @@ These theorems describe the behavior of the sum of a large number of random vari
 <!-- **Theorem (Strong Law of Large Numbers — SLLN):** Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $E[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
 $\frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
 \quad \text{as } n \to \infty.$ -->
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Strong Law of Large Numbers)</span></p>
 
-**Theorem (Strong Law of Large Numbers — SLLN):**  
 Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $\mathbb{E}[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
 
 $$
@@ -199,8 +227,11 @@ $$
 \quad \text{as } n \to \infty.
 $$
 
+</div>
 
-**Theorem (Central Limit Theorem — CLT):** 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Central Limit Theorem)</span></p>
+
 Let $(X_i)_{i=1}^\infty$ be a sequence of i.i.d. random variables with mean $\mu$ and finite variance $\sigma^2$. Then the distribution of the standardized sample mean converges to a standard Normal distribution:
 
 $$
@@ -209,7 +240,7 @@ $$
 \quad \text{as } n \to \infty.
 $$
 
----
+</div>
 
 ## 2. Review on Parameter Estimation
 
@@ -217,7 +248,12 @@ $$
 
 Statistical inference aims to deduce properties of an underlying population or data-generating process from a finite sample of data. To do so, we often assume that our data is drawn from a family of distributions parametrized by a finite set of parameters.
 
-**Definition (Parametric Model):** Let $\Theta \subseteq \mathbb{R}^n$ is a parameter space. A family of probability distributions $P(\Theta) = \lbrace p_{\theta} \mid \theta \in \Theta \rbrace $ on a measurable space is called a parametric model.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parametric Model)</span></p>
+
+Let $\Theta \subseteq \mathbb{R}^n$ is a parameter space. A family of probability distributions $P(\Theta) = \lbrace p_{\theta} \mid \theta \in \Theta \rbrace $ on a measurable space is called a parametric model.
+
+</div>
 
 Our goal is to estimate the true, unknown parameter $\theta$ that generated the data. We distinguish between:
 
@@ -408,15 +444,18 @@ $p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem ari
 
 **Posterior Sampling with Metropolis-Hastings**
 
+[More on Metropolis-Hastings](/subpages/monte-carlo-methods/mcmc/metropolis–hastings-algorithm/)
+
 We can evaluate $p(⋅)$ for individual points but don’t know its normalization constant. Since we only care about the shape of the posterior, MCMC methods let us bypass computing the normalization constant and still approximate the posterior.
 
 The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, \theta^{(1)}, ..., \theta^{(N)}$, that form a Markov chain whose stationary distribution is the target posterior distribution $p(\theta \mid X)$. We can work with the unnormalized posterior density, as the algorithm only depends on the ratio of densities, where the normalizing constant cancels out.
 $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
-**Metropolis-Hastings Algorithm with a Symmetric Proposal:**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Metropolis-Hastings Algorithm with a Symmetric Proposal)</span></p>
 
 1.  **Initialization:** Choose an initial parameter value $\theta^{(0)}$ and specify the number of samples $N$.
-2.  **Iteration:** Loop for $i = 1, ..., N$:
+2.  **Iteration:** Loop for $i = 1, \dots, N$:
     * **Propose:** Generate a new candidate sample $\theta_{prop}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{prop} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
     * **Compute Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
         * $r_{prop} := p(X \mid \theta_{prop})p(\theta_{prop})$
@@ -426,7 +465,9 @@ $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
         * If $u < \min(1, r)$, accept the proposal: $\theta^{(i)} = \theta_{prop}$.
         * Else, reject the proposal and stay at the current state: $\theta^{(i)} = \theta^{(i-1)}$.
 
-Under mild conditions, the resulting sequence of samples $\{\theta^{(i)}\}_{i=1}^N$ will be drawn from the target posterior distribution $p(\theta \mid X)$. MCMC “walks around” the space in a way that favors high-probability regions but still occasionally explores others. Over time, the visited points represent the true distribution.
+</div>
+
+Under mild conditions, the resulting sequence of samples $\lbrace\theta^{(i)}\rbrace_{i=1}^N$ will be drawn from the target posterior distribution $p(\theta \mid X)$. MCMC “walks around” the space in a way that favors high-probability regions but still occasionally explores others. Over time, the visited points represent the true distribution.
 
 <div class="accordion">
   <details>
@@ -513,9 +554,7 @@ Different MCMC algorithms exist for different problem structures. For instance, 
 
 When the data generating process depends on both parameters $\theta$ and unobserved **latent variables** $z$, the model is specified as $p_\theta(X, z)$. The log-likelihood of the observed data $X$ requires marginalizing out these latent variables:
 
-$$
-\log p_\theta(X) = \log \int p_\theta(X, z) dz
-$$
+$$\log p_\theta(X) = \log \int p_\theta(X, z) dz$$
 
 This integration is often intractable, necessitating methods like MCMC or Variational Inference.
 
@@ -535,24 +574,58 @@ This integration is often intractable, necessitating methods like MCMC or Variat
 ### 3.1 Stochastic Processes and Time Series
 
 Intuitively, a time series is a realization or **sample path** of a random process, such as $\lbrace X_1, X_2, ..., X_T\rbrace$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
+<!-- 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
 
-$\textbf{Definition (Stochastic Process):}$ Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \lbrace X_t\rbrace_{t \in I}$ with values in $E$ is called a **stochastic process**.
+</div> -->
 
-$\textbf{Definition (Time Series):}$ A **time series** is a stochastic process $X = \lbrace X_t\rbrace_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Process)</span></p>
 
-$\textbf{Definition (Sample Path (Realization)):}$ A **sample path** is a single outcome or sequence of observations $\lbrace x_t\rbrace_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, ..., x_T\rbrace$.
+Let $(\Omega, \mathcal{F}, \mathbb{P})$ be a probability space, $(E, \mathcal{E})$ be a measurable space (the state space), and $I \subseteq \mathbb{R}$ be an index set. A family of random variables $X = \lbrace X_t\rbrace_{t \in I}$ with values in $E$ is called a **stochastic process**.
 
-$\textbf{Definition (Discrete vs. Continuous Time):}$
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Time Series)</span></p>
+
+A **time series** is a stochastic process $X = \lbrace X_t\rbrace_{t \in I}$, where each random variable $X_t$ shares the same state space but may have a different probability distribution.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sample Path or Realization)</span></p>
+
+A **sample path** is a single outcome or sequence of observations $\lbrace x_t\rbrace_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, ..., x_T\rbrace$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete vs. Continuous Time)</span></p>
+
 * If the index set $I$ is countable (e.g., $I = \mathbb{Z}$ or $I = \mathbb{N}$), the process is a **discrete-time process**.
 * If the index set $I$ is an interval (e.g., $I = [0, T]$), the process is a **continuous-time process**.
 
-**Definition (Ensemble):** The **ensemble** is the population of all possible realizations that a stochastic process can generate. For a process $X_t = A \sin(\omega t + \phi) + \epsilon_t$, the ensemble would be the set of all possible sine waves generated by different values of the random variables $A$, $\phi$, and $\epsilon_t$.
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ensemble)</span></p>
+
+The **ensemble** is the population of all possible realizations that a stochastic process can generate. For a process $X_t = A \sin(\omega t + \phi) + \epsilon_t$, the ensemble would be the set of all possible sine waves generated by different values of the random variables $A$, $\phi$, and $\epsilon_t$.
+
+</div>
 
 #### 3.1.1 Example: White Noise Process
 
-**Definition (White Noise Process):** Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(White Noise Process)</span></p>
+
+Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
 1.  $\mathbb{E}[X_t] = 0$ for all $t \in I$.
 2.  $\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$
+
+</div>
 
 <div class="accordion">
   <details>
@@ -561,9 +634,7 @@ $\textbf{Definition (Discrete vs. Continuous Time):}$
     <strong>“same distribution” ≠ “same random variable”</strong> and doesn’t imply any <strong>dependence</strong>.
     </p>
 
-    $$
-    \mathrm{Cov}(X_s,X_t)=\mathbb{E}\big[(X_s-\mu)(X_t-\mu)\big].
-    $$
+    $$\mathrm{Cov}(X_s,X_t)=\mathbb{E}\big[(X_s-\mu)(X_t-\mu)\big].$$
 
   </details>
 </div>
@@ -572,17 +643,18 @@ This property is often imposed on the error terms $\epsilon_t$ of statistical mo
 
 ### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
 
-**Definition (Autocovariance Function (ACVF)):** Let $X=\lbrace X_t\rbrace_{t \in I}$ be a stochastic process with $\mathbb{E}[X_t^2] < \infty$. The autocovariance function is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Autocovariance Function)</span></p>
 
-$$
-\gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])]
-$$
+Let $X=\lbrace X_t\rbrace_{t \in I}$ be a stochastic process with $\mathbb{E}[X_t^2] < \infty$. The autocovariance function is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+
+$$\gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])]$$
 
 Using the property $\text{Cov}(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$, and letting $\mu_t = \mathbb{E}[X_t]$, this can be written as:
 
-$$
-\gamma_{XX}(s, t) = \mathbb{E}[X_s X_t] - \mu_s \mu_t
-$$
+$$\gamma_{XX}(s, t) = \mathbb{E}[X_s X_t] - \mu_s \mu_t$$
+
+</div>
 
 **Basic Properties of ACVF:**
 * **Symmetry:** $\gamma_{XX}(s, t) = \gamma_{XX}(t, s)$
@@ -607,31 +679,42 @@ $$
   </details>
 </div>
 
-**Definition (Autocorrelation Function (ACF)):** The **autocorrelation function** is the normalized version of the autocovariance function, mapping $\rho_{XX}: I \times I \to [-1, 1]$:
-$$
-\rho_{XX}(s, t) = \frac{\gamma_{XX}(s, t)}{\sqrt{\gamma_{XX}(s, s)\gamma_{XX}(t, t)}} = \frac{\text{Cov}(X_s, X_t)}{\sqrt{\text{Var}(X_s)\text{Var}(X_t)}}
-$$
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Autocorrelation Function)</span></p>
 
-**Definition (Cross-Covariance and Cross-Correlation Functions):** For two stochastic processes $X=\lbrace X_t\rbrace_{t \in I}$ and $Y=\lbrace Y_t\rbrace_{t \in I}$, the **cross-covariance function** is:
-$$
-\gamma_{XY}(s, t) = \text{Cov}(X_s, Y_t) = \mathbb{E}[(X_s - \mu_{X,s})(Y_t - \mu_{Y,t})]
-$$
+The **autocorrelation function** is the normalized version of the autocovariance function, mapping $\rho_{XX}: I \times I \to [-1, 1]$:
+
+$$\rho_{XX}(s, t) = \frac{\gamma_{XX}(s, t)}{\sqrt{\gamma_{XX}(s, s)\gamma_{XX}(t, t)}} = \frac{\text{Cov}(X_s, X_t)}{\sqrt{\text{Var}(X_s)\text{Var}(X_t)}}$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cross-Covariance and Cross-Correlation Functions)</span></p>
+
+For two stochastic processes $X=\lbrace X_t\rbrace_{t \in I}$ and $Y=\lbrace Y_t\rbrace_{t \in I}$, the **cross-covariance function** is:
+
+$$\gamma_{XY}(s, t) = \text{Cov}(X_s, Y_t) = \mathbb{E}[(X_s - \mu_{X,s})(Y_t - \mu_{Y,t})]$$
+
 The **cross-correlation function** is its normalized version:
-$$
-\rho_{XY}(s, t) = \frac{\gamma_{XY}(s, t)}{\sqrt{\text{Var}(X_s)\text{Var}(Y_t)}}
-$$
+
+$$\rho_{XY}(s, t) = \frac{\gamma_{XY}(s, t)}{\sqrt{\text{Var}(X_s)\text{Var}(Y_t)}}$$
+
+</div>
 
 ### 3.3 Stationarity and Ergodicity
 
 #### 3.3.1 Strong (Strict) Stationarity
 
-**Definition (Strong Stationarity):** Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is strongly stationary if for any choice of time points $t_1, \dots, t_m \in I$, the joint probability distribution of $(X_{t_1}, \dots, X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, \dots, X_{t_m+h})$, provided all time points remain in $I$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
 
-$$
-(X_{t_1}, \dots, X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, \dots, X_{t_m+h})
-$$
+Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is strongly stationary if for any choice of time points $t_1, \dots, t_m \in I$, the joint probability distribution of $(X_{t_1}, \dots, X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, \dots, X_{t_m+h})$, provided all time points remain in $I$.
+
+$$(X_{t_1}, \dots, X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, \dots, X_{t_m+h})$$
 
 where $\stackrel{d}{=}$ denotes equality in distribution.
+
+</div>
 
 * Strong stationarity is a statement about the entire joint distribution ("laws") of the process, which must be invariant to shifts in time.
 * This is a foundational assumption for many time series models.
@@ -639,11 +722,18 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 #### 3.3.2 Weak Stationarity
 
-**Definition (Weak Stationarity):** A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is **weakly stationary** (or covariance stationary) if it satisfies the following three conditions:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weak Stationarity)</span></p>
+
+A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is **weakly stationary** (or covariance stationary) if it satisfies the following three conditions:
 1.  The mean is constant for all $t$: $\mathbb{E}[X_t] = \mu$.
 2.  The variance is finite for all $t$: $\mathbb{E}[X_t^2] < \infty$.
 3.  The autocovariance between any two points depends only on their time lag $h = t-s$:
-    * $\gamma_{XX}(s, t) = \gamma_{XX}(s, s+h) = \gamma_X(h)$
+  
+  $$\gamma_{XX}(s, t) = \gamma_{XX}(s, s+h) = \gamma_X(h)$$
+
+</div>
 
 * Strong stationarity implies weak stationarity (provided the first two moments exist). The reverse is not generally true.
 * For a Gaussian process, weak stationarity implies strong stationarity, because the entire distribution is defined by its first two moments (mean and covariance).
@@ -651,11 +741,19 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 #### 3.3.3 Ergodicity
 
-**Definition (Ergodicity):** A stationary process is **ergodic** if its time average converges to its ensemble average (expected value) almost surely as the time horizon grows to infinity. For the mean:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
 
-$$
-\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu
-$$
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ergodicity)</span></p>
+
+A stationary process is **ergodic** if its time average converges to its ensemble average (expected value) almost surely as the time horizon grows to infinity. For the mean:
+
+$$\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu$$
+
+</div>
 
 * Ergodicity allows us to infer properties of the entire process (the ensemble) from a single, sufficiently long sample path.
 * Ergodicity requires stationarity. It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
@@ -675,9 +773,8 @@ If a time series is non-stationary, it must often be transformed before standard
 * **High-pass filtering:** Transforming the series from the time domain to the frequency domain to remove low-frequency (trending) components.
 * **Differencing:** Creating a new series by taking the difference between consecutive observations, e.g., $y_t = x_t - x_{t-1}$.
 * **Detrending:** Fitting a deterministic trend (e.g., a linear function of time) and subtracting it from the data. For a linear trend $y_t = \beta_0 + \beta_1 t$, the detrended series is:
-    $x_t^{\ast} = x_t - (\hat{\beta}_0 + \hat{\beta}_1 t)$
-
----
+    
+  $$x_t^{\ast} = x_t - (\hat{\beta}_0 + \hat{\beta}_1 t)$$
 
 ## 4. Linear Regression
 
@@ -707,10 +804,13 @@ $$
 ### 4.3 Loss Function
 
 The most common loss function for linear regression is the **Sum of Squared Errors (SSE)**, also known as the **Least Squares Error (LSE)**. The objective is to find the parameter vector $\beta$ that minimizes this quantity:
+
 $$
 \text{LSE}(\beta) = \sum_{t=1}^T (y_t - \hat{y}_t)^2 = \sum_{t=1}^T (y_t - x_t^T \beta)^2
 $$
+
 In vector notation, this is:
+
 $$
 \text{LSE}(\beta) = (y - X\beta)^T(y - X\beta)
 $$
@@ -720,25 +820,25 @@ $$
 The optimal parameters $\hat{\beta}$ are found by minimizing the LSE loss function. This is achieved by taking the derivative of the loss function with respect to $\beta$ and setting it to zero.
 
 Expanding the LSE expression:
-$\text{LSE}(\beta) = y^Ty - y^TX\beta - \beta^TX^Ty + \beta^TX^TX\beta$
+
+$$\text{LSE}(\beta) = y^Ty - y^TX\beta - \beta^TX^Ty + \beta^TX^TX\beta$$
+
 Since $y^TX\beta$ is a scalar, it is equal to its transpose $(\beta^TX^Ty)$. Therefore:
 
-$$
-\text{LSE}(\beta) = y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta
-$$
+$$\text{LSE}(\beta) = y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta$$
 
 Now, we take the derivative with respect to the vector $\beta$:
 
-$$
-\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta)
-$$
+$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta)$$
 
 Using the matrix calculus rules:
 * $\frac{\partial(a^Tx)}{\partial x} = a$
 * $\frac{\partial(x^TAx)}{\partial x} = (A + A^T)x$
 
 The derivative is:
-$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + (X^TX + (X^TX)^T)\beta$
+
+$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + (X^TX + (X^TX)^T)\beta$$
+
 Since $X^TX$ is a symmetric matrix, $(X^TX)^T = X^TX$. The derivative simplifies to:
 
 $$
@@ -746,11 +846,15 @@ $$
 $$
 
 Setting the derivative to zero to find the minimum:
-$-2X^Ty + 2X^TX\hat{\beta} = 0$
-$2X^TX\hat{\beta} = 2X^Ty$
-$X^TX\hat{\beta} = X^Ty$
+
+$$-2X^Ty + 2X^TX\hat{\beta} = 0$$
+
+$$2X^TX\hat{\beta} = 2X^Ty$$
+
+$$X^TX\hat{\beta} = X^Ty$$
 
 The solution for $\hat{\beta}$, known as the ordinary least squares (OLS) estimator, is:
+
 $$
 \hat{\beta} = (X^TX)^{-1}X^Ty
 $$
@@ -832,10 +936,10 @@ $$
 L\_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta) = X^T X - X^T U \beta - \beta^T U^T X + \beta^T U^T U \beta
 $$
 
-
 2. **Compute the derivative with respect to $\beta$:**
    * Note that $X^T U \beta$ is a scalar, so it equals its transpose $\beta^T U^T X$. Using this, the loss is $L_{\text{LSE}}(\beta) = X^T X - 2\beta^T U^T X + \beta^T U^T U \beta$.
    * Using the matrix calculus rules $\frac{\partial(a^T x)}{\partial x} = a$ and $\frac{\partial(x^T A x)}{\partial x} = (A + A^T)x$:
+     
      $$
      \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (X^T X - 2\beta^T U^T X + \beta^T U^T U \beta)
      $$
@@ -845,11 +949,13 @@ $$
      $$
 
    * Since $U^T U$ is symmetric, $(U^T U)^T = U^T U$.
+     
      $$
      \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = -2U^T X + 2U^T U \beta
      $$
 
 3. **Set the derivative to zero and solve for $\beta$:**
+    
     $$
     -2U^T X + 2U^T U \hat{\beta} = 0
     $$
@@ -863,6 +969,7 @@ $$
     $$
 
 4. Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
+    
     $$
     \hat{\beta}\_{\text{LS}} = (U^T U)^{-1} U^T X
     $$
@@ -938,13 +1045,19 @@ One way to address a non-linear relationship between predictors and the response
 
 Suppose we have a set of predictors $u_t = (u_{1t}, \dots, u_{pt})^T$.
 
-**Definition (Basis Expansion Model):** The model architecture is extended by introducing a set of $K$ basis functions, $\phi_k(\cdot)$:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Basis Expansion Model)</span></p>
+
+The model architecture is extended by introducing a set of $K$ basis functions, $\phi_k(\cdot)$:
 
 $$
 x_t = \beta_0 + \sum_{k=1}^K \beta_k \phi_k(u_t) + \epsilon_t
 $$
 
 where $\phi_k(\cdot)$ are chosen functions that transform the original predictor vector $u_t$. This model is still linear in the parameters $\beta_k$, so the standard LSE and MLE solutions still apply, but with a new design matrix whose columns are the transformed predictors $\phi_k(u_t)$.
+
+</div>
+
 
 **Common Choices for Basis Functions:**
 
@@ -2862,7 +2975,7 @@ For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a
 - **Maximum Likelihood Estimation:** The log-likelihood, assuming conditional independence of the individual processes given the past, is:
   
   $$
-  \ell(\{c, A_j\}) = \sum_{t=p+1}^{T} \sum_{i=1}^{N} \log P(C_{it} \mid \text{past})
+  \ell(\lbrace c, A_j\rbrace) = \sum_{t=p+1}^{T} \sum_{i=1}^{N} \log P(C_{it} \mid \text{past})
   $$
 
   Substituting the Poisson PMF, $\log P(C_{it}) = C_{it} \log(\lambda_{it}) - \lambda_{it} - \log(C_{it}!)$, and our model for $\lambda_{it}$:
