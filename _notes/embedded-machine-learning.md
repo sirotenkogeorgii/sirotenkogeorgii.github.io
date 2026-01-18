@@ -2243,152 +2243,81 @@ Convolutions remain the core primitive for vision but are computationally expens
 
 
 
-Below is a **formal, study-ready reformatted version** with clearer hierarchy and **highlighting via callouts, emphasis, and “Key idea / Formula / Embedded note” blocks**. Meaning is unchanged; only formatting and readability are improved.
-
----
-
-# Chapter 1 — The High Cost of Deep Learning on Embedded Systems
+# Lecture 7 — Unsafe Optimizations 1
 
 Deep Neural Networks (DNNs) deliver state-of-the-art accuracy in vision and language, but they are inherently **compute- and memory-intensive**. This creates a deployment barrier on embedded devices, where **power, memory, and compute throughput** are strictly limited.
 
-> **Key problem**
-> Modern DNN accuracy is purchased with high FLOPs, large parameter storage, and large runtime activation memory.
+**Key problem**: Modern DNN accuracy is purchased with high FLOPs, large parameter storage, and large runtime activation memory.
+**Embedded objective**: Reduce FLOPs, parameter storage, and activation memory **aggressively**, while maintaining acceptable accuracy.
 
----
-
-## 1.1 Defining the Resource Challenge
-
-Embedded ML aims to close the gap between:
-
-* **DNN resource demand**, and
-* **edge device capability** (MCU/DSP/NPU constraints).
-
-### Example: ImageNet @ 224×224 (ResNet50)
-
-A baseline architecture such as ResNet50 requires:
-
-* **Compute:** **3.9 GFLOPs** per inference
-* **Parameters (weights):** **102 MB**
-* **Runtime activations:** **187 MB**
-
-These requirements typically exceed the available SRAM and compute budget of many embedded targets.
-
-> **Embedded objective**
-> Reduce FLOPs, parameter storage, and activation memory **aggressively**, while maintaining acceptable accuracy.
-
----
-
-## 1.2 Trade-Off: Accuracy vs. Efficiency
+## Trade-Off: Accuracy vs. Efficiency
 
 Model performance correlates strongly with model complexity:
-
-* deeper/wider models → typically higher accuracy
-* but also → more FLOPs, more parameters, larger activations
-
-### Observed trends (from course graphs)
-
-The materials compare architectures (ResNet/ResNeXt/DenseNet/MobileNet) across three axes:
-
-1. **Accuracy vs. FLOPs**
-
-   * Higher GFLOPs usually increases Top-1 accuracy.
-   * Example anchor: **ResNet50 ≈ 3.87 GFLOPs → ~76% Top-1**.
-   * **ResNeXt** pushes beyond ~8 GFLOPs for smaller accuracy gains.
-   * **MobileNet** families operate below ~1 GFLOP with reduced accuracy but large compute savings.
-
-2. **Accuracy vs. Parameters**
-
-   * More parameters often correlate with better accuracy.
-   * Example anchor: **ResNet50 ≈ 102 MB** weights.
-
-3. **Accuracy vs. Activations**
-
-   * Runtime memory is a major bottleneck on embedded targets.
+* **deeper/wider models** $\implies$ typically **higher accuracy**
+* but also $\implies$ **more FLOPs, more parameters, larger activations**
+* **Runtime memory** is a major bottleneck on embedded targets.
    * Example anchor: **ResNet50 ≈ 187 MB** activations.
 
-> **Key takeaway**
-> Embedded deployment requires navigating an explicit **accuracy–resource trade-off**: reduce FLOPs and memory with minimal accuracy loss.
+**Key takeaway**: Embedded deployment requires navigating an explicit **accuracy–resource trade-off**: reduce FLOPs and memory with minimal accuracy loss.
 
----
 
-# Chapter 2 — A Framework for Model Optimization
-
-Optimizing a DNN for embedded deployment is a multi-layer problem. Effective design requires a holistic view across architecture, algorithms, and hardware.
-
----
-
-## 2.1 The DNN Compute Stack
-
-Efficient deployment can be viewed as a layered stack:
-
-1. **Neural architecture**
-   Defines the structure of computation and memory access patterns; largest leverage.
-
-2. **Compression & algorithm**
-   Techniques applied to a chosen architecture (e.g., **quantization**, **pruning**).
-
-3. **Hardware**
-   Execution substrate (CPU/GPU/DSP/NPU/ASIC/FPGA) determines what optimizations translate to real gains.
-
-> **HW–ML Interplay (principle)**
-> An algorithmic idea only produces speed/energy benefits if the hardware can exploit it (e.g., 1-bit compute needs fast bitwise datapaths).
-
----
-
-## 2.2 Safe vs. Unsafe Optimizations
+## Safe vs. Unsafe Optimizations
 
 Optimizations can be classified by whether they can change the model’s output.
 
----
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Safe optimization)</span></p>
 
-### Safe Optimizations (accuracy-preserving)
+**Safe optimization** methods reduce resources without changing accuracy.
 
-**Definition:** reduce resources without changing accuracy.
-
-**Characteristics**
-
+**Characteristics:**
 * guaranteed preservation of model behavior
 * typically hardware/system-level improvements
 
-**Examples**
+Safe optimizations are “free” in accuracy, but **require careful hardware/system design**.
 
-* shorter communication paths (layout / interconnect optimization)
-* data reuse (caching weights/activations; exploiting locality)
-* dedicated compute architectures (e.g., systolic arrays for GEMM)
+</div>
 
-> **Highlight**
-> Safe optimizations are “free” in accuracy, but require careful hardware/system design.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Safe optimization methods)</span></p>
 
----
+* **shorter communication paths** (layout / interconnect optimization)
+* **data reuse** (caching weights/activations; exploiting locality)
+* **dedicated compute architectures** (e.g., systolic arrays for GEMM)
 
-### Unsafe Optimizations (accuracy-risking)
+</div>
 
-**Definition:** modify the model/representation to reduce intrinsic cost, potentially affecting accuracy.
 
-**Characteristics**
-
-* may degrade accuracy; must be measured/mitigated
-* core “engineering” challenge in embedded ML
-
-**Examples**
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unsafe Optimization)</span></p>
 
 * **pruning** (remove weights/structures)
 * **quantization** (reduce numerical precision: FP32 → INT8 → binary)
 
-> **Key point**
-> Most embedded ML performance gains come from unsafe optimizations applied carefully.
+</div>
 
----
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Unsafe optimization methods)</span></p>
 
-# Chapter 3 — The Physics of Computation: Energy and Precision
+**Unsafe optimization** methods modify the model/representation to reduce intrinsic cost, potentially affecting accuracy.
+
+**Characteristics:**
+* may degrade accuracy; must be measured/mitigated
+* core “engineering” challenge in embedded ML
+
+Most embedded ML performance gains come from unsafe optimizations applied carefully.
+
+</div>
+
+## The Physics of Computation: Energy and Precision
 
 Energy and latency depend strongly on:
 * **numerical format (bit-width)**
 * **data movement** (cache vs DRAM)
 
-> **Central principle:** Computation is often cheaper than memory access; optimizing data movement is crucial.
+**Central principle:** Computation is often cheaper than memory access; optimizing data movement is crucial.
 
-## 3.1 Numerical Formats: Floating-Point vs Fixed-Point
+### Numerical Formats: Floating-Point vs Fixed-Point
 
 Here we will focus on the **trade-offs between hardware efficiency (energy/area) and numerical precision**. In modern computing — especially for Artificial Intelligence and Deep Learning — we are moving away from high-precision "perfect" math toward "good enough" math because it is significantly cheaper and faster.
 
@@ -2411,6 +2340,9 @@ To represent **12.75** in standard 32-bit Floating Point (IEEE 754):
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definiton</span><span class="math-callout__name">(Scientific notation, Multiplication)</span></p>
+
 Floating-point provides large dynamic range; Below is scientific notation for computers. **Formula:**
 
 $$v = (-1)^S \cdot (1 + F) \cdot 2^{(E-\text{bias})}$$
@@ -2421,16 +2353,19 @@ $$P_s=A_s \oplus B_s \qquad P_E = A_E + B_E \qquad P_F = A_F \cdot B_F$$
   * **sign bit** $S$ (positive or negative).
   * **exponent/fraction** $E$ (moves the decimal point, allowing for huge ranges).
   * **significand** $F$ (the actual digits).
+
+</div>
+
 * **The Distribution Problem:** Floating point is "dense" near zero. The slide notes that half of all representable numbers fall between $−1$ and $1$. This is great for weights in neural networks, which are usually small.
-* Complexity: Floating point hardware is much more complex because to multiply two numbers, you have to add their exponents ($P_E=A_E+B_E$) and multiply their fractions ($P_F=A_F\dot B_F$) separately.
+* **Complexity:** Floating point hardware is much more complex because to multiply two numbers, you have to add their exponents ($P_E=A_E+B_E$) and multiply their fractions ($P_F=A_F\dot B_F$) separately.
 * **Cost:** FPUs are large and power-hungry relative to integer units.
 
 | Format   | Sign | Exponent | Significand | Dynamic range                     |
 | -------- | ---- | -------- | ----------- | --------------------------------- |
-| float64  | 1    | 11       | 52          | $\sim 2\times 10^{\pm308}$        |
-| float32  | 1    | 8        | 23          | $\sim 2\times 10^{\pm38}$         |
-| float16  | 1    | 5        | 10          | $\sim 10^{-4} to 10^{+5}$       |
-| bfloat16 | 1    | 8        | 7           | similar exponent range to float32 |
+| float64  | 1b    | 11b       | 52b          | $\sim 2\times 10^{\pm308}$        |
+| float32  | 1b    | 8b        | 23b          | $\sim 2\times 10^{\pm38}$         |
+| float16  | 1b    | 5b        | 10b          | $\sim 10^{-4}$ to $10^{+5}$       |
+| bfloat16 | 1b    | 8b        | 7b           | similar exponent range to float32 |
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The "bfloat16" Revolution)</span></p>
@@ -2460,7 +2395,7 @@ You might wonder: *Why would we want less precision?* In Deep Learning, "Range" 
 * **bfloat16** handles these tiny numbers easily. AI researchers found that neural networks are "robust"—they don't mind if the numbers are a little blurry (low precision), as long as the numbers don't disappear entirely (dynamic range).
 
 **The "Hardware Area" Trade-off**
-The lecture mentions: `mult: {Energy, Area} ∝ N^2[bits]`. This is a hidden win for bfloat16.
+The lecture mentions: `mult: {Energy, Area} \propto N^2[bits]`. This is a hidden win for bfloat16.
 * The physical size of a multiplier on a chip depends mostly on the **significand (fraction)** bits.
 * Since bfloat16 only has **7 bits** of fraction (compared to float16's 10 bits), a bfloat16 multiplier is physically **smaller and uses less energy** on the silicon than a float16 multiplier, even though they both use 16 bits total.
 
@@ -2478,7 +2413,7 @@ The lecture mentions: `mult: {Energy, Area} ∝ N^2[bits]`. This is a hidden win
 ### Fixed-point arithmetic (The "Cheap" Way)
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Fixed-Point)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed-Point)</span></p>
 
 In a fixed-point system, we decide ahead of time exactly where the "point" goes. Imagine we have an **8-bit** system where we decide the first 4 bits are for the whole number and the last 4 bits are for the fraction.
 * **The Number:** $12.75$
@@ -2491,24 +2426,22 @@ In a fixed-point system, we decide ahead of time exactly where the "point" goes.
 </div>
 
 Fixed-point uses integers with an implicit binary point:
-
-* smaller dynamic range than floating point
-* simpler hardware → better energy efficiency
+* **smaller dynamic range than floating point**
+* **simpler hardware → better energy efficiency**
 
 * **Scaling:** Addition complexity grows linearly with the number of bits ($N$). Multiplication is much harder; it grows quadratically ($N^2$). If you double the bits, a multiplier becomes four times as large/expensive.
 * **The Trade-off:** Fixed point is very energy-efficient but has a **small dynamic range**. You can’t represent a very tiny number and a very huge number at the same time without losing precision.
 
-> **Highlight**
-> Quadratic multiplier scaling creates strong pressure to reduce precision.
+> **Highlight:** Quadratic multiplier scaling creates strong pressure to reduce precision.
 
 | Feature | Fixed-Point (e.g., `1100.1100`) | Floating-Point (e.g., $1.10011 \times 2^3$) |
 | :--- | :--- | :--- |
-| **Metaphor** | A **Ruler**: The marks are always the same distance apart. | A **Map**: You can zoom in for high detail or zoom out to see the whole world. |
+| **Metaphor** | **Ruler**: The marks are always the same distance apart. | **Map**: You can zoom in for high detail or zoom out to see the whole world. |
 | **Precision** | Always the same (e.g., always accurate to 0.01). | High precision for small numbers; low precision for huge numbers. |
 | **Hardware** | Very simple (uses the Integer Unit). | Complex (requires a dedicated Floating Point Unit). |
 | **Best Use** | Money (cents), simple sensors, or low-power microcontrollers. | 3D Graphics, AI training, and complex physics simulations. |
 
-## 3.2 The Picojoule Economy: Energy Costs
+### The Picojoule Economy: Energy Costs
 
 This is the "So What?" table. It uses data from Mark Horowitz (a famous Stanford professor) to show that **energy is the ultimate constraint in computing**.
 
@@ -2531,22 +2464,22 @@ Energy varies dramatically by operation type.
 | DRAM access  | —         | 1300–2600   | $~100×$ cache |
 
 **1. The Energy Gap (Integer vs. Floating Point)**
-Look at the tables. An 8-bit Integer Add costs **0.03 pJ**, while a 16-bit Floating Point Add costs **0.4 pJ**.
+* Look at the tables. An 8-bit Integer Add costs **0.03 pJ**, while a 16-bit Floating Point Add costs **0.4 pJ**.
 * **Takeaway:** Floating point operations are roughly **10x more expensive** in terms of energy than integer operations. If you can do your math with integers (Fixed Point), your battery lasts 10x longer.
 
 **2. The Scaling Law**
-The slide reiterates: **ADD scales with $n$, MULT with $n^2$**. A 32-bit integer addition costs **0.1 pJ**.
+* The slide reiterates: **ADD scales with $n$, MULT with $n^2$**. A 32-bit integer addition costs **0.1 pJ**.
 * A 32-bit integer multiplication costs **3.1 pJ**.
 * **Takeaway:** Multiplications are the "energy hogs" of computing. This is why researchers try to design neural networks that use more additions and fewer multiplications.
 
 **3. The "Memory Wall" (The Most Important Part)**
-Look at the **Memory** table on the right.
+* Look at the **Memory** table on the right.
 * A 32-bit Floating Point multiplication costs **3.7 pJ**.
 * Reading that same number from **DRAM (Main Memory)** costs **1300–2600 pJ**.
 * **The Shocking Truth:** It costs **hundreds of times more energy** to simply "fetch" a number from memory than it does to actually perform the math.
 
 
-### Key takeaways
+#### Key takeaways
 
 1. **Memory access dominates energy.** DRAM is extremely expensive.
 2. **Precision is costly.** 32-bit mult ≫ 8-bit mult.
@@ -2563,21 +2496,43 @@ If you are designing a chip or software for something like a smartphone or a dat
 
 > **The final message:** "Need for reduced precision, avoid memory accesses." If you can follow those two rules, you can run much larger AI models on much smaller devices.
 
-# Chapter 4 — Quantization: Trading Precision for Performance
+## Quantization: Trading Precision for Performance
 
 While the previous topic compared different "languages" (float vs. fixed), this topic explains how to translate a high-precision model into a low-precision one. **Quantization** maps high-precision values to a discrete low-precision set. It is one of the most effective unsafe optimizations for embedded inference.
 
-## 4.1 Core Concept
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definiton</span><span class="math-callout__name">(Quantizer)</span></p>
 
-the "Quantizer" ($Q$), which is a mathematical function that maps a continuous range of numbers into a set of discrete "buckets". A quantizer $Q$ maps an input $x$ into discrete levels $\lbrace q_\ell\rbrace$, typically using thresholds $\lbrace\delta^\ell\rbrace$.
+The **Quantizer** $Q$, which is a mathematical function that maps a continuous range of numbers into a set of discrete "buckets". A quantizer $Q$ maps an input $x$ into discrete levels $\lbrace q_\ell\rbrace$, typically using thresholds $\lbrace\delta^\ell\rbrace$.
+
+</div>
+
+**Neural Network Application:** These functions are applied to three main areas of an AI model: the Weights (stored parameters), the Activations (outputs of each layer), and sometimes the Gradients (used during training).
+**Trade-off:** Quantization limits "model capacity," meaning the AI might become less "smart" because it can't represent subtle differences in data anymore.
+
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/weight_distribution.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quantization functions)</span></p>
 
 * **Piece-wise Constant Function:** The quantizer is like a staircase. Any input value falling within a certain "step" (interval) gets snapped to the same value (quantization level).
 * **Uniform vs. Non-Uniform:** 
   * **Uniform:** All the "steps" on the staircase are exactly the same height/width ($\Delta$). This is easy for hardware to compute but might not fit the data perfectly.
   * **Non-Uniform:** Steps can be different sizes (useful if you have many numbers near zero and few large numbers).
-* **Binary Quantization Example:** The simplest version is the **Sign Function**. If a number is $\ge 0$, it becomes $+1$. If it’s $< 0$, it becomes $-1$. This turns a complex floating-point number into a single bit ($0$ or $1$).
-* **Neural Network Application:** These functions are applied to three main areas of an AI model: the Weights (stored parameters), the Activations (outputs of each layer), and sometimes the Gradients (used during training).
-* **Trade-off:** Quantization limits "model capacity," meaning the AI might become less "smart" because it can't represent subtle differences in data anymore.
+* **Binary Quantization:** The simplest version is the **Sign Function**. If a number is $\ge 0$, it becomes $+1$. If it’s $< 0$, it becomes $-1$. This turns a complex floating-point number into a single bit ($0$ or $1$):
+
+$$
+Q(x)=
+\begin{cases}
++1 & x \ge 0 \\
+-1 & x < 0
+\end{cases}
+$$
+
+</div>
 
 | Type | Uniform | Non-Uniform | Bits |
 | --- | --- | --- | --- |
@@ -2588,15 +2543,35 @@ the "Quantizer" ($Q$), which is a mathematical function that maps a continuous r
 
 **Bits Column**: The number of binary bits required to store one value in that format.
 
+### Uniform Quantization
+
+Again, Quantizer $Q$: piece-wise constant function
+* Input values in given quantization interval mapped to corresponding quantization level
+* Apply to activations/weights(/gradients)
+
+$$Q(x) = \underbrace{q_l}_{\text{quantization level } l} \text{ if } x\in \underbrace{(t_l, t_{l+1}]}_{\text{quantization invervals}}$$
+
+Uniform quantization uses constant step size (all level are equidistant):
+
+$$q_{i+1} - q_i = \Delta \quad \forall i$$
+
+**Advantages**
+* **Hardware Efficiency:** Uniform quantization is preferred in hardware design because it makes it "easy to store  and compute" using standard bitwidths (like $\log_2(L)$ bits). Since intervals are equally spaced, you only need to store $\log_2(L)$ bits where $L$ is the number of levels
+* **No need to store thresholds:** Given min/max range and number of levels, you can compute any threshold
+
+**Disadvantages**
+* may waste representation capacity when distributions are non-uniform (e.g., bell-shaped weights)
+
+> **Important note:** "Keep activation function in mind when quantizing" - ReLU outputs are $[0,\infty)$ so you'd use asymmetric quantization, while tanh outputs [-1,1] so symmetric quantization works better.
+
 ### Uniform $k$-bit quantizer on $[0,1]$
 
 For $a_i \in [0,1]$:
 
 $$a_i^q = \frac{1}{2^k - 1}\cdot \mathrm{round}\big((2^k-1)a_i\big)$$
 
-Example: $k=2$ maps [0,1] into 5 representable values
+Example: $k=2$ maps $[0,1]$ into $5$ representable values
 $\lbrace 0, 0.25, 0.5, 0.75, 1\rbrace$ (as stated in the notes).
-
 
 Quantization can be applied to:
 * **weights**
@@ -2609,43 +2584,13 @@ Quantization can be applied to:
 
 **The Trade-off:** By visualizing 10 possible input values on the x-axis, one can mathematically reason about the error — the further the colored line is from the diagonal, the more "knowledge" the AI loses.
 
-> **Optimization goal**
-> Use the smallest bit-width that preserves acceptable accuracy.
+**Optimization goal:** Use the smallest bit-width that preserves acceptable accuracy.
 
-## 4.2 Uniform Quantization
-Again, Quantizer $Q$: piece-wise constant function
-* Input values in given quantization interval mapped to corresponding quantization level
-* Apply to activations/weights(/gradients)
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/uniform_quantization_k_bits.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
-$$Q(x) = \underbrace{q_l}_{\text{quantization level } l} \text{ if } x\in \underbrace{(t_l, t_{l+1}]}_{\text{quantization invervals}}$$
-
-Uniform quantization uses constant step size (all level are equidistant):
-
-$$q_{i+1} - q_i = \Delta \quad \foral i$$
-
-**Advantages**
-* **Hardware Efficiency:** Uniform quantization is preferred in hardware design because it makes it "easy to store  and compute" using standard bitwidths (like $\log_2(L)$ bits). Since intervals are equally spaced, you only need to store $\log_2(L)$ bits where $L$ is the number of levels
-* **No need to store thresholds:** Given min/max range and number of levels, you can compute any threshold
-
-**Disadvantages**
-* may waste representation capacity when distributions are non-uniform (e.g., bell-shaped weights)
-
-> **Important note:** "Keep activation function in mind when quantizing" - ReLU outputs are $[0,\infty)$ so you'd use asymmetric quantization, while tanh outputs [-1,1] so symmetric quantization works better.
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Sign Function \ Binary quantization)</span></p>
-
-$$
-Q(x)=
-\begin{cases}
-+1 & x \ge 0 \\
--1 & x < 0
-\end{cases}
-$$
-
-</div>
-
-## 4.3 Non-Uniform Quantization
+### Non-Uniform Quantization
 
 Non-uniform quantization allocates more levels where values are dense.
 
@@ -2656,7 +2601,7 @@ Non-uniform quantization allocates more levels where values are dense.
 * **Slightly more storage:** requires storing quantization levels (lookup tables) ($\log_2(L)$ bits + the levels)
 
 > **Highlight**
-> Learnable thresholds/scales allow the quantizer to adapt to layer-specific distributions (remmber bell curve figure).
+> Learnable thresholds/scales allow the quantizer to adapt to layer-specific distributions (remember bell curve figure).
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">(Trainable ternary quantizer)</span></p>
@@ -2675,12 +2620,12 @@ $\Delta_l = t\cdot\max(\lvert w\rvert);t\in [0,1]$
 
 </div>
 
-## 4.4 Hardware Acceleration and Low-Precision MACs
+### Hardware Acceleration and Low-Precision MACs
 
 DNNs are dominated by **MAC operations** (matrix multiplication/convolution): 
 
 ```python
-sum = sum + A_ik * B_kj
+sum = sum + A_ik * B_kj # <- Multiply-Accumulate (MAC) operation
 ```
 
 This **multiply-accumulate (MAC)** is the bottleneck operation repeated billions of times in deep learning. Lower precision enables more parallelism per area/energy.
@@ -2710,15 +2655,12 @@ The increased cycle count comes from **managing bit-width expansion** and **accu
 
 #### **1-Bit MAC (Binary) - 15 Cycles**
 
-This is the most radical optimization using **binary neural networks** (weights are $\mb 1$):
-* Multiplication by $\mb 1$ becomes just a **sign flip**
+This is the most radical optimization using **binary neural networks** (weights are $\pm 1$):
+* Multiplication by $\pm 1$ becomes just a **sign flip**
 * The slide shows **XNOR operations** instead of multiplications
 * Multiple **XOR gates** performing bitwise operations
 * **CNT (count)** operations to accumulate bit patterns
 * Multiple **ADD** stages to combine results
-<!-- * **32-bit MAC:** fewer parallel units; higher energy/area per MAC
-* **8-bit MAC:** many MACs can run in parallel within the same resources
-* **1-bit MAC:** multiplication becomes bitwise logic; accumulation becomes popcount -->
 
 #### In Hardware Terms
 
@@ -2753,12 +2695,17 @@ So yes, each individual 1-bit operation is slower (15 cycles vs 6), but you're r
 
 This is why modern AI accelerators (like Google's TPU) use massive arrays of low-precision arithmetic units rather than fewer high-precision ones!
 
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/qnns_eigen_extension.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
 ### XNOR-based binary multiplication
 
 > **`popc` instruction:** The popcnt instructions, short for population count, are used to count the amount of 1s in a numbers binary representation.
 > **`xnor` instruction:** Exclusive NOR instruction performs logical equality, outputting a high (1) if all inputs are the same (all 0s or all 1s) and a low (0) if inputs differ, essentially checking for similarity; while not a single common instruction in basic x86, it's implemented via XOR/NOT or specific vector instructions
 
 **Coding (XNOR):**
+
 | a | b | !(a^b) |
 | --- | --- | --- |
 | 0 | 0 | 1 |
@@ -2789,27 +2736,38 @@ For binary networks with $\lbrace -1,+1\rbrace$, map to $\lbrace 0, 1\rbrace$.
 > **Key idea**
 > Replace multiply-add with XNOR + popcount → extremely efficient on suitable hardware.
 
-## 4.5 Training Strategies for Quantized Networks
+## Training Strategies for Quantized Networks
 
 Applying quantization naively can significantly degrade accuracy. To counteract this, several training strategies have been developed.
 
-### 1) Post-Training Quantization (PTQ)
+### 1) Post-Training Quantization
 
-This is the simplest method. A fully trained, high-precision model is converted to a lower precision after training is complete. It **requires a small "calibration dataset"** (a representative sample of the training data) to **determine the quantization parameters** (e.g., scale and zero-point). While easy to apply, PTQ often **results in a noticeable loss of accuracy**, especially for very low bit-widths.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definiton</span><span class="math-callout__name">(Post-Training Quantization)</span></p>
 
-### 2) Quantization-Aware Training (QAT)
+A fully trained, high-precision model is converted to a lower precision after training is complete. It **requires a small "calibration dataset"** (a representative sample of the training data) to **determine the quantization parameters** (e.g., scale and zero-point). While easy to apply, PTQ often **results in a noticeable loss of accuracy**, especially for very low bit-widths.
+
+</div>
+
+### 2) Quantization-Aware Training
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definiton</span><span class="math-callout__name">(Quantization-Aware Training)</span></p>
 
 This method **simulates the effects of quantization during the training** itself:
 * **Forward Pass:** Weights and/or activations are "fake quantized." They are quantized to a low precision (e.g., 8-bit integer) and then immediately de-quantized back to high precision (e.g., 32-bit float) before being used in the computation. This injects quantization noise into the training, forcing the model to learn weights that are robust to this effect.
 * **Backward Pass:** Gradients are computed using the high-precision values, allowing for stable training updates.
 
-Planner Cypther rejected (forbidden_token); falling back to safe query.
-Planner Cypher rejected (with_clause_forbidden); falling back to safe query.
-Planner Cypher rejected (unknown_schema); falling back to safe query.
+</div>
 
 ### 3) Straight-Through Estimator (STE)
 
-A significant challenge in QAT is that the quantization function is piece-wise constant, meaning its gradient is zero or undefined everywhere. This would stall training. To overcome this, the **Straight-Through Estimator (STE)** is used. STE simply passes the gradient through the quantization function as if it were an identity function (i.e., assuming a gradient of 1). The gradient for a weight $w$ is approximated as:
+A significant challenge in QAT is that the quantization function is piece-wise constant, meaning its gradient is zero or undefined everywhere. This would stall training. To overcome this, the **Straight-Through Estimator (STE)** is used. 
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definiton</span><span class="math-callout__name">(Straight-Through Estimator)</span></p>
+
+**Straight-Through Estimator** simply passes the gradient through the quantization function as if it were an identity function (i.e., assuming a gradient of 1). The gradient for a weight $w$ is approximated as:
 
 $$
 \frac{\partial\mathcal{L}}{\partial w}
@@ -2818,6 +2776,8 @@ $$
 $$
 
 where $\tilde{f}'(w)$ is a surrogate derivative, often just set to 1. This allows the high-precision weights to be updated based on gradients computed from the quantized weights.
+
+</div>
 
 ### 4) Fine-tuning
 
@@ -2838,7 +2798,6 @@ where $\tilde{f}'(w)$ is a surrogate derivative, often just set to 1. This allow
 | HWGQ       | XNOR                       | 2-bit            |
 
 **Empirical trend:**
-
 Performance data for these methods on the AlexNet/ImageNet task shows that while extreme 1-bit quantization (BNN, XNOR) suffers a significant accuracy drop, more moderate schemes can approach the full-precision baseline. For example, TTQ (with 2-bit weights and 32-bit activations) achieves 79.7% Top-5 accuracy, very close to the 80.3% of the 32-bit baseline.
 
 **Graphs in the lecture illustrate these trade-offs:**
@@ -2849,18 +2808,18 @@ Performance data for these methods on the AlexNet/ImageNet task shows that while
 > Lower bits → strong memory/latency improvements, but accuracy recovers substantially by 2–3 bits depending on method.
 > **Key observation:** DNNs contain plenty of redundancy. Nonuniform quantization outperforms uniform quantization
 
-# Chapter 5 — Pruning: Engineering Sparsity in Neural Networks
+## Pruning: Engineering Sparsity in Neural Networks
 
 **Pruning** is another powerful unsafe optimization technique aimed at reducing model size and computational cost. It operates by removing "unimportant" connections or neurons from a trained network, effectively setting their corresponding weights to zero.
 
-## 5.1 Principle: Inspired by Nature
+### Principle: Inspired by Nature
 
 The concept of pruning is biologically inspired. A diagram titled "Evolution of Human Brain During Life" shows that the density of synaptic connections in the human brain peaks around age 6 and is then gradually reduced by age 14. This process of synaptic pruning is believed to refine and optimize neural circuits. Similarly, DNNs are often over-parameterized, containing significant redundancy that can be removed without harming, and sometimes even improving, generalization.
 
 > **Key hypothesis**
 > Many weights are not critical for prediction and can be eliminated with minimal accuracy loss (especially with retraining).
 
-## 5.2 Pruning Workflow and Criteria
+### Pruning Workflow and Criteria
 
 Pruning is not a single action but a process, typically involving three stages:
 1. **Train:** A standard, dense network is trained to convergence.
@@ -2873,7 +2832,7 @@ $$\text{Train} \rightarrow \text{Prune} \rightarrow \text{Fine-tune} \rightarrow
 
 to achieve higher levels of sparsity without catastrophic drops in accuracy. This contrasts with **one-shot pruning**, where the entire pruning process happens at once.
 
-### Common pruning criteria
+#### Common pruning criteria
 
 The critical question is which connections to remove. Common criteria include:
 * **Magnitude pruning:** Weights with the smallest absolute values are removed, based on the heuristic that they have the least influence on the network's output.
@@ -2887,11 +2846,11 @@ The critical question is which connections to remove. Common criteria include:
 > **Highlight**
 > Magnitude pruning is simple and widely used; gradient-based measures attempt to capture impact on loss.
 
-## 5.3 Granularity: Unstructured vs Structured Sparsity
+### Granularity: Unstructured vs Structured Sparsity
 
 Pruning granularity strongly affects hardware speedups.
 
-### Unstructured (fine-grained) pruning
+#### Unstructured (fine-grained) pruning
 
 This approach removes individual weights anywhere in the network based on the pruning criterion.
 
@@ -2907,7 +2866,7 @@ This approach removes individual weights anywhere in the network based on the pr
 > **Embedded note**
 > Unstructured sparsity often compresses storage but may not reduce latency unless hardware explicitly supports sparse compute efficiently.
 
-### Structured (coarse-grained) pruning
+#### Structured (coarse-grained) pruning
 
 This approach removes entire groups of weights at once, such as entire filters/channels in a convolutional layer or rows/columns in a fully connected layer:
 * channels/filters in CNNs
@@ -2949,17 +2908,17 @@ $$\Delta\alpha_i(t+1) := \mu\Delta\alpha_i(t)-\eta\frac{\partial J}{\partial\alp
 
 Surprisingly, **option 1 outperforms option 2**. Different learning dynamics, seen in weight distributions L2 produces unimodal, bimodal and trimodal distributions with clear distinctions, while L1 lacks those distinctions
 
-## 5.4 Impact of Retraining and Regularization
+### Impact of Retraining and Regularization
 
 Fine-tuning after pruning is mandatory to recover model accuracy. The process of pruning and retraining fundamentally alters the weight distribution of the model.
 
-### Observed weight distribution shift (from notes)
+#### Observed weight distribution shift (from notes)
 
 A diagram shows two histograms:
 1. **Weight distribution before pruning:** A typical Gaussian-like distribution centered narrowly around zero.
 2. **Weight distribution after pruning and retraining:** The distribution becomes bimodal. The peak at zero is gone (due to pruning), and the remaining weights have been pushed away from zero during retraining, forming two distinct clusters. This shows that retraining strengthens the remaining connections to compensate for those that were removed.
 
-### Role of regularization
+#### Role of regularization
 
 The choice of regularization during training also plays a role.
 

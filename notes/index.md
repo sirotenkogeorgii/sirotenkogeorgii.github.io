@@ -6,7 +6,7 @@ permalink: /notes/
 
 # Notes
 
-Long-form write-ups and study notes. Subscribe to stay in the loop:
+Long-form write-ups and study notes.
 
 <!-- - <a href="{{ '/feed.xml' | relative_url }}">RSS feed</a> -->
 
