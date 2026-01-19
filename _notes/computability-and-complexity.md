@@ -1984,6 +1984,170 @@ $\text{QBF} \in \text{PSPACE}$.
 
 </div>
 
+**Proof:**
+
+To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-space TM $M$ that evaluates any sentence $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ of length $n$. Inputs that are not sentences in prenex normal form are rejected outright. The machine maintains three binary words $w_1, w_2, w_3$, each of length $m$, on separate tapes:
+
+- Tape 1 ($w_1$) encodes the quantifier prefix, with bit $i$ equal to $1$ iff $Q_i$ is existential.
+- Tape 2 ($w_2$) is a pointer of the form $1^i 0^{m-i}$ indicating the current quantifier.
+- Tape 3 ($w_3$) stores the current truth assignment for $X_1, \dots, X_m$.
+
+Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. $\square$
+
+The recursion depth is $m \le n$ and each layer keeps only two values: result for the current var=0 and result for the current var=1.
+
+```python
+def evaluate_qbf(psi):
+    """
+    Python-style pseudocode (your version):
+    - Always evaluate BOTH branches for each quantified variable
+    - Combine results with max (EXISTS) or min (FORALL)
+    - Uses w3 as the current assignment; backtracking is done by overwriting w3[i]
+    """
+
+    if not is_prenex_qbf(psi):
+        return False
+
+    Q, X, phi = parse_prenex(psi)          # Q[i] in {"E","A"}
+    m = len(Q)
+
+    # w1: quantifier types (1 = EXISTS, 0 = FORALL)
+    w1 = [1 if Q[i] == "E" else 0 for i in range(m)]
+
+    # w3: current assignment (bits for X1..Xm)
+    w3 = [0] * m
+
+    def dfs(i):
+        if i == m:
+            return eval_phi(phi, X, w3)    # quantifier-free evaluation under current assignment
+
+        # evaluate branch Xi = 0
+        w3[i] = 0
+        r0 = dfs(i + 1)
+
+        # evaluate branch Xi = 1
+        w3[i] = 1
+        r1 = dfs(i + 1)
+
+        # combine results depending on quantifier
+        if w1[i] == 1:                     # EXISTS
+            return max(r0, r1)             # booleans: max = OR
+        else:                              # FORALL
+            return min(r0, r1)             # booleans: min = AND
+
+    return dfs(0)
+```
+
+<div class="accordion">
+  <details markdown="1">
+    <summary>Evaluating $\phi$ still fits in polynomial space</summary>
+
+Good question — this is *exactly* where people get suspicious about “are we really just using polynomial space?”.
+
+Short answer:
+Yes, we do need some extra memory to evaluate $\phi$ and store intermediate results — **but**:
+
+* we only ever evaluate $\phi$ for **one assignment at a time**,
+* we only need to keep intermediate results for **one path in $\phi$** at a time,
+* and that all fits in **$O(\lvert\phi\rvert) \le O(n)$** extra space.
+
+So we’re still safely in PSPACE.
+
+## 1. What does “evaluating $\phi$” actually involve?
+
+$\phi$ is a *quantifier-free* Boolean formula over variables $X_1,\dots,X_m$.
+On a given assignment $w_3$ (a bitstring telling you which $X_i$ are true/false), the job of the machine is:
+
+> Given $\phi$ on the **input tape** + assignment $w_3$ on **tape 3**, compute whether $\phi(w_3) = 1$ or $0$.
+
+The input tape is read-only and **does not count** towards space complexity.
+All extra “intermediate results” must go on work tapes, and we must show that’s only polynomially many cells.
+
+## 2. Two ways to see that evaluating $\phi$ is poly-space
+
+### View A: Recursive evaluation / stack
+
+Think of $\phi$ as a syntax tree: leaves are literals, internal nodes are $\land,\lor,\lnot$, etc.
+
+A very natural algorithm:
+
+1. Start at the root of $\phi$.
+2. Recursively evaluate its children.
+3. Combine child values using the operator $\land,\lor,\lnot,\dots$.
+4. Return a single bit (true/false).
+
+To implement this on a Turing machine, you keep something like a **stack** of:
+
+* “Where am I in $\phi$?” (position or subformula),
+* “Have I already evaluated the left child?”,
+* “What was the result of the child?” (just 1 bit),
+* “What operator is this node?” ($\land,\lor,\lnot$, etc.)
+
+The key facts:
+
+* The **depth** of this recursion/stack is at most the **size of $\phi$** (number of symbols), hence $\leq n$.
+* Each stack frame is **constant-size** (a few bits/flags + maybe an index into the input).
+
+So the total work-tape space for evaluating $\phi$ is:
+
+$$O(\text{depth}(\phi)) \cdot O(1) \le O(\lvert\phi\rvert) \le O(n).$$
+
+Plus the assignment $w_3$ (length $m \le n$). So overall still $O(n)$ space.
+
+Time can be exponential (because of the branching over quantifiers), but PSPACE cares only about **space**, not time.
+
+### View B: Super-space-frugal evaluation by rescanning
+
+If we want to be *extra* stingy with space, we can even avoid storing a big stack:
+
+* For example, if $\phi$ is in CNF (AND of clauses), we can:
+
+  * scan the input, clause by clause,
+  * for each clause, keep just:
+    * one “clause is satisfied?” bit,
+    * maybe an index while scanning,
+  * use assignment $w_3$ to tell if each literal is true.
+
+We *never* need to store all clause truth values at once — we can:
+
+* immediately reject if we find an unsatisfied clause,
+* otherwise, keep going until the end.
+
+Again, this uses **constant or logarithmic extra space** on top of the assignment, just at the cost of potentially rescanning the input multiple times.
+
+## 3. How this fits back into the lemma
+
+The lemma’s machine uses:
+
+* Tape 1: $w_1$ – quantifier types, length $m \le n$
+* Tape 2: $w_2$ – pointer, length $m \le n$
+* Tape 3: $w_3$ – assignment, length $m \le n$
+* Plus **some extra cells** to evaluate $\phi$ for the current $w_3$, as above:
+
+  * either a recursion stack of depth $\leq \lvert\phi\rvert \le n$, or
+  * a few bits for a streaming check.
+
+Total work-tape space used at any moment:
+
+$$O(m) + O(\text{space for evaluating }\phi) \le O(n) + O(n) = O(n),$$
+
+which is **polynomial** in the input length $n$.
+
+We do *not* store:
+* all intermediate results for **all** assignments,
+* or a full truth table,
+* or a big DP table over subformulas × assignments,
+
+because that would explode space. Instead, we:
+
+* only keep data for **one assignment** $w_3$ at a time (depth-first search through quantifiers),
+* only keep data for **one “path” in $\phi$** at a time (recursive evaluation, or multiple rescans).
+
+This is the classic **time–space tradeoff**: we’re happy to redo work (evaluate $\phi$ again and again) to save space.
+
+  </details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
 
@@ -1991,15 +2155,8 @@ $\text{QBF}$ is $\text{PSPACE}$-hard.
 
 </div>
 
-**Proof of PSPACE-Completeness for QBF.**
+<!-- **Proof of PSPACE-Completeness for QBF.** -->
 
-$\textbf{Lemma 89 (Membership):}$ To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-space TM $M$ that evaluates any sentence $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ of length $n$. Inputs that are not sentences in prenex normal form are rejected outright. The machine maintains three binary words $w_1, w_2, w_3$, each of length $m$, on separate tapes:
-
-- Tape 1 ($w_1$) encodes the quantifier prefix, with bit $i$ equal to $1$ iff $Q_i$ is existential.
-- Tape 2 ($w_2$) is a pointer of the form $1^i 0^{m-i}$ indicating the current quantifier.
-- Tape 3 ($w_3$) stores the current truth assignment for $X_1, \dots, X_m$.
-
-Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. $\square$
 
 <!-- <div class="accordion">
   <details markdown="1">
@@ -2151,117 +2308,9 @@ All of this reuses the same $O(m)$ space on tapes. The fact that the recursion d
   </details>
 </div> -->
 
-<div class="accordion">
-  <details markdown="1">
-    <summary>Evaluating $\phi$ still fits in polynomial space</summary>
+**Proof:**
 
-Good question — this is *exactly* where people get suspicious about “are we really just using polynomial space?”.
-
-Short answer:
-Yes, we do need some extra memory to evaluate $\phi$ and store intermediate results — **but**:
-
-* we only ever evaluate $\phi$ for **one assignment at a time**,
-* we only need to keep intermediate results for **one path in $\phi$** at a time,
-* and that all fits in **$O(\lvert\phi\rvert) \le O(n)$** extra space.
-
-So we’re still safely in PSPACE.
-
-## 1. What does “evaluating (\phi)” actually involve?
-
-$\phi$ is a *quantifier-free* Boolean formula over variables $X_1,\dots,X_m$.
-On a given assignment $w_3$ (a bitstring telling you which $X_i$ are true/false), the job of the machine is:
-
-> Given $\phi$ on the **input tape** + assignment $w_3$ on **tape 3**, compute whether $\phi(w_3) = 1$ or $0$.
-
-The input tape is read-only and **does not count** towards space complexity.
-All extra “intermediate results” must go on work tapes, and we must show that’s only polynomially many cells.
-
-## 2. Two ways to see that evaluating $\phi$ is poly-space
-
-### View A: Recursive evaluation / stack
-
-Think of $\phi$ as a syntax tree: leaves are literals, internal nodes are $\land,\lor,\lnot$, etc.
-
-A very natural algorithm:
-
-1. Start at the root of $\phi$.
-2. Recursively evaluate its children.
-3. Combine child values using the operator $\land,\lor,\lnot,\dots$.
-4. Return a single bit (true/false).
-
-To implement this on a Turing machine, you keep something like a **stack** of:
-
-* “Where am I in $\phi$?” (position or subformula),
-* “Have I already evaluated the left child?”,
-* “What was the result of the child?” (just 1 bit),
-* “What operator is this node?” ($\land,\lor,\lnot$, etc.)
-
-The key facts:
-
-* The **depth** of this recursion/stack is at most the **size of $\phi$** (number of symbols), hence $\leq n$.
-* Each stack frame is **constant-size** (a few bits/flags + maybe an index into the input).
-
-So the total work-tape space for evaluating $\phi$ is:
-
-$$O(\text{depth}(\phi)) \cdot O(1) \le O(\lvert\phi\rvert) \le O(n).$$
-
-Plus the assignment $w_3$ (length $m \le n$). So overall still $O(n)$ space.
-
-Time can be exponential (because of the branching over quantifiers), but PSPACE cares only about **space**, not time.
-
-### View B: Super-space-frugal evaluation by rescanning
-
-If we want to be *extra* stingy with space, we can even avoid storing a big stack:
-
-* For example, if $\phi$ is in CNF (AND of clauses), we can:
-
-  * scan the input, clause by clause,
-  * for each clause, keep just:
-    * one “clause is satisfied?” bit,
-    * maybe an index while scanning,
-  * use assignment $w_3$ to tell if each literal is true.
-
-We *never* need to store all clause truth values at once — we can:
-
-* immediately reject if we find an unsatisfied clause,
-* otherwise, keep going until the end.
-
-Again, this uses **constant or logarithmic extra space** on top of the assignment, just at the cost of potentially rescanning the input multiple times.
-
-## 3. How this fits back into the lemma
-
-The lemma’s machine uses:
-
-* Tape 1: $w_1$ – quantifier types, length $m \le n$
-* Tape 2: $w_2$ – pointer, length $m \le n$
-* Tape 3: $w_3$ – assignment, length $m \le n$
-* Plus **some extra cells** to evaluate $\phi$ for the current $w_3$, as above:
-
-  * either a recursion stack of depth $\leq \lvert\phi\rvert \le n$, or
-  * a few bits for a streaming check.
-
-Total work-tape space used at any moment:
-
-$$O(m) + O(\text{space for evaluating }\phi) \le O(n) + O(n) = O(n),$$
-
-which is **polynomial** in the input length $n$.
-
-We do *not* store:
-* all intermediate results for **all** assignments,
-* or a full truth table,
-* or a big DP table over subformulas × assignments,
-
-because that would explode space. Instead, we:
-
-* only keep data for **one assignment** $w_3$ at a time (depth-first search through quantifiers),
-* only keep data for **one “path” in $\phi$** at a time (recursive evaluation, or multiple rescans).
-
-This is the classic **time–space tradeoff**: we’re happy to redo work (evaluate $\phi$ again and again) to save space.
-
-  </details>
-</div>
-
-$\textbf{Lemma 90 (Hardness).}$ For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
+For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
 
 - the current state $q_k \in Q = \lbrace q_1, \dots, q_k\rbrace$,
 - the input-head position $j \in J = \lbrace 0, 1, \dots, n + 1\rbrace$,
@@ -4308,7 +4357,12 @@ Interactive proofs can be made public-coin (all verifier randomness revealed) an
 
 Verifiers as defined in Definition 132 use **private coins**, i.e., there random word is not known to the prover. In the **public coin** model, all random bits read by the verifier are sent to the prover. The random bits need not be revealed all at once but may sent in successive rounds. Furthermore, a interactive proof system is said to have completeness 1 or **perfect** completeness, if every input in the recognized language is accepted with probability 1.
 
-> **Remark 144**: The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3$-QBF, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3$-QBF, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
+
+</div>
 
 ### Interactive Proof Systems with the Zero-Knowledge Property
 
@@ -4436,7 +4490,12 @@ A language is recursively enumerable $\iff$ it is equal to the domain of a Turin
 
 Computability theory also extends the notion of computation from recognizing languages to computing functions. Because Turing machines are not guaranteed to halt, the functions they compute may not be defined for all inputs. These are known as partial functions.
 
-> **Remark 150**: For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place $x$, written as $\alpha(x) =\uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset of $A \times B$ that contains for every $x$ in $A$ exactly one pair of the form $(x, y)$, where then we let $f(x) = y$. A partial function from $A$ to $B$ is a subset of $A \times B$ that contains for every $x$ in $A$ at most one pair of the form $(x, y)$. If for given $x$ there is such a pair, the partial function $\alpha$ is defined at place $x$ (or on argument $x$), and we let $\alpha(x) = y$, also written as $\alpha(x) \downarrow = y$. Otherwise, the partial function $\alpha$ is undefined at place $x$, written as $\alpha(x) =\uparrow$. The domain $\text{dom } \alpha$ of $\alpha$ is the subset of $A$ of all places at which $\alpha$ is defined.
+
+</div>
 
 Recall that a total $k$-tape Turing machine computes a function by writing the output on its final tape. We now formalize this for machines that may not halt.
 
@@ -4453,55 +4512,68 @@ $$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \te
 Observe that the partial function $\phi_M$ is defined exactly on the arguments $w$ such that $M$ terminates on input $w$.
 </div>
 
-> **Remark:** It is important to separate: 
-> 1. **a partial function as a mathematical object**, from 
-> 2. **a procedure/algorithm that tries to compute it**.
->
-> **1. The General Case: Partial Functions (Pure Math)**
-> 
-> A **partial function** is a purely mathematical object. It is simply a mapping where some inputs in the domain might not have a corresponding output.
-> * **Does it have a Turing Machine?** Not necessarily.
-> * **How does it "behave" on undefined inputs?** It doesn't "behave" at all. It's just a set of pairs. If $x$ isn't in the domain, the pair simply doesn't exist. There is no "process," no "waiting," and no "machine."
->
-> **2. The Specific Case: Partial Computable Functions**
->
-> When we add the word "**computable**," we are specifically talking about the subset of partial functions that do have a Turing Machine associated with them.
-> * For these functions, we do "offload" the logic to a machine.
-> * The definition of a "Partial Computable Function" is literally: "A function for which there exists a Turing Machine that halts and returns the correct value for every $x$ in the domain, and fails to halt for every $x$ outside the domain."
->
-> So in the case of **partial functions (not computable)**, we apply the pure math definition of "undefined".
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-> **Remark:** Do we work with general partial (non-computable) functions and therefore without corresponding Turing Machine in computability theory?
-> In computability theory, **usually no**: we mostly work with **partial *computable*** functions, precisely *because* they have a corresponding effective procedure (Turing machine / program / partial recursive definition). But both notions exist, and it’s easy to mix them up:
-> 
-> **General partial functions**
-> A general partial function is just a set-theoretic object
-> 
-> $$\alpha:\subseteq \mathbb{N}\to\mathbb{N},$$
-> 
-> with no promise it’s computable. There are vastly more of these than computable ones (uncountably many vs. countably many). For such an $\alpha$, there may be **no** Turing machine that computes it. 
-> 
-> In that setting, “$\alpha(x)$ is undefined” is purely mathematical: $x\notin\mathrm{dom}(\alpha)$. No “behavior”.
->
-> Partial computable functions (the default in computability)
-> 
-> Here $\alpha$ is in the class usually denoted by $\varphi_e$, $\Phi_e$, etc.: there exists a TM $M$ such that
-> 
-> * if $\alpha(x)\downarrow$ (defined), $M(x)$ halts with output $\alpha(x)$,
-> * if $\alpha(x)\uparrow$ (undefined), $M(x)$ does not halt.
-> 
-> **This is where “undefined = loops forever” is a correct computational interpretation.**
+It is important to separate: 
+  1. **a partial function as a mathematical object**, from 
+  2. **a procedure/algorithm that tries to compute it**.
 
+**1. The General Case: Partial Functions (Pure Math)**
 
-> **Remark:** 
-> * For a **partial function** $\alpha$, saying “$\alpha(x)$ is undefined” simply means **$x$ is not in the domain** of $\alpha$. Formally, $\alpha:\subseteq \mathbb{N}\to\mathbb{N}$ and $x\notin\mathrm{dom}(\alpha)$.
-> * In computability, if $\alpha$ is a **partial computable** function computed by some Turing machine/program $M$ in the standard way (halt = produce output), then:
+A **partial function** is a purely mathematical object. It is simply a mapping where some inputs in the domain might not have a corresponding output.
+  * **Does it have a Turing Machine?** Not necessarily.
+  * **How does it "behave" on undefined inputs?** It doesn't "behave" at all. It's just a set of pairs. If $x$ isn't in the domain, the pair simply doesn't exist. There is no "process," no "waiting," and no "machine."
+  
+**2. The Specific Case: Partial Computable Functions**
+
+When we add the word "**computable**," we are specifically talking about the subset of partial functions that do have a Turing Machine associated with them.
+  * For these functions, we do "offload" the logic to a machine.
+  * The definition of a "Partial Computable Function" is literally: "A function for which there exists a Turing Machine that halts and returns the correct value for every $x$ in the domain, and fails to halt for every $x$ outside the domain."
+
+So in the case of **partial functions (not computable)**, we apply the pure math definition of "undefined".
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Do we work with general partial (non-computable) functions and therefore without corresponding Turing Machine in computability theory?
+In computability theory, **usually no**: we mostly work with **partial *computable*** functions, precisely *because* they have a corresponding effective procedure (Turing machine / program / partial recursive definition). But both notions exist, and it’s easy to mix them up:
+ 
+**General partial functions**
+A general partial function is just a set-theoretic object
+ 
+$$\alpha:\subseteq \mathbb{N}\to\mathbb{N},$$
+ 
+with no promise it’s computable. There are vastly more of these than computable ones (uncountably many vs. countably many). For such an $\alpha$, there may be **no** Turing machine that computes it. 
+ 
+In that setting, “$\alpha(x)$ is undefined” is purely mathematical: $x\notin\mathrm{dom}(\alpha)$. No “behavior”.
+
+Partial computable functions (the default in computability)
+ 
+Here $\alpha$ is in the class usually denoted by $\varphi_e$, $\Phi_e$, etc.: there exists a TM $M$ such that
+
+* if $\alpha(x)\downarrow$ (defined), $M(x)$ halts with output $\alpha(x)$,
+* if $\alpha(x)\uparrow$ (undefined), $M(x)$ does not halt.
 > 
-> $$\alpha(x)\ \text{undefined} \quad\Longleftrightarrow\quad M(x)\ \text{does not halt}.$$
-> 
-> So “loops forever on input $x$” is indeed equivalent to “the computed partial function is undefined at $x$”.
-> 
-> So, for a partial function $\alpha$, “$\alpha(x)$ is undefined” means $x\notin\mathrm{dom}(\alpha)$ (no value is assigned). In computability theory, when $\alpha$ is computed by a Turing machine $M$, this is equivalent to saying that $M$ does not halt on input $x$ (diverges/loops forever).
+**This is where “undefined = loops forever” is a correct computational interpretation.**
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+* For a **partial function** $\alpha$, saying “$\alpha(x)$ is undefined” simply means **$x$ is not in the domain** of $\alpha$. Formally, $\alpha:\subseteq \mathbb{N}\to\mathbb{N}$ and $x\notin\mathrm{dom}(\alpha)$.
+* In computability, if $\alpha$ is a **partial computable** function computed by some Turing machine/program $M$ in the standard way (halt = produce output), then:
+ 
+$$\alpha(x)\ \text{undefined} \quad\Longleftrightarrow\quad M(x)\ \text{does not halt}.$$
+ 
+So “loops forever on input $x$” is indeed equivalent to “the computed partial function is undefined at $x$”.
+ 
+So, for a partial function $\alpha$, “$\alpha(x)$ is undefined” means $x\notin\mathrm{dom}(\alpha)$ (no value is assigned). In computability theory, when $\alpha$ is computed by a Turing machine $M$, this is equivalent to saying that $M$ does not halt on input $x$ (diverges/loops forever).
+
+</div>
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
@@ -4519,7 +4591,12 @@ A partial computable function that is defined for all inputs (i.e., is total) is
 
 To facilitate a more mathematical treatment, we often work with natural numbers rather than strings. This is achieved by a simple encoding.
 
-> **Remark 153**: The words over the unary alphabet $\lbrace 1\rbrace$ can be identified with the set $\mathbb{N}$ of natural numbers by associating a word $w$ with its length: the empty word is identified with $0$, the word $1$ with $1$, and so on.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The words over the unary alphabet $\lbrace 1\rbrace$ can be identified with the set $\mathbb{N}$ of natural numbers by associating a word $w$ with its length: the empty word is identified with $0$, the word $1$ with $1$, and so on.
+
+</div>
 
 Using this identification, we can directly translate our definitions from languages to sets of natural numbers and from functions on strings to functions on numbers.
 
@@ -5304,7 +5381,12 @@ A set $A\subseteq \mathbb{N}$ is decidable $\iff$ a set $A$ and its complement $
 
 *Proof*: See exercises.
 
-> **Remark 166**: By the equivalences shown in this section, the four concepts of decidable and recursively enumerable set as well as partial computable and computable functions can be mutually defined in terms of each other via purely set-theoretical definition not involving computability. Consequently, instead of introducing all four concepts separately via Turing machines, we could have done so for any one of them, then defining the other three concept without further use of Turing machines. This indicates that all four concepts formalize the same intuitive notion of effectiveness.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+By the equivalences shown in this section, the four concepts of decidable and recursively enumerable set as well as partial computable and computable functions can be mutually defined in terms of each other via purely set-theoretical definition not involving computability. Consequently, instead of introducing all four concepts separately via Turing machines, we could have done so for any one of them, then defining the other three concept without further use of Turing machines. This indicates that all four concepts formalize the same intuitive notion of effectiveness.
+
+</div>
 
 ## Numberings
 
@@ -5914,12 +5996,16 @@ $$x \in A \iff f(x) \in B.$$
 
 The function $f$ transforms instances of problem $A$ into instances of problem $B$ while preserving the yes/no answer. This means that if we can solve $B$, we can use $f$ to solve $A$.
 
-> **Remark 181**: Let set $A$ be decidable and set $B$ be distinct from $\emptyset$ and $\mathbb{N}$. Then $A$ is m-reducible to $B$. In order to obtain a function $f$ that witnesses the latter, fix $b_0 \notin B$ and $b_1 \in B$, and let  
-> 
-> $$f(x) = \begin{cases} b_0, & \text{if } x \notin A, \\ b_1, & \text{if } x \in A. \end{cases}$$
-> 
-> On the other hand, there is just a single set that is m-reducible to $\emptyset$ since $A \le_m \emptyset$ implies $A = \emptyset$, and a similar statement holds for $\mathbb{N}$ in place of $\emptyset$. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets $A$ are m-reducible to $\emptyset$ and $\mathbb{N}$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
+Let set $A$ be decidable and set $B$ be distinct from $\emptyset$ and $\mathbb{N}$. Then $A$ is m-reducible to $B$. In order to obtain a function $f$ that witnesses the latter, fix $b_0 \notin B$ and $b_1 \in B$, and let  
+ 
+$$f(x) = \begin{cases} b_0, & \text{if } x \notin A, \\ b_1, & \text{if } x \in A. \end{cases}$$
+
+On the other hand, there is just a single set that is m-reducible to $\emptyset$ since $A \le_m \emptyset$ implies $A = \emptyset$, and a similar statement holds for $\mathbb{N}$ in place of $\emptyset$. This is considered to be an anomaly and, accordingly, m-reducibility is sometimes defined such that, in addition to the relationships valid according to Definition 180, all decidable sets $A$ are m-reducible to $\emptyset$ and $\mathbb{N}$.
+
+</div>
 
 <!-- $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive. -->
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -6082,9 +6168,14 @@ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$.
 
 M-reducibility also interacts cleanly with set complements. Let $\bar{X} = \mathbb{N} \setminus X$.
 
-> **Remark 187**: If $A \le_m B$ via a function $f$, then also $\bar{A} \le_m \bar{B}$ via $f$ because we have 
-> 
-> $$x \in \bar{A} \iff x \notin A \iff f(x) \notin B \iff f(x) \in \bar{B}$$ 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+If $A \le_m B$ via a function $f$, then also $\bar{A} \le_m \bar{B}$ via $f$ because we have 
+ 
+$$x \in \bar{A} \iff x \notin A \iff f(x) \notin B \iff f(x) \in \bar{B}$$ 
+
+</div>
 
 This leads to an important non-reducibility result.
 
@@ -6467,7 +6558,12 @@ An enumeration $x_0,x_1,\dots$ is **effective in** $B$ if $x_i=f(i)$ for some fu
 
 </div>
 
-> **Remark 202**: Similar to the unrelativized case, it can be shown that a set $A$ is recursively enumerable with oracle $B$ if and only if there exists an enumeration $x_0, x_1, \dots$ that is effective in $B$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Similar to the unrelativized case, it can be shown that a set $A$ is recursively enumerable with oracle $B$ if and only if there exists an enumeration $x_0, x_1, \dots$ that is effective in $B$.
+
+</div>
 
 <!-- $\textbf{Theorem 203:}$ Let A and B be sets. 
 * **(i)** $A$ is decidable in $B$ if and only if $A$ and the complement $\bar{A}$ of $A$ are recursively enumerable in $B$. 
