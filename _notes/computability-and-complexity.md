@@ -2001,7 +2001,7 @@ $\textbf{Lemma 89 (Membership):}$ To place $\text{QBF}$ inside $\text{PSPACE}$, 
 
 Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. $\square$
 
-<div class="accordion">
+<!-- <div class="accordion">
   <details markdown="1">
     <summary>States vs tapes intuition</summary>
 
@@ -2149,7 +2149,7 @@ All of this reuses the same $O(m)$ space on tapes. The fact that the recursion d
 * In space-bounded TMs, *states* store only constant-size control information (phase, a few flags), while all data that can grow with input size — like the quantifier prefix, index of the current quantifier, and the current variable assignment in the $\text{QBF}$ lemma — must be stored on the tapes, and that’s exactly how the $\text{QBF}→\text{PSPACE}$ proof is structured.
 
   </details>
-</div>
+</div> -->
 
 <div class="accordion">
   <details markdown="1">
