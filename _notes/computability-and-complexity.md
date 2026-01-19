@@ -652,7 +652,7 @@ Each symbol in the tape alphabet of $M'$ will represent a block of $d$ symbols f
 
 ##### The computation of $M'$ proceeds in two phases:
 
-1. Initialization Phase:
+1. **Initialization Phase:**
   * $M'$ translates its input from $M$'s alphabet $\Sigma$ to its own compressed alphabet $\Sigma'$.
   * It writes this new, compressed input onto its second tape.
   * Simultaneously, it overwrites the original input on the first tape with blank symbols.
@@ -661,7 +661,7 @@ Each symbol in the tape alphabet of $M'$ will represent a block of $d$ symbols f
   * A typical breakdown is:
    * **$n$** steps: one left-to-right pass over the $n$ input symbols while producing the compressed encoding.
    * **$\lceil n/d\rceil$** steps: move the head on tape 2 back to the *beginning* of the compressed string (its length is about $n/d$).
-2. Simulation Phase:
+2. **Simulation Phase:**
   * $M'$ simulates $d$ steps of $M$ using just $7$ of its own steps. To do this, $M'$ uses its finite control (its state) to store key information about $M$'s current configuration: $M$'s current state, and for each tape, the head position of $M$ within the larger macro-symbol that $M'$ is currently scanning.
   * In each simulation cycle, $M'$ needs to know the contents of the cells $M$'s heads are on, as well as the adjacent cells, to determine $M$'s next $d$ moves. A "relevant" cell for $M'$ is one that is currently scanned or is immediately to its left or right.
   * $M'$ first reads all symbols on its relevant cells by moving one step left and two steps right ($3$ steps total), **storing this information in its state**.
@@ -735,10 +735,10 @@ Let $t$ be a time bound, let $k \ge 2$, and let $L$ be a language in $\text{DTIM
 
 The core idea is to encode each symbol $a_j$ from $M'$s alphabet as a unique binary string. We can use the encoding where $a_j$ is represented by the string $1^j0^{r-j}$.
 
-1. Initialization Phase: On input $w, M'$ first translates $w$ into its binary-encoded form. Using a second tape, this can be done in $2r \lvert w \rvert$ steps: each symbol of $w$ is encoded with the sequence of the length $r$.
-2. Simulation Phase: $M'$ simulates the computation of $M$ step-by-step. To simulate a single step of $M$, $M'$ must:
-  * Read: Identify the symbol under each of $M$'s heads. This requires $M'$ to read the corresponding block of $r$ binary symbols on each of its tapes. While reading a block, $M'$ uses its state to remember its position within the block and the binary pattern it has seen so far.
-  * Write/Move: Based on $M$'s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
+1. **Initialization Phase:** On input $w, M'$ first translates $w$ into its binary-encoded form. Using a second tape, this can be done in $2r \lvert w \rvert$ steps: each symbol of $w$ is encoded with the sequence of the length $r$.
+2. **Simulation Phase:** $M'$ simulates the computation of $M$ step-by-step. To simulate a single step of $M$, $M'$ must:
+  * **Read:** Identify the symbol under each of $M$'s heads. This requires $M'$ to read the corresponding block of $r$ binary symbols on each of its tapes. While reading a block, $M'$ uses its state to remember its position within the block and the binary pattern it has seen so far.
+  * **Write/Move:** Based on $M$'s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
 
 Simulating one step of $M$ requires reading and potentially writing $k$ blocks of $r$ symbols each. This takes a constant number of steps proportional to $r$. Thus, a single step of $M$ can be simulated in $d \cdot r$ steps of $M'$ for some constant $d$. The total running time of $M'$ is therefore bounded by a constant multiple of $t(n)$, as required. The constant $d$ depends on on the size $r$ of the source alphabet. $\square
 
@@ -759,21 +759,19 @@ Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the
 
 #### The simulation proceeds as follows:
 
-1. Initialization: On input $w$, $M'$ first initializes its tape to represent the initial configuration of $M$. This involves writing $w$ onto the first track and placing head markers $(*)$ at the beginning of all head-position tracks.
-2. Simulation of a Single Step: To simulate one step of $M$, $M'$ performs a subroutine:
-  * (i) Scan and Read: $M'$ sweeps its single head across the entire active portion of its tape to find the $k$ head markers $(*)$. As it passes each marker, it notes the corresponding tape symbol from the content track and stores all $k$ symbols in its state.
-  * (ii) Update and Write: After collecting all necessary information, $M'$ knows what transition $M$ will make. It then performs a second sweep across the tape to update the tape contents and move the head markers $(*)$ one position left or right, as dictated by $M$'s transition function. It also updates the state of $M$, which is stored in its own finite control.
+1. **Initialization:** On input $w$, $M'$ first initializes its tape to represent the initial configuration of $M$. This involves writing $w$ onto the first track and placing head markers $(*)$ at the beginning of all head-position tracks.
+2. **Simulation of a Single Step:** To simulate one step of $M$, $M'$ performs a subroutine:
+  * **(i) Scan and Read:** $M'$ sweeps its single head across the entire active portion of its tape to find the $k$ head markers $(*)$. As it passes each marker, it notes the corresponding tape symbol from the content track and stores all $k$ symbols in its state.
+  * **(ii) Update and Write:** After collecting all necessary information, $M'$ knows what transition $M$ will make. It then performs a second sweep across the tape to update the tape contents and move the head markers $(*)$ one position left or right, as dictated by $M$'s transition function. It also updates the state of $M$, which is stored in its own finite control.
 
-Timing Analysis: The machine $M$ runs for at most $t(n)$ steps. This means that on any of its tapes, it can access at most $t(n)$ cells to the left and $t(n)$ cells to the right of the starting position. Therefore, the active portion of $M'$'s tape has a length of at most $2t(n)+1$.
+**Timing Analysis:** The machine $M$ runs for at most $t(n)$ steps. This means that on any of its tapes, it can access at most $t(n)$ cells to the left and $t(n)$ cells to the right of the starting position. Therefore, the active portion of $M'$'s tape has a length of at most $2t(n)+1$.
 
 Each simulation of a single step of $M$ requires $M'$ to make two full passes over this active portion. The time required for this is proportional to the length of the active tape, which is $O(t(n))$. So, simulating one step of $M$ takes at most $d \cdot t(n)$ steps for $M'$, for some constant $d$.
 
 Since $M$ makes at most $t(n)$ steps in total, the entire simulation on $M'$ requires at most $t(n) \times (d \cdot t(n)) = d \cdot t^2(n)$ steps. Thus, $M'$ runs in time $O(t^2(n))$. $\square$
 
-#### On the Requirement for Time Bounds
-
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On the Requirement for Time Bounds)</span></p>
 
 By definition, a time bound $t$ must satisfy $t(n) \ge n$. The latter requirement indeed makes sense because for other $t$, a $t(n)$-time bounded Turing machine is restricted to read a prefix of its input of constant length, hence cannot recognize any interesting language. For a proof, let $t$ be a function where $t(n) < n$ for infinitely many $n$. Let $M$ be a Turing machine that is $t(n)$-bounded in the sense that for almost all $n$ or, equivalently, for some $n_0$ and all $n \ge n_0$, on inputs of length $n$, the running time of $M$ is at most $t(n)$. Pick $n_1 \ge n_0$ such that $t(n_1) < n_1$. Then on all inputs of length greater than $n_1$, $M$ reads at most the first $n_1$ symbols of its input. For a proof by contradiction, assume there is a word $w$ of length $\lvert w \rvert > n_1$ such that $M$ on input $w$ reads at least the first $n_1 + 1$ symbols of its input. Let $u$ be the prefix of $w$ of length $n_1$. Then $M$ scans on input $u$ at least $n_1 + 1$ cells of its input tape, hence makes at least $n_1 > t(n_1) = t(\lvert u \rvert)$ steps, which contradicts the choice of $n_0$ and $n_1$.
 
@@ -1189,7 +1187,7 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
     
     $$\bigwedge_{i \in I} \left( \bigvee_{\ell \in L} A_{i,\ell} \right) \quad (2.13)$$
 
-  * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_{\ell}}, a_{\ell}, q_{k'_{\ell}}, a'_{\ell}, B_{\ell}$), where $B_{\ell}$ is the head movement ($L$, $R$, $S$). Let $\delta_{\ell}$ be in $\lbrace -1, 1, 0 \rbrace$ for $L$, $R$, $S$ respectively.
+  * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_{\ell}}$, $a_{\ell}$, $q_{k'_{\ell}}$, $a'_{\ell}$, $B_{\ell}$), where $B_{\ell}$ is the head movement ($L$, $R$, $S$). Let $\delta_{\ell}$ be in $\lbrace -1, 1, 0 \rbrace$ for $L$, $R$, $S$ respectively.
   * **A configuration is not halting if an instruction applies to it.**  
   
   $$\bigwedge_{(i,j,\ell) \in I \times J \times L^-} (Z_{i,k_\ell} \land P_{i,j} \land B_{i,j,a_\ell} \to \neg A_{i,0}) \quad (2.14)$$ 
@@ -1232,7 +1230,7 @@ For all $k \ge 3$, the language $\text{k-SAT}$ is $\text{NP}$-complete.
 
 To show that $\text{3-SAT}$ is $\text{NP}$-hard, we use the transitivity of $p$-$m$-reducibility. By Cook's Theorem, $\text{SAT}$ is $\text{NP}$-hard. Therefore, if we can show that $\text{SAT} \le_p^m \text{3-SAT}$, it follows that $\text{3-SAT}$ is also $\text{NP}$-hard.
 
-We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi'$ such that $\phi \in \text{SAT}$ if and only if $\phi' \in \text{3-SAT}$.
+We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi'$ such that $\phi \in \text{SAT} \iff \phi' \in \text{3-SAT}$.
 
 Let $\phi$ be a given propositional formula.
 
@@ -1430,7 +1428,7 @@ We can now formally define space usage and the corresponding complexity classes.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Space Usage)</span></p>
 
-The space usage of a deterministic Turing machine $M$ on input $w$ is:
+The **space usage** of a deterministic Turing machine $M$ on input $w$ is:
 
 $$
 \text{space}_M(w) =
@@ -1569,9 +1567,10 @@ We refer to $\text{NPSPACE}$ as the class of problems decidable in nondeterminis
 
 </div>
 
-### Example: The Directed Path Problem (DirPath)
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Directed Path Problem)</span></p>
 
-A canonical problem in $\text{NLOG}$ is determining reachability in a directed graph.
+A canonical problem in $\text{NLOG}$ is determining **reachability in a directed graph**.
 
 The problem is formalized as the language:
 
@@ -1587,6 +1586,8 @@ To show that $\text{DirPath}$ is in $\text{NLOG}$, we can construct a $(c \log n
 4.  If the machine reaches node $t$ within $n$ steps, it accepts. If it takes more than $n$ steps without reaching $t$, it rejects, preventing infinite loops in cyclic graphs.
 
 The machine only needs to store the current node and a step counter, both of which require $O(\log n)$ space. Thus, $\text{DirPath} \in \text{NLOG}$.
+
+</div>
 
 ### Bounding Computations of Space-Bounded Machines
 
@@ -1654,9 +1655,7 @@ A fundamental aspect of complexity theory is understanding the relationships bet
 
 Let $t$ be any time bound. A $t(n)$-time bounded Turing machine can access at most $t(n)+1$ cells on each work tape. With minor adjustments, we can ensure it is $t(n)$-space-bounded. This gives the immediate inclusions:
 
-$$
-\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n)) \text{ and } \text{NTIME}(t(n)) \subseteq \text{NSPACE}(t(n))
-$$
+$$\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n)) \text{ and } \text{NTIME}(t(n)) \subseteq \text{NSPACE}(t(n))$$
 
 </div>
 
@@ -1679,8 +1678,8 @@ The relationships in the second and third columns also hold for an arbitrary spa
 **Proof.**: The inclusions in the diagram can be justified as follows:
 
 1.  **Vertical Inclusions:** The inclusions from the first row to the second row (e.g., $\text{DTIME}(t(n)) \subseteq \text{NTIME}(t(n))$) hold by definition, as any deterministic Turing machine is a special case of a nondeterministic one.
-2.  **First Horizontal Inclusions:** The inclusions from the first column to the second (e.g., $\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$) are immediate from Remark 72.
-3.  **Second Horizontal Inclusions:** The inclusions from the second column to the third (e.g., $\text{DSPACE}(t(n)) \subseteq \text{DTIME}(2^{O(t(n))})$) are a direct consequence of Lemma 71. A deterministic machine can simulate a space-bounded machine by exploring its entire configuration graph. The number of configurations is bounded by $2^{O(t(n))}$, so the simulation takes time exponential in the space bound.
+2.  **First Horizontal Inclusions:** The inclusions from the first column to the second (e.g., $\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$) are immediate from the previous Remark.
+3.  **Second Horizontal Inclusions:** The inclusions from the second column to the third (e.g., $\text{DSPACE}(t(n)) \subseteq \text{DTIME}(2^{O(t(n))})$) are a direct consequence of the previous Lemma. A deterministic machine can simulate a space-bounded machine by exploring its entire configuration graph. The number of configurations is bounded by $2^{O(t(n))}$, so the simulation takes time exponential in the space bound.
 4.  **Diagonal Inclusions:** The diagonal inclusions are statements of other lemmas (Lemmas 75 and 76, not provided in the source context). $\square$
 
 These relationships give rise to a chain of inclusions among the major complexity classes.
@@ -1690,9 +1689,7 @@ These relationships give rise to a chain of inclusions among the major complexit
 
 The following inclusions hold.
 
-$$
-\text{LOG} \subseteq \text{NLOG} \subseteq \text{P} \subseteq \text{NP} \subseteq \text{PSPACE} \subseteq \text{NPSPACE} \subseteq \text{EXP} \subseteq \text{NEXP}
-$$
+$$\text{LOG} \subseteq \text{NLOG} \subseteq \text{P} \subseteq \text{NP} \subseteq \text{PSPACE} \subseteq \text{NPSPACE} \subseteq \text{EXP} \subseteq \text{NEXP}$$
 
 </div>
 
@@ -1705,8 +1702,6 @@ This chain represents our current understanding of the hierarchy of these classe
 * $\text{P} \neq \text{EXP}$
 * $\text{NP} \neq \text{NEXP}$
 * Beyond these results and their direct consequences (like $\text{P} \neq \text{NEXP}$), it is not known which of the other inclusion relations are strict. The most famous of these is the $\text{P}$ versus $\text{NP}$ problem.
-
----
 
 ### Relationships Between Time and Space Complexity Classes
 
@@ -1754,7 +1749,6 @@ This process systematically checks all possible computation paths up to the maxi
   </details>
 </div>
 
-
 **Second Construction of D**
 
 This construction is more efficient and performs an exhaustive **depth-first search** on the computation tree of $M$, using a backtracking algorithm.
@@ -1770,7 +1764,7 @@ This construction is more efficient and performs an exhaustive **depth-first sea
     * If no such $y'$ exists, it means all branches from $C_v$ have been explored, so $D$ backtracks further on $v$.
 4.  **Termination:** The entire search terminates either when an accepting configuration is found (and $D$ accepts) or when the process backtracks on the empty word (meaning all paths have been exhausted without finding an accepting state, and $D$ rejects).
 
-To determine $C_u$ and $C_v$, $D$ simulates the partial computations of $M$ coded by $u$ and $v$. This depth-first search guarantees that all configurations in the computation tree are visited. The machine $D$ is deterministic and recognizes the same language as $M$. The space required is dominated by the need to store a configuration of $M$ and the current path (coding word) on the index tape, both of which are bounded by $O(t(n))$. Therefore, $L \in \text{DSPACE}(t(n))$. ∎
+To determine $C_u$ and $C_v$, $D$ simulates the partial computations of $M$ coded by $u$ and $v$. This depth-first search guarantees that all configurations in the computation tree are visited. The machine $D$ is deterministic and recognizes the same language as $M$. The space required is dominated by the need to store a configuration of $M$ and the current path (coding word) on the index tape, both of which are bounded by $O(t(n))$. Therefore, $L \in \text{DSPACE}(t(n))$. $\square$
 
 #### Nondeterministic Space vs. Deterministic Time
 
@@ -1832,13 +1826,9 @@ Another important technical result is that constant factors in space bounds do n
 
 Linear compression refers to the following fact: for all space bounds $s$ and all constants $c$, every $c \cdot s(n)$-space-bounded Turing machine can be transformed into an $s(n)$-space-bounded Turing machine that recognizes the same language; in case the given Turing machine is deterministic, the new one can be chosen to be deterministic, too. Consequently, it holds for all such $s$ and $c \ge 1$ that
 
-$$
-\text{NSPACE}(c \cdot s(n)) = \text{NSPACE}(s(n))
-$$
+$$\text{NSPACE}(c \cdot s(n)) = \text{NSPACE}(s(n))$$
 
-$$
-\text{DSPACE}(c \cdot s(n)) = \text{DSPACE}(s(n))
-$$
+$$\text{DSPACE}(c \cdot s(n)) = \text{DSPACE}(s(n))$$
 
 This is achieved by encoding blocks of symbols from the original machine's tapes into single, more complex symbols on the new machine's tapes, or by using multiple work tapes to simulate one.
 
@@ -1869,9 +1859,7 @@ It holds that $\text{PSPACE} = \text{NPSPACE}$.
 
 The NTM $N$ accepts an input $x$ if and only if there is a computation path from the initial configuration $K_{initial}(x)$ to the accepting configuration $K_{accept}(x)$ of length at most $2^{\ell(n)}$. We denote this as:
 
-$$
-K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x) \quad (3.1)
-$$
+$$K_{initial}(x) \xrightarrow{\le 2^{\ell(n)}}_N K_{accept}(x) \quad (3.1)$$
 
 where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length at most $t$ from configuration $K$ to $K'$.
 
@@ -1893,15 +1881,11 @@ The process unfolds as follows:
 
 1.  To solve the main problem (which is 3.1), $M$ iterates through all configurations $K$ and checks if both:
 
-$$
-i. K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K
-$$
+$$(i) K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-1}}_N K$$
 
 and
 
-$$
-ii. K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)
-$$
+$$(ii) K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)$$
 
 2.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
     iii. $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$
@@ -1980,14 +1964,14 @@ Writing $\psi = Q_1 X_1 \cdots Q_m X_m \phi$ in prenex normal form assumes $\phi
 **The QBF Language.** The central decision problem for these formulas asks whether a sentence (a quantifier prefix followed by a quantifier-free matrix) is true.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Language QBF)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Language $\text{QBF}$)</span></p>
 
 $\text{QBF} = \lbrace \psi : \psi \text{ is a true sentence in prenex normal form}\rbrace$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(QBF is PSPACE-Complete)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">($\text{QBF}$ is $\text{PSPACE}$-Complete)</span></p>
 
 $\text{QBF}$ is $\text{PSPACE}$-complete, as captured by the following lemmas.
 
@@ -2058,48 +2042,50 @@ So, informally:
 
 When we do **space complexity**, we **only** count the number of tape cells used (usually on the work tapes). The states are considered “free” in the sense that they’re a fixed constant for that machine.
 
-2. **Applying this to Lemma 89 (QBF ∈ PSPACE)**
+2. **Applying this to Lemma 89 ($\text{QBF} \in \text{PSPACE}$)**
 
 You have the lemma:
 
-> Build a deterministic polynomial-space TM (M) that evaluates a QBF
-> (\psi = Q_1 X_1 \cdots Q_m X_m ,\phi) of length (n).
-> It maintains three binary words (w_1, w_2, w_3) of length (m) on three tapes:
+> Build a deterministic polynomial-space TM $M$ that evaluates a QBF
+> 
+> $\psi = Q_1 X_1 \cdots Q_m X_m ,\phi$ of length $n$.
+> 
+> It maintains three binary words $w_1, w_2, w_3$ of length $m$ on three tapes:
 >
-> * Tape 1 ((w_1)): quantifier types (existential or universal)
-> * Tape 2 ((w_2)): pointer to current quantifier
-> * Tape 3 ((w_3)): current truth assignment to (X_1,\dots,X_m)
+> * Tape 1 ($w_1$): quantifier types (existential or universal)
+> * Tape 2 ($w_2$): pointer to current quantifier
+> * Tape 3 ($w_3$): current truth assignment to $X_1,\dots,X_m$
 
 Let’s classify what is stored where.
 
 ### What is on tapes?
 
-Besides the **input tape** (holding the formula (\psi)), we have 3 work tapes:
+Besides the **input tape** (holding the formula $\psi$), we have 3 work tapes:
 
-1. **Tape 1: (w_1) = quantifier prefix**
+1. **Tape 1: $w_1$ = quantifier prefix**
 
    * Length (m) word.
-   * Bit (i = 1) iff (Q_i) is (\exists), and bit (i = 0) iff (Q_i) is (\forall).
+   * Bit $i = 1$ iff $Q_i$ is $\exists$, and bit $i = 0$ iff $Q_i$ is $\forall$.
    * This is information that depends on the input formula, so it must live on a tape.
 
-2. **Tape 2: (w_2) = pointer to “where we are” in the prefix**
+2. **Tape 2: $w_2$ = pointer to “where we are” in the prefix**
 
-   * Encoding (1^i 0^{m-i}) means: “we are currently processing quantifier (Q_i)”.
-   * Again, (i) can be as large as (m) (which is (O(n))), so it must be represented on a tape.
+   * Encoding $1^i 0^{m-i}$ means: “we are currently processing quantifier $Q_i$”.
+   * Again, $i$ can be as large as $m$ (which is $O(n)$), so it must be represented on a tape.
 
-3. **Tape 3: (w_3) = current assignment to variables**
+3. **Tape 3: $w_3$ = current assignment to variables**
 
-   * Length (m) word.
-   * Bit (i) is the current truth value chosen for (X_i).
-   * As we recurse/branch on quantifiers, we change bits in (w_3).
+   * Length $m$ word.
+   * Bit $i$ is the current truth value chosen for $X_i$.
+   * As we recurse/branch on quantifiers, we change bits in $w_3$.
    * This is clearly input-dependent and unbounded in general; must be on a tape.
 
-Additionally, when evaluating the propositional part (\phi) under the assignment in (w_3), the TM might use:
+Additionally, when evaluating the propositional part $\phi$ under the assignment in $w_3$, the TM might use:
 
-* A few extra **work cells** to scan (\phi): e.g., a small counter or a current “truth value so far”.
-  All of those are again stored on tapes and take (O(\log n)) or (O(1)) space each.
+* A few extra **work cells** to scan $\phi$: e.g., a small counter or a current “truth value so far”.
+  All of those are again stored on tapes and take $O(\log n)$ or $O(1)$ space each.
 
-Crucially: all these words/tapes have length (O(m) \le O(n)), so the total space is **polynomial in (n)**.
+Crucially: all these words/tapes have length $O(m) \le O(n)$, so the total space is **polynomial in $n$**.
 
 ### What lives in the *states* here?
 
@@ -2108,61 +2094,59 @@ The states implement the **control flow** of the recursive “algorithm”:
 * Whether we are:
 
   * checking that the input is in prenex normal form,
-  * initializing (w_1, w_2, w_3),
-  * processing a quantifier (Q_i),
-  * at “leaf level” with all variables assigned and now evaluating (\phi),
+  * initializing $w_1, w_2, w_3$,
+  * processing a quantifier $Q_i$,
+  * at “leaf level” with all variables assigned and now evaluating $\phi$,
   * combining results of two branches for a quantifier (existential / universal case),
   * moving the pointer to the next quantifier, or backtracking.
 
 Concretely, the machine’s states might encode things like:
 
-* `STATE_INIT` – set up (w_1, w_2, w_3).
-* `STATE_AT_QI` – we are about to branch on quantifier (Q_i).
-* `STATE_BRANCH_0` / `STATE_BRANCH_1` – we are exploring the subtree with (X_i = 0) or (X_i = 1).
-* `STATE_EVAL_PHI` – evaluate (\phi) under current assignment (w_3).
+* `STATE_INIT` – set up $w_1, w_2, w_3$.
+* `STATE_AT_QI` – we are about to branch on quantifier $Q_i$.
+* `STATE_BRANCH_0` / `STATE_BRANCH_1` – we are exploring the subtree with $X_i = 0$ or $X_i = 1$.
+* `STATE_EVAL_PHI` – evaluate $\phi$ under current assignment $w_3$.
 * `STATE_RETURN_EXIST_OK` / `STATE_RETURN_EXIST_FAIL` – existential quantifier result is true/false.
 * `STATE_RETURN_UNIV_OK` / `STATE_RETURN_UNIV_FAIL` – universal quantifier result is true/false.
 * Plus a few states to move the heads around, reset bits, etc.
 
-There are **finitely many** such states, independent of (n). They only encode:
+There are **finitely many** such states, independent of $n$. They only encode:
 
 * *Which phase* of the algorithm we’re in,
 * A few *Boolean flags* (e.g., “did we already find a satisfying branch?”),
 * Which operation should be done next (toggle a bit, move pointer, etc.).
 
-All the “big” information — which quantifier index (i) we’re on, the actual quantifier types, the assignment to variables — is represented explicitly on tapes.
+All the “big” information — which quantifier index $i$ we’re on, the actual quantifier types, the assignment to variables — is represented explicitly on tapes.
 
-### And what about “recursion depth = m ≤ n”?
+### And what about “recursion depth = $m \leq n$”?
 
 The lemma informally describes a **recursive** evaluation:
 
-* For quantifier (Q_i):
+* For quantifier $Q_i$:
 
-  * Try assignment (X_i = 0) and recursively evaluate the rest,
-  * Try (X_i = 1) and recursively evaluate the rest,
-  * Combine according to ∃ or ∀.
+  * Try assignment $X_i = 0$ and recursively evaluate the rest,
+  * Try $X_i = 1$ and recursively evaluate the rest,
+  * Combine according to $\exists$ or $\forall$.
 
 In the actual TM:
 
 * The **“depth”** is encoded just by:
 
-  * where the pointer (w_2) currently points (which (i)), and
-  * the current contents of (w_3) (current partial assignment).
+  * where the pointer $w_2$ currently points (which $i$), and
+  * the current contents of $w_3$ (current partial assignment).
 * We **don’t** keep a separate call stack like in a programming language. We do a depth-first search:
 
-  * modify (w_3) to set (X_i = 0),
-  * move the pointer forward (update (w_2)),
+  * modify $w_3$ to set $X_i = 0$,
+  * move the pointer forward (update $w_2$),
   * evaluate the rest,
-  * come back, modify (w_3) to set (X_i = 1),
+  * come back, modify $w_3$ to set $X_i = 1$,
   * evaluate again, etc.
 
-All of this reuses the same (O(m)) space on tapes. The fact that the recursion depth is (m) explains why **time** can be exponential, but **space** stays linear in (m).
-
----
+All of this reuses the same $O(m)$ space on tapes. The fact that the recursion depth is $m$ explains why **time** can be exponential, but **space** stays linear in $m$.
 
 **Summary in one sentence:**
 
-* In space-bounded TMs, *states* store only constant-size control information (phase, a few flags), while all data that can grow with input size — like the quantifier prefix, index of the current quantifier, and the current variable assignment in the QBF lemma — must be stored on the tapes, and that’s exactly how the QBF→PSPACE proof is structured.
+* In space-bounded TMs, *states* store only constant-size control information (phase, a few flags), while all data that can grow with input size — like the quantifier prefix, index of the current quantifier, and the current variable assignment in the $\text{QBF}$ lemma — must be stored on the tapes, and that’s exactly how the $\text{QBF}→\text{PSPACE}$ proof is structured.
 
   </details>
 </div>
@@ -2174,77 +2158,68 @@ All of this reuses the same (O(m)) space on tapes. The fact that the recursion d
 Good question — this is *exactly* where people get suspicious about “are we really just using polynomial space?”.
 
 Short answer:
-Yes, we do need some extra memory to evaluate (\phi) and store intermediate results — **but**:
+Yes, we do need some extra memory to evaluate $\phi$ and store intermediate results — **but**:
 
-* we only ever evaluate (\phi) for **one assignment at a time**,
-* we only need to keep intermediate results for **one path in (\phi)** at a time,
-* and that all fits in **(O(|\phi|) \le O(n))** extra space.
+* we only ever evaluate $\phi$ for **one assignment at a time**,
+* we only need to keep intermediate results for **one path in $\phi$** at a time,
+* and that all fits in **$O(\lvert\phi\rvert) \le O(n)$** extra space.
 
 So we’re still safely in PSPACE.
 
----
-
 ## 1. What does “evaluating (\phi)” actually involve?
 
-(\phi) is a *quantifier-free* Boolean formula over variables (X_1,\dots,X_m).
-On a given assignment (w_3) (a bitstring telling you which (X_i) are true/false), the job of the machine is:
+$\phi$ is a *quantifier-free* Boolean formula over variables $X_1,\dots,X_m$.
+On a given assignment $w_3$ (a bitstring telling you which $X_i$ are true/false), the job of the machine is:
 
-> Given (\phi) on the **input tape** + assignment (w_3) on **tape 3**, compute whether (\phi(w_3) = 1) or (0).
+> Given $\phi$ on the **input tape** + assignment $w_3$ on **tape 3**, compute whether $\phi(w_3) = 1$ or $0$.
 
 The input tape is read-only and **does not count** towards space complexity.
 All extra “intermediate results” must go on work tapes, and we must show that’s only polynomially many cells.
 
----
-
-## 2. Two ways to see that evaluating (\phi) is poly-space
+## 2. Two ways to see that evaluating $\phi$ is poly-space
 
 ### View A: Recursive evaluation / stack
 
-Think of (\phi) as a syntax tree: leaves are literals, internal nodes are (\land,\lor,\lnot), etc.
+Think of $\phi$ as a syntax tree: leaves are literals, internal nodes are $\land,\lor,\lnot$, etc.
 
 A very natural algorithm:
 
-1. Start at the root of (\phi).
+1. Start at the root of $\phi$.
 2. Recursively evaluate its children.
-3. Combine child values using the operator ((\land,\lor,\lnot), …).
+3. Combine child values using the operator $\land,\lor,\lnot,\dots$.
 4. Return a single bit (true/false).
 
 To implement this on a Turing machine, you keep something like a **stack** of:
 
-* “Where am I in (\phi)?” (position or subformula),
+* “Where am I in $\phi$?” (position or subformula),
 * “Have I already evaluated the left child?”,
 * “What was the result of the child?” (just 1 bit),
-* “What operator is this node?” ((\land,\lor,\lnot), etc.)
+* “What operator is this node?” ($\land,\lor,\lnot$, etc.)
 
 The key facts:
 
-* The **depth** of this recursion/stack is at most the **size of (\phi)** (number of symbols), hence ≤ (n).
+* The **depth** of this recursion/stack is at most the **size of $\phi$** (number of symbols), hence $\leq n$.
 * Each stack frame is **constant-size** (a few bits/flags + maybe an index into the input).
 
-So the total work-tape space for evaluating (\phi) is:
+So the total work-tape space for evaluating $\phi$ is:
 
-[
-O(\text{depth}(\phi)) \cdot O(1) \le O(|\phi|) \le O(n).
-]
+$$O(\text{depth}(\phi)) \cdot O(1) \le O(\lvert\phi\rvert) \le O(n).$$
 
-Plus the assignment (w_3) (length (m \le n)). So overall still (O(n)) space.
+Plus the assignment $w_3$ (length $m \le n$). So overall still $O(n)$ space.
 
 Time can be exponential (because of the branching over quantifiers), but PSPACE cares only about **space**, not time.
-
----
 
 ### View B: Super-space-frugal evaluation by rescanning
 
 If we want to be *extra* stingy with space, we can even avoid storing a big stack:
 
-* For example, if (\phi) is in CNF (AND of clauses), we can:
+* For example, if $\phi$ is in CNF (AND of clauses), we can:
 
   * scan the input, clause by clause,
   * for each clause, keep just:
-
     * one “clause is satisfied?” bit,
     * maybe an index while scanning,
-  * use assignment (w_3) to tell if each literal is true.
+  * use assignment $w_3$ to tell if each literal is true.
 
 We *never* need to store all clause truth values at once — we can:
 
@@ -2253,40 +2228,35 @@ We *never* need to store all clause truth values at once — we can:
 
 Again, this uses **constant or logarithmic extra space** on top of the assignment, just at the cost of potentially rescanning the input multiple times.
 
----
-
 ## 3. How this fits back into the lemma
 
 The lemma’s machine uses:
 
-* Tape 1: (w_1) – quantifier types, length (m \le n)
-* Tape 2: (w_2) – pointer, length (m \le n)
-* Tape 3: (w_3) – assignment, length (m \le n)
-* Plus **some extra cells** to evaluate (\phi) for the current (w_3), as above:
+* Tape 1: $w_1$ – quantifier types, length $m \le n$
+* Tape 2: $w_2$ – pointer, length $m \le n$
+* Tape 3: $w_3$ – assignment, length $m \le n$
+* Plus **some extra cells** to evaluate $\phi$ for the current $w_3$, as above:
 
-  * either a recursion stack of depth ≤ (|\phi| \le n), or
+  * either a recursion stack of depth $\leq \lvert\phi\rvert \le n$, or
   * a few bits for a streaming check.
 
 Total work-tape space used at any moment:
 
-[
-O(m) + O(\text{space for evaluating }\phi) \le O(n) + O(n) = O(n),
-]
+$$O(m) + O(\text{space for evaluating }\phi) \le O(n) + O(n) = O(n),$$
 
-which is **polynomial** in the input length (n).
+which is **polynomial** in the input length $n$.
 
 We do *not* store:
-
 * all intermediate results for **all** assignments,
 * or a full truth table,
 * or a big DP table over subformulas × assignments,
 
 because that would explode space. Instead, we:
 
-* only keep data for **one assignment** (w_3) at a time (depth-first search through quantifiers),
-* only keep data for **one “path” in (\phi)** at a time (recursive evaluation, or multiple rescans).
+* only keep data for **one assignment** $w_3$ at a time (depth-first search through quantifiers),
+* only keep data for **one “path” in $\phi$** at a time (recursive evaluation, or multiple rescans).
 
-This is the classic **time–space tradeoff**: we’re happy to redo work (evaluate (\phi) again and again) to save space.
+This is the classic **time–space tradeoff**: we’re happy to redo work (evaluate $\phi$ again and again) to save space.
 
   </details>
 </div>
@@ -2342,13 +2312,11 @@ Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in p
 
 Your Savitch-style definition is *logically* fine, but as a **QBF encoding** it blows up the formula size exponentially, so it doesn’t give a polynomial-time reduction. The weird-looking definition in the notes is exactly a trick to avoid this blow-up while keeping the same meaning.
 
----
-
 ### 1. What you “expect” vs what they actually do
 
 What you intuitively expect is something like (fixing the index to $i+1$):
 
-\[
+$$
 \text{Comp}_n^{i+1}(K,K')
 \equiv
 \exists \tilde{K}\Big(
@@ -2356,16 +2324,14 @@ What you intuitively expect is something like (fixing the index to $i+1$):
 \land \text{Comp}_n^{i}(K,\tilde{K})
 \land \text{Comp}_n^{i}(\tilde{K},K')
 \Big).
-\tag{*}
-\]
+% \tag{*}
+$$
 
 This is exactly analogous to Savitch:
 
 > “There is a path of length $\le 2^{i+1}$ from $K$ to $K'$ iff there exists a middle configuration $\tilde{K}$ such that there is a path of length $\le 2^i$ from $K$ to $\tilde{K}$ and from $\tilde{K}$ to $K'$.”
 
 **Semantically, this is totally correct.** So the issue is *not* that your definition is wrong logically. The issue is **size**.
-
----
 
 ### 2. Why your recursive definition is a problem for QBF
 
@@ -2375,21 +2341,15 @@ Let $\lvert\text{Comp}_n^i\rvert$ be the syntactic size (number of symbols) of t
 
 So the size satisfies roughly
 
-\[
-\lvert\text{Comp}_n^{i+1}\rvert = O(1) + 2 \cdot \lvert\text{Comp}_n^i\rvert.
-\]
+$$\lvert\text{Comp}_n^{i+1}\rvert = O(1) + 2 \cdot \lvert\text{Comp}_n^i\rvert$$
 
 This solves to
 
-\[
-\lvert\text{Comp}_n^i\rvert = O(2^i).
-\]
+$$\lvert\text{Comp}_n^i\rvert = O(2^i)$$
 
 But we need to go up to $i = d \cdot p(n)$ so that paths of length up to $2^{d p(n)}$ are allowed. That gives
 
-\[
-\lvert\text{Comp}_n^{d p(n)}\rvert = 2^{\Theta(p(n))},
-\]
+$$\lvert\text{Comp}_n^{d p(n)}\rvert = 2^{\Theta(p(n))}$$
 
 i.e. *exponential* in the input size $n$.
 
@@ -2402,13 +2362,11 @@ So:
 
 This is the same “recursion tree vs DAG” phenomenon as in Savitch’s theorem, but now we care about **formula length**, not about space. Savitch’s algorithm is allowed to do exponentially many recursive calls, as long as it only uses polynomial *space*. Here, the QBF formula must be a *static object* whose length directly reflects how much “computation” we hard-wire into it.
 
----
-
 ### 3. What the weird $\text{Comp}$-definition is doing
 
 Their inductive step is:
 
-\[
+$$
 \begin{aligned}
 \text{Comp}_n^{i+1}(K, K') \equiv\;&
 \exists \tilde{K}\;
@@ -2425,25 +2383,19 @@ Their inductive step is:
 \text{Comp}_n^i(K_1, K_2)
 \Big).
 \end{aligned}
-\]
+$$
 
 The key idea: **only one syntactic occurrence** of $\text{Comp}_n^i$ appears — namely $\text{Comp}_n^i(K_1,K_2)$.
 
 So now we have the size recurrence
 
-\[
-\lvert\text{Comp}_n^{i+1}\rvert = \lvert\text{Comp}_n^{i}\rvert + \text{poly}(n),
-\]
+$$\lvert\text{Comp}_n^{i+1}\rvert = \lvert\text{Comp}_n^{i}\rvert + \text{poly}(n)$$
 
 hence
 
-\[
-\lvert\text{Comp}_n^{i}\rvert = \text{poly}(n) \cdot i = \text{poly}(n) \cdot p(n) = \text{poly}(n).
-\]
+$$\lvert\text{Comp}_n^{i}\rvert = \text{poly}(n) \cdot i = \text{poly}(n) \cdot p(n) = \text{poly}(n)$$
 
 Exactly what we need.
-
----
 
 ### 4. Why this formula has the *same meaning* as yours
 
@@ -2481,15 +2433,11 @@ A much simpler toy version of the same trick:
 * We want to encode $P(a) \land P(b)$ but we are only allowed one occurrence of $P(\cdot)$.
 * We can write instead
 
-  \[
-  \forall x\,((x = a \lor x = b) \rightarrow P(x)).
-  \]
+  $$\forall x\,((x = a \lor x = b) \rightarrow P(x))$$
 
   This is logically equivalent to $P(a)\land P(b)$ but only uses $P$ once.
 
 Their construction is the same idea, lifted to configurations and to the reachability predicate $\text{Comp}_n^i$.
-
----
 
 ### 5. Summary
 
