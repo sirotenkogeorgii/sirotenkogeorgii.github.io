@@ -29,6 +29,9 @@ To reason about uncertainty in a mathematically sound way, we begin with the con
 
 ### 1.1 The Probability Space
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probability Space, Experiment)</span></p>
+
 An **experiment** is a process that yields an observation. The mathematical abstraction for this is the **probability space**, a tuple $(\Omega, \mathcal{A}, P)$. 
 
 * **Sample Space $\Omega$:** The set of all possible indecomposable outcomes of an experiment. These are called simple events.
@@ -45,9 +48,16 @@ An **experiment** is a process that yields an observation. The mathematical abst
      $P\!\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i).$
 
 The pair $(\Omega, \mathcal{A})$ is called a **measurable space**. Elements of $\mathcal{A}$ are **measurable sets**.
-* *Example (Die Toss):*
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Die Toss)</span></p>
+
   * $\Omega = \lbrace 1, 2, 3, 4, 5, 6 \rbrace$.
   * $\mathcal{A} = \mathcal{P}(\Omega)$ or $\mathcal{A} = \lbrace \emptyset, \lbrace 1,3,5 \rbrace, \lbrace 2,4,5 \rbrace, \Omega \rbrace$.
+
+</div>
 
 ### 1.2. Random Variables and Probability Distributions
 
@@ -251,7 +261,7 @@ Statistical inference aims to deduce properties of an underlying population or d
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parametric Model)</span></p>
 
-Let $\Theta \subseteq \mathbb{R}^n$ is a parameter space. A family of probability distributions $P(\Theta) = \lbrace p_{\theta} \mid \theta \in \Theta \rbrace $ on a measurable space is called a parametric model.
+Let $\Theta \subseteq \mathbb{R}^n$ is a parameter space. A family of probability distributions $P(\Theta) = \lbrace p_{\theta} \mid \theta \in \Theta \rbrace $ on a measurable space is called a **parametric model**.
 
 </div>
 
@@ -452,7 +462,7 @@ The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, 
 $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Metropolis-Hastings Algorithm with a Symmetric Proposal)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Metropolis-Hastings with a Symmetric Proposal)</span></p>
 
 1.  **Initialization:** Choose an initial parameter value $\theta^{(0)}$ and specify the number of samples $N$.
 2.  **Iteration:** Loop for $i = 1, \dots, N$:
@@ -567,18 +577,11 @@ This integration is often intractable, necessitating methods like MCMC or Variat
   </details>
 </div>
 
----
-
 ## 3. Fundamental Concepts of Time Series Analysis
 
 ### 3.1 Stochastic Processes and Time Series
 
 Intuitively, a time series is a realization or **sample path** of a random process, such as $\lbrace X_1, X_2, ..., X_T\rbrace$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
-<!-- 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
-
-</div> -->
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Process)</span></p>
@@ -616,14 +619,12 @@ The **ensemble** is the population of all possible realizations that a stochasti
 
 </div>
 
-#### 3.1.1 Example: White Noise Process
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(White Noise Process)</span></p>
 
 Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
 1.  $\mathbb{E}[X_t] = 0$ for all $t \in I$.
-2.  $\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$
+2.  $$\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$$
 
 </div>
 
@@ -646,7 +647,7 @@ This property is often imposed on the error terms $\epsilon_t$ of statistical mo
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Autocovariance Function)</span></p>
 
-Let $X=\lbrace X_t\rbrace_{t \in I}$ be a stochastic process with $\mathbb{E}[X_t^2] < \infty$. The autocovariance function is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
+Let $X=\lbrace X_t\rbrace_{t \in I}$ be a stochastic process with $\mathbb{E}[X_t^2] < \infty$. The **autocovariance function** is a map $\gamma_{XX} : I \times I \to \mathbb{R}$ defined as:
 
 $$\gamma_{XX}(s, t) = \text{Cov}(X_s, X_t) = \mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])]$$
 
@@ -708,7 +709,7 @@ $$\rho_{XY}(s, t) = \frac{\gamma_{XY}(s, t)}{\sqrt{\text{Var}(X_s)\text{Var}(Y_t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
 
-Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is strongly stationary if for any choice of time points $t_1, \dots, t_m \in I$, the joint probability distribution of $(X_{t_1}, \dots, X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, \dots, X_{t_m+h})$, provided all time points remain in $I$.
+Let $h \in \mathbb{R}$ and $m \in \mathbb{N}$. A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is **strongly stationary** if for any choice of time points $t_1, \dots, t_m \in I$, the joint probability distribution of $(X_{t_1}, \dots, X_{t_m})$ is the same as the joint probability distribution of $(X_{t_1+h}, \dots, X_{t_m+h})$, provided all time points remain in $I$.
 
 $$(X_{t_1}, \dots, X_{t_m}) \stackrel{d}{=} (X_{t_1+h}, \dots, X_{t_m+h})$$
 
@@ -737,14 +738,11 @@ A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is **weakly stationary**
 
 * Strong stationarity implies weak stationarity (provided the first two moments exist). The reverse is not generally true.
 * For a Gaussian process, weak stationarity implies strong stationarity, because the entire distribution is defined by its first two moments (mean and covariance).
-* For a weakly stationary process, the autocovariance function simplifies to $\gamma_X(h) = \mathbb{E}[(X_{t+h} - \mu)(X_t - \mu)]$.
+* For a weakly stationary process, the autocovariance function simplifies to
+  
+  $$\gamma_X(h) = \mathbb{E}[(X_{t+h} - \mu)(X_t - \mu)]$$
 
 #### 3.3.3 Ergodicity
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
-
-</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ergodicity)</span></p>
@@ -790,30 +788,35 @@ A complete statistical model generally consists of four key components:
 ### 4.2 Model Architecture
 
 Given a dataset $D = \lbrace(x_t, y_t)\rbrace_{t=1}^T$ where $y_t$ are responses and $x_t$ are predictors, the univariate linear regression model assumes a linear relationship:
-$y_t = \beta_0 + \beta_1 x_t + \epsilon_t$
+
+$$y_t = \beta_0 + \beta_1 x_t + \epsilon_t$$
+
 The error term $\epsilon_t$ is typically assumed to be a white noise process, often Gaussian:
-$\epsilon_t \sim \mathcal{N}(0, \sigma^2)$
+
+$$\epsilon_t \sim \mathcal{N}(0, \sigma^2)$$
+
 This implies a conditional distribution for the response variable:
-$y_t \mid x_t \sim \mathcal{N}(\beta_0 + \beta_1 x_t, \sigma^2)$
+
+$$y_t \mid x_t \sim \mathcal{N}(\beta_0 + \beta_1 x_t, \sigma^2)$$
 
 For a model with $p$ predictors, this can be vectorized. Let $y$ be a $T \times 1$ vector of responses, $X$ be a $T \times (p+1)$ design matrix (with a column of ones for the intercept), and $\beta$ be a $(p+1) \times 1$ vector of parameters. The model is:
-$$
-y = X\beta + \epsilon
-$$
+
+$$y = X\beta + \epsilon$$
 
 ### 4.3 Loss Function
 
-The most common loss function for linear regression is the **Sum of Squared Errors (SSE)**, also known as the **Least Squares Error (LSE)**. The objective is to find the parameter vector $\beta$ that minimizes this quantity:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Least Squares Error or Sum of Squared Errors)</span></p>
 
-$$
-\text{LSE}(\beta) = \sum_{t=1}^T (y_t - \hat{y}_t)^2 = \sum_{t=1}^T (y_t - x_t^T \beta)^2
-$$
+$$\text{LSE}(\beta) = \sum_{t=1}^T (y_t - \hat{y}_t)^2 = \sum_{t=1}^T (y_t - x_t^T \beta)^2$$
 
 In vector notation, this is:
 
-$$
-\text{LSE}(\beta) = (y - X\beta)^T(y - X\beta)
-$$
+$$\text{LSE}(\beta) = (y - X\beta)^T(y - X\beta)$$
+
+</div>
+
+The objective is to find the parameter vector $\beta$ that minimizes it.
 
 ### 4.4 Training Algorithm
 
@@ -841,9 +844,7 @@ $$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + (X^TX + (X^TX)^T)
 
 Since $X^TX$ is a symmetric matrix, $(X^TX)^T = X^TX$. The derivative simplifies to:
 
-$$
-\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + 2X^TX\beta
-$$
+$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + 2X^TX\beta$$
 
 Setting the derivative to zero to find the minimum:
 
@@ -855,9 +856,7 @@ $$X^TX\hat{\beta} = X^Ty$$
 
 The solution for $\hat{\beta}$, known as the ordinary least squares (OLS) estimator, is:
 
-$$
-\hat{\beta} = (X^TX)^{-1}X^Ty
-$$
+$$\hat{\beta} = (X^TX)^{-1}X^Ty$$
 
 ## 5. Regression Models for Time Series
 
@@ -878,11 +877,12 @@ In the context of time series, we consider a dataset $D$ consisting of $T$ obser
 
 The simple linear regression model assumes a linear relationship between the predictors and the response, corrupted by additive Gaussian noise.
 
-**Definition (Linear Regression Model):** The response variable $x_t$ is modeled as a linear combination of the predictor variables $u_t$ plus an error term $\epsilon_t$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear Regression Model)</span></p>
 
-$$
-x_t = u_t^T \beta + \epsilon_t
-$$
+The response variable $x_t$ is modeled as a linear combination of the predictor variables $u_t$ plus an error term $\epsilon_t$.
+
+$$x_t = u_t^T \beta + \epsilon_t$$
 
 where:
 
@@ -893,15 +893,11 @@ where:
 
 This implies that the conditional distribution of the response variable is also Gaussian:
 
-$$
-x\_t \mid u\_t, \beta, \sigma^2 \sim \mathcal{N}(u\_t^T \beta, \sigma^2)
-$$
+$$x_t \mid u_t, \beta, \sigma^2 \sim \mathcal{N}(u_t^T \beta, \sigma^2)$$
 
 For the entire dataset, we can express the model in a vectorized form:
 
-$$
-X = U\beta + E
-$$
+$$X = U\beta + E$$
 
 where:
 
@@ -909,6 +905,9 @@ where:
 * $U$ is the $T \times (p+1)$ design matrix, where each row is $u_t^T$.
 * $\beta = (\beta_0, \dots, \beta_p)^T$ is the $(p+1) \times 1$ parameter vector.
 * $E = (\epsilon_1, \dots, \epsilon_T)^T$ is the $T \times 1$ vector of errors.
+</div>
+
+
 
 #### 5.1.2 Parameter Estimation: Least Squares
 
@@ -916,15 +915,11 @@ The most common method for estimating the parameters $\beta$ in a linear regress
 
 **Definition (Least Squares Loss Function):** The LSE loss function for the parameter vector $\beta$ is the sum of squared residuals:
 
-$$
-L\_{\text{LSE}}(\beta) = \sum\_{t=1}^T (x\_t - u\_t^T \beta)^2
-$$
+$$L\_{\text{LSE}}(\beta) = \sum\_{t=1}^T (x\_t - u\_t^T \beta)^2$$
 
 In vector form, this is expressed as:
 
-$$
-L_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta)
-$$
+$$L_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta)$$
 
 The training algorithm consists of finding the value of $\beta$ that minimizes this loss function. This can be achieved by taking the derivative of $L_{\text{LSE}}(\beta)$ with respect to $\beta$ and setting it to zero.
 
@@ -932,47 +927,34 @@ To find the estimator $\hat{\beta}_{\text{LS}}$ that minimizes the loss, we comp
 
 1.  **Expand the loss function:**
 
-$$
-L\_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta) = X^T X - X^T U \beta - \beta^T U^T X + \beta^T U^T U \beta
-$$
+$$L\_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta) = X^T X - X^T U \beta - \beta^T U^T X + \beta^T U^T U \beta$$
 
 2. **Compute the derivative with respect to $\beta$:**
-   * Note that $X^T U \beta$ is a scalar, so it equals its transpose $\beta^T U^T X$. Using this, the loss is $L_{\text{LSE}}(\beta) = X^T X - 2\beta^T U^T X + \beta^T U^T U \beta$.
+   * Note that $X^T U \beta$ is a scalar, so it equals its transpose $\beta^T U^T X$. Using this, the loss is 
+      
+      $$L_{\text{LSE}}(\beta) = X^T X - 2\beta^T U^T X + \beta^T U^T U \beta$$
+
    * Using the matrix calculus rules $\frac{\partial(a^T x)}{\partial x} = a$ and $\frac{\partial(x^T A x)}{\partial x} = (A + A^T)x$:
      
-     $$
-     \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (X^T X - 2\beta^T U^T X + \beta^T U^T U \beta)
-     $$
+     $$\frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (X^T X - 2\beta^T U^T X + \beta^T U^T U \beta)$$
 
-     $$
-     \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = 0 - 2U^T X + (U^T U + (U^T U)^T)\beta
-     $$
+     $$\frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = 0 - 2U^T X + (U^T U + (U^T U)^T)\beta$$
 
    * Since $U^T U$ is symmetric, $(U^T U)^T = U^T U$.
      
-     $$
-     \frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = -2U^T X + 2U^T U \beta
-     $$
+     $$\frac{\partial L\_{\text{LSE}}(\beta)}{\partial \beta} = -2U^T X + 2U^T U \beta$$
 
-3. **Set the derivative to zero and solve for $\beta$:**
+1. **Set the derivative to zero and solve for $\beta$:**
     
-    $$
-    -2U^T X + 2U^T U \hat{\beta} = 0
-    $$
+    $$-2U^T X + 2U^T U \hat{\beta} = 0$$
     
-    $$
-    2U^T U \hat{\beta} = 2U^T X
-    $$
+    $$2U^T U \hat{\beta} = 2U^T X$$
     
-    $$
-    U^T U \hat{\beta} = U^T X
-    $$
+    $$U^T U \hat{\beta} = U^T X$$
 
-4. Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
+2. Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
     
-    $$
-    \hat{\beta}\_{\text{LS}} = (U^T U)^{-1} U^T X
-    $$
+    $$\hat{\beta}\_{\text{LS}} = (U^T U)^{-1} U^T X$$
 
 This is the celebrated **normal equation** solution for ordinary least squares.
 
@@ -980,7 +962,10 @@ This is the celebrated **normal equation** solution for ordinary least squares.
 
 An alternative framework for parameter estimation is **Maximum Likelihood Estimation (MLE)**. This approach finds the parameter values that maximize the likelihood of observing the given data.
 
-**Definition (Likelihood Function):** Given the model assumption $x_t \sim \mathcal{N}(u_t^T \beta, \sigma^2)$, the likelihood of observing the entire dataset $D$ is the product of the probability densities for each observation:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Likelihood Function)</span></p>
+
+Given the model assumption $x_t \sim \mathcal{N}(u_t^T \beta, \sigma^2)$, the likelihood of observing the entire dataset $D$ is the product of the probability densities for each observation:
 
 $$
 \mathcal{L}(\beta, \sigma^2) = p(X \mid U, \beta, \sigma^2) = \prod_{t=1}^T p(x_t \mid u_t, \beta, \sigma^2)
@@ -989,6 +974,8 @@ $$
 $$
 \mathcal{L}(\beta, \sigma^2) = \prod_{t=1}^T \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_t - u_t^T \beta)^2}{2\sigma^2}\right)
 $$
+
+</div>
 
 It is often more convenient to work with the **log-likelihood function**:
 
@@ -1004,9 +991,7 @@ $$
 
 For the linear regression model with the assumption of i.i.d. Gaussian errors, the Least Squares Estimator (LSE) and the Maximum Likelihood Estimator (MLE) for the regression coefficients $\beta$ are identical.
 
-$$
-\hat{\beta}*{\text{LS}} = \hat{\beta}*{\text{MLE}}
-$$
+$$\hat{\beta}_{\text{LS}} = \hat{\beta}_{\text{MLE}}$$
 
 -----
 
@@ -2108,9 +2093,7 @@ The goal of hierarchical Bayesian inference is to compute the joint posterior di
 
 The joint distribution over all data ($D_{1:N}$), parameters ($\theta_{1:N}$), and hyperparameters ($\beta$) is given by:
 
-$$
-p(\beta, \lbrace\theta_i\rbrace_{i=1}^N, \lbrace D_i\rbrace_{i=1}^N) = p(\beta) \prod_{i=1}^N \left[ p(\theta_i \mid \beta) p(D_i \mid \theta_i) \right]
-$$
+$$p(\beta, \lbrace\theta_i\rbrace_{i=1}^N, \lbrace D_i\rbrace_{i=1}^N) = p(\beta) \prod_{i=1}^N \left[ p(\theta_i \mid \beta) p(D_i \mid \theta_i) \right]$$
 
 Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \beta \mid D_1, \dots, D_N)$. This structure allows the model to "borrow statistical strength" across subjects. The data from subject $j$ informs the posterior of $\theta_j$, which in turn informs the posterior of the group hyperparameter $\beta$. This updated knowledge about $\beta$ then helps to regularize and improve the estimates for all other subjects' parameters $\theta_i$ where $i \neq j$.
 
@@ -2139,9 +2122,7 @@ We have data from $N$ individuals. Subject $i$ performs $T_i$ trials, indexed by
 
 The observed data for each trial is a binary choice $y_{it}$:
 
-$$
-y_{it} = \begin{cases} 1 & \text{if delayed choice is selected} \\ 0 & \text{if immediate choice is selected} \end{cases}
-$$
+$$y_{it} = \begin{cases} 1 & \text{if delayed choice is selected} \\ 0 & \text{if immediate choice is selected} \end{cases}$$
 
 The full dataset for subject $i$ is $Y_i = \lbrace y_{it}\rbrace_{t=1}^{T_i}$.
 
@@ -2158,15 +2139,11 @@ The choice is then modeled based on the utility difference, $\Delta V_{it} = V_{
 
 The probability of choosing the delayed option is modeled using a logistic function (i.e., logistic regression):
 
-$$
-p_{it} := P(y_{it} = 1 \mid k_i, \beta_i) = \sigma(\beta_i \Delta V_{it}) = \frac{1}{1 + \exp(-\beta_i \Delta V_{it})}
-$$
+$$p_{it} := P(y_{it} = 1 \mid k_i, \beta_i) = \sigma(\beta_i \Delta V_{it}) = \frac{1}{1 + \exp(-\beta_i \Delta V_{it})}$$
 
 where $\beta_i$ is a subject-specific "softmax" temperature parameter controlling the steepness of the decision boundary. The likelihood for the observed choices of a single individual $i$ follows a Bernoulli distribution:
 
-$$
-\mathcal{L}(k_i, \beta_i \mid Y_i) = \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}
-$$
+$$\mathcal{L}(k_i, \beta_i \mid Y_i) = \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}$$
 
 #### 1.2.3 Hierarchical Priors
 
@@ -2174,9 +2151,7 @@ Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-l
 
   * **Individual Parameters:** $k = \lbrace k_i\rbrace_{i=1}^N$ and $\beta = \lbrace \beta_i\rbrace_{i=1}^N$.
 
-    $$
-    \log(k_i) \sim \mathcal{N}(\mu_k, \sigma_k^2) \quad \log(\beta_i) \sim \mathcal{N}(\mu_\beta, \sigma_\beta^2)
-    $$
+    $$\log(k_i) \sim \mathcal{N}(\mu_k, \sigma_k^2) \quad \log(\beta_i) \sim \mathcal{N}(\mu_\beta, \sigma_\beta^2)$$
 
   * **Group-level Hyperparameters:** The means $(\mu_k, \mu_\beta)$ and variances $(\sigma_k^2, \sigma_\beta^2)$ of the parent distributions.
   * **Hyperpriors:** We place priors on the hyperparameters themselves.
@@ -2218,7 +2193,7 @@ An alternative parametrization for hierarchical models, particularly useful in h
 
 -----
 
-## 7\. Autoregressive Moving Average (ARMA) Models
+## 7. Autoregressive Moving Average (ARMA) Models
 
 ARMA models are a fundamental class of models for analyzing stationary time series. They are built on the principle that the current value of a series can be explained by a combination of its own past values and past random shocks.
 
@@ -2229,35 +2204,40 @@ If the residuals of a regression model on time series data are found to be autoc
   * **Autoregressive (AR) Part:** This component regresses the time series on its own past values. It captures the "memory" or persistence in the series.
   * **Moving Average (MA) Part:** This component models the current value as a function of past random perturbations or "shocks". It can be thought of as a sequence of weighted random shocks.
 
-#### 2.1.1 The Autoregressive AR(p) Model
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Autoregressive model (AR))</span></p>
 
-An **Autoregressive model of order p**, denoted **AR(p)**, is defined as:
+An **Autoregressive model of order $p$**, denoted **AR($p$)**, is defined as:
 
-$$
-X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t
-$$
+$$X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$$
 
 where $\epsilon_t$ is a white noise process, typically $\epsilon_t \sim \mathcal{WN}(0, \sigma^2)$.
 
-#### 2.1.2 The Moving Average MA(q) Model
+</div>
 
-A **Moving Average model of order q**, denoted **MA(q)**, is defined as:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Moving Average Model (MA))</span></p>
 
-$$
-X_t = b_0 + \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}
-$$
+A **Moving Average model of order $q$**, denoted **MA($q$)**, is defined as:
+
+$$X_t = b_0 + \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$$
 
 Note that $X_t$ depends on past **error terms**, not past values of $X$ itself.
 
-#### 2.1.3 The ARMA(p,q) Model
+</div>
 
-Combining these two components gives the **ARMA(p,q)** model:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ARMA Model)</span></p>
 
-$$
-X_t = c + \sum_{i=1}^p a_i X_{t-i} + \sum_{j=1}^q b_j \epsilon_{t-j} + \epsilon_t
-$$
+Combining these two components gives the **ARMA($p$,$q$)** model:
 
-This can also be extended to include external inputs $u_t$. The full set of model parameters to be estimated is $\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$.
+$$X_t = c + \sum_{i=1}^p a_i X_{t-i} + \sum_{j=1}^q b_j \epsilon_{t-j} + \epsilon_t$$
+
+This can also be extended to include external inputs $u_t$. The full set of model parameters to be estimated is 
+
+$$\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$$
+
+</div>
 
 ### 2.2 Duality and Stationarity
 
@@ -2284,19 +2264,13 @@ This infinite expansion is only valid if the series converges.
 
 For the process to be stationary in the mean, its expected value must be constant and finite. Taking the expectation of the expanded form:
 
-$$
-\mathbb{E}[X_t] = \mathbb{E}\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]
-$$
+$$\mathbb{E}[X_t] = \mathbb{E}\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]$$
 
-$$
-\mathbb{E}[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \mathbb{E}[\epsilon_{t-k}]
-$$
+$$\mathbb{E}[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \mathbb{E}[\epsilon_{t-k}]$$
 
 Since $\mathbb{E}[\epsilon_{t-k}]=0$, the second term vanishes. The first term is a geometric series which converges if and only if $\lvert a_1 \rvert < 1$.
 
-$$
-\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1
-$$
+$$\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1$$
 
 Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
 
@@ -2315,9 +2289,7 @@ A powerful technique for analyzing AR models is to write them in a state-space (
 
 Consider an AR(p) process $X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$. We can define a $p$-dimensional state vector $\mathbf{X}_t$:
 
-$$
-\mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}
-$$
+$$\mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}$$
 
 The process can then be written in the form $\mathbf{X}\_t = \mathbf{a} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$, where:
 
