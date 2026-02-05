@@ -3469,12 +3469,12 @@ where $x_t \in \mathbb{R}^N$. This chapter introduces a latent variable, $z_t \i
 **Latent variable models**, also known as **State-Space Models (SSMs)**, are composed of two primary components:
 
 1. **Latent Model (or Process Model):** This describes the evolution of the unobserved state over time.
-  * Transition probability: $z_t \sim p_{lat}(z_t \mid z_{t-1}, \theta)$
+  * Transition probability: $z_t \sim p_{\text{lat}}(z_t \mid z_{t-1}, \theta)$
   * Initial condition: $p(z_1)$
 2. **Observation Model:** This describes how the observed data is generated from the current unobserved state.
-  * Emission probability: $x_t \sim p_{obs}(x_t \mid z_t, \theta)$
+  * Emission probability: $x_t \sim p_{\text{obs}}(x_t \mid z_t, \theta)$
 
-The complete set of model parameters is $\theta = [\theta_{lat}, \theta_{obs}]$.
+The complete set of model parameters is $\theta = [\theta_{\text{lat}}, \theta_{\text{obs}}]$.
 
 </div>
 
@@ -3486,11 +3486,11 @@ To make inference tractable, two key assumptions are made:
 
 2. **Conditional Independence:** The observations are conditionally independent given the latent states. The current observation $x_t$ depends only on the current latent state $z_t$. 
    
-   $$p(x_t \mid x_1, \dots, x_{t-1}, z_1, \dots, z_t) = p_{obs}(x_t \mid z_t)$$ 
+   $$p(x_t \mid x_1, \dots, x_{t-1}, z_1, \dots, z_t) = p_{\text{obs}}(x_t \mid z_t)$$ 
 
 Under these assumptions, the joint distribution over a sequence of observations $X_{1:T}$ and latent states $Z_{1:T}$ factorizes as follows:  
 
-$$p(X_{1:T}, Z_{1:T} \mid \theta) = p(z_1) \left( \prod_{t=2}^{T} p_{lat}(z_t \mid z_{t-1}, \theta) \right) \left( \prod_{t=1}^{T} p_{obs}(x_t \mid z_t, \theta) \right)$$ 
+$$p(X_{1:T}, Z_{1:T} \mid \theta) = p(z_1) \left( \prod_{t=2}^{T} p_{\text{lat}}(z_t \mid z_{t-1}, \theta) \right) \left( \prod_{t=1}^{T} p_{\text{obs}}(x_t \mid z_t, \theta) \right)$$ 
 
 This structure is represented by the following graphical model:
 
@@ -3595,7 +3595,7 @@ The EM algorithm is an iterative procedure for finding MLE solutions for models 
 2. Repeat until convergence:
   * E-Step (Expectation): Fix the current parameters $\theta^*$ and update the proposal distribution $q(Z)$ to be the true posterior. This minimizes the KL divergence, making the bound tight. 
   
-  $$q^(Z) = \arg\max_q ELBO(q, \theta^) = p_{\theta^*}(Z\mid X)$$ 
+  $$q^{(Z)} = \arg\max_q ELBO(q, \theta^) = p_{\theta^*}(Z\mid X)$$ 
   
   This step involves computing the expectation of the complete-data log-likelihood.
   * M-Step (Maximization): Fix the proposal distribution $q^*(Z)$ from the E-step and update the model parameters $\theta$ by maximizing the ELBO. 
@@ -4014,6 +4014,216 @@ The E-step for the Poisson SSM consists of a forward filtering pass using the La
 * Update: Approximate the posterior $p(z_t \mid c_{1:t})$ with a Gaussian $\mathcal{N}(\mu_t, V_t)$ where:
   * $\mu_t = \arg\max_{z_t} Q(z_t)$
   * $V_t = (-\nabla_{z_t}^2 Q(z_t)\mid_{z_t=\mu_t})^{-1}$
+
+Chapter 14: Generative Recurrent Neural Networks
+
+This chapter explores generative models for time series data that incorporate the non-linear dynamics characteristic of Recurrent Neural Networks (RNNs) within a state-space model framework. We will focus on the inference and learning challenges posed by these models and examine solutions based on the Expectation-Maximization (EM) algorithm, including the Extended Kalman Filter and Particle Filter for the E-Step.
+
+14.1 The EM Algorithm for State-Space RNNs
+
+The Expectation-Maximization (EM) algorithm provides a framework for performing maximum likelihood estimation in models with latent variables. For generative RNNs, which are a form of non-linear state-space model, EM proceeds by iterating between two steps:
+
+* E-Step (Expectation): With the model parameters $\theta$ held fixed, compute the posterior distribution over the latent variables, $Z$, given the observed data, $X$. This step involves finding the distribution $q$ that maximizes the expected log-likelihood.
+  
+  $$q^{(t+1)} = \underset{q}{\text{argmax}} \, , \mathbb{E}_q[\log p(X,Z\mid \theta^{(t)})]$$  
+  
+  This step is fundamentally about inference.
+* M-Step (Maximization): With the posterior distribution $q^{(t+1)}$ fixed, update the model parameters $\theta$ to maximize the expected log-likelihood.  
+  
+  $$\theta^{(t+1)} = \underset{\theta}{\text{argmax}} \, , \mathbb{E}_{q^{(t+1)}}[\log p(X,Z\mid \theta)]$$  
+  
+  This step is fundamentally about learning.
+
+Remark: Comparison to Linear State-Space Models
+
+In the case of a linear state-space model (SSM), the E-step is solved exactly and efficiently using established algorithms:
+
+* The Kalman filter is used to compute the filtering distribution, $p(z_t \mid  x_1, \dots, x_t)$.
+* The Rauch-Tung-Striebel (RTS) smoother is used to compute the smoothing distribution, $p(z_t \mid  x_1, \dots, x_T)$.
+
+For non-linear models like generative RNNs, these exact solutions are no longer tractable, necessitating the approximation methods discussed in this chapter.
+
+14.2 Model Architecture
+
+A generative RNN can be formulated as a non-linear state-space model with the following components:
+
+* Observation Model: The observed data $x_t$ at time $t$ is generated from the corresponding latent state $z_t$, typically through a linear-Gaussian relationship.  
+  
+  $$x_t \mid  z_t \sim \mathcal{N}(B z_t, \Gamma)$$
+
+* Latent Model (Transition Model): The latent state $z_t$ evolves over time based on the previous state $z_{t-1}$ through a non-linear transition function $F_\theta$, which represents the recurrent neural network dynamics.  
+  
+  $$z_t \mid  z_{t-1} \sim \mathcal{N}(F_\theta(z_{t-1}), \Sigma)$$  
+  
+  The function $F_\theta$ is the core of the RNN, often taking the form of a single neural network layer:  
+  
+  $$F_\theta(z_{t-1}) = \phi(W z_{t-1} + h)$$  
+  
+  where $\phi$ is a non-linear activation function (e.g., tanh, ReLU), and the parameters to be learned are $\theta = \lbrace W, h, B, \Gamma, \Sigma\rbrace$.
+* Initial State: The initial latent state is typically assumed to follow a standard normal distribution.  
+  
+  $$z_0 \sim \mathcal{N}(0, I)$$
+
+14.3 The E-Step: Inference via the Extended Kalman Filter (EKF)
+
+The primary challenge in the E-step is computing the one-step-ahead predictive distribution for the latent state:  
+
+$$p(z_t \mid  x_1, \dots, x_{t-1}) = \int p(z_t \mid  z_{t-1}, \theta) p(z_{t-1} \mid  x_1, \dots, x_{t-1}) dz_{t-1}$$  
+
+Due to the non-linear function $F_\theta$ inside $p(z_t \mid  z_{t-1}, \theta)$, this integral is intractable. The Extended Kalman Filter (EKF) provides an approximate solution.
+
+The Idea Behind the EKF
+
+The core idea of the EKF is to perform a local linearization of the non-linear dynamics at each time step.
+
+1. It assumes that the posterior distribution from the previous step, $p(z_{t-1} \mid  x_1, \dots, x_{t-1})$, is concentrated around its mean, $m_{t-1}$.
+2. If this assumption holds, then it is likely that the true latent state $z_{t-1}$ is near $m_{t-1}$.
+3. Therefore, we can linearize the non-linear function $F_\theta$ around this current mean estimate, $m_{t-1}$, creating a locally linear Gaussian model.
+
+This linearization is achieved using a first-order Taylor expansion of $F_\theta(z_{t-1})$ around $m_{t-1}$:  
+
+$$F_\theta(z_{t-1}) \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$  
+
+where $J_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$:  
+
+$$J_{t-1} = \left. \frac{\partial F_\theta}{\partial z_{t-1}} \right\mid _{z_{t-1}=m_{t-1}} \quad \text{where} \quad J_f(x) = \left( \frac{\partial f_i(x)}{\partial x_j} \right)$$  
+
+By substituting this approximation back into the latent model, the transition distribution becomes:  
+
+$$p(z_t \mid  z_{t-1}, \theta) \approx \mathcal{N}(z_t \mid  F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1}), \Sigma)$$
+
+Important Implications:
+
+* The resulting expression for the mean is now linear in $z_{t-1}$, which makes the predictive integral tractable, similar to the standard Kalman filter.
+* The mean of the posterior, $m_t$, is available at each successive time step, allowing for a new linearization point for the next step.
+* This constitutes a local update at each time step, adapting the linearization to the most recent state estimate.
+
+EKF Prediction and Update Equations
+
+The EKF operates in two stages: predict and update. Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of $p(z_{t-1}\mid x_1, \dots, x_{t-1})$.
+
+1. Prediction (Propagate): The one-step-ahead predictive distribution $p(z_t\mid x_1, v, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(m_{t\mid t-1}, V_{t\mid t-1})$ with:
+
+* Predicted Mean:
+  
+  $$m_{t\mid t-1} = F_\theta(m_{t-1})$$
+
+* Predicted Covariance:  
+  
+  $$V_{t\mid t-1} = J_{t-1} V_{t-1} J_{t-1}^T + \Sigma$$ 
+  
+  where $J_{t-1} = \left. \frac{\partial F_\theta}{\partial z_{t-1}} \right\mid _{z_{t-1}=m_{t-1}}$.
+
+1. Update: The filtering distribution $p(z_t\mid x_1, \dots, x_t)$ is approximated as a Gaussian $\mathcal{N}(m_t, V_t)$ with:
+
+* Kalman Gain: 
+  
+  $$K_t = V_{t\mid t-1} B^T (B V_{t\mid t-1} B^T + \Gamma)^{-1}$$
+
+* Updated Mean:  
+  
+  $$m_t = m_{t\mid t-1} + K_t (x_t - B m_{t\mid t-1}) = F_\theta(m_{t-1}) + K_t (x_t - B F_\theta(m_{t-1}))$$
+
+* Updated Covariance:
+  
+  $$V_t = V_{t\mid t-1} - K_t B V_{t\mid t-1}$$
+
+Comparison with Standard Kalman Filter
+
+It is instructive to compare the EKF prediction equations with those of the standard Kalman Filter, where the transition is linear ($z_t = A z_{t-1} + w_t$):
+
+* KF Predicted Mean: $m_{t\mid t-1} = A m_{t-1}$
+* KF Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^T + \Sigma$
+
+The EKF replaces the static transition matrix $A$ with the non-linear function $F_\theta$ for propagating the mean and with its local Jacobian $J_{t-1}$ for propagating the covariance.
+
+Remark: The Smoother
+
+The RTS smoother algorithm can be applied in the same form as in the linear Kalman Filter case to obtain the smoothed distributions $p(z_t\mid x_1, \dots, x_T)$, which are required for the M-step.
+
+Challenges of the EKF
+
+The primary drawback of the EKF is that the local linearizations can introduce errors. These errors can accumulate over time, potentially causing the filter to diverge from the true state distribution, especially for highly non-linear systems.
+
+14.4 The M-Step: Parameter Learning
+
+In the M-step, we maximize the expected log-joint likelihood with respect to the parameters $\theta = \lbrace W, h, B, \Gamma, \Sigma\rbrace$. The objective function is:  
+
+$$\mathbb{E}_q[\log p(X,Z\mid \theta)] = \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Gamma\mid  - \frac{1}{2}\sum_t(x_t - Bz_t)^T \Gamma^{-1} (x_t - Bz_t) \right] + \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Sigma\mid  - \frac{1}{2}\sum_t(z_t - F_\theta(z_{t-1}))^T \Sigma^{-1} (z_t - F_\theta(z_{t-1})) \right] + \text{const.}$$  
+
+To perform this maximization, we require posterior expectations of various terms. The EKF/EKS provides the necessary smoothed expectations for linear terms, such as $\mathbb{E}[z_t]$ and $\mathbb{E}[z_t z_t^T]$.
+
+However, the non-linear term $F_\theta(z_{t-1})$ introduces a significant problem. We now need to compute expectations involving this non-linearity, such as:  
+
+$$\mathbb{E}[F_\theta(z_{t-1})]$$  
+
+and other related terms. This requires solving integrals of the form $\int p(z_{t-1}\mid X)(F_\theta(z_{t-1})) dz_{t-1}$, which are often intractable for arbitrary non-linearities $\phi$.
+
+Key Point: Simplifying the M-Step Integral
+
+The difficulty of the M-step integrals is highly dependent on the choice of non-linearity in the model. One potential idea is to select a non-linearity that simplifies these integrals. For example, structuring the transition as:  
+
+$$F_\theta(z_{t-1}) = W h(z_{t-1}) + h$$  
+
+where $h(z) = \max(0, z)$ (the ReLU function), might lead to a more tractable expectation calculation for certain distributions.
+
+14.5 Alternative E-Step: The Particle Filter
+
+An alternative to the deterministic approximation of the EKF is a sampling-based approach known as the Particle Filter (PF).
+
+* Upsides: Particle filters provide consistent estimates. In the limit of an infinite number of particles, the sampled distribution converges to the true posterior distribution.
+* Downsides: They incur high computational costs and can suffer from practical issues.
+
+Core Idea: Weighted Particle Representation
+
+The particle filter approximates the filtering distribution $p(z_t\mid x_1, \dots, x_t)$ with a set of $K$ weighted samples, or particles.
+
+The one-step forward density, $p(z_t \mid  x_1, \dots, x_{t-1})$, is represented by a set of $K$ unweighted particles:  
+
+$$\lbrace z_t^{(1)}, z_t^{(2)}, \dots, z_t^{(K)} \rbrace \sim p(z_t \mid  x_1, \dots, x_{t-1})$$  
+
+The posterior distribution is then represented by combining these particles with the observation model, $p(x_t\mid z_t)$, to define a set of importance weights:  
+
+$$\lbrace w_t^{(1)}, w_t^{(2)}, \dots, w_t^{(K)} \rbrace$$  
+
+where each weight is defined as:  
+
+$$w_t^{(k)} \propto p(x_t \mid  z_t^{(k)})$$  
+
+The weights are normalized such that $\sum_{k=1}^K w_t^{(k)} = 1$.
+
+The Particle Filter Algorithm (Sequential Importance Resampling)
+
+The algorithm proceeds sequentially through time:
+
+1. Initialization ($t=1$):
+  * Draw $K$ initial particles $\lbrace z_1^{(k)}\rbrace_{k=1}^K$ from the prior distribution, $p(z_1\mid z_0)$. This set serves as the initial estimate of the one-step forward density.
+  * Pass these samples through the observation model and normalize to obtain the initial weights: $w_1^{(k)} \propto p(x_1\mid z_1^{(k)})$.
+2. Iteration (for $t > 1$): The process for each subsequent time step involves three stages: Resample, Propagate, and Weight.
+  * (a) Resample: Generate a new set of particles $\lbrace z'^{(k)}_{t-1}\rbrace_{k=1}^K$ by sampling with replacement from the previous particle set $\lbrace z_{t-1}^{(k)}\rbrace_{k=1}^K$, where the probability of drawing particle $k$ is given by its weight $w_{t-1}^{(k)}$.
+  * (b) Propagate / Predict: For each new particle $z'^{(k)}_{t-1}$, pass it through the process model to obtain a new particle for the current time step:  
+    
+    $$\lbrace z_t^{(k)}\rbrace_{k=1}^K \sim p(z_t \mid  z'^{(k)}_{t-1})$$  
+    
+    This new set of unweighted particles represents the estimate of the one-step forward density, $p(z_t\mid x_1, \dots, x_{t-1})$.
+  * (c) Update Weights: Pass the propagated particles through the observation model to obtain the new, unnormalized weights:  
+  
+    $$\tilde{w}_t^{(k)} = p(x_t \mid  z_t^{(k)})$$  
+    
+    Normalize the weights to obtain the final set $\lbrace w_t^{(k)}\rbrace_{k=1}^K$.
+
+Using Particles for Expectation
+
+The weighted particle set provides a straightforward way to approximate expectations needed for the M-step, replacing intractable integrals with finite sums:  
+
+$$\mathbb{E}[\varphi(z_t)] \approx \sum_{k=1}^K w_t^{(k)} \varphi(z_t^{(k)})$$
+
+Challenges of the Particle Filter
+
+Despite its theoretical appeal, the particle filter faces significant practical challenges:
+
+* Computational Expense: The need to propagate and weight many particles at each time step makes the method computationally intensive. The number of particles required for an accurate approximation often scales exponentially with the dimension of the latent state space.
+* Filter Collapse (Particle Degeneracy): After several resampling steps, it is common for only a few particles to have non-negligible weights. The algorithm may repeatedly select these high-weight particles, causing the diversity of the particle set to collapse. This results in an impoverished representation of the posterior distribution, which may unnaturally shrink and misrepresent the true uncertainty.
 
 Generative Recurrent Models with Variational Inference
 
