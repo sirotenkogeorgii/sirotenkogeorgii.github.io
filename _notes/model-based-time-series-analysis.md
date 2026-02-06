@@ -3992,13 +3992,13 @@ $$p(z_t \mid x_1, \dots, x_t) = \frac{p(z_t,x_1,\dots,x_t)}{p(x_1,\dots,x_t)}$$
 
 $$= \frac{p(x_t\mid z_t,\cancel{x_1,\dots,x_{t-1}})p(z_t\mid x_1,\dots,x_{t-1})\cancel{p(x_1,\dots,x_{t_1})}}{p(x_t \mid x_1,\dots,x_{t_1})\cancel{p(x_1,\dots,x_{t_1})}}$$
 
-$$= \frac{p(x_t\mid z_t)\overbrace{p(z_t\mid x_1,\dots,x_{t-1})}_{\text{prediction}}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
+$$= \frac{p(x_t\mid z_t)\overbrace{p(z_t\mid x_1,\dots,x_{t-1})}^{\text{prediction}}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
 
 $$= \frac{p(x_t\mid z_t)\int p(z_t, z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
 
 $$= \frac{p(x_t\mid z_t)\int p(z_t \mid z_{t-1}, \cancel{x_1,\dots,x_{t-1}})p(z_{t-1} \mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
 
-$$\implies \boxed{p(z_t \mid x_1, \dots, x_t) = \frac{\overbrace{p(x_t\mid z_t)}_{\text{obs. model}}\int \overbrace{p(z_t \mid z_{t-1})}_{\text{lat. model}}\overbrace{p(z_{t-1} \mid x_1,\dots,x_{t-1})}_{\text{filter at } t-1}dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}}$$
+$$\implies \boxed{p(z_t \mid x_1, \dots, x_t) = \frac{\overbrace{p(x_t\mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t \mid z_{t-1})}^{\text{lat. model}}\overbrace{p(z_{t-1} \mid x_1,\dots,x_{t-1})}^{\text{filter at } t-1}dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}}$$
 
 $$\implies \text{recursive in time}$$
 
@@ -4397,7 +4397,7 @@ The core idea of the EKF is to perform a local linearization of the non-linear d
 
 This linearization is achieved using a first-order Taylor expansion of $F_\theta(z_{t-1})$ around $m_{t-1}$:  
 
-$$F_\theta(z_{t-1})\right|_{m_{t-1}} \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$  
+$$F_\theta(z_{t-1})\right\mid_{m_{t-1}} \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$  
 
 where $J_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$:  
 
@@ -4406,7 +4406,6 @@ J_{t-1} =
 \begin{pmatrix}
 \frac{\partial F^{\theta}_1}{\partial z^{(t-1)}_1} & \dots & \frac{\partial F^{\theta}_1}{\partial z^{(t-1)}_M} \\
 \vdots & \dots & \vdots \\
-0 & \dots & 1 & 0
 \frac{\partial F^{\theta}_M}{\partial z^{(t-1)}_1} & \dots & \frac{\partial F^{\theta}_M}{\partial z^{(t-1)}_M} \\
 \end{pmatrix}
 $$
@@ -4522,7 +4521,7 @@ An alternative to the deterministic approximation of the EKF is a sampling-based
 
 We computed:
 
-$$p(z_t\mid x_1, \dots x_T) = \frac{p(x_t\mid z_t)\overbrace{\int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}_{p(z_t\mid x_1,\dots,x_{t-1})\text{ 1-step forward density}}}{p(x_t\mid x_1,\dots,x_{t-1})}$$
+$$p(z_t\mid x_1, \dots x_T) = \frac{p(x_t\mid z_t)\overbrace{\int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}^{p(z_t\mid x_1,\dots,x_{t-1})\text{ 1-step forward density}}}{p(x_t\mid x_1,\dots,x_{t-1})}$$
 
 The particle filter approximates the filtering distribution $p(z_t\mid x_1, \dots, x_t)$ with a set of $K$ weighted samples, or particles.
 
@@ -4547,6 +4546,8 @@ The weights are normalized such that $\sum_{k=1}^K w_t^{(k)} = 1$.
 
 * **Upsides:** Particle filters provide consistent estimates. In the limit of an infinite number of particles, the sampled distribution converges to the true posterior distribution.
 * **Downsides:** They incur high computational costs and can suffer from practical issues.
+
+</div>
 
 #### The Particle Filter Algorithm (Sequential Importance Resampling)
 
@@ -4739,7 +4740,7 @@ The ELBO contains expectations over $q_\phi(z\mid X)$ that are generally intract
 
 The ELBO can be expressed as an expectation:  
 
-$$\text{ELBO}(\phi, \theta) = \mathbb{E}{z \sim q\phi(z\mid X)} [\log p_\theta(X, z) - \log q_\phi(z\mid X)]$$  
+$$\text{ELBO}(\phi, \theta) = \mathbb{E}_{z \sim q\phi(z\mid X)} [\log p_\theta(X, z) - \log q_\phi(z\mid X)]$$  
 
 We can approximate this expectation using $L$ samples drawn from the variational posterior $q_\phi(z\mid X)$:  
 
@@ -4783,7 +4784,7 @@ $R$ can be obtained via Cholesky decomposition of the covariance matrix $\Sigma$
 This trick works for many distributions. By reparameterizing, we can move the expectation with respect to the parameters outside the gradient operator, making the objective differentiable with respect to $\phi$:  
 
 $$
-\nabla_\phi \mathbb{E}{z \sim q\phi(z\mid X)}[f(z)] = \nabla_\phi \mathbb{E}{\epsilon \sim p(\epsilon)}[f(g(\phi, \epsilon))] = \mathbb{E}{\epsilon \sim p(\epsilon)}[\nabla_\phi f(g(\phi, \epsilon))]
+\nabla_\phi \mathbb{E}_{z \sim q\phi(z\mid X)}[f(z)] = \nabla_\phi \mathbb{E}_{\epsilon \sim p(\epsilon)}[f(g(\phi, \epsilon))] = \mathbb{E}_{\epsilon \sim p(\epsilon)}[\nabla_\phi f(g(\phi, \epsilon))]
 $$
 
 </div>
@@ -4796,8 +4797,8 @@ $$\mathcal{L}(\theta, \phi, X) = \mathcal{L}_{\text{rec}}(\theta, \phi, X) + \ma
 
 Wherever we have analytic solutions to parts of the ELBO, we should use them instead of sampling. This reduces the variance of the gradient estimates and leads to more stable training.
 
-* **The Reconstruction Term $\mathcal{L}\_{\text{rec}}$:** This term, $\mathbb{E}_{q_\phi(Z\mid X)}[\sum_t \log p_\theta(x_t\mid z_t)]$, does not have a closed-form solution and requires sampling $Z$ using the reparameterization trick.
-* **The KL-Divergence Term $\mathcal{L}\_{\text{KL}}$:** For the common case where both the inference model $q_\phi(z_t\mid X) = \mathcal{N}(\mu_q, \Sigma_q)$ and the prior model $p_\theta(z_t\mid z_{t-1}) = \mathcal{N}(\mu_p, \Sigma_p)$ are Gaussian, the KL divergence has a closed-form analytical solution.
+* **The Reconstruction Term $\mathcal{L}\_{\text{rec}}$:** This term, $\mathbb{E}\_{q_\phi(Z\mid X)}[\sum_t \log p_\theta(x_t\mid z_t)]$, does not have a closed-form solution and requires sampling $Z$ using the reparameterization trick.
+* **The KL-Divergence Term $\mathcal{L}\_{\text{KL}}$:** For the common case where both the inference model $q\_\phi(z_t\mid X) = \mathcal{N}(\mu_q, \Sigma_q)$ and the prior model $p\_\theta(z_t\mid z_{t-1}) = \mathcal{N}(\mu_p, \Sigma_p)$ are Gaussian, the KL divergence has a closed-form analytical solution.
 
 By using the analytical form for the KL term, we only need to use MC estimation for the reconstruction term.
 
