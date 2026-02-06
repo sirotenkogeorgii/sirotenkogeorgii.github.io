@@ -3616,6 +3616,9 @@ The complete set of model parameters is $\theta = [\theta_{\text{lat}}, \theta_{
 
 To make inference tractable, two key assumptions are made:
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(SSM assumption for inference tractability)</span></p>
+
 1. **Markov Process:** The latent dynamics evolve according to a Markov process. The current latent state $z_t$ depends only on the previous state $z_{t-1}$.
    
    $$p(z_t \mid z_1, z_2, \dots, z_{t-1}) = p(z_t \mid z_{t-1})$$ 
@@ -3623,6 +3626,9 @@ To make inference tractable, two key assumptions are made:
 2. **Conditional Independence:** The observations are conditionally independent given the latent states. The current observation $x_t$ depends only on the current latent state $z_t$. 
    
    $$p(x_t \mid x_1, \dots, x_{t-1}, z_1, \dots, z_t) = p_{\text{obs}}(x_t \mid z_t)$$ 
+
+</div>
+
 
 Under these assumptions, the joint distribution over a sequence of observations $X_{1:T}$ and latent states $Z_{1:T}$ factorizes as follows:  
 
@@ -3644,7 +3650,7 @@ The primary goals when working with latent variable models are:
 2. **Inference:** Infer the latent trajectory, such as a point estimate $\mathbb{E}[Z_{1:T} \mid X_{1:T}]$.
 3. **Full Posterior Inference:** Infer the full posterior distribution over the latent paths, $p(Z_{1:T} \mid X_{1:T})$.
 
-12.2 Inference Problem
+### Inference Problem
 
 For Maximum Likelihood Estimation (MLE), the objective is to maximize the log-likelihood of the observed data:  
 
@@ -3660,7 +3666,7 @@ $$\log p_\theta(X) = \log \left( \int p_\theta(X, Z) dZ \right)$$
 
 This makes direct optimization difficult.
 
-Deriving the Evidence Lower Bound (ELBO)
+### Deriving the Evidence Lower Bound (ELBO)
 
 Let $X = X_{1:T}$ and $Z = Z_{1:T}$. We can introduce an arbitrary "proposal density" $q(Z)$ to derive a lower bound on the log-likelihood.
 
@@ -3668,11 +3674,9 @@ Starting with the log-likelihood:
 
 $$\log p_\theta(X) = \log \int p_\theta(X, Z) dZ$$
 
-We can write this as:  
-
 $$\log p_\theta(X) = \log \int q(Z) \frac{p_\theta(X, Z)}{q(Z)} dZ = \log \mathbb{E}_{q(Z)}\left[ \frac{p_\theta(X, Z)}{q(Z)} \right]$$
 
-Jensen's Inequality: For a concave function $f$, $f(\mathbb{E}[Y]) \ge \mathbb{E}[f(Y)]$.
+**Jensen's Inequality:** For a concave function $f$: $f(\mathbb{E}[Y]) \ge \mathbb{E}[f(Y)]$.
 
 Since the logarithm is a concave function, we can apply Jensen's inequality:
 
@@ -3682,63 +3686,87 @@ This gives us the Evidence Lower Bound (ELBO):
 
 $$\log p_\theta(X) \ge \mathbb{E}_{q(Z)}\left[ \log p_\theta(X, Z) \right] - \mathbb{E}_{q(Z)}\left[ \log q(Z) \right]$$
 
-Two Equivalent Forms of the ELBO
+#### Two Equivalent Forms of the ELBO
 
 The ELBO can be expressed in two common, equivalent forms.
 
-1. Expected Joint + Entropy: 
-   
-   $$ELBO(q, \theta) = \mathbb{E}_q[\log p_\theta(X, Z)] - \mathbb{E}_q[\log q(Z)]$$ 
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Expected Joint + Entropy )</span></p>
+
+   $$\text{ELBO}(q, \theta) = \mathbb{E}_q[\log p_\theta(X, Z)] - \mathbb{E}_q[\log q(Z)]$$ 
    
    This can be rewritten using the definition of entropy, 
    
-   $$H(q(Z)) = -\mathbb{E}_q[\log q(Z)]: ELBO(q, \theta) = \mathbb{E}_q[\log p_\theta(X, Z)] + H(q(Z))$$ 
+   $$\text{ELBO}(q, \theta) = \mathbb{E}_q[\log p_\theta(X, Z)] + H(q(Z)),$$ 
+
+   where $H(q(Z)) = -\mathbb{E}_q[\log q(Z)]$.
    
    The entropy term favors solutions where the proposal distribution $q(Z)$ is not overly confident (i.e., has high entropy).
-2. Log-Likelihood - KL Divergence: The ELBO can also be derived as:
 
-$$\begin{aligned} ELBO(q, \theta) &= \int q(Z) \log \frac{p_\theta(X, Z)}{q(Z)} dZ \\ &= \int q(Z) \log \frac{p_\theta(Z\mid X) p_\theta(X)}{q(Z)} dZ \\ &= \int q(Z) \log p_\theta(X) dZ + \int q(Z) \log \frac{p_\theta(Z\mid X)}{q(Z)} dZ \\ &= \log p_\theta(X) \int q(Z) dZ - \int q(Z) \log \frac{q(Z)}{p_\theta(Z\mid X)} dZ \\ &= \log p_\theta(X) - KL(q(Z) \parallel  p_\theta(Z\mid X)) \end{aligned}$$
+</div>
 
-where $KL(\cdot\parallel\cdot)$ is the Kullback-Leibler (KL) divergence.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Log-Likelihood - KL)</span></p>
 
-The KL divergence is defined as $KL(q(Z) \parallel p(Z)) = \int q(Z) \log \frac{q(Z)}{p(Z)} dZ$.
+$$\begin{aligned} \text{ELBO}(q, \theta) &= \int q(Z) \log \frac{p_\theta(X, Z)}{q(Z)} dZ \\ &= \int q(Z) \log \frac{p_\theta(Z\mid X) p_\theta(X)}{q(Z)} dZ \\ &= \int q(Z) \log p_\theta(X) dZ + \int q(Z) \log \frac{p_\theta(Z\mid X)}{q(Z)} dZ \\ &= \log p_\theta(X) \int q(Z) dZ - \int q(Z) \log \frac{q(Z)}{p_\theta(Z\mid X)} dZ \\ &= \log p_\theta(X) - KL(q(Z) \parallel  p_\theta(Z\mid X)) \end{aligned}$$
 
-* It is always non-negative: $KL \ge 0$.
-* It is zero if and only if $q=p$.
+</div>
 
-From the second form of the ELBO, we see that if $KL(q(Z) \parallel p_\theta(Z\mid X)) = 0$ (i.e., the proposal density $q(Z)$ is equal to the true posterior $p_\theta(Z\mid X)$), the bound becomes exact: $ELBO = \log p_\theta(X)$. Therefore, maximizing the ELBO becomes equivalent to maximizing the log-likelihood.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of the second form of ELBO)</span></p>
 
-12.3 Two Inference Strategies Suggested by the ELBO
+From the second form of the ELBO, we see that if $KL(q(Z) \parallel p_\theta(Z\mid X)) = 0$ (i.e., the proposal density $q(Z)$ is equal to the true posterior $p_\theta(Z\mid X)$), the bound becomes exact: $\text{ELBO} = \log p_\theta(X)$. Therefore, maximizing the ELBO becomes equivalent to maximizing the log-likelihood.
 
-12.3.1 Expectation-Maximization (EM)
+</div>
+
+### Two Inference Strategies Suggested by the ELBO
+
+#### Expectation-Maximization (EM)
 
 If the true posterior $p_\theta(Z\mid X)$ is tractable, we can choose our proposal density to be exactly this posterior: $q(Z) = p_\theta(Z\mid X)$. This choice makes the KL divergence term in the ELBO zero, turning the lower bound into an equality. This is the core idea behind the Expectation-Maximization (EM) algorithm.
 
 The EM algorithm consists of two alternating steps:
 
-1. E-Step: Compute the exact posterior over the latent variables given the current parameter estimate, $\theta^{\ast}$.
-2. M-Step: Maximize the expected complete-data log-likelihood with respect to the parameters $\theta$, using the posterior computed in the E-Step.
+1. **E-Step:** Compute the exact posterior over the latent variables given the current parameter estimate $\theta^{\ast}$.
+2. **M-Step:** Maximize the expected complete-data log-likelihood with respect to the parameters $\theta$, using the posterior computed in the E-Step.
 
-12.3.2 Variational Inference (VI)
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variational Inference)</span></p>
 
-If the true posterior $p_\theta(Z\mid X)$ is intractable, we restrict $q(Z)$ to a tractable family of distributions (e.g., fully-factorized Gaussians). We then jointly optimize the ELBO with respect to both the parameters of the proposal distribution $q$ and the model parameters $\theta$: $\max_{q, \theta} ELBO(q, \theta)$.
+If the true posterior $p_\theta(Z\mid X)$ is intractable, we restrict $q(Z)$ to a tractable family of distributions (e.g., fully-factorized Gaussians). We then jointly optimize the ELBO with respect to both the parameters of the proposal distribution $q$ and the model parameters $\theta$:
 
-12.4 The EM Algorithm
+$$\max_{q, \theta} \text{ELBO}(q, \theta)$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(EM Algorithm)</span></p>
 
 The EM algorithm is an iterative procedure for finding MLE solutions for models with latent variables.
 
 1. Start with an initial guess for the parameters, $\theta^{(0)}$.
 2. Repeat until convergence:
-  * E-Step (Expectation): Fix the current parameters $\theta^*$ and update the proposal distribution $q(Z)$ to be the true posterior. This minimizes the KL divergence, making the bound tight. 
+  * **E-Step (Expectation):** Fix the current parameters $\theta^{\ast}$ and update the proposal distribution $q^{\ast}(Z)$ to be the true posterior. This minimizes the KL divergence, making the bound tight. 
   
-  $$q^{(Z)} = \arg\max_q ELBO(q, \theta^) = p_{\theta^*}(Z\mid X)$$ 
+  $$q^{\ast}(Z) = \arg\max_q \text{ELBO}(q, \theta^{\ast}) = p_{\theta^{\ast}}(Z\mid X)$$ 
+  
+  $$\iff$$
+  
+  $$q^{\ast}(Z) = \arg\min_q \text{KL}(q(Z)\parallel p_{\theta^{\ast}}(Z\mid X))$$ 
   
   This step involves computing the expectation of the complete-data log-likelihood.
-  * M-Step (Maximization): Fix the proposal distribution $q^*(Z)$ from the E-step and update the model parameters $\theta$ by maximizing the ELBO. 
+  * **M-Step (Maximization):** Fix the proposal distribution $q^{\ast}(Z)$ from the E-step and update the model parameters $\theta$ by maximizing the ELBO. 
   
-  $$\theta^{\ast} = \arg\max_\theta ELBO(q^, \theta) = \arg\max_\theta \mathbb{E}_{q^}[\log p_\theta(X, Z)]$$
+  $$\theta^{\ast} = \arg\max_\theta \text{ELBO}(q^{\ast}(Z), \theta)$$ 
+  
+  $$\iff$$ 
+  
+  $$\theta^{\ast} = \arg\max_\theta \mathbb{E}_{q^{\ast}}[\log p_\theta(X, Z)]$$
 
-12.5 Linear State-Space Models
+</div>
+
+#### Linear State-Space Models
 
 12.5.1 Architecture: Linear Dynamical System (LDS)
 
@@ -3843,7 +3871,11 @@ Derivation of the Update for A
 
 To find the update for the transition matrix $A$, we differentiate the part of the expected log-likelihood related to the process model, which we denote $Q(A)$, with respect to $A$ and set it to zero.
 
-The relevant term is: $Q(A) = \mathbb{E}_q\left[\sum_{t=2}^T \log p(z_t \mid  z_{t-1})\right] \propto -\frac{1}{2} \sum_{t=2}^T \mathbb{E}_q\left[ (z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1}) \right]$. Expanding the quadratic form and using the trace trick 
+The relevant term is: 
+
+$$Q(A) = \mathbb{E}_q\left[\sum_{t=2}^T \log p(z_t \mid  z_{t-1})\right] \propto -\frac{1}{2} \sum_{t=2}^T \mathbb{E}_q\left[ (z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1}) \right]$$ 
+
+Expanding the quadratic form and using the trace trick 
 
 $$\text{tr}(ABC) = \text{tr}(CAB): Q(A) \propto -\frac{1}{2} \sum_{t=2}^T \mathbb{E}_q\left[ \text{tr}(z_t^T \Sigma^{-1} z_t) - 2\text{tr}(z_t^T \Sigma^{-1} A z_{t-1}) + \text{tr}(z_{t-1}^T A^T \Sigma^{-1} A z_{t-1}) \right]$$ 
 
@@ -3876,7 +3908,7 @@ The Kalman filter-smoother operates in two passes:
 
 From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^T]$, $\mathbb{E}[z_t z_{t-1}^T]$) required for the M-step.
 
-Model-Based Time Series Analysis: The Kalman Filter and Smoother
+## The Kalman Filter and Smoother
 
 1.1 Foundational Concepts for Bayesian Filtering
 
@@ -3985,8 +4017,10 @@ The full derivation of the update step (multiplying the Gaussian predictive dist
 Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of the state at time $t-1$.
 
 1. Prediction Step:
-  * Predicted state mean: $\hat{m}_t = A m_{t-1}$
-  * Predicted state covariance: $\hat{V}_t = A V_{t-1} A^T + \Sigma_z$
+  * Predicted state mean: 
+    * $\hat{m}\_t = A m_{t-1}$
+  * Predicted state covariance: 
+    * $\hat{V}\_t = A V_{t-1} A^T + \Sigma_z$
 2. Update Step:
   * Kalman Gain ($K_t$): The gain determines how much the new observation $x_t$ influences the updated state estimate.
     
@@ -4014,7 +4048,7 @@ The RTS smoother is an efficient algorithm that accomplishes this with a backwar
 
 1.4.1 RTS Smoother Recursion Equations
 
-The algorithm requires the stored results (means and covariances) from the forward Kalman filter pass: $\lbrace m_t, V_t\rbrace_{t=1}^T$ and $\lbrace \hat{m}_t, \hat{V}_t\rbrace_{t=1}^T$.
+The algorithm requires the stored results (means and covariances) from the forward Kalman filter pass: $\lbrace m_t, V_t\rbrace_{t=1}^T$ and $\lbrace \hat{m}\_t, \hat{V}\_t\rbrace_{t=1}^T$.
 
 1. Initialization: The recursion starts at the final time step, $T$. The smoothed estimate at this point is simply the filtered estimate.
   * Smoothed mean at time $T$: $m_T^s := m_T$
@@ -4034,9 +4068,9 @@ The algorithm requires the stored results (means and covariances) from the forwa
     
     $$V_t^s = V_t + J_t (V_{t+1}^s - \hat{V}_{t+1}) J_t^T$$
 
-After the backward pass is complete, the set of distributions $\lbrace N(m_t^s, V_t^s) \brace_{t=1}^T$ represents the full smoothed posterior distributions $p(z_t \mid x_1, \dots, x_T)$ for all time steps. The expected value of the state is given by the smoothed mean, $\mathbb{E}[z_t] = m_t^s$.
+After the backward pass is complete, the set of distributions $\lbrace N(m_t^s, V_t^s) \rbrace_{t=1}^T$ represents the full smoothed posterior distributions $p(z_t \mid x_1, \dots, x_T)$ for all time steps. The expected value of the state is given by the smoothed mean $\mathbb{E}[z_t] = m_t^s$.
 
-Model-Based Time Series Analysis: The Poisson State Space Model
+## The Poisson State Space Model
 
 This document provides a comprehensive overview of the Poisson State Space Model (SSM), a powerful tool for analyzing time series data composed of counts. We will detail the model's architecture, the parameter estimation process using the Expectation-Maximization (EM) algorithm, and the application of the Laplace approximation for the intractable E-step.
 
@@ -4081,9 +4115,21 @@ The parameters of the model, $\theta = \lbrace b_0, B_1, A, \Sigma, \mu_0, \Sigm
 
 The core objective is to maximize the log-likelihood of the observed data, which involves marginalizing over the latent variables: $\log p(C \mid \theta) = \log \int p(C, Z \mid \theta) dZ$. The EM algorithm instead maximizes a lower bound on this quantity, defined as the expected complete-data log-likelihood.
 
-The M-step objective is to maximize the following function with respect to $\theta$: $\mathcal{Q}(\theta, \theta^{\text{old}}) = \mathbb{E}_{q(Z)}[\log p(Z, C \mid \theta)]$, where $q(Z) = p(Z \mid C, \theta^{\text{old}})$ is the posterior distribution over the latent states, computed in the E-step using the parameters from the previous iteration.
+The M-step objective is to maximize the following function with respect to $\theta$: 
 
-This objective can be decomposed based on the model structure: $\log p(Z, C \mid \theta) = \log p(C \mid Z, \theta) + \log p(Z \mid \theta)$. Therefore, the expectation becomes: $\mathbb{E}_{q(Z)}[\log p(Z, C)] = \mathbb{E}_{q(Z)}[\log p(C \mid Z)] + \mathbb{E}_{q(Z)}[\log p(Z)]$.
+$$\mathcal{Q}(\theta, \theta^{\text{old}}) = \mathbb{E}_{q(Z)}[\log p(Z, C \mid \theta)],$$ 
+
+where $q(Z) = p(Z \mid C, \theta^{\text{old}})$
+
+is the posterior distribution over the latent states, computed in the E-step using the parameters from the previous iteration.
+
+This objective can be decomposed based on the model structure: 
+
+$$\log p(Z, C \mid \theta) = \log p(C \mid Z, \theta) + \log p(Z \mid \theta)$$ 
+
+Therefore, the expectation becomes: 
+
+$$\mathbb{E}_{q(Z)}[\log p(Z, C)] = \mathbb{E}_{q(Z)}[\log p(C \mid Z)] + \mathbb{E}_{q(Z)}[\log p(Z)]$$
 
 2.1 The M-Step: Maximization
 
@@ -4091,19 +4137,54 @@ In the M-step, we find the parameters $\theta$ that maximize the $\mathcal{Q}$ f
 
 2.1.1 Latent Dynamics Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
 
-The term $\mathbb{E}_{q(Z)}[\log p(Z)]$ depends only on the latent dynamics parameters. $\log p(Z) = \log p(z_1 \mid \mu_0, \Sigma_0) + \sum_{t=2}^{T} \log p(z_t \mid z_{t-1}, A, \Sigma)$. The log-likelihoods are for Gaussian distributions: $\log p(z_t \mid z_{t-1}) \propto -\frac{1}{2}\log\mid \Sigma\mid - \frac{1}{2}(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})$. Maximizing the expectation of this term is equivalent to the M-step of a standard linear Gaussian State Space Model. The updates for $A, \Sigma, \mu_0, \Sigma_0$ depend on the expected sufficient statistics (moments) of the latent states, such as $\mathbb{E}_q[z_t]$, $\mathbb{E}_q[z_t z_t^T]$, and $\mathbb{E}_q[z_t z_{t-1}^T]$, which are computed during the E-step.
+The term $\mathbb{E}_{q(Z)}[\log p(Z)]$ depends only on the latent dynamics parameters. 
+
+$$\log p(Z) = \log p(z_1 \mid \mu_0, \Sigma_0) + \sum_{t=2}^{T} \log p(z_t \mid z_{t-1}, A, \Sigma)$$ 
+
+The log-likelihoods are for Gaussian distributions: 
+
+$$\log p(z_t \mid z_{t-1}) \propto -\frac{1}{2}\log\mid \Sigma\mid - \frac{1}{2}(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})$$ 
+
+Maximizing the expectation of this term is equivalent to the M-step of a standard linear Gaussian State Space Model. The updates for $A, \Sigma, \mu_0, \Sigma_0$ depend on the expected sufficient statistics (moments) of the latent states, such as $\mathbb{E}_q[z_t]$, $\mathbb{E}_q[z_t z_t^T]$, and $\mathbb{E}_q[z_t z_{t-1}^T]$, which are computed during the E-step.
 
 2.1.2 Observation Parameters $\lbrace b_0, B_1\rbrace$
 
-The term $\mathbb{E}_{q(Z)}[\log p(C \mid Z)]$ depends only on the observation parameters. $\mathbb{E}_{q(Z)}[\log p(C \mid Z)] = \sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[\log p(c_t \mid z_t)]$. The log-likelihood of the Poisson observation is: $\log p(c_t \mid z_t, b_0, B_1) = c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t - \log(c_t!)$. Dropping terms constant with respect to the parameters, we need to maximize: $\sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t] = \sum_{t=1}^{T} (c_t^T \mathbb{E}_{q(z_t)}[\log \lambda_t] - \mathbf{1}^T\mathbb{E}_{q(z_t)}[\lambda_t])$.
+The term $\mathbb{E}_{q(Z)}[\log p(C \mid Z)]$ depends only on the observation parameters. 
 
-Substituting $\log \lambda_t = b_0 + B_1 z_t$, the first part is: $\mathbb{E}_{q(z_t)}[\log \lambda_t] = b_0 + B_1 \mathbb{E}_{q(z_t)}[z_t]$. The second part involves the expectation of an exponential function of a Gaussian random variable. Assuming the approximate posterior from the E-step is Gaussian, $q(z_t) = \mathcal{N}(z_t \mid \mu_t, V_t)$, then $\mathbb{E}_{q(z_t)}[\lambda_t] = \mathbb{E}_{q(z_t)}[\exp(b_0 + B_1 z_t)]$.
 
-Recall from probability theory that if a random vector $X \sim \mathcal{N}(\mu, \Sigma)$, then for a constant vector $k$, the expectation of $\exp(k^T X)$ is given by: $\mathbb{E}[e^{k^T X}] = \exp(k^T \mu + \frac{1}{2} k^T \Sigma k)$.
+$$\mathbb{E}_{q(Z)}[\log p(C \mid Z)] = \sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[\log p(c_t \mid z_t)]$$ 
 
-Applying this result to each component of $\lambda_t$ (since the exponential is elementwise), we find the expectation for the $i$-th component: $(\mathbb{E}_{q(z_t)}[\lambda_t])_i = \exp\left(b_{0,i} + (B_1 \mu_t)_i + \frac{1}{2} (B_1 V_t B_1^T)_{i,i}\right)$, where $(B_1)_{i,:}$ is the $i$-th row of $B_1$.
+The log-likelihood of the Poisson observation is: 
 
-The final objective for $b_0$ and $B_1$ is: $\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^T(b_0 + B_1 \mu_t) - \mathbf{1}^T \mathbb{E}_{q(z_t)}[\lambda_t] \right)$. This expression does not have a closed-form solution for $b_0$ and $B_1$. However, this objective function is concave, which guarantees that a unique maximum exists. This maximum can be found efficiently using numerical optimization methods like the Newton-Raphson algorithm.
+$$\log p(c_t \mid z_t, b_0, B_1) = c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t - \log(c_t!)$$.
+
+Dropping terms constant with respect to the parameters, we need to maximize: 
+
+$$\sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t] = \sum_{t=1}^{T} (c_t^T \mathbb{E}_{q(z_t)}[\log \lambda_t] - \mathbf{1}^T\mathbb{E}_{q(z_t)}[\lambda_t])$$
+
+Substituting $\log \lambda_t = b_0 + B_1 z_t$, the first part is: 
+
+$$\mathbb{E}_{q(z_t)}[\log \lambda_t] = b_0 + B_1 \mathbb{E}_{q(z_t)}[z_t]$$ 
+
+The second part involves the expectation of an exponential function of a Gaussian random variable. Assuming the approximate posterior from the E-step is Gaussian, $q(z_t) = \mathcal{N}(z_t \mid \mu_t, V_t)$, then 
+
+$$\mathbb{E}_{q(z_t)}[\lambda_t] = \mathbb{E}_{q(z_t)}[\exp(b_0 + B_1 z_t)]$$
+
+Recall from probability theory that if a random vector $X \sim \mathcal{N}(\mu, \Sigma)$, then for a constant vector $k$, the expectation of $\exp(k^T X)$ is given by: 
+
+$$\mathbb{E}[e^{k^T X}] = \exp(k^T \mu + \frac{1}{2} k^T \Sigma k)$$
+
+Applying this result to each component of $\lambda_t$ (since the exponential is elementwise), we find the expectation for the $i$-th component: 
+
+$$(\mathbb{E}_{q(z_t)}[\lambda_t])_i = \exp\left(b_{0,i} + (B_1 \mu_t)_i + \frac{1}{2} (B_1 V_t B_1^T)_{i,i}\right),$$ 
+
+where $(B_1)_{i,:}$ is the $i$-th row of $B_1$.
+
+The final objective for $b_0$ and $B_1$ is: 
+
+$$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^T(b_0 + B_1 \mu_t) - \mathbf{1}^T \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$ 
+
+This expression does not have a closed-form solution for $b_0$ and $B_1$. However, this objective function is concave, which guarantees that a unique maximum exists. This maximum can be found efficiently using numerical optimization methods like the Newton-Raphson algorithm.
 
 3.0 The E-Step: Laplace Approximation
 
@@ -4115,7 +4196,11 @@ The process follows the standard predict-update cycle of a Kalman filter, but wi
 
 3.1 Predict Step
 
-Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian $p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$, the one-step-ahead predictive distribution is also Gaussian: $p(z_t \mid c_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid c_{1:t-1}) dz_{t-1} \approx \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1})$, where:
+Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian $p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$, the one-step-ahead predictive distribution is also Gaussian: 
+
+$$p(z_t \mid c_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid c_{1:t-1}) dz_{t-1} \approx \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1}),$$
+
+where:
 
 * Predicted Mean: $\mu_{t\mid t-1} = A \mu_{t-1}$
 * Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^T + \Sigma$
@@ -4151,7 +4236,7 @@ The E-step for the Poisson SSM consists of a forward filtering pass using the La
   * $\mu_t = \arg\max_{z_t} Q(z_t)$
   * $V_t = (-\nabla_{z_t}^2 Q(z_t)\mid_{z_t=\mu_t})^{-1}$
 
-Chapter 14: Generative Recurrent Neural Networks
+## Generative Recurrent Neural Networks
 
 This chapter explores generative models for time series data that incorporate the non-linear dynamics characteristic of Recurrent Neural Networks (RNNs) within a state-space model framework. We will focus on the inference and learning challenges posed by these models and examine solutions based on the Expectation-Maximization (EM) algorithm, including the Extended Kalman Filter and Particle Filter for the E-Step.
 
@@ -4361,7 +4446,7 @@ Despite its theoretical appeal, the particle filter faces significant practical 
 * Computational Expense: The need to propagate and weight many particles at each time step makes the method computationally intensive. The number of particles required for an accurate approximation often scales exponentially with the dimension of the latent state space.
 * Filter Collapse (Particle Degeneracy): After several resampling steps, it is common for only a few particles to have non-negligible weights. The algorithm may repeatedly select these high-weight particles, causing the diversity of the particle set to collapse. This results in an impoverished representation of the posterior distribution, which may unnaturally shrink and misrepresent the true uncertainty.
 
-Generative Recurrent Models with Variational Inference
+## Generative Recurrent Models with Variational Inference
 
 15.1 Recap: Latent Variable Models
 
