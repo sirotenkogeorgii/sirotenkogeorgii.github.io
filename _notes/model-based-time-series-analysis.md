@@ -155,18 +155,18 @@ A function $f: \mathbb{R} \to [0, \infty)$ is a PDF if:
 1. $f(x) \ge 0$ for all $x \in \mathbb{R}$ (non-negativity).
 2. $\int_{-\infty}^{\infty} f(x)\,dx = 1$.
 
+The probability over an interval is given by the integral of the PDF: $P(a \le X \le b) = \int_a^b f(x)\,dx$. The corresponding CDF is $F(t) = \int_{-\infty}^{t} f(x)\,dx$.
 </div>
 
-The probability over an interval is given by the integral of the PDF: $P(a \le X \le b) = \int_a^b f(x)\,dx$. The corresponding CDF is $F(t) = \int_{-\infty}^{t} f(x)\,dx$.
 
 Common Continuous Distributions:
 
 | Distribution | Parameters | PDF $f(x)$ |
 | --- | --- | --- |
-| Normal | $\mu \in \mathbb{R},\ \sigma^2 > 0$ | $\dfrac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\dfrac{(x-\mu)^2}{2\sigma^2}\right)$ |
-| Multivariate Normal | $\mu \in \mathbb{R}^d,\ \Sigma \in \mathbb{R}^{d \times d}$ | $\dfrac{1}{(2\pi)^{d/2} \sqrt{\det \Sigma}} \exp\left(-\tfrac{1}{2}(x-\mu)^\top \Sigma^{-1} (x-\mu)\right)$ |
-| Exponential | $\lambda > 0$ | $\lambda e^{-\lambda x}$ for $x \ge 0$ |
-| Uniform | $a, b \in \mathbb{R},\ a < b$ | $\dfrac{1}{b-a}$ for $x \in [a, b]$ |
+| **Normal** | $\mu \in \mathbb{R},\ \sigma^2 > 0$ | $\dfrac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\dfrac{(x-\mu)^2}{2\sigma^2}\right)$ |
+| **Multivariate Normal** | $\mu \in \mathbb{R}^d,\ \Sigma \in \mathbb{R}^{d \times d}$ | $\dfrac{1}{(2\pi)^{d/2} \sqrt{\det \Sigma}} \exp\left(-\tfrac{1}{2}(x-\mu)^\top \Sigma^{-1} (x-\mu)\right)$ |
+| **Exponential** | $\lambda > 0$ | $\lambda e^{-\lambda x}$ for $x \ge 0$ |
+| **Uniform** | $a, b \in \mathbb{R},\ a < b$ | $\dfrac{1}{b-a}$ for $x \in [a, b]$ |
 
 <div class="pmf-grid">
   <figure>
@@ -182,6 +182,14 @@ Common Continuous Distributions:
     <figcaption>Uniform PDF</figcaption>
   </figure>
 </div>
+
+| Distribution                                   | Parameters (support)                             | Expected value ( \mathbb{E}[X] ) | Variance ( \mathrm{Var}(X) ) |
+| ---------------------------------------------- | ------------------------------------------------ | -------------------------------- | ---------------------------- |
+| **Bernoulli**                                  | $p\in[0,1]$, $X\in\lbrace 0,1\rbrace$                         | $p$                              | $p(1-p)$                     |
+| **Binomial**                                   | $n\in\mathbb{N}$, (p\in[0,1]), $X\inlbrace 0,\dots,n\rbrace$ | $np$                             | $np(1-p)$                    |
+| **Exponential**                                | rate $\lambda>0$, $X\ge 0$                      | ($1/\lambda$                      | $1/\lambda^2$                |
+| **Poisson**                                    | $\lambda>0$), $X\in\lbrace 0,1,2,\dots\rbrace$                | $\lambda$                        | $\lambda$                    |
+| **Geometric** *(# trials until first success)* | $p\in(0,1]$, $X\inlbrace 1,2,\dots\rbrace$                   | $1/p$                            | $(1-p)/p^2$                  |
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Random Variables)</span></p>
@@ -201,26 +209,32 @@ Common Continuous Distributions:
 
 ### 1.6 Rules and Laws of Probability
 
-This section covers essential rules for manipulating probabilities and two cornerstone theorems of probability theory.
-
-#### 1.6.1 Rules of Probability
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Rules of Probability)</span></p>
 
 Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
 
 * **Conditional Probability:** The probability of $x$ occurring given that $y$ has occurred.
-  $P(x \mid y) = \frac{P(x, y)}{P(y)}.$
+  
+  $$P(x \mid y) = \frac{P(x, y)}{P(y)}.$$
+
 * **Chain Rule:** Decomposes a joint probability into a product of conditional probabilities.
-  $P(x_1, x_2, \dots, x_n)
-  = P(x_1) P(x_2 \mid x_1) P(x_3 \mid x_1, x_2) \dots P(x_n \mid x_1, \dots, x_{n-1}).$
+  
+  $$P(x_1, x_2, \dots, x_n) = P(x_1) P(x_2 \mid x_1) P(x_3 \mid x_1, x_2) \dots P(x_n \mid x_1, \dots, x_{n-1}).$$
+
 * **Marginalization:** The probability of one variable can be found by summing (or integrating) over all possible values of other variables. 
-  $P(x) = \sum_y P(x, y) = \sum_y P(x \mid y) P(y).$
+  
+  $$P(x) = \sum_y P(x, y) = \sum_y P(x \mid y) P(y).$$
+
 * **Bayes' Rule:** Relates a conditional probability to its inverse and underpins Bayesian inference.
-  $P(y \mid x) = \frac{P(x \mid y) P(y)}{P(x)}.$
+  
+  $$P(y \mid x) = \frac{P(x \mid y) P(y)}{P(x)}.$$
+
 * **Independence:** Two RVs $X$ and $Y$ are independent if learning the value of one provides no information about the other. This holds iff
-  $P(x, y) = P(x) P(y)
-  \quad \text{or equivalently} \quad
-  P(x \mid y) = P(x), \quad
-  P(y \mid x) = P(y).$
+  
+  $$P(x, y) = P(x) P(y) \quad \text{or equivalently} \quad P(x \mid y) = P(x), \quad P(y \mid x) = P(y).$$
+
+</div>
 
 #### 1.6.2 Asymptotic Theorems
 
@@ -285,7 +299,9 @@ If I recompute samples and each time evaluate my estimate, I obtain a distributi
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Estimators)</span></p>
 
 * **Bias:** The difference between the expected value of the estimator and the true parameter:
-  $\text{Bias}(\hat{\theta}) = \mathbb{E}[\hat{\theta}] - \theta.$
+  
+  $$\text{Bias}(\hat{\theta}) = \mathbb{E}[\hat{\theta}] - \theta.$$
+
   An estimator is unbiased if its bias is zero.
 * **Efficiency:** An estimator is more efficient than another if it has a smaller variance (i.e., a smaller standard error).
 
@@ -307,14 +323,17 @@ There are three primary approaches to estimating parameters from data.
 
 The LS method estimates parameters by minimizing the sum of the squared differences between observed values and the values predicted by the model. It requires no assumptions about the underlying distribution of the data.
 
-Let $(x_i, y_i)$ be $N$ data pairs. We approximate the true relationship $y=f(x)$
-with a parameterized function $f_\theta(x)$. The residual for the $i$-th data point is
-$\epsilon_i = y_i - f_\theta(x_i)$. The LS estimator is
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Method of Least Squares)</span></p>
+
+Let $(x_i, y_i)$ be $N$ data pairs. We approximate the true relationship $y=f(x)$ with a parameterized function $f_\theta(x)$. The residual for the $i$-th data point is $\epsilon_i = y_i - f_\theta(x_i)$. The LS estimator is
 
 $$
-\hat{\theta}_{\mathrm{LS}} = \arg\min_{\theta} \sum_{i=1}^N \epsilon_i^2
+\hat{\theta}_{\text{LS}} = \arg\min_{\theta} \sum_{i=1}^N \epsilon_i^2
 = \arg\min_{\theta} \sum_{i=1}^N \bigl(y_i - f_\theta(x_i)\bigr)^2 .
 $$
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Estimating the Population Mean)</span></p>
@@ -333,6 +352,9 @@ $$
 
 MLE selects the parameter values that make the observed data most probable under the assumed parametric model.
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Likelihood Estimation)</span></p>
+
 Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn from a model with density $p(x \mid \theta)$ ($X \sim P(\Theta)^{(N)}$).
 
 * **Likelihood Function:** The joint density of the observed data, viewed as a function of the parameter $\theta$:
@@ -342,6 +364,8 @@ Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn f
 * **MLE Definition:** The MLE is the value of $\theta$ that maximizes the likelihood function:
   * $$\hat{\theta}_{\text{MLE}} = \arg\max_{\theta \in \Theta} \mathcal{L}(\theta \mid X)$$
 
+</div>
+
 In practice, it is often easier to maximize the log-likelihood $\ell(\theta \mid X) = \log \mathcal{L}(\theta \mid X)$, since the logarithm is monotonic and the resulting sums are easier to differentiate.
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -349,9 +373,13 @@ In practice, it is often easier to maximize the log-likelihood $\ell(\theta \mid
 
 * **Model:** $x_i = \mu + \epsilon_i$ with $\epsilon_i \sim \mathcal{N}(0, \sigma^2)$ or equivalently $X_i \sim \mathcal{N}(\mu, \sigma^2)$ i.i.d., with $\sigma^2$ known.
 * **Log-Likelihood:**
-  $\ell(\mu \mid X) = \log \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(X_i-\mu)^2}{2\sigma^2}\right) = \sum_{i=1}^N \left( -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(X_i-\mu)^2}{2\sigma^2} \right).$
+  
+  $$\ell(\mu \mid X) = \log \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(X_i-\mu)^2}{2\sigma^2}\right) = \sum_{i=1}^N \left( -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(X_i-\mu)^2}{2\sigma^2} \right).$$
+
 * **Maximization:** Differentiate with respect to $\mu$ and set to zero.
+  
   $$\frac{\partial \ell}{\partial \mu} = \sum_{i=1}^N \frac{X_i-\mu}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^N (X_i-\mu) = 0$$
+  
   $$\sum_i X_i - N\mu = 0 \implies \hat{\mu}_{\text{MLE}} = \frac{1}{N} \sum_{i=1}^N X_i$$
 
 * For this model, the MLE and LS estimates for the mean coincide.
@@ -360,10 +388,15 @@ In practice, it is often easier to maximize the log-likelihood $\ell(\theta \mid
 
 #### 2.3.3 Bayesian Inference (BI)
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bayesian Inference)</span></p>
+
 Bayesian inference uses Bayes' rule to update knowledge about parameters after observing data. It produces a posterior distribution for the parameters, not just a point estimate.
 
 The core of Bayesian inference is Bayes' rule:
-$p(\theta \mid X) = \frac{p(X \mid \theta) p(\theta)}{p(X)}.$
+
+$$p(\theta \mid X) = \frac{p(X \mid \theta) p(\theta)}{p(X)}.$$
+
 Here:
 
 * $p(\theta \mid X)$ is the **posterior** distribution: our belief about $\theta$ after seeing data $X$.
@@ -373,11 +406,15 @@ Here:
 
 This is often summarized as: Posterior $\propto$ Likelihood $\times$ Prior.
 
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Inferring the mean $\mu$ of a Normal distribution ($\sigma^2$ known) with a Normal prior on $\mu$.)</span></p>
 
-* Likelihood: $p(X \mid \mu) \propto \exp\left(-\frac{1}{2\sigma^2}\sum_i (x_i - \mu)^2\right)$.
-* Prior: $\mu \sim \mathcal{N}(\mu_0, \sigma_0^2)$, so $p(\mu) \propto \exp\left(-\frac{(\mu - \mu_0)^2}{2\sigma_0^2}\right)$.
+* Likelihood: 
+  * $p(X \mid \mu) \propto \exp\left(-\frac{1}{2\sigma^2}\sum_i (x_i - \mu)^2\right)$.
+* Prior: 
+  * $\mu \sim \mathcal{N}(\mu_0, \sigma_0^2)$, so $p(\mu) \propto \exp\left(-\frac{(\mu - \mu_0)^2}{2\sigma_0^2}\right)$.
 * The posterior $p(\mu \mid X)$ is also a Normal distribution: 
   * $p(\mu \mid X) = p(X\mid \mu)p(\mu) / p(x) = \mathcal{N}(\mu, \sigma^2)\mathcal{N}(\mu_0, \sigma_0^2) / p(x)$.
 * A common challenge is that the evidence $p(X)$ is often an intractable integral, requiring numerical methods such as MCMC or variational inference.
@@ -393,13 +430,16 @@ When closed-form solutions for estimators are not available, we turn to numerica
 
 Gradient Descent is an iterative first-order optimization algorithm for finding a local minimum of a differentiable function. The core idea is to take repeated steps in the opposite direction of the gradient of the function at the current point, as this is the direction of steepest descent.
 
-**Algorithm:**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Gradient Descent)</span></p>
 
 1. Initialize parameter guess $\theta_0$.
 2. Repeat for $n$ iterations:
    * $\theta_{n+1} = \theta_n - \gamma \nabla J(\theta_n)$, 
    * where $J(\theta)$ is the cost function and $\gamma > 0$ is the learning rate.
-1. Stop when convergence is reached (e.g., $\lvert J(\theta_{i}) - J(\theta_{i+1})\rvert < \epsilon$) or no more iterations.
+3. Stop when convergence is reached (e.g., $\lvert J(\theta_{i}) - J(\theta_{i+1})\rvert < \epsilon$) or no more iterations.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(GD for LS Estimation of the Mean)</span></p>
@@ -411,7 +451,9 @@ Gradient Descent is an iterative first-order optimization algorithm for finding 
 
 </div>
 
-**Challenges and Solutions:**
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenges and Solutions of GD)</span></p>
+
 * Local minima.
 * Slow convergence in flat regions of the cost landscape.
 * Overshooting the minimum if the learning rate $\gamma$ is too large.
@@ -419,6 +461,8 @@ Gradient Descent is an iterative first-order optimization algorithm for finding 
   * **Random Restarts:** Run the algorithm from multiple random initial conditions to increase the chance of finding a global minimum.
   * **Stochastic Gradient Descent (SGD):** Compute the gradient on a small random subset of data (a minibatch) at each step, leading to faster but noisier updates.
   * **Adaptive Learning Rates:** Algorithms like Momentum, Adagrad, and Adam dynamically adjust the learning rate to navigate varying curvatures in the cost landscape.
+
+</div>
 
 <div class="gd-grid">
   <figure>
@@ -435,8 +479,63 @@ Gradient Descent is an iterative first-order optimization algorithm for finding 
 
 The Newton-Raphson method is an iterative algorithm for finding the roots of a function $f(x)$, i.e., finding $x$ such that $f(x)=0$. In the context of model optimization, the goal is often to find the roots of the *derivative* of the loss function, which correspond to potential minima or maxima. This method is a second-order optimization algorithm that uses the curvature of the loss landscape to take more informed steps. It adapts the learning rate by incorporating the Hessian matrix (the matrix of second partial derivatives).
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Original Newton-Raphson Method)</span></p>
+
+**Newton–Raphson method** (often just “Newton’s method”) is an iterative numerical algorithm for finding a root of a differentiable function $f(x)=0$.
+
+Starting from an initial guess $x_0$, it repeatedly updates
+
+$$x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}.$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Original Newton-Raphson Method)</span></p>
+
+Geometrically, each step takes the tangent line to $f$ at $x_k$ and uses where that tangent crosses the $x$-axis as the next estimate. When $x_0$ is close to a simple root and $f'(x^{\ast})\neq 0$), the method typically converges very fast (quadratically). It can fail or converge slowly if $f'(x_k)$ is near zero, the initial guess is poor, or the function is not well-behaved near the root.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Original Newton-Raphson Method)</span></p>
+
+In machine learning, the Newton–Raphson idea becomes a **second-order optimization method** for minimizing a loss $L(\theta)$ by using both the **gradient** and the **curvature** (Hessian).
+
+* **Goal:** $\min_\theta L(\theta)$
+* **Update (Newton step):**
+  
+  $$\theta_{k+1} = \theta_k - H(\theta_k)^{-1},\nabla L(\theta_k),$$
+  
+  where $\nabla L(\theta)$ is the gradient and $H(\theta)=\nabla^2 L(\theta)$ is the Hessian.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Newton-Raphson Method in ML)</span></p>
+
+**Intuition:** around $\theta_k$, approximate the loss with a quadratic (2nd-order Taylor expansion) and jump directly to the minimizer of that quadratic. This can converge in very few iterations near the optimum (often **quadratically**), especially for convex problems.
+
+This can be viewed as an analogue to Gradient Descent (GD), but with an adaptive learning rate determined by the inverse of the derivative. For a multivariate function $f$, the first derivative $f'$ becomes the gradient, and the second derivative (used to find the root of the first derivative) is the matrix of second partial derivatives known as the **Hessian**.
+
+**Practical notes in ML:**
+
+* Computing and inverting the Hessian is expensive in high dimensions ($O(d^2)$ memory, $O(d^3)$ naive solve).
+* Hessians can be indefinite (not always positive definite), so the raw Newton step may not be a descent direction unless modified (e.g., damping).
+* Common practical variants:
+
+  * **(Damped) Newton / Levenberg–Marquardt:** use $(H+\lambda I)^{-1}\nabla L$
+  * **Quasi-Newton (BFGS/L-BFGS):** approximate $H^{-1}$ without forming $H$
+  * **Second-order for least squares / logistic regression:** leads to classic fast solvers; in GLMs it relates closely to IRLS.
+
+*“Newton’s method optimizes a loss by taking steps based on the gradient scaled by the inverse Hessian, using curvature to reach the minimum much faster than gradient descent when feasible.”*
+
+</div>
+
 **Update Rule:**
-$\theta_{n+1} = \theta_n - H_{f(\theta_n)}^{-1} \nabla f(\theta_n),$
+
+$$\theta_{n+1} = \theta_n - H_{f(\theta_n)}^{-1} \nabla f(\theta_n),$$
+
 where $H_{f(\theta_n)}$ is the Hessian matrix of the function $f$ evaluated at $\theta_n$. The term $H^{-1}$ acts as an adaptive, matrix-valued learning rate. While Newton-Raphson can converge much faster than GD, computing and inverting the Hessian is computationally expensive for the high-dimensional parameter spaces common in deep learning.
 
 The update rule is derived from the first-order Taylor expansion of the function $f$ around an initial guess $\theta_0$:
@@ -449,13 +548,6 @@ The update rule is derived from the first-order Taylor expansion of the function
     * $\theta_1 f'(\theta_0) = \theta_0 f'(\theta_0) - f(\theta_0)$
     * $\theta_1 = \theta_0 - \frac{f(\theta_0)}{f'(\theta_0)}$
 
-The general iterative update equation is:
-
-$$
-\theta_n = \theta_{n-1} - [f'(\theta_{n-1})]^{-1} f(\theta_{n-1})
-$$
-
-This can be viewed as an analogue to Gradient Descent (GD), but with an adaptive learning rate determined by the inverse of the derivative. For a multivariate function $f$, the first derivative $f'$ becomes the gradient, and the second derivative (used to find the root of the first derivative) is the matrix of second partial derivatives known as the **Hessian**.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -485,7 +577,7 @@ $p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem ari
     \mathbb{E}[h(\theta) \mid X] \approx \frac{1}{N} \sum_{i=1}^{N} h(\theta^{(i)})
     $$
 
-* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as $p(\theta_t \mid \theta_{t-1}, ..., \theta_0) = p(\theta_t \mid \theta_{t-1})$.
+* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as $p(\theta_t \mid \theta_{t-1}, \dots, \theta_0) = p(\theta_t \mid \theta_{t-1})$.
 
 **Posterior Sampling with Metropolis-Hastings**
 
@@ -871,39 +963,39 @@ The optimal parameters $\hat{\beta}$ are found by minimizing the LSE loss functi
 
 Expanding the LSE expression:
 
-$$\text{LSE}(\beta) = y^Ty - y^TX\beta - \beta^TX^Ty + \beta^TX^TX\beta$$
+$$\text{LSE}(\beta) = y^\top y - y^\top X\beta - \beta^\top X^\top y + \beta^\top X^\top X\beta$$
 
-Since $y^TX\beta$ is a scalar, it is equal to its transpose $(\beta^TX^Ty)$. Therefore:
+Since $y^\top X\beta$ is a scalar, it is equal to its transpose $(\beta^\top X^\top y)$. Therefore:
 
-$$\text{LSE}(\beta) = y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta$$
+$$\text{LSE}(\beta) = y^\top y - 2\beta^\top X^\top y + \beta^\top X^\top X\beta$$
 
 Now, we take the derivative with respect to the vector $\beta$:
 
-$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^Ty - 2\beta^TX^Ty + \beta^TX^TX\beta)$$
+$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^\top y - 2\beta^\top X^\top y + \beta^\top X^\top X\beta)$$
 
 Using the matrix calculus rules:
-* $\frac{\partial(a^Tx)}{\partial x} = a$
-* $\frac{\partial(x^TAx)}{\partial x} = (A + A^T)x$
+* $\frac{\partial(a^\top x)}{\partial x} = a$
+* $\frac{\partial(x^\top Ax)}{\partial x} = (A + A^\top)x$
 
 The derivative is:
 
-$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + (X^TX + (X^TX)^T)\beta$$
+$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^\top y + (X^\top X + (X^\top X)^\top)\beta$$
 
-Since $X^TX$ is a symmetric matrix, $(X^TX)^T = X^TX$. The derivative simplifies to:
+Since $X^\top X$ is a symmetric matrix, $(X^\top X)^\top = X^\top X$. The derivative simplifies to:
 
-$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^Ty + 2X^TX\beta$$
+$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^\top y + 2X^\top X\beta$$
 
 Setting the derivative to zero to find the minimum:
 
-$$-2X^Ty + 2X^TX\hat{\beta} = 0$$
+$$-2X^\top y + 2X^\top X\hat{\beta} = 0$$
 
-$$2X^TX\hat{\beta} = 2X^Ty$$
+$$2X^\top X\hat{\beta} = 2X^\topy$$
 
-$$X^TX\hat{\beta} = X^Ty$$
+$$X^\top X\hat{\beta} = X^\top y$$
 
 The solution for $\hat{\beta}$, known as the ordinary least squares (OLS) estimator, is:
 
-$$\hat{\beta} = (X^TX)^{-1}X^Ty$$
+$$\hat{\beta} = (X^\top X)^{-1}X^\topy$$
 
 ## 5. Regression Models for Time Series
 
@@ -929,7 +1021,7 @@ The simple linear regression model assumes a linear relationship between the pre
 
 The response variable $x_t$ is modeled as a linear combination of the predictor variables $u_t$ plus an error term $\epsilon_t$.
 
-$$x_t = u_t^T \beta + \epsilon_t$$
+$$x_t = u_t^\top \beta + \epsilon_t$$
 
 where:
 
@@ -948,7 +1040,7 @@ $$X = U\beta + E$$
 
 where:
 
-* $X = (x_1, \dots, x_T)^T$ is the $T \times 1$ vector of responses.
+* $X = (x_1, \dots, x_T)^\top$ is the $T \times 1$ vector of responses.
 * $U$ is the $T \times (p+1)$ design matrix, where each row is $u_t^T$.
 * $\beta = (\beta_0, \dots, \beta_p)^T$ is the $(p+1) \times 1$ parameter vector.
 * $E = (\epsilon_1, \dots, \epsilon_T)^T$ is the $T \times 1$ vector of errors.
@@ -1001,7 +1093,7 @@ $$L_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta) = X^T X - X^T U \beta - \be
 
 2. Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
     
-    $$\hat{\beta}\_{\text{LS}} = (U^T U)^{-1} U^T X$$
+    $$\hat{\beta}_{\text{LS}} = (U^T U)^{-1} U^T X$$
 
 This is the celebrated **normal equation** solution for ordinary least squares.
 
@@ -1123,7 +1215,7 @@ where:
 **Estimation (LSE/MLE):** The solution for the parameter matrix $B$ is analogous to the univariate case:
 
 $$
-\hat{B} = (U^T U)^{-1} U^T X
+\hat{B} = (U^\top U)^{-1} U^\top X
 $$
 
 This is equivalent to performing $q$ separate univariate linear regressions, one for each response variable.
