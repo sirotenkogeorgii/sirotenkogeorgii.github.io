@@ -3749,14 +3749,14 @@ The EM algorithm is an iterative procedure for finding MLE solutions for models 
 2. Repeat until convergence:
   * **E-Step (Expectation):** Fix the current parameters $\theta^{\ast}$ and update the proposal distribution $q^{\ast}(Z)$ to be the true posterior. This minimizes the KL divergence, making the bound tight. 
   
-  $$q^{\ast}(Z) = \arg\max_q \text{ELBO}(q, \theta^{\ast}) = p_{\theta^{\ast}}(Z\mid X)$$ 
+  $$q^{\ast}(Z) = \arg\max_q \text{ELBO}(q, \theta^{\ast})$$ 
   
   $$\iff$$
   
   $$q^{\ast}(Z) = \arg\min_q \text{KL}(q(Z)\parallel p_{\theta^{\ast}}(Z\mid X))$$ 
   
   This step involves computing the expectation of the complete-data log-likelihood.
-  * **M-Step (Maximization):** Fix the proposal distribution $q^{\ast}(Z)$ from the E-step and update the model parameters $\theta$ by maximizing the ELBO. 
+  * **M-Step (Maximization):** Fix the proposal distribution $q^{\ast}(Z)$ from the E-step and update the model parameters $\theta^{\ast}$ by maximizing the ELBO. 
   
   $$\theta^{\ast} = \arg\max_\theta \text{ELBO}(q^{\ast}(Z), \theta)$$ 
   
@@ -3768,7 +3768,7 @@ The EM algorithm is an iterative procedure for finding MLE solutions for models 
 
 #### Linear State-Space Models
 
-12.5.1 Architecture: Linear Dynamical System (LDS)
+Architecture: Linear Dynamical System (LDS)
 
 A Linear Dynamical System (LDS) is a specific type of state-space model where the transition and observation models are linear functions with Gaussian noise.
 
@@ -3782,38 +3782,43 @@ The graphical model is:
  x_1     x_2               x_t
 ```
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear State-Space Models)</span></p>
 
-1. Observation Model (Linear Gaussian): The observation $x_t \in \mathbb{R}^N$ is a linear combination of the latent state $z_t \in \mathbb{R}^M$ plus Gaussian noise. 
+1. **Observation Model (Linear Gaussian):** The observation $x_t \in \mathbb{R}^N$ is a linear combination of the latent state $z_t \in \mathbb{R}^M$ plus Gaussian noise. 
    
    $$x_t = B z_t + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \Gamma)$$ 
    
    So, the conditional distribution is: 
    
-   $$p(x_t \mid z_t) = \mathcal{N}(x_t \mid B z_t, \Gamma)$$
+   $$p(x_t \mid z_t) = \mathcal{N}(B z_t, \Gamma)$$
    
-2. Latent Model / Process Model (Linear Gaussian): The latent state $z_t \in \mathbb{R}^M$ evolves as a linear function of the previous state $z_{t-1}$ plus Gaussian noise.
+2. **Latent Model / Process Model (Linear Gaussian):** The latent state $z_t \in \mathbb{R}^M$ evolves as a linear function of the previous state $z_{t-1}$ plus Gaussian noise.
    
    $$z_t = A z_{t-1} + \omega_t, \quad \omega_t \sim \mathcal{N}(0, \Sigma)$$
    
    So, the conditional distribution is: 
    
-   $$p(z_t \mid z_{t-1}) = \mathcal{N}(z_t \mid A z_{t-1}, \Sigma)$$
+   $$p(z_t \mid z_{t-1}) = \mathcal{N}(A z_{t-1}, \Sigma)$$
 
-3. Initial Distribution: The initial state is drawn from a Gaussian distribution. 
+3. **Initial Distribution:** The initial state is drawn from a Gaussian distribution. 
    
    $$z_1 \sim \mathcal{N}(\mu_0, \Sigma_0)$$
 
 The model parameters are:
 
-* **Observation parameters:** $\theta_{obs} = \lbrace B, \Gamma\rbrace$
-* **Latent parameters:** $\theta_{lat} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
+* **Observation parameters:** $\theta_{\text{obs}} = \lbrace B, \Gamma\rbrace$
+* **Latent parameters:** $\theta_{\text{lat}} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
+
+</div>
 
 For convenience, we will assume $\Sigma_0 = \Sigma$. Additionally, external inputs could be added to these models, but they are omitted here for simplicity.
 
 * The true state ($z_t$) requires both position and velocity.
 * We only observe a noisy GPS measurement of the position ($x_t$). This is an incomplete observation of the true state.
 
-General LDS Vocabulary
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(General LDS Vocabulary)</span></p>
 
 * **Smoothing (Offline Inference):** The goal is to infer past states based on all available observations up to time $T$: 
   
@@ -3833,7 +3838,10 @@ General LDS Vocabulary
 
 * **Learning (Parameter Estimation):** The goal is to estimate the model parameters:
     
-    $$\theta_{lat} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace, \quad \theta_{obs} = \lbrace B, \Gamma\rbrace$$
+    $$\theta_{\text{lat}} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace, \quad \theta_{\text{obs}} = \lbrace B, \Gamma\rbrace$$
+
+</div>
+
 
 EM for LDS Models
 
@@ -3859,15 +3867,19 @@ $$\log p(y) = -\frac{k}{2}\log(2\pi) - \frac{1}{2}\log\mid \Sigma\mid  - \frac{1
 
 Applying this to the LDS model components ($p(z_1)$, $p(z_t\mid z_{t-1})$, $p(x_t\mid z_t)$), the expected complete-data log-likelihood becomes a function of terms like: 
 
-$$\mathbb{E}_q[(z_1 - \mu_0)^T \Sigma_0^{-1} (z_1 - \mu_0)], \quad \mathbb{E}_q[(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})], \quad \mathbb{E}_q[(x_t - Bz_{t})^T \Gamma^{-1} (x_t - Bz_{t})]$$
+$$\mathbb{E}_q[(z_1 - \mu_0)^T \Sigma_0^{-1} (z_1 - \mu_0)]$$
+
+$$\mathbb{E}_q[(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})]$$
+
+$$\mathbb{E}_q[(x_t - Bz_{t})^T \Gamma^{-1} (x_t - Bz_{t})]$$
 
 In the M-step for an LDS, all parameter updates can be written in terms of the first and second moments of the latent variables under the posterior distribution $q(Z) = p(Z\mid X)$. These required moments are:
 
 * $\mathbb{E}[z_t]$ (First moment, across one time step)
-* $\mathbb{E}[z_t z_t^T]$ (Second moment, at one time step)
-* $\mathbb{E}[z_t z_{t-1}^T]$ (Second moment, across two time steps)
+* $\mathbb{E}[z_t z_t^\top]$ (Second moment, at one time step)
+* $\mathbb{E}[z_t z_{t-1}^\top]$ (Second moment, across two time steps)
 
-Derivation of the Update for A
+Derivation of the Update for $A$
 
 To find the update for the transition matrix $A$, we differentiate the part of the expected log-likelihood related to the process model, which we denote $Q(A)$, with respect to $A$ and set it to zero.
 
@@ -3891,7 +3903,7 @@ $$\implies \Sigma^{-1} \sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^T] = \Sigma^{-1} A 
 
 Solving for $A$ yields the update rule: 
 
-$$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^T]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^T]\right)^{-1}$$
+$$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
 
 The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion.
 
@@ -3906,7 +3918,7 @@ The Kalman filter-smoother operates in two passes:
 1. **Forward Pass (Filtering):** This pass iterates from $t=1$ to $T$, computing the filtered distributions $p(z_t \mid x_1, \dots, x_t)$.
 2. **Backward Pass (Smoothing):** This pass iterates from $t=T-1$ down to $1$, using the results of the forward pass to compute the smoothed distributions $p(z_t \mid x_1, \dots, x_T)$.
 
-From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^T]$, $\mathbb{E}[z_t z_{t-1}^T]$) required for the M-step.
+From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^\top]$, $\mathbb{E}[z_t z_{t-1}^\top]$) required for the M-step.
 
 ## The Kalman Filter and Smoother
 
@@ -4188,7 +4200,11 @@ This expression does not have a closed-form solution for $b_0$ and $B_1$. Howeve
 
 3.0 The E-Step: Laplace Approximation
 
-The E-step requires computing the posterior distribution over the latent states, $p(Z \mid C, \theta^{\text{old}})$. For the Poisson SSM, this posterior is analytically intractable due to the non-conjugate relationship between the Gaussian latent dynamics and the Poisson observation model. $p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) \ p(z_t \mid c_{1:t-1})$. Here, $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a Poisson likelihood. Their product does not yield a standard distribution.
+The E-step requires computing the posterior distribution over the latent states, $p(Z \mid C, \theta^{\text{old}})$. For the Poisson SSM, this posterior is analytically intractable due to the non-conjugate relationship between the Gaussian latent dynamics and the Poisson observation model. 
+
+$$p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) \ p(z_t \mid c_{1:t-1})$$ 
+
+Here, $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a Poisson likelihood. Their product does not yield a standard distribution.
 
 To overcome this, we approximate the true posterior with a Gaussian distribution using the Laplace approximation. This method finds a Gaussian that matches the mode and the curvature at the mode of the target distribution.
 
@@ -4196,7 +4212,11 @@ The process follows the standard predict-update cycle of a Kalman filter, but wi
 
 3.1 Predict Step
 
-Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian $p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$, the one-step-ahead predictive distribution is also Gaussian: 
+Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian 
+
+$$p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$$ 
+
+the one-step-ahead predictive distribution is also Gaussian: 
 
 $$p(z_t \mid c_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid c_{1:t-1}) dz_{t-1} \approx \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1}),$$
 
@@ -4207,7 +4227,11 @@ where:
 
 3.2 Update Step
 
-The goal is to approximate the true filtering posterior $p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) p(z_t \mid c_{1:t-1})$ with a new Gaussian $\mathcal{N}(\mu_t, V_t)$.
+The goal is to approximate the true filtering posterior 
+
+$$p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) p(z_t \mid c_{1:t-1})$$
+
+with a new Gaussian $\mathcal{N}(\mu_t, V_t)$.
 
 1. A Gaussian distribution is fully specified by its mean and covariance matrix.
 2. The maximum of the logarithm of a Gaussian's PDF occurs at its mean. The curvature at this maximum is determined by the inverse of its covariance.
@@ -4220,8 +4244,14 @@ Dropping constants, this is:
 
 $$Q(z_t) = \left( c_t^T (b_0 + B_1 z_t) - \mathbf{1}^T\exp(b_0 + B_1 z_t) \right) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^T (V_{t\mid t-1})^{-1} (z_t - \mu_{t\mid t-1})$$
 
-* Approximated Mean (Mode): The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing $Q(z_t)$: $\mu_t := \arg\max_{z_t} Q(z_t)$. This maximization must be performed numerically.
-* Approximated Covariance (Curvature): The covariance $V_t$ is the negative inverse of the Hessian (second derivative matrix) of $Q(z_t)$ evaluated at the mode $\mu_t$: $V_t := \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$.
+* Approximated Mean (Mode): The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing 
+  
+  $$Q(z_t)$: $\mu_t := \arg\max_{z_t} Q(z_t)$$ 
+  
+  This maximization must be performed numerically.
+* Approximated Covariance (Curvature): The covariance $V_t$ is the negative inverse of the Hessian (second derivative matrix) of $Q(z_t)$ evaluated at the mode $\mu_t$:
+  
+  $$V_t := \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
 
 This procedure is repeated for each time step $t=1, \dots, T$ to obtain the approximate filtering distributions required for the M-step. To get the full posterior $q(Z)$, a subsequent backward pass (analogous to the Rauch-Tung-Striebel smoother) is typically performed.
 
@@ -4307,7 +4337,11 @@ $$F_\theta(z_{t-1}) \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$
 
 where $J_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$:  
 
-$$J_{t-1} = \left. \frac{\partial F_\theta}{\partial z_{t-1}} \right\mid _{z_{t-1}=m_{t-1}} \quad \text{where} \quad J_f(x) = \left( \frac{\partial f_i(x)}{\partial x_j} \right)$$  
+$$J_{t-1} = \left. \frac{\partial F_\theta}{\partial z_{t-1}} \right\mid _{z_{t-1}=m_{t-1}}$$
+
+where 
+
+$$J_f(x) = \left( \frac{\partial f_i(x)}{\partial x_j} \right)$$  
 
 By substituting this approximation back into the latent model, the transition distribution becomes:  
 
@@ -4333,7 +4367,9 @@ The EKF operates in two stages: predict and update. Let $m_{t-1}$ and $V_{t-1}$ 
   
   $$V_{t\mid t-1} = J_{t-1} V_{t-1} J_{t-1}^T + \Sigma$$ 
   
-  where $J_{t-1} = \left. \frac{\partial F_\theta}{\partial z_{t-1}} \right\mid _{z_{t-1}=m_{t-1}}$.
+  where 
+  
+  $$J_{t-1} = \left. \frac{\partial F_\theta}{\partial z_{t-1}} \right\mid _{z_{t-1}=m_{t-1}}$$
 
 1. Update: The filtering distribution $p(z_t\mid x_1, \dots, x_t)$ is approximated as a Gaussian $\mathcal{N}(m_t, V_t)$ with:
 
@@ -4370,15 +4406,21 @@ The primary drawback of the EKF is that the local linearizations can introduce e
 
 In the M-step, we maximize the expected log-joint likelihood with respect to the parameters $\theta = \lbrace W, h, B, \Gamma, \Sigma\rbrace$. The objective function is:  
 
-$$\mathbb{E}_q[\log p(X,Z\mid \theta)] = \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Gamma\mid  - \frac{1}{2}\sum_t(x_t - Bz_t)^T \Gamma^{-1} (x_t - Bz_t) \right] + \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Sigma\mid  - \frac{1}{2}\sum_t(z_t - F_\theta(z_{t-1}))^T \Sigma^{-1} (z_t - F_\theta(z_{t-1})) \right] + \text{const.}$$  
+$$\mathbb{E}_q[\log p(X,Z\mid \theta)] = \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Gamma\mid  - \frac{1}{2}\sum_t(x_t - Bz_t)^T \Gamma^{-1} (x_t - Bz_t) \right]$$
 
-To perform this maximization, we require posterior expectations of various terms. The EKF/EKS provides the necessary smoothed expectations for linear terms, such as $\mathbb{E}[z_t]$ and $\mathbb{E}[z_t z_t^T]$.
+$$+ \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Sigma\mid  - \frac{1}{2}\sum_t(z_t - F_\theta(z_{t-1}))^T \Sigma^{-1} (z_t - F_\theta(z_{t-1})) \right] + \text{const.}$$  
+
+To perform this maximization, we require posterior expectations of various terms. The EKF/EKS provides the necessary smoothed expectations for linear terms, such as $\mathbb{E}[z_t]$ and $\mathbb{E}[z_t z_t^\top]$.
 
 However, the non-linear term $F_\theta(z_{t-1})$ introduces a significant problem. We now need to compute expectations involving this non-linearity, such as:  
 
 $$\mathbb{E}[F_\theta(z_{t-1})]$$  
 
-and other related terms. This requires solving integrals of the form $\int p(z_{t-1}\mid X)(F_\theta(z_{t-1})) dz_{t-1}$, which are often intractable for arbitrary non-linearities $\phi$.
+and other related terms. This requires solving integrals of the form 
+
+$$\int p(z_{t-1}\mid X)(F_\theta(z_{t-1})) dz_{t-1}$$ 
+
+which are often intractable for arbitrary non-linearities $\phi$.
 
 Key Point: Simplifying the M-Step Integral
 
@@ -4520,7 +4562,9 @@ $$\text{ELBO}(\phi, \theta) = \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(X\mid z)]
 
 This form consists of two terms:
 
-1. Reconstruction Term: $\mathbb{E}_{q_\phi(z\mid X)}[\log p_\theta(X\mid z)]$ encourages the model to learn latent variables $z$ from which the original data $X$ can be accurately reconstructed.
+1. Reconstruction Term: 
+  * $\mathbb{E}\_{q_\phi(z\mid X)}[\log p_\theta(X\mid z)]$ 
+  * encourages the model to learn latent variables $z$ from which the original data $X$ can be accurately reconstructed.
 2. Regularization Term: The negative KL divergence acts as a regularizer, pushing the approximate posterior $q_\phi(z\mid X)$ to be close to the prior distribution $p_\theta(z)$.
 
 With a parameterized family of densities $q_\phi(z\mid X)$, VI becomes a joint optimization problem.
