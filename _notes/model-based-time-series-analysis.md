@@ -23,11 +23,11 @@ tags:
 
 # Model-Based Time Series Analysis
 
-## 1. Review on Statistical Inference
+## Review on Statistical Inference
 
 To reason about uncertainty in a mathematically sound way, we begin with the concept of a probability space. This structure consists of three essential components that formalize an experiment and its outcomes.
 
-### 1.1 The Probability Space
+### The Probability Space
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probability Space, Experiment)</span></p>
@@ -59,7 +59,7 @@ The pair $(\Omega, \mathcal{A})$ is called a **measurable space**. Elements of $
 
 </div>
 
-### 1.2. Random Variables and Probability Distributions
+### Random Variables and Probability Distributions
 
 Random variables allow us to map outcomes from the sample space to the real numbers, enabling the use of powerful mathematical tools.
 
@@ -81,8 +81,6 @@ For a coin toss where $\Omega = \lbrace \text{Heads}, \text{Tails} \rbrace$, we 
 
 The mapping itself is deterministic; the randomness is induced by the underlying probability measure on $\Omega$. Random variables induce probability distributions.
 
-<!-- ### 2.2 Cumulative Distribution Function (CDF) -->
-
 The **Cumulative Distribution Function (CDF)** uniquely characterizes the distribution of any random variable.
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -99,7 +97,7 @@ The CDF connects directly to the probability measure: $F(x) = P(X \le x)$.
 
 </div>
 
-### 1.3 Discrete Distributions and PMFs
+### Discrete Distributions and PMFs
 
 For a discrete RV, the probability is concentrated on a countable set of points.
 
@@ -143,7 +141,7 @@ Common Discrete Distributions:
   </figure>
 </div>
 
-### 1.4 Continuous Distributions and PDFs
+### Continuous Distributions and PDFs
 
 For a continuous RV, the probability of any single point is zero. Probability is defined over intervals.
 
@@ -207,7 +205,7 @@ Common Continuous Distributions:
 
 </div>
 
-### 1.6 Rules and Laws of Probability
+### Rules and Laws of Probability
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Rules of Probability)</span></p>
@@ -236,11 +234,10 @@ Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
 
 </div>
 
-#### 1.6.2 Asymptotic Theorems
+#### Asymptotic Theorems
 
 These theorems describe the behavior of the sum of a large number of random variables.
 
-<!-- **Theorem (Strong Law of Large Numbers — SLLN):** Let $(X_i)_{i=1}^\infty$ be a sequence of independent and identically distributed (i.i.d.) random variables with finite mean $E[X_i] = \mu$. Then the sample mean converges almost surely to the true mean:
 $\frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
 \quad \text{as } n \to \infty.$ -->
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -268,9 +265,9 @@ $$
 
 </div>
 
-## 2. Review on Parameter Estimation
+## Review on Parameter Estimation
 
-### 2.1 Statistical Inference
+### Statistical Inference
 
 Statistical inference aims to deduce properties of an underlying population or data-generating process from a finite sample of data. To do so, we often assume that our data is drawn from a family of distributions parametrized by a finite set of parameters.
 
@@ -315,11 +312,11 @@ If I recompute samples and each time evaluate my estimate, I obtain a distributi
 
 </div>
 
-### 2.3. Paradigms of Parameter Estimation
+### Paradigms of Parameter Estimation
 
 There are three primary approaches to estimating parameters from data.
 
-#### 2.3.1 Method of Least Squares (LS)
+#### Method of Least Squares (LS)
 
 The LS method estimates parameters by minimizing the sum of the squared differences between observed values and the values predicted by the model. It requires no assumptions about the underlying distribution of the data.
 
@@ -350,7 +347,7 @@ $$
 
 </div>
 
-#### 2.3.2 Maximum Likelihood Estimation (MLE)
+#### Maximum Likelihood Estimation (MLE)
 
 MLE selects the parameter values that make the observed data most probable under the assumed parametric model.
 
@@ -360,11 +357,12 @@ MLE selects the parameter values that make the observed data most probable under
 Let $X = \lbrace x_1, \dots, x_N \rbrace$ be observed data by assumption drawn from a model with density $p(x \mid \theta)$ ($X \sim P(\Theta)^{(N)}$).
 
 * **Likelihood Function:** The joint density of the observed data, viewed as a function of the parameter $\theta$:
-  $\mathcal{L}(\theta \mid X) = p(x_1, \dots, x_N \mid \theta).$
+  * $\mathcal{L}(\theta \mid X) = p(x_1, \dots, x_N \mid \theta)$
 * If the data are i.i.d., the likelihood factorizes:
-  $\mathcal{L}(\theta \mid X) = \prod_{i=1}^N p(x_i \mid \theta).$
+  * $\mathcal{L}(\theta \mid X) = \prod_{i=1}^N p(x_i \mid \theta)$
 * **MLE Definition:** The MLE is the value of $\theta$ that maximizes the likelihood function:
-  * $$\hat{\theta}_{\text{MLE}} = \arg\max_{\theta \in \Theta} \mathcal{L}(\theta \mid X)$$
+  
+  $$\hat{\theta}_{\text{MLE}} = \arg\max_{\theta \in \Theta} \mathcal{L}(\theta \mid X)$$
 
 </div>
 
@@ -388,7 +386,7 @@ In practice, it is often easier to maximize the log-likelihood $\ell(\theta \mid
 
 </div>
 
-#### 2.3.3 Bayesian Inference (BI)
+#### Bayesian Inference (BI)
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bayesian Inference)</span></p>
@@ -424,11 +422,11 @@ This is often summarized as: Posterior $\propto$ Likelihood $\times$ Prior.
 </div>
 
 
-### 2.4. Parameter Estimation for Intractable Problems
+### Parameter Estimation for Intractable Problems
 
 When closed-form solutions for estimators are not available, we turn to numerical optimization algorithms to find the parameters that minimize a cost function (e.g., sum of squared errors, negative log-likelihood).
 
-#### 2.4.1 Gradient Descent (GD)
+#### Gradient Descent (GD)
 
 Gradient Descent is an iterative first-order optimization algorithm for finding a local minimum of a differentiable function. The core idea is to take repeated steps in the opposite direction of the gradient of the function at the current point, as this is the direction of steepest descent.
 
@@ -477,7 +475,7 @@ Gradient Descent is an iterative first-order optimization algorithm for finding 
   </figure>
 </div>
 
-#### 2.4.2 Newton-Raphson Method
+#### Newton-Raphson Method
 
 The Newton-Raphson method is an iterative algorithm for finding the roots of a function $f(x)$, i.e., finding $x$ such that $f(x)=0$. In the context of model optimization, the goal is often to find the roots of the *derivative* of the loss function, which correspond to potential minima or maxima. This method is a second-order optimization algorithm that uses the curvature of the loss landscape to take more informed steps. It adapts the learning rate by incorporating the Hessian matrix (the matrix of second partial derivatives).
 
@@ -565,12 +563,13 @@ The update rule is derived from the first-order Taylor expansion of the function
 
 </div>
 
-#### 2.4.3 Parameter Estimation for Intractable Bayesian Problems
+#### Parameter Estimation for Intractable Bayesian Problems
 
 In Bayesian inference, we are interested in the posterior distribution of parameters $\theta$ given data $X$, which is given by Bayes' theorem:
 $p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem arises when the normalizing constant, or model evidence, $p(X) = \int p(X \mid \theta)p(\theta) d\theta$, is intractable to compute. This intractability gives rise to a class of powerful simulation-based methods known as **Markov Chain Monte Carlo (MCMC)**.
 
-**Core Concepts of MCMC**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Core Concepts of MCMC)</span></p>
 
 * **Monte Carlo Integration:** This principle states that we can estimate expectations by sampling. For a function $h(\theta)$, its expectation with respect to a probability distribution $p(\theta \mid X)$ is:
 
@@ -586,13 +585,15 @@ $p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem ari
 
 * **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as $p(\theta_t \mid \theta_{t-1}, \dots, \theta_0) = p(\theta_t \mid \theta_{t-1})$.
 
+</div>
+
 **Posterior Sampling with Metropolis-Hastings**
 
 [More on Metropolis-Hastings](/subpages/monte-carlo-methods/mcmc/metropolis–hastings-algorithm/)
 
 We can evaluate $p(⋅)$ for individual points but don’t know its normalization constant. Since we only care about the shape of the posterior, MCMC methods let us bypass computing the normalization constant and still approximate the posterior.
 
-The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, \theta^{(1)}, ..., \theta^{(N)}$, that form a Markov chain whose stationary distribution is the target posterior distribution $p(\theta \mid X)$. We can work with the unnormalized posterior density, as the algorithm only depends on the ratio of densities, where the normalizing constant cancels out.
+The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, \theta^{(1)}, \dots, \theta^{(N)}$, that form a Markov chain whose stationary distribution is the target posterior distribution $p(\theta \mid X)$. We can work with the unnormalized posterior density, as the algorithm only depends on the ratio of densities, where the normalizing constant cancels out.
 $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -600,13 +601,13 @@ $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
 1.  **Initialization:** Choose an initial parameter value $\theta^{(0)}$ and specify the number of samples $N$.
 2.  **Iteration:** Loop for $i = 1, \dots, N$:
-    * **Propose:** Generate a new candidate sample $\theta_{prop}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{prop} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
-    * **Compute Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
-        * $r_{prop} := p(X \mid \theta_{prop})p(\theta_{prop})$
-        * $r_{curr} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
-        * The acceptance ratio is $r = \frac{r_{prop}}{r_{curr}}$.
+    * **Propose:** Generate a new candidate sample $\theta_{\text{prop}}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{\text{prop}} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
+    * **CompuMetropolis-Hastings with a Symmetric Proposal)te Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
+        * $r_{\text{prop}} := p(X \mid \theta_{\text{prop}})p(\theta_{\text{prop}})$
+        * $r_{\text{curr}} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
+        * The acceptance ratio is $r = \frac{r_{\text{prop}}}{r_{\text{curr}}}$.
     * **Accept or Reject:** Draw a random number $u$ from a uniform distribution, $u \sim \text{Unif}(0, 1)$.
-        * If $u < \min(1, r)$, accept the proposal: $\theta^{(i)} = \theta_{prop}$.
+        * If $u < \min(1, r)$, accept the proposal: $\theta^{(i)} = \theta_{\text{prop}}$.
         * Else, reject the proposal and stay at the current state: $\theta^{(i)} = \theta^{(i-1)}$.
 
 </div>
@@ -695,30 +696,29 @@ In practice, MCMC is used for
   </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gibbs Sampling)</span></p>
+
 Different MCMC algorithms exist for different problem structures. For instance, **Gibbs Sampling** is highly effective when dealing with models that have dependent parameters and where conditional distributions are easy to sample from.
 
-**Parameter Inference for Latent Variable Models**
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Parameter Inference for Latent Variable Models)</span></p>
 
 When the data generating process depends on both parameters $\theta$ and unobserved **latent variables** $z$, the model is specified as $p_\theta(X, z)$. The log-likelihood of the observed data $X$ requires marginalizing out these latent variables:
 
 $$\log p_\theta(X) = \log \int p_\theta(X, z) dz$$
 
-This integration is often intractable, necessitating methods like MCMC or Variational Inference.
+**This integration is often intractable, necessitating methods like MCMC or Variational Inference.**
 
-<div class="accordion">
-  <details>
-    <summary>How is MCMC applied in Latent Variable Models?</summary>
-    <p>
-      #TODO
-    </p>
-  </details>
 </div>
 
-## 3. Fundamental Concepts of Time Series Analysis
+## Fundamental Concepts of Time Series Analysis
 
-### 3.1 Stochastic Processes and Time Series
+### Stochastic Processes and Time Series
 
-Intuitively, a time series is a realization or **sample path** of a random process, such as $\lbrace X_1, X_2, ..., X_T\rbrace$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
+Intuitively, a time series is a realization or **sample path** of a random process, such as $\lbrace X_1, X_2, \dots, X_T\rbrace$. A time series is univariate if $X_t \in \mathbb{R}$ and multivariate if $X_t \in \mathbb{R}^k$ for $k > 1$. The fundamental assumption in time series analysis is that our observations are realizations of an underlying stochastic process.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Process)</span></p>
@@ -737,7 +737,7 @@ A **time series** is a stochastic process $X = \lbrace X_t\rbrace_{t \in I}$, wh
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sample Path or Realization)</span></p>
 
-A **sample path** is a single outcome or sequence of observations $\lbrace x_t\rbrace_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, ..., x_T\rbrace$.
+A **sample path** is a single outcome or sequence of observations $\lbrace x_t\rbrace_{t \in I}$ from a stochastic process. For example, $\lbrace x_1, x_2, \dots, x_T\rbrace$.
 
 </div>
 
@@ -777,9 +777,14 @@ Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a
   </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gaussian white noise process)</span></p>
+
 This property is often imposed on the error terms $\epsilon_t$ of statistical models. If, additionally, $X_t \sim \mathcal{N}(0, \sigma^2)$, the process is called a **Gaussian white noise process**.
 
-### 3.2 Autocovariance, Autocorrelation, and Cross-Correlation
+</div>
+
+### Autocovariance, Autocorrelation, and Cross-Correlation
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Autocovariance Function)</span></p>
@@ -804,7 +809,6 @@ $$\gamma_{XX}(s, t) = \mathbb{E}[X_s X_t] - \mu_s \mu_t$$
     * $\delta_{s,t}$ is the Kronecker delta.
 
 </div>
-
 
 <div class="accordion">
   <details>
@@ -843,9 +847,9 @@ $$\rho_{XY}(s, t) = \frac{\gamma_{XY}(s, t)}{\sqrt{\text{Var}(X_s)\text{Var}(Y_t
 
 </div>
 
-### 3.3 Stationarity and Ergodicity
+### Stationarity and Ergodicity
 
-#### 3.3.1 Strong (Strict) Stationarity
+#### Strong (Strict) Stationarity
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strong Stationarity)</span></p>
@@ -858,12 +862,16 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 </div>
 
-* Strong stationarity is a statement about the entire joint distribution ("laws") of the process, which must be invariant to shifts in time.
-* This is a foundational assumption for many time series models.
-* In practice, verifying the equality of all moments and distributions is impossible from a single finite realization.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Strong Stationarity)</span></p>
 
-#### 3.3.2 Weak Stationarity
+* Strong stationarity is a statement about the entire joint distribution ("laws") of the process, which must be **invariant to shifts in time**.
+* This is a **foundational assumption for many time series models**.
+* In practice, **verifying the equality of all moments and distributions is impossible from a single finite realization**.
 
+</div>
+
+#### Weak Stationarity
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weak Stationarity)</span></p>
@@ -888,7 +896,7 @@ A stochastic process $X = \lbrace X_t\rbrace_{t \in I}$ is **weakly stationary**
 
 </div>
 
-#### 3.3.3 Ergodicity
+#### Ergodicity
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ergodicity)</span></p>
@@ -899,18 +907,31 @@ $$\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu$$
 
 </div>
 
-* Ergodicity allows us to infer properties of the entire process (the ensemble) from a single, sufficiently long sample path.
-* Ergodicity requires stationarity. It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Ergodicity)</span></p>
 
-### 3.4 Computing Properties from a Time Series
+* **Ergodicity allows us to infer properties of the entire process (the ensemble) from a single, sufficiently long sample path.**
+* **Ergodicity requires stationarity.** It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
 
-Under the assumptions of weak stationarity and ergodicity, we can estimate the moments of the stochastic process from a single time series realization $\lbrace x_t\rbrace_{t=1}^T$.
+</div>
+
+### Computing Properties from a Time Series
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+Under the assumptions of **weak stationarity and ergodicity**, we can estimate the moments of the stochastic process from a single time series realization $\lbrace x_t\rbrace_{t=1}^T$.
 
 * **Sample Mean:** $\hat{\mu} = \bar{x} = \frac{1}{T} \sum_{t=1}^T x_t$
 * **Sample Variance:** $\hat{\gamma}(0) = \hat{\sigma}^2 = \frac{1}{T} \sum_{t=1}^T (x_t - \bar{x})^2$
 * **Sample Autocovariance at lag $h$:** $\hat{\gamma}(h) = \frac{1}{T} \sum_{t=1}^{T-h} (x_t - \bar{x})(x_{t+h} - \bar{x})$
 
-### 3.5 Dealing with Non-stationarity
+</div>
+
+### Dealing with Non-stationarity
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Transformation of  non-stationarity data)</span></p>
 
 If a time series is non-stationary, it must often be transformed before standard models can be applied. Common techniques include:
 
@@ -920,9 +941,13 @@ If a time series is non-stationary, it must often be transformed before standard
     
   $$x_t^{\ast} = x_t - (\hat{\beta}_0 + \hat{\beta}_1 t)$$
 
-## 4. Linear Regression
+</div>
 
-### 4.1 Model Components
+## Regression Models for Time Series
+
+### Linear Regression
+
+#### Model Components
 
 A complete statistical model generally consists of four key components:
 
@@ -931,31 +956,41 @@ A complete statistical model generally consists of four key components:
 3.  **Training Algorithm:** An optimization procedure to find the parameters that minimize the loss function.
 4.  **Data:** The observations used to train and evaluate the model.
 
-### 4.2 Model Architecture
+#### Model Architecture
+
+The simple linear regression model assumes a linear relationship between the predictors and the response, corrupted by additive Gaussian noise.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Univariate Linear Regression Model)</span></p>
 
-Given a dataset $D = \lbrace(x_t, y_t)\rbrace_{t=1}^T$, the **univariate linear regression** model assumes a linear relationship:
+The response variable $y_t$ is modeled as a linear combination of the predictor variables $x_t$ plus an error term $\epsilon_t$.
 
-$$y_t = \beta_0 + \beta_1 x_t + \epsilon_t$$
+$$y_t = x_t^\top \beta + \epsilon_t$$
 
-The error term $\epsilon_t$ is typically assumed to be a white noise process, often Gaussian:
+where:
 
-$$\epsilon_t \sim \mathcal{N}(0, \sigma^2)$$
+* $y_t \in \mathbb{R}$ is the response variable at time $t$.
+* $x_t \in \mathbb{R}^{p+1}$ is the vector of predictor variables at time $t$ (including a constant term for the intercept).
+* $\beta \in \mathbb{R}^{p+1}$ is the vector of model parameters or coefficients.
+* $\epsilon_t$ is the error term, assumed to be independent and identically distributed (i.i.d.) Gaussian noise: $\epsilon_t \sim \mathcal{N}(0, \sigma^2)$.
 
+This implies that the conditional distribution of the response variable is also Gaussian:
 
+$$y_t \mid x_t, \beta, \sigma^2 \sim \mathcal{N}(x_t^T \beta, \sigma^2)$$
+
+For the entire dataset, we can express the model in a vectorized form:
+
+$$Y = X\beta + E$$
+
+where:
+
+* $Y = (y_1, \dots, y_T)^\top$ is the $T \times 1$ vector of responses.
+* $X$ is the $T \times (p+1)$ design matrix, where each row is $x_t^T$.
+* $\beta = (\beta_0, \dots, \beta_p)^T$ is the $(p+1) \times 1$ parameter vector.
+* $E = (\epsilon_1, \dots, \epsilon_T)^T$ is the $T \times 1$ vector of errors.
 </div>
 
-This implies a conditional distribution for the response variable:
-
-$$y_t \mid x_t \sim \mathcal{N}(\beta_0 + \beta_1 x_t, \sigma^2)$$
-
-For a model with $p$ predictors, this can be vectorized. Let $y$ be a $T \times 1$ vector of responses, $X$ be a $T \times (p+1)$ design matrix (with a column of ones for the intercept), and $\beta$ be a $(p+1) \times 1$ vector of parameters. The model is:
-
-$$y = X\beta + \epsilon$$
-
-### 4.3 Loss Function
+#### Loss Function
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Least Squares Error or Sum of Squared Errors)</span></p>
@@ -970,9 +1005,9 @@ $$\text{LSE}(\beta) = (y - X\beta)^\top(y - X\beta)$$
 
 The objective is to find the parameter vector $\beta$ that minimizes it.
 
-### 4.4 Training Algorithm
+#### Training Algorithm
 
-The optimal parameters $\hat{\beta}$ are found by minimizing the LSE loss function. This is achieved by taking the derivative of the loss function with respect to $\beta$ and setting it to zero.
+The most common method for estimating the parameters $\beta$ in a linear regression model is the **method of ordinary least squares (LSE)**. This involves minimizing the sum of the squared differences between the observed responses and the responses predicted by the model. This is achieved by taking the derivative of the loss function with respect to $\beta$ and setting it to zero.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(OLS Estimator)</span></p>
@@ -983,192 +1018,78 @@ $$\hat{\beta} = (X^\top X)^{-1}X^\top y$$
 
 </div>
 
-**proof:**
-
-Expanding the LSE expression:
-
-$$\text{LSE}(\beta) = y^\top y - y^\top X\beta - \beta^\top X^\top y + \beta^\top X^\top X\beta$$
-
-Since $y^\top X\beta$ is a scalar, it is equal to its transpose $(\beta^\top X^\top y)$. Therefore:
-
-$$\text{LSE}(\beta) = y^\top y - 2\beta^\top X^\top y + \beta^\top X^\top X\beta$$
-
-Now, we take the derivative with respect to the vector $\beta$:
-
-$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^\top y - 2\beta^\top X^\top y + \beta^\top X^\top X\beta)$$
-
-Using the matrix calculus rules:
-* $\frac{\partial(a^\top x)}{\partial x} = a$
-* $\frac{\partial(x^\top Ax)}{\partial x} = (A + A^\top)x$
-
-The derivative is:
-
-$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^\top y + (X^\top X + (X^\top X)^\top)\beta$$
-
-Since $X^\top X$ is a symmetric matrix, $(X^\top X)^\top = X^\top X$. The derivative simplifies to:
-
-$$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^\top y + 2X^\top X\beta$$
-
-Setting the derivative to zero to find the minimum:
-
-$$-2X^\top y + 2X^\top X\hat{\beta} = 0$$
-
-$$2X^\top X\hat{\beta} = 2X^\top y$$
-
-$$X^\top X\hat{\beta} = X^\top y$$
-
-$$\hat{\beta} = (X^\top X)^{-1}X^\top y \qquad\square$$
-
-## 5. Regression Models for Time Series
-
-This chapter introduces foundational regression techniques, which form the building blocks for more complex time series models. We will cover linear regression, extensions for non-linear relationships, models for non-Gaussian data, and approaches for handling multivariate and hierarchical data structures.
-
-### 5.1 Linear Regression
-
-A statistical model is formally composed of four key components:
-
-1.  **Model Architecture:** The mathematical form of the relationship between variables.
-2.  **Loss Function:** A function that quantifies the error between model predictions and observed data.
-3.  **Training Algorithm:** An optimization procedure to find model parameters that minimize the loss function.
-4.  **Data:** The observed measurements used to train and evaluate the model.
-
-In the context of time series, we consider a dataset $D$ consisting of $T$ observations. At each time step $t=1, \dots, T$, we observe a response variable $x_t$ and a vector of $p$ predictor variables $u_t$. The dataset is thus represented as: $D = \lbrace(u_t, x_t)\rbrace_{t=1}^T$
-
-#### 5.1.1 Model Architecture
-
-The simple linear regression model assumes a linear relationship between the predictors and the response, corrupted by additive Gaussian noise.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear Regression Model)</span></p>
-
-The response variable $x_t$ is modeled as a linear combination of the predictor variables $u_t$ plus an error term $\epsilon_t$.
-
-$$x_t = u_t^\top \beta + \epsilon_t$$
-
-where:
-
-* $x_t \in \mathbb{R}$ is the response variable at time $t$.
-* $u_t \in \mathbb{R}^{p+1}$ is the vector of predictor variables at time $t$ (including a constant term for the intercept).
-* $\beta \in \mathbb{R}^{p+1}$ is the vector of model parameters or coefficients.
-* $\epsilon_t$ is the error term, assumed to be independent and identically distributed (i.i.d.) Gaussian noise: $\epsilon_t \sim \mathcal{N}(0, \sigma^2)$.
-
-This implies that the conditional distribution of the response variable is also Gaussian:
-
-$$x_t \mid u_t, \beta, \sigma^2 \sim \mathcal{N}(u_t^T \beta, \sigma^2)$$
-
-For the entire dataset, we can express the model in a vectorized form:
-
-$$X = U\beta + E$$
-
-where:
-
-* $X = (x_1, \dots, x_T)^\top$ is the $T \times 1$ vector of responses.
-* $U$ is the $T \times (p+1)$ design matrix, where each row is $u_t^T$.
-* $\beta = (\beta_0, \dots, \beta_p)^T$ is the $(p+1) \times 1$ parameter vector.
-* $E = (\epsilon_1, \dots, \epsilon_T)^T$ is the $T \times 1$ vector of errors.
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Expanding the LSE expression:</p>
+    $$\text{LSE}(\beta) = y^\top y - y^\top X\beta - \beta^\top X^\top y + \beta^\top X^\top X\beta$$
+    <p>Since $y^\top X\beta$ is a scalar, it is equal to its transpose $(\beta^\top X^\top y)$. Therefore:</p>
+    $$\text{LSE}(\beta) = y^\top y - 2\beta^\top X^\top y + \beta^\top X^\top X\beta$$
+    <p>Now, we take the derivative with respect to the vector $\beta$:</p>
+    $$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (y^\top y - 2\beta^\top X^\top y + \beta^\top X^\top X\beta)$$
+    <p>The derivative is:</p>
+    $$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^\top y + (X^\top X + (X^\top X)^\top)\beta$$
+    <p>Since $X^\top X$ is a symmetric matrix, $(X^\top X)^\top = X^\top X$. The derivative simplifies to:</p>
+    $$\frac{\partial \text{LSE}(\beta)}{\partial \beta} = -2X^\top y + 2X^\top X\beta$$
+    <p>Setting the derivative to zero to find the minimum:</p>
+    $$-2X^\top y + 2X^\top X\hat{\beta} = 0$$
+    $$2X^\top X\hat{\beta} = 2X^\top y$$
+    $$X^\top X\hat{\beta} = X^\top y$$
+    $$\hat{\beta} = (X^\top X)^{-1}X^\top y \qquad\square$$
+  </details>
 </div>
 
-
-
-#### 5.1.2 Parameter Estimation: Least Squares
-
-The most common method for estimating the parameters $\beta$ in a linear regression model is the **method of ordinary least squares (LSE)**. This involves minimizing the sum of the squared differences between the observed responses and the responses predicted by the model.
-
-**Definition (Least Squares Loss Function):** The LSE loss function for the parameter vector $\beta$ is the sum of squared residuals:
-
-$$L_{\text{LSE}}(\beta) = \sum_{t=1}^T (x_t - u_t^T \beta)^2$$
-
-In vector form, this is expressed as:
-
-$$L_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta)$$
-
-The training algorithm consists of finding the value of $\beta$ that minimizes this loss function. This can be achieved by taking the derivative of $L_{\text{LSE}}(\beta)$ with respect to $\beta$ and setting it to zero.
-
-To find the estimator $\hat{\beta}_{\text{LS}}$ that minimizes the loss, we compute the gradient of the loss function with respect to $\beta$.
-
-1.  **Expand the loss function:**
-
-$$L_{\text{LSE}}(\beta) = (X - U\beta)^T(X - U\beta) = X^T X - X^T U \beta - \beta^T U^T X + \beta^T U^T U \beta$$
-
-2. **Compute the derivative with respect to $\beta$:**
-   * Note that $X^T U \beta$ is a scalar, so it equals its transpose $\beta^T U^T X$. Using this, the loss is 
-      
-      $$L_{\text{LSE}}(\beta) = X^T X - 2\beta^T U^T X + \beta^T U^T U \beta$$
-
-   * Using the matrix calculus rules $\frac{\partial(a^T x)}{\partial x} = a$ and $\frac{\partial(x^T A x)}{\partial x} = (A + A^T)x$:
-     
-     $$\frac{\partial L_{\text{LSE}}(\beta)}{\partial \beta} = \frac{\partial}{\partial \beta} (X^T X - 2\beta^T U^T X + \beta^T U^T U \beta)$$
-
-     $$\frac{\partial L_{\text{LSE}}(\beta)}{\partial \beta} = 0 - 2U^T X + (U^T U + (U^T U)^T)\beta$$
-
-   * Since $U^T U$ is symmetric, $(U^T U)^T = U^T U$.
-     
-     $$\frac{\partial L_{\text{LSE}}(\beta)}{\partial \beta} = -2U^T X + 2U^T U \beta$$
-
-1. **Set the derivative to zero and solve for $\beta$:**
-    
-    $$-2U^T X + 2U^T U \hat{\beta} = 0$$
-    
-    $$2U^T U \hat{\beta} = 2U^T X$$
-    
-    $$U^T U \hat{\beta} = U^T X$$
-
-2. Assuming that the matrix $U^T U$ is invertible, we can solve for $\hat{\beta}$:
-    
-    $$\hat{\beta}_{\text{LS}} = (U^T U)^{-1} U^T X$$
-
-This is the celebrated **normal equation** solution for ordinary least squares.
-
-#### 5.1.3 Parameter Estimation: Maximum Likelihood
+#### Parameter Estimation: Maximum Likelihood
 
 An alternative framework for parameter estimation is **Maximum Likelihood Estimation (MLE)**. This approach finds the parameter values that maximize the likelihood of observing the given data.
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Likelihood Function)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Coincidence of MLE and LSE solutions)</span></p>
 
-Given the model assumption $x_t \sim \mathcal{N}(u_t^T \beta, \sigma^2)$, the likelihood of observing the entire dataset $D$ is the product of the probability densities for each observation:
-
-$$
-\mathcal{L}(\beta, \sigma^2) = p(X \mid U, \beta, \sigma^2) = \prod_{t=1}^T p(x_t \mid u_t, \beta, \sigma^2)
-$$
-
-$$
-\mathcal{L}(\beta, \sigma^2) = \prod_{t=1}^T \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_t - u_t^T \beta)^2}{2\sigma^2}\right)
-$$
-
-</div>
-
-It is often more convenient to work with the **log-likelihood function**:
-
-$$
-l(\beta, \sigma^2) = \log \mathcal{L}(\beta, \sigma^2) = \sum_{t=1}^T \left[ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(x_t - u_t^T beta)^2 \right]
-$$
-
-To find the MLE for $\beta$, we maximize $l(\beta, \sigma^2)$ with respect to $\beta$. Notice that the terms involving $\sigma^2$ and $2\pi$ are constant with respect to $\beta$. Therefore, maximizing the log-likelihood is equivalent to minimizing the sum of squared errors:
-
-$$
-\arg\max_\beta l(\beta, \sigma^2) \equiv \arg\min_\beta \sum_{t=1}^T (x_t - u_t^\top \beta)^2
-$$
-
-For the linear regression model with the assumption of i.i.d. Gaussian errors, the Least Squares Estimator (LSE) and the Maximum Likelihood Estimator (MLE) for the regression coefficients $\beta$ are identical.
+For the linear regression model with the assumption of i.i.d. Gaussian errors, the Least Squares Estimator (LSE) and the Maximum Likelihood Estimator (MLE) for the regression coefficients $\beta$ are identical:
 
 $$\hat{\beta}_{\text{LS}} = \hat{\beta}_{\text{MLE}}$$
 
------
+</div>
 
-### 5.2 Model Diagnostics
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Given the model assumption $y_t \sim \mathcal{N}(x_t^\top \beta, \sigma^2)$, the likelihood of observing the entire dataset $D$ is the product of the probability densities for each observation:</p>
+    $$
+    \mathcal{L}(\beta, \sigma^2) = p(Y \mid X, \beta, \sigma^2) = \prod_{t=1}^T p(y_t \mid x_t, \beta, \sigma^2)
+    $$
+    $$
+    \mathcal{L}(\beta, \sigma^2) = \prod_{t=1}^T \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y_t - x_t^\top \beta)^2}{2\sigma^2}\right)
+    $$
+    <p>It is often more convenient to work with the <strong>log-likelihood function</strong>:</p>
+    $$
+    l(\beta, \sigma^2) = \log \mathcal{L}(\beta, \sigma^2) = \sum_{t=1}^T \left[ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(y_t - x_t^\top \beta)^2 \right]
+    $$
+    <p>To find the MLE for $\beta$, we maximize $l(\beta, \sigma^2)$ with respect to $\beta$. Notice that the terms involving $\sigma^2$ and $2\pi$ are constant with respect to $\beta$. Therefore, maximizing the log-likelihood is equivalent to minimizing the sum of squared errors:</p>
+    $$
+    \arg\max_\beta l(\beta, \sigma^2) \equiv \arg\min_\beta \sum_{t=1}^T (y_t - x_t^\top \beta)^2
+    $$
+    $$\hat{\beta}_{\text{LS}} = \hat{\beta}_{\text{MLE}}$$
+  </details>
+</div>
+
+#### Model Diagnostics
 
 After fitting a model, it is crucial to assess its validity by examining the **residuals**, which are the differences between the observed and fitted values.
 
-The model decomposes the observed data $x_t$ into a fitted signal $\hat{x}_t$ and a residual component $res_t$:
+The model decomposes the observed data $x_t$ into a fitted signal $\hat{y}_t$ and a residual component $res_t$:
 
-$$
-x_t = \hat{x}_t + res_t
-$$
+$$y_t = \hat{y}_t + res_t$$
 
-where $\hat{x}_t = u_t^T \hat{\beta}$ is the predicted value.
+where $\hat{y}_t = x_t^\top \hat{\beta}$ is the predicted value.
 
-The core assumptions of the linear regression model (linearity, normality of errors, constant variance, independence of errors) should be checked by analyzing the residuals.
+> [!IMPORTANT]
+> The core assumptions of the linear regression model
+> * **linearity, normality of errors**
+> * **constant variance**
+> * **independence of errors** 
+> should be checked by analyzing the residuals.
 
 **Common Diagnostic Visualizations:**
 
@@ -1183,217 +1104,199 @@ The core assumptions of the linear regression model (linearity, normality of err
   * **Missing external predictors:** Important explanatory variables may have been omitted from the model.
   * **Missing temporal dynamics:** The model fails to account for dependencies between observations over time.
 
------
-
-### 5.3 Handling Non-Linearity: Basis Expansion
+### Handling Non-Linearity: Basis Expansion
 
 One way to address a non-linear relationship between predictors and the response is through **basis expansion**. This technique extends the linear model by including non-linear transformations of the original predictors as additional regressors.
 
-Suppose we have a set of predictors $u_t = (u_{1t}, \dots, u_{pt})^\top$.
+Suppose we have a set of predictors $x_t = (x_{1t}, \dots, x_{pt})^\top$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Basis Expansion Model)</span></p>
 
-The model architecture is extended by introducing a set of $K$ basis functions, $\phi_k(\cdot)$:
+The model architecture is extended by introducing a set of $K$ **basis functions**, $\phi_k(\cdot)$:
 
-$$
-x_t = \beta_0 + \sum_{k=1}^K \beta_k \phi_k(u_t) + \epsilon_t
-$$
+$$y_t = \beta_0 + \sum_{k=1}^K \beta_k \phi_k(x_t) + \epsilon_t$$
 
-where $\phi_k(\cdot)$ are chosen functions that transform the original predictor vector $u_t$. This model is still linear in the parameters $\beta_k$, so the standard LSE and MLE solutions still apply, but with a new design matrix whose columns are the transformed predictors $\phi_k(u_t)$.
+where $\phi_k(\cdot)$ are chosen functions that transform the original predictor vector $x_t$. This model is still linear in the parameters $\beta_k$, so the standard LSE and MLE solutions still apply, but with a new design matrix whose columns are the transformed predictors $\phi_k(x_t)$.
 
 </div>
 
-
-**Common Choices for Basis Functions:**
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Common Choices for Basis Functions)</span></p>
 
 * **Polynomials:** $\phi_k(u_j) = u_{jt}^k$ (e.g., $u_t, u_t^2, u_t^3, \dots$).
 * **Interaction Terms:** $\phi(u_i, u_j) = u_{it} \cdot u_{jt}$.
 * **Radial Basis Functions:** Functions that depend on the distance from a center point.
 * **Fourier Basis:** Sines and cosines to model periodic patterns, e.g., $\sin(\omega t)$ and $\cos(\omega t)$.
 
------
+</div>
 
-### 5.4 Multivariate Linear Regression
+### Multivariate Linear Regression
 
 In many scenarios, we want to predict multiple response variables simultaneously. This leads to **multivariate linear regression**.
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multivariate Linear Regression Model)</span></p>
+
 **Data:** At each time $t=1, \dots, T$:
 
-* Response vector: $x_t = (x_{1t}, \dots, x_{qt})^T \in \mathbb{R}^q$.
-* Predictor vector: $u_t = (u_{1t}, \dots, u_{pt})^T \in \mathbb{R}^p$.
+* **Response vector:** $y_t = (y_{1t}, \dots, y_{qt})^\top \in \mathbb{R}^q$.
+* **Predictor vector:** $x_t = (x_{1t}, \dots, x_{pt})^\top \in \mathbb{R}^p$.
 
 **Model:** The model is a direct extension of the univariate case, written in matrix form:
 
-$$X = UB + E$$
+$$Y = XB + E$$
 
 where:
 
-  * $X$ is the $T \times q$ matrix of response variables.
-  * $U$ is the $T \times (p+1)$ design matrix.
+  * $Y$ is the $T \times q$ matrix of response variables.
+  * $X$ is the $T \times (p+1)$ design matrix.
   * $B$ is the $(p+1) \times q$ matrix of parameters, where each column corresponds to a response variable.
   * $E$ is the $T \times q$ matrix of errors.
 
-**Estimation (LSE/MLE):** The solution for the parameter matrix $B$ is analogous to the univariate case:
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Estimation of LSE/MLE for Multivariate Linear Regression Model)</span></p>
+
+The solution for the parameter matrix $B$ is analogous to the univariate case:
 
 $$
-\hat{B} = (U^\top U)^{-1} U^\top X
+\hat{B} = (X^\top X)^{-1} X^\top Y
 $$
 
 This is equivalent to performing $q$ separate univariate linear regressions, one for each response variable.
 
------
+</div>
 
-### 5.5 Generalized Linear Models (GLMs)
+### Generalized Linear Models (GLMs)
 
-Linear regression assumes a normally distributed response variable. **Generalized Linear Models (GLMs)** provide a framework to handle response variables with other distributions (e.g., binary, count data).
+* Linear regression assumes a normally distributed response variable. **Generalized Linear Models (GLMs)** provide a framework to handle response variables with other distributions (e.g., binary, count data).
+* Parameters in a GLM are typically estimated using MLE.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Linear Models (GLMs))</span></p>
 
 GLMs are composed of three components:
 
 1.  **Random Component:** The response variable $y_t$ follows a probability distribution from the exponential family (e.g., Bernoulli, Poisson, Gamma).
 2.  **Systematic Component:** A **linear predictor**, $\eta_t$, is constructed as a linear combination of the predictors:
 
-$$
-\eta_t = u_t^T \beta
-$$
+$$\eta_t = x_t^\top \beta$$
 
-3.  **Link Function:** A function $g(\cdot)$ that links the expected value of the response, $\mu_t = E[y_t]$, to the linear predictor:
+3.  **Link Function:** A function $g(\cdot)$ that links the expected value of the response, $\mu_t = \mathbb{E}[y_t]$, to the linear predictor:
 
-$$
-g(\mu_t) = \eta_t
-$$
+$$g(\mu_t) = \eta_t$$
 
 The inverse of the link function, $g^{-1}(\cdot)$, maps the linear predictor back to the mean of the response: $\mu_t = g^{-1}(\eta_t)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(LRM is a spacial case GLM)</span></p>
 
 The standard linear regression model is a special case of a GLM.
 
   * **Random Component:** $y_t \sim \mathcal{N}(\mu_t, \sigma^2)$.
-  * **Systematic Component:** $\eta_t = u_t^T \beta$.
-  * **Link Function:** The identity link, $g(\mu_t) = \mu_t$. Therefore, $\eta_t = \mu_t$, which gives us the familiar $E[y_t] = u_t^T \beta$.
+  * **Systematic Component:** $\eta_t = x_t^\top \beta$.
+  * **Link Function:** The identity link, $g(\mu_t) = \mu_t$. Therefore, $\eta_t = \mu_t$, which gives us the familiar $\mathbb{E}[y_t] = x_t^\top \beta$.
 
-#### 5.5.1 Example: Logistic Regression
+</div>
 
-Logistic regression is a GLM used for modeling binary response variables.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Logistic Regression)</span></p>
+
+Logistic regression is a GLM used for modeling **binary response variables**.
 
 **Model Architecture:**
 
-  * **Data:** Observed binary response variable $x_t \in \lbrace 0, 1 \rbrace$ for $t=1, \dots, T$, with predictor vector $u_t$.
+  * **Data:** Observed binary response variable $y_t \in \lbrace 0, 1 \rbrace$ for $t=1, \dots, T$, with predictor vector $x_t$.
   * **Random Component:** The response is assumed to follow a Bernoulli distribution:
     
-    $$
-    x_t \sim \text{Bernoulli}(\pi_t)
-    $$
+    $$y_t \sim \text{Bernoulli}(\pi_t)$$
     
-    where $\pi_t = P(x_t=1 \mid u_t)$ is the "success" probability.
-  * **Systematic Component:** The linear predictor is $\eta_t = u_t^T \beta$.
+    where $\pi_t = P(y_t=1 \mid x_t)$ is the "success" probability.
+  * **Systematic Component:** The linear predictor is $\eta_t = x_t^\top \beta$.
   * **Link Function:** The **logit** link function is used, which is the natural logarithm of the odds:
     
-    $$
-    g(\pi_t) = \log\left(\frac{\pi_t}{1-\pi_t}\right) = \eta_t
-    $$
+    $$g(\pi_t) = \log\left(\frac{\pi_t}{1-\pi_t}\right) = \eta_t$$
     
     The inverse link function is the **sigmoid** (or logistic) function, which maps the linear predictor to a probability between 0 and 1:
     
-    $$
-    \pi_t = g^{-1}(\eta_t) = \frac{e^{\eta_t}}{1+e^{\eta_t}} = \frac{1}{1+e^{-\eta_t}} = \sigma(\eta_t)
-    $$
+    $$\pi_t = g^{-1}(\eta_t) = \frac{\exp(\eta_t)}{1+\exp(\eta_t)} = \frac{1}{1+\exp(-\eta_t)} = \sigma(\eta_t)$$
 
-#### 5.5.2 Maximum Likelihood Estimation for Logistic Regression
+</div>
 
-Parameters in a GLM are typically estimated using MLE.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Maximum Likelihood Estimation for Logistic Regression)</span></p>
 
-**Loss Function (Negative Log-Likelihood):** The probability mass function for a single Bernoulli observation is $p(x_t \mid \pi_t) = \pi_t^{x_t}(1-\pi_t)^{1-x_t}$. The likelihood for the entire dataset is:
+The following statements are true for logistic regression:
+* Does not have close-form solution (unlike linear regression)
+* $\nabla_\beta \text{log-likelihood}(\beta) = \sum_{t=1}^T (y_t - \pi_t) x_t$
 
-$$
-\mathcal{L}(\beta) = \prod_{t=1}^T p(x_t \mid u_t, \beta) = \prod_{t=1}^T \pi_t^{x_t} (1-\pi_t)^{1-x_t}
-$$
+</div>
 
-The log-likelihood is:
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p><strong>Loss Function (Negative Log-Likelihood):</strong> The probability mass function for a single Bernoulli observation is</p>
+    $$p(y_t \mid \pi_t) = \pi_t^{y_t}(1-\pi_t)^{1-y_t}$$
+    <p>The likelihood for the entire dataset is:</p>
+    $$\mathcal{L}(\beta) = \prod_{t=1}^T p(y_t \mid x_t, \beta) = \prod_{t=1}^T \pi_t^{y_t} (1-\pi_t)^{1-y_t}$$
+    <p>The log-likelihood is:</p>
+    $$l(\beta) = \sum_{t=1}^T \left[ x_t \log(\pi_t) + (1-x_t)\log(1-\pi_t) \right]$$
+    <p>Substituting $\pi_t = \sigma(x_t^\top \beta)$, we can express the log-likelihood in a form common to the exponential family:</p>
+    $$l(\beta) = \sum_{t=1}^T \left[ y_t (x_t^\top \beta) - \log(1+\exp(x_t^\top \beta)) \right]$$
+    <p><strong>Training Algorithm:</strong> We maximize the log-likelihood by taking its derivative with respect to $\beta$ and setting it to zero.</p>
+    $$\nabla_\beta l(\beta) = \nabla_\beta \sum_{t=1}^T \left[ y_t \log(\sigma(x_t^\top\beta)) + (1-y_t)\log(1-\sigma(x_t^\top\beta)) \right]$$
+    <p>The derivative of the log-likelihood for a single observation with respect to $\beta$ is:</p>
+    $$\nabla_\beta l_t(\beta) = \left(y_t - \sigma(x_t^\top\beta)\right)x_t = (y_t - \pi_t)x_t$$
+    <p>Summing over all observations gives the full gradient:</p>
+    $$\nabla_\beta l(\beta) = \sum_{t=1}^T (y_t - \pi_t) x_t$$
+    <p>Unlike in linear regression, setting this equation to zero does not yield a closed-form solution for $\beta$. Therefore, iterative optimization algorithms like <strong>gradient ascent</strong> are used.</p>
+    <p>The gradient ascent update rule is:</p>
+    $$\beta_{\text{new}} = \beta_{\text{old}} + \alpha \nabla_\beta l(\beta_{\text{old}})$$
+    <p>where $\alpha$ is the learning rate. For a single data point (stochastic gradient ascent), the rule is:</p>
+    $$\beta_{\text{new}} = \beta_{\text{old}} + \alpha (y_t - \pi_t) x_t$$
+  </details>
+</div>
 
-$$
-l(\beta) = \sum_{t=1}^T \left[ x_t \log(\pi_t) + (1-x_t)\log(1-\pi_t) \right]
-$$
+### Modeling Complex Data Structures
 
-Substituting $\pi_t = \sigma(u_t^T \beta)$, we can express the log-likelihood in a form common to the exponential family:
-
-$$
-l(\beta) = \sum_{t=1}^T \left[ x_t (u_t^T \beta) - \log(1+e^{u_t^T \beta}) \right]
-$$
-
-**Training Algorithm:** We maximize the log-likelihood by taking its derivative with respect to $\beta$ and setting it to zero.
-
-$$
-\nabla_\beta l(\beta) = \nabla_\beta \sum_{t=1}^T \left[ x_t \log(\sigma(u_t^T\beta)) + (1-x_t)\log(1-\sigma(u_t^T\beta)) \right]
-$$
-
-The derivative of the log-likelihood for a single observation with respect to $\beta$ is:
-
-$$
-\nabla_\beta l_t(\beta) = \left(x_t - \sigma(u_t^T\beta)\right)u_t = (x_t - \pi_t)u_t
-$$
-
-Summing over all observations gives the full gradient:
-
-$$
-\nabla_\beta l(\beta) = \sum_{t=1}^T (x_t - \pi_t) u_t
-$$
-
-Unlike in linear regression, setting this equation to zero does not yield a closed-form solution for $\beta$. Therefore, iterative optimization algorithms like **gradient ascent** are used.
-
-The gradient ascent update rule is:
-
-$$
-\beta_{\text{new}} = \beta_{\text{old}} + \alpha \nabla_\beta l(\beta_{\text{old}})
-$$
-
-where $\alpha$ is the learning rate. For a single data point (stochastic gradient ascent), the rule is:
-
-$$
-\beta_{\text{new}} = \beta_{\text{old}} + \alpha (x_t - \pi_t) u_t
-$$
-
------
-
-### 5.6 Modeling Complex Data Structures
-
-#### 5.6.1 Multimodal Regression
+#### Multimodal Regression
 
 This approach models datasets where each observation consists of multiple types of data, or **modalities**.
 
 **Setup:**
 
-* We have multiple observed modalities, for example, a binary variable $x_{1t} \in \lbrace 0,1 \rbrace$ and a continuous variable $x_{2t} \in \mathbb{R}$.
-* These are collected into a response vector $x_t = (x_{1t}, x_{2t})^T$.
-* The full dataset is $D = \lbrace(x_t, u_t)\rbrace_{t=1}^T$.
+* We have multiple observed modalities, for example, a binary variable $y_{1t} \in \lbrace 0,1 \rbrace$ and a continuous variable $y_{2t} \in \mathbb{R}$.
+* These are collected into a response vector $y_t = (y_{1t}, y_{2t})^T$.
+* The full dataset is $D = \lbrace(y_t, x_t)\rbrace_{t=1}^T$.
 
-**Model:** We model each modality separately, conditional on the predictors $u_t$. This typically involves different parameter vectors ($\beta_1, \beta_2$) and distributions for each modality.
+**Model:** We model each modality separately, conditional on the predictors $x_t$. This typically involves different parameter vectors ($\beta_1, \beta_2$) and distributions for each modality.
 
-* Linear predictor for modality 1: $\eta_{1t} = \beta_1^T u_t$
-* Linear predictor for modality 2: $\eta_{2t} = \beta_2^T u_t$
-* Model for modality 1: $x_{1t} \mid u_t \sim \text{Bernoulli}(\pi_t)$, where $\pi_t = \sigma(\eta_{1t})$.
-* Model for modality 2: $x_{2t} \mid u_t \sim \mathcal{N}(\mu_t, \sigma^2)$, where $\mu_t = \eta_{2t}$.
+* Linear predictor for modality 1: $\eta_{1t} = \beta_1^\top x_t$
+* Linear predictor for modality 2: $\eta_{2t} = \beta_2^\top x_t$
+* Model for modality 1: $y_{1t} \mid x_t \sim \text{Bernoulli}(\pi_t)$, where $\pi_t = \sigma(\eta_{1t})$.
+* Model for modality 2: $y_{2t} \mid x_t \sim \mathcal{N}(\mu_t, \sigma^2)$, where $\mu_t = \eta_{2t}$.
 
 A key assumption is **conditional independence**: the different modalities are independent of each other, given the predictors.
 
-$$
-p(x_{1t}, x_{2t} \mid u_t) = p(x_{1t} \mid u_t) p(x_{2t} \mid u_t)
-$$
+$$p(y_{1t}, y_{2t} \mid x_t) = p(y_{1t} \mid x_t) p(y_{2t} \mid x_t)$$
 
 **Loss Function (MLE):** Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:
 
-$$
-l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T \log p(x_{1t} \mid u_t) + \sum_{t=1}^T \log p(x_{2t} \mid u_t)
-$$
+$$l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T \log p(y_{1t} \mid x_t) + \sum_{t=1}^T \log p(y_{2t} \mid x_t)$$
 
 $$
-l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T [x_{1t}\eta_{1t} - \log(1+e^{\eta_{1t}})] + \sum_{t=1}^T \left[-\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(x_{2t} - \eta_{2t})^2 \right]
+l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T [y_{1t}\eta_{1t} - \log(1+\exp(\eta_{1t}))] + \sum_{t=1}^T \left[-\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(y_{2t} - \eta_{2t})^2 \right]
 $$
 
 This loss function can be maximized jointly to find the parameters for both models.
 
 If the assumption of conditional independence between modalities is not reasonable, a common approach is to introduce a shared **latent variable** $\epsilon_t$ that captures common dynamics or unobserved factors influencing all modalities. Conditional on both the predictors $u_t$ and the latent variable $\epsilon_t$, the modalities are then assumed to be independent.
 
-#### 5.6.2 Hierarchical Modeling
+#### Hierarchical Modeling
 
 Hierarchical (or multilevel) models are designed for datasets with a nested or grouped structure, such as multiple time series from different subjects.
 
@@ -1447,712 +1350,7 @@ $$
 
 This approach allows for "partial pooling," where information is shared across subjects through the parent distribution, leading to more robust estimates while still allowing for individual variation.
 
-
-<!-- ---
-
-## 6. Hierarchical Modeling for Multiple Time Series
-
-Hierarchical (or multilevel) models are especially useful when we observe **multiple related time series**, for example different subjects in an experiment or multiple sensors measuring similar phenomena. They provide a principled compromise between:
-
-* **Separate models (no sharing)** — good for individuality, bad for stability when data per subject is small.
-* **Fully pooled model (complete sharing)** — good for stability, bad for individuality.
-
-### 6.1 Problem Setup: Multiple Subjects / Time Series
-
-Suppose we have $N$ subjects (or units). For each subject $i = 1, \dots, N$ we observe a time series dataset $D_i$:
-
-* Time points: $t = 1, \dots, T_i$ (often we assume $T_i = T$ for all $i$).
-* Observations: $x_{it}$.
-* Optionally, inputs or covariates: $w_{it}$.
-
-We collect
-
-$$
-D_i = \{x_{i1}, \dots, x_{iT_i}\}, 
-\qquad
-W_i = \{w_{i1}, \dots, w_{iT_i}\}.
-$$
-
-The goal is to model the time series of **each subject** while still **sharing information** across subjects.
-
-#### 6.1.1 Two Extreme Modeling Strategies
-
-**(1) Separate Models (No Sharing)**
-
-* For each subject $i$, fit an independent model with its own parameters $\theta_i$ using only $D_i$.
-* **Pros:**  
-  * Maximal flexibility — each subject has its own parameters.  
-  * Captures individual differences.
-* **Cons:**  
-  * If $T_i$ is small and the model is complex, estimates of $\theta_i$ are noisy and prone to overfitting.  
-  * No information sharing across subjects.
-
-**(2) Fully Pooled Model (Complete Sharing)**
-
-* Concatenate all datasets:
-  $$
-  D_{\text{pooled}} = \{D_1, \dots, D_N\}
-  $$
-* Fit a single parameter vector $\theta$ to all data.
-* **Pros:**  
-  * Very stable parameter estimates (large effective sample size).
-* **Cons:**  
-  * Ignores inter-individual differences — assumes all subjects are governed by the same dynamics.
-
-Both extremes are often unsatisfactory in practice.
-
-#### 6.1.2 The Hierarchical Approach
-
-Hierarchical modeling introduces **subject-specific parameters** while constraining them through a **shared parent distribution**.
-
-**Core idea:**
-
-* Each subject $i$ has parameters $\theta_i$.
-* These parameters are themselves random draws from a parent distribution with **hyperparameters** $\beta$.
-
-Formally,
-
-* **Subject–level parameters:**
-  $$
-  \theta_i \sim p(\theta \mid \beta), \quad i = 1, \dots, N
-  $$
-* **Hyperprior on group-level parameters:**
-  $$
-  \beta \sim p(\beta)
-  $$
-
-This creates the hierarchical chain
-
-$$
-\beta \;\rightarrow\; \theta_i \;\rightarrow\; D_i, 
-\qquad i = 1, \dots, N.
-$$
-
-**Joint distribution.** For all parameters and data:
-
-$$
-p\bigl(\beta, \{\theta_i\}_{i=1}^N, \{D_i\}_{i=1}^N \bigr)
-= p(\beta)\,\prod_{i=1}^N p(\theta_i \mid \beta)\, p(D_i \mid \theta_i).
-$$
-
-**Posterior of interest:**
-
-$$
-p(\theta_1, \dots, \theta_N, \beta \mid D_1, \dots, D_N).
-$$
-
-This structure allows the model to **borrow statistical strength**:
-
-* Data from subject $j$ updates $\theta_j$.
-* This in turn updates $\beta$ (group-level hyperparameters).
-* The updated $\beta$ regularizes and improves the estimates of $\theta_i$ for all other subjects $i \neq j$.
-
----
-
-### 6.2 Example: Hierarchical Delay Discounting
-
-A common application of hierarchical modeling in cognitive science is the **delay discounting** task.
-
-#### 6.2.1 Data and Task Structure
-
-* We have $N$ individuals.
-* Subject $i$ performs $T_i$ trials, $t = 1, \dots, T_i$.
-* On each trial $t$, subject $i$ chooses between:
-  * An **immediate reward** of amount $A_{I,it}$.
-  * A **delayed reward** of amount $A_{D,it}$ available after delay $D_{it}$.
-* Observed choice (binary):
-  $$
-  y_{it} = 
-  \begin{cases}
-  1 & \text{if the delayed reward is chosen} \\
-  0 & \text{if the immediate reward is chosen}
-  \end{cases}
-  $$
-* Full dataset for subject $i$:
-  $$
-  Y_i = \{y_{it}\}_{t=1}^{T_i}.
-  $$
-
-#### 6.2.2 Model Architecture: Hyperbolic Delay Discounting
-
-We model **subjective value** of the options as follows.
-
-* **Immediate option:**
-  $$
-  V_{I,it} = A_{I,it}
-  $$
-* **Delayed option (hyperbolic discounting):**
-  $$
-  V_{D,it} = \frac{A_{D,it}}{1 + k_i D_{it}},
-  $$
-  where $k_i > 0$ is the **discount rate** of subject $i$.  
-  Larger $k_i$ $\Rightarrow$ stronger devaluation of future rewards.
-
-Define the value difference
-$$
-\Delta V_{it} = V_{D,it} - V_{I,it}.
-$$
-
-A positive $\Delta V_{it}$ indicates a preference for the delayed option.
-
-We map $\Delta V_{it}$ to a **choice probability** using a logistic (softmax) function:
-
-$$
-p_{it} := P(y_{it} = 1 \mid k_i, \beta_i) 
-= \sigma(\beta_i \Delta V_{it})
-= \frac{1}{1 + \exp(-\beta_i \Delta V_{it})},
-$$
-
-where $\beta_i > 0$ is a **temperature / sensitivity** parameter for subject $i$:
-
-* Large $\beta_i$ $\Rightarrow$ more deterministic choices.
-* Small $\beta_i$ $\Rightarrow$ more random choices.
-
-Assuming conditional independence across trials,
-
-$$
-\mathcal{L}(k_i, \beta_i \mid Y_i)
-= \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}.
-$$
-
-#### 6.2.3 Hierarchical Priors
-
-We now place **hierarchical priors** on the subject-specific parameters $k_i$ and $\beta_i$.
-
-We require $k_i > 0$ and $\beta_i > 0$, so we model their **logarithms** as Gaussian:
-
-* Individual parameters:
-  $$
-  \log k_i \sim \mathcal{N}(\mu_k, \sigma_k^2),
-  \qquad
-  \log \beta_i \sim \mathcal{N}(\mu_\beta, \sigma_\beta^2),
-  $$
-  for $i = 1, \dots, N$.
-
-* Group-level hyperparameters:
-  $$
-  \mu_k, \mu_\beta \in \mathbb{R}, \qquad
-  \sigma_k^2, \sigma_\beta^2 > 0.
-  $$
-
-* Hyperpriors on means:
-  $$
-  \mu_k \sim \mathcal{N}(\mu_{k0}, \sigma_{k0}^2),
-  \qquad
-  \mu_\beta \sim \mathcal{N}(\mu_{\beta 0}, \sigma_{\beta 0}^2).
-  $$
-
-* Hyperpriors on variances (e.g., Inverse-Gamma):
-  $$
-  \sigma_k^2 \sim \text{Inverse-Gamma}(a_k, b_k),
-  \qquad
-  \sigma_\beta^2 \sim \text{Inverse-Gamma}(a_\beta, b_\beta).
-  $$
-
-#### 6.2.4 Full Bayesian Formulation
-
-Let $k = \rbrace k_i\lbrace_{i=1}^N$ and $\beta = \lbrace\beta_i\rbrace_{i=1}^N$, and let $Y = \lbraceY_i\rbrace_{i=1}^N$.
-
-We seek the posterior
-
-$$
-p(k, \beta, \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2 \mid Y).
-$$
-
-By Bayes’ theorem:
-
-$$
-p(\cdot \mid Y) \propto 
-P(Y \mid k, \beta)\,
-P(k, \beta \mid \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2)\,
-P(\mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2).
-$$
-
-Breaking this down:
-
-* **Likelihood (across subjects):**
-  $$
-  P(Y \mid k, \beta) = \prod_{i=1}^N P(Y_i \mid k_i, \beta_i).
-  $$
-
-* **Prior on individual parameters:**
-  $$
-  P(k, \beta \mid \dots) 
-  = \prod_{i=1}^N P(\log k_i \mid \mu_k, \sigma_k^2)
-    \prod_{i=1}^N P(\log \beta_i \mid \mu_\beta, \sigma_\beta^2).
-  $$
-
-* **Hyperprior (assuming independence):**
-  $$
-  P(\mu_k, \mu_\beta, \sigma_k^2, \sigma_\beta^2)
-  = P(\mu_k)\,P(\mu_\beta)\,P(\sigma_k^2)\,P(\sigma_\beta^2).
-  $$
-
-Posterior inference is typically performed via **MCMC** or other approximate Bayesian methods.
-
----
-
-### 6.3 Alternative Parameterization: Parent Matrix
-
-In high-dimensional settings, it is often useful to **reduce dimensionality** of subject-specific parameters.
-
-#### 6.3.1 Naive Parameterization
-
-Assume each subject has a $p$-dimensional parameter vector
-
-$$
-\theta_i \in \mathbb{R}^p, \quad i = 1, \dots, N.
-$$
-
-Total number of subject-level parameters: $p \times N$.
-
-#### 6.3.2 Low-Rank Parent Matrix Parameterization
-
-Introduce:
-
-* A shared **parent matrix**:
-  $$
-  W \in \mathbb{R}^{p \times k}, \quad k < p,
-  $$
-* A low-dimensional **individual vector** for each subject:
-  $$
-  h_i \in \mathbb{R}^k.
-  $$
-
-Subject parameters are then constructed as
-
-$$
-\theta_i = W h_i.
-$$
-
-This reduces the total number of parameters to:
-
-$$
-p \times k \;+\; k \times N
-$$
-
-which can be **much smaller** than $p \times N$ if $k$ is chosen appropriately.
-
-The hierarchical chain becomes
-
-$$
-W, \{h_i\}_{i=1}^N \;\rightarrow\; \{\theta_i\}_{i=1}^N \;\rightarrow\; \{D_i\}_{i=1}^N.
-$$
-
-This acts as a **shared basis** (columns of $W$) with **subject-specific weights** $h_i$.
-
----
-
-## 7. Autoregressive Moving Average (ARMA) Models
-
-ARMA models are a core class of models for **stationary time series**. They are based on the idea that the current value of the series can be expressed as a combination of:
-
-* Its **own past values** (autoregressive part).
-* Past **random shocks / errors** (moving average part).
-
-### 7.1 Motivation and Components
-
-If, after fitting a regression model, the **residuals** exhibit autocorrelation, then important temporal structure has been missed. ARMA models aim to capture this structure.
-
-#### 7.1.1 Autoregressive (AR) Component
-
-**Definition (AR($p$) Process):**  
-An autoregressive process of order $p$, AR($p$), is given by
-
-$$
-X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t,
-$$
-
-where $\epsilon_t$ is a white noise process, typically $\epsilon_t \sim WN(0, \sigma^2)$.
-
-The series “regresses” on its own past values.
-
-#### 7.1.2 Moving Average (MA) Component
-
-**Definition (MA($q$) Process):**  
-A moving average process of order $q$, MA($q$), is
-
-$$
-X_t = b_0 + \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}.
-$$
-
-Here $X_t$ depends on **past error terms** $\epsilon_{t-j}$, not directly on past $X_{t-j}$.
-
-#### 7.1.3 ARMA($p,q$) Model
-
-Combining both parts yields the ARMA($p,q$) model:
-
-$$
-X_t = c + \sum_{i=1}^p a_i X_{t-i}
-      + \sum_{j=1}^q b_j \epsilon_{t-j}
-      + \epsilon_t.
-$$
-
-The model parameters are
-
-$$
-\theta = \{c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2\}.
-$$
-
-* A pure AR($p$) model corresponds to $q = 0$.
-* A pure MA($q$) model corresponds to $p = 0$.
-
----
-
-### 7.2 Duality and Stationarity
-
-There is a fundamental **duality** between AR and MA processes:  
-under suitable stability conditions, a finite-order AR can be represented as an infinite-order MA, and vice versa.
-
-#### 7.2.1 Example: AR(1) as Infinite MA
-
-Consider an AR(1) process:
-
-$$
-X_t = a_0 + a_1 X_{t-1} + \epsilon_t.
-$$
-
-We can iteratively substitute $X_{t-1}$:
-
-$$X_t = a_0 + a_1 X_{t-1} + \epsilon_t$$
-$$= a_0 + a_1 (a_0 + a_1 X_{t-2} + \epsilon_{t-1}) + \epsilon_t$$
-$$= a_0(1 + a_1) + a_1^2 X_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t$$
-$$= a_0(1 + a_1 + a_1^2) + a_1^3 X_{t-3} + a_1^2 \epsilon_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t$$
-$$= a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}$$
-
-This infinite expansion is valid only if the geometric series converges.
-
-#### 7.2.2 Stationarity in the Mean for AR(1)
-
-Take expectations:
-
-$$
-\mathbb{E}[X_t]
-= a_0 \sum_{k=0}^\infty a_1^k 
-  + \sum_{k=0}^\infty a_1^k \mathbb{E}[\epsilon_{t-k}].
-$$
-
-Since $\mathbb{E}[\epsilon_{t-k}] = 0$, the second term vanishes:
-
-$$
-\mathbb{E}[X_t] = a_0 \sum_{k=0}^\infty a_1^k.
-$$
-
-The geometric series converges iff $\rvert a_1\lvert < 1$, giving
-
-$$
-\mathbb{E}[X_t] = \frac{a_0}{1 - a_1}, \quad \text{if } \rvert a_1\lvert < 1.
-$$
-
-Thus, a necessary condition for **stationarity** of an AR(1) process is
-
-$$
-\rvert a_1\lvert < 1.
-$$
-
-#### 7.2.3 State-Space Representation and Stability
-
-Any scalar AR($p$) process can be written as a **$p$-variate VAR(1)** process.
-
-Consider
-
-$$
-X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t.
-$$
-
-Define the state vector
-
-$$
-\mathbf{X}_t =
-\begin{pmatrix}
-X_t \\
-X_{t-1} \\
-\vdots \\
-X_{t-p+1}
-\end{pmatrix}.
-$$
-
-Then
-
-$$
-\mathbf{X}_t = \mathbf{a} + A \mathbf{X}_{t-1} + \boldsymbol{\epsilon}_t,
-$$
-
-where
-
-* 
-  $
-  \mathbf{a} =
-  \begin{pmatrix}
-  a_0 \\ 0 \\ \vdots \\ 0
-  \end{pmatrix}
-  $
-* 
-  $
-  A =
-  \begin{pmatrix}
-  a_1 & a_2 & \dots & a_p \\
-  1   & 0   & \dots & 0 \\
-  \vdots & \ddots & \ddots & \vdots \\
-  0   & \dots & 1 & 0
-  \end{pmatrix}
-  $
-* 
-  $
-  \boldsymbol{\epsilon}_t =
-  \begin{pmatrix}
-  \epsilon_t \\ 0 \\ \vdots \\ 0
-  \end{pmatrix}.
-  $
-
-The process is **stationary** if the spectral radius of $A$ is less than 1:
-
-$$
-\max_i \lvert\lambda_i(A)\rvert < 1.
-$$
-
----
-
-### 7.3 Model Identification via Autocorrelation
-
-To choose orders $p$ and $q$ in ARMA($p,q$), we use:
-
-* **Autocorrelation Function (ACF)**.
-* **Partial Autocorrelation Function (PACF)**.
-
-#### 7.3.1 Autocorrelation in AR(1)
-
-Consider a zero-mean AR(1):
-
-$$
-X_t = a_1 X_{t-1} + \epsilon_t.
-$$
-
-Let $\gamma(k) = \text{Cov}(X_t, X_{t-k})$.
-
-* Lag 1:
-  $$
-  \gamma(1) = a_1 \gamma(0).
-  $$
-* Lag 2:
-  $$
-  \gamma(2) = a_1 \gamma(1) = a_1^2 \gamma(0).
-  $$
-* In general:
-  $$
-  \gamma(k) = a_1^k \gamma(0).
-  $$
-
-Thus, the autocorrelation function
-
-$$
-\rho(k) = \frac{\gamma(k)}{\gamma(0)} = a_1^k
-$$
-
-**decays exponentially** to zero. For a general AR($p$), the ACF is a mixture of decaying exponentials / damped sinusoids.
-
-#### 7.3.2 Autocorrelation in MA($q$)
-
-Let $X_t$ be a zero-mean MA($q$):
-
-$$
-X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j},
-$$
-
-with $\epsilon_t$ white noise.
-
-For lag $k > q$, one can show $\gamma(k) = 0$, hence
-
-$$
-\text{ACF}(k) = 0 \quad \text{for all } k > q.
-$$
-
-So:
-
-* ACF of MA($q$) **cuts off** after lag $q$.
-
-#### 7.3.3 Partial Autocorrelation Function (PACF)
-
-The PACF at lag $k$ is the correlation between $X_t$ and $X_{t-k}$ **after** removing the linear effect of the intervening lags.
-
-Key property for AR($p$):
-
-$$
-\text{PACF}(k) = 0 \quad \text{for all } k > p.
-$$`
-
-So:
-
-* AR($p$) $\Rightarrow$ **PACF cuts off** after lag $p$, ACF decays.
-* MA($q$) $\Rightarrow$ **ACF cuts off** after lag $q$, PACF decays.
-
-#### 7.3.4 Summary Heuristic
-
-| Process | ACF | PACF |
-| ------ | --- | ---- |
-| AR($p$) | Decays (exponential / sinusoidal) | Cuts off after lag $p$ |
-| MA($q$) | Cuts off after lag $q$ | Decays (exponential / sinusoidal) |
-
-This heuristic is widely used in initial ARMA order selection.
-
----
-
-### 7.4 Fitting and Using ARMA Models
-
-#### 7.4.1 Parameter Estimation
-
-For a pure AR($p$) model, estimation is equivalent to a **linear regression** problem.
-
-Define:
-
-* Target vector:
-  $$
-  y =
-  \begin{pmatrix}
-  X_T \\
-  X_{T-1} \\
-  \vdots \\
-  X_{p+1}
-  \end{pmatrix}
-  $$
-* Design matrix:
-  $$
-  X =
-  \begin{pmatrix}
-  1 & X_{T-1} & \dots & X_{T-p} \\
-  1 & X_{T-2} & \dots & X_{T-p-1} \\
-  \vdots & \vdots & \ddots & \vdots \\
-  1 & X_p & \dots & X_1
-  \end{pmatrix}.
-  $$
-
-Standard OLS yields estimates of the intercept and AR coefficients.
-
-For ARMA($p,q$) models, parameters appear **nonlinearly** through the MA part; estimation typically uses:
-
-* Maximum likelihood (often via numerical optimization),
-* Or specialized algorithms (e.g., innovations algorithm).
-
-#### 7.4.2 Goals of ARMA Modeling
-
-Once an ARMA model is fitted, it can be used for:
-
-* **Goodness-of-fit diagnostics** (check residuals for remaining structure).
-* **Stationarity analysis** (via characteristic polynomial roots / eigenvalues).
-* **Understanding memory and dependence** (via orders $p$ and $q$).
-* **Hypothesis testing** on specific coefficients (e.g., $H_0: a_i = 0$).
-* **Forecasting** future values $X_{T+1}, X_{T+2}, \dots$.
-* **Control / interventions** in more advanced settings.
-
----
-
-## 8. Vector Autoregressive (VAR) Models
-
-VAR models generalize AR models to **multivariate** time series, where several variables are measured jointly over time.
-
-### 8.1 Model Architecture
-
-Let
-
-$$
-\mathbf{X}_t = 
-\begin{pmatrix}
-X_{1t} \\
-X_{2t} \\
-\vdots \\
-X_{Nt}
-\end{pmatrix}
-\in \mathbb{R}^N
-$$
-
-be the vector of $N$ time series at time $t$.
-
-**Definition (VAR($p$) Model):**
-
-$$
-\mathbf{X}_t = \mathbf{c} + \sum_{i=1}^p A_i \mathbf{X}_{t-i} + \boldsymbol{\epsilon}_t,
-$$
-
-where:
-
-* $\mathbf{c} \in \mathbb{R}^N$ is an intercept vector,
-* $A_i \in \mathbb{R}^{N \times N}$ are coefficient matrices,
-* $\epsilon_t \sim WN(0, \Sigma_\epsilon)$ is a white noise vector with covariance matrix $\Sigma_\epsilon$ (not necessarily diagonal).
-
-The structure of $A_i$ is informative:
-
-$$
-A_i =
-\begin{pmatrix}
-a_{11}^{(i)} & a_{12}^{(i)} & \dots & a_{1N}^{(i)} \\
-a_{21}^{(i)} & a_{22}^{(i)} & \dots & a_{2N}^{(i)} \\
-\vdots       & \vdots       & \ddots & \vdots \\
-a_{N1}^{(i)} & a_{N2}^{(i)} & \dots & a_{NN}^{(i)}
-\end{pmatrix}.
-$$
-
-* **Diagonal entries** $a_{jj}^{(i)}$: effect of past of variable $j$ on itself.
-* **Off-diagonal entries** $a_{jk}^{(i)}$: effect of past of variable $k$ on variable $j$.
-
-This is the basis for concepts like **Granger causality**.
-
----
-
-### 8.2 VAR as a State-Space Model and Stationarity
-
-Any VAR($p$) in $N$ variables can be written as a VAR(1) in $Np$ variables.
-
-#### 8.2.1 Companion Form
-
-Stack the lags into a state vector:
-
-$$
-\mathbf{Z}_t =
-\begin{pmatrix}
-\mathbf{X}_t \\
-\mathbf{X}_{t-1} \\
-\vdots \\
-\mathbf{X}_{t-p+1}
-\end{pmatrix} 
-\in \mathbb{R}^{Np}.
-$$
-
-Then the VAR($p$) can be written as
-
-$$
-\mathbf{Z}_t = \mathbf{c}^\ast + A^\ast \mathbf{Z}_{t-1} + \boldsymbol{\eta}_t,
-$$
-
-for suitable companion matrix $A^\ast$ and noise vector $\boldsymbol{\eta}_t$.
-
-#### 8.2.2 Stationarity Condition
-
-For the VAR(1) representation
-
-$$
-\mathbf{Z}_t = \mathbf{c}^\ast + A^\ast \mathbf{Z}_{t-1} + \boldsymbol{\eta}_t,
-$$
-
-the process is **stationary** if and only if all eigenvalues of $A^\ast$ lie **inside the unit circle**:
-
-$$
-\max_i \lvert \lambda_i(A^\ast) \rvert < 1.
-$$
-
-Equivalently, all roots of the **characteristic polynomial**
-
-$$
-\det(I_N - A(z)) = 0
-$$
-
-must lie **outside** the unit circle, where $A(z)$ encodes the lag structure.
-
-This generalizes the AR(1) condition $\lvert a_1\rvert < 1$ and the AR($p$) “roots outside unit circle” criterion to the multivariate case. -->
-
-Here are the new notes reformatted to match the style and structure of your previous lecture notes. I have added the front matter, the CSS for the accordions, and integrated specific image tags and LaTeX formatting to ensure consistency.
-
-
-## 6. Hierarchical Modeling for Multiple Time Series
+## Hierarchical Modeling for Multiple Time Series
 
 When analyzing data from multiple subjects or independent sources, we often face a modeling choice between two extremes. This section introduces hierarchical modeling as a powerful intermediate approach that balances individual specificity with group-level stability.
 
@@ -2170,10 +1368,10 @@ When analyzing data from multiple subjects or independent sources, we often face
       The likelihood, as seen in stage I is $P(y_j \mid \theta_j, \phi)$, with $P(\theta_j, \phi)$ as its prior distribution. Note that the likelihood depends on $\phi$ only through $\theta_j$.
     </p>
     <p>The prior distribution from stage I can be broken down into:</p>
-    $$P(\theta_j, \phi) = P(\theta_j \mid \phi)P(\phi) \quad \textit{[from the definition of conditional probability]}$$
+    $$P(\theta_j, \phi) = P(\theta_j \mid \phi)P(\phi) \quad \text{from the definition of conditional probability}$$
     <p>With $\phi$ as its hyperparameter with hyperprior distribution, $P(\phi)$.</p>
     <p>Thus, the posterior distribution is proportional to:</p>
-    $$P(\phi, \theta_j \mid y) \propto P(y_j \mid \theta_j, \phi)P(\theta_j, \phi) \quad \textit{[using Bayes' Theorem]}$$
+    $$P(\phi, \theta_j \mid y) \propto P(y_j \mid \theta_j, \phi)P(\theta_j, \phi) \quad \text{using Bayes' Theorem}$$
     $$P(\phi, \theta_j \mid y) \propto P(y_j \mid \theta_j)P(\theta_j \mid \phi)P(\phi)$$
   </details>
 </div>
@@ -2202,9 +1400,9 @@ When analyzing data from multiple subjects or independent sources, we often face
   </details>
 </div>
 
-### 1.1 Hierarchical Modeling
+### Hierarchical Modeling
 
-#### 1.1.1 Problem Formulation
+#### Problem Formulation
 
 Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, we have a time series dataset $D_i$.
 
@@ -2212,7 +1410,7 @@ Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, w
   * For simplicity, we can assume all time series have the same length, $T_i = T$.
   * Each observation may also be associated with inputs: $W_i = \lbrace w_{i1}, w_{i2}, \dots, w_{iT_i} \rbrace$.
 
-#### 1.1.2 Two Extreme Modeling Strategies
+#### Two Extreme Modeling Strategies
 
 1.  **Separate Models:**
     Fit a completely independent model with parameters $\theta_i$ to each dataset $D_i$.
@@ -2228,7 +1426,7 @@ Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, w
 
 We want to find a middle ground that finds a compromise between these extremes – **partial pooling**. This brings us to Bayesian hierarchical modeling, also known as multilevel modeling.
 
-#### 1.1.3 The Hierarchical Approach
+#### The Hierarchical Approach
 
 Hierarchical modeling provides a principled compromise between these two extremes.
 
@@ -2270,11 +1468,11 @@ Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \
   </figure>
 </div>
 
-### 1.2 Example: Hierarchical Delay Discounting
+### Example: Hierarchical Delay Discounting
 
 Let's consider a concrete example of hierarchical modeling applied to a delay discounting task in cognitive science.
 
-#### 1.2.1 Data and Task Structure
+#### Data and Task Structure
 
 We have data from $N$ individuals. Subject $i$ performs $T_i$ trials, indexed by $t=1, \dots, T_i$. In each trial, the subject chooses between two options:
 
@@ -2287,7 +1485,7 @@ $$y_{it} = \begin{cases} 1 & \text{if delayed choice is selected} \\ 0 & \text{i
 
 The full dataset for subject $i$ is $Y_i = \lbrace y_{it}\rbrace_{t=1}^{T_i}$.
 
-#### 1.2.2 Model Architecture: Hyperbolic Delay Discounting
+#### Model Architecture: Hyperbolic Delay Discounting
 
 The subjective value of the options is modeled as follows:
 
@@ -2308,7 +1506,7 @@ where $\beta_i$ is a subject-specific "softmax" temperature parameter controllin
 
 $$\mathcal{L}(k_i, \beta_i \mid Y_i) = \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}$$
 
-#### 1.2.3 Hierarchical Priors
+#### Hierarchical Priors
 
 Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-level structure. Since $k_i$ and $\beta_i$ must be positive, we model their logarithms as being drawn from a Normal distribution.
 
@@ -2321,7 +1519,7 @@ Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-l
       * *Priors on Means:* $\mu_k \sim \mathcal{N}(\mu_{k0}, \sigma_{k0}^2)$ and $\mu_\beta \sim \mathcal{N}(\mu_{\beta 0}, \sigma_{\beta 0}^2)$.
       * *Priors on Variances:* $\sigma_k^2 \sim \text{Inverse-Gamma}(a_k, b_k)$ and $\sigma_\beta^2 \sim \text{Inverse-Gamma}(a_\beta, b_\beta)$.
 
-#### 1.2.4 Full Bayesian Formulation
+#### Full Bayesian Formulation
 
 The goal is to obtain the full posterior distribution over all parameters and hyperparameters given the data $Y$:
 $$P(k, \beta, \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2 \mid Y)$$
@@ -2343,7 +1541,7 @@ $$\propto P(Y \mid k, \beta) P(k, \beta \mid \mu_k, \sigma_k^2, \mu_\beta, \sigm
 
 By combining these expressions, we define the full model. Inference is typically performed using sampling techniques like Markov Chain Monte Carlo (MCMC).
 
-### 1.3 Alternative: Hierarchical Modeling with a Parent Matrix
+### Alternative: Hierarchical Modeling with a Parent Matrix
 
 An alternative parametrization for hierarchical models, particularly useful in high-dimensional settings, involves a shared parent matrix.
 
@@ -2353,17 +1551,17 @@ An alternative parametrization for hierarchical models, particularly useful in h
     The total number of parameters is now $(p \times k) + (k \times N)$, which can be significantly smaller than $p \times N$ if $k$ is chosen well. This acts as a form of dimensionality reduction.
   * **Hierarchical Chain:** The dependency structure becomes: $W, h_i \rightarrow \theta_i \rightarrow D_i$.
 
-#### 1.2.5 Additional Sources
+#### Additional Sources
 
 * [Introduction to hierarchical modeling](https://towardsdatascience.com/introduction-to-hierarchical-modeling-a5c7b2ebb1ca/)
 * [Bayesian hierarchical modeling](https://en.wikipedia.org/wiki/Bayesian_hierarchical_modeling)
 * [Hierarchical Modeling](https://betanalpha.github.io/assets/case_studies/hierarchical_modeling.html)
 
-## 7. Autoregressive Moving Average (ARMA) Models
+## Autoregressive Moving Average (ARMA) Models
 
 ARMA models are a fundamental class of models for analyzing stationary time series. They are built on the principle that the current value of a series can be explained by a combination of its own past values and past random shocks.
 
-### 2.1 Motivation and Components
+### Motivation and Components
 
 If the residuals of a regression model on time series data are found to be autocorrelated or cross-correlated, it implies that the model is missing important temporal structure. ARMA models are designed to capture this very structure.
 
@@ -2405,9 +1603,9 @@ $$\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$$
 
 </div>
 
-### 2.2 Duality and Stationarity
+### Duality and Stationarity
 
-#### 2.2.1 Duality of AR and MA Processes
+#### Duality of AR and MA Processes
 
 There is a fundamental duality between AR and MA processes. Under certain stability conditions, any finite-order AR process can be represented as an infinite-order MA process, and vice-versa.
 
@@ -2426,7 +1624,7 @@ $$
 
 This infinite expansion is only valid if the series converges.
 
-#### 2.2.2 Stationarity in the Mean for AR(1)
+#### Stationarity in the Mean for AR(1)
 
 For the process to be stationary in the mean, its expected value must be constant and finite. Taking the expectation of the expanded form:
 
@@ -2449,7 +1647,7 @@ This condition arises from the convergence of the geometric series. If $\lvert a
 </details>
 </div>
 
-#### 2.2.3 State-Space Representation and Stability
+#### State-Space Representation and Stability
 
 A powerful technique for analyzing AR models is to write them in a state-space (or vector) form. Any scalar AR(p) process can be represented as a p-variate VAR(1) process.
 
@@ -2693,11 +1891,11 @@ where $\lambda_i(A)$ are the eigenvalues of $A$.
   </details>
 </div>
 
-### 2.3 Model Identification Using Autocorrelation
+### Model Identification Using Autocorrelation
 
 A key step in ARMA modeling is identifying the orders $p$ and $q$. The Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) are the primary tools for this task.
 
-#### 2.3.1 Autocorrelation in AR(1) Processes
+#### Autocorrelation in AR(1) Processes
 
 Consider a zero-mean ($a_0=0$) AR(1) process: $X_t = a_1 X_{t-1} + \epsilon_t$. The autocovariance at lag $k$, $\gamma(k)$, can be calculated.
 
@@ -2707,9 +1905,9 @@ Consider a zero-mean ($a_0=0$) AR(1) process: $X_t = a_1 X_{t-1} + \epsilon_t$. 
 
 The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rho(k) = a_1^k$. The ACF of an AR(1) process **decays exponentially** to zero.
 
-#### 2.3.2 Autocorrelation in MA(q) Processes
+#### Autocorrelation in MA($q$) Processes
 
-Consider a zero-mean MA(q) process: $X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$. Let's calculate the autocovariance at lag $k > q$.
+Consider a zero-mean MA($q$) process: $X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$. Let's calculate the autocovariance at lag $k > q$.
 
 Because the error terms are white noise, $\mathbb{E}[\epsilon_i \epsilon_j] = \sigma^2$ if $i=j$ and 0 otherwise. For the expectation $\mathbb{E}[X_t X_{t-k}]$ to be non-zero, there must be at least one pair of matching indices in the sums. If we consider a lag $k>q$, it is impossible to satisfy the matching index condition. Therefore, for any $k>q$, all cross-product terms have an expectation of zero.
 
@@ -2729,18 +1927,18 @@ $$
 
 This is because in an AR($p$) model, the direct relationship between $X_t$ and $X_{t-k}$ (for $k>p$) is fully mediated by the first $p$ lags.
 
-#### 2.3.4 Summary for Model Identification
+#### Summary for Model Identification
 
 | Process | Autocorrelation Function (ACF) | Partial Autocorrelation Function (PACF) |
 | :--- | :--- | :--- |
 | **AR($p$)** | Decays exponentially or sinusoidally | Cuts off to zero after lag $p$ |
 | **MA($q$)** | Cuts off to zero after lag $q$ | Decays exponentially or sinusoidally |
 
-### 2.4 Modeling with ARMA
+### Modeling with ARMA
 
-#### 2.4.1 Parameter Estimation
+#### Parameter Estimation
 
-For a pure AR(p) model, parameter estimation is equivalent to a linear regression problem. We can construct a predictor matrix $X$ and a target vector $y$:
+For a pure AR($p$) model, parameter estimation is equivalent to a linear regression problem. We can construct a predictor matrix $X$ and a target vector $y$:
 
 $$
 y = \begin{pmatrix} X_T \\ X_{T-1} \\ \vdots \\ X_{p+1} \end{pmatrix} \quad
@@ -2754,7 +1952,7 @@ $$
 
 The parameters can then be estimated using ordinary least squares. For ARMA models with an MA component, estimation is more complex and typically requires numerical optimization methods like maximum likelihood estimation.
 
-#### 2.4.2 Goals of ARMA Modeling
+#### Goals of ARMA Modeling
 
 Once an ARMA model is fitted, it can be used for:
 
@@ -2765,13 +1963,11 @@ Once an ARMA model is fitted, it can be used for:
   * **Forecasting:** Predict future values of the time series.
   * **Control:** Understand how to steer the system towards a desired state.
 
------
-
-## 3\. Vector Autoregressive (VAR) Models
+## Vector Autoregressive (VAR) Models
 
 Vector Autoregressive (VAR) models are a direct extension of the univariate AR models to multivariate time series.
 
-### 3.1 Model Architecture
+### Model Architecture
 
 A VAR model is used for analyzing a set of $N$ time series variables recorded simultaneously.
 
@@ -2800,7 +1996,7 @@ $$
   * **Diagonal entries** ($a_{jj}^{(i)}$) relate the past of variable $j$ to its own current value.
   * **Off-diagonal entries** ($a_{jk}^{(i)}$) quantify how the past of variable $k$ influences the current value of variable $j$. This is the basis for concepts like Granger causality.
 
-### 3.2 State-Space Representation and Stationarity
+### State-Space Representation and Stationarity
 
 Similar to the univariate case, VAR(p) models can be compactly represented as VAR(1) models. Any VAR(p) process in $N$ variables can be written as an $Np$-variate VAR(1) process by stacking the lagged vectors into a larger state vector.
 
@@ -2812,23 +2008,25 @@ $$
 
 where $\lambda_i$ are the eigenvalues of $A$. This is equivalent to saying all roots of the characteristic polynomial $\det(I_N - Az) = 0$ lie outside the unit circle.
 
-
 [Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
 
-## Chapter 1: Vector Autoregressive (VAR) Models
+## Vector Autoregressive (VAR) Models
 
-### 1.1 Introduction to Multivariate Time Series
+### Introduction to Multivariate Time Series
 
 In contrast to univariate analysis, multivariate time series analysis considers datasets where multiple variables are recorded simultaneously over time.
 
 - **Multivariate Time Series Data:** A vector $X_t$ representing observations at time $t$. $X_t = (X_{1t}, \dots, X_{Nt})^T \in \mathbb{R}^N$. Here, $N$ is the number of simultaneously recorded variables.
 - **New Phenomena of Interest:** The primary advantage of the multivariate approach is the ability to model interactions between time series. A key phenomenon is the cross-correlation between the different component series.
 
-### 1.2 The VAR($p$) Model Architecture
+### The VAR($p$) Model Architecture
 
 The Vector Autoregressive (VAR) model is a natural extension of the univariate autoregressive (AR) model to multivariate time series. A VAR($p$) model expresses each variable as a linear function of its own past values, the past values of all other variables in the system, and a random error term.
 
-The general form of a VAR($p$) model is:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(VAR($p$) Model)</span></p>
+
+The general form of a **VAR($p$) model** is:
 
 $$X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$$
 
@@ -2836,18 +2034,26 @@ $$X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$$
 - **Coefficient Matrices:** $A_i \in \mathbb{R}^{N \times N}$ are the coefficient matrices for each lag $i=1, \dots, p$.
 - **Error Term:** $\varepsilon_t$ is a vector of white noise error terms, typically assumed to be multivariate normal: $\varepsilon_t \sim \mathcal{N}(0, \Sigma_\varepsilon)$.
 
-The covariance matrix of the error term, $\Sigma_\varepsilon$, is given by:
+The **covariance matrix of the error** term, $\Sigma_\varepsilon$, is given by:
 
 $$
-\Sigma_\varepsilon = E[\varepsilon_t \varepsilon_t^T] =
+\Sigma_\varepsilon = \mathbb{E}[\varepsilon_t \varepsilon_t^\top] =
 \begin{pmatrix}
-  E[\varepsilon_{1t}^2] & E[\varepsilon_{1t}\varepsilon_{2t}] & \dots \\
+  \mathbb{E}[\varepsilon_{1t}^2] & \mathbb{E}[\varepsilon_{1t}\varepsilon_{2t}] & \dots \\
   \vdots & \ddots & \vdots \\
-  E[\varepsilon_{Nt}\varepsilon_{1t}] & \dots & E[\varepsilon_{Nt}^2]
+  \mathbb{E}[\varepsilon_{Nt}\varepsilon_{1t}] & \dots & \mathbb{E}[\varepsilon_{Nt}^2]
 \end{pmatrix}
 $$
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Off-diagonal elements of $\Sigma_\varepsilon$)</span></p>
+
 Crucially, the off-diagonal elements of $\Sigma_\varepsilon$ are allowed to be non-zero, meaning the contemporaneous error terms for different variables can be correlated.
+
+</div>
+
 
 #### Structure of Coefficient Matrices
 
@@ -2864,7 +2070,7 @@ $$
 - **Diagonal Entries ($a_{jj}^{(i)}$):** These entries relate a variable to its own past. They capture the internal time constants and autoregressive properties of each individual series.
 - **Off-Diagonal Entries ($a_{jk}^{(i)}$ for $j \neq k$):** These entries quantify how the past of variable $k$ influences the present of variable $j$. They are the key to understanding the cross-series dynamics and interactions.
 
-### 1.3 Equivalence and Companion Form
+### Equivalence and Companion Form
 
 A significant theoretical result is that any VAR($p$) process can be rewritten as a VAR(1) process. This is extremely useful for analysis, particularly for assessing model stability.
 
@@ -2873,7 +2079,7 @@ A significant theoretical result is that any VAR($p$) process can be rewritten a
 
 This transformation allows us to study the stability and properties of a high-order model by analyzing a single, larger coefficient matrix corresponding to the VAR(1) representation.
 
-### 1.4 Stationarity of VAR Processes
+### Stationarity of VAR Processes
 
 The stability of a VAR process is determined by the properties of its coefficient matrices. For a VAR(1) process, the condition for stationarity is based on the eigenvalues of the coefficient matrix.
 
@@ -2911,7 +2117,7 @@ where $\lambda_i$ are the eigenvalues of $A$.
    - If $\max_i(\lvert\lambda_i\rvert) > 1$, at least one eigenvalue has a modulus greater than 1. Its corresponding term $\lambda_i^t$ will grow exponentially, causing $X_t$ to explode along the direction of the corresponding eigenvector. The process is non-stationary (divergent).
    - If $\max_i(\lvert\lambda_i\rvert) = 1$, the system is marginally stable. This can lead to behaviors like a random walk.
 
-### 1.5 Parameter Estimation
+### Parameter Estimation
 
 The parameters of a VAR($p$) model $(c, A_1, \dots, A_p, \Sigma_\varepsilon)$ can be estimated using Maximum Likelihood Estimation (MLE), which in the case of Gaussian errors is equivalent to multivariate least squares.
 
@@ -2937,7 +2143,7 @@ $$
 
 Maximizing this log-likelihood function provides the parameter estimates. This can be framed as a multivariate linear regression problem.
 
-### 1.6 Model Order Selection
+### Model Order Selection
 
 A critical step in VAR modeling is determining the appropriate order, $p$. This is a model selection problem where we aim to balance model fit with model complexity. Common criteria include AIC and BIC, but a formal statistical test is the Likelihood Ratio Test.
 
@@ -2986,7 +2192,7 @@ $$
 
 This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR(p+1) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
 
-### 1.7 Granger Causality
+### Granger Causality
 
 Granger causality is a statistical concept of causality based on prediction. It provides a formal method to test for directed influence between time series within the VAR framework.
 
@@ -3021,11 +2227,11 @@ It is crucial to interpret "Granger causality" with care, as it is a statement a
 - **Linearity Assumption:** The standard test is based on linear VAR models and only detects linear forms of dependence. The general definition of Granger causality is not restricted to linear relationships.
 - **Gaussian Assumptions:** The statistical properties of the LR test rely on the assumption of Gaussian-distributed residuals. Strong deviations from this assumption may invalidate the test statistics.
 
-## Chapter 2: Generalized Autoregressive Models
+## Generalized Autoregressive Models
 
 This chapter extends the autoregressive framework to model non-Gaussian time series, such as binary sequences or count data, using the principles of Generalized Linear Models (GLMs).
 
-### 2.1 AR Models for Binary Processes
+### AR Models for Binary Processes
 
 Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can model this using an autoregressive structure similar to logistic regression.
 
@@ -3061,7 +2267,7 @@ Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can
 
 A common remedy for instability is to reduce the model order $p$, thereby reducing complexity.
 
-### 2.2 Change Point Models for Binary Time Series
+### Change Point Models for Binary Time Series
 
 An alternative approach for binary series is to model the success probability $\pi_t$ as an explicit function of time, allowing for a single change point.
 
@@ -3087,7 +2293,7 @@ An alternative approach for binary series is to model the success probability $\
   The log-likelihood is $\ell(\theta) = \sum_{t=1}^{T} [X_t \log(\pi_t) + (1-X_t)\log(1-\pi_t)]$. These parameters are typically found via MLE.
 - **Challenge:** This specific sigmoid structure only allows for a single, monotonic change point in the success probability.
 
-### 2.3 AR Models for Count Processes (Poisson GLM)
+### AR Models for Count Processes (Poisson GLM)
 
 For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a Poisson distribution where the rate is modeled with an autoregressive structure.
 
@@ -3120,11 +2326,11 @@ For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a
 
   Although there is no closed-form solution for the parameters, the Poisson log-likelihood function is concave. This is a significant advantage, as it guarantees that standard numerical optimization methods (like Gradient Descent) will converge to the unique global maximum.
 
-## Chapter 3: Nonlinear Dynamical Systems
+## Nonlinear Dynamical Systems
 
 This chapter introduces the fundamental concepts of nonlinear dynamical systems, moving beyond the linear framework of VAR models to explore more complex behaviors like fixed points, cycles, and chaos.
 
-### 3.1 Motivation: From Linear to Nonlinear Systems
+### Motivation: From Linear to Nonlinear Systems
 
 A VAR(1) model, $X_t = c + AX_{t-1}$, is a Linear Dynamical System (LDS). We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
 
@@ -3132,64 +2338,140 @@ $$X_t = F(X_{t-1})$$
 
 This defines a nonlinear dynamical system. Understanding the behavior of simple nonlinear systems provides the foundation for analyzing more complex models.
 
-### 3.2 Analysis of 1D Systems
+### Analysis of 1D Systems
 
 Let's start with a simple first-order nonlinear difference equation: $x_{t+1} = f(x_t)$.
 
 #### Fixed Points
 
-A central concept is the fixed point (FP), a state where the system remains unchanged over time.
+A central concept is the fixed point (FP), a state where **the system remains unchanged over time**.
 
-- **Definition:** A point $x^{\ast}$ is a fixed point of the map $f$ if it satisfies the equation:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed point of map)</span></p>
+
+A point $x^{\ast}$ is a **fixed point of the map** $f$ if it satisfies the equation:
   
-  $$x^{\ast} = f(x^{\ast})$$
+$$x^{\ast} = f(x^{\ast})$$
 
-- **Example (Linear AR(1)):** For $f(x) = \alpha x + c$, the fixed point equation is $x^{\ast} = \alpha x^{\ast} + c$.
-  - Solving for $x^{\ast}: x^{\ast}(1-\alpha) = c$, which gives $x^{\ast} = \dfrac{c}{1-\alpha}$ (provided $\alpha \neq 1$).
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed point of Linear AR(1))</span></p>
+
+For $f(x) = \alpha x + c$, the fixed point equation is 
+
+$$x^{\ast} = \alpha x^{\ast} + c$$
+
+Solving for $x^{\ast}: x^{\ast}(1-\alpha) = c$, which gives 
+
+$$x^{\ast} = \dfrac{c}{1-\alpha}$$ 
+
+provided $\alpha \neq 1$.
+
+</div>
 
 #### Stability of Fixed Points
 
 The behavior of the system near a fixed point determines its stability.
 
-- A stable fixed point, or attractor, is a point such that trajectories starting in its vicinity converge to it.
-  - Formally, $x^{\ast}$ is an attractor if there exists a set $C$, called the basin of attraction, such that for any initial condition $x_0 \in C$, $\lim_{t \to \infty} x_t = x^{\ast}$.
-- An unstable fixed point, or repeller, is a point from which nearby trajectories diverge.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stable FP = Attractor, Unstable FP = Repeller)</span></p>
+
+* A **stable fixed point**, or attractor, is a point such that trajectories starting in its vicinity converge to it:
+  * $x^{\ast}$ is an attractor if there exists a set $C$, called the basin of attraction, such that for any initial condition $x_0 \in C$, $\lim_{t \to \infty} x_t = x^{\ast}$
+* An **unstable fixed point**, or repeller, is a point from which nearby trajectories diverge.
+  * $x^{\ast}$ is a repeller if there exists a set $C$, such that for any initial condition $x_0 \in C$, $\lim_{t \to -\infty} x_t = x^{\ast}$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stability of FP of Linear System)</span></p>
 
 For the linear system $x_{t+1} = \alpha x_t + c$, the fixed point $x^{\ast}$ is:
 
-- Stable if $\lvert\alpha\rvert < 1$. Trajectories converge to $x^{\ast}$.
-- Unstable if $\lvert\alpha\rvert > 1$. Trajectories diverge from $x^{\ast}$.
-- Neutrally stable if $\lvert\alpha\rvert = 1$.
+- **Stable** if $\lvert\alpha\rvert < 1$. Trajectories converge to $x^{\ast}$.
+- **Unstable** if $\lvert\alpha\rvert > 1$. Trajectories diverge from $x^{\ast}$.
+- **Neutrally** stable if $\lvert\alpha\rvert = 1$.
+
+</div>
 
 #### Cycles
 
 A system may not settle on a single point but may instead visit a set of points periodically.
 
-- **$p$-cycle:** A set of $p$ distinct points $\lbrace x_1^{\ast}, \dots, x_p^{\ast}\rbrace$ that the system visits in sequence: $f(x_1^{\ast}) = x_2^{\ast}, \dots, f(x_p^{\ast}) = x_1^{\ast}$.
-- A point on a $p$-cycle is a fixed point of the $p$-th iterated map, $f^p(\cdot)$. That is, $x^{\ast} = f^p(x^{\ast})$.
-- **Example (2-cycle):** For the map $x_{t+1} = -x_t + c$, if we start at $x_0$, then $x_1 = -x_0+c$, and $x_2 = -x_1+c = -(-x_0+c)+c = x_0$. Every point is part of a 2-cycle. This is a neutrally stable cycle.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($p$-cycle)</span></p>
 
-#### Summary of 1D Linear System Behaviors
+A set of $p$ distinct points $\lbrace x_1^{\ast}, \dots, x_p^{\ast}\rbrace$ that the system visits in sequence: 
 
-1. Convergence to a solitary, stable fixed point (attractor) for $\lvert\alpha\rvert < 1$.
-2. Divergence from an isolated, unstable fixed point for $\lvert\alpha\rvert > 1$.
-3. An infinite set of neutrally stable fixed points (e.g., a line) if $\alpha=1$, $c=0$.
-4. No fixed point or cycle (linear drift) if $\alpha=1$, $c \neq 0$.
-5. An infinite set of neutrally stable cycles if $\alpha=-1$.
+$$f(x_1^{\ast}) = x_2^{\ast}, \dots, f(x_p^{\ast}) = x_1^{\ast}$$
 
-#### Multivariate Extension (Linear Case)
+A point on a **$p$-cycle is a fixed point of the $p$-th iterated map** $f^p(\cdot)$. That is, 
 
-For a multivariate linear system $X_t = AX_{t-1} + c$ where $X_t \in \mathbb{R}^N$:
+$$x^{\ast} = f^p(x^{\ast})$$.
 
-- **Fixed Point:** $X^{\ast} = AX^{\ast} + c \implies (I-A)X^{\ast} = c \implies X^{\ast} = (I-A)^{-1}c$, provided $(I-A)$ is invertible.
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2-cycle and neutrally stable cycle)</span></p>
+
+For the map 
+
+$$x_{t+1} = -x_t + c$$ 
+
+if we start at $x_0$, then 
+
+$$x_1 = -x_0+c$$
+
+$$x_2 = -x_1+c = -(-x_0+c)+c = x_0$$
+
+Every point is part of a 2-cycle. This is a **neutrally stable cycle**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(1D Linear System)</span></p>
+
+1. **Convergence** to a solitary, stable fixed point (attractor) for $\lvert\alpha\rvert < 1$.
+2. **Divergence** from an isolated, unstable fixed point for $\lvert\alpha\rvert > 1$.
+3. An infinite set of **neutrally stable fixed points** (e.g., a line) if $\alpha=1$, $c=0$.
+4. **No fixed point or cycle** (linear drift) if $\alpha=1$, $c \neq 0$.
+5. An infinite set of **neutrally stable cycles** if $\alpha=-1$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multivariate Extension (Linear Case))</span></p>
+
+For a **multivariate linear system** 
+
+$$X_t = AX_{t-1} + c$$
+
+where $X_t \in \mathbb{R}^N$:
+
+- **Fixed Point:** 
+  
+  $$X^{\ast} = AX^{\ast} + c$$
+  
+  $$(I-A)X^{\ast} = c$$
+  
+  $$X^{\ast} = (I-A)^{-1}c$$ 
+  
+  provided $(I-A)$ is invertible.
 - **Stability:** The stability of $X^{\ast}$ is determined by the eigenvalues of the Jacobian matrix, which is simply $A$.
-  1. $X^{\ast}$ is a stable fixed point if $\max_i(\lvert\lambda_i(A)\rvert) < 1$.
-  2. $X^{\ast}$ is unstable if $\max_i(\lvert\lambda_i(A)\rvert) > 1$.
-  3. $X^{\ast}$ is neutrally stable if $\max_i(\lvert\lambda_i(A)\rvert) = 1$.
+  1. $X^{\ast}$ is a **stable fixed point** if $\max_i(\lvert\lambda_i(A)\rvert) < 1$.
+  2. $X^{\ast}$ is **unstable** if $\max_i(\lvert\lambda_i(A)\rvert) > 1$.
+  3. $X^{\ast}$ is **neutrally stable** if $\max_i(\lvert\lambda_i(A)\rvert) = 1$.
 
-### 3.3 The Logistic Map: A Case Study in Nonlinearity
+</div>
 
-The logistic map is a simple, archetypal example of a nonlinear system that exhibits complex behavior, including chaos.
+### The Logistic Map: A Case Study in Nonlinearity
+
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Logistic Map)</span></p>
+
+The **logistic map** is a simple, archetypal example of a nonlinear system that exhibits complex behavior, including chaos.
 
 - **Equation:**
   
@@ -3197,412 +2479,141 @@ The logistic map is a simple, archetypal example of a nonlinear system that exhi
 
 - **Constraints:** We consider initial conditions $x_0 \in [0, 1]$ and the parameter $\alpha \in [0, 4]$. These constraints ensure that if $x_t$ is in $[0, 1]$, then $x_{t+1}$ will also be in $[0, 1]$.
 
-#### Fixed Points of the Logistic Map
+</div>
 
-We solve $x^{\ast} = f(x^{\ast}) = \alpha x^{\ast} (1 - x^{\ast})$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Fixed Points of the Logistic Map)</span></p>
 
-$$x^{\ast} - \alpha x^{\ast} + \alpha (x^{\ast})^2 = 0 \implies x^{\ast}(1 - \alpha + \alpha x^{\ast}) = 0$$
+The logistic map has two fixed points:
 
-This gives two fixed points:
+1. $x_1^{\ast} = 0$
+2. $x_2^{\ast} = \dfrac{\alpha - 1}{\alpha}$
 
-1. FP1: $x_1^{\ast} = 0$.
-2. FP2: $1 - \alpha + \alpha x^{\ast} = 0 \implies x_2^{\ast} = \dfrac{\alpha - 1}{\alpha}$. This fixed point is only physically relevant (i.e., in our state space $[0,1]$) when $\alpha \ge 1$.
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>We solve $x^{\ast} = f(x^{\ast}) = \alpha x^{\ast} (1 - x^{\ast})$.</p>
+    $$x^{\ast} - \alpha x^{\ast} + \alpha (x^{\ast})^2 = 0 \implies x^{\ast}(1 - \alpha + \alpha x^{\ast}) = 0$$
+    <p>This gives two fixed points:</p>
+    <ol>
+      <li>FP1: $x_1^{\ast} = 0$.</li>
+      <li>FP2: $1 - \alpha + \alpha x^{\ast} = 0 \implies x_2^{\ast} = \dfrac{\alpha - 1}{\alpha}$. This fixed point is only physically relevant (i.e., in our state space $[0,1]$) when $\alpha \ge 1$.</li>
+    </ol>
+  </details>
+</div>
 
 #### Formal Stability Analysis via Linearization
 
-To analyze the stability of a fixed point $x^{\ast}$ for a general nonlinear map $f(x)$, we consider a small perturbation $\varepsilon_t$ around the fixed point: $x_t = x^{\ast} + \varepsilon_t$.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Stability Analysis</span><span class="math-callout__name">(Univariate Linearization)</span></p>
 
-$$x_{t+1} = x^{\ast} + \varepsilon_{t+1} = f(x^{\ast} + \varepsilon_t)$$
+For a univariate system $x_t = f(x_{t-1})$ with fixed point $x^{\ast} = f(x^{\ast})$, the stability is determined by linearizing around $x^{\ast}$. The **evolution of a small perturbation** $\varepsilon_t$ is **governed by the derivative** $f'$ of $f$ evaluated at $x^{\ast}$.
 
-Using a first-order Taylor expansion of $f(x)$ around $x^{\ast}$:
+$$\varepsilon_{t+1} \approx f'(x^{\ast}) \varepsilon_t$$
 
-$$f(x^{\ast} + \varepsilon_t) \approx f(x^{\ast}) + f'(x^{\ast}) \cdot \varepsilon_t$$
+The fixed point $x^{\ast}$ is **stable if absolute value of $f'(x^{\ast})$ is less than 1**: 
 
-Since $f(x^{\ast}) = x^{\ast}$, this simplifies to:
+$$\lvert f'(x^{\ast})\rvert < 1$$
 
-$$x^{\ast} + \varepsilon_{t+1} \approx x^{\ast} + f'(x^{\ast}) \cdot \varepsilon_t \implies \varepsilon_{t+1} \approx f'(x^{\ast}) \cdot \varepsilon_t$$
+</div>
 
-This is a linear difference equation for the perturbation $\varepsilon_t$. The perturbation will decay to zero (i.e., the FP is stable) if $\lvert f'(x^{\ast})\rvert < 1$.
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>To analyze the stability of a fixed point $x^{\ast}$ for a general nonlinear map $f(x)$, we consider a small perturbation $\varepsilon_t$ around the fixed point:</p>
+    $$x_t = x^{\ast} + \varepsilon_t$$
+    $$x_{t+1} = x^{\ast} + \varepsilon_{t+1} = f(x^{\ast} + \varepsilon_t)$$
+    <p>Using a first-order Taylor expansion of $f(x)$ around $x^{\ast}$:</p>
+    $$f(x^{\ast} + \varepsilon_t) \approx f(x^{\ast}) + f'(x^{\ast}) \cdot \varepsilon_t$$
+    <p>Since $f(x^{\ast}) = x^{\ast}$, this simplifies to:</p>
+    $$x^{\ast} + \varepsilon_{t+1} \approx x^{\ast} + f'(x^{\ast}) \cdot \varepsilon_t \implies \varepsilon_{t+1} \approx f'(x^{\ast}) \cdot \varepsilon_t$$
+    <p>This is a linear difference equation for the perturbation $\varepsilon_t$. The perturbation will decay to zero (i.e., the FP is stable) if $\lvert f'(x^{\ast})\rvert < 1$.</p>
+  </details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stability Analysis of Logistic Map)</span></p>
 
 - **Applying to the Logistic Map:** The derivative is $f'(x) = \alpha(1-2x)$.
-  1. At FP1 ($x_1^{\ast}=0$): $f'(0) = \alpha(1-0) = \alpha$.
-     - The fixed point at 0 is stable if $\lvert f'(0)\rvert < 1$, which means $0 \le \alpha < 1$.
-  2. At FP2 ($x_2^{\ast} = (\alpha-1)/\alpha$): $f'(x_2^{\ast}) = \alpha\left(1 - 2\frac{\alpha-1}{\alpha}\right) = \alpha\left(\frac{\alpha - 2\alpha + 2}{\alpha}\right) = 2-\alpha$.
-     - This fixed point is stable if $\lvert f'(x_2^{\ast})\rvert = \lvert 2-\alpha\rvert < 1$. This inequality holds for $1 < \alpha < 3$.
+  1. At FP1 $x_1^{\ast}=0$: 
+   
+    $$f'(0) = \alpha(1-0) = \alpha$$
+
+    - The fixed point at $0$ is stable if $\lvert f'(0)\rvert < 1$, which means $0 \le \alpha < 1$.
+  2. At FP2 $x_2^{\ast} = (\alpha-1)/\alpha$: 
+ 
+    $$f'(x_2^{\ast}) = \alpha\left(1 - 2\frac{\alpha-1}{\alpha}\right) = \alpha\left(\frac{\alpha - 2\alpha + 2}{\alpha}\right) = 2-\alpha$$
+    
+    - This fixed point is stable if $\lvert f'(x_2^{\ast})\rvert = \lvert 2-\alpha\rvert < 1$. This inequality holds for $1 < \alpha < 3$.
+
 - **Stability Summary:**
   - For $0 \le \alpha < 1$: One stable FP at $x^{\ast}=0$.
   - For $1 < \alpha < 3$: The FP at $x^{\ast}=0$ becomes unstable, and a new stable FP appears at $x^{\ast}=(\alpha-1)/\alpha$.
 
-#### Multivariate Linearization
+</div>
 
-For a multivariate system $X_t = F(X_{t-1})$ with fixed point $X^{\ast} = F(X^{\ast})$, the stability is determined by linearizing around $X^{\ast}$. The evolution of a small perturbation $\mathcal{E}_t$ is governed by the Jacobian matrix $J$ of $F$ evaluated at $X^{\ast}$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Stability Analysis</span><span class="math-callout__name">(Multivariate Linearization)</span></p>
+
+For a multivariate system $X_t = F(X_{t-1})$ with fixed point $X^{\ast} = F(X^{\ast})$, the stability is determined by linearizing around $X^{\ast}$. The **evolution of a small perturbation** $\mathcal{E}_t$ is **governed by the Jacobian matrix** $J$ of $F$ evaluated at $X^{\ast}$.
 
 $$\mathcal{E}_{t+1} \approx J(X^{\ast}) \mathcal{E}_t$$
 
-The fixed point $X^{\ast}$ is stable if all eigenvalues of the Jacobian matrix have a modulus less than 1: $\max_i(\lvert\lambda_i(J(X^{\ast}))\rvert) < 1$.
+The fixed point $X^{\ast}$ is **stable if all eigenvalues of the Jacobian matrix have a modulus less than 1**: 
 
-### 3.4 Bifurcation and Chaos
+$$\max_i(\lvert\lambda_i(J(X^{\ast}))\rvert) < 1$$
 
-As the parameter $\alpha$ increases beyond 3 in the logistic map, the system's behavior undergoes a series of qualitative changes known as bifurcations.
+</div>
+
+### Bifurcation and Chaos
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(Bifurcation, Period-Doubling and Chaos)</span></p>
+
+As the parameter $\alpha$ increases beyond $3$ in the logistic map, the system's behavior undergoes a series of qualitative changes known as **bifurcations**.
 
 - **Period-Doubling:** At $\alpha=3$, the fixed point $x_2^{\ast}$ becomes unstable, and a stable 2-cycle emerges. As $\alpha$ increases further, this 2-cycle becomes unstable and bifurcates into a stable 4-cycle, then an 8-cycle, and so on. This cascade is known as the "period-doubling route to chaos."
 - **Chaos:** For larger values of $\alpha$ (e.g., $\alpha \gtrsim 3.57$), the system's behavior becomes chaotic.
-  - The trajectory is aperiodic and appears irregular or random, but it is still fully deterministic.
+  - The trajectory is aperiodic and appears irregular or random, but it is still **fully deterministic**.
   - A key feature is sensitivity to initial conditions: two trajectories starting arbitrarily close to each other will diverge exponentially fast.
+
+</div>
+
 
 #### Chaotic Attractors and the Lyapunov Exponent
 
-- **Chaotic Attractor:** A set $A$ is a chaotic attractor if trajectories starting within its basin of attraction converge to $A$, and within $A$, the dynamics are chaotic and sensitive to initial conditions.
-- **Lyapunov Exponent ($\lambda$):** This value quantifies the rate of separation of infinitesimally close trajectories. For a 1D map $f(x)$, it is defined as:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Chaotic Attractor)</span></p>
+
+A set $A$ is a **chaotic attractor** if trajectories starting within its basin of attraction converge to $A$, and within $A$, the dynamics are chaotic and sensitive to initial conditions.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lyapunov Exponent)</span></p>
+
+**Lyapunov Exponent** $\lambda$ quantifies the rate of separation of infinitesimally close trajectories. For a 1D map $f(x)$, it is defined as:
   
-  $$\lambda(x_0) = \lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T-1} \ln\lvert f'(x_t)\rvert$$
+$$\lambda(x_0) = \lim_{T \to \infty} \frac{1}{T} \sum_{t=0}^{T-1} \ln\lvert f'(x_t)\rvert$$
 
-  - $\lambda > 0$: Exponential divergence, a signature of chaos.
-  - $\lambda < 0$: Exponential convergence, corresponding to a stable fixed point or cycle.
+- $\lambda > 0$: **Exponential divergence**, a signature of chaos.
+- $\lambda < 0$: **Exponential convergence**, corresponding to a stable fixed point or cycle.
 
-### 3.5 Implications for Prediction and Modeling
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implications for Prediction and Modeling)</span></p>
 
 The existence of chaotic dynamics has profound implications for time series modeling:
 
-1. Prediction Horizon: Sensitivity to initial conditions makes long-term prediction fundamentally impossible, as any tiny error in measuring the current state will be exponentially amplified.
-2. Chaos vs. Noise: It can be extremely difficult to distinguish between a deterministic chaotic process and a stochastic (noisy) process based on observed data alone.
-3. Loss Functions: Traditional loss functions like Mean Squared Error (MSE) may be problematic for evaluating models of chaotic systems, as even a perfect model will produce trajectories that diverge from the data due to initial condition uncertainty.
-4. Parameter Estimation: The loss landscapes for models of chaotic systems can be highly non-convex and irregular, making optimization and parameter estimation very challenging.
-
-## Latent Variable Models
-
-This chapter introduces a powerful class of models for time series analysis that utilize unobserved, or latent, variables to capture the underlying dynamics of a system. We will explore the general architecture of these models, the core inference challenges they present, and delve into a cornerstone algorithm for linear systems: the Kalman filter.
-
-12.1 Latent Variable Model Architecture
-
-So far, models have directly described the evolution of an observed variable $x_t \in \mathbb{R}^N$, such as $x_t = f_\theta(x_{t-1}, \dots, x_{t-d})$. We now introduce a latent variable, $z_t \in \mathbb{R}^M$, which is not directly observed but is assumed to govern the behavior of $x_t$.
-
-Models built on this principle are often called State Space Models (SSMs). They are comprised of two primary components:
-
-1. Latent Model (or Process Model): Describes the evolution of the latent state over time.
-  * Transition Probability: $p_{lat}(z_t \mid z_{t-1})$
-  * Initial Condition: $p(z_1)$
-2. Observation Model: Describes how the observed data $x_t$ is generated from the current latent state $z_t$.
-  * Emission Probability: $p_{obs}(x_t \mid z_t)$
-
-The complete set of model parameters, $\theta$, can be partitioned into those governing the latent dynamics and those governing the observation process: $\theta = [\theta_{lat}, \theta_{obs}]$.
-
-Core Assumptions
-
-To make inference tractable, we typically rely on two key assumptions:
-
-1. Markov Process: The latent dynamics follow a first-order Markov process. The current latent state $z_t$ depends only on the immediately preceding state $z_{t-1}$, and is conditionally independent of all earlier states.
-  
-  $$p(z_t \mid z_{t-1}, z_{t-2}, \dots, z_1) = p(z_t \mid z_{t-1})$$ 
-
-2. Conditional Independence of Observations: The current observation $x_t$ is conditionally independent of all other observations and latent states given the current latent state $z_t$.  
- 
-$$p(x_t \mid x_1, \dots, x_{t-1}, z_1, \dots, z_T) = p_{obs}(x_t \mid z_t) $$
-
-These assumptions lead to a factorization of the joint distribution over all observed and latent variables, $p(x_{1:T}, z_{1:T} \mid \theta)$, as depicted by the following graphical model:
-
-```markdown
- z_1 ---> z_2 ---> ... ---> z_t ---> ... ---> z_T
-  |        |                 |                 |
-  |        |                 |                 |
-  v        v                 v                 v
- x_1      x_2               x_t               x_T
-```
-
-
-The joint distribution factorizes as:  
-
-$$p(x_{1:T}, z_{1:T} \mid \theta) = p(z_1) \left[ \prod_{t=2}^{T} p_{lat}(z_t \mid z_{t-1}) \right] \left[ \prod_{t=1}^{T} p_{obs}(x_t \mid z_t) \right]$$ 
-
-Objectives in Latent Variable Modeling
-
-Given a sequence of observations $x_{1:T}$, there are three primary goals:
-
-1. Learning Parameters ($\theta$): Estimate the model parameters $\theta$ from the observed data $x_{1:T}$.
-2. Inferring Latent Trajectory: Find a point estimate of the sequence of latent states, such as the expected trajectory $E[z_{1:T} \mid x_{1:T}]$.
-3. Inferring Full Posterior: Characterize the full posterior distribution over the latent state paths, $p(z_{1:T} \mid x_{1:T})$.
-
-12.2 The Inference Problem
-
-For Maximum Likelihood Estimation (MLE), the objective is to maximize the log-likelihood of the observed data, $ \log p_\theta(x_{1:T}) $. However, in latent variable models, this requires marginalizing out the latent variables $z_{1:T}$:  
-
-$$p_\theta(x_{1:T}) = \int p_\theta(x_{1:T}, z_{1:T}) dz_{1:T} = \int \dots \int p_\theta(x_{1:T}, z_1, \dots, z_T) dz_1 \dots dz_T$$  
-
-This is a high-dimensional integral that is typically intractable to compute directly. Taking the logarithm does not simplify the problem, as the log cannot be pushed inside the integral:  
-
-$$\log p_\theta(x_{1:T}) = \log \left( \int p_\theta(x_{1:T}, z_{1:T}) dz_{1:T} \right)$$ 
-
-Deriving the Evidence Lower Bound (ELBO)
-
-To create a tractable objective function, we introduce a "proposal density" $q(Z)$ over the latent variables $Z = z_{1:T}$ and derive the Evidence Lower Bound (ELBO).
-
-Let $X = x_{1:T}$. We start with the log-likelihood and introduce $q(Z)$:  
-
-$$\log p_\theta(X) = \log \int p_\theta(X,Z) dz = \log \int p_\theta(X,Z) \frac{q(Z)}{q(Z)} dz$$   
-
-$$\log p_\theta(X) = \log \left( E_{q(Z)} \left[ \frac{p_\theta(X,Z)}{q(Z)} \right] \right)$$  
-
-Since $\log$ is a concave function, we can apply Jensen's Inequality, which states that for a concave function $f$, $f(E[Y]) \geq E[f(Y)]$.
-
-Applying this, we get: 
-
-$$\log p_\theta(X) \geq E_{q(Z)} \left[ \log \left( \frac{p_\theta(X,Z)}{q(Z)} \right) \right]$$  
-
-This lower bound is the ELBO.
-
-Two Forms of the ELBO
-
-The ELBO can be expressed in two equivalent and insightful forms. Let ELBO(q, $\theta$) denote the bound.
-
-1. Expected Joint + Entropy:
-   
-  $$\text{ELBO}(q, \theta) = E_q[\log p_\theta(X,Z)] - E_q[\log q(Z)]$$
-  
-  The second term, $-E_q[\log q(Z)]$, is the entropy of the distribution $q(Z)$, denoted $H(q(Z))$.
-  
-  $$\text{ELBO}(q, \theta) = E_q[\log p_\theta(X,Z)] + H(q(Z))$$  
-  
-  The entropy term favors solutions where $q(Z)$ is not overly confident or sharply peaked.
-2. Log-Likelihood - KL Divergence: The ELBO can also be written in terms of the Kullback-Leibler (KL) divergence between the proposal $q(Z)$ and the true posterior $p(Z\mid X)$.
-  
-  $$\text{ELBO}(q, \theta) = \log p_\theta(X) - \text{KL}(q(Z) \parallel p_\theta(Z\mid X))$$ 
-
-12.3 Two Inference Strategies from the ELBO
-
-The structure of the ELBO suggests two primary strategies for inference and learning.
-
-12.3.1 Expectation-Maximization (EM)
-
-If the true posterior $p_\theta(Z\mid X)$ is tractable to compute, we can choose our proposal distribution $q(Z)$ to be exactly this posterior for a given set of parameters $\theta$. This leads to the Expectation-Maximization (EM) algorithm, which iteratively alternates between two steps:
-
-* E-Step (Expectation): Compute the exact posterior over the latent variables given the current parameter estimate, $\theta^k$. This means setting $q(Z) = p_{\theta^k}(Z\mid X)$.
-* M-Step (Maximization): Maximize the expected complete-data log-likelihood with respect to the parameters $\theta$, using the posterior computed in the E-step.
-
-12.3.2 Variational Inference (VI)
-
-If the true posterior $p_\theta(Z\mid X)$ is intractable, we can restrict $q(Z)$ to a tractable family of distributions (e.g., factorized Gaussians). We then jointly optimize the ELBO with respect to both the parameters of the proposal distribution $q$ and the model parameters $\theta$:
-
-$$\max_{q, \theta} \text{ELBO}(q, \theta)$$ 
-
-12.4 The Expectation-Maximization (EM) Algorithm
-
-The EM algorithm provides a structured approach for finding MLE solutions in models with latent variables.
-
-* Initialization: Start with an initial guess for the parameters, $\theta^0$.
-* Iteration: Repeat the following steps until convergence:
-  1. E-Step: Fix the current parameters $\theta^k$ and update the proposal distribution $q$ to minimize the KL divergence to the true posterior. This makes the ELBO tight.  
- 
-  $$q^{\ast}(Z) = \arg\max_q \text{ELBO}(q, \theta^k) = p_{\theta^k}(Z\mid X)$$
-  
-  This step is equivalent to setting $q^{\ast}(Z) = \arg\min_q \text{KL}(q(Z) \parallel p_{\theta^k}(Z\mid X))$.
-  2. M-Step: Fix the proposal distribution $q^{\ast}(Z)$ and update the model parameters $\theta$ to maximize the ELBO.
-  
-  $$\theta^{k+1} = \arg\max_\theta \text{ELBO}(q^, \theta) = \arg\max_\theta E_{q^}[\log p_\theta(X,Z)]$$ 
-
-12.5 Linear State Space Models
-
-A particularly important and tractable class of state space models is the Linear State Space Model (LSSM), also known as a Linear Dynamical System (LDS).
-
-12.5.1 Architecture: Linear Dynamical System (LDS)
-
-In an LDS, all conditional probability distributions are linear and Gaussian.
-
-```markdown
- z_1 ---> z_2 ---> ... ---> z_t ---> ... ---> z_T
-  |        |                 |                 |
-  |        |                 |                 |
-  v        v                 v                 v
- x_1      x_2               x_t               x_T
-```
-
-
-1. Observation Model (Linear Gaussian): The observation $x_t \in \mathbb{R}^N$ is a linear transformation of the latent state $z_t \in \mathbb{R}^M$, with added Gaussian noise. 
-  
-  $$x_t = B z_t + \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, \Gamma)$$  
-  
-  This implies the conditional distribution is $p(x_t\mid z_t) = \mathcal{N}(x_t \mid B z_t, \Gamma)$.
-1. Latent Model (Process Model): The latent state evolves according to a linear transformation of the previous state, with added Gaussian noise.
-  
-  $$z_t = A z_{t-1} + \eta_t, \quad \eta_t \sim \mathcal{N}(0, \Sigma)$$  
-  
-  This implies the transition distribution is $p(z_t\mid z_{t-1}) = \mathcal{N}(z_t \mid A z_{t-1}, \Sigma)$.
-3. Initial Distribution: The initial state is drawn from a Gaussian distribution.
-  
-  $$z_1 \sim \mathcal{N}(\mu_0, \Sigma_0)$$ 
-
-The model parameters are therefore:
-
-* Observation Parameters: $\theta_{obs} = \lbrace B, \Gamma\rbrace$
-* Latent Parameters: $\theta_{lat} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
-
-For simplicity, we assume the process noise covariance is constant, $\Sigma_t = \Sigma$. Additionally, we could add external inputs or control signals to the model, but these are omitted here for convenience.
-
-* True State ($z_t$): A vector containing the car's true position and velocity.
-* Observation ($x_t$): A noisy GPS measurement of only the position (an incomplete observation of the true state).
-
-General Inference Vocabulary in SSMs
-
-* Smoothing: Offline inference of past states given all observations up to time $T$. Goal: Compute $p(z_\tau \mid x_{1:T})$ for $\tau < T$.
-* Filtering: Online inference of the current state given observations up to the current time step. Goal: Compute $p(z_t \mid x_{1:t})$.
-* Prediction: Forecasting future states given observations up to the current time. Goal: Compute $p(z_\tau \mid x_{1:t})$ for $\tau > t$.
-* Most Probable Path: Inferring the "best" single latent trajectory (MAP estimate). Goal: $z_{1:T}^{\ast} = \arg\max_{z_{1:T}} p(z_{1:T} \mid x_{1:T})$.
-* Learning: Parameter estimation. Goal: Estimate $\theta = \lbrace A, \Sigma, \mu_0, \Sigma_0, B, \Gamma\rbrace$.
-
-12.6 EM Algorithm for LDS Models
-
-We now apply the EM framework to learn the parameters of an LDS. Let $X = \lbrace x_1, \dots, x_T\rbrace$ and $Z = \lbrace z_1, \dots, z_T\rbrace$.
-
-M-Step
-
-The goal of the M-Step is to maximize $E_q[\log p(X,Z)]$. Using the Markov and conditional independence properties, the joint log-likelihood splits into three parts: 
-
-$$\log p(X,Z) = \log p(z_1) + \sum_{t=2}^T \log p(z_t\mid z_{t-1}) + \sum_{t=1}^T \log p(x_t\mid z_t)$$  
-
-Taking the expectation with respect to $q(Z) = p(Z\mid X)$ gives:  
-
-$$E_q[\log p(X,Z)] = E_q[\log p(z_1)] + \sum_{t=2}^T E_q[\log p(z_t\mid z_{t-1})] + \sum_{t=1}^T E_q[\log p(x_t\mid z_t)]$$  
-
-Each term corresponds to a Gaussian log-pdf. The log-pdf of a multivariate normal $y \in \mathbb{R}^K \sim \mathcal{N}(\mu, \Sigma)$ is:  
-
-$$\log p(y) = -\frac{K}{2}\log(2\pi) - \frac{1}{2}\log\lvert\Sigma\rvert - \frac{1}{2}(y-\mu)^T \Sigma^{-1}(y-\mu)  $$
-
-Substituting the Gaussian forms for $p(z_1)$, $p(z_t\mid z_{t-1})$, and $p(x_t\mid z_t)$ into the expected log-likelihood, we find that the resulting expression depends only on the first and second moments of the latent variables under the posterior $q(Z)$.
-
-Take-home message: In the M-step, all parameter updates can be written in terms of the following sufficient statistics, which are computed in the E-step:
-
-* First moments: $E[z_t]$
-* Second moments (one-time step): $E[z_t z_t^T]$
-* Second moments (across time steps): $E[z_t z_{t-1}^T]$
-
-M-Step Derivation for Parameter $A$
-
-Let's derive the update for the transition matrix $A$. We focus on the part of the expected log-likelihood that depends on $A$, which is the process model term. Let this be $Q(A)$.  
-
-$$Q(A) = \sum_{t=2}^T E_q[\log p(z_t\mid z_{t-1})] = \sum_{t=2}^T E_q \left[ C - \frac{1}{2}\log\lvert\Sigma\rvert - \frac{1}{2}(z_t - A z_{t-1})^T \Sigma^{-1} (z_t - A z_{t-1}) \right]$$  
-
-Dropping terms constant w.r.t $A$:  
-
-$$Q(A) \propto -\frac{1}{2} \sum_{t=2}^T E_q[(z_t - A z_{t-1})^\top \Sigma^{-1} (z_t - A z_{t-1})]$$   
-
-$$Q(A) \propto -\frac{1}{2} \sum_{t=2}^T E_q[z_t^T \Sigma^{-1} z_t - z_t^\top \Sigma^{-1} A z_{t-1} - z_{t-1}^T A^\top \Sigma^{-1} z_t + z_{t-1}^T A^T \Sigma^{-1} A z_{t-1}]$$  
-
-Using the linearity of expectation and the cyclic property of the trace $\text{tr}(ABC) = \text{tr}(BCA)$ ($x^\top W x = \text{tr}(x^\top W x) = \text{tr}(W x x^\top)$):  
-
-$$\frac{\partial Q(A)}{\partial A} \propto -\frac{1}{2} \sum_{t=2}^T \frac{\partial}{\partial A} \text{tr} \left( -2 E_q[z_t z_{t-1}^T] \Sigma^{-1} A + \Sigma^{-1} A E_q[z_{t-1}z_{t-1}^T] A^T \right)$$  
-
-Using matrix calculus identities $\frac{\partial}{\partial A} \text{tr}(BAC) = B^T C^T$ and $\frac{\partial}{\partial A} \text{tr}(B A C A^T) = B^T A C^T + B A C$:  
-
-$$\frac{\partial Q(A)}{\partial A} \propto \sum_{t=2}^T \left( \Sigma^{-1} E_q[z_t z_{t-1}^T] - \Sigma^{-1} A E_q[z_{t-1}z_{t-1}^T] \right)$$  
-
-Setting the derivative to zero and solving for $A$:  
-
-$$\Sigma^{-1} A \left( \sum_{t=2}^T E_q[z_{t-1}z_{t-1}^T] \right) = \Sigma^{-1} \left( \sum_{t=2}^T E_q[z_t z_{t-1}^T] \right)$$   
-
-$$A^{new} = \left( \sum_{t=2}^T E_q[z_t z_{t-1}^T] \right) \left( \sum_{t=2}^T E_q[z_{t-1}z_{t-1}^T] \right)^{-1}$$  
-
-The M-step updates for all other parameters ($B, \Gamma, \Sigma, \mu_0, \Sigma_0$) can be derived in a similar fashion.
-
-E-Step: The Kalman Filter and Smoother
-
-The E-step requires computing the posterior $p_\theta(Z\mid X)$ and its associated moments. For an LDS, this posterior is Gaussian and can be computed analytically and efficiently. The algorithm for this is the Kalman filter and smoother, developed by Rudolph Kalman in 1960. It was famously used for trajectory estimation in the Apollo program and is now ubiquitous in GPS tracking, self-driving cars, and robotics.
-
-The core idea is a two-pass algorithm:
-
-1. **Forward Pass (Filtering):** Recursively computes $p(z_t \mid x_{1:t})$ for $t = 1, \dots, T$.
-2. **Backward Pass (Smoothing):** Recursively computes $p(z_t \mid x_{1:T})$ for $t = T-1, \dots, 1$, using results from the forward pass.
-
-From these posterior distributions ($p(z_t\mid x_{1:T})$ and $p(z_t, z_{t-1}\mid x_{1:T})$), we can obtain the sufficient statistics ($E[z_t]$, $E[z_t z_t^T]$, $E[z_t z_{t-1}^T]$) needed for the M-step.
-
-Derivation of the Kalman Filter Prediction Step
-
-We now derive the recursive update for the filtered distribution $p(z_t \mid x_{1:t})$. This involves two steps: a prediction step and an update step. Here we derive the prediction step, which calculates $p(z_t \mid x_{1:t-1})$.
-
-The key properties we use are:
-
-* Bayes' Rule
-* Chain Rule of Probability
-* Markov Property: $p(z_t \mid z_{t-1}, \dots, z_1) = p(z_t \mid z_{t-1})$
-* Conditional Independence: $p(x_t \mid x_{1:t-1}, z_t) = p(x_t \mid z_t)$
-
-We want to find the distribution of $z_t$ given past observations $x_{1:t-1}$. We can find this by marginalizing $z_{t-1}$ out of the joint distribution $p(z_t, z_{t-1} \mid x_{1:t-1})$.  
-
-$$p(z_t \mid x_{1:t-1}) = \int p(z_t, z_{t-1} \mid x_{1:t-1}) dz_{t-1}$$  
-
-By the chain rule of probability:
-
-$$p(z_t \mid x_{1:t-1}) = \int p(z_t \mid z_{t-1}, x_{1:t-1}) p(z_{t-1} \mid x_{1:t-1}) dz_{t-1}$$  
-
-Due to the Markov property, $z_t$ is independent of $x_{1:t-1}$ given $z_{t-1}$. So, $p(z_t \mid z_{t-1}, x_{1:t-1}) = p(z_t \mid z_{t-1})$. This gives the integral:  
-
-$$p(z_t \mid x_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid x_{1:t-1}) dz_{t-1}$$  
-
-This is a Chapman-Kolmogorov equation. It states that the predicted distribution for $z_t$ is found by convolving the transition probability $p(z_t\mid z_{t-1})$ with the previous step's filtered distribution $p(z_{t-1}\mid x_{1:t-1})$.
-
-In an LDS, all distributions are Gaussian. Let's assume the filtered posterior at time $t-1$ is Gaussian:  
-
-$$p(z_{t-1} \mid x_{1:t-1}) = \mathcal{N}(z_{t-1} \mid \mu_{t-1\mid t-1}, V_{t-1\mid t-1})$$  
-
-The transition model is also Gaussian:  
-
-$$p(z_t \mid z_{t-1}) = \mathcal{N}(z_t \mid A z_{t-1}, \Sigma)$$  
-
-The convolution of two Gaussians is also a Gaussian. We can derive its parameters. The joint distribution $p(z_t, z_{t-1} \mid  x_{1:t-1})$ is Gaussian, and thus the marginal $p(z_t \mid  x_{1:t-1})$ is also Gaussian. From the properties of linear transformations of Gaussian variables, if $z_{t-1} \sim \mathcal{N}(\mu, V)$ and $z_t = A z_{t-1} + \eta$ with $\eta \sim \mathcal{N}(0, \Sigma)$, then $A z_{t-1} \sim \mathcal{N}(A\mu, AVA^T)$. The sum of two independent Gaussians is another Gaussian whose mean is the sum of the means and whose covariance is the sum of the covariances. Therefore, the predicted distribution for $z_t$ is:  
-
-$$p(z_t \mid x_{1:t-1}) = \mathcal{N}(z_t \mid A \mu_{t-1\mid t-1}, A V_{t-1\mid t-1} A^T + \Sigma)$$ 
-
-The update step, which computes $p(z_t \mid x_{1:t})$ from the prediction $p(z_t \mid x_{1:t-1})$ and the new observation $x_t$, can be derived similarly using Bayes' rule. We skip the full derivation and present the final recursions.
-
-The Kalman Filter Recursions
-
-Let $\mu_{t\mid t-1}$ and $V_{t\mid t-1}$ be the mean and covariance of the predicted distribution $p(z_t \mid x_{1:t-1})$. Let $\mu_{t\mid t}$ and $V_{t\mid t}$ be the mean and covariance of the filtered distribution $p(z_t \mid x_{1:t})$.
-
-Initialization:
-
-* $\mu_{1\mid 0} = \mu_0$
-* $V_{1\mid 0} = \Sigma_0$
-
-For $t=1, \dots, T$:
-
-1. Prediction Step:
-  
-  $$\mu_{t\mid t-1} = A \mu_{t-1\mid t-1}$$   
-  
-  $$V_{t\mid t-1} = A V_{t-1\mid t-1} A^T + \Sigma$$
-
-2. Update Step:
-  
-  $$K_t = V_{t\mid t-1} B^T (B V_{t\mid t-1} B^T + \Gamma)^{-1} \quad \text{(Kalman Gain)}$$   
-  
-  $$\mu_{t\mid t} = \mu_{t\mid t-1} + K_t (x_t - B \mu_{t\mid t-1})$$   
-  
-  $$V_{t\mid t} = (I - K_t B) V_{t\mid t-1}$$ 
-
-The Kalman Smoother (RTS Smoother)
-
-After the forward filtering pass computes $\mu_{t\mid t}$ and $V_{t\mid t}$ for all $t=1, \dots, T$, the backward smoothing pass computes the smoothed estimates $p(z_t \mid x_{1:T}) = \mathcal{N}(z_t \mid \mu_{t\mid T}, V_{t\mid T})$.
-
-Initialization:
-
-* $\mu_{T\mid T}$ and $V_{T\mid T}$ are taken from the final step of the filter.
-
-For $t = T-1, \dots, 1$:
-
-1. Compute the smoother gain $J_t$:
-  
-  $$J_t = V_{t\mid t} A^T V_{t+1\mid t}^{-1}$$ 
-
-2. Update the smoothed mean and covariance:
-  
-  $$\mu_{t\mid T} = \mu_{t\mid t} + J_t (\mu_{t+1\mid T} - \mu_{t+1\mid t})$$   
-  
-  $$V_{t\mid T} = V_{t\mid t} + J_t (V_{t+1\mid T} - V_{t+1\mid t}) J_t^T$$  
-  
-  These smoothed posteriors provide the moments required for the M-step of the EM algorithm.
-
-
----
-
-new
+1. **Prediction Horizon:** Sensitivity to initial conditions makes long-term prediction fundamentally impossible, as any tiny error in measuring the current state will be exponentially amplified.
+2. **Chaos vs. Noise:** It can be extremely difficult to distinguish between a deterministic chaotic process and a stochastic (noisy) process based on observed data alone.
+3. **Loss Functions:** Traditional loss functions like Mean Squared Error (MSE) may be problematic for evaluating models of chaotic systems, as even a perfect model will produce trajectories that diverge from the data due to initial condition uncertainty.
+4. **Parameter Estimation:** The loss landscapes for models of chaotic systems can be highly non-convex and irregular, making optimization and parameter estimation very challenging.
+
+</div>
 
 ## Latent Variable Models
 
@@ -4388,6 +3399,8 @@ A **generative RNN** can be formulated as a non-linear state-space model with th
   
   $$z_0 \sim \mathcal{N}(0, I)$$
 
+</div>
+
 ### The E-Step: Inference via the Extended Kalman Filter (EKF)
 
 The primary challenge in the E-step is computing the one-step-ahead predictive distribution for the latent state:  
@@ -4894,4 +3907,3 @@ The choice of a simple unimodal Gaussian for the variational density $q_\phi$ ma
   * The density of the resulting variable $z_K$ can be computed exactly using the change of variables formula. This allows for the construction of highly flexible and expressive variational posteriors capable of modeling arbitrarily complex distributions.
 
 </div>
-
