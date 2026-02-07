@@ -933,13 +933,19 @@ A complete statistical model generally consists of four key components:
 
 ### 4.2 Model Architecture
 
-Given a dataset $D = \lbrace(x_t, y_t)\rbrace_{t=1}^T$ where $y_t$ are responses and $x_t$ are predictors, the univariate linear regression model assumes a linear relationship:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Univariate Linear Regression Model)</span></p>
+
+Given a dataset $D = \lbrace(x_t, y_t)\rbrace_{t=1}^T$, the **univariate linear regression** model assumes a linear relationship:
 
 $$y_t = \beta_0 + \beta_1 x_t + \epsilon_t$$
 
 The error term $\epsilon_t$ is typically assumed to be a white noise process, often Gaussian:
 
 $$\epsilon_t \sim \mathcal{N}(0, \sigma^2)$$
+
+
+</div>
 
 This implies a conditional distribution for the response variable:
 
@@ -967,6 +973,17 @@ The objective is to find the parameter vector $\beta$ that minimizes it.
 ### 4.4 Training Algorithm
 
 The optimal parameters $\hat{\beta}$ are found by minimizing the LSE loss function. This is achieved by taking the derivative of the loss function with respect to $\beta$ and setting it to zero.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(OLS Estimator)</span></p>
+
+The solution for $\hat{\beta}$, known as the **ordinary least squares (OLS) estimator**, is:
+
+$$\hat{\beta} = (X^\top X)^{-1}X^\top y$$
+
+</div>
+
+**proof:**
 
 Expanding the LSE expression:
 
@@ -996,13 +1013,11 @@ Setting the derivative to zero to find the minimum:
 
 $$-2X^\top y + 2X^\top X\hat{\beta} = 0$$
 
-$$2X^\top X\hat{\beta} = 2X^\topy$$
+$$2X^\top X\hat{\beta} = 2X^\top y$$
 
 $$X^\top X\hat{\beta} = X^\top y$$
 
-The solution for $\hat{\beta}$, known as the ordinary least squares (OLS) estimator, is:
-
-$$\hat{\beta} = (X^\top X)^{-1}X^\topy$$
+$$\hat{\beta} = (X^\top X)^{-1}X^\top y \qquad\square$$
 
 ## 5. Regression Models for Time Series
 
@@ -1126,7 +1141,7 @@ $$
 It is often more convenient to work with the **log-likelihood function**:
 
 $$
-l(\beta, \sigma^2) = \log \mathcal{L}(\beta, \sigma^2) = \sum\_{t=1}^T \left[ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(x\_t - u\_t^T beta)^2 \right]
+l(\beta, \sigma^2) = \log \mathcal{L}(\beta, \sigma^2) = \sum_{t=1}^T \left[ -\frac{1}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}(x_t - u_t^T beta)^2 \right]
 $$
 
 To find the MLE for $\beta$, we maximize $l(\beta, \sigma^2)$ with respect to $\beta$. Notice that the terms involving $\sigma^2$ and $2\pi$ are constant with respect to $\beta$. Therefore, maximizing the log-likelihood is equivalent to minimizing the sum of squared errors:
@@ -4068,10 +4083,11 @@ The full derivation of the update step (multiplying the Gaussian predictive dist
 Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of the state at time $t-1$.
 
 1. Prediction Step:
-  * Predicted state mean: 
+  * Predicted state mean:
     * $\hat{m}\_t = A m_{t-1}$
+  
   * Predicted state covariance: 
-    * $\hat{V}\_t = A V_{t-1} A^T + \Sigma_z$
+    * $\hat{V}\_t = A V_{t-1} A^\top + \Sigma_z$
 2. Update Step:
   * Kalman Gain ($K_t$): The gain determines how much the new observation $x_t$ influences the updated state estimate.
     
@@ -4283,7 +4299,7 @@ $$Q(z_t) = \log p(c_t \mid z_t) + \log p(z_t \mid c_{1:t-1})$$
 
 Dropping constants, this is: 
 
-$$Q(z_t) = \left( c_t^T (b_0 + B_1 z_t) - \mathbf{1}^T\exp(b_0 + B_1 z_t) \right) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^T (V_{t\mid t-1})^{-1} (z_t - \mu_{t\mid t-1})$$
+$$Q(z_t) = \left( c_t^\top (b_0 + B_1 z_t) - \mathbf{1}^\top\exp(b_0 + B_1 z_t) \right) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top (V_{t\mid t-1})^{-1} (z_t - \mu_{t\mid t-1})$$
 
 * Approximated Mean (Mode): The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing $Q(z_t)$:
   
@@ -4372,15 +4388,13 @@ A **generative RNN** can be formulated as a non-linear state-space model with th
   
   $$z_0 \sim \mathcal{N}(0, I)$$
 
-</div>
-
 ### The E-Step: Inference via the Extended Kalman Filter (EKF)
 
 The primary challenge in the E-step is computing the one-step-ahead predictive distribution for the latent state:  
 
 $$p(z_t \mid  x_1, \dots, x_t) = \frac{p(x_t\mid z_t)p(z_t \mid  x_1, \dots, x_{t-1})}{p(x_t\mid x_1, \dots, x_{t-1})}$$  
 
-$$p(z_t \mid  x_1, \dots, x_{t-1}) = \int \overline{p(z_t \mid  z_{t-1}, \theta)}_{\mathcal{N}(F_\theta(z_{t-1}), \Sigma)} p(z_{t-1} \mid  x_1, \dots, x_{t-1}) dz_{t-1}$$  
+$$p(z_t \mid  x_1, \dots, x_{t-1}) = \int \overbrace{p(z_t \mid  z_{t-1}, \theta)}^{\mathcal{N}(F_\theta(z_{t-1}), \Sigma)} p(z_{t-1} \mid  x_1, \dots, x_{t-1}) dz_{t-1}$$  
 
 Due to the non-linear function $F_\theta$ inside $p(z_t \mid  z_{t-1}, \theta)$, this integral is intractable. The Extended Kalman Filter (EKF) provides an approximate solution.
 
@@ -4397,7 +4411,7 @@ The core idea of the EKF is to perform a local linearization of the non-linear d
 
 This linearization is achieved using a first-order Taylor expansion of $F_\theta(z_{t-1})$ around $m_{t-1}$:  
 
-$$F_\theta(z_{t-1})\right\mid_{m_{t-1}} \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$  
+$$F_\theta(z_{t-1})\biggr\rvert_{m_{t-1}} \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$  
 
 where $J_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$:  
 
@@ -4566,6 +4580,7 @@ The algorithm proceeds sequentially through time:
     $$\lbrace z_t^{(k)}\rbrace_{k=1}^K \sim p(z_t \mid  z'^{(k)}_{t-1})$$  
     
     This new set of unweighted particles represents the estimate of the one-step forward density, $p(z_t\mid x_1, \dots, x_{t-1})$.
+  
   * **(c) Update Weights:** Pass the propagated particles through the observation model to obtain the new, unnormalized weights:  
   
     $$\tilde{w}_t^{(k)} = p(x_t \mid  z_t^{(k)})$$  
@@ -4596,23 +4611,26 @@ Despite its theoretical appeal, the particle filter faces significant practical 
 
 A latent variable model is defined by a joint probability distribution over observed data $X$ and unobserved (latent) variables $z$, denoted as $p_\theta(X, z)$, where $\theta$ represents the model parameters.
 
-* Generative Model Architecture: The model specifies a generative process where latent variables $z$ are first sampled from a prior distribution, and then the observed data $X$ is generated from a conditional likelihood distribution.
-  * Prior Distribution: The latent variables are assumed to follow a prior distribution, typically a standard normal distribution for simplicity:
+* **Generative Model Architecture:** The model specifies a generative process where latent variables $z$ are first sampled from a prior distribution, and then the observed data $X$ is generated from a conditional likelihood distribution.
+  * **Prior Distribution:** The latent variables are assumed to follow a prior distribution, typically a standard normal distribution for simplicity:
   
   $$p(z) = \mathcal{N}(z \mid  0, I)$$
 
-  * Likelihood (Observation Model): The observed data is generated conditioned on the latent variables, specified by the likelihood $p_\theta(X\mid z)$.
-* Training Objectives: Common approaches for training such models include:
+  * **Likelihood (Observation Model):** The observed data is generated conditioned on the latent variables, specified by the likelihood $p_\theta(X\mid z)$.
+* **Training Objectives:** Common approaches for training such models include:
   * Expectation-Maximization (EM)
 
-15.1.1 Challenges in the E-Step
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenges in the E-Step)</span></p>
 
 The E-Step in the EM algorithm requires computing the posterior distribution of the latent variables, $p_\theta(z\mid X)$. This step is often the primary bottleneck.
 
-* Analytical Computation: The posterior is frequently intractable for complex models (e.g., when neural networks are involved).
-* Approximation Methods: When an exact solution is not feasible, approximation methods are necessary. These include:
-  * Sampling: Using methods like Markov Chain Monte Carlo (MCMC) to draw samples from the posterior.
-  * Variational Inference (VI): Approximating the true posterior with a simpler, tractable distribution from a chosen family of distributions.
+* **Analytical Computation:** The posterior is frequently intractable for complex models (e.g., when neural networks are involved).
+* **Approximation Methods:** When an exact solution is not feasible, approximation methods are necessary. These include:
+  * **Sampling:** Using methods like Markov Chain Monte Carlo (MCMC) to draw samples from the posterior.
+  * **Variational Inference (VI):** Approximating the true posterior with a simpler, tractable distribution from a chosen family of distributions.
+
+</div>
 
 ### Variational Inference (VI)
 
@@ -4624,7 +4642,7 @@ The log-likelihood of the data, $\log p_\theta(X)$, which is often intractable t
 
 The log-likelihood of the observed data is bounded by:  
 
-$$\log p_\theta(X) \ge \mathbb{E}{q\phi(z\mid X)} \left[ \log \frac{p_\theta(X, z)}{q_\phi(z\mid X)} \right] := \text{ELBO}(\phi, \theta)$$
+$$\log p_\theta(X) \ge \mathbb{E}_{q\phi(z\mid X)} \left[ \log \frac{p_\theta(X, z)}{q_\phi(z\mid X)} \right] := \text{ELBO}(\phi, \theta)$$
 
 Maximizing the ELBO with respect to both the model parameters $\theta$ and the variational parameters $\phi$ serves as a tractable proxy for maximizing the true log-likelihood.
 
@@ -4632,13 +4650,13 @@ Maximizing the ELBO with respect to both the model parameters $\theta$ and the v
 
 The ELBO can be rewritten to reveal its connection to the Kullback-Leibler (KL) divergence between the approximate posterior $q_\phi(z\mid X)$ and the true posterior $p_\theta(z\mid X)$.
 
-$$\text{ELBO}(\phi, \theta) = \log p_\theta(X) - \text{KL}(q_\phi(z\mid X) \ \parallel \ p_\theta(z\mid X))$$
+$$\text{ELBO}(\phi, \theta) = \log p_\theta(X) - \text{KL}(q_\phi(z\mid X) \parallel p_\theta(z\mid X))$$
 
 Since the KL divergence is always non-negative, this confirms that the ELBO is a lower bound on the log-evidence. From this formulation, it is clear that maximizing the ELBO is equivalent to minimizing the KL divergence between the approximate and true posteriors. VI searches for an optimal density $q^{\ast}$ out of a chosen family of distributions $\mathcal{Q}$.
 
 The optimal approximate posterior $q^{\ast}$ is found by solving:  
 
-$$q^{\ast} = \arg\min_{q \in \mathcal{Q}} \text{KL}(q(z\mid X) \ \parallel \ p_\theta(z\mid X))$$
+$$q^{\ast} = \arg\min_{q \in \mathcal{Q}} \text{KL}(q(z\mid X) \parallel p_\theta(z\mid X))$$
 
 #### An Alternative Formulation of the ELBO
 
@@ -4646,34 +4664,40 @@ For practical implementation and a more intuitive understanding, the ELBO is oft
 
 Starting from the definition, we can expand the joint probability $p_\theta(X, z) = p_\theta(X\mid z) p_\theta(z)$:  
 
-$$\text{ELBO} = \mathbb{E}{q\phi(z\mid X)} \left[ \log \frac{p_\theta(X\mid z)p_\theta(z)}{q_\phi(z\mid X)} \right]$$  
+$$\text{ELBO} = \mathbb{E}_{q\phi(z\mid X)} \left[ \log \frac{p_\theta(X\mid z)p_\theta(z)}{q_\phi(z\mid X)} \right]$$  
 
 Using the properties of logarithms and the linearity of expectation:  
 
-$$= \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(X\mid z) + \log p_\theta(z) - \log q_\phi(z\mid X)]$$   
+$$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z) + \log p_\theta(z) - \log q_\phi(z\mid X)]$$   
 
-$$= \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(X\mid z)] + \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(z)] - \mathbb{E}{q\phi(z\mid X)}[\log q_\phi(z\mid X)]$$  
+$$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)] + \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(z)] - \mathbb{E}_{q\phi(z\mid X)}[\log q_\phi(z\mid X)]$$  
 
 Rearranging the terms, we can identify the KL divergence between the approximate posterior and the prior:  
 
-$$= \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(X\mid z)] - \left( \mathbb{E}{q\phi(z\mid X)}[\log q_\phi(z\mid X)] - \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(z)] \right)$$  
+$$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)] - \left( \mathbb{E}_{q\phi(z\mid X)}[\log q_\phi(z\mid X)] - \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(z)] \right)$$  
 
 This gives the final, commonly used form:  
 
-$$\text{ELBO}(\phi, \theta) = \mathbb{E}{q\phi(z\mid X)}[\log p_\theta(X\mid z)] - \text{KL}(q_\phi(z\mid X) \ \parallel \ p_\theta(z))$$
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Reconstruction - Regularization)</span></p>
+
+$$\text{ELBO}(\phi, \theta) = \underbrace{\mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)]}_{\text{Reconstruction}} - \underbrace{\text{KL}(q_\phi(z\mid X) \parallel p_\theta(z))}_{\text{Regularization}}$$
 
 This form consists of two terms:
 
 1. **Reconstruction Term:**
-  * $\mathbb{E}\_{q_\phi(z\mid X)}[\log p_\theta(X\mid z)]$ 
-  * encourages the model to learn latent variables $z$ from which the original data $X$ can be accurately reconstructed.
-2. **Regularization Term:** The negative KL divergence acts as a regularizer, pushing the approximate posterior $q_\phi(z\mid X)$ to be close to the prior distribution $p_\theta(z)$.
+  * Encourages the model to learn latent variables $z$ from which the original data $X$ can be accurately reconstructed.
+2. **Regularization Term:** 
+  * The negative KL divergence acts as a regularizer, pushing the approximate posterior $q_\phi(z\mid X)$ to be close to the prior distribution $p_\theta(z)$.
+
+</div>
+
 
 With a parameterized family of densities $q_\phi(z\mid X)$, VI becomes a joint optimization problem.
 
 We seek to find the optimal parameters for both the generative and inference models:  
 
-$$\phi^, \theta^ = \arg\max_{\phi, \theta} \text{ELBO}(\phi, \theta)$$
+$$\phi^{\ast}, \theta^{\ast} = \arg\max_{\phi, \theta} \text{ELBO}(\phi, \theta)$$
 
 For a detailed review of Variational Inference, see Blei et al. (2017), "Variational Inference: A Review for Statisticians."
 
@@ -4681,17 +4705,28 @@ For a detailed review of Variational Inference, see Blei et al. (2017), "Variati
 
 Introduced by Kingma & Welling (2013) and Rezende et al. (2014), the Variational Autoencoder framework can be extended to handle sequential data, leading to models often referred to as Sequential Variational Autoencoders (SVAE) or Variational Recurrent Neural Networks (VRNN).
 
-#### SVAE Architecture
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SVAE Architecture)</span></p>
 
 An SVAE consists of two primary components: a generative model that defines a distribution over sequences and an inference model that approximates the posterior over the sequence of latent variables.
 
 * **Generative Model $p_\theta(X, Z)$:**
-  * Prior Model $p_\theta(Z)$: Defines the dynamics of the latent variables over time, typically in an autoregressive manner, e.g., $p_\theta(z_t \mid  z_{t-1})$. This captures the temporal structure in the latent space.
-  * Observation Model $p_{\theta, \text{obs}}(X\mid Z)$: The "decoder" that generates the observed data $x_t$ at each time step, conditioned on the corresponding latent state $z_t$.
+  * **Prior Model $p_\theta(Z)$:** Defines the dynamics of the latent variables over time, typically in an autoregressive manner, e.g., $p_\theta(z_t \mid  z_{t-1})$. This captures the temporal structure in the latent space.
+  * **Observation Model $p_{\theta, \text{obs}}(X\mid Z)$:** The "decoder" that generates the observed data $x_t$ at each time step, conditioned on the corresponding latent state $z_t$.
 * **Inference Model (Encoder) $q_\phi(Z\mid X)$:**
   * The "encoder" approximates the true posterior $p_\theta(Z\mid X)$. It maps an observed sequence $X$ to a distribution over the latent sequence $Z$.
 
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/SVAE.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>SVAE Architecture.</figcaption>
+</figure>
+
 #### Architectural Possibilities
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Architectural Possibilities)</span></p>
 
 The core idea is to use simple, tractable distributional forms (e.g., Gaussian) for the model components, but to parameterize their means and covariances in complex, non-linear ways using neural networks (like RNNs, MLPs, or CNNs). This provides a rich blend of probabilistic modeling and deep learning.
 
@@ -4709,19 +4744,36 @@ The core idea is to use simple, tractable distributional forms (e.g., Gaussian) 
   * **Low-rank factorization:** $\Sigma_x = V V^\top$, where $V$ is the output of a neural network.
 * **Inference Model (Encoder):**  
  
-$$q_\phi(z_t \mid  x_{\le t}, \dots) = \mathcal{N}(\mu_\phi, \Sigma_\phi)$$  
+$$q_\phi(z_t \mid  x_{\le t}, \dots) = \mathcal{N}(\mu_\phi, \Sigma_\phi) \implies g_\phi(X\mid Z) = \prod_{t=1}^T g_\phi(z_t\mid x_t)$$  
 
 where the variational parameters $\mu_\phi$ and $\Sigma_\phi$ are complex functions of the input data, typically implemented by a recurrent neural network that processes the sequence $X$.
 
+</div>
+
 #### The Sequential ELBO
+
+Starting from the last definition of ELBO:
+
+$$\text{ELBO}(\phi, \theta) = \mathbb{E}_{q\phi(Z\mid X)}[\log p_\theta(X\mid Z)] -\text{KL}(q_\phi(Z\mid X) \parallel p_\theta(Z))$$
+
+$$=\text{ELBO}(\phi, \theta) = \mathbb{E}_{q\phi(Z\mid X)}[\log \prod_t^T p_\theta(x_z\mid z_t)] - \mathbb{E}_{q\phi(Z\mid X)}[\log q_\phi(Z\mid X) - \log p_\theta(Z)]$$
+
+$$=\text{ELBO}(\phi, \theta) = \sum_t^T \mathbb{E}_{q\phi(z_t\mid x_t)}[\log p_\theta(x_z\mid z_t)] - \sum_t^T \mathbb{E}_{q\phi(z_t\mid x_t)}[\log q_\phi(z_t\mid x_t) - \log p_\theta(z_t\mid z_{t-1})]$$
+
+$$=\text{ELBO}(\phi, \theta) = \sum_t \left( \mathbb{E}_{q_\phi(z_t\mid X)}[\log p_\theta(x_t\mid z_t)] - \mathbb{E}_{q_\phi(Z_{<t}\mid X)}[\text{KL}(q_\phi(z_t\mid X) \ \parallel \ p_\theta(z_t\mid z_{t-1}))] \right)$$
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sequential ELBO)</span></p>
 
 Starting from the practical form of the ELBO and applying factorization assumptions for sequential data, the objective can be decomposed into a sum over time steps.
 
-$$\mathcal{L}(\phi, \theta, X) = \sum_t \left( \mathbb{E}_{q_\phi(z_t\mid X)}[\log p_\theta(x_t\mid z_t)] - \mathbb{E}_{q_\phi(Z_{<t}\mid X)}[\text{KL}(q_\phi(z_t\mid X) \ \parallel \ p_\theta(z_t\mid z_{t-1}))] \right)$$
+$$\text{ELBO}(\phi, \theta, X) = \sum_t \left( \mathbb{E}_{q_\phi(z_t\mid X)}[\log p_\theta(x_t\mid z_t)] - \mathbb{E}_{q_\phi(Z_{<t}\mid X)}[\text{KL}(q_\phi(z_t\mid X) \ \parallel \ p_\theta(z_t\mid z_{t-1}))] \right)$$
 
 This objective can be conceptualized as a sum of per-timestep reconstruction losses and KL-divergence penalties:  
 
-$$\mathcal{L} = \sum_t \left( \mathcal{L}_{\text{rec}}(t) + \mathcal{L}_{\text{KL}}(t) \right)$$
+$$\text{ELBO} = \sum_t \left( \mathcal{L}_{\text{rec}}(t) + \mathcal{L}_{\text{KL}}(t) \right)$$
+
+</div>
 
 ### Training: Stochastic Gradient Variational Bayes (SGVB)
 
@@ -4738,6 +4790,9 @@ The ELBO contains expectations over $q_\phi(z\mid X)$ that are generally intract
 
 #### Monte Carlo Estimation
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Monte Carlo ELBO Estimation)</span></p>
+
 The ELBO can be expressed as an expectation:  
 
 $$\text{ELBO}(\phi, \theta) = \mathbb{E}_{z \sim q\phi(z\mid X)} [\log p_\theta(X, z) - \log q_\phi(z\mid X)]$$  
@@ -4748,7 +4803,14 @@ $$\text{ELBO}(\phi, \theta) \approx \frac{1}{L} \sum_{l=1}^L \left[ \log p_\thet
 
 In practice, a single sample ($L=1$) is often used for each gradient step.
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Naive Monte Carlo ELBO Estimation Problem)</span></p>
+
 A critical problem with this naive MC estimation is that the sampling operation $z^{(l)} \sim q_\phi(z\mid X)$ makes the objective non-differentiable with respect to the variational parameters $\phi$. This prevents the use of standard backpropagation.
+
+</div>
 
 #### The Reparameterization Trick
 
