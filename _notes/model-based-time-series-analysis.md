@@ -2159,13 +2159,13 @@ $$
 
 Maximizing this log-likelihood function provides the parameter estimates. This can be framed as a multivariate linear regression problem.
 
-### Model Order Selection
+## Model Order Selection
 
 A critical step in VAR modeling is determining the appropriate order, $p$. This is a model selection problem where we aim to balance model fit with model complexity. Common criteria include AIC and BIC, but a formal statistical test is the Likelihood Ratio Test.
 
-#### Likelihood Ratio Test (Wilks' Theorem)
+### Likelihood Ratio Test (Wilks' Theorem)
 
-The Likelihood Ratio (LR) test provides a framework for comparing nested models.
+The **Likelihood Ratio (LR) test** provides a framework for comparing nested models.
 
 - Let $\mathcal{M}_0$ be a "restricted" model (null hypothesis, $H_0$) with parameter space $\Theta_0$.
 - Let $\mathcal{M}_1$ be a "full" model (alternative hypothesis, $H_1$) with parameter space $\Theta_1$, where $\Theta_0 \subset \Theta_1$.
@@ -2206,19 +2206,24 @@ $$
 D = T_{\text{eff}} \left(\log(\lvert\hat{\Sigma}_{\text{restr}}\rvert) - \log(\rvert\hat{\Sigma}_{\text{full}}\lvert)\right)
 $$
 
-This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR(p+1) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
+This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR($p+1$) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
 
 ### Granger Causality
 
-Granger causality is a statistical concept of causality based on prediction. It provides a formal method to test for directed influence between time series within the VAR framework.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Granger Causality)</span></p>
 
-- **Definition:** If the past of a time series $X$ contains information that improves the prediction of a time series $Y$, beyond the information already contained in the past of $Y$ and all other relevant variables, then we say that $X$ Granger-causes $Y$ (denoted $X \to Y$).
+**Granger causality** is a statistical concept of causality based on prediction. It provides a formal method to test for directed influence between time series within the VAR framework.
+
+If the past of a time series $X$ contains information that improves the prediction of a time series $Y$, beyond the information already contained in the past of $Y$ and all other relevant variables, then we say that $X$ Granger-causes $Y$ (denoted $X \to Y$).
 
 Let $X_t, Y_t$ be two time series processes and $Z_t$ represent all other knowledge in the world. Let $\mathcal{E}[Y_{t+1} \mid \text{past}]$ denote the optimal prediction of $Y_{t+1}$ given information from the past. Then $X \to Y$ if:
 
 $$
 \mathcal{E}[Y_{t+1} \mid Y_{t-\text{past}}, X_{t-\text{past}}, Z_{t-\text{past}}] \neq \mathcal{E}[Y_{t+1} \mid Y_{t-\text{past}}, Z_{t-\text{past}}]
 $$
+
+</div>
 
 #### Testing for Granger Causality with VAR Models
 
@@ -2233,9 +2238,15 @@ We then perform a likelihood ratio test (or an F-test) comparing these two model
 - The LR test statistic is: $D = T_{\text{eff}} (\log(\lvert\hat{\Sigma}\_{\text{restr}}\rvert) - \log(\lvert\hat{\Sigma}\_{\text{full}}\rvert))$.
 - Under $H_0$ (no Granger causality), $D \sim \chi^2(q)$, where $q$ is the number of zero-restrictions imposed (in this case, $p \times (\text{dim of } X) \times (\text{dim of } Y)$).
 
-**Interpretation:** If adding the past of $X$ significantly reduces the residual covariance (i.e., the prediction error) for $Y$, then the test statistic will be large, leading to a rejection of the null hypothesis. We conclude that $X$ Granger-causes $Y$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation)</span></p>
 
-#### Caveats in Interpretation
+If adding the past of $X$ significantly reduces the residual covariance (i.e., the prediction error) for $Y$, then the test statistic will be large, leading to a rejection of the null hypothesis. We conclude that $X$ Granger-causes $Y$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Caveats in Interpretation)</span></p>
 
 It is crucial to interpret "Granger causality" with care, as it is a statement about predictive power, not necessarily true causal influence.
 
@@ -2243,11 +2254,16 @@ It is crucial to interpret "Granger causality" with care, as it is a statement a
 - **Linearity Assumption:** The standard test is based on linear VAR models and only detects linear forms of dependence. The general definition of Granger causality is not restricted to linear relationships.
 - **Gaussian Assumptions:** The statistical properties of the LR test rely on the assumption of Gaussian-distributed residuals. Strong deviations from this assumption may invalidate the test statistics.
 
+</div>
+
 ## Generalized Autoregressive Models
 
 This chapter extends the autoregressive framework to model non-Gaussian time series, such as binary sequences or count data, using the principles of Generalized Linear Models (GLMs).
 
 ### AR Models for Binary Processes
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AR Models for Binary Processes)</span></p>
 
 Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can model this using an autoregressive structure similar to logistic regression.
 
@@ -2272,9 +2288,13 @@ Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can
   $$
 
   This is analogous to logistic regression, but the predictors are now the lagged values of the time series itself.
+
 - **Training:** Model parameters are estimated by maximizing the likelihood, which does not have a closed-form solution. Numerical optimization methods like Gradient Descent or Newton-Raphson are required.
 
-#### Main Limitations of Binary AR Models
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Main Limitations of Binary AR Models)</span></p>
 
 - **Unstable Estimates:** For strongly dependent series, certain histories (e.g., a long string of 1s) may lead to perfect prediction, causing the MLE estimates for coefficients to become very large or non-existent.
 - **Limited Dynamical Structure:** These models may struggle to capture complex temporal patterns like "bursts" of activity versus periods of "silence".
@@ -2282,6 +2302,8 @@ Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can
 - **Numerical Inference:** Inference about the model parameters is purely numerical.
 
 A common remedy for instability is to reduce the model order $p$, thereby reducing complexity.
+
+</div>
 
 ### Change Point Models for Binary Time Series
 
@@ -3323,7 +3345,7 @@ $$\mathbb{E}[z_t z_t^\top] = \text{Cov}(z_t) + \mathbb{E}[z_t]\mathbb{E}[z_t^\to
 The Poisson State Space Model is designed to handle sequences of count data by linking them to an underlying, unobserved (latent) continuous state that evolves over time.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear State-Space Models)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Poisson State Space Model)</span></p>
 
 1. **Observation Model (Poisson):** The observation $c_t$ is a vector of counts at time $t$. Each count $c_t$ is drawn from a Poisson distribution whose rate, $\lambda_t$, is determined by the corresponding latent state $z_t$. $c_t \mid z_t \sim \text{Poisson}(\lambda_t)$. The probability mass function is given by: 
    
@@ -3480,7 +3502,7 @@ with a new Gaussian $\mathcal{N}(\mu_t, V_t)$.
 2. The maximum of the logarithm of a Gaussian's PDF occurs at its mean. The curvature at this maximum is determined by the inverse of its covariance.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Laplace Approaximation in Statistics)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Laplace Approximation in Statistics)</span></p>
 
 **Laplace approximation** in statistics replaces complicated posteriors by Gaussian that matches its
 * **Mode**
@@ -3508,7 +3530,7 @@ $$Q(z_t) = \left( c_t^\top (b_0 + B_1 z_t) - \mathbf{1}^\top\exp(b_0 + B_1 z_t) 
   $$V_t := \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">$V_t$ for Gaussin/span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($V_t$ for Gaussian)</span></p>
 
 Laplace Estimate for Gaussian:
 
@@ -3606,7 +3628,7 @@ The Expectation-Maximization (EM) algorithm provides a framework for performing 
 In the case of a linear state-space model (SSM), the E-step is solved exactly and efficiently using established algorithms:
 
 * The Kalman filter is used to compute the filtering distribution, $p(z_t \mid  x_1, \dots, x_t)$.
-* The Rauch-Tung-Striebel (RTS) smoother is used to compute the smoothing distribution, $p(z_t \mid  x_1, \dots, x_T)$.
+* The Kalman smoother is used to compute the smoothing distribution, $p(z_t \mid  x_1, \dots, x_T)$.
 
 For non-linear models like generative RNNs, these exact solutions are no longer tractable, necessitating the approximation methods discussed in this chapter.
 
@@ -3616,8 +3638,6 @@ For non-linear models like generative RNNs, these exact solutions are no longer 
   <img src="{{ '/assets/images/notes/model-based-time-series-analysis/generative_rnn.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
   <figcaption>Generative RNN.</figcaption>
 </figure>
-
-### Model Architecture
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generative RNN)</span></p>
