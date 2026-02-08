@@ -2818,8 +2818,6 @@ The EM algorithm is an iterative procedure for finding MLE solutions for models 
 
 ### Linear State-Space Models
 
-#### Architecture: Linear Dynamical System (LDS)
-
 A Linear Dynamical System (LDS) is a specific type of state-space model where the transition and observation models are linear functions with Gaussian noise.
 
 The graphical model is:
@@ -3108,7 +3106,7 @@ $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
     $$\text{Exponent} = -\frac{1}{2} \left( (z_t - Az_{t-1})^\top\Sigma^{-1}(z_t - Az_{t-1}) + (z_{t-1} - \mu_{t-1})^\top V_{t_1}^{-1}(z_{t-1} - \mu_{t-1}) \right)$$
     <p>Collecting terms in $z_{t-1}$:</p>
     $$= -\frac{1}{1} \Bigl[ z_{t-1}^\top \underbrace{(A^\top \Sigma^{-1} A + V^{-1}_{t-1})}_{:= H^{-1}} z_{t-1} - z_{t-1}^\top {(A^\top \Sigma^{-1} z_t + V^{-1}_{t-1}\mu_{t-1})}_{:= H^{-1}\mu}$$
-    $$- \undebrace{(z_t^\top A^\top \Sigma^{-1} A + \mu_{t-1}^\top V_{t-1}^{-1})}_{\mu^\top H^{-1}} z_{t-1} + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
+    $$- \underbrace{(z_t^\top A^\top \Sigma^{-1} A + \mu_{t-1}^\top V_{t-1}^{-1})}_{\mu^\top H^{-1}} z_{t-1} + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
     $$= -\frac{1}{2} \Bigl[ z_{t-1}^\top H^{-1} z_{t-1} - z_{t-1}^\top H^{-1} \mu - \mu^\top H^{-1} z_{t-1}^\top$$
     $$+ \mu^\top H^{-1}\mu - \mu^\top H^{-1}\mu$$
     $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
@@ -3322,51 +3320,45 @@ $$\mathbb{E}[z_t z_t^\top] = \text{Cov}(z_t) + \mathbb{E}[z_t]\mathbb{E}[z_t^\to
 
 ## The Poisson State Space Model
 
-This document provides a comprehensive overview of the Poisson State Space Model (SSM), a powerful tool for analyzing time series data composed of counts. We will detail the model's architecture, the parameter estimation process using the Expectation-Maximization (EM) algorithm, and the application of the Laplace approximation for the intractable E-step.
-
-1.0 Model Architecture
-
 The Poisson State Space Model is designed to handle sequences of count data by linking them to an underlying, unobserved (latent) continuous state that evolves over time.
 
-1.1 Core Components
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear State-Space Models)</span></p>
 
-The model is defined by two primary components: an observation model that describes how the observed counts are generated from the latent state, and a latent dynamics model that governs the evolution of this state.
+1. **Observation Model (Poisson):** The observation $c_t$ is a vector of counts at time $t$. Each count $c_t$ is drawn from a Poisson distribution whose rate, $\lambda_t$, is determined by the corresponding latent state $z_t$. $c_t \mid z_t \sim \text{Poisson}(\lambda_t)$. The probability mass function is given by: 
+   
+  $$p(c_t \mid z_t) = \frac{\lambda_t^{c_t} e^{-\lambda_t}}{c_t!} \quad\iff\quad c_t \mid z_t \sim \text{Poisson}(\lambda_t)$$
+   
+  * **Link Function:** A logarithmic link function connects the rate $\lambda_t$ to the latent state $z_t$. This ensures that the rate $\lambda_t$ is always non-negative. The function is applied elementwise if $c_t$ is a vector. $\log(\lambda_t) = b_0 + B_1 z_t$. This implies that the rate is an exponential function of a linear transformation of the state: $\lambda_t = \exp(b_0 + B_1 z_t)$, where $b_0$ is an offset vector and $B_1$ is a matrix of weights.
+   
+2. **Latent Model / Process Model (Linear Gaussian):** The latent state $z_t \in \mathbb{R}^M$ evolves as a linear function of the previous state $z_{t-1}$ plus Gaussian noise.
+   
+   $$z_t = A z_{t-1} + \omega_t, \quad \omega_t \sim \mathcal{N}(0, \Sigma)$$
+   
+   So, the conditional distribution is: 
+   
+   $$p(z_t \mid z_{t-1}) = \mathcal{N}(A z_{t-1}, \Sigma)$$
 
-* Observations: A time series of count data, denoted as $C = \lbrace c_1, c_2, \dots, c_T\rbrace$. Each $c_t$ is a vector of counts at time $t$.
-* Latent States: A sequence of unobserved continuous-valued vectors, denoted as $Z = \lbrace z_1, z_2, \dots, z_T\rbrace$. Each $z_t \in \mathbb{R}^M$ represents the hidden state of the system at time $t$.
+3. **Initial Distribution:** The initial state is drawn from a Gaussian distribution. 
+   
+   $$z_1 \sim \mathcal{N}(\mu_0, \Sigma_0)$$
 
-1.2 The Observation Model
+The model parameters are:
 
-The observations are assumed to be conditionally independent given the latent state, following a Poisson distribution.
+* **Observation parameters:** $\theta_{\text{obs}} = \lbrace b_0, B_1\rbrace$
+* **Latent parameters:** $\theta_{\text{lat}} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
 
-* Poisson Observation Model: Each count $c_t$ is drawn from a Poisson distribution whose rate, $\lambda_t$, is determined by the corresponding latent state $z_t$. $c_t \mid z_t \sim \text{Poisson}(\lambda_t)$. The probability mass function is given by: 
-  
-  $$p(c_t \mid z_t) = \frac{\lambda_t^{c_t} e^{-\lambda_t}}{c_t!}$$
+</div>
 
-* Link Function: A logarithmic link function connects the rate $\lambda_t$ to the latent state $z_t$. This ensures that the rate $\lambda_t$ is always non-negative. The function is applied elementwise if $c_t$ is a vector. $\log(\lambda_t) = b_0 + B_1 z_t$. This implies that the rate is an exponential function of a linear transformation of the state: $\lambda_t = \exp(b_0 + B_1 z_t)$, where $b_0$ is an offset vector and $B_1$ is a matrix of weights.
-
-1.3 The Latent Dynamics Model
-
-The latent states are modeled as a linear Gaussian dynamical system, meaning they evolve according to a multivariate autoregressive process.
-
-* State Transition: The state $z_t$ evolves from the previous state $z_{t-1}$ according to the following equation: $z_t \mid z_{t-1} \sim \mathcal{N}(A z_{t-1}, \Sigma)$, where $A$ is the state transition matrix and $\Sigma$ is the process noise covariance matrix.
-* Initial State: The initial latent state $z_1$ is drawn from a Gaussian distribution: $z_1 \sim \mathcal{N}(\mu_0, \Sigma_0)$, where $\mu_0$ is the initial mean and $\Sigma_0$ is the initial covariance.
-
-1.4 Model Summary
-
-In essence, the Poisson State Space Model is a hierarchical model described by the following generative process:
-
-1. Initial State: $z_1 \sim \mathcal{N}(\mu_0, \Sigma_0)$
-2. For $t=2, \dots, T$:
-  * Latent Dynamics: $z_t \mid z_{t-1} \sim \mathcal{N}(A z_{t-1}, \Sigma)$
-3. For $t=1, \dots, T$:
-  * Observation: $c_t \mid z_t \sim \text{Poisson}(\exp(b_0 + B_1 z_t))$
-
-2.0 Parameter Estimation using EM
+### Parameter Estimation using EM
 
 The parameters of the model, $\theta = \lbrace b_0, B_1, A, \Sigma, \mu_0, \Sigma_0\rbrace$, are estimated using the Expectation-Maximization (EM) algorithm. This iterative approach is well-suited for models with latent variables. The EM algorithm alternates between two steps: an Expectation (E) step and a Maximization (M) step.
 
-The core objective is to maximize the log-likelihood of the observed data, which involves marginalizing over the latent variables: $\log p(C \mid \theta) = \log \int p(C, Z \mid \theta) dZ$. The EM algorithm instead maximizes a lower bound on this quantity, defined as the expected complete-data log-likelihood.
+The core objective is to maximize the log-likelihood of the observed data, which involves marginalizing over the latent variables: 
+
+$$\log p(C \mid \theta) = \log \int p(C, Z \mid \theta) dZ$$
+
+The EM algorithm instead maximizes a lower bound on this quantity, defined as the expected complete-data log-likelihood.
 
 The M-step objective is to maximize the following function with respect to $\theta$: 
 
@@ -3382,13 +3374,13 @@ $$\log p(Z, C \mid \theta) = \log p(C \mid Z, \theta) + \log p(Z \mid \theta)$$
 
 Therefore, the expectation becomes: 
 
-$$\mathbb{E}_{q(Z)}[\log p(Z, C)] = \mathbb{E}_{q(Z)}[\log p(C \mid Z)] + \mathbb{E}_{q(Z)}[\log p(Z)]$$
+$$\mathbb{E}_{q(Z)}[\log p(Z, C)] = \underbrace{\mathbb{E}_{q(Z)}[\log p(C \mid Z)]}_{\prod_{t=1}^T p(c_t\mid z_t)} + \underbrace{\mathbb{E}_{q(Z)}[\log p(Z)]}_{p(z_1)\prod_{t=2}^T p(z_t\mid z_{t-1})}$$
 
-2.1 The M-Step: Maximization
+### The M-Step: Maximization
 
 In the M-step, we find the parameters $\theta$ that maximize the $\mathcal{Q}$ function, holding the posterior distribution $q(Z)$ fixed. We analyze the two terms of the objective separately.
 
-2.1.1 Latent Dynamics Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
+#### Latent Dynamics Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
 
 The term $\mathbb{E}_{q(Z)}[\log p(Z)]$ depends only on the latent dynamics parameters. 
 
@@ -3396,11 +3388,13 @@ $$\log p(Z) = \log p(z_1 \mid \mu_0, \Sigma_0) + \sum_{t=2}^{T} \log p(z_t \mid 
 
 The log-likelihoods are for Gaussian distributions: 
 
-$$\log p(z_t \mid z_{t-1}) \propto -\frac{1}{2}\log\mid \Sigma\mid - \frac{1}{2}(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})$$ 
+$$\log p(z_t \mid z_{t-1}) = \frac{M}{2}\log(2\pi) -\frac{1}{2}\log\mid \Sigma\mid - \frac{1}{2}(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})$$ 
+
+$$\log p(z_1) = \frac{M}{2}\log(2\pi) -\frac{1}{2}\log\mid \Sigma_0\mid - \frac{1}{2}(z_1 - \mu_0)^T \Sigma_{0}^{-1} (z_1 - \mu_0)$$ 
 
 Maximizing the expectation of this term is equivalent to the M-step of a standard linear Gaussian State Space Model. The updates for $A, \Sigma, \mu_0, \Sigma_0$ depend on the expected sufficient statistics (moments) of the latent states, such as $\mathbb{E}\_q[z_t]$, $\mathbb{E}\_q[z_t z_t^\top]$, and $\mathbb{E}\_q[z_t z_{t-1}^\top]$, which are computed during the E-step.
 
-2.1.2 Observation Parameters $\lbrace b_0, B_1\rbrace$
+#### Observation Parameters $\lbrace b_0, B_1\rbrace$
 
 The term $\mathbb{E}_{q(Z)}[\log p(C \mid Z)]$ depends only on the observation parameters. 
 
@@ -3408,7 +3402,7 @@ $$\mathbb{E}_{q(Z)}[\log p(C \mid Z)] = \sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[\log 
 
 The log-likelihood of the Poisson observation is: 
 
-$$\log p(c_t \mid z_t, b_0, B_1) = c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t - \log(c_t!)$$.
+$$\log p(c_t \mid z_t, b_0, B_1) = c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t - \log(c_t!)$$
 
 Dropping terms constant with respect to the parameters, we need to maximize: 
 
@@ -3436,13 +3430,20 @@ The final objective for $b_0$ and $B_1$ is:
 
 $$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^T(b_0 + B_1 \mu_t) - \mathbf{1}^T \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$ 
 
-This expression does not have a closed-form solution for $b_0$ and $B_1$. However, this objective function is concave, which guarantees that a unique maximum exists. This maximum can be found efficiently using numerical optimization methods like the Newton-Raphson algorithm.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(M-Objective does not .........)</span></p>
 
-3.0 The E-Step: Laplace Approximation
+* This expression **does not have a closed-form solution for $b_0$ and $B_1$**. 
+* However, this **objective function is concave**, which guarantees that a unique maximum exists. 
+* This maximum can be found efficiently using numerical optimization methods like the **Newton-Raphson algorithm**.
+
+</div>
+
+### The E-Step: Laplace Approximation
 
 The E-step requires computing the posterior distribution over the latent states, $p(Z \mid C, \theta^{\text{old}})$. For the Poisson SSM, this posterior is analytically intractable due to the non-conjugate relationship between the Gaussian latent dynamics and the Poisson observation model. 
 
-$$p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) \ p(z_t \mid c_{1:t-1})$$ 
+$$\overbrace{p(z_t \mid c_{1:t})}^{\approx \mathcal{N}(\mu_t, V_t)} = \frac{\overbrace{p(c_t \mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t\mid z_{t-1})}^{\mathcal{N}(Az_{t-1}, \Sigma)}\overbrace{p(z_{t-1}\mid c_{1:t-1})}^{\approx \mathcal{N}(\mu_{t-1}, V_{t-1})}dz_{t-1}}{p(c_t\mid c_{1:t-1})}$$ 
 
 Here, $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a Poisson likelihood. Their product does not yield a standard distribution.
 
@@ -3450,7 +3451,7 @@ To overcome this, we approximate the true posterior with a Gaussian distribution
 
 The process follows the standard predict-update cycle of a Kalman filter, but with a modified update step.
 
-3.1 Predict Step
+#### Predict Step
 
 Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian 
 
@@ -3465,9 +3466,11 @@ where:
 * Predicted Mean: $\mu_{t\mid t-1} = A \mu_{t-1}$
 * Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
 
-3.2 Update Step
+#### Update Step
 
 The goal is to approximate the true filtering posterior 
+
+$$p(z_t \mid c_{1:t}) = \frac{p(c_t \mid z_t) p(z_t \mid c_{1:t-1})}{p(c_t\mid c_{1:{t-1}})} \approx \frac{p(c_t \mid z_t) \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1})}{p(c_t\mid c_{1:{t-1}})}$$
 
 $$p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) p(z_t \mid c_{1:t-1})$$
 
@@ -3475,6 +3478,17 @@ with a new Gaussian $\mathcal{N}(\mu_t, V_t)$.
 
 1. A Gaussian distribution is fully specified by its mean and covariance matrix.
 2. The maximum of the logarithm of a Gaussian's PDF occurs at its mean. The curvature at this maximum is determined by the inverse of its covariance.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Laplace Approaximation in Statistics)</span></p>
+
+**Laplace approximation** in statistics replaces complicated posteriors by Gaussian that matches its
+* **Mode**
+* **Curvature**
+
+It is a second-order saddle-point approximation.
+
+</div>
 
 We can therefore find the parameters of our Gaussian approximation by maximizing the logarithm of the target posterior. Let $Q(z_t)$ be the unnormalized log-posterior: 
 
@@ -3484,27 +3498,83 @@ Dropping constants, this is:
 
 $$Q(z_t) = \left( c_t^\top (b_0 + B_1 z_t) - \mathbf{1}^\top\exp(b_0 + B_1 z_t) \right) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top (V_{t\mid t-1})^{-1} (z_t - \mu_{t\mid t-1})$$
 
-* Approximated Mean (Mode): The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing $Q(z_t)$:
+* **Approximated Mean (Mode):** The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing $Q(z_t)$:
   
   $$\mu_t := \arg\max_{z_t} Q(z_t)$$ 
   
   This maximization must be performed numerically.
-* Approximated Covariance (Curvature): The covariance $V_t$ is the negative inverse of the Hessian (second derivative matrix) of $Q(z_t)$ evaluated at the mode $\mu_t$:
+* **Approximated Covariance (Curvature):** The covariance $V_t$ is the negative inverse of the Hessian (second derivative matrix) of $Q(z_t)$ evaluated at the mode $\mu_t$:
   
   $$V_t := \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
 
-This procedure is repeated for each time step $t=1, \dots, T$ to obtain the approximate filtering distributions required for the M-step. To get the full posterior $q(Z)$, a subsequent backward pass (analogous to the Rauch-Tung-Striebel smoother) is typically performed.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">$V_t$ for Gaussin/span></p>
 
-3.3 E-Step Summary
+Laplace Estimate for Gaussian:
+
+$$V_t = \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
+
+$$ = \left[ -\nabla_{z_t}^2 \log \mathcal{N}(\mu, \Sigma) \right]^{-1}_{z_t=\mu_t} = -\Sigma^{-1}$$
+
+**Recall:**
+
+$$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z \partial z^\top} -\frac{1}{2}(z-\mu)^\top\Sigma^{-1}(z-\mu) = -\Sigma^{-1}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+This **procedure is repeated for each time step** $t=1, \dots, T$ to obtain the approximate filtering distributions required for the M-step. To get the full posterior $q(Z)$, a subsequent backward pass (analogous to the Rauch-Tung-Striebel smoother) is typically performed.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(E-step for Poisson SSM)</span></p>
 
 The E-step for the Poisson SSM consists of a forward filtering pass using the Laplace approximation at each update step.
 
-* Predict: Compute the Gaussian predictive distribution:
+* **Predict:** 
+  * Compute the Gaussian predictive distribution:
   * $\mu_{t\mid t-1} = A \mu_{t-1}$
   * $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
-* Update: Approximate the posterior $p(z_t \mid c_{1:t})$ with a Gaussian $\mathcal{N}(\mu_t, V_t)$ where:
+* **Update:** 
+  * Approximate the posterior $p(z_t \mid c_{1:t})$ with a Gaussian $\mathcal{N}(\mu_t, V_t)$ where:
   * $\mu_t = \arg\max_{z_t} Q(z_t)$
   * $V_t = (-\nabla_{z_t}^2 Q(z_t)\mid_{z_t=\mu_t})^{-1}$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Laplace approximation has nothing to do with Laplace distribution)</span></p>
+
+It’s called the **Laplace approximation** because the Gaussian you’re building is exactly the classical approximation that comes from **Laplace’s method** for approximating integrals.
+
+**The core idea (Laplace’s method)**
+
+Suppose you have an integral of the form
+
+$$I=\int \exp(f(z))dz$$
+
+and $f(z)$ has a sharp maximum $z^\star$ (the mode). Laplace’s method says: **expand $f$ to second order around the mode**,
+
+$$f(z)\approx f(z^\star) + \frac{1}{2} (z-z^\star)^\top H (z-z^\star) \quad H=\nabla^2 f(z^\star)$$
+
+(where $H$ is negative definite at a maximum), so
+
+$$\exp(f(z))\approx \exp(f(z^\star))\exp\left(-\frac{1}{2} (z-z^\star)^\top(-H)(z-z^\star)\right)$$
+
+That second factor is the kernel of a Gaussian. Therefore
+
+$$\exp(f(z)) \approx \text{const}\cdot \mathcal{N}\left(z\mid z^\star, (-H)^{-1}\right)$$
+
+and the integral becomes approximately
+
+$$\int \exp(f(z))dz \approx \exp(f(z^\star)) (2\pi)^{d/2}\lvert {-H} \rvert^{-1/2}$$
+
+That’s the “Laplace approximation”: approximate a peaked density (or the integrand of a marginal likelihood) by a Gaussian formed from the **mode + curvature**.
+
+</div>
 
 ## Generative Recurrent Neural Networks
 
