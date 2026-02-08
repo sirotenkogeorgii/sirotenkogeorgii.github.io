@@ -2659,7 +2659,7 @@ The complete set of model parameters is $\theta = [\theta_{\text{lat}}, \theta_{
 To make inference tractable, two key assumptions are made:
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(SSM core assumptions)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(SSM core assumptions)</span></p>
 
 State-space models are built upon two critical assumptions that simplify the probabilistic structure of the time series.
 
@@ -2673,10 +2673,14 @@ State-space models are built upon two critical assumptions that simplify the pro
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Joint distribution under assumptions above)</span></p>
 
-Under these assumptions, the joint distribution over a sequence of observations $X_{1:T}$ and latent states $Z_{1:T}$ factorizes as follows:  
+Under these assumptions, the **joint distribution** over a sequence of observations $X_{1:T}$ and latent states $Z_{1:T}$ factorizes as follows:  
 
 $$p(X_{1:T}, Z_{1:T} \mid \theta) = p(z_1) \left( \prod_{t=2}^{T} p_{\text{lat}}(z_t \mid z_{t-1}, \theta) \right) \left( \prod_{t=1}^{T} p_{\text{obs}}(x_t \mid z_t, \theta) \right)$$ 
+
+</div>
 
 This structure is represented by the following graphical model:
 
@@ -2688,11 +2692,16 @@ This structure is represented by the following graphical model:
  x_1     x_2               x_t
 ```
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Primary goals when working with LVMs)</span></p>
+
 The primary goals when working with latent variable models are:
 
 1. **Learning:** Learn the parameters $\theta$ from the observed data $X_{1:T}$.
 2. **Inference:** Infer the latent trajectory, such as a point estimate $\mathbb{E}[Z_{1:T} \mid X_{1:T}]$.
 3. **Full Posterior Inference:** Infer the full posterior distribution over the latent paths, $p(Z_{1:T} \mid X_{1:T})$.
+
+</div>
 
 ### Inference Problem
 
@@ -2710,30 +2719,13 @@ $$\log p_\theta(X) = \log \left( \int p_\theta(X, Z) dZ \right)$$
 
 This makes direct optimization difficult.
 
-### Deriving the Evidence Lower Bound (ELBO)
+### Evidence Lower Bound (ELBO)
 
-Let $X = X_{1:T}$ and $Z = Z_{1:T}$. We can introduce an arbitrary "proposal density" $q(Z)$ to derive a lower bound on the log-likelihood.
-
-Starting with the log-likelihood:  
-
-$$\log p_\theta(X) = \log \int p_\theta(X, Z) dZ$$
-
-$$\log p_\theta(X) = \log \int q(Z) \frac{p_\theta(X, Z)}{q(Z)} dZ = \log \mathbb{E}_{q(Z)}\left[ \frac{p_\theta(X, Z)}{q(Z)} \right]$$
-
-**Jensen's Inequality:** For a concave function $f$: $f(\mathbb{E}[Y]) \ge \mathbb{E}[f(Y)]$.
-
-Since the logarithm is a concave function, we can apply Jensen's inequality:
-
-$$\log \mathbb{E}_{q(Z)}\left[ \frac{p_\theta(X, Z)}{q(Z)} \right] \ge \mathbb{E}_{q(Z)}\left[ \log \frac{p_\theta(X, Z)}{q(Z)} \right]$$
-
-This gives us the Evidence Lower Bound (ELBO):
-
-$$\log p_\theta(X) \ge \mathbb{E}_{q(Z)}\left[ \log p_\theta(X, Z) \right] - \mathbb{E}_{q(Z)}\left[ \log q(Z) \right]$$
+Let $X = X_{1:T}$ and $Z = Z_{1:T}$. We can introduce an arbitrary **"proposal density"** $q(Z)$ to derive a **lower bound on the log-likelihood**.
 
 #### Two Equivalent Forms of the ELBO
 
 The ELBO can be expressed in two common, equivalent forms.
-
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Expected Joint + Entropy )</span></p>
@@ -2748,6 +2740,20 @@ The ELBO can be expressed in two common, equivalent forms.
    
    The entropy term favors solutions where the proposal distribution $q(Z)$ is not overly confident (i.e., has high entropy).
 
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Starting with the log-likelihood:</p>
+    $$\log p_\theta(X) = \log \int p_\theta(X, Z) dZ$$
+    $$\log p_\theta(X) = \log \int q(Z) \frac{p_\theta(X, Z)}{q(Z)} dZ = \log \mathbb{E}_{q(Z)}\left[ \frac{p_\theta(X, Z)}{q(Z)} \right]$$
+    <p><strong>Jensen's Inequality:</strong> For a concave function $f$: $f(\mathbb{E}[Y]) \ge \mathbb{E}[f(Y)]$.</p>
+    <p>Since the logarithm is a concave function, we can apply Jensen's inequality:</p>
+    $$\log \mathbb{E}_{q(Z)}\left[ \frac{p_\theta(X, Z)}{q(Z)} \right] \ge \mathbb{E}_{q(Z)}\left[ \log \frac{p_\theta(X, Z)}{q(Z)} \right]$$
+    <p>This gives us the Evidence Lower Bound (ELBO):</p>
+    $$\log p_\theta(X) \ge \mathbb{E}_{q(Z)}\left[ \log p_\theta(X, Z) \right] - \mathbb{E}_{q(Z)}\left[ \log q(Z) \right]$$
+  </details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -2812,7 +2818,7 @@ The EM algorithm is an iterative procedure for finding MLE solutions for models 
 
 ### Linear State-Space Models
 
-Architecture: Linear Dynamical System (LDS)
+#### Architecture: Linear Dynamical System (LDS)
 
 A Linear Dynamical System (LDS) is a specific type of state-space model where the transition and observation models are linear functions with Gaussian noise.
 
@@ -2897,16 +2903,16 @@ The model parameters are:
 
 </div>
 
-EM for LDS Models
+#### EM for LDS Models
 
-The EM algorithm alternates between the E-step and M-step to learn the parameters of an LDS. Let $X=\lbrace X_{1:T}\rbrace$ and $Z=\lbrace Z_{1:T}\rbrace$.
-
-M-Step for LDS
+The EM algorithm alternates between the E-step and M-step to learn the parameters of an LDS.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">EM for LDS Models</span><span class="math-callout__name">(M-Step)</span></p>
 
-**Goal:** Maximize $\mathbb{E}_q[\log p(X, Z)]$.
+Let $X=\lbrace X_{1:T}\rbrace$ and $Z=\lbrace Z_{1:T}\rbrace$.
+
+**Goal:** $\theta^* = \max_\theta \mathbb{E}_q[\log p(X, Z)]$.
 
 $$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
 
@@ -2940,55 +2946,44 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
 
 </div>
 
-#### Setting the things up
-
-The complete-data log-likelihood factorizes due to the Markov and conditional independence properties: 
-
-$$\log p(X, Z) = \log p(z_1) + \sum_{t=2}^T \log p(z_t\mid z_{t-1}) + \sum_{t=1}^T \log p(x_t\mid z_t)$$ 
-
-The expectation can be split into three parts: 
-
-$$\mathbb{E}_q[\log p(X, Z)] = \underbrace{\mathbb{E}_q[\log p(z_1)]}_{\text{initial condition}} + \underbrace{\mathbb{E}_q\left[\sum_{t=2}^T \log p(z_t\mid z_{t-1})\right]}_{\text{latent model}} + \underbrace{\mathbb{E}_q\left[\sum_{t=1}^T \log p(x_t\mid z_t)\right]}_{\text{observation model}}$$ 
-
-#### The objective expansion given the distributions of variables
-
-These correspond to the initial distribution, process model, and observation model, respectively.
-
-Applying this to the LDS model components ($p(z_1)$, $p(z_t\mid z_{t-1})$, $p(x_t\mid z_t)$), the expected complete-data log-likelihood becomes a function of terms like: 
-
-$$\mathbb{E}_q[c_1 - \frac{1}{2}\log \lvert \Sigma_0\rvert - \frac{1}{2}(z_1 - \mu_0)^\top \Sigma_0^{-1} (z_1 - \mu_0)]$$
-
-$$\mathbb{E}_q[c_2 \underbrace{- \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}(z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})}_{:= Q(A)}]$$
-
-$$\mathbb{E}_q[c_3 - \frac{T}{2}\log \lvert \Gamma \rvert -\frac{1}{2}(x_t - Bz_{t})^\top \Gamma^{-1} (x_t - Bz_{t})]$$
-
-#### Derivation of the Update for $A$
-
-To find the update for the transition matrix $A$, we differentiate the part of the expected log-likelihood related to the process model, which we denote $Q(A)$, with respect to $A$ and set it to zero.
-
-The relevant term is: 
-
-$$Q(A) = \mathbb{E}_q\left[\sum_{t=2}^T \log p(z_t \mid  z_{t-1})\right] \propto -\frac{1}{2} \sum_{t=2}^T \mathbb{E}_q\left[ (z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1}) \right]$$
-
-Expanding the quadratic form and using the trace trick $\text{tr}(ABC) = \text{tr}(CAB)$:
-
-$$Q(A) \propto -\frac{1}{2} \sum_{t=2}^T \mathbb{E}_q\left[ \text{tr}(z_t^\top \Sigma^{-1} z_t) - 2\text{tr}(z_t^\top \Sigma^{-1} A z_{t-1}) + \text{tr}(z_{t-1}^\top A^\top \Sigma^{-1} A z_{t-1}) \right]$$ 
-
-Dropping terms that are constant with respect to $A$: 
-
-$$Q(A) \propto \sum_{t=2}^T \left( \mathbb{E}_q[\text{tr}(z_{t-1} z_t^\top \Sigma^{-1} A)] - \frac{1}{2} \mathbb{E}_q[\text{tr}(A^\top \Sigma^{-1} A z_{t-1} z_{t-1}^\top)] \right)$$ 
-
-Differentiating with respect to $A$ and setting to zero: 
-
-$$\nabla_A Q(A) = \sum_{t=2}^T \left( \Sigma^{-1} \mathbb{E}_q[z_t z_{t-1}^\top] - \Sigma^{-1} A \mathbb{E}_q[z_{t-1} z_{t-1}^\top] \right) = 0$$ 
-
-$$\implies \Sigma^{-1} \sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top] = \Sigma^{-1} A \sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]$$
-
-Solving for $A$ yields the update rule: 
-
-$$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
-
-The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion.
+<div class="accordion">
+  <details>
+    <summary>proof of M-Step for LDS models</summary>
+    <h4>Setting the things up</h4>
+    <p>The complete-data log-likelihood factorizes due to the Markov and conditional independence properties:</p>
+    $$\log p(X, Z) = \log p(z_1) + \sum_{t=2}^T \log p(z_t\mid z_{t-1}) + \sum_{t=1}^T \log p(x_t\mid z_t)$$
+    <p>The expectation can be split into three parts:</p>
+    $$\mathbb{E}_q[\log p(X, Z)] = \underbrace{\mathbb{E}_q[\log p(z_1)]}_{\text{initial condition}} + \underbrace{\mathbb{E}_q\left[\sum_{t=2}^T \log p(z_t\mid z_{t-1})\right]}_{\text{latent model}} + \underbrace{\mathbb{E}_q\left[\sum_{t=1}^T \log p(x_t\mid z_t)\right]}_{\text{observation model}}$$
+    <h4>The objective expansion given the distributions of variables</h4>
+    <p>These correspond to the initial distribution, process model, and observation model, respectively.</p>
+    <p>Applying this to the LDS model components ($p(z_1)$, $p(z_t\mid z_{t-1})$, $p(x_t\mid z_t)$), the expected complete-data log-likelihood becomes a function of terms like:</p>
+    $$\mathbb{E}_q[\log p_\theta(X,Z)] =$$
+    $$\mathbb{E}_q[c_1 - \frac{1}{2}\log \lvert \Sigma_0\rvert - \frac{1}{2}(z_1 - \mu_0)^\top \Sigma_0^{-1} (z_1 - \mu_0)]$$
+    $$+\mathbb{E}_q[c_2 \underbrace{- \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2} \sum_{t=2}^T (z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})}_{:= Q(A)}]$$
+    $$+\mathbb{E}_q[c_3 - \frac{T}{2}\log \lvert \Gamma \rvert -\frac{1}{2} \sum_{t=1}^T (x_t - Bz_{t})^\top \Gamma^{-1} (x_t - Bz_{t})]$$
+    <h4>Derivation of the Update for $A$</h4>
+    <p>To find the update for the transition matrix $A$, we differentiate the part of the expected log-likelihood related to the process model, which we denote $Q(A)$, with respect to $A$ and set it to zero.</p>
+    <p>The relevant term is:</p>
+    $$Q(A) = \mathbb{E}_q[- \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T(z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})]$$
+    $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T\mathbb{E}_q[(z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})]$$
+    <p>Next we use the identities $x^\top A y = \text{tr}(Ayx^\top)$ and $\mathbb{E}[\text{tr}(A)] = \text{tr}(\mathbb{A})$.</p>
+    $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T\mathbb{E}_q[z_t^\top\Sigma^{-1}z_t - z_{t-1}^\top A^\top\Sigma^{-1}z_t -z_t^\top\Sigma^{-1}Az_{t-1} + z_{t-1}^\top A^\top\Sigma^{-1}Az_{t-1}]$$
+    $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T \Sigma^{-1}[z_t^\top z_t] - A^\top\Sigma^{-1}[z_t z_{t-1}^\top] -\Sigma^{-1}A[z_{t-1}z_t^\top] + A^\top\Sigma^{-1}A[z_{t-1}z_{t-1}^\top]$$
+    $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T \mathbb{E}_{q}[\text{tr}(\Sigma^{-1}z_t^\top z_t)] - \mathbb{E}_{q}[\text{tr}(A^\top\Sigma^{-1}z_t z_{t-1}^\top)] -\mathbb{E}_{q}[\text{tr}(\Sigma^{-1}Az_{t-1}z_t^\top)] + \mathbb{E}_{q}[\text{tr}(A^\top\Sigma^{-1}Az_{t-1}z_{t-1}^\top)]$$
+    $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T \text{tr}(\Sigma^{-1}\mathbb{E}_{q}[z_t^\top z_t]) - \text{tr}(A^\top\Sigma^{-1}\mathbb{E}_{q}[z_t z_{t-1}^\top]) - \text{tr}(\Sigma^{-1}A\mathbb{E}_{q}[z_{t-1}z_t^\top]) + \text{tr}(A^\top\Sigma^{-1}A\mathbb{E}_{q}[z_{t-1}z_{t-1}^\top])$$
+    <p>Dropping terms that are constant with respect to $A$:</p>
+    $$\widetilde{Q}(A) = -\frac{1}{2} \sum_{t=2}^T \left( -\text{tr}(A^\top\Sigma^{-1}\mathbb{E}_{q}[z_t z_{t-1}^\top]) \right)$$
+    $$- \text{tr}(\Sigma^{-1}A\mathbb{E}_{q}[z_{t-1}z_t^\top])$$
+    $$+ \text{tr}(A^\top\Sigma^{-1}A\mathbb{E}_{q}[z_{t-1}z_{t-1}^\top])$$
+    <p>Dropping terms that are constant with respect to $A$ and differentiating with respect to $A$ and setting to zero:</p>
+    $$\nabla_A \widetilde{Q}(A) = -\frac{1}{2} \sum_{t=2}^T \left( \Sigma^{-1} \mathbb{E}_q[z_t z_{t-1}^\top] - \Sigma^{-1}\mathbb{E}_q[z_t z_{t-1}^\top] + \Sigma^{-1}A\mathbb{E}_q[z_{t-1} z_{t-1}^\top] - \Sigma^{-1} A \mathbb{E}_q[z_{t-1} z_{t-1}^\top] \right)$$
+    $$= \Sigma^{-1} \sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top] - \Sigma^{-1} A \sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top] = 0$$
+    $$\implies \cancel{\Sigma^{-1}} \sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top] = \cancel{\Sigma^{-1}} A \sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]$$
+    <p>Solving for $A$ yields the update rule:</p>
+    $$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
+    <p>The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion.</p>
+  </details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">EM for LDS Models</span><span class="math-callout__name">(E-Step)</span></p>
@@ -3010,6 +3005,11 @@ The Kalman filter-smoother operates in two passes:
 From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^\top]$, $\mathbb{E}[z_t z_{t-1}^\top]$) required for the M-step.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/filtering_smoothing.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Filtering: forward loop. Smoothing: backward loop.</figcaption>
+</figure>
 
 ## The Kalman Filter and Smoother
 
@@ -3035,7 +3035,7 @@ The derivation of the filtering equations relies on fundamental principles of pr
 ### The Recursive Nature of Bayesian Filtering
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Bayesian Filtering)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Bayesian Filtering)</span></p>
 
 $$p(z_t \mid x_1, \dots, x_t) = \frac{p(x_t\mid z_t)\int p(z_t \mid z_{t-1})p(z_{t-1} \mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t-1})}$$
 
@@ -3055,7 +3055,12 @@ $$p(z_t \mid x_1, \dots, x_t) = \frac{p(x_t\mid z_t)\int p(z_t \mid z_{t-1})p(z_
   </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Recursive structure of Bayesian filtering)</span></p>
+
 This formulation reveals the recursive structure: the predictive distribution at time $t$ is found by integrating the process model $p(z_t \mid z_{t-1})$ against the filtering distribution from the previous step, $p(z_{t-1} \mid x_1, \dots, x_{t-1})$.
+
+</div>
 
 ### The Kalman Filter: A Linear Gaussian Solution
 
@@ -3087,7 +3092,7 @@ In this framework, **all relevant distributions are assumed to be Gaussian**.
 #### Derivation of the Predictive Distribution
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Bayesian Filter for Linear Gaussian SSM is Gaussian)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Bayesian Filter for Linear Gaussian SSM is Gaussian)</span></p>
 
 $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
 
@@ -3100,13 +3105,13 @@ $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
     $$\int \mathcal{N}(z_t \mid A z_{t-1}, \Sigma_z) \mathcal{N}(z_{t-1} \mid m_{t-1}, V_{t-1}) dz_{t-1}$$
     <p>The product of two Gaussian functions results in another Gaussian function (up to a scaling constant):</p>
     $$\text{Constant} = (2\pi)^{-\frac{M}{2}}\lvert \Sigma \rvert^{-\frac{1}{2}} \cdot (2\pi)^{-\frac{M}{2}}\lvert V_{t-1} \rvert^{-\frac{1}{2}}$$
-    $$\text{Exponent} = -\frac{1}{2} \left( (z_t - Az_{t-1})^\top\Sigma^{-1}(z_t - Az_{t-1}) + (z_{t-1} - \mu_{t-1})^\top\V_{t_1}^{-1}(z_{t-1} - \mu_{t-1}) \right)$$
+    $$\text{Exponent} = -\frac{1}{2} \left( (z_t - Az_{t-1})^\top\Sigma^{-1}(z_t - Az_{t-1}) + (z_{t-1} - \mu_{t-1})^\top V_{t_1}^{-1}(z_{t-1} - \mu_{t-1}) \right)$$
     <p>Collecting terms in $z_{t-1}$:</p>
-    $$= -\frac{1}{1} \left[ z_{t-1}^\top \underbrace{(A^\top \Sigma^{-1} A + V^{-1}_{t-1})}_{:= H^{-1}} z_{t-1} - z_{t-1}^\top {(A^\top \Sigma^{-1} z_t + V^{-1}_{t-1}\mu_{t-1})}_{:= H^{-1}\mu}$$
-    $$- \undebrace{(z_t^\top A^\top \Sigma^{-1} A + \mu_{t-1}^\top V_{t-1}^{-1})}_{\mu^\top H^{-1}} z_{t-1} + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \right]$$
-    $$= -\frac{1}{2} \left[ z_{t-1}^\top H^{-1} z_{t-1} - z_{t-1}^\top H^{-1} \mu - \mu^\top H^{-1} z_{t-1}^\top$$
+    $$= -\frac{1}{1} \Bigl[ z_{t-1}^\top \underbrace{(A^\top \Sigma^{-1} A + V^{-1}_{t-1})}_{:= H^{-1}} z_{t-1} - z_{t-1}^\top {(A^\top \Sigma^{-1} z_t + V^{-1}_{t-1}\mu_{t-1})}_{:= H^{-1}\mu}$$
+    $$- \undebrace{(z_t^\top A^\top \Sigma^{-1} A + \mu_{t-1}^\top V_{t-1}^{-1})}_{\mu^\top H^{-1}} z_{t-1} + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
+    $$= -\frac{1}{2} \Bigl[ z_{t-1}^\top H^{-1} z_{t-1} - z_{t-1}^\top H^{-1} \mu - \mu^\top H^{-1} z_{t-1}^\top$$
     $$+ \mu^\top H^{-1}\mu - \mu^\top H^{-1}\mu$$
-    $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \right]$$
+    $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
     $$\int (2\pi)^{-\frac{M}{2}} \underbrace{\lvert \Sigma \rvert^{-\frac{1}{2}} \cdot (2\pi)^{-\frac{M}{2}}\lvert V_{t-1} \rvert^{-\frac{1}{2}}}_{:= C}$$
     $$\cdot \underbrace{\exp(-\frac{1}{2}(- \mu^\top H^{-1}\mu + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1}))}_{:= \widetilde{C}} \exp(-\frac{1}{2}((z_{t-1}-\mu)^\top H^{-1}(z_{t-1}-\mu))) dz_{t-1}$$
     $$= C \lvert H \rvert^{-\frac{1}{2}} \widetilde{C} \underbrace{\int (2\pi)^{-\frac{M}{2}} \lvert H \rvert^{-\frac{1}{2}} \exp(-\frac{1}{2}((z_{t-1}-\mu)^\top H^{-1}(z_{t-1}-\mu))) dz_{t-1}}_{=1}$$
@@ -3127,7 +3132,7 @@ $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
     $$\quad\Longrightarrow\quad \mathcal{N}(A\mu_{t-1}, L_{t-1})$$
     $$\Longrightarrow\quad I = \int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1} = \mathcal{N}(A\mu_{t-1},\,L_{t-1})$$
     <p><strong>Finally:</strong></p>
-    $$p(z_t\mid x_1,\dots,x_t) = \frac{p(x_t\mid z_t)\underbrace{\int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}_{:=I}}{p(x_t\mid x_1,\dots,x_{t-1})}$$
+    $$p(z_t\mid x_1,\dots,x_t) = \frac{p(x_t\mid z_t)\overbrace{\int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}^{:=I}}{p(x_t\mid x_1,\dots,x_{t-1})}$$
     $$= \frac{\mathcal{N}(Bz_t,\Gamma)\mathcal{N}(A\mu_{t-1},L_{t-1})}{p(x_t\mid x_1,\dots,x_{t-1})}$$
     $$\Longrightarrow\quad p(z_t\mid x_1,\ldots,x_t) = \mathcal{N}(\mu_t,V_t).$$
     $$\Rightarrow\ \text{combining the remaining Gaussians is similar.}$$
@@ -3159,11 +3164,11 @@ Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of the state at time $t-1
 1. **Prediction Step:**
   * **Predicted state mean:**
   
-  $$\hat{m}\_t = A m_{t-1}$$
+  $$\hat{m}_t = A m_{t-1}$$
   
   * **Predicted state covariance:** 
   
-  $$\hat{V}\_t = A V_{t-1} A^\top + \Sigma_z$$
+  $$\hat{V}_t = A V_{t-1} A^\top + \Sigma_z$$
   
 2. **Update Step:**
   * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
@@ -3192,7 +3197,7 @@ At time $t$ you have:
 
 The update is:
 
-$$\mu_t=\mu_{t\mi dt-1}+K_t\big(x_t - B_t\mu_{t\mid t-1}\big)$$
+$$\mu_t=\mu_{t\mid t-1}+K_t\big(x_t - B_t\mu_{t\mid t-1}\big)$$
 
 The term in parentheses is the **innovation / residual**: “what the sensor says minus what I expected to see.”
 
@@ -3232,7 +3237,7 @@ The smoothing problem is to find the distribution $p(z_t \mid x_1, \dots, x_T)$,
 The Kalman smoother is an efficient algorithm that accomplishes this with a backward pass through the data after a full forward pass of the Kalman filter has been completed.
 
 <figure>
-  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/kalman_smoother.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/kalman_smoother.png' | relative_url }}" alt="Kalman Smoother Schema" loading="lazy">
   <figcaption>Kalman Smoother.</figcaption>
 </figure>
 
@@ -3241,7 +3246,7 @@ The Kalman smoother is an efficient algorithm that accomplishes this with a back
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Bayesian Smoother)</span></p>
 
-$$\gamma_t = \alpha_t \cdot \beta_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1}, z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+$$\gamma_t = \alpha_t \cdot \beta_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1} \mid z_{t+1})p(z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
 
 where 
 
@@ -3258,13 +3263,13 @@ Recursion comes from the dependence of $\gamma_t$ on $\gamma_{t+1}$ (backward in
 <div class="accordion">
   <details>
     <summary>proof</summary>
-    $$\undebrace{p(z_t \mid x_{1:T})}_{\gamma_t} = \undebrace{\frac{p(z_t, x_{1:t})}{p(x_{1:t})}}_{=p(z_t\mid x_{1:t})\sim\mathcal{N}(\mu_t,V_t), := \alpha_t} \times \underbrace{\frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}}_{:= \beta_t}$$
+    $$\underbrace{p(z_t \mid x_{1:T})}_{\gamma_t} = \underbrace{\frac{p(z_t, x_{1:t})}{p(x_{1:t})}}_{=p(z_t\mid x_{1:t})\sim\mathcal{N}(\mu_t,V_t), := \alpha_t} \times \underbrace{\frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}}_{:= \beta_t}$$
     $$\gamma_t = \alpha_t \cdot \beta_t$$
     $$= \alpha_t \cdot \frac{\int p(z_{t+1}, x_{t+1:T}\mid z_t)dz_{t+1}}{p(x_{t+1:T}\mid x_{1:t})}$$
     $$= \alpha_t \cdot \frac{\int p(x_{t+2:T}\mid \cancel{x_{t+1}, z_t}, z_{t+1})\overbrace{p(x_{t+1} \mid z_{t+1})}^{\text{obs. model}}\overbrace{p(z_{t+1} \mid z_t)}^{\text{lat. model}}dz_{t+1}}{p(x_{t+2:T}\mid x_{1:t+1})p(x_{t+1}\mid x_{1:t})}$$
     <p>where</p>
     $$\beta_{t+1}=\alpha_{t+1}^{-1}\gamma_{t+1}={p(x_{t+2:T}\mid \cancel{x_{t+1}, z_t}, z_{t+1})}{p(x_{t+2:T}\mid x_{1:t+1})}$$
-    $$\gamma_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1}, z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+    $$\implies \gamma_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1} \mid z_{t+1})p(z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
   </details>
 </div>
 
@@ -3302,6 +3307,9 @@ The algorithm requires the stored results (means and covariances) from the forwa
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Kalman Smoother)</span></p>
+
 After the backward pass is complete, the set of distributions $\lbrace \mathcal{N}(m_t^s, V_t^s) \rbrace_{t=1}^T$ represents the full smoothed posterior distributions $p(z_t \mid x_1, \dots, x_T)$ for all time steps:
 
 $$p(z_t \mid x_{1:T}) = \sim \mathcal{N}(m_t^s, V_t^s)$$
@@ -3309,6 +3317,8 @@ $$p(z_t \mid x_{1:T}) = \sim \mathcal{N}(m_t^s, V_t^s)$$
 $$\mathbb{E}[z_t] = m_t^s$$
 
 $$\mathbb{E}[z_t z_t^\top] = \text{Cov}(z_t) + \mathbb{E}[z_t]\mathbb{E}[z_t^\top]$$
+
+</div>
 
 ## The Poisson State Space Model
 
