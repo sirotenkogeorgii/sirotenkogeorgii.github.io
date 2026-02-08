@@ -3402,58 +3402,45 @@ $$\mathbb{E}_{q(Z)}[\log p(Z, C)] = \underbrace{\mathbb{E}_{q(Z)}[\log p(C \mid 
 
 In the M-step, we find the parameters $\theta$ that maximize the $\mathcal{Q}$ function, holding the posterior distribution $q(Z)$ fixed. We analyze the two terms of the objective separately.
 
-#### Latent Dynamics Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">EM for Poisson SSM</span><span class="math-callout__name">(M-Step)</span></p>
 
-The term $\mathbb{E}_{q(Z)}[\log p(Z)]$ depends only on the latent dynamics parameters. 
+Let $X=\lbrace X_{1:T}\rbrace$ and $Z=\lbrace Z_{1:T}\rbrace$.
 
-$$\log p(Z) = \log p(z_1 \mid \mu_0, \Sigma_0) + \sum_{t=2}^{T} \log p(z_t \mid z_{t-1}, A, \Sigma)$$ 
+**Goal:** $\theta^* = \max_\theta \mathbb{E}_q[\log p(X, Z)]$.
 
-The log-likelihoods are for Gaussian distributions: 
+**Update for Latent Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$:**
 
-$$\log p(z_t \mid z_{t-1}) = \frac{M}{2}\log(2\pi) -\frac{1}{2}\log\mid \Sigma\mid - \frac{1}{2}(z_t - Az_{t-1})^T \Sigma^{-1} (z_t - Az_{t-1})$$ 
+Equivalent to the M-step of a standard linear Gaussian State Space Model:
 
-$$\log p(z_1) = \frac{M}{2}\log(2\pi) -\frac{1}{2}\log\mid \Sigma_0\mid - \frac{1}{2}(z_1 - \mu_0)^T \Sigma_{0}^{-1} (z_1 - \mu_0)$$ 
+$$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
 
-Maximizing the expectation of this term is equivalent to the M-step of a standard linear Gaussian State Space Model. The updates for $A, \Sigma, \mu_0, \Sigma_0$ depend on the expected sufficient statistics (moments) of the latent states, such as $\mathbb{E}\_q[z_t]$, $\mathbb{E}\_q[z_t z_t^\top]$, and $\mathbb{E}\_q[z_t z_{t-1}^\top]$, which are computed during the E-step.
+The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion. 
 
-#### Observation Parameters $\lbrace b_0, B_1\rbrace$
+**Update for Observation Parameters $\lbrace b_0, B_1\rbrace$:**
 
-The term $\mathbb{E}_{q(Z)}[\log p(C \mid Z)]$ depends only on the observation parameters. 
+The objective for $b_0$ and $B_1$ is: 
 
-$$\mathbb{E}_{q(Z)}[\log p(C \mid Z)] = \sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[\log p(c_t \mid z_t)]$$ 
+$$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^\top(b_0 + B_1 \mu_t) - \mathbf{1}^\top \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$ 
 
-The log-likelihood of the Poisson observation is: 
+where 
 
-$$\log p(c_t \mid z_t, b_0, B_1) = c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t - \log(c_t!)$$
+$$\mathbb{E}[\lambda_t] = \exp\left(b_0 + B_1\mu_t + \frac{1}{2}\mathrm{diag}(B_1 V_t B_1^\top)\right)$$
 
-Dropping terms constant with respect to the parameters, we need to maximize: 
+the outer $\exp(\cdot)$ is elementwise.
 
-$$\sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[c_t^T \log \lambda_t - \mathbf{1}^T\lambda_t] = \sum_{t=1}^{T} (c_t^T \mathbb{E}_{q(z_t)}[\log \lambda_t] - \mathbf{1}^T\mathbb{E}_{q(z_t)}[\lambda_t])$$
-
-Substituting $\log \lambda_t = b_0 + B_1 z_t$, the first part is: 
-
-$$\mathbb{E}_{q(z_t)}[\log \lambda_t] = b_0 + B_1 \mathbb{E}_{q(z_t)}[z_t]$$ 
-
-The second part involves the expectation of an exponential function of a Gaussian random variable. Assuming the approximate posterior from the E-step is Gaussian, $q(z_t) = \mathcal{N}(z_t \mid \mu_t, V_t)$, then 
-
-$$\mathbb{E}_{q(z_t)}[\lambda_t] = \mathbb{E}_{q(z_t)}[\exp(b_0 + B_1 z_t)]$$
-
-Recall from probability theory that if a random vector $X \sim \mathcal{N}(\mu, \Sigma)$, then for a constant vector $k$, the expectation of $\exp(k^T X)$ is given by: 
-
-$$\mathbb{E}[e^{k^T X}] = \exp(k^T \mu + \frac{1}{2} k^T \Sigma k)$$
-
-Applying this result to each component of $\lambda_t$ (since the exponential is elementwise), we find the expectation for the $i$-th component: 
-
-$$(\mathbb{E}_{q(z_t)}[\lambda_t])_i = \exp\left(b_{0,i} + (B_1 \mu_t)_i + \frac{1}{2} (B_1 V_t B_1^T)_{i,i}\right),$$ 
-
-where $(B_1)_{i,:}$ is the $i$-th row of $B_1$.
-
-The final objective for $b_0$ and $B_1$ is: 
-
-$$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^T(b_0 + B_1 \mu_t) - \mathbf{1}^T \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$ 
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(M-Objective does not .........)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Latent Parameters are updated like in standard linear Gaussian SSM)</span></p>
+
+* Maximizing the expectation of this term is **equivalent to the M-step of a standard linear Gaussian State Space Model**. 
+* The updates for $\lbrace A, \Sigma, \mu_0, \Sigma_0 \rbrace$ depend on the expected sufficient statistics (moments) of the latent states, such as $\mathbb{E}\_q[z_t]$, $\mathbb{E}\_q[z_t z_t^\top]$, and $\mathbb{E}\_q[z_t z_{t-1}^\top]$, **which are computed during the E-step**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(No closed form solution for $b_0$ and $B_1$)</span></p>
 
 * This expression **does not have a closed-form solution for $b_0$ and $B_1$**. 
 * However, this **objective function is concave**, which guarantees that a unique maximum exists. 
@@ -3461,45 +3448,79 @@ $$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^T(b_0 + B_1 \mu_t) - \mathbf
 
 </div>
 
+<div class="accordion">
+  <details>
+    <summary>proof for Latent Parameters</summary>
+    <h4>Latent Dynamics Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$</h4>
+    <p>The term $\mathbb{E}_{q(Z)}[\log p(Z)]$ depends only on the latent dynamics parameters.</p>
+    $$\log p(Z) = \underbrace{\log p(z_1 \mid \mu_0, \Sigma_0)}_{(1)} + \sum_{t=2}^{T} \underbrace{\log p(z_t \mid z_{t-1}, A, \Sigma)}_{(2)}$$
+    $$(1) = \log p(z_t \mid z_{t-1}) = \frac{M}{2}\log(2\pi) -\frac{1}{2}\log\mid \Sigma\mid - \frac{1}{2}(z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})$$
+    $$(2) = \log p(z_1) = \frac{M}{2}\log(2\pi) -\frac{1}{2}\log\mid \Sigma_0\mid - \frac{1}{2}(z_1 - \mu_0)^\top \Sigma_{0}^{-1} (z_1 - \mu_0)$$
+  </details>
+</div>
+
+
+<div class="accordion">
+  <details>
+    <summary>proof for Observation Parameters</summary>
+    <h4>Observation Parameters $\lbrace b_0, B_1\rbrace$</h4>
+    <p>The term $\mathbb{E}_{q(Z)}[\log p(C \mid Z)]$ depends only on the observation parameters.</p>
+    $$\mathbb{E}_{q(Z)}[\log p(C \mid Z)] = \sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[\log p(c_t \mid z_t)]$$
+    <p>The log-likelihood of the Poisson observation is:</p>
+    $$\log p(c_t \mid z_t, b_0, B_1) = c_t^\top \log \lambda_t - \mathbf{1}^\top\lambda_t - \log(c_t!)$$
+    <p>Dropping terms constant with respect to the parameters, we need to maximize:</p>
+    $$\sum_{t=1}^{T} \mathbb{E}_{q(z_t)}[c_t^\top \log \lambda_t - \mathbf{1}^T\lambda_t] = \sum_{t=1}^{T} (c_t^\top \mathbb{E}_{q(z_t)}[\log \lambda_t] - \mathbf{1}^\top\mathbb{E}_{q(z_t)}[\lambda_t])$$
+    <p>Substituting $\log \lambda_t = b_0 + B_1 z_t$, the first part is:</p>
+    $$\mathbb{E}_{q(z_t)}[\log \lambda_t] = b_0 + B_1 \mathbb{E}_{q(z_t)}[z_t]$$
+    <p>The second part involves the expectation of an exponential function of a Gaussian random variable. Assuming the approximate posterior from the E-step is Gaussian, $q(z_t) = \mathcal{N}(z_t \mid \mu_t, V_t)$, then</p>
+    $$\mathbb{E}_{q(z_t)}[\lambda_t] = \mathbb{E}_{q(z_t)}[\exp(b_0 + B_1 z_t)]$$
+    <p>Recall from probability theory that if a random vector $X \sim \mathcal{N}(\mu, \Sigma)$, then for a constant vector $k$, the expectation of $\exp(k^\top X)$ is given by:</p>
+    $$\mathbb{E}[\exp(k^\top X)] = \exp(k^\top \mu + \frac{1}{2} k^\top \Sigma k)$$
+    <p>Let</p>
+    <ul>
+      <li>$z \sim \mathcal{N}(\mu, V)$ with $z\in\mathbb{R}^M$</li>
+      <li>$b_0\in\mathbb{R}^D$, $B_1\in\mathbb{R}^{D\times M}$</li>
+      <li>$\lambda = \exp(b_0 + B_1 z)$ where the exp is <strong>elementwise</strong>.</li>
+    </ul>
+    <p>Look at the $i$-th component:</p>
+    $$\lambda_i = \exp\big(b_{0,i} + (B_1 z)_i\big) = \exp\big(b_{0,i} + b_i^\top z\big)$$
+    <p>where $b_i^\top$ is the $i$-th row of $B_1$ (so $b_i\in\mathbb{R}^M$).</p>
+    <p>Now this matches the scalar identity with:</p>
+    <ul>
+      <li>scalar constant $a = b_{0,i}$</li>
+      <li>constant vector $k = b_i$.</li>
+    </ul>
+    <p>So</p>
+    $$\mathbb{E}[\lambda_i] = \mathbb{E}\big[\exp(a + k^\top z)\big] = \exp(a)\mathbb{E}\big[\exp(k^\top z)\big]$$
+    <p>For Gaussian $z\sim\mathcal N(\mu_t,V_t)$,</p>
+    $$\mathbb{E}[\exp(k^\top z)] = \exp\left(k^\top \mu_t + \frac{1}{2} k^\top V_t k\right)$$
+    <p>Therefore</p>
+    $$\boxed{\mathbb{E}[\lambda_{i}^{(t)}]= \exp\left(b_{0,i} + b_i^\top \mu_t + \frac{1}{2} b_i^\top V_t b_i\right)}$$
+    <p>If you stack all components, you get a vector:</p>
+    $$
+    \mathbb {E}[\lambda_t] =
+    \begin{bmatrix}
+    \exp(b_{0,1} + b_1^\top \mu_t + \tfrac12 b_1^\top V_t b_1)\\
+    \vdots\\
+    \exp(b_{0,D} + b_D^\top \mu_t + \tfrac12 b_D^\top V_t b_D)
+    \end{bmatrix}
+    $$
+    <p>More compact:</p>
+    $$
+    \boxed{\mathbb{E}[\lambda_t] = \exp\left(b_0 + B_1\mu_t + \frac{1}{2}\mathrm{diag}(B_1 V_t B_1^\top)\right)}
+    $$
+    <p>where:</p>
+    <ul>
+      <li>the outer $\exp(\cdot)$ is elementwise.</li>
+    </ul>
+    <p>The final objective for $b_0$ and $B_1$ is:</p>
+    $$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^\top(b_0 + B_1 \mu_t) - \mathbf{1}^\top \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$
+  </details>
+</div>
+
 ### The E-Step: Laplace Approximation
 
 The E-step requires computing the posterior distribution over the latent states, $p(Z \mid C, \theta^{\text{old}})$. For the Poisson SSM, this posterior is analytically intractable due to the non-conjugate relationship between the Gaussian latent dynamics and the Poisson observation model. 
-
-$$\overbrace{p(z_t \mid c_{1:t})}^{\approx \mathcal{N}(\mu_t, V_t)} = \frac{\overbrace{p(c_t \mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t\mid z_{t-1})}^{\mathcal{N}(Az_{t-1}, \Sigma)}\overbrace{p(z_{t-1}\mid c_{1:t-1})}^{\approx \mathcal{N}(\mu_{t-1}, V_{t-1})}dz_{t-1}}{p(c_t\mid c_{1:t-1})}$$ 
-
-Here, $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a Poisson likelihood. Their product does not yield a standard distribution.
-
-To overcome this, we approximate the true posterior with a Gaussian distribution using the Laplace approximation. This method finds a Gaussian that matches the mode and the curvature at the mode of the target distribution.
-
-The process follows the standard predict-update cycle of a Kalman filter, but with a modified update step.
-
-#### Predict Step
-
-Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian 
-
-$$p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$$ 
-
-the one-step-ahead predictive distribution is also Gaussian: 
-
-$$p(z_t \mid c_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid c_{1:t-1}) dz_{t-1} \approx \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1}),$$
-
-where:
-
-* Predicted Mean: $\mu_{t\mid t-1} = A \mu_{t-1}$
-* Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
-
-#### Update Step
-
-The goal is to approximate the true filtering posterior 
-
-$$p(z_t \mid c_{1:t}) = \frac{p(c_t \mid z_t) p(z_t \mid c_{1:t-1})}{p(c_t\mid c_{1:{t-1}})} \approx \frac{p(c_t \mid z_t) \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1})}{p(c_t\mid c_{1:{t-1}})}$$
-
-$$p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) p(z_t \mid c_{1:t-1})$$
-
-with a new Gaussian $\mathcal{N}(\mu_t, V_t)$.
-
-1. A Gaussian distribution is fully specified by its mean and covariance matrix.
-2. The maximum of the logarithm of a Gaussian's PDF occurs at its mean. The curvature at this maximum is determined by the inverse of its covariance.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Laplace Approximation in Statistics)</span></p>
@@ -3512,44 +3533,13 @@ It is a second-order saddle-point approximation.
 
 </div>
 
-We can therefore find the parameters of our Gaussian approximation by maximizing the logarithm of the target posterior. Let $Q(z_t)$ be the unnormalized log-posterior: 
+$$\overbrace{p(z_t \mid c_{1:t})}^{\approx \mathcal{N}(\mu_t, V_t)} = \frac{\overbrace{p(c_t \mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t\mid z_{t-1})}^{\mathcal{N}(Az_{t-1}, \Sigma)}\overbrace{p(z_{t-1}\mid c_{1:t-1})}^{\approx \mathcal{N}(\mu_{t-1}, V_{t-1})}dz_{t-1}}{p(c_t\mid c_{1:t-1})}$$ 
 
-$$Q(z_t) = \log p(c_t \mid z_t) + \log p(z_t \mid c_{1:t-1})$$ 
+Here, $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a Poisson likelihood. Their product does not yield a standard distribution.
 
-Dropping constants, this is: 
+To overcome this, we approximate the true posterior with a Gaussian distribution using the Laplace approximation. This method finds a Gaussian that matches the mode and the curvature at the mode of the target distribution.
 
-$$Q(z_t) = \left( c_t^\top (b_0 + B_1 z_t) - \mathbf{1}^\top\exp(b_0 + B_1 z_t) \right) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top (V_{t\mid t-1})^{-1} (z_t - \mu_{t\mid t-1})$$
-
-* **Approximated Mean (Mode):** The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing $Q(z_t)$:
-  
-  $$\mu_t := \arg\max_{z_t} Q(z_t)$$ 
-  
-  This maximization must be performed numerically.
-* **Approximated Covariance (Curvature):** The covariance $V_t$ is the negative inverse of the Hessian (second derivative matrix) of $Q(z_t)$ evaluated at the mode $\mu_t$:
-  
-  $$V_t := \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($V_t$ for Gaussian)</span></p>
-
-Laplace Estimate for Gaussian:
-
-$$V_t = \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
-
-$$ = \left[ -\nabla_{z_t}^2 \log \mathcal{N}(\mu, \Sigma) \right]^{-1}_{z_t=\mu_t} = -\Sigma^{-1}$$
-
-**Recall:**
-
-$$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z \partial z^\top} -\frac{1}{2}(z-\mu)^\top\Sigma^{-1}(z-\mu) = -\Sigma^{-1}$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-This **procedure is repeated for each time step** $t=1, \dots, T$ to obtain the approximate filtering distributions required for the M-step. To get the full posterior $q(Z)$, a subsequent backward pass (analogous to the Rauch-Tung-Striebel smoother) is typically performed.
-
-</div>
+The process follows the standard predict-update cycle of a Kalman filter, but with a modified update step.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(E-step for Poisson SSM)</span></p>
@@ -3565,6 +3555,72 @@ The E-step for the Poisson SSM consists of a forward filtering pass using the La
   * $\mu_t = \arg\max_{z_t} Q(z_t)$
   * $V_t = (-\nabla_{z_t}^2 Q(z_t)\mid_{z_t=\mu_t})^{-1}$
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Procedure is repeated)</span></p>
+
+This **procedure is repeated for each time step** $t=1, \dots, T$ to obtain the approximate filtering distributions required for the M-step. To get the full posterior $q(Z)$, a subsequent backward pass (analogous to the Rauch-Tung-Striebel smoother) is typically performed.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($V_t$ for Gaussian (our case))</span></p>
+
+Laplace Estimate for Gaussian:
+
+$$V_t = \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
+
+$$ = \left[ -\nabla_{z_t}^2 \log \mathcal{N}(\mu, \Sigma) \right]^{-1}_{z_t=\mu_t} = -\Sigma^{-1}$$
+
+**Recall:**
+
+$$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z \partial z^\top} -\frac{1}{2}(z-\mu)^\top\Sigma^{-1}(z-\mu) = -\Sigma^{-1}$$
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof for Predict Step</summary>
+    <h4>Predict Step</h4>
+    <p>Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian</p>
+    $$p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$$
+    <p>the one-step-ahead predictive distribution is also Gaussian:</p>
+    $$p(z_t \mid c_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid c_{1:t-1}) dz_{t-1} \approx \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1}),$$
+    <p>where:</p>
+    <ul>
+      <li>Predicted Mean: $\mu_{t\mid t-1} = A \mu_{t-1}$</li>
+      <li>Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$</li>
+    </ul>
+  </details>
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof for Update Step</summary>
+    <h4>Update Step</h4>
+    <p>The goal is to approximate the true filtering posterior</p>
+    $$p(z_t \mid c_{1:t}) = \frac{p(c_t \mid z_t) p(z_t \mid c_{1:t-1})}{p(c_t\mid c_{1:{t-1}})} \approx \frac{p(c_t \mid z_t) \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1})}{p(c_t\mid c_{1:{t-1}})}$$
+    $$p(z_t \mid c_{1:t}) \propto p(c_t \mid z_t) p(z_t \mid c_{1:t-1})$$
+    <p>with a new Gaussian $\mathcal{N}(\mu_t, V_t)$.</p>
+    <ol>
+      <li>A Gaussian distribution is fully specified by its mean and covariance matrix.</li>
+      <li>The maximum of the logarithm of a Gaussian's PDF occurs at its mean. The curvature at this maximum is determined by the inverse of its covariance.</li>
+    </ol>
+    <p>We can therefore find the parameters of our Gaussian approximation by maximizing the logarithm of the target posterior. Let $Q(z_t)$ be the unnormalized log-posterior:</p>
+    $$Q(z_t) = \log p(c_t \mid z_t) + \log p(z_t \mid c_{1:t-1})$$
+    <p>Dropping constants, this is:</p>
+    $$Q(z_t) = \left( c_t^\top (b_0 + B_1 z_t) - \mathbf{1}^\top\exp(b_0 + B_1 z_t) \right) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top (V_{t\mid t-1})^{-1} (z_t - \mu_{t\mid t-1})$$
+    <ul>
+      <li><strong>Approximated Mean (Mode):</strong> The mean $\mu_t$ of the Laplace approximation is set to the mode of the true posterior, which is found by maximizing $Q(z_t)$:</li>
+    </ul>
+    $$\mu_t := \arg\max_{z_t} Q(z_t)$$
+    <p>This maximization must be performed numerically.</p>
+    <ul>
+      <li><strong>Approximated Covariance (Curvature):</strong> The covariance $V_t$ is the negative inverse of the Hessian (second derivative matrix) of $Q(z_t)$ evaluated at the mode $\mu_t$:</li>
+    </ul>
+    $$V_t := \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
+  </details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -3747,8 +3803,8 @@ The EKF operates in two stages: predict and update. Let $m_{t-1}$ and $V_{t-1}$ 
 
 It is instructive to compare the EKF prediction equations with those of the standard Kalman Filter, where the transition is linear ($z_t = A z_{t-1} + w_t$):
 
-* KF Predicted Mean: $m_{t\mid t-1} = A m_{t-1}$
-* KF Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
+* **KF Predicted Mean:** $m_{t\mid t-1} = A m_{t-1}$
+* **KF Predicted Covariance:** $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
 
 The EKF replaces the static transition matrix $A$ with the non-linear function $F_\theta$ for propagating the mean and with its local Jacobian $J_{t-1}$ for propagating the covariance.
 
