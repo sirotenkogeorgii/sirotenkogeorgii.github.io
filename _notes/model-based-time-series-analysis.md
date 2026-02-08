@@ -759,9 +759,9 @@ The **ensemble** is the population of all possible realizations that a stochasti
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(White Noise Process)</span></p>
 
-Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim WN(0, \sigma^2)$, if it satisfies:
+Let $\sigma^2 > 0$. A time series $X = \lbrace X_t\rbrace_{t \in I}$ is called a **white noise process** with variance $\sigma^2$, denoted $X_t \sim \mathcal{WN}(0, \sigma^2)$, if it satisfies:
 1.  $\mathbb{E}[X_t] = 0$ for all $t \in I$.
-2.  $\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$
+2.  $$\text{Cov}(X_s, X_t) = \begin{cases} \sigma^2 & \text{if } s=t \\ 0 & \text{if } s \neq t \end{cases}$$
 
 </div>
 
@@ -805,7 +805,7 @@ $$\gamma_{XX}(s, t) = \mathbb{E}[X_s X_t] - \mu_s \mu_t$$
 * **Symmetry:** $\gamma_{XX}(s, t) = \gamma_{XX}(t, s)$
 * **Variance:** $\gamma_{XX}(t, t) = \text{Var}(X_t)$
 * **Cauchy-Schwarz Inequality:** $\lvert \gamma_{XX}(s, t)\rvert \leq \sqrt{\text{Var}(X_s)\text{Var}(X_t)}$
-* The autocovariance function for a white noise process $X_t \sim WN(0, \sigma^2)$: $\gamma_{XX}(s, t) = \sigma^2 \delta_{s,t}$
+* The autocovariance function for a white noise process $X_t \sim \mathcal{WN}(0, \sigma^2)$: $\gamma_{XX}(s, t) = \sigma^2 \delta_{s,t}$
     * $\delta_{s,t}$ is the Kronecker delta.
 
 </div>
@@ -985,7 +985,7 @@ $$Y = X\beta + E$$
 where:
 
 * $Y = (y_1, \dots, y_T)^\top$ is the $T \times 1$ vector of responses.
-* $X$ is the $T \times (p+1)$ design matrix, where each row is $x_t^T$.
+* $X$ is the $T \times (p+1)$ design matrix, where each row is $x_t^\top$.
 * $\beta = (\beta_0, \dots, \beta_p)^T$ is the $(p+1) \times 1$ parameter vector.
 * $E = (\epsilon_1, \dots, \epsilon_T)^T$ is the $T \times 1$ vector of errors.
 </div>
@@ -1076,6 +1076,9 @@ $$\hat{\beta}_{\text{LS}} = \hat{\beta}_{\text{MLE}}$$
 
 #### Model Diagnostics
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Examining the residuals, Assumptions of LRM on errors)</span></p>
+
 After fitting a model, it is crucial to assess its validity by examining the **residuals**, which are the differences between the observed and fitted values.
 
 The model decomposes the observed data $x_t$ into a fitted signal $\hat{y}_t$ and a residual component $res_t$:
@@ -1084,25 +1087,33 @@ $$y_t = \hat{y}_t + res_t$$
 
 where $\hat{y}_t = x_t^\top \hat{\beta}$ is the predicted value.
 
-> [!IMPORTANT]
-> The core assumptions of the linear regression model
-> * **linearity, normality of errors**
-> * **constant variance**
-> * **independence of errors** 
-> should be checked by analyzing the residuals.
+The core assumptions of the linear regression model:
+* **linearity, normality of errors**
+* **constant variance**
+* **independence of errors** 
 
-**Common Diagnostic Visualizations:**
+should be checked by analyzing the residuals.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Common Diagnostic Visualizations)</span></p>
 
   * **Error Histogram:** A histogram of the residuals $res_t$ can provide a first check on the assumption that the errors are normally distributed.
   * **Q-Q (Quantile-Quantile) Plot:** This is a more rigorous way to check for normality. It plots the sorted quantiles of the residuals against the theoretical quantiles of a standard normal distribution. If the residuals are normally distributed, the points on the Q-Q plot will lie close to a straight diagonal line.
   * **ACF Plot of Residuals:** The Autocorrelation Function (ACF) plot of the residuals is used to check the assumption of independence. For time series data, it is critical to ensure there is no remaining temporal structure (autocorrelation) in the residuals. Significant spikes in the ACF plot suggest that the model has failed to capture the temporal dynamics in the data.
 
-**Sources of "Bad Residuals" (Model Misspecification):**
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Sources of "Bad Residuals" (Model Misspecification))</span></p>
 
   * **Wrong assumption on modality:** The errors may not be normally distributed.
   * **Wrong assumption on relationship:** The true relationship between predictors and response may be non-linear.
   * **Missing external predictors:** Important explanatory variables may have been omitted from the model.
   * **Missing temporal dynamics:** The model fails to account for dependencies between observations over time.
+
+</div>
 
 ### Handling Non-Linearity: Basis Expansion
 
@@ -1265,6 +1276,9 @@ The following statements are true for logistic regression:
 
 #### Multimodal Regression
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multivariate Linear Regression Model)</span></p>
+
 This approach models datasets where each observation consists of multiple types of data, or **modalities**.
 
 **Setup:**
@@ -1280,11 +1294,18 @@ This approach models datasets where each observation consists of multiple types 
 * Model for modality 1: $y_{1t} \mid x_t \sim \text{Bernoulli}(\pi_t)$, where $\pi_t = \sigma(\eta_{1t})$.
 * Model for modality 2: $y_{2t} \mid x_t \sim \mathcal{N}(\mu_t, \sigma^2)$, where $\mu_t = \eta_{2t}$.
 
-A key assumption is **conditional independence**: the different modalities are independent of each other, given the predictors.
+**Key assumption:**
+
+* **conditional independence**: the different modalities are independent of each other, given the predictors.
 
 $$p(y_{1t}, y_{2t} \mid x_t) = p(y_{1t} \mid x_t) p(y_{2t} \mid x_t)$$
 
-**Loss Function (MLE):** Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Loss Function (MLE) for Multimodal Regression Above)</span></p>
+
+Due to the conditional independence assumption, the total log-likelihood is the sum of the log-likelihoods for each modality:
 
 $$l(\beta_1, \beta_2, \sigma^2) = \sum_{t=1}^T \log p(y_{1t} \mid x_t) + \sum_{t=1}^T \log p(y_{2t} \mid x_t)$$
 
@@ -1294,7 +1315,16 @@ $$
 
 This loss function can be maximized jointly to find the parameters for both models.
 
-If the assumption of conditional independence between modalities is not reasonable, a common approach is to introduce a shared **latent variable** $\epsilon_t$ that captures common dynamics or unobserved factors influencing all modalities. Conditional on both the predictors $u_t$ and the latent variable $\epsilon_t$, the modalities are then assumed to be independent.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What this calculation actually proves)</span></p>
+
+* If the assumption of conditional independence between modalities is not reasonable, a common approach is to introduce a shared **latent variable** $\epsilon_t$ that **captures common dynamics or unobserved factors influencing all modalities**. 
+* Conditional on both the predictors $x_t$ and the latent variable $\epsilon_t$, the modalities are then assumed to be independent.
+
+</div>
+
 
 #### Hierarchical Modeling
 
@@ -1609,6 +1639,12 @@ $$\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$$
 
 There is a fundamental duality between AR and MA processes. Under certain stability conditions, any finite-order AR process can be represented as an infinite-order MA process, and vice-versa.
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Autoregressive model (AR))</span></p>
+
+
+</div>
+
 Let's examine this with a simple AR(1) process: $X_t = a_0 + a_1 X_{t-1} + \epsilon_t$. We can recursively expand this expression:
 
 $$
@@ -1638,24 +1674,23 @@ $$\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1$$
 
 Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
 
-<div class="accordion">
-<details>
-<summary>Why must $\lvert a_1 \rvert < 1$?</summary>
-<p>
-This condition arises from the convergence of the geometric series. If $\lvert a_1 \rvert \ge 1$, the influence of past shocks ($\epsilon_{t-k}$) does not diminish over time. Instead, it persists or explodes, meaning the mean and variance of the process would not be constant, violating the definition of stationarity.
-</p>
-</details>
-</div>
-
 #### State-Space Representation and Stability
 
 A powerful technique for analyzing AR models is to write them in a state-space (or vector) form. Any scalar AR(p) process can be represented as a p-variate VAR(1) process.
 
-Consider an AR(p) process $X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$. We can define a $p$-dimensional state vector $\mathbf{X}_t$:
+Consider an AR(p) process 
+
+$$X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$$
+
+We can define a $p$-dimensional state vector $\mathbf{X}_t$:
 
 $$\mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}$$
 
-The process can then be written in the form $\mathbf{X}\_t = \mathbf{a} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$, where:
+The process can then be written in the form 
+
+$$\mathbf{X}\_t = \mathbf{a} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$$
+
+where:
 
 $$
 \mathbf{a} = \begin{pmatrix} a_0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
@@ -1897,11 +1932,24 @@ A key step in ARMA modeling is identifying the orders $p$ and $q$. The Autocorre
 
 #### Autocorrelation in AR(1) Processes
 
-Consider a zero-mean ($a_0=0$) AR(1) process: $X_t = a_1 X_{t-1} + \epsilon_t$. The autocovariance at lag $k$, $\gamma(k)$, can be calculated.
+Consider a zero-mean ($a_0=0$) AR(1) process: 
 
-  * **Lag 1:** $\mathbb{E}[X_t X_{t-1}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 \mathbb{E}[X_{t-1}^2] + \mathbb{E}[\epsilon_t X_{t-1}]$. Since $\epsilon_t$ is uncorrelated with past values of $X$, $\mathbb{E}[\epsilon_t X_{t-1}]=0$. Thus, $\gamma(1) = a_1 \gamma(0)$.
-  * **Lag 2:** $\mathbb{E}[X_t X_{t-2}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 \mathbb{E}[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$.
-  * **General Lag $k$:** $\gamma(k) = a_1^k \gamma(0)$.
+$$X_t = a_1 X_{t-1} + \epsilon_t$$
+
+The autocovariance at lag $k$, $\gamma(k)$, can be calculated.
+
+  * **Lag 1:** 
+  
+  $$\mathbb{E}[X_t X_{t-1}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 \mathbb{E}[X_{t-1}^2] + \mathbb{E}[\epsilon_t X_{t-1}]$$
+  
+  $\mathbb{E}[\epsilon_t X_{t-1}]=0$ since $\epsilon_t$ is uncorrelated with past values of $X$. Thus, $\gamma(1) = a_1 \gamma(0)$.
+  * **Lag 2:** 
+   
+  $$\mathbb{E}[X_t X_{t-2}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 \mathbb{E}[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$$
+
+  * **General Lag $k$:** 
+   
+  $$\gamma(k) = a_1^k \gamma(0)$$
 
 The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rho(k) = a_1^k$. The ACF of an AR(1) process **decays exponentially** to zero.
 
@@ -1917,7 +1965,7 @@ $$
 
 This provides a clear signature: the ACF of an MA($q$) process **sharply cuts off** to zero after lag $q$.
 
-#### 2.3.3 The Partial Autocorrelation Function (PACF)
+#### The Partial Autocorrelation Function (PACF)
 
 The PACF at lag $k$ measures the correlation between $X_t$ and $X_{t-k}$ after removing the linear dependence on the intervening variables ($X_{t-1}, X_{t-2}, \dots, X_{t-k+1}$). A key property of the PACF for an AR(p) process is:
 
@@ -1964,37 +2012,6 @@ Once an ARMA model is fitted, it can be used for:
   * **Control:** Understand how to steer the system towards a desired state.
 
 ## Vector Autoregressive (VAR) Models
-
-Vector Autoregressive (VAR) models are a direct extension of the univariate AR models to multivariate time series.
-
-### Model Architecture
-
-A VAR model is used for analyzing a set of $N$ time series variables recorded simultaneously.
-
-  * **Data:** At each time point $t$, we have a vector $\mathbf{X}\_t = (X\_{1t}, X\_{2t}, \dots, X\_{Nt})^\top \in \mathbb{R}^N$.
-  * **New Phenomenon:** The primary interest in VAR modeling is to capture not only the autocorrelation within each series but also the **cross-correlation** (or cross-covariance) between different series.
-
-A **VAR($p$) model** is defined as:
-
-$$\mathbf{X}_t = \mathbf{c} + \sum_{i=1}^p A_i \mathbf{X}_{t-i} + \mathbf{\epsilon}_t$$
-
-  * $\mathbf{c}$ is an $N \times 1$ intercept vector.
-  * $A_i$ are $N \times N$ coefficient matrices for each lag $i$.
-  * $\mathbf{\epsilon}\_t$ is an $N \times 1$ white noise vector process with mean zero and a covariance matrix $\Sigma_\epsilon$. Importantly, the covariance matrix $\Sigma_\epsilon$ is generally not diagonal, allowing for contemporaneous correlation between the shocks to different variables.
-
-The structure of a coefficient matrix $A_i$ is informative:
-
-$$
-A_i = \begin{pmatrix}
-a_{11}^{(i)} & a_{12}^{(i)} & \dots & a_{1N}^{(i)} \\
-a_{21}^{(i)} & a_{22}^{(i)} & \dots & a_{2N}^{(i)} \\
-\vdots & \vdots & \ddots & \vdots \\
-a_{N1}^{(i)} & a_{N2}^{(i)} & \dots & a_{NN}^{(i)}
-\end{pmatrix}
-$$
-
-  * **Diagonal entries** ($a_{jj}^{(i)}$) relate the past of variable $j$ to its own current value.
-  * **Off-diagonal entries** ($a_{jk}^{(i)}$) quantify how the past of variable $k$ influences the current value of variable $j$. This is the basis for concepts like Granger causality.
 
 ### State-Space Representation and Stationarity
 
@@ -2054,7 +2071,6 @@ Crucially, the off-diagonal elements of $\Sigma_\varepsilon$ are allowed to be n
 
 </div>
 
-
 #### Structure of Coefficient Matrices
 
 Each coefficient matrix $A_i$ captures the influence of variables at lag $i$ on the current state of the system.
@@ -2068,7 +2084,7 @@ a_{N1}^{(i)} & \dots & a_{NN}^{(i)}
 $$
 
 - **Diagonal Entries ($a_{jj}^{(i)}$):** These entries relate a variable to its own past. They capture the internal time constants and autoregressive properties of each individual series.
-- **Off-Diagonal Entries ($a_{jk}^{(i)}$ for $j \neq k$):** These entries quantify how the past of variable $k$ influences the present of variable $j$. They are the key to understanding the cross-series dynamics and interactions.
+- **Off-Diagonal Entries ($a_{jk}^{(i)}$ for $j \neq k$):** These entries quantify how the past of variable $k$ influences the present of variable $j$. They are the key to understanding the cross-series dynamics and interactions. This is the basis for concepts like Granger causality.
 
 ### Equivalence and Companion Form
 
@@ -2153,12 +2169,12 @@ The Likelihood Ratio (LR) test provides a framework for comparing nested models.
 
 - Let $\mathcal{M}_0$ be a "restricted" model (null hypothesis, $H_0$) with parameter space $\Theta_0$.
 - Let $\mathcal{M}_1$ be a "full" model (alternative hypothesis, $H_1$) with parameter space $\Theta_1$, where $\Theta_0 \subset \Theta_1$.
-- Let $\ell\_{max}(\mathcal{M}_0)$ and $\ell\_{max}(\mathcal{M}_1)$ be the maximized log-likelihoods for each model.
+- Let $\ell\_{\text{max}}(\mathcal{M}_0)$ and $\ell\_{\text{max}}(\mathcal{M}_1)$ be the maximized log-likelihoods for each model.
 
 The LR test statistic is defined as:
 
 $$
-D = -2 \log \left(\frac{\sup_{\theta \in \Theta_0} \mathcal{L}(\theta)}{\sup_{\theta \in \Theta_1} \mathcal{L}(\theta)}\right) = -2 (\ell_{max}(\mathcal{M}_0) - \ell_{max}(\mathcal{M}_1))
+D = -2 \log \left(\frac{\sup_{\theta \in \Theta_0} \mathcal{L}(\theta)}{\sup_{\theta \in \Theta_1} \mathcal{L}(\theta)}\right) = -2 (\ell_{\text{max}}(\mathcal{M}_0) - \ell_{\text{max}}(\mathcal{M}_1))
 $$
 
 Under suitable regularity conditions and assuming $H_0$ is true, the statistic $D$ follows a chi-squared distribution:
@@ -2181,13 +2197,13 @@ We can use the LR test to decide if a VAR($p+1$) model provides a significantly 
 The LR test compares the "explained variation" in the data under both models. The maximized log-likelihood is related to the determinant of the estimated residual covariance matrix, $\hat{\Sigma}_\varepsilon$.
 
 $$
-\ell_{max} \propto -\frac{T_{eff}}{2} \log(\lvert\hat{\Sigma}_\varepsilon\rvert)
+\ell_{\text{max}} \propto -\frac{T_{\text{eff}}}{2} \log(\lvert\hat{\Sigma}_\varepsilon\rvert)
 $$
 
 The test statistic becomes:
 
 $$
-D = T_{eff} \left(\log(\lvert\hat{\Sigma}_{restr}\rvert) - \log(\rvert\hat{\Sigma}_{full}\lvert)\right)
+D = T_{\text{eff}} \left(\log(\lvert\hat{\Sigma}_{\text{restr}}\rvert) - \log(\rvert\hat{\Sigma}_{\text{full}}\lvert)\right)
 $$
 
 This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR(p+1) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
@@ -2213,8 +2229,8 @@ To make this concept testable, Granger proposed embedding it within a VAR model.
 
 We then perform a likelihood ratio test (or an F-test) comparing these two models.
 
-- Let $\hat{\Sigma}\_{full}$ and $\hat{\Sigma}\_{restr}$ be the estimated residual covariance matrices.
-- The LR test statistic is: $D = T_{eff} (\log(\lvert\hat{\Sigma}\_{restr}\rvert) - \log(\lvert\hat{\Sigma}\_{full}\rvert))$.
+- Let $\hat{\Sigma}\_{\text{full}}$ and $\hat{\Sigma}\_{\text{restr}}$ be the estimated residual covariance matrices.
+- The LR test statistic is: $D = T_{\text{eff}} (\log(\lvert\hat{\Sigma}\_{\text{restr}}\rvert) - \log(\lvert\hat{\Sigma}\_{\text{full}}\rvert))$.
 - Under $H_0$ (no Granger causality), $D \sim \chi^2(q)$, where $q$ is the number of zero-restrictions imposed (in this case, $p \times (\text{dim of } X) \times (\text{dim of } Y)$).
 
 **Interpretation:** If adding the past of $X$ significantly reduces the residual covariance (i.e., the prediction error) for $Y$, then the test statistic will be large, leading to a rejection of the null hypothesis. We conclude that $X$ Granger-causes $Y$.
@@ -2408,7 +2424,7 @@ $$f(x_1^{\ast}) = x_2^{\ast}, \dots, f(x_p^{\ast}) = x_1^{\ast}$$
 
 A point on a **$p$-cycle is a fixed point of the $p$-th iterated map** $f^p(\cdot)$. That is, 
 
-$$x^{\ast} = f^p(x^{\ast})$$.
+$$x^{\ast} = f^p(x^{\ast})$$
 
 </div>
 
@@ -2494,7 +2510,7 @@ The logistic map has two fixed points:
 <div class="accordion">
   <details>
     <summary>proof</summary>
-    <p>We solve $x^{\ast} = f(x^{\ast}) = \alpha x^{\ast} (1 - x^{\ast})$.</p>
+    $$x^{\ast} = f(x^{\ast}) = \alpha x^{\ast} (1 - x^{\ast})$$
     $$x^{\ast} - \alpha x^{\ast} + \alpha (x^{\ast})^2 = 0 \implies x^{\ast}(1 - \alpha + \alpha x^{\ast}) = 0$$
     <p>This gives two fixed points:</p>
     <ol>
@@ -2737,14 +2753,14 @@ The ELBO can be expressed in two common, equivalent forms.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Log-Likelihood - KL)</span></p>
 
-$$\begin{aligned} \text{ELBO}(q, p_\theta) &= \int q(Z) \log \frac{p_\theta(X, Z)}{q(Z)} dZ \\ &= \int q(Z) \log \frac{p_\theta(Z\mid X) p_\theta(X)}{q(Z)} dZ \\ &= \int q(Z) \log p_\theta(X) dZ + \int q(Z) \log \frac{p_\theta(Z\mid X)}{q(Z)} dZ \\ &= \log p_\theta(X) \int q(Z) dZ - \int q(Z) \log \frac{q(Z)}{p_\theta(Z\mid X)} dZ \\ &= \log p_\theta(X) - KL(q(Z) \parallel  p_\theta(Z\mid X)) \end{aligned}$$
+$$\begin{aligned} \text{ELBO}(q, p_\theta) &= \int q(Z) \log \frac{p_\theta(X, Z)}{q(Z)} dZ \\ &= \int q(Z) \log \frac{p_\theta(Z\mid X) p_\theta(X)}{q(Z)} dZ \\ &= \int q(Z) \log p_\theta(X) dZ + \int q(Z) \log \frac{p_\theta(Z\mid X)}{q(Z)} dZ \\ &= \log p_\theta(X) \int q(Z) dZ - \int q(Z) \log \frac{q(Z)}{p_\theta(Z\mid X)} dZ \\ &= \log p_\theta(X) - \text{KL}(q(Z) \parallel  p_\theta(Z\mid X)) \end{aligned}$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of the second form of ELBO)</span></p>
 
-From the second form of the ELBO, we see that if $KL(q(Z) \parallel p_\theta(Z\mid X)) = 0$ (i.e., the proposal density $q(Z)$ is equal to the true posterior $p_\theta(Z\mid X)$), the bound becomes exact: $\text{ELBO} = \log p_\theta(X)$. Therefore, maximizing the ELBO becomes equivalent to maximizing the log-likelihood.
+From the second form of the ELBO, we see that if $\text{KL}(q(Z) \parallel p_\theta(Z\mid X)) = 0$ (i.e., the proposal density $q(Z)$ is equal to the true posterior $p_\theta(Z\mid X)$), the bound becomes exact: $\text{ELBO} = \log p_\theta(X)$. Therefore, maximizing the ELBO becomes equivalent to maximizing the log-likelihood.
 
 </div>
 
@@ -2840,10 +2856,21 @@ The model parameters are:
 
 </div>
 
-For convenience, we will assume $\Sigma_0 = \Sigma$. Additionally, external inputs could be added to these models, but they are omitted here for simplicity.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Parameters of init distribution are inferred from data)</span></p>
 
-* The true state ($z_t$) requires both position and velocity.
-* We only observe a noisy GPS measurement of the position ($x_t$). This is an incomplete observation of the true state.
+* $\mu_0$ and $\Sigma_0$ are usually **inferred from the data we have**.
+* For convenience, we will assume $\Sigma_0 = \Sigma$. Additionally, external inputs could be added to these models, but they are omitted here for simplicity.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Latent variable and observation)</span></p>
+
+* The **true state** $z_t$ requires both position and velocity.
+* We only observe a noisy GPS measurement of the position $x_t$. This is an incomplete **observation** of the true state.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(General LDS Vocabulary)</span></p>
@@ -2869,7 +2896,6 @@ For convenience, we will assume $\Sigma_0 = \Sigma$. Additionally, external inpu
     $$\theta_{\text{lat}} = \lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace, \quad \theta_{\text{obs}} = \lbrace B, \Gamma\rbrace$$
 
 </div>
-
 
 EM for LDS Models
 
@@ -2973,8 +2999,13 @@ For an LDS, the posterior distribution $p_\theta(Z\mid X)$ is also Gaussian and 
 
 The Kalman filter-smoother operates in two passes:
 
-1. **Forward Pass (Filtering):** This pass iterates from $t=1$ to $T$, computing the filtered distributions $p(z_t \mid x_1, \dots, x_t)$.
-2. **Backward Pass (Smoothing):** This pass iterates from $t=T-1$ down to $1$, using the results of the forward pass to compute the smoothed distributions $p(z_t \mid x_1, \dots, x_T)$.
+1. **Forward Pass (Filtering):** This pass iterates from $t=1$ to $T$, computing the filtered distributions 
+   
+   $$p(z_t \mid x_1, \dots, x_t)$$
+
+2. **Backward Pass (Smoothing):** This pass iterates from $t=T-1$ down to $1$, using the results of the forward pass to compute the smoothed distributions 
+  
+  $$p(z_t \mid x_1, \dots, x_T)$$
 
 From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^\top]$, $\mathbb{E}[z_t z_{t-1}^\top]$) required for the M-step.
 
@@ -2982,7 +3013,7 @@ From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z
 
 ## The Kalman Filter and Smoother
 
-1.1 Foundational Concepts for Bayesian Filtering
+### Foundational Concepts for Bayesian Filtering
 
 The core objective of filtering in time series analysis is to recursively estimate the state of a dynamic system from a series of noisy measurements. We aim to compute the probability distribution of the current state, $z_t$, given all observations up to the current time, $x_1, \dots, x_t$. This is formally expressed as the filtering distribution, $p(z_t \mid x_1, \dots, x_t)$.
 
@@ -3001,36 +3032,28 @@ The derivation of the filtering equations relies on fundamental principles of pr
 
 </div>
 
-### The Recursive Nature of Filtering
+### The Recursive Nature of Bayesian Filtering
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Kalman Filter)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Bayesian Filtering)</span></p>
 
-$$p(z_t \mid x_1, \dots, x_t) = \frac{p(x_t\mid z_t)\int p(z_t \mid z_{t-1})p(z_{t-1} \mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
+$$p(z_t \mid x_1, \dots, x_t) = \frac{p(x_t\mid z_t)\int p(z_t \mid z_{t-1})p(z_{t-1} \mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t-1})}$$
 
 </div>
 
-The filtering distribution $p(z_t \mid x_1, \dots, x_t)$ can be computed recursively. This means the estimate at time $t$ is an update of the estimate from time $t-1$, incorporating the new observation $x_t$.
-
-The derivation begins by applying Bayes' rule:  
-
-$$p(z_t \mid x_1, \dots, x_t) = \frac{p(z_t,x_1,\dots,x_t)}{p(x_1,\dots,x_t)}$$
-
-$$= \frac{p(x_t\mid z_t,\cancel{x_1,\dots,x_{t-1}})p(z_t\mid x_1,\dots,x_{t-1})\cancel{p(x_1,\dots,x_{t_1})}}{p(x_t \mid x_1,\dots,x_{t_1})\cancel{p(x_1,\dots,x_{t_1})}}$$
-
-$$= \frac{p(x_t\mid z_t)\overbrace{p(z_t\mid x_1,\dots,x_{t-1})}^{\text{prediction}}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
-
-$$= \frac{p(x_t\mid z_t)\int p(z_t, z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
-
-$$= \frac{p(x_t\mid z_t)\int p(z_t \mid z_{t-1}, \cancel{x_1,\dots,x_{t-1}})p(z_{t-1} \mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}$$
-
-$$\implies \boxed{p(z_t \mid x_1, \dots, x_t) = \frac{\overbrace{p(x_t\mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t \mid z_{t-1})}^{\text{lat. model}}\overbrace{p(z_{t-1} \mid x_1,\dots,x_{t-1})}^{\text{filter at } t-1}dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t_1})}}$$
-
-$$\implies \text{recursive in time}$$
-
-Applying the conditional independence assumption simplifies the first term.
-
-The second term, $p(z_t \mid x_1, \dots, x_{t-1})$, is the one-step predictive distribution. It is derived by marginalizing out the previous state $z_{t-1}$. 
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>The filtering distribution $p(z_t \mid x_1, \dots, x_t)$ can be computed recursively. This means the estimate at time $t$ is an update of the estimate from time $t-1$, incorporating the new observation $x_t$.</p>
+    <p>The derivation begins by applying Bayes' rule:</p>
+    $$p(z_t \mid x_1, \dots, x_t) = \frac{p(z_t,x_1,\dots,x_t)}{p(x_1,\dots,x_t)}$$
+    $$= \frac{p(x_t\mid z_t,\cancel{x_1,\dots,x_{t-1}})p(z_t\mid x_1,\dots,x_{t-1})\cancel{p(x_1,\dots,x_{t-1})}}{p(x_t \mid x_1,\dots,x_{t-1})\cancel{p(x_1,\dots,x_{t-1})}}$$
+    $$= \frac{p(x_t\mid z_t)\overbrace{p(z_t\mid x_1,\dots,x_{t-1})}^{\text{prediction}}}{p(x_t \mid x_1,\dots,x_{t-1})}$$
+    $$= \frac{p(x_t\mid z_t)\int p(z_t, z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t-1})}$$
+    $$\implies \boxed{p(z_t \mid x_1, \dots, x_t) = \frac{\overbrace{p(x_t\mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t \mid z_{t-1})}^{\text{lat. model}}\overbrace{p(z_{t-1} \mid x_1,\dots,x_{t-1})}^{\text{filter at } t-1}dz_{t-1}}{p(x_t \mid x_1,\dots,x_{t-1})}}$$
+    $$\implies \text{recursive in time}$$
+  </details>
+</div>
 
 This formulation reveals the recursive structure: the predictive distribution at time $t$ is found by integrating the process model $p(z_t \mid z_{t-1})$ against the filtering distribution from the previous step, $p(z_{t-1} \mid x_1, \dots, x_{t-1})$.
 
@@ -3061,92 +3084,231 @@ In this framework, **all relevant distributions are assumed to be Gaussian**.
 
 </div>
 
-1.3.2 Derivation of the Predictive Distribution
+#### Derivation of the Predictive Distribution
 
-We first solve for the one-step predictive distribution, $p(z_t \mid x_1, \dots, x_{t-1})$, by computing the integral:  
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Bayesian Filter for Linear Gaussian SSM is Gaussian)</span></p>
 
-$$\int p(z_t \mid z_{t-1}) p(z_{t-1} \mid x_1, \dots, x_{t-1}) dz_{t-1}$$
+$$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
 
-By assumption, this is the integral of the product of two Gaussian distributions:  
+</div>
 
-$$\int \mathcal{N}(z_t \mid A z_{t-1}, \Sigma_z) \mathcal{N}(z_{t-1} \mid m_{t-1}, V_{t-1}) dz_{t-1}$$
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    $$p(z_t \mid x_1, \dots, x_{t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid x_1, \dots, x_{t-1}) dz_{t-1}$$
+    $$\int \mathcal{N}(z_t \mid A z_{t-1}, \Sigma_z) \mathcal{N}(z_{t-1} \mid m_{t-1}, V_{t-1}) dz_{t-1}$$
+    <p>The product of two Gaussian functions results in another Gaussian function (up to a scaling constant):</p>
+    $$\text{Constant} = (2\pi)^{-\frac{M}{2}}\lvert \Sigma \rvert^{-\frac{1}{2}} \cdot (2\pi)^{-\frac{M}{2}}\lvert V_{t-1} \rvert^{-\frac{1}{2}}$$
+    $$\text{Exponent} = -\frac{1}{2} \left( (z_t - Az_{t-1})^\top\Sigma^{-1}(z_t - Az_{t-1}) + (z_{t-1} - \mu_{t-1})^\top\V_{t_1}^{-1}(z_{t-1} - \mu_{t-1}) \right)$$
+    <p>Collecting terms in $z_{t-1}$:</p>
+    $$= -\frac{1}{1} \left[ z_{t-1}^\top \underbrace{(A^\top \Sigma^{-1} A + V^{-1}_{t-1})}_{:= H^{-1}} z_{t-1} - z_{t-1}^\top {(A^\top \Sigma^{-1} z_t + V^{-1}_{t-1}\mu_{t-1})}_{:= H^{-1}\mu}$$
+    $$- \undebrace{(z_t^\top A^\top \Sigma^{-1} A + \mu_{t-1}^\top V_{t-1}^{-1})}_{\mu^\top H^{-1}} z_{t-1} + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \right]$$
+    $$= -\frac{1}{2} \left[ z_{t-1}^\top H^{-1} z_{t-1} - z_{t-1}^\top H^{-1} \mu - \mu^\top H^{-1} z_{t-1}^\top$$
+    $$+ \mu^\top H^{-1}\mu - \mu^\top H^{-1}\mu$$
+    $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \right]$$
+    $$\int (2\pi)^{-\frac{M}{2}} \underbrace{\lvert \Sigma \rvert^{-\frac{1}{2}} \cdot (2\pi)^{-\frac{M}{2}}\lvert V_{t-1} \rvert^{-\frac{1}{2}}}_{:= C}$$
+    $$\cdot \underbrace{\exp(-\frac{1}{2}(- \mu^\top H^{-1}\mu + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1}))}_{:= \widetilde{C}} \exp(-\frac{1}{2}((z_{t-1}-\mu)^\top H^{-1}(z_{t-1}-\mu))) dz_{t-1}$$
+    $$= C \lvert H \rvert^{-\frac{1}{2}} \widetilde{C} \underbrace{\int (2\pi)^{-\frac{M}{2}} \lvert H \rvert^{-\frac{1}{2}} \exp(-\frac{1}{2}((z_{t-1}-\mu)^\top H^{-1}(z_{t-1}-\mu))) dz_{t-1}}_{=1}$$
+    $$= C \lvert H \rvert^{-\frac{1}{2}} \widetilde{C}$$
+    <p>Focus on the exponent of $\widetilde{C}$:</p>
+    $$\text{exponent}(\tilde c) := -\frac{1}{2}\Bigl(-\mu^\top H^{-1} \mu + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1}\mu_{t-1}\Bigr)$$
+    $$= -\frac{1}{2}\Bigl[-\bigl(H(A^\top \Sigma^{-1}z_t + V_{t-1}^{-1}\mu_{t-1})\bigr)^\top H^{-1}H(A^\top \Sigma^{-1}z_t + V_{t-1}^{-1}\mu_{t-1})$$
+    $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1}\mu_{t-1}\Bigr]$$
+    $$= -\frac{1}{2}\Bigl(z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1}\mu_{t-1} - \bigl(z_t^\top \Sigma^{-1}A + \mu_{t-1}^\top V_{t-1}^{-1}\bigr)H$$
+    $$\bigl(A^\top \Sigma^{-1}z_t + V_{t-1}^{-1}\mu_{t-1}\bigr) \Bigr)$$
+    $$= -\frac{1}{2}\Bigl[\underbrace{z_t^\top\Bigl(\Sigma^{-1} - \Sigma^{-1} A H A^\top \Sigma^{-1}\Bigr)z_t}_{(\Sigma + A V_{t-1} A^\top)^{-1}}$$
+    $$- z_t^\top \underbrace{\Sigma^{-1} A H V_{t-1}^{-1}}_{(\Sigma + A V_{t-1} A^\top)^{-1}A}\mu_{t-1}$$
+    $$- \mu_{t-1}^\top \underbrace{V_{t-1}^{-1} H A^\top \Sigma^{-1}}_{A^\top(\Sigma + A V_{t-1} A^\top)^{-1}} z_t$$
+    $$+ \mu_{t-1}^\top\underbrace{\Bigl(V_{t-1}^{-1} - V_{t-1}^{-1} H V_{t-1}^{-1}\Bigr)}_{A^\top(\Sigma + A V_{t-1} A^\top)^{-1}A}\mu_{t-1}\Bigr]$$
+    $$= -\frac{1}{2}\Bigl[z_t^\top L_{t-1}^{-1} z_t - z_t^\top L_{t-1}^{-1}A\mu_{t-1}$$
+    $$- \mu_{t-1}^\top A^\top L_{t-1}^{-1} z_t + \mu_{t-1}^\top A^\top L_{t-1}^{-1}A\mu_{t-1} \Bigr]$$
+    $$= -\frac{1}{2}(z_t - A\mu_{t-1})^\top L_{t-1}^{-1}(z_t - A\mu_{t-1})$$
+    $$\quad\Longrightarrow\quad \mathcal{N}(A\mu_{t-1}, L_{t-1})$$
+    $$\Longrightarrow\quad I = \int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1} = \mathcal{N}(A\mu_{t-1},\,L_{t-1})$$
+    <p><strong>Finally:</strong></p>
+    $$p(z_t\mid x_1,\dots,x_t) = \frac{p(x_t\mid z_t)\underbrace{\int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}_{:=I}}{p(x_t\mid x_1,\dots,x_{t-1})}$$
+    $$= \frac{\mathcal{N}(Bz_t,\Gamma)\mathcal{N}(A\mu_{t-1},L_{t-1})}{p(x_t\mid x_1,\dots,x_{t-1})}$$
+    $$\Longrightarrow\quad p(z_t\mid x_1,\ldots,x_t) = \mathcal{N}(\mu_t,V_t).$$
+    $$\Rightarrow\ \text{combining the remaining Gaussians is similar.}$$
+    <p><strong>Used identities</strong></p>
+    <p>Let</p>
+    $$H := \bigl(A^\top \Sigma^{-1}A + V_{t-1}^{-1}\bigr)^{-1}$$
+    <p>(i)</p>
+    $$(\Sigma + A V_{t-1} A^\top)^{-1} = \Sigma^{-1} - \Sigma^{-1} A H A^\top \Sigma^{-1}. $$
+    <p>(ii)</p>
+    $$(\Sigma + A V_{t-1} A^\top)^{-1}A = \Sigma^{-1} A H V_{t-1}^{-1}$$
+    <p>(iii)</p>
+    $$A^\top(\Sigma + A V_{t-1} A^\top)^{-1} = V_{t-1}^{-1} H A^\top \Sigma^{-1}$$
+    <p>(iv)</p>
+    $$A^\top(\Sigma + A V_{t-1} A^\top)^{-1}A = V_{t-1}^{-1} - V_{t-1}^{-1} H V_{t-1}^{-1}$$
+    <p>Also (as annotated):</p>
+    $$(\Sigma + A V_{t-1} A^\top)^{-1} := L_t^{-1}.$$
+  </details>
+</div>
 
-The product of two Gaussian functions results in another Gaussian function (up to a scaling constant). To find its parameters, we analyze the quadratic terms in the exponent. The full exponent is:  
-
-$$-\frac{1}{2} \left( (z_t - A z_{t-1})^\top \Sigma_z^{-1} (z_t - A z_{t-1}) + (z_{t-1} - m_{t-1})^\top V_{t-1}^{-1} (z_{t-1} - m_{t-1}) \right)$$
-
-By collecting terms in $z_{t-1}$, completing the square, and integrating $z_{t-1}$ out, we are left with a quadratic form in $z_t$. This corresponds to the exponent of the resulting Gaussian predictive distribution. The derivation relies on standard matrix identities for Gaussian integrals.
-
-The algebraic manipulation in this derivation makes use of matrix inversion identities, such as the Sherman-Morrison-Woodbury identity, to simplify the resulting covariance matrix. For instance, identities of the form:  
-
-$$(V^{-1} + A^\top \Sigma^{-1} A)^{-1} = V - V A^\top (\Sigma + A V A^\top)^{-1} A V$$  
-
-are central to showing how the covariance matrices combine and propagate.
-
-The resulting distribution after integration is also a Gaussian:  
-
-$$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid A m_{t-1}, A V_{t-1} A^\top + \Sigma_z)$$
-
-1.3.3 The Kalman Filter Recursion Equations
+#### The Kalman Filter Recursion Equations
 
 The full derivation of the update step (multiplying the Gaussian predictive distribution by the Gaussian likelihood $p(x_t\mid z_t)$) is algebraically intensive. The final, well-established recursion equations are presented here.
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Kalman Filter Recursion)</span></p>
+
 Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of the state at time $t-1$.
 
-1. Prediction Step:
-  * Predicted state mean:
-    * $\hat{m}\_t = A m_{t-1}$
+1. **Prediction Step:**
+  * **Predicted state mean:**
   
-  * Predicted state covariance: 
-    * $\hat{V}\_t = A V_{t-1} A^\top + \Sigma_z$
-2. Update Step:
-  * Kalman Gain ($K_t$): The gain determines how much the new observation $x_t$ influences the updated state estimate.
+  $$\hat{m}\_t = A m_{t-1}$$
+  
+  * **Predicted state covariance:** 
+  
+  $$\hat{V}\_t = A V_{t-1} A^\top + \Sigma_z$$
+  
+2. **Update Step:**
+  * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
     
     $$K_t = \hat{V}_t B^\top (B \hat{V}_t B^\top + \Gamma)^{-1}$$
 
-  * Updated state mean ($m_t$): The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B \hat{m}_t)$.  
+  * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B \hat{m}_t)$.  
   
     $$m_t = \hat{m}_t + K_t (x_t - B \hat{m}_t)$$
 
-  * Updated state covariance ($V_t$): The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
+  * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
   
-    $$V_t = [I - K_t B] \hat{V}t \quad \text{or alternatively} \quad V_t = [V{t-1}A + \Sigma_z + B^\top \Gamma B]$$  
-    
-    (Note: The second form is an unusual representation and may be a shorthand from the original notes; the first form, $(I - KB)\hat{V}$, is the standard Joseph form covariance update.)
+    $$V_t = [I - K_t B] \hat{V}_t$$
 
-These equations are applied recursively for each time step $t=1, 2, \dots, T$.
+</div>
 
-1.4 The Rauch-Tung-Striebel (RTS) Smoother
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition behind Kalman Gain)</span></p>
+
+Kalman gain $K_t$ is the knob that decides **how much you trust the new measurement vs. your model prediction**.
+
+At time $t$ you have:
+
+* a **prediction** (from dynamics): mean $\mu_{t\mid t-1}$ with uncertainty $P_{t\mid t-1}$
+* a **measurement** $x_t$ with noise $R_t$ ($=\Gamma$)
+
+The update is:
+
+$$\mu_t=\mu_{t\mi dt-1}+K_t\big(x_t - B_t\mu_{t\mid t-1}\big)$$
+
+The term in parentheses is the **innovation / residual**: “what the sensor says minus what I expected to see.”
+
+#### It’s a trust-weight
+
+* If the **sensor is very noisy** ($R_t$ large), $K_t$ becomes small → *ignore the measurement more*.
+* If your **prediction is uncertain** ($\hat{V}_t$ large), $K_t$ becomes large → *listen to the measurement more*.
+
+So it automatically balances “model vs sensor” based on uncertainty.
+
+#### Multi-D: It accounts for geometry and correlations
+
+In general,
+
+$$K_t = \hat{V}_t B_t^\top \big(B_t \hat{V}_t B_t^\top + R_t\big)^{-1}$$
+
+* $B_t \hat{V}_t B_t^\top$ = predicted uncertainty **projected into measurement space**
+* $+R_t$ = total expected uncertainty of the innovation
+* Multiplying by $\hat{V}_t B_t^\top$ maps measurement corrections back into the state.
+
+So $K_t$ also decides *which components of the state* a measurement should correct (e.g., GPS position should update position strongly and maybe velocity a bit if they are correlated).
+
+#### Another good mental model
+
+Kalman gain is chosen to make the updated estimate **as certain as possible** (minimize posterior covariance), while staying unbiased under the model assumptions. It’s the “best linear” way to fuse prediction and measurement when everything is Gaussian.
+
+If you tell me a concrete example (e.g., GPS position updates a ($[pos, vel]$) state), I can show how $K$ gets a nonzero block that also nudges velocity because of the position–velocity coupling in $P$.
+
+</div>
+
+### The Kalman Smoother
 
 While the Kalman filter provides the optimal estimate of the state $z_t$ given observations up to time $t$, denoted $p(z_t \mid x_1, \dots, x_t)$, we often desire a more accurate estimate that incorporates the entire dataset, including future observations. This is the goal of smoothing.
 
 The smoothing problem is to find the distribution $p(z_t \mid x_1, \dots, x_T)$, where $T > t$.
 
-The RTS smoother is an efficient algorithm that accomplishes this with a backward pass through the data after a full forward pass of the Kalman filter has been completed.
+The Kalman smoother is an efficient algorithm that accomplishes this with a backward pass through the data after a full forward pass of the Kalman filter has been completed.
 
-1.4.1 RTS Smoother Recursion Equations
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/kalman_smoother.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Kalman Smoother.</figcaption>
+</figure>
+
+#### Derivation of the Predictive Distribution
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Equation</span><span class="math-callout__name">(Bayesian Smoother)</span></p>
+
+$$\gamma_t = \alpha_t \cdot \beta_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1}, z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+
+where 
+
+$$\gamma_t := p(z_t \mid x_{1:T})$$
+
+$$\alpha_t := \frac{p(z_t, x_{1:t})}{p(x_{1:t})}$$
+
+$$\beta_t := \frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}$$
+
+Recursion comes from the dependence of $\gamma_t$ on $\gamma_{t+1}$ (backward in time).
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    $$\undebrace{p(z_t \mid x_{1:T})}_{\gamma_t} = \undebrace{\frac{p(z_t, x_{1:t})}{p(x_{1:t})}}_{=p(z_t\mid x_{1:t})\sim\mathcal{N}(\mu_t,V_t), := \alpha_t} \times \underbrace{\frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}}_{:= \beta_t}$$
+    $$\gamma_t = \alpha_t \cdot \beta_t$$
+    $$= \alpha_t \cdot \frac{\int p(z_{t+1}, x_{t+1:T}\mid z_t)dz_{t+1}}{p(x_{t+1:T}\mid x_{1:t})}$$
+    $$= \alpha_t \cdot \frac{\int p(x_{t+2:T}\mid \cancel{x_{t+1}, z_t}, z_{t+1})\overbrace{p(x_{t+1} \mid z_{t+1})}^{\text{obs. model}}\overbrace{p(z_{t+1} \mid z_t)}^{\text{lat. model}}dz_{t+1}}{p(x_{t+2:T}\mid x_{1:t+1})p(x_{t+1}\mid x_{1:t})}$$
+    <p>where</p>
+    $$\beta_{t+1}=\alpha_{t+1}^{-1}\gamma_{t+1}={p(x_{t+2:T}\mid \cancel{x_{t+1}, z_t}, z_{t+1})}{p(x_{t+2:T}\mid x_{1:t+1})}$$
+    $$\gamma_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1}, z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+  </details>
+</div>
+
+#### Kalman Smoother Recursion Equations
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Kalman Smoother Recursion)</span></p>
 
 The algorithm requires the stored results (means and covariances) from the forward Kalman filter pass: $\lbrace m_t, V_t\rbrace_{t=1}^T$ and $\lbrace \hat{m}\_t, \hat{V}\_t\rbrace_{t=1}^T$.
 
-1. Initialization: The recursion starts at the final time step, $T$. The smoothed estimate at this point is simply the filtered estimate.
-  * Smoothed mean at time $T$: $m_T^s := m_T$
-  * Smoothed covariance at time T: $V_T^s := V_T$
-2. Backward Recursion: The algorithm proceeds backward in time, from $t = T-1$ down to 0.
-3. For each step $t$:
-  * Define Smoother Gain ($J_t$):  
+1. **Initialization:** The recursion starts at the final time step $T$. The smoothed estimate at this point is simply the filtered estimate.
+  * **Smoothed mean at time $T$:**
+    * $m_T^s := m_T$
+  
+  * **Smoothed covariance at time $T$:** 
+    * $V_T^s := V_T$
+
+2. **Backward Recursion:** 
+  * The algorithm proceeds backward in time, from $t = T-1$ down to $0$.
+
+3. **For each step $t$:**
+  * **Define Smoother Gain $J_t$:**  
   
     $$J_t = V_t A^\top (\hat{V}_{t+1})^{-1}$$  
   
     (Where $\hat{V}_{t+1} = A V_t A^\top + \Sigma_z$ is the one-step predictive covariance from time $t$ to $t+1$).
-  * Update Smoothed Mean ($m_t^s$):
+  
+  * **Update Smoothed Mean $m_t^s$:**
     
     $$m_t^s = m_t + J_t (m_{t+1}^s - \hat{m}_{t+1})$$
 
-  * Update Smoothed Covariance ($V_t^s$):  
+  * **Update Smoothed Covariance $V_t^s$:**  
     
     $$V_t^s = V_t + J_t (V_{t+1}^s - \hat{V}_{t+1}) J_t^\top$$
 
-After the backward pass is complete, the set of distributions $\lbrace N(m_t^s, V_t^s) \rbrace_{t=1}^T$ represents the full smoothed posterior distributions $p(z_t \mid x_1, \dots, x_T)$ for all time steps. The expected value of the state is given by the smoothed mean $\mathbb{E}[z_t] = m_t^s$.
+</div>
+
+After the backward pass is complete, the set of distributions $\lbrace \mathcal{N}(m_t^s, V_t^s) \rbrace_{t=1}^T$ represents the full smoothed posterior distributions $p(z_t \mid x_1, \dots, x_T)$ for all time steps:
+
+$$p(z_t \mid x_{1:T}) = \sim \mathcal{N}(m_t^s, V_t^s)$$
+
+$$\mathbb{E}[z_t] = m_t^s$$
+
+$$\mathbb{E}[z_t z_t^\top] = \text{Cov}(z_t) + \mathbb{E}[z_t]\mathbb{E}[z_t^\top]$$
 
 ## The Poisson State Space Model
 
@@ -3291,7 +3453,7 @@ $$p(z_t \mid c_{1:t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid c_{1:t-1}) dz_
 where:
 
 * Predicted Mean: $\mu_{t\mid t-1} = A \mu_{t-1}$
-* Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^T + \Sigma$
+* Predicted Covariance: $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
 
 3.2 Update Step
 
@@ -3538,8 +3700,6 @@ where $h(z) = \max(0, z)$ (the ReLU function), might lead to a more tractable ex
 
 An alternative to the deterministic approximation of the EKF is a sampling-based approach known as the **Particle Filter (PF)**.
 
-
-</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Particle Filter (PF))</span></p>

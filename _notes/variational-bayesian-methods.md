@@ -17,7 +17,7 @@ At its core, **variational inference (VI)** is a Bayesian approach. Like in stan
 
 Suppose we have a training set $X=(x_1,\dots,x_n)^\top$ with $n$ examples and model parameters $\theta$. Bayes’ rule gives the posterior: 
 
-$$p(\theta \mid X)=\frac{p(X\mid \theta),p(\theta)}{p(X)}.$$
+$$p(\theta \mid X)=\frac{p(X\mid \theta)p(\theta)}{p(X)}.$$
 
 This posterior $p(\theta\mid X)$ represents a *range of plausible parameter values* (a full distribution), in contrast to many conventional ML approaches that typically aim for a **single best parameter value**. Or instead of model parameters we can generalize to some latent variables $z_i$ (model parameters is an application of such random variables) associated with the observations $x_i$ and we want to infer $p(Z\mid X)$.
 
@@ -56,3 +56,6 @@ $$
 where the expectation is taken with respect to $q(\theta\mid \phi)$.
 
 *(Note: $\phi$ typically depends on the dataset $X$; for notational simplicity this dependence is often left implicit.)*
+
+
+https://blog.evjang.com/2016/08/variational-bayes.html
