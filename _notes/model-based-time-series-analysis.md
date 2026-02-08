@@ -3533,13 +3533,18 @@ It is a second-order saddle-point approximation.
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem and Solution</span><span class="math-callout__name">(Non-Gaussian Distribution $\implies$ Laplace Approximation)</span></p>
+
 $$\overbrace{p(z_t \mid c_{1:t})}^{\approx \mathcal{N}(\mu_t, V_t)} = \frac{\overbrace{p(c_t \mid z_t)}^{\text{obs. model}}\int \overbrace{p(z_t\mid z_{t-1})}^{\mathcal{N}(Az_{t-1}, \Sigma)}\overbrace{p(z_{t-1}\mid c_{1:t-1})}^{\approx \mathcal{N}(\mu_{t-1}, V_{t-1})}dz_{t-1}}{p(c_t\mid c_{1:t-1})}$$ 
 
-Here, $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a Poisson likelihood. Their product does not yield a standard distribution.
+* $p(z_t \mid c_{1:t-1})$ is the Gaussian predictive distribution from the Kalman filter's predict step, but $p(c_t \mid z_t)$ is a **Poisson likelihood**. 
+  * Their product **does not yield a standard distribution.**
+* To overcome this, we **approximate the true posterior with a Gaussian distribution using the Laplace approximation**. 
+  * This method **finds a Gaussian that matches the mode and the curvature** at the mode of the target distribution.
+* **The process follows the standard predict-update cycle of a Kalman filter**, but with a modified update step.
 
-To overcome this, we approximate the true posterior with a Gaussian distribution using the Laplace approximation. This method finds a Gaussian that matches the mode and the curvature at the mode of the target distribution.
-
-The process follows the standard predict-update cycle of a Kalman filter, but with a modified update step.
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(E-step for Poisson SSM)</span></p>
@@ -3581,7 +3586,7 @@ $$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z 
 
 <div class="accordion">
   <details>
-    <summary>proof for Predict Step</summary>
+    <summary>proof of Predict Step</summary>
     <h4>Predict Step</h4>
     <p>Assuming the filtered posterior at time $t-1$ is approximated by a Gaussian</p>
     $$p(z_{t-1} \mid c_{1:t-1}) \approx \mathcal{N}(\mu_{t-1}, V_{t-1})$$
@@ -3597,7 +3602,7 @@ $$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z 
 
 <div class="accordion">
   <details>
-    <summary>proof for Update Step</summary>
+    <summary>proof of Update Step</summary>
     <h4>Update Step</h4>
     <p>The goal is to approximate the true filtering posterior</p>
     $$p(z_t \mid c_{1:t}) = \frac{p(c_t \mid z_t) p(z_t \mid c_{1:t-1})}{p(c_t\mid c_{1:{t-1}})} \approx \frac{p(c_t \mid z_t) \mathcal{N}(z_t \mid \mu_{t\mid t-1}, V_{t\mid t-1})}{p(c_t\mid c_{1:{t-1}})}$$
@@ -3683,8 +3688,8 @@ The Expectation-Maximization (EM) algorithm provides a framework for performing 
 
 In the case of a linear state-space model (SSM), the E-step is solved exactly and efficiently using established algorithms:
 
-* The Kalman filter is used to compute the filtering distribution, $p(z_t \mid  x_1, \dots, x_t)$.
-* The Kalman smoother is used to compute the smoothing distribution, $p(z_t \mid  x_1, \dots, x_T)$.
+* The **Kalman filter** is used to compute the filtering distribution, $p(z_t \mid  x_1, \dots, x_t)$.
+* The **Kalman smoother** is used to compute the smoothing distribution, $p(z_t \mid  x_1, \dots, x_T)$.
 
 For non-linear models like generative RNNs, these exact solutions are no longer tractable, necessitating the approximation methods discussed in this chapter.
 
@@ -3721,24 +3726,27 @@ A **generative RNN** can be formulated as a non-linear state-space model with th
 
 ### The E-Step: Inference via the Extended Kalman Filter (EKF)
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem and Solution</span><span class="math-callout__name">(Non-inear function breaks KF assumptions $\implies$ Linearize using Extended Kalman Filter)</span></p>
+
 The primary challenge in the E-step is computing the one-step-ahead predictive distribution for the latent state:  
 
 $$p(z_t \mid  x_1, \dots, x_t) = \frac{p(x_t\mid z_t)p(z_t \mid  x_1, \dots, x_{t-1})}{p(x_t\mid x_1, \dots, x_{t-1})}$$  
 
 $$p(z_t \mid  x_1, \dots, x_{t-1}) = \int \overbrace{p(z_t \mid  z_{t-1}, \theta)}^{\mathcal{N}(F_\theta(z_{t-1}), \Sigma)} p(z_{t-1} \mid  x_1, \dots, x_{t-1}) dz_{t-1}$$  
 
-Due to the non-linear function $F_\theta$ inside $p(z_t \mid  z_{t-1}, \theta)$, this integral is intractable. The Extended Kalman Filter (EKF) provides an approximate solution.
+Due to the **non-linear function** $F_\theta$ inside $p(z_t \mid  z_{t-1}, \theta)$, this **integral is intractable**. The **Extended Kalman Filter (EKF)** provides an **approximate solution**.
 
-The Idea Behind the EKF
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Extended Kalman Filter)</span></p>
 
-The core idea of the EKF is to perform a local linearization of the non-linear dynamics at each time step.
+The core idea of the **Extended Kalman Filter** is to perform a **local linearization of the non-linear dynamics** at each time step.
 
-1. It assumes that the posterior distribution from the previous step, $p(z_{t-1} \mid  x_1, \dots, x_{t-1})$, is concentrated around its mean $m_{t-1}$.
+1. It **assumes** that the posterior distribution from the previous step, $p(z_{t-1} \mid  x_1, \dots, x_{t-1})$, is **concentrated around its mean** $m_{t-1}$.
 2. If this assumption holds, then it is likely that the true latent state $z_{t-1}$ is near $m_{t-1}$.
-3. Therefore, we can linearize the non-linear function $F_\theta$ around this current mean estimate $m_{t-1}$, creating a locally linear Gaussian model.
+3. Therefore, we can linearize the non-linear function $F_\theta$ around this current mean estimate $m_{t-1}$, creating a **locally linear Gaussian model**.
 
 This linearization is achieved using a first-order Taylor expansion of $F_\theta(z_{t-1})$ around $m_{t-1}$:  
 
@@ -3755,48 +3763,61 @@ J_{t-1} =
 \end{pmatrix}
 $$
 
-</div>
-
-By substituting this approximation back into the latent model, the transition distribution becomes:  
+By substituting this approximation back into the latent model, the **transition distribution** becomes:  
 
 $$p(z_t \mid  z_{t-1}, \theta) \approx \mathcal{N}(F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1}), \Sigma)$$
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Random Variables)</span></p>
+</div>
 
-* The resulting expression for the mean is now linear in $z_{t-1}$, which makes the predictive integral tractable, similar to the standard Kalman filter.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Extended Kalman Filter)</span></p>
+
+* The resulting **expression for the mean is now linear** in $z_{t-1}$, which makes the predictive integral tractable, similar to the standard Kalman filter.
 * The mean of the posterior $m_t$, is available at each successive time step, allowing for a new linearization point for the next step.
-* This constitutes a local update at each time step, adapting the linearization to the most recent state estimate.
+* This constitutes a **local update** at each time step, adapting the linearization to the most recent state estimate.
 
 </div>
 
-#### EKF Prediction and Update Equations
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(General case: more non-linearities)</span></p>
 
-The EKF operates in two stages: predict and update. Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of $p(z_{t-1}\mid x_1, \dots, x_{t-1})$.
+In more general case we use:
 
-1. Prediction (Propagate): The one-step-ahead predictive distribution $p(z_t\mid x_1, v, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(m_{t\mid t-1}, V_{t\mid t-1})$ with:
+$$x_t\mid z_t \sim \mathcal{N}(G(z_t), \Gamma)$$
 
-* Predicted Mean:
+$$z_t\mid z_{t_t} \sim \mathcal{N}(F(z_{t-1}), \Sigma)$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Extended Kalman Filter)</span></p>
+
+* Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of $p(z_{t-1}\mid x_1, \dots, x_{t-1})$.
+* Let $J_{t-1} := \frac{\partial F}{\partial z}\mid_{m_{t-1}}$, $\nabla_t := \frac{\partial G}{\partial z}\mid_{F(m_{t-1})}$
+
+1. **Prediction Step:** The one-step-ahead predictive distribution $p(z_t\mid x_1, \dots, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(m_{t\mid t-1}, V_{t\mid t-1})$ with:
+  * **Predicted state mean:**
   
   $$m_{t\mid t-1} = F_\theta(m_{t-1})$$
-
-* Predicted Covariance:  
+  
+  * **Predicted state covariance:** 
   
   $$V_{t\mid t-1} = J_{t-1} V_{t-1} J_{t-1}^\top + \Sigma$$ 
   
-1. Update: The filtering distribution $p(z_t\mid x_1, \dots, x_t)$ is approximated as a Gaussian $\mathcal{N}(m_t, V_t)$ with:
+2. **Update Step:** The filtering distribution $p(z_t\mid x_1, \dots, x_t)$ is approximated as a Gaussian $\mathcal{N}(m_t, V_t)$ with:
+  * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
+    
+    $$K_t = V_{t\mid t-1} \nabla_t^\top (\nabla_t V_{t\mid t-1} \nabla_t^\top + \Gamma)^{-1}$$
 
-* Kalman Gain: 
+  * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B m_{t\mid t-1})$.  
   
-  $$K_t = V_{t\mid t-1} B^\top (B V_{t\mid t-1} B^\top + \Gamma)^{-1}$$
+    $$m_t = m_{t\mid t-1} + K_t (x_t - G(m_{t\mid t-1}))$$
 
-* Updated Mean:  
+  * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
   
-  $$m_t = m_{t\mid t-1} + K_t (x_t - B m_{t\mid t-1}) = F_\theta(m_{t-1}) + K_t (x_t - B F_\theta(m_{t-1}))$$
+    $$V_t = V_{t\mid t-1} - K_t \nabla_t V_{t\mid t-1}$$
 
-* Updated Covariance:
-  
-  $$V_t = V_{t\mid t-1} - K_t B V_{t\mid t-1}$$
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Comparison with Standard Kalman Filter)</span></p>
@@ -3811,51 +3832,61 @@ The EKF replaces the static transition matrix $A$ with the non-linear function $
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Smoother)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Smoother is applicable in the same form as in KF)</span></p>
 
-The RTS smoother algorithm can be applied in the same form as in the linear Kalman Filter case to obtain the smoothed distributions $p(z_t\mid x_1, \dots, x_T)$, which are required for the M-step.
+The **Kalman smoother algorithm can be applied in the same form as in the linear Kalman Filter case** to obtain the smoothed distributions $p(z_t\mid x_1, \dots, x_T)$, which are required for the M-step.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenges of the EKF)</span></p>
 
-The primary drawback of the EKF is that the local linearizations can introduce errors. These errors can accumulate over time, potentially causing the filter to diverge from the true state distribution, especially for highly non-linear systems.
+* The primary drawback of the EKF is that the **local linearizations can introduce errors**. 
+* These **errors can accumulate over time**, potentially causing the filter to diverge from the true state distribution, especially for **highly non-linear systems**.
 
 </div>
 
 ### The M-Step: Parameter Learning
 
-In the M-step, we maximize the expected log-joint likelihood with respect to the parameters $\theta = \lbrace W, h, B, \Gamma, \Sigma\rbrace$. The objective function is:  
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Computing expectations involving non-linearity)</span></p>
 
-$$\mathbb{E}_q[\log p(X,Z\mid \theta)] = \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Gamma\mid  - \frac{1}{2}\sum_t(x_t - Bz_t)^\top \Gamma^{-1} (x_t - Bz_t) \right]$$
+* In the M-step, we maximize the **expected log-joint likelihood** with respect to the parameters $\theta = \lbrace W, h, B, \Gamma, \Sigma\rbrace$. The objective function is:  
 
-$$+ \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\mid \Sigma\mid  - \frac{1}{2}\sum_t(z_t - F_\theta(z_{t-1}))^\top \Sigma^{-1} (z_t - F_\theta(z_{t-1})) \right] + \text{const.}$$  
+$$\mathbb{E}_q[\log p(X,Z\mid \theta)] = \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\lvert \Gamma\rvert  - \frac{1}{2}\sum_t(x_t - Bz_t)^\top \Gamma^{-1} (x_t - Bz_t) \right]$$
 
-To perform this maximization, we require posterior expectations of various terms. The EKF/EKS provides the necessary smoothed expectations for linear terms, such as $\mathbb{E}[z_t]$ and $\mathbb{E}[z_t z_t^\top]$.
+$$+ \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\lvert \Sigma\rvert  - \frac{1}{2}\sum_t(z_t - F_\theta(z_{t-1}))^\top \Sigma^{-1} (z_t - F_\theta(z_{t-1})) \right] + \text{obs. model term}$$  
 
-However, the non-linear term $F_\theta(z_{t-1})$ introduces a significant problem. We now need to compute expectations involving this non-linearity, such as:  
+* **To perform this maximization, we require posterior expectations of various terms.**
+  * The **EKF/EKS provides the necessary smoothed expectations for linear terms**, such as $\mathbb{E}[z_t]$ and $\mathbb{E}[z_t z_t^\top]$.
+* However, the non-linear term $F_\theta(z_{t-1})$ introduces a significant problem. We now need to compute **expectations involving this non-linearity**, such as:  
 
-$$\mathbb{E}[F_\theta(z_{t-1})]$$  
+$$\mathbb{E}[F_\theta(z_t)]$$  
 
 and other related terms. This requires solving integrals of the form 
 
-$$\int p(z_{t-1}\mid X)(F_\theta(z_{t-1})) dz_{t-1}$$ 
+$$\int p(z_t)(F_\theta(z_t)) dz_t$$ 
 
-which are often intractable for arbitrary non-linearities $\phi$.
+which are often **intractable for arbitrary non-linearities** $\phi$.
 
-Key Point: Simplifying the M-Step Integral
+</div>
 
-The difficulty of the M-step integrals is highly dependent on the choice of non-linearity in the model. One potential idea is to select a non-linearity that simplifies these integrals. For example, structuring the transition as:  
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposed Solution</span><span class="math-callout__name">(Simplifying the M-Step Integral)</span></p>
+
+* The **difficulty of the M-step integrals is highly dependent on the choice of non-linearity** in the model. 
+* One potential idea is to **select a non-linearity that simplifies these integrals**. 
+  * For example, structuring the transition as:  
 
 $$F_\theta(z_{t-1}) = W h(z_{t-1}) + h$$  
 
-where $h(z) = \max(0, z)$ (the ReLU function), might lead to a more tractable expectation calculation for certain distributions.
+where $h(z) = \max(0, z)$ (the ReLU function), might lead to a **more tractable expectation** calculation for **certain distributions**.
+
+</div>
 
 ### Alternative E-Step: The Particle Filter
 
 An alternative to the deterministic approximation of the EKF is a sampling-based approach known as the **Particle Filter (PF)**.
-
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Method</span><span class="math-callout__name">(Particle Filter (PF))</span></p>
@@ -3892,8 +3923,6 @@ The weights are normalized such that $\sum_{k=1}^K w_t^{(k)} = 1$.
 
 </div>
 
-#### The Particle Filter Algorithm (Sequential Importance Resampling)
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(The Particle Filter (Sequential Importance Resampling))</span></p>
 
@@ -3918,11 +3947,14 @@ The algorithm proceeds sequentially through time:
 
 </div>
 
-Using Particles for Expectation
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Using Particles for Expectation)</span></p>
 
-The weighted particle set provides a straightforward way to approximate expectations needed for the M-step, replacing intractable integrals with finite sums:  
+The weighted particle set provides a straightforward way to **approximate expectations needed for the M-step**, **replacing intractable integrals with finite sums**:  
 
 $$\mathbb{E}[\varphi(z_t)] \approx \sum_{k=1}^K w_t^{(k)} \varphi(z_t^{(k)})$$
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenges of the Particle Filter)</span></p>
@@ -3991,22 +4023,6 @@ $$q^{\ast} = \arg\min_{q \in \mathcal{Q}} \text{KL}(q(z\mid X) \parallel p_\thet
 
 For practical implementation and a more intuitive understanding, the ELBO is often rewritten in a different form.
 
-Starting from the definition, we can expand the joint probability $p_\theta(X, z) = p_\theta(X\mid z) p_\theta(z)$:  
-
-$$\text{ELBO} = \mathbb{E}_{q\phi(z\mid X)} \left[ \log \frac{p_\theta(X\mid z)p_\theta(z)}{q_\phi(z\mid X)} \right]$$  
-
-Using the properties of logarithms and the linearity of expectation:  
-
-$$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z) + \log p_\theta(z) - \log q_\phi(z\mid X)]$$   
-
-$$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)] + \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(z)] - \mathbb{E}_{q\phi(z\mid X)}[\log q_\phi(z\mid X)]$$  
-
-Rearranging the terms, we can identify the KL divergence between the approximate posterior and the prior:  
-
-$$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)] - \left( \mathbb{E}_{q\phi(z\mid X)}[\log q_\phi(z\mid X)] - \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(z)] \right)$$  
-
-This gives the final, commonly used form:  
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Reconstruction - Regularization)</span></p>
 
@@ -4021,6 +4037,20 @@ This form consists of two terms:
 
 </div>
 
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Starting from the definition, we can expand the joint probability $p_\theta(X, z) = p_\theta(X\mid z) p_\theta(z)$:</p>
+    $$\text{ELBO} = \mathbb{E}_{q\phi(z\mid X)} \left[ \log \frac{p_\theta(X\mid z)p_\theta(z)}{q_\phi(z\mid X)} \right]$$
+    <p>Using the properties of logarithms and the linearity of expectation:</p>
+    $$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z) + \log p_\theta(z) - \log q_\phi(z\mid X)]$$
+    $$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)] + \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(z)] - \mathbb{E}_{q\phi(z\mid X)}[\log q_\phi(z\mid X)]$$
+    <p>Rearranging the terms, we can identify the KL divergence between the approximate posterior and the prior:</p>
+    $$= \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)] - \left( \mathbb{E}_{q\phi(z\mid X)}[\log q_\phi(z\mid X)] - \mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(z)] \right)$$
+    <p>This gives the final, commonly used form:</p>
+    $$\text{ELBO}(\phi, \theta) = \underbrace{\mathbb{E}_{q\phi(z\mid X)}[\log p_\theta(X\mid z)]}_{\text{Reconstruction}} - \underbrace{\text{KL}(q_\phi(z\mid X) \parallel p_\theta(z))}_{\text{Regularization}}$$
+  </details>
+</div>
 
 With a parameterized family of densities $q_\phi(z\mid X)$, VI becomes a joint optimization problem.
 
