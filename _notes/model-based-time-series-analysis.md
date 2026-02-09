@@ -1614,7 +1614,7 @@ where $\epsilon_t$ is a white noise process, typically $\epsilon_t \sim \mathcal
 
 A **Moving Average model of order $q$**, denoted **MA($q$)**, is defined as:
 
-$$X_t = b_0 + \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$$
+$$X_t = b_0 + \sum_{j=1}^q b_j \epsilon_{t-j} + \epsilon_t$$
 
 Note that $X_t$ depends on past **error terms**, not past values of $X$ itself.
 
@@ -1635,81 +1635,107 @@ $$\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$$
 
 ### Duality and Stationarity
 
-#### Duality of AR and MA Processes
-
 There is a fundamental duality between AR and MA processes. Under certain stability conditions, any finite-order AR process can be represented as an infinite-order MA process, and vice-versa.
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Autoregressive model (AR))</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finite AR $\iff$ Infinite MA)</span></p>
 
+Any finite-order AR process can be represented as an infinite-order MA process, and vice-versa:
+
+$$X_t = a_0 + a_1 X_{t-1} + \epsilon_t = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}$$
+
+**This infinite expansion is only valid if the series converges.**
 
 </div>
 
-Let's examine this with a simple AR(1) process: $X_t = a_0 + a_1 X_{t-1} + \epsilon_t$. We can recursively expand this expression:
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Let's examine this with a simple AR(1) process:</p>
+    $$X_t = a_0 + a_1 X_{t-1} + \epsilon_t$$
+    <p>We can recursively expand this expression:</p>
+    $$
+    \begin{aligned}
+    X_t &= a_0 + a_1(a_0 + a_1 X_{t-2} + \epsilon_{t-1}) + \epsilon_t \\
+    &= a_0 + a_1 a_0 + a_1^2 X_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
+    &= a_0(1 + a_1) + a_1^2 (a_0 + a_1 X_{t-3} + \epsilon_{t-2}) + a_1 \epsilon_{t-1} + \epsilon_t \\
+    &= a_0(1 + a_1 + a_1^2) + a_1^3 X_{t-3} + a_1^2 \epsilon_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
+    &\dots \\
+    &= a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}
+    \end{aligned}
+    $$
+  </details>
+</div>
 
-$$
-\begin{aligned}
-X_t &= a_0 + a_1(a_0 + a_1 X_{t-2} + \epsilon_{t-1}) + \epsilon_t \\
-&= a_0 + a_1 a_0 + a_1^2 X_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
-&= a_0(1 + a_1) + a_1^2 (a_0 + a_1 X_{t-3} + \epsilon_{t-2}) + a_1 \epsilon_{t-1} + \epsilon_t \\
-&= a_0(1 + a_1 + a_1^2) + a_1^3 X_{t-3} + a_1^2 \epsilon_{t-2} + a_1 \epsilon_{t-1} + \epsilon_t \\
-&\dots \\
-&= a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k}
-\end{aligned}
-$$
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Stationarity in the Mean for AR(1))</span></p>
 
-This infinite expansion is only valid if the series converges.
-
-#### Stationarity in the Mean for AR(1)
-
-For the process to be stationary in the mean, its expected value must be constant and finite. Taking the expectation of the expanded form:
-
-$$\mathbb{E}[X_t] = \mathbb{E}\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]$$
-
-$$\mathbb{E}[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \mathbb{E}[\epsilon_{t-k}]$$
-
-Since $\mathbb{E}[\epsilon_{t-k}]=0$, the second term vanishes. The first term is a geometric series which converges if and only if $\lvert a_1 \rvert < 1$.
+* **For the process to be stationary in the mean, its expected value must be constant and finite.**
+* The condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
 
 $$\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1$$
 
-Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Taking the expectation of the expanded form:</p>
+    $$\mathbb{E}[X_t] = \mathbb{E}\left[ a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \epsilon_{t-k} \right]$$
+    $$\mathbb{E}[X_t] = a_0 \sum_{k=0}^{\infty} a_1^k + \sum_{k=0}^{\infty} a_1^k \mathbb{E}[\epsilon_{t-k}]$$
+    <p>Since $\mathbb{E}[\epsilon_{t-k}]=0$, the second term vanishes. The first term is a geometric series which converges if and only if $\lvert a_1 \rvert < 1$.</p>
+    $$\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1$$
+    <p>Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.</p>
+  </details>
+</div>
 
 #### State-Space Representation and Stability
 
-A powerful technique for analyzing AR models is to write them in a state-space (or vector) form. Any scalar AR(p) process can be represented as a p-variate VAR(1) process.
+A powerful technique for analyzing AR models is to write them in a **state-space (or vector) form**. 
 
-Consider an AR(p) process 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(scalar AR($p$) $\implies$ $p$-variate VAR(1))</span></p>
 
-$$X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$$
+Any scalar AR($p$) process can be represented as a $p$-variate VAR(1) process:
 
-We can define a $p$-dimensional state vector $\mathbf{X}_t$:
+$$X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t \quad\implies\quad \mathbf{X}_t = \mathbf{a} + A \mathbf{X}_{t-1} + \mathbf{\epsilon}_t$$
 
-$$\mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}$$
+</div>
 
-The process can then be written in the form 
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Consider an AR($p$) process</p>
+    $$X_t = a_0 + \sum_{i=1}^p a_i X_{t-i} + \epsilon_t$$
+    <p>We can define a $p$-dimensional state vector $\mathbf{X}_t$:</p>
+    $$\mathbf{X}_t = \begin{pmatrix} X_t \\ X_{t-1} \\ \vdots \\ X_{t-p+1} \end{pmatrix}$$
+    <p>The process can then be written in the form</p>
+    $$\mathbf{X}_t = \mathbf{a} + A \mathbf{X}_{t-1} + \mathbf{\epsilon}_t$$
+    <p>where:</p>
+    $$
+    \mathbf{a} = \begin{pmatrix} a_0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
+    A = \begin{pmatrix}
+    a_1 & a_2 & \dots & a_p \\
+    1 & 0 & \dots & 0 \\
+    \vdots & \ddots & & \vdots \\
+    0 & \dots & 1 & 0
+    \end{pmatrix}, \quad
+    \mathbf{\epsilon}_t = \begin{pmatrix} \epsilon_t \\ 0 \\ \vdots \\ 0 \end{pmatrix}
+    $$
+  </details>
+</div>
 
-$$\mathbf{X}\_t = \mathbf{a} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$$
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Stationarity $\implies$ spectral radius of $A$ is less than 1)</span></p>
 
-where:
+* The stability and stationarity of the entire process can then be assessed by examining the eigenvalues of the companion matrix $A$. 
+* For the process to be stationary, the spectral radius of $A$ must be less than 1.
 
-$$
-\mathbf{a} = \begin{pmatrix} a_0 \\ 0 \\ \vdots \\ 0 \end{pmatrix}, \quad
-A = \begin{pmatrix}
-a_1 & a_2 & \dots & a_p \\
-1 & 0 & \dots & 0 \\
-\vdots & \ddots & & \vdots \\
-0 & \dots & 1 & 0
-\end{pmatrix}, \quad
-\mathbf{\epsilon}_t = \begin{pmatrix} \epsilon_t \\ 0 \\ \vdots \\ 0 \end{pmatrix}
-$$
-
-The stability and stationarity of the entire process can then be assessed by examining the eigenvalues of the companion matrix $A$. For the process to be stationary, the spectral radius of $A$ must be less than 1.
-
-$$
-\max_i \lvert \lambda_i(A) \rvert < 1
-$$
+$$\max_i \lvert \lambda_i(A) \rvert < 1$$
 
 where $\lambda_i(A)$ are the eigenvalues of $A$.
+
+</div>
 
 <div class="accordion">
   <details>
@@ -1928,50 +1954,83 @@ where $\lambda_i(A)$ are the eigenvalues of $A$.
 
 ### Model Identification Using Autocorrelation
 
-A key step in ARMA modeling is identifying the orders $p$ and $q$. The Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) are the primary tools for this task.
+* A key step in ARMA modeling is identifying the orders $p$ and $q$. 
+* **The Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) are the primary tools for this task.**
 
 #### Autocorrelation in AR(1) Processes
 
-Consider a zero-mean ($a_0=0$) AR(1) process: 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Autocovariance and autocorrelation for zero-mean AR(1))</span></p>
+
+For a zero-mean ($a_0=0$) AR(1) process 
 
 $$X_t = a_1 X_{t-1} + \epsilon_t$$
 
-The autocovariance at lag $k$, $\gamma(k)$, can be calculated.
+The **autocovariance** at lag $k$ ($\gamma(k)$) and **autocorrelation** at lag $k$ ($\rho(k)$):
 
-  * **Lag 1:** 
-  
-  $$\mathbb{E}[X_t X_{t-1}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 \mathbb{E}[X_{t-1}^2] + \mathbb{E}[\epsilon_t X_{t-1}]$$
-  
-  $\mathbb{E}[\epsilon_t X_{t-1}]=0$ since $\epsilon_t$ is uncorrelated with past values of $X$. Thus, $\gamma(1) = a_1 \gamma(0)$.
-  * **Lag 2:** 
-   
-  $$\mathbb{E}[X_t X_{t-2}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 \mathbb{E}[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$$
+$$\gamma(k) = a_1^k \gamma(0) \qquad \rho(k) = a_1^k$$
 
-  * **General Lag $k$:** 
-   
-  $$\gamma(k) = a_1^k \gamma(0)$$
+The ACF of an AR(1) process **decays exponentially** to zero.
 
-The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rho(k) = a_1^k$. The ACF of an AR(1) process **decays exponentially** to zero.
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Consider a zero-mean ($a_0=0$) AR(1) process:</p>
+    $$X_t = a_1 X_{t-1} + \epsilon_t$$
+    <p>The autocovariance at lag $k$, $\gamma(k)$, can be calculated.</p>
+    <ul>
+      <li><strong>Lag 1:</strong></li>
+    </ul>
+    $$\mathbb{E}[X_t X_{t-1}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-1}] = a_1 \mathbb{E}[X_{t-1}^2] + \mathbb{E}[\epsilon_t X_{t-1}]$$
+    <p>$\mathbb{E}[\epsilon_t X_{t-1}]=0$ since $\epsilon_t$ is uncorrelated with past values of $X$. Thus, $\gamma(1) = a_1 \gamma(0)$.</p>
+    <ul>
+      <li><strong>Lag 2:</strong></li>
+    </ul>
+    $$\mathbb{E}[X_t X_{t-2}] = \mathbb{E}[(a_1 X_{t-1} + \epsilon_t)X_{t-2}] = a_1 \mathbb{E}[X_{t-1} X_{t-2}] = a_1 \gamma(1) = a_1^2 \gamma(0)$$
+    <ul>
+      <li><strong>General Lag $k$:</strong></li>
+    </ul>
+    $$\gamma(k) = a_1^k \gamma(0)$$
+    <p>The autocorrelation function, $\rho(k) = \gamma(k)/\gamma(0)$, is therefore $\rho(k) = a_1^k$. The ACF of an AR(1) process <strong>decays exponentially</strong> to zero.</p>
+  </details>
+</div>
 
 #### Autocorrelation in MA($q$) Processes
 
-Consider a zero-mean MA($q$) process: $X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$. Let's calculate the autocovariance at lag $k > q$.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Autocorrelation in MA($q$) Processes)</span></p>
 
-Because the error terms are white noise, $\mathbb{E}[\epsilon_i \epsilon_j] = \sigma^2$ if $i=j$ and 0 otherwise. For the expectation $\mathbb{E}[X_t X_{t-k}]$ to be non-zero, there must be at least one pair of matching indices in the sums. If we consider a lag $k>q$, it is impossible to satisfy the matching index condition. Therefore, for any $k>q$, all cross-product terms have an expectation of zero.
+For zero-mean MA($q$) process 
 
-$$
-\text{ACF}(k) = 0 \quad \text{for all } k > q
-$$
+$$X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$$
+
+$$\text{ACF}(k) = 0 \quad \text{for all } k > q$$
+
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Consider a zero-mean MA($q$) process: $X_t = \epsilon_t + \sum_{j=1}^q b_j \epsilon_{t-j}$. Let's calculate the autocovariance at lag $k > q$.</p>
+    <p>Because the error terms are white noise, $\mathbb{E}[\epsilon_i \epsilon_j] = \sigma^2$ if $i=j$ and 0 otherwise. For the expectation $\mathbb{E}[X_t X_{t-k}]$ to be non-zero, there must be at least one pair of matching indices in the sums. If we consider a lag $k>q$, it is impossible to satisfy the matching index condition. Therefore, for any $k>q$, all cross-product terms have an expectation of zero.</p>
+    $$\text{ACF}(k) = 0 \quad \text{for all } k > q$$
+  </details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(ACF of an MA($q$) process)</span></p>
 
 This provides a clear signature: the ACF of an MA($q$) process **sharply cuts off** to zero after lag $q$.
 
+</div>
+
 #### The Partial Autocorrelation Function (PACF)
 
-The PACF at lag $k$ measures the correlation between $X_t$ and $X_{t-k}$ after removing the linear dependence on the intervening variables ($X_{t-1}, X_{t-2}, \dots, X_{t-k+1}$). A key property of the PACF for an AR(p) process is:
+The PACF at lag $k$ measures the correlation between $X_t$ and $X_{t-k}$ after removing the linear dependence on the intervening variables ($X_{t-1}, X_{t-2}, \dots, X_{t-k+1}$). A key property of the PACF for an AR($p$) process is:
 
-$$
-\text{PACF}(k) = 0 \quad \text{for all } k > p
-$$
+$$\text{PACF}(k) = 0 \quad \text{for all } k > p$$
 
 This is because in an AR($p$) model, the direct relationship between $X_t$ and $X_{t-k}$ (for $k>p$) is fully mediated by the first $p$ lags.
 
@@ -1986,7 +2045,10 @@ This is because in an AR($p$) model, the direct relationship between $X_t$ and $
 
 #### Parameter Estimation
 
-For a pure AR($p$) model, parameter estimation is equivalent to a linear regression problem. We can construct a predictor matrix $X$ and a target vector $y$:
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Parameter Estimation for AR and ARMA)</span></p>
+
+**For a pure AR($p$) model, parameter estimation is equivalent to a linear regression problem.**
 
 $$
 y = \begin{pmatrix} X_T \\ X_{T-1} \\ \vdots \\ X_{p+1} \end{pmatrix} \quad
@@ -1998,9 +2060,13 @@ X = \begin{pmatrix}
 \end{pmatrix}
 $$
 
-The parameters can then be estimated using ordinary least squares. For ARMA models with an MA component, estimation is more complex and typically requires numerical optimization methods like maximum likelihood estimation.
+* The parameters can then be estimated using ordinary least squares. 
+* **For ARMA models with an MA component, estimation is more complex and typically requires numerical optimization methods like maximum likelihood estimation.**
 
-#### Goals of ARMA Modeling
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Goals of ARMA Modeling)</span></p>
 
 Once an ARMA model is fitted, it can be used for:
 
@@ -2011,21 +2077,11 @@ Once an ARMA model is fitted, it can be used for:
   * **Forecasting:** Predict future values of the time series.
   * **Control:** Understand how to steer the system towards a desired state.
 
-## Vector Autoregressive (VAR) Models
+</div>
 
-### State-Space Representation and Stationarity
+## Fourier Transform
 
-Similar to the univariate case, VAR(p) models can be compactly represented as VAR(1) models. Any VAR(p) process in $N$ variables can be written as an $Np$-variate VAR(1) process by stacking the lagged vectors into a larger state vector.
-
-For a VAR(1) process defined by $\mathbf{X}\_t = \mathbf{c} + A \mathbf{X}\_{t-1} + \mathbf{\epsilon}\_t$, a necessary and sufficient condition for stationarity is that all eigenvalues of the matrix $A$ have a modulus less than 1.
-
-$$
-\max_i \lvert\lambda_i(A)\rvert < 1
-$$
-
-where $\lambda_i$ are the eigenvalues of $A$. This is equivalent to saying all roots of the characteristic polynomial $\det(I_N - Az) = 0$ lie outside the unit circle.
-
-[Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
+TODO: [Fourier Transform](/subpages/model-based-time-series-analysis/fourier_transform/)
 
 ## Vector Autoregressive (VAR) Models
 
@@ -2071,7 +2127,8 @@ Crucially, the off-diagonal elements of $\Sigma_\varepsilon$ are allowed to be n
 
 </div>
 
-#### Structure of Coefficient Matrices
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Structure of Coefficient Matrices)</span></p>
 
 Each coefficient matrix $A_i$ captures the influence of variables at lag $i$ on the current state of the system.
 
@@ -2083,29 +2140,46 @@ a_{N1}^{(i)} & \dots & a_{NN}^{(i)}
 \end{pmatrix}
 $$
 
-- **Diagonal Entries ($a_{jj}^{(i)}$):** These entries relate a variable to its own past. They capture the internal time constants and autoregressive properties of each individual series.
-- **Off-Diagonal Entries ($a_{jk}^{(i)}$ for $j \neq k$):** These entries quantify how the past of variable $k$ influences the present of variable $j$. They are the key to understanding the cross-series dynamics and interactions. This is the basis for concepts like Granger causality.
+- **Diagonal Entries ($a_{jj}^{(i)}$):** 
+  * These entries relate a variable to its own past. 
+  * They capture the internal time constants and autoregressive properties of each individual series.
+- **Off-Diagonal Entries ($a_{jk}^{(i)}$ for $j \neq k$):** 
+  * These entries quantify how the past of variable $k$ influences the present of variable $j$. 
+  * They are the key to understanding the cross-series dynamics and interactions. 
+  * This is the basis for concepts like Granger causality.
 
-### Equivalence and Companion Form
+</div>
 
-A significant theoretical result is that any VAR($p$) process can be rewritten as a VAR(1) process. This is extremely useful for analysis, particularly for assessing model stability.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Equivalence and Companion Form)</span></p>
 
-1. Any scalar AR($p$) process can be written as a p-variate VAR(1) process.
-2. Any VAR($p$) process in $K$ variables can be written as a $Kp$-variate VAR(1) process.
+1. Any **scalar AR($p$) process** can be written as a **$p$-variate VAR(1) process**.
+2. Any **VAR($p$) process in $K$ variables** can be written as a **$Kp$-variate VAR(1) process**.
 
-This transformation allows us to study the stability and properties of a high-order model by analyzing a single, larger coefficient matrix corresponding to the VAR(1) representation.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Significance of the equivalence)</span></p>
+
+* A significant theoretical result is that any VAR($p$) process can be rewritten as a VAR(1) process. **This is extremely useful for analysis, particularly for assessing model stability.**
+* This transformation allows us to study the stability and properties of a high-order model by analyzing a **single, larger coefficient matrix corresponding to the VAR(1) representation.**
+
+</div>
 
 ### Stationarity of VAR Processes
 
-The stability of a VAR process is determined by the properties of its coefficient matrices. For a VAR(1) process, the condition for stationarity is based on the eigenvalues of the coefficient matrix.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Stationarity $\implies$ spectral radius of $A$ is less than 1)</span></p>
 
-For the VAR(1) process $X_t = c + AX_{t-1} + \varepsilon_t$, a necessary and sufficient condition for stationarity is that all eigenvalues of the matrix $A$ have a modulus less than 1.
+* The stability of a VAR process is determined by the properties of its coefficient matrices. 
+* For a VAR(1) process, the condition for stationarity is based on the eigenvalues of the coefficient matrix.
+* For the VAR(1) process $X_t = c + AX_{t-1} + \varepsilon_t$, the necessary and sufficient condition for stationarity
 
-$$
-\max_i(\rvert\lambda_i(A)\lvert) < 1
-$$
+$$\max_i \lvert \lambda_i(A) \rvert < 1$$
 
-where $\lambda_i$ are the eigenvalues of $A$.
+where $\lambda_i(A)$ are the eigenvalues of $A$.
+
+</div>
 
 #### Proof Sketch for Stationarity
 
@@ -2135,29 +2209,43 @@ where $\lambda_i$ are the eigenvalues of $A$.
 
 ### Parameter Estimation
 
-The parameters of a VAR($p$) model $(c, A_1, \dots, A_p, \Sigma_\varepsilon)$ can be estimated using Maximum Likelihood Estimation (MLE), which in the case of Gaussian errors is equivalent to multivariate least squares.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Parameter Estimation for VAR)</span></p>
+
+The parameters of a VAR($p$) model $(c, A_1, \dots, A_p, \Sigma_\varepsilon)$ can be estimated using Maximum Likelihood Estimation (MLE).
 
 Given a VAR($p$) model:
 
-$$
-X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t, \quad \varepsilon_t \sim \mathcal{N}(0, \Sigma_\varepsilon)
-$$
+$$X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$$
 
-The conditional probability density of $X_t$ given its past is:
+The log-likelihood for a sequence of observations $X_1, \dots, X_T$ is then:
 
-$$
-p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta) = \mathcal{N}\left(c + \sum_{i=1}^{p} A_i X_{t-i}, \Sigma_\varepsilon\right)
-$$
+$$\ell(\theta) = \sum_{t=p+1}^{T} \log p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta)$$
+
+Maximizing this log-likelihood function provides the parameter estimates.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian errors)</span></p>
+
+In the case of Gaussian errors, MLI is equivalent to multivariate least squares.
+
+Given a VAR($p$) model:
+
+$$X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t, \quad \varepsilon_t \sim \mathcal{N}(0, \Sigma_\varepsilon)$$
+
+$$p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta) = \mathcal{N}\left(c + \sum_{i=1}^{p} A_i X_{t-i}, \Sigma_\varepsilon\right)$$
 
 where $\theta$ represents all model parameters.
 
 The log-likelihood for a sequence of observations $X_1, \dots, X_T$ is then:
 
-$$
-\ell(\theta) = \sum_{t=p+1}^{T} \log p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta)
-$$
+$$\ell(\theta) = \sum_{t=p+1}^{T} \log p(X_t \mid X_{t-1}, \dots, X_{t-p}, \theta)$$
 
-Maximizing this log-likelihood function provides the parameter estimates. This can be framed as a multivariate linear regression problem.
+For Gaussian errors, this can be framed as a multivariate linear regression problem.
+
+</div>
 
 ## Model Order Selection
 
@@ -2165,33 +2253,37 @@ A critical step in VAR modeling is determining the appropriate order, $p$. This 
 
 ### Likelihood Ratio Test (Wilks' Theorem)
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Likelihood Ratio Test (Wilks' Theorem))</span></p>
+
 The **Likelihood Ratio (LR) test** provides a framework for comparing nested models.
 
-- Let $\mathcal{M}_0$ be a "restricted" model (null hypothesis, $H_0$) with parameter space $\Theta_0$.
-- Let $\mathcal{M}_1$ be a "full" model (alternative hypothesis, $H_1$) with parameter space $\Theta_1$, where $\Theta_0 \subset \Theta_1$.
+- Let $\mathcal{M}_0$ be a **"restricted" model (null hypothesis, $H_0$)** with parameter space $\Theta_0$.
+- Let $\mathcal{M}_1$ be a **"full" model (alternative hypothesis, $H_1$)** with parameter space $\Theta_1$, where $\Theta_0 \subset \Theta_1$.
 - Let $\ell\_{\text{max}}(\mathcal{M}_0)$ and $\ell\_{\text{max}}(\mathcal{M}_1)$ be the maximized log-likelihoods for each model.
 
-The LR test statistic is defined as:
+The **LR test statistic** is defined as:
 
 $$
 D = -2 \log \left(\frac{\sup_{\theta \in \Theta_0} \mathcal{L}(\theta)}{\sup_{\theta \in \Theta_1} \mathcal{L}(\theta)}\right) = -2 (\ell_{\text{max}}(\mathcal{M}_0) - \ell_{\text{max}}(\mathcal{M}_1))
 $$
 
-Under suitable regularity conditions and assuming $H_0$ is true, the statistic $D$ follows a chi-squared distribution:
+Under suitable regularity conditions and assuming $H_0$ is true, **the statistic $D$ follows a chi-squared distribution**:
 
-$$
-D \sim \chi^2(d_1 - d_0)
-$$
+$$D \sim \chi^2(d_1 - d_0)$$
 
-where $d_1$ and $d_0$ are the number of free parameters in the full and restricted models, respectively.
+where $d_1$ and $d_0$ are the **number of free parameters** in the full and restricted models, respectively.
 
-**Decision Rule:** We compare the empirically observed statistic $D_{empirical}$ to the $\chi^2$ distribution. If the probability of observing a value as large as $D_{empirical}$ is small (e.g., $p < \alpha$, where $\alpha=0.05$ by convention), we reject the null hypothesis $H_0$ in favor of the more complex model $\mathcal{M}_1$.
+**Decision Rule:** We compare the empirically observed statistic $D_{\text{empirical}}$ to the $\chi^2$ distribution. If the probability of observing a value as large as $D_{\text{empirical}}$ is small (e.g., $p < \alpha$, where $\alpha=0.05$ by convention), we reject the null hypothesis $H_0$ in favor of the more complex model $\mathcal{M}_1$.
 
-#### Application to VAR($p$) vs. VAR($p+1$)
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VAR($p$) vs. VAR($p+1$))</span></p>
 
 We can use the LR test to decide if a VAR($p+1$) model provides a significantly better fit than a VAR($p$) model.
 
-- **Restricted Model ($H_0$):** VAR($p$) process, $X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$. This is equivalent to a VAR(p+1) model with the constraint $A_{p+1} = 0$.
+- **Restricted Model ($H_0$):** VAR($p$) process, $X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$. This is equivalent to a VAR($p+1$) model with the constraint $A_{p+1} = 0$.
 - **Full Model ($H_1$):** VAR($p+1$) process, $X_t = c + \sum_{i=1}^{p+1} A_i X_{t-i} + \varepsilon_t$.
 
 The LR test compares the "explained variation" in the data under both models. The maximized log-likelihood is related to the determinant of the estimated residual covariance matrix, $\hat{\Sigma}_\varepsilon$.
@@ -2208,16 +2300,21 @@ $$
 
 This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR($p+1$) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
 
+</div>
+
 ### Granger Causality
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Granger Causality)</span></p>
 
-**Granger causality** is a statistical concept of causality based on prediction. It provides a formal method to test for directed influence between time series within the VAR framework.
+* **Granger causality** is a statistical concept of causality based on prediction.
+* Provides a formal method to test for **directed influence between time series** within the VAR framework.
 
 If the past of a time series $X$ contains information that improves the prediction of a time series $Y$, beyond the information already contained in the past of $Y$ and all other relevant variables, then we say that $X$ Granger-causes $Y$ (denoted $X \to Y$).
 
-Let $X_t, Y_t$ be two time series processes and $Z_t$ represent all other knowledge in the world. Let $\mathcal{E}[Y_{t+1} \mid \text{past}]$ denote the optimal prediction of $Y_{t+1}$ given information from the past. Then $X \to Y$ if:
+* Let $X_t, Y_t$ be two time series processes and $Z_t$ represent all other knowledge in the world. 
+* Let $\mathcal{E}[Y_{t+1} \mid \text{past}]$ denote the optimal prediction of $Y_{t+1}$ given information from the past. 
+* Then $X \to Y$ if:
 
 $$
 \mathcal{E}[Y_{t+1} \mid Y_{t-\text{past}}, X_{t-\text{past}}, Z_{t-\text{past}}] \neq \mathcal{E}[Y_{t+1} \mid Y_{t-\text{past}}, Z_{t-\text{past}}]
@@ -2225,9 +2322,12 @@ $$
 
 </div>
 
-#### Testing for Granger Causality with VAR Models
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Granger Causality for VAR Models)</span></p>
 
-To make this concept testable, Granger proposed embedding it within a VAR model. Consider a bivariate system $(X_t, Y_t)$. To test if $X \to Y$, we set up two nested models:
+* To make this concept testable, Granger proposed embedding it within a VAR model. 
+* Consider a **bivariate system** $(X_t, Y_t)$. 
+* To test if $X \to Y$, we set up **two nested models**:
 
 1. **Full Model:** A VAR($p$) model where past values of $X$ are used to predict $Y$. In the equation for $Y_t$, the coefficients on lagged $X_t$ are unrestricted.
 2. **Restricted Model:** A VAR($p$) model where the influence of past $X$ on $Y$ is removed. This is achieved by setting all coefficients that link lagged $X_t$ to $Y_t$ to zero.
@@ -2237,6 +2337,8 @@ We then perform a likelihood ratio test (or an F-test) comparing these two model
 - Let $\hat{\Sigma}\_{\text{full}}$ and $\hat{\Sigma}\_{\text{restr}}$ be the estimated residual covariance matrices.
 - The LR test statistic is: $D = T_{\text{eff}} (\log(\lvert\hat{\Sigma}\_{\text{restr}}\rvert) - \log(\lvert\hat{\Sigma}\_{\text{full}}\rvert))$.
 - Under $H_0$ (no Granger causality), $D \sim \chi^2(q)$, where $q$ is the number of zero-restrictions imposed (in this case, $p \times (\text{dim of } X) \times (\text{dim of } Y)$).
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation)</span></p>
@@ -2309,6 +2411,9 @@ A common remedy for instability is to reduce the model order $p$, thereby reduci
 
 An alternative approach for binary series is to model the success probability $\pi_t$ as an explicit function of time, allowing for a single change point.
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Change Point Model)</span></p>
+
 - **Problem:** We suspect the underlying success probability $\pi_t$ is not constant over time and want to infer the location of a change.
 - **Goal:** Infer the change point location $\tau$ from the observed data $X_1, \dots, X_T$.
 - **Model:** We model the time-varying probability $\pi_t$ using a sigmoid function of time:
@@ -2322,47 +2427,88 @@ An alternative approach for binary series is to model the success probability $\
   - $d$: Amplitude of the change $(0 \le d \le 1-m)$. The success probability after the change is $m+d$.
   - $a$: Inverse slope of the change $(a \ge 0)$. Smaller values of $a$ correspond to a steeper, more abrupt change.
   - $c$: Change point location in time $(0 \le c \le T-1)$.
-- **Likelihood:** The likelihood of the observed data given the parameters is the product of Bernoulli probabilities:
-  
-  $$
-  P(X \mid \theta) = \prod_{t=1}^{T} \pi_t^{X_t} (1-\pi_t)^{1-X_t}
-  $$
 
-  The log-likelihood is $\ell(\theta) = \sum_{t=1}^{T} [X_t \log(\pi_t) + (1-X_t)\log(1-\pi_t)]$. These parameters are typically found via MLE.
-- **Challenge:** This specific sigmoid structure only allows for a single, monotonic change point in the success probability.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Parameter Estimation for Change Point Model)</span></p>
+
+**Likelihood:** The likelihood of the observed data given the parameters is the product of Bernoulli probabilities:
+  
+  $$P(X \mid \theta) = \prod_{t=1}^{T} \pi_t^{X_t} (1-\pi_t)^{1-X_t}$$
+
+  The log-likelihood is 
+  
+  $$\ell(\theta) = \sum_{t=1}^{T} [X_t \log(\pi_t) + (1-X_t)\log(1-\pi_t)]$$
+  
+  These parameters are typically found via MLE.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenge of such a change point model)</span></p>
+
+This specific sigmoid structure only allows for a single, monotonic change point in the success probability.
+
+</div>
+
 
 ### AR Models for Count Processes (Poisson GLM)
 
 For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a Poisson distribution where the rate is modeled with an autoregressive structure.
 
-- **Data:** A univariate or multivariate count process. For example, the number of customers entering a store per hour, or the number of spikes from $N$ neurons in discrete time bins. $C_t = (C_{1t}, \dots, C_{Nt})^T$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Poisson GLM)</span></p>
+
+</div>
+
+- **Data:** A univariate or multivariate count process. For example, the number of customers entering a store per hour, or the number of spikes from $N$ neurons in discrete time bins. 
+  
+  $$C_t = (C_{1t}, \dots, C_{Nt})^T$$
+
 - **Model:** For each process $i=1, \dots, N$, we model the count $C_{it}$ conditioned on the past as a Poisson random variable.
   
   $$
   C_{it} \mid \text{past} \sim \text{Poisson}(\lambda_{it})
   $$
 
-  The Poisson PMF implies that $E[C_{it} \mid \text{past}] = \text{Var}(C_{it} \mid \text{past}) = \lambda_{it}$. The rate $\lambda_{it}$ determines both the mean and variance.
-- **Rate Model:** We model the vector of rates $\lambda_t = (\lambda_{1t}, \dots, \lambda_{Nt})^T$ using an AR structure with an exponential link function to ensure positivity of the rates.
+  The Poisson PMF implies that 
+  
+  $$\mathbb{E}[C_{it} \mid \text{past}] = \text{Var}(C_{it} \mid \text{past}) = \lambda_{it}$$ 
+  
+  The rate $\lambda_{it}$ determines both the mean and variance.
+- **Rate Model:** We model the vector of rates $\lambda_t = (\lambda_{1t}, \dots, \lambda_{Nt})^\top$ using an AR structure with an exponential link function to ensure positivity of the rates.
   
   $$
   \lambda_t = \exp\left(c + \sum_{j=1}^{p} A_j C_{t-j}\right)
   $$
 
   The $\exp$ is the inverse link function in this Poisson GLM. The coefficient matrices $A_j$ capture the influence of past counts on current rates, representing "effective couplings" between processes.
-- **Maximum Likelihood Estimation:** The log-likelihood, assuming conditional independence of the individual processes given the past, is:
-  
-  $$
-  \ell(\lbrace c, A_j\rbrace) = \sum_{t=p+1}^{T} \sum_{i=1}^{N} \log P(C_{it} \mid \text{past})
-  $$
 
-  Substituting the Poisson PMF, $\log P(C_{it}) = C_{it} \log(\lambda_{it}) - \lambda_{it} - \log(C_{it}!)$, and our model for $\lambda_{it}$:
-  
-  $$
-  \ell(\lbrace c, A_j\rbrace) = \sum_{t, i} \left[ C_{it} \left(c_i + \sum_{j,k} (A_j)_{ik} C_{k,t-j}\right) - \exp\left(c_i + \sum_{j,k} (A_j)_{ik} C_{k,t-j}\right) \right] + \text{const}
-  $$
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Parameter Estimation for Poisson GLM)</span></p>
 
-  Although there is no closed-form solution for the parameters, the Poisson log-likelihood function is concave. This is a significant advantage, as it guarantees that standard numerical optimization methods (like Gradient Descent) will converge to the unique global maximum.
+  **Maximum Likelihood Estimation:** The log-likelihood, assuming conditional independence of the individual processes given the past, is:
+  
+  $$\ell(\lbrace c, A_j\rbrace) = \sum_{t=p+1}^{T} \sum_{i=1}^{N} \log P(C_{it} \mid \text{past})$$
+
+  Substituting the Poisson PMF, 
+  
+  $$\log P(C_{it}) = C_{it} \log(\lambda_{it}) - \lambda_{it} - \log(C_{it}!)$$ 
+  
+  and our model for $\lambda_{it}$:
+  
+  $$\ell(\lbrace c, A_j\rbrace) = \sum_{t, i} \Bigl[ C_{it} \Bigl(c_i + \sum_{j,k} (A_j)_{ik} C_{k,t-j}\Bigr) - \exp\Bigl(c_i + \sum_{j,k} (A_j)_{ik} C_{k,t-j}\Bigr) \Bigr] + \text{const}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(No closed-form solution for the parameters of Poisson GLM)</span></p>
+
+* Although there is **no closed-form solution for the parameters of Poisson GLM**, the **Poisson log-likelihood function is concave**. 
+* This is a **significant advantage**, as it guarantees that standard numerical optimization methods (like Gradient Descent) will converge to the **unique global maximum**.
+
+</div>
 
 ## Nonlinear Dynamical Systems
 
@@ -3727,7 +3873,7 @@ A **generative RNN** can be formulated as a non-linear state-space model with th
 ### The E-Step: Inference via the Extended Kalman Filter (EKF)
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Problem and Solution</span><span class="math-callout__name">(Non-inear function breaks KF assumptions $\implies$ Linearize using Extended Kalman Filter)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Problem and Solution</span><span class="math-callout__name">(Non-linear function breaks KF assumptions $\implies$ Linearize using Extended Kalman Filter)</span></p>
 
 The primary challenge in the E-step is computing the one-step-ahead predictive distribution for the latent state:  
 
@@ -3865,7 +4011,7 @@ $$\mathbb{E}[F_\theta(z_t)]$$
 
 and other related terms. This requires solving integrals of the form 
 
-$$\int p(z_t)(F_\theta(z_t)) dz_t$$ 
+$$\int p(z_t)F_\theta(z_t) dz_t$$ 
 
 which are often **intractable for arbitrary non-linearities** $\phi$.
 
