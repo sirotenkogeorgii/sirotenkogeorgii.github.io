@@ -1325,61 +1325,6 @@ This loss function can be maximized jointly to find the parameters for both mode
 
 </div>
 
-
-#### Hierarchical Modeling
-
-Hierarchical (or multilevel) models are designed for datasets with a nested or grouped structure, such as multiple time series from different subjects.
-
-**Data:** We have $N$ independent datasets, one for each subject $j=1, \dots, N$:
-
-$$
-D_j = \lbrace (u_{1j}, x_{1j}), \dots, (u_{T_j j}, x_{T_j j}) \rbrace
-$$
-
-**Modeling Strategies:**
-
-  * **Separate Models (No Sharing):** Fit a completely separate model with parameters $\theta_j$ for each subject $j$ using only their data $D_j$.
-      * **Pros:** Captures individual differences perfectly.
-      * **Cons:** If $T_j$ is small, estimates of $\theta_j$ can be noisy and prone to overfitting.
-  * **Fully Pooled (Complete Sharing):** Concatenate all data $D = [D_1, \dots, D_N]$ and fit a single parameter vector $\theta$ for all subjects.
-      * **Pros:** Provides more stable estimates by borrowing statistical strength across subjects.
-      * **Cons:** Fails to capture inter-individual differences.
-
-**The Hierarchical Approach:** Hierarchical modeling provides a compromise between these two extremes. The core idea is to model the individual-specific parameters themselves as being drawn from a common group-level distribution.
-
-  * **Subject-Specific Parameters:** Each subject $j$ has their own parameter vector, $\theta_j$.
-  * **Parent Distribution:** These parameters are not arbitrary but are assumed to be drawn from a common parent distribution, which is governed by hyperparameters $\xi$:
-    
-    $$
-    \theta_j \sim p(\theta \mid \xi)
-    $$
-
-  * **Hyperprior:** To complete the Bayesian formulation, a prior distribution (a **hyperprior**) is placed on the hyperparameters $\xi$:
-    
-    $$
-    \xi \sim p(\xi)
-    $$
-    
-    This creates a hierarchical chain of dependencies:
-
-$$
-\xi \to \theta_j \to D_j \quad \text{for } j=1, \dots, N
-$$
-
-The joint distribution over all data and parameters is:
-
-$$
-p(\xi, \lbrace\theta_j\rbrace_{j=1}^N, \lbrace D_j\rbrace_{j=1}^N) = p(\xi) \prod_{j=1}^N \left[ p(\theta_j \mid \xi) p(D_j \mid \theta_j) \right]
-$$
-
-The goal of hierarchical Bayesian analysis is to compute the posterior distribution of the subject-level parameters and group-level hyperparameters, given the observed data:
-
-$$
-p(\xi, \lbrace\theta_j\rbrace_{j=1}^N \mid \lbrace D_j\rbrace_{j=1}^N) = \dfrac{p(\lbrace D_j\rbrace_{j=1}^N \mid \lbrace\theta_j\rbrace_{j=1}^N)p(\lbrace\theta_j\rbrace_{j=1}^N \mid \xi)p(\xi)}{p(\lbrace D_j\rbrace_{j=1}^N)}
-$$
-
-This approach allows for "partial pooling," where information is shared across subjects through the parent distribution, leading to more robust estimates while still allowing for individual variation.
-
 ## Hierarchical Modeling for Multiple Time Series
 
 When analyzing data from multiple subjects or independent sources, we often face a modeling choice between two extremes. This section introduces hierarchical modeling as a powerful intermediate approach that balances individual specificity with group-level stability.
@@ -1432,7 +1377,8 @@ When analyzing data from multiple subjects or independent sources, we often face
 
 ### Hierarchical Modeling
 
-#### Problem Formulation
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Multiple Datasets)</span></p>
 
 Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, we have a time series dataset $D_i$.
 
@@ -1440,7 +1386,10 @@ Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, w
   * For simplicity, we can assume all time series have the same length, $T_i = T$.
   * Each observation may also be associated with inputs: $W_i = \lbrace w_{i1}, w_{i2}, \dots, w_{iT_i} \rbrace$.
 
-#### Two Extreme Modeling Strategies
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposed Solutions</span><span class="math-callout__name">(Two Extreme Modeling Strategies)</span></p>
 
 1.  **Separate Models:**
     Fit a completely independent model with parameters $\theta_i$ to each dataset $D_i$.
@@ -1454,7 +1403,14 @@ Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, w
       * **Advantage:** This method yields more stable parameter estimates because it leverages the entire data pool.
       * **Disadvantage:** It completely ignores inter-individual differences, assuming all subjects are governed by the exact same process.
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Partial pooling)</span></p>
+
 We want to find a middle ground that finds a compromise between these extremes – **partial pooling**. This brings us to Bayesian hierarchical modeling, also known as multilevel modeling.
+
+</div>
 
 #### The Hierarchical Approach
 
@@ -1462,29 +1418,53 @@ Hierarchical modeling provides a principled compromise between these two extreme
 
 **Core Idea:** We introduce subject-specific parameters $\theta_1, \theta_2, \dots, \theta_N$, but we assume they are not arbitrary. Instead, they are drawn from a common parent distribution, which is itself described by hyperparameters.
 
-**Mathematical Formulation:**
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bayesian hierarchical modeling)</span></p>
 
-Bayesian hierarchical modeling makes use of two important concepts in deriving the posterior distribution, namely:
+**Bayesian hierarchical modeling** makes use of two important concepts in deriving the posterior distribution, namely:
 
 * **Hyperparameters:** parameters of the prior distribution
 * **Hyperpriors:** distributions of Hyperparameters
 
-Each subject's parameter $\theta_i$ is drawn from a parent distribution parameterized by $\beta$:
+Each subject's parameter $\theta_i$ is drawn from a **parent distribution** parameterized by $\beta$:
+
 $$\theta_i \sim p(\theta \mid \beta)$$
 
 We then place a prior distribution, known as a **hyperprior**, on the hyperparameters $\beta$:
+
 $$\beta \sim p(\beta)$$
 
-This creates a hierarchical chain of dependencies:
+**Hierarchical chain of dependencies**:
+
 $$\beta \rightarrow \theta_i \rightarrow D_i \quad \text{for } i=1, \dots, N$$
 
-The goal of hierarchical Bayesian inference is to compute the joint posterior distribution of all subject-level parameters and group-level hyperparameters given the observed data from all subjects.
-
-The joint distribution over all data ($D_{1:N}$), parameters ($\theta_{1:N}$), and hyperparameters ($\beta$) is given by:
+The **joint distribution** over all data ($D_{1:N}$), parameters ($\theta_{1:N}$), and hyperparameters ($\beta$) is given by:
 
 $$p(\beta, \lbrace\theta_i\rbrace_{i=1}^N, \lbrace D_i\rbrace_{i=1}^N) = p(\beta) \prod_{i=1}^N \left[ p(\theta_i \mid \beta) p(D_i \mid \theta_i) \right]$$
 
-Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \beta \mid D_1, \dots, D_N)$. This structure allows the model to "borrow statistical strength" across subjects. The data from subject $j$ informs the posterior of $\theta_j$, which in turn informs the posterior of the group hyperparameter $\beta$. This updated knowledge about $\beta$ then helps to regularize and improve the estimates for all other subjects' parameters $\theta_i$ where $i \neq j$.
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hierarchical Bayesian inference)</span></p>
+
+The goal of hierarchical Bayesian inference is to compute the joint posterior distribution of all subject-level parameters and group-level hyperparameters given the observed data from all subjects.
+
+$$
+p(\beta, \lbrace\theta_i\rbrace_{i=1}^N \mid \lbrace D_i\rbrace_{i=1}^N) = \dfrac{p(\lbrace D_i\rbrace_{i=1}^N \mid \lbrace\theta_i\rbrace_{i=1}^N)p(\lbrace\theta_i\rbrace_{i=1}^N \mid \beta)p(\beta)}{p(\lbrace D_i\rbrace_{i=1}^N)}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Information Sharing in Bayesian hierarchical modeling)</span></p>
+
+* Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \beta \mid D_1, \dots, D_N)$. 
+* This structure allows the model to "borrow statistical strength" across subjects. 
+* The data from subject $j$ informs the posterior of $\theta_j$, 
+* which in turn informs the posterior of the group hyperparameter $\beta$. 
+* This updated knowledge about $\beta$ then helps to regularize and improve the estimates for all other subjects' parameters $\theta_i$ where $i \neq j$.
+
+</div>
 
 <div class="gd-grid">
   <figure>
@@ -1498,88 +1478,76 @@ Our primary target is the posterior distribution $p(\theta_1, \dots, \theta_N, \
   </figure>
 </div>
 
-### Example: Hierarchical Delay Discounting
-
-Let's consider a concrete example of hierarchical modeling applied to a delay discounting task in cognitive science.
-
-#### Data and Task Structure
-
-We have data from $N$ individuals. Subject $i$ performs $T_i$ trials, indexed by $t=1, \dots, T_i$. In each trial, the subject chooses between two options:
-
-1.  An immediate reward of value $A_{I,it}$.
-2.  A delayed reward of value $A_{D,it}$ available after a delay $D_{it}$.
-
-The observed data for each trial is a binary choice $y_{it}$:
-
-$$y_{it} = \begin{cases} 1 & \text{if delayed choice is selected} \\ 0 & \text{if immediate choice is selected} \end{cases}$$
-
-The full dataset for subject $i$ is $Y_i = \lbrace y_{it}\rbrace_{t=1}^{T_i}$.
-
-#### Model Architecture: Hyperbolic Delay Discounting
-
-The subjective value of the options is modeled as follows:
-
-  * **Value of Immediate Option:** $V_{I,it} = A_{I,it}$
-  * **Value of Delayed Option:** The value of the delayed reward is discounted hyperbolically based on the delay duration.
-    
+<div class="accordion">
+  <details>
+    <summary>Example: Hierarchical Delay Discounting</summary>
+    <h3>Example: Hierarchical Delay Discounting</h3>
+    <p>Let's consider a concrete example of hierarchical modeling applied to a delay discounting task in cognitive science.</p>
+    <h4>Data and Task Structure</h4>
+    <p>We have data from $N$ individuals. Subject $i$ performs $T_i$ trials, indexed by $t=1, \dots, T_i$. In each trial, the subject chooses between two options:</p>
+    <ol>
+      <li>An immediate reward of value $A_{I,it}$.</li>
+      <li>A delayed reward of value $A_{D,it}$ available after a delay $D_{it}$.</li>
+    </ol>
+    <p>The observed data for each trial is a binary choice $y_{it}$:</p>
+    $$y_{it} = \begin{cases} 1 & \text{if delayed choice is selected} \\ 0 & \text{if immediate choice is selected} \end{cases}$$
+    <p>The full dataset for subject $i$ is $Y_i = \lbrace y_{it}\rbrace_{t=1}^{T_i}$.</p>
+    <h4>Model Architecture: Hyperbolic Delay Discounting</h4>
+    <p>The subjective value of the options is modeled as follows:</p>
+    <ul>
+      <li><strong>Value of Immediate Option:</strong> $V_{I,it} = A_{I,it}$</li>
+      <li><strong>Value of Delayed Option:</strong> The value of the delayed reward is discounted hyperbolically based on the delay duration.</li>
+    </ul>
     $$V_{D,it} = \frac{A_{D,it}}{1 + k_i D_{it}}$$
-    
-    Here, $k_i > 0$ is the subject-specific **discount rate**. A higher $k_i$ means the subject devalues future rewards more steeply.
-
-The choice is then modeled based on the utility difference, $\Delta V_{it} = V_{D,it} - V_{I,it}$. A positive $\Delta V_{it}$ indicates a preference for the delayed option.
-
-The probability of choosing the delayed option is modeled using a logistic function (i.e., logistic regression):
-
-$$p_{it} := P(y_{it} = 1 \mid k_i, \beta_i) = \sigma(\beta_i \Delta V_{it}) = \frac{1}{1 + \exp(-\beta_i \Delta V_{it})}$$
-
-where $\beta_i$ is a subject-specific "softmax" temperature parameter controlling the steepness of the decision boundary. The likelihood for the observed choices of a single individual $i$ follows a Bernoulli distribution:
-
-$$\mathcal{L}(k_i, \beta_i \mid Y_i) = \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}$$
-
-#### Hierarchical Priors
-
-Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-level structure. Since $k_i$ and $\beta_i$ must be positive, we model their logarithms as being drawn from a Normal distribution.
-
-  * **Individual Parameters:** $k = \lbrace k_i\rbrace_{i=1}^N$ and $\beta = \lbrace \beta_i\rbrace_{i=1}^N$.
-
+    <p>Here, $k_i > 0$ is the subject-specific <strong>discount rate</strong>. A higher $k_i$ means the subject devalues future rewards more steeply.</p>
+    <p>The choice is then modeled based on the utility difference, $\Delta V_{it} = V_{D,it} - V_{I,it}$. A positive $\Delta V_{it}$ indicates a preference for the delayed option.</p>
+    <p>The probability of choosing the delayed option is modeled using a logistic function (i.e., logistic regression):</p>
+    $$p_{it} := P(y_{it} = 1 \mid k_i, \beta_i) = \sigma(\beta_i \Delta V_{it}) = \frac{1}{1 + \exp(-\beta_i \Delta V_{it})}$$
+    <p>where $\beta_i$ is a subject-specific "softmax" temperature parameter controlling the steepness of the decision boundary. The likelihood for the observed choices of a single individual $i$ follows a Bernoulli distribution:</p>
+    $$\mathcal{L}(k_i, \beta_i \mid Y_i) = \prod_{t=1}^{T_i} p_{it}^{y_{it}} (1 - p_{it})^{1 - y_{it}}$$
+    <h4>Hierarchical Priors</h4>
+    <p>Instead of treating each $k_i$ and $\beta_i$ as independent, we impose a group-level structure. Since $k_i$ and $\beta_i$ must be positive, we model their logarithms as being drawn from a Normal distribution.</p>
+    <p><strong>Individual Parameters:</strong> $k = \lbrace k_i\rbrace_{i=1}^N$ and $\beta = \lbrace \beta_i\rbrace_{i=1}^N$.</p>
     $$\log(k_i) \sim \mathcal{N}(\mu_k, \sigma_k^2) \quad \log(\beta_i) \sim \mathcal{N}(\mu_\beta, \sigma_\beta^2)$$
-
-  * **Group-level Hyperparameters:** The means $(\mu_k, \mu_\beta)$ and variances $(\sigma_k^2, \sigma_\beta^2)$ of the parent distributions.
-  * **Hyperpriors:** We place priors on the hyperparameters themselves.
-      * *Priors on Means:* $\mu_k \sim \mathcal{N}(\mu_{k0}, \sigma_{k0}^2)$ and $\mu_\beta \sim \mathcal{N}(\mu_{\beta 0}, \sigma_{\beta 0}^2)$.
-      * *Priors on Variances:* $\sigma_k^2 \sim \text{Inverse-Gamma}(a_k, b_k)$ and $\sigma_\beta^2 \sim \text{Inverse-Gamma}(a_\beta, b_\beta)$.
-
-#### Full Bayesian Formulation
-
-The goal is to obtain the full posterior distribution over all parameters and hyperparameters given the data $Y$:
-$$P(k, \beta, \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2 \mid Y)$$
-
-By Bayes' theorem, this is proportional to the product of the likelihood and the priors:
-$$\propto P(Y \mid k, \beta) P(k, \beta \mid \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2) P(\mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2)$$
-
-  * **Joint Likelihood:** Assuming independence across subjects given their parameters:
-
+    <p><strong>Group-level Hyperparameters:</strong> The means $(\mu_k, \mu_\beta)$ and variances $(\sigma_k^2, \sigma_\beta^2)$ of the parent distributions.</p>
+    <p><strong>Hyperpriors:</strong> We place priors on the hyperparameters themselves.</p>
+    <p><em>Priors on Means:</em> $\mu_k \sim \mathcal{N}(\mu_{k0}, \sigma_{k0}^2)$ and $\mu_\beta \sim \mathcal{N}(\mu_{\beta 0}, \sigma_{\beta 0}^2)$.</p>
+    <p><em>Priors on Variances:</em> $\sigma_k^2 \sim \text{Inverse-Gamma}(a_k, b_k)$ and $\sigma_\beta^2 \sim \text{Inverse-Gamma}(a_\beta, b_\beta)$.</p>
+    <h4>Full Bayesian Formulation</h4>
+    <p>The goal is to obtain the full posterior distribution over all parameters and hyperparameters given the data $Y$:</p>
+    $$P(k, \beta, \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2 \mid Y)$$
+    <p>By Bayes' theorem, this is proportional to the product of the likelihood and the priors:</p>
+    $$\propto P(Y \mid k, \beta) P(k, \beta \mid \mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2) P(\mu_k, \sigma_k^2, \mu_\beta, \sigma_\beta^2)$$
+    <ul>
+      <li><strong>Joint Likelihood:</strong> Assuming independence across subjects given their parameters:</li>
+    </ul>
     $$P(Y \mid k, \beta) = \prod_{i=1}^N P(Y_i \mid k_i, \beta_i)$$
-
-  * **Joint Prior on Individual Parameters:**
-
+    <ul>
+      <li><strong>Joint Prior on Individual Parameters:</strong></li>
+    </ul>
     $$P(k, \beta \mid \dots) = \left[ \prod_{i=1}^N P(\log(k_i) \mid \mu_k, \sigma_k^2) \right] \left[ \prod_{i=1}^N P(\log(\beta_i) \mid \mu_\beta, \sigma_\beta^2) \right]$$
-
-  * **Joint Hyperprior:** Assuming independence of the hyperparameters:
-
+    <ul>
+      <li><strong>Joint Hyperprior:</strong> Assuming independence of the hyperparameters:</li>
+    </ul>
     $$P(\mu_k, \mu_\beta, \sigma_k^2, \sigma_\beta^2) = P(\mu_k) P(\mu_\beta) P(\sigma_k^2) P(\sigma_\beta^2)$$
+    <p>By combining these expressions, we define the full model. Inference is typically performed using sampling techniques like Markov Chain Monte Carlo (MCMC).</p>
+  </details>
+</div>
 
-By combining these expressions, we define the full model. Inference is typically performed using sampling techniques like Markov Chain Monte Carlo (MCMC).
-
-### Alternative: Hierarchical Modeling with a Parent Matrix
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Alternative: Hierarchical Modeling with a Parent Matrix)</span></p>
 
 An alternative parametrization for hierarchical models, particularly useful in high-dimensional settings, involves a shared parent matrix.
 
   * **Naive Parametrization:** Each subject $i$ has a parameter vector $\theta_i \in \mathbb{R}^p$. The total number of parameters to estimate for the subject level is $p \times N$.
   * **Parent Matrix Parametrization:** We introduce a shared parent matrix $W \in \mathbb{R}^{p \times k}$ (with $k < p$) and individual subject vectors $h_i \in \mathbb{R}^k$. The subject-specific parameter vector $\theta_i$ is then constructed as a linear combination of the columns of $W$:
+    
     $$\theta_i = W h_i$$
+
     The total number of parameters is now $(p \times k) + (k \times N)$, which can be significantly smaller than $p \times N$ if $k$ is chosen well. This acts as a form of dimensionality reduction.
   * **Hierarchical Chain:** The dependency structure becomes: $W, h_i \rightarrow \theta_i \rightarrow D_i$.
+
+</div>
 
 #### Additional Sources
 
@@ -1688,6 +1656,11 @@ $$\mathbb{E}[X_t] = \frac{a_0}{1-a_1} \quad \text{if } \lvert a_1 \rvert < 1$$
     <p>Therefore, the condition for stationarity of an AR(1) process is $\lvert a_1 \rvert < 1$.</p>
   </details>
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/ar_1_different_a1.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>AR(1) time series with different $\rvert a_1\rvert$.</figcaption>
+</figure>
 
 #### State-Space Representation and Stability
 
@@ -2034,16 +2007,7 @@ $$\text{PACF}(k) = 0 \quad \text{for all } k > p$$
 
 This is because in an AR($p$) model, the direct relationship between $X_t$ and $X_{t-k}$ (for $k>p$) is fully mediated by the first $p$ lags.
 
-#### Summary for Model Identification
-
-| Process | Autocorrelation Function (ACF) | Partial Autocorrelation Function (PACF) |
-| :--- | :--- | :--- |
-| **AR($p$)** | Decays exponentially or sinusoidally | Cuts off to zero after lag $p$ |
-| **MA($q$)** | Cuts off to zero after lag $q$ | Decays exponentially or sinusoidally |
-
 ### Modeling with ARMA
-
-#### Parameter Estimation
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Parameter Estimation for AR and ARMA)</span></p>
@@ -2091,6 +2055,11 @@ In contrast to univariate analysis, multivariate time series analysis considers 
 
 - **Multivariate Time Series Data:** A vector $X_t$ representing observations at time $t$. $X_t = (X_{1t}, \dots, X_{Nt})^T \in \mathbb{R}^N$. Here, $N$ is the number of simultaneously recorded variables.
 - **New Phenomena of Interest:** The primary advantage of the multivariate approach is the ability to model interactions between time series. A key phenomenon is the cross-correlation between the different component series.
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/var3.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>VAR(3)</figcaption>
+</figure>
 
 ### The VAR($p$) Model Architecture
 
@@ -2278,6 +2247,17 @@ where $d_1$ and $d_0$ are the **number of free parameters** in the full and rest
 
 </div>
 
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/chi-squared-distribution-diff-k.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <figcaption>Chi-squared distribution for different $k$.</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/chi-squared-distribution.png' | relative_url }}" alt="Poisson PMF" loading="lazy">
+    <figcaption>Chi-squared distribution with $p$ value.</figcaption>
+  </figure>
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VAR($p$) vs. VAR($p+1$))</span></p>
 
@@ -2452,19 +2432,16 @@ This specific sigmoid structure only allows for a single, monotonic change point
 
 </div>
 
-
 ### AR Models for Count Processes (Poisson GLM)
 
 For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a Poisson distribution where the rate is modeled with an autoregressive structure.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Poisson GLM)</span></p>
-
-</div>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AR Models for Count Processes (Poisson GLM))</span></p>
 
 - **Data:** A univariate or multivariate count process. For example, the number of customers entering a store per hour, or the number of spikes from $N$ neurons in discrete time bins. 
   
-  $$C_t = (C_{1t}, \dots, C_{Nt})^T$$
+  $$C_t = (C_{1t}, \dots, C_{Nt})^\top$$
 
 - **Model:** For each process $i=1, \dots, N$, we model the count $C_{it}$ conditioned on the past as a Poisson random variable.
   
@@ -2484,6 +2461,8 @@ For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a
   $$
 
   The $\exp$ is the inverse link function in this Poisson GLM. The coefficient matrices $A_j$ capture the influence of past counts on current rates, representing "effective couplings" between processes.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Parameter Estimation for Poisson GLM)</span></p>
@@ -2516,7 +2495,11 @@ This chapter introduces the fundamental concepts of nonlinear dynamical systems,
 
 ### Motivation: From Linear to Nonlinear Systems
 
-A VAR(1) model, $X_t = c + AX_{t-1}$, is a Linear Dynamical System (LDS). We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
+A VAR(1) model, 
+
+$$X_t = c + AX_{t-1}$$
+
+is a Linear Dynamical System (LDS). We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
 
 $$X_t = F(X_{t-1})$$
 
@@ -2649,6 +2632,29 @@ where $X_t \in \mathbb{R}^N$:
 
 </div>
 
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case1.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case2.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case3.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case4.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case5.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+</div>
+
 ### The Logistic Map: A Case Study in Nonlinearity
 
 
@@ -2751,6 +2757,29 @@ $$\max_i(\lvert\lambda_i(J(X^{\ast}))\rvert) < 1$$
 
 </div>
 
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/nonlin_map_case1.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/nonlin_map_case2.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/nonlin_map_case3.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/nonlin_map_case4.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/nonlin_map_case5.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+</div>
+
 ### Bifurcation and Chaos
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -2765,6 +2794,16 @@ As the parameter $\alpha$ increases beyond $3$ in the logistic map, the system's
 
 </div>
 
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/bifurcation_diagram.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/bifurcation_graph.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+</div>
 
 #### Chaotic Attractors and the Lyapunov Exponent
 
