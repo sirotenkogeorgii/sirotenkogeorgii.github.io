@@ -156,9 +156,6 @@ A function $f: \mathbb{R} \to [0, \infty)$ is a PDF if:
 The probability over an interval is given by the integral of the PDF: $P(a \le X \le b) = \int_a^b f(x)\,dx$. The corresponding CDF is $F(t) = \int_{-\infty}^{t} f(x)\,dx$.
 </div>
 
-
-Common Continuous Distributions:
-
 | Distribution | Parameters | PDF $f(x)$ |
 | --- | --- | --- |
 | **Normal** | $\mu \in \mathbb{R},\ \sigma^2 > 0$ | $\dfrac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\dfrac{(x-\mu)^2}{2\sigma^2}\right)$ |
@@ -181,12 +178,12 @@ Common Continuous Distributions:
   </figure>
 </div>
 
-| Distribution                                   | Parameters                             | Expected value ( \mathbb{E}[X] ) | Variance ( \mathrm{Var}(X) ) |
+| Distribution                                   | Parameters                             | Expected value $\mathbb{E}[X]$ | Variance $\mathrm{Var}(X)$ |
 | ---------------------------------------------- | ------------------------------------------------ | -------------------------------- | ---------------------------- |
 | **Bernoulli**                                  | $p\in[0,1]$, $X\in\lbrace 0,1\rbrace$                         | $p$                              | $p(1-p)$                     |
 | **Binomial**                                   | $n\in\mathbb{N}$, $p\in[0,1]$, $X\in\lbrace 0,\dots,n\rbrace$ | $np$                             | $np(1-p)$                    |
-| **Exponential**                                | rate $\lambda>0$, $X\ge 0$                      | ($1/\lambda$                      | $1/\lambda^2$                |
-| **Poisson**                                    | $\lambda>0$), $X\in\lbrace 0,1,2,\dots\rbrace$                | $\lambda$                        | $\lambda$                    |
+| **Exponential**                                | rate $\lambda>0$, $X\ge 0$                      | $1/\lambda$                      | $1/\lambda^2$                |
+| **Poisson**                                    | $\lambda>0$, $X\in\lbrace 0,1,2,\dots\rbrace$                | $\lambda$                        | $\lambda$                    |
 | **Geometric** *(# trials until first success)* | $p\in(0,1]$, $X\in\lbrace 1,2,\dots\rbrace$                   | $1/p$                            | $(1-p)/p^2$                  |
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -238,8 +235,6 @@ Let $X$ and $Y$ be random variables with realizations $x$ and $y$.
 
 These theorems describe the behavior of the sum of a large number of random variables.
 
-$\frac{1}{n} \sum_{i=1}^n X_i \xrightarrow{\text{a.s.}} \mu
-\quad \text{as } n \to \infty.$ -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Strong Law of Large Numbers)</span></p>
 
@@ -597,12 +592,12 @@ The general idea is to generate a sequence of parameter samples, $\theta^{(0)}, 
 $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Metropolis-Hastings with a Symmetric Proposal)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Metropolis-Hastings with a Symmetric Proposal for posterior $p(\theta \mid X)$ estimation)</span></p>
 
 1.  **Initialization:** Choose an initial parameter value $\theta^{(0)}$ and specify the number of samples $N$.
 2.  **Iteration:** Loop for $i = 1, \dots, N$:
     * **Propose:** Generate a new candidate sample $\theta_{\text{prop}}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{\text{prop}} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
-    * **CompuMetropolis-Hastings with a Symmetric Proposal)te Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
+    * **Compute Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
         * $r_{\text{prop}} := p(X \mid \theta_{\text{prop}})p(\theta_{\text{prop}})$
         * $r_{\text{curr}} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
         * The acceptance ratio is $r = \frac{r_{\text{prop}}}{r_{\text{curr}}}$.
@@ -867,7 +862,17 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 * Strong stationarity is a statement about the entire joint distribution ("laws") of the process, which must be **invariant to shifts in time**.
 * This is a **foundational assumption for many time series models**.
-* In practice, **verifying the equality of all moments and distributions is impossible from a single finite realization**.
+* In practice, **strong stationarity is difficult to prove** because you would theoretically need to test every possible moment (mean, variance, skewness, kurtosis, etc.) and every possible joint distribution across time.
+
+</div>
+
+<div class="math-callout math-callout--auestion" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Where Strong Stationarity holds)</span></p>
+
+Despite being "unrealistic," the assumption is a necessary "working fiction" in several fields:
+* **Physics/Thermodynamics:** In a sealed container of gas at equilibrium, strong stationarity is a very safe bet. This is where ergodicity originated.
+* **Monte Carlo Simulations:** Since we program the rules of the simulation, we can ensure the process is strictly stationary to guarantee our results are valid.
+* **Information Theory:** When compressing data or transmitting signals, we often model the source as stationary and ergodic to establish the theoretical limits of data transfer (like the Shannon-Hartley theorem).
 
 </div>
 
@@ -911,7 +916,28 @@ $$\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu$$
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Ergodicity)</span></p>
 
 * **Ergodicity allows us to infer properties of the entire process (the ensemble) from a single, sufficiently long sample path.**
-* **Ergodicity requires stationarity.** It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
+* **Ergodicity requires (strong) stationarity.** It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Strong Stationarity for Ergodicity?)</span></p>
+
+**Why Strong Stationarity?**
+The core idea of ergodicity is that a **time average** (following one path over a long period) is equal to the **ensemble average** (taking a snapshot of many paths at one moment).
+* **The Scope:** Ergodicity implies that a single realization of the process will eventually visit every part of the state space. To guarantee that this "sample path" represents the entire probability distribution, the entire distribution must be invariant over time.
+* **The Limitation of Weak Stationarity:** Weak (wide-sense) stationarity only guarantees that the **mean** and **autocovariance** are constant. It says nothing about higher-order moments (like skewness or kurtosis) or the shape of the distribution itself. If those higher-order properties change over time, the time average cannot reliably converge to the ensemble average.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Theory vs. Practice Trade-off)</span></p>
+
+Mathematically, we need strong stationarity because ergodicity is a statement about the **entirety** of a system's behavior. If the "shape" of the probability distribution changes at any point, the past becomes a poor predictor of the future, and the time average loses its meaning.
+
+However, in **Applied Science and Engineering**, we often "downgrade" our requirements:
+* **Ergodicity in the Mean:** We only care if the time-averaged mean converges to the ensemble mean. For this, we only need **weak stationarity** (and a condition that the autocovariance decays to zero).
+* **Local Stationarity:** We assume the system is stationary over a "short enough" window of time to perform calculations (e.g., analyzing a 20-millisecond slice of a speech signal).
 
 </div>
 
@@ -931,7 +957,7 @@ Under the assumptions of **weak stationarity and ergodicity**, we can estimate t
 ### Dealing with Non-stationarity
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Transformation of  non-stationarity data)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Transformation of non-stationarity data)</span></p>
 
 If a time series is non-stationary, it must often be transformed before standard models can be applied. Common techniques include:
 
@@ -1391,14 +1417,12 @@ Consider a scenario with $N$ subjects, where for each subject $i=1, \dots, N$, w
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposed Solutions</span><span class="math-callout__name">(Two Extreme Modeling Strategies)</span></p>
 
-1.  **Separate Models:**
-    Fit a completely independent model with parameters $\theta_i$ to each dataset $D_i$.
+1.  **Separate Models:** Fit a completely independent model with parameters $\theta_i$ to each dataset $D_i$.
 
       * **Advantage:** This approach is excellent for capturing individual differences, as each model is tailored specifically to its own data.
       * **Disadvantage:** If the number of time steps $T$ is small and the model is complex, the estimates for $\theta_i$ can be noisy and highly prone to overfitting. There is no sharing of information across subjects.
 
-2.  **Fully Pooled Model:**
-    Concatenate all data into a single large dataset: $D_{\text{pooled}} = \lbrace D_1, D_2, \dots, D_N \rbrace$. Fit a single parameter vector $\theta$ to all the data.
+1.  **Fully Pooled Model:** Union all data into a single large dataset: $D_{\text{pooled}} = \lbrace D_1, D_2, \dots, D_N \rbrace$. Fit a single parameter vector $\theta$ to all the data.
 
       * **Advantage:** This method yields more stable parameter estimates because it leverages the entire data pool.
       * **Disadvantage:** It completely ignores inter-individual differences, assuming all subjects are governed by the exact same process.
@@ -1447,7 +1471,7 @@ $$p(\beta, \lbrace\theta_i\rbrace_{i=1}^N, \lbrace D_i\rbrace_{i=1}^N) = p(\beta
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hierarchical Bayesian inference)</span></p>
 
-The goal of hierarchical Bayesian inference is to compute the joint posterior distribution of all subject-level parameters and group-level hyperparameters given the observed data from all subjects.
+The **goal of hierarchical Bayesian inference** is to compute the joint posterior distribution of all subject-level parameters and group-level hyperparameters given the observed data from all subjects.
 
 $$
 p(\beta, \lbrace\theta_i\rbrace_{i=1}^N \mid \lbrace D_i\rbrace_{i=1}^N) = \dfrac{p(\lbrace D_i\rbrace_{i=1}^N \mid \lbrace\theta_i\rbrace_{i=1}^N)p(\lbrace\theta_i\rbrace_{i=1}^N \mid \beta)p(\beta)}{p(\lbrace D_i\rbrace_{i=1}^N)}
@@ -1598,6 +1622,59 @@ $$X_t = c + \sum_{i=1}^p a_i X_{t-i} + \sum_{j=1}^q b_j \epsilon_{t-j} + \epsilo
 This can also be extended to include external inputs $u_t$. The full set of model parameters to be estimated is 
 
 $$\theta = \lbrace c, a_1, \dots, a_p, b_1, \dots, b_q, \sigma^2 \rbrace$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What's the point of considering errors in predicting a new state? If they are errors, what's their predictive power?)</span></p>
+
+The trick is to stop thinking of these as "mistakes" and start thinking of them as **shocks** or **innovations**.
+
+**The "Impulse" Idea**
+
+In an MA model, $\epsilon_t$ represents a new piece of information that enters the system at time $t$ that was **not** explained by the past.
+
+Imagine you are modeling the water level in a harbor.
+
+* **The Shock ($\epsilon$):** A giant ship enters the harbor, creating a displacement wave.
+* **The Persistence:** That wave doesn't disappear instantly. It ripples and bounces for a while.
+* **The Prediction:** Even if you can't predict *when* the next ship will arrive, if you know a ship arrived one minute ago ($\epsilon_{t-1}$), you can predict that the water will still be choppy *now* ($X_t$).
+
+**The "error" has predictive power because its effects linger.**
+
+**Information vs. Noise**
+
+In econometrics, we often call these terms **innovations**.
+
+* **White Noise:** Purely random and unpredictable *at the moment it happens*.
+* **The Model's Job:** To capture how much of that "random shock" stays in the system for the next step.
+
+If the coefficient $\theta$ is 0.8, it means 80% of yesterday's unexpected shock is still influencing today's value. We aren't predicting the *error itself*; we are predicting the **observed value** based on the fact that a specific shock recently occurred.
+
+**Error vs. Residual**
+
+There is a subtle but vital distinction here:
+
+1. **The Theoretical Error ($\epsilon$):** This is the "shock." We assume it happened.
+2. **The Residual ($\hat{\epsilon}$):** This is what we calculate after the fact.
+
+When we "predict" using an MA model, we use the **residuals** from previous steps. If our model predicted the value would be 100, but it turned out to be 110, we know there was a  "shock." Since the MA model says shocks linger, we add a fraction of that  to our prediction for the next step.
+
+**Why not just use past values of X (Autoregression)?**
+
+You might ask: *"Why not just use the previous water level ($X_{t-1}$) instead of the previous shock ($\epsilon_{t-1}$)?*
+
+* **AR models (using $X$):** Assume the *entire* past value influences the future. This creates a "long memory" where effects decay slowly.
+* **MA models (using $\epsilon$):** Assume only the *random shocks* influence the future. This creates a "short memory." After  steps, the shock is completely gone from the system.
+
+**Summary: The "Pothole" Analogy**
+
+Think of driving a car with bad shocks:
+
+* **AR Model:** The car’s height right now depends on its height a second ago (the car stays bouncy).
+* **MA Model:** The car’s height right now depends on the fact that you hit a **pothole** (the error/shock) three seconds ago.
+
+The "point" of the MA model is to capture those temporary, lingering effects of specific events without assuming the entire history of the variable matters.
 
 </div>
 
@@ -1992,6 +2069,11 @@ $$\text{ACF}(k) = 0 \quad \text{for all } k > q$$
   </details>
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/ACF_MA.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Autocorrelation in MA($q$) Process.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(ACF of an MA($q$) process)</span></p>
 
@@ -2053,7 +2135,7 @@ TODO: [Fourier Transform](/subpages/model-based-time-series-analysis/fourier_tra
 
 In contrast to univariate analysis, multivariate time series analysis considers datasets where multiple variables are recorded simultaneously over time.
 
-- **Multivariate Time Series Data:** A vector $X_t$ representing observations at time $t$. $X_t = (X_{1t}, \dots, X_{Nt})^T \in \mathbb{R}^N$. Here, $N$ is the number of simultaneously recorded variables.
+- **Multivariate Time Series Data:** A vector $X_t$ representing observations at time $t$. $X_t = (X_{1t}, \dots, X_{Nt})^\top \in \mathbb{R}^N$. Here, $N$ is the number of simultaneously recorded variables.
 - **New Phenomena of Interest:** The primary advantage of the multivariate approach is the ability to model interactions between time series. A key phenomenon is the cross-correlation between the different component series.
 
 <figure>
@@ -2086,6 +2168,15 @@ $$
   \mathbb{E}[\varepsilon_{Nt}\varepsilon_{1t}] & \dots & \mathbb{E}[\varepsilon_{Nt}^2]
 \end{pmatrix}
 $$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Empirical Covariance)</span></p>
+
+For the VAR($p$) process, the **empirical covariance** based on the path of the length $T$ is 
+
+$$\hat{\Sigma_\varepsilon} = \frac{1}{T - (p + 1)} \sum_{t=p+2}^T \epsilon_t \epsilon_t^\top$$
 
 </div>
 
@@ -2150,31 +2241,39 @@ where $\lambda_i(A)$ are the eigenvalues of $A$.
 
 </div>
 
-#### Proof Sketch for Stationarity
-
-1. **Iterative Substitution:** Consider the process without the intercept and noise terms for simplicity: $X_t = AX_{t-1}$. By iterating backwards, we can express $X_t$ in terms of an initial state $X_0$:
-   
-   $$
-   X_t = A X_{t-1} = A (A X_{t-2}) = A^2 X_{t-2} = \dots = A^t X_0
-   $$
-
-2. **Eigendecomposition:** We can decompose the matrix $A$ into its eigenvalues and eigenvectors: $A = V \Lambda V^{-1}$ where $\Lambda$ is a diagonal matrix containing the eigenvalues $\lambda_i$, and $V$ is the matrix of corresponding eigenvectors.
-3. **Power of $A$:** Using the eigendecomposition, the $t$-th power of $A$ is:
-   
-   $$
-   A^t = (V \Lambda V^{-1})^t = (V \Lambda V^{-1})(V \Lambda V^{-1}) \dots = V \Lambda^t V^{-1}
-   $$
-
-4. **System Evolution:** Substituting this back into the expression for $X_t$:
-   
-   $$
-   X_t = V \Lambda^t V^{-1} X_0
-   $$
-
-5. **Condition for Stability:** The system is stable (i.e., stationary) if $X_t \to 0$ as $t \to \infty$. This requires that $A^t \to 0$. This, in turn, depends on the behavior of $\Lambda^t$, which is a diagonal matrix with entries $\lambda_i^t$.
-   - If $\max_i(\lvert\lambda_i\rvert) < 1$, then all $\lambda_i^t \to 0$ as $t \to \infty$. Consequently, $\Lambda^t \to 0$, $A^t \to 0$, and the process is stable and stationary.
-   - If $\max_i(\lvert\lambda_i\rvert) > 1$, at least one eigenvalue has a modulus greater than 1. Its corresponding term $\lambda_i^t$ will grow exponentially, causing $X_t$ to explode along the direction of the corresponding eigenvector. The process is non-stationary (divergent).
-   - If $\max_i(\lvert\lambda_i\rvert) = 1$, the system is marginally stable. This can lead to behaviors like a random walk.
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <h4>Proof Sketch for Stationarity</h4>
+    <ol>
+      <li><strong>Iterative Substitution:</strong> Consider the process without the intercept and noise terms for simplicity: $X_t = AX_{t-1}$. By iterating backwards, we can express $X_t$ in terms of an initial state $X_0$:</li>
+    </ol>
+    $$
+    X_t = A X_{t-1} = A (A X_{t-2}) = A^2 X_{t-2} = \dots = A^t X_0
+    $$
+    <ol>
+      <li><strong>Eigendecomposition:</strong> We can decompose the matrix $A$ into its eigenvalues and eigenvectors: $A = V \Lambda V^{-1}$ where $\Lambda$ is a diagonal matrix containing the eigenvalues $\lambda_i$, and $V$ is the matrix of corresponding eigenvectors.</li>
+      <li><strong>Power of $A$:</strong> Using the eigendecomposition, the $t$-th power of $A$ is:</li>
+    </ol>
+    $$
+    A^t = (V \Lambda V^{-1})^t = (V \Lambda V^{-1})(V \Lambda V^{-1}) \dots = V \Lambda^t V^{-1}
+    $$
+    <ol>
+      <li><strong>System Evolution:</strong> Substituting this back into the expression for $X_t$:</li>
+    </ol>
+    $$
+    X_t = V \Lambda^t V^{-1} X_0
+    $$
+    <ol>
+      <li><strong>Condition for Stability:</strong> The system is stable (i.e., stationary) if $X_t \to 0$ as $t \to \infty$. This requires that $A^t \to 0$. This, in turn, depends on the behavior of $\Lambda^t$, which is a diagonal matrix with entries $\lambda_i^t$.</li>
+    </ol>
+    <ul>
+      <li>If $\max_i(\lvert\lambda_i\rvert) < 1$, then all $\lambda_i^t \to 0$ as $t \to \infty$. Consequently, $\Lambda^t \to 0$, $A^t \to 0$, and the process is stable and stationary.</li>
+      <li>If $\max_i(\lvert\lambda_i\rvert) > 1$, at least one eigenvalue has a modulus greater than 1. Its corresponding term $\lambda_i^t$ will grow exponentially, causing $X_t$ to explode along the direction of the corresponding eigenvector. The process is non-stationary (divergent).</li>
+      <li>If $\max_i(\lvert\lambda_i\rvert) = 1$, the system is marginally stable. This can lead to behaviors like a random walk.</li>
+    </ul>
+  </details>
+</div>
 
 ### Parameter Estimation
 
@@ -2263,20 +2362,56 @@ where $d_1$ and $d_0$ are the **number of free parameters** in the full and rest
 
 We can use the LR test to decide if a VAR($p+1$) model provides a significantly better fit than a VAR($p$) model.
 
-- **Restricted Model ($H_0$):** VAR($p$) process, $X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$. This is equivalent to a VAR($p+1$) model with the constraint $A_{p+1} = 0$.
-- **Full Model ($H_1$):** VAR($p+1$) process, $X_t = c + \sum_{i=1}^{p+1} A_i X_{t-i} + \varepsilon_t$.
+- **Restricted Model ($H_0$):** 
+  - VAR($p$) process, 
+  - $X_t = c + \sum_{i=1}^{p} A_i X_{t-i} + \varepsilon_t$
+  - This is equivalent to a VAR($p+1$) model with the constraint $A_{p+1} = 0$
+- **Full Model ($H_1$):** 
+  - VAR($p+1$) process, 
+  - $X_t = c + \sum_{i=1}^{p+1} A_i X_{t-i} + \varepsilon_t$
 
-The LR test compares the "explained variation" in the data under both models. The maximized log-likelihood is related to the determinant of the estimated residual covariance matrix, $\hat{\Sigma}_\varepsilon$.
+The **LR test** compares the "explained variation" in the data under both models. The maximized log-likelihood is related to the determinant of the estimated residual covariance matrix, $\hat{\Sigma}_\varepsilon$.
 
 $$
-\ell_{\text{max}} \propto -\frac{T_{\text{eff}}}{2} \log(\lvert\hat{\Sigma}_\varepsilon\rvert)
+\ell_{\text{restricted}}
+= \sum_{t=p+2}^{T}
+\left(
+-\frac{N}{2}\log(2\pi)
+-\frac{1}{2}\log\lvert\hat{\Sigma}_0\rvert
+-\frac{1}{2}(x_t-\hat{x}_t)^{\top}\hat{\Sigma}_0^{-1}(x-\hat{x}_t)
+\right)
 $$
+
+$$
+\ell_{\text{full}}
+= \sum_{t=p+2}^{T}
+\left(
+-\frac{N}{2}\log(2\pi)
+-\frac{1}{2}\log\lvert\hat{\Sigma}\rvert
+-\frac{1}{2}(x_t-\hat{x}_t)^{\top}\hat{\Sigma}^{-1}(x-\hat{x}_t)
+\right),
+\qquad
+(x_t-\hat{x}_t) \eqqcolon \varepsilon_t
+$$
+
+$$
+Q(\varepsilon)
+= \sum_{t=p+2}^{T} \varepsilon_t^{\top}\hat{\Sigma}^{-1}\varepsilon_t
+= \text{tr}\left(\hat{\Sigma}^{-1}\sum_{t=p+2}^{T}\varepsilon_t\varepsilon_t^{\top}\right)
+\quad \text{(trace identity)}
+$$
+
+$$\ell_{\text{restricted}} = -\sum_{t=p+2}^T\frac{1}{2} \log(\lvert\hat{\Sigma}_0\rvert) + \text{const}$$
+
+$$\ell_{\text{full}} = -\sum_{t=p+2}^T\frac{1}{2} \log(\lvert\hat{\Sigma}\rvert) + \text{const}$$
 
 The test statistic becomes:
 
-$$
-D = T_{\text{eff}} \left(\log(\lvert\hat{\Sigma}_{\text{restr}}\rvert) - \log(\rvert\hat{\Sigma}_{\text{full}}\lvert)\right)
-$$
+$$D = -2(\ell_{\text{restricted}} - \ell_{\text{full}})$$
+
+$$= -2(-\sum_{t=p+2}^T\frac{1}{2} \log(\lvert\hat{\Sigma}_0\rvert)+\sum_{t=p+2}^T\frac{1}{2} \log(\lvert\hat{\Sigma}\rvert))$$
+
+$$= (T-(p+1))(\log(\lvert\hat{\Sigma}_0\rvert) - \log(\lvert\hat{\Sigma}\rvert))$$
 
 This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR($p+1$) model has $N^2$ additional free parameters in the matrix $A_{p+1}$.
 
@@ -2310,13 +2445,17 @@ $$
 * To test if $X \to Y$, we set up **two nested models**:
 
 1. **Full Model:** A VAR($p$) model where past values of $X$ are used to predict $Y$. In the equation for $Y_t$, the coefficients on lagged $X_t$ are unrestricted.
+   * $Y_t = a_0 + \sum_{i=1}^{p} A_i Y_{t-i} + \sum_{j=1}^{q} B_j X_{t-j} + \sum_{l=1}^{m} C_l Z_{t-l} + \varepsilon_t$
 2. **Restricted Model:** A VAR($p$) model where the influence of past $X$ on $Y$ is removed. This is achieved by setting all coefficients that link lagged $X_t$ to $Y_t$ to zero.
+   * $Y_t = a_0 + \sum_{i=1}^{p} A_i Y_{t-i} + \sum_{l=1}^{m} C_l Z_{t-l} + \varepsilon_t$
 
 We then perform a likelihood ratio test (or an F-test) comparing these two models.
 
 - Let $\hat{\Sigma}\_{\text{full}}$ and $\hat{\Sigma}\_{\text{restr}}$ be the estimated residual covariance matrices.
-- The LR test statistic is: $D = T_{\text{eff}} (\log(\lvert\hat{\Sigma}\_{\text{restr}}\rvert) - \log(\lvert\hat{\Sigma}\_{\text{full}}\rvert))$.
-- Under $H_0$ (no Granger causality), $D \sim \chi^2(q)$, where $q$ is the number of zero-restrictions imposed (in this case, $p \times (\text{dim of } X) \times (\text{dim of } Y)$).
+- The LR test statistic is: 
+  - $D = T_{\text{eff}} (\log(\lvert\hat{\Sigma}\_{\text{restr}}\rvert) - \log(\lvert\hat{\Sigma}\_{\text{full}}\rvert))$
+  - $T_{\text{eff}} = T - \max(p, q, m) - 1$
+- Under $H_0$ (no Granger causality), $D \sim \chi^2(r)$, where $r = q \cdot (\text{dim of } X) \cdot (\text{dim of } Y)$ is the number of zero-restrictions imposed.
 
 </div>
 
@@ -2349,7 +2488,7 @@ This chapter extends the autoregressive framework to model non-Gaussian time ser
 
 Consider a time series of binary outcomes, $X_t \in \lbrace 0, 1\rbrace$. We can model this using an autoregressive structure similar to logistic regression.
 
-- **Data:** A binary time series, e.g., $X_t = \lbrace 0, 1, 1, 0, \dots\rbrace$.
+- **Data:** A binary time series, e.g., $\lbrace X_t\rbrace_{t=1}^T$.
 - **Model Architecture:** The probability of a "success" $(X_t=1)$ is conditioned on the past $p$ values.
   
   $$
@@ -2499,7 +2638,7 @@ A VAR(1) model,
 
 $$X_t = c + AX_{t-1}$$
 
-is a Linear Dynamical System (LDS). We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
+is a **Linear Dynamical System (LDS)**. We can generalize this by replacing the linear function with a nonlinear function $F(\cdot)$, such as a recurrent neural network (RNN).
 
 $$X_t = F(X_{t-1})$$
 
@@ -2607,6 +2746,29 @@ Every point is part of a 2-cycle. This is a **neutrally stable cycle**.
 
 </div>
 
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case1.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case2.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case3.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case4.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case5.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
+  </figure>
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multivariate Extension (Linear Case))</span></p>
 
@@ -2632,28 +2794,6 @@ where $X_t \in \mathbb{R}^N$:
 
 </div>
 
-<div class="pmf-grid">
-  <figure>
-    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case1.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
-  </figure>
-  <figure>
-    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case2.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
-  </figure>
-  <figure>
-    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case3.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
-  </figure>
-  <figure>
-    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case4.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
-  </figure>
-  <figure>
-    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/lin_map_case5.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
-    <!-- <figcaption>Chi-squared distribution for different $k$.</figcaption> -->
-  </figure>
-</div>
 
 ### The Logistic Map: A Case Study in Nonlinearity
 
@@ -2937,13 +3077,13 @@ The ELBO can be expressed in two common, equivalent forms.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Expected Joint + Entropy )</span></p>
 
-   $$\text{ELBO}(q, p_\theta) = \mathbb{E}_q[\log p_\theta(X, Z)] - \mathbb{E}_q[\log q(Z)]$$ 
+   $$\text{ELBO}(q, p_\theta) = \mathbb{E}_{q(Z\mid X)}[\log p_\theta(X, Z)] - \mathbb{E}_{q(Z\mid X)}[\log q(Z\mid X)]$$ 
    
    This can be rewritten using the definition of entropy, 
    
-   $$\text{ELBO}(q, p_\theta) = \mathbb{E}_q[\log p_\theta(X, Z)] + H(q(Z)),$$ 
+   $$\text{ELBO}(q, p_\theta) = \mathbb{E}_{q(Z\mid X)}[\log p_\theta(X, Z)] + H(q(Z\mid X)),$$ 
 
-   where $H(q(Z)) = -\mathbb{E}_q[\log q(Z)]$.
+   where $H(q(Z\mid X)) = -\mathbb{E}_{q(Z\mid X)}[\log q(Z\mid X)]$.
    
    The entropy term favors solutions where the proposal distribution $q(Z)$ is not overly confident (i.e., has high entropy).
 
@@ -2998,29 +3138,31 @@ $$\max_{q, \theta} \text{ELBO}(q, \theta)$$
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Expectation-Maximization (EM))</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Expectation–Maximization (EM))</span></p>
 
-The EM algorithm is an iterative procedure for finding MLE solutions for models with latent variables.
+The EM algorithm is an iterative procedure for finding maximum-likelihood estimates in latent-variable models by alternating between updating a distribution over latent variables and updating parameters.
 
-1. Start with an initial guess for the parameters, $\theta^{(0)}$.
-2. Repeat until convergence:
-  * **E-Step (Expectation):** Fix the current parameters $\theta^{\ast}$ and update the proposal distribution $q^{\ast}(Z)$ to be the true posterior. This minimizes the KL divergence, making the bound tight. 
-  
-  $$q^{\ast}(Z) = \arg\max_q \text{ELBO}(q, p_{\theta^{\ast}})$$ 
-  
-  $$\iff$$
-  
-  $$q^{\ast}(Z) = \arg\min_q \text{KL}(q(Z)\parallel p_{\theta^{\ast}}(Z\mid X))$$ 
-  
-  This step involves computing the expectation of the complete-data log-likelihood.
-  * **M-Step (Maximization):** Fix the proposal distribution $q^{\ast}(Z)$ from the E-step and update the model parameters $\theta^{\ast}$ by maximizing the ELBO. 
-  
-  $$\theta^{\ast} = \arg\max_\theta \text{ELBO}(q^{\ast}(Z), p_\theta)$$ 
-  
-  $$\iff$$ 
-  
-  $$\theta^{\ast} = \arg\max_\theta \mathbb{E}_{q^{\ast}}[\log p_\theta(X, Z)]$$
+1. **Initialize** parameters $\theta^{(0)}$.
+2. **Repeat** until convergence (let $\theta^{old}$ denote the current parameters):
 
+* **E-step (Expectation):** Fix $\theta^{old}$ and choose a distribution over latents **conditioned on the observed data** $X$ by maximizing the ELBO. The optimum is the true posterior under the current parameters (for exact EM), which makes the bound tight.
+  
+  $$q^{\ast}(Z\mid X)=\arg\max_{q} \mathrm{ELBO}\big(q(Z\mid X),\theta^{old}\big)$$
+  
+  $$\iff\quad q^{\ast}(Z\mid X)=\arg\min_{q} \text{KL}\left(q(Z\mid X) \parallel p_{\theta^{old}}(Z\mid X)\right)$$
+  
+  Hence (if exact EM, meaning we can compute $p_{\theta^{old}}(Z\mid X)$):
+  
+  $$q^{\ast}(Z\mid X)=p_{\theta^{old}}(Z\mid X)$$
+
+* **M-step (Maximization):** Fix $q^{\ast}(Z\mid X)$ and update parameters by maximizing the ELBO with respect to $\theta$:
+  
+  $$\theta^{new}=\arg\max_{\theta} \mathrm{ELBO}\big(q^{\ast}(Z\mid X),\theta\big)$$
+  
+  Since the entropy term of $q^{\ast}$ does not depend on $\theta$, this is equivalent to maximizing the expected complete-data log-likelihood:
+  
+  $$\theta^{new}=\arg\max_{\theta} \mathbb{E}_{q^{\ast}(Z\mid X)}\big[\log p_{\theta}(X,Z)\big].$$
+  
 </div>
 
 ### Linear State-Space Models
@@ -3171,9 +3313,8 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
     <p>The relevant term is:</p>
     $$Q(A) = \mathbb{E}_q[- \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T(z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})]$$
     $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T\mathbb{E}_q[(z_t - Az_{t-1})^\top \Sigma^{-1} (z_t - Az_{t-1})]$$
-    <p>Next we use the identities $x^\top A y = \text{tr}(Ayx^\top)$ and $\mathbb{E}[\text{tr}(A)] = \text{tr}(\mathbb{A})$.</p>
+    <p>Next we use the identities $x^\top A y = \text{tr}(Ayx^\top)$ and $\mathbb{E}[\text{tr}(A)] = \text{tr}(\mathbb{E}[A])$.</p>
     $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T\mathbb{E}_q[z_t^\top\Sigma^{-1}z_t - z_{t-1}^\top A^\top\Sigma^{-1}z_t -z_t^\top\Sigma^{-1}Az_{t-1} + z_{t-1}^\top A^\top\Sigma^{-1}Az_{t-1}]$$
-    $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T \Sigma^{-1}[z_t^\top z_t] - A^\top\Sigma^{-1}[z_t z_{t-1}^\top] -\Sigma^{-1}A[z_{t-1}z_t^\top] + A^\top\Sigma^{-1}A[z_{t-1}z_{t-1}^\top]$$
     $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T \mathbb{E}_{q}[\text{tr}(\Sigma^{-1}z_t^\top z_t)] - \mathbb{E}_{q}[\text{tr}(A^\top\Sigma^{-1}z_t z_{t-1}^\top)] -\mathbb{E}_{q}[\text{tr}(\Sigma^{-1}Az_{t-1}z_t^\top)] + \mathbb{E}_{q}[\text{tr}(A^\top\Sigma^{-1}Az_{t-1}z_{t-1}^\top)]$$
     $$Q(A) = - \frac{T-1}{2}\log \lvert \Sigma \rvert -\frac{1}{2}\sum_{t=2}^T \text{tr}(\Sigma^{-1}\mathbb{E}_{q}[z_t^\top z_t]) - \text{tr}(A^\top\Sigma^{-1}\mathbb{E}_{q}[z_t z_{t-1}^\top]) - \text{tr}(\Sigma^{-1}A\mathbb{E}_{q}[z_{t-1}z_t^\top]) + \text{tr}(A^\top\Sigma^{-1}A\mathbb{E}_{q}[z_{t-1}z_{t-1}^\top])$$
     <p>Dropping terms that are constant with respect to $A$:</p>
@@ -3208,6 +3349,13 @@ The Kalman filter-smoother operates in two passes:
   $$p(z_t \mid x_1, \dots, x_T)$$
 
 From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^\top]$, $\mathbb{E}[z_t z_{t-1}^\top]$) required for the M-step.
+
+</div>
+
+<div class="math-callout math-callout--Remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Backward Pass (Smoothing): Practical point)</span></p>
+
+To compute $\mathbb{E}[z_t z_{t-1}^\top]$ you typically need **pairwise smoothed marginals** $p(z_{t-1},z_t\mid x_{1:T})$, not just the single-time smoothed $p(z_t\mid x_{1:T})$. The Kalman **smoother** (often specifically the RTS smoother) provides exactly what you need.
 
 </div>
 
@@ -3303,7 +3451,7 @@ $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
 
 </div>
 
-<div class="accordion">
+<!-- <div class="accordion">
   <details>
     <summary>proof</summary>
     $$p(z_t \mid x_1, \dots, x_{t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid x_1, \dots, x_{t-1}) dz_{t-1}$$
@@ -3354,6 +3502,54 @@ $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
     $$A^\top(\Sigma + A V_{t-1} A^\top)^{-1}A = V_{t-1}^{-1} - V_{t-1}^{-1} H V_{t-1}^{-1}$$
     <p>Also (as annotated):</p>
     $$(\Sigma + A V_{t-1} A^\top)^{-1} := L_t^{-1}.$$
+  </details>
+</div> -->
+
+<div class="accordion">
+  <details>
+    <summary>proof (clean: affine transformation of a Gaussian)</summary>
+
+We assume the **filtered posterior at time $t-1$** is Gaussian:
+
+$$z_{t-1}\mid x_{1:t-1}\sim \mathcal{N}(m_{t-1},V_{t-1})$$
+
+The **linear Gaussian dynamics** are
+
+$$z_t = A z_{t-1} + w_t,\qquad w_t\sim\mathcal{N}(0,\Sigma_z),\quad w_t \perp z_{t-1}.$$
+
+
+Define $y := A z_{t-1}$. Since an affine map of a Gaussian is Gaussian,
+
+$$y\mid x_{1:t-1}\sim \mathcal{N}(A m_{t-1}, A V_{t-1}A^\top).$$
+
+
+Now $z_t = y + w_t$ is a sum of two **independent Gaussians**, hence also Gaussian. Its mean and covariance follow from linearity of expectation and independence:
+
+$$
+\mathbb{E}[z_t\mid x_{1:t-1}]
+= \mathbb{E}[y\mid x_{1:t-1}] + \mathbb{E}[w_t]
+= A m_{t-1},
+$$
+
+and
+
+$$
+\mathrm{Cov}(z_t\mid x_{1:t-1})
+= \mathrm{Cov}(y\mid x_{1:t-1}) + \mathrm{Cov}(w_t)
+= A V_{t-1}A^\top + \Sigma_z,
+$$
+
+because the cross-covariance terms vanish $y$ and $w_t$ are independent.
+
+Therefore the **predictive (one-step-ahead) distribution** is Gaussian:
+
+$$
+p(z_t\mid x_{1:t-1})=\mathcal{N}\big(z_t \mid \hat m_t,\hat V_t\big),
+\qquad
+\hat m_t = A m_{t-1},\quad
+\hat V_t = A V_{t-1}A^\top + \Sigma_z.
+$$
+
   </details>
 </div>
 
@@ -3517,11 +3713,15 @@ The algorithm requires the stored results (means and covariances) from the forwa
 
 After the backward pass is complete, the set of distributions $\lbrace \mathcal{N}(m_t^s, V_t^s) \rbrace_{t=1}^T$ represents the full smoothed posterior distributions $p(z_t \mid x_1, \dots, x_T)$ for all time steps:
 
-$$p(z_t \mid x_{1:T}) = \sim \mathcal{N}(m_t^s, V_t^s)$$
+$$p(z_t \mid x_{1:T}) \mathcal{N}(m_t^s, V_t^s)$$
 
 $$\mathbb{E}[z_t] = m_t^s$$
 
 $$\mathbb{E}[z_t z_t^\top] = \text{Cov}(z_t) + \mathbb{E}[z_t]\mathbb{E}[z_t^\top]$$
+
+$$\mathbb{E}[z_t z_t^\top] = V_t^s J_{t-1}^\top + m_t^s (m_t^s)^\top$$
+
+$$\implies \text{Cov}(z_t, z_{t-1}\mid X) = V_t^s J_{t-1}^\top$$
 
 </div>
 
@@ -4296,16 +4496,6 @@ where the variational parameters $\mu_\phi$ and $\Sigma_\phi$ are complex functi
 
 #### The Sequential ELBO
 
-Starting from the last definition of ELBO:
-
-$$\text{ELBO}(\phi, \theta) = \mathbb{E}_{q\phi(Z\mid X)}[\log p_\theta(X\mid Z)] -\text{KL}(q_\phi(Z\mid X) \parallel p_\theta(Z))$$
-
-$$=\text{ELBO}(\phi, \theta) = \mathbb{E}_{q\phi(Z\mid X)}[\log \prod_t^T p_\theta(x_z\mid z_t)] - \mathbb{E}_{q\phi(Z\mid X)}[\log q_\phi(Z\mid X) - \log p_\theta(Z)]$$
-
-$$=\text{ELBO}(\phi, \theta) = \sum_t^T \mathbb{E}_{q\phi(z_t\mid x_t)}[\log p_\theta(x_z\mid z_t)] - \sum_t^T \mathbb{E}_{q\phi(z_t\mid x_t)}[\log q_\phi(z_t\mid x_t) - \log p_\theta(z_t\mid z_{t-1})]$$
-
-$$=\text{ELBO}(\phi, \theta) = \sum_t \left( \mathbb{E}_{q_\phi(z_t\mid X)}[\log p_\theta(x_t\mid z_t)] - \mathbb{E}_{q_\phi(Z_{<t}\mid X)}[\text{KL}(q_\phi(z_t\mid X) \ \parallel \ p_\theta(z_t\mid z_{t-1}))] \right)$$
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sequential ELBO)</span></p>
 
@@ -4317,6 +4507,17 @@ This objective can be conceptualized as a sum of per-timestep reconstruction los
 
 $$\text{ELBO} = \sum_t \left( \mathcal{L}_{\text{rec}}(t) + \mathcal{L}_{\text{KL}}(t) \right)$$
 
+</div>
+
+<div class="accordion">
+  <details>
+    <summary>proof</summary>
+    <p>Starting from the last definition of ELBO:</p>
+    $$\text{ELBO}(\phi, \theta) = \mathbb{E}_{q\phi(Z\mid X)}[\log p_\theta(X\mid Z)] -\text{KL}(q_\phi(Z\mid X) \parallel p_\theta(Z))$$
+    $$=\text{ELBO}(\phi, \theta) = \mathbb{E}_{q\phi(Z\mid X)}[\log \prod_t^T p_\theta(x_z\mid z_t)] - \mathbb{E}_{q\phi(Z\mid X)}[\log q_\phi(Z\mid X) - \log p_\theta(Z)]$$
+    $$=\text{ELBO}(\phi, \theta) = \sum_t^T \mathbb{E}_{q\phi(z_t\mid x_t)}[\log p_\theta(x_z\mid z_t)] - \sum_t^T \mathbb{E}_{q\phi(z_t\mid x_t)}[\log q_\phi(z_t\mid x_t) - \log p_\theta(z_t\mid z_{t-1})]$$
+    $$=\text{ELBO}(\phi, \theta) = \sum_t \left( \mathbb{E}_{q_\phi(z_t\mid X)}[\log p_\theta(x_t\mid z_t)] - \mathbb{E}_{q_\phi(Z_{<t}\mid X)}[\text{KL}(q_\phi(z_t\mid X) \ \parallel \ p_\theta(z_t\mid z_{t-1}))] \right)$$
+  </details>
 </div>
 
 ### Training: Stochastic Gradient Variational Bayes (SGVB)
