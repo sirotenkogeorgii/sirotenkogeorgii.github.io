@@ -3293,7 +3293,7 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
 
 </div>
 
-<div class="accordion">
+<!-- <div class="accordion">
   <details>
     <summary>proof of M-Step for LDS models</summary>
     <h4>Setting the things up</h4>
@@ -3329,6 +3329,204 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
     $$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
     <p>The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion.</p>
   </details>
+</div> -->
+
+<div class="accordion">
+  <details>
+    <summary>proof (elegant M-step for LDS via expected sufficient statistics)</summary>
+
+We consider the linear–Gaussian LDS (time-homogeneous):
+
+$$
+z_1\sim\mathcal N(\mu_0,\Sigma_0),\qquad
+z_t = A z_{t-1}+w_t,\; w_t\sim\mathcal N(0,\Sigma)\ (t\ge 2),
+\qquad
+x_t = B z_t + \varepsilon_t,\; \varepsilon_t\sim\mathcal N(0,\Gamma).
+$$
+
+In EM, the E-step provides $q(Z)=p(Z\mid X,\theta^{old})$ and we maximize
+
+$$Q(\theta) := \mathbb E_q[\log p_\theta(X,Z)]$$
+
+Using the Markov structure,
+
+$$\log p_\theta(X,Z)=\log p(z_1)+\sum_{t=2}^T \log p(z_t\mid z_{t-1})+\sum_{t=1}^T \log p(x_t\mid z_t),$$
+
+so $Q(\theta)$ splits into three independent maximizations: initial, dynamics, observation.
+
+---
+
+### Expected sufficient statistics (from the smoother)
+Let
+
+$$
+\bar z_t := \mathbb E_q[z_t],\qquad
+P_t := \mathbb E_q[z_t z_t^\top],\qquad
+P_{t,t-1}:=\mathbb E_q[z_t z_{t-1}^\top].
+$$
+
+Also define the sums
+
+$$
+S_{00}:=\sum_{t=2}^T \mathbb E_q[z_{t-1}z_{t-1}^\top]=\sum_{t=2}^T P_{t-1},\qquad
+S_{10}:=\sum_{t=2}^T \mathbb E_q[z_t z_{t-1}^\top]=\sum_{t=2}^T P_{t,t-1},\qquad
+S_{11}:=\sum_{t=2}^T \mathbb E_q[z_t z_t^\top]=\sum_{t=2}^T P_t,
+$$
+
+and for the observation part (since $x_t$ is observed/fixed),
+
+$$
+S_{xz}:=\sum_{t=1}^T x_t\,\bar z_t^\top,\qquad
+S_{zz}:=\sum_{t=1}^T \mathbb E_q[z_t z_t^\top]=\sum_{t=1}^T P_t,\qquad
+S_{xx}:=\sum_{t=1}^T x_t x_t^\top.
+$$
+
+---
+
+## 1) Dynamics parameters $(A,\Sigma)$
+
+### Update for $A$
+The dynamics contribution to $Q$ is
+
+$$
+Q_{\text{dyn}}(A,\Sigma)
+= -\frac{T-1}{2}\log|\Sigma|
+-\frac12 \sum_{t=2}^T \mathbb E_q\!\left[(z_t-Az_{t-1})^\top\Sigma^{-1}(z_t-Az_{t-1})\right]
++\text{const}.
+$$
+
+For fixed $\Sigma$, maximizing w.r.t. $A$ is equivalent to minimizing the expected quadratic form.
+Using $\mathbb E[u^\top M u]=\mathrm{tr}\!\left(M\,\mathbb E[uu^\top]\right)$,
+
+$$
+\sum_{t=2}^T \mathbb E_q[(z_t-Az_{t-1})(z_t-Az_{t-1})^\top]
+= S_{11} - A S_{10}^\top - S_{10} A^\top + A S_{00}A^\top.
+$$
+
+Thus (dropping constants)
+
+$$
+Q_{\text{dyn}}(A,\Sigma)\equiv
+-\frac12\,\mathrm{tr}\!\Big(\Sigma^{-1}\big(S_{11}-A S_{10}^\top - S_{10}A^\top + A S_{00}A^\top\big)\Big).
+$$
+
+Differentiate w.r.t. $A$ and set to zero (standard matrix calculus):
+
+$$
+\frac{\partial}{\partial A}\,\mathrm{tr}\!\big(\Sigma^{-1}A S_{00}A^\top\big)=2\Sigma^{-1}A S_{00},
+\qquad
+\frac{\partial}{\partial A}\,\mathrm{tr}\!\big(\Sigma^{-1}S_{10}A^\top\big)=\Sigma^{-1}S_{10}.
+$$
+
+So the stationarity condition is
+
+$$
+2\Sigma^{-1}A S_{00} - 2\Sigma^{-1}S_{10}=0
+\quad\Longrightarrow\quad
+A S_{00}=S_{10}.
+$$
+
+Therefore
+
+$$
+\boxed{
+A^{new}=S_{10}\,S_{00}^{-1}
+=\left(\sum_{t=2}^T \mathbb E_q[z_t z_{t-1}^\top]\right)
+\left(\sum_{t=2}^T \mathbb E_q[z_{t-1} z_{t-1}^\top]\right)^{-1}.
+}
+$$
+
+### Update for $\Sigma$
+For fixed $A$, $Q_{\text{dyn}}$ has the form
+
+$$
+Q_{\text{dyn}}(\Sigma)
+= -\frac{T-1}{2}\log|\Sigma|-\frac12\,\mathrm{tr}\!\big(\Sigma^{-1}\,S_{\text{res}}\big)+\text{const},
+$$
+
+where
+
+$$
+S_{\text{res}}
+:=\sum_{t=2}^T \mathbb E_q\!\left[(z_t-Az_{t-1})(z_t-Az_{t-1})^\top\right].
+$$
+
+The maximizer is the empirical covariance of the (expected) residuals:
+
+$$
+\boxed{
+\Sigma^{new}=\frac{1}{T-1}\,S_{\text{res}}
+=\frac{1}{T-1}\sum_{t=2}^T \mathbb E_q\!\left[(z_t-A^{new}z_{t-1})(z_t-A^{new}z_{t-1})^\top\right].
+}
+$$
+
+If you want it expanded in sufficient statistics:
+
+$$
+S_{\text{res}} = S_{11} - A^{new} S_{10}^\top - S_{10}(A^{new})^\top + A^{new} S_{00}(A^{new})^\top.
+$$
+
+---
+
+## 2) Observation parameters $(B,\Gamma)$
+
+### Update for $B$
+Similarly,
+
+$$
+Q_{\text{obs}}(B,\Gamma)
+= -\frac{T}{2}\log|\Gamma|
+-\frac12\sum_{t=1}^T \mathbb E_q\!\left[(x_t-Bz_t)^\top\Gamma^{-1}(x_t-Bz_t)\right]+\text{const}.
+$$
+
+For fixed $\Gamma$, maximizing w.r.t. $B$ gives the normal equations of multivariate linear regression:
+
+$$
+\boxed{
+B^{new}=S_{xz}\,S_{zz}^{-1}
+=\left(\sum_{t=1}^T x_t\,\bar z_t^\top\right)\left(\sum_{t=1}^T \mathbb E_q[z_t z_t^\top]\right)^{-1}.
+}
+$$
+
+### Update for $\Gamma$
+For fixed $B$,
+
+$$
+\boxed{
+\Gamma^{new}
+=\frac{1}{T}\sum_{t=1}^T \mathbb E_q\!\left[(x_t-B^{new}z_t)(x_t-B^{new}z_t)^\top\right].
+}
+$$
+
+Expanded (useful for implementation):
+
+$$
+\Gamma^{new}
+=\frac{1}{T}\Big(S_{xx}-B^{new}S_{xz}^\top-S_{xz}(B^{new})^\top+B^{new}S_{zz}(B^{new})^\top\Big).
+$$
+
+---
+
+## 3) Initial parameters $(\mu_0,\Sigma_0)$
+From
+
+$$Q_{\text{init}}(\mu_0,\Sigma_0)=\mathbb E_q[\log \mathcal N(z_1\mid \mu_0,\Sigma_0)],$$
+
+the maximizers match the posterior mean/covariance at $t=1$:
+
+$$
+\boxed{\mu_0^{new}=\bar z_1,\qquad \Sigma_0^{new}=P_1-\bar z_1\bar z_1^\top.}
+$$
+
+---
+
+### Interpretation (why this proof is “clean”)
+Each M-step is just a **Gaussian linear regression** with “data” replaced by posterior expectations:
+- $A,\Sigma$ regress $z_t$ on $z_{t-1}$,
+- $B,\Gamma$ regress $x_t$ on $z_t$,
+- $\mu_0,\Sigma_0$ match the posterior at the initial time.
+
+  </details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3352,7 +3550,7 @@ From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z
 
 </div>
 
-<div class="math-callout math-callout--Remark" markdown="1">
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Backward Pass (Smoothing): Practical point)</span></p>
 
 To compute $\mathbb{E}[z_t z_{t-1}^\top]$ you typically need **pairwise smoothed marginals** $p(z_{t-1},z_t\mid x_{1:T})$, not just the single-time smoothed $p(z_t\mid x_{1:T})$. The Kalman **smoother** (often specifically the RTS smoother) provides exactly what you need.
