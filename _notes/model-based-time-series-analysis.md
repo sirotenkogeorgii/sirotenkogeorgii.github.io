@@ -3645,7 +3645,8 @@ In this framework, **all relevant distributions are assumed to be Gaussian**.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Bayesian Filter for Linear Gaussian SSM is Gaussian)</span></p>
 
-$$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
+<!-- $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$ -->
+$$p(z_t \mid x_1, \dots, x_t) = \mathcal{N}(z_t \mid m_t, V_t)$$
 
 </div>
 
@@ -3702,6 +3703,116 @@ $$p(z_t \mid x_1, \dots, x_{t-1}) = \mathcal{N}(z_t \mid m_t, V_t)$$
     $$(\Sigma + A V_{t-1} A^\top)^{-1} := L_t^{-1}.$$
   </details>
 </div> -->
+
+<div class="accordion">
+  <details>
+    <summary>proof (clean: induction + “Gaussian in information form”)</summary>
+
+We prove by induction that the filtering distribution is Gaussian:
+
+$$p(z_t\mid x_{1:t})=\mathcal N(z_t\mid m_t,V_t)$$
+
+
+### Step 0 (base case)
+
+By assumption the initial state is Gaussian, e.g.
+
+$$p(z_0)=\mathcal N(z_0\mid m_0,V_0),$$
+
+so the claim holds at $t=0$.
+
+### Induction hypothesis
+
+Assume for some $t-1\ge 0$ that
+
+$$p(z_{t-1}\mid x_{1:t-1})=\mathcal N(z_{t-1}\mid m_{t-1},V_{t-1}).$$
+
+
+### 1) Prediction is Gaussian (pushforward of a Gaussian)
+
+The dynamics are linear-Gaussian:
+
+$$z_t = A z_{t-1} + w_t,\qquad w_t\sim\mathcal N(0,\Sigma_z),\quad w_t\perp z_{t-1}.$$
+
+Conditioned on $x_{1:t-1}$, $z_{t-1}$ is Gaussian, and $Az_{t-1}$ is therefore Gaussian. Adding independent Gaussian noise keeps it Gaussian. Hence
+
+$$
+p(z_t\mid x_{1:t-1})=\mathcal N(z_t\mid \hat m_t,\hat V_t),
+\qquad
+\hat m_t = A m_{t-1},\quad
+\hat V_t = A V_{t-1}A^\top + \Sigma_z.
+$$
+
+### 2) Update keeps it Gaussian (product of Gaussians in canonical form)
+
+The observation model is
+
+$$
+p(x_t\mid z_t)=\mathcal N(x_t\mid B z_t,\Gamma).
+$$
+
+For fixed $x_t$, this is a Gaussian *function of $z_t$*:
+
+$$
+p(x_t\mid z_t)\propto
+\exp\!\left(-\tfrac12 (Bz_t-x_t)^\top\Gamma^{-1}(Bz_t-x_t)\right),
+$$
+
+which is quadratic in $z_t$.
+
+Now apply Bayes’ rule:
+
+$$
+p(z_t\mid x_{1:t}) \propto p(x_t\mid z_t)\,p(z_t\mid x_{1:t-1}).
+$$
+
+Both factors are Gaussians in $z_t$, so their product is also Gaussian. The cleanest way to see this is to use **information form**.
+
+Write the predicted prior as $\mathcal N(\hat m_t,\hat V_t)$ with
+
+$$
+\Lambda_t := \hat V_t^{-1},\qquad \eta_t := \Lambda_t \hat m_t.
+$$
+
+Up to normalization,
+
+$$
+p(z_t\mid x_{1:t-1}) \propto \exp\!\left(-\tfrac12 z_t^\top \Lambda_t z_t + \eta_t^\top z_t\right).
+$$
+
+Similarly, the likelihood contributes the quadratic/linear terms
+
+$$
+p(x_t\mid z_t)\propto \exp\!\left(-\tfrac12 z_t^\top (B^\top\Gamma^{-1}B) z_t + (B^\top\Gamma^{-1}x_t)^\top z_t\right).
+$$
+
+Multiplying the exponentials just **adds** these natural parameters, giving
+
+$$
+V_t^{-1} = \hat V_t^{-1} + B^\top\Gamma^{-1}B,
+\qquad
+V_t^{-1} m_t = \hat V_t^{-1}\hat m_t + B^\top\Gamma^{-1}x_t.
+$$
+
+Equivalently,
+
+$$
+\boxed{
+V_t = \left(\hat V_t^{-1} + B^\top\Gamma^{-1}B\right)^{-1},
+\qquad
+m_t = V_t\left(\hat V_t^{-1}\hat m_t + B^\top\Gamma^{-1}x_t\right).
+}
+$$
+
+Therefore $p(z_t\mid x_{1:t})$ is Gaussian, completing the induction.
+
+> (These information-form updates are algebraically equivalent to the usual Kalman-gain form
+> $K_t=\hat V_t B^\top(B\hat V_t B^\top+\Gamma)^{-1}$,
+> $m_t=\hat m_t+K_t(x_t-B\hat m_t)$,
+> $V_t=(I-K_tB)\hat V_t$.)
+
+  </details>
+</div>
 
 <div class="accordion">
   <details>
