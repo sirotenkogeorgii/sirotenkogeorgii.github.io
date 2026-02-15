@@ -113,7 +113,7 @@ So: **AR is primarily an independent sampling method, not an MCMC/Markov-chain s
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Basic rejection sampling suffers fromthe curse of dimensionality)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Basic rejection sampling suffers from the curse of dimensionality)</span></p>
 
 Most simple **rejection sampling** techniques run into the **curse of dimensionality**: as the number of dimensions increases, the rejection rate typically rises **exponentially**, making these methods quickly impractical.
 

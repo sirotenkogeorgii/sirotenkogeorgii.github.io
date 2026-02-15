@@ -6,10 +6,10 @@ noindex: true
 
 # Random Processes
 
-
-
-### TODO Random/Stochastic process definitions/summary/...
-
 - [Markov Chains](/subpages/monte-carlo-methods/random_processes/markov_chains/)
-- [Gaussian Processes](/subpages/monte-carlo-methods/random_processes/gaussian_process/)
+- [Gaussian Process](/subpages/monte-carlo-methods/random_processes/gaussian_process/)
 - [Wiener Process and Brownian Motion](/subpages/monte-carlo-methods/random_processes/wiener_process_brownian_motion/)
+- [Diffusion Process](/subpages/monte-carlo-methods/random_processes/diffusion_process/)
+- [Ornstein–Uhlenbeck Process](/subpages/monte-carlo-methods/random_processes/ornstein_uhlenbeck_process/)
+
+
