@@ -16,6 +16,112 @@ date: 2024-11-01
   <figcaption>Hierarchy of vector spaces</figcaption>
 </figure>
 
+## Vector Space
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector Space)</span></p>
+
+Let $\mathbb{T}$ be a **field** with neutral elements $0$ (for addition) and $1$ (for multiplication).
+
+A **vector space over $\mathbb{T}$** is a set $V$ equipped with
+
+* **vector addition** $+\colon V\times V \to V$,
+* **scalar multiplication** $\cdot\colon \mathbb{T}\times V \to V$,
+
+such that for all $\alpha,\beta \in \mathbb{T}$ and all $u,v\in V$:
+
+1. $(V,+)$ is an **abelian group** (there is a zero vector $o\in V$, every $v\in V$ has an additive inverse $-v$, and addition is associative and commutative).
+2. $\alpha(\beta v) = (\alpha\beta)v$  (associativity of scalar multiplication).
+3. $1v = v$  (multiplicative identity acts trivially).
+4. $(\alpha+\beta)v = \alpha v + \beta v$  (distributivity over scalar addition).
+5. $\alpha(u+v) = \alpha u + \alpha v$  (distributivity over vector addition).
+
+Elements of $V$ are called **vectors**, and elements of $\mathbb{T}$ are called **scalars**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Field)</span></p>
+
+A **field** is a set $\mathbb{T}$ with two **commutative** binary operations $+$ and $\cdot$ such that:
+
+1. $(\mathbb{T},+)$ is an **abelian group** (neutral element is $0$; inverse of $a$ is $-a$).
+2. $(\mathbb{T}\setminus{0},\cdot)$ is an **abelian group** (neutral element is $1$; inverse of $a\neq 0$ is $a^{-1}$).
+3. **Distributivity:** for all $a,b,c\in \mathbb{T}$,
+
+   $$a\cdot(b+c)=a\cdot b+a\cdot c$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of vector spaces)</span></p>
+
+### 1) Arithmetic space $\mathbb{R}^n$ (more generally $\mathbb{T}^n$ over a field $\mathbb{T}$)
+
+* Vectors are $n$-tuples $(x_1,\dots,x_n)$.
+* Addition and scalar multiplication are **componentwise**:
+  
+  $$(x_1,\dots,x_n)+(y_1,\dots,y_n)=(x_1+y_1,\dots,x_n+y_n)$$
+  
+  $$\alpha(x_1,\dots,x_n)=(\alpha x_1,\dots,\alpha x_n)$$
+  
+### 2) Matrices $\mathbb{R}^{m\times n}$ (more generally $\mathbb{T}^{m\times n}$)
+
+* Vectors are matrices.
+* Addition and scalar multiplication are **entrywise**:
+  
+  $(A+B)*{ij}=A*{ij}+B_{ij}, \quad (\alpha A)*{ij}=\alpha A*{ij}$
+
+### 3) All real polynomials in one variable $x$ (denoted $\mathcal P$)
+
+* Vector space over $\mathbb{R}$.
+* Addition and scalar multiplication are the standard polynomial operations.
+
+### 4) Polynomials of degree at most $n$: $\mathcal P^n$
+
+For
+
+$$p(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0,\quad
+q(x)=b_nx^n+b_{n-1}x^{n-1}+\cdots+b_1x+b_0,$$
+
+* Addition:
+  
+  $$p(x)+q(x)=(a_n+b_n)x^n+(a_{n-1}+b_{n-1})x^{n-1}+\cdots+(a_0+b_0)$$
+  
+* Scalar multiplication $(\alpha\in\mathbb{R})$:
+  
+  $$\alpha p(x)=(\alpha a_n)x^n+(\alpha a_{n-1})x^{n-1}+\cdots+(\alpha a_0)$$
+  
+* Zero vector is the zero polynomial $0$.
+* Additive inverse:
+  
+  $$-p(x)=(-a_n)x^n+(-a_{n-1})x^{n-1}+\cdots+(-a_0)$$
+  
+
+### 5) All real functions $f:\mathbb{R}\to\mathbb{R}$ (denoted $\mathcal F$)
+
+* Addition is pointwise:
+  
+  $$(f+g)(x)=f(x)+g(x)$$
+  
+* Scalar multiplication is pointwise:
+  
+  $$(\alpha f)(x)=\alpha f(x)$$
+
+### 6) All continuous real functions $f:\mathbb{R}\to\mathbb{R}$ (denoted $\mathcal C$)
+
+* Operations are defined like for $\mathcal F$.
+
+### 7) All continuous real functions on interval $f:[a,b]\to\mathbb{R}$ (denoted $\mathcal C_{[a,b]}$)
+
+* Operations are defined like for $\mathcal F$.
+  
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/linear-algebra/real_functions_space.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
 ## Inner Product Spaces
 
 ### 1. Inner Products
