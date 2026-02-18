@@ -1,10 +1,10 @@
 ---
-title: Metropolis-Hastings Langevin Algorithm
+title: Metropolis-Adjusted Langevin Algorithm
 layout: default
 noindex: true
 ---
 
-# Metropolis-Hastings Langevin Algorithm
+# Metropolis-Adjusted Langevin Algorithm
 
 <div class="math-callout math-callout--proposition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Goal</span><span class="math-callout__name">(Metropolis-adjusted Langevin algorithm (MALA))</span></p>
@@ -61,12 +61,12 @@ which is the same dynamics after a rescaling (it’s just a convention).
 ## Euler–Maruyama discretization of Langevin diffusion (discrete-time approximation)
 
 <div class="math-callout math-callout--proposition" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Euler–Maruyama discretization of Langevin diffusion)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Euler–Maruyama discretization of Langevin diffusion)</span></p>
 
 To simulate the diffusion, choose a step size $\tau>0$ and define a discrete chain $(X_k)$ by
 
 $$
-X_{k+1} = X_k + \tau \nabla \log \pi(X_k) + \sqrt{2\tau},\xi_k,
+X_{k+1} = X_k + \tau \nabla \log \pi(X_k) + \sqrt{2\tau}\xi_k,
 \qquad \xi_k \sim \mathcal{N}(0,I_d)\ \text{i.i.d.}
 $$
 
@@ -89,11 +89,11 @@ MALA takes the Euler–Maruyama step as a **proposal** and then applies a Metrop
 
 Given current state $x$, propose
 
-$$x' = x + \tau \nabla \log \pi(x) + \sqrt{2\tau},\xi,\quad \xi\sim\mathcal{N}(0,I_d)$$
+$$x' = x + \tau \nabla \log \pi(x) + \sqrt{2\tau}\xi,\quad \xi\sim\mathcal{N}(0,I_d)$$
 
 This corresponds to the proposal density
 
-$$q(x' \mid x) = \mathcal{N}!\big(x+\tau\nabla\log\pi(x),\ 2\tau I_d\big)$$
+$$q(x' \mid x) = \mathcal{N}\big(x+\tau\nabla\log\pi(x),\ 2\tau I_d\big)$$
 
 Note: typically $q(x'\mid x)\neq q(x\mid x')$ (asymmetric proposal).
 
@@ -101,7 +101,7 @@ Note: typically $q(x'\mid x)\neq q(x\mid x')$ (asymmetric proposal).
 
 Accept with probability
 
-$$\alpha(x,x')=\min!\left(1,\ \frac{\pi(x'),q(x\mid x')}{\pi(x),q(x'\mid x)}\right)$$
+$$\alpha(x,x')=\min\left(1,\ \frac{\pi(x')q(x\mid x')}{\pi(x)q(x'\mid x)}\right)$$
 
 * If accepted: $X_{k+1}=x'$
 * If rejected: $X_{k+1}=x$
@@ -125,11 +125,11 @@ If $\pi$ has very different scales in different directions (strongly anisotropic
 
 Choose a symmetric positive definite matrix $A\in\mathbb{R}^{d\times d}$ and propose
 
-$$x' = x + \tau A\nabla\log\pi(x) + \sqrt{2\tau A},\xi,\quad \xi\sim\mathcal{N}(0,I_d)$$
+$$x' = x + \tau A\nabla\log\pi(x) + \sqrt{2\tau A}\xi,\quad \xi\sim\mathcal{N}(0,I_d)$$
 
 so that
 
-$$x'\mid x \sim \mathcal{N}!\big(x+\tau A\nabla\log\pi(x),\ 2\tau A\big)$$
+$$x'\mid x \sim \mathcal{N}\big(x+\tau A\nabla\log\pi(x),\ 2\tau A\big)$$
 
 Then apply the same MH acceptance formula with this new $q(\cdot\mid\cdot)$.
 
