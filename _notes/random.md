@@ -1282,8 +1282,6 @@ Many statistical models are **generative**: they specify a complete probability 
 
 Typical examples include **mixture models** (where the latent variable indicates the unknown mixture component for each data point), **hidden Markov models**, and **factor analysis**.
 
-Even **decoding error-correcting codes** can be formulated as inference in a latent-variable model (see Fig. 34.1). In that setting, the encoding matrix $G$ is usually known beforehand. In most latent-variable modeling problems, however, the parameters analogous to $G$ are **unknown** and must be learned from data together with the latent variables.
-
 Latent variables are often given a **simple** prior distribution, frequently one that factorizes into independent parts. In that sense, fitting a latent-variable model can be viewed as representing the data in terms of “independent components.” The **independent component analysis (ICA)** algorithm can be seen as one of the simplest continuous latent-variable models of this kind.
 
 ### Generative model for independent component analysis
@@ -1302,13 +1300,13 @@ $$P(s\mid \mathcal H)=\prod_i p_i(s_i),$$
 
 where $\mathcal H$ denotes the modeling assumptions, including the chosen marginal densities $p_i$.
 
-Given $G$ and $\mathcal H$, the joint probability of observations and sources factorizes over samples:
+Given $G$ and $\mathcal H$ (note that the probability of the latent vector depends only on the prior distribution given by $\mathcal H$ and is indenendent on the encoding matrix $G$), the joint probability of observations and sources factorizes over samples:
 
-$$P(\lbrace x^{(n)}, s^{(n)}\rbrace_{n=1}^N \mid G,\mathcal H) = \prod_{n=1}^N \Big[ P(x^{(n)}\mid s^{(n)},G,\mathcal H),P(s^{(n)}\mid \mathcal H) \Big] \qquad (34.2)$$
+$$P(\lbrace x^{(n)}, s^{(n)}\rbrace_{n=1}^N \mid G,\mathcal H) = \prod_{n=1}^N \Big[P(x^{(n)}\mid s^{(n)},G,\mathcal H)\underbrace{P(s^{(n)}\mid \mathcal H)}_{=P(s^{(n)}\mid \mathcal G,H)} \Big] \qquad \text{34.2}$$
 
-In the **noise-free** ICA model, $x$ is assumed to be generated exactly from $Gs$. This makes the conditional distribution a set of delta constraints:
+In the **noise-free** ICA model, $x$ is assumed to be generated exactly from $Gs$. In the noise-free model the prediction becomes deterministic and we use Dirac delta function. This makes the conditional distribution a set of delta constraints:
 
-$$= \prod_{n=1}^N \left[ \left(\prod_j \delta!\left(x^{(n)}_j - \sum_i G_{ji}s^{(n)}_i\right)\right)\left(\prod_i p_i!\left(s^{(n)}_i\right)\right)\right] \qquad (34.3)$$
+$$= \prod_{n=1}^N \left[ \underbrace{\left(\prod_j \delta\left(x^{(n)}_j - \sum_i G_{ji}s^{(n)}_i\right)\right)}_{P(x^{(n)}\mid s^{(n)},G,\mathcal H)}\underbrace{\left(\prod_i p_i\left(s^{(n)}_i\right)\right)}_{P(s^{(n)}\mid \mathcal H)}\right] \qquad \text{34.3}$$
 
 The assumption of *no observation noise* is not typical in many latent-variable modeling contexts (since real data are rarely noiseless), but it simplifies the inference problem substantially.
 
@@ -1316,35 +1314,35 @@ The assumption of *no observation noise* is not typical in many latent-variable 
 
 To estimate the mixing matrix $G$ from the dataset $D$, we focus on the **likelihood**
 
-$$P(D\mid G,\mathcal H)=\prod_n P(x^{(n)}\mid G,\mathcal H). \text{34.4}$$
+$$P(D\mid G,\mathcal H)=\prod_n P(x^{(n)}\mid G,\mathcal H). \qquad\text{34.4}$$
 
 So the full likelihood is a product over datapoints, and each factor $P(x^{(n)}\mid G,\mathcal H)$ is obtained by **integrating out** the latent sources $s^{(n)}$.
 
 When carrying out the marginalization, we use the delta-function identity
 
-$$\int \delta(\alpha x-y),f(s),ds=\frac{1}{|\alpha|},f(x/\alpha),$$
+$$\int \delta(\alpha x-y)f(s)ds=\frac{1}{\lvert \alpha\rvert}f(x/\alpha),$$
 
-and we also adopt a summation convention so expressions like (G_{ji}s_i^{(n)}) mean (\sum_i G_{ji}s_i^{(n)}).
+and we also adopt a summation convention so expressions like $G_{ji}s_i^{(n)}$ mean $\sum_i G_{ji}s_i^{(n)}$.
 
 For one datapoint, the marginal likelihood is
 
-$$P(x^{(n)}\mid G,\mathcal H)=\int d^I s^{(n)};P(x^{(n)}\mid s^{(n)},G,\mathcal H),P(s^{(n)}\mid\mathcal H), \text{34.5}$$
+$$P(x^{(n)}\mid G,\mathcal H)=\int d^I s^{(n)}P(x^{(n)}\mid s^{(n)},G,\mathcal H)P(s^{(n)}\mid\mathcal H), \qquad\text{34.5}$$
 
 and under the noiseless ICA model this becomes
 
-$$=\int d^I s^{(n)}\left[\prod_j \delta!\left(x_j^{(n)}-G_{ji}s_i^{(n)}\right)\right] \left[\prod_i p_i!\left(s_i^{(n)}\right)\right]. \text{34.6}$$
+$$=\int d^I s^{(n)}\left[\prod_j \delta\left(x_j^{(n)}-G_{ji}s_i^{(n)}\right)\right] \left[\prod_i p_i\left(s_i^{(n)}\right)\right]. \qquad\text{34.6}$$
 
 Evaluating the integral yields
 
-$$P(x^{(n)}\mid G,\mathcal H)=\frac{1}{\lvert\det G\rvert}\prod_i p_i!\left((G^{-1})*{ij}x_j^{(n)}\right). \text{34.7}$$
+$$P(x^{(n)}\mid G,\mathcal H)=\frac{1}{\lvert\det G\rvert}\prod_i p_i\left((G^{-1})_{ij}x_j^{(n)}\right). \qquad\text{34.7}$$
 
 Taking logs,
 
-$$\ln P(x^{(n)}\mid G,\mathcal H)= -\ln\lvert\det G\rvert+\sum_i \ln p_i!\left((G^{-1})*{ij}x_j^{(n)}\right). \text{34.8}$$
+$$\ln P(x^{(n)}\mid G,\mathcal H)= -\ln\lvert\det G\rvert+\sum_i \ln p_i\left((G^{-1})_{ij}x_j^{(n)}\right). \qquad\text{34.8}$$
 
 It is convenient to work with the **unmixing matrix** $W = G^{-1}$. Then the single-sample log-likelihood can be written as
 
-$$\ln P(x^{(n)}\mid G,\mathcal H)= \ln\lvert\det W\rvert+\sum_i \ln p_i!\left(W_{ij}x_j^{(n)}\right). \text{34.9}$$
+$$\ln P(x^{(n)}\mid G,\mathcal H)= \ln\lvert\det W\rvert+\sum_i \ln p_i\left(W_{ij}x_j^{(n)}\right). \text{34.9}$$
 
 From here on, we assume $\det W>0$, so we can drop the absolute value.
 
@@ -1414,3 +1412,404 @@ The function $\phi$ effectively encodes the assumed **prior** over the latent so
   $$p_i(s_i)\propto \frac{1}{\cosh(s_i)} \propto \frac{1}{e^{s_i}+e^{-s_i}}. \text{34.18}$$
   
   This distribution has **heavier tails** than a Gaussian, which is consistent with many real-world source signals.
+
+
+## Fisher Information
+
+https://en.wikipedia.org/wiki/Informant_(statistics)
+https://en.wikipedia.org/wiki/Observed_information
+https://en.wikipedia.org/wiki/Jeffreys_prior
+https://en.wikipedia.org/wiki/Fisher_information#Matrix_form
+https://en.wikipedia.org/wiki/Fisher_information_metric
+https://en.wikipedia.org/wiki/Kullback–Leibler_divergence#Fisher_information_metric
+
+https://www.youtube.com/watch?v=pneluWj-U-o
+https://www.youtube.com/watch?v=82molmnRCg0
+https://www.youtube.com/watch?v=f_wU0LeNUvE
+https://www.youtube.com/watch?v=kmAc1nDizu0
+https://www.youtube.com/watch?v=jlh21U2texo
+https://www.youtube.com/watch?v=q-Bbxvxpqvw
+https://www.youtube.com/watch?v=pneluWj-U-o
+
+https://math.stackexchange.com/questions/3959787/confusion-about-the-definition-of-the-fisher-information-for-discrete-random-var
+https://math.stackexchange.com/questions/381364/meaning-of-fishers-information?rq=1
+https://math.stackexchange.com/questions/4503324/intuitive-understanding-of-the-fisher-information
+https://math.stackexchange.com/questions/265917/intuitive-explanation-of-a-definition-of-the-fisher-information
+https://math.stackexchange.com/questions/1314090/intuition-behind-fisher-information-and-expected-value?noredirect=1&lq=1
+https://math.stackexchange.com/questions/1523416/what-are-differences-and-relationship-between-shannon-entropy-and-fisher-informa?noredirect=1&lq=1
+https://math.stackexchange.com/questions/1892907/what-are-the-measurement-units-of-fisher-information-dimensional-analysis?rq=1 
+https://math.stackexchange.com/questions/1858607/what-is-the-difference-between-observed-information-and-fisher-information?noredirect=1&lq=1 
+https://math.stackexchange.com/questions/2479473/can-fisher-information-be-zero?rq=1 
+https://math.stackexchange.com/questions/1891564/how-many-types-of-mathematical-information-are-there?rq=1 
+https://math.stackexchange.com/questions/5069004/intuition-behind-matrix-form-of-fisher-information?rq=1 
+https://math.stackexchange.com/questions/5093002/proof-that-the-maximum-likelihood-estimator-attains-the-cramer-rao-bound?rq=1 
+https://math.stackexchange.com/questions/3740898/qualitative-understanding-of-fisher-information?rq=1 
+https://math.stackexchange.com/questions/3404537/unachievable-cramer-rao-lower-bound?rq=1 
+https://math.stackexchange.com/questions/2027945/logliklihood-function-and-fisher-information-martix?rq=1 
+https://math.stackexchange.com/questions/4600425/why-is-the-fisher-information-important
+https://arxiv.org/pdf/1705.01064
+https://arxiv.org/pdf/2208.00549
+
+
+## Bounded Variation Functions
+
+### Bounded variation in 1D (one variable)
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bounded variation in 1D)</span></p>
+
+Let $f:[a,b]\to\mathbb{R}$. Its **total variation** on $[a,b]$ is
+
+$$V_a^b(f) = \sup_{P}\sum_{i=1}^{n}\lvert f(x_i)-f(x_{i-1})\rvert$$
+
+where the supremum is over all partitions $P:\ a=x_0<x_1<\dots<x_n=b$.
+
+* $f$ has **bounded variation (BV)** on $[a,b]$ if $V_a^b(f)<\infty$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
+
+You walk along the graph and add up *all* up-and-down changes (absolute increments). BV means the total “amount of oscillation” is finite.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Bounded variation in 1D)</span></p>
+
+* Every **monotone** function is BV, with $V_a^b(f)=\lvert f(b)-f(a)\rvert$.
+* $f$ is BV **iff** it can be written as a difference of two increasing functions (Jordan decomposition).
+* If $f$ is differentiable and $f'$ is integrable, then
+  
+  $$V_a^b(f)\le \int_a^b \lvert f'(x)\rvert dx$$
+  
+  and equality holds when $f$ is absolutely continuous.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bounded variation in 1D)</span></p>
+
+* $f(x)=\sin x$ on $[0,2\pi]$ is BV (finite total variation).
+* A classic non-example: $f(x)=\sin(1/x)$ on $(0,1]$ has *infinite* variation near $0$.
+
+</div>
+
+### Bounded variation in multiple variables
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bounded variation in ND)</span></p>
+
+Let $\Omega\subset\mathbb{R}^n$ be open and $u\in L^1(\Omega)$. We say $u\in BV(\Omega)$ if its **distributional gradient** $Du$ is a **finite vector-valued Radon measure**. The **total variation** of $u$ on $\Omega$ is
+
+$$\lvert Du\rvert(\Omega) < \infty$$
+
+A very usable equivalent definition is the dual (supremum) formula:
+
+$$\lvert Du\rvert(\Omega) =\sup\lbrace\int_{\Omega} u\mathrm{div}\varphi dx : \varphi\in C_c^1(\Omega;\mathbb{R}^n), \| \varphi\|_\infty\le 1\rbrace$$
+
+* If $u$ is smooth, then $Du=\nabla u dx$ and
+  
+  $$\lvert Du\rvert(\Omega)=\int_{\Omega}\lvert\nabla u(x)\rvert dx$$
+
+  so BV is the natural extension of “$\nabla u\in L^1$” to non-smooth functions.
+
+This notion reduces to the 1D definition when $n=1$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
+
+BV functions may have jumps (like edges in images), but the total “edge strength + slope” is finite.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(BV in $\mathbb{R}^n$)</span></p>
+
+* $f(x)=\sin x$ on $[0,2\pi]$ is BV (finite total variation).
+* A classic non-example: $f(x)=\sin(1/x)$ on $(0,1]$ has *infinite* variation near $0$.
+
+The indicator $u=\mathbf{1}_E$ of a set $E$ is in $BV(\Omega)$ exactly when $E$ has **finite perimeter** in $\Omega$. Then $\lvert Du\rvert(\Omega)$ corresponds to the surface area of the boundary (in a precise sense).
+
+</div>
+
+## Shannon Entropy Rate
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shannon Entropy Rate)</span></p>
+
+Shannon entropy rate is the **average information per symbol** generated by a stochastic process.
+
+Let $(X_1,X_2,\dots)$ be a stationary process. Define block entropy
+
+$$H(X_1,\dots,X_n)$$
+
+The **entropy rate** is
+
+$$h = \lim_{n\to\infty} \frac{1}{n}, H(X_1,\dots,X_n)$$
+
+when this limit exists (it does for many common processes; for stationary processes one often uses $\lim$ or $\liminf$).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
+
+$H(X_1,\dots,X_n)$ is the average number of bits you need to encode the first $n$ symbols optimally; dividing by $n$ gives “bits per symbol” in the long run.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(i.i.d. case (simplest))</span></p>
+
+If you flip a biased coin with $\Pr(1)=p$ independently each time, then the entropy **per bit** is
+
+$$H(p) = -p\log_2 p - (1-p)\log_2(1-p)$$
+
+This is already a “rate” because each bit is independent and identically distributed.
+
+* If $p=\tfrac12$, $H(p)=1$ bit per flip (max uncertainty).
+* If $p$ is near 0 or 1, $H(p)$ is near 0 bits per flip (very predictable).
+
+**In a general process bits may be dependent.**
+
+</div>
+
+## Cylinder Sets
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cylinder Sets)</span></p>
+
+We work with infinite binary sequences $X = x_0x_1x_2\ldots \in 2^\omega$.
+
+A **finite** binary string is $\sigma \in 2^{<\omega}$ (like $\sigma = 10110$).
+
+The **basic cylinder** generated by $\sigma$ is the set
+
+$$[\sigma] = \lbrace X \in 2^\omega : \sigma \prec X\rbrace$$
+
+meaning: all infinite sequences $X$ whose first $\lvert\sigma\rvert$ bits are exactly $\sigma$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(All infinite sequences starting with 101)</span></p>
+
+If $\sigma=101$, then
+
+$$[101] = \lbrace 101000\ldots, 101011\ldots, 101111\ldots, \dots\rbrace$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
+
+Why “cylinder”? Because if you picture $2^\omega$ as an infinite product space $\lbrace 0,1\rbrace^\mathbb{N}$, fixing the first $k$ coordinates and letting the rest vary gives a product set shaped like a “cylinder” in product topology.
+
+**Measure fact (fair coin):** under the fair-coin/Lebesgue measure $\mu$,
+
+$\mu([\sigma]) = 2^{-\lvert\sigma\rvert}$
+
+since you need $\lvert\sigma\rvert$ specific coin flips.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Cylinders are interval-like blocks, not sets of isolated numbers)</span></p>
+
+Cylinders are not sets of isolated numbers (points). They are **interval-like blocks** (clopen sets in the product topology).
+
+If you map $X\in 2^\omega$ to a real in $[0,1]$ via binary expansion, then:
+
+* $[\sigma]$ corresponds to a **dyadic interval** of length $2^{-\lvert\sigma\rvert}$:
+  * e.g. $[0]$ = $[0, 1/2)$,
+  * $[1]$ = $[1/2, 1)$,
+  * $[01]$ = $[1/4, 1/2)$,
+  * $[101]$ = $[5/8, 6/8)$.
+
+These intervals are equal-length for fixed $\lvert\sigma\rvert$, but they’re **adjacent intervals that tile $[0,1)$**, not “points with equal gaps.”
+
+</div>
+
+## Cantor Space
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cantor Space)</span></p>
+
+**Cantor space** is the set
+
+$$2^\omega=\lbrace 0,1\rbrace^{\mathbb{N}}$$
+
+the set of all **infinite binary sequences** $x_0x_1x_2\ldots$, equipped with a natural topology (and often a natural probability measure).
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(The topology of Cantor Space (how "closeness" works))</span></p>
+
+Two sequences are “close” if they agree on a long initial prefix.
+
+A basic open set is a **cylinder**
+
+$$[\sigma]=\lbrace X\in 2^\omega:\sigma\prec X\rbrace$$
+
+i.e. all sequences starting with a finite string $\sigma$.
+
+Equivalently, you can use a metric:
+
+$$
+d(X,Y)=
+\begin{cases}
+0 & X=Y,\\
+2^{-n} & \text{where } n \text{ is the first index with } X(n)\neq Y(n)
+\end{cases}
+$$
+
+So if the first disagreement happens late, distance is tiny.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Cantor Space)</span></p>
+
+With this topology, Cantor space is:
+* **compact**
+* **totally disconnected** (it’s made of clopen “blocks” like cylinders)
+* **perfect** (no isolated points)
+* **uncountable**
+
+A topological space is a Cantor space if it is **homeomorphic** to the Cantor set. 
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Connection to the classic Cantor set)</span></p>
+
+Cantor space is homeomorphic (topologically “the same”) as the middle-thirds Cantor set $C\subset[0,1]$.
+
+One explicit link: map a binary sequence $X$ to a ternary expansion using only digits $0$ and $2$:
+
+$$X \mapsto \sum_{n=1}^{\infty} \frac{2X_{n-1}}{3^n}$$
+
+This lands exactly in the middle-thirds Cantor set. (Up to the usual base-expansion ambiguities on a countable set.)
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Use in Martin-Löf randomness)</span></p>
+
+* Strings $\sigma$ define cylinders $[\sigma]$, which are **simple, computable** building blocks.
+* The fair-coin measure $\mu$ is natural: $\mu([\sigma])=2^{-\lvert\sigma\rvert}$.
+* Martin-Löf tests are built as effective unions of cylinders.
+
+</div>
+
+## Effectively Open Sets
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Effectively Open Sets)</span></p>
+
+A set $U\subseteq 2^\omega$ is **effectively open** (a.k.a. a $\Sigma^0_1$ class) if there is a computably enumerable set $S\subseteq 2^{<\omega}$ such that
+
+$$U=\bigcup_{\sigma\in S}[\sigma]$$
+
+</div>
+
+## Martin-Löf Test
+
+#TODO: what about other measures?
+#TODO: what is special about this test?
+#TODO: why should the measure of the sequence of subsets decrease by at least two times
+#TODO: what is the connection between Kolmogorov complexity and shannon entropy rate?
+#TODO: is ML random real incompressable? why? how is it connected to the shannon entropy rate?
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Martin-Löf test)</span></p>
+
+A **Martin-Löf test** (for randomness w.r.t. the fair-coin / Lebesgue measure) is an *effective* way to specify a sequence of “statistical tests” whose rejection regions have rapidly vanishing measure.
+
+A **Martin-Löf test** is a sequence $(U_n)_{n\in\mathbb{N}}$ of subsets of $2^\omega$ such that:
+
+1. **Uniform effective openness:** each $U_n$ is effectively open, and this is *uniform* in $n$.
+   Formally, there exists a c.e. set $W \subseteq \mathbb{N}\times 2^{<\omega}$ with
+   
+   $$U_n=\bigcup \lbrace[\sigma] : (n,\sigma)\in W\rbrace \quad\text{for every }n$$
+   
+   (Equivalently: there is a computable procedure that, given $n$, enumerates the strings $\sigma$ whose cylinders make up $U_n$.)
+
+2. **Lebesgue Measure bound:** for every $n$,
+   
+   $$\mu(U_n)\le 2^{-n}$$
+
+The associated **Martin-Löf null set** (the set of sequences that fail the test) is
+
+$$\bigcap_{n\in\mathbb{N}} U_n$$
+
+A sequence $X\in 2^\omega$ **fails** the test if $X\in\bigcap_n U_n$, and **passes** it otherwise (i.e., $X\notin\bigcap_n U_n$).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common but optional normalization)</span></p>
+
+Many texts also assume $U_{n+1}\subseteq U_n$ (nestedness). Any Martin-Löf test can be converted into a nested one by replacing $U_n$ with $\bigcap_{k\le n} U_k$, preserving the measure bound up to a constant-factor adjustment.
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Inconsistency
+
+https://share.google/aimode/wtrHG1fk9Ac8kNTqv
+https://share.google/aimode/JCBRv9GCiTnyBebfQ
+https://share.google/aimode/d6k7KB7zcbETX09Oj
+
+https://stats.stackexchange.com/questions/236774/inconsistency-in-unit-on-gradient-descent-equation
+https://www.reddit.com/r/learnmachinelearning/comments/1cc0u9a/adam_dimensional_analysis_seems_inconsistent/
+http://www.machinedlearnings.com/2011/06/dimensional-analysis-and-gradient.html
+https://www.quora.com/What-is-the-intuition-behind-updating-the-weights-in-a-gradient-descent-algorithm-by-the-gradient-of-the-error-Why-not-update-by-some-other-quantity
+https://timvieira.github.io/blog/post/2016/05/27/dimensional-analysis-of-gradient-ascent/
+https://math.stackexchange.com/questions/223252/why-is-gradient-the-direction-of-steepest-ascent
+https://www.reddit.com/r/MachineLearning/comments/9sfv8x/d_a_note_on_why_gradient_descent_is_even_needed/
+https://www.reddit.com/r/MachineLearning/comments/48u7aw/is_there_any_good_theory_on_why_gradient_descent/
