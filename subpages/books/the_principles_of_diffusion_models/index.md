@@ -116,7 +116,7 @@ $$
 \begin{aligned}
 D_{\mathrm{KL}}(p_{\text{data}}|p_\phi)
 &= \mathbb{E}_{x\sim p_{\text{data}}}\left[\log\frac{p_{\text{data}}(x)}{p_\phi(x)}\right] \
-&= -\mathbb{E}_{x\sim p_{\text{data}}}\left[\log p_\phi(x)\right]!!!\underbrace{\left(-\mathbb{E}_{x\sim p_{\text{data}}}[\log p_{\text{data}}(x)]\right)}_{\mathcal{H}(p_{\text{data}})}.
+&= -\mathbb{E}_{x\sim p_{\text{data}}}\left[\log p_\phi(x)\right] + \underbrace{\left(-\mathbb{E}_{x\sim p_{\text{data}}}[\log p_{\text{data}}(x)]\right)}_{\mathcal{H}(p_{\text{data}})}.
 \end{aligned}
 $$
 
@@ -173,27 +173,20 @@ Different divergences encode different notions of “closeness” and can change
 
 A broad family:
 
-$$D_f(p\mid q) = \int q(x), f!\left(\frac{p(x)}{q(x)}\right)dx, \qquad f(1)=0$$
+$$D_f(p\mid q) = \int q(x), f\left(\frac{p(x)}{q(x)}\right)dx, \qquad f(1)=0$$
 
 where $f:\mathbb{R}_+\to\mathbb{R}$ is **convex**. $\text{(1.1.4)}$
 
 **Examples**
 * **Forward KL:** $f(u)=u\log u \Rightarrow D_f = D_{\mathrm{KL}}(p\mid q)$
-* **Jensen–Shannon (JS):**
-  
-  $$f(u)=\tfrac12\Big[u\log u-(u+1)\log\frac{u+1}{2}\Big] \Rightarrow D_f=D_{\mathrm{JS}}(p\mid q)$$
-  
-* **Total variation (TV):** $f(u)=\tfrac12|u-1| \Rightarrow D_f=D_{\mathrm{TV}}(p,q)$
+* **Jensen–Shannon (JS):** $f(u)=\tfrac12\Big[u\log u-(u+1)\log\frac{u+1}{2}\Big] \Rightarrow D_f=D_{\mathrm{JS}}(p\mid q)$
+* **Total variation (TV):** $f(u)=\tfrac12\lvert u-1\rvert \Rightarrow D_f=D_{\mathrm{TV}}(p,q)$
 
 #### 5.2) Explicit forms for JS and TV
 
 * **JS divergence**
   
-  $$
-  D_{\mathrm{JS}}(p\mid q)
-  =\tfrac12 D_{\mathrm{KL}}\left(p ,\Big|, \tfrac12(p+q)\right)
-  +\tfrac12 D_{\mathrm{KL}}\left(q ,\Big|, \tfrac12(p+q)\right).
-  $$
+  $$D_{\mathrm{JS}}(p\mid q) =\tfrac12 D_{\mathrm{KL}}\left(p \parallel \tfrac12(p+q)\right) +\tfrac12 D_{\mathrm{KL}}\left(q \parallel \tfrac12(p+q)\right)$$
 
   Intuition: **smooth + symmetric**, balances both distributions, avoids some unbounded KL behavior; later useful for interpreting GANs.
 
@@ -211,7 +204,7 @@ where $f:\mathbb{R}_+\to\mathbb{R}$ is **convex**. $\text{(1.1.4)}$
 
 ### 6) Challenges in modeling distributions (Section 1.1.2)
 
-To model a density $p_\phi(x)$ with a neural network, $p_\phi$ must satisfy:
+To model a complex data distribution, we can parameterize the probability density function $p_{\text{data}}$ using a neural network with parameters $ϕ$, creating a model we denote as $p_ϕ$. To model a density $p_\phi(x)$ with a neural network, $p_\phi$ must satisfy:
 
 1. **Non-negativity:** $p_\phi(x)\ge 0$ for all $x$.
 2. **Normalization:** $\int p_\phi(x)dx = 1$.
@@ -220,7 +213,9 @@ To model a density $p_\phi(x)$ with a neural network, $p_\phi$ must satisfy:
 
 Let the network output a scalar
 
-$$E_\phi(x)\in\mathbb{R}.$$
+$$E_\phi(x)\in\mathbb{R}$$
+
+To interpret this output as a valid density, it must be transformed to satisfy conditions (1) and (2).
 
 Interpret it as defining an **unnormalized** density.
 
@@ -229,13 +224,15 @@ Use a positive mapping, commonly the exponential:
 
 $$\tilde p_\phi(x) = \exp(E_\phi(x))$$
 
+Interpret it as an **unnormalized** density.
+
 **Step 2: enforce normalization**
 
-$$p_\phi(x) = \frac{\tilde p_\phi(x)}{\int \tilde p_\phi(x'),dx'} = \frac{\exp(E_\phi(x))}{\int \exp(E_\phi(x')),dx'}$$
+$$p_\phi(x) = \frac{\tilde p_\phi(x)}{\int \tilde p_\phi(x')dx'} = \frac{\exp(E_\phi(x))}{\int \exp(E_\phi(x'))dx'}$$
 
 The denominator is the **normalizing constant / partition function**:
 
-$$Z(\phi) := \int \exp(E_\phi(x')),dx'.$$
+$$Z(\phi) := \int \exp(E_\phi(x'))dx'.$$
 
 #### Central difficulty
 
@@ -248,26 +245,6 @@ $$Z(\phi) := \int \exp(E_\phi(x')),dx'.$$
 
 
 # Score-Based Perspective: From EBMs to NCSN
-
-<figure>
-  <img src="{{ '/assets/images/notes/books/diffusion_models/dsm_via_the_conditioning_technique.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>**Illustration of DSM via the conditioning technique.** By perturbing the data distribution pdata with small additive Gaussian noise $\mathcal{N}(0,σ^2I)$, the resulting conditional distribution $p_σ(\wildetilde{x}\mid x) = \mathcal{N}(\wildetilde{x}; x,σ^2I)$ admits a closed-form score function.</figcaption>
-</figure>
-
-<figure>
-  <img src="{{ '/assets/images/notes/books/diffusion_models/ncsn.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>**Illustration of NCSN.** The forward process perturbs the data with multiple levels of additive Gaussian noise $p_σ(x_σ\mid x)$. Generation proceeds via Langevin sampling at each noise level, using the result from the current level to initialize sampling at the next lower variance.</figcaption>
-</figure>
-
-<figure>
-  <img src="{{ '/assets/images/notes/books/diffusion_models/score_matching_inaccuracy.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>**Illustration of SM inaccuracy (revisiting Illustration of Score Matching).** the red region indicates low-density areas with potentially inaccurate score estimates due to limited sample coverage, while high-density regions tend to yield more accurate estimates.</figcaption>
-</figure>
-
-<figure>
-  <img src="{{ '/assets/images/notes/books/diffusion_models/score_matching.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>**Illustration of Score Matching.** The neural network score $s_ϕ(x)$ is trained to match the ground truth score $s(x)$ using a MSE loss. Both are represented as vector fields.</figcaption>
-</figure>
 
 
 ## Big picture: why EBMs show up in diffusion / score-based modeling
@@ -299,7 +276,9 @@ $$p_\phi(x) := \frac{\exp(-E_\phi(x))}{Z_\phi}, \qquad Z_\phi := \int_{\mathbb{R
   $$\int_{\mathbb{R}^D} p_\phi(x)dx = 1$$
 
 **Key interpretation:**
-* Lower $E_\phi(x)$  $\Rightarrow$ larger $\exp(-E_\phi(x))$ $\Rightarrow$ **higher probability**.
+* Lower $E_\phi(x)$  
+* $\Rightarrow$ larger $\exp(-E_\phi(x))$ 
+* $\Rightarrow$ **higher probability**.
 
 <figure>
   <img src="{{ '/assets/images/notes/books/diffusion_models/ebm_training.png' | relative_url }}" alt="a" loading="lazy">
@@ -494,9 +473,9 @@ Brownian increments satisfy:
 
 $$w(t+\eta)-w(t)\sim\mathcal N(0,\eta I)$$
 
-So $\sqrt{2},dw(t)$ over a step $\eta$ becomes:
+So $\sqrt{2}dw(t)$ over a step $\eta$ becomes:
 
-$$\sqrt{2},(w(t+\eta)-w(t))=\sqrt{2\eta}\varepsilon_n,\quad \varepsilon_n\sim\mathcal N(0,I)$$
+$$\sqrt{2}(w(t+\eta)-w(t))=\sqrt{2\eta}\varepsilon_n,\quad \varepsilon_n\sim\mathcal N(0,I)$$
 
 That’s exactly where the **$\sqrt{\eta}$** scaling (and the $\sqrt{2\eta}$) in the discrete update comes from.
 
@@ -567,33 +546,6 @@ This motivates **more structured / guided sampling**—which is exactly where di
 * **Discrete is Euler–Maruyama** for the SDE.
 * **Noise helps escape minima**; $\sqrt{2}$ makes $p_\phi$ stationary.
 
-# Quick cheat sheet (key equations)
-
-* **EBM density**
-  
-  $$p_\phi(x)=\frac{e^{-E_\phi(x)}}{Z_\phi},\quad Z_\phi=\int e^{-E_\phi(x)}dx$$
-  
-* **Score definition**
-  
-  $$s(x)=\nabla_x \log p(x)$$
-  
-* **Score ignores normalization**
-  
-  $$p=\tilde p/Z \Rightarrow \nabla_x\log p=\nabla_x\log \tilde p$$
-  
-* **EBM score**
-  
-  $$\nabla_x\log p_\phi(x)=-\nabla_x E_\phi(x)$$
-  
-* **Score matching**
-  
-  $$\mathcal{L}*{SM}=\tfrac12 \mathbb{E}_{p_{data}}| \nabla_x\log p_\phi - \nabla_x\log p_{data}|^2$$
-  
-  Equivalent:
-  
-  $$\mathcal{L}*{SM}=\mathbb{E}_{p_{data}}\left[\mathrm{Tr}(\nabla_x^2E_\phi)+\tfrac12|\nabla_xE_\phi|^2\right]+C$$
-  
-
 ---
 
 ## Mini self-check questions
@@ -618,6 +570,11 @@ This motivates **more structured / guided sampling**—which is exactly where di
     
   * However, **training through an energy** with score matching tends to require **second derivatives** (Hessians).
 * **Core shift:** since sampling uses only the score, we can **learn the score directly** with a neural network $s_\phi(x)$. This is the foundation of **score-based generative models**.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/score_matching.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>**Illustration of Score Matching.** The neural network score $s_ϕ(x)$ is trained to match the ground truth score $s(x)$ using a MSE loss. Both are represented as vector fields.</figcaption>
+</figure>
 
 ---
 
@@ -646,7 +603,7 @@ Approximate the **unknown** true score $s(x)=\nabla_x \log p_{\text{data}}(x)$ f
 
 $$
 \mathcal{L}_{\mathrm{SM}}(\phi)
-=\frac{1}{2},\mathbb{E}*{x\sim p_{\text{data}}}\Big[;|s_\phi(x)-s(x)|_2^2;\Big].
+=\frac{1}{2},\mathbb{E}_{x\sim p_{\text{data}}}\Big[|s_\phi(x)-s(x)|_2^2\Big].
 $$
 
 * Looks like ordinary MSE regression, **but** the target $s(x)$ is unknown.
@@ -659,11 +616,11 @@ $$
 
 Hyvärinen & Dayan (2005) show:
 
-$$\mathcal{L}_{\mathrm{SM}}(\phi)=\tilde{\mathcal{L}}_{\mathrm{SM}}(\phi)+C,$$
+$$\mathcal{L}_{\mathrm{SM}}(\phi)=\tilde{\mathcal{L}}_{\mathrm{SM}}(\phi)+C$$
 
 where $C$ does **not** depend on $\phi$, and
 
-$$\tilde{\mathcal{L}}_{\mathrm{SM}}(\phi) =\mathbb{E}_{x\sim p_{\text{data}}}\left[\mathrm{Tr}\big(\nabla_x s_\phi(x)\big)+\frac{1}{2}|s_\phi(x)|*2^2\right]$$
+$$\tilde{\mathcal{L}}_{\mathrm{SM}}(\phi) =\mathbb{E}_{x\sim p_{\text{data}}}\left[\mathrm{Tr}\big(\nabla_x s_\phi(x)\big)+\frac{1}{2}\|s_\phi(x)\|_2^2\right]$$
 
 So you can minimize $\tilde{\mathcal{L}}_{\mathrm{SM}}$ **using only samples** $x\sim p_{\text{data}}$, without ever knowing the true score.
 
@@ -679,17 +636,17 @@ $$s^*(\cdot)=\nabla_x \log p(\cdot)$$
   $\mathrm{Tr}(\nabla_x s_\theta)= -\mathrm{Tr}(\nabla_x^2 E_\theta)$: **second derivatives** of the energy.
 * If you parameterize $s_\phi$ **directly**, $\mathrm{Tr}(\nabla_x s_\phi)$ uses **first derivatives** of the score network output w.r.t. input $x$ (still not cheap, but avoids “derivative-of-a-derivative” through an energy).
 
-## 4) Intuition for the two terms in (\tilde{\mathcal{L}}_{\mathrm{SM}})
+## 4) Intuition for the two terms in $\tilde{\mathcal{L}}_{\mathrm{SM}}$
 
 $$
 \tilde{\mathcal{L}}_{\mathrm{SM}}(\phi)
-=\mathbb{E}_{p_{\text{data}}}\left[\underbrace{\mathrm{Tr}(\nabla_x s_\phi(x))}_{\text{divergence term}}+\underbrace{\frac{1}{2}|s_\phi(x)|*2^2}_{\text{magnitude term}}\right]
+=\mathbb{E}_{p_{\text{data}}}\left[\underbrace{\mathrm{Tr}(\nabla_x s_\phi(x))}_{\text{divergence term}}+\underbrace{\frac{1}{2}\|s_\phi(x)\|_2^2}_{\text{magnitude term}}\right]
 $$
 
 ### (A) “Stationarity from the magnitude term”
 
 * The expectation is under $p_{\text{data}}$, so **high-density regions dominate**.
-* Minimizing $\frac12|s_\phi(x)|^2$ pushes
+* Minimizing $\frac12\lvert s_\phi(x)\rvert^2$ pushes
   
   $$s_\phi(x)\to 0 \quad \text{in high-probability regions}$$
   
@@ -700,7 +657,7 @@ $$
 * The term $\mathrm{Tr}(\nabla_x s_\phi(x))=\nabla\cdot s_\phi(x)$ encourages **negative divergence** in high-density regions.
 * **Negative divergence** means nearby vectors **converge** (flow contracts) rather than spread out → stationary points become **attractive sinks**.
 
-#### Making it precise when (s_\phi\approx\nabla_x u)
+#### Making it precise when $s_\phi\approx\nabla_x u$
 
 Assume $s_\phi=\nabla_x u$. Then:
 
@@ -709,7 +666,7 @@ Assume $s_\phi=\nabla_x u$. Then:
 
 At a stationary point $x_\star$ where $\nabla_x u(x_\star)=0$, Taylor expansion:
 
-$$u(x)=u(x_\star)+\frac{1}{2}(x-x_\star)^\top \nabla_x^2u(x_\star)(x-x_\star)+o(|x-x_\star|^2)$$
+$$u(x)=u(x_\star)+\frac{1}{2}(x-x_\star)^\top \nabla_x^2u(x_\star)(x-x_\star)+o(\|x-x_\star\|^2)$$
 
 * If $\nabla_x^2u(x_\star)$ is **negative definite**, then $u$ is locally concave → log-density has a **strict local maximum** there.
 * Negative definite Hessian $\implies$ all eigenvalues negative $\implies$ trace negative $\implies$ $\mathrm{Tr}(\nabla_x^2u(x_\star))<0$.
@@ -725,10 +682,10 @@ $$u(x)=u(x_\star)+\frac{1}{2}(x-x_\star)^\top \nabla_x^2u(x_\star)(x-x_\star)+o(
 
 Once you have a trained score model $s_{\phi^*}(x)$, you can sample by iterating:
 
-$$x_{n+1}=x_n+\eta, s_{\phi^*}(x_n)+\sqrt{2\eta},\varepsilon_n,\quad \varepsilon_n\sim\mathcal{N}(0,I).$$
+$$x_{n+1}=x_n+\eta s_{\phi^*}(x_n)+\sqrt{2\eta}\varepsilon_n,\quad \varepsilon_n\sim\mathcal{N}(0,I).$$
 
 * $\eta>0$ is the step size.
-* Deterministic part (\eta s(x)): moves “uphill” in log-density.
+* Deterministic part $\eta s(x)$: moves “uphill” in log-density.
 * Noise $\sqrt{2\eta}\varepsilon$: keeps exploration and yields the correct stationary distribution (in the idealized limit).
 
 ### Continuous-time view (Langevin SDE)
@@ -753,10 +710,10 @@ where $w(t)$ is a standard Wiener process (Brownian motion).
 ## 7) Quick “exam-ready” summary
 
 * **Score:** $s(x)=\nabla_x\log p(x)$, points toward higher density.
-* **Score matching (naive):** minimize $\mathbb{E}|s_\phi(x)-s(x)|^2$ (but $s$ unknown).
+* **Score matching (naive):** minimize $\mathbb{E}\lvert s_\phi(x)-s(x)\rvert^2$ (but $s$ unknown).
 * **Hyvärinen trick:** minimize instead
   
-  $$\mathbb{E}\left[\nabla\cdot s_\phi(x)+\tfrac12|s_\phi(x)|^2\right]$$
+  $$\mathbb{E}\left[\nabla\cdot s_\phi(x)+\tfrac12\|s_\phi(x)\|^2\right]$$
   
   (same optimum up to constant).
 * **Intuition:** magnitude term makes $s_\phi\approx 0$ in high-density regions (stationary points); divergence term makes them **sinks** (contracting flow).
@@ -790,7 +747,7 @@ The “direct” score matching loss is
 
 $$
 \mathcal{L}_{\text{SM}}(\phi)
-= \frac12,\mathbb{E}_{x\sim p_{\text{data}}}\Big[|s_\phi(x)-\nabla_x \log p_{\text{data}}(x)|*2^2\Big],
+= \frac12,\mathbb{E}_{x\sim p_{\text{data}}}\Big[\|s_\phi(x)-\nabla_x \log p_{\text{data}}(x)\|_2^2\Big],
 $$
 
 but $\nabla_x \log p_{\text{data}}(x)$ is **unknown/intractable** because $p_{\text{data}}$ is unknown.
@@ -799,7 +756,7 @@ A classic workaround (Hyvärinen-style) is an equivalent objective that removes 
 
 $$
 \tilde{\mathcal{L}}_{\text{SM}}(\phi)
-=\mathbb{E}_{x\sim p_{\text{data}}}\Big[\mathrm{Tr}(\nabla_x s_\phi(x))+\frac12|s_\phi(x)|_2^2\Big].
+=\mathbb{E}_{x\sim p_{\text{data}}}\Big[\mathrm{Tr}(\nabla_x s_\phi(x))+\frac12\|s_\phi(x)\|_2^2\Big].
 $$
 
 ### Problem
@@ -897,8 +854,8 @@ A natural objective is
 
 $$
 \mathcal{L}_{\text{SM}}(\phi;\sigma)
-= \frac12,\mathbb{E}_{\tilde x\sim p_\sigma}\Big[
-|s_\phi(\tilde x;\sigma) - \nabla_{\tilde x}\log p_\sigma(\tilde x)|*2^2
+= \frac12\mathbb{E}_{\tilde x\sim p_\sigma}\Big[
+\|s_\phi(\tilde x;\sigma) - \nabla_{\tilde x}\log p_\sigma(\tilde x)\|_2^2
 \Big],
 $$
 
@@ -911,9 +868,9 @@ Vincent’s key result: **condition on the clean sample $x$** and replace the in
 $$
 \boxed{
 \mathcal{L}_{\text{DSM}}(\phi;\sigma)
-:= \frac12,\mathbb{E}_{x\sim p_{\text{data}},;\tilde x\sim p_\sigma(\cdot\mid x)}
+:= \frac12,\mathbb{E}_{x\sim p_{\text{data}},\tilde x\sim p_\sigma(\cdot\mid x)}
 \Big[
-|s_\phi(\tilde x;\sigma)-\nabla_{\tilde x}\log p_\sigma(\tilde x\mid x)|_2^2
+\|s_\phi(\tilde x;\sigma)-\nabla_{\tilde x}\log p_\sigma(\tilde x\mid x)\|_2^2
 \Big]
 }
 $$
@@ -951,6 +908,10 @@ so
 
 $$p_\sigma(\tilde x\mid x)=\mathcal{N}(\tilde x;,x,\sigma^2 I)$$
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/dsm_via_the_conditioning_technique.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>**Illustration of DSM via the conditioning technique.** By perturbing the data distribution pdata with small additive Gaussian noise $\mathcal{N}(0,σ^2I)$, the resulting conditional distribution $p_σ(\tilde{x}\mid x) = \mathcal{N}(\tilde{x}; x,σ^2I)$ admits a closed-form score function.</figcaption>
+</figure>
 
 ### Conditional score has closed form
 
@@ -961,12 +922,12 @@ Plugging into DSM gives:
 $$
 \boxed{
 \mathcal{L}_{\text{DSM}}(\phi;\sigma)
-= \frac12,\mathbb{E}_{x,\tilde x}\Big[
-\big|s_\phi(\tilde x;\sigma)-\frac{x-\tilde x}{\sigma^2}\big|*2^2
+= \frac12\mathbb{E}_{x,\tilde x}\Big[
+\big\|s_\phi(\tilde x;\sigma)-\frac{x-\tilde x}{\sigma^2}\big\|_2^2
 \Big]
-= \frac12,\mathbb{E}_{x,\varepsilon}\Big[
-\big|s_\phi(x+\sigma\varepsilon;\sigma)+\frac{\varepsilon}{\sigma}\big|_2^2
-\Big].
+= \frac12\mathbb{E}_{x,\varepsilon}\Big[
+\big\|s_\phi(x+\sigma\varepsilon;\sigma)+\frac{\varepsilon}{\sigma}\big\|_2^2
+\Big]
 }
 $$
 
@@ -976,9 +937,7 @@ This objective is described on the page as forming the **core of score-based dif
 
 As $\sigma\approx 0$,
 * $p_\sigma(\tilde x)\approx p_{\text{data}}(x)$
-* so
-  
-  $$s^*(\tilde x;\sigma)=\nabla_{\tilde x}\log p_\sigma(\tilde x)\approx \nabla_x\log p_{\text{data}}(x)$$
+* so $s^*(\tilde x;\sigma)=\nabla_{\tilde x}\log p_\sigma(\tilde x)\approx \nabla_x\log p_{\text{data}}(x)$
   
 
 Meaning: learning scores of slightly-noised data recovers (approximately) the true data score.
@@ -1009,7 +968,7 @@ For a fixed $\sigma$:
 4. Target is $-\varepsilon/\sigma$ (equivalently $(x-\tilde x)/\sigma^2$)
 5. Minimize:
    
-   $$\frac12\left|s_\phi(\tilde x;\sigma)+\frac{\varepsilon}{\sigma}\right|_2^2$$
+   $$\frac12\left\|s_\phi(\tilde x;\sigma)+\frac{\varepsilon}{\sigma}\right\|_2^2$$
    
 
 (Extensions usually train over many $\sigma$ values, but that part isn’t shown on these pages.)
@@ -1043,7 +1002,7 @@ For a fixed $\sigma$:
 * Noisy/corrupted observation: $\tilde x$
 * Noisy marginal (a “smoothed” data distribution):
   
-  $$p_\sigma(\tilde x) ;=; \int p(\tilde x\mid x),p_{\text{data}}(x)dx$$
+  $$p_\sigma(\tilde x) = \int p(\tilde x\mid x)p_{\text{data}}(x)dx$$
   
 * **Score** of a density $p$: $\nabla_{\tilde x}\log p(\tilde x)$
 * Learned score network at noise level $\sigma$: $s_\phi(\tilde x;\sigma)\approx \nabla_{\tilde x}\log p_\sigma(\tilde x)$
@@ -1060,7 +1019,7 @@ Generate samples from (approximately) $p_{\text{data}}$ using a learned approxim
 
 Given a score model $s_\phi(\cdot;\sigma)$ at a fixed noise level $\sigma$, iterate
 
-$$\tilde x_{n+1} = \tilde x_n + \eta, s_\phi(\tilde x_n;\sigma);+;\sqrt{2\eta},\varepsilon_n, \qquad \varepsilon_n\sim\mathcal N(0,I)$$
+$$\tilde x_{n+1} = \tilde x_n + \eta s_\phi(\tilde x_n;\sigma) + \sqrt{2\eta}\varepsilon_n, \qquad \varepsilon_n\sim\mathcal N(0,I)$$
 
 * $\eta>0$ here is the **step size** (careful: later pages reuse $\eta$ for “natural parameter” in exponential families).
 * This is Langevin sampling where the “force” term $\nabla \log p_\sigma(\tilde x)$ is replaced by the learned $s_\phi$.
@@ -1079,7 +1038,8 @@ $$\tilde x_{n+1} = \tilde x_n + \eta, s_\phi(\tilde x_n;\sigma);+;\sqrt{2\eta},\
 
 1. Initialize $\tilde x_0$ (often random noise).
 2. For $n=0,\dots,N-1$:
-   $\tilde x \leftarrow \tilde x + \eta, s_\phi(\tilde x;\sigma) + \sqrt{2\eta},\varepsilon$, with $\varepsilon\sim\mathcal N(0,I)$.
+   1. $\tilde x \leftarrow \tilde x + \eta$
+   2. $s_\phi(\tilde x;\sigma) + \sqrt{2\eta}\varepsilon$, with $\varepsilon\sim\mathcal N(0,I)$
 3. Output $\tilde x_N$.
 
 ---
@@ -1111,11 +1071,11 @@ Assume:
 
 Define the noisy marginal:
 
-$$p_\sigma(\tilde x) = \int \mathcal N(\tilde x;\alpha x,\sigma^2 I),p_{\text{data}}(x)dx$$
+$$p_\sigma(\tilde x) = \int \mathcal N(\tilde x;\alpha x,\sigma^2 I)p_{\text{data}}(x)dx$$
 
 ### Lemma (Tweedie’s formula)
 
-$$\alpha,\mathbb E[x\mid \tilde x] = \tilde x + \sigma^2 \nabla_{\tilde x}\log p_\sigma(\tilde x)$$
+$$\alpha\mathbb E[x\mid \tilde x] = \tilde x + \sigma^2 \nabla_{\tilde x}\log p_\sigma(\tilde x)$$
 
 Equivalently, the **posterior mean / denoiser** is
 
@@ -1142,16 +1102,16 @@ So: **learning the score is (almost directly) learning a denoiser** via Tweedie.
 
 Assume the conditional law of $\tilde x$ given a latent natural parameter $\eta\in\mathbb R^D$ is
 
-$$q_\sigma(\tilde x\mid \eta) ;=; \exp(\eta^\top \tilde x - \psi(\eta)),q_0(\tilde x)$$
+$$q_\sigma(\tilde x\mid \eta) = \exp(\eta^\top \tilde x - \psi(\eta)) q_0(\tilde x)$$
 
 * $q_0(\tilde x)$ is the **base measure** (independent of $\eta$).
 * For additive Gaussian noise with variance $\sigma^2 I$,
   
-  $$q_0(\tilde x) = (2\pi\sigma^2)^{-D/2}\exp!\left(-\frac{|\tilde x|^2}{2\sigma^2}\right)$$
+  $$q_0(\tilde x) = (2\pi\sigma^2)^{-D/2}\exp\left(-\frac{|\tilde x|^2}{2\sigma^2}\right)$$
 
 Let $p(\eta)$ be a prior over $\eta$. The noisy marginal is
 
-$$p_\sigma(\tilde x) = \int q_\sigma(\tilde x\mid \eta),p(\eta),d\eta$$
+$$p_\sigma(\tilde x) = \int q_\sigma(\tilde x\mid \eta)p(\eta)d\eta$$
 
 Define the “log-normalizer in $\tilde x$”:
 
@@ -1161,13 +1121,11 @@ Then the posterior has the form
 
 $$p(\eta\mid \tilde x)\propto \exp(\eta^\top \tilde x - \psi(\eta) - \lambda(\tilde x))p(\eta)$$
 
-### Derivatives of (\lambda) give posterior cumulants
+### Derivatives of $\lambda$ give posterior cumulants
 
 A core exponential-family identity:
-
-* $\nabla_{\tilde x}\lambda(\tilde x) ;=; \mathbb E[\eta\mid \tilde x]$
-  
-* $\nabla_{\tilde x}^2\lambda(\tilde x) ;=; \mathrm{Cov}[\eta\mid \tilde x]$
+* $\nabla_{\tilde x}\lambda(\tilde x) = \mathbb E[\eta\mid \tilde x]$
+* $\nabla_{\tilde x}^2\lambda(\tilde x) = \mathrm{Cov}[\eta\mid \tilde x]$
 * More generally:
   
   $$\nabla_{\tilde x}^{(k)}\lambda(\tilde x) = \kappa_k(\eta\mid \tilde x),\quad k\ge 3$$
@@ -1180,11 +1138,11 @@ For Gaussian location models, one can take $\eta = x/\sigma^2$. Then:
 
 * Posterior mean:
   
-  $$\mathbb E[x\mid \tilde x] ;=; \tilde x + \sigma^2 \nabla_{\tilde x}\log p_\sigma(\tilde x)$$
+  $$\mathbb E[x\mid \tilde x] = \tilde x + \sigma^2 \nabla_{\tilde x}\log p_\sigma(\tilde x)$$
   
 * Posterior covariance:
   
-  $$\mathrm{Cov}[x\mid \tilde x] ;=; \sigma^2 I ;+; \sigma^4 \nabla_{\tilde x}^2\log p_\sigma(\tilde x)$$
+  $$\mathrm{Cov}[x\mid \tilde x] = \sigma^2 I + \sigma^4 \nabla_{\tilde x}^2\log p_\sigma(\tilde x)$$
   
 * Higher cumulants scale with higher derivatives of $\log p_\sigma(\tilde x)$.
 
@@ -1199,9 +1157,6 @@ For Gaussian location models, one can take $\eta = x/\sigma^2$. Then:
 * **Tweedie:** $\mathbb E[x\mid \tilde x]=\frac{1}{\alpha}(\tilde x+\sigma^2\nabla_{\tilde x}\log p_\sigma(\tilde x))$.
 * **DSM ⇒ denoiser:** replace $\nabla \log p_\sigma$ by $s_\phi$.
 * **Higher-order:** derivatives of $\log p_\sigma$ relate to posterior covariance and cumulants.
-
-If you want, I can turn these into a 1–2 page “exam-style” cheat sheet (definitions + boxed formulas + common pitfalls).
-
 
 ## Study notes: SURE, Tweedie, and (Generalized) Score Matching
 
@@ -1242,7 +1197,7 @@ Problem: this depends on $\mathbf x$, so you can’t compute it from $\tilde{\ma
 **Stein’s Unbiased Risk Estimator (SURE)** provides:
 
 $$
-\mathrm{SURE}(\mathbf D;\tilde{\mathbf x}) = |\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}|*2^2 + 2\sigma^2,\nabla_{\tilde{\mathbf x}}\cdot \mathbf D(\tilde{\mathbf x})!!!d\sigma^2.
+\mathrm{SURE}(\mathbf D;\tilde{\mathbf x}) = \|\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}\|_2^2 + 2\sigma^2\nabla_{\tilde{\mathbf x}}\cdot \mathbf D(\tilde{\mathbf x})- D\sigma^2.
 $$
 
 * $\nabla_{\tilde{\mathbf x}}\cdot \mathbf D(\tilde{\mathbf x})$ is the **divergence** of $\mathbf D$:
@@ -1253,8 +1208,7 @@ $$
 
 ### Why the terms make sense (intuition)
 
-* $|\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}|^2$: how much the denoiser changes the input.
-
+* $\lvert\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}\rvert^2$: how much the denoiser changes the input.
   * Alone, it *underestimates* true error because $\tilde{\mathbf x}$ is already corrupted.
 * $2\sigma^2 \nabla\cdot \mathbf D(\tilde{\mathbf x})$: **correction term** accounting for noise variance via sensitivity of $\mathbf D$.
 * $-d\sigma^2$: constant offset that fixes the bias.
@@ -1265,9 +1219,7 @@ $$
 
 For any fixed but unknown $\mathbf x$,
 
-$$
-\mathbb E_{\tilde{\mathbf x}\mid \mathbf x}\big[\mathrm{SURE}(\mathbf D;\mathbf x+\sigma\epsilon)\ \big|\ \mathbf x\big]!!!R(\mathbf D;\mathbf x).
-$$
+$$\mathbb E_{\tilde{\mathbf x}\mid \mathbf x}\big[\mathrm{SURE}(\mathbf D;\mathbf x+\sigma\epsilon)\ \big|\ \mathbf x\big] = R(\mathbf D;\mathbf x)$$
 
 So **minimizing SURE (in expectation or empirically)** is equivalent to minimizing the true denoising MSE risk, while using only noisy data.
 
@@ -1275,11 +1227,11 @@ So **minimizing SURE (in expectation or empirically)** is equivalent to minimizi
 
 Start from:
 
-$$|\mathbf D(\tilde{\mathbf x})-\mathbf x|^2 = |\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x} + (\tilde{\mathbf x}-\mathbf x)|^2$$
+$$\|\mathbf D(\tilde{\mathbf x})-\mathbf x\|^2 = \|\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x} + (\tilde{\mathbf x}-\mathbf x)\|^2$$
 
 Expand and use $\tilde{\mathbf x}-\mathbf x=\sigma\epsilon$. The cross-term contains $\mathbb E[\epsilon^\top g(\mathbf x+\sigma\epsilon)]$ with $g(\tilde{\mathbf x})=\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}$. Stein’s lemma converts this to a divergence term:
 
-$$\mathbb E[\epsilon^\top g(\mathbf x+\sigma\epsilon)] = \sigma,\mathbb E[\nabla_{\tilde{\mathbf x}}\cdot g(\tilde{\mathbf x})]$$
+$$\mathbb E[\epsilon^\top g(\mathbf x+\sigma\epsilon)] = \sigma\mathbb E[\nabla_{\tilde{\mathbf x}}\cdot g(\tilde{\mathbf x})]$$
 
 Since $\nabla\cdot(\tilde{\mathbf x})=d$, you get exactly the SURE formula.
 
@@ -1298,13 +1250,13 @@ $$p_\sigma(\tilde{\mathbf x}) := (p_{\text{data}} * \mathcal N(0,\sigma^2\mathbf
 SURE is unbiased *w.r.t. noise* conditional on $\mathbf x$:
 
 $$
-\mathbb E_{\tilde{\mathbf x}\mid \mathbf x}[\mathrm{SURE}(\mathbf D;\tilde{\mathbf x})] = \mathbb E_{\tilde{\mathbf x}\mid \mathbf x}\big[|\mathbf D(\tilde{\mathbf x})-\mathbf x|^2\big].
+\mathbb E_{\tilde{\mathbf x}\mid \mathbf x}[\mathrm{SURE}(\mathbf D;\tilde{\mathbf x})] = \mathbb E_{\tilde{\mathbf x}\mid \mathbf x}\big[\|\mathbf D(\tilde{\mathbf x})-\mathbf x\|^2\big].
 $$
 
 Averaging also over $\mathbf x\sim p_{\text{data}}$ gives the **Bayes risk**:
 
 $$
-\mathbb E_{\mathbf x,\tilde{\mathbf x}}\big[|\mathbf D(\tilde{\mathbf x})-\mathbf x|^2\big] = \mathbb E_{\tilde{\mathbf x}}\Big[\mathbb E_{\mathbf x\mid \tilde{\mathbf x}} |\mathbf D(\tilde{\mathbf x})-\mathbf x|^2\Big].
+\mathbb E_{\mathbf x,\tilde{\mathbf x}}\big[\|\mathbf D(\tilde{\mathbf x})-\mathbf x\|^2\big] = \mathbb E_{\tilde{\mathbf x}}\Big[\mathbb E_{\mathbf x\mid \tilde{\mathbf x}} \|\mathbf D(\tilde{\mathbf x})-\mathbf x\|^2\Big].
 $$
 
 This decomposes pointwise in $\tilde{\mathbf x}$, so the optimal denoiser is:
@@ -1327,7 +1279,7 @@ So the Bayes-optimal denoiser equals **input + $\sigma^2$ times the noisy score*
 
 Motivated by Tweedie:
 
-$$\mathbf D(\tilde{\mathbf x}) = \tilde{\mathbf x}+\sigma^2,\mathbf s_\phi(\tilde{\mathbf x};\sigma)$$
+$$\mathbf D(\tilde{\mathbf x}) = \tilde{\mathbf x}+\sigma^2 \mathbf s_\phi(\tilde{\mathbf x};\sigma)$$
 
 where $\mathbf s_\phi(\cdot;\sigma)\approx \nabla_{\tilde{\mathbf x}}\log p_\sigma(\cdot)$.
 
@@ -1338,12 +1290,12 @@ Substitute into SURE and simplify:
 $$
 \frac{1}{2\sigma^4}\mathrm{SURE}(\mathbf D;\tilde{\mathbf x}) = \mathrm{Tr}\big(\nabla_{\tilde{\mathbf x}}\mathbf s_\phi(\tilde{\mathbf x};\sigma)\big)
 +
-\frac12|\mathbf s_\phi(\tilde{\mathbf x};\sigma)|*2^2
+\frac12\|\mathbf s_\phi(\tilde{\mathbf x};\sigma)\|_2^2
 +
-\text{const}(\sigma).
+\text{const}(\sigma)
 $$
 
-Taking expectation over $\tilde{\mathbf x}\sim p*\sigma$, minimizing SURE is equivalent (up to an additive constant) to minimizing **Hyvärinen’s alternative score matching objective** at noise level $\sigma$.
+Taking expectation over $\tilde{\mathbf x}\sim p_\sigma$, minimizing SURE is equivalent (up to an additive constant) to minimizing **Hyvärinen’s alternative score matching objective** at noise level $\sigma$.
 **Conclusion:** SURE and score matching share the same minimizer, corresponding to the denoiser $\tilde{\mathbf x}+\sigma^2\nabla \log p_\sigma(\tilde{\mathbf x})$.
 
 ---
@@ -1371,10 +1323,10 @@ Key idea: the $\frac{\mathcal L p}{p}$ structure enables **integration by parts*
 Let $p$ be data and $q$ be a model density. Define
 
 $$
-\mathcal D_{\mathcal L}(p|q) := \int p(\mathbf x)\left|\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}-\frac{\mathcal L q(\mathbf x)}{q(\mathbf x)}\right|*2^2,d\mathbf x.
+\mathcal D_{\mathcal L}(p\parallel q) := \int p(\mathbf x)\left\|\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}-\frac{\mathcal L q(\mathbf x)}{q(\mathbf x)}\right\|_2^2 d\mathbf x
 $$
 
-If $\mathcal L$ is **complete** (informally: $\frac{\mathcal L p_1}{p_1}=\frac{\mathcal L p_2}{p_2}$ a.e. implies $p_1=p_2$ a.e.), then $\mathcal D_{\mathcal L}(p|q)=0$ identifies $q=p$.
+If $\mathcal L$ is **complete** (informally: $\frac{\mathcal L p_1}{p_1}=\frac{\mathcal L p_2}{p_2}$ a.e. implies $p_1=p_2$ a.e.), then $\mathcal D_{\mathcal L}(p\parallel q)=0$ identifies $q=p$.
 For $\mathcal L=\nabla$, this recovers the classical Fisher divergence.
 
 ---
@@ -1384,7 +1336,7 @@ For $\mathcal L=\nabla$, this recovers the classical Fisher divergence.
 Instead of modeling $q$, directly learn a vector field $\mathbf s_\phi(\mathbf x)$ to approximate $\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}$:
 
 $$
-\mathcal D_{\mathcal L}(p|\mathbf s_\phi) := \mathbb E_{\mathbf x\sim p}\left[\left|\mathbf s_\phi(\mathbf x)-\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}\right|_2^2\right].
+\mathcal D_{\mathcal L}(p\parallel \mathbf s_\phi) := \mathbb E_{\mathbf x\sim p}\left[\left\|\mathbf s_\phi(\mathbf x)-\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}\right\|_2^2\right].
 $$
 
 The target is unknown, but integration by parts makes the loss computable.
@@ -1393,14 +1345,14 @@ The target is unknown, but integration by parts makes the loss computable.
 
 Define the adjoint $\mathcal L^\dagger$ by:
 
-$$\int (\mathcal L f)^\top g = \int f,(\mathcal L^\dagger g) \quad \text{for all test functions } f,g$$
+$$\int (\mathcal L f)^\top g = \int f (\mathcal L^\dagger g) \quad \text{for all test functions } f,g$$
 
 (assuming boundary terms vanish).
 
 Expanding the square and applying the adjoint identity yields the tractable objective:
 
 $$
-\mathcal L_{\text{GSM}}(\phi) = \mathbb E_{\mathbf x\sim p}\Big[\frac12|\mathbf s_\phi(\mathbf x)|*2^2-(\mathcal L^\dagger \mathbf s*\phi)(\mathbf x)\Big]
+\mathcal L_{\text{GSM}}(\phi) = \mathbb E_{\mathbf x\sim p}\Big[\frac12\|\mathbf s_\phi(\mathbf x)\|_2^2-(\mathcal L^\dagger \mathbf s_\phi)(\mathbf x)\Big]
 +\text{const},
 $$
 
@@ -1410,7 +1362,7 @@ where “const” does not depend on $\phi$.
 
 For $\mathcal L=\nabla$, we have $\mathcal L^\dagger=-\nabla\cdot$ (negative divergence), so:
 
-$$\mathbb E_p\Big[\tfrac12|\mathbf s_\phi|^2-(\mathcal L^\dagger \mathbf s_\phi)\Big] = \mathbb E_p\Big[\tfrac12|\mathbf s_\phi|^2+\nabla\cdot\mathbf s_\phi\Big]$$
+$$\mathbb E_p\Big[\tfrac12\|\mathbf s_\phi\|^2-(\mathcal L^\dagger \mathbf s_\phi)\Big] = \mathbb E_p\Big[\tfrac12\|\mathbf s_\phi\|^2+\nabla\cdot\mathbf s_\phi\Big]$$
 
 which is Hyvärinen’s classical objective.
 
@@ -1428,11 +1380,11 @@ $$\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}=\nabla_{\mathbf x}\log p(\mathbf 
 
 For additive Gaussian noise at level $\sigma$, define an operator on scalar $f$:
 
-$$(\mathcal L f)(\tilde{\mathbf x})=\tilde{\mathbf x},f(\tilde{\mathbf x})+\sigma^2\nabla_{\tilde{\mathbf x}} f(\tilde{\mathbf x})$$
+$$(\mathcal L f)(\tilde{\mathbf x})=\tilde{\mathbf x}f(\tilde{\mathbf x})+\sigma^2\nabla_{\tilde{\mathbf x}} f(\tilde{\mathbf x})$$
 
 Then
 
-$$\frac{\mathcal L p_\sigma(\tilde{\mathbf x})}{p_\sigma(\tilde{\mathbf x})}!!!\tilde{\mathbf x}+\sigma^2\nabla_{\tilde{\mathbf x}}\log p_\sigma(\tilde{\mathbf x})\mathbb E[\mathbf x_0\mid \tilde{\mathbf x}]$$
+$$\frac{\mathcal L p_\sigma(\tilde{\mathbf x})}{p_\sigma(\tilde{\mathbf x})} = \tilde{\mathbf x}+\sigma^2\nabla_{\tilde{\mathbf x}}\log p_\sigma(\tilde{\mathbf x})\mathbb E[\mathbf x_0\mid \tilde{\mathbf x}]$$
 
 which is exactly **Tweedie’s identity**. Minimizing $\mathcal L_{\text{GSM}}$ with this operator trains $\mathbf s_\phi$ to approximate the **denoiser**, recovering denoising score matching behavior.
 
@@ -1480,6 +1432,11 @@ If you want, I can also turn these notes into a one-page “cheat sheet” of on
 
 ## 3.4 Multi-Noise Levels of Denoising Score Matching (NCSN)
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/score_matching_inaccuracy.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>**Illustration of SM inaccuracy (revisiting Illustration of Score Matching).** the red region indicates low-density areas with potentially inaccurate score estimates due to limited sample coverage, while high-density regions tend to yield more accurate estimates.</figcaption>
+</figure>
+
 ### 3.4.1 Motivation: why one noise level is not enough
 
 Adding Gaussian noise “smooths” the data distribution, but:
@@ -1501,6 +1458,11 @@ Adding Gaussian noise “smooths” the data distribution, but:
 
 * High noise: explore globally / cross modes.
 * Low noise: refine details.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/ncsn.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>**Illustration of NCSN.** The forward process perturbs the data with multiple levels of additive Gaussian noise $p_σ(x_σ\mid x)$. Generation proceeds via Langevin sampling at each noise level, using the result from the current level to initialize sampling at the next lower variance.</figcaption>
+</figure>
 
 ---
 
@@ -1548,7 +1510,7 @@ $$\mathcal L_{\text{NCSN}}(\phi) := \sum_{i=1}^{L}\lambda(\sigma_i),\mathcal L_{
 where
 
 $$
-\mathcal L_{\text{DSM}}(\phi;\sigma) = \frac12,\mathbb E_{x\sim p_{\text{data}},,\tilde x \sim p_\sigma(\tilde x\mid x)}
+\mathcal L_{\text{DSM}}(\phi;\sigma) = \frac12\mathbb E_{x\sim p_{\text{data}},\tilde x \sim p_\sigma(\tilde x\mid x)}
 \left[
 \left|
 s_\phi(\tilde x,\sigma)-\frac{x-\tilde x}{\sigma^2}
@@ -1582,7 +1544,7 @@ So:
 $$
 s^*(x_\sigma,\sigma)= -\frac{1}{\sigma}\epsilon^*(x_\sigma,\sigma),
 \quad
-\epsilon^*(x_\sigma,\sigma)= -\sigma,s^*(x_\sigma,\sigma)
+\epsilon^*(x_\sigma,\sigma)= -\sigmas^*(x_\sigma,\sigma)
 $$
 
 **Discrete DDPM notation shown:**
@@ -1609,7 +1571,7 @@ $$s^*(x_i,i)= -\frac{1}{\sigma_i}\mathbb E[\epsilon\mid x_i]$$
 
 Given current $\tilde x_n$:
 
-$$\tilde x_{n+1} = \tilde x_n + \eta_\ell, s_\phi(\tilde x_n,\sigma_\ell) + \sqrt{2\eta_\ell}\epsilon_n, \quad \epsilon_n\sim\mathcal N(0,I)$$
+$$\tilde x_{n+1} = \tilde x_n + \eta_\ell s_\phi(\tilde x_n,\sigma_\ell) + \sqrt{2\eta_\ell}\epsilon_n, \quad \epsilon_n\sim\mathcal N(0,I)$$
 
 ### Algorithm (as given)
 
@@ -1655,8 +1617,7 @@ sequential network passes ⇒ computationally slow.
   (incrementally increasing variance).
 * **DDPM:** Markov chain with variance schedule $\beta_i$:
   
-  $$x_{i+1} = \sqrt{1-\beta_i},x_i + \sqrt{\beta_i}\epsilon$$
-  
+  $$x_{i+1} = \sqrt{1-\beta_i}x_i + \sqrt{\beta_i}\epsilon$$
 
 ### Loss / training target
 
