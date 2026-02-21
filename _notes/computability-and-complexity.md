@@ -1999,7 +1999,6 @@ The recursion depth is $m \le n$ and each layer keeps only two values: result fo
 ```python
 def evaluate_qbf(psi):
     """
-    Python-style pseudocode (your version):
     - Always evaluate BOTH branches for each quantified variable
     - Combine results with max (EXISTS) or min (FORALL)
     - Uses w3 as the current assignment; backtracking is done by overwriting w3[i]
@@ -3551,116 +3550,6 @@ The majority satisfiability problem **MAJ** is complete for **PP**.
 
 </div>
 
-**Proof.** The proof has two parts: showing **MAJ** is in **PP** and showing **MAJ** is **PP**-hard.
-
-1.  **MAJ is in PP:** To show that **MAJ** is a member of **PP**, we can specify a polynomially time-bounded probabilistic Turing machine $M$ that recognizes it.
-
-* On an input that is not a propositional formula in conjunctive normal form (CNF), $M$ rejects.
-* If the input is a CNF formula $\phi$ with $n$ variables, $M$ uses the first $n$ bits of its random word as an assignment to the variables of $\phi$.
-* $M$ accepts if this assignment satisfies $\phi$.
-
-The acceptance probability of $M$ for an input $\phi$ is the number of satisfying assignments divided by $2^n$. Therefore, $\phi$ is in **MAJ** if and only if its acceptance probability is strictly greater than $1/2$, which means $\phi$ is in the language $L(M)$.
-
-2.  **MAJ is PP-hard:** To show that **MAJ** is **PP**-hard, we provide a polynomial-time reduction from any language $L \in \textbf{PP}$ to **MAJ**.
-
-Let $L$ be a language in **PP**, recognized by a polynomially time-bounded PTM $M$ that uses random words of length $r(n)$ for an input of length $n$. Fix an input $w$ for $M$ of length $n$. Let $r = r(n)$. Similar to the proof of the Cook-Levin theorem, we construct a propositional formula $\phi_w$ in CNF that formalizes the computations of $M$ on input $w$. In addition to the standard variables, we use variables $Y_1, \ldots, Y_r$ for the bits of the random word and $P_{i,j}$ for the position of the head on the random tape.
-
-An assignment to the random variables $Y_1, \ldots, Y_r$ corresponds to a specific random word. For any given random word, there is exactly one computation of $M$. Consequently, every accepting assignment to the random variables can be extended in a unique way to a satisfying assignment for the entire formula $\phi_w$. Let $a(w)$ be the number of accepting random words. This number is equal to the number of satisfying assignments of $\phi_w$.
-
-The machine $M$ accepts $w$ if its acceptance probability is greater than $1/2$. This means $w \in L$ if and only if $a(w) / 2^r > 1/2$, which is equivalent to $a(w) > 2^{r-1}$.
-
-Let the variables of $\phi_w$ be $Y_1, \ldots, Y_m$, where $m = m(n)$ is polynomially bounded. We can construct a new formula $\phi'\_w$. Let $Z$ be a new variable not in $\phi_w$. Let $\tau$ be the formula $Y_1 \land \cdots \land Y_{m-(r-1)}$. The formula $\tau$ is satisfied by exactly $2^{m - (m-(r-1))} = 2^{r-1}$ of the $2^m$ assignments to its variables.
-
-Define $\phi'_w$ as:
-
-$$\phi'_w = (Z \land \phi_w(Y_1, \ldots, Y_m)) \lor (\neg Z \land \neg \tau(Y_1, \ldots, Y_m))$$
-
-This formula has $m+1$ variables.
-
-  * If $Z$ is true, $\phi'_w$ is satisfied if $\phi_w$ is satisfied. There are $a(w)$ such assignments.
-  * If $Z$ is false, $\phi'_w$ is satisfied if $\neg \tau$ is satisfied. There are $2^m - 2^{r-1}$ such assignments.
-
-The total number of satisfying assignments for $\phi'_w$ is $a(w) + (2^m - 2^{r-1})$. The formula $\phi'_w$ is in **MAJ** if this number is greater than half of the total $2^{m+1}$ assignments:
-
-$$a(w) + 2^m - 2^{r-1} \> \frac{1}{2} 2^{m+1} = 2^m$$
-
-$$a(w) - 2^{r-1} \> 0 \implies a(w) \> 2^{r-1}$$
-
-This is exactly the condition for $w \in L$. Thus, $w \in L \iff \phi'_w \in \textbf{MAJ}$. Finally, $\phi'_w$ can be transformed into an equivalent CNF formula in polynomial time using distributive laws. This completes the reduction. $\square$
-
-
-### A Generic Technique for Constructing Complete Languages
-
-A general approach for creating complete languages involves simulating Turing machines that recognize languages within a given complexity class. To simplify these simulations, we can standardize the machines.
-
-For this purpose, we define a **special Turing machine** as one having a single work tape and a tape alphabet of $\lbrace 0, 1, \square \rbrace$.
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-By the results on tape reduction and on alphabet reduction, for every $t(n)$-time-bounded Turing machine there is a special Turing machine that is $c \cdot t^2(n)$-time-bounded for some constant $c$ such that both machines recognize the same language. Furthermore, if the given Turing machine is deterministic, the special Turing machine can be chosen to be deterministic, too.
-
-</div>
-
-We fix a binary representation for these special TMs. For a representation word $w$, we write $M_w$ for the machine it represents. This representation scheme has the following properties:
-
-  * Given a binary word of length $n$, it can be checked in polynomial time whether it represents a TM and whether that TM is deterministic.
-  * There exists a fixed universal Turing machine $U$ that can simulate any $M_w$ on a given input. The simulating computation's length exceeds the simulated one by at most a factor of $\lvert w\rvert$.
-
-#### Examples of Generic Complete Languages
-
-Using this framework, we can construct complete languages for several major complexity classes. A common technique involves padding the components of the input string, where for a binary word $w$, $\tilde{w}$ is obtained by doubling every bit (e.g., if $w=01$, then $\tilde{w}=0011$).
-
-**A Complete Language for EXP**
-
-Let
-
-$$
-C_{\text{EXP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that is deterministic and accepts } x \text{ in at most } 2^t \text{ steps}\rbrace.
-$$
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
-
-The language $C_{\text{EXP}}$ is **EXP**-complete.
-
-</div>
-
-**Proof sketch.**
-
-* **Membership in EXP:** We must show that $C_{\text{EXP}}$ can be recognized by a $2^{poly(n)}$-time-bounded deterministic TM, let's call it $M_{\text{decider}}$. On an input of length $n$ of the form $\tilde{w}01\tilde{x}01t$, $M_{\text{decider}}$ first checks if $w$ represents a deterministic TM. If not, it rejects. Otherwise, it simulates the computation of $M_w$ on input $x$ for up to $2^t$ steps. It accepts if $M_w$ reaches an accepting configuration within this step bound. The simulation of $2^t$ steps of $M_w$ can be done in at most $\lvert w \rvert \cdot 2^t < 2^{2n-1}$ steps of $M_{\text{decider}}$. For some polynomial $p$, the total computation time on an input of length $n$ is at most $p(n) + 2^{2n-1}$, which is at most $2^{2n}$ for sufficiently large $n$. This is within the class **EXP**.
-* **EXP-hardness:** Let $L$ be any language in **EXP**. By Remark 128, there is a polynomial $p$ such that $L$ is recognized by a $2^{p(n)}$-time-bounded deterministic special Turing machine, represented by a word $w$. Then $L$ is $p$-$m$-reducible to $C_{\text{EXP}}$ via the function $x \mapsto \tilde{w}01\tilde{x}01p(\lvert x\rvert)$. $\square$
-
-**An NP-Complete Language**
-
-A similar construction yields an $\textbf{NP}$-complete language. Let
-
-$$C_{\text{NP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a Turing machine that on input } x \text{ has an accepting computation of length at most } t\rbrace.$$
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
-
-The language $C_{\text{NP}}$ is **NP**-complete.
-
-</div>
-
-**A PP-Complete Language**
-
-This construction can be extended to probabilistic classes like **PP**. Here, we consider probabilistic Turing machines with an auxiliary tape. We define **pruning** a computation to length $t$ as a variant of the machine where a computation accepts if and only if an accepting configuration is reached within the first $t$ steps. Let
-
-$$
-C_{\text{PP}} = \lbrace \tilde{w}01\tilde{x}01t : \text{the word } w \text{ represents a probabilistic Turing machine that accepts input } x \text{ when all computations are pruned to length } t\rbrace.
-$$
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
-
-The language $C_{\text{PP}}$ is $\textbf{PP}$-complete.
-
-</div>
-
-*(Note: The proof is omitted here but was covered in the lecture.)*
-
 ## Interactive Proof Systems
 
 [Some additional notes on Interactive Proof Systems](/subpages/computability-and-complexity/interactive-proof-systems/)
@@ -3772,24 +3661,6 @@ We first show that any problem with an interactive proof can be solved by a poly
 $\text{IP} \subseteq \text{PSPACE}$.
 
 </div>
-
-*Proof.* Let $L \in \text{IP}$ with polynomially bounded verifier $V$ (bound $p$). On input $w$ of length $n$, the interaction can be represented as a game tree $T$ of depth $2p(n)$ whose nodes encode partial transcripts $m_1 \ldots m_t$. Each node has at most $2^{p(n)}$ children (all possible next messages).
-
-Let $k(u)$ be the number of verifier random strings that lead to partial communication $u$ and eventual acceptance assuming an optimal prover from there. Then $w \in L$ iff $k(z) \ge \tfrac{2}{3} \cdot 2^{p(n)}$ for the root $z$ (root $z$ is the initial message computation: $z = m_1 = V^r(w)$).
-
-Compute $k(u)$ recursively in polynomial space:
-
-* If $u$ is at even depth (verifier turn, we count depth from 0), $k(u) = \sum_{v \text{ child of } u} k(v)$.
-* If $u$ is at odd depth (prover turn), $k(u) = \max_{v \text{ child of } u} k(v)$.
-
-Leaves can be evaluated by simulating $V$ on all $2^{p(n)}$ random strings using polynomial space. A DFS reuses space, so the overall computation fits in $\text{PSPACE}$. 
-
-We show by induction on $j$ (from the leaves up) that for any node $u$ at depth $2p(n) - j$, $k(u)$ can be computed in polynomial space.
-
-* **Base Case** $(j=0)$: The node $u$ is a leaf. To compute $k(u)$, we can iterate through all $2^{p(n)}$ possible random words. For each word, we simulate the verifier to check if it generates the verifier messages in $u$'s label and if it ultimately accepts. This requires space to store the current random word $(p(n))$, a counter (polynomial in $n$), and space to simulate $V$ (also polynomial).
-* **Inductive Step** $(j>0)$: For an internal node $u$, we recursively compute $k(v)$ for each of its children $v$. By the induction hypothesis, each of these computations requires polynomial space. Since we can reuse the space for each recursive call, the total space needed is the space for one child's computation plus the space to manage the summation or maximization, which remains polynomial.
-
-Since the entire computation can be performed in polynomial space, $L \in \text{PSPACE}$. Therefore, $\text{IP} \subseteq \text{PSPACE}$. $\square$
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -4218,138 +4089,6 @@ $\text{IP} = \text{PSPACE}$.
 $3\text{-QBF} \in \text{IP}$.
 
 </div>
-
-*Proof:* We adapt the arithmetization protocol from Theorem 141 for quantified formulas. Let 
-
-$$\Psi = \forall X_1 \exists X_2 \ldots \phi(X_1, \ldots, X_n)$$
-
-On input $\Psi$, the verifier $V$ can immediately reject in case $\Psi$ is not in 3-CNF prenex normal form, hence we can assume otherwise. Let also $\phi$ has $m$ clauses, $p_\phi$ has the same meaning as in Theorem 141. We can arithmetize this structure. The universal quantifier $\forall X_i$ corresponds to a product ($\prod_{x_i \in \lbrace 0,1\rbrace}$), and the existential quantifier $\exists X_i$ corresponds to a logical OR, which can be arithmetized using the operation $\alpha * \beta = 1 - (1-\alpha)(1-\beta)$. Then $\Psi$ is true if and only if the following expression evaluates to $1$: 
-
-$$\prod_{x_1\in\lbrace 0,1\rbrace} \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n) = 1 \quad (5.9)$$
-
-where $\coprod$ denotes the arithmetic OR operation. Here $\prod$ is the usual product of polynomials, and given a polynomial $p$ in variables $x_1,\dots,x_t$, we let
-
-$$\cdots \coprod_{x_t\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_t) = p_\phi(x_1, \ldots, x_{t-1}, 0) * p_\phi(x_1, \ldots, x_{t-1}, 1)$$
-
-A direct application of the checksum protocol fails because each operator ($\prod$ and $\coprod$) can double the degree of the polynomials involved, leading to an exponential degree overall. The solution is to apply a linearization operator at each step. For a polynomial $p$, let 
-
-$$L_i p(x_1, \ldots, x_n) = x_i p(\ldots, x_{i-1}, 1, x_{i+1}, \ldots) + (1-x_i) p(\ldots, x_{i-1}, 0, x_{i+1}, \ldots)$$
-
-<div class="gd-grid">
-  <figure>
-    <img src="{{ 'assets/images/notes/computability-and-complexity/linearization_example.jpeg' | relative_url }}" alt="a" loading="lazy">
-    <figcaption>Example of linearization</figcaption>
-  </figure>
-</div>
-
-This new polynomial $L_i p$ agrees with $p$ on all boolean inputs $\lbrace 0,1\rbrace^n$, but the degree of $x_i$ in $L_i p$ is at most $1$. By applying these operators repeatedly, we can keep the degree of all variables low throughout the protocol. By construction, $L_1,\dots,L_n p(x_1,\dots,x_{i-1},0,x_i,\dots,x_n)$ all variables have degree at most $1$. Thus in order to verify that (5.9) is equal to $1$, the checksum protocol can be applied in order to verify that:
-
-$$1 = \prod_{x_1\in\lbrace 0,1\rbrace} \underbrace{  L_1 \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \prod_{x_{n-1}\in\lbrace 0,1\rbrace} L_1 \dots L_{n-1}  \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n)}_{= h_1(x_1)} \quad (5.10)$$
-
-The verifier's protocol is modified to check the arithmetized QBF expression with linearization.
-
-* **Round 1 and 2**: to convince the verifier that (5.10) holds, the prover sends a prime $p$ (for modulo $p$) and then the prover sends a polynomial $h^P_1$ that is meant to coincide with $h_1$ in (5.10). The verifier checks $h^P_1(0) \cdot h^P_1(1) = 1$. Rejects in case this fails and, otherwise, selects a member $r_1$ in $\mathbb{F}_p$ uniformly at random and sends it to prover. In order to convince the verifier that 
- 
-  $$h^P_1(r_1) = L_1 \underbrace{ \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots \prod_{x_{n-1}\in\lbrace 0,1\rbrace} L_1 \dots L_{n-1}  \coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(x_1, \ldots, x_n)}_{= h_2(x_1)}$$
-
-  is true, the verifier sends the polynomial $h^P_2$ that is meant to coincide with $h_2$. The verifier then checks whether $h^P_1(r_1)$ is equal to $r_1h^P_2(1) + (1−r_1)h^P_2(0)$, rejects in case this fails and, otherwise, selects $r_2$ in $\mathbb{F}_p$ uniformly at random and sends it to the prover, which now has to convince the verifier that $h^P_2(r_2)$ is equal to $h_2(r_2)$.
-* Similarly, in case the first operator of the currently considered expression is $\coprod$, the verifier checks whether $h_{i−1}(r_{i−1})=h^P_i(0)∗h^P_i(1)$. The verification remains essentially the same as in the proof of Theorem 141, in particular, each random choice of a member of $\mathbb{F}_p$ is unfortunate with probability at most $\frac{d}{p}$ for some constant $d$. Observe, however, that now there are more such choices, their number is quadratic instead of linear in $n$, hence the value of $c$ has to be adapted accordingly.
-
-Why quadratic instead of linear in $n$:
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
-
-$$\prod_{x_1\in\lbrace 0,1\rbrace} L_1 \coprod_{x_2\in\lbrace 0,1\rbrace} L_1 L_2 \prod_{x_3\in\lbrace 0,1\rbrace} p(x_1,x_2,x_3)$$
-
-</div>
-
-
-$\textbf{Solution:}$
-
-$$
-1
-= \prod_{x_1\in\{0,1\}}
-   \underbrace{
-     L_1\,
-     \underbrace{
-       \coprod_{x_2\in\lbrace 0,1\rbrace}
-       \underbrace{
-         L_1 
-         \underbrace{
-            L_2 
-            \underbrace{
-            \prod_{x_3\in\lbrace 0,1\rbrace} p(x_1,x_2,x_3)
-            }_{h_5}
-         }_{h_4}
-       }_{h_3}
-     }_{h_2}
-   }_{h_1}
-$$
-
-General template (optional, for the $n$-variable case):
-
-$$
-h^P_1(z) 
-= L_1 \underbrace{ \coprod_{x_2\in\lbrace 0,1\rbrace} \cdots 
-\prod_{x_{n-1}\in\lbrace 0,1\rbrace} L_1 \dots L_{n-1}  
-\coprod_{x_n\in\lbrace 0,1\rbrace} p_\phi(z, x_2, \ldots, x_n)}_{= h_2(z)}
-$$
-
-$\textbf{Round 1 (Operator: $\prod_{x_1}$)}$
-
-Check: $1 \stackrel{?}{=} h^P_1(0)\cdot h^P_1(1)$
-
-Action: If true, Verifier picks random $r_1$. New target is $h^P_1(r_1)$.
-
-$\textbf{Round 2 (Operator: $L_1$)}$
-
-$h^P_1(r_1) \stackrel{?}{=} r_1 \cdot h^P_2(1) + (1-r_1) \cdot h^P_2(0)$
-
-Note: This uses the Linearization formula; $r_1$ acts as the weight.
-
-Action: If true, Verifier picks a NEW random $r'_1$. New target is $h^P_2(r'_1)$.
-
-$\textbf{Round 3 (Operator: $\coprod_{x_2}$)}$
-
-Check: $h^P_2(r'_1) \stackrel{?}{=} 1 - (1-h^P_3(0))(1-h^P_3(1))$
-
-Note: This uses the arithmetic OR formula $(a \lor b = 1-(1-a)(1-b))$ for $a,b\in\{0,1\}$.
-
-Action: If true, Verifier picks random $r_2$. New target is $h^P_3(r_2)$.
-
-$\textbf{Round 4 (Operator: $L_1$)}$
-
-Check: $h^P_3(r_2) \stackrel{?}{=} r'_1 \cdot h^P_4(1) + (1-r'_1) \cdot h^P_4(0)$
-
-Note: This linearizes again in $x_1$;~ $r'_1$ is the current point for $x_1$.
-
-Action: If true, Verifier picks a NEW random $r''_1$. New target is $h^P_4(r''_1)$.
-
-$\textbf{Round 5 (Operator: $L_2$)}$
-
-Check: $h^P_4(r''_1) \stackrel{?}{=} r_2 \cdot h^P_5(1) + (1-r_2) \cdot h^P_5(0)$
-
-Note: This linearizes in $x_2$;~ $r_2$ is the current point for $x_2$.
-
-Action: If true, Verifier picks a NEW random $r'_2$. New target is $h^P_5(r'_2)$.
-
-$\textbf{Round 6 (Operator: $\prod_{x_3}$)}$
-
-Check: $h^P_5(r'_2) \stackrel{?}{=} h^P_6(0)\cdot h^P_6(1)$
-
-Note: This is the product check for $x_3 \in \{0,1\}$.
-
-Note: Actually we do not need to introduce $h^P_6$ explicitly, because  $h^P_6(x)=p(r''_1,r'_2,x)$.
-
-Action: If true, Verifier picks random $r_3$. New target is $h^P_6(r_3)$.
-
-$\textbf{Final Check}$
-
-Verifier directly evaluates $p(r''_1, r'_2, r_3)$ and checks that $p(r''_1, r'_2, r_3) \stackrel{?}{=} h^P_6(r_3)$.
-
-$\textbf{Note: }$ There is the same amount of computation per round, and the Linearization is made in general by the same template.
-
 
 ### Public Coins and Perfect Completeness
 
@@ -5879,6 +5618,7 @@ Because prime factorization is unique, you can decode the number back into the e
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Standard numbering is Gödel numbering)</span></p>
 
 The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
+
 </div>
 <!-- $\textbf{Theorem 178:}$ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering. -->
 
@@ -5899,84 +5639,6 @@ There is a universal numbering that is not a Gödel numbering.
 There exists a universal numbering that is not a Gödel numbering.
 
 </div>
-
-*Proof.* Let $(\phi_e)\_{e\in\mathbb N}$ be the standard numbering of the partial computable functions. Define a new sequence $(\psi_e)\_{e\in\mathbb N}$ as follows. For each $e=\langle i,t\rangle$, set
-
-$$
-\psi_{\langle i,t\rangle}(x)\ \simeq
-\begin{cases}
-\phi_i(x), & x\neq 0, \\
-\uparrow, & x=0\ \text{and}\ t=0 \\
-t-1, & x=0\ \text{and}\ t>0.
-\end{cases}
-$$
-
-In words: $\psi_{\langle i,t\rangle}$ behaves like $\phi_i$ on all inputs $x\neq 0$, while its value at $0$ is independently controlled by $t$.
-
-**Step 1: $(\psi_e)$ is a numbering.**
-Its principal function $\psi(e,x)$ is partial computable: on input $(e,x)$, decode $e$ as $\langle i,t\rangle$. If $x\neq 0$, simulate $\phi_i(x)$. If $x=0$, output $\uparrow$ when $t=0$ and output $t-1$ when $t>0$. Hence $(\psi_e)$ is a numbering.
-
-**Step 2: $(\psi_e)$ is universal.**
-Fix $i$. We show that $\phi_i$ occurs somewhere in the $\psi$-list. Consider the value $\phi_i(0)$.
-
-* If $\phi_i(0)\uparrow$, then we choose $e=\langle i,0\rangle$ and we have $\psi_{\langle i,0\rangle}(0)\uparrow$ and $\psi_{\langle i,0\rangle}(x)=\phi_i(x)$ for $x\neq 0$. Hence $\psi_{\langle i,0\rangle}=\phi_i$.
-* If $\phi_i(0)\downarrow=y$, then we choose $e=\langle i,y+1\rangle$ and we have $\psi_{\langle i,y+1\rangle}(0)=y$ and again $\psi_{\langle i,y+1\rangle}(x)=\phi_i(x)$ for $x\neq 0$. Hence $\psi_{\langle i,y+1\rangle}=\phi_i$.
-
-Thus every $\phi_i$ appears among the $\psi_e$, so $(\psi_e)$ is universal.
-
-**Step 3: $(\psi_e)$ is not a Gödel numbering.**
-Define a computable function $g$ such that, for every $e$,
-
-$$
-\phi_{g(e)}(x)\ \simeq
-\begin{cases}
-0, & \text{if } \phi_e(e)\downarrow,\\
-\uparrow, & \text{if } \phi_e(e)\uparrow.
-\end{cases}
-$$
-
-Such a $g$ exists and is computable: given $e$, effectively construct a Turing machine that ignores its input $x$ and outputs $0$ if $\phi_e(e)$ halts and loops otherwise (I guess such a TM just simulates $\phi_e(e)$ and simulation either diverges or produces some output and the TM outputs zero); Such a TM has its corresponding partial computable function, which is somewhere in the standard numbering. Let $g(e)$ be an index of this machine in the standard enumeration.
-
-Now suppose, for contradiction, that $(\psi_e)$ were a Gödel numbering. Then there would exist a computable translation function $f$ such that
-
-$$\phi_n = \psi_{f(n)}\qquad\text{for all }n.$$
-
-Applying this with $n=g(e)$, we obtain
-
-$$\phi_{g(e)} = \psi_{f(g(e))}\qquad\text{for all }e.$$
-
-Write $f(g(e))=\langle i(e),t(e)\rangle$, and let $\mathrm{inv}_2(\langle u,v\rangle)=v$ denote the second projection. We now look at the value at input $0$.
-
-* If $\phi_e(e)\downarrow$, then by construction $\phi_{g(e)}(0)=0$. Hence $\psi_{f(g(e))}(0)=0$. By the definition of $\psi$, this can happen only when $t(e)=1$, i.e. $\mathrm{inv}_2(f(g(e)))=1$.
-* If $\phi_e(e)\uparrow$, then $\phi_{g(e)}(0)\uparrow$. Hence $\psi_{f(g(e))}(0)\uparrow$, which (by the definition of $\psi$) happens only when $t(e)=0$, i.e. $\mathrm{inv}_2(f(g(e)))=0$.
-
-Therefore the function
-
-$$h(e)\ :=\ \mathrm{inv}_2(f(g(e)))$$
-
-is exactly the characteristic function of the diagonal halting set
-
-$$H=\lbrace e:\phi_e(e)\downarrow\rbrace.$$
-
-But $h$ is computable as a composition of computable functions ($\mathrm{inv}_2$, $f$, and $g$. This would make $H$ decidable, contradicting the undecidability of the halting problem. Hence $(\psi_e)$ cannot be a Gödel numbering. $\square$
-
-<!-- *Proof*: Let $\phi_0, \phi_1, \dots$ be the standard numbering. We define a new sequence of partial functions $\psi_0, \psi_1, \dots$. For an index $e = \langle i, t \rangle$, we define $\psi_e$ as:  
-
-$$\psi_{\langle i, t \rangle}(x) = \begin{cases} \phi_i(x) & \text{in case } x \ne 0, \\ \uparrow & \text{in case } x=0 \text{ and } t=0, \\ t-1 & \text{in case } x=0 \text{ and } t > 0. \end{cases}$$  
-
-Essentially, $\psi_{\langle i, t \rangle}$ is a copy of $\phi_i$, except at input $0$, where its behavior is independently controlled by $t$.
-
-* The sequence $\psi_0, \psi_1, \dots$ is a numbering because its principal function $\psi(e, x)$ is partial computable. To compute $\psi(e, x)$, we first decode $e$ into its components $i$ and $t$. If $x > 0$, we simulate $\phi_i(x)$. If $x=0$, we determine the output based on $t$.
-* This numbering is universal. For any partial computable function $\phi_i$, we can find an index $e$ such that $\psi_e = \phi_i$. If $\phi_i(0)$ is undefined, we can choose $e = \langle i, 0 \rangle$. If $\phi_i(0)$ is defined and equals $y$, we can choose $e = \langle i, y+1 \rangle$.
-* This numbering is not a Gödel numbering. We can construct a specific computable function $g$ such that for all $e$ and $x$:  
-  
-  $$\phi_{g(e)}(x) = \begin{cases} 0, & \text{in case } \phi_e(e) \downarrow, \\ \uparrow, & \text{otherwise.} \end{cases}$$ 
-  
-  The function $g$ is computable: given $e$, one can effectively construct the description of a Turing machine that outputs $0$ if $\phi_e(e)$ halts, and loops otherwise. $g(e)$ is the index of this machine in the standard enumeration.
-* Now, assume for contradiction that $\psi$ were a Gödel numbering. Then there would be a computable function $f$ such that $\phi_e = \psi_{f(e)}$ for all $e$. Applying this to our constructed functions, we get $\phi_{g(e)} = \psi_{f(g(e))}$ for all $e$. Let's examine the behavior at input $0$.
-  * If $e \in H$, then $\phi_e(e) \downarrow$. This means $\phi_{g(e)}(0) = 0$. So, $\psi_{f(g(e))}(0) = 0$. According to the definition of $\psi$, this happens only if the second component of the index $f(g(e))$ is $1$. Let $\text{inv}_2$ be the function that gives the second component of a pair (i.e., $\text{inv}_2(\langle x, y \rangle) = y$). Then $\text{inv}_2(f(g(e))) = 1$.
-  * If $e \notin H$, then $\phi_e(e) \uparrow$. This means $\phi_{g(e)}(0) \uparrow$. So, $\psi_{f(g(e))}(0) \uparrow$. This happens only if the second component of $f(g(e))$ is $0$. Then $\text{inv}_2(f(g(e))) = 0$.
-* This implies that the function $\text{inv}_2 \circ f \circ g$ is the characteristic function of the halting problem $H$. Since $f$, $g$, and $\text{inv}_2$ are all computable, their composition is also computable. But this would mean $H$ is decidable, which is a contradiction. Therefore, $\psi$ cannot be a Gödel numbering. -->
 
 ## Many-one Reducibility and Rice’s Theorem
 
@@ -6380,7 +6042,7 @@ Now check the reduction:
 * If $e\in\overline{H}$, then $\phi_{g(e)}=\beta=\phi_{e_0}$. Since $e_0\in I$ and $I$ is an index set (membership depends only on the computed function), it follows that $g(e)\in I$.
 * If $e\in H$, then $\phi_{g(e)}=\phi_\uparrow$. By the case assumption, no index of $\phi_\uparrow$ lies in $I$, hence $g(e)\notin I$.
 
-Therefore $e\in\overline{H}\iff g(e)\in I$), so $\overline{H}\le_m I$.
+Therefore $e\in\overline{H}\iff g(e)\in I$, so $\overline{H}\le_m I$.
 
 **Case 2: $I$ contains an index of $\phi_\uparrow$**
 
@@ -6475,7 +6137,7 @@ We now introduce a more powerful form of reducibility, Turing reducibility, base
 If an oracle Turing machine $M$ terminates for all inputs $x$ with a given oracle $B$, the notation $M(B)$ is used for the uniquely determined set $A$ with the characteristic function $c_A : x \mapsto M(x, B)$.
 A set $A$ is Turing-reducible to a set $B$, briefly $A$ is T-reducible to $B$ or $A \le_T B$, if there is an oracle Turing machine $M$ such that $A = M(B)$, i.e.,  $A(x) = M(x, B) \text{ for all } x \in \mathbb{N}$.  -->
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Oracle Turing Machine)</span></p>
 
 An **oracle Turing machine** is a Turing machine that, in addition to its work tapes, has a special **oracle tape**. For a set $B$, the oracle tape contains the infinite binary sequence
 
@@ -6493,6 +6155,11 @@ We also write $M^B(x)$ instead of $M(x,B)$.
 
 If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (unique) set $A$ whose characteristic function is $x \mapsto M(x,B)$.
 
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing-reducibility)</span></p
+
 A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
 
 $$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}.$$
@@ -6506,6 +6173,7 @@ Turing reducibility is a more general notion than many-one reducibility.
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
 
 For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse implication fails.
+
 </div>
 
 *Proof*:
@@ -6646,4 +6314,251 @@ $$A \le_T B \ \Longrightarrow\ H^A \le_m H^B.$$
 
 </div>
 
-*Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means $M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$. Therefore, we have the desired equivalence:  $e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  The function $h$ is computable, so this establishes $H^A \le_m H^B$.
+*Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means 
+
+$M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$
+
+Therefore, we have the desired equivalence: 
+
+$e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  
+
+The function $h$ is computable, so this establishes $H^A \le_m H^B$.
+
+## Incompleteness of Arithmetic
+
+### First-Order Logic
+
+First-order logic, also known as predicate calculus, provides a formal system for reasoning. In this system, formulas are constructed from a set of symbols, which include relation symbols, function symbols, and constant symbols, in addition to logical symbols such as quantifiers (∀, ∃), logical connectives (∧, ∨, ¬, →), and the equality sign (=).
+
+For example, consider the formula: \phi ≡ ∀x∀y∃z(x < z ∧ z < y) Here, < is a relation symbol of arity 2, written in infix notation. Formulas like φ, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers N or real numbers R) and provide interpretations for the symbols over that domain. A binary relation symbol like < would be interpreted as a set of ordered pairs from the domain.
+
+In the case of the formula \phi above:
+* If the domain is the set of natural numbers (N) and < is interpreted as the standard "less than" ordering, the formula is false. There is no natural number z that can exist between two consecutive numbers like x=1 and y=2.
+* If the domain is the set of real numbers (R) with the standard ordering, the formula is true. This property, that between any two distinct numbers there is another, is known as being dense.
+
+Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula ∃x(x < y) is true for the natural numbers if y is assigned any value other than 0, but it is false if y is assigned 0.
+
+<div class="math-callout math-callout--example" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(204: The Axioms of Group Theory)</span></p>
+
+The axioms of group theory can be expressed in first-order logic with a binary function symbol $\cdot$ (multiplication) and a constant symbol $e$ (the identity element).
+* **(i)** $\forall x \forall y \forall z((x \cdot y) \cdot z) = (x \cdot (y \cdot z))$ (Associativity)
+* **(ii)** $\forall x(e \cdot x = x)$ (Left-neutral element)
+* **(iii)** $\forall x \exists y(y \cdot x = e)$ (Existence of left-inverses)
+
+A group is defined as a structure (G, \cdot, e) consisting of a set G, a binary function \cdot on G, and an element e \in G where all three axioms are true. Group theory is the set of all sentences over these symbols that are true in all groups.
+</div>
+
+A sentence is a semantical consequence of a set of axioms if it is true in every structure where the axioms are true. In this case, we say the axioms entail the sentence.
+
+An inference system is a collection of syntactical rules that allow new sentences to be derived from a given set of sentences. A classic example is modus ponens, which allows the derivation of sentence \beta if one is given both \alpha and \alpha → \beta.
+
+* An inference system is sound if it can only derive sentences that are semantical consequences of the given set.
+* An inference system is complete if it can derive all semantical consequences of the given set.
+
+First-order logic is restricted to quantification over members of the domain; it does not allow quantification over sets, functions, or other higher-order objects. While this limits its expressive power compared to formalisms like set theory, it has a significant advantage: first-order logic possesses effective inference systems that are both sound and complete. This implies that if a set of axioms is finite, decidable, or recursively enumerable (r.e.), then the set of all its semantical consequences is also r.e. This is because one can systematically search through all possible derivations from the axioms, and due to completeness, a derivation for any true consequence will eventually be found.
+
+<div class="math-callout math-callout--example" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(205)</span></p>
+
+Group theory is r.e. An enumeration can be generated by applying a sound and complete inference system to the axioms of group theory. However, it can be shown that group theory is not decidable. In contrast, the theory of commutative groups (which adds the axiom $\forall x\forall y(x \cdot y = y \cdot x)$) is decidable.
+</div>
+
+###  Arithmetic Formulas
+
+We can use the language of first-order logic to make precise statements about the natural numbers.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arithmetic Formula)</span></p
+
+An **arithmetic formula**, or a formula in the language of arithmetic, is a formula of first-order logic whose non-logical symbols are restricted to:
+* The binary function symbols $+$ and $\cdot$ (addition and multiplication).
+* The unary function symbol $s$ (the successor function, $s(n) = n+1$).
+* The binary relation symbol $<$ (the strict order relation).
+* The constant symbol $0$.
+
+</div>
+
+The intended interpretation for these symbols is over the domain of natural numbers N. An arithmetic sentence is an arithmetic formula with no free variables. An arithmetic sentence is considered true if it expresses a true statement about the natural numbers under this standard interpretation. We denote the set of all true arithmetic sentences by T. By establishing an effective bijection between arithmetic formulas and natural numbers, T can be treated as a subset of $\mathbb{N}$.
+
+### Incompleteness of Arithmetic
+
+To represent specific natural numbers within arithmetic formulas, we use a term notation. For any natural number $n \ge 0$, we define the term n̄ as the n-th successor of 0: n̄ = s(s(...(s(0))...)) where the successor function s is applied n times. For example, the term for the number $3$ is $s(s(s(0)))$. For an arithmetic formula \phi with one free variable, $\phi(\overline e)$ denotes the sentence obtained by replacing all free occurrences of that variable with the term $\overline e$.
+
+A foundational result is that the computations of Turing machines can be "arithmetized," meaning that statements about whether a Turing machine halts on an input can be expressed using arithmetic formulas. This leads to the following powerful theorem.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(207)</span></p>
+
+For every recursively enumerable set $A$, there exists an arithmetic formula $\psi$ with two free variables such that for all natural numbers $e$, it holds that 
+
+$$e \in A \text{ if and only if } \exists s \psi(\overline e, s) \text{ is true.}$$
+
+</div>
+
+This connection between computability (r.e. sets) and arithmetic logic (true sentences) allows us to prove a fundamental limitation of formal arithmetic.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Set of True Arithmetic Sentences is Undecidable)</span></p>
+
+The set $T$ of true arithmetic sentences is not decidable.
+
+</div>
+
+**Proof:** 
+
+The proof proceeds by a reduction from the diagonal halting problem, $H = \lbrace e \mid M_e(e) \text{ halts} \rbrace$, which is known to be r.e. but not decidable.
+
+1. Since $H$ is r.e., we can apply Theorem 207. This guarantees the existence of an arithmetic formula ψ such that for any natural number $e: e \in H \text{ if and only if } \exists s\psi(\overline e, s) \text{ is true.}$
+2. The mapping $e \mapsto \exists s(\overline e, s)$ constitutes a many-one reduction ($H \le_m T$) from the diagonal halting problem $H$ to the set of true arithmetic sentences $T$.
+3. If $T$ were decidable, then this reduction would imply that $H$ is also decidable.
+4. Since $H$ is known to be undecidable, this is a contradiction. Therefore, $T$ cannot be decidable.
+
+This result has a profound consequence for the axiomatization of mathematics. It tells us that no sound and effective formal system can ever capture all truths about the natural numbers.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Incompleteness of Arithmetic)</span></p>
+
+The set $T$ of true arithmetic sentences is not axiomatizable. That is, there is no r.e. (and thus no finite or decidable) set of arithmetic sentences (axioms) $A$ from which exactly the true sentences of arithmetic can be derived.
+
+</div>
+
+**Proof:** The proof is by contradiction. Let's assume such an r.e. set of axioms A exists. We also fix an inference system that is effective, sound, and complete for first-order logic.
+
+1. Assume there is an r.e. set of axioms A such that a sentence φ can be derived from A if and only if $\phi \in T$.
+2. We can construct a Turing machine M to decide T. On input φ:
+  * If φ is not a valid arithmetic sentence, M rejects.
+  * Otherwise, M exhaustively searches through all possible derivations from the axioms in A. Since A is r.e., this search is effective.
+  * In the standard model of natural numbers, for any sentence φ, either φ is true or its negation ¬φ is true. Because our axiom system A is assumed to capture all of T (and is sound), exactly one of φ or ¬φ must be derivable from A.
+  * Therefore, M's search is guaranteed to terminate. It will eventually find a derivation for either φ or ¬φ.
+  * If a derivation for φ is found, M accepts.
+  * If a derivation for ¬φ is found, M rejects.
+3. This construction describes a total Turing machine M that decides the set T.
+4. However, this contradicts Theorem 208, which states that T is undecidable.
+5. Therefore, our initial assumption must be false, and no such r.e. set of axioms A can exist.
+
+### Arithmetization of Computations
+
+The ability to express computational statements within arithmetic is the technical core of the incompleteness results. For example, there exists an arithmetic formula φ_T with three free variables such that φ_T(ē, x̄, ȳ) is true if and only if the Turing machine M_e halts on input x with a computation encoded by the number y. This process, known as arithmetization, requires a method to encode finite sequences of numbers (representing configurations) using only the language of arithmetic.
+
+#### Gödel's β-function
+
+To encode sequences of configurations, we first need a way to encode arbitrary finite sequences of natural numbers. This can be achieved using the Chinese Remainder Theorem and a clever construction known as Gödel's β-function.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(210: Chinese Remainder Theorem)</span></p>
+
+Let m_1, \dots, m_t be pairwise co-prime natural numbers. Then, for every sequence of natural numbers a_1, \dots, a_t, there exists a unique number m such that: 0 \le m < m_1 \cdot m_2 \cdot \dots \cdot m_t \quad \text{and} \quad a_i \equiv m \pmod{m_i} \text{ for } i = 1, \dots, t.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(211)</span></p>
+
+The Chinese Remainder Theorem allows us to encode a sequence a_1, \dots, a_t using just a few numbers. For example, one could choose a prime number p larger than all a_i and then use a sequence of t successive primes starting from p. However, defining "successive primes" within the language of arithmetic is non-trivial. A more direct arithmetical construction is needed.
+</div>
+
+Gödel's β-function provides this construction by generating a suitable list of pairwise co-prime numbers arithmetically.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(name of Lemma)</span></p>
+
+Let $d = n!$ for a natural number $n > 0$. Then, the natural numbers $d+1, 2d+1, \dots, nd+1$ are pairwise co-prime.
+  
+</div>
+
+Proof: Assume for contradiction that there exist distinct i, j \in \lbrace 1, \dots, n\rbrace such that $id+1$ and jd+1 share a common prime divisor p.
+
+1. Since id and id+1 are co-prime, p cannot divide id. As d=n!, this means p cannot divide d. By the definition of d, any prime less than or equal to n divides d, so we must have p > n.
+2. A common divisor of two numbers must also divide their difference. Thus, p divides |(id+1) - (jd+1)| = |i-j|d.
+3. Since p is a prime that does not divide d, it must divide |i-j|.
+4. However, i, j \in \{1, \dots, n\} implies 0 < |i-j| < n.
+5. This leads to a contradiction, as the prime p must be greater than n but also divide a number smaller than n. Thus, no such common prime divisor p exists, and the numbers are pairwise co-prime.
+
+This lemma enables the definition of a function that can extract elements from an encoded sequence.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gödel’s $\beta$-function)</span></p
+
+For any natural numbers $m$, $d$, and $i$, let $\beta(m, d, i)$ be the remainder of $m$ modulo $id+1$. That is, 
+
+$$m \equiv \beta(m, d, i) \pmod{id+1} \quad \text{and} \quad 0 \le \beta(m, d, i) \le id.$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(214: Encoding Sequences with the $\beta$-function)</span></p>
+
+Let $a_1, \dots, a_t$ be a sequence of natural numbers. Then, there exist natural numbers $m$ and $d$ such that for $i=1, \dots, t$, it holds that $a_i = β(m, d, i)$.
+</div>
+
+**Proof:**
+
+1. Choose a natural number n that is greater than the sequence length t and also greater than every element a_i in the sequence. Let d = n!.
+2. By Lemma 212, the numbers d+1, 2d+1, \dots, td+1 are pairwise co-prime.
+3. By the Chinese Remainder Theorem (Theorem 210), there exists a natural number m such that for each i \in \{1, \dots, t\}, we have m \equiv a_i \pmod{id+1}.
+4. By our choice of n, we have a_i < n. Since d=n!, we also have d \ge n (for n>1), so a_i < d. This means a_i \le id.
+5. Since m \equiv a_i \pmod{id+1} and 0 \le a_i \le id, a_i is precisely the remainder of m when divided by id+1.
+6. By Definition 213, this means a_i = \beta(m, d, i) for all i = 1, \dots, t.
+
+#### Detailed Arithmetization of Computations
+
+Using Gödel's β-function, we can now encode an entire Turing machine computation. A computation is a sequence of configurations C_0, \dots, C_s. Each configuration is determined by the current state, head position, and tape contents. A computation of length s can be represented by:
+
+* A list of states: q_0, \dots, q_s.
+* A list of head positions: j_0, \dots, j_s.
+* A list of tape inscriptions: w_0, \dots, w_s.
+
+Each state and tape symbol can be represented by a number. Each tape inscription w_i, which is itself a sequence of symbols, can also be encoded as a single number using the β-function again. Ultimately, the entire computation can be encoded by a fixed set of natural numbers. For example, the sequence of states q_0, \dots, q_s can be encoded by three numbers: the length s, and the pair m_{state}, d_{state} from Theorem 214.
+
+The formula ψ from Theorem 207 then takes a form with many existential quantifiers, one for each number used in the encoding: ∃m_{state}∃d_{state}∃m_{pos}∃d_{pos} \dots ψ'(e, s, m_{state}, d_{state}, \dots) The inner formula ψ' is a large conjunction of subformulas that enforce the rules of Turing machine computation. For example, one subformula would assert that the tape inscription of configuration C_{i+1} is correctly derived from C_i based on the transition function of machine M_e. This structure is conceptually similar to the formula constructed in the proof of the Cook-Levin theorem.
+
+### Matiyasevich’s Theorem and Diophantine Equations
+
+The arithmetization of computation can be pushed even further, leading to a remarkable connection between computability theory and number theory. It turns out that r.e. sets can be characterized by equations between polynomials.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matiyasevich’s Theorem)</span></p
+
+For every r.e. set $A$, there exist a natural number $n$ and polynomials $f$ and $g$ over the variables $x, y_1, \dots, y_n$ with coefficients in $N$, such that: 
+
+$$x \in A \iff \exists y_1 \in \mathbb{N} \dots \exists y_n \in \mathbb{N} [ f(x, y_1, \dots, y_n) = g(x, y_1, \dots, y_n) ]$$
+
+</div>
+
+This theorem, also known as the Davis-Matiyasevich-Putnam-Robinson (DMPR) theorem, was the culmination of work by all four mathematicians.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(216)</span></p>
+
+An equation between polynomials with natural number coefficients, like f=g, is equivalent to an equation of the form h=0 where h=f-g is a polynomial with integer coefficients. The question of whether such an equation has solutions over the natural numbers versus the integers is essentially equivalent.
+</div>
+
+* Solvability over integers can be reduced to solvability over natural numbers, since any integer can be expressed as a difference of two natural numbers, and any natural number can be written as the sum of four squares (Lagrange's four-square theorem).
+* Solvability over natural numbers can be checked by considering the 2^n variants of an equation over the integers obtained by replacing variables with their negations.
+
+In 1900, David Hilbert posed his famous list of 23 problems. His tenth problem asked for a general algorithm to determine if a given Diophantine equation has integer solutions.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Diophantine Equation)</span></p
+
+A **Diophantine equation** is an equation of the form $f = 0$, where $f$ is a polynomial with integer coefficients. The equation is solvable if its variables can be assigned integer values such that the equation is satisfied.
+
+</div>
+
+Matiyasevich's theorem provides a definitive, negative answer to Hilbert's tenth problem.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Unsolvability of Diophantine Equations)</span></p>
+
+It is not possible to decide whether a given Diophantine equation is solvable.
+
+</div>
+
+Proof:
+
+1. Let A be an undecidable r.e. set, such as the Halting Problem.
+2. By Matiyasevich’s theorem, there exist polynomials f and g with natural number coefficients such that for all x: x \in A \iff ∃y_1 \in \text{N} \dots ∃y_n \in \text{N} [ f(x, y_1, \dots, y_n) - g(x, y_1, \dots, y_n) = 0 ].
+3. For any given x, the statement on the right corresponds to asking whether the Diophantine equation f(x, \vec{y}) - g(x, \vec{y}) = 0 has a solution in the natural numbers.
+4. As noted in Remark 216, deciding solvability over N is equivalent to deciding solvability over the integers.
+5. If there were an algorithm to decide the solvability of Diophantine equations, we could use it to decide the right-hand side of the equivalence for any x. This would give us an algorithm to decide membership in A.
+6. Since A is undecidable, this is a contradiction. Therefore, no such general algorithm for Diophantine equations can exist.
