@@ -33,7 +33,7 @@ The Quicksort algorithm sorts a list by choosing a pivot element and partitionin
 
 ### The Copy Game and Strategic Randomization
 
-Randomization is equally vital in game-theoretical contexts. Consider the copy game, where two players, A and B, secretly commit to a bit $x_A$, $x_B \in \{0, 1\}$. Player A wins if the bits are distinct; Player B wins if they are identical.
+Randomization is equally vital in game-theoretical contexts. Consider the copy game, where two players, A and B, secretly commit to a bit $x_A$, $x_B \in \lbrace 0, 1\rbrace$. Player A wins if the bits are distinct; Player B wins if they are identical.
 
 If Player A uses a deterministic strategy that B can learn or simulate, B can simply duplicate A's value, causing A to lose every round. however, if Player A uses a randomized strategy—determining their bit by a fair coin toss independent of B—then B cannot gain an advantage. On average, each player wins half the rounds, regardless of B's computational power or intelligence.
 
@@ -45,7 +45,7 @@ The parity function and the properties of the Exclusive-Or (XOR) operation form 
 
 ### The Parity Function
 
-An n-ary Boolean function maps $\{0, 1\}^n \to \{0, 1\}$, where 0 represents false and 1 represents true.
+An n-ary Boolean function maps $\lbrace 0, 1\rbrace^n \to \lbrace 0, 1\rbrace$, where 0 represents false and 1 represents true.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(n-ary Parity Function (\oplus_n))</span></p>
@@ -110,8 +110,8 @@ A real-valued function Prob: $\Omega \to [0, 1]$ such that: $\sum_{\omega \in \O
 </div>
 
 * Events: Subsets of $\Omega$. The probability of an event E is $\mathbb{P}[E]$ = $\sum_{\omega \in E}$ $\mathbb{P}[\omega]$.
-* Atomic Events: Singleton subsets $\{\omega\}$, often identified simply as $\omega$.
-* Uniform Distribution: On a finite set $\Omega$, this distribution assigns $\mathbb{P}[\omega]$ = $\frac{1}{|\Omega|}$ to every outcome. Note that a uniform distribution cannot exist on a countably infinite set.
+* Atomic Events: Singleton subsets $\lbrace\omega\rbrace$, often identified simply as $\omega$.
+* Uniform Distribution: On a finite set $\Omega$, this distribution assigns $\mathbb{P}[\omega]$ = $\frac{1}{\lvert \Omega\rvert}$ to every outcome. Note that a uniform distribution cannot exist on a countably infinite set.
 
 ### Random Variables
 
@@ -120,7 +120,7 @@ A random variable X is a function X: $\Omega \to \mathbb{R}$. It maps outcomes o
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Distribution of a Random Variable)</span></p>
 
-The range of X, denoted range(X), is a countable subset of $\mathbb{R}$. The distribution $\mathbb{P}_X$ is defined as: $\mathbb{P}_X(r)$ = $\mathbb{P}[X = r]$ = $\sum_{\{\omega \in \Omega: X(\omega) = r\}}$ $\mathbb{P}[\omega]$
+The range of X, denoted range(X), is a countable subset of $\mathbb{R}$. The distribution $\mathbb{P}_X$ is defined as: $\mathbb{P}_X(r)$ = $\mathbb{P}[X = r]$ = $\sum_{\lbrace\omega \in \Omega: X(\omega) = r\rbrace}$ $\mathbb{P}[\omega]$
 
 </div>
 
@@ -174,7 +174,7 @@ This concept generalizes pairwise independence. Variables are k-wise independent
 * k'-wise independence implies k-wise independence if k < k'.
 * The reverse is false: variables can be pairwise independent without being triplewise (3-wise) independent.
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pairwise but Not Triplewise Independence)</span></p>
 
 Consider three fair coin tosses $X_1$, $X_2$, $X_3$. Define:
@@ -217,7 +217,7 @@ $$
 
 If the variables $X_1$, $\dots$, $X_n$ are mutually independent, the expectation of their product also decomposes: $\mathbb{E}[X_1 \cdot \dots \cdot X_n] = \mathbb{E}[X_1] \cdot \dots \cdot \mathbb{E}[X_n]$
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Fixed Points of a Random Permutation Suppose n gifts are distributed to n people via a random permutation $\pi$. Let $X_i$ be an indicator variable that is 1 if person $P_i$ receives their own gift $T_i$. The probability $\mathbb{P}[X_i = 1]$ = $\frac{1}{n}$. The expected number of people who get their own gift is: $\mathbb{E}\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n \mathbb{E}[X_i] = \sum_{i=1}^n \frac{1}{n} = 1$
@@ -229,7 +229,7 @@ Fixed Points of a Random Permutation Suppose n gifts are distributed to n people
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Conditional Distribution and Expectation)</span></p>
 
-For an event F where $\mathbb{P}[F]$ > 0: $\mathbb{P}[X = r | F]$ = $\frac{\mathbb{P}[\{X = r\} \cap F]}{\mathbb{P}[F]}$ $\mathbb{E}[X | F]$ = $\sum_{r \in range(X)}$ r $\cdot$ $\mathbb{P}[X = r | F]$
+For an event F where $\mathbb{P}[F]$ > 0: $\mathbb{P}[X = r \mid F]$ = $\frac{\mathbb{P}[\lbrace X = r\rbrace \cap F]}{\mathbb{P}[F]}$ $\mathbb{E}[X \mid F]$ = $\sum_{r \in range(X)}$ r $\cdot$ $\mathbb{P}[X = r \mid F]$
 
 </div>
 
@@ -253,9 +253,9 @@ Let X be a non-negative random variable. For any r > 0: $\mathbb{P}[X \ge r]$ $\
 **Proof.**
 
 1. By the definition of expectation: $\mathbb{E}[X]$ = $\sum_{\omega \in \Omega}$ $\mathbb{P}[\omega]$X($\omega$).
-2. Since X is non-negative, we can truncate the sum to only those $\omega$ where X($\omega$) $\ge$ r: $\mathbb{E}[X]$ $\ge$ $\sum_{\{\omega: X(\omega) \ge r\}}$ $\mathbb{P}[\omega]$X($\omega$)
-3. In this truncated sum, every X($\omega$) is at least r: $\mathbb{E}[X]$ $\ge$ r $\sum_{\{\omega: X(\omega) \ge r\}}$ $\mathbb{P}[\omega]$
-4. The sum $\sum_{\{\omega: X(\omega) \ge r\}}$ $\mathbb{P}[\omega]$ is exactly $\mathbb{P}[X \ge r]$.
+2. Since X is non-negative, we can truncate the sum to only those $\omega$ where X($\omega$) $\ge$ r: $\mathbb{E}[X]$ $\ge$ $\sum_{\lbrace\omega: X(\omega) \ge r\rbrace}$ $\mathbb{P}[\omega]$X($\omega$)
+3. In this truncated sum, every X($\omega$) is at least r: $\mathbb{E}[X]$ $\ge$ r $\sum_{\lbrace\omega: X(\omega) \ge r\rbrace}$ $\mathbb{P}[\omega]$
+4. The sum $\sum_{\lbrace\omega: X(\omega) \ge r\rbrace}$ $\mathbb{P}[\omega]$ is exactly $\mathbb{P}[X \ge r]$.
 5. Thus, $\mathbb{E}[X]$ $\ge$ r $\cdot$ $\mathbb{P}[X \ge r]$, which rearranges to the stated inequality. $\square$
 
 ### The Sum Bound
@@ -304,9 +304,9 @@ $$
 
 1. By definition: $\mathbb{E}[X] = \sum_{\omega \in \Omega} \mathbb{P}[\omega] X(\omega)$.
 2. Since $X$ is non-negative, we can restrict to outcomes with $X(\omega) \ge r$:
-   $\mathbb{E}[X] \ge \sum_{\{\omega \in \Omega : X(\omega) \ge r\}} \mathbb{P}[\omega] X(\omega)$.
+   $\mathbb{E}[X] \ge \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega] X(\omega)$.
 3. Each summand in this restricted sum is at least $r$ times its probability:
-   $\mathbb{E}[X] \ge r \sum_{\{\omega \in \Omega : X(\omega) \ge r\}} \mathbb{P}[\omega]$.
+   $\mathbb{E}[X] \ge r \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega]$.
 4. The remaining sum equals $\mathbb{P}[X \ge r]$.
 5. Therefore, $\mathbb{E}[X] \ge r \cdot \mathbb{P}[X \ge r]$, hence $\mathbb{P}[X \ge r] \le \frac{\mathbb{E}[X]}{r}$.
 
@@ -348,7 +348,7 @@ The game involves two players: Alice (the department head, who wants to prevent 
 1. Initial Configuration: Finitely many tokens 1, $\dots$, m are placed at positions $d_1$, $\dots$, $d_m$, where each $d_i$ is a non-zero natural number. Position 0 represents "tenure."
 2. The Rounds: In each round:
   * Step I (Partition): Bob partitions the set I of tokens currently not at position 0 into two disjoint sets, $I_0$ and $I_1$.
-  * Step II (Selection): Alice chooses a bit r $\in$ $\{0, 1\}$.
+  * Step II (Selection): Alice chooses a bit r $\in$ $\lbrace 0, 1\rbrace$.
   * Step III (Removal and Promotion): Tokens in the set $I_r$ are removed from the game. Tokens in the set $I_{1-r}$ are moved one step closer to position 0 (e.g., a token at position d moves to d-1).
 3. Winning Condition: Bob wins if eventually any token reaches position 0. Alice wins if all tokens are removed before any reaches position 0.
 
@@ -391,7 +391,7 @@ If the potential of the initial configuration is strictly less than 1, then Alic
 * Bob's Strategy: Bob must partition the tokens such that both $I_0$ and $I_1$ have a potential of at least 1/2. If he does this, no matter which part Alice removes, the remaining part (when promoted one step closer to 0) will have its potential doubled, resulting in a new potential $\Phi' = 2 \cdot (\text{potential } \geq 1/2) \geq 1$.
 * Feasibility: Bob can always find such a partition.
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Splitting Potential at 1/2)</span></p>
 
 Let $d_1 \leq \dots \leq d_m$ be a non-decreasing sequence of non-zero natural numbers where $\sum_{i=1}^m \frac{1}{2^{d_i}} \geq \frac{1}{2}$. Then there exists an index t such that: $\sum_{i=1}^t \frac{1}{2^{d_i}} = \frac{1}{2}$.
@@ -441,7 +441,7 @@ To visualize these games, we use a game tree:
 
 The finiteness of these games is often supported by König's Lemma.
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(König's Lemma)</span></p>
 
 König's Lemma Any finitely branching infinite tree has an infinite path.
@@ -480,7 +480,7 @@ This document explores randomized strategies for solving graph-theoretic problem
 
 ### Randomized Algorithms for Finding a Cut
 
-In the context of this study, a graph refers to a finite undirected graph G = (V, E).
+In the context of this study, a graph refers to a finite undirected graph $G = (V, E)$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cut)</span></p>
@@ -494,18 +494,16 @@ A cut of a graph $G = (V, E)$ is a partition of the vertex set $V$ into two disj
 
 The weight of a cut $(V_0, V_1)$ is the number of edges between a node in $V_0$ and a node in $V_1$. Formally,
 
-$$
-\left|\{\{u, v\} \in E : u \in V_0, v \in V_1\}\right|.
-$$
+$$\left\|\lbrace\lbraceu, v\rbrace \in E : u \in V_0, v \in V_1\rbrace\right\|$$
 
 </div>
 
 ### Algorithm Cut
 
-The Algorithm Cut is a simple randomized approach to find a cut in a graph G = (V, E) where V = $\{1, \dots, n\}$:
+The Algorithm Cut is a simple randomized approach to find a cut in a graph $G = (V, E)$ where V = $\lbrace 1, \dots, n\rbrace$:
 
 1. Choose random bits $r_1$, $\dots$, $r_n$ by tosses of a fair coin.
-2. Assign nodes to partitions: $V_0$ = $\{i : r_i = 0\}$ and $V_1$ = $\{i : r_i = 1\}$.
+2. Assign nodes to partitions: $V_0$ = $\lbrace i : r_i = 0\rbrace$ and $V_1$ = $\lbrace i : r_i = 1\rbrace$.
 3. Output the cut ($V_0$, $V_1$).
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -515,7 +513,7 @@ Expected Weight of a Cut Let G be a graph with m edges. On input G, the expected
 
 </div>
 
-**Proof.** Let G = (V, E) have edges $e_1, \dots, e_m$. We introduce indicator variables $\hat{e}_i$, where $\hat{e}_i = 1$ if edge $e_i = \{u_i, v_i\}$ crosses the cut, and $\hat{e}_i = 0$ otherwise. The total weight $\hat{w}_G$ of the cut is the sum of these indicators: $\hat{w}_G = \sum_{i=1}^m \hat{e}_i$. By the linearity of expectation: $\mathbb{E}[\hat{w}_G] = \mathbb{E}\left[\sum_{i=1}^m \hat{e}_i\right] = \sum_{i=1}^m \mathbb{E}[\hat{e}_i]$. To find $\mathbb{E}[\hat{e}_i]$, we calculate the probability that the edge $e_i = \{u_i, v_i\}$ crosses the cut: $\mathbb{E}[\hat{e}_i] = 1 \cdot \mathbb{P}(\hat{e}_i = 1) + 0 \cdot \mathbb{P}(\hat{e}_i = 0) = \mathbb{P}(u_i \in V_0 \text{ and } v_i \in V_1) + \mathbb{P}(u_i \in V_1 \text{ and } v_i \in V_0)$. Because node assignments are mutually (and thus pairwise) independent: $\mathbb{E}[\hat{e}_i] = \mathbb{P}(u_i \in V_0)\mathbb{P}(v_i \in V_1) + \mathbb{P}(u_i \in V_1)\mathbb{P}(v_i \in V_0) = \left(\frac{1}{2} \cdot \frac{1}{2}\right) + \left(\frac{1}{2} \cdot \frac{1}{2}\right) = \frac{1}{2}$. Therefore, $\mathbb{E}[\hat{w}_G] = \sum_{i=1}^m \frac{1}{2} = \frac{m}{2}$. If every possible cut had a weight strictly less than $m/2$, the expected value would also be strictly less than $m/2$. Since the expectation is exactly $m/2$, there must exist at least one sequence of coin tosses yielding a cut weight $\geq m/2$.
+**Proof.** Let G = (V, E) have edges $e_1, \dots, e_m$. We introduce indicator variables $\hat{e}_i$, where $\hat{e}_i = 1$ if edge $e_i = \lbrace u_i, v_i\rbrace$ crosses the cut, and $\hat{e}_i = 0$ otherwise. The total weight $\hat{w}_G$ of the cut is the sum of these indicators: $\hat{w}_G = \sum_{i=1}^m \hat{e}_i$. By the linearity of expectation: $\mathbb{E}[\hat{w}_G] = \mathbb{E}\left[\sum_{i=1}^m \hat{e}_i\right] = \sum_{i=1}^m \mathbb{E}[\hat{e}_i]$. To find $\mathbb{E}[\hat{e}_i]$, we calculate the probability that the edge $e_i = \lbrace u_i, v_i\rbrace$ crosses the cut: $\mathbb{E}[\hat{e}_i] = 1 \cdot \mathbb{P}(\hat{e}_i = 1) + 0 \cdot \mathbb{P}(\hat{e}_i = 0) = \mathbb{P}(u_i \in V_0 \text{ and } v_i \in V_1) + \mathbb{P}(u_i \in V_1 \text{ and } v_i \in V_0)$. Because node assignments are mutually (and thus pairwise) independent: $\mathbb{E}[\hat{e}_i] = \mathbb{P}(u_i \in V_0)\mathbb{P}(v_i \in V_1) + \mathbb{P}(u_i \in V_1)\mathbb{P}(v_i \in V_0) = \left(\frac{1}{2} \cdot \frac{1}{2}\right) + \left(\frac{1}{2} \cdot \frac{1}{2}\right) = \frac{1}{2}$. Therefore, $\mathbb{E}[\hat{w}_G] = \sum_{i=1}^m \frac{1}{2} = \frac{m}{2}$. If every possible cut had a weight strictly less than $m/2$, the expected value would also be strictly less than $m/2$. Since the expectation is exactly $m/2$, there must exist at least one sequence of coin tosses yielding a cut weight $\geq m/2$.
 
 ---
 
@@ -537,13 +535,13 @@ We can observe that: $\mathbb{E}[\hat{w}_G(\alpha)]$ = $\frac{1}{2}\mathbb{E}[\h
 
 ### Efficiency of the Derandomized Version
 
-To evaluate the condition efficiently, we partition the edges E into sets based on the current step s:
+To evaluate the condition efficiently, we partition the edges $E$ into sets based on the current step $s$:
 
 * $E_1$: Edges where both endpoints are < s (already determined).
 * $E_2$: Edges where at least one endpoint is > s (assignment still random).
-* $E_3^i$: Edges $\{j, s\}$ where j < s and $r_j$ = i.
+* $E_3^i$: Edges $\lbrace j, s\rbrace$ where j < s and $r_j$ = i.
 
-The choice of $r_s$ affects the edges in $E_3^i$. Specifically, the expected weight is: $\mathbb{E}[\hat{w}_G(r_1 \dots r_{s-1}r_s)]$ = |E'_1| + $\frac{1}{2}$|$E_2$| + |$E_3^{1-r_s}$| where E'_1 are edges in $E_1$ that already cross the cut. To maximize this value, we choose $r_s$ such that we maximize the number of edges crossing between node s and previously placed nodes.
+The choice of $r_s$ affects the edges in $E_3^i$. Specifically, the expected weight is: $\mathbb{E}[\hat{w}_G(r_1 \dots r_{s-1}r_s)] = \lvert E'_1\rvert + \frac{1}{2}\lvert E_2\rvert + \lvert E_3^{1-r_s}\rvert$ where $E'_1$ are edges in $E_1$ that already cross the cut. To maximize this value, we choose $r_s$ such that we maximize the number of edges crossing between node s and previously placed nodes.
 
 Deterministic Rule: Set $r_s$ = 0 if the number of neighbors of s already in $V_1$ is greater than or equal to the number of neighbors in $V_0$. Otherwise, set $r_s$ = 1.
 
@@ -553,20 +551,20 @@ Deterministic Rule: Set $r_s$ = 0 if the number of neighbors of s already in $V_
 
 Another approach to derandomization involves reducing the size of the sample space (the set of all possible random bit strings) and then exhaustively searching it (trivial derandomization).
 
-Trivial Derandomization: Simulating a randomized algorithm for every possible value of its random source. If an algorithm uses k random bits, this takes $2^k$ simulations. If k = O($\log$ n), the derandomized algorithm runs in polynomial time.
+Trivial Derandomization: Simulating a randomized algorithm for every possible value of its random source. If an algorithm uses k random bits, this takes $2^k$ simulations. If $k = O(\log n)$, the derandomized algorithm runs in polynomial time.
 
 ### Pairwise Independence
 
-The analysis of Algorithm Cut only requires the bits $r_1$, $\dots$, $r_n$ to be pairwise independent and uniformly distributed. We can generate n pairwise independent bits using only t = $\lceil$ $\log$(n+1) $\rceil$ truly random bits.
+The analysis of Algorithm Cut only requires the bits $r_1$, $\dots$, $r_n$ to be pairwise independent and uniformly distributed. We can generate $n$ pairwise independent bits using only $t = \lceil\log(n+1) \rceil$ truly random bits.
 
 ### Construction of n Pairwise Independent Bits
 
-1. Let t = $\lceil$ $\log$(n+1) $\rceil$ and I = $\{1, \dots, t\}$.
+1. Let t = $\lceil$ $\log$(n+1) $\rceil$ and I = $\lbrace 1, \dots, t\rbrace$.
 2. Choose $b_1$, $\dots$, $b_t$ using a fair coin.
 3. Let $J_1$, $\dots$, $J_n$ be pairwise distinct non-empty subsets of I.
 4. For i = 1, $\dots$, n, set $r_i$ = $\bigoplus_{j \in J_i}$ $b_j$ (the parity/XOR of the selected bits).
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Verification of Construction)</span></p>
 
 Verification of Construction The random bits $r_1$, $\dots$, $r_n$ obtained by the XOR construction are pairwise independent and each bit is uniformly distributed.
@@ -575,9 +573,9 @@ Verification of Construction The random bits $r_1$, $\dots$, $r_n$ obtained by t
 
 **Proof.**
 
-1. Uniform Distribution: For any non-empty J $\subseteq$ $\{1, \dots, t\}$, let s $\in$ J. Then r = ($\bigoplus_{j \in J \setminus \{s\}}$ $b_j$) $\oplus$ $b_s$. Since $b_s$ is a fair coin flip and independent of other bits, r is equally likely to be 0 or 1.
+1. Uniform Distribution: For any non-empty J $\subseteq$ $\lbrace 1, \dots, t\rbrace$, let s $\in$ J. Then r = ($\bigoplus_{j \in J \setminus \lbrace s\rbrace}$ $b_j$) $\oplus$ $b_s$. Since $b_s$ is a fair coin flip and independent of other bits, r is equally likely to be 0 or 1.
 2. Pairwise Independence: Consider two distinct non-empty sets J and J'. There must be an index s that is in one set but not the other (assume s $\in$ J, s $\notin$ J').
-  * r = ($\bigoplus_{j \in J \setminus \{s\}}$ $b_j$) $\oplus$ $b_s$
+  * r = ($\bigoplus_{j \in J \setminus \lbrace s\rbrace}$ $b_j$) $\oplus$ $b_s$
   * r' = $\bigoplus_{j \in J'}$ $b_j$ Since s $\notin$ J', r' is independent of $b_s$. For any fixed value of r', the bit $b_s$ ensures r is 0 or 1 with probability 1/2. Thus $\mathbb{P}(r=u \mid r'=v) = 1/2$, proving $\mathbb{P}(r=u \land r'=v) = \mathbb{P}(r=u)\mathbb{P}(r'=v)$.
 
 ### Derandomized Algorithm Cut (Pairwise Independence)
@@ -599,7 +597,7 @@ A hypergraph G = (V, E) consists of nodes V and hyperedges E, which are subsets 
 
 ### Algorithm HyperCut
 
-1. Assign each node i a random bit $r_i \in \{0, 1\}$ via fair coin tosses.
+1. Assign each node i a random bit $r_i \in \lbrace 0, 1\rbrace$ via fair coin tosses.
 2. Output cut ($V_0$, $V_1$) based on these bits.
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -620,7 +618,7 @@ The analysis of HyperCut requires k-wise independence: any subset of k variables
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(k-wise Independent Numbers)</span></p>
 
-k-wise Independent Numbers Let p be a prime number. Let $\hat{a}_0$, $\dots$, $\hat{a}_{k-1}$ be chosen uniformly and independently from $\{0, \dots, p-1\}$. For i = 1, $\dots$, p, define $r_i$ as: $r_i = \hat{a}_{k-1}i^{k-1} + \hat{a}_{k-2}i^{k-2} + \dots + \hat{a}_0 \pmod p$. Then $r_1$, $\dots$, $r_p$ are uniformly distributed and k-wise independent.
+k-wise Independent Numbers Let p be a prime number. Let $\hat{a}_0$, $\dots$, $\hat{a}_{k-1}$ be chosen uniformly and independently from $\lbrace 0, \dots, p-1\rbrace$. For i = 1, $\dots$, p, define $r_i$ as: $r_i = \hat{a}_{k-1}i^{k-1} + \hat{a}_{k-2}i^{k-2} + \dots + \hat{a}_0 \pmod p$. Then $r_1$, $\dots$, $r_p$ are uniformly distributed and k-wise independent.
 
 </div>
 
@@ -664,16 +662,16 @@ In a hypergraph $G = (V, E)$, a subset $U \subseteq V$ is independent if it does
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Size of Independent Sets)</span></p>
 
-Size of Independent Sets A 3-regular hypergraph with n nodes and m $\ge$ n/3 hyperedges has an independent set U where: |U| $\ge$ $\frac{n\sqrt{n}}{3\sqrt{m}}$
+Size of Independent Sets A 3-regular hypergraph with n nodes and m $\ge$ n/3 hyperedges has an independent set $U$ where: \lvert U\rvert $\ge$ $\frac{n\sqrt{n}}{3\sqrt{m}}$
 
 </div>
 
 ### Algorithm IndependentSet
 
-1. Input: Hypergraph G, parameter p $\in$ [0, 1].
+1. Input: Hypergraph $G$, parameter $p \in [0, 1]$.
 2. Choose random bits $r_i$ such that $\mathbb{P}(r_i = 1) = p$ (biased coin).
-3. Let T = $\{i : r_i = 1\}$ be the initial candidate set.
-4. Identify "bad" edges: D = $\{e \in E : e \subseteq T\}$.
+3. Let T = $\lbrace i : r_i = 1\rbrace$ be the initial candidate set.
+4. Identify "bad" edges: D = $\lbrace e \in E : e \subseteq T\rbrace$.
 5. Create Y by picking the minimum node from each edge in D.
 6. Output U = T $\setminus$ Y.
 
@@ -681,16 +679,16 @@ Size of Independent Sets A 3-regular hypergraph with n nodes and m $\ge$ n/3 hyp
 
 The set U is guaranteed to be independent because for every hyperedge originally in T, at least one node was removed.
 
-* $\mathbb{E}[|T|]$ = np.
+* $\mathbb{E}[\lvert T\rvert]$ = np.
 * Let $\hat{e}$ be an indicator that edge e is in T. $\mathbb{E}[\hat{e}] = \mathbb{P}(e \subseteq T) = p^3$ (since hyperedges have 3 nodes).
-* $\mathbb{E}[|D|]$ = $\sum$ $\mathbb{E}[\hat{e}]$ = $mp^3$.
-* Since |Y| $\le$ |D|, we have $\mathbb{E}[|U|]$ = $\mathbb{E}[|T|]$ - $\mathbb{E}[|Y|]$ $\ge$ np - $mp^3$.
+* $\mathbb{E}[\lvert D\rvert]$ = $\sum$ $\mathbb{E}[\hat{e}]$ = $mp^3$.
+* Since \lvert Y\rvert $\le$ \lvert D\rvert, we have $\mathbb{E}[\lvert U\rvert]$ = $\mathbb{E}[\lvert T\rvert]$ - $\mathbb{E}[\lvert Y\rvert]$ $\ge$ np - $mp^3$.
 
-To maximize f(p) = np - $mp^3$, we find the derivative n - $3mp^2$ and set it to 0. This gives p = $\sqrt{\frac{n}{3m}}$. Substituting p back into the expectation formula:
+To maximize $f(p) = np - mp^3$, we find the derivative $n - 3mp^2$ and set it to 0. This gives $p = \sqrt{\frac{n}{3m}}$. Substituting $p$ back into the expectation formula:
 
-$\mathbb{E}[|U|] \ge n\left(\sqrt{\frac{n}{3m}}\right) - m\left(\sqrt{\frac{n}{3m}}\right)^3 = \frac{n\sqrt{n}}{\sqrt{3m}} - \frac{n\sqrt{n}}{3\sqrt{3m}} = \frac{2}{3\sqrt{3}}\frac{n\sqrt{n}}{\sqrt{m}} \ge \frac{1}{3}\frac{n\sqrt{n}}{\sqrt{m}}$
+$\mathbb{E}[\lvert U\rvert] \ge n\left(\sqrt{\frac{n}{3m}}\right) - m\left(\sqrt{\frac{n}{3m}}\right)^3 = \frac{n\sqrt{n}}{\sqrt{3m}} - \frac{n\sqrt{n}}{3\sqrt{3m}} = \frac{2}{3\sqrt{3}}\frac{n\sqrt{n}}{\sqrt{m}} \ge \frac{1}{3}\frac{n\sqrt{n}}{\sqrt{m}}$
 
-**Note.** This algorithm can be derandomized using the Method of Conditional Expectations (maintaining the potential function $\mathbb{E}[|T|]$ - $\mathbb{E}[|D|]$) or Small Sample Spaces (using 3-wise independent biased variables).
+**Note.** This algorithm can be derandomized using the Method of Conditional Expectations (maintaining the potential function $\mathbb{E}[\lvert T\rvert]$ - $\mathbb{E}[\lvert D\rvert]$) or Small Sample Spaces (using 3-wise independent biased variables).
 
 
 ---
@@ -710,7 +708,7 @@ Each processor starts with an initial binary value. The objective is for all goo
 
 An agreement is considered admissible if it satisfies the following two conditions:
 
-1. Agreement: All good processors must eventually agree on the same binary value b $\in$ $\{0, 1\}$.
+1. Agreement: All good processors must eventually agree on the same binary value b $\in$ $\lbrace 0, 1\rbrace$.
 2. Validity: If all good processors share the same initial value v, then the agreed-upon value b must be equal to v.
 
 </div>
@@ -748,7 +746,7 @@ Execution Steps (For each round s = 1, 2, $\dots$)
 3. Majority Selection:
   * If $c_0$ $\ge$ $c_1$, the processor sets its preferred value u(s) = 0 and its count c(s) = $c_0$.
   * Otherwise, it sets u(s) = 1 and c(s) = $c_1$.
-4. Randomized Thresholding: The processors use a fair coin toss to obtain a random bit $\tau(s)$ $\in$ $\{0, 1\}$. Crucially, this random bit is the same for all processors in a given round.
+4. Randomized Thresholding: The processors use a fair coin toss to obtain a random bit $\tau(s)$ $\in$ $\lbrace 0, 1\rbrace$. Crucially, this random bit is the same for all processors in a given round.
   * If c(s) $\ge$ $t_{\tau(s)}$, then the processor updates its value for the next round: $v_i(s+1)$ = u(s).
   * Otherwise, it sets $v_i(s+1)$ = 0 (the default value).
 5. Termination: If c(s) $\ge$ $\frac{7}{8}$n, the processor assumes an agreement has been reached on u(s) and terminates.
@@ -793,9 +791,9 @@ The proof of the proposition is built upon three primary claims.
 
 **Claim III (Probabilistic Convergence).** If no good processor has assumed an agreement before round s, there is a probability of at least $\frac{1}{2}$ that some processor will assume an agreement by the end of round s+1.
 
-**Proof.** To prove this, we examine the distribution of bits sent by good processors in round s. Let $k_0$ and $k_1$ be the number of good processors sending 0 and 1, respectively, and let k = $\max\{k_0, k_1\}$. We consider two cases based on k:
+**Proof.** To prove this, we examine the distribution of bits sent by good processors in round s. Let $k_0$ and $k_1$ be the number of good processors sending 0 and 1, respectively, and let k = $\max\lbrace k_0, k_1\rbrace$. We consider two cases based on k:
 
-* Case A (k < $\frac{5}{8}$n): In this scenario, both $k_0$ and $k_1$ are less than $\frac{5}{8}$n. Because the number of bad processors is at most $\frac{1}{8}$n, no processor can receive a count c(s) $\ge$ $\frac{6}{8}$n. With probability $\frac{1}{2}$, the random bit $\tau(s)$ will be 1, making the threshold $t_1$ = $\frac{6}{8}$n. Since no processor meets this threshold, all good processors will revert to the default value 0 for round s+1. This creates unanimity, and agreement is reached.
+* Case A $(k < \frac{5}{8}n)$: In this scenario, both $k_0$ and $k_1$ are less than $\frac{5}{8}$n. Because the number of bad processors is at most $\frac{1}{8}$n, no processor can receive a count c(s) $\ge$ $\frac{6}{8}$n. With probability $\frac{1}{2}$, the random bit $\tau(s)$ will be 1, making the threshold $t_1$ = $\frac{6}{8}$n. Since no processor meets this threshold, all good processors will revert to the default value 0 for round s+1. This creates unanimity, and agreement is reached.
 * Case B (k $\ge$ $\frac{5}{8}$n): Let b be the bit such that $k_b$ $\ge$ $\frac{5}{8}$n. Regardless of what the bad processors do, every processor will receive at least $\frac{5}{8}$n messages containing bit b. With probability $\frac{1}{2}$, the random bit $\tau(s)$ will be 0, making the threshold $t_0$ = $\frac{5}{8}$n. In this case, all good processors will see c(s) $\ge$ $t_0$ and will set their next value $v_i(s+1)$ = b. Again, this results in unanimity for the next round.
 
 In both cases, there is a $\frac{1}{2}$ chance that the random coin $\tau(s)$ forces all good processors to send the same bit in the next round, leading to agreement.
@@ -813,7 +811,7 @@ In the study of combinatorial optimization and algorithmic game theory, the Stab
 
 ### The Stable Marriage Problem
 
-The problem begins with two disjoint sets of equal size n: a set of women $\{F_1, \dots, F_n\}$ and a set of men $\{M_1, \dots, M_n\}$. Every individual maintains a preference list—a strict ordering of all members of the opposite sex.
+The problem begins with two disjoint sets of equal size n: a set of women $\lbrace F_1, \dots, F_n\rbrace$ and a set of men $\lbrace M_1, \dots, M_n\rbrace$. Every individual maintains a preference list—a strict ordering of all members of the opposite sex.
 
 For instance, a woman $F_j$ prefers man $M_k$ over man $M_l$ if $k <_{F_j} l$, where $<_{F_j}$ denotes her specific ranking. Similar strict orderings exist for every man $M_i$. The objective is to pair every man with exactly one woman in a way that the resulting social structure is "stable."
 
@@ -824,10 +822,10 @@ To analyze this problem mathematically, we must first define the structure of th
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Marriage)</span></p>
 
-Given two sets of size n, a marriage is a bijection $\pi$ of the set $\{1, \dots, n\}$. We identify a marriage $H$ with the set of binary relations
+Given two sets of size n, a marriage is a bijection $\pi$ of the set $\lbrace 1, \dots, n\rbrace$. We identify a marriage $H$ with the set of binary relations
 
 $$
-H = \{(F_1, M_{\pi(1)}), \dots, (F_n, M_{\pi(n)})\}.
+H = \lbrace (F_1, M_{\pi(1)}), \dots, (F_n, M_{\pi(n)})\rbrace.
 $$
 
 </div>
@@ -855,7 +853,7 @@ The existence of a stable marriage for any set of preference lists is guaranteed
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Marriage Theorem)</span></p>
 
-The Marriage Theorem Let $<_{F_1}$, $\dots$, $<_{F_n}$ and $<_{M_1}$, $\dots$, $<_{M_n}$ be strict orderings on $\{1, \dots, n\}$. Then there always exists at least one stable marriage with respect to these orderings.
+The Marriage Theorem Let $<_{F_1}$, $\dots$, $<_{F_n}$ and $<_{M_1}$, $\dots$, $<_{M_n}$ be strict orderings on $\lbrace 1, \dots, n\rbrace$. Then there always exists at least one stable marriage with respect to these orderings.
 
 </div>
 
@@ -1019,14 +1017,14 @@ While the core definition focuses on the probability-theoretical and combinatori
 
 ## Case Study: PAC Learning of Axis-Parallel Rectangles
 
-Consider the task of learning axis-parallel rectangles in the Euclidean plane E = $\mathbb{R}^2$. The concept class $\mathcal{K}$ consists of all rectangles of the form: R(a, b, c, d) = $\{ (x, y) \in \mathbb{R}^2 : a \leq x \leq b \text{ and } c \leq y \leq d \}$ This class includes degenerate rectangles, such as line segments or the empty set.
+Consider the task of learning axis-parallel rectangles in the Euclidean plane E = $\mathbb{R}^2$. The concept class $\mathcal{K}$ consists of all rectangles of the form: R(a, b, c, d) = $\lbrace (x, y) \in \mathbb{R}^2 : a \leq x \leq b \text{ and } c \leq y \leq d \rbrace$ This class includes degenerate rectangles, such as line segments or the empty set.
 
 ### The Learner Algorithm
 
 We define a learner A that, given data (($x_1$, $y_1$), $b_1$), $\dots$, (($x_s$, $y_s$), $b_s$), identifies the sets of coordinates for all positive examples:
 
-* X = $\{ x_i : b_i = 1 \}$
-* Y = $\{ y_i : b_i = 1 \}$
+* X = $\lbrace x_i : b_i = 1 \rbrace$
+* Y = $\lbrace y_i : b_i = 1 \rbrace$
 
 The learner outputs the least axis-parallel rectangle that contains all positive examples: $R_A$ = R($\min$ X, $\max$ X, $\min$ Y, $\max$ Y) If X is empty, $R_A$ is the empty set. By construction, $R_A \subseteq R_T$ (the target rectangle), and $R_A$ is consistent with the data.
 
@@ -1038,10 +1036,10 @@ Case I: $\mu(R_T)$ $\leq$ $\epsilon$ Since $R_A \subseteq R_T$, the symmetric di
 
 Case II: $\mu(R_T)$ > $\epsilon$ We define four marginal strips ($R_1$ for right, $R_2$ for left, $R_3$ for top, and $R_4$ for bottom) within $R_T$, each having a measure of approximately $\epsilon$/4. Let:
 
-* $z_1 = \sup\{z : \mu(R(z, b, c, d)) \geq \epsilon/4\}$
-* $z_2 = \inf\{z : \mu(R(a, z, c, d)) \geq \epsilon/4\}$
-* $z_3 = \sup\{z : \mu(R(a, b, z, d)) \geq \epsilon/4\}$
-* $z_4 = \inf\{z : \mu(R(a, b, c, z)) \geq \epsilon/4\}$
+* $z_1 = \sup\lbrace z : \mu(R(z, b, c, d)) \geq \epsilon/4\rbrace$
+* $z_2 = \inf\lbrace z : \mu(R(a, z, c, d)) \geq \epsilon/4\rbrace$
+* $z_3 = \sup\lbrace z : \mu(R(a, b, z, d)) \geq \epsilon/4\rbrace$
+* $z_4 = \inf\lbrace z : \mu(R(a, b, c, z)) \geq \epsilon/4\rbrace$
 
 We define $R_1 = R(z_1, b, c, d)$, $R_2 = R(a, z_2, c, d)$, $R_3 = R(a, b, z_3, d)$, and $R_4 = R(a, b, c, z_4)$. Let $R_{-i}$ be the same strips excluding their boundary edges such that $\mu(R_{-i}) \leq \epsilon/4$. Define $R_0 = R_T \setminus (R_{-1} \cup R_{-2} \cup R_{-3} \cup R_{-4})$.
 
@@ -1049,7 +1047,7 @@ If the sample contains at least one point from each strip $R_1$, $R_2$, $R_3$, $
 
 ### Proof of Sample Complexity
 
-1. For each i $\in$ $\{1, 2, 3, 4\}$, the probability that a single example misses strip $R_i$ is at most (1 - $\epsilon$/4).
+1. For each i $\in$ $\lbrace 1, 2, 3, 4\rbrace$, the probability that a single example misses strip $R_i$ is at most (1 - $\epsilon$/4).
 2. The probability that among s examples, none are in $R_i$ is at most (1 - $\epsilon$/4)^s.
 3. By the union bound, the probability that any of the four strips is missed is at most 4(1 - $\epsilon$/4)^s.
 4. We require 4(1 - $\epsilon$/4)^s $\leq$ $\delta$.
@@ -1074,7 +1072,7 @@ Consistent Learner A concept K is consistent with data ($x_1$, $b_1$), $\dots$, 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Finite Concept Class PAC Learning)</span></p>
 
-Finite Concept Class PAC Learning Let E be a set and let $\mathcal{K} \subseteq 2^E$ be a finite concept class. Every consistent learner for $\mathcal{K}$ is a PAC learner for $\mathcal{K}$ with sample complexity: s = s($\epsilon$, $\delta$) = $\frac{\log |\mathcal{K}| + \log(1/\delta)}{\epsilon}$
+Finite Concept Class PAC Learning Let E be a set and let $\mathcal{K} \subseteq 2^E$ be a finite concept class. Every consistent learner for $\mathcal{K}$ is a PAC learner for $\mathcal{K}$ with sample complexity: s = s($\epsilon$, $\delta$) = $\frac{\log \lvert \mathcal{K} \rvert + \log(1/\delta)}{\epsilon}$
 
 </div>
 
@@ -1082,12 +1080,11 @@ Finite Concept Class PAC Learning Let E be a set and let $\mathcal{K} \subseteq 
 
 * It suffices to show that the probability the learner outputs a "bad" concept K (where $\mu(K_T \Delta K) \geq \epsilon$) is at most $\delta$.
 * A concept K is consistent with the data for $K_T$ if and only if no sample points fall in the symmetric difference $K_T \Delta K$.
-* For any "bad" concept K, the probability that a single sample point is not in $K_T \Delta K$ is at most (1 - $\epsilon$).
-* The probability that K is consistent with all s independent samples is at most (1 - $\epsilon$)^s.
-* There are at most |$\mathcal{K}$| such concepts. By the union bound, the probability that any bad concept is consistent with the data is at most |$\mathcal{K}$|(1 - $\epsilon$)^s.
-* We set |$\mathcal{K}$|(1 - $\epsilon$)^s $\leq$ $\delta$. Using the fact that (1 - $\epsilon$) $\leq$ $e^{-\epsilon}$, we find that s $\geq$ $\frac{\ln|\mathcal{K}| + \ln(1/\delta)}{\epsilon}$ satisfies the condition.
+* For any "bad" concept K, the probability that a single sample point is not in $K_T \Delta K$ is at most $(1 - \epsilon)$.
+* The probability that K is consistent with all s independent samples is at most $(1 - \epsilon)^s$.
+* There are at most $\lvert\mathcal{K}\rvert$ such concepts. By the union bound, the probability that any bad concept is consistent with the data is at most $\lvert T\rvert\mathcal{K}\rvert(1 - \epsilon)^s$.
+* We set $\lvert\mathcal{K}\rvert(1 - \epsilon)^s \leq \delta$. Using the fact that (1 - $\epsilon$) $\leq$ $e^{-\epsilon}$, we find that s $\geq$ $\frac{\ln\lvert\mathcal{K}\rvert + \ln(1/\delta)}{\epsilon}$ satisfies the condition.
 
----
 
 ## PAC Learning and VC Dimension
 
@@ -1096,7 +1093,7 @@ The concept of PAC learnability can be extended to infinite concept classes by u
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(VC Dimension)</span></p>
 
-VC Dimension A finite set X $\subseteq$ E is shattered by a concept class $\mathcal{K}$ if every possible subset of X can be formed by the intersection of X with some K $\in$ $\mathcal{K}$ (i.e., $\{ K \cap X : K \in \mathcal{K} \}$ = $2^X$).
+VC Dimension A finite set X $\subseteq$ E is shattered by a concept class $\mathcal{K}$ if every possible subset of X can be formed by the intersection of X with some K $\in$ $\mathcal{K}$ (i.e., $\lbrace K \cap X : K \in \mathcal{K} \rbrace$ = $2^X$).
 
 </div>
 
@@ -1104,7 +1101,7 @@ The VC dimension of $\mathcal{K}$, denoted VC($\mathcal{K}$), is the maximum siz
 
 ### Examples of VC Dimension
 
-* For a finite set E and $\mathcal{K}$ = $2^E$, VC($\mathcal{K}$) = |E|.
+* For a finite set E and $\mathcal{K} = $2^E$, $VC(\mathcal{K}) = \lvert E\rvert$.
 * For E = $\mathbb{R}$ and $\mathcal{K}$ as the set of finite intervals, VC($\mathcal{K}$) = 2.
 * For axis-parallel rectangles in $\mathbb{R}^2$, VC($\mathcal{K}$) = 4.
 
@@ -1123,7 +1120,7 @@ The existence of a finite VC dimension guarantees PAC learnability.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(VC Dimension and PAC Learning)</span></p>
 
-VC Dimension and PAC Learning Let E be a set and $\mathcal{K} \subseteq 2^E$ be a concept class with VC($\mathcal{K}$) = d. Every consistent learner for $\mathcal{K}$ is a PAC learner with sample complexity: $s = s(\epsilon, \delta) = O\left(\frac{d \log \frac{1}{\min\{\epsilon, \delta\}}}{\epsilon}\right)$. The constant in the O-notation is independent of $\mathcal{K}$, $\epsilon$, and $\delta$.
+VC Dimension and PAC Learning Let E be a set and $\mathcal{K} \subseteq 2^E$ be a concept class with VC($\mathcal{K}$) = d. Every consistent learner for $\mathcal{K}$ is a PAC learner with sample complexity: $s = s(\epsilon, \delta) = O\left(\frac{d \log \frac{1}{\min\lbrace\epsilon, \delta\rbrace}}{\epsilon}\right)$. The constant in the O-notation is independent of $\mathcal{K}$, $\epsilon$, and $\delta$.
 
 </div>
 
@@ -1145,7 +1142,7 @@ An algorithm that is always correct, regardless of the random choices made durin
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Randomized Quicksort is a Las Vegas algorithm. It always produces a correctly sorted list, but its running time depends on the random selection of pivot elements.
@@ -1159,7 +1156,7 @@ An algorithm that may produce an incorrect result with some probability.
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Integration by randomized sampling is a Monte Carlo algorithm. It estimates the area of a geometric figure by picking points uniformly at random; the result is an approximation that may deviate from the true value.
@@ -1172,9 +1169,9 @@ This chapter focuses on the expected complexity of Las Vegas algorithms in the w
 
 To analyze the performance of randomized algorithms, we must first establish a formal setup for deterministic algorithms and inputs. For each input size n:
 
-* $I_n$ is a finite set of all possible inputs of size n.
+* $I_n$ is a finite set of all possible inputs of size $n$.
 * $A_n$ is a finite set of all correct deterministic algorithms for inputs in $I_n$.
-* $k_n$ : A $\times$ I $\to$ $\mathbb{N}$ is a cost function, where $k_n(A, I)$ represents the cost of running algorithm A on input I.
+* $k_n$ : A $\times$ I $\to$ $\mathbb{N}$ is a cost function, where $k_n(A, I)$ represents the cost of running algorithm $A$ on input $I$.
 
 This framework is particularly useful for black-box algorithms.
 
@@ -1185,7 +1182,7 @@ An algorithm that can only access its input through specific types of queries. T
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
 Black-Box Sorting
@@ -1203,15 +1200,15 @@ A sorting algorithm where the input list can only be accessed by queries of the 
 
 #### For these algorithms
 
-* $I_n$ is the set of all permutations of $\{1, \dots, n\}$.
+* $I_n$ is the set of all permutations of $\lbrace 1, \dots, n\rbrace$.
 * $A_n$ is the set of all deterministic black-box algorithms that correctly sort the list (this set is finite if we exclude algorithms that repeat queries).
-* k(A, I) is the number of comparisons (queries) made.
+* $k(A, I)$ is the number of comparisons (queries) made.
 
 ### Representing Las Vegas Algorithms as Distributions
 
 A Las Vegas algorithm can be viewed as a probability distribution over a set of deterministic algorithms. If an algorithm uses r(n) random bits, each fixed sequence of those bits results in the algorithm behaving like a specific deterministic algorithm A $\in$ $A_n$.
 
-Thus, for any size n, a Las Vegas algorithm is characterized by a probability distribution $\sigma_n$ on $A_n$, where $\mathbb{P}_{\sigma_n}$[A] is the probability that the randomized algorithm behaves like deterministic algorithm A. Conversely, any distribution $\sigma_n$ on $A_n$ defines a randomized algorithm $A_{\sigma_n}$ that first selects a deterministic algorithm according to $\sigma_n$ and then executes it.
+Thus, for any size $n$, a Las Vegas algorithm is characterized by a probability distribution $\sigma_n$ on $A_n$, where $\mathbb{P}_{\sigma_n}$[A] is the probability that the randomized algorithm behaves like deterministic algorithm A. Conversely, any distribution $\sigma_n$ on $A_n$ defines a randomized algorithm $A_{\sigma_n}$ that first selects a deterministic algorithm according to $\sigma_n$ and then executes it.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -1220,7 +1217,9 @@ Any sequence of probability distributions $\sigma_0$, $\sigma_1$, $\dots$ on $A_
 
 </div>
 
-The expected cost of such a randomized algorithm on the worst-case input of size n is defined as: $\max_{I \in I_n}$ $\sum_{A \in A_n}$ $\mathbb{P}_{\sigma_n}$[A] $\cdot$ $k_n(A, I)$
+The expected cost of such a randomized algorithm on the worst-case input of size $n$ is defined as: 
+
+$$\max_{I \in I_n} \sum_{A \in A_n} \mathbb{P}_{\sigma_n}[A] \cdot k_n(A, I)$$
 
 ### Yao’s Minimax Principle
 
@@ -1262,7 +1261,7 @@ Upper Bound for Empty Columns There exists a black-box Las Vegas algorithm that 
 
 **Proof.** Consider an algorithm that:
 
-1. Chooses a random permutation $\pi$ of the columns $\{1, \dots, n\}$.
+1. Chooses a random permutation $\pi$ of the columns $\lbrace 1, \dots, n\rbrace$.
 2. Successively checks columns $\pi(1)$, $\pi(2)$, $\dots$
 3. In each column, it checks rows 1, $\dots$, n in order until it finds a 1 or finishes the column. On any input, if an empty column exists, the expected number of checked columns before finding it is at most (n+1)/2. Each column takes at most n queries. If no empty column exists, the algorithm will eventually terminate. The expected total queries is at most n(n+1)/2.
 
@@ -1289,10 +1288,10 @@ For an input chosen from $D_n$, a deterministic algorithm can only reject the po
 
 ## Excursus on Game Theory
 
-The framework of Yao's Minimax Principle is deeply rooted in game theory. A matrix game ($\mathcal{A}$, $\mathcal{I}$, k) involves two players:
+The framework of Yao's Minimax Principle is deeply rooted in game theory. A matrix game $(\mathcal{A}, \mathcal{I}, k)$ involves two players:
 
-1. Player I chooses A $\in$ $\mathcal{A}$ to minimize the payoff k(A, I).
-2. Player II chooses I $\in$ $\mathcal{I}$ to maximize the payoff k(A, I).
+1. Player I chooses A $\in$ $\mathcal{A}$ to minimize the payoff $k(A, I)$.
+2. Player II chooses I $\in$ $\mathcal{I}$ to maximize the payoff $k(A, I)$.
 
 They choose simultaneously. This is a finite two-player zero-sum game with incomplete information.
 
@@ -1318,21 +1317,23 @@ $\max_\tau$ $\min_\sigma$ $\mathbb{E}[k(A_\sigma, I_\tau)]$ = $\min_\sigma$ $\ma
 
 </div>
 
-Variant: $\max_\tau$ $\min_{A \in \mathcal{A}}$ $\mathbb{E}[k(A, I_\tau)]$ = $\min_\sigma$ $\max_{I \in \mathcal{I}}$ $\mathbb{E}[k(A_\sigma, I)]$
+Variant: 
 
-This theorem implies that $k_1^*$ = $k_2^*$. The common value is called the value of the game.
+$$\max_\tau \min_{A \in \mathcal{A}} \mathbb{E}[k(A, I_\tau)] = \min_\sigma \max_{I \in \mathcal{I}} \mathbb{E}[k(A_\sigma, I)]$$
+
+This theorem implies that $k_1^{\ast} = k_2^{\ast}$. The common value is called the value of the game.
 
 ### Equilibrium Points
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Equilibrium Point)</span></p>
 
-Equilibrium Point A pair ($\sigma_0$, $\tau_0$) is an equilibrium point if neither player can improve their payoff by unilaterally switching strategies:
+Equilibrium Point A pair $(\sigma_0, \tau_0)$ is an equilibrium point if neither player can improve their payoff by unilaterally switching strategies:
 
 </div>
 
-1. $\forall$ $\sigma$: $\mathbb{E}[k(A_{\sigma_0}, I_{\tau_0})]$ $\le$ $\mathbb{E}[k(A_\sigma, I_{\tau_0})]$
-2. $\forall$ $\tau$: $\mathbb{E}[k(A_{\sigma_0}, I_\tau)]$ $\le$ $\mathbb{E}[k(A_{\sigma_0}, I_{\tau_0})]$
+1. $\forall \sigma: \mathbb{E}[k(A_{\sigma_0}, I_{\tau_0})] \le \mathbb{E}[k(A_\sigma, I_{\tau_0})]$
+2. $\forall \tau: \mathbb{E}[k(A_{\sigma_0}, I_\tau)] \le \mathbb{E}[k(A_{\sigma_0}, I_{\tau_0})]$
 
 If $k_1^*$ = $k_2^*$, any pair of optimal strategies ($\sigma^*$, $\tau^*$) forms an equilibrium point. While zero-sum games always have equilibrium points with the same expected payoff, general-sum games (like the ones below) may have multiple equilibria with different payoffs.
 
@@ -1376,8 +1377,8 @@ RandQuicksort Given a list S = ($s_{\pi(1)}$, $\dots$, $s_{\pi(n)}$) of n pairwi
 2. Create two sublists:
   * $S_{small}$ = ($s_{\pi(i)}$) where $s_{\pi(i)}$ < s
   * $S_{large}$ = ($s_{\pi(i)}$) where $s_{\pi(i)}$ > s
-3. If |$S_{small}$| > 1, recursively call RandQuicksort($S_{small}$).
-4. If |$S_{large}$| > 1, recursively call RandQuicksort($S_{large}$).
+3. If $\lvert S_{small}\rvert > 1$, recursively call RandQuicksort($S_{small}$).
+4. If $\lvert S_{large}\rvert > 1$, recursively call RandQuicksort($S_{large}$).
 5. Output: The concatenation ($S_{small}$ $\circ$ s $\circ$ $S_{large}$).
 
 ### Upper Bound on Complexity
@@ -1396,12 +1397,12 @@ Upper Bound for RandQuicksort When RandQuicksort is run on any list of n pairwis
 1. Let $X_{ij}$ be an indicator variable such that $X_{ij}$ = 1 if $s_i$ and $s_j$ are compared, and $X_{ij}$ = 0 otherwise, for 1 $\le$ i < j $\le$ n.
 2. The total number of comparisons X is the sum of these indicators: X = $\sum_{1 \le i < j \le n}$ $X_{ij}$.
 3. By the linearity of expectation: $\mathbb{E}[X]$ = $\sum_{1 \le i < j \le n}$ $\mathbb{E}[X_{ij}]$ = $\sum_{1 \le i < j \le n}$ $p_{ij}$, where $p_{ij}$ is the probability that $s_i$ and $s_j$ are compared.
-4. Consider the set of items $\{s_i, s_{i+1}, \dots, s_j\}$. These items remain in the same sublist until one of them is chosen as a pivot.
+4. Consider the set of items $\lbrace s_i, s_{i+1}, \dots, s_j\rbrace$. These items remain in the same sublist until one of them is chosen as a pivot.
 5. $s_i$ and $s_j$ are compared if and only if either $s_i$ or $s_j$ is the first item chosen as a pivot from this set of j - i + 1 items.
 6. Since the pivot is chosen uniformly at random, each item in the set has a probability of $\frac{1}{j-i+1}$ of being chosen first.
-7. Thus, $p_{ij}$ = $\frac{2}{j-i+1}$.
+7. Thus, $p_{ij} = \frac{2}{j-i+1}$.
 8. The expected number of comparisons is: $\mathbb{E}[X]$ = $\sum_{i=1}^{n-1}$ $\sum_{j=i+1}^{n}$ $\frac{2}{j-i+1}$
-9. By changing the variable k = j - i + 1: $\mathbb{E}[X]$ = 2 $\sum_{i=1}^{n-1}$ $\sum_{k=2}^{n-i+1}$ $\frac{1}{k}$ $\le$ 2n $\sum_{k=2}^{n}$ $\frac{1}{k}$ = 2n($H_n$ - 1) where $H_n$ is the n-th Harmonic number.
+9. By changing the variable $k = j - i + 1$: $\mathbb{E}[X]$ = 2 $\sum_{i=1}^{n-1}$ $\sum_{k=2}^{n-i+1}$ $\frac{1}{k}$ $\le$ 2n $\sum_{k=2}^{n}$ $\frac{1}{k}$ = 2n($H_n$ - 1) where $H_n$ is the n-th Harmonic number.
 10. Using the approximation $H_n - 1 \le \ln n$ and knowing $\ln n = \ln 2 \cdot \log n \approx 0.69 \log n$: $\mathbb{E}[X] \le 2n(0.69 \log n) \approx 1.38 n \log n < 1.4 n \log n$. This concludes the proof.
 
 ### Lower Bound for Black-Box Sorting
@@ -1417,11 +1418,11 @@ Lower Bound for Average Case Let A be a deterministic black-box sorting algorith
 
 **Proof.**
 
-1. Let I be the set of all N = n! permutations of $\{1, \dots, n\}$.
+1. Let I be the set of all $N = n!$ permutations of $\lbrace 1, \dots, n\rbrace$.
 2. For an algorithm A, let $w_i$ be the sequence of "answer bits" (the results of comparisons) for input $S_i$.
-3. The set $\{w_1, \dots, w_N\}$ must be prefix-free. If $w_i$ were a prefix of $w_j$, the algorithm would not be able to distinguish between $S_i$ and $S_j$ after |$w_i$| comparisons.
-4. To minimize the average length $\frac{1}{N}$ $\sum$ |$w_i$|, the word lengths should be as close as possible. In a binary tree with N leaves, the average depth is at least $\log$ N.
-5. Using Stirling's approximation or basic factorials: $\log$ n! $\ge$ (1 - $\frac{1}{k}$)n($\log$ n - $\log$ k).
+3. The set $\lbrace w_1, \dots, w_N\rbrace$ must be prefix-free. If $w_i$ were a prefix of $w_j$, the algorithm would not be able to distinguish between $S_i$ and $S_j$ after $\lvert w_i\rvert$ comparisons.
+4. To minimize the average length $\frac{1}{N} \sum \lvert w_i\rvert$, the word lengths should be as close as possible. In a binary tree with N leaves, the average depth is at least $\log N$.
+5. Using Stirling's approximation or basic factorials: $\log n! \ge (1 - \frac{1}{k})n(\log n - \log k)$.
 6. By picking k sufficiently large, we find that for large n, the average number of comparisons t satisfies t $\ge$ (1 - $\epsilon$)n $\log$ n.
 
 By Yao’s Minimax Principle, the lower bound for the average-case performance of deterministic algorithms under a uniform distribution also serves as a lower bound for the worst-case expected performance of any randomized Las Vegas algorithm. Thus, no randomized sorting algorithm can significantly beat the n $\log$ n bound.
@@ -1434,19 +1435,19 @@ Fingerprinting is a technique used to verify the identity of two large files wit
 
 ### Computing a Fingerprint
 
-We treat a file w = $w_1$ $\dots$ $w_n$ as a binary string.
+We treat a file $w = w_1 \dots w_n$ as a binary string.
 
-1. Map w to an integer f(w) = $\sum_{i=1}^{n}$ $w_i$ $2^{n-i}$.
-2. Choose a small integer k and define the fingerprint as $f_k(w)$ = f(w) $\pmod$ k.
+1. Map w to an integer $f(w) = \sum_{i=1}^{n} w_i 2^{n-i}$.
+2. Choose a small integer $k$ and define the fingerprint as $f_k(w) = f(w) \pmod k$.
 
-Two files u and v have the same fingerprint if k divides |f(u) - f(v)|. While a fixed k might fail against specific errors, picking a random prime p provides strong probabilistic guarantees.
+Two files $u$ and $v$ have the same fingerprint if k divides $\lvert f(u) - f(v)\rvert$. While a fixed k might fail against specific errors, picking a random prime p provides strong probabilistic guarantees.
 
 ### The Prime Number Lemma
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Prime Density)</span></p>
 
-Prime Density For sufficiently large t, there are at least t prime numbers less than or equal to t $\log$ t.
+For sufficiently large $t$, there are at least $t$ prime numbers less than or equal to $t \log t$.
 
 </div>
 
@@ -1454,37 +1455,33 @@ Prime Density For sufficiently large t, there are at least t prime numbers less 
 
 ### Algorithm Fingerprint
 
-<div class="math-callout math-callout--algorithm" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Fingerprint)</span></p>
 
 Fingerprint
 
 </div>
 
-1. Given words u, v of length n and parameter t.
-2. Choose a prime p uniformly at random from the primes below tn $\log$(tn).
-3. If $f_p(u)$ = $f_p(v)$, accept; else reject.
+1. Given words u, v of length n and parameter $t$.
+2. Choose a prime $p$ uniformly at random from the primes below $tn\log(tn)$.
+3. If $f_p(u) = f_p(v)$, accept; else reject.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Fingerprint Correctness)</span></p>
 
-Fingerprint Correctness If u = v, the algorithm accepts with probability 1. If u $\ne$ v, the algorithm accepts with probability at most 1/t.
+If $u = v$, the algorithm accepts with probability 1. If $u \ne v$, the algorithm accepts with probability at most $1/t$.
 
 </div>
 
 **Proof.**
 
-1. If u = v, then f(u) = f(v), so f(u) $\equiv$ f(v) $\pmod$ p for any p.
-2. If u $\ne$ v, let d = |f(u) - f(v)|. Since u, v are n-bit strings, 1 $\le$ d < $2^n$.
-3. Any integer d has at most n distinct prime factors (since each prime $\ge$ 2).
-4. The algorithm picks p from a set of at least tn primes (by the Lemma).
-5. The probability that the chosen p is one of the $\le$ n prime factors of d is
+1. If $u = v$, then $f(u) = f(v)$, so $f(u) \equiv f(v) \pmod p$ for any $p$.
+2. If $u \ne v$, let $d = \lvert f(u) - f(v)\rvert$. Since $u$, $v$ are n-bit strings, $1 \le d < 2^n$.
+3. Any integer $d$ has at most $n$ distinct prime factors (since each prime $\ge$ 2).
+4. The algorithm picks $p$ from a set of at least $tn$ primes (by the Lemma).
+5. The probability that the chosen $p$ is one of the $\le n$ prime factors of $d$ is
 
-   $$
-   \mathbb{P}[\text{False Accept}] \le \frac{n}{tn} = \frac{1}{t}.
-   $$
-
----
+   $$\mathbb{P}[\text{False Accept}] \le \frac{n}{tn} = \frac{1}{t}$$
 
 ## Pattern Matching
 
@@ -1500,8 +1497,6 @@ Instead of bitwise comparisons, we compare the fingerprint of w with the fingerp
 * Las Vegas Version: When fingerprints match, the algorithm verifies the match by checking the subwords bit-by-bit. If it's a false match, it continues.
 
 Note on Bad Inputs: For specific pairs of pattern/text (e.g., w=$0^n$, a=$1^m$), certain primes p might cause many false matches. To mitigate this, one can pick a new random prime p whenever a false match is detected.
-
----
 
 ## Self-Correcting Programs
 
@@ -1527,16 +1522,14 @@ Correction Probability If a processor's multiplication is incorrect for at most 
 
 **Proof.**
 
-1. The formula involves four multiplications: $M_1$ = (a+$r_1$)(b+$r_2$), $M_2$ = $r_1$(b+$r_2$), $M_3$ = $r_2$(a+$r_1$), and $M_4$ = $r_1r_2$.
-2. For each multiplication, the arguments are effectively randomized. For example, in $M_2$, $r_1$ and b+$r_2$ are chosen uniformly and independently from the set of n-bit (or n+1-bit) numbers.
-3. Because the inputs are randomized, the probability that any single multiplication $M_i$ hits a "bad" input pair is at most 4$\epsilon$.
-4. By the sum bound (union bound), the probability that at least one of the four multiplications is incorrect is at most 4 $\times$ 4$\epsilon$ = 16$\epsilon$.
-5. Thus, the algorithm succeeds with probability at least 1 - 16$\epsilon$.
+1. The formula involves four multiplications: $M_1$ = (a+$r_1$)(b+$r_2$), $M_2$ = $r_1$(b+$r_2$), $M_3$ = $r_2$(a+$r_1$), and $M_4 = r_1r_2$.
+2. For each multiplication, the arguments are effectively randomized. For example, in $M_2$, $r_1$ and b+$r_2$ are chosen uniformly and independently from the set of $n$-bit (or $n+1$-bit) numbers.
+3. Because the inputs are randomized, the probability that any single multiplication $M_i$ hits a "bad" input pair is at most $4\epsilon$.
+4. By the sum bound (union bound), the probability that at least one of the four multiplications is incorrect is at most $4 \times 4\epsilon = 16\epsilon$.
+5. Thus, the algorithm succeeds with probability at least $1 - 16\epsilon$.
 
 This technique effectively spreads the "bad" inputs across the entire input space, ensuring that for any a and b, the probability of failure is consistently low.
 
-
----
 
 ## Karger’s Min-Cut Algorithm
 
@@ -1558,14 +1551,14 @@ While standard graphs have at most one edge between any two nodes, Karger’s al
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multigraph)</span></p>
 
-A multigraph is a pair $G = (V, E)$ where $V$ is a finite set of nodes and $E : V \times V \to \mathbb{N}$ is a mapping representing edge multiplicities. For all $u, v \in V$, the multigraph must satisfy $E(u, v) = E(v, u)$ (undirected) and $E(u, u) = 0$ (no loops). The multiplicity of an edge $\{u, v\}$ is given by $E(u, v)$.
+A multigraph is a pair $G = (V, E)$ where $V$ is a finite set of nodes and $E : V \times V \to \mathbb{N}$ is a mapping representing edge multiplicities. For all $u, v \in V$, the multigraph must satisfy $E(u, v) = E(v, u)$ (undirected) and $E(u, u) = 0$ (no loops). The multiplicity of an edge $\lbrace u, v\rbrace$ is given by $E(u, v)$.
 
 </div>
 
 In a multigraph, the number of edges $m(E)$, counted with multiplicities, is defined as
 
 $$
-m(E) = \frac{1}{2} \sum_{(u,v) \in V \times V} E(u, v) = \sum_{\{u,v\} \in V \times V : u < v} E(u, v).
+m(E) = \frac{1}{2} \sum_{(u,v) \in V \times V} E(u, v) = \sum_{\lbrace u,v\rbrace \in V \times V : u < v} E(u, v).
 $$
 
 The concept of a cut extends naturally to multigraphs: the weight $w(V_0, V_1)$ of a cut is the sum of the multiplicities of all edges crossing the partition:
@@ -1581,14 +1574,14 @@ The core mechanism of Karger’s algorithm is the contraction of nodes. When an 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Contracting an Edge)</span></p>
 
-Let $G = (V, E)$ be a multigraph and $\{u, v\}$ be a pair of distinct nodes. The multigraph obtained by contracting the edge $\{u, v\}$ towards $u$ is $G' = (V \setminus \{v\}, E')$. For all $x, y \in V \setminus \{u, v\}$, the new multiplicities are:
+Let $G = (V, E)$ be a multigraph and $\lbrace u, v\rbrace$ be a pair of distinct nodes. The multigraph obtained by contracting the edge $\lbrace u, v\rbrace$ towards $u$ is $G' = (V \setminus \lbrace v\rbrace, E')$. For all $x, y \in V \setminus \lbrace u, v\rbrace$, the new multiplicities are:
 
-* E'(x, y) = E(x, y)
-* E'(u, x) = E'(x, u) = E(u, x) + E(v, x)
+* $E'(x, y) = E(x, y)$
+* $E'(u, x) = E'(x, u) = E(u, x) + E(v, x)$
 
 </div>
 
-This process collapses nodes u and v into a single node. This can be performed even if the multiplicity of the edge is 0. Note that the resulting multigraph does not depend on the multiplicity of the edge being contracted.
+This process collapses nodes $u$ and $v$ into a single node. This can be performed even if the multiplicity of the edge is $0$. Note that the resulting multigraph does not depend on the multiplicity of the edge being contracted.
 
 ### The Contract Algorithm
 
@@ -1596,11 +1589,11 @@ The algorithm iteratively reduces the number of nodes in the graph by picking ed
 
 ### Algorithm Contract
 
-1. Input: A graph G = (V, E) with n = |V| nodes.
-2. Initialization: Set $V_n$ = V, $E_n$ = E, and $G_n$ = ($V_n$, $E_n$).
-3. Iterative Contraction: For i = n down to 3:
-  * Choose an edge $\{u, v\} \in E_i$ uniformly at random based on edge multiplicities. The probability of choosing edge $\{u, v\}$ is $\frac{E_i(u, v)}{m(E_i)}$.
-  * Create $G_{i-1}$ = ($V_{i-1}$, $E_{i-1}$) by contracting nodes u and v into a single node (e.g., $\min\{u, v\}$).
+1. Input: A graph $G = (V, E)$ with $n = \lvert V \rvert$ nodes.
+2. Initialization: Set $V_n = V$, $E_n = E$, and $G_n = (V_n, E_n)$.
+3. Iterative Contraction: For $i = n$ down to $3$:
+  * Choose an edge $\lbrace u, v\rbrace \in E_i$ uniformly at random based on edge multiplicities. The probability of choosing edge $\lbrace u, v\rbrace$ is $\frac{E_i(u, v)}{m(E_i)}$.
+  * Create $G_{i-1}$ = ($V_{i-1}$, $E_{i-1}$) by contracting nodes u and v into a single node (e.g., $\min\lbrace u, v\rbrace$).
 4. Output: The cut ($U_0$, $U_1$) formed by the sets of original nodes that were contracted into the two remaining nodes in $V_2$.
 
 ### Success Probability and Analysis
@@ -1619,7 +1612,7 @@ Success Probability of Contract If algorithm Contract is run on a graph with n n
 1. Let G be a graph with n nodes and fix a specific minimum cut of weight k (the designated cut).
 2. Let $G_i$ = ($V_i$, $E_i$) be the graphs constructed at each step i = n, $\dots$, 2.
 3. For any set of nodes U in $G_i$, let expand(U) be the set of original nodes in V contracted into U. If ($U_0$, $U_1$) is a cut in $G_i$, then (expand($U_0$), expand($U_1$)) is a cut in G with the same weight. Thus, every cut in $G_i$ has weight at least k.
-4. Since every node v in $G_i$ represents a cut ($\{v\}$, $V_i \setminus \{v\}$), the degree of every node in $G_i$ must be at least k. Therefore, the total number of edges m($E_i$) satisfies: m($E_i$) $\ge$ $\frac{k |V_i|}{2}$ = $\frac{k \cdot i}{2}$
+4. Since every node v in $G_i$ represents a cut ($\lbrace v\rbrace$, $V_i \setminus \lbrace v\rbrace$), the degree of every node in $G_i$ must be at least k. Therefore, the total number of edges m($E_i$) satisfies: $m(E_i) \ge \frac{k \lvert V_i\rvert}{2} = \frac{k \cdot i}{2}$
 5. We say $G_i$ is good if no edge crossing the designated cut was contracted during the steps n, $\dots$, i. The algorithm succeeds if $G_2$ is good.
 6. If $G_i$ is good, the probability that $G_{i-1}$ is also good is the probability of not picking one of the k edges of the designated cut from the m($E_i$) available edges: $\mathbb{P}[G_{i-1} \text{ is good} \mid G_i \text{ is good}]$ $\ge$ 1 - $\frac{k}{m(E_i)}$ $\ge$ 1 - $\frac{k}{ki/2}$ = 1 - $\frac{2}{i}$ = $\frac{i-2}{i}$
 7. By the chain rule, the probability that $G_2$ is good is:
@@ -1636,7 +1629,7 @@ Success Probability of Contract If algorithm Contract is run on a graph with n n
 
 To increase the reliability of finding the minimum cut, the algorithm is typically run multiple times independently.
 
-<div class="math-callout math-callout--corollary" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Probability Amplification)</span></p>
 
 Probability Amplification Assume algorithm Contract is run independently $tn^2$ times on a graph with n nodes. The probability that the minimum cut is not found is at most $\frac{1}{2^{2t}}$.
@@ -1662,7 +1655,7 @@ Markov’s inequality is the most basic tail bound, requiring only that the rand
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Markov’s Inequality)</span></p>
 
-Markov’s Inequality Let X be a discrete random variable that attains only non-negative values such that $\mathbb{E}[X]$ exists. For any real number r > 0: $\mathbb{P}[X \ge r]$ $\le$ $\frac{\mathbb{E}[X]}{r}$ If $\mathbb{E}[X]$ > 0, this can be rewritten as $\mathbb{P}[X \ge r \mathbb{E}[X]]$ $\le$ $\frac{1}{r}$.
+Let X be a discrete random variable that attains only non-negative values such that $\mathbb{E}[X]$ exists. For any real number r > 0: $\mathbb{P}[X \ge r]$ $\le$ $\frac{\mathbb{E}[X]}{r}$ If $\mathbb{E}[X]$ > 0, this can be rewritten as $\mathbb{P}[X \ge r \mathbb{E}[X]]$ $\le$ $\frac{1}{r}$.
 
 </div>
 
@@ -1677,9 +1670,7 @@ Chebyshev's inequality provides a tighter bound by utilizing the variance of the
 
 The variance $\mathrm{Var}[X]$ of a discrete random variable $X$ is defined as
 
-$$
-\mathrm{Var}[X] = \mathbb{E}[(X - \mathbb{E}[X])^2].
-$$
+$$\mathrm{Var}[X] = \mathbb{E}[(X - \mathbb{E}[X])^2]$$
 
 Small variance indicates that $X$ is highly concentrated around its mean $\mathbb{E}[X]$. The square root of the variance is a rough measure of deviation from the mean.
 
@@ -1688,20 +1679,20 @@ Small variance indicates that $X$ is highly concentrated around its mean $\mathb
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Chebyshev’s Inequality)</span></p>
 
-Chebyshev’s Inequality Let X be a random variable where $\mathbb{E}[X]$ and $\mathrm{Var}[X]$ exist. For any r > 0: $\mathbb{P}[|X - \mathbb{E}[X]| \ge r]$ $\le$ $\frac{\mathrm{Var}[X]}{r^2}$ If $\mathrm{Var}[X]$ > 0, then $\mathbb{P}[|X - \mathbb{E}[X]| \ge r \sqrt{\mathrm{Var}[X]}]$ $\le$ $\frac{1}{r^2}$.
+Chebyshev’s Inequality Let X be a random variable where $\mathbb{E}[X]$ and $\mathrm{Var}[X]$ exist. For any r > 0: $\mathbb{P}[\lvert X - \mathbb{E}[X]\rvert \ge r]$ $\le$ $\frac{\mathrm{Var}[X]}{r^2}$ If $\mathrm{Var}[X]$ > 0, then $\mathbb{P}[\lvert X - \mathbb{E}[X]\rvert \ge r \sqrt{\mathrm{Var}[X]}]$ $\le$ $\frac{1}{r^2}$.
 
 </div>
 
-**Proof.** Apply Markov's inequality to the non-negative random variable Y = |X - $\mathbb{E}[X]$|^2. Note that $\mathbb{E}[Y]$ = $\mathrm{Var}[X]$. $\mathbb{P}[|X - \mathbb{E}[X]| \ge r\sqrt{\mathrm{Var}[X]}]$ = $\mathbb{P}[|X - \mathbb{E}[X]|^2 \ge r^2 \mathrm{Var}[X]]$ $\le$ $\frac{\mathrm{Var}[X]}{r^2 \mathrm{Var}[X]}$ = $\frac{1}{r^2}$
+**Proof.** Apply Markov's inequality to the non-negative random variable $Y = \lvert X - \mathbb{E}[X]\rvert^2$. Note that $\mathbb{E}[Y]$ = $\mathrm{Var}[X]$. $\mathbb{P}[\lvert X - \mathbb{E}[X]\rvert \ge r\sqrt{\mathrm{Var}[X]}]$ = $\mathbb{P}[\lvert X - \mathbb{E}[X]\rvert^2 \ge r^2 \mathrm{Var}[X]]$ $\le$ $\frac{\mathrm{Var}[X]}{r^2 \mathrm{Var}[X]}$ = $\frac{1}{r^2}$
 
 ### The Chernov-Hoeffding Bound
 
-The Chernov-Hoeffding bound provides exponentially decreasing bounds for the sum of independent $\{0, 1\}$-valued random variables.
+The Chernov-Hoeffding bound provides exponentially decreasing bounds for the sum of independent $\lbrace 0, 1\rbrace$-valued random variables.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Chernov-Hoeffding Bound)</span></p>
 
-Chernov-Hoeffding Bound Let $X_1$, $\dots$, $X_n$ be mutually independent $\{0, 1\}$-valued random variables where $\mathbb{P}[X_i = 1]$ = $p_i$. Let X = $\sum$ $X_i$ and $\mu$ = $\mathbb{E}[X]$ = $\sum$ $p_i$.
+Chernov-Hoeffding Bound Let $X_1$, $\dots$, $X_n$ be mutually independent $\lbrace 0, 1\rbrace$-valued random variables where $\mathbb{P}[X_i = 1] = p_i$. Let $X = \sum X_i$ and $\mu = \mathbb{E}[X] = \sum p_i$.
 
 </div>
 
@@ -1730,12 +1721,12 @@ Chernov-Hoeffding Bound Let $X_1$, $\dots$, $X_n$ be mutually independent $\{0, 
 
 ## Application: Majority Vote and Probability Amplification
 
-A common application of tail bounds is probability amplification through a majority vote. If a randomized algorithm correctly decides a property with probability p = 1/2 + $\epsilon$, we can repeat the algorithm n times and take the majority output to significantly lower the error probability.
+A common application of tail bounds is probability amplification through a majority vote. If a randomized algorithm correctly decides a property with probability $p = 1/2 + \epsilon$, we can repeat the algorithm n times and take the majority output to significantly lower the error probability.
 
-<div class="math-callout math-callout--corollary" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Probability Amplification)</span></p>
 
-Probability Amplification Let $X_1$, $\dots$, $X_n$ be independent $\{0, 1\}$ variables where $\mathbb{P}[X_i = 1]$ = 1/2 + $\epsilon$ (correctness). Let X = $\sum$ $X_i$. The probability that the majority vote is wrong (i.e., X $\le$ n/2) is: $\mathbb{P}[X \le n/2]$ < $2^{-\epsilon^2 n}$
+Let $X_1$, $\dots$, $X_n$ be independent $\lbrace 0, 1\rbrace$ variables where $\mathbb{P}[X_i = 1] = 1/2 + \epsilon$ (correctness). Let $X = \sum$ $X_i$. The probability that the majority vote is wrong (i.e., $X \le n/2$) is: $\mathbb{P}[X \le n/2] < 2^{-\epsilon^2 n}$
 
 </div>
 
@@ -1784,7 +1775,7 @@ A Boolean formula is in k-CNF if it is in CNF such that each clause contains exa
 
 ### Satisfying Assignments
 
-An assignment of length n is a binary word $\sigma \in \{0, 1\}^n$, where 0 represents false and 1 represents true. For a formula $\phi$ over n variables, we assume the variables are ordered, meaning the i-th bit of the assignment corresponds to the i-th variable.
+An assignment of length n is a binary word $\sigma \in \lbrace 0, 1\rbrace^n$, where 0 represents false and 1 represents true. For a formula $\phi$ over n variables, we assume the variables are ordered, meaning the i-th bit of the assignment corresponds to the i-th variable.
 
 A formula is satisfied if the assignment makes the entire formula evaluate to true. For example, consider the 3-CNF formula: $\phi = (Z_1 \lor \neg Z_3 \lor Z_4) \land (\neg Z_1 \lor Z_4 \lor Z_5)$. The assignment 10010 satisfies this formula, while 10000 does not.
 
@@ -1808,7 +1799,7 @@ Because $\sigma_0$ satisfies every clause, it must differ from the current (unsa
 * With probability at least 1/3, we flip a variable where $\sigma$ and $\sigma_0$ differ, thereby decreasing the Hamming distance d($\sigma$, $\sigma_0$) by 1.
 * With probability at most 2/3, we might flip a variable where $\sigma$ and $\sigma_0$ were already identical, increasing the distance by 1.
 
-<div class="math-callout math-callout--algorithm" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(LocalSearch)</span></p>
 
 LocalSearch
@@ -1817,20 +1808,19 @@ LocalSearch
 
 The following algorithm utilizes this "flipping" strategy to navigate the search space.
 
-<div class="math-callout math-callout--algorithm" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(LocalSearch($\phi$, $\sigma$, r))</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(LocalSearch($\phi$, $\sigma$, $r$))</span></p>
 
-LocalSearch($\phi$, $\sigma$, r)
 
 </div>
 
-Input: A Boolean formula $\phi$ in n variables in 3-CNF, an assignment $\sigma \in \{0, 1\}^n$, and a natural number r.
+Input: A Boolean formula $\phi$ in n variables in 3-CNF, an assignment $\sigma \in \lbrace 0, 1\rbrace^n$, and a natural number $r$.
 
 1. While r $\ge$ 1 and $\phi(\sigma)$ = $\text{false}$:
   * Pick the least clause of $\phi$ that is not made true by $\sigma$.
   * Pick a variable in this clause uniformly at random.
   * Flip the value of the assignment $\sigma$ at this variable.
-  * Let r = r - 1.
+  * Let $r = r - 1$.
 2. Output: The modified assignment $\sigma$.
 
 ### Modeling Search as a Random Walk
@@ -1844,7 +1834,7 @@ Reaching a satisfying assignment is equivalent to the random walk reaching the o
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(One-Dimensional Random Walk)</span></p>
 
-One-Dimensional Random Walk A sequence of random variables $X_0$, $X_1$, $\dots$ where:
+A sequence of random variables $X_0$, $X_1$, $\dots$ where:
 
 </div>
 
@@ -1873,10 +1863,10 @@ Probability of Reaching the Origin Let $p_j$ be the probability that a walk star
 
 The previous calculation assumes an infinite number of moves. For LocalSearch, we limit the steps to r.
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Success with Finite Moves)</span></p>
 
-Success with Finite Moves For $\alpha$ = 1/3 and r = 27j, the probability of reaching the origin within r moves is at least $p_j$ / 2 = $2^{-(j+1)}$.
+Success with Finite Moves For $\alpha = 1/3$ and $r = 27j$, the probability of reaching the origin within $r$ moves is at least $p_j / 2 = 2^{-(j+1)}$.
 
 </div>
 
@@ -1897,7 +1887,7 @@ Since the success probability of a single run is low ($\frac{1}{2}$ (3/4)^n), we
 
 By running the algorithm 2(4/3)^n times, we achieve a high constant probability of success.
 
-<div class="math-callout math-callout--algorithm" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(IteratedLocalSearch($\phi$))</span></p>
 
 IteratedLocalSearch($\phi$)
@@ -1908,7 +1898,7 @@ Input: A Boolean formula $\phi$ in n variables in 3-CNF.
 
 1. Let i = 1 and $\sigma$ = $0^n$.
 2. While i $\le$ 2 $\cdot$ (4/3)^n and $\phi(\sigma)$ = $\text{false}$:
-  * Pick an assignment $\sigma$ uniformly at random from $\{0, 1\}^n$.
+  * Pick an assignment $\sigma$ uniformly at random from $\lbrace 0, 1\rbrace^n$.
   * Let $\sigma$ := LocalSearch($\phi$, $\sigma$, 27n).
   * Let i := i + 1.
 3. Output: The current assignment $\sigma$.
@@ -1928,14 +1918,14 @@ The running time is proportional to the number of iterations times the cost of L
 
 Exhaustive local search is a systematic approach used to find a satisfying assignment for a Boolean formula by exploring assignments within a specific distance from a starting point. This method is particularly useful for formulas in k-CNF (Conjunctive Normal Form where each clause contains exactly k literals).
 
-<div class="math-callout math-callout--algorithm" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(LocalSearchExh($\phi$, $\sigma$, r))</span></p>
 
 LocalSearchExh($\phi$, $\sigma$, r)
 
 </div>
 
-Input: Natural numbers n and k $\ge$ 3, a Boolean formula $\phi$ in k-CNF with n variables, an assignment $\sigma \in \{0, 1\}^n$, and a search radius (depth) r.
+Input: Natural numbers n and k $\ge$ 3, a Boolean formula $\phi$ in k-CNF with n variables, an assignment $\sigma \in \lbrace 0, 1\rbrace^n$, and a search radius (depth) r.
 
 Procedure:
 
@@ -1966,7 +1956,7 @@ Let $\phi$ be a Boolean formula in n variables in k-CNF. Let $\sigma$ and $\sigm
 
 ### Deterministic 3-SAT Application
 
-A basic deterministic algorithm for 3-SAT can be constructed using exhaustive local search. Any assignment in $\{0, 1\}^n$ is at most distance n/2 from either the all-zeros assignment $0^n$ or the all-ones assignment $1^n$. Therefore, $\phi$ is satisfiable if and only if LocalSearchExh($\phi$, $0^n$, n/2) or LocalSearchExh($\phi$, $1^n$, n/2) returns an assignment.
+A basic deterministic algorithm for 3-SAT can be constructed using exhaustive local search. Any assignment in $\lbrace 0, 1\rbrace^n$ is at most distance n/2 from either the all-zeros assignment $0^n$ or the all-ones assignment $1^n$. Therefore, $\phi$ is satisfiable if and only if LocalSearchExh($\phi$, $0^n$, n/2) or LocalSearchExh($\phi$, $1^n$, n/2) returns an assignment.
 
 The complexity of this approach is poly(n) $\cdot$ $3^{n/2}$, which simplifies to poly(n) $\cdot$ ($\sqrt{3}$)^n $\approx$ poly(n) $\cdot$ $1.74^n$. This is significantly faster than the $2^n$ required for a naive search of all possible assignments.
 
@@ -1981,7 +1971,7 @@ Volume of a Discrete Ball
 
 </div>
 
-The n-dimensional ball with center $\sigma \in \{0, 1\}^n$ and radius r is defined as: $B(\sigma, n, r) = \{ \tau \in \{0, 1\}^n : d(\sigma, \tau) \le r \}$. The volume, denoted vol(n, r), is independent of the center $\sigma$ and is calculated as: $vol(n, r) = \sum_{j=0}^{r} \binom{n}{j}$
+The n-dimensional ball with center $\sigma \in \lbrace 0, 1\rbrace^n$ and radius r is defined as: $B(\sigma, n, r) = \lbrace \tau \in \lbrace 0, 1\rbrace^n : d(\sigma, \tau) \le r \rbrace$. The volume, denoted vol(n, r), is independent of the center $\sigma$ and is calculated as: $vol(n, r) = \sum_{j=0}^{r} \binom{n}{j}$
 
 For large n, we approximate this volume using the binary entropy function.
 
@@ -2013,7 +2003,7 @@ To minimize this, we take the derivative of the exponent with respect to $\rho$.
 
 ### Benefits of the Optimum Radius
 
-By setting r = $\frac{n}{k+1}$, the ratio becomes: $\frac{a_k(n, r)}{v(n, r) / n}$ = n $\cdot$ $\left(\frac{k}{k+1}\right)^n$ This indicates that the search tree is exponentially smaller than the total number of assignments in the ball.
+By setting $r = \frac{n}{k+1}$, the ratio becomes: $\frac{a_k(n, r)}{v(n, r) / n} = n \cdot \left(\frac{k}{k+1}\right)^n$ This indicates that the search tree is exponentially smaller than the total number of assignments in the ball.
 
 ### Randomized and Deterministic Search Strategies
 
@@ -2036,7 +2026,7 @@ Covering Code
 
 </div>
 
-A set C $\subseteq$ $\{0, 1\}^n$ is a covering code of radius r if every word in $\{0, 1\}^n$ is contained in at least one ball of radius r centered at a codeword in C: $\{0, 1\}^n$ = $\bigcup_{w \in C}$ B(w, n, r)
+A set C $\subseteq$ $\lbrace 0, 1\rbrace^n$ is a covering code of radius r if every word in $\lbrace 0, 1\rbrace^n$ is contained in at least one ball of radius r centered at a codeword in C: $\lbrace 0, 1\rbrace^n$ = $\bigcup_{w \in C}$ B(w, n, r)
 
 By running LocalSearchExh starting from every codeword in a covering code of radius r = $\frac{n}{k+1}$, we can deterministically decide satisfiability. The size of such a code is roughly $\frac{2^n}{vol(n, r)}$. The resulting deterministic complexity is poly(n) $\cdot$ ($\frac{2k}{k+1}$)^n.
 
@@ -2046,8 +2036,6 @@ The construction of efficient covering codes is related to the Minimum Set Cover
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weighted Minimum Set Cover Problem)</span></p>
-
-Weighted Minimum Set Cover Problem
 
 </div>
 
@@ -2062,22 +2050,22 @@ Existence of Small Covering Codes
 
 </div>
 
-For any n and r < n, there exists a covering code C of size: |C| $\le$ $\frac{n \cdot 2^n}{vol(n, r)}$ $\le$ $\frac{n^2 \cdot 2^n}{v(n, r)}$
+For any $n$ and $r < n$, there exists a covering code $C$ of size: $\lvert C\rvert \le \frac{n \cdot 2^n}{vol(n, r)} \le \frac{n^2 \cdot 2^n}{v(n, r)}$
 
 **Proof.**
 
 * Suppose we pick a set C of size $\frac{n \cdot 2^n}{vol(n, r)}$ uniformly at random.
-* Let $E_u$ be the event that a specific word u is not covered by any ball around words in C.
-* $\mathbb{P}[E_u]$ = (1 - $\frac{vol(n, r)}{2^n}$)^{|C|} $\le$ $e^{-n}$.
-* The sum of these probabilities over all $2^n$ words is $2^n \cdot e^{-n}$, which is less than 1 for sufficiently large n. Thus, a covering code of this size must exist.
+* Let $E_u$ be the event that a specific word $u$ is not covered by any ball around words in $C$.
+* $\mathbb{P}[E_u] = (1 - \frac{vol(n, r)}{2^n})^{\lvert C\rvert} \le$ e^{-n}$.
+* The sum of these probabilities over all $2^n$ words is $2^n \cdot e^{-n}$, which is less than 1 for sufficiently large $n$. Thus, a covering code of this size must exist.
 
-To compute these codes efficiently, we can use a direct sum of smaller covering codes. By partitioning the n-bit word into d blocks of length $n_0 \approx n/d$ and computing optimal codes for these smaller blocks, we can construct a total covering code in poly(n)|C| time.
+To compute these codes efficiently, we can use a direct sum of smaller covering codes. By partitioning the n-bit word into d blocks of length $n_0 \approx n/d$ and computing optimal codes for these smaller blocks, we can construct a total covering code in $\text{poly}(n)\lvert C\rvert$ time.
 
 ---
 
 ## Cryptography: Symmetric and Public-Key Systems
 
-Cryptography traditionally relied on symmetric-key protocols, where parties share a secret key in advance. An example is the One-time pad, where a message w is encrypted using a random secret r of the same length via w $\oplus$ r. The receiver recovers w by computing (w $\oplus$ r) $\oplus$ r.
+Cryptography traditionally relied on symmetric-key protocols, where parties share a secret key in advance. An example is the One-time pad, where a message $w$ is encrypted using a random secret $r$ of the same length via $w \oplus r$. The receiver recovers w by computing $(w \oplus r) \oplus r$.
 
 ### Public-Key Cryptography
 
@@ -2086,16 +2074,14 @@ In public-key protocols, each party has a private key (kept secret) and a public
 #### Key tasks used in these assumptions include
 
 1. Factorization: Finding prime factors of large integers.
-2. Discrete Logarithm Problem: Given a generator d of a cyclic group G and an element b, finding x such that $d^x$ = b.
+2. Discrete Logarithm Problem: Given a generator $d$ of a cyclic group $G$ and an element $b$, finding x such that $d^x = b$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cyclic Group)</span></p>
 
-Cyclic Group
-
 </div>
 
-A finite group (G, $\circ$) is cyclic if there exists a generator d $\in$ G such that G = $\{d^1, d^2, \dots, d^{|G|}\}$.
+A finite group (G, $\circ$) is cyclic if there exists a generator $d \in G$ such that $G = \lbrace d^1, d^2, \dots, d^{\lvert G\rvert}\rbrace$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete Logarithm)</span></p>
@@ -2104,7 +2090,7 @@ Discrete Logarithm
 
 </div>
 
-Given a generator d of a cyclic group G of order n and b $\in$ G, the discrete logarithm $\log_d$ b is the unique x $\in$ $\{0, \dots, n-1\}$ such that b = $d^x$.
+Given a generator d of a cyclic group G of order n and b $\in$ G, the discrete logarithm $\log_d$ b is the unique x $\in$ $\lbrace 0, \dots, n-1\rbrace$ such that b = $d^x$.
 
 ### Standard Protocols
 
@@ -2117,7 +2103,7 @@ Given a generator d of a cyclic group G of order n and b $\in$ G, the discrete l
 
 2. ElGamal Public-Key Encryption:
 
-* Goal: B wants to send message m $\in$ $\{1, \dots, p-1\}$ to A.
+* Goal: B wants to send message m $\in$ $\lbrace 1, \dots, p-1\rbrace$ to A.
 * Infrastructure: A publishes (p, d, $d^{i_A}$) and keeps $i_A$ secret.
 * Encryption: B chooses random $i_B$, computes $c_1$ = $d^{i_B}$ and $c_2$ = m $\cdot$ ($d^{i_A}$)^{$i_B$}, and sends ($c_1$, $c_2$) to A.
 * Decryption: A uses $i_A$ to compute $m = c_2 \cdot (c_1^{i_A})^{-1}$ (using Fermat's Little Theorem: $c_1^{p-1-i_A}$ in $\mathbb{Z}_p^*$).
@@ -2140,7 +2126,7 @@ To implement such a protocol, we rely on a hard computational problem. In this c
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(k-Coloring)</span></p>
 
-Let $G = (V, E)$ be a graph. A k-coloring of $G$ is a mapping $g : V \to \{1, \dots, k\}$. A coloring is considered legal if for all edges $\{u, v\} \in E$, the colors $g(u)$ and $g(v)$ are distinct.
+Let $G = (V, E)$ be a graph. A k-coloring of $G$ is a mapping $g : V \to \lbrace 1, \dots, k\rbrace$. A coloring is considered legal if for all edges $\lbrace u, v\rbrace \in E$, the colors $g(u)$ and $g(v)$ are distinct.
 
 </div>
 
@@ -2152,10 +2138,10 @@ This protocol allows A to prove she knows the coloring without revealing it.
 
 Assumptions: A knows a legal k-coloring g of G and has a private random source.
 
-1. Step 1 (A): A picks a random permutation $\pi$ of the color set $\{1, \dots, k\}$. A then secretly commits to a list of the permuted colors for all nodes: $\pi(g(1))$, $\dots$, $\pi(g(n))$.
-2. Step 2 (B): B picks an edge $\{u, v\}$ from G uniformly at random and sends these vertices to A.
+1. Step 1 (A): A picks a random permutation $\pi$ of the color set $\lbrace 1, \dots, k\rbrace$. A then secretly commits to a list of the permuted colors for all nodes: $\pi(g(1))$, $\dots$, $\pi(g(n))$.
+2. Step 2 (B): B picks an edge $\lbrace u, v\rbrace$ from G uniformly at random and sends these vertices to A.
 3. Step 3 (A): A reveals the specific colors $\pi(g(u))$ and $\pi(g(v))$ to B.
-4. Step 4 (B): B accepts if the two colors are distinct and belong to the set $\{1, \dots, k\}$. Otherwise, B rejects.
+4. Step 4 (B): B accepts if the two colors are distinct and belong to the set $\lbrace 1, \dots, k\rbrace$. Otherwise, B rejects.
 
 To minimize the probability of B accepting a false claim, the protocol is iterated m times, where m is the number of edges in G.
 
@@ -2190,20 +2176,20 @@ A set $Z$ of integers is sum-free if for all $x, y, z \in Z$, the equation $x + 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Existence of Large Sum-Free Subsets)</span></p>
 
-Existence of Large Sum-Free Subsets Every nonempty finite set Z of integers contains a sum-free subset T of size |T| > $\frac{|Z|}{3}$.
+Subsets Every nonempty finite set $Z$ of integers contains a sum-free subset $T$ of size $\lvert T\rvert > \frac{\lvert Z\rvert}{3}$.
 
 </div>
 
 **Proof.**
 
-1. Let Z = $\{z_1 < \dots < z_n\}$ be a set of n integers.
-2. Choose a prime q = 3k + 2 such that q is larger than the absolute values of all elements in Z (ensuring q does not divide any z $\in$ Z).
-3. Let $N_q$ = $\{1, \dots, q-1\}$. Pick r $\in$ $N_q$ uniformly at random.
+1. Let $Z = \lbrace z_1 < \dots < z_n\rbrace$ be a set of $n$ integers.
+2. Choose a prime $q = 3k + 2$ such that $q$ is larger than the absolute values of all elements in $Z$ (ensuring q does not divide any z $\in$ Z).
+3. Let $N_q$ = $\lbrace 1, \dots, q-1\rbrace$. Pick r $\in$ $N_q$ uniformly at random.
 4. For each $z_i \in Z$, define $d_i \equiv z_i \cdot r \pmod{q}$, where $d_i \in N_q$. Since q is prime, the mapping $r \mapsto z \cdot r$ is a bijection, making each $d_i$ uniformly distributed in $N_q$.
-5. Define a sum-free set M = $\{k+1, \dots, 2k+1\}$ in the range of residues. M is sum-free because the sum of the two smallest elements is (k+1) + (k+1) = 2k+2, which is outside the set.
-6. Let $T_r$ = $\{z_i : d_i \in M\}$. $T_r$ is sum-free because if $z_{i_1}$ + $z_{i_2}$ = $z_{i_3}$, then $d_{i_1}$ + $d_{i_2} \equiv d_{i_3} \pmod{q}$, which cannot happen for elements in M.
-7. We calculate the expected size of $T_r$: $\mathbb{E}[|T_r|]$ = $\sum_{z_i \in Z}$ $\mathbb{P}[d_i \in M]$ = |Z| $\cdot$ $\frac{|M|}{|N_q|}$ = |Z| $\cdot$ $\frac{k+1}{3k+1}$ > $\frac{|Z|}{3}$
-8. Since the expectation is greater than $\frac{|Z|}{3}$, there must exist at least one r such that |$T_r$| > $\frac{|Z|}{3}$.
+5. Define a sum-free set M = $\lbrace k+1, \dots, 2k+1\rbrace$ in the range of residues. M is sum-free because the sum of the two smallest elements is (k+1) + (k+1) = 2k+2, which is outside the set.
+6. Let $T_r$ = $\lbrace z_i : d_i \in M\rbrace$. $T_r$ is sum-free because if $z_{i_1}$ + $z_{i_2}$ = $z_{i_3}$, then $d_{i_1}$ + $d_{i_2} \equiv d_{i_3} \pmod{q}$, which cannot happen for elements in M.
+7. We calculate the expected size of $T_r$: $\mathbb{E}[\lvert T_r\rvert] = \sum_{z_i \in Z} \mathbb{P}[d_i \in M] = \lvert Z\rvert \cdot \frac{\lvert M\rvert }{\lvert N_q\rvert} = \lvert Z\rvert \cdot \frac{k+1}{3k+1} > \frac{\lvert Z\rvert}{3}$
+8. Since the expectation is greater than $\frac{\lvert Z\rvert}{3}$, there must exist at least one $r$ such that $\lvert T_r\rvert > \frac{\lvert Z\rvert}{3}$.
 
 ---
 
@@ -2221,19 +2207,19 @@ A function $w: X \to \mathbb{R}$. For a subset $S \subseteq X$, the weight is ex
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Isolating Lemma)</span></p>
 
-Isolating Lemma Let X = $\{a_1, \dots, a_m\}$ be a set and $\mathcal{F}$ be a nonempty collection of subsets of X. If weights w(x) are chosen independently and uniformly from $\{1, \dots, 2m\}$ for each x $\in$ X, then with probability at least 1/2, the minimal weight $w_{min}$ = $\min_{S \in \mathcal{F}}$ w(S) is attained by a unique set in $\mathcal{F}$.
+Isolating Lemma Let X = $\lbrace a_1, \dots, a_m\rbrace$ be a set and $\mathcal{F}$ be a nonempty collection of subsets of X. If weights w(x) are chosen independently and uniformly from $\lbrace 1, \dots, 2m\rbrace$ for each x $\in$ X, then with probability at least 1/2, the minimal weight $w_{min}$ = $\min_{S \in \mathcal{F}}$ w(S) is attained by a unique set in $\mathcal{F}$.
 
 </div>
 
 **Proof.**
 
-1. A set S $\in$ $\mathcal{F}$ is a minimum weight set if w(S) = $w_{min}$.
+1. A set S $\in$ $\mathcal{F}$ is a minimum weight set if $w(S) = w_{min}$.
 2. An element a $\in$ X is ambiguous if there exist two minimum weight sets $S_-$ and $S_+$ such that a $\notin$ $S_-$ and a $\in$ $S_+$.
 3. A unique minimum weight set exists if and only if no member of X is ambiguous.
-4. Fix a $\in$ X. Let $\mathcal{F}_-$ = $\{S \in \mathcal{F} : a \notin S\}$ and $\mathcal{F}_+$ = $\{S \in \mathcal{F} : a \in S\}$.
-5. Fix weights for all elements in X $\setminus$ $\{a\}$. Let:
+4. Fix a $\in$ X. Let $\mathcal{F}_-$ = $\lbrace S \in \mathcal{F} : a \notin S\rbrace$ and $\mathcal{F}_+$ = $\lbrace S \in \mathcal{F} : a \in S\rbrace$.
+5. Fix weights for all elements in X $\setminus$ $\lbrace a\rbrace$. Let:
   * $w_-$ = $\min_{S \in \mathcal{F}_-}$ $\sum_{x \in S}$ w(x)
-  * $w_+$ = $\min_{S \in \mathcal{F}_+}$ $\sum_{x \in S \setminus \{a\}}$ w(x)
+  * $w_+$ = $\min_{S \in \mathcal{F}_+}$ $\sum_{x \in S \setminus \lbrace a\rbrace}$ w(x)
 6. Let d = $w_- - w_+$. The total minimum weight is $w_{min}$ = $\min(w_-, w_+ + w(a))$.
 7. Both $w_-$ and $w_+ + w(a)$ are equal (making a ambiguous) if and only if w(a) = d.
 8. Since w(a) is chosen from 2m values independently of d, the probability that w(a) = d is at most 1/2m.
@@ -2250,7 +2236,7 @@ A graph is planar if it can be embedded in a plane such that no edges cross. We 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Euler's Formula)</span></p>
 
-Euler's Formula Let G be a connected planar graph with n nodes, m edges, and f faces. Then: f - m + n = 2
+Let $G$ be a connected planar graph with $n$ nodes, $m$ edges, and $f$ faces. Then: $f - m + n = 2$
 
 </div>
 
@@ -2274,7 +2260,7 @@ The crossing number $\operatorname{cr}(G)$ is the minimum number of crossings in
 
 </div>
 
-A minimum embedding (one with cr(G) crossings) has specific properties:
+A minimum embedding (one with $cr(G)$ crossings) has specific properties:
 
 1. No edge crosses itself.
 2. Edges incident to a common node do not cross.
@@ -2286,11 +2272,11 @@ If any of these occur, the embedding can be redrawn with fewer crossings.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Basic Lower Bound)</span></p>
 
-Basic Lower Bound For any graph G, cr(G) $\ge$ m - 3n + 6.
+For any graph $G$, $cr(G) \ge m - 3n + 6$.
 
 </div>
 
-**Proof.** Replace every crossing in a minimum embedding with a new node. The new graph G' is planar and simple, with n' = n + cr(G) nodes and m' = m + 2cr(G) edges (since each crossing splits two edges into four segments). Applying the planar edge bound: m + 2cr(G) $\le$ 3(n + cr(G)) - 6 $\implies$ cr(G) $\ge$ m - 3n + 6
+**Proof.** Replace every crossing in a minimum embedding with a new node. The new graph $G'$ is planar and simple, with $n' = n + cr(G)$ nodes and $m' = m + 2cr(G)$ edges (since each crossing splits two edges into four segments). Applying the planar edge bound: $m + 2cr(G) \le 3(n + cr(G)) - 6 \implies cr(G) \ge m - 3n + 6$
 
 ### The Crossing Number Theorem
 
@@ -2299,22 +2285,22 @@ For dense graphs, we can establish a much stronger lower bound.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Crossing Number Bound)</span></p>
 
-Crossing Number Bound Let G be a graph with n nodes and m edges. If m $\ge$ 4n, then: cr(G) $\ge$ $\frac{1}{64}$ $\frac{m^3}{n^2}$
+Let $G$ be a graph with $n$ nodes and $m$ edges. If $m \ge 4n$, then: $cr(G) \ge \frac{1}{64} \frac{m^3}{n^2}$
 
 </div>
 
 **Proof.**
 
-1. Let p $\in$ (0, 1] be a probability. Create a subgraph $G_p$ by picking each node of G independently with probability p.
-2. Let $n_p$, $m_p$, and $x_p$ be the number of nodes, edges, and crossings in $G_p$ (restricted from a minimum embedding of G).
-3. From the previous proposition, we know $\mathbb{E}[x_p - m_p + 3n_p]$ $\ge$ 0.
+1. Let $p \in (0, 1]$ be a probability. Create a subgraph $G_p$ by picking each node of $G$ independently with probability $p$.
+2. Let $n_p$, $m_p$, and $x_p$ be the number of nodes, edges, and crossings in $G_p$ (restricted from a minimum embedding of $G$).
+3. From the previous proposition, we know $\mathbb{E}[x_p - m_p + 3n_p] \ge 0$.
 4. Calculate expectations:
-  * $\mathbb{E}[n_p]$ = pn
-  * $\mathbb{E}[m_p]$ = $p^2m$
-  * $\mathbb{E}[x_p]$ = $p^4cr(G)$ (a crossing remains if all 4 endpoints of the two crossing edges are selected).
-5. By linearity of expectation: $p^4cr(G)$ - $p^2m$ + 3pn $\ge$ 0, which simplifies to: cr(G) $\ge$ $\frac{p^2m - 3pn}{p^4}$
-6. Set p = $\frac{4n}{m}$. Since m $\ge$ 4n, p $\le$ 1.
-7. Substituting p: cr(G) $\ge$ $\frac{(\frac{4n}{m})m - 3n}{p^3}$ = $\frac{4n - 3n}{p^3}$ = $\frac{n}{(\frac{4n}{m})^3}$ = $\frac{1}{64}$ $\frac{m^3}{n^2}$
+  * $\mathbb{E}[n_p] = pn$
+  * $\mathbb{E}[m_p] = p^2m$
+  * $\mathbb{E}[x_p] = p^4cr(G)$ (a crossing remains if all 4 endpoints of the two crossing edges are selected).
+5. By linearity of expectation: $p^4cr(G) - p^2m + 3pn \ge 0$, which simplifies to: $cr(G) \ge \frac{p^2m - 3pn}{p^4}$
+6. Set $p = \frac{4n}{m}$. Since $m \ge 4n, p \le 1$.
+7. Substituting $p$: $cr(G) \ge \frac{(\frac{4n}{m})m - 3n}{p^3} = \frac{4n - 3n}{p^3} = \frac{n}{(\frac{4n}{m})^3} = \frac{1}{64} \frac{m^3}{n^2}$
 
 ---
 
@@ -2325,16 +2311,16 @@ Consider the probability of a specific geometric configuration when points are p
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Center in Convex Hull)</span></p>
 
-Center in Convex Hull If n points are chosen uniformly and independently on a circle, the probability that their convex hull contains the center of the circle is 1 - $\frac{2n}{2^n}$.
+If $n$ points are chosen uniformly and independently on a circle, the probability that their convex hull contains the center of the circle is $1 - \frac{2n}{2^n}$.
 
 </div>
 
 **Proof.**
 
 1. Perform the experiment in two steps:
-  * (i) Pick n points independently.
+  * (i) Pick $n$ points independently.
   * (ii) For each point, flip a coin to decide whether to use that point or its mirror point (the point diametrically opposite).
 2. This results in $2^n$ possible "candidate sets" of points.
 3. The center of the circle is not in the convex hull if and only if all points lie in a single half-plane (the set is "one-sided").
-4. There are exactly 2n candidate sets that are one-sided.
-5. Therefore, the probability of being one-sided is $\frac{2n}{2^n}$. The probability that the center is contained in the hull is the complement: 1 - $\frac{2n}{2^n}$.
+4. There are exactly $2n$ candidate sets that are one-sided.
+5. Therefore, the probability of being one-sided is $\frac{2n}{2^n}$. The probability that the center is contained in the hull is the complement: $1 - \frac{2n}{2^n}$.
