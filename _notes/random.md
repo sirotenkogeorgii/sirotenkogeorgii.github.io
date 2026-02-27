@@ -1759,6 +1759,355 @@ Many texts also assume $U_{n+1}\subseteq U_n$ (nestedness). Any Martin-Löf test
 
 </div>
 
+## Open Sets in Calculus
+
+It is **not** arbitrary. Open sets are the natural domains for most of the *local* ideas in calculus.
+
+The key intuition is this:
+
+Calculus studies what happens to a function **near a point**.
+To talk about “near,” you usually want to be able to move a little in every direction while staying inside the domain. That is exactly what openness gives you.
+
+### Why open sets matter
+
+A set $U$ is open if every point $x \in U$ has a small ball around it still contained in $U$.
+
+So if $f : U \to \mathbb{R}$ and $U$ is open, then for every $x \in U$, there are nearby points of the domain all around $x$. This is perfect for:
+* limits
+* derivatives
+* gradients
+* Jacobians
+* Taylor expansions
+* local linear approximations
+* inverse / implicit function theorems
+
+All of these are **local** notions.
+
+### Example: derivative in one variable
+
+To define
+
+$$f'(a)=\lim_{h\to 0}\frac{f(a+h)-f(a)}{h}$$
+
+you need $a+h$ to be in the domain for small positive and negative $h$.
+
+That automatically happens if the domain contains an open interval around $a$.
+
+If the domain is not open, say $f:[0,\infty)\to\mathbb R$, then at $a=0$ you cannot approach from both sides. You can still define a **one-sided derivative**, but it is less symmetric and many standard theorems need adjustment.
+
+So openness is not required for *every possible definition*, but it is the clean setting where the standard theory works smoothly.
+
+### In several variables it becomes even more important
+
+In $\mathbb R^n$, differentiability at a point means approximating $f(x)$ when $x$ is close to $a$ from **all directions**.
+
+If the domain is open, then every point has a whole neighborhood inside the domain, so “all nearby directions” make sense.
+
+If the domain is something like a curve, a surface boundary, or a half-space edge, then some directions are missing. Then ordinary multivariable differentiation either:
+
+* is only meaningful at interior points, or
+* must be reformulated using manifolds, tangent spaces, one-sided notions, etc.
+
+### Why textbooks often assume “open domain”
+
+Because many theorems become clean and elegant:
+
+* “Let $f:U\to\mathbb R$ be differentiable, where $U\subset \mathbb R^n$ is open…”
+* then every point of $U$ is an interior point
+* local arguments work without constantly saying “for interior points only”
+* no annoying boundary exceptions
+* partial derivatives and directional derivatives are naturally defined nearby
+
+So openness is often a **technical assumption that matches the geometry of calculus**.
+
+### Is every function in calculus defined on an open set?
+
+No. Functions can be defined on any set.
+
+For example:
+
+* $f:[0,1]\to\mathbb R$
+* $f:\mathbb Q\to\mathbb R$
+* $f$ on a closed interval
+* $f$ on a surface
+
+All of these are legitimate.
+
+But when doing **differential calculus**, we usually restrict attention to open sets because that is the most natural setting for local analysis.
+
+### Another way to think about it
+
+Open sets are the sets with **no boundary points included as mandatory stopping points**.
+
+Boundary points cause trouble because near them, part of the nearby space lies outside the domain.
+
+Calculus likes freedom to zoom in around a point without hitting the edge immediately.
+
+### Summary
+
+Open sets are special in calculus because:
+
+1. **Calculus is local** — it studies behavior near a point.
+2. **Open sets provide neighborhoods** around every point.
+3. This lets us approach points from all nearby directions.
+4. Standard definitions and theorems become cleaner and more symmetric.
+5. If the domain is not open, calculus still works, but usually with extra boundary cases or modified notions.
+
+A good slogan is:
+
+**Open sets are the natural domains for local differential analysis.**
+
+If you want, I can also show this from the perspective of:
+
+* derivatives on closed intervals,
+* multivariable geometry,
+* or why continuity does **not** need openness in the same way differentiability does.
+
+It does **not completely break** on closed sets. The issue is more precise:
+
+> Calculus works fine on closed sets, but the **standard two-sided local definitions and theorems** are really about **interior points**.
+> On a closed set, boundary points are the problem.
+
+That is the whole story.
+
+---
+
+### 1. Closed sets themselves are not bad
+
+For example, take
+
+$$f:[0,1]\to\mathbb R,\qquad f(x)=x^2$$
+
+This is a perfectly good function. It is continuous on $[0,1]$, integrable, and smooth on the interior $(0,1)$.
+
+So being closed does **not** make calculus impossible.
+
+The trouble appears when you ask for things like:
+
+* derivative at boundary points
+* gradient at boundary points
+* local linear approximation in all directions
+* theorems that assume you can move slightly around a point in every direction
+
+---
+
+### 2. What exactly fails at a boundary point?
+
+Take $f:[0,1]\to\mathbb R$.
+At an interior point $a\in(0,1)$, to define the derivative you use
+
+$$f'(a)=\lim_{h\to 0}\frac{f(a+h)-f(a)}{h}$$
+
+This expression assumes that $a+h$ is in the domain for all sufficiently small positive **and negative** $h$.
+
+That is true if $a$ is an interior point.
+
+But at the boundary point $a=0$, negative $h$ gives $0+h<0$, which is outside the domain. So the usual two-sided limit is not even available.
+
+You can still define a **right derivative**:
+
+$$f'_+(0)=\lim_{h\to 0^+}\frac{f(0+h)-f(0)}{h},$$
+
+but now it is a different notion.
+
+So the problem is not “closed set = impossible,” but:
+
+> at boundary points, the usual symmetric local definition is no longer available.
+
+---
+
+### 3. Concrete example
+
+Let
+
+$$f:[0,\infty)\to\mathbb R,\qquad f(x)=\sqrt{x}$$
+
+At $x=0$,
+
+$$\frac{\sqrt{0+h}-\sqrt{0}}{h}=\frac{\sqrt h}{h}=\frac1{\sqrt h}, \qquad h>0$$
+
+As $h\to 0^+$, this goes to $+\infty$. There is no finite right derivative, and there is certainly no two-sided derivative because $h<0$ is not allowed.
+
+So near a boundary point, the domain restricts which nearby points you can use.
+
+---
+
+### 4. Why open sets avoid this
+
+If $U\subset\mathbb R^n$ is open and $a\in U$, then there exists a small ball around $a$ contained in $U$.
+
+That means:
+
+* you can perturb $a$ a little
+* in every direction
+* and still remain inside the domain
+
+That is exactly what differential calculus wants.
+
+So open sets are not chosen because closed sets are “bad,” but because open sets guarantee that **every point is an interior point**.
+
+---
+
+### 5. What breaks in theorems?
+
+Many standard theorems are really statements about interior behavior.
+
+#### Mean Value Theorem
+
+A common form says:
+
+* $f$ continuous on $[a,b]$
+* differentiable on $(a,b)$
+
+Then there exists $c\in(a,b)$ such that
+
+$$f'(c)=\frac{f(b)-f(a)}{b-a}$$
+
+Notice the pattern:
+
+* **closed interval** for continuity
+* **open interval** for differentiability
+
+Why? Because differentiation is only needed in the interior. At the endpoints $a,b$, two-sided differentiability is not expected.
+
+So textbooks already treat boundary points differently.
+
+---
+
+### 6. In several variables the issue is even clearer
+
+Suppose $f$ is defined on the closed half-space
+
+$$H={x\in\mathbb R^n:x_1\ge 0}$$
+
+At a boundary point $a$ with $a_1=0$, you cannot move in the direction $(-1,0,\dots,0)$ even a little, because that leaves the domain.
+
+So if you want differentiability at $a$ in the usual Fréchet sense, you run into a conceptual issue:
+
+* ordinary differentiability wants approximation for **all small vectors** $h$
+* but the function is only defined for those $h$ with $a+h\in H$
+
+So some directions are missing.
+
+That is why standard multivariable calculus likes open domains.
+
+---
+
+### 7. Does differentiability literally “break” on closed sets?
+
+Not on the whole set. More accurately:
+
+* at **interior points** of a closed set, nothing breaks
+* at **boundary points**, the ordinary definition becomes awkward or must be modified
+
+You then have choices:
+
+#### Option A: only talk about differentiability on the interior
+
+For $f:[0,1]\to\mathbb R$, say $f$ is differentiable on $(0,1)$.
+
+#### Option B: use one-sided derivatives at the boundary
+
+At $0$, use the right derivative; at $1$, use the left derivative.
+
+#### Option C: extend the function to an open neighborhood
+
+Sometimes we say $f$ is differentiable at a boundary point if it agrees near that point with some differentiable function on an open set.
+
+But this is extra machinery. Open sets avoid the need for these special treatments.
+
+---
+
+### 8. A useful distinction: continuity vs differentiability
+
+Continuity does **not** need openness in the same way.
+
+If $f:A\to\mathbb R$, continuity at $a\in A$ only cares about points of $A$ approaching $a$. That works for any subset $A$.
+
+But differentiability is stronger: it wants a linear approximation based on small changes around the point, and that is most natural when the domain contains a full neighborhood.
+
+So:
+
+* **continuity** works naturally on arbitrary subsets
+* **differentiability** works most naturally on open subsets
+
+---
+
+### 9. Best mental picture
+
+A boundary point of a closed set is like standing at the edge of a cliff.
+
+* At an interior point, you can step a little in any direction.
+* At a boundary point, some directions are blocked.
+
+Differential calculus likes points where all small moves are allowed.
+That is why open sets are the default setting.
+
+---
+
+### 10. Final answer in one sentence
+
+Closed sets do **not** destroy calculus, but at their boundary points the usual local, two-sided definitions of differentiation and many standard theorems no longer apply cleanly, so open sets are used because they guarantee every point has room around it.
+
+If you want, I can next show:
+
+1. a rigorous comparison of derivative on $(a,b)$ vs $[a,b]$, or
+2. why the Mean Value Theorem uses a closed interval for continuity but an open interval for differentiability.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Computational Learning Theory
