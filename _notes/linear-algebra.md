@@ -19,6 +19,19 @@ date: 2024-11-01
 ## Vector Space
 
 <div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Field)</span></p>
+
+A **field** is a set $\mathbb{T}$ with two **commutative** binary operations $+$ and $\cdot$ such that:
+
+1. $(\mathbb{T},+)$ is an **abelian group** (neutral element is $0$; inverse of $a$ is $-a$).
+2. $(\mathbb{T}\setminus{0},\cdot)$ is an **abelian group** (neutral element is $1$; inverse of $a\neq 0$ is $a^{-1}$).
+3. **Distributivity:** for all $a,b,c\in \mathbb{T}$,
+
+   $$a\cdot(b+c)=a\cdot b+a\cdot c$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector Space)</span></p>
 
 Let $\mathbb{T}$ be a **field** with neutral elements $0$ (for addition) and $1$ (for multiplication).
@@ -40,19 +53,6 @@ Elements of $V$ are called **vectors**, and elements of $\mathbb{T}$ are called 
 
 </div>
 
-<div class="math-callout math-callout--definition" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Field)</span></p>
-
-A **field** is a set $\mathbb{T}$ with two **commutative** binary operations $+$ and $\cdot$ such that:
-
-1. $(\mathbb{T},+)$ is an **abelian group** (neutral element is $0$; inverse of $a$ is $-a$).
-2. $(\mathbb{T}\setminus{0},\cdot)$ is an **abelian group** (neutral element is $1$; inverse of $a\neq 0$ is $a^{-1}$).
-3. **Distributivity:** for all $a,b,c\in \mathbb{T}$,
-
-   $$a\cdot(b+c)=a\cdot b+a\cdot c$$
-
-</div>
-
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Examples of vector spaces)</span></p>
 
@@ -70,7 +70,7 @@ A **field** is a set $\mathbb{T}$ with two **commutative** binary operations $+$
 * Vectors are matrices.
 * Addition and scalar multiplication are **entrywise**:
   
-  $(A+B)*{ij}=A*{ij}+B_{ij}, \quad (\alpha A)*{ij}=\alpha A*{ij}$
+  $$(A+B)_{ij}=A_{ij}+B_{ij}, \quad (\alpha A)_{ij}=\alpha A_{ij}$$
 
 ### 3) All real polynomials in one variable $x$ (denoted $\mathcal P$)
 
@@ -96,7 +96,6 @@ q(x)=b_nx^n+b_{n-1}x^{n-1}+\cdots+b_1x+b_0,$$
 * Additive inverse:
   
   $$-p(x)=(-a_n)x^n+(-a_{n-1})x^{n-1}+\cdots+(-a_0)$$
-  
 
 ### 5) All real functions $f:\mathbb{R}\to\mathbb{R}$ (denoted $\mathcal F$)
 
@@ -151,7 +150,7 @@ satisfying:
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{R}^n$)</span></p>
 
 For vectors
@@ -197,7 +196,7 @@ satisfying:
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\mathbb{C}^n$)</span></p>
 
 For
@@ -307,7 +306,7 @@ Every finite-dimensional inner product space admits an orthonormal basis.
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Uniqueness of dot product form)</span></p>
 
 If $\lbrace e_i \rbrace$ is orthonormal, then
@@ -403,7 +402,7 @@ there exist norms which do **not** arise from any inner product.
 
 ### Example of a Non–Inner-Product Norm
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ell^1$-norm on $\mathbb{R}^n$)</span></p>
 
 For $x = (x_1,\dots,x_n) \in \mathbb{R}^n$, define
@@ -481,7 +480,7 @@ All norms on a finite-dimensional vector space are equivalent.
 
 ### Example: A Classic Banach Space
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ell^2$ space)</span></p>
 
 Let
@@ -510,6 +509,499 @@ such that
 $$d(x,y) = \lvert f(x) - f(y)\rvert  \quad \text{for all } x,y \in M.$$
 
 </div>
+
+
+## Dual Space and Trace
+
+## 1. Big picture
+
+This chapter answers a natural question:
+
+> A matrix depends on a basis, so why does the **trace** (sum of diagonal entries) make sense independently of basis?
+
+The answer is to define trace **intrinsically**, without coordinates. To do that, the chapter introduces two major constructions:
+
+* the **tensor product** $V \otimes W$
+* the **dual space** $V^\vee$
+
+Then it shows that for finite-dimensional spaces,
+
+$$V^\vee \otimes W \cong \mathrm{Hom}(V,W)$$
+
+so linear maps can be viewed as tensors. In particular, for $T:V\to V$, the trace comes from the natural **evaluation map** $V^\vee \otimes V \to k$. 
+
+---
+
+## 2. Tensor product $V \otimes W$
+
+## 2.1 Motivation
+
+We already know:
+
+$$\dim(V \oplus W)=\dim V+\dim W$$
+
+But sometimes we want a real “product” of vector spaces whose dimension multiplies:
+
+$$\dim(V \otimes W)=\dim V \cdot \dim W$$
+
+The motivating example in the chapter is that if
+
+* $V$ is the space of quadratic polynomials in $x$,
+* $W$ is the space of linear polynomials in $y$,
+
+then instead of storing pairs $(f(x),g(y))$, we want a space of products like
+
+$$4x^2y+5xy+y+3$$
+
+which behaves like a 2-variable polynomial space. This is the role of the tensor product. 
+
+---
+
+## 2.2 Definition
+
+For vector spaces $V,W$ over the same field $k$, the **tensor product** $V\otimes_k W$ is generated by formal symbols $v\otimes w$, subject to the relations
+
+$$(v_1+v_2)\otimes w = v_1\otimes w + v_2\otimes w$$
+
+$$v\otimes (w_1+w_2)=v\otimes w_1 + v\otimes w_2$$
+
+$$(c v)\otimes w = v\otimes (c w)$$
+
+Scalars can move through the tensor wall:
+
+$$c(v\otimes w)=(cv)\otimes w=v\otimes (cw)$$
+
+An element of the form $v\otimes w$ is called a **pure tensor**. General elements of $V\otimes W$ are **sums** of pure tensors. 
+
+---
+
+## 2.3 Important warning
+
+Not every element of $V\otimes W$ is a single pure tensor.
+
+That is, many tensors are sums like
+
+$$\xi_1\otimes w_1+\xi_2\otimes w_2+\cdots$$
+
+and cannot be factored into one $v\otimes w$.
+
+The chapter emphasizes this with the example
+
+$$\mathbb R[x]\otimes_{\mathbb R}\mathbb R[y]=\mathbb R[x,y]$$
+
+A two-variable polynomial does **not** always factor as $f(x)g(y)$, but it can always be written as a sum of monomials $x^a\otimes y^b$. 
+
+---
+
+## 2.4 Basis of a tensor product
+
+If
+
+* $e_1,\dots,e_m$ is a basis of $V$,
+* $f_1,\dots,f_n$ is a basis of $W$,
+
+then a basis of $V\otimes W$ is
+
+$$e_i\otimes f_j \quad (1\le i\le m,;1\le j\le n)$$
+
+Therefore,
+
+$$\dim(V\otimes W)= (\dim V)(\dim W)$$
+
+So the tensor product really behaves like a multiplicative version of combining spaces. 
+
+---
+
+## 2.5 Concrete computation
+
+If $V$ has basis $e_1,e_2$, $W$ has basis $f_1,f_2$, and
+
+v=3e_1+4e_2,\qquad w=5f_1+6f_2,
+
+then
+
+$$v\otimes w=(3e_1+4e_2)\otimes(5f_1+6f_2)$$
+
+expands by bilinearity to
+
+15(e_1\otimes f_1)+20(e_2\otimes f_1)+18(e_1\otimes f_2)+24(e_2\otimes f_2).
+
+This is the tensor-product analogue of multiplying out brackets. 
+
+---
+
+## 2.6 Key intuition
+
+Think of $\otimes$ as a **wall**:
+
+* it keeps the two vector spaces conceptually separate,
+* but scalars can pass through.
+
+Also, $V\otimes W$ depends only on the spaces $V$ and $W$, not on any relationship between them. Even if $V=W$, in general
+
+$$v\otimes 1 \ne 1\otimes v$$
+
+So tensor product is content-agnostic: it is a formal construction, not identification. 
+
+---
+
+# 3. Dual space $V^\vee$
+
+## 3.1 Definition
+
+For a vector space $V$ over $k$, the **dual space**
+
+$$V^\vee$$
+
+is the vector space of all linear maps
+
+$$V \to k$$
+
+Its elements are called **linear functionals**. Addition and scalar multiplication are pointwise. 
+
+---
+
+## 3.2 Concrete interpretation
+
+If $V=\mathbb R^3$, vectors can be viewed as column vectors:
+
+$$v=\begin{bmatrix}2\\5\\9\end{bmatrix}$$
+
+A linear functional $f:V\to \mathbb R$ can be viewed as a row vector:
+
+$$f=\begin{bmatrix}3&4&5\end{bmatrix}$$
+
+Then
+
+$$
+f(v)=
+\begin{bmatrix}3&4&5\end{bmatrix}
+\begin{bmatrix}2\5\9\end{bmatrix}
+=71
+$$
+
+So dual vectors act on vectors by “row times column.” 
+
+---
+
+## 3.3 Dual basis
+
+If $V$ has basis $e_1,\dots,e_n$, then define $e_1^\vee,\dots,e_n^\vee$ by
+
+$$
+e_i^\vee(e_j)=
+\begin{cases}
+1,& i=j,\\
+0,& i\ne j
+\end{cases}
+$$
+
+These are the **dual basis vectors**.
+
+Interpretation: $e_i^\vee(v)$ picks out the coefficient of $e_i$ when $v$ is written in the basis $e_1,\dots,e_n$. The set
+
+$$e_1^\vee,\dots,e_n^\vee$$
+
+forms a basis of (V^\vee). Therefore,
+
+$$\dim V^\vee = \dim V$$
+
+for finite-dimensional $V$. 
+
+---
+
+## 3.4 Example
+
+If
+
+$$f=3e_1^\vee+4e_2^\vee+5e_3^\vee$$
+
+then for example
+
+$$f(e_1)=3e_1^\vee(e_1)+4e_2^\vee(e_1)+5e_3^\vee(e_1)=3$$
+
+So the notation behaves exactly as expected: the coefficients of the dual-basis expansion tell you the images of basis vectors. 
+
+---
+
+## 3.5 Is $V \cong V^\vee$?
+
+Yes, for finite-dimensional spaces they are isomorphic because they have the same dimension.
+
+But the chapter makes a very important point:
+
+> The isomorphism $V\to V^\vee$ is **not natural** in general.
+
+Why not? Because the identification
+
+$$e_i \mapsto e_i^\vee$$
+
+depends on the chosen basis.
+
+If two people choose different bases of the same vector space, they generally get **different** identifications $V\to V^\vee$. So although $V\cong V^\vee$, there is usually no canonical way to say a vector *is* a covector unless extra structure is given. 
+
+This is one of the most important conceptual points in the chapter.
+
+---
+
+# 4. Why $V^\vee \otimes W$ represents linear maps $V\to W$
+
+## 4.1 Goal
+
+For finite-dimensional vector spaces $V$ and $W$,
+
+$$V^\vee\otimes W$$
+
+can be interpreted as the space of linear maps from $V$ to $W$. In other words,
+
+$$V^\vee\otimes W \cong \mathrm{Hom}(V,W)$$
+
+This is the central structural result of the chapter. 
+
+---
+
+## 4.2 Intuition
+
+Suppose $\dim V=3$ and $\dim W=5$. Then a linear map $V\to W$ is like a $5\times 3$ matrix, so the space of such maps should have dimension (15).
+
+Meanwhile,
+
+$$\dim(V^\vee\otimes W)= (\dim V^\vee)(\dim W)=3\cdot 5=15$$
+
+So the dimensions match, and the tensor product is the right candidate. 
+
+---
+
+## 4.3 How a tensor gives a linear map
+
+Take a tensor such as
+
+$$\xi_1\otimes w_1+\cdots+\xi_m\otimes w_m \in V^\vee\otimes W$$
+
+Each $\xi_i$ is a functional $V\to k$, so if you plug in $v\in V$, each $\xi_i(v)$ is a scalar. Hence define
+
+$$v \mapsto \xi_1(v)w_1+\cdots+\xi_m(v)w_m$$
+
+This gives an element of $W$, and the map is linear. So every tensor naturally defines a linear map $V\to W$. 
+
+---
+
+## 4.4 The theorem
+
+Define
+
+$$\Psi: V^\vee\otimes W \to \mathrm{Hom}(V,W)$$
+
+by
+
+$$\Psi(\xi_1\otimes w_1+\cdots+\xi_m\otimes w_m)(v) = \xi_1(v)w_1+\cdots+\xi_m(v)w_m$$
+
+Then $\Psi$ is an **isomorphism of vector spaces**. So every linear map $V\to W$ can be represented uniquely as an element of $V^\vee\otimes W$. 
+
+---
+
+## 4.5 Proof idea
+
+The proof in the chapter has two steps.
+
+### Step 1: Surjectivity
+
+Take any $T:V\to W$. If $e_1,\dots,e_n$ is a basis of $V$, write
+
+$$T(e_i)=w_i$$
+
+Then the tensor
+
+$$e_1^\vee\otimes w_1+\cdots+e_n^\vee\otimes w_n$$
+
+maps under $\Psi$ to $T$. So every linear map has at least one representation. 
+
+### Step 2: Dimension count
+
+We know
+
+$$\dim(V^\vee\otimes W)=\dim V \cdot \dim W$$
+
+Also $\mathrm{Hom}(V,W)$ has the same dimension, because linear maps $V\to W$ are represented by $(\dim W)\times(\dim V)$ matrices. Since $\Psi$ is surjective between spaces of equal dimension, it is an isomorphism. 
+
+---
+
+## 4.6 Concrete matrix example
+
+If $V=\mathbb R^2$ with basis $e_1,e_2$, and
+
+$$
+T=
+\begin{bmatrix}
+1 & 2\\
+3 & 4
+\end{bmatrix},
+$$
+
+then the corresponding tensor is
+
+$$
+e_1^\vee\otimes e_1
++2e_2^\vee\otimes e_1
++3e_1^\vee\otimes e_2
++4e_2^\vee\otimes e_2.
+$$
+
+The nice part is that although this expression changes with basis, the underlying tensor in $V^\vee\otimes V$ is basis-independent. 
+
+---
+
+# 5. Trace
+
+## 5.1 Coordinate-free definition
+
+For a finite-dimensional vector space $V$, a linear map $T:V\to V$ is an element of
+
+$$\mathrm{Hom}(V,V)\cong V^\vee\otimes V$$
+
+There is also a natural **evaluation map**
+
+$$\mathrm{ev}: V^\vee\otimes V \to k$$
+
+defined on pure tensors by
+
+$$f\otimes v \mapsto f(v)$$
+
+Compose the isomorphism $\mathrm{Hom}(V,V)\cong V^\vee\otimes V$ with evaluation. The resulting scalar is **the trace** of $T$. 
+
+So:
+
+$$\operatorname{Tr}(T)=\mathrm{ev}(\text{tensor corresponding to }T)$$
+
+This is the intrinsic definition.
+
+---
+
+## 5.2 Why this becomes “sum of diagonal entries”
+
+Using the earlier example
+
+$$
+T=
+\begin{bmatrix}
+1 & 2\\
+3 & 4
+\end{bmatrix},
+$$
+
+its tensor is
+
+$$
+e_1^\vee\otimes e_1
++2e_2^\vee\otimes e_1
++3e_1^\vee\otimes e_2
++4e_2^\vee\otimes e_2
+$$
+
+Applying evaluation gives
+
+$$e_1^\vee(e_1)+2e_2^\vee(e_1)+3e_1^\vee(e_2)+4e_2^\vee(e_2) =1+0+0+4=5$$
+
+So only the “matching” terms survive, and that is exactly why trace equals the sum of diagonal entries. 
+
+---
+
+# 6. Core formulas to memorize
+
+## Tensor product
+
+$$(v_1+v_2)\otimes w=v_1\otimes w+v_2\otimes w$$
+
+$$v\otimes(w_1+w_2)=v\otimes w_1+v\otimes w_2$$
+
+$$(cv)\otimes w=v\otimes(cw)=c(v\otimes w)$$
+
+## Dual basis
+
+$$e_i^\vee(e_j)=\delta_{ij}$$
+
+## Main isomorphism
+
+$$V^\vee\otimes W \cong \mathrm{Hom}(V,W)$$
+
+given by
+
+$$\xi\otimes w \mapsto (v\mapsto \xi(v)w).$$
+
+## Trace
+
+$$
+\operatorname{Tr}(T)=\mathrm{ev}(T)
+\quad\text{under}\quad
+\mathrm{Hom}(V,V)\cong V^\vee\otimes V
+$$
+
+---
+
+# 7. Most important conceptual takeaways
+
+### 1. Tensor product is not the same as direct sum
+
+* direct sum adds dimensions
+* tensor product multiplies dimensions
+
+### 2. General tensors are sums of pure tensors
+
+Do **not** assume every tensor is a single $v\otimes w$.
+
+### 3. Dual vectors are linear functionals
+
+Elements of $V^\vee$ do not live in $V$; they act on $V$.
+
+### 4. $V\cong V^\vee$ is not usually canonical
+
+The identification depends on basis unless extra structure exists.
+
+### 5. Linear maps are tensors
+
+$$V^\vee\otimes W$$
+
+is the natural home of linear maps $V\to W$.
+
+### 6. Trace is evaluation
+
+Trace is not just a coordinate trick; it comes from a natural map
+
+$$V^\vee\otimes V \to k$$
+
+---
+
+# 8. Problem section: what the chapter wants you to think about
+
+The chapter ends with four deeper problems:
+
+* **11A:** show that trace equals the sum of eigenvalues over an algebraically closed field
+* **11B:** prove
+  $$\operatorname{Tr}(T\otimes S)=\operatorname{Tr}(T)\operatorname{Tr}(S)$$
+  
+* **11C:** prove
+  $$\operatorname{Tr}(T\circ S)=\operatorname{Tr}(S\circ T)$$
+  
+  for compatible maps $T$ and $S$
+* **11D:** a Putnam problem about many highly independent eigenvectors implying the map may be scalar 
+
+These are good indicators of what the author thinks is structurally important about trace.
+
+---
+
+# 9. Ultra-short summary
+
+* $V\otimes W$ is a bilinear product space with basis $e_i\otimes f_j$.
+* $V^\vee$ is the space of linear maps $V\to k$, with dual basis $e_i^\vee$.
+* For finite-dimensional spaces,
+  
+  $$V^\vee\otimes W \cong \mathrm{Hom}(V,W)$$
+  
+* A linear operator $T:V\to V$ can therefore be seen as an element of $V^\vee\otimes V$.
+* Applying evaluation $f\otimes v\mapsto f(v)$ gives $\operatorname{Tr}(T)$.
+* This explains, in a basis-free way, why trace is the sum of diagonal entries. 
+
+---
 
 
 
