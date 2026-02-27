@@ -1507,7 +1507,7 @@ $$\lvert Du\rvert(\Omega) < \infty$$
 
 A very usable equivalent definition is the dual (supremum) formula:
 
-$$\lvert Du\rvert(\Omega) =\sup\lbrace\int_{\Omega} u\mathrm{div}\varphi dx : \varphi\in C_c^1(\Omega;\mathbb{R}^n), \| \varphi\|_\infty\le 1\rbrace$$
+$$\lvert Du\rvert(\Omega) =\sup\lbrace\int_{\Omega} u\mathrm{ div }\varphi dx : \varphi\in C_c^1(\Omega;\mathbb{R}^n), \| \varphi\|_\infty\le 1\rbrace$$
 
 * If $u$ is smooth, then $Du=\nabla u dx$ and
   
@@ -1761,7 +1761,123 @@ Many texts also assume $U_{n+1}\subseteq U_n$ (nestedness). Any Martin-Löf test
 
 
 
+## Computational Learning Theory
 
+* https://en.wikipedia.org/wiki/Computational_learning_theory
+* https://ai.stackexchange.com/questions/20355/what-are-some-resources-on-computational-learning-theory
+* https://stats.stackexchange.com/questions/63077/statistical-learning-theory-vs-computational-learning-theory
+* https://arxiv.org/pdf/2011.04483
+* https://www.amazon.de/-/en/Understanding-Machine-Learning-Theory-Algorithms/dp/1107512824?utm_source=chatgpt.com
+* https://www.amazon.de/-/en/Introduction-Computational-Learning-Theory-Press/dp/0262111934?utm_source=chatgpt.com
+* https://www.amazon.de/-/en/Deep-Learning-Foundations-Taeho-Jo/dp/3031328787?utm_source=chatgpt.com
+* https://www.amazon.de/-/en/Computational-Learning-Theory-Natural-Systems/dp/0262581264?utm_source=chatgpt.com
+* https://www.amazon.de/-/en/Understanding-Machine-Learning-Theory-Algorithms/dp/1107057132?utm_source=chatgpt.com
+* https://www.amazon.de/-/en/Mehryar-Mohri-ebook/dp/B08BT4MJ29?utm_source=chatgpt.com
+* https://www.amazon.de/-/en/Principles-Deep-Learning-Theory-Understanding/dp/1316519333?utm_source=chatgpt.com
+* https://www.jeffreyheinz.net/classes/22F/materials/Valiant2014-Chaps1-2.pdf?utm_source=chatgpt.com
+* https://www.jeffreyheinz.net/classes/18S/materials/Kearns-Vairani-1994-Introduction-to-Computational-Learning-Thoery-Ch01.pdf?utm_source=chatgpt.com
+* https://www.cs.cmu.edu/afs/cs/academic/class/10601-f10/lecture/lec10.pdf?utm_source=chatgpt.com
+* https://www.cs.cmu.edu/~avrim/ML14/?utm_source=chatgpt.com
+* https://www.cs.cmu.edu/~avrim/courses.html?utm_source=chatgpt.com
+* https://openeclass.panteion.gr/modules/document/file.php/PMS152/LEARNING/Anthony%20Martin%2C%20Bartlett%20Peter%20L.%20%282009%29%20--%20Neural%20Network%20Learning_%20Theoretical%20Foundations.pdf?utm_source=chatgpt.com
+* https://dblp.uni-trier.de/rec/books/daglib/0041035.html?utm_source=chatgpt.com
+* https://api.pageplace.de/preview/DT0400.9780511822902_A23680035/preview-9780511822902_A23680035.pdf?utm_source=chatgpt.com
+* https://deeplearningtheory.com/?utm_source=chatgpt.com
+* https://tor-lattimore.com/downloads/book/book.pdf?utm_source=chatgpt.com
+* https://www.cs.huji.ac.il/~shais/papers/OLsurvey.pdf?utm_source=chatgpt.com
+* https://cesa-bianchi.di.unimi.it/predbook/?utm_source=chatgpt.com
+* https://home.mathematik.uni-freiburg.de/maxwell/coursenotes-mlandml-website.pdf?utm_source=chatgpt.com
+* https://home.ttic.edu/~avrim/MLT22/?utm_source=chatgpt.com
+* https://www.cs.ox.ac.uk/people/varun.kanade/teaching/CLT-MT2024/lectures/CLT%20%28updated%29.pdf?utm_source=chatgpt.com
+* https://people.mpi-inf.mpg.de/~mehlhorn/SeminarEvolvability/ValiantLearnable.pdf?utm_source=chatgpt.com
+* https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/understanding-machine-learning-theory-algorithms.pdf?utm_source=chatgpt.com
+* https://cs.nyu.edu/~mohri/mlbook/?utm_source=chatgpt.com
+* https://rl.uni-freiburg.de/teaching/ws20/deeplearning?utm_source=chatgpt.com
+* https://www.cambridge.org/eg/universitypress/subjects/computer-science/pattern-recognition-and-machine-learning/understanding-machine-learning-theory-algorithms?format=HB&isbn=9781107057135&utm_source=chatgpt.com
+* https://www.cambridge.org/de/universitypress/subjects/physics/statistical-physics/principles-deep-learning-theory-effective-theory-approach-understanding-neural-networks?format=HB&isbn=9781316519332
+* https://www.cambridge.org/core/books/abs/understanding-machine-learning/online-learning/A43CEEF3F7F18953B592C983087C8A36?utm_source=chatgpt.com
+* https://www.cambridge.org/core/books/prediction-learning-and-games/A05C9F6ABC752FAB8954C885D0065C8F?utm_source=chatgpt.com
+* https://assets.cambridge.org/97811084/86828/frontmatter/9781108486828_frontmatter.pdf?utm_source=chatgpt.com
+* https://cdn.aaai.org/AAAI/1990/AAAI90-163.pdf?utm_source=chatgpt.com
+* https://dokumen.pub/mehryar-mohri-afshin-rostamizadeh-and-ameet-talwalkar-foundations-of-machine-learning-second-edition-the-mit-press-cambridge-ma-2018-504-pp-cdn-9653-hardback-isbn-9780262039406-2nbsped-9780262039406.html?utm_source=chatgpt.com
+* https://dokumen.pub/theoretical-machine-learning-lecture-notes-princeton-cos511.html?utm_source=chatgpt.com
+* https://dokumen.pub/understanding-machine-learning-from-theory-to-algorithms-1nbsped-9781107057135.html?utm_source=chatgpt.com
+* https://dokumen.pub/neural-network-learning-theoretical-foundations.html?utm_source=chatgpt.com
+* https://dokumen.pub/prediction-learning-and-games-9780521841085-9780511189951-0511189958-0521841089-9780511546921-0511546920.html?utm_source=chatgpt.com
+* https://dokumen.pub/understanding-machine-learning-9781107057135-1107057132-w-5259393.html?utm_source=chatgpt.com
+* https://dlib.hust.edu.vn/server/api/core/bitstreams/3293054a-2c5f-4c97-bb14-b7c891e16c90/content
+* https://svivek.com/teaching/lectures/slides/colt/agnostic-learning.pdf?utm_source=chatgpt.com
+* https://ece.iisc.ac.in/~aditya/E1245_Online_Prediction_Learning_F2018/lattimore-szepesvari18bandit-algorithms.pdf?utm_source=chatgpt.com
+* https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/?utm_source=chatgpt.com
+* https://www.cs.huji.ac.il/~shais/Advanced2011/Online.pdf?utm_source=chatgpt.com
+* https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/copy.html?utm_source=chatgpt.com
+* https://people.seas.harvard.edu/~valiant/PAC-%20Summary.pdf?utm_source=chatgpt.com
+* https://api.pageplace.de/preview/DT0400.9780511189951_A23689971/preview-9780511189951_A23689971.pdf?utm_source=chatgpt.com
+* https://api.pageplace.de/preview/DT0400.9781108687492_A49236430/preview-9781108687492_A49236430.pdf?utm_source=chatgpt.com
+* https://github.com/yanshengjia/ml-road/blob/master/resources/Foundations%20of%20Machine%20Learning%20%282nd%20Edition%29.pdf?utm_source=chatgpt.com
+* https://kyl.neocities.org/books/%5BTEC%20ROB%5D%20the%20principles%20of%20deep%20learning%20theory.pdf?utm_source=chatgpt.com
+* https://www.stat.berkeley.edu/~bartlett/nnl/index.html?utm_source=chatgpt.com
+* https://people.eecs.berkeley.edu/~nika/pubs/nhaghtal_cs_2018.pdf?utm_source=chatgpt.com
+* https://simons.berkeley.edu/sites/default/files/docs/5318/slides.pdf?utm_source=chatgpt.com
+* https://www.zvab.com/products/isbn/9780262111935?ref_=pd_offer-1-d_0&utm_source=chatgpt.com
+* https://virtualmmx.ddns.net/gbooks/BanditAlgorithms.pdf?utm_source=chatgpt.com
+* https://virtualmmx.ddns.net/gbooks/UnderstandingMachineLearning.pdf?utm_source=chatgpt.com
+* https://d1b10bmlvqabco.cloudfront.net/attach/jl2b00mpen3au/jl2b0jnvzgn3hf/jntb4o0banvp/CMSC422PACandVC.pdf?utm_source=chatgpt.com
+* https://www.ekzhang.com/assets/pdf/CS_228_Notes.pdf?utm_source=chatgpt.com
+* https://books.google.de/books?hl=de&id=ttJkAwAAQBAJ&printsec=frontcover&source=gbs_atb&utm_source=chatgpt.com#v=onepage&q&f=false
+* https://books.google.de/books?id=QVA8ugEACAAJ&utm_source=chatgpt.com
+* https://arxiv.org/abs/2106.10165?utm_source=chatgpt.com
+* https://arxiv.org/pdf/2511.08791
+* https://www.semanticscholar.org/paper/Online-Learning-and-Online-Convex-Optimization-Shalev-Shwartz/bcce96a2a074448953fc61a29a84afbdfc8db55a?utm_source=chatgpt.com
+* https://cseweb.ucsd.edu/classes/fa12/cse291-b/vcnotes.pdf?utm_source=chatgpt.com
+* https://www.springerprofessional.de/en/deep-learning-foundations/25846382?utm_source=chatgpt.com
+* https://books.google.at/books?hl=de&id=vCA01wY6iywC&printsec=copyright&utm_source=chatgpt.com#v=onepage&q&f=false
+* https://www.scribd.com/document/907458671/Foundations-of-Machine-Learning-2nd-Edition-Mehryar?utm_source=chatgpt.com
+* https://www.scribd.com/document/718886563/Bandit-Algorithms-Tor-Lattimore-Csaba-Szepesvari-Z-Library?utm_source=chatgpt.com
+* https://www.scribd.com/document/461103850/lattimore-szepesvari18bandit-algorithms-pdf?utm_source=chatgpt.com
+* https://mitpress.mit.edu/9780262039406/foundations-of-machine-learning/?utm_source=chatgpt.com
+* https://direct.mit.edu/books/monograph/2604/chapter-abstract/70331/Index?redirectedFrom=fulltext
+* https://www.cs.cornell.edu/jeh/book.pdf?utm_source=chatgpt.com
+* https://pages.cs.wisc.edu/~dpage/cs760/colt.pdf?utm_source=chatgpt.com
+* https://dl.acm.org/doi/10.5555/2371238?utm_source=chatgpt.com
+* https://dl.acm.org/doi/10.5555/200548?utm_source=chatgpt.com
+* https://dl.acm.org/doi/book/10.5555/1137817?utm_source=chatgpt.com
+* https://www.emerald.com/ftmal/article-abstract/4/2/107/1332161/Online-Learning-and-Online-Convex-Optimization?redirectedFrom=fulltext&utm_source=chatgpt.com
+* https://homepages.cwi.nl/~wmkoolen/MLT_2025/?utm_source=chatgpt.com
+* https://www.medimops.de/deep-learning-foundations-paperback-M03031328817.html?utm_source=chatgpt.com
+* https://www.ebay.co.uk/p/86720448
+* https://www.hlevkin.com/hlevkin/45MachineDeepLearning/ML/Foundations_of_Machine_Learning.pdf?utm_source=chatgpt.com
+* https://freecomputerbooks.com/Neural-Network-Learning-Theoretical-Foundations.html?utm_source=chatgpt.com
+* https://www.d.umn.edu/~rmaclin/cs8751/fall2005/Notes/L17_Computational_Learning_Theory.pdf?utm_source=chatgpt.com
+* https://www.denizalpgoktas.com/pubs/notes/Online_Learning_and_Online_Convex_Optimization.pdf?utm_source=chatgpt.com
+* https://constantinides.net/2024/07/16/notes-on-computational-learning-theory/?utm_source=chatgpt.com
+* https://www.tandfonline.com/doi/full/10.1080/14697688.2015.1080489?utm_source=chatgpt.com
+* https://www.mimuw.edu.pl/~fopss18/PDF/Worrell-lecture-notes.pdf?utm_source=chatgpt.com
+* https://home.ttic.edu/~avrim/MLT22/05-04-Hardness.pdf?utm_source=chatgpt.com
+* https://www.di.ens.fr/appstat/fall-2018/notes/cours_online_learning.pdf?utm_source=chatgpt.com
+* https://bibbase.org/network/publication/lattimore-szepesvri-banditalgorithms-2020?utm_source=chatgpt.com
+* https://www.cs.ox.ac.uk/people/varun.kanade/teaching/CLT-MT2018/lectures/lecture03.pdf?utm_source=chatgpt.com
+* https://www.schaumburg-buch.de/shop/item/9789811682339/foundations-of-deep-learning-von-fengxiang-tao-he-e-book-pdf?utm_source=chatgpt.com
+* https://openurl.ebsco.com/EPDB%3Asrh%3A14%3A54742190/detailv2?id=ebsco%3Adoi%3A10.1561%2F2200000018&sid=ebsco%3Aplink%3Acrawler&utm_source=chatgpt.com&crl=f&link_origin=none
+* https://www.perlego.com/book/4222798/bandit-algorithms-pdf?utm_source=chatgpt.com
+* https://www.exlibris.ch/de/buecher-buch/englische-ebooks/fengxiang-he/foundations-of-deep-learning/id/9789811682339/?srsltid=AfmBOoq-bFjdXIgI2Tk6dQrG5GhcnMHnEwJQbgun9eiFMghEt1sUEo-1&utm_source=chatgpt.com
+* https://www.cs.ubc.ca/~nickhar/W14/?utm_source=chatgpt.com
+* https://nakulgopalan.github.io/cs4641/course/17-computational-learning-theory-annotated.pdf?utm_source=chatgpt.com
+* https://www.overdrive.com/media/103351/prediction-learning-and-games?utm_source=chatgpt.com
+* https://www.ou.edu/content/dam/coe/cs/course-syllabi/fall-2025/CS_4713-5713_Diochnos_Fa25.pdf?utm_source=chatgpt.com
+* https://www.betterworldbooks.com/product/detail/understanding-machine-learning-from-theory-to-algorithms-9781107057135
+* https://www.bibsonomy.org/pow-challenge/?return=https%3A%2F%2Fwww.bibsonomy.org%2Fbibtex%2Fe5571f0a85ff77ab750e5eecc6c45106%3Futm_source%3Dchatgpt.com
+* https://www.bibsonomy.org/pow-challenge/?return=https%3A%2F%2Fwww.bibsonomy.org%2Fbibtex%2F22aaa93082f1d8d95409e4a2383447295%2Fsb3000%3Futm_source%3Dchatgpt.com
+* https://scispace.com/papers/an-introduction-to-computational-learning-theory-59rvusb1xt?utm_source=chatgpt.com
+* https://www.jennwv.com/courses/F11.html?utm_source=chatgpt.com
+* https://portal.mardi4nfdi.de/wiki/Publication%3A3166527?utm_source=chatgpt.com
+* https://www.mdpi.com/2227-7390/13/3/451?utm_source=chatgpt.com
+* https://cs.uwaterloo.ca/~klarson/teaching/W15-486/lectures/22Colt.pdf?utm_source=chatgpt.com
+* https://cdn.bookey.app/files/pdf/book/en/probably-approximately-correct.pdf?utm_source=chatgpt.com
+* https://archive.org/details/neuralnetworklea0000anth?utm_source=chatgpt.com
+* https://books.google.de/books/about/Probably_Approximately_Correct.html?id=NqIWBQAAQBAJ&redir_esc=y
+* https://books.google.de/books?id=SiSwzgEACAAJ&printsec=frontcover&redir_esc=y#v=onepage&q&f=false
+* https://chatgpt.com/share/69a15b52-5108-8011-945a-1a510e913ecb
 
 
 
