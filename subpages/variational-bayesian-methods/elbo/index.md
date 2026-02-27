@@ -61,15 +61,15 @@ Given the approximation $q_\phi(z\mid x)$ we would like to know how good we are 
 
 $$\mathrm{KL}\big(q_\phi(z\mid x)\| p_\theta(z\mid x)\big) = \int q_\phi(z\mid x) \log \frac{q_\phi(z\mid x)}{p(z\mid x)} dz$$
 
-$$= \int q_\phi(z\mid x) \log \frac{q_\phi(z\mid x)}{p(z\mid x)} dz$$
-
 $$= - \int q_\phi(z\mid x) \log \frac{p(z\mid x)}{q_\phi(z\mid x)} dz$$
 
-$$= - \int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)p(x)} dz$$
+$$= - \int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)p(x)} dz \qquad (\text{trick}!!!)$$
 
 $$= - (\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz - \int q_\phi(z\mid x) \log p(x) dz)$$
 
-$$= - \underbrace{\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz}_{\text{ELBO}:=\mathcal L(\phi,\theta;x)} - \log p(x) dz$$
+$$= - \underbrace{\int q_\phi(z\mid x) \log \frac{p(x,z)}{q_\phi(z\mid x)} dz}_{\text{ELBO}:=\mathcal L(\phi,\theta;x)} + \log p(x)$$
+
+$$= -\mathcal L(\phi,\theta;x) + \log p(x)$$
 
 So, ELBO can be rewritten as
 
