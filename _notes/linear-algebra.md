@@ -616,7 +616,7 @@ So the tensor product really behaves like a multiplicative version of combining 
 
 If $V$ has basis $e_1,e_2$, $W$ has basis $f_1,f_2$, and
 
-v=3e_1+4e_2,\qquad w=5f_1+6f_2,
+$$v=3e_1+4e_2,\qquad w=5f_1+6f_2,$$
 
 then
 
@@ -624,7 +624,7 @@ $$v\otimes w=(3e_1+4e_2)\otimes(5f_1+6f_2)$$
 
 expands by bilinearity to
 
-15(e_1\otimes f_1)+20(e_2\otimes f_1)+18(e_1\otimes f_2)+24(e_2\otimes f_2).
+$$15(e_1\otimes f_1)+20(e_2\otimes f_1)+18(e_1\otimes f_2)+24(e_2\otimes f_2)$$
 
 This is the tensor-product analogue of multiplying out brackets. 
 
@@ -1008,3 +1008,266 @@ These are good indicators of what the author thinks is structurally important ab
 
 
 [Jordan Normal Form](/subpages/linear-algebra/jordan-form/)
+
+---
+
+## Eigen-things
+
+This section develops the theory of eigenvalues and eigenvectors, culminating in the Jordan canonical form.
+
+### Why You Should Care
+
+A square matrix $T$ is really a linear map $V \to V$. The simplest such map is multiplication by a scalar $\lambda$, giving a diagonal matrix $\lambda I$. More generally, if we had a basis $e_1, \dots, e_n$ where $T$ just scales each $e_i$ by $\lambda_i$, the matrix would be diagonal:
+
+$$T = \begin{pmatrix} \lambda_1 & 0 & \cdots & 0 \\ 0 & \lambda_2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_n \end{pmatrix}.$$
+
+Computing $T^{100}$ with such a matrix is trivial: $e_i \mapsto \lambda_i^{100} e_i$.
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Getting lucky)</span></p>
+
+Let $V$ be two-dimensional with basis $e_1, e_2$. Consider the map $T: V \to V$ defined by $e_1 \mapsto 2e_1$ and $e_2 \mapsto e_1 + 3e_2$, so
+
+$$T = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix} \quad \text{in basis } e_1, e_2.$$
+
+Rewriting: $e_1 \mapsto 2e_1$ and $e_1 + e_2 \mapsto 3(e_1 + e_2)$. Changing to the basis $e_1, e_1 + e_2$ gives
+
+$$T = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} \quad \text{in basis } e_1, e_1 + e_2.$$
+
+Under a suitable change of basis, the map becomes diagonal.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Assumptions)</span></p>
+
+Most theorems in this section require:
+* **Finite-dimensional** vector spaces $V$,
+* over a field $k$ which is **algebraically closed**.
+
+The definitions work fine without these assumptions.
+
+</div>
+
+### Eigenvectors and Eigenvalues
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Eigenvector and Eigenvalue)</span></p>
+
+Let $T: V \to V$ and $v \in V$ a **nonzero** vector. We say $v$ is an **eigenvector** if $T(v) = \lambda v$ for some $\lambda \in k$ (possibly zero, but $v \neq 0$). The value $\lambda$ is called an **eigenvalue** of $T$.
+
+We abbreviate "$v$ is an eigenvector with eigenvalue $\lambda$" to "$v$ is a $\lambda$-eigenvector".
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Eigenvectors of a $2 \times 2$ matrix)</span></p>
+
+Consider $T = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
+
+* $e_1$ and $e_1 + e_2$ are $2$-eigenvectors and $3$-eigenvectors respectively.
+* $5e_1$ is also a $2$-eigenvector.
+* $7e_1 + 7e_2$ is also a $3$-eigenvector.
+
+</div>
+
+The $\lambda$-eigenvectors together with $\lbrace 0 \rbrace$ form a subspace.
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\lambda$-Eigenspace)</span></p>
+
+For any $\lambda$, the **$\lambda$-eigenspace** is the set of $\lambda$-eigenvectors together with $0$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Eigenvalues need not exist)</span></p>
+
+Let $V = \mathbb{R}^2$ and let $T$ be the map which rotates a vector by $90°$ around the origin. Then $T(v)$ is not a multiple of $v$ for any nonzero $v \in V$.
+
+</div>
+
+However, over algebraically closed fields eigenvalues always exist:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Eigenvalues always exist over algebraically closed fields)</span></p>
+
+Suppose $k$ is an **algebraically closed** field. Let $V$ be a finite-dimensional $k$-vector space. Then if $T: V \to V$ is a linear map, there exists an eigenvalue $\lambda \in k$.
+
+**Proof.** Fix any nonzero $v \in V$. The $n + 1$ vectors $v, T(v), \dots, T^n(v)$ (where $n = \dim V$) cannot be linearly independent, so there exists a nonzero monic polynomial $P$ with $P(T)(v) = 0$. Factor $P(z) = (z - r_1)\cdots(z - r_m)$ over $k$. Then
+
+$$0 = (T - r_1 \mathrm{id}) \circ (T - r_2 \mathrm{id}) \circ \cdots \circ (T - r_m \mathrm{id})(v)$$
+
+so at least one $T - r_i \mathrm{id}$ is not injective, giving an eigenvector. $\square$
+
+</div>
+
+### The Jordan Form
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Jordan Block)</span></p>
+
+A **Jordan block** is an $n \times n$ matrix with $\lambda$ on the diagonal and $1$ on the superdiagonal:
+
+$$J_n(\lambda) = \begin{pmatrix} \lambda & 1 & 0 & \cdots & 0 \\ 0 & \lambda & 1 & \cdots & 0 \\ \vdots & & \ddots & \ddots & \vdots \\ 0 & 0 & \cdots & \lambda & 1 \\ 0 & 0 & \cdots & 0 & \lambda \end{pmatrix}.$$
+
+We allow $n = 1$, so $[\lambda]$ is a Jordan block.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jordan Canonical Form)</span></p>
+
+Let $T: V \to V$ be a linear map of finite-dimensional vector spaces over an algebraically closed field $k$. Then we can choose a basis of $V$ such that the matrix of $T$ is **block-diagonal** with each block being a Jordan block.
+
+Such a matrix is said to be in **Jordan form**. This form is unique up to rearranging the order of the blocks.
+
+</div>
+
+This means $V$ decomposes as a direct sum
+
+$$V = J_1 \oplus J_2 \oplus \cdots \oplus J_m$$
+
+where $T$ acts on each subspace $J_i$ independently. In the simplest case $\dim J_i = 1$, so $J_i$ has a basis element $e$ with $T(e) = \lambda_i e$ (a simple eigenvalue). When $\dim J_i \geq 2$, we get $1$'s above the diagonal ("descending staircases").
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Concrete Jordan form)</span></p>
+
+Let $T: k^6 \to k^6$ be given by
+
+$$T = \begin{pmatrix} 5 & 0 & 0 & 0 & 0 & 0 \\ 0 & 2 & 1 & 0 & 0 & 0 \\ 0 & 0 & 2 & 0 & 0 & 0 \\ 0 & 0 & 0 & 7 & 0 & 0 \\ 0 & 0 & 0 & 0 & 3 & 0 \\ 0 & 0 & 0 & 0 & 0 & 3 \end{pmatrix}.$$
+
+The eigenvectors and eigenvalues: for any $a, b \in k$,
+
+$$T(a \cdot e_1) = 5a \cdot e_1, \quad T(a \cdot e_2) = 2a \cdot e_2, \quad T(a \cdot e_4) = 7a \cdot e_4, \quad T(a \cdot e_5 + b \cdot e_6) = 3[a \cdot e_5 + b \cdot e_6].$$
+
+The element $e_3$ is **not** an eigenvector since $T(e_3) = e_2 + 2e_3$.
+
+</div>
+
+### Nilpotent Maps
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nilpotent map)</span></p>
+
+A map $T: V \to V$ is **nilpotent** if $T^m$ is the zero map for some integer $m$. (Here $T^m$ means "$T$ applied $m$ times".)
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The descending staircase)</span></p>
+
+Let $V = k^{\oplus 3}$ with basis $e_1, e_2, e_3$. The map $T$ sending
+
+$$e_3 \mapsto e_2 \mapsto e_1 \mapsto 0$$
+
+is nilpotent since $T(e_1) = T^2(e_2) = T^3(e_3) = 0$, hence $T^3(v) = 0$ for all $v \in V$. Its matrix is
+
+$$T = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{pmatrix},$$
+
+which is a Jordan block with $\lambda = 0$. The only eigenvalue is $0$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Double staircase)</span></p>
+
+Let $V = k^{\oplus 5}$ with basis $e_1, \dots, e_5$. The map
+
+$$e_3 \mapsto e_2 \mapsto e_1 \mapsto 0 \quad \text{and} \quad e_5 \mapsto e_4 \mapsto 0$$
+
+is nilpotent. It consists of two independent staircases.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Nilpotent Jordan)</span></p>
+
+Let $V$ be a finite-dimensional vector space over an algebraically closed field $k$. Let $T: V \to V$ be a nilpotent map. Then we can write $V = \bigoplus_{i=1}^{m} V_i$ where each $V_i$ has a basis of the form $v_i, T(v_i), \dots, T^{\dim V_i - 1}(v_i)$ for some $v_i \in V_i$, and $T^{\dim V_i}(v_i) = 0$.
+
+Hence: **every nilpotent map can be viewed as independent staircases.**
+
+</div>
+
+The key observation: if $S$ is a nilpotent staircase matrix, then $S + \lambda \mathrm{id}$ is a Jordan block with eigenvalue $\lambda$. This gives the strategy: decompose $V$ into subspaces where $T - \lambda \mathrm{id}$ is nilpotent, then apply Nilpotent Jordan.
+
+### Reducing to the Nilpotent Case
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($T$-invariant subspace)</span></p>
+
+Let $T: V \to V$. A subspace $W \subseteq V$ is called **$T$-invariant** if $T(w) \in W$ for any $w \in W$. In this way, $T$ can be thought of as a map $W \to W$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Indecomposable map)</span></p>
+
+A map $T: V \to V$ is called **indecomposable** if it is impossible to write $V = W_1 \oplus W_2$ where both $W_1$ and $W_2$ are nontrivial $T$-invariant subspaces.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Invariant subspace decomposition)</span></p>
+
+Let $V$ be a finite-dimensional vector space. Given any map $T: V \to V$, we can write
+
+$$V = V_1 \oplus V_2 \oplus \cdots \oplus V_m$$
+
+where each $V_i$ is $T$-invariant, and $T: V_i \to V_i$ is indecomposable for every $i$.
+
+**Proof.** Same as the proof that every integer is a product of primes. If $V$ is not decomposable, we are done. Otherwise write $V = W_1 \oplus W_2$ and repeat on each factor. $\square$
+
+</div>
+
+With this decomposition, consider $T: V_1 \to V_1$ indecomposable. It has an eigenvalue $\lambda_1$, so let $S = T - \lambda_1 \mathrm{id}$, giving $\ker S \neq \lbrace 0 \rbrace$. Since $V_1 = \ker S^N \oplus \operatorname{im} S^N$ for some $N$, and $T$ is indecomposable, we must have $\operatorname{im} S^N = \lbrace 0 \rbrace$ and $\ker S^N = V_1$. Hence $S$ is nilpotent, and since $T$ is indecomposable there is only one staircase. Thus $V_1$ is a Jordan block.
+
+### Algebraic and Geometric Multiplicity
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Geometric and Algebraic Multiplicity)</span></p>
+
+Let $T: V \to V$ be a linear map and $\lambda$ a scalar.
+
+* The **geometric multiplicity** of $\lambda$ is the dimension $\dim V_\lambda$ of the $\lambda$-eigenspace.
+* The **generalized eigenspace** $V^\lambda$ is the subspace of $V$ for which $(T - \lambda \mathrm{id})^n(v) = 0$ for some $n \geq 1$. The **algebraic multiplicity** of $\lambda$ is $\dim V^\lambda$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Eigenspaces via Jordan form)</span></p>
+
+Consider the matrix in Jordan form
+
+$$T = \begin{pmatrix} 7 & 1 & & & & \\ 0 & 7 & & & & \\ & & 9 & & & \\ & & & 7 & 1 & 0 \\ & & & 0 & 7 & 1 \\ & & & 0 & 0 & 7 \end{pmatrix}$$
+
+and let $\lambda = 7$.
+
+* The eigenspace $V_\lambda$ has basis $e_1$ and $e_4$, so the **geometric multiplicity** is $2$.
+* The generalized eigenspace $V^\lambda$ has basis $e_1, e_2, e_4, e_5, e_6$, so the **algebraic multiplicity** is $5$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Geometric and algebraic multiplicity vs Jordan blocks)</span></p>
+
+Assume $T: V \to V$ is written in Jordan form. Let $\lambda$ be a scalar. Then
+
+* The **geometric multiplicity** of $\lambda$ is the number of Jordan blocks with eigenvalue $\lambda$; the eigenspace has one basis element per Jordan block.
+* The **algebraic multiplicity** of $\lambda$ is the sum of the dimensions of the Jordan blocks with eigenvalue $\lambda$; the generalized eigenspace is the direct sum of the corresponding subspaces.
+
+The geometric multiplicity is always $\leq$ the algebraic multiplicity.
+
+</div>
+
+This gives tentative definitions:
+
+* The **trace** is the sum of the eigenvalues, counted with algebraic multiplicity.
+* The **determinant** is the product of the eigenvalues, counted with algebraic multiplicity.
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Diagonalizable)</span></p>
+
+A linear map $T: V \to V$ (where $\dim V$ is finite) is **diagonalizable** if it has a basis $e_1, \dots, e_n$ such that each $e_i$ is an eigenvector. Over an algebraically closed field, $T$ is diagonalizable if and only if for every $\lambda$, the geometric multiplicity equals the algebraic multiplicity.
+
+</div>
