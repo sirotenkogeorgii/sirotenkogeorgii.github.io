@@ -8,6 +8,9 @@ noindex: true
 
 ## Deep Generative Modeling
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Deep Generative Modeling)</span></p>
+
 **Goal of DGM:** 
 * DNN to parameterize a model distribution $p_\phi(x)$, 
 * $\phi$ represents the network’s trainable parameters.
@@ -24,6 +27,8 @@ $$p_{\phi^*}(x) = p_{\text{data}}(x)$$
 * by minimizing a discrepancy $\mathcal{D}(p_{\text{data}},p_\phi)$:
 
 $$\phi^*\in\arg\min_\phi \mathcal{D}(p_{\text{data}},p_\phi)$$
+
+</div>
 
 ### Divergences
 
@@ -59,9 +64,12 @@ All distance metrics between probability distributions are also divergences, but
 </div>
 
 
-## Study notes: DGM setup, training divergences, and modeling challenges
+## DGM Setup, Training Divergences, and Modeling Challenges
 
 ### 1) Mathematical setup (Section 1.1.1)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Mathematical setup)</span></p>
 
 **Data assumption**
 
@@ -79,14 +87,19 @@ All distance metrics between probability distributions are also divergences, but
   
 * Intuition: since $p_{\text{data}}$ is unknown (and you only have samples), you fit $p_\phi$ so it can act as a proxy for the data distribution.
 
-**What “having a generative model” gives you**
+**What "having a generative model" gives you**
 
 * **Sampling:** generate arbitrarily many new samples (e.g., via Monte Carlo methods) from $p_\phi$.
 * **Likelihood / density evaluation:** compute $p_\phi(x')$ (or $\log p_\phi(x')$) for a given point $x'$ *if the model family supports tractable evaluation*.
 
+</div>
+
 ---
 
 ### 2) Training objective via a discrepancy / divergence
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Training objective via a discrepancy / divergence)</span></p>
 
 **General training principle**
 
@@ -98,11 +111,16 @@ All distance metrics between probability distributions are also divergences, but
 
 **Figure intuition**
 
-* You only see samples $x_i$ from $p_{\text{data}}$, and you tune $p_\phi$ to reduce the “gap” $D(p_{\text{data}}, p_\phi)$.
+* You only see samples $x_i$ from $p_{\text{data}}$, and you tune $p_\phi$ to reduce the "gap" $D(p_{\text{data}}, p_\phi)$.
+
+</div>
 
 ---
 
 ### 3) Forward KL divergence and Maximum Likelihood Estimation (MLE)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward KL divergence and Maximum Likelihood Estimation (MLE))</span></p>
 
 **Forward KL definition**
 
@@ -116,14 +134,24 @@ $$
   
   $$D_{\mathrm{KL}}(p_{\text{data}}\lvert p_\phi)\neq D_{\mathrm{KL}}(p_\phi\rvert p_{\text{data}})$$
 
+</div>
+
 #### Mode covering effect (important intuition)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mode covering effect (important intuition))</span></p>
 
 * Minimizing **forward KL** encourages **mode covering**:
 
   * If there is a set (A) with positive data probability $p_{\text{data}}(A)>0$ but the model assigns zero density there ($p_\phi(x)=0$ for $x\in A$), then the integrand contains $\log(p_{\text{data}}(x)/0)=+\infty$ on $A$, hence the KL becomes infinite.
   * **Consequence:** forward KL strongly pressures the model to put probability mass wherever the data has support.
 
+</div>
+
 #### KL decomposition → MLE equivalence
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(KL decomposition → MLE equivalence)</span></p>
 
 Rewrite forward KL:
 
@@ -138,7 +166,10 @@ $$
 - $\mathcal{H}(p_{\text{data}})$ is the **entropy** of the data distribution and does **not** depend on $\phi$.
 - Therefore:
 
-**Lemma (Minimizing KL $\iff$ MLE)**
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Minimizing KL $\iff$ MLE)</span></p>
 
 $$
 \min_\phi D_{\mathrm{KL}}(p_{\text{data}}|p_\phi)
@@ -146,7 +177,12 @@ $$
 \max_\phi \mathbb{E}_{x\sim p_{\text{data}}}[\log p_\phi(x)] \qquad\text{(1.1.2)}
 $$
 
+</div>
+
 #### Empirical MLE objective (what you actually optimize)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Empirical MLE objective (what you actually optimize))</span></p>
 
 Replace the expectation with the sample average (Monte Carlo estimate):
 
@@ -155,14 +191,23 @@ $$\hat{\mathcal{L}}_{\mathrm{MLE}}(\phi) := -\frac{1}{N}\sum_{i=1}^N \log p_\phi
 optimized with stochastic gradients / minibatches.
 Key point: **you never need to evaluate** $p_{\text{data}}(x)$.
 
+</div>
+
 ---
 
 ### 4) Fisher divergence (score discrepancy) and score matching
 
-**Definition (Fisher divergence)**
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fisher Divergence)</span></p>
+
 For distributions $p$ and $q$:
 
 $$D_F(p\mid q) := \mathbb{E}_{x\sim p}\left[\left\|\nabla_x \log p(x) - \nabla_x \log q(x)\right\|_2^2\right] \qquad \text{(1.1.3)}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Fisher divergence (score discrepancy) and score matching)</span></p>
 
 **Core concept: the score**
 
@@ -178,13 +223,18 @@ $$D_F(p\mid q) := \mathbb{E}_{x\sim p}\left[\left\|\nabla_x \log p(x) - \nabla_x
   * If $q(x)\propto \tilde q(x)$, then $\nabla_x \log q(x)=\nabla_x \log \tilde q(x)$.
 * This makes it a natural basis for **score matching** and connects directly to **score-based / diffusion modeling**, where you train a model to match the data score field.
 
+</div>
+
 ---
 
 ### 5) Beyond KL: other divergences
 
-Different divergences encode different notions of “closeness” and can change learning behavior.
+Different divergences encode different notions of "closeness" and can change learning behavior.
 
 #### 5.1) $f$-divergences (Csiszár family)
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($f$-divergence)</span></p>
 
 A broad family:
 
@@ -192,12 +242,21 @@ $$D_f(p\mid q) = \int q(x), f\left(\frac{p(x)}{q(x)}\right)dx, \qquad f(1)=0$$
 
 where $f:\mathbb{R}_+\to\mathbb{R}$ is **convex**. $\text{(1.1.4)}$
 
-**Examples**
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($f$-divergence instances)</span></p>
+
 * **Forward KL:** $f(u)=u\log u \Rightarrow D_f = D_{\mathrm{KL}}(p\mid q)$
 * **Jensen–Shannon (JS):** $f(u)=\tfrac12\Big[u\log u-(u+1)\log\frac{u+1}{2}\Big] \Rightarrow D_f=D_{\mathrm{JS}}(p\mid q)$
 * **Total variation (TV):** $f(u)=\tfrac12\lvert u-1\rvert \Rightarrow D_f=D_{\mathrm{TV}}(p,q)$
 
+</div>
+
 #### 5.2) Explicit forms for JS and TV
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Explicit forms for JS and TV)</span></p>
 
 * **JS divergence**
   
@@ -211,20 +270,35 @@ where $f:\mathbb{R}_+\to\mathbb{R}$ is **convex**. $\text{(1.1.4)}$
 
   Intuition: captures the **largest possible** difference in probability the two distributions can assign to any event $A$.
 
+</div>
+
 #### 5.3) Optimal transport viewpoint: Wasserstein distances
 
-* Unlike $f$-divergences (which compare **density ratios**), **Wasserstein** distances depend on the **geometry of the sample space** and can remain meaningful even if the supports of $p$ and $q$ **do not overlap**.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Wasserstein distances)</span></p>
+
+Unlike $f$-divergences (which compare **density ratios**), **Wasserstein** distances depend on the **geometry of the sample space** and can remain meaningful even if the supports of $p$ and $q$ **do not overlap**.
+
+</div>
 
 ---
 
 ### 6) Challenges in modeling distributions (Section 1.1.2)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenges in modeling distributions)</span></p>
 
 To model a complex data distribution, we can parameterize the probability density function $p_{\text{data}}$ using a neural network with parameters $\phi$, creating a model we denote as $p_\phi$. To model a density $p_\phi(x)$ with a neural network, $p_\phi$ must satisfy:
 
 1. **Non-negativity:** $p_\phi(x)\ge 0$ for all $x$.
 2. **Normalization:** $\int p_\phi(x)dx = 1$.
 
-#### Practical construction via an unnormalized “energy” output
+</div>
+
+#### Practical construction via an unnormalized "energy" output
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical construction via an unnormalized "energy" output)</span></p>
 
 Let the network output a scalar
 
@@ -249,32 +323,47 @@ The denominator is the **normalizing constant / partition function**:
 
 $$Z(\phi) := \int \exp(E_\phi(x'))dx'$$
 
+</div>
+
 #### Central difficulty
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Central difficulty)</span></p>
 
 * In **high dimensions**, computing $Z(\phi)$ (and often its gradients) is typically **intractable**.
 * This intractability is a major motivation for many DGM families: they’re designed to **avoid**, **approximate**, or **circumvent** the cost of evaluating the partition function.
 
+</div>
+
 ---
 
-# Variational Perspective: From VAEs to DDPMs
+## Variational Perspective: From VAEs to DDPMs
 
 ## Big picture
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Big picture)</span></p>
 
 * **Core theme:** VAEs, hierarchical VAEs, and diffusion models can all be viewed as optimizing a **tractable variational lower bound** (a likelihood surrogate) on an otherwise **intractable log-likelihood**.
 * **VAE template (learned encoder + learned decoder):**
 
   * Encoder maps observations → latent distribution.
-  * Decoder maps latents → observation distribution, “closing the loop.”
+  * Decoder maps latents → observation distribution, "closing the loop."
 * **DDPM template (fixed encoder + learned decoder):**
 
-  * The “encoder” is a **fixed forward noising process** mapping data → noise.
+  * The "encoder" is a **fixed forward noising process** mapping data → noise.
   * Training learns a **reverse denoising decoder** that inverts this path step-by-step.
+
+</div>
 
 ---
 
 ## 2.1 Variational Autoencoder (VAE)
 
 ### Why not a plain autoencoder?
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why not a plain autoencoder?)</span></p>
 
 * A standard autoencoder has:
 
@@ -285,12 +374,19 @@ $$Z(\phi) := \int \exp(E_\phi(x'))dx'$$
   * sampling random latent codes usually yields meaningless outputs
   * not a reliable **generative** model
 
+</div>
+
 ### VAE idea (Kingma & Welling, 2013)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(VAE idea (Kingma & Welling, 2013))</span></p>
 
 * Make the latent space **probabilistic + regularized**, so that:
 
   * sampling $z$ from a simple prior produces meaningful outputs
   * the model becomes a true generative model
+
+</div>
 
 ---
 
@@ -298,31 +394,54 @@ $$Z(\phi) := \int \exp(E_\phi(x'))dx'$$
 
 ### Variables
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Variables)</span></p>
+
 * **Observed variable:** $x$ (e.g., an image)
 * **Latent variable:** $z$ (captures hidden factors: shape, color, style, $\dots$)
 
+</div>
+
 ### Prior over latents
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Prior over latents)</span></p>
 
 Typically a simple prior, e.g.
 
 $$z \sim p(z) = \mathcal N(0, I)$$
 
+</div>
+
 ### Decoder / generator
 
-Define a conditional likelihood (“decode latents into data”):
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Decoder / generator)</span></p>
+
+Define a conditional likelihood ("decode latents into data"):
 
 $$p_\phi(x \mid z)$$
 
 In practice this is often kept **simple**, e.g. a **factorized Gaussian**, to encourage learning useful latent features rather than memorizing data.
 
+</div>
+
 ### Sampling procedure
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sampling procedure)</span></p>
 
 1. Sample $z \sim p(z)$
 2. Sample $x \sim p_\phi(x \mid z)$
 
+</div>
+
 ---
 
 ## Latent-variable marginal likelihood (why it’s hard)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Latent-variable marginal likelihood (why it’s hard))</span></p>
 
 A VAE defines the data likelihood via marginalization:
 
@@ -331,19 +450,29 @@ $$p_\phi(x) = \int p_\phi(x \mid z), p(z) dz$$
 * Ideally, we would learn $\phi$ by maximizing $\log p_\phi(x)$ (MLE).
 * But for expressive nonlinear decoders, the integral over $z$ is **intractable**, so **direct MLE is computationally infeasible**.
 
+</div>
+
 ---
 
 ## Construction of the encoder (inference network)
 
 ### True posterior (intractable)
 
-Given $x$, the “correct” latent posterior is:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(True posterior (intractable))</span></p>
+
+Given $x$, the "correct" latent posterior is:
 
 $$p_\phi(z \mid x) = \frac{p_\phi(x \mid z), p(z)}{p_\phi(x)}$$
 
 * The denominator $p_\phi(x)$ is exactly the intractable marginal likelihood, so **exact inference is prohibitive**.
 
+</div>
+
 ### Variational approximation
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variational approximation)</span></p>
 
 Introduce a learnable approximate posterior (encoder):
 
@@ -351,11 +480,14 @@ $$q_\theta(z \mid x) \approx p_\phi(z \mid x)$$
 
 * This gives a feasible, trainable pathway from $x \to z$.
 
+</div>
+
 ---
 
 ## 2.1.2 Training via the Evidence Lower Bound (ELBO)
 
-### The ELBO bound (Theorem 2.1.1)
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO bound (2.1.1))</span></p>
 
 For any data point $x$:
 
@@ -368,12 +500,17 @@ $$
 =
 
 \underbrace{\mathbb E_{z\sim q_\theta(z\mid x)}\big[\log p_\phi(x\mid z)\big]}_{\text{Reconstruction term}}
- - 
+ -
 \underbrace{D_{\mathrm{KL}} \big(q_\theta(z\mid x)\parallel p(z)\big)}_{\text{Latent regularization}}.
 $$
 
+</div>
+
 
 ### Proof sketch (Jensen’s inequality)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Proof sketch (Jensen’s inequality))</span></p>
 
 Start from:
 
@@ -401,18 +538,28 @@ $$
 
 which rearranges into the ELBO form above.
 
+</div>
+
 ---
 
 ## Interpreting the two ELBO terms
 
 ### 1) Reconstruction term
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reconstruction term)</span></p>
+
 $$\mathbb E_{z\sim q_\theta(z\mid x)}[\log p_\phi(x\mid z)]$$
 
 * Encourages accurate recovery of $x$ from its latent code $z$.
 * Under Gaussian encoder/decoder assumptions, this reduces to the familiar **reconstruction loss** of autoencoders.
 
+</div>
+
 ### 2) Latent KL regularization
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Latent KL regularization)</span></p>
 
 $$D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p(z))$$
 
@@ -421,11 +568,16 @@ $$D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p(z))$$
 
 **Key trade-off:** good reconstructions vs. a well-structured latent space that supports sampling.
 
+</div>
+
 ---
 
 ## Information-theoretic view: ELBO as a divergence bound
 
 ### MLE view
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(MLE view)</span></p>
 
 Maximum likelihood training corresponds to minimizing:
 
@@ -433,7 +585,12 @@ $$D_{\mathrm{KL}}(p_{\text{data}}(x)\parallel p_\phi(x))$$
 
 which measures how well $p_\phi$ approximates the data distribution (but is generally intractable to optimize directly).
 
+</div>
+
 ### Joint-distribution trick (variational framework)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Joint-distribution trick (variational framework))</span></p>
 
 Introduce two joint distributions:
 
@@ -455,7 +612,12 @@ D_{\mathrm{KL}}(q_\theta(x,z)\parallel p_\phi(x,z)).
 $$
 **Intuition:** comparing only marginals over $x$ can hide mismatches that become visible when considering the full joint over $(x,z)$.
 
+</div>
+
 ### Chain rule / decomposition of the joint KL
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Chain rule / decomposition of the joint KL)</span></p>
 
 Expanding the joint KL:
 
@@ -477,7 +639,12 @@ $$
 
 Because the inference error is nonnegative, you get inequality (2.1.2).
 
+</div>
+
 ### ELBO gap equals posterior KL
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO gap equals posterior KL)</span></p>
 
 For each $x$,
 
@@ -490,20 +657,30 @@ $$
 
 So **maximizing ELBO** is exactly **reducing the inference gap**, i.e. pushing the variational posterior toward the true posterior.
 
+</div>
+
 ---
 
 ## Connection forward: hierarchical VAEs → DDPMs (conceptual bridge)
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection forward: hierarchical VAEs → DDPMs (conceptual bridge))</span></p>
+
 * **Hierarchical VAEs:** stack multiple latent layers to capture structure at multiple scales.
-* **DDPMs as “many-layer” variational models:**
+* **DDPMs as "many-layer" variational models:**
 
   * the forward noising process plays the role of a (fixed) encoder that gradually maps data to noise
   * the reverse denoising model is the learned decoder that inverts this mapping step-by-step
 * The shared variational viewpoint: all optimize a **variational bound** on likelihood rather than the exact likelihood directly.
 
+</div>
+
 ---
 
 ## Quick formula sheet (from these pages)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Quick formula sheet (from these pages))</span></p>
 
 * Prior: $p(z)=\mathcal N(0,I)$
 * Decoder: $p_\phi(x\mid z)$
@@ -526,36 +703,42 @@ $$
   
   $$\log p_\phi(x) - \mathcal L_{\text{ELBO}}(x) = D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p_\phi(z\mid x))$$
 
+</div>
 
-## 2.1.3 Gaussian VAE (standard “Gaussian–Gaussian” VAE)
+## 2.1.3 Gaussian VAE (standard "Gaussian–Gaussian" VAE)
 
 ### Setup and notation
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Setup and notation)</span></p>
 
 * Data: $x \in \mathbb{R}^D$
 * Latent: $z \in \mathbb{R}^d$
 * Prior: $p_{\text{prior}}(z)$ (often $\mathcal N(0,I)$)
 
-### Encoder (approximate posterior)
+</div>
 
-The encoder is a diagonal-covariance Gaussian:
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gaussian VAE encoder and decoder)</span></p>
+
+**Encoder (approximate posterior):** The encoder is a diagonal-covariance Gaussian:
 
 $$q_\theta(z\mid x) := \mathcal N \Big(z;\ \mu_\theta(x),\ \mathrm{diag}(\sigma_\theta^2(x))\Big)$$
 
-where
+where $\mu_\theta:\mathbb R^D\to\mathbb R^d$ and $\sigma_\theta:\mathbb R^D\to\mathbb R_+^d$ are deterministic neural-network outputs.
 
-* $\mu_\theta:\mathbb R^D\to\mathbb R^d$
-* $\sigma_\theta:\mathbb R^D\to\mathbb R_+^d$
-  are deterministic neural-network outputs.
-
-### Decoder (likelihood / generator)
-
-The decoder is a Gaussian with **fixed** variance:
+**Decoder (likelihood / generator):** The decoder is a Gaussian with **fixed** variance:
 
 $$p_\phi(x\mid z) := \mathcal N\big(x;\ \mu_\phi(z),\ \sigma^2 I\big)$$
 
 where $\mu_\phi:\mathbb R^d\to\mathbb R^D$ is a neural network and $\sigma>0$ is a (small) constant.
 
+</div>
+
 ### ELBO specialization (\Rightarrow) MSE reconstruction
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO specialization (\Rightarrow) MSE reconstruction)</span></p>
 
 Under this likelihood,
 
@@ -573,17 +756,22 @@ $$
  + D_{\mathrm{KL}} \big(q_\theta(z\mid x),|,p_{\text{prior}}(z)\big).
 $$
 
-**Interpretation:** training becomes “regularized reconstruction”:
+**Interpretation:** training becomes "regularized reconstruction":
 * a **reconstruction loss** (scaled MSE),
 * plus a **KL regularizer** pushing $q_\theta(z\mid x)$ toward the prior.
 
-**Why KL is “easy” here:** for Gaussian $q_\theta$ (and typical Gaussian prior), the KL has a closed form (commonly used in implementations).
+**Why KL is "easy" here:** for Gaussian $q_\theta$ (and typical Gaussian prior), the KL has a closed form (commonly used in implementations).
+
+</div>
 
 ---
 
 ## 2.1.4 Drawbacks of a standard VAE: blurry outputs
 
 ### Why Gaussian VAEs often look blurry (core mechanism)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Gaussian VAEs often look blurry (core mechanism))</span></p>
 
 Consider:
 
@@ -600,9 +788,14 @@ This is a least-squares regression problem in $\mu(z)$. The optimal solution is 
 
 $$\mu^*(z)=\mathbb E_{q_{\text{enc}}(x\mid z)}[x]$$
 
+</div>
+
 ### What is $q_{\text{enc}}(x\mid z)$?
 
-It’s the “encoder-induced posterior on inputs given latents”, obtained via Bayes’ rule:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is $q_{\text{enc}}(x\mid z)$?)</span></p>
+
+It’s the "encoder-induced posterior on inputs given latents", obtained via Bayes’ rule:
 
 $$q_{\text{enc}}(x\mid z)=\frac{q_{\text{enc}}(z\mid x),p_{\text{data}}(x)}{p_{\text{prior}}(z)}$$
 
@@ -614,15 +807,22 @@ $$
 {\mathbb E_{p_{\text{data}}(x)}\big[q_{\text{enc}}(z\mid x)\big]}.
 $$
 
+</div>
+
 ### Where blur comes from (mode averaging)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where blur comes from (mode averaging))</span></p>
 
 If two distinct inputs $x\neq x'$ are mapped to **overlapping regions** in latent space (i.e., supports of $q_{\text{enc}}(\cdot\mid x)$ and $q_{\text{enc}}(\cdot\mid x')$ intersect), then for such a $z$,
 
 $$\mu^*(z)=\mathbb E[x\mid z]$$
 
-**averages across multiple (possibly unrelated) inputs**. Averaging “conflicting modes” produces **non-distinct, blurry** reconstructions/samples.
+**averages across multiple (possibly unrelated) inputs**. Averaging "conflicting modes" produces **non-distinct, blurry** reconstructions/samples.
 
 **Key takeaway:** with a Gaussian decoder + MSE-like training signal, the optimal prediction is a mean, and means of multimodal/ambiguous conditionals look blurry.
+
+</div>
 
 ---
 
@@ -630,9 +830,17 @@ $$\mu^*(z)=\mathbb E[x\mid z]$$
 
 ### Motivation
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(HVAE motivation)</span></p>
+
 Hierarchical VAEs introduce **multiple latent layers** to capture structure at different abstraction levels (coarse $\to$ fine). (Referenced: Vahdat & Kautz, 2020.)
 
+</div>
+
 ### Generative model (top-down hierarchy)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Generative model (top-down hierarchy))</span></p>
 
 Introduce $z_{1:L}=(z_1,\dots,z_L)$. A common top-down factorization:
 
@@ -648,17 +856,27 @@ $$p_{\text{HVAE}}(x)  :=  \int p_\phi(x,z_{1:L}),dz_{1:L}$$
 2. decode downward $z_{L-1}\sim p_\phi(z_{L-1}\mid z_L)$, $\dots$, $z_1\sim p_\phi(z_1\mid z_2)$
 3. generate $x\sim p_\phi(x\mid z_1)$
 
+</div>
+
 ### Inference model (bottom-up, mirrors hierarchy)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Inference model (bottom-up, mirrors hierarchy))</span></p>
 
 A common structured encoder uses a bottom-up Markov factorization:
 
 $$q_\theta(z_{1:L}\mid x)  =  q_\theta(z_1\mid x)\ \prod_{i=2}^{L} q_\theta(z_i\mid z_{i-1})$$
+
+</div>
 
 ---
 
 ## HVAE ELBO (derivation + form)
 
 ### Jensen’s inequality derivation (standard ELBO trick)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Jensen’s inequality derivation (standard ELBO trick))</span></p>
 
 $$
 \log p_{\text{HVAE}}(x)
@@ -683,7 +901,12 @@ p(z_L)\ \prod_{i=2}^L p_\phi(z_{i-1}\mid z_i)\ p_\phi(x\mid z_1)}
 \Bigg]
 $$
 
-### Interpretable decomposition (reconstruction + “adjacent” KLs)
+</div>
+
+### Interpretable decomposition (reconstruction + "adjacent" KLs)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretable decomposition (reconstruction + "adjacent" KLs))</span></p>
 
 A key decomposition shown:
 
@@ -708,15 +931,23 @@ where $\mathbb E_q$ denotes expectation under the encoder-induced joint over $(x
 + $q(z_i\mid z_{i-1})$ vs $p(z_i\mid z_{i+1})$,
 + top level $q(z_L\mid z_{L-1})$ vs $p(z_L)$.
 
-### Observation 2.1.1 (core intuition)
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Observation 2.1.1)</span></p>
 
 Stacking layers lets the model generate **progressively** (coarse $\to$ fine), which helps capture complex high-dimensional structure.
 
+</div>
+
 ---
 
-## Why “just make a flat VAE deeper” is not enough
+## Why "just make a flat VAE deeper" is not enough
 
 ### Limitation 1: the variational family is still too simple
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Limitation 1: the variational family is still too simple)</span></p>
 
 In a standard flat VAE,
 
@@ -726,7 +957,12 @@ is **one unimodal Gaussian** per $x$. Making networks deeper can improve $\mu_\t
 
 If the true posterior $p_\phi(z\mid x)$ is **multi-peaked**, this mismatch loosens the ELBO and weakens inference. Fix needs a **richer posterior class**, not just deeper nets.
 
+</div>
+
 ### Limitation 2: posterior collapse with an expressive decoder
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Limitation 2: posterior collapse with an expressive decoder)</span></p>
 
 Recall the expected objective:
 
@@ -755,7 +991,9 @@ $$q_\theta(z)=\int p_{\text{data}}(x),q_\theta(z\mid x)dx$$
 
 $$q_\theta(z\mid x)=p(z)$$
 
-making $\mathcal I_q(x;z)=0$ and $q_\theta(z)=p(z)$. Then $z$ carries no information about $x$, and changing $z$ doesn’t affect outputs (controllability fails). Making the networks deeper does not automatically remove this “ignore $z$” solution.
+making $\mathcal I_q(x;z)=0$ and $q_\theta(z)=p(z)$. Then $z$ carries no information about $x$, and changing $z$ doesn’t affect outputs (controllability fails). Making the networks deeper does not automatically remove this "ignore $z$" solution.
+
+</div>
 
 ---
 
@@ -763,13 +1001,21 @@ making $\mathcal I_q(x;z)=0$ and $q_\theta(z)=p(z)$. Then $z$ carries no informa
 
 ### What improves conceptually
 
-The HVAE ELBO uses **multiple adjacent KL terms**, so the “information penalty” is:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What improves conceptually)</span></p>
+
+The HVAE ELBO uses **multiple adjacent KL terms**, so the "information penalty" is:
 
 * **distributed across layers**, and
 * **localized** (each layer matches to its neighbor’s conditional prior),
   which comes from the hierarchical latent graph—not simply from depth in the encoder/decoder networks.
 
+</div>
+
 ### Training challenges (as noted)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training challenges (as noted))</span></p>
 
 Even though HVAEs are more expressive, training can be unstable because:
 
@@ -778,41 +1024,57 @@ Even though HVAEs are more expressive, training can be unstable because:
 * overly expressive conditionals can dominate reconstruction and suppress higher-level latents,
   so capacity balancing becomes important.
 
-### Forward pointer
+</div>
 
-The text notes that diffusion models can be seen as inheriting the *progressive hierarchy idea* while sidestepping key HVAE weaknesses by fixing the encoding process and learning the generative reversal.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward pointer)</span></p>
 
-### Notation note
+Diffusion models can be seen as inheriting the *progressive hierarchy idea* while sidestepping key HVAE weaknesses by fixing the encoding process and learning the generative reversal.
 
-To avoid ambiguity, the text mentions deviating from the “$q$=encoder, $p$=generator” convention and instead using $p$ with clear subscripts/superscripts to indicate roles.
+To avoid ambiguity, the text deviates from the "$q$=encoder, $p$=generator" convention and instead uses $p$ with clear subscripts/superscripts to indicate roles.
+
+</div>
 
 ---
 
 
-## Study notes — Variational perspective on DDPMs (Sections 2.2–2.2.3)
+## Variational Perspective on DDPMs
 
-### Big picture: DDPM as a “VAE-like” variational model
+### Big picture: DDPM as a "VAE-like" variational model
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Big picture: DDPM as a "VAE-like" variational model)</span></p>
 
 DDPMs (Denoising Diffusion Probabilistic Models) can be viewed as a variational generative model with two coupled stochastic processes:
 
 * **Forward process (fixed encoder)**: progressively **corrupt** data with Gaussian noise through a *fixed* Markov chain.
 * **Reverse process (learnable decoder)**: learn a Markov chain that **denoises** step-by-step, starting from pure noise.
 
-This “gradual generation” is easier to learn than generating a full sample in one shot.
+This "gradual generation" is easier to learn than generating a full sample in one shot.
+
+</div>
 
 ---
 
-## 1) The two chains and their roles
+## The two chains and their roles
 
 ### 1.1 Forward pass: fixed corruption (encoder)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward pass: fixed corruption (encoder))</span></p>
 
 A Markov chain:
 
 $$x_0 \to x_1 \to \cdots \to x_L$$
 
-where each step injects Gaussian noise via a fixed kernel $p(x_i\mid x_{i-1})$. As $i$ grows, the distribution becomes close to an isotropic Gaussian (“pure noise”).
+where each step injects Gaussian noise via a fixed kernel $p(x_i\mid x_{i-1})$. As $i$ grows, the distribution becomes close to an isotropic Gaussian ("pure noise").
+
+</div>
 
 ### 1.2 Reverse denoising: learnable generation (decoder)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reverse denoising: learnable generation (decoder))</span></p>
 
 A reverse chain:
 
@@ -824,11 +1086,14 @@ $$p_\phi(x_{i-1}\mid x_i)$$
 
 so that starting from $x_L \sim p_{\text{prior}}$, we iteratively denoise to obtain a realistic $x_0$.
 
+</div>
+
 ---
 
-## 2) Forward process (fixed encoder) — formalization
+## Forward process (fixed encoder) — formalization
 
-### 2.1 Fixed Gaussian transitions
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(DDPM forward transition)</span></p>
 
 Each forward step uses a fixed Gaussian transition kernel:
 
@@ -844,14 +1109,22 @@ Then the transition can be written as the intuitive iterative update:
 
 $$x_i = \alpha_i x_{i-1} + \beta_i \varepsilon_i,\qquad \varepsilon_i\sim\mathcal N(0,I)\text{ iid.}$$
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward process (fixed encoder) — formalization)</span></p>
+
 **Interpretation**
 
 * $\alpha_i$ shrinks the previous state.
 * $\beta_i\varepsilon_i$ adds controlled Gaussian noise.
 
+</div>
+
 ---
 
-### 2.2 Perturbation kernel (closed form $x_i\mid x_0$)
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Perturbation kernel — closed form $x_i\mid x_0$)</span></p>
 
 By composing Gaussian transitions, you get a closed-form distribution of $x_i$ given the original data $x_0$:
 
@@ -861,17 +1134,20 @@ where
 
 $$\bar\alpha_i := \prod_{k=1}^i \alpha_k$$
 
-#### Direct sampling form (Eq. 2.2.1)
-
-You can sample $x_i$ in one shot:
+**Direct sampling form (Eq. 2.2.1):**
 
 $$x_i = \bar\alpha_i x_0 + \sqrt{1-\bar\alpha_i^2},\varepsilon,\qquad \varepsilon\sim\mathcal N(0,I)$$
 
 This is the key computational convenience in DDPM training: you don’t need to simulate all intermediate steps to get $x_i$.
 
+</div>
+
 ---
 
 ### 2.3 Prior distribution from the long-run limit
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Prior distribution from the long-run limit)</span></p>
 
 If the noise schedule increases and $L$ is large, the forward marginal converges:
 
@@ -883,9 +1159,14 @@ $$p_{\text{prior}} := \mathcal N(0,I)$$
 
 independent of $x_0$.
 
+</div>
+
 ---
 
 ### 2.4 Continuous-time-like shorthand (identity in distribution)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuous-time-like shorthand (identity in distribution))</span></p>
 
 Often we write (for a fixed index $t$):
 
@@ -897,11 +1178,16 @@ $$x_t \overset{d}{=} \alpha_t x_0 + \sigma_t \varepsilon$$
 
 meaning $x_t$ and $\alpha_t x_0+\sigma_t\varepsilon$ have the same *law* (same density), hence same expectations for test functions.
 
+</div>
+
 ---
 
-## 3) Reverse denoising process (learnable decoder)
+## Reverse denoising process (learnable decoder)
 
 ### 3.1 The core question (Question 2.2.1)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The core question (Question 2.2.1))</span></p>
 
 Can we compute—or approximate—the true reverse transition
 
@@ -909,7 +1195,12 @@ $$p(x_{i-1}\mid x_i)$$
 
 even though $x_i\sim p_i(x_i)$ is complicated?
 
-### 3.2 Why the “obvious” Bayes formula is intractable
+</div>
+
+### 3.2 Why the "obvious" Bayes formula is intractable
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the "obvious" Bayes formula is intractable)</span></p>
 
 Bayes gives:
 
@@ -921,11 +1212,16 @@ $$p_i(x_i)=\int p_i(x_i\mid x_0),p_{\text{data}}(x_0),dx_0$$
 
 (and similarly for $p_{i-1}$), so exact densities are unavailable.
 
+</div>
+
 ---
 
-## 4) The conditioning trick: make the target tractable
+## The conditioning trick: make the target tractable
 
 ### 4.1 Condition on the clean sample
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Condition on the clean sample)</span></p>
 
 Instead of targeting $p(x_{i-1}\mid x_i)$ directly, consider:
 
@@ -940,9 +1236,12 @@ Using:
 
 the conditional reverse kernel becomes Gaussian and has a closed form.
 
+</div>
+
 ---
 
-### 4.2 Lemma 2.2.2 — reverse conditional transition kernel (Eq. 2.2.4)
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(2.2.2 — Reverse conditional transition kernel)</span></p>
 
 $$p(x_{i-1}\mid x_i,x)=\mathcal N \left(x_{i-1};\mu(x_i,x,i),,\sigma^2(i)I\right)$$
 
@@ -951,7 +1250,7 @@ with
 $$
 \mu(x_i,x,i)=
 \frac{\bar\alpha_{i-1}\beta_i^2}{1-\bar\alpha_i^2},x
- + 
+ +
 \frac{(1-\bar\alpha_{i-1}^2)\alpha_i}{1-\bar\alpha_i^2},x_i,
 $$
 
@@ -959,16 +1258,24 @@ and
 
 $$\sigma^2(i)=\frac{1-\bar\alpha_{i-1}^2}{1-\bar\alpha_i^2},\beta_i^2$$
 
-**Intuition**
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition for Lemma 2.2.2)</span></p>
 
 * The posterior mean is a *precision-weighted blend* of the clean signal $x$ and the noisy observation $x_i$.
 * As noise increases, $x_i$ becomes less informative, and the weights shift accordingly.
 
+</div>
+
 ---
 
-## 5) Training objective via KL minimization
+## Training objective via KL minimization
 
-### 5.1 “Ideal” objective (marginal KL; Eq. 2.2.2)
+### 5.1 "Ideal" objective (marginal KL; Eq. 2.2.2)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">("Ideal" objective (marginal KL; Eq. 2.2.2))</span></p>
 
 Introduce a learnable model $p_\phi(x_{i-1}\mid x_i)$ and aim to minimize:
 
@@ -976,11 +1283,12 @@ $$\mathbb E_{p_i(x_i)} \left[ D_{\mathrm{KL}} \big(p(x_{i-1}\mid x_i)\parallel p
 
 But this involves the intractable $p(x_{i-1}\mid x_i)$.
 
+</div>
+
 ---
 
-### 5.2 Theorem 2.2.1 — equivalence between marginal and conditional KL (Eq. 2.2.3)
-
-The key equality:
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(2.2.1 — Equivalence between marginal and conditional KL)</span></p>
 
 $$
 \mathbb E_{p_i(x_i)} \left[ D_{\mathrm{KL}} \big(p(x_{i-1}\mid x_i)\parallel p_\phi(x_{i-1}\mid x_i)\big)\right]
@@ -994,21 +1302,30 @@ $$
 
 where $C$ does not depend on $\phi$.
 
-So **minimizing the intractable marginal KL** is equivalent (up to an additive constant) to **minimizing a tractable conditional KL** with $x\sim p_{\text{data}}$ and $x_i\sim p(x_i\mid x)$.
-
-Also, the minimizer satisfies the mixture identity:
+The minimizer satisfies the mixture identity:
 
 $$p^*(x_{i-1}\mid x_i) = \mathbb E_{p(x\mid x_i)}[p(x_{i-1}\mid x_i,x)] = p(x_{i-1}\mid x_i),\qquad x_i\sim p_i$$
 
-**Interpretation**
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Equivalence interpretation)</span></p>
+
+**Minimizing the intractable marginal KL** is equivalent (up to an additive constant) to **minimizing a tractable conditional KL** with $x\sim p_{\text{data}}$ and $x_i\sim p(x_i\mid x)$.
+
 * The true reverse kernel is a mixture (over possible clean $x$ consistent with $x_i$) of the tractable conditional posteriors.
-* Training on the conditional KL is “the right thing” to recover the marginal reverse.
+* Training on the conditional KL is "the right thing" to recover the marginal reverse.
+
+</div>
 
 ---
 
-## 6) Modeling $p_\phi(x_{i-1}\mid x_i)$ and simplifying the loss
+## Modeling $p_\phi(x_{i-1}\mid x_i)$ and simplifying the loss
 
 ### 6.1 Gaussian parameterization (Eq. 2.2.5)
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gaussian parameterization (Eq. 2.2.5))</span></p>
 
 DDPM assumes each reverse transition is Gaussian:
 
@@ -1017,9 +1334,14 @@ $$p_\phi(x_{i-1}\mid x_i):=\mathcal N\left(x_{i-1};\mu_\phi(x_i,i),\sigma^2(i)I\
 * $\mu_\phi(\cdot,i):\mathbb R^D\to\mathbb R^D$ is a learnable mean function (neural net).
 * $\sigma^2(i)$ is **fixed**, taken from the closed-form posterior variance in Eq. (2.2.4).
 
+</div>
+
 ---
 
 ### 6.2 Diffusion loss as sum of KLs (Eq. 2.2.6)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Diffusion loss as sum of KLs (Eq. 2.2.6))</span></p>
 
 Define (for one clean sample $x_0$):
 
@@ -1032,9 +1354,14 @@ D_{\mathrm{KL}}\big(p(x_{i-1}\mid x_i,x_0)\parallel p_\phi(x_{i-1}\mid x_i)\big)
 \right].
 $$
 
+</div>
+
 ---
 
 ### 6.3 Closed-form simplification to weighted MSE (Eq. 2.2.7)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Closed-form simplification to weighted MSE (Eq. 2.2.7))</span></p>
 
 Since both distributions in the KL are Gaussians with the **same covariance** $\sigma^2(i)I$, the KL reduces to a squared error between means (plus constant):
 
@@ -1048,9 +1375,14 @@ $$
 
 Here $\mu(x_i,x_0,i)$ is the *analytic target* from Lemma 2.2.2.
 
+</div>
+
 ---
 
 ### 6.4 Final DDPM training objective (Eq. 2.2.8)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Final DDPM training objective (Eq. 2.2.8))</span></p>
 
 Average over the data distribution and drop the constant:
 
@@ -1067,32 +1399,52 @@ $$
 
 * You’re effectively training a network to match the **posterior mean** of $x_{i-1}$ given $(x_i,x_0)$, across all noise levels.
 
+</div>
+
 ---
 
-## 7) Practical “mental model” summary
+## Practical "mental model" summary
 
 ### Forward (known, easy)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Forward (known, easy))</span></p>
 
 * Pick schedule $\lbrace\beta_i\rbrace$, compute $\alpha_i=\sqrt{1-\beta_i^2}$, $\bar\alpha_i=\prod_{k\le i}\alpha_k$.
 * Sample noisy state directly:
   
   $$x_i=\bar\alpha_i x_0+\sqrt{1-\bar\alpha_i^2},\varepsilon$$
 
+</div>
+
 ### Reverse (learned, step-by-step)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Reverse (learned, step-by-step))</span></p>
 
 * Start from $x_L\sim\mathcal N(0,I)$.
 * For $i=L,\dots,1$, sample:
   
   $$x_{i-1}\sim \mathcal N\big(\mu_\phi(x_i,i),\sigma^2(i)I\big)$$
 
+</div>
+
 ### Training signal comes from tractable conditioning
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Training signal comes from tractable conditioning)</span></p>
 
 * Instead of computing $p(x_{i-1}\mid x_i)$ (hard), compute $p(x_{i-1}\mid x_i,x_0)$ (Gaussian, closed form).
 * The theorem guarantees this yields an equivalent optimization problem.
 
+</div>
+
 ---
 
-## 8) Key equations to memorize (minimal set)
+## Key equations to memorize (minimal set)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Key equations to memorize (minimal set))</span></p>
 
 1. **Forward step**
    
@@ -1117,32 +1469,45 @@ $$
    
    $$\mathcal L_{\text{DDPM}}(\phi)=\sum_{i=1}^L\frac{1}{2\sigma^2(i)} \mathbb E\left[|\mu_\phi(x_i,i)-\mu(x_i,x_0,i)|_2^2\right]$$
 
+</div>
+
 ---
 
 ## Notation (quick recap)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Notation (quick recap))</span></p>
 
 * Clean data: $x_0 \sim p_{\text{data}}$.
 * Noisy latent at step $i$: $x_i$.
 * Noise: $\epsilon \sim \mathcal N(0, I)$.
 * Noise schedule scalars:
-  * $\alpha_i \in (0,1)$ (per-step “signal keep” factor),
+  * $\alpha_i \in (0,1)$ (per-step "signal keep" factor),
   * $\bar \alpha_i := \prod_{j=1}^i \alpha_j$ (cumulative keep),
   * so $\bar \alpha_i^2$ appears frequently.
 * Forward noising (DDPM forward process):
   
   $$x_i  =  \bar \alpha_i x_0  +  \sqrt{1-\bar \alpha_i^2},\epsilon \qquad \text{(2.2.9)}$$
 
+</div>
+
 ---
 
-# 2.2.4 Practical Choices of Predictions and Loss
+## 2.2.4 Practical Choices of Predictions and Loss
 
 ## A. $\epsilon$-prediction (noise prediction)
 
-### 1) Why reparameterize?
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why reparameterize?)</span></p>
 
-Although DDPM can be written as predicting the **reverse mean** $\mu(\cdot)$ directly (a “mean prediction” view), implementations typically train a network to predict the **added noise** $\epsilon$. This is an *equivalent reparameterization* but is simpler and numerically well-scaled.
+Although DDPM can be written as predicting the **reverse mean** $\mu(\cdot)$ directly (a "mean prediction" view), implementations typically train a network to predict the **added noise** $\epsilon$. This is an *equivalent reparameterization* but is simpler and numerically well-scaled.
 
-### 2) Reverse mean written in terms of $\epsilon$
+</div>
+
+### Reverse mean written in terms of $\epsilon$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reverse mean written in terms of $\epsilon$)</span></p>
 
 Using the forward identity $x_i = \bar\alpha_i x_0 + \sqrt{1-\bar\alpha_i^2}\epsilon$, the reverse mean $\mu(x_i,x_0,i)$ can be rewritten as:
 
@@ -1155,8 +1520,12 @@ x_i - \frac{1-\alpha_i^2}{\sqrt{1-\bar\alpha_i^2}},\epsilon
 \Bigg).
 $$
 
+</div>
 
 ### 3) Parameterizing the mean via a noise network
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parameterizing the mean via a noise network)</span></p>
 
 Define a neural net $\epsilon_\phi(x_i,i)$ and plug it into the same functional form:
 
@@ -1169,8 +1538,12 @@ x_i - \frac{1-\alpha_i^2}{\sqrt{1-\bar\alpha_i^2}},\epsilon_\phi(x_i,i)
 \Bigg).
 $$
 
+</div>
 
 ### 4) Loss becomes an $\ell_2$ noise regression (up to a weight)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Loss becomes an $\ell_2$ noise regression (up to a weight))</span></p>
 
 Because $\mu_\phi$ depends linearly on $\epsilon_\phi$,
 
@@ -1182,11 +1555,16 @@ $$
 
 with a proportionality factor that depends on $i$ (a timestep-dependent weight).
 
-**Interpretation:** the model is a “noise detective” that estimates what noise was added; subtracting it moves $x_i$ toward a cleaner sample; repeating this over steps reconstructs data from pure noise.
+**Interpretation:** the model is a "noise detective" that estimates what noise was added; subtracting it moves $x_i$ toward a cleaner sample; repeating this over steps reconstructs data from pure noise.
+
+</div>
 
 ---
 
 ## B. Simplified training loss (the standard DDPM loss)
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Simplified DDPM loss)</span></p>
 
 In practice one often *drops the timestep-dependent weighting*, giving the widely-used objective:
 
@@ -1202,9 +1580,19 @@ $$
 
 where $x_i = \bar\alpha_i x_0 + \sqrt{1-\bar\alpha_i^2}\epsilon$.
 
-**Key practical reason:** the target noise $\epsilon$ has **unit variance at every step**, so the loss scale stays consistent across timesteps and you avoid exploding/vanishing targets and explicit weighting.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Key practical reason)</span></p>
+
+The target noise $\epsilon$ has **unit variance at every step**, so the loss scale stays consistent across timesteps and you avoid exploding/vanishing targets and explicit weighting.
+
+</div>
 
 ### Optimal solution under $\ell_2$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimal solution under $\ell_2$)</span></p>
 
 Because it’s a least-squares regression problem:
 
@@ -1212,13 +1600,23 @@ $$\epsilon^*(x_i,i) = \mathbb E[\epsilon \mid x_i],\qquad x_i \sim p_i$$
 
 So at optimum, the network predicts the **conditional expectation** of the true noise given the noisy input.
 
+</div>
+
 ---
 
 ## C. Another equivalent parameterization: $x$-prediction (clean prediction)
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($x$-prediction overview)</span></p>
+
 Instead of predicting noise, you can predict the clean sample directly with a network $x_\phi(x_i,i)\approx x_0$.
 
+</div>
+
 ### 1) Reverse mean expressed with a clean predictor
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reverse mean expressed with a clean predictor)</span></p>
 
 Replacing the ground-truth $x_0$ in the reverse mean expression with $x_\phi(x_i,i)$ yields a model of the form:
 
@@ -1233,7 +1631,12 @@ $$
 
 (Exact coefficients depend on the schedule/notation, but the important point is: **$\mu_\phi$** is an affine combination of the predicted clean sample and the current noisy sample.)
 
+</div>
+
 ### 2) Training objective becomes a weighted clean regression
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Training objective becomes a weighted clean regression)</span></p>
 
 Analogously,
 
@@ -1252,7 +1655,12 @@ $$
 
 for some weight (\omega_i).
 
+</div>
+
 ### Optimal solution
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimal solution)</span></p>
 
 Again least squares implies:
 
@@ -1261,7 +1669,12 @@ x^*(x_i,i) = \mathbb E[x_0\mid x_i],\qquad x_i\sim p_i.
 \qquad\text{(2.2.11)}
 $$
 
+</div>
+
 ### 3) Connection between $\epsilon$-pred and $x$-pred
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection between $\epsilon$-pred and $x$-pred)</span></p>
 
 They are linked by the forward noising relation:
 
@@ -1286,11 +1699,16 @@ $$
 
 And conversely you can get $\hat \epsilon$ from $\hat x_0$.
 
+</div>
+
 ---
 
-# 2.2.5 DDPM’s ELBO (variational/MLE grounding)
+## 2.2.5 DDPM’s ELBO (variational/MLE grounding)
 
 ## A. DDPM generative model as a reverse-time latent variable model
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(DDPM as a reverse-time latent variable model)</span></p>
 
 Define the reverse Markov chain:
 
@@ -1304,14 +1722,16 @@ and the marginal model:
 
 $$p_\phi(x_0) := \int p_\phi(x_0,x_{1:L}),dx_{1:L}$$
 
+</div>
 
-## B. Theorem (ELBO decomposition)
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO decomposition)</span></p>
 
 The objective corresponds to an ELBO (lower bound on log-likelihood):
 
 $$
 -\log p_\phi(x_0)
- \le 
+ \le
 -\mathcal L_{\text{ELBO}}(x_0;\phi)
 :=
 \mathcal L_{\text{prior}}(x_0)
@@ -1325,7 +1745,7 @@ $$
 Where:
 
 * **Prior-matching term**
-  
+
   $$
   \mathcal L_{\text{prior}}(x_0)
   :=
@@ -1333,7 +1753,7 @@ Where:
   $$
 
 * **Reconstruction / decoder term**
-  
+
   $$
   \mathcal L_{\text{recon}}(x_0;\phi)
   :=
@@ -1341,7 +1761,7 @@ Where:
   $$
 
 * **Diffusion (sum of per-step KLs)**
-  
+
   $$
   \mathcal L_{\text{diffusion}}(x_0;\phi)
   :=
@@ -1354,15 +1774,23 @@ Where:
   \Big].
   $$
 
-**Proof idea (high level):** Jensen’s inequality, like VAE/HVAE ELBO derivations.
+</div>
 
 ## C. Practical remarks from the text
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical remarks)</span></p>
 
 * $\mathcal L_{\text{prior}}$ can be made small by choosing the noise schedule so that $p(x_L\mid x_0)\approx p_{\text{prior}}$ (typically $\mathcal N(0,I)$).
 * $\mathcal L_{\text{recon}}$ is handled via Monte Carlo estimates in practice.
 * $\mathcal L_{\text{diffusion}}$ enforces that each learned reverse conditional matches the corresponding true reverse conditional.
 
+</div>
+
 ## D. Data processing inequality view
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Data processing inequality view)</span></p>
 
 With latents $z=x_{1:L}$:
 
@@ -1374,20 +1802,28 @@ $$
 
 where $p(x_0,x_{1:L})$ is the forward-process joint.
 
+</div>
+
 ## E. HVAE-style interpretation (important conceptual framing)
 
-* “Encoder” is the **fixed forward noising chain** (not learned).
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(HVAE-style interpretation)</span></p>
+
+* "Encoder" is the **fixed forward noising chain** (not learned).
 * Latents $x_{1:T}$ share the same dimensionality as data.
 * No per-level learned encoder or per-level KL terms like in standard HVAEs.
 * Training decomposes into **well-conditioned denoising subproblems** from large noise to small noise (coarse-to-fine), which stabilizes optimization and tends to yield high sample quality.
 
+</div>
+
 ---
 
-# 2.2.6 Sampling (generation)
+## 2.2.6 Sampling (generation)
 
-Assume the $\epsilon$-prediction model has been trained and frozen: $\epsilon_{\phi^*}$.
 
-## A. Standard DDPM sampling recursion
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(DDPM sampling)</span></p>
 
 Start from Gaussian noise:
 
@@ -1404,7 +1840,7 @@ x_{i-1}
 x_i - \frac{1-\alpha_i^2}{\sqrt{1-\bar\alpha_i^2}},
 \epsilon_{\phi^*}(x_i,i)
 \Big)}_{\mu_{\phi^*}(x_i,i)}
- + 
+ +
 \sigma(i),\epsilon_i,
 \qquad
 \epsilon_i\sim\mathcal N(0,I).
@@ -1413,7 +1849,12 @@ $$
 
 This repeats until $x_0$ is produced.
 
-## B. Another interpretation: “predict clean then step”
+</div>
+
+## B. Another interpretation: "predict clean then step"
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Predict clean then step)</span></p>
 
 From the (\epsilon)-estimate, define the implied clean prediction:
 
@@ -1439,7 +1880,12 @@ So each step:
 1. **Estimate clean signal** from the current noisy latent,
 2. **Move to a slightly less noisy latent** (plus controlled Gaussian noise).
 
-## C. Why early steps are “coarse” and later steps add “detail”
+</div>
+
+## C. Why early steps are "coarse" and later steps add "detail"
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why early steps are coarse and later steps add detail)</span></p>
 
 Even if $x_{\phi^*}$ is optimal (it predicts $\mathbb E[x_0\mid x_i]$), it only returns the **average** clean sample consistent with $x_i$. At high noise, many clean images map to similar $x_i$, so the conditional expectation can look **blurry**.
 
@@ -1448,9 +1894,14 @@ Sampling proceeds **high noise $\to$ low noise**, progressively refining:
 * early steps set global structure,
 * later steps sharpen and add fine details.
 
+</div>
+
 ---
 
-# Why DDPM sampling is slow (and the core bottleneck)
+## Why DDPM sampling is slow (and the core bottleneck)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why DDPM sampling is slow (and the core bottleneck))</span></p>
 
 DDPM sampling is inherently slow because it is a **sequential** reverse-time process.
 
@@ -1467,9 +1918,14 @@ Main factors described:
 
 This motivates later continuous-time / differential-equation viewpoints and faster samplers.
 
+</div>
+
 ---
 
-## High-yield “exam style” takeaways
+## High-yield "exam style" takeaways
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(High-yield "exam style" takeaways)</span></p>
 
 * $\epsilon$-prediction, $x$-prediction, and mean-prediction are **equivalent parameterizations** of the same underlying reverse model; they differ mainly by *what the network outputs* and the induced loss scaling.
 * With $\ell_2$ loss:
@@ -1480,11 +1936,15 @@ This motivates later continuous-time / differential-equation viewpoints and fast
 * Sampling is **iterative denoising** from $x_L\sim\mathcal N(0,I)$ down to $x_0$.
 * DDPM is slow because generation is **$L$-step sequential** and uses many small noise steps to keep Gaussian reverse approximations accurate.
 
+</div>
 
-# Score-Based Perspective: From EBMs to NCSN
+## Score-Based Perspective: From EBMs to NCSN
 
 
 ## Big picture: why EBMs show up in diffusion / score-based modeling
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Big picture: why EBMs show up in diffusion / score-based modeling)</span></p>
 
 * **Energy-Based Model (EBM)** viewpoint: represent a probability distribution through an **energy landscape**:
   * **Low energy** where data are likely
@@ -1497,6 +1957,8 @@ This motivates later continuous-time / differential-equation viewpoints and fast
 * **Score-based diffusion models** build on this:
   * Instead of learning the score of the clean data distribution directly, they learn scores for a **sequence of Gaussian-noise–perturbed distributions** (easier to approximate).
   * Generation becomes **progressive denoising** guided by these learned vector fields.
+
+</div>
 
 ## Energy-Based Models: Modeling Probability Distributions Using Energy Functions
 
@@ -1530,7 +1992,7 @@ $$p_\phi(x) := \frac{\exp(-E_\phi(x))}{Z_\phi}, \qquad Z_\phi := \int_{\mathbb{R
 </figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(“Only relative energies matter”)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">("Only relative energies matter")</span></p>
 
 * If you add a constant $c$ to all energies, $E_\phi(x)\mapsto E_\phi(x)+c$:
   * numerator $\exp(-E_\phi(x)-c)$ and denominator $Z_\phi$ both get multiplied by $\exp(-c)$
@@ -1544,7 +2006,7 @@ $$p_\phi(x) := \frac{\exp(-E_\phi(x))}{Z_\phi}, \qquad Z_\phi := \int_{\mathbb{R
 
 Because probabilities must sum to 1:
 * decreasing energy in one region (increasing its probability mass) necessarily **decreases probability elsewhere**.
-* EBMs therefore impose a **global coupling**: “making one valley deeper makes others shallower.”
+* EBMs therefore impose a **global coupling**: "making one valley deeper makes others shallower."
 
 </div>
 
@@ -1603,7 +2065,7 @@ $$s(x) := \nabla_x \log p(x), \qquad s:\mathbb{R}^D \to \mathbb{R}^D$$
 #### Why model scores instead of densities?
 
 <div class="math-callout math-callout--proposition" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(“Only relative energies matter”)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">("Only relative energies matter")</span></p>
 
 Many models are only known up to an unnormalized density $\tilde p(x)$:
 
@@ -1692,7 +2154,7 @@ Sampling from EBMs can be performed using **Langevin dynamics**.
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Useful mental model)</span></p>
 
-* **deterministic part:** move “uphill in probability” (follow the score / descend energy)
+* **deterministic part:** move "uphill in probability" (follow the score / descend energy)
 * **stochastic part:** add noise to keep exploring and not get stuck.
 
 </div>
@@ -1730,7 +2192,7 @@ $$x_{n+1}=x_n+\eta\nabla_x\log p_\phi(x_n)+\sqrt{2\eta}\varepsilon_n$$
 * **Deterministic part:** takes a small step **toward higher probability density** (gradient ascent on $\log p_\phi$).
 * **Stochastic part:** adds Gaussian exploration to cross energy barriers.
 
-$$\boxed{\text{This “score + noise” form is the bridge to diffusion/score-based models.}}$$
+$$\boxed{\text{This "score + noise" form is the bridge to diffusion/score-based models.}}$$
 
 </div>
 
@@ -1762,11 +2224,11 @@ $$dx(t)=-\nabla_x E_\phi(x(t))dt+\sqrt{2}dw(t)$$
 
 Think of $E_\phi(x)$ as a **potential energy landscape**.
 
-**According to Newtonian dynamics, the motion of a particle under the force field derived from this energy is described by the ordinary differential equation (ODE). Pure deterministic dynamics (gradient flow / “Newtonian” lens):**
+**According to Newtonian dynamics, the motion of a particle under the force field derived from this energy is described by the ordinary differential equation (ODE). Pure deterministic dynamics (gradient flow / "Newtonian" lens):**
 
 $$dx(t)=-\nabla_x E_\phi(x(t))dt$$
 
-* Always moves “downhill” in energy → ends up in a **local minimum**.
+* Always moves "downhill" in energy → ends up in a **local minimum**.
 * Bad for sampling multimodal distributions (gets trapped).
 
 **Add noise → Langevin:**
@@ -1799,12 +2261,20 @@ This motivates **more structured / guided sampling** — which is exactly where 
 
 ## Mini self-check questions
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Mini self-check questions)</span></p>
+
 1. Why does adding a constant to $E_\phi(x)$ not change $p_\phi(x)$?
 2. Write $\log p_\phi(x)$ for an EBM and show why the score does not depend on $Z_\phi$.
+
+</div>
 
 ## From Energy-Based to Score-Based Generative Models
 
 ### Big picture
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Big picture)</span></p>
 
 * **Key message:** to *generate* samples (e.g., via Langevin dynamics), you don’t need the full normalized density $p(x)$. You only need the **score**
   
@@ -1820,12 +2290,17 @@ This motivates **more structured / guided sampling** — which is exactly where 
   * However, **training through an energy** with score matching tends to require **second derivatives** (Hessians).
 * **Core shift:** since sampling uses only the score, we can **learn the score directly** with a neural network $s_\phi(x)$. This is the foundation of **score-based generative models**.
 
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/diffusion_models/score_matching.png' | relative_url }}" alt="a" loading="lazy">
   <figcaption>Illustration of Score Matching. The neural network score $s_ϕ(x)$ is trained to match the ground truth score $s(x)$ using a MSE loss. Both are represented as vector fields.</figcaption>
 </figure>
 
 ### Notation
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Notation)</span></p>
 
 Let $x\in\mathbb{R}^D$, and $s_\phi(x)\in\mathbb{R}^D$.
 
@@ -1838,9 +2313,13 @@ Let $x\in\mathbb{R}^D$, and $s_\phi(x)\in\mathbb{R}^D$.
 * If $s_\phi=\nabla_x u$ for scalar $u$, then $\nabla_x s_\phi = \nabla_x^2 u$ (the Hessian), and
   
   $$\nabla\cdot s_\phi = \mathrm{Tr}(\nabla_x^2 u)=\Delta u \quad(\text{Laplacian})$$
-  
+
+</div>
 
 ### Learning data score
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Learning the data score)</span></p>
 
 **Goal:** Approximate the **unknown** true score $s(x)=\nabla_x \log p_{\text{data}}(x)$ from samples $x\sim p_{\text{data}}$ using a neural net $s_\phi(x)$.
 
@@ -1856,21 +2335,28 @@ So you can minimize $\tilde{\mathcal{L}}\_{\mathrm{SM}}$ **using only samples** 
 
 The **optimal solution** (**minimizer**) is the true score: $s^*(\cdot)=\nabla_x \log p(\cdot)$
 
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Why this helps computationally)</span></p>
 
 * If you parameterize an **energy** $E_\theta$ and set $s_\theta=-\nabla_x E_\theta$, then
   $\mathrm{Tr}(\nabla_x s_\theta)= -\mathrm{Tr}(\nabla_x^2 E_\theta)$: **second derivatives** of the energy.
-* If you parameterize $s_\phi$ **directly**, $\mathrm{Tr}(\nabla_x s_\phi)$ uses **first derivatives** of the score network output w.r.t. input $x$ (still not cheap, but avoids “derivative-of-a-derivative” through an energy).
+* If you parameterize $s_\phi$ **directly**, $\mathrm{Tr}(\nabla_x s_\phi)$ uses **first derivatives** of the score network output w.r.t. input $x$ (still not cheap, but avoids "derivative-of-a-derivative" through an energy).
 
 </div>
 
 ### Interpretation of the two terms in $\tilde{\mathcal{L}}_{\mathrm{SM}}$
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of the two terms in $\tilde{\mathcal{L}}_{\mathrm{SM}}$)</span></p>
+
 $$
 \tilde{\mathcal{L}}_{\mathrm{SM}}(\phi)
 =\mathbb{E}_{p_{\text{data}}}\left[\underbrace{\mathrm{Tr}(\nabla_x s_\phi(x))}_{\text{divergence term}}+\underbrace{\frac{1}{2}\|s_\phi(x)\|_2^2}_{\text{magnitude term}}\right]
 $$
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">("Stationarity from the magnitude term")</span></p>
@@ -1924,7 +2410,7 @@ Once you have a trained score model $s_{\phi^*}(x)$, you can sample by iterating
 $$x_{n+1}=x_n+\eta s_{\phi^*}(x_n)+\sqrt{2\eta}\varepsilon_n,\quad \varepsilon_n\sim\mathcal{N}(0,I).$$
 
 * $\eta>0$ is the step size.
-* Deterministic part $\eta s(x)$: moves “uphill” in log-density.
+* Deterministic part $\eta s(x)$: moves "uphill" in log-density.
 * Noise $\sqrt{2\eta}\varepsilon$: keeps exploration and yields the correct stationary distribution (in the idealized limit).
 
 </div>
@@ -1935,7 +2421,7 @@ $$x_{n+1}=x_n+\eta s_{\phi^*}(x_n)+\sqrt{2\eta}\varepsilon_n,\quad \varepsilon_n
 * The **score function** started as a way to train EBMs efficiently.
 * It has become the **central object** in modern **score-based diffusion models**:
   * Theoretical formulation + practical implementation are built around learning scores
-  * Generation becomes “simulate (reverse) stochastic processes using learned scores”
+  * Generation becomes "simulate (reverse) stochastic processes using learned scores"
 
 </div>
 
@@ -1943,11 +2429,16 @@ $$x_{n+1}=x_n+\eta s_{\phi^*}(x_n)+\sqrt{2\eta}\varepsilon_n,\quad \varepsilon_n
 
 ### Vanilla score matching is hard even with score training
 
-Minimizaing the “direct” score matching loss is infeasible. A classic workaround (Hyvärinen-style) is an equivalent objective that removes the explicit data-score target but introduces a **trace-of-Jacobian** term:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vanilla score matching is hard even with score training)</span></p>
+
+Minimizaing the "direct" score matching loss is infeasible. A classic workaround (Hyvärinen-style) is an equivalent objective that removes the explicit data-score target but introduces a **trace-of-Jacobian** term:
 
 $$\tilde{\mathcal{L}}_{\text{SM}}(\phi)=\mathbb{E}_{x\sim p_{\text{data}}}\Big[\mathrm{Tr}(\nabla_x s_\phi(x))+\frac12\|s_\phi(x)\|_2^2\Big]$$
 
 **Problem:** Computing $\mathrm{Tr}(\nabla_x s_\phi(x))$ (trace of the Jacobian of a $D$-dimensional vector field) has **worst-case complexity $\mathcal{O}(D^2)$** $\implies$ not scalable in high dimensions.
+
+</div>
 
 ### Sliced score matching via Hutchinson’s estimator
 
@@ -1979,7 +2470,7 @@ Using $A = \nabla_x s_\phi(x)$, the objective becomes (exactly, in expectation):
 
 $$\tilde{\mathcal{L}}_{\text{SM}}(\phi) = \mathbb{E}_{x,u}\Big[u^\top\nabla_x s_\phi(x)u+\frac12 (u^\top s_\phi(x))^2\Big]$$
 
-**Interpretation:** You “test” the model’s behavior only along **random directions** (“random slices”), rather than fully constraining all partial derivatives.
+**Interpretation:** You "test" the model’s behavior only along **random directions** ("random slices"), rather than fully constraining all partial derivatives.
 
 </div>
 
@@ -2014,6 +2505,9 @@ This motivates DSM as a more robust alternative.
 
 #### Conditioning trick: corrupt the data with known noise
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conditioning trick: corrupt the data with known noise)</span></p>
+
 To overcome the intractability of $\nabla_x \log p\_{\text{data}}(x)$, Vincent (2011) proposed injecting noise into the data $x \sim p_{\text{data}}$ via a known conditional distribution $p_\sigma(\tilde x \mid x)$ with scale $σ$.
 
 Introduce a **known corruption kernel**: $\tilde x \sim p_\sigma(\tilde x \mid x)$ where $\sigma>0$ controls noise scale. This defines a **perturbed (smoothed) marginal** distribution:
@@ -2034,6 +2528,8 @@ $$
 $$
 
 but $\nabla_{\tilde x}\log p_\sigma(\tilde x)$ is still generally intractable.
+
+</div>
 
 #### DSM objective (tractable target)
 
@@ -2144,7 +2640,7 @@ For a fixed $\sigma$:
 <div class="math-callout math-callout--proposition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(DSM is more robust than raw score matching)</span></p>
 
-* Adding noise makes the distribution **smooth/full-dimensional**, which avoids the “score undefined on a manifold” issue.
+* Adding noise makes the distribution **smooth/full-dimensional**, which avoids the "score undefined on a manifold" issue.
 * Training constrains the score field in **neighborhoods** around data, not only exactly on the data.
 
 </div>
@@ -2170,7 +2666,7 @@ Compared to "vanilla" score matching on the original data distribution, adding G
    * Convolving with Gaussian noise spreads mass over all of $\mathbb R^D$, making $p_\sigma$ have **full support** in $\mathbb R^D$.
    * Therefore the score $\nabla_{\tilde x}\log p_\sigma(\tilde x)$ is (typically) **well-defined everywhere**.
 2. **Improved coverage between modes**
-   * Noise **smooths** the distribution, filling in low-density “gaps” between separated modes.
+   * Noise **smooths** the distribution, filling in low-density "gaps" between separated modes.
    * This improves training signal and helps Langevin dynamics move through low-density regions more effectively (less getting stuck).
 
 </div>
@@ -2184,8 +2680,8 @@ Given a score model $s_\phi(\cdot;\sigma)$ at a fixed noise level $\sigma$, iter
 
 $$\tilde x_{n+1} = \tilde x_n + \eta s_\phi(\tilde x_n;\sigma) + \sqrt{2\eta}\varepsilon_n, \qquad \varepsilon_n\sim\mathcal N(0,I)$$
 
-* $\eta>0$ here is the **step size** (careful: later pages reuse $\eta$ for “natural parameter” in exponential families).
-* This is Langevin sampling where the “force” term $\nabla \log p_\sigma(\tilde x)$ is replaced by the learned $s_\phi$.
+* $\eta>0$ here is the **step size** (careful: later pages reuse $\eta$ for "natural parameter" in exponential families).
+* This is Langevin sampling where the "force" term $\nabla \log p_\sigma(\tilde x)$ is replaced by the learned $s_\phi$.
 
 </div>
 
@@ -2196,6 +2692,9 @@ $$\tilde x_{n+1} = \tilde x_n + \eta s_\phi(\tilde x_n;\sigma) + \sqrt{2\eta}\va
 
 ### Setup (Gaussian corruption with scaling)
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Setup (Gaussian corruption with scaling))</span></p>
+
 Assume:
 * $x\sim p_{\text{data}}$
 * $\tilde x\mid x \sim \mathcal N(\alpha x,\sigma^2 I)$, with $\alpha\neq 0$
@@ -2203,6 +2702,8 @@ Assume:
 Define the noisy marginal:
 
 $$p_\sigma(\tilde x) = \int \mathcal N(\tilde x;\alpha x,\sigma^2 I)p_{\text{data}}(x)dx$$
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Tweedie’s formula)</span></p>
@@ -2216,7 +2717,7 @@ $$\mathbb E[x\mid \tilde x] = \frac{1}{\alpha}\Big(\tilde x + \sigma^2 \nabla_{\
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition (why this is “denoising”))</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition (why this is "denoising"))</span></p>
 
 * The score $\nabla_{\tilde x}\log p_\sigma(\tilde x)$ points toward regions where noisy samples are more likely.
 * Moving $\tilde x$ by a step of size $\sigma^2$ in the score direction produces the **conditional mean of the clean signal** (up to the $\alpha$ scaling).
@@ -2225,17 +2726,25 @@ $$\mathbb E[x\mid \tilde x] = \frac{1}{\alpha}\Big(\tilde x + \sigma^2 \nabla_{\
 
 ### Connection to DSM-trained score networks
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection to DSM-trained score networks)</span></p>
+
 If DSM gives $s_\phi(\tilde x)\approx \nabla_{\tilde x}\log p_\sigma(\tilde x)$, then an estimated denoiser is:
 
 $$\widehat{x}(\tilde x) = \frac{1}{\alpha}\Big(\tilde x + \sigma^2, s_\phi(\tilde x)\Big)$$
 
 So: **learning the score is (almost directly) learning a denoiser** via Tweedie.
 
+</div>
+
 ---
 
 ## (Optional) Higher-order Tweedie via an exponential-family view
 
 ### Exponential family observation model
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Exponential family observation model)</span></p>
 
 Assume the conditional law of $\tilde x$ given a latent natural parameter $\eta\in\mathbb R^D$ is
 
@@ -2250,7 +2759,7 @@ Let $p(\eta)$ be a prior over $\eta$. The noisy marginal is
 
 $$p_\sigma(\tilde x) = \int q_\sigma(\tilde x\mid \eta)p(\eta)d\eta$$
 
-Define the “log-normalizer in $\tilde x$”:
+Define the "log-normalizer in $\tilde x$":
 
 $$\lambda(\tilde x) := \log p_\sigma(\tilde x) - \log q_0(\tilde x)$$
 
@@ -2258,7 +2767,12 @@ Then the posterior has the form
 
 $$p(\eta\mid \tilde x)\propto \exp(\eta^\top \tilde x - \psi(\eta) - \lambda(\tilde x))p(\eta)$$
 
+</div>
+
 ### Derivatives of $\lambda$ give posterior cumulants
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Derivatives of $\lambda$ give posterior cumulants)</span></p>
 
 A core exponential-family identity:
 * $\nabla_{\tilde x}\lambda(\tilde x) = \mathbb E[\eta\mid \tilde x]$
@@ -2269,7 +2783,12 @@ A core exponential-family identity:
   
   where $\kappa_k$ are conditional cumulants.
 
+</div>
+
 ### Specialize to Gaussian location noise (recover classic Tweedie + covariance)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Specialize to Gaussian location noise (recover classic Tweedie + covariance))</span></p>
 
 For Gaussian location models, one can take $\eta = x/\sigma^2$. Then:
 
@@ -2283,11 +2802,16 @@ For Gaussian location models, one can take $\eta = x/\sigma^2$. Then:
   
 * Higher cumulants scale with higher derivatives of $\log p_\sigma(\tilde x)$.
 
-**Takeaway:** not only denoising (mean), but also **uncertainty estimates** (covariance) and higher statistics are encoded in higher-order “scores” (higher derivatives).
+**Takeaway:** not only denoising (mean), but also **uncertainty estimates** (covariance) and higher statistics are encoded in higher-order "scores" (higher derivatives).
+
+</div>
 
 ---
 
-## Quick “what to remember” checklist
+## Quick "what to remember" checklist
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Quick "what to remember" checklist)</span></p>
 
 * **Sampling:** $\tilde x_{n+1}=\tilde x_n+\eta s_\phi(\tilde x_n;\sigma)+\sqrt{2\eta}\varepsilon_n$.
 * **Why noise helps:** (i) score well-defined everywhere, (ii) smoother landscape improves mode coverage.
@@ -2295,7 +2819,12 @@ For Gaussian location models, one can take $\eta = x/\sigma^2$. Then:
 * **DSM ⇒ denoiser:** replace $\nabla \log p_\sigma$ by $s_\phi$.
 * **Higher-order:** derivatives of $\log p_\sigma$ relate to posterior covariance and cumulants.
 
-## Study notes: SURE, Tweedie, and (Generalized) Score Matching
+</div>
+
+## SURE, Tweedie, and Generalized Score Matching
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Study notes: SURE, Tweedie, and (Generalized) Score Matching)</span></p>
 
 These pages explain two closely related ideas:
 
@@ -2303,11 +2832,16 @@ These pages explain two closely related ideas:
 2. The **SURE-optimal denoiser** is the **Bayes posterior mean**, which equals a **score-based correction** (Tweedie). This directly links denoisers $\iff$ scores $\iff$ score matching objectives.
 3. **Generalized score matching (GSM)** unifies classical score matching, denoising score matching, and higher-order variants through a general linear operator $\mathcal L$.
 
+</div>
+
 ---
 
-# 3.3.5 Why DSM is Denoising: SURE
+## 3.3.5 Why DSM is Denoising: SURE
 
 ## Setup: additive Gaussian noise
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Setup: additive Gaussian noise)</span></p>
 
 We observe
 
@@ -2319,7 +2853,12 @@ A **denoiser** is a (weakly differentiable) map
 
 $$\mathbf D:\mathbb R^d\to\mathbb R^d,\qquad \mathbf D(\tilde{\mathbf x})\approx \mathbf x$$
 
+</div>
+
 ## True denoising quality: conditional MSE risk
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(True denoising quality: conditional MSE risk)</span></p>
 
 For a fixed (unknown) clean $\mathbf x$,
 
@@ -2327,32 +2866,43 @@ $$R(\mathbf D;\mathbf x):=\mathbb E_{\tilde{\mathbf x}\mid \mathbf x}\Big[\|\mat
 
 Problem: this depends on $\mathbf x$, so you can’t compute it from $\tilde{\mathbf x}$ alone.
 
+</div>
+
 ---
 
 ## SURE: an observable surrogate for the MSE
 
-**Stein’s Unbiased Risk Estimator (SURE)** provides:
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stein’s Unbiased Risk Estimator (SURE))</span></p>
 
 $$
 \mathrm{SURE}(\mathbf D;\tilde{\mathbf x}) = \|\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}\|_2^2 + 2\sigma^2\nabla_{\tilde{\mathbf x}}\cdot \mathbf D(\tilde{\mathbf x})- D\sigma^2.
 $$
 
 * $\nabla_{\tilde{\mathbf x}}\cdot \mathbf D(\tilde{\mathbf x})$ is the **divergence** of $\mathbf D$:
-  
+
   $$\nabla_{\tilde{\mathbf x}}\cdot \mathbf D(\tilde{\mathbf x})=\sum_{i=1}^d \frac{\partial D_i(\tilde{\mathbf x})}{\partial \tilde{x}_i}$$
-  
-* Importantly: **SURE depends only on (\tilde{\mathbf x})** (and $\sigma$), not on $\mathbf x$.
+
+* Importantly: **SURE depends only on $\tilde{\mathbf x}$** (and $\sigma$), not on $\mathbf x$.
+
+</div>
 
 ### Why the terms make sense (intuition)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the terms make sense (intuition))</span></p>
 
 * $\|\mathbf D(\tilde{\mathbf x})-\tilde{\mathbf x}\|^2$: how much the denoiser changes the input.
   * Alone, it *underestimates* true error because $\tilde{\mathbf x}$ is already corrupted.
 * $2\sigma^2 \nabla\cdot \mathbf D(\tilde{\mathbf x})$: **correction term** accounting for noise variance via sensitivity of $\mathbf D$.
 * $-d\sigma^2$: constant offset that fixes the bias.
 
+</div>
+
 ---
 
-## Unbiasedness property (the key guarantee)
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(SURE unbiasedness)</span></p>
 
 For any fixed but unknown $\mathbf x$,
 
@@ -2360,7 +2910,12 @@ $$\mathbb E_{\tilde{\mathbf x}\mid \mathbf x}\big[\mathrm{SURE}(\mathbf D;\mathb
 
 So **minimizing SURE (in expectation or empirically)** is equivalent to minimizing the true denoising MSE risk, while using only noisy data.
 
+</div>
+
 ### Derivation sketch (how Stein’s identity enters)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Derivation sketch (how Stein’s identity enters))</span></p>
 
 Start from:
 
@@ -2372,17 +2927,27 @@ $$\mathbb E[\epsilon^\top g(\mathbf x+\sigma\epsilon)] = \sigma\mathbb E[\nabla_
 
 Since $\nabla\cdot(\tilde{\mathbf x})=d$, you get exactly the SURE formula.
 
+</div>
+
 ---
 
-# Link to Tweedie’s formula and Bayes optimality
+## Link to Tweedie’s formula and Bayes optimality
 
 ## Noisy marginal
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Noisy marginal)</span></p>
 
 Let the noisy marginal be the convolution:
 
 $$p_\sigma(\tilde{\mathbf x}) := (p_{\text{data}} * \mathcal N(0,\sigma^2\mathbf I))(\tilde{\mathbf x})$$
 
+</div>
+
 ## SURE minimization ⇒ Bayes optimal denoiser
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(SURE minimization ⇒ Bayes optimal denoiser)</span></p>
 
 SURE is unbiased *w.r.t. noise* conditional on $\mathbf x$:
 
@@ -2400,19 +2965,25 @@ This decomposes pointwise in $\tilde{\mathbf x}$, so the optimal denoiser is:
 
 $$\mathbf D^*(\tilde{\mathbf x})=\mathbb E[\mathbf x\mid \tilde{\mathbf x}]$$
 
-## Tweedie’s identity: posterior mean = score correction
+</div>
 
-A central identity:
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Tweedie’s identity)</span></p>
 
 $$\mathbf D^*(\tilde{\mathbf x})=\mathbb E[\mathbf x\mid \tilde{\mathbf x}] = \tilde{\mathbf x}+\sigma^2\nabla_{\tilde{\mathbf x}}\log p_\sigma(\tilde{\mathbf x})$$
 
 So the Bayes-optimal denoiser equals **input + $\sigma^2$ times the noisy score**.
 
+</div>
+
 ---
 
-# Relationship between SURE and score matching
+## Relationship between SURE and score matching
 
 ## Parameterize denoiser via a score field
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parameterize denoiser via a score field)</span></p>
 
 Motivated by Tweedie:
 
@@ -2420,7 +2991,12 @@ $$\mathbf D(\tilde{\mathbf x}) = \tilde{\mathbf x}+\sigma^2 \mathbf s_\phi(\tild
 
 where $\mathbf s_\phi(\cdot;\sigma)\approx \nabla_{\tilde{\mathbf x}}\log p_\sigma(\cdot)$.
 
+</div>
+
 ## Plugging into SURE yields Hyvärinen’s objective (up to constants)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Plugging into SURE yields Hyvärinen’s objective (up to constants))</span></p>
 
 Substitute into SURE and simplify:
 
@@ -2435,11 +3011,16 @@ $$
 Taking expectation over $\tilde{\mathbf x}\sim p_\sigma$, minimizing SURE is equivalent (up to an additive constant) to minimizing **Hyvärinen’s alternative score matching objective** at noise level $\sigma$.
 **Conclusion:** SURE and score matching share the same minimizer, corresponding to the denoiser $\tilde{\mathbf x}+\sigma^2\nabla \log p_\sigma(\tilde{\mathbf x})$.
 
+</div>
+
 ---
 
-# 3.3.6 Generalized Score Matching (GSM)
+## 3.3.6 Generalized Score Matching (GSM)
 
-## Motivation: unify many “score-like” training targets
+## Motivation: unify many "score-like" training targets
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Motivation: unify many "score-like" training targets)</span></p>
 
 Classical score matching, denoising score matching, and higher-order variants all target a quantity of the form
 
@@ -2453,9 +3034,12 @@ for some **linear operator** $\mathcal L$ acting on the density $p$.
 
 Key idea: the $\frac{\mathcal L p}{p}$ structure enables **integration by parts** to remove unknown normalizing constants, producing a tractable objective depending only on samples and the learned field.
 
+</div>
+
 ---
 
-## Generalized Fisher divergence
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Fisher Divergence)</span></p>
 
 Let $p$ be data and $q$ be a model density. Define
 
@@ -2466,9 +3050,14 @@ $$
 If $\mathcal L$ is **complete** (informally: $\frac{\mathcal L p_1}{p_1}=\frac{\mathcal L p_2}{p_2}$ a.e. implies $p_1=p_2$ a.e.), then $\mathcal D_{\mathcal L}(p\parallel q)=0$ identifies $q=p$.
 For $\mathcal L=\nabla$, this recovers the classical Fisher divergence.
 
+</div>
+
 ---
 
 ## Score parameterization (avoid explicit normalized $q$)
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Score parameterization (avoid explicit normalized $q$))</span></p>
 
 Instead of modeling $q$, directly learn a vector field $\mathbf s_\phi(\mathbf x)$ to approximate $\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}$:
 
@@ -2478,7 +3067,12 @@ $$
 
 The target is unknown, but integration by parts makes the loss computable.
 
+</div>
+
 ### Adjoint operator and integration by parts trick
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Adjoint operator and integration by parts trick)</span></p>
 
 Define the adjoint $\mathcal L^\dagger$ by:
 
@@ -2493,9 +3087,14 @@ $$
 +\text{const},
 $$
 
-where “const” does not depend on $\phi$.
+where "const" does not depend on $\phi$.
+
+</div>
 
 ### Check: recovering Hyvärinen’s score matching
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Check: recovering Hyvärinen’s score matching)</span></p>
 
 For $\mathcal L=\nabla$, we have $\mathcal L^\dagger=-\nabla\cdot$ (negative divergence), so:
 
@@ -2503,17 +3102,27 @@ $$\mathbb E_p\Big[\tfrac12\|\mathbf s_\phi\|^2-(\mathcal L^\dagger \mathbf s_\ph
 
 which is Hyvärinen’s classical objective.
 
+</div>
+
 ---
 
-# Examples of operators $\mathcal L$
+## Examples of operators $\mathcal L$
 
-## 1) Classical score matching
+## Classical score matching
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Classical score matching)</span></p>
 
 Take $\mathcal L=\nabla_{\mathbf x}$. Then
 
 $$\frac{\mathcal L p(\mathbf x)}{p(\mathbf x)}=\nabla_{\mathbf x}\log p(\mathbf x)$$
 
-## 2) Denoising score matching (Gaussian corruption)
+</div>
+
+## Denoising score matching (Gaussian corruption)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Denoising score matching (Gaussian corruption))</span></p>
 
 For additive Gaussian noise at level $\sigma$, define an operator on scalar $f$:
 
@@ -2525,7 +3134,12 @@ $$\frac{\mathcal L p_\sigma(\tilde{\mathbf x})}{p_\sigma(\tilde{\mathbf x})} = \
 
 which is exactly **Tweedie’s identity**. Minimizing $\mathcal L_{\text{GSM}}$ with this operator trains $\mathbf s_\phi$ to approximate the **denoiser**, recovering denoising score matching behavior.
 
-## 3) Higher-order targets
+</div>
+
+## Higher-order targets
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Higher-order targets)</span></p>
 
 By stacking derivatives inside $\mathcal L$, you can target:
 
@@ -2533,9 +3147,14 @@ By stacking derivatives inside $\mathcal L$, you can target:
 * higher derivatives,
   which relate to **posterior covariance** and higher-order cumulants.
 
+</div>
+
 ---
 
-# Key takeaways / mental model
+## Key takeaways / mental model
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Key takeaways / mental model)</span></p>
 
 * **SURE** lets you estimate denoising MSE without clean targets; its correction term is a **divergence**.
 * Minimizing expected **SURE** yields the **posterior mean denoiser**:
@@ -2549,10 +3168,14 @@ By stacking derivatives inside $\mathcal L$, you can target:
 * Parameterizing $\mathbf D(\tilde{\mathbf x})=\tilde{\mathbf x}+\sigma^2\mathbf s_\phi(\tilde{\mathbf x};\sigma)$ turns SURE minimization into (alternative) **score matching** (up to constants).
 * **Generalized score matching**: pick an operator $\mathcal L$; learn $\mathbf s_\phi \approx \mathcal Lp/p$; integration by parts gives a tractable loss. This **unifies** classical SM, DSM, and higher-order variants.
 
+</div>
 
 ## Multi-Noise Denoising Score Matching (NCSN) + Annealed Langevin Dynamics (Sections 3.4–3.6)
 
 ### Big picture
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Big picture)</span></p>
 
 * **Goal (score-based generative modeling):** learn the **score**
   
@@ -2561,6 +3184,8 @@ By stacking derivatives inside $\mathcal L$, you can target:
   (gradient of log-density), which lets you **generate samples** by running dynamics that follow this gradient plus noise (e.g., Langevin).
 * **Problem:** learning / sampling with a **single** noise level is unreliable and slow.
 * **Fix (NCSN, Song & Ermon 2019):** train **one network conditioned on noise level** to estimate scores for **many noise scales**, then sample by **annealing** from high noise → low noise.
+
+</div>
 
 ### Multi-Noise Levels of Denoising Score Matching (NCSN)
 
@@ -2571,7 +3196,10 @@ By stacking derivatives inside $\mathcal L$, you can target:
 
 ### Motivation: why one noise level is not enough
 
-Adding Gaussian noise “smooths” the data distribution, but:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Motivation: why one noise level is not enough)</span></p>
+
+Adding Gaussian noise "smooths" the data distribution, but:
 
 * **Low noise (small variance):**
   * Distribution is sharp/multi-modal; **Langevin struggles to move between modes**.
@@ -2584,6 +3212,8 @@ Adding Gaussian noise “smooths” the data distribution, but:
 * High noise: explore globally / cross modes.
 * Low noise: refine details.
 
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/diffusion_models/ncsn.png' | relative_url }}" alt="a" loading="lazy">
   <figcaption>Illustration of NCSN. The forward process perturbs the data with multiple levels of additive Gaussian noise $p_σ(x_σ\mid x)$. Generation proceeds via Langevin sampling at each noise level, using the result from the current level to initialize sampling at the next lower variance.</figcaption>
@@ -2593,6 +3223,9 @@ Adding Gaussian noise “smooths” the data distribution, but:
 
 ### Noise levels
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Noise levels)</span></p>
+
 Choose a sequence of noise scales:
 
 $$0 < \sigma_1 < \sigma_2 < \cdots < \sigma_L$$
@@ -2600,7 +3233,12 @@ $$0 < \sigma_1 < \sigma_2 < \cdots < \sigma_L$$
 * $\sigma_1$: small enough to preserve fine details
 * $\sigma_L$: large enough to heavily smooth the distribution (easier learning)
 
+</div>
+
 ### Forward perturbation (data → noisy)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward perturbation (data → noisy))</span></p>
 
 Sample clean $x \sim p_{\text{data}}$. Create noisy version:
 
@@ -2616,17 +3254,27 @@ $$p_\sigma(x_\sigma) = \int p_\sigma(x_\sigma\mid x)p_{\text{data}}(x)dx$$
 
 **Interpretation:** $p_\sigma$ is a Gaussian-smoothed version of $p_{\text{data}}$. Larger $\sigma$ $\implies$ smoother.
 
+</div>
+
 ### Noise-conditional score network
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Noise-conditional score network)</span></p>
 
 Train a single network $s_\phi(x,\sigma)$ to approximate:
 
 $$s_\phi(x,\sigma) \approx \nabla_x \log p_\sigma(x)$$
+
+</div>
 
 ---
 
 ## Training objective of NCSN (DSM across all noise levels)
 
 ### Weighted multi-noise DSM loss
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Weighted multi-noise DSM loss)</span></p>
 
 $$\mathcal L_{\text{NCSN}}(\phi) := \sum_{i=1}^{L}\lambda(\sigma_i)\mathcal L_{\text{DSM}}(\phi;\sigma_i)$$
 
@@ -2643,7 +3291,12 @@ $$
 
 * $\lambda(\sigma_i)>0$: weight per scale (balances contributions of different noise levels).
 
+</div>
+
 ### Key fact (optimal solution)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Optimal solution))</span></p>
 
 Minimizing DSM at each $\sigma$ yields:
 
@@ -2651,9 +3304,14 @@ $$s^*(\cdot,\sigma) = \nabla_x \log p_\sigma(\cdot), \quad \forall \sigma \in {\
 
 So you learn the **true score of the smoothed distribution** at every noise scale.
 
+</div>
+
 ---
 
 ## Relationship to DDPM loss (Tweedie connection)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relationship to DDPM loss (Tweedie connection))</span></p>
 
 Let $x_\sigma = x + \sigma \epsilon$, $\epsilon\sim \mathcal N(0,I)$. By **Tweedie’s formula**:
 
@@ -2680,23 +3338,36 @@ $$s^*(x_i,i)= -\frac{1}{\sigma_i}\mathbb E[\epsilon\mid x_i]$$
 
 **Takeaway:** *Noise-prediction (DDPM) and score-prediction (NCSN) are the same information, just scaled/parameterized differently.*
 
+</div>
+
 ---
 
 ## 3.4.3 Sampling — Annealed Langevin Dynamics (ALD)
 
 ### Why annealing helps
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why annealing helps)</span></p>
+
 * At large $\sigma$, $p_\sigma$ is smooth ⇒ sampling is easier (better mixing).
 * Gradually reduce $\sigma$ and **refine** samples using the next score model.
 * Each stage uses the previous stage’s output as a strong initialization.
 
+</div>
+
 ### Langevin update at noise level $\sigma_\ell$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Langevin update at noise level $\sigma_\ell$)</span></p>
 
 Given current $\tilde x_n$:
 
 $$\tilde x_{n+1} = \tilde x_n + \eta_\ell s_\phi(\tilde x_n,\sigma_\ell) + \sqrt{2\eta_\ell}\epsilon_n, \quad \epsilon_n\sim\mathcal N(0,I)$$
 
-### Algorithm (as given)
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Annealed Langevin Dynamics)</span></p>
 
 * Initialize $x^{\sigma_L}\sim\mathcal N(0,I)$ (often equivalent to choosing a large-noise prior).
 * For $\ell = L, L-1,\dots,2$:
@@ -2708,6 +3379,8 @@ $$\tilde x_{n+1} = \tilde x_n + \eta_\ell s_\phi(\tilde x_n,\sigma_\ell) + \sqrt
 
 $$\eta_\ell = \delta\cdot \frac{\sigma_\ell^2}{\sigma_1^2},\quad \delta>0$$
 
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
 
@@ -2718,6 +3391,9 @@ Bigger noise $\implies$ you can take bigger steps.
 ---
 
 ## Why NCSN sampling is slow (important bottleneck)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why NCSN sampling is slow (important bottleneck))</span></p>
 
 NCSN sampling uses **annealed MCMC** across scales $\lbrace\sigma_i\rbrace_{i=1}^L$. If you do $K$ updates per scale, you need $\sim L\times K$ network evaluations.
 
@@ -2732,11 +3408,16 @@ $$\mathcal O(LK)$$
 
 sequential network passes ⇒ computationally slow.
 
+</div>
+
 ---
 
 ## 3.5 Summary: Comparative view of NCSN and DDPM
 
 ### Forward / corruption process (conceptual comparison)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Forward / corruption process (conceptual comparison))</span></p>
 
 * **NCSN:** additive Gaussian noise at multiple scales. The table shows transitions like:
 
@@ -2747,7 +3428,12 @@ sequential network passes ⇒ computationally slow.
   
   $$x_{i+1} = \sqrt{1-\beta_i}x_i + \sqrt{\beta_i}\epsilon$$
 
+</div>
+
 ### Loss / training target
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Loss / training target)</span></p>
 
 * **NCSN:** score loss equivalent to
   
@@ -2758,21 +3444,36 @@ sequential network passes ⇒ computationally slow.
   
   $$\mathbb E\big[\|\epsilon_\phi(x_i,i)-\epsilon\|^2\big]$$
 
+</div>
+
 ### Sampling
 
-* **NCSN:** Langevin per noise “layer”; output initializes next lower noise.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sampling)</span></p>
+
+* **NCSN:** Langevin per noise "layer"; output initializes next lower noise.
 * **DDPM:** traverse learned reverse chain $p_\phi(x_{i-1}\mid x_i)$.
 
+</div>
+
 ### Shared bottleneck
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Shared bottleneck)</span></p>
 
 Both rely on **dense discretization** ⇒ often **hundreds/thousands** of steps ⇒ slow generation.
 
 **Question 3.5.1:** *How can we accelerate sampling in diffusion models?*
 (Flag for later chapters on faster solvers / fewer steps.)
 
+</div>
+
 ---
 
 ## 3.6 Closing remarks (what this chapter sets up)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Closing remarks (what this chapter sets up))</span></p>
 
 * Score-based view comes from EBMs: score avoids dealing directly with the **intractable partition function**.
 * Progression:
@@ -2784,9 +3485,14 @@ Both rely on **dense discretization** ⇒ often **hundreds/thousands** of steps 
 * Key convergence: **NCSN and DDPM** look different but share structure and **same bottleneck** (slow sequential sampling).
 * Next step: move to **continuous time**, unify methods as discretizations of a **Score SDE**, and connect variational + score-based views via differential equations (motivates advanced numerical methods to speed up sampling).
 
+</div>
+
 ---
 
-## Quick “exam-ready” checklist
+## Quick "exam-ready" checklist
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Quick "exam-ready" checklist)</span></p>
 
 * Can you write:
 
@@ -2806,6 +3512,7 @@ $$
 \nabla\log p_\sigma(x_\sigma)=-(1/\sigma)\mathbb E[\epsilon\mid x_\sigma]  \Rightarrow  \epsilon^*=-\sigma s^* ; ?
 $$
 
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/books/diffusion_models/discrete_time_noise_adding_step.png' | relative_url }}" alt="a" loading="lazy">
@@ -2825,7 +3532,7 @@ $$
 </figure>
 
 
-# Score SDE Framework
+## Score SDE Framework
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Why "Score SDE")</span></p>
@@ -2833,8 +3540,8 @@ $$
 You’ve seen diffusion models in **discrete time** (e.g., **DDPM**) and in the **score-based / noise-conditional** view (e.g., **NCSN**). The **Score SDE framework** is the **continuous-time limit** that **unifies** them.
 
 Key idea:
-* The forward “add-noise” process can be written as a **(stochastic) differential equation**.
-* **Generation (sampling)** becomes “solve a differential equation backward in time”.
+* The forward "add-noise" process can be written as a **(stochastic) differential equation**.
+* **Generation (sampling)** becomes "solve a differential equation backward in time".
 * This gives a clean mathematical foundation and lets you use tools from **numerical analysis** (Euler/Euler–Maruyama, better solvers, stability/efficiency ideas).
 
 </div>
@@ -2852,7 +3559,7 @@ x_{\sigma_i} = x + \sigma_i ,\varepsilon_i,
 \qquad \varepsilon_i \sim \mathcal N(0, I).
 $$
 
-**Interpretation:** you can think of a “time” index where the **noise level increases** as time increases.
+**Interpretation:** you can think of a "time" index where the **noise level increases** as time increases.
 
 </div>
 
@@ -2870,7 +3577,7 @@ $$
 
 </div>
 
-### A unified “small step” view on a time grid
+### A unified "small step" view on a time grid
 
 Consider a discrete time grid with step $\Delta t$. The update from $x_t$ to $x_{t+\Delta t}$ can be written in a common pattern.
 
@@ -2924,7 +3631,7 @@ Notation:
 
 * $x_t \in \mathbb R^D$
 * $f:\mathbb R^D\times \mathbb R \to \mathbb R^D$ (drift)
-* $g:\mathbb R \to \mathbb R$ (diffusion “strength”)
+* $g:\mathbb R \to \mathbb R$ (diffusion "strength")
 
 
 </div>
@@ -3022,7 +3729,8 @@ Discrete-time diffusion methods (e.g., **NCSN** and **DDPM**) can be viewed in a
 
 ---
 
-### Forward SDE (data $\to$ noise)
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Forward SDE (data $\to$ noise))</span></p>
 
 $$
 d\mathbf{x}(t)=\mathbf{f}(\mathbf{x}(t),t),dt + g(t),d\mathbf{w}(t),
@@ -3030,23 +3738,24 @@ d\mathbf{x}(t)=\mathbf{f}(\mathbf{x}(t),t),dt + g(t),d\mathbf{w}(t),
 \qquad\text{(4.1.3)}
 $$
 
-**Objects**
-
 * $\mathbf{f}(\cdot,t):\mathbb{R}^D\to\mathbb{R}^D$: **drift** (deterministic trend).
 * $g(t)\in\mathbb{R}$: **scalar diffusion coefficient** (noise strength schedule).
 * $\mathbf{w}(t)$: standard **Wiener process** (Brownian motion).
 
-**Interpretation**
+Once $\mathbf{f}$ and $g$ are chosen, the forward process is fully specified.
+It describes how clean data is progressively corrupted by injecting **Gaussian noise** over time.
 
-* Once $\mathbf{f}$ and $g$ are chosen, the forward process is fully specified.
-* It describes how clean data is progressively corrupted by injecting **Gaussian noise** over time.
+</div>
 
 ---
 
 ### Figure intuition (forward process)
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Figure intuition (forward process))</span></p>
+
 * At $t=0$: distribution is complex, e.g. bimodal $p_0=p_{\text{data}}$.
-* As $t$ increases: the **marginal density** $p_t$ “smooths out”.
+* As $t$ increases: the **marginal density** $p_t$ "smooths out".
 * At $t=T$: $p_T\approx p_{\text{prior}}$ (typically a simple Gaussian).
 
 **PF-SDE vs PF-ODE paths (from the figure caption)**
@@ -3054,17 +3763,27 @@ $$
 * **PF-SDE**: sample trajectories are stochastic (wiggly).
 * **PF-ODE**: deterministic counterpart gives a **transport map for densities**; it is *not* generally the mean of SDE sample paths from a single initial point.
 
+</div>
+
 ---
 
 ## Perturbation kernels and marginals
 
 ### Perturbation kernel
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Perturbation kernel)</span></p>
+
 $$p_t(\mathbf{x}_t\mid \mathbf{x}_0)$$
 
 describes how one clean sample $\mathbf{x}_0\sim p_{\text{data}}$ becomes a noisy $\mathbf{x}_t$ at time $t$.
 
+</div>
+
 ### Marginal density (mixture over data)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Marginal density (mixture over data))</span></p>
 
 $$
 p_t(\mathbf{x}_t)=\int p_t(\mathbf{x}_t\mid \mathbf{x}_0),p_{\text{data}}(\mathbf{x}_0),d\mathbf{x}_0,
@@ -3074,9 +3793,14 @@ $$
 
 So $p_t$ is a (generally complicated) mixture induced by the kernel + the data distribution.
 
+</div>
+
 ---
 
 ## Affine drift special case (closed-form Gaussian kernels)
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Affine drift special case (closed-form Gaussian kernels))</span></p>
 
 A common analytically convenient assumption is that drift is **linear in $\mathbf{x}$**:
 
@@ -3087,7 +3811,12 @@ $$
 
 where $f(t)$ is scalar (typically **non-positive**, so the signal decays).
 
+</div>
+
 ### Consequence: Gaussian conditional at every time
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Consequence: Gaussian conditional at every time)</span></p>
 
 Under this structure, the process stays Gaussian conditionally:
 
@@ -3105,16 +3834,21 @@ and initial conditions $\mathbf{m}(0)=\mathbf{x}_0,;P(0)=0$.
 
 **Why this matters**
 
-* You can sample $\mathbf{x}_t\mid \mathbf{x}_0$ **directly** without numerically simulating the SDE (“simulation-free”).
+* You can sample $\mathbf{x}_t\mid \mathbf{x}_0$ **directly** without numerically simulating the SDE ("simulation-free").
 * Both **NCSN** and **DDPM** fall into this affine-drift setting (in the continuous-time view).
+
+</div>
 
 ---
 
 ## Convergence to a simple prior
 
-By choosing $f(t)$ and $g(t)$ appropriately, the forward diffusion eventually “forgets” the initial condition.
+By choosing $f(t)$ and $g(t)$ appropriately, the forward diffusion eventually "forgets" the initial condition.
 
 ### Mean decays (forgetting $\mathbf{x}_0$)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mean decays (forgetting $\mathbf{x}_0$))</span></p>
 
 If $f(u)\le 0$,
 
@@ -3125,7 +3859,12 @@ $$
 
 so dependence on $\mathbf{x}_0$ vanishes.
 
+</div>
+
 ### Marginal approaches a prior
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Marginal approaches a prior)</span></p>
 
 As the conditional becomes independent of $\mathbf{x}_0$, the marginal simplifies:
 
@@ -3137,29 +3876,42 @@ $$
 
 Thus, the forward SDE maps a complex data distribution into a tractable prior, giving a clean starting point for *reversal/generation*.
 
+</div>
+
 ---
 
-# 4.1.3 Reverse-Time Stochastic Process for Generation
+## 4.1.3 Reverse-Time Stochastic Process for Generation
 
 ### Goal
 
-Generate data by “reversing” the forward corruption:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Goal)</span></p>
+
+Generate data by "reversing" the forward corruption:
 
 * Start at $t=T$ from $\mathbf{x}_T\sim p_{\text{prior}}\approx p_T$,
 * Evolve **backward** to $t=0$ to obtain a sample from $p_{\text{data}}$.
 
+</div>
+
 ### Why reversing is subtle for SDEs
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why reversing is subtle for SDEs)</span></p>
 
 * For ODEs: time reversal is basically tracing trajectories backward.
 * For SDEs: individual stochastic paths aren’t reversible in a naive sense; the key fact is that **the distributional evolution** *is* reversible in a precise way.
 
 This is formalized by a time-reversal result (attributed here to **Anderson (1982)**): the time-reversed process is again an SDE with a modified drift involving the **score**.
 
+</div>
+
 ---
 
-## Reverse-time SDE (noise (\to) data)
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reverse-time SDE (noise $\to$ data))</span></p>
 
-Let $\bar{\mathbf{x}}(t)$ denote the reverse-time process (the “bar” distinguishes it from forward $\mathbf{x}(t)$). Then:
+Let $\bar{\mathbf{x}}(t)$ denote the reverse-time process. Then:
 
 $$
 d\bar{\mathbf{x}}(t)=
@@ -3171,14 +3923,23 @@ d\bar{\mathbf{x}}(t)=
   \tag{4.1.6}
 $$
 
+</div>
 
 ### Reverse-time Brownian motion
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reverse-time Brownian motion)</span></p>
 
 $$\bar{\mathbf{w}}(t) := \mathbf{w}(T-t)-\mathbf{w}(T)$$
 
 is a Wiener process when viewed in reverse time.
 
+</div>
+
 ### Key new ingredient: the score term
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Key new ingredient: the score term)</span></p>
 
 $$\nabla_{\mathbf{x}}\log p_t(\mathbf{x})$$
 
@@ -3190,40 +3951,55 @@ is what makes the reverse dynamics reproduce the correct marginals.
 
 **Important:** the reverse process does **not** inject arbitrary randomness: the diffusion term $g(t),d\bar{\mathbf{w}}(t)$ is *paired* with the score-driven drift so that the distribution flows correctly back to data.
 
+</div>
+
 ---
 
 ## Conceptual intuition: why does the reverse process work?
 
-At first it seems paradoxical: you add noise in reverse time too, so why don’t you just get “more random”?
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conceptual intuition: why does the reverse process work?)</span></p>
+
+At first it seems paradoxical: you add noise in reverse time too, so why don’t you just get "more random"?
 
 The intuition is:
-* The **score drift** points toward **higher-density regions** of $p_t$, pulling samples toward structured regions (toward the “data manifold” at small $t$).
+* The **score drift** points toward **higher-density regions** of $p_t$, pulling samples toward structured regions (toward the "data manifold" at small $t$).
 * The Brownian term provides **controlled exploration**, but its effect is balanced by the score correction.
 * Together they produce a process whose marginals match the reversed marginals of the forward SDE.
+
+</div>
 
 ---
 
 ## Connection to Langevin dynamics (special case $f(t)=0$)
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection to Langevin dynamics (special case $f(t)=0$))</span></p>
+
 If $\mathbf{f}(t)=0$, (4.1.6) becomes
 
 $$d\bar{\mathbf{x}}(t)= -g^2(t)\nabla_{\mathbf{x}}\log p_t(\bar{\mathbf{x}}(t))dt + g(t),d\bar{\mathbf{w}}(t)$$
 
+</div>
+
 ### Reparameterize time forward
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reparameterize time forward)</span></p>
 
 Let $s=T-t$ (so $dt=-ds$) and rename Brownian motion so that $d\bar{\mathbf{w}}(t)=-d\mathbf{w}_s$.
 Define $\bar{\mathbf{x}}_s := \bar{\mathbf{x}}(T-s)$ and $\pi_s := p_{T-s}$. Then:
 
 $$d\bar{\mathbf{x}}_s = g^2(T-s)\nabla_{\mathbf{x}}\log \pi_s(\bar{\mathbf{x}}_s)ds + g(T-s),d\mathbf{w}_s$$
 
-Now define a “temperature” schedule
+Now define a "temperature" schedule
 
 $$\tau(s) := \tfrac12 g^2(T-s)$$
 
 Then
 
 $$
-d\bar{\mathbf{x}}*s
+d\bar{\mathbf{x}}_s
 = 2\tau(s)\nabla_{\mathbf{x}}\log \pi_s(\bar{\mathbf{x}}_s)\,ds
 
 + \sqrt{2\tau(s)},d\mathbf{w}_s,
@@ -3231,10 +4007,17 @@ $$
 
   which is exactly **Langevin form**, but with **time-varying temperature** $\tau(s)$ and a time-evolving target density $\pi_s$.
 
+</div>
+
 ### Annealing intuition
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Annealing intuition)</span></p>
 
 * Early in reverse time (near $t\approx T$, i.e. $s\approx 0$): $g(T-s)$ is typically larger → more noise → broad exploration.
 * As you approach $t\to 0$ (i.e. $s\to T$): $g(T-s)$ decreases → noise weakens, score term dominates → trajectories concentrate near high-density (data-like) regions.
+
+</div>
 
 ---
 
@@ -3242,17 +4025,25 @@ $$
 
 ### Central role of the score
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Central role of the score)</span></p>
+
 Define the score function:
 
 $$\mathbf{s}(\mathbf{x},t) := \nabla_{\mathbf{x}}\log p_t(\mathbf{x})$$
 
 Once forward coefficients $\mathbf{f}$ and $g$ are fixed, **the score is the only unknown** needed to run the reverse SDE.
 
+</div>
+
 ### Practical approach
 
-The “oracle” score is not available, so we learn a neural net $\mathbf{s}_\phi(\mathbf{x},t)$ via **score matching** (later section referenced as 4.2.1). Plugging it into (4.1.6) yields a fully specified generative dynamics.
+The "oracle" score is not available, so we learn a neural net $\mathbf{s}_\phi(\mathbf{x},t)$ via **score matching** (later section referenced as 4.2.1). Plugging it into (4.1.6) yields a fully specified generative dynamics.
 
 ### Sampling statement
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sampling statement)</span></p>
 
 Generation = solve the reverse-time SDE from $t=T$ to $t=0$:
 
@@ -3260,9 +4051,14 @@ Generation = solve the reverse-time SDE from $t=T$ to $t=0$:
 * integrate reverse dynamics using learned score,
 * output $\mathbf{x}_0$ which should follow $p_{\text{data}}$ approximately, assuming $p_{\text{prior}}\approx p_T$.
 
+</div>
+
 ---
 
-## Minimal “memory hooks” (quick recall)
+## Minimal "memory hooks" (quick recall)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Minimal "memory hooks" (quick recall))</span></p>
 
 * **Forward:** $d\mathbf{x}=\mathbf{f}(\mathbf{x},t)dt+g(t)d\mathbf{w}$, $\mathbf{x}(0)\sim p_{\text{data}}$.
 * **Kernel:** $p_t(\mathbf{x}_t\mid \mathbf{x}_0)$ (often Gaussian if $\mathbf{f}(\mathbf{x},t)=f(t)\mathbf{x}$).
@@ -3271,10 +4067,14 @@ Generation = solve the reverse-time SDE from $t=T$ to $t=0$:
 * **Key unknown:** the **score** $\nabla\log p_t$.
 * **Langevin view:** reverse SDE looks like annealed Langevin with $\tau(s)=\tfrac12 g^2(T-s)$ when $f=0$.
 
+</div>
 
 ## 4.1.4 Deterministic Process for Generation: Probability Flow ODE (PF-ODE)
 
 ### Motivation (Question 4.1.1)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Motivation (Question 4.1.1))</span></p>
 
 Forward diffusion is usually defined as an SDE that adds noise:
 
@@ -3282,15 +4082,14 @@ Forward diffusion is usually defined as an SDE that adds noise:
 
 Key idea: **No, SDE sampling is not necessary.** There exists a **deterministic ODE** whose solutions have the **same marginal distributions** as the forward SDE at every time $t$.
 
+</div>
+
 ---
 
-### Probability Flow ODE (PF-ODE)
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probability Flow ODE (PF-ODE))</span></p>
 
-Given the forward SDE (from earlier in the text) of the form
-
-$$d\mathbf{x}(t)=\mathbf{f}(\mathbf{x}(t),t),dt + g(t),d\mathbf{w}(t)$$
-
-Song et al. introduce the **Probability Flow ODE**:
+Given the forward SDE $d\mathbf{x}(t)=\mathbf{f}(\mathbf{x}(t),t),dt + g(t),d\mathbf{w}(t)$, Song et al. introduce the **Probability Flow ODE**:
 
 $$
 \frac{d\tilde{\mathbf{x}}(t)}{dt}
@@ -3301,17 +4100,21 @@ $$
 \tag{PF-ODE}
 $$
 
+**Important:** the PF-ODE drift is **not** obtained by "just removing noise."
+The $\tfrac12$ factor is essential and comes from the **Fokker–Planck** matching principle.
 
-**Important:** the PF-ODE drift is **not** obtained by “just removing noise.”
-The **(\tfrac12)** factor is essential and comes from the **Fokker–Planck** matching principle (next section).
+</div>
 
 ---
 
 ### Sampling / generation with PF-ODE
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sampling / generation with PF-ODE)</span></p>
+
 To generate data:
 
-1. Sample an initial point from the terminal distribution (the “prior”):
+1. Sample an initial point from the terminal distribution (the "prior"):
    
    $$\tilde{\mathbf{x}}(T) \sim p_{\text{prior}} \approx p_T$$
    
@@ -3332,12 +4135,19 @@ $$
 3. In practice the integral is not closed-form ⇒ use **numerical ODE solvers** (Euler, RK methods, adaptive solvers, etc.).
 4. As usual in diffusion models, replace the true score $\nabla \log p_t$ with a learned approximation.
 
+</div>
+
 ---
 
 ### Advantages vs reverse-time SDE sampling
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Advantages vs reverse-time SDE sampling)</span></p>
+
 * **Bidirectional integration:** you can run the same ODE forward $0\to T$ or backward $T\to 0$, just changing the endpoint initial condition.
 * **ODE solver ecosystem:** many mature, accurate, off-the-shelf numerical solvers exist for ODEs.
+
+</div>
 
 ---
 
@@ -3345,21 +4155,30 @@ $$
 
 ### High-level goal (Question 4.1.2)
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(High-level goal (Question 4.1.2))</span></p>
+
 Different stochastic/deterministic processes can yield the **same time-indexed marginals** $\lbrace p_t\rbrace_{t\in[0,T]}$.
 What matters is constructing a process whose marginals match the target evolution—especially so that at $t=0$ we recover $p_{\text{data}}$.
+
+</div>
 
 ---
 
 ### Figure intuition (Fig. 4.4)
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Figure intuition (Fig. 4.4))</span></p>
+
 The forward process gradually transforms an initial complicated distribution $p_0=p_{\text{data}}$ (e.g., a multi-modal mixture) into a simple terminal distribution $p_T \approx p_{\text{prior}}$ (often Gaussian-like).
 This evolution of the marginal density $p_t$ is governed by the **Fokker–Planck equation**.
 
+</div>
+
 ---
 
-## Theorem 4.1.1: Fokker–Planck ensures marginals align
-
-### Forward SDE and its Fokker–Planck PDE
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(4.1.1 — Fokker–Planck ensures marginals align)</span></p>
 
 If $\lbrace\mathbf{x}(t)\rbrace_{t\in[0,T]}$ follows the forward SDE
 
@@ -3378,7 +4197,6 @@ $$
 +\frac12 g(t)^2,\Delta_{\mathbf{x}}p_t(\mathbf{x}).
 \tag{Fokker–Planck}
 $$
-
 
 This can be rewritten as a **continuity equation**
 
@@ -3399,8 +4217,9 @@ $$
 -\frac12 g(t)^2 \nabla_{\mathbf{x}}\log p_t(\mathbf{x}).
 $$
 
-
 **This $\mathbf{v}$ is exactly the PF-ODE drift**, explaining the $\tfrac12$ factor.
+
+</div>
 
 ---
 
@@ -3408,13 +4227,21 @@ $$
 
 #### (i) PF-ODE
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">((i) PF-ODE)</span></p>
+
 $$\frac{d\tilde{\mathbf{x}}(t)}{dt}=\mathbf{v}(\tilde{\mathbf{x}}(t),t)$$
 
 * If started from $\tilde{\mathbf{x}}(0)\sim p_0$ and run forward, then $\tilde{\mathbf{x}}(t)\sim p_t$.
 * Equivalently, if started from $\tilde{\mathbf{x}}(T)\sim p_T$ and run backward, it also matches the same marginals.
 
+</div>
+
 #### (ii) Reverse-time SDE (stochastic sampler)
 
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">((ii) Reverse-time SDE (stochastic sampler))</span></p>
 
 $$
 d\bar{\mathbf{x}}(t)
@@ -3428,13 +4255,18 @@ initialized at $\bar{\mathbf{x}}(0)\sim p_T$, where $\bar{\mathbf{w}}(t)$ is a W
 
 **Key point:** PF-ODE and reverse-time SDE differ at the *trajectory level* (deterministic vs stochastic), but are designed to be consistent with the **same family of marginals** governed by Fokker–Planck.
 
+</div>
+
 ---
 
-## Flow map view and “many conditionals, one marginal”
+## Flow map view and "many conditionals, one marginal"
 
 ### PF-ODE flow map
 
-Define the flow map $\Psi_{s\to t}:\mathbb{R}^D\to\mathbb{R}^D$ by “evolving the ODE from time $s$ to $t$”:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(PF-ODE flow map)</span></p>
+
+Define the flow map $\Psi_{s\to t}:\mathbb{R}^D\to\mathbb{R}^D$ by "evolving the ODE from time $s$ to $t$":
 
 $$
 \Psi_{s\to t}(\mathbf{x}_s)
@@ -3446,9 +4278,14 @@ $$
 
 Under mild smoothness assumptions, $\Psi_{s\to t}$ is a **smooth bijection**.
 
+</div>
+
 ---
 
 ### Pushforward density under the ODE
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Pushforward density under the ODE)</span></p>
 
 If $\mathbf{x}_0\sim p_{\text{data}}$ and $\mathbf{x}_t=\Psi_{0\to t}(\mathbf{x}_0)$, then the induced density at time $t$ is the pushforward:
 
@@ -3460,9 +4297,14 @@ $$
 
 The theorem ensures $p_t^{\text{fwd}}=p_t$, matching the forward SDE marginals.
 
+</div>
+
 ---
 
 ### Non-uniqueness of conditionals $Q_t(\mathbf{x}_t\mid \mathbf{x}_0$)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Non-uniqueness of conditionals $Q_t(\mathbf{x}_t\mid \mathbf{x}_0$))</span></p>
 
 A marginal constraint
 
@@ -3493,19 +4335,29 @@ Q_t(\mathbf{x}_t\mid \mathbf{x}_0)
 $$
 
 
-**Interpretation:** many different dynamics (stochastic/deterministic/hybrid) can satisfy the same marginal evolution—what “selects” the right marginals is the **Fokker–Planck equation**.
+**Interpretation:** many different dynamics (stochastic/deterministic/hybrid) can satisfy the same marginal evolution—what "selects" the right marginals is the **Fokker–Planck equation**.
+
+</div>
 
 ---
 
 ## Observation 4.1.1: What really matters
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Observation 4.1.1: What really matters)</span></p>
+
 * Multiple processes can produce the **same sequence of marginals** $\lbrace p_t\rbrace$.
 * The crucial requirement is: **the process must satisfy the Fokker–Planck evolution** for the prescribed $p_t$.
 * This gives significant flexibility in designing generative processes from $p_{\text{prior}}\to p_{\text{data}}$ (or the reverse).
 
+</div>
+
 ---
 
 ## Compact cheat sheet (core equations to memorize)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Compact cheat sheet (core equations to memorize))</span></p>
 
 Forward SDE:
 
@@ -3527,10 +4379,14 @@ Reverse-time SDE:
 
 $$d\bar{\mathbf{x}}=\big[\mathbf{f}-g^2\nabla\log p\big]dt + g,d\bar{\mathbf{w}}$$
 
+</div>
 
-## Study notes — Score SDE: training, sampling, inversion, likelihood (Sec. 4.2)
+## Score SDE: Training, Sampling, Inversion, and Likelihood
 
 ### 0) Setup and notation (what objects appear in these pages)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Setup and notation (what objects appear in these pages))</span></p>
 
 * We have a **forward (noising) diffusion** over continuous time $t\in[0,T]$ that induces a family of marginal densities $\lbrace p_t(\mathbf{x})}_{t\in[0,T]\rbrace$.
 * The central quantity is the **score**
@@ -3548,11 +4404,16 @@ $$d\bar{\mathbf{x}}=\big[\mathbf{f}-g^2\nabla\log p\big]dt + g,d\bar{\mathbf{w}}
   * diffusion scale $g(t)$
     so the reverse-time and PF-ODE formulas later use these same $f,g$.
 
+</div>
+
 ---
 
-## 1) Training the score model
+## Training the score model
 
-### 1.1 “Oracle” score matching objective (intractable target)
+### 1.1 "Oracle" score matching objective (intractable target)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">("Oracle" score matching objective (intractable target))</span></p>
 
 The conceptual objective is: fit $\mathbf{s}_\phi$ to the true score at every time:
 
@@ -3571,9 +4432,14 @@ $$
 
 **Problem:** $\nabla_{\mathbf{x}}\log p_t(\mathbf{x})$ is an **oracle** (unknown).
 
+</div>
+
 ---
 
 ### 1.2 Denoising Score Matching (DSM) objective (tractable target)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Denoising Score Matching (DSM) objective (tractable target))</span></p>
 
 To avoid the oracle score, use the **conditional** distribution of the forward process:
 
@@ -3594,13 +4460,18 @@ $$
 Key point: for many SDE choices (and especially the diffusion-model cases),
 $\nabla_{\mathbf{x}_t}\log p_t(\mathbf{x}_t\mid \mathbf{x}_0)$ is **analytically available**.
 
-**Interpretation:** DSM is “regress the network output onto a known conditional score target.”
+**Interpretation:** DSM is "regress the network output onto a known conditional score target."
+
+</div>
 
 ---
 
 ### 1.3 What does DSM learn? (Proposition 4.2.1)
 
-**Proposition (Minimizer of DSM).** The optimal function $\mathbf{s}^*$ satisfies
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(4.2.1 — Minimizer of DSM)</span></p>
+
+The optimal function $\mathbf{s}^*$ satisfies
 
 $$
 \mathbf{s}^*(\mathbf{x}_t,t)
@@ -3610,6 +4481,11 @@ $$
 $$
 
 for (almost) every $\mathbf{x}_t\sim p_t$ and $t\in[0,T]$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(What does DSM learn? (Proposition 4.2.1))</span></p>
 
 **Why this is true (high-level):**
 
@@ -3623,9 +4499,14 @@ for (almost) every $\mathbf{x}_t\sim p_t$ and $t\in[0,T]$.
 
 **Takeaway:** DSM lets you train $\mathbf{s}_\phi$ using a tractable conditional target, yet the optimum corresponds to the true marginal score.
 
+</div>
+
 ---
 
 ### 1.4 Practical training recipe (what you do in code)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical training recipe (what you do in code))</span></p>
 
 For each SGD step:
 
@@ -3635,9 +4516,14 @@ For each SGD step:
 4. Compute the analytic target $\nabla_{\mathbf{x}_t}\log p_t(\mathbf{x}_t\mid \mathbf{x}_0)$.
 5. Minimize the weighted squared error with $\omega(t)$.
 
+</div>
+
 ---
 
-## 2) Sampling and inference after training (Sec. 4.2.2)
+## Sampling and inference after training (Sec. 4.2.2)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Sampling and inference after training))</span></p>
 
 Once trained, denote the learned score as
 
@@ -3651,12 +4537,17 @@ A helpful visual intuition (Fig. 4.5): starting from $\mathbf{x}_T\sim p_{\text{
 * solving the PF-ODE (deterministic path),
   end near the data manifold at $t=0$ (if the score is accurate).
 
+</div>
+
 ---
 
-## 3) Generation via the empirical reverse-time SDE
+## Generation via the empirical reverse-time SDE
 
 ### 3.1 Empirical reverse-time SDE (Eq. 4.2.3)
 
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Empirical reverse-time SDE (Eq. 4.2.3))</span></p>
 
 $$
 d\mathbf{x}^{\text{SDE}}_{\phi^\star}(t)
@@ -3676,7 +4567,12 @@ $$
 * $\bar{\mathbf{w}}(t)$ is the Brownian motion in reverse-time formulation.
 * The learned score modifies the drift by $-g^2(t),s_{\phi^\star}$.
 
+</div>
+
 ### 3.2 Euler–Maruyama discretization (Eq. 4.2.4)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Euler–Maruyama discretization (Eq. 4.2.4))</span></p>
 
 To sample:
 
@@ -3705,12 +4601,17 @@ $$p^{\text{SDE}}_{\phi^\star}(\cdot;0)\approx p_{\text{data}}(\cdot)$$
 
 **Connection noted:** DDPM sampling is a **special case** of this Euler–Maruyama discretization for specific choices of $\mathbf{f}$ and $g$.
 
+</div>
+
 ---
 
-## 4) Generation via the empirical PF-ODE (probability flow ODE)
+## Generation via the empirical PF-ODE (probability flow ODE)
 
 ### 4.1 Empirical PF-ODE (Eq. 4.2.5)
 
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Empirical PF-ODE (Eq. 4.2.5))</span></p>
 
 $$
 \frac{d}{dt}\mathbf{x}^{\text{ODE}}_{\phi^\star}(t)
@@ -3744,8 +4645,12 @@ $$
 \Big]d\tau.
 $$
 
+</div>
 
 ### 4.2 Euler method update (Eq. 4.2.6)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Euler method update (Eq. 4.2.6))</span></p>
 
 With step size $\Delta t>0$:
 
@@ -3763,9 +4668,11 @@ $$
 
 The resulting distribution $p^{\text{ODE}}_{\phi^\star}(\cdot;0)$ should approximate $p_{\text{data}}$.
 
+</div>
+
 ---
 
-## 5) Core insight: generation = solving an ODE/SDE (Insight 4.2.1)
+## Core insight: generation = solving an ODE/SDE (Insight 4.2.1)
 
 > Sampling from diffusion models is fundamentally equivalent to solving a corresponding **reverse-time SDE** or **probability flow ODE**.
 
@@ -3773,7 +4680,10 @@ The resulting distribution $p^{\text{ODE}}_{\phi^\star}(\cdot;0)$ should approxi
 
 ---
 
-## 6) Inversion with PF-ODE (encoder viewpoint)
+## Inversion with PF-ODE (encoder viewpoint)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Inversion with PF-ODE (encoder viewpoint))</span></p>
 
 Unlike SDE sampling, the PF-ODE can be solved both:
 
@@ -3785,11 +4695,16 @@ because it’s a deterministic ODE (under standard well-posedness assumptions).
 **Forward solve interpretation:**
 Solving PF-ODE forward maps $\mathbf{x}_0$ to a noisy latent $\mathbf{x}(T)$. This acts like an **encoder**, and enables applications like controllable generation / translation / editing.
 
+</div>
+
 ---
 
-## 7) Exact log-likelihood via PF-ODE (continuous normalizing flow view)
+## Exact log-likelihood via PF-ODE (continuous normalizing flow view)
 
 ### 7.1 Define the velocity field
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Define the velocity field)</span></p>
 
 Treat the PF-ODE dynamics as a (Neural ODE–style) flow with velocity
 
@@ -3799,7 +4714,12 @@ $$
 \mathbf{f}(\mathbf{x},t)-\frac{1}{2}g^2(t)\mathbf{s}_{\phi^\star}(\mathbf{x},t)
 $$
 
+</div>
+
 ### 7.2 Log-density evolution along the flow
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Log-density evolution along the flow)</span></p>
 
 Along the PF-ODE trajectory $\lbrace \mathbf{x}^{\text{ODE}}_{\phi^\star}(t)\rbrace$,
 
@@ -3812,7 +4732,12 @@ $$
 
 where $\nabla\cdot \mathbf{v}$ is the divergence w.r.t. $\mathbf{x}$.
 
+</div>
+
 ### 7.3 Augmented ODE to compute likelihood (Eq. 4.2.7)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Augmented ODE to compute likelihood (Eq. 4.2.7))</span></p>
 
 To compute likelihood for $\mathbf{x}_0\sim p_{\text{data}}$, integrate forward from $t=0$ to $t=T$:
 
@@ -3856,10 +4781,15 @@ where $p_{\text{prior}}(\mathbf{x}(T))$ is available in closed form (e.g. standa
 
 **Mental model:** PF-ODE gives a reversible flow + change-of-variables, so diffusion models can support **exact likelihood evaluation** (under the ODE formulation).
 
+</div>
+
 ---
 
 
 ## 4.3 Instantiations of SDEs (Score-SDE framework)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Instantiations of SDEs (Score-SDE framework))</span></p>
 
 We consider the **forward SDE** (diffusion / noising process)
 
@@ -3876,11 +4806,16 @@ $$p_t(\mathbf{x}_t\mid \mathbf{x}_0)$$
 
 which tells you what distribution you get after noising clean data $\mathbf{x}_0$ up to time $t$. This kernel is what you sample from during training (e.g., for denoising/score matching), and it also determines a natural **prior** $p_{\text{prior}} = p_T(\mathbf{x}_T)$ used for generation.
 
+</div>
+
 ---
 
 ## Table 4.1 — Summary (VE vs VP)
 
 ### VE SDE
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(VE SDE summary)</span></p>
 
 * **Drift:** $f(\mathbf{x},t)=0$
 * **Diffusion:** $g(t)=\sqrt{\frac{\mathrm{d}\sigma^2(t)}{\mathrm{d}t}}$
@@ -3896,7 +4831,12 @@ which tells you what distribution you get after noising clean data $\mathbf{x}_0
   
   $$p_{\text{prior}}=\mathcal{N}(\mathbf{0},\sigma^2(T)\mathbf{I})$$
 
+</div>
+
 ### VP SDE
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(VP SDE summary)</span></p>
 
 * **Drift:** $f(\mathbf{x},t)= -\tfrac12 \beta(t)\mathbf{x}$
 * **Diffusion:** $g(t)=\sqrt{\beta(t)}$
@@ -3915,40 +4855,58 @@ which tells you what distribution you get after noising clean data $\mathbf{x}_0
   
   $$p_{\text{prior}}=\mathcal{N}(\mathbf{0},\mathbf{I})$$
 
+</div>
+
 ---
 
 ## 4.3.1 VE SDE (Variance Exploding)
 
-### Definition
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(VE SDE)</span></p>
 
 * Drift term is **zero**:
-  
+
   $$f(\mathbf{x},t)=0$$
-  
+
 * Diffusion is controlled by a variance schedule $\sigma(t)$:
-  
+
   $$g(t)=\sqrt{\frac{\mathrm{d}\sigma^2(t)}{\mathrm{d}t}}$$
-  
+
   So the forward SDE is
-  
+
   $$\mathrm{d}\mathbf{x}(t)=\sqrt{\frac{\mathrm{d}\sigma^2(t)}{\mathrm{d}t}},\mathrm{d}\mathbf{w}(t)$$
+
+</div>
 
 ### Perturbation kernel (what noising does)
 
-Because there is no drift, the process does not “shrink” $\mathbf{x}$; it only adds Gaussian noise:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Perturbation kernel (what noising does))</span></p>
+
+Because there is no drift, the process does not "shrink" $\mathbf{x}$; it only adds Gaussian noise:
 
 $$
 p_t(\mathbf{x}_t\mid \mathbf{x}_0)=
 \mathcal{N} \Big(\mathbf{x}_t;\mathbf{x}_0,;(\sigma^2(t)-\sigma^2(0))\mathbf{I}\Big).
 $$
 
+</div>
+
 ### Prior choice
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Prior choice)</span></p>
 
 Assume $\sigma(t)$ is increasing on $[0,T]$ and $\sigma^2(T)\gg\sigma^2(0)$. Then a natural prior is:
 
 $$p_{\text{prior}}:=\mathcal{N}(\mathbf{0},\sigma^2(T)\mathbf{I})$$
 
+</div>
+
 ### Typical instance: NCSN (discretized VE)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Typical instance: NCSN (discretized VE))</span></p>
 
 A standard VE design uses a **geometric** schedule (for $t\in(0,1]$):
 
@@ -3958,27 +4916,35 @@ so the variance levels form a geometric sequence. NCSN can be viewed as a discre
 
 **Intuition:** VE keeps the mean at $\mathbf{x}_0$ but steadily increases the noise scale—eventually the signal is drowned by large variance.
 
+</div>
+
 ---
 
 ## 4.3.2 VP SDE (Variance Preserving)
 
-### Definition
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(VP SDE)</span></p>
 
-Let $\beta:[0,T]\to\mathbb{R}_{\ge 0}$ be a nonnegative “noise rate” schedule.
+Let $\beta:[0,T]\to\mathbb{R}_{\ge 0}$ be a nonnegative "noise rate" schedule.
 
 * Drift pulls $\mathbf{x}(t)$ toward zero:
-  
+
   $$f(\mathbf{x},t)= -\tfrac12\beta(t)\mathbf{x}$$
-  
+
 * Diffusion injects noise:
-  
+
   $$g(t)=\sqrt{\beta(t)}$$
 
 Forward SDE:
 
 $$\mathrm{d}\mathbf{x}(t)= -\tfrac12 \beta(t)\mathbf{x}(t),\mathrm{d}t + \sqrt{\beta(t)},\mathrm{d}\mathbf{w}(t)$$
 
+</div>
+
 ### Perturbation kernel
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Perturbation kernel)</span></p>
 
 Define
 
@@ -3998,13 +4964,23 @@ Then
   
   $$p_t(\mathbf{x}_t\mid \mathbf{x}_0)= \mathcal{N}\Big(\mathbf{x}_t;;e^{-\frac12B(t)}\mathbf{x}_0,;(1-e^{-B(t)})\mathbf{I}\Big)$$
 
+</div>
+
 ### Prior choice
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Prior choice)</span></p>
 
 At large time (typical design makes $B(T)$ large), the mean vanishes and covariance approaches $\mathbf{I}$, hence:
 
 $$p_{\text{prior}}:=\mathcal{N}(\mathbf{0},\mathbf{I})$$
 
+</div>
+
 ### Note on computing scores
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Note on computing scores)</span></p>
 
 Since $p_t(\mathbf{x}_t\mid \mathbf{x}_0)$ is Gaussian with known mean/covariance, its **score**
 
@@ -4012,7 +4988,12 @@ $$\nabla_{\mathbf{x}_t}\log p_t(\mathbf{x}_t\mid \mathbf{x}_0)$$
 
 has a closed form (for isotropic covariance it’s proportional to $-(\mathbf{x}_t-\text{mean})$).
 
+</div>
+
 ### Typical instance: DDPM (discretized VP)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Typical instance: DDPM (discretized VP))</span></p>
 
 A classic VP schedule (for $t\in[0,1]$) is **linear**:
 
@@ -4022,11 +5003,16 @@ DDPM can be interpreted as a discretization of the VP SDE.
 
 **Intuition:** VP simultaneously (i) shrinks the signal and (ii) adds noise so that the total variance stays controlled and ends near standard normal.
 
+</div>
+
 ---
 
 ## 4.3.3 (Optional) How the perturbation kernel $p_t(\mathbf{x}_t\mid \mathbf{x}_0)$ is derived
 
 ### Linear-drift case ⇒ conditional Gaussian
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear-drift case ⇒ conditional Gaussian)</span></p>
 
 If the drift is **linear in $\mathbf{x}$**:
 
@@ -4047,7 +5033,12 @@ $$
 P(t)\mathbf{I}_D=\mathrm{Cov}[\mathbf{x}_t\mid \mathbf{x}_0].
 $$
 
+</div>
+
 ### Moment ODEs
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Moment ODEs)</span></p>
 
 The mean and (scalar) variance satisfy:
 
@@ -4058,7 +5049,12 @@ $$
 
 with initial conditions $\mathbf{m}(0)=\mathbf{x}_0$, $P(0)=0$.
 
+</div>
+
 ### Closed-form solution via integrating factor
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Closed-form solution via integrating factor)</span></p>
 
 Define the exponential integrating factor
 
@@ -4071,11 +5067,16 @@ $$
 P(t)=\int_0^t \mathcal{E}^2(s\to t),g^2(s),\mathrm{d}s.
 $$
 
+</div>
+
 ---
 
 ## Worked examples (transition kernels)
 
 ### VE SDE
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VE SDE worked example)</span></p>
 
 Here $f=0$, $g(t)=\sqrt{\frac{\mathrm{d}\sigma^2(t)}{\mathrm{d}t}}$.
 
@@ -4089,7 +5090,12 @@ p_t(\mathbf{x}_t\mid \mathbf{x}_0)=
 \mathcal{N} \Big(\mathbf{x}_t;\mathbf{x}_0,;(\sigma^2(t)-\sigma^2(0))\mathbf{I}_D\Big).
 $$
 
+</div>
+
 ### VP SDE
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VP SDE worked example)</span></p>
 
 Here $f(t)=-\tfrac12\beta(t)$, $g(t)=\sqrt{\beta(t)}$, and $B(t)=\int_0^t\beta(s)ds$.
 
@@ -4109,17 +5115,26 @@ Final:
 
 $$p_t(\mathbf{x}_t\mid \mathbf{x}_0)=\mathcal{N} \Big(\mathbf{x}_t;;e^{-\frac12B(t)}\mathbf{x}_0,;(1-e^{-B(t)})\mathbf{I}_D\Big)$$
 
+</div>
+
 ---
 
 ## Mental model: VE vs VP (what to remember)
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Mental model: VE vs VP (what to remember))</span></p>
+
 * **VE:** mean stays $\mathbf{x}_0$; variance grows like $\sigma^2(t)$ (eventually huge).
 * **VP:** mean decays to $0$; variance rises but is capped to approach $1$ (standard normal), giving a clean $\mathcal{N}(0,I)$ prior.
 
+</div>
 
-# Study notes — Section 4.4: Rethinking forward kernels in score-based and variational diffusion models
+### Rethinking Forward Kernels in Score-Based and Variational Diffusion Models
 
-## 1) Why “rethink” the forward kernel?
+## Why "rethink" the forward kernel?
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why "rethink" the forward kernel?)</span></p>
 
 Diffusion/Score-SDE models are often introduced via **incremental** forward transitions:
 
@@ -4137,11 +5152,14 @@ Both DDPM and Score-SDE ultimately rely on this kernel:
 
 **Key message:** defining $p_t(x_t\mid x_0)$ directly is often **cleaner**, **more interpretable**, and aligns naturally with loss/prior design (e.g., what happens as $t\to T$).
 
+</div>
+
 ---
 
-## 2) A general affine forward perturbation process $p_t(x_t\mid x_0)$
+## A general affine forward perturbation process $p_t(x_t\mid x_0)$
 
-### Definition (Eq. 4.4.1)
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(General affine forward perturbation (Eq. 4.4.1))</span></p>
 
 Assume a Gaussian perturbation kernel:
 
@@ -4152,29 +5170,42 @@ where $x_0\sim p_{\text{data}}$, and $\alpha_t,\sigma_t\ge 0$ for $t\in[0,T]$, t
 * $\alpha_t>0$ and $\sigma_t>0$ for $t\in(0,T]$ (allowing $\sigma_0=0$)
 * usually $\alpha_0=1,\ \sigma_0=0$
 
-### Sampling form
+**Sampling form:**
 
 $$x_t = \alpha_t x_0 + \sigma_t \varepsilon,\qquad \varepsilon\sim \mathcal N(0,I)$$
 
-### This single form subsumes common “forward types”
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common forward kernel types)</span></p>
+
+This single form subsumes common "forward types":
 
 * **VE (NCSN) kernel:** $\alpha_t\equiv 1,\ \sigma_T\gg 1$
 * **VP (DDPM) kernel:** $\alpha_t := \sqrt{1-\sigma_t^2}$ so that $\alpha_t^2+\sigma_t^2=1$
 * **FM kernel:** $\alpha_t=1-t,\ \sigma_t=t$ (linear interpolation between $x_0$ and noise)
 
+</div>
+
 ---
 
-## 3) Connection to Score SDE: marginal kernel $\Longleftrightarrow$ linear SDE
+## Connection to Score SDE: marginal kernel $\Longleftrightarrow$ linear SDE
 
 ### Score-SDE forward process (linear-in-$x$ form)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Score-SDE forward process (linear-in-$x$ form))</span></p>
 
 If $p_t(x_t\mid x_0)$ has the affine Gaussian form above, it corresponds to an SDE
 
 $$dx(t)= f(t),x(t),dt + g(t),dw(t)$$
 
-where $w(t)$ is Brownian motion (so $dw(t)$ is “Gaussian noise” with variance $\propto dt$).
+where $w(t)$ is Brownian motion (so $dw(t)$ is "Gaussian noise" with variance $\propto dt$).
 
-### Lemma 4.4.1 (Forward perturbation kernel ⇔ linear SDE)
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(4.4.1 — Forward perturbation kernel $\Leftrightarrow$ linear SDE)</span></p>
 
 Define
 
@@ -4191,7 +5222,12 @@ $$
 
 Conversely, any linear SDE whose conditionals are $\mathcal N(\alpha_t x_0,\sigma_t^2 I)$ must satisfy these relations.
 
+</div>
+
 #### Proof idea (what’s happening)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Proof idea (what’s happening))</span></p>
 
 For a linear SDE, the conditional mean $m(t)$ and covariance $P(t)$ satisfy ODEs:
 
@@ -4200,18 +5236,28 @@ For a linear SDE, the conditional mean $m(t)$ and covariance $P(t)$ satisfy ODEs
 
 Matching $m(t)=\alpha_t x_0$ and $P(t)=\sigma_t^2 I$ yields the formulas above.
 
+</div>
+
 ### Observation 4.4.1
 
 > Defining $p_t(x_t\mid x_0)$ is **equivalent** to specifying the linear SDE coefficients $f(t)$ and $g(t)$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Observation 4.4.1)</span></p>
 
 So you can design the forward process **either** by:
 
 * choosing $\alpha_t,\sigma_t$ directly (marginal view), **or**
 * choosing $f,g$ (SDE view)
 
+</div>
+
 ---
 
-## 4) Terminal prior and why “exact Gaussian prior at finite time” can be pathological
+## Terminal prior and why "exact Gaussian prior at finite time" can be pathological
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Terminal prior and why "exact Gaussian prior at finite time" can be pathological)</span></p>
 
 To exactly match a Gaussian prior at terminal time $T$, you’d like the process to **forget $x_0$**:
 
@@ -4226,17 +5272,22 @@ To force ($\alpha_T=0$ at finite $T$, you need
 
 $$\int_0^T f(u),du = -\infty$$
 
-meaning the drift $f(t)$ must contract “infinitely fast” near $T$. At the same time, maintaining the prescribed variance forces the diffusion to blow up; the text notes this is reflected by
+meaning the drift $f(t)$ must contract "infinitely fast" near $T$. At the same time, maintaining the prescribed variance forces the diffusion to blow up; the text notes this is reflected by
 
 $$g^2(t)=\sigma_t^{2,\prime}-2\frac{\alpha_t'}{\alpha_t}\sigma_t^2 \to \infty\quad \text{as }t\to T$$
 
 **Practical takeaway:** if $f$ and $g$ stay bounded on $[0,T]$, then $\alpha_T>0$ and some dependence on $x_0$ remains; the Gaussian prior is then reached only **asymptotically** (e.g., in the limit $t\to T$ without exact attainment, or on an infinite horizon with reparameterization).
 
+</div>
+
 ---
 
-## 5) Connection to variational diffusion (DDPM/VDM): Bayes rule and reverse kernels
+## Connection to variational diffusion (DDPM/VDM): Bayes rule and reverse kernels
 
 ### Core DDPM identity (Eq. 4.4.3)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Core DDPM identity (Eq. 4.4.3))</span></p>
 
 A reverse conditional (posterior) can be written using Bayes’ rule:
 
@@ -4254,15 +5305,20 @@ Typically $x=x_0\sim p_{\text{data}}$. This posterior is central:
 * gives tractable training targets (ELBO terms)
 * yields efficient sampling updates
 
-The section’s theme: even if DDPM starts from incremental kernels, $p_t(x_t\mid x_0)$ is often the clearer “primary object.”
+The section’s theme: even if DDPM starts from incremental kernels, $p_t(x_t\mid x_0)$ is often the clearer "primary object."
+
+</div>
 
 ---
 
-## 6) Closed-form reverse conditional transitions for the general affine kernel
+## Closed-form reverse conditional transitions for the general affine kernel
 
 Let $0\le t < s \le T$.
 
-### Useful “between-time” parameters
+### Useful "between-time" parameters
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Useful "between-time" parameters)</span></p>
 
 Define
 
@@ -4271,11 +5327,14 @@ $$
 \sigma_{s\mid t}^2 := \sigma_s^2 - \alpha_{s\mid t}^2\sigma_t^2.
 $$
 
+</div>
+
 ### Forward transition between noisy times (Eq. 4.4.5)
 
 $$p(x_s\mid x_t)=\mathcal N \big(x_s;\ \alpha_{s\mid t}x_t,\ \sigma_{s\mid t}^2 I\big)$$
 
-### Lemma 4.4.2 (Reverse conditional transition kernels)
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(4.4.2 — Reverse conditional transition kernels)</span></p>
 
 The reverse conditional kernel has Gaussian form:
 
@@ -4292,8 +5351,12 @@ $$
 \frac{\alpha_t\sigma_{s\mid t}^2}{\sigma_s^2}x,
 $$
 
-
 $$\sigma^2(s,t)=\sigma_{s\mid t}^2\frac{\sigma_t^2}{\sigma_s^2}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward transition between noisy times (Eq. 4.4.5))</span></p>
 
 **Interpretation:** the posterior mean is a **weighted blend** of:
 
@@ -4302,9 +5365,14 @@ $$\sigma^2(s,t)=\sigma_{s\mid t}^2\frac{\sigma_t^2}{\sigma_s^2}$$
 
 Weights depend entirely on the noise schedule $(\alpha,\sigma)$.
 
+</div>
+
 ---
 
-## 7) Reverse model parameterization (x-prediction and ε-prediction)
+## Reverse model parameterization (x-prediction and ε-prediction)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reverse model parameterization (x-prediction and ε-prediction))</span></p>
 
 In variational diffusion / ELBO training, you model a parametric reverse process:
 
@@ -4329,9 +5397,14 @@ $$x_s = \alpha_s x_\phi(x_s,s) + \sigma_s \varepsilon_\phi(x_s,s)$$
 
 mirroring the standard DDPM identity relating $x_0$-prediction and noise-prediction.
 
+</div>
+
 ---
 
-## 8) Diffusion loss becomes a weighted regression loss (Eq. 4.4.7)
+## Diffusion loss becomes a weighted regression loss (Eq. 4.4.7)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Diffusion loss becomes a weighted regression loss (Eq. 4.4.7))</span></p>
 
 For the KL term in the diffusion objective, because both distributions are Gaussian with the same covariance $\sigma^2(s,t)I$, the KL reduces to a squared error between means:
 
@@ -4354,9 +5427,14 @@ $$\mathrm{SNR}(u):=\frac{\alpha_u^2}{\sigma_u^2}$$
 
 **Takeaway:** the ELBO training signal is essentially **x0 regression** with a time-dependent weight given by an SNR difference.
 
+</div>
+
 ---
 
-## 9) Continuous-time limit: VDM objective (Kingma et al., 2021)
+## Continuous-time limit: VDM objective (Kingma et al., 2021)
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(VDM objective)</span></p>
 
 Kingma et al. study the limit $t\to s$ of the weighted regression term, yielding:
 
@@ -4370,11 +5448,14 @@ $$
 
 Typically $\mathrm{SNR}(s)$ decreases with $s$, so $\mathrm{SNR}'(s)<0$, making the overall weight $-\mathrm{SNR}'(s)$ positive.
 
+</div>
+
 This perspective also suggests a **learnable noise schedule** via learning $\mathrm{SNR}(s)$ (though extensions are beyond the shown excerpt).
 
 ---
 
-## 10) Sampling update (generalized DDPM step) — Eq. 4.4.8
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Generalized DDPM sampling step (Eq. 4.4.8))</span></p>
 
 To sample backward from time $s$ to $t$ (with $t<s$), use the parametric reverse kernel:
 
@@ -4392,38 +5473,63 @@ $$
 
 This is exactly the familiar DDPM-style update, but expressed for the **general** $(\alpha_t,\sigma_t)$ schedule.
 
+</div>
+
 ---
 
-# “Cheat sheet” summary (what to remember)
+## "Cheat sheet" summary (what to remember)
 
 ### Forward (marginal) design
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Forward (marginal) design)</span></p>
 
 * Pick $\alpha_t,\sigma_t$ $\implies$ defines $p_t(x_t\mid x_0)=\mathcal N(\alpha_t x_0,\sigma_t^2 I)$
 * Sample: $x_t=\alpha_t x_0+\sigma_t\varepsilon$
 
+</div>
+
 ### Convert to SDE (linear)
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Convert to SDE (linear))</span></p>
 
 * $f(t)=\frac{d}{dt}\log\alpha_t$
 * $g^2(t)=\sigma_t^{2,\prime}-2(\log\alpha_t)'\sigma_t^2=-2\sigma_t^2\lambda_t'$, $\lambda_t=\log(\alpha_t/\sigma_t)$
 
+</div>
+
 ### Between-time forward kernel
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Between-time forward kernel)</span></p>
 
 * $\alpha_{s\mid t}=\alpha_s/\alpha_t$
 * $\sigma_{s\mid t}^2=\sigma_s^2-\alpha_{s\mid t}^2\sigma_t^2$
 * $p(x_s\mid x_t)=\mathcal N(\alpha_{s\mid t}x_t,\sigma_{s\mid t}^2I)$
 
+</div>
+
 ### Reverse posterior + model
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Reverse posterior + model)</span></p>
 
 * True posterior: $p(x_t\mid x_s,x)$ Gaussian with mean/var in Lemma 4.4.2
 * Model replaces $x$ by $x_\phi(x_s,s)$
 * KL term $\implies$ weighted regression: $\frac12(\mathrm{SNR}(t)-\mathrm{SNR}(s))\lvert x_0-x_\phi\rvert^2$
 
+</div>
+
 ---
 
 
-# Study notes — 4.5 Fokker–Planck equation & reverse-time SDEs (via marginalization + Bayes)
+### Fokker–Planck Equation and Reverse-Time SDEs
 
 ## Setup and notation
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Setup and notation)</span></p>
 
 * State: $\mathbf{x}_t \in \mathbb{R}^D$
 
@@ -4445,11 +5551,16 @@ This is exactly the familiar DDPM-style update, but expressed for the **general*
   * $\nabla_{\mathbf{x}}\cdot$: divergence
   * $\Delta_{\mathbf{x}} = \sum_i \partial_{x_i}^2$: Laplacian
 
+</div>
+
 ---
 
 ## 4.5.1 Fokker–Planck from marginalizing transition kernels
 
 ### Step 1: Chapman–Kolmogorov / marginalization
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 1: Chapman–Kolmogorov / marginalization)</span></p>
 
 Using the Markov property,
 
@@ -4459,7 +5570,12 @@ p_{t+\Delta t}(\mathbf{x})
 = \int \mathcal{N} \Big(\mathbf{x};\ \mathbf{y}+\mathbf{f}(\mathbf{y},t)\Delta t,\ g^2(t)\Delta t,\mathbf{I}\Big),p_t(\mathbf{y}),d\mathbf{y}
 $$
 
+</div>
+
 ### Step 2: Change of variables to center the Gaussian
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Step 2: Change of variables to center the Gaussian)</span></p>
 
 Define
 
@@ -4492,12 +5608,17 @@ p_t(\mathbf{u})
 $$
 
 
-> The bracketed combination is exactly the “drift acting on density” term:
+> The bracketed combination is exactly the "drift acting on density" term:
 > 
 > $$\mathbf{f}\cdot\nabla p + (\nabla\cdot \mathbf{f})p = \nabla\cdot(\mathbf{f}p)$$
 > 
 
+</div>
+
 ### Step 3: Taylor–Gaussian smoothing formula
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 3: Taylor–Gaussian smoothing formula)</span></p>
 
 For smooth $\phi:\mathbb{R}^D\to\mathbb{R}$ and $\sigma^2>0$, with $\mathbf{z}\sim \mathcal{N}(0,\mathbf{I})$,
 
@@ -4512,7 +5633,12 @@ $\mathbb{E}[\mathbf{z}]=0$, $\mathbb{E}[\mathbf{z}\mathbf{z}^\top]=\mathbf{I}$.
 
 Here $\sigma^2 = g^2(t)\Delta t$.
 
+</div>
+
 ### Step 4: Keep terms up to $\mathcal{O}(\Delta t)$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 4: Keep terms up to $\mathcal{O}(\Delta t)$)</span></p>
 
 * Convolving $p_t(\cdot)$ produces the Laplacian correction $\frac{g^2(t)\Delta t}{2}\Delta p_t(\mathbf{x})$.
 * The other terms already have a prefactor $\Delta t$, so their Gaussian-smoothing corrections would be $\mathcal{O}(\Delta t^2)$ and can be dropped.
@@ -4537,22 +5663,26 @@ p_{t+\Delta t} - p_t
 + \mathcal{O}(\Delta t^2).
 $$
 
+</div>
 
 ### Step 5: Take $\Delta t\to 0$ ⇒ Fokker–Planck
 
 Divide by $\Delta t$ and let $\Delta t\to 0$:
 
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Fokker–Planck equation)</span></p>
+
 $$
-\boxed{
 \partial_t p_t(\mathbf{x})
 =
 
 -\nabla_{\mathbf{x}}\cdot\big(\mathbf{f}(\mathbf{x},t),p_t(\mathbf{x})\big)
 +\frac{g^2(t)}{2},\Delta_{\mathbf{x}}p_t(\mathbf{x})
-}
 $$
 
 (For isotropic diffusion $g(t)\mathbf{I}$.)
+
+</div>
 
 **Interpretation (useful intuition):** this is a conservation/continuity equation for probability, where drift transports mass and diffusion spreads it.
 
@@ -4564,6 +5694,9 @@ Goal: find the **reverse-time transition** $p(\mathbf{x}_t \mid \mathbf{x}_{t+\D
 
 ### Step 1: Bayes rule for the reverse kernel
 
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 1: Bayes rule for the reverse kernel)</span></p>
 
 $$
 p(\mathbf{x}_t\mid \mathbf{x}_{t+\Delta t})
@@ -4577,8 +5710,12 @@ p(\mathbf{x}_{t+\Delta t}\mid \mathbf{x}_t),
 \exp \Big(\log p_t(\mathbf{x}_t)-\log p_{t+\Delta t}(\mathbf{x}_{t+\Delta t})\Big).
 $$
 
+</div>
 
 ### Step 2: First-order Taylor expansion of the log-density term
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 2: First-order Taylor expansion of the log-density term)</span></p>
 
 Expand $\log p_{t+\Delta t}(\mathbf{x}_{t+\Delta t})$ around $(\mathbf{x}_t,t)$:
 
@@ -4611,7 +5748,12 @@ $$
 
 A key scaling fact for diffusions: $\mathbb{E}\lvert\mathbf{x}_{t+\Delta t}-\mathbf{x}_t\rvert_2^2=\mathcal{O}(\Delta t)$, so the remainder is $\mathcal{O}(\Delta t^2)$ in expectation (hence negligible at first order).
 
+</div>
+
 ### Step 3: Substitute and complete the square
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 3: Substitute and complete the square)</span></p>
 
 Use the forward Gaussian
 
@@ -4642,7 +5784,12 @@ $$
 * The extra $\lvert g^2(t)\Delta t,\nabla\log p_t\rvert^2$ term produced by completing the square is $\mathcal{O}(\Delta t^2)$ → absorbed into the error.
 * The $\partial_t\log p_t,\Delta t$ factor affects normalization at $\mathcal{O}(\Delta t)$, not the leading-order mean/covariance structure.
 
+</div>
+
 ### Step 4: Replace $(\mathbf{x}_t,t)$ by $(\mathbf{x}_{t+\Delta t},t+\Delta t)$ (smoothness)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 4: Replace $(\mathbf{x}_t,t)$ by $(\mathbf{x}_{t+\Delta t},t+\Delta t)$ ...)</span></p>
 
 Under smoothness,
 
@@ -4657,36 +5804,49 @@ where $\mathbf{s}(\mathbf{x},t)$ is the **score**.
 
 So the reverse kernel says:
 
-* **Mean step backward** is “forward drift” minus a **score correction** $g^2,\mathbf{s}$
+* **Mean step backward** is "forward drift" minus a **score correction** $g^2,\mathbf{s}$
 * **Covariance** is still $g^2\Delta t,\mathbf{I}$
+
+</div>
 
 ### Step 5: Continuous-time limit ⇒ reverse-time SDE
 
 Heuristically, as $\Delta t\to 0$, the reverse-time process satisfies:
 
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Reverse-time SDE)</span></p>
+
 $$
-\boxed{
 d\mathbf{x}_t
 =
 
 \big[\mathbf{f}(\mathbf{x}_t,t)-g^2(t)\nabla_{\mathbf{x}}\log p_t(\mathbf{x}_t)\big]dt
 +
 g(t),d\bar{\mathbf{w}}_t
-}
 $$
 
 where $\bar{\mathbf{w}}_t$ is a Brownian motion in reverse time (and the process is run with time decreasing from $T$ to $0$).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Step 5: Continuous-time limit ⇒ reverse-time SDE)</span></p>
 
 **Intuition:** the score term points toward higher-density regions of $p_t$, so when you run time backward it acts like a *denoising drift* that counteracts the forward diffusion.
 
 **Practical link (diffusion/score models):** if you learn $\mathbf{s}_\theta(\mathbf{x},t)\approx \nabla_{\mathbf{x}}\log p_t(\mathbf{x})$, you can sample by simulating the reverse-time SDE from noise (large $t$) back to data (small $t$).
 
+</div>
+
 ---
 
 ## 4.6 Closing remarks (big picture takeaways)
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Closing remarks (big picture takeaways))</span></p>
+
 * **Unification:** DDPM-style discrete diffusion and NCSN/score-based models can be viewed as *discretizations of SDEs* with different choices of drift/volatility.
-* **Reverse-time SDE is the generative engine:** it “reverses” the forward noising process. Crucially, its drift depends on one unknown object:
+* **Reverse-time SDE is the generative engine:** it "reverses" the forward noising process. Crucially, its drift depends on one unknown object:
   
   $$\nabla_{\mathbf{x}}\log p_t(\mathbf{x}) \quad \text{(the score)}$$
   
@@ -4694,5 +5854,7 @@ where $\bar{\mathbf{w}}_t$ is a Brownian motion in reverse time (and the process
 * **Probability Flow ODE (PF-ODE):** a deterministic counterpart whose trajectories share the same marginals $\lbrace p_t\rbrace$ as the SDE; this equivalence rests on the Fokker–Planck equation.
 * **Core implication:** generation $\approx$ solving a differential equation; training $\approx$ learning the vector field (score / velocity); sampling $\approx$ numerical integration.
 * This PF-ODE viewpoint bridges toward **flow-based generative modeling** (Normalizing Flows, Neural ODEs) and motivates the transition to **Flow Matching**.
+
+</div>
 
 ---
