@@ -17,7 +17,10 @@ date: 2024-11-01
 
 There are two popular definitions of natural numbers
 
-#### 1.1.1 Peano axioms
+#### Peano axioms
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Peano axioms)</span></p>
 
 We assume a set $\mathbb{N}$, a distinguished element $0$, and a function $S:\mathbb{N}\to\mathbb{N}$ called the **successor**.
 
@@ -38,6 +41,8 @@ We assume a set $\mathbb{N}$, a distinguished element $0$, and a function $S:\ma
 These axioms characterize the structure of the natural numbers (up to isomorphism). 
 
 These are not the original axioms published by Peano, but are named in his honor. Some forms of the Peano axioms have $1$ in place of $0$. In ordinary arithmetic, the successor of $x$ is $x+1$.
+
+</div>
 
 #### 1.1.2 von Neumann naturals (Set-theoretic definition/construction)
 
@@ -64,17 +69,27 @@ The **von Neumann naturals are a concrete model of the Peano axioms**. Peano axi
 
 ### 1.2 DeMorgan's Laws
 
-$\textbf{Theorem (DeMorgan's Laws).}$ Let $A\subset S$, $B\subset S$. Then
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(DeMorgan's Laws)</span></p>
+
+Let $A\subset S$, $B\subset S$. Then
 
 $$C(A \cup B) = C(A) \cap C(B)$$
 
 $$C(A \cap B) = C(A) \cup C(B)$$
 
-$\textbf{Theorem (DeMorgan's Laws for indexed families).}$ Let $\lbrace A_{\alpha}\rbrace_{\alpha \in I}$ be an indexed family of subsets of a set $S$. Then
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(DeMorgan's Laws for indexed families)</span></p>
+
+Let $\lbrace A_{\alpha}\rbrace_{\alpha \in I}$ be an indexed family of subsets of a set $S$. Then
 
 $$C(\bigcup_{\alpha\in I} A_{\alpha}) = \bigcap_{\alpha\in I} C(A_{\alpha})$$
 
 $$C(\bigcap_{\alpha\in I} A_{\alpha}) = \bigcup_{\alpha\in I} C(A_{\alpha})$$
+
+</div>
 
 ## 2. Properties of Metric Spaces
 
@@ -424,9 +439,9 @@ The open intervals form a basis of $\mathbb{R}$.
 
 The $r$-neighborhoods form a basis of any metric space $M$.
 
-*Proof.* Given an open set $U$, for every point $p$ inside $U$, draw an $r_p$-neighborhood $U_p$ contained entirely inside $U$. Then $\bigcup_p U_p$ is contained in $U$ and covers every point inside it. $\square$
-
 </div>
+
+*Proof.* Given an open set $U$, for every point $p$ inside $U$, draw an $r_p$-neighborhood $U_p$ contained entirely inside $U$. Then $\bigcup_p U_p$ is contained in $U$ and covers every point inside it. $\square$
 
 ## 4. Compactness
 
@@ -493,18 +508,18 @@ If $X$ and $Y$ are compact spaces, then so is $X \times Y$.
 
 $[0, 1]$ is compact.
 
-*Proof sketch.* Split $[0, 1]$ into $[0, \frac{1}{2}] \cup [\frac{1}{2}, 1]$. By Pigeonhole, infinitely many terms of the sequence lie in the left half (say); let $x_1$ be the first one and then keep only the terms in the left half after $x_1$. Now split $[0, \frac{1}{2}]$ into $[0, \frac{1}{4}] \cup [\frac{1}{4}, \frac{1}{2}]$. Again, by Pigeonhole, infinitely many terms fall in some half; pick one of them, call it $x_2$. Rinse and repeat. In this way we generate a sequence $x_1, x_2, \dots$ which is Cauchy, implying that it converges since $[0, 1]$ is complete. $\square$
-
 </div>
+
+*Proof sketch.* Split $[0, 1]$ into $[0, \frac{1}{2}] \cup [\frac{1}{2}, 1]$. By Pigeonhole, infinitely many terms of the sequence lie in the left half (say); let $x_1$ be the first one and then keep only the terms in the left half after $x_1$. Now split $[0, \frac{1}{2}]$ into $[0, \frac{1}{4}] \cup [\frac{1}{4}, \frac{1}{2}]$. Again, by Pigeonhole, infinitely many terms fall in some half; pick one of them, call it $x_2$. Rinse and repeat. In this way we generate a sequence $x_1, x_2, \dots$ which is Cauchy, implying that it converges since $[0, 1]$ is complete. $\square$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bolzano-Weierstraß)</span></p>
 
 A subset of $\mathbb{R}^n$ is compact if and only if it is closed and bounded.
 
-*Proof.* Look at a closed and bounded $S \subseteq \mathbb{R}^n$. Since it's bounded, it lives inside some box $[a_1, b_1] \times [a_2, b_2] \times \cdots \times [a_n, b_n]$. By Tychonoff's theorem, since each $[a_i, b_i]$ is compact the entire box is. Since $S$ is a closed subset of this compact box, we're done. $\square$
-
 </div>
+
+*Proof.* Look at a closed and bounded $S \subseteq \mathbb{R}^n$. Since it's bounded, it lives inside some box $[a_1, b_1] \times [a_2, b_2] \times \cdots \times [a_n, b_n]$. By Tychonoff's theorem, since each $[a_i, b_i]$ is compact the entire box is. Since $S$ is a closed subset of this compact box, we're done. $\square$
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Closed and bounded but not compact)</span></p>
@@ -576,18 +591,18 @@ Compactness lets us reduce *infinite* open covers to finite ones. Very often one
 
 Let $M$ be compact. Then $M$ is totally bounded.
 
-*Proof using covers.* For every point $p \in M$, take an $\varepsilon$-neighborhood of $p$, say $U_p$. These cover $M$ for the horrendously stupid reason that each point $p$ is at the very least covered by its open neighborhood $U_p$. Compactness then lets us take a finite subcover. $\square$
-
 </div>
+
+*Proof using covers.* For every point $p \in M$, take an $\varepsilon$-neighborhood of $p$, say $U_p$. These cover $M$ for the horrendously stupid reason that each point $p$ is at the very least covered by its open neighborhood $U_p$. Compactness then lets us take a finite subcover. $\square$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Images of compacts are compact)</span></p>
 
 Let $f\colon X \to Y$ be a continuous function, where $X$ is compact. Then the image $f^{\text{img}}(X) \subseteq Y$ is compact.
 
-*Proof using covers.* Take any open cover $\lbrace V_\alpha \rbrace$ in $Y$ of $f^{\text{img}}(X)$. By continuity of $f$, it pulls back to an open cover $\lbrace U_\alpha \rbrace$ of $X$. Thus some finite subcover of this covers $X$. The corresponding $V$'s cover $f^{\text{img}}(X)$. $\square$
-
 </div>
+
+*Proof using covers.* Take any open cover $\lbrace V_\alpha \rbrace$ in $Y$ of $f^{\text{img}}(X)$. By continuity of $f$, it pulls back to an open cover $\lbrace U_\alpha \rbrace$ of $X$. Thus some finite subcover of this covers $X$. The corresponding $V$'s cover $f^{\text{img}}(X)$. $\square$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Extreme value theorem)</span></p>
@@ -637,9 +652,10 @@ A function $f\colon M \to N$ of metric spaces is called **uniformly continuous**
 
 If $M$ is compact and $f\colon M \to N$ is continuous, then $f$ is uniformly continuous.
 
-*Proof using sequences.* Fix $\varepsilon > 0$, and assume for contradiction that for every $\delta = 1/k$ there exists points $x_k$ and $y_k$ within $\delta$ of each other but with images $\varepsilon$ apart. By compactness, take a convergent subsequence $x_{i_k} \to p$. Then $y_{i_k} \to p$ as well, since the $x_k$'s and $y_k$'s are close to each other. So both sequences $f(x_{i_k})$ and $f(y_{i_k})$ should converge to $f(p)$ by sequential continuity, but this can't be true since the two sequences are always $\varepsilon$ apart. $\square$
 
 </div>
+
+*Proof using sequences.* Fix $\varepsilon > 0$, and assume for contradiction that for every $\delta = 1/k$ there exists points $x_k$ and $y_k$ within $\delta$ of each other but with images $\varepsilon$ apart. By compactness, take a convergent subsequence $x_{i_k} \to p$. Then $y_{i_k} \to p$ as well, since the $x_k$'s and $y_k$'s are close to each other. So both sequences $f(x_{i_k})$ and $f(y_{i_k})$ should converge to $f(p)$ by sequential continuity, but this can't be true since the two sequences are always $\varepsilon$ apart. $\square$
 
 ### 4.5 (Optional) Equivalence of Formulations of Compactness
 
@@ -659,6 +675,6 @@ For a metric space $M$, the following are equivalent:
 
 Let $M$ be a compact metric space and $\lbrace U_\alpha \rbrace$ an open cover. Then there exists a real number $\delta > 0$, called a **Lebesgue number** for that covering, such that the $\delta$-neighborhood of any point $p$ lies entirely in some $U_\alpha$.
 
-*Proof.* Assume for contradiction that for every $\delta = 1/k$ there is a point $x_k \in M$ such that its $1/k$-neighborhood isn't contained in any $U_\alpha$. We construct a sequence $x_1, x_2, \dots$; thus we're allowed to take a subsequence which converges to some $x$. Then for every $\varepsilon > 0$ we can find an integer $n$ such that $d(x_n, x) + 1/n < \varepsilon$; thus the $\varepsilon$-neighborhood at $x$ isn't contained in any $U_\alpha$ for every $\varepsilon > 0$. This is impossible, because we assumed $x$ was covered by some open set. $\square$
-
 </div>
+
+*Proof.* Assume for contradiction that for every $\delta = 1/k$ there is a point $x_k \in M$ such that its $1/k$-neighborhood isn't contained in any $U_\alpha$. We construct a sequence $x_1, x_2, \dots$; thus we're allowed to take a subsequence which converges to some $x$. Then for every $\varepsilon > 0$ we can find an integer $n$ such that $d(x_n, x) + 1/n < \varepsilon$; thus the $\varepsilon$-neighborhood at $x$ isn't contained in any $U_\alpha$ for every $\varepsilon > 0$. This is impossible, because we assumed $x$ was covered by some open set. $\square$
