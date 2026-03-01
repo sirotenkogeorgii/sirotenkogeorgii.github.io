@@ -58,44 +58,6 @@ Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also calle
 
 </div>
 
-<!-- <div class="accordion">
-  <details markdown="1">
-    <summary>"States" in CPU</summary>
-
-## 1. “State” in the sense of complexity theory / automata
-
-When I compared a Turing machine’s **state** to a CPU, I was talking about the **control logic** of the CPU, which you can model as a **finite-state machine**:
-* The control unit has a **state register** (a bunch of flip-flops).
-* On each clock cycle, this state register + some inputs (like parts of the instruction) determine:
-  * what control signals to assert (read from register file, write to memory, etc.),
-  * what the **next state** of the control unit will be.
-
-Here:
-* The set of possible control states is **finite** and **fixed by the design** of the CPU.
-* Each state typically corresponds to a “phase” of instruction processing:
-  * e.g. `FETCH`, `DECODE`, `EXECUTE`, `MEM_READ`, `MEM_WRITE`, `WRITE_BACK`, or finer-grained micro-steps.
-
-This is the analog of a Turing machine’s (or DFA’s) **$q \in Q$**:
-> A small piece of control info that decides “what kind of step am I doing now?”, **not** the entire memory contents.
-
-In complexity theory, when we say “a machine has finitely many states”, we mean this *control* part, **not** the whole RAM/register contents.
-
-## 2. How this connects back to Turing machines
-
-For a Turing machine, you can think of:
-* **Finite control state** (the “$q$” in TM formalism) ↔ CPU control unit’s FSM state (e.g. `FETCH`, `EXECUTE_ADD`, etc.).
-* **Tape contents + head positions** $\iff$ CPU’s registers + main memory + program counter.
-
-When we talk about space complexity and say **“the machine has only finitely many states”**, we mean:
-* The **control states** are finite and don’t grow with input size.
-* The “unbounded” or input-dependent information lives in **tape cells** (for TM) or **RAM/registers** (for a real CPU).
-
-So:
-* **In complexity theory**: “state” = the control state, a small, constant-sized piece of info.
-
-  </details>
-</div> -->
-
 #### Structure of a $k$-tape Turing Machine
 
 - **Memory.** The machine's memory consists of $k$ work tapes. Each tape is a doubly infinite sequence of cells, and each cell holds a single symbol from the tape alphabet $\Gamma$.
@@ -138,7 +100,15 @@ For an instruction of the form $(q, a_1, \dots, a_k, q', a'_1, \dots, a'_k, Z_1,
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a $k$-tape Turing machine, $\Delta$ is thus a binary relation of the form  $\Delta \subseteq (Q \times \Gamma^k) \times (Q \times \Gamma^k \times \text{Mov}^k)$  which can be written in infix notation as  $(q, a_1, \dots, a_k) \Delta (q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$. The relation $\Delta$ is called right-unique if for each condition part $(q, a_1, \dots, a_k)$ there is at most one instruction part $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ that satisfies the relation.
+The transition relation $\Delta$ of a Turing machine can also be understood as a relation between condition parts and instruction parts. For a $k$-tape Turing machine, $\Delta$ is thus a binary relation of the form  
+
+$$\Delta \subseteq (Q \times \Gamma^k) \times (Q \times \Gamma^k \times \text{Mov}^k)$$
+
+which can be written in infix notation as  
+
+$$(q, a_1, \dots, a_k) \Delta (q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$$
+
+The relation $\Delta$ is called right-unique if for each condition part $(q, a_1, \dots, a_k)$ there is at most one instruction part $(q', a'_1, \dots, a'_k, Z_1, \dots, Z_k)$ that satisfies the relation.
 
 </div>
 
@@ -439,11 +409,19 @@ To ensure a unique output for every input, function computation is defined using
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computable Functions)</span></p>
 
-For a configuration $C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$ of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
+For a configuration 
+
+$$C = (q, u_1, \dots, u_k, j_1, \dots, j_k)$$
+
+of a $k$-tape TM, let $\text{out}(C)$ be the longest word on tape $k$ that starts at the current head position and extends to the right without containing any blank symbols. Formally,
 
 $$\text{out}(C) = u_k(j_k) u_k(j_k + 1) \cdots u_k(t)$$
 
-where $t = \max \lbrace i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \rbrace$. If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
+where 
+
+$$t = \max \lbrace i \leq \lvert u_k \rvert : u_k(j_k), \dots, u_k(i) \text{ all differ from } \square \rbrace$$
+
+If $u_k(j_k)$ is the blank symbol, $\text{out}(C)$ is the empty word.
 
 The **function $f_M$ computed by a total deterministic Turing machine** $M$ is defined by $f_M(w) = \text{out}(C)$ for the halting configuration $C$ reached by $M$ on input $w$.
 
@@ -498,9 +476,9 @@ A natural number $n$ can be represented by its binary expansion $\text{bin}(n)$,
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sets, languages, and problems)</span></p>
 
-Sets, languages, and problems The terminology used often depends on the context of study:
+The terminology used often depends on the context of study:
 * In computability theory, where resource bounds are not a concern, it is common to use unary representations (e.g., $n$ is represented by $1^n$). Turing machines are viewed as recognizing subsets of natural numbers, leading to terms like "decidable sets of natural numbers."
 * In complexity theory, where computations are resource-bounded, inputs are typically binary words representing instances of a computational problem. Here, Turing machines are seen as recognizing languages or problems, both of which refer to arbitrary sets of binary words. (Note that in a general context, a "language" is any set of words over some alphabet).
 
@@ -657,18 +635,22 @@ Each symbol in the tape alphabet of $M'$ will represent a block of $d$ symbols f
   * It writes this new, compressed input onto its second tape.
   * Simultaneously, it overwrites the original input on the first tape with blank symbols.
   * Finally, it positions the head of the second tape at the beginning of the compressed input.
-  * This phase takes $\underbrace{n}_{\text{read →}} + \underbrace{\lceil n/d \rceil}_{\text{go back ←}} + 2$ steps. After this, $M'$ will simulate $M$, treating its second tape as the primary input tape.
+  * This phase takes 
+  
+  $$\underbrace{n}_{\text{read →}} + \underbrace{\lceil n/d \rceil}_{\text{go back ←}} + 2$$
+   
+  steps. After this, $M'$ will simulate $M$, treating its second tape as the primary input tape.
   * A typical breakdown is:
    * **$n$** steps: one left-to-right pass over the $n$ input symbols while producing the compressed encoding.
    * **$\lceil n/d\rceil$** steps: move the head on tape 2 back to the *beginning* of the compressed string (its length is about $n/d$).
-2. **Simulation Phase:**
+1. **Simulation Phase:**
   * $M'$ simulates $d$ steps of $M$ using just $7$ of its own steps. To do this, $M'$ uses its finite control (its state) to store key information about $M$'s current configuration: $M$'s current state, and for each tape, the head position of $M$ within the larger macro-symbol that $M'$ is currently scanning.
   * In each simulation cycle, $M'$ needs to know the contents of the cells $M$'s heads are on, as well as the adjacent cells, to determine $M$'s next $d$ moves. A "relevant" cell for $M'$ is one that is currently scanned or is immediately to its left or right.
   * $M'$ first reads all symbols on its relevant cells by moving one step left and two steps right ($3$ steps total), **storing this information in its state**.
   * With the complete local information ($M$'s state, head positions, and relevant cell contents), $M'$ can determine the outcome of the next $d$ steps of $M$. Since $d$ is a constant, all possible outcomes can be pre-computed and stored in $M'$'s transition function (a finite table lookup). This information includes $M$'s new state, the new content of the relevant cells, and the new head positions.
   * $M'$ then uses another $4$ steps to update its tape cells and move its heads to the new positions corresponding to $M'$s configuration after $d$ steps.
 
-Timing Analysis: The initialization takes $n + \lceil n/d \rceil + 2$ steps. The simulation of $M$ takes at most $t(n)$ steps. Since $M'$ simulates $d$ steps of $M$ in $7$ steps, this phase requires at most $7 \lceil t(n)/d \rceil + 7$ steps. $+7$ is a simulation rounding: $7\left\lceil \frac{t(n)}{d}\right\rceil \le 7\left(\frac{t(n)}{d}+1\right)=\frac{7t(n)}{d}+7$.
+**Timing Analysis:** The initialization takes $n + \lceil n/d \rceil + 2$ steps. The simulation of $M$ takes at most $t(n)$ steps. Since $M'$ simulates $d$ steps of $M$ in $7$ steps, this phase requires at most $7 \lceil t(n)/d \rceil + 7$ steps. $+7$ is a simulation rounding: $7\left\lceil \frac{t(n)}{d}\right\rceil \le 7\left(\frac{t(n)}{d}+1\right)=\frac{7t(n)}{d}+7$.
 
 The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7 = \frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$.
 
@@ -3943,8 +3925,8 @@ The fundamental problem the verifier faces is determining if the submitted polyn
 
 Instead, the verifier uses a randomized challenge:
 
-*   If the prover submits a polynomial $h_i^P$ that is truly correct ($h_i^P = h_i$), then $h_i^P(r_i)$ will be the correct value, and the protocol maintains its completeness (acceptance probability $\ge 2/3$).
-*   If the prover submits an incorrect polynomial ($h_i^P \ne h_i$), the difference between the two polynomials, $(h_i^P - h_i)$, is a non-zero polynomial.
+* If the prover submits a polynomial $h_i^P$ that is truly correct ($h_i^P = h_i$), then $h_i^P(r_i)$ will be the correct value, and the protocol maintains its completeness (acceptance probability $\ge 2/3$).
+* If the prover submits an incorrect polynomial ($h_i^P \ne h_i$), the difference between the two polynomials, $(h_i^P - h_i)$, is a non-zero polynomial.
 
 ### 2. The Soundness Guarantee
 
@@ -3975,7 +3957,7 @@ The protocol is structured across $n$ rounds, corresponding to the $n$ variables
 
 The necessity for a new polynomial in each round stems from the definition of the polynomial sequence $h_i(x_i)$. These polynomials are defined iteratively to reduce the complexity of the original $n$-variable sum:
 
-$$h_i(x_i) = \sum_{x_{i+1}\in\lbrace 0,1\rbrace} \cdots \sum_{x_n\in\lbrace 0,1\rbrace} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n) \quad$$
+$$h_i(x_i) = \sum_{x_{i+1}\in\lbrace 0,1\rbrace} \cdots \sum_{x_n\in\lbrace 0,1\rbrace} p_\phi(r_1, \ldots, r_{i-1}, x_i, x_{i+1}, \ldots, x_n)$$
 
 *   $h_1(x_1)$ is a polynomial only of the variable $x_1$.
 *   $h_2(x_2)$ is a polynomial only of the variable $x_2$, with the variable $x_1$ having been fixed to the random value $r_1$ chosen in the previous round.
@@ -4054,6 +4036,7 @@ The ultimate objective of the entire $n$-round protocol is to verify that $h_1^P
 The recursive structure of the protocol forces the prover to prove that $h_1^P$ is algebraically correct by linking it to the subsequent polynomials $h_2^P, h_3^P, \ldots$ using the fundamental identity $h_{i-1}(r_{i-1}) = h_i(0) + h_i(1)$.
 
 In each Round $i$ (where $i \ge 2$), the consistency check ensures that the values match based on the required recursive structure:
+
 $$h_{i-1}^P(r_{i-1}) \equiv h_i^P(0) + h_i^P(1) \pmod p \quad \text{}$$
 
 If the prover submits a false $h_1^P$, they must maintain the appearance of correctness throughout the subsequent rounds.
@@ -4208,7 +4191,12 @@ Finally, the abbreviations **c.e.** and **r.e.** are often used (even in print) 
 
 > **Convention 148**: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
 
-A crucial concept for Turing machines that may not halt is their domain. The domain of a Turing machine $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Domain of Turing Machine)</span></p>
+
+A crucial concept for Turing machines that may not halt is their domain. The **domain of a Turing machine** $M$, denoted $\text{dom } M$, is the set of all input strings on which $M$ eventually halts.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">($L$ is r.e. $\iff$ $L$ $\text{dom}$ TM)</span></p>
@@ -4238,9 +4226,6 @@ For sets $A$ and $B$, a function $f$ from $A$ to $B$ is by definition a subset o
 
 Recall that a total $k$-tape Turing machine computes a function by writing the output on its final tape. We now formalize this for machines that may not halt.
 
-<!-- $\textbf{Definition (Partial function):}$ The partial function $\phi_M$ computed by a Turing machine $M$ is  
-$$\phi_M (w) = \begin{cases} \text{out}(C) & \text{if the computation of } M \text{ on input } w \text{ reaches the halting configuration } C, \\ \uparrow & \text{otherwise.} \end{cases}$$
-Observe that the partial function $\phi_M$ is defined exactly on the arguments $w$ such that $M$ terminates on input $w$. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial function)</span></p>
 
@@ -4316,14 +4301,13 @@ So, for a partial function $\alpha$, “$\alpha(x)$ is undefined” means $x\not
 
 This leads to the formal definition of what it means for a partial function to be computable.
 
-<!-- $\textbf{Definition (Partial computable function):}$ For alphabets $\Sigma_1$ and $\Sigma_2$, a partial function from $\Sigma'_1$ to $\Sigma'_2$ is partial computable if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
-A partial computable function that is defined for all inputs (i.e., is total) is simply called a computable function. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial computable function)</span></p>
 
-For alphabets $\Sigma_1$ and $\Sigma_2$, a **partial function** from $\Sigma'_1$ to $\Sigma'_2$ is a **partial computable function** if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
+For alphabets $\Sigma_1$ and $\Sigma_2$, a **partial function** from $\Sigma^{\ast}_1$ to $\Sigma^{\ast}_2$ is a **partial computable function** if it equals the partial function $\phi_M$ computed by some Turing machine $M$.
 
 A partial computable function that is defined for all inputs (i.e., is total) is simply called a **computable function**.
+
 </div>
 
 ### Computability on Natural Numbers
@@ -4342,7 +4326,9 @@ Using this identification, we can directly translate our definitions from langua
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computability on Natural Numbers)</span></p>
 
-A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is partial computable if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. The notions decidable set of natural numbers and computable function from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
+* A set $A$ of natural numbers is **recursively enumerable** if the set $\lbrace 1^n : n \in A\rbrace$ is recursively enumerable. 
+* A partial function $\alpha : \mathbb{N} \to \mathbb{N}$ is **partial computable** if the partial function $1^n \mapsto 1^{\alpha(n)}$ is partial computable. 
+* The notions **decidable set of natural numbers** and **computable function** from $\mathbb{N}$ to $\mathbb{N}$ are defined likewise.
 
 </div>
 
@@ -4352,9 +4338,6 @@ A set $A$ of natural numbers is recursively enumerable if the set $\lbrace 1^n :
 
 The concepts of decidable sets, r.e. sets, computable functions, and partial computable functions are deeply interconnected. We can formalize these relationships using characteristic functions.
 
-<!-- $\textbf{Definition 156:}$ Let $A$ be a set. The characteristic function $c_A$ and the partial characteristic function $\chi_A$ of $A$ are defined as follows:  
-
-$$c_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ 0 & \text{if } n \notin A, \end{cases} \quad \text{and} \quad \chi_A(n) = \begin{cases} 1 & \text{if } n \in A, \\ \uparrow & \text{if } n \notin A. \end{cases}$$ -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial characteristic function)</span></p>
 
@@ -4378,7 +4361,6 @@ These functions provide a direct link between sets and functions.
 
 The domain of a partial computable function provides another characterization of r.e. sets.
 
-<!-- $\textbf{Proposition 158:}$ A set is recursively enumerable $\iff$ it is equal to the domain of a partial computable function. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Set r.e. $\iff$ set is $\text{dom}$ of partial computable function)</span></p>
 
@@ -4417,8 +4399,6 @@ is partial computable. We call $\alpha$ **computable** if it is partial computab
 </div>
 
 The graph of a function is the set of all its input-output pairs. The computability of a function is linked to the status of its graph.
-<!-- $\textbf{Definition:}$ The graph of a partial function $\alpha : A \to B$ is  
-$$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = y\rbrace$$ -->
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Graph of a partial function)</span></p>
@@ -4429,14 +4409,6 @@ $$\text{graph}(\alpha) = \lbrace (x, y) \in A \times B : \alpha(x) \downarrow = 
 
 </div>
 
-<!-- $\textbf{Proposition 160:}$ For a partial function $\alpha$, the following statements are equivalent. 
-* **(i)** The partial function $\alpha$ is partial computable. 
-* **(ii)** The set $\text{graph}(\alpha)$ is recursively enumerable.
-
-For a function $f$, the following statements are equivalent. 
-* **(iii)** The function $f$ is computable. 
-* **(iv)** The set $\text{graph}(f)$ is decidable. 
-* **(v)** The set $\text{graph}(f)$ is recursively enumerable. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
 
@@ -4472,16 +4444,6 @@ $$n\in A \Longleftrightarrow \exists m\in\mathbb{N} (n,m)\in B.$$
 * Conversely, assume $A$ is recursively enumerable. Then $A$ is the domain of some Turing machine $M$. We can define a decidable set $B$ as the set of pairs $\langle n, t \rangle$ where $M$ halts on input $n$ within $t$ steps. $B$ is decidable because we can simulate $M$ on input $n$ for exactly $t$ steps. The set $A$ is then the projection of $B$, since $n \in A$ $\iff$ there exists some time $t$ such that $M$ halts on $n$ within $t$ steps, i.e., $\langle n, t \rangle \in B$.
 
 Finally, the term "recursively enumerable" comes from an alternative characterization: a set is r.e. if its elements can be generated one by one by an effective procedure.
-
-<!-- $\textbf{Definition 162:}$ An enumeration is a sequence $z_0, z_1, \dots$ of natural numbers. For such an enumeration, the set $\lbrace z_0, z_1, \dots\rbrace$ is enumerated by or has the enumeration $z_0, z_1, \dots$, and a natural number $n$ is enumerated if $n$ coincides with some $z_i$. An enumeration $z_0, z_1, \dots$ is effective if the function $i \mapsto z_i$ is computable. -->
-
-<!-- $\textbf{Definition 162:}$ An **enumeration** is an infinite sequence $z_0, z_1, \ldots$ of natural numbers. This sequence is said to **enumerate** the set
-
-$${z_0, z_1, \ldots}.$$
-
-A natural number $n$ is **enumerated** by $z_0, z_1, \ldots$ if $n = z_i$ for some $i$.
-
-The enumeration $z_0, z_1, \ldots$ is **effective** if the mapping $i \mapsto z_i$ is computable (i.e., if there is an algorithm that, given $i$, outputs $z_i$). -->
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Enumeration, Enumerate, Enumerated, Effective Enumeration)</span></p>
@@ -4941,8 +4903,6 @@ So: **in the context of r.e./decidable/partial computable, it’s safe to treat 
 
 </div>
 
-<!-- $\textbf{Proposition 163:}$ A nonempty set $A$ is recursively enumerable $\iff$ $A$ has an effective enumeration. -->
-
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(r.e. and effective enumeration)</span></p>
 
@@ -5075,8 +5035,6 @@ According to the Church–Turing thesis, every **effectively computable** functi
 
 Decidable sets correspond to a special, more structured type of enumeration.
 
-<!-- $\textbf{Proposition 164:}$ A nonempty set $A$ is decidable $\iff$ $A$ has a nondecreasing effective enumeration. -->
-
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and nondecreasing effective enumeration)</span></p>
 
@@ -5084,9 +5042,6 @@ A nonempty set $A\subseteq \mathbb{N}$ is decidable $$\iff$$ $A$ has a nondecrea
 </div>
 
 *Proof*:
-
-<!-- * Assume $A$ is decidable. If $A$ is finite, it is trivially decidable and has a nondecreasing enumeration. If infinite, we can construct a nondecreasing enumeration $z_0, z_1, \dots$. Let $z_0$ be the smallest element of $A$. For $i > 0$, let $z_i$ be the smallest element of $A$ that is greater than $z_{i-1}$. Since $A$ is decidable, we can find these elements effectively. The resulting function $i \mapsto z_i$ is computable.
-* Conversely, assume $A$ has a nondecreasing effective enumeration $z_0, z_1, \dots$. If $A$ is finite, it is decidable. If $A$ is infinite, to decide membership for an input $n$, we generate the sequence $z_0, z_1, \dots$ until we find a $z_i$ such that $z_i \ge n$. Since the sequence is nondecreasing and infinite, such a $z_i$ must exist. We then check if $n = z_i$. If it is, $n \in A$; otherwise, $n \notin A$. This procedure always halts, so $A$ is decidable. -->
   
 $(\Rightarrow)$ Assume $A$ is decidable and nonempty. Since membership in $A$ is decidable, we can effectively find the least element of $A$: search $0,1,2,\dots$ until the first $m$ with $m\in A$, and set $z_0=m$.
 
@@ -5108,8 +5063,6 @@ If $A$ is infinite, then the nondecreasing enumeration cannot get stuck forever 
 
 
 A final, crucial theorem links decidability to the recursive enumerability of a set and its complement.
-
-<!-- $\textbf{Proposition 165:}$ A set $A$ is decidable $\iff$ a set $A$ and its complement $\mathbb{N} \setminus A$ are recursively enumerable. -->
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(decidability and r.e.)</span></p>
@@ -5147,7 +5100,6 @@ This correspondence allows us to treat a sequence of functions and its associate
 
 ### Numberings of Partial Computable Functions
 
-<!-- $\textbf{Definition 168:}$ Let $\alpha_0, \alpha_1, \dots$ be a sequence of partial functions on $\mathbb{N}$. Let $\alpha$ be a partial function on $\mathbb{N}^2$ such that (7.1) holds. Then $\alpha$ is called the principal function of the sequence $\alpha_0, \alpha_1, \dots$, and the sequence itself is called determined by $\alpha$. The sequence $\alpha_0, \alpha_1, \dots$ is a numbering of partial computable functions, or simply a numbering, if its principal function is partial computable. A numbering $\alpha$ is a numbering of or is universal for a set of partial functions if the latter set is equal to $\lbrace\alpha(e, \cdot) : e \in \mathbb{N}\rbrace$. A universal numbering is a numbering of the set of partial computable functions. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Numberings, Principal (universal) function, Universal numbering)</span></p>
 
@@ -5256,15 +5208,11 @@ For any numbering $\alpha_0, \alpha_1, \dots$, all $\alpha_e$ are partial comput
 Not every sequence of computable functions constitutes a numbering. A numbering requires that the principal function itself be computable.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(There exist sequences of computable functions that are not numberings)</span></p>
 
-There exist sequences of computable functions that are not numberings. For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set $A$ and consider the sequence $\alpha_0, \alpha_1, \dots$ of constant functions such that $\alpha(e)$ has constant value $0$ if $e$ is not in $A$, and has constant value $1$, otherwise. This sequence is not a numbering, as its principal function $\alpha$ is not partial computable. Otherwise, since $\alpha$ is total, $\alpha$ and then also the function $e \mapsto \alpha(e, e)$ were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set $A$.
+For a proof, first note that there are undecidable sets since there are uncountably many susbets of the natural numbers but only countable many Turing machines. Fix an undecidable set $A$ and consider the sequence $\alpha_0, \alpha_1, \dots$ of constant functions such that $\alpha(e)$ has constant value $0$ if $e$ is not in $A$, and has constant value $1$, otherwise. This sequence is not a numbering, as its principal function $\alpha$ is not partial computable. Otherwise, since $\alpha$ is total, $\alpha$ and then also the function $e \mapsto \alpha(e, e)$ were computable. This is a contradiction since, by construction, the latter function is the characteristic function of the undecidable set $A$.
 
 </div>
-
-<!-- <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Turing Machine $\iff$ Algorithm)</span></p>
-</div> -->
 
 A fundamental result is that a universal numbering for all partial computable functions indeed exists.
 
@@ -5277,7 +5225,6 @@ There exists a universal numbering.
 
 </div>
 
-<!-- *Proof*: See lecture and exercises. -->
 *Proof*:
 
 **Claim.** There exists a numbering $(\alpha_e)_{e\in\mathbb N}$ that enumerates *all* partial computable functions.
@@ -5343,7 +5290,6 @@ This is exactly the construction the Definition 172 refers to: the effective lis
 
 The construction in the proof of this theorem gives rise to a canonical numbering.
 
-<!-- $\textbf{Definition 172:}$ The sequence $M_0, M_1, \dots$ constructed in the proof of Theorem 171 is called the standard enumeration of Turing machines. The derived universal numbering $\phi_1, \phi_2, \dots$, where $\phi_i = \phi_{M_i}$, is called the standard enumeration of partial computable functions. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Standard enumeration of Turing machines, Standard enumeration of partial computable functions)</span></p>
 
@@ -5354,7 +5300,6 @@ In derived universal numbering for each $i\in\mathbb{N}$, let $\phi_i$ denote th
 
 While we can enumerate all partial computable functions, a famous diagonalization argument shows that we cannot do the same for the set of total computable functions.
 
-<!-- $\textbf{Theorem 173:}$ There exists no numbering of the set of computable functions. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Numbering of set of computable functions does not exists)</span></p>
 
@@ -5372,7 +5317,7 @@ Define a new function $d:\mathbb N\to\mathbb N$ by
 
 $$d(e)=\alpha(e,e)+1.$$
 
-Since (\alpha) is computable, so is $d$; moreover $d$ is total.
+Since $\alpha$ is computable, so is $d$; moreover $d$ is total.
 
 We claim that $d$ is not equal to any $\alpha_e$. Indeed, fix $e$. Then
 
@@ -5381,7 +5326,7 @@ $$d(e)=\alpha(e,e)+1=\alpha_e(e)+1\neq \alpha_e(e),$$
 so $d$ and $\alpha_e$ differ on input $e$. Therefore $d\neq \alpha_e$ for every $e$, contradicting the assumption that the list $(\alpha_e)$ contains all total computable functions.
 
 
-Question: why cannot we use the same logic to disprove existence of universal numbering?
+**Question:** why cannot we use the same logic to disprove existence of universal numbering?
 
 In the proof above, the *one* property that makes the diagonal argument go through is:
 
@@ -5441,7 +5386,6 @@ This *would* be total and would diagonalize. But computing it requires deciding 
 
 Numberings provide a powerful tool for proving the existence of specific, concrete undecidable problems. The most famous of these is the Halting Problem.
 
-<!-- $\textbf{Lemma 174:}$ Let $\alpha_0, \alpha_1, \dots$ be a numbering, and let $H_\alpha = \lbrace e : \alpha_e(e) \downarrow \rbrace$. The set $H_\alpha$ is recursively enumerable. If the numbering $\alpha_0, \alpha_1, \dots$ contains all computable functions, then the set $H_\alpha$ is not decidable. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(diagonal halting set is r.e.)</span></p>
 
@@ -5620,13 +5564,11 @@ Because prime factorization is unique, you can decode the number back into the e
 The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
 
 </div>
-<!-- $\textbf{Theorem 178:}$ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering. -->
 
-*Proof*: Let $\alpha_0, \alpha_1, \dots$ be an arbitrary numbering, and let its principal function $\alpha$ be computed by a Turing machine $M$. So, $M(\langle e, x \rangle) \simeq \alpha_e(x)$. For any given $e$, we can construct a new Turing machine $M'$ that, on input $x$, first transforms $x$ into the pair $\langle e, x \rangle$ and then simulates $M$. This new machine $M'$ computes the function $\alpha_e$. The process of constructing $M'$ from $M$ and $e$ is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index $f(e)$ for this machine $M'$. Thus, there exists a computable function $f$ such that $\phi_{f(e)} = \alpha_e$ for all $e$.
+*Proof*: Let $\alpha_0, \alpha_1, \dots$ be an arbitrary numbering, and let its principal function $\alpha$ be computed by a Turing machine $M$. So, $M(\langle e, x \rangle) \simeq \alpha_e(x)$. For any given $e$, we can construct a new Turing machine $M'$ that, on input $x$, first transforms $x$ into the pair $\langle e, x \rangle$ and then simulates $M$. This new machine $M'$ computes the function $\alpha_e$. The process of constructing $M'$ from $M$ and $e$ is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index $f(e)$ for this machine $M'$. Thus, there exists a computable function $f$ such that $\phi_{f(e)} = \alpha_e$ for all $e$. $\square$
 
 Not all universal numberings have this powerful translation property.
 
-<!-- $\textbf{Theorem 179:}$ There is a universal numbering that is not a Gödel numbering. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Universal numbering is not Gödel numbering)</span></p>
 
@@ -5646,7 +5588,6 @@ To compare the difficulty of undecidable problems, we introduce the concept of r
 
 ### Many-one Reducibility
 
-<!-- $\textbf{Definition 180:}$ A set $A$ is many-one reducible to a set $B$, abbreviated as $A$ is m-reducible to $B$ or $A \le_m B$, if there exists a computable function $f$ such that for all $x \in \mathbb{N}$, it holds that  $x \in A \text{ if and only if } f(x) \in B$.  -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Many-one reduction)</span></p>
 
@@ -5669,7 +5610,6 @@ On the other hand, there is just a single set that is m-reducible to $\emptyset$
 
 </div>
 
-<!-- $\textbf{Proposition 182:}$ The relation m-reducibility is reflexive and transitive. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(m-reductions preserve decidability)</span></p>
 
@@ -5693,9 +5633,6 @@ Thus $A\le_m C$. $\square$
 
 ### M-reducibility allows us to infer properties about sets.
 
-<!-- $\textbf{Proposition 183:}$ Let $A$ and $B$ be sets such that $A \le_m B$. 
-* **(i)** If $B$ is decidable, then $A$ is also decidable. 
-* **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(m-reductions preserve decidability/undecidability)</span></p>
 
@@ -5726,9 +5663,6 @@ Hence $A$ is decidable.
 
 A key result is that the halting problem $H$ is a "hardest" problem among all r.e. sets with respect to m-reducibility.
 
-<!-- $\textbf{Theorem 184:}$ Let $A$ and $B$ be sets. 
-* **(i)** If $A \le_m B$ and $B$ is r.e., then $A$ is also r.e. 
-* **(ii)** For every r.e. set $A$, it holds that $A \le_m H$. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(r.e. sets and many-one reductions to the halting problem)</span></p>
 
@@ -5815,7 +5749,6 @@ A set $A$ is r.e. if and only if $A \le_m H$.
 
 *Proof*: Immediate by Theorem 184.
 
-<!-- $\textbf{Corollary 186:}$ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
@@ -5841,9 +5774,6 @@ $$x \in \bar{A} \iff x \notin A \iff f(x) \notin B \iff f(x) \in \bar{B}$$
 
 This leads to an important non-reducibility result.
 
-<!-- $\textbf{Corollary 188:}$ Let $A$ be an undecidable r.e. set. Then it holds that $A \not\le_m \bar{A}$ and $\bar{A} \not\le_m A$. In particular, we have 
-
-$$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$  -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
@@ -5867,11 +5797,6 @@ $$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$
 
 Rice's Theorem is a powerful generalization of the undecidability of the halting problem. It states that any non-trivial property of the behavior of Turing machines (i.e., of the partial computable functions they compute) is undecidable. To formalize this, we use the notion of an index set.
 
-<!-- $\textbf{Definition 189:}$ An index set is a set $I$ of natural numbers such that for all $e$ and $e'$ it holds that  
-
-$$e \in I \text{ and } \phi_e = \phi_{e'} \implies e' \in I$$  
-
-An index set is nontrivial if it differs from $\emptyset$ and $\mathbb{N}$. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Index Set)</span></p>
 
@@ -5915,10 +5840,7 @@ An index set can be viewed as a property of partial computable functions.
 For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$.
 
 </div>
-<!-- > **Remark 190**: An index set can be viewed as a property of partial computable functions. For an index set $I$ and any partial computable function $\alpha$, either all or none of the indices $e$ with $\alpha = \phi_e$ are in $I$. -->
 
-<!-- $\textbf{Example 191:}$ The following sets are index sets: 
-$$\lbrace e \in \mathbb{N} : \phi_e \text{ is total} \rbrace, \lbrace e \in \mathbb{N} : \phi_e(0) \uparrow\rbrace, \lbrace e \in \mathbb{N} : \text{dom}(\phi_e) \text{ is infinite} \rbrace$$ -->
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
@@ -5987,9 +5909,6 @@ Just one precision: the “infinite duplicates” fact isn’t true for *every* 
 
 </div>
 
-<!-- $\textbf{Theorem 192 (Rice's Theorem):}$ Let $I$ be a nontrivial index set. Then it holds that 
-
-$$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$  -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Rice's Theorem)</span></p>
 
@@ -6084,7 +6003,6 @@ With that understood, the picture is exactly:
 So **the image of $g$** (as a function on indices) is essentially just **two equivalence classes of programs**: those computing $\beta$ and those computing $\varphi_\uparrow$. That’s the whole “two-function” trick that makes the membership in $I$ encode the halting behavior.
 
 
-<!-- $\textbf{Corollary 193:}$ Nontrivial index sets are not decidable. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(193)</span></p>
 
@@ -6092,7 +6010,6 @@ Nontrivial index sets are not decidable.
 
 </div>
 
-<!-- $\textbf{Corollary 194:}$ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \phi_e\rbrace$ is infinite. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
@@ -6104,10 +6021,6 @@ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \ph
 
 Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
 
-<!-- $\textbf{Example 196:}$ The set $A = \lbrace e : \text{dom}(\phi_e) \text{ has more than } e \text{ elements}\rbrace$ is not an index set. The set $A$ is r.e. Given $e$, we can effectively enumerate $\text{dom}(\phi_e)$ until at least $e + 1$ elements of $W_e$ have been enumerated. The latter enumeration works by a technique called dovetailing, which roughly amounts to simulate for $s = 0, 1, \dots$ the computation of $\phi_e(x)$ for all $x \le s$ and for $s$ computation steps, see the exercises for details.
-
-* **Case I**: There exists $e \in A$ such that the domain of $\phi_e$ has finite size $m$. By Corollary 194, there exists an index $e' > m$ such that $\phi_e = \phi_{e'}$. Then $e' \notin A$, hence $A$ is not an index set.
-* **Case II**: For all $e \in A$ the domain of $\phi_e$ is infinite. By definition, $A$ contains all indices $e$ such that $W_e$ is infinite, yielding a numbering of partial computable functions with infinite domains, contradicting Remark 195. For an effective enumeration $e_0, e_1, \dots$ of $A$, $\phi_{e_0}, \phi_{e_1}, \dots$ is such a numbering. -->
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(name of Example)</span></p>
 
@@ -6133,9 +6046,6 @@ We now introduce a more powerful form of reducibility, Turing reducibility, base
 
 ### Oracle Turing Machines and Turing Reducibility
 
-<!-- $\textbf{Definition 197:}$ An oracle Turing machine is a Turing machine that, in addition to its working tapes, has a special tape on which the sequence of function values $B(0)B(1) \dots$ of the characteristic function of a set $B$ is continuously written. The set $B$, which can be considered as an additional input to the computation, is called the oracle, and the additional tape is called the oracle tape. The oracle tape is read-only, and initially, the read head is positioned on the cell containing the bit $B(0)$. The notation $M(x, B)$ is used for the result of the computation of the oracle Turing machine $M$ on inputs $x$ and oracle $B$, if the computation terminates, and $M(x, B) \uparrow$, if the computation does not terminate. The notations $M(x, B) \downarrow$ and $M(x, B) \downarrow = y$ are defined as for Turing machines. In all these notations, $M(x, B)$ can also be written as $M^B(x)$.
-If an oracle Turing machine $M$ terminates for all inputs $x$ with a given oracle $B$, the notation $M(B)$ is used for the uniquely determined set $A$ with the characteristic function $c_A : x \mapsto M(x, B)$.
-A set $A$ is Turing-reducible to a set $B$, briefly $A$ is T-reducible to $B$ or $A \le_T B$, if there is an oracle Turing machine $M$ such that $A = M(B)$, i.e.,  $A(x) = M(x, B) \text{ for all } x \in \mathbb{N}$.  -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Oracle Turing Machine)</span></p>
 
@@ -6158,7 +6068,7 @@ If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing-reducibility)</span></p
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing-reducibility)</span></p>
 
 A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
 
@@ -6168,7 +6078,6 @@ $$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}.$$
 
 Turing reducibility is a more general notion than many-one reducibility.
 
-<!-- $\textbf{Theorem 198:}$ For all sets $A$ and $B$, it holds that $A \le_m B$ implies $A \le_T B$ but the implication in the opposite direction is false in general. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of Theorem)</span></p>
 
@@ -6183,9 +6092,6 @@ For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse im
 
 ### Like m-reducibility, T-reducibility preserves decidability.
 
-<!-- $\textbf{Proposition 199:}$ Let $A$ and $B$ be sets where $A \le_T B$. 
-* **(i)** If $B$ is decidable, then $A$ is also decidable. 
-* **(ii)** If $A$ is undecidable, then $B$ is also undecidable. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(name of Proposition)</span></p>
 
@@ -6201,7 +6107,6 @@ Let $A$ and $B$ be sets where $A \le_T B$.
 
 The concept of an oracle allows us to "relativize" all the fundamental notions of computability. We can speak of sets being decidable or r.e. relative to an oracle.
 
-<!-- $\textbf{Definition 200:}$ A set A is decidable with oracle $B$, if $A \le_T B$ holds. A set $A$ is recursively enumerable or r.e. with oracle $B$, if there exists an oracle Turing machine $M$ that has domain $A$ when its oracle is $B$, i.e., if  $A = \lbrace x \in \mathbb{N} : M(x, B) \downarrow\rbrace$.  -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
 
@@ -6216,7 +6121,6 @@ Let $A,B \subseteq \mathbb{N}$.
 
 If $A$ is decidable with oracle $B$, we also say $A$ is decidable in $B$ or decidable relative to $B$. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativised world.
 
-<!-- $\textbf{Definition 201:}$ $A$ function $f$ is computable with oracle $B$ if there is an oracle Turing machine that on input $i$ and oracle $B$ outputs $f(i)$. An enumeration $x_0, x_1, \dots$ is effective in $B$ if $x_i = f(i)$ for some function $f$ that is computable with oracle $B$. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
 
@@ -6233,9 +6137,6 @@ Similar to the unrelativized case, it can be shown that a set $A$ is recursively
 
 </div>
 
-<!-- $\textbf{Theorem 203:}$ Let A and B be sets. 
-* **(i)** $A$ is decidable in $B$ if and only if $A$ and the complement $\bar{A}$ of $A$ are recursively enumerable in $B$. 
-* **(ii)** $A$ is decidable in $B$ if and only if $A$ has a monotone enumeration $x_0 \le x_1 \le x_2$ \dots that is effective in $B$. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
 
@@ -6243,11 +6144,11 @@ Let $A,B$ be sets.
 
 1. $A$ is decidable in $B$ $\iff$ both $A$ and $\overline{A}$ are r.e. in $B$.
 2. $A$ is decidable in $B$ $\iff$ $A$ has a monotone enumeration $x_0 \le x_1 \le x_2 \le \dots$ that is effective in $B$.
+
 </div>
 
 Just as we can create a standard numbering of all Turing machines, we can create a standard numbering of all oracle Turing machines, which is also a Gödel numbering in the relativized sense. This allows us to define a relativized version of the halting problem.
 
-<!-- $\textbf{Definition 205:}$ Let $B$ be a set and $M_0, M_1, \dots$ be the standard enumeration of all oracle Turing machines. The set  $H^B = \lbrace e : M_e(e, B) \downarrow \rbrace$  is called the (diagonal) halting problem relative to $B$, or the jump of $B$. The map $X \mapsto H^X$ is called the jump operator. -->
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of definition)</span></p>
 
@@ -6261,7 +6162,6 @@ This set is called the **(diagonal) halting problem relative to $B$**, or the **
 
 The jump of $B$ is often denoted $B'$. The set $H^B$ plays the same role for sets that are r.e. in $B$ as the original halting problem $H$ does for r.e. sets.
 
-<!-- $\textbf{Theorem 206:}$ For all sets $A$ and $B$, $A$ is recursively enumerable relative to the oracle $B$ if and only if $A$ is m-reducible to $H^B$. -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
 
@@ -6272,18 +6172,21 @@ For all sets $A,B$, the set $A$ is r.e. relative to $B$ $\iff$ $A \le_m H^B$.
 *Proof*: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
 
 * $(\impliedby)$ If $A \le_m H^B$ via computable function $f$, we can build an oracle TM for $A$. On input $x$ with oracle $B$, it computes $f(x)$ and then simulates the oracle TM $M_{f(x)}$ on input $f(x)$ with oracle $B$. This machine halts iff $f(x) \in H^B$, which happens iff $x \in A$. Thus, $A$ is r.e. in $B$.
-* $(\implies)$ If $A$ is r.e. in $B$, there is an oracle TM $M$ such that $A$ is its domain with oracle $B$. We can create a computable function $h$ such that for any $x, M_{h(x)}$ is an oracle TM that on any input $y$ with any oracle $X$ simulates $M$ on input $x$ with oracle $X$. The function $h$ is computable as it just hard-wires $x$ into the description of $M$. Then we have:  $x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$.  This shows $A \le_m H^B$ via the computable function $h$.
+* $(\implies)$ If $A$ is r.e. in $B$, there is an oracle TM $M$ such that $A$ is its domain with oracle $B$. We can create a computable function $h$ such that for any $x, M_{h(x)}$ is an oracle TM that on any input $y$ with any oracle $X$ simulates $M$ on input $x$ with oracle $X$. The function $h$ is computable as it just hard-wires $x$ into the description of $M$. Then we have:  
+ 
+$$x \in A \iff M(x, B) \downarrow \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$$
 
-<!-- $\textbf{Corollary 207:}$ For all sets $B$, the halting problem relative to $B$ is recursively enumerable with oracle $B$. -->
+This shows $A \le_m H^B$ via the computable function $h$. $\square$
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of theorem)</span></p>
 
 For every set $B$, the halting problem $H^B$ is r.e. relative to $B$.
+
 </div>
 
 The jump operator always produces a strictly more complex set. A set is always reducible to its own jump, but the jump is never reducible back to the original set.
 
-<!-- $\textbf{Theorem 208:}$ Let $B$ be a set. Then $B$ is m-reducible to $H^B$ and thus decidable with oracle $H^B$, but $H^B$ is not decidable with oracle $B$, i.e., it holds  $B \le_m H^B \quad \text{and} \quad H^B \not\le_T B$.  -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
 
@@ -6292,7 +6195,7 @@ Let $B$ be a set. Then $B \le_m H^B$, so $B$ is decidable relative to $H^B$. How
 $$
 B \le_m H^B
 \quad\text{and}\quad
-H^B \not\le_T B.
+H^B \not\le_T B
 $$
 
 </div>
@@ -6304,7 +6207,6 @@ $$
 
 Finally, the jump operator is monotone with respect to Turing reducibility. If $A$ is no harder than $B$, then the jump of $A$ is no harder than the jump of $B$.
 
-<!-- $\textbf{Theorem 209:}$ If a set $A$ is $T$-reducible to a set $B$, then the halting problem relative to $A$ is m-reducible to the halting problem relative to B, i.e., it holds  $A \le_T B \text{ implies } H^A \le_m H^B$.  -->
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(name of theorem)</span></p>
 
@@ -6322,36 +6224,37 @@ Therefore, we have the desired equivalence:
 
 $e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  
 
-The function $h$ is computable, so this establishes $H^A \le_m H^B$.
+The function $h$ is computable, so this establishes $H^A \le_m H^B$. $\square$
 
 ## Incompleteness of Arithmetic
 
 ### First-Order Logic
 
-First-order logic, also known as predicate calculus, provides a formal system for reasoning. In this system, formulas are constructed from a set of symbols, which include relation symbols, function symbols, and constant symbols, in addition to logical symbols such as quantifiers (∀, ∃), logical connectives (∧, ∨, ¬, →), and the equality sign (=).
+First-order logic, also known as predicate calculus, provides a formal system for reasoning. In this system, formulas are constructed from a set of symbols, which include relation symbols, function symbols, and constant symbols, in addition to logical symbols such as quantifiers $(∀, ∃)$, logical connectives $(∧, ∨, ¬, →)$, and the equality sign $(=)$.
 
-For example, consider the formula: \phi ≡ ∀x∀y∃z(x < z ∧ z < y) Here, < is a relation symbol of arity 2, written in infix notation. Formulas like φ, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers N or real numbers R) and provide interpretations for the symbols over that domain. A binary relation symbol like < would be interpreted as a set of ordered pairs from the domain.
+For example, consider the formula: $\phi ≡ ∀x∀y∃z(x < z ∧ z < y)$ Here, $<$ is a relation symbol of arity $2$, written in infix notation. Formulas like $φ$, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers $\mathcal N$ or real numbers $\mathcal R$) and provide interpretations for the symbols over that domain. A binary relation symbol like $<$ would be interpreted as a set of ordered pairs from the domain.
 
-In the case of the formula \phi above:
-* If the domain is the set of natural numbers (N) and < is interpreted as the standard "less than" ordering, the formula is false. There is no natural number z that can exist between two consecutive numbers like x=1 and y=2.
-* If the domain is the set of real numbers (R) with the standard ordering, the formula is true. This property, that between any two distinct numbers there is another, is known as being dense.
+In the case of the formula $\phi$ above:
+* If the domain is the set of natural numbers ($\mathcal N$) and $<$ is interpreted as the standard "less than" ordering, the formula is false. There is no natural number $z$ that can exist between two consecutive numbers like $x=1$ and $y=2$.
+* If the domain is the set of real numbers ($\mathcal R$) with the standard ordering, the formula is true. This property, that between any two distinct numbers there is another, is known as being dense.
 
-Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula ∃x(x < y) is true for the natural numbers if y is assigned any value other than 0, but it is false if y is assigned 0.
+Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula $∃x(x < y)$ is true for the natural numbers if $y$ is assigned any value other than $0$, but it is false if $y$ is assigned $0$.
 
 <div class="math-callout math-callout--example" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(204: The Axioms of Group Theory)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Axioms of Group Theory)</span></p>
 
 The axioms of group theory can be expressed in first-order logic with a binary function symbol $\cdot$ (multiplication) and a constant symbol $e$ (the identity element).
 * **(i)** $\forall x \forall y \forall z((x \cdot y) \cdot z) = (x \cdot (y \cdot z))$ (Associativity)
 * **(ii)** $\forall x(e \cdot x = x)$ (Left-neutral element)
 * **(iii)** $\forall x \exists y(y \cdot x = e)$ (Existence of left-inverses)
 
-A group is defined as a structure (G, \cdot, e) consisting of a set G, a binary function \cdot on G, and an element e \in G where all three axioms are true. Group theory is the set of all sentences over these symbols that are true in all groups.
+A group is defined as a structure $(G, \cdot, e)$ consisting of a set $G$, a binary function $\cdot$ on $G$, and an element $e \in G$ where all three axioms are true. Group theory is the set of all sentences over these symbols that are true in all groups.
+
 </div>
 
 A sentence is a semantical consequence of a set of axioms if it is true in every structure where the axioms are true. In this case, we say the axioms entail the sentence.
 
-An inference system is a collection of syntactical rules that allow new sentences to be derived from a given set of sentences. A classic example is modus ponens, which allows the derivation of sentence \beta if one is given both \alpha and \alpha → \beta.
+An inference system is a collection of syntactical rules that allow new sentences to be derived from a given set of sentences. A classic example is modus ponens, which allows the derivation of sentence $\beta$ if one is given both $\alpha and \alpha → \beta$.
 
 * An inference system is sound if it can only derive sentences that are semantical consequences of the given set.
 * An inference system is complete if it can derive all semantical consequences of the given set.
@@ -6362,6 +6265,7 @@ First-order logic is restricted to quantification over members of the domain; it
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(205)</span></p>
 
 Group theory is r.e. An enumeration can be generated by applying a sound and complete inference system to the axioms of group theory. However, it can be shown that group theory is not decidable. In contrast, the theory of commutative groups (which adds the axiom $\forall x\forall y(x \cdot y = y \cdot x)$) is decidable.
+
 </div>
 
 ###  Arithmetic Formulas
@@ -6379,11 +6283,11 @@ An **arithmetic formula**, or a formula in the language of arithmetic, is a form
 
 </div>
 
-The intended interpretation for these symbols is over the domain of natural numbers N. An arithmetic sentence is an arithmetic formula with no free variables. An arithmetic sentence is considered true if it expresses a true statement about the natural numbers under this standard interpretation. We denote the set of all true arithmetic sentences by T. By establishing an effective bijection between arithmetic formulas and natural numbers, T can be treated as a subset of $\mathbb{N}$.
+The intended interpretation for these symbols is over the domain of natural numbers $\mathcal N$. An arithmetic sentence is an arithmetic formula with no free variables. An arithmetic sentence is considered true if it expresses a true statement about the natural numbers under this standard interpretation. We denote the set of all true arithmetic sentences by $T$. By establishing an effective bijection between arithmetic formulas and natural numbers, $T$ can be treated as a subset of $\mathbb{N}$.
 
 ### Incompleteness of Arithmetic
 
-To represent specific natural numbers within arithmetic formulas, we use a term notation. For any natural number $n \ge 0$, we define the term n̄ as the n-th successor of 0: n̄ = s(s(...(s(0))...)) where the successor function s is applied n times. For example, the term for the number $3$ is $s(s(s(0)))$. For an arithmetic formula \phi with one free variable, $\phi(\overline e)$ denotes the sentence obtained by replacing all free occurrences of that variable with the term $\overline e$.
+To represent specific natural numbers within arithmetic formulas, we use a term notation. For any natural number $n \ge 0$, we define the term $n̄$ as the $n$-th successor of $0$: $n̄ = s(s(...(s(0))...))$ where the successor function s is applied n times. For example, the term for the number $3$ is $s(s(s(0)))$. For an arithmetic formula \phi with one free variable, $\phi(\overline e)$ denotes the sentence obtained by replacing all free occurrences of that variable with the term $\overline e$.
 
 A foundational result is that the computations of Turing machines can be "arithmetized," meaning that statements about whether a Turing machine halts on an input can be expressed using arithmetic formulas. This leads to the following powerful theorem.
 
@@ -6423,38 +6327,42 @@ The set $T$ of true arithmetic sentences is not axiomatizable. That is, there is
 
 </div>
 
-**Proof:** The proof is by contradiction. Let's assume such an r.e. set of axioms A exists. We also fix an inference system that is effective, sound, and complete for first-order logic.
+**Proof:** The proof is by contradiction. Let's assume such an r.e. set of axioms $A$ exists. We also fix an inference system that is effective, sound, and complete for first-order logic.
 
-1. Assume there is an r.e. set of axioms A such that a sentence φ can be derived from A if and only if $\phi \in T$.
-2. We can construct a Turing machine M to decide T. On input φ:
-  * If φ is not a valid arithmetic sentence, M rejects.
-  * Otherwise, M exhaustively searches through all possible derivations from the axioms in A. Since A is r.e., this search is effective.
-  * In the standard model of natural numbers, for any sentence φ, either φ is true or its negation ¬φ is true. Because our axiom system A is assumed to capture all of T (and is sound), exactly one of φ or ¬φ must be derivable from A.
-  * Therefore, M's search is guaranteed to terminate. It will eventually find a derivation for either φ or ¬φ.
-  * If a derivation for φ is found, M accepts.
-  * If a derivation for ¬φ is found, M rejects.
-3. This construction describes a total Turing machine M that decides the set T.
-4. However, this contradicts Theorem 208, which states that T is undecidable.
-5. Therefore, our initial assumption must be false, and no such r.e. set of axioms A can exist.
+1. Assume there is an r.e. set of axioms $A$ such that a sentence $φ$ can be derived from $A$ if and only if $\phi \in T$.
+2. We can construct a Turing machine $M$ to decide $T$. On input $φ$:
+  * If $φ$ is not a valid arithmetic sentence, $M$ rejects.
+  * Otherwise, $M$ exhaustively searches through all possible derivations from the axioms in $A$. Since $A$ is r.e., this search is effective.
+  * In the standard model of natural numbers, for any sentence $φ$, either $φ$ is true or its negation $¬φ$ is true. Because our axiom system $A$ is assumed to capture all of $T$$ (and is sound), exactly one of $φ$ or $¬φ$ must be derivable from $A$.
+  * Therefore, $M$'s search is guaranteed to terminate. It will eventually find a derivation for either $φ$ or $¬φ$.
+  * If a derivation for $φ$ is found, $M$ accepts.
+  * If a derivation for $¬φ$ is found, $M$ rejects.
+3. This construction describes a total Turing machine M that decides the set $T$.
+4. However, this contradicts Theorem 208, which states that $T$ is undecidable.
+5. Therefore, our initial assumption must be false, and no such r.e. set of axioms $A$ can exist.
 
 ### Arithmetization of Computations
 
-The ability to express computational statements within arithmetic is the technical core of the incompleteness results. For example, there exists an arithmetic formula φ_T with three free variables such that φ_T(ē, x̄, ȳ) is true if and only if the Turing machine M_e halts on input x with a computation encoded by the number y. This process, known as arithmetization, requires a method to encode finite sequences of numbers (representing configurations) using only the language of arithmetic.
+The ability to express computational statements within arithmetic is the technical core of the incompleteness results. For example, there exists an arithmetic formula $φ_T$ with three free variables such that $φ_T(ē, x̄, ȳ)$ is true if and only if the Turing machine $M_e$ halts on input $x$ with a computation encoded by the number $y$. This process, known as arithmetization, requires a method to encode finite sequences of numbers (representing configurations) using only the language of arithmetic.
 
-#### Gödel's β-function
+#### Gödel's $β$-function
 
-To encode sequences of configurations, we first need a way to encode arbitrary finite sequences of natural numbers. This can be achieved using the Chinese Remainder Theorem and a clever construction known as Gödel's β-function.
+To encode sequences of configurations, we first need a way to encode arbitrary finite sequences of natural numbers. This can be achieved using the Chinese Remainder Theorem and a clever construction known as Gödel's $β$-function.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(210: Chinese Remainder Theorem)</span></p>
 
-Let m_1, \dots, m_t be pairwise co-prime natural numbers. Then, for every sequence of natural numbers a_1, \dots, a_t, there exists a unique number m such that: 0 \le m < m_1 \cdot m_2 \cdot \dots \cdot m_t \quad \text{and} \quad a_i \equiv m \pmod{m_i} \text{ for } i = 1, \dots, t.
+Let m_1, \dots, m_t be pairwise co-prime natural numbers. Then, for every sequence of natural numbers a_1, \dots, a_t, there exists a unique number m such that: 
+
+$$0 \le m < m_1 \cdot m_2 \cdot \dots \cdot m_t \quad \text{and} \quad a_i \equiv m \pmod{m_i} \text{ for } i = 1, \dots, t$$
+
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(211)</span></p>
 
-The Chinese Remainder Theorem allows us to encode a sequence a_1, \dots, a_t using just a few numbers. For example, one could choose a prime number p larger than all a_i and then use a sequence of t successive primes starting from p. However, defining "successive primes" within the language of arithmetic is non-trivial. A more direct arithmetical construction is needed.
+The Chinese Remainder Theorem allows us to encode a sequence $a_1, \dots, a_t$ using just a few numbers. For example, one could choose a prime number $p$ larger than all a_i and then use a sequence of t successive primes starting from $p$. However, defining "successive primes" within the language of arithmetic is non-trivial. A more direct arithmetical construction is needed.
+
 </div>
 
 Gödel's β-function provides this construction by generating a suitable list of pairwise co-prime numbers arithmetically.
@@ -6466,13 +6374,13 @@ Let $d = n!$ for a natural number $n > 0$. Then, the natural numbers $d+1, 2d+1,
   
 </div>
 
-Proof: Assume for contradiction that there exist distinct i, j \in \lbrace 1, \dots, n\rbrace such that $id+1$ and jd+1 share a common prime divisor p.
+**Proof:** Assume for contradiction that there exist distinct $i, j \in \lbrace 1, \dots, n\rbrace$ such that $id+1$ and $jd+1$ share a common prime divisor $p$.
 
-1. Since id and id+1 are co-prime, p cannot divide id. As d=n!, this means p cannot divide d. By the definition of d, any prime less than or equal to n divides d, so we must have p > n.
-2. A common divisor of two numbers must also divide their difference. Thus, p divides |(id+1) - (jd+1)| = |i-j|d.
-3. Since p is a prime that does not divide d, it must divide |i-j|.
-4. However, i, j \in \{1, \dots, n\} implies 0 < |i-j| < n.
-5. This leads to a contradiction, as the prime p must be greater than n but also divide a number smaller than n. Thus, no such common prime divisor p exists, and the numbers are pairwise co-prime.
+1. Since id and $id+1$ are co-prime, $p$ cannot divide $id$. As $d=n!$, this means $p$ cannot divide $d$. By the definition of $d$, any prime less than or equal to $n$ divides $d$, so we must have $p > n$.
+2. A common divisor of two numbers must also divide their difference. Thus, $p$ divides $\lvert (id+1) - (jd+1)\rvert = \lvert i-j\rvert d$.
+3. Since $p$ is a prime that does not divide $d$, it must divide $\lvert i-j\rvert$.
+4. However, $i, j \in \lbrace 1, \dots, n\rbrace implies 0 < \lvert i-j\rvert < n$.
+5. This leads to a contradiction, as the prime $p$ must be greater than $n$ but also divide a number smaller than $n$. Thus, no such common prime divisor $p$ exists, and the numbers are pairwise co-prime.
 
 This lemma enables the definition of a function that can extract elements from an encoded sequence.
 
@@ -6481,7 +6389,7 @@ This lemma enables the definition of a function that can extract elements from a
 
 For any natural numbers $m$, $d$, and $i$, let $\beta(m, d, i)$ be the remainder of $m$ modulo $id+1$. That is, 
 
-$$m \equiv \beta(m, d, i) \pmod{id+1} \quad \text{and} \quad 0 \le \beta(m, d, i) \le id.$$
+$$m \equiv \beta(m, d, i) \pmod{id+1} \quad \text{and} \quad 0 \le \beta(m, d, i) \le id$$
 
 </div>
 
@@ -6489,6 +6397,7 @@ $$m \equiv \beta(m, d, i) \pmod{id+1} \quad \text{and} \quad 0 \le \beta(m, d, i
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(214: Encoding Sequences with the $\beta$-function)</span></p>
 
 Let $a_1, \dots, a_t$ be a sequence of natural numbers. Then, there exist natural numbers $m$ and $d$ such that for $i=1, \dots, t$, it holds that $a_i = β(m, d, i)$.
+
 </div>
 
 **Proof:**
@@ -6530,11 +6439,12 @@ This theorem, also known as the Davis-Matiyasevich-Putnam-Robinson (DMPR) theore
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(216)</span></p>
 
-An equation between polynomials with natural number coefficients, like f=g, is equivalent to an equation of the form h=0 where h=f-g is a polynomial with integer coefficients. The question of whether such an equation has solutions over the natural numbers versus the integers is essentially equivalent.
+An equation between polynomials with natural number coefficients, like $f=g$, is equivalent to an equation of the form $h=0$ where $h=f-g$ is a polynomial with integer coefficients. The question of whether such an equation has solutions over the natural numbers versus the integers is essentially equivalent.
+
 </div>
 
 * Solvability over integers can be reduced to solvability over natural numbers, since any integer can be expressed as a difference of two natural numbers, and any natural number can be written as the sum of four squares (Lagrange's four-square theorem).
-* Solvability over natural numbers can be checked by considering the 2^n variants of an equation over the integers obtained by replacing variables with their negations.
+* Solvability over natural numbers can be checked by considering the $2^n$ variants of an equation over the integers obtained by replacing variables with their negations.
 
 In 1900, David Hilbert posed his famous list of 23 problems. His tenth problem asked for a general algorithm to determine if a given Diophantine equation has integer solutions.
 
