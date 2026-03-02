@@ -314,7 +314,7 @@ A finitely branching rooted tree is infinite $\iff$ it has an infinite branch.
 * Assuming $v_i$ has been defined such that its subtree is infinite, we choose $v_{i+1}$ from its children. Since $v_i$ has only finitely many children, and the subtree at $v_i$ is infinite, at least one of its children must be the root of an infinite subtree. We choose such a child to be $v_{i+1}$. This process can be continued indefinitely, constructing an infinite branch. $\square$
 
 <figure>
-  <img src="{{ '/assets/images/notes/computability-and-complexity/konigs_lemma_sketch.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <img src="{{ '/assets/images/notes/computability-and-complexity/konigs_lemma_sketch.jpeg' | relative_url }}" alt="CPU + GPU system" loading="lazy">
   <figcaption>Sketch of the proof</figcaption>
 </figure>
 
@@ -462,7 +462,7 @@ A **representation** of a set $A$ is an injective function $\text{repr} : A \to 
 In other words, $f$ is computable iff there is a total TM that, on input $\mathrm{repr}(x)$, halts with output $\mathrm{repr}(f(x))$ for all $x\in A$, where valid encodings $\mathrm{repr}(A)$ form a decidable language. Injectivity gives us that every element of $A$ has a **unique code**, so in principle no information is lost. That’s the valid renaming intuition. Decidability of encoding in addition, gives us that **there is an algorithm that can check whether a given string is a valid code of some element of $A$**. So the decidability condition is basically saying: **your encoding must be a "reasonable/effective" one, where validity of codes is decidable**.
 
 <figure>
-  <img src="{{ '/assets/images/notes/computability-and-complexity/computable_functions_via_set_representation_sketch.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <img src="{{ '/assets/images/notes/computability-and-complexity/computable_functions_via_set_representation_sketch.jpeg' | relative_url }}" alt="CPU + GPU system" loading="lazy">
   <figcaption>Sketch of the proof</figcaption>
 </figure>
 
@@ -656,13 +656,13 @@ The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$.
 
 <div class="gd-grid">
   <figure>
-    <img src="{{ '/assets/images/notes/computability-and-complexity/linear_speedup_theorem_sketch1.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <img src="{{ '/assets/images/notes/computability-and-complexity/linear_speedup_theorem_sketch1.jpeg' | relative_url }}" alt="GPU global memory" loading="lazy">
   </figure>
   <figure>
-    <img src="{{ '/assets/images/notes/computability-and-complexity/linear_speedup_theorem_sketch2.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <img src="{{ '/assets/images/notes/computability-and-complexity/linear_speedup_theorem_sketch2.jpeg' | relative_url }}" alt="GPU global memory" loading="lazy">
   </figure>
   <figure>
-    <img src="{{ '/assets/images/notes/computability-and-complexity/linear_speedup_theorem_sketch3.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+    <img src="{{ '/assets/images/notes/computability-and-complexity/linear_speedup_theorem_sketch3.jpeg' | relative_url }}" alt="GPU global memory" loading="lazy">
   </figure>
 </div>
 
@@ -722,7 +722,7 @@ The core idea is to encode each symbol $a_j$ from $M'$s alphabet as a unique bin
   * **Read:** Identify the symbol under each of $M$'s heads. This requires $M'$ to read the corresponding block of $r$ binary symbols on each of its tapes. While reading a block, $M'$ uses its state to remember its position within the block and the binary pattern it has seen so far.
   * **Write/Move:** Based on $M$'s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
 
-Simulating one step of $M$ requires reading and potentially writing $k$ blocks of $r$ symbols each. This takes a constant number of steps proportional to $r$. Thus, a single step of $M$ can be simulated in $d \cdot r$ steps of $M'$ for some constant $d$. The total running time of $M'$ is therefore bounded by a constant multiple of $t(n)$, as required. The constant $d$ depends on on the size $r$ of the source alphabet. $\square
+Simulating one step of $M$ requires reading and potentially writing $k$ blocks of $r$ symbols each. This takes a constant number of steps proportional to $r$. Thus, a single step of $M$ can be simulated in $d \cdot r$ steps of $M'$ for some constant $d$. The total running time of $M'$ is therefore bounded by a constant multiple of $t(n)$, as required. The constant $d$ depends on on the size $r$ of the source alphabet. $\square$
 
 #### Tape Reduction
 
@@ -737,7 +737,12 @@ Let $t$ be a time bound and let $L$ be a language in $\text{DTIME}_k(t(n))$, i.e
 
 **Proof.**: We construct a single-tape Turing machine $M'$ that simulates a $k$-tape machine $M$. The single tape of $M'$ is structured to represent all $k$ tapes of $M$ simultaneously using a system of "tracks".
 
-Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma'$ of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, \ast \rbrace $, where $*$ is used as the head marker.
+Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma'$ of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, \ast \rbrace $, where $*$ is used as the head marker. $\square$
+
+<figure>
+  <img src="{{ '/assets/images/notes/computability-and-complexity/tape_reduction_sketch.jpeg' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>Sketch of the proof</figcaption>
+</figure>
 
 #### The simulation proceeds as follows:
 
@@ -6063,7 +6068,7 @@ For an oracle machine $M$, input $x$, and oracle $B$, write:
 
 We also write $M^B(x)$ instead of $M(x,B)$.
 
-If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (unique) set $A$ whose characteristic function is $x \mapsto M(x,B)$.
+If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (unique) set $A$ whose characteristic function $c_A: x \mapsto M(x,B)$.
 
 </div>
 
@@ -6154,7 +6159,7 @@ Just as we can create a standard numbering of all Turing machines, we can create
 
 Let $B\subseteq \mathbb{N}$, and let $M_0,M_1,\dots$ be the standard enumeration of all oracle Turing machines. Define
 
-$$H^B=\lbrace e : M_e(e,B)\downarrow\rbrace.$$
+$$H^B=\lbrace e : M_e(e,B)\downarrow\rbrace$$
 
 This set is called the **(diagonal) halting problem relative to $B$**, or the **jump** of $B$. The map $X \mapsto H^X$ is the **jump operator**.
 
@@ -6212,7 +6217,7 @@ Finally, the jump operator is monotone with respect to Turing reducibility. If $
 
 If $A \le_T B$, then the halting problem relative to $A$ is many-one reducible to the halting problem relative to $B$; equivalently,
 
-$$A \le_T B \ \Longrightarrow\ H^A \le_m H^B.$$
+$$A \le_T B \ \Longrightarrow\ H^A \le_m H^B$$
 
 </div>
 
@@ -6240,7 +6245,7 @@ In the case of the formula $\phi$ above:
 
 Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula $∃x(x < y)$ is true for the natural numbers if $y$ is assigned any value other than $0$, but it is false if $y$ is assigned $0$.
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Axioms of Group Theory)</span></p>
 
 The axioms of group theory can be expressed in first-order logic with a binary function symbol $\cdot$ (multiplication) and a constant symbol $e$ (the identity element).
@@ -6261,7 +6266,7 @@ An inference system is a collection of syntactical rules that allow new sentence
 
 First-order logic is restricted to quantification over members of the domain; it does not allow quantification over sets, functions, or other higher-order objects. While this limits its expressive power compared to formalisms like set theory, it has a significant advantage: first-order logic possesses effective inference systems that are both sound and complete. This implies that if a set of axioms is finite, decidable, or recursively enumerable (r.e.), then the set of all its semantical consequences is also r.e. This is because one can systematically search through all possible derivations from the axioms, and due to completeness, a derivation for any true consequence will eventually be found.
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(205)</span></p>
 
 Group theory is r.e. An enumeration can be generated by applying a sound and complete inference system to the axioms of group theory. However, it can be shown that group theory is not decidable. In contrast, the theory of commutative groups (which adds the axiom $\forall x\forall y(x \cdot y = y \cdot x)$) is decidable.
@@ -6273,7 +6278,7 @@ Group theory is r.e. An enumeration can be generated by applying a sound and com
 We can use the language of first-order logic to make precise statements about the natural numbers.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arithmetic Formula)</span></p
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arithmetic Formula)</span></p>
 
 An **arithmetic formula**, or a formula in the language of arithmetic, is a formula of first-order logic whose non-logical symbols are restricted to:
 * The binary function symbols $+$ and $\cdot$ (addition and multiplication).
@@ -6287,7 +6292,7 @@ The intended interpretation for these symbols is over the domain of natural numb
 
 ### Incompleteness of Arithmetic
 
-To represent specific natural numbers within arithmetic formulas, we use a term notation. For any natural number $n \ge 0$, we define the term $n̄$ as the $n$-th successor of $0$: $n̄ = s(s(...(s(0))...))$ where the successor function s is applied n times. For example, the term for the number $3$ is $s(s(s(0)))$. For an arithmetic formula \phi with one free variable, $\phi(\overline e)$ denotes the sentence obtained by replacing all free occurrences of that variable with the term $\overline e$.
+To represent specific natural numbers within arithmetic formulas, we use a term notation. For any natural number $n \ge 0$, we define the term $n̄$ as the $n$-th successor of $0$: $n̄ = s(s(\dots(s(0))\dots))$ where the successor function s is applied n times. For example, the term for the number $3$ is $s(s(s(0)))$. For an arithmetic formula \phi with one free variable, $\phi(\overline e)$ denotes the sentence obtained by replacing all free occurrences of that variable with the term $\overline e$.
 
 A foundational result is that the computations of Turing machines can be "arithmetized," meaning that statements about whether a Turing machine halts on an input can be expressed using arithmetic formulas. This leads to the following powerful theorem.
 
@@ -6337,7 +6342,7 @@ The set $T$ of true arithmetic sentences is not axiomatizable. That is, there is
   * Therefore, $M$'s search is guaranteed to terminate. It will eventually find a derivation for either $φ$ or $¬φ$.
   * If a derivation for $φ$ is found, $M$ accepts.
   * If a derivation for $¬φ$ is found, $M$ rejects.
-3. This construction describes a total Turing machine M that decides the set $T$.
+3. This construction describes a total Turing machine $M$ that decides the set $T$.
 4. However, this contradicts Theorem 208, which states that $T$ is undecidable.
 5. Therefore, our initial assumption must be false, and no such r.e. set of axioms $A$ can exist.
 
@@ -6352,7 +6357,7 @@ To encode sequences of configurations, we first need a way to encode arbitrary f
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(210: Chinese Remainder Theorem)</span></p>
 
-Let m_1, \dots, m_t be pairwise co-prime natural numbers. Then, for every sequence of natural numbers a_1, \dots, a_t, there exists a unique number m such that: 
+Let $m_1, \dots, m_t$ be pairwise co-prime natural numbers. Then, for every sequence of natural numbers $a_1, \dots, a_t$, there exists a unique number $m$ such that: 
 
 $$0 \le m < m_1 \cdot m_2 \cdot \dots \cdot m_t \quad \text{and} \quad a_i \equiv m \pmod{m_i} \text{ for } i = 1, \dots, t$$
 
@@ -6361,11 +6366,11 @@ $$0 \le m < m_1 \cdot m_2 \cdot \dots \cdot m_t \quad \text{and} \quad a_i \equi
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(211)</span></p>
 
-The Chinese Remainder Theorem allows us to encode a sequence $a_1, \dots, a_t$ using just a few numbers. For example, one could choose a prime number $p$ larger than all a_i and then use a sequence of t successive primes starting from $p$. However, defining "successive primes" within the language of arithmetic is non-trivial. A more direct arithmetical construction is needed.
+The Chinese Remainder Theorem allows us to encode a sequence $a_1, \dots, a_t$ using just a few numbers. For example, one could choose a prime number $p$ larger than all $a_i$ and then use a sequence of $t$ successive primes starting from $p$. However, defining "successive primes" within the language of arithmetic is non-trivial. A more direct arithmetical construction is needed.
 
 </div>
 
-Gödel's β-function provides this construction by generating a suitable list of pairwise co-prime numbers arithmetically.
+Gödel's $β$-function provides this construction by generating a suitable list of pairwise co-prime numbers arithmetically.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(name of Lemma)</span></p>
@@ -6385,7 +6390,7 @@ Let $d = n!$ for a natural number $n > 0$. Then, the natural numbers $d+1, 2d+1,
 This lemma enables the definition of a function that can extract elements from an encoded sequence.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gödel’s $\beta$-function)</span></p
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gödel’s $\beta$-function)</span></p>
 
 For any natural numbers $m$, $d$, and $i$, let $\beta(m, d, i)$ be the remainder of $m$ modulo $id+1$. That is, 
 
@@ -6402,31 +6407,31 @@ Let $a_1, \dots, a_t$ be a sequence of natural numbers. Then, there exist natura
 
 **Proof:**
 
-1. Choose a natural number n that is greater than the sequence length t and also greater than every element a_i in the sequence. Let d = n!.
-2. By Lemma 212, the numbers d+1, 2d+1, \dots, td+1 are pairwise co-prime.
-3. By the Chinese Remainder Theorem (Theorem 210), there exists a natural number m such that for each i \in \{1, \dots, t\}, we have m \equiv a_i \pmod{id+1}.
-4. By our choice of n, we have a_i < n. Since d=n!, we also have d \ge n (for n>1), so a_i < d. This means a_i \le id.
-5. Since m \equiv a_i \pmod{id+1} and 0 \le a_i \le id, a_i is precisely the remainder of m when divided by id+1.
-6. By Definition 213, this means a_i = \beta(m, d, i) for all i = 1, \dots, t.
+1. Choose a natural number $n$ that is greater than the sequence length $t$ and also greater than every element $a_i$ in the sequence. Let $d = n!$.
+2. By Lemma 212, the numbers $d+1, 2d+1, \dots, td+1$ are pairwise co-prime.
+3. By the Chinese Remainder Theorem (Theorem 210), there exists a natural number $m$ such that for each $i \in \lbrace 1, \dots, t\rbrace$, we have $m \equiv a_i \pmod{id+1}$.
+4. By our choice of $n$, we have $a_i < n$. Since $d=n!$, we also have $d \ge n (for n>1)$, so $a_i < d$. This means $a_i \le id$.
+5. Since $m \equiv a_i \pmod{id+1} and 0 \le a_i \le id, a_i$ is precisely the remainder of m when divided by $id+1$.
+6. By Definition 213, this means $a_i = \beta(m, d, i)$ for all $i = 1, \dots, t$.
 
 #### Detailed Arithmetization of Computations
 
-Using Gödel's β-function, we can now encode an entire Turing machine computation. A computation is a sequence of configurations C_0, \dots, C_s. Each configuration is determined by the current state, head position, and tape contents. A computation of length s can be represented by:
+Using Gödel's $β$-function, we can now encode an entire Turing machine computation. A computation is a sequence of configurations $C_0, \dots, C_s$. Each configuration is determined by the current state, head position, and tape contents. A computation of length $s$ can be represented by:
 
-* A list of states: q_0, \dots, q_s.
-* A list of head positions: j_0, \dots, j_s.
-* A list of tape inscriptions: w_0, \dots, w_s.
+* A list of states: $q_0, \dots, q_s$.
+* A list of head positions: $j_0, \dots, j_s$.
+* A list of tape inscriptions: $w_0, \dots, w_s$.
 
-Each state and tape symbol can be represented by a number. Each tape inscription w_i, which is itself a sequence of symbols, can also be encoded as a single number using the β-function again. Ultimately, the entire computation can be encoded by a fixed set of natural numbers. For example, the sequence of states q_0, \dots, q_s can be encoded by three numbers: the length s, and the pair m_{state}, d_{state} from Theorem 214.
+Each state and tape symbol can be represented by a number. Each tape inscription $w_i$, which is itself a sequence of symbols, can also be encoded as a single number using the $β$-function again. Ultimately, the entire computation can be encoded by a fixed set of natural numbers. For example, the sequence of states $q_0, \dots, q_s$ can be encoded by three numbers: the length $s$, and the pair $m_{state}, d_{state}$ from Theorem 214.
 
-The formula ψ from Theorem 207 then takes a form with many existential quantifiers, one for each number used in the encoding: ∃m_{state}∃d_{state}∃m_{pos}∃d_{pos} \dots ψ'(e, s, m_{state}, d_{state}, \dots) The inner formula ψ' is a large conjunction of subformulas that enforce the rules of Turing machine computation. For example, one subformula would assert that the tape inscription of configuration C_{i+1} is correctly derived from C_i based on the transition function of machine M_e. This structure is conceptually similar to the formula constructed in the proof of the Cook-Levin theorem.
+The formula $ψ$ from Theorem 207 then takes a form with many existential quantifiers, one for each number used in the encoding: $∃m_{state}∃d_{state}∃m_{pos}∃d_{pos} \dots ψ'(e, s, m_{state}, d_{state}, \dots)$ The inner formula $ψ'$ is a large conjunction of subformulas that enforce the rules of Turing machine computation. For example, one subformula would assert that the tape inscription of configuration $C_{i+1}$ is correctly derived from $C_i$ based on the transition function of machine $M_e$. This structure is conceptually similar to the formula constructed in the proof of the Cook-Levin theorem.
 
 ### Matiyasevich’s Theorem and Diophantine Equations
 
 The arithmetization of computation can be pushed even further, leading to a remarkable connection between computability theory and number theory. It turns out that r.e. sets can be characterized by equations between polynomials.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matiyasevich’s Theorem)</span></p
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matiyasevich’s Theorem)</span></p>
 
 For every r.e. set $A$, there exist a natural number $n$ and polynomials $f$ and $g$ over the variables $x, y_1, \dots, y_n$ with coefficients in $N$, such that: 
 
@@ -6449,7 +6454,7 @@ An equation between polynomials with natural number coefficients, like $f=g$, is
 In 1900, David Hilbert posed his famous list of 23 problems. His tenth problem asked for a general algorithm to determine if a given Diophantine equation has integer solutions.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Diophantine Equation)</span></p
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Diophantine Equation)</span></p>
 
 A **Diophantine equation** is an equation of the form $f = 0$, where $f$ is a polynomial with integer coefficients. The equation is solvable if its variables can be assigned integer values such that the equation is satisfied.
 
@@ -6464,11 +6469,14 @@ It is not possible to decide whether a given Diophantine equation is solvable.
 
 </div>
 
-Proof:
+**Proof:**
 
-1. Let A be an undecidable r.e. set, such as the Halting Problem.
-2. By Matiyasevich’s theorem, there exist polynomials f and g with natural number coefficients such that for all x: x \in A \iff ∃y_1 \in \text{N} \dots ∃y_n \in \text{N} [ f(x, y_1, \dots, y_n) - g(x, y_1, \dots, y_n) = 0 ].
-3. For any given x, the statement on the right corresponds to asking whether the Diophantine equation f(x, \vec{y}) - g(x, \vec{y}) = 0 has a solution in the natural numbers.
-4. As noted in Remark 216, deciding solvability over N is equivalent to deciding solvability over the integers.
-5. If there were an algorithm to decide the solvability of Diophantine equations, we could use it to decide the right-hand side of the equivalence for any x. This would give us an algorithm to decide membership in A.
-6. Since A is undecidable, this is a contradiction. Therefore, no such general algorithm for Diophantine equations can exist.
+1. Let $A$ be an undecidable r.e. set, such as the Halting Problem.
+2. By Matiyasevich’s theorem, there exist polynomials $f$ and $g$ with natural number coefficients such that for all 
+   
+   $$x: x \in A \iff ∃y_1 \in \text{N} \dots ∃y_n \in \text{N} [ f(x, y_1, \dots, y_n) - g(x, y_1, \dots, y_n) = 0 ]$$
+
+3. For any given $x$, the statement on the right corresponds to asking whether the Diophantine equation $f(x, \vec{y}) - g(x, \vec{y}) = 0$ has a solution in the natural numbers.
+4. As noted in Remark 216, deciding solvability over $N$ is equivalent to deciding solvability over the integers.
+5. If there were an algorithm to decide the solvability of Diophantine equations, we could use it to decide the right-hand side of the equivalence for any $x$. This would give us an algorithm to decide membership in $A$.
+6. Since $A$ is undecidable, this is a contradiction. Therefore, no such general algorithm for Diophantine equations can exist.
