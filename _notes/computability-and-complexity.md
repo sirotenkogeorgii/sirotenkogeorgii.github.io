@@ -742,7 +742,7 @@ Let $t$ be a time bound and let $L$ be a language in $\text{DTIME}_k(t(n))$, i.e
 
 **Proof.**: We construct a single-tape Turing machine $M'$ that simulates a $k$-tape machine $M$. The single tape of $M'$ is structured to represent all $k$ tapes of $M$ simultaneously using a system of "tracks".
 
-Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma'$ of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, \ast \rbrace $, where $*$ is used as the head marker. $\square$
+Conceptually, the tape of $M'$ is partitioned into $2k$ tracks. Each cell on the tape of $M'$ contains a $2k$-tuple. For each of $M$'s tapes (say, tape $i$), two tracks on $M'$ are used: one to store the content of tape $i$ and another to mark the position of tape $i$'s head. The tape alphabet $\Gamma'$ of $M'$ consists of tuples containing $k$ symbols from $M$'s alphabet $\Gamma$ and $k$ symbols from $\lbrace \square, \ast \rbrace $, where $*$ is used as the head marker.
 
 <figure>
   <img src="{{ '/assets/images/notes/computability-and-complexity/tape_reduction_sketch.jpeg' | relative_url }}" alt="CPU + GPU system" loading="lazy">
@@ -773,7 +773,15 @@ By definition, a time bound $t$ must satisfy $t(n) \ge n$. The latter requiremen
 
 ### Nondeterministic Time-Bounded Turing Machines
 
-The concept of time complexity can be extended from deterministic to nondeterministic Turing machines. A nondeterministic Turing machine may have multiple possible transitions from a given configuration, leading to a tree of possible computations. A word $w$ is accepted if at least one of these computational paths leads to an accepting state.
+The concept of time complexity can be extended from deterministic to nondeterministic Turing machines.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Nondeterministic Turing Machine)</span></p>
+
+1. A **nondeterministic Turing machine** may have **multiple possible transitions** from a given configuration, leading to a tree of possible computations. 
+2. A word $w$ is accepted if **at least one** of these computational paths leads to an **accepting state**.
+
+</div>
 
 When analyzing the time complexity of a nondeterministic machine, we consider the length of the longest possible computation path.
 
@@ -821,7 +829,9 @@ To compare the relative difficulty of problems, we use the concept of reduction.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(many-one reduction)</span></p>
 
-A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \lbrace 0, 1\rbrace ^*$ it holds that $x \in A \iff g(x) \in B$.
+A language $A$ is many-one reducible in polynomial time to a language $B$, denoted $A \le_p^m B$, if there exists a function $g \in \text{FP}$ (i.e., computable in deterministic polynomial time) such that for all $x \in \lbrace 0, 1\rbrace ^*$ it holds that 
+
+$$x \in A \iff g(x) \in B$$
 
 </div>
 
@@ -834,7 +844,7 @@ Complexity classes often exhibit closure properties with respect to reductions.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Closed Downward, Closed Upward)</span></p>
 
-A set of languages is closed downward under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is closed upward under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
+A set of languages is **closed downward** under $p$-$m$-reducibility if for every language $B$ in the class, every language $A \le_p^m B$ is in the class, too. A set of languages is **closed upward** under $p$-$m$-reducibility if for every language $A$ in the class, every language $B$ with $A \le_p^m B$ is in the class, too.
 
 </div>
 
@@ -888,8 +898,8 @@ Reducibility allows us to identify the "hardest" problems within a complexity cl
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\text{NP}$-complete languages)</span></p>
 
-* A language $B$ is $\text{NP}$-hard if all languages in $\text{NP}$ are $p$-$m$-reducible to 
-* $B$ A language is $\text{NP}$-complete if it is $\text{NP}$-hard and belongs to $\text{NP}$.
+* A language $B$ is $\text{NP}$-hard if all languages in $\text{NP}$ are $p$-$m$-reducible to $B$
+* A language is $\text{NP}$-complete if it is $\text{NP}$-hard and belongs to $\text{NP}$.
 
 </div>
 
@@ -945,11 +955,16 @@ To establish that the first $\text{NP}$-complete problem exists, it will be show
 
 ### Polynomial-Time Many-One Reducibility Degrees
 
-The concept of reducibility allows us to compare the relative difficulty of computational problems. When two problems can be reduced to each other, they are considered equivalent in terms of their computational complexity. This equivalence can be formalized into distinct classes.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(p-m-equivalence and p-m-degree)</span></p>
+
+The concept of reducibility allows us to compare the relative difficulty of computational problems. **When two problems can be reduced to each other, they are considered equivalent** in terms of their computational complexity. This equivalence can be formalized into distinct classes.
 
 **p-m-equivalence**: Two languages $A$ and $B$ are $p$-$m$-equivalent, denoted $A \equiv_p^m B$, if $A \le_p^m B$ and $B \le_p^m A$.
 
 **p-m-degree**: The $p$-$m$-degree of a language $A$ is the class of all languages that are $p$-$m$-equivalent to it:  $\text{deg}_p^m(A) = \lbrace B \subseteq \lbrace 0, 1 \rbrace ^* : A \equiv_p^m B\rbrace$ 
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -1590,7 +1605,7 @@ For a time-bounded machine, the length of any computation is naturally bounded b
 
 Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s(n)$-space bounded Turing machine. Then there exists a constant $d$ that depends only on $M$ such that the following two statements hold for all $n$:
 
-* (i) The number of possible configurations of $M$ on an input of length $n$ is at most $2^{d \cdot s(n)}$.
+* (i) The number of possible **distinct** configurations of $M$ on an input of length $n$ is at most $2^{d \cdot s(n)}$.
 * (ii) The depth of the computation tree of $M$ on an input of length $n$ is less than $2^{d \cdot s(n)}$.
 
 </div>
@@ -1672,7 +1687,7 @@ The relationships in the second and third columns also hold for an arbitrary spa
 1.  **Vertical Inclusions:** The inclusions from the first row to the second row (e.g., $\text{DTIME}(t(n)) \subseteq \text{NTIME}(t(n))$) hold by definition, as any deterministic Turing machine is a special case of a nondeterministic one.
 2.  **First Horizontal Inclusions:** The inclusions from the first column to the second (e.g., $\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$) are immediate from the previous Remark.
 3.  **Second Horizontal Inclusions:** The inclusions from the second column to the third (e.g., $\text{DSPACE}(t(n)) \subseteq \text{DTIME}(2^{O(t(n))})$) are a direct consequence of the previous Lemma. A deterministic machine can simulate a space-bounded machine by exploring its entire configuration graph. The number of configurations is bounded by $2^{O(t(n))}$, so the simulation takes time exponential in the space bound.
-4.  **Diagonal Inclusions:** The diagonal inclusions are statements of other lemmas (Lemmas 75 and 76, not provided in the source context). $\square$
+4.  **Diagonal Inclusions:** The diagonal inclusions are statements of other lemmas (Lemmas below in the text). $\square$
 
 These relationships give rise to a chain of inclusions among the major complexity classes.
 
@@ -1710,7 +1725,7 @@ Let $t$ be a time bound. Then $\text{NTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$
 
 </div>
 
-**Proof.**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \lbrace y_1, \dots, y_d\rbrace$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
+**Proof**: Let $L$ be a language in $\text{NTIME}(t(n))$, recognized by a $t(n)$-time-bounded $k$-tape nondeterministic Turing machine (NTM) $M$. Let the tape alphabet of $M$ be $\Gamma$ and its transition relation be $\Delta$, with size $d$. We will construct a deterministic Turing machine (DTM) $D$ that recognizes $L$ within a space bound of $t(n)$. The tape alphabet of $D$ will include $\Gamma$ plus a set of $d$ new symbols, $Y = \lbrace y_1, \dots, y_d\rbrace$, where each $y_i$ corresponds to a unique instruction in $\Delta$.
 
 The core idea is to represent a specific computation path of $M$ on an input $w$ as a sequence of instructions. A word $u = u(1) \dots u(t)$ over the alphabet $Y$ is said to **code a partial computation** $C_0, C_1, \dots, C_t$ on input $w$ if $C_0$ is the initial configuration and for each step $i$ from $1$ to $t-1$, the instruction $u(i)$ is applicable in configuration $C_{i-1}$ and yields configuration $C_i$. If a word $u$ codes a partial computation, we call it a **coding word**. Let $C_u$ denote the final configuration of the computation coded by $u$. Note that all prefixes of a coding word are also coding words. The empty word, $\lambda$, is a coding word, and $C_\lambda$ is the initial configuration.
 
@@ -1769,7 +1784,7 @@ Let $s$ be a space bound. Then $\text{NSPACE}(s(n)) \subseteq \text{DTIME}(2^{O(
 
 </div>
 
-**Proof.**: Let $L$ be a language in $\text{NSPACE}(s(n))$, recognized by an $s(n)$-space-bounded NTM $M$. We will construct a DTM $D$ that recognizes $L$ in $2^{c \cdot s(n)}$ time for some constant $c$.
+**Proof**: Let $L$ be a language in $\text{NSPACE}(s(n))$, recognized by an $s(n)$-space-bounded NTM $M$. We will construct a DTM $D$ that recognizes $L$ in $2^{c \cdot s(n)}$ time for some constant $c$.
 
 A critical observation is that the computation trees of $M$ on an input $w$ of length $n$ can be extremely large. The depth could be as large as $2^{s(n)}$, and the total number of nodes could exceed $2^{2^{s(n)}}$. A simple depth-first search, as used in the previous proof, would be too slow for our deterministic time bound.
 
@@ -1842,9 +1857,9 @@ It holds that $\text{PSPACE} = \text{NPSPACE}$.
 
 </div>
 
-**Proof of the Corollary.**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}(p^2(n))$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. $\square$
+**Proof of the Corollary**: By definition, $\text{DSPACE}(s(n)) \subseteq \text{NSPACE}(s(n))$ for any space bound $s$, so $\text{PSPACE} \subseteq \text{NPSPACE}$. For the reverse inclusion, let $L \in \text{NPSPACE}$. This means $L$ is recognized by an NTM in space $p(n)$ for some polynomial $p$. By Savitch's Theorem, $L \in \text{DSPACE}(p^2(n))$. Since the square of a polynomial, $p^2(n)$, is also a polynomial, it follows that $L \in \text{PSPACE}$. Therefore, $\text{NPSPACE} \subseteq \text{PSPACE}$. $\square$
 
-**Proof of Savitch’s Theorem.**: Let $L \in \text{NSPACE}(s(n))$ be recognized by an NTM $N$. We can assume without loss of generality that for any input $x$ of length $n$:
+**Proof of Savitch’s Theorem**: Let $L \in \text{NSPACE}(s(n))$ be recognized by an NTM $N$. We can assume without loss of generality that for any input $x$ of length $n$:
 
 * There is a unique accepting configuration, $K_{accept}(x)$.
 * All computations have a length of at most $2^{\ell(n)}$, where $\ell(n) = d \cdot s(n)$ for some constant $d$. This is because there are at most $2^{d \cdot s(n)}$ distinct configurations, so any longer computation must contain a cycle.
@@ -2146,159 +2161,6 @@ $\text{QBF}$ is $\text{PSPACE}$-hard.
 
 </div>
 
-<!-- **Proof of PSPACE-Completeness for QBF.** -->
-
-
-<!-- <div class="accordion">
-  <details markdown="1">
-    <summary>States vs tapes intuition</summary>
-
-1. **States vs tapes in space-bounded TMs**
-
-Think of a (space-bounded) Turing machine like a very dumb CPU with:
-
-* a **finite control** = *the set of states*, and
-* one or more **tapes** = *its RAM*.
-
-The key points:
-
-* **States are finite.**
-  For a fixed TM, the set of states is some *fixed* finite set that does **not depend on the input length** $n$. So the amount of information you can encode in the state is **O(1)** bits.
-
-* **Tapes are where all “growing” information lives.**
-  Anything whose size must grow with the input (counters up to $n$, pointers into the input, partial solutions, stacks, assignments to variables, etc.) must be written on a tape, because that’s the only place where you can have **unbounded** memory.
-
-So, informally:
-
-* **In states you store:**
-
-  * The current *phase* of the algorithm (“initializing”, “processing next quantifier”, “evaluating $\phi$”, “returning from recursion”, etc.).
-  * A small constant number of *flags* (“I’m currently in the branch $X_i = 0$” vs “$X_i = 1$”, “so far the universal quantifier is satisfied” vs “already failed”, etc.).
-  * Which transition rule to apply next.
-
-  All of this is constant-size control info — it doesn’t scale with $n$.
-
-* **On tapes you store:**
-
-  * Anything whose size **might depend on $n$**:
-
-    * indices or pointers that can go up to $n$ or $m$,
-    * counters that can be as big as $n$,
-    * strings/words of length up to polynomial in $n$,
-    * encodings of assignments to variables,
-    * encodings of stacks / recursion information, if needed.
-
-When we do **space complexity**, we **only** count the number of tape cells used (usually on the work tapes). The states are considered “free” in the sense that they’re a fixed constant for that machine.
-
-2. **Applying this to Lemma 89 ($\text{QBF} \in \text{PSPACE}$)**
-
-You have the lemma:
-
-> Build a deterministic polynomial-space TM $M$ that evaluates a QBF
-> 
-> $\psi = Q_1 X_1 \cdots Q_m X_m ,\phi$ of length $n$.
-> 
-> It maintains three binary words $w_1, w_2, w_3$ of length $m$ on three tapes:
->
-> * Tape 1 ($w_1$): quantifier types (existential or universal)
-> * Tape 2 ($w_2$): pointer to current quantifier
-> * Tape 3 ($w_3$): current truth assignment to $X_1,\dots,X_m$
-
-Let’s classify what is stored where.
-
-### What is on tapes?
-
-Besides the **input tape** (holding the formula $\psi$), we have 3 work tapes:
-
-1. **Tape 1: $w_1$ = quantifier prefix**
-
-   * Length (m) word.
-   * Bit $i = 1$ iff $Q_i$ is $\exists$, and bit $i = 0$ iff $Q_i$ is $\forall$.
-   * This is information that depends on the input formula, so it must live on a tape.
-
-2. **Tape 2: $w_2$ = pointer to “where we are” in the prefix**
-
-   * Encoding $1^i 0^{m-i}$ means: “we are currently processing quantifier $Q_i$”.
-   * Again, $i$ can be as large as $m$ (which is $O(n)$), so it must be represented on a tape.
-
-3. **Tape 3: $w_3$ = current assignment to variables**
-
-   * Length $m$ word.
-   * Bit $i$ is the current truth value chosen for $X_i$.
-   * As we recurse/branch on quantifiers, we change bits in $w_3$.
-   * This is clearly input-dependent and unbounded in general; must be on a tape.
-
-Additionally, when evaluating the propositional part $\phi$ under the assignment in $w_3$, the TM might use:
-
-* A few extra **work cells** to scan $\phi$: e.g., a small counter or a current “truth value so far”.
-  All of those are again stored on tapes and take $O(\log n)$ or $O(1)$ space each.
-
-Crucially: all these words/tapes have length $O(m) \le O(n)$, so the total space is **polynomial in $n$**.
-
-### What lives in the *states* here?
-
-The states implement the **control flow** of the recursive “algorithm”:
-
-* Whether we are:
-
-  * checking that the input is in prenex normal form,
-  * initializing $w_1, w_2, w_3$,
-  * processing a quantifier $Q_i$,
-  * at “leaf level” with all variables assigned and now evaluating $\phi$,
-  * combining results of two branches for a quantifier (existential / universal case),
-  * moving the pointer to the next quantifier, or backtracking.
-
-Concretely, the machine’s states might encode things like:
-
-* `STATE_INIT` – set up $w_1, w_2, w_3$.
-* `STATE_AT_QI` – we are about to branch on quantifier $Q_i$.
-* `STATE_BRANCH_0` / `STATE_BRANCH_1` – we are exploring the subtree with $X_i = 0$ or $X_i = 1$.
-* `STATE_EVAL_PHI` – evaluate $\phi$ under current assignment $w_3$.
-* `STATE_RETURN_EXIST_OK` / `STATE_RETURN_EXIST_FAIL` – existential quantifier result is true/false.
-* `STATE_RETURN_UNIV_OK` / `STATE_RETURN_UNIV_FAIL` – universal quantifier result is true/false.
-* Plus a few states to move the heads around, reset bits, etc.
-
-There are **finitely many** such states, independent of $n$. They only encode:
-
-* *Which phase* of the algorithm we’re in,
-* A few *Boolean flags* (e.g., “did we already find a satisfying branch?”),
-* Which operation should be done next (toggle a bit, move pointer, etc.).
-
-All the “big” information — which quantifier index $i$ we’re on, the actual quantifier types, the assignment to variables — is represented explicitly on tapes.
-
-### And what about “recursion depth = $m \leq n$”?
-
-The lemma informally describes a **recursive** evaluation:
-
-* For quantifier $Q_i$:
-
-  * Try assignment $X_i = 0$ and recursively evaluate the rest,
-  * Try $X_i = 1$ and recursively evaluate the rest,
-  * Combine according to $\exists$ or $\forall$.
-
-In the actual TM:
-
-* The **“depth”** is encoded just by:
-
-  * where the pointer $w_2$ currently points (which $i$), and
-  * the current contents of $w_3$ (current partial assignment).
-* We **don’t** keep a separate call stack like in a programming language. We do a depth-first search:
-
-  * modify $w_3$ to set $X_i = 0$,
-  * move the pointer forward (update $w_2$),
-  * evaluate the rest,
-  * come back, modify $w_3$ to set $X_i = 1$,
-  * evaluate again, etc.
-
-All of this reuses the same $O(m)$ space on tapes. The fact that the recursion depth is $m$ explains why **time** can be exponential, but **space** stays linear in $m$.
-
-**Summary in one sentence:**
-
-* In space-bounded TMs, *states* store only constant-size control information (phase, a few flags), while all data that can grow with input size — like the quantifier prefix, index of the current quantifier, and the current variable assignment in the $\text{QBF}$ lemma — must be stored on the tapes, and that’s exactly how the $\text{QBF}→\text{PSPACE}$ proof is structured.
-
-  </details>
-</div> -->
-
 **Proof:**
 
 For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
@@ -2327,22 +2189,18 @@ Define $\text{Comp}_n^i(K, K')$ to state that a computation path of length at mo
 
 - **Base case ($i = 0$):**
 
-  $$
-  \text{Comp}_n^0(K, K') \equiv \text{Konf}_n(K) \land \text{Konf}_n(K') \land (\text{Equal}_n(K, K') \lor \text{Succ}_n(K, K')).
-  $$
+  $$\text{Comp}_n^0(K, K') \equiv \text{Konf}_n(K) \land \text{Konf}_n(K') \land (\text{Equal}_n(K, K') \lor \text{Succ}_n(K, K'))$$
 
 - **Inductive step:**
 
   $$
-  \text{Comp}_n^{i+1}(K, K') \equiv \exists \tilde{K} \forall K_1 \forall K_2 (\text{Konf}_n(\tilde{K}) \land ((\text{Equal}_n(K_1, K) \land \text{Equal}_n(K_2, \tilde{K})) \lor (\text{Equal}_n(K_1, \tilde{K}) \land \text{Equal}_n(K_2, K'))) \rightarrow \text{Comp}_n^i(K_1, K_2)).
+  \text{Comp}_n^{i+1}(K, K') \equiv \exists \tilde{K} \forall K_1 \forall K_2 (\text{Konf}_n(\tilde{K}) \land ((\text{Equal}_n(K_1, K) \land \text{Equal}_n(K_2, \tilde{K})) \lor (\text{Equal}_n(K_1, \tilde{K}) \land \text{Equal}_n(K_2, K'))) \rightarrow \text{Comp}_n^i(K_1, K_2))
   $$
 
 This reuse of $\text{Comp}\_n^i$ keeps the overall formula size polynomial in $i$. For input $x$ of length $n$, let $K\_{initial}(x)$ and $K\_{accept}(x)$ denote the start and accepting configurations. Since $M$ runs in at most $2^{d \cdot p(n)}$ steps for some constant $d$, define
 
 
-$$
-\phi_x \equiv \text{Comp}_n^{d \cdot p(n)}(K_{initial}(x), K_{accept}(x)).
-$$
+$$\phi_x \equiv \text{Comp}_n^{d \cdot p(n)}(K_{initial}(x), K_{accept}(x))$$
 
 Then $\phi_x$ is true iff $x \in A$, and $g:x \mapsto \phi_x$ is computable in polynomial time, so $\text{QBF}$ is $\text{PSPACE}$-hard. $\square$
 
@@ -2363,8 +2221,7 @@ $$
 \text{Konf}_n(\tilde{K})
 \land \text{Comp}_n^{i}(K,\tilde{K})
 \land \text{Comp}_n^{i}(\tilde{K},K')
-\Big).
-% \tag{*}
+\Big)
 $$
 
 This is exactly analogous to Savitch:
@@ -2495,7 +2352,7 @@ If you like, next we can write both definitions side-by-side and explicitly deri
 
 ### Nondeterministic Space and Closure Under Complement
 
-**Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi. Both used a proof technique now known as $\text{inductive counting}$.
+**Motivation.** Deterministic time and space classes are trivially closed under complement: if $M$ decides $L$, flipping its accepting and rejecting states decides $\bar{L}$. The same argument fails for nondeterministic time classes such as $\text{NP}$, where acceptance means at least one path accepts, and it remains open whether $\text{NP} = \text{co-NP}$. For nondeterministic space classes the situation is better, thanks to Immerman and Szelepcsényi. Both used a proof technique now known as **inductive counting**.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Closure Under Complement)</span></p>
@@ -2852,9 +2709,15 @@ Let $t(n)$ be a time-bound. A $t(n)$-bounded Turing machine with auxiliary tape 
 This model provides a powerful way to re-characterize familiar complexity classes like $\text{NP}$.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Characterization of $\text{NP}$ via auxiliary tape TM)</span></p>
 
-Recall that a language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that $w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w , z) \in B \text{ \& } \lvert z \rvert \le p(\lvert w \rvert)]$. This equivalence can be reformulated in terms of Turing machines with auxiliary tape: a language $L$ is in the class $\text{NP}$ if and only if there is a polynomially time-bounded Turing machine $M$ with auxiliary tape such that for all binary words $w$, it holds that $w \in L \text{ if and only if } M \text{ accepts } w \text{ for some auxiliary word } z$.
+Recall that a language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that 
+
+$$w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w , z) \in B \text{ \& } \lvert z \rvert \le p(\lvert w \rvert)]$$
+
+This equivalence can be reformulated in terms of Turing machines with auxiliary tape: a language $L$ is in the class $\text{NP}$ if and only if there is a polynomially time-bounded Turing machine $M$ with auxiliary tape such that for all binary words $w$, it holds that 
+
+$$w \in L \text{ if and only if } M \text{ accepts } w \text{ for some auxiliary word } z$$
 
 </div>
 
@@ -2865,7 +2728,13 @@ We can now define a **probabilistic Turing machine** by treating the auxiliary t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probabilistic Turing machine)</span></p>
 
-A **probabilistic Turing machine** is a total Turing machine with auxiliary tape. Let $M$ be a probabilistic Turing machine and let $t$ be a computable function such that $M$ reads at most the first $t(n)$ bits on its random tape. The **acceptance probability** of $M$ on input $w$ is $\text{accept}_M(w) = \frac{\lvert \lbrace z \in \lbrace 0, 1\rbrace^{t(n)} : M \text{ accepts on input } w \text{ and random word } z\rbrace \rvert }{2^{t(n)}}$, and the **rejection probability** of $M$ on $w$ is $\text{reject}_M(w) = 1 - \text{accept}_M(w)$.
+A **probabilistic Turing machine** is a total Turing machine with auxiliary tape. Let $M$ be a probabilistic Turing machine and let $t$ be a computable function such that $M$ reads at most the first $t(n)$ bits on its random tape. The **acceptance probability** of $M$ on input $w$ is 
+
+$$\text{accept}_M(w) = \frac{\lvert \lbrace z \in \lbrace 0, 1\rbrace^{t(n)} : M \text{ accepts on input } w \text{ and random word } z\rbrace \rvert }{2^{t(n)}}$$
+
+and the **rejection probability** of $M$ on $w$ is 
+
+$$\text{reject}_M(w) = 1 - \text{accept}_M(w)$$
 
 In this model, the machine doesn't simply accept or reject. Instead, it accepts with a certain probability. The decision rule is based on whether this probability crosses a specific threshold.
 
@@ -2936,16 +2805,15 @@ It holds that $\text{BPP} \subseteq \text{PP} \subseteq \text{PSPACE}$.
 
 </div>
 
-**Proof sketch.**: The first inclusion, $\text{BPP} \subseteq \text{PP}$, holds by definition. The second inclusion follows because a polynomially time-bounded probabilistic Turing machine can be simulated by a polynomially space-bounded deterministic Turing machine for all random words while counting the number of random words that result in acceptance. ∎
+**Proof sketch**: The first inclusion, $\text{BPP} \subseteq \text{PP}$, holds by definition. The second inclusion follows because a polynomially time-bounded probabilistic Turing machine can be simulated by a polynomially space-bounded deterministic Turing machine for all random words while counting the number of random words that result in acceptance.
 
-Specifically, to prove that $\text{PP} \subseteq \text{PSPACE}$ we construct a polynomially space-bounded deterministic Turing machine $M_1$, that uses/simulates the polynomially time-bounded Turing machine $M_2$ with auxiliary tape (which is deterministic by the definition of the TM with auxiliary tape). Given the input word w on the input tape, $M_1$ simulates $M_2$ on this input, but because $M_1$ does not have an auxiliary tape, one working tape $M_1$ serves as a auxiliary tape for $M_2$. $M_1$ writes all possible auxiliary words $z$ to the auxiliary tape one by one and for each such auxiliary word $M_2$ accepts or rejects. $M_2$ is total by definition, so we know for sure that it will either accept or reject a pair $(w,z)$. $M_1$ counts the number of accepted pairs $(w,z)$, updating its counter after each run of $M_2$ on a pair $(w,z)$: increment if is accepted, otherwise do nothing. Then if the number of accepted pairs is strictly greater than half of all pairs, the turing machine $M_1$ accepts the input $w$, rejecting otherwise. I divide the space analysis of $M_1$ into to parts: (i) space analysis of $M_2$ simulation and (ii) analysis of accepted pairs $(w,z)$ counting.
+Specifically, to prove that $\text{PP} \subseteq \text{PSPACE}$ we construct a polynomially space-bounded deterministic Turing machine $M_1$, that uses/simulates the polynomially time-bounded Turing machine $M_2$ with auxiliary tape (which is deterministic by the definition of the TM with auxiliary tape). Given the input word $w$ on the input tape, $M_1$ simulates $M_2$ on this input, but because $M_1$ does not have an auxiliary tape, one working tape $M_1$ serves as a auxiliary tape for $M_2$. $M_1$ writes all possible auxiliary words $z$ to the auxiliary tape one by one and for each such auxiliary word $M_2$ accepts or rejects. $M_2$ is total by definition, so we know for sure that it will either accept or reject a pair $(w,z)$. $M_1$ counts the number of accepted pairs $(w,z)$, updating its counter after each run of $M_2$ on a pair $(w,z)$: increment if is accepted, otherwise do nothing. Then if the number of accepted pairs is strictly greater than half of all pairs, the turing machine $M_1$ accepts the input $w$, rejecting otherwise. I divide the space analysis of $M_1$ into to parts: (i) space analysis of $M_2$ simulation and (ii) analysis of accepted pairs $(w,z)$ counting.
 
 (i) Each run on each pair $(w,z)$ requires polynomial memory as $M_2$ is time-bounded by some polynomial $t(\lvert w \rvert)$ and $\text{DTIME}(t(\lvert w \rvert)) \subseteq \text{DSPACE}(t(\lvert w \rvert))$ $\implies$ one simulation of $M_2$ takes $t(\lvert w \rvert)$ memory cells. Construction of the auxiliary tape requires the same polynomial $t(\lvert w \rvert)$ memory cells, because $t(\lvert w \rvert)$ time-bounded TM with an auxiliary tape, can read at most of the first $t(\lvert w \rvert)$ bits on its auxiliary tape, that is why we consider auxiliary words of length $t(\lvert w \rvert)$ only. Each run of $M_2$ we reuse the same tapes and cells, thus $2t(\lvert w \rvert)$ memory cells for overall simulation of $M_2$.
 
 (ii) Assuming that the alphabet of the auxiliary tape is binary ($\lbrace 0,1 \rbrace$), the total number of all possible pairs is $2^{t(\lvert w \rvert)}$, which greater than polynomial. That is why we will use binary counter, reducing the $2^{t(\lvert w \rvert)}$ memory cells that would unary counting used to $\log 2^{t(\lvert w \rvert)} = t(\lvert w \rvert)$ memory cells that binary counting uses. So, binary counter uses polynomial $t(\lvert w \rvert)$ number of memory cells. Technical detail: we skip the first accepted pair.
 
-After the simulation and counting steps end, we check whether the most significant bit is $1$. If it is, then the number of of accepted pairs exceeds the number of rejected ones (we skipped the first accepted pair, then there cannot be a situation that counter shows only half of accepted pairs with the most significant bit $1$), implying that the fraction of accepted pairs is greater than $\frac{1}{2}$ and the polynomially time-bounded probabilistic Turing machine $M_2$ accepts the input word $w$.
-
+After the simulation and counting steps end, we check whether the most significant bit is $1$. If it is, then the number of of accepted pairs exceeds the number of rejected ones (we skipped the first accepted pair, then there cannot be a situation that counter shows only half of accepted pairs with the most significant bit $1$), implying that the fraction of accepted pairs is greater than $\frac{1}{2}$ and the polynomially time-bounded probabilistic Turing machine $M_2$ accepts the input word $w$. $\square$
 
 Furthermore, these classes are robust under polynomial-time reductions.
 
@@ -2956,7 +2824,7 @@ The complexity classes $\text{PP}$ and $\text{BPP}$ are closed downwards under $
 
 </div>
 
-**Proof.**: We give the proof for the case of $\text{PP}$ and omit the essentially identical considerations for $\text{BPP}$. Let $A$ be reduced to a language $B$ in $\text{PP}$ via some function $g$ that is computable in time $p_g(n)$ for some polynomial $p_g$. Let $M$ be a $p_M(n)$-time bounded probabilistic Turing machine that recognizes $B$ where $p_M$ is a polynomial. Then $A$ is recognized by a probabilistic Turing machine $M_A$ that on input $w$ first computes $g(w)$, then simulates $M$ on input $g(w)$, and accepts if and only if $M$ accepts. Observe that $M_A$ can be chosen to be $(p_g(n) + p_M(p_g(n)))$-time-bounded, hence is polynomially time-bounded. $\square$
+**Proof**: We give the proof for the case of $\text{PP}$ and omit the essentially identical considerations for $\text{BPP}$. Let $A$ be reduced to a language $B$ in $\text{PP}$ via some function $g$ that is computable in time $p_g(n)$ for some polynomial $p_g$. Let $M$ be a $p_M(n)$-time bounded probabilistic Turing machine that recognizes $B$ where $p_M$ is a polynomial. Then $A$ is recognized by a probabilistic Turing machine $M_A$ that on input $w$ first computes $g(w)$, then simulates $M$ on input $g(w)$, and accepts if and only if $M$ accepts. Observe that $M_A$ can be chosen to be $(p_g(n) + p_M(p_g(n)))$-time-bounded, hence is polynomially time-bounded. $\square$
 
 The connection between $\text{NP}$ and $\text{PP}$ is also well-defined.
 
@@ -2967,7 +2835,7 @@ It holds that $\text{NP} \subseteq \text{PP}$.
 
 </div>
 
-**Proof.**: Let $L$ be any language in $\text{NP}$. By Remark 102, there is a polynomial $p$ and a deterministic $p(n)$-time-bounded Turing machine $M$ with auxiliary tape such that $w$ is in $L$ if and only if $M$ accepts $w$ for some auxiliary word $z$. Now we construct a new probabilistic TM $\text{P}$ that uses $\text{M}$ as a subroutine, plus a trick.  On input $w$, $P$ does:
+**Proof**: Let $L$ be any language in $\text{NP}$. By Remark 102, there is a polynomial $p$ and a deterministic $p(n)$-time-bounded Turing machine $M$ with auxiliary tape such that $w$ is in $L$ if and only if $M$ accepts $w$ for some auxiliary word $z$. Now we construct a new probabilistic TM $\text{P}$ that uses $\text{M}$ as a subroutine, plus a trick.  On input $w$, $P$ does:
 
 1. Take a random word $r \in \lbrace 0,1\rbrace^{t(\lvert w \rvert)}$.
    * We pick $t(\lvert w \rvert) = p(\lvert w \rvert) + 1$ so that we can split it as: $r = b z, \quad b \in \lbrace 0,1 \rbrace,\ z \in \lbrace 0,1 \rbrace^{p(\lvert w\rvert)}.$
@@ -2982,7 +2850,11 @@ Then $L$ is recognized by the polynomially time-bounded probabilistic Turing mac
 
 ### Properties of the Class PP
 
-The definition of $\text{PP}$ allows for an acceptance and error probability of exactly $\frac{1}{2}$, which is ambiguous: it could happend that the PTM accepts some input word $w$ with exactly a half of all random words. It means that $\text{accept}_M(w)=\text{reject}_M(w)=\frac{1}{2} \implies \text{error}^L_M(w) = \frac{1}{2}$. However, this can be avoided.
+The definition of $\text{PP}$ allows for an acceptance and error probability of exactly $\frac{1}{2}$, which is ambiguous: it could happend that the PTM accepts some input word $w$ with exactly a half of all random words. It means that 
+
+$$\text{accept}_M(w)=\text{reject}_M(w)=\frac{1}{2} \implies \text{error}^L_M(w) = \frac{1}{2}$$
+
+However, this can be avoided.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name"></span></p>
@@ -2991,11 +2863,19 @@ Every language in $\text{PP}$ is recognized by a polynomially time-bounded proba
 
 </div>
 
-**Proof.**: Let $L$ be a language in $\text{PP}$ and let $M$ be a probabilistic Turing machine that recognizes $L$ and is $p(n)$-time-bounded for some polynomial $p$. We construct a probabilistic Turing machine $M'$ as required. For almost all $n$, $M$ runs for at most $p(n)$ steps, hence reads at most $p(n)$ bits from its random tape on all inputs of length $n$. We can disregard all other inputs by hard-wiring their acceptance or rejection into $M'$.
+**Proof**: Let $L$ be a language in $\text{PP}$ and let $M$ be a probabilistic Turing machine that recognizes $L$ and is $p(n)$-time-bounded for some polynomial $p$. We construct a probabilistic Turing machine $M'$ as required. For almost all $n$, $M$ runs for at most $p(n)$ steps, hence reads at most $p(n)$ bits from its random tape on all inputs of length $n$. We can disregard all other inputs by hard-wiring their acceptance or rejection into $M'$.
 
 On an input $w$ of length $n$, the Turing machine $M'$ first computes $p(n)$ and copies the first two blocks of $p(n)$ bits on its random tape to two special tapes, respectively. Then $M'$ works like $M$ on input $w$ while using the first special tape as random tape, and $M'$ accepts if and only if $M$ accepts and the bits on the second tape are not all $0$.
 
-In case $w$ is not in $L(M)$, by construction either $\text{reject}\_{M'}(w) = \text{reject}\_M(w) = 1 \quad \text{or} \quad \text{reject}\_{M'}(w) > \text{reject}\_M(w) \ge \frac{1}{2}$. In case the word $w$ is in $L(M)$, it is accepted by $M$ on strictly more than half of all random words of length $p(n)$, hence is accepted by $M'$ for at least $(2^{p(n)-1} + 1)(2^{p(n)} - 1) = \underbrace{2^{2p(n)-1} + 2^{p(n)} - 1}_{>0}$ many random words of length $2p(n)$, i.e., for strictly more than half of the latter words. In summary, the polynomially time-bounded probabilistic Turing machine $M'$ recognizes the same language as $M$ and has error probability strictly less than $\frac{1}{2}$. $\square$
+In case $w$ is not in $L(M)$, by construction either 
+
+$$\text{reject}\_{M'}(w) = \text{reject}\_M(w) = 1 \quad \text{or} \quad \text{reject}\_{M'}(w) > \text{reject}\_M(w) \ge \frac{1}{2}$$
+
+In case the word $w$ is in $L(M)$, it is accepted by $M$ on strictly more than half of all random words of length $p(n)$, hence is accepted by $M'$ for at least 
+
+$$(2^{p(n)-1} + 1)(2^{p(n)} - 1) = \underbrace{2^{2p(n)-1} + 2^{p(n)} - 1}_{>0}$$ 
+
+many random words of length $2p(n)$, i.e., for strictly more than half of the latter words. In summary, the polynomially time-bounded probabilistic Turing machine $M'$ recognizes the same language as $M$ and has error probability strictly less than $\frac{1}{2}$. $\square$
 
 <div class="accordion">
   <details>
@@ -3169,14 +3049,18 @@ The complexity class $\text{PP}$ is closed under symmetric difference.
 
 </div>
 
-**Proof.**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form $\text{error}\_M(w) = \frac{1}{2} - \epsilon\_w \quad \text{and} \quad \text{error}\_{M'}(w) = \frac{1}{2} - \epsilon'\_w$, where we can assume by Lemma 111 that $\epsilon\_w$ and $\epsilon'\_w$ both are strictly larger than $0$.
+**Proof**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form 
+
+$$\text{error}\_M(w) = \frac{1}{2} - \epsilon\_w \quad \text{and} \quad \text{error}\_{M'}(w) = \frac{1}{2} - \epsilon'\_w$$
+
+where we can assume by Lemma 111 that $\epsilon\_w$ and $\epsilon'\_w$ both are strictly larger than $0$.
 
 Now consider a probabilistic Turing machine $\tilde{M}$ that on input $w$ simulates $M$ and $M'$ on the same input while using independent random bits for the two simulations (both auxiliary tapes are bounded by some polynomials), and then accepts if and only if exactly one of the simulations accepted.
 
-Then $\tilde{M}$ accepts or rejects correctly with respect to the symmetric difference of $L$ and $L'$ $iff$ both or neither of the simulations are correct with respect to $L$ and $L'$. The reason is that $\tilde{M}$ works as XOR over outputs of $M$ and $M'$ and XOR is invariant to all bits flip, but sensetive if only some bits are fliped (bit flipping is analogy to incorrect results of $M$,$M'$). Both are correct or both are incorrect happens with the probability
+Then $\tilde{M}$ accepts or rejects correctly with respect to the symmetric difference of $L$ and $L'$ iff both or neither of the simulations are correct with respect to $L$ and $L'$. The reason is that $\tilde{M}$ works as XOR over outputs of $M$ and $M'$ and XOR is invariant to all bits flip, but sensetive if only some bits are fliped (bit flipping is analogy to incorrect results of $M$,$M'$). Both are correct or both are incorrect happens with the probability
 
 $$
-\text{P}[M,M' \text{ correct } \lor M,M' \text{ incorrect }] = \left(\frac{1}{2} + \epsilon_w\right)\left(\frac{1}{2} + \epsilon'\_w\right) + \left(\frac{1}{2} - \epsilon_w\right)\left(\frac{1}{2} - \epsilon'\_w\right) = \frac{1}{2} + 2\epsilon_w \epsilon'\_w > \frac{1}{2},
+\text{P}[M,M' \text{ correct } \lor M,M' \text{ incorrect }] = \left(\frac{1}{2} + \epsilon_w\right)\left(\frac{1}{2} + \epsilon'_w\right) + \left(\frac{1}{2} - \epsilon_w\right)\left(\frac{1}{2} - \epsilon'_w\right) = \frac{1}{2} + 2\epsilon_w \epsilon'_w > \frac{1}{2},
 $$
 
 $$
@@ -3209,7 +3093,7 @@ The majority satisfiability problem $\text{MAJ}$ is complete for $\text{PP}$.
 
 </div>
 
-**Proof sketch.**:
+**Proof sketch**:
 First, to see that the language $\text{MAJ}$ is a member of $\text{PP}$, we specify a polynomially time-bounded probabilistic Turing machine $M$ that recognizes $\text{MAJ}$. $M$ rejects every input that is not a propositional formula in conjunctive normal form. Otherwise, in case its input is a formula $\phi$ in conjunctive normal form in $n$ variables, $M$ interprets the prefix of length $n$ of its random word in the natural way as an assignment to the variables of $\phi$ and accepts in case this assignment satisfies $\phi$. So the formula $\phi$ is in $\text{MAJ}$ if and only if it has acceptance probability strictly larger than $\frac{1}{2}$ if and only if it is in $L(M)$.
 
 Second, to show that $\text{MAJ}$ is $\text{PP}$-hard, let $L$ be a language in $\text{PP}$. Fix some polynomially time-bounded probabilistic Turing machine $M$ that recognizes $L$. Similar to the construction in the proof of Cook’s Theorem, we construct a function $w \mapsto \phi_w$ computable in polynomial time such that $\phi_w$ is a propositional formula in conjunctive normal form and there is a one-to-one correspondence between satisfying assignments of $\phi_w$ and random words $z$ such that $M$ accepts on input $w$ and random word $z$. Consequently, $w$ is in $L$ if and only if $\phi$ is in $\text{MAJ}$. $\square$
@@ -3235,7 +3119,7 @@ For a language $L$ the following assertions are equivalent:
 
 </div>
 
-**Proof.**: By definition, (iii) implies (i) and (i) implies (ii). In order to show that (ii) implies (iii), let $M$ be a probabilistic Turing machine as asserted to exist in (ii).
+**Proof**: By definition, (iii) implies (i) and (i) implies (ii). In order to show that (ii) implies (iii), let $M$ be a probabilistic Turing machine as asserted to exist in (ii).
 
 For a function $t$ to be specified later, let $M'$ be a probabilistic Turing machine that on an input $w$ of length $n$ runs $2t(n) + 1$ many simulations of $M$ on input $w$ while using independent random bits for each simulation. Then $M'$ accepts according to a majority vote among the simulations, i.e., $M'$ accepts if and only if at least $t(n) + 1$ simulations resulted in acceptance, and a similar equivalence holds for rejection. Accordingly, $M'$ makes an error with respect to recognizing $L$ $\iff$ at most $t(n)$ simulations are correct.
 
@@ -3274,7 +3158,7 @@ The complexity class $\text{BPP}$ is closed under complement. The complexity cla
 
 </div>
 
-**Proof.**: Closure under complement follows by swapping acceptance and rejection of a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{3}$ that recognizes a given language in $\text{BPP}$.
+**Proof**: Closure under complement follows by swapping acceptance and rejection of a polynomially time-bounded probabilistic Turing machine with error probability at most $\frac{1}{3}$ that recognizes a given language in $\text{BPP}$.
 
 In order to demonstrate the closure under binary set-theoretical operators, let $L$ and $L'$ be languages in $\text{BPP}$. By the third item in Theorem 117, choose polynomially time-bounded probabilistic Turing machines $M$ and $M'$ that both have error probability of at most $\frac{1}{6}$ and recognize $L$ and $L'$, respectively. Now consider a polynomially time-bounded probabilistic Turing machine that on input $w$ simulates $M$ and $M'$ on input $w$ and then applies the given operator to the results of the simulations, e.g., in the case of intersection, accepts if and only if both simulations accepted. The error probability of this probabilistic Turing machine is at most the sum of the error probabilities of $M$ and $M'$, hence is at most $\frac{1}{3}$. $\square$
 
@@ -3309,7 +3193,7 @@ The complexity class $\text{BPP}$ is a subset of $\text{P/poly}$.
 
 </div>
 
-**Proof.**: Let $L$ be a language in $\text{BPP}$. Let $M$ be a $p(n)$-time-bounded probabilistic Turing machine that recognizes $L$ with error probability $2^{-2n}$. We construct an advice function $a(n)$ such that $M$ recognizes $L$ with advice $a(n)$. Fix some length $n$ and consider inputs of length $n$ and their corresponding random words of length $p(n)$. Say a random word is **bad** for an input if this random word results in an error of $M$ with respect to deciding whether the input is in $L$. For each of the $2^n$ inputs, at most a fraction of $2^{-2n}$ of all random words are bad. Consequently, at most a fraction of $2^n \cdot 2^{-2n} = 2^{-n}$ of all random words is bad for some input of length $n$. So it suffices to let $a(n)$ be equal to some random word that is **good**, i.e., not bad, for all inputs of length $n$. $\square$
+**Proof**: Let $L$ be a language in $\text{BPP}$. Let $M$ be a $p(n)$-time-bounded probabilistic Turing machine that recognizes $L$ with error probability $2^{-2n}$. We construct an advice function $a(n)$ such that $M$ recognizes $L$ with advice $a(n)$. Fix some length $n$ and consider inputs of length $n$ and their corresponding random words of length $p(n)$. Say a random word is **bad** for an input if this random word results in an error of $M$ with respect to deciding whether the input is in $L$. For each of the $2^n$ inputs, at most a fraction of $2^{-2n}$ of all random words are bad. Consequently, at most a fraction of $2^n \cdot 2^{-2n} = 2^{-n}$ of all random words is bad for some input of length $n$. So it suffices to let $a(n)$ be equal to some random word that is **good**, i.e., not bad, for all inputs of length $n$. $\square$
 
 ## The Polynomial Hierarchy and Complete Languages
 
