@@ -3073,31 +3073,6 @@ $$
 
 hence $\tilde{M}$ recognizes the symmetric difference of $L$ and $L'$. $\square$
 
-Like $\text{NP}$ has $\text{SAT}$, $\text{PP}$ also has a natural complete problem.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The majority satisfiability problem)</span></p>
-
-The **majority satisfiability problem** is the language
-
-$$
-\text{MAJ} = \lbrace \phi : \phi \text{ is a propositional formula in conjunctive normal form that is satisfied by strictly more than half of the assignments to its variables}\rbrace
-$$
-
-</div>
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The majority satisfiability problem)</span></p>
-
-The majority satisfiability problem $\text{MAJ}$ is complete for $\text{PP}$.
-
-</div>
-
-**Proof sketch**:
-First, to see that the language $\text{MAJ}$ is a member of $\text{PP}$, we specify a polynomially time-bounded probabilistic Turing machine $M$ that recognizes $\text{MAJ}$. $M$ rejects every input that is not a propositional formula in conjunctive normal form. Otherwise, in case its input is a formula $\phi$ in conjunctive normal form in $n$ variables, $M$ interprets the prefix of length $n$ of its random word in the natural way as an assignment to the variables of $\phi$ and accepts in case this assignment satisfies $\phi$. So the formula $\phi$ is in $\text{MAJ}$ if and only if it has acceptance probability strictly larger than $\frac{1}{2}$ if and only if it is in $L(M)$.
-
-Second, to show that $\text{MAJ}$ is $\text{PP}$-hard, let $L$ be a language in $\text{PP}$. Fix some polynomially time-bounded probabilistic Turing machine $M$ that recognizes $L$. Similar to the construction in the proof of Cook’s Theorem, we construct a function $w \mapsto \phi_w$ computable in polynomial time such that $\phi_w$ is a propositional formula in conjunctive normal form and there is a one-to-one correspondence between satisfying assignments of $\phi_w$ and random words $z$ such that $M$ accepts on input $w$ and random word $z$. Consequently, $w$ is in $L$ if and only if $\phi$ is in $\text{MAJ}$. $\square$
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
@@ -3141,18 +3116,6 @@ $$(1 - 4\epsilon^2)^{cp(n)} < (\frac{1}{2})^{p(n)}=2^{-p(n)}$$
 
 and by construction recognizes $L$. $\square$
 
-<div class="accordion">
-  <details>
-    <summary>Comment 1</summary>
-  </details>
-</div>
-
-<div class="accordion">
-  <details>
-    <summary>Comment 2</summary>
-  </details>
-</div>
-
 The ability to amplify probability makes $\text{BPP}$ a very robust class with strong closure properties.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3168,7 +3131,7 @@ In order to demonstrate the closure under binary set-theoretical operators, let 
 
 <div class="accordion">
   <details>
-    <summary>Comment on intersction proof</summary>
+    <summary>Comment on intersection proof</summary>
     <p>Yes, intersection can tolerate some individual errors.</p>
     <p>The proof knows that but doesn’t use this extra structure; it just gives a safe upper bound.</p>
     <p>$\text{Pr}[\text{Err}_{\text{intersection}}]\ge \text{Pr}[M]+\text{Pr}[M']$</p>
@@ -3256,12 +3219,11 @@ The class **PH** is a subset of **PSPACE**.
   </figure>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Collapse of the Hierarchy)</span></p>
 
-<div class="note-callout">
-<p class="note-callout__title">Remark 123 (Collapse of the Hierarchy)</p>
-<p>
-In case $\Sigma_k^p$ and $\Sigma_{k+1}^p$ coincide, then $\Sigma_k^p$ coincides with <strong>PH</strong>; this is referred to as a <strong>collapse of the polynomial hierarchy</strong> to $\Sigma_k^p$. It is not known whether <strong>PH</strong> coincides with <strong>PSPACE</strong>. If the latter were the case, then the polynomial hierarchy would collapse. The latter follows because the classes $\Sigma_k^p$ are all closed downwards under $p$-$m$-reducibility. In case the two classes were equal, some class $\Sigma_k^p$ would contain a <strong>PSPACE</strong>-complete language and thus the whole class <strong>PSPACE</strong>. Everything said about the classes $\Sigma^p$ holds accordingly also for the classes $\Pi^p$.
-</p>
+In case $\Sigma_k^p$ and $\Sigma_{k+1}^p$ coincide, then $\Sigma_k^p$ coincides with **PH**; this is referred to as a **collapse of the polynomial hierarchy** to $\Sigma_k^p$. It is not known whether **PH** coincides with **PSPACE**. If the latter were the case, then the polynomial hierarchy would collapse. The latter follows because the classes $\Sigma_k^p$ are all closed downwards under $p$-$m$-reducibility. In case the two classes were equal, some class $\Sigma_k^p$ would contain a **PSPACE**-complete language and thus the whole class **PSPACE**. Everything said about the classes $\Sigma^p$ holds accordingly also for the classes $\Pi^p$.
+
 </div>
 
 ### BPP and the Polynomial Hierarchy
@@ -3360,7 +3322,11 @@ So: $w \notin L \quad\Rightarrow\quad \text{formula (4.3) is false.}$
 **Case 2: $w$ is in $L$.**
 In this case, we show that statement (4.3) is **true**. Fix some word $z$. Consider a random experiment where the bits of a word $v$ are determined by fair coin tosses. The word $z \oplus v$ is uniformly distributed among all words. Therefore, the probability that $z \oplus v$ is not in $U$ (or equivalently, that $z$ is not in $U \oplus v$) is at most $2^{-n}$.
 
-Now, assume the bits of words $v_1, \ldots, v_{p(n)}$ are determined by fair coin tosses. The probability that a fixed word $z$ is in none of the sets $U \oplus v_i$ is at most $(2^{-n})^{p(n)} = 2^{-np(n)}$. The probability that *some* word $z$ among all $2^{p(n)}$ words is in none of the sets $U \oplus v_1$ through $U \oplus v_{p(n)}$ is at most:
+Now, assume the bits of words $v_1, \ldots, v_{p(n)}$ are determined by fair coin tosses. The probability that a fixed word $z$ is in none of the sets $U \oplus v_i$ is at most 
+
+$$(2^{-n})^{p(n)} = 2^{-np(n)}$$
+
+The probability that *some* word $z$ among all $2^{p(n)}$ words is in none of the sets $U \oplus v_1$ through $U \oplus v_{p(n)}$ is at most:
 
 $$
 2^{p(n)} \cdot 2^{-np(n)} = 2^{-(n-1)p(n)} < 1.
@@ -3413,12 +3379,12 @@ A key technique for understanding complexity classes is to identify **complete l
 
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Majority Satisfiability Problem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The majority satisfiability problem)</span></p>
 
 The **majority satisfiability problem** is the language
 
 $$
-\textbf{MAJ} = \lbrace \phi : \phi \text{ is a propositional formula in CNF that is satisfied by strictly more than half of the assignments to its variables}\rbrace
+\text{MAJ} = \lbrace \phi : \phi \text{ is a propositional formula in CNF that is satisfied by strictly more than half of the assignments}\rbrace
 $$
 
 </div>
