@@ -2869,11 +2869,11 @@ On an input $w$ of length $n$, the Turing machine $M'$ first computes $p(n)$ and
 
 In case $w$ is not in $L(M)$, by construction either 
 
-$$\text{reject}\_{M'}(w) = \text{reject}\_M(w) = 1 \quad \text{or} \quad \text{reject}\_{M'}(w) > \text{reject}\_M(w) \ge \frac{1}{2}$$
+$$\text{reject}_{M'}(w) = \text{reject}_M(w) = 1 \quad \text{or} \quad \text{reject}_{M'}(w) > \text{reject}_M(w) \ge \frac{1}{2}$$
 
 In case the word $w$ is in $L(M)$, it is accepted by $M$ on strictly more than half of all random words of length $p(n)$, hence is accepted by $M'$ for at least 
 
-$$(2^{p(n)-1} + 1)(2^{p(n)} - 1) = \underbrace{2^{2p(n)-1} + 2^{p(n)} - 1}_{>0}$$ 
+$$(2^{p(n)-1} + 1)(2^{p(n)} - 1) = 2^{2p(n)-1} + 2^{p(n)} - 1 > \frac{2^{2p(n)}}{2}$$ 
 
 many random words of length $2p(n)$, i.e., for strictly more than half of the latter words. In summary, the polynomially time-bounded probabilistic Turing machine $M'$ recognizes the same language as $M$ and has error probability strictly less than $\frac{1}{2}$. $\square$
 
@@ -3051,7 +3051,7 @@ The complexity class $\text{PP}$ is closed under symmetric difference.
 
 **Proof**: Let $L$ and $L'$ be languages in $\text{PP}$ that are recognized by polynomially time-bounded probabilistic Turing machines $M$ and $M'$, respectively. For every input $w$, let the error probability of $M$ and $M'$ be written in the form 
 
-$$\text{error}\_M(w) = \frac{1}{2} - \epsilon\_w \quad \text{and} \quad \text{error}\_{M'}(w) = \frac{1}{2} - \epsilon'\_w$$
+$$\text{error}_M(w) = \frac{1}{2} - \epsilon_w \quad \text{and} \quad \text{error}_{M'}(w) = \frac{1}{2} - \epsilon'_w$$
 
 where we can assume by Lemma 111 that $\epsilon\_w$ and $\epsilon'\_w$ both are strictly larger than $0$.
 
@@ -3135,7 +3135,11 @@ $$
 
 where the first inequality follows because of $j \le m/2$ and the last one because of $0 < \epsilon \le \frac{1}{2}$.
 
-By the latter, fix a constant $c > 0$ such that $(1 - 4\epsilon^2)^c < \frac{1}{2}$, and given a polynomial $p$, let $t(n) = cp(n)$. Then $M'$ is polynomially time-bounded, has error probability at most $2^{-p(n)}$, because $(1 - 4\epsilon^2)^{cp(n)} < (\frac{1}{2})^{p(n)}=2^{-p(n)}$ and by construction recognizes $L$. $\square$
+By the latter, fix a constant $c > 0$ such that $(1 - 4\epsilon^2)^c < \frac{1}{2}$, and given a polynomial $p$, let $t(n) = cp(n)$. Then $M'$ is polynomially time-bounded, has error probability at most $2^{-p(n)}$, because 
+
+$$(1 - 4\epsilon^2)^{cp(n)} < (\frac{1}{2})^{p(n)}=2^{-p(n)}$$
+
+and by construction recognizes $L$. $\square$
 
 <div class="accordion">
   <details>
@@ -5981,7 +5985,11 @@ For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse im
 
 *Proof*:
 
-* The implication $A \le_m B \implies A \le_T B$ holds because if $f$ is the computable function for the m-reduction, an oracle Turing machine can compute $f(x)$ and then query the oracle for B at the single location $f(x)$ to get the answer.
+* The implication 
+  
+  $$A \le_m B \implies A \le_T B$$
+  
+  holds because if $f$ is the computable function for the m-reduction, an oracle Turing machine can compute $f(x)$ and then query the oracle for B at the single location $f(x)$ to get the answer.
 * A counterexample for the reverse is given by the halting problem $H$ and its complement $\bar{H}$. For any set $A$, we have $A \le_T \bar{A}$, because an oracle for $\bar{A}$ can be used to decide membership in $A$ and vice versa. Thus, $H \le_T \bar{H}$. However, as shown in Corollary 188, we have $H \not\le_m \bar{H}$.
 
 ### Like m-reducibility, T-reducibility preserves decidability.
@@ -6096,7 +6104,11 @@ $$
 
 *Proof*:
 
-* To show $B \le_m H^B$, we need a computable function $h$. Let $h(x)$ be the index of an oracle TM $M_{h(x)}$ that, on any input $y$ and with any oracle $X$, halts if and only if $x \in X$. Then $x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$. Thus $B \le_m H^B$.
+* To show $B \le_m H^B$, we need a computable function $h$. Let $h(x)$ be the index of an oracle TM $M_{h(x)}$ that, on any input $y$ and with any oracle $X$, halts if and only if $x \in X$. Then 
+  
+  $$x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$$
+  
+  Thus $B \le_m H^B$.
 * The proof that $H^B \not\le_T B$ is a relativized diagonalization argument, identical to the proof that the original halting problem is undecidable. If $H^B$ were decidable in $B$, then the function $g(e) = 1 + M_e(e, B)$ (if $e \in H^B$) and $0$ (otherwise) would be computable in $B$. But this function cannot be computed by any oracle TM $M_e$ with oracle $B$, as it differs from the function computed by $M_e$ on input $e$. This is a contradiction.
 
 Finally, the jump operator is monotone with respect to Turing reducibility. If $A$ is no harder than $B$, then the jump of $A$ is no harder than the jump of $B$.
@@ -6112,11 +6124,11 @@ $$A \le_T B \ \Longrightarrow\ H^A \le_m H^B$$
 
 *Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means 
 
-$M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$
+$$M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$$
 
 Therefore, we have the desired equivalence: 
 
-$e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$.  
+$$e \in H^A \iff M_e(e, A) \downarrow \iff M_{h(e)}(h(e), B) \downarrow \iff h(e) \in H^B$$
 
 The function $h$ is computable, so this establishes $H^A \le_m H^B$. $\square$
 
@@ -6126,13 +6138,13 @@ The function $h$ is computable, so this establishes $H^A \le_m H^B$. $\square$
 
 First-order logic, also known as predicate calculus, provides a formal system for reasoning. In this system, formulas are constructed from a set of symbols, which include relation symbols, function symbols, and constant symbols, in addition to logical symbols such as quantifiers $(∀, ∃)$, logical connectives $(∧, ∨, ¬, →)$, and the equality sign $(=)$.
 
-For example, consider the formula: $\phi ≡ ∀x∀y∃z(x < z ∧ z < y)$ Here, $<$ is a relation symbol of arity $2$, written in infix notation. Formulas like $φ$, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers $\mathcal N$ or real numbers $\mathcal R$) and provide interpretations for the symbols over that domain. A binary relation symbol like $<$ would be interpreted as a set of ordered pairs from the domain.
+For example, consider the formula: $\phi ≡ ∀x∀y∃z(x < z ∧ z < y)$ Here, $<$ is a relation symbol of arity $2$, written in infix notation. Formulas like $φ$, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers $\mathbb{N}$ or real numbers $\mathbb{R}$) and provide interpretations for the symbols over that domain. A binary relation symbol like $<$ would be interpreted as a set of ordered pairs from the domain.
 
 In the case of the formula $\phi$ above:
-* If the domain is the set of natural numbers ($\mathcal N$) and $<$ is interpreted as the standard "less than" ordering, the formula is false. There is no natural number $z$ that can exist between two consecutive numbers like $x=1$ and $y=2$.
-* If the domain is the set of real numbers ($\mathcal R$) with the standard ordering, the formula is true. This property, that between any two distinct numbers there is another, is known as being dense.
+* If the domain is the set of natural numbers ($\mathbb{N}$) and $<$ is interpreted as the standard "less than" ordering, the formula is false. There is no natural number $z$ that can exist between two consecutive numbers like $x=1$ and $y=2$.
+* If the domain is the set of real numbers ($\mathbb{R}$) with the standard ordering, the formula is true. This property, that between any two distinct numbers there is another, is known as being dense.
 
-Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula $∃x(x < y)$ is true for the natural numbers if $y$ is assigned any value other than $0$, but it is false if $y$ is assigned $0$.
+Formulas may also contain free variables—variables not bound by a quantifier. To evaluate such a formula, these free variables must be assigned specific values from the domain. For instance, the formula $\exists x(x < y)$ is true for the natural numbers if $y$ is assigned any value other than $0$, but it is false if $y$ is assigned $0$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Axioms of Group Theory)</span></p>
@@ -6148,7 +6160,7 @@ A group is defined as a structure $(G, \cdot, e)$ consisting of a set $G$, a bin
 
 A sentence is a semantical consequence of a set of axioms if it is true in every structure where the axioms are true. In this case, we say the axioms entail the sentence.
 
-An inference system is a collection of syntactical rules that allow new sentences to be derived from a given set of sentences. A classic example is modus ponens, which allows the derivation of sentence $\beta$ if one is given both $\alpha and \alpha → \beta$.
+An inference system is a collection of syntactical rules that allow new sentences to be derived from a given set of sentences. A classic example is modus ponens, which allows the derivation of sentence $\beta$ if one is given both $\alpha$ and $\alpha → \beta$.
 
 * An inference system is sound if it can only derive sentences that are semantical consequences of the given set.
 * An inference system is complete if it can derive all semantical consequences of the given set.
@@ -6177,7 +6189,7 @@ An **arithmetic formula**, or a formula in the language of arithmetic, is a form
 
 </div>
 
-The intended interpretation for these symbols is over the domain of natural numbers $\mathcal N$. An arithmetic sentence is an arithmetic formula with no free variables. An arithmetic sentence is considered true if it expresses a true statement about the natural numbers under this standard interpretation. We denote the set of all true arithmetic sentences by $T$. By establishing an effective bijection between arithmetic formulas and natural numbers, $T$ can be treated as a subset of $\mathbb{N}$.
+The intended interpretation for these symbols is over the domain of natural numbers $\mathbb{N}$. An arithmetic sentence is an arithmetic formula with no free variables. An arithmetic sentence is considered true if it expresses a true statement about the natural numbers under this standard interpretation. We denote the set of all true arithmetic sentences by $T$. By establishing an effective bijection between arithmetic formulas and natural numbers, $T$ can be treated as a subset of $\mathbb{N}$.
 
 ### Incompleteness of Arithmetic
 
@@ -6190,7 +6202,7 @@ A foundational result is that the computations of Turing machines can be "arithm
 
 For every recursively enumerable set $A$, there exists an arithmetic formula $\psi$ with two free variables such that for all natural numbers $e$, it holds that 
 
-$$e \in A \text{ if and only if } \exists s \psi(\overline e, s) \text{ is true.}$$
+$$e \in A \iff \exists s \psi(\overline e, s) \text{ is true.}$$
 
 </div>
 
@@ -6207,7 +6219,10 @@ The set $T$ of true arithmetic sentences is not decidable.
 
 The proof proceeds by a reduction from the diagonal halting problem, $H = \lbrace e \mid M_e(e) \text{ halts} \rbrace$, which is known to be r.e. but not decidable.
 
-1. Since $H$ is r.e., we can apply Theorem 207. This guarantees the existence of an arithmetic formula ψ such that for any natural number $e: e \in H \text{ if and only if } \exists s\psi(\overline e, s) \text{ is true.}$
+1. Since $H$ is r.e., we can apply Theorem 207. This guarantees the existence of an arithmetic formula $ψ$ such that for any natural number 
+   
+   $$e: e \in H \iff \exists s\psi(\overline e, s) \text{ is true.}$$
+
 2. The mapping $e \mapsto \exists s(\overline e, s)$ constitutes a many-one reduction ($H \le_m T$) from the diagonal halting problem $H$ to the set of true arithmetic sentences $T$.
 3. If $T$ were decidable, then this reduction would imply that $H$ is also decidable.
 4. Since $H$ is known to be undecidable, this is a contradiction. Therefore, $T$ cannot be decidable.
@@ -6227,7 +6242,7 @@ The set $T$ of true arithmetic sentences is not axiomatizable. That is, there is
 2. We can construct a Turing machine $M$ to decide $T$. On input $φ$:
   * If $φ$ is not a valid arithmetic sentence, $M$ rejects.
   * Otherwise, $M$ exhaustively searches through all possible derivations from the axioms in $A$. Since $A$ is r.e., this search is effective.
-  * In the standard model of natural numbers, for any sentence $φ$, either $φ$ is true or its negation $¬φ$ is true. Because our axiom system $A$ is assumed to capture all of $T$$ (and is sound), exactly one of $φ$ or $¬φ$ must be derivable from $A$.
+  * In the standard model of natural numbers, for any sentence $φ$, either $φ$ is true or its negation $¬φ$ is true. Because our axiom system $A$ is assumed to capture all of $T$ (and is sound), exactly one of $φ$ or $¬φ$ must be derivable from $A$.
   * Therefore, $M$'s search is guaranteed to terminate. It will eventually find a derivation for either $φ$ or $¬φ$.
   * If a derivation for $φ$ is found, $M$ accepts.
   * If a derivation for $¬φ$ is found, $M$ rejects.
@@ -6273,7 +6288,7 @@ Let $d = n!$ for a natural number $n > 0$. Then, the natural numbers $d+1, 2d+1,
 1. Since id and $id+1$ are co-prime, $p$ cannot divide $id$. As $d=n!$, this means $p$ cannot divide $d$. By the definition of $d$, any prime less than or equal to $n$ divides $d$, so we must have $p > n$.
 2. A common divisor of two numbers must also divide their difference. Thus, $p$ divides $\lvert (id+1) - (jd+1)\rvert = \lvert i-j\rvert d$.
 3. Since $p$ is a prime that does not divide $d$, it must divide $\lvert i-j\rvert$.
-4. However, $i, j \in \lbrace 1, \dots, n\rbrace implies 0 < \lvert i-j\rvert < n$.
+4. However, $i, j \in \lbrace 1, \dots, n\rbrace \implies 0 < \lvert i-j\rvert < n$.
 5. This leads to a contradiction, as the prime $p$ must be greater than $n$ but also divide a number smaller than $n$. Thus, no such common prime divisor $p$ exists, and the numbers are pairwise co-prime.
 
 This lemma enables the definition of a function that can extract elements from an encoded sequence.
@@ -6290,7 +6305,7 @@ $$m \equiv \beta(m, d, i) \pmod{id+1} \quad \text{and} \quad 0 \le \beta(m, d, i
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(214: Encoding Sequences with the $\beta$-function)</span></p>
 
-Let $a_1, \dots, a_t$ be a sequence of natural numbers. Then, there exist natural numbers $m$ and $d$ such that for $i=1, \dots, t$, it holds that $a_i = β(m, d, i)$.
+Let $a_1, \dots, a_t$ be a sequence of natural numbers. Then, there exist natural numbers $m$ and $d$ such that for $i=1, \dots, t$, it holds that $a_i = \beta(m, d, i)$.
 
 </div>
 
@@ -6299,8 +6314,8 @@ Let $a_1, \dots, a_t$ be a sequence of natural numbers. Then, there exist natura
 1. Choose a natural number $n$ that is greater than the sequence length $t$ and also greater than every element $a_i$ in the sequence. Let $d = n!$.
 2. By Lemma 212, the numbers $d+1, 2d+1, \dots, td+1$ are pairwise co-prime.
 3. By the Chinese Remainder Theorem (Theorem 210), there exists a natural number $m$ such that for each $i \in \lbrace 1, \dots, t\rbrace$, we have $m \equiv a_i \pmod{id+1}$.
-4. By our choice of $n$, we have $a_i < n$. Since $d=n!$, we also have $d \ge n (for n>1)$, so $a_i < d$. This means $a_i \le id$.
-5. Since $m \equiv a_i \pmod{id+1} and 0 \le a_i \le id, a_i$ is precisely the remainder of m when divided by $id+1$.
+4. By our choice of $n$, we have $a_i < n$. Since $d=n!$, we also have $d \ge n$ (for $n>1$), so $a_i < d$. This means $a_i \le id$.
+5. Since $m \equiv a_i \pmod{id+1}$ and $0 \le a_i \le id, a_i$ is precisely the remainder of m when divided by $id+1$.
 6. By Definition 213, this means $a_i = \beta(m, d, i)$ for all $i = 1, \dots, t$.
 
 #### Detailed Arithmetization of Computations
@@ -6313,7 +6328,7 @@ Using Gödel's $β$-function, we can now encode an entire Turing machine computa
 
 Each state and tape symbol can be represented by a number. Each tape inscription $w_i$, which is itself a sequence of symbols, can also be encoded as a single number using the $β$-function again. Ultimately, the entire computation can be encoded by a fixed set of natural numbers. For example, the sequence of states $q_0, \dots, q_s$ can be encoded by three numbers: the length $s$, and the pair $m_{state}, d_{state}$ from Theorem 214.
 
-The formula $ψ$ from Theorem 207 then takes a form with many existential quantifiers, one for each number used in the encoding: $∃m_{state}∃d_{state}∃m_{pos}∃d_{pos} \dots ψ'(e, s, m_{state}, d_{state}, \dots)$ The inner formula $ψ'$ is a large conjunction of subformulas that enforce the rules of Turing machine computation. For example, one subformula would assert that the tape inscription of configuration $C_{i+1}$ is correctly derived from $C_i$ based on the transition function of machine $M_e$. This structure is conceptually similar to the formula constructed in the proof of the Cook-Levin theorem.
+The formula $ψ$ from Theorem 207 then takes a form with many existential quantifiers, one for each number used in the encoding: $\exists m_{state}∃d_{state}∃m_{pos}∃d_{pos} \dots ψ'(e, s, m_{state}, d_{state}, \dots)$ The inner formula $ψ'$ is a large conjunction of subformulas that enforce the rules of Turing machine computation. For example, one subformula would assert that the tape inscription of configuration $C_{i+1}$ is correctly derived from $C_i$ based on the transition function of machine $M_e$. This structure is conceptually similar to the formula constructed in the proof of the Cook-Levin theorem.
 
 ### Matiyasevich’s Theorem and Diophantine Equations
 
