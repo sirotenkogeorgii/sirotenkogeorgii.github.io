@@ -20,25 +20,13 @@ tags:
   }
 </style>
 
-<div class="note-callout">
-  <p class="note-callout__title">Remark</p>
-  <p>
-    Classical deterministic mathematics emerges as the special case of
-    probability theory where the sample space $\Omega$ contains only a single
-    outcome. With $P(\{\omega\}) = 1$ every random variable collapses to a
-    deterministic quantity. This perspective is helpful later when we discuss
-    probabilistic computation: the usual discrete models are simply the
-    zero-entropy corner of the same formalism.
-  </p>
-</div>
-
 # Computability and Complexity
 
 ## Complexity
 
 ### Formalizing Computability
 
-In theoretical computer science, the abstract concept of computability is given a precise mathematical foundation through the study of partial computable functions. From this core idea, related concepts such as computable functions and decidable sets are derived. While several equivalent models exist for formalizing computability—including register machines, µ-recursive functions, and the lambda calculus—this study will focus exclusively on the model provided by Turing machines. All these formalisms are provably identical, meaning they all define the same class of computable functions and decidable sets.
+In theoretical computer science, the abstract concept of computability is given a precise mathematical foundation through the study of partial computable functions. From this core idea, related concepts such as computable functions and decidable sets are derived. While several equivalent models exist for formalizing computability—including register machines, $µ$-recursive functions, and the lambda calculus—this study will focus exclusively on the model provided by Turing machines. All these formalisms are provably identical, meaning they all define the same class of computable functions and decidable sets.
 
 ### The Turing Machine: A Formal Definition
 
@@ -47,7 +35,7 @@ The Turing machine serves as a foundational abstract model of a computing device
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Turing Machine)</span></p>
 
-Let $k$ be a nonzero natural number. A Turing machine with $k$ tapes, also called a $k$-tape Turing machine or $k$-tape TM, is a $6$-tuple of the form $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ where
+Let $k$ be a nonzero natural number. A **Turing machine** with $k$ tapes, also called a $k$-tape Turing machine or $k$-tape TM, is a $6$-tuple of the form $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ where
 
 - $Q$ is the finite set of states,
 - $\Sigma$ is the input alphabet,
@@ -519,15 +507,20 @@ A **time bound** is a computable function $t : \mathbb{N} \to \mathbb{N}$ with $
 The phrase "for almost all inputs" means the condition must hold for all but a finite number of inputs. This provides flexibility, allowing us to disregard a small number of exceptional cases, typically short inputs, which can be handled separately.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Lookup or hard-wiring)</span></p>
 
-For a $t(n)$-time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table *lookup* or *hard-wiring*.
+For a $t(n)$-time-bounded Turing machine, the time bound must be obeyed for almost all inputs, i.e., for all words over the input alphabet except for at most finitely many, say, for all inputs of length larger than or equal to some constant $b$. Note that such a Turing machine can be transformed into another Turing machine such that both Turing machines recognize the same language $L$, and the new machine runs in time at most $t(n) + 2b$ on all inputs. For the proof, call inputs of length at most $b-1$ small and call all other inputs long. It suffices to change the given Turing machine such that initially it scans the first $b$ symbols of its input and stores them in its state such that on every small input a halting configuration is reached and this configuration is accepting if only if the input is in $L$. On a large input, the new Turing machine goes back to the first symbol of the input and then proceeds as usual. Treating small inputs this way is referred to as table **lookup** or **hard-wiring**.
 
 </div>
 
-By default, time complexity is a measure of the machine's performance in the most demanding scenario for a given input length. This is known as worst-case time complexity. An alternative approach, average-case time complexity, considers the average running time over all inputs of a certain length. While potentially relevant for specific practical applications, the theory of average-case complexity is more intricate and less developed. Therefore, our focus will remain on worst-case complexity.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Worst-case vs. Average case)</span></p>
 
-Convention: In the part about complexity theory, all languages are languages over the binary alphabet unless explicitly something different is stated. Accordingly, we will restrict attention to Turing machines with binary input alphabet.
+By default, time complexity is a measure of the machine's performance in the most demanding scenario for a given input length. This is known as **worst-case** time complexity. An alternative approach, **average-case** time complexity, considers the average running time over all inputs of a certain length. While potentially relevant for specific practical applications, the theory of average-case complexity is more intricate and less developed. Therefore, our focus will remain on worst-case complexity.
+
+</div>
+
+**Convention:** In the part about complexity theory, all languages are languages over the binary alphabet unless explicitly something different is stated. Accordingly, we will restrict attention to Turing machines with binary input alphabet.
 
 ### Deterministic Time Complexity Classes
 
@@ -559,7 +552,7 @@ $$
 The notation $\text{DTIME}_k(t(n))$ is used to specify the class of languages decidable by a $t(n)$-time-bounded $k$-tape Turing machine. These definitions can also be extended from languages over strings to subsets of natural numbers by using a standard representation, such as binary encoding.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Time-bounded sets and functions)</span></p>
 
 Let $t$ be a time bound. A subset $A$ of the natural numbers is decidable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that decides the set $\lbrace \text{bin}(n) : n \in A\rbrace$. A function $f : \mathbb{N} \to \mathbb{N}$ is computable in time $t(n)$ if there is a $t(n)$-time-bounded Turing machine that computes a function that maps $\text{bin}(n)$ to $\text{bin}(f(n))$.
 
@@ -603,21 +596,21 @@ Let $t$ be a time bound, and let $\alpha > 0$ be a real number, and let $k \ge 2
 
 $$
 \text{DTIME}_k(t(n)) \subseteq \text{DTIME}_k(\alpha \cdot t(n) + n)
-\quad\text{2.1}
+\qquad\text{(2.1)}
 $$
 
 and hence, in particular,
 
 $$
 \text{DTIME}(t(n)) \subseteq \text{DTIME}(\alpha \cdot t(n) + n).
-\quad\text{2.2}
+\qquad\text{(2.2)}
 $$
 
 Furthermore, every function $f$ in $\text{FTIME}(t(n))$ is in 
 
 $$
 \text{FTIME}(\alpha \cdot t(n) + n + \lvert f(n) \rvert).
-\quad\text{2.3}
+\qquad\text{(2.3)}
 $$
 
 </div>
@@ -652,7 +645,7 @@ Each symbol in the tape alphabet of $M'$ will represent a block of $d$ symbols f
 
 **Timing Analysis:** The initialization takes $n + \lceil n/d \rceil + 2$ steps. The simulation of $M$ takes at most $t(n)$ steps. Since $M'$ simulates $d$ steps of $M$ in $7$ steps, this phase requires at most $7 \lceil t(n)/d \rceil + 7$ steps. $+7$ is a simulation rounding: $7\left\lceil \frac{t(n)}{d}\right\rceil \le 7\left(\frac{t(n)}{d}+1\right)=\frac{7t(n)}{d}+7$.
 
-The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7 = \frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$.
+The total time for $M'$ is at most $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7$. Since the time bound $t(n) \ge n$, for almost all $n$, this is bounded by $n + \frac{n}{d} + 2 + \frac{7 t(n)}{d} + 7 = \frac{8 t(n)}{d} + n + 9 \le \frac{9 t(n)}{d} + n$. We want this to be less than $\alpha \, t(n) + n$. We can achieve this by choosing a large enough constant $d$ such that $\frac{9}{d} < \alpha$. With such a $d$, the running time of $M'$ is bounded by $\alpha \, t(n) + n$, proving that $L \in \text{DTIME}_k(\alpha \cdot t(n) + n)$. $\square$
 
 <div class="gd-grid">
   <figure>
@@ -723,6 +716,18 @@ The core idea is to encode each symbol $a_j$ from $M'$s alphabet as a unique bin
   * **Write/Move:** Based on $M$'s transition function, $M'$ overwrites the binary blocks with the new encoded symbols and moves its heads accordingly. This involves moving across the $r$ cells of the block.
 
 Simulating one step of $M$ requires reading and potentially writing $k$ blocks of $r$ symbols each. This takes a constant number of steps proportional to $r$. Thus, a single step of $M$ can be simulated in $d \cdot r$ steps of $M'$ for some constant $d$. The total running time of $M'$ is therefore bounded by a constant multiple of $t(n)$, as required. The constant $d$ depends on on the size $r$ of the source alphabet. $\square$
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/alphabet_reduction_sketch1.jpeg' | relative_url }}" alt="GPU global memory" loading="lazy">
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/alphabet_reduction_sketch2.jpeg' | relative_url }}" alt="GPU global memory" loading="lazy">
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/computability-and-complexity/alphabet_reduction_sketch3.jpeg' | relative_url }}" alt="GPU global memory" loading="lazy">
+  </figure>
+</div>
 
 #### Tape Reduction
 
