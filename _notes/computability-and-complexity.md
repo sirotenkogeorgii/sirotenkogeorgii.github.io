@@ -3268,14 +3268,14 @@ $$U = \{r \in \{0,1\}^{p(n)} : M \text{ accepts } w \text{ when its random tape 
 So:
 
 * $U$ is the set of random strings that make $M$ accept $w$.
-* If $w \in L$, then $\|U\|$ is **almost all** of ${0,1}^{p(n)}$.
+* If $w \in L$, then $\|U\|$ is **almost all** of $\lbrace 0,1\rbrace^{p(n)}$.
 * If $w \notin L$, then $\|U\|$ is **tiny** (at most a $2^{-n}$-fraction).
 
 For the remainder of this proof, "word" will refer to a binary word of length $p(n)$ unless stated otherwise. We use the operator $\oplus$, which represents bitwise exclusive-or (parity). For any word $v$, the function $u \mapsto u \oplus v$ is a bijection on the set of all words. Let $U \oplus v = \lbrace u \oplus v : u \in U\rbrace$. Note that $\lvert U \rvert = \lvert U \oplus v \rvert$.
 
 We will consider the following statement:
 
-$$\exists v_1^{p(n)} \cdots \exists v_{p(n)}^{p(n)}\ \forall z^{p(n)} \bigl( z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)} \bigr) (4.3)$$
+$$\exists v_1^{p(n)} \cdots \exists v_{p(n)}^{p(n)}\ \forall z^{p(n)} \bigl( z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)} \bigr)\qquad(4.3)$$
 
 Informally:
 
@@ -3291,7 +3291,7 @@ Thus, membership in $L$ is equivalent to the truth of this $\exists\forall$-stat
 **Case 1: $w$ is not in $L$.**
 In this case, the set $U$ (and thus any set $U \oplus v$) contains at most $\dfrac\{2^{-n}}{2^n}$, because the acceptance probability is at most $2^{-n}$:
 
-$$\frac{\|U\|}{2^{p(n)}} \le 2^{-n} \quad\Longrightarrow\quad \|U\| \le 2^{p(n)} \cdot 2^{-n}$$
+$$\frac{\lvert U\rvert}{2^{p(n)}} \le 2^{-n} \quad\Longrightarrow\quad \lvert U\rvert \le 2^{p(n)} \cdot 2^{-n}$$
 
 Consider **any** choice of $v_1,\dots,v_{p(n)}$. The union
 
@@ -3299,15 +3299,15 @@ $$(U \oplus v_1) \cup \cdots \cup (U \oplus v_{p(n)})$$
 
 has at most
 
-$$p(n) \cdot \|U\| \le p(n) \cdot 2^{p(n)} \cdot 2^{-n}$$
+$$p(n) \cdot \lvert U\rvert \le p(n) \cdot 2^{p(n)} \cdot 2^{-n}$$
 
 elements.
 
 Since we chose $n_0$ so that $p(n) < 2^n$ for $n \ge n_0$, we get:
 
-$$p(n) \cdot \|U\| < 2^{p(n)}$$
+$$p(n) \cdot \lvert U\rvert < 2^{p(n)}$$
 
-Thus, even after taking the union of all $p(n)$ sets $U \oplus v_i$, we still **do not cover the entire space** ${0,1}^{p(n)}$, which has size $2^{p(n)}$.
+Thus, even after taking the union of all $p(n)$ sets $U \oplus v_i$, we still **do not cover the entire space** $\lbrace 0,1\rbrace^{p(n)}$, which has size $2^{p(n)}$.
 
 The union of $p(n)$ such sets cannot comprise all words, because by our choice of $n_0$, we have $p(n) < 2^n$. Consequently, the following statement is **false**:
 
@@ -3317,7 +3317,9 @@ $$\forall z\ (z \in U \oplus v_1 \lor \cdots \lor z \in U \oplus v_{p(n)})$$
 
 is false for that particular choice of the $v_i$, and hence the whole formula (4.3) is false.
 
-So: $w \notin L \quad\Rightarrow\quad \text{formula (4.3) is false.}$
+So: 
+
+$$w \notin L \Rightarrow \text{formula (4.3) is false.}$$
 
 **Case 2: $w$ is in $L$.**
 In this case, we show that statement (4.3) is **true**. Fix some word $z$. Consider a random experiment where the bits of a word $v$ are determined by fair coin tosses. The word $z \oplus v$ is uniformly distributed among all words. Therefore, the probability that $z \oplus v$ is not in $U$ (or equivalently, that $z$ is not in $U \oplus v$) is at most $2^{-n}$.
@@ -3332,7 +3334,7 @@ $$
 2^{p(n)} \cdot 2^{-np(n)} = 2^{-(n-1)p(n)} < 1.
 $$
 
-Since this probability is less than 1, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than 0. This means there must exist such words $v_1, \ldots, v_{p(n)}$.
+Since this probability is less than 1, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than 0. This means there must exist such words $v_1, \ldots, v_{p(n)}$. $\square$
 
 <div class="accordion">
 <details>
@@ -3410,7 +3412,7 @@ An interactive proof system establishes membership in a language through a dialo
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Verifiers and provers)</span></p>
 
-A *message function* maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(\|w\|)$ for some fixed polynomial $p$. A *prover* is a message function. A *verifier* is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
+A **message function** maps a tuple $(w, m_1, \ldots, m_i)$ of binary words to a binary word of length at most $p(\|w\|)$ for some fixed polynomial $p$. A **prover** is a message function. A **verifier** is a polynomial-time probabilistic Turing machine $M$ with special accepting and rejecting states that computes a message function depending on its random sequence.
 
 For a verifier $V$ and a prover $P$, the messages exchanged on input $w$ and random word $r$ are $m_1, m_2, \ldots$ with
 
@@ -3424,8 +3426,7 @@ Let $t : \mathbb{N} \to \mathbb{N}$. A verifier $V$ is **total** and **$t(n)$-bo
 
 </div>
 
-Key consequences:
-
+**Key consequences:**
 * Message lengths, **number of rounds**, and verifier computation per message are polynomially bounded in $\|w\|$.
 * The messages sent by the prover do not depend on the random word of the verifier (the prover cannot see the verifier’s random word); its replies depend only on the input and previous messages.
 * Any total verifier is $t(n)$-bounded for some computable $t$ (by bounding the computation tree depth).
@@ -3452,7 +3453,7 @@ Let $k \in \mathbb{N}$. The class $\text{IP}[k]$ contains all languages recogniz
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-If $L$ is recognized by a verifier $V$. Then for each input in $L$ some prover must result in an acceptance probability of at least $\frac{2}{3}$, where this prover *may depend on the input*. It can be shown, however, that there is a single prover $P$ *independent of the input* that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
+If $L$ is recognized by a verifier $V$. Then for each input in $L$ some prover must result in an acceptance probability of at least $\frac{2}{3}$, where this prover **may depend on the input**. It can be shown, however, that there is a single prover $P$ **independent of the input** that yields acceptance probability at least $\tfrac{2}{3}$ for all $w \in L$. The pair $(V, P)$ is an interactive proof system for $L$. Remark 139 below shows that $P$ can be chosen polynomial-space-bounded.
 
 </div>
 
@@ -3460,12 +3461,16 @@ If $L$ is recognized by a verifier $V$. Then for each input in $L$ some prover m
 
 We adopt a fixed node-labeling convention.
 
-Convention 136: All graphs with $n$ nodes have the node set $\lbrace 1, \ldots, n\rbrace$.
+**Convention:** All graphs with $n$ nodes have the node set $\lbrace 1, \ldots, n\rbrace$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Graph Isomorphism)</span></p>
 
-Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An *isomorphism* between graphs is a bijection $\pi : V \to V'$ such that $(u, v) \in E$ iff $(\pi(u), \pi(v)) \in E'$. Graphs are *isomorphic* if such a $\pi$ exists.
+Let $G = (V, E)$ and $G' = (V', E')$ be graphs. An **isomorphism** between graphs is a bijection $\pi : V \to V'$ such that 
+
+$$(u, v) \in E \iff (\pi(u), \pi(v)) \in E'$$
+
+Graphs are **isomorphic** if such a $\pi$ exists.
 
 Languages:
 
@@ -3483,7 +3488,7 @@ $\text{GNI} \in \text{IP}[1]$.
 
 </div>
 
-*Proof.* Let the input be $(G_0, G_1)$ with the same number of nodes (otherwise reject immediately). The protocol is a single round:
+**Proof.** Let the input be $(G_0, G_1)$ with the same number of nodes (otherwise reject immediately). The protocol is a single round:
 
 1. **Verifier:** Choose $i \in \lbrace 0,1\rbrace$ uniformly and a random permutation $\pi$ of the nodes. Compute $H = \pi(G_i)$ and send $H$.
 2. **Prover:** Return a bit $j'$ claiming whether $H$ is isomorphic to $G_{j'}$.
@@ -3496,10 +3501,6 @@ Soundness: If $(G_0, G_1) \notin \text{GNI}$, they are isomorphic, so $H$ reveal
 ### The Equivalence of $\text{IP}$ and $\text{PSPACE}$
 
 A landmark result in complexity theory is the characterization of $\textbf{IP}$ as being exactly equal to the class of problems solvable in polynomial space, $\textbf{PSPACE}$.
-
-#### Proving $\text{IP}$ is a Subset of $\text{PSPACE}$
-
-We first show that any problem with an interactive proof can be solved by a polynomial-space Turing machine.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
@@ -3537,7 +3538,7 @@ $$
 
 </div>
 
-*Proof*: We design an interactive protocol where a prover convinces a verifier that a 3-CNF formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
+**Proof**: We design an interactive protocol where a prover convinces a verifier that a 3-CNF formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
 
 <div class="gd-grid">
   <figure>
@@ -3928,7 +3929,7 @@ $\text{IP} = \text{PSPACE}$.
 
 </div>
 
-*Proof.* Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in $3$-CNF form ($3$-QBF) is PSPACE-complete.
+**Proof** Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in $3$-CNF form ($3$-QBF) is PSPACE-complete.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
@@ -3957,7 +3958,7 @@ Zero-knowledge proofs allow authentication without revealing secrets: the verifi
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Zero-knowledge IPS)</span></p>
 
-An interactive proof system $(V, P)$ for $L$ is *zero-knowledge* if for every verifier $V'$ there is a probabilistic Turing machine $S$ (the simulator) running in expected polynomial time such that for every $w \in L$, the output distribution of $S$ equals the distribution of transcripts from the interaction of $V'$ with $P$ on input $w$.
+An interactive proof system $(V, P)$ for $L$ is **zero-knowledge** if for every verifier $V'$ there is a probabilistic Turing machine $S$ (the simulator) running in expected polynomial time such that for every $w \in L$, the output distribution of $S$ equals the distribution of transcripts from the interaction of $V'$ with $P$ on input $w$.
 
 </div>
 
@@ -3972,7 +3973,7 @@ $\text{GI}$ has a zero-knowledge interactive proof system.
 
 </div>
 
-*Proof.* For input $(G_0, G_1)$, the prover’s secret is an isomorphism if it exists.
+**Proof** For input $(G_0, G_1)$, the prover’s secret is an isomorphism if it exists.
 
 1. **Prover:** Pick random $i \in \lbrace 0,1\rbrace$ and random permutation $\pi$. Send $H = \pi(G_i)$.
 2. **Verifier:** Send random challenge bit $j$.
@@ -3983,9 +3984,9 @@ $\text{GI}$ has a zero-knowledge interactive proof system.
 
 *Soundness*: If $G_0 \not\cong G_1$, $H$ is isomorphic to only one of them. With probability $\tfrac{1}{2}$ the verifier asks for the other, making acceptance impossible. Repetition reduces soundness error (by iterating the protocol twice, the acceptance probability is at most).
 
-*Zero-knowledge*: It remains to show that the interactive proof system $(V,P)$ has the zeroknowledge property. Fix some verifer $V′$. Let $S$ be a probabilistic Turing machine that on input $(G_0,G_1)$ first chooses a bit $i$ and a permutation $π$ of the node set of $G_i$ uniformly at random and computes $H= π(G_i)$. Then $S$ computes the response $j$ of $V′ $by simulating $V′$ on receiving $H$ as first message of the prover. In case $j$ is not a bit, we can assume that $P$ responds by the empty word $λ$, and accordingly $S$ outputs $(H,j,λ)$. Now assume that $j$ is a bit. In case $j$ is equal to $i$, the simulator outputs $(H,j,π)$. In case $j$ differs from $i$, the simulator abandons the current simulation and restarts by choosing a new bit iand a new permutation $π$.
+*Zero-knowledge*: It remains to show that the interactive proof system $(V,P)$ has the zeroknowledge property. Fix some verifer $V'$. Let $S$ be a probabilistic Turing machine that on input $(G_0,G_1)$ first chooses a bit $i$ and a permutation $π$ of the node set of $G_i$ uniformly at random and computes $H=\pi(G_i)$. Then $S$ computes the response $j$ of $V'$ by simulating $V'$ on receiving $H$ as first message of the prover. In case $j$ is not a bit, we can assume that $P$ responds by the empty word $\lambda$, and accordingly $S$ outputs $(H,j,\lambda)$. Now assume that $j$ is a bit. In case $j$ is equal to $i$, the simulator outputs $(H,j,\pi)$. In case $j$ differs from $i$, the simulator abandons the current simulation and restarts by choosing a new bit $i$ and a new permutation $\pi$.
 
-When demonstrating that $S$ is a simulator for $(V,P)$, we can assume that $G_0$ and $G_1$ are isomorphic and have the same node sets because there are no requirements on a simulator for inputs not in $\text{GI}$. But then for every graph that is isomorphic to $G_0$, the probability that this graph is sent as $H$ does not depend on the choice of $i$. On receiving the message $H$ from $P$, the verifier $V′$ has thus no information at all about the bit $i$, hence $j$ is chosen indepently of $i$. Since $i$ was chosen by tossing a fair coin, the probability that both bits are equal is exactly $\frac{1}{2}$. Thus a simulation where $i$ is equal to $j$ will occur after an expected number of iterations that is constant, hence the running time of $S$ is in expected polynomial time. Furthermore, the distribution of communications $(H,j,π)$ between $P$ and $V′$ is such that every graph $H$ occurs with a certain probability. The message $j$ is independent of $i$, and $π$ is the unique permutation such that $H= π(G_i)$. This coincides with the distribution of the output of $S$, hence $S$ is a simulator for $(V,P)$.
+When demonstrating that $S$ is a simulator for $(V,P)$, we can assume that $G_0$ and $G_1$ are isomorphic and have the same node sets because there are no requirements on a simulator for inputs not in $\text{GI}$. But then for every graph that is isomorphic to $G_0$, the probability that this graph is sent as $H$ does not depend on the choice of $i$. On receiving the message $H$ from $P$, the verifier $V'$ has thus no information at all about the bit $i$, hence $j$ is chosen indepently of $i$. Since $i$ was chosen by tossing a fair coin, the probability that both bits are equal is exactly $\frac{1}{2}$. Thus a simulation where $i$ is equal to $j$ will occur after an expected number of iterations that is constant, hence the running time of $S$ is in expected polynomial time. Furthermore, the distribution of communications $(H,j,\pi)$ between $P$ and $V'$ is such that every graph $H$ occurs with a certain probability. The message $j$ is independent of $i$, and $\pi$ is the unique permutation such that $H=\pi(G_i)$. This coincides with the distribution of the output of $S$, hence $S$ is a simulator for $(V,P)$.
 
 > **Note**: The distributions match because we do not actually know from the outside what was the graph $G_i$, that $H=\pi(G_i)$.
 
@@ -5429,7 +5430,7 @@ The standard numbering $\phi_0, \phi_1, \dots$ is a Gödel numbering.
 
 </div>
 
-*Proof*: Let $\alpha_0, \alpha_1, \dots$ be an arbitrary numbering, and let its principal function $\alpha$ be computed by a Turing machine $M$. So, $M(\langle e, x \rangle) \simeq \alpha_e(x)$. For any given $e$, we can construct a new Turing machine $M'$ that, on input $x$, first transforms $x$ into the pair $\langle e, x \rangle$ and then simulates $M$. This new machine $M'$ computes the function $\alpha_e$. The process of constructing $M'$ from $M$ and $e$ is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index $f(e)$ for this machine $M'$. Thus, there exists a computable function $f$ such that $\phi_{f(e)} = \alpha_e$ for all $e$. $\square$
+**Proof**: Let $\alpha_0, \alpha_1, \dots$ be an arbitrary numbering, and let its principal function $\alpha$ be computed by a Turing machine $M$. So, $M(\langle e, x \rangle) \simeq \alpha_e(x)$. For any given $e$, we can construct a new Turing machine $M'$ that, on input $x$, first transforms $x$ into the pair $\langle e, x \rangle$ and then simulates $M$. This new machine $M'$ computes the function $\alpha_e$. The process of constructing $M'$ from $M$ and $e$ is effective. The standard enumeration of Turing machines is constructed in such a way that we can computably find an index $f(e)$ for this machine $M'$. Thus, there exists a computable function $f$ such that $\phi_{f(e)} = \alpha_e$ for all $e$. $\square$
 
 Not all universal numberings have this powerful translation property.
 
@@ -5481,20 +5482,6 @@ The relation m-reducibility is **reflexive** and **transitive**.
 
 </div>
 
-*Proof*:
-
-**Reflexive.** Let $A\subseteq\mathbb N$. Take the identity function $f(x)=x$. This function is computable and satisfies
-
-$$x\in A \iff f(x)=x\in A.$$
-
-Hence $A\le_m A$.
-
-**Transitive.** Suppose $A\le_m B$ via a computable function $f$, and $B\le_m C$ via a computable function $g$. Define $h=g\circ f$, i.e. $h(x)=g(f(x)$). Since computable functions are closed under composition, $h$ is computable. Moreover, for every $x$,
-
-$$x\in A \iff f(x)\in B \iff g(f(x))\in C \iff h(x)\in C.$$
-
-Thus $A\le_m C$. $\square$
-
 ### M-reducibility allows us to infer properties about sets.
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -5505,25 +5492,6 @@ Let $A$ and $B$ be sets such that $A \le_m B$.
 * **(ii)** If $A$ is undecidable, then $B$ is also undecidable.
 
 </div>
-
-*Proof*:
-
-Assume $A\le_m B$. Then there exists a computable function $f$ such that for all $x$,
-
-$$x\in A \iff f(x)\in B.$$
-
-**(i)** Suppose $B$ is decidable, and let $D_B$ be a decider for $B$. We build a decider $D_A$ for $A$ as follows: on input $x$,
-
-1. compute $y=f(x)$;
-2. run $D_B$ on input $y$ and output the same yes/no answer.
-
-Because $f$ is computable and $D_B$ always halts, this procedure always halts. Correctness follows from the defining property of $f$:
-
-$$D_A \text{ accepts } x \iff D_B \text{ accepts } f(x) \iff f(x)\in B \iff x\in A.$$
-
-Hence $A$ is decidable.
-
-**(ii)** This is the contrapositive of $i$. If $B$ were decidable, then $i$ would imply that $A$ is decidable. Therefore, if $A$ is undecidable, $B$ must be undecidable. $\square$
 
 A key result is that the halting problem $H$ is a "hardest" problem among all r.e. sets with respect to m-reducibility.
 
@@ -5536,82 +5504,21 @@ Let $A$ and $B$ be sets.
 
 </div>
 
-*Proof*: 
+**Proof**: 
 
 * **(i)** Let $A \le_m B$ via a computable function $f$, and let $B$ be r.e. Then $B$ is the domain of some partial computable function $\alpha$. The set $A$ is the domain of the partial computable function $\alpha \circ f : x \mapsto \alpha(f(x))$. Since $A$ is the domain of a partial computable function, it is r.e. 
 * **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)}$ for all $e$. This function $f$ witnesses that 
   
   $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$
 
-**Another proof:**
-
-**(i)**
-
-Assume $A \le_m B$ via a computable function $f$, and assume $B$ is r.e. Then there exists a partial computable function $\alpha$ such that
-
-$$B = \operatorname{dom}(\alpha).$$
-
-Define a partial function $\gamma$ by
-
-$$\gamma(x)\ \simeq\ \alpha(f(x)).$$
-
-Since $f$ is computable and $\alpha$ is partial computable, their composition $\gamma=\alpha\circ f$ is partial computable. Moreover,
-
-$$x\in A \iff f(x)\in B \iff \alpha(f(x))\downarrow \iff \gamma(x)\downarrow,$$
-
-so $A=\operatorname{dom}(\gamma)$. Hence $A$ is r.e.
-
-**(ii)**
-
-Let $A$ be r.e. Then $A=\operatorname{dom}(\alpha)$ for some partial computable function $\alpha$.
-
-For each $e$, define a partial computable function $\beta_e$ that ignores its input and simulates $\alpha(e)$; formally,
-
-$$\beta_e(x)\ \simeq\ \alpha(e)\qquad(\text{for all }x).$$
-
-Intuitively, $\beta_e(0)$ halts iff (\alpha(e)) halts, i.e. iff $e\in A$.
-
-Because the standard numbering $(\phi_n)\_{n\in\mathbb N}$ is a Gödel numbering, there exists a computable function $f$ such that
-
-$$\phi_{f(e)}=\beta_e\qquad\text{for all }e.$$
-
-Now compute:
-
-$$
-e\in A
-\iff \alpha(e)\downarrow
-\iff \beta_e(0)\downarrow
-\iff \phi_{f(e)}(0)\downarrow.
-$$
-
-To reduce to the *diagonal* halting set $H=\lbrace n:\phi_n(n)\downarrow\rbrace$, define a computable map $g$ by
-
-$$g(e)=s(f(e)),$$
-
-where $s$ is any computable “padding” function with the property that $\phi_{s(n)}(x)\simeq \phi_n(0)$ for all $x$. (Equivalently: from an index $n$ we can effectively produce an index of a machine that ignores its input and runs $\phi_n$ on input $0$.)
-
-Then, for all $e$,
-
-$$
-e\in A
-\iff \phi_{f(e)}(0)\downarrow
-\iff \phi_{g(e)}(g(e))\downarrow
-\iff g(e)\in H.
-$$
-
-Thus $A\le_m H$. $\square$
-
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 
-<!-- $\textbf{Corollary 185:}$ A set $A$ is r.e. if and only if $A \le_m H$. -->
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
 A set $A$ is r.e. if and only if $A \le_m H$.
 
 </div>
-
-*Proof*: Immediate by Theorem 184.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
@@ -5620,10 +5527,13 @@ It holds that $H \le_m H_{gen}$ and $H_{gen} \le_m H$.
 
 </div>
 
-*Proof*:
+**Proof**:
 
-* The reduction $H \le_m H_{gen}$ is witnessed by the computable function $f(e) = \langle e, e \rangle$. We have $e \in H \iff \phi_e(e) \downarrow \iff \langle e, e \rangle \in H_{gen}$.
-* The reduction $H_{gen} \le_m H$ follows directly from Corollary 185, because $H_{gen}$ is a recursively enumerable set.
+* The reduction $H \le_m H_{gen}$ is witnessed by the computable function $f(e) = \langle e, e \rangle$. We have 
+  
+  $$e \in H \iff \phi_e(e) \downarrow \iff \langle e, e \rangle \in H_{gen}$$
+
+* The reduction $H_{gen} \le_m H$ follows directly from Corollary above, because $H_{gen}$ is a recursively enumerable set. $\square$
 
 M-reducibility also interacts cleanly with set complements. Let $\bar{X} = \mathbb{N} \setminus X$.
 
@@ -5641,13 +5551,9 @@ This leads to an important non-reducibility result.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(name of Corollary)</span></p>
 
-Let $A$ be an undecidable r.e. set. Then neither set is many-one reducible to the other’s complement:
+Let $A$ be an undecidable r.e. set. Then
 
-$$
-A \not\le_m \overline{A}
-\quad\text{and}\quad
-\overline{A} \not\le_m A.
-$$
+$$A \not\le_m \overline{A}\quad\text{and}\quad\overline{A} \not\le_m A$$
 
 In particular, we have
 
@@ -5655,7 +5561,7 @@ $$H \not\le_m \bar{H} \text{ and } \bar{H} \not\le_m H$$
 
 </div>
 
-*Proof*: The complement $\bar{A}$ cannot be r.e., otherwise $A$ would be decidable by Proposition 165. If we had $A \le_m \bar{A}$, since $\bar{A}$ is not r.e., this would imply by Theorem 184(i) that $A$ is not r.e., which contradicts that $A$ is an r.e. set. If we had $\bar{A} \le_m A$, since $A$ is r.e., this would imply that $\bar{A}$ is also r.e., which we know is false. $\square$
+**Proof**: Proof. The set $\hat{A}$ cannot be r.e. because in this case A would be decidable. By Theorem above, then $\hat{A}$ cannot be $m$-reducible to $A$, hence also $A$ cannot be m-reducible to $\hat{A}$ by Remark above. $\square$
 
 ### Index Sets and Rice’s Theorem
 
@@ -5666,7 +5572,7 @@ Rice's Theorem is a powerful generalization of the undecidability of the halting
 
 A set $I \subseteq \mathbb{N}$ is an **index set** if for all $e,e'$,
 
-$$e \in I \ \text{and}\ \phi_e=\phi_{e'} \ \Longrightarrow\ e' \in I.$$
+$$e \in I \ \land \ \phi_e=\phi_{e'} \ \Longrightarrow\ e' \in I$$
 
 An index set is **nontrivial** if it is neither $\emptyset$ nor $\mathbb{N}$.
 
@@ -5679,11 +5585,11 @@ Let $\varphi_e$ be a computable enumeration of all partial computable functions,
 
 Let $\mathcal{A}$ be a collection of partial computable functions. Define its **index set** by
 
-$$A=\lbrace x:\varphi_x\in\mathcal{A}\rbrace.$$
+$$A=\lbrace x:\varphi_x\in\mathcal{A}\rbrace$$
 
 More generally, a set $A\subseteq\mathbb{N}$ is an **index set** if whenever $x,y\in\mathbb{N}$ satisfy $\varphi_x\simeq \varphi_y$ (i.e., they compute the same partial function), we have
 
-$$x\in A \iff y\in A.$$
+$$x\in A \iff y\in A$$
 
 Intuitively, index sets are subsets of $\mathbb{N}$ defined purely in terms of the functions their elements index.
 
@@ -5782,8 +5688,11 @@ $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
 
 </div>
 
-*Proof of Rice's Theorem 1*: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
-* **Case 1**: I does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, it is not empty, so there must be some index $e_0 \in I$. Let $\beta = \phi_{e_0}$. By our assumption, $\beta$ is not the everywhere undefined function. We will show $\bar{H} \le_m I$. To do this, we need a computable function $g$ such that $e \in \bar{H} \iff g(e) \in I$.
+**Proof of Rice's Theorem 1**: Let $I$ be a nontrivial index set. Let $\phi_\uparrow$ denote the everywhere undefined partial function. There are two cases for $I$.
+* **Case 1**: $I$ does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, it is not empty, so there must be some index $e_0 \in I$. Let $\beta = \phi_{e_0}$. By our assumption, $\beta$ is not the everywhere undefined function. We will show $\bar{H} \le_m I$. To do this, we need a computable function $g$ such that 
+  
+  $$e \in \bar{H} \iff g(e) \in I$$
+
 * Consider the function $g(e)$ which gives the index of a new Turing machine. This machine, on any input $x$, first simulates the computation of $\phi_e(e)$. If this simulation halts, the machine then proceeds to compute $\beta(x)$. If the simulation of $\phi_e(e)$ does not halt, the machine runs forever. The function computed by the machine with index $g(e)$ is:  
   
   $$\phi_{g(e)} = \begin{cases} \beta & \text{if } \phi_e(e)\uparrow \text{ (i.e., } e \in \bar{H}), \\ \phi_\uparrow & \text{if } \phi_e(e)\downarrow \text{ (i.e., } e \in H). \end{cases}$$
@@ -5793,7 +5702,7 @@ $$H \le_m I \quad \text{or} \quad \bar{H} \le_m I$$
   * If $e \in H$, then $\phi_{g(e)} = \phi_\uparrow$. By our case assumption, no index for $\phi_\uparrow$ is in $I$, so $g(e) \notin I$. Thus, $e \in \bar{H} \iff g(e) \in I$, so $\bar{H} \le_m I$.
 * **Case 2**: I contains an index for $\phi_\uparrow$. In this case, the complement set $\bar{I}$ does not contain an index for $\phi_\uparrow$. Since $I$ is nontrivial, $\bar{I}$ is also a nontrivial index set. Applying the logic from Case 1 to $\bar{I}$, we find that $\bar{H} \le_m \bar{I}$. By Remark 187, this implies $H \le_m I$.
 
-*Proof of Rice's Theorem 2.* Let $\phi_\uparrow$ denote the everywhere undefined partial computable function. Since $I$ is nontrivial, $I\neq\emptyset$ and $I\neq\mathbb N$. We distinguish two cases depending on whether $I$ contains an index of $\phi_\uparrow$.
+**Proof of Rice's Theorem 2** Let $\phi_\uparrow$ denote the everywhere undefined partial computable function. Since $I$ is nontrivial, $I\neq\emptyset$ and $I\neq\mathbb N$. We distinguish two cases depending on whether $I$ contains an index of $\phi_\uparrow$.
 
 **Case 1: $I$ contains no index of $\phi_\uparrow$**
 
@@ -5822,8 +5731,10 @@ $$
 The map $e\mapsto g(e)$ is computable because from $e$ we can effectively write down a code for $M_e$ (using the usual indexing of Turing machines / the s-m-n idea).
 
 Now check the reduction:
-* If $e\in\overline{H}$, then $\phi_{g(e)}=\beta=\phi_{e_0}$. Since $e_0\in I$ and $I$ is an index set (membership depends only on the computed function), it follows that $g(e)\in I$.
-* If $e\in H$, then $\phi_{g(e)}=\phi_\uparrow$. By the case assumption, no index of $\phi_\uparrow$ lies in $I$, hence $g(e)\notin I$.
+* If $e\in\overline{H}$, then $\phi_{g(e)}=\beta=\phi_{e_0}$. 
+  * Since $e_0\in I$ and $I$ is an index set (membership depends only on the computed function), it follows that $g(e)\in I$.
+* If $e\in H$, then $\phi_{g(e)}=\phi_\uparrow$. 
+  * By the case assumption, no index of $\phi_\uparrow$ lies in $I$, hence $g(e)\notin I$.
 
 Therefore $e\in\overline{H}\iff g(e)\in I$, so $\overline{H}\le_m I$.
 
@@ -5881,7 +5792,7 @@ For every partial computable function $\alpha$ the set $\lbrace e : \alpha = \ph
 
 </div>
 
-*Proof*: If this set were finite for some $\alpha$, it would be a decidable set. It is also nontrivial (it's not $\emptyset$ or $\mathbb{N}$) and is an index set by definition. This would contradict Corollary 193.
+**Proof**: If this set were finite for some $\alpha$, it would be a decidable set. It is also nontrivial (it's not $\emptyset$ or $\mathbb{N}$) and is an index set by definition. This would contradict Corollary 193.
 
 Not all properties related to Turing machine indices are index sets. For a property to be an index set, it must depend only on the function computed, not the index itself.
 
@@ -5890,7 +5801,7 @@ Not all properties related to Turing machine indices are index sets. For a prope
 
 Let
 
-$$A=\lbrace e : \operatorname{dom}(\phi_e)\ \text{has more than } e \text{ elements}\rbrace.$$
+$$A=\lbrace e : \operatorname{dom}(\phi_e)\ \text{has more than } e \text{ elements}\rbrace$$
 
 Then $A$ is **not** an index set.
 
@@ -5936,7 +5847,7 @@ If $M$ halts on every input $x$ when using oracle $B$, then $M(B)$ denotes the (
 
 A set $A$ is **Turing-reducible** to $B$, written $A \le_T B$, if there exists an oracle Turing machine $M$ such that $A=M(B)$, i.e.
 
-$$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}.$$
+$$A(x)=M(x,B)\quad\text{for all }x\in\mathbb{N}$$
 
 </div>
 
@@ -5949,14 +5860,14 @@ For all sets $A,B$, if $A \le_m B$ then $A \le_T B$. In general, the converse im
 
 </div>
 
-*Proof*:
+**Proof**:
 
 * The implication 
   
   $$A \le_m B \implies A \le_T B$$
   
-  holds because if $f$ is the computable function for the m-reduction, an oracle Turing machine can compute $f(x)$ and then query the oracle for B at the single location $f(x)$ to get the answer.
-* A counterexample for the reverse is given by the halting problem $H$ and its complement $\bar{H}$. For any set $A$, we have $A \le_T \bar{A}$, because an oracle for $\bar{A}$ can be used to decide membership in $A$ and vice versa. Thus, $H \le_T \bar{H}$. However, as shown in Corollary 188, we have $H \not\le_m \bar{H}$.
+  holds because if $f$ is the computable function for the m-reduction, an oracle Turing machine can compute $f(x)$ and then query the oracle for $B$ at the single location $f(x)$ to get the answer.
+* A counterexample for the reverse is given by the halting problem $H$ and its complement $\bar{H}$. For any set $A$, we have $A \le_T \bar{A}$, because an oracle for $\bar{A}$ can be used to decide membership in $A$ and vice versa. Thus, $H \le_T \bar{H}$. However, as shown in Corollary 188, we have $H \not\le_m \bar{H}$. $\square$
 
 ### Like m-reducibility, T-reducibility preserves decidability.
 
@@ -5969,28 +5880,26 @@ Let $A$ and $B$ be sets where $A \le_T B$.
   
 </div>
 
-*Proof*: See the exercises.
-
 ### Relative Computations and the Jump Operator
 
 The concept of an oracle allows us to "relativize" all the fundamental notions of computability. We can speak of sets being decidable or r.e. relative to an oracle.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Relative decidability, Relative r.e.)</span></p>
 
 Let $A,B \subseteq \mathbb{N}$.
 
 * $A$ is **decidable relative to** (or **with oracle**) $B$ if $A \le_T B$.
 * $A$ is **recursively enumerable relative to** $B$ if there exists an oracle Turing machine $M$ such that
   
-  $$A=\lbrace x\in\mathbb{N} : M(x,B)\downarrow\rbrace.$$
+  $$A=\lbrace x\in\mathbb{N} : M(x,B)\downarrow\rbrace$$
 
 </div>
 
 If $A$ is decidable with oracle $B$, we also say $A$ is decidable in $B$ or decidable relative to $B$. The same terminology applies to r.e. sets. Most theorems from standard computability theory have direct analogues in this relativised world.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of Definition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computable with oracle, Effective enumeration with oracle)</span></p>
 
 A function $f$ is **computable with oracle** $B$ if there exists an oracle Turing machine that, on input $i$ and oracle $B$, outputs $f(i)$.
 
@@ -6017,6 +5926,23 @@ Let $A,B$ be sets.
 
 Just as we can create a standard numbering of all Turing machines, we can create a standard numbering of all oracle Turing machines, which is also a Gödel numbering in the relativized sense. This allows us to define a relativized version of the halting problem.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+Similar to the construction for Turing machines, we obtain a standard enumeration $M_0, M_1, \dots$ of oracle Turing machines. First, this is an effective enumeration of Turing machines in the sense that there exists an oracle Turing machine $M$ such that for all $e$, $x$, and all oracles $X$ it holds that
+
+$$M(\langle e, x\rangle, X) \simeq M_e(x, X)$$
+
+Second, similar to a Gödel numbering, for every sequence $O_0, O_1, \dots$ of oracle Turing machines such that for some oracle Turing machine $O$ it holds that
+
+$$O(\langle e, x\rangle, X) \simeq O_e(x, X)$$
+
+there exists a computable function $f$ such that for all $e$, $x$, and all oracles $X$ it holds that
+
+$$M_{f(e)}(x, X) \simeq O_e(x, X)$$
+
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(name of definition)</span></p>
 
@@ -6037,7 +5963,7 @@ For all sets $A,B$, the set $A$ is r.e. relative to $B$ $\iff$ $A \le_m H^B$.
 
 </div>
 
-*Proof*: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
+**Proof**: The proof is a direct relativization of the proof of Theorem 184 and Corollary 185.
 
 * $(\impliedby)$ If $A \le_m H^B$ via computable function $f$, we can build an oracle TM for $A$. On input $x$ with oracle $B$, it computes $f(x)$ and then simulates the oracle TM $M_{f(x)}$ on input $f(x)$ with oracle $B$. This machine halts iff $f(x) \in H^B$, which happens iff $x \in A$. Thus, $A$ is r.e. in $B$.
 * $(\implies)$ If $A$ is r.e. in $B$, there is an oracle TM $M$ such that $A$ is its domain with oracle $B$. We can create a computable function $h$ such that for any $x, M_{h(x)}$ is an oracle TM that on any input $y$ with any oracle $X$ simulates $M$ on input $x$ with oracle $X$. The function $h$ is computable as it just hard-wires $x$ into the description of $M$. Then we have:  
@@ -6060,22 +5986,18 @@ The jump operator always produces a strictly more complex set. A set is always r
 
 Let $B$ be a set. Then $B \le_m H^B$, so $B$ is decidable relative to $H^B$. However, $H^B$ is not decidable relative to $B$; that is,
 
-$$
-B \le_m H^B
-\quad\text{and}\quad
-H^B \not\le_T B
-$$
+$$B \le_m H^B \quad\text{and}\quad H^B \not\le_T B$$
 
 </div>
 
-*Proof*:
+**Proof**:
 
 * To show $B \le_m H^B$, we need a computable function $h$. Let $h(x)$ be the index of an oracle TM $M_{h(x)}$ that, on any input $y$ and with any oracle $X$, halts if and only if $x \in X$. Then 
   
   $$x \in B \iff M_{h(x)}(h(x), B) \downarrow \iff h(x) \in H^B$$
   
   Thus $B \le_m H^B$.
-* The proof that $H^B \not\le_T B$ is a relativized diagonalization argument, identical to the proof that the original halting problem is undecidable. If $H^B$ were decidable in $B$, then the function $g(e) = 1 + M_e(e, B)$ (if $e \in H^B$) and $0$ (otherwise) would be computable in $B$. But this function cannot be computed by any oracle TM $M_e$ with oracle $B$, as it differs from the function computed by $M_e$ on input $e$. This is a contradiction.
+* The proof that $H^B \not\le_T B$ is a relativized diagonalization argument, identical to the proof that the original halting problem is undecidable. If $H^B$ were decidable in $B$, then the function $g(e) = 1 + M_e(e, B)$ (if $e \in H^B$) and $0$ (otherwise) would be computable in $B$. But this function cannot be computed by any oracle TM $M_e$ with oracle $B$, as it differs from the function computed by $M_e$ on input $e$. This is a contradiction. $\square$
 
 Finally, the jump operator is monotone with respect to Turing reducibility. If $A$ is no harder than $B$, then the jump of $A$ is no harder than the jump of $B$.
 
@@ -6088,7 +6010,7 @@ $$A \le_T B \ \Longrightarrow\ H^A \le_m H^B$$
 
 </div>
 
-*Proof*: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means 
+**Proof**: Let $A \le_T B$ via an oracle TM $M_{oracle}$. We want to show $H^A \le_m H^B$. We need a computable function $h$ such that $e \in H^A \iff h(e) \in H^B$. The function $h(e)$ produces the index of a new oracle TM $M_{h(e)}$. This machine, on input $y$ with oracle $X$, simulates the oracle TM $M_e$ on input $e$. Whenever $M_e$ makes an oracle query for some string $z$ (to what it thinks is oracle $A$), $M_{h(e)}$ pauses and uses its own oracle $X$ to simulate $M_{oracle}$ on input $z$ to get the answer. It then provides this answer back to the simulation of $M_e$. So,$ M_{h(e)}$ with oracle $X$ simulates $M_e$ with oracle $M_{oracle}(X)$. This means 
 
 $$M_e(e, A) \downarrow \iff M_e(e, M_{oracle}(B)) \downarrow \iff M_{h(e)}(h(e), B) \downarrow$$
 
@@ -6104,7 +6026,7 @@ The function $h$ is computable, so this establishes $H^A \le_m H^B$. $\square$
 
 First-order logic, also known as predicate calculus, provides a formal system for reasoning. In this system, formulas are constructed from a set of symbols, which include relation symbols, function symbols, and constant symbols, in addition to logical symbols such as quantifiers $(∀, ∃)$, logical connectives $(∧, ∨, ¬, →)$, and the equality sign $(=)$.
 
-For example, consider the formula: $\phi ≡ ∀x∀y∃z(x < z ∧ z < y)$ Here, $<$ is a relation symbol of arity $2$, written in infix notation. Formulas like $φ$, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers $\mathbb{N}$ or real numbers $\mathbb{R}$) and provide interpretations for the symbols over that domain. A binary relation symbol like $<$ would be interpreted as a set of ordered pairs from the domain.
+For example, consider the formula: $\phi ≡ \forall x \forall y \exists z(x < z \land z < y)$ Here, $<$ is a relation symbol of arity $2$, written in infix notation. Formulas like $\phi$, where every occurrence of a variable is within the scope of a corresponding quantifier, are called sentences. To determine the truth value of a sentence, one must specify a domain (e.g., the set of natural numbers $\mathbb{N}$ or real numbers $\mathbb{R}$) and provide interpretations for the symbols over that domain. A binary relation symbol like $<$ would be interpreted as a set of ordered pairs from the domain.
 
 In the case of the formula $\phi$ above:
 * If the domain is the set of natural numbers ($\mathbb{N}$) and $<$ is interpreted as the standard "less than" ordering, the formula is false. There is no natural number $z$ that can exist between two consecutive numbers like $x=1$ and $y=2$.
@@ -6214,7 +6136,7 @@ The set $T$ of true arithmetic sentences is not axiomatizable. That is, there is
   * If a derivation for $¬φ$ is found, $M$ rejects.
 3. This construction describes a total Turing machine $M$ that decides the set $T$.
 4. However, this contradicts Theorem 208, which states that $T$ is undecidable.
-5. Therefore, our initial assumption must be false, and no such r.e. set of axioms $A$ can exist.
+5. Therefore, our initial assumption must be false, and no such r.e. set of axioms $A$ can exist. $\square$
 
 ### Arithmetization of Computations
 
@@ -6225,7 +6147,7 @@ The ability to express computational statements within arithmetic is the technic
 To encode sequences of configurations, we first need a way to encode arbitrary finite sequences of natural numbers. This can be achieved using the Chinese Remainder Theorem and a clever construction known as Gödel's $β$-function.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(210: Chinese Remainder Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Chinese Remainder Theorem)</span></p>
 
 Let $m_1, \dots, m_t$ be pairwise co-prime natural numbers. Then, for every sequence of natural numbers $a_1, \dots, a_t$, there exists a unique number $m$ such that: 
 
@@ -6255,7 +6177,7 @@ Let $d = n!$ for a natural number $n > 0$. Then, the natural numbers $d+1, 2d+1,
 2. A common divisor of two numbers must also divide their difference. Thus, $p$ divides $\lvert (id+1) - (jd+1)\rvert = \lvert i-j\rvert d$.
 3. Since $p$ is a prime that does not divide $d$, it must divide $\lvert i-j\rvert$.
 4. However, $i, j \in \lbrace 1, \dots, n\rbrace \implies 0 < \lvert i-j\rvert < n$.
-5. This leads to a contradiction, as the prime $p$ must be greater than $n$ but also divide a number smaller than $n$. Thus, no such common prime divisor $p$ exists, and the numbers are pairwise co-prime.
+5. This leads to a contradiction, as the prime $p$ must be greater than $n$ but also divide a number smaller than $n$. Thus, no such common prime divisor $p$ exists, and the numbers are pairwise co-prime. $\square$
 
 This lemma enables the definition of a function that can extract elements from an encoded sequence.
 
@@ -6349,4 +6271,4 @@ It is not possible to decide whether a given Diophantine equation is solvable.
 3. For any given $x$, the statement on the right corresponds to asking whether the Diophantine equation $f(x, \vec{y}) - g(x, \vec{y}) = 0$ has a solution in the natural numbers.
 4. As noted in Remark 216, deciding solvability over $N$ is equivalent to deciding solvability over the integers.
 5. If there were an algorithm to decide the solvability of Diophantine equations, we could use it to decide the right-hand side of the equivalence for any $x$. This would give us an algorithm to decide membership in $A$.
-6. Since $A$ is undecidable, this is a contradiction. Therefore, no such general algorithm for Diophantine equations can exist.
+6. Since $A$ is undecidable, this is a contradiction. Therefore, no such general algorithm for Diophantine equations can exist. $\square$
