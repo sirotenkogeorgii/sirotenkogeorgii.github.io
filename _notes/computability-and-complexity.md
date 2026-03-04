@@ -865,7 +865,7 @@ These implications are logically equivalent to their contrapositions, i.e., to:
 
 </div>
 
-**Proof.**: We prove the first implication, $B \in \text{P} \implies A \in \text{P}$. The proof for $\text{NP}$ is very similar. Let $A \le_p^m B$ via a function $g \in \text{FP}$. Let $M_g$ be a deterministic Turing machine that computes $g$ in time $p_g(n)$ for some polynomial $p_g$. Since $B \in \text{P}$, there is a deterministic Turing machine $M_B$ that decides $B$ in time $p_B(n)$ for some polynomial $p_B$.
+**Proof:**: We prove the first implication, $B \in \text{P} \implies A \in \text{P}$. The proof for $\text{NP}$ is very similar. Let $A \le_p^m B$ via a function $g \in \text{FP}$. Let $M_g$ be a deterministic Turing machine that computes $g$ in time $p_g(n)$ for some polynomial $p_g$. Since $B \in \text{P}$, there is a deterministic Turing machine $M_B$ that decides $B$ in time $p_B(n)$ for some polynomial $p_B$.
 
 We can construct a deterministic Turing machine $M_A$ to decide $A$ as follows:
 
@@ -886,10 +886,10 @@ The relation $\le_p^m$ is reflexive and transitive.
 
 </div>
 
-**Proof.**:
+**Proof:**:
 
 * Reflexivity: For any language $A$, $A \le_p^m A$ via the identity function $g(x) = x$, which is computable in polynomial (linear) time.
-* Transitivity: Suppose $A \le_p^m B$ via function $g_B$ and $B \le_p^m C$ via function $g_C$. Let $g_B$ be computable in time $p_B(n)$ and $g_C$ be computable in time $p_C(n)$. The reduction from $A$ to $C$ is the composition $g_C \circ g_B$. We have $x \in A \iff g_B(x) \in B \iff g_C(g_B(x)) \in C$. The time to compute $g_C(g_B(x))$ is the time to compute $g_B(x)$ (which is $p_B(n)$) plus the time to compute $g_C$ on the result (which is $p_C(\lvert g_B(x) \rvert) \le p_C(p_B(n))$). The total time is $p_B(n) + p_C(p_B(n))$, which is a polynomial. Thus, $A \le_p^m C$.
+* Transitivity: Suppose $A \le_p^m B$ via function $g_B$ and $B \le_p^m C$ via function $g_C$. Let $g_B$ be computable in time $p_B(n)$ and $g_C$ be computable in time $p_C(n)$. The reduction from $A$ to $C$ is the composition $g_C \circ g_B$. We have $x \in A \iff g_B(x) \in B \iff g_C(g_B(x)) \in C$. The time to compute $g_C(g_B(x))$ is the time to compute $g_B(x)$ (which is $p_B(n)$) plus the time to compute $g_C$ on the result (which is $p_C(\lvert g_B(x) \rvert) \le p_C(p_B(n))$). The total time is $p_B(n) + p_C(p_B(n))$, which is a polynomial. Thus, $A \le_p^m C$. $\square$
 
 ### $\text{NP}$-Hardness and $\text{NP}$-Completeness
 
@@ -927,7 +927,7 @@ The following statements are equivalent:
 
 * (i) $\implies$ (ii): If $\text{P}$ = $\text{NP}$, then every language in $\text{NP}$ is also in $\text{P}$. By definition, $\text{NP}$-complete languages are in $\text{NP}$, so they must also be in $\text{P}$.
 * (ii) $\implies$ (iii): This implication is trivial, assuming that $\text{NP}$-complete languages exist (which will be proven later).
-* (iii) $\implies$ (i): We need to show that if some $\text{NP}$-complete language $L$ is in $\text{P}$, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an $\text{NP}$-complete language such that $L \in \text{P}$. Since $L$ is $\text{NP}$-hard, every language $A \in \text{NP}$ is $p$-$m$-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$.
+* (iii) $\implies$ (i): We need to show that if some $\text{NP}$-complete language $L$ is in $\text{P}$, then $\text{NP} \subseteq \text{P}$. (The inclusion $\text{P} \subseteq \text{NP}$ is true by definition). Let $L$ be an $\text{NP}$-complete language such that $L \in \text{P}$. Since $L$ is $\text{NP}$-hard, every language $A \in \text{NP}$ is $p$-$m$-reducible to $L$ ($A \le_p^m L$). From Proposition 37, we know that if $A \le_p^m L$ and $L \in \text{P}$, then $A \in \text{P}$. Since this holds for any arbitrary language $A \in \text{NP}$, it follows that $\text{NP} \subseteq \text{P}$. Therefore, $\text{P} = \text{NP}$. $\square$
 
 The Significance of the $\text{P}$ vs. $\text{NP}$ Problem
 
@@ -962,7 +962,9 @@ The concept of reducibility allows us to compare the relative difficulty of comp
 
 **p-m-equivalence**: Two languages $A$ and $B$ are $p$-$m$-equivalent, denoted $A \equiv_p^m B$, if $A \le_p^m B$ and $B \le_p^m A$.
 
-**p-m-degree**: The $p$-$m$-degree of a language $A$ is the class of all languages that are $p$-$m$-equivalent to it:  $\text{deg}_p^m(A) = \lbrace B \subseteq \lbrace 0, 1 \rbrace ^* : A \equiv_p^m B\rbrace$ 
+**p-m-degree**: The $p$-$m$-degree of a language $A$ is the class of all languages that are $p$-$m$-equivalent to it:  
+
+$$\text{deg}_p^m(A) = \lbrace B \subseteq \lbrace 0, 1 \rbrace ^* : A \equiv_p^m B\rbrace$$
 
 </div>
 
@@ -1017,15 +1019,15 @@ We begin by formally defining the components of propositional logic.
 
 Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
 
-* Base case: Every element of $\text{Var}$ is a propositional formula.
-* Inductive step: If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
+* **Base case:** Every element of $\text{Var}$ is a propositional formula.
+* **Inductive step:** If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
 
 In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true ($1$) and false ($0$) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
 
 The truth value of a formula, denoted $\text{val}(\phi)$, is either true ($1$) or false ($0$). This value is determined relative to an assignment $b : \text{Var} \to \lbrace 0, 1\rbrace$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
 
-* Base case: For a variable $X \in \text{Var}$, $\text{val}(X) = b(X)$.
-* Inductive step: For formulas $\phi$ and $\phi'$:
+* **Base case:** For a variable $X \in \text{Var}$, $\text{val}(X) = b(X)$.
+* **Inductive step:** For formulas $\phi$ and $\phi'$:
   * $\text{val}(\neg \phi) = 1 - \text{val}(\phi)$
   * $\text{val}(\phi \land \phi') = \min\lbrace \text{val}(\phi), \text{val}(\phi')\rbrace$
 
@@ -1061,9 +1063,9 @@ This leads to the formal definition of the satisfiability problems as languages.
 
 Assuming an appropriate representation of propositional formulas as binary strings, we define the following languages for any $k > 0$:
 
-$\text{SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in CNF} \,\rbrace$
+$$\text{SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in CNF} \,\rbrace$$
 
-$k\text{-SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\rbrace$
+$$k\text{-SAT} = \lbrace \, \phi \mid \phi \text{ is a satisfiable propositional formula in k-CNF} \,\rbrace$$
 
 </div>
 
@@ -1120,13 +1122,18 @@ An accepting computation is a sequence of configurations, starting with the init
 
 Together, these points establish that $A \le_p^m \text{SAT}$, proving that $\text{SAT}$ is $\text{NP}$-hard.
 
-#### Technical Note on Logical Notation
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Technical Note on Logical Notation)</span></p>
 
 In the construction, we will frequently express clauses as implications. The following logical equivalences are useful:
 
-* An implication $\alpha \to \beta$ is equivalent to $\neg \alpha \lor \beta$.
-* The negation of a conjunction $\neg(\gamma_1 \land \dots \land \gamma_r)$ is equivalent to a disjunction of negations $\neg \gamma_1 \lor \dots \lor \neg \gamma_r$.
-* A clause of the form $L_1 \land \dots \land L_r \to L_{r+1}$ (where each $L_i$ is a literal) is equivalent to the disjunctive clause $\neg L_1 \lor \dots \lor \neg L_r \lor L_{r+1}$.
+$$\alpha \to \beta \iff \neg \alpha \lor \beta$$
+
+$$\neg(\gamma_1 \land \dots \land \gamma_r) \iff \neg \gamma_1 \lor \dots \lor \neg \gamma_r$$
+
+$$L_1 \land \dots \land L_r \to L_{r+1} \iff \neg L_1 \lor \dots \lor \neg L_r \lor L_{r+1}$$
+
+</div>
 
 #### Formalization of the Turing Machine Computation
 
@@ -1135,9 +1142,10 @@ A computation of $M$ on input $x$ is a sequence of configurations over $p(n)+1$ 
 #### We define index sets to refer to time steps, tape cells, states, and nondeterministic choices:
 
 * **Time steps:** $I = \lbrace 0,1, \dots, p(n) \rbrace$
-* **Tape cells:** $J = \lbrace -p(n)+1, \dots, p(n)+1 \rbrace$ (covers all cells the head can possibly reach) #TODO: should not it be -p(n)-1 instead of p(n)+1?
-* **States**: $K = \lbrace 0, 1, \dots, t \rbrace$, where $t = \lvert Q \rvert$ and $Q= \lbrace q_1, \dots, q_t \rbrace$
-* Instructions/Choices: $L = \lbrace 0, 1, \dots, d \rbrace$, where $d$ is the number of instructions in $\Delta$. The index $0$ represents the "choice" of repeating a halting configuration.
+* **Tape cells:** $J = \lbrace -p(n)+1, \dots, p(n)+1 \rbrace$ (covers all cells the head can possibly reach)
+  * the set as written is correct if the head starts at cell 1.
+* **States**: $K = \lbrace 1, \dots, t \rbrace$, where $t = \lvert Q \rvert$ and $Q= \lbrace q_1, \dots, q_t \rbrace$
+* **Instructions/Choices**: $L = \lbrace 0, 1, \dots, d \rbrace$, where $d$ is the number of instructions in $\Delta$. The index $0$ represents the "choice" of repeating a halting configuration.
 * We also define $I^- = I \setminus \lbrace p(n) \rbrace$ and $L^- = L \setminus \lbrace 0 \rbrace$.
 
 We introduce the following propositional variables to describe the computation. The intended meaning of each variable being true is given below:
@@ -1148,7 +1156,7 @@ We introduce the following propositional variables to describe the computation. 
 * $A_{i',\ell}$: At time step $i' \in I^-$, the $\ell$-th instruction in $\Delta$ is executed to transition from configuration $i'$ to $i'+1$.
   * $A_{i,0}$: At time step $i \in I$, the configuration is a halting configuration (i.e., the computation has already terminated).
 
-Constructing the Formula $\phi_x$
+#### Constructing the Formula $\phi_x$
 
 The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a specific property of a valid accepting computation.
 
@@ -1161,6 +1169,7 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
   $$A_{p(n),0} \land \left( \bigvee_{k \in K : q_k \in F} Z_{p(n),k} \right) \quad (2.5)$$ 
 
 3. **Uniqueness Constraints:** At any time step $i$, the configuration must be well-defined.
+  
   * **Unique Inscription:** Each tape cell contains at most one symbol.
   
   $$\bigwedge_{(i,j,a,a') \in I \times J \times \Gamma \times \Gamma : a < a'} (B_{i,j,a} \to \neg B_{i,j,a'}) \quad (2.6)$$ 
@@ -1178,6 +1187,7 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
   $$\bigwedge_{(i,\ell,\ell') \in I \times L \times L : \ell < \ell'} (A_{i,\ell} \to \neg A_{i,\ell'}) \quad (2.9)$$
   
 4. **Valid Transitions:** The configuration at step $i+1$ must follow legally from the configuration at step $i$.
+  
   * **Writing only at the head position:** Tape cells not under the head do not change.  
   
   $$\bigwedge_{(i,j,a) \in I^- \times J \times \Gamma} (B_{i,j,a} \land \neg P_{i,j} \to B_{i+1,j,a}) \quad (2.10)$$ 
@@ -1190,11 +1200,17 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
 
   $$\bigwedge_{(i,j) \in I^- \times J} (A_{i,0} \land P_{i,j} \to P_{i+1,j}) \land \bigwedge_{(i,k) \in I^- \times K} (A_{i,0} \land Z_{i,k} \to Z_{i+1,k}) \quad (2.12)$$ 
 
-  * **Instruction Execution:** In every non-halting configuration, exactly one instruction must be executed. $#TODO: what prevent all Ail to be halting?
+  * **Instruction Execution:** In every non-halting configuration, exactly one instruction must be executed. #TODO: what prevent all Ail to be halting?
     
     $$\bigwedge_{i \in I} \left( \bigvee_{\ell \in L} A_{i,\ell} \right) \quad (2.13)$$
 
-  * For the $\ell$-th instruction in $\Delta$, let it be ($q_{k_{\ell}}$, $a_{\ell}$, $q_{k'_{\ell}}$, $a'_{\ell}$, $B_{\ell}$), where $B_{\ell}$ is the head movement ($L$, $R$, $S$). Let $\delta_{\ell}$ be in $\lbrace -1, 1, 0 \rbrace$ for $L$, $R$, $S$ respectively.
+  * For the $\ell$-th instruction in $\Delta$, let it be 
+    
+    $$q_{k_{\ell}}, a_{\ell}, q_{k'_{\ell}}, a'_{\ell}, B_{\ell}$$
+
+    * where $B_{\ell}$ is the head movement ($L$, $R$, $S$). 
+    * Let $\delta_{\ell}$ be in $\lbrace -1, 1, 0 \rbrace$ for $L$, $R$, $S$ respectively.
+  
   * **A configuration is not halting if an instruction applies to it.**  
   
   $$\bigwedge_{(i,j,\ell) \in I \times J \times L^-} (Z_{i,k_\ell} \land P_{i,j} \land B_{i,j,a_\ell} \to \neg A_{i,0}) \quad (2.14)$$ 
@@ -1426,7 +1442,7 @@ This definition ensures that configurations remain snapshots of all information 
 
 </div>
 
-$\textbf{Convention 59 (Space-Bounds and Off-line Turing machines):}$ In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
+**Convention 59 (Space-Bounds and Off-line Turing machines):** In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
 
 ### Deterministic Space Complexity
 
