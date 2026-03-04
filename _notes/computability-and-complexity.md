@@ -1103,7 +1103,7 @@ The language $\text{SAT}$ is $\text{NP}$-complete.
 
 </div>
 
-**Proof.**: We have already established in the previous Remark that $\text{SAT}$ is in $\text{NP}$. To prove that it is $\text{NP}$-complete, we must show it is $\text{NP}$-hard. This requires showing that every language $A \in \text{NP}$ is $p$-$m$-reducible to $\text{SAT}$.
+**Proof:**: We have already established in the previous Remark that $\text{SAT}$ is in $\text{NP}$. To prove that it is $\text{NP}$-complete, we must show it is $\text{NP}$-hard. This requires showing that every language $A \in \text{NP}$ is $p$-$m$-reducible to $\text{SAT}$.
 
 Let $A$ be any language in $\text{NP}$. We will construct a function $g : x \mapsto \phi_x$, computable in polynomial time (i.e., $g \in \text{FP}$), that maps any binary word $x$ to a propositional formula $\phi_x$ in CNF. This construction will ensure that $x \in A$ if and only if $\phi_x$ is satisfiable.
 
@@ -1182,11 +1182,11 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
   
   $$\bigwedge_{(i,k,k') \in I \times K \times K : k < k'} (Z_{i,k} \to \neg Z_{i,k'}) \quad (2.8)$$ 
   
-  * **Unique Instruction:** At most one instruction is executed. No instruction is executed if and only if the configuration is halting ($A_{i,0}$ is true). #TODO: does not this formula below only requires to have at most one instruction executed?
+  * **Unique Instruction:** At most one instruction is executed. No instruction is executed if and only if the configuration is halting ($A_{i,0}$ is true).
   
   $$\bigwedge_{(i,\ell,\ell') \in I \times L \times L : \ell < \ell'} (A_{i,\ell} \to \neg A_{i,\ell'}) \quad (2.9)$$
   
-4. **Valid Transitions:** The configuration at step $i+1$ must follow legally from the configuration at step $i$.
+1. **Valid Transitions:** The configuration at step $i+1$ must follow legally from the configuration at step $i$.
   
   * **Writing only at the head position:** Tape cells not under the head do not change.  
   
@@ -1200,13 +1200,13 @@ The formula $\phi_x$ is the conjunction of several subformulas, each enforcing a
 
   $$\bigwedge_{(i,j) \in I^- \times J} (A_{i,0} \land P_{i,j} \to P_{i+1,j}) \land \bigwedge_{(i,k) \in I^- \times K} (A_{i,0} \land Z_{i,k} \to Z_{i+1,k}) \quad (2.12)$$ 
 
-  * **Instruction Execution:** In every non-halting configuration, exactly one instruction must be executed. #TODO: what prevent all Ail to be halting?
+  * **Instruction Execution:** In every non-halting configuration, exactly one instruction must be executed.
     
     $$\bigwedge_{i \in I} \left( \bigvee_{\ell \in L} A_{i,\ell} \right) \quad (2.13)$$
 
   * For the $\ell$-th instruction in $\Delta$, let it be 
     
-    $$q_{k_{\ell}}, a_{\ell}, q_{k'_{\ell}}, a'_{\ell}, B_{\ell}$$
+    $$\Delta_\ell = (q_{k_{\ell}}, a_{\ell}, q_{k'_{\ell}}, a'_{\ell}, B_{\ell})$$
 
     * where $B_{\ell}$ is the head movement ($L$, $R$, $S$). 
     * Let $\delta_{\ell}$ be in $\lbrace -1, 1, 0 \rbrace$ for $L$, $R$, $S$ respectively.
@@ -1253,7 +1253,9 @@ For all $k \ge 3$, the language $\text{k-SAT}$ is $\text{NP}$-complete.
 
 To show that $\text{3-SAT}$ is $\text{NP}$-hard, we use the transitivity of $p$-$m$-reducibility. By Cook's Theorem, $\text{SAT}$ is $\text{NP}$-hard. Therefore, if we can show that $\text{SAT} \le_p^m \text{3-SAT}$, it follows that $\text{3-SAT}$ is also $\text{NP}$-hard.
 
-We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi'$ such that $\phi \in \text{SAT} \iff \phi' \in \text{3-SAT}$.
+We need to construct a polynomial-time computable function that transforms a formula $\phi$ into a formula $\phi'$ such that 
+
+$$\phi \in \text{SAT} \iff \phi' \in \text{3-SAT}$$
 
 Let $\phi$ be a given propositional formula.
 
@@ -1273,14 +1275,13 @@ Let a clause $C_i$ be $(L_1^i \lor L_2^i \lor \dots \lor L_{k_i}^i)$, where $L_j
   
   The final formula is $\phi' = \kappa_1 \land \kappa_2 \land \dots \land \kappa_m$. This transformation introduces a polynomial number of new variables and clauses and is computable in polynomial time.
 
-Now, we must show that $\phi$ is satisfiable if and only if $\phi$' is satisfiable.
+Now, we must show that $\phi$ is satisfiable if and only if $\phi'$ is satisfiable.
 
-($\Rightarrow$) Assume $\phi$ is satisfiable. Let b be a satisfying assignment for $\phi$. For each clause $C_i = (L_1^i \lor \dots \lor L_{k_i}^i)$ in $\phi$, at least one literal must be true under $b$. Let $t_i$ be the index of the first true literal in $C_i$. We can extend the assignment $b$ to the new variables $Z_j^i$ as follows:
-
+($\Rightarrow$) Assume $\phi$ is satisfiable. Let $b$ be a satisfying assignment for $\phi$. For each clause $C_i = (L_1^i \lor \dots \lor L_{k_i}^i)$ in $\phi$, at least one literal must be true under $b$. Let $t_i$ be the index of the first true literal in $C_i$. We can extend the assignment $b$ to the new variables $Z_j^i$ as follows:
 * Set $Z_j^i$ to true for all $j < t_i$.
-* Set $Z_j^i$ to false for all $j \ge t_i$. Under this extended assignment, every clause in every $\kappa_i$ becomes true, thus satisfying $\phi$'.
+* Set $Z_j^i$ to false for all $j \ge t_i$. Under this extended assignment, every clause in every $\kappa_i$ becomes true, thus satisfying $\phi'$.
 
-($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi$' must also be unsatisfiable. Let $b$ be an arbitrary assignment for the variables in $\phi$'. Since $\phi$ is unsatisfiable, under the restriction of $b$ to the original variables, at least one clause $C_i$ in $\phi$ must be false. This means all literals $L_1^i$, $\dots$, $L_{k_i}^i$ are false. Now consider the corresponding formula $\kappa_i$ under assignment $b$:  
+($\Leftarrow$) Assume $\phi$ is unsatisfiable. We will show that $\phi'$ must also be unsatisfiable. Let $b$ be an arbitrary assignment for the variables in $\phi'$. Since $\phi$ is unsatisfiable, under the restriction of $b$ to the original variables, at least one clause $C_i$ in $\phi$ must be false. This means all literals $L_1^i, \dots, L_{k_i}^i$ are false. Now consider the corresponding formula $\kappa_i$ under assignment $b$:  
 
 $$\kappa_i \equiv (L_1^i \lor Z_1^i) \land (\neg Z_1^i \lor L_2^i \lor Z_2^i) \land \dots \land (\neg Z_{k_i-1}^i \lor L_{k_i}^i)$$  
 
@@ -1320,7 +1321,7 @@ The language $\text{CLIQUE}$ is $\text{NP}$-complete.
 
 </div>
 
-**Proof.**: The proof consists of two main parts:
+**Proof:**: The proof consists of two main parts:
 
 1.  Show that $\text{CLIQUE} \in \text{NP}$.
 2.  Show that $\text{CLIQUE}$ is $\text{NP}$-hard by demonstrating that a known $\text{NP}$-complete problem, $\text{3-SAT}$, is polynomial-time many-one reducible to $\text{CLIQUE}$ (i.e., $\text{3-SAT} \le_p^m \text{CLIQUE}$).
@@ -1381,14 +1382,14 @@ This pattern provides a fundamental characterization of the class $\text{NP}$.
 A language $L$ is in the class $\text{NP}$ if and only if there exists a language $B$ in $\text{P}$ and a polynomial $p$ such that for all binary words $w$, it holds that
 
 $$
-w \in L \text{ if and only if } \exists z \in \lbrace 0, 1\rbrace^* [(w, z) \in B \text{ and } \lvert z\rvert \le p(\lvert w \rvert)]
+w \in L \iff \exists z \in \lbrace 0, 1\rbrace^* [(w, z) \in B \text{ and } \lvert z\rvert \le p(\lvert w \rvert)]
 $$
 
 In this formulation, for an instance $w$ of $L$, the binary words $z$ (of length at most $p(\lvert w \rvert)$) represent the **possible solutions**, and the language $B$ acts as a verifier, where $(w, z) \in B$ means that $z$ is an **admissible solution** for $w$.
 
 </div>
 
-**Proof sketch.**:
+**Proof sketch:**:
 
 ($\Rightarrow$) **If $L \in \text{NP}$, then such a $B$ and $p$ exist.**
 Let $L$ be a language in $\text{NP}$. By definition, there is a nondeterministic Turing machine $M$ that recognizes $L$ and is $p_M(n)$-time-bounded for some polynomial $p_M$. Let the instruction set of $M$ have size $d$. We can represent each instruction $j$ (for $j = 1, \dots, d$) by the binary word $1^j0^{d-j}$.
@@ -1442,7 +1443,7 @@ This definition ensures that configurations remain snapshots of all information 
 
 </div>
 
-**Convention 59 (Space-Bounds and Off-line Turing machines):** In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
+**Convention (Space-Bounds and Off-line Turing machines):** In the context of space-bounded computations, all considered Turing machines are off-line Turing machines, unless explicitly stated otherwise.
 
 ### Deterministic Space Complexity
 
@@ -1626,7 +1627,7 @@ Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s
 
 </div>
 
-**Proof.**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
+**Proof:**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
 
 <div class="accordion">
   <details>
@@ -1698,7 +1699,7 @@ The relationships in the second and third columns also hold for an arbitrary spa
 
 </div>
 
-**Proof.**: The inclusions in the diagram can be justified as follows:
+**Proof:**: The inclusions in the diagram can be justified as follows:
 
 1.  **Vertical Inclusions:** The inclusions from the first row to the second row (e.g., $\text{DTIME}(t(n)) \subseteq \text{NTIME}(t(n))$) hold by definition, as any deterministic Turing machine is a special case of a nondeterministic one.
 2.  **First Horizontal Inclusions:** The inclusions from the first column to the second (e.g., $\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$) are immediate from the previous Remark.
@@ -1751,7 +1752,7 @@ The DTM $D$ works by determining if any node in $M$'s computation tree is labele
 
 We present two constructions for the DTM $D$.
 
-**First Construction of D**
+**First Construction of $D$**
 
 This construction performs a **breadth-first-style search** on the computation tree.
 
@@ -1767,12 +1768,12 @@ This process systematically checks all possible computation paths up to the maxi
   <details>
     <summary>Note to the second step (Iterate by Length)</summary>
     <p>
-    We don't store all words of the current length i, because it would require exponential space. We process words in this step one by one and check it.
+    We don't store all words of the current length $i$, because it would require exponential space. We process words in this step one by one and check it.
     </p>
   </details>
 </div>
 
-**Second Construction of D**
+**Second Construction of $D$**
 
 This construction is more efficient and performs an exhaustive **depth-first search** on the computation tree of $M$, using a backtracking algorithm.
 
@@ -1888,15 +1889,11 @@ where $K \xrightarrow{\le t}_N K'$ means there is a computation of $N$ of length
 
 We will construct a deterministic TM $M$ that decides if this condition holds using $O(s^2(n))$ space. The core of the proof is a recursive, divide-and-conquer algorithm. To check if
 
-$$
-K_1 \xrightarrow{\le 2^i}_N K_2,
-$$
+$$K_1 \xrightarrow{\le 2^i}_N K_2$$
 
 the algorithm checks for the existence of an intermediate configuration $K_{mid}$ such that:
 
-$$
-K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2
-$$
+$$K_1 \xrightarrow{\le 2^{i-1}}_N K_{mid} \quad \text{and} \quad K_{mid} \xrightarrow{\le 2^{i-1}}_N K_2$$
 
 The machine $M$ checks this by iterating through all possible configurations $K_{mid}$ that obey the space bound $s(n)$. For each candidate $K_{mid}$, it recursively checks the two subproblems.
 
@@ -1911,8 +1908,11 @@ and
 $$(ii) K \xrightarrow{\le 2^{\ell(n)-1}}_N K_{accept}(x)$$
 
 2.  To check condition (i), $M$ recursively breaks it down further, looking for a configuration $K'$ such that:
-    iii. $K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$
-    iv. $K' \xrightarrow{\le 2^{\ell(n)-2}}_N K$
+    
+    $$(iii) K_{initial}(x) \xrightarrow{\le 2^{\ell(n)-2}}_N K'$$
+
+    $$(iv) K' \xrightarrow{\le 2^{\ell(n)-2}}_N K$$
+
 3.  This process continues until the length of the computation to be checked is $2^0=1$ or $2^1=2$. These base cases can be checked directly by inspecting the transition function of $N$.
 
 The depth of this recursion is $\ell(n) = d \cdot s(n)$. At each level of the recursion, the machine $M$ needs to store the configurations that form the start and end points of the current subproblem (e.g., $K_{initial}, K_{accept}, K, K'$, etc.). Since the recursion depth is $\ell(n)$, and each configuration of $N$ requires $O(s(n))$ space to store, the total space required for the recursion stack is $O(\ell(n) \cdot s(n)) = O(s(n) \cdot s(n)) = O(s^2(n))$.
@@ -2017,7 +2017,7 @@ To place $\text{QBF}$ inside $\text{PSPACE}$, build a deterministic polynomial-s
 
 Initially, $w_1$ captures the full prefix, $w_2$ points to $Q_1$, and $w_3$ is the all-zero assignment. The evaluation procedure recursively branches on each quantifier, toggling the relevant bit of $w_3$ and combining subresults according to whether the quantifier is existential or universal. The recursion depth is $m \le n$, and only the current assignment and fixed bookkeeping are stored, so the total space is polynomial in $n$. Hence $\text{QBF} \in \text{PSPACE}$. $\square$
 
-The recursion depth is $m \le n$ and each layer keeps only two values: result for the current var=0 and result for the current var=1.
+The recursion depth is $m \le n$ and each layer keeps only two values: result for the current $\text{var}=0$ and result for the current $\text{var}=1$.
 
 ```python
 def evaluate_qbf(psi):
@@ -2397,7 +2397,13 @@ The class of context-sensitive languages is closed under complement.
 
 Let $\text{Conf}\_N(x, t)$ be the configurations reachable from $K_{start}(x)$ within $t$ steps, and write $k_t = \lvert \text{Conf}\_N(x, t)\rvert$. Define four $O(s(n))$-space NTMs $N_1, N_2, N_3, N_4$ for nondeterministic function computation:
 
-- **$N_1$:** On input $(t, k_t, K)$ iterate over all configurations $K'$, checking (i) $K' \in \text{Conf}_N(x, t)$ and (ii) $K' \xrightarrow[N]{1} K$. Maintain a counter $a$ of the successful $K'$. If $a \ne k_t$, report an error. Otherwise output $1$ iff at least one $K'$ satisfies both properties, and $0$ otherwise. At least one computation path correctly guesses every subcomputation and produces the right answer without errors.
+- **$N_1$:** On input $(t, k_t, K)$ iterate over all configurations $K'$, checking
+  
+  $$(i) K' \in \text{Conf}_N(x, t)$$
+  
+  $$(ii) K' \xrightarrow[N]{1} K$$
+  
+  Maintain a counter $a$ of the successful $K'$. If $a \ne k_t$, report an error. Otherwise output $1$ iff at least one $K'$ satisfies both properties, and $0$ otherwise. At least one computation path correctly guesses every subcomputation and produces the right answer without errors.
 - **$N_2$:** On input $(t, k_t)$ iterate over all configurations $K$ and invoke $N_1(t, k_t, K)$ to determine whether $K \in \text{Conf}\_N(x, t+1)$. Count the number of configurations for which $N_1$ returns $1$. Errors from $N_1$ propagate; otherwise the count equals $k_{t+1}$.
 - **$N_3$:** Starting from $k_0 = 1$ (only $K_{start}(x)$ is reachable in zero steps), repeatedly call $N_2$ to compute $k_1, k_2, \dots, k_{2^{\ell(n)}}$. Finally, call $N_1$ to check if $K_{accept}(x) \in \text{Conf}_N(x, 2^{\ell(n)})$ and output that result. Some computation path of $N_3$ therefore recognizes $L$.
 - **$N_4$:** Replicate $N_3$ but flip the final output bit, swapping the accepting and rejecting halts on all error-free paths. This machine recognizes $\bar{L}$ within $O(s(n))$ space.
