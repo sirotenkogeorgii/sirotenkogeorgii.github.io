@@ -53,7 +53,7 @@ $$
 \forall\, h \in \mathcal{C}(\mathbb{R}^d), \quad \int_{\mathbb{R}^d} h(x)\mathrm{d}\alpha(x) = \int_{\mathbb{R}^d} h(x)\rho_\alpha(x)\mathrm{d}x.
 $$
 
-We denote $\mathcal{M}_+(\mathcal{X})$ the set of all positive measures on $\mathcal{X}$. The set of probability measures is denoted $\mathcal{M}_+^1(\mathcal{X})$, which means that any $\alpha \in \mathcal{M}_+^1(\mathcal{X})$ is positive, and that $\alpha(\mathcal{X}) = \int_\mathcal{X} \mathrm{d}\alpha = 1$.
+We denote $\mathcal{M}\_+(\mathcal{X})$ the set of all positive measures on $\mathcal{X}$. The set of probability measures is denoted $\mathcal{M}\_+^1(\mathcal{X})$, which means that any $\alpha \in \mathcal{M}\_+^1(\mathcal{X})$ is positive, and that $\alpha(\mathcal{X}) = \int\_\mathcal{X} \mathrm{d}\alpha = 1$.
 
 </div>
 
