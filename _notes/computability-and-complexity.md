@@ -3182,7 +3182,27 @@ The complexity class $\text{BPP}$ is a subset of $\text{P/poly}$.
 
 </div>
 
-**Proof**: Let $L$ be a language in $\text{BPP}$. Let $M$ be a $p(n)$-time-bounded probabilistic Turing machine that recognizes $L$ with error probability $2^{-2n}$. We construct an advice function $a(n)$ such that $M$ recognizes $L$ with advice $a(n)$. Fix some length $n$ and consider inputs of length $n$ and their corresponding random words of length $p(n)$. Say a random word is **bad** for an input if this random word results in an error of $M$ with respect to deciding whether the input is in $L$. For each of the $2^n$ inputs, at most a fraction of $2^{-2n}$ of all random words are bad. Consequently, at most a fraction of $2^n \cdot 2^{-2n} = 2^{-n}$ of all random words is bad for some input of length $n$. So it suffices to let $a(n)$ be equal to some random word that is **good**, i.e., not bad, for all inputs of length $n$. $\square$
+**Proof**: Let $L$ be a language in $\text{BPP}$. Let $M$ be a $p(n)$-time-bounded probabilistic Turing machine that recognizes $L$ with error probability $2^{-2n}$. We construct an advice function $a(n)$ such that $M$ recognizes $L$ with advice $a(n)$. Fix some length $n$ and consider inputs of length $n$ and their corresponding random words of length $p(n)$. Say a random word is **bad** for an input if this random word results in an error of $M$ with respect to deciding whether the input is in $L$. For each of the $2^n$ inputs, at most a fraction of $2^{-2n}$ of all random words are bad. Consequently, at most a fraction of $2^n \cdot 2^{-2n} = 2^{-n}$ of all random words is bad for some input of length $n$. So it suffices to let $a(n)$ be equal to some random word that is **good**, i.e., not bad, for all inputs of length $n$. 
+
+After amplification, you have a randomized machine $M$ such that for every input $w$ of length $n$,
+
+$$\Pr_{r}[M(w;r)\ \text{errs}] \le 2^{-2n}$$
+
+Here $r$ is the random string of length $p(n)$ (polynomial).
+
+Now fix this $n$. For each particular $w$ of length $n$, only a $2^{-2n}$ fraction of random strings are "bad" for that $w$.
+
+There are $2^n$ possible inputs of length $n$. By a union bound:
+
+$$\Pr_r[\exists w\in{0,1}^n \text{ s.t. } M(w;r)\text{ errs}] \le 2^n \cdot 2^{-2n} = 2^{-n}$$
+
+So at least a $1-2^{-n}$ fraction of random strings are **good for all inputs of length $n$** simultaneously. In particular, **there exists** at least one such good string $r_n$.
+
+Then define the advice for that length:
+
+$$a(n) := r_n$$
+
+$\square$
 
 ## The Polynomial Hierarchy and Complete Languages
 
@@ -3356,7 +3376,7 @@ $$
 2^{p(n)} \cdot 2^{-np(n)} = 2^{-(n-1)p(n)} < 1.
 $$
 
-Since this probability is less than 1, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than 0. This means there must exist such words $v_1, \ldots, v_{p(n)}$. $\square$
+Since this probability is less than $1$, the probability that the chosen $v_i$ are such that all words $z$ are in at least one set $U \oplus v_i$ is strictly greater than $0$. This means there must exist such words $v_1, \ldots, v_{p(n)}$. $\square$
 
 <div class="accordion">
 <details>
@@ -4076,7 +4096,7 @@ Finally, the abbreviations **c.e.** and **r.e.** are often used (even in print) 
 
 </div>
 
-> **Convention 148**: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
+> **Convention**: In what follows, i.e., in the part on computability theory, all Turing machines are meant to be deterministic.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Domain of Turing Machine)</span></p>
@@ -4219,7 +4239,7 @@ Using this identification, we can directly translate our definitions from langua
 
 </div>
 
-> **Convention 155**: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
+> **Convention**: In the part on computability theory, unless explicitly stated otherwise, the term set always refers to a set of natural numbers, and the terms partial function and function refer to a partial function and a function, respectively, from $\mathbb{N}$ to $\mathbb{N}$.
 
 ### Relations Between Notions of Effectiveness
 
