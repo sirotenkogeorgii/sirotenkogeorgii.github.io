@@ -1017,12 +1017,12 @@ We begin by formally defining the components of propositional logic.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Propositional Formula)</span></p>
 
-Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let Var be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over Var is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
+Let $\Lambda = \lbrace \neg, \land, (, )\rbrace$ be a set of logical symbols and let $\text{Var}$ be a countable set of variables disjoint from $\Lambda$. The set of propositional formulas over $\text{Var}$ is a set of words over the alphabet $\text{Var} \cup \Lambda$, defined inductively:
 
 * **Base case:** Every element of $\text{Var}$ is a propositional formula.
 * **Inductive step:** If $\phi$ and $\phi'$ are propositional formulas, then so are $\neg \phi$ and $(\phi \land \phi')$.
 
-In this context, elements of Var are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true ($1$) and false ($0$) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
+In this context, elements of $\text{Var}$ are propositional variables, while $\neg$ represents logical negation (NOT) and $\land$ represents logical conjunction (AND). Other logical operators can be introduced as shorthand. For instance, disjunction (OR), denoted by $\lor$, can be expressed using De Morgan's laws: $X \lor Y$ is shorthand for $\neg(\neg X \land \neg Y)$. Constants for true ($1$) and false ($0$) can also be included. For readability, standard rules for operator precedence are often used, allowing parentheses to be omitted.
 
 The truth value of a formula, denoted $\text{val}(\phi)$, is either true ($1$) or false ($0$). This value is determined relative to an assignment $b : \text{Var} \to \lbrace 0, 1\rbrace$ that assigns a truth value to each variable. The truth value of a complex formula is defined inductively:
 
@@ -1103,7 +1103,7 @@ The language $\text{SAT}$ is $\text{NP}$-complete.
 
 </div>
 
-**Proof:**: We have already established in the previous Remark that $\text{SAT}$ is in $\text{NP}$. To prove that it is $\text{NP}$-complete, we must show it is $\text{NP}$-hard. This requires showing that every language $A \in \text{NP}$ is $p$-$m$-reducible to $\text{SAT}$.
+**Proof:** We have already established in the previous Remark that $\text{SAT}$ is in $\text{NP}$. To prove that it is $\text{NP}$-complete, we must show it is $\text{NP}$-hard. This requires showing that every language $A \in \text{NP}$ is $p$-$m$-reducible to $\text{SAT}$.
 
 Let $A$ be any language in $\text{NP}$. We will construct a function $g : x \mapsto \phi_x$, computable in polynomial time (i.e., $g \in \text{FP}$), that maps any binary word $x$ to a propositional formula $\phi_x$ in CNF. This construction will ensure that $x \in A$ if and only if $\phi_x$ is satisfiable.
 
@@ -1249,7 +1249,7 @@ For all $k \ge 3$, the language $\text{k-SAT}$ is $\text{NP}$-complete.
 
 </div>
 
-**Proof.**: As established in previous Remark , all $\text{k-SAT}$ languages are in $\text{NP}$. We need to show they are $\text{NP}$-hard for $k \ge 3$. We will demonstrate this for the case $k=3$. The result for $k > 3$ follows because $\text{3-SAT}$ can be easily $p$-$m$-reduced to $\text{k-SAT}$ (by padding clauses with dummy variables, or more simply, noting that any instance of $\text{3-SAT}$ is already an instance of $\text{k-SAT}$ for $k > 3$).
+**Proof.**: As established in previous Remark, all $\text{k-SAT}$ languages are in $\text{NP}$. We need to show they are $\text{NP}$-hard for $k \ge 3$. We will demonstrate this for the case $k=3$. The result for $k > 3$ follows because $\text{3-SAT}$ can be easily $p$-$m$-reduced to $\text{k-SAT}$ (by padding clauses with dummy variables, or more simply, noting that any instance of $\text{3-SAT}$ is already an instance of $\text{k-SAT}$ for $k > 3$).
 
 To show that $\text{3-SAT}$ is $\text{NP}$-hard, we use the transitivity of $p$-$m$-reducibility. By Cook's Theorem, $\text{SAT}$ is $\text{NP}$-hard. Therefore, if we can show that $\text{SAT} \le_p^m \text{3-SAT}$, it follows that $\text{3-SAT}$ is also $\text{NP}$-hard.
 
@@ -1260,7 +1260,7 @@ $$\phi \in \text{SAT} \iff \phi' \in \text{3-SAT}$$
 Let $\phi$ be a given propositional formula.
 
 * If $\phi$ is not in CNF, it cannot be in $\text{SAT}$. In this case, we map it to a fixed, unsatisfiable $3$-CNF formula (e.g., $(X) \land (\neg X)$).
-* If $\phi$ is in CNF, it has the form $\phi \equiv C_1 \land C_2 \land \dots \land C_m$, where each $C_i$ is a clause. The formula $\phi$' is obtained by replacing each clause $C_i$ in $\phi$ with a new set of clauses $\kappa_i$, constructed as follows.
+* If $\phi$ is in CNF, it has the form $\phi \equiv C_1 \land C_2 \land \dots \land C_m$, where each $C_i$ is a clause. The formula $\phi'$ is obtained by replacing each clause $C_i$ in $\phi$ with a new set of clauses $\kappa_i$, constructed as follows.
 
 Let a clause $C_i$ be $(L_1^i \lor L_2^i \lor \dots \lor L_{k_i}^i)$, where $L_j^i$ are literals.
 
@@ -1627,7 +1627,7 @@ Let $s$ be a space bound, and $M = (Q, \Sigma, \Gamma, \Delta, q_0, F)$ be an $s
 
 </div>
 
-**Proof:**: Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
+**Proof:** Part (i) follows from a direct calculation of the components of a configuration: the state, the input head position, the work tape contents, and the work tape head positions. The number of possibilities for each component is bounded, and their product gives an upper bound of the form $2^{d \cdot s(n)}$ for some machine-dependent constant $d$. This part is proven in the exercises.
 
 <div class="accordion">
   <details>
@@ -1699,7 +1699,7 @@ The relationships in the second and third columns also hold for an arbitrary spa
 
 </div>
 
-**Proof:**: The inclusions in the diagram can be justified as follows:
+**Proof:** The inclusions in the diagram can be justified as follows:
 
 1.  **Vertical Inclusions:** The inclusions from the first row to the second row (e.g., $\text{DTIME}(t(n)) \subseteq \text{NTIME}(t(n))$) hold by definition, as any deterministic Turing machine is a special case of a nondeterministic one.
 2.  **First Horizontal Inclusions:** The inclusions from the first column to the second (e.g., $\text{DTIME}(t(n)) \subseteq \text{DSPACE}(t(n))$) are immediate from the previous Remark.
@@ -2180,14 +2180,12 @@ $\text{QBF}$ is $\text{PSPACE}$-hard.
 **Proof:**
 
 For hardness, reduce any language $A \in \text{PSPACE}$ to $\text{QBF}$ via a polynomial-time computable map $g$. Let $M = (Q, \Sigma, \Gamma, \Delta, s, F)$ be a $p(n)$-space-bounded deterministic TM recognizing $A$, assumed to use a single work tape. A configuration on inputs of length $n$ is determined by:
-
 - the current state $q_k \in Q = \lbrace q_1, \dots, q_k\rbrace$,
 - the input-head position $j \in J = \lbrace 0, 1, \dots, n + 1\rbrace$,
 - the work-tape head position $j' \in J' = \lbrace 1, \dots, p(n)\rbrace$,
 - the work-tape contents $w \in \Gamma^{p(n)}$.
 
 Introduce propositional variables $Z_k$, $P_j$, $P'\_{j'}$, and $B_{j', a}$ to encode these components, and let $V\_{conf}$ be the full set of such variables:
-
 - $Z_k$: the state is $q_k$ , 
 - $P_j$: the head on the input tape is at position $j$,
 - $P_{j'}$: the head on the work tape reads position $j'$of $w$,
@@ -2196,7 +2194,6 @@ Introduce propositional variables $Z_k$, $P_j$, $P'\_{j'}$, and $B_{j', a}$ to e
 For any assignment $K$ to $V_{conf}$, write $\psi(K)$ for the value of $\psi$ under $K$; expressions like $\exists K \phi(K)$ abbreviate quantification over all variables in $V\_{conf}$.
 
 Following the Cook-Levin blueprint, create formulas $\text{Konf}_n$, $\text{Equal}_n$, and $\text{Succ}_n$ with the properties:
-
 - $\text{Konf}_n(K)$ is true iff $K$ represents a valid configuration.
 - $\text{Equal}_n(K, K')$ is true iff $K$ and $K'$ coincide.
 - $\text{Succ}_n(K, K')$ is true iff $K'$ is the successor of $K$ (provided both are valid).
@@ -3580,7 +3577,7 @@ $$
 
 </div>
 
-**Proof**: We design an interactive protocol where a prover convinces a verifier that a 3-CNF formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
+**Proof**: We design an interactive protocol where a prover convinces a verifier that a $3\text{-CNF}$ formula $\phi$ with $n$ variables has exactly $k$ satisfying assignments.
 
 <div class="gd-grid">
   <figure>
@@ -3599,7 +3596,7 @@ $$p_\phi(x_1, \ldots, x_n) = \prod_{j=1}^m p_{C_j}(x_1, \ldots, x_n)$$
 
 For any assignment of $\lbrace 0, 1\rbrace$ values to the variables $x_1, \ldots, x_n, p_\phi$ evaluates to $1$ if the assignment satisfies $\phi$, and $0$ otherwise. Consequently, the number of satisfying assignments, $k_\phi$, is given by the sum over all possible boolean assignments:
 
-$$k_\phi = \sum_{x_1 \in \{0,1\}} \sum_{x_2 \in \{0,1\}} \cdots \sum_{x_n \in \{0,1\}} p_\phi(x_1, x_2, \ldots, x_n) \quad (5.2)$$
+$$k_\phi = \sum_{x_1 \in \lbrace 0,1\rbrace} \sum_{x_2 \in \lbrace 0,1\rbrace} \cdots \sum_{x_n \in \lbrace 0,1\rbrace} p_\phi(x_1, x_2, \ldots, x_n) \quad (5.2)$$
 
 **Step 2: The Checksum Protocol**
 
@@ -3746,7 +3743,6 @@ Here is a comprehensive breakdown of the purpose of randomizing $r_i$:
 The primary goal of using randomness in the verifier's challenges is to guarantee that if the initial statement is false (i.e., if $k \ne k_\phi$), no prover, regardless of its computational power, can convince the verifier of the statement's truth with a high probability.
 
 In the Checksum Protocol, the prover sends a claimed polynomial $h_i^P(x_i)$. If this polynomial is not the true polynomial $h_i(x_i)$, the prover is lying.
-
 *   If $h_i^P(x_i)$ is incorrect, the difference between the true and claimed polynomial, $(h_i^P - h_i)$, is a non-zero polynomial.
 *   A non-zero polynomial of degree $d$ (which is polynomial in $n$ for the Checksum Protocol) has at most $d$ roots.
 *   When the verifier chooses a random $r_i$ from the large finite field $\mathbb{F}_p$, the probability that $r_i$ happens to be a root of the difference polynomial—meaning $h_i^P(r_i) = h_i(r_i)$ even though $h_i^P \ne h_i$—is very small, specifically at most $d/p$.
@@ -3772,7 +3768,7 @@ The random selection of $r_i$ ensures that the prover cannot predict the exact p
 
 <div class="accordion">
   <details markdown="1">
-    <summary>I do not understand why in the proof we evaluate the polynomial $h$ in random points, that are not binary. $p_{\phi}(r_1, ..., r_{n-1}, 0)$ or $p_{\phi}(r_1, ..., r_{n-1}, 1)$ can give us values that is different from $0$ or $1$, because $r_i$ are not necessary binary and we evaluate arithmetised formula in non binary values</summary>
+    <summary>I do not understand why in the proof we evaluate the polynomial $h$ in random points, that are not binary. $p_{\phi}(r_1, \dots, r_{n-1}, 0)$ or $p_{\phi}(r_1, \dots, r_{n-1}, 1)$ can give us values that is different from $0$ or $1$, because $r_i$ are not necessary binary and we evaluate arithmetised formula in non binary values</summary>
 This is a fundamental and excellent question about the core mechanism of the Checksum Protocol (Theorem 141) and the arithmetization technique used to prove PSPACE $\subseteq$ IP.
 
 The reason the verifier evaluates the arithmetized formula $p_\phi$ at non-binary, random points ($r_1, \ldots, r_{n-1}$) and the resulting values are often non-zero and non-one is that **the protocol shifts the problem from checking boolean logic to checking polynomial identity over a large finite field $\mathbb{F}_p$**.
@@ -3783,7 +3779,7 @@ Here is a breakdown drawing on the sources:
 
 The arithmetization step (Step 1 of Theorem 141) maps the boolean formula $\phi$ to a polynomial $p_\phi(x_1, \ldots, x_n)$.
 
-*   **Boolean Inputs:** When $p_\phi$ is evaluated on **boolean inputs** (i.e., $x_i \in \{0, 1\}$), it correctly represents the satisfiability of the formula: $p_\phi$ evaluates to $1$ if the assignment satisfies $\phi$, and $0$ otherwise.
+*   **Boolean Inputs:** When $p_\phi$ is evaluated on **boolean inputs** (i.e., $x_i \in \lbrace 0, 1\rbrace$), it correctly represents the satisfiability of the formula: $p_\phi$ evaluates to $1$ if the assignment satisfies $\phi$, and $0$ otherwise.
 *   **The Goal:** The number of satisfying assignments, $k_\phi$, is the sum of $p_\phi$ over all possible boolean assignments. The verifier needs to check if the given $k$ equals this sum.
 
 ### 2. The Shift from Boolean Logic to Field Arithmetic (Introducing $r_i$)
@@ -3793,19 +3789,20 @@ The interactive proof protocol is designed to check the value of this massive su
 *   The goal of the protocol is to verify that the polynomial $h_i^P(x_i)$ submitted by the prover is actually the true polynomial $h_i(x_i)$.
 *   The only way a computationally bounded verifier can probabilistically check this identity is through **randomized spot-checking**.
 
-The verifier does not choose $r_i$ from $\{0, 1\}$ because:
+The verifier does not choose $r_i$ from $\lbrace 0, 1\rbrace$ because:
 
-*   **Soundness Requirement:** To detect a cheating prover who has submitted a polynomial $h_i^P$ that is different from the true polynomial $h_i$ (i.e., $h_i^P \ne h_i$), the verifier must choose a random point $r_i$ from the large field $\mathbb{F}_p$. If the verifier only checked points in $\{0, 1\}$, a cheating prover could easily construct a polynomial that agrees with the true polynomial only at the few binary points but is incorrect everywhere else.
+*   **Soundness Requirement:** To detect a cheating prover who has submitted a polynomial $h_i^P$ that is different from the true polynomial $h_i$ (i.e., $h_i^P \ne h_i$), the verifier must choose a random point $r_i$ from the large field $\mathbb{F}_p$. If the verifier only checked points in $\lbrace 0, 1\rbrace$, a cheating prover could easily construct a polynomial that agrees with the true polynomial only at the few binary points but is incorrect everywhere else.
 *   **Polynomial Identity Testing:** By choosing $r_i$ randomly from a large field $\mathbb{F}_p$, the probability that a non-zero polynomial $(h_i^P - h_i)$ evaluates to zero at $r_i$ is negligible, ensuring high probability of error detection (soundness).
 
-### 3. Why $p_\phi(r_1, \ldots, r_{n-1}, 0)$ is Not Necessarily 0 or 1
+### 3. Why $p_\phi(r_1, \ldots, r_{n-1}, 0)$ is Not Necessarily $0$ or $1$
 
-You are absolutely correct that when the polynomial $p_\phi$ is evaluated at inputs that include non-binary values $r_i \in \mathbb{F}_p$, the output will generally be an element of $\mathbb{F}_p$ that is neither 0 nor 1.
+You are absolutely correct that when the polynomial $p_\phi$ is evaluated at inputs that include non-binary values $r_i \in \mathbb{F}_p$, the output will generally be an element of $\mathbb{F}_p$ that is neither $0$ nor $1$.
 
 In the final step of the protocol, the verifier computes the true value:
-$$p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1) \pmod p$$.
 
-*   This value is **not** meant to be a boolean truth value (0 or 1). Instead, it is the true arithmetic value of the specific polynomial $h_{n-1}(r_{n-1})$, which itself is derived from the arithmetized formula $p_\phi$ evaluated at the fixed random points $r_1, \ldots, r_{n-1}$.
+$$p_\phi(r_1, \ldots, r_{n-1}, 0) + p_\phi(r_1, \ldots, r_{n-1}, 1) \pmod p$$
+
+*   This value is **not** meant to be a boolean truth value ($0$ or $1$). Instead, it is the true arithmetic value of the specific polynomial $h_{n-1}(r_{n-1})$, which itself is derived from the arithmetized formula $p_\phi$ evaluated at the fixed random points $r_1, \ldots, r_{n-1}$.
 *   This calculated field element serves as the **final numerical value** that the prover must match to confirm that the chain of algebraic identities (checked over $n$ rounds) holds up to the very end.
 
 In essence, the protocol uses $r_i$ to **algebraically enforce consistency** across rounds, treating the problem purely as one of polynomial arithmetic over $\mathbb{F}_p$, rather than checking boolean assignments.
@@ -3899,7 +3896,7 @@ The verifier uses this structure to perform local checks in each round:
 *   **Initial Consistency (Round 1):** The first check ensures that the initial polynomial $h_1^P$ is consistent with the ultimate claim $k$, checking $k \equiv h_1^P(0) + h_1^P(1) \pmod p$.
 *   **Recursive Consistency (Round $i$):** For subsequent rounds, the check ensures that the polynomial $h_i^P$ submitted in the current round satisfies the identity required by the claimed value from the previous round ($h_{i-1}^P(r_{i-1})$).
 
-This recursive checking guarantees **completeness**: if $k$ truly equals the number of satisfying assignments $k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$, and all these consistency checks will pass, leading to acceptance with probability 1.
+This recursive checking guarantees **completeness**: if $k$ truly equals the number of satisfying assignments $k_\phi$, an honest prover can send the true polynomials $h_1, \ldots, h_{n-1}$, and all these consistency checks will pass, leading to acceptance with probability $1$.
 
 ### 3. The Main Point: Soundness via Recursive Spot-Checks
 
@@ -3931,7 +3928,9 @@ Here is how your interpretation aligns with the principles detailed in the sourc
 ### 1. The Insufficiency of the Initial Check
 
 The initial check in Round 1 verifies if the claimed number of satisfying assignments, $k$, is consistent with the polynomial $h_1^P$ at the boolean inputs $\lbrace 0,1\rbrace$:
+
 $$k \equiv h_1^P(0) + h_1^P(1) \pmod p \quad$$
+
 As you noted, a false polynomial $h_1^P$ might satisfy this equation by chance, or by construction, if the prover ensures $h_1^P(0) + h_1^P(1)$ equals $k$.
 
 ### 2. The Verification Goal: Checking Polynomial Identity
@@ -3971,7 +3970,7 @@ $\text{IP} = \text{PSPACE}$.
 
 </div>
 
-**Proof** Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. QBF in $3$-CNF form ($3$-QBF) is PSPACE-complete.
+**Proof:** Theorem 138 gives $\text{IP} \subseteq \text{PSPACE}$. For the reverse direction, show a $\text{PSPACE}$-complete language has an interactive proof. $\text{QBF}$ in $3\text{-CNF}$ form ($3\text{-QBF}$) is $\text{PSPACE}$-complete.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name"></span></p>
@@ -3984,12 +3983,12 @@ $3\text{-QBF} \in \text{IP}$.
 
 Interactive proofs can be made public-coin (all verifier randomness revealed) and perfectly complete (accept with probability $1$ on yes-instances).
 
-Verifiers as defined in Definition 132 use **private coins**, i.e., there random word is not known to the prover. In the **public coin** model, all random bits read by the verifier are sent to the prover. The random bits need not be revealed all at once but may sent in successive rounds. Furthermore, a interactive proof system is said to have completeness 1 or **perfect** completeness, if every input in the recognized language is accepted with probability 1.
+Verifiers as defined in Definition 132 use **private coins**, i.e., there random word is not known to the prover. In the **public coin** model, all random bits read by the verifier are sent to the prover. The random bits need not be revealed all at once but may sent in successive rounds. Furthermore, a interactive proof system is said to have completeness 1 or **perfect** completeness, if every input in the recognized language is accepted with probability $1$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3$-QBF, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
+The verifier from Theorem 143 can be modified to a public-coin verifier $V'$ with perfect completeness. Since every $L \in \text{IP}$ reduces to $3\text{-QBF}$, every language in $\text{IP}$ has a public-coin, perfectly complete interactive proof.
 
 </div>
 
@@ -4030,7 +4029,7 @@ $\text{GI}$ has a zero-knowledge interactive proof system.
 
 When demonstrating that $S$ is a simulator for $(V,P)$, we can assume that $G_0$ and $G_1$ are isomorphic and have the same node sets because there are no requirements on a simulator for inputs not in $\text{GI}$. But then for every graph that is isomorphic to $G_0$, the probability that this graph is sent as $H$ does not depend on the choice of $i$. On receiving the message $H$ from $P$, the verifier $V'$ has thus no information at all about the bit $i$, hence $j$ is chosen indepently of $i$. Since $i$ was chosen by tossing a fair coin, the probability that both bits are equal is exactly $\frac{1}{2}$. Thus a simulation where $i$ is equal to $j$ will occur after an expected number of iterations that is constant, hence the running time of $S$ is in expected polynomial time. Furthermore, the distribution of communications $(H,j,\pi)$ between $P$ and $V'$ is such that every graph $H$ occurs with a certain probability. The message $j$ is independent of $i$, and $\pi$ is the unique permutation such that $H=\pi(G_i)$. This coincides with the distribution of the output of $S$, hence $S$ is a simulator for $(V,P)$.
 
-> **Note**: The distributions match because we do not actually know from the outside what was the graph $G_i$, that $H=\pi(G_i)$.
+> **Note**: The distributions match because we do not actually know from the outside what was the graph $G_i$ that $H=\pi(G_i)$.
 
 <div class="gd-grid">
   <figure>
@@ -5249,13 +5248,13 @@ is a **total** computable function that disagrees with $\alpha_e$ on input $e$. 
 
 A *universal numbering* (like the standard $(\phi_e)$) enumerates **partial** computable functions. Then the principal function is only **partial**:
 
-$$\alpha(e,x)\simeq \alpha_e(x),$$
+$$\alpha(e,x)\simeq \alpha_e(x)$$
 
 and crucially, $\alpha(e,e)$ may be undefined.
 
 If you try the same diagonal definition
 
-$$d(e)\ \simeq\ 1+\alpha(e,e),$$
+$$d(e)\ \simeq\ 1+\alpha(e,e)$$
 
 then:
 
@@ -5552,6 +5551,8 @@ Let $A$ and $B$ be sets.
 * **(ii)** Let $A$ be an r.e. set. Then $A = \text{dom}(\alpha)$ for some partial computable function $\alpha$. Let $\phi_0, \phi_1, \dots$ be the standard numbering. Since it is a Gödel numbering, we can effectively construct a new numbering $\beta_0, \beta_1, \dots$ where for a given $e$, the function $\beta_e$ ignores its own input and simply computes $\alpha(e)$. That is, $\beta_e(x) \simeq \alpha(e)$. The principal function $(e,x) \mapsto \beta_e(x)$ is partial computable, so this is a valid numbering. Since the standard numbering is a Gödel numbering, there exists a computable function $f$ such that $\beta_e = \phi_{f(e)}$ for all $e$. This function $f$ witnesses that 
   
   $$A \le_m H:  e \in A \iff \alpha(e) \downarrow \iff \beta_e \text{ is total} \iff \beta_e(f(e)) \downarrow \iff \phi_{f(e)}(f(e)) \downarrow \iff f(e) \in H$$
+
+$\square$
 
 This theorem provides a complete characterization of recursively enumerable sets in terms of m-reducibility to the halting problem.
 
@@ -6136,7 +6137,7 @@ Take $B=\emptyset^{[n]}$.
 
 A set $A \subseteq \mathbb N$ is called a **$\Sigma_n$ set** if there exists a decidable relation $R$ such that
 
-$$x \in A \iff \exists y_1 \forall y_2 \cdots Q y_n; R(x,y_1,\dots,y_n)$$
+$$x \in A \iff \exists y_1 \forall y_2 \cdots Q y_n R(x,y_1,\dots,y_n)$$
 
 where the quantifiers alternate, and:
 * if $n$ is odd, the last quantifier is existential,
@@ -6147,9 +6148,9 @@ where the quantifiers alternate, and:
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\Sigma_1$, $\Sigma_2$, $\Sigma_3$)</span></p>
 
-* $\Sigma_1$: $\exists y, R(x,y)$
-* $\Sigma_2$: $\exists y_1 \forall y_2, R(x,y_1,y_2)$
-* $\Sigma_3$: $\exists y_1 \forall y_2 \exists y_3, R(\dots)$
+* $\Sigma_1$: $\exists y R(x,y)$
+* $\Sigma_2$: $\exists y_1 \forall y_2 R(x,y_1,y_2)$
+* $\Sigma_3$: $\exists y_1 \forall y_2 \exists y_3 R(\dots)$
 
 with $R$ decidable.
 
@@ -6296,21 +6297,21 @@ Now the text switches from computability/arithmetic hierarchy to **complexity th
 
 For an oracle $B$:
 
-* $P^B$: polynomial-time deterministic machines with oracle $B$
-* $NP^B$: polynomial-time nondeterministic machines with oracle $B$
+* $\text{P}^B$: polynomial-time deterministic machines with oracle $B$
+* $\text{NP}^B$: polynomial-time nondeterministic machines with oracle $B$
 
-The question is whether $P^B = NP^B$ or not.
+The question is whether $\text{P}^B = \text{NP}^B$ or not.
 
 The surprising point is: **both can happen, depending on the oracle**.
 
-So oracle arguments alone cannot settle the ordinary $P$ vs $NP$ problem.
+So oracle arguments alone cannot settle the ordinary $\text{P}$ vs $\text{NP}$ problem.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(There is an oracle $B$ with $P^B = NP^B$)</span></p>
 
 There exists an oracle $B$ such that
 
-$$P^B = NP^B$$
+$$\text{P}^B = \text{NP}^B$$
 
 The proof chooses $B$ to be a language that is polynomial many-one complete for **PSPACE**, for example **QBF**.
 
@@ -6318,53 +6319,53 @@ The proof chooses $B$ to be a language that is polynomial many-one complete for 
 
 **Proof:**
 
-Take $B$ to be a PSPACE-complete language.
+Take $B$ to be a $\text{PSPACE}$-complete language.
 
 Then:
 
-$$P^B \subseteq NP^B \subseteq PSPACE^B \subseteq PSPACE \subseteq P^B$$
+$$\text{P}^B \subseteq \text{NP}^B \subseteq \text{PSPACE}^B \subseteq \text{PSPACE} \subseteq \text{P}^B$$
 
-Since we have inclusions from left to right and back to $P^B$, all classes are equal.
+Since we have inclusions from left to right and back to $\text{P}^B$, all classes are equal.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why each inclusion holds)</span></p>
 
-**1. $P^B \subseteq NP^B$**
+**1. $\text{P}^B \subseteq \text{NP}^B$**
 
 Trivial: deterministic computation is a special case of nondeterministic computation.
 
-**2. $NP^B \subseteq PSPACE^B$**
+**2. $\text{NP}^B \subseteq \text{PSPACE}^B$**
 
 Also standard: polynomial-time nondeterminism can be simulated in polynomial space.
 
-**3. $PSPACE^B \subseteq PSPACE$**
+**3. $\text{PSPACE}^B \subseteq PSPACE$**
 
 This is the first nontrivial one.
 
-Why? Because $B$ itself is in PSPACE.
+Why? Because $B$ itself is in $\text{PSPACE}$.
 
-So whenever a PSPACE machine with oracle $B$ wants to ask “is $x \in B$?”, it can just compute the answer itself in polynomial space.
+So whenever a $\text{PSPACE}$ machine with oracle $B$ wants to ask “is $x \in B$?”, it can just compute the answer itself in polynomial space.
 
-Thus the oracle adds no extra power beyond PSPACE.
+Thus the oracle adds no extra power beyond $\text{PSPACE}$.
 
-**4. $PSPACE \subseteq P^B$**
+**4. $\text{PSPACE} \subseteq P^B$**
 
-Because $B$ is PSPACE-complete.
+Because $B$ is $\text{PSPACE}$-complete.
 
-Any PSPACE problem can be reduced in polynomial time to $B$, so a polynomial-time machine with oracle $B$ can solve all PSPACE problems.
+Any $\text{PSPACE}$ problem can be reduced in polynomial time to $B$, so a polynomial-time machine with oracle $B$ can solve all $\text{PSPACE}$ problems.
 
 **Conclusion**
 
-$$P^B = NP^B = PSPACE^B = PSPACE$$
+$$\text{P}^B = \text{NP}^B = \text{PSPACE}^B = \text{PSPACE}$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why this matters)</span></p>
 
-An oracle can make $P$ and $NP$ collapse.
+An oracle can make $\text{P}$ and $\text{NP}$ collapse.
 
-So if someone tried to prove $P \neq NP$ using a method that still works relative to **every** oracle, that proof would fail.
+So if someone tried to prove $\text{P} \neq \text{NP}$ using a method that still works relative to **every** oracle, that proof would fail.
 
 </div>
 
@@ -6373,7 +6374,7 @@ So if someone tried to prove $P \neq NP$ using a method that still works relativ
 
 There is even a **decidable** oracle $B$ such that
 
-$$P^B \ne NP^B$$
+$$\text{P}^B \ne \text{NP}^B$$
 
 This is the opposite of Theorem 238.
 
@@ -6384,8 +6385,8 @@ So some oracles make the classes equal, and some make them different.
 #### Main construction in Theorem 239
 
 We build two languages $A$ and $B$ such that:
-* $A \in NP^B$
-* $A \notin P^B$
+* $A \in \text{NP}^B$
+* $A \notin \text{P}^B$
 
 The language $A$ is defined by:
 
@@ -6404,7 +6405,7 @@ This is polynomial time.
 
 So:
 
-$$A \in NP^B$$
+$$A \in \text{NP}^B$$
 
 That part is easy.
 
