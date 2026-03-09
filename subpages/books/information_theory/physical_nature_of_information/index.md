@@ -73,7 +73,7 @@ For every interval of a definite derivative sign, say $(\partial E / \partial S)
 
 $$(\partial^2 E / \partial X^2)_S = -(\partial^2 S / \partial X^2)_E (\partial E / \partial S)_X.$$
 
-The equilibrium is an entropy maximum, so $-(\partial^2 S / \partial X^2)_E$ is negative. When the temperature is positive, the equilibrium is the energy minimum. The equilibrium curve $S(E)$ is **convex**, which guarantees stability of a homogeneous state: if the system were to break into two halves with slightly different energies, the entropy must decrease: $2S(E) > S(E+\Delta) + S(E-\Delta) = 2S(E) + S''\Delta^2$, which requires $S'' < 0$.
+The equilibrium is an entropy maximum, so $-(\partial^2 S / \partial X^2)_E$ is negative. When the temperature is positive, the equilibrium is the energy minimum. The equilibrium curve $S(E)$ is **convex**, which guarantees stability of a homogeneous state: if the system were to break into two halves with slightly different energies, the entropy must decrease: $2S(E) > S(E+\Delta) + S(E-\Delta) = 2S(E) + S'' \Delta^2$, which requires $S'' < 0$.
 
 #### Equations of State
 
@@ -167,7 +167,7 @@ The transform is possible when for every $X$ there is one $P$, that is $P(X)$ is
 
 $$dF(T,V,N,\ldots) = -SdT - PdV + \mu dN + \ldots$$
 
-Counterpart to $(\partial E / \partial S)_{VN} = T$ is $(\partial F / \partial T)_{VN} = -S$.
+Counterpart to $(\partial E / \partial S)\_{VN} = T$ is $(\partial F / \partial T)\_{VN} = -S$.
 
 </div>
 
@@ -192,7 +192,7 @@ It is particularly convenient for situations in which the pressure is maintained
 
 </div>
 
-The heat received by the system at constant pressure (and N) is the enthalpy change: $\delta Q = dQ = TdS = dH$. Compare it with the fact that the heat received by the system at constant volume (and N) is the energy change since the work is zero.
+The heat received by the system at constant pressure (and $N$) is the enthalpy change: $\delta Q = dQ = TdS = dH$. Compare it with the fact that the heat received by the system at constant volume (and N) is the energy change since the work is zero.
 
 #### Gibbs Free Energy and Grand Canonical Potential
 
@@ -254,7 +254,7 @@ Consider two subsystems, 1 and 2, that can exchange energy. Then
 
 $$\Gamma(E) = \sum_{i=1}^{E/\Delta} \Gamma_1(E_i)\Gamma_2(E - E_i).$$
 
-The maximum of $\Gamma$ corresponds to the thermal equilibrium. Computing the derivative and setting it to zero gives $(\partial S_1/\partial E_1)_{\bar{E}_1} = (\partial S_2/\partial E_2)_{\bar{E}_2}$, that is the temperatures of the subsystems are equal. In the thermodynamic limit, $S(E) = S_1(\bar{E}_1) + S_2(\bar{E}_2) + O(\log N)$.
+The maximum of $\Gamma$ corresponds to the thermal equilibrium. Computing the derivative and setting it to zero gives $(\partial S_1/\partial E_1)\_{\bar{E}_1} = (\partial S_2/\partial E_2)\_{\bar{E}_2}$, that is the temperatures of the subsystems are equal. In the thermodynamic limit, $S(E) = S_1(\bar{E}_1) + S_2(\bar{E}_2) + O(\log N)$.
 
 #### The Gibbs Paradox and Indistinguishability
 
@@ -401,7 +401,19 @@ Irreversibility and relaxation to equilibrium essentially follows from necessity
 
 How does the system come to equilibrium and reach the entropy maximum? The Hamiltonian evolution is an incompressible flow in the phase space ($\operatorname{div}\mathbf{v} = 0$), so it conserves the total Gibbs entropy: $dS/dt = -\int d\mathbf{x}\,\ln\rho\frac{\partial\rho}{\partial t} = \int d\mathbf{x}\,\ln\rho\,\operatorname{div}(\rho\mathbf{v}) = \int d\mathbf{x}\,\rho\operatorname{div}\mathbf{v} = 0$. How then can the entropy grow?
 
-Boltzmann answered this question by deriving the equation on the one-particle momentum probability distribution. Such equation must follow from integrating the $N$-particle Liouville equation over all $N$ coordinates and $N-1$ momenta. Consider the phase-space probability density $\rho(\mathbf{x},t)$ in the space $\mathbf{x} = (\mathbf{P},\mathbf{Q})$, where $\mathbf{P} = \lbrace\mathbf{p}_1\ldots\mathbf{p}_N\rbrace$ and $\mathbf{Q} = \lbrace\mathbf{q}_1\ldots\mathbf{q}_N\rbrace$. For the system with the Hamiltonian $\mathcal{H} = \sum_i p_i^2/2m + \sum_{i<j}U(\mathbf{q}_i - \mathbf{q}_j)$, the evolution of the density is described by the Liouville equation:
+Boltzmann answered this question by deriving the equation on the one-particle momentum probability distribution. Such equation must follow from integrating the $N$-particle Liouville equation over all $N$ coordinates and $N-1$ momenta. Consider the phase-space probability density $\rho(\mathbf{x},t)$ in the space $\mathbf{x} = (\mathbf{P},\mathbf{Q})$, where 
+
+$$\mathbf{P} = \lbrace\mathbf{p}_1\ldots\mathbf{p}_N\rbrace$$
+
+and 
+
+$$\mathbf{Q} = \lbrace\mathbf{q}_1\ldots\mathbf{q}_N\rbrace$$
+
+For the system with the Hamiltonian 
+
+$$\mathcal{H} = \sum_i p_i^2/2m + \sum_{i<j}U(\mathbf{q}_i - \mathbf{q}_j)$$
+
+the evolution of the density is described by the Liouville equation:
 
 $$\frac{\partial\rho(\mathbf{P},\mathbf{Q},t)}{\partial t} = \lbrace\rho(\mathbf{P},\mathbf{Q},t),\mathcal{H}\rbrace = \left[-\sum_i^N\frac{\mathbf{p}_i}{m}\frac{\partial}{\partial\mathbf{q}_i} + \sum_{i<j}\theta_{ij}\right]\rho(\mathbf{P},\mathbf{Q},t),$$
 
@@ -507,9 +519,21 @@ This is because the intervals of time with positive $\Lambda(t)$ give more contr
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Saddle-Point Flow)</span></p>
 
-Consider the simplest two-dimensional pure strain, which corresponds to an incompressible saddle-point flow: $v_x = \lambda x$, $v_y = -\lambda y$. Here we have one expanding direction and one contracting direction, with equal rates. Since $x(t) = x_0\exp(\lambda t)$ and $y(t) = y_0\exp(-\lambda t) = x_0 y_0/x(t)$, every trajectory is a hyperbola.
+Consider the simplest two-dimensional pure strain, which corresponds to an incompressible saddle-point flow: $v_x = \lambda x$, $v_y = -\lambda y$. Here we have one expanding direction and one contracting direction, with equal rates. Since $x(t) = x_0\exp(\lambda t)$ and 
 
-A unit vector initially forming an angle $\varphi$ with the $x$ axis will have its length $[\cos^2\varphi\exp(2\lambda T) + \sin^2\varphi\exp(-2\lambda T)]^{1/2}$ after time $T$. The vector is stretched if $\cos\varphi \ge [1 + \exp(2\lambda T)]^{-1/2} < 1/\sqrt{2}$, i.e. the fraction of stretched directions is larger than half. When along the motion all orientations are equally probable, the net effect is stretching, increasing with the persistence time $T$.
+$$y(t) = y_0\exp(-\lambda t) = x_0 y_0/x(t)$$
+
+every trajectory is a hyperbola.
+
+A unit vector initially forming an angle $\varphi$ with the $x$ axis will have its length 
+
+$$[\cos^2\varphi\exp(2\lambda T) + \sin^2\varphi\exp(-2\lambda T)]^{1/2}$$ 
+
+after time $T$. The vector is stretched if 
+
+$$\cos\varphi \ge [1 + \exp(2\lambda T)]^{-1/2} < 1/\sqrt{2}$$
+
+i.e. the fraction of stretched directions is larger than half. When along the motion all orientations are equally probable, the net effect is stretching, increasing with the persistence time $T$.
 
 </div>
 
@@ -662,7 +686,7 @@ After $n$ iterations of the map, a square having initial side $\delta \ll L$ wil
 
 $$d_f = 1 + \frac{\lambda_+}{|\lambda_-|}.$$
 
-Since $|\lambda_-| \ge \lambda_+$, the dimension is between 1 and 2. The set is smooth in the $x$-direction and fractal in the $y$-direction, which respectively gives two terms in the formula.
+Since $\|\lambda_-\| \ge \lambda_+$, the dimension is between 1 and 2. The set is smooth in the $x$-direction and fractal in the $y$-direction, which respectively gives two terms in the formula.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kaplan-Yorke Conjecture)</span></p>
@@ -688,7 +712,7 @@ This Chapter presents an elementary introduction into information theory from th
 
 The central idea is that information lowers uncertainty. A convenient way to quantify it is by the number of questions whose answers together eliminate the uncertainty. If we are uncertain about the events with a priori equal probabilities, the number of such questions is a logarithm of the number $n$ of possible outcomes, which is the Boltzmann entropy. One needs $\log_2 n$ of yes-no questions to locate one out of $n$ equally probable objects. If we know the probabilities $p_i$ of the events, we find the information rate per answer on average to be equal to the Gibbs entropy, $S = -\sum_i p_i \log_2 p_i$ bits. That follows from the fact that the number of typical $N$-sequences of outcomes grows with $N$ as $2^{NS}$, so that any such sequence brings $\log_2 2^{NS} = NS$ bits, that is $S$ bits per outcome on average.
 
-But what if the answers are not completely reliable? In other words, we have an imperfect channel whose output $A$ specifies the event (input) $B_j$ not completely, but with some remaining uncertainty, which is characterized by the conditional entropy $S(B|A)$. The information received is then equal to $I(A,B) = S(B) - S(B|A)$ called the mutual information. Next Chapter will describe how fast widens the region of applications of the universal notions of entropy and mutual information: from physics, communications and computations to brain research, artificial intelligence and quantum computing.
+But what if the answers are not completely reliable? In other words, we have an imperfect channel whose output $A$ specifies the event (input) $B_j$ not completely, but with some remaining uncertainty, which is characterized by the conditional entropy $S(B\mid A)$. The information received is then equal to $I(A,B) = S(B) - S(B\mid A)$ called the mutual information. Next Chapter will describe how fast widens the region of applications of the universal notions of entropy and mutual information: from physics, communications and computations to brain research, artificial intelligence and quantum computing.
 
 ### 3.1 Information as a Choice
 
@@ -847,7 +871,7 @@ The first British telegraph managed to do without C, J, Q, U, X, which tells us 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Markov Chain and Stochastic Matrix)</span></p>
 
-A simple universal model with neighboring correlations is a Markov chain. It is specified by the conditional probability $p(j|i)$ that the letter $i$ is followed by $j$. For example $p(U|Q) = 1$. The probability is normalized for every $i$: $\sum_j p(j|i) = 1$. The matrix $p_{ij} = p(j|i)$, whose elements are positive and in every column sum to unity, is called **stochastic**.
+A simple universal model with neighboring correlations is a Markov chain. It is specified by the conditional probability $p(j\mid i)$ that the letter $i$ is followed by $j$. For example $p(U\mid Q) = 1$. The probability is normalized for every $i$: $\sum_j p(j\mid i) = 1$. The matrix $p_{ij} = p(j\mid i)$, whose elements are positive and in every column sum to unity, is called **stochastic**.
 
 Do the vector of probabilities $p(i)$ and the transition matrix $p_{ij}$ bring independent information? The answer is no, because the matrix $p_{ij}$ and the vector $p_i$ are not independent, but are related by the condition of stationarity: $p(i) = \sum_j p(j) p_{ji}$, that is $\mathbf{p} = \lbrace p(a),\ldots p(z)\rbrace$ is an eigenvector with the unit eigenvalue of the matrix $p_{ij}$.
 
@@ -855,16 +879,16 @@ Do the vector of probabilities $p(i)$ and the transition matrix $p_{ij}$ bring i
 
 The probability of any $N$-string is then the product of $N-1$ transition probabilities times the probability of the initial letter. As in the asymptotic equipartition case, minus the logarithm of the probability of a long $N$-string is a sum of uncorrelated numbers:
 
-$$\log_2 p(i_1,\ldots,i_N) = \log_2 p(i_1) + \sum_{k=2}^N \log_2 p(i_{k+1}|i_k).$$
+$$\log_2 p(i_1,\ldots,i_N) = \log_2 p(i_1) + \sum_{k=2}^N \log_2 p(i_{k+1}\mid i_k).$$
 
-At large $N$ the sum grows linearly with $N$ with the rate, which is the mean value of the logarithm of conditional probability, $-\sum_j p(j|i)\log_2 p(j|i) = S_i$, called the conditional entropy $S_i$. The number of typical sequences starting from $i$ grows with $N$ exponentially, as $2^{NS_i}$. To get the mean rate of growth for all sequences, it must be averaged over different $i$ with their probabilities $p(i)$.
+At large $N$ the sum grows linearly with $N$ with the rate, which is the mean value of the logarithm of conditional probability, $-\sum_j p(j\mid i)\log_2 p(j\mid i) = S_i$, called the conditional entropy $S_i$. The number of typical sequences starting from $i$ grows with $N$ exponentially, as $2^{NS_i}$. To get the mean rate of growth for all sequences, it must be averaged over different $i$ with their probabilities $p(i)$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Information Rate of a Markov Source)</span></p>
 
-The entropy of the language for a Markov source is expressed via $p(i)$ and $p(j|i)$ by averaging over $i$ the entropy of the transition probability distribution:
+The entropy of the language for a Markov source is expressed via $p(i)$ and $p(j\mid i)$ by averaging over $i$ the entropy of the transition probability distribution:
 
-$$S = -\sum_i p_i \sum_j p(j|i)\log_2 p(j|i).$$
+$$S = -\sum_i p_i \sum_j p(j\mid i)\log_2 p(j\mid i).$$
 
 </div>
 
@@ -890,9 +914,9 @@ In this context one can treat measurements $A$ as messages about the value of th
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Conditional Entropy)</span></p>
 
-The relation between the message (measurement) $A_i$ and the event (quantity) $B_j$ is characterized by the conditional probability $P(B_j|A_i)$. For every $A_i$, this is a normalized probability distribution, and one can define its entropy $S(B|A_i) = -\sum_j P(B_j|A_i)\log_2 P(B_j|A_i)$. Since we are interested in the mean quality of transmission, we average this entropy over all values of $A_j$, which defines the **conditional entropy**:
+The relation between the message (measurement) $A_i$ and the event (quantity) $B_j$ is characterized by the conditional probability $P(B_j\mid A_i)$. For every $A_i$, this is a normalized probability distribution, and one can define its entropy $S(B\mid A_i) = -\sum_j P(B_j\mid A_i)\log_2 P(B_j\mid A_i)$. Since we are interested in the mean quality of transmission, we average this entropy over all values of $A_j$, which defines the **conditional entropy**:
 
-$$S(B|A) = \sum_i P(A_i)S(B|A_i) = -\sum_{ij} P(A_i)P(B_j|A_i)\log_2 P(B_j|A_i).$$
+$$S(B|A) = \sum_i P(A_i)S(B\mid A_i) = -\sum_{ij} P(A_i)P(B_j\mid A_i)\log_2 P(B_j\mid A_i).$$
 
 </div>
 
@@ -905,18 +929,18 @@ The conditional entropy measures what on average remains unknown about $B$ after
 
 What the measurements bring on average is their difference called the **mutual information**:
 
-$$I(A,B) = S(B) - S(B|A) = \sum_{ij} P(A_i,B_j)\log_2\left[\frac{P(B_j|A_i)}{P(B_j)}\right].$$
+$$I(A,B) = S(B) - S(B\mid A) = \sum_{ij} P(A_i,B_j)\log_2\left[\frac{P(B_j\mid A_i)}{P(B_j)}\right].$$
 
 Indeed, information is a decrease in uncertainty, so that the mutual information is non-negative. That means that measurements on average lower uncertainty by increasing the conditional probability relative to unconditional:
 
-$$\langle\log_2[P(B_j|A_i)/P(B_j)]\rangle \ge 0.$$
+$$\langle\log_2[P(B_j\mid A_i)/P(B_j)]\rangle \ge 0.$$
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Choice out of $n$ with $m$ Remaining)</span></p>
 
-Let $B$ be a choice out of $n$ equal possibilities: $P(B) = 1/n$ and $S(B) = \log_2 n$. If for every $A_i$ we can have $m$ different values of $B$, that is $P(B|A) = 1/m$, then $S(B|A) = \log_2 m$ and $I(A,B) = S(B) - S(B|A) = \log_2(n/m)$ bits. It is non-negative, since evidently $m \le n$. Note that in this case, knowledge of $B$ fixes $A$, so that $S(A|B) = 0$ and $I(A,B) = S(A)$.
+Let $B$ be a choice out of $n$ equal possibilities: $P(B) = 1/n$ and $S(B) = \log_2 n$. If for every $A_i$ we can have $m$ different values of $B$, that is $P(B\mid A) = 1/m$, then $S(B\mid A) = \log_2 m$ and $I(A,B) = S(B) - S(B\mid A) = \log_2(n/m)$ bits. It is non-negative, since evidently $m \le n$. Note that in this case, knowledge of $B$ fixes $A$, so that $S(A\mid B) = 0$ and $I(A,B) = S(A)$.
 
 When there is one-to-one correspondence, $m = 1$, and $A$ tells us all we need to know about $B$.
 
@@ -926,16 +950,16 @@ When there is one-to-one correspondence, $m = 1$, and $A$ tells us all we need t
 
 Probabilities are multiplied and entropies added for independent events. For correlated events, one uses conditional probabilities and entropies in what is called the **chain rule**:
 
-$$P(A_i,B_j) = P(B_j|A_i)P(A_i),$$
+$$P(A_i,B_j) = P(B_j\mid A_i)P(A_i),$$
 
-$$S(A,B) = S(A) + S(B|A) = S(B) + S(A|B).$$
+$$S(A,B) = S(A) + S(B\mid A) = S(B) + S(A\mid B).$$
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Properties of Mutual Information)</span></p>
 
 The mutual information can be written in the symmetric form:
 
-$$I(A,B) = \sum_{ij} P(A_i,B_j)\log_2\left[\frac{P(A_i,B_j)}{P(A_i)P(B_j)}\right] = S(B) - S(B|A) = S(A) - S(A|B) = S(A) + S(B) - S(A,B).$$
+$$I(A,B) = \sum_{ij} P(A_i,B_j)\log_2\left[\frac{P(A_i,B_j)}{P(A_i)P(B_j)}\right] = S(B) - S(B\mid A) = S(A) - S(A\mid B) = S(A) + S(B) - S(A,B).$$
 
 Key properties:
 - **Symmetry**: $I(A,B) = I(B,A)$, even though $A$ and $B$ can be of very different nature.
@@ -944,7 +968,7 @@ Key properties:
 - **Self-information**: $I(A,A) = S(A)$. So one can call entropy self-information.
 - **Bounds**: $I(A,B)$ exceeds neither $S(A)$ nor $S(B)$. $A$ cannot contain more information about $B$ than $B$ contains about itself.
 
-It is important to stress that measuring $A$ decreases the entropy of $B$ only *on average* over all values $A_i$: $S(B|A) \le S(B)$. Yet for any particular $A_i$ the entropy $S(B|A_i)$ can be either smaller or larger than $S(B)$, depending on how this measurement changes the probability distribution.
+It is important to stress that measuring $A$ decreases the entropy of $B$ only *on average* over all values $A_i$: $S(B\mid A) \le S(B)$. Yet for any particular $A_i$ the entropy $S(B\mid A_i)$ can be either smaller or larger than $S(B)$, depending on how this measurement changes the probability distribution.
 
 </div>
 
@@ -963,7 +987,7 @@ The channel capacity is the log of the maximal number of distinguishable inputs.
 
 </div>
 
-If there are different outputs for the same input (as in the $k-l$ example), the rate of information transfer is lower than for a one-to-one correspondence, since we need to divide our $k$ outputs into groups of $l$, distinguishing only between the groups. More formally, for each typical $N$-sequence of independently chosen $B$-s, we have $[P(A|B)]^{-N} = 2^{NS(A|B)}$ possible output sequences, all of them equally likely. To get the rate of the useful information about distinguishing the inputs, we need to divide the total number of typical outputs $2^{NS(A)}$ into sets of size $2^{NS(A|B)}$ corresponding to different inputs. Therefore, we can distinguish at most $2^{NS(A)}/2^{NS(A|B)} = 2^{NI(A,B)}$ sequences of the length $N$, which sets $I(A,B)$ as the maximal rate of information transfer.
+If there are different outputs for the same input (as in the $k-l$ example), the rate of information transfer is lower than for a one-to-one correspondence, since we need to divide our $k$ outputs into groups of $l$, distinguishing only between the groups. More formally, for each typical $N$-sequence of independently chosen $B$-s, we have $[P(A\mid B)]^{-N} = 2^{NS(A\mid B)}$ possible output sequences, all of them equally likely. To get the rate of the useful information about distinguishing the inputs, we need to divide the total number of typical outputs $2^{NS(A)}$ into sets of size $2^{NS(A\mid B)}$ corresponding to different inputs. Therefore, we can distinguish at most $2^{NS(A)}/2^{NS(A|B)} = 2^{NI(A,B)}$ sequences of the length $N$, which sets $I(A,B)$ as the maximal rate of information transfer.
 
 #### Noisy Channel Coding Theorem
 
@@ -981,7 +1005,7 @@ This (arguably the most important) result of the communication theory is rather 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Binary Symmetric Channel)</span></p>
 
-If in a binary channel the probability of every single bit going wrong is $q$, then $A$ is binary random variable with equal probabilities of 0 and 1, so that $S(A) = \log_2 2 = 1$. Conditional probabilities are $P(1|0) = P(0|1) = q$ and $P(1|1) = P(0|0) = 1 - q$, so that $S(A|B) = S(B|A) = S(q) = -q\log_2 q - (1-q)\log_2(1-q)$. The mutual information $I(A,B) = S(A) - S(A|B) = 1 - S(q)$. This is actually the maximum, that is the channel capacity: $\mathcal{C} = \max_{P(B)}[S(B) - S(B|A)] = 1 - S(q)$, because the maximal entropy is unity for a binary variable and corresponds to $P(0) = P(1) = 1/2$.
+If in a binary channel the probability of every single bit going wrong is $q$, then $A$ is binary random variable with equal probabilities of 0 and 1, so that $S(A) = \log_2 2 = 1$. Conditional probabilities are $P(1\mid 0) = P(0\mid 1) = q$ and $P(1\mid 1) = P(0\mid 0) = 1 - q$, so that $S(A\mid B) = S(B\mid A) = S(q) = -q\log_2 q - (1-q)\log_2(1-q)$. The mutual information $I(A,B) = S(A) - S(A\mid B) = 1 - S(q)$. This is actually the maximum, that is the channel capacity: $\mathcal{C} = \max_{P(B)}[S(B) - S(B\mid A)] = 1 - S(q)$, because the maximal entropy is unity for a binary variable and corresponds to $P(0) = P(1) = 1/2$.
 
 In a message of length $N$, there are on average $qN$ errors and there are $N!/(qN)!(N-qN)! \approx 2^{NS(q)}$ ways to distribute them. We then need to devote some $m$ bits in the message not to data transmission but to error correction. The number of possibilities provided by these extra bits, $2^m$, must exceed $2^{NS(q)}$, which means that $m > NS(q)$, and the transmission rate $R = (N-m)/N < 1 - S(q)$.
 
@@ -989,18 +1013,18 @@ In a message of length $N$, there are on average $qN$ errors and there are $N!/(
 
 #### Additive Noise and the Gaussian Channel
 
-The conditional entropy $S(B|A)$ is often independent of the input statistics $P(B)$. Maximal mutual information, that is capacity, is then achieved for maximal $S(B)$. If no other restrictions are imposed, that corresponds to the uniform distribution $P(B)$.
+The conditional entropy $S(B\mid A)$ is often independent of the input statistics $P(B)$. Maximal mutual information, that is capacity, is then achieved for maximal $S(B)$. If no other restrictions are imposed, that corresponds to the uniform distribution $P(B)$.
 
-If the measurement/transmission noise $\xi$ is additive, that is the output is $A = g(B) + \xi$ with an invertible function $g$, then $S(A|B) = S(\xi)$ and
+If the measurement/transmission noise $\xi$ is additive, that is the output is $A = g(B) + \xi$ with an invertible function $g$, then $S(A\mid B) = S(\xi)$ and
 
 $$I(A,B) = S(A) - S(\xi).$$
 
-The more choices of the output are recognizable despite the noise, the more is the capacity of the channel. When the conditional entropy $S(A|B)$ is given, then to maximize the mutual information we need to choose the measurement/coding procedure, for instance $g(B)$, that maximizes the entropy of the output $S(A)$.
+The more choices of the output are recognizable despite the noise, the more is the capacity of the channel. When the conditional entropy $S(A\mid B)$ is given, then to maximize the mutual information we need to choose the measurement/coding procedure, for instance $g(B)$, that maximizes the entropy of the output $S(A)$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gaussian Channel Capacity)</span></p>
 
-In a continuous case, an indeterminacy is infinite. If we agree to know the position of a point on an interval $L$ with an accuracy $\epsilon$, the entropy is $S(B) = \log_2(L/\epsilon)$. A measurement $A$ with precision $\Delta$ brings the information $I(A,B) = S(B) - S(B|A) = \log(L/\Delta)$, independent of $\epsilon$.
+In a continuous case, an indeterminacy is infinite. If we agree to know the position of a point on an interval $L$ with an accuracy $\epsilon$, the entropy is $S(B) = \log_2(L/\epsilon)$. A measurement $A$ with precision $\Delta$ brings the information $I(A,B) = S(B) - S(B\mid A) = \log(L/\Delta)$, independent of $\epsilon$.
 
 More generally, for a continuous distribution $\rho(x)$, the entropy in the limit $\epsilon \to 0$ consists of two parts:
 
@@ -1016,7 +1040,7 @@ where $SNR = \mathcal{S}/\mathcal{N}$ is the signal to noise ratio. This determi
 
 The estimate of $B$ is linearly related to the measurement $A$:
 
-$$\bar{B}(A) = \int BP(B|A)\,dB = \frac{A\mathcal{S}}{\mathcal{S}+\mathcal{N}} = A\frac{SNR}{1+SNR}.$$
+$$\bar{B}(A) = \int BP(B\mid A)\,dB = \frac{A\mathcal{S}}{\mathcal{S}+\mathcal{N}} = A\frac{SNR}{1+SNR}.$$
 
 At high SNR we use the unity factor, while at low SNR we scale down the output since most of what we are seeing must be noise.
 
@@ -1036,32 +1060,32 @@ Take-home lesson: entropy of the symbol set is the ultimate data compression rat
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bayes' Formula)</span></p>
 
-All empirical sciences need a quantitative tool for confronting hypothesis with data. One (rational) way to do that is statistical: update prior beliefs in light of the evidence. It is done using conditional probability. Indeed, for any $e$ and $h$, we have $P(e,h) = P(e|h)P(h) = P(h|e)P(e)$. If we now call $h$ hypothesis and $e$ evidence, we obtain the rule for updating the probability of hypothesis to be true:
+All empirical sciences need a quantitative tool for confronting hypothesis with data. One (rational) way to do that is statistical: update prior beliefs in light of the evidence. It is done using conditional probability. Indeed, for any $e$ and $h$, we have $P(e,h) = P(e\mid h)P(h) = P(h\mid e)P(e)$. If we now call $h$ hypothesis and $e$ evidence, we obtain the rule for updating the probability of hypothesis to be true:
 
-$$P(h|e) = P(h)\frac{P(e|h)}{P(e)}.$$
+$$P(h\mid e) = P(h)\frac{P(e\mid h)}{P(e)}.$$
 
-This form of the chain rule has been named after Bayes, who first introduced it (in 1763). The new (posterior) probability $P(h|e)$ is the prior probability $P(h)$ times the quotient $P(e|h)/P(e)$ which presents the support $e$ provides for $h$.
+This form of the chain rule has been named after Bayes, who first introduced it (in 1763). The new (posterior) probability $P(h\mid e)$ is the prior probability $P(h)$ times the quotient $P(e\mid h)/P(e)$ which presents the support $e$ provides for $h$.
 
 </div>
 
-Without exaggeration, one can say that most errors made by data analysis in science and most conspiracy theories are connected to neglect or abuse of Bayes' formula. A common mistake is the *inversion of the conditional*: evaluating $P(e|h)$ instead of $P(h|e)$. Even when $P(e|h)$ is high, $P(h|e)$ could be small if the prior probability $P(h)$ is vanishingly small and the total evidence probability $P(e)$ is not negligible.
+Without exaggeration, one can say that most errors made by data analysis in science and most conspiracy theories are connected to neglect or abuse of Bayes' formula. A common mistake is the *inversion of the conditional*: evaluating $P(e\mid h)$ instead of $P(h\mid e)$. Even when $P(e\mid h)$ is high, $P(h\mid e)$ could be small if the prior probability $P(h)$ is vanishingly small and the total evidence probability $P(e)$ is not negligible.
 
 #### Two Mutually Exclusive Hypotheses
 
-If we choose between two mutually exclusive hypotheses $h_1$ and $h_2$, the total probability of evidence consists of two terms: $P(e) = P(e,h_1) + P(e,h_2) = P(h_1)P(e|h_1) + P(h_2)P(e|h_2)$. The posterior probability is:
+If we choose between two mutually exclusive hypotheses $h_1$ and $h_2$, the total probability of evidence consists of two terms: $P(e) = P(e,h_1) + P(e,h_2) = P(h_1)P(e\mid h_1) + P(h_2)P(e\mid h_2)$. The posterior probability is:
 
-$$P(h_1|e) = P(h_1)\frac{P(e|h_1)}{P(h_1)P(e|h_1) + P(h_2)P(e|h_2)}.$$
+$$P(h_1\mid e) = P(h_1)\frac{P(e\mid h_1)}{P(h_1)P(e\mid h_1) + P(h_2)P(e\mid h_2)}.$$
 
-For checking an a priori improbable hypothesis, $P(h_1) \ll P(h_2)$, it is better to design an experiment that minimizes $P(e|h_2)$ rather than maximizes $P(e|h_1)$ — that is, *rule out the alternative* rather than support the hypothesis.
+For checking an a priori improbable hypothesis, $P(h_1) \ll P(h_2)$, it is better to design an experiment that minimizes $P(e\mid h_2)$ rather than maximizes $P(e\mid h_1)$ — that is, *rule out the alternative* rather than support the hypothesis.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Drug Test in a Mostly Drug-Free Population)</span></p>
 
-Suppose a drug test is 99% sensitive and 99% specific: $P(e|h_1) = 0.99$ and $P(e|h_2) = 0.01$, where $e$ is a positive test result, $h_1$ is "drug user", $h_2$ is "clean". If 0.5% of the population are drug users, i.e. $P(h_1) = 0.005$, the probability that a randomly selected individual with a positive test is actually a drug user is:
+Suppose a drug test is 99% sensitive and 99% specific: $P(e\mid h_1) = 0.99$ and $P(e\mid h_2) = 0.01$, where $e$ is a positive test result, $h_1$ is "drug user", $h_2$ is "clean". If 0.5% of the population are drug users, i.e. $P(h_1) = 0.005$, the probability that a randomly selected individual with a positive test is actually a drug user is:
 
-$$P(h_1|e) = \frac{0.005 \cdot 0.99}{0.99 \cdot 0.005 + 0.01 \cdot 0.995} \approx 0.332,$$
+$$P(h_1\mid e) = \frac{0.005 \cdot 0.99}{0.99 \cdot 0.005 + 0.01 \cdot 0.995} \approx 0.332,$$
 
-which is less than half. The result is more sensitive to specificity approaching unity (when $P(e|h_2) \to 0$) than to sensitivity.
+which is less than half. The result is more sensitive to specificity approaching unity (when $P(e\mid h_2) \to 0$) than to sensitivity.
 
 </div>
 
@@ -1069,7 +1093,7 @@ which is less than half. The result is more sensitive to specificity approaching
 
 The choice between two (not necessarily exclusive) hypotheses is determined by the ratio of their posterior probabilities:
 
-$$\frac{P(h_1|e)}{P(h_2|e)} = \frac{P(h_1)}{P(h_2)}\frac{P(e|h_1)}{P(e|h_2)}.$$
+$$\frac{P(h_1\mid e)}{P(h_2\mid e)} = \frac{P(h_1)}{P(h_2)}\frac{P(e\mid h_1)}{P(e\mid h_2)}.$$
 
 Both factors quantify **Occam's razor** — the preference for simpler hypotheses. The second factor (the *likelihood ratio*) is applied to data: a more complex hypothesis spreads its probability over the data space more thinly, so if the evidence is compatible with both hypotheses, the simpler one generally assigns more probability to the evidence.
 
@@ -1078,7 +1102,7 @@ Both factors quantify **Occam's razor** — the preference for simpler hypothese
 
 One can interpret higher probability as lower information brought by the choice. This leads to the **minimum description length** principle: prefer the hypothesis that communicates the data in the smaller number of bits. The total message length is
 
-$$-\log_2 P(h) - \log_2 P(e|h) = -\log_2 P(e,h).$$
+$$-\log_2 P(h) - \log_2 P(e\mid h) = -\log_2 P(e,h).$$
 
 A simpler model is communicated in fewer bits and also communicates data predictions in fewer bits since a more narrow distribution has lower entropy. The evaluation of $P(e|h)$ is itself a two-step process: first specify the model parameters, then communicate the data in those terms. Increasing the number of parameters allows better data fitting which shortens the error list, but lengthens the model specification — optimizing this trade-off is the essence of model selection.
 
@@ -1096,16 +1120,16 @@ Making prior assumptions explicit is important, both computationally and concept
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Arithmetic vs Fibonacci Sequence)</span></p>
 
-Given $5, 8, \ldots$ as two numbers of a sequence, one may put forward two hypotheses: $h_1$ predicts an arithmetic sequence $5, 8, 11, \ldots$; $h_2$ predicts a Fibonacci sequence $5, 8, 13, \ldots$ If the next number comes through a noisy channel as $12 \pm 1$, then $P(e|h_1) = P(e|h_2)$ and the choice is due to priors. Engineers and accountants would argue for arithmetic sequences (more frequently encountered), while natural scientists would point to pine cones, floral petals and seed heads to argue for Fibonacci.
+Given $5, 8, \ldots$ as two numbers of a sequence, one may put forward two hypotheses: $h_1$ predicts an arithmetic sequence $5, 8, 11, \ldots$; $h_2$ predicts a Fibonacci sequence $5, 8, 13, \ldots$ If the next number comes through a noisy channel as $12 \pm 1$, then $P(e\mid h_1) = P(e\mid h_2)$ and the choice is due to priors. Engineers and accountants would argue for arithmetic sequences (more frequently encountered), while natural scientists would point to pine cones, floral petals and seed heads to argue for Fibonacci.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bayes' Formula for Design)</span></p>
 
-Experimentalists measure the sensory response $A$ of an animal to the stimulus $B$, which gives $P(A|B)/P(A)$, or build a robot with the prescribed response. Then they measure the distribution of stimulus $P(B)$ in the natural habitat. After that, one obtains:
+Experimentalists measure the sensory response $A$ of an animal to the stimulus $B$, which gives $P(A\mid B)/P(A)$, or build a robot with the prescribed response. Then they measure the distribution of stimulus $P(B)$ in the natural habitat. After that, one obtains:
 
-$$P(B|A) = P(B)\frac{P(A|B)}{P(A)},$$
+$$P(B\mid A) = P(B)\frac{P(A\mid B)}{P(A)},$$
 
 which allows the animal/robot to perceive the environment and function effectively in that habitat.
 
@@ -1117,7 +1141,7 @@ The mutual information $I(A,B)$ measures the degree of correlation, which is ess
 
 #### Invalidating an Incorrect Hypothesis
 
-Let us ask: how fast can data invalidate an incorrect hypothesis? If the true distribution is $p$ but our hypothetical distribution is $q$, what number $N$ of trials is sufficient to decrease $P(h|e)$ by some a priori set factor? We need to estimate how fast the factor $\mathcal{P} = P(e|h)/P(e)$ decreases with $N$. The result $i$ is observed $p_i N$ times. We judge the probability of that happening as $q_i^{p_i N}$ times the number of sequences with those frequencies:
+Let us ask: how fast can data invalidate an incorrect hypothesis? If the true distribution is $p$ but our hypothetical distribution is $q$, what number $N$ of trials is sufficient to decrease $P(h\mid e)$ by some a priori set factor? We need to estimate how fast the factor $\mathcal{P} = P(e\mid h)/P(e)$ decreases with $N$. The result $i$ is observed $p_i N$ times. We judge the probability of that happening as $q_i^{p_i N}$ times the number of sequences with those frequencies:
 
 $$\mathcal{P} = \prod_i q_i^{p_i N} \frac{N!}{\prod_j (p_j N)!}.$$
 
@@ -1155,11 +1179,11 @@ $$-D(p\|q) = \sum_i p_i \ln(q_i/p_i) \leq \sum_i (q_i - p_i) = 0.$$
 
 #### Asymptotic Equipartition and Types
 
-Relative entropy quantifies how close to reality is the asymptotic equipartition estimate of the probability of a given sequence. Assume we have an $N$-sequence where the values appear with frequencies $q_k$, $k = 1, \ldots, K$. The asymptotic equipartition (the law of large numbers) suggests that the probability of that sequence is $\prod_k q_k^{Nq_k} = \exp[-NS(q)]$. But the frequencies in a finite sequence are generally somewhat different from the true probabilities $\{p_k\}$. The positivity of the relative entropy guarantees that the asymptotic equipartition *underestimates* the probability — the true probability is actually higher:
+Relative entropy quantifies how close to reality is the asymptotic equipartition estimate of the probability of a given sequence. Assume we have an $N$-sequence where the values appear with frequencies $q_k$, $k = 1, \ldots, K$. The asymptotic equipartition (the law of large numbers) suggests that the probability of that sequence is $\prod_k q_k^{Nq_k} = \exp[-NS(q)]$. But the frequencies in a finite sequence are generally somewhat different from the true probabilities $\lbrace p_k\rbrace$. The positivity of the relative entropy guarantees that the asymptotic equipartition *underestimates* the probability — the true probability is actually higher:
 
-$$\prod_k p_k^{Nq_k} = \exp\!\left[N\sum_k q_k \ln p_k\right] = \exp\{-N[S(q) - D(q\|p)]\}.$$
+$$\prod_k p_k^{Nq_k} = \exp\!\left[N\sum_k q_k \ln p_k\right] = \exp\lbrace -N[S(q) - D(q\|p)]\rbrace.$$
 
-How many different probability distributions $\{q_k\}$ (called **types** in information theory) exist for an $N$-sequence from an alphabet with $K$ symbols? Since $q_k$ can take any of $N+1$ values $0, 1/N, \ldots, 1$, the number of possible $K$-vectors is at most $(N+1)^K$, which grows with $N$ only polynomially (where $K$ sets the power). The number of sequences grows exponentially with $N$, so there is an exponential number of possible sequences for each type. The probability to observe a given type (empirical distribution) is determined by the relative entropy: $\mathcal{P}\{q_k\} \propto \exp[-ND(q\|p)]$.
+How many different probability distributions $\lbrace q_k\rbrace$ (called **types** in information theory) exist for an $N$-sequence from an alphabet with $K$ symbols? Since $q_k$ can take any of $N+1$ values $0, 1/N, \ldots, 1$, the number of possible $K$-vectors is at most $(N+1)^K$, which grows with $N$ only polynomially (where $K$ sets the power). The number of sequences grows exponentially with $N$, so there is an exponential number of possible sequences for each type. The probability to observe a given type (empirical distribution) is determined by the relative entropy: $\mathcal{P}\lbrace q_k\rbrace \propto \exp[-ND(q\|p)]$.
 
 #### Mutual Information as Relative Entropy
 
@@ -1167,7 +1191,7 @@ Mutual information is a particular case of relative entropy where we compare the
 
 $$D(p\|q) = S(X) + S(Y) - S(X,Y) = I(X,Y) \geq 0.$$
 
-If $i$ in $p_i$ runs from 1 to $M$, we can introduce $D(p\|u) = \log_2 M - S(p)$, where $u$ is the uniform distribution. This allows one to show that both relative entropy and mutual information inherit convexity properties from entropy: $D(p\|q)$ is convex with respect to both $p$ and $q$, while $I(X,Y)$ is a concave function of $p(x)$ for fixed $p(y|x)$ and a convex function of $p(y|x)$ for fixed $p(x)$. Convexity is important for ensuring that the extremum we seek is unique and lies at the boundary of allowed states.
+If $i$ in $p_i$ runs from 1 to $M$, we can introduce $D(p\|u) = \log_2 M - S(p)$, where $u$ is the uniform distribution. This allows one to show that both relative entropy and mutual information inherit convexity properties from entropy: $D(p\|q)$ is convex with respect to both $p$ and $q$, while $I(X,Y)$ is a concave function of $p(x)$ for fixed $p(y\mid x)$ and a convex function of $p(y\mid x)$ for fixed $p(x)$. Convexity is important for ensuring that the extremum we seek is unique and lies at the boundary of allowed states.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Price of Non-Optimal Coding)</span></p>
@@ -1206,7 +1230,7 @@ $$S(X,Y) + S(Y,Z) - S(Y) - S(X,Y,Z) \geq 0,$$
 
 which is called **strong sub-additivity**. It can be presented as the positivity of the **conditional mutual information**:
 
-$$I(X,Z|Y) = S(X|Y) + S(Z|Y) - S(X,Z|Y) = S(X,Y) + S(Y,Z) - S(Y) - S(X,Y,Z) \geq 0.$$
+$$I(X,Z\mid Y) = S(X\mid Y) + S(Z\mid Y) - S(X,Z\mid Y) = S(X,Y) + S(Y,Z) - S(Y) - S(X,Y,Z) \geq 0.$$
 
 </div>
 
@@ -1219,7 +1243,7 @@ The straightforward generalization of mutual information for many objects, $I(X_
 
 For three variables, the interaction information (McGill 1954) measures the difference between the total correlation and that encoded in all pairs:
 
-$$II = I(X,Z) - I(X,Z|Y) = S(X) + S(Y) + S(Z) - S(X,Y) - S(X,Z) - S(Y,Z) + S(X,Y,Z).$$
+$$II = I(X,Z) - I(X,Z\mid Y) = S(X) + S(Y) + S(Z) - S(X,Y) - S(X,Z) - S(Y,Z) + S(X,Y,Z).$$
 
 Equivalently: $II = I(X,Y) + I(X,Z) + I(Y,Z) - I(X,Y,Z)$.
 
@@ -1232,9 +1256,9 @@ Interaction information measures the influence of a third variable on the amount
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Channels and Love Triangles)</span></p>
 
-A channel with input $X$, noise $Z$ and output $Y$ corresponds to $I(X,Z) = 0$ and $I(X,Z|Y) > 0$, that is $II(X,Y,Z) < 0$ (synergy). Once you know the output, the unknown noise and input become related.
+A channel with input $X$, noise $Z$ and output $Y$ corresponds to $I(X,Z) = 0$ and $I(X,Z\mid Y) > 0$, that is $II(X,Y,Z) < 0$ (synergy). Once you know the output, the unknown noise and input become related.
 
-Love triangles can be either redundant or synergetic. If $Y$ dates either $X$, both $X,Z$, or none, then the dating states of $X$ and $Z$ are correlated, and knowing one tells us more about another when $Y$'s state is unknown: $I(X,Z) > I(X,Z|Y)$ (redundancy). Conversely, if $Y$ can date one, another, both, or none with equal probability, the states of $X$ and $Z$ are uncorrelated, but knowledge of $Y$ induces correlation between them (synergy).
+Love triangles can be either redundant or synergetic. If $Y$ dates either $X$, both $X,Z$, or none, then the dating states of $X$ and $Z$ are correlated, and knowing one tells us more about another when $Y$'s state is unknown: $I(X,Z) > I(X,Z\mid Y)$ (redundancy). Conversely, if $Y$ can date one, another, both, or none with equal probability, the states of $X$ and $Z$ are uncorrelated, but knowledge of $Y$ induces correlation between them (synergy).
 
 </div>
 
