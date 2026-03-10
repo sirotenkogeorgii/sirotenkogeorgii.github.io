@@ -15,3 +15,4 @@ date: 2024-10-20
 - [Information Theory, Inference, and Learning Algorithms](/subpages/books/information_theory_mackay/)
 - [Physical Nature of Information](/subpages/books/information_theory/physical_nature_of_information/)
 - [Algorithmic Randomness and Complexity](/subpages/books/algorithmic_randomness/algorithmic_randomness_and_complexity/)
+- [Randomized Numerical Linear Algebra](/subpages/books/randomized-numerical-linear-algebra/)
