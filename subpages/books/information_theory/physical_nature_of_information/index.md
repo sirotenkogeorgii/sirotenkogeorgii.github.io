@@ -1735,7 +1735,7 @@ One looks for the minimum of the functional:
 
 $$I(C,A) - \beta\,I(C,B).$$
 
-The coding $A \to C$ is stochastic, characterized by $P(C|A)$. The rate $I(C,A)$ is the average number of bits per message needed to specify an element in the codebook. The single parameter $\beta$ represents the tradeoff between complexity of representation $I(C,A)$ and accuracy $I(C,B)$:
+The coding $A \to C$ is stochastic, characterized by $P(C\mid A)$. The rate $I(C,A)$ is the average number of bits per message needed to specify an element in the codebook. The single parameter $\beta$ represents the tradeoff between complexity of representation $I(C,A)$ and accuracy $I(C,B)$:
 - At $\beta = 0$: the most sketchy quantization — everything is assigned to a single point.
 - As $\beta$ grows: we are pushed toward detailed quantization.
 
@@ -1746,13 +1746,13 @@ The coding $A \to C$ is stochastic, characterized by $P(C|A)$. The rate $I(C,A)$
 
 Variation of the functional with respect to $P(C_j|A_i)$ gives:
 
-$$P(C_j|A_i) = \frac{P(C_j)}{Z(A_i,\beta)}\exp\left\{-\beta\,D[P(B_k|A_i)\|P(B_k|C_j)]\right\},$$
+$$P(C_j\mid A_i) = \frac{P(C_j)}{Z(A_i,\beta)}\exp\left\{-\beta\,D[P(B_k|A_i)\|P(B_k|C_j)]\right\},$$
 
 where the conditional probabilities of $A, B$ given $C$ are related by Bayes' rule:
 
-$$P(B_k|C_j) = \frac{1}{P(C_j)}\sum_i P(A_i)P(B_k|A_i)P(C_j|A_i).$$
+$$P(B_k\mid C_j) = \frac{1}{P(C_j)}\sum_i P(A_i)P(B_k|A_i)P(C_j|A_i).$$
 
-The relative entropy $D$ between the two conditional probability distributions $P(B|A)$ and $P(B|C)$ emerged as the effective distortion measure. The system of equations is solved by iterations. Doing compression many times, $A \to C_1 \to C_2 \ldots$, is used in multi-layered **Deep Learning** algorithms. Knowledge of statistical physics helps in identifying phase transitions (with respect to $\beta$) and the relation between processing from layer to layer and the renormalization group.
+The relative entropy $D$ between the two conditional probability distributions $P(B\mid A)$ and $P(B\mid C)$ emerged as the effective distortion measure. The system of equations is solved by iterations. Doing compression many times, $A \to C_1 \to C_2 \ldots$, is used in multi-layered **Deep Learning** algorithms. Knowledge of statistical physics helps in identifying phase transitions (with respect to $\beta$) and the relation between processing from layer to layer and the renormalization group.
 
 </div>
 
@@ -1810,18 +1810,18 @@ Bacteria follow the same strategy without ever taking a course on statistical ph
 
 More generally, the environment can be characterized by parameters $A$ and the internal state of the organism/gambler by parameters $B$. The growth rate is:
 
-$$\lambda = \int dA\,dB\,P(A,B)\,r(A,B) = \int dA\,P(A)\int dB\,P(B|A)\,r(A,B).$$
+$$\lambda = \int dA\,dB\,P(A,B)\,r(A,B) = \int dA\,P(A)\int dB\,P(B\mid A)\,r(A,B).$$
 
-The coordination is determined by $P(B|A)$, which determines the mutual information:
+The coordination is determined by $P(B\mid A)$, which determines the mutual information:
 
-$$I(A,B) = \int dA\,P(A)\int dB\,P(B|A)\log_2\frac{P(B|A)}{P(B)}.$$
+$$I(A,B) = \int dA\,P(A)\int dB\,P(B\mid A)\log_2\frac{P(B\mid A)}{P(B)}.$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Growth-Information Tradeoff)</span></p>
 
 Acquiring information has its own cost $aI$. One looks for a tradeoff between maximizing growth and minimizing information cost: maximize $F = \lambda - aI$. This gives, similarly to the rate distortion theory:
 
-$$P(B|A) = \frac{P(B)}{Z(A,\beta)}\,e^{\beta r(A,B)},$$
+$$P(B\mid A) = \frac{P(B)}{Z(A,\beta)}\,e^{\beta r(A,B)},$$
 
 where $\beta = a^{-1}\ln 2$. This is the same as rate distortion theory, with the energy now being minus the growth rate. The choice of $\beta$ reflects relative costs of information and metabolism. All possible states in the plane $(r, I)$ lie below a monotonic convex curve, much like the energy-entropy plane in thermodynamics.
 
@@ -2285,7 +2285,7 @@ For independent subsystems, $\psi_{AB}(x,y) = \psi_A(x)\psi_B(y)$ and $\bar{O} =
 
 $$\rho(x,x') = \sum_y \psi_{AB}^*(x',y)\psi_{AB}(x,y),$$
 
-so that $\bar{O} = \sum_x[\hat{O}(x)\rho(x,x')]_{x'=x}$. The density matrix is Hermitian, has all non-negative eigenvalues and unit trace. Every such matrix can be "purified" — presented (non-uniquely) as a density matrix of some pure state $\psi_{AB}$ in the extended system $AB$. Purification is quantum mechanical with no classical analog.
+so that $\bar{O} = \sum_x[\hat{O}(x)\rho(x,x')]\_{x'=x}$. The density matrix is Hermitian, has all non-negative eigenvalues and unit trace. Every such matrix can be "purified" — presented (non-uniquely) as a density matrix of some pure state $\psi_{AB}$ in the extended system $AB$. Purification is quantum mechanical with no classical analog.
 
 </div>
 
