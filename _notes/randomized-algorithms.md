@@ -15,7 +15,8 @@ tags:
 
 Randomization is a powerful tool in algorithm design, often providing simpler or more efficient solutions to problems where deterministic approaches may fail or become overly complex. By introducing randomness, we can avoid deadlocks, improve average-case performance, and create secure protocols.
 
-### Avoiding Deadlock in Communication
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Avoiding Deadlock in Communication)</span></p>
 
 Consider two network nodes, $A$ and $B$, connected by a half-duplex channel. This channel allows communication in both directions, but only one node can send at any given time. If both nodes attempt to transmit simultaneously, they recognize the collision but cannot retrieve any data.
 
@@ -24,19 +25,26 @@ To prevent a permanent deadlock—where both nodes repeatedly try to start at th
 1. If one side is already transmitting, the other side must wait.
 2. If both sides attempt to start at the same time, both must stop. Each node then waits for a random time interval before attempting to send again.
 
-### Deterministic vs. Randomized Quicksort
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deterministic vs. Randomized Quicksort)</span></p>
 
 The Quicksort algorithm sorts a list by choosing a pivot element and partitioning the list into elements smaller and larger than that pivot. The efficiency of this algorithm depends heavily on the quality of the pivot.
 
-* Deterministic Quicksort: The pivot is chosen according to a fixed procedure (e.g., always picking the first element or the median of the first, last, and middle elements). In this version, rare "bad inputs" exist that will always trigger a degenerated partition tree, causing the complexity to spike to $O(n^2)$ instead of the average $O(n \log n)$.
-* Randomized Quicksort: The pivot is chosen uniformly at random from the current list. Here, no specific input is "bad" by itself. While there is a small probability that the algorithm makes a series of poor random choices, the expected performance is robust across all possible inputs.
+* **Deterministic Quicksort:** The pivot is chosen according to a fixed procedure (e.g., always picking the first element or the median of the first, last, and middle elements). In this version, rare "bad inputs" exist that will always trigger a degenerated partition tree, causing the complexity to spike to $O(n^2)$ instead of the average $O(n \log n)$.
+* **Randomized Quicksort:** The pivot is chosen uniformly at random from the current list. Here, no specific input is "bad" by itself. While there is a small probability that the algorithm makes a series of poor random choices, the expected performance is robust across all possible inputs.
 
-### The Copy Game and Strategic Randomization
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Copy Game and Strategic Randomization)</span></p>
 
 Randomization is equally vital in game-theoretical contexts. Consider the copy game, where two players, A and B, secretly commit to a bit $x_A, x_B \in \lbrace 0, 1\rbrace$. Player A wins if the bits are distinct; Player B wins if they are identical.
 
 If Player A uses a deterministic strategy that B can learn or simulate, B can simply duplicate A's value, causing A to lose every round. however, if Player A uses a randomized strategy—determining their bit by a fair coin toss independent of B—then B cannot gain an advantage. On average, each player wins half the rounds, regardless of B's computational power or intelligence.
 
+</div>
 
 ## Boolean Functions and Cryptographic Applications
 
@@ -51,8 +59,6 @@ An $n$-ary Boolean function maps $\lbrace 0, 1\rbrace^n \to \lbrace 0, 1\rbrace$
 
 A Boolean function on $n$ arguments that yields 1 if and only if an odd number of the arguments are equal to 1.
 
-</div>
-
 The 2-ary parity function, or XOR ($\oplus$), is defined as
 
 $$
@@ -63,27 +69,40 @@ a \oplus b =
 \end{cases}
 $$
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(The binary parity function is associative)</span></p>
+
 The binary parity function is associative. In expressions containing only $\oplus$, parentheses do not affect the result; the expression will always evaluate to the parity of all arguments involved. For example, $(a_1 \oplus a_2) \oplus (a_1 \oplus (a_3 \oplus a_1))$ is equivalent to $\oplus_5(a_1, a_2, a_1, a_3, a_1)$.
 
-### One-Time Pad
+</div>
+
+TODO: proof
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One-Time Pad)</span></p>
 
 The one-time pad is a technique used to encrypt a message $w = w_1 \dots w_n$ using a secret random word $r = r_1 \dots r_n$, where $r$ is generated by independent fair coin tosses.
 
-* Encryption: The sender computes $w \oplus r = (w_1 \oplus r_1) \dots (w_n \oplus r_n)$.
-* Security: Without knowledge of $r$, an adversary $E$ cannot gain any information about $w$. Because $r$ is uniform and random, the encrypted message $w \oplus r$ is equally likely to be any word of length $n$.
+* **Encryption:** The sender computes $w \oplus r = (w_1 \oplus r_1) \dots (w_n \oplus r_n)$.
+* **Security:** Without knowledge of $r$, an adversary $E$ cannot gain any information about $w$. Because $r$ is uniform and random, the encrypted message $w \oplus r$ is equally likely to be any word of length $n$.
 
 **Note.** The random word $r$ must never be reused. If $r$ is used to encrypt both $w_0$ and $w_1$, an adversary can compute $(w_0 \oplus r) \oplus (w_1 \oplus r) = w_0 \oplus w_1$, revealing whether the two messages were identical.
 
-### The Dining Cryptographers Problem
+</div>
 
-Three cryptographers (A, B, C) wish to determine if one of them paid their restaurant bill or if an external entity (like the NSA) paid. They require a protocol where:
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Dining Cryptographers Problem)</span></p>
+
+Three cryptographers $(A, B, C)$ wish to determine if one of them paid their restaurant bill or if an external entity (like the NSA) paid. They require a protocol where:
 
 1. Everyone learns if a cryptographer paid.
 2. If a cryptographer paid, the identity of that person remains anonymous to the others.
 
-### The Protocol
+**The Protocol**
 
-1. Every pair of cryptographers tosses a fair coin to establish a shared random bit unknown to the third party (e.g., A and B share $r_{A,B}$).
+1. Every pair of cryptographers tosses a fair coin to establish a shared random bit unknown to the third party (e.g., $A$ and $B$ share $r_{A,B}$).
 2. Each cryptographer $X$ calculates $u_X$, the parity of the two bits they know (e.g., $u_A = r_{A,B} \oplus r_{A,C}$).
 3. The sum of these parities is always zero: $u_A \oplus u_B \oplus u_C = (r_{A,B} \oplus r_{A,C}) \oplus (r_{A,B} \oplus r_{B,C}) \oplus (r_{A,C} \oplus r_{B,C}) = 0$.
 4. Each cryptographer publishes a bit $p_X$:
@@ -91,6 +110,7 @@ Three cryptographers (A, B, C) wish to determine if one of them paid their resta
   * If they did pay, $p_X = \neg u_X$ (the complement).
 5. The result $p_A \oplus p_B \oplus p_C$ will be 0 if no one paid and 1 if exactly one person paid.
 
+</div>
 
 ## Foundations of Discrete Probability
 
@@ -103,13 +123,13 @@ A chance experiment is modeled using a set $\Omega$ of outcomes. $\Omega$ must b
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete Probability Distribution)</span></p>
 
-A real-valued function Prob: $\Omega \to [0, 1]$ such that: $\sum_{\omega \in \Omega} \mathbb{P}[\omega] = 1$. The pair $(\Omega, Prob)$ is called a discrete probability space.
+A real-valued function $Prob: \Omega \to [0, 1]$ such that: $\sum_{\omega \in \Omega} \mathbb{P}[\omega] = 1$. The pair $(\Omega, Prob)$ is called a discrete probability space.
 
 </div>
 
-* Events: Subsets of $\Omega$. The probability of an event $E$ is $\mathbb{P}[E] = \sum_{\omega \in E}\mathbb{P}[\omega]$.
-* Atomic Events: Singleton subsets $\lbrace\omega\rbrace$, often identified simply as $\omega$.
-* Uniform Distribution: On a finite set $\Omega$, this distribution assigns $\mathbb{P}[\omega] = \frac{1}{\lvert \Omega\rvert}$ to every outcome. Note that a uniform distribution cannot exist on a countably infinite set.
+* **Events:** Subsets of $\Omega$. The probability of an event $E$ is $\mathbb{P}[E] = \sum_{\omega \in E}\mathbb{P}[\omega]$.
+* **Atomic Events:** Singleton subsets $\lbrace\omega\rbrace$, often identified simply as $\omega$.
+* **Uniform Distribution:** On a finite set $\Omega$, this distribution assigns $\mathbb{P}[\omega] = \frac{1}{\lvert \Omega\rvert}$ to every outcome. Note that a uniform distribution cannot exist on a countably infinite set.
 
 ### Random Variables
 
@@ -118,13 +138,16 @@ A random variable $X$ is a function $X$: $\Omega \to \mathbb{R}$. It maps outcom
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Distribution of a Random Variable)</span></p>
 
-The range of $X$, denoted range($X$), is a countable subset of $\mathbb{R}$. The distribution $\mathbb{P}_X$ is defined as: $\mathbb{P}_X(r) = \mathbb{P}[X = r] = \sum_{\lbrace\omega \in \Omega: X(\omega) = r\rbrace}\mathbb{P}[\omega]$
+The range of $X$, denoted range($X$), is a countable subset of $\mathbb{R}$. The distribution $\mathbb{P}\_X$ is defined as: 
+
+$$\mathbb{P}_X(r) = \mathbb{P}[X = r] = \sum_{\lbrace\omega \in \Omega: X(\omega) = r\rbrace}\mathbb{P}[\omega]$$
 
 </div>
 
-### Indicator Variables
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Indicator Variables)</span></p>
 
-A specific type of random variable is the indicator variable for an event $E$:
+A specific type of random variable is the **indicator variable** for an event $E$:
 
 $$
 X(\omega) =
@@ -134,6 +157,7 @@ X(\omega) =
 \end{cases}
 $$
 
+</div>
 
 ## Joint Distributions and Independence
 
@@ -141,7 +165,11 @@ When dealing with multiple random variables $X_1, \dots, X_m$ on the same probab
 
 ### Joint Distribution
 
-The joint probability distribution maps combinations of values $(r_1, \dots, r_m)$ to the probability that all variables take those values simultaneously: $\mathbb{P}_{X_1, \dots, X_m}(r_1, \dots, r_m) = \mathbb{P}[X_1 = r_1, \dots, X_m = r_m]$ Crucially, the individual distributions of $X_i$ do not necessarily determine the joint distribution.
+The joint probability distribution maps combinations of values $(r_1, \dots, r_m)$ to the probability that all variables take those values simultaneously: 
+
+$$\mathbb{P}_{X_1, \dots, X_m}(r_1, \dots, r_m) = \mathbb{P}[X_1 = r_1, \dots, X_m = r_m]$$
+
+Crucially, the individual distributions of $X_i$ do not necessarily determine the joint distribution.
 
 ### Independence
 
@@ -150,18 +178,22 @@ Independence describes how the knowledge of one variable's value affects the pro
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mutually Independent Random Variables)</span></p>
 
-Variables $X_1, \dots, X_m$ are mutually independent if for all $r_1, \dots, r_m$: $\mathbb{P}[X_1 = r_1, \dots, X_m = r_m] = \mathbb{P}[X_1 = r_1] \cdot \dots \cdot \mathbb{P}[X_m = r_m]$
+Variables $X_1, \dots, X_m$ are mutually independent if for all $r_1, \dots, r_m$: 
+
+$$\mathbb{P}[X_1 = r_1, \dots, X_m = r_m] = \mathbb{P}[X_1 = r_1] \cdot \dots \cdot \mathbb{P}[X_m = r_m]$$
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pairwise Independent Random Variables)</span></p>
 
-Variables are pairwise independent if for all $i \neq j$: $\mathbb{P}[X_i = r_i, X_j = r_j] = \mathbb{P}[X_i = r_i] \cdot \mathbb{P}[X_j = r_j]$
+Variables are pairwise independent if for all $i \neq j$: 
+
+$$\mathbb{P}[X_i = r_i, X_j = r_j] = \mathbb{P}[X_i = r_i] \cdot \mathbb{P}[X_j = r_j]$$
 
 </div>
 
-### k-wise Independence
+### $k$-wise Independence
 
 This concept generalizes pairwise independence. Variables are $k$-wise independent if every subset of $k$ distinct variables is mutually independent.
 
@@ -176,12 +208,11 @@ This concept generalizes pairwise independence. Variables are $k$-wise independe
 
 Consider three fair coin tosses $X_1, X_2, X_3$. Define:
 
-</div>
-
 * $Z_1 = X_1 \oplus X_2$
 * $Z_2 = X_1 \oplus X_3$
 * $Z_3 = X_2 \oplus X_3$ Here, any two $Z_i$ are independent. However, because $Z_1 = Z_2 \oplus Z_3$, the third variable is entirely determined by the first two. Thus, $\mathbb{P}[Z_1 = 1, Z_2 = 0, Z_3 = 0] = 0$, which is not equal to $\mathbb{P}[Z_1=1]\mathbb{P}[Z_2=0]\mathbb{P}[Z_3=0] = 1/8$.
 
+</div>
 
 ## Expectation
 
@@ -190,7 +221,9 @@ The expectation (or expected value) is the long-run average value of a random va
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Expectation)</span></p>
 
-$\mathbb{E}[X] = \sum_{\omega \in \Omega}\mathbb{P}[\omega]X(\omega)$ This is defined only if the series converges absolutely.
+This is defined only if the series converges absolutely:
+
+$$\mathbb{E}[X] = \sum_{\omega \in \Omega}\mathbb{P}[\omega]X(\omega)$$
 
 </div>
 
@@ -202,21 +235,25 @@ $\mathbb{E}[X] = \sum_{\omega \in \Omega}\mathbb{P}[\omega]X(\omega)$ This is de
 For any random variables $X_1, \dots, X_n$ and any real number $r$:
 
 $$
-\mathbb{E}[X_1 + \dots + X_n] = \mathbb{E}[X_1] + \dots + \mathbb{E}[X_n]
+(i) \quad \mathbb{E}[X_1 + \dots + X_n] = \mathbb{E}[X_1] + \dots + \mathbb{E}[X_n]
 $$
 
 $$
-\mathbb{E}[rX] = r \mathbb{E}[X]
+(ii) \quad \mathbb{E}[rX] = r \mathbb{E}[X]
 $$
 
 </div>
 
-If the variables $X_1, \dots, X_n$ are mutually independent, the expectation of their product also decomposes: $\mathbb{E}[X_1 \cdot \dots \cdot X_n] = \mathbb{E}[X_1] \cdot \dots \cdot \mathbb{E}[X_n]$
+If the variables $X_1, \dots, X_n$ are mutually independent, the expectation of their product also decomposes: 
+
+$$\mathbb{E}[X_1 \cdot \dots \cdot X_n] = \mathbb{E}[X_1] \cdot \dots \cdot \mathbb{E}[X_n]$$
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed Points of a Random Permutation )</span></p>
 
-Fixed Points of a Random Permutation Suppose $n$ gifts are distributed to $n$ people via a random permutation $\pi$. Let $X_i$ be an indicator variable that is 1 if person $P_i$ receives their own gift $T_i$. The probability $\mathbb{P}[X_i = 1] = \frac{1}{n}$. The expected number of people who get their own gift is: $\mathbb{E}\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n \mathbb{E}[X_i] = \sum_{i=1}^n \frac{1}{n} = 1$
+Suppose $n$ gifts are distributed to $n$ people via a random permutation $\pi$. Let $X_i$ be an indicator variable that is 1 if person $P_i$ receives their own gift $T_i$. The probability $\mathbb{P}[X_i = 1] = \frac{1}{n}$. The expected number of people who get their own gift is: 
+
+$$\mathbb{E}\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n \mathbb{E}[X_i] = \sum_{i=1}^n \frac{1}{n} = 1$$
 
 </div>
 
@@ -225,7 +262,9 @@ Fixed Points of a Random Permutation Suppose $n$ gifts are distributed to $n$ pe
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Conditional Distribution and Expectation)</span></p>
 
-For an event $F$ where $\mathbb{P}[F] > 0$: $\mathbb{P}[X = r \mid F] = \frac{\mathbb{P}[\lbrace X = r\rbrace \cap F]}{\mathbb{P}[F]}\mathbb{E}[X \mid F] = \sum_{r \in range(X)} r \cdot\mathbb{P}[X = r \mid F]$
+For an event $F$ where $\mathbb{P}[F] > 0$: 
+
+$$\mathbb{P}[X = r \mid F] = \frac{\mathbb{P}[\lbrace X = r\rbrace \cap F]}{\mathbb{P}[F]}\mathbb{E}[X \mid F] = \sum_{r \in range(X)} r \cdot\mathbb{P}[X = r \mid F]$$
 
 </div>
 
@@ -239,19 +278,26 @@ Bounds allow us to estimate the probability of "bad" events even when the exact 
 This is a simple "tail bound" for non-negative random variables.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Markov Inequality)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Markov's Inequality)</span></p>
 
-Let $X$ be a non-negative random variable. For any $r > 0$: $\mathbb{P}[X \ge r]\le\frac{\mathbb{E}[X]}{r}$
+Let $X$ be a random variable with $X \ge 0$ and let $a > 0$. Then
+
+$$P(X \ge a) \le \frac{\mathbb{E}(X)}{a}.$$
 
 </div>
 
-**Proof.**
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-1. By the definition of expectation: $\mathbb{E}[X] = \sum_{\omega \in \Omega}\mathbb{P}[\omega]X(\omega)$.
-2. Since $X$ is non-negative, we can truncate the sum to only those $\omega$ where $X(\omega) \ge r$: $\mathbb{E}[X]\ge\sum_{\lbrace\omega: X(\omega) \ge r\rbrace}\mathbb{P}[\omega]X(\omega)$
-3. In this truncated sum, every $X(\omega)$ is at least $r$: $\mathbb{E}[X]\ge r \sum_{\lbrace\omega: X(\omega) \ge r\rbrace}\mathbb{P}[\omega]$
-4. The sum $\sum_{\lbrace\omega: X(\omega) \ge r\rbrace}\mathbb{P}[\omega]$ is exactly $\mathbb{P}[X \ge r]$.
-5. Thus, $\mathbb{E}[X]\ge r\cdot\mathbb{P}[X \ge r]$, which rearranges to the stated inequality. $\square$
+By the law of total expectation with partition $\lbrace X \ge a \rbrace$ and $\lbrace X < a \rbrace$:
+
+$$\mathbb{E}(X) = P(X \ge a)\,\mathbb{E}(X \mid X \ge a) + P(X < a)\,\mathbb{E}(X \mid X < a) \ge P(X \ge a) \cdot a + 0.$$
+
+Dividing by $a$ gives the result.
+
+</details>
+</div>
 
 ### The Sum Bound
 
@@ -269,8 +315,6 @@ If a single experiment has a success probability of at least $\frac{1}{n}$, we c
 
 Consequently, the probability of at least one success in $n$ repetitions is at least $\frac{1}{2}$, and in tn repetitions, it is at least $1 - \frac{1}{2^t}$.
 
-
-
 ## Fundamental Probability Bounds and the Tenure Game
 
 In the study of randomized algorithms, we often need to bound the probability that a random variable deviates significantly from its expectation or that a sequence of independent trials fails to produce a desired outcome. This section introduces essential tail bounds and applies them to a combinatorial game known as the Tenure Game to demonstrate how probabilistic reasoning can reveal deterministic winning strategies.
@@ -286,7 +330,7 @@ The most basic tool for bounding the "tail" of a distribution (the probability t
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Markov's Inequality)</span></p>
 
-Let X be a random variable that assumes only non-negative values. Then for every positive real number $r$, we have
+Let $X$ be a random variable that assumes only non-negative values. Then for every positive real number $r$, we have
 
 $$
 \mathbb{P}[X \ge r] \le \frac{\mathbb{E}[X]}{r}.
@@ -298,9 +342,13 @@ $$
 
 1. By definition: $\mathbb{E}[X] = \sum_{\omega \in \Omega} \mathbb{P}[\omega] X(\omega)$.
 2. Since $X$ is non-negative, we can restrict to outcomes with $X(\omega) \ge r$:
-   $\mathbb{E}[X] \ge \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega] X(\omega)$.
+   
+   $$\mathbb{E}[X] \ge \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega] X(\omega)$$
+
 3. Each summand in this restricted sum is at least $r$ times its probability:
-   $\mathbb{E}[X] \ge r \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega]$.
+   
+   $$\mathbb{E}[X] \ge r \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega]$$
+
 4. The remaining sum equals $\mathbb{P}[X \ge r]$.
 5. Therefore, $\mathbb{E}[X] \ge r \cdot \mathbb{P}[X \ge r]$, hence $\mathbb{P}[X \ge r] \le \frac{\mathbb{E}[X]}{r}$.
 
@@ -325,25 +373,32 @@ Consider an experiment with a success probability of at least $1/n$. If we repea
 * The probability of failure in a single trial is at most $1 - 1/n$.
 * The probability of no success in $tn$ repetitions is $(1 - 1/n)^{tn}$.
 
-Using the calculus identity where $(1 - 1/n)^n$ approaches $1/e < 0.4$ as $n \to $\infty$ (where $e \approx 2.718$ is Euler's number): $\left(1 - \frac{1}{n}\right)^{tn} = \left(\left(1 - \frac{1}{n}\right)^n\right)^t \leq 0.4^t \leq \frac{1}{2^t}$
+Using the calculus identity where $(1 - 1/n)^n$ approaches $1/e < 0.4$ as $n \to \infty$ (where $e \approx 2.718$ is Euler's number): 
+
+$$\left(1 - \frac{1}{n}\right)^{tn} = \left(\left(1 - \frac{1}{n}\right)^n\right)^t \leq 0.4^t \leq \frac{1}{2^t}$$
 
 Thus, the probability of at least one success in $tn$ independent repetitions is at least $1 - 1/2^t$. Specifically, if $t=1$ (i.e., we run $n$ repetitions), the probability of at least one success is at least $1/2$.
 
 
 ## The Tenure Game
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Game</span><span class="math-callout__name">(The Tenure Game)</span></p>
+
 The Tenure Game is a finite, two-person, zero-sum game with complete information. It serves as an excellent model for applying probabilistic analysis to determine the existence of winning strategies.
 
-### Game Rules and Mechanics
+**Game Rules and Mechanics**
 
 The game involves two players: Alice (the department head, who wants to prevent tenure) and Bob (the dean, who wants at least one person to receive tenure).
 
-1. Initial Configuration: Finitely many tokens $1, \dots, m$ are placed at positions $d_1, \dots, d_m$, where each $d_i$ is a non-zero natural number. Position 0 represents "tenure."
-2. The Rounds: In each round:
-  * Step I (Partition): Bob partitions the set $I$ of tokens currently not at position 0 into two disjoint sets, $I_0$ and $I_1$.
-  * Step II (Selection): Alice chooses a bit $r \in \lbrace 0, 1\rbrace$.
-  * Step III (Removal and Promotion): Tokens in the set $I_r$ are removed from the game. Tokens in the set $I_{1-r}$ are moved one step closer to position 0 (e.g., a token at position $d$ moves to $d-1$).
-3. Winning Condition: Bob wins if eventually any token reaches position 0. Alice wins if all tokens are removed before any reaches position 0.
+1. **Initial Configuration:** Finitely many tokens $1, \dots, m$ are placed at positions $d_1, \dots, d_m$, where each $d_i$ is a non-zero natural number. Position 0 represents "tenure."
+2. **The Rounds:** In each round:
+  * **Step I (Partition):** Bob partitions the set $I$ of tokens currently not at position 0 into two disjoint sets, $I_0$ and $I_1$.
+  * **Step II (Selection):** Alice chooses a bit $r \in \lbrace 0, 1\rbrace$.
+  * **Step III (Removal and Promotion):** Tokens in the set $I_r$ are removed from the game. Tokens in the set $I_{1-r}$ are moved one step closer to position 0 (e.g., a token at position $d$ moves to $d-1$).
+3. **Winning Condition:** Bob wins if eventually any token reaches position 0. Alice wins if all tokens are removed before any reaches position 0.
+
+</div>
 
 ### Potential and Randomized Analysis
 
@@ -352,7 +407,9 @@ To analyze who has a winning strategy, we define the potential of a configuratio
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Potential)</span></p>
 
-For a configuration with m tokens at positions $d_1, \dots, d_m$, the potential $\Phi$ is defined as: $\Phi = \sum_{i=1}^m \frac{1}{2^{d_i}}$
+For a configuration with m tokens at positions $d_1, \dots, d_m$, the potential $\Phi$ is defined as: 
+
+$$\Phi = \sum_{i=1}^m \frac{1}{2^{d_i}}$$
 
 </div>
 
@@ -360,14 +417,19 @@ We can understand this potential by considering a randomized strategy for Alice:
 
 * Each token $i$ at position $d_i$ must survive $d_i$ consecutive rounds to reach position 0.
 * Since Alice's coin tosses are independent and uniform, the probability that token $i$ survives and reaches 0 is exactly $(1/2)^{d_i}$.
-* Let $X_i$ be an indicator variable where $X_i = 1$ if token $i$ reaches 0, and $X_i = 0$ otherwise. Then $\mathbb{E}[X_i] = \frac{1}{2^{d_i}}$.
-* The total number of tokens reaching tenure is $X = X_1 + \dots + X_m$. By linearity of expectation, $\mathbb{E}[X] = \sum \frac{1}{2^{d_i}} = \Phi$.
+* Let $X_i$ be an indicator variable where $X_i = 1$ if token $i$ reaches 0, and $X_i = 0$ otherwise. Then 
+  
+  $$\mathbb{E}[X_i] = \frac{1}{2^{d_i}}$$
+
+* The total number of tokens reaching tenure is $X = X_1 + \dots + X_m$. By linearity of expectation,
+  
+  $$\mathbb{E}[X] = \sum \frac{1}{2^{d_i}} = \Phi$$
 
 ### Determining the Winner
 
 The value of the initial potential $\Phi$ determines which player has a winning strategy.
 
-1. Alice's Winning Condition ($\Phi < 1$) If the initial potential is strictly less than 1, Alice has a winning strategy.
+1. Alice's Winning Condition ($\Phi < 1$): If the initial potential is strictly less than 1, Alice has a winning strategy.
 
 * Probabilistic Argument: If $\mathbb{E}[X] < 1$, there must exist at least one sequence of coin tosses where $X < 1$. Since $X$ must be an integer, $X < 1$ implies $X = 0$. Thus, there is a sequence of moves where Alice wins.
 * Deterministic Strategy: Alice can maintain the invariant that $\Phi < 1$. When Bob partitions $I$ into $I_0$ and $I_1$, the potential $\Phi = \Phi_0 + \Phi_1$. Alice chooses to remove the part with the higher potential. By choosing $r$ such that $\Phi_r \geq \Phi_{1-r}$, she ensures that the potential of the remaining, promoted tokens stays below 1.
@@ -387,17 +449,31 @@ If the potential of the initial configuration is strictly less than 1, then Alic
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Splitting Potential at $1/2$)</span></p>
 
-Let $d_1 \leq \dots \leq d_m$ be a non-decreasing sequence of non-zero natural numbers where $\sum_{i=1}^m \frac{1}{2^{d_i}} \geq \frac{1}{2}$. Then there exists an index $t$ such that: $\sum_{i=1}^t \frac{1}{2^{d_i}} = \frac{1}{2}$.
+Let $d_1 \leq \dots \leq d_m$ be a non-decreasing sequence of non-zero natural numbers where
+
+$$\sum_{i=1}^m \frac{1}{2^{d_i}} \geq \frac{1}{2}$$
+
+Then there exists an index $t$ such that: 
+
+$$\sum_{i=1}^t \frac{1}{2^{d_i}} = \frac{1}{2}$$
 
 </div>
 
-**Proof.** Let t be the minimum index such that the partial sum $s_t = \sum_{i=1}^t \frac{1}{2^{d_i}} \geq \frac{1}{2}$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $t$ be the minimum index such that the partial sum $s_t = \sum_{i=1}^t \frac{1}{2^{d_i}} \geq \frac{1}{2}$.
 
 1. Assume for contradiction that $s_t > 1/2$.
 2. Because $d_1 \leq \dots \leq d_t$, all terms $\frac{1}{2^{d_1}}, \dots, \frac{1}{2^{d_t}}$ are multiples of $\frac{1}{2^{d_t}}$. Thus, both $s_t$ and $\frac{1}{2}$ are multiples of $\frac{1}{2^{d_t}}$.
-3. By the minimality of $t$, $s_t - 1/2^{d_t} < 1/2$.
+3. By the minimality of $t$ it holds that $s_t - 1/2^{d_t} < 1/2$.
 4. However, if $s_t > 1/2$ and both are multiples of $1/2^{d_t}$, the smallest possible value for $s_t$ is $1/2 + 1/2^{d_t}$.
 5. This implies $s_t - \frac{1}{2^{d_t}} \geq \frac{1}{2}$, which contradicts the minimality of $t$. Thus, $s_t$ must equal $1/2$.
+
+</details>
+</div>
+
 
 
 ## Excursus: Game Theory Foundations
@@ -406,28 +482,50 @@ The analysis of the Tenure Game relies on general principles of game theory conc
 
 ### Definitions and Game Trees
 
-In a finite two-person game with perfect information, players take turns making moves with full knowledge of all previous moves. The game must end in a finite number of steps with a winner and a loser.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Finite two-person game with perfect information)</span></p>
+
+In a **finite two-person game with perfect information**, players take turns making moves with full knowledge of all previous moves. There are always at most finitely many admissible moves. The game must end in a finite number of steps with a winner and a loser.
+
+The situation reached in such a game after a certain sequence of moves is called a **configuration**.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strategy)</span></p>
 
-A strategy for a player is a function that determines their next move for every possible configuration where it is their turn. A winning strategy is one that guarantees a win regardless of the opponent's moves.
+* A **strategy** for a player is a function that determines their next move for every possible configuration where it is their turn. 
+* A **winning strategy** is one that guarantees a win regardless of the opponent's moves.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Determined Game)</span></p>
 
-A game is determined if one of the two players possesses a winning strategy.
+A game is **determined** if **one of the two** players possesses a winning strategy.
 
 </div>
 
-To visualize these games, we use a game tree:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Game Tree)</span></p>
 
-* Nodes: Represent configurations.
-* Root: The initial configuration.
-* Edges: Represent admissible moves to children nodes.
-* Leaves: Terminal configurations where a winner is decided.
+To visualize these games, we use a **game tree**:
+* **Nodes:** Represent configurations.
+* **Root:** The initial configuration.
+* **Edges:** Represent admissible moves to children nodes.
+* **Leaves:** Terminal configurations where a winner is decided.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Absence of winning strategy)</span></p>
+
+If A$ has no winning strategy, this does not imply in general that $B$ has a winning strategy but only that for any strategy of $A$ there is some strategy of $B$ such that $B$ will win.
+
+</div>
+
+TODO: proof
+TODO: connection to algorithmic randomness?
 
 ### König's Lemma and Determinacy
 
@@ -436,27 +534,39 @@ The finiteness of these games is often supported by König's Lemma.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(König's Lemma)</span></p>
 
-König's Lemma Any finitely branching infinite tree has an infinite path.
+Any finitely branching infinite tree has an infinite path.
 
 </div>
 
-**Proof.**
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 1. Start at the root $v_0$. Since the tree is infinite and the root has finitely many children, at least one child must be the root of an infinite subtree.
 2. Pick that child as $v_1$.
 3. Repeat this process inductively. Because each node $v_i$ has an infinite subtree and only finitely many children, there will always be at least one child $v_{i+1}$ that also maintains an infinite subtree. This construct generates an infinite path $v_0$, $v_1$, $\dots$.
 
+</details>
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Finite Games are Determined)</span></p>
 
-Finite Games are Determined Every finite two-person game with perfect information is determined.
+Every finite two-person game with perfect information is determined.
 
 </div>
 
-**Proof.** The proof proceeds by induction on the height of the game tree.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-1. Base Case: If the height is 0, the node is a leaf, and the winner is already decided.
-2. Inductive Step: For a node of height $h > 0$, assume Player A moves. By the inductive hypothesis, all children nodes (subgames of height $< h$) are determined. If there is at least one child where Player A has a winning strategy, then Player A has a winning strategy for the current node. If all children are winning for Player B, then Player B has a winning strategy for the current node.
+The proof proceeds by induction on the height of the game tree.
+
+1. **Base Case:** If the height is 0, the node is a leaf, and the winner is already decided.
+2. **Inductive Step:** For a node of height $h > 0$ (a node is a subtree of that height), assume Player A moves from that node. By the inductive hypothesis, all children nodes (subgames of height $<h$) are determined. If there is at least one child where Player A has a winning strategy, then Player A has a winning strategy for the current node. If all children are winning for Player B, then Player B has a winning strategy for the current node.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -466,7 +576,7 @@ This determinacy does not necessarily hold for infinite games. Using the axiom o
 </div>
 
 
-## Randomized Algorithms: Graph Cuts and Derandomization Techniques
+## Graph Cuts and Derandomization Techniques
 
 This document explores randomized strategies for solving graph-theoretic problems, specifically focusing on finding maximum cuts and independent sets. It details the analysis of these algorithms through the lens of expectation and introduces two powerful methods for derandomization: the Method of Conditional Expectations and the use of Small Sample Spaces through $k$-wise independence.
 
@@ -486,7 +596,7 @@ A cut of a graph $G = (V, E)$ is a partition of the vertex set $V$ into two disj
 
 The weight of a cut $(V_0, V_1)$ is the number of edges between a node in $V_0$ and a node in $V_1$. Formally,
 
-$$\left\|\lbrace\lbraceu, v\rbrace \in E : u \in V_0, v \in V_1\rbrace\right\|$$
+$$\left\|\lbrace u, v\rbrace \in E : u \in V_0, v \in V_1\rbrace\right\|$$
 
 </div>
 
@@ -520,7 +630,7 @@ We can observe that: $\mathbb{E}[\hat{w}_G(\alpha)] = \frac{1}{2}\mathbb{E}[\hat
 
 1. Input: Graph $G = (V, E)$.
 2. For $s = 1, \dots, n$:
-  * If $\mathbb{E}[\hat{w}_G(r_1 \dots r_{s-1}0)] \ge \mathbb{E}[\hat{w}_G(r_1 \dots r_{s-1}1)]$, set $r_s = 0$.
+  * If $\mathbb{E}[\hat{w}\_G(r_1 \dots r_{s-1}0)] \ge \mathbb{E}[\hat{w}\_G(r_1 \dots r_{s-1}1)]$, set $r_s = 0$.
   * Else, set $r_s = 1$.
 3. Output: Cut $(V_0, V_1)$ defined by $r_1, \dots, r_n$.
 
@@ -650,7 +760,9 @@ In a hypergraph $G = (V, E)$, a subset $U \subseteq V$ is independent if it does
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Size of Independent Sets)</span></p>
 
-A $3$-regular hypergraph with $n$ nodes and $m \ge n/3$ hyperedges has an independent set $U$ where: $\lvert U\rvert \ge \frac{n\sqrt{n}}{3\sqrt{m}}$
+A $3$-regular hypergraph with $n$ nodes and $m \ge n/3$ hyperedges has an independent set $U$ where: 
+
+$$\lvert U\rvert \ge \frac{n\sqrt{n}}{3\sqrt{m}}$$
 
 </div>
 
@@ -1285,7 +1397,7 @@ $\max_\tau\mathbb{E}[k(A_{\sigma^{\ast}}, I_\tau)] = \min_\sigma\max_\tau\mathbb
 
 </div>
 
-In every matrix game, optimal strategies exist because the sets of mixed strategies are compact and payoffs are bounded. Let $k_1^{\ast}$ be the value Player I can enforce (the minimum possible maximum) and $k_2^{\ast}$ be the value Player II can enforce (the maximum possible minimum). It is always true that $k_2^{\ast}\lek_1^{\ast}$.
+In every matrix game, optimal strategies exist because the sets of mixed strategies are compact and payoffs are bounded. Let $k_1^{\ast}$ be the value Player I can enforce (the minimum possible maximum) and $k_2^{\ast}$ be the value Player II can enforce (the maximum possible minimum). It is always true that $k_2^{\ast}\le k_1^{\ast}$.
 
 ### Von Neumann’s Minimax Theorem
 

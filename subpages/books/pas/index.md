@@ -739,7 +739,9 @@ Let $X \sim \mathrm{Bin}(m, p)$ and $Y \sim \mathrm{Bin}(n, p)$ be independent. 
 
 Using the convolution formula:
 
-$$P(Z = z) = \sum_{k=0}^{m} \binom{m}{k} p^k (1-p)^{m-k} \binom{n}{z-k} p^{z-k} (1-p)^{n-(z-k)} = p^z (1-p)^{m+n-z} \sum_{k=0}^{m} \binom{m}{k} \binom{n}{z-k} = p^z (1-p)^{m+n-z} \binom{m+n}{z},$$
+$$P(Z = z) = \sum_{k=0}^{m} \binom{m}{k} p^k (1-p)^{m-k} \binom{n}{z-k} p^{z-k} (1-p)^{n-(z-k)}$$
+
+$$= p^z (1-p)^{m+n-z} \sum_{k=0}^{m} \binom{m}{k} \binom{n}{z-k} = p^z (1-p)^{m+n-z} \binom{m+n}{z},$$
 
 where the last step uses the Vandermonde identity.
 
