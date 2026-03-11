@@ -9,6 +9,10 @@ date: 2024-11-01
 #   - theory
 ---
 
+**Table of Contents**
+- TOC
+{:toc}
+
 # Section 1: Introduction
 
 ## 1.1 Our World
@@ -449,7 +453,7 @@ Let $\boldsymbol{S}$ be a $d \times m$ sketching operator and $L$ be a finite po
 $$1 - \delta \le \frac{\|\boldsymbol{S}(\boldsymbol{x} - \boldsymbol{y})\|_2^2}{\|\boldsymbol{x} - \boldsymbol{y}\|_2^2} \le 1 + \delta.$$
 
 The JL Lemma (as the result is now known) is remarkable for two reasons:
-1. The requisite value for $d$ did not depend on the ambient dimension $m$ and was only logarithmic in $|L|$.
+1. The requisite value for $d$ did not depend on the ambient dimension $m$ and was only logarithmic in $\|L\|$.
 2. The construction of the transformation $\boldsymbol{S}$ was *data-oblivious* — a scaled orthogonal projection.
 
 </div>
@@ -465,7 +469,7 @@ $$\mathbb{E}[\boldsymbol{S}] = \boldsymbol{0} \qquad \text{and} \qquad \mathbb{E
 
 The property $\mathbb{E}[\boldsymbol{S}] = \boldsymbol{0}$ is important in RandNLA. However, there is flexibility in the scale of the covariance matrix — in most situations it suffices for the covariance matrix to be a scalar multiple of the identity.
 
-$\mathbb{E}[\boldsymbol{S}^*\boldsymbol{S}] = \boldsymbol{I}$ is equivalent to $\boldsymbol{S}$ preserving squared Euclidean norms in expectation. However, the vast majority of algorithms in this monograph rely on sketching preserving *relative norms*, in the sense that $\|\boldsymbol{S}\boldsymbol{u}\|_2/\|\boldsymbol{S}\boldsymbol{v}\|_2$ should be close to $\|\boldsymbol{u}\|_2/\|\boldsymbol{v}\|_2$. Such a property is clearly unaffected if $\boldsymbol{S}$ is replaced by $t\boldsymbol{S}$ for some $t \ne 0$.
+$\mathbb{E}[\boldsymbol{S}^\ast\boldsymbol{S}] = \boldsymbol{I}$ is equivalent to $\boldsymbol{S}$ preserving squared Euclidean norms in expectation. However, the vast majority of algorithms in this monograph rely on sketching preserving *relative norms*, in the sense that $\|\boldsymbol{S}\boldsymbol{u}\|_2/\|\boldsymbol{S}\boldsymbol{v}\|_2$ should be close to $\|\boldsymbol{u}\|_2/\|\boldsymbol{v}\|_2$. Such a property is clearly unaffected if $\boldsymbol{S}$ is replaced by $t\boldsymbol{S}$ for some $t \ne 0$.
 
 This section therefore ignores most matters of scaling that is applied equally to all entries of a sketching operator, and regularly describes sketching operators as having entries in $[-1, 1]$ even though it is more common to have entries in $[-v, v]$ for some positive $v$ (which is set to achieve an identity covariance matrix).
 
