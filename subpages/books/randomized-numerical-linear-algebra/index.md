@@ -1847,9 +1847,74 @@ Let $\boldsymbol{A}$ be $n \times n$ and $\lbrace \boldsymbol{e}_1, \ldots, \bol
 
 $$\operatorname{tr}(\boldsymbol{A}) = \sum_{i=1}^n \boldsymbol{e}_i^*\boldsymbol{A}\boldsymbol{e}_i.$$
 
-Randomization allows estimating this quantity using $m \ll n$ matrix-vector multiplications. If $\boldsymbol{\omega} \sim \mathcal{D}$ is a random vector satisfying $\mathbb{E}[\boldsymbol{\omega}\boldsymbol{\omega}^*] = \boldsymbol{I}_n$, then $\operatorname{tr}(\boldsymbol{A}) = \mathbb{E}[\boldsymbol{\omega}^*\boldsymbol{A}\boldsymbol{\omega}]$. Drawing $m$ independent vectors $\boldsymbol{\omega}_i \sim \mathcal{D}$, the **Girard-Hutchinson estimator** is
+Randomization allows estimating this quantity using $m \ll n$ matrix-vector multiplications. If $\boldsymbol{\omega} \sim \mathcal{D}$ is a random vector satisfying $\mathbb{E}[\boldsymbol{\omega}\boldsymbol{\omega}^\ast] = \boldsymbol{I}\_n$, then 
+
+$$\operatorname{tr}(\boldsymbol{A}) = \mathbb{E}[\boldsymbol{\omega}^\ast\boldsymbol{A}\boldsymbol{\omega}]$$
+
+Drawing $m$ independent vectors $\boldsymbol{\omega}_i \sim \mathcal{D}$, the **Girard-Hutchinson estimator** is
 
 $$\operatorname{tr}(\boldsymbol{A}) \approx \frac{1}{m}\sum_{i=1}^m \boldsymbol{\omega}_i^*\boldsymbol{A}\boldsymbol{\omega}_i.$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof 1 (trace of scalar)</summary>
+
+We use two wonderful tricks that for the scalar $x$ or equivalently a $1\times 1$ matrix $x$ holds $\text{tr}(x) = x$. Another trick is a cycle property of the trace: for the matrices $A,B$ and $C$ the following holds: $\text{tr}(ABC)=\text{tr}(BCA)=\text{tr}(CAB)$.
+
+$$\mathbb{E}[w^\top A w] = $$
+
+$$\mathbb{E}[\text{tr}(w^\top A w)] = $$
+
+$$\mathbb{E}[\text{tr}(A w w^\top )] = $$
+
+$$\text{tr}(\mathbb{E}[A w w^\top]) = $$
+
+$$\text{tr}(A\mathbb{E}[w w^\top]) = $$
+
+$$\text{tr}(AI) = $$
+
+$$\text{tr}(A).$$
+
+We used:
+
+$$(i) \quad \text{tr}(w^\top A w) = \text{tr}(A w w^\top)$$
+
+$$(ii) \quad \mathbb{E}[\text{tr}(A)] = \text{tr}(\mathbb{E}[A])$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof 2 (element-wise)</summary>
+
+$$\mathbb{E}[w^\top A w] = $$
+
+$$\mathbb{E}[\sum_i w_i \sum_j A_{ij} w_j] =$$
+
+$$\mathbb{E}[\sum_i \sum_j A_{ij} w_i w_j] =$$
+
+$$\sum_i \sum_j \mathbb{E}[A_{ij} w_i w_j] =$$
+
+$$\sum_i \sum_j A_{ij} \mathbb{E}[w_i w_j] =$$
+
+$$\sum_i \sum_j A_{ij} \mathbb{E}[w w^\top]_{ij} =$$
+
+$$\sum_i \sum_j A_{ij} I_{ij} =$$
+
+$$\text{tr}(A).$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Isotropic random vectors)</span></p>
+
+The set of vectors $D is said to be in **isotropic position**, if for every vector $w \in D$ holds $\mathbb{E}[w w^\top] = I$.
+
+We say the random vectors $w \in D$ are **isotropic**.
 
 </div>
 
@@ -1872,13 +1937,13 @@ Such estimators require $m \in \Omega(1/\epsilon^2)$ samples to approximate $\op
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Compress-and-Trace Method)</span></p>
 
-In [SAI17], Saibaba, Alexanderian, and Ipsen propose two randomized algorithms for estimating the trace of a psd linear operator $\boldsymbol{A}$. When $\boldsymbol{A}$ is accessible by matrix-vector products, the proposed method begins with a rangefinder step to find a column-orthonormal $n \times m$ matrix $\boldsymbol{Q}$ where $\boldsymbol{Q}\boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q}\boldsymbol{Q}^* \approx \boldsymbol{A}$. The method then approximates
+In [SAI17], Saibaba, Alexanderian, and Ipsen propose two randomized algorithms for estimating the trace of a psd linear operator $\boldsymbol{A}$. When $\boldsymbol{A}$ is accessible by matrix-vector products, the proposed method begins with a rangefinder step to find a column-orthonormal $n \times m$ matrix $\boldsymbol{Q}$ where $\boldsymbol{Q}\boldsymbol{Q}^\ast\boldsymbol{A}\boldsymbol{Q}\boldsymbol{Q}^\ast \approx \boldsymbol{A}$. The method then approximates
 
 $$\operatorname{tr}(\boldsymbol{A}) \approx \operatorname{tr}(\boldsymbol{Q}\boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q}\boldsymbol{Q}^*) = \operatorname{tr}(\boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q}).$$
 
 This can provide better relative error bounds than a Girard-Hutchinson estimator if $\boldsymbol{A}$'s spectral decay is sufficiently fast and $\boldsymbol{Q}$ is obtained by power iteration.
 
-For the case where $\boldsymbol{A} = \log(\boldsymbol{I} + \boldsymbol{B})$ for a psd matrix $\boldsymbol{B}$, one finds $\boldsymbol{Q}$ so that $\boldsymbol{Q}\boldsymbol{Q}^*\boldsymbol{B}\boldsymbol{Q}\boldsymbol{Q}^*$ is a good low-rank approximation of $\boldsymbol{B}$, and then
+For the case where $\boldsymbol{A} = \log(\boldsymbol{I} + \boldsymbol{B})$ for a psd matrix $\boldsymbol{B}$, one finds $\boldsymbol{Q}$ so that $\boldsymbol{Q}\boldsymbol{Q}^\ast\boldsymbol{B}\boldsymbol{Q}\boldsymbol{Q}^*$ is a good low-rank approximation of $\boldsymbol{B}$, and then
 
 $$\operatorname{tr}(\boldsymbol{A}) \approx \sum_{i=1}^m \log\!\left(1 + \lambda_i(\boldsymbol{Q}^*\boldsymbol{B}\boldsymbol{Q})\right).$$
 
@@ -1892,9 +1957,15 @@ $$\operatorname{tr}(\boldsymbol{A}) \approx \sum_{i=1}^m \log\!\left(1 + \lambda
 In [MMM+21], Meyer et al. combined ideas from low-rank approximation with the Girard-Hutchinson estimator to obtain **Hutch++**. The algorithm proceeds as follows:
 
 1. Sample a matrix $\boldsymbol{Q}$ uniformly at random from the set of $n \times m$ column-orthonormal matrices.
-2. Define the low-rank approximation $\hat{\boldsymbol{A}} = \boldsymbol{Q}\boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q}\boldsymbol{Q}^*$ and compute $\operatorname{tr}(\hat{\boldsymbol{A}}) = \operatorname{tr}(\boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q})$.
-3. Apply Girard-Hutchinson to the **deflated matrix** $\boldsymbol{\Delta} = (\boldsymbol{I} - \boldsymbol{Q}\boldsymbol{Q}^*)\boldsymbol{A}(\boldsymbol{I} - \boldsymbol{Q}\boldsymbol{Q}^*)$.
-4. $\operatorname{tr}(\boldsymbol{A}) = \operatorname{tr}(\hat{\boldsymbol{A}}) + \operatorname{tr}(\boldsymbol{\Delta})$.
+2. Define the low-rank approximation $\hat{\boldsymbol{A}} = \boldsymbol{Q}\boldsymbol{Q}^\ast\boldsymbol{A}\boldsymbol{Q}\boldsymbol{Q}^\ast$ and compute 
+   
+  $$\operatorname{tr}(\hat{\boldsymbol{A}}) = \operatorname{tr}(\boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q})$$
+
+3. Apply Girard-Hutchinson to the **deflated matrix** 
+   
+  $$\boldsymbol{\Delta} = (\boldsymbol{I} - \boldsymbol{Q}\boldsymbol{Q}^*)\boldsymbol{A}(\boldsymbol{I} - \boldsymbol{Q}\boldsymbol{Q}^*)$$
+
+1. $\operatorname{tr}(\boldsymbol{A}) = \operatorname{tr}(\hat{\boldsymbol{A}}) + \operatorname{tr}(\boldsymbol{\Delta})$.
 
 For psd matrices, Hutch++ can (with some small fixed failure probability) compute $\operatorname{tr}(\boldsymbol{A})$ to within $\epsilon$ relative error using only $O(1/\epsilon)$ matrix-vector products — a substantial improvement over the $O(1/\epsilon^2)$ products required by plain Girard-Hutchinson estimators. In fact, this sample complexity cannot be improved when considering a large class of algorithms [MMM+21, Theorems 4.1 and 4.2].
 
