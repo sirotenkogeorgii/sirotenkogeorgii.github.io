@@ -17,3 +17,4 @@ date: 2024-10-20
 - [Algorithmic Randomness and Complexity](/subpages/books/algorithmic_randomness/algorithmic_randomness_and_complexity/)
 - [Randomized Numerical Linear Algebra](/subpages/books/randomized-numerical-linear-algebra/)
 - [Geometric Machine Learning](/subpages/books/geometric_machine_learning/)
+- [Probability and Statistics 1](/subpages/books/pas/)
