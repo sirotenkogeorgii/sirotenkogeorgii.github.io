@@ -54,7 +54,11 @@ Modern machine learning operates with large, high-quality datasets, which togeth
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Universal Approximation)</span></p>
 
-A set $\mathcal{A} \subset \mathcal{X}$ is said to be *dense* in $\mathcal{X}$ if its closure $\mathcal{A} \cup \lbrace \lim_{i \to \infty} a_i : a_i \in \mathcal{A} \rbrace = \mathcal{X}$. A typical Universal Approximation result shows that the class of functions represented by a two-layer perceptron, $f(\mathbf{x}) = \mathbf{c}^\top \text{sign}(\mathbf{A}\mathbf{x} + \mathbf{b})$, is dense in the space of continuous functions on $\mathbb{R}^d$.
+A set $\mathcal{A} \subset \mathcal{X}$ is said to be *dense* in $\mathcal{X}$ if its closure 
+
+$$\mathcal{A} \cup \lbrace \lim_{i \to \infty} a_i : a_i \in \mathcal{A} \rbrace = \mathcal{X}$$
+
+A typical Universal Approximation result shows that the class of functions represented by a two-layer perceptron, $f(\mathbf{x}) = \mathbf{c}^\top \text{sign}(\mathbf{A}\mathbf{x} + \mathbf{b})$, is dense in the space of continuous functions on $\mathbb{R}^d$.
 
 </div>
 
@@ -77,7 +81,11 @@ Consider a classical notion of regularity extended to high dimensions: 1-Lipschi
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Maximum Discrepancy)</span></p>
 
-The curse can be formalised through the notion of *Maximum Discrepancy* for the Lipschitz class, $\kappa(d) = \mathbb{E}_{x,x'} \sup_{f \in \text{Lip}(1)} \left\| \frac{1}{N} \sum_l f(x_l) - \frac{1}{N} \sum_l f(x'_l) \right\| \simeq N^{-1/d}$. Ensuring $\kappa(d) \simeq \epsilon$ requires $N = \Theta(\epsilon^{-d})$; for a $d$-dimensional Euclidean domain of diameter 1, the $\epsilon$-net size grows exponentially as $\epsilon^{-d}$.
+The curse can be formalised through the notion of *Maximum Discrepancy* for the Lipschitz class, 
+
+$$\kappa(d) = \mathbb{E}_{x,x'} \sup_{f \in \text{Lip}(1)} \left\| \frac{1}{N} \sum_l f(x_l) - \frac{1}{N} \sum_l f(x'_l) \right\| \simeq N^{-1/d}$$
+
+Ensuring $\kappa(d) \simeq \epsilon$ requires $N = \Theta(\epsilon^{-d})$; for a $d$-dimensional Euclidean domain of diameter 1, the $\epsilon$-net size grows exponentially as $\epsilon^{-d}$.
 
 </div>
 
@@ -171,7 +179,9 @@ An $n$-dimensional real **representation** of a group $\mathfrak{G}$ is a map $\
 
 </div>
 
-Written in the language of group representations, the action of $\mathfrak{G}$ on signals $x \in \mathcal{X}(\Omega)$ is defined as $\rho(\mathfrak{g})x(u) = x(\mathfrak{g}^{-1}u)$.
+Written in the language of group representations, the action of $\mathfrak{G}$ on signals $x \in \mathcal{X}(\Omega)$ is defined as 
+
+$$\rho(\mathfrak{g})x(u) = x(\mathfrak{g}^{-1}u)$$
 
 #### Invariant and Equivariant Functions
 
@@ -346,7 +356,7 @@ $$
 (\widehat{S_v x})(\xi) = e^{-\mathrm{i}\xi v} \hat{x}(\xi).
 $$
 
-Thus, the *Fourier modulus* $f(x) = |\hat{x}|$ removing the complex phase is a simple shift-invariant function, $f(S_v x) = f(x)$. However, if we have only approximately a translation, $\tau(u) = u - \tilde{\tau}(u)$ with $\|\nabla\tau\|_\infty \le \epsilon$, the situation is entirely different: the Fourier representation is **unstable under deformations**:
+Thus, the *Fourier modulus* $f(x) = \|\hat{x}\|$ removing the complex phase is a simple shift-invariant function, $f(S_v x) = f(x)$. However, if we have only approximately a translation, $\tau(u) = u - \tilde{\tau}(u)$ with $\|\nabla\tau\|_\infty \le \epsilon$, the situation is entirely different: the Fourier representation is **unstable under deformations**:
 
 $$
 \frac{\|f(\rho(\tau)x) - f(x)\|}{\|x\|} = \mathcal{O}(1)
@@ -481,7 +491,11 @@ specified by a weight matrix $\boldsymbol{\Theta} \in \mathbb{R}^{d \times d'}$,
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear Equivariants on Sets)</span></p>
 
-This construction arises naturally from our Geometric Deep Learning blueprint. To characterise *linear equivariants* (functions of the form $\mathbf{F}\mathbf{P}\mathbf{X} = \mathbf{P}\mathbf{F}\mathbf{X}$), it is easy to verify that any such map can be written as a linear combination of two *generators*, the identity $\mathbf{F}_1\mathbf{X} = \mathbf{X}$ and the average $\mathbf{F}_2\mathbf{X} = \frac{1}{n}\mathbf{1}\mathbf{1}^\top\mathbf{X} = \frac{1}{n}\sum_{u=1}^{n} \mathbf{x}_u$. The popular Deep Sets architecture follows precisely this blueprint.
+This construction arises naturally from our Geometric Deep Learning blueprint. To characterise *linear equivariants* (functions of the form $\mathbf{F}\mathbf{P}\mathbf{X} = \mathbf{P}\mathbf{F}\mathbf{X}$), it is easy to verify that any such map can be written as a linear combination of two *generators*, the identity $\mathbf{F}_1\mathbf{X} = \mathbf{X}$ and the average 
+
+$$\mathbf{F}_2\mathbf{X} = \frac{1}{n}\mathbf{1}\mathbf{1}^\top\mathbf{X} = \frac{1}{n}\sum_{u=1}^{n} \mathbf{x}_u$$
+
+The popular Deep Sets architecture follows precisely this blueprint.
 
 </div>
 
@@ -535,7 +549,11 @@ $$
 
 </div>
 
-The GDL blueprint yields a general recipe for constructing permutation equivariant functions on graphs, by specifying a *local* function $\phi$ that operates over the features of a node and its neighbourhood, $\phi(\mathbf{x}_u, \mathbf{X}_{\mathcal{N}_u})$. A permutation equivariant function $\mathbf{F}$ can be constructed by applying $\phi$ to every node's neighbourhood in isolation:
+The GDL blueprint yields a general recipe for constructing permutation equivariant functions on graphs, by specifying a *local* function $\phi$ that operates over the features of a node and its neighbourhood, 
+
+$$\phi(\mathbf{x}_u, \mathbf{X}_{\mathcal{N}_u})$$ 
+
+A permutation equivariant function $\mathbf{F}$ can be constructed by applying $\phi$ to every node's neighbourhood in isolation:
 
 $$
 \mathbf{F}(\mathbf{X}, \mathbf{A}) = \begin{bmatrix} \phi(\mathbf{x}_1, \mathbf{X}_{\mathcal{N}_1}) \\ \phi(\mathbf{x}_2, \mathbf{X}_{\mathcal{N}_2}) \\ \vdots \\ \phi(\mathbf{x}_n, \mathbf{X}_{\mathcal{N}_n}) \end{bmatrix}
@@ -560,7 +578,11 @@ Grids are a particular case of graphs with special adjacency. However, since the
 
 Assuming for simplicity periodic boundary conditions, we can think of a one-dimensional grid as a *ring graph* with nodes indexed by $0, 1, \ldots, n-1$ modulo $n$ and the adjacency matrix with elements $a_{u, u+1 \bmod n} = 1$ and zero otherwise. There are two main differences from the general graph case: first, each node $u$ has identical connectivity to its neighbours $u-1$ and $u+1$, making all nodes structure-wise indistinguishable. Second, the nodes have a fixed ordering of the *neighbours*: we can call $u-1$ the "left neighbour" and $u+1$ the "right neighbour".
 
-For a particular choice of a linear transformation $\phi(\mathbf{x}_{u-1}, \mathbf{x}_u, \mathbf{x}_{u+1}) = \theta_{-1}\mathbf{x}_{u-1} + \theta_0 \mathbf{x}_u + \theta_1 \mathbf{x}_{u+1}$, we can write $\mathbf{F}(\mathbf{X})$ as a matrix product with a special multi-diagonal structure with one element repeated along each diagonal --- sometimes referred to as "weight sharing" in the machine learning literature.
+For a particular choice of a linear transformation 
+
+$$\phi(\mathbf{x}_{u-1}, \mathbf{x}_u, \mathbf{x}_{u+1}) = \theta_{-1}\mathbf{x}_{u-1} + \theta_0 \mathbf{x}_u + \theta_1 \mathbf{x}_{u+1}$$
+
+we can write $\mathbf{F}(\mathbf{X})$ as a matrix product with a special multi-diagonal structure with one element repeated along each diagonal --- sometimes referred to as "weight sharing" in the machine learning literature.
 
 More generally, given a vector $\boldsymbol{\theta} = (\theta_0, \ldots, \theta_{n-1})$, a **circulant matrix** $\mathbf{C}(\boldsymbol{\theta}) = (\theta_{u - v \bmod n})$ is obtained by appending circularly shifted versions of the vector $\boldsymbol{\theta}$. Circulant matrices are synonymous with discrete convolutions,
 
@@ -680,7 +702,7 @@ $$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Grid and Cyclic Shift Group)</span></p>
 
-The case of one-dimensional grid is obtained with the choice $\Omega = \mathbb{Z}_n = \lbrace 0, \ldots, n-1 \rbrace$ and the cyclic shift group $\mathfrak{G} = \mathbb{Z}_n$. The group elements are cyclic shifts of indices. An element $\mathfrak{g} \in \mathfrak{G}$ can be identified with some $u = 0, \ldots, n-1$ such that $\mathfrak{g}.v = v - u \bmod n$, whereas the inverse element is $\mathfrak{g}^{-1}.v = v + u \bmod n$. Since the elements of the group (shifts) are also elements of the domain (indices), we can identify $\Omega = \mathfrak{G}$; our expression for the group convolution leads to the familiar convolution $(x \star \theta)_u = \sum_{v=0}^{n-1} x_v \theta_{v + u \bmod n}$.
+The case of one-dimensional grid is obtained with the choice $\Omega = \mathbb{Z}\_n = \lbrace 0, \ldots, n-1 \rbrace$ and the cyclic shift group $\mathfrak{G} = \mathbb{Z}_n$. The group elements are cyclic shifts of indices. An element $\mathfrak{g} \in \mathfrak{G}$ can be identified with some $u = 0, \ldots, n-1$ such that $\mathfrak{g}.v = v - u \bmod n$, whereas the inverse element is $\mathfrak{g}^{-1}.v = v + u \bmod n$. Since the elements of the group (shifts) are also elements of the domain (indices), we can identify $\Omega = \mathfrak{G}$; our expression for the group convolution leads to the familiar convolution $(x \star \theta)_u = \sum_{v=0}^{n-1} x_v \theta_{v + u \bmod n}$.
 
 </div>
 
@@ -964,7 +986,11 @@ $$
 (\hat{p}(\Delta)x)(u) = \sum_{k \ge 0} \hat{p}(\lambda_k) \langle x, \varphi_k \rangle \varphi_k(u) = \int_\Omega x(v) \sum_{k \ge 0} \hat{p}(\lambda_k) \varphi_k(v) \varphi_k(u) \, \mathrm{d}v
 $$
 
-which can be interpreted either as a spectral filter (where we identify $\hat{\theta}_k = \hat{p}(\lambda_k)$), or as a spatial filter with a position-dependent kernel $\theta(u, v) = \sum_{k \ge 0} \hat{p}(\lambda_k)\varphi_k(v)\varphi_k(u)$. The advantage of this formulation is that $\hat{p}(\lambda)$ can be parametrised by a small number of coefficients, and choosing parametric functions such as polynomials $\hat{p}(\lambda) = \sum_{l=0}^{r} \alpha_l \lambda^l$ allows for efficiently computing the filter as
+which can be interpreted either as a spectral filter (where we identify $\hat{\theta}\_k = \hat{p}(\lambda_k)$), or as a spatial filter with a position-dependent kernel 
+
+$$\theta(u, v) = \sum_{k \ge 0} \hat{p}(\lambda_k)\varphi_k(v)\varphi_k(u)$$
+
+The advantage of this formulation is that $\hat{p}(\lambda)$ can be parametrised by a small number of coefficients, and choosing parametric functions such as polynomials $\hat{p}(\lambda) = \sum_{l=0}^{r} \alpha_l \lambda^l$ allows for efficiently computing the filter as
 
 $$
 (\hat{p}(\Delta)x)(u) = \sum_{l=0}^{r} \alpha_l (\Delta^l x)(u),
@@ -1065,7 +1091,11 @@ $$
 (\mathbf{x} \star \boldsymbol{\Theta})(u) = \int_\Omega \boldsymbol{\Theta}(u, v) \rho(\mathfrak{g}_{v \to u}) \mathbf{x}(v) \mathrm{d}v,
 $$
 
-where $\mathfrak{g}_{v \to u} \in \mathfrak{G}$ denotes the parallel transport from $v$ to $u$ along the geodesic connecting these two points; its representation $\rho(\mathfrak{g}_{v \to u})$ is an $s \times s$ rotation matrix. If the filter commutes with the structure group representation $\boldsymbol{\Theta}(u, v)\rho(\mathfrak{g}_u) = \rho(\mathfrak{g}_u)\boldsymbol{\Theta}(u, v)$, this equation defines a **gauge-equivariant convolution**, which transforms as
+where $\mathfrak{g}\_{v \to u} \in \mathfrak{G}$ denotes the parallel transport from $v$ to $u$ along the geodesic connecting these two points; its representation $\rho(\mathfrak{g}\_{v \to u})$ is an $s \times s$ rotation matrix. If the filter commutes with the structure group representation 
+
+$$\boldsymbol{\Theta}(u, v)\rho(\mathfrak{g}_u) = \rho(\mathfrak{g}_u)\boldsymbol{\Theta}(u, v)$$
+
+this equation defines a **gauge-equivariant convolution**, which transforms as
 
 $$
 (\mathbf{x}' \star \boldsymbol{\Theta})(u) = \rho^{-1}(\mathfrak{g}_u)(\mathbf{x} \star \boldsymbol{\Theta})(u).
@@ -1305,7 +1335,7 @@ For the continuous symmetry group of the sphere, it is possible to implement the
 
 Graph Neural Networks (GNNs) are the realisation of our Geometric Deep Learning blueprint on graphs leveraging the properties of the permutation group. GNNs are among the most general class of deep learning architectures currently in existence, and most other deep learning architectures can be understood as a special case of the GNN with additional geometric structure.
 
-We consider a graph specified with an adjacency matrix $\mathbf{A}$ and node features $\mathbf{X}$. We study GNN architectures that are *permutation equivariant* functions $\mathbf{F}(\mathbf{X}, \mathbf{A})$ constructed by applying shared *permutation invariant* functions $\phi(\mathbf{x}_u, \mathbf{X}_{\mathcal{N}_u})$ over local neighbourhoods. Under various guises, this local function $\phi$ can be referred to as "diffusion", "propagation", or "message passing", and the overall computation of such $\mathbf{F}$ as a "GNN layer".
+We consider a graph specified with an adjacency matrix $\mathbf{A}$ and node features $\mathbf{X}$. We study GNN architectures that are *permutation equivariant* functions $\mathbf{F}(\mathbf{X}, \mathbf{A})$ constructed by applying shared *permutation invariant* functions $\phi(\mathbf{x}\_u, \mathbf{X}\_{\mathcal{N}_u})$ over local neighbourhoods. Under various guises, this local function $\phi$ can be referred to as "diffusion", "propagation", or "message passing", and the overall computation of such $\mathbf{F}$ as a "GNN layer".
 
 The vast majority of the literature may be derived from only three "flavours" of GNN layers, which govern the extent to which $\phi$ transforms the neighbourhood features, allowing for varying degrees of complexity when modelling interactions across the graph.
 
