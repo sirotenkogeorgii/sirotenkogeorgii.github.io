@@ -78,7 +78,14 @@ The binary parity function is associative. In expressions containing only $\oplu
 
 </div>
 
-TODO: proof
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Via the equality $a \oplus b = a + b \quad (\text{mod } 2)$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One-Time Pad)</span></p>
@@ -103,13 +110,33 @@ Three cryptographers $(A, B, C)$ wish to determine if one of them paid their res
 **The Protocol**
 
 1. Every pair of cryptographers tosses a fair coin to establish a shared random bit unknown to the third party (e.g., $A$ and $B$ share $r_{A,B}$).
-2. Each cryptographer $X$ calculates $u_X$, the parity of the two bits they know (e.g., $u_A = r_{A,B} \oplus r_{A,C}$).
-3. The sum of these parities is always zero: $u_A \oplus u_B \oplus u_C = (r_{A,B} \oplus r_{A,C}) \oplus (r_{A,B} \oplus r_{B,C}) \oplus (r_{A,C} \oplus r_{B,C}) = 0$.
+2. Each cryptographer $X$ calculates $u_X$, the parity of the two bits they know
+   
+  $$u_A = r_{A,B} \oplus r_{A,C}$$
+
+3. The sum of these parities is always zero: 
+   
+  $$u_A \oplus u_B \oplus u_C = (r_{A,B} \oplus r_{A,C}) \oplus (r_{A,B} \oplus r_{B,C}) \oplus (r_{A,C} \oplus r_{B,C}) = 0$$
+
 4. Each cryptographer publishes a bit $p_X$:
   * If they did not pay, $p_X = u_X$.
   * If they did pay, $p_X = \neg u_X$ (the complement).
 5. The result $p_A \oplus p_B \oplus p_C$ will be 0 if no one paid and 1 if exactly one person paid.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+* Nobody paid: $p_A \oplus p_B \oplus p_C = u_A \oplus u_B \oplus u_C = 0$
+* Somebody paid (let it be $B$): $p_A \oplus p_B \oplus p_C = u_A \oplus \neq u_B \oplus u_C$
+  * $= (r_{A,B} \oplus r_{A,C}) \oplus \neq u_B \oplus (r_{A,C} \oplus r_{B,C})$
+  * $= (r_{A,B} \oplus r_{B,C}) \oplus \neq u_B$
+  * $= u_B \oplus \neq u_B$
+  * $= 1$
+
+</details>
 </div>
 
 ## Foundations of Discrete Probability
@@ -165,11 +192,16 @@ When dealing with multiple random variables $X_1, \dots, X_m$ on the same probab
 
 ### Joint Distribution
 
-The joint probability distribution maps combinations of values $(r_1, \dots, r_m)$ to the probability that all variables take those values simultaneously: 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Joint Distribution)</span></p>
+
+The **joint probability** distribution maps combinations of values $(r_1, \dots, r_m)$ to the probability that all variables take those values simultaneously: 
 
 $$\mathbb{P}_{X_1, \dots, X_m}(r_1, \dots, r_m) = \mathbb{P}[X_1 = r_1, \dots, X_m = r_m]$$
 
 Crucially, the individual distributions of $X_i$ do not necessarily determine the joint distribution.
+
+</div>
 
 ### Independence
 
@@ -210,7 +242,13 @@ Consider three fair coin tosses $X_1, X_2, X_3$. Define:
 
 * $Z_1 = X_1 \oplus X_2$
 * $Z_2 = X_1 \oplus X_3$
-* $Z_3 = X_2 \oplus X_3$ Here, any two $Z_i$ are independent. However, because $Z_1 = Z_2 \oplus Z_3$, the third variable is entirely determined by the first two. Thus, $\mathbb{P}[Z_1 = 1, Z_2 = 0, Z_3 = 0] = 0$, which is not equal to $\mathbb{P}[Z_1=1]\mathbb{P}[Z_2=0]\mathbb{P}[Z_3=0] = 1/8$.
+* $Z_3 = X_2 \oplus X_3$ Here, any two $Z_i$ are independent. However, because $Z_1 = Z_2 \oplus Z_3$, the third variable is entirely determined by the first two. Thus,
+  
+  $$\mathbb{P}[Z_1 = 1, Z_2 = 0, Z_3 = 0] = 0$$
+  
+  which is not equal to 
+  
+  $$\mathbb{P}[Z_1=1]\mathbb{P}[Z_2=0]\mathbb{P}[Z_3=0] = 1/8$$
 
 </div>
 
@@ -242,11 +280,11 @@ $$
 (ii) \quad \mathbb{E}[rX] = r \mathbb{E}[X]
 $$
 
-</div>
-
 If the variables $X_1, \dots, X_n$ are mutually independent, the expectation of their product also decomposes: 
 
 $$\mathbb{E}[X_1 \cdot \dots \cdot X_n] = \mathbb{E}[X_1] \cdot \dots \cdot \mathbb{E}[X_n]$$
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Fixed Points of a Random Permutation )</span></p>
@@ -301,62 +339,12 @@ Dividing by $a$ gives the result.
 
 ### The Sum Bound
 
-The sum bound (also known as the Union Bound) states that the probability of at least one error event occurring is at most the sum of the individual error probabilities: $\mathbb{P}[E_1 \cup \dots \cup E_n]\le\sum_{i=1}^n\mathbb{P}[E_i]$ This bound is powerful because it requires no assumptions about the independence of the events $E_i$.
-
-### The Repetition Bound
-
-If a single experiment has a success probability of at least $\frac{1}{n}$, we can increase the likelihood of success through independent repetitions.
-
-#### If we repeat the experiment $tn$ times
-
-1. The probability of failure in one trial is $\le 1 - \frac{1}{n}$.
-2. The probability of failure in tn independent trials is $\le (1 - \frac{1}{n})^{tn} = ((1 - \frac{1}{n})^n)^t$.
-3. Using the fact that $(1 - \frac{1}{n})^n\to\frac{1}{e} < 0.4$ as $n\to\infty$: $\mathbb{P}[\text{no success}]\le 0.4^t\le\frac{1}{2^t}$
-
-Consequently, the probability of at least one success in $n$ repetitions is at least $\frac{1}{2}$, and in tn repetitions, it is at least $1 - \frac{1}{2^t}$.
-
-## Fundamental Probability Bounds and the Tenure Game
-
-In the study of randomized algorithms, we often need to bound the probability that a random variable deviates significantly from its expectation or that a sequence of independent trials fails to produce a desired outcome. This section introduces essential tail bounds and applies them to a combinatorial game known as the Tenure Game to demonstrate how probabilistic reasoning can reveal deterministic winning strategies.
-
-### Fundamental Probability Bounds
-
-Analyzing randomized systems requires a toolkit of inequalities to estimate the likelihood of specific events.
-
-### Markov's Inequality
-
-The most basic tool for bounding the "tail" of a distribution (the probability that a variable is much larger than its mean) is Markov's Inequality. It applies to any non-negative random variable.
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Markov's Inequality)</span></p>
-
-Let $X$ be a random variable that assumes only non-negative values. Then for every positive real number $r$, we have
-
-$$
-\mathbb{P}[X \ge r] \le \frac{\mathbb{E}[X]}{r}.
-$$
-
-</div>
-
-**Proof.** Let $(\Omega, \mathbb{P})$ be the probability space on which $X$ is defined. We derive the bound as follows:
-
-1. By definition: $\mathbb{E}[X] = \sum_{\omega \in \Omega} \mathbb{P}[\omega] X(\omega)$.
-2. Since $X$ is non-negative, we can restrict to outcomes with $X(\omega) \ge r$:
-   
-   $$\mathbb{E}[X] \ge \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega] X(\omega)$$
-
-3. Each summand in this restricted sum is at least $r$ times its probability:
-   
-   $$\mathbb{E}[X] \ge r \sum_{\lbrace\omega \in \Omega : X(\omega) \ge r\rbrace} \mathbb{P}[\omega]$$
-
-4. The remaining sum equals $\mathbb{P}[X \ge r]$.
-5. Therefore, $\mathbb{E}[X] \ge r \cdot \mathbb{P}[X \ge r]$, hence $\mathbb{P}[X \ge r] \le \frac{\mathbb{E}[X]}{r}$.
-
-### The Sum Bound
-
 The Sum Bound (often referred to as the Union Bound) provides an upper limit on the probability that at least one of several "error" events occurs.
 
-The Sum Bound Suppose the only way a chance experiment may fail is if the outcome is one of $n$ possible error events $E_1, \dots, E_n$, where $E_i$ occurs with probability $\mathbb{P}[E_i]$. Then the probability of failure is at most the sum of the individual error probabilities:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Sum Bound)</span></p>
+
+Suppose the only way a chance experiment may fail is if the outcome is one of $n$ possible error events $E_1, \dots, E_n$, where $E_i$ occurs with probability $\mathbb{P}[E_i]$. Then the probability of failure is at most the sum of the individual error probabilities:
 
 $$
 \mathbb{P}[\text{Failure}] \le \sum_{i=1}^n \mathbb{P}[E_i].
@@ -364,7 +352,12 @@ $$
 
 **Note.** This bound is powerful because it requires no assumptions about the relationship between events; specifically, the events $E_i$ do not need to be mutually independent.
 
+</div>
+
 ### The Repetition Bound
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Repetition Bound)</span></p>
 
 When an experiment has a low probability of success, we can increase the overall success probability through independent trials.
 
@@ -379,6 +372,7 @@ $$\left(1 - \frac{1}{n}\right)^{tn} = \left(\left(1 - \frac{1}{n}\right)^n\right
 
 Thus, the probability of at least one success in $tn$ independent repetitions is at least $1 - 1/2^t$. Specifically, if $t=1$ (i.e., we run $n$ repetitions), the probability of at least one success is at least $1/2$.
 
+</div>
 
 ## The Tenure Game
 
@@ -394,9 +388,24 @@ The game involves two players: Alice (the department head, who wants to prevent 
 1. **Initial Configuration:** Finitely many tokens $1, \dots, m$ are placed at positions $d_1, \dots, d_m$, where each $d_i$ is a non-zero natural number. Position 0 represents "tenure."
 2. **The Rounds:** In each round:
   * **Step I (Partition):** Bob partitions the set $I$ of tokens currently not at position 0 into two disjoint sets, $I_0$ and $I_1$.
-  * **Step II (Selection):** Alice chooses a bit $r \in \lbrace 0, 1\rbrace$.
+  * **Step II (Selection):** Alice chooses a bit $r \in \lbrace 0, 1\rbrace$. (randomly or not)
   * **Step III (Removal and Promotion):** Tokens in the set $I_r$ are removed from the game. Tokens in the set $I_{1-r}$ are moved one step closer to position 0 (e.g., a token at position $d$ moves to $d-1$).
 3. **Winning Condition:** Bob wins if eventually any token reaches position 0. Alice wins if all tokens are removed before any reaches position 0.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Terminal Configuration and End of Tenure Game)</span></p>
+
+* A **terminal configuration** is a configuration where all tokens are at position 0, that is, in a terminal configuration each token has either been removed or reached position 0.
+* The tenure game ends when a terminal configuration is reached.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
+
+For any given initial configuration of the tenure game, either Alice or Bob has a winning strategy.
 
 </div>
 
@@ -474,8 +483,6 @@ Let $t$ be the minimum index such that the partial sum $s_t = \sum_{i=1}^t \frac
 </details>
 </div>
 
-
-
 ## Excursus: Game Theory Foundations
 
 The analysis of the Tenure Game relies on general principles of game theory concerning finite games with perfect information.
@@ -520,12 +527,16 @@ To visualize these games, we use a **game tree**:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Absence of winning strategy)</span></p>
 
-If A$ has no winning strategy, this does not imply in general that $B$ has a winning strategy but only that for any strategy of $A$ there is some strategy of $B$ such that $B$ will win.
+If $A$ has no winning strategy, this does not imply in general that $B$ has a winning strategy but only that for any strategy of $A$ there is some strategy of $B$ such that $B$ will win.
 
 </div>
 
 TODO: proof
-TODO: connection to algorithmic randomness?
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Question</span><span class="math-callout__name">(Connection to algorithmic randomness?)</span></p>
+
+</div>
 
 ### König's Lemma and Determinacy
 
