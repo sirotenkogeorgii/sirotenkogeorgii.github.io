@@ -9,6 +9,10 @@ tags:
   - theory
 ---
 
+**Table of Contents**
+- TOC
+{:toc}
+
 # Randomized Algorithms
 
 ## Introduction to Randomized Strategies
@@ -1456,7 +1460,9 @@ They choose simultaneously. This is a finite two-player zero-sum game with incom
 
 ### Mixed Strategies and Optimality
 
-A pure strategy is a single choice from $\mathcal{A}$ or $\mathcal{I}$. A mixed strategy is a probability distribution ($\sigma$ for Player I, $\tau$ for Player II). The expected payoff for mixed strategies is: $\mathbb{E}[k(A_\sigma, I_\tau)] = \sum_{A, I}\mathbb{P}_\sigma[A]\cdot\mathbb{P}_\tau[I]\cdot k(A, I)$
+A pure strategy is a single choice from $\mathcal{A}$ or $\mathcal{I}$. A mixed strategy is a probability distribution ($\sigma$ for Player I, $\tau$ for Player II). The expected payoff for mixed strategies is: 
+
+$$\mathbb{E}[k(A_\sigma, I_\tau)] = \sum_{A, I}\mathbb{P}_\sigma[A]\cdot\mathbb{P}_\tau[I]\cdot k(A, I)$$
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Optimal Strategy)</span></p>
@@ -1474,13 +1480,13 @@ In every matrix game, optimal strategies exist because the sets of mixed strateg
 
 $$\max_\tau \min_\sigma \mathbb{E}[k(A_\sigma, I_\tau)] = \min_\sigma \max_\tau \mathbb{E}[k(A_\sigma, I_\tau)]$$
 
-</div>
-
 Variant: 
 
 $$\max_\tau \min_{A \in \mathcal{A}} \mathbb{E}[k(A, I_\tau)] = \min_\sigma \max_{I \in \mathcal{I}} \mathbb{E}[k(A_\sigma, I)]$$
 
 This theorem implies that $k_1^{\ast} = k_2^{\ast}$. The common value is called the value of the game.
+
+</div>
 
 ### Equilibrium Points
 
