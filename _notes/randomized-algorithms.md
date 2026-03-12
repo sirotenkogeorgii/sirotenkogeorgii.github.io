@@ -728,13 +728,17 @@ The analysis of HyperCut requires $k$-wise independence: any subset of $k$ varia
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">($k$-wise Independent Numbers)</span></p>
 
-Let $p$ be a prime number. Let $\hat{a}_0, \dots, \hat{a}_{k-1}$ be chosen uniformly and independently from $\lbrace 0, \dots, p-1\rbrace$. For $i = 1, \dots, p$, define $r_i$ as: $r_i = \hat{a}_{k-1}i^{k-1} + \hat{a}_{k-2}i^{k-2} + \dots + \hat{a}_0 \pmod p$. Then $r_1, \dots, r_p$ are uniformly distributed and $k$-wise independent.
+Let $p$ be a prime number. Let $\hat{a}\_0, \dots, \hat{a}\_{k-1}$ be chosen uniformly and independently from $\lbrace 0, \dots, p-1\rbrace$. For $i = 1, \dots, p$, define $r_i$ as: 
+
+$$r_i = \hat{a}_{k-1}i^{k-1} + \hat{a}_{k-2}i^{k-2} + \dots + \hat{a}_0 \pmod p$$ 
+
+Then $r_1, \dots, r_p$ are uniformly distributed and $k$-wise independent.
 
 </div>
 
 **Proof.**
 
-* Uniformity: For any $r_i$, if coefficients $\hat{a}_1, \dots, \hat{a}_{k-1}$ are fixed, the $p$ possible values of $\hat{a}_0$ result in $p$ distinct values for $r_i$.
+* Uniformity: For any $r_i$, if coefficients $\hat{a}\_1, \dots, \hat{a}\_{k-1}$ are fixed, the $p$ possible values of $\hat{a}\_0$ result in $p$ distinct values for $r_i$.
 * Independence: For any $k$ distinct indices $i_1, \dots, i_k$ and target values $b_1, \dots, b_k$, we look for a solution to the system:
 
   $$
@@ -1081,7 +1085,9 @@ In the coupon collector's problem with $n$ types, the expected number of rounds 
 
 In the study of computational learning theory, we seek to understand how a system can learn an unknown subset of a base set $E$. This unknown subset is referred to as the target concept, denoted as $K_T$. The target concept is selected from a specific concept class $\mathcal{K}$, which is a collection of subsets of $E$ (i.e., $\mathcal{K} \subseteq 2^E$).
 
-The process of learning involves receiving data about the target concept in the form of pairs: $(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$
+The process of learning involves receiving data about the target concept in the form of pairs: 
+
+$$(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$$
 
 #### In this context
 
@@ -1092,7 +1098,9 @@ A learner for a concept class $\mathcal{K}$ is an algorithm or mapping that take
 
 ### The PAC Framework
 
-The discrepancy between the candidate concept and the target concept is measured using the probability distribution $\mu$. Specifically, for a given precision parameter $\epsilon > 0$, we require that the measure of the symmetric difference between $K_A$ and $K_T$ is small: $\mu(K_T \Delta K_A) \leq \epsilon$
+The discrepancy between the candidate concept and the target concept is measured using the probability distribution $\mu$. Specifically, for a given precision parameter $\epsilon > 0$, we require that the measure of the symmetric difference between $K_A$ and $K_T$ is small: 
+
+$$\mu(K_T \Delta K_A) \leq \epsilon$$
 
 It is natural to measure discrepancy relative to $\mu$ because it is intuitively difficult to approximate a concept in regions of $E$ that have a very small measure, as those regions are unlikely to be represented in the random sample $x_1, \dots, x_s$.
 
@@ -1102,14 +1110,16 @@ A learner must succeed in reaching this precision $\epsilon$ with a probability 
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(PAC Learner)</span></p>
 
 Let $E$ be any set and let $\mathcal{K}$ be a subset of the power set $2^E$ of $E$. The learner $A$ learns the concept class $\mathcal{K}$ probably approximately correct (PAC-learns) $\mathcal{K}$ with sample complexity $s$ if:
-
-</div>
-
 1. For every probability distribution $\mu$ on $E$,
 2. For all $\epsilon, \delta > 0$ and for $s = s(\epsilon, \delta)$,
 3. For all $K_T \in \mathcal{K}$,
 
-If $x_1, \dots, x_s$ are randomly chosen from $E$ such that the $x_j$ are mutually independent and distributed according to $\mu$, then on the data $(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$, the learner $A$ outputs a concept $K_A \in \mathcal{K}$ such that: $\mathbb{P}[\mu(K_T \Delta K_A) \leq \epsilon] \geq 1 - \delta$
+</div>
+
+
+If $x_1, \dots, x_s$ are randomly chosen from $E$ such that the $x_j$ are mutually independent and distributed according to $\mu$, then on the data $(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$, the learner $A$ outputs a concept $K_A \in \mathcal{K}$ such that: 
+
+$$\mathbb{P}[\mu(K_T \Delta K_A) \leq \epsilon] \geq 1 - \delta$$
 
 ### Variants of PAC Learning
 
@@ -1121,7 +1131,11 @@ While the core definition focuses on the probability-theoretical and combinatori
 
 ## Case Study: PAC Learning of Axis-Parallel Rectangles
 
-Consider the task of learning axis-parallel rectangles in the Euclidean plane $E = \mathbb{R}^2$. The concept class $\mathcal{K}$ consists of all rectangles of the form: $R(a, b, c, d) = \lbrace (x, y) \in \mathbb{R}^2 : a \leq x \leq b \text{ and } c \leq y \leq d \rbrace$ This class includes degenerate rectangles, such as line segments or the empty set.
+Consider the task of learning axis-parallel rectangles in the Euclidean plane $E = \mathbb{R}^2$. The concept class $\mathcal{K}$ consists of all rectangles of the form: 
+
+$$R(a, b, c, d) = \lbrace (x, y) \in \mathbb{R}^2 : a \leq x \leq b \text{ and } c \leq y \leq d \rbrace$$ 
+
+This class includes degenerate rectangles, such as line segments or the empty set.
 
 ### The Learner Algorithm
 
@@ -1130,24 +1144,50 @@ We define a learner $A$ that, given data $((x_1, y_1), b_1), \dots, ((x_s, y_s),
 * $X = \lbrace x_i : b_i = 1 \rbrace$
 * $Y = \lbrace y_i : b_i = 1 \rbrace$
 
-The learner outputs the least axis-parallel rectangle that contains all positive examples: $R_A = R(\min X, \max X, \min Y, \max Y)$ If $X$ is empty, $R_A$ is the empty set. By construction, $R_A \subseteq R_T$ (the target rectangle), and $R_A$ is consistent with the data.
+The learner outputs the least axis-parallel rectangle that contains all positive examples: 
+
+$$R_A = R(\min X, \max X, \min Y, \max Y)$$
+
+If $X$ is empty, $R_A$ is the empty set. By construction, $R_A \subseteq R_T$ (the target rectangle), and $R_A$ is consistent with the data.
 
 ### Sample Complexity Analysis
 
 To show $A$ is a PAC learner, we must determine the required sample complexity $s$. Fix $\mu$, $\epsilon$, $\delta$, and $R_T$.
 
-Case I: $\mu(R_T)\leq\epsilon$ Since $R_A \subseteq R_T$, the symmetric difference $R_T \Delta R_A = R_T \setminus R_A \subseteq R_T$. Therefore, $\mu(R_T \Delta R_A)\leq\mu(R_T)\leq\epsilon$. In this case, the learner always succeeds regardless of the sample.
+**Case I:** $\mu(R_T)\leq\epsilon$ Since $R_A \subseteq R_T$, the symmetric difference 
 
-Case II: $\mu(R_T) > \epsilon$ We define four marginal strips ($R_1$ for right, $R_2$ for left, $R_3$ for top, and $R_4$ for bottom) within $R_T$, each having a measure of approximately $\epsilon/4$. Let:
+$$R_T \Delta R_A = R_T \setminus R_A \subseteq R_T$$
+
+Therefore, 
+
+$$\mu(R_T \Delta R_A)\leq\mu(R_T)\leq\epsilon$$
+
+In this case, the learner always succeeds regardless of the sample.
+
+**Case II:** $\mu(R_T) > \epsilon$ We define four marginal strips ($R_1$ for right, $R_2$ for left, $R_3$ for top, and $R_4$ for bottom) within $R_T$, each having a measure of approximately $\epsilon/4$. Let:
 
 * $z_1 = \sup\lbrace z : \mu(R(z, b, c, d)) \geq \epsilon/4\rbrace$
 * $z_2 = \inf\lbrace z : \mu(R(a, z, c, d)) \geq \epsilon/4\rbrace$
 * $z_3 = \sup\lbrace z : \mu(R(a, b, z, d)) \geq \epsilon/4\rbrace$
 * $z_4 = \inf\lbrace z : \mu(R(a, b, c, z)) \geq \epsilon/4\rbrace$
 
-We define $R_1 = R(z_1, b, c, d)$, $R_2 = R(a, z_2, c, d)$, $R_3 = R(a, b, z_3, d)$, and $R_4 = R(a, b, c, z_4)$. Let $R_{-i}$ be the same strips excluding their boundary edges such that $\mu(R_{-i}) \leq \epsilon/4$. Define $R_0 = R_T \setminus (R_{-1} \cup R_{-2} \cup R_{-3} \cup R_{-4})$.
+We define 
 
-If the sample contains at least one point from each strip $R_1$, $R_2$, $R_3$, $R_4$, then $R_0 \subseteq R_A \subseteq R_T$. The error is then: $\mu(R_T \Delta R_A) = \mu(R_T \setminus R_A)\subseteq\mu(R_T \setminus R_0)\leq\sum\mu(R_{-i})\leq 4(\epsilon/4) = \epsilon$
+$$R_1 = R(z_1, b, c, d)$$
+
+$$R_2 = R(a, z_2, c, d)$$
+
+$$R_3 = R(a, b, z_3, d)$$
+
+$$R_4 = R(a, b, c, z_4)$$
+
+Let $R_{-i}$ be the same strips excluding their boundary edges such that $\mu(R_{-i}) \leq \epsilon/4$. Define 
+
+$$R_0 = R_T \setminus (R_{-1} \cup R_{-2} \cup R_{-3} \cup R_{-4})$$
+
+If the sample contains at least one point from each strip $R_1$, $R_2$, $R_3$, $R_4$, then $R_0 \subseteq R_A \subseteq R_T$. The error is then: 
+
+$$\mu(R_T \Delta R_A) = \mu(R_T \setminus R_A)\subseteq\mu(R_T \setminus R_0)\leq\sum\mu(R_{-i})\leq 4(\epsilon/4) = \epsilon$$
 
 ### Proof of Sample Complexity
 
@@ -1155,8 +1195,13 @@ If the sample contains at least one point from each strip $R_1$, $R_2$, $R_3$, $
 2. The probability that among $s$ examples, none are in $R_i$ is at most $(1 - \epsilon/4)^s$.
 3. By the union bound, the probability that any of the four strips is missed is at most $4(1 - \epsilon/4)^s$.
 4. We require $4(1 - \epsilon/4)^s\leq\delta$.
-5. Solving for $s: s \log(1 - \epsilon/4) \leq \log(\delta/4) s \geq \frac{\log(4/\delta)}{-\log(1 - \epsilon/4)}$
-6. Using the inequality $\epsilon/4 < -\log(1 - \epsilon/4)$, the learner succeeds if: $s \geq \frac{2 + \log(1/\delta)}{\epsilon/4}$
+5. Solving for $s: 
+   
+  $$s \log(1 - \epsilon/4) \leq \log(\delta/4) s \geq \frac{\log(4/\delta)}{-\log(1 - \epsilon/4)}$$
+
+6. Using the inequality $\epsilon/4 < -\log(1 - \epsilon/4)$, the learner succeeds if: 
+
+$$s \geq \frac{2 + \log(1/\delta)}{\epsilon/4}$$
 
 
 ## PAC Learning of Finite Concept Classes
@@ -1175,7 +1220,9 @@ A concept $K$ is consistent with data $(x_1, b_1), \dots, (x_s, b_s)$ if $K(x_j)
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Finite Concept Class PAC Learning)</span></p>
 
-Let $E$ be a set and let $\mathcal{K} \subseteq 2^E$ be a finite concept class. Every consistent learner for $\mathcal{K}$ is a PAC learner for $\mathcal{K}$ with sample complexity: $s = s(\epsilon, \delta) = \frac{\log \lvert \mathcal{K} \rvert + \log(1/\delta)}{\epsilon}$
+Let $E$ be a set and let $\mathcal{K} \subseteq 2^E$ be a finite concept class. Every consistent learner for $\mathcal{K}$ is a PAC learner for $\mathcal{K}$ with sample complexity: 
+
+$$s = s(\epsilon, \delta) = \frac{\log \lvert \mathcal{K} \rvert + \log(1/\delta)}{\epsilon}$$
 
 </div>
 
@@ -1204,7 +1251,7 @@ The VC dimension of $\mathcal{K}$, denoted $\text{VC}(\mathcal{K})$, is the maxi
 
 ### Examples of VC Dimension
 
-* For a finite set $E$ and $\mathcal{K} = $2^E$, $\text{VC}(\mathcal{K}) = \lvert E\rvert$.
+* For a finite set $E$ and $\mathcal{K} = 2^E$, $\text{VC}(\mathcal{K}) = \lvert E\rvert$.
 * For $E = \mathbb{R}$ and $\mathcal{K}$ as the set of finite intervals, $\text{VC}(\mathcal{K}) = 2$.
 * For axis-parallel rectangles in $\mathbb{R}^2$, $\text{VC}(\mathcal{K}) = 4$.
 
@@ -1223,7 +1270,11 @@ The existence of a finite VC dimension guarantees PAC learnability.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(VC Dimension and PAC Learning)</span></p>
 
-Let $E$ be a set and $\mathcal{K} \subseteq 2^E$ be a concept class with $\text{VC}(\mathcal{K}) = d$. Every consistent learner for $\mathcal{K}$ is a PAC learner with sample complexity: $s = s(\epsilon, \delta) = O\left(\frac{d \log \frac{1}{\min\lbrace\epsilon, \delta\rbrace}}{\epsilon}\right)$. The constant in the $O$-notation is independent of $\mathcal{K}$, $\epsilon$, and $\delta$.
+Let $E$ be a set and $\mathcal{K} \subseteq 2^E$ be a concept class with $\text{VC}(\mathcal{K}) = d$. Every consistent learner for $\mathcal{K}$ is a PAC learner with sample complexity: 
+
+$$s = s(\epsilon, \delta) = O\left(\frac{d \log \frac{1}{\min\lbrace\epsilon, \delta\rbrace}}{\epsilon}\right)$$
+
+The constant in the $O$-notation is independent of $\mathcal{K}$, $\epsilon$, and $\delta$.
 
 </div>
 
@@ -1311,7 +1362,7 @@ A sorting algorithm where the input list can only be accessed by queries of the 
 
 A Las Vegas algorithm can be viewed as a probability distribution over a set of deterministic algorithms. If an algorithm uses $r(n)$ random bits, each fixed sequence of those bits results in the algorithm behaving like a specific deterministic algorithm $A \in $A_n$.
 
-Thus, for any size $n$, a Las Vegas algorithm is characterized by a probability distribution $\sigma_n$ on $A_n$, where $\mathbb{P}_{\sigma_n}[A]$ is the probability that the randomized algorithm behaves like deterministic algorithm $A$. Conversely, any distribution $\sigma_n$ on $A_n$ defines a randomized algorithm $A_{\sigma_n}$ that first selects a deterministic algorithm according to $\sigma_n$ and then executes it.
+Thus, for any size $n$, a Las Vegas algorithm is characterized by a probability distribution $\sigma_n$ on $A_n$, where $\mathbb{P}\_{\sigma_n}[A]$ is the probability that the randomized algorithm behaves like deterministic algorithm $A$. Conversely, any distribution $\sigma_n$ on $A_n$ defines a randomized algorithm $A_{\sigma_n}$ that first selects a deterministic algorithm according to $\sigma_n$ and then executes it.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -1331,7 +1382,9 @@ Yao’s Minimax Principle provides a method for establishing lower bounds on the
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Yao’s Minimax Principle)</span></p>
 
-Let $\mathcal{A}$ and $\mathcal{I}$ be nonempty finite sets of algorithms and inputs, respectively. Let $k : \mathcal{A} \times \mathcal{I} \to \mathbb{N}$ be a cost function. Let $\sigma$ be a probability distribution on $\mathcal{A}$ and $\tau$ be a probability distribution on $\mathcal{I}$. Let $A_\sigma$ be a random variable with distribution $\sigma$, and $I_\tau$ be a random variable with distribution $\tau$. Then: $\min_{A \in \mathcal{A}}\mathbb{E}[k(A, I_\tau)]\le\max_{I \in \mathcal{I}}\mathbb{E}[k(A_\sigma, I)]$
+Let $\mathcal{A}$ and $\mathcal{I}$ be nonempty finite sets of algorithms and inputs, respectively. Let $k : \mathcal{A} \times \mathcal{I} \to \mathbb{N}$ be a cost function. Let $\sigma$ be a probability distribution on $\mathcal{A}$ and $\tau$ be a probability distribution on $\mathcal{I}$. Let $A_\sigma$ be a random variable with distribution $\sigma$, and $I_\tau$ be a random variable with distribution $\tau$. Then: 
+
+$$\min_{A \in \mathcal{A}}\mathbb{E}[k(A, I_\tau)]\le\max_{I \in \mathcal{I}}\mathbb{E}[k(A_\sigma, I)]$$
 
 </div>
 
@@ -1358,7 +1411,9 @@ Consider the problem of determining if an $n \times n$ Boolean matrix has an emp
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Upper Bound for Empty Columns)</span></p>
 
-There exists a black-box Las Vegas algorithm that decides if a Boolean matrix has an empty column with an expected worst-case cost of: $g_{upper}(n) = \frac{n(n+1)}{2}$
+There exists a black-box Las Vegas algorithm that decides if a Boolean matrix has an empty column with an expected worst-case cost of: 
+
+$$g_{upper}(n) = \frac{n(n+1)}{2}$$
 
 </div>
 
@@ -1373,7 +1428,9 @@ There exists a black-box Las Vegas algorithm that decides if a Boolean matrix ha
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Lower Bound for Empty Columns)</span></p>
 
-For any black-box Las Vegas algorithm for the empty column problem, the expected worst-case cost is at least: $g_{lower}(n) = \frac{n(n+1)}{2}$
+For any black-box Las Vegas algorithm for the empty column problem, the expected worst-case cost is at least: 
+
+$$g_{lower}(n) = \frac{n(n+1)}{2}$$
 
 </div>
 
@@ -1415,7 +1472,7 @@ In every matrix game, optimal strategies exist because the sets of mixed strateg
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Von Neumann’s Minimax Theorem)</span></p>
 
-$\max_\tau \min_\sigma \mathbb{E}[k(A_\sigma, I_\tau)] = \min_\sigma \max_\tau \mathbb{E}[k(A_\sigma, I_\tau)]$
+$$\max_\tau \min_\sigma \mathbb{E}[k(A_\sigma, I_\tau)] = \min_\sigma \max_\tau \mathbb{E}[k(A_\sigma, I_\tau)]$$
 
 </div>
 
@@ -1441,21 +1498,37 @@ If $k_1^{\ast} = k_2^{\ast}$, any pair of optimal strategies ($\sigma^{\ast}, \t
 
 ### Examples of Non-Zero-Sum Games
 
-1. Planes on Collision Course
+#### 1. Planes on a Collision Course
 
-Two planes are colliding. Pilots can "Climb" or "Descend." They avoid collision only if they choose different actions. | Plane I \ Plane II | Descend | Climb | | :--- | :--- | :--- | | Descend | (-100, -100) | (0, 0) | | Climb | (0, 0) | (-100, -100) |
+Two planes are on a collision course. Each pilot can choose to **Climb** or **Descend**. They avoid collision only if they choose different actions.
 
-There are two pure-strategy equilibria: (Descend, Climb) and (Climb, Descend), both yielding payoff 0. If both pilots toss a fair coin (mixed strategy), the expected payoff is -50.
+| Plane I \ Plane II | Descend        | Climb           |
+| :----------------- | :------------- | :-------------- |
+| **Descend**        | $(-100, -100)$   | $(0, 0)$          |
+| **Climb**          | $(0, 0)$         | $(-100, -100)$    |
 
-2. Prisoner’s Dilemma
+There are two pure-strategy Nash equilibria: **(Descend, Climb)** and **(Climb, Descend)**, both yielding a payoff of **0** for each pilot.
 
-Two suspects can "Deny" or "Confess." | Suspect I \ Suspect II | Deny | Confess | | :--- | :--- | :--- | | Deny | (1, 1) | (5, 0) | | Confess | (0, 5) | (3, 3) | (Values represent years in prison; players want to minimize these.)
+If both pilots use a mixed strategy and choose **Climb** or **Descend** with equal probability, the expected payoff for each is **-50**.
 
-In this game, "Confess" is a dominating strategy—it is the best choice regardless of the other player's action. The equilibrium is (Confess, Confess), resulting in 3 years each. However, if both "Denied," they would only serve 1 year each. This illustrates a conflict between individual rationality and collective benefit.
+#### 2. Prisoner’s Dilemma
+
+Two suspects can choose to **Deny** or **Confess**.
+
+| Suspect I \ Suspect II | Deny   | Confess |
+| :--------------------- | :----- | :------ |
+| **Deny**               | $(1, 1)$ | $(5, 0)$  |
+| **Confess**            | $(0, 5)$ | $(3, 3)$  |
+
+*Values represent years in prison, so lower numbers are better.*
+
+In this game, **Confess** is the dominant strategy for both players: it gives a better outcome regardless of what the other suspect does.
+
+The Nash equilibrium is **(Confess, Confess)**, which results in **3 years in prison each**. However, if both suspects **Deny**, they receive only **1 year each**. This illustrates the tension between **individual rationality** and **collective welfare**.
 
 
 
-## Randomized Algorithms: Sorting, Fingerprinting, and Program Self-Correction
+## Sorting, Fingerprinting, and Program Self-Correction
 
 In the study of algorithms, randomization serves as a powerful tool to achieve efficiency and robustness. This guide explores the application of randomized techniques to fundamental problems: sorting, file identification through fingerprinting, pattern matching in strings, and the development of self-correcting programs. We focus on Las Vegas algorithms, which always produce a correct result but have a variable running time, and Monte Carlo algorithms, which have a fixed running time but a small probability of error.
 
