@@ -273,8 +273,6 @@ A useful rule of thumb:
 * If your program is “one loop over big arrays”: **DLP first** (vectorize/GPU-style).
 * If your program is “many independent jobs or stages”: **TLP first** (threads/tasks).
 
-</div>
-
 
 #### Thread Hierarchy
 

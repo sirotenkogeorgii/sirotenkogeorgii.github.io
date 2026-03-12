@@ -3062,7 +3062,7 @@ There are two main learning settings:
 2. **Unsupervised setting:** We are given sequences $\lbrace x_t \rbrace$ and the learning signal is derived from the data itself (e.g., predicting the next time step).
 
 **Supervised tasks:**
-- Given a set of input patterns over time $\lbrace s_T^{(p)} \rbrace_{T \in \mathcal{T}}$, $p = 1,\dots,P$ (patterns), and a set of desired outputs $\lbrace \tilde{x}_t^{(p)} \rbrace_{t \in \mathcal{T}'}$.
+- Given a set of input patterns over time $\lbrace s_T^{(p)} \rbrace_{T \in \mathcal{T}}$, $p = 1,\dots,P$ (patterns), and a set of desired outputs $\lbrace \tilde{x}\_t^{(p)} \rbrace_{t \in \mathcal{T}'}$.
 - Training data are pairs: $\left(\lbrace s_t^{(p)} \rbrace,\; \lbrace \tilde{x}_t^{(p)} \rbrace\right)$, $p = 1,\dots,P$.
 - Examples: speech-to-text, machine translation, topic classification.
 
@@ -3112,7 +3112,7 @@ $$n \leftarrow n + 1$$
 
 #### Idea of BPTT
 
-The RNN recurrence is $\mathbf{x}_t = g(W\,\mathbf{x}_{t-1} + \mathbf{b})$ with $W, \mathbf{b} \in \theta$. The key idea is to **unfold the network in time** and treat it as a feedforward network:
+The RNN recurrence is $\mathbf{x}\_t = g(W\,\mathbf{x}\_{t-1} + \mathbf{b})$ with $W, \mathbf{b} \in \theta$. The key idea is to **unfold the network in time** and treat it as a feedforward network:
 
 $$\mathbf{x}_1 \xrightarrow{\theta} \mathbf{x}_2 \xrightarrow{\theta} \mathbf{x}_3 \to \cdots \to \mathbf{x}_T$$
 
@@ -3130,7 +3130,7 @@ This can be written compactly as:
 
 $$\frac{\partial \ell_t}{\partial w_{ij}} = \sum_{\tau=1}^{t} \underbrace{\frac{\partial \ell_t}{\partial \mathbf{x}_t^{(p)}}}_{\in \mathbb{R}^{1 \times M}} \underbrace{\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau}}_{\in \mathbb{R}^{M \times M}} \underbrace{\frac{\partial \mathbf{x}_\tau}{\partial w_{ij}}}_{\in \mathbb{R}^{M \times 1}}$$
 
-where $\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau}$ is the **Jacobian product**:
+where $\frac{\partial \mathbf{x}\_t}{\partial \mathbf{x}\_\tau}$ is the **Jacobian product**:
 
 $$\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau} = \frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_{t-1}} \cdot \frac{\partial \mathbf{x}_{t-1}}{\partial \mathbf{x}_{t-2}} \cdots \frac{\partial \mathbf{x}_{\tau+1}}{\partial \mathbf{x}_\tau} = \prod_{u=\tau+1}^{t} \frac{\partial \mathbf{x}_u}{\partial \mathbf{x}_{u-1}}$$
 
@@ -3139,7 +3139,7 @@ $$\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau} = \frac{\partial \mathb
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Jacobians Between Consecutive Time Steps)</span></p>
 
-Given $\mathbf{x}_u = g(W\,\mathbf{x}_{u-1} + \mathbf{b})$, the Jacobian between consecutive steps is:
+Given $\mathbf{x}\_u = g(W\,\mathbf{x}\_{u-1} + \mathbf{b})$, the Jacobian between consecutive steps is:
 
 $$J_u := \frac{\partial \mathbf{x}_u}{\partial \mathbf{x}_{u-1}} = \mathrm{diag}\!\left(g'(W\,\mathbf{x}_{u-1} + \mathbf{b})\right) \cdot W$$
 
@@ -3152,7 +3152,7 @@ $$\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau} = J_t \cdot J_{t-1} \cd
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Exploding and Vanishing Gradient Problem — EVGP)</span></p>
 
-The behavior of the Jacobian product $\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau}$ is governed by the spectral radius of the Jacobians $J_u$:
+The behavior of the Jacobian product $\frac{\partial \mathbf{x}\_t}{\partial \mathbf{x}\_\tau}$ is governed by the spectral radius of the Jacobians $J_u$:
 
 - If $\max \lvert \mathrm{eig}(J_u) \rvert > 1$ (typical spectral radius $> 1$): gradients **explode** $\Rightarrow$ unstable training.
 - If $\max \lvert \mathrm{eig}(J_u) \rvert < 1$ (typical spectral radius $< 1$): gradients **vanish** $\Rightarrow$ forgetting of long-range dependencies.
@@ -3165,7 +3165,7 @@ The total loss derivative combines all these terms:
 
 $$\frac{\partial \mathcal{L}}{\partial w_{ij}} = \sum_{p=1}^{P} \sum_{t=1}^{T} \frac{\partial \ell_t^{(p)}}{\partial w_{ij}} = \sum_{p=1}^{P} \sum_{t=1}^{T} \sum_{\tau=1}^{t} \frac{\partial \ell_t^{(p)}}{\partial \mathbf{x}_t^{(p)}} \frac{\partial \mathbf{x}_t^{(p)}}{\partial \mathbf{x}_\tau^{(p)}} \frac{\partial \mathbf{x}_\tau^{(p)}}{\partial w_{ij}}$$
 
-where $\frac{\partial \mathbf{x}_t^{(p)}}{\partial \mathbf{x}_\tau^{(p)}}$ is the Jacobian product and $\frac{\partial \mathbf{x}_\tau^{(p)}}{\partial w_{ij}}$ is the local derivative.
+where $\frac{\partial \mathbf{x}\_t^{(p)}}{\partial \mathbf{x}\_\tau^{(p)}}$ is the Jacobian product and $\frac{\partial \mathbf{x}\_\tau^{(p)}}{\partial w_{ij}}$ is the local derivative.
 
 #### Remarks on BPTT
 
@@ -3187,7 +3187,7 @@ where $\frac{\partial \mathbf{x}_t^{(p)}}{\partial \mathbf{x}_\tau^{(p)}}$ is th
 
 ### Capturing Long-Term Temporal Dependencies (Solutions to EVGP)
 
-**Recap:** In vanilla RNNs, $\mathbf{x}_t = \phi(W\,\mathbf{x}_{t-1} + C\,\mathbf{s}_t + \mathbf{b})$, and the influence of the past is a Jacobian product:
+**Recap:** In vanilla RNNs, $\mathbf{x}\_t = \phi(W\,\mathbf{x}\_{t-1} + C\,\mathbf{s}\_t + \mathbf{b})$, and the influence of the past is a Jacobian product:
 
 $$\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_{t-k}} = J_t \cdot J_{t-1} \cdots, \quad J_t = \mathrm{diag}(\phi'(\cdot)) \cdot W$$
 
@@ -3335,13 +3335,13 @@ The idea is to train the network from easy to hard — starting with **short seq
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Teacher Forcing — GTF)</span></p>
 
-In the unsupervised learning setting, let $\mathbf{z}_t = f_\theta(\mathbf{z}_{t-1}, s_t)$ and define $J_t := \frac{\partial \mathbf{z}_t}{\partial \mathbf{z}_{t-1}}$. In BPTT, $\frac{\partial \mathbf{z}_t}{\partial \mathbf{z}_\tau} = J_t\,J_{t-1}\cdots J_{\tau+1}$.
+In the unsupervised learning setting, let $\mathbf{z}\_t = f_\theta(\mathbf{z}\_{t-1}, s_t)$ and define $J_t := \frac{\partial \mathbf{z}\_t}{\partial \mathbf{z}\_{t-1}}$. In BPTT, $\frac{\partial \mathbf{z}\_t}{\partial \mathbf{z}\_\tau} = J_t\,J_{t-1}\cdots J_{\tau+1}$.
 
 **GTF state interpolation:** Assume we have a "teacher signal" $\bar{\mathbf{z}}_t$ inferred from the data. Define an interpolated state:
 
 $$\widehat{\mathbf{z}}_t := (1 - \alpha)\,\mathbf{z}_t + \alpha\,\bar{\mathbf{z}}_t, \quad 0 \leq \alpha \leq 1$$
 
-where $\alpha$ is a hyperparameter. The network then evolves as $\mathbf{z}_t = f_\theta(\widehat{\mathbf{z}}_{t-1}, s_t)$.
+where $\alpha$ is a hyperparameter. The network then evolves as $\mathbf{z}\_t = f_\theta(\widehat{\mathbf{z}}\_{t-1}, s_t)$.
 
 The Jacobians change to:
 
