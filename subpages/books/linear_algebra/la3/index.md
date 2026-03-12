@@ -8,6 +8,10 @@ tags:
   - mathematics
 ---
 
+**Table of Contents**
+- TOC
+{:toc}
+
 # Linear Algebra III
 
 ## Eigenvalues
@@ -19,7 +23,9 @@ The Schur decomposition is a key result in eigenvalue theory. Like the Jordan no
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Schur Decomposition)</span></p>
 
-For every matrix $A \in \mathbb{C}^{n \times n}$ there exists a unitary $U \in \mathbb{C}^{n \times n}$ and an upper triangular $T \in \mathbb{C}^{n \times n}$ such that $A = UTU^*$.
+For every matrix $A \in \mathbb{C}^{n \times n}$ there exists a unitary $U \in \mathbb{C}^{n \times n}$ and an upper triangular $T \in \mathbb{C}^{n \times n}$ such that 
+
+$$A = UTU^*$$
 
 </div>
 
@@ -689,7 +695,7 @@ The norm of a matrix is important because it allows us to say how "large" a matr
 Recall that a **vector norm** on a real or complex vector space $V$ is a mapping $\lVert \cdot \rVert \colon V \to \mathbb{R}$ satisfying:
 
 1. $\lVert x \rVert \geq 0$ for all $x \in V$, with equality only for $x = 0$,
-2. $\lVert \alpha x \rVert = |\alpha| \cdot \lVert x \rVert$ for all $x \in V$ and all scalars $\alpha$,
+2. $\lVert \alpha x \rVert = \lvert \alpha\rvert \cdot \lVert x \rVert$ for all $x \in V$ and all scalars $\alpha$,
 3. $\lVert x + y \rVert \leq \lVert x \rVert + \lVert y \rVert$.
 
 Important examples of vector norms on $\mathbb{R}^n$ are the $\ell_p$-norms:
@@ -726,7 +732,7 @@ For matrix norms, we additionally require **consistency** (or sub-multiplicativi
 A mapping $\lVert \cdot \rVert \colon \mathbb{R}^{n \times n} \to \mathbb{R}$ is a real **matrix norm** if for all $A \in \mathbb{R}^{n \times n}$ and $\alpha \in \mathbb{R}$:
 
 1. $\lVert A \rVert \geq 0$, with equality only for $A = 0$,
-2. $\lVert \alpha A \rVert = |\alpha| \cdot \lVert A \rVert$,
+2. $\lVert \alpha A \rVert = \lvert \alpha\rvert \cdot \lVert A \rVert$,
 3. $\lVert A + B \rVert \leq \lVert A \rVert + \lVert B \rVert$,
 4. $\lVert AB \rVert \leq \lVert A \rVert \cdot \lVert B \rVert$.
 
@@ -849,9 +855,9 @@ For $p \in \lbrace 1, 2, \infty \rbrace$ the $p$-norm has a simple closed-form e
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-1. $\lVert A \rVert_1 = \max_j \sum_i |a_{ij}|$ (maximum column sum),
+1. $\lVert A \rVert_1 = \max_j \sum_i \lvert a_{ij}\rvert$ (maximum column sum),
 2. $\lVert A \rVert_2 = \sigma_1(A)$ (largest singular value of $A$),
-3. $\lVert A \rVert_\infty = \max_i \sum_j |a_{ij}| = \lVert A^\top \rVert_1$ (maximum row sum).
+3. $\lVert A \rVert_\infty = \max_i \sum_j \lvert a_{ij}\rvert = \lVert A^\top \rVert_1$ (maximum row sum).
 
 </div>
 
@@ -985,7 +991,7 @@ $$
 C(p) \coloneqq \begin{pmatrix} 0 & \ldots & \ldots & 0 & -a_0 \\ 1 & \ddots & & \vdots & -a_1 \\ 0 & \ddots & \ddots & \vdots & -a_2 \\ \vdots & \ddots & \ddots & 0 & \vdots \\ 0 & \ldots & 0 & 1 & -a_{n-1} \end{pmatrix},
 $$
 
-and the roots of $p(x)$ equal the eigenvalues of $C(p)$. For any root $x^*$ and any matrix norm: $|x^*| \leq \rho(C(p)) \leq \lVert C(p) \rVert$. Using $\lVert \cdot \rVert_\infty$:
+and the roots of $p(x)$ equal the eigenvalues of $C(p)$. For any root $x^*$ and any matrix norm: $\lvertx^\ast\rvert \leq \rho(C(p)) \leq \lVert C(p) \rVert$. Using $\lVert \cdot \rVert_\infty$:
 
 $$
 |x^*| \leq \lVert C(p) \rVert_\infty = \max\lbrace |a_0|, 1 + |a_1|, \ldots, 1 + |a_{n-1}| \rbrace \leq 1 + \max_{i=0,\ldots,n-1} |a_i|,
@@ -1026,7 +1032,9 @@ Let $A \in \mathbb{R}^{n \times n}$. The following are equivalent:
 2. $\lim_{k \to \infty} A^k = 0$,
 3. $\sum_{k=0}^\infty A^k$ converges.
 
-If any of these holds, then $(I_n - A)^{-1} = \sum_{k=0}^\infty A^k$.
+If any of these holds, then 
+
+$$(I_n - A)^{-1} = \sum_{k=0}^\infty A^k$$
 
 </div>
 
@@ -1040,7 +1048,9 @@ If any of these holds, then $(I_n - A)^{-1} = \sum_{k=0}^\infty A^k$.
 
 **(3)$\Rightarrow$(2):** Clear (terms of a convergent series tend to zero).
 
-**(2)$\Rightarrow$(3):** $(I_n - A)(\sum_{k=0}^m A^k) = I_n - A^{m+1}$ converges to $I_n$ as $m \to \infty$. Since $I_n - A^{m+1}$ is regular for large $m$, so is $I_n - A$. Thus $\sum_{k=0}^m A^k = (I_n - A)^{-1}(I_n - A^{m+1}) \to (I_n - A)^{-1}$.
+**(2)$\Rightarrow$(3):** $(I_n - A)(\sum_{k=0}^m A^k) = I_n - A^{m+1}$ converges to $I_n$ as $m \to \infty$. Since $I_n - A^{m+1}$ is regular for large $m$, so is $I_n - A$. Thus 
+
+$$\sum_{k=0}^m A^k = (I_n - A)^{-1}(I_n - A^{m+1}) \to (I_n - A)^{-1}$$
 
 </details>
 </div>
@@ -1050,7 +1060,9 @@ Note that $(I_n - A)^{-1}$ may exist without any of the three conditions holding
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Gelfand's Formula)</span></p>
 
-For every matrix norm $a$ and $A \in \mathbb{R}^{n \times n}$: $\rho(A) = \lim_{k \to \infty} \lVert A^k \rVert^{1/k}$.
+For every matrix norm $a$ and $A \in \mathbb{R}^{n \times n}$: 
+
+$$\rho(A) = \lim_{k \to \infty} \lVert A^k \rVert^{1/k}$$
 
 </div>
 
@@ -1564,7 +1576,9 @@ As a consequence, we get perturbation bounds on all eigenvalues simultaneously, 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span></p>
 
-Let $A, B \in \mathbb{R}^{n \times n}$ be symmetric. Then $\rho(A+B) \leq \rho(A) + \rho(B)$.
+Let $A, B \in \mathbb{R}^{n \times n}$ be symmetric. Then 
+
+$$\rho(A+B) \leq \rho(A) + \rho(B)$$
 
 </div>
 
@@ -1582,12 +1596,18 @@ $$
 \lambda_n(A+B) \geq \lambda_n(A) + \lambda_n(B) \leq -\rho(A) - \rho(B).
 $$
 
-Thus $\rho(A+B) = \max\lbrace \lambda_1(A+B), -\lambda_n(A+B) \rbrace \leq \rho(A) + \rho(B)$.
+Thus 
+
+$$\rho(A+B) = \max\lbrace \lambda_1(A+B), -\lambda_n(A+B) \rbrace \leq \rho(A) + \rho(B)$$
 
 </details>
 </div>
 
-Note that this bound does **not** hold for general (non-symmetric) matrices. For example, $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 0 & 0 \\\ 1 & 0 \end{pmatrix}$ have $\rho(A) = \rho(B) = 0$ but $\rho(A+B) = 1$.
+Note that this bound does **not** hold for general (non-symmetric) matrices. For example, 
+
+$$A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix} \qquad B = \begin{pmatrix} 0 & 0 \\ 1 & 0 \end{pmatrix}$$
+
+have $\rho(A) = \rho(B) = 0$ but $\rho(A+B) = 1$.
 
 Another consequence of the Weyl theorem is a uniform bound on the change of eigenvalues:
 
@@ -1726,7 +1746,7 @@ $$
 \begin{pmatrix} 1+t & 2+t \\ 3+t & 4+t \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 1 \\ 5 \end{pmatrix}.
 $$
 
-For $t = 0$, the solution is $x = (3, -1)^\top$ and $A^{-1} = \frac{1}{2}\begin{pmatrix} -4 & 2 \\ 3 & -1 \end{pmatrix}$. Computing $x' = (2, -2)^\top$. So as $t$ increases, the first component grows and the second decreases at the same rate.
+For $t = 0$, the solution is $x = (3, -1)^\top$ and $A^{-1} = \frac{1}{2}\begin{pmatrix} -4 & 2 \\\ 3 & -1 \end{pmatrix}$. Computing $x' = (2, -2)^\top$. So as $t$ increases, the first component grows and the second decreases at the same rate.
 
 </div>
 
@@ -1850,7 +1870,7 @@ We build up the theory step by step.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-If $|A| \leq B$ (entrywise), then $\rho(A) \leq \rho(B)$.
+If $\lvert A\rvert \leq B$ (entrywise), then $\rho(A) \leq \rho(B)$.
 
 </div>
 
@@ -1858,7 +1878,7 @@ If $|A| \leq B$ (entrywise), then $\rho(A) \leq \rho(B)$.
 <details markdown="1">
 <summary>Proof</summary>
 
-From $|A| \leq B$ we deduce $|A|^k \leq B^k$ entrywise, so $\lVert A^k \rVert_F \leq \lVert |A|^k \rVert_F \leq \lVert B^k \rVert_F$. Thus $\lVert A^k \rVert_F^{1/k} \leq \lVert B^k \rVert_F^{1/k}$ and by Gelfand's formula (Theorem 5.19), $\rho(A) \leq \rho(B)$.
+From $|A| \leq B$ we deduce $\lvert A\rvert^k \leq B^k$ entrywise, so $\lVert A^k \rVert_F \leq \lVert \lvert A\rvert^k \rVert_F \leq \lVert B^k \rVert_F$. Thus $\lVert A^k \rVert_F^{1/k} \leq \lVert B^k \rVert_F^{1/k}$ and by Gelfand's formula (Theorem 5.19), $\rho(A) \leq \rho(B)$.
 
 </details>
 </div>
@@ -1937,7 +1957,7 @@ We now prove the essential part of Perron's theorem --- that $\rho(A) > 0$ is an
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A > 0$, $Ax = \lambda x$, $x \neq 0$, $|\lambda| = \rho(A)$. Then $A|x| = \rho(A)|x|$ and $|x| > 0$.
+Let $A > 0$, $Ax = \lambda x$, $x \neq 0$, $\lvert\lambda\rvert = \rho(A)$. Then $A\lvert x\rvert = \rho(A)\lvert x\rvert$ and $\lvert x\rvert > 0$.
 
 </div>
 
@@ -1952,12 +1972,12 @@ Otherwise, define $z \coloneqq A|x| > 0$. Then $\rho(A)z < Az$ and by Theorem 8.
 </details>
 </div>
 
-The next part of Perron's theorem says the largest eigenvalue is unique --- there are no two distinct eigenvalues $\lambda_1, \lambda_2$ with $|\lambda_1| = |\lambda_2| = \rho(A)$.
+The next part of Perron's theorem says the largest eigenvalue is unique --- there are no two distinct eigenvalues $\lambda_1, \lambda_2$ with $\lvert\lambda_1\rvert = \lvert\lambda_2\rvert = \rho(A)$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A > 0$ and $\lambda \neq \rho(A)$ be an eigenvalue. Then $|\lambda| < \rho(A)$.
+Let $A > 0$ and $\lambda \neq \rho(A)$ be an eigenvalue. Then $\lvert\lambda\rvert < \rho(A)$.
 
 </div>
 
@@ -1965,7 +1985,7 @@ Let $A > 0$ and $\lambda \neq \rho(A)$ be an eigenvalue. Then $|\lambda| < \rho(
 <details markdown="1">
 <summary>Proof</summary>
 
-Suppose $|\lambda| = \rho(A)$. Let $x$ be the eigenvector for $\lambda$. By Theorem 8.9, $|Ax| = A|x|$, so for every $k$: $|\sum_j a_{kj} x_j| = \sum_j a_{kj} |x_j|$. Triangle inequality for complex numbers becomes equality exactly when all numbers lie on the same ray from the origin. Thus there exists $\gamma \in \mathbb{C}$ such that $\gamma a_{kj} x_j > 0$ for all $j$ (with $\gamma$ aligning the ray with the positive real axis). For all $j$, $\gamma x_j$ is real positive, and hence from $A(\gamma x) = \lambda(\gamma x)$, the eigenvector $\gamma x > 0$ is positive. By Corollary 8.8, $\lambda = \rho(A)$ --- a contradiction.
+Suppose $\lvert\lambda\rvert = \rho(A)$. Let $x$ be the eigenvector for $\lambda$. By Theorem 8.9, $\lvert Ax\rvert = A\lvert x\rvert$, so for every $k$: $\lvert\sum_j a_{kj} x_j\rvert = \sum_j a_{kj} \lvert x_j\rvert$. Triangle inequality for complex numbers becomes equality exactly when all numbers lie on the same ray from the origin. Thus there exists $\gamma \in \mathbb{C}$ such that $\gamma a_{kj} x_j > 0$ for all $j$ (with $\gamma$ aligning the ray with the positive real axis). For all $j$, $\gamma x_j$ is real positive, and hence from $A(\gamma x) = \lambda(\gamma x)$, the eigenvector $\gamma x > 0$ is positive. By Corollary 8.8, $\lambda = \rho(A)$ --- a contradiction.
 
 </details>
 </div>
@@ -1995,7 +2015,7 @@ For certain nonnegative matrices, the properties of positive matrices can be str
 
 Throughout this text, we studied numerical problems when solving systems of linear equations. We identified matrices prone to numerical errors via the condition number and studied changes in solutions under perturbations. The goal of **verification** is to numerically determine a rigorous (upper) bound on the distance of a numerically computed solution from the actual one.
 
-Consider $Ax = b$ where $A \in \mathbb{R}^{n \times n}$ and $b \in \mathbb{R}^n$. Let $x^*$ be the numerically computed solution. The goal is to find a vector $y^\Delta > 0$ such that $|x - x^*| \leq y^\Delta$, i.e., $x \in x^* + [-y^\Delta, y^\Delta]$. Geometrically, we seek a hyperrectangle around $x^*$ containing the true solution.
+Consider $Ax = b$ where $A \in \mathbb{R}^{n \times n}$ and $b \in \mathbb{R}^n$. Let $x^\ast$ be the numerically computed solution. The goal is to find a vector $y^\Delta > 0$ such that $\lvert x - x^\ast\rvert \leq y^\Delta$, i.e., $x \in x^\ast + [-y^\Delta, y^\Delta]$. Geometrically, we seek a hyperrectangle around $x^*$ containing the true solution.
 
 Systems are often preconditioned: if $C \in \mathbb{R}^{n \times n}$ is regular, $CAx = Cb$ is an equivalent system. For our purposes, $C \coloneqq A^{-1}$ or its approximation is the best choice.
 
@@ -2145,7 +2165,7 @@ We now state several important properties of the matrix exponential.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-$\det(e^A) = e^{\operatorname{trace}(A)}$.
+$$\det(e^A) = e^{\operatorname{trace}(A)}$$
 
 </div>
 
@@ -2167,7 +2187,7 @@ Therefore $\det(e^J) = e^{\lambda_1} \cdots e^{\lambda_n} = e^{\lambda_1 + \cdot
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-If $AB = BA$, then $e^{A+B} = e^A e^B$.
+$$AB = BA \implies e^{A+B} = e^A e^B$$
 
 </div>
 
@@ -2249,9 +2269,9 @@ $$
 \alpha(u, \tilde{u}) = (\alpha u, \tilde{u}) = (u, \alpha \tilde{u}), \quad (u_1, \tilde{u}) + (u_2, \tilde{u}) = (u_1 + u_2, \tilde{u}), \quad (u, \tilde{u}_1) + (u, \tilde{u}_2) = (u, \tilde{u}_1 + \tilde{u}_2).
 $$
 
-For $u = \sum_i \alpha_i u_i \in U$ and $\tilde{u} = \sum_j \beta_j \tilde{u}_j \in \tilde{U}$, these properties imply $(u, \tilde{u}) = \sum_{i,j} \alpha_i \beta_j (u_i, \tilde{u}_j)$. The space $U \times \tilde{U}$ is then viewed as the set of expressions $\sum_{i,j} \alpha_i \beta_j (u_i, \tilde{u}_j)$.
+For $u = \sum_i \alpha_i u_i \in U$ and $\tilde{u} = \sum_j \beta_j \tilde{u}\_j \in \tilde{U}$, these properties imply $(u, \tilde{u}) = \sum_{i,j} \alpha_i \beta_j (u_i, \tilde{u}\_j)$. The space $U \times \tilde{U}$ is then viewed as the set of expressions $\sum\_{i,j} \alpha_i \beta_j (u_i, \tilde{u}\_j)$.
 
-The mapping $f \otimes \tilde{f}$ acts by $(u_j, \tilde{u}_\ell) \mapsto (f(u_j), \tilde{f}(\tilde{u}_\ell))$. If $A, B$ are the matrices of $f, \tilde{f}$ with respect to chosen bases, then the matrix of $f \otimes \tilde{f}$ is exactly $A \otimes B$.
+The mapping $f \otimes \tilde{f}$ acts by $(u_j, \tilde{u}\_\ell) \mapsto (f(u_j), \tilde{f}(\tilde{u}\_\ell))$. If $A, B$ are the matrices of $f, \tilde{f}$ with respect to chosen bases, then the matrix of $f \otimes \tilde{f}$ is exactly $A \otimes B$.
 
 </div>
 
@@ -2337,7 +2357,9 @@ Similarly, the system $AX + XC = B$ can be rewritten as $(I \otimes A + C^\top \
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-The system $AXC = B$ is equivalent to the system $(C^\top \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$.
+The system $AXC = B$ is equivalent to the system 
+
+$$(C^\top \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$$
 
 </div>
 
@@ -2404,7 +2426,7 @@ The Hadamard product multiplies matrices entry-wise, as one might intuitively de
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hadamard Product)</span></p>
 
-Let $A, B \in \mathbb{R}^{m \times n}$. The **Hadamard product** (also called the Schur product) of $A$ and $B$ is the matrix $A \circ B \in \mathbb{R}^{m \times n}$ defined as $(A \circ B)_{ij} = a_{ij} b_{ij}$.
+Let $A, B \in \mathbb{R}^{m \times n}$. The **Hadamard product** (also called the Schur product) of $A$ and $B$ is the matrix $A \circ B \in \mathbb{R}^{m \times n}$ defined as $(A \circ B)\_{ij} = a_{ij} b_{ij}$.
 
 </div>
 
@@ -2488,7 +2510,7 @@ We have $0 = x_i^\top \sqrt{A} \sqrt{A} x_i = \lVert \sqrt{A} x_i \rVert_2^2$, w
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-The set $\mathcal{S}_+$ forms a convex cone in the space of symmetric matrices in $\mathbb{R}^{n \times n}$. The interior of $\mathcal{S}_+$ consists of positive definite matrices. The boundary of $\mathcal{S}_+$ consists of singular matrices. The extreme rays of the cone are formed by positive semidefinite matrices of rank $1$, i.e., matrices of the form $xx^\top$ for $x \neq 0$.
+The set $\mathcal{S}\_+$ forms a convex cone in the space of symmetric matrices in $\mathbb{R}^{n \times n}$. The interior of $\mathcal{S}\_+$ consists of positive definite matrices. The boundary of $\mathcal{S}\_+$ consists of singular matrices. The extreme rays of the cone are formed by positive semidefinite matrices of rank $1$, i.e., matrices of the form $xx^\top$ for $x \neq 0$.
 
 </div>
 
@@ -2622,7 +2644,11 @@ $$
 </details>
 </div>
 
-The converse does not hold in general. For example: $A = \begin{pmatrix} 3 & 0 \\ 0 & 1 \end{pmatrix}$, $B = \begin{pmatrix} 0 & 0 \\ 0 & 2 \end{pmatrix}$ --- here $\lambda_1(A) \geq \lambda_1(B)$ and $\lambda_2(A) \geq \lambda_2(B)$, but $A - B$ is indefinite.
+The converse does not hold in general. For example: 
+
+$$A = \begin{pmatrix} 3 & 0 \\ 0 & 1 \end{pmatrix} \qquad B = \begin{pmatrix} 0 & 0 \\ 0 & 2 \end{pmatrix}$$
+
+here $\lambda_1(A) \geq \lambda_1(B)$ and $\lambda_2(A) \geq \lambda_2(B)$, but $A - B$ is indefinite.
 
 From the properties above we can derive further results. For instance, $A \succeq B \succeq 0$ implies $\det(A) \geq \det(B)$, $\operatorname{trace}(A) \geq \operatorname{trace}(B)$, etc.
 
@@ -2630,7 +2656,7 @@ From the properties above we can derive further results. For instance, $A \succe
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hadamard Inequality)</span></p>
 
 1. If $A \succ 0$, then $\det(A) \leq \prod_{i=1}^n a_{ii}$.
-2. If $B \in \mathbb{R}^{n \times n}$, then $|\det(B)| \leq \prod_{i=1}^n \lVert B_{*i} \rVert_2$.
+2. If $B \in \mathbb{R}^{n \times n}$, then $\lvert\det(B)\rvert \leq \prod_{i=1}^n \lVert B_{*i} \rVert_2$.
 
 </div>
 
@@ -2720,7 +2746,7 @@ By induction, $\lVert x^k - x^* \rVert \leq \lVert M^{-1}N \rVert^k \cdot \lVert
 
 The converse also holds. If $\rho(M^{-1}N) \geq 1$, then $A$ need not be regular. Even if $A$ is regular, the sequence $x^0, x^1, \ldots$ typically does not converge for all $x^0$ and $b$. As a concrete example, let $M = N = I_n$; then $\rho(M^{-1}N) = 1$ and the sequence does not converge.
 
-If $\rho(M^{-1}N)$ is close to $1$ from below, convergence is slow. The spectral radius only provides convergence for real eigenvalues $|\lambda| \geq 1$; for complex eigenvalues $\lambda \pm i\nu$ the situation is more involved (via the real Schur decomposition and a careful analysis of the $2 \times 2$ blocks).
+If $\rho(M^{-1}N)$ is close to $1$ from below, convergence is slow. The spectral radius only provides convergence for real eigenvalues $\lvert \lambda\rvert \geq 1$; for complex eigenvalues $\lambda \pm i\nu$ the situation is more involved (via the real Schur decomposition and a careful analysis of the $2 \times 2$ blocks).
 
 </div>
 
@@ -2864,7 +2890,7 @@ $$
 
 The solution is $x(t) = e^{At}x(0)$. The state $x(t)$ converges to the equilibrium (or stays bounded near it) precisely when $A$ is stable.
 
-An equivalent characterization of stability is given by the Lyapunov theorem: $A$ is stable if and only if the Lyapunov equation $XA + A^\topX = -I$ has a positive definite solution $X$.
+An equivalent characterization of stability is given by the Lyapunov theorem: $A$ is stable if and only if the Lyapunov equation $XA + A^\top X = -I$ has a positive definite solution $X$.
 
 ### Iterative Methods for Solving Linear Systems
 

@@ -967,7 +967,7 @@ The existence of a stable marriage for any set of preference lists is guaranteed
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Marriage Theorem)</span></p>
 
-The Marriage Theorem Let $<_{F_1}, \dots, <_{F_n}$ and $<_{M_1}, \dots, <_{M_n}$ be strict orderings on $\lbrace 1, \dots, n\rbrace$. Then there always exists at least one stable marriage with respect to these orderings.
+The Marriage Theorem Let $<\_{F_1}, \dots, <\_{F_n}$ and $<\_{M_1}, \dots, <\_{M_n}$ be strict orderings on $\lbrace 1, \dots, n\rbrace$. Then there always exists at least one stable marriage with respect to these orderings.
 
 </div>
 
@@ -1093,8 +1093,6 @@ The process of learning involves receiving data about the target concept in the 
 
 $$(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$$
 
-#### In this context
-
 * The sample points or examples $x_j$ are selected randomly and independently from $E$ according to a probability distribution $\mu$ on $E$.
 * The bit $K_T(x_j)$ indicates membership: it is 1 if $x_j$ is a member of the target concept and 0 otherwise.
 
@@ -1118,22 +1116,30 @@ Let $E$ be any set and let $\mathcal{K}$ be a subset of the power set $2^E$ of $
 2. For all $\epsilon, \delta > 0$ and for $s = s(\epsilon, \delta)$,
 3. For all $K_T \in \mathcal{K}$,
 
-</div>
+If $x_1, \dots, x_s$ are randomly chosen from $E$ such that the $x_j$ are mutually independent and distributed according to $\mu$, then on the data 
 
+$$(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$$
 
-If $x_1, \dots, x_s$ are randomly chosen from $E$ such that the $x_j$ are mutually independent and distributed according to $\mu$, then on the data $(x_1, K_T(x_1)), \dots, (x_s, K_T(x_s))$, the learner $A$ outputs a concept $K_A \in \mathcal{K}$ such that: 
+the learner $A$ outputs a concept $K_A \in \mathcal{K}$ such that: 
 
 $$\mathbb{P}[\mu(K_T \Delta K_A) \leq \epsilon] \geq 1 - \delta$$
 
-### Variants of PAC Learning
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variants of PAC Learning)</span></p>
 
 While the core definition focuses on the probability-theoretical and combinatorial aspects, more restricted versions of PAC learning exist. These versions may require:
 
 * The function mapping data to a candidate concept must be computable in polynomial time.
 * The sample complexity $s = s(\epsilon, \delta)$ must be polynomial in the reciprocals of $\epsilon$ and $\delta$ (i.e., $s = p(1/\epsilon, 1/\delta)$ for some polynomial $p$).
 
+</div>
 
-## Case Study: PAC Learning of Axis-Parallel Rectangles
+### Case Study: PAC Learning of Axis-Parallel Rectangles
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Concept class: Axis-parallel rectangles)</span></p>
 
 Consider the task of learning axis-parallel rectangles in the Euclidean plane $E = \mathbb{R}^2$. The concept class $\mathcal{K}$ consists of all rectangles of the form: 
 
@@ -1141,12 +1147,14 @@ $$R(a, b, c, d) = \lbrace (x, y) \in \mathbb{R}^2 : a \leq x \leq b \text{ and }
 
 This class includes degenerate rectangles, such as line segments or the empty set.
 
-### The Learner Algorithm
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Learner: Axis-parallel rectangles)</span></p>
 
 We define a learner $A$ that, given data $((x_1, y_1), b_1), \dots, ((x_s, y_s), b_s)$, identifies the sets of coordinates for all positive examples:
 
-* $X = \lbrace x_i : b_i = 1 \rbrace$
-* $Y = \lbrace y_i : b_i = 1 \rbrace$
+$$X = \lbrace x_i : b_i = 1 \rbrace \qquad Y = \lbrace y_i : b_i = 1 \rbrace$$
 
 The learner outputs the least axis-parallel rectangle that contains all positive examples: 
 
@@ -1154,11 +1162,26 @@ $$R_A = R(\min X, \max X, \min Y, \max Y)$$
 
 If $X$ is empty, $R_A$ is the empty set. By construction, $R_A \subseteq R_T$ (the target rectangle), and $R_A$ is consistent with the data.
 
-### Sample Complexity Analysis
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(It is a PAC learner)</span></p>
+
+The algorithm $A$ described above is a PAC learner if 
+
+$$s=s(\epsilon, \delta)=\geq \frac{2 + \log(1/\delta)}{\epsilon/4}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Sample Complexity Analysis</summary>
 
 To show $A$ is a PAC learner, we must determine the required sample complexity $s$. Fix $\mu$, $\epsilon$, $\delta$, and $R_T$.
 
-**Case I:** $\mu(R_T)\leq\epsilon$ Since $R_A \subseteq R_T$, the symmetric difference 
+**Case I:** $\mu(R_T)\leq\epsilon$ 
+
+Since $R_A \subseteq R_T$, the symmetric difference 
 
 $$R_T \Delta R_A = R_T \setminus R_A \subseteq R_T$$
 
@@ -1168,12 +1191,17 @@ $$\mu(R_T \Delta R_A)\leq\mu(R_T)\leq\epsilon$$
 
 In this case, the learner always succeeds regardless of the sample.
 
-**Case II:** $\mu(R_T) > \epsilon$ We define four marginal strips ($R_1$ for right, $R_2$ for left, $R_3$ for top, and $R_4$ for bottom) within $R_T$, each having a measure of approximately $\epsilon/4$. Let:
+**Case II:** $\mu(R_T) > \epsilon$ 
 
-* $z_1 = \sup\lbrace z : \mu(R(z, b, c, d)) \geq \epsilon/4\rbrace$
-* $z_2 = \inf\lbrace z : \mu(R(a, z, c, d)) \geq \epsilon/4\rbrace$
-* $z_3 = \sup\lbrace z : \mu(R(a, b, z, d)) \geq \epsilon/4\rbrace$
-* $z_4 = \inf\lbrace z : \mu(R(a, b, c, z)) \geq \epsilon/4\rbrace$
+We define four marginal strips ($R_1$ for right, $R_2$ for left, $R_3$ for top, and $R_4$ for bottom) within $R_T$, each having a measure of approximately $\epsilon/4$. Let:
+
+$$z_1 = \sup\lbrace z : \mu(R(z, b, c, d)) \geq \epsilon/4\rbrace$$
+
+$$z_2 = \inf\lbrace z : \mu(R(a, z, c, d)) \geq \epsilon/4\rbrace$$
+
+$$z_3 = \sup\lbrace z : \mu(R(a, b, z, d)) \geq \epsilon/4\rbrace$$
+
+$$z_4 = \inf\lbrace z : \mu(R(a, b, c, z)) \geq \epsilon/4\rbrace$$
 
 We define 
 
@@ -1193,33 +1221,43 @@ If the sample contains at least one point from each strip $R_1$, $R_2$, $R_3$, $
 
 $$\mu(R_T \Delta R_A) = \mu(R_T \setminus R_A)\subseteq\mu(R_T \setminus R_0)\leq\sum\mu(R_{-i})\leq 4(\epsilon/4) = \epsilon$$
 
-### Proof of Sample Complexity
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Sample Complexity</summary>
 
 1. For each $i \in\lbrace 1, 2, 3, 4\rbrace$, the probability that a single example misses strip $R_i$ is at most $(1 - \epsilon/4)$.
 2. The probability that among $s$ examples, none are in $R_i$ is at most $(1 - \epsilon/4)^s$.
 3. By the union bound, the probability that any of the four strips is missed is at most $4(1 - \epsilon/4)^s$.
 4. We require $4(1 - \epsilon/4)^s\leq\delta$.
-5. Solving for $s: 
+5. Solving for $s$: 
    
-  $$s \log(1 - \epsilon/4) \leq \log(\delta/4) s \geq \frac{\log(4/\delta)}{-\log(1 - \epsilon/4)}$$
-
+  $$s \log(1 - \epsilon/4) \leq \log(\delta/4) \implies s \geq \frac{\log(4/\delta)}{-\log(1 - \epsilon/4)}$$
+  
 6. Using the inequality $\epsilon/4 < -\log(1 - \epsilon/4)$, the learner succeeds if: 
 
 $$s \geq \frac{2 + \log(1/\delta)}{\epsilon/4}$$
 
+**Note:** to see $\epsilon/4 < -\log(1 - \epsilon/4)$ consider $f(x)=-\log(1 - \epsilon/4) - x$, $f(0)=0$ and $f'(x)>0$ for $x \in (0,1)$. In visualization base $2$ matters.
 
-## PAC Learning of Finite Concept Classes
+</details>
+</div>
+
+### PAC Learning of Finite Concept Classes
 
 A key property of learners is their consistency with the provided data.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Consistent Learner)</span></p>
 
-A concept $K$ is consistent with data $(x_1, b_1), \dots, (x_s, b_s)$ if $K(x_j) = b_j$ for all $j=1, \dots, s$. A learner for a concept class $\mathcal{K}$ is consistent if it always yields a candidate concept consistent with the given data.
-
-</div>
+* A concept $K$ is consistent with data $(x_1, b_1), \dots, (x_s, b_s)$ if $K(x_j) = b_j$ for all $j=1, \dots, s$. 
+* A learner for a concept class $\mathcal{K}$ is consistent if it always yields a candidate concept consistent with the given data.
 
 **Note.** A learner is consistent if and only if the symmetric difference of the candidate and target concepts never contains an example from the provided data.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Finite Concept Class PAC Learning)</span></p>
@@ -1230,7 +1268,9 @@ $$s = s(\epsilon, \delta) = \frac{\log \lvert \mathcal{K} \rvert + \log(1/\delta
 
 </div>
 
-**Proof.**
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 * It suffices to show that the probability the learner outputs a "bad" concept $K$ (where $\mu(K_T \Delta K) \geq \epsilon$) is at most $\delta$.
 * A concept $K$ is consistent with the data for $K_T$ if and only if no sample points fall in the symmetric difference $K_T \Delta K$.
@@ -1239,8 +1279,12 @@ $$s = s(\epsilon, \delta) = \frac{\log \lvert \mathcal{K} \rvert + \log(1/\delta
 * There are at most $\lvert\mathcal{K}\rvert$ such concepts. By the union bound, the probability that any bad concept is consistent with the data is at most $\lvert T\rvert\mathcal{K}\rvert(1 - \epsilon)^s$.
 * We set $\lvert\mathcal{K}\rvert(1 - \epsilon)^s \leq \delta$. Using the fact that $(1 - \epsilon) \leq e^{-\epsilon}$, we find that $s \geq \frac{\ln\lvert\mathcal{K}\rvert + \ln(1/\delta)}{\epsilon}$ satisfies the condition.
 
+</details>
+</div>
 
-## PAC Learning and VC Dimension
+
+
+### PAC Learning and VC Dimension
 
 The concept of PAC learnability can be extended to infinite concept classes by using the Vapnik-Chervonenkis (VC) dimension.
 
@@ -1249,25 +1293,54 @@ The concept of PAC learnability can be extended to infinite concept classes by u
 
 A finite set $X \subseteq E$ is shattered by a concept class $\mathcal{K}$ if every possible subset of $X$ can be formed by the intersection of $X$ with some $K\in\mathcal{K}$ (i.e., $\lbrace K \cap X : K \in \mathcal{K} \rbrace = 2^X$).
 
+The **VC dimension** of $\mathcal{K}$, denoted $\text{VC}(\mathcal{K})$, is the maximum size of a finite set $X$ that is shattered by $\mathcal{K}$.
+
 </div>
 
-The VC dimension of $\mathcal{K}$, denoted $\text{VC}(\mathcal{K})$, is the maximum size of a finite set $X$ that is shattered by $\mathcal{K}$.
-
-### Examples of VC Dimension
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(VC Dimensions)</span></p>
 
 * For a finite set $E$ and $\mathcal{K} = 2^E$, $\text{VC}(\mathcal{K}) = \lvert E\rvert$.
 * For $E = \mathbb{R}$ and $\mathcal{K}$ as the set of finite intervals, $\text{VC}(\mathcal{K}) = 2$.
 * For axis-parallel rectangles in $\mathbb{R}^2$, $\text{VC}(\mathcal{K}) = 4$.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-VC Dimension of Rectangles To see why $\text{VC}(\mathcal{K}) = 4$ for axis-parallel rectangles:
-
 </div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(VC Dimension of Rectangles)</span></p>
+
+To see why $\text{VC}(\mathcal{K}) = 4$ for axis-parallel rectangles:
 
 1. A set of four points (e.g., $(0, 1), (1, 0), (-1, 0), (0, -1)$) can be shattered.
 2. No set of five points can be shattered. If we have five points, consider the bounding box formed by the minimum and maximum $x$ and $y$ coordinates. At most four points are needed to define these boundaries. Any rectangle containing these four "extreme" points must necessarily contain the fifth point if it lies within the bounding box. Thus, we cannot pick the four extreme points without also picking the fifth.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Definition by Google)</span></p>
+
+The **Vapnik–Chervonenkis (VC) dimension** is a measure of the capacity, complexity, or flexibility of a binary classification model (hypothesis class). It is defined as the maximum number of data points $$n$$ that can be shattered by the model, meaning the model can realize all $2^n$ possible labelings of those points. 
+
+**Key Concepts of VC Dimension:**
+
+* **Shattering:** A model $H$ shatters a set of points if it can classify them in every possible way, ensuring perfect separation regardless of label assignment.
+* **Capacity Metric:** A higher VC dimension indicates a more complex model capable of fitting more diverse data patterns.
+* **Generalization:** It provides bounds on the number of training examples required for a given accuracy. Generally, higher VC dimension risks overfitting, while lower VC dimension risks underfitting.
+
+**Examples:**
+
+* **2D Linear Classifier:** The VC dimension is $3$, as any $3$ non-collinear points can be shattered, but no $4$ points can be.
+* **$d$-Dimensional Linear Classifier (Hyperplanes):** The VC dimension is $d+1$.
+
+**Significance in Learning Theory:**
+The VC dimension is a cornerstone of statistical learning theory, introduced by Vladimir Vapnik and Alexey Chervonenkis to quantify the "richness" of a hypothesis space. It helps determine if a model will generalize well based on the size of the training set.
+
+<figure>
+  <img src="{{ '/assets/images/notes/randomized-algorithms/vc_2d_lin_classifier.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>VC Dimension for a 2D Linear Classifier</figcaption>
+</figure>
+
+</div>
 
 The existence of a finite VC dimension guarantees PAC learnability.
 
@@ -1282,8 +1355,7 @@ The constant in the $O$-notation is independent of $\mathcal{K}$, $\epsilon$, an
 
 </div>
 
-
-### Randomized Algorithms and Yao's Minimax Principle
+## Yao's Minimax Principle
 
 In the study of algorithms, complexity is typically measured relative to the size of the input, denoted as $n$. This size might represent the length of a binary word, the number of nodes in a graph, or the elements in a list. When analyzing complexity, we often distinguish between worst-case complexity (the maximum resource usage on any input of size $n$) and average-case complexity (the expected resource usage averaged over all possible inputs of size $n$). These metrics can apply to various resources, such as running time, storage space, or the number of specific operations like comparisons.
 
@@ -1352,7 +1424,7 @@ In sorting, we assume the input is a list $x_1, \dots, x_n$ of distinct elements
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Black-Box Sorting Algorithm)</span></p>
 
-A sorting algorithm where the input list can only be accessed by queries of the form "is $x_i < $_j$?".
+A sorting algorithm where the input list can only be accessed by queries of the form "is $x_i <_j$?".
 
 </div>
 
@@ -1364,7 +1436,7 @@ A sorting algorithm where the input list can only be accessed by queries of the 
 
 ### Representing Las Vegas Algorithms as Distributions
 
-A Las Vegas algorithm can be viewed as a probability distribution over a set of deterministic algorithms. If an algorithm uses $r(n)$ random bits, each fixed sequence of those bits results in the algorithm behaving like a specific deterministic algorithm $A \in $A_n$.
+A Las Vegas algorithm can be viewed as a probability distribution over a set of deterministic algorithms. If an algorithm uses $r(n)$ random bits, each fixed sequence of those bits results in the algorithm behaving like a specific deterministic algorithm $A \in A_n$.
 
 Thus, for any size $n$, a Las Vegas algorithm is characterized by a probability distribution $\sigma_n$ on $A_n$, where $\mathbb{P}\_{\sigma_n}[A]$ is the probability that the randomized algorithm behaves like deterministic algorithm $A$. Conversely, any distribution $\sigma_n$ on $A_n$ defines a randomized algorithm $A_{\sigma_n}$ that first selects a deterministic algorithm according to $\sigma_n$ and then executes it.
 
@@ -1493,14 +1565,14 @@ This theorem implies that $k_1^{\ast} = k_2^{\ast}$. The common value is called 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Equilibrium Point)</span></p>
 
-Equilibrium Point A pair $(\sigma_0, \tau_0)$ is an equilibrium point if neither player can improve their payoff by unilaterally switching strategies:
-
-</div>
+A pair $(\sigma_0, \tau_0)$ is an equilibrium point if neither player can improve their payoff by unilaterally switching strategies:
 
 1. $\forall \sigma: \mathbb{E}[k(A_{\sigma_0}, I_{\tau_0})] \le \mathbb{E}[k(A_\sigma, I_{\tau_0})]$
 2. $\forall \tau: \mathbb{E}[k(A_{\sigma_0}, I_\tau)] \le \mathbb{E}[k(A_{\sigma_0}, I_{\tau_0})]$
 
 If $k_1^{\ast} = k_2^{\ast}$, any pair of optimal strategies ($\sigma^{\ast}, \tau^{\ast}$) forms an equilibrium point. While zero-sum games always have equilibrium points with the same expected payoff, general-sum games (like the ones below) may have multiple equilibria with different payoffs.
+
+</div>
 
 ### Examples of Non-Zero-Sum Games
 
@@ -1551,8 +1623,6 @@ The RandQuicksort algorithm is a randomized version of the classic Quicksort. Wh
 
 Given a list $S = (s_{\pi(1)}, \dots, s_{\pi(n)})$ of $n$ pairwise distinct items:
 
-</div>
-
 1. Pick an item $s$ from $S$ uniformly at random. This is the pivot.
 2. Create two sublists:
   * $S_{small} = (s_{\pi(i)})$ where $s_{\pi(i)} < s$
@@ -1560,6 +1630,9 @@ Given a list $S = (s_{\pi(1)}, \dots, s_{\pi(n)})$ of $n$ pairwise distinct item
 3. If $\lvert S_{small}\rvert > 1$, recursively call RandQuicksort($S_{small}$).
 4. If $\lvert S_{large}\rvert > 1$, recursively call RandQuicksort($S_{large}$).
 5. Output: The concatenation ($S_{small} \circ s \circ S_{large}$).
+
+</div>
+
 
 ### Upper Bound on Complexity
 
@@ -1575,14 +1648,21 @@ When RandQuicksort is run on any list of $n$ pairwise distinct items, the expect
 **Proof.** Let $S = (s_1, \dots, s_n)$ be the sorted version of the input items. In RandQuicksort, any pair of items $(s_i, s_j)$ is compared at most once. This occurs because once a pivot is chosen, it is compared to everything in its current sublist and then never compared again.
 
 1. Let $X_{ij}$ be an indicator variable such that $X_{ij} = 1$ if $s_i$ and $s_j$ are compared, and $X_{ij} = 0$ otherwise, for $1 \le i < j \le n$.
-2. The total number of comparisons $X$ is the sum of these indicators: $X = \sum_{1 \le i < j \le n} X_{ij}$.
-3. By the linearity of expectation: $\mathbb{E}[X] = \sum_{1 \le i < j \le n}\mathbb{E}[X_{ij}] = \sum_{1 \le i < j \le n}p_{ij}$, where $p_{ij}$ is the probability that $s_i$ and $s_j$ are compared.
+2. The total number of comparisons $X$ is the sum of these indicators: 
+  
+  $$X = \sum_{1 \le i < j \le n} X_{ij}$$
+
+3. By the linearity of expectation: 
+  
+  $$\mathbb{E}[X] = \sum_{1 \le i < j \le n}\mathbb{E}[X_{ij}] = \sum_{1 \le i < j \le n}p_{ij}$$
+  
+  where $p_{ij}$ is the probability that $s_i$ and $s_j$ are compared.
 4. Consider the set of items $\lbrace s_i, s_{i+1}, \dots, s_j\rbrace$. These items remain in the same sublist until one of them is chosen as a pivot.
 5. $s_i$ and $s_j$ are compared if and only if either $s_i$ or $s_j$ is the first item chosen as a pivot from this set of $j - i + 1$ items.
 6. Since the pivot is chosen uniformly at random, each item in the set has a probability of $\frac{1}{j-i+1}$ of being chosen first.
 7. Thus, $p_{ij} = \frac{2}{j-i+1}$.
 8. The expected number of comparisons is: $\mathbb{E}[X] = \sum_{i=1}^{n-1}\sum_{j=i+1}^{n}\frac{2}{j-i+1}$
-9. By changing the variable $k = j - i + 1$: $\mathbb{E}[X] = 2 \sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1}\frac{1}{k}\le 2n\sum_{k=2}^{n}\frac{1}{k} = 2n(H_n - 1)$ where $H_n$ is the $n$-th Harmonic number.
+9.  By changing the variable $k = j - i + 1$: $\mathbb{E}[X] = 2 \sum_{i=1}^{n-1}\sum_{k=2}^{n-i+1}\frac{1}{k}\le 2n\sum_{k=2}^{n}\frac{1}{k} = 2n(H_n - 1)$ where $H_n$ is the $n$-th Harmonic number.
 10. Using the approximation $H_n - 1 \le \ln n$ and knowing $\ln n = \ln 2 \cdot \log n \approx 0.69 \log n$: $\mathbb{E}[X] \le 2n(0.69 \log n) \approx 1.38 n \log n < 1.4 n \log n$. This concludes the proof.
 
 ### Lower Bound for Black-Box Sorting

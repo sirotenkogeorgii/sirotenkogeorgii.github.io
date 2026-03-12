@@ -4347,13 +4347,15 @@ Now we derive an explicit formula for the projection of a vector $x$ into a subs
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.49 — Orthogonal projection in $\mathbb{R}^m$)</span></p>
 
-*Let $A \in \mathbb{R}^{m \times n}$ have rank $n$. Then the projection of a vector $x \in \mathbb{R}^m$ into the column space $\mathcal{S}(A)$ is $x' = A(A^\top A)^{-1} A^\top x$.*
+Let $A \in \mathbb{R}^{m \times n}$ have rank $n$. Then the projection of a vector $x \in \mathbb{R}^m$ into the column space $\mathcal{S}(A)$ is 
+
+$$x' = A(A^\top A)^{-1} A^\top x$$
+
+</div>
 
 *Proof.* First we observe that $x'$ is well-defined. The matrix $A^\top A$ has rank $n$ (Corollary 8.47(3)), so it is nonsingular and has an inverse. By Proposition 8.41 it now suffices to show that $x' \in \mathcal{S}(A)$ and $x - x' \in \mathcal{S}(A)^\perp$. The first property holds since $x' = Az$ for $z = (A^\top A)^{-1} A^\top x$. For the second property it suffices to verify that $x - x' \in \mathcal{S}(A)^\perp = \mathcal{R}(A^\top)^\perp = \operatorname{Ker}(A^\top)$, and this follows from the computation
 
 $$A^\top(x - x') = A^\top(x - A(A^\top A)^{-1} A^\top x) = A^\top x - A^\top A(A^\top A)^{-1} A^\top x = A^\top x - A^\top x = o.$$
-
-</div>
 
 Note that the projection is a linear map and by the previous theorem $P := A(A^\top A)^{-1} A^\top$ is its matrix (with respect to the canonical basis). Moreover, this matrix has several special properties:
 
@@ -4364,13 +4366,13 @@ Note that the projection is a linear map and by the previous theorem $P := A(A^\
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.50)</span></p>
 
-*A matrix $P \in \mathbb{R}^{n \times n}$ is a projection matrix if and only if it is symmetric and $P = P^2$.*
+A matrix $P \in \mathbb{R}^{n \times n}$ is a projection matrix if and only if it is symmetric and $P = P^2$.
+
+</div>
 
 *Proof.* One direction has already been observed. Now assume that $P$ is symmetric and satisfies $P = P^2$, and we want to show that it is the projection matrix onto the space $\mathcal{S}(A)$. In other words, we want to show that for every vector $x \in \mathbb{R}^n$, $Px$ is its projection into $\mathcal{S}(A)$. By Proposition 8.41 it suffices to show that $x - Px \in \mathcal{S}(A)^\perp$. That is, $x - Px$ must be orthogonal to all vectors from $\mathcal{S}(A)$, and these have the form $Py$, where $y \in \mathbb{R}^n$. But this is easily verified by expanding their inner product
 
 $$((I_n - P)x)^\top Py = x^\top(I_n - P)^\top Py = x^\top(P - P^2)y = 0.$$
-
-</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.51)</span></p>
@@ -4414,11 +4416,11 @@ In particular, the projection matrix onto a one-dimensional subspace (line) has 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.54 — Orthogonal projection into the complement)</span></p>
 
-*Let $P \in \mathbb{R}^{n \times n}$ be the projection matrix into a subspace $V \subseteq \mathbb{R}^n$. Then $I - P$ is the projection matrix into $V^\perp$.*
-
-*Proof.* By Theorem 8.33, every vector $x \in \mathbb{R}^n$ can be uniquely decomposed into the sum $x = y + z$, where $y \in V$ and $z \in V^\perp$. From the perspective of Theorem 8.36, $y$ is the projection of $x$ into $V$ and $z$ is the projection of $x$ into $V^\perp$. Thus $z = x - y = x - Px = (I - P)x$.
+Let $P \in \mathbb{R}^{n \times n}$ be the projection matrix into a subspace $V \subseteq \mathbb{R}^n$. Then $I - P$ is the projection matrix into $V^\perp$.
 
 </div>
+
+*Proof.* By Theorem 8.33, every vector $x \in \mathbb{R}^n$ can be uniquely decomposed into the sum $x = y + z$, where $y \in V$ and $z \in V^\perp$. From the perspective of Theorem 8.36, $y$ is the projection of $x$ into $V$ and $z$ is the projection of $x$ into $V^\perp$. Thus $z = x - y = x - Px = (I - P)x$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.55 — Projection matrix into $\operatorname{Ker}(A)$)</span></p>
@@ -4473,16 +4475,16 @@ This system is called the *system of normal equations*. Interestingly, we obtain
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.59 — Set of least squares solutions)</span></p>
 
-*Let $A \in \mathbb{R}^{m \times n}$. Then the set of approximate solutions of the system $Ax = b$ by the least squares method is nonempty and equals the set of solutions of the normal equations (8.5).*
-
-*Proof.* We are essentially looking for the projection of the vector $b$ into the subspace $\mathcal{S}(A)$, and this projection is a vector of the form $Ax$, where $x \in \mathbb{R}^n$. By Proposition 8.41, $Ax$ is the projection if and only if $Ax - b \in \mathcal{S}(A)^\perp = \operatorname{Ker}(A^\top)$. In other words, $A^\top(Ax - b) = 0$ must hold, i.e., $A^\top Ax = A^\top b$. This system has a solution because the projection must exist.
+Let $A \in \mathbb{R}^{m \times n}$. Then the set of approximate solutions of the system $Ax = b$ by the least squares method is nonempty and equals the set of solutions of the normal equations (8.5).
 
 </div>
+
+*Proof.* We are essentially looking for the projection of the vector $b$ into the subspace $\mathcal{S}(A)$, and this projection is a vector of the form $Ax$, where $x \in \mathbb{R}^n$. By Proposition 8.41, $Ax$ is the projection if and only if $Ax - b \in \mathcal{S}(A)^\perp = \operatorname{Ker}(A^\top)$. In other words, $A^\top(Ax - b) = 0$ must hold, i.e., $A^\top Ax = A^\top b$. This system has a solution because the projection must exist.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 8.60)</span></p>
 
-*Let $A \in \mathbb{R}^{m \times n}$ have rank $n$. Then the approximate solution of the system $Ax = b$ by the least squares method is $x^* = (A^\top A)^{-1} A^\top b$, and it is unique.*
+Let $A \in \mathbb{R}^{m \times n}$ have rank $n$. Then the approximate solution of the system $Ax = b$ by the least squares method is $x^* = (A^\top A)^{-1} A^\top b$, and it is unique.
 
 </div>
 
@@ -4527,7 +4529,7 @@ The concept of a unitary matrix is a generalization of orthogonal matrices to co
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.63 — Characterization of orthogonal matrices)</span></p>
 
-*Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:*
+Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 
 1. *$Q$ is orthogonal,*
 2. *$Q$ is nonsingular and $Q^{-1} = Q^\top$,*
@@ -4537,18 +4539,19 @@ The concept of a unitary matrix is a generalization of orthogonal matrices to co
 6. *the columns of $Q$ form an orthonormal basis of $\mathbb{R}^n$,*
 7. *the rows of $Q$ form an orthonormal basis of $\mathbb{R}^n$.*
 
-*Proof.* Briefly. (1)--(5) If $Q$ is orthogonal, then $Q^\top Q = I$ and thus $Q^{-1} = Q^\top$; similarly in the other direction. By the property of the inverse we also have $QQ^\top = I$, i.e., $(Q^\top)^\top Q^\top = I$, so $Q^\top$ is orthogonal. (6): From the equality $Q^\top Q = I$, by comparing entries at position $i, j$, we get $\langle Q_{*i}, Q_{*j} \rangle = 1$ if $i = j$ and $\langle Q_{*i}, Q_{*j} \rangle = 0$ if $i \neq j$. Thus the columns of $Q$ form an orthonormal system. Analogously in the other direction.
-
 </div>
+
+*Proof.* Briefly. (1)--(5) If $Q$ is orthogonal, then $Q^\top Q = I$ and thus $Q^{-1} = Q^\top$; similarly in the other direction. By the property of the inverse we also have $QQ^\top = I$, i.e., $(Q^\top)^\top Q^\top = I$, so $Q^\top$ is orthogonal. (6): From the equality $Q^\top Q = I$, by comparing entries at position $i, j$, we get $\langle Q_{\ast i}, Q_{\ast j} \rangle = 1$ if $i = j$ and $\langle Q_{\ast i}, Q_{\ast j} \rangle = 0$ if $i \neq j$. Thus the columns of $Q$ form an orthonormal system. Analogously in the other direction.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.64 — Product of orthogonal matrices)</span></p>
 
 *If $Q_1, Q_2 \in \mathbb{R}^{n \times n}$ are orthogonal, then $Q_1 Q_2$ is orthogonal.*
 
-*Proof.* $(Q_1 Q_2)^\top Q_1 Q_2 = Q_2^\top Q_1^\top Q_1 Q_2 = Q_2^\top Q_2 = I_n$.
 
 </div>
+
+*Proof.* $(Q_1 Q_2)^\top Q_1 Q_2 = Q_2^\top Q_1^\top Q_1 Q_2 = Q_2^\top Q_2 = I_n$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.65 — Examples of orthogonal matrices)</span></p>
@@ -4582,6 +4585,8 @@ The concept of a unitary matrix is a generalization of orthogonal matrices to co
 3. *$|Q_{ij}| \le 1$ and $|Q_{ij}^{-1}| \le 1$ for every $i, j = 1, \ldots, n$,*
 4. *$\begin{pmatrix} 1 & o^\top \\ o & Q \end{pmatrix}$ is an orthogonal matrix.*
 
+</div>
+
 *Proof.*
 
 (1) $\langle Qx, Qy \rangle = (Qx)^\top Qy = x^\top Q^\top Qy = x^\top Iy = \langle x, y \rangle$.
@@ -4592,7 +4597,7 @@ The concept of a unitary matrix is a generalization of orthogonal matrices to co
 
 (4) By definition $\begin{pmatrix} 1 & o^\top \\ o & Q \end{pmatrix}^\top \begin{pmatrix} 1 & o^\top \\ o & Q \end{pmatrix} = \begin{pmatrix} 1 & o^\top \\ o & Q^\top Q \end{pmatrix} = I_{n+1}$.
 
-</div>
+$\square$
 
 If we view $Q$ as the matrix of the corresponding linear map $x \mapsto Qx$, then property (1) of Theorem 8.66 says that angles are preserved under this map, and property (2) says that lengths are preserved. The converse also holds: the matrix of a map preserving the inner product must necessarily be orthogonal (cf. Theorem 8.68) and in fact the matrix of a map preserving the Euclidean norm must be orthogonal. Property (3) is valued in numerical mathematics because $Q$ and $Q^{-1}$ have bounded entry magnitudes. An important property for numerical computation is also (2), because when multiplying by an orthogonal matrix, the entries (and thus also rounding errors) do not tend to grow.
 
@@ -4610,7 +4615,9 @@ Once again we obtain that the $i$-th coordinate $x_i$ of the vector $v$ has the 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.68 — Orthogonal matrices and linear maps)</span></p>
 
-*Let $U, V$ be spaces over $\mathbb{R}$ with an arbitrary inner product and $f \colon U \to V$ a linear map. Let $B_U$ resp. $B_V$ be an orthonormal basis of $U$ resp. $V$. Then the matrix of the map ${}_{B_V}[f]\_{B_U}$ is orthogonal if and only if $\langle f(x), f(y) \rangle = \langle x, y \rangle$ for every $x, y \in U$.*
+Let $U, V$ be spaces over $\mathbb{R}$ with an arbitrary inner product and $f \colon U \to V$ a linear map. Let $B_U$ resp. $B_V$ be an orthonormal basis of $U$ resp. $V$. Then the matrix of the map ${}_{B_V}[f]\_{B_U}$ is orthogonal if and only if $\langle f(x), f(y) \rangle = \langle x, y \rangle$ for every $x, y \in U$.
+
+</div>
 
 *Proof.* By Proposition 8.29 and the properties of the matrix of a map,
 
@@ -4622,9 +4629,7 @@ Therefore, if ${}_{B_V}[f]\_{B_U}$ is orthogonal, then the equality $\langle f(x
 
 $$(I_n)_{ij} = e_i^\top e_j = [x]\_{B_U}^\top [y]\_{B_U} = \langle x, y \rangle = \langle f(x), f(y) \rangle = e_i^\top \cdot {}_{B_V}[f]\_{B_U}^\top \cdot {}_{B_V}[f]\_{B_U} \cdot e_j = \left({}_{B_V}[f]\_{B_U}^\top \cdot {}_{B_V}[f]\_{B_U}\right)\_{ij}.$$
 
-Thus, entry by entry, we obtain the equality $I_n = {}_{B_V}[f]\_{B_U}^\top \cdot {}_{B_V}[f]\_{B_U}$.
-
-</div>
+Thus, entry by entry, we obtain the equality $I_n = {}_{B_V}[f]\_{B_U}^\top \cdot {}_{B_V}[f]\_{B_U}$. $\square$
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.69 — Orthogonal matrices and change-of-basis matrices)</span></p>
@@ -4635,9 +4640,9 @@ Thus, entry by entry, we obtain the equality $I_n = {}_{B_V}[f]\_{B_U}^\top \cdo
 2. *$B_2$ is an orthonormal basis,*
 3. *${}_{B_2}[id]\_{B_1}$ is an orthogonal matrix.*
 
-*Proof.* Implication "(1), (2) $\Rightarrow$ (3)". Follows from Theorem 8.68, since the identity preserves the inner product. Implication "(2), (3) $\Rightarrow$ (1)". Let $B_1 = \lbrace x_1, \ldots, x_n \rbrace$. By definition, the columns of ${}_{B_2}[id]\_{B_1}$ are formed by the vectors $[x_i]\_{B_2}$, which are (due to the orthogonality of the change-of-basis matrix) orthonormal with respect to the standard inner product in $\mathbb{R}^n$. By Proposition 8.29, $\langle x_i, x_j \rangle = [x_i]\_{B_2}^\top [x_j]\_{B_2}$, which equals 1 for $i = j$ and 0 otherwise. Implication "(3), (1) $\Rightarrow$ (2)". Follows from the previous by symmetry, since ${}_{B_1}[id]\_{B_2} = {}_{B_2}[id]\_{B_1}^{-1}$.
-
 </div>
+
+*Proof.* Implication "(1), (2) $\Rightarrow$ (3)". Follows from Theorem 8.68, since the identity preserves the inner product. Implication "(2), (3) $\Rightarrow$ (1)". Let $B_1 = \lbrace x_1, \ldots, x_n \rbrace$. By definition, the columns of ${}_{B_2}[id]\_{B_1}$ are formed by the vectors $[x_i]\_{B_2}$, which are (due to the orthogonality of the change-of-basis matrix) orthonormal with respect to the standard inner product in $\mathbb{R}^n$. By Proposition 8.29, $\langle x_i, x_j \rangle = [x_i]\_{B_2}^\top [x_j]\_{B_2}$, which equals 1 for $i = j$ and 0 otherwise. Implication "(3), (1) $\Rightarrow$ (2)". Follows from the previous by symmetry, since ${}_{B_1}[id]\_{B_2} = {}_{B_2}[id]\_{B_1}^{-1}$. $\square$
 
 ### Summary of Chapter 8
 
@@ -6022,7 +6027,7 @@ For every positive definite matrix $A \in \mathbb{R}^{n \times n}$, there exists
 
 *Proof.* By mathematical induction on $n$. For $n = 1$ we have $A = (a_{11})$ and $L = (\sqrt{a_{11}})$.
 
-Inductive step $n \leftarrow n - 1$. Let $A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$. By Theorem 11.9, $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite. By the inductive hypothesis, there exists a lower triangular matrix $\tilde{L} \in \mathbb{R}^{(n-1) \times (n-1)}$ with positive diagonal such that $\tilde{A} - \frac{1}{\alpha}aa^\top = \tilde{L}\tilde{L}^\top$. Then $L = \begin{pmatrix} \sqrt{\alpha} & o^\top \\ \frac{1}{\sqrt{\alpha}}a & \tilde{L} \end{pmatrix}$, since
+Inductive step $n \leftarrow n - 1$. Let $A = \begin{pmatrix} \alpha & a^\top \\\ a & \tilde{A} \end{pmatrix}$. By Theorem 11.9, $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite. By the inductive hypothesis, there exists a lower triangular matrix $\tilde{L} \in \mathbb{R}^{(n-1) \times (n-1)}$ with positive diagonal such that $\tilde{A} - \frac{1}{\alpha}aa^\top = \tilde{L}\tilde{L}^\top$. Then $L = \begin{pmatrix} \sqrt{\alpha} & o^\top \\\ \frac{1}{\sqrt{\alpha}}a & \tilde{L} \end{pmatrix}$, since
 
 $$LL^\top = \begin{pmatrix} \sqrt{\alpha} & o^\top \\ \frac{1}{\sqrt{\alpha}}a & \tilde{L} \end{pmatrix} \begin{pmatrix} \sqrt{\alpha} & \frac{1}{\sqrt{\alpha}}a^\top \\ o & \tilde{L}^\top \end{pmatrix} = \begin{pmatrix} \alpha & a^\top \\ a & \frac{1}{\alpha}aa^\top + \tilde{L}\tilde{L}^\top \end{pmatrix} = A.$$
 
