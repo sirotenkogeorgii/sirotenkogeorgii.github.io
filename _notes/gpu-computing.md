@@ -258,6 +258,9 @@ Thread 1 handles user A’s request, thread 2 handles user B’s request; or thr
 
 **Main limitation:** overheads and coordination—thread creation/scheduling, synchronization, contention, false sharing.
 
+  </details>
+</div>
+
 ---
 
 ## Quick comparison
