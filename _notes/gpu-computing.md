@@ -149,18 +149,14 @@ A key concept in this model is **parallel slackness**, which refers to having ma
 
 ### CUDA and GPU Overview
 
-In a typical computer system, the CPU and GPU are distinct components with their own dedicated memory systems, connected via an I/O bridge.
+In a typical computer system, the CPU and GPU are distinct components with their own dedicated memory systems, connected via an I/O bridge (PCIe).
 
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/cpu-gpu-diagram.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
   <figcaption>CPU + GPU System</figcaption>
 </figure>
 
-A diagram of a modern system illustrates this separation: The CPU is connected to its Host Memory (system RAM) through a high-speed memory interface. The GPU, a separate component on the peripheral bus (like PCIe), is connected to its own dedicated, high-bandwidth GPU Memory.
-
-The performance differences, particularly in memory bandwidth and computational throughput, are staggering. The GPU's memory bandwidth can be over 7 times higher than the CPU's, and its computational throughput can be an order of magnitude greater. This massive throughput is precisely what we aim to leverage with GPU computing. The CUDA (Compute Unified Device Architecture) platform allows us to use this power not just for graphics, but for general-purpose computing tasks.
-
-
+The GPU's memory bandwidth can be over 7x higher than the CPU's, and its computational throughput an order of magnitude greater. CUDA (Compute Unified Device Architecture) allows us to leverage this power for general-purpose computing tasks.
 
 #### The GPU Architecture for General-Purpose Computing
 
@@ -206,69 +202,19 @@ A CUDA program is a hybrid program consisting of two parts: a host part that run
 - The **CPU (host) part** is responsible for serial or low-parallelism tasks, such as setting up data, managing memory transfers, and launching computations on the GPU.
 - The **GPU (device) part** handles massively parallel operations by executing kernels across many threads, SPMD-style.
 
-### Two different types of parallelism
+### Two Types of Parallelism
 
-Fine-grain data-level parallelism (DLP): Do the *same* operation on *many* data elements at once.
-Thread-level parallelism (TLP): Run multiple (more independent) *threads* concurrently, each with its own instruction stream.
+CUDA programs exploit two complementary forms of parallelism:
 
-More:
-<div class="accordion">
-  <details markdown="1">
-    <summary>Two different types of parallelism</summary>
+<div class=”math-callout math-callout--definition” markdown=”1”>
+  <p class=”math-callout__title”><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></p>
 
-Fine-grain **data-level parallelism (DLP)** and **thread-level parallelism (TLP)** are two different ways to run work in parallel. The key difference is *what* gets replicated and scheduled: **operations on many data elements** (DLP) vs **independent instruction streams** (TLP).
+- **Data-Level Parallelism (DLP):** Perform the *same* operation on *many* data elements simultaneously. Exploited by SIMD/vector units and GPU warps. Best for dense, regular computations (linear algebra, convolutions, elementwise ops). The main limitation is branch divergence and irregular memory access.
+- **Thread-Level Parallelism (TLP):** Run multiple *independent threads* concurrently, each with its own instruction stream. Exploited by multi-core CPUs, SMT, and GPU thread blocks. Best for coarse-grained parallel work (serving requests, pipeline stages, independent simulations). The main limitation is coordination overhead (synchronization, contention, false sharing).
 
-## Fine-grain Data-Level Parallelism (DLP)
-
-**Idea:** Do the *same* operation on *many* data elements at once.
-
-* **Unit of parallel work:** individual data elements (or small vectors of elements)
-* **How it’s exploited:** SIMD / vector units, GPU warps/wavefronts, vectorized CPU instructions
-* **Control flow:** usually **one** control stream (“single instruction”) applied across many lanes
-* **Best for:** dense, regular computations: linear algebra, image filters, convolution, elementwise ops, large array loops
-* **Typical hardware mapping:**
-
-  * CPU SIMD (AVX/NEON): 4–64-ish elements per instruction depending on type/width
-  * GPUs: warps of threads executing in lockstep (SIMT behaves like DLP when threads follow same path)
-
-**Example mental model:**
-`for i in 0..N: C[i] = A[i] + B[i]`
-Vectorization/GPU executes many `i` in parallel.
-
-**Main limitation:** if elements follow different branches (divergence) or memory accesses are irregular, efficiency drops.
-
----
-
-## Thread-Level Parallelism (TLP)
-
-**Idea:** Run multiple (more independent) *threads* concurrently, each with its own instruction stream.
-
-* **Unit of parallel work:** threads (or tasks)
-* **How it’s exploited:** multi-core CPUs, SMT/Hyper-Threading, GPU thread blocks (at a higher level), OS threads, OpenMP, pthreads, CUDA blocks, TBB tasks
-* **Control flow:** **many** independent instruction streams (each thread can take different branches)
-* **Best for:** coarse/medium-grain parallel work: serving many requests, running different pipeline stages, parallel search, independent simulations, producer–consumer patterns
-* **Typical hardware mapping:**
-
-  * CPU cores run different threads truly concurrently
-  * SMT runs multiple threads per core to hide stalls
-  * GPUs run huge numbers of threads too, but within a warp execution is still lockstep (so it’s a mix: TLP at grid/block level, DLP-like at warp level)
-
-**Example mental model:**
-Thread 1 handles user A’s request, thread 2 handles user B’s request; or thread 1 updates physics for one region, thread 2 for another.
-
-**Main limitation:** overheads and coordination—thread creation/scheduling, synchronization, contention, false sharing.
-
-  </details>
 </div>
 
----
-
-## Quick comparison
-
-* **DLP:** parallelize *across data* (same code, many elements) → *vector lanes / warps*
-* **TLP:** parallelize *across threads/tasks* (different control flows possible) → *cores / hardware threads*
-
-A useful rule of thumb:
+GPUs combine both: TLP at the grid/block level and DLP-like execution at the warp level. A useful rule of thumb:
 
 * If your program is “one loop over big arrays”: **DLP first** (vectorize/GPU-style).
 * If your program is “many independent jobs or stages”: **TLP first** (threads/tasks).
@@ -418,8 +364,7 @@ int main() {
   - **A range of $100-1000$ threads is often optimal.**
 - **Blocks per Grid:** You should launch enough blocks to keep all the SMs on the GPU busy.
   - **A good heuristic is to launch at least twice as many blocks as there are SMs on your GPU.**
-- **Number of blocks is limited:** $512 \times 512 \times 64 \to 1024 \times 1024 \times 64$. Depends on GPU.
-- **Number of blocks is limited. Depends on GPU.**
+- **Number of blocks is limited:** $512 \times 512 \times 64 \to 1024 \times 1024 \times 64$, depending on the GPU generation.
 
 #### Thread Communication and Synchronization
 
@@ -838,22 +783,30 @@ You can query the properties of the GPU in your system to make informed decision
 | Max Block Dimension | 1024 x 1024 x 64 | 1024 x 1024 x 64 | 1024 x 1024 x 64 |
 | Max Grid Dimension | 65535 x 65535 x 65535 | 2G x 65535 x 65535 | 2G x 65535 x ? |
 
-### Common CUDA Errors
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common CUDA Errors)</span></p>
 
-- **CUDA Error: the launch timed out and was terminated:** The kernel took too long to execute. This often happens on systems with a graphical display, where the OS will kill a kernel to prevent the screen from freezing. A common solution is to stop the X11 server.
-- **CUDA Error: unspecified launch failure:** This is a generic error that often indicates a segmentation fault inside the kernel, such as accessing an array out of bounds or dereferencing an invalid pointer.
-- **CUDA Error: invalid configuration argument:** The kernel launch configuration is invalid. Common causes include requesting too many threads per block (e.g., > 1024) or requesting more resources (shared memory, registers) per thread than are available on the SM.
-- **error: identifier "__eh_curr_region" is undefined:** A compiler problem often related to using non-static allocation for shared memory. Ensure shared memory arrays are declared with static sizes.
+- **the launch timed out and was terminated:** Kernel took too long. Common on systems with a graphical display where the OS kills kernels to prevent screen freezing. Solution: stop the X11 server.
+- **unspecified launch failure:** Often indicates a segfault inside the kernel (out-of-bounds access or invalid pointer).
+- **invalid configuration argument:** Invalid launch configuration — too many threads per block (> 1024) or too many resources per SM.
+- **identifier "__eh_curr_region" is undefined:** Compiler issue related to non-static shared memory allocation. Declare shared memory arrays with static sizes.
+
+</div>
 
 ## The Modern GPU Architecture
 
 ### Vector Architectures: The Foundation of Efficiency
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vector ISA Efficiency)</span></p>
 
 The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (Instruction Set Architectures)**, which are efficient in three key ways:
 
   * **Compact:** A single instruction defines many operations, amortizing the cost of instruction fetch/decode and reducing branches.
   * **Parallel:** The operations are data-parallel (no dependencies), simplifying the hardware.
   * **Expressive:** Vector memory instructions describe regular access patterns, allowing the hardware to prefetch data and amortize memory latency.
+
+</div>
 
 
 ### The GK110 Architecture: A High-Level View
@@ -1053,12 +1006,15 @@ When threads in a warp access memory, the ideal pattern is for them to access co
 
 **Misaligned accesses:** One warp is scheduled, but accesses misaligned addresses.
 
-#### Access Penalties
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Access Penalties)</span></p>
 
   * **Offset Access:** `data[addr + offset]`. If a warp's access crosses a cache line boundary, it may require fetching 5 cache lines instead of 4, reducing effective bandwidth.
   * **Strided Access:** `data[addr * stride]`. A stride of 2 means only half the data loaded into a cache line is used, resulting in 50% load/store efficiency.
 
-The solution is to **manually control data movement**. A common pattern is to have threads collaboratively load a "tile" of data from global memory into shared memory in a coalesced manner, then perform computation using the fast shared memory.
+The solution is to **manually control data movement**: threads collaboratively load a "tile" from global memory into shared memory in a coalesced pattern, then compute using the fast shared memory.
+
+</div>
 
 > One of the GPU’s main advantages is memory bandwidth: **coalescing is of utmost importance\!**
 
@@ -1183,9 +1139,8 @@ The Kepler scheduler
   <figcaption>Thread Scheduling on Kepler</figcaption>
 </figure>
 
-<div class="accordion">
-  <details markdown="1">
-    <summary>Data </summary>
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Data Hazards)</span></p>
 
 Data hazards in computer architecture are **pipeline stalls caused by instruction dependencies**, where an instruction needs data from a previous instruction that hasn't finished yet, leading to incorrect results, most commonly **Read After Write (RAW)** hazards, but also **Write After Read (WAR)** and **Write After Write (WAW)** hazards in parallel systems. These are managed with techniques like **forwarding (bypassing)** (sending data directly) or **stalling the pipeline** (inserting NOPs/bubbles) to ensure data correctness, especially when a load instruction precedes its use. 
 
@@ -1206,7 +1161,6 @@ Data hazards in computer architecture are **pipeline stalls caused by instructio
 * **Forwarding (Bypassing):** Data is sent directly from the output of one stage (like ALU) to the input of a later stage that needs it, bypassing the register file.
 * **Out-of-Order Execution:** Processors reorder instructions to avoid stalls, though WAR/WAW hazards become more complex. 
 
-  </details>
 </div>
 
 ### The Challenge of Branch Divergence
@@ -1268,13 +1222,6 @@ The most common CUDA performance issues are:
   * **Divergent Branching:** When threads within a warp follow different control flow paths, their execution is serialized, nullifying parallelism.
 
 </div>
-
-### Summary of Key Concepts
-
-  * **Memory Hierarchy:** GPUs feature a manually-controlled, flat memory hierarchy. Caches are primarily for coalescing accesses, not hiding latency.
-  * **Parallel Slackness:** The BSP model's concept of $v \gg p$ is key to the GPU's latency hiding capabilities.
-  * **The Warp:** The instruction stream on a GPU corresponds to a **thread warp** (32 threads), not a single thread.
-  * **Optimization:** Performance optimization revolves around maximizing memory coalescing, ensuring sufficient active warps, and minimizing branch divergence.
 
 ### Advanced Memory Analysis: Pointer Chasing
 
@@ -1504,8 +1451,6 @@ While this kernel runs in parallel, it suffers from **abysmal computational inte
 
 The hardware provides nearly 100x less bandwidth than this naive algorithm requires. The GPU spends almost all its time waiting for data from global memory.
 
-## Optimizing with Shared Memory
-
 To solve the bandwidth bottleneck, we must program the **Shared Memory**. This is a user-managed L1 cache (scratchpad) that is orders of magnitude faster than global memory.
 
 <figure>
@@ -1591,45 +1536,19 @@ To close the gap to theoretical peak performance, further techniques are require
   * **Thread Coarsening:** Having one thread compute multiple output elements (e.g., a $4 \times 4$ patch) increases register reuse.
   * **Double Buffering:** Loading the *next* tile into registers while computing the *current* tile hides memory latency completely.
 
-#### Summary
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Matrix Multiplication Summary)</span></p>
 
   * **Performance is Memory-Bound:** High-performance computing is often less about math and more about data movement.
   * **Hierarchy is King:** Tiling (blocking) is the fundamental technique to exploit the memory hierarchy.
-  * **Shared Memory:** This is the programmer's primary tool for maximizing computational intensity ($O(n)$ data reuse).
-  * **Synchronization:** When using shared memory, `__syncthreads()` is essential for correctness to manage RAW and WAR hazards.
+  * **Shared Memory:** The programmer's primary tool for maximizing computational intensity ($O(n)$ data reuse).
+  * **Synchronization:** `__syncthreads()` is essential for correctness when using shared memory to manage RAW and WAR hazards.
 
-## Chapter 5 - Scheduling and Optimization
+</div>
 
-This chapter focuses on the crucial topic of scheduling and explores a series of powerful optimization techniques, using a common parallel algorithm—reduction—as our practical, step-by-step example.
+## Scheduling and Optimization
 
-### A Refresher on GPU Scheduling
-
-Before we optimize, we must understand how the GPU executes our code. The CUDA programming model provides abstractions like thread blocks and grids, but the hardware has its own way of managing the work.
-
-#### The Thread Hierarchy and Parallel Slackness
-
-As a reminder, the CUDA programming model organizes threads into a three-level hierarchy:
-
-1. A **thread** is the smallest unit of execution, running a single instance of your kernel function.
-2. A **thread block**, also known as a Cooperative Thread Array (**CTA**), is a group of threads that can cooperate by sharing data through a fast, on-chip shared memory and can synchronize their execution.
-3. A **grid** is composed of all the thread blocks launched by a single kernel call.
-
-The GPU scheduler maps these CTAs to the physical processing units on the chip, called Streaming Multiprocessors (SMs). An important concept here is parallel slackness. To achieve high performance, we deliberately launch far more threads and CTAs than there are physical SMs. Why? The primary reason is to hide latency. When a group of threads is stuck waiting for a slow operation, like fetching data from global memory, the SM can instantly switch to executing another group of threads that is ready to run. This keeps the computational units busy and maximizes throughput.
-
-A key rule of this model is that there are no dependency guarantees between different CTAs. They can be executed in any order, concurrently or sequentially, which gives the scheduler maximum flexibility.
-
-#### The Warp: The True Unit of Scheduling
-
-While we, as programmers, think in terms of threads and blocks, the GPU hardware schedules threads in groups of 32, known as a warp. A warp is a fundamental, architecture-dependent concept. All 32 threads in a warp execute the same instruction at the same time on an SM. This is a form of SIMT (Single Instruction, Multiple Thread) execution.
-
-Let's clarify the abstractions:
-
-* **CTAs (Thread Blocks)**: This is a user-defined abstraction. You decide how many threads are in a block and what they do. The execution of CTAs is opaque to the user; you don't control which SM they run on or when.
-* **Warps**: This is a hardware-level abstraction defined by the Just-In-Time (JIT) compiler and the GPU architecture. The execution of warps is transparent to the user; you don't directly manage them, but their behavior has profound performance implications.
-
-Imagine a CTA with 128 threads. The hardware doesn't see 128 individual threads; it sees four warps (warp 0: threads 0-31, warp 1: threads 32-63, etc.). The SM will pick a ready warp and execute one instruction for all 32 of its threads, then pick another ready warp, and so on.
-
-The slide content describes a diagram that visually represents this hierarchy. It shows a Grid composed of multiple CTAs (or thread blocks). Each CTA has access to its own private shared memory. All CTAs in the grid can access the larger, but slower, global memory. Within a CTA, threads are grouped into Warps, and each individual thread has its own private thread-local memory (registers). This illustrates the memory and execution hierarchy of a modern GPU.
+This section applies the optimization techniques discussed so far to **parallel reduction** — a classic case study that exposes all key GPU performance pitfalls. The GPU scheduler maps CTAs (thread blocks) to SMs, groups threads into warps of 32, and exploits parallel slackness ($v \gg p$) to hide latency by switching between ready warps at zero cost.
 
 <div class="gd-grid">
   <figure>
@@ -1642,24 +1561,14 @@ The slide content describes a diagram that visually represents this hierarchy. I
   </figure>
 </div>
 
-### Common CUDA Performance Issues
-
-Before we can fix problems, we need to know what they are. Several common issues can bottleneck GPU performance:
-
-* **Memory Coalescing**: Inefficient access patterns to global memory can dramatically slow down data transfers.
-* **Latency Hiding**: If there isn't enough parallel slackness, the SMs will stall while waiting for memory, leaving the cores idle.
-* **Divergent Branching**: When threads within the same warp take different paths in an if-else statement, performance suffers because the hardware must execute both paths sequentially.
-* **Shared Memory Bank Conflicts**: Inefficient access patterns to shared memory by threads within a block can cause access serialization, slowing down computation.
-* **Instruction Overhead**: Spending too many cycles on control flow (loops, address calculations) instead of actual computation can limit performance.
-
-We will see nearly all of these issues in our upcoming example.
+The reduction example below will demonstrate all of the key performance pitfalls discussed earlier — memory coalescing, latency hiding, divergent branching, bank conflicts, and instruction overhead — and how to fix them systematically.
 
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/chapter5_cuda_performance_issues_optimizations.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>Memory-Thread hierarchy</figcaption>
+  <figcaption>CUDA performance issues and optimizations</figcaption>
 </figure>
 
-### The Parallel Reduction Problem: A Case Study in Optimization
+### The Parallel Reduction Problem
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parallel Reduction)</span></p>
@@ -1668,13 +1577,13 @@ A **reduction** is a common parallel operation where an array of elements is "re
 
 </div>
 
-#### Examples of reduction include:
+Examples of reduction include:
 
-* Calculating a global sum: $s = \sum_{i=0}^{N} f(x_i)$
-* Calculating a global product: $p = \prod_{i=0}^{N} f(x_i)$
-* Building a histogram: $h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0$
+* Global sum: $s = \sum_{i=0}^{N} f(x_i)$
+* Global product: $p = \prod_{i=0}^{N} f(x_i)$
+* Histogram: $h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0$
 
-Reduction is a perfect candidate for optimization analysis because it is a **memory-bound operation**. This means its performance is limited by the speed at which it can read data from memory, not by the speed of the calculations. Therefore, our **key performance metric will be effective bandwidth GB/s** (gigabytes per second). The problem often occuring due to inefficient access patterns,causing the process to wait for data. Also it is an optimization example for scheduling issues that we are considering.
+Reduction is a perfect candidate for optimization analysis because it is **memory-bound**: performance is limited by the speed at which data can be read from memory, not by the speed of the arithmetic. Therefore, our key performance metric will be **effective bandwidth (GB/s)**.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Effective Bandwidth)</span></p>
@@ -1694,10 +1603,8 @@ To process a large array, we must launch many CTAs, each responsible for reducin
 
 This would be simple if we had a global synchronization mechanism that could make all CTAs across the entire GPU wait for each other. However, *CUDA provides no such feature*.
 
-The lecture notes say that there is no mechanism for block synchronisation, but can we synchronise blocks within one SM?
-
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Question:</span><span class="math-callout__name">The lecture notes say that there is no mechanism for block synchronisation, but can we synchronise blocks within one SM?</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Question</span><span class="math-callout__name">(Can we synchronise blocks within one SM?)</span></p>
 
 Not in the way people usually mean by “block synchronization.”
 
@@ -1738,12 +1645,10 @@ So: **within one SM**, you can *sometimes hack coordination* if you ensure all r
 1. **Scalability**: A global barrier would be extremely expensive to implement in hardware across a device with a high SM count.
 2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  #\text{CTAs} $\leq$ #\text{SMs} $\cdot$ $b_r$  where $b_r$ is the number of resident blocks per SM.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example:</span><span class="math-callout__name">The deadlock example that would the global synchronization cause.</span></p>
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deadlock from Global Synchronization)</span></p>
 
-Close, but the "cycle of CTAs waiting on each other" isn't the usual deadlock mechanism here.
-
-The classic deadlock is simpler:
+The classic deadlock scenario works as follows:
 
 1. You launch **more blocks than can be resident at once**:
    
@@ -1755,12 +1660,7 @@ The classic deadlock is simpler:
 5. Because the SMs are "full" of waiting resident blocks, **no new blocks can become resident**, so the remaining (not-yet-scheduled) CTAs never start.
 6. But the barrier can't release until **all CTAs arrive** → the ones that haven't started can't arrive → **deadlock**.
 
-So it's not really a "waiting chain forming a cycle." It's more like:
-
-* **scheduled/resident CTAs are waiting for unscheduled CTAs** to reach the barrier,
-* but **unscheduled CTAs can't be scheduled** because scheduled CTAs are parked at the barrier holding all resources.
-
-That's why the text says global synchronization would only be safe if all CTAs can be resident simultaneously:
+In short, **resident CTAs wait for unscheduled CTAs** to reach the barrier, but **unscheduled CTAs cannot be scheduled** because resident CTAs are parked at the barrier holding all SM resources. Global synchronization would therefore only be safe if all CTAs can be resident simultaneously:
 
 $$\#\text{CTAs} \le \#\text{SMs} \cdot b_r$$
 
@@ -1770,9 +1670,11 @@ $$\#\text{CTAs} \le \#\text{SMs} \cdot b_r$$
 
 The standard solution is kernel decomposition. We write a kernel that performs a partial reduction, where each CTA writes its partial sum to global memory. After this first kernel completes, we launch it again on the smaller array of partial sums. **A kernel completion boundary acts as a de facto global synchronization point**. Because the reduction operation is the same at each level, we can reuse the same kernel code. **Negligible HW overhead, low SW overhead**
 
-<div class="math-callout math-callout--remark">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">"Launch it again on the smaller array … reuse the same kernel code"</span></p>
-  <p>Often true, but in practice people frequently use a different final-stage kernel (or do the last step on CPU) for efficiency. Still, "can reuse the same kernel" is fine as a conceptual statement.</p>
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kernel Reuse in Practice)</span></p>
+
+In practice, the final reduction stage often uses a different, simpler kernel (or is completed on the CPU). However, the same kernel *can* be reused at every level since the reduction operation is identical.
+
 </div>
 
 The figure depicts this as a tree-based reduction. A large array is at the bottom. The first kernel launch has many CTAs (CTA 0, CTA 1, CTA 2, etc.) that each compute a partial sum. These partial sums form a new, smaller array. A second kernel launch then reduces this smaller array, and so on, until a single final value remains.
@@ -1782,7 +1684,6 @@ The figure depicts this as a tree-based reduction. A large array is at the botto
   <figcaption>Kernel decomposition</figcaption>
 </figure>
 
-**Question(s):** Where the intermediate results are stored? Are they returned from the kernel as an output? Could something happen to the global memory of the device between kernel launches?
 <div class="accordion">
   <details markdown="1">
     <summary>Intermediate results</summary>
@@ -2152,50 +2053,49 @@ This progression clearly shows how systematically identifying and eliminating bo
 
 ### A Framework for Optimization
 
-The techniques we used in the reduction example can be categorized into a broader framework. When you optimize CUDA code, you can make changes at three different levels.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Three Levels of CUDA Optimization)</span></p>
 
-1. Algorithmic Optimizations
+The techniques used in the reduction example generalize into three optimization levels:
 
-This involves changing the high-level parallel algorithm itself—the global pattern of work and synchronization.
+**1. Algorithmic Optimizations** — changing the high-level parallel algorithm itself:
 
-* Hierarchical Tree: Our reduction algorithm is a classic example.
-* Associativity: We exploited the associative property of addition $a + (b + c) = (a + b) + c$ to reorder the operations for parallelism.
-* Algorithm Cascading: A further optimization (not shown) would be to have each thread sum multiple elements sequentially before starting the parallel reduction. This increases Instruction-Level Parallelism (ILP) and reduces the total number of synchronization steps needed.
+* *Hierarchical Tree:* The reduction algorithm is a classic example.
+* *Associativity:* Exploiting $a + (b + c) = (a + b) + c$ to reorder operations for parallelism.
+* *Algorithm Cascading:* Having each thread sum multiple elements sequentially before the parallel reduction, increasing ILP and reducing synchronization steps.
 
-2. Code Optimizations
+**2. Code Optimizations** — same algorithm, better implementation:
 
-Here, the overall algorithm stays the same, but the implementation of the kernel code is changed for better hardware performance.
+* *Addressing Changes:* Modifying indexing to improve memory coalescing and eliminate bank conflicts.
+* *Loop Unrolling:* Reducing instruction overhead for the last warp (and the entire loop via templates).
+* *Warp Shuffle Operations:* Exchanging data within a warp directly, bypassing shared memory.
 
-* Addressing Changes: We modified our indexing to improve memory coalescing and eliminate shared memory bank conflicts.
-* Loop Unrolling: We unrolled the loop for the last warp (and later, the entire loop) to reduce instruction overhead.
-* Templating: We used C++ templates to generate specialized, highly-optimized code based on compile-time parameters.
-* Warp Shuffle Operations: A more advanced technique (not shown) that allows threads within a warp to exchange data directly without using shared memory, further reducing latency.
+**3. Scheduling Optimizations** — tuning how kernels are launched:
 
-3. Scheduling Optimizations
+* *Kernel Launch Parameters:* Tuning grid and block dimensions for occupancy.
+* *Overlapped Copy & Execute:* Using CUDA streams to overlap data transfers with kernel execution.
 
-This level of optimization leaves the algorithm and code untouched. Instead, it focuses on how kernels are launched and how work is managed.
-
-* Kernel Launch Parameters: Tuning the grid and block dimensions (`dimGrid`, `dimBlock`) can have a huge impact on performance.
-* Overlapped Copy & Execute: Using CUDA streams to overlap data transfers between the host and device with kernel execution to keep all parts of the GPU busy.
+</div>
 
 ### Summary
 
-This chapter provided a deep dive into the world of GPU performance optimization. By understanding the hardware's scheduling behavior and systematically addressing common bottlenecks, you can transform a simple parallel algorithm into a highly efficient one.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization Workflow)</span></p>
 
-Key Takeaways:
+1. **Set the Right Goal:** Identify whether your application is memory-bound (measure in GB/s) or compute-bound (measure in GFLOP/s).
+2. **Identify Bottlenecks:** Systematically look for issues like memory access patterns, branch divergence, instruction overhead, and resource underutilization.
+3. **Optimize Systematically:** Start with algorithmic optimizations, then code optimizations, and finally scheduling optimizations.
+4. **Know When to Stop:** Balance raw performance with code readability and maintainability.
 
-1. Set the Right Goal: First, identify whether your application is memory-bound (measure in GB/s) or compute-bound (measure in GFLOP/s). This determines where you should focus your optimization efforts.
-2. Identify Bottlenecks: Systematically look for issues like memory access patterns, branch divergence, instruction overhead, and resource underutilization.
-3. Optimize Systematically: Start with the broadest algorithmic optimizations, then move to fine-grained code optimizations, and finally tune the scheduling optimizations.
-4. Know When to Stop: The goal of optimization is not just raw performance, but performance balanced with code readability, maintainability, and portability. A hyper-optimized but unreadable kernel may be a long-term liability.
+</div>
 
-## Chapter 6 - Profiling and Understanding GPU Performance
+## Profiling and Understanding GPU Performance
 
-Welcome to the world of performance analysis! Writing a parallel program that runs correctly is only the first step. The next, and often more challenging, step is to make it run fast. In high-performance computing, we are constantly chasing the maximum possible speedup. This chapter will introduce you to the fundamental concepts that define and limit the performance of your GPU applications. As one expert noted, “There is no lower bound how bad a baseline can be,” which serves as a humble reminder that there is always room for improvement.
+Writing a parallel program that runs correctly is only the first step; making it run *fast* is the real challenge.
 
-### What is Performance? The Concept of Intensity
+### Arithmetic Intensity
 
-At its core, a program's performance is a balancing act between two fundamental activities: computation and memory access. Your GPU can perform trillions of calculations per second, but it can only do so if it has the data it needs. Fetching that data from memory takes time. This relationship is captured by a crucial metric called Arithmetic Intensity.
+Computational intensity — the ratio of FLOPs to memory operations — is the key metric for performance analysis. Here we formalize it precisely.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arithmetic Intensity)</span></p>
@@ -2208,33 +2108,27 @@ where $r$ is the arithmetic intensity in FLOPs/Byte, $f$ is the number of floati
 
 </div>
 
-Think of it like a chef in a kitchen. If the chef spends a lot of time chopping, mixing, and cooking (computation) for every ingredient they grab from the pantry (memory access), their arithmetic intensity is high. They are making efficient use of their time at the cooking station. If they constantly run back and forth to the pantry for a single ingredient each time, their intensity is low, and the pantry access becomes the bottleneck.
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Types of Intensity)</span></p>
 
-It's important to distinguish between three related concepts:
-
 * **Algorithmic Intensity:** The inherent ratio of operations to memory accesses in the pure, mathematical algorithm.
-* **Computational Intensity:** The actual ratio achieved by your specific code implementation. Caching can reduce memory accesses and increase computational intensity.
-* **Machine Intensity:** The ratio of a hardware's peak FLOPs/sec to its peak memory bandwidth (Bytes/sec). This represents the intensity an application needs to achieve to fully utilize the processor's computational power.
+* **Computational Intensity:** The actual ratio achieved by a specific code implementation. Caching can reduce memory accesses and increase it.
+* **Machine Intensity:** The ratio of peak FLOPs/sec to peak memory bandwidth (Bytes/sec). This is the intensity an application needs to fully utilize the hardware.
 
 </div>
 
-To achieve peak performance on a GPU, an extreme amount of computational intensity and data reuse is required.
-
-### Memory-Bound vs. Compute-Bound: Where is the Bottleneck?
+### Memory-Bound vs. Compute-Bound
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Boundedness Classification)</span></p>
 
-Based on their arithmetic intensity, algorithms can be classified into three categories:
+Based on arithmetic intensity, algorithms are classified as:
 
-* **Memory-Bound:** Limited by the speed of memory access. A simple vector addition (`C[i] = A[i] + B[i]`) is a classic example: for every three memory operations (two reads, one write), it performs only one addition.
-* **Compute-Bound:** Limited by the raw computational power of the processor. A dense matrix multiplication is a good example, as it reuses data many times.
-* **IO-Bound:** Limited by Input/Output operations. In GPU computing, this often describes the PCIe bottleneck, where performance is limited by host-to-device data transfer time.
+* **Memory-Bound:** Limited by the speed of memory access (e.g., vector addition: one FLOP per three memory operations).
+* **Compute-Bound:** Limited by the raw computational power (e.g., dense matrix multiplication with high data reuse).
+* **IO-Bound:** Limited by host-device data transfer time (PCIe bottleneck).
 
-Understanding which category your application falls into is the first step toward optimizing it.
+Identifying which category your application falls into is the first step toward optimizing it.
 
 </div>
 
@@ -2258,30 +2152,20 @@ If you are under the slanted part, you are **memory-bound**. If under the flat p
 
 </div>
 
-### How to Optimize Performance
+### Optimization Strategy
 
-The Roofline Model clarifies which type of optimization will be most effective.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Roofline-Guided Optimization)</span></p>
 
-If your application is Compute-Bound (hitting the flat part of the roof), you should focus on optimizing floating-point performance:
+**If compute-bound** (hitting the flat roof): balance additions/multiplications, improve ILP, and exploit SIMD instructions.
 
-* Balance the number of additions and multiplications.
-* Improve Instruction-Level Parallelism (ILP) to help the processor's superscalar architecture execute more instructions simultaneously.
-* Make effective use of SIMD (Single Instruction, Multiple Data) instructions, which perform the same operation on multiple data points at once.
+**If memory-bound** (hitting the slanted roof): use software prefetching, avoid load stalls, ensure memory affinity, and avoid non-local data accesses.
 
-If your application is Memory-Bound (hitting the slanted part of the roof), you must optimize memory usage:
+Arithmetic intensity is not fixed — it can scale with problem size, and effective caching directly increases the *effective* intensity by reducing main memory traffic.
 
-* Use software prefetching to fetch data from memory before it's actually needed.
-* Structure your code to avoid load stalls, where the processor idles waiting for data.
-* Ensure memory affinity by having threads access data that is physically close to them (e.g., in NUMA architectures).
-* Avoid non-local data accesses whenever possible.
+</div>
 
-Critically, the arithmetic intensity $r$ of an application is not always fixed; it can vary and often scales with the problem size. Furthermore, effective caching is a primary way to optimize. By keeping frequently used data in fast, on-chip caches, you reduce the number of accesses to slower main memory. This reduction in memory traffic directly increases your application's effective arithmetic intensity, pushing it to the right on the Roofline plot and unlocking higher performance.
-
-## Chapter 2: Introduction to GPU Profiling
-
-Once you understand the theoretical limits of performance, the next step is to measure what your application is actually doing. This is the job of a profiler.
-
-### What is Profiling?
+### GPU Profiling
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Profiling)</span></p>
@@ -2308,14 +2192,17 @@ Profiling at the SASS level gives you the most accurate and detailed view of wha
 
 ### Prerequisites for Profiling
 
-Before you start optimizing for performance, you must follow two critical steps:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Before You Profile)</span></p>
 
-1. Ensure Correctness First: Performance profiling is meaningless if your program produces the wrong results. Use tools like cuda-memcheck to find and fix memory errors, such as segmentation faults and memory leaks, before you begin any performance analysis.
-2. Compile with Correct Flags: To get the most accurate and useful profiling data, you need to compile your code correctly.
-  * Enable compiler optimizations (e.g., nvcc -O2). This ensures you are profiling the code as it would run in a production environment.
-  * Include debug information (e.g., nvcc -lineinfo). This allows the profiler to map the low-level SASS instructions back to the original lines in your C++/CUDA source code, making it much easier to identify which parts of your code are causing bottlenecks.
+1. **Ensure Correctness First:** Use tools like `cuda-memcheck` to find and fix memory errors before any performance analysis.
+2. **Compile with Correct Flags:**
+   * Enable optimizations (`nvcc -O2`) to profile production-like code.
+   * Include debug information (`nvcc -lineinfo`) to map SASS instructions back to source lines.
 
-## Chapter 3: NVIDIA's Professional Profiling Toolkit
+</div>
+
+## NVIDIA's Professional Profiling Toolkit
 
 NVIDIA provides a powerful suite of tools called Nsight for profiling and debugging GPU applications. For performance analysis, we will focus on two key components: Nsight Compute and Nsight Systems.
 
@@ -2392,9 +2279,9 @@ nvtxRangePop();
 ```
 
 
-## Chapter 4: Case Study: Profiling a Matrix Multiplication Kernel
+### Case Study: Profiling a Matrix Multiplication Kernel
 
-Let's apply these concepts to a real-world example: profiling a highly optimized matrix multiplication routine from the cuBLAS library. We'll examine how the performance changes dramatically not just with the size of the matrices, but with their shape.
+We now apply these tools to a concrete example: profiling a cuBLAS matrix multiplication routine and examining how performance changes with matrix shape.
 
 ### The High Cost of Detailed Profiling
 
@@ -2481,23 +2368,13 @@ By plotting these metrics against the different matrix shapes, the source of the
 
 This shows the complexity of high-performance libraries, which contain multiple specialized algorithms to handle different types of inputs. However, even with these specialized kernels, the fundamental problem of poor data locality in skewed matrices leads to catastrophic cache performance and a massive drop in overall GFLOP/s.
 
-## Chapter 5: Architectural Deep Dive: Independent Thread Scheduling
+### Independent Thread Scheduling
 
-The way a GPU schedules and executes threads is fundamental to its performance, especially when dealing with complex control flow (like if-else statements). This execution model, known as SIMT (Single Instruction, Multiple Thread), has evolved significantly. Understanding this evolution helps explain why certain programming patterns are more efficient than others.
+The SIMT execution model has evolved significantly across GPU generations. Understanding this evolution explains why certain programming patterns are more efficient than others.
 
-### The Classic SIMT Model (Pascal and Earlier)
+#### The Classic SIMT Model (Pascal and Earlier)
 
-On older architectures like Pascal, a warp (a group of 32 threads) operated like a single unit with one program counter (PC) and one call stack. To handle branches where some threads take an if path and others take the else path, the hardware used an active mask.
-
-1. Divergence: When an if statement is encountered, threads that don't meet the condition are "masked off" (made inactive).
-2. Execution: The GPU executes the entire if block for the active threads.
-3. Mask Inversion: The active mask is then inverted. The threads that just ran are masked off, and the threads that originally failed the condition are made active.
-4. Execution: The GPU executes the else block for the newly active threads.
-5. Reconvergence: After the else block, all threads in the warp become active again and proceed together.
-
-* Description of the Diagram: A flow chart shows a single execution path. At a divergence point (if), the path for A; B; is executed first, followed by the path for X; Y;. Only after both serialized paths are complete does the execution reconverge to execute Z;.
-
-The major drawback of this model is branch serialization. Even though different threads are doing different work, they cannot do it at the same time. The hardware must execute each branch path sequentially, causing a significant performance penalty for divergent code. This model could also lead to deadlock if threads within a warp tried to synchronize with each other across a divergent branch.
+On older architectures, a warp operated as a single unit with **one program counter (PC) and one call stack**. As described in the branch divergence section above, divergent `if-else` paths were serialized using an active mask. The major drawback is that this model could also lead to **deadlock** if threads within a warp tried to synchronize with each other across a divergent branch.
 
 ### The Modern SIMT Model (Volta and Later)
 
@@ -2508,40 +2385,22 @@ Starting with the Volta architecture, NVIDIA introduced **Independent Thread Sch
 
 </div>
 
-* A schedule optimizer is now responsible for dynamically grouping active threads from the same warp that are executing the same instruction and issuing that instruction to the SIMT execution units.
-* Threads can now diverge and reconverge at a sub-warp granularity.
-* Description of the Diagram: A flow chart shows the execution path diverging. The A; B; block and the X; Y; block are shown side-by-side, indicating they can be scheduled more flexibly. Crucially, after A; B; finishes, its threads can immediately start executing Z; without waiting for the X; Y; block to complete. Similarly, threads from the other branch can start Z; as soon as they are done.
+Execution is still SIMT at the core — the hardware executes one instruction across multiple threads. However, the scheduler can now group *any* threads from a warp that are at the same PC, rather than being constrained by a single warp-wide program counter. Crucially, after one branch finishes, its threads can immediately proceed without waiting for the other branch to complete.
 
-Execution is still SIMT at the core—the hardware still executes one common instruction across multiple threads at a time. However, the scheduler can now group any threads from a warp that are at the same point in the code, rather than being constrained by a single warp-wide program counter.
+One subtlety: the hardware does not automatically force full warp reconvergence at the join point. To explicitly reconverge, developers use the `__syncwarp()` intrinsic.
 
-One subtlety is that the hardware does not automatically force a full warp reconvergence at the point where the branches would logically meet (e.g., at statement Z in the example). This is a conservative approach because code in one branch might produce data needed by another branch if synchronization were involved.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Starvation-Free Algorithms)</span></p>
 
-To force a reconvergence point and ensure all threads in a warp have reached a specific point before any proceed, developers can use the __syncwarp() intrinsic.
+ITS enables **starvation-free algorithms**: if threads within a warp contend for a lock, the scheduler guarantees every thread will eventually be scheduled. In the old model, a thread holding a lock might never be re-scheduled if another thread in the same warp was spinning, causing deadlock.
 
-### Implications for Developers and Starvation-Free Algorithms
+To recover strict warp-synchronous behavior (e.g., for warp-level reductions), use `__shfl_down_sync()`, call `__syncwarp()`, or compile for an older architecture (`-arch=compute_60`).
 
-Independent Thread Scheduling enables starvation-free algorithms. This means that if multiple threads are contending for a shared resource (like a lock), the system guarantees that any given thread will eventually be scheduled and make progress.
+</div>
 
-Consider a lock (mutual exclusion):
+### A Survey of Profiling Tools
 
-* Thread #0 acquires a lock.
-* Thread #1, which needs the lock, is scheduled to run. It spins, waiting for the lock.
-* In the old model, if Thread #0 and #1 were in the same warp, Thread #0 might never be scheduled again to release the lock, causing a deadlock.
-* With ITS, the scheduler will eventually give Thread #0 a chance to run, allowing it to release the lock and ensuring the system makes forward progress.
-
-If you need the old, stricter warp-synchronous behavior for certain algorithms (like a warp-level reduction), you can:
-
-* Use sync-variant primitives like __shfl_down_sync().
-* Explicitly call __syncwarp().
-* Compile your code for an older architecture (e.g., nvcc -arch=compute_60 -code=sm_70) to force the compiler to generate code compatible with the old scheduling model.
-
-## Chapter 6: A Survey of Profiling Tools and Techniques
-
-While NVIDIA's Nsight suite is the industry standard, it's part of a broader ecosystem of tools and research projects for performance analysis. Understanding these alternatives provides a more complete picture of the field.
-
-### An Overview of Available Tools
-
-We can categorize profiling tools based on their underlying technology:
+Beyond NVIDIA's Nsight suite, several alternative profiling tools exist:
 
 | Category | Examples | Pros | Cons |
 | --- | --- | --- | --- |
@@ -2552,82 +2411,25 @@ We can categorize profiling tools based on their underlying technology:
 
 ### CUDA Flux: An LLVM-Based Instrumentation Profiler
 
-CUDA Flux is a research tool developed at Heidelberg University that offers a lightweight alternative to hardware counter-based profiling. It works by instrumenting the code at the compiler level.
+**CUDA Flux** (Heidelberg University) is a lightweight alternative to hardware-counter profiling. It hooks into the LLVM middle-end, injecting per-basic-block counters at the IR level. After kernel execution, it combines execution counts with PTX instruction summaries to compute total instructions executed — at warp, CTA, or grid granularity.
 
-### The LLVM Framework and CUDA
+| | Advantages | Limitations |
+| --- | --- | --- |
+| 1 | Fine-grained instruction counts | Profiles PTX, not SASS (one step removed from hardware) |
+| 2 | Low overhead — no kernel replays | Requires `clang++` instead of `nvcc` |
+| 3 | PTX is more stable than SASS | May not support all CUDA features (e.g., texture memory) |
 
-Modern compilers like clang use the LLVM Compiler Framework. This framework has a modular design:
+### Predictive Performance Modeling (GPU Mangrove)
 
-1. Front-end: Parses source code (like C++) into an Intermediate Representation (IR).
-2. Middle-end: Performs optimizations on the IR. This is where CUDA Flux hooks in.
-3. Back-end: Converts the optimized IR into machine code (PTX and SASS for GPUs).
+**GPU Mangrove** uses a machine-learning approach to predict kernel performance without running on every target GPU. It extracts portable code features (instruction counts, memory footprint, launch configuration, computational intensity) using tools like CUDA Flux, then trains a RandomForest model on measured execution time and power from 189 benchmark kernels. Results: 8.86–52.0% accuracy for execution time and 1.84–2.94% for power consumption across five GPUs, with prediction taking only 15–108 ms.
 
-CUDA Flux adds a custom "pass" to the LLVM middle-end that injects extra instructions into the code to count how many times each basic block is executed.
+## N-Body Simulations: A Case Study in Optimization
 
-### How CUDA Flux Works
+We now apply the optimization principles discussed so far to a classic, computationally demanding problem: the N-body simulation. We start with a naive implementation and progressively refine it, demonstrating how architectural awareness leads to dramatic speedups.
 
-1. PTX Processing: It first analyzes the PTX assembly for each kernel to create a summary of how many instructions are in each basic block (a straight-line sequence of code with no branches in or out, except at the beginning and end).
-2. Instrumentation: It then instruments the code at the IR level. At the beginning of each basic block, it inserts an instruction to increment a counter specific to that block.
-3. Calculation: After the kernel runs, the tool uses the execution counts for each basic block and the instruction summary to calculate the total number of PTX instructions executed.
+### Memory Layout: AoS vs. SoA
 
-This profiling can be done at different granularities: for a single warp, a single CTA (thread block), or the entire grid.
-
-### Advantages and Limitations
-
-Advantages:
-
-* Fine-grained: Provides detailed instruction counts.
-* Low Overhead: The time taken does not depend on the number of metrics being monitored, avoiding the kernel replay issue of ncu.
-* Accessible: PTX is a more stable and accessible target for analysis than the constantly changing SASS.
-
-Limitations:
-
-* PTX, not SASS: It profiles PTX instructions, which is one step removed from what the hardware actually runs. The mapping is not always one-to-one.
-* Build System Modification: It requires changing the build system to use clang++ instead of nvcc, which can be complex.
-* Clang Limitations: It may not support all the newest CUDA features, such as texture memory.
-
-### Excursion: Predictive Performance Modeling
-
-A cutting-edge area of research is predictive performance modeling. The goal is to predict the performance (time, power, energy) of an application on a processor without actually running it, or at least without running it on every possible hardware configuration. This is incredibly useful for:
-
-* Making runtime scheduling decisions.
-* Exploring performance on hardware you don't have access to.
-* Guiding co-design of future hardware and software.
-
-### GPU Mangrove: A Portable Prediction Model
-
-GPU Mangrove is a research project that uses a machine learning approach for performance prediction.
-
-**Methodology:**
-
-1. Feature Extraction: It uses a tool like CUDA Flux to extract a set of portable code features from a kernel. These features depend only on the code and its inputs, not on the target hardware. Examples include:
-    * Instructions executed (total FLOPs, memory ops, etc.)
-    * Memory footprint
-    * Kernel launch configuration (grid and block dimensions)
-    * Computational intensity
-2. Model Training: For a specific GPU, it measures the actual execution time and power consumption of a large suite of diverse kernels (189 unique kernels from benchmarks like Rodinia and SHOC). It then trains a RandomForest machine learning model to learn the relationship between the portable code features and the measured performance on that GPU.
-3. Prediction: To predict the performance of a new kernel on that GPU, it extracts its portable features and feeds them into the trained model.
-
-**Results:** This approach has proven to be quite effective.
-
-* Accuracy: Achieved prediction accuracy of 8.86–52.0% for execution time and an impressive 1.84–2.94% for power consumption across five different GPUs.
-* Speed: Prediction is very fast, taking only 15-108 milliseconds.
-
-This type of learning-based model represents a powerful new way to reason about performance in our increasingly heterogeneous and complex computing landscape.
-
-## Chapter 7: Optimizing GPU Applications: A Case Study in N-Body Simulations
-
-Welcome to the next chapter in our exploration of GPU computing. So far, we have covered the fundamentals of the GPU architecture and the CUDA programming model. Now, we will dive deeper into one of the most critical aspects of high-performance computing: optimization.
-
-Effective GPU programming is not just about writing code that runs in parallel; it's about writing code that leverages the specific strengths of the GPU architecture to achieve maximum performance. In this chapter, we will explore advanced optimization techniques by examining a classic and computationally demanding problem: the N-body simulation. We will start with a simple, "naive" implementation and progressively refine it, demonstrating how architectural awareness can lead to dramatic speedups.
-
-### Advanced Memory Layout Optimizations
-
-Before we tackle the N-body problem, we must first discuss a foundational optimization strategy that is crucial for GPU performance: how we arrange our data in memory.
-
-#### The High Cost of Memory Access
-
-In any modern computer system, from a laptop CPU to a high-end GPU, accessing data from main memory is one of the most expensive operations an application can perform. It takes significantly more time and energy than performing an arithmetic calculation. Therefore, a primary goal of performance optimization is to minimize and streamline memory access. On a GPU, where thousands of threads can request data simultaneously, this becomes paramount.
+Before tackling the N-body problem, we address a foundational optimization: how data is arranged in memory. Since memory access is far more expensive than arithmetic, streamlining access patterns is critical.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AoS vs. SoA)</span></p>
@@ -2685,65 +2487,15 @@ Memory Layout (SoA): [x0, x1, x2, ...] [y0, y1, y2, ...] [z0, z1, z2, ...] ...
 
 While this might seem less intuitive and requires more pointers to manage, it is often the superior choice for GPU applications. To understand why, we need to revisit the concept of memory coalescing.
 
-#### A Refresher on Memory Coalescing
+#### Impact on Memory Coalescing
 
-As we've learned, threads on a GPU are grouped into warps (typically 32 threads). When threads in a warp access global memory, the GPU tries to service all of their requests with a single, large memory transaction. This is called coalesced memory access.
+Recall that coalesced memory access requires threads in a warp to access consecutive addresses. With **AoS**, threads reading the `x` coordinate of consecutive particles access non-contiguous locations (separated by `y`, `z`, `m` fields) — a non-coalesced pattern. With **SoA**, the `x` values of all particles are contiguous, yielding perfectly coalesced access.
 
-* Coalesced Access: Occurs when threads in a warp access consecutive memory addresses. This is the ideal, most efficient scenario, as a single transaction can satisfy all 32 threads at once.
-* Non-Coalesced Access: Occurs when threads access scattered, non-consecutive memory locations. This forces the GPU to issue multiple memory transactions to satisfy the requests of a single warp, leading to a significant performance penalty.
+While AoS can sometimes be improved using packed types like `float4`, SoA is the naturally GPU-friendly layout for memory-bound applications.
 
-#### Visualizing Memory Access: AoS vs. SoA
+### Applying Tiling to N-Body Simulations
 
-The source context provides a helpful diagram to visualize this difference. Let's describe it.
-
-Imagine four threads (Thread 1, 2, 3, 4) in a warp, each tasked with processing a particle's position. Let's say each thread needs to read the x coordinate of its assigned particle.
-
-Case 1: Array of Structures (AoS) The memory is laid out as [x1, y1, z1, m1], [x2, y2, z2, m2], and so on.
-
-* Thread 1 wants x1.
-* Thread 2 wants x2.
-* Thread 3 wants x3.
-* Thread 4 wants x4.
-
-The data they want (x1, x2, x3, x4) is separated by other data (y, z, m). This is a non-coalesced access pattern. The memory controller has to fetch a larger chunk of memory for each thread and discard the unneeded y, z, and m data, or issue multiple separate transactions.
-
-Case 2: Structure of Arrays (SoA) The memory is laid out as [x1, x2, x3, x4, ...], [y1, y2, y3, y4, ...], etc.
-
-* Thread 1 wants x1.
-* Thread 2 wants x2.
-* Thread 3 wants x3.
-* Thread 4 wants x4.
-
-Here, the data they need is located in consecutive memory locations. The GPU can satisfy all four requests with a single memory transaction. This is a perfectly coalesced access.
-
-While AoS can sometimes be made to work by using data types like float4 to pack values together, the SoA layout is naturally suited for coalesced memory access on GPUs and is a key technique for memory-bound applications.
-
-### The Tiling Technique for Data Reuse
-
-Another powerful optimization is tiling, which focuses on maximizing the use of data once it has been loaded into the GPU's faster, on-chip memory.
-
-#### What is Tiling?
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tiling)</span></p>
-
-**Tiling** is a technique used to divide a large, repetitive computation into smaller, regular blocks or "tiles." By processing the problem one tile at a time, we can manage resource usage more effectively and improve data locality. The primary goal is to maximize **data reuse**: load data from slow global memory into fast shared memory once, then use it as many times as possible before discarding.
-
-</div>
-
-Imagine you need to multiply two very large matrices. Instead of loading entire rows and columns from slow global memory for every single calculation, you can:
-
-1. Load a small sub-matrix (a tile) from each input matrix into the fast shared memory.
-2. Perform all possible calculations using only the data within those tiles.
-3. Load the next set of tiles and repeat.
-
-This makes the computation more regular and often independent of the overall problem size. The tiling approach breaks a large $N \times N$ matrix into smaller $p \times p$ sub-matrices. A thread block loads the data for one sub-problem into shared memory, computes all interactions within that tile, synchronizes, and then moves to the next tile.
-
-#### A Practical Application: N-Body Simulations
-
-Now, let's apply these concepts to a real-world problem: simulating the interactions of a large number of particles, a task known as an N-body simulation.
-
-##### What are N-Body Simulations?
+The tiling principle from matrix multiplication — load a tile into shared memory, compute all interactions within it, then move on — applies directly to the N-body problem.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(N-Body Simulation)</span></p>
@@ -2752,18 +2504,9 @@ Now, let's apply these concepts to a real-world problem: simulating the interact
 
 </div>
 
-These simulations are foundational in many scientific fields:
+Applications include astrophysics (galaxy formation, neutron star collisions) and biomolecular simulation (protein folding, virus modeling).
 
-* Astrophysics: Simulating the formation and evolution of galaxies, where each "body" is a star or a cluster of stars interacting via gravitational forces. N-body simulations were instrumental in the 1990s discovery of dark energy and are used today to model phenomena like the collision of neutron stars.
-* Biomolecular Systems: Modeling the folding of proteins or the behavior of viruses like the Satellite Tobacco Mosaic Virus (STMV). Here, the "bodies" are atoms, and the interactions are complex electrostatic and Van der Waals forces. Simulating these systems is a massive computational challenge, with a single day of simulation time for STMV (100 million atoms) requiring petascale computing power.
-
-#### The Computational Challenge of N-Body Problems
-
-The core of an N-body simulation is calculating the total force exerted on each body by every other body in the system. If there are N bodies, then for each body, we must calculate the force from the other N-1 bodies. This leads to a computational complexity of O(N^2). For a system with a million bodies, this is a trillion interactions per time step!
-
-This makes the naive all-pairs calculation computationally bound, meaning the processor's speed is the main bottleneck. The memory requirement is only $O(N)$ (to store positions and velocities), but the compute cost is $O(N^2)$.
-
-To make this tractable for enormous systems, scientists use hierarchical algorithms like the Barnes-Hut algorithm ($O(N \log N)$) which approximate the forces from distant clusters of bodies. However, for interactions within a cluster, an all-pairs method ($O(k^2)$ for a cluster of size $k$) is still used, and this portion is extremely well-suited for GPUs.
+The all-pairs force calculation has $O(N^2)$ computational complexity but only $O(N)$ memory, making it compute-bound and ideal for GPUs. For very large $N$, hierarchical algorithms like Barnes-Hut ($O(N \log N)$) approximate distant interactions, but the all-pairs kernel remains the inner loop.
 
 #### The Physics Behind the Simulation
 
@@ -3047,58 +2790,34 @@ Analysis:
 * However, even the best multi-threaded, vectorized CPU implementation (5.65 G-interactions/sec) is significantly slower than the GPU.
 * The optimized GPU implementation is 8x faster than the highly optimized 32-thread CPU version, showcasing why GPUs are the prime architecture for problems like N-body simulations.
 
-### Chapter Summary and Further Optimizations
+### N-Body Summary
 
-#### Recap of Key Techniques
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(N-Body Optimization Takeaways)</span></p>
 
-In this chapter, we saw how to transform a naive GPU implementation into a highly-optimized one, resulting in a dramatic performance increase. The key takeaways are:
+* **Data Layout Matters:** Choosing SoA layout is often critical for coalesced memory access on the GPU.
+* **Maximize Data Reuse:** Tiling combined with explicit shared memory management reduces expensive global memory traffic.
+* **Compiler Optimizations:** Simple directives like `#pragma unroll` can provide significant speedups by reducing instruction and branch overhead.
+* **Further Techniques:**
+  * *Warp Shuffle Instructions* (`__shfl()`): Allow threads within a warp to exchange data directly without shared memory, but require restructuring the algorithm to work at warp granularity.
+  * *Constant Memory:* Beneficial for read-only data accessed by all threads, but unsuitable for data that changes every time step.
 
-* Data Layout Matters: Choosing a Structure of Arrays (SoA) layout is often critical for achieving coalesced memory access on the GPU.
-* Maximize Data Reuse: The tiling technique, combined with explicit management of on-chip shared memory, is a powerful way to reduce expensive global memory traffic.
-* Compiler Optimizations: Simple directives like #pragma unroll can provide significant speedups by reducing instruction and branch overhead.
-* N-Body is a Prime Example for GPUs: The massive data parallelism and high arithmetic intensity of N-body problems make them exceptionally well-suited for the GPU's many-core architecture.
+</div>
 
-#### Other Optimization Paths
+## CUDA Streams and Host-Device Communication
 
-The optimizations don't stop here. The lecture slides mention several other advanced techniques that were skipped for brevity but are worth knowing:
+### The Host-Device Bottleneck
 
-* Warp Shuffle Instructions (__shfl()): These are special instructions that allow threads within the same warp to exchange data directly without needing to use shared memory. This can be even faster than shared memory but requires restructuring the algorithm to work at the warp level (e.g., tiling at a size of 32) instead of the block level.
-* Constant Memory: For data that is read-only and accessed by all threads, placing it in constant memory can be beneficial. The GPU has a dedicated cache for constant memory, which is optimized for broadcasting a single value to all threads in a warp. However, updating constant memory requires a host-to-device transfer, making it unsuitable for data that changes every time step, as in our N-body simulation.
+The CPU (host) and GPU (device) are connected via PCIe, which creates a massive bandwidth mismatch:
 
-## Chapter 7: A Deep Dive into GPU Computing: Architecture and Programming
+* **On-device memory bandwidth:** up to ~3.3 TB/s
+* **PCIe bus bandwidth:** ~64 GB/s
 
-### Chapter 1: Overcoming the Host-Device Bottleneck
+The GPU can compute at 34–67 TFLOP/s but can only receive data at a fraction of that rate. If data transfers are not overlapped with computation, the GPU sits idle — a condition known as being **PCIe-bound**. The key objective is to **overlap communication and computation**.
 
-Welcome to the world of high-performance computing with GPUs! In previous discussions, we've focused on how to write code that runs in parallel on the GPU itself. Now, we'll address a critical, real-world challenge: getting data to and from the GPU efficiently. This chapter explores the fundamental bottleneck in GPU computing—the connection between the CPU and the GPU—and introduces CUDA Streams, a powerful technique for hiding data transfer latency and unlocking even more performance.
+To hide this latency, we employ **task parallelism**: instead of sequentially performing H2D copy → kernel → D2H copy, we overlap these operations across independent data chunks using **CUDA Streams**.
 
-#### 1.1 The GPU as a Peripheral Device: A Tale of Two Speeds
-
-A modern computer system is a collection of specialized components. The CPU (Central Processing Unit) acts as the general-purpose brain, while the GPU (Graphics Processing Unit) serves as a highly parallel co-processor, or an accelerator. The CPU and its main memory (the host) are connected to the GPU and its dedicated memory (the device) via a peripheral interface, typically the PCIe (Peripheral Component Interconnect Express) bus.
-
-This architectural separation is the source of a major performance challenge. To understand why, let's examine the bandwidth—the rate at which data can be moved—at different points in the system.
-
-A diagram of the system architecture reveals a stark contrast:
-
-* On-Device Memory Bandwidth: The connection between the GPU processor and its own dedicated memory is incredibly fast. Modern GPUs can have a memory bandwidth of up to 3.3 TB/s. This is like having a multi-lane superhighway for data.
-* PCIe Bus Bandwidth: The connection between the host system and the GPU device is significantly slower. The PCIe interface typically offers a bandwidth of around 64 GB/s. This is more like a local access road.
-
-This massive difference creates a bandwidth mismatch. The GPU can process data at a phenomenal rate (e.g., 34-67 TFLOP/s for double-precision), but it can only receive that data from the host at a much slower pace. If we are not careful, the GPU will spend most of its time waiting for data to arrive, completely wasting its computational power. This is often referred to as being memory-bound or, more specifically, PCIe-bound.
-
-Therefore, a key objective for any high-performance GPU application is to overlap communication and computation—that is, to keep the GPU busy with calculations while new data is being transferred over the PCIe bus.
-
-#### 1.2 Exploiting Task Parallelism on the Host
-
-Up to this point, our focus has been on data parallelism: taking a single task (like adding two vectors) and splitting the data across thousands of GPU threads to be processed simultaneously.
-
-Now, we introduce a new concept: task parallelism. This involves breaking down the entire workflow into independent tasks that can be executed concurrently on the host side. Instead of performing our operations in a strict sequence:
-
-1. Copy data from Host to Device (H2D)
-2. Execute a kernel on the Device
-3. Copy results from Device to Host (D2H)
-
-We want to orchestrate these steps so that, for example, the GPU is executing a kernel on one chunk of data at the same time it is receiving the next chunk of data from the host. This is where CUDA Streams come in.
-
-#### 1.3 Introducing CUDA Streams
+### CUDA Streams
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA Stream)</span></p>
@@ -3115,54 +2834,39 @@ A **CUDA Stream** is an ordered queue of operations submitted to the GPU. Key pr
 
 By placing independent operations into different streams, we can enable the GPU's hardware to execute them concurrently, effectively hiding the latency of data transfers behind useful computation.
 
-#### 1.4 The Levels of Concurrency
+Streams unlock **coarse-grained concurrency**: CPU/GPU concurrency, concurrent copy & execute, concurrent kernel execution, and multi-GPU parallelism — complementing the fine-grained thread-level concurrency within a kernel.
 
-CUDA Streams unlock a higher level of concurrency, which we can call coarse-grained concurrency, to complement the fine-grained concurrency we already know. Let's break down the different types of parallelism a modern GPU can exploit:
+### Host-Device Synchronization
 
-1. Fine-Grained Concurrency (Within a Kernel): This is the parallelism at the instruction and thread level that we are familiar with. It involves overlapping the execution of instructions and threads to hide memory latency within the GPU itself.
-2. Coarse-Grained Concurrency (Enabled by Streams):
-  * CPU/GPU Concurrency: While the GPU is busy executing tasks from a stream, the CPU is free to perform other work, including queuing up more tasks for the GPU.
-  * Concurrent Copy & Execute: This is the primary goal. A memory copy operation (e.g., cudaMemcpyAsync) can execute at the same time as a kernel, provided they are in different streams and the hardware supports it.
-  * Concurrent Kernel Execution: Modern GPUs (Compute Capability 2.x and later) can execute multiple kernels from different streams simultaneously.
-  * Multi-GPU Concurrency: If a host system has multiple GPUs, each can operate in parallel on its own set of streams, dramatically increasing throughput.
+Since the CPU queues up work asynchronously, we need mechanisms to ensure results are ready before using them. CUDA provides three synchronization granularities:
 
-#### 1.5 Managing Host-Device Synchronization
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Synchronization Granularities)</span></p>
 
-Since the CPU queues up work asynchronously, we need mechanisms to check on the GPU's progress and ensure that results are ready before we try to use them. CUDA provides three primary ways to manage synchronization.
+**Context-Based Synchronization** — blocks the CPU until *all* CUDA operations complete:
 
-##### Context-Based Synchronization
+* `cudaDeviceSynchronize()`: Blocks until all operations on all streams finish.
+* Many blocking calls like `cudaMemcpy()` implicitly synchronize.
 
-This is the most heavy-handed approach. It blocks the CPU until all previously issued CUDA operations on the device have completed, regardless of which stream they were in.
+**Stream-Based Synchronization** — targets a *specific stream*:
 
-* Functions: cudaDeviceSynchronize() is the most common function for this. Many blocking calls, like the standard cudaMemcpy(), also have this effect implicitly.
-* When to Use: Use this when you need a hard barrier, for example, right before the CPU needs to access the final results calculated by the GPU.
+* `cudaStreamSynchronize(stream)`: Pauses the host thread until the specified stream is empty.
+* `cudaStreamQuery(stream)`: Non-blocking check; returns `cudaSuccess` or `cudaErrorNotReady`.
 
-##### Stream-Based Synchronization
+**Event-Based Synchronization** — the most *fine-grained* method:
 
-This offers more granular control by targeting a specific stream. It blocks the CPU until all operations in a particular stream have completed.
+1. `cudaEventRecord(event, stream)`: Places a marker into a stream.
+2. `cudaEventSynchronize(event)`: Blocks the CPU until the event marker is reached.
+3. `cudaEventQuery(event)`: Non-blocking check of event status.
 
-* cudaStreamSynchronize(stream): This function will pause the host thread until the specified stream is empty.
-* cudaStreamQuery(stream): This is a non-blocking alternative. It checks the status of the stream and immediately returns either cudaSuccess (if all operations in the stream are complete) or cudaErrorNotReady (if the GPU is still working). This is useful for building more complex scheduling logic on the host.
+Events allow synchronization at specific points in the workflow rather than waiting for an entire stream or device.
 
-##### Event-Based Synchronization
-
-This is the most fine-grained and flexible method. An event is like a marker or a checkpoint that you can place into a stream.
-
-1. Record an Event: You use cudaEventRecord(event, stream) to place an event into a specific stream. When the GPU processes all operations in the queue up to that point, the event is considered "recorded," and a timestamp is captured.
-2. Wait for an Event: You can then have the CPU wait for that specific event to be recorded using cudaEventSynchronize(event). This call will block until the event marker has been passed in its stream.
-3. Query an Event: Similar to streams, you can use the non-blocking cudaEventQuery(event) to check if an event has been recorded without halting the CPU.
-
-Events are powerful because they allow you to synchronize based on specific points in your workflow, rather than waiting for an entire stream or the entire device to finish.
+</div>
 
 
----
+### Programming with CUDA Streams
 
-
-### Chapter 2: Programming with CUDA Streams
-
-Now that we understand the theory behind CUDA Streams, let's put it into practice. This chapter will walk you through the process of converting a standard, sequential GPU workflow into a pipelined, high-performance one using streams. We'll examine the necessary API calls, look at code examples, and discuss important architectural details that can affect performance.
-
-#### 2.1 The Default Stream and Sequential Execution
+#### The Default Stream and Sequential Execution
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Default Stream)</span></p>
@@ -3208,7 +2912,7 @@ for (int i = 0; i < dev_count; i++) {
 
 Without this hardware feature, using streams for overlap is impossible. Fortunately, it is standard on nearly all modern GPUs.
 
-#### 2.2 Pipelining with Multiple Streams
+#### Pipelining with Multiple Streams
 
 To achieve overlap, we need to break our problem into smaller, independent pieces and process them in a pipeline. The strategy is as follows:
 
@@ -3224,7 +2928,7 @@ This creates a pipeline with three distinct phases:
 
 The effectiveness of this technique depends on computational intensity. If the kernel is too fast compared to the data transfer time, the pipeline will stall, waiting for data. Conversely, if the data transfers are much faster than the kernel, the benefit of overlap is minimal. We will analyze this trade-off mathematically in the next chapter.
 
-#### 2.3 Implementing a Multi-Stream Workflow
+#### Implementing a Multi-Stream Workflow
 
 Let's see how to implement this in code. First, we need to know the relevant API calls.
 
@@ -3295,7 +2999,7 @@ cudaDeviceSynchronize();
 
 The intent here is that while the saxpy kernel for stream0 is running, the cudaMemcpyAsync operations for stream1 can also be running, achieving our desired overlap. However, due to the architecture of older GPUs, this might not happen as we expect.
 
-#### 2.4 Architecture Matters: Fermi vs. Kepler and Newer
+#### Architecture Matters: Fermi vs. Kepler and Newer
 
 The way a GPU executes commands from streams depends heavily on its architecture.
 
@@ -3331,28 +3035,27 @@ cudaMemcpyAsync(h_C + segSize, d_C1, segSize * sizeof(float), cudaMemcpyDeviceTo
 
 By issuing all input copies first, followed by all kernel launches, we maximize the opportunity for the GPU to overlap the execution of Kernel(0) with the input copies for stream 1 (H2D(A1) and H2D(B1)). This reordering makes the code more robust across different GPU architectures.
 
-#### 2.5 Common Pitfalls: Implicit Synchronization
+#### Common Pitfalls: Implicit Synchronization
 
-When using streams, you must be careful to avoid operations that implicitly synchronize the entire device, as they will destroy any overlap you've worked to create. These operations act like a call to cudaDeviceSynchronize(), forcing all previously issued work to complete.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implicit Synchronization)</span></p>
 
-Be cautious with the following types of operations:
+The following operations act like `cudaDeviceSynchronize()`, destroying any stream overlap:
 
 * **Page-locked host memory allocation:** `cudaMallocHost()` or `cudaHostAlloc()`.
 * **Device memory allocation/deallocation:** `cudaMalloc()` or `cudaFree()`.
-* **Synchronous memory operations:** Any memory function that does not have the `Async` suffix, such as `cudaMemcpy()` or `cudaMemset()`.
+* **Synchronous memory operations:** Any function without the `Async` suffix (e.g., `cudaMemcpy()`, `cudaMemset()`).
 * **L1/Shared Memory configuration changes:** `cudaDeviceSetCacheConfig()`.
 
-Always use the Async versions of functions where available and perform all necessary memory allocations before you begin your pipelined stream loop.
+Always use the Async versions and perform all memory allocations before your pipelined stream loop.
 
+</div>
 
----
+### Advanced Topics and Modern Alternatives
 
+While CUDA Streams are powerful, they add programmer complexity. The key question is: when is streaming mathematically justified? Beyond streams, modern CUDA features like Unified Memory and Peer-to-Peer Access simplify host-device memory management, sometimes at the cost of performance.
 
-### Chapter 3: Advanced Topics and Modern Alternatives
-
-While CUDA Streams are a powerful tool for performance optimization, they represent a manual approach that increases programmer complexity. In this chapter, we will analyze when using streams is mathematically justified. We will then explore more modern CUDA features—Unified Memory and Peer-to-Peer Access—that aim to simplify host-device memory management, sometimes at the cost of performance, but always with the benefit of simpler code.
-
-#### 3.1 Is Streaming Always Worth It? An Analysis of Arithmetic Intensity
+#### Is Streaming Always Worth It? An Analysis of Arithmetic Intensity
 
 The goal of streaming is to hide the time it takes to transfer data over the PCIe bus ($t_{\text{PCIe}}$) by overlapping it with computation time ($t_{\text{COMP}}$). This strategy is only effective if the computation is long enough to mask the transfer. We can formalize this with the concept of Arithmetic Intensity.
 
@@ -3396,7 +3099,7 @@ where $c$ is the GPU's peak compute performance (FLOPs/s) and $b$ is the PCIe ba
 
 </div>
 
-#### 3.2 Simplifying Memory Management: Unified Virtual Addressing (UVA)
+#### Unified Virtual Addressing (UVA)
 
 The complexity of manually managing memory buffers and cudaMemcpyAsync calls led NVIDIA to develop simpler memory models. The first step in this direction was Unified Virtual Addressing (UVA).
 
@@ -3407,7 +3110,7 @@ With **UVA**, the CPU and all GPUs in a system share a single virtual address sp
 
 </div>
 
-#### 3.3 The Future is Automatic: Unified Memory (UM)
+#### Unified Memory (UM)
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Memory)</span></p>
@@ -3465,7 +3168,7 @@ The charts illustrate the breakdown of time spent in host2device copy, kernel ex
 
 The conclusion is that Unified Memory offers a promising trade-off between programmer productivity and performance, especially for applications where development speed is critical or memory access patterns are complex.
 
-#### 3.4 Direct Peer-to-Peer Access for Multi-GPU Systems
+#### Peer-to-Peer Access for Multi-GPU Systems
 
 In systems with multiple GPUs connected by a high-speed interconnect like NVLink, it's possible for one GPU to directly access the memory of another without involving the host CPU. This is known as Peer-to-Peer (P2P) Access.
 
@@ -3502,28 +3205,26 @@ gpu0_buf[idx] = gpu1_buf[idx];
 
 This capability is essential for scaling applications across multiple GPUs efficiently.
 
+### Summary: CUDA Streams and Host-Device Communication
 
----
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Streams for Latency Hiding)</span></p>
 
+* **Problem:** The PCIe bus is much slower than the GPU's internal memory and compute capabilities.
+* **Solution:** Task-level parallelism via CUDA Streams overlaps communication with computation.
+* **Mechanism:** Divide work into independent segments, place each segment's workflow into a different stream using `cudaMemcpyAsync` and stream-specific kernel launches.
+* **Prerequisite:** Only effective if the arithmetic intensity satisfies $r \ge c/b$.
 
-### Chapter 4: Summary and Key Takeaways
+</div>
 
-This lecture has taken us beyond single-kernel optimization and into the critical domain of system-level performance. We've explored the challenges posed by the host-device communication bottleneck and learned powerful techniques to mitigate it.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unified Memory as an Alternative)</span></p>
 
-#### 4.1 Recap: Streams for Latency Hiding
+* **UVA:** Provides a single address space but still requires manual data movement for good performance.
+* **Unified Memory (UM):** Automates data migration between host and device based on access patterns. Eliminates explicit `cudaMemcpy` calls at the cost of some migration overhead.
+* **Trade-off:** For large problems on modern hardware, UM performance is competitive with manual methods.
 
-* **The Problem:** The PCIe bus connecting the host and device is much slower than the GPU's internal memory and compute capabilities, creating a data transfer bottleneck.
-* **The Solution:** We can introduce task-level parallelism using CUDA Streams to overlap communication (data transfers) with computation (kernel execution).
-* **The "How":** By dividing work into independent segments and placing the operations for each segment into a different stream, we can create a pipeline. This requires using asynchronous functions like `cudaMemcpyAsync` and launching kernels into specific streams.
-* **The Catch:** This technique adds complexity for the programmer. For older GPUs (Fermi-class), careful ordering of API calls is required to achieve overlap due to limited hardware queues.
-* **The Prerequisite:** Overlapping is only effective if the application has sufficient computational intensity. The ratio of computations to data bytes ($r$) must be high enough to successfully hide the data transfer time ($r \ge c/b$).
-
-#### 4.2 Recap: Unified Memory as an Alternative
-
-* **The Goal:** Simplify the programming model by reducing the burden of manual memory management.
-* **Unified Virtual Addressing (UVA):** Provides a single address space for the entire system, but still requires the programmer to manually move data for good performance. Accessing host memory from the GPU is possible but can be extremely slow.
-* **Unified Memory (UM):** Automates the movement of data between host and device based on where it is being accessed (page migration). This eliminates the need for explicit `cudaMemcpy` calls, resulting in simpler, more maintainable code.
-* **The Trade-off:** The convenience of UM comes with some performance overhead from the automated page migration system. However, for large problems and on modern hardware, its performance can be very competitive with manual methods, making it a compelling alternative.
+</div>
 
 
 ## Stencil Computations
@@ -4172,9 +3873,12 @@ To overcome the power limits of CMOS (the current standard chip technology), res
 
 ### Course Summary
 
-Throughout this series, we have covered the foundational and advanced aspects of GPU computing:
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(GPU Computing)</span></p>
 
 * **CUDA Basics:** Thread hierarchies, shared memory, and barrier synchronization.
 * **Architecture:** The SMX architecture, memory hierarchies, and warp scheduling.
 * **Optimizations:** Bank conflict resolution, loop unrolling, and templating.
 * **Advanced Features:** SIMT divergence management, Cooperative Groups for flexible syncing, and Tensor Cores for AI acceleration.
+
+</div>
