@@ -38,7 +38,7 @@ $$
 By the inductive hypothesis there exists a unitary $W \in \mathbb{C}^{(n-1) \times (n-1)}$ such that $\tilde{T} \coloneqq W^* V^* AVW$ is upper triangular. Setting
 
 $$
-U = \tilde{V} \begin{pmatrix} 1 & 0^T \\ 0 & W \end{pmatrix}, \quad T = \begin{pmatrix} \lambda & x^* AVW \\ 0 & \tilde{T} \end{pmatrix}
+U = \tilde{V} \begin{pmatrix} 1 & 0^\top \\ 0 & W \end{pmatrix}, \quad T = \begin{pmatrix} \lambda & x^* AVW \\ 0 & \tilde{T} \end{pmatrix}
 $$
 
 gives $A = UTU^*$.
@@ -51,7 +51,7 @@ Since $T$ is similar to $A$, the eigenvalues of $A$ appear on the diagonal of $T
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Schur Decomposition, Real Variant I)</span></p>
 
-For every matrix $A \in \mathbb{R}^{n \times n}$ there exists an orthogonal $Q \in \mathbb{R}^{n \times n}$ and a block upper triangular $T \in \mathbb{R}^{n \times n}$ such that $A = QTQ^T$. The blocks of $T$ are of size $1$ or $2$, where blocks of size $2$ contain complex conjugate eigenvalues.
+For every matrix $A \in \mathbb{R}^{n \times n}$ there exists an orthogonal $Q \in \mathbb{R}^{n \times n}$ and a block upper triangular $T \in \mathbb{R}^{n \times n}$ such that $A = QTQ^\top$. The blocks of $T$ are of size $1$ or $2$, where blocks of size $2$ contain complex conjugate eigenvalues.
 
 </div>
 
@@ -64,11 +64,11 @@ For every matrix $A \in \mathbb{R}^{n \times n}$ there exists a regular $S \in \
 
 One consequence of the Schur decomposition is the observation that any matrix that is arbitrarily close to diagonal is diagonalizable (see Theorem 5.27 in later sections).
 
-Matrices whose Schur decomposition has a diagonal $T$ are called **normal**. A typical example of a normal matrix is a real symmetric matrix, since its spectral decomposition $QAQ^T$ ($Q$ orthogonal and $A$ diagonal) is precisely its Schur decomposition. Other symmetric matrices do not have $QAQ^T$ normal since the result is not symmetric. Nevertheless, thanks to complex Schur decomposition, both real and complex normal matrices (including antisymmetric $A = -A^T$ and orthogonal matrices) can arise. Normal matrices share many nice properties with symmetric matrices, and some results from Section 2.2 apply analogously to them.
+Matrices whose Schur decomposition has a diagonal $T$ are called **normal**. A typical example of a normal matrix is a real symmetric matrix, since its spectral decomposition $QAQ^\top$ ($Q$ orthogonal and $A$ diagonal) is precisely its Schur decomposition. Other symmetric matrices do not have $QAQ^\top$ normal since the result is not symmetric. Nevertheless, thanks to complex Schur decomposition, both real and complex normal matrices (including antisymmetric $A = -A^\top$ and orthogonal matrices) can arise. Normal matrices share many nice properties with symmetric matrices, and some results from Section 2.2 apply analogously to them.
 
 ### Eigenvalues of Symmetric Matrices
 
-The Rayleigh--Ritz formula gives an elegant expression for the largest and smallest eigenvalue of a symmetric matrix --- the largest and smallest values of the quadratic form $f(x) = x^T A x$ on the unit Euclidean sphere.
+The Rayleigh--Ritz formula gives an elegant expression for the largest and smallest eigenvalue of a symmetric matrix --- the largest and smallest values of the quadratic form $f(x) = x^\top A x$ on the unit Euclidean sphere.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Rayleigh--Ritz)</span></p>
@@ -76,7 +76,7 @@ The Rayleigh--Ritz formula gives an elegant expression for the largest and small
 Let $\lambda_1 \geq \ldots \geq \lambda_n$ be the eigenvalues of a symmetric matrix $A \in \mathbb{R}^{n \times n}$. Then
 
 $$
-\lambda_1 = \max_{\lVert x \rVert_2 = 1} x^T A x, \quad \lambda_n = \min_{\lVert x \rVert_2 = 1} x^T A x.
+\lambda_1 = \max_{\lVert x \rVert_2 = 1} x^\top A x, \quad \lambda_n = \min_{\lVert x \rVert_2 = 1} x^\top A x.
 $$
 
 </div>
@@ -87,12 +87,12 @@ $$
 
 Only for $\lambda_1$; the second part is analogous.
 
-**"$\leq$":** Let $x_1$ be the eigenvector for $\lambda_1$ normalized to $\lVert x_1 \rVert_2 = 1$. Then $Ax_1 = \lambda_1 x_1$. Multiplying by $x_1^T$ from the left gives $\lambda_1 = \lambda_1 x_1^T x_1 = x_1^T A x_1 \leq \max_{\lVert x \rVert_2 = 1} x^T A x$.
+**"$\leq$":** Let $x_1$ be the eigenvector for $\lambda_1$ normalized to $\lVert x_1 \rVert_2 = 1$. Then $Ax_1 = \lambda_1 x_1$. Multiplying by $x_1^\top$ from the left gives $\lambda_1 = \lambda_1 x_1^\top x_1 = x_1^\top A x_1 \leq \max_{\lVert x \rVert_2 = 1} x^\top A x$.
 
-**"$\geq$":** Let $x \in \mathbb{R}^n$ be arbitrary with $\lVert x \rVert_2 = 1$. Set $y \coloneqq Q^T x$, so $\lVert y \rVert_2 = 1$. Using the spectral decomposition $A = Q \Lambda Q^T$:
+**"$\geq$":** Let $x \in \mathbb{R}^n$ be arbitrary with $\lVert x \rVert_2 = 1$. Set $y \coloneqq Q^\top x$, so $\lVert y \rVert_2 = 1$. Using the spectral decomposition $A = Q \Lambda Q^\top$:
 
 $$
-x^T A x = x^T Q \Lambda Q^T x = y^T \Lambda y = \sum_{i=1}^n \lambda_i y_i^2 \leq \sum_{i=1}^n \lambda_1 y_i^2 = \lambda_1 \lVert y \rVert_2^2 = \lambda_1.
+x^\top A x = x^\top Q \Lambda Q^\top x = y^\top \Lambda y = \sum_{i=1}^n \lambda_i y_i^2 \leq \sum_{i=1}^n \lambda_1 y_i^2 = \lambda_1 \lVert y \rVert_2^2 = \lambda_1.
 $$
 
 </details>
@@ -107,12 +107,12 @@ $$
 A = \begin{pmatrix} 1 & K \\ 0 & 1 \end{pmatrix},
 $$
 
-with $K$ arbitrarily large. The matrix $A$ has only one eigenvalue, equal to $1$. Yet the vector $e_2 = (0,1)^T$ can be mapped to an arbitrarily large vector, since $Ae_2 = (K,1)^T$. Thus eigenvalues do not bound the size of images.
+with $K$ arbitrarily large. The matrix $A$ has only one eigenvalue, equal to $1$. Yet the vector $e_2 = (0,1)^\top$ can be mapped to an arbitrarily large vector, since $Ae_2 = (K,1)^\top$. Thus eigenvalues do not bound the size of images.
 
 For symmetric matrices it is different. Let $A \in \mathbb{R}^{n \times n}$ be symmetric and $x \in \mathbb{R}^n$, $\lVert x \rVert_2 = 1$. By the Rayleigh--Ritz formula:
 
 $$
-\lVert Ax \rVert_2 = \sqrt{(Ax)^T(Ax)} = \sqrt{x^T A^2 x} \leq \sqrt{\lambda_1(A^2)} = \sqrt{\max\lbrace|\lambda_1(A)|, |\lambda_n(A)|\rbrace^2} \leq \rho(A).
+\lVert Ax \rVert_2 = \sqrt{(Ax)^\top(Ax)} = \sqrt{x^\top A^2 x} \leq \sqrt{\lambda_1(A^2)} = \sqrt{\max\lbrace|\lambda_1(A)|, |\lambda_n(A)|\rbrace^2} \leq \rho(A).
 $$
 
 Thus the image size is bounded, at most $\rho(A)$-times larger.
@@ -127,7 +127,7 @@ The following theorem is a direct consequence of the Rayleigh--Ritz formula. It 
 Let $\lambda_1 \geq \ldots \geq \lambda_n$ be the eigenvalues of a symmetric matrix $A \in \mathbb{R}^{n \times n}$. Then
 
 $$
-\lambda_k = \max_{V \in \mathbb{R}^n:\, \dim V = k} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^T A x = \min_{V \in \mathbb{R}^n:\, \dim V = n-k+1} \max_{x \in V:\, \lVert x \rVert_2 = 1} x^T A x.
+\lambda_k = \max_{V \in \mathbb{R}^n:\, \dim V = k} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^\top A x = \min_{V \in \mathbb{R}^n:\, \dim V = n-k+1} \max_{x \in V:\, \lVert x \rVert_2 = 1} x^\top A x.
 $$
 
 </div>
@@ -141,19 +141,19 @@ $$
 **"$\leq$":** Define $U \coloneqq \operatorname{span}\lbrace q_1, \ldots, q_k \rbrace$. Every $x \in U$ with $\lVert x \rVert_2 = 1$ can be written as $x = \sum_{i=1}^k \alpha_i q_i$ with $\sum_{i=1}^k \alpha_i^2 = 1$. Then
 
 $$
-x^T A x = \sum_{i=1}^k \alpha_i^2 \lambda_i \geq \sum_{i=1}^k \alpha_i^2 \lambda_k = \lambda_k.
+x^\top A x = \sum_{i=1}^k \alpha_i^2 \lambda_i \geq \sum_{i=1}^k \alpha_i^2 \lambda_k = \lambda_k.
 $$
 
 **"$\geq$":** Let $V$ be an arbitrary subspace of $\mathbb{R}^n$ of dimension $k$. Then $V \cap \operatorname{span}\lbrace q_k, \ldots, q_n \rbrace$ has dimension at least $1$, so there exists a unit vector $v$ expressible as $x = \sum_{i=k}^n \alpha_i q_i$ with $\sum_{i=k}^n \alpha_i^2 = 1$. Then
 
 $$
-x^T A x = \sum_{i=k}^n \alpha_i^2 \lambda_i \leq \sum_{i=k}^n \alpha_i^2 \lambda_k = \lambda_k.
+x^\top A x = \sum_{i=k}^n \alpha_i^2 \lambda_i \leq \sum_{i=k}^n \alpha_i^2 \lambda_k = \lambda_k.
 $$
 
 **Equality (2.2).** Using $\lambda_k(A) = -\lambda_{n-k+1}(-A)$:
 
 $$
-\lambda_k(A) = -\max_{V:\,\dim V = n-k+1} \min_{x \in V:\, \lVert x \rVert_2=1} (-x^T A x) = \min_{V:\,\dim V = n-k+1} \max_{x \in V:\, \lVert x \rVert_2=1} x^T A x.
+\lambda_k(A) = -\max_{V:\,\dim V = n-k+1} \min_{x \in V:\, \lVert x \rVert_2=1} (-x^\top A x) = \min_{V:\,\dim V = n-k+1} \max_{x \in V:\, \lVert x \rVert_2=1} x^\top A x.
 $$
 
 </details>
@@ -181,13 +181,13 @@ Without loss of generality, assume $i = n$. Set $W \coloneqq \operatorname{span}
 **"$\lambda_k \geq \mu_k$":** By Courant--Fischer,
 
 $$
-\lambda_k = \max_{V \in \mathbb{R}^n:\, \dim V = k} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^T A x \geq \max_{V \in W:\, \dim V = k} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^T A x = \mu_k.
+\lambda_k = \max_{V \in \mathbb{R}^n:\, \dim V = k} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^\top A x \geq \max_{V \in W:\, \dim V = k} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^\top A x = \mu_k.
 $$
 
 **"$\mu_k \geq \lambda_{k+1}$":** Let $V_{k+1}$ be the subspace achieving the maximum in the Courant--Fischer formula for $\lambda_{k+1}$. Then $V_{k+1} \cap W$ has dimension at least $k$, so
 
 $$
-\lambda_{k+1} = \min_{x \in V_{k+1}:\, \lVert x \rVert_2 = 1} x^T A x \leq \max_{V \in W:\, \dim V = k} \min_{x \in V_{k+1} \cap W:\, \lVert x \rVert_2 = 1} x^T A x \leq \mu_k.
+\lambda_{k+1} = \min_{x \in V_{k+1}:\, \lVert x \rVert_2 = 1} x^\top A x \leq \max_{V \in W:\, \dim V = k} \min_{x \in V_{k+1} \cap W:\, \lVert x \rVert_2 = 1} x^\top A x \leq \mu_k.
 $$
 
 </details>
@@ -204,7 +204,7 @@ The SVD (Singular Value Decomposition) is one of the most important numerical te
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(SVD Decomposition)</span></p>
 
-Let $A \in \mathbb{R}^{m \times n}$, $q \coloneqq \min\lbrace m,n \rbrace$. Then there exists a diagonal matrix $\Sigma \in \mathbb{R}^{m \times n}$ with entries $\sigma_{11} \geq \ldots \geq \sigma_{qq} \geq 0$ and orthogonal matrices $U \in \mathbb{R}^{m \times m}$, $V \in \mathbb{R}^{n \times n}$ such that $A = U \Sigma V^T$.
+Let $A \in \mathbb{R}^{m \times n}$, $q \coloneqq \min\lbrace m,n \rbrace$. Then there exists a diagonal matrix $\Sigma \in \mathbb{R}^{m \times n}$ with entries $\sigma_{11} \geq \ldots \geq \sigma_{qq} \geq 0$ and orthogonal matrices $U \in \mathbb{R}^{m \times m}$, $V \in \mathbb{R}^{n \times n}$ such that $A = U \Sigma V^\top$.
 
 </div>
 
@@ -213,7 +213,7 @@ The diagonal entries $\sigma_1, \ldots, \sigma_q$ of $\Sigma$ are called the **s
 The **reduced form** of the SVD: Decompose $U = (U_1 \mid U_2)$, $V = (V_1 \mid V_2)$, and $S \coloneqq \operatorname{diag}(\sigma_1, \ldots, \sigma_r)$. Then
 
 $$
-A = U \Sigma V^T = \begin{pmatrix} U_1 & U_2 \end{pmatrix} \begin{pmatrix} S & 0 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} V_1^T \\ V_2^T \end{pmatrix} = U_1 S V_1^T.
+A = U \Sigma V^\top = \begin{pmatrix} U_1 & U_2 \end{pmatrix} \begin{pmatrix} S & 0 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} V_1^\top \\ V_2^\top \end{pmatrix} = U_1 S V_1^\top.
 $$
 
 The reduced SVD uses only a portion of the full SVD but contains the essential information, since the full SVD can be reconstructed by completing $U$, $V$ to orthogonal matrices.
@@ -221,7 +221,7 @@ The reduced SVD uses only a portion of the full SVD but contains the essential i
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Relationship Between Singular Values and Eigenvalues I)</span></p>
 
-Let $A \in \mathbb{R}^{m \times n}$, $r = \operatorname{rank}(A)$, and let $A^T A$ have eigenvalues $\lambda_1 \geq \ldots \geq \lambda_n$. Then the positive singular values of $A$ are $\sigma_i = \sqrt{\lambda_i}$, $i = 1, \ldots, r$.
+Let $A \in \mathbb{R}^{m \times n}$, $r = \operatorname{rank}(A)$, and let $A^\top A$ have eigenvalues $\lambda_1 \geq \ldots \geq \lambda_n$. Then the positive singular values of $A$ are $\sigma_i = \sqrt{\lambda_i}$, $i = 1, \ldots, r$.
 
 </div>
 
@@ -229,13 +229,13 @@ Let $A \in \mathbb{R}^{m \times n}$, $r = \operatorname{rank}(A)$, and let $A^T 
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $A = U \Sigma V^T$ be the SVD of $A$. Then
+Let $A = U \Sigma V^\top$ be the SVD of $A$. Then
 
 $$
-A^T A = V \Sigma^T U^T U \Sigma V^T = V \Sigma^T \Sigma V^T = V \operatorname{diag}(\sigma_1^2, \ldots, \sigma_q^2, 0, \ldots, 0) V^T,
+A^\top A = V \Sigma^\top U^\top U \Sigma V^\top = V \Sigma^\top \Sigma V^\top = V \operatorname{diag}(\sigma_1^2, \ldots, \sigma_q^2, 0, \ldots, 0) V^\top,
 $$
 
-which is the spectral decomposition of the positive semidefinite matrix $A^T A$. Thus $\lambda_i = \sigma_i^2$.
+which is the spectral decomposition of the positive semidefinite matrix $A^\top A$. Thus $\lambda_i = \sigma_i^2$.
 
 </details>
 </div>
@@ -243,16 +243,16 @@ which is the spectral decomposition of the positive semidefinite matrix $A^T A$.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-Let $Q \in \mathbb{R}^{n \times n}$ be orthogonal. Since $Q^T Q = I_n$, all eigenvalues are ones. Thus the singular values of an orthogonal matrix are also all ones.
+Let $Q \in \mathbb{R}^{n \times n}$ be orthogonal. Since $Q^\top Q = I_n$, all eigenvalues are ones. Thus the singular values of an orthogonal matrix are also all ones.
 
-Conversely, if $A \in \mathbb{R}^{n \times n}$ has all singular values equal to one, then $\Sigma = I_n$ and $A = U \Sigma V^T = U I_n V^T = UV^T$, which is a product of orthogonal matrices and hence orthogonal.
+Conversely, if $A \in \mathbb{R}^{n \times n}$ has all singular values equal to one, then $\Sigma = I_n$ and $A = U \Sigma V^\top = U I_n V^\top = UV^\top$, which is a product of orthogonal matrices and hence orthogonal.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A^T A = A^2$ has eigenvalues that are squares of eigenvalues $\lambda_1, \ldots, \lambda_n$ of $A$. Hence the singular values of $A$ are $|\lambda_1|, \ldots, |\lambda_n|$ in descending order.
+Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A^\top A = A^2$ has eigenvalues that are squares of eigenvalues $\lambda_1, \ldots, \lambda_n$ of $A$. Hence the singular values of $A$ are $\lvert \lambda_1\rvert, \ldots, \lvert \lambda_n\rvert$ in descending order.
 
 </div>
 
@@ -260,19 +260,19 @@ Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A^T A = A^2$ has eigenva
 <details markdown="1">
 <summary>Proof of the SVD Theorem</summary>
 
-Let $A^T A = V \Lambda V^T$ be the spectral decomposition of $A^T A$, with columns $v_1, \ldots, v_m$ of $V$. Set $r = \operatorname{rank}(A)$. Then
+Let $A^\top A = V \Lambda V^\top$ be the spectral decomposition of $A^\top A$, with columns $v_1, \ldots, v_m$ of $V$. Set $r = \operatorname{rank}(A)$. Then
 
 $$
-v_j^T A^T A v_i = v_j^T \lambda_i v_i = \begin{cases} \lambda_i & \text{if } i = j, \\ 0 & \text{if } i \neq j. \end{cases}
+v_j^\top A^\top A v_i = v_j^\top \lambda_i v_i = \begin{cases} \lambda_i & \text{if } i = j, \\ 0 & \text{if } i \neq j. \end{cases}
 $$
 
 Define $u_i \coloneqq \frac{1}{\sqrt{\lambda_i}} A v_i$ for $i = 1, \ldots, r$. Then $v_i \perp v_j$ and
 
 $$
-\lVert u_i \rVert_2^2 = \langle u_i, u_i \rangle = \left\langle \frac{1}{\sqrt{\lambda_i}} A v_i, \frac{1}{\sqrt{\lambda_i}} A v_i \right\rangle = \frac{1}{\lambda_i} v_i^T A^T A v_i = 1.
+\lVert u_i \rVert_2^2 = \langle u_i, u_i \rangle = \left\langle \frac{1}{\sqrt{\lambda_i}} A v_i, \frac{1}{\sqrt{\lambda_i}} A v_i \right\rangle = \frac{1}{\lambda_i} v_i^\top A^\top A v_i = 1.
 $$
 
-Thus $u_1, \ldots, u_r$ form an orthonormal system. Extend to an orthonormal basis $u_1, \ldots, u_r, \ldots, u_m$ of $\mathbb{R}^m$. Since $u_i \in \mathcal{S}(A)$ and $\operatorname{rank}(A) = r$, we have $u_i^T A = 0$ for $i = r+1, \ldots, n$. The equation can be rewritten as $U^T A V = \Sigma$, giving $A = U \Sigma V^T$.
+Thus $u_1, \ldots, u_r$ form an orthonormal system. Extend to an orthonormal basis $u_1, \ldots, u_r, \ldots, u_m$ of $\mathbb{R}^m$. Since $u_i \in \mathcal{S}(A)$ and $\operatorname{rank}(A) = r$, we have $u_i^\top A = 0$ for $i = r+1, \ldots, n$. The equation can be rewritten as $U^\top A V = \Sigma$, giving $A = U \Sigma V^\top$.
 
 </details>
 </div>
@@ -280,23 +280,23 @@ Thus $u_1, \ldots, u_r$ form an orthonormal system. Extend to an orthonormal bas
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-The proof reveals that $V$ is the orthogonal matrix from the spectral decomposition of $A^T A$. Similarly, $U$ is the orthogonal matrix from the spectral decomposition of $AA^T$:
+The proof reveals that $V$ is the orthogonal matrix from the spectral decomposition of $A^\top A$. Similarly, $U$ is the orthogonal matrix from the spectral decomposition of $AA^\top$:
 
 $$
-AA^T = U \Sigma V^T V \Sigma^T U^T = U \Sigma \Sigma^T U^T = U \operatorname{diag}(\sigma_1^2, \ldots, \sigma_q^2, 0, \ldots, 0) U^T.
+AA^\top = U \Sigma V^\top V \Sigma^\top U^\top = U \Sigma \Sigma^\top U^\top = U \operatorname{diag}(\sigma_1^2, \ldots, \sigma_q^2, 0, \ldots, 0) U^\top.
 $$
 
-Unfortunately, the spectral decompositions of $A^T A$ and $AA^T$ alone cannot be used to uniquely construct the SVD, since we can only use one and must compute the other slightly differently.
+Unfortunately, the spectral decompositions of $A^\top A$ and $AA^\top$ alone cannot be used to uniquely construct the SVD, since we can only use one and must compute the other slightly differently.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-Let $A = (1\ 1\ 1\ 1)$. The spectral decomposition of $A^T A$ is
+Let $A = (1\ 1\ 1\ 1)$. The spectral decomposition of $A^\top A$ is
 
 $$
-A^T A = \begin{pmatrix} 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} 1/2 & \cdots \\ 1/2 & \cdots \\ 1/2 & \cdots \\ 1/2 & \cdots \end{pmatrix} \begin{pmatrix} 4 & & \\ & 0 & \\ & & 0 \\ & & & 0 \end{pmatrix} \begin{pmatrix} 1/2 & 1/2 & 1/2 & 1/2 \\ \vdots & \vdots & \vdots & \vdots \end{pmatrix}.
+A^\top A = \begin{pmatrix} 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} 1/2 & \cdots \\ 1/2 & \cdots \\ 1/2 & \cdots \\ 1/2 & \cdots \end{pmatrix} \begin{pmatrix} 4 & & \\ & 0 & \\ & & 0 \\ & & & 0 \end{pmatrix} \begin{pmatrix} 1/2 & 1/2 & 1/2 & 1/2 \\ \vdots & \vdots & \vdots & \vdots \end{pmatrix}.
 $$
 
 Now $u_1 = \frac{1}{\sqrt{\lambda_i}} A v_i = 1$. Thus the full and reduced SVD is
@@ -315,7 +315,7 @@ There is another relationship between singular values and eigenvalues:
 A matrix $A \in \mathbb{R}^{m \times n}$ has singular values $\sigma_1, \ldots, \sigma_r$ exactly when the nonzero eigenvalues of the matrix
 
 $$
-\begin{pmatrix} 0 & A \\ A^T & 0 \end{pmatrix}
+\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix}
 $$
 
 are $\sigma_1, \ldots, \sigma_r, -\sigma_r, \ldots, -\sigma_1$.
@@ -326,18 +326,18 @@ are $\sigma_1, \ldots, \sigma_r, -\sigma_r, \ldots, -\sigma_1$.
 <details markdown="1">
 <summary>Proof</summary>
 
-**"$\Leftarrow$":** Let $\lambda$ be an eigenvalue and $(y^T, x^T)^T$ the corresponding eigenvector of $\begin{pmatrix} 0 & A \\ A^T & 0 \end{pmatrix}$, i.e.,
+**"$\Leftarrow$":** Let $\lambda$ be an eigenvalue and $(y^\top, x^\top)^\top$ the corresponding eigenvector of $\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix}$, i.e.,
 
 $$
-\begin{pmatrix} 0 & A \\ A^T & 0 \end{pmatrix} \begin{pmatrix} y \\ x \end{pmatrix} = \lambda \begin{pmatrix} y \\ x \end{pmatrix}.
+\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix} \begin{pmatrix} y \\ x \end{pmatrix} = \lambda \begin{pmatrix} y \\ x \end{pmatrix}.
 $$
 
-This gives two equations: $A^T y = \lambda x$ and $Ax = \lambda y$. Thus $A^T A x = A^T(\lambda y) = \lambda^2 x$. By Theorem 3.2, $\sigma \coloneqq \sqrt{\lambda^2} = |\lambda|$ is a singular value of $A$.
+This gives two equations: $A^\top y = \lambda x$ and $Ax = \lambda y$. Thus $A^\top A x = A^\top(\lambda y) = \lambda^2 x$. By Theorem 3.2, $\sigma \coloneqq \sqrt{\lambda^2} = |\lambda|$ is a singular value of $A$.
 
-**"$\Rightarrow$":** Let $\sigma$ be a singular value of $A$. By Theorem 3.2, $A^T A x = \sigma^2 x$ for some $x \neq 0$. Set $y \coloneqq \frac{1}{\sigma} Ax$. Then $Ax = \sigma y$ and $A^T y = \sigma x$, so
+**"$\Rightarrow$":** Let $\sigma$ be a singular value of $A$. By Theorem 3.2, $A^\top A x = \sigma^2 x$ for some $x \neq 0$. Set $y \coloneqq \frac{1}{\sigma} Ax$. Then $Ax = \sigma y$ and $A^\top y = \sigma x$, so
 
 $$
-\begin{pmatrix} 0 & A \\ A^T & 0 \end{pmatrix} \begin{pmatrix} y \\ x \end{pmatrix} = \sigma \begin{pmatrix} y \\ x \end{pmatrix}.
+\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix} \begin{pmatrix} y \\ x \end{pmatrix} = \sigma \begin{pmatrix} y \\ x \end{pmatrix}.
 $$
 
 Thus $\sigma$ is an eigenvalue. Analogously, setting $y' \coloneqq -\frac{1}{\sigma} Ax$, we get $-\sigma$ as an eigenvalue.
@@ -366,7 +366,7 @@ Another consequence of Theorem 3.7 is the min-max representation of singular val
 Let $A \in \mathbb{R}^{m \times n}$. Then
 
 $$
-\sigma_1(A) = \max_{\lVert x \rVert_2 = \lVert y \rVert_2 = 1} x^T A y.
+\sigma_1(A) = \max_{\lVert x \rVert_2 = \lVert y \rVert_2 = 1} x^\top A y.
 $$
 
 </div>
@@ -375,15 +375,15 @@ $$
 <details markdown="1">
 <summary>Proof</summary>
 
-Applying the Rayleigh--Ritz theorem to the matrix $\begin{pmatrix} 0 & A \\ A^T & 0 \end{pmatrix}$:
+Applying the Rayleigh--Ritz theorem to the matrix $\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix}$:
 
 $$
-\sigma_1(A) = \max_{\lVert(x,y)\rVert_2 = 1} \begin{pmatrix} x^T & y^T \end{pmatrix} \begin{pmatrix} 0 & A \\ A^T & 0 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 2 \max_{\lVert(x,y)\rVert_2 = 1} x^T A y.
+\sigma_1(A) = \max_{\lVert(x,y)\rVert_2 = 1} \begin{pmatrix} x^\top & y^\top \end{pmatrix} \begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 2 \max_{\lVert(x,y)\rVert_2 = 1} x^\top A y.
 $$
 
-This is $\geq 2 \max_{\lVert x \rVert_2 = \lVert y \rVert_2 = 1} x^T A y \cdot \frac{1}{1} = \max_{\lVert x \rVert_2 = \lVert y \rVert_2 = 1} x^T A y$.
+This is $\geq 2 \max_{\lVert x \rVert_2 = \lVert y \rVert_2 = 1} x^\top A y \cdot \frac{1}{1} = \max_{\lVert x \rVert_2 = \lVert y \rVert_2 = 1} x^\top A y$.
 
-On the other hand, let $A = U\Sigma V^T$ and let $u$, $v$ be the first columns of $U$ and $V$. Then $u^T A v = e_1^T \Sigma e_1 = \sigma_1(A)$, so the equality is achieved for $x \coloneqq u$ and $y \coloneqq v$.
+On the other hand, let $A = U\Sigma V^\top$ and let $u$, $v$ be the first columns of $U$ and $V$. Then $u^\top A v = e_1^\top \Sigma e_1 = \sigma_1(A)$, so the equality is achieved for $x \coloneqq u$ and $y \coloneqq v$.
 
 </details>
 </div>
@@ -397,10 +397,10 @@ The SVD can be used to find an orthonormal basis of (not only) the column space 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A = U\Sigma V^T = U_1 S V_1^T$ be the SVD of $A \in \mathbb{R}^{m \times n}$. Then
+Let $A = U\Sigma V^\top = U_1 S V_1^\top$ be the SVD of $A \in \mathbb{R}^{m \times n}$. Then
 
 1. Columns of $U_1$ form an orthonormal basis of $\mathcal{S}(A)$.
-2. Columns of $U_2$ form an orthonormal basis of $\operatorname{Ker}(A^T)$.
+2. Columns of $U_2$ form an orthonormal basis of $\operatorname{Ker}(A^\top)$.
 3. Columns of $V_1$ form an orthonormal basis of $\mathcal{R}(A)$.
 4. Columns of $V_2$ form an orthonormal basis of $\operatorname{Ker}(A)$.
 
@@ -410,10 +410,10 @@ Let $A = U\Sigma V^T = U_1 S V_1^T$ be the SVD of $A \in \mathbb{R}^{m \times n}
 <details markdown="1">
 <summary>Proof</summary>
 
-1. The reduced SVD is $A = U_1 S V_1^T$. Multiplying $V_1$ from the right gives $AV_1 = U_1 S$. Thus $\mathcal{S}(A) \ni \mathcal{S}(AV_1) = \mathcal{S}(U_1 S) = \mathcal{S}(U_1)$ by regularity of $S$. Since $\operatorname{rank}(A) = \operatorname{rank}(U_1)$, we have $\mathcal{S}(A) = \mathcal{S}(U_1)$.
+1. The reduced SVD is $A = U_1 S V_1^\top$. Multiplying $V_1$ from the right gives $AV_1 = U_1 S$. Thus $\mathcal{S}(A) \ni \mathcal{S}(AV_1) = \mathcal{S}(U_1 S) = \mathcal{S}(U_1)$ by regularity of $S$. Since $\operatorname{rank}(A) = \operatorname{rank}(U_1)$, we have $\mathcal{S}(A) = \mathcal{S}(U_1)$.
 2. Analogous, using (4).
-3. Follows from $\mathcal{R}(A) = \mathcal{S}(A^T)$.
-4. From the transpose $A^T = V_1 S U_1^T$, the columns of $V_1$ form an orthonormal basis of $\mathcal{S}(A^T) = \mathcal{R}(A) = \operatorname{Ker}(A)^\perp$. Hence columns of $V_2$ represent an orthonormal basis of $\operatorname{Ker}(A)$.
+3. Follows from $\mathcal{R}(A) = \mathcal{S}(A^\top)$.
+4. From the transpose $A^\top = V_1 S U_1^\top$, the columns of $V_1$ form an orthonormal basis of $\mathcal{S}(A^\top) = \mathcal{R}(A) = \operatorname{Ker}(A)^\perp$. Hence columns of $V_2$ represent an orthonormal basis of $\operatorname{Ker}(A)$.
 
 </details>
 </div>
@@ -425,10 +425,10 @@ Using the SVD we can easily express the projection matrix onto the column space 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A = U\Sigma V^T = U_1 S V_1^T$ be the SVD of $A \in \mathbb{R}^{m \times n}$. Then the projection matrix onto
+Let $A = U\Sigma V^\top = U_1 S V_1^\top$ be the SVD of $A \in \mathbb{R}^{m \times n}$. Then the projection matrix onto
 
-1. the column space $\mathcal{S}(A)$ is $U_1 U_1^T$,
-2. the row space $\mathcal{R}(A)$ is $V_1 V_1^T$.
+1. the column space $\mathcal{S}(A)$ is $U_1 U_1^\top$,
+2. the row space $\mathcal{R}(A)$ is $V_1 V_1^\top$.
 
 </div>
 
@@ -436,15 +436,15 @@ Let $A = U\Sigma V^T = U_1 S V_1^T$ be the SVD of $A \in \mathbb{R}^{m \times n}
 <details markdown="1">
 <summary>Proof</summary>
 
-1. By Theorem 3.11, $\mathcal{S}(A) = \mathcal{S}(U_1)$. The columns of $U_1$ are linearly independent, so the projection matrix has the well-known form $U_1(U_1^T U_1)^{-1} U_1^T = U_1 (I_r)^{-1} U_1^T = U_1 U_1^T$.
-2. Follows from $\mathcal{R}(A) = \mathcal{S}(A^T)$.
+1. By Theorem 3.11, $\mathcal{S}(A) = \mathcal{S}(U_1)$. The columns of $U_1$ are linearly independent, so the projection matrix has the well-known form $U_1(U_1^\top U_1)^{-1} U_1^\top = U_1 (I_r)^{-1} U_1^\top = U_1 U_1^\top$.
+2. Follows from $\mathcal{R}(A) = \mathcal{S}(A^\top)$.
 
 </details>
 </div>
 
 #### SVD and Geometry of Linear Maps
 
-Let $A \in \mathbb{R}^{n \times n}$ be a regular matrix and consider the image of the unit ball under $x \mapsto Ax$. From the SVD $A = U\Sigma V^T$ it follows that the linear map decomposes into three elementary maps: orthogonal transformation by $V^T$, scaling by $\Sigma$, and orthogonal transformation by $U$. Specifically, $V^T$ maps the ball onto itself, $\Sigma$ deforms it into an ellipsoid, and $U$ rotates/reflects it. The resulting ellipsoid has semi-axes in the directions of the columns of $U$ with lengths $\sigma_1, \ldots, \sigma_n$.
+Let $A \in \mathbb{R}^{n \times n}$ be a regular matrix and consider the image of the unit ball under $x \mapsto Ax$. From the SVD $A = U\Sigma V^\top$ it follows that the linear map decomposes into three elementary maps: orthogonal transformation by $V^\top$, scaling by $\Sigma$, and orthogonal transformation by $U$. Specifically, $V^\top$ maps the ball onto itself, $\Sigma$ deforms it into an ellipsoid, and $U$ rotates/reflects it. The resulting ellipsoid has semi-axes in the directions of the columns of $U$ with lengths $\sigma_1, \ldots, \sigma_n$.
 
 The ratio $\frac{\sigma_1}{\sigma_n} \geq 1$ is called the **condition number** and quantifies how much the map deforms geometric shapes. If the condition number equals $1$, the ellipsoid is a ball; the larger it is, the more elongated the ellipsoid becomes. In numerical mathematics, $\frac{\sigma_1}{\sigma_n}$ is also called the condition number of the matrix $A$: the larger it is, the worse the matrix $A$ is conditioned, causing issues with rounding in computer arithmetic.
 
@@ -454,17 +454,17 @@ The rank of $A$ equals the number of positive singular values. However, for comp
 
 #### SVD and Low-Rank Approximation
 
-Let $A \in \mathbb{R}^{m \times n}$ with $A = U\Sigma V^T$. By keeping only the $k$ largest singular values and setting $\sigma_{k+1} \coloneqq 0, \ldots, \sigma_r \coloneqq 0$, we obtain a matrix
+Let $A \in \mathbb{R}^{m \times n}$ with $A = U\Sigma V^\top$. By keeping only the $k$ largest singular values and setting $\sigma_{k+1} \coloneqq 0, \ldots, \sigma_r \coloneqq 0$, we obtain a matrix
 
 $$
-A' = U \operatorname{diag}(\sigma_1, \ldots, \sigma_k, 0, \ldots, 0) V^T
+A' = U \operatorname{diag}(\sigma_1, \ldots, \sigma_k, 0, \ldots, 0) V^\top
 $$
 
 of rank $k$ that well approximates $A$. Moreover, this approximation is optimal in a certain sense --- in a specific norm (see Theorem 5.26), $A'$ is the closest rank-$k$ matrix to $A$.
 
 #### SVD and Data Compression
 
-If $A \in \mathbb{R}^{m \times n}$ with $\operatorname{rank}(A) = r$, the reduced SVD $A = U_1 S V_1^T$ requires storing $(m+r+n)r$ values. A low-rank approximation $A \approx U \operatorname{diag}(\sigma_1, \ldots, \sigma_k, 0, \ldots, 0) V^T$ requires only $(m+n+1)k$ values. The compression ratio is $k : r$. The smaller $k$, the smaller the data to store, but the worse the approximation.
+If $A \in \mathbb{R}^{m \times n}$ with $\operatorname{rank}(A) = r$, the reduced SVD $A = U_1 S V_1^\top$ requires storing $(m+r+n)r$ values. A low-rank approximation $A \approx U \operatorname{diag}(\sigma_1, \ldots, \sigma_k, 0, \ldots, 0) V^\top$ requires only $(m+n+1)k$ values. The compression ratio is $k : r$. The smaller $k$, the smaller the data to store, but the worse the approximation.
 
 #### SVD and Regularity Measure
 
@@ -492,14 +492,14 @@ The most common pseudoinverse is the Moore--Penrose pseudoinverse, which is base
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Moore--Penrose Pseudoinverse)</span></p>
 
-Let $A \in \mathbb{R}^{m \times n}$ with reduced SVD $A = U_1 S V_1^T$. If $A \neq 0$, its **pseudoinverse** is $A^\dagger = V_1 S^{-1} U_1^T \in \mathbb{R}^{n \times m}$. For $A = 0$ we define $A^\dagger = A^T$.
+Let $A \in \mathbb{R}^{m \times n}$ with reduced SVD $A = U_1 S V_1^\top$. If $A \neq 0$, its **pseudoinverse** is $A^\dagger = V_1 S^{-1} U_1^\top \in \mathbb{R}^{n \times m}$. For $A = 0$ we define $A^\dagger = A^\top$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-The pseudoinverse of a nonzero vector $a \in \mathbb{R}^n$ is $a^\dagger = \frac{1}{a^T a} a^T$. For instance, $(1,1,1,1)^\dagger = \frac{1}{4}(1,1,1,1)^T$.
+The pseudoinverse of a nonzero vector $a \in \mathbb{R}^n$ is $a^\dagger = \frac{1}{a^\top a} a^\top$. For instance, $(1,1,1,1)^\dagger = \frac{1}{4}(1,1,1,1)^\top$.
 
 </div>
 
@@ -510,13 +510,13 @@ Let $A \in \mathbb{R}^{m \times n}$, then
 
 1. If $A$ is regular, then $A^{-1} = A^\dagger$.
 2. $(A^\dagger)^\dagger = A$.
-3. $(A^T)^\dagger = (A^\dagger)^T$.
+3. $(A^\top)^\dagger = (A^\dagger)^\top$.
 4. $A = AA^\dagger A$.
 5. $A^\dagger = A^\dagger A A^\dagger$.
 6. $AA^\dagger$ is symmetric.
 7. $A^\dagger A$ is symmetric.
-8. If $A$ has linearly independent columns, then $A^\dagger = (A^T A)^{-1} A^T$.
-9. If $A$ has linearly independent rows, then $A^\dagger = A^T (A A^T)^{-1}$.
+8. If $A$ has linearly independent columns, then $A^\dagger = (A^\top A)^{-1} A^\top$.
+9. If $A$ has linearly independent rows, then $A^\dagger = A^\top (A A^\top)^{-1}$.
 
 </div>
 
@@ -524,15 +524,15 @@ Let $A \in \mathbb{R}^{m \times n}$, then
 <details markdown="1">
 <summary>Proof (selected)</summary>
 
-**(4):** From the definition, $AA^\dagger A = U_1 S V_1^T V_1 S^{-1} U_1^T U_1 S V_1^T = U_1 S S^{-1} S V_1^T = U_1 S V_1^T = A$.
+**(4):** From the definition, $AA^\dagger A = U_1 S V_1^\top V_1 S^{-1} U_1^\top U_1 S V_1^\top = U_1 S S^{-1} S V_1^\top = U_1 S V_1^\top = A$.
 
 **(8):** Here $V_1$ is square, hence orthogonal. Then
 
 $$
-(A^T A)^{-1} = (V_1 S U_1^T U_1 S V_1^T)^{-1} = (V_1 S^2 V_1^T)^{-1} = V_1 S^{-2} V_1^T,
+(A^\top A)^{-1} = (V_1 S U_1^\top U_1 S V_1^\top)^{-1} = (V_1 S^2 V_1^\top)^{-1} = V_1 S^{-2} V_1^\top,
 $$
 
-and so $(A^T A)^{-1} A^T = V_1 S^{-2} V_1^T V_1 S U_1^T = V_1 S^{-1} U_1^T = A^\dagger$.
+and so $(A^\top A)^{-1} A^\top = V_1 S^{-2} V_1^\top V_1 S U_1^\top = V_1 S^{-1} U_1^\top = A^\dagger$.
 
 </details>
 </div>
@@ -558,8 +558,8 @@ Let $A \in \mathbb{R}^{m \times n}$. The projection matrix onto
 <details markdown="1">
 <summary>Proof</summary>
 
-1. Using the reduced SVD $A = U_1 S V_1^T$: $AA^\dagger = U_1 S V_1^T V_1 S^{-1} U_1^T = U_1 U_1^T$. By Theorem 3.12, this is the projection onto $\mathcal{S}(A)$.
-2. Analogously, $A^\dagger A = V_1 V_1^T$, the projection onto $\mathcal{R}(A)$.
+1. Using the reduced SVD $A = U_1 S V_1^\top$: $AA^\dagger = U_1 S V_1^\top V_1 S^{-1} U_1^\top = U_1 U_1^\top$. By Theorem 3.12, this is the projection onto $\mathcal{S}(A)$.
+2. Analogously, $A^\dagger A = V_1 V_1^\top$, the projection onto $\mathcal{R}(A)$.
 3. From the property $\operatorname{Ker}(A) = \mathcal{R}(A)^\perp$.
 
 </details>
@@ -713,7 +713,7 @@ $$
 In particular, the norm $\lVert A \rVert_{\ell_2}$ is often called the **Frobenius norm** and denoted $\lVert A \rVert_F$. It can be equivalently expressed as
 
 $$
-\lVert A \rVert_F = \sqrt{\operatorname{trace}(A^T A)}.
+\lVert A \rVert_F = \sqrt{\operatorname{trace}(A^\top A)}.
 $$
 
 ### Definition, Examples, and the Induced Norm
@@ -851,7 +851,7 @@ For $p \in \lbrace 1, 2, \infty \rbrace$ the $p$-norm has a simple closed-form e
 
 1. $\lVert A \rVert_1 = \max_j \sum_i |a_{ij}|$ (maximum column sum),
 2. $\lVert A \rVert_2 = \sigma_1(A)$ (largest singular value of $A$),
-3. $\lVert A \rVert_\infty = \max_i \sum_j |a_{ij}| = \lVert A^T \rVert_1$ (maximum row sum).
+3. $\lVert A \rVert_\infty = \max_i \sum_j |a_{ij}| = \lVert A^\top \rVert_1$ (maximum row sum).
 
 </div>
 
@@ -867,7 +867,7 @@ It suffices to verify property (4) --- the other axioms follow from Theorem 5.7.
 
 "$\leq$": $\lVert A \rVert_1 = \max_{\lVert x \rVert_{\ell_1}=1} \lVert Ax \rVert_{\ell_1} = \max_{\lVert x \rVert_{\ell_1}=1} \lVert \sum_j x_j A_{\ast j} \rVert_{\ell_1} \leq \max_{\lVert x \rVert_{\ell_1}=1} \sum_j |x_j| \cdot \lVert A_{\ast j} \rVert_{\ell_1} \leq \max_{\lVert x \rVert_{\ell_1}=1} \sum_j |x_j| h = h$.
 
-**(2):** Let $A = U\Sigma V^T$ be the SVD. By Lemma 5.8, $\lVert A \rVert_2 = \lVert \Sigma \rVert_2 = \max_{\lVert x \rVert_{\ell_2}=1} \lVert \sigma_1 I_n x \rVert_{\ell_2} \leq \max_{\lVert x \rVert_{\ell_2}=1} \sigma_1 \lVert x \rVert_{\ell_2} = \sigma_1$, with equality for $x = e_1$.
+**(2):** Let $A = U\Sigma V^\top$ be the SVD. By Lemma 5.8, $\lVert A \rVert_2 = \lVert \Sigma \rVert_2 = \max_{\lVert x \rVert_{\ell_2}=1} \lVert \sigma_1 I_n x \rVert_{\ell_2} \leq \max_{\lVert x \rVert_{\ell_2}=1} \sigma_1 \lVert x \rVert_{\ell_2} = \sigma_1$, with equality for $x = e_1$.
 
 **(3):** Set $h \coloneqq \max_i \sum_j |a_{ij}|$.
 
@@ -912,7 +912,7 @@ One important relationship between matrix norms is their connection to the spect
 The spectral radius is not a matrix norm because:
 
 1. $\rho(A) = 0$ even for $A \neq 0$, e.g., $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$.
-2. $\rho(A+B) \leq \rho(A) + \rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$, $B = A^T$.
+2. $\rho(A+B) \leq \rho(A) + \rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$, $B = A^\top$.
 3. $\rho(AB) \leq \rho(A)\rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$, since $\rho(A) = \rho(B) = 1$ but $\rho(AB) = (1+\sqrt{5})/2$.
 
 </div>
@@ -1074,7 +1074,7 @@ A matrix norm $\lVert A \rVert$ is **orthogonally invariant** if $\lVert UAV \rV
 
 </div>
 
-For any orthogonally invariant norm and $A \in \mathbb{R}^{m \times n}$ with $A = U\Sigma V^T$: $\lVert A \rVert = \lVert U\Sigma V^T \rVert = \lVert \Sigma \rVert$, so the norm depends only on the singular values of $A$.
+For any orthogonally invariant norm and $A \in \mathbb{R}^{m \times n}$ with $A = U\Sigma V^\top$: $\lVert A \rVert = \lVert U\Sigma V^\top \rVert = \lVert \Sigma \rVert$, so the norm depends only on the singular values of $A$.
 
 We already know that the spectral norm $\lVert A \rVert_2$ is orthogonally invariant (Lemma 5.8). It is not the only such norm. The Frobenius norm is also orthogonally invariant since it depends only on singular values:
 
@@ -1093,7 +1093,7 @@ Other examples of orthogonally invariant norms include:
 The nuclear norm is the best convex lower bound to the rank of a matrix within the unit ball. It can be used for matrix rank minimization problems --- for instance, in robust PCA, where instead of minimizing the rank we minimize the nuclear norm. Its relationship with the Frobenius norm is:
 
 $$
-\lVert A \rVert_F = \sqrt{\operatorname{trace}(A^T A)}, \quad \lVert A \rVert_* = \operatorname{trace}\left(\sqrt{A^T A}\right).
+\lVert A \rVert_F = \sqrt{\operatorname{trace}(A^\top A)}, \quad \lVert A \rVert_* = \operatorname{trace}\left(\sqrt{A^\top A}\right).
 $$
 
 ### Further Applications of Matrix Norms
@@ -1113,16 +1113,16 @@ Let $A \in \mathbb{R}^{m \times n}$ have singular values $\sigma_1, \ldots, \sig
 <details markdown="1">
 <summary>Proof</summary>
 
-**"$\geq$":** Let $A = U\Sigma V^T$ be the SVD. Define the rank-$(i-1)$ matrix $B \coloneqq U \operatorname{diag}(\sigma_1, \ldots, \sigma_{i-1}, 0, \ldots, 0) V^T$. Then
+**"$\geq$":** Let $A = U\Sigma V^\top$ be the SVD. Define the rank-$(i-1)$ matrix $B \coloneqq U \operatorname{diag}(\sigma_1, \ldots, \sigma_{i-1}, 0, \ldots, 0) V^\top$. Then
 
 $$
-\lVert A - B \rVert_2 = \lVert U \operatorname{diag}(0, \ldots, 0, \sigma_i, \ldots, \sigma_n) V^T \rVert_2 = \lVert \operatorname{diag}(0, \ldots, 0, \sigma_i, \ldots, \sigma_n) \rVert_2 = \sigma_i.
+\lVert A - B \rVert_2 = \lVert U \operatorname{diag}(0, \ldots, 0, \sigma_i, \ldots, \sigma_n) V^\top \rVert_2 = \lVert \operatorname{diag}(0, \ldots, 0, \sigma_i, \ldots, \sigma_n) \rVert_2 = \sigma_i.
 $$
 
-**"$\leq$":** Let $B \in \mathbb{R}^{n \times n}$ have rank at most $i-1$. Let $V_1$ consist of the first $i$ columns of $V$. Take $0 \neq z \in \operatorname{Ker}(B) \cap \mathcal{S}(V_1)$ (such $z$ exists since $\dim \operatorname{Ker}(B) \geq n - i + 1$ and $\dim \mathcal{S}(V_1) = i$). Normalize $\lVert z \rVert_2 = 1$. Since $z \in \mathcal{S}(V_1)$, write $z = V y$ for $y = (y_1, \ldots, y_i, 0, \ldots, 0)^T$ with $\lVert y \rVert_2 = 1$. Then
+**"$\leq$":** Let $B \in \mathbb{R}^{n \times n}$ have rank at most $i-1$. Let $V_1$ consist of the first $i$ columns of $V$. Take $0 \neq z \in \operatorname{Ker}(B) \cap \mathcal{S}(V_1)$ (such $z$ exists since $\dim \operatorname{Ker}(B) \geq n - i + 1$ and $\dim \mathcal{S}(V_1) = i$). Normalize $\lVert z \rVert_2 = 1$. Since $z \in \mathcal{S}(V_1)$, write $z = V y$ for $y = (y_1, \ldots, y_i, 0, \ldots, 0)^\top$ with $\lVert y \rVert_2 = 1$. Then
 
 $$
-\lVert A - B \rVert_2^2 \geq \lVert (A-B)z \rVert_2^2 \geq \lVert Az \rVert_2^2 = \lVert U\Sigma V^T z \rVert_2^2 = \lVert \Sigma y \rVert_2^2 = \sum_{j=1}^i \sigma_j^2 y_j^2 \geq \sigma_i^2 \lVert y \rVert_2^2 = \sigma_i^2.
+\lVert A - B \rVert_2^2 \geq \lVert (A-B)z \rVert_2^2 \geq \lVert Az \rVert_2^2 = \lVert U\Sigma V^\top z \rVert_2^2 = \lVert \Sigma y \rVert_2^2 = \sum_{j=1}^i \sigma_j^2 y_j^2 \geq \sigma_i^2 \lVert y \rVert_2^2 = \sigma_i^2.
 $$
 
 </details>
@@ -1141,7 +1141,7 @@ $$
 \min\lbrace \lVert A - QB \rVert_F \colon Q \in \mathbb{R}^{m \times m} \text{ orthogonal} \rbrace.
 $$
 
-Let $AB^T = U\Sigma V^T$ be the SVD of $AB^T$. Then the optimum is $Q = UV^T$. Moreover, there exists an orthogonal $Q$ with $A = QB$ exactly when $\lVert A \rVert_F = \lVert B \rVert_F = \sqrt{\sum_i \sigma_i}$.
+Let $AB^\top = U\Sigma V^\top$ be the SVD of $AB^\top$. Then the optimum is $Q = UV^\top$. Moreover, there exists an orthogonal $Q$ with $A = QB$ exactly when $\lVert A \rVert_F = \lVert B \rVert_F = \sqrt{\sum_i \sigma_i}$.
 
 </div>
 
@@ -1149,13 +1149,13 @@ Let $AB^T = U\Sigma V^T$ be the SVD of $AB^T$. Then the optimum is $Q = UV^T$. M
 <details markdown="1">
 <summary>Proof</summary>
 
-The Frobenius norm is induced by the scalar product $\langle A, B \rangle = \operatorname{trace}(A^T B)$. Expanding:
+The Frobenius norm is induced by the scalar product $\langle A, B \rangle = \operatorname{trace}(A^\top B)$. Expanding:
 
 $$
 \lVert A - QB \rVert_F^2 = \lVert A \rVert_F^2 + \lVert QB \rVert_F^2 - 2 \langle QB, A \rangle = \lVert A \rVert_F^2 + \lVert B \rVert_F^2 - 2\langle QB, A \rangle.
 $$
 
-Since $\lVert A \rVert_F^2 + \lVert B \rVert_F^2$ is constant, we maximize $\langle QB, A \rangle = \operatorname{trace}(B^T Q^T A) = \operatorname{trace}(U\Sigma V^T Q^T)$ over orthogonal $Q$. Setting $H = V^T Q^T U$, we get $\langle QB, A \rangle = \operatorname{trace}(\Sigma H) = \sum_i \sigma_i h_{ii}$. Since $h_{ii} \in [-1,1]$ for orthogonal $H$, the maximum $\sum_i \sigma_i$ is achieved when $H = I_m$, i.e., $Q = UV^T$.
+Since $\lVert A \rVert_F^2 + \lVert B \rVert_F^2$ is constant, we maximize $\langle QB, A \rangle = \operatorname{trace}(B^\top Q^\top A) = \operatorname{trace}(U\Sigma V^\top Q^\top)$ over orthogonal $Q$. Setting $H = V^\top Q^\top U$, we get $\langle QB, A \rangle = \operatorname{trace}(\Sigma H) = \sum_i \sigma_i h_{ii}$. Since $h_{ii} \in [-1,1]$ for orthogonal $H$, the maximum $\sum_i \sigma_i$ is achieved when $H = I_m$, i.e., $Q = UV^\top$.
 
 For the second part, $A = QB$ requires $\lVert A \rVert_F = \lVert B \rVert_F$ by orthogonal invariance of the Frobenius norm. The first part shows $Q$ exists iff $0 = \lVert A - QB \rVert_F^2 = 2\lVert A \rVert_F^2 - 2\langle QB, A \rangle$, i.e., $\lVert A \rVert_F^2 = \sum_i \sigma_i$.
 
@@ -1165,7 +1165,7 @@ For the second part, $A = QB$ requires $\lVert A \rVert_F = \lVert B \rVert_F$ b
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-For $B = I$, the best orthogonal approximation of $A$ is $Q = UV^T$, where $A = U\Sigma V^T$ is the SVD of $A$.
+For $B = I$, the best orthogonal approximation of $A$ is $Q = UV^\top$, where $A = U\Sigma V^\top$ is the SVD of $A$.
 
 </div>
 
@@ -1190,7 +1190,7 @@ $$
 
 By a matrix Pythagorean theorem (Lemma 5.24): for $X \coloneqq I_m - AA^\dagger$ and $Y \coloneqq A(A^\dagger - X)$, if $\mathcal{S}(X) \perp \mathcal{S}(Y)$, then $\lVert X + Y \rVert_F^2 = \lVert X \rVert_F^2 + \lVert Y \rVert_F^2$.
 
-Since $\mathcal{S}(I_m - AA^\dagger) \subseteq \mathcal{S}(A) = \operatorname{Ker}(A^T)^\perp$ and $\mathcal{S}(AA^\dagger - AX) \subseteq \mathcal{S}(A)$ (by Theorem 4.4, $I_m - AA^\dagger$ projects onto $\operatorname{Ker}(A^T)$):
+Since $\mathcal{S}(I_m - AA^\dagger) \subseteq \mathcal{S}(A) = \operatorname{Ker}(A^\top)^\perp$ and $\mathcal{S}(AA^\dagger - AX) \subseteq \mathcal{S}(A)$ (by Theorem 4.4, $I_m - AA^\dagger$ projects onto $\operatorname{Ker}(A^\top)$):
 
 $$
 \lVert I_m - AX \rVert_F^2 = \lVert I_m - AA^\dagger + AA^\dagger - AX \rVert_F^2 = \lVert I_m - AA^\dagger \rVert_F^2 + \lVert AA^\dagger - AX \rVert_F^2 \geq \lVert I_m - AA^\dagger \rVert_F^2.
@@ -1208,7 +1208,9 @@ Using matrix norms, we can formally express the fact that any matrix is arbitrar
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-For every matrix $A \in \mathbb{C}^{n \times n}$ and every $\varepsilon > 0$ there exists a diagonalizable matrix $A' \in \mathbb{C}^{n \times n}$ such that $\lVert A - A' \rVert < \varepsilon$.
+For every matrix $A \in \mathbb{C}^{n \times n}$ and every $\varepsilon > 0$ there exists a diagonalizable matrix $A' \in \mathbb{C}^{n \times n}$ such that 
+
+$$\lVert A - A' \rVert < \varepsilon$$
 
 </div>
 
@@ -1254,14 +1256,22 @@ For an induced matrix norm: $\lVert I_n \rVert = 1$.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
 
-$k(A) \geq 1$. Equality holds, in particular, when $A$ is symmetric and $k_2$ is used.
+It holds that
+
+$$k(A) \geq 1$$
+
+Equality holds, in particular, when $A$ is symmetric and $k_2$ is used.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
 
-$k(A) \geq \frac{|\lambda_{\max}(A)|}{|\lambda_{\min}(A)|}$. Equality holds when $A$ is symmetric and $k_2(A)$ is used.
+It holds that 
+
+$$k(A) \geq \frac{\lvert \lambda_{\max}(A)\rvert}{\lvert \lambda_{\min}(A)\rvert}$$
+
+Equality holds when $A$ is symmetric and $k_2(A)$ is used.
 
 </div>
 
@@ -1297,8 +1307,8 @@ The spectral norm is the most commonly used norm for the condition number, becau
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
 1. $k_2(A) = \sigma_1 / \sigma_n$,
-2. $k_2(A) = k_2(A^T)$,
-3. $k_2(A^T A) = k_2(A)^2$,
+2. $k_2(A) = k_2(A^\top)$,
+3. $k_2(A^\top A) = k_2(A)^2$,
 4. $k_2(A) = 1$ exactly when $A$ is a nonzero scalar multiple of an orthogonal matrix.
 
 </div>
@@ -1307,13 +1317,13 @@ The spectral norm is the most commonly used norm for the condition number, becau
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $A = U\Sigma V^T$ be the SVD.
+Let $A = U\Sigma V^\top$ be the SVD.
 
 1. $k_2(A) = \lVert A \rVert_2 \cdot \lVert A^{-1} \rVert_2 = \sigma_1 / \sigma_n$.
-2. $A$ and $A^T$ have the same singular values.
-3. $A^T A = (U\Sigma V^T)^T (U\Sigma V^T) = V \Sigma^2 V^T$, so the singular values of $A^T A$ are $\sigma_1^2, \ldots, \sigma_n^2$.
+2. $A$ and $A^\top$ have the same singular values.
+3. $A^\top A = (U\Sigma V^\top)^\top (U\Sigma V^\top) = V \Sigma^2 V^\top$, so the singular values of $A^\top A$ are $\sigma_1^2, \ldots, \sigma_n^2$.
 4. "$\Leftarrow$": Orthogonal matrices have all singular values equal to $1$, so $k_2 = 1$.
-   "$\Rightarrow$": If $k_2(A) = 1$, all singular values must be equal, say $\sigma_1 = \sigma_n = c > 0$. Then $A = U \Sigma V^T = U(cI_n) V^T = c(UV^T)$, where $UV^T$ is orthogonal.
+   "$\Rightarrow$": If $k_2(A) = 1$, all singular values must be equal, say $\sigma_1 = \sigma_n = c > 0$. Then $A = U \Sigma V^\top = U(cI_n) V^\top = c(UV^\top)$, where $UV^\top$ is orthogonal.
 
 </details>
 </div>
@@ -1433,7 +1443,7 @@ For symmetric matrices, the eigenvector matrix $S$ is orthogonal, so $k_2(S) = 1
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span></p>
 
-If $A \in \mathbb{R}^{n \times n}$ is symmetric, then $|\lambda - \tilde{\lambda}| \leq \lVert r \rVert_2$.
+If $A \in \mathbb{R}^{n \times n}$ is symmetric, then $\lvert \lambda - \tilde{\lambda}\rvert \leq \lVert r \rVert_2$.
 
 </div>
 
@@ -1503,13 +1513,13 @@ $$
 By dimension counting, $\dim(U \cap V) \geq i + (n - i + 1) - n = 1$. So there exists $x \in U \cap V$ with $\lVert x \rVert_2 = 1$. Using $x \in V$:
 
 $$
-x^T C x = \sum_{k=i}^n \gamma_k^2 \lambda_k(C) \leq \sum_{k=i}^n \gamma_k^2 \lambda_i(C) = \lambda_i(C).
+x^\top C x = \sum_{k=i}^n \gamma_k^2 \lambda_k(C) \leq \sum_{k=i}^n \gamma_k^2 \lambda_i(C) = \lambda_i(C).
 $$
 
 Using $x \in U$:
 
 $$
-x^T C x = x^T(A+B)x = x^T A x + x^T B x \geq \lambda_i(A) + \lambda_n(B).
+x^\top C x = x^\top(A+B)x = x^\top A x + x^\top B x \geq \lambda_i(A) + \lambda_n(B).
 $$
 
 This gives the lower bound. The upper bound is proved analogously.
@@ -1542,7 +1552,7 @@ $$
 V_1 = \operatorname{span}\lbrace a_1, \ldots, a_j \rbrace, \quad V_2 = \operatorname{span}\lbrace b_1, \ldots, b_{i-j+n} \rbrace, \quad V_3 = \operatorname{span}\lbrace c_i, \ldots, c_n \rbrace.
 $$
 
-By an intersection dimension argument: $\dim(V_1 \cap V_2 \cap V_3) \geq j + (i-j+n) + (n-i+1) - n - n = 1$. So there exists $x \in V_1 \cap V_2 \cap V_3$ with $\lVert x \rVert_2 = 1$. Using $x \in V_3$: $x^T C x \leq \lambda_i(C)$. Using $x \in V_1 \cap V_2$: $x^T C x = x^T A x + x^T B x \geq \lambda_j(A) + \lambda_{i-j+n}(B)$.
+By an intersection dimension argument: $\dim(V_1 \cap V_2 \cap V_3) \geq j + (i-j+n) + (n-i+1) - n - n = 1$. So there exists $x \in V_1 \cap V_2 \cap V_3$ with $\lVert x \rVert_2 = 1$. Using $x \in V_3$: $x^\top C x \leq \lambda_i(C)$. Using $x \in V_1 \cap V_2$: $x^\top C x = x^\top A x + x^\top B x \geq \lambda_j(A) + \lambda_{i-j+n}(B)$.
 
 This gives the lower bound. The upper bound is proved analogously.
 
@@ -1577,7 +1587,7 @@ Thus $\rho(A+B) = \max\lbrace \lambda_1(A+B), -\lambda_n(A+B) \rbrace \leq \rho(
 </details>
 </div>
 
-Note that this bound does **not** hold for general (non-symmetric) matrices. For example, $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 0 & 0 \\ 1 & 0 \end{pmatrix}$ have $\rho(A) = \rho(B) = 0$ but $\rho(A+B) = 1$.
+Note that this bound does **not** hold for general (non-symmetric) matrices. For example, $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 0 & 0 \\\ 1 & 0 \end{pmatrix}$ have $\rho(A) = \rho(B) = 0$ but $\rho(A+B) = 1$.
 
 Another consequence of the Weyl theorem is a uniform bound on the change of eigenvalues:
 
@@ -1590,7 +1600,7 @@ $$
 |\lambda_i(A+B) - \lambda_i(A)| \leq \rho(B).
 $$
 
-Moreover, by Theorem 5.13 we can also use matrix norms: $|\lambda_i(A+B) - \lambda_i(A)| \leq \lVert B \rVert$. For the spectral norm, this result is stronger than the Bauer--Fike bound, because unlike the latter, it compares the $i$-th eigenvalues directly.
+Moreover, by Theorem 5.13 we can also use matrix norms: $\lvert \lambda_i(A+B) - \lambda_i(A)\rvert \leq \lVert B \rVert$. For the spectral norm, this result is stronger than the Bauer--Fike bound, because unlike the latter, it compares the $i$-th eigenvalues directly.
 
 </div>
 
@@ -1620,7 +1630,7 @@ $$
 A = \begin{pmatrix} 0 & 1 \\ 0 & \alpha \end{pmatrix}
 $$
 
-has, for $\alpha = 0$, eigenvalue $0$ with eigenvector $(1,0)^T$ only. For $\alpha > 0$, it has eigenvalue $\alpha$ with eigenvector $(1,\alpha)^T$. So the eigenvectors are indeed two for $\alpha > 0$ but only one for $\alpha = 0$.
+has, for $\alpha = 0$, eigenvalue $0$ with eigenvector $(1,0)^\top$ only. For $\alpha > 0$, it has eigenvalue $\alpha$ with eigenvector $(1,\alpha)^\top$. So the eigenvectors are indeed two for $\alpha > 0$ but only one for $\alpha = 0$.
 
 Under additional conditions, eigenvectors can be made continuous:
 
@@ -1638,7 +1648,7 @@ If $A \in \mathbb{C}^{n \times n}$ has mutually distinct eigenvalues, then the e
 
 </div>
 
-Continuity of eigenvalues is useful in many contexts. A noteworthy application is the **Gershgorin disc theorem**: every eigenvalue $\lambda$ of $A \in \mathbb{C}^{n \times n}$ lies in a disc centered at $a_{ii}$ with radius $\sum_{j \neq i} |a_{ij}|$ for some $i \in \lbrace 1, \ldots, n \rbrace$. Moreover:
+Continuity of eigenvalues is useful in many contexts. A noteworthy application is the **Gershgorin disc theorem**: every eigenvalue $\lambda$ of $A \in \mathbb{C}^{n \times n}$ lies in a disc centered at $a_{ii}$ with radius $\sum_{j \neq i} \lvert a_{ij}\rvert$ for some $i \in \lbrace 1, \ldots, n \rbrace$. Moreover:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Gershgorin Disc Refinement)</span></p>
@@ -1701,7 +1711,7 @@ Consider the system $Ax = b$ with regular $A$, so $x = A^{-1}b$. Three cases ari
 
 1. **$A$ is fixed, $b$ is parametric.** Then $x' = (A^{-1}b)' = A^{-1}b'$. If only entry $b_k$ changes ($b_k(t) = b_k + t$), then $x' = A^{-1}e_k = A^{-1}_{\ast k}$. In summary, the Jacobian is $\frac{\partial x}{\partial b} = A^{-T}$.
 
-2. **$A$ is parametric, $b$ is fixed.** Then $x' = (A^{-1})'b = -A^{-1}A'A^{-1}b = -A^{-1}A'x$. If only entry $a_{ij}$ changes ($a_{ij}(t) = a_{ij} + t$), then $x' = -A^{-1}e_i e_j^T x = -A^{-1}_{\ast i} x_j$.
+2. **$A$ is parametric, $b$ is fixed.** Then $x' = (A^{-1})'b = -A^{-1}A'A^{-1}b = -A^{-1}A'x$. If only entry $a_{ij}$ changes ($a_{ij}(t) = a_{ij} + t$), then $x' = -A^{-1}e_i e_j^\top x = -A^{-1}_{\ast i} x_j$.
 
 3. **Both $A$ and $b$ are parametric.** Then $x' = (A^{-1}b)' = (A^{-1})'b + A^{-1}b' = -A^{-1}A'A^{-1}b + A^{-1}b' = -A^{-1}A'x + A^{-1}b'$.
 
@@ -1716,21 +1726,21 @@ $$
 \begin{pmatrix} 1+t & 2+t \\ 3+t & 4+t \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 1 \\ 5 \end{pmatrix}.
 $$
 
-For $t = 0$, the solution is $x = (3, -1)^T$ and $A^{-1} = \frac{1}{2}\begin{pmatrix} -4 & 2 \\ 3 & -1 \end{pmatrix}$. Computing $x' = (2, -2)^T$. So as $t$ increases, the first component grows and the second decreases at the same rate.
+For $t = 0$, the solution is $x = (3, -1)^\top$ and $A^{-1} = \frac{1}{2}\begin{pmatrix} -4 & 2 \\ 3 & -1 \end{pmatrix}$. Computing $x' = (2, -2)^\top$. So as $t$ increases, the first component grows and the second decreases at the same rate.
 
 </div>
 
 #### Derivatives of Eigenvalues
 
-Recall that the **left eigenvector** of $A$ is defined as a (right) eigenvector of $A^T$. The following theorem gives an elegant formula for the derivative of an eigenvalue.
+Recall that the **left eigenvector** of $A$ is defined as a (right) eigenvector of $A^\top$. The following theorem gives an elegant formula for the derivative of an eigenvalue.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A \in \mathbb{C}^{n \times n}$ have mutually distinct eigenvalues. Let $\lambda \in \mathbb{C}$ be an eigenvalue, and $x, y \in \mathbb{C}^n$ its right and left eigenvectors normalized so that $x^T y = 1$. Then
+Let $A \in \mathbb{C}^{n \times n}$ have mutually distinct eigenvalues. Let $\lambda \in \mathbb{C}$ be an eigenvalue, and $x, y \in \mathbb{C}^n$ its right and left eigenvectors normalized so that $x^\top y = 1$. Then
 
 $$
-\lambda' = y^T A' x.
+\lambda' = y^\top A' x.
 $$
 
 In particular, if only entry $a_{ij}$ changes ($a_{ij}(t) = a_{ij} + t$), then $\lambda' = y_i x_j$.
@@ -1743,7 +1753,7 @@ If $A$ is moreover real symmetric, then $\lambda' = x_i x_j$ (since left and rig
 <details markdown="1">
 <summary>Proof</summary>
 
-Since $A$ is diagonalizable, $A = X\Lambda X^{-1}$, where $\Lambda$ is diagonal with eigenvalues, $X$ has right eigenvectors in columns, and $X^{-1}$ has left eigenvectors in rows. The normalization $x^T y = 1$ is ensured by $X^{-1}X = I_n$.
+Since $A$ is diagonalizable, $A = X\Lambda X^{-1}$, where $\Lambda$ is diagonal with eigenvalues, $X$ has right eigenvectors in columns, and $X^{-1}$ has left eigenvectors in rows. The normalization $x^\top y = 1$ is ensured by $X^{-1}X = I_n$.
 
 Differentiating $AX = X\Lambda$:
 
@@ -1759,9 +1769,9 @@ $$
 
 The diagonal entries of the right-hand side are zero (since $(X^{-1}X'\Lambda - \Lambda X^{-1}X')_{kk} = 0$), so we get $(X^{-1}A'X - \Lambda')_{kk} = 0$ for each $k$.
 
-For a specific eigenvalue, this gives $y^T A' x = \lambda'$.
+For a specific eigenvalue, this gives $y^\top A' x = \lambda'$.
 
-If only $a_{ij}$ changes, $A' = e_i e_j^T$, so $\lambda' = y^T e_i e_j^T x = y_i x_j$. For a real symmetric matrix, left and right eigenvectors coincide, so $\lambda' = x_i x_j$.
+If only $a_{ij}$ changes, $A' = e_i e_j^\top$, so $\lambda' = y^\top e_i e_j^\top x = y_i x_j$. For a real symmetric matrix, left and right eigenvectors coincide, so $\lambda' = x_i x_j$.
 
 </details>
 </div>
@@ -1771,7 +1781,7 @@ If $A$ is symmetric and only a diagonal entry $a_{ii}$ changes, then $\lambda' =
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-Consider $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$. It has eigenvalues $3$ and $1$ with eigenvectors $\frac{\sqrt{2}}{2}(1,1)^T$ and $\frac{\sqrt{2}}{2}(1,-1)^T$. By the theorem:
+Consider $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$. It has eigenvalues $3$ and $1$ with eigenvectors $\frac{\sqrt{2}}{2}(1,1)^\top$ and $\frac{\sqrt{2}}{2}(1,-1)^\top$. By the theorem:
 
 $$
 \frac{\partial \lambda_1}{\partial a_{11}} = \frac{1}{2}, \quad \frac{\partial \lambda_1}{\partial a_{12}} = \frac{1}{2}, \quad \frac{\partial \lambda_2}{\partial a_{11}} = \frac{1}{2}, \quad \frac{\partial \lambda_2}{\partial a_{12}} = -\frac{1}{2}.
@@ -1810,10 +1820,10 @@ $$
 Since $\lVert \cdot \rVert_2$ is a monotone function and its square attains the minimum at the same point, we minimize
 
 $$
-\lVert Ax - b \rVert_2^2 = (Ax - b)^T(Ax-b) = x^T A^T A x - 2b^T A x + b^T b.
+\lVert Ax - b \rVert_2^2 = (Ax - b)^\top(Ax-b) = x^\top A^\top A x - 2b^\top A x + b^\top b.
 $$
 
-This is a convex function, so the minimum is attained where the gradient vanishes. The gradient is $2A^T Ax - 2A^T b$. Setting it to zero gives the **normal equations** $A^T Ax = A^T b$. Since $A$ has linearly independent columns, $A^T A$ is regular and the unique solution is $x = (A^T A)^{-1} A^T b$.
+This is a convex function, so the minimum is attained where the gradient vanishes. The gradient is $2A^\top Ax - 2A^\top b$. Setting it to zero gives the **normal equations** $A^\top Ax = A^\top b$. Since $A$ has linearly independent columns, $A^\top A$ is regular and the unique solution is $x = (A^\top A)^{-1} A^\top b$.
 
 </div>
 
@@ -1971,15 +1981,15 @@ To complete Perron's theorem for positive matrices, it remains to show that $\rh
 
 ### Specific Results for Nonnegative Matrices
 
-Part of Perron's theorem for nonnegative matrices can be shown simply by a limiting argument from positive matrices: for $A \geq 0$, consider $A + \varepsilon e e^T > 0$ for $\varepsilon > 0$; by the limit $\varepsilon \to 0$ and continuity of eigenvalues/eigenvectors (Section 7.2), we obtain the desired properties.
+Part of Perron's theorem for nonnegative matrices can be shown simply by a limiting argument from positive matrices: for $A \geq 0$, consider $A + \varepsilon e e^\top > 0$ for $\varepsilon > 0$; by the limit $\varepsilon \to 0$ and continuity of eigenvalues/eigenvectors (Section 7.2), we obtain the desired properties.
 
 This shows that the largest eigenvalue is real nonnegative and the corresponding eigenvector is nonnegative. However, the remaining properties of positive matrices are generally lost:
 
 - $\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ has the largest eigenvalue of multiplicity greater than one.
-- $\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$ has the largest eigenvalue $1$ with eigenvector $(1,0)^T$ which is not positive. Another eigenvalue $0$ also has a nonnegative eigenvector $(0,1)^T$.
+- $\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$ has the largest eigenvalue $1$ with eigenvector $(1,0)^\top$ which is not positive. Another eigenvalue $0$ also has a nonnegative eigenvector $(0,1)^\top$.
 - $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ has the largest eigenvalue $0$, even though it is nonnegative and nonzero.
 
-For certain nonnegative matrices, the properties of positive matrices can be strengthened. This leads to the theory of **irreducible** matrices. A matrix $A$ is irreducible if no permutation matrix $P$ exists such that $P^T AP$ is block upper triangular. For a nonnegative irreducible matrix, $\rho(A) > 0$ is an eigenvalue of multiplicity $1$ with a positive eigenvector. Thus nearly all properties of positive matrices hold; the only exception is that $\rho(A)$ may be attained by multiple eigenvalues (e.g., $A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ has eigenvalues $\pm 1$).
+For certain nonnegative matrices, the properties of positive matrices can be strengthened. This leads to the theory of **irreducible** matrices. A matrix $A$ is irreducible if no permutation matrix $P$ exists such that $P^\top AP$ is block upper triangular. For a nonnegative irreducible matrix, $\rho(A) > 0$ is an eigenvalue of multiplicity $1$ with a positive eigenvector. Thus nearly all properties of positive matrices hold; the only exception is that $\rho(A)$ may be attained by multiple eigenvalues (e.g., $A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ has eigenvalues $\pm 1$).
 
 ### Application --- Verification of Linear Systems
 
@@ -2211,7 +2221,7 @@ $$
 R = \alpha \begin{pmatrix} 0 & -z & y \\ z & 0 & -x \\ -y & x & 0 \end{pmatrix},
 $$
 
-describes a rotation around the axis $(x,y,z)^T$ by angle $\alpha$ (right-hand rule).
+describes a rotation around the axis $(x,y,z)^\top$ by angle $\alpha$ (right-hand rule).
 
 ## Nonstandard Matrix Products
 
@@ -2251,7 +2261,7 @@ The mapping $f \otimes \tilde{f}$ acts by $(u_j, \tilde{u}_\ell) \mapsto (f(u_j)
 For matrices of compatible dimensions:
 1. $(A \otimes B)(C \otimes D) = AC \otimes BD$ (provided $AC, BD$ make sense),
 2. $(A \otimes B)^{-1} = A^{-1} \otimes B^{-1}$ if $A, B$ are regular,
-3. $(A \otimes B)^T = A^T \otimes B^T$,
+3. $(A \otimes B)^\top = A^\top \otimes B^\top$,
 4. $(A \otimes B) \otimes C = A \otimes (B \otimes C)$,
 5. In general $A \otimes B \neq B \otimes A$.
 
@@ -2317,17 +2327,17 @@ The matrix $A \otimes I_n + I_m \otimes B$ is called the **Kronecker sum** of $A
 The Kronecker product is a useful tool for working with matrix systems of linear equations. Consider the system $AX = B$, where $A, B$ are given matrices and $X$ is the unknown matrix. Using the $\operatorname{vec}(\cdot)$ operator, which stacks columns of a matrix into a single long vector:
 
 $$
-\operatorname{vec}(B) = (b_{11}, \ldots, b_{m1}, b_{12}, \ldots, b_{m2}, \ldots, b_{1n}, \ldots, b_{mn})^T,
+\operatorname{vec}(B) = (b_{11}, \ldots, b_{m1}, b_{12}, \ldots, b_{m2}, \ldots, b_{1n}, \ldots, b_{mn})^\top,
 $$
 
 we can rewrite $AX = B$ as $(I \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$.
 
-Similarly, the system $AX + XC = B$ can be rewritten as $(I \otimes A + C^T \otimes I)\operatorname{vec}(X) = \operatorname{vec}(B)$, and $AXC = B$ becomes $(C^T \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$.
+Similarly, the system $AX + XC = B$ can be rewritten as $(I \otimes A + C^\top \otimes I)\operatorname{vec}(X) = \operatorname{vec}(B)$, and $AXC = B$ becomes $(C^\top \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-The system $AXC = B$ is equivalent to the system $(C^T \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$.
+The system $AXC = B$ is equivalent to the system $(C^\top \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$.
 
 </div>
 
@@ -2335,7 +2345,7 @@ The system $AXC = B$ is equivalent to the system $(C^T \otimes A)\operatorname{v
 <details markdown="1">
 <summary>Proof</summary>
 
-The $(i,j)$-th equation in $AXC = B$ is $\sum_{k,\ell} a_{ik} x_{k\ell} c_{\ell j} = (AXC)_{ij} = b_{ij}$. On the other hand, the equations in the $j$-th block of $(C^T \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$ have the form $(c_{1j}A \;\cdots\; c_{nj}A)\operatorname{vec}(X) = B_{*j}$, i.e., $\sum_\ell c_{\ell j} A X_{*\ell} = B_{*j}$. The $i$-th equation in this block is $\sum_{k,\ell} c_{\ell j} a_{ik} x_{k\ell} = b_{ij}$.
+The $(i,j)$-th equation in $AXC = B$ is $\sum_{k,\ell} a_{ik} x_{k\ell} c_{\ell j} = (AXC)_{ij} = b_{ij}$. On the other hand, the equations in the $j$-th block of $(C^\top \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$ have the form $(c_{1j}A \;\cdots\; c_{nj}A)\operatorname{vec}(X) = B_{*j}$, i.e., $\sum_\ell c_{\ell j} A X_{*\ell} = B_{*j}$. The $i$-th equation in this block is $\sum_{k,\ell} c_{\ell j} a_{ik} x_{k\ell} = b_{ij}$.
 
 </details>
 </div>
@@ -2360,7 +2370,7 @@ Let $A, B \in \mathbb{R}^{n \times n}$ have no common eigenvalue. Then the Sylve
 <details markdown="1">
 <summary>Proof</summary>
 
-The equation can be rewritten as $(I_n \otimes A - B^T \otimes I_n)\operatorname{vec}(X) = \operatorname{vec}(C)$. By property (4) of Corollary 10.5, the eigenvalues of $I_n \otimes A - B^T \otimes I_n$ are $\lambda_i - \mu_j$ for all $i, j$. Since $A$ and $B$ have no common eigenvalue, all these are nonzero, so the matrix is regular and the solution is unique.
+The equation can be rewritten as $(I_n \otimes A - B^\top \otimes I_n)\operatorname{vec}(X) = \operatorname{vec}(C)$. By property (4) of Corollary 10.5, the eigenvalues of $I_n \otimes A - B^\top \otimes I_n$ are $\lambda_i - \mu_j$ for all $i, j$. Since $A$ and $B$ have no common eigenvalue, all these are nonzero, so the matrix is regular and the solution is unique.
 
 </details>
 </div>
@@ -2368,7 +2378,7 @@ The equation can be rewritten as $(I_n \otimes A - B^T \otimes I_n)\operatorname
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lyapunov, 1892)</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$ have eigenvalues only in the open left half-plane (i.e., their real parts are negative). Then the Lyapunov equation $AX + XA^T = -I_n$ has exactly one solution. Moreover, the solution is symmetric and positive definite.
+Let $A \in \mathbb{R}^{n \times n}$ have eigenvalues only in the open left half-plane (i.e., their real parts are negative). Then the Lyapunov equation $AX + XA^\top = -I_n$ has exactly one solution. Moreover, the solution is symmetric and positive definite.
 
 </div>
 
@@ -2376,11 +2386,11 @@ Let $A \in \mathbb{R}^{n \times n}$ have eigenvalues only in the open left half-
 <details markdown="1">
 <summary>Proof</summary>
 
-Since $A$ and $-A^T$ share no common eigenvalue (eigenvalues of $-A^T$ are the negatives of eigenvalues of $A$, which lie in the right half-plane), the Sylvester--Rosenblum theorem guarantees a unique solution.
+Since $A$ and $-A^\top$ share no common eigenvalue (eigenvalues of $-A^\top$ are the negatives of eigenvalues of $A$, which lie in the right half-plane), the Sylvester--Rosenblum theorem guarantees a unique solution.
 
-By transposing the equation: $X^T A^T + AX^T = -I_n$, so $X^T$ is also a solution. By uniqueness, $X = X^T$, i.e., $X$ is symmetric.
+By transposing the equation: $X^\top A^\top + AX^\top = -I_n$, so $X^\top$ is also a solution. By uniqueness, $X = X^\top$, i.e., $X$ is symmetric.
 
-For positive definiteness (in the special case when $A$ is symmetric): since $A$ is negative definite, let $\lambda$ be an eigenvalue of $X$ and $v$ the corresponding eigenvector. Then $0 > -v^T v = v^T(AX + XA^T)v = v^T AXv + v^T XA^Tv = 2v^T AXv = 2\lambda v^T Av$. Since $v^T Av < 0$ (by the Rayleigh--Ritz theorem), we get $\lambda > 0$.
+For positive definiteness (in the special case when $A$ is symmetric): since $A$ is negative definite, let $\lambda$ be an eigenvalue of $X$ and $v$ the corresponding eigenvector. Then $0 > -v^\top v = v^\top(AX + XA^\top)v = v^\top AXv + v^\top XA^\topv = 2v^\top AXv = 2\lambda v^\top Av$. Since $v^\top Av < 0$ (by the Rayleigh--Ritz theorem), we get $\lambda > 0$.
 
 </details>
 </div>
@@ -2411,15 +2421,15 @@ Let $A, B \in \mathbb{R}^{n \times n}$.
 <details markdown="1">
 <summary>Proof</summary>
 
-**(1)** Let $A = Q \Lambda Q^T$ be the spectral decomposition, so $a_{ij} = \sum_{k=1}^n q_{ik} \lambda_k q_{jk}$ with $\lambda_k \geq 0$. For any nonzero $x \neq 0$:
+**(1)** Let $A = Q \Lambda Q^\top$ be the spectral decomposition, so $a_{ij} = \sum_{k=1}^n q_{ik} \lambda_k q_{jk}$ with $\lambda_k \geq 0$. For any nonzero $x \neq 0$:
 
 $$
-x^T(A \circ B)x = \sum_{i,j=1}^n x_i x_j a_{ij} b_{ij} = \sum_{k=1}^n \lambda_k \sum_{i,j=1}^n b_{ij}(q_{ik}x_i)(q_{jk}x_j) = \sum_{k=1}^n \lambda_k (y^{(k)})^T B y^{(k)} \geq 0,
+x^\top(A \circ B)x = \sum_{i,j=1}^n x_i x_j a_{ij} b_{ij} = \sum_{k=1}^n \lambda_k \sum_{i,j=1}^n b_{ij}(q_{ik}x_i)(q_{jk}x_j) = \sum_{k=1}^n \lambda_k (y^{(k)})^\top B y^{(k)} \geq 0,
 $$
 
-where $y^{(k)} \coloneqq (q_{1k}x_1, \ldots, q_{nk}x_n)^T$.
+where $y^{(k)} \coloneqq (q_{1k}x_1, \ldots, q_{nk}x_n)^\top$.
 
-**(2)** For positive definite $A, B$, the equality $x^T(A \circ B)x = 0$ holds only when $y^{(k)} = 0$ for all $k$ (since $B$ is positive definite). Since $0 = \sum_{i,k=1}^n (y_i^{(k)})^2 = \sum_{i,k=1}^n (q_{ik}x_i)^2 = \sum_{i=1}^n x_i^2 \sum_{k=1}^n q_{ik}^2 = \sum_{i=1}^n x_i^2$, we must have $x = 0$.
+**(2)** For positive definite $A, B$, the equality $x^\top(A \circ B)x = 0$ holds only when $y^{(k)} = 0$ for all $k$ (since $B$ is positive definite). Since $0 = \sum_{i,k=1}^n (y_i^{(k)})^2 = \sum_{i,k=1}^n (q_{ik}x_i)^2 = \sum_{i=1}^n x_i^2 \sum_{k=1}^n q_{ik}^2 = \sum_{i=1}^n x_i^2$, we must have $x = 0$.
 
 </details>
 </div>
@@ -2439,11 +2449,11 @@ Let $A, B \in \mathbb{R}^{n \times n}$. Then $\lVert A \circ B \rVert_2 \leq \lV
 <details markdown="1">
 <summary>Proof</summary>
 
-For any square matrix $C$, $\lVert C \rVert_2^2 = \rho(C^TC) \leq \lVert C^TC \rVert_1 \leq \lVert C \rVert_1$. Setting $C \coloneqq A \circ B$, we get $\lVert A \circ B \rVert_2^2 \leq \lVert A^T \circ B^T \rVert_1 \cdot \lVert A \circ B \rVert_1$.
+For any square matrix $C$, $\lVert C \rVert_2^2 = \rho(C^\topC) \leq \lVert C^\topC \rVert_1 \leq \lVert C \rVert_1$. Setting $C \coloneqq A \circ B$, we get $\lVert A \circ B \rVert_2^2 \leq \lVert A^\top \circ B^\top \rVert_1 \cdot \lVert A \circ B \rVert_1$.
 
-Now $\lVert A \circ B \rVert_1 = \max_j \sum_i |a_{ij} b_{ij}| = \max_j \langle |A_{*j}|, |B_{*j}| \rangle \leq \max_j \lVert A_{*j} \rVert_2 \cdot \lVert B_{*j} \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$ by Cauchy--Schwarz and the fact that $\max_j \sqrt{e_j^T A^T A e_j} \leq \sqrt{\lambda_1(A^TA)} = \lVert A \rVert_2$.
+Now $\lVert A \circ B \rVert_1 = \max_j \sum_i |a_{ij} b_{ij}| = \max_j \langle |A_{*j}|, |B_{*j}| \rangle \leq \max_j \lVert A_{*j} \rVert_2 \cdot \lVert B_{*j} \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$ by Cauchy--Schwarz and the fact that $\max_j \sqrt{e_j^\top A^\top A e_j} \leq \sqrt{\lambda_1(A^\topA)} = \lVert A \rVert_2$.
 
-Similarly $\lVert A^T \circ B^T \rVert_1 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$, giving $\lVert A \circ B \rVert_2^2 \leq \lVert A \rVert_2^2 \cdot \lVert B \rVert_2^2$.
+Similarly $\lVert A^\top \circ B^\top \rVert_1 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$, giving $\lVert A \circ B \rVert_2^2 \leq \lVert A \rVert_2^2 \cdot \lVert B \rVert_2^2$.
 
 </details>
 </div>
@@ -2462,7 +2472,7 @@ The set of positive semidefinite matrices has a specific geometric structure tha
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span></p>
 
-Let $A \in \mathcal{S}_+$ and $x \in \mathbb{R}^n$. If $x^T A x = 0$, then $Ax = 0$.
+Let $A \in \mathcal{S}_+$ and $x \in \mathbb{R}^n$. If $x^\top A x = 0$, then $Ax = 0$.
 
 </div>
 
@@ -2470,7 +2480,7 @@ Let $A \in \mathcal{S}_+$ and $x \in \mathbb{R}^n$. If $x^T A x = 0$, then $Ax =
 <details markdown="1">
 <summary>Proof</summary>
 
-We have $0 = x_i^T \sqrt{A} \sqrt{A} x_i = \lVert \sqrt{A} x_i \rVert_2^2$, which implies $\sqrt{A} x_i = 0$ and hence $Ax = 0$.
+We have $0 = x_i^\top \sqrt{A} \sqrt{A} x_i = \lVert \sqrt{A} x_i \rVert_2^2$, which implies $\sqrt{A} x_i = 0$ and hence $Ax = 0$.
 
 </details>
 </div>
@@ -2478,7 +2488,7 @@ We have $0 = x_i^T \sqrt{A} \sqrt{A} x_i = \lVert \sqrt{A} x_i \rVert_2^2$, whic
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-The set $\mathcal{S}_+$ forms a convex cone in the space of symmetric matrices in $\mathbb{R}^{n \times n}$. The interior of $\mathcal{S}_+$ consists of positive definite matrices. The boundary of $\mathcal{S}_+$ consists of singular matrices. The extreme rays of the cone are formed by positive semidefinite matrices of rank $1$, i.e., matrices of the form $xx^T$ for $x \neq 0$.
+The set $\mathcal{S}_+$ forms a convex cone in the space of symmetric matrices in $\mathbb{R}^{n \times n}$. The interior of $\mathcal{S}_+$ consists of positive definite matrices. The boundary of $\mathcal{S}_+$ consists of singular matrices. The extreme rays of the cone are formed by positive semidefinite matrices of rank $1$, i.e., matrices of the form $xx^\top$ for $x \neq 0$.
 
 </div>
 
@@ -2488,9 +2498,9 @@ The set $\mathcal{S}_+$ forms a convex cone in the space of symmetric matrices i
 
 The set $\mathcal{S}_+$ is closed under addition and nonnegative scalar multiplication, so it forms a convex cone. Its interior consists of positive definite matrices (since these are exactly the ones with all eigenvalues strictly positive, forming an open set).
 
-Every $A \in \mathcal{S}_+$ can be written via its spectral decomposition as $A = Q\Lambda Q^T = \sum_{i=1}^n \lambda_i q_i q_i^T$, where $q_i = Q_{*i}$. Thus every positive semidefinite matrix is a nonnegative combination of rank-$1$ matrices $xx^T$.
+Every $A \in \mathcal{S}_+$ can be written via its spectral decomposition as $A = Q\Lambda Q^\top = \sum_{i=1}^n \lambda_i q_i q_i^\top$, where $q_i = Q_{*i}$. Thus every positive semidefinite matrix is a nonnegative combination of rank-$1$ matrices $xx^\top$.
 
-It remains to show that matrices of the form $xx^T$ are extreme. Suppose $xx^T = \alpha A + \beta B$ where $A, B \in \mathcal{S}_+$ and $\alpha, \beta > 0$. Without loss of generality let $\lVert x \rVert_2 = 1$ and extend to an orthonormal basis $x, x_2, \ldots, x_n$. For each $i = 2, \ldots, n$: $0 = x_i^T(xx^T)x_i = \alpha x_i^T A x_i + \beta x_i^T B x_i \geq 0$, so $x_i^T A x_i = x_i^T B x_i = 0$. By Lemma 11.1, $Ax_i = Bx_i = 0$. This means $A$ and $B$ have rank at most $1$ and $\operatorname{Ker}(A) = \operatorname{Ker}(B) = \operatorname{Ker}(xx^T)$, hence $A$ and $B$ must be positive multiples of $xx^T$.
+It remains to show that matrices of the form $xx^\top$ are extreme. Suppose $xx^\top = \alpha A + \beta B$ where $A, B \in \mathcal{S}_+$ and $\alpha, \beta > 0$. Without loss of generality let $\lVert x \rVert_2 = 1$ and extend to an orthonormal basis $x, x_2, \ldots, x_n$. For each $i = 2, \ldots, n$: $0 = x_i^\top(xx^\top)x_i = \alpha x_i^\top A x_i + \beta x_i^\top B x_i \geq 0$, so $x_i^\top A x_i = x_i^\top B x_i = 0$. By Lemma 11.1, $Ax_i = Bx_i = 0$. This means $A$ and $B$ have rank at most $1$ and $\operatorname{Ker}(A) = \operatorname{Ker}(B) = \operatorname{Ker}(xx^\top)$, hence $A$ and $B$ must be positive multiples of $xx^\top$.
 
 </details>
 </div>
@@ -2536,8 +2546,8 @@ Analogously for $\succ$.
   <p class="math-callout__title"><span class="math-callout__label">Observation</span></p>
 
 Let $A, B, C, D \in \mathbb{R}^{n \times n}$ be symmetric. Then:
-1. $A \succeq B \;\Rightarrow\; SAS^T \succeq SBS^T$ for every $S \in \mathbb{R}^{n \times n}$,
-2. $A \succ B \;\Rightarrow\; SAS^T \succ SBS^T$ for every regular $S \in \mathbb{R}^{n \times n}$,
+1. $A \succeq B \;\Rightarrow\; SAS^\top \succeq SBS^\top$ for every $S \in \mathbb{R}^{n \times n}$,
+2. $A \succ B \;\Rightarrow\; SAS^\top \succ SBS^\top$ for every regular $S \in \mathbb{R}^{n \times n}$,
 3. $A \succeq B,\; C \succeq D \;\Rightarrow\; A + C \succeq B + D$.
 
 </div>
@@ -2545,7 +2555,7 @@ Let $A, B, C, D \in \mathbb{R}^{n \times n}$ be symmetric. Then:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A, B \in \mathbb{R}^{n \times n}$ be symmetric and $a = A \succ 0$. Then $A, B$ are simultaneously diagonalizable (in the sense of quadratic forms): there exists a regular $U$ such that $U^T A U$ and $U^T B U$ are both diagonal.
+Let $A, B \in \mathbb{R}^{n \times n}$ be symmetric and $a = A \succ 0$. Then $A, B$ are simultaneously diagonalizable (in the sense of quadratic forms): there exists a regular $U$ such that $U^\top A U$ and $U^\top B U$ are both diagonal.
 
 </div>
 
@@ -2553,7 +2563,7 @@ Let $A, B \in \mathbb{R}^{n \times n}$ be symmetric and $a = A \succ 0$. Then $A
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $V \coloneqq \sqrt{A}^{-1}$, so $V^T AV = I_n$. The matrix $V^T BV$ is symmetric and hence has a spectral decomposition $V^T BV = Q \Lambda Q^T$. Setting $U \coloneqq VQ$ gives $U^T AU = Q^T V^T A V Q = Q^T I_n Q = I_n$ and $U^T BU = Q^T \Lambda Q^T Q = \Lambda$.
+Let $V \coloneqq \sqrt{A}^{-1}$, so $V^\top AV = I_n$. The matrix $V^\top BV$ is symmetric and hence has a spectral decomposition $V^\top BV = Q \Lambda Q^\top$. Setting $U \coloneqq VQ$ gives $U^\top AU = Q^\top V^\top A V Q = Q^\top I_n Q = I_n$ and $U^\top BU = Q^\top \Lambda Q^\top Q = \Lambda$.
 
 </details>
 </div>
@@ -2571,7 +2581,7 @@ Let $A \succ 0$, $B \succeq 0$. Then:
 <details markdown="1">
 <summary>Proof</summary>
 
-By Theorem 11.6, $A = UU^T$ and $B = UDU^T$ where $D$ is diagonal with nonnegative entries. Then $A \succeq B$ iff $U(I-D)U^T \succeq 0$, iff $I - D \succeq 0$, iff $d_{ii} \leq 1$. The eigenvalues of $A^{-1}B = U^{-T}DU^T$ are $d_{11}, \ldots, d_{nn}$, so $\rho(A^{-1}B) \leq 1$ iff $d_{ii} \leq 1$.
+By Theorem 11.6, $A = UU^\top$ and $B = UDU^\top$ where $D$ is diagonal with nonnegative entries. Then $A \succeq B$ iff $U(I-D)U^\top \succeq 0$, iff $I - D \succeq 0$, iff $d_{ii} \leq 1$. The eigenvalues of $A^{-1}B = U^{-T}DU^\top$ are $d_{11}, \ldots, d_{nn}$, so $\rho(A^{-1}B) \leq 1$ iff $d_{ii} \leq 1$.
 
 </details>
 </div>
@@ -2606,7 +2616,7 @@ Let $A, B \in \mathbb{R}^{n \times n}$ be symmetric and $A \succeq B$. Then $\la
 By the Courant--Fischer theorem:
 
 $$
-\lambda_i(A) = \max_{V \in \mathbb{R}^n:\, \dim V = i} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^T A x \geq \max_{V \in \mathbb{R}^n:\, \dim V = i} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^T B x = \lambda_i(B).
+\lambda_i(A) = \max_{V \in \mathbb{R}^n:\, \dim V = i} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^\top A x \geq \max_{V \in \mathbb{R}^n:\, \dim V = i} \min_{x \in V:\, \lVert x \rVert_2 = 1} x^\top B x = \lambda_i(B).
 $$
 
 </details>
@@ -2634,7 +2644,7 @@ $$
 \det(DAD) = \prod_{i=1}^n \lambda_i \leq \Big(\frac{1}{n}\sum_{i=1}^n \lambda_i\Big)^n = \Big(\frac{1}{n}\operatorname{trace}(DAD)\Big)^n = 1.
 $$
 
-**(2)** For singular $B$ the bound is trivial, so assume $B$ is regular. Define $A \coloneqq B^T B \succ 0$. Then $\det(A) \leq \prod_{i=1}^n a_{ii}$ gives $\det(B)^2 = \det(B^TB) \leq \prod_{i=1}^n \lVert B_{*i} \rVert_2^2$.
+**(2)** For singular $B$ the bound is trivial, so assume $B$ is regular. Define $A \coloneqq B^\top B \succ 0$. Then $\det(A) \leq \prod_{i=1}^n a_{ii}$ gives $\det(B)^2 = \det(B^\topB) \leq \prod_{i=1}^n \lVert B_{*i} \rVert_2^2$.
 
 </details>
 </div>
@@ -2807,10 +2817,10 @@ The Laplacian matrix is not an M-matrix in the strict sense (it is called a **si
 The **linear complementarity problem** is the feasibility problem for the system
 
 $$
-y = Ax + b, \quad x, y \geq 0, \quad x^T y = 0,
+y = Ax + b, \quad x, y \geq 0, \quad x^\top y = 0,
 $$
 
-where $A \in \mathbb{R}^{n \times n}$ and $b \in \mathbb{R}^n$ are given and $x, y \in \mathbb{R}^n$ are the unknowns. The constraints are linear except for the complementarity condition $x^T y = 0$, which equivalently states that for each $i$, either $x_i = 0$ or $y_i = 0$.
+where $A \in \mathbb{R}^{n \times n}$ and $b \in \mathbb{R}^n$ are given and $x, y \in \mathbb{R}^n$ are the unknowns. The constraints are linear except for the complementarity condition $x^\top y = 0$, which equivalently states that for each $i$, either $x_i = 0$ or $y_i = 0$.
 
 This problem is NP-hard in general and arises in optimality conditions (quadratic programming, integer programming feasibility) and in expressing Nash equilibria of bimatrix games.
 
@@ -2854,7 +2864,7 @@ $$
 
 The solution is $x(t) = e^{At}x(0)$. The state $x(t)$ converges to the equilibrium (or stays bounded near it) precisely when $A$ is stable.
 
-An equivalent characterization of stability is given by the Lyapunov theorem: $A$ is stable if and only if the Lyapunov equation $XA + A^TX = -I$ has a positive definite solution $X$.
+An equivalent characterization of stability is given by the Lyapunov theorem: $A$ is stable if and only if the Lyapunov equation $XA + A^\topX = -I$ has a positive definite solution $X$.
 
 ### Iterative Methods for Solving Linear Systems
 
@@ -2871,7 +2881,7 @@ converges to the solution under the condition $\rho(M^{-1}N) < 1$. The choice of
 
 ### Normal Matrices
 
-A matrix is **normal** if its Schur decomposition (Theorem 2.1) has a diagonal matrix. Equivalently, $A$ is normal if and only if $A^T A = AA^T$. Normal matrices have many nice properties --- similar to symmetric matrices but forming a larger class.
+A matrix is **normal** if its Schur decomposition (Theorem 2.1) has a diagonal matrix. Equivalently, $A$ is normal if and only if $A^\top A = AA^\top$. Normal matrices have many nice properties --- similar to symmetric matrices but forming a larger class.
 
 ### Total Least Squares
 
