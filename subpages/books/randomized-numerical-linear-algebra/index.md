@@ -916,7 +916,7 @@ Taking this for granted, the preconditioner (3.11) can only be effective if $\el
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(3.2.1 — Exact Eigenvectors)</span></p>
 
-The argument above can be made more rigorous by assuming that $\boldsymbol{V}$ is an $n \times (\ell - 1)$ matrix that contains the *exact* leading $\ell - 1$ eigenvectors of $\boldsymbol{G}$, and that $\lambda_1, \ldots, \lambda_\ell$ are the *exact* leading $\ell$ eigenvalues of $\boldsymbol{G}$. In this case, the condition number of $\boldsymbol{G}_p$ will be equal to $\kappa_\ell(\boldsymbol{G}, \mu)$, which will be at most $1 + \lambda_\ell/\mu$.
+The argument above can be made more rigorous by assuming that $\boldsymbol{V}$ is an $n \times (\ell - 1)$ matrix that contains the *exact* leading $\ell - 1$ eigenvectors of $\boldsymbol{G}$, and that $\lambda_1, \ldots, \lambda_\ell$ are the *exact* leading $\ell$ eigenvalues of $\boldsymbol{G}$. In this case, the condition number of $\boldsymbol{G}\_p$ will be equal to $\kappa_\ell(\boldsymbol{G}, \mu)$, which will be at most $1 + \lambda_\ell/\mu$.
 
 </div>
 
@@ -928,18 +928,18 @@ Randomization offers several avenues for solving problems of the form (3.1) to m
 
 $$(\boldsymbol{A}\boldsymbol{A}^* + m\lambda\boldsymbol{I})\hat{\boldsymbol{\alpha}} = \boldsymbol{h},$$
 
-where $\boldsymbol{A}\boldsymbol{A}^*$ is a Nystrom approximation of $\boldsymbol{G}$. The computation of $\boldsymbol{A}$ only requires access to $\boldsymbol{G}$ by a single sketch $\boldsymbol{G}\boldsymbol{S}$ for a tall $m \times n$ sketching operator $\boldsymbol{S}$. In the KRR context, it is especially popular for $\boldsymbol{S}$ to be a column sampling operator. There is an equivalence between computing $\hat{\boldsymbol{\alpha}}$ and solving a dual saddle point problem with matrix $\boldsymbol{A}$ and other data $(\boldsymbol{b}, \boldsymbol{c}, \mu) = (\boldsymbol{h}, \boldsymbol{0}, m\lambda)$. That dual saddle point problem can naturally be approached by sketch-and-precondition methods from Section 3.2.2.
+where $\boldsymbol{A}\boldsymbol{A}^\ast$ is a Nystrom approximation of $\boldsymbol{G}$. The computation of $\boldsymbol{A}$ only requires access to $\boldsymbol{G}$ by a single sketch $\boldsymbol{G}\boldsymbol{S}$ for a tall $m \times n$ sketching operator $\boldsymbol{S}$. In the KRR context, it is especially popular for $\boldsymbol{S}$ to be a column sampling operator. There is an equivalence between computing $\hat{\boldsymbol{\alpha}}$ and solving a dual saddle point problem with matrix $\boldsymbol{A}$ and other data $(\boldsymbol{b}, \boldsymbol{c}, \mu) = (\boldsymbol{h}, \boldsymbol{0}, m\lambda)$. That dual saddle point problem can naturally be approached by sketch-and-precondition methods from Section 3.2.2.
 
 **Applying a random subspace constraint.** By taking the gradient of the objective function in (3.1) and multiplying the gradient by the positive definite matrix $\boldsymbol{G}$, we can recast (3.1) as minimizing
 
 $$Q(\boldsymbol{\alpha}) = \boldsymbol{\alpha}^*(\boldsymbol{G}^2 + m\lambda\boldsymbol{G})\boldsymbol{\alpha} - 2\boldsymbol{h}^*\boldsymbol{G}\boldsymbol{\alpha}.$$
 
-A sketch-and-solve approach is to minimize $Q(\boldsymbol{\alpha})$ subject to a constraint that $\boldsymbol{\alpha}$ is in the range of a very tall $m \times n$ sketching operator $\boldsymbol{S}$. The constrained minimization problem is equivalent to minimizing $\boldsymbol{z} \mapsto Q(\boldsymbol{S}\boldsymbol{z})$ over $n$-vectors $\boldsymbol{z}$. This in turn is equivalent to solving a highly overdetermined least squares problem, with an $(m + n) \times n$ data matrix $\boldsymbol{A} = [\boldsymbol{G}\boldsymbol{S};\; \sqrt{m\lambda}\boldsymbol{R}]$ where $\boldsymbol{R}$ is any matrix for which $\boldsymbol{R}^*\boldsymbol{R} = \boldsymbol{S}^*\boldsymbol{G}\boldsymbol{S}$.
+A sketch-and-solve approach is to minimize $Q(\boldsymbol{\alpha})$ subject to a constraint that $\boldsymbol{\alpha}$ is in the range of a very tall $m \times n$ sketching operator $\boldsymbol{S}$. The constrained minimization problem is equivalent to minimizing $\boldsymbol{z} \mapsto Q(\boldsymbol{S}\boldsymbol{z})$ over $n$-vectors $\boldsymbol{z}$. This in turn is equivalent to solving a highly overdetermined least squares problem, with an $(m + n) \times n$ data matrix $\boldsymbol{A} = [\boldsymbol{G}\boldsymbol{S};\; \sqrt{m\lambda}\boldsymbol{R}]$ where $\boldsymbol{R}$ is any matrix for which $\boldsymbol{R}^\ast\boldsymbol{R} = \boldsymbol{S}^\ast\boldsymbol{G}\boldsymbol{S}$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(3.2.2 — On Required Sketches)</span></p>
 
-Note that the approach of applying a random subspace constraint presumes access to the sketches $\boldsymbol{h}^*\boldsymbol{G}\boldsymbol{S}$, $\boldsymbol{S}^*\boldsymbol{G}\boldsymbol{S}$, and $\boldsymbol{S}^*\boldsymbol{G}^2\boldsymbol{S}$, and advocates for solving the resulting $n$-dimensional minimization problem by a direct method in $O(n^3)$ time. However, no guidance is given on how to compute the sketch $\boldsymbol{S}^*\boldsymbol{G}^2\boldsymbol{S}$. From what we can tell, the most efficient way of doing this would be to form the Gram matrix at cost $O(mn^2)$ assuming access to the sketch $\boldsymbol{G}\boldsymbol{S}$.
+Note that the approach of applying a random subspace constraint presumes access to the sketches $\boldsymbol{h}^\ast\boldsymbol{G}\boldsymbol{S}$, $\boldsymbol{S}^\ast\boldsymbol{G}\boldsymbol{S}$, and $\boldsymbol{S}^\ast\boldsymbol{G}^2\boldsymbol{S}$, and advocates for solving the resulting $n$-dimensional minimization problem by a direct method in $O(n^3)$ time. However, no guidance is given on how to compute the sketch $\boldsymbol{S}^\ast\boldsymbol{G}^2\boldsymbol{S}$. From what we can tell, the most efficient way of doing this would be to form the Gram matrix at cost $O(mn^2)$ assuming access to the sketch $\boldsymbol{G}\boldsymbol{S}$.
 
 </div>
 
@@ -1215,7 +1215,7 @@ Let $\tilde{\boldsymbol{A}}$ be any rank-$k$ approximation of $\boldsymbol{A}$ s
 
 $$\|\boldsymbol{A} - \hat{\boldsymbol{A}}\|_2 \le (1 + \|\boldsymbol{X}\|_2)\epsilon.$$
 
-Furthermore, if $|X_{ij}| \le M$ for all $(i,j)$, then $\|\boldsymbol{X}\|_2 \le \sqrt{1 + M^2 k(n-k)}$.
+Furthermore, if $\lvert X_{ij}\rvert \le M$ for all $(i,j)$, then $\|\boldsymbol{X}\|_2 \le \sqrt{1 + M^2 k(n-k)}$.
 
 </div>
 
@@ -1242,7 +1242,7 @@ The main error metrics in low-rank approximation are norm-induced distances. One
 
 **Distance to optimal approximations.** Truncating $\boldsymbol{A}$'s SVD at rank $k$ gives an optimal rank-$k$ approximation in any unitarily invariant norm. However, this truncation is non-unique when $\boldsymbol{A}$ has more than one singular value equal to $\sigma_k$. If $\boldsymbol{A}$ has multiple singular values *close to* $\sigma_k$, then extremely small perturbations to $\boldsymbol{A}$ can result in large changes to the singular vectors. It is harder to estimate the dominant $k$ singular vectors than to find a rank-$k$ approximation that is "near optimal."
 
-**Intractability of computing optimal approximations.** With submatrix-oriented decompositions, finding an "optimal" ID with constraint $|X_{ij}| \le M$ is NP-hard even when $\hat{\boldsymbol{A}}$ has exact rank $k$ and $M = 1$. Algorithms such as strong rank-revealing QR can be applied with typical runtime $O(mnk)$, while ensuring $\max_{ij} |X_{ij}| \le 2$.
+**Intractability of computing optimal approximations.** With submatrix-oriented decompositions, finding an "optimal" ID with constraint $\lvert X_{ij}\rvert \le M$ is NP-hard even when $\hat{\boldsymbol{A}}$ has exact rank $k$ and $M = 1$. Algorithms such as strong rank-revealing QR can be applied with typical runtime $O(mnk)$, while ensuring $\max_{ij} \lvert X_{ij}\rvert \le 2$.
 
 **Distance relative to a reference approximation.** One considers the distance between $\boldsymbol{A}$ and $\hat{\boldsymbol{A}}$ *relative to* that between $\boldsymbol{A}$ and some reference matrix $\boldsymbol{A}_r$:
 
@@ -1322,7 +1322,7 @@ Each randomized algorithm for low-rank SVD has a corresponding version specializ
 2. $\boldsymbol{C} = \boldsymbol{B}\boldsymbol{Q}$ &ensp; $\#$ since $\boldsymbol{B} = \boldsymbol{Q}^*\boldsymbol{A}$, we have $\boldsymbol{C} = \boldsymbol{Q}^*\boldsymbol{A}\boldsymbol{Q}$
 3. $\boldsymbol{U}, \boldsymbol{\lambda} = \texttt{eigh}(\boldsymbol{C})$ &ensp; $\#$ full Hermitian eigendecomposition
 4. $r = \min\lbrace k, \text{number of entries in } \boldsymbol{\lambda}\rbrace$
-5. $P = \texttt{argsort}(|\boldsymbol{\lambda}|)[:r]$
+5. $P = \texttt{argsort}(\lvert \boldsymbol{\lambda}\rvert)[:r]$
 6. $\boldsymbol{U} = \boldsymbol{U}[:, P]$, $\boldsymbol{\lambda} = \boldsymbol{\lambda}[P]$
 7. $\boldsymbol{V} = \boldsymbol{Q}\boldsymbol{U}$
 8. **return** $\boldsymbol{V}, \boldsymbol{\lambda}$
@@ -1924,11 +1924,22 @@ We say the random vectors $w \in D$ are **isotropic**.
 The idea for this method goes back to 1987 with work by Girard [Gir87], who proposed that $\mathcal{D}$ be the uniform distribution over the $\ell_2$ hypersphere with radius $\sqrt{n}$. Shortly thereafter, Hutchinson proposed taking $\mathcal{D}$ as a distribution over Rademacher random vectors [Hut90].
 
 - **Hutchinson's choice** of $\mathcal{D}$ minimizes the variance of the estimator when $\boldsymbol{A}$ is fixed.
-- **Girard's choice** minimizes the worst-case variance over sets of matrices that are closed under conjugation by unitary matrices.
+- **Girard's choice** minimizes the worst-case variance over sets of matrices that are closed under conjugation by unitary matrices: $A\in S \implies UAU^\ast \in S$.
 
 Such estimators require $m \in \Omega(1/\epsilon^2)$ samples to approximate $\operatorname{tr}(\boldsymbol{A})$ to within $\epsilon$ error for some constant failure probability.
 
 </div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Girard-Hutchinson estimator is unbiased)</span></p>
+
+Provided the random vectors are **isotropic**: $\mathbb{E}[w_i w_i^\top] = I$
+
+$$\mathbb{E}\Bigl[ \frac{1}{m}\sum_{i=1}^m \boldsymbol{\omega}_i^\top\boldsymbol{A}\boldsymbol{\omega}_i \Bigr] = \frac{1}{m}\sum_{i=1}^m \mathbb{E}\Bigl[ \boldsymbol{\omega}_i^\top\boldsymbol{A}\boldsymbol{\omega}_i \Bigr] = \frac{1}{m}\sum_{i=1}^m \cdot m \cdot \text{tr}(A) = \text{tr}(A)$$
+
+</div>
+
+TODO: https://www.ethanepperly.com/index.php/2023/01/26/stochastic-trace-estimation/
 
 ### 5.3.2 Trace Estimation with Help from Low-Rank Approximation
 
@@ -1984,9 +1995,9 @@ For psd matrices, Hutch++ can (with some small fixed failure probability) comput
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(XTrace)</span></p>
 
-In [ETW23], Epperly, Tropp, and Webber develop a trace estimator based on the **exchangeability principle**. This principle stipulates that if an algorithm computes its estimate based on $m$ pairs $\lbrace (\boldsymbol{\omega}_i, \boldsymbol{A}\boldsymbol{\omega}_i)\rbrace_{i=1}^m$ where $\boldsymbol{\omega}_i$ are iid, then the minimum-variance unbiased estimator for $\operatorname{tr}(\boldsymbol{A})$ must be invariant under relabelings $\lbrace \boldsymbol{\omega}_i\rbrace_{i=1}^m \leftarrow \lbrace \boldsymbol{\omega}_{\sigma(i)}\rbrace_{i=1}^m$ for permutations $\sigma$.
+In [ETW23], Epperly, Tropp, and Webber develop a trace estimator based on the **exchangeability principle**. This principle stipulates that if an algorithm computes its estimate based on $m$ pairs $\lbrace (\boldsymbol{\omega}\_i, \boldsymbol{A}\boldsymbol{\omega}\_i)\rbrace_{i=1}^m$ where $\boldsymbol{\omega}\_i$ are iid, then the minimum-variance unbiased estimator for $\operatorname{tr}(\boldsymbol{A})$ must be invariant under relabelings $\lbrace \boldsymbol{\omega}\_i\rbrace_{i=1}^m \leftarrow \lbrace \boldsymbol{\omega}\_{\sigma(i)}\rbrace_{i=1}^m$ for permutations $\sigma$.
 
-Hutch++ does not respect the exchangeability principle since it uses randomness in two distinct stages. The **XTrace** algorithm can be thought of as a symmetrized version of Hutch++. Its $j$-th run uses $\boldsymbol{Q}_j = \operatorname{orth}([\boldsymbol{A}\boldsymbol{\omega}_i|_{i \ne j})$ and estimates $\operatorname{tr}(\boldsymbol{\Delta}_j)$ by $\boldsymbol{\omega}_j^*\boldsymbol{\Delta}_j\boldsymbol{\omega}_j$. A careful implementation achieves the same asymptotic complexity as Hutch++. XTrace also comes with adaptive-stopping and variance estimation methods.
+Hutch++ does not respect the exchangeability principle since it uses randomness in two distinct stages. The **XTrace** algorithm can be thought of as a symmetrized version of Hutch++. Its $j$-th run uses $\boldsymbol{Q}\_j = \operatorname{orth}([\boldsymbol{A}\boldsymbol{\omega}\_i\|_{i \ne j})$ and estimates $\operatorname{tr}(\boldsymbol{\Delta}\_j)$ by $\boldsymbol{\omega}\_j^\ast\boldsymbol{\Delta}_j\boldsymbol{\omega}\_j$. A careful implementation achieves the same asymptotic complexity as Hutch++. XTrace also comes with adaptive-stopping and variance estimation methods.
 
 </div>
 
