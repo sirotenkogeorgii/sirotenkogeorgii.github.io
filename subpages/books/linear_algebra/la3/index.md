@@ -762,7 +762,7 @@ It suffices to verify property (4):
 
 1. $\lVert AB \rVert_{\ell_1} = \sum_{i,j} |\sum_k a_{ik} b_{kj}| \leq \sum_{i,j,k} |a_{ik} b_{kj}| = (\sum_{i,k} |a_{ik}|)(\sum_{\ell,j} |b_{\ell j}|) = \lVert A \rVert_{\ell_1} \lVert B \rVert_{\ell_1}$.
 2. Using the Cauchy--Schwarz inequality: $\lVert AB \rVert_F^2 = \sum_{i,j} (\sum_k a_{ik} b_{kj})^2 \leq \sum_{i,j} (\sum_k a_{ik}^2)(\sum_\ell b_{\ell j}^2) = (\sum_{i,k} a_{ik}^2)(\sum_{\ell,j} b_{\ell j}^2) = \lVert A \rVert_F^2 \lVert B \rVert_F^2$.
-3. $\lVert A \rVert_{\ell_\infty}$ is not a matrix norm since for $A = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$ we get $2 = \lVert A^2 \rVert \not\leq \lVert A \rVert^2 = 1$. However, for the scaled variant $n \cdot \max_{i,j} |a_{ij}|$: $n \cdot \max_{i,j} |\sum_k a_{ik} b_{kj}| \leq n \cdot \max_{i,j} \sum_k |a_{ik}| |b_{kj}| \leq n \cdot \lVert A \rVert_{\ell_\infty} \cdot n \cdot \lVert B \rVert_{\ell_\infty}$.
+3. $\lVert A \rVert_{\ell_\infty}$ is not a matrix norm since for $A = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$ we get $2 = \lVert A^2 \rVert \not\leq \lVert A \rVert^2 = 1$. However, for the scaled variant $n \cdot \max_{i,j} \lvert a_{ij}\rvert$: $n \cdot \max_{i,j} |\sum_k a_{ik} b_{kj}| \leq n \cdot \max_{i,j} \sum_k |a_{ik}| |b_{kj}| \leq n \cdot \lVert A \rVert_{\ell_\infty} \cdot n \cdot \lVert B \rVert_{\ell_\infty}$.
 
 </details>
 </div>
@@ -814,7 +814,7 @@ The induced norm is a matrix norm, and moreover $\lVert Ax \rVert \leq \lVert A 
 <summary>Proof</summary>
 
 1. Clearly $\lVert A \rVert \geq 0$. Equality holds iff $\lVert Ax \rVert = 0$ for all $x$, which happens only when $A = 0$.
-2. $\lVert \alpha A \rVert = |\alpha| \cdot \lVert A \rVert$ is clear.
+2. $\lVert \alpha A \rVert = \lvert \alpha\rvert \cdot \lVert A \rVert$ is clear.
 3. $\lVert A + B \rVert = \max_{\lVert x \rVert = 1} \lVert (A+B)x \rVert \leq \max_{\lVert x \rVert = 1} (\lVert Ax \rVert + \lVert Bx \rVert) \leq \lVert A \rVert + \lVert B \rVert$.
 4. For $Bx \neq 0$: $\lVert AB \rVert = \max_{x \neq 0} \frac{\lVert ABx \rVert}{\lVert x \rVert} = \max_{x \neq 0} \frac{\lVert ABx \rVert}{\lVert Bx \rVert} \cdot \frac{\lVert Bx \rVert}{\lVert x \rVert} \leq \max_{y \neq 0} \frac{\lVert Ay \rVert}{\lVert y \rVert} \cdot \max_{x \neq 0} \frac{\lVert Bx \rVert}{\lVert x \rVert} = \lVert A \rVert \cdot \lVert B \rVert$.
 5. Consistency: from the equivalent expression $\lVert A \rVert \geq \frac{\lVert Ax \rVert}{\lVert x \rVert}$ for all $x \neq 0$, we get $\lVert Ax \rVert \leq \lVert A \rVert \cdot \lVert x \rVert$.
@@ -867,19 +867,19 @@ For $p \in \lbrace 1, 2, \infty \rbrace$ the $p$-norm has a simple closed-form e
 
 It suffices to verify property (4) --- the other axioms follow from Theorem 5.7.
 
-**(1):** Set $h \coloneqq \max_j \sum_i |a_{ij}| = \max_j \lVert A_{\ast j} \rVert_{\ell_1}$.
+**(1):** Set $h \coloneqq \max_j \sum_i \lvert a_{ij}\rvert = \max_j \lVert A_{\ast j} \rVert_{\ell_1}$.
 
 "$\geq$": Choose $x = e_k$, where $k$ achieves the maximum in $h$. Then $\lVert Ax \rVert_{\ell_1} = \lVert A_{\ast k} \rVert_{\ell_1} = h$.
 
-"$\leq$": $\lVert A \rVert_1 = \max_{\lVert x \rVert_{\ell_1}=1} \lVert Ax \rVert_{\ell_1} = \max_{\lVert x \rVert_{\ell_1}=1} \lVert \sum_j x_j A_{\ast j} \rVert_{\ell_1} \leq \max_{\lVert x \rVert_{\ell_1}=1} \sum_j |x_j| \cdot \lVert A_{\ast j} \rVert_{\ell_1} \leq \max_{\lVert x \rVert_{\ell_1}=1} \sum_j |x_j| h = h$.
+"$\leq$": $\lVert A \rVert_1 = \max_{\lVert x \rVert_{\ell_1}=1} \lVert Ax \rVert_{\ell_1} = \max_{\lVert x \rVert_{\ell_1}=1} \lVert \sum_j x_j A_{\ast j} \rVert_{\ell_1} \leq \max_{\lVert x \rVert_{\ell_1}=1} \sum_j \lvert x_j\rvert \cdot \lVert A_{\ast j} \rVert_{\ell_1} \leq \max_{\lVert x \rVert_{\ell_1}=1} \sum_j \lvert x_j\rvert h = h$.
 
 **(2):** Let $A = U\Sigma V^\top$ be the SVD. By Lemma 5.8, $\lVert A \rVert_2 = \lVert \Sigma \rVert_2 = \max_{\lVert x \rVert_{\ell_2}=1} \lVert \sigma_1 I_n x \rVert_{\ell_2} \leq \max_{\lVert x \rVert_{\ell_2}=1} \sigma_1 \lVert x \rVert_{\ell_2} = \sigma_1$, with equality for $x = e_1$.
 
-**(3):** Set $h \coloneqq \max_i \sum_j |a_{ij}|$.
+**(3):** Set $h \coloneqq \max_i \sum_j \lvert a_{ij}\rvert$.
 
 "$\geq$": Let $k$ achieve the maximum. Choose $x \coloneqq \operatorname{sgn}(A_{k\ast})$, the sign vector of the $k$-th row of $A$. Then $\lVert A \rVert_\infty \geq \lVert Ax \rVert_{\ell_\infty} = h$.
 
-"$\leq$": $\lVert A \rVert_\infty = \max_{\lVert x \rVert_{\ell_\infty}=1} \max_i |\sum_j a_{ij} x_j| \leq \max_{\lVert x \rVert_{\ell_\infty}=1} \max_i \sum_j |a_{ij}| |x_j| \leq \max_i \sum_j |a_{ij}| = h$.
+"$\leq$": $\lVert A \rVert_\infty = \max_{\lVert x \rVert_{\ell_\infty}=1} \max_i \lvert \sum_j a_{ij} x_j\rvert \leq \max_{\lVert x \rVert_{\ell_\infty}=1} \max_i \sum_j \lvert a_{ij}\rvert \lvert x_j\rvert \leq \max_i \sum_j \lvert a_{ij}\rvert = h$.
 
 </details>
 </div>
@@ -887,7 +887,9 @@ It suffices to verify property (4) --- the other axioms follow from Theorem 5.7.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
 
-For an induced matrix norm and a regular matrix $A$: $\min_{\lVert x \rVert=1} \lVert Ax \rVert = \lVert A^{-1} \rVert^{-1}$.
+For an induced matrix norm and a regular ma
+
+$$\min_{\lVert x \rVert=1} \lVert Ax \rVert = \lVert A^{-1} \rVert^{-1}$$
 
 </div>
 
@@ -944,12 +946,12 @@ $$
 |\lambda| \cdot \lVert X \rVert = \lVert \lambda X \rVert = \lVert AX \rVert \leq \lVert A \rVert \cdot \lVert X \rVert.
 $$
 
-Dividing by $\lVert X \rVert \neq 0$ gives $|\lambda| \leq \lVert A \rVert$.
+Dividing by $\lVert X \rVert \neq 0$ gives $\lvert \lambda\rvert \leq \lVert A \rVert$.
 
 </details>
 </div>
 
-The inequality can be strict --- for instance, $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$ has $\rho(A) = 0 < \lVert A \rVert$ for any matrix norm. Moreover, $\lVert A \rVert - \rho(A)$ can be arbitrarily large (consider $A = \begin{pmatrix} 0 & \alpha \\ 0 & 0 \end{pmatrix}$).
+The inequality can be strict --- for instance, $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$ has $\rho(A) = 0 < \lVert A \rVert$ for any matrix norm. Moreover, $\lVert A \rVert - \rho(A)$ can be arbitrarily large (consider $A = \begin{pmatrix} 0 & \alpha \\\ 0 & 0 \end{pmatrix}$).
 
 On the other hand, we can get arbitrarily close to the spectral radius by choosing a suitable norm:
 
@@ -2078,7 +2080,7 @@ $$
 and therefore
 
 $$
-f(J) = \sum_{k=0}^{\infty} a_k \begin{pmatrix} \lambda_1^k & & \\ & \ddots & \\ & & \lambda_n^k \end{pmatrix} = \begin{pmatrix} f(\lambda_1) & & \\ & \ddots & \\ & & f(\lambda_n) \end{pmatrix}.
+f(J) = \begin{pmatrix} \lambda_1^k & & \\ & \ddots & \\ & & \lambda_n^k \end{pmatrix} = \begin{pmatrix} \sum_{k=0}^{\infty} a_k \lambda_1^k & & \\ & \ddots & \\ & & \sum_{k=0}^{\infty} a_k \lambda_n^k \end{pmatrix} = \begin{pmatrix} f(\lambda_1) & & \\ & \ddots & \\ & & f(\lambda_n) \end{pmatrix}.
 $$
 
 In the general case, when $J$ is block diagonal with Jordan blocks $J_{k_1}(\lambda_1), \ldots, J_{k_m}(\lambda_m)$, we have
@@ -2097,7 +2099,7 @@ $$
 <details markdown="1">
 <summary>Proof sketch (for $k_i = 2$)</summary>
 
-Consider a Jordan block of size $2$: $A = J_2(\lambda) = \begin{pmatrix} \lambda & 1 \\ 0 & \lambda \end{pmatrix}$. Define $A_\varepsilon \coloneqq \begin{pmatrix} \lambda & 1 \\ 0 & \lambda + \varepsilon \end{pmatrix}$ where $\varepsilon \neq 0$. This matrix is diagonalizable:
+Consider a Jordan block of size $2$: $A = J_2(\lambda) = \begin{pmatrix} \lambda & 1 \\\ 0 & \lambda \end{pmatrix}$. Define $A_\varepsilon \coloneqq \begin{pmatrix} \lambda & 1 \\\ 0 & \lambda + \varepsilon \end{pmatrix}$ where $\varepsilon \neq 0$. This matrix is diagonalizable:
 
 $$
 A_\varepsilon = S_\varepsilon \Lambda_\varepsilon S_\varepsilon^{-1}, \quad S_\varepsilon = \begin{pmatrix} 1 & 1 \\ 0 & \varepsilon \end{pmatrix}, \quad \Lambda_\varepsilon = \begin{pmatrix} \lambda & 0 \\ 0 & \lambda + \varepsilon \end{pmatrix}, \quad S_\varepsilon^{-1} = \begin{pmatrix} 1 & -1/\varepsilon \\ 0 & 1/\varepsilon \end{pmatrix}.
@@ -2109,7 +2111,7 @@ $$
 f(A_\varepsilon) = S_\varepsilon \begin{pmatrix} f(\lambda) & 0 \\ 0 & f(\lambda + \varepsilon) \end{pmatrix} S_\varepsilon^{-1} = \begin{pmatrix} f(\lambda) & (f(\lambda + \varepsilon) - f(\lambda))/\varepsilon \\ 0 & f(\lambda + \varepsilon) \end{pmatrix}.
 $$
 
-Taking the limit $\varepsilon \to 0$ gives $f(A) = \begin{pmatrix} f(\lambda) & f'(\lambda) \\ 0 & f(\lambda) \end{pmatrix}$.
+Taking the limit $\varepsilon \to 0$ gives $f(A) = \begin{pmatrix} f(\lambda) & f'(\lambda) \\\ 0 & f(\lambda) \end{pmatrix}$.
 
 </details>
 </div>
@@ -2133,11 +2135,14 @@ Others, however, do not generalize straightforwardly (see Theorem 9.4 below).
 
 ### Matrix Exponential
 
-The exponential is one of the most important matrix functions. For $A \in \mathbb{R}^{n \times n}$, the matrix exponential is defined by the power series
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matrix Exponential)</span></p>
 
-$$
-e^A = \sum_{k=0}^{\infty} \frac{1}{k!} A^k.
-$$
+The exponential is one of the most important matrix functions. For $A \in \mathbb{R}^{n \times n}$, the **matrix exponential** is defined by the power series
+
+$$e^A = \sum_{k=0}^{\infty} \frac{1}{k!} A^k$$
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Derivation of $e^A$)</span></p>
@@ -2458,12 +2463,14 @@ where $y^{(k)} \coloneqq (q_{1k}x_1, \ldots, q_{nk}x_n)^\top$.
 
 The Hadamard product has different properties from the standard matrix product. For instance:
 - If $A, B$ are symmetric, then $A \circ B$ is symmetric.
-- If $A, B$ are regular, $A \circ B$ may be singular: e.g., $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$, $B = \begin{pmatrix} 1 & 2 \\ 2 & 1 \end{pmatrix}$.
+- If $A, B$ are regular, $A \circ B$ may be singular: e.g., $A = \begin{pmatrix} 2 & 1 \\\ 1 & 2 \end{pmatrix}$, $B = \begin{pmatrix} 1 & 2 \\\ 2 & 1 \end{pmatrix}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A, B \in \mathbb{R}^{n \times n}$. Then $\lVert A \circ B \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$.
+Let $A, B \in \mathbb{R}^{n \times n}$. Then 
+
+$$\lVert A \circ B \rVert_2 \leq \lVert A \rVert_2 \cdot \lVert B \rVert_2$$
 
 </div>
 
