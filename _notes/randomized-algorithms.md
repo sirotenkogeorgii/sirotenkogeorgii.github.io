@@ -927,7 +927,7 @@ In the study of combinatorial optimization and algorithmic game theory, the Stab
 
 The problem begins with two disjoint sets of equal size $n$: a set of women $\lbrace F_1, \dots, F_n\rbrace$ and a set of men $\lbrace M_1, \dots, M_n\rbrace$. Every individual maintains a preference list—a strict ordering of all members of the opposite sex.
 
-For instance, a woman $F_j$ prefers man $M_k$ over man $M_l$ if $k <_{F_j} l$, where $<_{F_j}$ denotes her specific ranking. Similar strict orderings exist for every man $M_i$. The objective is to pair every man with exactly one woman in a way that the resulting social structure is "stable."
+For instance, a woman $F_j$ prefers man $M_k$ over man $M_l$ if $k <\_{F_j} l$, where $<\_{F_j}$ denotes her specific ranking. Similar strict orderings exist for every man $M_i$. The objective is to pair every man with exactly one woman in a way that the resulting social structure is "stable."
 
 ### Formal Definitions
 
@@ -1169,7 +1169,7 @@ If $X$ is empty, $R_A$ is the empty set. By construction, $R_A \subseteq R_T$ (t
 
 The algorithm $A$ described above is a PAC learner if 
 
-$$s=s(\epsilon, \delta)=\geq \frac{2 + \log(1/\delta)}{\epsilon/4}$$
+$$s=s(\epsilon, \delta) \geq \frac{2 + \log(1/\delta)}{\epsilon/4}$$
 
 </div>
 
@@ -1950,15 +1950,16 @@ The Chernov-Hoeffding bound provides exponentially decreasing bounds for the sum
 
 Chernov-Hoeffding Bound Let $X_1, \dots, X_n$ be mutually independent $\lbrace 0, 1\rbrace$-valued random variables where $\mathbb{P}[X_i = 1] = p_i$. Let $X = \sum X_i$ and $\mu = \mathbb{E}[X] = \sum p_i$.
 
+1. **Lower Tail:** For $0 < \delta \le 1: \mathbb{P}[X \le (1 - \delta)\mu] < e^{-\frac{\delta^2 \mu}{2}}$
+2. **Upper Tail:** For $\delta > 0: \mathbb{P}[X \ge (1 + \delta)\mu] < \left(\frac{e^\delta}{(1 + \delta)^{(1 + \delta)}}\right)^\mu$
+
 </div>
 
-1. Lower Tail: For $0 < \delta \le 1: \mathbb{P}[X \le (1 - \delta)\mu] < e^{-\frac{\delta^2 \mu}{2}}$
-2. Upper Tail: For $\delta > 0: \mathbb{P}[X \ge (1 + \delta)\mu] < \left(\frac{e^\delta}{(1 + \delta)^{(1 + \delta)}}\right)^\mu$
 
 ### Proof of Lower Tail
 
 1. Using the fact that the exponential function is strictly increasing, for any $t > 0$: $\mathbb{P}[X \le (1 - \delta)\mu] = \mathbb{P}[e^{-tX} \ge e^{-t(1-\delta)\mu}]\le \frac{\mathbb{E}[e^{-tX}]}{e^{-t(1-\delta)\mu}}$
-2. Since $X_i$ are independent, $\mathbb{E}[e^{-tX}] = \prod_{i=1}^n$ \mathbb{E}[e^{-tX_i}]$.
+2. Since $X_i$ are independent, $\mathbb{E}[e^{-tX}] = \prod_{i=1}^n \mathbb{E}[e^{-tX_i}]$.
 3. $\mathbb{E}[e^{-tX_i}] = p_i e^{-t} + (1 - p_i) = 1 + p_i(e^{-t} - 1) \le e^{p_i(e^{-t} - 1)}$ (using $1+y < e^y$).
 4. Thus, $\mathbb{E}[e^{-tX}]\le e^{(e^{-t}-1)\mu}$.
 5. Let $b(t) = e^{-t} - 1 + t(1-\delta)$. We want to minimize $e^{b(t)\mu}$. The minimum of $b(t)$ occurs at $t_0 = \ln(1/(1-\delta))$.
@@ -1980,11 +1981,15 @@ A common application of tail bounds is probability amplification through a major
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Probability Amplification)</span></p>
 
-Let $X_1, \dots, X_n$ be independent $\lbrace 0, 1\rbrace$ variables where $\mathbb{P}[X_i = 1] = 1/2 + \epsilon$ (correctness). Let $X = \sum X_i. The probability that the majority vote is wrong (i.e., $X \le n/2$) is: $\mathbb{P}[X \le n/2] < 2^{-\epsilon^2 n}$
+Let $X_1, \dots, X_n$ be independent $\lbrace 0, 1\rbrace$ variables where $\mathbb{P}[X_i = 1] = 1/2 + \epsilon$ (correctness). Let $X = \sum X_i$. The probability that the majority vote is wrong (i.e., $X \le n/2$) is: 
+
+$$\mathbb{P}[X \le n/2] < 2^{-\epsilon^2 n}$$
 
 </div>
 
-**Proof.** Let $\mu = \mathbb{E}[X] = (1/2 + \epsilon)n$. We look for $\delta$ such that $n/2 \le (1-\delta)\mu. Solving $n/2 = (1-\delta)(1/2 + \epsilon)n$ gives $\delta = \frac{2\epsilon}{1 + 2\epsilon}$. Applying the Chernov bound: $\mathbb{P}[X \le n/2] \le e^{-\frac{\delta^2 \mu}{2}} = e^{-\frac{\epsilon^2 n}{1+2\epsilon}} < e^{-\epsilon^2 n} < 2^{-\epsilon^2 n}$
+**Proof.** Let $\mu = \mathbb{E}[X] = (1/2 + \epsilon)n$. We look for $\delta$ such that $n/2 \le (1-\delta)\mu$. Solving $n/2 = (1-\delta)(1/2 + \epsilon)n$ gives $\delta = \frac{2\epsilon}{1 + 2\epsilon}$. Applying the Chernov bound: 
+
+$$\mathbb{P}[X \le n/2] \le e^{-\frac{\delta^2 \mu}{2}} = e^{-\frac{\epsilon^2 n}{1+2\epsilon}} < e^{-\epsilon^2 n} < 2^{-\epsilon^2 n}$$
 
 **Note.** To achieve an error probability of at most $2^{-t}$, one should set the number of iterations $n \ge \frac{2}{\epsilon^2} t$.
 
@@ -2088,20 +2093,20 @@ Reaching a satisfying assignment is equivalent to the random walk reaching the o
 
 A sequence of random variables $X_0, X_1, \dots$ where:
 
-</div>
-
 * If $X_t = 0$, then $X_{t+1} = 0$ (the origin is an absorbing point).
 * If $X_t \neq 0$, $X_{t+1}$ is $X_t - 1$ with probability $\alpha$ and $X_t + 1$ with probability $1 - \alpha$. This sequence is a Markov chain because the distribution of $X_{t+1}$ depends only on the current state $X_t$.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Probability of Reaching the Origin)</span></p>
 
 Let $p_j$ be the probability that a walk starting at $X_0 = j$ eventually reaches $0$.
 
-</div>
-
 1. If $\alpha \ge 1/2$, $p_j = 1$ for all $j \ge 0$.
 2. If $\alpha < 1/2$, $p_j = \left(\frac{\alpha}{1-\alpha}\right)^j$.
+
+</div>
 
 **Proof.**
 
@@ -2234,23 +2239,28 @@ $$H(\rho) = -\rho \log \rho - (1 - \rho) \log (1 - \rho)$$
 
 </div>
 
-
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Approximate Volume of a Ball)</span></p>
 
-Approximate Volume of a Ball
+Let $\rho = r/n$ and $v(n, r) = 2^{H(\rho)n}$. For sufficiently large $n$ and $r \le n/2: 
+
+$$\frac{v(n, r)}{n} \le \text{vol}(n, r) \le v(n, r)$$
 
 </div>
 
-Let $\rho = r/n$ and $v(n, r) = 2^{H(\rho)n}$. For sufficiently large $n$ and $r \le n/2: \frac{v(n, r)}{n} \le \text{vol}(n, r) \le v(n, r)$
-
 ### Optimizing the Search Radius
 
-An invocation of LocalSearchExh($\phi$, $\sigma$, $r$) checks if any satisfying assignment exists within $B(\sigma, n, r)$. The algorithm explores a search tree with a size bounded by: $a_k(n, r) := \sum_{i=0}^{r} k^i \approx k^r$
+An invocation of LocalSearchExh($\phi$, $\sigma$, $r$) checks if any satisfying assignment exists within $B(\sigma, n, r)$. The algorithm explores a search tree with a size bounded by: 
 
-The efficiency gain of local search over naive exhaustive search within the ball $B(\sigma, n, r)$ occurs when $a_k(n, r) < \text{vol}(n, r)$. To find the optimal radius, we minimize the ratio of the search tree size to the ball volume. Let $\rho = r/n$. We approximate the ratio as: $\frac{a_k(n, r)}{\text{vol}(n, r)}\le \frac{k^{rn}}{2^{H(\rho)n} / n} = n \cdot 2^{(\rho \log k - H(\rho))n}$
+$$a_k(n, r) := \sum_{i=0}^{r} k^i \approx k^r$$
 
-To minimize this, we take the derivative of the exponent with respect to $\rho$. The derivative of $H(\rho)$ is $-\log(\frac{\rho}{1-\rho})$. Setting the derivative of the exponent to zero: $\log k + \log\left(\frac{\rho}{1-\rho}\right) = 0 \iff \frac{\rho}{1-\rho} = \frac{1}{k} \iff \rho = \frac{1}{k+1}$
+The efficiency gain of local search over naive exhaustive search within the ball $B(\sigma, n, r)$ occurs when $a_k(n, r) < \text{vol}(n, r)$. To find the optimal radius, we minimize the ratio of the search tree size to the ball volume. Let $\rho = r/n$. We approximate the ratio as: 
+
+$$\frac{a_k(n, r)}{\text{vol}(n, r)}\le \frac{k^{rn}}{2^{H(\rho)n} / n} = n \cdot 2^{(\rho \log k - H(\rho))n}$$
+
+To minimize this, we take the derivative of the exponent with respect to $\rho$. The derivative of $H(\rho)$ is $-\log(\frac{\rho}{1-\rho})$. Setting the derivative of the exponent to zero: 
+
+$$\log k + \log\left(\frac{\rho}{1-\rho}\right) = 0 \iff \frac{\rho}{1-\rho} = \frac{1}{k} \iff \rho = \frac{1}{k+1}$$
 
 ### Benefits of the Optimum Radius
 
@@ -2262,7 +2272,9 @@ By setting $r = \frac{n}{k+1}$, the ratio becomes: $\frac{a_k(n, r)}{v(n, r) / n
 
 If we choose an initial assignment $\sigma$ uniformly at random, the probability that a specific satisfying assignment $\sigma_0$ falls within $B(\sigma, n, r)$ is $\frac{\text{vol}(n, r)}{2^n}$.
 
-A randomized algorithm can be defined by repeating the local search $t \cdot \frac{2^n}{\text{vol}(n, r)}$ times with independent random starting assignments. The probability of failing to find a satisfying assignment is at most $(1 - \frac{\text{vol}(n, r)}{2^n})^{t \cdot 2^n / \text{vol}(n, r)} \le e^{-t}$.
+A randomized algorithm can be defined by repeating the local search $t \cdot \frac{2^n}{\text{vol}(n, r)}$ times with independent random starting assignments. The probability of failing to find a satisfying assignment is at most 
+
+$$(1 - \frac{\text{vol}(n, r)}{2^n})^{t \cdot 2^n / \text{vol}(n, r)} \le e^{-t}$$
 
 For $r = \frac{n}{k+1}$ and $t = n^2$, the total number of assignments checked is approximately: $\text{poly}(n) \cdot \left(\frac{2k}{k+1}\right)^n$ For $3$-SAT ($k=3$), this results in a randomized algorithm with a running time of $\text{poly}(n) \cdot 1.5^n$ and an error probability of at most $2^{-n^2}$.
 

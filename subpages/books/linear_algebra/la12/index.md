@@ -5670,7 +5670,8 @@ First, let us look at the generalization of transposition and symmetric matrices
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 10.49 — Hermitian matrix and conjugate transpose)</span></p>
 
-The *conjugate transpose* (Hermitian transpose) of a matrix $A \in \mathbb{C}^{n \times n}$ is the matrix $A^* \coloneqq \overline{A}^\top$. A matrix $A \in \mathbb{C}^{n \times n}$ is called *Hermitian* if $A^* = A$.
+* The *conjugate transpose* (Hermitian transpose) of a matrix $A \in \mathbb{C}^{n \times n}$ is the matrix $A^* \coloneqq \overline{A}^\top$. 
+* A matrix $A \in \mathbb{C}^{n \times n}$ is called *Hermitian* if $A^* = A$.
 
 </div>
 
@@ -5748,7 +5749,7 @@ $$\lambda_1 = \max_{x: \|x\|_2 = 1} x^\top A x, \quad \lambda_n = \min_{x: \|x\|
 
 </div>
 
-*Proof.* Only for $\lambda_1$; the second part is analogous. Inequality "$\le$": Let $x_1$ be the eigenvector corresponding to $\lambda_1$ normalized so that $\|x_1\|_2 = 1$. Then $Ax_1 = \lambda_1 x_1$. Multiplying by $x_1^\top$ from the left we get $\lambda_1 = \lambda_1 x_1^\top x_1 = x_1^\top A x_1 \le \max_{x: \|x\|_2 = 1} x^\top Ax$. Inequality "$\ge$": Let $x \in \mathbb{R}^n$ be any vector such that $\|x\|_2 = 1$. Denote $y \coloneqq Q^\top x$, then $\|y\|_2 = 1$. Using the spectral decomposition $A = Q\Lambda Q^\top$ we get
+*Proof.* Only for $\lambda_1$; the second part is analogous. Inequality "$\le$": Let $x_1$ be the eigenvector corresponding to $\lambda_1$ normalized so that $\|x_1\|\_2 = 1$. Then $Ax_1 = \lambda_1 x_1$. Multiplying by $x_1^\top$ from the left we get $\lambda_1 = \lambda_1 x_1^\top x_1 = x_1^\top A x_1 \le \max_{x: \|x\|\_2 = 1} x^\top Ax$. Inequality "$\ge$": Let $x \in \mathbb{R}^n$ be any vector such that $\|x\|\_2 = 1$. Denote $y \coloneqq Q^\top x$, then $\|y\|\_2 = 1$. Using the spectral decomposition $A = Q\Lambda Q^\top$ we get
 
 $$x^\top Ax = x^\top Q \Lambda Q^\top x = y^\top \Lambda y = \sum_{i=1}^n \lambda_i y_i^2 \le \sum_{i=1}^n \lambda_1 y_i^2 = \lambda_1 \|y\|_2^2 = \lambda_1.$$
 
@@ -5783,7 +5784,7 @@ Initial state: 58 million residents in the city, 142 million in suburbs, and 60 
 
 $$A \coloneqq \begin{pmatrix} 0.96 & 0.01 & 0.015 \\ 0.03 & 0.98 & 0.005 \\ 0.01 & 0.01 & 0.98 \end{pmatrix}, \quad x_0 = (58, 142, 60)^\top.$$
 
-By diagonalization we compute $A^\infty x_0 = (0.23 e^\top x_0, \; 0.43 e^ x_0, \; 0.33 e^\top x_0)^\top$. Thus (regardless of the initial state $x_0$) the population distribution stabilizes at: 23% in the city, 43% in suburbs, 33% in rural areas.
+By diagonalization we compute $A^\infty x_0 = (0.23 e^\top x_0, \\\ 0.43 e^ x_0, \\\ 0.33 e^\top x_0)^\top$. Thus (regardless of the initial state $x_0$) the population distribution stabilizes at: 23% in the city, 43% in suburbs, 33% in rural areas.
 
 </div>
 
@@ -5796,18 +5797,27 @@ Since numerical methods are iterative and compute eigenvalues only with a certai
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 10.58 — Gershgorin discs)</span></p>
 
-Every eigenvalue $\lambda$ of a matrix $A \in \mathbb{C}^{n \times n}$ lies in a disc centered at $a_{ii}$ with radius $\sum_{j \neq i} |a_{ij}|$ for some $i \in \lbrace 1, \ldots, n \rbrace$.
+Every eigenvalue $\lambda$ of a matrix $A \in \mathbb{C}^{n \times n}$ lies in a disc centered at $a_{ii}$ with radius $\sum_{j \neq i} \lvert a_{ij}\rvert$ for some $i \in \lbrace 1, \ldots, n \rbrace$.
 
 </div>
 
-*Proof.* Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector, so $Ax = \lambda x$. Let the $i$-th component of $x$ have the largest absolute value, i.e., $|x_i| = \max_{k=1,\ldots,n} |x_k|$. Since the $i$-th equation has the form $\sum_{j=1}^n a_{ij} x_j = \lambda x_i$, dividing by $x_i \neq 0$ we get $\lambda = a_{ii} + \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}$, and therefore $|\lambda - a_{ii}| = \left| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i} \right| \le \sum_{j \neq i} |a_{ij}| \frac{|x_j|}{|x_i|} \le \sum_{j \neq i} |a_{ij}|$.
+*Proof.* Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector, so $Ax = \lambda x$. Let the $i$-th component of $x$ have the largest absolute value, i.e., $\lvert x_i\rvert = \max_{k=1,\ldots,n} \lvert x_k\rvert$. Since the $i$-th equation has the form $\sum_{j=1}^n a_{ij} x_j = \lambda x_i$, dividing by $x_i \neq 0$ we get $\lambda = a_{ii} + \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}$, and therefore $\lvert \lambda - a_{ii}\rvert = \left| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i} \right| \le \sum_{j \neq i} \lvert a_{ij}\rvert \frac{\lvert x_j\rvert}{\lvert x_i\rvert} \le \sum_{j \neq i} \lvert a_{ij}\rvert$.
 
 The theorem gives a simple but coarse estimate on the magnitude of eigenvalues (there also exist improvements, e.g., Cassini ovals, etc.). Nevertheless, in some applications such an estimate may suffice.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.59)</span></p>
 
-Consider $A = \begin{pmatrix} 2 & 1 & 0 \\ -2 & 5 & 1 \\ -1 & -2 & -3 \end{pmatrix}$. The eigenvalues of $A$ are $\lambda_1 = -2.78$, $\lambda_2 = 3.39 + 0.6i$, $\lambda_3 = 3.39 - 0.6i$. The Gershgorin discs are: the disc centered at 2 with radius 1, the disc centered at 5 with radius 3, and the disc centered at $-3$ with radius 3. All eigenvalues lie inside one of the discs.
+Consider 
+
+$$A = \begin{pmatrix} 2 & 1 & 0 \\ -2 & 5 & 1 \\ -1 & -2 & -3 \end{pmatrix}$$
+
+The eigenvalues of $A$ are $\lambda_1 = -2.78$, $\lambda_2 = 3.39 + 0.6i$, $\lambda_3 = 3.39 - 0.6i$. The Gershgorin discs are: the disc centered at 2 with radius 1, the disc centered at 5 with radius 3, and the disc centered at $-3$ with radius 3. All eigenvalues lie inside one of the discs.
+
+<figure>
+  <img src="{{ '/assets/images/notes/linear-algebra/gershgorin_discs.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>Gershgorin discs</figcaption>
+</figure>
 
 </div>
 
@@ -5841,7 +5851,7 @@ The method terminates when the value $x_{i-1}^\top y_i$ or the vector $x_i$ stab
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 10.63 — Convergence of the power method)</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$ with eigenvalues $|\lambda_1| > |\lambda_2| \ge \ldots \ge |\lambda_n|$ and corresponding linearly independent eigenvectors $v_1, \ldots, v_n$ of unit size. Let $x_0$ have a nonzero component in the direction of $v_1$. Then $x_i$ converges (up to a scalar multiple) to the eigenvector $v_1$ and $x_{i-1}^\top y_i$ converges to the eigenvalue $\lambda_1$.
+Let $A \in \mathbb{R}^{n \times n}$ with eigenvalues $\lvert \lambda_1\rvert > \lvert\lambda_2\rvert \ge \ldots \ge \lvert\lambda_n\rvert$ and corresponding linearly independent eigenvectors $v_1, \ldots, v_n$ of unit size. Let $x_0$ have a nonzero component in the direction of $v_1$. Then $x_i$ converges (up to a scalar multiple) to the eigenvector $v_1$ and $x_{i-1}^\top y_i$ converges to the eigenvalue $\lambda_1$.
 
 </div>
 

@@ -1759,16 +1759,20 @@ Many texts also assume $U_{n+1}\subseteq U_n$ (nestedness). Any Martin-Löf test
 
 </div>
 
-## Open Sets in Calculus
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Choice of opens sets in calculus)</span></p>
 
-It is **not** arbitrary. Open sets are the natural domains for most of the *local* ideas in calculus.
+The choice of open sets in calculus is **not** arbitrary. Open sets are the natural domains for most of the *local* ideas in calculus.
 
 The key intuition is this:
 
 Calculus studies what happens to a function **near a point**.
 To talk about “near,” you usually want to be able to move a little in every direction while staying inside the domain. That is exactly what openness gives you.
 
-### Why open sets matter
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why open sets matter)</span></p>
 
 A set $U$ is open if every point $x \in U$ has a small ball around it still contained in $U$.
 
@@ -1781,9 +1785,12 @@ So if $f : U \to \mathbb{R}$ and $U$ is open, then for every $x \in U$, there ar
 * local linear approximations
 * inverse / implicit function theorems
 
-All of these are **local** notions.
+All of these are **local** notions. When doing **differential calculus**, we usually restrict attention to open sets because that is the most natural setting for local analysis.
 
-### Example: derivative in one variable
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Derivative in one variable)</span></p>
 
 To define
 
@@ -1797,18 +1804,10 @@ If the domain is not open, say $f:[0,\infty)\to\mathbb R$, then at $a=0$ you can
 
 So openness is not required for *every possible definition*, but it is the clean setting where the standard theory works smoothly.
 
-### In several variables it becomes even more important
+</div>
 
-In $\mathbb R^n$, differentiability at a point means approximating $f(x)$ when $x$ is close to $a$ from **all directions**.
-
-If the domain is open, then every point has a whole neighborhood inside the domain, so “all nearby directions” make sense.
-
-If the domain is something like a curve, a surface boundary, or a half-space edge, then some directions are missing. Then ordinary multivariable differentiation either:
-
-* is only meaningful at interior points, or
-* must be reformulated using manifolds, tangent spaces, one-sided notions, etc.
-
-### Why textbooks often assume “open domain”
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why textbooks often assume “open domain”)</span></p>
 
 Because many theorems become clean and elegant:
 
@@ -1820,22 +1819,10 @@ Because many theorems become clean and elegant:
 
 So openness is often a **technical assumption that matches the geometry of calculus**.
 
-### Is every function in calculus defined on an open set?
+</div>
 
-No. Functions can be defined on any set.
-
-For example:
-
-* $f:[0,1]\to\mathbb R$
-* $f:\mathbb Q\to\mathbb R$
-* $f$ on a closed interval
-* $f$ on a surface
-
-All of these are legitimate.
-
-But when doing **differential calculus**, we usually restrict attention to open sets because that is the most natural setting for local analysis.
-
-### Another way to think about it
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Another way to think about it)</span></p>
 
 Open sets are the sets with **no boundary points included as mandatory stopping points**.
 
@@ -1843,7 +1830,10 @@ Boundary points cause trouble because near them, part of the nearby space lies o
 
 Calculus likes freedom to zoom in around a point without hitting the edge immediately.
 
-### Summary
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Summary)</span></p>
 
 Open sets are special in calculus because:
 
@@ -1853,210 +1843,548 @@ Open sets are special in calculus because:
 4. Standard definitions and theorems become cleaner and more symmetric.
 5. If the domain is not open, calculus still works, but usually with extra boundary cases or modified notions.
 
-A good slogan is:
-
 **Open sets are the natural domains for local differential analysis.**
-
-If you want, I can also show this from the perspective of:
-
-* derivatives on closed intervals,
-* multivariable geometry,
-* or why continuity does **not** need openness in the same way differentiability does.
-
-It does **not completely break** on closed sets. The issue is more precise:
 
 > Calculus works fine on closed sets, but the **standard two-sided local definitions and theorems** are really about **interior points**.
 > On a closed set, boundary points are the problem.
 
-That is the whole story.
+</div>
 
----
+## Why are Definite and Semi-definite Matrices Important?
 
-### 1. Closed sets themselves are not bad
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Analogy of positive / non-negative numbers)</span></p>
 
-For example, take
+Because a PSD operator is the mathematical form of “**cannot produce negative energy / curvature / variance**.” That simple sign condition ends up being exactly what many theories need.
 
-$$f:[0,1]\to\mathbb R,\qquad f(x)=x^2$$
+</div>
 
-This is a perfectly good function. It is continuous on $[0,1]$, integrable, and smooth on the interior $(0,1)$.
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(It makes quadratic forms behave like a notion of size)</span></p>
 
-So being closed does **not** make calculus impossible.
+For a general operator $A$, the quantity
 
-The trouble appears when you ask for things like:
+$\langle x, Ax\rangle$
 
-* derivative at boundary points
-* gradient at boundary points
-* local linear approximation in all directions
-* theorems that assume you can move slightly around a point in every direction
+can be positive for some directions and negative for others, so it is hard to interpret.
 
----
+If $A$ is PSD, then
 
-### 2. What exactly fails at a boundary point?
+$$\langle x, Ax\rangle \ge 0$$
 
-Take $f:[0,1]\to\mathbb R$.
-At an interior point $a\in(0,1)$, to define the derivative you use
+for every $x$. That means this quadratic form behaves like a generalized squared length, energy, cost, or variance.
 
-$$f'(a)=\lim_{h\to 0}\frac{f(a+h)-f(a)}{h}$$
+That is incredibly useful, because many objects in mathematics and applications are naturally quadratic:
+* energy in physics
+* squared error in optimization
+* variance/covariance in probability
+* curvature in second-order analysis
+* kernels and Gram matrices in ML
+* diffusion/elliptic operators in PDEs
 
-This expression assumes that $a+h$ is in the domain for all sufficiently small positive **and negative** $h$.
+So PSD is often the exact condition that says: “this quantity is physically or mathematically meaningful.”
 
-That is true if $a$ is an interior point.
+</div>
 
-But at the boundary point $a=0$, negative $h$ gives $0+h<0$, which is outside the domain. So the usual two-sided limit is not even available.
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(It prevents pathological behavior)</span></p>
 
-You can still define a **right derivative**:
+If the operator were not PSD, then there would be some direction $x$ with
 
-$$f'_+(0)=\lim_{h\to 0^+}\frac{f(0+h)-f(0)}{h},$$
+$$\langle x, Ax\rangle < 0$$
 
-but now it is a different notion.
+That often means something breaks:
 
-So the problem is not “closed set = impossible,” but:
+* an “energy” could become negative
+* a “variance” could be negative, which is impossible
+* an optimization objective could curve downward in a direction you did not want
+* a kernel matrix could stop representing valid similarities
+* a numerical method could become unstable
 
-> at boundary points, the usual symmetric local definition is no longer available.
+So PSD is a natural safety condition.
 
----
+</div>
 
-### 3. Concrete example
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(It appears in physics as “energy cannot be negative”)</span></p>
 
-Let
+Many operators represent energy, stiffness, dissipation, or mass. PSD then means:
 
-$$f:[0,\infty)\to\mathbb R,\qquad f(x)=\sqrt{x}$$
+* stored energy is nonnegative
+* dissipation is nonnegative
+* the system is stable rather than self-amplifying in an impossible way
 
-At $x=0$,
+That is why PSD shows up in:
 
-$$\frac{\sqrt{0+h}-\sqrt{0}}{h}=\frac{\sqrt h}{h}=\frac1{\sqrt h}, \qquad h>0$$
+* mechanics
+* elasticity
+* quantum theory
+* control
+* PDEs
 
-As $h\to 0^+$, this goes to $+\infty$. There is no finite right derivative, and there is certainly no two-sided derivative because $h<0$ is not allowed.
+</div>
 
-So near a boundary point, the domain restricts which nearby points you can use.
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The deepest intuition)</span></p>
 
----
+You keep seeing PSD assumptions because they encode the idea that a linear transformation has **no negative self-interaction**.
 
-### 4. Why open sets avoid this
+When you apply the operator to a vector and compare it with the same vector, the result is never negative. That is exactly the structure needed whenever the operator represents:
 
-If $U\subset\mathbb R^n$ is open and $a\in U$, then there exists a small ball around $a$ contained in $U$.
+* energy
+* curvature
+* variance
+* similarity
+* squared magnitude
+* diffusion
+* stability
 
-That means:
+So PSD is not an arbitrary technical assumption. It is often the minimal assumption that makes the object represent something real and well-behaved.
 
-* you can perturb $a$ a little
-* in every direction
-* and still remain inside the domain
+</div>
 
-That is exactly what differential calculus wants.
+## Spectral Decay
 
-So open sets are not chosen because closed sets are “bad,” but because open sets guarantee that **every point is an interior point**.
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Spectral Decay)</span></p>
 
----
+**Spectral decay** means how fast the **singular values** or **eigenvalues** of a matrix get smaller as you move down the spectrum.
 
-### 5. What breaks in theorems?
+If a matrix $A$ has singular values
 
-Many standard theorems are really statements about interior behavior.
+$$\sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r \ge 0$$
 
-#### Mean Value Theorem
+then spectral decay describes the behavior of the sequence
 
-A common form says:
+$$\sigma_1,\sigma_2,\sigma_3,\dots$$
 
-* $f$ continuous on $[a,b]$
-* differentiable on $(a,b)$
+Similarly, for a PSD matrix, people often talk about its eigenvalues
 
-Then there exists $c\in(a,b)$ such that
+$$\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_n \ge 0$$
 
-$$f'(c)=\frac{f(b)-f(a)}{b-a}$$
+and spectral decay means how fast these $\lambda_i$ decrease.
 
-Notice the pattern:
+</div>
 
-* **closed interval** for continuity
-* **open interval** for differentiability
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
 
-Why? Because differentiation is only needed in the interior. At the endpoints $a,b$, two-sided differentiability is not expected.
+Spectral decay tells you how quickly the “energy” or “information” of a matrix becomes concentrated in the top eigenvalues or singular values. It tells you how much “importance” each direction has.
 
-So textbooks already treat boundary points differently.
+* If the values drop **very quickly**, then only a few directions matter.
+* If they drop **slowly**, then many directions matter.
 
----
+So spectral decay tells you whether the matrix is effectively:
 
-### 6. In several variables the issue is even clearer
+* **low-rank-ish** or compressible
+* or spread across many significant directions
 
-Suppose $f$ is defined on the closed half-space
+</div>
 
-$$H={x\in\mathbb R^n:x_1\ge 0}$$
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Slow and fast spectral decay)</span></p>
 
-At a boundary point $a$ with $a_1=0$, you cannot move in the direction $(-1,0,\dots,0)$ even a little, because that leaves the domain.
+Suppose the singular values are
 
-So if you want differentiability at $a$ in the usual Fréchet sense, you run into a conceptual issue:
+$$10,; 5,; 1,; 0.1,; 0.01$$
 
-* ordinary differentiability wants approximation for **all small vectors** $h$
-* but the function is only defined for those $h$ with $a+h\in H$
+This is **fast spectral decay**: after a few components, everything is tiny.
 
-So some directions are missing.
+But if they are
 
-That is why standard multivariable calculus likes open domains.
+$$10,; 9,; 8,; 7,; 6$$
 
----
+this is **slow spectral decay**: many directions still carry substantial weight.
 
-### 7. Does differentiability literally “break” on closed sets?
+</div>
 
-Not on the whole set. More accurately:
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Common types of decay)</span></p>
 
-* at **interior points** of a closed set, nothing breaks
-* at **boundary points**, the ordinary definition becomes awkward or must be modified
+People sometimes describe decay as:
 
-You then have choices:
+* **exponential decay**:
+  
+  $$\sigma_i \sim c e^{-ai}$$
+  
+  very fast
 
-#### Option A: only talk about differentiability on the interior
+* **polynomial decay**:
+  
+  $$\sigma_i \sim i^{-p}$$
+  
+  slower
 
-For $f:[0,1]\to\mathbb R$, say $f$ is differentiable on $(0,1)$.
+* **flat / weak decay**:
+  singular values stay large for a long time
 
-#### Option B: use one-sided derivatives at the boundary
+</div>
 
-At $0$, use the right derivative; at $1$, use the left derivative.
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Applications)</span></p>
 
-#### Option C: extend the function to an open neighborhood
+Spectral decay is important because it controls how well a matrix can be approximated by a low-rank matrix.
 
-Sometimes we say $f$ is differentiable at a boundary point if it agrees near that point with some differentiable function on an open set.
+If the singular values decay fast, then truncating after the first $k$ values gives a good approximation:
 
-But this is extra machinery. Open sets avoid the need for these special treatments.
+$$A \approx A_k$$
 
----
+That matters in:
 
-### 8. A useful distinction: continuity vs differentiability
+* PCA
+* SVD compression
+* kernel methods
+* numerical linear algebra
+* inverse problems
+* machine learning
 
-Continuity does **not** need openness in the same way.
+</div>
 
-If $f:A\to\mathbb R$, continuity at $a\in A$ only cares about points of $A$ approaching $a$. That works for any subset $A$.
+## When diagonal of the matrix could be approximated by eigenvalues
 
-But differentiability is stronger: it wants a linear approximation based on small changes around the point, and that is most natural when the domain contains a full neighborhood.
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(In general, a diagonal is not approximable by eigenvalues)</span></p>
+
+Usually, **you cannot** approximate a diagonal entry $a_{ii}$ by a “corresponding” eigenvalue $\lambda_i$ without extra assumptions.
+
+The key issue is:
+
+* **Diagonal entries depend on the basis**
+* **Eigenvalues do not**
+
+So in a generic basis, there is no natural reason why $a_{ii}$ should be close to any particular eigenvalue.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(When it holds)</span></p>
+
+You get
+
+$$a_{ii}=\lambda$$
+
+exactly when the basis vector $e_i$ is an eigenvector of $A$.
+That happens, for example, if the matrix is diagonal in the chosen basis.
+
+So exact equality means: the chosen coordinates are already aligned with the eigenvectors.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The main approximate case)</span></p>
+
+You can approximate $a_{ii}$ by an eigenvalue when the matrix is **almost diagonal in the given basis**.
+
+Write
+
+$$A = D + E$$
+
+where $D=\operatorname{diag}(a_{11},\dots,a_{nn})$ and $E$ contains the off-diagonal part.
+
+If the off-diagonal entries are small, then the eigenvalues of $A$ are close to the diagonal entries of $D$, at least under suitable separation assumptions.
+
+So the rough rule is:
+
+> **small off-diagonal terms + well-separated diagonal entries**
+> $\Rightarrow$
+> each eigenvalue is close to one diagonal entry.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+For a any matrix, the diagonal entry is
+
+$$a_{ii} = e_i^* A e_i,$$
+
+which is the **Rayleigh quotient** of the coordinate vector $e_i$ if the matrix $A$ is symmetric/Hermitian.
+
+If $e_i$ is close to an eigenvector $v_k$, then
+
+$$e_i^* A e_i \approx \lambda_k$$
+
+So $a_{ii}$ is close to an eigenvalue when the standard basis vector $e_i$ is close to an eigenvector.
+
+That is the real geometric condition.
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Very useful interpretation for symmetric/Hermitian matrices)</span></p>
+
+If $A$ is symmetric/Hermitian with eigenpairs $(\lambda_k,v_k)$, then
+
+$$a_{ii} = e_i^* A e_i = \sum_{k=1}^n \lvert \langle e_i,v_k\rangle \rvert^2 \lambda_k$$
+
+So $a_{ii}$ is a **weighted average of the eigenvalues**.
+
+Therefore:
+
+* if one weight $\lvert\langle e_i,v_k\rangle\rvert^2$ is close to $1$, then
+  
+  $$a_{ii} \approx \lambda_k;$$
+  
+* if the mass is spread over many eigenvectors, then $a_{ii}$ is just an average, not close to any one eigenvalue in general.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Gershgorin discs)</span></p>
+
+A very common sufficient condition is based on the row sums of off-diagonal entries.
+
+Define
+
+$$r_i = \sum_{j\ne i} \lvert a_{ij}\rvert$$
+
+Then every eigenvalue lies in the union of Gershgorin discs, and for a symmetric/Hermitian matrix this means intervals
+
+$$[a_{ii}-r_i,; a_{ii}+r_i]$$
+
+So if $r_i$ is small, there is an eigenvalue near $a_{ii}$.
+If these intervals are also well separated, then you can often identify a specific eigenvalue with that diagonal entry.
+
+So a practical criterion is:
+
+$$
+\sum_{j\ne i}\lvert a_{ij}\rvert \ll 1
+\quad\text{and the diagonal entries are separated.}
+$$
+
+Then $a_{ii}$ is a good approximation to a nearby eigenvalue.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Gershgorin discs)</span></p>
+
+Every eigenvalue $\lambda$ of a matrix $A\in \mathcal{C}^{n\times n}$ lies in a circle centered to $a_{ii}$ and a radius $r_i=\sum_{i\neq j} \lvert a_{ij} \rvert$ for some $i \in \lbrace 1, \dots, n \rbrace$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/linear-algebra/gershgorin_discs.png' | relative_url }}" alt="GPU global memory" loading="lazy">
+  <figcaption>Gershgorin discs</figcaption>
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $\lambda$ be an eigenvalue of the matrix $A$ and $x$ is its corresponding eigenvector. Let $\rvert x_i\lvert = \max_{k} \lvert x_k \rvert$ be the largest by magnitude the entry of the eigenvector $x$. Then
+
+$$\sum_j a_{ij}x_j = \lambda x_i$$
+
+$$ \lambda = \sum_j a_{ij}\frac{x_j}{x_i} = a_{ii} + \sum_{j\neq i} a_{ij}\frac{x_j}{x_i}$$
+
+$$ \lvert \lambda - a_{ii}\rvert = \lvert \sum_{j\neq i} a_{ij}\frac{x_j}{x_i}\rvert \leq \sum_{j\neq i} \lvert a_{ij}\rvert \lvert \frac{x_j}{x_i}\rvert \leq \sum_{j\neq i} \lvert a_{ij}\rvert$$
+
+$\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Perturbation viewpoint)</span></p>
+
+If
+
+$$A = D + E$$
+
+with $D$ diagonal and $E$ small in norm, then for Hermitian matrices the eigenvalues of $A$ are close to those of $D$, i.e. close to the diagonal entries.
+
+A standard bound is:
+
+$$\lvert\lambda_k(A)-\lambda_k(D)\rvert \le \lvert E\rvert_2$$
+
+after appropriate ordering.
+
+Since the eigenvalues of $D$ are just its diagonal entries, this says:
+
+> when the off-diagonal perturbation is small in operator norm, eigenvalues are close to diagonal entries.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Important warning)</span></p>
+
+Even if the matrix is symmetric, it is **not** true in general that
+
+$$a_{ii} \approx \lambda_i$$
+
+Example:
+
+$$
+A=\begin{pmatrix}
+1 & 1\\
+1 & 1
+\end{pmatrix}
+$$
+
+The diagonal entries are both $1$, but the eigenvalues are $2$ and $0$.
+So neither diagonal entry equals a “corresponding” eigenvalue in any obvious way.
+
+This matrix is not close to diagonal in the standard basis, and the coordinate vectors are not eigenvectors.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Summary)</span></p>
+
+You can approximate a diagonal element $a_{ii}$ by an eigenvalue when:
+
+1. the matrix is **diagonal or nearly diagonal** in the chosen basis,
+2. the basis vector $e_i$ is **close to an eigenvector**,
+3. the off-diagonal couplings are **small**,
+4. and ideally the relevant eigenvalue is **well separated** from the others.
+
+For symmetric/Hermitian matrices, the most useful mental picture is:
+
+$$a_{ii} = \text{weighted average of eigenvalues}$$
+
+So $a_{ii}$ is close to one eigenvalue only when one eigenvector dominates that coordinate direction.
+
+If you want, I can show you:
+
+* a **2x2 example** where this approximation works,
+* the **precise perturbation formula**,
+* or how this connects to **Gershgorin circles** and **Rayleigh quotients**.
+
+</div>
+
+## Eigenvalue does not depend on the basis
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Eigenvalues belong to the operator, not to the coordinates)</span></p>
+
+The **eigenvalue of a linear operator does not depend on the basis**, including the “magnitude” of the basis vectors.
+
+The clean way to see it is this:
+
+If $T:V\to V$, an eigenvalue is defined by
+
+$$T v = \lambda v \quad \text{for some } v\neq 0$$
+
+This statement makes no reference to a basis at all.
+
+A basis is only something you choose afterward to write $T$ as a matrix.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Changing basis changes the matrix, but not the eigenvalues)</span></p>
+
+Suppose $A$ is the matrix of $T$ in one basis, and $A'$ is the matrix in another basis. Then
+
+$$A' = S^{-1} A S$$
+
+for some invertible matrix $S$.
+
+Matrices related this way are called **similar**. Similar matrices always have the same eigenvalues, because
+
+$$\det(A' - \lambda I) = \det(S^{-1}(A-\lambda I)S) = \det(A-\lambda I)$$
+
+So the characteristic polynomial stays the same.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(But diagonal entries can change)</span></p>
+
+This is what I meant by “diagonal entries depend on the basis.”
+
+Example:
+
+$$
+A=
+\begin{pmatrix}
+2 & 1\\
+1 & 2
+\end{pmatrix}
+$$
+
+in the standard basis has diagonal entries $2,2$.
+
+Its eigenvalues are $3$ and $1$.
+If you switch to the eigenbasis, the matrix becomes
+
+$$
+A'=
+\begin{pmatrix}
+3 & 0\\
+0 & 1
+\end{pmatrix},
+$$
+
+whose diagonal entries are now $3,1$.
 
 So:
 
-* **continuity** works naturally on arbitrary subsets
-* **differentiability** works most naturally on open subsets
+* same operator
+* same eigenvalues
+* different diagonal entries
 
----
+That is the sense in which diagonal entries are basis-dependent.
 
-### 9. Best mental picture
+</div>
 
-A boundary point of a closed set is like standing at the edge of a cliff.
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What about changing only the magnitudes of basis vectors?)</span></p>
 
-* At an interior point, you can step a little in any direction.
-* At a boundary point, some directions are blocked.
+Rescaling is just a **special kind** of basis change.
 
-Differential calculus likes points where all small moves are allowed.
-That is why open sets are the default setting.
+If you only rescale basis vectors, then the change-of-basis matrix is diagonal:
 
----
+$$S = \operatorname{diag}(c_1,\dots,c_n)$$
 
-### 10. Final answer in one sentence
+Then
 
-Closed sets do **not** destroy calculus, but at their boundary points the usual local, two-sided definitions of differentiation and many standard theorems no longer apply cleanly, so open sets are used because they guarantee every point has room around it.
+$$A' = S^{-1} A S$$
 
-If you want, I can next show:
+In this special case, the diagonal entries actually stay the same:
 
-1. a rigorous comparison of derivative on $(a,b)$ vs $[a,b]$, or
-2. why the Mean Value Theorem uses a closed interval for continuity but an open interval for differentiability.
+$$a'_{ii} = a_{ii}$$
 
+So pure rescaling of the basis vectors does **not** change the diagonal entries either. It only changes some off-diagonal entries.
 
+So the full picture is:
 
+* **general basis change**: diagonal entries may change
+* **pure rescaling of basis vectors**: diagonal entries stay the same
+* **any basis change at all**: eigenvalues stay the same
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The key distinction)</span></p>
+
+There are two different things:
+
+### Changing the **basis**
+
+You are only changing coordinates.
+The operator itself stays the same.
+So eigenvalues stay the same.
+
+### Scaling the **operator**
+
+For example replacing $A$ by $2A$.
+Now you changed the actual map.
+Then the eigenvalues do change: they get multiplied by $2$.
+
+So “basis scaling” and “matrix scaling” are completely different operations.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Eigenvalues are intrinsic to the linear operator)</span></p>
+
+Eigenvalues are **intrinsic** to the linear operator, while diagonal entries are usually just **coordinate artifacts**.
+
+</div>
 
 
 
