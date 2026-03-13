@@ -1611,7 +1611,7 @@ Why “cylinder”? Because if you picture $2^\omega$ as an infinite product spa
 
 **Measure fact (fair coin):** under the fair-coin/Lebesgue measure $\mu$,
 
-$\mu([\sigma]) = 2^{-\lvert\sigma\rvert}$
+$$\mu([\sigma]) = 2^{-\lvert\sigma\rvert}$$
 
 since you need $\lvert\sigma\rvert$ specific coin flips.
 
@@ -1986,13 +1986,13 @@ So spectral decay tells you whether the matrix is effectively:
 
 Suppose the singular values are
 
-$$10,; 5,; 1,; 0.1,; 0.01$$
+$$10, 5, 1, 0.1, 0.01$$
 
 This is **fast spectral decay**: after a few components, everything is tiny.
 
 But if they are
 
-$$10,; 9,; 8,; 7,; 6$$
+$$10, 9, 8, 7, 6$$
 
 this is **slow spectral decay**: many directions still carry substantial weight.
 
@@ -2142,7 +2142,7 @@ $$r_i = \sum_{j\ne i} \lvert a_{ij}\rvert$$
 
 Then every eigenvalue lies in the union of Gershgorin discs, and for a symmetric/Hermitian matrix this means intervals
 
-$$[a_{ii}-r_i,; a_{ii}+r_i]$$
+$$[a_{ii}-r_i, a_{ii}+r_i]$$
 
 So if $r_i$ is small, there is an eigenvalue near $a_{ii}$.
 If these intervals are also well separated, then you can often identify a specific eigenvalue with that diagonal entry.
@@ -2363,13 +2363,13 @@ So the full picture is:
 
 There are two different things:
 
-### Changing the **basis**
+**Changing the basis**
 
 You are only changing coordinates.
 The operator itself stays the same.
 So eigenvalues stay the same.
 
-### Scaling the **operator**
+**Scaling the operator**
 
 For example replacing $A$ by $2A$.
 Now you changed the actual map.
@@ -2387,21 +2387,69 @@ Eigenvalues are **intrinsic** to the linear operator, while diagonal entries are
 </div>
 
 
+## Analytic Function
 
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Analytic function)</span></p>
 
+A function $f:U\to\mathcal{R}$ is **analytic** at the point $p\in U$ if there exists an open neighborhood $V$ of $p$ (inside $U$) and a power series $\sum_n a_n z^n$ such that 
 
+$$f(x)=\sum_n a_n (z-p)^n$$
 
+for any $x\in V$. As usual, the whole function is analytic if it is analytic at each point.
 
+</div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Taylor series)</span></p>
 
+For smooth $f$, the power series $\sum_n \frac{f^{(n)}(p)}{n!}z^n$ is called **Taylor series** of $f$ at $p$.
 
+</div>
 
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analytic functions)</span></p>
 
+* $e^x$, $\sin x$, $\cos x$, and polynomials are analytic.
+* $\frac{1}{1-x}$ is analytic for $\lvert x\rvert <1$, because
+  
+  $$\frac{1}{1-x}=\sum_{n=0}^\infty x^n$$
 
+</div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analytic is stronger than smooth)</span></p>
 
+A useful contrast:
 
+* **Smooth** means infinitely differentiable.
+* **Analytic** is stronger: the function must equal its Taylor series near each point.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Smooth, but not analytic functions)</span></p>
+
+So a function can be smooth but **not** analytic. A classic example is
+
+$$
+f(x)=
+\begin{cases}
+e^{-1/x^2}, & x\neq 0 \\
+0, & x=0
+\end{cases}
+$$
+
+This function is infinitely differentiable at $0$, but its Taylor series at $0$ is just $0$, which does not equal the function for $x\neq 0$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(All your usual closure properties for analytic functions)</span></p>
+
+The sums, products, compositions, nonzero quotients of analytic functions are analytic.
+
+</div>
 
 
 
