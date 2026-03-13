@@ -5801,7 +5801,7 @@ Every eigenvalue $\lambda$ of a matrix $A \in \mathbb{C}^{n \times n}$ lies in a
 
 </div>
 
-*Proof.* Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector, so $Ax = \lambda x$. Let the $i$-th component of $x$ have the largest absolute value, i.e., $\lvert x_i\rvert = \max_{k=1,\ldots,n} \lvert x_k\rvert$. Since the $i$-th equation has the form $\sum_{j=1}^n a_{ij} x_j = \lambda x_i$, dividing by $x_i \neq 0$ we get $\lambda = a_{ii} + \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}$, and therefore $\lvert \lambda - a_{ii}\rvert = \left| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i} \right| \le \sum_{j \neq i} \lvert a_{ij}\rvert \frac{\lvert x_j\rvert}{\lvert x_i\rvert} \le \sum_{j \neq i} \lvert a_{ij}\rvert$.
+*Proof.* Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector, so $Ax = \lambda x$. Let the $i$-th component of $x$ have the largest absolute value, i.e., $\lvert x_i\rvert = \max_{k=1,\ldots,n} \lvert x_k\rvert$. Since the $i$-th equation has the form $\sum_{j=1}^n a_{ij} x_j = \lambda x_i$, dividing by $x_i \neq 0$ we get $\lambda = a_{ii} + \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}$, and therefore $\lvert \lambda - a_{ii}\rvert = \left\| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i} \right\| \le \sum_{j \neq i} \lvert a_{ij}\rvert \frac{\lvert x_j\rvert}{\lvert x_i\rvert} \le \sum_{j \neq i} \lvert a_{ij}\rvert$.
 
 The theorem gives a simple but coarse estimate on the magnitude of eigenvalues (there also exist improvements, e.g., Cassini ovals, etc.). Nevertheless, in some applications such an estimate may suffice.
 
@@ -5825,7 +5825,11 @@ The eigenvalues of $A$ are $\lambda_1 = -2.78$, $\lambda_2 = 3.39 + 0.6i$, $\lam
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 10.60 — Three applications of Gershgorin discs)</span></p>
 
 1. *Stopping criterion for iterative methods.* For example, the Jacobi method for computing eigenvalues consists of gradually reducing the off-diagonal entries of a symmetric matrix so that the matrix converges to a diagonal matrix. The Gershgorin discs then give an upper bound on the accuracy of the computed eigenvalues. If, for instance, a matrix $A \in \mathbb{R}^{n \times n}$ is nearly diagonal in the sense that all off-diagonal entries are less than $10^{-k}$ for some $k \in \mathbb{N}$, then the diagonal entries approximate the eigenvalues with accuracy $10^{-k}(n-1)$.
-2. *Diagonally dominant matrices.* Gershgorin discs also give the following sufficient condition for the nonsingularity of a matrix $A \in \mathbb{C}^{n \times n}$: $\lvert a_{ii}\rvert > \sum_{j \neq i} \lvert a_{ij}\rvert$ $\forall i = 1, \ldots, n$. In this case the discs do not contain the origin, and therefore zero is not an eigenvalue of $A$. Matrices with this property are called diagonally dominant.
+2. *Diagonally dominant matrices.* Gershgorin discs also give the following sufficient condition for the nonsingularity of a matrix 
+   
+   $A \in \mathbb{C}^{n \times n}$: $\lvert a_{ii}\rvert > \sum_{j \neq i} \lvert a_{ij}\rvert \quad \forall i = 1, \ldots, n$
+   
+   In this case the discs do not contain the origin, and therefore zero is not an eigenvalue of $A$. Matrices with this property are called diagonally dominant.
 3. *Markov matrices.* Let $A$ be the Markov matrix from Example 10.57. All Gershgorin discs of the matrix $A^\top$ have their center at a point in the interval $[0, 1]$ and their right edge touches the value 1 on the real axis. This proves that $\rho(A) \le 1$, and therefore 1 is indeed the largest eigenvalue of the matrix $A$ in absolute value.
 
 </div>
@@ -5838,7 +5842,7 @@ Input: matrix $A \in \mathbb{C}^{n \times n}$.
 1. Choose $o \neq x_0 \in \mathbb{C}^n$, $i \coloneqq 1$,
 2. **while not** stopping criterion satisfied **do**
 3. &emsp; $y_i \coloneqq A x_{i-1}$,
-4. &emsp; $x_i \coloneqq \frac{1}{\|y_i\|_2} y_i$,
+4. &emsp; $x_i \coloneqq \frac{1}{\lVert y_i\rVert_2} y_i$,
 5. &emsp; $i \coloneqq i + 1$,
 6. **end while**
 
@@ -5846,7 +5850,11 @@ Output: $\lambda_1 \coloneqq x_{i-1}^\top y_i$ is an estimate of the eigenvalue,
 
 </div>
 
-The method terminates when the value $x_{i-1}^\top y_i$ or the vector $x_i$ stabilizes; then $x_i \approx x_{i-1}$ is an estimate of the eigenvector and $x_{i-1}^\top y_i = x_{i-1}^\top A x_{i-1} \approx x_{i-1}^\top \lambda x_{i-1} \approx \lambda$ is an estimate of the corresponding eigenvalue. The method can be slow, the error and convergence rate are difficult to estimate, and furthermore the initial choice of $x_0$ matters significantly. On the other hand, it is robust (rounding errors have little effect) and easily applicable to large sparse matrices. It does not always converge, but under certain assumptions convergence can be guaranteed.
+The method terminates when the value $x_{i-1}^\top y_i$ or the vector $x_i$ stabilizes; then $x_i \approx x_{i-1}$ is an estimate of the eigenvector and 
+
+$$x_{i-1}^\top y_i = x_{i-1}^\top A x_{i-1} \approx x_{i-1}^\top \lambda x_{i-1} \approx \lambda$$
+
+is an estimate of the corresponding eigenvalue. The method can be slow, the error and convergence rate are difficult to estimate, and furthermore the initial choice of $x_0$ matters significantly. On the other hand, it is robust (rounding errors have little effect) and easily applicable to large sparse matrices. It does not always converge, but under certain assumptions convergence can be guaranteed.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 10.63 — Convergence of the power method)</span></p>
@@ -5855,21 +5863,33 @@ Let $A \in \mathbb{R}^{n \times n}$ with eigenvalues $\lvert \lambda_1\rvert > \
 
 </div>
 
-*Proof.* Since the vectors $v_1, \ldots, v_n$ form a basis of $\mathbb{R}^n$, we can express the vector $x_0$ as $x_0 = \sum_{j=1}^n \alpha_j v_j$, where $\alpha_1 \neq 0$ by assumption. Then $A^i x_0 = \sum_{j=1}^n \alpha_j \lambda_j^i v_j = \lambda_1^i \left( \alpha_1 v_1 + \sum_{j \neq 1} \alpha_j \left(\frac{\lambda_j}{\lambda_1}\right)^i v_j \right)$. Since the vectors $x_i$ are successively normalized, the factor $\lambda_1^i$ does not matter. The remaining vector gradually converges to $\alpha_1 v_1$, because $\left|\frac{\lambda_j}{\lambda_1}\right| < 1$ and therefore $\left|\frac{\lambda_j}{\lambda_1}\right|^i \to 0$ as $i \to \infty$.
+*Proof.* Since the vectors $v_1, \ldots, v_n$ form a basis of $\mathbb{R}^n$, we can express the vector $x_0$ as $x_0 = \sum_{j=1}^n \alpha_j v_j$, where $\alpha_1 \neq 0$ by assumption. Then 
+
+$$A^i x_0 = \sum_{j=1}^n \alpha_j \lambda_j^i v_j = \lambda_1^i \left( \alpha_1 v_1 + \sum_{j \neq 1} \alpha_j \left(\frac{\lambda_j}{\lambda_1}\right)^i v_j \right)$$
+
+Since the vectors $x_i$ are successively normalized, the factor $\lambda_1^i$ does not matter. The remaining vector gradually converges to $\alpha_1 v_1$, because $\left\|\frac{\lambda_j}{\lambda_1}\right\| < 1$ and therefore $\left\|\frac{\lambda_j}{\lambda_1}\right\|^i \to 0$ as $i \to \infty$.
 
 From the proof we see that the convergence rate depends strongly on the ratio $\left|\frac{\lambda_2}{\lambda_1}\right|$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 10.64 — On eigenvalue deflation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.64 — On eigenvalue deflation)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be symmetric, $\lambda_1, \ldots, \lambda_n$ its eigenvalues, and $v_1, \ldots, v_n$ the corresponding orthonormal eigenvectors. Then the matrix $A - \lambda_1 v_1 v_1^\top$ has eigenvalues $0, \lambda_2, \ldots, \lambda_n$ and eigenvectors $v_1, \ldots, v_n$.
 
 </div>
 
-*Proof.* By Remark 10.54 we can write $A = \sum_{i=1}^n \lambda_i v_i v_i^\top$. Then $A - \lambda_1 v_1 v_1^\top = 0 v_1 v_1^\top + \sum_{i=2}^n \lambda_i v_i v_i^\top$, which is the spectral decomposition of the matrix $A - \lambda_1 v_1 v_1^\top$.
+*Proof.* By Remark 10.54 we can write 
+
+$$A = \sum_{i=1}^n \lambda_i v_i v_i^\top$$
+
+Then 
+
+$$A - \lambda_1 v_1 v_1^\top = 0 v_1 v_1^\top + \sum_{i=2}^n \lambda_i v_i v_i^\top$$
+
+which is the spectral decomposition of the matrix $A - \lambda_1 v_1 v_1^\top$.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 10.65 — On eigenvalue deflation for a general matrix)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(10.65 — On eigenvalue deflation for a general matrix)</span></p>
 
 Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector of a matrix $A \in \mathbb{R}^{n \times n}$. Extend $x$ to a nonsingular matrix $S$ so that $S_{*1} = x$. Then
 
@@ -5880,9 +5900,9 @@ By similarity, the matrix $A'$ has the same eigenvalues as $A$, only $\lambda$ h
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.66 — Google search engine and PageRank)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.66 — Google search engine and PageRank)</span></p>
 
-Consider a web network with $N$ web pages. The goal is to determine the importances $x_1, \ldots, x_N$ of individual pages. The basic idea of the authors of Google's PageRank is to set the importance of the $i$-th page to be proportional to the sum of the importances of the pages linking to it. We therefore solve the equation $x_i = \sum_{j=1}^N \frac{a_{ij}}{b_j} x_j$, $i = 1, \ldots, N$, where $a_{ij} = 1$ if the $j$-th page links to the $i$-th page (otherwise 0) and $b_j$ is the number of links from the $j$-th page. In matrix form $A'x = x$, where $a'_{ij} \coloneqq \frac{a_{ij}}{b_j}$.
+Consider a web network with $N$ web pages. The goal is to determine the importances $x_1, \ldots, x_N$ of individual pages. The basic idea of the authors of Google's PageRank is to set the importance of the $i$-th page to be proportional to the sum of the importances of the pages linking to it. We therefore solve the equation $x_i = \sum_{j=1}^N \frac{a_{ij}}{b_j} x_j$, $i = 1, \ldots, N$, where $a_{ij} = 1$ if the $j$-th page links to the $i$-th page (otherwise 0) and $b_j$ is the number of links from the $j$-th page. In matrix form $A'x = x$, where $a'\_{ij} \coloneqq \frac{a_{ij}}{b_j}$.
 
 Thus $x$ is an eigenvector of the matrix $A'$ corresponding to eigenvalue 1. The eigenvalue 1 is dominant, which is easily seen from the Gershgorin discs for the matrix $A'^\top$ (the column sums of $A'$ equal 1, so all Gershgorin discs have their rightmost point at 1). By Perron's theorem 10.56, the eigenvector $x$ is nonnegative.
 
@@ -5913,10 +5933,14 @@ The problem of computing eigenvalues and the problem of computing roots of polyn
 
 ## Chapter 11 — Positive (Semi-)Definite Matrices
 
-Already in Theorem 10.55 we encountered the function $f \colon \mathbb{R}^n \to \mathbb{R}$ given by $f(x) = x^\top Ax = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j$, where $A \in \mathbb{R}^{n \times n}$ is a fixed matrix. This function represents a polynomial in the variables $x_1, \ldots, x_n$ and we will analyze it further in Chapter 12. Here we focus on the situation when the function $f(x)$ is nonnegative or positive, and for which matrices this is satisfied.
+Already in Theorem 10.55 we encountered the function $f \colon \mathbb{R}^n \to \mathbb{R}$ given by 
+
+$$f(x) = x^\top Ax = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j$$
+
+where $A \in \mathbb{R}^{n \times n}$ is a fixed matrix. This function represents a polynomial in the variables $x_1, \ldots, x_n$ and we will analyze it further in Chapter 12. Here we focus on the situation when the function $f(x)$ is nonnegative or positive, and for which matrices this is satisfied.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 11.1 — Positive (semi-)definite matrix)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(11.1 — Positive (semi-)definite matrix)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A$ is *positive semidefinite* if $x^\top Ax \ge 0$ for all $x \in \mathbb{R}^n$, and $A$ is *positive definite* if $x^\top Ax > 0$ for all $x \neq o$.
 
@@ -5924,12 +5948,12 @@ Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A$ is *positive semidefi
 
 Clearly, if $A$ is positive definite, then it is also positive semidefinite.
 
-Positive definiteness and semidefiniteness need not be tested for all vectors $x \in \mathbb{R}^n$; it suffices to restrict, for example, to the unit sphere. If $x^\top Ax > 0$ for all vectors $x$ with unit norm $\|x\|_2 = 1$, then this holds for all other nonzero vectors as well. Indeed, every vector $x \neq o$ is a positive multiple of a unit-length vector, specifically the $\|x\|_2$-multiple of the vector $\frac{1}{\|x\|_2} x$.
+Positive definiteness and semidefiniteness need not be tested for all vectors $x \in \mathbb{R}^n$; it suffices to restrict, for example, to the unit sphere. If $x^\top Ax > 0$ for all vectors $x$ with unit norm $\lVertx\rVert_2 = 1$, then this holds for all other nonzero vectors as well. Indeed, every vector $x \neq o$ is a positive multiple of a unit-length vector, specifically the $\lVert x\rVert_2$-multiple of the vector $\frac{1}{\lVert x\rVert_2} x$.
 
 Besides positive (semi-)definite matrices, one can also introduce negative (semi-)definite matrices using the reversed inequality. We will not deal with them, since $A$ is negative (semi-)definite if and only if $-A$ is positive (semi-)definite, so everything reduces to the basic case.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.2)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(11.2)</span></p>
 
 The definition also makes sense for non-symmetric matrices, but these can easily be symmetrized by the transformation $\frac{1}{2}(A + A^\top)$, since
 
@@ -5940,28 +5964,30 @@ Thus, for testing the condition one can equivalently use the symmetric matrix $\
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 11.3)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.3)</span></p>
 
-An example of a positive semidefinite matrix is $0_n$. An example of a positive definite matrix is $I_n$, since $x^\top I_n x = x^\top x = \|x\|_2^2 > 0$ for all $x \neq o$.
+An example of a positive semidefinite matrix is $0_n$. An example of a positive definite matrix is $I_n$, since 
+
+$$x^\top I_n x = x^\top x = \|x\|_2^2 > 0$ for all $x \neq o$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.4 — Necessary condition for positive (semi-)definiteness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(11.4 — Necessary condition for positive (semi-)definiteness)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be a symmetric matrix. For it to be positive semidefinite, by definition $x^\top Ax \ge 0$ must hold for all $x \in \mathbb{R}^n$. Substituting successively $x = e_i$, $i = 1, \ldots, n$, we obtain $x^\top Ax = e_i^\top A e_i = a_{ii} \ge 0$. Therefore, a positive semidefinite matrix must have a nonnegative diagonal, and a positive definite matrix must even have a positive diagonal.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.5)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(11.5)</span></p>
 
 The matrix $A = (a) \in \mathbb{R}^{1 \times 1}$ is positive semidefinite if and only if $a \ge 0$, and positive definite if and only if $a > 0$. Therefore, we can view positive semidefiniteness as a generalization of the concept of nonnegativity from numbers to matrices. This is also why positive semidefiniteness of a matrix $A \in \mathbb{R}^{n \times n}$ is denoted $A \succeq 0$ (as opposed to $A \ge 0$, which is used for entrywise nonnegativity).
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 11.6 — Properties of positive definite matrices)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(11.6 — Properties of positive definite matrices)</span></p>
 
 1. If $A, B \in \mathbb{R}^{n \times n}$ are positive definite, then $A + B$ is also positive definite,
 2. If $A \in \mathbb{R}^{n \times n}$ is positive definite and $\alpha > 0$, then $\alpha A$ is also positive definite,
@@ -5976,7 +6002,7 @@ The analogue of the proposition also holds for positive semidefinite matrices. P
 The product of positive definite matrices is discussed in Remark 12.20; we have already implicitly encountered this expression, for example in the method of least squares (Section 8.5) in the system of normal equations $A^\top Ax = A^\top b$, or more generally in the explicit expression for orthogonal projection in $\mathbb{R}^n$ (Theorem 8.49).
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 11.7 — Characterization of positive definiteness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.7 — Characterization of positive definiteness)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then the following conditions are equivalent:
 
@@ -5995,7 +6021,7 @@ Implication (3) $\Rightarrow$ (1): By contradiction, suppose $x^\top Ax \le 0$ f
 For positive semidefiniteness we have the following characterization (the proof is analogous):
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 11.8 — Characterization of positive semidefiniteness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.8 — Characterization of positive semidefiniteness)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then the following conditions are equivalent:
 
@@ -6010,7 +6036,7 @@ Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then the following conditions 
 We now focus on specific methods for testing positive definiteness. Many of them are based on the following recurrence relation.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 11.9 — Recurrence formula for testing positive definiteness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.9 — Recurrence formula for testing positive definiteness)</span></p>
 
 A symmetric matrix $A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$, where $\alpha \in \mathbb{R}$, $a \in \mathbb{R}^{n-1}$, $\tilde{A} \in \mathbb{R}^{(n-1) \times (n-1)}$, is positive definite if and only if $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite.
 
@@ -6029,7 +6055,7 @@ Equality holds only when $\tilde{x} = o$ and the second square is zero, i.e., $\
 Although the recurrence formula can be used for testing positive definiteness, a more important role is played by the following Cholesky decomposition.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 11.10 — Cholesky decomposition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.10 — Cholesky decomposition)</span></p>
 
 For every positive definite matrix $A \in \mathbb{R}^{n \times n}$, there exists a unique lower triangular matrix $L \in \mathbb{R}^{n \times n}$ with positive diagonal such that $A = LL^\top$.
 
@@ -6054,7 +6080,7 @@ And for the element at position $(i, k)$, where $i > k$:
 $$a_{ik} = \sum_{j=1}^{k} \ell_{ij}\ell_{kj}, \quad \text{tedy} \quad \ell_{ik} = \frac{1}{\ell_{kk}} \left(a_{ik} - \sum_{j=1}^{k-1} \ell_{ij}\ell_{kj}\right).$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Algorithm 11.11 — Cholesky decomposition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(11.11 — Cholesky decomposition)</span></p>
 
 Input: symmetric matrix $A \in \mathbb{R}^{n \times n}$.
 
@@ -6072,7 +6098,7 @@ Output: matrix $L$ satisfying $A = LL^\top$, or the information that $A$ is not 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 11.12)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.12)</span></p>
 
 Cholesky decomposition of the matrix $A$:
 
@@ -6081,7 +6107,7 @@ $$\begin{pmatrix} 2 & 0 & 0 \\ -1 & 3 & 0 \\ 2 & 1 & 1 \end{pmatrix} \begin{pmat
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 11.13 — Using the Cholesky decomposition for solving systems)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(11.13 — Using the Cholesky decomposition for solving systems)</span></p>
 
 Using the Cholesky decomposition for solving the system $Ax = b$ with a positive definite matrix $A$. If we have the decomposition $A = LL^\top$, then the system has the form $L(L^\top x) = b$. First we solve the system $Ly = b$ by forward substitution, then $L^\top x = y$ by back substitution. The procedure is thus as follows:
 
@@ -6104,7 +6130,11 @@ A symmetric matrix $A \in \mathbb{R}^{n \times n}$ is positive definite if and o
 
 </div>
 
-*Proof.* Let $A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$ be positive definite. The first step of Gaussian elimination transforms the matrix to the form $\begin{pmatrix} \alpha & a^\top \\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$; it suffices to subtract the $\frac{1}{\alpha}a$-multiple of the first row from the second block row. By Theorem 11.9, $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is again positive definite, so we can continue inductively.
+*Proof.* Let 
+
+$$A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$$ 
+
+be positive definite. The first step of Gaussian elimination transforms the matrix to the form $\begin{pmatrix} \alpha & a^\top \\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$; it suffices to subtract the $\frac{1}{\alpha}a$-multiple of the first row from the second block row. By Theorem 11.9, $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is again positive definite, so we can continue inductively.
 
 Conversely, suppose that Gaussian elimination transforms the matrix $A$ into the required form. In the first step it again transforms it to the form $\begin{pmatrix} \alpha & a^\top \\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$, where $\alpha > 0$. By mathematical induction on the size of the matrix, we may assume that the matrix $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite. Therefore the matrix $A$ is also positive definite by Theorem 11.9.
 
@@ -6122,7 +6152,7 @@ Implication "$\Leftarrow$": During Gaussian elimination of the matrix $A$, all p
 Nonnegativity of the determinants of all leading principal submatrices does not yet imply positive semidefiniteness (find such an example!). The analogue of Sylvester's criterion for positive semidefinite matrices is as follows:
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 11.16 — Sylvester's criterion for positive semidefiniteness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(11.16 — Sylvester's criterion for positive semidefiniteness)</span></p>
 
 A symmetric matrix $A \in \mathbb{R}^{n \times n}$ is positive semidefinite if and only if the determinants of all principal submatrices are nonnegative, where a principal submatrix is a matrix obtained from $A$ by removing a certain number (possibly zero) of rows and columns with the same indices.
 
@@ -6133,7 +6163,7 @@ A symmetric matrix $A \in \mathbb{R}^{n \times n}$ is positive semidefinite if a
 We prove the reverse implication by mathematical induction. For $n = 1$ the claim is obvious. Inductive step $n \leftarrow n - 1$. For contradiction, let $\lambda < 0$ be an eigenvalue of $A$, and let $x$ be the corresponding eigenvector normalized so that $\|x\|_2 = 1$. If all other eigenvalues are positive, then $\det(A) < 0$, and we are done. Otherwise, let $\mu \le 0$ be another eigenvalue of $A$ and let $y$, $\|y\|_2 = 1$, be the corresponding eigenvector. Since $x \perp y$, we now find $\alpha \in \mathbb{R}$ such that the vector $z \coloneqq x + \alpha y$ has at least one zero component; let it be the $i$-th. Then $z^\top Az = (x + \alpha y)^\top A(x + \alpha y) = \lambda x^\top x + \alpha^2 \mu y^\top y = \lambda + \alpha^2 \mu < 0$. Let $A'$ be obtained from $A$ by removing the $i$-th row and column, and let $z'$ be obtained from the vector $z$ by removing the $i$-th component. Then $z'^\top A' z' = z^\top Az < 0$, so the principal submatrix $A'$ is not positive semidefinite and we apply the inductive hypothesis.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.17 — Computational complexity)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(11.17 — Computational complexity)</span></p>
 
 We compare the computational complexity of the individual methods for testing positive definiteness. By Remark 2.19, the asymptotic complexity of Gaussian elimination is $\frac{2}{3}n^3$. Computing the determinant has the same complexity, so Sylvester's criterion requires on the order of
 
