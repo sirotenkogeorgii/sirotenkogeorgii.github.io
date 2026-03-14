@@ -4209,15 +4209,15 @@ By properties (3) and (5) of Theorem 8.33, the space $V$ can be expressed as a d
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.41)</span></p>
 
-*Using the notation from Theorem 8.36, if some $y \in U$ satisfies $x - y \in U^\perp$, then $y = x_U$.*
+Using the notation from Theorem 8.36, if some $y \in U$ satisfies $x - y \in U^\perp$, then $y = x_U$.
+
+</div>
 
 *Proof.* Since $(x - y) \perp (y - x_U)$, we apply the Pythagorean theorem, which gives
 
 $$\|x - x_U\|^2 = \|x - y\|^2 + \|y - x_U\|^2 \ge \|x - y\|^2.$$
 
 We get $\|x - x_U\| \ge \|x - y\|$, so by the property and uniqueness of the projection, $y = x_U$.
-
-</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 8.42 — Legendre polynomials)</span></p>
@@ -4362,6 +4362,22 @@ Note that the projection is a linear map and by the previous theorem $P := A(A^\
 - The matrix $P$ is symmetric.
 - $P^2 = P$. The projection of a vector $x$ is the vector $Px$. The vector $Px$ already belongs to the subspace $\mathcal{S}(A)$, and therefore its projection is itself: $P^2 x = Px$.
 - Since $P$ represents the projection into $\mathcal{S}(A)$, we have $\mathcal{S}(P) = \mathcal{S}(A)$. The rank of the matrix $P$ is therefore equal to the dimension of the space into which we project, i.e., $\operatorname{rank}(P) = \operatorname{rank}(A)$. The matrix $P$ is thus nonsingular only when $m = n$, i.e., $\mathcal{S}(A) = \mathbb{R}^n$.
+
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Summary on projection on the column space)</span></p>
+
+If $Q$ has orthonormal columns, then the orthogonal projector onto $\operatorname{col}(Q)$ is
+
+$$P = QQ^*$$
+
+If the columns are not orthonormal, then the projector becomes
+
+$$P = Q(Q^*Q)^{-1}Q^*$$
+
+So the simple formula $QQ^*$ works specifically because the columns of $Q$ are orthonormal.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 8.50)</span></p>
@@ -4582,8 +4598,8 @@ Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 
 1. *$\langle Qx, Qy \rangle = \langle x, y \rangle$ for every $x, y \in \mathbb{R}^n$,*
 2. *$\|Qx\| = \|x\|$ for every $x \in \mathbb{R}^n$,*
-3. *$|Q_{ij}| \le 1$ and $|Q_{ij}^{-1}| \le 1$ for every $i, j = 1, \ldots, n$,*
-4. *$\begin{pmatrix} 1 & o^\top \\ o & Q \end{pmatrix}$ is an orthogonal matrix.*
+3. *$\|Q_{ij}\| \le 1$ and $\|Q_{ij}^{-1}\| \le 1$ for every $i, j = 1, \ldots, n$,*
+4. *$\begin{pmatrix} 1 & o^\top \\\ o & Q \end{pmatrix}$ is an orthogonal matrix.*
 
 </div>
 
@@ -4593,9 +4609,9 @@ Let $Q \in \mathbb{R}^{n \times n}$. Then the following are equivalent:
 
 (2) $\|Qx\| = \sqrt{\langle Qx, Qx \rangle} = \sqrt{\langle x, x \rangle} = \|x\|$.
 
-(3) By property (6) of Proposition 8.63, $\|Q_{*j}\| = 1$ for every $j = 1, \ldots, n$. Thus $1 = \|Q_{*j}\|^2 = \sum_{i=1}^{n} q_{ij}^2$, from which $q_{ij}^2 \le 1$, and therefore $|q_{ij}| \le 1$. The matrix $Q^{-1}$ is orthogonal, so the claim holds for it as well.
+(3) By property (6) of Proposition 8.63, $\|Q_{\ast j}\| = 1$ for every $j = 1, \ldots, n$. Thus $1 = \|Q_{\ast j}\|^2 = \sum_{i=1}^{n} q_{ij}^2$, from which $q_{ij}^2 \le 1$, and therefore $\|q_{ij}\| \le 1$. The matrix $Q^{-1}$ is orthogonal, so the claim holds for it as well.
 
-(4) By definition $\begin{pmatrix} 1 & o^\top \\ o & Q \end{pmatrix}^\top \begin{pmatrix} 1 & o^\top \\ o & Q \end{pmatrix} = \begin{pmatrix} 1 & o^\top \\ o & Q^\top Q \end{pmatrix} = I_{n+1}$.
+(4) By definition $\begin{pmatrix} 1 & o^\top \\\ o & Q \end{pmatrix}^\top \begin{pmatrix} 1 & o^\top \\\ o & Q \end{pmatrix} = \begin{pmatrix} 1 & o^\top \\\ o & Q^\top Q \end{pmatrix} = I_{n+1}$.
 
 $\square$
 
@@ -5407,9 +5423,17 @@ A matrix $A \in \mathbb{C}^{n \times n}$ is diagonalizable if and only if it has
 
 </div>
 
-*Proof.* Implication "$\Rightarrow$": If $A$ is diagonalizable, then it has the spectral decomposition $A = S \Lambda S^{-1}$, where $S$ is nonsingular and $\Lambda$ is diagonal. From the equality $AS = S\Lambda$ and comparing $j$-th columns we get $AS_{*j} = (S\Lambda)_{*j} = S\Lambda_{jj}e_j = \Lambda_{jj}S_{*j}$. Thus $\Lambda_{jj}$ is an eigenvalue and $S_{*j}$ is the corresponding eigenvector. The columns of $S$ are linearly independent due to its nonsingularity.
+*Proof.* Implication "$\Rightarrow$": If $A$ is diagonalizable, then it has the spectral decomposition $A = S \Lambda S^{-1}$, where $S$ is nonsingular and $\Lambda$ is diagonal. From the equality $AS = S\Lambda$ and comparing $j$-th columns we get 
 
-Implication "$\Leftarrow$": Let $A$ have eigenvalues $\lambda_1, \ldots, \lambda_n$ with corresponding linearly independent eigenvectors $x_1, \ldots, x_n$. Construct the nonsingular matrix $S \coloneqq (x_1 \mid \cdots \mid x_n)$ and the diagonal matrix $\Lambda \coloneqq \operatorname{diag}(\lambda_1, \ldots, \lambda_n)$. Then $(AS)_{*j} = Ax_j = \lambda_j x_j = \Lambda_{jj} S_{*j} = (S\Lambda)_{*j}$. Thus $AS = S\Lambda$, from which $A = S\Lambda S^{-1}$.
+$$AS_{\ast j} = (S\Lambda)_{\ast j} = S\Lambda_{jj}e_j = \Lambda_{jj}S_{\ast j}$$
+
+Thus $\Lambda_{jj}$ is an eigenvalue and $S_{\ast j}$ is the corresponding eigenvector. The columns of $S$ are linearly independent due to its nonsingularity.
+
+Implication "$\Leftarrow$": Let $A$ have eigenvalues $\lambda_1, \ldots, \lambda_n$ with corresponding linearly independent eigenvectors $x_1, \ldots, x_n$. Construct the nonsingular matrix $S \coloneqq (x_1 \mid \cdots \mid x_n)$ and the diagonal matrix $\Lambda \coloneqq \operatorname{diag}(\lambda_1, \ldots, \lambda_n)$. Then 
+
+$$(AS)_{\ast j} = Ax_j = \lambda_j x_j = \Lambda_{jj} S_{\ast j} = (S\Lambda)_{\ast j}$$
+
+Thus $AS = S\Lambda$, from which $A = S\Lambda S^{-1}$.
 
 Non-diagonalizable matrices are those for which certain pathological situations arise, but diagonalizable matrices have a whole range of natural properties. If a matrix $A$ is diagonalizable, then:
 
@@ -5680,14 +5704,14 @@ The conjugate transpose has similar properties to the classical transpose, e.g.,
 Using the conjugate transpose, we can define *unitary matrices* (extending the concept of orthogonal matrices to complex matrices) as matrices $Q \in \mathbb{C}^{n \times n}$ satisfying $Q^\ast Q = I_n$.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.50)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.50)</span></p>
 
 Of the matrices $\begin{pmatrix} 2 & 1 + i \\ 1 + i & 5 \end{pmatrix}$ and $\begin{pmatrix} 2 & 1 + i \\ 1 - i & 5 \end{pmatrix}$, the first is symmetric but not Hermitian, and the second is Hermitian but not symmetric. For real matrices, both concepts coincide.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 10.51 — Eigenvalues of symmetric matrices)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(10.51 — Eigenvalues of symmetric matrices)</span></p>
 
 The eigenvalues of real symmetric (or more generally complex Hermitian) matrices are real.
 
@@ -5695,7 +5719,7 @@ The eigenvalues of real symmetric (or more generally complex Hermitian) matrices
 
 *Proof.* Let $A \in \mathbb{C}^{n \times n}$ be Hermitian and let $\lambda \in \mathbb{C}$ be any eigenvalue of $A$ and $x \in \mathbb{C}^n$ the corresponding eigenvector of unit size, i.e., $\|x\|_2 = 1$. Multiplying the equation $Ax = \lambda x$ by $x^\ast$ we have $x^\ast Ax = \lambda x^\ast x = \lambda$. Now
 
-$$\lambda = x^* Ax = x^* A^* x = (x^* Ax)^* = \lambda^*.$$
+$$\lambda = x^* Ax = x^* A^* x = (x^* Ax)^* = \lambda^*$$
 
 Thus $\lambda = \lambda^\ast$, and therefore $\lambda$ must be real.
 
@@ -5717,7 +5741,7 @@ $$A = Q \Lambda Q^\top$$
 
 </div>
 
-*Proof.* By mathematical induction on $n$. The case $n = 1$ is trivial: $\Lambda = A$, $Q = 1$. Induction step $n \leftarrow n - 1$. Let $\lambda$ be an eigenvalue of $A$ and $x$ the corresponding eigenvector normalized so that $\|x\|_2 = 1$. Extend $x$, as an orthonormal system, to an orthogonal matrix $S \coloneqq (x \mid \cdots)$. Since $(A - \lambda I_n)x = o$, we have $(A - \lambda I_n)S = (o \mid \cdots)$, and therefore $S^\top(A - \lambda I_n)S = S^\top(o \mid \cdots) = (o \mid \cdots)$. And since this matrix is symmetric, we have
+*Proof.* By mathematical induction on $n$. The case $n = 1$ is trivial: $\Lambda = A$, $Q = 1$. Induction step $n \leftarrow n - 1$. Let $\lambda$ be an eigenvalue of $A$ and $x$ the corresponding eigenvector normalized so that $\lVert x\rVert_2 = 1$. Extend $x$, as an orthonormal system, to an orthogonal matrix $S \coloneqq (x \mid \cdots)$. Since $(A - \lambda I_n)x = o$, we have $(A - \lambda I_n)S = (o \mid \cdots)$, and therefore $S^\top(A - \lambda I_n)S = S^\top(o \mid \cdots) = (o \mid \cdots)$. And since this matrix is symmetric, we have
 
 $$S^\top(A - \lambda I_n)S = \begin{pmatrix} 0 & o^\top \\ o & A' \end{pmatrix},$$
 
@@ -5736,7 +5760,11 @@ then the matrix $A$ can be expressed as
 
 $$A = Q \Lambda Q^\top = Q \left( \sum_{i=1}^n \lambda_i e_i e_i^\top \right) Q^\top = \sum_{i=1}^n \lambda_i Q e_i e_i^\top Q^\top = \sum_{i=1}^n \lambda_i Q_{*i} Q_{*i}^\top = \sum_{i=1}^n \lambda_i x_i x_i^\top.$$
 
-The form $A = \sum_{i=1}^n \lambda_i x_i x_i^\top$ is thus an alternative expression of the spectral decomposition, in which we decompose the matrix $A$ as a sum of $n$ matrices of rank 0 or 1. Moreover, $x_i x_i^\top$ is the projection matrix onto the line $\operatorname{span}\lbrace x_i \rbrace$, so from a geometric perspective we can view the map $x \mapsto Ax$ as a sum of $n$ maps, where in each one we project onto a line (orthogonal to the others) and scale by the value $\lambda_i$.
+The form 
+
+$$A = \sum_{i=1}^n \lambda_i x_i x_i^\top$$
+
+is thus an alternative expression of the spectral decomposition, in which we decompose the matrix $A$ as a sum of $n$ matrices of rank 0 or 1. Moreover, $x_i x_i^\top$ is the projection matrix onto the line $\operatorname{span}\lbrace x_i \rbrace$, so from a geometric perspective we can view the map $x \mapsto Ax$ as a sum of $n$ maps, where in each one we project onto a line (orthogonal to the others) and scale by the value $\lambda_i$.
 
 </div>
 
@@ -5766,7 +5794,7 @@ The Perron--Frobenius theory of nonnegative matrices is an advanced theory conce
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.57 — Markov chains)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.57 — Markov chains)</span></p>
 
 One application of matrix powers (Example 10.46) and, to some extent, of the theory of nonnegative matrices is Markov chains. Let $x \in \mathbb{R}^n$ be a state vector, where $x_i$ gives the value of state $i$. Let $A \in \mathbb{R}^{n \times n}$ be a matrix with values $a_{ij} \in [0, 1]$ such that the sum of values in each column equals 1. We view the matrix $A$ as a transition matrix, that is, the value $a_{ij}$ is the probability of transition from state $j$ to state $i$. Then $Ax$ gives the new state vector after one step of the process. We are interested in how the state vector evolves over time and whether it stabilizes.
 
@@ -5801,12 +5829,22 @@ Every eigenvalue $\lambda$ of a matrix $A \in \mathbb{C}^{n \times n}$ lies in a
 
 </div>
 
-*Proof.* Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector, so $Ax = \lambda x$. Let the $i$-th component of $x$ have the largest absolute value, i.e., $\lvert x_i\rvert = \max_{k=1,\ldots,n} \lvert x_k\rvert$. Since the $i$-th equation has the form $\sum_{j=1}^n a_{ij} x_j = \lambda x_i$, dividing by $x_i \neq 0$ we get $\lambda = a_{ii} + \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}$, and therefore $\lvert \lambda - a_{ii}\rvert = \left\| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i} \right\| \le \sum_{j \neq i} \lvert a_{ij}\rvert \frac{\lvert x_j\rvert}{\lvert x_i\rvert} \le \sum_{j \neq i} \lvert a_{ij}\rvert$.
+*Proof.* Let $\lambda$ be an eigenvalue and $x$ the corresponding eigenvector, so $Ax = \lambda x$. Let the $i$-th component of $x$ have the largest absolute value, i.e., $\lvert x_i\rvert = \max_{k=1,\ldots,n} \lvert x_k\rvert$. Since the $i$-th equation has the form 
+
+$$\sum_{j=1}^n a_{ij} x_j = \lambda x_i$$
+
+dividing by $x_i \neq 0$ we get 
+
+$$\lambda = a_{ii} + \sum_{j \neq i} a_{ij} \frac{x_j}{x_i}$$
+
+and therefore 
+
+$$\lvert \lambda - a_{ii}\rvert = \left\| \sum_{j \neq i} a_{ij} \frac{x_j}{x_i} \right\| \le \sum_{j \neq i} \lvert a_{ij}\rvert \frac{\lvert x_j\rvert}{\lvert x_i\rvert} \le \sum_{j \neq i} \lvert a_{ij}\rvert$$
 
 The theorem gives a simple but coarse estimate on the magnitude of eigenvalues (there also exist improvements, e.g., Cassini ovals, etc.). Nevertheless, in some applications such an estimate may suffice.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.59)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(10.59)</span></p>
 
 Consider 
 
@@ -5822,12 +5860,12 @@ The eigenvalues of $A$ are $\lambda_1 = -2.78$, $\lambda_2 = 3.39 + 0.6i$, $\lam
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 10.60 — Three applications of Gershgorin discs)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(10.60 — Three applications of Gershgorin discs)</span></p>
 
 1. *Stopping criterion for iterative methods.* For example, the Jacobi method for computing eigenvalues consists of gradually reducing the off-diagonal entries of a symmetric matrix so that the matrix converges to a diagonal matrix. The Gershgorin discs then give an upper bound on the accuracy of the computed eigenvalues. If, for instance, a matrix $A \in \mathbb{R}^{n \times n}$ is nearly diagonal in the sense that all off-diagonal entries are less than $10^{-k}$ for some $k \in \mathbb{N}$, then the diagonal entries approximate the eigenvalues with accuracy $10^{-k}(n-1)$.
 2. *Diagonally dominant matrices.* Gershgorin discs also give the following sufficient condition for the nonsingularity of a matrix 
    
-   $A \in \mathbb{C}^{n \times n}$: $\lvert a_{ii}\rvert > \sum_{j \neq i} \lvert a_{ij}\rvert \quad \forall i = 1, \ldots, n$
+   $$A \in \mathbb{C}^{n \times n}$: $\lvert a_{ii}\rvert > \sum_{j \neq i} \lvert a_{ij}\rvert \quad \forall i = 1, \ldots, n$$
    
    In this case the discs do not contain the origin, and therefore zero is not an eigenvalue of $A$. Matrices with this property are called diagonally dominant.
 3. *Markov matrices.* Let $A$ be the Markov matrix from Example 10.57. All Gershgorin discs of the matrix $A^\top$ have their center at a point in the interval $[0, 1]$ and their right edge touches the value 1 on the real axis. This proves that $\rho(A) \le 1$, and therefore 1 is indeed the largest eigenvalue of the matrix $A$ in absolute value.
@@ -5835,7 +5873,7 @@ The eigenvalues of $A$ are $\lambda_1 = -2.78$, $\lambda_2 = 3.39 + 0.6i$, $\lam
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Algorithm 10.61 — Power method)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(10.61 — Power method)</span></p>
 
 Input: matrix $A \in \mathbb{C}^{n \times n}$.
 
@@ -5857,19 +5895,23 @@ $$x_{i-1}^\top y_i = x_{i-1}^\top A x_{i-1} \approx x_{i-1}^\top \lambda x_{i-1}
 is an estimate of the corresponding eigenvalue. The method can be slow, the error and convergence rate are difficult to estimate, and furthermore the initial choice of $x_0$ matters significantly. On the other hand, it is robust (rounding errors have little effect) and easily applicable to large sparse matrices. It does not always converge, but under certain assumptions convergence can be guaranteed.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 10.63 — Convergence of the power method)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.63 — Convergence of the power method)</span></p>
 
 Let $A \in \mathbb{R}^{n \times n}$ with eigenvalues $\lvert \lambda_1\rvert > \lvert\lambda_2\rvert \ge \ldots \ge \lvert\lambda_n\rvert$ and corresponding linearly independent eigenvectors $v_1, \ldots, v_n$ of unit size. Let $x_0$ have a nonzero component in the direction of $v_1$. Then $x_i$ converges (up to a scalar multiple) to the eigenvector $v_1$ and $x_{i-1}^\top y_i$ converges to the eigenvalue $\lambda_1$.
 
 </div>
 
-*Proof.* Since the vectors $v_1, \ldots, v_n$ form a basis of $\mathbb{R}^n$, we can express the vector $x_0$ as $x_0 = \sum_{j=1}^n \alpha_j v_j$, where $\alpha_1 \neq 0$ by assumption. Then 
+*Proof.* Since the vectors $v_1, \ldots, v_n$ form a basis of $\mathbb{R}^n$, we can express the vector $x_0$ as 
+
+$$x_0 = \sum_{j=1}^n \alpha_j v_j$$
+
+where $\alpha_1 \neq 0$ by assumption. Then 
 
 $$A^i x_0 = \sum_{j=1}^n \alpha_j \lambda_j^i v_j = \lambda_1^i \left( \alpha_1 v_1 + \sum_{j \neq 1} \alpha_j \left(\frac{\lambda_j}{\lambda_1}\right)^i v_j \right)$$
 
 Since the vectors $x_i$ are successively normalized, the factor $\lambda_1^i$ does not matter. The remaining vector gradually converges to $\alpha_1 v_1$, because $\left\|\frac{\lambda_j}{\lambda_1}\right\| < 1$ and therefore $\left\|\frac{\lambda_j}{\lambda_1}\right\|^i \to 0$ as $i \to \infty$.
 
-From the proof we see that the convergence rate depends strongly on the ratio $\left|\frac{\lambda_2}{\lambda_1}\right|$.
+From the proof we see that the convergence rate depends strongly on the ratio $\left\|\frac{\lambda_2}{\lambda_1}\right\|$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(10.64 — On eigenvalue deflation)</span></p>
@@ -5887,6 +5929,74 @@ Then
 $$A - \lambda_1 v_1 v_1^\top = 0 v_1 v_1^\top + \sum_{i=2}^n \lambda_i v_i v_i^\top$$
 
 which is the spectral decomposition of the matrix $A - \lambda_1 v_1 v_1^\top$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mental Model of Power Iteration)</span></p>
+
+A good mental image is an ellipse. If a transformation turns the unit circle into an ellipse, then the longest axis of that ellipse is the dominant eigenvector direction. If you keep applying the transformation, the shape gets more and more elongated along that axis, and almost any point you track ends up pointing along it.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>More detailed intuition on power iteration</summary>
+
+Think of a linear map $A$ as something that stretches space by different factors in a few special directions: the eigenvector directions.
+
+If you start with any vector $x_0$, that vector can be decomposed into eigenvector components:
+
+$$x_0 = c_1 v_1 + c_2 v_2 + \cdots + c_n v_n$$
+
+where $v_1$ is the eigenvector with the largest absolute eigenvalue:
+
+$$|\lambda_1| > |\lambda_2| \ge \cdots$$
+
+
+After applying $A$ once,
+
+$$Ax_0 = c_1 \lambda_1 v_1 + c_2 \lambda_2 v_2 + \cdots$$
+
+After applying it $k$ times,
+
+$$A^k x_0 = c_1 \lambda_1^k v_1 + c_2 \lambda_2^k v_2 + \cdots$$
+
+The key intuition is:
+
+**each eigen-direction gets amplified at its own rate.**
+The direction with the biggest stretch factor grows fastest, so after repeated applications it overwhelms all the others.
+
+Geometrically, imagine every step as:
+
+* take your current arrow,
+* apply $A$,
+* the part of the arrow pointing in the dominant eigenvector direction gets multiplied by the biggest factor,
+* all other directional parts grow more slowly,
+* so the arrow gradually “tilts” toward the most amplified direction.
+
+Even if analytically you already know this, the geometric picture is:
+
+**the power method is a competition between directional components, and the dominant eigenvector wins because it is the direction that $A$ magnifies the most.**
+
+A good mental image is an ellipse. If a transformation turns the unit circle into an ellipse, then the longest axis of that ellipse is the dominant eigenvector direction. If you keep applying the transformation, the shape gets more and more elongated along that axis, and almost any point you track ends up pointing along it.
+
+Why “almost any” vector?
+
+Because your starting vector must contain at least a tiny component in that dominant direction. If it is exactly orthogonal to that eigenvector component, then there is nothing for the dominant direction to amplify.
+
+A few extra intuitive remarks:
+
+* **Normalization does not change the direction**, it only prevents the vector from exploding in length.
+* If the largest eigenvalue is negative, the vector flips sign each iteration, but the **line** still converges to the dominant eigenvector direction.
+* If two eigenvalues have the same largest magnitude, there is no single winner, so the method may not settle to one direction.
+
+So the shortest intuition is:
+
+**Repeated application of $A$ acts like repeated selective amplification. The dominant eigenvector is the direction most amplified by $A$, so every generic vector gets visually pulled toward that direction because all competing components become negligible in comparison.**
+
+If you want, I can also give you a 2D picture-based explanation with a concrete matrix.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(10.65 — On eigenvalue deflation for a general matrix)</span></p>
@@ -6038,7 +6148,7 @@ We now focus on specific methods for testing positive definiteness. Many of them
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.9 — Recurrence formula for testing positive definiteness)</span></p>
 
-A symmetric matrix $A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$, where $\alpha \in \mathbb{R}$, $a \in \mathbb{R}^{n-1}$, $\tilde{A} \in \mathbb{R}^{(n-1) \times (n-1)}$, is positive definite if and only if $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite.
+A symmetric matrix $A = \begin{pmatrix} \alpha & a^\top \\\ a & \tilde{A} \end{pmatrix}$, where $\alpha \in \mathbb{R}$, $a \in \mathbb{R}^{n-1}$, $\tilde{A} \in \mathbb{R}^{(n-1) \times (n-1)}$, is positive definite if and only if $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite.
 
 </div>
 
@@ -6160,7 +6270,7 @@ A symmetric matrix $A \in \mathbb{R}^{n \times n}$ is positive semidefinite if a
 
 *Proof.* If $A$ is positive semidefinite, then clearly the principal submatrices are also positive semidefinite, and therefore have nonnegative determinant ($=$ product of eigenvalues).
 
-We prove the reverse implication by mathematical induction. For $n = 1$ the claim is obvious. Inductive step $n \leftarrow n - 1$. For contradiction, let $\lambda < 0$ be an eigenvalue of $A$, and let $x$ be the corresponding eigenvector normalized so that $\|x\|_2 = 1$. If all other eigenvalues are positive, then $\det(A) < 0$, and we are done. Otherwise, let $\mu \le 0$ be another eigenvalue of $A$ and let $y$, $\|y\|_2 = 1$, be the corresponding eigenvector. Since $x \perp y$, we now find $\alpha \in \mathbb{R}$ such that the vector $z \coloneqq x + \alpha y$ has at least one zero component; let it be the $i$-th. Then $z^\top Az = (x + \alpha y)^\top A(x + \alpha y) = \lambda x^\top x + \alpha^2 \mu y^\top y = \lambda + \alpha^2 \mu < 0$. Let $A'$ be obtained from $A$ by removing the $i$-th row and column, and let $z'$ be obtained from the vector $z$ by removing the $i$-th component. Then $z'^\top A' z' = z^\top Az < 0$, so the principal submatrix $A'$ is not positive semidefinite and we apply the inductive hypothesis.
+We prove the reverse implication by mathematical induction. For $n = 1$ the claim is obvious. Inductive step $n \leftarrow n - 1$. For contradiction, let $\lambda < 0$ be an eigenvalue of $A$, and let $x$ be the corresponding eigenvector normalized so that $\lVert x\rVert_2 = 1$. If all other eigenvalues are positive, then $\det(A) < 0$, and we are done. Otherwise, let $\mu \le 0$ be another eigenvalue of $A$ and let $y$, $\lVert y\rVert_2 = 1$, be the corresponding eigenvector. Since $x \perp y$, we now find $\alpha \in \mathbb{R}$ such that the vector $z \coloneqq x + \alpha y$ has at least one zero component; let it be the $i$-th. Then $z^\top Az = (x + \alpha y)^\top A(x + \alpha y) = \lambda x^\top x + \alpha^2 \mu y^\top y = \lambda + \alpha^2 \mu < 0$. Let $A'$ be obtained from $A$ by removing the $i$-th row and column, and let $z'$ be obtained from the vector $z$ by removing the $i$-th component. Then $z'^\top A' z' = z^\top Az < 0$, so the principal submatrix $A'$ is not positive semidefinite and we apply the inductive hypothesis.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(11.17 — Computational complexity)</span></p>
@@ -6188,7 +6298,7 @@ Although we have presented several methods for testing positive definiteness, so
 First we show that using positive definite matrices we can describe all possible inner products on the space $\mathbb{R}^n$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 11.18 — Inner product and positive definiteness)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(11.18 — Inner product and positive definiteness)</span></p>
 
 The operation $\langle x, y \rangle$ is an inner product on $\mathbb{R}^n$ if and only if it has the form $\langle x, y \rangle = x^\top Ay$ for some positive definite matrix $A \in \mathbb{R}^{n \times n}$.
 
