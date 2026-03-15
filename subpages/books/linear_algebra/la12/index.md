@@ -3178,13 +3178,13 @@ Let $f \colon U \to V$ be a linear map. Then $\dim U = \dim \operatorname{Ker}(f
 
 </div>
 
-*Proof.* By Theorem 5.72, for a matrix $A$ of type $m \times n$, the equality $n = \dim \operatorname{Ker}(A) + \operatorname{rank}(A)$ holds. In particular, for $A = {}_{B_V}[f]_{B_U}$ we obtain the desired identity, since $n = \dim U$, $\dim \operatorname{Ker}(f) = \dim \operatorname{Ker}(A)$, and $\dim f(U) = \operatorname{rank}(A)$.
+*Proof.* By Theorem 5.72, for a matrix $A$ of type $m \times n$, the equality $n = \dim \operatorname{Ker}(A) + \operatorname{rank}(A)$ holds. In particular, for $A = {}\_{B_V}[f]_{B_U}$ we obtain the desired identity, since $n = \dim U$, $\dim \operatorname{Ker}(f) = \dim \operatorname{Ker}(A)$, and $\dim f(U) = \operatorname{rank}(A)$.
 
 Already on page 102 we observed that the kernel of a linear map describes how much the map degenerates. Corollary 6.43 then expresses the degree of degeneracy numerically. The dimension of the kernel gives the difference between the dimension of the space $U$ and the dimension of its image.
 
-With regard to Theorems 6.12 and 6.41, we obtain that a linear map $f \colon U \to V$ is injective if and only if $\dim U = \dim f(U)$, i.e., $\dim U = \operatorname{rank}({}_{B_V}[f]_{B_U})$. A necessary and sufficient condition for $f$ to be injective is therefore that the matrix of the map $f$ with respect to any bases has linearly independent columns.
+With regard to Theorems 6.12 and 6.41, we obtain that a linear map $f \colon U \to V$ is injective if and only if $\dim U = \dim f(U)$, i.e., $\dim U = \operatorname{rank}({}\_{B_V}[f]_{B_U})$. A necessary and sufficient condition for $f$ to be injective is therefore that the matrix of the map $f$ with respect to any bases has linearly independent columns.
 
-How do we determine that a linear map $f \colon U \to V$ is surjective? This situation can be expressed by the condition $\dim V = \dim f(U)$, i.e., $\dim V = \operatorname{rank}({}_{B_V}[f]_{B_U})$. Equivalently, the matrix of $f$ with respect to any bases must have linearly independent rows. We thus obtain the following proposition.
+How do we determine that a linear map $f \colon U \to V$ is surjective? This situation can be expressed by the condition $\dim V = \dim f(U)$, i.e., $\dim V = \operatorname{rank}({}\_{B_V}[f]_{B_U})$. Equivalently, the matrix of $f$ with respect to any bases must have linearly independent rows. We thus obtain the following proposition.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 6.44)</span></p>
@@ -3207,13 +3207,25 @@ where
 
 $$B_U = \lbrace (1, 2, 1)^\top, \ (0, 1, 1)^\top, \ (1, 2, 4)^\top \rbrace, \qquad B_V = \lbrace x^2 - 2x + 3, \ x - 1, \ 2x^2 + x \rbrace.$$
 
-Since $\operatorname{rank}(A) = 2$, we immediately get $\dim \operatorname{Ker}(f) = 3 - \operatorname{rank}(A) = 1$ and $\dim f(\mathbb{R}^3) = \operatorname{rank}(A) = 2$. Since the kernel has positive dimension and is therefore nontrivial, by Theorem 6.12 this means the map $f$ is not injective. Since the image has dimension 2 but the space $\mathcal{P}^2$ has dimension 3, the map $f$ is not surjective.
+Since $\operatorname{rank}(A) = 2$, we immediately get 
 
-A basis of $\operatorname{Ker}(A)$ is $(2, -3, 1)^\top$, which represents the coordinates of the desired vector in the basis $B_U$. Thus a basis of $\operatorname{Ker}(f)$ is formed by the vector $2(1, 2, 1)^\top - 3(0, 1, 1)^\top + 1(1, 2, 4)^\top = (3, 3, 3)^\top$.
+$$\dim \operatorname{Ker}(f) = 3 - \operatorname{rank}(A) = 1$$
+
+and
+
+$$\dim f(\mathbb{R}^3) = \operatorname{rank}(A) = 2$$
+
+Since the kernel has positive dimension and is therefore nontrivial, by Theorem 6.12 this means the map $f$ is not injective. Since the image has dimension 2 but the space $\mathcal{P}^2$ has dimension 3, the map $f$ is not surjective.
+
+A basis of $\operatorname{Ker}(A)$ is $(2, -3, 1)^\top$, which represents the coordinates of the desired vector in the basis $B_U$. Thus a basis of $\operatorname{Ker}(f)$ is formed by the vector 
+
+$$2(1, 2, 1)^\top - 3(0, 1, 1)^\top + 1(1, 2, 4)^\top = (3, 3, 3)^\top$$
 
 A basis of $\mathcal{S}(A)$ is $(1, 3, 0)^\top$, $(1, 2, 1)^\top$, which again represents the coordinates of the desired vectors. Thus the basis of the image $f(\mathbb{R}^3)$ consists of two vectors
 
-$$1(x^2 - 2x + 3) + 3(x - 1) + 0(2x^2 + x) = x^2 + x, \qquad 1(x^2 - 2x + 3) + 2(x - 1) + 1(2x^2 + x) = 3x^2 + x + 1.$$
+$$1(x^2 - 2x + 3) + 3(x - 1) + 0(2x^2 + x) = x^2 + x,$$
+
+$$1(x^2 - 2x + 3) + 2(x - 1) + 1(2x^2 + x) = 3x^2 + x + 1.$$
 
 </div>
 
@@ -3221,9 +3233,11 @@ $$1(x^2 - 2x + 3) + 3(x - 1) + 0(2x^2 + x) = x^2 + x, \qquad 1(x^2 - 2x + 3) + 2
 
 It is not difficult to see that the set of linear maps from a space $U$ over $\mathbb{T}$ of dimension $n$ to a space $V$ over $\mathbb{T}$ of dimension $m$ forms a vector space: the sum of linear maps $f, g \colon U \to V$ is again a linear map $(f + g) \colon U \to V$, and the scalar multiple $\alpha f$ of a linear map $f \colon U \to V$ is also a linear map. The zero vector is the map $u \mapsto o_V$ $\forall u \in U$.
 
-Moreover, since every linear map is uniquely determined by a matrix with respect to given bases, this space of linear maps is isomorphic to the space of matrices $\mathbb{T}^{m \times n}$ and therefore has dimension $mn$. The corresponding isomorphism can be the map $f \mapsto {}_{B_V}[f]_{B_U}$, where $B_U$ is any fixed basis of the space $U$ and $B_V$ is any fixed basis of the space $V$. The linearity of this map follows easily (due to linearity of coordinates) from the properties
+Moreover, since every linear map is uniquely determined by a matrix with respect to given bases, this space of linear maps is isomorphic to the space of matrices $\mathbb{T}^{m \times n}$ and therefore has dimension $mn$. The corresponding isomorphism can be the map $f \mapsto {}\_{B_V}[f]_{B_U}$, where $B_U$ is any fixed basis of the space $U$ and $B_V$ is any fixed basis of the space $V$. The linearity of this map follows easily (due to linearity of coordinates) from the properties
 
-$${}_{B_V}[f + g]_{B_U} = {}_{B_V}[f]_{B_U} + {}_{B_V}[g]_{B_U}, \qquad {}_{B_V}[\alpha f]_{B_U} = \alpha \, {}_{B_V}[f]_{B_U}.$$
+$${}_{B_V}[f + g]_{B_U} = {}_{B_V}[f]_{B_U} + {}_{B_V}[g]_{B_U},$$
+
+$${}_{B_V}[\alpha f]_{B_U} = \alpha \, {}_{B_V}[f]_{B_U}.$$
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 6.46 — Linear Form and Dual Space)</span></p>
@@ -3239,11 +3253,11 @@ An example of a linear form on the space $\mathbb{R}^n$ over $\mathbb{R}$ is the
 
 </div>
 
-Nothing prevents us from considering the dual space of the dual space. This is the space $V^{**}$ of all linear maps $F \colon V^* \to \mathbb{T}$. In other words, $F$ maps every linear form on $V$ to a scalar from the field $\mathbb{T}$. For example, let $v^* \in V$ be a fixed vector and consider the map that sends a linear form $f$ to its function value $f(v^*)$. We have just defined a map $F_{v^*} \in V^{**}$ given by $F_{v^*}(f) = f(v^*)$. For every vector $v^* \in V$ we have thus found a vector $F_{v^*} \in V^{**}$. The map $v^* \mapsto F_{v^*}$ is called the *canonical embedding* of the space $V$ into the space $V^{**}$. It can be shown that this is an injective linear map.
+Nothing prevents us from considering the dual space of the dual space. This is the space $V^{\ast\ast}$ of all linear maps $F \colon V^\ast \to \mathbb{T}$. In other words, $F$ maps every linear form on $V$ to a scalar from the field $\mathbb{T}$. For example, let $v^\ast \in V$ be a fixed vector and consider the map that sends a linear form $f$ to its function value $f(v^\ast)$. We have just defined a map $F_{v^\ast} \in V^{\ast\ast}$ given by $F_{v^\ast}(f) = f(v^\ast)$. For every vector $v^\ast \in V$ we have thus found a vector $F_{v^\ast} \in V^{\ast\ast}$. The map $v^\ast \mapsto F_{v^\ast}$ is called the *canonical embedding* of the space $V$ into the space $V^{\ast\ast}$. It can be shown that this is an injective linear map.
 
-If $\dim V = n$, then also $\dim V^* = n$. If $v_1, \ldots, v_n$ is a basis of $V$, then the dual space has, for example, the basis $f_1, \ldots, f_n$, where $f_i$ is determined by the images of the basis: $f_i(v_i) = 1$ and $f_i(v_j) = 0$ for $i \neq j$. This basis is called the *dual basis* to the basis $v_1, \ldots, v_n$.
+If $\dim V = n$, then also $\dim V^\ast = n$. If $v_1, \ldots, v_n$ is a basis of $V$, then the dual space has, for example, the basis $f_1, \ldots, f_n$, where $f_i$ is determined by the images of the basis: $f_i(v_i) = 1$ and $f_i(v_j) = 0$ for $i \neq j$. This basis is called the *dual basis* to the basis $v_1, \ldots, v_n$.
 
-For a finitely generated space, $V$ is therefore isomorphic to the dual space $V^*$, to the dual of the dual space $V^{**}$, etc. Nevertheless, there always exists a canonical embedding of $V$ into $V^{**}$. If moreover $V$ and $V^{**}$ are isomorphic, then $V$ has certain nice properties.
+For a finitely generated space, $V$ is therefore isomorphic to the dual space $V^\ast$, to the dual of the dual space $V^{\ast\ast}$, etc. Nevertheless, there always exists a canonical embedding of $V$ into $V^{\ast\ast}$. If moreover $V$ and $V^{\ast\ast}$ are isomorphic, then $V$ has certain nice properties.
 
 ### 6.5 Applications
 

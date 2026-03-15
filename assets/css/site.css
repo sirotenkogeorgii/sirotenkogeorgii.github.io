@@ -800,7 +800,7 @@ thead {
 
 .math-callout--info {
   --callout-border: #000000;
-  --callout-bg: rgba(238, 236, 255, 0.08);
+  --callout-bg: rgba(193, 238, 255, 0.08);
   --callout-title: #000000;
 }
 

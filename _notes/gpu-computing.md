@@ -206,7 +206,7 @@ A CUDA program is a hybrid program consisting of two parts: a host part that run
 
 CUDA programs exploit two complementary forms of parallelism:
 
-<div class=”math-callout math-callout--definition” markdown=”1”>
+<div class="math-callout math-callout--definition" markdown="1">
   <p class=”math-callout__title”><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></p>
 
 - **Data-Level Parallelism (DLP):** Perform the *same* operation on *many* data elements simultaneously. Exploited by SIMD/vector units and GPU warps. Best for dense, regular computations (linear algebra, convolutions, elementwise ops). The main limitation is branch divergence and irregular memory access.
@@ -1654,7 +1654,7 @@ The classic deadlock scenario works as follows:
    
    $$\#\text{CTAs} > \#\text{SMs} \cdot b_r$$
    
-2. The GPU schedules up to $\#\text{SMs} \cdot b_r$ blocks. These become **resident** and start running.
+2. The GPU schedules up to $\char"0023 \text{SMs} \cdot b_r$ blocks. These become **resident** and start running.
 3. All resident blocks reach the **global barrier** and **wait** there.
 4. While waiting, they **still occupy the SM resources** (registers, shared memory, block slots).
 5. Because the SMs are "full" of waiting resident blocks, **no new blocks can become resident**, so the remaining (not-yet-scheduled) CTAs never start.
