@@ -2247,8 +2247,101 @@ The *dimension* of a finitely generated vector space is the size of any of its b
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.47 — Examples of Dimensions)</span></p>
 
-- $\dim \mathbb{R}^n = n$, $\dim \mathbb{R}^{m \times n} = mn$, $\dim \lbrace o \rbrace = 0$, $\dim \mathcal{P}^n = n + 1$,
+- $\dim \mathbb{R}^n = n$, 
+- $\dim \mathbb{R}^{m \times n} = mn$, 
+- $\dim \lbrace o \rbrace = 0$, 
+- $\dim \mathcal{P}^n = n + 1$,
 - the real spaces $\mathcal{P}$, $\mathcal{F}$, and the space $\mathbb{R}$ over $\mathbb{Q}$ are not finitely generated and have dimension $\infty$ (see Problem 5.1).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Subpace defined by a linear contraint)</span></p>
+
+The space
+
+$$V=\lbrace(x,y,z)\in \mathbb R^3 \mid x+y+z=0\rbrace$$
+
+is 2-dimensional because the equation $x+y+z=0$ imposes **one linear constraint** on vectors in $\mathbb R^3$.
+
+**Direct way to see it**
+
+From
+
+$$x+y+z=0$$
+
+you can solve for $z$:
+
+$$z=-x-y$$
+
+So every vector in $V$ must look like
+
+$$(x,y,-x-y)$$
+
+That means once you choose $x$ and $y$, the value of $z$ is forced. So there are only **$2$ free parameters**.
+
+A vector in $V$ can therefore be written as
+
+$$
+(x,y,-x-y)
+= x(1,0,-1)+y(0,1,-1).
+$$
+
+So $V$ is spanned by the two vectors
+
+$$(1,0,-1),\qquad (0,1,-1)$$
+
+These two are linearly independent, so they form a basis. Hence
+
+$$\dim V=2$$
+
+**Geometric picture**
+
+$\mathbb R^3$ is 3-dimensional.
+The condition $x+y+z=0$ cuts out a **plane through the origin**. A plane in $\mathbb R^3$ is 2-dimensional.
+
+**General rule**
+
+In $\mathbb R^3$, one independent linear equation usually reduces the dimension by $1$:
+
+$$3-1=2$$
+
+So that is why this space is 2D.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dimensionality as a number of linear degrees of freedom)</span></p>
+
+**The dimension of a vector space is the number of vectors in a basis.**
+
+A basis is a set of vectors that is
+
+* linearly independent, and
+* spans the whole space.
+
+So in a finite-dimensional space, dimension is also:
+
+* the **maximum number of linearly independent vectors**, and
+* the **minimum number of vectors needed to span the space**.
+
+**About “independent variables” and “degrees of freedom”**
+
+These are good intuitions, but they are not the formal definition.
+
+**Degree of freedom**
+
+Yes — in many practical cases, dimension tells you the number of **degrees of freedom**.
+
+For example,
+
+$$V=\lbrace(x,y,z)\in\mathbb R^3\mid x+y+z=0\rbrace$$
+
+has 2 degrees of freedom, because once you choose $x$ and $y$, then $z$ is fixed:
+
+$$z=-x-y$$
+
+So here dimension $=2$ matches “2 free choices”.
 
 </div>
 
@@ -2262,9 +2355,9 @@ For a vector space $V$ the following holds:
 1. Let $x_1, \ldots, x_m \in V$ be linearly independent. Then $m \le \dim V$. If $m = \dim V$, then $x_1, \ldots, x_m$ is a basis.
 2. Let $y_1, \ldots, y_n$ be generators of $V$. Then $n \ge \dim V$. If $n = \dim V$, then $y_1, \ldots, y_n$ is a basis.
 
-*Proof.* Denote $d = \dim V$ and let $z_1, \ldots, z_d$ be a basis of $V$, i.e., its linearly independent generators. (1) Since $x_1, \ldots, x_m$ are linearly independent and $z_1, \ldots, z_d$ are generators of $V$, by the Steinitz Exchange Theorem 5.44 we have $m \le d$. If $m = d$, then by the same theorem the system $x_1, \ldots, x_m$ can be extended by $d - m = 0$ vectors to a generating system of $V$. Hence they are necessarily generators and thus a basis. (2) Since $y_1, \ldots, y_n$ are generators of $V$ and $z_1, \ldots, z_d$ are linearly independent, by the Steinitz Exchange Theorem 5.44 we have $n \ge d$. Suppose $n = d$. If $y_1, \ldots, y_n$ are linearly independent, they form a basis. If they are linearly dependent, then one can be omitted to obtain a generating system of size $n - 1$ (Corollary 5.29). By the Steinitz theorem we would then have $d \le n - 1$, which leads to a contradiction.
-
 </div>
+
+*Proof.* Denote $d = \dim V$ and let $z_1, \ldots, z_d$ be a basis of $V$, i.e., its linearly independent generators. (1) Since $x_1, \ldots, x_m$ are linearly independent and $z_1, \ldots, z_d$ are generators of $V$, by the Steinitz Exchange Theorem 5.44 we have $m \le d$. If $m = d$, then by the same theorem the system $x_1, \ldots, x_m$ can be extended by $d - m = 0$ vectors to a generating system of $V$. Hence they are necessarily generators and thus a basis. (2) Since $y_1, \ldots, y_n$ are generators of $V$ and $z_1, \ldots, z_d$ are linearly independent, by the Steinitz Exchange Theorem 5.44 we have $n \ge d$. Suppose $n = d$. If $y_1, \ldots, y_n$ are linearly independent, they form a basis. If they are linearly dependent, then one can be omitted to obtain a generating system of size $n - 1$ (Corollary 5.29). By the Steinitz theorem we would then have $d \le n - 1$, which leads to a contradiction.
 
 The first part of Proposition 5.48 says, among other things, that a basis can be viewed as a maximal linearly independent system. The second part says that a basis is a minimal generating system (both in terms of inclusion and in terms of size).
 
@@ -3084,12 +3177,12 @@ $${}_{B_U}[f^{-1}]_{B_V} = {}_{B_V}[f]_{B_U}^{-1}.$$
 
 $${}_{B_U}[f^{-1}]_{B_V} \cdot {}_{B_V}[f]_{B_U} = {}_{B_U}[f^{-1} \circ f]_{B_U} = {}_{B_U}[id]_{B_U} = I.$$
 
-Since ${}_{B_V}[f]_{B_U}$ is square by Theorem 6.34(4), ${}_{B_U}[f^{-1}]_{B_V}$ is its inverse matrix.
+Since ${}\_{B_V}[f]_{B_U}$ is square by Theorem 6.34(4), ${}\_{B_U}[f^{-1}]_{B_V}$ is its inverse matrix.
 
 The matrix of an isomorphism has an inverse matrix, so it must be nonsingular. This statement also holds in reverse: If the matrix of a linear map $f$ is nonsingular, then $f$ is an isomorphism, because the inverse matrix gives the formula for the inverse map $f^{-1}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 6.36)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(6.36)</span></p>
 
 A linear map $f \colon U \to V$ is an isomorphism if and only if some (any) matrix representing $f$ is nonsingular.
 
@@ -3100,7 +3193,7 @@ A further corollary of Proposition 6.35 is obtained specifically for the change-
 $${}_{B_U}[id]_{B_V} = {}_{B_V}[id]_{B_U}^{-1}.$$
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.37 — Mnemonic for Computing Change-of-Basis Matrices)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.37 — Mnemonic for Computing Change-of-Basis Matrices)</span></p>
 
 For computing the change-of-basis matrix in $\mathbb{R}^n$ from basis $B_U$ to basis $B_V$, i.e., ${}_{B_V}[id]_{B_U}$, one can use the following mnemonic:
 
@@ -3172,7 +3265,7 @@ The proof of Theorem 6.41 is constructive -- it tells us not only how to compute
 As a corollary of Theorem 6.41, we obtain the following generalization of the equality from Theorem 6.34(4), since for an isomorphism we have $\dim \operatorname{Ker}(f) = 0$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 6.43)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(6.43)</span></p>
 
 Let $f \colon U \to V$ be a linear map. Then $\dim U = \dim \operatorname{Ker}(f) + \dim f(U)$.
 
@@ -3197,7 +3290,7 @@ Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.45)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.45)</span></p>
 
 Let us have a linear map $f \colon \mathbb{R}^3 \to \mathcal{P}^2$ given by the matrix
 
@@ -3229,7 +3322,7 @@ $$1(x^2 - 2x + 3) + 2(x - 1) + 1(2x^2 + x) = 3x^2 + x + 1.$$
 
 </div>
 
-### 6.4 The Space of Linear Maps
+### 6.4 The Space of Linear Maps: Dual Space
 
 It is not difficult to see that the set of linear maps from a space $U$ over $\mathbb{T}$ of dimension $n$ to a space $V$ over $\mathbb{T}$ of dimension $m$ forms a vector space: the sum of linear maps $f, g \colon U \to V$ is again a linear map $(f + g) \colon U \to V$, and the scalar multiple $\alpha f$ of a linear map $f \colon U \to V$ is also a linear map. The zero vector is the map $u \mapsto o_V$ $\forall u \in U$.
 
@@ -3240,16 +3333,289 @@ $${}_{B_V}[f + g]_{B_U} = {}_{B_V}[f]_{B_U} + {}_{B_V}[g]_{B_U},$$
 $${}_{B_V}[\alpha f]_{B_U} = \alpha \, {}_{B_V}[f]_{B_U}.$$
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 6.46 — Linear Form and Dual Space)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(6.46 — Linear Form and Dual Space)</span></p>
 
-Let $V$ be a vector space over $\mathbb{T}$. A *linear form* (also called a linear functional) is any linear map from $V$ to $\mathbb{T}$. The *dual space*, denoted $V^*$, is the vector space of all linear forms.
+Let $V$ be a vector space over $\mathbb{T}$. A **linear form** (also called a linear functional) is any linear map from $V$ to $\mathbb{T}$. The **dual space**, denoted $V^*$ or $V^\vee$, is the vector space of all linear forms.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.47)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Important Case)</span></p>
 
-An example of a linear form on the space $\mathbb{R}^n$ over $\mathbb{R}$ is the map $f(x_1, \ldots, x_n) = \frac{1}{n}\sum_{i=1}^{n} x_i$ or the map $g(x_1, \ldots, x_n) = x_1$.
+Suppose for example $V=\mathbb{R}^3$. We can think of elements of $V$ as column matrices, like
+
+$$v=\begin{bmatrix}2\\5\\9\end{bmatrix} \in V$$
+
+Then a linear map $f: V\to\mathbb \mathbb{T}$ can be interpreted as a **row matrix**:
+
+$$f=\begin{bmatrix}3&4&5\end{bmatrix} \in V^\vee$$
+
+Then
+
+$$
+f(v)=
+\begin{bmatrix}3&4&5\end{bmatrix}
+\begin{bmatrix}2\5\9\end{bmatrix}
+=71
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mapping of basis elements is all you need)</span></p>
+
+More precisely: **to specify a linear map $V\to k$, I only have to tell you where each basis element of $V$ goes.** In the above example, $f$ sends $e_1$ to $3$, $e_2$ to $4$, and $e_3$ to $5$. So $f$ sends
+
+$$2e_1 + 5e_2 + 9e_3 \mapto 2\cdot 3 + 5\cdot 4 + 9\cdot 5 = 71$$
+
+Let’s make all this precise.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The dual basis for $V^vee$)</span></p>
+
+Let $V$ be a finite-dimensional vector space with basis $e_1,\dots,e_n$. For each i consider the function $e_i^vee: V \to \mathbb{T}$ defined by
+
+$$
+e_i^\vee(e_j)=
+\begin{cases}
+1,& i=j,\\
+0,& i\ne j
+\end{cases}
+$$
+
+These are the **dual basis vectors**.
+
+Interpretation: $e_i^\vee(v)$ gives / picks out the coefficient of $e_i$ when $v$ is written in the basis $e_1,\dots,e_n$. The set
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Isomorphism with dual)</span></p>
+
+There exists isomophism between $V$ and $V^\vee$, but it's not canonical.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Explicit example showing that the isomorphism $V\to V^vee$ given above is canonical)</span></p>
+
+The isomorphism $V \cong V^\vee$ constructed in the previous proposition is generally **not canonical**: it depends on the choice of a basis of $V$. In other words, although a finite-dimensional vector space and its dual always have the same dimension and are therefore isomorphic, there is in general no distinguished, basis-independent way to identify them.
+
+To see this concretely, consider the vector space
+
+$$V=\lbrace(x,y,z)\in \mathbb{R}^3 \mid x+y+z=0\rbrace.$$
+
+This is a 2-dimensional subspace of $\mathbb{R}^3$, so $V$ and $V^\vee$ are both 2-dimensional.
+
+Now suppose Alice chooses the basis
+
+$$e_1=(1,0,-1), \qquad e_2=(0,1,-1),$$
+
+and defines an isomorphism
+
+$$A:V\to V^\vee$$
+
+by sending each basis vector to the corresponding dual basis vector:
+
+$$A(e_i)=e_i^\vee.$$
+
+Bob, however, chooses a different basis
+
+$$f_1=(1,0,-1), \qquad f_2=(1,-1,0),$$
+
+and defines another isomorphism
+
+$$B:V\to V^\vee$$
+
+in the same way:
+
+$$B(f_i)=f_i^\vee.$$
+
+Notice that both Alice and Bob start with the same vector
+
+$$(1,0,-1)=e_1=f_1.$$
+
+However, the functionals to which they send this vector are different. Indeed, evaluate them on the vector
+
+$$(3,5,-8)\in V.$$
+
+In Alice’s basis,
+
+$$(3,5,-8)=3e_1+5e_2,$$
+
+so
+
+$$A((1,0,-1))(3,5,-8)=e_1^\vee(3,5,-8)=3.$$
+
+In Bob’s basis,
+
+$$(3,5,-8)=8f_1-5f_2,$$
+
+so
+
+$$B((1,0,-1))(3,5,-8)=f_1^\vee(3,5,-8)=8$$
+
+Thus
+
+$$A((1,0,-1))\neq B((1,0,-1))$$
+
+So the isomorphism $V\to V^\vee$ depends on the chosen basis. This shows that the identification of $V$ with $V^\vee$ is **unnatural**: it is not determined by the vector space structure alone.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why there it is isomorphism?)</span></p>
+
+Yes — the key point is:
+
+When we choose a basis of $V$, the map $V \to V^\vee$ is an isomorphism **because it sends a basis of $V$ to a basis of $V^\vee$**.
+
+So you can “get back” by sending the dual basis vectors back to the original basis vectors.
+
+**General construction**
+
+Suppose $V$ is finite-dimensional and we choose a basis
+
+$$e_1,\dots,e_n.$$
+
+Then the **dual basis**
+
+e^1,\dots,e^n \in V^\vee
+
+is defined by
+
+$$e^i(e_j)=\delta_{ij}.$$
+
+Now define
+
+$$A:V\to V^\vee
+
+by
+
+$$A(e_i)=e^i$$
+
+for each $i$, and extend linearly.
+
+**Why is this an isomorphism?**
+
+Take any vector $v\in V$. Since $e_1,\dots,e_n$ is a basis, we can write
+
+$$v=a_1e_1+\cdots+a_ne_n.$$
+
+Then by linearity,
+
+$$A(v)=a_1e^1+\cdots+a_ne^n.$$
+
+So $A$ just takes the coordinates of $v$ in the basis $e_i$, and uses the same coordinates in the dual basis $e^i$.
+
+That already suggests how to go back.
+
+**The inverse map**
+
+Define
+
+$$A^{-1}:V^\vee\to V$$
+
+by
+
+$$A^{-1}(e^i)=e_i$$
+
+for each (i), and extend linearly.
+
+So if
+
+$$\varphi=b_1e^1+\cdots+b_ne^n \in V^\vee,$$
+
+then
+
+$$A^{-1}(\varphi)=b_1e_1+\cdots+b_ne_n.$$
+
+**Check that they undo each other**
+
+Start with
+
+$v=a_1e_1+\cdots+a_ne_n.$
+
+Then
+
+$A(v)=a_1e^1+\cdots+a_ne^n,$
+
+so
+
+$$A^{-1}(A(v))=a_1e_1+\cdots+a_ne_n=v.$$
+
+Now start with
+
+$$\varphi=b_1e^1+\cdots+b_ne^n.$$
+
+Then
+
+$$A^{-1}(\varphi)=b_1e_1+\cdots+b_ne_n,$$
+
+so
+
+$$A(A^{-1}(\varphi))=b_1e^1+\cdots+b_ne^n=\varphi.$$
+
+So indeed $A^{-1}$ exists, hence $A$ is an isomorphism.
+
+**In our 2D example**
+
+Alice chose the basis
+
+$$e_1=(1,0,-1),\qquad e_2=(0,1,-1).$$
+
+Her map is
+
+$$A(e_1)=e^1,\qquad A(e_2)=e^2.$$
+
+So if
+
+$$v=3e_1+5e_2,$$
+
+then
+
+$$A(v)=3e^1+5e^2.$$
+
+To get back, the inverse does
+
+$$A^{-1}(3e^1+5e^2)=3e_1+5e_2$$
+
+So “getting back” just means:
+
+* from a vector, read its coefficients in the chosen basis;
+* turn those into coefficients of the dual basis;
+* and to invert, use the same coefficients again but put them back on the original basis vectors.
+
+**Why this is not canonical**
+
+This works **once a basis is chosen**.
+
+But if you choose a different basis, then you get a different dual basis, hence a different map $A$, and therefore a different inverse too.
+
+So:
+
+* yes, it is an isomorphism;
+* yes, you can get back;
+* but the whole construction depends on the basis choice.
+
+That is why the book says the isomorphism exists but is not canonical.
+
+</div>
+
+
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.47)</span></p>
+
+An example of a linear form on the space $\mathbb{R}^n$ over $\mathbb{R}$ is the map 
+
+$$f(x_1, \ldots, x_n) = \frac{1}{n}\sum_{i=1}^{n} x_i$$
+
+or the map 
+
+$$g(x_1, \ldots, x_n) = x_1$$
 
 </div>
 
