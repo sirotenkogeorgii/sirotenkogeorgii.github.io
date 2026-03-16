@@ -21,6 +21,10 @@ tags:
   }
 </style>
 
+**Table of Contents**
+- TOC
+{:toc}
+
 # Model-Based Time Series Analysis
 
 ## Review on Statistical Inference
@@ -3073,7 +3077,7 @@ There are two main learning settings:
 #### Loss Function
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function for RNNs)</span></p>
 
 Let:
 - $x_t^{(p)}$ be the RNN output/prediction,
@@ -3139,7 +3143,11 @@ $$\frac{\partial \mathbf{x}_t}{\partial \mathbf{x}_\tau} = \frac{\partial \mathb
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Jacobians Between Consecutive Time Steps)</span></p>
 
-Given $\mathbf{x}\_u = g(W\,\mathbf{x}\_{u-1} + \mathbf{b})$, the Jacobian between consecutive steps is:
+Given 
+
+$$\mathbf{x}_u = g(W\,\mathbf{x}_{u-1} + \mathbf{b})$$
+
+the Jacobian between consecutive steps is:
 
 $$J_u := \frac{\partial \mathbf{x}_u}{\partial \mathbf{x}_{u-1}} = \mathrm{diag}\!\left(g'(W\,\mathbf{x}_{u-1} + \mathbf{b})\right) \cdot W$$
 
@@ -3335,7 +3343,17 @@ The idea is to train the network from easy to hard — starting with **short seq
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Teacher Forcing — GTF)</span></p>
 
-In the unsupervised learning setting, let $\mathbf{z}\_t = f_\theta(\mathbf{z}\_{t-1}, s_t)$ and define $J_t := \frac{\partial \mathbf{z}\_t}{\partial \mathbf{z}\_{t-1}}$. In BPTT, $\frac{\partial \mathbf{z}\_t}{\partial \mathbf{z}\_\tau} = J_t\,J_{t-1}\cdots J_{\tau+1}$.
+In the unsupervised learning setting, let 
+
+$$\mathbf{z}_t = f_\theta(\mathbf{z}_{t-1}, s_t)$$
+
+and define 
+
+$$J_t := \frac{\partial \mathbf{z}_t}{\partial \mathbf{z}_{t-1}}$$
+
+In BPTT, 
+
+$$\frac{\partial \mathbf{z}_t}{\partial \mathbf{z}_\tau} = J_t\,J_{t-1}\cdots J_{\tau+1}$$
 
 **GTF state interpolation:** Assume we have a "teacher signal" $\bar{\mathbf{z}}_t$ inferred from the data. Define an interpolated state:
 
@@ -3712,9 +3730,9 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
   </details>
 </div> -->
 
-<div class="accordion">
-  <details>
-    <summary>proof (elegant M-step for LDS via expected sufficient statistics)</summary>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 We consider the linear–Gaussian LDS (time-homogeneous):
 
@@ -3907,7 +3925,7 @@ Each M-step is just a **Gaussian linear regression** with “data” replaced by
 - $B,\Gamma$ regress $x_t$ on $z_t$,
 - $\mu_0,\Sigma_0$ match the posterior at the initial time.
 
-  </details>
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
