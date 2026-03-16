@@ -2060,7 +2060,7 @@ The two partial derivatives express the directions of two tangent lines to $S$ i
 
 This will be mended by the concept of total differential.
 
-**The norm.** For a point $\mathbf{x} \in \mathbb{E}_n$ we define the norm $\lVert \mathbf{x} \rVert$ as the distance of $\mathbf{x}$ from $\mathbf{o}$. Thus, we will typically use the formula $\lVert \mathbf{x} \rVert = \max_i \lvert x_i \rvert$ (but $\lVert \mathbf{x} \rVert = \sum_{i=1}^{n} \lvert x_i \rvert$ or the standard Pythagorean $\lVert \mathbf{x} \rVert = \sqrt{\mathbf{x} \cdot \mathbf{x}}$ would yield the same results, recall XIII.4).
+**The norm.** For a point $\mathbf{x} \in \mathbb{E}\_n$ we define the norm $\lVert \mathbf{x} \rVert$ as the distance of $\mathbf{x}$ from $\mathbf{o}$. Thus, we will typically use the formula $\lVert \mathbf{x} \rVert = \max_i \lvert x_i \rvert$ (but $\lVert \mathbf{x} \rVert = \sum_{i=1}^{n} \lvert x_i \rvert$ or the standard Pythagorean $\lVert \mathbf{x} \rVert = \sqrt{\mathbf{x} \cdot \mathbf{x}}$ would yield the same results, recall XIII.4).
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(3.3 - Total differential)</span></p>
@@ -2088,10 +2088,26 @@ Let a function $f$ have a total differential at a point $\mathbf{a}$. Then
 1. $f$ is continuous in $\mathbf{a}$.
 2. $f$ has all the partial derivatives in $\mathbf{a}$, with values $\frac{\partial f(\mathbf{a})}{\partial x_k} = A_k$.
 
-*Proof.* 1. We have $\lvert f(\mathbf{x} - \mathbf{y}) \rvert \le \lvert \mathbf{A}(\mathbf{x} - \mathbf{y}) \rvert + \lvert \mu(\mathbf{x} - \mathbf{y}) \rvert \lVert \mathbf{x} - \mathbf{y} \rVert$ and the limit of the right hand side for $\mathbf{y} \to \mathbf{x}$ is obviously 0.
 
-2. We have $\frac{1}{h}(f(x_1, \ldots, x_{k-1}, x_k + h, x_{k+1}, \ldots, x_n) - f(x_1, \ldots, x_n)) = A_k + \mu((0, \ldots, 0, h, 0, \ldots, 0))\frac{\lVert(0, \ldots, h, \ldots, 0)\rVert}{h}$, and the limit of the right hand side is clearly $A_k$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+1. We have 
+
+$$\lvert f(\mathbf{x} - \mathbf{y}) \rvert \le \lvert \mathbf{A}(\mathbf{x} - \mathbf{y}) \rvert + \lvert \mu(\mathbf{x} - \mathbf{y}) \rvert \lVert \mathbf{x} - \mathbf{y} \rVert$$ 
+
+and the limit of the right hand side for $\mathbf{y} \to \mathbf{x}$ is obviously 0.
+
+2. We have 
+  
+$$\frac{1}{h}(f(x_1, \ldots, x_{k-1}, x_k + h, x_{k+1}, \ldots, x_n) - f(x_1, \ldots, x_n)) = A_k + \mu((0, \ldots, 0, h, 0, \ldots, 0))\frac{\lVert(0, \ldots, h, \ldots, 0)\rVert}{h}$$
+
+and the limit of the right hand side is clearly $A_k$. $\square$
+
+</details>
 </div>
 
 **Linear approximation.** Now we have a linear approximation: the formula
@@ -2117,7 +2133,23 @@ the partial derivatives describe just the tangent lines in the directions of the
 
 Let $f$ have continuous partial derivatives in a neighborhood of a point $\mathbf{a}$. Then $f$ has a total differential at $\mathbf{a}$.
 
-*Proof.* Let $\mathbf{h}^{(0)} = \mathbf{h}$, $\mathbf{h}^{(1)} = (0, h_2, \ldots, h_n)$, $\mathbf{h}^{(2)} = (0, 0, h_3, \ldots, h_n)$ etc. (so that $\mathbf{h}^{(n)} = \mathbf{o}$). Then we have
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let 
+
+$$\mathbf{h}^{(0)} = \mathbf{h}$$
+
+$$\mathbf{h}^{(1)} = (0, h_2, \ldots, h_n)$$
+
+$$\mathbf{h}^{(2)} = (0, 0, h_3, \ldots, h_n)$$
+
+$$\dots$$
+
+(so that $\mathbf{h}^{(n)} = \mathbf{o}$). Then we have
 
 $$f(\mathbf{a} + \mathbf{h}) - f(\mathbf{a}) = \sum_{k=1}^{n} (f(\mathbf{a} + \mathbf{h}^{(k-1)}) - f(\mathbf{a} + \mathbf{h}^{(k)})) = M.$$
 
@@ -2127,10 +2159,22 @@ $$f(\mathbf{a} + \mathbf{h}^{(k-1)}) - f(\mathbf{a} + \mathbf{h}^{(k)}) = \frac{
 
 and hence we can proceed
 
-$$M = \sum \frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} h_k = \sum \frac{\partial f(\mathbf{a})}{\partial x_k} h_k + \lVert \mathbf{h} \rVert \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}.$$
+$$
+\begin{aligned}
+M &= \sum \frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} h_k \\
+&= \sum \frac{\partial f(\mathbf{a})}{\partial x_k} h_k + \lVert \mathbf{h} \rVert \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}
+\end{aligned}
+$$
 
-Set $\mu(\mathbf{h}) = \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}$. Since $\left\lvert \frac{h_k}{\lVert \mathbf{h} \rVert}\right\rvert \le 1$ and since the functions $\frac{\partial f}{\partial x_k}$ are continuous, $\lim_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$. $\square$
+Set 
 
+$$
+\mu(\mathbf{h}) = \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}$. Since $\left\lvert \frac{h_k}{\lVert \mathbf{h} \rVert}\right\rvert \le 1
+$$
+
+and since the functions $\frac{\partial f}{\partial x_k}$ are continuous, $\lim_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2184,7 +2228,13 @@ Let $f(x, y)$ be a function such that the partial derivatives $\frac{\partial^2 
 
 $$\frac{\partial^2 f(x, y)}{\partial x \partial y} = \frac{\partial^2 f(x, y)}{\partial y \partial x}.$$
 
-*Proof.* The idea of the proof is easy: we compute the second derivative in one step. This leads, as one easily sees, to computing the limit $\lim_{h \to 0} F(h)$ of the function
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The idea of the proof is easy: we compute the second derivative in one step. This leads, as one easily sees, to computing the limit $\lim_{h \to 0} F(h)$ of the function
 
 $$F(h) = \frac{f(x + h, y + h) - f(x, y + h) - f(x + h, y) + f(x, y)}{h^2}$$
 
@@ -2210,6 +2260,7 @@ Now since both $\frac{\partial}{\partial y}(\frac{\partial f}{\partial x})$ and 
 
 $$\lim_{h \to 0} F(h) = \frac{\partial^2 f(x, y)}{\partial x \partial y} = \frac{\partial^2 f(x, y)}{\partial y \partial x}. \quad \square$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -2240,14 +2291,31 @@ Then $F$ has a derivative at $b$, and
 
 $$F'(b) = \sum_{k=1}^{n} \frac{\partial f(\mathbf{a})}{\partial x_k} \cdot g'_k(b).$$
 
-*Proof.* Applying the formula from 3.3 we get
+</div>
 
-$$\frac{1}{h}(F(b + h) - F(b)) = \frac{1}{h}(f(\mathbf{g}(b + h)) - f(\mathbf{g}(b))) = \frac{1}{h}(f(\mathbf{g}(b) + (\mathbf{g}(b + h) - \mathbf{g}(b))) - f(\mathbf{g}(b))) = \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} + \mu(\mathbf{g}(b + h) - \mathbf{g}(b))\max_k \frac{\lvert g_k(b + h) - g_k(b) \rvert}{h}.$$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Applying the formula from 3.3 we get
+
+$$
+\begin{aligned}
+\frac{1}{h}(F(b + h) - F(b)) = \frac{1}{h}(f(\mathbf{g}(b + h)) - f(\mathbf{g}(b))) = \frac{1}{h}(f(\mathbf{g}(b) + (\mathbf{g}(b + h) - \mathbf{g}(b))) - f(\mathbf{g}(b))) \\
+&= \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} + \mu(\mathbf{g}(b + h) - \mathbf{g}(b))\max_k \frac{\lvert g_k(b + h) - g_k(b) \rvert}{h}
+\end{aligned}
+$$
 
 We have $\lim_{h \to 0} \mu(\mathbf{g}(b + h) - \mathbf{g}(b)) = 0$ since the functions $g_k$ are continuous at $b$. Since the functions $g_k$ have derivatives, the values $\max_k \frac{\lvert g_k(b+h) - g_k(b) \rvert}{h}$ are bounded in a sufficiently small neighborhood of 0. Thus, the limit of the last summand is zero and we have
 
-$$\lim_{h \to 0} \frac{1}{h}(F(b + h) - F(b)) = \lim_{h \to 0} \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} = \sum_{k=1}^{n} A_k \lim_{h \to 0} \frac{g_k(b + h) - g_k(b)}{h} = \sum_{k=1}^{n} \frac{\partial f(\mathbf{a})}{\partial x_k} g'_k(b). \quad \square$$
+$$
+\begin{aligned}
+\lim_{h \to 0} \frac{1}{h}(F(b + h) - F(b)) = \lim_{h \to 0} \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} \\
+&= \sum_{k=1}^{n} A_k \lim_{h \to 0} \frac{g_k(b + h) - g_k(b)}{h} = \sum_{k=1}^{n} \frac{\partial f(\mathbf{a})}{\partial x_k} g'_k(b)
+\end{aligned}
+$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -2322,12 +2390,32 @@ Let $f$ have continuous partial derivatives in a convex open set $U \subseteq \m
 
 $$f(\mathbf{y}) - f(\mathbf{x}) = \sum_{j=1}^{n} \frac{\partial f(\mathbf{x} + \theta(\mathbf{y} - \mathbf{x}))}{\partial x_j}(y_j - x_j).$$
 
-*Proof.* Set $F(t) = f(\mathbf{x} + t(\mathbf{y} - \mathbf{x}))$. Then $F = f \circ \mathbf{g}$ where $\mathbf{g}$ is defined by $g_j(t) = x_j + t(y_j - x_j)$, and
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Set 
+
+$$F(t) = f(\mathbf{x} + t(\mathbf{y} - \mathbf{x}))$$
+
+Then $F = f \circ \mathbf{g}$ where $\mathbf{g}$ is defined by 
+
+$$g_j(t) = x_j + t(y_j - x_j)$$
+
+and
 
 $$F'(t) = \sum_{j=1}^{n} \frac{\partial f(\mathbf{g}(t))}{\partial x_j} g'_j(t) = \sum_{j=1}^{n} \frac{\partial f(\mathbf{g}(t))}{\partial x_j}(y_j - x_j).$$
 
-Hence by VII.2.2, $f(\mathbf{y}) - f(\mathbf{x}) = F(1) - F(0) = F'(\theta)$ which yields the statement. $\square$
+Hence by VII.2.2, 
 
+$$f(\mathbf{y}) - f(\mathbf{x}) = F(1) - F(0) = F'(\theta)$$
+
+which yields the statement. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
