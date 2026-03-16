@@ -2451,17 +2451,534 @@ The sums, products, compositions, nonzero quotients of analytic functions are an
 
 </div>
 
+## Divergence
+
+### What is Divergence?
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Divergence)</span></p>
+
+**Divergence** measures how much a vector field behaves like a **source** or a **sink** at a point.
+
+If $F(x) = (F_1(x), \dots, F_d(x))$, then
+
+$$\operatorname{div} F(x) = \sum_{i=1}^d \frac{\partial F_i}{\partial x_i}(x)$$
+
+So it adds up how strongly each component changes in its own coordinate direction.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
+
+Think of $F(x)$ as a velocity field of a fluid.
+
+* **Positive divergence** at a point: fluid is, locally, flowing outward from that point. It looks like a source.
+* **Negative divergence**: fluid is flowing inward. It looks like a sink.
+* **Zero divergence**: no net creation or removal of fluid locally. What flows in roughly equals what flows out.
+
+A very important phrase is:
+
+> divergence = **net outward flow per unit volume**
+
+So it is not about whether the field is large. A vector field can have large magnitude but zero divergence.
+
+For example, a constant flow to the right has zero divergence: fluid moves, but it is not being created or destroyed anywhere.
+
+**The deepest intuition:**
+
+Divergence answers:
+
+**Is stuff being locally created, destroyed, or conserved here?**
+
+Depending on the context, “stuff” could mean:
+
+* fluid
+* electric flux
+* probability mass
+* heat
+* particles
+* volume under a dynamical flow
+
+So divergence is a local measure of **expansion/compression** or **source/sink behavior**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constant field)</span></p>
+
+In 2D, if (F(x,y) = (P(x,y), Q(x,y))), then
+
+$$\operatorname{div} F = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y}$$
+
+* $\partial P/\partial x$: does the horizontal flow get stronger as you move in the horizontal direction?
+* $\partial Q/\partial y$: does the vertical flow get stronger as you move in the vertical direction?
+
+If both happen, more flow leaves a tiny region than enters, so divergence is positive.
+
+$$F(x,y) = (1,0)$$
+
+Then
+
+$$\operatorname{div} F = 0 + 0 = 0$$
+
+**Interpretation:** everything moves right, but there is no local expansion or compression.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Expanding field)</span></p>
+
+$$F(x,y) = (x,y)$$
+
+Then
+
+$$\operatorname{div} F = 1 + 1 = 2$$
+
+**Interpretation:** vectors point away from the origin and get larger outward, so the field acts like a source.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Contracting field)</span></p>
+
+$$F(x,y) = (-x,-y)$$
+
+Then
+
+$$\operatorname{div} F = -1 + (-1) = -2$$
+
+**Interpretation:** everything points inward, like a sink.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Rotational field)</span></p>
+
+$$F(x,y) = (-y,x)$$
+
+Then
+
+$$\operatorname{div} F = 0 + 0 = 0$$
+
+**Interpretation:** pure rotation. Things swirl around, but there is no net local outflow.
+
+This example is useful because it shows divergence is **not** about spinning. Spinning is related to **curl**, not divergence.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Applications: Where it is used)</span></p>
+
+**Fluid mechanics**
+
+Divergence tells whether fluid is locally expanding or compressing.
+
+For incompressible flow,
+
+$$\operatorname{div} u = 0$$
+
+This means fluid density is preserved locally.
+
+**Electromagnetism**
+
+Gauss’s law relates divergence of the electric field to charge density:
+
+$$\nabla \cdot E = \frac{\rho}{\varepsilon_0}$$
+
+So charges act like sources or sinks of electric field.
+
+**PDEs and conservation laws**
+
+Divergence appears in equations expressing conservation of mass, momentum, heat, probability, and so on.
+
+A typical conservation law looks like
+
+$$\frac{\partial \rho}{\partial t} + \nabla \cdot J = 0$$
+
+where $J$ is a flux. This says: change in density = minus net outflow.
+
+**Differential geometry / vector calculus**
+
+It is a basic operator alongside:
+* gradient
+* divergence
+* curl
+* Laplacian
+
+**Probability and generative modeling**
+
+In continuous normalizing flows and diffusion-related topics, divergence appears because it measures how a flow changes local volume. That is why it enters log-density evolution formulas.
+
+For example, along a flow $\dot{x} = f(x,t)$, the density changes according to divergence of $f$. Roughly:
+
+* positive divergence expands volume, decreasing density
+* negative divergence contracts volume, increasing density
+
+</div>
+
+### How is Divergence related to Laplacian
+
+#TODO:
+
+### Why is computing Divergence expensive using autodiff?
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Divergence is expensive with autodiff)</span></p>
+
+Divergence is the **trace of the Jacobian**.
+
+If you have a vector field $f(x) \in \mathbb{R}^d$, then
+
+$$\operatorname{div} f(x) = \sum_{i=1}^d \frac{\partial f_i(x)}{\partial x_i}$$
+
+So even though the final result is just **one scalar**, it depends on **many partial derivatives**.
+
+The expensive part in autodiff is this:
+
+* To get all diagonal terms $\partial f_i / \partial x_i$, you effectively need access to the Jacobian information.
+* Standard autodiff is very good at:
+
+  * gradients of a scalar output w.r.t. many inputs, or
+  * Jacobian-vector products / vector-Jacobian products.
+* But divergence needs **many entries of the Jacobian**, not just one gradient.
+
+In practice, that means one of two costly options:
+
+1. **Form the whole Jacobian**
+
+   * This is usually very expensive in memory and time.
+   * A $d \times d$ Jacobian has $d^2$ entries.
+
+2. **Compute the diagonal terms one by one**
+
+   * Often requires about $d$ separate autodiff calls.
+   * So cost scales roughly linearly with dimension, on top of the cost of evaluating the network.
+
+That is why in high dimensions, exact divergence becomes expensive.
+
+A useful intuition:
+
+* Computing $f(x)$: one forward pass.
+* Computing divergence exactly: often like doing **many backward/forward passes**, one per dimension or equivalent work.
+
+This is also why methods like the **Hutchinson trace estimator** are popular: they estimate the divergence (trace) without explicitly computing the full Jacobian diagonal, making it much cheaper.
+
+</div>
+
+### When and Why is Hutchinson estimator cheaper?
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(When and Why is Hutchinson estimator cheaper?)</span></p>
+
+**Why is Hutchinson estimator cheaper?**
+
+Because Hutchinson is usually **not** replacing “compute the trace of a matrix you already have explicitly.” It replaces “compute the trace of a matrix that is too expensive to form or whose diagonal is expensive to get.”
+
+The key identity is
+
+$$\operatorname{tr}(A)=\mathbb{E}[z^\top A z]$$
+
+for a random vector $z$ with suitable properties, so you estimate
+
+$$\operatorname{tr}(A)\approx \frac1m \sum_{i=1}^m z_i^\top A z_i$$
+
+The speedup comes from the fact that this only needs **matrix-vector products**, not the full matrix or all diagonal entries.
+
+**If the matrix is explicitly available**
+
+If you literally have a dense matrix $A \in \mathbb{R}^{n\times n}$ in memory, then yes:
+
+* exact trace = sum of diagonal entries = $O(n)$
+* one Hutchinson sample = one matvec $Az$ = $O(n^2)$ for dense $A$
+
+So in that case, Hutchinson is obviously worse.
+
+**When Hutchinson helps**
+
+It helps when $A$ is available only **implicitly**, for example as:
+
+* a Hessian
+* a Jacobian-derived operator
+* an inverse like $A^{-1}$
+* $\log A$, $f(A)$, or other matrix function
+* a huge sparse / structured linear operator
+
+Then:
+
+* getting all diagonal entries may require $n$ expensive solves or $n$ passes
+* forming the full matrix may cost $O(n^2)$ memory or worse
+* but computing $Az$ for a vector $z$ may be relatively cheap
+
+So instead of paying for all $n$ columns / diagonal entries, you pay for only $m$ operator applications, where often $m \ll n$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why “trace = sum of diagonal” is misleading here)</span></p>
+
+The formula itself is cheap **only if the diagonal is already accessible**.
+
+But in many applications, to get $A_{ii}$ you do not have direct access to the entries of $A$. You only have access to the action $v \mapsto Av$. In that model:
+
+* exact trace may require recovering all diagonal entries
+* Hutchinson estimates the sum of diagonals without recovering them individually
+
+That is the whole point.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Cost comparison and Tradeoff)</span></p>
+
+**Cost comparison**
+
+If $A$ is dense and explicit:
+
+* exact trace: $O(n)$
+* Hutchinson: $O(mn^2)$
+
+No advantage.
+
+If $A$ is implicit and matvec cost is $T$:
+
+* exact trace may be $O(nT)$ or impossible without forming $A$
+* Hutchinson is $O(mT)$
+
+Advantage when $m \ll n$.
+
+**Tradeoff**
+
+Hutchinson gives:
+
+* **lower cost**
+* **lower memory**
+* but only an **approximation**
+
+You accept variance in exchange for avoiding a much more expensive exact computation.
+
+So your intuition is correct: if you can read off the diagonal cheaply, do that. Hutchinson is useful precisely when you **cannot**.
+
+</div>
+
+### Time complexity of exact trace estimation
+
+Let $T$ be the cost of applying the matrix/operator $A$ to **one vector**
+
+So if $A$ is only available as an operator, not as explicit entries, then getting the **exact** trace often means recovering all diagonal entries, and that takes about **$n$** operator-level computations.
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Trace is easy only for an explicit matrix)</span></p>
+
+If you have the full matrix $A\in\mathbb R^{n\times n}$ stored, then
+
+$$\operatorname{tr}(A)=\sum_{i=1}^n A_{ii},$$
+
+so you just read the diagonal. That is $O(n)$.
+
+But that is **not** the setting people mean when they write exact trace is $O(nT)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implicit matrix access: Operator-access setting)</span></p>
+
+Suppose you do **not** have entries of $A$. You only know how to compute
+
+$$v \mapsto Av$$
+
+and one such application costs $T$.
+
+To compute the exact trace, you need all diagonal entries $A_{11},\dots,A_{nn}$.
+
+How do you get $A_{ii}$ from operator access?
+
+Use the standard basis vector $e_i$. Then
+
+$$Ae_i$$
+
+is exactly the $i$-th column of $A$. Its $i$-th component is
+
+$$e_i^\top A e_i = A_{ii}$$
+
+So one way to get the exact trace is:
+
+1. for each $i=1,\dots,n$, apply $A$ to $e_i$
+2. extract the $i$-th component
+3. sum them up
+
+That is $n$ operator applications, each costing $T$, hence
+
+$$O(nT).$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Important nuance)</span></p>
+
+$O(nT)$ is not a universal law. It means:
+
+* **if** the only access you have to $A$ is via operator applications,
+* **and** one application costs $T$,
+* **then** a straightforward exact trace computation needs $n$ such applications.
+
+If the matrix is explicit, trace is just $O(n)$, not $O(nT)$.
+
+So the phrase “exact trace is $O(nT)$” really belongs to the **implicit-operator setting**.
+
+</div>
 
 
+### How can we compute $Az$ without computing having $z$?
+
+Because in many problems you do **not** have the entries of $A$, but you do have a procedure that computes the action of $A$ on a vector.
+
+That is what "implicit matrix" means.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Explicit matrix vs. Implicit linear operator)</span></p>
+
+**1. Explicit matrix**
+
+You store all entries of $A$. Then computing $Az$ is the usual multiplication.
+
+**2. Implicit linear operator**
+
+You do **not** store $A$, but you know a routine
+
+$$z \mapsto Az$$
+
+without ever materializing the full matrix.
+
+This happens a lot.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hessian)</span></p>
+
+Let $A = \nabla^2 f(x)$, the Hessian.
+
+You usually do **not** form the full Hessian matrix, because it is huge. But with autodiff you can compute a Hessian-vector product
+
+$$\nabla^2 f(x), z$$
+
+directly.
+
+So you can evaluate $Az$ even though you never built $A$.
+
+This is much cheaper than computing every Hessian entry.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Jacobian)</span></p>
+
+Suppose $A = J(x)$, a Jacobian. You may not form all partial derivatives, but autodiff can compute:
+
+* $Jz$ by forward-mode AD
+* $J^\top z$ by reverse-mode AD
+
+again without storing the whole Jacobian.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix function)</span></p>
+
+If $A = \log(B)$ or $A = f(B)$, you may approximate $Az = f(B)z$ using Krylov methods, Chebyshev methods, Lanczos, etc., without ever forming $f(B)$.
+
+</div>
+
+### Classic example: Hessian-vector products in deep learning / optimization
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Large Hessian you do not want to compute)</span></p>
+
+Let
+
+$$A = \nabla^2 L(\theta),$$
+
+the Hessian of a loss $L(\theta)$ with respect to parameters $\theta$.
+
+If a model has millions of parameters, then $A$ is a huge $n\times n$ matrix. You would never form it explicitly.
+
+But you can still compute
+
+$$Az = \nabla^2 L(\theta), z$$
+
+for a given vector $z$.
+
+If $n=10^6$, then the Hessian would have $10^{12}$ entries, which is impossible to store in practice.
+
+But one Hessian-vector product can often be computed with a cost comparable to a small number of gradient evaluations.
+
+So here you truly compute $Az$ without ever having the full $A$.
+
+</div>
 
 
+### How to avoid computing the whole Hessian for matvec
 
+Define
 
+$$g(\theta)=\nabla L(\theta).$$
 
+Then consider the scalar
 
+$$\phi(\theta)=g(\theta)^\top z$$
 
+Now differentiate again:
 
+$$
+\nabla_\theta \phi(\theta) = \nabla_\theta \big(g(\theta)^\top z\big)
+\nabla^2 L(\theta), z
+$$
 
+So instead of building the whole Hessian, you:
+
+1. compute the gradient $g(\theta)$
+2. form the scalar $g(\theta)^\top z$
+3. differentiate that scalar w.r.t. $\theta$
+
+and the result is exactly $Hz$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is this used for?)</span></p>
+
+This shows up in:
+
+* Newton-type optimization methods
+* curvature estimation
+* trace estimation with Hutchinson
+* Laplace approximation
+* influence functions
+* second-order analysis of neural networks
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Inverse os sparse matrix)</span></p>
+
+Let
+
+$$A = B^{-1}$$
+
+for some large sparse matrix $B$.
+
+You do not form $A$ explicitly, because inverting a huge matrix is expensive and destroys sparsity.
+
+But to compute
+
+$$Az = B^{-1}z,$$
+
+you just solve the linear system
+
+$$Bx = z$$
+
+Then $x = Az$.
+
+</div>
 
 
 
