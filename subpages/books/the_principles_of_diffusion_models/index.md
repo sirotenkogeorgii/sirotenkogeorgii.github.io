@@ -128,9 +128,12 @@ All distance metrics between probability distributions are also divergences, but
 
 **Forward KL definition**
 
-$$D_{\mathrm{KL}}(p_{\text{data}}\parallel p_\phi) :=\int p_{\text{data}}(x)\log\frac{p_{\text{data}}(x)}{p_\phi(x)}dx$$
-
-$$= \mathbb{E}_{x\sim p_{\text{data}}}\left[\log p_{\text{data}}(x)-\log p_\phi(x)\right]$$
+$$
+\begin{aligned}
+D_{\mathrm{KL}}(p_{\text{data}}\parallel p_\phi) := \int p_{\text{data}}(x)\log\frac{p_{\text{data}}(x)}{p_\phi(x)}dx \\
+&= \mathbb{E}_{x\sim p_{\text{data}}}\left[\log p_{\text{data}}(x)-\log p_\phi(x)\right]
+\end{aligned}
+$$
 
 * **Asymmetric:**
   
@@ -677,8 +680,6 @@ Diffusion models relate to several classical families of deep generative models:
 
 ### Variational Autoencoder (VAE)
 
-### Why not a plain autoencoder?
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why not a plain autoencoder?)</span></p>
 
@@ -693,8 +694,6 @@ Diffusion models relate to several classical families of deep generative models:
 
 </div>
 
-### VAE idea (Kingma & Welling, 2013)
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(VAE idea (Kingma & Welling, 2013))</span></p>
 
@@ -705,32 +704,29 @@ Diffusion models relate to several classical families of deep generative models:
 
 </div>
 
----
+### Probabilistic encoder and decoder
 
-## 2.1.1 Probabilistic encoder and decoder
-
-### Variables
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/vae.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Illustration of a VAE.</strong> It consists of a stochastic encoder $q_θ(z\mid x)$ that maps data $x$ to a latent variable $z$, and a decoder $p_ϕ(x\mid z)$ that reconstructs data from the latent.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Variables)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Hidden Variables vs. Observable Variables)</span></p>
 
 * **Observed variable:** $x$ (e.g., an image)
 * **Latent variable:** $z$ (captures hidden factors: shape, color, style, $\dots$)
 
 </div>
 
-### Prior over latents
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Prior over latents)</span></p>
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Prior over latents)</span></p>
 
 Typically a simple prior, e.g.
 
-$$z \sim p(z) = \mathcal N(0, I)$$
+$$z \sim p(z) = p_{\text{prior}}(z) = \mathcal N(0, I)$$
 
 </div>
-
-### Decoder / generator
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Decoder / generator)</span></p>
@@ -743,8 +739,6 @@ In practice this is often kept **simple**, e.g. a **factorized Gaussian**, to en
 
 </div>
 
-### Sampling procedure
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sampling procedure)</span></p>
 
@@ -753,58 +747,152 @@ In practice this is often kept **simple**, e.g. a **factorized Gaussian**, to en
 
 </div>
 
----
+### Latent-variable marginal likelihood (why it’s hard)
 
-## Latent-variable marginal likelihood (why it’s hard)
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Why do we need $p(z\mid x)$)</span></p>
+
+Because once we observe a datapoint $x$, the relevant question is:
+
+> **Which latent $z$'s could plausibly have produced this particular $x$?**
+
+That is exactly what the posterior does:
+
+$$p_\phi(z\mid x)=\frac{p_\phi(x\mid z)p(z)}{p_\phi(x)}$$
+
+So $p(z\mid x)$ is not part of the model because we “like it aesthetically” — it is the mathematically correct conditional distribution over latent causes of $x$.
+
+**Intuition**
+
+Suppose $x$ is an image of a handwritten “3”.
+
+* The prior $p(z)$ is broad: it includes latent codes for all digits, writing styles, thicknesses, rotations, etc.
+* But after seeing **this specific image**, only a small subset of latent codes are plausible.
+* That narrowed distribution is $p(z\mid x)$.
+
+So posterior inference is:
+**given data, infer the hidden explanation**.
+
+**Why this matters for learning**
+
+The marginal likelihood is
+
+$$p_\phi(x)=\int p_\phi(x\mid z)p(z)dz$$
+
+This integral averages over **all** latent codes. But for a fixed $x$, most $z$'s under the prior contribute almost nothing. The posterior tells you where the mass that actually explains $x$ is concentrated.
+
+So $p(z\mid x)$ is useful because it identifies the “important” latent regions for a given observation.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Latent-variable marginal likelihood (why it’s hard))</span></p>
 
-A VAE defines the data likelihood via marginalization:
+**The VAE thereby defines a latent-variable generative model through the marginal likelihood:**
 
-$$p_\phi(x) = \int p_\phi(x \mid z), p(z) dz$$
+$$p_\phi(x) = \int p_\phi(x \mid z) p(z) dz$$
 
 * Ideally, we would learn $\phi$ by maximizing $\log p_\phi(x)$ (MLE).
 * But for expressive nonlinear decoders, the integral over $z$ is **intractable**, so **direct MLE is computationally infeasible**.
 
 </div>
 
----
-
-## Construction of the encoder (inference network)
-
-### True posterior (intractable)
+### Construction of the encoder (inference network)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(True posterior (intractable))</span></p>
 
+To connect our intractable generator to real data, consider the reverse question: given an observation $x$, what latent codes $z$ could have produced it?
+
 Given $x$, the "correct" latent posterior is:
 
-$$p_\phi(z \mid x) = \frac{p_\phi(x \mid z), p(z)}{p_\phi(x)}$$
+$$p_\phi(z \mid x) = \frac{p_\phi(x \mid z) p(z)}{p_\phi(x)}$$
 
 * The denominator $p_\phi(x)$ is exactly the intractable marginal likelihood, so **exact inference is prohibitive**.
 
 </div>
 
-### Variational approximation
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variational approximation)</span></p>
 
-Introduce a learnable approximate posterior (encoder):
+The **"variational" step in VAEs** addresses this by replacing the intractable posterior with a tractable approximation. Introduce a learnable approximate posterior (encoder):
 
 $$q_\theta(z \mid x) \approx p_\phi(z \mid x)$$
 
-* This gives a feasible, trainable pathway from $x \to z$.
+* This gives a feasible, trainable pathway $x \to z$.
 
 </div>
 
----
+### The deeper reason VAEs need $q_\theta(z\mid x)$
 
-## 2.1.2 Training via the Evidence Lower Bound (ELBO)
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The deeper reason VAEs need $q_\theta(z\mid x)$)</span></p>
+
+There are really **two problems** in VAEs:
+
+**1. **Learning problem****
+
+We want to maximize $\log p_\phi(x)$, but that integral over $z$ is hard.
+
+**2. **Inference problem****
+
+Given $x$, we want to infer which latent $z$ explains it.
+
+The true answer to problem 2 is $p_\phi(z\mid x)$, but it is intractable because it depends on $p_\phi(x)$.
+
+So VAEs introduce
+
+$$q_\theta(z\mid x)\approx p_\phi(z\mid x)$$
+
+to solve both problems at once:
+
+* it gives an **encoder** from $x$ to latent code
+* it provides a tractable proposal distribution concentrated on relevant $z$'s
+* it yields the ELBO, a trainable lower bound on $\log p_\phi(x)$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Lots of general models do not bother about $p(z\mid x)$)</span></p>
+
+Only **latent-variable models** need this kind of posterior inference.
+
+**Models that do **not** need $p(z\mid x)$**
+
+These models do not introduce an unobserved latent $z$ that must be inferred for each datapoint:
+
+* **Autoregressive models**
+  They model $p(x)$ directly.
+* **Normalizing flows**
+  They define an invertible transformation, so likelihood is tractable without variational inference.
+* **Standard discriminative models**
+  They model $p(y\mid x)$, not hidden latent causes of $x$.
+* **GANs**
+  They use latent $z$ for generation, but typically do **not** define or optimize an explicit posterior $p(z\mid x)$.
+
+**Models that **do** need something like $p(z\mid x)$**
+
+Whenever you have hidden variables and want likelihood-based learning, posterior inference appears naturally:
+
+* mixture models
+* HMMs
+* factor analysis
+* VAEs
+* general latent-variable probabilistic models
+
+So the issue is not “general vs non-general models”.
+The issue is:
+
+> **Does the model contain hidden variables that must be inferred from observed data?**
+
+If yes, then a posterior like $p(z\mid x)$ is central.
+
+</div>
+
+### Training via the Evidence Lower Bound (ELBO)
 
 <div class="math-callout math-callout--theorem" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO bound (2.1.1))</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO bound)</span></p>
 
 For any data point $x$:
 
@@ -815,7 +903,6 @@ where
 $$
 \mathcal L_{\text{ELBO}}(\theta,\phi; x)
 =
-
 \underbrace{\mathbb E_{z\sim q_\theta(z\mid x)}\big[\log p_\phi(x\mid z)\big]}_{\text{Reconstruction term}}
  -
 \underbrace{D_{\mathrm{KL}} \big(q_\theta(z\mid x)\parallel p(z)\big)}_{\text{Latent regularization}}.
@@ -823,11 +910,9 @@ $$
 
 </div>
 
-
-### Proof sketch (Jensen’s inequality)
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Proof sketch (Jensen’s inequality))</span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Start from:
 
@@ -855,13 +940,12 @@ $$
 
 which rearranges into the ELBO form above.
 
+</details>
 </div>
 
----
+### Interpreting the two ELBO terms
 
-## Interpreting the two ELBO terms
-
-### 1) Reconstruction term
+#### 1) Reconstruction term
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reconstruction term)</span></p>
@@ -873,7 +957,7 @@ $$\mathbb E_{z\sim q_\theta(z\mid x)}[\log p_\phi(x\mid z)]$$
 
 </div>
 
-### 2) Latent KL regularization
+#### 2) Latent KL regularization
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Latent KL regularization)</span></p>
@@ -887,11 +971,9 @@ $$D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p(z))$$
 
 </div>
 
----
+### Information-theoretic view: ELBO as a divergence bound
 
-## Information-theoretic view: ELBO as a divergence bound
-
-### MLE view
+#### MLE view
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(MLE view)</span></p>
@@ -904,52 +986,49 @@ which measures how well $p_\phi$ approximates the data distribution (but is gene
 
 </div>
 
-### Joint-distribution trick (variational framework)
+#### Joint-distribution trick (variational framework)
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Joint-distribution trick (variational framework))</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Joint-distribution trick (variational framework))</span></p>
 
 Introduce two joint distributions:
 
 * **Generative joint**
   
-  $$p_\phi(x,z) = p(z),p_\phi(x\mid z)$$
+  $$p_\phi(x,z) = p(z)p_\phi(x\mid z)$$
   
 * **Inference joint**
   
-  $$q_\theta(x,z) = p_{\text{data}}(x),q_\theta(z\mid x)$$
+  $$q_\theta(x,z) = p_{\text{data}}(x)q_\theta(z\mid x)$$
 
 Comparing them yields:
 
 $$
 D_{\mathrm{KL}}(p_{\text{data}}(x)\parallel p_\phi(x))
- \le 
+\le 
 D_{\mathrm{KL}}(q_\theta(x,z)\parallel p_\phi(x,z)).
 \qquad\text{(2.1.2)}
 $$
+
 **Intuition:** comparing only marginals over $x$ can hide mismatches that become visible when considering the full joint over $(x,z)$.
 
 </div>
 
-### Chain rule / decomposition of the joint KL
+#### Chain rule / decomposition of the joint KL
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Chain rule / decomposition of the joint KL)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Chain rule / decomposition of the joint KL)</span></p>
 
 Expanding the joint KL:
 
 $$
-D_{\mathrm{KL}}(q_\theta(x,z),|,p_\phi(x,z))
-=
-
-D_{\mathrm{KL}}(p_{\text{data}}(x),|,p_\phi(x))
-+
-\mathbb E_{p_{\text{data}}(x)}
-\Big[
-D_{\mathrm{KL}}(q_\theta(z\mid x),|,p_\phi(z\mid x))
-\Big].
+\begin{aligned}
+\underbrace{D_{\mathrm{KL}}(q_\theta(x,z)\parallel p_\phi(x,z))}_{\text{Total Error Bound}} \\
+&= \mathbb{E}_{q_\theta(x,z)} \Big[ \log \dfrac{p_{\text{data}}(x)q_\theta(z\mid x)}{p_\phi(x)p_\phi(z\mid x)} \Big] \\
+&= \mathbb{E}_{p_{\text{data}}(x)} \Big[ \log \dfrac{p_{\text{data}}(x)}{p_\phi(x)} + D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p_\phi(z\mid x)) \Big] \\
+&= \undebrace{D_{\mathrm{KL}}(p_{\text{data}}(x)\parallel p_\phi(x))}_{\text{True Modeling Error}} + \undebrace{\mathbb E_{p_{\text{data}}(x)} \Big[ D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p_\phi(z\mid x))}_{\text{Inference Error}}\Big].
+\end{aligned}
 $$
-
 
 * First term: **true modeling error** (how well $p_\phi(x)$ matches data)
 * Second term: **inference error** (gap between approximate and true posterior)
@@ -958,10 +1037,10 @@ Because the inference error is nonnegative, you get inequality (2.1.2).
 
 </div>
 
-### ELBO gap equals posterior KL
+#### ELBO gap equals posterior KL
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO gap equals posterior KL)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(ELBO gap equals posterior KL)</span></p>
 
 For each $x$,
 
@@ -969,16 +1048,14 @@ $$
 \log p_\phi(x) - \mathcal L_{\text{ELBO}}(\theta,\phi;x)
 =
 
-D_{\mathrm{KL}}(q_\theta(z\mid x),|,p_\phi(z\mid x)).
+D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p_\phi(z\mid x)).
 $$
 
 So **maximizing ELBO** is exactly **reducing the inference gap**, i.e. pushing the variational posterior toward the true posterior.
 
 </div>
 
----
-
-## Connection forward: hierarchical VAEs → DDPMs (conceptual bridge)
+### Connection forward: hierarchical VAEs → DDPMs (conceptual bridge)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection forward: hierarchical VAEs → DDPMs (conceptual bridge))</span></p>
@@ -992,39 +1069,7 @@ So **maximizing ELBO** is exactly **reducing the inference gap**, i.e. pushing t
 
 </div>
 
----
-
-## Quick formula sheet (from these pages)
-
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Quick formula sheet (from these pages))</span></p>
-
-* Prior: $p(z)=\mathcal N(0,I)$
-* Decoder: $p_\phi(x\mid z)$
-* Marginal likelihood: $\displaystyle p_\phi(x)=\int p_\phi(x\mid z)p(z)dz$
-* True posterior: $\displaystyle p_\phi(z\mid x)=\frac{p_\phi(x\mid z)p(z)}{p_\phi(x)}$
-* Variational posterior: $q_\theta(z\mid x)\approx p_\phi(z\mid x)$
-* ELBO:
-
-$$
-\mathcal L_{\text{ELBO}}(x) = \mathbb E_{q_\theta(z\mid x)}[\log p_\phi(x\mid z)]
-- D_{\mathrm{KL}}(q_\theta(z\mid x) \parallel p(z))
-$$
-
-
-* Joint KL decomposition:
-  
-  $$D_{\mathrm{KL}}(q(x,z)\parallel p(x,z)) = D_{\mathrm{KL}}(p_{\text{data}}(x)\parallel p_\phi(x)) - \mathbb E_{p_{\text{data}}(x)}D_{\mathrm{KL}}(q(z\mid x)\parallel p_\phi(z\mid x))$$
-
-* ELBO gap:
-  
-  $$\log p_\phi(x) - \mathcal L_{\text{ELBO}}(x) = D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p_\phi(z\mid x))$$
-
-</div>
-
-## 2.1.3 Gaussian VAE (standard "Gaussian–Gaussian" VAE)
-
-### Setup and notation
+### Gaussian VAE (standard "Gaussian–Gaussian" VAE)
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Setup and notation)</span></p>
@@ -1052,16 +1097,16 @@ where $\mu_\phi:\mathbb R^d\to\mathbb R^D$ is a neural network and $\sigma>0$ is
 
 </div>
 
-### ELBO specialization (\Rightarrow) MSE reconstruction
+### ELBO specialization $\Rightarrow$ MSE reconstruction
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO specialization (\Rightarrow) MSE reconstruction)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO specialization $\Rightarrow$ MSE reconstruction)</span></p>
 
 Under this likelihood,
 
 $$
 \mathbb E_{q_\theta(z\mid x)}\big[\log p_\phi(x\mid z)\big]
-= -\frac{1}{2\sigma^2}\ \mathbb E_{q_\theta(z\mid x)}\Big[|x-\mu_\phi(z)|^2\Big] + C,
+= -\frac{1}{2\sigma^2}\ \mathbb E_{q_\theta(z\mid x)}\Big[\|x-\mu_\phi(z)\|^2\Big] + C,
 $$
 
 where $C$ is constant w.r.t. $\theta,\phi$.
@@ -1069,8 +1114,8 @@ where $C$ is constant w.r.t. $\theta,\phi$.
 So maximizing the ELBO is equivalent (up to constants/sign) to minimizing:
 
 $$
-\min_{\theta,\phi}\ \mathbb E_{q_\theta(z\mid x)}\Big[\frac{1}{2\sigma^2}|x-\mu_\phi(z)|^2\Big]
- + D_{\mathrm{KL}} \big(q_\theta(z\mid x),|,p_{\text{prior}}(z)\big).
+\min_{\theta,\phi}\ \mathbb E_{q_\theta(z\mid x)}\Big[\frac{1}{2\sigma^2}\|x-\mu_\phi(z)\|^2\Big]
+ + D_{\mathrm{KL}} \big(q_\theta(z\mid x)\parallel p_{\text{prior}}(z)\big).
 $$
 
 **Interpretation:** training becomes "regularized reconstruction":
@@ -1081,11 +1126,9 @@ $$
 
 </div>
 
----
+### Drawbacks of a standard VAE: blurry outputs
 
-## 2.1.4 Drawbacks of a standard VAE: blurry outputs
-
-### Why Gaussian VAEs often look blurry (core mechanism)
+#### Why Gaussian VAEs often look blurry (core mechanism)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Gaussian VAEs often look blurry (core mechanism))</span></p>
@@ -1099,7 +1142,7 @@ Consider:
 
 With an arbitrary encoder, optimizing the ELBO (up to an additive constant) reduces to minimizing an expected squared error:
 
-$$\arg\min_{\mu}\ \mathbb E_{p_{\text{data}}(x),q_{\text{enc}}(z\mid x)}\Big[|x-\mu(z)|^2\Big]$$
+$$\arg\min_{\mu}\ \mathbb E_{p_{\text{data}}(x),q_{\text{enc}}(z\mid x)}\Big[\|x-\mu(z)\|^2\Big]$$
 
 This is a least-squares regression problem in $\mu(z)$. The optimal solution is the **conditional mean**:
 
@@ -1107,14 +1150,12 @@ $$\mu^*(z)=\mathbb E_{q_{\text{enc}}(x\mid z)}[x]$$
 
 </div>
 
-### What is $q_{\text{enc}}(x\mid z)$?
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What is $q_{\text{enc}}(x\mid z)$?)</span></p>
 
 It’s the "encoder-induced posterior on inputs given latents", obtained via Bayes’ rule:
 
-$$q_{\text{enc}}(x\mid z)=\frac{q_{\text{enc}}(z\mid x),p_{\text{data}}(x)}{p_{\text{prior}}(z)}$$
+$$q_{\text{enc}}(x\mid z)=\frac{q_{\text{enc}}(z\mid x)p_{\text{data}}(x)}{p_{\text{prior}}(z)}$$
 
 An equivalent (often useful) form:
 
@@ -1126,8 +1167,6 @@ $$
 
 </div>
 
-### Where blur comes from (mode averaging)
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where blur comes from (mode averaging))</span></p>
 
@@ -1135,17 +1174,13 @@ If two distinct inputs $x\neq x'$ are mapped to **overlapping regions** in laten
 
 $$\mu^*(z)=\mathbb E[x\mid z]$$
 
-**averages across multiple (possibly unrelated) inputs**. Averaging "conflicting modes" produces **non-distinct, blurry** reconstructions/samples.
+**averages across multiple (possibly unrelated) inputs**. Averaging "conflicting modes" produces **non-distinct, blurry** reconstructions/samples. Suppose that two distinct inputs $x \neq x'$ are mapped to overlapping regions in latent space, i.e., the supports of $q_{\text{enc}}(\cdot\mid x)$ and $q_{\text{enc}}(\cdot\mid x')$ intersect.
 
 **Key takeaway:** with a Gaussian decoder + MSE-like training signal, the optimal prediction is a mean, and means of multimodal/ambiguous conditionals look blurry.
 
 </div>
 
----
-
-## 2.1.5 (Optional) From standard VAE to Hierarchical VAEs (HVAEs)
-
-### Motivation
+### From standard VAE to Hierarchical VAEs (HVAEs)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(HVAE motivation)</span></p>
@@ -1154,7 +1189,12 @@ Hierarchical VAEs introduce **multiple latent layers** to capture structure at d
 
 </div>
 
-### Generative model (top-down hierarchy)
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/hvae.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Computation graph of the HVAE.</strong> It has a hierarchical structure with stacked, trainable encoders and decoders across multiple latent layers.</figcaption>
+</figure>
+
+#### Generative model (top-down hierarchy)
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Generative model (top-down hierarchy))</span></p>
@@ -1165,7 +1205,7 @@ $$p_\phi(x,z_{1:L})  =  p_\phi(x\mid z_1)\ \prod_{i=2}^{L} p_\phi(z_{i-1}\mid z_
 
 The marginal data density:
 
-$$p_{\text{HVAE}}(x)  :=  \int p_\phi(x,z_{1:L}),dz_{1:L}$$
+$$p_{\text{HVAE}}(x)  :=  \int p_\phi(x,z_{1:L}) dz_{1:L}$$
 
 **Sampling/generation is progressive:**
 
@@ -1175,7 +1215,7 @@ $$p_{\text{HVAE}}(x)  :=  \int p_\phi(x,z_{1:L}),dz_{1:L}$$
 
 </div>
 
-### Inference model (bottom-up, mirrors hierarchy)
+#### Inference model (bottom-up, mirrors hierarchy)
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Inference model (bottom-up, mirrors hierarchy))</span></p>
@@ -1186,14 +1226,26 @@ $$q_\theta(z_{1:L}\mid x)  =  q_\theta(z_1\mid x)\ \prod_{i=2}^{L} q_\theta(z_i\
 
 </div>
 
----
+### HVAE ELBO
 
-## HVAE ELBO (derivation + form)
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ELBO for HVAE)</span></p>
 
-### Jensen’s inequality derivation (standard ELBO trick)
+$$
+\mathcal L_{\text{ELBO}}
+=\mathbb E_{q_\theta(z_{1:L}\mid x)}
+\Bigg[
+\log \frac{
+p(z_L)\ \prod_{i=2}^L p_\phi(z_{i-1}\mid z_i)\ p_\phi(x\mid z_1)}
+{q_\theta(z_1\mid x)\ \prod_{i=2}^L q_\theta(z_i\mid z_{i-1})}
+\Bigg]
+$$
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Jensen’s inequality derivation (standard ELBO trick))</span></p>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 $$
 \log p_{\text{HVAE}}(x)
@@ -1203,7 +1255,7 @@ $$
 
 $$
 \ge \mathbb E_{q_\theta(z_{1:L}\mid x)}\Big[\log \frac{p_\phi(x,z_{1:L})}{q_\theta(z_{1:L}\mid x)}\Big]
-;=:;\mathcal L_{\text{ELBO}}
+=: \mathcal L_{\text{ELBO}}
 $$
 
 Substituting the factorizations:
@@ -1218,9 +1270,10 @@ p(z_L)\ \prod_{i=2}^L p_\phi(z_{i-1}\mid z_i)\ p_\phi(x\mid z_1)}
 \Bigg]
 $$
 
+</details>
 </div>
 
-### Interpretable decomposition (reconstruction + "adjacent" KLs)
+#### Interpretable decomposition (reconstruction + "adjacent" KLs)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretable decomposition (reconstruction + "adjacent" KLs))</span></p>
@@ -1230,15 +1283,14 @@ A key decomposition shown:
 $$
 \mathcal L_{\text{ELBO}}(x)
 =
-
 \mathbb E_q[\log p_\phi(x\mid z_1)]
--\mathbb E_q \Big[D_{\mathrm{KL}}(q_\theta(z_1\mid x),|,p_\phi(z_1\mid z_2))\Big]
+-\mathbb E_q \Big[D_{\mathrm{KL}}(q_\theta(z_1\mid x)\parallel p_\phi(z_1\mid z_2))\Big]
 
 $$
 
 $$
--\sum_{i=2}^{L-1}\mathbb E_q \Big[D_{\mathrm{KL}}(q_\theta(z_i\mid z_{i-1}),|,p_\phi(z_i\mid z_{i+1}))\Big]
--\mathbb E_q \Big[D_{\mathrm{KL}}(q_\theta(z_L\mid z_{L-1}),|,p(z_L))\Big],
+-\sum_{i=2}^{L-1}\mathbb E_q \Big[D_{\mathrm{KL}}(q_\theta(z_i\mid z_{i-1})\parallel p_\phi(z_i\mid z_{i+1}))\Big]
+-\mathbb E_q \Big[D_{\mathrm{KL}}(q_\theta(z_L\mid z_{L-1})\parallel p(z_L))\Big],
 $$
 
 where $\mathbb E_q$ denotes expectation under the encoder-induced joint over $(x,z_{1:L})$ (as written in the text).
@@ -1251,21 +1303,19 @@ where $\mathbb E_q$ denotes expectation under the encoder-induced joint over $(x
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Observation 2.1.1)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(The core insight is simple yet powerful)</span></p>
 
 Stacking layers lets the model generate **progressively** (coarse $\to$ fine), which helps capture complex high-dimensional structure.
 
 </div>
 
----
+### Why "just make a flat VAE deeper" is not enough
 
-## Why "just make a flat VAE deeper" is not enough
+#### Limitation 1: the variational family is still too simple
 
-### Limitation 1: the variational family is still too simple
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Limitation 1: the variational family is still too simple)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Limitation 1: the variational family is still too simple)</span></p>
 
 In a standard flat VAE,
 
@@ -1277,19 +1327,18 @@ If the true posterior $p_\phi(z\mid x)$ is **multi-peaked**, this mismatch loose
 
 </div>
 
-### Limitation 2: posterior collapse with an expressive decoder
+#### Limitation 2: posterior collapse with an expressive decoder
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Limitation 2: posterior collapse with an expressive decoder)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Limitation 2: posterior collapse with an expressive decoder)</span></p>
 
 Recall the expected objective:
 
 $$
 \mathbb E_{p_{\text{data}}(x)}[\mathcal L_{\text{ELBO}}(x)]
 =
-
 \mathbb E_{p_{\text{data}}(x),q_\theta(z\mid x)}[\log p_\phi(x\mid z)]
--\mathbb E_{p_{\text{data}}(x)}[D_{\mathrm{KL}}(q_\theta(z\mid x),|,p(z))].
+-\mathbb E_{p_{\text{data}}(x)}[D_{\mathrm{KL}}(q_\theta(z\mid x)\parallel p(z))].
 $$
 
 
@@ -1303,7 +1352,7 @@ $$\mathcal I_q(x;z)=\mathbb E_{q(x,z)}\Big[\log \frac{q_\theta(z\mid x)}{q_\thet
 
 and the aggregated posterior is
 
-$$q_\theta(z)=\int p_{\text{data}}(x),q_\theta(z\mid x)dx$$
+$$q_\theta(z)=\int p_{\text{data}}(x)q_\theta(z\mid x)dx$$
 
 **Collapse story:** if the decoder can model the data well **without using $z$** (i.e., effectively $p_\phi(x\mid z)\approx r(x)\approx p_{\text{data}}(x)$), then an ELBO maximizer can choose
 
@@ -1313,11 +1362,7 @@ making $\mathcal I_q(x;z)=0$ and $q_\theta(z)=p(z)$. Then $z$ carries no informa
 
 </div>
 
----
-
-## What hierarchy changes (and what new issues appear)
-
-### What improves conceptually
+### What hierarchy changes (and what new issues appear)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What improves conceptually)</span></p>
@@ -1329,8 +1374,6 @@ The HVAE ELBO uses **multiple adjacent KL terms**, so the "information penalty" 
   which comes from the hierarchical latent graph—not simply from depth in the encoder/decoder networks.
 
 </div>
-
-### Training challenges (as noted)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training challenges (as noted))</span></p>
@@ -1372,7 +1415,10 @@ This "gradual generation" is easier to learn than generating a full sample in on
 
 </div>
 
----
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/ddpm.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Illustration of DDPM.</strong> It consists of a fixed forward process (in gray) that gradually adds Gaussian noise to the data, and a learned reverse process that denoises step-by-step to generate new samples.</figcaption>
+</figure>
 
 ## The two chains and their roles
 
@@ -1406,9 +1452,12 @@ so that starting from $x_L \sim p_{\text{prior}}$, we iteratively denoise to obt
 
 </div>
 
----
-
 ## Forward process (fixed encoder) — formalization
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/ddpm_forward_process.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Illustration of the DDPM forward process, where in Gaussian noise is incrementally added to corrupt a data sample into pure noise.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(DDPM forward transition)</span></p>
@@ -1501,6 +1550,11 @@ meaning $x_t$ and $\alpha_t x_0+\sigma_t\varepsilon$ have the same *law* (same d
 ---
 
 ## Reverse denoising process (learnable decoder)
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/ddpm_reverse_denoising_process.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Illustration of DDPM reverse (denoising) process.</strong> Starting from noise $x_L ~ p_{\text{prior}}$, the model sequentially samples $x_{i−1} ~ p(x_{i−1}\mid x_i)$ for $i= L,\dots,1$ to obtain a newly generated data $x$. The oracle transition $p(x_{i−1}\mid x_i)$ is unknown; thus, we aim to approximate it.</figcaption>
+</figure>
 
 ### 3.1 The core question (Question 2.2.1)
 
@@ -1884,7 +1938,7 @@ with a proportionality factor that depends on $i$ (a timestep-dependent weight).
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Simplified DDPM loss)</span></p>
 
-In practice one often *drops the timestep-dependent weighting*, giving the widely-used objective:
+In practice one often **drops the timestep-dependent weighting**, giving the widely-used objective:
 
 $$
 \mathcal L_{\text{simple}}(\phi)
@@ -1959,19 +2013,17 @@ $$
 Analogously,
 
 $$
-\lvert\mu_\phi(x_i,i)-\mu(x_i,x_0,i)\rvert_2^2
- \propto 
-\lvert x_\phi(x_i,i)-x_0|\rvert_2^2,
+\|\mu_\phi(x_i,i)-\mu(x_i,x_0,i)\|_2^2 \propto  \| x_\phi(x_i,i)-x_0|\|_2^2,
 $$
 
 so the mean-matching loss reduces to:
 
 $$
 \mathbb E_i\mathbb E_{x_0,\epsilon}
-\Big[\omega_i|x_\phi(x_i,i)-x_0|_2^2\Big]
+\Big[\omega_i\|x_\phi(x_i,i)-x_0\|_2^2\Big]
 $$
 
-for some weight (\omega_i).
+for some weight $\omega_i$.
 
 </div>
 
@@ -2138,8 +2190,6 @@ where $p(x_0,x_{1:L})$ is the forward-process joint.
 
 ## 2.2.6 Sampling (generation)
 
-
-
 <div class="math-callout math-callout--theorem" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(DDPM sampling)</span></p>
 
@@ -2168,6 +2218,11 @@ $$
 This repeats until $x_0$ is produced.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/diffusion_models/ddpm_sampling_with_clean_prediction.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Illustration of DDPM sampling with clean prediction: estimate $x_{ϕ×}(x_i,i)$ from $x_i$, then update to $x_{i−1}$.</figcaption>
+</figure>
 
 ## B. Another interpretation: "predict clean then step"
 
@@ -2238,23 +2293,6 @@ This motivates later continuous-time / differential-equation viewpoints and fast
 
 </div>
 
----
-
-## High-yield "exam style" takeaways
-
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(High-yield "exam style" takeaways)</span></p>
-
-* $\epsilon$-prediction, $x$-prediction, and mean-prediction are **equivalent parameterizations** of the same underlying reverse model; they differ mainly by *what the network outputs* and the induced loss scaling.
-* With $\ell_2$ loss:
-
-  * $\epsilon^*(x_i,i)=\mathbb E[\epsilon\mid x_i]$,
-  * $x^*(x_i,i)=\mathbb E[x_0\mid x_i]$.
-* DDPM training is grounded as **ELBO maximization** with a sum of KLs across timesteps.
-* Sampling is **iterative denoising** from $x_L\sim\mathcal N(0,I)$ down to $x_0$.
-* DDPM is slow because generation is **$L$-step sequential** and uses many small noise steps to keep Gaussian reverse approximations accurate.
-
-</div>
 
 ## Score-Based Perspective: From EBMs to NCSN
 
@@ -8728,8 +8766,14 @@ $$\mathbf{Y}(\tau) = \sum_{j=0}^{n} \ell_j(\tau)\,\mathbf{Y}_j, \quad \ell_j(\ta
 where $\ell_j(\tau) = \prod_{\substack{k=0 \\ k \neq j}}^{n} \frac{\tau - \tau_k}{\tau_j - \tau_k}$ are the Lagrange basis functions. Each $\ell_j(\tau)$ acts like a "spotlight", taking value 1 at its own anchor ($\ell_j(\tau_j) = 1$) and 0 at all others.
 
 **Small cases:**
-- $n = 0$ (Constant): $\mathbf{Y}(\tau) \equiv \mathbf{Y}_n$.
-- $n = 1$ (Line): $\mathbf{Y}(\tau) = \frac{\tau - \tau_n}{\tau_{n-1} - \tau_n}\,\mathbf{Y}_{n-1} + \frac{\tau - \tau_{n-1}}{\tau_n - \tau_{n-1}}\,\mathbf{Y}_n$.
+- $n = 0$ (Constant): 
+  
+  $$\mathbf{Y}(\tau) \equiv \mathbf{Y}_n$$
+
+- $n = 1$ (Line): 
+  
+  $$\mathbf{Y}(\tau) = \frac{\tau - \tau_n}{\tau_{n-1} - \tau_n}\,\mathbf{Y}_{n-1} + \frac{\tau - \tau_{n-1}}{\tau_n - \tau_{n-1}}\,\mathbf{Y}_n$$
+
 - $n = 2$ (Quadratic): passes a parabola through three anchors.
 
 </div>
@@ -8739,13 +8783,17 @@ where $\ell_j(\tau) = \prod_{\substack{k=0 \\ k \neq j}}^{n} \frac{\tau - \tau_k
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(AB-DEIS-n Update)</span></p>
 
-Let $n \ge 0$ be the chosen polynomial degree. At step $i$, we approximate $\tau \mapsto \boldsymbol{\epsilon}_{\phi^\times}(\mathbf{x}_\tau, \tau)$ over $[t_{i-1}, t_i]$ by a degree-$n$ polynomial interpolant built from past model outputs, and substitute this approximation into the exponential-integrator update.
+Let $n \ge 0$ be the chosen polynomial degree. At step $i$, we approximate $\tau \mapsto \boldsymbol{\epsilon}\_{\phi^\times}(\mathbf{x}\_\tau, \tau)$ over $[t_{i-1}, t_i]$ by a degree-$n$ polynomial interpolant built from past model outputs, and substitute this approximation into the exponential-integrator update.
 
 **Case I: $i = n+1, \ldots, M$ (Sufficient History).** DEIS reuses the last $n+1$ model evaluations as anchors, constructs the degree-$n$ Lagrange polynomial $P_n(\tau)$, and substitutes into the exponential-integrator formula:
 
 $$\tilde{\mathbf{x}}_{t_i} = \mathcal{E}(t_{i-1} \to t_i)\,\tilde{\mathbf{x}}_{t_{i-1}} + \sum_{j=0}^{n} C_{i,j}\,\boldsymbol{\epsilon}_{\phi^\times}(\tilde{\mathbf{x}}_{t_{i-1-j}}, t_{i-1-j}),$$
 
-with coefficients $C_{i,j} := \frac{1}{2}\int_{t_{i-1}}^{t_i} \frac{g^2(\tau)}{\sigma_\tau}\,\mathcal{E}(\tau \to t_i)\,\ell_j^{(i)}(\tau)\,\mathrm{d}\tau$ that depend only on the schedule $(\alpha_\tau, \sigma_\tau)$ and the grid $\lbrace t_i\rbrace$, so they can be precomputed exactly in closed form.
+with coefficients 
+
+$$C_{i,j} := \frac{1}{2}\int_{t_{i-1}}^{t_i} \frac{g^2(\tau)}{\sigma_\tau}\,\mathcal{E}(\tau \to t_i)\,\ell_j^{(i)}(\tau)\,\mathrm{d}\tau$$
+
+that depend only on the schedule $(\alpha_\tau, \sigma_\tau)$ and the grid $\lbrace t_i\rbrace$, so they can be precomputed exactly in closed form.
 
 **Case II: $i = 1, \ldots, n$ (Insufficient History / Warm Start).** Set the degree to $i-1$ and use all $i$ available anchors. The degree ramps up from 0 (constant) to the target degree $n$ as more history accumulates.
 
@@ -8763,7 +8811,7 @@ When $i \ge n+1$ (sufficient history), the step attains local truncation error $
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(9.3.1: DDIM = AB-DEIS-0)</span></p>
 
-When $n = 0$ (constant polynomial), the AB-DEIS-0 update is exactly the exponential-Euler step (constant-in-time $\boldsymbol{\epsilon}_{\phi^\times}$ over $[t_{i-1}, t_i]$), which coincides with the deterministic DDIM update.
+When $n = 0$ (constant polynomial), the AB-DEIS-0 update is exactly the exponential-Euler step (constant-in-time $\boldsymbol{\epsilon}\_{\phi^\times}$ over $[t_{i-1}, t_i]$), which coincides with the deterministic DDIM update.
 
 </div>
 
@@ -8794,22 +8842,36 @@ For common noise schedules, $\lambda_t$ is strictly decreasing in $t$, so it has
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(9.4.1: Exponentially Weighted Exact Solution)</span></p>
 
-Given an initial value $\mathbf{x}_s$ at time $s > 0$, the exact solution $\widetilde{\boldsymbol{\Psi}}_{s \to t}(\mathbf{x}_s)$ at time $t \in [0, s]$ of the PF-ODE can be re-expressed as:
+Given an initial value $\mathbf{x}_s$ at time $s > 0$, the exact solution $\widetilde{\boldsymbol{\Psi}}\_{s \to t}(\mathbf{x}\_s)$ at time $t \in [0, s]$ of the PF-ODE can be re-expressed as:
 
 $$\widetilde{\boldsymbol{\Psi}}_{s \to t}(\mathbf{x}_s) = \frac{\alpha_t}{\alpha_s}\mathbf{x}_s - \alpha_t \int_{\lambda_s}^{\lambda_t} e^{-\lambda}\,\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda)\,\mathrm{d}\lambda,$$
 
-where $\hat{\mathbf{x}}_\lambda := \mathbf{x}_{t_\lambda(\lambda)}$ and $\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda) := \boldsymbol{\epsilon}_{\phi^\times}(\mathbf{x}_{t_\lambda(\lambda)}, t_\lambda(\lambda))$ denote the reparameterized quantities.
+where 
+
+$$\hat{\mathbf{x}}_\lambda := \mathbf{x}_{t_\lambda(\lambda)}$$
+
+and 
+
+$$\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda) := \boldsymbol{\epsilon}_{\phi^\times}(\mathbf{x}_{t_\lambda(\lambda)}, t_\lambda(\lambda))$$
+
+denote the reparameterized quantities.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Reparameterize Time?)</span></p>
 
-In $\lambda$-time, the model appears inside an exponentially weighted integral $\int e^{-\lambda}\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda)\,\mathrm{d}\lambda$, where the $e^{-\lambda}$ factor produces closed-form coefficients and smooths the integrand, which is exactly what high-order local approximations require.
+In $\lambda$-time, the model appears inside an exponentially weighted integral 
 
-The PF-ODE in $\lambda$-time becomes: $\frac{\mathrm{d}\hat{\mathbf{x}}_\lambda}{\mathrm{d}\lambda} = \frac{\alpha_\lambda'}{\alpha_\lambda}\,\hat{\mathbf{x}}_\lambda - \sigma_\lambda\,\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda).$
+$$\int e^{-\lambda}\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda)\,\mathrm{d}\lambda$$
 
-For strictly monotone $\lambda(t)$, a first-order change of variables gives $\Delta t \approx \Delta\lambda / |\lambda'(t)|$. So $\Delta t$ is smaller where $|\lambda'(t)|$ is large (i.e., where $\lambda$ changes rapidly with $t$), and larger where $|\lambda'(t)|$ is small. This often makes the integrand smoother to approximate on a uniform $\lambda$ grid.
+where the $e^{-\lambda}$ factor produces closed-form coefficients and smooths the integrand, which is exactly what high-order local approximations require.
+
+The PF-ODE in $\lambda$-time becomes: 
+
+$$\frac{\mathrm{d}\hat{\mathbf{x}}_\lambda}{\mathrm{d}\lambda} = \frac{\alpha_\lambda'}{\alpha_\lambda}\,\hat{\mathbf{x}}_\lambda - \sigma_\lambda\,\hat{\boldsymbol{\epsilon}}_{\phi^\times}(\hat{\mathbf{x}}_\lambda, \lambda).$$
+
+For strictly monotone $\lambda(t)$, a first-order change of variables gives $\Delta t \approx \Delta\lambda / \lvert \lambda'(t)\rvert$. So $\Delta t$ is smaller where $\lvert \lambda'(t)\rvert$ is large (i.e., where $\lambda$ changes rapidly with $t$), and larger where $\lvert \lambda'(t)\rvert$ is small. This often makes the integrand smoother to approximate on a uniform $\lambda$ grid.
 
 </div>
 
@@ -9106,7 +9168,15 @@ In practice, these quantities are estimated via a Monte Carlo (MCMC) approach. S
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(9.7.1: Reducing First-Order Discretization Error Helps Higher-Order Solvers)</span></p>
 
-Starting from the same initial condition $\mathbf{x}_{\lambda_s}$, let the approximated solution $\tilde{\mathbf{x}}_{\lambda_t}$ use the DPM-Solver-v3 update (with Taylor expansion of $\mathbf{N}_{\phi^\times}^{\text{new}}$), and the exact solution $\widetilde{\boldsymbol{\Psi}}_{\lambda_s \to \lambda_t}(\mathbf{x}_{\lambda_s})$ be given by the exact exponential-integrator formula. Then the discretization error depends on $\mathbf{N}_{\phi^\times}^{\text{new},(1)}$, and by controlling $\lVert\mathbf{N}_{\phi^\times}^{\text{new},(1)}\rVert_2$, we reduce $\lVert\tilde{\mathbf{x}}_{\lambda_t} - \widetilde{\boldsymbol{\Psi}}_{\lambda_s \to \lambda_t}(\mathbf{x}_{\lambda_s})\rVert_2$, assuming sufficient smoothness.
+Starting from the same initial condition $\mathbf{x}\_{\lambda_s}$, let the approximated solution $\tilde{\mathbf{x}}\_{\lambda_t}$ use the DPM-Solver-v3 update (with Taylor expansion of $\mathbf{N}\_{\phi^\times}^{\text{new}}$), and the exact solution 
+
+$$\widetilde{\boldsymbol{\Psi}}_{\lambda_s \to \lambda_t}(\mathbf{x}_{\lambda_s})$$
+
+be given by the exact exponential-integrator formula. Then the discretization error depends on $\mathbf{N}\_{\phi^\times}^{\text{new},(1)}$, and by controlling $\lVert\mathbf{N}\_{\phi^\times}^{\text{new},(1)}\rVert_2$, we reduce 
+
+$$\lVert\tilde{\mathbf{x}}_{\lambda_t} - \widetilde{\boldsymbol{\Psi}}_{\lambda_s \to \lambda_t}(\mathbf{x}_{\lambda_s})\rVert_2$$
+
+assuming sufficient smoothness.
 
 </div>
 

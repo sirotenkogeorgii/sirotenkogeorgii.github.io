@@ -2169,10 +2169,10 @@ $$
 Set 
 
 $$
-\mu(\mathbf{h}) = \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}$. Since $\left\lvert \frac{h_k}{\lVert \mathbf{h} \rVert}\right\rvert \le 1
+\mu(\mathbf{h}) = \sum \left(\frac{\partial f(a_1, \ldots, a_k + \theta_k h_k, \ldots, a_n)}{\partial x_k} - \frac{\partial f(\mathbf{a})}{\partial x_k}\right)\frac{h_k}{\lVert \mathbf{h} \rVert}
 $$
 
-and since the functions $\frac{\partial f}{\partial x_k}$ are continuous, $\lim_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$. $\square$
+Since $\left\lvert \frac{h_k}{\lVert \mathbf{h} \rVert}\right\rvert \le 1$ and since the functions $\frac{\partial f}{\partial x_k}$ are continuous, $\lim_{\mathbf{h} \to \mathbf{o}} \mu(\mathbf{h}) = 0$. $\square$
 
 </details>
 </div>
@@ -2240,11 +2240,21 @@ $$F(h) = \frac{f(x + h, y + h) - f(x, y + h) - f(x + h, y) + f(x, y)}{h^2}$$
 
 and this is what we are going to do.
 
-Setting $\varphi_h(y) = f(x + h, y) - f(x, y)$ and $\psi_k(x) = f(x, y + k) - f(x, y)$, we obtain two expressions for $F(h)$:
+Setting 
+
+$$\varphi_h(y) = f(x + h, y) - f(x, y)$$
+
+$$\psi_k(x) = f(x, y + k) - f(x, y)$$
+
+we obtain two expressions for $F(h)$:
 
 $$F(h) = \frac{1}{h^2}(\varphi_h(y + h) - \varphi_h(y)) \quad \text{and} \quad F(h) = \frac{1}{h^2}(\psi_h(x + h) - \psi_h(x)).$$
 
-Let us compute the first one. The function $\varphi_h$, which is a function of one variable $y$, has the derivative $\varphi'_h(y) = \frac{\partial f(x + h, y)}{\partial y} - \frac{\partial f(x, y)}{\partial y}$ and hence by Lagrange Formula VI.2.2, we have
+Let us compute the first one. The function $\varphi_h$, which is a function of one variable $y$, has the derivative 
+
+$$\varphi'_h(y) = \frac{\partial f(x + h, y)}{\partial y} - \frac{\partial f(x, y)}{\partial y}$$ 
+
+and hence by Lagrange Formula VI.2.2, we have
 
 $$F(h) = \frac{1}{h^2}(\varphi_h(y + h) - \varphi_h(y)) = \frac{1}{h}\varphi'_h(y + \theta_1 h) = \frac{\frac{\partial f(x + h, y + \theta_1 h)}{\partial y} - \frac{\partial f(x, y + \theta_1 h)}{\partial y}}{h}.$$
 
@@ -2252,7 +2262,11 @@ Then, using VI.2.2 again, we obtain
 
 $$F(h) = \frac{\partial}{\partial x}\left(\frac{\partial f(x + \theta_2 h, y + \theta_1 h)}{\partial y}\right) \qquad (*)$$
 
-for some $\theta_1, \theta_2$ between 0 and 1. Similarly, computing $\frac{1}{h^2}(\psi_h(x + h) - \psi_h(x))$ we obtain
+for some $\theta_1, \theta_2$ between 0 and 1. Similarly, computing 
+
+$$\frac{1}{h^2}(\psi_h(x + h) - \psi_h(x))$ $
+
+we obtain
 
 $$F(h) = \frac{\partial}{\partial y}\left(\frac{\partial f(x + \theta_4 h, y + \theta_2 h)}{\partial x}\right). \qquad (**)$$
 
@@ -2301,8 +2315,7 @@ Applying the formula from 3.3 we get
 
 $$
 \begin{aligned}
-\frac{1}{h}(F(b + h) - F(b)) = \frac{1}{h}(f(\mathbf{g}(b + h)) - f(\mathbf{g}(b))) = \frac{1}{h}(f(\mathbf{g}(b) + (\mathbf{g}(b + h) - \mathbf{g}(b))) - f(\mathbf{g}(b))) \\
-&= \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} + \mu(\mathbf{g}(b + h) - \mathbf{g}(b))\max_k \frac{\lvert g_k(b + h) - g_k(b) \rvert}{h}
+\frac{1}{h}(F(b + h) - F(b)) &= \frac{1}{h}(f(\mathbf{g}(b + h)) - f(\mathbf{g}(b))) \\ &= \frac{1}{h}(f(\mathbf{g}(b) + (\mathbf{g}(b + h) - \mathbf{g}(b))) - f(\mathbf{g}(b))) \\ &= \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} + \mu(\mathbf{g}(b + h) - \mathbf{g}(b))\max_k \frac{\lvert g_k(b + h) - g_k(b) \rvert}{h}
 \end{aligned}
 $$
 
@@ -2310,8 +2323,7 @@ We have $\lim_{h \to 0} \mu(\mathbf{g}(b + h) - \mathbf{g}(b)) = 0$ since the fu
 
 $$
 \begin{aligned}
-\lim_{h \to 0} \frac{1}{h}(F(b + h) - F(b)) = \lim_{h \to 0} \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} \\
-&= \sum_{k=1}^{n} A_k \lim_{h \to 0} \frac{g_k(b + h) - g_k(b)}{h} = \sum_{k=1}^{n} \frac{\partial f(\mathbf{a})}{\partial x_k} g'_k(b)
+\lim_{h \to 0} \frac{1}{h}(F(b + h) - F(b)) &= \lim_{h \to 0} \sum_{k=1}^{n} A_k \frac{g_k(b + h) - g_k(b)}{h} \\ &= \sum_{k=1}^{n} A_k \lim_{h \to 0} \frac{g_k(b + h) - g_k(b)}{h} \\ &= \sum_{k=1}^{n} \frac{\partial f(\mathbf{a})}{\partial x_k} g'_k(b)
 \end{aligned}
 $$
 
