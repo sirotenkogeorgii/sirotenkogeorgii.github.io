@@ -824,7 +824,7 @@ The French mathematician *Augustin-Louis Cauchy (1789–1857)* also lived in Pra
 
 Last time we considered existence of limits of real sequences. Now we look at relations between limits and arithmetical operations, and between limits and ordering. Recall that $(a_n)$, $(b_n)$ and $(c_n)$ denote real sequences and that $\mathbb{R}^*$ is the extended real line. Recall how to compute with infinities.
 
-The **variant form** of the triangle inequality $|a + b| \le |a| + |b|$ is
+The **variant form** of the triangle inequality $\|a + b\| \le \|a\| + \|b\|$ is
 
 $$|a - b| \ge |a| - |b|.$$
 
@@ -837,7 +837,7 @@ $$\lim a_n = a \iff a_n =: a + \underbrace{e_n}_{\text{error term}} \;\text{ whe
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 1</span><span class="math-callout__name">(Arithmetic of Limits)</span></p>
 
-Let $\lim a_n = K \in \mathbb{R}^*$ and $\lim b_n = L \in \mathbb{R}^*$. Then
+Let $\lim a_n = K \in \mathbb{R}^\ast$ and $\lim b_n = L \in \mathbb{R}^\ast$. Then
 
 1. $\lim(a_n + b_n) = K + L$ whenever the right-hand side is defined.
 2. $\lim a_n b_n = KL$ whenever the right-hand side is defined.
@@ -954,7 +954,7 @@ In the proof of the next proposition we use the simple observation that
 
 $$\lim a_n = 0 \iff \lim |a_n| = 0.$$
 
-Indeed, $a_n \to 0 \iff \forall\, \varepsilon\; \exists\, n_0\colon n \ge n_0 \Rightarrow |a_n| < \varepsilon \iff \forall\, \varepsilon\; \exists\, n_0\colon n \ge n_0 \Rightarrow |\,|a_n|\,| < \varepsilon \iff |a_n| \to 0$.
+Indeed, $a_n \to 0 \iff \forall\, \varepsilon\; \exists\, n_0\colon n \ge n_0 \Rightarrow \|a_n\| < \varepsilon \iff \forall\, \varepsilon\; \exists\, n_0\colon n \ge n_0 \Rightarrow |\,|a_n|\,| < \varepsilon \iff \|a_n\| \to 0$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5</span><span class="math-callout__name">(Geometric Sequences)</span></p>
@@ -1254,7 +1254,7 @@ We consider the harmonic numbers $h_n = \sum_{j=1}^n 1/j$, $n \in \mathbb{N}$.
 
    $$h_n = \log n + \gamma + \Delta_n,$$
 
-   where $\gamma = 0.57721\dots$ is the so called **Euler's constant** and the numbers $\Delta_n \in \mathbb{R}$ satisfy $|\Delta_n| < c/n$ for a constant $c$ and every $n$.
+   where $\gamma = 0.57721\dots$ is the so called **Euler's constant** and the numbers $\Delta_n \in \mathbb{R}$ satisfy $\|\Delta_n\| < c/n$ for a constant $c$ and every $n$.
 
 2. $h_n \in \mathbb{N} \iff n = 1$.
 
@@ -1292,7 +1292,7 @@ We introduce a class of series whose sums do not change under reordering of summ
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 6</span><span class="math-callout__name">(AC Series)</span></p>
 
-A series $\sum a_n$ is **absolutely convergent**, abbreviated **AC**, if the series $\sum |a_n|$ converges.
+A series $\sum a_n$ is **absolutely convergent**, abbreviated **AC**, if the series $\sum \|a_n\|$ converges.
 
 </div>
 
@@ -1313,7 +1313,7 @@ Let $\sum a_n$ be an AC series and $(s_n)$ be its partial sums. We show that $(s
 
 $$|s_n - s_m| = |a_{m+1} + a_{m+2} + \cdots + a_n| \stackrel{\Delta\text{-ineq.}}{\le} |a_{m+1}| + |a_{m+2}| + \cdots + |a_n| = t_n - t_m,$$
 
-where $(t_n)$ are partial sums of the series $\sum |a_n|$. But the sequence $(t_n)$ is Cauchy (by the mentioned theorem) and therefore also $(s_n)$ is Cauchy. $\square$
+where $(t_n)$ are partial sums of the series $\sum \|a_n\|$. But the sequence $(t_n)$ is Cauchy (by the mentioned theorem) and therefore also $(s_n)$ is Cauchy. $\square$
 
 </details>
 </div>
@@ -1463,7 +1463,11 @@ In the proof of the implication $\Leftarrow$ we used the so called **axiom of ch
 
 Due to the identity $a^2 - b^2 = (a - b)(a + b)$,
 
-$$\lim_{x \to +\infty} \left(\sqrt{x + \sqrt{x}} - \sqrt{x}\right) \stackrel{\frac{(\cdots - \sqrt{x})(\cdots + \sqrt{x})}{\cdots + \sqrt{x}}}{=} \lim_{x \to +\infty} \frac{\sqrt{x}}{\sqrt{x + \sqrt{x}} + \sqrt{x}} \stackrel{\frac{\cdots/\sqrt{x}}{\cdots/\sqrt{x}}}{=} \lim_{x \to +\infty} \frac{1}{\sqrt{1 + 1/\sqrt{x}} + 1} = \frac{1}{1 + 1} = \frac{1}{2}.$$
+$$
+\begin{aligned}
+\lim_{x \to +\infty} \left(\sqrt{x + \sqrt{x}} - \sqrt{x}\right) \stackrel{\frac{(\cdots - \sqrt{x})(\cdots + \sqrt{x})}{\cdots + \sqrt{x}}}{=} \lim_{x \to +\infty} \frac{\sqrt{x}}{\sqrt{x + \sqrt{x}} + \sqrt{x}} \stackrel{\frac{\cdots/\sqrt{x}}{\cdots/\sqrt{x}}}{=} \lim_{x \to +\infty} \frac{1}{\sqrt{1 + 1/\sqrt{x}} + 1} = \frac{1}{1 + 1} = \frac{1}{2}
+\end{aligned}
+$$
 
 </div>
 
@@ -1480,7 +1484,7 @@ $$\mathrm{e}^x = \exp(x) := \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x
 
 </div>
 
-This series is AC for every real (even complex) $x$, due to an estimate by geometric series: $|x/n| < 1$ whenever $n > |x|$.
+This series is AC for every real (even complex) $x$, due to an estimate by geometric series: $\|x/n\| < 1$ whenever $n > \|x\|$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 16</span><span class="math-callout__name">(The Exponential Identity)</span></p>
@@ -1608,7 +1612,7 @@ Again by geometric series estimates we see that both series are AC for every $t 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 24</span><span class="math-callout__name">(On a Runner)</span></p>
 
-Let $t \in \mathbb{R}$ and $S := \lbrace(x, y) \in \mathbb{R}^2 \mid x^2 + y^2 = 1 \rbrace$ be the plane unit circle (i.e., with radius 1) with center in the origin. The runner that runs on the track $S$ with unit speed, starts at the point $(1, 0) \in S$ and runs counter-clockwise for $t > 0$ and clockwise for $t \le 0$, is in the time $|t|$ located in the point
+Let $t \in \mathbb{R}$ and $S := \lbrace(x, y) \in \mathbb{R}^2 \mid x^2 + y^2 = 1 \rbrace$ be the plane unit circle (i.e., with radius 1) with center in the origin. The runner that runs on the track $S$ with unit speed, starts at the point $(1, 0) \in S$ and runs counter-clockwise for $t > 0$ and clockwise for $t \le 0$, is in the time $\|t\|$ located in the point
 
 $$(\cos t,\, \sin t) \in S.$$
 
@@ -2331,7 +2335,7 @@ When strict inequalities ($<$, resp. $>$) hold for every $x \neq a$, we speak of
 
 ## Compact Sets in $\mathbb{R}$
 
-We know when a set $M \subset \mathbb{R}$ is **bounded**: $\exists\, c\; \forall\, a \in M\colon |a| < c$. It is **closed** if
+We know when a set $M \subset \mathbb{R}$ is **bounded**: $\exists\, c\; \forall\, a \in M\colon \|a\| < c$. It is **closed** if
 
 $$\forall\, (a_n) \subset M\colon\; \lim a_n = a \;\Rightarrow\; a \in M.$$
 
@@ -2366,7 +2370,7 @@ $$\bigcup_{j \in X} I_j = M.$$
 
 </div>
 
-Closed sets are complements of open sets and therefore they are unions of "gaps" between the above intervals $I_j$. If $|X| = n \in \mathbb{N}_0$, there are at most $n + 1$ gaps. What is hard to imagine is that for countable $X$ the set of gaps may be uncountable. This is the reason that it is harder to imagine closed sets.
+Closed sets are complements of open sets and therefore they are unions of "gaps" between the above intervals $I_j$. If $\|X\| = n \in \mathbb{N}_0$, there are at most $n + 1$ gaps. What is hard to imagine is that for countable $X$ the set of gaps may be uncountable. This is the reason that it is harder to imagine closed sets.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 17</span><span class="math-callout__name">(Compact Sets)</span></p>
@@ -2381,7 +2385,7 @@ Let $M \subset \mathbb{R}$. Then $M$ is compact if and only if $M$ is closed and
 
 Let $M \subset \mathbb{R}$ be closed and bounded and let $(a_n) \subset M$ be any sequence. Since $(a_n)$ is bounded, by the Bolzano–Weierstrass theorem it has a convergent subsequence $(a_{m_n})$ with $a := \lim a_{m_n} \in \mathbb{R}$. Since $M$ is closed, $a \in M$. Thus $M$ is compact.
 
-Suppose that $M \subset \mathbb{R}$ is not bounded. We construct a sequence $(a_n) \subset M$ such that $|a_m - a_n| > 1$ for every two indices $m \neq n$. This property is inherited by every subsequence which therefore cannot be convergent and $M$ is not compact. The first term $a_1 \in M$ is taken arbitrarily. Suppose that $a_1, a_2, \dots, a_n$ have been defined such that $|a_i - a_j| > 1$ for every $i, j$ with $1 \le i < j \le n$. Since $M$ is not bounded, there is a point $a_{n+1} \in M$ such that $|a_{n+1}| > 1 + \max(|a_1|, \dots, |a_n|)$. Then $|a_{n+1} - a_i| > 1$ for every $i = 1, 2, \dots, n$. In this way we define the whole $(a_n)$.
+Suppose that $M \subset \mathbb{R}$ is not bounded. We construct a sequence $(a_n) \subset M$ such that $\|a_m - a_n\| > 1$ for every two indices $m \neq n$. This property is inherited by every subsequence which therefore cannot be convergent and $M$ is not compact. The first term $a_1 \in M$ is taken arbitrarily. Suppose that $a_1, a_2, \dots, a_n$ have been defined such that $\|a_i - a_j\| > 1$ for every $i, j$ with $1 \le i < j \le n$. Since $M$ is not bounded, there is a point $a_{n+1} \in M$ such that $\|a_{n+1}\| > 1 + \max(\|a_1\|, \dots, \|a_n\|)$. Then $\|a_{n+1} - a_i\| > 1$ for every $i = 1, 2, \dots, n$. In this way we define the whole $(a_n)$.
 
 Suppose that $M \subset \mathbb{R}$ is not closed. Then there is a convergent sequence $(a_n) \subset M$ such that $a := \lim a_{m_n} \in \mathbb{R} \setminus M$. Every subsequence has the same limit $a$, and so it does not have limit in $M$. Thus $M$ is not compact. $\square$
 
@@ -2534,11 +2538,11 @@ resp.
 
 $$f'_+(a) := \lim_{x \to a^+} \frac{f(x) - f(a)}{x - a} \stackrel{(*)}{=} \lim_{h \to 0^+} \frac{f(a + h) - f(a)}{h},$$
 
-and say that $f'_-(a) \in \mathbb{R}^*$, resp. $f'_+(a) \in \mathbb{R}^*$, is the **left-sided**, resp. **right-sided**, **derivative** of $f$ at the point $a$.
+and say that $f'\_-(a) \in \mathbb{R}^\ast$, resp. $f'\_+(a) \in \mathbb{R}^\ast$, is the **left-sided**, resp. **right-sided**, **derivative** of $f$ at the point $a$.
 
 </div>
 
-Derivatives and one-sided derivatives relate as follows. If $f$ has the derivative $f'(a) \in \mathbb{R}^*$ then $f$ has at least one one-sided derivative and $f'_-(a) = f'_+(a) = f'(a)$ whenever these values are defined. If the one-sided derivatives coincide, $f'_-(a) = f'_+(a) = L \in \mathbb{R}^*$, then also $f'(a) = L$. If $f'_-(a) \neq f'_+(a)$ then $f'(a)$ does not exist.
+Derivatives and one-sided derivatives relate as follows. If $f$ has the derivative $f'(a) \in \mathbb{R}^\ast$ then $f$ has at least one one-sided derivative and $f'\_-(a) = f'\_+(a) = f'(a)$ whenever these values are defined. If the one-sided derivatives coincide, $f'\_-(a) = f'\_+(a) = L \in \mathbb{R}^\ast$, then also $f'(a) = L$. If $f'\_-(a) \neq f'\_+(a)$ then $f'(a)$ does not exist.
 
 ## Derivatives and Extremes
 
@@ -4543,7 +4547,7 @@ We give the fourth definition of the area under graph; see Lecture 10 for the de
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 7</span><span class="math-callout__name">(Again $A_f$)</span></p>
 
-If $f \in \mathrm{R}(a, b)$ then we define the area $A_f$ of the domain $D_f$ under the graph $G_f$ of the function $f\colon [a, b] \to \mathbb{R}$ (or $f\colon [a, b) \to \mathbb{R}$, ...) as
+If $f \in \mathrm{R}(a, b)$ then we define the area $A_f$ of the domain $D_f$ under the graph $G_f$ of the function $f\colon [a, b] \to \mathbb{R}$ (or $f\colon [a, b) \to \mathbb{R}, \dots$) as
 
 $$A_f := \int_a^b f(x)\,\mathrm{d}x.$$
 
@@ -4551,7 +4555,7 @@ $$A_f := \int_a^b f(x)\,\mathrm{d}x.$$
 
 ## Existence and Non-Existence of the Riemann Integral
 
-We begin with two non-existence results. Recall that for $M \subset \mathbb{R}$ a function $f\colon M \to \mathbb{R}$ is **bounded** if $\exists\, c\; \forall\, x \in M\colon |f(x)| < c$. Else $f$ is **unbounded**.
+We begin with two non-existence results. Recall that for $M \subset \mathbb{R}$ a function $f\colon M \to \mathbb{R}$ is **bounded** if $\exists\, c\; \forall\, x \in M\colon \|f(x)\| < c$. Else $f$ is **unbounded**.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 8</span><span class="math-callout__name">(Unbounded Functions Are Bad)</span></p>
@@ -4708,7 +4712,7 @@ But $\varepsilon > 0$ may be arbitrarily small, so $\text{(R)} \int_a^b f = F(b)
 </details>
 </div>
 
-The *First Fundamental Theorem of Calculus* is as follows. A function $f\colon M \to \mathbb{R}$, $M \subset \mathbb{R}$, is **Lipschitz continuous** if there is a constant $C > 0$ such that $\forall\, x, y \in M\colon |f(x) - f(y)| \le C|x - y|$. It is a property stronger than continuity or even than uniform continuity; every Lipschitz continuous function is uniformly continuous.
+The *First Fundamental Theorem of Calculus* is as follows. A function $f\colon M \to \mathbb{R}$, $M \subset \mathbb{R}$, is **Lipschitz continuous** if there is a constant $C > 0$ such that $\forall\, x, y \in M\colon \|f(x) - f(y)\| \le C\|x - y\|$. It is a property stronger than continuity or even than uniform continuity; every Lipschitz continuous function is uniformly continuous.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 16</span><span class="math-callout__name">(FTC 1)</span></p>
@@ -4768,7 +4772,7 @@ $$\text{(N}_\text{e}\text{)} \int_{-1}^1 \operatorname{sgn}(x) = [\,|x|\,]_{-1}^
 
 ## The Riemann Integral After J.-G. Darboux
 
-We give another equivalent definition of the Riemann integral. For real numbers $a < b$ and for a partition $P = (a_0, a_1, \dots, a_k)$ of the interval $[a, b]$ we denote $I_i := [a_{i-1}, a_i]$ and $|I_i| := a_i - a_{i-1}$. For a function $f\colon [a, b] \to \mathbb{R}$, the sums
+We give another equivalent definition of the Riemann integral. For real numbers $a < b$ and for a partition $P = (a_0, a_1, \dots, a_k)$ of the interval $[a, b]$ we denote $I_i := [a_{i-1}, a_i]$ and $\|I_i\| := a_i - a_{i-1}$. For a function $f\colon [a, b] \to \mathbb{R}$, the sums
 
 $$s(P, f) := \sum_{i=1}^{k} |I_i| \cdot \inf(f[I_i]) \quad \text{and} \quad S(P, f) := \sum_{i=1}^{k} |I_i| \cdot \sup(f[I_i]),$$
 
@@ -4987,7 +4991,7 @@ $$\int_{G(a)}^{G(b)} f = \int_a^b f(G)g.$$
 
 ## Use of Integrals in Formulas for Lengths, Areas and Volumes
 
-We denote by the symbol $|uv|$ (always $\ge 0$) the length of the straight segment with endpoints $u, v \in \mathbb{R}^2$.
+We denote by the symbol $\|uv\|$ (always $\ge 0$) the length of the straight segment with endpoints $u, v \in \mathbb{R}^2$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 12</span><span class="math-callout__name">(Length of $G_f$)</span></p>

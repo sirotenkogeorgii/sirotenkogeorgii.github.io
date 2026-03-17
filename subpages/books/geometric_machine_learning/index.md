@@ -702,7 +702,7 @@ $$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Grid and Cyclic Shift Group)</span></p>
 
-The case of one-dimensional grid is obtained with the choice $\Omega = \mathbb{Z}\_n = \lbrace 0, \ldots, n-1 \rbrace$ and the cyclic shift group $\mathfrak{G} = \mathbb{Z}_n$. The group elements are cyclic shifts of indices. An element $\mathfrak{g} \in \mathfrak{G}$ can be identified with some $u = 0, \ldots, n-1$ such that $\mathfrak{g}.v = v - u \bmod n$, whereas the inverse element is $\mathfrak{g}^{-1}.v = v + u \bmod n$. Since the elements of the group (shifts) are also elements of the domain (indices), we can identify $\Omega = \mathfrak{G}$; our expression for the group convolution leads to the familiar convolution $(x \star \theta)_u = \sum_{v=0}^{n-1} x_v \theta_{v + u \bmod n}$.
+The case of one-dimensional grid is obtained with the choice $\Omega = \mathbb{Z}\_n = \lbrace 0, \ldots, n-1 \rbrace$ and the cyclic shift group $\mathfrak{G} = \mathbb{Z}\_n$. The group elements are cyclic shifts of indices. An element $\mathfrak{g} \in \mathfrak{G}$ can be identified with some $u = 0, \ldots, n-1$ such that $\mathfrak{g}.v = v - u \bmod n$, whereas the inverse element is $\mathfrak{g}^{-1}.v = v + u \bmod n$. Since the elements of the group (shifts) are also elements of the domain (indices), we can identify $\Omega = \mathfrak{G}$; our expression for the group convolution leads to the familiar convolution $(x \star \theta)\_u = \sum_{v=0}^{n-1} x_v \theta_{v + u \bmod n}$.
 
 </div>
 
@@ -1114,7 +1114,7 @@ Each edge is shared by exactly two triangles, and the boundary of all triangles 
 
 </div>
 
-Similarly to Riemannian manifolds, we can define a *metric* on the mesh. In the simplest instance, it can be induced from the embedding of the mesh nodes $\mathbf{x}_1, \ldots, \mathbf{x}_n$ and expressed through the Euclidean length of the edges, $\ell_{uv} = \|\mathbf{x}_u - \mathbf{x}_v\|$. Any property that can be expressed solely in terms of $\ell$ is *intrinsic*, and any deformation of the mesh preserving $\ell$ is an *isometry*.
+Similarly to Riemannian manifolds, we can define a *metric* on the mesh. In the simplest instance, it can be induced from the embedding of the mesh nodes $\mathbf{x}\_1, \ldots, \mathbf{x}\_n$ and expressed through the Euclidean length of the edges, $\ell\_{uv} = \|\mathbf{x}\_u - \mathbf{x}\v\|$. Any property that can be expressed solely in terms of $\ell$ is *intrinsic*, and any deformation of the mesh preserving $\ell$ is an *isometry*.
 
 #### Laplacian Matrices
 
@@ -1175,7 +1175,7 @@ $$
 \hat{p}(\boldsymbol{\Delta})\mathbf{X} = \sum_{k=0}^{r} \alpha_k \boldsymbol{\Delta}^k \mathbf{X} = \alpha_0 \mathbf{X} + \alpha_1 \boldsymbol{\Delta}\mathbf{X} + \ldots + \alpha_r \boldsymbol{\Delta}^r \mathbf{X},
 $$
 
-amounting to the multiplication of the $n \times d$ feature matrix $\mathbf{X}$ by the $n \times n$ Laplacian matrix $r$ times. Since the Laplacian is typically sparse, this has low complexity $\mathcal{O}(|\mathcal{E}|dr) \sim \mathcal{O}(|\mathcal{E}|)$. Furthermore, a polynomial filter of degree $r$ is localised in $r$-hop neighbourhood. However, this exact property comes at a disadvantage when dealing with meshes, since the actual support of the filter depends on the *resolution* of the mesh. For this reason, in computer graphics applications it is more common to use *rational filters*, such as *Cayley polynomials* with complex coefficients $\alpha_l \in \mathbb{C}$:
+amounting to the multiplication of the $n \times d$ feature matrix $\mathbf{X}$ by the $n \times n$ Laplacian matrix $r$ times. Since the Laplacian is typically sparse, this has low complexity $\mathcal{O}(\lvert \mathcal{E}\rvert dr) \sim \mathcal{O}(\lvert \mathcal{E}\rvert)$. Furthermore, a polynomial filter of degree $r$ is localised in $r$-hop neighbourhood. However, this exact property comes at a disadvantage when dealing with meshes, since the actual support of the filter depends on the *resolution* of the mesh. For this reason, in computer graphics applications it is more common to use *rational filters*, such as *Cayley polynomials* with complex coefficients $\alpha_l \in \mathbb{C}$:
 
 $$
 \hat{p}(\lambda) = \text{Re}\left(\sum_{l=0}^{r} \alpha_l \left(\frac{\lambda - \mathrm{i}}{\lambda + \mathrm{i}}\right)^l\right).
@@ -1374,7 +1374,7 @@ Here, $\psi$ is a learnable *message function*, computing $v$'s vector sent to $
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Representational Containment)</span></p>
 
-One important thing to note is a representational containment between these approaches: *convolution* $\subseteq$ *attention* $\subseteq$ *message-passing*. Attentional GNNs can represent convolutional GNNs by an attention mechanism implemented as a look-up table $a(\mathbf{x}_u, \mathbf{x}_v) = c_{uv}$, and both convolutional and attentional GNNs are special cases of message-passing where the messages are only the sender nodes' features: $\psi(\mathbf{x}_u, \mathbf{x}_v) = c_{uv}\psi(\mathbf{x}_v)$ for convolutional GNNs and $\psi(\mathbf{x}_u, \mathbf{x}_v) = a(\mathbf{x}_u, \mathbf{x}_v)\psi(\mathbf{x}_v)$ for attentional GNNs.
+One important thing to note is a representational containment between these approaches: *convolution* $\subseteq$ *attention* $\subseteq$ *message-passing*. Attentional GNNs can represent convolutional GNNs by an attention mechanism implemented as a look-up table $a(\mathbf{x}\_u, \mathbf{x}\_v) = c_{uv}$, and both convolutional and attentional GNNs are special cases of message-passing where the messages are only the sender nodes' features: $\psi(\mathbf{x}\_u, \mathbf{x}\_v) = c_{uv}\psi(\mathbf{x}\_v)$ for convolutional GNNs and $\psi(\mathbf{x}\_u, \mathbf{x}\_v) = a(\mathbf{x}\_u, \mathbf{x}\_v)\psi(\mathbf{x}\_v)$ for attentional GNNs.
 
 </div>
 
@@ -1402,7 +1402,7 @@ $$
 \mathbf{h}_u = \phi \left( \mathbf{x}_u, \bigoplus_{v \in \mathcal{V}} a(\mathbf{x}_u, \mathbf{x}_v) \psi(\mathbf{x}_v) \right),
 $$
 
-which yields the *self-attention* operator, the core of the Transformer architecture. Assuming some kind of normalisation over the attentional coefficients (e.g. softmax), we can constrain all the scalars $a(\mathbf{x}_u, \mathbf{x}_v)$ to be in the range $[0, 1]$; as such, we can think of self-attention as inferring a *soft adjacency matrix*, $a_{uv} = a(\mathbf{x}_u, \mathbf{x}_v)$, as a byproduct of gradient-based optimisation for some downstream task.
+which yields the *self-attention* operator, the core of the Transformer architecture. Assuming some kind of normalisation over the attentional coefficients (e.g. softmax), we can constrain all the scalars $a(\mathbf{x}\_u, \mathbf{x}\_v)$ to be in the range $[0, 1]$; as such, we can think of self-attention as inferring a *soft adjacency matrix*, $a_{uv} = a(\mathbf{x}\_u, \mathbf{x}\_v)$, as a byproduct of gradient-based optimisation for some downstream task.
 
 Transformers can be posed exactly as attentional GNNs over a complete graph. However, this is in apparent conflict with Transformers being initially proposed for modelling *sequences* --- the representations of $\mathbf{h}_u$ should be mindful of node $u$'s *position* in the sequence, which complete-graph aggregation would ignore. Transformers address this issue by introducing *positional encodings*: the node features $\mathbf{x}_u$ are augmented to encode node $u$'s position in the sequence, typically as samples from a sine wave whose frequency is dependent on $u$.
 
@@ -1480,7 +1480,7 @@ $$
 
 Conceptually, this can be visualised as correlating geodesic patches with a rotating filter and collecting the strongest responses.
 
-On meshes, the continuous integrals can be discretised using a construction referred to as *patch operators*. In a geodesic patch around node $u$, the neighbour nodes $\mathcal{N}_u$, represented in the local polar coordinates as $(r_{uv}, \vartheta_{uv})$, are weighted by a set of weighting functions $w_1(r, \vartheta), \ldots, w_K(r, \vartheta)$ (acting as 'soft pixels') and aggregated:
+On meshes, the continuous integrals can be discretised using a construction referred to as *patch operators*. In a geodesic patch around node $u$, the neighbour nodes $\mathcal{N}\_u$, represented in the local polar coordinates as $(r_{uv}, \vartheta\_{uv})$, are weighted by a set of weighting functions $w_1(r, \vartheta), \ldots, w_K(r, \vartheta)$ (acting as 'soft pixels') and aggregated:
 
 $$
 (x \star \theta)_u = \frac{\sum_{k=1}^{K} w_k \sum_{v \in \mathcal{N}_u} (r_{uv}, \vartheta_{uv}) x_v \, \theta_k}{\sum_{k=1}^{K} w_k \sum_{v \in \mathcal{N}_u} (r_{uv}, \vartheta_{uv}) \theta_k},

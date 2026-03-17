@@ -344,7 +344,7 @@ Consider a real function $f$ defined on the interval $[0, 1)$. If we sample its 
 
 If $\mathbf{x}$ is a real vector from $\mathbb{R}^n$, its Fourier image $\mathbf{y} = F(\mathbf{x})$ is conjugate symmetric: $y_j = \bar{y}_{n-j}$ for all $j$.
 
-Specifically, $y_0 = \bar{y}_0$ and $y_{n/2} = \bar{y}_{n/2}$, which implies that both of these values are real.
+Specifically, $y_0 = \bar{y}\_0$ and $y_{n/2} = \bar{y}\_{n/2}$, which implies that both of these values are real.
 
 </div>
 
@@ -394,7 +394,7 @@ For $0 < k < n/2$, the Fourier images of the vectors $\mathbf{e}_k$, $\mathbf{s}
 * $F(\mathbf{s}_k) = (0, \dots, 0, -\frac{n}{2}i, 0, \dots, 0, \frac{n}{2}i, 0, \dots, 0)$ where the non-zero elements are at positions $k$ and $n-k$.
 * $F(\mathbf{c}_k) = (0, \dots, 0, \frac{n}{2}, 0, \dots, 0, \frac{n}{2}, 0, \dots, 0)$ where the non-zero elements are at positions $k$ and $n-k$.
 
-While the formula for $F(\mathbf{e}_k)$ works for $k=0$ and $k=n/2$, the sines and cosines behave differently at these boundaries. $\mathbf{s}_0$ and $\mathbf{s}_{n/2}$ are zero vectors, so their transforms are also zero. $\mathbf{c}_0$ is a vector of all ones, with $F(\mathbf{c}_0) = (n, 0, \dots, 0)$. The vector $\mathbf{c}_{n/2}$ is $(1, -1, \dots, 1, -1)$, with $F(\mathbf{c}_{n/2}) = (0, \dots, 0, n, 0, \dots, 0)$, with $n$ at position $n/2$.
+While the formula for $F(\mathbf{e}\_k)$ works for $k=0$ and $k=n/2$, the sines and cosines behave differently at these boundaries. $\mathbf{s}\_0$ and $\mathbf{s}\_{n/2}$ are zero vectors, so their transforms are also zero. $\mathbf{c}\_0$ is a vector of all ones, with $F(\mathbf{c}\_0) = (n, 0, \dots, 0)$. The vector $\mathbf{c}\_{n/2}$ is $(1, -1, \dots, 1, -1)$, with $F(\mathbf{c}\_{n/2}) = (0, \dots, 0, n, 0, \dots, 0)$, with $n$ at position $n/2$.
 
 </div>
 
@@ -409,7 +409,7 @@ While the formula for $F(\mathbf{e}_k)$ works for $k=0$ and $k=n/2$, the sines a
 
 ### The Discrete Fourier Series
 
-Any conjugate symmetric vector can be formed by a real linear combination of the vectors $F(\mathbf{s}_1), \dots, F(\mathbf{s}_{n/2-1})$ and $F(\mathbf{c}_0), \dots, F(\mathbf{c}_{n/2})$. Since the DFT is a linear transformation, it follows that any real vector can be obtained by a linear combination of $\mathbf{s}_1, \dots, \mathbf{s}_{n/2-1}$ and $\mathbf{c}_0, \dots, \mathbf{c}_{n/2}$.
+Any conjugate symmetric vector can be formed by a real linear combination of the vectors $F(\mathbf{s}\_1), \dots, F(\mathbf{s}\_{n/2-1})$ and $F(\mathbf{c}\_0), \dots, F(\mathbf{c}\_{n/2})$. Since the DFT is a linear transformation, it follows that any real vector can be obtained by a linear combination of $\mathbf{s}\_1, \dots, \mathbf{s}\_{n/2-1}$ and $\mathbf{c}\_0, \dots, \mathbf{c}\_{n/2}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Discrete Fourier Series)</span></p>
@@ -424,7 +424,7 @@ Furthermore, these coefficients can be calculated from the Fourier image $\mathb
 * $\alpha_k = 2a_k/n \quad \text{for } k = 1, \dots, n/2$
 * $\beta_k = -2b_k/n \quad \text{for } k = 1, \dots, n/2-1$
 
-(Note that $\beta_0$ and $\beta_{n/2}$ are implicitly zero, corresponding to $\mathbf{s}_0$ and $\mathbf{s}_{n/2}$ being zero vectors.)
+(Note that $\beta_0$ and $\beta_{n/2}$ are implicitly zero, corresponding to $\mathbf{s}\_0$ and $\mathbf{s}\_{n/2}$ being zero vectors.)
 
 </div>
 
