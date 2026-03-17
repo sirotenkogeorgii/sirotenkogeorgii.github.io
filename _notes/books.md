@@ -12,6 +12,7 @@ date: 2024-10-20
 # Books
 
 - [The Principles of Diffusion Models](/subpages/books/the_principles_of_diffusion_models/)
+- [Non Linear Dynamics and Chaos](/subpages/books/strogatz_dynamical_systems/)
 - [Information Theory, Inference, and Learning Algorithms](/subpages/books/information_theory_mackay/)
 - [Physical Nature of Information](/subpages/books/information_theory/physical_nature_of_information/)
 - [Algorithmic Randomness and Complexity](/subpages/books/algorithmic_randomness/algorithmic_randomness_and_complexity/)

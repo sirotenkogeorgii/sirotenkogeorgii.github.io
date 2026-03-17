@@ -3617,7 +3617,7 @@ The model parameters are:
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Latent variable and observation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Latent variable and observation in GPS)</span></p>
 
 * The **true state** $z_t$ requires both position and velocity.
 * We only observe a noisy GPS measurement of the position $x_t$. This is an incomplete **observation** of the true state.
@@ -3794,8 +3794,9 @@ Q_{\text{dyn}}(A,\Sigma)
 +\text{const}.
 $$
 
-For fixed $\Sigma$, maximizing w.r.t. $A$ is equivalent to minimizing the expected quadratic form.
-Using $\mathbb E[u^\top M u]=\mathrm{tr}\!\left(M\,\mathbb E[uu^\top]\right)$,
+For fixed $\Sigma$, maximizing w.r.t. $A$ is equivalent to minimizing the expected quadratic form. 
+
+Using $\mathbb E[u^\top M u]=\mathrm{tr}\\left(M\,\mathbb E[uu^\top]\right)$,
 
 $$
 \sum_{t=2}^T \mathbb E_q[(z_t-Az_{t-1})(z_t-Az_{t-1})^\top]
@@ -4048,63 +4049,9 @@ $$p(z_t \mid x_1, \dots, x_t) = \mathcal{N}(z_t \mid m_t, V_t)$$
 
 </div>
 
-<!-- <div class="accordion">
-  <details>
-    <summary>proof</summary>
-    $$p(z_t \mid x_1, \dots, x_{t-1}) = \int p(z_t \mid z_{t-1}) p(z_{t-1} \mid x_1, \dots, x_{t-1}) dz_{t-1}$$
-    $$\int \mathcal{N}(z_t \mid A z_{t-1}, \Sigma_z) \mathcal{N}(z_{t-1} \mid m_{t-1}, V_{t-1}) dz_{t-1}$$
-    <p>The product of two Gaussian functions results in another Gaussian function (up to a scaling constant):</p>
-    $$\text{Constant} = (2\pi)^{-\frac{M}{2}}\lvert \Sigma \rvert^{-\frac{1}{2}} \cdot (2\pi)^{-\frac{M}{2}}\lvert V_{t-1} \rvert^{-\frac{1}{2}}$$
-    $$\text{Exponent} = -\frac{1}{2} \left( (z_t - Az_{t-1})^\top\Sigma^{-1}(z_t - Az_{t-1}) + (z_{t-1} - \mu_{t-1})^\top V_{t_1}^{-1}(z_{t-1} - \mu_{t-1}) \right)$$
-    <p>Collecting terms in $z_{t-1}$:</p>
-    $$= -\frac{1}{1} \Bigl[ z_{t-1}^\top \underbrace{(A^\top \Sigma^{-1} A + V^{-1}_{t-1})}_{:= H^{-1}} z_{t-1} - z_{t-1}^\top {(A^\top \Sigma^{-1} z_t + V^{-1}_{t-1}\mu_{t-1})}_{:= H^{-1}\mu}$$
-    $$- \underbrace{(z_t^\top A^\top \Sigma^{-1} A + \mu_{t-1}^\top V_{t-1}^{-1})}_{\mu^\top H^{-1}} z_{t-1} + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
-    $$= -\frac{1}{2} \Bigl[ z_{t-1}^\top H^{-1} z_{t-1} - z_{t-1}^\top H^{-1} \mu - \mu^\top H^{-1} z_{t-1}^\top$$
-    $$+ \mu^\top H^{-1}\mu - \mu^\top H^{-1}\mu$$
-    $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1} \Bigr]$$
-    $$\int (2\pi)^{-\frac{M}{2}} \underbrace{\lvert \Sigma \rvert^{-\frac{1}{2}} \cdot (2\pi)^{-\frac{M}{2}}\lvert V_{t-1} \rvert^{-\frac{1}{2}}}_{:= C}$$
-    $$\cdot \underbrace{\exp(-\frac{1}{2}(- \mu^\top H^{-1}\mu + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1} \mu_{t-1}))}_{:= \widetilde{C}} \exp(-\frac{1}{2}((z_{t-1}-\mu)^\top H^{-1}(z_{t-1}-\mu))) dz_{t-1}$$
-    $$= C \lvert H \rvert^{-\frac{1}{2}} \widetilde{C} \underbrace{\int (2\pi)^{-\frac{M}{2}} \lvert H \rvert^{-\frac{1}{2}} \exp(-\frac{1}{2}((z_{t-1}-\mu)^\top H^{-1}(z_{t-1}-\mu))) dz_{t-1}}_{=1}$$
-    $$= C \lvert H \rvert^{-\frac{1}{2}} \widetilde{C}$$
-    <p>Focus on the exponent of $\widetilde{C}$:</p>
-    $$\text{exponent}(\tilde c) := -\frac{1}{2}\Bigl(-\mu^\top H^{-1} \mu + z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1}\mu_{t-1}\Bigr)$$
-    $$= -\frac{1}{2}\Bigl[-\bigl(H(A^\top \Sigma^{-1}z_t + V_{t-1}^{-1}\mu_{t-1})\bigr)^\top H^{-1}H(A^\top \Sigma^{-1}z_t + V_{t-1}^{-1}\mu_{t-1})$$
-    $$+ z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1}\mu_{t-1}\Bigr]$$
-    $$= -\frac{1}{2}\Bigl(z_t^\top \Sigma^{-1} z_t + \mu_{t-1}^\top V_{t-1}^{-1}\mu_{t-1} - \bigl(z_t^\top \Sigma^{-1}A + \mu_{t-1}^\top V_{t-1}^{-1}\bigr)H$$
-    $$\bigl(A^\top \Sigma^{-1}z_t + V_{t-1}^{-1}\mu_{t-1}\bigr) \Bigr)$$
-    $$= -\frac{1}{2}\Bigl[\underbrace{z_t^\top\Bigl(\Sigma^{-1} - \Sigma^{-1} A H A^\top \Sigma^{-1}\Bigr)z_t}_{(\Sigma + A V_{t-1} A^\top)^{-1}}$$
-    $$- z_t^\top \underbrace{\Sigma^{-1} A H V_{t-1}^{-1}}_{(\Sigma + A V_{t-1} A^\top)^{-1}A}\mu_{t-1}$$
-    $$- \mu_{t-1}^\top \underbrace{V_{t-1}^{-1} H A^\top \Sigma^{-1}}_{A^\top(\Sigma + A V_{t-1} A^\top)^{-1}} z_t$$
-    $$+ \mu_{t-1}^\top\underbrace{\Bigl(V_{t-1}^{-1} - V_{t-1}^{-1} H V_{t-1}^{-1}\Bigr)}_{A^\top(\Sigma + A V_{t-1} A^\top)^{-1}A}\mu_{t-1}\Bigr]$$
-    $$= -\frac{1}{2}\Bigl[z_t^\top L_{t-1}^{-1} z_t - z_t^\top L_{t-1}^{-1}A\mu_{t-1}$$
-    $$- \mu_{t-1}^\top A^\top L_{t-1}^{-1} z_t + \mu_{t-1}^\top A^\top L_{t-1}^{-1}A\mu_{t-1} \Bigr]$$
-    $$= -\frac{1}{2}(z_t - A\mu_{t-1})^\top L_{t-1}^{-1}(z_t - A\mu_{t-1})$$
-    $$\quad\Longrightarrow\quad \mathcal{N}(A\mu_{t-1}, L_{t-1})$$
-    $$\Longrightarrow\quad I = \int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1} = \mathcal{N}(A\mu_{t-1},\,L_{t-1})$$
-    <p><strong>Finally:</strong></p>
-    $$p(z_t\mid x_1,\dots,x_t) = \frac{p(x_t\mid z_t)\overbrace{\int p(z_t\mid z_{t-1})p(z_{t-1}\mid x_1,\dots,x_{t-1})dz_{t-1}}^{:=I}}{p(x_t\mid x_1,\dots,x_{t-1})}$$
-    $$= \frac{\mathcal{N}(Bz_t,\Gamma)\mathcal{N}(A\mu_{t-1},L_{t-1})}{p(x_t\mid x_1,\dots,x_{t-1})}$$
-    $$\Longrightarrow\quad p(z_t\mid x_1,\ldots,x_t) = \mathcal{N}(\mu_t,V_t).$$
-    $$\Rightarrow\ \text{combining the remaining Gaussians is similar.}$$
-    <p><strong>Used identities</strong></p>
-    <p>Let</p>
-    $$H := \bigl(A^\top \Sigma^{-1}A + V_{t-1}^{-1}\bigr)^{-1}$$
-    <p>(i)</p>
-    $$(\Sigma + A V_{t-1} A^\top)^{-1} = \Sigma^{-1} - \Sigma^{-1} A H A^\top \Sigma^{-1}. $$
-    <p>(ii)</p>
-    $$(\Sigma + A V_{t-1} A^\top)^{-1}A = \Sigma^{-1} A H V_{t-1}^{-1}$$
-    <p>(iii)</p>
-    $$A^\top(\Sigma + A V_{t-1} A^\top)^{-1} = V_{t-1}^{-1} H A^\top \Sigma^{-1}$$
-    <p>(iv)</p>
-    $$A^\top(\Sigma + A V_{t-1} A^\top)^{-1}A = V_{t-1}^{-1} - V_{t-1}^{-1} H V_{t-1}^{-1}$$
-    <p>Also (as annotated):</p>
-    $$(\Sigma + A V_{t-1} A^\top)^{-1} := L_t^{-1}.$$
-  </details>
-</div> -->
-
-<div class="accordion">
-  <details>
-    <summary>proof (clean: induction + “Gaussian in information form”)</summary>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 We prove by induction that the filtering distribution is Gaussian:
 
@@ -4212,9 +4159,9 @@ Therefore $p(z_t\mid x_{1:t})$ is Gaussian, completing the induction.
   </details>
 </div>
 
-<div class="accordion">
-  <details>
-    <summary>proof (clean: affine transformation of a Gaussian)</summary>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 We assume the **filtered posterior at time $t-1$** is Gaussian:
 
@@ -4257,7 +4204,7 @@ p(z_t\mid x_{1:t-1})=\mathcal{N}\big(z_t \mid \hat m_t,\hat V_t\big),
 \hat V_t = A V_{t-1}A^\top + \Sigma_z.
 $$
 
-  </details>
+</details>
 </div>
 
 #### The Kalman Filter Recursion Equations
