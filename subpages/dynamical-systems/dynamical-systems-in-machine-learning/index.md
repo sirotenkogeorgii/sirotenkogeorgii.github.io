@@ -593,11 +593,6 @@ Two GRUs exhibit a pseudo-line attractor. Nullclines intersect at one point, but
 
 </div>
 
-<figure>
-  <img src="{{ '/assets/images/notes/dynamical-systems/line_attractor1.png' | relative_url }}" alt="Kalman Smoother Schema" loading="lazy">
-  <figcaption>A line attractor is a specific pattern of activity, created by the interconnections between brain cells, that follows the shape of a valley. In a graph showing the flow of energy among neurons over time. In the line attractor signal encoding aggression, the farther that neural energy flows along the line, the more the animal's aggressive state escalates. Then after a fight, it takes time for the neural energy to flow back out of the valley.</figcaption>
-</figure>
-
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Why do we consider only two eigenvalues?)</span></p>
 
@@ -667,7 +662,7 @@ Why not? Because the unstable mode might not appear in that coordinate.
 Example:
 
 $$
-A=\begin{pmatrix}1&0\0&-1\end{pmatrix},
+A=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
 \qquad
 x(t)=c_1 e^t \binom10 + c_2 e^{-t}\binom01.
 $$
@@ -703,7 +698,7 @@ $$\lambda=\alpha \pm i\beta$$
 
 Then the real solution is not just a sum of plain exponentials, but terms like
 
-$$e^{\alpha t}(\cos \beta t,; \sin \beta t)$$
+$$e^{\alpha t}(\cos \beta t, \sin \beta t)$$
 
 So the real behavior is:
 
@@ -788,24 +783,24 @@ So the long-time behavior is entirely controlled by how $e^{At}$ behaves as $t\t
 **If $A$ has eigenvalues with negative real part, the exponential factors decay**
 
 1. *Diagonalizable case (clean intuition)*
+   
+   If $A$ is diagonalizable, $A=V\Lambda V^{-1}$ with $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_n)$. Then
 
-If $A$ is diagonalizable, $A=V\Lambda V^{-1}$ with $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_n)$. Then
+   $$e^{At}=V e^{\Lambda t} V^{-1},\qquad e^{\Lambda t}=\mathrm{diag}(e^{\lambda_1 t},\dots,e^{\lambda_n t}).$$
 
-$$e^{At}=V e^{\Lambda t} V^{-1},\qquad e^{\Lambda t}=\mathrm{diag}(e^{\lambda_1 t},\dots,e^{\lambda_n t}).$$
-
-If $\operatorname{Re}(\lambda_i)<0$, then
+   If $\operatorname{Re}(\lambda_i)<0$, then
 
 $$\lvert e^{\lambda_i t}\rvert = e^{\operatorname{Re}(\lambda_i)t}\to 0.$$
 
 So every eigen-direction is multiplied by a decaying factor, which forces $e^{At}x_0\to 0$ for any initial state $x_0$. (The change of basis $V,V^{-1}$ only distorts by constant factors; it doesn’t change “decays to zero” into “doesn’t decay.”)
 
-2. *Complex eigenvalues: spirals are just “oscillation × decay”*
+1. *Complex eigenvalues: spirals are just “oscillation × decay”*
+   
+   If $\lambda=\alpha\pm i\omega$, the real solutions look like
 
-If $\lambda=\alpha\pm i\omega$, the real solutions look like
+   $$e^{\alpha t}\big(\cos(\omega t)u + \sin(\omega t)w\big),$$
 
-$$e^{\alpha t}\big(\cos(\omega t),u + \sin(\omega t),w\big),$$
-
-for some real vectors $u,w$. The ($\cos$/$\sin$) part just rotates/oscillates, while the amplitude is scaled by $e^{\alpha t}$. If $\alpha<0$, the amplitude shrinks to 0, so trajectories spiral inward.
+   for some real vectors $u,w$. The ($\cos$/$\sin$) part just rotates/oscillates, while the amplitude is scaled by $e^{\alpha t}$. If $\alpha<0$, the amplitude shrinks to $0$, so trajectories spiral inward.
 
 **Even if $A$ is not diagonalizable, negative real parts still win**
 
@@ -817,7 +812,7 @@ $$t^k e^{\lambda t}$$
 
 $$t^k e^{\operatorname{Re}(\lambda)t}.$$
 
-If $\operatorname{Re}(\lambda)<0$, the exponential decay dominates any polynomial factor $t^k$, so these terms still go to 0. Hence $e^{At}\to 0$ and therefore $x(t)\to 0$.
+If $\operatorname{Re}(\lambda)<0$, the exponential decay dominates any polynomial factor $t^k$, so these terms still go to $0$. Hence $e^{At}\to 0$ and therefore $x(t)\to 0$.
 
 A common way to summarize this is:
 
@@ -848,7 +843,6 @@ this becomes very simple:
 So in the linear case, yes: these manifolds are exactly the corresponding **eigenspaces / invariant subspaces**.
 
 More precisely, for a diagonalizable linear system:
-
 
 $$E^s = \operatorname{span}\lbrace v_i : \Re(\lambda_i)<0\rbrace$$
 
@@ -884,21 +878,13 @@ An equilibrium point is called **hyperbolic** if none of its eigenvalues have a 
 
 ### General Solutions for Linear Systems
 
-This chapter generalizes our understanding of linear dynamical systems. We will move beyond the specific case of systems with distinct eigenvalues to introduce a universal solution applicable to any linear system, articulated by the Fundamental Theorem of Linear Dynamical Systems.
-
-### Recap: The Eigenvector-Based Solution
-
 We previously considered linear dynamical systems defined by systems of ordinary differential equations (ODEs) of the form:
 
 $$\dot{\mathbf{x}} = A \mathbf{x}$$
 
 where $\mathbf{x} \in \mathbb{R}^m$ is the state vector and $A$ is a square $m \times m$ matrix.
 
-Under the strong assumption that the matrix $A$ has distinct eigenvalues ($\lambda_i$) and that its corresponding eigenvectors ($\mathbf{v}_i$) form a basis for the space, we derived a general solution. This solution expresses the evolution of the system, $\mathbf{x}(t)$, from an initial condition $\mathbf{x}_0$ as a linear combination of exponential and oscillatory terms:
-
-$$\mathbf{x}(t) = \sum_{i=1}^{m} c_i e^{\lambda_i t} \mathbf{v}_i = \sum_{i=1}^{m} c_i e^{\alpha_i t} (\cos(\omega_i t) + i \sin(\omega_i t)) \mathbf{v}_i$$
-
-Here, the eigenvalues $\lambda_i = \alpha_i + i\omega_i$ are split into their real parts ($\alpha_i$), which govern exponential growth or decay, and their imaginary parts ($\omega_i$), which govern oscillations. The coefficients $c_i$ are determined by the initial conditions.
+Under the strong assumption that the matrix $A$ has distinct eigenvalues ($\lambda_i$) and that its corresponding eigenvectors ($\mathbf{v}_i$) form a basis for the space, we derived a general solution. This solution expresses the evolution of the system, $\mathbf{x}(t)$, from an initial condition $\mathbf{x}_0$ as a linear combination of exponential and oscillatory terms.
 
 This formulation allowed us to classify various types of equilibria (fixed points), such as stable/unstable nodes, saddles, stable/unstable spirals, and centers. However, the initial assumptions are restrictive. They do not cover all possible linear systems, specifically those where eigenvalues are repeated. To address this, we must develop a more general framework.
 
@@ -915,6 +901,13 @@ $$A_1 = S A_2 S^{-1}$$
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Dynamics of Similar Matrices)</span></p>
+
+All similar matrices have the same dynamics
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition behind Similar Matrices)</span></p>
 
@@ -926,26 +919,26 @@ The matrix $S$ represents an invertible transformation, or a change of variables
 
 For any $2 \times 2$ matrix, it can be shown that it is similar to one of three distinct canonical forms. These forms represent the fundamental classes of dynamics possible in two-dimensional linear systems.
 
-1. **Distinct Real Eigenvalues:** The matrix is similar to a diagonal form. 
-   
-   $$A \sim \begin{pmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{pmatrix} $$
+1. **Distinct Real Eigenvalues:** The matrix is similar to a diagonal form.
 
-  * **Eigenvalues:** has the two real eigenvalues $λ_1 = a$ and $λ_2 = b$.
-  * **Dynamics:** This form corresponds to dynamics without an oscillatory component, such as saddles and stable/unstable nodes.
-  
-2. **Complex Conjugate Eigenvalues:** The matrix is similar to a form representing rotation and scaling. 
-   
+   $$A \sim \begin{pmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{pmatrix}$$
+
+   - **Eigenvalues:** The matrix has two real eigenvalues, $\lambda_1 = a$ and $\lambda_2 = b$.
+   - **Dynamics:** This form corresponds to dynamics without an oscillatory component, such as saddles and stable or unstable nodes.
+
+2. **Complex Conjugate Eigenvalues:** The matrix is similar to a form representing rotation and scaling.
+
    $$A \sim \begin{pmatrix} a & -b \\ b & a \end{pmatrix}$$
 
-  * **Eigenvalues:** has the two complex eigenvalues $λ_{1,2} = a\pm ib$.
-  * **Dynamics:** Eigenvalues for such a matrix come in complex conjugate pairs. This form can be decomposed into a scaling component (related to $a$) and a rotational component (related to $b$). This gives rise to spirals (stable if $a<0$, unstable if $a>0$) and centers (if $a=0$).
-  
-3. **Repeated Eigenvalues (Degenerate Case):** This is the case our previous solution did not cover. The matrix is similar to the form:
-   
-  $$A \sim \begin{pmatrix} a & 1 \\ 0 & a \end{pmatrix}$$
+   - **Eigenvalues:** The matrix has two complex eigenvalues, $\lambda_{1,2} = a \pm ib$.
+   - **Dynamics:** Eigenvalues for such a matrix come in complex conjugate pairs. This form can be decomposed into a scaling component (related to $a$) and a rotational component (related to $b$). This gives rise to spirals (stable if $a<0$, unstable if $a>0$) and centers (if $a=0$).
 
-  * **Eigenvalues:** has only the one eigenvalue $\lambda_1 = a$.
-  * **Dynamics:** This matrix has one eigenvalue, $a$, with a multiplicity of two. However, it only has one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space; instead, two eigenvector directions align. The dynamics ultimately collapse into a one-dimensional space, with all trajectories aligning with the single eigenvector direction. The specific path of convergence or divergence depends on the initial conditions and the value of $a$.
+3. **Repeated Eigenvalues (Degenerate Case):** This is the case our previous solution did not cover. The matrix is similar to the form
+
+   $$A \sim \begin{pmatrix} a & 1 \\ 0 & a \end{pmatrix}$$
+
+   - **Eigenvalues:** The matrix has only one eigenvalue, $\lambda_1 = a$.
+   - **Dynamics:** This matrix has one eigenvalue, $a$, with algebraic multiplicity two. However, it has only one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space. The dynamics align with the single eigenvector direction, and the specific behavior depends on the initial conditions and the value of $a$.
 
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/DefectiveRepeatedEigenvalueSystem.png' | relative_url }}" alt="a" loading="lazy">
@@ -1012,7 +1005,7 @@ $$\dot{\mathbf{x}} = A \mathbf{x}$$
 
 $$\mathbf{x}(0) = \mathbf{x}_0$$
 
-has a unique solution $x:\mathbb{R}\to \mathbb{R}^n$ of the form:
+has a **unique solution** $x:\mathbb{R}\to \mathbb{R}^n$ of the form:
 
 $$\mathbf{x}(t) = e^{At} \mathbf{x}_0 = \sum_{k=0}^{\infty} \frac{(At)^k}{k!} x_0,$$
 
@@ -1061,7 +1054,6 @@ While the matrix exponential provides a powerful general solution, it is importa
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
 
-
 Let's demonstrate that for a diagonalizable matrix $A$, the two solution forms are equivalent.
 
 1. Recall the eigenvector-based solution in matrix form. The initial condition $\mathbf{x}_0$ is a linear combination of eigenvectors: $\mathbf{x}_0 = \sum c_i \mathbf{v}_i$. In matrix form, this is $\mathbf{x}_0 = V\mathbf{c}$, where $V$ is the matrix whose columns are the eigenvectors $\mathbf{v}_i$ and $\mathbf{c}$ is the vector of coefficients $c_i$. Since the eigenvectors form a basis, $V$ is invertible, so $\mathbf{c} = V^{-1}\mathbf{x}_0$.
@@ -1095,9 +1087,7 @@ Let's demonstrate that for a diagonalizable matrix $A$, the two solution forms a
 
 This is identical to the matrix form of the eigenvector-based solution. The two forms are fully consistent when the matrix $A$ is diagonalizable.
 
-
 </div>
-
 
 #### The Degenerate Case: Repeated Eigenvalues
 
@@ -1141,9 +1131,11 @@ An affine system introduces a constant vector term, shifting the dynamics in sta
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Affine System of ODEs)</span></p>
 
+An affine or inhomogeneous linear system of ordinary differential equations is defined by:  
 
-An affine or inhomogeneous linear system of ordinary differential equations is defined by:  $\dot{x} = Ax + b$  where $x, b \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix.
+$$\dot{x} = Ax + b$$
 
+where $x, b \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix.
 
 </div>
 
@@ -1151,7 +1143,7 @@ An affine or inhomogeneous linear system of ordinary differential equations is d
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Shifting the Equilibrium)</span></p>
 
 
-The addition of the constant vector b does not alter the fundamental dynamics of the system, which are dictated by the matrix A. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
+The addition of the constant vector b does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
 
 To understand this, we first locate the new equilibrium, or fixed point, by finding the point $x^{\ast}$ where the flow is zero ($\dot{x}=0$).
 
@@ -1167,26 +1159,25 @@ This point $x^{\ast}$ is our new equilibrium, shifted from the origin.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Equivalence of Dynamics via Change of Variables)</span></p>
 
-
 We can formally prove that the dynamics remain the same by defining a new variable y that represents the state relative to the fixed point $x^{\ast}$.
 
-1. Define a new variable: Let $y = x - x^{\ast}$. This is equivalent to $x = y + x^{\ast}$.
-2. Consider the dynamics of the new variable: The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^{\ast}$ is a constant and its derivative is zero.
-3. Substitute into the original equation: We can now express $\dot{y}$ in terms of $y$
+1. **Define a new variable:** Let $y = x - x^{\ast}$. This is equivalent to $x = y + x^{\ast}$.
+2. **Consider the dynamics of the new variable:** The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^{\ast}$ is a constant and its derivative is zero.
+3. **Substitute into the original equation:** We can now express $\dot{y}$ in terms of $y$
    
    $\dot{y} = \dot{x} = Ax + b$  
    
    Substitute $$x = y + x^{\ast}: \dot{y} = A(y + x^{\ast}) + b = Ay + Ax^{\ast} + b$$  
    
-  Now, substitute the expression for the fixed point, $x^{\ast} = -A^{-1}b$:
+   Now, substitute the expression for the fixed point, $x^{\ast} = -A^{-1}b$:
    
-  $$\dot{y} = Ay + A(-A^{-1}b) + b = Ay - b + b$$
+   $$\dot{y} = Ay + A(-A^{-1}b) + b = Ay - b + b$$
 
-4. Result: The dynamics for the new variable are:
+4. **Result:** The dynamics for the new variable are:
    
-  $$\dot{y} = Ay$$
+   $$\dot{y} = Ay$$
    
-  This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^{\ast}$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers $x(t) = y(t) + x^{\ast}$.
+   This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^{\ast}$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers $x(t) = y(t) + x^{\ast}$.
 
 
 </div>
@@ -1194,9 +1185,7 @@ We can formally prove that the dynamics remain the same by defining a new variab
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Non-Invertible Case)</span></p>
 
-
 If the matrix $A$ is not invertible, it possesses at least one zero eigenvalue. In this scenario, a unique fixed point does not exist. This corresponds to the case of a center or, more generally, a line attractor (or plane/hyperplane attractor in higher dimensions). The system has a continuous manifold of equilibrium points along the direction of the eigenvector(s) associated with the zero eigenvalue(s).
-
 
 </div>
 
@@ -1208,55 +1197,55 @@ We now consider systems where the dynamics are explicitly influenced by time, dr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Non-autonomous System with Forcing Function)</span></p>
 
-
 A non-autonomous linear system with a forcing function $f(t)$ is defined as a system that explicitly depends on time. For simplicity, we will analyze the scalar case:
 
 $$\dot{x} = ax + f(t)$$ 
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variation of Parameters)</span></p>
 
-
 To solve this type of equation, we employ a powerful technique known as variation of parameters. The logic is as follows: we know the solution to the homogeneous part of the equation ($\dot{x} = ax$) is $x(t) = C e^{at}$, where $C$ is a constant. We now "promote" this constant to a time-dependent function, $k(t)$, and propose an ansatz (an educated guess) for the full solution that has a similar form. This allows the solution to adapt to the time-varying influence of $f(t)$.
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Solution)</span></p>
 
+1. **Formulate the ansatz:** Let the solution be of the form
 
-1. Formulate the ansatz: Let the solution be of the form $x(t) = (h(t) + C)e^{at}$, where $h(t)$ is an unknown function we need to determine and $C$ is a constant of integration.
-2. Take the temporal derivative: Using the product rule, the derivative of our ansatz is:
-  
-  $$\dot{x}(t) = \frac{d}{dt}[(h(t) + C)e^{at}] = \dot{h}(t)e^{at} + a(h(t) + C)e^{at}$$ 
+   $$x(t) = (h(t) + C)e^{at}$$
 
-3. Equate with the original ODE: The definition of the system states that $\dot{x} = ax + f(t)$. We can substitute our ansatz for $x(t)$ into this definition:
-   
-  $$\dot{x}(t) = a[(h(t) + C)e^{at}] + f(t)$$
+   where $h(t)$ is an unknown function we need to determine and $C$ is a constant of integration.
 
-4. Compare the two expressions for $\dot{x}(t)$:
-   
-  $$\dot{h}(t)e^{at} + (h(t) + C)ae^{at} = a(h(t) + C)e^{at} + f(t)$$
-  
-  The term $(h(t) + C)ae^{at}$ appears on both sides and cancels out.
-5. Isolate the derivative of $h(t)$: We are left with a simple expression:
-  
-  $$\dot{h}(t)e^{at} = f(t)$$  
-  
-  Multiplying through by $e^{-at}$ gives:  
-  
-  $$\dot{h}(t) = f(t)e^{-at}$$ 
+2. **Take the temporal derivative:** Using the product rule, the derivative of our ansatz is:
 
-6. Integrate to find $h(t)$: To find the function $h(t)$, we integrate both sides with respect to time:
-   
-  $$h(t) = \int f(t)e^{-at} dt$$ 
+   $$\dot{x}(t) = \frac{d}{dt}[(h(t) + C)e^{at}] = \dot{h}(t)e^{at} + a(h(t) + C)e^{at}$$
+
+3. **Equate with the original ODE:** The definition of the system states that $\dot{x} = ax + f(t)$. We can substitute our ansatz for $x(t)$ into this definition:
+
+   $$\dot{x}(t) = a[(h(t) + C)e^{at}] + f(t)$$
+
+4. **Compare the two expressions for $\dot{x}(t)$:**
+
+   $$\dot{h}(t)e^{at} + (h(t) + C)ae^{at} = a(h(t) + C)e^{at} + f(t)$$
+
+   The term $(h(t) + C)ae^{at}$ appears on both sides and cancels out.
+
+5. **Isolate the derivative of $h(t)$:** We are left with a simple expression:
+
+   $$\dot{h}(t)e^{at} = f(t)$$
+
+   Multiplying through by $e^{-at}$ gives:
+
+   $$\dot{h}(t) = f(t)e^{-at}$$
+
+6. **Integrate to find $h(t)$:** To find the function $h(t)$, we integrate both sides with respect to time:
+
+   $$h(t) = \int f(t)e^{-at}\,dt$$
 
 The full solution to the non-autonomous equation is therefore found by computing this integral for $h(t)$ and substituting it back into our original ansatz. This method provides a general recipe for solving first-order linear ODEs with a forcing function.
-
 
 </div>
 
@@ -1267,7 +1256,6 @@ Many dynamical systems, including various types of recurrent neural networks, ar
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
-
 
 A discrete-time autonomous dynamical system is defined by a recursive prescription:  
 
@@ -1318,7 +1306,6 @@ Another powerful way to illustrate this solution is to plot $x_{t+1}$ as a funct
 
 </div>
 
-
 ### One-Dimensional Discrete-Time Linear Systems
 
 We begin our exploration with the simplest case: a one-dimensional, discrete-time linear system. These systems, while seemingly basic, exhibit a rich set of behaviors that provide a foundational understanding for more complex, higher-dimensional systems.
@@ -1331,7 +1318,6 @@ A one-dimensional discrete-time linear system is described by a recursive relati
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(1D Linear Map)</span></p>
 
 The state $x_{t+1}$ of the system at time $t+1$ is given by an affine transformation of its state $x_t$ at time $t$:
-
 
 $$x_{t+1} = f(x_t) = ax_t + b$$
 
@@ -1348,11 +1334,10 @@ To gain a deeper intuition for the system's evolution over time, we can visualiz
 
 The Cobweb Plot The Cobweb Plot is a powerful geometric technique for visualizing the trajectory of a discrete-time system. It provides an immediate feel for whether the system converges to a specific value, diverges to infinity, or exhibits other behaviors. The procedure is as follows:
 
-
-1. Initialization: Start with an initial condition, $x_0$, on the horizontal axis.
-2. Evaluation: Move vertically from $x_0$ to the function line $x_{t+1} = ax_t + b$. The height of this point gives the next state, $x_1$.
-3. Iteration: To use $x_1$ as the next input, move horizontally from the point on the function line to the bisectrix ($x_{t+1} = x_t$). This transfers the output value $x_1$ to the horizontal axis, preparing it for the next iteration.
-4. Repeat: From this new point on the bisectrix, move vertically again to the function line to find $x_2$, then horizontally to the bisectrix, and so on.
+1. **Initialization:** Start with an initial condition, $x_0$, on the horizontal axis.
+2. **Evaluation:** Move vertically from $x_0$ to the function line $x_{t+1} = ax_t + b$. The height of this point gives the next state, $x_1$.
+3. **Iteration:** To use $x_1$ as the next input, move horizontally from the point on the function line to the bisectrix ($x_{t+1} = x_t$). This transfers the output value $x_1$ to the horizontal axis, preparing it for the next iteration.
+4. **Repeat:** From this new point on the bisectrix, move vertically again to the function line to find $x_2$, then horizontally to the bisectrix, and so on.
 
 The path traced by these movements often resembles a spider's web, spiraling inwards or outwards, which gives the method its name.
 
@@ -1391,7 +1376,6 @@ The path traced by these movements often resembles a spider's web, spiraling inw
   </figure>
 </div>
 
-
 </div>
 
 #### Fixed Points in One Dimension
@@ -1417,7 +1401,6 @@ If the system is initialized at a fixed point, it will remain there for all futu
 
 View of Fixed Points Geometrically, a fixed point is simply the intersection of the function graph $y = f(x)$ and the bisectrix $y=x$. At this specific point, the input to the function is exactly equal to its output, satisfying the definition $x^{\ast} = f(x^{\ast})$.
 
-
 </div>
 
 ##### Algebraic Solution
@@ -1428,7 +1411,6 @@ We can find the fixed point not only graphically but also by solving the definin
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the 1D Fixed Point)</span></p>
 
 To find the fixed point $x^{\ast}$, we set the output equal to the input according to the definition:
-
 
 $$x^{\ast} = ax^{\ast} + b$$
 
@@ -1443,7 +1425,6 @@ Assuming $a \neq 1$, we can divide by $(1-a)$ to find the unique fixed point:
 $$x^{\ast} = \frac{b}{1-a}$$
 
 This algebraic solution precisely matches the limiting solution for convergent systems and identifies the point of intersection on the cobweb plot.
-
 
 </div>
 
@@ -1460,14 +1441,12 @@ If the absolute value of the slope is less than one, any initial condition will 
 
 A fixed point $x^{\ast}$ is stable if trajectories starting near $x^{\ast}$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
 On the Cobweb Plot, a slope with $\lvert a\rvert < 1$ is less steep than the bisectrix. This geometric configuration ensures that each step of the cobweb construction brings the state closer to the intersection point, causing the "web" to spiral inwards towards the fixed point.
-
 
 </div>
 
@@ -1479,7 +1458,6 @@ If the absolute value of the slope is greater than one, the system will diverge 
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unstable Fixed Point)</span></p>
 
 A fixed point $x^{\ast}$ is unstable if trajectories starting near $x^{\ast}$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
-
 
 </div>
 
@@ -1500,17 +1478,15 @@ The case where the slope has an absolute value of exactly one represents a bound
 
 A point or system is neutrally stable if nearby trajectories neither converge towards nor diverge away from it, but instead remain in a bounded orbit. This occurs when $\lvert a\rvert = 1$.
 
-
 We must consider two sub-cases:
 
-* Case 1: $a = 1$ 
+* **Case 1:** $a = 1$ 
   * If $b \neq 0$, the system becomes $x_{t+1} = x_t + b$. This represents linear divergence, as a constant amount $b$ is added at each time step. There is no fixed point.
   * If $b = 0$, the system is $x_{t+1} = x_t$. In this scenario, every point is a fixed point. This is sometimes referred to as a line attractor, as there is a continuous set of fixed points.
-* Case 2: $a = -1$
+* **Case 2:** $a = -1$
   * The system takes the form $x_{t+1} = -x_t + b$. This leads to oscillatory behavior.
   * If $b=0$, the system $x_{t+1} = -x_t$ simply flips the sign at each step (e.g., $x_0, -x_0, x_0, \dots$).
   * If $b \neq 0$, the system oscillates between two distinct values. This is known as a flip oscillation.
-
 
 </div>
 
@@ -1519,11 +1495,11 @@ We must consider two sub-cases:
 
 Consider the system $x_{t+1} = -x_t + 1$. Let the initial state be $x_1 = 2$.
 
-
 * $x_2 = -x_1 + 1 = -(2) + 1 = -1$
 * $x_3 = -x_2 + 1 = -(-1) + 1 = 2$
-* $x_4 = -x_3 + 1 = -(2) + 1 = -1$ The system enters a stable 2-cycle, oscillating between the values 2 and -1. The amplitude of this oscillation depends on the initial value, but the oscillatory nature is preserved. This behavior is analogous to the center case in systems of linear differential equations, where solutions form a continuous set of stable orbits.
-
+* $x_4 = -x_3 + 1 = -(2) + 1 = -1$ 
+  
+The system enters a stable 2-cycle, oscillating between the values $2$ and $-1$. The amplitude of this oscillation depends on the initial value, but the oscillatory nature is preserved. This behavior is analogous to the center case in systems of linear differential equations, where solutions form a continuous set of stable orbits.
 
 </div>
 
@@ -1532,9 +1508,7 @@ Consider the system $x_{t+1} = -x_t + 1$. Let the initial state be $x_1 = 2$.
 
 The spectrum of solutions observed in discrete-time linear systems—stable and unstable fixed points, and mutually stable oscillations—is precisely the same class of solutions found in continuous-time linear systems of ordinary differential equations. This parallel provides a powerful conceptual bridge between the two domains.
 
-
 </div>
-
 
 ### Higher-Dimensional Discrete-Time Linear Systems
 
@@ -1564,7 +1538,6 @@ The definition of a fixed point remains the same: it is a point that is mapped o
 
 Let $\vec{x}^{\ast}$ be a fixed point. It must satisfy the condition $\vec{x}^{\ast} = A\vec{x}^{\ast} + \vec{b}$. We solve for $\vec{x}^{\ast}$:
 
-
 $$\vec{x}^{\ast} - A\vec{x}^{\ast} = \vec{b}$$
 
 $$(I - A)\vec{x}^{\ast} = \vec{b}$$
@@ -1574,7 +1547,6 @@ where $I$ is the $m \times m$ identity matrix. If the matrix $(I-A)$ is invertib
 $$\vec{x}^{\ast} = (I-A)^{-1}\vec{b}$$
 
 If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does not exist. In this case, the system may have no fixed points or a continuous set of fixed points, such as a line attractor or a higher-dimensional manifold attractor.
-
 
 </div>
 
@@ -1587,9 +1559,7 @@ To understand the system's trajectory, we analyze the behavior of the map when i
 
 For the system $\vec{x}_{t+1} = A\vec{x}_t$, the state at time $T$ is related to the initial state $\vec{x}_1$ by:
 
-
 $$\vec{x}_T = A^{T-1}\vec{x}_1$$ 
-
 
 </div>
 
@@ -1649,7 +1619,6 @@ We begin our formal study by introducing a concept central to understanding how 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Flow Map (or Flow Operator))</span></p>
 
-
 For a linear system of differential equations of the form $\dot{x} = Ax$, with an initial condition $x(0) = x_0$, the solution is given by:
 
 $$x(t) = e^{At} x_0$$
@@ -1660,18 +1629,14 @@ More generally, we can define a flow map, denoted by $\phi$, which is a function
 
 $$\phi(t, x_0) = e^{At} x_0$$
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name"></span></p>
 
-
 You can visualize the flow map as a mechanism that takes a set of initial conditions and "transports" it forward in time by an amount $t$ to a new location in the state space. If you vary the time $t$, the path traced out by a single initial point $x_0$ is called its orbit or trajectory.
 
-
 </div>
-
 
 #### From Continuous to Discrete Time: The Sampling Equivalence
 
@@ -1695,7 +1660,6 @@ We can define a new matrix that encapsulates this discrete-time evolution.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete-Time Equivalent Matrix)</span></p>
 
-
 Let a continuous-time linear system be defined by $\dot{x} = Ax$. Its equivalent discrete-time evolution matrix, $\tilde{A}$, for a sampling time step $\Delta t$ is defined as:
 
 $$\tilde{A} = e^{A \Delta t}$$
@@ -1706,15 +1670,29 @@ $$x_{n+1} = \tilde{A} x_n$$
 
 where $x_n$ represents the state at time $t = n \Delta t$.
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 This linear map is equivalent to the continuous-time linear ODE system in a specific sense: for the same initial condition $x_0$, the solutions of the discrete and continuous systems agree exactly at the sampling points $t = n \Delta t$. The construction of $\tilde{A}$ ensures this correspondence, as it is precisely the flow operator for a duration of $\Delta t$.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Equivalent Discrete-Time System)</span></p>
+
+* **Left:** a continuous-time trajectory for $\dot x = Ax$, with states sampled every $\Delta t$.
+* **Arrows between sample points:** the flow map $x_{n+1}=\phi(\Delta t,x_n)$.
+* **Right:** the corresponding discrete-time evolution of the sampled states, governed by
+  
+  $$x_{n+1}=\tilde A x_n, \qquad \tilde A=e^{A\Delta t}$$
+  
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/EquivalentDiscreteTimeSystem.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+So the picture makes the key point explicit: the discrete system is not an approximation here, but the **exact sampled version** of the continuous linear system at times $t=n\Delta t$.
 
 </div>
 
@@ -1735,12 +1713,15 @@ where $\tilde{A}$ is defined as before: $\tilde{A} = e^{A \Delta t}$.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Determining the Discrete Offset)</span></p>
 
-
 To find the corresponding offset vector $b$, we can enforce the condition that the fixed points of both the continuous and discrete systems must be identical.
 
-1. Find the fixed point of the continuous system: Set $\dot{x} = 0. 0 = Ax^{\ast} + c \implies x^{\ast} = -A^{-1}c$
-2. Find the fixed point of the discrete system: Set $x_{n+1} = x_n = x^{\ast}$. $x^{\ast} = \tilde{A}x^{\ast} + b \implies (I - \tilde{A})x^{\ast} = b$
-3. Equate and Solve for $b$: By substituting the expression for $x^{\ast}$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
+1. **Find the fixed point of the continuous system:** 
+   1. Set $\dot{x} = 0$. 
+   2. $0 = Ax^{\ast} + c \implies x^{\ast} = -A^{-1}c$
+2. **Find the fixed point of the discrete system:** 
+   1. Set $x_{n+1} = x_n = x^{\ast}$. 
+   2. $x^{\ast} = \tilde{A}x^{\ast} + b \implies (I - \tilde{A})x^{\ast} = b$
+3. **Equate and Solve for $b$:** By substituting the expression for $x^{\ast}$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
 
 </div>
 
@@ -1769,17 +1750,14 @@ Let's revisit the concept of a line attractor, a continuous set of neutrally sta
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Detuning for Arbitrary Time Constants)</span></p>
 
-
 What happens if we slightly "detune" the system, so the nullclines no longer perfectly overlap but are very close? The vector field, which was exactly zero on the line attractor, will now be non-zero but very small in the "channel" between the slightly separated nullclines.
 
 This has a profound consequence: by making subtle changes to the system's parameters (e.g., the slopes of the nullclines), we can create dynamics that evolve on arbitrarily long time scales. The system can be made to move extremely slowly without introducing any large physical time constants. This ability to generate a wide range of temporal scales is fundamental for complex information processing.
-
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Addition Problem in Machine Learning)</span></p>
-
 
 A classic benchmark for recurrent neural networks is the addition problem. The network receives two input streams:
 1. A sequence of real numbers between 0 and 1.
@@ -1791,7 +1769,6 @@ A line attractor provides a simple and elegant solution. A two-unit PL-RNN can s
 * Integration and Storage: One unit integrates the input values (when the indicator bit is active) and stores the running total as a state on a line attractor. The system's state remains stable on this line, effectively acting as a memory device.
 * Final Output: Once the sequence is complete, the final state on the line attractor represents the total sum.
 
-
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1799,9 +1776,7 @@ A line attractor provides a simple and elegant solution. A two-unit PL-RNN can s
 
 This is not merely a machine learning construct. There is evidence for the existence of line attractors, plane attractors, and even torus attractors (shaped like a donut) in biological brains, for example, in the hippocampus, an area critical for memory and navigation.
 
-
 </div>
-
 
 ### The Flow Map and Trajectories
 
@@ -1846,7 +1821,12 @@ $$\phi_t(\phi_{-t}(x)) = x$$
 
 </div>
 
-* Remark/Intuition: Imagine a particle tracing a path in the state space. It should not matter whether you calculate its position after 5 seconds by moving it forward 2 seconds and then 3 seconds, or by moving it 3 seconds and then 2 seconds. The final position must be the same as moving it forward for 5 seconds directly. This consistency is fundamental.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition)</span></p>
+
+Imagine a particle tracing a path in the state space. It should not matter whether you calculate its position after 5 seconds by moving it forward 2 seconds and then 3 seconds, or by moving it 3 seconds and then 2 seconds. The final position must be the same as moving it forward for 5 seconds directly. This consistency is fundamental.
+
+</div>
 
 #### Trajectories and Orbits
 
@@ -1866,9 +1846,7 @@ $$\gamma(x_0) = \lbrace \phi_t(x_0) \mid t \in T \rbrace$$
 
 A critical feature of a well-defined dynamical system is the uniqueness of its trajectories. For any given initial point $x_0$, there can be only one trajectory passing through it. If two different curves could originate from the same starting point, it would imply that the state space is missing crucial information needed to predict the future state, and we would not have a deterministic dynamical system. We will explore the conditions that guarantee this uniqueness in the next chapter.
 
-
 </div>
-
 
 ### Existence and Uniqueness of Solutions
 
@@ -1883,14 +1861,12 @@ The unfortunate answer is no, unique solutions are not guaranteed for all system
 
 Consider the following initial value problem:
 
-
 $$\dot{x} = 3x^{2/3}, \quad x(0) = 0$$
 
 This system has two distinct solutions that satisfy the initial condition:
 
-1. The Trivial Solution: $u(t) = 0$
-2. A Non-trivial Solution: $v(t) = t^3$
-
+1. **The Trivial Solution:** $u(t) = 0$
+2. **A Non-trivial Solution:** $v(t) = t^3$
 
 </div>
 
@@ -1899,15 +1875,12 @@ This system has two distinct solutions that satisfy the initial condition:
 
 We must verify that both functions satisfy the differential equation and the initial condition.
 
-
 * For $u(t) = 0$:
   * Initial Condition: $u(0) = 0$, which is satisfied.
   * Differential Equation: The time derivative is $\dot{u}(t) = 0$. Plugging into the equation gives $0 = (0)^{2/3} = 0$. The equation holds.
 * For $v(t) = t^3$:
   * Initial Condition: $v(0) = 0^3 = 0$, which is satisfied.
   * Differential Equation: The time derivative is $\dot{v}(t) = 3t^2 = 3v^{2/3}$. 
-  
-
 
 </div>
 
@@ -1916,11 +1889,62 @@ We must verify that both functions satisfy the differential equation and the ini
 
 The problem lies at the point $x=0$. The vector field $f(x) = 3x^{2/3}$ is continuous at $x=0$, but it is not continuously differentiable there. Let's examine its derivative with respect to the dynamical variable $x$:
 
- 
  $$\frac{df}{dx} = \frac{d}{dx}(3x^{2/3}) = 2x^{-1/3}$$
  
 This derivative is undefined at $x=0$. This lack of smoothness in the vector field is precisely what allows for multiple solution paths to emerge from the same point.
+  
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/EquivalentDiscreteTimeSystem.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
+The key picture is already clear: the slope field is continuous along $x=0$, but the derivative with respect to $x$ blows up there, so uniqueness can fail.
+
+Here is the plot of the slope field for the ODE
+
+together with several solution curves that all pass through the same initial point $(0,0)$:
+
+A few key facts:
+
+$$f(x)=3x^{2/3}$$
+
+is **continuous at $x=0$** because
+
+$$\lim_{x\to 0} 3x^{2/3}=0=f(0)$$
+
+But it is **not continuously differentiable there**. For $x\neq 0$,
+
+$$f'(x)=2x^{-1/3},$$
+
+which blows up as $x\to 0$, so $f'$ does not extend continuously to $0$. In fact, $f$ is not even differentiable at $0$.
+
+That is exactly why uniqueness breaks down. The usual uniqueness theorem needs at least local Lipschitz regularity in $x$, and this vector field fails that at $0$. As a result, multiple solution paths can emerge from the same point $(0,0)$, including
+
+$$x(t)\equiv $$
+
+and also the delayed solutions
+
+$$
+x_a(t)=
+\begin{cases}
+0, & t\le a,\\
+(t-a)^3, & t\ge a,
+\end{cases}
+\qquad a\ge 0.
+$$
+
+So the lack of smoothness at $0$ is precisely what allows several distinct trajectories to start from the same initial condition.
+
+<div class="pmf-grid">
+
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/continuous_function_at_0.png' | relative_url }}" alt="a" loading="lazy">
+    
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/discontinuous_derivative_at_0.jpeg' | relative_url }}" alt="a" loading="lazy">
+    
+  </figure>
+</div>
 
 </div>
 
@@ -1952,9 +1976,7 @@ This integral expression is sometimes referred to as the solution operator.
 
 This theorem is the bedrock for much of dynamical systems theory. It tells us that as long as our system's rules of evolution (the vector field $f$) are smooth, we don't have to worry about non-uniqueness. The solution might not exist for all time (it could "blow up" in finite time), but in some local time interval around our starting point, the path is uniquely determined. While the integral form of the solution is general, it may not be solvable analytically and often requires a numerical solver.
 
-
 </div>
-
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bedrock for much of dynamical systems theory)</span></p>
@@ -1978,7 +2000,6 @@ Let an IVP be given. Let $f$ be globally Lipschitz-continuous with respect to $x
 
 </div>
 
-
 #### On Solving Non-Linear Systems
 
 While the theorem guarantees the existence of a unique solution for a broad class of systems, it does not provide a general method for finding it.
@@ -1988,12 +2009,10 @@ While the theorem guarantees the existence of a unique solution for a broad clas
 
 In the most general case, non-linear systems of differential equations cannot be solved analytically. However, for certain scalar cases or systems with special structures, analytical techniques exist. These include:
 
-
-* Separation of Variables: Rearranging the equation so that all terms involving one variable are on one side and all terms involving the other variable are on the other side, allowing for direct integration.
-* Variational Calculus: A more advanced method for solving certain classes of problems.
+* **Separation of Variables:** Rearranging the equation so that all terms involving one variable are on one side and all terms involving the other variable are on the other side, allowing for direct integration.
+* **Variational Calculus:** A more advanced method for solving certain classes of problems.
 
 For most complex systems encountered in practice, numerical methods are the primary tool for approximating the unique solution trajectories that the theorem guarantees.
-
 
 </div>
 
@@ -2009,16 +2028,13 @@ To introduce the core properties of nonlinear systems, we will begin with the si
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Cubic Vector Field)</span></p>
 
-
 Let's consider a one-dimensional nonlinear dynamical system whose vector field is defined by a third-order polynomial:
 
 $$\dot{x} = f(x) = x - x^3$$
 
 Here, $x$ is a state on the real number line, and its rate of change, $\dot{x}$, is given by the nonlinear function $f(x)$. The specific form of the function is less important than the general properties it illustrates.
 
-
 </div>
-
 
 #### Graphical Analysis of Equilibria
 
@@ -2030,22 +2046,19 @@ For our example, $f(x) = x - x^3$, the plot is a cubic function that looks somet
 
 From this simple graph, we can extract a wealth of information about the system's dynamics.
 
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Finding and Classifying Equilibria Graphically)</span></p>
 
-
 On the plot of $f(x)$ versus $x$, the equilibria are simply the points where the graph crosses the horizontal axis (i.e., where $f(x)=0$).
 
-* Direction of Flow: The sign of $f(x)$ tells us the direction of movement.
+* **Direction of Flow:** The sign of $f(x)$ tells us the direction of movement.
   * If $f(x) > 0$, then $\dot{x} > 0$, and the state x moves to the right (increases).
   * If $f(x) < 0$, then $\dot{x} < 0$, and the state x moves to the left (decreases).
-* Stability: By observing the flow around each fixed point, we can determine its stability.
+* **Stability:** By observing the flow around each fixed point, we can determine its stability.
   * A fixed point is stable if nearby trajectories move toward it. In the graphical analysis, this corresponds to a point where the function $f(x)$ crosses the axis with a negative slope.
   * A fixed point is unstable if nearby trajectories move away from it. This corresponds to a point where $f(x)$ crosses the axis with a positive slope.
 
 Applying this to our example $f(x) = x - x^3$, we find three equilibria. The two outer points are stable, as the flow converges toward them from both sides. The central point is unstable, as the flow moves away from it.
-
 
 </div>
 
@@ -2058,11 +2071,10 @@ The presence of multiple isolated, stable fixed points is a hallmark of nonlinea
 
 Each stable equilibrium, or attractor, governs a region of the state space.
 
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Basin of Attraction)</span></p>
 
-The basin of attraction for an attractor (such as a stable fixed point) is the set of all initial conditions in the state space from which trajectories converge to that attractor as $t \to \infty$.
+The **basin of attraction** for an attractor (such as a stable fixed point) is the set of all initial conditions in the state space from which trajectories converge to that attractor as $t \to \infty$.
 
 </div>
 
@@ -2083,10 +2095,8 @@ $A$ is minimal, i.e. there exists no subset of $A$ satisfying the first two prop
 
 </div>
 
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Basins in the 1D Example)</span></p>
-
 
 In our example, the unstable fixed point at the center acts as a boundary separating the domains of the two stable fixed points. Let's say the unstable fixed point is located at a value we call $-\alpha$.
 
@@ -2094,7 +2104,6 @@ In our example, the unstable fixed point at the center acts as a boundary separa
 * Similarly, the stable fixed point on the left has its own basin of attraction, bounded on the right by $-\alpha$.
 
 The stable fixed points themselves are referred to as point attractors.
-
 
 </div>
 
@@ -2132,10 +2141,8 @@ This is a linear system of differential equations describing the evolution of th
 
 By analyzing the eigenvalues of the Jacobian matrix $J$ evaluated at the equilibrium point $\mathbf{x}_0$, we can classify its stability, just as we did for fully linear systems.
 
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stability of an Equilibrium Point)</span></p>
-
 
 Let $\mathbf{x}_0$ be an equilibrium point of the system $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$, and let $J = J(\mathbf{x}_0)$ be the Jacobian evaluated at that point. Let $\lbrace\lambda_i\rbrace$ be the set of eigenvalues of $J$.
 
@@ -2146,17 +2153,13 @@ Let $\mathbf{x}_0$ be an equilibrium point of the system $\dot{\mathbf{x}} = \ma
 * The equilibrium $\mathbf{x}_0$ is a saddle point if there is at least one eigenvalue with a negative real part and at least one eigenvalue with a positive real part.
   * There exist $i, j$ such that $Re(\lambda_i) < 0$ and $Re(\lambda_j) > 0$.
 
-
 </div>
-
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Clarifications and Edge Cases)</span></p>
 
-
-* Saddle vs. Unstable: It is a very good point that the definition of an unstable point includes saddle points. Some authors may use "unstable" more strictly to refer to a point where all trajectories move away (i.e., all eigenvalues have positive real parts), but the broader definition provided above is common. A saddle is unstable because trajectories will diverge along at least one direction.
-* The Non-Hyperbolic Case: What happens if one or more eigenvalues have a real part that is exactly zero? In this case, the linearization fails. The terms we ignored in the Taylor expansion ($O(\epsilon^2)$ and higher) become critical in determining the stability. Our linear approximation is not good enough to make a conclusion, and a more advanced analysis involving the higher-order terms is required.
-
+* **Saddle vs. Unstable:** It is a very good point that the definition of an unstable point includes saddle points. Some authors may use "unstable" more strictly to refer to a point where all trajectories move away (i.e., all eigenvalues have positive real parts), but the broader definition provided above is common. A saddle is unstable because trajectories will diverge along at least one direction.
+* **The Non-Hyperbolic Case:** What happens if one or more eigenvalues have a real part that is exactly zero? In this case, the linearization fails. The terms we ignored in the Taylor expansion ($O(\epsilon^2)$ and higher) become critical in determining the stability. Our linear approximation is not good enough to make a conclusion, and a more advanced analysis involving the higher-order terms is required.
 
 </div>
 
@@ -2164,7 +2167,6 @@ Let $\mathbf{x}_0$ be an equilibrium point of the system $\dot{\mathbf{x}} = \ma
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
 
 A fundamental challenge and a source of rich complexity in the study of nonlinear systems is that we can no longer expect to find explicit, closed-form solutions for the state of the system as a function of time, i.e., an equation for $x(t)$. Unlike linear systems, where such solutions are often readily available, nonlinear systems require a different, more qualitative approach. Our goal will be to understand the overall behavior and geometry of the system's evolution in its state space without necessarily solving the equations of motion explicitly.
 
@@ -2175,7 +2177,6 @@ It is remarkable how frequently similar mathematical structures appear across di
 * Epidemiology: Models for infectious diseases, such as the Susceptible-Infected-Recovered (SIR) model for epidemics like COVID, use these very types of equations to describe the dynamics of a population.
 
 Recognizing these patterns allows us to transfer insights from one field to another, which is a powerful aspect of dynamical systems theory.
-
 
 </div>
 
@@ -2209,7 +2210,6 @@ Intuitive Breakdown of the Terms:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Systems as Feedback Loops)</span></p>
 
-
 It is often conceptually useful to visualize such systems as a network of interacting feedback loops. This perspective was central to the development of Cybernetics in the 1940s and 50s.
 
 For our predator-prey model:
@@ -2221,7 +2221,6 @@ For our predator-prey model:
 
 While Cybernetics as a distinct field is no longer prominent, the mathematical tools and the conceptual framework of analyzing systems through their feedback structures remain invaluable.
 
-
 </div>
 
 #### Finding Equilibria: The System's Stationary States
@@ -2231,7 +2230,6 @@ The first step in analyzing any dynamical system is to find its equilibrium poin
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Equilibrium Point)</span></p>
 
-
 An equilibrium point $x_0$ of a dynamical system $\dot{x} = f(x)$ is a point where the vector field is zero.  
 
 $$f(x_0) = 0$$  
@@ -2239,7 +2237,6 @@ $$f(x_0) = 0$$
 For our 2D system, this corresponds to the condition:  
 
 $$\frac{dx}{dt} = 0 \quad \text{and} \quad \frac{dy}{dt} = 0$$ 
-
 
 </div>
 
@@ -2305,7 +2302,6 @@ $$J(x, y) = \begin{pmatrix} \alpha - \beta y & -\beta x \\ \gamma y & \gamma x -
 
 To analyze the stability of an equilibrium point $(x^{\ast}, y^{\ast})$, we evaluate this matrix at that specific point and then find its eigenvalues.
 
-
 </div>
 
 #### Case Study: Characterizing the Equilibria of a Predator-Prey System
@@ -2360,7 +2356,6 @@ Since both eigenvalues are real and positive, trajectories starting near the ori
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
 
-
 Next, we evaluate the Jacobian at the coexistence equilibrium $(x, y) = (2, 3)$ using our parameters $(\alpha=3, \beta=1, \gamma=-1, \lambda=-2)$:  
 
 $$J(2, 3) = \begin{pmatrix} \alpha - \beta(3) & -\beta(2) \\ \gamma(3) & \gamma(2) - \lambda \end{pmatrix} = \begin{pmatrix} 3 - 1(3) & -1(2) \\ -1(3) & -1(2) - (-2) \end{pmatrix}$$   
@@ -2375,12 +2370,10 @@ This gives $\lambda^2 = 6$, so the eigenvalues are $\lambda_1 = +\sqrt{6} \appro
 
 Since we have one positive real eigenvalue and one negative real eigenvalue, trajectories are attracted towards the equilibrium along one direction (the stable direction) and repelled from it along another direction (the unstable direction). This quintessential feature defines a saddle point.
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Manifolds and Heteroclinic Orbits)</span></p>
-
 
 The qualitative behavior of this system is quite structured.
 
@@ -2389,7 +2382,6 @@ The qualitative behavior of this system is quite structured.
 * An especially interesting feature in some systems is when an orbit starts at one equilibrium point and ends at another. In our example, the unstable manifold of the unstable node at $(0,0)$ connects to the stable manifold of the saddle at $(2,3)$. An orbit that connects two different fixed points is called a heteroclinic orbit. Such structures are not mere curiosities; they play important roles in phenomena like computation in neural systems.
 
 (We use the term manifold loosely for now; it has a precise mathematical definition that we will explore later.)
-
 
 </div>
 
@@ -2459,14 +2451,13 @@ Previously, definitions of stability may have been restricted to hyperbolic dyna
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Asymptotic Stability)</span></p>
 
 
-An equilibrium point $x_0$ is asymptotically stable if there exists a neighborhood around it such that any trajectory starting within that neighborhood converges to $x_0$.
+An equilibrium point $x_0$ is **asymptotically stable** if there exists a neighborhood around it such that any trajectory starting within that neighborhood converges to $x_0$.
 
 Formally, there exists a $ \delta > 0$ such that for any initial condition $x$ within the open neighborhood $N_\delta(x_0)$, the trajectory starting at $x$ converges to $x_0$:  
 
 $$\forall x \in N_\delta(x_0), \quad \lim_{t \to \infty} \phi_t(x) = x_0$$  
 
 where $\phi_t(x)$ is the flow of the dynamical system.
-
 
 </div>
 
@@ -2475,26 +2466,22 @@ where $\phi_t(x)$ is the flow of the dynamical system.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 A central task in the study of dynamical systems is the ability to compare them. We need a "recipe" to determine if two different systems are, in some essential way, the same. This is not just an academic exercise; it is crucial for modern applications. For instance, when machine learning algorithms attempt to infer the governing equations of a system from data, we want the reconstructed system to preserve the fundamental properties of the original. The concept of topological equivalence, which is built upon the idea of a homeomorphism, provides the mathematical language for this.
-
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Homeomorphism)</span></p>
 
-
 Let $X$ be a metric space (a space endowed with a distance function), and let $A$ and $B$ be subsets of $X$.
 
-A homeomorphism is a function $h: A \to B$ that satisfies the following three properties:
+A **homeomorphism** is a function $h: A \to B$ that satisfies the following three properties:
 
 1. Continuity: The function h is continuous.
 2. One-to-One and Onto (Bijective): The function h is a one-to-one map (injective) and maps onto the entire set $B$.
 3. Continuous Inverse: The inverse function $h^{-1}: B \to A$ exists and is also continuous.
 
 In essence, a homeomorphism is a continuous stretching and bending of space that defines a unique, reversible mapping between two sets, $A$ and $B$.
-
 
 </div>
 
@@ -2503,15 +2490,12 @@ In essence, a homeomorphism is a continuous stretching and bending of space that
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The concept of a manifold formalizes the idea of a space that, on a local level, resembles standard Euclidean space. For any point within a manifold, we can find a small neighborhood around it that can be smoothly mapped to an open ball in $\mathbb{R}^n$. This ensures that every point is "surrounded" by other points in the set, a property that is crucial for defining smooth dynamics on these structures.
-
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Manifold)</span></p>
-
 
 An $n$-dimensional topological manifold is a topological space $X$ such that for each point $x_0 \in X$, there exists an open neighborhood of $x_0$ that is homeomorphic to an $n$-dimensional open Euclidean ball.
 
@@ -2531,13 +2515,10 @@ The "strictly less than" condition is what makes the set open, meaning for any p
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
 
-
 * A manifold: A closed orbit (like a circle) is a simple example of a 1-dimensional manifold. For any point on the circle, you can find a small arc around it that is homeomorphic to an open interval in $\mathbb{R}^1$.
 * Not a manifold: A line segment is not a manifold. Consider a point at one of the endpoints. No matter how small a neighborhood (an open ball) you draw around this endpoint, it will never be completely contained within the line segment. Therefore, the endpoint does not have a neighborhood homeomorphic to an open Euclidean ball.
 
-
 </div>
-
 
 ### Stable and Unstable Manifolds
 
@@ -2548,44 +2529,36 @@ Stable and unstable manifolds are fundamental geometric structures in dynamical 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The construction of stable and unstable manifolds is a two-step process. First, we define them locally in a small neighborhood around an equilibrium point $x_0$. In this local region, the manifold's structure is determined by the linear dynamics—specifically, the stable and unstable directions given by the eigenvectors of the system's Jacobian at $x_0$. After defining this local structure, we can extend it to find the full, global manifold.
-
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Local Stable Manifold)</span></p>
 
-
-The local stable manifold of an equilibrium point $x_0$, denoted $W^s_{loc}(x_0)$, is the set of all points $x$ in a small neighborhood of $x_0$ that not only converge to $x_0$ as time goes to infinity but also remain within that neighborhood for all future time.
+The **local stable manifold** of an equilibrium point $x_0$, denoted $W^s_{loc}(x_0)$, is the set of all points $x$ in a small neighborhood of $x_0$ that not only converge to $x_0$ as time goes to infinity but also remain within that neighborhood for all future time.
 
 Formally, for a given neighborhood $N_\epsilon(x_0)$:  
 
 $$W^s_{loc}(x_0) = \lbrace x \in N_\epsilon(x_0) \mid \lim_{t \to \infty} \phi_t(x) = x_0 \quad \text{and} \quad \phi_t(x) \in N_\epsilon(x_0) \text{ for all } t \ge 0 \rbrace$$ 
-
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Local Unstable Manifold)</span></p>
 
-
-The local unstable manifold of an equilibrium point $x_0$, denoted $W^u_{loc}(x_0)$, is defined analogously but using reverse time. It is the set of all points $x$ in a small neighborhood of $x_0$ that converge to $x_0$ as time goes to negative infinity and remain within that neighborhood for all past time.
+The **local unstable manifold** of an equilibrium point $x_0$, denoted $W^u_{loc}(x_0)$, is defined analogously but using reverse time. It is the set of all points $x$ in a small neighborhood of $x_0$ that converge to $x_0$ as time goes to negative infinity and remain within that neighborhood for all past time.
 
 Formally, for a given neighborhood $N_\epsilon(x_0)$:  
 
 $$W^u_{loc}(x_0) = \lbrace x \in N_\epsilon(x_0) \mid \lim_{t \to -\infty} \phi_t(x) = x_0 \quad \text{and} \quad \phi_t(x) \in N_\epsilon(x_0) \text{ for all } t \le 0 \rbrace$$ 
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The condition that trajectories must stay within the neighborhood is critical. Consider a saddle point. There are many points in an initial neighborhood that will eventually be repelled and leave the neighborhood. These points are not part of the local stable manifold. The definition precisely isolates only those initial conditions that are perfectly aligned with the stable direction and will thus converge to the equilibrium point without first being pushed away.
-
 
 </div>
 
@@ -2594,15 +2567,12 @@ The condition that trajectories must stay within the neighborhood is critical. C
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Once the local stable and unstable manifolds are defined, the global manifolds are constructed by integrating the points on these local sets forward or backward in time. This process "collects" all the points in the entire phase space that are connected to the equilibrium point via its stable or unstable dynamics.
-
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Stable Manifold)</span></p>
-
 
 The global stable manifold of an equilibrium point $x_0$, denoted $W^s(x_0)$, is the union of all backward-time images of the local stable manifold. Intuitively, we take the set of points that are already known to be approaching $x_0$ (the local manifold) and trace their paths backward in time to find every point in the phase space that will eventually enter this local neighborhood and converge to $x_0$.
 
@@ -2610,12 +2580,10 @@ Formally, it is the union of the flow operator applied to the local manifold for
 
 $$W^s(x_0) = \bigcup_{t \le 0} \phi_t(W^s_{loc}(x_0))$$ 
 
-
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Unstable Manifold)</span></p>
-
 
 The global unstable manifold of an equilibrium point $x_0$, denoted $W^u(x_0)$, is the union of all forward-time images of the local unstable manifold. Intuitively, we take the points that are locally diverging from $x_0$ (which converge to $x_0$ in reverse time) and follow their trajectories forward to trace out the entire structure of repulsion from the equilibrium.
 
@@ -2623,9 +2591,7 @@ Formally, it is the union of the flow operator applied to the local manifold for
 
 $$W^u(x_0) = \bigcup_{t \ge 0} \phi_t(W^u_{loc}(x_0))$$ 
 
-
 </div>
-
 
 ### Foundational Concepts in Phase Space
 
@@ -2638,8 +2604,7 @@ Certain orbits, or solution curves, play a crucial role in defining the global s
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Homoclinic Orbit)</span></p>
 
-
-A homoclinic orbit $\Gamma$ is a solution curve that connects an equilibrium point to itself. It originates from the equilibrium point (as $t \to -\infty$) and returns to the same equilibrium point (as $t \to +\infty$).
+A **homoclinic orbit** $\Gamma$ is a solution curve that connects an equilibrium point to itself. It originates from the equilibrium point (as $t \to -\infty$) and returns to the same equilibrium point (as $t \to +\infty$).
 
 Formally, for an equilibrium point $x_0$, a homoclinic orbit is a trajectory $\Gamma$ such that:
 
@@ -2647,14 +2612,12 @@ $$\Gamma \subset W^s(x_0) \cap W^u(x_0)$$
 
 This means the orbit is simultaneously part of the stable manifold and the unstable manifold of the same point. The trajectory diverges from $x_0$ along its unstable manifold and converges back to $x_0$ along its stable manifold.
 
-
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Heteroclinic Orbit)</span></p>
 
-
-A heteroclinic orbit $\Gamma$ is a solution curve that connects two different equilibrium points. It originates from one equilibrium point (as $t \to -\infty$) and terminates at another (as $t \to +\infty$).
+A **heteroclinic orbit** $\Gamma$ is a solution curve that connects two different equilibrium points. It originates from one equilibrium point (as $t \to -\infty$) and terminates at another (as $t \to +\infty$).
 
 Formally, for two distinct equilibrium points $x_0 \neq x_1$, a heteroclinic orbit is a trajectory $\Gamma$ connecting $x_0$ to $x_1$ such that:
 
@@ -2662,19 +2625,16 @@ $$\Gamma \subset W^u(x_0) \cap W^s(x_1)$$
 
 This means the orbit is part of the unstable manifold of $x_0$ and the stable manifold of $x_1$.
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
 
 Homoclinic and heteroclinic orbits are of fundamental importance in the study of dynamical systems. Their presence can have profound implications for the system's behavior.
 
 * Structural Skeletons: These orbits act as organizing centers or "skeletons" for the dynamics in phase space.
 * Indicators of Chaos: The existence of a homoclinic orbit, in particular, is often a strong indicator—almost a guarantee—that the system exhibits chaotic behavior. We will explore this connection in greater detail later.
 * Separatrix Cycles: Structures built from sequences of heteroclinic (and sometimes homoclinic) orbits are called separatrix cycles. These cycles can create boundaries in the phase space that separate regions of qualitatively different behavior.
-
 
 </div>
 
@@ -2686,7 +2646,6 @@ The concept of invariance is central to identifying regions in the phase space t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Invariant Set)</span></p>
 
-
 Let $E \subset \mathbb{R}^n$ be an open set representing the state space, and let $\phi_t: \mathbb{R} \times E \to E$ be a flow operator defined for all times $t \in \mathbb{R}$.
 
 A set $S \subset E$ is called an invariant set with respect to the flow $\phi_t$ if any trajectory starting in $S$ remains in $S$ for all time, both forward and backward.
@@ -2697,18 +2656,15 @@ $$\phi_t(S) = S \quad \text{for all } t \in \mathbb{R}$$
 
 where $\phi_t(S) = \lbrace \phi_t(x) \mid x \in S \rbrace$.
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 * Forward and Backward Invariance: One can also define one-sided invariance. A set $S$ is forward invariant if $\phi_t(S) \subset S$ for all $t \ge 0$. This means that once you are in the set, you can never leave it as time moves forward. A set is backward invariant if $\phi_t(S) \subset S$ for all $t \le 0$.
 * Discrete Time Systems (Maps): The concept applies equally to discrete maps. For a map $f: E \to E$, a set $S$ is invariant if applying the map (or its inverse) any number of times to a point in $S$ yields a point that is still in $S$. That is, $f(S) = S$.
 
 The simplest examples of invariant sets are equilibrium points and limit cycles. Understanding which sets are invariant helps decompose the phase space into dynamically independent regions.
-
 
 </div>
 
@@ -2720,7 +2676,6 @@ A powerful idea in the study of dynamical systems is to determine when two syste
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Topological Equivalence)</span></p>
 
-
 Consider two dynamical systems defined by continuously differentiable vector fields:
 
 1. $\dot{x} = f(x)$, where $x \in A$ and $A \subset \mathbb{R}^n$ is an open set.
@@ -2730,35 +2685,29 @@ Let $\phi^A_t$ be the flow of the first system and $\phi^B_t$ be the flow of the
 
 These two systems are topologically equivalent if there exists a homeomorphism $h: A \to B$ what preserves the direction of flow (any time I guess).
 
-
 * A homeomorphism is a continuous function with a continuous inverse, meaning it provides a smooth, one-to-one mapping between the state spaces $A$ and $B$.
 
 The condition of "preserving the direction of time" means that forward-time evolution in one system corresponds to forward-time evolution in the other. Formally, for every $x_0 \in A$ and any time $t$, the following relationship must hold:
 
 $$h(\phi^A_t(x_0)) = \phi^B_{\tau(x_0, t)}(h(x_0))$$ 
 
-
 Here, $\tau(x_0, t)$ is a reparameterization of time. To preserve the direction of flow, for any fixed $x_0$, $\tau$ must be a strictly increasing function of $t$. This is guaranteed if its derivative with respect to $t$ is always positive: 
 
 $$\frac{\partial \tau}{\partial t} > 0$$ 
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Topological equivalence means we can stretch, bend, or compress one state space to make it look like the other, such that the orbit structures align perfectly. The time it takes to travel along corresponding segments of orbits might differ (hence the reparameterization $\tau$), but the direction of travel is the same.
 
 If two systems are topologically equivalent, then properties like the number and type of fixed points, the existence of closed orbits, and the stability of these objects are preserved. For instance, if one system has an orbit that converges to a fixed point, the corresponding orbit in the equivalent system will also converge to the corresponding fixed point. The diagram below illustrates the commutative relationship:
-
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
-
 
 Let's demonstrate topological equivalence with a simple example.
 
@@ -2772,7 +2721,6 @@ The flow for System A is $\phi^A_t(x) = e^{-t}x$. Trajectories in this system de
 Let's propose a candidate homeomorphism $h(x) = 1/x$. This map is defined for $x \neq 0$ and its inverse is $h^{-1}(y) = 1/y$, which is also continuous.
 
 We now check if the condition for topological equivalence, $h(\phi^A_t(x_0)) = \phi^B_{\tau}(h(x_0))$, can be satisfied for a valid time reparameterization $\tau$.
-
 
 </div>
 
@@ -2810,13 +2758,11 @@ In the study of dynamical systems, we are often less concerned with the precise 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Topological Equivalence)</span></p>
 
-
 Two dynamical systems, defined by flows $\phi_t^A$ and $\phi_t^B$ on state spaces $A$ and $B$ respectively, are said to be topologically equivalent if there exists a homeomorphism $h: A \to B$ that maps trajectories of $\phi^A $ onto trajectories of $\phi^B$ while preserving the direction of time.
 
 * A homeomorphism is a continuous function between topological spaces that has a continuous inverse function. It is a map that preserves all the topological properties of a given space.
 
 This means that for every point $x \in A$, the curve traced by $\phi_t^A(x)$ is mapped by $h$ to the curve traced by $\phi_t^B(h(x))$. While the direction of flow along the curve is preserved, the speed is not. The time parameter may be re-scaled, meaning a point that takes 1 second to travel a path in system A might take 2 seconds (or 0.5 seconds) to travel the corresponding path in system B.
-
 
 </div>
 
@@ -2832,7 +2778,6 @@ At first glance, one might wonder if these systems could be considered equivalen
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What Went Wrong?)</span></p>
 
-
 Intuitively, these two systems have fundamentally different behaviors. One diverges from the origin, while the other converges to it. A continuous transformation should not be able to reverse the fundamental stability of a system. The direction of flow is a core topological property, and reversing it is a major violation. Let's see how this intuition manifests mathematically.
 
 The proposed map $h(x) = 1/x$ is not a homeomorphism for this problem. A homeomorphism must be continuous everywhere on the domain of interest. Here, the domain includes the equilibrium point at $x=0$. The function $1/x$ has a discontinuity precisely at this equilibrium point.
@@ -2843,7 +2788,6 @@ This example reveals a crucial insight:
 
 Stable nodes, unstable nodes, and saddles are all topologically distinct. You cannot find a homeomorphism that continuously deforms the phase portrait of a stable node into that of an unstable node.
 
-
 </div>
 
 #### Conditions for Equivalence in Linearizable Systems
@@ -2853,20 +2797,16 @@ While a stable and an unstable node are not equivalent, other pairings are. For 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Topological Equivalence for Hyperbolic Systems)</span></p>
 
-
 For linear or linearizable systems, two systems are topologically equivalent in a neighborhood of a hyperbolic fixed point if the Jacobian matrices evaluated at that fixed point have the same number of eigenvalues with positive real parts and the same number of eigenvalues with negative real parts.
 
 * Recall that a hyperbolic fixed point is one where the Jacobian has no eigenvalues with a zero real part.
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 This theorem provides a powerful and practical criterion for determining equivalence. It essentially states that the local "picture" of the dynamics is determined entirely by the number of stable (negative real part) and unstable (positive real part) directions. The exact values of the eigenvalues don't matter for equivalence, nor does the presence of imaginary parts (which create spirals), as long as the counts of stable and unstable dimensions match.
-
 
 </div>
 
@@ -2877,20 +2817,16 @@ Topological conjugacy is a stricter condition than equivalence. It requires not 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Topological Conjugacy)</span></p>
 
-
 Two systems with flows $\phi_t^A$ and $\phi_t^B$ are topologically conjugate if they are topologically equivalent via a homeomorphism $h$, and this mapping preserves the time parameter. Formally, for any initial point $x_0$ and any time $t$:
 
 $$h(\phi_t^A(x_0)) = \phi_t^B(h(x_0))$$
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Notice the crucial difference: the time variable $t$ is exactly the same on both sides of the equation. This means that if it takes the first system $T$ seconds to get from point $x_0$ to $x_1$, it must also take the second system exactly $T$ seconds to get from the mapped point $h(x_0)$ to the mapped point $h(x_1)$. The systems are not just qualitatively similar; their flows are perfectly synchronized through the lens of the homeomorphism $h$.
-
 
 </div>
 
@@ -2900,7 +2836,6 @@ Let's demonstrate this stronger condition with an example.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
-
 
 Consider the following two systems:
 
@@ -2922,21 +2857,17 @@ x^2 & \text{if } x \ge 0 \\
 \end{cases}
 $$
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 This function $h(x)$ is a valid homeomorphism. It is continuous everywhere, including at $x=0$ where both pieces of the function converge to zero. It is also continuously differentiable at the origin.
-
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Conjugacy)</span></p>
-
 
 We must now verify that our chosen $h$ satisfies the condition $h(\phi_t^A(x)) = \phi_t^B(h(x))$. Let's analyze the left and right sides of the equation separately, assuming $x \ge 0$ for simplicity.
 
@@ -2958,9 +2889,7 @@ We must now verify that our chosen $h$ satisfies the condition $h(\phi_t^A(x)) =
 
 Since LHS = RHS, we have shown that $h(\phi_t^A(x)) = \phi_t^B(h(x))$. The systems are indeed topologically conjugate.
 
-
 </div>
-
 
 ### The Hartman-Grobman Theorem
 
@@ -2971,13 +2900,11 @@ We now arrive at one of the most fundamental and powerful results in the study o
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The core message of the Hartman-Grobman theorem is profound:
 
 In a small neighborhood of a hyperbolic equilibrium point, a nonlinear system is topologically conjugate to its linearization.
 
 This is an extremely strong result. It doesn't just say the nonlinear system is "similar" to its linear approximation; it says there is a continuous, invertible map that transforms the nonlinear trajectories precisely onto the linear ones, while preserving the flow of time. This justifies our entire approach of analyzing the Jacobian matrix to understand the stability and local geometry of equilibria like nodes, saddles, and spirals. It guarantees that the picture we see in the linear system is not an illusion but a topologically faithful representation of the nonlinear system's behavior near the fixed point.
-
 
 </div>
 
@@ -2996,6 +2923,24 @@ This must hold for all $t$ within some open time interval $I_0 \subset \mathbb{R
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hartman-Grobman Visualization)</span></p>
+
+It shows a hyperbolic equilibrium at the origin for:
+
+$$
+\text{linearized system: } \begin{cases} x' = x \\ y' = -y \end{cases}
+\qquad
+\text{nonlinear system: } \begin{cases} x' = x \\ y' = -y + x^2 \end{cases}
+$$
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/hartman_grobmann_theorem.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+The point of the graphic is that near the origin, the nonlinear flow has the same qualitative structure as its linearization: both are saddles, with one stable direction and one unstable direction. The nonlinear system bends the unstable manifold into a curve, but the local phase portrait is still topologically equivalent to the linear one, which is exactly what the Hartman–Grobman theorem says.
+
+</div>
 
 #### The Power and Implications of Hartman-Grobman
 
@@ -3025,9 +2970,7 @@ These ideas culminated in the Hartman-Grobman Theorem, a cornerstone of dynamica
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The Hartman-Grobman Theorem is profoundly important because it provides the rigorous justification for linearization. It tells us that in the local neighborhood of a hyperbolic equilibrium point, the behavior of a nonlinear system is topologically equivalent to the behavior of its linearization around that point. This is why we can confidently use the tools of linear systems analysis (e.g., Jacobian eigenvalues) to determine the local stability and properties of equilibria even in highly nonlinear systems.
-
 
 </div>
 
@@ -3038,7 +2981,6 @@ There was a subtle but critical point regarding the definition of manifolds, spe
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Let us clarify the nature of a manifold with respect to its own dimensionality versus its embedding in a higher-dimensional ambient space.
 
 * A Manifold is Locally an Open Set: When we say a manifold is an "open set," we are speaking locally and with respect to its own dimension. At any point $p$ on a $k$-dimensional manifold, one can always find a $k$-dimensional neighborhood around $p$ that contains only other points from the manifold. This neighborhood is homeomorphic to a $k$-dimensional open Euclidean ball.
@@ -3047,7 +2989,6 @@ Let us clarify the nature of a manifold with respect to its own dimensionality v
   * Example: For the same 1D limit cycle in 2D space, you cannot draw a 2D open ball around any point on the cycle that is completely contained within the manifold. Any such 2D ball will inevitably contain points from the surrounding 2D space that are not on the 1D limit cycle. Therefore, with respect to the 2D topology, the limit cycle is a closed set.
 
 This distinction is crucial for a precise understanding of the geometric structures that govern system dynamics.
-
 
 </div>
 

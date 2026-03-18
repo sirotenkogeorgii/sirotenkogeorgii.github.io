@@ -2126,8 +2126,15 @@ A basis is therefore, by definition, a generating system of the space $V$ that i
 
 Let $v_1, \ldots, v_n$ be a basis of the space $V$. Then for every vector $u \in V$ there exist uniquely determined coefficients $\alpha_1, \ldots, \alpha_n \in \mathbb{T}$ such that $u = \sum_{i=1}^{n} \alpha_i v_i$.
 
-*Proof.* The vectors $v_1, \ldots, v_n$ form a basis of $V$, so every $u \in V$ can be expressed as $u = \sum_{i=1}^{n} \alpha_i v_i$ for suitable scalars $\alpha_1, \ldots, \alpha_n \in \mathbb{T}$. We show uniqueness by contradiction. Suppose there also exists another representation $u = \sum_{i=1}^{n} \beta_i v_i$. Then $\sum_{i=1}^{n} \alpha_i v_i - \sum_{i=1}^{n} \beta_i v_i = u - u = o$, i.e., $\sum_{i=1}^{n} (\alpha_i - \beta_i)v_i = o$. Since $v_1, \ldots, v_n$ are linearly independent, we must have $\alpha_i = \beta_i$ for every $i = 1, \ldots, n$. This contradicts the assumption that the representations are different.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The vectors $v_1, \ldots, v_n$ form a basis of $V$, so every $u \in V$ can be expressed as $u = \sum_{i=1}^{n} \alpha_i v_i$ for suitable scalars $\alpha_1, \ldots, \alpha_n \in \mathbb{T}$. We show uniqueness by contradiction. Suppose there also exists another representation $u = \sum_{i=1}^{n} \beta_i v_i$. Then $\sum_{i=1}^{n} \alpha_i v_i - \sum_{i=1}^{n} \beta_i v_i = u - u = o$, i.e., $\sum_{i=1}^{n} (\alpha_i - \beta_i)v_i = o$. Since $v_1, \ldots, v_n$ are linearly independent, we must have $\alpha_i = \beta_i$ for every $i = 1, \ldots, n$. This contradicts the assumption that the representations are different.
+
+</details>
 </div>
 
 Thanks to the mentioned uniqueness, we can introduce the concept of coordinates.
@@ -2188,8 +2195,15 @@ For any basis $B$ of a finitely generated space $V$ over $\mathbb{T}$, vectors $
 
 $$[u + v]_B = [u]_B + [v]_B, \qquad [\alpha v]_B = \alpha [v]_B.$$
 
-*Proof.* Let the basis $B$ consist of vectors $z_1, \ldots, z_n$, let $u = \sum_{i=1}^{n} \beta_i z_i$ and let $v = \sum_{i=1}^{n} \gamma_i z_i$. Then $u + v = \sum_{i=1}^{n} (\beta_i + \gamma_i) z_i$ and thus $[u + v]_B = (\beta_1 + \gamma_1, \ldots, \beta_n + \gamma_n)^\top = [u]_B + [v]_B$. Similarly for scalar multiples $\alpha[u]_B = \alpha(\beta_1, \ldots, \beta_n)^\top = (\alpha \beta_1, \ldots, \alpha \beta_n)^\top = [\alpha u]_B$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let the basis $B$ consist of vectors $z_1, \ldots, z_n$, let $u = \sum_{i=1}^{n} \beta_i z_i$ and let $v = \sum_{i=1}^{n} \gamma_i z_i$. Then $u + v = \sum_{i=1}^{n} (\beta_i + \gamma_i) z_i$ and thus $[u + v]_B = (\beta_1 + \gamma_1, \ldots, \beta_n + \gamma_n)^\top = [u]_B + [v]_B$. Similarly for scalar multiples $\alpha[u]_B = \alpha(\beta_1, \ldots, \beta_n)^\top = (\alpha \beta_1, \ldots, \alpha \beta_n)^\top = [\alpha u]_B$.
+
+</details>
 </div>
 
 The property from the proposition can be generalized: The coordinates of any linear combination of vectors equal the same linear combination of their coordinates. Coordinates thus preserve a certain structure and relationships between vectors (linear dependence, etc.). Later in Chapter 6 we will see that thanks to this property we can efficiently compute coordinates.
@@ -2199,8 +2213,15 @@ The property from the proposition can be generalized: The coordinates of any lin
 
 Every vector space has a basis.
 
-*Proof.* We carry out the proof only for a finitely generated space $V$. Let $v_1, \ldots, v_n$ be a generating system of $V$. If the vectors are linearly independent, they already form a basis. Otherwise, by Corollary 5.29 there exists an index $k$ such that $\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace = \operatorname{span}\lbrace v_1, \ldots, v_{k-1}, v_{k+1}, \ldots, v_n \rbrace$. Thus, by removing $v_k$ the system of vectors still generates $V$. If the system of vectors is now linearly independent, it forms a basis. Otherwise we repeat the procedure until we find a basis. The procedure is finite because we have a finite set of generators, so we must eventually find a basis.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We carry out the proof only for a finitely generated space $V$. Let $v_1, \ldots, v_n$ be a generating system of $V$. If the vectors are linearly independent, they already form a basis. Otherwise, by Corollary 5.29 there exists an index $k$ such that $\operatorname{span}\lbrace v_1, \ldots, v_n \rbrace = \operatorname{span}\lbrace v_1, \ldots, v_{k-1}, v_{k+1}, \ldots, v_n \rbrace$. Thus, by removing $v_k$ the system of vectors still generates $V$. If the system of vectors is now linearly independent, it forms a basis. Otherwise we repeat the procedure until we find a basis. The procedure is finite because we have a finite set of generators, so we must eventually find a basis.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2208,8 +2229,15 @@ Every vector space has a basis.
 
 Let $y_1, \ldots, y_n$ be a generating system of a vector space $V$ and let the vector $x \in V$ have the representation $x = \sum_{i=1}^{n} \alpha_i y_i$. Then for any $k$ such that $\alpha_k \neq 0$, the system $y_1, \ldots, y_{k-1}, x, y_{k+1}, \ldots, y_n$ is a generating system of $V$.
 
-*Proof.* From the relation $x = \sum_{i=1}^{n} \alpha_i y_i$ we express $y_k = \tfrac{1}{\alpha_k}(x - \sum_{i \neq k} \alpha_i y_i)$. We want to prove that the vectors $y_1, \ldots, y_{k-1}, x, y_{k+1}, \ldots, y_n$ generate the space $V$. Take any vector $z \in V$. For suitable coefficients $\beta_i$ we can express $z$ as $z = \sum_{i=1}^{n} \beta_i y_i = \beta_k y_k + \sum_{i \neq k} \beta_i y_i = \tfrac{\beta_k}{\alpha_k}x + \sum_{i \neq k} (\beta_i - \tfrac{\beta_k}{\alpha_k}\alpha_i) y_i$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+From the relation $x = \sum_{i=1}^{n} \alpha_i y_i$ we express $y_k = \tfrac{1}{\alpha_k}(x - \sum_{i \neq k} \alpha_i y_i)$. We want to prove that the vectors $y_1, \ldots, y_{k-1}, x, y_{k+1}, \ldots, y_n$ generate the space $V$. Take any vector $z \in V$. For suitable coefficients $\beta_i$ we can express $z$ as $z = \sum_{i=1}^{n} \beta_i y_i = \beta_k y_k + \sum_{i \neq k} \beta_i y_i = \tfrac{\beta_k}{\alpha_k}x + \sum_{i \neq k} (\beta_i - \tfrac{\beta_k}{\alpha_k}\alpha_i) y_i$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2220,8 +2248,15 @@ Let $V$ be a vector space, let $x_1, \ldots, x_m$ be a linearly independent syst
 1. $m \le n$,
 2. there exist pairwise distinct indices $k_1, \ldots, k_{n-m}$ such that $x_1, \ldots, x_m, y_{k_1}, \ldots, y_{k_{n-m}}$ form a generating system of $V$.
 
-*Proof.* We carry out the proof by mathematical induction on $m$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+We carry out the proof by mathematical induction on $m$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2229,8 +2264,15 @@ Let $V$ be a vector space, let $x_1, \ldots, x_m$ be a linearly independent syst
 
 All bases of a finitely generated vector space $V$ have the same size.
 
-*Proof.* Let $x_1, \ldots, x_m$ and $y_1, \ldots, y_n$ be two bases of the space $V$. In particular, $x_1, \ldots, x_m$ are linearly independent and $y_1, \ldots, y_n$ are generators of $V$, hence $m \le n$. Analogously in reverse, $y_1, \ldots, y_n$ are linearly independent and $x_1, \ldots, x_m$ generate $V$, hence $n \le m$. Together we get $m = n$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $x_1, \ldots, x_m$ and $y_1, \ldots, y_n$ be two bases of the space $V$. In particular, $x_1, \ldots, x_m$ are linearly independent and $y_1, \ldots, y_n$ are generators of $V$, hence $m \le n$. Analogously in reverse, $y_1, \ldots, y_n$ are linearly independent and $x_1, \ldots, x_m$ generate $V$, hence $n \le m$. Together we get $m = n$.
+
+</details>
 </div>
 
 ### 5.5 Dimension
@@ -2357,7 +2399,14 @@ For a vector space $V$ the following holds:
 
 </div>
 
-*Proof.* Denote $d = \dim V$ and let $z_1, \ldots, z_d$ be a basis of $V$, i.e., its linearly independent generators. (1) Since $x_1, \ldots, x_m$ are linearly independent and $z_1, \ldots, z_d$ are generators of $V$, by the Steinitz Exchange Theorem 5.44 we have $m \le d$. If $m = d$, then by the same theorem the system $x_1, \ldots, x_m$ can be extended by $d - m = 0$ vectors to a generating system of $V$. Hence they are necessarily generators and thus a basis. (2) Since $y_1, \ldots, y_n$ are generators of $V$ and $z_1, \ldots, z_d$ are linearly independent, by the Steinitz Exchange Theorem 5.44 we have $n \ge d$. Suppose $n = d$. If $y_1, \ldots, y_n$ are linearly independent, they form a basis. If they are linearly dependent, then one can be omitted to obtain a generating system of size $n - 1$ (Corollary 5.29). By the Steinitz theorem we would then have $d \le n - 1$, which leads to a contradiction.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Denote $d = \dim V$ and let $z_1, \ldots, z_d$ be a basis of $V$, i.e., its linearly independent generators. (1) Since $x_1, \ldots, x_m$ are linearly independent and $z_1, \ldots, z_d$ are generators of $V$, by the Steinitz Exchange Theorem 5.44 we have $m \le d$. If $m = d$, then by the same theorem the system $x_1, \ldots, x_m$ can be extended by $d - m = 0$ vectors to a generating system of $V$. Hence they are necessarily generators and thus a basis. (2) Since $y_1, \ldots, y_n$ are generators of $V$ and $z_1, \ldots, z_d$ are linearly independent, by the Steinitz Exchange Theorem 5.44 we have $n \ge d$. Suppose $n = d$. If $y_1, \ldots, y_n$ are linearly independent, they form a basis. If they are linearly dependent, then one can be omitted to obtain a generating system of size $n - 1$ (Corollary 5.29). By the Steinitz theorem we would then have $d \le n - 1$, which leads to a contradiction.
+
+</details>
+</div>
 
 The first part of Proposition 5.48 says, among other things, that a basis can be viewed as a maximal linearly independent system. The second part says that a basis is a minimal generating system (both in terms of inclusion and in terms of size).
 
@@ -2366,8 +2415,15 @@ The first part of Proposition 5.48 says, among other things, that a basis can be
 
 Every linearly independent system of a vector space $V$ can be extended to a basis of $V$.
 
-*Proof.* Let $x_1, \ldots, x_m$ be linearly independent and $z_1, \ldots, z_d$ be a basis of $V$. By the Steinitz Exchange Theorem 5.44 there exist indices $k_1, \ldots, k_{d-m}$ such that $x_1, \ldots, x_m, z_{k_1}, \ldots, z_{k_{d-m}}$ are generators of $V$. Their count is $d$, so by Proposition 5.48 they also form a basis of $V$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $x_1, \ldots, x_m$ be linearly independent and $z_1, \ldots, z_d$ be a basis of $V$. By the Steinitz Exchange Theorem 5.44 there exist indices $k_1, \ldots, k_{d-m}$ such that $x_1, \ldots, x_m, z_{k_1}, \ldots, z_{k_{d-m}}$ are generators of $V$. Their count is $d$, so by Proposition 5.48 they also form a basis of $V$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2375,10 +2431,17 @@ Every linearly independent system of a vector space $V$ can be extended to a bas
 
 If $W$ is a subspace of $V$, then $\dim W \le \dim V$. If moreover $\dim W = \dim V$, then $W = V$.
 
-*Proof.* Define $M := \emptyset$. If $\operatorname{span}(M) = W$, we are done. Otherwise there exists a vector $v \in W \setminus \operatorname{span}(M)$. We add the vector $v$ to the set $M$ and repeat the procedure. Since $M$ is a linearly independent set of vectors, by Proposition 5.48 the size of $M$ is bounded above by the dimension of $V$. The process is therefore finite. Since $\operatorname{span}(M) = W$, the set $M$ forms a basis of $W$, and hence $\dim W \le \dim V$.
-
 If $\dim W = \dim V$, then the set $M$ must by Proposition 5.48 form a basis of $V$, and therefore $W = V$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Define $M := \emptyset$. If $\operatorname{span}(M) = W$, we are done. Otherwise there exists a vector $v \in W \setminus \operatorname{span}(M)$. We add the vector $v$ to the set $M$ and repeat the procedure. Since $M$ is a linearly independent set of vectors, by Proposition 5.48 the size of $M$ is bounded above by the dimension of $V$. The process is therefore finite. Since $\operatorname{span}(M) = W$, the set $M$ forms a basis of $W$, and hence $\dim W \le \dim V$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -2415,10 +2478,17 @@ Let $U, V$ be subspaces of a vector space $W$. Then the *sum of subspaces* $U, V
 
 Let $U, V$ be subspaces of a vector space $W$. Then
 
-$$U + V = \operatorname{span}(U \cup V).$$
+$$U + V = \operatorname{span}(U \cup V)$$
 
-*Proof.* Inclusion "$\subseteq$": this is trivial, since the space $\operatorname{span}(U \cup V)$ is closed under sums. Inclusion "$\supseteq$": It suffices to show that $U + V$ contains the spaces $U, V$ and that it is a subspace of $W$. The first part is obvious; for the second, consider $x_1, x_2 \in U + V$. The vectors can be expressed as $x_1 = u_1 + v_1$, $u_1 \in U$, $v_1 \in V$, and $x_2 = u_2 + v_2$, $u_2 \in U$, $v_2 \in V$. Then $x_1 + x_2 = (u_1 + u_2) + (v_1 + v_2) \in U + V$, which proves closure under addition. For closure under scalar multiples, consider $x = u + v \in U + V$, $u \in U$, $v \in V$ and a scalar $\alpha$. Then $\alpha x = \alpha(u + v) = (\alpha u) + (\alpha v) \in U + V$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Inclusion "$\subseteq$": this is trivial, since the space $\operatorname{span}(U \cup V)$ is closed under sums. Inclusion "$\supseteq$": It suffices to show that $U + V$ contains the spaces $U, V$ and that it is a subspace of $W$. The first part is obvious; for the second, consider $x_1, x_2 \in U + V$. The vectors can be expressed as $x_1 = u_1 + v_1$, $u_1 \in U$, $v_1 \in V$, and $x_2 = u_2 + v_2$, $u_2 \in U$, $v_2 \in V$. Then $x_1 + x_2 = (u_1 + u_2) + (v_1 + v_2) \in U + V$, which proves closure under addition. For closure under scalar multiples, consider $x = u + v \in U + V$, $u \in U$, $v \in V$ and a scalar $\alpha$. Then $\alpha x = \alpha(u + v) = (\alpha u) + (\alpha v) \in U + V$.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -2439,8 +2509,15 @@ Let $U, V$ be subspaces of a vector space $W$. Then
 
 $$\dim(U + V) + \dim(U \cap V) = \dim U + \dim V.$$
 
-*Proof.* $U \cap V$ is a subspace of $W$, so it has a finite basis $z_1, \ldots, z_p$. By Theorem 5.49 we can extend it to a basis of $U$ of the form $z_1, \ldots, z_p, x_1, \ldots, x_m$. Similarly, we can extend it to a basis of $V$ of the form $z_1, \ldots, z_p, y_1, \ldots, y_n$. It suffices to show that the vectors $z_1, \ldots, z_p, x_1, \ldots, x_m, y_1, \ldots, y_n$ together form a basis of $U + V$, and then the equality $(5.3)$ will follow.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$U \cap V$ is a subspace of $W$, so it has a finite basis $z_1, \ldots, z_p$. By Theorem 5.49 we can extend it to a basis of $U$ of the form $z_1, \ldots, z_p, x_1, \ldots, x_m$. Similarly, we can extend it to a basis of $V$ of the form $z_1, \ldots, z_p, y_1, \ldots, y_n$. It suffices to show that the vectors $z_1, \ldots, z_p, x_1, \ldots, x_m, y_1, \ldots, y_n$ together form a basis of $U + V$, and then the equality $(5.3)$ will follow.
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2459,7 +2536,7 @@ We now combine matrix theory with vector spaces. Both subjects will mutually enr
 
 Let $A \in \mathbb{T}^{m \times n}$. Then we define
 
-1. the column space $\mathcal{S}(A) := \operatorname{span}\lbrace A_{*1}, \ldots, A_{*n} \rbrace$,
+1. the column space $\mathcal{S}(A) := \operatorname{span}\lbrace A_{\ast 1}, \ldots, A_{\ast n} \rbrace$,
 2. the row space $\mathcal{R}(A) := \mathcal{S}(A^\top)$,
 3. the kernel $\operatorname{Ker}(A) := \lbrace x \in \mathbb{T}^n ;\ Ax = o \rbrace$.
 
@@ -2490,8 +2567,15 @@ Let $A \in \mathbb{T}^{m \times n}$. Then
 1. $\mathcal{S}(A) = \lbrace Ax ;\ x \in \mathbb{T}^n \rbrace$,
 2. $\mathcal{R}(A) = \lbrace A^\top y ;\ y \in \mathbb{T}^m \rbrace$.
 
-*Proof.* Obvious from the fact that $Ax = \sum_{j=1}^{n} x_j A_{*j}$ represents a linear combination of the columns of matrix $A$. In the second part, analogously $A^\top y$ represents a linear combination of the rows of matrix $A$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Obvious from the fact that $Ax = \sum_{j=1}^{n} x_j A_{*j}$ represents a linear combination of the columns of matrix $A$. In the second part, analogously $A^\top y$ represents a linear combination of the rows of matrix $A$.
+
+</details>
 </div>
 
 We can represent any subspace $V$ of $\mathbb{T}^n$ using matrices. It suffices to take some of its generators $v_1, \ldots, v_m$ and construct a matrix $A \in \mathbb{T}^{m \times n}$ whose rows are precisely the vectors $v_1, \ldots, v_m$. Then $V = \mathcal{R}(A)$. Similarly, $V$ can be expressed as the column space of a suitable matrix from $\mathbb{T}^{n \times m}$. We can even represent the space $V$ as the kernel of a suitable matrix from $\mathbb{T}^{m \times n}$.
@@ -2524,10 +2608,23 @@ Let us examine how matrix spaces change when a matrix is multiplied on the left 
 Let $A \in \mathbb{T}^{m \times n}$, $Q \in \mathbb{T}^{p \times m}$. Then
 
 1. $\mathcal{R}(QA)$ is a subspace of $\mathcal{R}(A)$,
-2. If $A_{*k} = \sum_{j \neq k} \alpha_j A_{*j}$ for some $k \in \lbrace 1, \ldots, n \rbrace$ and some $\alpha_j \in \mathbb{T}$, $j \neq k$, then $(QA)_{*k} = \sum_{j \neq k} \alpha_j (QA)_{*j}$.
+2. If $A\_{\ast k} = \sum_{j \neq k} \alpha_j A_{\ast j}$ for some $k \in \lbrace 1, \ldots, n \rbrace$ and some $\alpha_j \in \mathbb{T}$, $j \neq k$, then $(QA)\_{\ast k} = \sum_{j \neq k} \alpha_j (QA)_{\ast j}$.
 
-*Proof.* (1) It suffices to show $\mathcal{R}(QA) \subseteq \mathcal{R}(A)$. Let $x \in \mathcal{R}(QA)$, then there exists $y \in \mathbb{T}^p$ such that $x = (QA)^\top y = A^\top(Q^\top y) \in \mathcal{R}(A)$. (2) $(QA)_{*k} = QA_{*k} = Q(\sum_{j \neq k} \alpha_j A_{*j}) = \sum_{j \neq k} \alpha_j QA_{*j} = \sum_{j \neq k} \alpha_j (QA)_{*j}$.
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+(1) It suffices to show $\mathcal{R}(QA) \subseteq \mathcal{R}(A)$. Let $x \in \mathcal{R}(QA)$, then there exists $y \in \mathbb{T}^p$ such that 
+
+$$x = (QA)^\top y = A^\top(Q^\top y) \in \mathcal{R}(A)$$
+
+(2) 
+
+$$(QA)_{\ast k} = QA_{\ast k} = Q(\sum_{j \neq k} \alpha_j A_{*j}) = \sum_{j \neq k} \alpha_j QA_{*j} = \sum_{j \neq k} \alpha_j (QA)_{\ast j}$$
+
+</details>
 </div>
 
 The theorem says that row spaces are directly comparable — after multiplying by any matrix on the left we obtain a subspace. This is also easily seen from the fact that every row of the matrix $QA$ is actually a linear combination of the rows of matrix $A$ (see Remark 5.21), and by selected linear combinations one can generate only a subspace. Also the linear dependence relation is preserved: if the $i$-th column of matrix $A$ is dependent on the others, then the $i$-th column of matrix $QA$ is dependent on the others with the same linear combination (note that linear independence need not be preserved).
@@ -2583,7 +2680,9 @@ $$\operatorname{rank}(A) = \dim \mathcal{R}(A) = \dim \mathcal{S}(A) = \dim \mat
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 5.69)</span></p>
 
-For every matrix $A \in \mathbb{T}^{m \times n}$ we have $\operatorname{rank}(A) = \operatorname{rank}(A^\top)$.
+For every matrix $A \in \mathbb{T}^{m \times n}$ we have 
+
+$$\operatorname{rank}(A) = \operatorname{rank}(A^\top)$$
 
 </div>
 
@@ -6245,7 +6344,7 @@ The eigenvalues of $A$ are $\lambda_1 = -2.78$, $\lambda_2 = 3.39 + 0.6i$, $\lam
 1. *Stopping criterion for iterative methods.* For example, the Jacobi method for computing eigenvalues consists of gradually reducing the off-diagonal entries of a symmetric matrix so that the matrix converges to a diagonal matrix. The Gershgorin discs then give an upper bound on the accuracy of the computed eigenvalues. If, for instance, a matrix $A \in \mathbb{R}^{n \times n}$ is nearly diagonal in the sense that all off-diagonal entries are less than $10^{-k}$ for some $k \in \mathbb{N}$, then the diagonal entries approximate the eigenvalues with accuracy $10^{-k}(n-1)$.
 2. *Diagonally dominant matrices.* Gershgorin discs also give the following sufficient condition for the nonsingularity of a matrix 
    
-   $$A \in \mathbb{C}^{n \times n}$: $\lvert a_{ii}\rvert > \sum_{j \neq i} \lvert a_{ij}\rvert \quad \forall i = 1, \ldots, n$$
+   $$A \in \mathbb{C}^{n \times n}: \lvert a_{ii}\rvert > \sum_{j \neq i} \lvert a_{ij}\rvert \quad \forall i = 1, \ldots, n$$
    
    In this case the discs do not contain the origin, and therefore zero is not an eigenvalue of $A$. Matrices with this property are called diagonally dominant.
 3. *Markov matrices.* Let $A$ be the Markov matrix from Example 10.57. All Gershgorin discs of the matrix $A^\top$ have their center at a point in the interval $[0, 1]$ and their right edge touches the value 1 on the real axis. This proves that $\rho(A) \le 1$, and therefore 1 is indeed the largest eigenvalue of the matrix $A$ in absolute value.
@@ -6438,7 +6537,7 @@ Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then $A$ is *positive semidefi
 
 Clearly, if $A$ is positive definite, then it is also positive semidefinite.
 
-Positive definiteness and semidefiniteness need not be tested for all vectors $x \in \mathbb{R}^n$; it suffices to restrict, for example, to the unit sphere. If $x^\top Ax > 0$ for all vectors $x$ with unit norm $\lVertx\rVert_2 = 1$, then this holds for all other nonzero vectors as well. Indeed, every vector $x \neq o$ is a positive multiple of a unit-length vector, specifically the $\lVert x\rVert_2$-multiple of the vector $\frac{1}{\lVert x\rVert_2} x$.
+Positive definiteness and semidefiniteness need not be tested for all vectors $x \in \mathbb{R}^n$; it suffices to restrict, for example, to the unit sphere. If $x^\top Ax > 0$ for all vectors $x$ with unit norm $\lVert x\rVert_2 = 1$, then this holds for all other nonzero vectors as well. Indeed, every vector $x \neq o$ is a positive multiple of a unit-length vector, specifically the $\lVert x\rVert_2$-multiple of the vector $\frac{1}{\lVert x\rVert_2} x$.
 
 Besides positive (semi-)definite matrices, one can also introduce negative (semi-)definite matrices using the reversed inequality. We will not deal with them, since $A$ is negative (semi-)definite if and only if $-A$ is positive (semi-)definite, so everything reduces to the basic case.
 
@@ -6458,14 +6557,18 @@ Thus, for testing the condition one can equivalently use the symmetric matrix $\
 
 An example of a positive semidefinite matrix is $0_n$. An example of a positive definite matrix is $I_n$, since 
 
-$$x^\top I_n x = x^\top x = \|x\|_2^2 > 0$ for all $x \neq o$$
+$$x^\top I_n x = x^\top x = \|x\|_2^2 > 0 \quad \forall x \neq o$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(11.4 — Necessary condition for positive (semi-)definiteness)</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$ be a symmetric matrix. For it to be positive semidefinite, by definition $x^\top Ax \ge 0$ must hold for all $x \in \mathbb{R}^n$. Substituting successively $x = e_i$, $i = 1, \ldots, n$, we obtain $x^\top Ax = e_i^\top A e_i = a_{ii} \ge 0$. Therefore, a positive semidefinite matrix must have a nonnegative diagonal, and a positive definite matrix must even have a positive diagonal.
+Let $A \in \mathbb{R}^{n \times n}$ be a symmetric matrix. For it to be positive semidefinite, by definition $x^\top Ax \ge 0$ must hold for all $x \in \mathbb{R}^n$. Substituting successively $x = e_i$, $i = 1, \ldots, n$, we obtain 
+
+$$x^\top Ax = e_i^\top A e_i = a_{ii} \ge 0$$
+
+Therefore, a positive semidefinite matrix must have a nonnegative diagonal, and a positive definite matrix must even have a positive diagonal.
 
 </div>
 
@@ -6506,7 +6609,11 @@ Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then the following conditions 
 
 Implication (2) $\Rightarrow$ (3): Since $A$ is symmetric, it has a spectral decomposition $A = Q\Lambda Q^\top$, where $\Lambda$ is a diagonal matrix with entries $\lambda_1, \ldots, \lambda_n > 0$. Define the matrix $\Lambda'$ as diagonal with entries $\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n} > 0$. Then the desired matrix is, for example, $U = \Lambda' Q^\top$, since $U^\top U = Q\Lambda' \Lambda' Q^\top = Q\Lambda'^2 Q^\top = Q\Lambda Q^\top = A$. Note that $U$ has rank $n$ and is therefore nonsingular, being the product of two nonsingular matrices.
 
-Implication (3) $\Rightarrow$ (1): By contradiction, suppose $x^\top Ax \le 0$ for some $x \neq o$. Then $0 \ge x^\top Ax = x^\top U^\top Ux = (Ux)^\top Ux = \|Ux\|_2^2$. Hence $Ux = o$, but the columns of $U$ are linearly independent, so $x = o$, a contradiction.
+Implication (3) $\Rightarrow$ (1): By contradiction, suppose $x^\top Ax \le 0$ for some $x \neq o$. Then 
+
+$$0 \ge x^\top Ax = x^\top U^\top Ux = (Ux)^\top Ux = \|Ux\|_2^2$$
+
+Hence $Ux = o$, but the columns of $U$ are linearly independent, so $x = o$, a contradiction.
 
 For positive semidefiniteness we have the following characterization (the proof is analogous):
 
