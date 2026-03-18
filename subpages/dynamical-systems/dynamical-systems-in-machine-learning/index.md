@@ -54,7 +54,7 @@ The formulation of a continuous dynamical system is the following:
 Let $I \times R \subseteq \mathbb{R} \times \mathbb{R}^n$.
 A map $\Phi : I \times R \to R$ is called a dynamical system or flow if:
 1. $\Phi(0, x) = x, \quad \forall x \in M,$
-2. $\Phi(t + s, x) = \Phi(t, \Phi(s, x)), \quad \forall s, t \in \mathbb{R}, , x \in M,$
+2. $\Phi(t + s, x) = \Phi(t, \Phi(s, x)), \quad \forall s, t \in \mathbb{R}, x \in M,$
 3. $\Phi$ is continuous in $(t, x)$.
 
 </div>
@@ -71,7 +71,7 @@ These systems evolve continuously. These are typically described by differential
 
 $$\begin{align*} \dot{x}_1 &= f_1(x_1, x_2, \dots, x_p) \\ \dot{x}_2 &= f_2(x_1, x_2, \dots, x_p) \\ &\vdots \\ \dot{x}_p &= f_p(x_1, x_2, \dots, x_p) \end{align*} $$
 
-* **Partial Differential Equations (PDEs):** These are used for systems that evolve along multiple dimensions simultaneously, such as time and space. For example, describing the temperature u across a physical object would involve derivatives with respect to time $\dot{u}$ and spatial coordinates $u_x, u_y, \dots$.
+* **Partial Differential Equations (PDEs):** These are used for systems that evolve along multiple dimensions simultaneously, such as time and space. For example, describing the temperature $u$ across a physical object would involve derivatives with respect to time $\dot{u}$ and spatial coordinates $u_x, u_y, \dots$.
 
 #### Discrete-Time Systems (Maps)
 
@@ -210,6 +210,25 @@ Linear systems are a cornerstone of dynamical systems theory. While they don't e
 
 ### The One-Dimensional Case: $\dot{x} = ax$
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Solution for 1D Linear System)</span></p>
+
+For the 1D linear system
+
+$$\dot{x} = ax$$
+
+the solution is
+
+$$x(t) = x_0 e^{at}$$
+
+for the initial condition $x(0) = x_0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 Let's analyze the simplest linear system, a single variable whose rate of change is proportional to its value, with an initial condition $x(0) = x_0$.
 
 *Proof:* Solution by Separation of Variables
@@ -240,10 +259,14 @@ The final solution is:
 
 $$x(t) = x_0 e^{at}$$
 
+</details>
+</div>
+
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed point or Equilibrium point)</span></p>
 
-A point $x^{\ast}\in\mathbb{R}^n$ is called equilibrium point of a system ODEs, if $f(t,x)=0$ for all $t\in I$.
+A point $x^{\ast}\in\mathbb{R}^n$ is called equilibrium point of a system ODEs, if $f(t,x^\ast)=0$ for all $t\in I$.
 
 </div>
 
@@ -291,7 +314,26 @@ Now we consider a system of $n$ coupled linear ODEs, where $x \in \mathbb{R}^n$ 
 
 $$\dot{x} = Ax, \quad x(0) = x_0$$
 
-*Proof:* Derivation of the General Solution
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Solution of Linear Systems)</span></p>
+
+Assuming the matrix $A$ has $n$ distinct eigenvalues $\lambda_1, \dots, \lambda_n$ with corresponding eigenvectors $v_1, \dots, v_n$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
+
+$$x(t) = \sum_{i=1}^{n} c_i v_i e^{\lambda_i t}$$
+
+The coefficients $c_i$ are determined by the initial condition $x(0) = x_0$:
+
+$$x_0 = \sum_{i=1}^{n} c_i v_i$$
+
+The behavior of the system is a superposition of simple exponential behaviors along each of the eigendirections.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Derivation of the General Solution</summary>
+
+*Proof:*
 
 To find the solution, we can use an ansatz inspired by the 1D case, proposing a solution of a similar exponential form.
 
@@ -335,7 +377,7 @@ It does **not** prove that *every* solution has that form. It only produces a fa
 
 We showed that each eigenpair $(\lambda_i, v_i)$ of $A$ generates a solution of the system: if the initial condition is an eigenvector, $x(0)=v_i$, then
 
-$$x(t)=v_i,e^{\lambda_i t}$$
+$$x(t)=v_i e^{\lambda_i t}$$
 
 satisfies $\dot x = Ax$.
 
@@ -353,35 +395,12 @@ $$x(t)=\sum_{i=1}^n c_i v_i e^{\lambda_i t}.$$
 
 This gives the general solution, with the constants $c_i$ chosen to match the initial condition.
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(General Solution of Linear Systems)</span></p>
 
-Assuming the matrix $A$ has $n$ distinct eigenvalues $\lambda_1, \dots, \lambda_n$ with corresponding eigenvectors $v_1, \dots, v_n$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
-
-$$x(t) = \sum_{i=1}^{n} c_i v_i e^{\lambda_i t}$$
-
-The coefficients $c_i$ are determined by the initial condition $x(0) = x_0$:
-
-$$x_0 = \sum_{i=1}^{n} c_i v_i$$
-
-The behavior of the system is a superposition of simple exponential behaviors along each of the eigendirections.
-
+</details>
 </div>
 
-**Solution with Complex Eigenvalues**
-
-The eigenvalues of a real matrix $A$ can be complex. Since $A$ is real, its complex eigenvalues must come in conjugate pairs: $\lambda = \alpha \pm i\omega$.
-
-Recalling **Euler's formula**: 
-
-$$e^{i\theta} = \cos(\theta) + i\sin(\theta)$$
-
-We can rewrite the exponential term for a complex eigenvalue $\lambda_i = \alpha_i + i\omega_i$:
-
-$$e^{\lambda_i t} = e^{(\alpha_i + i\omega_i)t} = e^{\alpha_i t} e^{i\omega_i t} = e^{\alpha_i t}(\cos(\omega_i t) + i\sin(\omega_i t))$$
-
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(General Solution of Linear Systems with Complex Eigenvalues)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Solution of Linear Systems with Complex Eigenvalues)</span></p>
 
 Assuming the matrix $A$ has $n$ distinct **complex** eigenvalues $\lambda_1, \dots, \lambda_n$ with corresponding eigenvectors $v_1, \dots, v_n$, the eigenvectors form a basis for the state space. Since the system is linear, any linear combination of individual solutions is also a solution. The general solution can therefore be written as a sum:
 
@@ -396,8 +415,44 @@ The overall behavior is a spiral: the system oscillates while its amplitude grow
 
 </div>
 
-### A Geometric Classification of 2D Linear Equilibria
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Derivation for Complex Eigenvalues</summary>
 
+**Solution with Complex Eigenvalues**
+
+The eigenvalues of a real matrix $A$ can be complex. Since $A$ is real, its complex eigenvalues must come in conjugate pairs: $\lambda = \alpha \pm i\omega$.
+
+Recalling **Euler's formula**: 
+
+$$e^{i\theta} = \cos(\theta) + i\sin(\theta)$$
+
+We can rewrite the exponential term for a complex eigenvalue $\lambda_i = \alpha_i + i\omega_i$:
+
+$$e^{\lambda_i t} = e^{(\alpha_i + i\omega_i)t} = e^{\alpha_i t} e^{i\omega_i t} = e^{\alpha_i t}(\cos(\omega_i t) + i\sin(\omega_i t))$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Having linearly independent eigenvectors is enough)</span></p>
+
+The real requirement is **$n$ linearly independent eigenvectors**, not **$n$ distinct eigenvalues**.
+
+What your theorem currently says is a **sufficient condition**:
+
+* If $A$ has $n$ **distinct eigenvalues**, then the corresponding eigenvectors are automatically linearly independent.
+* So $A$ is diagonalizable, and the formula
+  
+  $$x(t)=\sum_{i=1}^n c_i v_i e^{\lambda_i t}$$
+  
+  is valid.
+
+But "distinct eigenvalues" is **stronger than necessary**. The theorem still works whenever $A$ has a basis of eigenvectors, even if some eigenvalues are repeated.
+
+</div>
+
+### A Geometric Classification of 2D Linear Equilibria
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nullclines)</span></p>
@@ -416,7 +471,6 @@ Equilibrium points must lie at the intersection of all nullclines, as this is wh
 The *equilibrium point* of a linear system of ODEs is called **node** if $A$ has *two real eigenvalues*.
 
 </div>
-
 
 The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
 
@@ -507,11 +561,204 @@ For two real eigenvalues with one being smaller and the other being equal to zer
 
 </div>
 
-**Case: Some Eigenvalues with Zero Real Part**
+**Case 3: Some Eigenvalues with Zero Real Part**
 * **Line or Plane of Equilibria:** One eigenvalue is zero, and the others are negative (e.g., $\lambda_1 < 0$, $\lambda_2 = 0$).
   * *Geometry*: There is an entire line (or plane in higher dimensions) of fixed points. This line is the eigenspace corresponding to $\lambda_2 = 0$. Trajectories from off this line will converge toward it along the stable eigendirections.
   * *Stability*: Marginally stable.
   * *Remark*: This configuration, sometimes called a **line attractor**, is crucial in neuroscience and machine learning for modeling memory. The system can be placed at any point along the line and will stay there, effectively "remembering" that state.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Line Attractor: Hypothalamus of Mice)</span></p>
+
+The new Cell paper, used machine learning to model brain activity, which revealed that the **neural signal causing the state of aggression in mice was a line attractor**.
+
+A line attractor is a specific pattern of activity, created by the interconnections between brain cells, that follows the shape of a valley. In a graph showing the flow of energy among neurons over time, the energy in a line attractor system tends to flow down the valley, like a ball rolling down into a trough. Once neural energy has reached the bottom, it tends to stay there and flow along a line, like a river moving along the bottom of a valley.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/line_attractor1.png' | relative_url }}" alt="Kalman Smoother Schema" loading="lazy">
+</figure>
+
+In the line attractor signal encoding aggression, the farther that neural energy flows along the line, the more the animal's aggressive state escalates. Then after a fight, it takes time for the neural energy to flow back out of the valley. The researchers speculate that this gradual decay may correspond to the time it takes someone to calm down if they are very upset or angry.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Line Attractor: GRU)</span></p>
+
+Two GRUs exhibit a pseudo-line attractor. Nullclines intersect at one point, but are close enough on a finite region to mimic an analytic line attractor in practice. (A,B) depict the same phase portrait on [−1.5, 1.5] and [−0.2, 0.2], respectively.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/line_attractor2.png' | relative_url }}" alt="Kalman Smoother Schema" loading="lazy">
+</figure>
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/line_attractor1.png' | relative_url }}" alt="Kalman Smoother Schema" loading="lazy">
+  <figcaption>A line attractor is a specific pattern of activity, created by the interconnections between brain cells, that follows the shape of a valley. In a graph showing the flow of energy among neurons over time. In the line attractor signal encoding aggression, the farther that neural energy flows along the line, the more the animal's aggressive state escalates. Then after a fight, it takes time for the neural energy to flow back out of the valley.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Why do we consider only two eigenvalues?)</span></p>
+
+The text above does not state it explicitly, but we were considering a **special case $n=2$**: **2-dimensional linear system**. 
+
+That is why it talks about exactly **two** eigenvalues and uses words like *node*, *saddle*, and *spiral* in a plane-phase-portrait sense. **We do not consider only two eigenvalues in general.**
+
+That classification is for the **planar case**.
+
+For an $n$-dimensional linear system
+
+$$\dot x = Ax, \qquad A\in \mathbb R^{n\times n}$$
+
+the matrix $A$ has $n$ eigenvalues counting algebraic multiplicity. **In general, all $n$ eigenvalues matter**.
+
+What changes in higher dimension is mostly the **language** and **geometry**:
+
+* In $2D$, you can draw the phase portrait, so you get names like *node*, *saddle*, *center*, *spiral*.
+* In $nD$, the more useful description is in terms of:
+
+  * **stable subspace** $E^s$: directions where solutions decay,
+  * **unstable subspace** $E^u$: directions where solutions grow,
+  * **center subspace** $E^c$: directions where growth/decay is not decided by the linear part alone.
+
+So in higher dimensions, instead of saying "this is a saddle node in the plane," one usually says things like:
+
+* "$A$ has 3 eigenvalues with negative real part and 1 with positive real part, so the equilibrium has a 3D stable subspace and a 1D unstable subspace."
+* "All eigenvalues have negative real part, so the origin is asymptotically stable."
+* "There are eigenvalues with both positive and negative real parts, so the origin is a saddle-type equilibrium."
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Is not only one eigenvalue enough to cause instable behavior?)</span></p>
+
+> If we have $n$-dimensional system and the matrix $A$ has $n$ linearly independent eigenvectors forming a basis of the original vector space, then we can describe the solution $x(t)$ as a linear combination of evolutions of those eigenvectors. Because those evolutions are described via exponential functions, each element of the solution vector $x(t)$ we can write as a sum of exponential functions. If at least one eigenvalue if greater than 0, then the component diverges unless the corresponding coefficient is zero. Is it correct?
+
+### 1. Is your reasoning about sums of exponentials correct?**
+
+**The diagonalizable real-eigenvalue case**
+
+If $A$ has $n$ linearly independent eigenvectors $v_1,\dots,v_n$, then yes:
+
+$$x(t)=\sum_{i=1}^n c_i e^{\lambda_i t} v_i$$
+
+And the $j$-th coordinate is
+
+$$x_j(t)=\sum_{i=1}^n c_i (v_i)_j e^{\lambda_i t}$$
+
+So each coordinate is indeed a linear combination of exponential terms.
+
+That part is correct.
+
+### 2. What needs correction?
+
+#### 2.1. "If one eigenvalue is $>0$, then the component diverges" is not always true coordinate-by-coordinate**
+
+What is true is this:
+
+* If there is an eigenvalue with **positive real part**, then the equilibrium is **unstable**.
+* For a **generic initial condition**, the solution grows in norm, because it usually has some nonzero component in the unstable eigendirection.
+
+But an individual coordinate $x_j(t)$ need not diverge.
+
+Why not? Because the unstable mode might not appear in that coordinate.
+
+Example:
+
+$$
+A=\begin{pmatrix}1&0\0&-1\end{pmatrix},
+\qquad
+x(t)=c_1 e^t \binom10 + c_2 e^{-t}\binom01.
+$$
+
+Then
+
+$$x_1(t)=c_1 e^t,\qquad x_2(t)=c_2 e^{-t}$$
+
+Here there is a positive eigenvalue $1$, so the system is unstable. But $x_2(t)\to 0$, not $\infty$.
+
+So the correct statement is:
+
+* If some eigenvalue has positive real part and the initial condition has a nonzero component in the corresponding unstable subspace, then **the solution vector** typically grows without bound in norm.
+* Not every coordinate must diverge.
+
+#### 2.2. If the unstable coefficient is zero, growth may disappear
+
+If all coefficients corresponding to eigenvalues with positive real part are zero, then the initial condition lies entirely in the stable/center directions.
+
+For example, if
+
+$$x(t)=\sum_{\Re \lambda_i <0} c_i e^{\lambda_i t} v_i,$$
+
+then the solution decays, even if $A$ also has other unstable eigenvalues, because this particular initial condition does not excite them.
+
+That is exactly the idea behind the **stable manifold / stable subspace** for linear systems.
+
+#### 2.3. Complex eigenvalues change the form
+
+In real systems, you may also have complex eigenvalues
+
+$$\lambda=\alpha \pm i\beta$$
+
+Then the real solution is not just a sum of plain exponentials, but terms like
+
+$$e^{\alpha t}(\cos \beta t,; \sin \beta t)$$
+
+So the real behavior is:
+
+* $e^{\alpha t}$ controls growth/decay,
+* $\cos(\beta t)$, $\sin(\beta t)$ cause oscillation.
+
+That is where spirals and oscillations come from.
+
+So in full generality, it is better to say:
+
+* solutions are built from modes of the form $e^{\lambda t}$,
+* and for real-valued solutions, complex eigenvalues produce oscillatory terms.
+
+### 2.4. If $A$ is not diagonalizable, polynomial factors appear
+
+If $A$ does not have a full eigenbasis, then the solution is not only sums of $e^{\lambda t}$, but may include terms like
+
+$$t e^{\lambda t},\quad t^2 e^{\lambda t},\dots$$
+
+coming from Jordan blocks.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(The clean corrected version)</span></p>
+
+For the linear system
+
+$$\dot x = Ax,$$
+
+if $A$ is diagonalizable and has eigenpairs $(\lambda_i,v_i)$, then
+
+$$x(t)=\sum_i c_i e^{\lambda_i t} v_i.$$
+
+From this:
+
+* If **all** eigenvalues satisfy $\Re(\lambda_i)<0$, then $x(t)\to 0$ for every initial condition.
+* If **some** eigenvalue satisfies $\Re(\lambda_i)>0$, then the equilibrium is unstable.
+* A particular solution still may converge to $0$ if its initial condition has no component in the unstable eigenspaces.
+* What matters for stability is the behavior of the **whole vector** $x(t)$, usually measured by $\|x(t)\|$, not whether every coordinate separately diverges.
+
+**In the language of stable and unstable manifolds**
+
+For a linear system:
+
+* the **stable subspace** is spanned by eigenvectors with $\Re(\lambda)<0$,
+* the **unstable subspace** is spanned by eigenvectors with $\Re(\lambda)>0$,
+* the **center subspace** is spanned by eigenvectors with $\Re(\lambda)=0$.
+
+If your initial condition lies in the stable subspace, the solution decays.
+If it has any nonzero component in the unstable subspace, the solution typically grows.
+
+That is the higher-dimensional generalization of the $2D$ saddle picture.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why only real parts of eigenvalues matter)</span></p>
@@ -583,12 +830,57 @@ A common way to summarize this is:
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Manifolds of initial conditions)</span></p>
+
+A stable or unstable manifold is **not just the eigenvectors themselves**.
+It is the **set of all initial conditions** whose trajectories have the corresponding behavior.
+
+For a **linear system**
+
+$$\dot x = Ax,$$
+
+this becomes very simple:
+
+* the **stable manifold** is the subspace spanned by all eigenvectors whose eigenvalues have **negative real part**,
+* the **unstable manifold** is the subspace spanned by all eigenvectors whose eigenvalues have **positive real part**,
+* the **center manifold / center subspace** is spanned by eigenvectors whose eigenvalues have **zero real part**.
+
+So in the linear case, yes: these manifolds are exactly the corresponding **eigenspaces / invariant subspaces**.
+
+More precisely, for a diagonalizable linear system:
+
+
+$$E^s = \operatorname{span}\lbrace v_i : \Re(\lambda_i)<0\rbrace$$
+
+$$E^u = \operatorname{span}\lbrace v_i : \Re(\lambda_i)>0\rbrace$$
+
+$$E^c = \operatorname{span}\lbrace v_i : \Re(\lambda_i)=0\rbrace$$
+
+These are usually called **stable subspace**, **unstable subspace**, and **center subspace**.
+
+The reason people say “manifold” is that in the **nonlinear case** the corresponding objects are usually **curved**, not linear subspaces. Then:
+
+* the stable manifold is tangent to $E^s$ at the equilibrium,
+* the unstable manifold is tangent to $E^u$,
+* the center manifold is tangent to $E^c$.
+
+So the clean distinction is:
+
+* **Linear system:** manifold = subspace spanned by the relevant eigenvectors.
+* **Nonlinear system:** manifold is generally curved, but near the equilibrium it points in those eigendirections.
+
+Also, one more subtlety: if there are complex eigenvalues, you do not speak about a single real eigenvector in the same way. Instead, the stable/unstable/center subspaces are built from the corresponding **real invariant subspaces** associated with those eigenvalues.
+
+> Stable and unstable manifolds are the sets of initial conditions with stable/unstable behavior; for linear systems they are exactly the invariant subspaces spanned by eigenvectors corresponding to eigenvalues with negative/positive real part.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hyperbolic equilibrium point, Hyperbolic Systems)</span></p>
 
 An equilibrium point is called **hyperbolic** if none of its eigenvalues have a real part equal to zero. This means the system has no **centers** and no directions of marginal stability. Stable nodes, unstable nodes, saddle nodes, and spirals are all hyperbolic. This is an important property because the local behavior of hyperbolic equilibria is robust to small changes in the system.
 
 </div>
-
 
 ### General Solutions for Linear Systems
 
@@ -987,6 +1279,8 @@ $$\mathbf{x}_t = A \mathbf{x}_{t-1} + \mathbf{b}$$
 
 Such a map generates a sequence of vector-valued numbers $\lbrace\mathbf{x}_1, \mathbf{x}_2, \dots, \mathbf{x}_T\rbrace$ starting from an initial condition $\mathbf{x}_1$. A primary goal is to understand the limiting behavior of this sequence as $t \to \infty$.
 
+</div>
+
 #### Iterative Solution and Limiting Behavior (Scalar Case)
 
 To build intuition, let's analyze the scalar case:
@@ -1017,9 +1311,6 @@ $$x_t = ax_{t-1} + b$$
   
   $$\lim_{t \to \infty} x_t = b \left( \frac{1}{1-a} \right)$$
 
-
-</div>
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Different View)</span></p>
 
@@ -1045,7 +1336,6 @@ The state $x_{t+1}$ of the system at time $t+1$ is given by an affine transforma
 $$x_{t+1} = f(x_t) = ax_t + b$$
 
 where a and b are scalar constants. The parameter $a$ represents the slope, and $b$ is the intercept or offset.
-
 
 </div>
 
@@ -1119,7 +1409,6 @@ A point $x^{\ast}$ is a fixed point of a discrete-time system $x_{t+1} = f(x_t)$
 $$x^{\ast} = f(x^{\ast})$$
 
 If the system is initialized at a fixed point, it will remain there for all future time steps. There is no movement at this point.
-
 
 </div>
 
@@ -2772,7 +3061,7 @@ We also discussed an example of a mapping that failed to be a homeomorphism beca
 
 A system with a stable equilibrium and a system with an unstable equilibrium are not topologically equivalent. The intuition behind this is that equilibria serve as temporal anchors for the dynamics.
 
-* An equilibrium point fixes where trajectories go as $t \to \infty$ (for a stable equilibrium) or where they came from as t \to -\infty (for an unstable one). It imposes a specific and preferred temporal orientation on the flow in its vicinity.
+* An equilibrium point fixes where trajectories go as $t \to \infty$ (for a stable equilibrium) or where they came from as $t \to -\infty$ (for an unstable one). It imposes a specific and preferred temporal orientation on the flow in its vicinity.
 * If you were to remove the equilibrium point from the state space, the defining "anchor" of the flow would be gone. In this modified space (without the equilibrium), it might be possible to find a homeomorphism between two different flows.
 * However, once the equilibrium is included, its role as a temporal anchor breaks the equivalence. A continuous mapping (a homeomorphism) cannot reconcile the fundamentally different long-term behaviors of convergence versus divergence.
 
@@ -2822,9 +3111,9 @@ This model is an example of a mean-field approach, where the collective activity
 
 The state of the Wilson-Cowan system is described by the average firing rates of the excitatory and inhibitory populations, denoted by $\nu_e(t)$ and $\nu_i(t)$, respectively. The dynamics are governed by the following system of nonlinear ordinary differential equations:
 
-$\tau_e \frac{d\nu_e}{dt} = -\nu_e + f_e(w_{ee}\nu_e - w_{ie}\nu_i - \theta_e)$
+$$\tau_e \frac{d\nu_e}{dt} = -\nu_e + f_e(w_{ee}\nu_e - w_{ie}\nu_i - \theta_e)$$
 
-$\tau_i \frac{d\nu_i}{dt} = -\nu_i + f_i(w_{ei}\nu_e - \theta_i)$
+$$\tau_i \frac{d\nu_i}{dt} = -\nu_i + f_i(w_{ei}\nu_e - \theta_i)$$
 
 Where:
 
@@ -3011,7 +3300,10 @@ Given a dynamical system $(\mathbb{R} \times E, \phi)$ where $E \subseteq \mathb
    
   $$\forall x_0 \in B, \quad \lim_{t \to \infty} d(\phi_t(x_0), A) = 0$$
   
-  Here, $d(p, S)$ can be defined as the minimum distance from a point $p$ to any point in the set $S: d(p, S) = \inf_{y \in S} \|p-y\|$.
+  Here, $d(p, S)$ can be defined as the minimum distance from a point $p$ to any point in the set 
+  
+  $$S: d(p, S) = \inf_{y \in S} \|p-y\|$$
+
 3. **Minimality:** $A$ is a minimal set with the first two properties. There is no smaller, proper subset of $A$ that is also an attractor with the same basin of attraction. If such a smaller set existed, the other points in $A$ would simply be part of the basin for that smaller attractor.
 
 
@@ -3424,7 +3716,7 @@ This appearance and disappearance of fixed points is associated with a type of b
 
 The existence of an unstable spiral fixed point is significant. Often, such a point is surrounded by a stable limit cycle, representing a sustained oscillation in the fast subsystem. This is precisely what occurs in the intermediate range of h.
 
-To represent this limit cycle on the two-dimensional bifurcation graph, we plot its extremities.
+To represent this limit cycle on the two-dimensioal bifurcation graph, we plot its extremities.
 
 
 </div>

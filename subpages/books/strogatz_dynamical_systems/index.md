@@ -169,7 +169,7 @@ For the system $\dot{x} = f(x)$, we imagine a fluid flowing along the real line 
 
 A picture showing all the qualitatively different trajectories of the system is called a **phase portrait**.
 
-The phase portrait is controlled by the **fixed points** $x^*$, defined by $f(x^*) = 0$. Fixed points represent **equilibrium** solutions (also called steady, constant, or rest solutions), since if $x = x^*$ initially, then $x(t) = x^*$ for all time.
+The phase portrait is controlled by the **fixed points** $x^\abs$, defined by $f(x^\abs) = 0$. Fixed points represent **equilibrium** solutions (also called steady, constant, or rest solutions), since if $x = x^\abs$ initially, then $x(t) = x^\abs$ for all time.
 
 An equilibrium is **stable** if all sufficiently small disturbances away from it damp out in time. Otherwise it is **unstable**. Stable equilibria are represented geometrically by stable fixed points (where the local flow is toward the point), and unstable equilibria by unstable fixed points (where the local flow is away).
 
@@ -180,7 +180,7 @@ An equilibrium is **stable** if all sufficiently small disturbances away from it
 
 Find all fixed points and classify their stability.
 
-Here $f(x) = x^2 - 1$. Setting $f(x^*) = 0$ gives $x^* = \pm 1$. To determine stability, we plot $x^2 - 1$ and sketch the vector field. The flow is to the right where $x^2 - 1 > 0$ and to the left where $x^2 - 1 < 0$. Thus $x^* = -1$ is **stable** and $x^* = 1$ is **unstable**.
+Here $f(x) = x^2 - 1$. Setting $f(x^\abs) = 0$ gives $x^\abs = \pm 1$. To determine stability, we plot $x^2 - 1$ and sketch the vector field. The flow is to the right where $x^2 - 1 > 0$ and to the left where $x^2 - 1 < 0$. Thus $x^\abs = -1$ is **stable** and $x^\abs = 1$ is **unstable**.
 
 </div>
 
@@ -198,7 +198,7 @@ A resistor $R$ and capacitor $C$ in series with a battery of constant voltage $V
 
 $$\dot{Q} = f(Q) = \frac{V_0}{R} - \frac{Q}{RC}.$$
 
-The graph of $f(Q)$ is a straight line with negative slope. The unique fixed point $Q^* = CV_0$ is **globally stable** — the flow is always toward $Q^*$. The solution $Q(t)$ increases monotonically and is concave down as it approaches $Q^*$.
+The graph of $f(Q)$ is a straight line with negative slope. The unique fixed point $Q^\abs = CV_0$ is **globally stable** — the flow is always toward $Q^*$. The solution $Q(t)$ increases monotonically and is concave down as it approaches $Q^\abs$.
 
 </div>
 
@@ -241,33 +241,35 @@ So far we have relied on graphical methods. Now we develop a more quantitative a
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Linear Stability Analysis)</span></p>
 
-Let $x^*$ be a fixed point of $\dot{x} = f(x)$, and let $\eta(t) = x(t) - x^*$ be a small perturbation. Then by Taylor expansion:
+Let $x^\abs$ be a fixed point of $\dot{x} = f(x)$, and let $\eta(t) = x(t) - x^\abs$ be a small perturbation. Then by Taylor expansion:
 
 $$\dot{\eta} = f(x^* + \eta) = \underbrace{f(x^*)}_{= 0} + \eta f'(x^*) + O(\eta^2).$$
 
-If $f'(x^*) \neq 0$, the $O(\eta^2)$ terms are negligible for small $\eta$, yielding the **linearization about $x^*$**:
+If $f'(x^\abs) \neq 0$, the $O(\eta^2)$ terms are negligible for small $\eta$, yielding the **linearization about $x^\abs$**:
 
 $$\dot{\eta} \approx \eta f'(x^*).$$
 
-Hence the perturbation grows exponentially if $f'(x^*) > 0$ (unstable) and decays exponentially if $f'(x^*) < 0$ (stable). The quantity $\lvert f'(x^*)\rvert$ is the rate of exponential growth or decay, and its reciprocal $\tau = 1/\lvert f'(x^*)\rvert$ is the **characteristic time scale** — the time required for $x(t)$ to vary significantly near $x^*$.
+Hence the perturbation grows exponentially if $f'(x^\abs) > 0$ (unstable) and decays exponentially if $f'(x^\abs) < 0$ (stable). The quantity $\lvert f'(x^\abs)\rvert$ is the rate of exponential growth or decay, and its reciprocal $\tau = 1/\lvert f'(x^\abs)\rvert$ is the **characteristic time scale** — the time required for $x(t)$ to vary significantly near $x^\abs$.
 
-If $f'(x^*) = 0$, the linearization is inconclusive and a nonlinear analysis (graphical methods) is needed.
+If $f'(x^\abs) = 0$, the linearization is inconclusive and a nonlinear analysis (graphical methods) is needed.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Stability of $\dot{x} = \sin x$)</span></p>
 
-The fixed points are $x^* = k\pi$. Then $f'(x^*) = \cos(k\pi) = \begin{cases} 1, & k \text{ even} \\ -1, & k \text{ odd}.\end{cases}$
+The fixed points are $x^\abs = k\pi$. Then 
 
-Hence $x^*$ is **unstable** if $k$ is even and **stable** if $k$ is odd, agreeing with the graphical analysis.
+$$f'(x^\abs) = \cos(k\pi) = \begin{cases} 1, & k \text{ even} \\ -1, & k \text{ odd}.\end{cases}$$
+
+Hence $x^\abs$ is **unstable** if $k$ is even and **stable** if $k$ is odd, agreeing with the graphical analysis.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear Stability of the Logistic Equation)</span></p>
 
-Here $f(N) = rN(1 - N/K)$, so $f'(N) = r - 2rN/K$. At $N^* = 0$: $f'(0) = r > 0$ (unstable). At $N^* = K$: $f'(K) = -r < 0$ (stable). The characteristic time scale in either case is $\tau = 1/r$.
+Here $f(N) = rN(1 - N/K)$, so $f'(N) = r - 2rN/K$. At $N^\abs = 0$: $f'(0) = r > 0$ (unstable). At $N^\abs = K$: $f'(K) = -r < 0$ (stable). The characteristic time scale in either case is $\tau = 1/r$.
 
 </div>
 
@@ -474,11 +476,11 @@ To find $r_c$: we require both $r - x = e^{-x}$ and $-1 = -e^{-x}$ (tangency of 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Saddle-Nodes Are Generic)</span></p>
 
-Near a saddle-node bifurcation at $(x^*, r_c)$, Taylor expansion gives
+Near a saddle-node bifurcation at $(x^\abs, r_c)$, Taylor expansion gives
 
 $$\dot{x} = f(x, r) \approx a(r - r_c) + b(x - x^*)^2 + \cdots$$
 
-where $a = \partial f/\partial r\rvert_{(x^*, r_c)}$ and $b = \frac{1}{2}\partial^2 f/\partial x^2\rvert_{(x^*, r_c)}$, since $f(x^*, r_c) = 0$ and $\partial f/\partial x\rvert_{(x^*, r_c)} = 0$ (tangency condition). When $a, b \neq 0$, this has the same algebraic form as the normal form $\dot{x} = r + x^2$ after rescaling. This is why the saddle-node is the *generic* one-parameter bifurcation of fixed points.
+where $a = \partial f/\partial r\rvert_{(x^\abs, r_c)}$ and $b = \frac{1}{2}\partial^2 f/\partial x^2\rvert_{(x^\abs, r_c)}$, since $f(x^\abs, r_c) = 0$ and $\partial f/\partial x\rvert_{(x^\abs, r_c)} = 0$ (tangency condition). When $a, b \neq 0$, this has the same algebraic form as the normal form $\dot{x} = r + x^2$ after rescaling. This is why the saddle-node is the *generic* one-parameter bifurcation of fixed points.
 
 </div>
 
@@ -570,7 +572,7 @@ This equation arises in statistical mechanics and neural networks. Fixed points 
 * At $\beta = 1$: the $\tanh$ curve develops a slope of 1 at the origin — pitchfork bifurcation.
 * For $\beta > 1$: two new stable fixed points appear symmetrically, and the origin becomes unstable.
 
-To get a numerically accurate bifurcation diagram, we compute $\beta = x^*/\tanh x^*$ for each $x^*$ (exploiting the fact that $f$ depends more simply on $\beta$ than on $x$).
+To get a numerically accurate bifurcation diagram, we compute $\beta = x^\abs/\tanh x^\abs$ for each $x^\abs$ (exploiting the fact that $f$ depends more simply on $\beta$ than on $x$).
 
 </div>
 
@@ -3943,7 +3945,7 @@ Note that $\lambda$ depends on $x_0$. However, it is the same for all $x_0$ in t
 
 Suppose that $f$ has a stable $p$-cycle containing the point $x_0$. Show that the Liapunov exponent $\lambda < 0$. If the cycle is superstable, show that $\lambda = -\infty$.
 
-**Solution:** As usual, we convert questions about $p$-cycles of $f$ into questions about fixed points of $f^p$. Since $x_0$ is an element of a $p$-cycle, $x_0$ is a fixed point of $f^p$. By assumption, the cycle is stable; hence the multiplier $|(f^p)'(x_0)| < 1$. Therefore $\ln|(f^p)'(x_0)| < \ln(1) = 0$, a result that we'll use in a moment.
+**Solution:** As usual, we convert questions about $p$-cycles of $f$ into questions about fixed points of $f^p$. Since $x_0$ is an element of a $p$-cycle, $x_0$ is a fixed point of $f^p$. By assumption, the cycle is stable; hence the multiplier $\|(f^p)'(x_0)\| < 1$. Therefore $\ln\|(f^p)'(x_0)\| < \ln(1) = 0$, a result that we'll use in a moment.
 
 Next observe that for a $p$-cycle,
 
@@ -3953,7 +3955,7 @@ since the same $p$ terms keep appearing in the infinite sum. Finally, using the 
 
 $$\frac{1}{p}\sum_{i=0}^{p-1}\ln|f'(x_i)| = \frac{1}{p}\ln|(f^p)'(x_0)| < 0,$$
 
-as desired. If the cycle is superstable, then $|(f^p)'(x_0)| = 0$ by definition, and thus $\lambda = \frac{1}{p}\ln(0) = -\infty$. $\blacksquare$
+as desired. If the cycle is superstable, then $\|(f^p)'(x_0)\| = 0$ by definition, and thus $\lambda = \frac{1}{p}\ln(0) = -\infty$. $\blacksquare$
 
 </div>
 
@@ -3966,7 +3968,7 @@ $$f(x) = \begin{cases} rx, & 0 \le x \le \tfrac{1}{2},\\ r - rx, & \tfrac{1}{2} 
 
 for $0 \le r \le 2$ and $0 \le x \le 1$. Because it is piecewise linear, it is far easier to analyze than the logistic map. Show that $\lambda = \ln r$ for the tent map, independent of the initial condition $x_0$.
 
-**Solution:** Since $f'(x) = \pm r$ for all $x$, we find $\lambda = \lim_{n\to\infty}\left\lbrace\frac{1}{n}\sum_{i=0}^{n-1}\ln|f'(x_i)|\right\rbrace = \ln r.$ $\blacksquare$
+**Solution:** Since $f'(x) = \pm r$ for all $x$, we find $\lambda = \lim_{n\to\infty}\left\lbrace\frac{1}{n}\sum_{i=0}^{n-1}\ln\|f'(x_i)\|\right\rbrace = \ln r.$ $\blacksquare$
 
 </div>
 
@@ -3979,7 +3981,7 @@ In general, one needs to use a computer to calculate Liapunov exponents.
 
 Describe a numerical scheme to compute $\lambda$ for the logistic map $f(x) = rx(1 - x)$. Graph the results as a function of the control parameter $r$, for $3 \le r \le 4$.
 
-**Solution:** Fix some value of $r$. Then, starting from a random initial condition, iterate the map long enough to allow transients to decay, say 300 iterates or so. Next compute a large number of additional iterates, say 10,000. You only need to store the current value of $x_n$, not all the previous iterates. Compute $\ln|f'(x_n)| = \ln|r - 2rx_n|$ and add it to the sum of the previous logarithms. The Liapunov exponent is then obtained by dividing the grand total by 10,000. Repeat this procedure for the next $r$, and so on.
+**Solution:** Fix some value of $r$. Then, starting from a random initial condition, iterate the map long enough to allow transients to decay, say 300 iterates or so. Next compute a large number of additional iterates, say 10,000. You only need to store the current value of $x_n$, not all the previous iterates. Compute $\ln\|f'(x_n)\| = \ln\|r - 2rx_n\|$ and add it to the sum of the previous logarithms. The Liapunov exponent is then obtained by dividing the grand total by 10,000. Repeat this procedure for the next $r$, and so on.
 
 Comparing the graph of $\lambda(r)$ to the orbit diagram, we notice that $\lambda$ remains negative for $r < r_\infty \approx 3.57$, and approaches zero at the period-doubling bifurcations. The negative spikes correspond to the $2^n$-cycles. The onset of chaos is visible near $r \approx 3.57$, where $\lambda$ first becomes positive. For $r > 3.57$ the Liapunov exponent generally increases, except for the dips caused by the windows of periodic behavior. Note the large dip due to the period-3 window near $r = 3.83$.
 
@@ -4115,7 +4117,7 @@ Feigenbaum phrased his analysis in terms of the superstable cycles, so let's get
 
 Find $R_0$ and $R_1$ for the map $f(x, r) = r - x^2$.
 
-**Solution:** At $R_0$ the map has a superstable fixed point, by definition. The fixed point condition is $x^* = R_0 - (x^*)^2$ and the superstability condition is $\lambda = (\partial f/\partial x)_{x = x^*} = -2x$, we must have $x^* = 0$, i.e., the fixed point is the maximum of $f$. Substituting $x^* = 0$ into the fixed point condition yields $R_0 = 0$.
+**Solution:** At $R_0$ the map has a superstable fixed point, by definition. The fixed point condition is $x^\ast = R_0 - (x^\ast)^2$ and the superstability condition is $\lambda = (\partial f/\partial x)_{x = x^\ast} = -2x$, we must have $x^\ast = 0$, i.e., the fixed point is the maximum of $f$. Substituting $x^\ast = 0$ into the fixed point condition yields $R_0 = 0$.
 
 At $R_1$ the map has a superstable 2-cycle. Let $p$ and $q$ denote the points of the cycle. Superstability requires that the multiplier $\lambda = (-2p)(-2q) = 0$, so the point $x = 0$ must be one of the points in the 2-cycle. Then the period-2 condition $f^2(0, R_1) = 0$ implies $f^2(0, R_1) = R_1 - (R_1)^2 = 0$. Hence $R_1 = 1$ (since the other root gives a fixed point, not a 2-cycle). $\blacksquare$
 
@@ -4767,7 +4769,7 @@ Show that the Hénon map contracts areas if $-1 < b < 1$.
 
 $$\mathbf{J} = \begin{pmatrix} \partial f/\partial x & \partial f/\partial y \\ \partial g/\partial x & \partial g/\partial y \end{pmatrix}.$$
 
-If $|\det \mathbf{J}(x, y)| < 1$ for all $(x, y)$, the map is area-contracting. This rule follows from a fact of multivariable calculus: if $\mathbf{J}$ is the Jacobian of a two-dimensional map $T$, then $T$ maps an infinitesimal rectangle at $(x, y)$ with area $dx\,dy$ into an infinitesimal parallelogram with area $|\det \mathbf{J}(x, y)|\,dx\,dy$.
+If $\lvert \det \mathbf{J}(x, y)\rvert < 1$ for all $(x, y)$, the map is area-contracting. This rule follows from a fact of multivariable calculus: if $\mathbf{J}$ is the Jacobian of a two-dimensional map $T$, then $T$ maps an infinitesimal rectangle at $(x, y)$ with area $dx\,dy$ into an infinitesimal parallelogram with area $\|\det \mathbf{J}(x, y)\|\,dx\,dy$.
 
 For the Hénon map, we have $f(x, y) = 1 - ax^2 + y$ and $g(x, y) = bx$. Therefore
 
