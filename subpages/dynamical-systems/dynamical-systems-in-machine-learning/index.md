@@ -38,7 +38,7 @@ These notes are designed to be a self-contained introduction. However, the field
 
 ## Part I: An Introduction to Dynamical Systems
 
-## Chapter 1: Fundamentals and Linear Systems
+## Lecture 1
 
 This field of dynamical systems provides the mathematical language for describing any system that evolves over time or another dimension. From the planets orbiting the sun to the firing of neurons in the brain, dynamical systems theory gives us the tools to model, understand, and predict change.
 
@@ -876,6 +876,8 @@ Also, one more subtlety: if there are complex eigenvalues, you do not speak abou
 An equilibrium point is called **hyperbolic** if none of its eigenvalues have a real part equal to zero. This means the system has no **centers** and no directions of marginal stability. Stable nodes, unstable nodes, saddle nodes, and spirals are all hyperbolic. This is an important property because the local behavior of hyperbolic equilibria is robust to small changes in the system.
 
 </div>
+
+## Lecture 2
 
 ### General Solutions for Linear Systems
 
@@ -2015,6 +2017,8 @@ For most complex systems encountered in practice, numerical methods are the prim
 
 </div>
 
+## Lecture 3
+
 ### Introduction to Nonlinear Systems
 
 #### Flow on a Line: A First Look at Nonlinear Dynamics
@@ -2997,7 +3001,7 @@ This theorem gives us confidence in our analytical methods. When we encounter a 
 If the point is hyperbolic, Hartman-Grobman assures us that the local dynamics are completely characterized by the behavior of the linear system $\dot{\mathbf{z}} = J(\mathbf{x_0})\mathbf{z}$. The stability, the presence of saddle dynamics, and the spiral or nodal nature of the trajectories are all preserved. This allows us to use the well-understood tools of linear systems theory to draw robust conclusions about the behavior of highly nonlinear systems.
 
 
-### Foundational Concepts and Clarifications
+## Lecture 4
 
 This chapter revisits several central concepts from our previous discussions to solidify your understanding and clarify important nuances. A firm grasp of these ideas is essential before proceeding to more complex systems.
 
@@ -3043,7 +3047,6 @@ We also discussed an example of a mapping that failed to be a homeomorphism beca
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 A system with a stable equilibrium and a system with an unstable equilibrium are not topologically equivalent. The intuition behind this is that equilibria serve as temporal anchors for the dynamics.
 
 * An equilibrium point fixes where trajectories go as $t \to \infty$ (for a stable equilibrium) or where they came from as $t \to -\infty$ (for an unstable one). It imposes a specific and preferred temporal orientation on the flow in its vicinity.
@@ -3051,7 +3054,6 @@ A system with a stable equilibrium and a system with an unstable equilibrium are
 * However, once the equilibrium is included, its role as a temporal anchor breaks the equivalence. A continuous mapping (a homeomorphism) cannot reconcile the fundamentally different long-term behaviors of convergence versus divergence.
 
 Think of equilibria as providing the ultimate destinations or origins for trajectories, and this function cannot be smoothly mapped away.
-
 
 </div>
 
@@ -3113,14 +3115,12 @@ Where:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The sigmoid function is a crucial component, modeling the input-output relationship of the neuron populations. It has two key properties:
 
 1. It is bounded between $0$ and $1$, representing a firing rate that cannot be negative or infinitely high.
 2. Its steepness is controlled by the slope parameter $\beta$. A larger $\beta$ results in a sharper, more switch-like transition from "off" $0$ to "on" $1$.
 
 The term inside the sigmoid function, such as $w_{ee}\nu_e - w_{ie}\nu_i - \theta_e$, represents the total input current to the population.
-
 
 </div>
 
@@ -3130,7 +3130,6 @@ To understand the model's behavior, we analyze its phase portrait in the $\nu_e,
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
-
 
 A nullcline for a given state variable is the set of points in the state space where the rate of change of that variable is zero.
 
@@ -3146,17 +3145,14 @@ A nullcline for a given state variable is the set of points in the state space w
   
   This equation is simply a sigmoid function of $\nu_e$, resulting in a monotonically increasing curve.
 
-
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
 
-
 The equilibria, or fixed points, of the system are the points where the dynamics cease, meaning all derivatives are simultaneously zero. Geometrically, these are the points where the nullclines intersect.
 
 For certain parameter settings, the $N$-shaped $\nu_e$-nullcline can intersect the sigmoid-shaped $\nu_i$-nullcline at three distinct points, giving rise to three equilibria.
-
 
 </div>
 
@@ -3164,7 +3160,6 @@ For certain parameter settings, the $N$-shaped $\nu_e$-nullcline can intersect t
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
 
 The nullclines are powerful analytical tools because they segregate the state space into distinct regions of flow. The sign of a variable's derivative must flip every time a trajectory crosses that variable's nullcline.
 
@@ -3179,14 +3174,12 @@ Let's consider the flow directions in the ($\nu_e, \nu_i$) plane:
 
 By sketching these general directions in each region bounded by the nullclines, we can build a qualitative picture of the system's phase portrait.
 
-
 </div>
 
 #### Stability and Saddle Manifolds
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
 
 Combining the qualitative flow analysis with the location of the equilibria, we can infer their stability properties. In the three-equilibrium case:
 
@@ -3198,7 +3191,6 @@ These stability assignments can be formally proven by calculating the Jacobian m
 The saddle point and its manifolds play a crucial structural role. The stable manifold of the saddle is a particularly important curve. Any trajectory initiated exactly on this manifold will flow directly into the saddle point. More importantly, this manifold acts as the separatrix dividing the basins of attraction of the two stable equilibria.
 
 This leads to a critical question: what happens if we start a trajectory just slightly to one side of the saddle's stable manifold?
-
 
 </div>
 
@@ -3781,7 +3773,7 @@ A fixed point is a state of the system that does not change over time. It is a p
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Fixed Point</span></p>
 
-A point $x^*$ is a fixed point of a map $f$ if it satisfies the condition:
+A point $x^\ast$ is a fixed point of a map $f$ if it satisfies the condition:
 
 $$x^* = f(x^*)$$
 
@@ -3790,7 +3782,7 @@ $$x^* = f(x^*)$$
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Finding the Fixed Points of the Logistic Map</span></p>
 
-To find the fixed points of the logistic map, we set $x_{t+1} = x_t = x^*$ and solve the resulting equation:
+To find the fixed points of the logistic map, we set $x_{t+1} = x_t = x^\ast$ and solve the resulting equation:
 
 $$x^* = \alpha x^* (1 - x^*)$$
 
@@ -3804,8 +3796,8 @@ $$x^* (\alpha x^* + 1 - \alpha) = 0$$
 
 This equation yields two solutions for the fixed points:
 
-1. $x_1^* = 0$
-2. $\alpha x^* + 1 - \alpha = 0 \implies x_2^* = \frac{\alpha - 1}{\alpha}$
+1. $x_1^\ast = 0$
+2. $\alpha x^\ast + 1 - \alpha = 0 \implies x_2^\ast = \frac{\alpha - 1}{\alpha}$
 
 </div>
 
@@ -3832,7 +3824,7 @@ To formalize our intuition, we analyze the behavior of a small perturbation arou
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Derivation of the Stability Condition</span></p>
 
-Let $x^*$ be a fixed point of the map $x_{t+1} = f(x_t)$. Consider a small perturbation $\epsilon_t$ from this fixed point at time $t$:
+Let $x^\ast$ be a fixed point of the map $x_{t+1} = f(x_t)$. Consider a small perturbation $\epsilon_t$ from this fixed point at time $t$:
 
 $$x_t = x^* + \epsilon_t$$
 
@@ -3840,11 +3832,11 @@ The state at the next time step, $x_{t+1}$, will be:
 
 $$x_{t+1} = x^* + \epsilon_{t+1} = f(x^* + \epsilon_t)$$
 
-Assuming $\epsilon_t$ is small, we can perform a Taylor expansion of $f(x^* + \epsilon_t)$ around $x^*$:
+Assuming $\epsilon_t$ is small, we can perform a Taylor expansion of $f(x^\ast + \epsilon_t)$ around $x^\ast$:
 
 $$x^* + \epsilon_{t+1} \approx f(x^*) + f'(x^*) \epsilon_t + O(\epsilon_t^2)$$
 
-By definition, $f(x^*) = x^*$. We can therefore cancel the $x^*$ terms on both sides. Ignoring higher-order terms for our linear approximation, we get a recursive map for the perturbation:
+By definition, $f(x^\ast) = x^\ast$. We can therefore cancel the $x^\ast$ terms on both sides. Ignoring higher-order terms for our linear approximation, we get a recursive map for the perturbation:
 
 $$\epsilon_{t+1} \approx f'(x^*) \epsilon_t$$
 
@@ -3853,13 +3845,13 @@ This is a linear map describing the evolution of the perturbation. The perturbat
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability of Fixed Points for 1D Maps</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability of Fixed Points for 1D Maps)</span></p>
 
 Let $x^*$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^*$ is determined by the derivative of the map evaluated at the fixed point, $f'(x^*)$:
 
-* If $|f'(x^*)| < 1$, the fixed point is locally stable.
-* If $|f'(x^*)| > 1$, the fixed point is locally unstable.
-* If $|f'(x^*)| = 1$, the stability cannot be determined by this linear analysis. This is a non-hyperbolic case, and higher-order terms of the Taylor expansion must be considered.
+* If $\|f'(x^*)\| < 1$, the fixed point is locally stable.
+* If $\|f'(x^*)\| > 1$, the fixed point is locally unstable.
+* If $\|f'(x^*)\| = 1$, the stability cannot be determined by this linear analysis. This is a non-hyperbolic case, and higher-order terms of the Taylor expansion must be considered.
 
 </div>
 
@@ -3881,13 +3873,13 @@ $$J = \begin{pmatrix} \frac{\partial F_1}{\partial x_1} & \cdots & \frac{\partia
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability for N-D Maps</span></p>
 
-Let $\mathbf{x}^*$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The stability of $\mathbf{x}^*$ is determined by the eigenvalues of the Jacobian matrix evaluated at the fixed point, $J(\mathbf{x}^*)$.
+Let $\mathbf{x}^\ast$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The stability of $\mathbf{x}^\ast$ is determined by the eigenvalues of the Jacobian matrix evaluated at the fixed point, $J(\mathbf{x}^\ast)$.
 
-* The fixed point $\mathbf{x}^*$ is stable if the maximum absolute value (or modulus, for complex eigenvalues) of all eigenvalues of $J(\mathbf{x}^*)$ is less than $1$.
+* The fixed point $\mathbf{x}^\ast$ is stable if the maximum absolute value (or modulus, for complex eigenvalues) of all eigenvalues of $J(\mathbf{x}^\ast)$ is less than $1$.
 
 $$\max_i |\lambda_i| < 1$$
 
-* The fixed point $\mathbf{x}^*$ is unstable if the maximum absolute value of any eigenvalue of $J(\mathbf{x}^*)$ is greater than $1$.
+* The fixed point $\mathbf{x}^\ast$ is unstable if the maximum absolute value of any eigenvalue of $J(\mathbf{x}^\ast)$ is greater than $1$.
 
 $$\max_i |\lambda_i| > 1$$
 
@@ -3986,15 +3978,15 @@ The cycle is unstable if this value is greater than one.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">k-Cycle</span></p>
 
-For a continuous map $f$, a $k$-cycle is a set of $k$ distinct points, $\lbrace x_1^*, x_2^*, \ldots, x_k^* \rbrace$, which are visited sequentially by iteration of $f$. This implies two critical conditions:
+For a continuous map $f$, a $k$-cycle is a set of $k$ distinct points, $\lbrace x_1^\ast, x_2^\ast, \ldots, x_k^\ast \rbrace$, which are visited sequentially by iteration of $f$. This implies two critical conditions:
 
-1. **Fixed Point of the Iterated Map:** Each point $x_i^*$ in the set (for $i = 1, \ldots, k$) is a fixed point of the $k$-times iterated map.
+1. **Fixed Point of the Iterated Map:** Each point $x_i^\ast$ in the set (for $i = 1, \ldots, k$) is a fixed point of the $k$-times iterated map.
 
 $$x_i^* = f^k(x_i^*)$$
 
 2. **Minimality and Distinctness:** To be a true $k$-cycle, two additional constraints must be met:
    * $k$ must be the smallest integer for which the fixed-point condition holds. This ensures that a two-cycle is not misidentified as a four-cycle, for example.
-   * All points in the set must be distinct: $x_i^* \neq x_j^*$ for all $i \neq j$. This prevents a lower-order cycle (like a fixed point where $x_1^* = x_2^*$) from being classified as a higher-order cycle.
+   * All points in the set must be distinct: $x_i^\ast \neq x_j^\ast$ for all $i \neq j$. This prevents a lower-order cycle (like a fixed point where $x_1^\ast = x_2^\ast$) from being classified as a higher-order cycle.
 
 </div>
 
@@ -4291,12 +4283,12 @@ $$\dot{\phi} = (\omega_1 - \omega_2) + a \cdot g(\phi)$$
 
 where $g(\phi)$ is a periodic coupling function (e.g., a sigmoid or sine function) and $a$ is the amplitude of the coupling.
 
-* **The Role of Frequency Difference** ($\omega_1 - \omega_2$): This term acts as a constant vertical shift to the coupling function $g(\phi)$. If the difference is zero, synchronization can occur even with zero coupling ($a = 0$). However, as the difference $|\omega_1 - \omega_2|$ grows, this vertical shift becomes larger.
+* **The Role of Frequency Difference** ($\omega_1 - \omega_2$): This term acts as a constant vertical shift to the coupling function $g(\phi)$. If the difference is zero, synchronization can occur even with zero coupling ($a = 0$). However, as the difference $\|\omega_1 - \omega_2\|$ grows, this vertical shift becomes larger.
 * **The Role of Coupling Amplitude** ($a$): This term scales the magnitude of the coupling function. Increasing $a$ makes the peaks and troughs of $a \cdot g(\phi)$ more pronounced.
 
 For phase locking to occur, the graph of $\dot{\phi}$ must intersect the horizontal axis ($\dot{\phi} = 0$).
 
-* If the frequency difference $|\omega_1 - \omega_2|$ becomes too large for a given coupling strength $a$, the entire curve of $\dot{\phi}$ may be shifted above or below the zero-axis. In this case, no fixed point exists, and the oscillators desynchronize; their phase difference will continuously drift.
+* If the frequency difference $\|\omega_1 - \omega_2\|$ becomes too large for a given coupling strength $a$, the entire curve of $\dot{\phi}$ may be shifted above or below the zero-axis. In this case, no fixed point exists, and the oscillators desynchronize; their phase difference will continuously drift.
 * However, we can often compensate for a large difference in intrinsic frequencies by ramping up the amplitude of coupling, $a$. A larger $a$ increases the magnitude of the coupling term, allowing it to overcome the frequency difference and create intersections with the zero-axis, re-establishing a stable fixed point and thus, synchronization.
 
 In summary, for any given coupling strength, there is a limited range of frequency differences within which oscillators can phase lock. Increasing the coupling strength broadens this range.
@@ -4775,7 +4767,7 @@ Here, $x$ is the state variable and $r$ is the control parameter.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analysis of the Transcritical Bifurcation</span></p>
 
-To understand the behavior, we analyze the system for different values of the parameter $r$. We can find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x) = 0$. This yields two fixed points: $x^*_1 = 0$ and $x^*_2 = r$. Their existence and stability depend on the value of $r$.
+To understand the behavior, we analyze the system for different values of the parameter $r$. We can find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x) = 0$. This yields two fixed points: $x^{\ast}_1 = 0$ and $x^{\ast}_2 = r$. Their existence and stability depend on the value of $r$.
 
 **Case 1: $r < 0$**
 
@@ -4856,7 +4848,7 @@ We find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x^2) = 0$.
 
 **Case 2: $r > 0$**
 
-* **Fixed Points:** There are now three distinct fixed points: $x^*_1 = 0$, $x^*_2 = +\sqrt{r}$, and $x^*_3 = -\sqrt{r}$.
+* **Fixed Points:** There are now three distinct fixed points: $x^{\ast}_1 = 0$, $x^{\ast}_2 = +\sqrt{r}$, and $x^{\ast}_3 = -\sqrt{r}$.
 * **Stability:**
   * The original fixed point at $x=0$ has become unstable.
   * The two new, symmetrically located fixed points at $x = \pm\sqrt{r}$ are both stable.
@@ -5094,7 +5086,7 @@ $$\dot{r} = \mu r + r^3$$
 The Morris-Lecar model is a simplified 2D biophysical model describing the membrane potential of a single neuron. It serves as an excellent example of a system exhibiting a subcritical Hopf bifurcation.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Morris-Lecar Equations</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Morris-Lecar Equations)</span></p>
 
 The model consists of two coupled ordinary differential equations for the membrane potential ($V$) and a gating variable ($n$):
 
@@ -5108,7 +5100,7 @@ Here, $m_{\infty}(V)$ and $n_{\infty}(V)$ are sigmoidal functions of voltage, re
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Phase Space Analysis of the Morris-Lecar Model</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Phase Space Analysis of the Morris-Lecar Model)</span></p>
 
 By plotting the nullclines of the system ($\dot{V} = 0$ and $\dot{n} = 0$), we can analyze its dynamics. For certain parameter configurations, the phase space has the following structure:
 
@@ -5119,7 +5111,7 @@ By plotting the nullclines of the system ($\dot{V} = 0$ and $\dot{n} = 0$), we c
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Bifurcation and Bistability</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Bifurcation and Bistability)</span></p>
 
 As a parameter (such as the injected current, $I$) is changed, the unstable limit cycle can shrink and eventually coalesce with the stable equilibrium.
 
@@ -5162,7 +5154,7 @@ This chapter introduces the fundamental concepts of chaos theory using the logis
 We begin by recalling the logistic map, a simple equation originally developed to model population dynamics.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Logistic Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Logistic Map)</span></p>
 
 The logistic map is a discrete-time dynamical system defined by the equation:
 
