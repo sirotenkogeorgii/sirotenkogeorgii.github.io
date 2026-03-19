@@ -3723,7 +3723,6 @@ This continuous process of being driven back and forth between a stable fixed po
 
 </div>
 
-
 ## Lecture 5
 
 ### Cycles in Nonlinear Maps
@@ -3732,14 +3731,14 @@ This continuous process of being driven back and forth between a stable fixed po
 
 In our study of dynamical systems, we have explored continuous-time systems described by differential equations. These are ideal for modeling phenomena where change is constant. However, many systems, particularly in fields like biology or epidemiology, are more naturally described in discrete time steps. For instance, we might count an infected population once per day or track a species' population generation by generation. For these scenarios, we use maps, which are recursive descriptions that define the state of a system at time $t+1$ based on its state at time $t$.
 
-This chapter transitions our focus from continuous flows to discrete maps, exploring their unique behaviors, such as fixed points and cycles. We will begin with a foundational example that is famous for its complexity and its role in the history of chaos theory: the logistic map.
+This section transitions our focus from continuous flows to discrete maps, exploring their unique behaviors, such as fixed points and cycles. We will begin with a foundational example that is famous for its complexity and its role in the history of chaos theory: the logistic map.
 
 #### The Logistic Map: A Canonical Example
 
 The logistic map is a simple, scalar (one-dimensional) map defined by a quadratic equation. It was famously analyzed by Robert May in a 1976 Nature paper, which highlighted how such a simple deterministic equation could produce extraordinarily complex, chaotic dynamics.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Logistic Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Logistic Map</span></p>
 
 The logistic map is a recursive function that maps a value $x_t$ to a new value $x_{t+1}$. It is defined by the equation:
 
@@ -3760,11 +3759,11 @@ Under these conditions, it can be shown that the state $x_t$ will remain bounded
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Visualizing the Map with a Return Plot)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Visualizing the Map with a Return Plot</span></p>
 
 To understand the behavior of a map, we use a return plot, which graphs $x_{t+1}$ as a function of $x_t$. For the logistic map, this function is a parabola opening downwards. We also plot the line $x_{t+1} = x_t$, known as the bisector or identity line.
 
-The intersections of the map's curve with the bisector are significant, as they represent points where the input equals the output—these are the fixed points of the system. We can trace the evolution of the system graphically using a "cobweb plot":
+The intersections of the map's curve with the bisector are significant, as they represent points where the input equals the output — these are the fixed points of the system. We can trace the evolution of the system graphically using a "cobweb plot":
 
 1. Start at an initial value $x_0$ on the horizontal axis.
 2. Move vertically to the parabola to find the value of $x_1$.
@@ -3780,39 +3779,49 @@ This graphical method provides a powerful intuition for whether the system conve
 A fixed point is a state of the system that does not change over time. It is a point where, if the system starts there, it stays there.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Point)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Fixed Point</span></p>
 
-A point $x^*$ is a fixed point of a map $f$ if it satisfies the condition: $x^* = f(x^*)$.
+A point $x^*$ is a fixed point of a map $f$ if it satisfies the condition:
+
+$$x^* = f(x^*)$$
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Finding the Fixed Points of the Logistic Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Finding the Fixed Points of the Logistic Map</span></p>
 
 To find the fixed points of the logistic map, we set $x_{t+1} = x_t = x^*$ and solve the resulting equation:
 
 $$x^* = \alpha x^* (1 - x^*)$$
 
-Rearranging this gives us a quadratic equation: $\alpha (x^*)^2 + (1 - \alpha) x^* = 0$.
+Rearranging this gives us a quadratic equation:
 
-We can factor out $x^*$: $x^* (\alpha x^* + 1 - \alpha) = 0$.
+$$\alpha (x^*)^2 + (1 - \alpha) x^* = 0$$
+
+We can factor out $x^*$:
+
+$$x^* (\alpha x^* + 1 - \alpha) = 0$$
 
 This equation yields two solutions for the fixed points:
 
 1. $x_1^* = 0$
-2. $\alpha x^* + 1 - \alpha = 0 \implies \mathbf{x_2^* = \frac{\alpha - 1}{\alpha}}$
+2. $\alpha x^* + 1 - \alpha = 0 \implies x_2^* = \frac{\alpha - 1}{\alpha}$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Existence of Fixed Points</span></p>
 
 From these solutions, we can immediately see two things:
 
-* The fixed point at $x^*=0$ exists for all values of $\alpha$.
-* The second fixed point, $x_2^* = \frac{\alpha-1}{\alpha}$, only exists within our interval of interest $[0, 1]$ if the parameter $\alpha$ is greater than or equal to $1$.
+* The fixed point at $x^* = 0$ exists for all values of $\alpha$.
+* The second fixed point, $x_2^* = \frac{\alpha - 1}{\alpha}$, only exists within our interval of interest $[0, 1]$ if the parameter $\alpha$ is greater than or equal to $1$.
 
-The return plot illustrates two scenarios. For a small $\alpha$, only one fixed point exists at $x^*=0$. For a larger $\alpha$, a second fixed point appears where the parabola intersects the bisector. This graphical analysis suggests that the stability of a fixed point is determined by the slope of the map at that point.
+The return plot illustrates two scenarios. For a small $\alpha$, only one fixed point exists at $x^* = 0$. For a larger $\alpha$, a second fixed point appears where the parabola intersects the bisector.
+
+A cobweb plot starting near the origin converges to the fixed point at $x^* = 0$ when the slope of the map at this point has an absolute value less than $1$, suggesting the point is stable. For a larger $\alpha$, a cobweb plot starting near the origin is repelled from it, while a plot starting near the second fixed point converges towards it. The slope at $x^* = 0$ is now steep (absolute value greater than $1$), indicating it is unstable, while the slope at the second point is shallower, indicating it is stable.
+
+This graphical analysis suggests that the stability of a fixed point is determined by the slope of the map at that point.
 
 </div>
 
@@ -3821,9 +3830,15 @@ The return plot illustrates two scenarios. For a small $\alpha$, only one fixed 
 To formalize our intuition, we analyze the behavior of a small perturbation around a fixed point, a technique analogous to the one we used for differential equations.
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Stability Condition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Derivation of the Stability Condition</span></p>
 
-Let $x^*$ be a fixed point of the map $x_{t+1} = f(x_t)$. Consider a small perturbation $\epsilon_t$ from this fixed point at time $t$: $x_t = x^* + \epsilon_t$. The state at the next time step, $x_{t+1}$, will be: $x_{t+1} = x^* + \epsilon_{t+1} = f(x^* + \epsilon_t)$.
+Let $x^*$ be a fixed point of the map $x_{t+1} = f(x_t)$. Consider a small perturbation $\epsilon_t$ from this fixed point at time $t$:
+
+$$x_t = x^* + \epsilon_t$$
+
+The state at the next time step, $x_{t+1}$, will be:
+
+$$x_{t+1} = x^* + \epsilon_{t+1} = f(x^* + \epsilon_t)$$
 
 Assuming $\epsilon_t$ is small, we can perform a Taylor expansion of $f(x^* + \epsilon_t)$ around $x^*$:
 
@@ -3838,13 +3853,13 @@ This is a linear map describing the evolution of the perturbation. The perturbat
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability of Fixed Points for 1D Maps)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability of Fixed Points for 1D Maps</span></p>
 
 Let $x^*$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^*$ is determined by the derivative of the map evaluated at the fixed point, $f'(x^*)$:
 
-* If $\|f'(x^*)\| < 1$, the fixed point is locally stable.
-* If $\|f'(x^*)\| > 1$, the fixed point is locally unstable.
-* If $\|f'(x^*)\| = 1$, the stability cannot be determined by this linear analysis. This is a non-hyperbolic case, and higher-order terms of the Taylor expansion must be considered.
+* If $|f'(x^*)| < 1$, the fixed point is locally stable.
+* If $|f'(x^*)| > 1$, the fixed point is locally unstable.
+* If $|f'(x^*)| = 1$, the stability cannot be determined by this linear analysis. This is a non-hyperbolic case, and higher-order terms of the Taylor expansion must be considered.
 
 </div>
 
@@ -3853,7 +3868,7 @@ Let $x^*$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^*$ is 
 This stability criterion extends naturally to multivariate (higher-dimensional) maps.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(N-Dimensional Maps and the Jacobian)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">N-Dimensional Maps and the Jacobian</span></p>
 
 Consider a system in $m$ dimensions described by a map $\mathbf{x}_{t+1} = \mathbf{F}(\mathbf{x}_t)$, where $\mathbf{x}_t$ is a vector in $\mathbb{R}^m$. The stability analysis is analogous, but the scalar derivative is replaced by the Jacobian matrix, $J$.
 
@@ -3864,12 +3879,18 @@ $$J = \begin{pmatrix} \frac{\partial F_1}{\partial x_1} & \cdots & \frac{\partia
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability for N-D Maps)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability for N-D Maps</span></p>
 
 Let $\mathbf{x}^*$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The stability of $\mathbf{x}^*$ is determined by the eigenvalues of the Jacobian matrix evaluated at the fixed point, $J(\mathbf{x}^*)$.
 
-* The fixed point $\mathbf{x}^*$ is stable if the maximum absolute value (or modulus, for complex eigenvalues) of all eigenvalues of $J(\mathbf{x}^*)$ is less than $1$: $\max_i |\lambda_i| < 1$.
-* The fixed point $\mathbf{x}^*$ is unstable if the maximum absolute value of any eigenvalue of $J(\mathbf{x}^*)$ is greater than $1$: $\max_i |\lambda_i| > 1$.
+* The fixed point $\mathbf{x}^*$ is stable if the maximum absolute value (or modulus, for complex eigenvalues) of all eigenvalues of $J(\mathbf{x}^*)$ is less than $1$.
+
+$$\max_i |\lambda_i| < 1$$
+
+* The fixed point $\mathbf{x}^*$ is unstable if the maximum absolute value of any eigenvalue of $J(\mathbf{x}^*)$ is greater than $1$.
+
+$$\max_i |\lambda_i| > 1$$
+
 * If the maximum absolute value of the eigenvalues is exactly equal to $1$ (i.e., the largest eigenvalue lies on the unit circle in the complex plane), the system is non-hyperbolic, and a linear stability analysis is inconclusive.
 
 </div>
@@ -3879,23 +3900,27 @@ Let $\mathbf{x}^*$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The sta
 What happens when all fixed points in a bounded system become unstable? The trajectory cannot settle into a fixed point, but it also cannot escape to infinity. The system must find another form of stable, persistent behavior. In maps, this often leads to the emergence of cycles.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Path to a 2-Cycle)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Path to a 2-Cycle</span></p>
 
-Consider the logistic map for $\alpha > 3$. At these parameter values, the slopes at both fixed points ($x^*=0$ and $x^*=(\alpha-1)/\alpha$) are greater than $1$ in absolute value. This means both fixed points are unstable.
+Consider the logistic map for $\alpha > 3$. At these parameter values, the slopes at both fixed points ($x^* = 0$ and $x^* = (\alpha - 1)/\alpha$) are greater than $1$ in absolute value. This means both fixed points are unstable.
 
 Since we know the system is confined to the interval $[0, 1]$, the trajectory must go somewhere else. This "somewhere else" is often a cycle, where the system visits a finite sequence of points repeatedly.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(K-Cycle)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">K-Cycle</span></p>
 
-A K-cycle is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that: $f(x_a) = x_b$ and $f(x_b) = x_a$. The system perpetually jumps back and forth between these two points.
+A $K$-cycle is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that:
+
+$$f(x_a) = x_b \quad \text{and} \quad f(x_b) = x_a$$
+
+The system perpetually jumps back and forth between these two points.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A 2-Cycle in the Logistic Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A 2-Cycle in the Logistic Map</span></p>
 
 For a parameter value of $\alpha = 3.3$, the logistic map exhibits a stable 2-cycle.
 
@@ -3911,7 +3936,7 @@ This behavior, where an increase in a parameter causes a stable fixed point to l
 #### Two-Cycles as Fixed Points of the Iterated Map
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">From Cycles to Fixed Points</span></p>
 
 When analyzing discrete maps, we often encounter cycles, where the system iterates between a set of distinct points. A two-cycle, for instance, involves iterating between two different points. If we start at one point, a single application of the map takes us to the second point, and the next application takes us back to the first.
 
@@ -3920,18 +3945,22 @@ This observation leads to a powerful insight: a point on a two-cycle returns to 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Logistic Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">The Logistic Map Iterated Twice</span></p>
 
 Let's consider the logistic map, which is a second-order polynomial (a "square map"). If we construct the twice-iterated map, $f^2(x) = f(f(x))$, by substituting the logistic equation into itself, the resulting function is a fourth-order polynomial.
 
-The explicit form of this map is given by: $f^2(x^*) = - \alpha^3 (x^*)^4 + 2 \alpha^3 (x^*)^3 - (\alpha^2 + \alpha^3) (x^*)^2$. The key takeaway is that an iterated map yields another function, and the fixed points of this new function correspond to the cycles of the original map.
+The explicit form of this map is given by:
+
+$$f^2(x^*) = - \alpha^3 (x^*)^4 + 2 \alpha^3 (x^*)^3 - (\alpha^2 + \alpha^3) (x^*)^2$$
+
+The key takeaway is that an iterated map yields another function, and the fixed points of this new function correspond to the cycles of the original map.
 
 </div>
 
 #### Stability of Cycles
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Stability via the Iterated Map</span></p>
 
 Since we can treat the points of a cycle as fixed points of an iterated map, we can determine the stability of the cycle by analyzing the stability of these corresponding fixed points. The method is the same as for simple fixed points: we check the slope of the function at the fixed point.
 
@@ -3942,11 +3971,11 @@ The plot of $f^2(x)$ for the logistic map at $\alpha = 3.3$ reveals four fixed p
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability of a Cycle)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability of a Cycle</span></p>
 
-The stability of a k-cycle can be determined by checking the slope of the k-times iterated function, $f^k(x)$, at any point $x_i^*$ on the cycle. The cycle is stable if the absolute value of this slope is less than one:
+The stability of a $k$-cycle can be determined by checking the slope of the $k$-times iterated function, $f^k(x)$, at any point $x_i^*$ on the cycle. The cycle is stable if the absolute value of this slope is less than one.
 
-$$\left| \frac{d}{dx} f^k(x) \right|_{x=x_i^*} < 1$$
+$$\left| \frac{d}{dx} f^k(x) \bigg|_{x=x_i^*} \right| < 1$$
 
 The cycle is unstable if this value is greater than one.
 
@@ -3955,19 +3984,22 @@ The cycle is unstable if this value is greater than one.
 #### Generalization to k-Cycles
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(k-Cycle)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">k-Cycle</span></p>
 
-For a continuous map $f$, a k-cycle is a set of $k$ distinct points, $\lbrace x_1^*, x_2^*, ..., x_k^* \rbrace$, which are visited sequentially by iteration of $f$. This implies two critical conditions:
+For a continuous map $f$, a $k$-cycle is a set of $k$ distinct points, $\lbrace x_1^*, x_2^*, \ldots, x_k^* \rbrace$, which are visited sequentially by iteration of $f$. This implies two critical conditions:
 
-1. **Fixed Point of the Iterated Map:** Each point $x_i^*$ in the set (for $i = 1, ..., k$) is a fixed point of the k-times iterated map: $x_i^* = f^k(x_i^*)$.
-2. **Minimality and Distinctness:** To be a true k-cycle, two additional constraints must be met:
+1. **Fixed Point of the Iterated Map:** Each point $x_i^*$ in the set (for $i = 1, \ldots, k$) is a fixed point of the $k$-times iterated map.
+
+$$x_i^* = f^k(x_i^*)$$
+
+2. **Minimality and Distinctness:** To be a true $k$-cycle, two additional constraints must be met:
    * $k$ must be the smallest integer for which the fixed-point condition holds. This ensures that a two-cycle is not misidentified as a four-cycle, for example.
    * All points in the set must be distinct: $x_i^* \neq x_j^*$ for all $i \neq j$. This prevents a lower-order cycle (like a fixed point where $x_1^* = x_2^*$) from being classified as a higher-order cycle.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analytical Advantage of Iterated Maps</span></p>
 
 This framework provides a significant advantage. While the original map $f$ might be complex and its iterated version $f^k$ even more so, we at least have a closed-form expression. This closed form gives us direct, analytical access to the stability of cycles. This is a powerful tool that is not generally available for analyzing the stability of limit cycles in continuous-time systems described by differential equations.
 
@@ -3980,57 +4012,74 @@ In the study of dynamical systems, oscillators represent a fundamental class of 
 #### The Phase Variable
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Phase Variable)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Phase Variable</span></p>
 
 The phase of an oscillator describes its position along its limit cycle. It is represented by a phase variable, typically denoted as $\theta$. A single full iteration of the oscillator corresponds to the phase variable completing a full cycle. By convention, the phase is often defined to evolve in the interval $[0, 2\pi]$, though other intervals such as $[0, 1]$ are also used.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Phase Dynamics</span></p>
 
-The central idea of this approach is to shift our focus from the full state-space variables of the oscillator to just its phase. By doing this, we can formulate a new, often simpler, differential equation that describes the evolution of the phase itself: $\dot{\theta} = f(\theta)$. This simplification allows us to capture the essential timing and rhythm of the oscillator, which is paramount when studying phenomena like synchronization.
+The central idea of this approach is to shift our focus from the full state-space variables of the oscillator to just its phase. By doing this, we can formulate a new, often simpler, differential equation that describes the evolution of the phase itself:
+
+$$\dot{\theta} = f(\theta)$$
+
+This simplification allows us to capture the essential timing and rhythm of the oscillator, which is paramount when studying phenomena like synchronization.
 
 </div>
 
 #### A Simple Oscillator: Constant Angular Velocity
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constant Angular Velocity)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Constant Angular Velocity</span></p>
 
 Consider the simplest case of an oscillator: one that traverses its limit cycle at a constant speed. This means its phase variable increases at a constant rate.
 
-* **Dynamics:** The differential equation for the phase is linear: $\dot{\theta} = \Omega$, where $\Omega$ is the constant angular velocity.
-* **Solution:** The explicit equation for the phase at time $t$ is: $\theta(t) = (\Omega t + \theta_0) \pmod{2\pi}$, where $\theta_0$ is the initial phase at $t=0$.
+* **Dynamics:** The differential equation for the phase is linear:
+
+$$\dot{\theta} = \Omega$$
+
+where $\Omega$ is the constant angular velocity.
+
+* **Solution:** The explicit equation for the phase at time $t$ is:
+
+$$\theta(t) = (\Omega t + \theta_0) \pmod{2\pi}$$
+
+where $\theta_0$ is the initial phase at $t = 0$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Non-Uniform Speed in Nonlinear Oscillators</span></p>
 
-While this constant-speed model is a useful starting point, it is crucial to remember that it is not generally true for non-linear oscillators. In most realistic systems, an oscillator will speed up and slow down as it moves through different parts of its cycle.
+While this constant-speed model is a useful starting point, it is crucial to remember that it is not generally true for non-linear oscillators. In most realistic systems, an oscillator will speed up and slow down as it moves through different parts of its cycle. For instance, it might move quickly through one region of its state space and very slowly through another.
 
 </div>
 
 #### Calculating the Oscillation Period
 
-If we have the differential equation for the phase, $\dot{\theta} = f(\theta)$, we can derive a formula to calculate the temporal period of one full oscillation, $T_{osc}$.
+If we have the differential equation for the phase, $\dot{\theta} = f(\theta)$, we can derive a formula to calculate the temporal period of one full oscillation, $T_{\text{osc}}$.
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Oscillation Period)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Derivation of the Oscillation Period</span></p>
 
-The period $T_{osc}$ is, by definition, the time it takes to complete one cycle. We can express this with a simple integral: $T_{osc} = \int_0^{T_{osc}} dt$. To connect this to the phase variable, we perform a change of variables from time $t$ to phase $\theta$. As time progresses from $0$ to $T_{osc}$, the phase progresses from $0$ to $2\pi$. We can introduce $d\theta$ into the integral:
+The period $T_{\text{osc}}$ is, by definition, the time it takes to complete one cycle. We can express this with a simple integral:
 
-$$T_{osc} = \int_0^{2\pi} \frac{dt}{d\theta} d\theta$$
+$$T_{\text{osc}} = \int_0^{T_{\text{osc}}} dt$$
+
+To connect this to the phase variable, we perform a change of variables from time $t$ to phase $\theta$. As time progresses from $0$ to $T_{\text{osc}}$, the phase progresses from $0$ to $2\pi$. We can introduce $d\theta$ into the integral:
+
+$$T_{\text{osc}} = \int_0^{2\pi} \frac{dt}{d\theta} \, d\theta$$
 
 We know the differential equation for the phase is $\frac{d\theta}{dt} = f(\theta)$. Therefore, its inverse is $\frac{dt}{d\theta} = \frac{1}{f(\theta)}$. Substituting this into the integral gives the final formula:
 
-$$T_{osc} = \int_0^{2\pi} \frac{1}{f(\theta)} d\theta$$
+$$T_{\text{osc}} = \int_0^{2\pi} \frac{1}{f(\theta)} \, d\theta$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Direct Recipe</span></p>
 
 This formula provides a direct recipe for calculating the oscillation period for any one-dimensional phase oscillator, provided we know the function $f(\theta)$ that governs its dynamics.
 
@@ -4043,7 +4092,7 @@ We now extend our analysis from a single oscillator to a system of multiple osci
 #### The State-Space Torus
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Runners on a Circular Track)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Two Runners on a Circular Track</span></p>
 
 Imagine two runners on a circular track, each running at their own constant, but different, velocity. Let the first runner have velocity $\omega_1$ and the second have velocity $\omega_2$.
 
@@ -4053,11 +4102,11 @@ Imagine two runners on a circular track, each running at their own constant, but
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Torus as State Space</span></p>
 
 Since each oscillator is described by a variable on a circle (from $0$ to $2\pi$), the combined state space of two such oscillators, $(\theta_1, \theta_2)$, can be visualized as a torus (a donut shape). One phase variable, say $\theta_1$, represents motion around the main radius of the torus, while the other, $\theta_2$, represents motion around the circular cross-section.
 
-A trajectory in this two-dimensional state space represents the simultaneous evolution of both phases. A central question arises: Under what conditions will this trajectory eventually return to its starting point, forming a closed orbit on the torus?
+A trajectory in this two-dimensional state space represents the simultaneous evolution of both phases. As both oscillators cycle, the combined state $(\theta_1(t), \theta_2(t))$ traces a path that coils around the surface of the torus. A central question arises: Under what conditions will this trajectory eventually return to its starting point, forming a closed orbit on the torus?
 
 </div>
 
@@ -4066,14 +4115,16 @@ A trajectory in this two-dimensional state space represents the simultaneous evo
 A trajectory on the state-space torus will be a closed orbit if and only if the frequencies of the two oscillators are commensurate.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Commensurate Frequencies)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Commensurate Frequencies</span></p>
 
-Two frequencies, $\omega_1$ and $\omega_2$, are commensurate if their ratio is a rational number. That is, there exist two integers, $p$ and $q$, such that: $\frac{\omega_1}{\omega_2} = \frac{p}{q}$.
+Two frequencies, $\omega_1$ and $\omega_2$, are commensurate if their ratio is a rational number. That is, there exist two integers, $p$ and $q$, such that:
+
+$$\frac{\omega_1}{\omega_2} = \frac{p}{q}$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Physical Meaning of Commensurate Frequencies</span></p>
 
 This condition has a very clear physical meaning. If the ratio of frequencies is $\frac{p}{q}$, it means that the first oscillator completes exactly $p$ cycles in the same amount of time that the second oscillator completes exactly $q$ cycles. After this time has elapsed, both oscillators will have returned to their initial phases simultaneously, thus closing the trajectory on the torus.
 
@@ -4086,14 +4137,14 @@ For instance, if $\omega_1$ is three times faster than $\omega_2$ ($\frac{\omega
 If the condition for a closed orbit is not met, a fascinating and more complex behavior emerges.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Quasi-periodicity)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Quasi-periodicity</span></p>
 
 If the ratio of the oscillator frequencies $\frac{\omega_1}{\omega_2}$ is an irrational number, the trajectory on the torus will never close. Instead, it will wind around indefinitely, eventually passing arbitrarily close to every point on the surface of the torus. This motion is called quasi-periodic.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Middle Ground Between Periodicity and Chaos</span></p>
 
 Quasi-periodic motion is an interesting middle ground between simple periodic behavior (like a limit cycle) and the more complex behavior of chaos. The system is "almost" periodic, but because the frequencies never align perfectly, the trajectory never repeats. Over time, the path of the system state will densely fill the entire surface of the torus. This is a unique property that arises in systems of two or more oscillators.
 
@@ -4106,14 +4157,14 @@ Having explored uncoupled systems, we now introduce coupling, allowing the oscil
 #### Phase-Dependent Coupling
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Phase-Dependent Effects</span></p>
 
 In most non-linear oscillators, the effect of an external perturbation depends critically on the phase at which the perturbation is applied.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Biological Neuron)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A Biological Neuron</span></p>
 
 Consider a biological neuron that fires action potentials periodically. If we inject a small pulse of electrical current into the neuron, the effect will depend on when we inject it.
 
@@ -4127,8 +4178,10 @@ When two such neurons are coupled, they perturb each other back and forth. The f
 
 #### A Model for Two Coupled Oscillators
 
+We can formalize this concept with a mathematical model. Let's assume we have two oscillators with their own intrinsic (natural) frequencies, $\omega_1$ and $\omega_2$. We then add a coupling term that depends on the difference between their phases.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coupled Phase Oscillator Model)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Coupled Phase Oscillator Model</span></p>
 
 A common model for two coupled oscillators is given by the following system of differential equations:
 
@@ -4145,16 +4198,24 @@ Here, $A$ is the coupling strength, which determines how strongly the oscillator
 To analyze whether these oscillators will synchronize, the most effective technique is to study the evolution of their phase difference.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Difference)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Phase Difference</span></p>
 
-The phase difference, $\phi$, between the two oscillators is defined as: $\phi = \theta_1 - \theta_2$. If the oscillators synchronize perfectly (zero phase locking), this difference will be constant at $\phi=0$. If they lock at a different, but still constant, phase relationship, $\phi$ will be a non-zero constant. Therefore, synchronization corresponds to the phase difference $\phi$ reaching a stable fixed point.
+The phase difference, $\phi$, between the two oscillators is defined as:
+
+$$\phi = \theta_1 - \theta_2$$
+
+If the oscillators synchronize perfectly (zero phase locking), this difference will be constant at $\phi = 0$. If they lock at a different, but still constant, phase relationship, $\phi$ will be a non-zero constant. Therefore, synchronization corresponds to the phase difference $\phi$ reaching a stable fixed point.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Phase Difference Equation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Derivation of the Phase Difference Equation</span></p>
 
-We can derive a differential equation for $\phi$ by differentiating its definition with respect to time: $\dot{\phi} = \dot{\theta}_1 - \dot{\theta}_2$. Now, substitute the model equations:
+We can derive a differential equation for $\phi$ by differentiating its definition with respect to time:
+
+$$\dot{\phi} = \dot{\theta}_1 - \dot{\theta}_2$$
+
+Now, substitute the model equations for $\dot{\theta}_1$ and $\dot{\theta}_2$:
 
 $$\dot{\phi} = \left( \omega_1 + A \sin(\theta_1 - \theta_2) \right) - \left( \omega_2 + A \sin(\theta_2 - \theta_1) \right)$$
 
@@ -4162,7 +4223,13 @@ Group the terms:
 
 $$\dot{\phi} = (\omega_1 - \omega_2) + A \sin(\theta_1 - \theta_2) - A \sin(\theta_2 - \theta_1)$$
 
-Using the trigonometric identity that sine is an odd function, $\sin(-x) = -\sin(x)$, we have $\sin(\theta_2 - \theta_1) = -\sin(\theta_1 - \theta_2)$. Substituting and simplifying:
+Using the trigonometric identity that sine is an odd function, $\sin(-x) = -\sin(x)$, we have $\sin(\theta_2 - \theta_1) = -\sin(\theta_1 - \theta_2)$. Substituting this into the equation:
+
+$$\dot{\phi} = (\omega_1 - \omega_2) + A \sin(\theta_1 - \theta_2) - A \left( -\sin(\theta_1 - \theta_2) \right)$$
+
+$$\dot{\phi} = (\omega_1 - \omega_2) + A \sin(\theta_1 - \theta_2) + A \sin(\theta_1 - \theta_2)$$
+
+Finally, by substituting $\phi = \theta_1 - \theta_2$, we arrive at the differential equation for the phase difference:
 
 $$\dot{\phi} = (\omega_1 - \omega_2) + 2A \sin(\phi)$$
 
@@ -4171,36 +4238,41 @@ $$\dot{\phi} = (\omega_1 - \omega_2) + 2A \sin(\phi)$$
 #### Phase Locking and Fixed Point Analysis
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Synchronization as a Fixed Point Problem</span></p>
 
 The concept of synchronization or phase locking is now transformed into a familiar problem: finding the fixed points of the scalar differential equation for $\phi$. A fixed point occurs where $\dot{\phi} = 0$, which means the phase difference stops changing and the oscillators are locked.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Identical Intrinsic Frequencies)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Identical Intrinsic Frequencies</span></p>
 
-Let's analyze the simplest case, where the two oscillators have the same intrinsic frequency, $\omega_1 = \omega_2$. The phase difference equation simplifies to: $\dot{\phi} = 2A \sin(\phi)$.
+Let's analyze the simplest case, where the two oscillators have the same intrinsic frequency, $\omega_1 = \omega_2$. The phase difference equation simplifies to:
 
-* **Fixed Points:** The fixed points are where $\dot{\phi} = 0$, which occurs when $\sin(\phi) = 0$. This gives fixed points at $\phi=0, \pi, 2\pi, \dots$.
+$$\dot{\phi} = 2A \sin(\phi)$$
+
+We can analyze the stability of the fixed points by examining the graph of $\dot{\phi}$ versus $\phi$.
+
+* **Fixed Points:** The fixed points are where $\dot{\phi} = 0$, which occurs when $\sin(\phi) = 0$. This gives fixed points at $\phi = 0, \pi, 2\pi, \ldots$.
 * **Stability Analysis:**
   * For a value of $\phi$ slightly greater than $0$, $\dot{\phi}$ is positive, causing $\phi$ to increase and move away from $0$.
   * For a value of $\phi$ slightly less than $\pi$ (but greater than $0$), $\dot{\phi}$ is positive, causing $\phi$ to increase towards $\pi$. For a value of $\phi$ slightly greater than $\pi$, $\dot{\phi}$ is negative, causing $\phi$ to decrease towards $\pi$.
+  * Based on the lecture's analysis, the system exhibits one stable fixed point and one unstable fixed point. The stable fixed point represents a state of stable phase locking, where if the oscillators are perturbed slightly from this state, they will return to it. The unstable fixed point represents a state where any small perturbation will cause the oscillators to drift away from that phase relationship.
   * The state at the center is a stable fixed point. This is the point of phase locking.
   * The system dynamics cause the phase difference $\phi$ to be repelled from the unstable fixed point and attracted to the stable one.
 
-The analysis can be extended by considering what happens as the difference in intrinsic frequencies, $\omega_1 - \omega_2$, is increased. This corresponds to vertically shifting the sine curve of the $\dot{\phi}$ vs. $\phi$ graph.
+The analysis can be extended by considering what happens as the difference in intrinsic frequencies, $\omega_1 - \omega_2$, is increased. This corresponds to vertically shifting the sine curve of the $\dot{\phi}$ vs. $\phi$ graph. The question then becomes: how large can this frequency difference be before synchronization is lost?
 
 </div>
 
 ### Synchronization and Phase Locking in Coupled Oscillators
 
-This section explores the phenomenon of synchronization, where coupled oscillating systems adjust their rhythms to lock into a common pattern. We investigate the conditions under which this occurs and introduce a powerful graphical tool for mapping these behaviors.
+This section explores the fascinating phenomenon of synchronization, where coupled oscillating systems adjust their rhythms to lock into a common pattern. We will investigate the conditions under which this occurs and introduce a powerful graphical tool for mapping these behaviors.
 
 #### The Concept of Phase Locking
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Locking)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Phase Locking</span></p>
 
 Two or more oscillators are said to be synchronized or phase-locked when the difference between their phases, $\phi$, becomes constant over time. Mathematically, this corresponds to a stable fixed point of the phase difference dynamics. If $\dot{\phi} = 0$ for some phase difference $\phi^*$, the oscillators have achieved phase locking.
 
@@ -4209,7 +4281,7 @@ Two or more oscillators are said to be synchronized or phase-locked when the dif
 #### Conditions for Synchronization: Frequency Difference and Coupling Strength
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Interplay of Intrinsic Frequency and Coupling)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Interplay of Intrinsic Frequency and Coupling</span></p>
 
 The ability of two oscillators to synchronize is a result of the competition between their intrinsic properties and the strength of the interaction connecting them.
 
@@ -4219,10 +4291,13 @@ $$\dot{\phi} = (\omega_1 - \omega_2) + a \cdot g(\phi)$$
 
 where $g(\phi)$ is a periodic coupling function (e.g., a sigmoid or sine function) and $a$ is the amplitude of the coupling.
 
-* **The Role of Frequency Difference ($\omega_1 - \omega_2$):** This term acts as a constant vertical shift to the coupling function $g(\phi)$. If the difference is zero, synchronization can occur even with zero coupling ($a=0$). However, as the difference $|\omega_1 - \omega_2|$ grows, this vertical shift becomes larger.
-* **The Role of Coupling Amplitude ($a$):** This term scales the magnitude of the coupling function. Increasing $a$ makes the peaks and troughs of $a \cdot g(\phi)$ more pronounced.
+* **The Role of Frequency Difference** ($\omega_1 - \omega_2$): This term acts as a constant vertical shift to the coupling function $g(\phi)$. If the difference is zero, synchronization can occur even with zero coupling ($a = 0$). However, as the difference $|\omega_1 - \omega_2|$ grows, this vertical shift becomes larger.
+* **The Role of Coupling Amplitude** ($a$): This term scales the magnitude of the coupling function. Increasing $a$ makes the peaks and troughs of $a \cdot g(\phi)$ more pronounced.
 
-For phase locking to occur, the graph of $\dot{\phi}$ must intersect the horizontal axis ($\dot{\phi}=0$). If the frequency difference $|\omega_1 - \omega_2|$ becomes too large for a given coupling strength $a$, the entire curve of $\dot{\phi}$ may be shifted above or below the zero-axis. However, we can often compensate for a large difference in intrinsic frequencies by ramping up the amplitude of coupling, $a$.
+For phase locking to occur, the graph of $\dot{\phi}$ must intersect the horizontal axis ($\dot{\phi} = 0$).
+
+* If the frequency difference $|\omega_1 - \omega_2|$ becomes too large for a given coupling strength $a$, the entire curve of $\dot{\phi}$ may be shifted above or below the zero-axis. In this case, no fixed point exists, and the oscillators desynchronize; their phase difference will continuously drift.
+* However, we can often compensate for a large difference in intrinsic frequencies by ramping up the amplitude of coupling, $a$. A larger $a$ increases the magnitude of the coupling term, allowing it to overcome the frequency difference and create intersections with the zero-axis, re-establishing a stable fixed point and thus, synchronization.
 
 In summary, for any given coupling strength, there is a limited range of frequency differences within which oscillators can phase lock. Increasing the coupling strength broadens this range.
 
@@ -4231,7 +4306,7 @@ In summary, for any given coupling strength, there is a limited range of frequen
 #### The Phenomenon of Phase Slips
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Border of Synchronization)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Border of Synchronization</span></p>
 
 An interesting special case occurs when the curve of $\dot{\phi}$ is shifted just enough to become tangent to the zero-axis, touching it at a single point. This is the critical boundary between synchronization and desynchronization.
 
@@ -4246,11 +4321,11 @@ In this state, the system exhibits phase slips.
 #### Generalized P:Q Phase Locking
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(P:Q Phase Locking)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">P:Q Phase Locking</span></p>
 
-We can generalize the concept of synchronization beyond a simple 1:1 relationship. We speak of P:Q phase locking if the difference between the unbounded phase variables, $\theta_1(t)$ and $\theta_2(t)$, remains bounded when weighted by integers $p$ and $q$.
+We can generalize the concept of synchronization beyond a simple 1:1 relationship. We speak of $P$:$Q$ phase locking if the difference between the unbounded phase variables, $\theta_1(t)$ and $\theta_2(t)$, remains bounded when weighted by integers $p$ and $q$.
 
-Specifically, P:Q phase locking occurs if the quantity:
+Specifically, $P$:$Q$ phase locking occurs if the quantity:
 
 $$p \cdot \theta_1(t) - q \cdot \theta_2(t)$$
 
@@ -4261,19 +4336,19 @@ remains bounded over time. This describes a state where one oscillator completes
 #### Arnold Tongues: Mapping Synchronization Regions
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arnold Tongues)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Arnold Tongues</span></p>
 
-Arnold tongues are regions in a parameter space that depict where phase locking of a specific P:Q ratio occurs. Typically, this space is plotted with the difference in intrinsic frequencies ($\omega_1 - \omega_2$) on one axis and the coupling amplitude ($a$) on the other. Each "tongue" represents a combination of parameters for which the system will synchronize in a particular mode (e.g., 1:1, 1:2, 2:1).
+Arnold tongues are regions in a parameter space that depict where phase locking of a specific $P$:$Q$ ratio occurs. Typically, this space is plotted with the difference in intrinsic frequencies ($\omega_1 - \omega_2$) on one axis and the coupling amplitude ($a$) on the other. Each "tongue" represents a combination of parameters for which the system will synchronize in a particular mode (e.g., 1:1, 1:2, 2:1).
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Structure of Arnold Tongues)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Structure of Arnold Tongues</span></p>
 
 The plot of Arnold tongues provides a powerful map of a coupled oscillator system's behavior.
 
-* **The 1:1 Tongue:** The most prominent region is typically the 1:1 coupling (or exact synchrony) tongue. It is centered at a frequency difference of zero ($\omega_1 = \omega_2$). At this central point, synchronization can occur with zero coupling ($a=0$). As the coupling strength $a$ increases, the 1:1 tongue grows broader, signifying that a stronger coupling can enforce synchronization across a larger range of intrinsic frequency differences.
-* **Higher-Order Tongues:** For many systems, smaller, higher-order tongues corresponding to P:Q couplings like 1:2, 2:1, 1:3, 3:1, etc., appear as side-branches. These tongues are typically narrower than the main 1:1 tongue, indicating that these more complex locking modes occur over a smaller range of parameters. The existence and prominence of these higher-order tongues depend on the specific properties of the system and its interaction function.
+* **The 1:1 Tongue:** The most prominent region is typically the 1:1 coupling (or exact synchrony) tongue. It is centered at a frequency difference of zero ($\omega_1 = \omega_2$). At this central point, synchronization can occur with zero coupling ($a = 0$). As the coupling strength $a$ increases, the 1:1 tongue grows broader, signifying that a stronger coupling can enforce synchronization across a larger range of intrinsic frequency differences.
+* **Higher-Order Tongues:** For many systems, smaller, higher-order tongues corresponding to $P$:$Q$ couplings like 1:2, 2:1, 1:3, 3:1, etc., appear as side-branches. These tongues are typically narrower than the main 1:1 tongue, indicating that these more complex locking modes occur over a smaller range of parameters. The existence and prominence of these higher-order tongues depend on the specific properties of the system and its interaction function.
 * **Intersection and Complex Dynamics:** As the coupling amplitude $a$ is increased, the tongues broaden. At a certain point, these tongues may begin to intersect. The regions where Arnold tongues overlap correspond to parameter values where complex and interesting dynamics can emerge, which are a subject of more advanced study.
 
 </div>
@@ -4282,50 +4357,63 @@ The plot of Arnold tongues provides a powerful map of a coupled oscillator syste
 
 #### The Need for Numerical Methods
 
-Most ordinary differential equations arising in practical applications cannot be solved analytically. We therefore rely on numerical methods to approximate solutions.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Why Numerical Methods?</span></p>
+
+While the theoretical analysis of dynamical systems provides deep insights into qualitative behavior, many systems of practical interest cannot be solved analytically. For these systems, we must rely on numerical methods to approximate the solution of ordinary differential equations (ODEs). This section introduces the foundational ideas behind numerical ODE solvers.
+
+</div>
 
 #### The Explicit Euler Method
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Explicit Euler Method)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Explicit Euler Method</span></p>
 
-The Explicit Euler Method is the simplest numerical scheme for solving an initial value problem $\dot{x} = f(x, t)$. Given a step size $\Delta t$, the approximation at the next time step is:
+The explicit (or forward) Euler method is the simplest numerical method for solving an initial value problem of the form $\dot{x} = f(x, t)$ with $x(0) = x_0$. The method discretizes time into steps of size $h$ and approximates the solution at each step using the tangent line:
 
-$$x_{n+1} = x_n + \Delta t \cdot f(x_n, t_n)$$
+$$x_{n+1} = x_n + h \cdot f(x_n, t_n)$$
+
+where $x_n$ is the approximation of $x(t_n)$ and $t_n = n \cdot h$.
 
 </div>
 
 #### The Runge-Kutta Family of Methods
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Higher-Order Methods</span></p>
 
-The Euler method, while intuitive, can be inaccurate for large step sizes. The Runge-Kutta family of methods provides higher-order approximations by evaluating the vector field at multiple intermediate points within each time step, achieving better accuracy without requiring excessively small step sizes.
+The Euler method, while conceptually simple, has limited accuracy for a given step size. The Runge-Kutta family of methods achieves higher accuracy by evaluating the derivative $f(x, t)$ at multiple intermediate points within each time step, effectively using a weighted average of these evaluations to better approximate the true trajectory. The most commonly used variant is the fourth-order Runge-Kutta method (RK4).
 
 </div>
 
 #### Practical Considerations: Explicit vs. Implicit Solvers for Stiff Systems
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Stiff Systems</span></p>
 
-For stiff systems—those with dynamics occurring on vastly different time scales—explicit methods like Euler or standard Runge-Kutta can become unstable unless the step size is made extremely small. In such cases, implicit solvers, which evaluate the vector field at the future time step, provide better stability properties at the cost of requiring the solution of an algebraic equation at each step.
+A key practical consideration in numerical integration is the concept of stiffness. A stiff system is one that contains dynamics operating on vastly different time scales. For example, a system might have one variable that changes very rapidly and another that changes very slowly.
+
+* **Explicit solvers** (like the Euler method or standard RK4) require very small time steps to maintain numerical stability when applied to stiff systems. The step size is dictated by the fastest time scale in the system, making the computation extremely expensive if one also needs to simulate the slow dynamics over long times.
+* **Implicit solvers** are designed to handle stiff systems more efficiently. Instead of extrapolating forward from the current state, they define the next state implicitly, often requiring the solution of an algebraic equation at each step. While each step is more computationally expensive, implicit solvers can take much larger time steps without becoming unstable, making them far more efficient overall for stiff problems.
+
+The choice between explicit and implicit solvers is a critical practical decision in computational dynamical systems and depends heavily on the nature of the system being simulated.
 
 </div>
+
 ## Lecture 6
 
 ### Dynamical Systems with Special Functionals
 
-In the study of dynamical systems, certain classes of systems exhibit unique behaviors due to the existence of special functions, or functionals, defined on their state space. These functionals, such as potentials, energy functions, or Hamiltonians, impose strong constraints on the system's dynamics. Understanding these functions allows us to predict the qualitative behavior of trajectories and the nature of equilibrium points without solving the differential equations explicitly. This section explores two fundamental types of such systems: Hamiltonian systems, often associated with conservation laws in physics, and Gradient systems, which describe processes moving towards local minima.
+In the study of dynamical systems, certain classes of systems exhibit unique behaviors due to the existence of special functions, or functionals, defined on their state space. These functionals, such as potentials, energy functions, or Hamiltonians, impose strong constraints on the system's dynamics. Understanding these functions allows us to predict the qualitative behavior of trajectories and the nature of equilibrium points without solving the differential equations explicitly. This chapter explores two fundamental types of such systems: Hamiltonian systems, often associated with conservation laws in physics, and Gradient systems, which describe processes moving towards local minima.
 
 #### Hamiltonian Systems
 
 Hamiltonian systems are a cornerstone of classical mechanics and dynamical systems theory. They are characterized by a conserved quantity, the Hamiltonian, which often corresponds to the total energy of the system. This conservation property leads to highly structured and constrained dynamics.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hamiltonian Function)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Hamiltonian Function</span></p>
 
-Let the state space $E$ be an open set in $\mathbb{R}^{2m}$. A function $H: E \to \mathbb{R}$ is called a Hamiltonian function if it is twice differentiable ($C^2$) on $E$. The state variables are typically written as $(x, y)$ where $x, y \in \mathbb{R}^m$.
+Let the state space $E$ be an open set in $\mathbb{R}^{2m}$. A function $H: E \to \mathbb{R}$ is called a **Hamiltonian function** if it is twice differentiable ($C^2$) on $E$. The state variables are typically written as $(x, y)$ where $x, y \in \mathbb{R}^m$.
 
 A dynamical system described by the differential equations:
 
@@ -4339,69 +4427,105 @@ is defined as a **Hamiltonian system**.
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Equilibria of Hamiltonian Systems)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Equilibria of Hamiltonian Systems</span></p>
 
 Any non-degenerate equilibrium point of a Hamiltonian system is either a saddle or a center. Specifically, if the equilibrium point corresponds to:
 
-* A saddle point of the Hamiltonian function $H(x,y)$, then the equilibrium is a saddle.
-* A local maximum or minimum of the Hamiltonian function $H(x,y)$, then the equilibrium is a center (a non-linear center).
+* A **saddle point** of the Hamiltonian function $H(x,y)$, then the equilibrium is a saddle.
+* A **local maximum or minimum** of the Hamiltonian function $H(x,y)$, then the equilibrium is a center (a non-linear center).
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Significance of the Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Significance of the Theorem</span></p>
 
 This theorem is a powerful tool for classifying equilibrium points in non-linear systems. Typically, determining if an equilibrium is a true non-linear center requires analyzing higher-order terms of the system's Taylor expansion. However, if we can demonstrate that a system possesses a Hamiltonian function, we can classify its equilibria simply by analyzing the local extrema of $H$. This provides a direct and elegant method for proving the existence of non-linear centers, which are characterized by a dense set of closed orbits in their vicinity.
 
-Systems that possess a Hamiltonian are often called conservative systems. The value of the Hamiltonian, $H(x,y)$, remains constant along any trajectory of the system, acting as a constant of motion.
+Systems that possess a Hamiltonian are often called **conservative systems**. The value of the Hamiltonian, $H(x,y)$, remains constant along any trajectory of the system, acting as a constant of motion.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lotka-Volterra System)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">The Lotka-Volterra System</span></p>
 
 Let us revisit the Lotka-Volterra model for predator-prey interaction, which we can demonstrate is a Hamiltonian system.
 
 The system is defined by the equations:
 
-$$\begin{aligned} \dot{x} &= \alpha x - \beta xy \\ \dot{y} &= \gamma xy - \lambda y \end{aligned}$$
+$$\begin{aligned}
+\dot{x} &= \alpha x - \beta xy \\
+\dot{y} &= \gamma xy - \lambda y
+\end{aligned}$$
 
 where $x$ represents the prey population and $y$ represents the predator population. All parameters $\alpha, \beta, \gamma, \lambda$ are positive constants.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Deriving the Hamiltonian for Lotka-Volterra)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Deriving the Hamiltonian for Lotka-Volterra</span></p>
 
 To show this system is Hamiltonian, we must construct a function $H(x,y)$ that is constant along the system's trajectories and satisfies the necessary conditions.
 
-1. **Combine the Differential Equations:** We can eliminate the time variable $dt$ by dividing the two equations:
+**Step 1: Combine the Differential Equations.** We can eliminate the time variable $dt$ by dividing the two equations:
 
 $$\frac{dx}{dy} = \frac{\dot{x}}{\dot{y}} = \frac{\alpha x - \beta xy}{\gamma xy - \lambda y} = \frac{x(\alpha - \beta y)}{y(\gamma x - \lambda)}$$
 
-2. **Separate Variables:** We rearrange the equation to group terms involving $x$ and $y$ on opposite sides.
+**Step 2: Separate Variables.** We rearrange the equation to group terms involving $x$ and $y$ on opposite sides.
 
 $$\frac{\gamma x - \lambda}{x} dx = \frac{\alpha - \beta y}{y} dy$$
 
-3. **Integrate Both Sides:**
+**Step 3: Integrate Both Sides.** We integrate both sides of the equation to find the conserved quantity.
+
+$$\int \left(\frac{\gamma x - \lambda}{x}\right) dx = \int \left(\frac{\alpha - \beta y}{y}\right) dy$$
 
 $$\int \left(\gamma - \frac{\lambda}{x}\right) dx = \int \left(\frac{\alpha}{y} - \beta\right) dy$$
 
-This yields: $\gamma x - \lambda \ln(x) = \alpha \ln(y) - \beta y + C$, where $C$ is a constant of integration.
+This yields:
 
-4. **Define the Hamiltonian:** By rearranging the terms, we define:
+$$\gamma x - \lambda \ln(x) = \alpha \ln(y) - \beta y + C$$
+
+where $C$ is a constant of integration.
+
+**Step 4: Define the Hamiltonian.** By rearranging the terms, we can define a function $H(x,y)$ that is constant along any trajectory.
 
 $$H(x,y) = \alpha \ln(y) - \beta y - \gamma x + \lambda \ln(x)$$
 
-Since the logarithm is only defined for positive arguments, this Hamiltonian is valid in the positive quadrant ($x > 0, y > 0$).
+Since the logarithm is only defined for positive arguments, this Hamiltonian is valid in the positive quadrant ($x > 0$, $y > 0$), which is the only biologically meaningful region for population models.
 
-5. **Verification with Auxiliary Variables:** We introduce auxiliary variables: let $p = \ln(x)$ and $q = \ln(y)$, so $x = e^p$ and $y = e^q$. Rewriting: $H(p, q) = \alpha q - \beta e^q + \lambda p - \gamma e^p$.
+**Step 5: Verification with Auxiliary Variables.** To formally verify that this is a Hamiltonian system according to the definition, we introduce auxiliary variables:
 
-6. **First condition for $\dot{p}$:** Using the chain rule, $\dot{p} = \frac{1}{x}\dot{x} = \alpha - \beta y = \alpha - \beta e^q$. And $\frac{\partial H}{\partial q} = \alpha - \beta e^q$. The condition $\dot{p} = \frac{\partial H}{\partial q}$ is satisfied.
+* Let $p = \ln(x)$ and $q = \ln(y)$.
+* This implies $x = e^p$ and $y = e^q$.
 
-7. **Second condition for $\dot{q}$:** Similarly, $\dot{q} = \frac{1}{y}\dot{y} = \gamma x - \lambda = \gamma e^p - \lambda$. And $-\frac{\partial H}{\partial p} = \gamma e^p - \lambda$. The condition $\dot{q} = -\frac{\partial H}{\partial p}$ is also satisfied.
+**Step 6: Rewriting the Hamiltonian** in terms of $p$ and $q$:
 
-We have successfully shown that the Lotka-Volterra system is a Hamiltonian system in the positive quadrant. Consequently, its equilibrium points must be either saddles or centers, which aligns with numerical simulations that show a dense set of closed orbits.
+$$H(p, q) = \alpha q - \beta e^q + \lambda p - \gamma e^p$$
+
+**Step 7: Verify the Hamiltonian conditions.**
+
+We must verify that $\dot{p} = \frac{\partial H}{\partial q}$ and $\dot{q} = -\frac{\partial H}{\partial p}$.
+
+*First condition for $\dot{p}$:* Using the chain rule, $\dot{p} = \frac{d}{dt}(\ln(x)) = \frac{1}{x}\dot{x}$.
+
+$$\dot{p} = \frac{1}{x}(\alpha x - \beta xy) = \alpha - \beta y = \alpha - \beta e^q$$
+
+Now, we compute the partial derivative of $H$ with respect to $q$:
+
+$$\frac{\partial H}{\partial q} = \frac{\partial}{\partial q} (\alpha q - \beta e^q + \lambda p - \gamma e^p) = \alpha - \beta e^q$$
+
+The condition $\dot{p} = \frac{\partial H}{\partial q}$ is satisfied.
+
+*Second condition for $\dot{q}$:* Similarly, $\dot{q} = \frac{1}{y}\dot{y}$.
+
+$$\dot{q} = \frac{1}{y}(\gamma xy - \lambda y) = \gamma x - \lambda = \gamma e^p - \lambda$$
+
+Next, we compute the negative partial derivative of $H$ with respect to $p$:
+
+$$-\frac{\partial H}{\partial p} = -\frac{\partial}{\partial p} (\alpha q - \beta e^q + \lambda p - \gamma e^p) = -(\lambda - \gamma e^p) = \gamma e^p - \lambda$$
+
+The condition $\dot{q} = -\frac{\partial H}{\partial p}$ is also satisfied.
+
+**Step 8: Conclusion.** We have successfully shown that the Lotka-Volterra system is a Hamiltonian system in the positive quadrant. Consequently, its equilibrium points must be either saddles or centers, which aligns with numerical simulations that show a dense set of closed orbits.
 
 </div>
 
@@ -4410,48 +4534,79 @@ We have successfully shown that the Lotka-Volterra system is a Hamiltonian syste
 Another important class of systems are gradient systems, where the dynamics are governed by the gradient of a potential function. These systems model phenomena where a state moves to minimize a certain quantity, such as energy.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Potential Function and Gradient System)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Potential Function and Gradient System</span></p>
 
 Let the state space $E$ be an open set in $\mathbb{R}^m$. Let $V: E \to \mathbb{R}$ be a twice differentiable ($C^2$) function on $E$.
 
-A dynamical system is a gradient system if its vector field is given by the negative gradient of a potential function $V(x)$:
+A dynamical system is a **gradient system** if its vector field is given by the negative gradient of a potential function $V(x)$:
 
 $$\dot{x} = -\frac{\partial V}{\partial x}$$
 
-This can also be written using the gradient operator as $\dot{x} = -\nabla V(x)$. The function $V(x)$ is also referred to as a gradient field.
+This can also be written using the gradient operator as $\dot{x} = -\nabla V(x)$. The function $V(x)$ is also referred to as a **gradient field**.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Impossibility of Closed Orbits in Gradient Systems)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Impossibility of Closed Orbits in Gradient Systems</span></p>
 
-For any system with a potential function $V(x)$, closed orbits are impossible unless the orbit is a single equilibrium point.
+Closed orbits are impossible in a gradient system.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Powerful Restrictive Result)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Powerful Restrictive Result</span></p>
 
 This theorem provides a very strong constraint on the possible behaviors of a gradient system. It implies that such systems cannot have centers or limit cycles. If one can construct a potential function for a given system, it immediately rules out any periodic or oscillatory behavior. All trajectories in a gradient system must eventually approach an equilibrium point or diverge to infinity.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Impossibility of Closed Orbits)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Impossibility of Closed Orbits (Intuitive Argument)</span></p>
+
+Let us provide the intuition behind this proof.
+
+**Step 1: Assumption for Contradiction.** Suppose a closed orbit exists in the system. Let this orbit be parameterized by time $t$, and let $T$ be its period.
+
+**Step 2: Property of the Potential Function.** A trajectory starting at a point $x_0$ on this orbit returns to the exact same point after time $T$. Since the potential function $V(x)$ is continuous (and in fact, twice differentiable), its value must be the same at the start and end of the orbit. Therefore, the total change in $V$ along one full orbit, $\Delta V$, must be zero.
+
+$$\Delta V = V(x(T)) - V(x(0)) = 0$$
+
+**Step 3: Calculating the Change in $V$.** The total change in $V$ along the orbit can also be calculated by integrating its rate of change, $\frac{dV}{dt}$, over the period $T$:
+
+$$\Delta V = \int_0^T \frac{dV}{dt} \, dt$$
+
+(The proof in the source material is paused at this point, but would continue by showing that $\frac{dV}{dt}$ is strictly non-positive and only zero at equilibrium points, leading to a contradiction.)
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Impossibility of Closed Orbits (Complete Argument)</span></p>
+
+A defining characteristic of gradient systems is that they do not permit closed orbits (i.e., limit cycles). This can be proven by examining how the potential function $V$ changes over time along any given orbit.
 
 Let us consider the change in the potential function, $\Delta V$, along an orbit of the system over a time interval. This change is given by the integral of the time derivative of $V$:
 
-$$\Delta V = \int \frac{dV}{dt} dt$$
+$$\Delta V = \int \frac{dV}{dt} \, dt$$
 
-Using the chain rule: $\frac{dV}{dt} = \frac{\partial V}{\partial x} \frac{dx}{dt} = (\nabla V) \cdot \dot{x}$.
+Using the chain rule, we can express $\frac{dV}{dt}$ as:
 
-By the definition of a potential function, $\nabla V = -\dot{x}$. Substituting:
+$$\frac{dV}{dt} = \frac{\partial V}{\partial x} \frac{dx}{dt} = (\nabla V) \cdot \dot{x}$$
 
-$$\frac{dV}{dt} = (-\dot{x}) \cdot \dot{x} = - \|\dot{x}\|^2$$
+By the definition of a potential function, we know that $\nabla V = -\dot{x}$. Substituting this into the equation gives:
 
-Therefore: $\Delta V = -\int \|\dot{x}\|^2 dt$. The term $\|\dot{x}\|^2$ is always non-negative, so $\Delta V \le 0$. Equality holds only if $\dot{x} = 0$ for the entire trajectory, i.e., at an equilibrium point.
+$$\frac{dV}{dt} = (-\dot{x}) \cdot \dot{x} = - \dot{x}^2$$
 
-For a closed orbit, the system must return to its starting point, meaning $\Delta V = 0$. But $\Delta V = 0$ requires $\dot{x} = 0$ everywhere on the orbit, which contradicts the definition of a closed orbit (which involves movement). Therefore, no closed orbits can exist in a gradient system.
+Substituting this back into the integral for $\Delta V$, we get:
+
+$$\Delta V = -\int \dot{x}^2 \, dt$$
+
+The term $\dot{x}^2$ (the squared velocity) is always non-negative. Therefore, the integral is also non-negative, and the entire expression for $\Delta V$ is always less than or equal to zero:
+
+$$\Delta V \le 0$$
+
+Equality, $\Delta V = 0$, holds only if $\dot{x} = 0$ for the entire duration of the trajectory. A state where $\dot{x} = 0$ is, by definition, an equilibrium point.
+
+For a closed orbit, the system must return to its starting point, meaning the net change in the potential, $\Delta V$, must be zero. However, as we have shown, $\Delta V$ can only be zero if the system is at an equilibrium point. A true closed orbit involves movement ($\dot{x} \neq 0$), for which $\Delta V$ must be strictly negative. This is a contradiction. Therefore, no closed orbits can exist in a gradient system.
 
 </div>
 
@@ -4460,11 +4615,11 @@ For a closed orbit, the system must return to its starting point, meaning $\Delt
 The behavior of a gradient system can be intuitively understood by visualizing the potential function $V(x)$ as a landscape of hills and valleys. The dynamics, $\dot{x} = -\nabla V(x)$, describe a state "rolling downhill" towards lower potential values.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Gradient System Equilibria as Landscape Features</span></p>
 
-* A stable equilibrium (a stable node) corresponds to a local minimum of the potential function $V$. Any small perturbation from the bottom of a "valley" will result in the system returning to that minimum.
-* An unstable equilibrium corresponds to a local maximum of the potential function $V$. Any small perturbation from the top of a "hill" will cause the system to roll away, typically towards a nearby minimum.
-* A saddle point of the potential function $V$ corresponds to a saddle equilibrium of the dynamical system.
+* A **stable equilibrium** (a stable node) corresponds to a **local minimum** of the potential function $V$. Any small perturbation from the bottom of a "valley" will result in the system returning to that minimum.
+* An **unstable equilibrium** corresponds to a **local maximum** of the potential function $V$. Any small perturbation from the top of a "hill" will cause the system to roll away, typically towards a nearby minimum.
+* A **saddle point** of the potential function $V$ corresponds to a **saddle equilibrium** of the dynamical system.
 
 This intuitive picture is central to understanding how gradient systems store information. The minima of the potential function act as point attractors, representing stable memory states.
 
@@ -4475,7 +4630,7 @@ This intuitive picture is central to understanding how gradient systems store in
 The properties of gradient systems are essential to certain classes of neural networks, most famously the Hopfield network. John Hopfield defined a set of differential equations for a neural network that possess a potential function, which he termed an "energy function." This construction guarantees that the network's dynamics will always converge to one of several stable equilibrium points, which represent stored memory states.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(General Class of Continuous-Time Networks)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">General Class of Continuous-Time Networks</span></p>
 
 A general class of continuous-time neural networks, which includes Hopfield networks and the Wilson-Cowan equations, can be written in the form:
 
@@ -4491,11 +4646,11 @@ Where:
 
 For a system in this general class to have a potential function, three conditions must be met:
 
-1. **Symmetric Connectivity:** The weight matrix must be symmetric, i.e., $W = W^T$.
+1. **Symmetric Connectivity:** The weight matrix must be symmetric, i.e., $W = W^T$. Intuitively, this symmetry gives rise to squared terms in the potential function's expression, which is crucial for its existence.
 2. **Positive Time Constant:** The time constant $\tau$ must be greater than zero ($\tau > 0$).
 3. **Monotonically Increasing Transfer Function:** The activation function $\sigma$ must be monotonically increasing.
 
-If these conditions are met, the system is guaranteed to be a gradient system, and therefore its only attractors are stable fixed points. This is the case for original Hopfield networks. Conversely, if the weights are not symmetric ($W \neq W^T$), a potential function does not exist, and more complex dynamics like limit cycles can emerge.
+If these conditions are met, the system is guaranteed to be a gradient system, and therefore its only attractors are stable fixed points. This is the case for original Hopfield networks. Conversely, if the weights are not symmetric ($W \neq W^T$), as is more general for the Wilson-Cowan model, a potential function does not exist, and more complex dynamics like limit cycles can emerge.
 
 </div>
 
@@ -4506,9 +4661,9 @@ Bifurcation theory is a broad and critical area within the study of dynamical sy
 #### Defining Bifurcations
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bifurcation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Bifurcation</span></p>
 
-A bifurcation is a qualitative, topological change in the state space of a system that occurs as a parameter is changed. This means the vector fields before and after the bifurcation point are not topologically equivalent. Such changes can include:
+A **bifurcation** is a qualitative, topological change in the state space of a system that occurs as a parameter is changed. This means the vector fields before and after the bifurcation point are not topologically equivalent. Such changes can include:
 
 * The creation or destruction of new attractors (e.g., equilibrium points).
 * A change in the stability of an existing attractor.
@@ -4520,17 +4675,18 @@ A bifurcation is a qualitative, topological change in the state space of a syste
 One of the most important and common types of bifurcations is the saddle-node bifurcation. In this event, a stable equilibrium (a node) and an unstable equilibrium (a saddle) collide and annihilate each other.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bifurcations in Wilson-Cowan Equations)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Bifurcations in Wilson-Cowan Equations</span></p>
 
-Consider the Wilson-Cowan model for interacting populations of excitatory ($E$) and inhibitory ($I$) neurons. The equilibria of this system are found at the intersections of the nullclines for each population.
+Consider the Wilson-Cowan model for interacting populations of excitatory ($E$) and inhibitory ($I$) neurons, described by differential equations for their firing rates, $\nu_E$ and $\nu_I$. The equilibria of this system are found at the intersections of the nullclines for each population.
 
-The system's behavior is governed by parameters such as the connection weights ($w_{EE}, w_{EI}$, etc.). Let's consider the self-excitation weight of the excitatory population, $w_{EE}$, as our control parameter.
+The system's behavior is governed by parameters such as the connection weights ($w_{EE}$, $w_{EI}$, etc.). Let's consider the self-excitation weight of the excitatory population, $w_{EE}$, as our control parameter.
 
 * If we increase $w_{EE}$, the S-shaped nullcline for the excitatory population ($\dot{\nu}_E = 0$) is lifted upwards.
 * At a critical value of $w_{EE}$, the S-shaped nullcline becomes tangent to the inhibitory nullcline ($\dot{\nu}_I = 0$). This point of tangency is the saddle-node bifurcation point. At this exact moment, a stable node and a saddle point merge.
 * If $w_{EE}$ is increased further, the two equilibria disappear, leaving only one other equilibrium point.
+* Conversely, decreasing $w_{EE}$ can lead to another saddle-node bifurcation at the lower bend of the S-curve.
 
-The region of parameter space between these two bifurcation points is a bistable regime, where the system has two stable equilibrium points separated by an unstable saddle.
+The region of parameter space between these two bifurcation points is a **bistable regime**, where the system has two stable equilibrium points separated by an unstable saddle.
 
 </div>
 
@@ -4539,7 +4695,7 @@ The region of parameter space between these two bifurcation points is a bistable
 To visualize these changes, we use a bifurcation diagram. This diagram plots the location of the system's equilibria (often denoted as $\bar{x}$) against the value of the control parameter.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Bifurcation Diagram for Saddle-Node</span></p>
 
 For the saddle-node bifurcation in the Wilson-Cowan example, the bifurcation diagram would look like an "S" shape turned on its side:
 
@@ -4549,7 +4705,7 @@ For the saddle-node bifurcation in the Wilson-Cowan example, the bifurcation dia
 * The middle branch (often drawn with a dashed line) represents the unstable equilibrium (the saddle).
 * The points where the upper/lower branches meet the middle branch are the saddle-node bifurcation points.
 
-This diagram powerfully illustrates phenomena like hysteresis and sudden transitions. A system state might follow the lower stable branch as the parameter increases, and then, upon reaching the bifurcation point, make a sudden jump to the upper stable branch. Such rapid transitions are seen in many real-world systems, including epileptic seizures in the brain.
+This diagram powerfully illustrates phenomena like **hysteresis** and **sudden transitions**. A system state might follow the lower stable branch as the parameter increases, and then, upon reaching the bifurcation point, make a sudden jump to the upper stable branch. Such rapid transitions are seen in many real-world systems, including epileptic seizures in the brain.
 
 </div>
 
@@ -4558,7 +4714,7 @@ This diagram powerfully illustrates phenomena like hysteresis and sudden transit
 Near a bifurcation point, many complex nonlinear systems can be simplified and shown to behave like a much simpler mathematical equation known as a normal form. The normal form captures the essential dynamics of the bifurcation.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form of a Saddle-Node Bifurcation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form of a Saddle-Node Bifurcation</span></p>
 
 The normal form for a saddle-node bifurcation is given by the one-dimensional differential equation:
 
@@ -4566,18 +4722,31 @@ $$\dot{x} = r + x^2$$
 
 Here, $r$ is the bifurcation parameter (or control parameter).
 
-* When $r < 0$: The parabola $y = r + x^2$ is shifted down and intersects the x-axis at two points. These are the equilibria: one stable and one unstable.
-* When $r = 0$: The parabola $y = x^2$ is tangent to the x-axis at $x=0$. The stable and unstable equilibria have merged into a single, half-stable equilibrium. This is the exact moment of the saddle-node bifurcation.
-* When $r > 0$: The parabola $y = r + x^2$ is shifted up and does not intersect the x-axis. There are no equilibria.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analysis of the Normal Form</span></p>
+
+Let's analyze the behavior of this system by plotting $\dot{x}$ versus $x$ for different values of $r$:
+
+* **When $r < 0$:** The parabola $y = r + x^2$ is shifted down and intersects the $x$-axis at two points. These are the equilibria:
+  * One stable equilibrium (where the slope is negative).
+  * One unstable equilibrium (where the slope is positive).
+* **When $r = 0$:** The parabola $y = x^2$ is tangent to the $x$-axis at $x=0$. At this point, the stable and unstable equilibria have merged into a single, half-stable equilibrium. This is the exact moment of the saddle-node bifurcation.
+* **When $r > 0$:** The parabola $y = r + x^2$ is shifted up and does not intersect the $x$-axis. There are no equilibria. The system state will always move towards $+\infty$ or $-\infty$.
+
+This minimal equation perfectly captures the qualitative behavior of a saddle-node bifurcation: the collision and annihilation of a stable and an unstable fixed point as a parameter is varied.
 
 </div>
 
 #### The Concept of a Normal Form
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form)</span></p>
+When studying a specific type of bifurcation, it is incredibly useful to distill the system down to its essential mathematical structure. This leads to the concept of a normal form.
 
-A normal form of a bifurcation is the simplest, minimal differential equation that exhibits the essential dynamics of that bifurcation. By analyzing the normal form, we can understand the universal properties of a whole class of systems near the bifurcation point, regardless of their specific physical or biological details.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form</span></p>
+
+A **normal form** of a bifurcation is the simplest, minimal differential equation that exhibits the essential dynamics of that bifurcation. By analyzing the normal form, we can understand the universal properties of a whole class of systems near the bifurcation point, regardless of their specific physical or biological details. For instance, the normal form for a saddle-node bifurcation is $\dot{x} = r + x^2$.
 
 </div>
 
@@ -4586,17 +4755,68 @@ A normal form of a bifurcation is the simplest, minimal differential equation th
 A transcritical bifurcation is a fundamental type of bifurcation where two fixed points collide and exchange their stability properties.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Exchange of Stability</span></p>
 
-The core idea behind a transcritical bifurcation is an exchange of stability. As we tune a control parameter, two equilibria move towards each other, merge at the bifurcation point, and then re-emerge with their stability profiles swapped.
+The core idea behind a transcritical bifurcation is an exchange of stability. Imagine two equilibrium states. As we tune a control parameter, these two equilibria move towards each other, merge at the bifurcation point, and then re-emerge, but with their stability profiles swapped -- the one that was stable is now unstable, and vice versa.
 
-The normal form for the transcritical bifurcation is: $\dot{x} = rx - x^2$.
+</div>
 
-The fixed points are $x_1^* = 0$ and $x_2^* = r$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form of a Transcritical Bifurcation</span></p>
 
-* **$r < 0$:** The fixed point at $x=r$ is unstable; the fixed point at $x=0$ is stable.
-* **$r = 0$:** The two fixed points merge at $x=0$ (non-hyperbolic).
-* **$r > 0$:** The fixed point at $x=0$ is now unstable; the fixed point at $x=r$ is now stable.
+The normal form for the transcritical bifurcation is given by the one-dimensional differential equation:
+
+$$\dot{x} = rx - x^2$$
+
+Here, $x$ is the state variable and $r$ is the control parameter.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analysis of the Transcritical Bifurcation</span></p>
+
+To understand the behavior, we analyze the system for different values of the parameter $r$. We can find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x) = 0$. This yields two fixed points: $x^*_1 = 0$ and $x^*_2 = r$. Their existence and stability depend on the value of $r$.
+
+**Case 1: $r < 0$**
+
+* **Fixed Points:** We have two distinct fixed points, one at $x=0$ and another at $x=r$ (which is negative).
+* **Stability:** The plot of $\dot{x}$ versus $x$ is an inverted parabola crossing the $x$-axis at $r$ and $0$.
+  * The fixed point at $x=r$ (the "left one") is unstable.
+  * The fixed point at $x=0$ (the "right one") is stable.
+
+| Fixed Point ($x^*$) | Value | Stability |
+|---|---|---|
+| $x^*_1$ | $r$ | Unstable |
+| $x^*_2$ | $0$ | Stable |
+
+**Case 2: $r = 0$**
+
+* **Fixed Points:** The two fixed points merge into one at $x=0$. The equation becomes $\dot{x} = -x^2$. The vertex of the parabola now touches the $x$-axis at the origin.
+* **Stability:** This is a non-hyperbolic fixed point. The flow moves towards the fixed point from the positive side ($x>0$) and away from it on the negative side ($x<0$).
+
+**Case 3: $r > 0$**
+
+* **Fixed Points:** We again have two distinct fixed points, one at $x=0$ and another at $x=r$ (which is positive).
+* **Stability:** The stability has now been exchanged compared to the $r<0$ case.
+  * The fixed point at $x=0$ (the "left one") is now unstable.
+  * The fixed point at $x=r$ (the "right one") is now stable.
+
+| Fixed Point ($x^*$) | Value | Stability |
+|---|---|---|
+| $x^*_1$ | $0$ | Unstable |
+| $x^*_2$ | $r$ | Stable |
+
+**Bifurcation Diagram**
+
+The bifurcation diagram visually summarizes these dynamics by plotting the location of the fixed points ($x^*$) as a function of the control parameter ($r$).
+
+* A solid line represents a branch of stable fixed points.
+* A dashed line represents a branch of unstable fixed points.
+
+The diagram for the transcritical bifurcation shows two lines intersecting at the origin $(r, x) = (0, 0)$:
+
+1. A horizontal line at $x=0$. This branch is stable for $r<0$ and becomes unstable for $r>0$.
+2. A diagonal line representing $x=r$. This branch is unstable for $r<0$ and becomes stable for $r>0$.
 
 At the bifurcation point $(0,0)$, the two branches cross and exchange stability.
 
@@ -4604,211 +4824,456 @@ At the bifurcation point $(0,0)$, the two branches cross and exchange stability.
 
 #### Pitchfork Bifurcation
 
-The pitchfork bifurcation is characteristic of systems possessing a certain symmetry.
+The pitchfork bifurcation is characteristic of systems possessing a certain symmetry. As its name suggests, the bifurcation diagram resembles a pitchfork.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Pitchfork Bifurcation Intuition</span></p>
 
-In a pitchfork bifurcation, a single stable fixed point loses its stability as a parameter is varied. As it becomes unstable, two new stable fixed points are simultaneously created, branching off symmetrically from the original state.
+In a pitchfork bifurcation, a single stable fixed point loses its stability as a parameter is varied. As it becomes unstable, two new stable fixed points are simultaneously created, branching off symmetrically from the original state. This often happens in systems where states can be equivalent but opposite (e.g., left/right, up/down).
 
-The normal form for the supercritical pitchfork bifurcation is: $\dot{x} = rx - x^3$. The symmetry is evident: if $x(t)$ is a solution, then so is $-x(t)$.
+</div>
 
-* **$r \le 0$:** The only real solution is $x=0$, which is stable.
-* **$r > 0$:** There are three fixed points: $x_1^* = 0$ (now unstable), $x_2^* = +\sqrt{r}$ (stable), and $x_3^* = -\sqrt{r}$ (stable).
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form of the Supercritical Pitchfork Bifurcation</span></p>
 
-The **supercritical** form gives rise to two new stable fixed points, while the **subcritical** form involves two unstable fixed points merging with a stable one, annihilating it and leaving no stable equilibria nearby.
+From the geometry of the bifurcation, one can guess that it involves a third-order polynomial. The normal form for the supercritical pitchfork bifurcation is:
+
+$$\dot{x} = rx - x^3$$
+
+Once again, $r$ is the control parameter. The symmetry is evident in the equation: if $x(t)$ is a solution, then so is $-x(t)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analysis of the Pitchfork Bifurcation</span></p>
+
+We find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x^2) = 0$. The solutions depend critically on the sign of $r$.
+
+**Case 1: $r \le 0$**
+
+* **Fixed Points:** The only real solution is $x=0$.
+* **Stability:** The plot of $\dot{x}$ versus $x$ shows a single crossing at the origin. This single fixed point is stable. For $r=0$, the fixed point is non-hyperbolic but still attracts nearby trajectories.
+
+**Case 2: $r > 0$**
+
+* **Fixed Points:** There are now three distinct fixed points: $x^*_1 = 0$, $x^*_2 = +\sqrt{r}$, and $x^*_3 = -\sqrt{r}$.
+* **Stability:**
+  * The original fixed point at $x=0$ has become unstable.
+  * The two new, symmetrically located fixed points at $x = \pm\sqrt{r}$ are both stable.
+
+**Bifurcation Diagram**
+
+The bifurcation diagram for the supercritical pitchfork bifurcation has the following structure:
+
+* For $r \le 0$, there is a single branch of stable fixed points at $x=0$.
+* At $r=0$, this branch becomes unstable (represented by a dashed line for $r>0$).
+* Simultaneously at $r=0$, two new branches of stable fixed points emerge, following the curves $x = \pm\sqrt{r}$. This creates the characteristic three-pronged "pitchfork" shape.
+
+</div>
+
+##### Supercritical and Subcritical Forms
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Supercritical vs. Subcritical</span></p>
+
+The bifurcation described above is known as a **supercritical pitchfork bifurcation**. There is also a corresponding subcritical version.
+
+* **Supercritical Pitchfork Bifurcation:** A stable fixed point becomes unstable and gives rise to two new stable fixed points. This is the case we analyzed, with the normal form $\dot{x} = rx - x^3$. The "fork" opens in the direction of increasing $r$.
+* **Subcritical Pitchfork Bifurcation:** This is the reverse scenario. Two unstable fixed points merge with a stable fixed point, annihilating it and leaving no stable equilibria nearby. The bifurcation graph looks like a pitchfork opening in the direction of decreasing $r$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pitchfork Bifurcations in Neural Systems)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Pitchfork Bifurcations in Neural Systems</span></p>
 
-1. **Symmetric Wilson-Cowan System:** If a parameter is changed causing one nullcline to flatten, a single stable equilibrium can give way to three equilibria (one unstable, two stable), characteristic of a pitchfork bifurcation.
-2. **Single Neuron with Sigmoidal Self-Coupling:** A simple one-dimensional model of a neuron with a sigmoidal input-output function can exhibit this behavior. Changing the sigmoid's slope can cause the system to transition from one stable fixed point to three through a pitchfork bifurcation.
+The pitchfork bifurcation often appears in models with inherent symmetries.
+
+1. **Symmetric Wilson-Cowan System:** Consider a Wilson-Cowan model where the nullclines of the excitatory and inhibitory populations are perfectly symmetric. If a parameter (like the time constants) is changed, causing one nullcline to flatten, a single stable equilibrium can give way to three equilibria (one unstable, two stable), characteristic of a pitchfork bifurcation.
+2. **Single Neuron with Sigmoidal Self-Coupling:** A simple one-dimensional model of a neuron with a sigmoidal input-output function can also exhibit this behavior. The fixed points are the intersections of the sigmoid function with the line $y=x$. If the sigmoid is symmetric around the origin, changing its slope can cause the system to transition from one stable fixed point to three through a pitchfork bifurcation.
 
 </div>
 
 #### Critical Slowing Down: A Signature of Approaching Bifurcations
 
+A fascinating and important phenomenon occurs in the vicinity of many bifurcations, including the saddle-node and pitchfork bifurcations: critical slowing down.
+
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Critical Slowing Down)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Critical Slowing Down</span></p>
 
-As a system approaches a bifurcation point, the basin of attraction of a stable equilibrium point "flattens out." The derivative $\dot{x}$ becomes very close to zero in a wide region around the fixed point, causing the system's dynamics to become extremely slow.
+As a system approaches a bifurcation point, the basin of attraction of a stable equilibrium point "flattens out." In the phase portrait of $\dot{x}$ vs. $x$, the curve of the vector field becomes nearly tangent to the $x$-axis near the fixed point.
 
-**Observable Consequences:**
+* **Mechanism:** Because the derivative $\dot{x}$ (the "velocity" of the system) becomes very close to zero in a wide region around the fixed point, the system's dynamics become extremely slow. Trajectories take an arbitrarily long time to converge to the equilibrium. This is critical slowing down.
+* **Saddle-Node Example:** For a saddle-node bifurcation, if the parabola $\dot{x} = r + x^2$ is just slightly above the $x$-axis (for $r > 0$, before any fixed points are created), the flow through the narrow "ghost" channel where the fixed points are about to appear becomes very, very slow.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Observable Consequences of Critical Slowing Down</span></p>
+
+This phenomenon provides a powerful, model-independent warning sign that a system is approaching a critical transition or "tipping point." This is actively studied in fields like climate science.
 
 1. **Slow Recovery from Perturbations:** A system close to a bifurcation will take much longer to return to its stable state after being perturbed.
-2. **Increased Variance:** In the presence of noise, the system's state will fluctuate with a much larger amplitude. An increase in the variance of a time series can therefore be a signature that the underlying system is approaching a bifurcation.
-
-This phenomenon provides a powerful, model-independent warning sign that a system is approaching a critical transition or "tipping point." It is actively studied in fields like climate science.
+2. **Increased Variance:** In the presence of noise or random perturbations, the system's state will fluctuate with a much larger amplitude. Because the restoring force (the "friction") is so weak in the flattened region, noise can push the system far back and forth. An increase in the variance of a time series can therefore be a signature that the underlying system is approaching a bifurcation.
 
 </div>
 
 #### Hopf Bifurcation and the Birth of Limit Cycles
 
-While the bifurcations discussed so far concern fixed points (equilibria), the Hopf bifurcation is the most important bifurcation for the creation of a limit cycle from an equilibrium point.
+While the bifurcations discussed so far concern fixed points (equilibria), dynamical systems can also feature more complex behaviors like oscillations. The bifurcations of these oscillatory states are crucial for understanding rhythmic phenomena in nature.
+
+##### Bifurcations of Equilibria vs. Limit Cycles
+
+The concepts of bifurcations can be extended from fixed points to limit cycles (isolated, closed orbits). For example:
+
+* A saddle-node bifurcation of cycles can occur, where a stable and an unstable limit cycle coalesce and annihilate each other.
+
+However, the most important bifurcation for the creation of a limit cycle from an equilibrium point is the Hopf bifurcation.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hopf Bifurcation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Hopf Bifurcation</span></p>
 
-A Hopf bifurcation is a bifurcation where a fixed point of a dynamical system loses stability as a pair of complex conjugate eigenvalues of the linearized system cross the imaginary axis of the complex plane. This typically results in the birth of a small-amplitude limit cycle around the fixed point.
+A **Hopf bifurcation** is a bifurcation where a fixed point of a dynamical system loses stability as a pair of complex conjugate eigenvalues of the linearized system cross the imaginary axis of the complex plane. This typically results in the birth of a small-amplitude limit cycle around the fixed point.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Mechanism)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Mechanism of the Hopf Bifurcation</span></p>
 
-Consider a stable spiral fixed point. Trajectories spiral inwards towards it. The stability is governed by the real part of the eigenvalues; a negative real part ensures stability. At the Hopf bifurcation point, the real part becomes exactly zero. As the parameter is changed further, the real part becomes positive, the fixed point becomes an unstable spiral, and trajectories spiral outwards, captured by a newly born, stable limit cycle.
+* **The Mechanism:** Consider a stable spiral fixed point. Trajectories spiral inwards towards it. The stability is governed by the real part of the eigenvalues of the Jacobian matrix at that point; a negative real part ensures stability. As a system parameter is changed, the real part of the eigenvalues can change. At the Hopf bifurcation point, the real part becomes exactly zero. The point is no longer a stable spiral but a center, with trajectories orbiting it. As the parameter is changed further, the real part becomes positive, the fixed point becomes an unstable spiral, and trajectories spiral outwards. This outward flow is often captured by a newly born, stable limit cycle.
+* **In summary:** A Hopf bifurcation marks the transition of a fixed point from a stable spiral to an unstable spiral, giving birth to a stable oscillation (limit cycle) in the process.
 
-**Core Properties:**
+</div>
 
-1. **Equilibrium Type:** The eigenvalues must be a complex conjugate pair, $\lambda = \alpha \pm i\beta$.
-2. **Stability Change:** The bifurcation occurs when the real part crosses zero ($\alpha = 0$).
-3. **Oscillation Frequency:** The imaginary part must be non-zero ($\beta \neq 0$) at the bifurcation point. The frequency of the resulting oscillation is approximately $\beta$.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Hopf Bifurcation in Neural Models</span></p>
+
+The Hopf bifurcation is fundamental to the generation of rhythmic activity in many neural models.
+
+1. **Wilson-Cowan System:** In the Wilson-Cowan model, changing parameters such as the excitatory-to-inhibitory drive can cause a stable fixed point to lose stability via a Hopf bifurcation. The result is the emergence of a stable limit cycle, which corresponds to a sustained oscillation in the activity of the neural populations.
+2. **Bursting Neuron Models (e.g., Hodgkin-Huxley type):** In biophysical models of spiking neurons, a technique called slow-fast separation is often used. A slow variable (like an ion channel gating variable $h$) is treated as a control parameter for the fast subsystem (membrane voltage $V$ and another gating variable $n$).
+   * In this fast subsystem, a fixed point can become an unstable spiral via a Hopf bifurcation.
+   * This gives rise to a limit cycle that corresponds to the repetitive, fast spiking activity (action potentials) of the neuron. The system spirals out from the unstable fixed point onto this limit cycle, generating a train of spikes.
+
+</div>
+
+### The Hopf Bifurcation: Detailed Analysis
+
+The Hopf bifurcation is a fundamental mechanism through which oscillations are born in a dynamical system. It describes the local birth or death of a periodic solution (a limit cycle) from an equilibrium point as a control parameter is varied. This section will explore the essential properties of this bifurcation, examine its two primary forms -- supercritical and subcritical -- and provide a concrete biophysical example.
+
+#### General Properties of the Hopf Bifurcation
+
+A Hopf bifurcation is characterized by a specific change in the stability of an equilibrium point. For this bifurcation to occur, the system must involve at least two dimensions (or variables), as oscillations require a "plane" to unfold.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Core Intuition</span></p>
+
+At its core, the Hopf bifurcation marks the point where a system's tendency to return to a stable equilibrium is perfectly balanced by a force pushing it away, leading to sustained, stable oscillations. Before the bifurcation, disturbances might cause damped oscillations that spiral back to the equilibrium. After the bifurcation, the equilibrium becomes unstable, and disturbances spiral outwards, eventually settling onto a newly formed limit cycle.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Core Properties</span></p>
+
+The key features of a system at a Hopf bifurcation point are rooted in the eigenvalues of the Jacobian matrix evaluated at the equilibrium.
+
+1. **Equilibrium Type:** The equilibrium point must be a spiral. This means the eigenvalues of the system linearized around the equilibrium are a complex conjugate pair, $\lambda = \alpha \pm i\beta$.
+2. **Stability Change:** The bifurcation occurs precisely when the real part of the complex eigenvalues crosses zero ($\alpha = 0$). The stability of the spiral point flips at this moment.
+   * If $\alpha < 0$, the spiral is stable.
+   * If $\alpha > 0$, the spiral is unstable.
+3. **Oscillation Frequency:** The imaginary part of the eigenvalues must be non-zero ($\beta \neq 0$) at the bifurcation point. In the neighborhood of the bifurcation, the frequency of the resulting oscillation is approximately equal to this imaginary part, $\beta$.
+
+The trajectory of the eigenvalues in the complex plane as a control parameter is varied looks as follows: they move across the imaginary axis.
+
+| Eigenvalue Property | System Behavior |
+|---|---|
+| $\text{Re}(\lambda) < 0$ | Stable spiral (damped oscillations) |
+| $\text{Re}(\lambda) = 0$ | Hopf Bifurcation (center-like) |
+| $\text{Re}(\lambda) > 0$ | Unstable spiral (growing oscillations) |
 
 </div>
 
 #### The Supercritical Hopf Bifurcation
 
+The supercritical Hopf bifurcation is characterized by a smooth, gradual onset of oscillation.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Supercritical Hopf Bifurcation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Supercritical Hopf Bifurcation</span></p>
 
-In a supercritical Hopf bifurcation, a stable spiral equilibrium loses its stability and becomes an unstable spiral. At the exact moment of stability change, a stable limit cycle is born with an infinitesimally small amplitude, which then grows smoothly as the parameter continues to change.
+In a supercritical Hopf bifurcation, as a control parameter is varied, a stable spiral equilibrium loses its stability and becomes an unstable spiral. At the exact moment of stability change, a stable limit cycle is born with an infinitesimally small amplitude, which then grows smoothly as the parameter continues to change.
 
-The normal form for the radius (amplitude) is: $\dot{r} = \mu r - r^3$.
+</div>
 
-* For $\mu < 0$: The only stable equilibrium is at $r=0$.
-* For $\mu > 0$: The equilibrium at $r=0$ becomes unstable. A new stable limit cycle appears at $r = \sqrt{\mu}$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Bifurcation Diagram for Supercritical Hopf</span></p>
+
+The state of the system can be visualized in a bifurcation diagram, where the vertical axis represents an oscillation amplitude (e.g., the maximum value of a variable on the limit cycle) and the horizontal axis represents the control parameter.
+
+* **Before the bifurcation point:** A single line represents the stable spiral equilibrium.
+* **At the bifurcation point:** The stable spiral becomes unstable (often denoted by a dashed line). A parabolic curve emerges from this point, representing the maximum and minimum amplitudes of the newly created stable limit cycle.
+
+| Parameter Regime | System State |
+|---|---|
+| Before Bifurcation | One stable spiral (equilibrium point). |
+| At Bifurcation Point | The spiral loses stability. |
+| After Bifurcation | One unstable spiral and one stable limit cycle surrounding it. |
+
+Imagine a system perturbed from its equilibrium.
+
+* **Before the bifurcation:** The system exhibits damped oscillations, spiraling back into the stable equilibrium.
+* **After the bifurcation:** The system spirals out from the now-unstable equilibrium, and the oscillations grow until they settle onto the stable limit cycle, resulting in sustained periodic behavior.
+
+A known example of this phenomenon occurs in the Wilson-Cowan equations.
 
 </div>
 
 #### The Subcritical Hopf Bifurcation
 
+In contrast to the smooth transition of the supercritical case, the subcritical Hopf bifurcation is associated with abrupt and dramatic changes in system behavior.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Subcritical Hopf Bifurcation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Subcritical Hopf Bifurcation</span></p>
 
-In a subcritical Hopf bifurcation, a stable spiral equilibrium loses stability when the equilibrium point coalesces with a pre-existing unstable limit cycle. This leads to abrupt, dramatic changes in system behavior.
-
-The normal form for the radius is: $\dot{r} = \mu r + r^3$.
-
-* For $\mu < 0$: The equilibrium at $r=0$ is stable. An unstable limit cycle exists at $r=\sqrt{-\mu}$.
-* For $\mu > 0$: The equilibrium at $r=0$ becomes unstable. The unstable limit cycle has vanished, and trajectories are pushed away from the origin.
+In a subcritical Hopf bifurcation, a stable spiral equilibrium loses stability and becomes an unstable spiral. However, this occurs when the equilibrium point coalesces with a pre-existing unstable limit cycle. This unstable cycle acts as a separatrix between the basin of attraction of the stable spiral and another, potentially distant, stable attractor.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Bifurcation Diagram for Subcritical Hopf</span></p>
 
-The subcritical Hopf bifurcation can be dramatic in real-world systems because it leads to sudden, large-scale changes. As the control parameter slowly approaches the bifurcation point, the system appears stable. The moment it crosses the threshold, the equilibrium vanishes, and the system "hops" to a completely different state—often a large-amplitude oscillation. A famous analogy is soldiers marching in step across a bridge: at a critical point, the bridge can jump from small vibration to large-amplitude, destructive oscillation.
+The bifurcation diagram for a subcritical Hopf looks like a "flipped" version of the supercritical one.
+
+* **Before the bifurcation point:** There is a stable equilibrium. Separately, there may exist an unstable limit cycle (often represented by a dashed parabola) and a large-amplitude stable limit cycle. This region can exhibit bistability.
+* **At the bifurcation point:** The stable equilibrium becomes unstable as it merges with and annihilates the unstable limit cycle.
+* **After the bifurcation point:** The only remaining attractor is the large-amplitude stable limit cycle.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Morris-Lecar Model)</span></p>
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Danger of Subcritical Hopf Bifurcations</span></p>
 
-The Morris-Lecar model is a simplified 2D biophysical model describing the membrane potential of a single neuron. It consists of two coupled ODEs for the membrane potential ($V$) and a gating variable ($n$):
+The subcritical Hopf bifurcation can be frightening in real-world systems because it leads to sudden, large-scale changes. As the control parameter slowly approaches the bifurcation point, the system appears stable. The moment it crosses the threshold, the equilibrium vanishes, and the system "hops" or jumps to a completely different state -- often a large-amplitude oscillation.
+
+* **Example:** A famous analogy is soldiers marching in step across a bridge. The frequency of their marching acts as a forcing parameter. At a critical point, the bridge can undergo a subcritical Hopf bifurcation, suddenly jumping from a state of small vibration to a large-amplitude, destructive oscillation, causing it to break.
+
+This type of bifurcation highlights that changes in natural systems are not always gradual; they can be abrupt and catastrophic.
+
+</div>
+
+#### Normal Forms for Hopf Bifurcations
+
+To study the local dynamics near a Hopf bifurcation, it is useful to transform the system into a simpler "normal form." These are typically written in polar coordinates $(r, \theta)$, where $r$ represents the amplitude of the oscillation and $\theta$ represents its phase. The control parameter $\mu$ is defined such that the bifurcation occurs at $\mu = 0$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form: Supercritical Hopf</span></p>
+
+The normal form for the radius (amplitude) of the supercritical Hopf bifurcation is:
+
+$$\dot{r} = \mu r - r^3$$
+
+The equation for the phase is often given as $\dot{\theta} = \omega$, where $\omega$ is a constant frequency.
+
+* For $\mu < 0$: The only stable equilibrium is at $r=0$. The $-r^3$ term is negligible for small $r$, and the $\mu r$ term drives the system to the origin.
+* For $\mu > 0$: The equilibrium at $r=0$ becomes unstable (since $\dot{r} > 0$ for small $r$). A new stable limit cycle appears at $r = \sqrt{\mu}$, where $\dot{r} = 0$. The amplitude of this cycle grows smoothly from zero as $\sqrt{\mu}$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form: Subcritical Hopf</span></p>
+
+Analogous to the subcritical pitchfork bifurcation, the normal form for the radius is:
+
+$$\dot{r} = \mu r + r^3$$
+
+* For $\mu < 0$: The equilibrium at $r=0$ is stable. An unstable limit cycle exists at $r=\sqrt{-\mu}$.
+* For $\mu > 0$: The equilibrium at $r=0$ becomes unstable. The unstable limit cycle has vanished, and trajectories are now pushed away from the origin by both terms.
+
+</div>
+
+#### The Morris-Lecar Model: A Subcritical Hopf Example
+
+The Morris-Lecar model is a simplified 2D biophysical model describing the membrane potential of a single neuron. It serves as an excellent example of a system exhibiting a subcritical Hopf bifurcation.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Morris-Lecar Equations</span></p>
+
+The model consists of two coupled ordinary differential equations for the membrane potential ($V$) and a gating variable ($n$):
 
 $$\begin{align*}
 C \dot{V} &= I - g_L(V - E_L) - g_{Ca} m_{\infty}(V)(V - E_{Na}) - g_K n (V - E_K) \\
 \dot{n} &= \frac{n_{\infty}(V) - n}{\tau_n(V)}
 \end{align*}$$
 
-For certain parameter configurations, the phase space has: a stable equilibrium, an unstable limit cycle surrounding the equilibrium, and a large-amplitude stable limit cycle corresponding to continuous spiking. As the injected current $I$ changes, a subcritical Hopf bifurcation occurs, forcing the system to "hop" to the spiking state. This system exhibits **bistability**: the coexistence of a stable resting state and a stable spiking state.
+Here, $m_{\infty}(V)$ and $n_{\infty}(V)$ are sigmoidal functions of voltage, representing the activation of ion channels. This model can be seen as a simplification of the 3D biophysical neuron models discussed previously.
 
 </div>
-
-#### Co-dimension Two Bifurcations
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Phase Space Analysis of the Morris-Lecar Model</span></p>
 
-In co-dimension two bifurcations, the system's behavior changes qualitatively when two parameters are varied simultaneously. Notable examples include the **Cusp bifurcation** and the **Bogdanov-Takens bifurcation**. These bifurcations organize the overall bifurcation structure in parameter space and are important in understanding phenomena like neuronal bursting as a bifurcation phenomenon.
+By plotting the nullclines of the system ($\dot{V} = 0$ and $\dot{n} = 0$), we can analyze its dynamics. For certain parameter configurations, the phase space has the following structure:
+
+1. A stable equilibrium (a node or spiral).
+2. An unstable limit cycle surrounding the equilibrium.
+3. A large-amplitude stable limit cycle, corresponding to continuous spiking activity.
 
 </div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Bifurcation and Bistability</span></p>
+
+As a parameter (such as the injected current, $I$) is changed, the unstable limit cycle can shrink and eventually coalesce with the stable equilibrium.
+
+* At this point, a subcritical Hopf bifurcation occurs.
+* The equilibrium and the unstable cycle annihilate each other.
+* The system state is forced to "hop" from the former equilibrium to the only remaining attractor: the large, stable limit cycle representing neuronal spiking.
+
+A crucial feature of this system is the existence of a parameter regime before the bifurcation point where two stable attractors coexist: the stable equilibrium (a resting state) and the stable limit cycle (a spiking state). This phenomenon is known as **bistability**. The system's final state depends on the initial conditions -- it will either settle to rest or engage in continuous spiking.
+
+</div>
+
+### Co-dimension Two Bifurcations and Complex Dynamics
+
+#### A Landscape of Bifurcations
+
+#### Introduction to Co-dimension Two Bifurcations
+
+#### The Cusp Bifurcation
+
+##### Normal Form and Properties
+
+##### Parameter-Dependent Dynamics
+
+##### The Geometry of the Cusp
+
+#### Applications in Biophysical Systems
+
+##### The Bogdanov-Takens Bifurcation
+
+##### Neuronal Bursting as a Bifurcation Phenomenon
+
 ## Lecture 7
 
 ### An Introduction to Chaos and the Logistic Map
 
-This lecture introduces the fundamental concepts of chaos theory using the logistic map as a primary example. We explore the key signatures of chaotic systems and the process by which a simple, deterministic system can exhibit complex, aperiodic behavior.
+This chapter introduces the fundamental concepts of chaos theory using the logistic map as a primary example. We will explore the key signatures of chaotic systems and the process by which a simple, deterministic system can exhibit complex, aperiodic behavior.
 
 #### The Logistic Map Revisited
 
+We begin by recalling the logistic map, a simple equation originally developed to model population dynamics.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Logistic Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Logistic Map</span></p>
 
 The logistic map is a discrete-time dynamical system defined by the equation:
 
 $$x_{t} = \alpha x_{t-1}(1 - x_{t-1})$$
 
-Where $x_t$ represents the state at time $t$ and $\alpha$ is a control parameter. For the system to remain bounded within $[0, 1]$, we consider $x_0 \in [0, 1]$ and $\alpha \in [0, 4]$.
+Where:
+
+* $x_t$ represents the state of the system at time $t$.
+* $\alpha$ is a control parameter.
+
+For the system to remain bounded within the unit interval $[0, 1]$, we consider initial conditions $x_0 \in [0, 1]$ and the parameter range $\alpha \in [0, 4]$. The function's graph is a parabola, and its dynamics can be visualized using bifurcation diagrams, which show the long-term behavior of the system as $\alpha$ is varied. We have previously identified its fixed points and periodic cycles.
 
 </div>
 
 #### Core Characteristics of Chaos
 
-As we increase the parameter $\alpha$ beyond the values that produce simple fixed points and low-period cycles, the system's behavior changes dramatically. The period of the cycles doubles at an accelerating rate until the trajectory becomes irregular and appears to fill a dense region of the state space. This phenomenon is known as chaos.
+As we increase the parameter $\alpha$ beyond the values that produce simple fixed points and low-period cycles, the system's behavior changes dramatically. The period of the cycles doubles at an accelerating rate until, at a critical value of $\alpha$, the trajectory becomes irregular and appears to fill a dense region of the state space. This phenomenon is known as chaos. Chaotic systems, though entirely deterministic, exhibit several defining characteristics.
+
+##### Aperiodicity in Deterministic Systems
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Aperiodicity in Deterministic Systems)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Aperiodicity</span></p>
 
-The first signature of chaos is aperiodic or irregular behavior in the complete absence of noise. For a chaotic trajectory, there is no integer $n$ for which the system exactly repeats its state: $x_{t+n} \neq x_t$ for all $n > 0$. The trajectory never closes on itself.
+The first signature of chaos is aperiodic or irregular behavior that arises in the complete absence of noise or external randomness. For a chaotic trajectory, there is no integer $n$ for which the system exactly repeats its state.
+
+$$x_{t+n} \neq x_t \quad \forall n > 0$$
+
+This means the system never settles into a periodic cycle. One might consider this a "cycle of infinite period," but the crucial point is that the trajectory never closes on itself. The emergence of such non-repeating behavior from a simple, deterministic equation was a surprising discovery in the mid-20th century.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sensitive Dependence on Initial Conditions)</span></p>
+##### Sensitive Dependence on Initial Conditions
 
-Two trajectories starting from infinitesimally different initial states will diverge from each other at an exponential rate. Even a minuscule difference in starting points leads to completely different outcomes after a short period. This exponential divergence is a hallmark of chaotic dynamics.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Sensitive Dependence</span></p>
+
+The second key feature of chaos is a sensitive dependence on initial conditions. This means that two trajectories starting from infinitesimally different initial states will diverge from each other at an exponential rate. Even a minuscule, imperceptible difference in starting points will lead to completely different outcomes after a short period of time. This exponential divergence is a hallmark of chaotic dynamics.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Boundedness)</span></p>
+##### Boundedness
 
-Despite the exponential divergence of nearby trajectories, the system remains bounded. For the logistic map, it can be proven that for $\alpha \in [0, 4]$ and $x_0 \in [0, 1]$, the trajectory will never leave the unit interval. The system is simultaneously divergent on a local scale and constrained on a global scale.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Boundedness</span></p>
+
+A third, and somewhat puzzling, characteristic is that the system remains bounded. Despite the exponential divergence of nearby trajectories, the system's state does not grow infinitely. For the logistic map, it can be proven that for $\alpha \in [0, 4]$ and $x_0 \in [0, 1]$, the trajectory will never leave the unit interval. The system is simultaneously divergent on a local scale (nearby trajectories separate) and constrained on a global scale (the overall dynamics are confined to a specific region).
 
 </div>
 
 #### The Period Doubling Route to Chaos
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Period-Doubling Cascade</span></p>
 
-The transition to chaos in the logistic map occurs via the **period-doubling cascade**:
+Systems can transition to chaos through various mechanisms as a control parameter is changed. For the logistic map, this transition occurs via the famous period-doubling route to chaos, also known as the period-doubling cascade.
 
-1. **Stable Fixed Point:** For small $\alpha$, the system has a single stable fixed point.
-2. **First Bifurcation:** As $\alpha$ increases, the fixed point becomes unstable and gives rise to a stable 2-cycle.
-3. **Cascade:** The 2-cycle bifurcates into a 4-cycle, then 8-cycle, 16-cycle, etc. The $\alpha$-interval over which each subsequent cycle is stable becomes progressively shorter.
-4. **Onset of Chaos:** This cascade culminates at a finite value of $\alpha$, beyond which the behavior becomes chaotic and aperiodic.
+By examining the bifurcation diagram of the logistic map, we can observe this process:
+
+1. **Stable Fixed Point:** For small values of $\alpha$, the system has a single stable fixed point.
+2. **First Bifurcation:** As $\alpha$ increases, the fixed point becomes unstable and gives rise to a stable 2-cycle. The system now oscillates between two values.
+3. **Cascade:** With further increases in $\alpha$, this 2-cycle becomes unstable and bifurcates into a stable 4-cycle. This process repeats, creating an 8-cycle, a 16-cycle, and so on. The interval of $\alpha$ over which each subsequent cycle is stable becomes progressively shorter.
+4. **Onset of Chaos:** This cascade of period-doubling bifurcations culminates at a finite value of $\alpha$, beyond which the system's behavior becomes chaotic and aperiodic.
 
 </div>
 
 #### The Strange Attractor
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Strange Attractor</span></p>
 
-Even in the chaotic regime, the object to which trajectories converge is still an attractor. Initial conditions from within a certain basin of attraction converge toward this complex, bounded object. There is simultaneous convergence from the outside and divergence within the attractor itself. Such an object is called a **strange attractor**.
+Even in the chaotic regime, the object to which trajectories converge is still an attractor. This means that initial conditions from within a certain basin of attraction will converge toward this complex, bounded object. This is another puzzling aspect of chaos: there is simultaneous convergence to the attractor from the outside and divergence within the attractor itself. Such an object is often called a strange attractor.
 
-Periodic windows embedded within the chaotic regime are also visible in the bifurcation diagram. As $\alpha$ increases through the chaotic region, the system can suddenly revert to stable periodic behavior for narrow parameter ranges before returning to chaos.
+</div>
+
+#### Periodic Windows in the Chaotic Regime
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Periodic Windows</span></p>
+
+A final interesting feature visible in the bifurcation diagram is the presence of periodic windows embedded within the chaotic regime. As $\alpha$ is increased through the chaotic region, the system can suddenly revert to stable, periodic behavior (for example, a stable 3-cycle or 5-cycle) for a narrow range of $\alpha$ values, before returning to chaos.
 
 </div>
 
 ### Deeper Properties of One-Dimensional Maps
 
+The study of one-dimensional maps like the logistic map has revealed a rich mathematical structure underlying their chaotic behavior. Here, we summarize several key theorems and concepts.
+
 #### Unstable Periodic Orbits (UPOs)
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Unstable Periodic Orbits</span></p>
 
-For certain parameter values, the chaotic attractor is built upon a "skeleton" of infinitely many unstable periodic orbits (UPOs). For the logistic map at $\alpha = 4$, UPOs exist for every possible integer period $k \geq 1$. These are complete, periodic cycles that the system could follow, but they are all unstable—any small perturbation will cause the trajectory to move away.
+For certain parameter values, the chaotic attractor is built upon a "skeleton" of infinitely many unstable periodic orbits (UPOs). For the logistic map at $\alpha = 4$, it can be shown that there exists an infinite number of these UPOs.
+
+* These are complete, periodic cycles that the system could follow.
+* However, they are all unstable, meaning any small perturbation will cause the trajectory to move away from the cycle.
+* For the logistic map at $\alpha=4$, UPOs exist for every possible integer period $k \geq 1$.
 
 </div>
 
 #### Topological Equivalence: The Tent Map
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Topological Equivalence</span></p>
+
+The logistic map is topologically equivalent to another map called the tent map. This means there is a continuous, one-to-one mapping (a homeomorphism) that transforms one system's dynamics into the other while preserving the direction of time. Consequently, they exhibit the same fundamental dynamical phenomena, including the period-doubling route to chaos.
+
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Tent Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Tent Map</span></p>
 
 The tent map is a piecewise linear map defined by:
 
@@ -4819,16 +5284,19 @@ The map is typically studied for $x \in [0, 1]$ and $\alpha \in [0, 2]$. Its gra
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Importance of Piecewise Linear Systems</span></p>
 
-The logistic map is topologically equivalent to the tent map. The study of piecewise linear systems is important because: (1) many mathematical analyses become much easier while still exhibiting complex behaviors like chaos; and (2) many recurrent neural networks (RNNs) used in deep learning are fundamentally piecewise linear systems and can exhibit the full spectrum of dynamical behaviors.
+The study of piecewise linear systems is important for two main reasons:
+
+1. **Analytical Tractability:** Many mathematical analyses that are difficult for general nonlinear systems become much easier for piecewise linear systems. They can exhibit complex behaviors like chaos while remaining mathematically manageable.
+2. **Relevance to Modern Applications:** Many recurrent neural networks (RNNs) used in deep learning are fundamentally piecewise linear systems and can exhibit the full spectrum of dynamical behaviors, including chaos.
 
 </div>
 
 #### The Li-Yorke Theorem: Period Three Implies Chaos
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Li-Yorke Theorem, 1975)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Li-Yorke Theorem (1975)</span></p>
 
 For a one-dimensional map, if a period-3 cycle is observed, then the system must also exhibit chaotic behavior.
 
@@ -4844,9 +5312,18 @@ This is a powerful and surprising result. The mere existence of a cycle with per
 #### The Sharkovskii Ordering of Periodic Orbits
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Sharkovskii's Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Sharkovskii's Theorem</span></p>
 
-There exists a specific ordering of natural numbers, known as the Sharkovskii ordering, which dictates a hierarchy of implications for the existence of periodic orbits in one-dimensional maps. If a map possesses a periodic orbit of period $k$, it must also possess periodic orbits for all periods that appear to the right of $k$ in the ordering:
+There exists a specific ordering of natural numbers, known as the Sharkovskii ordering, which dictates a hierarchy of implications for the existence of periodic orbits in one-dimensional maps.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Sharkovskii Ordering</span></p>
+
+If a map possesses a periodic orbit of period $k$, it must also possess periodic orbits for all periods that appear to the right of $k$ in the Sharkovskii ordering.
+
+The ordering begins as follows:
 
 $$\begin{align*}
 3 &\implies 5 \implies 7 \implies 9 \implies \dots \implies (2n+1) \implies \dots \\
@@ -4856,204 +5333,362 @@ $$\begin{align*}
 \implies 2^n &\implies 2^{n-1} \implies \dots \implies 2^3 \implies 2^2 \implies 2 \implies 1
 \end{align*}$$
 
-The number $3$ is first in the ordering. Therefore, the existence of a 3-cycle implies the existence of cycles of all other integer periods, connecting back to the Li-Yorke theorem.
+The most significant implication of this theorem is that the number 3 is first in the ordering. Therefore, the existence of a 3-cycle implies the existence of cycles of all other integer periods, which connects back to the Li-Yorke theorem.
 
 </div>
 
 #### The Feigenbaum Constants
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Feigenbaum Constants</span></p>
 
-For maps exhibiting the period-doubling route to chaos, the rate at which bifurcations occur is governed by a universal constant. Let $\alpha_n$ be the parameter value at which the period-doubling bifurcation from a $2^{n-1}$-cycle to a $2^n$-cycle occurs. The ratio of successive bifurcation intervals converges to the first Feigenbaum constant:
+For maps that exhibit the period-doubling route to chaos (like the logistic and tent maps), the rate at which the bifurcations occur is governed by a universal constant.
+
+Let $\alpha_n$ be the parameter value at which the period-doubling bifurcation from a $2^{n-1}$-cycle to a $2^n$-cycle occurs. The ratio of the intervals between successive bifurcation points converges to a universal constant, known as the first Feigenbaum constant, $\delta$.
 
 $$\delta = \lim_{n \to \infty} \frac{\alpha_n - \alpha_{n-1}}{\alpha_{n+1} - \alpha_n} \approx 4.669...$$
 
-This universality indicates that a wide class of systems transitions to chaos in a quantitatively identical manner.
+This universality is a profound property, indicating that a wide class of systems transitions to chaos in a quantitatively identical manner.
 
 </div>
 
 ### Examples of Chaotic Behavior
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Population Dynamics in Beetles)</span></p>
+The principles of chaos are not just mathematical curiosities; they appear in a wide range of natural and engineered systems.
 
-An empirical study of a beetle population provided evidence for the period-doubling cascade in a biological system. By manipulating a control parameter, researchers observed the population's long-term behavior transition from a stable equilibrium to 2-cycles, then 4-cycles, and eventually to chaotic fluctuations, providing a real-world parallel to the dynamics of the logistic map.
+#### Empirical Evidence: Population Dynamics in Beetles
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Population Dynamics in Beetles</span></p>
+
+An empirical study of a beetle population provided evidence for the period-doubling cascade in a biological system. By manipulating a control parameter (related to the beetles' environment or resources), researchers observed the population's long-term behavior transition from a stable equilibrium to 2-cycles, then 4-cycles, and eventually to chaotic fluctuations in population numbers. This provides a real-world parallel to the dynamics of the logistic map.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Bursting Neuron Model)</span></p>
+#### Biophysical Systems: The Bursting Neuron Model
 
-Chaos can also be found in complex, higher-dimensional continuous systems. A three-dimensional model of a bursting neuron can exhibit chaotic dynamics through bifurcations such as a homoclinic bifurcation where a limit cycle crashes into a saddle point. Within the parameter space of such biophysical models, chaotic dynamics can emerge, leading to irregular, non-repeating patterns of neural activity.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">The Bursting Neuron Model</span></p>
+
+Chaos can also be found in more complex, higher-dimensional continuous systems. We previously discussed a three-dimensional model of a bursting neuron, described by a set of differential equations for the membrane potential ($V$) and two gating variables ($n$ and $h$).
+
+By performing a fast-slow separation of variables, we analyzed the bifurcations of the fast subsystem (governed by $V$ and $n$). We identified various bifurcations, such as a homoclinic bifurcation where a limit cycle (representing spiking) crashes into a saddle point, terminating the spiking behavior. It turns out that within the parameter space of such biophysical models, chaotic dynamics can also emerge, leading to irregular, non-repeating patterns of neural activity.
 
 </div>
 
-### Chaos in Continuous-Time Dynamical Systems
+### An Introduction to Chaos in Dynamical Systems
+
+Welcome to the study of chaotic systems. For decades, chaos was considered a mathematical curiosity, but we now understand it to be an almost inevitable phenomenon in many natural systems. As soon as a system incorporates a sufficient number of elements interacting in a nonlinear fashion, the emergence of chaos becomes highly probable. This chapter will introduce the fundamental concepts of chaos, explore its appearance in both biological and physical models, and define its core mathematical and conceptual properties.
 
 #### What is Chaos? An Initial View
 
-At its core, chaos describes complex, unpredictable behavior in deterministic dynamical systems. A key indicator of potential chaos is the presence of homoclinic orbits, which are trajectories that connect a saddle-type equilibrium point to itself.
+At its core, chaos describes a specific type of complex, unpredictable behavior in deterministic dynamical systems. A key indicator of potential chaos is the presence of homoclinic orbits (also referred to as homoclinic intersections), which are trajectories that connect a saddle-type equilibrium point to itself.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Homoclinic Orbits and Chaos</span></p>
 
-The presence of homoclinic structures is a strong hint that a system might exhibit chaotic behavior. For certain classes of systems, particularly discrete maps, the existence of homoclinic orbits is not just a hint—it is a guarantee. Formal theorems prove this connection.
+The presence of these homoclinic structures is a strong hint that a system might exhibit chaotic behavior. For certain classes of systems, particularly discrete maps, the existence of homoclinic orbits is not just a hint -- it is a guarantee. There are formal theorems that prove this connection, solidifying the link between a system's geometric structure in state space and its dynamic behavior over time.
 
 </div>
 
 #### Examples of Chaotic Systems
 
+To build a concrete understanding of chaos, we will examine two canonical examples: a modern model from computational neuroscience and the classic Lorenz system from atmospheric science.
+
+##### A Continuous-Time Biological Neuron Model
+
+Let us first consider a full three-dimensional model of a biological neuron. The dynamics of this system are governed by several parameters, one of which is a conductance parameter. By systematically increasing this single parameter, we can observe the system's trajectory through distinct behavioral regimes.
+
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bifurcation in a Neuron Model)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Bifurcation in a Neuron Model</span></p>
 
-A full three-dimensional model of a biological neuron exhibits the following sequence as a key conductance parameter is increased:
+The model exhibits the following sequence of behaviors as a key conductance parameter is increased:
 
-1. **Bursting Behavior:** Rapid bursts followed by quiescence.
-2. **Chaotic Regime:** Highly irregular, aperiodic spiking. The trajectory densely fills a bounded region—the hallmark of a chaotic attractor.
-3. **Regular Spiking:** Stable, periodic firing pattern.
-
-This progression is observed empirically in biological experiments. The chaotic dynamics are produced by highly nonlinear NMDA conductances. If the model were linearized, these complex phenomena would vanish entirely.
+1. **Bursting Behavior:** The neuron fires in rapid bursts followed by periods of quiescence.
+2. **Chaotic Regime:** The system transitions into a state of highly irregular, aperiodic spiking activity. In state space, the trajectory begins to densely fill a specific, bounded region. This is the hallmark of a chaotic attractor.
+3. **Regular Spiking Behavior:** As the parameter increases further, the system settles into a stable, periodic firing pattern.
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Empirical Validation</span></p>
+
+This progression is not merely a theoretical construct; it is observed empirically. In biological experiments using "slice preparations," real, individual neurons exhibit the same transitions from bursting to chaotic to regular spiking when subjected to similar changes in their electrochemical environment. Statistical tests can be applied to these empirical time series to support the conclusion that the intermediate, irregular regime is indeed chaos.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Role of Nonlinearity</span></p>
+
+The emergence of this complex behavior is deeply tied to nonlinearity. In this neuron model, the chaotic and bursting dynamics are produced by highly nonlinear NMDA conductances. These elements drive the system back and forth between a region of state space where a stable limit cycle exists and another region where only a stable fixed point exists. If one were to linearize the model equations, these complex phenomena would vanish entirely. The bifurcation diagram for this system reveals a limit cycle "crashing" into the homoclinic orbit of a saddle point, triggering the complex dynamics.
+
+</div>
+
+##### The Lorenz Equations of Atmospheric Convection
+
+One of the most famous and foundational examples of chaos arises from the Lorenz equations. Conceived by Edward Lorenz, this model is a significant simplification of a much larger set of equations describing atmospheric convection.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Lorenz System)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Lorenz System</span></p>
 
 The Lorenz system is a set of three coupled, nonlinear, first-order ordinary differential equations:
 
-$$\begin{aligned} \dot{x} &= s(y - x) \\ \dot{y} &= x(r - z) - y \\ \dot{z} &= xy - bz \end{aligned}$$
+$$\begin{aligned}
+\dot{x} &= s(y - x) \\
+\dot{y} &= x(r - z) - y \\
+\dot{z} &= xy - bz
+\end{aligned}$$
 
-The system has three dynamical variables ($x, y, z$) and three positive constant parameters ($s, r, b$). The nonlinearity stems from just two terms: the product $xz$ in the second equation and the product $xy$ in the third. By varying $r$ while keeping $s$ and $b$ fixed, the system exhibits a range of behaviors, culminating in the renowned Lorenz attractor.
+* The system has three dynamical variables: $x$, $y$, and $z$.
+* It is controlled by three positive constants (parameters): $s$, $r$, and $b$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Simplicity of the Lorenz System</span></p>
+
+The power of the Lorenz system lies in its simplicity. The first equation is entirely linear. The nonlinearity of the entire system stems from just two terms: the product $x \cdot z$ in the second equation and the product $x \cdot y$ in the third. Such simple polynomial or multinomial forms of nonlinearity are not unique to this system; they appear frequently in models across various fields, including Lotka-Volterra predator-prey models, epidemic models, and chemical reaction models.
+
+In their original physical context, the variables and parameters have specific interpretations:
+
+* The variables relate to horizontal and vertical temperature gradients and convection velocity.
+* The parameter $s$ is related to the Prandtl number, and $r$ is related to the Rayleigh number.
+
+By varying the parameter $r$ while keeping $s$ and $b$ fixed, the system exhibits a range of behaviors, culminating in the formation of the renowned Lorenz attractor. This "butterfly wing" structure is one of the most iconic images in the study of chaos.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Attractor)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Attractor</span></p>
 
-An attractor is a set of states in the state space towards which a system's trajectory evolves over time. For a chaotic attractor, trajectories that start nearby converge onto this object, then move around chaotically, densely filling a region of the state space.
+An attractor is a set of states in the state space towards which a system's trajectory evolves over time. For a chaotic attractor, trajectories that start nearby will converge onto this object. Once on the attractor, the trajectory moves around chaotically, densely filling a region of the state space. It is important to note that chaos can also be unstable or transient; not all chaotic behavior is confined to an attractor.
 
 </div>
 
 #### Core Properties of Chaotic Systems
 
+Across different examples, chaotic systems share a set of defining characteristics. Understanding these properties is crucial for distinguishing chaos from other types of complex or random behavior.
+
+##### Aperiodicity and Boundedness
+
+A key feature of a chaotic trajectory is that it is aperiodic.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Aperiodic Trajectory)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Aperiodic</span></p>
 
 An aperiodic trajectory is one that never closes up or repeats itself exactly. No matter how long the system is observed, the state vector will never return to a previous value.
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+In practice, we observe this aperiodicity numerically by running a simulation for a very long time and seeing that the trajectory never settles into a repeating loop (a limit cycle). Furthermore, while a limit cycle is a one-dimensional curve, a chaotic trajectory will start to densely fill a higher-dimensional region of the state space.
+
+At the same time, a chaotic attractor is a bounded object. The trajectory is confined to a specific region of state space and will not diverge to infinity.
+
+</div>
+
+##### The Dimensionality Requirement for Continuous Systems
+
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Minimum Dimension for Chaos)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Minimum Dimension for Chaos</span></p>
 
 For continuous-time dynamical systems (described by ordinary differential equations), chaos is only possible in three or more dimensions.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(by Intuition)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">by Intuition</span></p>
 
-1. **One Dimension:** A trajectory can only move along a line. It can approach a fixed point or go to infinity, but cannot exhibit complex dynamics.
-2. **Two Dimensions:** Trajectories can form limit cycles. However, a fundamental property of deterministic ODEs is that trajectories cannot cross. A non-intersecting, bounded curve in a 2D plane must eventually close on itself, forming a periodic orbit. It cannot densely fill a 2D area.
-3. **Three Dimensions:** A trajectory has enough freedom to move without intersecting itself while remaining bounded, weaving through space in a complex, aperiodic pattern.
+1. **One Dimension:** In one dimension ($\dot{x} = f(x)$), a trajectory can only move along a line. It can approach a fixed point or go to infinity, but it cannot oscillate or exhibit complex dynamics, as it cannot turn around without stopping at a fixed point.
+2. **Two Dimensions:** In two dimensions, trajectories can form cycles (limit cycles). However, a fundamental property of solutions to deterministic ODEs is that trajectories in state space cannot cross. If a trajectory were to cross itself, it would imply two different future paths from the same point, violating determinism. For a trajectory to be chaotic, it must explore a region densely without repeating. In a 2D plane, a non-intersecting, bounded curve must eventually close on itself, forming a periodic orbit. It cannot densely fill a 2D area.
+3. **Three Dimensions:** In three dimensions, a trajectory has enough freedom to move without intersecting itself while remaining in a bounded region. This allows it to weave through space in a complex, aperiodic pattern, forming the intricate structure of a chaotic attractor.
 
 </div>
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sensitive Dependence on Initial Conditions)</span></p>
+##### Sensitive Dependence on Initial Conditions (The Butterfly Effect)
 
-Two trajectories starting from arbitrarily close initial points will, on average, diverge from each other exponentially over time. This is the **butterfly effect**: a tiny change in the system's initial state can lead to macroscopically different outcomes. This makes long-term prediction fundamentally impossible.
+Perhaps the most famous characteristic of chaos is its sensitive dependence on initial conditions (SDIC).
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Sensitive Dependence on Initial Conditions</span></p>
+
+This property means that two trajectories starting from arbitrarily close initial points will, on average, diverge from each other exponentially over time.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Structured Nature of Chaos)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Butterfly Effect</span></p>
 
-While individual trajectories are unpredictable in the long term, the collective behavior is highly structured:
+This is famously known as the butterfly effect, a metaphor suggesting that the flap of a butterfly's wings in one part of the world might ultimately cause a hurricane in another. A tiny, imperceptible change in the system's initial state can lead to macroscopically different outcomes. This property is what makes long-term prediction for chaotic systems fundamentally impossible. While the system is deterministic (the rules are fixed), our inability to measure the initial state with infinite precision means any small error will grow exponentially, rendering long-term forecasts useless.
 
-* The chaotic attractor is a bounded object with specific geometry. A trajectory on the Lorenz attractor will always remain within the "butterfly wings."
-* The system possesses **ergodic statistics**: averages over a long time for a single trajectory equal averages over the entire attractor at a single moment.
+</div>
 
-Therefore, while we cannot predict the exact state far into the future, we can predict the probability of finding the system in a particular region of its attractor.
+##### The Structured Nature of Chaos
+
+The butterfly effect might suggest that chaotic systems are completely random and unpredictable. This is a common misconception. While individual trajectories are unpredictable in the long term, the collective behavior is highly structured.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Structure Within Chaos</span></p>
+
+The key is the existence of the chaotic attractor.
+
+* It is a bounded object with a specific geometry. A trajectory on the Lorenz attractor will always remain within the "butterfly wings"; it cannot go just anywhere in state space. Trajectories that start off the attractor are pulled into it.
+* It has characteristic statistics. Although the point-by-point future is unknown, the long-term statistical properties of the system's behavior are often stable and predictable. The system possesses what are known as ergodic statistics, meaning that averages over a long time for a single trajectory are the same as averages over the entire attractor at a single moment.
+
+Therefore, while we cannot predict the exact state of the system far into the future, we can predict the probability of finding the system in a particular region of its attractor. Statistically speaking, a chaotic system is not completely random or unpredictable; it possesses a deep and beautiful structure.
 
 </div>
 
 ### Characterizing Chaos: Lyapunov Exponents
 
-The Lyapunov exponent provides a quantitative measure of the average rate of divergence or convergence of nearby trajectories. A positive Lyapunov exponent is the hallmark of chaotic dynamics.
+In our exploration of dynamical systems, we often encounter behavior that is complex, aperiodic, and seemingly random, yet arises from deterministic rules. This phenomenon is known as chaos. To move beyond a purely qualitative description, we need a quantitative measure to characterize this complexity. The Lyapunov exponent provides just such a tool, measuring the average rate of divergence or convergence of nearby trajectories in the state space. A positive Lyapunov exponent is a hallmark of chaotic dynamics, signifying the sensitive dependence on initial conditions that is central to the concept of chaos.
 
 #### Defining the Maximum Lyapunov Exponent
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Lyapunov Exponent, Discrete Time)</span></p>
+The maximum Lyapunov exponent, denoted by $\lambda_{\text{max}}$, quantifies the most rapid rate of separation of trajectories. Its formulation differs slightly between discrete-time maps and continuous-time flows, but the underlying principle remains the same.
 
-For a discrete-time system $x_{n+1} = f(x_n)$, the maximum Lyapunov exponent $\lambda_{\text{max}}$ is:
+##### The Discrete-Time Case: Product of Jacobians
+
+For a multi-dimensional discrete-time system, the evolution of a small perturbation is governed by the Jacobian matrix of the map at each step. To understand the long-term behavior, we must consider the product of these Jacobians along a trajectory.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Maximum Lyapunov Exponent (Discrete Time)</span></p>
+
+For a discrete-time dynamical system defined by the map $x_{n+1} = f(x_n)$, the maximum Lyapunov exponent $\lambda_{\text{max}}$ is defined as:
 
 $$\lambda_{\text{max}} = \lim_{n \to \infty} \frac{1}{n} \log \left\| \prod_{i=0}^{n-1} J(x_i) \right\|$$
 
-where $J(x_i)$ is the Jacobian of $f$ at $x_i$ and $\| \cdot \|$ is the spectral norm.
+where $J(x_i)$ is the Jacobian matrix of the map $f$ evaluated at point $x_i$ on the trajectory, and $\| \cdot \|$ denotes a matrix norm, typically the spectral norm.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The term $\prod_{i=0}^{n-1} J(x_i)$ represents the total linearization of the dynamics along a trajectory of length $n$. It tells us how an infinitesimal ball of initial conditions is stretched and rotated after $n$ iterations. By taking the logarithm, we are converting this multiplicative stretching factor into an additive rate. Finally, dividing by $n$ and taking the limit as $n \to \infty$ gives us the average exponential rate of separation per iteration over the entire trajectory.
+
+</div>
+
+##### The Continuous-Time Case: Trajectory Separation
+
+For continuous-time systems, we can define the exponent by directly observing the evolution of the distance between two initially close trajectories.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Exponential Divergence Ansatz</span></p>
+
+Consider two trajectories starting at infinitesimally close initial conditions, $x_0$ and $x_0 + \Delta x_0$. We can make an ansatz that the distance between them, $\Delta x(t)$, grows exponentially over time. This can be expressed as:
+
+$$\| \Delta x(t) \| \approx \| \Delta x_0 \| e^{\lambda t}$$
+
+Here, $\lambda$ is the rate of separation, which we identify as the maximum Lyapunov exponent. This simple relationship forms the basis for the formal definition.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Lyapunov Exponent, Continuous Time)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Maximum Lyapunov Exponent (Continuous Time)</span></p>
 
-For a continuous-time system with flow operator $\phi_t(x_0)$:
+For a continuous-time dynamical system with flow operator $\phi_t(x_0)$, the maximum Lyapunov exponent $\lambda_{\text{max}}$ is defined by a two-step limit process:
 
 $$\lambda_{\text{max}} = \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \phi_t(x_0 + \Delta x_0) - \phi_t(x_0) \|}{\| \Delta x_0 \|} \right)$$
 
-This can also be expressed as: $\lambda_{\text{max}} = \lim_{t \to \infty} \frac{1}{t} \log \left\| \frac{\partial \phi_t(x_0)}{\partial x_0} \right\|$.
+In the limit where the initial separation $\| \Delta x_0 \|$ approaches zero, the numerator can be expressed in terms of the partial derivatives of the flow operator. This leads to an analogous form:
+
+$$\lambda_{\text{max}} = \lim_{t \to \infty} \frac{1}{t} \log \left\| \frac{\partial \phi_t(x_0)}{\partial x_0} \right\|$$
+
+This formulation highlights the parallel with the discrete case, where the product of Jacobians is replaced by the Jacobian of the flow operator over time $t$.
 
 </div>
 
 #### The Lyapunov Spectrum and Geometric Intuition
 
-In a $d$-dimensional system, the full Lyapunov spectrum consists of $d$ exponents: $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_d$.
+In a $d$-dimensional system, separation and contraction can occur at different rates in different directions. The full set of these rates is known as the Lyapunov spectrum, consisting of $d$ Lyapunov exponents: $\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_d$. The maximum exponent, $\lambda_1 = \lambda_{\text{max}}$, governs the overall stability, but the entire spectrum provides a richer description of the dynamics.
+
+##### Stretching and Contracting Space
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Stretching and Contracting Space)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Geometric Interpretation</span></p>
 
-Imagine a small spherical ball of initial conditions. As the system evolves:
+Imagine a small, spherical ball (an $\epsilon$-ball) of initial conditions in the state space. As the system evolves, this sphere is deformed along the trajectory.
 
-* Directions with positive $\lambda_i$: the ball is **stretched**.
-* Directions with negative $\lambda_i$: the ball is **compressed**.
-* Directions with zero $\lambda_i$: distance is preserved on average.
+* In directions associated with positive Lyapunov exponents, the ball is stretched into an ellipsoid.
+* In directions associated with negative Lyapunov exponents, the ball is compressed.
+* In directions associated with zero Lyapunov exponents, the distance is, on average, preserved.
 
-For a chaotic attractor, this continuous stretching and folding generates the complex, fractal structures characteristic of strange attractors. The connection to singular value decomposition (SVD) is direct: the maximum Lyapunov exponent corresponds to the maximum singular value of the Jacobian product matrix.
+For a chaotic attractor, this process of stretching and folding is continuous. The ellipsoid is stretched along unstable directions ($\lambda_i > 0$) and simultaneously compressed along stable directions ($\lambda_j < 0$). This continuous deformation, constrained within a bounded region of state space, is what generates the complex, fractal structures characteristic of strange attractors.
+
+</div>
+
+##### Connection to Singular Value Decomposition
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">SVD Connection</span></p>
+
+The stretching and reorientation of this evolving ellipsoid of initial conditions can be formally described by the Singular Value Decomposition (SVD) of the Jacobian product matrix, $G = \prod J(x_i)$. Recall that the singular values of a matrix describe its scaling action along principal axes.
+
+* The maximum Lyapunov exponent corresponds to the maximum singular value of this product matrix.
+* The singular values, $\sigma_i$, of $G$ are given by the square root of the eigenvalues of the matrix $G^T G$.
+
+This provides a powerful connection between the abstract concept of Lyapunov exponents and the concrete geometric transformations occurring in the state space. It is analogous to the eigenvalue analysis we perform for linear systems to classify fixed points, but extended to the non-linear, trajectory-dependent dynamics of chaotic systems. The singular values quantify the stretching and contraction along different directions.
 
 </div>
 
 #### Lyapunov Exponents as a Diagnostic Tool
 
+The value of the maximum Lyapunov exponent serves as a powerful indicator of the long-term behavior of a dynamical system.
+
 | Value of $\lambda_{\text{max}}$ | Implied Long-Term Behavior |
-| --- | --- |
+|---|---|
 | $\lambda_{\text{max}} > 0$ | Chaotic evolution. Trajectories diverge exponentially. |
 | $\lambda_{\text{max}} = 0$ | Neutral stability. Often occurs on a limit cycle. |
 | $\lambda_{\text{max}} < 0$ | Stable fixed point or stable periodic orbit. |
 
+An unstable fixed point, which features local divergence, will also be associated with a positive Lyapunov exponent for trajectories originating near it.
+
 #### A Rigorous Definition of Chaos
 
+While chaos is often described qualitatively by properties like aperiodic or irregular evolution, the Lyapunov exponents allow for a precise mathematical definition.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Chaos)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Chaos</span></p>
 
-A dynamical system is considered chaotic if it satisfies:
+A dynamical system is considered chaotic if it satisfies the following core conditions:
 
-1. **Sensitive Dependence on Initial Conditions:** At least one positive Lyapunov exponent ($\lambda_{\text{max}} > 0$).
-2. **Boundedness:** Trajectories are confined to a bounded region of state space.
+1. **Sensitive Dependence on Initial Conditions:** The system must have at least one positive Lyapunov exponent. That is, $\lambda_{\text{max}} > 0$. This ensures that nearby trajectories diverge exponentially over time.
+2. **Boundedness:** The system's trajectories must be confined to a bounded region of the state space. This prevents trajectories from simply exploding to infinity.
 
-An additional condition sometimes included: all Lyapunov exponents are unequal to zero (aperiodicity).
+An additional condition is sometimes included for mathematical rigor in certain systems:
+
+* **Aperiodicity:** All Lyapunov exponents are unequal to zero. This condition is sometimes omitted but helps to exclude simple periodic orbits.
+
+The two primary conditions -- divergence within a bounded set -- are the most crucial elements to remember.
+
+</div>
+
+#### The Nature of Chaotic Attractors
+
+For a chaotic system to be an attractor, it must not only keep trajectories bounded but must, on average, contract volumes in the state space. If the system expanded volume overall, it would not be an attractor, as volumes would eventually grow to fill all of space.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Volume Contraction</span></p>
+
+The rate of volume change in the state space is related to the sum of all the Lyapunov exponents in the spectrum.
+
+* A system is volume-contracting if the sum of its Lyapunov exponents is negative.
+
+Therefore, for a system to possess a chaotic attractor, a crucial condition must be met.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Condition for a Chaotic Attractor)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Condition for a Chaotic Attractor</span></p>
 
 A chaotic system possesses an attractor only if the sum of all its Lyapunov exponents is less than zero:
 
 $$\sum_{i=1}^{d} \lambda_i < 0$$
 
-This ensures that while the system stretches along at least one direction, the contraction along other directions is strong enough to ensure overall volume shrinkage towards a bounded, fractal strange attractor.
+This ensures that while the system stretches along at least one direction (due to $\lambda_{\text{max}} > 0$), the contraction along other directions is strong enough to ensure that overall, volumes shrink and trajectories are drawn towards a bounded, fractal object -- the strange attractor.
 
 </div>
 
@@ -5061,31 +5696,84 @@ This ensures that while the system stretches along at least one direction, the c
 
 #### Introduction to Fractals in Chaos
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+In the study of chaotic systems, we often encounter geometric structures of immense complexity. These are not the simple lines, planes, or spheres of classical geometry, but intricate, jagged, and infinitely detailed objects known as fractals.
 
-A hallmark of chaotic systems is a profound sensitivity to initial conditions, which becomes even more pronounced when basins of attraction possess fractal boundaries. The emergence of fractal geometries is due to three key actions: (1) stretching, (2) contraction, and (3) folding or reinjection. Repeated iteration gives rise to **self-similarity**, where zooming into a part of the structure reveals smaller copies of the whole.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Fractal Basins of Attraction</span></p>
+
+A hallmark of chaotic systems is a profound sensitivity to initial conditions. This sensitivity becomes even more pronounced when the basins of attraction for different attractors possess fractal boundaries. In such systems, the distinct basins are interwoven, meaning that within any infinitesimally small neighborhood of one basin, there exists a point belonging to another. Consequently, a minute perturbation to an initial condition might not merely shift the final state along the same attractor but could propel it into a completely different dynamical regime.
+
+The emergence of these fractal geometries in chaotic attractors is often due to a fundamental dynamical process involving three key actions:
+
+1. Stretching along certain directions.
+2. Contraction along other directions.
+3. Folding or reinjection, where the stretched and contracted structure is mapped back into itself.
+
+This sequence of stretching, contracting, and folding, when repeated iteratively, gives rise to a recursive structure. A key property arising from this process is self-similarity, where zooming into a part of the structure reveals smaller copies of the whole, repeating at ever-finer scales.
 
 </div>
 
 #### The Cantor Set: A Prototypical Fractal
 
+To understand the properties of fractal sets, we begin with a foundational example: the Cantor set. It is a set of points on a line segment with a number of counter-intuitive and remarkable properties.
+
+##### Iterative Construction
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Cantor Set)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Cantor Set</span></p>
 
 The Cantor set is constructed through an iterative procedure starting with the closed interval $[0, 1]$.
 
-1. Let $K_0 = [0, 1]$.
-2. Remove the open middle third, $(\frac{1}{3}, \frac{2}{3})$, to get $K_1 = [0, \frac{1}{3}] \cup [\frac{2}{3}, 1]$.
-3. Remove the open middle third from each remaining segment to get $K_2$.
-4. Continue iteratively. The Cantor set $K = \lim_{n \to \infty} K_n$.
+1. **Start with $K_0$:** Let $K_0$ be the interval $[0, 1]$.
+2. **Iteration 1:** Remove the open middle third, $(\frac{1}{3}, \frac{2}{3})$, from $K_0$. The remaining set is $K_1 = [0, \frac{1}{3}] \cup [\frac{2}{3}, 1]$.
+3. **Iteration 2:** Remove the open middle third from each of the remaining segments in $K_1$. This yields $K_2 = [0, \frac{1}{9}] \cup [\frac{2}{9}, \frac{3}{9}] \cup [\frac{6}{9}, \frac{7}{9}] \cup [\frac{8}{9}, 1]$.
+4. **Continue Iteratively:** Repeat this process for all subsequent sets $K_n$. The Cantor set, $K$, is the set of points that remain after this process is carried out an infinite number of times, i.e., $K = \lim_{n \to \infty} K_n$.
 
-At the $n$-th iteration, $K_n$ consists of $2^n$ closed intervals. The Cantor set consists of all numbers in $[0, 1]$ whose ternary representation uses only the digits $0$ and $2$.
+At the $n$-th iteration, the set $K_n$ consists of $2^n$ closed intervals.
 
 </div>
 
+##### Ternary Representation and Properties
+
+To analyze the Cantor set more deeply, it is useful to represent the numbers in the interval $[0, 1]$ using a base-3, or ternary, number system.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Ternary Representation</span></p>
+
+A number $x \in [0, 1]$ can be expressed in a ternary representation as:
+
+$$x = \sum_{i=1}^{\infty} a_i 3^{-i} = a_1 \cdot 3^{-1} + a_2 \cdot 3^{-2} + a_3 \cdot 3^{-3} + \dots$$
+
+This can be written as $x = (0.a_1 a_2 a_3 \dots)_3$, where each digit $a_i$ is an element of the set $\lbrace 0, 1, 2 \rbrace$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Ternary Interpretation of the Cantor Construction</span></p>
+
+The iterative construction of the Cantor set has a direct and elegant interpretation in the ternary system.
+
+* The interval $[0, 1]$ is divided into three parts: $[0, \frac{1}{3}]$, $[\frac{1}{3}, \frac{2}{3}]$, and $[\frac{2}{3}, 1]$.
+* Numbers in the first third, $[0, \frac{1}{3}]$, have a ternary representation where the first digit, $a_1$, is $0$. (e.g., $0.0\dots_3$).
+* Numbers in the second third, $[\frac{1}{3}, \frac{2}{3}]$, have a ternary representation where the first digit, $a_1$, is $1$. (e.g., $0.1\dots_3$).
+* Numbers in the third third, $[\frac{2}{3}, 1]$, have a ternary representation where the first digit, $a_1$, is $2$. (e.g., $0.2\dots_3$).
+
+In the first step of the Cantor construction ($K_1$), we remove the middle third. This is equivalent to removing all numbers whose ternary representation begins with the digit $1$.
+
+In the second step ($K_2$), we remove the middle third of the remaining segments. This is equivalent to removing all numbers whose second ternary digit, $a_2$, is $1$.
+
+This reveals the fundamental property of the Cantor set: it consists of all numbers in the interval $[0, 1]$ whose ternary representation can be written using only the digits $0$ and $2$.
+
+A minor mathematical subtlety exists at the boundaries between intervals. For example, the number $\frac{1}{3}$ can be written as $(0.1)_3$ or as $(0.0222\dots)_3$. Since a representation without the digit '$1$' exists, such boundary points remain in the set.
+
+</div>
+
+##### The Uncountability of the Cantor Set
+
+Despite its construction by removing intervals, the Cantor set contains more than just the endpoints of those intervals. In fact, it contains an uncountably infinite number of points, a fact we can prove using a technique similar to Cantor's famous diagonal argument.
+
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Uncountability of the Cantor Set)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Uncountability of the Cantor Set</span></p>
 
 The Cantor set is an uncountably infinite set.
 
@@ -5094,66 +5782,188 @@ The Cantor set is an uncountably infinite set.
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
 
-1. **Assume for Contradiction:** Assume the Cantor set is countable. Create an enumeration $x_1, x_2, x_3, \dots$.
-2. **Represent in Ternary:** Each $x_i$ has ternary representation using only digits $\lbrace 0, 2 \rbrace$: $x_i = 0.a_{i1} a_{i2} a_{i3} \dots$.
-3. **Construct a New Number:** Define $R = 0.r_1 r_2 r_3 \dots$ by examining the diagonal: if $a_{ii} = 0$, set $r_i = 2$; if $a_{ii} = 2$, set $r_i = 0$.
-4. **Show Contradiction:** $R$ uses only digits $\lbrace 0, 2 \rbrace$ (so belongs to the Cantor set), but differs from every $x_i$ at position $i$. Therefore $R$ is not in our list—a contradiction.
+1. **Assume for Contradiction:** Assume the Cantor set is countable. This means we can create an exhaustive list, or an enumeration, of all numbers in the set. Let this list be $x_1, x_2, x_3, \dots$.
+2. **Represent in Ternary:** Each number $x_i$ in our list belongs to the Cantor set, so its ternary representation consists only of the digits $0$ and $2$. We can write our list as follows:
+   * $x_1 = 0.a_{11} a_{12} a_{13} a_{14} \dots$
+   * $x_2 = 0.a_{21} a_{22} a_{23} a_{24} \dots$
+   * $x_3 = 0.a_{31} a_{32} a_{33} a_{34} \dots$
+   * ...
+3. where every digit $a_{ij} \in \lbrace 0, 2 \rbrace$.
+4. **Construct a New Number:** We will now construct a new number, let's call it $R$, which is also composed only of digits $0$ and $2$, but which cannot be on our list. We define the digits of $R = 0.r_1 r_2 r_3 \dots$ by examining the diagonal elements of our list ($a_{11}, a_{22}, a_{33}, \dots$).
+5. For each digit $r_i$, we set its value as follows:
+   * If $a_{ii} = 0$, then set $r_i = 2$.
+   * If $a_{ii} = 2$, then set $r_i = 0$.
+6. **Show Contradiction:** By this construction, the number $R$ is composed exclusively of digits $0$ and $2$, so it must belong to the Cantor set. However, $R$ cannot be on our list.
+   * $R$ cannot be $x_1$ because its first digit $r_1$ is different from $a_{11}$.
+   * $R$ cannot be $x_2$ because its second digit $r_2$ is different from $a_{22}$.
+   * In general, $R$ cannot be $x_i$ for any $i$, because its $i$-th digit $r_i$ is different from $a_{ii}$.
+7. **Conclusion:** Our newly constructed number $R$ belongs to the Cantor set but is not in our supposedly complete list. This is a contradiction. Therefore, our initial assumption that the Cantor set is countable must be false. The set is uncountably infinite.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Zero Measure, Uncountable Cardinality</span></p>
 
-The total length of intervals removed from $[0, 1]$ sums to $1$. The Cantor set has zero Lebesgue measure, yet contains uncountably many points. This combination of zero measure and uncountable cardinality is a defining feature of many fractal sets.
+This result presents a fascinating puzzle. The total length of the intervals removed from $[0, 1]$ is $\frac{1}{3} + 2(\frac{1}{9}) + 4(\frac{1}{27}) + \dots = \sum_{n=0}^{\infty} \frac{2^n}{3^{n+1}} = 1$. The Cantor set has a zero measure (or zero length). Yet, as we have just proven, it contains an uncountably infinite number of points. This combination of zero measure and uncountable cardinality is a defining feature of many fractal sets.
 
 </div>
 
 #### The Smale Horseshoe Map
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Smale Horseshoe Map)</span></p>
+We now move from a static set to a dynamic map that generates a fractal structure. The Smale horseshoe map is a famous construction that captures the essential topological mechanisms -- stretching, contraction, and folding -- that produce chaos in systems like the Lorenz attractor.
 
-The Smale horseshoe map $F$ is a mapping of the unit square $S = [0, 1] \times [0, 1]$ onto $\mathbb{R}^2$. The process involves:
-
-1. **Stretching and Contraction:** A linear transformation stretches the square by a factor of $3$ horizontally and compresses it by a factor of $3$ vertically.
-2. **Folding:** The long rectangle is bent into a "horseshoe" shape and placed back over the original square.
-
-Only the parts of the horseshoe within the original square $S$ are considered for the next iteration. After the first application, these consist of two vertical rectangular regions $H_1$ and $H_2$.
-
-</div>
+##### Motivation: Distilling the Essence of Chaos
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Lyapunov Exponents)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Motivation</span></p>
 
-The Smale Horseshoe map has two constant Lyapunov exponents:
+The Smale horseshoe map is an elegant abstraction of chaotic dynamics. It can be viewed as a 2D Poincare map of a 3D system, designed to distill the core properties of chaos into their essence. The map operates on a simple geometric space (a square) but, through iteration, generates a structure of incredible complexity, analogous to a chaotic attractor. The entire process is driven by two simple components: a linear transformation (the Jacobian) and a geometric fold.
 
-* $\lambda_1 = \log(3) > 0$ (stretching direction)
-* $\lambda_2 = \log(1/3) = -\log(3) < 0$ (contracting direction)
+</div>
+
+##### The Mapping Process: Stretch, Contract, and Fold
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Smale Horseshoe Map</span></p>
+
+The Smale horseshoe map $F$ is a mapping of the unit square $S = [0, 1] \times [0, 1]$ onto the real plane $\mathbb{R}^2$. The process involves two distinct operations.
+
+1. **Stretching and Contraction:** The map first applies a linear transformation to the square. This transformation is characterized by a local Jacobian matrix that stretches the square along one dimension and contracts it along another.
+2. This Jacobian stretches the square by a factor of $3$ in the horizontal direction and compresses it by a factor of $3$ in the vertical direction, transforming the unit square into a long, thin rectangle.
+3. **Folding:** The long rectangle is then bent into a "horseshoe" shape and placed back over the original unit square $S$.
+
+Only the parts of the horseshoe that lie within the original square $S$ are considered for the next iteration. After the first application of the map $F$, these parts consist of two vertical rectangular regions, which we can label $H_1$ and $H_2$.
+
+</div>
+
+##### Iterations and Fractal Generation
+
+The complexity of the system arises when we iterate the map. Let's consider what happens when we apply the map a second time, $F^2(S)$, to the set that remained in the square after the first iteration (i.e., to $H_1 \cup H_2$).
+
+1. The two vertical strips ($H_1$ and $H_2$) are themselves stretched horizontally and contracted vertically.
+2. This new, even longer and thinner shape is then folded back onto the square.
+
+The result is that within each of the new vertical strips, there are now smaller segments corresponding to both of the original strips, $H_1$ and $H_2$. This repetitive stretching and folding creates an increasingly fine and complex structure. The set of points that remain within the square $S$ after an infinite number of iterations forms a fractal set that is, in fact, a product of two Cantor sets.
+
+### The Smale Horseshoe and Symbolic Dynamics
+
+#### The Horseshoe Map: Construction and Iteration
+
+The Smale Horseshoe is a foundational example in the study of dynamical systems that elegantly demonstrates how simple operations of stretching and folding can generate profoundly complex, chaotic behavior. The map operates on a unit square, which we will denote as $S$.
+
+The process is iterative and consists of three fundamental steps applied to the square $S$:
+
+1. **Stretch:** The square is stretched in one direction (e.g., horizontally) to three times its original length.
+2. **Contract:** Simultaneously, the square is contracted in the perpendicular direction (vertically) to one-third of its original height.
+3. **Fold:** The resulting long, thin rectangle is then folded into a 'U' shape, or horseshoe, and placed back over the area of the original square.
+
+Let us trace the evolution of subsets through this process. We begin with the square $S$. After one iteration, the mapping $f(S)$ results in two horizontal stripes, which we can label $H_1$ and $H_2$.
+
+Now, consider a second iteration of the map, $f(f(S)) = f^2(S)$. The process is applied again to the stripes $H_1$ and $H_2$. Each stripe is stretched, contracted, and folded. The resulting image consists of four even thinner horizontal stripes.
+
+To understand the dynamics, we must establish a consistent labeling system.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">An Indexing System</span></p>
+
+We can create a systematic index for the stripes generated at each iteration. Let the original stripes from the first iteration be $H_1$ and $H_2$. In the second iteration, the image of $H_1$ will consist of two new stripes, which we can label $H_{11}$ and $H_{21}$. Similarly, the image of $H_2$ will produce stripes $H_{12}$ and $H_{22}$.
+
+Let's clarify the geometric arrangement after the fold. The folding operation places the transformed regions back onto the original square. The region corresponding to $H_2$ is folded on top of the region corresponding to $H_1$. This means the resulting stripes will appear as follows, from top to bottom:
+
+* $H_{12}$
+* $H_{22}$
+* $H_{21}$
+* $H_{11}$
+
+At each iteration $k$, this process generates $2^k$ horizontal stripes. This indexing system, where we append a digit with each iteration, forms the basis for a more powerful analytical tool we will explore later, known as symbolic dynamics.
+
+</div>
+
+#### Properties of the Map: Lyapunov Exponents
+
+To quantify the stretching and contracting nature of the map, we can examine its Jacobian.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Jacobian of the Horseshoe Map</span></p>
+
+The map is constructed from two distinct parts: the linear transformation (stretching and contracting) and the non-linear folding. The Jacobian reflects the linear part of this operation. For the Smale Horseshoe, this Jacobian remains constant across the regions of interest.
+
+From the Jacobian of the map, we can directly determine the Lyapunov exponents, which measure the average rate of separation or convergence of nearby trajectories.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Invariant Set $\Lambda$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Lyapunov Exponents of the Horseshoe Map</span></p>
 
-The invariant set $\Lambda$ is the set of all points in $S$ that remain in $S$ for all time, both forward and backward:
+For the Smale Horseshoe map, the Jacobian reveals two constant Lyapunov exponents:
+
+* $\lambda_1 = \log(3) > 0$
+* $\lambda_2 = \log(1/3) = -\log(3) < 0$
+
+The positive exponent, $\lambda_1$, corresponds to the stretching direction, indicating that nearby points are exponentially separated. The negative exponent, $\lambda_2$, corresponds to the contracting direction, indicating that nearby points are exponentially brought closer together. This combination of expansion and contraction is a hallmark of chaotic systems.
+
+</div>
+
+#### The Invariant Set $\Lambda$
+
+The truly interesting dynamics of the horseshoe map occur not on the entire square, but on a specific subset of points that remain within the square under all forward and backward iterations of the map. This is known as the invariant set.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Forward and Backward Iteration</span></p>
+
+As we iterate the map forward in time ($k \to \infty$), the horizontal stripes become progressively thinner. At iteration $k$, we have $2^k$ stripes, each with a height of $(1/3)^k$. As $k$ approaches infinity, this collection of stripes converges to a geometric structure known as a Cantor set in the vertical direction.
+
+We can also consider the inverse of the map, $f^{-1}$, which corresponds to iterating the system backward in time. Applying the inverse map involves reversing the steps: unfolding, contracting horizontally, and stretching vertically. This process, when iterated, creates a set of vertical stripes.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Invariant Set $\Lambda$</span></p>
+
+The invariant set, denoted by $\Lambda$, is defined as the set of all points in the square $S$ that remain in $S$ for all time, both forward and backward. Mathematically, it is the intersection of all forward and backward images of the square:
 
 $$\Lambda = \bigcap_{k=-\infty}^{\infty} f^k(S)$$
 
-$\Lambda$ is the intersection of horizontal stripes (forward iteration) and vertical stripes (backward iteration). It is a fractal set—the product of two Cantor sets.
-
 </div>
-
-#### Symbolic Dynamics
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Geometry of $\Lambda$</span></p>
 
-Each point in $\Lambda$ can be assigned a unique bi-infinite sequence of symbols $...x_{-2}x_{-1}.x_0x_1x_2...$ by tracking which stripe it belongs to at each iteration. This symbolic coding transforms complex geometric problems into algebraic ones.
+The set $\Lambda$ is the geometric intersection of the horizontal stripes generated by forward iteration and the vertical stripes generated by backward iteration. After a finite number of forward and backward iterations, the set appears as a grid of small squares. As we approach an infinite number of iterations, this structure becomes infinitely fine. $\Lambda$ is a fractal set -- it is the product of two Cantor sets, one aligned vertically and one horizontally.
 
 </div>
 
+#### Introduction to Symbolic Dynamics
+
+To analyze the complex structure of $\Lambda$ and the dynamics upon it, we introduce a powerful technique called symbolic dynamics. The core idea is to "code" the history of each point by tracking which subset it belongs to at each iteration.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Bi-Infinite Coding System</span></p>
+
+We can extend the indexing system developed earlier to account for both forward and backward time. Let us use a dot ('.') as a separator between past and future.
+
+* **Forward Time:** For forward iterations ($k > 0$), we assign an index based on the horizontal stripe a point occupies. We can write this sequence to the right of the dot, e.g., $.x_0x_1x_2...$.
+* **Backward Time:** For backward iterations ($k < 0$), we assign an index based on the vertical stripe a point occupies. We write this sequence to the left of the dot, e.g., $...x_{-2}x_{-1}$.
+
+Combining these gives a unique, bi-infinite sequence of symbols for each point in the invariant set $\Lambda$:
+
+$$...x_{-2}x_{-1}.x_0x_1x_2...$$
+
+For example, consider the small squares formed by the intersection of the stripes. The square in the bottom-left corner after the first forward and first backward iteration would have an index like $...1.1...$. The square in the top-right would have an index like $...2.2...$. As we iterate infinitely, we find points within $\Lambda$ corresponding to unique bi-infinite sequences.
+
+* One point will correspond to the sequence $...111.111...$.
+* Another point will correspond to the sequence $...222.222...$.
+
+This method of assigning a sequence of symbols to orbits is known as symbolic coding.
+
+</div>
+
+#### The Power of Symbolic Coding: Unveiling Chaos
+
+The true power of symbolic dynamics is that it transforms a complex geometric problem into a simpler, algebraic one. By analyzing the space of all possible symbol sequences, we can prove profound theorems about the dynamics on the invariant set $\Lambda$. It can be formally shown that any bi-infinite sequence of symbols corresponds to a unique point in $\Lambda$. This leads to remarkable conclusions about the nature of the orbits within this set.
+
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Structure of Orbits in $\Lambda$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">The Structure of Orbits in $\Lambda$</span></p>
 
 The invariant set $\Lambda$ of the Smale Horseshoe map contains:
 
@@ -5163,366 +5973,861 @@ The invariant set $\Lambda$ of the Smale Horseshoe map contains:
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Skeleton of Chaos)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Skeleton of Chaos</span></p>
 
-Steven Strogatz provides a beautiful metaphor for the structure of a chaotic attractor: an "infinite skeleton of unstable periodic orbits." The system state wanders between these orbits, repelled by one and attracted to another, much like a "ball in a pinball wizard machine." The chaotic attractor is organized around this dense, unstable backbone of periodic behaviors.
+This theorem reveals the intricate structure of chaos. The horseshoe map generates an infinite number of repeating, periodic behaviors, but all of them are unstable. A tiny perturbation will knock a trajectory off a periodic orbit. Furthermore, there is an even larger infinity of orbits that never repeat at all yet remain bounded within the square.
+
+This method of symbolic coding has been instrumental in proving the existence of chaos in many other systems. It distills the essential topology of the dynamics into a symbolic form, upon which rigorous proofs can be built.
+
+Steven Strogatz provides a beautiful metaphor for the structure of a chaotic attractor, which is highly relevant here. He describes it as an "infinite skeleton of unstable periodic orbits." The system state wanders between these orbits, repelled by one and attracted to another, much like a "ball in a pinball wizard machine." The chaotic attractor is organized around this dense, unstable backbone of periodic behaviors.
 
 </div>
+
 ## Lecture 8
 
 ### Characterizing the Geometry of Attractors
 
-#### The Need for New Geometric Measures
+#### Introduction: The Need for New Geometric Measures
 
-In our previous discussions, we explored chaos and fractal sets. We established that chaotic attractors often produce intricate fractal structures. A natural question arises: how can we describe their geometry? Classical Euclidean geometry, which deals with integer dimensions, seems inadequate. The Cantor set has zero Lebesgue measure yet contains uncountably many points. This signals the need for new types of measurement.
+In our previous discussions, we explored the concepts of chaos and fractal sets, exemplified by the Cantor set. We established that chaotic attractors, which arise from processes like the Smale horseshoe mapping that continuously reinject trajectories into a bounded region of space, often produce these intricate fractal structures.
 
-#### The Box-Counting Dimension
+A natural and pressing question arises when studying these objects: how can we describe their geometry? Classical Euclidean geometry, which deals with integer dimensions (a line is 1D, a plane is 2D), seems inadequate. The Cantor set, for instance, has a Lebesgue measure of zero, yet it contains an uncountably infinite number of points. This paradox signals the need for a new type of measurement to characterize such peculiar sets. This chapter introduces powerful concepts for quantifying the dimensionality of complex objects, which will be essential not only for understanding chaos but also for the machine learning applications we will explore later.
 
-The fundamental idea is remarkably simple: how many boxes of a given size are needed to completely cover the set?
+### The Box-Counting Dimension
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition and Scaling)</span></p>
+#### Intuition and Scaling
 
-We tile our space with boxes of side length $\epsilon$ and count $N(\epsilon)$, the number of boxes intersected by our set $S$. The scaling law is:
+The fundamental idea behind the box-counting dimension is remarkably simple. Imagine we have some dynamical object—it could be a trajectory, a limit cycle, a fixed point, or a complex chaotic set—residing in a state space. To measure its dimension, we ask: How many boxes of a given size are needed to completely cover the set?
+
+Let's formalize this. We tile our space with a grid of boxes, each with a side length of $\epsilon$. We then count the number of boxes, $N(\epsilon)$, that are intersected by our set $S$.
+
+The crucial question is: How does $N(\epsilon)$ scale as the box size $\epsilon$ approaches zero?
+
+Intuitively, the smaller the boxes, the more we will need. We can propose a scaling law that relates the number of boxes to the size $\epsilon$ and the object's intrinsic dimension, $D$:
 
 $$N(\epsilon) \propto \left(\frac{1}{\epsilon}\right)^D$$
 
-* **A Line** ($D=1$): Halving the box size doubles the count: $N(\epsilon') = 2^1 N(\epsilon)$.
-* **A Plane** ($D=2$): Halving the box size quadruples the count: $N(\epsilon') = 2^2 N(\epsilon)$.
+or, introducing a proportionality constant $C$,
 
-</div>
+$$N(\epsilon) \approx C \left(\frac{1}{\epsilon}\right)^D$$
+
+Let's test this intuition with familiar objects:
+
+* A Line (1-dimensional object): Suppose we cover a line segment with boxes of size $\epsilon$. Now, let's reduce the box size by half, to $\epsilon' = \epsilon/2$. It is clear we will now need twice as many boxes to cover the same line. The number of boxes scales linearly: $N(\epsilon') = 2 N(\epsilon) = 2^1 N(\epsilon)$. This matches our proposed law, where $D=1$.
+* A Plane (2-dimensional object): If we cover a planar area with squares of side length $\epsilon$ and then reduce the side length to $\epsilon' = \epsilon/2$, we will need four times as many squares to cover the same area. The number of boxes scales quadratically: $N(\epsilon') = 4 N(\epsilon) = 2^2 N(\epsilon)$. This again matches our law, with $D=2$.
+
+This relationship provides a robust method for defining a dimension $D$ that extends beyond integer values.
+
+#### Formal Definition
+
+To isolate the dimension $D$ from our scaling law, we can use logarithms. Taking the logarithm of both sides of $N(\epsilon) = C (1/\epsilon)^D$ gives:
+
+$$\log(N(\epsilon)) = \log(C) + D \log\left(\frac{1}{\epsilon}\right)$$
+
+Rearranging for $D$, we get:
+
+$$D = \frac{\log(N(\epsilon)) - \log(C)}{\log(1/\epsilon)}$$
+
+To get a precise definition, we examine the behavior in the limit as $\epsilon \to 0$. In this limit, the $\log(N(\epsilon))$ and $\log(1/\epsilon)$ terms will grow, while the constant term $\log(C)$ becomes negligible. This allows us to drop the constant and arrive at a formal definition.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Box-Counting Dimension)</span></p>
 
-For a set $S$ in $\mathbb{R}^m$, the box-counting dimension $D_{box}$ is:
+For a set $S$ in an $m$-dimensional Euclidean space $\mathbb{R}^m$, the box-counting dimension, $D_{box}$, is defined as:
 
 $$D_{box} = \lim_{\epsilon \to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$$
 
-where $N(\epsilon)$ is the minimum number of $m$-dimensional boxes of side length $\epsilon$ required to cover $S$.
+where $N(\epsilon)$ is the minimum number of $m$-dimensional boxes of side length $\epsilon$ required to cover the set $S$.
 
 </div>
+
+#### Example: The Cantor Set
+
+Let's apply this definition to the middle-third Cantor set, which we construct iteratively.
+
+* Recall the Construction: We begin with the interval $[0, 1]$. At each iteration $n$, we remove the middle third of every existing interval.
+* Counting the Boxes: After $n$ iterations, we are left with $2^n$ disjoint intervals.
+* Determining the Box Size: The length of each of these small intervals is $(1/3)^n$.
+
+We can directly use these properties to calculate the box-counting dimension. For the $n$-th iteration of the construction, we can choose our box size $\epsilon_n$ to be the exact length of the intervals, $\epsilon_n = (1/3)^n$. The number of boxes required to cover the set is then precisely $N(\epsilon_n) = 2^n$.
+
+The limit $\epsilon \to 0$ is equivalent to the number of iterations $n \to \infty$. Plugging these into the definition:
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Box-Counting Dimension of the Cantor Set)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Calculation of $D_{box}$ for the Cantor Set)</span></p>
 
-After $n$ iterations of the Cantor set construction, we have $2^n$ intervals of length $(1/3)^n$. Setting $\epsilon_n = (1/3)^n$ and $N(\epsilon_n) = 2^n$:
-
-$$D_{box} = \lim_{n \to \infty} \frac{\log(2^n)}{\log(3^n)} = \lim_{n \to \infty} \frac{n \log 2}{n \log 3} = \frac{\log 2}{\log 3} \approx 0.6309$$
+1. Start with the definition of the box-counting dimension: $$D_{box} = \lim_{\epsilon \to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$$
+2. Substitute $N = 2^n$ and $\epsilon = (1/3)^n$. The limit becomes $n \to \infty$: $$D_{box} = \lim_{n \to \infty} \frac{\log(2^n)}{\log(1/(1/3)^n)}$$
+3. Simplify the denominator: $$D_{box} = \lim_{n \to \infty} \frac{\log(2^n)}{\log(3^n)}$$
+4. Use the logarithm property $\log(a^b) = b \log(a)$ to bring the exponents down: $$D_{box} = \lim_{n \to \infty} \frac{n \log 2}{n \log 3}$$
+5. The $n$ terms cancel out, leaving a constant value. The limit is therefore this constant: $$D_{box} = \frac{\log 2}{\log 3} \approx 0.6309$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-The result is a fractal dimension—a non-integer value. The Cantor set is more complex than a collection of points (dimension $0$) but less space-filling than a line (dimension $1$). This fractional value captures the set's self-similar structure and is a general property of chaotic attractors.
-
-Empirically, the box-counting dimension can be estimated by plotting $\log N(\epsilon)$ against $\log(1/\epsilon)$ and extracting the slope of the linear region.
+The result is a fractal dimension—a non-integer value. This mathematically confirms our intuition that the Cantor set is more complex than a collection of points (which would have dimension 0) but less "space-filling" than a continuous line segment (which has dimension 1). This fractional value elegantly captures the set's intricate, self-similar structure. This is a general property of chaotic attractors that possess a fractal structure.
 
 </div>
 
-#### The Correlation Dimension
+#### Empirical Estimation
+
+The box-counting dimension is not just a theoretical construct; it can be estimated from data. For an observed dataset representing a chaotic attractor, one can:
+
+1. Embed the data in its state space.
+2. Overlay grids of decreasing box size $\epsilon$.
+3. For each $\epsilon$, count the number of boxes $N(\epsilon)$ that contain at least one data point.
+4. Plot $\log N(\epsilon)$ against $\log(1/\epsilon)$.
+5. For a range of $\epsilon$ where the data exhibits scaling, these points should fall on a straight line.
+6. The slope of this line provides an empirical estimate of the box-counting dimension, $D_{box}$.
+
+This is illustrated by the log-log plot below, where the slope directly yields the dimension $D$.
+
+(Note: As per instructions, no images can be rendered. The source describes a log plot where the slope of $\log N(\epsilon)$ vs $\log(1/\epsilon)$ is the dimension D.)
+
+### The Correlation Dimension
+
+#### Motivation: A Practical Alternative
+
+While the box-counting dimension is powerful, it can be computationally prohibitive to implement in practice. For systems with a state space of dimension four or higher, creating a grid and counting boxes becomes exceptionally tedious as the number of required boxes explodes exponentially (the "curse of dimensionality").
+
+To overcome this, a more practical, trajectory-based measure was developed: the correlation dimension.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Motivation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-While the box-counting dimension is powerful, it can be computationally prohibitive for high-dimensional systems due to the curse of dimensionality. The correlation dimension provides a more practical, trajectory-based alternative. Its value is always $D_{corr} \le D_{box}$.
+A key property and practical advantage of the correlation dimension is that its value is always less than or equal to the box-counting dimension: $D_{corr} \le D_{box}$.
 
 </div>
+
+#### Definition and Intuition
+
+Instead of covering the entire set with a grid, the correlation dimension is defined along the orbits or trajectories of the system. This makes it especially well-suited for analyzing time-series data from experiments.
+
+The core idea is to:
+
+1. Take points along a trajectory of the system.
+2. For each point, place a ball of radius $\epsilon$ around it.
+3. Count the average number of other points on the trajectory that fall within this ball. Let's call this quantity $C(\epsilon)$.
+4. Examine how $C(\epsilon)$ scales as $\epsilon \to 0$.
+
+The logic remains the same:
+
+* For a 1D object (a line), the number of neighbors within radius $\epsilon$ should scale proportionally to $\epsilon^1$.
+* For a 2D object (a plane), the number of neighbors should scale proportionally to $\epsilon^2$.
+
+This leads to the scaling law:
+
+$$C(\epsilon) \approx k \cdot \epsilon^D$$
+
+where $k$ is a constant and $D$ is the correlation dimension. By again taking the logarithm and considering the limit as $\epsilon \to 0$, we arrive at the formal definition.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Correlation Dimension)</span></p>
 
-The correlation dimension $D_{corr}$ is:
+The correlation dimension, $D_{corr}$, is defined as:
 
 $$D_{corr} = \lim_{\epsilon \to 0} \frac{\log C(\epsilon)}{\log \epsilon}$$
 
-where $C(\epsilon)$ is the correlation integral, measuring the average number of neighbors within an $\epsilon$-ball around points on the trajectory.
-
-The method: (1) take points along a trajectory, (2) for each point, place a ball of radius $\epsilon$, (3) count the average number of other points within this ball, $C(\epsilon)$, (4) examine how $C(\epsilon)$ scales as $\epsilon \to 0$.
+where $C(\epsilon)$ is the correlation integral, which measures the average number of neighbors within an $\epsilon$-ball around points on the trajectory.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Maps vs. Continuous Systems)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-* **Maps:** Chaotic behavior can occur in one-dimensional maps (e.g., the logistic map).
-* **Continuous-Time ODEs:** Chaos requires at least three dimensions (Poincaré-Bendixson theorem). In four or more dimensions, hyperchaos can emerge.
+Note the subtle but important difference in the denominator: $\log \epsilon$ instead of $\log(1/\epsilon)$. This is because as $\epsilon \to 0$, the number of boxes $N(\epsilon)$ needed to cover a set increases (so $\log(1/\epsilon)$ is positive and grows), whereas the number of neighbors $C(\epsilon)$ found within a small ball decreases (so $\log \epsilon$ is negative and approaches $-\infty$). The ratio remains a well-defined, positive dimension.
 
 </div>
+
+### A Note on Dimensionality and System Type
+
+It is important to distinguish between discrete-time systems (maps) and continuous-time systems (ODEs) when discussing the dimensionality required for chaos.
+
+* Maps: Chaotic behavior can occur in very low-dimensional maps. The logistic map, for instance, is a one-dimensional system ($x_{n+1} = rx_n(1-x_n)$) that exhibits chaos.
+* Continuous-Time ODEs: For systems of ordinary differential equations, chaos is not possible in one or two dimensions (due to the Poincaré-Bendixson theorem). A minimum of three dimensions is required to generate the complex stretching and folding of trajectories characteristic of chaos. In four or more dimensions, even more complex phenomena like hyperchaos can emerge.
 
 ### From Theory to Practice: Analyzing Empirical Data
 
 #### The Fundamental Challenge of Real-World Systems
 
-We now pivot from idealized models to empirical data. We often have data from a real-world system without knowing the underlying equations. The central questions are: (1) How can we apply dynamical systems theory to characterize real data? (2) Can we derive data-driven models of the underlying process?
+We now pivot from idealized model systems to the domain of empirical data. As experimentalists or data scientists, we are often confronted with data recorded from a real-world system—be it temperature measurements from a climate system or neural recordings from the brain. We do not know the underlying equations of motion.
+
+The central questions we will now address are:
+
+1. How can we apply the powerful concepts of dynamical systems theory to characterize and understand real data?
+2. Can we go even further and actually derive data-driven models of the underlying data-generating process?
 
 #### The Measurement Problem
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+Let's formalize the typical experimental setup. We assume there is some underlying, unknown data-generating system that can be described as a dynamical system:
 
-We assume an unknown data-generating system $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$ where $\mathbf{x} \in \mathbb{R}^m$. We never observe the full state $\mathbf{x}$ directly. Instead, a measurement function $h$ gives us a time series of scalar observations: $s(t_k) = h(\mathbf{x}(t_k))$. Our goal is to reconstruct the dynamics from this limited data.
+$$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}) \quad \text{where} \quad \mathbf{x} \in \mathbb{R}^m$$
 
-</div>
+Here, $\mathbf{x}$ represents the complete state of the system in an $m$-dimensional state space. For now, we will assume the system is autonomous (the function $\mathbf{f}$ does not explicitly depend on time).
+
+The crucial challenge is that we never observe the full state vector $\mathbf{x}$ directly. Instead, we use a recording device (e.g., a thermometer, an electrode, a microphone) which acts as a measurement function, $h$. This function takes the true system state $\mathbf{x}$ and transforms it into a measurable quantity. Furthermore, we can only record this quantity at discrete points in time.
+
+This means the data we actually have is a time series of scalar observations $s(t_k)$, given by:
+
+$$s(t_k) = h(\mathbf{x}(t_k))$$
+
+Our goal is to reconstruct the dynamics of the full $m$-dimensional system from this limited, one-dimensional time series. This seemingly impossible task is the subject of our next topic: temporal delay embeddings.
 
 ### State Space Reconstruction from Time Series Data
 
+In the study of complex dynamical systems, such as the climate or the human brain, we are often faced with a significant challenge: the systems are defined by a vast number of interacting variables, yet we can only measure a small fraction of them. This chapter introduces the foundational concepts that allow us to reconstruct the system's underlying dynamics from limited, often scalar, time series data.
+
+#### The Fundamental Problem: Incomplete Observations
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Observational Setup)</span></p>
+
+Let a true dynamical system evolve in an $M$-dimensional state space. We typically do not have access to all $M$ variables. Instead, we observe a time series of measurements, denoted as $y_t$, which are captured at discrete time intervals.
+
+* The measurement times are given by $t = k \cdot \Delta t$, where $\Delta t$ is the inverse of the sampling frequency and $k$ is a natural number.
+* The observations $y_t$ form a time series of finite length, where $t$ ranges from $1$ to $T$.
+* These observations reside in a $k$-dimensional space, where it is common for the measurement dimension $k$ to be much smaller than the true system dimension $M$ (i.e., $k \ll M$).
+
+</div>
+
+For the purposes of our initial discussion, we will consider the most extreme case where our measurements are scalar, meaning $k=1$. The central question is: can we recover the dynamics of the true, high-dimensional system from a single scalar time series? The answer, remarkably, is yes. The mathematical theorems that support this form the basis of state space reconstruction.
+
 #### The Intuition of Time Delay Embedding
 
+The core idea behind reconstruction is that if the variables in a system are all coupled, then the dynamics of the entire system will leave a "trace" on any single variable we measure. While the instantaneous value of our measurement, $y_t$, may be ambiguous, its history contains the information needed to resolve the state of the system.
+
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple Harmonic Oscillator)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Simple Harmonic Oscillator)</span></p>
 
-If we observe a single point on a sine wave, we cannot tell if it's about to increase or decrease. But if we also consider the value at a slightly earlier time, $t-\tau$, we gain crucial context. A two-dimensional space $(y_t, y_{t-\tau})$ resolves the ambiguity—the trajectory forms a clean, non-intersecting closed loop.
+Imagine we have a scalar measurement from a simple harmonic oscillator, which looks like a sine wave.
 
-For more complex oscillations (e.g., ECG-like signals), even two dimensions may not suffice, and a three-dimensional space $(y_t, y_{t-\tau}, y_{t-2\tau})$ may be needed.
+Conceptual sketch of a simple oscillator's time series.
+
+If we observe a single point on this curve, say at a specific time $t$, we face an ambiguity: is the system's value about to increase or decrease? We cannot predict the future from this single point.
+
+However, if we also consider the value at a slightly earlier time, $t-\tau$, we gain crucial context. By knowing the preceding value, we can determine the direction of the trajectory. In other words, a two-dimensional state space spanned by $(y_t, y_{t-\tau})$ is sufficient to resolve the ambiguity. In this new space, the trajectory of the simple oscillator would form a clean, non-intersecting closed loop.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-A fundamental property of a valid state space is that trajectories cannot intersect. By augmenting the current measurement with its own past values, we create new dimensions, "unfolding" the trajectory into a higher-dimensional space where intersections are eliminated.
+Recall that a fundamental property of a valid state space is that trajectories cannot intersect. A single dimension is often insufficient to satisfy this property for even simple oscillatory systems. By augmenting our current measurement with its own past values, we effectively create new dimensions, allowing us to "unfold" the trajectory into a higher-dimensional space where intersections are eliminated.
 
 </div>
 
-#### The Delay Coordinate Map
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A More Complex Oscillator)</span></p>
+
+Consider a more complex, non-sinusoidal oscillation, similar to an electrocardiogram (ECG) signal, which features sharp spikes and other intricate patterns.
+
+Conceptual sketch of a complex oscillator's time series.
+
+In this case, many points on the time series have the same amplitude. If we attempt to project this into a two-dimensional delay space $(y_t, y_{t-\tau})$, we might still find that the trajectory intersects with itself.
+
+Conceptual sketch of a 2D projection with self-intersection.
+
+To resolve these intersections, we may need to include more of the system's history. By moving to a three-dimensional space, using the coordinates $(y_t, y_{t-\tau}, y_{t-2\tau})$, we can often fully resolve the trajectory, creating a smooth, non-intersecting object.
+
+</div>
+
+#### Formalizing the Delay Coordinate Map
+
+The intuitive process of using past values to construct a state space vector can be formalized mathematically.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Delay Coordinate Map)</span></p>
 
-The delay coordinate map transforms a scalar time series $y_t \in \mathbb{R}$ into a vector in an $m$-dimensional space:
+The delay coordinate map is an operation that transforms a scalar time series, $y_t \in \mathbb{R}$, into a vector in an $m$-dimensional space. This vector, known as the delay embedding vector, is constructed as follows:
 
 $$\mathbf{Y}_t = (y_t, y_{t-\tau}, y_{t-2\tau}, \dots, y_{t-(m-1)\tau})$$
 
-Two crucial parameters:
+This map is defined by two crucial parameters:
 
-* $m$: The embedding dimension.
-* $\tau$: The time lag or time delay.
+* $m$: The embedding dimension, which is the dimensionality of the new state space vector.
+* $\tau$: The time lag or time delay, which determines the time separation between the components of the vector.
 
 </div>
 
 #### Choosing the Embedding Parameters
 
+The success of the reconstruction critically depends on the appropriate choice of the time lag $\tau$ and the embedding dimension $m$.
+
+**The Time Lag $\tau$**
+
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Time Lag $\tau$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Trade-off in Choosing $\tau$)</span></p>
 
-* **Too small:** Components become highly correlated; the reconstruction collapses onto a diagonal.
-* **Too large:** Components become uncorrelated; deterministic structure is lost.
+The choice of $\tau$ presents a delicate balance, especially in the presence of measurement noise.
 
-$\tau$ must be in an intermediate range. A common heuristic: choose $\tau$ near the first minimum of the autocorrelation function.
+* If $\tau$ is too small ($\tau \to 0$): The components of the delay vector, $y_t$ and $y_{t-\tau}$, become highly correlated. In the noise-free limit, this might be acceptable. However, with even a small amount of noise, the reconstructed trajectory will collapse onto a lower-dimensional object (e.g., the diagonal line where $y_t \approx y_{t-\tau}$), and the underlying structure will be obscured by this "jitter."
+* If $\tau$ is too large: The components of the vector, $y_t$ and $y_{t-\tau}$, may become completely uncorrelated due to the chaotic nature of the system or the influence of noise. The reconstructed points will appear to jump erratically in the embedding space, and any deterministic structure will be lost.
+
+Therefore, $\tau$ must be chosen in an intermediate range: large enough to avoid redundancy, but small enough to preserve the correlation that defines the system's dynamics.
 
 </div>
+
+A common empirical method for selecting $\tau$ is to examine the autocorrelation function of the time series. This function measures the linear correlation between measurements as a function of their time separation.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Empirical Autocorrelation Function)</span></p>
 
-$$R_y(\tau) = \frac{\sum_{t} (y_t - \bar{y})(y_{t-\tau} - \bar{y})}{S_y^2}$$
+The empirical autocorrelation function, $R_y(\tau)$, for a time series $y_t$ with sample mean $\bar{y}$ and variance $S_y^2$ is calculated as:
 
-The numerator is the covariance between the time series and its time-lagged version; the denominator normalizes this value.
+$$R_y(\tau) = \frac{\sum_{t} (y_t - \bar{y})(y_{t-\tau} - \bar{y})}{S_y^2}$$
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
+
+The numerator represents the covariance between the time series and a time-lagged version of itself, while the denominator normalizes this value. A typical heuristic is to choose $\tau$ to be near the first minimum of the autocorrelation function. This ensures that the information in $y_t$ and $y_{t-\tau}$ is sufficiently different, while still being dynamically related.
+
+Other, more advanced methods exist, such as using the mutual information, which is a nonlinear measure of dependency between variables. It is crucial to remember that the problem of choosing an optimal $\tau$ is primarily an empirical one that arises from the presence of noise. Theoretical derivations, which operate in the noise-free limit, do not provide a unique prescription for $\tau$.
+
+</div>
+
+**The Embedding Dimension $m$**
+
+The choice of the embedding dimension $m$ is a more fundamental question that can be addressed systematically. The goal is to choose an $m$ that is large enough to fully "unfold" the attractor from its projection in the measurement space.
+
 #### Properties of a "Good" Embedding
+
+To formalize what we require from our reconstruction, we define a complete map from the original, true state space to our new, reconstructed space.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Delay Embedding Map)</span></p>
+
+Let the original system's attractor live on a manifold $A$ in the true state space. The full delay embedding map, which we will call $F$, is a composition of two functions:
+
+1. The measurement function, $h$, which maps a point $x$ on the true attractor to a scalar observation $y$.
+2. The delay coordinate map, $G$, which takes the time series of observations and constructs the delay vector.
+
+The map $F$ takes the manifold $A$ to its image, $F(A)$, in the $m$-dimensional delay embedding space (also called the reconstruction space).
+
+$$A \xrightarrow{F} F(A)$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Desired Properties of the Map $F$)</span></p>
+
+For the reconstruction $F(A)$ to be scientifically useful, the map $F$ must preserve essential properties of the original system on $A$.
+
+1. Topological Preservation (One-to-One Mapping): At a minimum, we require the map $F$ to be one-to-one (injective). This ensures that distinct points on the original attractor are mapped to distinct points in the reconstruction space. This property guarantees that trajectories do not intersect, thereby creating a topologically faithful representation (a homeomorphism).
+2. Dynamical Preservation (Preserving the Vector Field): For a truly useful embedding, preserving the topology is not enough. We also want to preserve the local dynamics—the vector field on the attractor. This is a much stronger condition. It requires that the derivative of the map, denoted $dF$, also be one-to-one. The map $dF$ is a linear map between the tangent spaces (local vector fields, or Jacobians) at any point on $A$ and its corresponding image on $F(A)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
+
+Since $dF$ is a linear map between tangent spaces, the condition that it be one-to-one is equivalent to requiring that $dF$ has full rank. This ensures that the local geometric structure of the dynamics is preserved in the reconstruction. The famous Takens' Embedding Theorem provides the conditions under which such a map is guaranteed to exist.
+
+</div>
+
+### Embedding Theorems: From Geometry to Dynamics
+
+#### The Concept of Diffeomorphic Equivalence
+
+In the study of dynamical systems, we are often concerned with transformations between state spaces. A key goal is to find a mapping that preserves the essential geometric and dynamic properties of the system. This leads us to the concept of a diffeomorphism, a particularly strong form of equivalence between two systems.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Diffeomorphism)</span></p>
 
-A homeomorphism is a continuous, one-to-one mapping with a continuous inverse. A **diffeomorphism** additionally requires both the map and its inverse to be continuously differentiable. The derivative $DF$ (the "push-forward") transports the vector field from one domain to another and must also be one-to-one.
+A homeomorphism is a continuous, one-to-one mapping between two spaces that has a continuous inverse. It preserves topological properties.
+
+A diffeomorphism is a map that is a homeomorphism, but with the additional requirement that both the map and its inverse are continuously differentiable. This means that a diffeomorphism is not only one-to-one in its points but also in its derivatives.
+
+The derivative of the mapping, often denoted as $DF$, is also called a push-forward. It effectively transports the vector field from one domain to another. For a mapping to be a diffeomorphism, this transportation of the vector field must also be a one-to-one relationship.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Desired Properties of the Embedding Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Diffeomorphism Matters)</span></p>
 
-1. **Topological Preservation (One-to-One):** Distinct points on the original attractor map to distinct points in reconstruction space.
-2. **Dynamical Preservation (Preserving the Vector Field):** The derivative $dF$ must also be one-to-one, ensuring local dynamics are preserved. This requires $dF$ to have full rank.
+Consider a trajectory in a three-dimensional space that we wish to represent, or "embed," in a lower-dimensional space. A simple one-to-one projection (a homeomorphism) is not sufficient. While it would prevent the trajectory from intersecting itself, it could introduce artificial and misleading features into the system's dynamics.
+
+For instance, a smooth, flowing trajectory in the original space might be projected in such a way that its corresponding vector field in the embedded space exhibits sudden, sharp jumps. A diffeomorphism prevents this. It guarantees that any smooth changes in the original vector field correspond to smooth changes in the embedded vector field.
+
+The central challenge addressed by embedding theorems is finding the right embedding—specifically, the right embedding dimensionality—that guarantees the existence of such a diffeomorphism.
 
 </div>
+
+#### Intuition: Avoiding Intersections in Higher Dimensions
+
+The core principle behind embedding theorems can be understood through a simple geometric question: Given two manifolds, one of dimension $d_1$ and the other of dimension $d_2$, how large must the dimension of the ambient space be so that the manifolds will most likely not intersect?
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Avoiding Intersections in Higher Dimensions)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-Given two manifolds of dimensions $d_1$ and $d_2$, the ambient space must have dimension at least $d_1 + d_2 + 1$ so that randomly placed manifolds will almost certainly not intersect. In 2D, random lines likely intersect; in 3D, they almost certainly pass as skew lines.
+The required dimensionality of the ambient space is at least $d_1 + d_2 + 1$. In a space of this dimension or higher, the probability of two randomly placed manifolds intersecting is zero (or, more formally, the measure of the set of intersecting configurations is zero).
 
 </div>
 
-### Embedding Theorems
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
+
+* Lines in 2D vs. 3D: Imagine randomly "throwing" straight lines (1-dimensional manifolds, so $d_1 = d_2 = 1$) into a space.
+  * In a 2-dimensional plane, it is very likely that two randomly placed lines will intersect (unless they are perfectly parallel).
+  * In a 3-dimensional space, however, two randomly placed lines will almost certainly not intersect. They will pass by each other as skew lines. With probability one, they will miss.
+
+This powerful intuitive idea—that increasing the dimension of the ambient space provides "more room" to avoid intersections—is the foundation upon which the formal embedding theorems are built.
+
+</div>
+
+#### The Whitney Embedding Theorem
+
+The first formalization of this intuition comes from the field of differential geometry. The Whitney Embedding Theorem provides the conditions under which a smooth manifold can be embedded into a Euclidean space of a certain dimension.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Whitney's Embedding Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Whitney's Embedding Theorem, c. 1930s)</span></p>
 
-Let $A \subset \mathbb{R}^m$ be a compact, smooth manifold of dimension $D$. Then almost any smooth map $f: \mathbb{R}^m \to \mathbb{R}^k$ where $k \geq 2D + 1$ is an embedding (diffeomorphism onto its image).
+Let $A \subset \mathbb{R}^m$ be a compact, smooth, and differentiable manifold of dimension $D$.
+
+Then, almost any smooth map $f: \mathbb{R}^m \to \mathbb{R}^k$ where $k \geq 2D + 1$ is an embedding of $A$.
+
+An embedding in this context is a diffeomorphism onto its image.
 
 </div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On "Almost Any" and "Generic" Maps)</span></p>
+
+The phrase "almost any" is a probabilistic statement, meaning "with probability one." It acknowledges that while maps that fail to be embeddings might exist, they are exceptionally rare.
+
+This is often expressed using the term "generic." A property is generic if the set of maps possessing that property is dense in the overall space of possible measurement functions. This has a powerful practical implication: if you choose a map $f$ that does not work, any slight perturbation of $f$ will produce a map that does the job.
+
+</div>
+
+#### Takens' Delay Embedding Theorem for Dynamical Systems
+
+Floris Takens, in a landmark 1981 paper, adapted the principles of Whitney's theorem specifically for the analysis of dynamical systems observed through time series data. This theorem provides the theoretical justification for the method of delay-coordinate embedding.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Takens' Delay Embedding Theorem)</span></p>
 
-Assume $A \subset \mathbb{R}^m$ is a $D$-dimensional smooth manifold invariant under the flow $\Phi$. Let $h$ be a generic measurement function, and $F_{\tau} = G_{\tau} \circ h$ a delay coordinate map with generic delay $\tau$.
+Assume $A \subset \mathbb{R}^m$ is a $D$-dimensional smooth manifold that is invariant under the flow $\Phi$ of a dynamical system.
 
-If $k \geq 2D + 1$, then $F_{\tau}$ is an embedding (a diffeomorphism).
+Let $h$ be a generic measurement function, and let $F_{\tau} = G_{\tau} \circ h$ be a delay coordinate map from $\mathbb{R}^m$ to $\mathbb{R}^k$, constructed with a generic delay $\tau$.
+
+If the embedding dimension $k$ satisfies $k \geq 2D + 1$, then the map $F_{\tau}$ is an embedding (a diffeomorphism).
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Invariance and Generic Delay)</span></p>
 
-A "bad" choice of $\tau$ (e.g., an integer multiple of the period for a periodic system) can ruin the embedding. The "generic" condition means almost any choice works; if one fails, a slight change will succeed.
+* Invariance: A set $A$ is invariant under a flow $\Phi$ if any trajectory starting in $A$ remains in $A$ for all time. That is, $\Phi_t(x) \in A$ for all $x \in A$ and for all time $t$. The theorem applies to the attractors of dynamical systems, which are by definition invariant sets.
+* Generic Delay ($\tau$): The choice of the time delay $\tau$ is crucial. A "bad" choice can ruin the embedding. For example, if the system is periodic, choosing $\tau$ to be an integer multiple of the period would be a poor choice, as all delay coordinates would be identical, and the structure would collapse. The "generic" condition means that almost any choice of $\tau$ will work, as long as it avoids such special, resonant values. If a choice of $\tau$ fails, a slightly different value will succeed.
 
 </div>
+
+#### The Fractal Delay Embedding Prevalence Theorem
+
+Many dynamical systems, particularly chaotic ones, have attractors that are not smooth manifolds but are instead fractal sets. The theorem by Sauer, Yorke, and Casdagli (1991) extends Takens' results to cover these more complex geometric objects by using the box-counting dimension.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Fractal Delay Embedding Prevalence Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Fractal Delay Embedding Prevalence Theorem)</span></p>
 
-Assume $A \subset \mathbb{R}^m$ is a compact subset invariant under the flow $\Phi$, with box-counting dimension $D_{box}$. If $k > 2 D_{box}$, then a delay coordinate map with generic measurement and delay is an embedding.
+Assume $A \subset \mathbb{R}^m$ is a compact subset that is invariant under the flow $\Phi$, and let its box-counting dimension be $D_{box}$.
+
+Let $h$ be a generic measurement function, and let $F_{\tau} = G_{\tau} \circ h$ be a delay coordinate map from $\mathbb{R}^m$ to $\mathbb{R}^k$, constructed with a generic delay $\tau$.
+
+If the embedding dimension $k$ satisfies $k > 2 D_{box}$, then the map $F_{\tau}$ is a delay embedding (a diffeomorphism).
 
 </div>
-
-#### Practical Estimation: The False Neighbors Method
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The False Neighbors Method)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Power of Embedding)</span></p>
 
-In an embedding with insufficient dimension, points far apart on the true attractor may appear close ("false neighbors"). As dimension increases, these false neighbors separate.
-
-**Methodology:**
-
-1. Start with low embedding dimension $d=1, 2, 3, \dots$.
-2. For each point, find its nearest neighbor in $d$ dimensions.
-3. Check if distance increases dramatically in $d+1$ dimensions.
-4. If so, classify as a "false neighbor."
-5. Plot false neighbor percentage vs. $d$. The dimension where it drops to near zero is the sufficient embedding dimension.
+Together, these theorems provide a rigorous foundation for a powerful technique. They demonstrate that from a single, observed time series, one can construct a state space that is topologically equivalent to the original, unobserved system. This reconstructed space preserves not only the geometry of the attractor but also the dynamics (the vector field) upon it.
 
 </div>
 
+#### Practical Estimation of Embedding Dimension: The False Neighbors Method
+
+The embedding theorems provide a lower bound for the embedding dimension ($k \geq 2D + 1$ or $k > 2 D_{box}$), but in practice, the dimension $D$ or $D_{box}$ of the underlying attractor is often unknown. The False Neighbors method (Kennel et al., 1992) is a practical, empirical technique to estimate a sufficient embedding dimension directly from the data.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Principle of False Neighbors)</span></p>
+
+The fundamental principle is that the orbits of a deterministic dynamical system cannot intersect. In an embedding space with insufficient dimension, the projection of the attractor can cause points that are far apart on the true attractor to appear as close neighbors in the projected space. These are "false neighbors."
+
+As the embedding dimension is increased, the attractor "unfolds." When the dimension is sufficient, these false neighbors will move apart, revealing their true, larger distance from each other. The method works by tracking this unfolding process.
+
+</div>
+
+**Methodology**
+
+1. Construct Embeddings: Start with a low embedding dimension, $d=1, 2, 3, \dots$.
+2. Identify Neighbors: For each point in the $d$-dimensional embedded trajectory, find its nearest neighbor.
+3. Check in Next Dimension: Observe the distance between this same pair of points in the $d+1$-dimensional embedding.
+4. Count False Neighbors: If the distance between the points increases dramatically when moving from dimension $d$ to $d+1$, the pair is classified as a "false neighbor." This jump in distance indicates that the proximity in dimension $d$ was merely an artifact of the projection.
+5. Analyze the Trend: Plot the percentage of false neighbors as a function of the embedding dimension $d$. Typically, this curve will show a high percentage of false neighbors for low $d$, which then drops sharply and plateaus at or near zero. The embedding dimension at which this "kink" occurs and the percentage of false neighbors becomes negligible is chosen as the minimum sufficient embedding dimension.
+
 #### Applications: Computing Invariants in Embedded Space
+
+Once a proper embedding has been constructed, the reconstructed state space can be used to compute key dynamical invariants of the original system, even if that system was never directly observed.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computable Quantities)</span></p>
 
-Once a proper embedding is constructed:
-
-* **Attractor Dimension:** Box-counting or correlation dimension computed from the reconstructed trajectories.
-* **Lyapunov Exponents:** Estimated by tracking the evolution of distances between nearby points. For initially close trajectories: $\delta(t) \approx \Delta_0 e^{\lambda t}$, so $\ln(\delta(t)) \approx \ln(\Delta_0) + \lambda t$. The slope of the initial linear region gives $\lambda$.
+* Attractor Dimension: If an estimate of the attractor's dimension (e.g., box-counting dimension, correlation dimension) was not available beforehand, it can be computed from the trajectories in the newly constructed delay-embedding space.
+* Lyapunov Exponents: The delay-embedding space allows for the empirical estimation of Lyapunov exponents, which quantify the rate of separation of infinitesimally close trajectories and are a hallmark of chaotic systems.
 
 </div>
 
-### Inferring Models from Data
+**Method for Estimating Lyapunov Exponents**
 
-#### Two Fundamental Approaches
+1. In the delay-embedding space, for each point on a trajectory, identify a neighborhood of nearby points.
+2. Track the evolution of the distance between the reference point and each of its neighbors over time. For initially close trajectories with separation $\delta(0) = \Delta_0$, the separation typically grows exponentially for a chaotic system: $\delta(t) \approx \Delta_0 e^{\lambda t}$.
+3. By taking the logarithm, we get $\ln(\delta(t)) \approx \ln(\Delta_0) + \lambda t$.
+4. By averaging the evolution of $\ln(\delta(t))$ over many initial points and their respective neighbors, one can plot this quantity against time $t$ (or discrete time steps $k \cdot \Delta t$). The slope of the initial linear region of this plot provides an empirical estimate of the largest Lyapunov exponent, $\lambda$.
+
+### From Data to Dynamics: Reconstruction and Inference
+
+This chapter bridges the gap between the theoretical analysis of dynamical systems and the practical challenge of working with real-world, observational data. We begin by revisiting the powerful technique of delay embedding, which allows us to reconstruct a system's state space from a single time series. We then explore how to compute key dynamical invariants, such as Lyapunov exponents, within this reconstructed space. Finally, we pose a more fundamental question: Can we move beyond merely characterizing a system to inferring its underlying mathematical model directly from data? This leads us to the modern intersection of dynamical systems and machine learning, setting the stage for advanced reconstruction techniques.
+
+#### A Recap on Delay Embedding
+
+The delay embedding theorems provide a remarkable guarantee: under certain conditions, we can reconstruct a state space that is topologically equivalent (diffeomorphic) to the original, unseen state space of a dynamical system using only a sequence of measurements from a single observable.
+
+**The Delay Coordinate Map**
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Delay Coordinate Map)</span></p>
+
+Given a time series of scalar measurements $\{s_1, s_2, ..., s_k\}$, the delay coordinate map constructs a series of state vectors in a higher-dimensional space. A vector $x_t$ in the reconstructed space is formed as:
+
+$$x_t = (s_t, s_{t-\tau}, s_{t-2\tau}, ..., s_{t-(m-1)\tau})$$
+
+Where:
+
+* $m$ is the embedding dimension.
+* $\tau$ is the time lag or delay time.
+
+The collection of all such vectors $\{x_t\}$ forms a trajectory in an $m$-dimensional space that, with proper parameter choices, preserves the geometric and dynamic properties of the original system's attractor.
+
+</div>
+
+**The Role of Parameters: $m$ and $\tau$**
+
+The success of delay embedding hinges on the careful selection of its two key parameters, $m$ and $\tau$.
+
+* The Time Lag ($\tau$):
+  * Theoretical Role: While theoretically less critical than $m$, $\tau$ must be chosen so that it does not align with a natural periodicity of the underlying signal, which would cause the coordinates to become correlated and the embedding to collapse.
+  * Empirical Selection: A common heuristic is to choose $\tau$ based on the autocorrelation function of the time series. A value is often selected where the function first drops significantly, indicating that $s_t$ and $s_{t-\tau}$ are sufficiently independent to serve as distinct coordinates.
+* The Embedding Dimension ($m$):
+  * Theoretical Role: This parameter is theoretically crucial. Takens' theorem guarantees a successful embedding if the dimension $m$ is at least twice the box-counting dimension of the underlying attractor ($D_{box}$): $$m > 2 D_{box}$$
+  * Empirical Selection: The false neighbor technique is a practical method to determine an appropriate $m$. It works by checking how many "neighboring" points in an $m$-dimensional embedding remain neighbors when the dimension is increased to $m+1$. If they are no longer neighbors, they were "false neighbors" resulting from a projection into a space of insufficient dimension. One increases $m$ until the percentage of false neighbors drops to zero.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
+
+The goal of delay embedding is to "unfold" the trajectory. If you imagine a complex trajectory like a tangled ball of yarn (e.g., the Lorenz attractor), a 2D projection might show intersections that do not exist in the true 3D space. By choosing a sufficiently high embedding dimension $m$, we provide enough "room" for the trajectory to resolve these apparent self-intersections, creating a faithful representation of the system's dynamics. An improperly chosen $\tau$ can also distort the reconstruction; a $\tau$ that is too small will cause the embedded points to cluster along a diagonal line, while a $\tau$ that is too large can over-fold the attractor.
+
+</div>
+
+#### Estimating Lyapunov Exponents from Time Series
+
+Once a state space has been successfully reconstructed via delay embedding, we can use the embedded trajectory to compute dynamical invariants. A key invariant is the maximum Lyapunov exponent ($\lambda_{max}$), which measures the average rate of exponential divergence of nearby trajectories.
+
+**The Divergence Method**
+
+The standard algorithm for estimating $\lambda_{max}$ from data operates on the reconstructed trajectory. It involves tracking the evolution of distances between initially close pairs of points. The slope of the average logarithmic divergence of these pairs over time provides an estimate of the exponent.
+
+**Interpreting the Divergence Plot**
+
+When plotting the average logarithmic distance between trajectory pairs versus time, a characteristic curve often emerges. Correctly interpreting this curve is essential for an accurate estimation of $\lambda_{max}$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Anatomy of the Divergence Plot)</span></p>
+
+A typical empirical divergence plot can be divided into three regions:
+
+1. Initial Sharp Rise: The curve often begins with a steep, rapid increase. This is typically an artifact of noise in the measurement data. Noise is uncorrelated with the system dynamics and causes an initial, non-dynamical separation of points across all available dimensions.
+2. Linear Slope: Following the initial noise-driven rise, the plot should exhibit a linear region. This slope reflects the true exponential divergence governed by the system's underlying dynamics. The slope of this linear portion is the estimate of the maximum Lyapunov exponent.
+3. Plateau: Eventually, the curve will flatten out and plateau. This saturation occurs because the attractor is bounded in space. As trajectories diverge, their separation cannot grow indefinitely; it is limited by the maximum possible distance across the attractor. At this point, the average distance will fluctuate around this maximum value.
+
+Therefore, the empirical task is to identify the linear region of this plot, fit a line to it, and extract its slope as the estimate for $\lambda_{max}$.
+
+</div>
+
+#### The Core Problem: Inferring Models from Data
+
+While delay embedding and the calculation of invariants are powerful tools for characterizing a system, they do not provide a formal, predictive model of the system itself. As scientists, we often seek to uncover the underlying equations of motion. This leads to a central question for the remainder of our study:
+
+Can we infer a formal model of an underlying dynamical system using only its observational time series data?
+
+This approach, often called Dynamical Systems Reconstruction, aims to automate the discovery of models, moving beyond the classical scientific cycle of proposing a model, making predictions, and performing experiments to refine it.
+
+**Two Fundamental Approaches: Vector Fields vs. Flow Maps**
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Model Inference Approaches)</span></p>
 
-1. **Vector Field Approximation:** For $\dot{x} = f(x)$, find $\hat{f}_{\theta}(x)$ that approximates $f(x)$.
-2. **Flow Operator Approximation:** For $x_{k+1} = \Phi(x_k)$, find $\hat{F}_{\theta}(x_k)$ that approximates $\Phi$.
+1. Vector Field Approximation: For a continuous-time system described by a set of differential equations $\dot{x} = f(x)$, this approach seeks to find a function $\hat{f}_{\theta}(x)$ that approximates the true underlying vector field $f(x)$. The function $\hat{f}$ belongs to a flexible function class parameterized by a set of parameters $\theta$.
+2. Flow Operator Approximation: For a discrete-time system (or a discretized continuous system) where the state at the next time step is given by $x_{k+1} = \Phi(x_k)$, this approach seeks to find a function $\hat{F}_{\theta}(x_k)$ that directly approximates the flow operator (or map) $\Phi$.
 
 </div>
+
+**The Machine Learning Framework for Reconstruction**
+
+Modern approaches to this problem leverage the framework of machine learning. This involves a three-step process to find a good model approximator from a general, powerful function class (e.g., a deep neural network) "blindly," without presupposing its specific mathematical form.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Machine Learning Pipeline)</span></p>
 
-1. **Specify a Model:** Choose a flexible function class (e.g., neural network) as $\hat{f}_{\theta}$.
-2. **Specify a Loss Function:** Quantify discrepancy between predictions and observations.
-3. **Training (Optimization):** Use gradient descent to minimize the loss function.
+1. Specify a Model: We choose a highly flexible class of functions, such as a neural network, to serve as our model candidate, $\hat{f}_{\theta}$ or $\hat{F}_{\theta}$. The parameters $\theta$ represent the weights and biases of the network. We also must consider that our observations $y_t$ may be related to the true states $x_t$ via a measurement function $h_{\psi}$, which may also need to be learned: $y_t = h_{\psi}(x_t)$.
+2. Specify a Loss Function: We define a loss function, $R(\theta | \text{data})$, which quantifies the discrepancy between our model's predictions and the observed data. This function could be a mean squared error, a likelihood function, or another metric of model quality. The loss function creates a "surface" over the parameter space.
+3. Training (Optimization): We employ an iterative numerical optimization algorithm (often a variant of gradient descent) to search the parameter space for a set of parameters $\theta$ that minimizes the loss function. This "training" procedure refines the model until it provides the best possible fit to the data, hopefully corresponding to a global (or at least a good local) minimum of the loss function.
 
 </div>
 
 ### SINDy: Sparse Identification of Nonlinear Dynamics
 
-SINDy, introduced by Brunton, Proctor, and Kutz (2016), is a comparatively simple yet elegant approach that focuses on discovering the vector field.
+One of the first modern, interpretable methods for dynamical systems reconstruction is SINDy (Sparse Identification of Nonlinear Dynamics), introduced by Brunton, Proctor, and Kutz in 2016. It is a comparatively simple yet elegant approach that focuses on discovering the vector field of the system.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Core Assumptions)</span></p>
+#### The Core Idea and Assumptions
 
-SINDy operates on the assumption that the vector field can be expressed as a **sparse** linear combination of functions from a predefined library. Key assumptions:
+SINDy operates on the assumption that the vector field of many physical systems can be expressed as a sparse linear combination of functions from a predefined library. "Sparse" means that only a few terms in the library are active, making the resulting model interpretable.
 
-* It directly approximates the vector field $f(x)$ in $\dot{x} = f(x)$.
-* It assumes access to state variable measurements (or uses delay embedding first).
-* It requires numerical derivatives, which amplify noise.
+The method makes several key assumptions and has important caveats:
 
-</div>
+* Vector Field Approach: It directly approximates the vector field $f(x)$ in $\dot{x} = f(x)$.
+* State Variable Access: It assumes measurements of the relevant state variables are available. If not, a delay embedding must first be performed to reconstruct the state space. The method, in its basic form, does not automatically discover the measurement function $h$.
+* Numerical Derivatives: To connect the model to the data, it requires an estimate of the time derivatives from the time series. This is often done via finite differences: $$\nabla x_t \approx \frac{x_{t+1} - x_t}{\Delta t}$$ Caveat: This step is highly sensitive to measurement noise. The process of taking differences amplifies high-frequency noise, which can lead to unreliable derivative estimates.
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SINDy Model Formulation)</span></p>
+#### The Core Idea: Function Approximation
 
-**Library of Basis Functions:** A library $\Theta(x)$ of candidate functions $\lbrace \phi_b(x) \rbrace$ is defined a priori (e.g., polynomials, trigonometric functions).
+The central goal of the SINDy algorithm is to discover the governing equations of a dynamical system directly from time-series data. We begin with the assumption that the system can be described by an ordinary differential equation of the form:
 
-**Linear Model Structure:** Each component of the vector field is:
+$$\frac{d}{dt}\mathbf{x}(t) = \mathbf{f}(\mathbf{x}(t))$$
 
-$$\dot{x}_i = f_i(x) \approx c_{0i} + \sum_{b=1}^{P} c_{bi} \phi_b(x_1, ..., x_n)$$
+where $\mathbf{x}(t)$ is the state of the system at time $t$. The core challenge is that the function $\mathbf{f}$, which represents the underlying vector field, is unknown. The SINDy method addresses this by approximating $\mathbf{f}$ with a linear combination of candidate functions from a pre-defined library. The key innovation is to find a representation of $\mathbf{f}$ that is sparse, meaning most of the candidate functions have coefficients of zero, thus revealing the simplest mathematical model that describes the dynamics.
 
-The approximation in matrix form: $\hat{\mathbf{f}}(\mathbf{x}(t)) = \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t))$.
+#### Constructing the Candidate Library
 
-</div>
+**Basis Functions**
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stone-Weierstrass Theorem)</span></p>
-
-On a compact set, any continuous function can be approximated arbitrarily well by a polynomial function of sufficiently high order.
-
-</div>
+To approximate the unknown function $\mathbf{f}$, we construct a library, or a set of basis functions, denoted by $\mathbf{\Theta}(\mathbf{x}(t))$. These are candidate functions that we believe might constitute the true underlying vector field. The choice of these functions is flexible and is determined by the person applying the algorithm.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mean Squared Error Loss)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Basis Function Library)</span></p>
 
-$$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)) \|_2^2$$
+A basis function library $\mathbf{\Theta}(\mathbf{x}(t))$ is a collection of candidate functions that depend on the state variables $\mathbf{x} = [x_1, x_2, ..., x_n]$. The approximation of the true vector field, $\hat{\mathbf{f}}(\mathbf{x}(t))$, is constructed as a linear combination of these basis functions.
 
-</div>
+$$\hat{\mathbf{f}}(\mathbf{x}(t)) = \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t))$$
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lasso Regularization)</span></p>
-
-To achieve sparsity, a penalty is added:
-
-$$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)) \|_2^2 + \lambda \sum_{i,j} |c_{ij}|$$
-
-The parameter $\lambda$ controls the sparsity-accuracy trade-off. The $L_1$-norm penalty forces some coefficients to exactly zero.
-
-</div>
-
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Closed-Form Solution for $\lambda=0$)</span></p>
-
-Without regularization, setting the derivative to zero gives:
-
-$$\hat{\mathbf{C}} = \left( \sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T \right) \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T \right)^{-1}$$
-
-This closed-form solution is computationally fast and does not require numerical iteration. When $\lambda > 0$, the sign function in the derivative makes a closed-form solution difficult, and iterative numerical methods are required.
+where $\mathbf{C}$ is a matrix of coefficients that determines the weight of each basis function in the approximation.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recovering the Lorenz Equations)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Candidate Basis Functions)</span></p>
 
-SINDy was successfully applied to the Lorenz system: a polynomial library was chosen, Lasso regression forced many coefficients to zero, and the final sparse model recovered equations very close to the true Lorenz equations.
+The library can be constructed from a wide variety of functions. Common choices include:
+
+* Monomials: Simple first-order terms like $x_1$, $x_2$, etc.
+* Polynomials: Higher-order terms, such as squares ($x_1^2$), or multinomials ($x_1 x_2$, $x_2 x_3$).
+* Trigonometric Functions: Terms like $\sin(x_i)$ or $\cos(x_j)$.
+* Other Functions: Any other function could be included, such as radial basis functions.
+
+A typical library for a system with state vector $\mathbf{x}(t)$ might include a constant term, linear terms, and polynomial terms up to a certain order. For instance:
+
+$$\mathbf{\Theta}(\mathbf{x}(t)) = \begin{bmatrix} 1 \\ \mathbf{x}(t) \\ \mathbf{x}(t)^{\otimes 2} \\ \vdots \end{bmatrix}$$
+
+where $\mathbf{x}(t)^{\otimes 2}$ represents all second-order polynomial terms.
+
+</div>
+
+**Theoretical Underpinning: The Stone-Weierstrass Theorem**
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stone-Weierstrass Theorem)</span></p>
+
+On a compact set, any continuous function can be approximated arbitrarily well by a polynomial function of a sufficiently high order.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Limitations)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Polynomials are a Good Starting Point)</span></p>
 
-SINDy is effective when the library is geared towards the system being studied. For real empirical data where the functional form is unknown, the method can fail if essential functions are not in the library. The choice of library often requires physical domain knowledge.
+The Stone-Weierstrass theorem provides a strong theoretical justification for including polynomial terms in the basis function library. It suggests that, in theory, we can construct a polynomial function that accurately approximates the true underlying vector field $\mathbf{f}$. Many physical systems are already described by polynomials, lending further virtue to this choice.
+
+However, there is a significant practical caveat. The theorem guarantees approximation but does not specify the required order of the polynomial. For complex systems, an "infinitely high order" might be necessary, which is computationally infeasible. This highlights a central challenge: the effectiveness of the algorithm depends heavily on the choice of the library.
 
 </div>
+
+#### The SINDy Algorithm: A Mathematical Formulation
+
+**System Representation in Matrix Form**
+
+To find the coefficients that define our model, we first express the problem in matrix notation. Our goal is to find a set of coefficients such that our approximation $\hat{\mathbf{f}}(\mathbf{x}(t))$ is as close as possible to the time derivative $\dot{\mathbf{x}}(t)$, which is derived numerically from the empirical data.
+
+We define our approximation at a specific time $t$ as: $$\hat{\mathbf{f}}(\mathbf{x}(t)) = \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t))$$
+
+| Variable | Description | Dimensions |
+|---|---|---|
+| $\hat{\mathbf{f}}(\mathbf{x}(t))$ | The estimated time derivative of the state vector. | $n \times 1$ |
+| $\mathbf{C}$ | The matrix of unknown coefficients we want to find. | $n \times (B+1)$ |
+| $\mathbf{\Theta}(\mathbf{x}(t))$ | The library of basis functions evaluated at $\mathbf{x}(t)$. | $(B+1) \times 1$ |
+
+Here, $n$ is the number of state variables and $B$ is the number of basis functions in our library.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The $B+1$ Dimension)</span></p>
+
+The "$B+1$" dimension for the library and coefficient matrix is a standard statistical trick to handle a constant offset term (e.g., $c_0$). We augment the library vector with a leading '1':
+
+$$\mathbf{\Theta}(\mathbf{x}(t)) = \begin{bmatrix} 1 \\ \psi_1(\mathbf{x}) \\ \psi_2(\mathbf{x}) \\ \vdots \\ \psi_B(\mathbf{x}) \end{bmatrix}$$
+
+Correspondingly, the coefficient matrix $\mathbf{C}$ includes a first column, $[\mathbf{c}_{01}, ..., \mathbf{c}_{0n}]^T$, which represents the constant terms in the differential equations for each state variable. This simplifies the mathematical formulation by incorporating the offset directly into the matrix product.
+
+</div>
+
+**The Optimization Problem: Finding the Coefficients**
+
+To find the optimal coefficient matrix $\mathbf{C}$, we define a loss function, $L(\mathbf{C})$, which measures the discrepancy between our model's prediction and the data-derived derivative. We aim to minimize this loss across all measured time steps. The standard choice for this is the Mean Squared Error.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mean Squared Error Loss Function)</span></p>
+
+The loss function $L(\mathbf{C})$ is defined as the sum of squared Euclidean distances between the numerically estimated derivative, $\hat{\dot{\mathbf{x}}}(t)$, and the model's approximation, $\hat{\mathbf{f}}(\mathbf{x}(t))$, summed over all time steps $T$:
+
+$$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \hat{\mathbf{f}}(\mathbf{x}(t)) \|_2^2$$
+
+Substituting the matrix form of our approximation, we get:
+
+$$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)) \|_2^2$$
+
+This can also be written in its quadratic form: $$L(\mathbf{C}) = \sum_{t=1}^{T} (\hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)))^T (\hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)))$$
+
+</div>
+
+**The Role of Sparsity: Lasso Regularization**
+
+Minimizing the mean squared error alone would typically result in a dense $\mathbf{C}$ matrix, where every basis function contributes to the model. This model would be complex and difficult to interpret. The core idea of SINDy is to find a sparse model.
+
+To achieve this, we add a penalty term to the loss function that penalizes the number and magnitude of non-zero coefficients. This technique is known as Lasso Regression (Least Absolute Shrinkage and Selection Operator).
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lasso Regularization Term)</span></p>
+
+A regularization term, weighted by a coefficient $\lambda$, is added to the loss function. This term is the sum of the absolute values (the $L_1$-norm) of all coefficients in the matrix $\mathbf{C}$.
+
+$$\text{Regularization Term} = \lambda \sum_{i,j} |c_{ij}|$$
+
+The complete loss function with the regularization term is:
+
+$$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)) \|_2^2 + \lambda \sum_{i,j} |c_{ij}|$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Sparsity Trade-off)</span></p>
+
+The regularization term is the key to achieving sparsity. It forces some of the parameters to drop out (become exactly zero).
+
+* The first term (mean squared error) pushes the model to fit the data as closely as possible.
+* The second term (Lasso penalty) pushes the coefficients $c_{ij}$ towards zero.
+* The parameter $\lambda$ controls the trade-off. A larger $\lambda$ results in a sparser model (more zero coefficients) at the potential cost of a poorer fit to the data. The optimization will try to strike a balance between these two competing objectives.
+
+</div>
+
+#### Solving for the System Dynamics
+
+To minimize the loss function $L(\mathbf{C})$, we take its derivative with respect to $\mathbf{C}$ and set it to zero.
+
+The derivative of the loss function is:
+
+$$\frac{\partial L}{\partial \mathbf{C}} = \frac{\partial}{\partial \mathbf{C}} \left( \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(t) \|_2^2 \right) + \frac{\partial}{\partial \mathbf{C}} \left( \lambda \sum_{i,j} |c_{ij}| \right) = 0$$
+
+This yields:
+
+$$\frac{\partial L}{\partial \mathbf{C}} = -2 \sum_{t=1}^{T} [\hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t))] \mathbf{\Theta}(\mathbf{x}(t))^T + \lambda \mathbf{D} = 0$$
+
+where $\mathbf{D}$ is a matrix with elements $d_{ij} = \text{sign}(c_{ij})$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Linearity Advantage)</span></p>
+
+A crucial feature of this formulation is that the model approximation, $\hat{\mathbf{f}}(\mathbf{x}(t)) = \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t))$, is linear in the parameters $\mathbf{C}$. This makes the loss function quadratic (a squared function) in the parameters, which ensures that it has a unique minimum. This allows us to find an optimal solution by setting the derivatives to zero.
+
+</div>
+
+**Case 1: Standard Linear Regression (No Regularization)**
+
+Let's first consider the simpler case where $\lambda=0$. This reduces the problem to a standard linear regression.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Deriving the Closed-Form Solution for $\mathbf{C}$ when $\lambda=0$)</span></p>
+
+1. Start with the derivative equation without regularization: $$-2 \sum_{t=1}^{T} [\hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t))] \mathbf{\Theta}(\mathbf{x}(t))^T = 0$$
+2. Divide by $-2$ and distribute the terms: $$\sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T - \sum_{t=1}^{T} \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T = 0$$
+3. Isolate the term containing $\mathbf{C}$. Since $\mathbf{C}$ does not depend on time $t$, we can pull it out of the summation: $$\sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T = \mathbf{C} \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T \right)$$
+4. Solve for $\mathbf{C}$ by post-multiplying by the inverse of the term in the parenthesis: $$\hat{\mathbf{C}} = \left( \sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T \right) \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T \right)^{-1}$$ This provides a closed-form, explicit solution for the coefficient matrix $\mathbf{C}$. This is highly desirable as it is computationally fast and does not require a numerical iteration procedure.
+
+</div>
+
+**Case 2: Lasso Regression (With Sparsity Constraint)**
+
+When $\lambda > 0$, the presence of the sign function in the derivative makes finding a closed-form solution more difficult. The optimization must find a set of coefficients $\mathbf{C}$ whose signs are consistent with the derivatives. If the constraints imposed by the two terms in the loss function cannot be satisfied for a given coefficient, the optimization will force that coefficient to become exactly zero. This is the mathematical mechanism that induces sparsity. Solving this system typically requires iterative numerical methods.
+
+#### Practical Considerations and Examples
+
+**Application to the Lorenz System**
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recovering the Lorenz Equations)</span></p>
+
+The SINDy algorithm was successfully applied to data generated from the Lorenz system.
+
+1. A polynomial basis expansion was chosen as the candidate library.
+2. The coefficient matrix $\mathbf{C}$ was estimated using the Lasso regression procedure.
+3. The regularization forced many of the estimated coefficients to become zero.
+4. The final, sparse model recovered a system of equations very close to the true Lorenz equations.
+
+</div>
+
+**A Note on Choosing the Library**
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The "Beauty" and the "Breakdown")</span></p>
+
+The SINDy method is beautiful in its simplicity. It transforms a difficult nonlinear system identification problem into a linear regression problem. However, its success is highly dependent on the initial choice of the basis function library.
+
+* When it works well: The Lorenz system example works nicely because the true system is already in a polynomial form, which was included in the library. SINDy is effective when the library is geared towards the system on which the discovery is being performed.
+* When it can fail: For real empirical data, where the true functional form of the dynamics is unknown, the method can easily break down. If the essential functions are not included in the library, or if the system requires a very high-dimensional library, the problem can become computationally infeasible. Therefore, the choice of the library often requires physical domain knowledge.
+
+</div>
+
 ## Lecture 9
 
 ### Introduction to Universal Approximators for Dynamical Systems
 
-#### Beyond Pre-defined Libraries
+#### Beyond Pre-defined Libraries: The Need for Universal Approximators
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Motivation for Universal Approximators</span></p>
 
-Methods like SINDy rely on a pre-defined library of functions specified a priori. Deep learning methods do not have this limitation: they are **universal approximators**, capable of learning complex functions directly from data without manually defining a basis of candidate functions.
+In previous discussions, we explored methods for inferring dynamical systems from data, such as SINDy. A notable characteristic of such approaches is their reliance on a pre-defined library of functions that must be specified a priori. This requirement, while powerful in certain contexts, can be a limitation.
+
+The focus of our study now shifts to a class of methods that do not have this caveat: deep learning methods. These models are known as universal approximators, capable of learning complex functions directly from data without the need to manually define a basis or library of candidate functions. This chapter will introduce a foundational deep learning architecture for modeling time-dependent systems.
 
 </div>
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Universal Approximation of Dynamical Systems)</span></p>
+#### Deep Learning and Recurrent Neural Networks (RNNs)
 
-A Recurrent Neural Network (RNN) can be formally shown to be a universal approximator of dynamical systems. These models were, and in many domains remain, state-of-the-art for time series prediction and modeling of dynamical systems.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Universal Approximation of Dynamical Systems</span></p>
+
+All the methods discussed henceforth are universal approximators of functions in general, and of dynamical systems in particular. A key architecture in this domain is the Recurrent Neural Network (RNN).
+
+An RNN can be formally shown to be a universal approximator of dynamical systems. While we will not delve into the formal proofs of the theorems that establish this property, we will build a comprehensive understanding of their structure, function, and application. These models were, and in many domains remain, state-of-the-art for time series prediction and the modeling of dynamical systems.
 
 </div>
 
@@ -5531,66 +6836,110 @@ A Recurrent Neural Network (RNN) can be formally shown to be a universal approxi
 #### Neuroscientific Origins and Core Concepts
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Neuroscientific Origins</span></p>
 
-Like many foundational architectures, RNNs have roots in neuroscience. The key components are:
+Like many foundational neural network architectures, RNNs have their roots in neuroscience and psychology, where they were initially introduced as abstract models of the brain. The core idea is to model a system of interconnected processing units, or neurons, that influence each other's activity over time.
 
-* **Units (Neurons):** Nodes with activation $x_i^t$ at time $t$.
-* **Synaptic Connections (Weights):** Weight $w_{ij}$ from unit $j$ to unit $i$.
-* **Recurrent Connections:** Feedback connections forming cycles, enabling the network to maintain an internal state or "memory."
-* **External Inputs:** Input time series $S_t$.
+The key components of this model are:
+
+* **Units (Neurons):** These are the nodes of the network, each possessing an activation value at a given point in time. We can denote the activation of unit $i$ at time $t$ as $x_i^t$.
+* **Synaptic Connections (Weights):** The units are coupled through connections, each having an associated weight, denoted $w_{ij}$, which represents the strength of the connection from unit $j$ to unit $i$. These weights are adjustable parameters learned from data.
+* **Recurrent Connections:** The defining feature of RNNs is the presence of feedback connections. Unlike feed-forward architectures (like many Convolutional Neural Networks) where information flows in a single direction, RNNs can have connections that form cycles. This allows for both forward and backward connections between units, enabling the network to maintain an internal state or "memory" of past events. This is what makes the network recurrent.
+* **External Inputs:** Some or all units may receive input from the external world. This input is represented as a time series, $S_t$.
+* **Outputs:** Similarly, some or all units can produce outputs that are sent back to the external world.
 
 </div>
 
 #### Mathematical Formulation of an RNN
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(RNN Activation Dynamics)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">RNN Activation Dynamics</span></p>
 
-The activation of unit $i$ at time $t$ is:
+The activation of a specific unit $i$ at time $t$, denoted $x_i^t$, is determined by an activation function, $\phi$. This function processes a weighted sum of inputs from other units at the previous time step ($t-1$), any external inputs at the current time step ($t$), and a unit-specific bias term.
+
+The general formulation for the activation of unit $i$ is:
 
 $$x_i^t = \phi \left( \sum_j w_{ij} x_j^{t-1} + h_i + \sum_k c_{ik} S_k^t \right)$$
 
 Where:
 
+* $x_i^t$ is the activation of unit $i$ at time $t$.
 * $\phi$ is a non-linear activation function.
 * $w_{ij}$ is the connection weight from unit $j$ to unit $i$.
-* $h_i$ is a learnable bias term.
-* $c_{ik}$ is the weight for the $k$-th external input.
+* $x_j^{t-1}$ is the activation of unit $j$ at the previous time step, $t-1$.
+* $h_i$ is a unit-specific, learnable bias term.
+* $c_{ik}$ is the weight for the $k$-th external input to unit $i$.
+* $S_k^t$ is the value of the $k$-th external input at time $t$.
 
-The learnable parameters include connection weights ($w_{ij}$), input weights ($c_{ik}$), and bias terms ($h_i$).
+The learnable parameters of the model, which are adjusted during training, include the connection weights ($w_{ij}$), the input weights ($c_{ik}$), and the bias terms ($h_i$).
 
 </div>
 
-#### The RNN in Vector Notation
+#### Historical Context
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Historical Context</span></p>
+
+The foundational concepts and training algorithms for RNNs were first developed in the late 1980s and early 1990s. Key figures associated with their invention include Jeff Elman and Paul Werbos (referred to in the source as "Bar Palmer or Zipa").
+
+For a significant period, RNNs were not widely popular in the broader machine learning community due to challenges in training them effectively. However, with advancements in algorithms and computational power, they have become indispensable tools, particularly for sequence and time-series data. We will return to the topic of training challenges and modern solutions later in the course.
+
+</div>
+
+### Formalizing Recurrent Neural Networks
+
+#### From Scalar Operations to Vector Notation
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">From Scalars to Vectors</span></p>
+
+Recurrent Neural Networks (RNNs) are an inherently natural architectural choice for modeling time series and dynamical systems. Their structure, which processes information sequentially and maintains an internal state that evolves over time, mirrors the fundamental nature of such systems. This stands in contrast to other architectures, such as transformers, which may be adapted for these tasks but lack the intrinsic recursive formulation of an RNN.
+
+To analyze these systems rigorously, we move from a component-wise description of individual network units to a more compact and powerful matrix notation. This allows us to treat the entire network's state as a single vector and its evolution as a unified vector-valued map.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The RNN in Vector Notation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The RNN in Vector Notation</span></p>
 
-The RNN state update equation:
+A recurrent neural network's state at a discrete time step $t$ can be described by a vector of activation values, $z_t$. The evolution of this state from one time step to the next is governed by a recursive map.
+
+The components of this map are:
+
+* **State Vector:** $z_t \in \mathbb{R}^M$. This is a vector containing the activation values of the $M$ units in the network at time $t$. These are also referred to as latent states, as they represent an internal, unobserved configuration of the system.
+* **Weight Matrix:** $W \in \mathbb{R}^{M \times M}$. A square matrix containing the weights of the connections between the network's units. This matrix does not change with time.
+* **Bias Vector:** $h \in \mathbb{R}^M$. Also known as a bias term, this vector applies a constant offset to the pre-activation of each unit, biasing it towards a particular activity regime.
+* **External Input Vector:** $s_t \in \mathbb{R}^K$. An optional vector representing $K$ external inputs to the system at time $t$. The dimensionality $K$ does not need to equal the internal state dimensionality $M$.
+* **Input Weight Matrix:** $C \in \mathbb{R}^{M \times K}$. This matrix maps the $K$-dimensional external input space to the $M$-dimensional latent state space.
+* **Nonlinear Activation Function:** $\phi(\cdot)$. A scalar function (e.g., a sigmoid) that is applied element-wise to the pre-activation vector.
+
+The state update equation, which describes the evolution of the network, can be written as:
 
 $$z_t = \phi(W z_{t-1} + C s_t + h)$$
 
-Or more generally: $z_t = f(z_{t-1}, s_t; \theta)$, where:
+More generally, we can express the dynamics of an RNN as a function $f$ parameterized by a set of parameters $\theta$, which includes $W$, $C$, and $h$.
 
-* $z_t \in \mathbb{R}^M$ is the state vector (latent states).
-* $W \in \mathbb{R}^{M \times M}$ is the weight matrix.
-* $h \in \mathbb{R}^M$ is the bias vector.
-* $s_t \in \mathbb{R}^K$ is the external input.
-* $C \in \mathbb{R}^{M \times K}$ is the input weight matrix.
-* $\phi(\cdot)$ is the element-wise activation function.
+$$z_t = f(z_{t-1}, s_t; \theta)$$
+
+This formulation makes it explicit that the state at time $t$ is a function of the state at the previous time step, $t-1$, and any external inputs at time $t$.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The RNN as a Discrete-Time Dynamical System)</span></p>
+#### The RNN as a Discrete-Time Dynamical System
 
-The recursive formulation $z_t = f(z_{t-1}, s_t; \theta)$ reveals that an RNN is a **discrete-time, multi-dimensional recursive map**, directly paralleling maps like the logistic map. Depending on parameters and initial conditions, an RNN can:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">RNNs as Dynamical Systems</span></p>
+
+The recursive formulation $z_t = f(z_{t-1}, s_t; \theta)$ is of profound importance. It reveals that a recurrent neural network is, in essence, a discrete-time, multi-dimensional recursive map. This directly parallels the discrete-time maps, such as the logistic map, that are central to the study of dynamical systems.
+
+This connection is not merely an analogy; it has direct and critical consequences. Because an RNN is a discrete dynamical system, it is subject to the full range of complex behaviors that these systems can exhibit. Specifically, depending on the parameters ($\theta$) and initial conditions ($z_0$), an RNN can:
 
 * Converge to different fixed points.
 * Exhibit periodic behavior (cycles).
-* Undergo bifurcations.
+* Undergo bifurcations as its parameters are changed.
 * Display chaotic dynamics.
+
+Understanding these potential behaviors is crucial for both analyzing and effectively training these networks.
 
 </div>
 
@@ -5599,285 +6948,796 @@ The recursive formulation $z_t = f(z_{t-1}, s_t; \theta)$ reveals that an RNN is
 #### The Gradient Descent Paradigm
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Why Gradient Descent</span></p>
 
-Gradient descent dominates not because it is the most powerful technique, but because it is effective and scalable. Since RNNs are highly nonlinear, no analytical closed-form solution exists for optimal parameters—we must rely on iterative numerical optimization.
+While numerous techniques exist for training machine learning models, the field is overwhelmingly dominated by methods based on gradient descent. This is not because gradient descent is the most powerful optimization technique available -- other methods may yield more accurate parameter estimates. Rather, its dominance stems from its effectiveness and scalability. Gradient descent-based techniques are generally well-understood, straightforward to implement, and scale favorably with the size of the dataset. For these reasons, it is the primary method for training RNNs.
 
-</div>
-
-#### Defining the Core Components
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Dataset)</span></p>
-
-The training data consists of $P$ patterns. For each pattern $p \in \lbrace 1, \dots, P \rbrace$:
-
-* **Inputs:** A sequence $\lbrace s_t^{(p)} \rbrace_{t=1}^{T_p}$, $s_t^{(p)} \in \mathbb{R}^K$.
-* **Targets:** A sequence $\lbrace x_t^{(p)} \rbrace_{t=1}^{T_p}$, $x_t^{(p)} \in \mathbb{R}^N$.
+The objective of training is to find a set of model parameters that minimizes a given loss function. Since RNNs are highly nonlinear devices, it is impossible to find an analytical, closed-form solution for the optimal parameters. We must therefore rely on iterative numerical optimization algorithms like gradient descent.
 
 </div>
 
+#### Defining the Core Components for Training
+
+To train an RNN, we require three fundamental components: a dataset, a model architecture that links latent states to observable outputs, and a loss function to quantify performance.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Model Architecture)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Dataset</span></p>
+
+The training data consists of a set of $P$ patterns or sequences. For each pattern $p \in \lbrace 1, \dots, P \rbrace$, the dataset provides:
+
+* **Inputs:** A sequence of input vectors $\lbrace s_t^{(p)} \rbrace_{t=1}^{T_p}$, where $s_t^{(p)} \in \mathbb{R}^K$. These are optional, depending on the task.
+* **Desired Outputs (Targets):** A sequence of target vectors $\lbrace x_t^{(p)} \rbrace_{t=1}^{T_p}$, where $x_t^{(p)} \in \mathbb{R}^N$. These are the ground-truth values the model should aim to produce.
+
+Here, $T_p$ is the length of the $p$-th sequence.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Model Architecture: State Dynamics and Observation</span></p>
 
 The complete model consists of two parts:
 
-1. **Recursive Core (State Equation):** $z_t = f(z_{t-1}, s_t; \theta)$
-2. **Decoder (Observation Model):** $\hat{x}_t = g(z_t; \lambda)$
+1. **The Recursive Core (State Equation):** This is the RNN itself, which describes the evolution of the latent states $z_t$.
 
-A common decoder is a linear mapping: $\hat{x}_t = B z_t$, where $B \in \mathbb{R}^{N \times M}$.
+$$z_t = f(z_{t-1}, s_t; \theta)$$
+
+2. **The Decoder (Observation Model):** This is a function, $g$, that maps the latent state $z_t$ to a predicted output $\hat{x}_t$. This is necessary because the latent states are not directly observed; the decoder must learn to translate them into the space of the target outputs.
+
+$$\hat{x}_t = g(z_t; \lambda)$$
+
+The decoder has its own set of parameters, denoted by $\lambda$.
+
+This two-part structure is analogous to concepts in dynamical systems where an unobservable internal state generates observable measurements. Models of this form are sometimes referred to as State-Space Models, though this term often implies additional probabilistic assumptions.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Linear Decoder</span></p>
+
+A simple and common choice for the decoder $g$ is a linear mapping, also known as a linear layer in neural network terminology:
+
+$$\hat{x}_t = B z_t$$
+
+Here, the parameter set $\lambda$ is simply the matrix $B \in \mathbb{R}^{N \times M}$, which maps the $M$-dimensional latent space to the $N$-dimensional output space. The dimensionality of the latent space, $M$, is a design choice and does not need to be equal to the input or output dimensions.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Loss Function</span></p>
 
-The Sum of Squared Errors (SSE) loss:
+The loss function, $L$, quantifies the discrepancy between the model's predicted outputs and the true target outputs. It is a function of the model's parameters ($\theta$ and $\lambda$). The goal of training is to minimize this function. A common and straightforward choice is the Sum of Squared Errors (SSE) loss, which is calculated by summing the squared deviations over all time steps and all patterns in the dataset.
+
+Given the observed output $x_t^{(p)}$ and the predicted output $\hat{x}_t^{(p)}$, the SSE loss is:
 
 $$L(\theta, \lambda) = \sum_{p=1}^{P} \sum_{t=1}^{T_p} \| x_t^{(p)} - \hat{x}_t^{(p)} \|^2$$
+
+While SSE is used here for concreteness, any differentiable loss function (e.g., likelihood functions) can be used within the gradient descent framework. The fundamental goal remains the same: to adjust the network's parameters to make the predicted output as close as possible to the observed output.
+
+</div>
+
+#### The Gradient Descent Algorithm
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Gradient Descent Overview</span></p>
+
+Gradient descent is an iterative algorithm that seeks to find a minimum of the loss function. The process begins with an initial guess for the parameters and repeatedly adjusts them in the direction that most steeply decreases the loss.
+
+**Algorithm Outline:**
+
+1. **Initialization:** Start with an initial guess for the parameters, $\theta_0$ and $\lambda_0$. A common practice is to draw these initial values from a probability distribution, such as a Gaussian distribution with zero mean.
+
+$$\theta_0, \lambda_0 \sim \mathcal{N}(0, \sigma^2 I)$$
+
+2. **Iteration:** Initialize an iteration counter, e.g., $k=1$. Begin a loop that continues until a stopping criterion is met. In each step of the loop, the parameters are updated based on the gradient of the loss function. (The process of calculating the gradient and performing the update will be detailed subsequently.)
+
+</div>
+
+### Gradient Descent-Based Training
+
+#### The Core Idea: Minimizing the Loss Function
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Intuition for Gradient Descent</span></p>
+
+The central goal of training a model is to find a set of parameters, which we'll denote by $\theta$, that minimizes a loss function, $L(\theta)$. This function quantifies how poorly our model is performing on a given dataset; a lower loss value corresponds to a better model.
+
+The idea behind gradient descent is intuitive: we start with an initial guess for our parameters $\theta$ and iteratively update them by taking small steps in the direction that most steeply decreases the loss. The gradient of the loss function, $\nabla L(\theta)$, points in the direction of the steepest ascent. Therefore, to minimize the loss, we must move in the opposite direction of the gradient.
+
+Imagine a hilly landscape where the altitude represents the loss value for any given parameter set $\theta$. Our goal is to find the lowest valley.
+
+* If we are on a slope where the gradient is positive, we need to move in the negative direction (downhill).
+* If we are on a slope where the gradient is negative, we need to move in the positive direction (also downhill).
+
+In both cases, we "go against the gradient." This iterative process continues until we reach a point where the loss is sufficiently low, ideally a minimum.
+
+It is important to note that in classical machine learning, the aim was often to find the global optimum -- the single best parameter set that corresponds to the absolute lowest point in the loss landscape. However, in modern practice, finding the global optimum is often not feasible, nor is it always desirable. As we will discuss later, forcing a model to the global minimum on the training data can lead to a phenomenon known as overfitting.
 
 </div>
 
 #### The Gradient Descent Algorithm
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient Descent)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Gradient Descent</span></p>
 
-Parameters are updated iteratively:
+Gradient Descent is an iterative optimization algorithm used to find a local minimum of a differentiable function. The parameters are updated at each step $n$ according to the following rule:
 
 $$\theta_n = \theta_{n-1} - \gamma \nabla L(\theta_{n-1})$$
 
-where $\gamma$ is the learning rate. The gradient $\nabla L(\theta)$ points in the direction of steepest ascent; we move opposite to it.
+Where:
+
+* $\theta_n$ is the vector of parameters at iteration $n$.
+* $\theta_{n-1}$ is the vector of parameters from the previous iteration.
+* $\gamma$ is a positive scalar known as the learning rate, which controls the size of the step taken at each iteration.
+* $\nabla L(\theta_{n-1})$ is the gradient of the loss function $L$ evaluated at the parameters $\theta_{n-1}$.
+
+The gradient $\nabla L(\theta)$ is a vector of partial derivatives:
+
+$$\nabla L(\theta) = \left[ \frac{\partial L}{\partial \theta_1}, \frac{\partial L}{\partial \theta_2}, \dots, \frac{\partial L}{\partial \theta_L} \right]$$
+
+where $\theta_1, \dots, \theta_L$ are the individual parameters of the model.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training as a Dynamical System)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Simple Gradient Descent Loop</span></p>
 
-The iterative update rule $\theta_n = \theta_{n-1} - \gamma \nabla L(\theta_{n-1})$ is itself a **discrete-time dynamical system**. The training process can converge to a fixed point (desired), become oscillatory, or exhibit chaos. The entire toolset of dynamical systems theory applies to the training process itself.
+A simple implementation of this algorithm can be formulated as a while loop, which continues as long as the improvement in loss is significant and a maximum number of iterations has not been reached.
+
+**Algorithm:**
+
+1. Initialize parameters $\theta_0$ and counter $n = 0$.
+2. Set a learning rate $\gamma > 0$, a minimum loss change threshold $\epsilon$, and a maximum number of iterations $N_{\max}$.
+3. **while** $\Delta L(\theta) > \epsilon$ **and** $n < N_{\max}$:
+   * Calculate the gradient: $g = \nabla L(\theta_n)$
+   * Update the parameters: $\theta_{n+1} = \theta_n - \gamma g$
+   * Increment the counter: $n = n + 1$
+
+This core idea forms the basis for the most common optimization procedures in machine learning. While more sophisticated versions are implemented in standard toolboxes, they are fundamentally built upon this principle. The same concept can be used for maximization (e.g., in Maximum Likelihood Estimation) by simply moving with the gradient (i.e., using a $+$ sign instead of a $-$), which is equivalent to minimizing the negative of the function.
+
+</div>
+
+#### The Training Algorithm as a Dynamical System
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Training as a Dynamical System</span></p>
+
+This is a fundamentally important point. The iterative update rule of gradient descent:
+
+$$\theta_n = \theta_{n-1} - \gamma \nabla L(\theta_{n-1})$$
+
+is a recursive procedure. It defines the state of the parameters at step $n$ based on their state at step $n-1$. This structure is precisely what defines a discrete-time dynamical system.
+
+The implications of this are profound:
+
+* The entire toolset of dynamical systems theory can be applied to analyze the training process itself.
+* Just like the dynamical systems we have studied, the training process can exhibit complex behaviors. The parameter updates can:
+  * **Converge to a fixed point:** This is often the desired outcome, as a fixed point where the gradient is zero corresponds to a local minimum (or a saddle point). Hopfield networks are an example where fixed points are defined to be local minima.
+  * **Become oscillatory:** The parameters might not settle down, but instead cycle through a set of values.
+  * **Exhibit chaos:** The parameter updates could be chaotic, never converging or repeating in a predictable pattern.
+
+This perspective reveals that training a neural network is not just a simple optimization problem but a dynamical process with its own stability properties and potential complexities. We will see the consequences of this in the next section.
 
 </div>
 
 ### Challenges in Gradient-Based Optimization
 
+While powerful, the gradient descent algorithm is not without its challenges. The nature of the loss landscape -- the high-dimensional surface defined by $L(\theta)$ -- can introduce significant difficulties for the optimization process.
+
 #### Local Minima and Saddle Points
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Local Minima and Saddle Points</span></p>
 
-At any point where $\nabla L(\theta) = 0$, the update step becomes zero. These can be **local minima** (suboptimal valleys) or **saddle points** (minima in one dimension, maxima in another). If the RNN operates in a chaotic regime, the loss landscape can be incredibly complex and even fractal.
+A primary issue in gradient-based optimization is that the algorithm can get "stuck." The update rule relies on the gradient to determine the direction of movement. At any point where the gradient is zero ($\nabla L(\theta) = 0$), the update step becomes zero, and the algorithm halts.
+
+These points can be:
+
+* **Local Minima:** These are valley bottoms in the loss landscape that are not the single lowest point (the global minimum). If the algorithm converges to a local minimum, the resulting model may be suboptimal.
+* **Saddle Points:** These are points that are a minimum along one dimension but a maximum along another. The gradient is also zero here, causing the algorithm to stall.
+
+In either case, the optimizer may fail to find a better solution, even if one exists elsewhere in the parameter space.
 
 </div>
 
-#### Learning Rate Selection
+#### Widely Differing Loss Slopes and Learning Rate Selection
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Learning Rate Dilemma</span></p>
 
-* **$\gamma$ too small:** Minuscule updates in flat regions; extremely slow convergence.
-* **$\gamma$ too large:** Overshooting in steep regions; oscillations or divergence.
+The geometry of the loss landscape presents another major challenge related to selecting an appropriate learning rate ($\gamma$). Loss functions for complex models are rarely smooth, uniform bowls. They often contain regions of vastly different curvature: some areas might be extremely steep "valleys," while others are wide, flat "plateaus."
 
-The ideal learning rate would be adaptive: large in flat regions and small in steep regions.
+This creates a dilemma for choosing $\gamma$:
+
+* **If $\gamma$ is too small:** In flat regions of the loss landscape, the gradients will be very small. A small learning rate will result in minuscule updates, and the algorithm will take an extremely long time to converge, if it converges at all.
+* **If $\gamma$ is too large:** In very steep regions, a large learning rate can cause the algorithm to overshoot the minimum. The update step may be so large that it jumps completely across the valley to a point where the loss is even higher. This can lead to oscillations where the parameters bounce back and forth, failing to converge, and may even cause the algorithm to diverge entirely.
+
+The ideal learning rate would be adaptive: large in flat regions to speed up progress and small in steep regions to ensure careful convergence. This challenge has motivated the development of more advanced optimization algorithms beyond simple gradient descent.
+
+</div>
+
+#### The Impact of System Dynamics on the Loss Landscape
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Dynamics Shape the Loss Landscape</span></p>
+
+The dynamics of the model being trained have direct implications for the structure of its loss function. While the loss function is defined over the parameter space, not the state space of the model, the behavior of the model's dynamics shapes the landscape.
+
+Consider training a Recurrent Neural Network.
+
+* If the RNN is operating in a chaotic regime, its output can be extremely sensitive to small changes in its parameters.
+* This sensitivity translates to the loss function. The resulting loss landscape can be incredibly complex and may even be fractal.
+* Trying to perform gradient descent on such a landscape is exceptionally difficult, as the gradient can change dramatically and unpredictably with tiny steps.
+
+In practice, the loss landscape for large systems (with potentially hundreds, thousands, or even billions of parameters) is extremely high-dimensional. While we cannot visualize it directly, we can analyze its properties by plotting cross-sections in subspaces or by observing the behavior of the training process itself.
 
 </div>
 
 ### Classical Remedies and Modern Approaches
 
-#### Multiple Initial Conditions
+Over the years, researchers and practitioners have developed numerous techniques to mitigate the challenges of gradient-based optimization. Here, we survey a few key ideas.
+
+#### Addressing Local Minima
+
+##### Multiple Initial Conditions
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Multiple Initial Conditions</span></p>
 
-Run optimization multiple times from different random initial parameters $\theta_0$, then choose the model with the lowest final loss. Simple but computationally expensive.
+A straightforward, classical approach to increase the chances of finding a good minimum is to run the entire optimization process multiple times from different, randomly chosen initial parameter values ($\theta_0$).
+
+If the loss landscape contains many local minima, starting from different points explores different regions of the space. After all the runs are complete, one simply chooses the model that achieved the lowest final loss value. While simple, this can be computationally expensive. This technique is not as commonly used today in its basic form for large-scale deep learning, but the principle of exploration remains important.
 
 </div>
 
-#### Overparameterization: Double Descent and the Lottery Ticket Hypothesis
+##### Overparameterization: Double Descent and the Lottery Ticket Hypothesis
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Double Descent and the Lottery Ticket Hypothesis</span></p>
 
-**Double descent:** Classical theory predicts a U-shaped test loss curve. However, if you continue increasing parameters far beyond overfitting, test loss can decrease again.
+A more modern and perhaps counter-intuitive approach involves using strongly overparameterized models -- that is, using many more parameters than one might think are necessary to represent the data.
 
-The **Lottery Ticket Hypothesis:** A very large network is like a lottery containing many tickets. Within it exists a smaller, optimal sub-network (the "winning ticket"). Training effectively carves out this sub-network by pruning unnecessary connections.
+This is related to a phenomenon known as **double descent**. Classical statistical theory suggests that as you increase model complexity (number of parameters), the test loss (error on unseen data) will first decrease (good) and then increase as the model begins to overfit the training data (bad). This creates a U-shaped curve.
+
+However, a surprising observation, highlighted in a notable 2019 paper by Belkin, Hsu, Ma, and Mandal (related to the Franklin and Carbone paper mentioned in the lecture), is that if you continue to increase the number of parameters far beyond the point of overfitting, the test loss can decrease again. This second drop is the "double descent."
+
+This leads to the **Lottery Ticket Hypothesis**. The idea is that a very large, overparameterized network is like a lottery containing many tickets. Within this massive network, there exists a smaller, optimal sub-network (the "winning ticket") that is perfectly suited for the given task. The gradient descent training process, in this view, doesn't just tune all the parameters, but effectively carves out this winning sub-network from the larger structure by pruning unnecessary connections.
+
+Note: This is an active area of research, and while powerful, this approach does not always work.
 
 </div>
 
-#### Stochastic Gradient Descent (SGD)
+##### Stochasticity: Adding Noise to Gradients
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Adding Noise to Gradients</span></p>
+
+Another strategy is to intentionally introduce randomness into the optimization process. By adding a small amount of noise, $\epsilon$, to the gradient calculation at each step, the parameter updates become probabilistic:
+
+$$\theta_{n+1} = \theta_n - \gamma (\nabla L(\theta_n) + \epsilon)$$
+
+where $\epsilon$ is drawn from some probability distribution.
+
+The purpose of this noise is to provide a chance for the parameters to "jump out" of a local minimum. If the algorithm is stuck in a shallow valley, a random nudge from the noise term might be enough to push it over the hill and into a deeper, better region of the loss landscape.
+
+This principle is exploited by entire classes of models, such as Boltzmann Machines, which use thermal noise in a principled way to probabilistically find the global optimum of the system. This topic, however, goes beyond the scope of our current discussion.
+
+</div>
+
+### Advanced Optimization for Neural Network Training
+
+#### Mitigating Local Minima: Stochastic Gradient Descent (SGD)
+
+A primary challenge in gradient-based optimization is the risk of the algorithm converging to a local minimum in the loss function rather than the desired global minimum. One of the most common and effective procedures to address this is not to inject artificial noise into the gradient updates, but rather to leverage the noise inherent in the data itself.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Gradient Descent)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Stochastic Gradient Descent (SGD)</span></p>
 
-In SGD, the gradient update is calculated on a randomly drawn mini-batch of the training data, rather than the entire dataset. The inherent noise helps the optimization "jump out" of shallow local minima.
+Stochastic Gradient Descent (SGD) is an optimization algorithm where, at each gradient step, the update is calculated based on a randomly drawn subsample (a "mini-batch") of the full training dataset, rather than the entire dataset.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Time Series Data)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Intuition for SGD</span></p>
 
-When applying SGD to time series, randomly sampling individual points destroys temporal structure. Instead, sample **consecutive blocks or segments** to preserve dynamic relationships.
+The core idea is that data is inherently noisy. By randomly drawing a different subset of data for each step, we introduce noise into the gradient calculation. This stochasticity can help the optimization process "jump out" of shallow local minima and continue its search for a better solution in the broader parameter space. The effect is conceptually similar to injecting noise directly into the gradient updates.
 
 </div>
 
-#### Adaptive Learning Rates
+##### A Note on Time Series Data
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Handling Autocorrelations in Temporal Data</span></p>
 
-Modern optimizers use adaptive learning rates:
+When applying SGD or related subsampling techniques to time series and dynamical systems, special care must be taken. These data types are characterized by significant autocorrelations, where the value of a point depends on previous points.
 
-* **Adagrad:** Adapts based on historical sum of squared gradients.
-* **Momentum:** Adds fraction of previous update, building "velocity."
-* **Adam:** Combines momentum and adaptive scaling. Widely used as default.
-* **RAdam:** Corrects for high variance in early training stages.
+* **Problem:** Randomly sampling individual data points from a time series will destroy its temporal structure and, consequently, the very dynamics the model is intended to learn.
+* **Solution:** To preserve the temporal integrity, one must sample consecutive blocks or segments of the time series for each gradient update. This ensures that the essential dynamic relationships within the data are maintained during training.
 
 </div>
 
-#### Second-Order Methods
+#### Addressing Varying Slopes: Adaptive Learning Rates
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Adaptive Learning Rates</span></p>
+
+Another significant challenge in training deep networks is the presence of "ravines" or "valleys" in the loss landscape, where the slope is very steep in one direction and very shallow in another. A fixed learning rate can cause oscillations across the steep direction while making painfully slow progress along the shallow one.
+
+The naive but effective approach to this problem is to make the learning rate adaptive. Instead of a fixed scalar $\gamma$, we can use a learning rate $\gamma_n$ that changes at each step $n$. This adaptation can be based on the history of the gradients, their variance, or other principles designed to accelerate progress in flat directions and dampen updates in steep directions.
+
+</div>
+
+##### Common Adaptive Rate Algorithms
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Toolbox of Optimizers</span></p>
+
+Modern machine learning frameworks provide a host of optimizers that implement adaptive learning rate schemes. While a deep dive into each is beyond our current scope, it is essential to be aware of the most prominent examples:
+
+* **Adagrad:** Adapts the learning rate based on the historical sum of squared gradients for each parameter.
+* **Momentum:** Aims to accelerate descent by adding a fraction of the previous update vector to the current one, helping to build "velocity" in a consistent direction. It provides an implicit estimate of the slope.
+* **Adam (Adaptive Moment Estimation):** A highly popular algorithm that combines the ideas of momentum and adaptive scaling of gradients (similar to RMSprop).
+* **RAdam (Rectified Adam):** An enhancement to Adam that seeks to correct for the high variance of adaptive learning rates in the early stages of training.
+
+In contemporary practice, a significant portion of the field has settled on using Adam or RAdam as default, robust optimizers for a wide range of problems. All these techniques function by adjusting learning rates in an intelligent manner during the gradient descent procedure.
+
+</div>
+
+#### Incorporating Curvature: Second-Order Algorithms
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Second-Order Methods Intuition</span></p>
+
+While first-order methods like gradient descent only use the gradient (first derivative) of the loss function, second-order algorithms incorporate additional information about the curvature of the loss surface.
+
+The virtue of second-order methods is that they are often superior to standard gradient descent because they possess a more detailed "map" of the loss landscape. By considering how the gradient itself is changing (i.e., the second derivative), they can make more informed steps. The idea is that if the first derivative is small, the change in the derivative is also likely to be small. These methods weigh the gradient update by the magnitude of the second derivatives.
+
+</div>
+
+##### The Hessian and the Newton-Raphson Procedure
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Hessian Matrix)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Hessian Matrix</span></p>
 
-The Hessian is the matrix of second-order partial derivatives of the loss. A second-order update:
+The Hessian is the matrix of second-order partial derivatives of the loss function. It describes the local curvature of the function at a given point.
+
+A naive second-order update rule modifies the parameters $\theta$ not just with the gradient of the loss $\nabla_{\theta} L$, but by pre-multiplying it with the inverse of the Hessian, $H^{-1}$:
 
 $$\theta_{n+1} = \theta_n - \gamma [H(\theta_n)]^{-1} \nabla_{\theta} L(\theta_n)$$
 
-While theoretically superior, computing and inverting the $N \times N$ Hessian is prohibitive for large networks. **Quasi-Newton methods** build efficient numerical approximations of the inverse Hessian.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Relation to Newton-Raphson</span></p>
+
+In its strict formulation, this update rule gives rise to the Newton-Raphson procedure, a well-known root-finding algorithm from statistics and numerical analysis.
 
 </div>
 
-### Backpropagation Through Time (BPTT)
+##### Challenges and Adjustments
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Caveats of Second-Order Methods</span></p>
+
+Despite their theoretical advantages, pure second-order methods are rarely used in modern large-scale machine learning for two primary reasons:
+
+1. **Computational Demand:** Calculating, storing, and inverting the Hessian matrix is computationally prohibitive. For a network with $N$ parameters, the Hessian is an $N \times N$ matrix, which quickly becomes intractable.
+2. **Inclination and Saddle Points:** The naive update rule can get stuck in inclination points or saddle points where both the first and second derivatives vanish. Furthermore, it does not distinguish between local minima and local maxima, which is problematic as we only wish to find minima.
+
+To make these methods viable, adjustments are necessary. A notable proposal by Pascanu and Bengio (c. 2014) involves modifying the Hessian to ensure updates always point towards a minimum.
+
+* A Singular Value Decomposition (SVD) of the Hessian is performed.
+* All singular values are set to be positive (conceptually, taking an absolute value, denoted here as $|H|$).
+* This procedure ensures that the second derivatives cannot change sign at the same time as the first derivative vanishes, preventing convergence to maxima.
+
+The adjusted update rule can be conceptualized as:
+
+$$\theta_{n+1} = \theta_n - \gamma [|H(\theta_n)|]^{-1} \nabla_{\theta} L(\theta_n)$$
+
+</div>
+
+##### Quasi-Newton Methods and Their Relevance
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Backpropagation Through Time)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Quasi-Newton Methods</span></p>
 
-BPTT is the standard algorithm for training RNNs. It conceptually transforms the RNN's temporal recursion into a spatial deep structure by "unwrapping" the network through its time steps. Each time step becomes a distinct layer, with **shared weights** across all layers.
+Quasi-Newton methods are a class of algorithms that seek to capture the benefits of second-order information without the prohibitive cost of computing the full Hessian. They do so by building an efficient numerical approximation of the inverse Hessian at each step.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Recursive Least Squares</span></p>
+
+Recursive Least Squares (RLS) is an algorithm formerly used for updating recurrent networks that falls into the family of quasi-Newton methods.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Procedure)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Enduring Value of Second-Order Thinking</span></p>
 
-1. **Forward Pass:** Propagate activity from $t=1$ to $t=T$.
-2. **Calculate Errors:** Compute deviation between prediction and target.
-3. **Backward Pass:** Propagate error signals from $T$ to $1$, updating shared weights at each step.
-
-BPTT is storage-efficient and linear in time complexity. Input/output configurations include sequence-to-sequence (time series modeling) and sequence-to-value (classification).
+While most large-scale applications have moved away from these methods, they should not be forgotten. For scientific applications with smaller datasets, the precision offered by incorporating curvature information can be extremely valuable. Furthermore, concepts in machine learning have a tendency to resurface, and a solid understanding of these powerful techniques remains a significant asset.
 
 </div>
 
-#### The Gradient Calculation
+#### A Specialized Algorithm for RNNs: Backpropagation Through Time (BPTT)
+
+We now turn to a very specific, time-efficient gradient descent algorithm tailored for Recurrent Neural Networks (RNNs): Backpropagation Through Time (BPTT).
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total Loss)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Backpropagation Through Time (BPTT)</span></p>
 
-$L = \sum_t l_t$, where $l_t$ is the loss at time step $t$. The gradient decomposes as: $\frac{\partial L}{\partial \theta_i} = \sum_t \frac{\partial l_t}{\partial \theta_i}$.
+BPTT is the standard algorithm for training RNNs. It is an adaptation of the general backpropagation algorithm that applies gradient descent to an RNN by first "unwrapping" or "unrolling" the network through its time steps.
+
+</div>
+
+##### Historical Context
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Historical Context of BPTT</span></p>
+
+BPTT was introduced and refined by several researchers over the years, with key contributions from:
+
+* Paul Werbos (1988)
+* Ronald Williams and David Zipser
+* David Rumelhart and others, with a famous paper in 1995.
+
+</div>
+
+##### The Core Idea: Unwrapping in Time
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">From Recurrence to Depth</span></p>
+
+The foundational insight of BPTT is to train a recurrent network in the exact same way as a standard feed-forward network. This is achieved by conceptually transforming the RNN's temporal recursion into a spatial deep structure.
+
+Consider a simple RNN with two units, whose activations are $x_1$ and $x_2$, and a weight matrix $W$ that includes recurrent couplings like $W_{11}$, $W_{12}$, $W_{21}$, and $W_{22}$.
+
+To train this network on a time series of length $T$, we perform the following "unwrapping" procedure:
+
+1. **Create a Layer for Each Time Step:** The RNN is converted into a deep feed-forward network where each time step, from $t=1$ to $t=T$, becomes a distinct layer.
+2. **Propagate Activations:** The state of the network at time $t$ becomes the input to the layer representing time $t+1$. An activation $x_1(t-1)$ propagates to influence $x_1(t)$, $x_2(t)$, and so on.
+3. **Share Weights Across Layers:** This is the crucial feature that distinguishes an unwrapped RNN from a standard deep network. The same set of weights ($W_{11}$, $W_{12}$, $\dots$) is used at every layer (i.e., at every time step). The weights are effectively copied and pasted across the entire time-unrolled structure.
+
+The following illustrates this transformation from a recurrent graph to a deep, feed-forward graph:
+
+* **At Time $t=1$:** The network has units with activations $x_1(1)$ and $x_2(1)$.
+* **At Time $t=2$:** This forms the next layer. The connection from $x_1(1)$ to $x_1(2)$ is governed by weight $W_{11}$. The connection from $x_2(1)$ to $x_1(2)$ is governed by $W_{12}$, and so on.
+* ...and so on, until **Time $t=T$:** The final layer corresponds to the final time step, with activations $x_1(T)$ and $x_2(T)$.
+
+This unwrapped structure is simply another way to write down the recursive update procedure of the RNN. Instead of updating a single network state recursively, we can think of it as propagating activity through a deep network where each layer corresponds to a moment in time.
+
+</div>
+
+##### The Backpropagation Procedure
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Backpropagation Procedure</span></p>
+
+BPTT is a specific, algorithmically efficient implementation of gradient descent.
+
+1. **Forward Pass:** Propagate activity forward through the unrolled network, from $t=1$ to $t=T$.
+2. **Calculate Errors:** At the output layer(s), calculate the error, which is the deviation between the network's prediction and the target value.
+3. **Backward Pass:** Propagate these error signals backward through the network, from layer $T$ down to layer $1$. At each layer (time step), update the shared weight parameters based on the propagated error.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Algorithmic Efficiency</span></p>
+
+BPTT is a highly storage-efficient procedure. At each step of the backward pass, it only needs to account for the values present at that particular time step, as it leverages the already-computed values from the subsequent step. The complexity is linear in time, as it proceeds layer by layer.
+
+</div>
+
+##### Input and Output Configurations
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Input and Output Configurations</span></p>
+
+The specific structure of the unwrapped network depends on the task at hand.
+
+* **External Inputs:** The network can receive external inputs at any or all time steps. For example, in sentence processing, each word could be an input at a sequential time step.
+* **Target Outputs:** The network can be trained to produce a target output at any or all time steps.
+  * **Sequence-to-Sequence (e.g., Time Series Modeling):** If we want an RNN to reproduce a temperature time series, we would have a target output (the desired temperature) at each time step.
+  * **Sequence-to-Value (e.g., Classification):** If we want to perform sentiment classification on a sentence, we might provide word inputs at each time step but only have a single target output at the final time step ($t=T$), representing the overall sentiment.
+
+</div>
+
+##### Formalism for Training
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Simplifications for Derivation</span></p>
+
+For clarity in the following derivation, we will:
+
+1. Neglect External Inputs: These do not fundamentally change the derivation of the gradient updates.
+2. Consider a Single Data Pattern: The logic extends trivially to multiple patterns by summing or averaging the loss.
+
+Let our RNN be given by the recursive form, and let our set of trainable parameters (weights and biases) be denoted by $\theta$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Loss Function for BPTT</span></p>
+
+A typical loss function $L(\theta)$ for an RNN trained on a sequence of length $T$ is the mean squared error, averaged over time:
+
+$$L(\theta) = \frac{1}{T} \sum_{t=1}^{T} \sum_{k=1}^{N} (x_k(t) - x_k^*(t))^2$$
+
+where $N$ is the number of units, $x_k(t)$ is the activation of unit $k$ at time $t$, and $x_k^*(t)$ is the desired or target output for that unit at that time.
+
+</div>
+
+### Training Recurrent Networks: Backpropagation Through Time (Detailed Derivation)
+
+This section delves into the fundamental mechanics of training Recurrent Neural Networks (RNNs). The core challenge in training these models lies in how to properly assign credit -- or blame -- to parameters that are reused at every step of a temporal sequence. The algorithm for this is a special case of backpropagation known as Backpropagation Through Time (BPTT). We will derive the gradient calculations step-by-step and, in doing so, uncover a critical instability that plagued early research in this area: the exploding and vanishing gradient problem.
+
+#### The Optimization Problem: Minimizing a Loss Function
+
+To train any neural network, we must first define an objective. This objective is typically formulated as the minimization of a loss function, $L$, which measures the discrepancy between the network's predictions and the observed data. For a single observed time series, we can define a total loss over the entire sequence.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Total Loss</span></p>
+
+The total loss, $L$, for a given time series is the sum of the losses incurred at each individual time step. If we denote the loss at a specific time step $t$ as $l_t$, the total loss is given by:
+
+$$L = \sum_t l_t$$
+
+This decomposition is possible due to the linearity of gradients, which allows us to consider the contribution of each time step to the total parameter gradient independently.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Squared Error Loss</span></p>
+
+For concreteness, a common choice for the loss function is the squared error loss. Let $x_{\text{obs}}(t)$ be the observed value at time $t$ and $x(t)$ be the value predicted by our model. The loss at that time step, $l_t$, would be:
+
+$$l_t = (x_{\text{obs}}(t) - x(t))^2$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Generality of the Loss</span></p>
+
+While we use the squared error for this example, the derivations that follow are general. You can substitute any differentiable loss function $l_t$ without changing the core mechanics of the backpropagation algorithm. The loss $l_t$ is a function of both the system parameters, which we'll call $\theta$, and the network's state or activation at that time, $x(t)$.
+
+</div>
+
+#### Gradient Calculation for Recurrent Architectures
+
+Our goal is to adjust the model's parameters, $\theta_i$, to minimize the total loss $L$. We achieve this using gradient descent, which requires computing the derivative of the loss with respect to each parameter, $\frac{\partial L}{\partial \theta_i}$.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">The Total Loss Gradient</span></p>
+
+By the linearity of the gradient operator, the derivative of the total loss is the sum of the derivatives of the per-time-step losses:
+
+$$\frac{\partial L}{\partial \theta_i} = \frac{\partial}{\partial \theta_i} \sum_t l_t = \sum_t \frac{\partial l_t}{\partial \theta_i}$$
+
+Now, we must analyze the term $\frac{\partial l_t}{\partial \theta_i}$. In a standard feedforward network, a parameter only affects the loss at the output layer. In an RNN, however, the situation is more complex. The parameters (e.g., the weight matrix $W$) are reused at every time step. This means a parameter $\theta_i$ at an early time step $\tau$ influences the state $x_t$ at a later time step $t$.
+
+Consequently, to calculate the gradient of the loss at time $t$, we must sum over the influence of the parameter $\theta_i$ as it appears at all preceding time steps $\tau$ from $1$ to $t$.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Decomposing the Gradient with the Chain Rule)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Decomposing the Gradient with the Chain Rule</span></p>
 
-Since parameters are reused at every time step, a parameter $\theta_i$ at early time $\tau$ influences the state at later time $t$. The full gradient:
+Applying the chain rule to the term $\frac{\partial l_t}{\partial \theta_i}$ reveals this dependency. The loss $l_t$ is an explicit function of the state $x_t$. The state $x_t$, in turn, is a function of all previous states, including $x_\tau$, where the parameter $\theta_i$ has an effect. This creates a recursive dependency that we must unroll.
+
+The full expression for the gradient of the loss at time $t$ with respect to a parameter $\theta_i$ is a sum over all previous time steps $\tau \le t$ where that parameter appears:
 
 $$\frac{\partial l_t}{\partial \theta_i} = \sum_{\tau=1}^{t} \frac{\partial l_t}{\partial x_t} \frac{\partial x_t}{\partial x_\tau} \frac{\partial x_\tau}{\partial \theta_i}$$
 
-Where:
+Let's break down the components of this expression:
 
-* $\frac{\partial l_t}{\partial x_t}$: Local gradient of loss w.r.t. output at time $t$.
-* $\frac{\partial x_t}{\partial x_\tau}$: **Temporal Jacobian** — how state at $t$ depends on state at $\tau$. This is the crux of BPTT.
-* $\frac{\partial x_\tau}{\partial \theta_i}$: Direct influence of the parameter on the state at $\tau$.
-
-The temporal Jacobian decomposes as a product of single-step Jacobians:
-
-$$\frac{\partial x_t}{\partial x_\tau} = \prod_{u=\tau+1}^{t} \frac{\partial x_u}{\partial x_{u-1}}$$
+1. $\frac{\partial l_t}{\partial x_t}$: This is the local gradient of the loss at time $t$ with respect to the network's output/state at that same time. It measures how the final error at step $t$ changes with respect to the output at step $t$.
+2. $\frac{\partial x_t}{\partial x_\tau}$: This is the **temporal Jacobian matrix**. It measures how the state at a later time $t$ is influenced by the state at an earlier time $\tau$. This term is the crux of BPTT, as it carries the gradient information backward through the unrolled network.
+3. $\frac{\partial x_\tau}{\partial \theta_i}$: This term measures the direct influence of the parameter $\theta_i$ on the state $x_\tau$ at the time step $\tau$ where the parameter is applied.
 
 </div>
 
-### The Exploding and Vanishing Gradient Problem
-
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Jacobian Matrix Dimensions</span></p>
 
-For a standard RNN with $x_t = \phi(W x_{t-1} + \dots)$, the single-step Jacobian is:
+To better understand the mathematical objects we are manipulating, consider an RNN with an $m$-dimensional state vector $x \in \mathbb{R}^m$. The dimensions of the terms in the chain rule are as follows:
+
+* $\frac{\partial l_t}{\partial x_t}$: A $1 \times m$ row vector (the gradient of the scalar loss w.r.t. the state vector).
+* $\frac{\partial x_t}{\partial x_\tau}$: An $m \times m$ matrix, representing the Jacobian of the state at time $t$ with respect to the state at time $\tau$. Each element $(j, k)$ of this matrix is $\frac{\partial x_j(t)}{\partial x_k(\tau)}$.
+* $\frac{\partial x_\tau}{\partial \theta_i}$: If $\theta_i$ is a scalar parameter, this is an $m \times 1$ column vector.
+
+</div>
+
+#### The Recursive Chain Rule and Temporal Dependencies
+
+The most important and complex term in our gradient expression is the temporal Jacobian, $\frac{\partial x_t}{\partial x_\tau}$. This term quantifies the long-range dependencies in the sequence. We can decompose it further by another application of the chain rule.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Unrolling the Temporal Jacobian</span></p>
+
+The state $x_t$ is a direct function of $x_{t-1}$, which is a function of $x_{t-2}$, and so on. We can express the derivative of $x_t$ with respect to a distant past state $x_\tau$ as a product of intermediate, single-step Jacobians:
+
+$$\frac{\partial x_t}{\partial x_\tau} = \frac{\partial x_t}{\partial x_{t-1}} \frac{\partial x_{t-1}}{\partial x_{t-2}} \cdots \frac{\partial x_{\tau+1}}{\partial x_\tau}$$
+
+This can be written more compactly using product notation:
+
+$$\frac{\partial x_t}{\partial x_\tau} = \prod_{u=\tau+1}^{t} \frac{\partial x_u}{\partial x_{u-1}}$$
+
+Each term in this product, $\frac{\partial x_u}{\partial x_{u-1}}$, is the Jacobian of the state transition function at a single time step.
+
+</div>
+
+#### The Exploding and Vanishing Gradient Problem
+
+Let's now investigate the structure of the single-step Jacobian, $\frac{\partial x_u}{\partial x_{u-1}}$, to understand the long-term behavior of this product.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A Simple RNN Update Rule</span></p>
+
+Consider a standard RNN where the state $x_t$ is updated according to the following rule:
+
+$$x_t = \phi(W x_{t-1} + \dots)$$
+
+Here, $W$ is the recurrent weight matrix and $\phi$ is a non-linear, element-wise activation function. To find the Jacobian $\frac{\partial x_t}{\partial x_{t-1}}$, we apply the chain rule (outer derivative times inner derivative):
+
+* The derivative of the inner part, $W x_{t-1}$, with respect to $x_{t-1}$ is simply the matrix $W$.
+* The derivative of the outer element-wise function $\phi$ results in a diagonal matrix containing the derivatives of $\phi$ evaluated at each input component. Let's denote this $\text{diag}(\phi'(\dots))$.
+
+Therefore, the single-step Jacobian is:
 
 $$\frac{\partial x_t}{\partial x_{t-1}} = \text{diag}(\phi'(W x_{t-1} + \dots)) \cdot W$$
 
-The temporal Jacobian becomes a product of these matrices, effectively raising $W$ to a power:
+Substituting this back into our product expression for the temporal Jacobian, we get:
 
-$$\frac{\partial x_t}{\partial x_\tau} = \prod_{u=\tau+1}^{t} \left( \text{diag}(\phi'(\dots)) \cdot W \right)$$
+$$\frac{\partial x_t}{\partial x_\tau} = \prod_{u=\tau+1}^{t} \left( \text{diag}(\phi'(W x_{u-1} + \dots)) \cdot W \right)$$
 
-* **Exploding Gradients:** If eigenvalue magnitudes $> 1$ on average, the product grows exponentially. Training becomes unstable.
-* **Vanishing Gradients:** If eigenvalue magnitudes $< 1$ on average, the product shrinks to zero. The network cannot learn long-range dependencies.
+</div>
 
-This is a fundamental obstacle deeply connected to Lyapunov exponents and stability analysis.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Exploding and Vanishing Gradient Problem</span></p>
+
+This product of matrices is the source of a fundamental instability in training RNNs. The expression involves repeatedly multiplying the weight matrix $W$, effectively raising it to the power of the time difference, $t-\tau$. The behavior of this matrix power is governed by the eigenvalues of the matrices in the product.
+
+* **Exploding Gradients:** If the magnitudes of the leading eigenvalues of the Jacobian matrices are, on average, greater than $1$, their product will grow exponentially as the time gap $t-\tau$ increases. The gradients will "explode" to enormous values, leading to unstable training and divergent weight updates.
+* **Vanishing Gradients:** If the magnitudes of the leading eigenvalues are, on average, less than $1$, their product will shrink exponentially towards zero as $t-\tau$ increases. The gradients will "vanish." This is also highly problematic, as it means the influence of early time steps on the loss at later time steps is effectively erased. The network becomes incapable of learning long-range dependencies, as the information required to update the parameters is lost during backpropagation.
+
+This exploding and vanishing gradient problem is not merely a numerical inconvenience; it is a fundamental obstacle to learning long-term structure in sequential data with simple RNNs. The dynamics of this process are deeply connected to concepts from dynamical systems theory, such as the calculation of Lyapunov exponents and the stability analysis of linear systems converging to fixed points. The repeated matrix multiplication is precisely the process used to determine the stability of a linear dynamical system. This insight highlights why these "vanilla" training approaches are no longer standard practice and motivated the development of more sophisticated architectures.
 
 </div>
 
 ### Long Short-Term Memory (LSTM) Networks
 
-LSTMs are designed to handle long-term dependencies by introducing a memory cell and gating mechanisms.
+Long Short-Term Memory (LSTM) networks are a specialized type of recurrent neural network (RNN) architecture designed to handle long-term dependencies in sequential data. This section details the precise equations governing the LSTM cell and explores the core principles that make it effective.
 
-#### The Memory Cell Update
+#### The Complete LSTM Architecture
+
+The power of an LSTM lies in its internal structure, which is composed of a memory cell and several gates that regulate the flow of information. These components work in concert to decide what information to store, what to discard, and what to output at each time step.
+
+##### The Memory Cell Update
+
+The most important component of the LSTM is the memory cell, which carries information through time. Its state, denoted by $c_t$, is updated at each time step $t$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Memory Cell Update)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Memory Cell Update</span></p>
+
+The state of the memory cell $c_t$ at time step $t$ is updated according to the following equation:
 
 $$c_t = (f_t \odot c_{t-1}) + (i_t \odot \tanh(z_{t-1} + h_c))$$
 
-Where $f_t$ is the forget gate, $i_t$ is the input gate, $\odot$ is the Hadamard product.
+Where:
 
-* **Forgetting:** $f_t \odot c_{t-1}$ filters what to keep from old memory.
-* **Inputting:** $i_t \odot \tanh(z_{t-1} + h_c)$ determines what new information to add.
-
-</div>
-
-#### The Gating Mechanisms
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gate Equations)</span></p>
-
-* **Forget Gate:** $f_t = \sigma(W_f z_{t-1} + h_f)$
-* **Input Gate:** $i_t = \sigma(W_i z_{t-1} + h_i)$
-* **Output Gate:** $o_t = \sigma(W_o c_{t-1} + h_o)$
-
-where $\sigma(y) = \frac{1}{1 + e^{-y}}$ is the sigmoid function.
+* $c_{t-1}$ is the state of the memory cell from the previous time step.
+* $f_t$ is the forget gate's activation vector.
+* $i_t$ is the input gate's activation vector.
+* $z_{t-1}$ is the total output from the previous time step.
+* $h_c$ is a bias term for the candidate memory content.
+* $\odot$ denotes the pointwise multiplication (Hadamard product) of vectors.
+* $\tanh$ is the hyperbolic tangent activation function.
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Intuition for the Memory Cell Update</span></p>
+
+This update equation has two primary parts:
+
+1. **Forgetting:** The term $f_t \odot c_{t-1}$ determines which parts of the old memory cell state $c_{t-1}$ should be preserved or discarded. The forget gate $f_t$ acts as a filter; if an element of $f_t$ is close to $0$, the corresponding information in $c_{t-1}$ is forgotten. If it is close to $1$, the information is kept.
+2. **Inputting:** The term $i_t \odot \tanh(z_{t-1} + h_c)$ determines what new information should be added to the cell state. A candidate memory content is first computed (the $\tanh$ part), and the input gate $i_t$ decides which parts of this new information are relevant enough to be stored in $c_t$.
+
+The combination of these two operations allows the LSTM to selectively update its memory, preserving crucial long-term information while incorporating new, relevant inputs.
+
+</div>
+
+##### The Gating Mechanisms
+
+The flow of information into and out of the memory cell is controlled by three gates: the input gate ($i_t$), the forget gate ($f_t$), and the output gate ($o_t$). These gates are implemented using a sigmoid activation function, which outputs values between $0$ and $1$, representing the degree to which information is allowed to pass.
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Final Output)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Gate Equations</span></p>
+
+The activation of each gate at time step $t$ is calculated as follows:
+
+* **Forget Gate** ($f_t$):
+
+$$f_t = \sigma(W_f z_{t-1} + h_f)$$
+
+* **Input Gate** ($i_t$):
+
+$$i_t = \sigma(W_i z_{t-1} + h_i)$$
+
+* **Output Gate** ($o_t$):
+
+$$o_t = \sigma(W_o c_{t-1} + h_o)$$
+
+Where:
+
+* $\sigma$ is the sigmoid function, defined as:
+
+$$\sigma(y) = \frac{1}{1 + e^{-y}}$$
+
+* $W_f$, $W_i$, and $W_o$ are weight matrices for the respective gates.
+* $h_f$, $h_i$, and $h_o$ are the bias vectors for the respective gates.
+* $z_{t-1}$ is the output from the previous time step.
+* $c_{t-1}$ is the memory cell state from the previous time step.
+
+</div>
+
+##### The Final Output
+
+The final output of the LSTM cell at time step $t$, denoted as $z_t$, is a filtered version of the memory cell state $c_t$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Final Output</span></p>
+
+The total output $z_t$ is computed by passing the memory cell state through a $\tanh$ function and then multiplying it pointwise by the output gate's activation:
 
 $$z_t = o_t \odot \tanh(c_t)$$
 
-The output gate controls what part of the internal memory is exposed to the next layer or time step.
-
-</div>
-
-#### Fundamental Design Principles
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Power of Linearity)</span></p>
-
-The linear nature of the memory update through the forget gate ($f_t \odot c_{t-1}$) is critically important. If $f_t = 1$, the previous memory is passed through unmodified, allowing the network to preserve information across long time horizons. Linearity introduces a form of control that is difficult to achieve in purely nonlinear systems.
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gating)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Output Gate Intuition</span></p>
 
-The principle of using multiplicative interactions to control information flow is powerful and influential. It appears not only in LSTMs but also in modern architectures like Mamba.
+This mechanism allows the network to control what part of its internal memory is exposed to the next layer or the next time step. The $\tanh$ function squashes the values of the memory cell to be between $-1$ and $1$, and the output gate $o_t$ then decides which of these values are relevant to pass on as the final output.
+
+</div>
+
+#### Fundamental Design Principles of LSTMs
+
+The specific architectural choices in the LSTM are not arbitrary; they embody two crucial principles for processing sequential data: linearity and gating.
+
+##### The Power of Linearity
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Power of Linearity</span></p>
+
+A key feature of the LSTM is the linear nature of the memory update through the forget gate. The operation $f_t \odot c_{t-1}$ is a linear interaction. This is critically important for preserving information over long time horizons.
+
+* **Information Preservation:** If the forget gate $f_t$ is set to $1$, the previous memory content $c_{t-1}$ is passed through to the next step unmodified. This allows the network to "literally copy and paste the previous content" and "rescue it across long periods of time."
+* **Control:** This introduces a form of control that is difficult to achieve in purely nonlinear systems. By managing the forget gate, the network can learn to maintain a stable memory state when needed. As stated in the lecture, "Linearity is important. Linearity allows a certain type of control that you don't that easily have in nonlinear systems."
+
+</div>
+
+##### The Concept of Gating
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Concept of Gating</span></p>
+
+The second foundational concept is gating, where information flow is modulated by multiplicative units (the gates). This idea of using multiplicative interactions to control pathways in a neural network is powerful and has proven influential. This principle is not unique to LSTMs and can be found in other modern architectures, such as Mamba.
 
 </div>
 
 #### Variants and Simplifications: GRUs
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Gated Recurrent Units (GRUs)</span></p>
 
-The **Gated Recurrent Unit** (GRU), introduced by Cho et al. (2014), simplifies the LSTM by combining the forget and input gates into a single "update gate." GRUs aim to capture the essence of gated RNNs with a simpler architecture.
+The LSTM architecture, while powerful, is also complex. This has led to the development of several simplified variants. One of the most prominent is the Gated Recurrent Unit (GRU).
+
+* **Origin:** The GRU was introduced in a 2014 formulation by Cho, et al., in collaboration with Yoshua Bengio.
+* **Purpose:** GRUs aim to capture the essence of gated RNNs with a simpler architecture, often combining the forget and input gates into a single "update gate."
+* **Availability:** You will find GRUs, along with many other LSTM variants, implemented in virtually any standard machine learning toolbox.
 
 </div>
+
 ## Lecuture 10
 
 ### Revisiting Recurrent Networks and Their Challenges
