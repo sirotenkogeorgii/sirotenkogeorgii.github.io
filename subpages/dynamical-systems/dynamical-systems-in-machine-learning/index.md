@@ -15,6 +15,10 @@ noindex: true
   }
 </style>
 
+**Table of Contents**
+- TOC
+{:toc}
+
 # Dynamical Systems Theory in Machine Learning 
 
 ## Recommended Reading
@@ -2241,24 +2245,22 @@ In dynamical systems, they are often the same idea, but used in slightly differe
 A **fixed point** usually means a point that is unchanged by the system’s update rule.
 
 For a discrete-time system
-[
-x_{n+1} = f(x_n),
-]
+
+$$x_{n+1} = f(x_n),$$
+
 a fixed point (x^*) satisfies
-[
-f(x^*) = x^*.
-]
+
+$$f(x^*) = x^*$$
 
 An **equilibrium** usually means a state where nothing changes in time.
 
 For a continuous-time system
-[
-\dot{x} = g(x),
-]
+
+$$\dot{x} = g(x),$$
+
 an equilibrium (x^*) satisfies
-[
-g(x^*) = 0.
-]
+
+$$g(x^*) = 0$$
 
 So the difference is mostly about language and context:
 
@@ -2267,7 +2269,7 @@ So the difference is mostly about language and context:
 
 They both describe a state that stays where it is once the system reaches it.
 
-There is also a nice connection between them. If (x^*) is an equilibrium of a flow, then starting at (x^*) gives a constant trajectory, so it is also a fixed point of the time-(t) flow map for every (t).
+There is also a nice connection between them. If $x^\ast$ is an equilibrium of a flow, then starting at $x^\ast$ gives a constant trajectory, so it is also a fixed point of the time-$t$ flow map for every $t$.
 
 </div>
 
@@ -3822,7 +3824,7 @@ This graphical analysis suggests that the stability of a fixed point is determin
 To formalize our intuition, we analyze the behavior of a small perturbation around a fixed point, a technique analogous to the one we used for differential equations.
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Derivation of the Stability Condition</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Stability Condition)</span></p>
 
 Let $x^\ast$ be a fixed point of the map $x_{t+1} = f(x_t)$. Consider a small perturbation $\epsilon_t$ from this fixed point at time $t$:
 
@@ -3847,11 +3849,11 @@ This is a linear map describing the evolution of the perturbation. The perturbat
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability of Fixed Points for 1D Maps)</span></p>
 
-Let $x^*$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^*$ is determined by the derivative of the map evaluated at the fixed point, $f'(x^*)$:
+Let $x^\ast$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^\ast$ is determined by the derivative of the map evaluated at the fixed point, $f'(x^\ast)$:
 
-* If $\|f'(x^*)\| < 1$, the fixed point is locally stable.
-* If $\|f'(x^*)\| > 1$, the fixed point is locally unstable.
-* If $\|f'(x^*)\| = 1$, the stability cannot be determined by this linear analysis. This is a non-hyperbolic case, and higher-order terms of the Taylor expansion must be considered.
+* If $\|f'(x^\ast)\| < 1$, the fixed point is locally stable.
+* If $\|f'(x^\ast)\| > 1$, the fixed point is locally unstable.
+* If $\|f'(x^\ast)\| = 1$, the stability cannot be determined by this linear analysis. This is a non-hyperbolic case, and higher-order terms of the Taylor expansion must be considered.
 
 </div>
 
@@ -5030,7 +5032,7 @@ In a subcritical Hopf bifurcation, a stable spiral equilibrium loses stability a
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Bifurcation Diagram for Subcritical Hopf</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bifurcation Diagram for Subcritical Hopf)</span></p>
 
 The bifurcation diagram for a subcritical Hopf looks like a "flipped" version of the supercritical one.
 
@@ -5041,7 +5043,7 @@ The bifurcation diagram for a subcritical Hopf looks like a "flipped" version of
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Danger of Subcritical Hopf Bifurcations</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Danger of Subcritical Hopf Bifurcations)</span></p>
 
 The subcritical Hopf bifurcation can be frightening in real-world systems because it leads to sudden, large-scale changes. As the control parameter slowly approaches the bifurcation point, the system appears stable. The moment it crosses the threshold, the equilibrium vanishes, and the system "hops" or jumps to a completely different state -- often a large-amplitude oscillation.
 
@@ -5056,7 +5058,7 @@ This type of bifurcation highlights that changes in natural systems are not alwa
 To study the local dynamics near a Hopf bifurcation, it is useful to transform the system into a simpler "normal form." These are typically written in polar coordinates $(r, \theta)$, where $r$ represents the amplitude of the oscillation and $\theta$ represents its phase. The control parameter $\mu$ is defined such that the bifurcation occurs at $\mu = 0$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form: Supercritical Hopf</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form: Supercritical Hopf)</span></p>
 
 The normal form for the radius (amplitude) of the supercritical Hopf bifurcation is:
 
@@ -5070,7 +5072,7 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form: Subcritical Hopf</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form: Subcritical Hopf)</span></p>
 
 Analogous to the subcritical pitchfork bifurcation, the normal form for the radius is:
 
