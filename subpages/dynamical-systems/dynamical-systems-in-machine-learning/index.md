@@ -7915,7 +7915,7 @@ The PLRNN is a class of recurrent networks designed to mitigate gradient issues 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(PLRNN Architecture)</span></p>
 
-The latent state transition in a PLRNN is defined by the following map:
+The latent state transition in a **PLRNN** is defined by the following map:
 
 $$z_t = A z_{t-1} + W \phi(z_{t-1}) + h + s_t$$
 
@@ -7944,11 +7944,11 @@ To understand how PLRNNs handle gradients, we examine the derivative of the tran
 1. Given $z_t = A z_{t-1} + W \phi(z_{t-1}) + h$.
 2. The Jacobian $\frac{\partial z_t}{\partial z_{t-1}}$ is calculated as:
 
-$$\frac{\partial z_t}{\partial z_{t-1}} = A + W \operatorname{diag}(\phi’(z_{t-1}))$$
+   $$\frac{\partial z_t}{\partial z_{t-1}} = A + W \operatorname{diag}(\phi’(z_{t-1}))$$
 
 3. Since $\phi$ is the ReLU function, its derivative $\phi’(z)$ is:
 
-$$\phi’(z) = \begin{cases} 1 & \text{if } z > 0 \\ 0 & \text{if } z < 0 \end{cases}$$
+   $$\phi’(z) = \begin{cases} 1 & \text{if } z > 0 \\ 0 & \text{if } z < 0 \end{cases}$$
 
 4. Therefore, the Jacobian is a piecewise constant matrix that depends on whether the components of the previous state were positive or negative.
 
@@ -8052,18 +8052,18 @@ Establishing whether a model has successfully reproduced a dynamical system requ
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dynamical Systems Reconstruction via Topological Conjugacy)</span></p>
 
-Let $R \subseteq \mathbb{R}^m$ and $R^* \subseteq \mathbb{R}^{m^*}$ be open sets representing subspaces of Euclidean space. Define two dynamical systems:
+Let $R \subseteq \mathbb{R}^m$ and $R^\ast \subseteq \mathbb{R}^{m^\ast}$ be open sets representing subspaces of Euclidean space. Define two dynamical systems:
 
 1. $D = (T, R, \phi)$, where $\phi$ is the flow operator of the original system.
-2. $D^* = (T, R^*, \phi^*)$, where $\phi^*$ is the flow operator of the reconstructed system.
+2. $D^\ast = (T, R^\ast, \phi^\ast)$, where $\phi^\ast$ is the flow operator of the reconstructed system.
 
 Let $A$ be an attractor of $\phi$ surrounded by a basin of attraction $B \subseteq R$.
 
-We call the system $D^*$ a **dynamical systems reconstruction** of $D$ on the domain $B$ if $\phi^*$ is topologically conjugate to $\phi$ on $B$. This implies there exists a homeomorphism $G: B \to V^*$ (where $V^* \subseteq R^*$) such that for every initial condition $x_0 \in B$:
+We call the system $D^\ast$ a **dynamical systems reconstruction** of $D$ on the domain $B$ if $\phi^\ast$ is topologically conjugate to $\phi$ on $B$. This implies there exists a homeomorphism $G: B \to V^\ast$ (where $V^\ast \subseteq R^\ast$) such that for every initial condition $x_0 \in B$:
 
 $$\phi^*(t, G(x_0)) = G(\phi(t, x_0))$$
 
-This conjugacy ensures that the trajectory $x^*(t)$ produced by $\phi^*$ is topologically equivalent to the trajectory $x(t)$ produced by $\phi$, preserving the parameterization by time.
+This conjugacy ensures that the trajectory $x^\ast(t)$ produced by $\phi^\ast$ is topologically equivalent to the trajectory $x(t)$ produced by $\phi$, preserving the parameterization by time.
 
 </div>
 
@@ -8198,7 +8198,7 @@ where:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Hellinger Distance Interpretation)</span></p>
 
-The Hellinger distance lives within the range $[0, 1]$. When the correlation between power spectra is very high, the integral term approaches 1, and the distance becomes 0. If there is no overlap, the distance approaches 1. This makes it a normalized, robust measure of temporal similarity.
+The Hellinger distance lives within the range $[0, 1]$. When the correlation between power spectra is very high, the integral term approaches $1$, and the distance becomes $0$. If there is no overlap, the distance approaches $1$. This makes it a normalized, robust measure of temporal similarity.
 
 </div>
 
@@ -8338,7 +8338,7 @@ $$z_{t+1} = \begin{cases} f(\tilde{z}_t) & \text{if } t \in T_{\text{force}} \\ 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Sparse Teacher Forcing)</span></p>
 
-By forcing the trajectory back onto the "true" latent path every $\tau$ steps, we prevent the model’s trajectory from diverging too far from the data. Crucially, because $\tilde{z}_t$ is derived directly from the data and is not a function of the previous hidden state $z_{t-1}$ in the computational graph, the gradient $\frac{\partial \tilde{z}_t}{\partial z_{t-1}}$ is zero. This effectively "cuts" the gradient chain every $\tau$ steps, preventing the product series from exploding.
+By forcing the trajectory back onto the "true" latent path every $\tau$ steps, we prevent the model’s trajectory from diverging too far from the data. Crucially, because $\tilde{z}\_t$ is derived directly from the data and is not a function of the previous hidden state $z_{t-1}$ in the computational graph, the gradient $\frac{\partial \tilde{z}\_t}{\partial z_{t-1}}$ is zero. This effectively "cuts" the gradient chain every $\tau$ steps, preventing the product series from exploding.
 
 </div>
 
@@ -8477,10 +8477,10 @@ The primary motivation for GTF is to solve the exploding gradient problem by reg
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the GTF Jacobian)</span></p>
 
-We wish to find the Jacobian of the state $\tilde{z}_t$ with respect to the state at a previous time step $\tilde{z}_{t-1}$.
+We wish to find the Jacobian of the state $\tilde{z}\_t$ with respect to the state at a previous time step $\tilde{z}\_{t-1}$.
 
-1. Start with the GTF definition: $\tilde{z}_t = (1 - \alpha)\, f_\theta(\tilde{z}_{t-1}) + \alpha\, \hat{z}_t$.
-2. Differentiate $\tilde{z}_t$ with respect to $\tilde{z}_{t-1}$. Note that $\hat{z}_t$ (the data estimate) is independent of the model’s previous state $\tilde{z}_{t-1}$, so its derivative is zero.
+1. Start with the GTF definition: $\tilde{z}\_t = (1 - \alpha)\, f_\theta(\tilde{z}\_{t-1}) + \alpha\, \hat{z}\_t$.
+2. Differentiate $\tilde{z}\_t$ with respect to $\tilde{z}\_{t-1}$. Note that $\hat{z}\_t$ (the data estimate) is independent of the model’s previous state $\tilde{z}\_{t-1}$, so its derivative is zero.
 3. Apply the chain rule to the first term:
 
 $$\frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}} = (1 - \alpha) \cdot \frac{\partial f_\theta(\tilde{z}_{t-1})}{\partial \tilde{z}_{t-1}}$$
@@ -8661,7 +8661,7 @@ A **fixed point** $z^\ast$ of the map is a state that remains constant under the
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Analytical Extraction of Fixed Points)</span></p>
 
-To find the fixed point $z^*$, we assume the system has settled into a specific linear region defined by $D^*$:
+To find the fixed point $z^\ast$, we assume the system has settled into a specific linear region defined by $D^\ast$:
 
 1. Start with the steady-state equation: 
    
