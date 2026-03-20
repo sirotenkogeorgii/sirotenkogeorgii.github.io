@@ -59,7 +59,7 @@ We denote $\mathcal{M}\_+(\mathcal{X})$ the set of all positive measures on $\ma
 
 ### Assignment and Monge Problem
 
-Given a cost matrix $(\mathbf{C}_{i,j})_{i \in [\![n]\!], j \in [\![m]\!]}$, assuming $n = m$, the optimal assignment problem seeks for a bijection $\sigma$ in the set $\mathrm{Perm}(n)$ of permutations of $n$ elements solving
+Given a cost matrix $(\mathbf{C}_{i,j})\_{i \in [\![n]\!], j \in [\![m]\!]}$, assuming $n = m$, the optimal assignment problem seeks for a bijection $\sigma$ in the set $\mathrm{Perm}(n)$ of permutations of $n$ elements solving
 
 $$
 \min_{\sigma \in \mathrm{Perm}(n)} \frac{1}{n} \sum_{i=1}^n \mathbf{C}_{i,\sigma(i)}.
@@ -102,9 +102,7 @@ When $n \neq m$, note that, optimality aside, Monge maps may not even exist betw
 
 For a continuous map $T : \mathcal{X} \to \mathcal{Y}$, we define its corresponding push-forward operator $T_\sharp : \mathcal{M}(\mathcal{X}) \to \mathcal{M}(\mathcal{Y})$. For discrete measures, the push-forward operation consists simply in moving the positions of all the points in the support of the measure
 
-$$
-T_\sharp \alpha \stackrel{\text{def}}{=} \sum_i \mathbf{a}_i \delta_{T(x_i)}.
-$$
+$$T_\sharp \alpha \stackrel{\text{def}}{=} \sum_i \mathbf{a}_i \delta_{T(x_i)}$$
 
 </div>
 
@@ -113,17 +111,13 @@ $$
 
 For $T : \mathcal{X} \to \mathcal{Y}$, the push-forward measure $\beta = T_\sharp \alpha \in \mathcal{M}(\mathcal{Y})$ of some $\alpha \in \mathcal{M}(\mathcal{X})$ satisfies
 
-$$
-\forall\, h \in \mathcal{C}(\mathcal{Y}), \quad \int_\mathcal{Y} h(y)\mathrm{d}\beta(y) = \int_\mathcal{X} h(T(x))\mathrm{d}\alpha(x).
-$$
+$$\forall\, h \in \mathcal{C}(\mathcal{Y}), \quad \int_\mathcal{Y} h(y)\mathrm{d}\beta(y) = \int_\mathcal{X} h(T(x))\mathrm{d}\alpha(x)$$
 
 Equivalently, for any measurable set $B \subset \mathcal{Y}$, one has
 
-$$
-\beta(B) = \alpha(\lbrace x \in \mathcal{X} \;:\; T(x) \in B \rbrace) = \alpha(T^{-1}(B)).
-$$
+$$\beta(B) = \alpha(\lbrace x \in \mathcal{X} \;:\; T(x) \in B \rbrace) = \alpha(T^{-1}(B))$$
 
-Note that $T_\sharp$ preserves positivity and total mass, so that if $\alpha \in \mathcal{M}_+^1(\mathcal{X})$ then $T_\sharp \alpha \in \mathcal{M}_+^1(\mathcal{Y})$.
+Note that $T_\sharp$ preserves positivity and total mass, so that if $\alpha \in \mathcal{M}\_+^1(\mathcal{X})$ then $T_\sharp \alpha \in \mathcal{M}\_+^1(\mathcal{Y})$.
 
 </div>
 
@@ -171,7 +165,7 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2.9</span><span class="math-callout__name">(Measures and Random Variables)</span></p>
 
-Radon measures can also be viewed as representing the distributions of random variables. A random variable $X$ on $\mathcal{X}$ is actually a map $X : \Omega \to \mathcal{X}$ from some abstract (often unspecified) probability space $(\Omega, \mathbb{P})$, and its distribution $\alpha$ is the Radon measure $\alpha \in \mathcal{M}_+^1(\mathcal{X})$ such that $\mathbb{P}(X \in A) = \alpha(A) = \int_A \mathrm{d}\alpha(x)$. Equivalently, it is the push-forward of $\mathbb{P}$ by $X$, $\alpha = X_\sharp \mathbb{P}$. Applying another push-forward $\beta = T_\sharp \alpha$ for $T : \mathcal{X} \to \mathcal{Y}$, is equivalent to defining another random variable $Y = T(X)$, so that $\beta$ is the distribution of $Y$. Drawing a random sample $y$ from $Y$ is thus simply achieved by computing $y = T(x)$, where $x$ is drawn from $X$.
+Radon measures can also be viewed as representing the distributions of random variables. A random variable $X$ on $\mathcal{X}$ is actually a map $X : \Omega \to \mathcal{X}$ from some abstract (often unspecified) probability space $(\Omega, \mathbb{P})$, and its distribution $\alpha$ is the Radon measure $\alpha \in \mathcal{M}\_+^1(\mathcal{X})$ such that $\mathbb{P}(X \in A) = \alpha(A) = \int_A \mathrm{d}\alpha(x)$. Equivalently, it is the push-forward of $\mathbb{P}$ by $X$, $\alpha = X_\sharp \mathbb{P}$. Applying another push-forward $\beta = T_\sharp \alpha$ for $T : \mathcal{X} \to \mathcal{Y}$, is equivalent to defining another random variable $Y = T(X)$, so that $\beta$ is the distribution of $Y$. Drawing a random sample $y$ from $Y$ is thus simply achieved by computing $y = T(x)$, where $x$ is drawn from $X$.
 
 </div>
 
@@ -179,7 +173,7 @@ Radon measures can also be viewed as representing the distributions of random va
 
 The assignment problem, and its generalization found in the Monge problem, is not always relevant to studying discrete measures. Indeed, because the assignment problem is formulated as a permutation problem, it can only be used to compare *uniform* histograms of the *same* size. Additionally, the assignment problem is combinatorial, and the feasible set for the Monge problem, despite being continuously parameterized, is *nonconvex*. Both are therefore difficult to solve when approached in their original formulation.
 
-The key idea of Kantorovich [1942] is to relax the deterministic nature of transportation, namely the fact that a source point $x_i$ can only be assigned to another point or location $y_{\sigma_i}$ or $T(x_i)$ only. Kantorovich proposes instead that the mass at any point $x_i$ be potentially dispatched across several locations. This flexibility is encoded using, in place of a permutation $\sigma$ or a map $T$, a coupling matrix $\mathbf{P} \in \mathbb{R}_+^{n \times m}$, where $\mathbf{P}_{i,j}$ describes the amount of mass flowing from bin $i$ toward bin $j$.
+The key idea of Kantorovich [1942] is to relax the deterministic nature of transportation, namely the fact that a source point $x_i$ can only be assigned to another point or location $y_{\sigma_i}$ or $T(x_i)$ only. Kantorovich proposes instead that the mass at any point $x_i$ be potentially dispatched across several locations. This flexibility is encoded using, in place of a permutation $\sigma$ or a map $T$, a coupling matrix $\mathbf{P} \in \mathbb{R}\_+^{n \times m}$, where $\mathbf{P}_{i,j}$ describes the amount of mass flowing from bin $i$ toward bin $j$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Admissible Couplings)</span></p>
@@ -342,7 +336,11 @@ The Wasserstein distance $\mathcal{W}_p$ has many important properties, the most
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2.2</span><span class="math-callout__name">(Weak Convergence)</span></p>
 
-On a compact domain $\mathcal{X}$, $(\alpha_k)_k$ converges weakly to $\alpha$ in $\mathcal{M}_+^1(\mathcal{X})$ (denoted $\alpha_k \rightharpoonup \alpha$) if and only if for any continuous function $g \in \mathcal{C}(\mathcal{X})$, $\int_\mathcal{X} g\,\mathrm{d}\alpha_k \to \int_\mathcal{X} g\,\mathrm{d}\alpha$. This notion of weak convergence corresponds to the convergence in the law of random vectors.
+On a compact domain $\mathcal{X}$, $(\alpha_k)_k$ converges weakly to $\alpha$ in $\mathcal{M}\_+^1(\mathcal{X})$ (denoted $\alpha_k \rightharpoonup \alpha$) if and only if for any continuous function 
+
+$$g \in \mathcal{C}(\mathcal{X})$, $\int_\mathcal{X} g\,\mathrm{d}\alpha_k \to \int_\mathcal{X} g\,\mathrm{d}\alpha$$ 
+
+This notion of weak convergence corresponds to the convergence in the law of random vectors.
 
 This convergence can be shown to be equivalent to $\mathcal{W}_p(\alpha_k, \alpha) \to 0$ (together with a convergence of the moments up to order $p$ for unbounded metric spaces).
 
@@ -357,7 +355,11 @@ $$
 \mathcal{W}_2(T_{\tau\sharp}\alpha, T_{\tau'\sharp}\beta)^2 = \mathcal{W}_2(\alpha, \beta)^2 - 2\langle \tau - \tau', \mathbf{m}_\alpha - \mathbf{m}_\beta \rangle + \|\tau - \tau'\|^2,
 $$
 
-where $\mathbf{m}_\alpha \stackrel{\text{def}}{=} \int_\mathcal{X} x\,\mathrm{d}\alpha(x) \in \mathbb{R}^d$ is the mean of $\alpha$. In particular, this implies the nice decomposition of the distance as
+where 
+
+$$\mathbf{m}_\alpha \stackrel{\text{def}}{=} \int_\mathcal{X} x\,\mathrm{d}\alpha(x) \in \mathbb{R}^d$$
+
+is the mean of $\alpha$. In particular, this implies the nice decomposition of the distance as
 
 $$
 \mathcal{W}_2(\alpha, \beta)^2 = \mathcal{W}_2(\tilde{\alpha}, \tilde{\beta})^2 + \|\mathbf{m}_\alpha - \mathbf{m}_\beta\|^2,
@@ -422,7 +424,7 @@ $$
 
 Following the interpretation given to the Kantorovich problem in Remark 2.10, consider an operator wishing to move resources from warehouses to factories at least cost. Suppose he outsources this task to a vendor. The vendor splits the logistic task into collecting (price $\mathbf{f}_i$ at warehouse $i$) and delivering (price $\mathbf{g}_j$ at factory $j$), for a total of $\langle \mathbf{f}, \mathbf{a} \rangle + \langle \mathbf{g}, \mathbf{b} \rangle$.
 
-The operator checks that for all pairs $i, j$ the prices verify $\mathbf{f}_i + \mathbf{g}_j \le \mathbf{C}_{i,j}$. If so, *any* attempt at doing the job by himself would necessarily be more expensive than the vendor's price, since for any transport plan $\mathbf{P}$ (including the optimal one $\mathbf{P}^\star$), the marginal constraints imply
+The operator checks that for all pairs $i, j$ the prices verify $\mathbf{f}\_i + \mathbf{g}\_j \le \mathbf{C}\_{i,j}$. If so, *any* attempt at doing the job by himself would necessarily be more expensive than the vendor's price, since for any transport plan $\mathbf{P}$ (including the optimal one $\mathbf{P}^\star$), the marginal constraints imply
 
 $$
 \sum_{i,j} \mathbf{P}_{i,j} \mathbf{C}_{i,j} \ge \sum_{i,j} \mathbf{P}_{i,j}(\mathbf{f}_i + \mathbf{g}_j) = \langle \mathbf{f}, \mathbf{a} \rangle + \langle \mathbf{g}, \mathbf{b} \rangle.
@@ -476,7 +478,7 @@ where we denoted $(f \oplus g)(x,y) = f(x) + g(y)$. Here the minimum should be c
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark 2.24</span><span class="math-callout__name">(Monge--Kantorovich Equivalence---Brenier Theorem)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 2.24</span><span class="math-callout__name">(Monge-Kantorovich Equivalence-Brenier Theorem)</span></p>
 
 The following theorem is often attributed to Brenier [1991] and ensures that in $\mathbb{R}^d$ for $p = 2$, if at least one of the two input measures has a density, and for measures with second order moments, then the Kantorovich and Monge problems are equivalent.
 
@@ -912,7 +914,7 @@ The number of steps of the auction algorithm is at most $N = n\|\mathbf{C}\|_\in
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 3.3</span><span class="math-callout__name">(Complexity)</span></p>
 
-Note that this result yields a naive number of operations of $N^3\|\mathbf{C}\|_\infty / \varepsilon$ for the algorithm to terminate. That complexity can be reduced to $N^3 \log \|\mathbf{C}\|_\infty$ when using a clever method known as $\varepsilon$-scaling, designed to decrease the value of $\varepsilon$ with each iteration.
+Note that this result yields a naive number of operations of $N^3\|\mathbf{C}\|\_\infty / \varepsilon$ for the algorithm to terminate. That complexity can be reduced to $N^3 \log \|\mathbf{C}\|\_\infty$ when using a clever method known as $\varepsilon$-scaling, designed to decrease the value of $\varepsilon$ with each iteration.
 
 </div>
 
@@ -943,7 +945,7 @@ $$
 \mathbf{H}(\mathbf{P}) \stackrel{\text{def}}{=} -\sum_{i,j} \mathbf{P}_{i,j}(\log(\mathbf{P}_{i,j}) - 1),
 $$
 
-with an analogous definition for vectors, with the convention that $\mathbf{H}(\mathbf{a}) = -\infty$ if one of the entries $\mathbf{a}_j$ is 0 or negative. The function $\mathbf{H}$ is 1-strongly concave, because its Hessian is $\partial^2 \mathbf{H}(P) = -\mathrm{diag}(1/\mathbf{P}_{i,j})$ and $\mathbf{P}_{i,j} \le 1$. The idea of the entropic regularization of optimal transport is to use $-\mathbf{H}$ as a regularizing function to obtain approximate solutions to the original transport problem:
+with an analogous definition for vectors, with the convention that $\mathbf{H}(\mathbf{a}) = -\infty$ if one of the entries $\mathbf{a}_j$ is 0 or negative. The function $\mathbf{H}$ is 1-strongly concave, because its Hessian is $\partial^2 \mathbf{H}(P) = -\mathrm{diag}(1/\mathbf{P}\_{i,j})$ and $\mathbf{P}\_{i,j} \le 1$. The idea of the entropic regularization of optimal transport is to use $-\mathbf{H}$ as a regularizing function to obtain approximate solutions to the original transport problem:
 
 $$
 \mathrm{L}_\mathbf{C}^\varepsilon(\mathbf{a}, \mathbf{b}) \stackrel{\text{def}}{=} \min_{\mathbf{P} \in \mathbf{U}(\mathbf{a}, \mathbf{b})} \langle \mathbf{P}, \mathbf{C} \rangle - \varepsilon \mathbf{H}(\mathbf{P}).
@@ -960,7 +962,7 @@ $$
 \mathbf{P}_\varepsilon \xrightarrow{\varepsilon \to 0} \operatorname{argmin}_{\mathbf{P}} \left\lbrace -\mathbf{H}(\mathbf{P}) \;:\; \mathbf{P} \in \mathbf{U}(\mathbf{a}, \mathbf{b}),\, \langle \mathbf{P}, \mathbf{C} \rangle = \mathrm{L}_\mathbf{C}(\mathbf{a}, \mathbf{b}) \right\rbrace,
 $$
 
-so that in particular $\mathrm{L}_\mathbf{C}^\varepsilon(\mathbf{a}, \mathbf{b}) \xrightarrow{\varepsilon \to 0} \mathrm{L}_\mathbf{C}(\mathbf{a}, \mathbf{b})$.
+so that in particular $\mathrm{L}\_\mathbf{C}^\varepsilon(\mathbf{a}, \mathbf{b}) \xrightarrow{\varepsilon \to 0} \mathrm{L}\_\mathbf{C}(\mathbf{a}, \mathbf{b})$.
 
 One also has
 
@@ -968,15 +970,15 @@ $$
 \mathbf{P}_\varepsilon \xrightarrow{\varepsilon \to \infty} \mathbf{a} \otimes \mathbf{b} = \mathbf{a}\mathbf{b}^\mathrm{T} = (\mathbf{a}_i \mathbf{b}_j)_{i,j}.
 $$
 
-*Proof.* We consider a sequence $(\varepsilon_\ell)_\ell$ such that $\varepsilon_\ell \to 0$ and $\varepsilon_\ell > 0$. We denote $\mathbf{P}_\ell$ the solution for $\varepsilon = \varepsilon_\ell$. Since $\mathbf{U}(\mathbf{a}, \mathbf{b})$ is bounded, we can extract a subsequence such that $\mathbf{P}_\ell \to \mathbf{P}^\star$. Since $\mathbf{U}(\mathbf{a}, \mathbf{b})$ is closed, $\mathbf{P}^\star \in \mathbf{U}(\mathbf{a}, \mathbf{b})$. By optimality of $\mathbf{P}$ and $\mathbf{P}_\ell$ for their respective optimization problems, one has
+</div>
+
+*Proof.* We consider a sequence $(\varepsilon_\ell)\_\ell$ such that $\varepsilon\_\ell \to 0$ and $\varepsilon\_\ell > 0$. We denote $\mathbf{P}\_\ell$ the solution for $\varepsilon = \varepsilon\_\ell$. Since $\mathbf{U}(\mathbf{a}, \mathbf{b})$ is bounded, we can extract a subsequence such that $\mathbf{P}\_\ell \to \mathbf{P}^\star$. Since $\mathbf{U}(\mathbf{a}, \mathbf{b})$ is closed, $\mathbf{P}^\star \in \mathbf{U}(\mathbf{a}, \mathbf{b})$. By optimality of $\mathbf{P}$ and $\mathbf{P}_\ell$ for their respective optimization problems, one has
 
 $$
 0 \le \langle \mathbf{C}, \mathbf{P}_\ell \rangle - \langle \mathbf{C}, \mathbf{P} \rangle \le \varepsilon_\ell (\mathbf{H}(\mathbf{P}_\ell) - \mathbf{H}(\mathbf{P})).
 $$
 
 Since $\mathbf{H}$ is continuous, taking the limit shows that $\langle \mathbf{C}, \mathbf{P}^\star \rangle = \langle \mathbf{C}, \mathbf{P} \rangle$ so that $\mathbf{P}^\star$ is a feasible point. Furthermore, dividing by $\varepsilon_\ell$ and taking the limit shows that $\mathbf{H}(\mathbf{P}) \le \mathbf{H}(\mathbf{P}^\star)$. Since the solution $\mathbf{P}_0^\star$ to this program is unique by strict convexity of $-\mathbf{H}$, one has $\mathbf{P}^\star = \mathbf{P}_0^\star$. In the limit $\varepsilon \to +\infty$, a similar proof shows that one should rather consider $\min_{\mathbf{P} \in \mathbf{U}(\mathbf{a}, \mathbf{b})} -\mathbf{H}(\mathbf{P})$, the solution of which is $\mathbf{a} \otimes \mathbf{b}$. $\square$
-
-</div>
 
 Formula (4.3) states that for a small regularization $\varepsilon$, the solution converges to the maximum entropy optimal transport coupling. In sharp contrast, (4.4) shows that for a large regularization, the solution converges to the coupling with maximal entropy between two prescribed marginals $\mathbf{a}, \mathbf{b}$, namely the joint probability between two independent random variables distributed following $\mathbf{a}, \mathbf{b}$. A key insight is that, as $\varepsilon$ increases, the optimal coupling becomes less and less sparse, which in turn has the effect of both accelerating computational algorithms and leading to faster statistical convergence.
 
@@ -1001,7 +1003,7 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 4.1</span><span class="math-callout__name">(Entropic Regularization Between Discrete Measures)</span></p>
 
-For discrete measures of the form $\alpha = \sum_i \mathbf{a}_i \delta_{x_i}$, $\beta = \sum_j \mathbf{b}_j \delta_{y_j}$, the definition of regularized transport extends naturally to
+For discrete measures of the form $\alpha = \sum_i \mathbf{a}\_i \delta\_{x_i}$, $\beta = \sum_j \mathbf{b}\_j \delta\_{y_j}$, the definition of regularized transport extends naturally to
 
 $$
 \mathcal{L}_c^\varepsilon(\alpha, \beta) \stackrel{\text{def}}{=} \mathrm{L}_\mathbf{C}^\varepsilon(\mathbf{a}, \mathbf{b}),
@@ -1992,7 +1994,7 @@ $$
 The associated dual problem, which is analogous to Formula (6.4), is then
 
 $$
-\mathrm{W}_1(\mathbf{a}, \mathbf{b}) = \min_{\mathbf{s} \in \mathbb{R}_+^\mathcal{E}} \left\lbrace \sum_{(i,j) \in \mathcal{E}} \mathbf{w}_{i,j} \mathbf{s}_{i,j} \;:\; \mathrm{div}(\mathbf{s}) = \mathbf{a} - \mathbf{b} \right\rbrace. \tag{6.6}
+\mathrm{W}_1(\mathbf{a}, \mathbf{b}) = \min_{\mathbf{s} \in \mathbb{R}_+^\mathcal{E}} \left\lbrace \sum_{(i,j) \in \mathcal{E}} \mathbf{w}_{i,j} \mathbf{s}_{i,j} \;:\; \mathrm{div}(\mathbf{s}) = \mathbf{a} - \mathbf{b} \right\rbrace. \text{(6.6)}
 $$
 
 This is a linear program and more precisely an instance of min-cost flow problems. Highly efficient dedicated simplex solvers have been devised to solve it. Formulation (6.6) is the so-called Beckmann formulation and has been used and extended to define and study traffic congestion models.
@@ -3686,4 +3688,3 @@ $$
 $$
 
 which can be interpreted as a mirror-descent scheme. Each update can thus be solved using Sinkhorn iterations (4.15) with cost $\mathbf{C}^{(\ell)}$.
-
