@@ -4282,7 +4282,7 @@ Two or more oscillators are said to be synchronized or phase-locked when the dif
 #### Conditions for Synchronization: Frequency Difference and Coupling Strength
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Interplay of Intrinsic Frequency and Coupling<)/span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Interplay of Intrinsic Frequency and Coupling)</span></p>
 
 The ability of two oscillators to synchronize is a result of the competition between their intrinsic properties and the strength of the interaction connecting them.
 
@@ -6359,7 +6359,7 @@ A common empirical method for selecting $\tau$ is to examine the autocorrelation
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Empirical Autocorrelation Function)</span></p>
 
-The empirical autocorrelation function, $R_y(\tau)$, for a time series $y_t$ with sample mean $\bar{y}$ and variance $S_y^2$ is calculated as:
+The **empirical autocorrelation function**, $R_y(\tau)$, for a time series $y_t$ with sample mean $\bar{y}$ and variance $S_y^2$ is calculated as:
 
 $$R_y(\tau) = \frac{\sum_{t} (y_t - \bar{y})(y_{t-\tau} - \bar{y})}{S_y^2}$$
 
@@ -6385,7 +6385,9 @@ To formalize what we require from our reconstruction, we define a complete map f
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Delay Embedding Map)</span></p>
 
-Let the original system's attractor live on a manifold $A$ in the true state space. The full delay embedding map, which we will call $F$, is a composition of two functions:
+Let the original system's attractor live on a manifold $A$ in the true state space. The full **delay embedding map**, which we will call $F$, is a composition of two functions:
+
+$$F := G \circ h(x)$$
 
 1. The measurement function, $h$, which maps a point $x$ on the true attractor to a scalar observation $y$.
 2. The delay coordinate map, $G$, which takes the time series of observations and constructs the delay vector.
@@ -6424,7 +6426,7 @@ In the study of dynamical systems, we are often concerned with transformations b
 
 A homeomorphism is a continuous, one-to-one mapping between two spaces that has a continuous inverse. It preserves topological properties.
 
-A diffeomorphism is a map that is a homeomorphism, but with the additional requirement that both the map and its inverse are continuously differentiable. This means that a diffeomorphism is not only one-to-one in its points but also in its derivatives.
+A **diffeomorphism** is a map that is a homeomorphism, but with the additional requirement that both the map and its inverse are continuously differentiable. This means that a diffeomorphism is not only one-to-one in its points but also in its derivatives.
 
 The derivative of the mapping, often denoted as $DF$, is also called a push-forward. It effectively transports the vector field from one domain to another. For a mapping to be a diffeomorphism, this transportation of the vector field must also be a one-to-one relationship.
 
@@ -6568,8 +6570,14 @@ Once a proper embedding has been constructed, the reconstructed state space can 
 **Method for Estimating Lyapunov Exponents**
 
 1. In the delay-embedding space, for each point on a trajectory, identify a neighborhood of nearby points.
-2. Track the evolution of the distance between the reference point and each of its neighbors over time. For initially close trajectories with separation $\delta(0) = \Delta_0$, the separation typically grows exponentially for a chaotic system: $\delta(t) \approx \Delta_0 e^{\lambda t}$.
-3. By taking the logarithm, we get $\ln(\delta(t)) \approx \ln(\Delta_0) + \lambda t$.
+2. Track the evolution of the distance between the reference point and each of its neighbors over time. For initially close trajectories with separation $\delta(0) = \Delta_0$, the separation typically grows exponentially for a chaotic system: 
+   
+   $$\delta(t) \approx \Delta_0 e^{\lambda t}$$
+
+3. By taking the logarithm, we get 
+   
+   $$\ln(\delta(t)) \approx \ln(\Delta_0) + \lambda t$$
+
 4. By averaging the evolution of $\ln(\delta(t))$ over many initial points and their respective neighbors, one can plot this quantity against time $t$ (or discrete time steps $k \cdot \Delta t$). The slope of the initial linear region of this plot provides an empirical estimate of the largest Lyapunov exponent, $\lambda$.
 
 ### From Data to Dynamics: Reconstruction and Inference
