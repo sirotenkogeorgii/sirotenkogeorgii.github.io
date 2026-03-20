@@ -512,7 +512,6 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
   <figcaption>Saddle Node: For two real eigenvalues with one being lager and the other being smaller than zero we get a convergence in the dimension which holds the eigenvalue smaller than zero and divergence in the other. The state space trajectories behave accordingly. The dynamical system has a saddle node in the origin.</figcaption>
 </figure>
 
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Attractor or Manifold)</span></p>
 
@@ -635,7 +634,7 @@ So in higher dimensions, instead of saying "this is a saddle node in the plane,"
 
 > If we have $n$-dimensional system and the matrix $A$ has $n$ linearly independent eigenvectors forming a basis of the original vector space, then we can describe the solution $x(t)$ as a linear combination of evolutions of those eigenvectors. Because those evolutions are described via exponential functions, each element of the solution vector $x(t)$ we can write as a sum of exponential functions. If at least one eigenvalue if greater than 0, then the component diverges unless the corresponding coefficient is zero. Is it correct?
 
-### 1. Is your reasoning about sums of exponentials correct?**
+### 1. Is your reasoning about sums of exponentials correct?
 
 **The diagonalizable real-eigenvalue case**
 
@@ -6041,6 +6040,8 @@ Steven Strogatz provides a beautiful metaphor for the structure of a chaotic att
 
 ## Lecture 8
 
+[SINDy](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/sindy/)
+
 ### Characterizing the Geometry of Attractors
 
 #### Introduction: The Need for New Geometric Measures
@@ -6674,9 +6675,9 @@ Modern approaches to this problem leverage the framework of machine learning. Th
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Machine Learning Pipeline)</span></p>
 
-1. Specify a Model: We choose a highly flexible class of functions, such as a neural network, to serve as our model candidate, $\hat{f}\_{\theta}$ or $\hat{F}\_{\theta}$. The parameters $\theta$ represent the weights and biases of the network. We also must consider that our observations $y_t$ may be related to the true states $x_t$ via a measurement function $h_{\psi}$, which may also need to be learned: $y_t = h_{\psi}(x_t)$.
-2. Specify a Loss Function: We define a loss function, $R(\theta \mid \text{data})$, which quantifies the discrepancy between our model's predictions and the observed data. This function could be a mean squared error, a likelihood function, or another metric of model quality. The loss function creates a "surface" over the parameter space.
-3. Training (Optimization): We employ an iterative numerical optimization algorithm (often a variant of gradient descent) to search the parameter space for a set of parameters $\theta$ that minimizes the loss function. This "training" procedure refines the model until it provides the best possible fit to the data, hopefully corresponding to a global (or at least a good local) minimum of the loss function.
+1. **Specify a Model:** We choose a highly flexible class of functions, such as a neural network, to serve as our model candidate, $\hat{f}\_{\theta}$ or $\hat{F}\_{\theta}$. The parameters $\theta$ represent the weights and biases of the network. We also must consider that our observations $y_t$ may be related to the true states $x_t$ via a measurement function $h_{\psi}$, which may also need to be learned: $y_t = h_{\psi}(x_t)$.
+2. **Specify a Loss Function:** We define a loss function, $R(\theta \mid \text{data})$, which quantifies the discrepancy between our model's predictions and the observed data. This function could be a mean squared error, a likelihood function, or another metric of model quality. The loss function creates a "surface" over the parameter space.
+3. **Training (Optimization):** We employ an iterative numerical optimization algorithm (often a variant of gradient descent) to search the parameter space for a set of parameters $\theta$ that minimizes the loss function. This "training" procedure refines the model until it provides the best possible fit to the data, hopefully corresponding to a global (or at least a good local) minimum of the loss function.
 
 </div>
 
@@ -6690,9 +6691,13 @@ SINDy operates on the assumption that the vector field of many physical systems 
 
 The method makes several key assumptions and has important caveats:
 
-* Vector Field Approach: It directly approximates the vector field $f(x)$ in $\dot{x} = f(x)$.
-* State Variable Access: It assumes measurements of the relevant state variables are available. If not, a delay embedding must first be performed to reconstruct the state space. The method, in its basic form, does not automatically discover the measurement function $h$.
-* Numerical Derivatives: To connect the model to the data, it requires an estimate of the time derivatives from the time series. This is often done via finite differences: $$\nabla x_t \approx \frac{x_{t+1} - x_t}{\Delta t}$$ Caveat: This step is highly sensitive to measurement noise. The process of taking differences amplifies high-frequency noise, which can lead to unreliable derivative estimates.
+* **Vector Field Approach:** It directly approximates the vector field $f(x)$ in $\dot{x} = f(x)$.
+* **State Variable Access:** It assumes measurements of the relevant state variables are available. If not, a delay embedding must first be performed to reconstruct the state space. The method, in its basic form, does not automatically discover the measurement function $h$.
+* **Numerical Derivatives:** To connect the model to the data, it requires an estimate of the time derivatives from the time series. This is often done via finite differences:    
+  
+  $$\nabla x_t \approx \frac{x_{t+1} - x_t}{\Delta t}$$ 
+  
+  * **Caveat:** This step is highly sensitive to measurement noise. The process of taking differences amplifies high-frequency noise, which can lead to unreliable derivative estimates.
 
 #### The Core Idea: Function Approximation
 
@@ -6711,7 +6716,7 @@ To approximate the unknown function $\mathbf{f}$, we construct a library, or a s
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Basis Function Library)</span></p>
 
-A basis function library $\mathbf{\Theta}(\mathbf{x}(t))$ is a collection of candidate functions that depend on the state variables $\mathbf{x} = [x_1, x_2, ..., x_n]$. The approximation of the true vector field, $\hat{\mathbf{f}}(\mathbf{x}(t))$, is constructed as a linear combination of these basis functions.
+A **basis function library** $\mathbf{\Theta}(\mathbf{x}(t))$ is a collection of candidate functions that depend on the state variables $\mathbf{x} = [x_1, x_2, ..., x_n]$. The approximation of the true vector field, $\hat{\mathbf{f}}(\mathbf{x}(t))$, is constructed as a linear combination of these basis functions.
 
 $$\hat{\mathbf{f}}(\mathbf{x}(t)) = \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t))$$
 
@@ -6724,10 +6729,10 @@ where $\mathbf{C}$ is a matrix of coefficients that determines the weight of eac
 
 The library can be constructed from a wide variety of functions. Common choices include:
 
-* Monomials: Simple first-order terms like $x_1$, $x_2$, etc.
-* Polynomials: Higher-order terms, such as squares ($x_1^2$), or multinomials ($x_1 x_2$, $x_2 x_3$).
-* Trigonometric Functions: Terms like $\sin(x_i)$ or $\cos(x_j)$.
-* Other Functions: Any other function could be included, such as radial basis functions.
+* **Monomials:** Simple first-order terms like $x_1$, $x_2$, etc.
+* **Polynomials:** Higher-order terms, such as squares ($x_1^2$), or multinomials ($x_1 x_2$, $x_2 x_3$).
+* **Trigonometric Functions:** Terms like $\sin(x_i)$ or $\cos(x_j)$.
+* **Other Functions:** Any other function could be included, such as radial basis functions.
 
 A typical library for a system with state vector $\mathbf{x}(t)$ might include a constant term, linear terms, and polynomial terms up to a certain order. For instance:
 
@@ -6801,7 +6806,7 @@ $$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot
 
 This can also be written in its quadratic form: 
 
-$$L(\mathbf{C}) = \sum_{t=1}^{T} (\hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)))^T (\hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)))$$
+$$L(\mathbf{C}) = \sum_{t=1}^{T} (\hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)))^\top (\hat{\dot{\mathbf{x}}}(t) - \mathbf{C} \cdot \mathbf{\Theta}(\mathbf{x}(t)))$$
 
 </div>
 
@@ -6845,7 +6850,7 @@ $$\frac{\partial L}{\partial \mathbf{C}} = \frac{\partial}{\partial \mathbf{C}} 
 
 This yields:
 
-$$\frac{\partial L}{\partial \mathbf{C}} = -2 \sum_{t=1}^{T} [\hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t))] \mathbf{\Theta}(\mathbf{x}(t))^T + \lambda \mathbf{D} = 0$$
+$$\frac{\partial L}{\partial \mathbf{C}} = -2 \sum_{t=1}^{T} [\hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t))] \mathbf{\Theta}(\mathbf{x}(t))^\top + \lambda \mathbf{D} = 0$$
 
 where $\mathbf{D}$ is a matrix with elements $d_{ij} = \text{sign}(c_{ij})$.
 
@@ -6865,19 +6870,19 @@ Let's first consider the simpler case where $\lambda=0$. This reduces the proble
 
 1. Start with the derivative equation without regularization: 
    
-   $$-2 \sum_{t=1}^{T} [\hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t))] \mathbf{\Theta}(\mathbf{x}(t))^T = 0$$
+   $$-2 \sum_{t=1}^{T} [\hat{\dot{\mathbf{x}}}(t) - \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t))] \mathbf{\Theta}(\mathbf{x}(t))^\top = 0$$
 
 2. Divide by $-2$ and distribute the terms: 
    
-   $$\sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T - \sum_{t=1}^{T} \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T = 0$$
+   $$\sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T - \sum_{t=1}^{T} \mathbf{C}\mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^\top = 0$$
 
 3. Isolate the term containing $\mathbf{C}$. Since $\mathbf{C}$ does not depend on time $t$, we can pull it out of the summation: 
    
-   $$\sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T = \mathbf{C} \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T \right)$$
+   $$\sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^\top = \mathbf{C} \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^\top \right)$$
    
 4. Solve for $\mathbf{C}$ by post-multiplying by the inverse of the term in the parenthesis:
    
-   $$\hat{\mathbf{C}} = \left( \sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^T \right) \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^T \right)^{-1}$$ 
+   $$\hat{\mathbf{C}} = \left( \sum_{t=1}^{T} \hat{\dot{\mathbf{x}}}(t) \mathbf{\Theta}(\mathbf{x}(t))^\top \right) \left( \sum_{t=1}^{T} \mathbf{\Theta}(\mathbf{x}(t)) \mathbf{\Theta}(\mathbf{x}(t))^\top \right)^{-1}$$ 
    
    This provides a closed-form, explicit solution for the coefficient matrix $\mathbf{C}$. This is highly desirable as it is computationally fast and does not require a numerical iteration procedure.
 
@@ -7291,7 +7296,7 @@ Over the years, researchers and practitioners have developed numerous techniques
 ##### Multiple Initial Conditions
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Multiple Initial Conditions</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Multiple Initial Conditions)</span></p>
 
 A straightforward, classical approach to increase the chances of finding a good minimum is to run the entire optimization process multiple times from different, randomly chosen initial parameter values ($\theta_0$).
 
@@ -7340,14 +7345,14 @@ This principle is exploited by entire classes of models, such as Boltzmann Machi
 A primary challenge in gradient-based optimization is the risk of the algorithm converging to a local minimum in the loss function rather than the desired global minimum. One of the most common and effective procedures to address this is not to inject artificial noise into the gradient updates, but rather to leverage the noise inherent in the data itself.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Stochastic Gradient Descent (SGD)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Gradient Descent: SGD)</span></p>
 
 Stochastic Gradient Descent (SGD) is an optimization algorithm where, at each gradient step, the update is calculated based on a randomly drawn subsample (a "mini-batch") of the full training dataset, rather than the entire dataset.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Intuition for SGD</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition for SGD)</span></p>
 
 The core idea is that data is inherently noisy. By randomly drawing a different subset of data for each step, we introduce noise into the gradient calculation. This stochasticity can help the optimization process "jump out" of shallow local minima and continue its search for a better solution in the broader parameter space. The effect is conceptually similar to injecting noise directly into the gradient updates.
 
@@ -7356,7 +7361,7 @@ The core idea is that data is inherently noisy. By randomly drawing a different 
 ##### A Note on Time Series Data
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Handling Autocorrelations in Temporal Data</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Handling Autocorrelations in Temporal Data)</span></p>
 
 When applying SGD or related subsampling techniques to time series and dynamical systems, special care must be taken. These data types are characterized by significant autocorrelations, where the value of a point depends on previous points.
 
@@ -7368,7 +7373,7 @@ When applying SGD or related subsampling techniques to time series and dynamical
 #### Addressing Varying Slopes: Adaptive Learning Rates
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Adaptive Learning Rates</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Adaptive Learning Rates)</span></p>
 
 Another significant challenge in training deep networks is the presence of "ravines" or "valleys" in the loss landscape, where the slope is very steep in one direction and very shallow in another. A fixed learning rate can cause oscillations across the steep direction while making painfully slow progress along the shallow one.
 
@@ -7379,7 +7384,7 @@ The naive but effective approach to this problem is to make the learning rate ad
 ##### Common Adaptive Rate Algorithms
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Toolbox of Optimizers</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Toolbox of Optimizers)</span></p>
 
 Modern machine learning frameworks provide a host of optimizers that implement adaptive learning rate schemes. While a deep dive into each is beyond our current scope, it is essential to be aware of the most prominent examples:
 
@@ -7395,7 +7400,7 @@ In contemporary practice, a significant portion of the field has settled on usin
 #### Incorporating Curvature: Second-Order Algorithms
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Second-Order Methods Intuition</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Second-Order Methods Intuition)</span></p>
 
 While first-order methods like gradient descent only use the gradient (first derivative) of the loss function, second-order algorithms incorporate additional information about the curvature of the loss surface.
 
@@ -7406,7 +7411,7 @@ The virtue of second-order methods is that they are often superior to standard g
 ##### The Hessian and the Newton-Raphson Procedure
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Hessian Matrix</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Hessian Matrix)</span></p>
 
 The Hessian is the matrix of second-order partial derivatives of the loss function. It describes the local curvature of the function at a given point.
 
@@ -7417,7 +7422,7 @@ $$\theta_{n+1} = \theta_n - \gamma [H(\theta_n)]^{-1} \nabla_{\theta} L(\theta_n
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Relation to Newton-Raphson</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Relation to Newton-Raphson)</span></p>
 
 In its strict formulation, this update rule gives rise to the Newton-Raphson procedure, a well-known root-finding algorithm from statistics and numerical analysis.
 
@@ -7426,7 +7431,7 @@ In its strict formulation, this update rule gives rise to the Newton-Raphson pro
 ##### Challenges and Adjustments
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Caveats of Second-Order Methods</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Caveats of Second-Order Methods)</span></p>
 
 Despite their theoretical advantages, pure second-order methods are rarely used in modern large-scale machine learning for two primary reasons:
 
@@ -7448,21 +7453,21 @@ $$\theta_{n+1} = \theta_n - \gamma [|H(\theta_n)|]^{-1} \nabla_{\theta} L(\theta
 ##### Quasi-Newton Methods and Their Relevance
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Quasi-Newton Methods</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Quasi-Newton Methods)</span></p>
 
 Quasi-Newton methods are a class of algorithms that seek to capture the benefits of second-order information without the prohibitive cost of computing the full Hessian. They do so by building an efficient numerical approximation of the inverse Hessian at each step.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Recursive Least Squares</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Recursive Least Squares)</span></p>
 
 Recursive Least Squares (RLS) is an algorithm formerly used for updating recurrent networks that falls into the family of quasi-Newton methods.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Enduring Value of Second-Order Thinking</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Enduring Value of Second-Order Thinking)</span></p>
 
 While most large-scale applications have moved away from these methods, they should not be forgotten. For scientific applications with smaller datasets, the precision offered by incorporating curvature information can be extremely valuable. Furthermore, concepts in machine learning have a tendency to resurface, and a solid understanding of these powerful techniques remains a significant asset.
 
@@ -7473,7 +7478,7 @@ While most large-scale applications have moved away from these methods, they sho
 We now turn to a very specific, time-efficient gradient descent algorithm tailored for Recurrent Neural Networks (RNNs): Backpropagation Through Time (BPTT).
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Backpropagation Through Time (BPTT)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Backpropagation Through Time: BPTT)</span></p>
 
 BPTT is the standard algorithm for training RNNs. It is an adaptation of the general backpropagation algorithm that applies gradient descent to an RNN by first "unwrapping" or "unrolling" the network through its time steps.
 
@@ -7482,7 +7487,7 @@ BPTT is the standard algorithm for training RNNs. It is an adaptation of the gen
 ##### Historical Context
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Historical Context of BPTT</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Historical Context of BPTT)</span></p>
 
 BPTT was introduced and refined by several researchers over the years, with key contributions from:
 
@@ -7495,7 +7500,7 @@ BPTT was introduced and refined by several researchers over the years, with key 
 ##### The Core Idea: Unwrapping in Time
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">From Recurrence to Depth</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(From Recurrence to Depth)</span></p>
 
 The foundational insight of BPTT is to train a recurrent network in the exact same way as a standard feed-forward network. This is achieved by conceptually transforming the RNN's temporal recursion into a spatial deep structure.
 
@@ -7520,7 +7525,7 @@ This unwrapped structure is simply another way to write down the recursive updat
 ##### The Backpropagation Procedure
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Backpropagation Procedure</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Backpropagation Procedure)</span></p>
 
 BPTT is a specific, algorithmically efficient implementation of gradient descent.
 
@@ -7531,7 +7536,7 @@ BPTT is a specific, algorithmically efficient implementation of gradient descent
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Algorithmic Efficiency</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Algorithmic Efficiency)</span></p>
 
 BPTT is a highly storage-efficient procedure. At each step of the backward pass, it only needs to account for the values present at that particular time step, as it leverages the already-computed values from the subsequent step. The complexity is linear in time, as it proceeds layer by layer.
 
@@ -7540,7 +7545,7 @@ BPTT is a highly storage-efficient procedure. At each step of the backward pass,
 ##### Input and Output Configurations
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Input and Output Configurations</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Input and Output Configurations)</span></p>
 
 The specific structure of the unwrapped network depends on the task at hand.
 
@@ -7554,7 +7559,7 @@ The specific structure of the unwrapped network depends on the task at hand.
 ##### Formalism for Training
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Simplifications for Derivation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Simplifications for Derivation)</span></p>
 
 For clarity in the following derivation, we will:
 
@@ -7566,7 +7571,7 @@ Let our RNN be given by the recursive form, and let our set of trainable paramet
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Loss Function for BPTT</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function for BPTT)</span></p>
 
 A typical loss function $L(\theta)$ for an RNN trained on a sequence of length $T$ is the mean squared error, averaged over time:
 
@@ -7585,7 +7590,7 @@ This section delves into the fundamental mechanics of training Recurrent Neural 
 To train any neural network, we must first define an objective. This objective is typically formulated as the minimization of a loss function, $L$, which measures the discrepancy between the network's predictions and the observed data. For a single observed time series, we can define a total loss over the entire sequence.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Total Loss</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total Loss)</span></p>
 
 The total loss, $L$, for a given time series is the sum of the losses incurred at each individual time step. If we denote the loss at a specific time step $t$ as $l_t$, the total loss is given by:
 
@@ -7596,7 +7601,7 @@ This decomposition is possible due to the linearity of gradients, which allows u
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Squared Error Loss</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Squared Error Loss)</span></p>
 
 For concreteness, a common choice for the loss function is the squared error loss. Let $x_{\text{obs}}(t)$ be the observed value at time $t$ and $x(t)$ be the value predicted by our model. The loss at that time step, $l_t$, would be:
 
@@ -7605,7 +7610,7 @@ $$l_t = (x_{\text{obs}}(t) - x(t))^2$$
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Generality of the Loss</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Generality of the Loss)</span></p>
 
 While we use the squared error for this example, the derivations that follow are general. You can substitute any differentiable loss function $l_t$ without changing the core mechanics of the backpropagation algorithm. The loss $l_t$ is a function of both the system parameters, which we'll call $\theta$, and the network's state or activation at that time, $x(t)$.
 
@@ -7616,7 +7621,7 @@ While we use the squared error for this example, the derivations that follow are
 Our goal is to adjust the model's parameters, $\theta_i$, to minimize the total loss $L$. We achieve this using gradient descent, which requires computing the derivative of the loss with respect to each parameter, $\frac{\partial L}{\partial \theta_i}$.
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">The Total Loss Gradient</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(The Total Loss Gradient)</span></p>
 
 By the linearity of the gradient operator, the derivative of the total loss is the sum of the derivatives of the per-time-step losses:
 
@@ -7629,7 +7634,7 @@ Consequently, to calculate the gradient of the loss at time $t$, we must sum ove
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Decomposing the Gradient with the Chain Rule</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Decomposing the Gradient with the Chain Rule)</span></p>
 
 Applying the chain rule to the term $\frac{\partial l_t}{\partial \theta_i}$ reveals this dependency. The loss $l_t$ is an explicit function of the state $x_t$. The state $x_t$, in turn, is a function of all previous states, including $x_\tau$, where the parameter $\theta_i$ has an effect. This creates a recursive dependency that we must unroll.
 
@@ -7646,7 +7651,7 @@ Let's break down the components of this expression:
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Jacobian Matrix Dimensions</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Jacobian Matrix Dimensions)</span></p>
 
 To better understand the mathematical objects we are manipulating, consider an RNN with an $m$-dimensional state vector $x \in \mathbb{R}^m$. The dimensions of the terms in the chain rule are as follows:
 
@@ -7661,7 +7666,7 @@ To better understand the mathematical objects we are manipulating, consider an R
 The most important and complex term in our gradient expression is the temporal Jacobian, $\frac{\partial x_t}{\partial x_\tau}$. This term quantifies the long-range dependencies in the sequence. We can decompose it further by another application of the chain rule.
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Unrolling the Temporal Jacobian</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Unrolling the Temporal Jacobian)</span></p>
 
 The state $x_t$ is a direct function of $x_{t-1}$, which is a function of $x_{t-2}$, and so on. We can express the derivative of $x_t$ with respect to a distant past state $x_\tau$ as a product of intermediate, single-step Jacobians:
 
@@ -7680,7 +7685,7 @@ Each term in this product, $\frac{\partial x_u}{\partial x_{u-1}}$, is the Jacob
 Let's now investigate the structure of the single-step Jacobian, $\frac{\partial x_u}{\partial x_{u-1}}$, to understand the long-term behavior of this product.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A Simple RNN Update Rule</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A Simple RNN Update Rule)</span></p>
 
 Consider a standard RNN where the state $x_t$ is updated according to the following rule:
 
@@ -7702,7 +7707,7 @@ $$\frac{\partial x_t}{\partial x_\tau} = \prod_{u=\tau+1}^{t} \left( \text{diag}
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Exploding and Vanishing Gradient Problem</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Exploding and Vanishing Gradient Problem)</span></p>
 
 This product of matrices is the source of a fundamental instability in training RNNs. The expression involves repeatedly multiplying the weight matrix $W$, effectively raising it to the power of the time difference, $t-\tau$. The behavior of this matrix power is governed by the eigenvalues of the matrices in the product.
 
@@ -7726,7 +7731,7 @@ The power of an LSTM lies in its internal structure, which is composed of a memo
 The most important component of the LSTM is the memory cell, which carries information through time. Its state, denoted by $c_t$, is updated at each time step $t$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Memory Cell Update</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Memory Cell Update)</span></p>
 
 The state of the memory cell $c_t$ at time step $t$ is updated according to the following equation:
 
@@ -7745,7 +7750,7 @@ Where:
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Intuition for the Memory Cell Update</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition for the Memory Cell Update)</span></p>
 
 This update equation has two primary parts:
 
@@ -8601,9 +8606,7 @@ Introduced in a 2023 ICML paper by Florian Hess et al., Generalized Teacher Forc
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Weighted Average State)</span></p>
 
-
 Unlike sparse teacher forcing, which replaces the model's state with the true state at certain time steps, generalized teacher forcing creates a new state, $\tilde{z}_t$, which is a weighted average of the model-propagated state and an estimate from the true data.
-
 
 </div>
 
@@ -8621,7 +8624,6 @@ where:
 * $f_{\theta}(\tilde{z}\_{t-1})$ is the one-step forward propagation of the previous state using the learned dynamics model $f_{\theta}$.
 * $\hat{z}_t$ is the latent state estimated from the real data observation $x_t$ at time $t$, typically obtained by inverting a decoder model.
 
-
 * $\alpha$ is a weighting parameter between 0 and 1 that balances the influence of the model's internal dynamics and the guidance from the real data.
 
 </div>
@@ -8629,15 +8631,12 @@ where:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(An Old Idea, Revisited)</span></p>
 
-
 This idea of blending model dynamics with data was first introduced by Kenji Doya in 1992. However, it remained dormant for a long time, partly because a principled method for choosing the mixing parameter $\alpha$ was not established. The key contribution of the modern approach is to provide a smart, adaptive choice for $\alpha$.
-
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(The Product Series of Jacobians)</span></p>
-
 
 To understand how to choose $\alpha$, we must analyze the product series of Jacobians, which governs gradient flow through time. The Jacobian of the map from $\tilde{z}_{t-1}$ to $\tilde{z}_t$ is crucial.
 
@@ -8661,12 +8660,10 @@ The product of Jacobians over $T$ time steps, which determines the magnitude of 
 
 $$\prod_{k=0}^{T-1} J_{T-k} = \prod_{k=0}^{T-1} (1 - \alpha_{T-k}) G_{T-k}$$  
 
-
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(An Optimal Choice for $\alpha$)</span></p>
-
 
 The derivation above reveals a clear strategy for controlling gradient flow. The magnitude of the gradients is determined by the singular values of the Jacobian product. If the largest singular value is much greater than 1, gradients will explode. If it is much less than 1, they will vanish.
 
@@ -8680,12 +8677,10 @@ $$\alpha_t = 1 - \frac{1}{\sigma_{\max}(G_t)}$$
 
 where $\sigma_{\max}(G_t)$ is the maximum singular value of the dynamics Jacobian $G_t$. By choosing $\alpha$ in this way, we can adaptively keep the gradients in check, preventing both exploding and vanishing gradient problems.
 
-
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical Implementation)</span></p>
-
 
 A significant caveat is that computing a full Singular Value Decomposition (SVD) to find $\sigma_{\max}$ at every single time step is computationally prohibitive. However, this theoretical result provides the foundation for practical approximations. In practice, one can:
 
@@ -8694,9 +8689,7 @@ A significant caveat is that computing a full Singular Value Decomposition (SVD)
 
 This makes the automatic, adaptive regulation of gradients feasible for training on real-world systems. Furthermore, an optimal choice of $\alpha$ not only stabilizes gradients but also tends to make the loss landscape nearly convex, greatly aiding the optimization process.
 
-
 </div>
-
 
 #### Summary of Techniques
 
@@ -8706,7 +8699,3150 @@ To effectively reconstruct dynamical systems, especially from real-world data, i
 * Sparse Teacher Forcing: (Referenced as a point of comparison) This involves occasionally replacing the model's predicted state with the ground truth state, providing a strong corrective signal.
 * Generalized Teacher Forcing: A more sophisticated, control-theoretic method that creates a new state at each time step as a weighted average of the model's prediction and a data-derived estimate. The weighting parameter, $\alpha$, can be chosen adaptively to regulate the singular values of the system's Jacobians, ensuring stable gradients and leading to a smoother, more convex loss landscape.
 
+## Lecture 11
 
-[SINDy](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/sindy/)
+This lecture provides a comprehensive study of how Recurrent Neural Networks (RNNs) can be used as surrogate models for dynamical systems. We cover the goals and evaluation of dynamical systems reconstruction, specialized training methodologies for chaotic systems, the analytically tractable Piecewise Linear RNN (PLRNN), bifurcation phenomena during training, flow operator properties, Reservoir Computing, Autoencoders, and the integration of SINDy for latent dynamics discovery.
 
+### Dynamical Systems Reconstruction
 
+The primary objective in reconstructing dynamical systems using RNNs is to identify an approximate flow map, $\phi^*$, that effectively models the underlying dynamics of a system.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dynamical System Reconstruction)</span></p>
+
+A **dynamical system reconstruction** aims to find an approximate flow map $\phi^*$, typically modeled through an RNN, that is **topologically conjugate** to the underlying dynamical system described by a flow operator $\phi$ on a domain $D$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Beyond Prediction)</span></p>
+
+In a scientific context, we do not view these RNNs merely as black-box prediction models. Instead, we treat them as **surrogate models**. The goal is to capture the dynamical properties of the system to gain insight into the underlying mechanisms governing the observed data.
+
+</div>
+
+#### Assessing Reconstruction Quality
+
+When evaluating how well an RNN has reconstructed a dynamical system, we look beyond simple error metrics and focus on geometrical, temporal, and dynamical properties.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Key Performance Measures)</span></p>
+
+* **Geometrical Properties:** We assess the overlap in state space. One common measure is the Kullback-Leibler (KL) divergence applied to the distribution of states in the state space.
+* **Temporal Properties:** To quantify how well the long-term temporal properties are matched, we use the Hellinger distance defined on the power spectra of the true and generated signals.
+* **Dynamical Properties:** We calculate and compare the Lyapunov exponents (specifically the maximal Lyapunov exponent, $\lambda_{\max}$) of both the original system and the reconstructed model.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Attractor Localization)</span></p>
+
+In an ideal reconstruction, the RNN can detect features of the underlying system that were not explicitly present in the training trajectories. For instance, a model trained only on trajectories residing on an attractor might still accurately localize the system’s equilibria (fixed points).
+
+</div>
+
+### Training Methodologies for Chaotic Systems
+
+Training RNNs on chaotic systems presents significant challenges, most notably the exploding and vanishing gradient problem, which is often inevitable when dealing with underlying chaotic dynamics. To mitigate these issues, specialized training techniques are employed. These techniques build on the teacher forcing and generalized teacher forcing methods discussed in Lecture 10.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Teacher Forcing)</span></p>
+
+**Teacher Forcing** is a training technique where the latent state $z_t$ of the RNN is replaced by an estimate $\hat{z}_t$ derived from the actual data.
+
+* The estimate $\hat{z}_t$ is obtained by inverting (or pseudo-inverting) the decoder/observation function $G$.
+* This replacement occurs every $\tau$ time steps.
+* The interval $\tau$ is chosen based on the Lyapunov spectrum or the maximal Lyapunov exponent of the system.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generalized Teacher Forcing)</span></p>
+
+**Generalized Teacher Forcing** is a refinement where, instead of a total replacement, a weighted average is used to update the state:
+
+$$z_t^{\text{updated}} = \alpha \, z_t^{\text{forward}} + (1 - \alpha)\,\hat{z}_t^{\text{data}}$$
+
+where:
+* $z_t^{\text{forward}}$ is the state predicted by the RNN.
+* $\hat{z}_t^{\text{data}}$ is the estimate inferred from the data.
+* $\alpha$ is a weighting factor.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization of $\alpha$)</span></p>
+
+The parameter $\alpha$ can be adjusted optimally by considering the Singular Value Decomposition (SVD) of the underlying Jacobian matrix of the system. Recall from Lecture 10 that the optimal choice is $\alpha_t = 1 - \frac{1}{\sigma_{\max}(G_t)}$, which keeps gradient magnitudes controlled.
+
+</div>
+
+### Piecewise Linear Recurrent Neural Networks (PLRNN)
+
+To ensure mathematical tractability and interpretability, we often utilize Piecewise Linear Recurrent Neural Networks (PLRNN).
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(PLRNN State Equations)</span></p>
+
+The latent variables $z_t$ in a PLRNN evolve according to the following multivariate map:
+
+$$z_t = A z_{t-1} + W \phi(z_{t-1}) + h$$
+
+where:
+* $A$ is a weight matrix (often diagonal).
+* $W$ is the weight matrix for the non-linear term.
+* $h$ is a bias term.
+* $\phi$ is the Rectified Linear Unit (ReLU) activation function, defined as $\phi(z) = \max(0, z)$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Observation Function)</span></p>
+
+The latent states are linked to the actual observations $x_t$ through an observation function $G$:
+
+$$x_t = G(z_t;\, \lambda)$$
+
+where $\lambda$ represents trainable parameters.
+
+</div>
+
+#### Mathematical Analysis of Trained Models
+
+The piecewise linear nature of the PLRNN allows us to reformulate the system into a more analytically accessible form.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Matrix Representation of ReLU)</span></p>
+
+The $\max$ operator in the PLRNN can be rewritten as a time-dependent diagonal matrix $D_{t-1}$, allowing the system to be expressed as an affine mapping:
+
+$$z_t = (A + W D_{t-1})\, z_{t-1} + h$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Construction of the Indicator Matrix)</span></p>
+
+1. Let $\phi(z) = \max(0, z)$ be the ReLU activation function.
+2. Define a diagonal matrix $D_t$ such that the $i$-th element on the diagonal corresponds to the $i$-th component of the state vector $z_t$.
+3. Set the diagonal entries as:
+
+$$D_{ii} = \begin{cases} 1 & \text{if } z_i > 0 \\ 0 & \text{if } z_i \leq 0 \end{cases}$$
+
+4. Substituting this into the state equation: $W\phi(z_{t-1}) = W D_{t-1} z_{t-1}$.
+5. The full state equation becomes:
+
+$$z_t = A z_{t-1} + W D_{t-1} z_{t-1} + h = (A + W D_{t-1})\, z_{t-1} + h$$
+
+This confirms that for any given state $z$, the system behaves as a linear mapping specific to the "quadrant" or region of state space defined by the signs of the components of $z$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Points of the Map)</span></p>
+
+A **fixed point** $z^*$ of the map is a state that remains constant under the iteration of the map, such that $z_t = z_{t-1} = z^*$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Analytical Extraction of Fixed Points)</span></p>
+
+To find the fixed point $z^*$, we assume the system has settled into a specific linear region defined by $D^*$:
+
+1. Start with the steady-state equation: $z^* = A z^* + W D^* z^* + h$.
+2. Group the terms involving $z^*$: $z^* - A z^* - W D^* z^* = h$.
+3. Factor out $z^*$: $(I - A - W D^*)\, z^* = h$.
+4. Solve for $z^*$:
+
+$$z^* = (I - A - W D^*)^{-1} h$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Consistency Constraint)</span></p>
+
+While the above formula provides a candidate for a fixed point, it is not purely analytical. One must verify that the resulting $z^*$ is **consistent** with the matrix $D^*$. That is, the signs of the components of the calculated $z^*$ must actually produce the diagonal entries of $D^*$ used in the calculation.
+
+</div>
+
+### Fixed Points and Periodic Orbits in RNNs
+
+In the study of RNNs as dynamical systems, identifying the long-term behavior of the system—specifically its fixed points and periodic orbits (cycles)—is essential for understanding the model’s computational properties and its validity as a surrogate for real-world systems.
+
+#### The Consistency Problem in Fixed Point Localization
+
+To find an exact solution for a fixed point $Z^*$, we must ensure that the state of the system is consistent with the activation of its units. In many RNN architectures, the transition is governed by a diagonal matrix $D$ that represents the "on/off" state of the neurons (often associated with rectified linear units or similar activations).
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Consistency Condition)</span></p>
+
+A candidate fixed point $Z^*$ and its associated configuration matrix $D^*$ are considered **consistent** if and only if:
+
+$$D_{ii}^* = 1 \iff Z_i^* > 0$$
+
+and $D_{ii}^* = 0$ otherwise.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Combinatorial Complexity)</span></p>
+
+Finding a fixed point is fundamentally a combinatorial problem. Because each unit in a hidden layer of dimension $m$ can be either active or inactive, there are $2^m$ possible configurations for the matrix $D^*$. In low-dimensional spaces, one could exhaustively check every configuration, but this becomes computationally intractable as $m$ increases.
+
+</div>
+
+#### Mathematical Formulation of $k$-Cycles
+
+Beyond individual fixed points, we are interested in cycles—sets of points that the system visits in a repeating sequence.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($k$-Cycle)</span></p>
+
+A **$k$-cycle** is a set of $k$ distinct points $\lbrace Z_1^*, Z_2^*, \dots, Z_k^* \rbrace$ such that each point is a fixed point of the $k$-times iterated map $f^{(k)}$. That is:
+
+$$Z_{m}^* = f^{(k)}(Z_{m}^*) \quad \text{for } m \in \lbrace 1, \dots, k \rbrace$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Iterated Map of an RNN)</span></p>
+
+For a system defined by an affine transition of the form $Z_t = (A + W D_{t-1})\, Z_{t-1} + h$, the two-time iterated map is expressed as:
+
+$$Z_t = (A + W D_{t-1}) \left[ (A + W D_{t-2})\, Z_{t-2} + h \right] + h$$
+
+Expanding this, we obtain:
+
+$$Z_t = (A + W D_{t-1})(A + W D_{t-2})\, Z_{t-2} + (A + W D_{t-1})\, h + h$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(General $k$-Iteration)</span></p>
+
+To derive the general form for a $k$-times iterated map, we apply the recursive rule repeatedly:
+
+1. Let the Jacobian of the map be defined as $J_t = (A + W D_t)$.
+2. For a $k$-step iteration from $Z_{t-k}$ to $Z_t$, the state is:
+
+$$Z_t = \left( \prod_{j=1}^{k} J_{t-j} \right) Z_{t-k} + \sum_{i=1}^{k-1} \left( \prod_{j=1}^{i} J_{t-j} \right) h + h$$
+
+3. This resulting expression remains an affine map of the initial state $Z_{t-k}$. Thus, finding a $k$-cycle reduces to solving a linear system, provided the sequence of matrices $\lbrace D_{t-1}, \dots, D_{t-k} \rbrace$ is known and consistent with the resulting states.
+
+</div>
+
+#### Search Algorithms for Fixed Points and Cycles
+
+Given the $2^m$ complexity of the combinatorial search, efficient numerical procedures are required to locate these points exactly rather than relying on approximations.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(The "Virtual Point" Heuristic)</span></p>
+
+A highly efficient heuristic for finding fixed points and cycles involves the following steps:
+
+1. **Initialization:** Start with an initial configuration matrix $D$.
+2. **Candidate Computation:** Solve the affine equation to find a candidate solution $Z^*$ (a "virtual" fixed point).
+3. **Consistency Check:** Verify if the signs of $Z^*$ match the configuration $D$.
+4. **Update:** If inconsistent, use the configuration $D$ derived from the current $Z^*$ to initialize the next round.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Efficiency of the Virtual Point Heuristic)</span></p>
+
+While the theoretical worst-case remains combinatorial, this heuristic often behaves linearly in time relative to the dimension. For certain matrix conditions, it can even be proven to converge in at most linear time. This efficiency is crucial for making RNNs "tractable" or "interpretable," allowing researchers to use them as surrogate systems to analyze underlying real-world data.
+
+</div>
+
+### Training Dynamics and Bifurcation Analysis
+
+The process of training a neural network is itself a dynamical system. When we update parameters using gradient descent, we are moving through a parameter space that can fundamentally change the qualitative behavior of the network’s internal dynamics.
+
+#### Optimization as a Dynamical System
+
+Consider a standard gradient descent update rule:
+
+$$\theta_{\text{next}} = \theta_{\text{prev}} - \eta \nabla L(\theta_{\text{prev}})$$
+
+where $\theta$ represents the parameters (weights $W$, biases $h$) and $L$ is the loss function.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dynamical Phenomena in Training)</span></p>
+
+Because the training process is a recursive update, it is subject to all dynamical phenomena:
+
+* **Oscillations:** The parameters may bounce around an optimum.
+* **Chaos:** The training path may become unpredictable.
+* **Attractors:** The system may converge to stable fixed points.
+* **Information Loss:** If the system converges too strongly to a fixed point, it may lose the gradient information required to learn the underlying system.
+
+</div>
+
+#### Case Study: The Single-Unit RNN
+
+To understand how parameter changes affect system behavior, we examine a one-unit RNN with a sigmoid activation function $\phi$.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1-Unit Scalar System)</span></p>
+
+Let $W$ and $Z$ be scalars. The system is defined by:
+
+$$Z_t = \phi(W Z_{t-1} + h)$$
+
+As we vary the parameters $W$ (weight) and $h$ (bias), the system undergoes various bifurcations:
+
+* **Varying $h$:** Changing the bias shifts the sigmoid function along the $Z_{t-1}$ axis.
+* **Varying $W$:** Changing the weight alters the slope (steepness) of the function.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Pitchfork Bifurcation in RNNs)</span></p>
+
+If the sigmoid function $\phi$ is perfectly symmetric around its inflection point, increasing the weight $W$ can lead to a **pitchfork bifurcation**.
+
+* Initially, the system has a single stable fixed point.
+* As $W$ increases and the slope becomes steeper, two new stable fixed points simultaneously appear while the original fixed point becomes unstable.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bifurcation Visualization)</span></p>
+
+This is visualized in a bifurcation graph where the stable states are plotted as a function of $W$. Understanding these transitions is vital because moving through a bifurcation during training can radically change the loss landscape and the network’s ability to represent the target system.
+
+</div>
+
+### Bifurcations in Neural Dynamics
+
+In high-dimensional recurrent networks, the system’s behavior is governed by its fixed points and their stability. As we adjust parameters during training, the system may undergo qualitative changes in its topological structure, known as **bifurcations**. This connects to the general bifurcation theory introduced in Part I.
+
+#### The Saddle-Node Bifurcation in Sigmoidal Units
+
+Consider a single sigmoidal unit within a network where we adjust a parameter $H$. As $H$ varies, the intersection between the state update function and the bisectrix changes.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Saddle-Node Bifurcation Mechanism)</span></p>
+
+As we shift the curve defined by $H$, it will eventually touch the bisectrix. This contact point gives rise to a **saddle-node bifurcation**. Before this point, we might have two stable fixed points (one at a lower value, one at an upper value). As we move through the bifurcation point, these fixed points can merge and disappear, or a single stable point may remain.
+
+</div>
+
+#### Bifurcation Graphs and Parameter Sensitivity
+
+We can visualize these transitions by plotting the fixed point $z^*$ against the parameter $H$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bifurcation Graph)</span></p>
+
+A **bifurcation graph** represents the location and stability of fixed points $z^*$ as a function of a system parameter $H$. For a sigmoidal system undergoing a saddle-node bifurcation, the graph typically displays a characteristic "arc" or "fold" where stable and unstable branches meet.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Learning Barrier — Kenji Doya, 1998)</span></p>
+
+In a 1998 paper, Kenji Doya illustrated why certain configurations are unlearnable. If a desired state for a network is located at an unstable node surrounded by a cycle, gradient descent will fail to stabilize the system at that point. Because the target is unstable, the system will naturally drift away, preventing the network from ever reaching the desired output.
+
+</div>
+
+#### Impact on Training: The Loss Landscape
+
+Training an RNN via gradient descent involves iteratively readjusting parameters like $H$ to minimize a loss function. However, bifurcations create significant obstacles for this process.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The "Jump" Phenomenon)</span></p>
+
+Imagine the system is in a regime with two stable fixed points (lower and upper arcs). If the target $z$ requires increasing $H$, the state will move along the current arc. Upon reaching the bifurcation point, the current stable equilibrium disappears, forcing the state to "jump" abruptly to the other arc. This transition causes a steep, discontinuous jump in the loss function.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Gradient Behavior at Bifurcations)</span></p>
+
+For certain types of bifurcations and dynamical systems, it can be formally proven that at the bifurcation point, the gradients will either:
+
+1. **Diverge/Explode:** Tend toward infinity.
+2. **Abruptly vanish:** Instantly go to zero.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Empirical Loss Landscapes)</span></p>
+
+Research (e.g., Eisman et al.) using algorithms like PyDSTool to locate bifurcation curves has shown that huge jumps in the loss landscape coincide exactly with these curves. When plotting parameter trajectories during training, the loss spikes precisely as the trajectory crosses a bifurcation boundary.
+
+</div>
+
+#### Avoiding Bifurcations with Generalized Teacher Forcing
+
+Standard backpropagation through time (BPTT) is highly susceptible to the instabilities caused by bifurcations. However, specific algorithms can mitigate this.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Smooth Loss via Alignment)</span></p>
+
+Generalized Teacher Forcing (GTF), as defined earlier, is an algorithm that can formally be shown to avoid certain bifurcations. By aligning the system with the observed data at each time point, GTF "smooths out" the loss function. It effectively pushes the system into the correct dynamical regime without requiring it to cross the discontinuous "cliffs" in the loss landscape found in straightforward BPTT.
+
+</div>
+
+### Flow Operators and Continuous-Time RNNs
+
+While RNNs are often defined in discrete time, they are frequently used to approximate systems that exist in continuous time. To do this accurately, the network must behave like a true flow operator.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Flow Operator)</span></p>
+
+A **flow operator** maps an initial state $x_0$ to a future state $x_t$ after a duration $t$. For a true flow operator, we expect:
+
+1. The ability to continuously vary $\Delta t$ and obtain valid outputs.
+2. Adherence to the semi-group property.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Semi-Group Property)</span></p>
+
+If we advance a system by time steps $s$ and $t$ in succession, the resulting state must be the same as advancing the system by a single step of $(s + t)$:
+
+$$\Phi_{s+t} = \Phi_s \circ \Phi_t = \Phi_t \circ \Phi_s$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Path Independence)</span></p>
+
+In a training context, if we have data $x_0$ and we want to reach a state at a future time, the result must be identical regardless of the path taken:
+
+* **Path A:** Move from $x_0$ to $x_1$ (time $\tau_1$) then to $x_2$ (time $\tau_2$).
+* **Path B:** Move directly from $x_0$ to $x_2$ (time $\tau_1 + \tau_2$).
+* **Path C:** Move by $\tau_2$ first, then $\tau_1$.
+
+All these paths must yield the same result for the system to be a mathematically consistent flow.
+
+</div>
+
+#### Recursive Descriptions and Neutral Elements
+
+To enforce these properties, we can define the RNN using a recursive structure, as suggested by Chen and Wu (2003).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Recursive Flow Approximation)</span></p>
+
+A system can be defined by the following recursive description:
+
+$$z_t = z_{t - \Delta\tau} + \Delta\tau \cdot \sigma(z_{t - \Delta\tau},\, \Delta\tau)$$
+
+where $\sigma$ is an activation function (which could itself be a deep feed-forward neural network) and $\Delta\tau$ is the time step.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Convergence to the Neutral Element)</span></p>
+
+We demand that if the time step $\Delta t$ is zero, the state remains unchanged (the neutral element). Using the recursive definition:
+
+$$z_t = \lim_{\Delta\tau \to 0} \left[ z_{t - \Delta\tau} + \Delta\tau \cdot \sigma(\dots) \right]$$
+
+As $\Delta\tau \to 0$:
+
+$$z_t = z_t + 0 \cdot \sigma(\dots) = z_t$$
+
+This demonstrates that the recursive formulation automatically satisfies the neutral element property of a flow operator.
+
+</div>
+
+#### Enforcing Flow Properties through Loss Function Design
+
+Standard RNN training does not guarantee the semi-group properties. To ensure the learned model behaves like a physical flow, we must use regularization terms in the loss function.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Flow Operator Composition Law)</span></p>
+
+A true flow operator $f$ acting on a state $z_t$ with time steps $\tau_1$ and $\tau_2$ must satisfy the following composition law:
+
+$$f(z_t,\, \tau_1 + \tau_2) = f(f(z_t,\, \tau_1),\, \tau_2)$$
+
+This implies that advancing the system by $\tau_1$ and then by $\tau_2$ must be equivalent to advancing it by the combined step $\tau_1 + \tau_2$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Regularization as a Constraint Mechanism)</span></p>
+
+While we can attempt to design architectures that inherently respect these properties, a more flexible approach is to enforce them through the loss function. By adding a regularization term to the standard objective, we penalize the model when it deviates from the requirements of a flow operator. This principle can be extended to other physical constraints, such as Hamiltonian conservation laws.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(The Regularized Loss Function)</span></p>
+
+The complete training loss $\mathcal{L}$ is constructed as the sum of a standard Mean Squared Error (MSE) and a regularization term $\lambda$ that enforces the flow properties:
+
+$$\mathcal{L} = \text{MSE} + \lambda \sum \text{Deviations}$$
+
+where the deviations are defined as:
+
+1. **Composition Error:** The difference between a single step of $(\tau_1 + \tau_2)$ and the sequential application of $\tau_1$ and $\tau_2$:
+
+$$\lVert f(z_t,\, \tau_1 + \tau_2) - f(f(z_t,\, \tau_1),\, \tau_2) \rVert^2$$
+
+2. **Commutativity Error:** The difference resulting from swapping the order of $\tau_1$ and $\tau_2$:
+
+$$\lVert f(f(z_t,\, \tau_1),\, \tau_2) - f(f(z_t,\, \tau_2),\, \tau_1) \rVert^2$$
+
+</div>
+
+### Reservoir Computing (Echo State Machines)
+
+Training RNNs is notoriously difficult and computationally expensive. Techniques like generalized teacher forcing offer improvements, but **Reservoir Computing** (also known as Echo State Machines) approaches the problem from an entirely different perspective.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reservoir Computing)</span></p>
+
+First introduced by Jaeger and Haas (2004) in *Science*, **Reservoir Computing** is a type of RNN where the internal connectivity is fixed and only the output layer is trained. It aims to maintain the simplicity of linear regression while retaining the ability to approximate complex, nonlinear dynamical systems.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Core Idea)</span></p>
+
+The core concept is to project an input into a high-dimensional "pool" or reservoir of complex dynamics. Instead of meticulously training every connection in the network, we use a large, fixed reservoir that expresses a wide variety of dynamical behaviors. We then "shape" or "read out" these dynamics through a simple linear layer to match our observations.
+
+</div>
+
+#### Architecture and Dynamics of Reservoir Systems
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reservoir System Variables)</span></p>
+
+* $x_t \in \mathbb{R}^N$: The true observed state (e.g., a time series from a Lorenz system or temperature data).
+* $\hat{x}_t \in \mathbb{R}^N$: The network’s predicted state.
+* $z_t \in \mathbb{R}^M$: The reservoir state (or latent state).
+* **Dimensionality Constraint:** Crucially, $M \gg N$. The reservoir must be high-dimensional to provide a sufficiently rich "pool" of possibilities.
+
+</div>
+
+The reservoir state $z_t$ evolves according to a nonlinear function, typically utilizing a sigmoid activation:
+
+$$z_t = \sigma(W z_{t-1} + h + W_{\text{in}}\, s_t)$$
+
+where:
+* $W$: The internal reservoir connectivity matrix. This is **fixed** and not changed during training.
+* $W_{\text{in}}$: Input weights, also fixed.
+* $s_t$: External inputs or forced true states $x_t$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reservoir Connectivity Properties)</span></p>
+
+To prevent the reservoir from exhibiting "boring" dynamics (such as immediately collapsing to a fixed point), the matrix $W$ is carefully initialized:
+
+* **Sparse Connectivity:** Connections are often sparse.
+* **Spectral Norm:** The eigenvalue spectrum is typically scaled so the spectral norm is close to 1. This ensures the reservoir is at the "edge of chaos"—neither exploding nor decaying too rapidly.
+
+</div>
+
+The prediction $\hat{x}_t$ is generated via a linear mapping from the reservoir state:
+
+$$\hat{x}_t = B z_t$$
+
+In some cases, a basis expansion of $z_t$ is performed to improve performance. For example, concatenating $z_t$ with its squared terms: $\hat{x}_t = B [z_t;\, z_t^2]$. Importantly, the system remains linear in the parameters $B$.
+
+#### Training Reservoir Computers via Linear Regression
+
+Because the internal weights $W$ are fixed, the training process does not require backpropagation through time. Instead, it boils down to a simple regression problem.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Training vs. Inference)</span></p>
+
+* **Training (Entrainment):** The reservoir is forced with the true states $x_t$. We record the resulting reservoir states $z_t$.
+* **Test Time (Inference):** The true input $x_t$ is replaced by the network’s own previous prediction $\hat{x}_t$, letting the system run recursively.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Closed-Form Solution for Readout Weights)</span></p>
+
+The optimal readout matrix $B$ can be solved analytically by minimizing the Mean Squared Error:
+
+$$\mathcal{L} = \frac{1}{T} \sum_{t=1}^T \lVert x_t - B z_t \rVert^2$$
+
+Setting the derivative with respect to $B$ to zero:
+
+$$\frac{\partial \mathcal{L}}{\partial B} = \sum 2(x_t - B z_t)\, z_t^T = 0$$
+
+This yields the closed-form solution:
+
+$$B = \left( \sum_{t=1}^T x_t\, z_t^T \right) \left( \sum_{t=1}^T z_t\, z_t^T \right)^{-1}$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Readout Matrix)</span></p>
+
+1. Represent the loss in terms of the $L_2$ norm: $\mathcal{L} \propto (x_t - B z_t)^T (x_t - B z_t)$.
+2. Expand the product: $x_t^T x_t - z_t^T B^T x_t - x_t^T B z_t + z_t^T B^T B z_t$.
+3. Differentiate with respect to $B$:
+   * The derivative of $-2\, x_t^T B z_t$ with respect to $B$ is $-2\, x_t\, z_t^T$.
+   * The derivative of $z_t^T B^T B z_t$ with respect to $B$ is $2\, B z_t\, z_t^T$.
+4. Equate to zero: $\sum x_t\, z_t^T = B \sum z_t\, z_t^T$.
+5. Isolate $B$ by multiplying by the inverse of the covariance-like matrix of reservoir states:
+
+$$B = \left(\sum x_t\, z_t^T\right) \left(\sum z_t\, z_t^T\right)^{-1}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Practical Application)</span></p>
+
+In practice, training a reservoir computer is "one line of Python code." Once the reservoir is entrained with the training data and the matrix $B$ is calculated, the model can predict complex sequences (like the Lorenz system) with surprising accuracy, provided the reservoir properties (spectral norm, sparsity) are correctly tuned.
+
+</div>
+
+#### Refining Reservoir Computing for Topology Preservation
+
+While standard Reservoir Computing provides a computationally efficient framework for time-series prediction, it often fails to capture the true limiting dynamics of a system—the behavior as $t \to \infty$. To reconstruct a dynamical system properly, the model must do more than minimize immediate error; it must replicate the system’s invariant properties.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reservoir Weight Constraints)</span></p>
+
+To ensure the reservoir remains stable and possesses the "Echo State Property," the internal weight matrix $W$ is typically constrained. A common condition is that the maximum singular value $\sigma_{\max}$ of $W$ is constrained:
+
+$$\sigma_{\max}(W) \leq 1$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multi-Step Loss Function)</span></p>
+
+Instead of minimizing the error for just $t+1$, we minimize the squared deviations over a window $U$:
+
+$$\mathcal{L}_{\text{multi}} = \sum_{u=0}^{U} \sum_{t} \lVert b \cdot f^u(z_{t-u}) - x_t \rVert^2$$
+
+where:
+* $b$ is the readout matrix.
+* $f^u$ represents the $u$-th composition of the reservoir’s recurrent transition function.
+* $z_{t-u}$ is the latent state at time $t-u$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Multi-Step Prediction)</span></p>
+
+By forcing the network to predict multiple steps into the future using its own previous predictions (recursive mode), we encourage the system to obey longer-term dynamics. This prevents the "drift" often seen in models trained only on single-step transitions.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Statistical Regularization)</span></p>
+
+The total loss $\mathcal{L}$ can be augmented by a penalty term that measures the deviation of invariant statistics:
+
+$$\mathcal{L} = \text{MSE} + \lambda \lVert C_{\text{data}} - C_{\text{model}} \rVert$$
+
+where $C$ represents a dynamical invariant such as:
+
+* **Maximum Lyapunov Exponent:** The rate of exponential separation of nearby trajectories.
+* **Lyapunov Spectrum:** The full set of exponents characterizing the system’s stability.
+* **Fractal Dimensionality:** Measures like the Correlation Dimension or the Kaplan-Yorke Dimension.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Physics-Based Training)</span></p>
+
+This approach explicitly builds the "physics" or the "limiting dynamics" into the training process. If the true system is chaotic with a specific fractal dimension, we penalize the neural network if its autonomous behavior produces a different dimensionality.
+
+</div>
+
+### Autoencoders: Nonlinear Dimensionality Reduction
+
+A central challenge in dynamical systems reconstruction is dimensionality. While a system might be observed in a high-dimensional space $X \in \mathbb{R}^D$, its true degrees of freedom often live on a much lower-dimensional manifold. An **Autoencoder** (AE) is a feed-forward neural network designed to learn a compressed representation of the input data. Unlike PCA, which is limited to linear projections, Autoencoders can capture nonlinear manifolds.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Autoencoder Structure)</span></p>
+
+An **Autoencoder** consists of two primary components:
+
+1. **Encoder** ($\phi$): Maps the high-dimensional input $x_t$ to a low-dimensional latent state $z_t$.
+2. **Decoder** ($\phi^{-1}$): Maps the latent state $z_t$ back to the reconstructed input $\hat{x}_t$.
+
+The architecture follows an "hourglass" shape, where the inner layer (the bottleneck) has significantly fewer units than the input/output layers.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(The Reconstruction Objective)</span></p>
+
+The objective of the Autoencoder is to approximate the identity function through a bottleneck. We minimize the Mean Squared Error (MSE):
+
+$$\mathcal{L}_{\text{AE}} = \sum_{t} \lVert x_t - \hat{x}_t \rVert^2 = \sum_{t} \lVert x_t - \phi^{-1}(\phi(x_t)) \rVert^2$$
+
+Successful training implies that:
+
+$$x_t \approx \phi^{-1}(\phi(x_t))$$
+
+This suggests that $\phi^{-1}$ acts as an approximate inverse of $\phi$, and $z_t = \phi(x_t)$ captures the essential information required to reconstruct $x_t$.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deep Autoencoder: Layer-wise Formulation)</span></p>
+
+Modern Autoencoders are implemented as Deep Neural Networks, alternating affine mappings with nonlinear activation functions. The latent representation $z_t$ for a three-layer encoder can be written as:
+
+$$z_t = \sigma(W_3\, \sigma(W_2\, \sigma(W_1\, x_t + h_1) + h_2) + h_3)$$
+
+where $\sigma$ is a nonlinearity like the ReLU ($\max(0, x)$), $W_i$ are weight matrices, and $h_i$ are bias vectors. The decoder follows a symmetric structure to expand $z_t$ back to the original dimensionality.
+
+</div>
+
+### Joint Manifold Discovery and SINDy Reconstruction
+
+The ultimate goal in modern reconstruction (e.g., Champion and Brunton, 2019) is to combine the dimensionality reduction of Autoencoders with the interpretability of structural models like SINDy (Sparse Identification of Non-linear Dynamics). This builds upon the SINDy framework introduced in earlier lectures.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Latent Dynamics Assumption)</span></p>
+
+We assume that while our measurements $x_t$ are high-dimensional and correlated, they are governed by a low-dimensional latent dynamic $\dot{z} = f(z)$. By training an Autoencoder and a dynamical model simultaneously, we identify the coordinate system ($z$) in which the dynamics are most "sparse" or "simple."
+
+</div>
+
+#### SINDy in Latent Space
+
+Once the Autoencoder projects the data into the latent space $z_t$, we apply the SINDy framework to identify the governing differential equations.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SINDy in Latent Space)</span></p>
+
+We represent the dynamics of the latent state $z$ using a library of candidate basis functions $\Theta(z)$:
+
+$$\dot{z} = \Theta(z)\,\Xi$$
+
+where:
+* $\Theta(z)$ contains functions like polynomials ($z_1, z_2, z_1^2, z_1 z_2, \dots$) or trigonometric functions.
+* $\Xi$ is a sparse matrix of coefficients that determines which terms in the library actually contribute to the dynamics.
+
+</div>
+
+#### The Autoencoder-SINDy Architecture
+
+To move from high-dimensional observations $x$ to a low-dimensional latent space $z$, we utilize an Autoencoder structure combined with a dynamics model:
+
+* **Encoder** ($\phi$): A function that projects the input observations into a latent space: $z = \phi(x)$.
+* **Decoder/Approximate Inverse** ($s$): A function that maps the latent state back to the observation space: $\hat{x} = s(z)$. Note that $s$ is an approximation of $\phi^{-1}$.
+* **Latent Dynamics:** Within the latent space, the dynamics are governed by a function $\Theta(z)\,\xi$, representing the identified vector field.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Parsimonious Coordinates)</span></p>
+
+This configuration allows the model to learn a coordinate transformation where the dynamics become parsimonious (sparse). Instead of modeling complex, high-dimensional noise, the system identifies the "true" underlying degrees of freedom.
+
+</div>
+
+#### Mathematical Formulation of the Loss Function
+
+The training of this integrated system relies on a multi-term loss function designed to satisfy reconstruction accuracy, dynamical consistency, and sparsity.
+
+**I. Reconstruction Loss**
+
+The first term ensures the autoencoder can accurately reconstruct the input signal:
+
+$$L_{\text{rec}} = \lVert x_t - s(\phi(x_t)) \rVert^2$$
+
+**II. Latent Space Derivative Loss**
+
+To ensure the dynamics in the latent space match the observed temporal evolution of the data, we must relate the latent derivatives $\dot{z}$ to the empirical observation derivatives $\dot{x}$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Latent Derivatives via the Chain Rule)</span></p>
+
+Given the relationship $z = \phi(x)$, we find the temporal derivative $\dot{z}$ by applying the chain rule:
+
+$$\dot{z} = \frac{d}{dt} \phi(x) = \nabla_x \phi(x) \cdot \frac{dx}{dt}$$
+
+In the context of our learned dynamics $\Theta(z)\,\xi$, we require:
+
+$$\nabla_x \phi(x) \cdot \dot{x} \approx \Theta(z)\,\xi$$
+
+Thus, the latent derivative loss is defined as:
+
+$$L_{\dot{z}} = \lVert \nabla_x \phi(x) \cdot \dot{x} - \Theta(z)\,\xi \rVert^2$$
+
+where $\dot{x}$ is an empirical estimate (e.g., first-order temporal differences).
+
+</div>
+
+**III. Observation Space Derivative Loss**
+
+We also enforce that the derivatives reconstructed from the latent space match the empirical derivatives in the original observation space.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Observation Derivatives)</span></p>
+
+Starting from $x \approx s(z)$, the temporal derivative is:
+
+$$\dot{x} \approx \frac{d}{dt} s(z) = \nabla_z s(z) \cdot \dot{z}$$
+
+Substituting the latent dynamics $\dot{z} = \Theta(z)\,\xi$:
+
+$$\dot{x} \approx \nabla_z s(z) \cdot (\Theta(z)\,\xi)$$
+
+The resulting loss term is:
+
+$$L_{\dot{x}} = \lVert \dot{x} - \nabla_z s(z) \cdot (\Theta(z)\,\xi) \rVert^2$$
+
+</div>
+
+**IV. Regularization Loss**
+
+To enforce the sparsity of the identified dynamics (the SINDy principle), we apply an $L_1$ penalty to the parameters $\xi$:
+
+$$L_{\text{reg}} = \lVert \xi \rVert_1$$
+
+**V. Total Integrated Loss**
+
+The complete objective function is a weighted sum of these terms:
+
+$$L_{\text{total}} = L_{\text{rec}} + \lambda_1 L_{\dot{z}} + \lambda_2 L_{\dot{x}} + \lambda_3 L_{\text{reg}}$$
+
+where $\lambda_1, \lambda_2, \lambda_3$ are hyper-parameters that weigh the importance of reconstruction, dynamical fidelity, and sparsity.
+
+#### Empirical Validation: The Lorenz Attractor
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(High-Dimensional Lorenz Projection)</span></p>
+
+To evaluate the performance of this approach, it is tested on the Lorenz Attractor:
+
+1. **System Dynamics:** The Lorenz system is defined in 3D latent space $(z_1, z_2, z_3)$:
+   * $\dot{z}_1 = \sigma(z_2 - z_1)$
+   * $\dot{z}_2 = z_1(R - z_3) - z_2$
+   * $\dot{z}_3 = z_1 z_2 - V z_3$
+2. **Projection:** The 3D system is projected into a high-dimensional space (e.g., 128 dimensions) using non-linear basis functions $U_1, \dots, U_6$.
+3. **Task:** The model must take the 128D empirical data, project it back to a 3D latent manifold, and correctly identify the Lorenz equations.
+4. **Result:** The framework successfully retrieves the underlying 3D structure and the sparse coefficients of the vector field from the high-dimensional embedding.
+
+</div>
+
+#### Supplemental Insights: Reservoir Computing and Predictability
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Lyapunov Exponents and Predictability)</span></p>
+
+Including Lyapunov exponents in the training criterion significantly improves the "mean valid prediction time." Models trained with these dynamical constraints can predict the future state of a chaotic system for a much longer duration compared to those trained solely on standard error metrics.
+
+</div>
+
+## Lecture 12
+
+This lecture introduces Koopman Operator Theory as a principled framework for linearizing nonlinear dynamics, and then transitions from deterministic to stochastic formulations. We cover Koopman Autoencoders, the move to probabilistic latent variable models via Variational Autoencoders (VAEs), maximum likelihood estimation with latent variables, the Evidence Lower Bound (ELBO), and the reparameterization trick that makes end-to-end training possible.
+
+### Koopman Operator Theory
+
+In Lecture 11, we explored Autoencoders as a mechanism for extracting lower-dimensional embeddings from high-dimensional data. Our objective now shifts toward a more ambitious goal: identifying a specific space of observations where a nonlinear system can be approximated by a **linear** dynamical system. For linear systems, the mathematical landscape is well-defined — we possess explicit expressions for equilibria and can rigorously analyze global behavior. The formal mathematical background for this coordinate transformation is known as **Koopman Operator Theory**.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Koopman Operator)</span></p>
+
+The **Koopman operator** $K$ is a linear, infinite-dimensional operator that acts on functions of the state space (observation functions) rather than the state space itself.
+
+Given a discrete-time nonlinear dynamical system $x_{t} = f(x_{t-1})$, we define a set of observation functions or mappings $g$ that translate our observed state space into an infinite-dimensional Hilbert space $\mathcal{H}$. In this space, there exists a linear operator $K$ such that:
+
+$$K\, g(x_t) = g(f(x_t)) = g(x_{t+1})$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Infinite-Dimensional Caveat)</span></p>
+
+The fundamental theorem of Koopman theory guarantees that a linear representation exists if we move to an infinite-dimensional space. This is the primary challenge in practical applications: we must find a finite-dimensional approximation (a set of "basis functions") that captures the essential dynamics without requiring an infinite number of dimensions.
+
+</div>
+
+#### Deep Learning for Koopman Representations
+
+To move from theory to application, we utilize the framework proposed by Lusch, Kutz, and Brunton (2018). Their approach uses an Autoencoder to learn the optimal coordinate transformation that projects data into a space where dynamics are linear.
+
+The goal is to find a representation $\phi$ such that the forward iteration in the latent space is governed by a linear operator $\tilde{K}$:
+
+$$\phi(x_{t+1}) = \tilde{K}\, \phi(x_t)$$
+
+If the operator $\tilde{K}$ is diagonalizable, we can further simplify the representation. By expressing the dynamics in terms of the eigenvectors of $K$, we can replace $\tilde{K}$ with a diagonal matrix of eigenvalues $\Lambda$:
+
+$$\phi(x_{t+1}) = \Lambda\, \phi(x_t)$$
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Applicability and Limitations)</span></p>
+
+* **Simple Systems:** For systems like limit cycles, which exhibit peaks at finite frequencies in their power spectrum, this method works exceptionally well.
+* **Chaotic Systems:** In chaotic or more complex systems, the power spectrum is often "smeared out," making an exact linear approximation significantly more difficult.
+
+</div>
+
+#### Mathematical Parameterization of the Linear Operator
+
+To characterize the dynamics within the linear latent space, we parameterize the operator $\tilde{K}$ using its eigenvalues. Recall from the linear systems analysis in Part I that the real and imaginary parts of the eigenvalues $\lambda$ provide a complete characterization of the system’s behavior.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Eigenvalue Decomposition of $\tilde{K}$)</span></p>
+
+We define the eigenvalues $\lambda$ in terms of their real parts $\mu$ and imaginary parts $\omega$:
+
+$$\lambda = \mu \pm i\omega$$
+
+The general solution for a diagonalizable linear system can be expressed as a combination of eigenvectors $v_i$ and coefficients $c_i$:
+
+$$x(t) = \sum_{i=1}^{m} c_i\, v_i\, e^{\lambda_i t}$$
+
+Using Euler’s formula, this can be expanded to show the decay/growth and oscillatory components:
+
+$$e^{\lambda_i t} = e^{\mu_i t} (\cos(\omega_i t) + i \sin(\omega_i t))$$
+
+</div>
+
+To implement this in a real-valued neural network, we construct $\tilde{K}$ using a **block diagonal form**. Since imaginary eigenvalues always appear in complex conjugate pairs, we use $2 \times 2$ blocks to represent each pair.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Block Diagonal Construction)</span></p>
+
+Each block $B$ is defined by a decay term and a rotation matrix:
+
+$$B = e^{\mu \Delta t} \begin{pmatrix} \cos(\omega \Delta t) & -\sin(\omega \Delta t) \\ \sin(\omega \Delta t) & \cos(\omega \Delta t) \end{pmatrix}$$
+
+By learning the values of $\mu$ and $\omega$ for each block, the autoencoder approximates the dynamics in what is sometimes called the **measurement space**.
+
+</div>
+
+#### Autoencoder Architecture for Koopman Embedding
+
+The architecture consists of three components:
+
+* **Encoder:** Projects the observed state $x_t$ into the latent/measurement space $y_t$.
+* **Linear Propagator:** Applies the linear operator $K(\lambda)$ to progress the state forward in time: $y_{k+1} = K\, y_k$.
+* **Decoder:** Maps the latent state back to the original observation space, effectively implementing the inverse of the encoder.
+
+### Koopman Autoencoders (KAE)
+
+Koopman Autoencoders bridge the gap between deep learning and classical dynamical systems theory by seeking a latent space where non-linear dynamics can be represented as a linear system.
+
+#### The Koopman Embedding Objective
+
+The primary goal of a Koopman Autoencoder is to find a mapping $\phi$ (the encoder) and its approximate inverse $\phi^{-1}$ (the decoder) such that the dynamics in the embedding space follow a linear operator $\tilde{K}$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reconstruction Loss)</span></p>
+
+The **Reconstruction Loss** ($\mathcal{L}_{\text{recon}}$) ensures that the embedding space preserves the essential information of the observation space. It penalizes the difference between the original input $x_t$ and its reconstruction through the autoencoder:
+
+$$\mathcal{L}_{\text{recon}} = \sum_{t} \lVert x_t - \phi^{-1}(\phi(x_t)) \rVert$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Approximate Inverses)</span></p>
+
+It is important to note that $\phi^{-1}$ is an approximate expression. In most neural network architectures, it is not a guaranteed mathematical inverse of $\phi$, but rather a parameterized function (the decoder) trained to minimize the reconstruction error.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Koopman Loss)</span></p>
+
+The **Koopman Loss** ($\mathcal{L}_{\text{Koopman}}$) enforces the linear evolution property within the latent space. It ensures that the projected state at the next time step $\phi(x_{t+1})$ matches the result of applying the linear operator $\tilde{K}$ to the current projected state $\phi(x_t)$:
+
+$$\mathcal{L}_{\text{Koopman}} = \sum_{t} \lVert \phi(x_{t+1}) - \tilde{K}\, \phi(x_t) \rVert$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Parameterization of $\tilde{K}$)</span></p>
+
+The matrix $\tilde{K}$ is not typically learned as a dense weight matrix. Instead, it is parameterized via its eigenvalues. Specifically, the real and imaginary parts of the eigenvalues are the free parameters $\theta$ adjusted during training. These form $2 \times 2$ blocks that constitute the block-diagonal structure of $\tilde{K}$.
+
+</div>
+
+#### Multi-Step Prediction and Robustness
+
+To increase the stability and robustness of the learned dynamics, we often extend the one-step loss to an $M$-step iterated loss. This technique is philosophically similar to the sparse and generalized teacher forcing methods discussed in Lectures 10–11.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($M$-Step Latent Loss)</span></p>
+
+The $M$-step Latent Loss ensures that the linear operator remains valid over longer trajectories in the embedding space:
+
+$$\mathcal{L}_{m\text{-step}} = \sum_{t} \lVert \phi(x_{t+m}) - \tilde{K}^m\, \phi(x_t) \rVert$$
+
+where $\tilde{K}^m$ represents the $m$-th power of the linear operator, signifying the $m$-step forward iteration in the latent space.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Observed $M$-Step Loss)</span></p>
+
+To further constrain the system and prevent the latent space from drifting into unphysical solutions, we define a loss in the actual observation space for $m$ steps ahead:
+
+$$\mathcal{L}_{\text{obs},\, m} = \sum_{t} \lVert x_{t+m} - \phi^{-1}(\tilde{K}^m\, \phi(x_t)) \rVert$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Redundancy for Stability)</span></p>
+
+While $\mathcal{L}_{\text{obs},\, m}$ might appear redundant if $\mathcal{L}_{m\text{-step}}$ and $\mathcal{L}_{\text{recon}}$ are minimized, explicitly including it provides the algorithm with more robustness. It constrains the degrees of freedom by forcing the long-term latent predictions to remain decodable into accurate observations.
+
+</div>
+
+#### Total Loss Formulation and Regularization
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total KAE Loss)</span></p>
+
+The total loss $\mathcal{L}_{\text{total}}$ is defined as:
+
+$$\mathcal{L}_{\text{total}} = \alpha_1\, \mathcal{L}_{\text{recon}} + \alpha_2\, \mathcal{L}_{\text{obs},\, m} + \alpha_3\, \mathcal{L}_{\text{Koopman}} + \alpha_4\, \mathcal{L}_{\text{reg}}$$
+
+where:
+* $\alpha_i$ are weighting hyperparameters.
+* $\mathcal{L}_{\text{reg}}$ is a penalty on the parameters $\theta$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Regularization and Sparsity)</span></p>
+
+The parameter $\theta$ includes the real and imaginary parts of the eigenvalues of $\tilde{K}$ as well as the weights of the autoencoder. Penalizing the size of these parameters acts as a regularization strategy to prevent overfitting, similar to the SINDy approach from Lecture 11, effectively encouraging the model to find the most salient features of the dynamics.
+
+</div>
+
+#### Global vs. Local Operator Parameterization
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Global vs. Local Koopman Operator)</span></p>
+
+When designing the Koopman matrix $\tilde{K}$, there are two primary approaches:
+
+1. **Global Koopman Operator:** A single operator $\tilde{K}$ is learned for the entire system. This implies a truly linear system in the latent space.
+2. **Local Koopman Operator:** The eigenvalues (and thus $\tilde{K}$) can be parameterized to depend on the current time step. While the operation at any single step is linear, the progression across steps becomes non-linear. This offers significantly more flexibility for complex systems while maintaining the interpretability of a linear step-by-step transition.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linearization of Fast-Slow Systems)</span></p>
+
+Consider a system defined by two differential equations where one variable fluctuates much faster than the other: $\dot{x}_2 \propto \mu(x_2 - x_1^2)$, with $\mu \gg \lambda$ (where $\lambda$ represents the slower timescale).
+
+Observations from KAE Reconstruction:
+
+* The KAE identifies a latent space where the dynamics quickly converge to a lower-dimensional manifold.
+* The system learns to linearize the underlying non-linear dynamics.
+* By analyzing the learned eigenvalues of $\tilde{K}$, researchers can directly understand the composition and stability of the underlying system, such as how quickly the "fast" variable converges toward the "slow" manifold.
+
+</div>
+
+### Transition to Stochastic Formulations
+
+The dynamical systems theory discussed thus far has been largely deterministic. However, real-world data is inherently stochastic, containing noise and probabilistic uncertainties. To account for this, we must move beyond standard autoencoders.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(From Deterministic to Probabilistic)</span></p>
+
+In a standard autoencoder (as used in Lecture 11), we project a point $x_t$ to a single point in the latent space. In a **Variational Autoencoder** (VAE), we aim to accommodate probabilistic properties in both the latent space and the observation space. This allows the model to handle noise and represent the underlying distribution of the dynamics rather than just a single trajectory.
+
+</div>
+
+#### Motivations for Stochasticity
+
+There are two primary motivations for introducing stochasticity into our dynamical models:
+
+1. **Stochastic Latent Evolution:** We often want the underlying latent system to be stochastic. In continuous time, this leads us to Stochastic Differential Equations (SDEs). In discrete time, this is typically handled by adding a noise term (e.g., Gaussian noise) to the state transition. This accounts for processes within the dynamical system that we cannot control or explicitly model, but which impact its temporal evolution.
+2. **Diverse Observation Modalities:** Many real-world observations do not follow a continuous Gaussian form. We require a framework capable of handling "non-continuous" and "non-Gaussian" data (e.g., point processes, count data).
+
+#### Embedding Theorems for Point Processes
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Delay Embedding for Point Processes)</span></p>
+
+As established in literature (e.g., Sauer, 1994), delay embedding theorems can be extended to point processes. This suggests that even from spike processes, it is mathematically possible to reconstruct the dynamical system (such as the Lorenz attractor) in a topological sense.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lorenz Attractor from Point Process Data)</span></p>
+
+Recall the Lorenz attractor’s "butterfly wing" structure, where the system switches between two loops. If we only record the maxima of the trajectories (a form of point process), we can still achieve a reconstruction that is topologically equivalent to the original attractor.
+
+</div>
+
+### Stochastic Latent Dynamical Systems
+
+We now define a discrete-time latent dynamical system that incorporates stochasticity.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Latent Variable)</span></p>
+
+We define $z_t \in \mathbb{R}^m$ as the **latent state** of the system at time $t$. In the context of an RNN, these would be the latent states.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Latent Model)</span></p>
+
+The evolution of the latent state is governed by a transition function $f_\theta$ and a noise term:
+
+$$z_t = f_\theta(z_{t-1},\, s_t) + \epsilon_t$$
+
+where:
+* $z_{t-1}$ is the previous state.
+* $s_t$ represents external inputs.
+* $\epsilon_t$ is a random variable representing system noise.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Observation Model)</span></p>
+
+The observations $x_t$ are coupled to the latent process through a decoder. For simplicity, we can assume a linear mapping with additive noise:
+
+$$x_t = B\, z_t + \eta_t$$
+
+where:
+* $B$ is a transition matrix.
+* $\eta_t$ is the observation noise.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Zero Mean Noise?)</span></p>
+
+In these noise processes ($\epsilon_t$, $\eta_t$), we generally assume a mean of zero. This is because any non-zero mean (offset) can be mathematically absorbed into the constant terms of the function $f_\theta$ or the observation matrix $B$.
+
+</div>
+
+#### Probability Densities in State-Space Models
+
+In a probabilistic setting, every variable is treated as being drawn from a distribution.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multivariate Gaussian Distribution)</span></p>
+
+We assume the noise $\epsilon_t$ and the initial state $z_1$ are Gaussian distributed. A multivariate Gaussian distribution $\mathcal{N}(\mu, \Sigma)$ is characterized by its mean $\mu$ and covariance matrix $\Sigma$.
+
+The Probability Density Function (PDF) for an $m$-dimensional Gaussian variable is:
+
+$$p(\epsilon) = \frac{1}{(2\pi)^{m/2} \lvert\Sigma\rvert^{1/2}} \exp \left( -\frac{1}{2} (\epsilon - \mu)^T \Sigma^{-1} (\epsilon - \mu) \right)$$
+
+The initial state is also a random variable: $z_1 \sim \mathcal{N}(\mu_0, \Sigma_0)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(General Formulation)</span></p>
+
+While we often add a noise term (e.g., $z_t = f(z_{t-1}) + \epsilon_t$), a more general and powerful way to express this is to state that the next state is sampled directly from a conditional distribution: $z_t \sim p(z_t \mid z_{t-1})$. This allows us to move beyond Gaussian assumptions to any probability distribution.
+
+</div>
+
+#### Probabilistic Observation Models
+
+In dynamical systems, we treat our observations $X_t$ as being generated by an underlying probability distribution $P(X_t \mid Z_t)$ conditioned on the latent state $Z_t$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear Observation Model)</span></p>
+
+The observation $X_t$ is defined as:
+
+$$X_t = B\, Z_t + \eta_t$$
+
+where $B$ is a transition matrix, $Z_t$ is the latent state, and $\eta_t$ is the observation noise.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Conditional Distribution of $X_t$)</span></p>
+
+To find the probability distribution $P(X_t \mid Z_t)$, we must determine its mean and variance given that $Z_t$ is fixed.
+
+1. **Assumption:** Let $\eta_t$ be Gaussian noise with mean zero and covariance $\Gamma$, such that $\eta_t \sim \mathcal{N}(0, \Gamma)$.
+2. **Expectation:** Using the linearity of the expectation operator:
+
+$$\mathbb{E}[X_t \mid Z_t] = \mathbb{E}[B\, Z_t + \eta_t] = B\, Z_t + 0 = B\, Z_t$$
+
+3. **Conclusion:** Because the only source of randomness is the Gaussian variable $\eta_t$, $X_t$ also follows a normal distribution:
+
+$$P(X_t \mid Z_t) = \mathcal{N}(B\, Z_t,\, \Gamma)$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Latent Transition Model)</span></p>
+
+The probability distribution of the current latent state $Z_t$ given the preceding state $Z_{t-1}$ is:
+
+$$Z_t = f(Z_{t-1},\, s_t) + \epsilon_t$$
+
+where $\epsilon_t$ has covariance $\Sigma$. Once $Z_{t-1}$ is given, $\epsilon_t$ is the sole source of randomness, so:
+
+$$P(Z_t \mid Z_{t-1}) = \mathcal{N}(f(Z_{t-1},\, s_t),\, \Sigma)$$
+
+</div>
+
+#### Modeling Non-Gaussian Data
+
+The probabilistic framework is flexible enough to handle data types that do not follow a Gaussian distribution.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Poisson Observation Model)</span></p>
+
+For count data $C_t$ at time $t$, the probability of observing a specific count is given by:
+
+$$P(C_t \mid Z_t) = \frac{\lambda_t^{C_t}\, e^{-\lambda_t}}{C_t!}$$
+
+where $\lambda_t$ is the mean parameter of the distribution.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Exponential Link Function)</span></p>
+
+A common way to parameterize $\lambda_t$ is to use an affine transformation of $Z_t$ passed through an exponential function:
+
+$$\lambda_t = \exp(B\, Z_t + b_0)$$
+
+The exponential function ensures that $\lambda_t$ is strictly positive, as required for count data. Other functions like the ReLU can also be employed.
+
+</div>
+
+### Variational Autoencoders (VAEs)
+
+Variational Autoencoders represent a significant advancement in machine learning (notably introduced by Kingma & Welling and Rezende et al. in 2014). They extend the autoencoder concept to operate on complete probability distributions.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Encoder — Inference Model)</span></p>
+
+The encoder is a probability distribution $q_\phi(Z_t \mid X_t)$ parameterized by $\phi$. It serves as an approximation of the true (but unknown) posterior distribution of the latent states given the observations.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Decoder — Generative Model)</span></p>
+
+The decoder is a probability distribution $p_\theta(X_t \mid Z_t)$ parameterized by $\theta$. It describes how to generate observations back from the latent state.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Approximating the True Posterior)</span></p>
+
+The goal of the VAE is to make the learned distribution $q_\phi(Z_t \mid X_t)$ as close as possible to the true probability distribution of the latent states $Z_t$ given the observations $X_t$. Since the true posterior is inaccessible, we use this variational approximation.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Prior Distribution)</span></p>
+
+The **prior** $p(Z_t)$ represents our beliefs about the latent states before observing any data. In the context of dynamical systems, this prior often emerges from the conditional latent model (the transition $Z_t$ given $Z_{t-1}$).
+
+</div>
+
+### Maximum Likelihood Estimation with Latent Variables
+
+To estimate model parameters, we adopt the **Maximum Likelihood Estimation** (MLE) framework. The core objective is to identify the parameters that make the observed data most plausible under the assumed model.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Likelihood Function)</span></p>
+
+Let $X$ represent a sequence of observed variables across all time steps. Let $\theta$ represent the parameters of the model. The **likelihood function** is defined as the probability (or probability density) of observing the exact data $X$ given the parameters $\theta$:
+
+$$L(\theta) = P(X \mid \theta)$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition behind MLE)</span></p>
+
+We seek the parameters $\theta$ that maximize the probability of our actual observations. We want to avoid models where our observed data has a very low chance of occurring; instead, we favor the model that assigns the highest possible chance to the data we actually collected.
+
+</div>
+
+#### The Log-Likelihood
+
+In practice, it is often more convenient to maximize the logarithm of the likelihood function.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Log-Likelihood)</span></p>
+
+The **log-likelihood** is the natural logarithm of the likelihood function:
+
+$$\ell(\theta) = \ln P(X \mid \theta)$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mathematical Convenience)</span></p>
+
+There are two primary reasons for using the log-likelihood:
+
+1. **Exponent Reduction:** In many common distributions (Poisson, Gaussian), the probability density involves an exponential term. Taking the logarithm "pulls down" the exponent, simplifying differentiation.
+2. **Product-to-Sum Conversion:** If observations are independent, the joint probability is a product of individual probabilities. The logarithm converts these products into sums, which are significantly easier to manipulate.
+
+</div>
+
+#### Marginalization and the Path Integral
+
+In systems involving latent states $Z$, the observations $X$ depend on these hidden variables. To obtain the likelihood of $X$, we must "integrate out" all possible latent states.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Path Integral)</span></p>
+
+In the context of a dynamical system over $T$ time steps with an $m$-dimensional latent vector $Z$ at each step, we must account for every possible trajectory the system could have taken in the latent space:
+
+$$P(X \mid \theta) = \int P(X, Z \mid \theta)\, dZ$$
+
+where $Z$ represents the collection of all latent variables $z_1, z_2, \dots, z_T$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dimensionality)</span></p>
+
+If $Z$ is an $m$-dimensional vector at each time step and we have $T$ time steps, the integral is over $T \times m$ random variables. This "path integral" sums the joint probability density $P(X, Z)$ across the entire latent space to find the marginal probability density.
+
+</div>
+
+### Variational Inference and the ELBO
+
+In most realistic scenarios involving non-linear functions (such as those found in RNNs), the integral required to find $P(X \mid \theta)$ is **intractable**. To resolve this, we introduce an auxiliary distribution $Q_\phi(Z \mid X)$ (the encoder) as a "helping construct."
+
+We can rewrite the log-likelihood by inserting this distribution:
+
+$$\ln P(X \mid \theta) = \ln \int Q_\phi(Z \mid X) \frac{P_\theta(X, Z)}{Q_\phi(Z \mid X)}\, dZ$$
+
+At this stage, the expression remains exact because $Q_\phi$ cancels out. However, the logarithm remains outside the integral. To bring it inside, we use Jensen’s Inequality.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jensen’s Inequality)</span></p>
+
+For a concave function $f$ and a random variable $x$:
+
+$$f(\mathbb{E}[x]) \geq \mathbb{E}[f(x)]$$
+
+Given that the logarithm ($\ln$) is a concave function, the following holds for a probability distribution $Q$:
+
+$$\ln \int Q(Z)\, f(Z)\, dZ \geq \int Q(Z)\, \ln f(Z)\, dZ$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Geometric Intuition for Jensen’s Inequality)</span></p>
+
+1. Consider a concave curve (like the logarithm).
+2. Pick two points on the curve, $x_0$ and $x_1$, and draw a line segment (a chord) connecting them.
+3. For any concave function, the line segment connecting two points lies **below or on** the curve.
+4. Mathematically, for $\alpha \in [0, 1]$:
+
+$$\alpha\, f(x_0) + (1-\alpha)\, f(x_1) \leq f(\alpha\, x_0 + (1-\alpha)\, x_1)$$
+
+5. Generalizing from a discrete weighted sum to an integral, and noting that $Q(Z)$ acts as the weights (where $Q(Z) \geq 0$ and $\int Q(Z)\, dZ = 1$), the inequality allows us to "pull" the logarithm inside the integral.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Evidence Lower Bound — ELBO)</span></p>
+
+The **ELBO** (also related to "free energy" in physics) is defined as:
+
+$$\text{ELBO} = \int Q_\phi(Z \mid X)\, \ln \frac{P_\theta(X, Z)}{Q_\phi(Z \mid X)}\, dZ$$
+
+By Jensen’s Inequality:
+
+$$\ln P(X \mid \theta) \geq \text{ELBO}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization Strategy)</span></p>
+
+Since the true log-likelihood is intractable, we instead maximize the ELBO. Because the ELBO is a lower bound on the log-likelihood, maximizing the ELBO pushes the likelihood upward. Under certain conditions, this bound can become tight (reaching equality), effectively allowing us to optimize the parameters $\theta$ and $\phi$ of our dynamical system efficiently.
+
+</div>
+
+#### ELBO Decomposition
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO Decomposition)</span></p>
+
+The objective can be expressed as:
+
+$$\mathbb{E}_{q_\phi} \left[ \log \frac{p_\theta(x, z)}{q_\phi(z \mid x)} \right] = \mathbb{E}_{q_\phi} [\log p_\theta(x, z)] - \mathbb{E}_{q_\phi} [\log q_\phi(z \mid x)]$$
+
+By applying the chain rule of probability to the joint density $p_\theta(x, z) = p_\theta(x \mid z)\, p(z)$, we obtain three terms:
+
+1. $\log p_\theta(x \mid z)$: The decoder model (likelihood of the data given the latent).
+2. $\log p(z)$: The latent model (the prior distribution).
+3. $-\log q_\phi(z \mid x)$: The term associated with the approximate posterior.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Entropy Interpretation)</span></p>
+
+The term $-\int q_\phi \log q_\phi$ is known as the **entropy** of the distribution. Thus, the objective can be viewed as the expectation of the latent model and decoder likelihood plus the entropy of the approximate posterior $q_\phi(z \mid x)$.
+
+</div>
+
+#### Sampling-Based Approximations
+
+While we have an expression for the expectation, it remains a high-dimensional integral. We approximate it using a sum.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sampling Estimator)</span></p>
+
+We draw $L$ samples $z_l$ from the probability distribution $q_\phi(z \mid x)$ and approximate the expectation by calculating the average:
+
+$$\mathbb{E}_{q_\phi}[f(z)] \approx \frac{1}{L} \sum_{l=1}^{L} f(z_l)$$
+
+Applying this to our ELBO formulation:
+
+$$\mathcal{L} \approx \frac{1}{L} \sum_{l=1}^{L} \left[ \log p_\theta(x \mid z_l) + \log p_\theta(z_l) - \log q_\phi(z_l \mid x) \right]$$
+
+where $z_l \sim q_\phi(z \mid x)$.
+
+</div>
+
+### The Reparameterization Trick
+
+Our goal is to perform gradient descent with respect to the parameters $\theta$ (decoder/latent) and $\phi$ (encoder). Taking the derivative with respect to $\theta$ is straightforward. However, a significant issue arises with $\phi$: because the samples $z_l$ are drawn from a distribution $q_\phi$ that depends on $\phi$, the parameters are only "indirectly" involved in the expression. If we take the derivative directly, the contribution of $\phi$ through the sampling process evaluates to zero, which is mathematically incorrect.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Reparameterization Trick)</span></p>
+
+The **reparameterization trick** involves expressing a random variable $z$ from a distribution $q_\phi(z \mid x)$ as a deterministic transformation of a parameterless noise variable $\epsilon$:
+
+$$z = g_\phi(\epsilon,\, x)$$
+
+For a Gaussian distribution, this becomes:
+
+$$z = \mu + \sigma \odot \epsilon$$
+
+where:
+* $\mu$ and $\sigma$ are the mean and standard deviation (derived from $\phi$ via a neural network).
+* $\epsilon$ is drawn from a standard normal distribution $\mathcal{N}(0, I)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Reparameterization is Necessary)</span></p>
+
+If we simply sample a value $z$ from a distribution, $z$ becomes a "number" in the computational graph. The sampling operation itself is non-differentiable. By using the reparameterization trick, the stochasticity is isolated in the variable $\epsilon$, which has no parameters. The parameters we care about ($\phi$) are now part of the deterministic function $g_\phi$. This makes it possible to calculate the gradient of the expectation with respect to $\phi$ using standard backpropagation.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Gradient Estimation via Sampling)</span></p>
+
+To optimize the ELBO, we approximate the integral using samples:
+
+1. **Objective:** We want to compute $\nabla_\phi \mathbb{E}_{q_\phi(z)} [f(z)]$.
+2. **Transformation:** Express $z = \mu + \sigma \odot \epsilon$, where $\epsilon \sim \mathcal{N}(0, I)$.
+3. **Substitution:** The expectation becomes $\mathbb{E}_{p(\epsilon)} [f(g_\phi(\epsilon))]$.
+4. **Key step:** Since the distribution of $\epsilon$ no longer depends on $\phi$, we can move the gradient inside the expectation:
+
+$$\nabla_\phi \mathbb{E}_{p(\epsilon)} [f(g_\phi(\epsilon))] = \mathbb{E}_{p(\epsilon)} [\nabla_\phi f(g_\phi(\epsilon))]$$
+
+5. **Monte Carlo Estimation:** We approximate by taking $L$ samples:
+
+$$\nabla_\phi \mathbb{E}_{q_\phi(z)} [f(z)] \approx \frac{1}{L} \sum_{i=1}^{L} \nabla_\phi f(g_\phi(\epsilon_i))$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Distribution Compatibility)</span></p>
+
+While common for Gaussian variables, the reparameterization trick can be applied to various distributions within the exponential family, such as the Poisson distribution. The core requirement is the ability to rephrase the distribution in terms of a parameterless distribution.
+
+</div>
+
+### Stochastic Gradient Variational Bayes (SGVB)
+
+By integrating the reparameterization trick into the sampling estimator, we can compute the gradients of the ELBO with respect to both $\theta$ and $\phi$ simultaneously.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Gradient Variational Bayes)</span></p>
+
+**SGVB** is the procedure of optimizing the ELBO by:
+
+1. Reparameterizing the latent variable $z$.
+2. Approximating the expectation via sampling.
+3. Computing the gradients with respect to parameters $\theta$ and $\phi$ using standard backpropagation.
+
+This formulation allows for efficient, end-to-end training of latent variable models using stochastic gradient descent.
+
+</div>
+
+#### Neural Network Integration in Probabilistic Models
+
+In modern dynamical systems reconstruction, we utilize neural networks to map input data onto the parameters of the probability distributions that describe latent states or observations.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parameter Mapping)</span></p>
+
+The parameters of our distributions (such as the mean $\mu$ and variance $\sigma^2$) are not learned directly as static values. Instead, they are the **outputs of functional mappings** (neural networks) parameterized by $\theta$ (decoder parameters) and $\phi$ (encoder parameters).
+
+* **Mean Mapping:** A deep neural network maps the observation $x_t$ onto a mean vector: $\mu(z) = \text{NN}_\phi(x_t)$.
+* **Variance Mapping:** To ensure variances remain positive, a network might output the log-variance, or use $\sigma^2 = \exp(\text{NN}_\phi(x_t))$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Decoder Flexibility)</span></p>
+
+The decoder model is not limited to a single distribution type. Depending on the nature of the empirical data, one might use:
+
+* **Gaussian Distributions:** Common for continuous state spaces.
+* **Count Processes:** Useful for discrete, event-based data.
+* **Recurrent Neural Networks (RNNs):** These describe the temporal evolution in the latent space, which is then coupled to the observation model to estimate the likelihood of the trajectories.
+
+</div>
+
+#### Model Evaluation: Divergence Measures and Attractor Reconstruction
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(KL Divergence as a Quality Measure)</span></p>
+
+The **Kullback-Leibler Divergence** is used to quantify the "geometrical disagreement" between two distributions in the state space. In the context of evaluation (rather than training), it compares the distribution of the true trajectories with the distribution of the trajectories generated by the model.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lorenz Attractor Reconstruction)</span></p>
+
+In experiments involving the Lorenz attractor, researchers aimed to reconstruct the attractor object from data.
+
+* **Method:** Trajectories were encoded according to the octant in which they resided, providing this categorical information to the estimation algorithm.
+* **Observation:** Providing this additional structural information significantly improved reconstruction.
+* **Result:** The cumulative density of the KL divergence shifted toward smaller values, indicating a higher quality of reconstruction and better agreement between the true attractor and the model-generated one.
+
+</div>
+
+#### Challenges and Future Directions
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Exploding Gradient Problem)</span></p>
+
+A recurring issue in dynamical systems reconstruction is exploding gradients. When we allow a model the freedom to explore the future by simulating trajectories, the sensitivity of the long-term output to the initial parameters can grow exponentially. This makes the gradient descent process unstable.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuous-Time Models — Neural ODEs)</span></p>
+
+To address gradient instability and better represent physical systems, the field is moving toward **Neural Ordinary Differential Equations** (Neural ODEs). Instead of discrete-time updates, the system is modeled using continuous-time dynamics. This provides a more natural framework for describing the temporal evolution of latent variables and offers specialized techniques to mitigate the exploding gradient problem. The integration of random variables with continuous-time models represents a robust combined approach, improving both the exploration of the state space and the stability of the reconstruction process.
+
+</div>
+
+## Lecture 13
+
+This lecture brings together the probabilistic framework for dynamical systems with continuous-time neural network architectures. We begin by formalizing latent variable models and variational inference, then extend these ideas to multimodal data integration. The second half covers the transition from discrete residual networks to Neural ODEs, the adjoint sensitivity method for training, and Physics-Informed Neural Networks (PINNs).
+
+### Foundations of Probabilistic Latent Variable Models
+
+In the study of dynamical systems through the lens of machine learning, we often deal with systems where the underlying governing laws are not directly observable. Instead, we possess a dataset of vector-valued observations, $\mathbf{x}$, from which we aim to reconstruct the latent dynamics.
+
+#### The Generative Framework: Latent States and Observations
+
+We assume the existence of an underlying latent process, $\mathbf{z}_t$, governed by a recursive map. In modern applications, this map is typically represented by a Recurrent Neural Network (RNN) with parameters $\theta$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Latent Dynamical Model)</span></p>
+
+The latent state evolution and the corresponding observation model are defined by the following system of equations:
+
+1. **Latent Transition:** $\mathbf{z}_t = f_{\theta}^{\text{latent}}(\mathbf{z}_{t-1}) + \boldsymbol{\epsilon}$
+2. **Observation (Decoder) Model:** $\mathbf{x}_t = g(\mathbf{z}_t) + \boldsymbol{\eta}$
+
+Where:
+
+* $f_{\theta}^{\text{latent}}$ is a recursive function (e.g., an RNN).
+* $g(\cdot)$ is the decoder mapping latent states to observations. In the simplest case, this is a linear mapping $\mathbf{B}\mathbf{z}_t$, though it can be an arbitrarily complex deep neural network.
+* $\boldsymbol{\epsilon} \sim \mathcal{N}(0, \Sigma)$ represents process noise.
+* $\boldsymbol{\eta} \sim \mathcal{N}(0, \Gamma)$ represents observation noise.
+
+</div>
+
+#### Probabilistic Reformulation of Dynamical Systems
+
+To account for stochasticity at both the process and observation levels, we reformulate the model using probability distributions.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Probabilistic State-Space Model)</span></p>
+
+The system is defined by the transition distribution and the emission distribution:
+
+1. **Transition Probability:** $p(\mathbf{z}_t \mid \mathbf{z}_{t-1}) = \mathcal{N}(f_{\theta}^{\text{latent}}(\mathbf{z}_{t-1}),\; \Sigma)$
+2. **Emission Probability:** $p(\mathbf{x}_t \mid \mathbf{z}_t) = \mathcal{N}(g(\mathbf{z}_t),\; \Gamma)$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Flexibility of the Probabilistic Framework)</span></p>
+
+By adopting a probabilistic framework, we are no longer restricted to Gaussian noise. We can "sneak in" any distribution that suits the data type. For instance, if the observations consist of discrete counts, a Gaussian model is inappropriate.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Poisson Observations)</span></p>
+
+For $n$-dimensional count data $\mathbf{x}_t \in \mathbb{N}^n$, we can employ a Poisson decoder:
+
+$$p(\mathbf{x}_t \mid \mathbf{z}_t) = \text{Poisson}(\lambda_t)$$
+
+To ensure the rate parameter $\lambda_t$ remains positive ($\lambda_t \geq 0$), we use a mapping such as the exponential function:
+
+$$\lambda_t = \exp(\mathbf{B}\mathbf{z}_t)$$
+
+</div>
+
+#### Variational Inference and the Evidence Lower Bound (ELBO)
+
+The objective of learning is to find parameters $\theta$ that maximize the log-likelihood of the observed data $\mathbf{x}$:
+
+$$\max_{\theta} \log p_{\theta}(\mathbf{x})$$
+
+However, calculating $p_{\theta}(\mathbf{x})$ requires integrating out the latent states $\mathbf{z}$ across all possible paths:
+
+$$p_{\theta}(\mathbf{x}) = \int p_{\theta}(\mathbf{x}, \mathbf{z})\, d\mathbf{z}$$
+
+This integral is generally intractable for complex high-dimensional systems. To solve this, we introduce a helper distribution, $q_{\phi}(\mathbf{z} \mid \mathbf{x})$, known as the **encoder**.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Evidence Lower Bound (ELBO))</span></p>
+
+The log-likelihood can be lower-bounded by the ELBO, which is defined as:
+
+$$\mathcal{L}(\theta, \phi) = \mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x})} \left[ \log p_{\theta}(\mathbf{x}|\mathbf{z}) + \log p_{\theta}(\mathbf{z}) - \log q_{\phi}(\mathbf{z}|\mathbf{x}) \right]$$
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Derivation of the ELBO</summary>
+
+Using Bayes' Law and Jensen's Inequality, we decompose the log-likelihood:
+
+1. Start with the log-marginal likelihood: $\log p_{\theta}(\mathbf{x}) = \log \int p_{\theta}(\mathbf{x}, \mathbf{z})\, d\mathbf{z}$.
+2. Introduce the encoder distribution $q_{\phi}(\mathbf{z}|\mathbf{x})$:
+
+$$\log \int q_{\phi}(\mathbf{z}|\mathbf{x}) \frac{p_{\theta}(\mathbf{x}, \mathbf{z})}{q_{\phi}(\mathbf{z}|\mathbf{x})}\, d\mathbf{z}$$
+
+3. Apply the definition of expectation:
+
+$$\log \mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x})} \left[ \frac{p_{\theta}(\mathbf{x}, \mathbf{z})}{q_{\phi}(\mathbf{z}|\mathbf{x})} \right]$$
+
+4. By Jensen's Inequality, move the logarithm inside the expectation:
+
+$$\geq \mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x})} \left[ \log \frac{p_{\theta}(\mathbf{x}, \mathbf{z})}{q_{\phi}(\mathbf{z}|\mathbf{x})} \right]$$
+
+5. Expand the joint distribution $p_{\theta}(\mathbf{x}, \mathbf{z}) = p_{\theta}(\mathbf{x}|\mathbf{z})p_{\theta}(\mathbf{z})$:
+
+$$\mathcal{L}(\theta, \phi) = \mathbb{E}_{q_{\phi}(\mathbf{z}|\mathbf{x})} \left[ \log p_{\theta}(\mathbf{x}|\mathbf{z}) + \log p_{\theta}(\mathbf{z}) \right] + H(q_{\phi})$$
+
+where $H(q_{\phi})$ is the entropy of the encoder distribution.
+
+</details>
+
+#### Stochastic Gradient Variational Bayes (SGVB)
+
+To optimize the ELBO, we use a sampling estimate. However, we cannot sample $\mathbf{z}$ directly from $q_{\phi}$ because the gradient with respect to the encoder parameters $\phi$ would not propagate through the random sampling process.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Reparameterization Trick)</span></p>
+
+We express the latent variable $\mathbf{z}$ as a deterministic function of a parameter-free random variable $\boldsymbol{\epsilon}$:
+
+$$\mathbf{z} = g(\phi, \boldsymbol{\epsilon}), \quad \boldsymbol{\epsilon} \sim p(\boldsymbol{\epsilon})$$
+
+For a Gaussian encoder $\mathcal{N}(\mu_{\phi}, \sigma_{\phi}^2)$, this becomes:
+
+$$\mathbf{z} = \mu_{\phi} + \sigma_{\phi} \odot \boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim \mathcal{N}(0, \mathbf{I})$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Stochastic Gradient Variational Bayes)</span></p>
+
+This trick allows us to use standard gradient descent. We compute the gradient of the ELBO with respect to both $\phi$ (encoder parameters) and $\theta$ (latent and decoder model parameters) and maximize it. This procedure is known as **Stochastic Gradient Variational Bayes**.
+
+</div>
+
+### Multimodal Teacher Forcing
+
+While the probabilistic framework is robust, it faces challenges common in dynamical systems reconstruction, such as exploding gradients or the inability to capture long-term statistical properties. Methods like sparse teacher forcing address these in deterministic settings; **Multimodal Teacher Forcing** aims to bring these advantages to the probabilistic regime.
+
+#### Integrating Multiple Data Modalities
+
+In complex real-world systems, observations often come in different forms. Multimodal Teacher Forcing is designed to handle systems where data of varying types (modalities) are observed simultaneously.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Climate Research Data)</span></p>
+
+In climate science, a single dynamical system might produce:
+
+* Continuous variables (e.g., temperature).
+* Discrete events (e.g., occurrence of extreme weather events).
+* Count data.
+
+The model generalizes by utilizing multiple types of decoders (Gaussian, Poisson, etc.) tied to the same latent process $\mathbf{z}_t$, allowing the latent model to learn from diverse data streams simultaneously.
+
+</div>
+
+#### Multimodal Data Integration and Latent Space Parameterization
+
+In real-world applications, such as medical monitoring or climate science, systems are often observed through multiple, simultaneous measurement modalities. We now explore how to unify these disparate data streams into a single latent model using probabilistic approaches.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multimodal Observation Vector)</span></p>
+
+The multimodal observation vector $\mathbf{y}$ represents the concatenation of different data modalities observed at the same time step. If $\mathbf{x}$ represents Gaussian observations and $\mathbf{c}$ represents count observations, the combined vector is defined as:
+
+$$\mathbf{y} = [\mathbf{x}, \mathbf{c}, \dots]^T$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multimodal Data in Practice)</span></p>
+
+* **Climate Science:** Simultaneous recordings of temperatures (modeled as continuous/Gaussian) and counts of extreme weather events like tornadoes (modeled as discrete/count data).
+* **Medicine:** Combining continuous blood pressure readings with categorical lab results or binary (Bernoulli) indicators of symptom presence.
+
+</div>
+
+##### Parameterizing Distributions via Latent States
+
+The core principle is that the parameters of various probability distributions are parameterized by latent states. This allows a single underlying dynamical model to govern multiple observation types.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Latent State Parameterization)</span></p>
+
+In a probabilistic framework, the latent state $z_t$ determines the parameters of the observation distribution. For an observation $x_t$, the mapping is:
+
+$$p(x_t \mid z_t) = \text{Dist}(\text{parameters} = f(z_t))$$
+
+where $f$ can be a linear model, an exponential linear model, or a deep neural network.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Common Distribution Modalities)</span></p>
+
+Depending on the data type, the following distributions are typically employed:
+
+1. **Gaussian Observations:** Used for continuous numerical data. $p(x_t) = \mathcal{N}(x_t \mid \mu(z_t), \sigma^2(z_t))$
+2. **Count Observations:** Used for discrete event frequencies, modeled via a Poisson distribution with parameter $\lambda$. $p(c_t) = \text{Poisson}(c_t \mid \lambda(z_t))$
+3. **Categorical/Bernoulli Observations:** Used for class labels or binary flags where numerical information is absent.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Flexibility of the Mapping Function)</span></p>
+
+The choice of the mapping function $f(z_t)$ (e.g., a neural network) is flexible. The critical requirement is that the latent state $z_t$ must capture enough information to reconstruct all modalities simultaneously, even if they come from different statistical families.
+
+</div>
+
+#### Architecture of the Multimodal Variational Autoencoder (MVAE)
+
+To map high-dimensional multimodal observations into a lower-dimensional latent space, we employ an encoder model, typically structured as a neural network.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Variational Encoder)</span></p>
+
+The encoder $q_\phi(z \mid \mathbf{y})$ is defined as a Gaussian distribution where the mean $\mu$ and covariance $\Sigma$ are functions of the input data, parameterized by a neural network with parameters $\phi$:
+
+$$q_\phi(z \mid \mathbf{y}) = \mathcal{N}(z \mid \mu_\phi(\mathbf{y}), \Sigma_\phi(\mathbf{y}))$$
+
+When parameterizing the covariance matrix $\Sigma$, the model must ensure that the diagonal entries are non-negative ($\geq 0$). This is often achieved using square operations or outer product forms.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(CNNs in the Time Domain)</span></p>
+
+While deep neural networks (DNNs) can be used, **Temporal Convolutional Neural Networks** are often preferred for the encoder. In this context, the CNN treats the time series as a matrix where rows represent time steps and columns represent concatenated data modalities (Gaussian, counts, categorical). The CNN uses:
+
+* **Receptive Fields:** Units that pay attention to localized segments of the spatial or temporal scene.
+* **Kernels/Weights ($W$):** Shared matrices that perform convolutions to identify features (e.g., shapes in images or specific patterns in time series).
+* **Pooling Operations:** Operations like "Max Pooling" that reduce dimensionality by selecting the maximum activation within a window, making the representation more compact.
+
+</div>
+
+#### Integration with Temporal Dynamics and Teacher Forcing
+
+Training a variational autoencoder for dynamical systems requires balancing the encoder's output with the long-term statistics of the reconstruction model.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Encoder vs. Reconstruction Latent States)</span></p>
+
+A key distinction must be made between two types of latent states:
+
+* $\tilde{z}_t$: The latent state produced by the multimodal VAE encoder $q_\phi$ (derived directly from observations).
+* $z_t$: The latent state of the reconstruction model (e.g., a recurrent neural network or a forward-propagating dynamical system).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Goal of Coupling)</span></p>
+
+While $\tilde{z}$ and $z_t$ arise from different components of the architecture, they describe the same underlying system. We must force these states to agree so that $\tilde{z}$ can serve as a proxy for observations during teacher forcing, where the model's own predicted state is occasionally replaced by the encoded state from the data.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sparse Teacher Forcing)</span></p>
+
+In this regime, the reconstruction model generally propagates forward from an initial condition. However, at specific intervals, its internal latent state $z_t$ is replaced by the encoder's latent state $\tilde{z}_t$ (the "pseudo-observation").
+
+The MVAE framework proceeds as follows:
+
+1. **Input:** Concatenated multimodal data $\mathbf{y}$.
+2. **Encoding:** The MVAE (implemented via CNN/DNN) maps $\mathbf{y}$ to the distribution of $\tilde{z}$.
+3. **Initialization:** The reconstruction model is initialized by $\tilde{z}_0$.
+4. **Propagation:** The reconstruction model propagates forward in time to generate $z_t$.
+5. **Alignment:** To ensure $z_t$ and $\tilde{z}_t$ represent the same underlying system, both are fed into the same set of decoder models.
+6. **Decoding:** The decoders map both $z_t$ and $\tilde{z}_t$ back to the original data modalities (e.g., $\hat{\mathbf{y}}$), enforcing consistency between the encoder and the dynamical model.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Data Flow in the MVAE)</span></p>
+
+The reconstruction model does not "see" the raw data $\mathbf{y}$ directly; it only interacts with the data through the teacher forcing signal provided by the encoder. This setup allows for training a probabilistic reconstruction model on multimodal data in a way that is more stable than standard VAE formulations.
+
+</div>
+
+#### The MVAE Encoder and Decoder Models
+
+The architecture transitions from a standard VAE to a Multimodal VAE by handling different probability distributions at the output simultaneously.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MVAE Encoder and Decoder Models)</span></p>
+
+* **Encoder ($q$):** Maps multimodal data $Y$ to a latent model described by a probability distribution: $q_{\phi}(\tilde{z} \mid Y)$. In practice, this is often parameterized by a Convolutional Neural Network (CNN).
+* **Decoders ($p_{\theta}$):** Map the latent states back to observation space. In a multimodal setting, we may use different distributions for different data types:
+  1. **Gaussian Decoder** (for continuous data $x_t$): $p(x_t \mid \tilde{z}) = \mathcal{N}(B \tilde{z}, \Gamma)$, where $B$ is a linear mapping and $\Gamma$ is the covariance matrix.
+  2. **Poisson Decoder** (for count data $c_t$): $p(c_t \mid \tilde{z}) = \text{Poisson}(\lambda)$, $\lambda = s(\tilde{z})$, where $s(\cdot)$ is a function (e.g., a neural network) mapping the latent state to the Poisson rate parameter.
+
+</div>
+
+#### The Variational Loss Function
+
+To optimize the Multimodal VAE, we utilize the Evidence Lower Bound (ELBO). To frame this as an optimization problem for gradient descent, we minimize the negative ELBO.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multimodal VAE Loss)</span></p>
+
+The loss function for the multimodal variational autoencoder is defined as:
+
+$$\mathcal{L}_{\text{MVAE}} = - \mathbb{E}_{q} \left[ \ln p_{\theta}(Y \mid \tilde{z}) \right] - \ln p_{\theta}^{\text{latent}}(\tilde{z}) + H(q(\tilde{z} \mid Y))$$
+
+Where:
+
+* $\mathbb{E}_{q} [ \ln p_{\theta}(Y \mid \tilde{z}) ]$ represents the reconstruction log-likelihood.
+* $p_{\theta}^{\text{latent}}(\tilde{z})$ is the prior over the latent states.
+* $H(q)$ is the entropy of the encoder distribution.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implementation Details)</span></p>
+
+To propagate gradients through the stochastic latent variables, the reparameterization trick (defined earlier) is employed, allowing the expectation to be approximated via sampling.
+
+</div>
+
+#### Coupling with Reconstruction Models (RNNs)
+
+The "Grand Architecture" involves coupling a reconstruction model (RNN) to the same decoders used by the VAE.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Shared Decoder Parameters)</span></p>
+
+To ensure that the latent states $z_t$ (from the RNN) and $\tilde{z}$ (from the VAE) reside in the same manifold, the system enforces strict parameter sharing:
+
+1. The RNN latent state $z_t$ is passed through the exact same Gaussian decoder: $p(x_t \mid z_t) = \mathcal{N}(B z_t, \Gamma)$
+2. The RNN latent state $z_t$ is passed through the exact same Poisson decoder: $p(c_t \mid z_t) = \text{Poisson}(s(z_t))$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Use Shared Decoders?)</span></p>
+
+By channeling both the VAE and the RNN through the same decoder models with identical parameters $B$, $\Gamma$, and the function $s(\cdot)$, we mathematically force $z_t$ to be close to $\tilde{z}$. This consistency is required for teacher forcing, where the latent state $z_t$ is replaced by $\tilde{z}$ at specific time steps to maintain stability during training.
+
+</div>
+
+#### Consistency and the Integrated Loss Framework
+
+A critical innovation is treating the RNN's output as the prior for the VAE.
+
+<details class="accordion" markdown="1">
+<summary>Proof: Deriving the Latent Consistency Term</summary>
+
+We assume the prior $p_{\theta}^{\text{latent}}(\tilde{z})$ is a Gaussian distribution whose mean is provided by the RNN state $z_t$. We approximate the expectation over the latent states using $L$ samples across $T$ time steps.
+
+1. Start with the Log-Gaussian Prior: $- \ln p_{\theta}^{\text{latent}}(\tilde{z}) = - \ln \mathcal{N}(\tilde{z};\; z_t, \Sigma)$
+2. Expand the Log-Probability: Ignoring constant terms ($2\pi$, etc.), the negative log-likelihood for $L$ samples and $T$ time steps becomes:
+
+$$\sum_{l=1}^{L} \sum_{t=1}^{T} \left( \frac{1}{2} \ln |\Sigma| + \frac{1}{2} (\tilde{z}_t^{(l)} - z_t)^T \Sigma^{-1} (\tilde{z}_t^{(l)} - z_t) \right)$$
+
+3. **Result:** This term penalizes the squared distance between the encoder's output $\tilde{z}$ and the RNN's prediction $z_t$, effectively enforcing direct consistency between the two components.
+
+</details>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total Multimodal Teacher Forcing Loss)</span></p>
+
+The final objective function for end-to-end training combines the VAE loss and the reconstruction model loss:
+
+$$\mathcal{L}_{\text{total}} = \underbrace{- \mathbb{E}_q [\ln p_{\theta}(Y \mid \tilde{z})] + H(q)}_{\text{Reconstruction/Entropy}} + \underbrace{- \mathbb{E}_q [\ln p_{\theta}^{\text{latent}}(\tilde{z} \mid z_t)]}_{\text{Consistency Prior}} + \underbrace{- \ln p(Y \mid z_t)}_{\text{RNN Decoder Loss}}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Complexity of Modern AI)</span></p>
+
+Modern architectures are rarely single deep neural networks. Instead, they are "Grand Architectures"—compositions of standard components (CNN encoders, RNN transition models, Gaussian/Poisson decoders) integrated into a single differentiable framework optimized end-to-end.
+
+</div>
+
+### From Discrete-Time Models to Continuous-Time Neural Networks
+
+As we transition from discrete-time models to continuous-time frameworks, we explore how we can reconstruct complex chaotic attractors and how the architecture of deep learning has evolved into the elegant domain of Neural Ordinary Differential Equations (Neural ODEs).
+
+#### Reconstruction of Chaotic Attractors
+
+Before diving into the architecture of neural networks, we must understand the power of dynamical reconstruction. Even when a system is highly obscured or simplified, its underlying topology and dynamics can often be recovered.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dealing with Noise in Observations)</span></p>
+
+In practical applications, we rarely observe a pristine dynamical system. Often, the original signal—such as the trajectories of a Lorenz attractor—is obscured by significant noise, appearing as "squiggly lines" that bear little resemblance to the underlying butterfly shape. Even when the signal-to-noise ratio is poor, a system can be reconstructed if we incorporate additional observations. For example, in the Lorenz system, integrating "counts" or other secondary observations alongside the noisy data allows the model to identify the true underlying manifold.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Symbolic Lorenz Reconstruction)</span></p>
+
+A more radical approach to reconstruction involves symbolic encoding. Instead of using continuous coordinates, we partition the state space into discrete "boxes":
+
+1. **Discretization:** The entire state space of the Lorenz attractor is divided into regions (boxes).
+2. **Binary Assignment:** Each box is assigned a unique binary code.
+3. **Training:** A model is trained exclusively on these binary sequences, with no access to the original continuous coordinates.
+4. **Result:** Post-training, the model can generate a reconstructed attractor that maintains the same topology and a similar Lyapunov exponent as the original system.
+
+</div>
+
+#### From Residual Networks to Neural ODEs
+
+The transition to Neural ODEs is motivated by the desire to make deep neural networks continuous in depth. To understand this, we first look at the structure of a Residual Network (ResNet).
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Residual Network (ResNet))</span></p>
+
+A ResNet is a feed-forward architecture where activations at one layer are passed directly to subsequent layers, bypassing certain transformations. This "residual connection" helps combat the vanishing/exploding gradient problem.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(ResNet Discrete-Time Dynamics)</span></p>
+
+If we denote $n \in \lbrace 1, \dots, N \rbrace$ as the layer index and $h_n$ as the activation at layer $n$, the activation at the next layer $h_{n+1}$ is defined by:
+
+$$h_{n+1} = h_n + f(h_n, \theta_n, I_n)$$
+
+Where:
+
+* $h_n$ is the residual connection (the previous state added directly).
+* $f(h_n, \theta_n, I_n)$ represents the nonlinear transformation (e.g., an affine mapping followed by a ReLU activation).
+* $\theta_n$ represents the weights/parameters at layer $n$.
+* $I_n$ represents potential inputs at that layer.
+
+</div>
+
+##### The Continuous Limit
+
+By considering the step between layers as an infinitesimal increment, we can transform this discrete mapping into a continuous one.
+
+<details class="accordion" markdown="1">
+<summary>Proof: Transition to Neural ODEs</summary>
+
+1. Let the change in activation between layers be $\Delta h = h_{n+1} - h_n$.
+2. From our ResNet definition: $\Delta h = f(h_n, \theta_n, I_n)$.
+3. Let $\Delta n$ represent the "step size" between layers. If we divide by $\Delta n$ and let $\Delta n \to 0$:
+
+$$\lim_{\Delta n \to 0} \frac{h_{n+\Delta n} - h_n}{\Delta n} = \frac{dh}{dt}$$
+
+4. This yields a continuous-time formulation where the processing across "layers" is represented by a differential equation:
+
+$$\frac{dh}{dt} = f(h(t), t, \theta)$$
+
+In this view, the depth of the network is analogous to the time dimension in an ODE.
+
+</details>
+
+#### Motivation for Continuous-Time Models
+
+Why move from discrete layers to continuous differential equations? The motivations vary across disciplines.
+
+* **Computational Neuroscience:** In neuroscience, biophysical quantities (like membrane potentials) naturally evolve in continuous time. Continuous-time recurrent networks are essential for modeling these systems accurately.
+* **Machine Learning Efficiency:** Neural ODEs offer lower memory costs (no need to store all intermediate activations for backpropagation) and often allow for faster training compared to very deep discrete networks.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Problem of Irregular Sampling)</span></p>
+
+Traditional discrete-time RNNs struggle with data that is not sampled at regular intervals. In a discrete RNN, you must "bin" your time steps, which leads to a loss of precision regarding the exact moment an observation occurred ($t_i$).
+
+Neural ODEs are uniquely suited for **point processes**, where events occur at irregular intervals. Examples include:
+
+* Spikes in the nervous system.
+* Particles hitting a surface in a collider.
+* Customers entering a shop.
+* Extreme weather events like tornadoes.
+
+Because Neural ODEs run in continuous time, they can simply integrate the state from one observation time point $t_i$ to the next $t_{i+1}$, regardless of the spacing between them.
+
+</div>
+
+#### Training Neural ODEs
+
+To train these systems, we treat the state transitions as an integration problem.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Neural ODE State Integration)</span></p>
+
+We define the state of the system as $z(t)$. To find the state at time $t_1$ given an initial state at $t_0$, we integrate the vector field $f$:
+
+$$z(t_1) = z(t_0) + \int_{t_0}^{t_1} f(z(\tau), \tau, \theta)\, d\tau$$
+
+where $f$ can be any differentiable function, such as a deep neural network or a convolutional neural network.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function)</span></p>
+
+The loss function $L$ is calculated based on observations $\mathbf{x}$ at specific time points $t_i$. It is the sum of the differences between the observations and the decoded latent states $h(t_i)$:
+
+$$L = \sum_{i} \text{Loss}(x(t_i), \text{decoder}(h(t_i)))$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training via Adjoint Sensitivity)</span></p>
+
+Standard gradient descent would require backpropagating through every operation of the numerical ODE solver. This is problematic because it is computationally expensive and restricts the choice of solver (especially for implicit solvers). To solve this, we treat the ODE solver as a black box and use the **Adjoint Sensitivity Method** (a technique dating back to the 1960s), which allows for a "reverse mode automatic differentiation" that is much more flexible and efficient.
+
+</div>
+
+### The Adjoint Sensitivity Method
+
+In the study of dynamical systems, particularly when integrated with machine learning (such as Neural ODEs), we often need to compute the gradient of a loss function with respect to the parameters of a vector field. This process is essentially a continuous-time version of Backpropagation Through Time (BPTT).
+
+Instead of unwrapping a discrete neural network into layers, we consider a state $z(t)$ that evolves according to a differential equation defined by a vector field $f_\theta(z, t)$. To perform gradient descent on the parameters $\theta$, we require the derivative of the loss $L$ with respect to $\theta$. This is achieved through the Adjoint Sensitivity Method.
+
+#### The Adjoint State
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Adjoint State)</span></p>
+
+The adjoint state $a(t)$ is defined as the partial derivative of the loss function $L$ with respect to the state $z$ at time $t$:
+
+$$a(t) = \frac{\partial L}{\partial z(t)}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Physical Intuition)</span></p>
+
+The adjoint can be thought of as an "error signal" that we propagate backward in time. Just as standard backpropagation uses the chain rule to send gradients from the output layer back to the input, the adjoint method uses a differential equation to move the gradient from the final time $t_1$ back to the initial time $t_0$.
+
+</div>
+
+#### Derivation of the Adjoint Differential Equation
+
+To use the adjoint in a computational framework, we must define how it evolves over time. It turns out that $a(t)$ follows its own differential equation, which depends on the Jacobian of the system's vector field.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Adjoint ODE)</span></p>
+
+The dynamics of the adjoint state $a(t)$ are governed by the following linear differential equation:
+
+$$\frac{da(t)}{dt} = -a(t)^\top \frac{\partial f_\theta(z, t)}{\partial z}$$
+
+where $\frac{\partial f_\theta}{\partial z}$ is the Jacobian of the vector field with respect to the state $z$.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Derivation via Limit Definition</summary>
+
+We derive this by considering the recursion of the state in a small time step $\epsilon$ and applying the chain rule, then taking the limit as $\epsilon \to 0$.
+
+1. **State Evolution:** Assume we have a state at time $t + \epsilon$. By integrating the ODE $z' = f_\theta(z, t)$, we can approximate the state as:
+
+$$z(t + \epsilon) = z(t) + \int_{t}^{t+\epsilon} f_\theta(z, t)\, dt \approx z(t) + \epsilon f_\theta(z(t), t)$$
+
+We define this mapping as $T_\epsilon(z(t))$.
+
+2. **Chain Rule Recursion:** In the spirit of backpropagation, the derivative of the loss with respect to the state at time $t$ depends on the state at $t + \epsilon$:
+
+$$\frac{\partial L}{\partial z(t)} = \frac{\partial L}{\partial z(t + \epsilon)} \frac{\partial z(t + \epsilon)}{\partial z(t)}$$
+
+Substituting the definition of the adjoint $a(t)$:
+
+$$a(t) = a(t + \epsilon) \frac{\partial T_\epsilon(z(t))}{\partial z(t)}$$
+
+3. **Applying the Derivative:** Using our Taylor approximation $T_\epsilon(z(t)) \approx z(t) + \epsilon f_\theta(z, t)$, we take the derivative with respect to $z(t)$:
+
+$$\frac{\partial T_\epsilon(z(t))}{\partial z(t)} = I + \epsilon \frac{\partial f_\theta(z, t)}{\partial z} + O(\epsilon^2)$$
+
+where $I$ is the identity matrix.
+
+4. **Forming the Difference Quotient:**
+
+$$a(t) = a(t + \epsilon) \left( I + \epsilon \frac{\partial f_\theta}{\partial z} + O(\epsilon^2) \right)$$
+
+$$a(t) = a(t + \epsilon) + \epsilon\, a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon^2)$$
+
+Rearranging to find the change in $a$ over time:
+
+$$\frac{a(t + \epsilon) - a(t)}{\epsilon} = -a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon)$$
+
+5. **Taking the Limit:** As $\epsilon \to 0$, the left side becomes the derivative $\frac{da}{dt}$, and $a(t + \epsilon)$ becomes $a(t)$:
+
+$$\frac{da(t)}{dt} = -a(t) \frac{\partial f_\theta(z, t)}{\partial z}$$
+
+The negative sign arises because we are looking at the change in the reverse direction relative to the standard derivative definition.
+
+</details>
+
+#### Gradient Computation and Augmented States
+
+The primary goal is to find $\frac{dL}{d\theta}$ to update our parameters. This is calculated by integrating the relationship between the adjoint and the vector field's sensitivity to parameters over time.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Parameter Gradient)</span></p>
+
+The derivative of the loss with respect to the parameters $\theta$ is given by the integral:
+
+$$\frac{dL}{d\theta} = -\int_{t_1}^{t_0} a(t)^\top \frac{\partial f_\theta(z, t)}{\partial \theta}\, dt$$
+
+This integration is performed backward in time from the final state $t_1$ to the initial state $t_0$, which is referred to as reverse mode differentiation.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented State)</span></p>
+
+To solve for the state $z$, the adjoint $a$, and the parameter gradients $\frac{dL}{d\theta}$ simultaneously, we construct an augmented state. This is a mathematical trick to treat parameters as part of the dynamical system:
+
+$$z_{\text{aug}} = \begin{bmatrix} z \\ \theta \end{bmatrix}$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented Vector Field)</span></p>
+
+The augmented vector field $f_{\text{aug}}$ describes the dynamics of the augmented state:
+
+$$f_{\text{aug}}(z, \theta, t) = \begin{bmatrix} f_\theta(z, t) \\ 0 \end{bmatrix}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dynamics of Parameters)</span></p>
+
+In the augmented vector field, the second component is $0$ because the parameters $\theta$ do not depend on time ($\frac{d\theta}{dt} = 0$). By concatenating these, we can use a single ODE solver to integrate the entire system—states and adjoints—jointly across the time interval.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Augmented Adjoint)</span></p>
+
+Just as we augmented the state, we can augment the adjoint to include $a_\theta$, which corresponds to $\frac{\partial L}{\partial \theta}$. The augmented adjoint $a_{\text{aug}}$ is:
+
+$$a_{\text{aug}} = \begin{bmatrix} a \\ a_\theta \end{bmatrix}$$
+
+By applying the adjoint ODE formula to the augmented system, we can derive the full set of differential equations required to solve the gradient descent step in one backward pass.
+
+</div>
+
+#### Formal Derivation: Augmented Vector Field Jacobian
+
+The Adjoint Sensitivity Method allows us to compute gradients of a loss function with respect to the parameters of a differential equation without backpropagating through the internal steps of an ODE solver.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented Vector Field Jacobian)</span></p>
+
+To compute gradients in a continuous-time system, we consider an augmented vector field that incorporates both the state $z$ and the parameters $\theta$. The Jacobian of this augmented vector field with respect to the augmented states is defined as:
+
+$$J = \begin{pmatrix} \frac{\partial f_\theta}{\partial z} & \frac{\partial f_\theta}{\partial \theta} \\ 0 & 0 \end{pmatrix}$$
+
+where $f_\theta$ represents the dynamics of the system. The bottom row consists of zeros because the parameters $\theta$ are constant over time.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Total Loss Derivative via the Adjoint)</span></p>
+
+The total derivative of the loss $L$ with respect to the parameters $\theta$ can be obtained by integrating the adjoint state $a(t)$ and the partial derivative of the vector field over the time interval $[t_0, t_1]$:
+
+$$\frac{dL}{d\theta} = -\int_{t_1}^{t_0} a(t)^\top \frac{\partial f_\theta}{\partial \theta}\, dt$$
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Deriving the Adjoint Gradient</summary>
+
+1. **Augmented State Dynamics:** Let our augmented state be $\tilde{z} = [z, \theta]$. The dynamics are given by $\frac{d\tilde{z}}{dt} = [f_\theta(z, t), 0]$.
+2. **Applying the Jacobian:** We multiply the augmented adjoint vector by the Jacobian derived above:
+
+$$\begin{pmatrix} a(t) & a_\theta(t) \end{pmatrix} \begin{pmatrix} \frac{\partial f_\theta}{\partial z} & \frac{\partial f_\theta}{\partial \theta} \\ 0 & 0 \end{pmatrix}$$
+
+3. **Component Result:** This multiplication yields two components:
+   * $a(t) \frac{\partial f_\theta}{\partial z}$: The original adjoint derivative for the state.
+   * $a(t) \frac{\partial f_\theta}{\partial \theta}$: The term required to construct the gradient with respect to the parameters.
+4. **Integration:** To find the total gradient at $t_0$, we propagate the adjoint back from $t_1$ to $t_0$:
+
+$$\frac{dL}{d\theta} = - \int_{t_1}^{t_0} a(t) \frac{\partial f_\theta}{\partial \theta}\, dt$$
+
+This result allows us to propagate gradients backwards through time in a mathematically rigorous and computationally efficient manner.
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition on Continuous Time)</span></p>
+
+When transitioning from discrete networks to continuous models, we must treat time as a continuous variable. This necessitates the use of integrals rather than discrete summations. By letting the time step $\epsilon \to 0$, we leverage the properties of differential equations to derive these gradients, which steered significant research in both machine learning and dynamical systems reconstruction.
+
+</div>
+
+### Neural Stochastic Differential Equations (Neural SDEs)
+
+While Neural ODEs describe deterministic processes, many real-world systems are subject to noise. **Neural Stochastic Differential Equations (SDEs)** extend the Neural ODE framework to include stochasticity, effectively serving as a continuous-time analog to Recurrent Neural Networks (RNNs) with noise terms.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Differential Equation (SDE))</span></p>
+
+A **Stochastic Differential Equation** with Gaussian input is defined by two primary components: a deterministic drift term and a stochastic diffusion term.
+
+$$dh_t = f(h_t, t, \theta)\, dt + g(h_t, t, \phi)\, dW_t$$
+
+* $f(h_t, t, \theta)$: The **Drift Term**, representing the deterministic part of the dynamics.
+* $g(h_t, t, \phi)$: The **Diffusion Term**, representing the scaling of the noise process.
+* $dW_t$: The **Wiener Process** (or Brownian motion).
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Wiener Process)</span></p>
+
+The **Wiener Process** $W_t$ is characterized by the following properties:
+
+1. **Independent Increments:** The differences between terms at different times, $W_{t + \Delta t} - W_t$, are independent.
+2. **Normal Distribution:** The increments follow a normal distribution with zero mean and variance equal to the time lag: $W_{t + \Delta t} - W_t \sim \mathcal{N}(0, \Delta t)$.
+3. **Continuous Limit:** It is viewed as the limit of a Gaussian process as the time step $\Delta t \to 0$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Neural Parameterization)</span></p>
+
+In the context of "Neural" SDEs, both the drift term $f$ and the diffusion term $g$ are parameterized using Deep Neural Networks. This allows the model to learn complex, non-linear deterministic trajectories while simultaneously learning the structure of the noise or uncertainty in the system.
+
+</div>
+
+### Physics-Informed Neural Networks (PINNs) and Hybrid Modeling
+
+The core objective of Physics-Informed Neural Networks (PINNs) and hybrid models is to balance the flexibility of "black-box" deep learning with the rigorous constraints of known physical laws.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hybrid Drift Formulation)</span></p>
+
+In a hybrid model, the drift term of a differential equation is augmented to include both a learned neural component and a term representing prior physical knowledge:
+
+$$\frac{dh}{dt} = f_\theta(h, t) + \gamma K_\psi(h, t)$$
+
+* $f_\theta$: A black-box deep neural network.
+* $K_\psi$: A function embedding prior physical knowledge (e.g., known differential equations).
+* $\gamma$: A weighting constant or matrix (often diagonal) that determines the trade-off between the neural approximation and the physical prior.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lorenz 63 System as a Prior)</span></p>
+
+If we possess prior knowledge that a system behaves similarly to the chaotic Lorenz 63 attractor, we can define $K_\psi$ using the Lorenz equations:
+
+$$K = \begin{pmatrix} \sigma(h_2 - h_1) \\ h_1(\rho - h_3) - h_2 \\ h_1 h_2 - \beta h_3 \end{pmatrix}$$
+
+By injecting these equations into the learning process, the model is constrained to respect the known dynamics of the Lorenz system while the neural network $f_\theta$ accounts for residuals or deviations from this idealized model.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Versatility of PINNs)</span></p>
+
+The PINN framework is highly flexible and can be extended to:
+
+* Partial Differential Equations (PDEs).
+* Stochastic Differential Equations (SDEs).
+* Decoding Techniques in fields like computational neuroscience, where Neural ODEs are used to describe underlying processes giving rise to observed data, such as single spike recordings.
+
+</div>
+
+#### Spatiotemporal Dynamical Systems
+
+In many physical contexts, such as astrophysics or atmospheric science, we define a dynamical variable $u$ that depends on both time $t$ and space $x$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Spatiotemporal PDE)</span></p>
+
+A general partial differential equation for a variable $u(t, x)$ can be expressed as:
+
+$$\frac{\partial u}{\partial t} = g\left(u(t, x),\; t,\; x,\; \frac{\partial u}{\partial x},\; \frac{\partial^2 u}{\partial x^2},\; \dots \right)$$
+
+Where:
+
+* $u(t, x)$ is the state variable (e.g., temperature, velocity).
+* $t$ denotes time.
+* $x$ denotes spatial coordinates.
+* $g(\cdot)$ is a function representing the physics of the system, potentially including higher-order spatial derivatives.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Combining Physics and Neural Networks)</span></p>
+
+The goal is to combine our prior "physics knowledge" (expressed via the function $g$) with the flexible approximation capabilities of deep neural networks. This allows us to reconstruct the system even when our observations are sparse or noisy.
+
+</div>
+
+#### Parameterization via Deep Neural Networks
+
+In the PINN framework, we do not use a traditional numerical solver. Instead, we parameterize the dynamical variable $u$ directly using a deep neural network.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(DNN Parameterization)</span></p>
+
+We approximate the unknown solution $u(t, x)$ with a deep neural network $u_{\theta}(t, x)$, where $\theta$ represents the trainable weights of the network:
+
+$$u(t, x) \approx u_{\theta}(t, x)$$
+
+This neural network takes time $t$ and spatial coordinates $x$ as inputs and outputs the estimated state at those coordinates.
+
+</div>
+
+#### The Physics-Informed Loss Function
+
+To train the network $u_{\theta}$, we construct a loss function that penalizes both deviations from empirical data and deviations from the known physical laws (the PDE).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The PINN Loss Function)</span></p>
+
+Given $N$ observations $\tilde{u}$ at various points in time $t_i$ and space $x_i$, the total loss function $\mathcal{L}$ is defined as the sum of a data-driven loss and a physics-informed penalty:
+
+$$\mathcal{L} = \sum_{i=1}^{N} \left\| \tilde{u}(t_i, x_i) - u_{\theta}(t_i, x_i) \right\|^2 + \lambda \mathcal{L}_{\text{physics}}$$
+
+Where:
+
+* The first term is the Mean Squared Error (MSE) between true observations and the network's predictions.
+* Note that observations $(t_i, x_i)$ do not need to be regularly spaced.
+* $\mathcal{L}_{\text{physics}}$ is the penalty for violating the underlying differential equation.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Construction of the Physics Penalty</summary>
+
+To ensure the neural network adheres to the physics model $G$ (for example, the Lorenz equations or a specific fluid dynamics model), we define the residual of the PDE.
+
+1. Compute the temporal derivative of the neural network output $\frac{\partial u_{\theta}}{\partial t}$ using automatic differentiation (similar to the method used in Neural ODEs).
+2. The physics-informed term $\mathcal{L}_{\text{physics}}$ minimizes the difference between this derivative and the prescribed vector field:
+
+$$\mathcal{L}_{\text{physics}} = \left\| \frac{\partial u_{\theta}}{\partial t} - G(u_{\theta}, t, x, \dots) \right\|^2$$
+
+3. By minimizing $\mathcal{L}$, the network simultaneously learns to fit the data and satisfy the governing physical equations.
+
+</details>
+
+#### Numerical Implementation and Training Challenges
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training Stability)</span></p>
+
+PINNs are notoriously tedious to train. Unlike standard supervised learning, the optimization landscape for PINNs is complex, and the models often diverge during the training process. In many practical scenarios, Recurrent Neural Networks (RNNs) may actually be easier to train and more stable, despite lacking the explicit physics prior of a PINN.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Applications of PINNs)</span></p>
+
+* **Turbulence:** Modeling fluid flow in gas or water tanks.
+* **Quantum Physics:** Describing wave functions and particle dynamics.
+* **Astrophysics:** Modeling large-scale cosmic structures.
+
+</div>
+
+## Lecture 14
+
+### Out-of-Domain Generalization in Dynamical Systems Reconstruction
+
+In the context of artificial intelligence and machine learning, generalization is the "holy grail." However, the definition of what it means to "generalize" differs significantly between classical statistical learning and the study of dynamical systems.
+
+#### Characterizing Generalization
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Distribution Shift)</span></p>
+
+In classical machine learning, generalization is typically defined in the context of a **distribution shift**. We assume a training data distribution $P_{\text{train}}$ and a test or inference distribution $P_{\text{test}}$. Generalization is the ability of a model to perform accurately when:
+
+$$P_{\text{train}} \neq P_{\text{test}}$$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Clinical Diagnostics)</span></p>
+
+Consider a classifier trained to differentiate healthy subjects from patients using physiological measures (e.g., ECG, blood tests) collected across a specific set of hospitals. If this model is applied to a new set of hospitals in a different country, the underlying data distribution may shift due to demographic or environmental factors. If the original classifier fails to adapt to this new location in the feature space, it has failed to generalize across the distribution shift.
+
+</div>
+
+#### Generalization within a Single Basin
+
+When reconstructing dynamical systems—using models such as Recurrent Neural Networks (RNNs), Neural Ordinary Differential Equations (NODEs), or Reservoir Computers—we often seek to reconstruct a chaotic attractor from limited data.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Rössler System)</span></p>
+
+The Rössler system is a 3D chaotic attractor, often viewed as a simplification of the Lorenz system. In a typical reconstruction task, we may only have access to a single, short trajectory starting from a specific initial condition $x_0$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Ergodic Distribution and Generalization)</span></p>
+
+It is often asked whether training a model on one trajectory and testing it on another (from a different initial condition) constitutes "out-of-distribution" generalization.
+
+In dynamical systems, if the trajectories converge to the same limit set (the chaotic attractor), they share the same **ergodic distribution**. Therefore, generalizing to nearby initial conditions within the same basin of attraction is generally not considered out-of-distribution generalization in the classical machine learning sense, as the long-term statistics of the trajectories are identical.
+
+</div>
+
+#### The Frontiers: Out-of-Domain Generalization
+
+The "Holy Grail" of dynamical systems reconstruction is **Out-of-Domain (OOD) Generalization**. This refers to the ability of a model to predict the behavior of a system in regimes or regions of the state space that were never observed during training.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Out-of-Domain Generalization)</span></p>
+
+In the context of dynamical systems, OOD generalization is the capacity to:
+
+1. Generalize to different dynamical regimes (e.g., moving from a fixed point to a limit cycle).
+2. Predict behavior in unobserved basins of attraction in a multi-stable system.
+3. Generalize across bifurcation points where the qualitative behavior of the system changes fundamentally due to a parameter shift.
+
+</div>
+
+#### Multi-stability and Bifurcations
+
+Most complex real-world systems—such as the climate, the human brain, or ecosystems—are inherently multi-stable. They possess multiple stable regimes that the system may transition between due to noise or external perturbations.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Subcritical Hopf Bifurcation)</span></p>
+
+Consider a system undergoing a subcritical Hopf bifurcation. In such a system, we may observe:
+
+* A stable equilibrium (point attractor).
+* As a control parameter changes, the equilibrium becomes an unstable spiral.
+* A stable limit cycle may coexist with a stable fixed point, separated by an unstable limit cycle.
+
+If we only observe data from the stable equilibrium regime, the challenge is to determine if a model can predict the existence of the stable limit cycle that appears after the bifurcation.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Spiking Neuron Model)</span></p>
+
+A 2D spiking neuron model can exhibit bi-stability, where a stable point attractor (resting state) and a stable limit cycle (spiking state) coexist in the vector field.
+
+* If a model (like an RNN) is trained only on trajectories converging to the limit cycle (the spiking regime), it often fails to reconstruct the vector field in the region of the point attractor.
+* This failure highlights the difficulty of reconstructing the global topology of the state space from local observations.
+
+</div>
+
+#### Theoretical Limits of Reconstruction
+
+While OOD generalization is a primary goal, there are formal mathematical constraints on what can be achieved through data-driven reconstruction.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Impossibility of General Out-of-Domain Generalization)</span></p>
+
+Formulated in research by Nicholas Goring (ICML), it can be shown that in the most general scenario, OOD generalization is mathematically impossible without additional structural assumptions.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Intuition via Bump Functions</summary>
+
+The proof relies on the fact that one can mathematically construct a vector field using bump functions (e.g., Gaussian-like functions that taper to zero at the boundaries of a basin).
+
+1. Define a system where each basin of attraction is governed by its own independent set of differential equations.
+2. Use a bump function to ensure that the dynamics of System A are only active within Basin A and decay to zero at the boundary.
+3. Define System B similarly for Basin B.
+4. Because the dynamics in Basin A contain zero information about the functional form of the dynamics in Basin B, no model trained exclusively on data from Basin A can possibly predict the behavior in Basin B.
+
+</details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implications for Scientific Theory)</span></p>
+
+Any good scientific theory is expected to make predictions about unobserved regimes. Therefore, while pure data-driven reconstruction faces these "impossibility" hurdles, the integration of physical constraints or prior knowledge is essential to achieve the level of generalization required for robust scientific modeling.
+
+</div>
+
+### Generalization and the Problem of Multiple Basins
+
+In classical machine learning, generalization refers to the ability of a model to perform well on unseen data from the same distribution. In dynamical systems, however, we encounter the problem of out-of-domain generalization, where a model trained on one region of the state space must predict dynamics in a completely different region—specifically, in a different basin of attraction.
+
+#### The Limits of Out-of-Domain Generalization
+
+When a dynamical system possesses multiple stable states, the vector field may behave differently in each basin. Standard architectures like Reservoir Computers or Neural Ordinary Differential Equations (Neural ODEs) often fail to generalize across these boundaries.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Bistable Duffing Oscillator)</span></p>
+
+The bistable Duffing oscillator is a 2D system of differential equations characterized by having two attracting spiral points. Each point has its own basin of attraction.
+
+* If a model is trained exclusively on trajectories from one basin, it typically fails to capture the dynamics of the second basin.
+* Even if a model has successfully learned both basins, retraining it on data from only one basin often leads to "unlearning" the dynamics of the other.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Different Equations per Basin)</span></p>
+
+Intuitively, one might think of a system with multiple basins as being governed by different sets of equations in each region. While mathematically we can construct a vector field where this is true, real-world systems are typically governed by a single, global set of equations (e.g., a specific physical law). The challenge is whether a data-driven model can recover that global law from local observations.
+
+</div>
+
+#### Learning Global Dynamics via SINDy
+
+Sparse Identification of Nonlinear Dynamics (SINDy) offers a potential solution to the generalization problem if certain conditions are met.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Global Reconstruction from Local Trajectories)</span></p>
+
+Assume a vector field is described by a global set of equations $\dot{x} = f(x)$, where $f(x)$ can be represented as a linear combination of basis functions:
+
+$$f(x) \approx \sum_{i} \alpha_i \phi_i(x)$$
+
+If the library of basis functions $\lbrace \phi_i \rbrace$ contains the true functional forms of the system (a "physical prior"), then the coefficients $\alpha_i$ learned from trajectories in a single basin of attraction can correctly describe the dynamics in all other basins.
+
+**Conditions for Failure:**
+
+1. **Incomplete Library:** If the basis expansion does not contain the necessary terms, the model cannot reconstruct the global field.
+2. **Singular Matrices:** Certain trajectories (e.g., specific limit cycles) may result in data matrices that are singular, preventing the identification of a unique solution for the coefficients.
+
+</div>
+
+#### Loss Landscapes and Unlearning
+
+The empirical behavior of models during training reveals significant differences between dynamical systems and standard machine learning tasks.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Broad vs. Narrow Minima)</span></p>
+
+In traditional machine learning, "broad" minima in the loss landscape are generally associated with better generalization. In the context of learning dynamical systems across basins, the opposite is often observed: the most generalizing solutions correspond to **narrower minima**.
+
+**The Phenomenon of Unlearning:** If a model that has already learned the global dynamics (both basins) is retrained on data from only one basin, the out-of-domain performance degrades significantly.
+
+* The generalizing solution (the global minimum) becomes a spurious minimum in the presence of restricted data.
+* As training continues on the single-basin data, the model's loss landscape shifts, causing it to lose the parameters that defined the dynamics in the unobserved basin.
+
+</div>
+
+### Tipping Points and Topological Shifts
+
+Predicting sudden, drastic changes in system behavior is a critical objective in dynamical systems theory, particularly when those changes involve "tipping points."
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tipping Point)</span></p>
+
+A **tipping point** is a sudden change in a system's behavior characterized by a topological shift. In this context, the vector field before the shift is not topologically equivalent to the vector field after the shift.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Tipping as a Bifurcation)</span></p>
+
+A tipping point often corresponds to a qualitative shift in the system's stability or the creation/destruction of attractors. This is mathematically defined as a **bifurcation**, where a change in a control parameter crosses a critical threshold, altering the system's phase portrait.
+
+</div>
+
+Tipping points are highly relevant in several fields:
+
+* **Climate Change:** Identifying the threshold at which a subsystem (like an ice sheet) shifts to a new, potentially irreversible state.
+* **Medicine (Sepsis):** In clinical settings, a patient may transition from a healthy state to a state of exponential bacterial growth and fever. This shift acts like a transition to a different attractor state once a "bacterial load" threshold is crossed.
+
+#### B-Tipping: Bifurcation-Induced Transitions
+
+The major class of tipping points is known as B-tipping, which is directly related to bifurcations caused by slowly changing parameters. To understand B-tipping, we look at the normal form of a bifurcation. Consider a supercritical Hopf bifurcation, which describes the transition from a stable spiral point to a stable limit cycle.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form — Polar Coordinates)</span></p>
+
+The dynamics of a supercritical Hopf bifurcation can be expressed as:
+
+$$\dot{r} = \mu r - r^3, \qquad \dot{\theta} = \omega$$
+
+where:
+
+* $r$ is the radius from the equilibrium point.
+* $\mu$ is the control parameter.
+* $\omega$ is the constant angular velocity.
+
+</div>
+
+In B-tipping, we assume that the control parameter $\mu$ is not constant but changes slowly over time: $\mu = \mu(t)$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Vibration Example)</span></p>
+
+Consider an aircraft wing. Initially, the system sits at a stable equilibrium (the wing is steady). As a parameter $\mu$ (such as airspeed) slowly increases, the system may undergo a bifurcation.
+
+1. At $\mu < 0$, the equilibrium is a stable spiral point.
+2. Small, sub-threshold vibrations may occur but die out.
+3. As $\mu$ crosses $0$, the equilibrium becomes unstable, and the system "tips" into a limit cycle, resulting in large-scale, sustained oscillations (flutter).
+
+This transition represents B-tipping: the system is pushed into a new attractor object (the limit cycle) due to the slow drift of the control parameter.
+
+</div>
+
+### Classification of Tipping Points
+
+In the study of complex dynamical systems, a tipping point refers to a critical threshold at which a small change in an input or parameter results in a disproportionately large change in the state of the system. While the previous discussion focused on bifurcation-induced tipping, there are at least three distinct mechanisms through which tipping can occur.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(B-Tipping — Bifurcation-Induced)</span></p>
+
+**B-Tipping** occurs when a control parameter drifts slowly across a critical value, causing a qualitative change in the system's stability (a bifurcation), such as the disappearance of a stable fixed point or the emergence of a new attractor.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(N-Tipping — Noise-Induced)</span></p>
+
+**N-Tipping** occurs in multi-stable systems when stochastic fluctuations (noise) provide enough energy to push the system state across the boundary of a basin of attraction and into the regime of a different attractor. This occurs even when the underlying parameters of the system remain constant.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(R-Tipping — Rate-Induced)</span></p>
+
+**R-Tipping** occurs when a control parameter changes at a rate that is too fast for the system to track its internal state. Even if the system would remain stable under any fixed value of the parameter, the speed of the transition causes the system to "slip" out of its current basin of attraction.
+
+</div>
+
+#### Mathematical Analysis of Rate-Induced Tipping
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Intuition of Potential Landscapes)</span></p>
+
+To visualize R-tipping, imagine a system state residing in a minimum of a potential landscape. As a control parameter changes, it pulls the entire landscape. If the landscape moves slowly, the system state "rolls" along the moving minimum, effectively tracking the attractor. However, if the rate of movement exceeds the system's ability to relax toward the minimum, the state may be left behind or pulled over a ridge into a different basin of attraction.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Quadratic Rate-Induced Model)</span></p>
+
+Consider a system described by a quadratic differential equation where the control parameter $\lambda$ varies at a constant rate $r$:
+
+$$\dot{x} = -(x + \lambda)^2 + \mu, \qquad \dot{\lambda} = r$$
+
+To analyze whether the system tracks the attractor or undergoes R-tipping, we introduce a new coordinate $y$ that moves with the parameter: $y = x + \lambda$.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Stability Conditions for Tracking</summary>
+
+1. **Differentiate the new variable:** Compute the derivative of $y$ with respect to time:
+
+   $$\dot{y} = \dot{x} + \dot{\lambda}$$
+
+2. **Substitute the system equations:**
+
+   $$\dot{y} = [-(x + \lambda)^2 + \mu] + r$$
+
+   Since $y = x + \lambda$, we substitute:
+
+   $$\dot{y} = -y^2 + \mu + r$$
+
+3. **Identify fixed points:** To find the equilibrium where the system successfully tracks the moving parameter, set $\dot{y} = 0$:
+
+   $$0 = -y^2 + \mu + r \implies y^2 = \mu + r \implies y^* = \pm \sqrt{\mu + r}$$
+
+4. **Analyze existence and tipping:** The existence of these fixed points depends on the relationship between the system's internal parameters ($\mu$) and the rate of change ($r$).
+   * In the original context of the quadratic form $\dot{x} = (x + \lambda)^2 - \mu$ (as used in the derivation), the fixed point locations are $y = \pm \sqrt{\mu - r}$.
+   * If $r > \mu$, the term under the square root becomes negative, and the fixed points disappear.
+   * **Conclusion:** If the rate of change $r$ exceeds the critical threshold $\mu$, the system can no longer maintain a stable tracking state and will be pulled out of the basin of attraction.
+
+</details>
+
+#### Non-Autonomous Dynamical Systems
+
+The scenarios described above—where parameters are time-dependent or external forcing is present—fall under the category of non-autonomous systems.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Non-Autonomous System)</span></p>
+
+A system is **non-autonomous** if the vector field depends explicitly on time:
+
+$$\dot{x} = f(x, t)$$
+
+In these systems, the evolution of the state depends not only on the initial state $x_0$ and the duration of time elapsed but also on the specific initial time $t_0$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Autonomous Transformation Trick)</span></p>
+
+A non-autonomous system in $n$ dimensions can formally be rewritten as an autonomous system in $n+1$ dimensions by introducing a new state variable $x_{n+1}$ to represent time: $\dot{x}_{n+1} = 1$. While this trick makes the system "formally" autonomous, it often complicates analysis because the system never reaches a standard attractor; the state is constantly drifting along the time dimension.
+
+</div>
+
+#### The Theory of Pullback Attractors
+
+Standard attractor theory (looking at $t \to \infty$) is often insufficient for non-autonomous systems because the "landscape" is constantly shifting. Instead, we use the concept of a pullback attractor.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pullback Attractor)</span></p>
+
+A **pullback attractor** is a set of states $A(t)$ defined by looking into the infinite past. We ask: "What is the set of states that converges to the current time $t$ if we started the system infinitely far back in time?" Formally, we evaluate the limit as the starting time $t_0$ approaches negative infinity:
+
+$$\lim_{t_0 \to -\infty} \phi(t, t_0, x_0)$$
+
+where $\phi$ is the flow of the system. This provides a snapshot of the attractor's structure at a specific time $t$.
+
+</div>
+
+### Modeling Approaches for Post-Tipping Dynamics
+
+To predict how a system behaves after a tipping point (particularly B-tipping), researchers utilize specific architectural priors in their models.
+
+#### Skew Product Systems
+
+Skew product systems are mathematical constructs that assume a clear separation of time scales between the "driving" force and the "dependent" system.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Skew Product System)</span></p>
+
+The system is partitioned into two coupled sets of equations:
+
+1. **Driving System:** A slow-moving system that governs the parameters: $\dot{y} = \epsilon\, g(y)$
+2. **Dependent System:** The system of interest, driven by the state of $y$: $\dot{x} = f(x, y)$
+
+where $\epsilon$ is a small magnitude parameter ensuring $y$ changes slowly relative to $x$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Application in Machine Learning)</span></p>
+
+This structure can be used as a structural prior in reconstruction algorithms like Recurrent Neural Networks (RNNs). For example, in Piecewise Linear Recurrent Neural Networks (PLRNNs), one can encourage the model to learn the underlying "driving variables" by regularizing the system to follow a slow manifold. This allows the model to capture the non-autonomous nature of the data and potentially predict post-tipping dynamics by identifying the hidden parameters that drive the system toward a bifurcation.
+
+</div>
+
+#### Subspace Regularization and Manifold Attractors
+
+One approach to capturing drifting dynamics is to incorporate a prior into our loss function that encourages the emergence of a manifold attractor—a continuous sheet of stable fixed points.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Regularized Loss Function)</span></p>
+
+The objective function is modified by adding a regularization term to the standard Mean Squared Error (MSE):
+
+$$\mathcal{L} = \text{MSE} + \gamma \cdot \mathcal{L}_{\text{reg}}$$
+
+where $\gamma$ is a regularization parameter and $\mathcal{L}_{\text{reg}}$ penalizes deviations from a desired subspace structure.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Goal of Subspace Regularization)</span></p>
+
+The goal is to drive a specific subsystem to act as the "driving" system. By regularizing a subspace of the model (for example, in an $m$-dimensional state space), we can force the system to learn its own "slow" control parameters or time constants without making rigid assumptions about their precise values.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Linear Model Regularization)</span></p>
+
+In a system defined by matrices $\mathbf{A}$, $\mathbf{W}$, and $\mathbf{H}$, we can split the matrices to isolate a non-regularized subspace.
+
+* The diagonal elements of the $\mathbf{A}$ matrix for the regularized states are driven towards $1$.
+* The corresponding terms in $\mathbf{W}$ and $\mathbf{H}$ are pushed towards $0$.
+* This creates a subsystem that does not receive input from the rest of the states but provides input to them, effectively acting as an internal controller.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Biophysical Bursting Neuron)</span></p>
+
+A system trained on a trajectory of a biophysical bursting neuron using this regularization was able to track the system as a control parameter changed slowly. The model successfully followed the system through a bifurcation, moving from a complex bursting regime into a simple regular spiking limit cycle.
+
+</div>
+
+#### Explicit Time-Dependent Parameterization
+
+An alternative to implicit regularization is to explicitly define the parameters of the system as functions of time.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Time-Dependent Parameters)</span></p>
+
+In this framework, parameters such as the bias term $\mathbf{h}_t$ or weight matrices $\mathbf{W}$ are not constant but are defined by a function $f(t)$:
+
+$$\mathbf{h}_t = f(t)$$
+
+where $f$ can be a simple linear mapping, an affine form ($\mathbf{a} + \mathbf{b}t$), or a complex Multi-Layer Perceptron (MLP).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Expressiveness of Time-Dependent Models)</span></p>
+
+By making the parameters explicit functions of time, we allow the model to adapt its internal dynamics to non-stationary data. If $f(t)$ is represented by a deep neural network, the model becomes highly expressive, capable of mapping diverse temporal trajectories to parameter shifts. The entire system, including the mapping from time to parameters and the recurrent dynamics, is trained end-to-end.
+
+</div>
+
+### Early Warning Signs of Tipping Points
+
+While full dynamical reconstruction is a primary goal, a more modest but critical task is the detection of **Early Warning Signs (EWS)** for tipping points (bifurcations). The detection of tipping points often relies on the principle of Critical Slowing Down.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Critical Slowing Down)</span></p>
+
+As a system approaches a local bifurcation (such as a saddle-node bifurcation), the recovery rate from perturbations decreases. Mathematically, as the system nears the bifurcation point, the magnitude of the dominant eigenvalue of the Jacobian approaches zero, causing the flow of the vector field to become increasingly slow.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The "Tunnel" Effect)</span></p>
+
+Imagine a 2D system where the nullclines of two variables are nearly touching. This creates a "tunnel" in the vector field. As the system moves closer to a saddle-node bifurcation, the flow through this tunnel slows down.
+
+If we introduce noise into such a system, the slow dynamics fail to push the state back to the attractor quickly. This results in the state "wiggling" or drifting more freely along the direction of the bifurcation.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Increase in Variance</summary>
+
+1. Let a system be governed by $\dot{x} = f(x, \mu) + \sigma \eta(t)$, where $\eta(t)$ is noise.
+2. Near a bifurcation, the "restoring force" (the gradient of the potential, if one exists) becomes nearly flat.
+3. Because the dynamics are "friction-free" or nearly flat in the direction of the bifurcation, any stochastic perturbation $\sigma \eta(t)$ is uncountered by the deterministic flow.
+4. Consequently, the fluctuations of the system state $x$ around the equilibrium increase.
+5. Therefore, a dramatic increase in variance serves as a primary signature (EWS) that a tipping point is ahead.
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Earthquake Detection)</span></p>
+
+Earthquake detection systems utilize these signatures. By monitoring the increase in variance in seismic signals, researchers attempt to predict the proximity of a critical transition (the earthquake) based on these characteristic features of bifurcations.
+
+</div>
+
+### Foundation Models for Dynamical Systems
+
+A recent development in the field (circa 2024–2025) is the application of **Foundation Models** to dynamical systems.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Foundation Model)</span></p>
+
+A **Foundation Model** is a large-scale model pre-trained on a vast corpus of data, designed to be adaptable to a wide range of downstream tasks. In the context of dynamical systems, these models are trained on diverse forms of dynamics to learn generalizable representations.
+
+</div>
+
+#### Coupled Training Framework
+
+In the study of complex systems, we often encounter multiple, distinct subsystems that share underlying structural similarities. Rather than training isolated models for each, we can utilize a coupled training framework to leverage shared information.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(System-Specific Parameters and Observations)</span></p>
+
+Consider a set of $K$ different dynamical subsystems. For each subsystem $k \in \lbrace 1, \dots, K \rbrace$, we define:
+
+* **Latent State Equation:** The evolution of the latent state $z_t^{(k)}$ is governed by parameters specific to that system, such as $A_k$ (system matrix), $W_k$ (weight matrix), and $H_k$.
+* **Observation Function:** A decoder or observation function $G$ with parameters $\theta_{\text{obs}}^{(k)}$ that maps the latent state onto the observed state $x_t^{(k)}$:
+
+$$x_t^{(k)} = G(z_t^{(k)};\; \theta_{\text{obs}}^{(k)})$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Coupling Strategy)</span></p>
+
+While each subsystem could theoretically be trained independently, coupled training imposes restrictions on the parameters. This forces the models to share knowledge across the different systems, treating the collection not as $K$ independent problems, but as a unified learning task.
+
+</div>
+
+#### Transfer Learning and Universal Properties
+
+The motivation for coupling the training of multiple dynamical systems lies in the concept of transfer learning. Dynamical systems across disparate fields—from quantum physics and astrophysics to biology and sociology—exhibit **universal properties**. There are only a finite set of possible attractor states and specific classes of bifurcations. By sharing parameters, a model can learn these universal "building blocks" of dynamics from one system and apply that knowledge to another.
+
+#### Parameterization via Hypernetworks and Feature Vectors
+
+To implement coupled training, we decouple the high-dimensional system parameters from the unique identity of the subsystem. This is achieved using a hypernetwork and low-dimensional feature vectors.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hypernetwork Parameterization)</span></p>
+
+We define a function $f$, parameterized by group-level parameters $\theta_{\text{group}}$, that computes the model-specific parameters $\theta_k$ from a low-dimensional feature vector $L_k$:
+
+$$\theta_k = f(L_k;\; \theta_{\text{group}})$$
+
+* $L_k$: A low-dimensional feature vector representing system-specific characteristics. The dimension of $L_k$ is typically much smaller than the number of parameters in $\theta_k$.
+* $\theta_{\text{group}}$: Global parameters shared across all subsystems.
+* **Hypernetwork** ($f$): This can be a simple affine/linear mapping or a complex Multi-Layer Perceptron (MLP).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Parameter Unwrapping)</span></p>
+
+If we define $\theta_k$ by unwrapping the system matrices into a single vector (concatenating the diagonal of $A$, then $W_1, W_2, \dots$), the hypernetwork $f$ transforms the low-dimensional feature $L_k$ into this expanded parameter space. In a simple case, a scalar feature $L_k$ could scale an entire parameter vector, though more complex mappings are usually required.
+
+</div>
+
+#### Loss Functions and Optimization Strategies
+
+The training of these coupled systems typically employs techniques like sparse or generalized teacher forcing.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coupled Loss Function)</span></p>
+
+The objective is to minimize a loss function across all $K$ observed systems and all time points $T_k$. This is often formulated as an augmented Mean Square Error (MSE) or a Gaussian log-likelihood:
+
+$$\mathcal{L} = \sum_{k=1}^{K} \sum_{t=1}^{T_k} \left[ \frac{1}{2} \ln |\Sigma| + \frac{1}{2} (x_t^{(k)} - \hat{x}_t^{(k)})^\top \Sigma^{-1} (x_t^{(k)} - \hat{x}_t^{(k)}) \right]$$
+
+where $x_t^{(k)}$ is the observed state, $\hat{x}_t^{(k)}$ is the predicted state from the model, and $\Sigma$ is a co-trained covariance matrix.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Role of $\Sigma$)</span></p>
+
+The covariance matrix $\Sigma$ is crucial when training on systems with very different geometries or scales. By co-training $\Sigma$, the system automatically learns to provide similar scaling for all subsystems, allowing the optimizer to handle diverse dynamical regimes within a single framework.
+
+</div>
+
+#### Empirical Results: Control Parameters and System Behavior
+
+Applying hypernetworks to benchmarks like the Lorenz, Rössler, and Lorenz 96 systems reveals a profound emergence of structure in the feature space.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Discovery of Control Parameters)</span></p>
+
+A significant result of this architecture is that the low-dimensional features $L_k$ often learn to correspond directly to the physical control parameters of the underlying system. For example, in a Lorenz system where the parameter $\rho$ (Rayleigh number) is varied, the network's extracted features often show a linear relationship with the ground truth $\rho$. This suggests the model is identifying the fundamental "knobs" that govern the dynamics.
+
+**Extrapolation and Fine-Tuning:** Coupled training allows for high efficiency in new regimes:
+
+* **Data Efficiency:** While a standard model might require thousands of time points to learn a new regime, a pre-trained coupled model may only require 10 to 200 observations.
+* **Fine-Tuning:** One only needs to optimize the low-dimensional feature value $L$ for the new observations to achieve accurate predictions.
+
+</div>
+
+#### Applications in Time Series Classification and Neuroimaging
+
+The feature space created by the hypernetwork acts as a metric space where proximity reflects dynamical similarity.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(EEG and Epilepsy Diagnosis)</span></p>
+
+In studies using human electroencephalographic (EEG) recordings, feature vectors can distinguish between different physiological states:
+
+* **Clustering:** Features from healthy controls and epileptic patients tend to cluster in separate regions of the feature space.
+* **Performance:** This dynamical feature-based classification often outperforms traditional time-series classification tools.
+* **Distance Measures:** The feature space provides a way to define "distance" between different dynamical systems based on their underlying temporal logic rather than raw signal similarity.
+
+</div>
+
+#### In-Context and Zero-Shot Learning
+
+Recent advancements have introduced models capable of In-Context Learning or Zero-Shot Learning within the domain of dynamical systems.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Zero-Shot Learning in Dynamics)</span></p>
+
+**Zero-shot learning** refers to the ability of a model to be presented with a novel multivariate signal and, without any further training or parameter updates, generate forward predictions of the system's long-term properties and its attractor.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Future Outlook)</span></p>
+
+This approach, exemplified by recent work presented at NeurIPS, mimics the capabilities of large language models. The model "observes" the context of a signal and immediately internalizes the underlying dynamical rules to predict future behavior, representing a significant shift from traditional training-heavy paradigms.
+
+</div>
+
+### The Mixture of Experts (MoE) Architecture
+
+The architecture of Dynamical Foundation Models draws inspiration from large language models (LLMs), specifically utilizing a Mixture of Experts (MoE) framework combined with attention mechanisms. Traditional modeling of dynamical systems often requires fine-tuning or training specifically on the system of interest. In contrast, these models aim to provide a "zero-shot" inference capability.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mixture of Experts)</span></p>
+
+The MoE architecture consists of $J$ individual "experts"—in this context, piecewise linear models—that specialize in different types of dynamical behaviors. Instead of a single model making a prediction, each expert generates an individual prediction, which is then aggregated into a final output.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Next State Prediction)</span></p>
+
+The prediction for the next state $\hat{x}_t$ is defined as the weighted sum of the predictions made by $J$ experts:
+
+$$\hat{x}_t = \sum_{j=1}^{J} w^{\text{ex}}_{j, t-1} \cdot \hat{x}_{j, t}$$
+
+where $x \in \mathbb{R}^M$ represents the $M$-dimensional state space, $w^{\text{ex}}_{j, t-1}$ are the expert weights at time $t-1$, and $\hat{x}_{j, t}$ is the prediction of the $j$-th expert for time $t$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Constraints on Weights)</span></p>
+
+To ensure a valid weighted average, the expert weights must satisfy the condition $\sum_{j=1}^{J} w^{\text{ex}}_j = 1$. This is typically achieved using a Softmax function within the network.
+
+</div>
+
+#### Feature Extraction via Convolutional Neural Networks
+
+The expert weights are not static; they are determined by a Multi-Layer Perceptron (MLP) that processes a modified version of the context signal.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Modified Context Signal)</span></p>
+
+The raw context signal $C$ is processed by a Convolutional Neural Network (CNN) to extract temporal features:
+
+$$\tilde{C} = \text{CNN}(C)$$
+
+These temporal features $\tilde{C}$ characterize the time series across various scales, providing a more robust input for the weighting mechanism than raw signal data alone.
+
+</div>
+
+#### The Attention Mechanism
+
+The model determines the importance of different segments of the context signal through an attention mechanism, which is functionally similar to those found in transformer-based language models.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Attention Weights)</span></p>
+
+The attention weights $a_t$ at time step $t$ are computed using a softmax function that measures the relevance between the current state and the context $C$:
+
+$$a_t = \text{Softmax} \left( \frac{|C| \cdot D \cdot x_t}{\tau} \right)$$
+
+where $C$ is the context matrix of dimensions $n \times T_c$, $D$ is a trainable weight matrix, $x_t$ is the current state, and $\tau$ is a temperature parameter.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Temperature Effects)</span></p>
+
+The temperature parameters ($\tau$) control the "sharpness" of the model's focus:
+
+* **Large $\tau$:** The impact of the context is diffused. All experts and context segments receive relatively equal weighting, leading to a broader, less specific average.
+* **Small $\tau$:** The model places a high focus on specific, highly relevant bits of the context and specific experts, allowing for precise specialization.
+
+</div>
+
+#### Training Methodology: Sparse Teacher Forcing
+
+The training of these foundation models presents a departure from standard deep learning norms regarding data volume.
+
+* **Dataset Size:** Surprisingly, the model can be trained on a "tiny" dataset consisting of only 34 different dynamical systems. These systems are primarily chaotic or limit cycle attractors.
+* **Training Technique:** The model utilizes Sparse Teacher Forcing.
+* **Data Partitioning:** During training, segments of a trajectory are defined as "context" and others as "to be predicted." An overlap is often introduced between these segments to ease the training process.
+
+#### Zero-Shot Inference and Generalization
+
+A key strength of this architecture is its ability to perform zero-shot inference, meaning it can simulate systems not present in its training set without any additional fine-tuning.
+
+**Generalization to Novel Topologies:** The model demonstrates the ability to reproduce the dynamics of systems that are topologically different from the training data. This includes correctly matching the state space trajectory and accurately reproducing the power spectrum of the unseen system.
+
+**Generalization to New Initial Conditions:** The foundation model does not merely "memorize" the context trajectory. If the system is moved to a new initial condition—one not present in the provided context—the model can still correctly reproduce the expected trajectory based on the underlying dynamics it has inferred.
+
+#### Comparative Analysis: Dynamics vs. Time Series Models
+
+The lecture distinguishes between Dynamical Systems Foundation Models and Time Series Foundation Models (e.g., Amazon's Kronos).
+
+| Feature | Time Series Foundation Models | Dynamics Foundation Models |
+| --- | --- | --- |
+| Training Data | Thousands to millions of datasets. | Tiny dataset (e.g., 34 systems). |
+| Long-term Stability | Often fail; converge to fixed points. | Preserves long-term chaotic/limit cycle behavior. |
+| Principles | Statistical/General Time Series. | Dynamical Systems Principles. |
+
+Despite being trained on a small set of mathematical attractors, these models generalize effectively to real-world data, including:
+
+* **Energy:** Electrical transformer data.
+* **Infrastructure:** Cloud requests and traffic data.
+* **Environment:** Weather data.
+* **Biology:** Human fMRI signals and spiking neuron trajectories.
+
+### Synthesis of AI and Dynamical Systems
+
+The integration of Dynamical Systems Theory with modern Machine Learning (ML) architectures represents a convergence of classical reconstruction principles and contemporary foundation models. This synthesis allows for the modeling of complex, multi-scale phenomena that were previously difficult to capture using traditional linear methods.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dynamical Systems Reconstruction)</span></p>
+
+The process of identifying the underlying rules or state-space representations governing a system based on observed data. In the context of modern AI, this involves combining historical reconstruction techniques with high-capacity neural architectures.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection to General Artificial Intelligence)</span></p>
+
+The relationship between current architectural trends and Artificial General Intelligence (AGI) is defined by the integration of specific principles:
+
+* **Combination of Principles:** Current models are not monolithic; they combine disparate mechanisms like attention and expert mixtures.
+* **Foundation Models:** These serve as the basis for broader intelligence by being trained on expansive, large-scale datasets.
+* **Methodological Convergence:** The intersection of Dynamical Systems Reconstruction and AI architecture is a primary driver in the development of models that exhibit generalizable behavior.
+
+</div>
+
+#### Chaotic Signal Reconstruction and Generalization
+
+A critical benchmark for any dynamical system model is its ability to handle chaotic signals and generalize to data it has not encountered during the training phase.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Chaotic Signal)</span></p>
+
+In the context of reconstruction, a signal is considered chaotic when it exhibits:
+
+* **Multiple Time Scales:** The presence of various temporal resolutions and frequencies within a single signal.
+* **Complex Structure:** A non-trivial internal organization that is difficult for simple models to approximate.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Generalization to Unseen Data)</span></p>
+
+One of the most significant capabilities of modern foundation models is their performance on data points the model "hasn't seen in training at all." Despite the lack of prior exposure to specific chaotic instances, a well-constructed model can:
+
+* Produce an output that is fairly similar in structure to the original context signal.
+* Maintain the integrity of the underlying dynamical scales.
+* Successfully reconstruct the signal's complex structure through learned foundational patterns.
+
+The goal of the model is not mere memorization but the internalizing of structural rules. When a model produces a "similar structure" to a chaotic signal it hasn't seen, it demonstrates that it has captured the essential dynamics of the system rather than just the specific data points of the training set.
+
+</div>
