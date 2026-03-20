@@ -72,12 +72,10 @@ $$
 
 where $\mathbf{y}$ is a column of $\dot{\mathbf{X}}$ and $\lambda$ is the sparsity-promoting parameter.
 
-<div class="gd-grid">
-  <figure>
-    <img src="{{ '/assets/images/notes/dynamical-systems/SINDy_demo.png' | relative_url }}" alt="SINDy" loading="lazy">
-    <figcaption>Schematic of the algorithm for sparse identification of nonlinear dynamics demonstrated on the Lorenz equations.</figcaption>
-  </figure>
-</div>
+<figure>
+   <img src="{{ '/assets/images/notes/dynamical-systems/SINDy_demo.png' | relative_url }}" alt="SINDy" loading="lazy">
+   <figcaption>Schematic of the algorithm for sparse identification of nonlinear dynamics demonstrated on the Lorenz equations.</figcaption>
+</figure>
 
 ### Extensions
 
