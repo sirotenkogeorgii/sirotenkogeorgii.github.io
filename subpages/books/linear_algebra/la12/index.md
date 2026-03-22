@@ -5597,8 +5597,8 @@ Eigenvalues can also be introduced more generally. Let $V$ be a vector space and
 
 An eigenvector represents an invariant direction under the map $x \mapsto Ax$, that is, a direction that maps to itself. In other words, if $v$ is an eigenvector, then the line $\operatorname{span}\lbrace v \rbrace$ maps to itself. The eigenvalue then represents the scaling factor in this invariant direction.
 
-- Reflection across the line $y = -x$, mapping matrix $A = \begin{pmatrix} 0 & -1 \\ -1 & 0 \end{pmatrix}$: eigenvalue 1, eigenvector $(-1, 1)^\top$; eigenvalue $-1$, eigenvector $(1, 1)^\top$.
-- Rotation by angle $90°$, mapping matrix $A = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$: no real eigenvalues.
+- Reflection across the line $y = -x$, mapping matrix $A = \begin{pmatrix} 0 & -1 \\\ -1 & 0 \end{pmatrix}$: eigenvalue 1, eigenvector $(-1, 1)^\top$; eigenvalue $-1$, eigenvector $(1, 1)^\top$.
+- Rotation by angle $90°$, mapping matrix $A = \begin{pmatrix} 0 & -1 \\\ 1 & 0 \end{pmatrix}$: no real eigenvalues.
 
 </div>
 
@@ -5607,8 +5607,13 @@ An eigenvector represents an invariant direction under the map $x \mapsto Ax$, t
 
 Let $A \in \mathbb{C}^{n \times n}$. Then
 
-1. $\lambda \in \mathbb{C}$ is an eigenvalue of $A$ if and only if $\det(A - \lambda I_n) = 0$,
-2. $x \in \mathbb{C}^n$ is an eigenvector corresponding to eigenvalue $\lambda \in \mathbb{C}$ if and only if $o \neq x \in \operatorname{Ker}(A - \lambda I_n)$.
+1. $\lambda \in \mathbb{C}$ is an eigenvalue of $A$ if and only if
+
+   $$\det(A - \lambda I_n) = 0$$
+
+2. $x \in \mathbb{C}^n$ is an eigenvector corresponding to eigenvalue $\lambda \in \mathbb{C}$ if and only if 
+
+   $$o \neq x \in \operatorname{Ker}(A - \lambda I_n)$$
 
 </div>
 
@@ -5621,9 +5626,11 @@ A consequence of the theorem is that for a given eigenvalue $\lambda$ there are 
 The first part of Theorem 10.3 says that $\lambda \in \mathbb{C}$ is an eigenvalue of matrix $A$ if and only if the matrix $A - \lambda I_n$ is singular, that is, $\det(A - \lambda I_n) = 0$. If we view $\lambda$ as a complex variable, then finding an eigenvalue is the same as finding a solution of the equation $\det(A - \lambda I_n) = 0$. Expanding the determinant from the definition yields a polynomial of degree at most $n$ in the variable $\lambda$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 10.4 — Characteristic polynomial)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(10.4 — Characteristic polynomial)</span></p>
 
-The *characteristic polynomial* of a matrix $A \in \mathbb{C}^{n \times n}$ with respect to the variable $\lambda$ is $p_A(\lambda) = \det(A - \lambda I_n)$.
+The *characteristic polynomial* of a matrix $A \in \mathbb{C}^{n \times n}$ with respect to the variable $\lambda$ is 
+
+$$p_A(\lambda) = \det(A - \lambda I_n)$$
 
 </div>
 
@@ -5638,7 +5645,7 @@ By the fundamental theorem of algebra, this polynomial has $n$ complex roots (co
 $$p_A(\lambda) = (-1)^n (\lambda - \lambda_1) \ldots (\lambda - \lambda_n).$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 10.5)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(10.5)</span></p>
 
 The eigenvalues of a matrix $A \in \mathbb{C}^{n \times n}$ are precisely the roots of its characteristic polynomial $p_A(\lambda)$, and there are $n$ of them counting multiplicities.
 
@@ -5656,9 +5663,11 @@ The roots of the polynomial, and hence the eigenvalues of matrix $A$, are $\pm 2
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 10.7 — Spectrum and spectral radius)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(10.7 — Spectrum and spectral radius)</span></p>
 
-Let $A \in \mathbb{C}^{n \times n}$ have eigenvalues $\lambda_1, \ldots, \lambda_n$. Then the *spectrum* of matrix $A$ is the set of its eigenvalues $\lbrace \lambda_1, \ldots, \lambda_n \rbrace$ and the *spectral radius* is $\rho(A) = \max_{i=1,\ldots,n} |\lambda_i|$.
+Let $A \in \mathbb{C}^{n \times n}$ have eigenvalues $\lambda_1, \ldots, \lambda_n$. Then the *spectrum* of matrix $A$ is the set of its eigenvalues $\lbrace \lambda_1, \ldots, \lambda_n \rbrace$ and the *spectral radius* is 
+
+$$\rho(A) = \max_{i=1,\ldots,n} \|\lambda_i\|$$
 
 </div>
 
@@ -5679,14 +5688,14 @@ Computing eigenvalues as roots of the characteristic polynomial is not very effi
 - Let $A \in \mathbb{C}^{n \times n}$ be a triangular matrix. Then its eigenvalues are the diagonal entries, since $\det(A - \lambda I_n) = (a_{11} - \lambda) \ldots (a_{nn} - \lambda)$.
 - In particular, $I_n$ has eigenvalue 1, which has multiplicity $n$. The set of corresponding eigenvectors is $\mathbb{R}^n \setminus \lbrace o \rbrace$.
 - In particular, $0_n$ has eigenvalue 0, which has multiplicity $n$. The set of corresponding eigenvectors is $\mathbb{R}^n \setminus \lbrace o \rbrace$.
-- In particular, the matrix $\begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$ has eigenvalue 1, which is a double eigenvalue (algebraically). The corresponding eigenvector is, up to a scalar multiple, only $(1, 0)^\top$, so the geometric multiplicity of eigenvalue 1 is only one.
+- In particular, the matrix $\begin{pmatrix} 1 & 1 \\\ 0 & 1 \end{pmatrix}$ has eigenvalue 1, which is a double eigenvalue (algebraically). The corresponding eigenvector is, up to a scalar multiple, only $(1, 0)^\top$, so the geometric multiplicity of eigenvalue 1 is only one.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 10.10 — Geometric interpretation: shearing and stretching)</span></p>
 
-Consider the matrix $A = \begin{pmatrix} 1.5 & 0.75 \\ 0 & 1 \end{pmatrix}$. The corresponding linear map $x \mapsto Ax$ geometrically represents a shear and a stretch in the $x_1$-axis by $50\%$, while it does not stretch in the direction of the $x_2$-axis.
+Consider the matrix $A = \begin{pmatrix} 1.5 & 0.75 \\\ 0 & 1 \end{pmatrix}$. The corresponding linear map $x \mapsto Ax$ geometrically represents a shear and a stretch in the $x_1$-axis by $50\%$, while it does not stretch in the direction of the $x_2$-axis.
 
 The eigenvalues of matrix $A$ are 1.5 and 1, and the corresponding eigenvectors are $(1, 0)^\top$ and $(-1.5, 1)^\top$. The first eigenvalue and eigenvector say that the image is stretched by $50\%$ in the direction of the $x_1$-axis. The second eigenvalue and eigenvector say that the image is not deformed in the direction of the vector $(-1.5, 1)^\top$.
 
@@ -6731,9 +6740,9 @@ A symmetric matrix $A \in \mathbb{R}^{n \times n}$ is positive definite if and o
 
 $$A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$$ 
 
-be positive definite. The first step of Gaussian elimination transforms the matrix to the form $\begin{pmatrix} \alpha & a^\top \\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$; it suffices to subtract the $\frac{1}{\alpha}a$-multiple of the first row from the second block row. By Theorem 11.9, $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is again positive definite, so we can continue inductively.
+be positive definite. The first step of Gaussian elimination transforms the matrix to the form $\begin{pmatrix} \alpha & a^\top \\\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$; it suffices to subtract the $\frac{1}{\alpha}a$-multiple of the first row from the second block row. By Theorem 11.9, $\alpha > 0$ and $\tilde{A} - \frac{1}{\alpha}aa^\top$ is again positive definite, so we can continue inductively.
 
-Conversely, suppose that Gaussian elimination transforms the matrix $A$ into the required form. In the first step it again transforms it to the form $\begin{pmatrix} \alpha & a^\top \\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$, where $\alpha > 0$. By mathematical induction on the size of the matrix, we may assume that the matrix $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite. Therefore the matrix $A$ is also positive definite by Theorem 11.9.
+Conversely, suppose that Gaussian elimination transforms the matrix $A$ into the required form. In the first step it again transforms it to the form $\begin{pmatrix} \alpha & a^\top \\\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}$, where $\alpha > 0$. By mathematical induction on the size of the matrix, we may assume that the matrix $\tilde{A} - \frac{1}{\alpha}aa^\top$ is positive definite. Therefore the matrix $A$ is also positive definite by Theorem 11.9.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 11.15 — Sylvester's criterion for positive definiteness)</span></p>
@@ -6804,7 +6813,7 @@ We know that an inner product induces a norm (Definition 8.5). The norm induced 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.19)</span></p>
 
-Although the nonstandard inner product $\langle x, y \rangle = x^\top Ay$ may look strange, its relationship to the standard one is very close. Since the matrix $A$ is positive definite, it can be decomposed as $A = R^\top R$, where $R$ is nonsingular. Let $B$ be the basis formed by the columns of the matrix $R^{-1}$, so $R = {}_B[id]_{\text{kan}}$ is the change-of-basis matrix from $B$ to the canonical basis. Now $x^\top Ay = x^\top R^\top R y = (Rx)^\top(Ry) = [x]_B^\top [y]_B$. This shows that the nonstandard inner product can be expressed as the standard inner product with respect to a certain basis.
+Although the nonstandard inner product $\langle x, y \rangle = x^\top Ay$ may look strange, its relationship to the standard one is very close. Since the matrix $A$ is positive definite, it can be decomposed as $A = R^\top R$, where $R$ is nonsingular. Let $B$ be the basis formed by the columns of the matrix $R^{-1}$, so $R = {}\_B[id]_{\text{kan}}$ is the change-of-basis matrix from $B$ to the canonical basis. Now $x^\top Ay = x^\top R^\top R y = (Rx)^\top(Ry) = [x]_B^\top [y]_B$. This shows that the nonstandard inner product can be expressed as the standard inner product with respect to a certain basis.
 
 </div>
 

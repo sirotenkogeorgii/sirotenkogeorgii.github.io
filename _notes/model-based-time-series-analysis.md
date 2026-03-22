@@ -4042,7 +4042,7 @@ In this framework, **all relevant distributions are assumed to be Gaussian**.
 
 #### Derivation of the Predictive Distribution
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Bayesian Filter for Linear Gaussian SSM is Gaussian)</span></p>
 
 $$p(z_t \mid x_1, \dots, x_t) = \mathcal{N}(z_t \mid m_t, V_t)$$
@@ -4336,29 +4336,31 @@ Recursion comes from the dependence of $\gamma_t$ on $\gamma_{t+1}$ (backward in
 The algorithm requires the stored results (means and covariances) from the forward Kalman filter pass: $\lbrace m_t, V_t\rbrace_{t=1}^T$ and $\lbrace \hat{m}\_t, \hat{V}\_t\rbrace_{t=1}^T$.
 
 1. **Initialization:** The recursion starts at the final time step $T$. The smoothed estimate at this point is simply the filtered estimate.
-  * **Smoothed mean at time $T$:**
-    * $m_T^s := m_T$
+   * **Smoothed mean at time $T$:**
+     
+     $$m_T^s := m_T$$
   
   * **Smoothed covariance at time $T$:** 
-    * $V_T^s := V_T$
+  
+    $$V_T^s := V_T$$
 
 2. **Backward Recursion:** 
-  * The algorithm proceeds backward in time, from $t = T-1$ down to $0$.
+   * The algorithm proceeds backward in time, from $t = T-1$ down to $0$.
 
 3. **For each step $t$:**
-  * **Define Smoother Gain $J_t$:**  
+   * **Define Smoother Gain $J_t$:**  
   
-    $$J_t = V_t A^\top (\hat{V}_{t+1})^{-1}$$  
+     $$J_t = V_t A^\top (\hat{V}_{t+1})^{-1}$$  
   
-    (Where $\hat{V}_{t+1} = A V_t A^\top + \Sigma_z$ is the one-step predictive covariance from time $t$ to $t+1$).
+     (Where $\hat{V}_{t+1} = A V_t A^\top + \Sigma_z$ is the one-step predictive covariance from time $t$ to $t+1$).
   
-  * **Update Smoothed Mean $m_t^s$:**
+   * **Update Smoothed Mean $m_t^s$:**
     
-    $$m_t^s = m_t + J_t (m_{t+1}^s - \hat{m}_{t+1})$$
+     $$m_t^s = m_t + J_t (m_{t+1}^s - \hat{m}_{t+1})$$
 
-  * **Update Smoothed Covariance $V_t^s$:**  
+   * **Update Smoothed Covariance $V_t^s$:**  
     
-    $$V_t^s = V_t + J_t (V_{t+1}^s - \hat{V}_{t+1}) J_t^\top$$
+     $$V_t^s = V_t + J_t (V_{t+1}^s - \hat{V}_{t+1}) J_t^\top$$
 
 </div>
 
@@ -4388,9 +4390,9 @@ The Poisson State Space Model is designed to handle sequences of count data by l
 
 1. **Observation Model (Poisson):** The observation $c_t$ is a vector of counts at time $t$. Each count $c_t$ is drawn from a Poisson distribution whose rate, $\lambda_t$, is determined by the corresponding latent state $z_t$. $c_t \mid z_t \sim \text{Poisson}(\lambda_t)$. The probability mass function is given by: 
    
-  $$p(c_t \mid z_t) = \frac{\lambda_t^{c_t} e^{-\lambda_t}}{c_t!} \quad\iff\quad c_t \mid z_t \sim \text{Poisson}(\lambda_t)$$
+   $$p(c_t \mid z_t) = \frac{\lambda_t^{c_t} e^{-\lambda_t}}{c_t!} \quad\iff\quad c_t \mid z_t \sim \text{Poisson}(\lambda_t)$$
    
-  * **Link Function:** A logarithmic link function connects the rate $\lambda_t$ to the latent state $z_t$. This ensures that the rate $\lambda_t$ is always non-negative. The function is applied elementwise if $c_t$ is a vector. $\log(\lambda_t) = b_0 + B_1 z_t$. This implies that the rate is an exponential function of a linear transformation of the state: $\lambda_t = \exp(b_0 + B_1 z_t)$, where $b_0$ is an offset vector and $B_1$ is a matrix of weights.
+   * **Link Function:** A logarithmic link function connects the rate $\lambda_t$ to the latent state $z_t$. This ensures that the rate $\lambda_t$ is always non-negative. The function is applied elementwise if $c_t$ is a vector. $\log(\lambda_t) = b_0 + B_1 z_t$. This implies that the rate is an exponential function of a linear transformation of the state: $\lambda_t = \exp(b_0 + B_1 z_t)$, where $b_0$ is an offset vector and $B_1$ is a matrix of weights.
    
 2. **Latent Model / Process Model (Linear Gaussian):** The latent state $z_t \in \mathbb{R}^M$ evolves as a linear function of the previous state $z_{t-1}$ plus Gaussian noise.
    
@@ -4836,26 +4838,26 @@ $$z_t\mid z_{t_t} \sim \mathcal{N}(F(z_{t-1}), \Sigma)$$
 * Let $\nabla_t := \frac{\partial G}{\partial z}\mid_{F(m_{t-1})}$.
 
 1. **Prediction Step:** The one-step-ahead predictive distribution $p(z_t\mid x_1, \dots, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(m_{t\mid t-1}, V_{t\mid t-1})$ with:
-  * **Predicted state mean:**
+   * **Predicted state mean:**
   
-  $$m_{t\mid t-1} = F_\theta(m_{t-1})$$
+     $$m_{t\mid t-1} = F_\theta(m_{t-1})$$
   
-  * **Predicted state covariance:** 
+   * **Predicted state covariance:** 
   
-  $$V_{t\mid t-1} = J_{t-1} V_{t-1} J_{t-1}^\top + \Sigma$$ 
+     $$V_{t\mid t-1} = J_{t-1} V_{t-1} J_{t-1}^\top + \Sigma$$ 
   
 2. **Update Step:** The filtering distribution $p(z_t\mid x_1, \dots, x_t)$ is approximated as a Gaussian $\mathcal{N}(m_t, V_t)$ with:
-  * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
+   * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
     
-    $$K_t = V_{t\mid t-1} \nabla_t^\top (\nabla_t V_{t\mid t-1} \nabla_t^\top + \Gamma)^{-1}$$
+     $$K_t = V_{t\mid t-1} \nabla_t^\top (\nabla_t V_{t\mid t-1} \nabla_t^\top + \Gamma)^{-1}$$
 
-  * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B m_{t\mid t-1})$.  
+   * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B m_{t\mid t-1})$.  
   
-    $$m_t = m_{t\mid t-1} + K_t (x_t - G(m_{t\mid t-1}))$$
+     $$m_t = m_{t\mid t-1} + K_t (x_t - G(m_{t\mid t-1}))$$
 
-  * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
+   * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
   
-    $$V_t = V_{t\mid t-1} - K_t \nabla_t V_{t\mid t-1}$$
+     $$V_t = V_{t\mid t-1} - K_t \nabla_t V_{t\mid t-1}$$
 
 </div>
 
@@ -5281,11 +5283,11 @@ where $\eta$ is the learning rate.
 
 The choice of a simple unimodal Gaussian for the variational density $q_\phi$ may be too restrictive to accurately model a complex, multi-modal true posterior. More expressive families of distributions can be used to achieve a better approximation.
 
-1. **Gaussian Mixture Models (GMMs):** The variational posterior can be modeled as a mixture of $M$ Gaussian components, allowing it to capture multi-modal distributions.
+* **Gaussian Mixture Models (GMMs):** The variational posterior can be modeled as a mixture of $M$ Gaussian components, allowing it to capture multi-modal distributions.
   
-  $$q_\phi(z\mid X) = \sum_{m=1}^M \pi_m(X) \mathcal{N}(z \mid  \mu_m(X), \Sigma_m(X))$$
+   $$q_\phi(z\mid X) = \sum_{m=1}^M \pi_m(X) \mathcal{N}(z \mid  \mu_m(X), \Sigma_m(X))$$
 
-2. **Normalizing Flows (Rezende & Mohamed, 2015):** Normalizing flows provide a general method for constructing complex distributions from a simple base distribution through a sequence of invertible transformations.
+* **Normalizing Flows (Rezende & Mohamed, 2015):** Normalizing flows provide a general method for constructing complex distributions from a simple base distribution through a sequence of invertible transformations.
   * Idea: Start with a simple random variable $z_0$ with a known density $p_0(z_0)$ (e.g., $z_0 \sim \mathcal{N}(0, I)$).
   * Apply a sequence of smooth, invertible transformations $f_1, f_2, \dots, f_K$:
   
