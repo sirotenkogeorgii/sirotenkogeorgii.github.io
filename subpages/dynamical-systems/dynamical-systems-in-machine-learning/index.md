@@ -1824,9 +1824,10 @@ To find the corresponding offset vector $b$, we can enforce the condition that t
 
 The principles of establishing equivalence between continuous and discrete systems are not merely theoretical exercises. They have profound implications in modern machine learning and computational neuroscience.
 
-##### Piecewise Linear Recurrent Neural Networks
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Piecewise Linear Recurrent Neural Networks)</span></p>
 
-An important class of models in machine learning is the Piecewise Linear Recurrent Neural Network (PL-RNN). These networks are often defined using the Rectified Linear Unit (ReLU) activation function, which is a piecewise linear function.
+An important class of models in machine learning is the **Piecewise Linear Recurrent Neural Network (PL-RNN)**. These networks are often defined using the Rectified Linear Unit (ReLU) activation function, which is a piecewise linear function.
 
 A typical PL-RNN update rule has the form:
 
@@ -1837,6 +1838,8 @@ where $g$ is the ReLU nonlinearity, defined as $g(z) = \max(0, z)$.
 The ideas of state-space dynamics and the equivalence between continuous and discrete forms can be extended to analyze these powerful computational models. For those interested in the details of this connection, the following resources are recommended:
 * A paper by Monfared and Durstewitz presented at ICML 2020.
 * The book Time Series Analysis (2013) by Ozaki, which contains a chapter on defining equivalent formulations for some nonlinear systems.
+
+</div>
 
 ##### Line Attractors, Time Constants, and Memory
 
@@ -1871,6 +1874,174 @@ A line attractor provides a simple and elegant solution. A two-unit PL-RNN can s
 
 This is not merely a machine learning construct. There is evidence for the existence of line attractors, plane attractors, and even torus attractors (shaped like a donut) in biological brains, for example, in the hippocampus, an area critical for memory and navigation.
 
+</div>
+
+### Exact discretization vs. Numerical discretization
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Exact discretization vs. Numerical discretization)</span></p>
+
+When passing from a continuous-time dynamical system
+
+$$\dot{x}(t)=f(x(t))$$
+
+to a discrete-time map with step size $h>0$, one should distinguish between the **exact discretization** and a **numerical discretization**. The exact discretization is given by the flow of the ODE over one time step,
+
+$$x_{k+1}=\Phi_h(x_k)$$
+
+where $\Phi_h$ maps the state $x_k$ at time $t_k$ to the exact state at time $t_{k+1}=t_k+h$. **In general, this map is not available in closed form**. Therefore, in practice one often replaces $\Phi_h$ by a numerical approximation $\Psi_h$, obtained for example by Euler or Runge–Kutta methods. This yields a discrete update of the form
+
+$$x_{k+1}=\Psi_h(x_k)$$
+
+for instance, in the explicit Euler scheme,
+
+$$x_{k+1}=x_k+h,f(x_k)$$
+
+Hence, the exact discretization preserves the true continuous dynamics at the sampling times, whereas a numerical discretization only approximates them, with an error that depends on the method and the step size $h$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(General Exact Discretization)</span></p>
+
+A **continuous-time dynamical system**
+
+$$\dot{x}(t)=f(x(t),t)$$
+
+is turned into a **discrete-time map**
+
+$$x_{k+1}=F_h(x_k)$$
+
+by choosing a time step $h>0$ and looking only at the state at times
+
+$$t_k = kh$$
+
+1. **Start from the continuous system**
+
+   Suppose
+
+   $$\frac{dx}{dt}=f(x(t))$$
+
+   with initial value $x(0)=x_0$.
+
+   This describes how the state changes continuously in time.
+
+2. **Sample time at discrete points**
+
+   Define
+
+   $$x_k := x(t_k), \qquad t_k = kh.$$
+
+   Now we want a rule that gives $x_{k+1}$ from $x_k$.
+
+   That rule is the **map**.
+
+3. **Exact discrete map**
+
+   From the ODE, the exact solution after one time step is
+
+   $$x_{k+1} = \Phi_h(x_k)$$
+
+   where $\Phi_h$ is the **flow map** of the system over time $h$.
+
+   So the continuous system induces the discrete map
+
+   $$F_h = \Phi_h$$
+
+   This is exact, but usually $\Phi_h$ is not available in closed form.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(General Numerical Discretization)</span></p>
+
+Use the integral form:
+
+$$x(t_{k+1}) = x(t_k) + \int_{t_k}^{t_{k+1}} f(x(t)),dt$$
+
+Approximate the integral by assuming $f(x(t))$ stays roughly constant on the interval:
+
+$$\int_{t_k}^{t_{k+1}} f(x(t)),dt \approx h,f(x_k)$$
+
+Then
+
+$$x_{k+1} \approx x_k + h f(x_k)$$
+
+So the discrete map becomes
+
+$$\boxed{x_{k+1}=x_k+h,f(x_k)}$$
+
+This is the standard **forward Euler discretisation**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Exact discretization vs. Numerical discretization)</span></p>
+
+Take
+
+$$\dot{x}=ax$$
+
+Then Euler gives
+
+$$x_{k+1}=x_k+hax_k=(1+ha)x_k$$
+
+So the continuous system
+
+$$\dot{x}=ax$$
+
+becomes the discrete map
+
+$$\boxed{x_{k+1}=(1+ha)x_k}$$
+
+The exact map in this case would be
+
+$$x_{k+1}=e^{ah}x_k$$
+
+So:
+
+* **exact discretisation**: $x_{k+1}=e^{ah}x_k$
+* **Euler discretisation**: $x_{k+1}=(1+ah)x_k$
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Linear DS: Exact Discretization)</span></p>
+
+For a linear continuous system
+
+$$\dot{x}(t)=Ax(t)$$
+
+the exact discrete-time map is
+
+$$\boxed{x_{k+1}=e^{Ah}x_k}$$
+
+If there is an input,
+
+$$\dot{x}(t)=Ax(t)+Bu(t)$$
+
+and the input is held constant on each interval $[t_k,t_{k+1})$, then
+
+$$\boxed{x_{k+1}=A_d x_k + B_d u_k}$$
+
+with
+
+$$
+A_d=e^{Ah},
+\qquad
+B_d=\int_0^h e^{A\tau}B,d\tau.
+$$
+
+</div>
+
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/exact_vs_euler_large_h.png' | relative_url }}" alt="Continuous function at 0" loading="lazy">
+  </figure>
+
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/exact_vs_euler_small_h.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+  </figure>
 </div>
 
 ### The Flow Map and Trajectories
