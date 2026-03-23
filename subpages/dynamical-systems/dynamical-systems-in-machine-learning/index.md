@@ -460,17 +460,6 @@ But "distinct eigenvalues" is **stronger than necessary**. The theorem still wor
 ### A Geometric Classification of 2D Linear Equilibria
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nullclines)</span></p>
-
-**Nullclines** are curves in the state space where the rate of change of one of the variables is zero.
-* The $x_1$-nullcline is the set of points where $\dot{x}_1 = 0$.
-* The $x_2$-nullcline is the set of points where $\dot{x}_2 = 0$.
-
-Equilibrium points must lie at the intersection of all nullclines, as this is where all derivatives are zero simultaneously. For linear systems, nullclines are straight lines passing through the origin. They divide the state space into regions with different flow directions.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Node)</span></p>
 
 The *equilibrium point* of a linear system of ODEs is called **node** if $A$ has *two real eigenvalues*.
@@ -880,6 +869,70 @@ An equilibrium point is called **hyperbolic** if none of its eigenvalues have a 
 
 </div>
 
+### Nullclines
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nullclines)</span></p>
+
+**Nullclines** are curves in the state space where the rate of change of one of the variables is zero.
+* The $x_1$-nullcline is the set of points where $\dot{x}_1 = 0$.
+* The $x_2$-nullcline is the set of points where $\dot{x}_2 = 0$.
+
+Equilibrium points must lie at the intersection of all nullclines, as this is where all derivatives are zero simultaneously. For linear systems, nullclines are straight lines passing through the origin. They divide the state space into regions with different flow directions.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Very important distinction: nullcline vs trajectory)</span></p>
+
+A nullcline is **not usually a curve that the solution follows**.
+
+It is just the **set of points** where one derivative vanishes **at that instant**.
+
+So if a trajectory reaches the $x$-nullcline, usually what happens is:
+* at that moment, $x$ stops changing
+* but $y$ may still change
+* so the state moves **vertically**
+* and immediately leaves the nullcline
+
+So a trajectory typically **crosses** a nullcline. It does not stay on it.
+
+The only place where it can stay still is where **both** nullclines meet:
+
+$$\dot x=0,\qquad \dot y=0$$
+
+That intersection is an **equilibrium/fixed point**.
+
+</div>
+
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/nullclines1.png' | relative_url }}" alt="a" loading="lazy">
+  </figure>
+  
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/nullclines1.png' | relative_url }}" alt="a" loading="lazy">
+  </figure>
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Then why do many pictures seem to show tilted arrows on the nullcline?)</span></p>
+
+Usually because the arrows are **not actually evaluated exactly on the nullcline**.
+
+What happens in many plots is:
+
+* the vector field is drawn on a **coarse rectangular grid**
+* the nullcline is drawn afterward as a **smooth thick curve**
+* visually, some nearby arrows look like they sit “on” the curve
+* but those arrows are actually at neighboring grid points where $\dot x\neq 0$
+
+So the picture can make it look wrong even when the math is right.
+
+On the images above, that is very likely what is happening. The nullclines are thick colored curves, and the arrow field is sampled separately. The arrows that seem to lie on the curve are mostly just **near** it.
+
+</div>
+
 ## Lecture 2
 
 ### General Solutions for Linear Systems
@@ -976,7 +1029,7 @@ $$x_2(t)=C_2 e^{at}, \qquad x_1(t)=e^{at}(C_1 + C_2 t).$$
 **Geometric interpretation:**
 
 * The factor $e^{at}$ is uniform expansion/decay (depending on sign of $a$).
-* The $\begin{pmatrix} 1 & t \\ 0 & 1 \end{pmatrix}$ part is a **shear**: it pushes points sideways in the $x_1$ direction at a rate proportional to $t$ and to their $x_2$-component.
+* The $\begin{pmatrix} 1 & t \\\ 0 & 1 \end{pmatrix}$ part is a **shear**: it pushes points sideways in the $x_1$ direction at a rate proportional to $t$ and to their $x_2$-component.
 
 **Why “trajectories align with the single eigenvector direction”**
 
@@ -1194,6 +1247,42 @@ We can formally prove that the dynamics remain the same by defining a new variab
 If the matrix $A$ is not invertible, it possesses at least one zero eigenvalue. In this scenario, a unique fixed point does not exist. This corresponds to the case of a center or, more generally, a line attractor (or plane/hyperplane attractor in higher dimensions). The system has a continuous manifold of equilibrium points along the direction of the eigenvector(s) associated with the zero eigenvalue(s).
 
 </div>
+
+---
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Characteristic polynomial)</span></p>
+
+The *characteristic polynomial* of a matrix $A \in \mathbb{C}^{n \times n}$ with respect to the variable $\lambda$ is 
+
+$$p_A(\lambda) = \det(A - \lambda I_n)$$
+
+</div>
+
+From the definition of the determinant it is clear that the characteristic polynomial can be expressed in the form
+
+$$p_A(\lambda) = \det(A - \lambda I_n) = (-1)^n \lambda^n + a_{n-1}\lambda^{n-1} + \ldots + a_1 \lambda + a_0.$$
+
+Thus it is indeed a polynomial and has degree $n$. We can easily see that $a_{n-1} = (-1)^{n-1}(a_{11} + \ldots + a_{nn})$ and by substituting $\lambda = 0$ we obtain $a_0 = \det(A)$.
+
+By the fundamental theorem of algebra, this polynomial has $n$ complex roots (counting multiplicities); denote them $\lambda_1, \ldots, \lambda_n$. Then
+
+$$p_A(\lambda) = (-1)^n (\lambda - \lambda_1) \ldots (\lambda - \lambda_n).$$
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2D case)</span></p>
+
+For the 2D case
+
+$$p_A(\lambda) = \lambda^2 - \text{trace}(A)\lambda + \det(A)$$
+
+Discriminant $D$:
+
+$$D = \text{trace}(A)^2 - 4\det(A)$$
+
+</div>
+
+---
 
 
 #### Non-autonomous Systems with a Forcing Function
@@ -7932,7 +8021,13 @@ where:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Versatility of the Form)</span></p>
 
-While the formulation places the nonlinearity outside the weight multiplication for the $W$ term, any standard RNN where the affine mapping is inside the nonlinearity can be rewritten into this piecewise linear form through a substitution of variables.
+While the formulation places the nonlinearity outside the weight multiplication for the $W$ term, any standard RNN where the affine mapping is inside the nonlinearity can be rewritten into this piecewise linear form through a substitution of variables:
+
+$$\phi(Wx + h)$$
+
+could be rewritten as
+
+$$W\phi(x) + h$$
 
 </div>
 
@@ -8301,7 +8396,7 @@ If a recurrent neural network $f$ successfully captures a chaotic system, the lo
 
 1. Recall the recursion relationship for the latent states $z_t$ in an RNN. The loss gradient involves a product series of Jacobians of the form: $\prod_{i} \frac{\partial z_{i+1}}{\partial z_i}$.
 2. By definition, a chaotic system is characterized by a maximum Lyapunov exponent $\lambda_{\max} > 0$.
-3. The Lyapunov exponent describes the exponential rate of divergence of nearby trajectories. In terms of the Jacobian product series, a positive $\lambda_{\max}$ implies that the singular values of this product series have an absolute value larger than 1.
+3. The Lyapunov exponent describes the exponential rate of divergence of nearby trajectories. In terms of the Jacobian product series, a positive $\lambda_{\max}$ implies that the singular values of this product series have an absolute value larger than $1$.
 4. As the product series grows with the time horizon, the terms within the gradient calculation grow exponentially.
 5. Therefore, if the RNN $f$ effectively recreates the chaotic properties of the target system (such as the Lorenz attractor), the loss gradients will explode.
 
@@ -8321,17 +8416,27 @@ To address the exploding gradient problem in chaotic systems, we utilize a techn
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sparse Teacher Forcing)</span></p>
 
-STF is a control-theoretic technique where the forward-propagated latent states are replaced by estimates derived from observed data at specific, well-chosen temporal intervals, rather than at every time step.
+**STF** is a control-theoretic technique where the forward-propagated latent states are replaced by estimates derived from observed data at specific, well-chosen temporal intervals, rather than at every time step.
 
-Assume we have an observed time series of length $T$, where observations $x_t \in \mathbb{R}^n$ are coupled to latent states $z_t \in \mathbb{R}^m$ via an observation function (decoder) $g$: $x_t = g(z_t)$.
+Assume we have an observed time series of length $T$, where observations $x_t \in \mathbb{R}^n$ are coupled to latent states $z_t \in \mathbb{R}^m$ via an observation function (decoder) $g$:
+
+$$x_t = g(z_t)$$
 
 To implement STF, we perform the following steps:
 
-1. **Invert the Decoder:** Obtain an estimate of the latent state $\tilde{z}_t$ from the observed data $x_t$. If $g$ is a linear mapping, we use the pseudo-inverse: $\tilde{z}_t = g^+(x_t)$. Alternatively, this can be framed as a regression problem to find the latent state that best maps to the observation.
-2. **Define the Forcing Interval:** Let $\tau \in \mathbb{N}^+$ be the forcing interval. We define a set of forcing times: $T_{\text{force}} = \lbrace n \cdot \tau \mid n \in \mathbb{N} \rbrace$.
+1. **Invert the Decoder:** Obtain an estimate of the latent state $\tilde{z}_t$ from the observed data $x_t$. If $g$ is a linear mapping, we use the pseudo-inverse: 
+   
+   $$\tilde{z}_t = g^+(x_t)$$
+   
+   Alternatively, this can be framed as a regression problem to find the latent state that best maps to the observation.
+
+2. **Define the Forcing Interval:** Let $\tau \in \mathbb{N}^+$ be the forcing interval. We define a set of forcing times: 
+   
+   $$T_{\text{force}} = \lbrace n \cdot \tau \mid n \in \mathbb{N} \rbrace$$
+
 3. **Compute the Latent Trajectory:** During training, the next latent state $z_{t+1}$ is calculated as:
 
-$$z_{t+1} = \begin{cases} f(\tilde{z}_t) & \text{if } t \in T_{\text{force}} \\ f(z_t) & \text{otherwise} \end{cases}$$
+   $$z_{t+1} = \begin{cases} f(\tilde{z}_t) & \text{if } t \in T_{\text{force}} \\ f(z_t) & \text{otherwise} \end{cases}$$
 
 </div>
 
@@ -8382,7 +8487,7 @@ A related technique for handling long-term trajectories in dynamical systems is 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multiple Shooting)</span></p>
 
-Multiple Shooting involves segmenting a long time series into $N$ shorter segments. For each segment $n$, we estimate a unique initial condition $m_0^{(n)}$ as a trainable parameter.
+**Multiple Shooting** involves segmenting a long time series into $N$ shorter segments. For each segment $n$, we estimate a unique initial condition $m_0^{(n)}$ as a trainable parameter.
 
 The goal is to minimize a squared error loss function across all segments and all time steps within those segments, while maintaining temporal contingency:
 
@@ -8479,13 +8584,19 @@ The primary motivation for GTF is to solve the exploding gradient problem by reg
 
 We wish to find the Jacobian of the state $\tilde{z}\_t$ with respect to the state at a previous time step $\tilde{z}\_{t-1}$.
 
-1. Start with the GTF definition: $\tilde{z}\_t = (1 - \alpha)\, f_\theta(\tilde{z}\_{t-1}) + \alpha\, \hat{z}\_t$.
+1. Start with the GTF definition: 
+   
+   $$\tilde{z}\_t = (1 - \alpha)\, f_\theta(\tilde{z}\_{t-1}) + \alpha\, \hat{z}\_t$$
+
 2. Differentiate $\tilde{z}\_t$ with respect to $\tilde{z}\_{t-1}$. Note that $\hat{z}\_t$ (the data estimate) is independent of the model’s previous state $\tilde{z}\_{t-1}$, so its derivative is zero.
 3. Apply the chain rule to the first term:
 
 $$\frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}} = (1 - \alpha) \cdot \frac{\partial f_\theta(\tilde{z}_{t-1})}{\partial \tilde{z}_{t-1}}$$
 
-4. Let $G_t$ be the Jacobian of the map $f_\theta$ at time $t$. The single-step Jacobian is: $J_t = (1 - \alpha)\, G_t$.
+4. Let $G_t$ be the Jacobian of the map $f_\theta$ at time $t$. The single-step Jacobian is: 
+   
+   $$J_t = (1 - \alpha)\, G_t$$
+
 5. For a sequence of $T$ steps, the product series of Jacobians becomes:
 
 $$\prod_{k=0}^{T-1} (1 - \alpha)\, G_{T-k}$$
@@ -8495,7 +8606,7 @@ $$\prod_{k=0}^{T-1} (1 - \alpha)\, G_{T-k}$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Optimal Alpha Selection)</span></p>
 
-To prevent gradients from exploding, the maximum singular value of the product series should be kept near unity. To regulate the gradients such that they hover around 1, $\alpha$ should be chosen based on the maximum singular value ($\sigma_{\max}$) of the model’s Jacobian $G_t$:
+To prevent gradients from exploding, the maximum singular value of the product series should be kept near unity. To regulate the gradients such that they hover around $1$, $\alpha$ should be chosen based on the maximum singular value ($\sigma_{\max}$) of the model’s Jacobian $G_t$:
 
 $$\alpha \approx 1 - \frac{1}{\sigma_{\max}(G_t)}$$
 
@@ -8583,7 +8694,11 @@ where:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization of $\alpha$)</span></p>
 
-The parameter $\alpha$ can be adjusted optimally by considering the Singular Value Decomposition (SVD) of the underlying Jacobian matrix of the system. Recall from Lecture 10 that the optimal choice is $\alpha_t = 1 - \frac{1}{\sigma_{\max}(G_t)}$, which keeps gradient magnitudes controlled.
+The parameter $\alpha$ can be adjusted optimally by considering the Singular Value Decomposition (SVD) of the underlying Jacobian matrix of the system. Recall from Lecture 10 that the optimal choice is 
+
+$$\alpha_t = 1 - \frac{1}{\sigma_{\max}(G_t)}$$
+
+which keeps gradient magnitudes controlled.
 
 </div>
 
@@ -8594,7 +8709,7 @@ To ensure mathematical tractability and interpretability, we often utilize Piece
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(PLRNN State Equations)</span></p>
 
-The latent variables $z_t$ in a PLRNN evolve according to the following multivariate map:
+The latent variables $z_t$ in a **PLRNN** evolve according to the following multivariate map:
 
 $$z_t = A z_{t-1} + W \phi(z_{t-1}) + h$$
 
@@ -8609,7 +8724,7 @@ where:
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Observation Function)</span></p>
 
-The latent states are linked to the actual observations $x_t$ through an observation function $G$:
+The latent states are linked to the actual observations $x_t$ through an **observation function** $G$:
 
 $$x_t = G(z_t;\, \lambda)$$
 
@@ -8637,7 +8752,7 @@ $$z_t = (A + W D_{t-1})\, z_{t-1} + h$$
 2. Define a diagonal matrix $D_t$ such that the $i$-th element on the diagonal corresponds to the $i$-th component of the state vector $z_t$.
 3. Set the diagonal entries as:
 
-$$D_{ii} = \begin{cases} 1 & \text{if } z_i > 0 \\ 0 & \text{if } z_i \leq 0 \end{cases}$$
+   $$D_{ii} = \begin{cases} 1 & \text{if } z_i > 0 \\ 0 & \text{if } z_i \leq 0 \end{cases}$$
 
 4. Substituting this into the state equation: 
    
@@ -8654,7 +8769,9 @@ This confirms that for any given state $z$, the system behaves as a linear mappi
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Points of the Map)</span></p>
 
-A **fixed point** $z^\ast$ of the map is a state that remains constant under the iteration of the map, such that $z_t = z_{t-1} = z^\ast$.
+A **fixed point $z^\ast$ of the map** is a state that remains constant under the iteration of the map, such that
+
+$$z_t = z_{t-1} = z^\ast$$
 
 </div>
 
@@ -8755,7 +8872,7 @@ To derive the general form for a $k$-times iterated map, we apply the recursive 
 
 2. For a $k$-step iteration from $Z_{t-k}$ to $Z_t$, the state is:
 
-$$Z_t = \left( \prod_{j=1}^{k} J_{t-j} \right) Z_{t-k} + \sum_{i=1}^{k-1} \left( \prod_{j=1}^{i} J_{t-j} \right) h + h$$
+   $$Z_t = \left( \prod_{j=1}^{k} J_{t-j} \right) Z_{t-k} + \sum_{i=1}^{k-1} \left( \prod_{j=1}^{i} J_{t-j} \right) h + h$$
 
 3. This resulting expression remains an affine map of the initial state $Z_{t-k}$. Thus, finding a $k$-cycle reduces to solving a linear system, provided the sequence of matrices $\lbrace D_{t-1}, \dots, D_{t-k} \rbrace$ is known and consistent with the resulting states.
 
@@ -9014,11 +9131,11 @@ where the deviations are defined as:
 
 1. **Composition Error:** The difference between a single step of $(\tau_1 + \tau_2)$ and the sequential application of $\tau_1$ and $\tau_2$:
 
-$$\lVert f(z_t,\, \tau_1 + \tau_2) - f(f(z_t,\, \tau_1),\, \tau_2) \rVert^2$$
+   $$\lVert f(z_t,\, \tau_1 + \tau_2) - f(f(z_t,\, \tau_1),\, \tau_2) \rVert^2$$
 
 2. **Commutativity Error:** The difference resulting from swapping the order of $\tau_1$ and $\tau_2$:
 
-$$\lVert f(f(z_t,\, \tau_1),\, \tau_2) - f(f(z_t,\, \tau_2),\, \tau_1) \rVert^2$$
+   $$\lVert f(f(z_t,\, \tau_1),\, \tau_2) - f(f(z_t,\, \tau_2),\, \tau_1) \rVert^2$$
 
 </div>
 
@@ -9037,6 +9154,15 @@ First introduced by Jaeger and Haas (2004) in *Science*, **Reservoir Computing**
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Core Idea)</span></p>
 
 The core concept is to project an input into a high-dimensional "pool" or reservoir of complex dynamics. Instead of meticulously training every connection in the network, we use a large, fixed reservoir that expresses a wide variety of dynamical behaviors. We then "shape" or "read out" these dynamics through a simple linear layer to match our observations.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(MP Note: Echo state networks)</span></p>
+
+**Echo state networks (ESNs)** have a large recurrent layer at the input, which has weights initialized randomly, and these are not trained in any way. Typically, this layer is implemented as a single $k \times m$ matrix, where $k=n+m$, $m$ is the size of the recurrent layer, and $n$ is the number of inputs. The network works by receiving vectors of length $n$ as input and appending its internal state of length $m$ to them. It applies its recurrent layer to it and thus gets a new internal state. The recurrent layer typically contains some activation function to make it non-linear (it is applied to all activations - the results of multiplying by a random matrix). After the recurrent layer, traditional ESNs contain only one layer, which, similarly to RBF networks, can be trained using linear regression or using the gradient method.
+
+ESN may look strange at first glance, why should a random matrix give reasonable results? An important observation is that due to the size of the internal state (which is often larger than the number of inputs), the matrix actually randomly transforms the information from the input into a higher dimensional space. Other layers then actually try to decode this information and get the necessary information from it. Note also that the internal state of the network depends on all previous inputs, not just the last one, and thus contains information about all of them.
 
 </div>
 
@@ -9098,11 +9224,11 @@ $$\mathcal{L} = \frac{1}{T} \sum_{t=1}^T \lVert x_t - B z_t \rVert^2$$
 
 Setting the derivative with respect to $B$ to zero:
 
-$$\frac{\partial \mathcal{L}}{\partial B} = \sum 2(x_t - B z_t)\, z_t^T = 0$$
+$$\frac{\partial \mathcal{L}}{\partial B} = \sum 2(x_t - B z_t)\, z_t^\top = 0$$
 
 This yields the closed-form solution:
 
-$$B = \left( \sum_{t=1}^T x_t\, z_t^T \right) \left( \sum_{t=1}^T z_t\, z_t^T \right)^{-1}$$
+$$B = \left( \sum_{t=1}^T x_t\, z_t^\top \right) \left( \sum_{t=1}^T z_t\, z_t^\top \right)^{-1}$$
 
 </div>
 
@@ -9111,11 +9237,11 @@ $$B = \left( \sum_{t=1}^T x_t\, z_t^T \right) \left( \sum_{t=1}^T z_t\, z_t^T \r
 
 1. Represent the loss in terms of the $L_2$ norm:
    
-   $$\mathcal{L} \propto (x_t - B z_t)^T (x_t - B z_t)$$
+   $$\mathcal{L} = \frac{1}{T} \sum_{t=1}^T (x_t - B z_t)^\top (x_t - B z_t) \propto (x_t - B z_t)^\top (x_t - B z_t)$$
 
 2. Expand the product:
    
-   $$x_t^T x_t - z_t^T B^T x_t - x_t^T B z_t + z_t^T B^T B z_t$$
+   $$x_t^\top x_t - z_t^\top B^\top x_t - x_t^\top B z_t + z_t^\top B^\top B z_t$$
 
 3. Differentiate with respect to $B$:
    
@@ -9125,11 +9251,11 @@ $$B = \left( \sum_{t=1}^T x_t\, z_t^T \right) \left( \sum_{t=1}^T z_t\, z_t^T \r
 
 4. Equate to zero:
    
-   $$\sum x_t\, z_t^T = B \sum z_t\, z_t^T$$
+   $$\sum_{t=1}^{T} x_t\, z_t^T = B \sum_{t=1}^{T} z_t\, z_t^T$$
 
 5. Isolate $B$ by multiplying by the inverse of the covariance-like matrix of reservoir states:
 
-   $$B = \left(\sum x_t\, z_t^T\right) \left(\sum z_t\, z_t^T\right)^{-1}$$
+   $$B = \left(\sum_{t=1}^{T} x_t\, z_t^T\right) \left(\sum_{t=1}^{T} z_t\, z_t^T\right)^{-1}$$
 
 </div>
 
@@ -9158,10 +9284,10 @@ $$\sigma_{\max}(W) \leq 1$$
 
 Instead of minimizing the error for just $t+1$, we minimize the squared deviations over a window $U$:
 
-$$\mathcal{L}_{\text{multi}} = \sum_{u=0}^{U} \sum_{t} \lVert b \cdot f^u(z_{t-u}) - x_t \rVert^2$$
+$$\mathcal{L}_{\text{multi}} = \sum_{u=0}^{U} \sum_{t=u + 1}^{T} \lVert B \cdot f^u(z_{t-u}) - x_t \rVert^2$$
 
 where:
-* $b$ is the readout matrix.
+* $B$ is the readout matrix.
 * $f^u$ represents the $u$-th composition of the reservoir’s recurrent transition function.
 * $z_{t-u}$ is the latent state at time $t-u$.
 
@@ -9181,7 +9307,7 @@ The total loss $\mathcal{L}$ can be augmented by a penalty term that measures th
 
 $$\mathcal{L} = \text{MSE} + \lambda \lVert C_{\text{data}} - C_{\text{model}} \rVert$$
 
-where $C$ represents a dynamical invariant such as:
+where $C$ represents a dynamical invariant, some long-term statistics such as:
 
 * **Maximum Lyapunov Exponent:** The rate of exponential separation of nearby trajectories.
 * **Lyapunov Spectrum:** The full set of exponents characterizing the system’s stability.
@@ -9239,6 +9365,8 @@ where $\sigma$ is a nonlinearity like the ReLU ($\max(0, x)$), $W_i$ are weight 
 </div>
 
 ### Joint Manifold Discovery and SINDy Reconstruction
+
+> RNNs work because they do something like implicit delay embedding. If our latent dimensionaly is greater than out observation dimensionality. RNNs learn those underlying latent dynamics. (or in opposite)
 
 The ultimate goal in modern reconstruction (e.g., Champion and Brunton, 2019) is to combine the dimensionality reduction of Autoencoders with the interpretability of structural models like SINDy (Sparse Identification of Non-linear Dynamics). This builds upon the SINDy framework introduced in earlier lectures.
 
@@ -9545,7 +9673,7 @@ $$\mathcal{L}_{\text{total}} = \alpha_1\, \mathcal{L}_{\text{recon}} + \alpha_2\
 
 where:
 * $\alpha_i$ are weighting hyperparameters.
-* $\mathcal{L}_{\text{reg}}$ is a penalty on the parameters $\theta$.
+* $\mathcal{L}_{\text{reg}}$ is a penalty on the parameters $\theta$ (e.g $\lVert \theta \rVert_2^2$).
 
 </div>
 
@@ -9564,7 +9692,7 @@ The parameter $\theta$ includes the real and imaginary parts of the eigenvalues 
 When designing the Koopman matrix $\tilde{K}$, there are two primary approaches:
 
 1. **Global Koopman Operator:** A single operator $\tilde{K}$ is learned for the entire system. This implies a truly linear system in the latent space.
-2. **Local Koopman Operator:** The eigenvalues (and thus $\tilde{K}$) can be parameterized to depend on the current time step. While the operation at any single step is linear, the progression across steps becomes non-linear. This offers significantly more flexibility for complex systems while maintaining the interpretability of a linear step-by-step transition.
+2. **Local Koopman Operator:** The eigenvalues (and thus $\tilde{K}$) can be parameterized to depend on the current time step. While the operation at any single step is linear, the progression across steps becomes non-linear. This offers significantly more flexibility for complex systems while maintaining the interpretability of a linear step-by-step transition. For example, interpret the transition by analysing the eigenvalues of $\tilde{K}$ directly.
 
 </div>
 
@@ -9573,9 +9701,11 @@ When designing the Koopman matrix $\tilde{K}$, there are two primary approaches:
 
 Consider a system defined by two differential equations where one variable fluctuates much faster than the other:
 
-$$\dot{x}_2 \propto \mu(x_2 - x_1^2)$$
+$$\dot x_1 = \mu x$$
 
-with $\mu \gg \lambda$ (where $\lambda$ represents the slower timescale).
+$$\dot x_2 = \lambda (x_2 - x_1^2)$$
+
+with $0 > \mu \gg \lambda$ (where $\lambda$ represents the slower timescale).
 
 Observations from KAE Reconstruction:
 
@@ -9684,7 +9814,11 @@ The initial state is also a random variable: $z_1 \sim \mathcal{N}(\mu_0, \Sigma
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(General Formulation)</span></p>
 
-While we often add a noise term (e.g., $z_t = f(z_{t-1}) + \epsilon_t$), a more general and powerful way to express this is to state that the next state is sampled directly from a conditional distribution: $z_t \sim p(z_t \mid z_{t-1})$. This allows us to move beyond Gaussian assumptions to any probability distribution.
+While we often add a noise term (e.g., $z_t = f(z_{t-1}) + \epsilon_t$), a more general and powerful way to express this is to state that the next state is sampled directly from a conditional distribution: 
+
+$$z_t \sim p(z_t \mid z_{t-1})$$
+
+This allows us to move beyond Gaussian assumptions to any probability distribution.
 
 </div>
 
@@ -9708,14 +9842,17 @@ where $B$ is a transition matrix, $Z_t$ is the latent state, and $\eta_t$ is the
 
 To find the probability distribution $P(X_t \mid Z_t)$, we must determine its mean and variance given that $Z_t$ is fixed.
 
-1. **Assumption:** Let $\eta_t$ be Gaussian noise with mean zero and covariance $\Gamma$, such that $\eta_t \sim \mathcal{N}(0, \Gamma)$.
+1. **Assumption:** Let $\eta_t$ be Gaussian noise with mean zero and covariance $\Gamma$, such that 
+   
+   $$\eta_t \sim \mathcal{N}(0, \Gamma)$$
+
 2. **Expectation:** Using the linearity of the expectation operator:
 
-$$\mathbb{E}[X_t \mid Z_t] = \mathbb{E}[B\, Z_t + \eta_t] = B\, Z_t + 0 = B\, Z_t$$
+   $$\mathbb{E}[X_t \mid Z_t] = \mathbb{E}[B\, Z_t + \eta_t] = B\, Z_t + 0 = B\, Z_t$$
 
 3. **Conclusion:** Because the only source of randomness is the Gaussian variable $\eta_t$, $X_t$ also follows a normal distribution:
 
-$$P(X_t \mid Z_t) = \mathcal{N}(B\, Z_t,\, \Gamma)$$
+   $$P(X_t \mid Z_t) = \mathcal{N}(B\, Z_t,\, \Gamma)$$
 
 </div>
 
@@ -9886,7 +10023,7 @@ $$\ln \int Q(Z)\, f(Z)\, dZ \geq \int Q(Z)\, \ln f(Z)\, dZ$$
 3. For any concave function, the line segment connecting two points lies **below or on** the curve.
 4. Mathematically, for $\alpha \in [0, 1]$:
 
-$$\alpha\, f(x_0) + (1-\alpha)\, f(x_1) \leq f(\alpha\, x_0 + (1-\alpha)\, x_1)$$
+   $$\alpha\, f(x_0) + (1-\alpha)\, f(x_1) \leq f(\alpha\, x_0 + (1-\alpha)\, x_1)$$
 
 5. Generalizing from a discrete weighted sum to an integral, and noting that $Q(Z)$ acts as the weights (where $Q(Z) \geq 0$ and $\int Q(Z)\, dZ = 1$), the inequality allows us to "pull" the logarithm inside the integral.
 
@@ -9988,16 +10125,22 @@ If we simply sample a value $z$ from a distribution, $z$ becomes a "number" in t
 
 To optimize the ELBO, we approximate the integral using samples:
 
-1. **Objective:** We want to compute $\nabla_\phi \mathbb{E}\_{q_\phi(z)} [f(z)]$.
+1. **Objective:** We want to compute 
+   
+   $$\nabla_\phi \mathbb{E}\_{q_\phi(z)} [f(z)]$$
+
 2. **Transformation:** Express $z = \mu + \sigma \odot \epsilon$, where $\epsilon \sim \mathcal{N}(0, I)$.
-3. **Substitution:** The expectation becomes $\mathbb{E}\_{p(\epsilon)} [f(g_\phi(\epsilon))]$.
+3. **Substitution:** The expectation becomes 
+   
+   $$\mathbb{E}\_{p(\epsilon)} [f(g_\phi(\epsilon))]$$
+
 4. **Key step:** Since the distribution of $\epsilon$ no longer depends on $\phi$, we can move the gradient inside the expectation:
 
-$$\nabla_\phi \mathbb{E}_{p(\epsilon)} [f(g_\phi(\epsilon))] = \mathbb{E}_{p(\epsilon)} [\nabla_\phi f(g_\phi(\epsilon))]$$
+   $$\nabla_\phi \mathbb{E}_{p(\epsilon)} [f(g_\phi(\epsilon))] = \mathbb{E}_{p(\epsilon)} [\nabla_\phi f(g_\phi(\epsilon))]$$
 
 5. **Monte Carlo Estimation:** We approximate by taking $L$ samples:
 
-$$\nabla_\phi \mathbb{E}_{q_\phi(z)} [f(z)] \approx \frac{1}{L} \sum_{i=1}^{L} \nabla_\phi f(g_\phi(\epsilon_i))$$
+   $$\nabla_\phi \mathbb{E}_{q_\phi(z)} [f(z)] \approx \frac{1}{L} \sum_{i=1}^{L} \nabla_\phi f(g_\phi(\epsilon_i))$$
 
 </div>
 
@@ -10024,6 +10167,154 @@ By integrating the reparameterization trick into the sampling estimator, we can 
 This formulation allows for efficient, end-to-end training of latent variable models using stochastic gradient descent.
 
 </div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection between VI and SGVB)</span></p>
+
+* **VI** = inference principle
+* **SGVB** = training method
+
+</div>
+
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On Definition of SGVB above)</span></p>
+
+A better way to say it is:
+
+**SGVB (Stochastic Gradient Variational Bayes)** is a method for optimizing the ELBO by using a **Monte Carlo estimator** of the expectation together with the **reparameterization trick**, so that gradients with respect to the variational parameters ( \phi ) and model parameters ( \theta ) can be computed by standard gradient-based optimization.
+
+What is good in your slide:
+
+* reparameterizing the latent variable (z)
+* approximating the expectation by sampling
+* computing gradients w.r.t. (\theta) and (\phi) via backpropagation
+
+Those are exactly the core ideas.
+
+What is slightly inaccurate:
+
+* “**SGVB is the procedure of optimizing the ELBO**” is not wrong, but SGVB is more specifically the **gradient estimator / optimization framework** based on the reparameterization trick.
+* “**Reparameterizing the latent variable (z)**” is slightly imprecise. More accurately, you reparameterize the **sampling process** from the variational posterior:
+  [
+  z \sim q_\phi(z\mid x)
+  \quad\Rightarrow\quad
+  z = g_\phi(\varepsilon, x), ;; \varepsilon \sim p(\varepsilon)
+  ]
+  So we do not change the random variable in a vague sense; we rewrite it as a deterministic transform of auxiliary noise.
+* “**using standard backpropagation**” is correct in practice, but conceptually it is because the reparameterization makes the sampled objective differentiable w.r.t. parameters.
+
+A cleaner slide version would be:
+
+**Definition (SGVB).**
+SGVB is a method for optimizing the ELBO by:
+
+1. rewriting samples from (q_\phi(z\mid x)) using the reparameterization trick,
+2. estimating the expectation in the ELBO with Monte Carlo samples,
+3. computing gradients of the resulting estimator w.r.t. (\theta) and (\phi) using backpropagation.
+
+Or even more precise:
+
+**SGVB is a stochastic gradient estimator for the ELBO based on Monte Carlo sampling and the reparameterization trick.**
+
+So: **conceptually correct, but I would tighten the wording**.
+The main thing I would change is step 1.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Ttraining of VAE is an instance of SGVB)</span></p>
+
+**Standard VAE training is exactly the canonical example of SGVB**.
+
+More precisely:
+
+* A **VAE** is the model/framework.
+* **SGVB** is the **training method / gradient estimator** used to optimize its ELBO.
+
+So when people train a VAE by:
+
+1. writing the ELBO,
+2. sampling (z) from (q_\phi(z\mid x)) via
+   [
+   z=\mu_\phi(x)+\sigma_\phi(x)\odot \varepsilon,\qquad \varepsilon\sim\mathcal N(0,I),
+   ]
+3. approximating the expectation with sampled (z),
+4. backpropagating through that estimator,
+
+that is **SGVB**.
+
+A good way to phrase it:
+
+> Training a VAE with the reparameterization trick and Monte Carlo estimation of the ELBO is an instance of SGVB.
+
+Small nuance:
+
+* not every conceivable way of training a latent-variable variational model is SGVB,
+* but the **usual VAE training procedure introduced by Kingma and Welling** is SGVB.
+
+The standard Gaussian VAE from the original paper: **yes, absolutely**.
+
+A concise exam-style statement:
+
+> The VAE is the model, and SGVB is the optimization method typically used to train it.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Are we actually doing MC estimation in VAE training?)</span></p>
+
+Yes — **in the usual VAE training procedure, we are doing Monte Carlo estimation**.
+
+For one datapoint (x), the ELBO contains
+[
+\mathbb{E}*{q*\phi(z\mid x)}[\log p_\theta(x\mid z)].
+]
+That expectation is generally not computed analytically, so in practice we approximate it by sampling:
+[
+z^{(l)} = \mu_\phi(x) + \sigma_\phi(x)\odot \varepsilon^{(l)},
+\qquad \varepsilon^{(l)} \sim \mathcal N(0,I),
+]
+and then
+[
+\mathbb{E}*{q*\phi(z\mid x)}[\log p_\theta(x\mid z)]
+\approx
+\frac{1}{L}\sum_{l=1}^L \log p_\theta(x\mid z^{(l)}).
+]
+
+That is exactly a **Monte Carlo estimator**.
+
+Why it may not feel like “Monte Carlo”:
+
+* in VAEs, we often use only **one sample** per datapoint, (L=1)
+* because of the **reparameterization trick**, it looks like ordinary backprop through noise
+* the KL term is often available in **closed form** for Gaussian (q_\phi(z\mid x)), so only the reconstruction expectation is sampled
+
+So in the standard Gaussian VAE, training usually looks like:
+[
+\mathcal L(x)
+\approx
+\log p_\theta(x\mid z)
+----------------------
+
+\mathrm{KL}\big(q_\phi(z\mid x),|,p(z)\big),
+\qquad z=\mu_\phi(x)+\sigma_\phi(x)\odot\varepsilon,;\varepsilon\sim\mathcal N(0,I).
+]
+
+Here:
+
+* the reconstruction term is estimated by **Monte Carlo**
+* the KL term is often computed **exactly**
+* over the dataset, we also use **minibatch averaging**
+
+So the answer is: **yes, VAE training does use Monte Carlo estimation, typically a very small-sample Monte Carlo estimator, often just one latent sample per datapoint per update.**
+
+A very precise sentence would be:
+
+> In VAE training, the ELBO is usually optimized using a Monte Carlo estimate of the expectation over the latent variable, combined with the reparameterization trick for low-variance gradient estimation.
+
+</div>
+
 
 #### Neural Network Integration in Probabilistic Models
 
@@ -10393,7 +10684,12 @@ The architecture transitions from a standard VAE to a Multimodal VAE by handling
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MVAE Encoder and Decoder Models)</span></p>
 
-* **Encoder ($q$):** Maps multimodal data $Y$ to a latent model described by a probability distribution: $q_{\phi}(\tilde{z} \mid Y)$. In practice, this is often parameterized by a Convolutional Neural Network (CNN).
+* **Encoder ($q$):** Maps multimodal data $Y$ to a latent model described by a probability distribution: 
+  
+  $$q_{\phi}(\tilde{z} \mid Y)$$
+  
+  In practice, this is often parameterized by a Convolutional Neural Network (CNN).
+
 * **Decoders ($p_{\theta}$):** Map the latent states back to observation space. In a multimodal setting, we may use different distributions for different data types:
   1. **Gaussian Decoder** (for continuous data $x_t$): 
    
@@ -10418,7 +10714,7 @@ To optimize the Multimodal VAE, we utilize the Evidence Lower Bound (ELBO). To f
 
 The loss function for the multimodal variational autoencoder is defined as:
 
-$$\mathcal{L}_{\text{MVAE}} = - \mathbb{E}_{q} \left[ \ln p_{\theta}(Y \mid \tilde{z}) \right] - \ln p_{\theta}^{\text{latent}}(\tilde{z}) + H(q(\tilde{z} \mid Y))$$
+$$\mathcal{L}_{\text{MVAE}} = - \mathbb{E}_{q} \left[ \ln p_{\theta}(Y \mid \tilde{z}) + \ln p_{\theta}^{\text{latent}}(\tilde{z})\right] + H(q(\tilde{z} \mid Y))$$
 
 Where:
 
@@ -10529,7 +10825,7 @@ The transition to Neural ODEs is motivated by the desire to make deep neural net
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Residual Network (ResNet))</span></p>
 
-A ResNet is a feed-forward architecture where activations at one layer are passed directly to subsequent layers, bypassing certain transformations. This "residual connection" helps combat the vanishing/exploding gradient problem.
+A **ResNet** is a feed-forward architecture where activations at one layer are passed directly to subsequent layers, bypassing certain transformations. This "residual connection" helps combat the vanishing/exploding gradient problem.
 
 </div>
 
@@ -10560,11 +10856,11 @@ By considering the step between layers as an infinitesimal increment, we can tra
 2. From our ResNet definition: $\Delta h = f(h_n, \theta_n, I_n)$.
 3. Let $\Delta n$ represent the "step size" between layers. If we divide by $\Delta n$ and let $\Delta n \to 0$:
 
-$$\lim_{\Delta n \to 0} \frac{h_{n+\Delta n} - h_n}{\Delta n} = \frac{dh}{dt}$$
+   $$\lim_{\Delta n \to 0} \frac{h_{n+\Delta n} - h_n}{\Delta n} = \frac{dh}{dt}$$
 
 4. This yields a continuous-time formulation where the processing across "layers" is represented by a differential equation:
 
-$$\frac{dh}{dt} = f(h(t), t, \theta)$$
+   $$\frac{dh}{dt} = f(h(t), t, \theta)$$
 
 In this view, the depth of the network is analogous to the time dimension in an ODE.
 
@@ -10614,6 +10910,8 @@ where $f$ can be any differentiable function, such as a deep neural network or a
 The loss function $L$ is calculated based on observations $\mathbf{x}$ at specific time points $t_i$. It is the sum of the differences between the observations and the decoded latent states $h(t_i)$:
 
 $$L = \sum_{i} \text{Loss}(x(t_i), \text{decoder}(h(t_i)))$$
+
+$$L = \sum_{i} \|x(t_i) - Bh(t_i)\|_2^2$$
 
 </div>
 
@@ -10668,41 +10966,49 @@ where $\frac{\partial f_\theta}{\partial z}$ is the Jacobian of the vector field
 
 We derive this by considering the recursion of the state in a small time step $\epsilon$ and applying the chain rule, then taking the limit as $\epsilon \to 0$.
 
-1. **State Evolution:** Assume we have a state at time $t + \epsilon$. By integrating the ODE $z' = f_\theta(z, t)$, we can approximate the state as:
+1. **State Evolution:** Assume we have a state at time $t + \epsilon$. By integrating the ODE 
+   
+   $$z' = f_\theta(z, t)$$
+   
+   we can approximate the state as:
 
-$$z(t + \epsilon) = z(t) + \int_{t}^{t+\epsilon} f_\theta(z, t)\, dt \approx z(t) + \epsilon f_\theta(z(t), t)$$
+   $$z(t + \epsilon) = z(t) + \int_{t}^{t+\epsilon} f_\theta(z, t)\, dt \approx z(t) + \epsilon f_\theta(z(t), t)$$
 
-We define this mapping as $T_\epsilon(z(t))$.
+   We define this mapping as $T_\epsilon(z(t))$.
 
 2. **Chain Rule Recursion:** In the spirit of backpropagation, the derivative of the loss with respect to the state at time $t$ depends on the state at $t + \epsilon$:
 
-$$\frac{\partial L}{\partial z(t)} = \frac{\partial L}{\partial z(t + \epsilon)} \frac{\partial z(t + \epsilon)}{\partial z(t)}$$
+   $$\frac{\partial L}{\partial z(t)} = \frac{\partial L}{\partial z(t + \epsilon)} \frac{\partial z(t + \epsilon)}{\partial z(t)}$$
 
-Substituting the definition of the adjoint $a(t)$:
+   Substituting the definition of the adjoint $a(t)$:
 
-$$a(t) = a(t + \epsilon) \frac{\partial T_\epsilon(z(t))}{\partial z(t)}$$
+   $$a(t) = a(t + \epsilon) \frac{\partial T_\epsilon(z(t))}{\partial z(t)}$$
 
-3. **Applying the Derivative:** Using our Taylor approximation $T_\epsilon(z(t)) \approx z(t) + \epsilon f_\theta(z, t)$, we take the derivative with respect to $z(t)$:
+3. **Applying the Derivative:** Using our Taylor approximation 
+   
+   $$T_\epsilon(z(t)) \approx z(t) + \epsilon f_\theta(z, t)$$
 
-$$\frac{\partial T_\epsilon(z(t))}{\partial z(t)} = I + \epsilon \frac{\partial f_\theta(z, t)}{\partial z} + O(\epsilon^2)$$
+   we take the derivative with respect to $z(t)$:
 
-where $I$ is the identity matrix.
+   $$\frac{\partial T_\epsilon(z(t))}{\partial z(t)} = I + \epsilon \frac{\partial f_\theta(z, t)}{\partial z} + O(\epsilon^2)$$
+
+   where $I$ is the identity matrix.
 
 4. **Forming the Difference Quotient:**
 
-$$a(t) = a(t + \epsilon) \left( I + \epsilon \frac{\partial f_\theta}{\partial z} + O(\epsilon^2) \right)$$
+   $$a(t) = a(t + \epsilon) \left( I + \epsilon \frac{\partial f_\theta}{\partial z} + O(\epsilon^2) \right)$$
 
-$$a(t) = a(t + \epsilon) + \epsilon\, a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon^2)$$
+   $$a(t) = a(t + \epsilon) + \epsilon\, a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon^2)$$
 
-Rearranging to find the change in $a$ over time:
+   Rearranging to find the change in $a$ over time:
 
-$$\frac{a(t + \epsilon) - a(t)}{\epsilon} = -a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon)$$
+   $$\frac{a(t + \epsilon) - a(t)}{\epsilon} = -a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon)$$
 
 5. **Taking the Limit:** As $\epsilon \to 0$, the left side becomes the derivative $\frac{da}{dt}$, and $a(t + \epsilon)$ becomes $a(t)$:
 
-$$\frac{da(t)}{dt} = -a(t) \frac{\partial f_\theta(z, t)}{\partial z}$$
+   $$\frac{da(t)}{dt} = -a(t) \frac{\partial f_\theta(z, t)}{\partial z}$$
 
-The negative sign arises because we are looking at the change in the reverse direction relative to the standard derivative definition.
+   The negative sign arises because we are looking at the change in the reverse direction relative to the standard derivative definition.
 
 </details>
 
@@ -10790,16 +11096,16 @@ $$\frac{dL}{d\theta} = -\int_{t_1}^{t_0} a(t)^\top \frac{\partial f_\theta}{\par
 
 2. **Applying the Jacobian:** We multiply the augmented adjoint vector by the Jacobian derived above:
 
-$$\begin{pmatrix} a(t) & a_\theta(t) \end{pmatrix} \begin{pmatrix} \frac{\partial f_\theta}{\partial z} & \frac{\partial f_\theta}{\partial \theta} \\ 0 & 0 \end{pmatrix}$$
+   $$\begin{pmatrix} a(t) & a_\theta(t) \end{pmatrix} \begin{pmatrix} \frac{\partial f_\theta}{\partial z} & \frac{\partial f_\theta}{\partial \theta} \\ 0 & 0 \end{pmatrix}$$
 
 3. **Component Result:** This multiplication yields two components:
    * $a(t) \frac{\partial f_\theta}{\partial z}$: The original adjoint derivative for the state.
    * $a(t) \frac{\partial f_\theta}{\partial \theta}$: The term required to construct the gradient with respect to the parameters.
 4. **Integration:** To find the total gradient at $t_0$, we propagate the adjoint back from $t_1$ to $t_0$:
 
-$$\frac{dL}{d\theta} = - \int_{t_1}^{t_0} a(t) \frac{\partial f_\theta}{\partial \theta}\, dt$$
+   $$\frac{dL}{d\theta} = - \int_{t_1}^{t_0} a(t) \frac{\partial f_\theta}{\partial \theta}\, dt$$
 
-This result allows us to propagate gradients backwards through time in a mathematically rigorous and computationally efficient manner.
+   This result allows us to propagate gradients backwards through time in a mathematically rigorous and computationally efficient manner.
 
 </details>
 
@@ -10956,7 +11262,7 @@ To ensure the neural network adheres to the physics model $G$ (for example, the 
 1. Compute the temporal derivative of the neural network output $\frac{\partial u_{\theta}}{\partial t}$ using automatic differentiation (similar to the method used in Neural ODEs).
 2. The physics-informed term $\mathcal{L}_{\text{physics}}$ minimizes the difference between this derivative and the prescribed vector field:
 
-$$\mathcal{L}_{\text{physics}} = \left\| \frac{\partial u_{\theta}}{\partial t} - G(u_{\theta}, t, x, \dots) \right\|^2$$
+   $$\mathcal{L}_{\text{physics}} = \left\| \frac{\partial u_{\theta}}{\partial t} - G(u_{\theta}, t, x, \dots) \right\|^2$$
 
 3. By minimizing $\mathcal{L}$, the network simultaneously learns to fit the data and satisfy the governing physical equations.
 
@@ -11255,7 +11561,9 @@ Consider a system described by a quadratic differential equation where the contr
 
 $$\dot{x} = -(x + \lambda)^2 + \mu, \qquad \dot{\lambda} = r$$
 
-To analyze whether the system tracks the attractor or undergoes R-tipping, we introduce a new coordinate $y$ that moves with the parameter: $y = x + \lambda$.
+To analyze whether the system tracks the attractor or undergoes R-tipping, we introduce a new coordinate $y$ that moves with the parameter: 
+
+$$y = x + \lambda$$
 
 </div>
 
@@ -11303,7 +11611,11 @@ In these systems, the evolution of the state depends not only on the initial sta
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Autonomous Transformation Trick)</span></p>
 
-A non-autonomous system in $n$ dimensions can formally be rewritten as an autonomous system in $n+1$ dimensions by introducing a new state variable $x_{n+1}$ to represent time: $\dot{x}_{n+1} = 1$. While this trick makes the system "formally" autonomous, it often complicates analysis because the system never reaches a standard attractor; the state is constantly drifting along the time dimension.
+A non-autonomous system in $n$ dimensions can formally be rewritten as an autonomous system in $n+1$ dimensions by introducing a new state variable $x_{n+1}$ to represent time: 
+
+$$\dot{x}_{n+1} = 1$$
+
+While this trick makes the system "formally" autonomous, it often complicates analysis because the system never reaches a standard attractor; the state is constantly drifting along the time dimension.
 
 </div>
 
