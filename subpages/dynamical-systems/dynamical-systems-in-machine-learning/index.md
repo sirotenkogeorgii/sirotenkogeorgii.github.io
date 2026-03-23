@@ -935,6 +935,153 @@ On the images above, that is very likely what is happening. The nullclines are t
 
 ## Lecture 2
 
+### Decoupling Technique
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Decoupling in Dynamical Systems)</span></p>
+
+In dynamical systems, **decoupling** means rewriting a coupled system so that its variables evolve **independently** or in **smaller independent groups**. The point is to turn a hard multivariable problem into several easier one-variable problems. Imagine a system of two variables, $x_1$ and $x_2$. If the rate of change of $x_1$ depends only on $x_1$, and the rate of change of $x_2$ depends only on $x_2$, the system is already decoupled. You can solve them completely independently. But in the real world, things are "coupled." The rate of change of $x_1$ depends on what $x_2$ is doing, and vice versa.
+
+Suppose you start with a coupled linear system
+
+$$\dot{x} = Ax$$
+
+where $x \in \mathbb{R}^n$ and the components of $x$ influence each other through the matrix $A$.
+
+If you can find a change of variables $x = Py$ such that
+
+$$\dot{y} = P^{-1}AP, y$$
+
+and (P^{-1}AP) is diagonal, then the system becomes
+
+$$\dot{y}_i = \lambda_i y_i$$
+
+Now each equation depends only on one variable $y_i$, so the system is decoupled.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Main idea)</span></p>
+
+A system is **coupled** if one equation contains several state variables, like
+
+$$
+\dot{x}_1 = 2x_1 + x_2, \qquad
+\dot{x}_2 = x_1 + 2x_2
+$$
+
+Here $x_1$ and $x_2$ affect each other.
+
+A **decoupled** version would look like
+
+$$\dot{y}_1 = 3y_1, \qquad \dot{y}_2 = y_2$$
+
+Now each variable evolves on its own.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Decoupling in Linear Dynamical Systems)</span></p>
+
+For linear systems, the usual technique is:
+
+1. Write the system in matrix form $\dot{x}=Ax$.
+2. Find eigenvalues and eigenvectors of $A$.
+3. Use eigenvectors to build a transformation matrix $P$.
+4. Change coordinates with $x=Py$.
+
+If $A$ is diagonalizable, this gives independent scalar ODEs.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Main idea)</span></p>
+
+Take
+
+$$\dot{x}_1 = x_1 + x_2,\qquad \dot{x}_2 = x_1 + x_2$$
+
+Define new variables
+
+$$y_1 = x_1 + x_2,\qquad y_2 = x_1 - x_2$$
+
+Then
+
+$$\dot{y}_1 = 2y_1,\qquad \dot{y}_2 = 0$$
+
+So the original coupled system becomes decoupled in the new coordinates.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why this is useful)</span></p>
+
+Decoupling helps with:
+
+* solving the system explicitly,
+* understanding stability,
+* identifying normal modes,
+* separating fast and slow behavior,
+* simplifying numerical simulation.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Important note)</span></p>
+
+Decoupling is easiest for **linear systems**. For **nonlinear systems**, exact decoupling is usually harder, but one often tries to:
+
+* decouple **locally** near an equilibrium by linearization,
+* use **normal forms**,
+* exploit symmetry or conserved quantities,
+* separate variables into slow/fast subsystems.
+
+So, in one sentence:
+
+**Decoupling is a coordinate transformation that turns interacting state equations into independent ones, making the dynamics easier to analyze.**
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Physical Example)</span></p>
+
+To really understand decoupling, it helps to step away from the abstract matrix $A$ and look at a physical example. 
+
+Imagine two identical pendulums hanging side-by-side, connected by a spring.
+* If you pull just the left pendulum back and let it go, the resulting motion is a chaotic, messy dance. The left pendulum swings, the spring pulls the right pendulum, the right pendulum swings back and pushes the left one. The energy sloshes back and forth between them.
+* The position of the left pendulum ($x_1$) and the right pendulum ($x_2$) are deeply **coupled**.
+
+However, if you observe carefully, you will notice there are two specific ways you can start the pendulums where the motion is incredibly simple:
+1. **The "Together" Pattern:** If you pull both pendulums back by the exact same amount and let go, they will swing back and forth in perfect unison. The spring between them never stretches or compresses; it just goes along for the ride.
+2. **The "Opposite" Pattern:** If you pull them apart by the exact same amount and let go, they will swing exactly opposite to each other, crashing inward and flying outward symmetrically.
+  
+These hidden, pure patterns are called **Normal Modes**. In these specific patterns, the complex system acts like a simple, single entity.
+
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/Two-pendulums-connected-by-a-spring.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Two pendulums connected by a spring.</figcaption>
+  </figure>
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mathematical Translation Of Example above)</span></p>
+
+* **The standard coordinates ($x_1, x_2$):** These represent the physical positions of the left and right pendulums. Tracking these is messy and coupled ($A$).
+* **The eigenvectors ($P$):** These are the mathematical representation of our "Normal Modes." One eigenvector represents the "Together" pattern, and the other represents the "Opposite" pattern.
+* **The eigenvalues ($D$):** These dictate the frequencies or decay rates of those specific patterns. The "Together" pattern will swing at one specific frequency ($\lambda_1$), and the "Opposite" pattern will swing at a different frequency ($\lambda_2$) because it has to fight the tension of the spring.
+* **The decoupled coordinates ($y_1, y_2$):** These variables no longer ask "Where is the left pendulum?" Instead, $y_1$ asks "How much of the Together pattern is happening right now?" and $y_2$ asks "How much of the Opposite pattern is happening right now?"
+
+**Key Moment:**
+
+Here is the brilliant core of decoupling: **Any messy, chaotic state the pendulums can possibly be in is just a combination of those two simple patterns.**
+
+By using the substitution $\mathbf{x} = P\mathbf{y}$, we stopped trying to track the left and right pendulums individually. Instead, we translated the entire problem into the language of the system's natural patterns. Because the "Together" pattern and the "Opposite" pattern do not interfere with each other, their mathematical equations ($\dot{y}_1 = \lambda_1 y_1$ and $\dot{y}_2 = \lambda_2 y_2$) are completely separated (decoupled).
+
+We solve the simple patterns, and then translate them back into physical positions at the very end.
+
+</div>
+
 ### General Solutions for Linear Systems
 
 We previously considered linear dynamical systems defined by systems of ordinary differential equations (ODEs) of the form:
@@ -1083,7 +1230,7 @@ So they are equivalent under the condition that all values are distinct. If they
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Matrix Exponential)</span></p>
 
-The matrix exponential $e^{At}$ is defined in a manner analogous to the Taylor series expansion of the scalar exponential function:
+The **matrix exponential** $e^{At}$ is defined in a manner analogous to the Taylor series expansion of the scalar exponential function:
 
 $$e^{At} = \sum_{k=0}^{\infty} \frac{(At)^k}{k!} = I + At + \frac{(At)^2}{2!} + \frac{(At)^3}{3!} + \dots$$
 
@@ -1155,15 +1302,12 @@ The true power of the Fundamental Theorem is that it also provides the solution 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 In the degenerate case, the solution involves not just exponential terms, but also polynomials of time ($t$). These polynomial terms arise from the off-diagonal elements in the canonical form of the matrix (e.g., the '1' in the third canonical form).
-
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name"></span></p>
-
 
 Consider the $2 \times 2$ matrix from the third canonical form, which has a repeated eigenvalue a: 
 
@@ -1174,7 +1318,6 @@ The solution for a system governed by this matrix, $\mathbf{x}(t) = e^{At}\mathb
 $$\mathbf{x}(t) = e^{At}\mathbf{x}_0 = e^{at} \begin{pmatrix} 1 & t \\ 0 & 1 \end{pmatrix} \mathbf{x}_0$$
 
 Notice the appearance of the linear term $t$ in the matrix. For higher-dimensional degenerate systems, higher-order polynomials of $t$ can appear in the solution. This is a direct consequence of the structure of the matrix exponential for non-diagonalizable matrices.
-
 
 </div>
 
@@ -1190,7 +1333,7 @@ An affine system introduces a constant vector term, shifting the dynamics in sta
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Affine System of ODEs)</span></p>
 
-An affine or inhomogeneous linear system of ordinary differential equations is defined by:  
+An **affine or inhomogeneous linear system of ordinary differential equations** is defined by:  
 
 $$\dot{x} = Ax + b$$
 
@@ -1248,12 +1391,10 @@ If the matrix $A$ is not invertible, it possesses at least one zero eigenvalue. 
 
 </div>
 
----
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Characteristic polynomial)</span></p>
 
-The *characteristic polynomial* of a matrix $A \in \mathbb{C}^{n \times n}$ with respect to the variable $\lambda$ is 
+The **characteristic polynomial** of a matrix $A \in \mathbb{C}^{n \times n}$ with respect to the variable $\lambda$ is 
 
 $$p_A(\lambda) = \det(A - \lambda I_n)$$
 
@@ -1281,9 +1422,6 @@ Discriminant $D$:
 $$D = \text{trace}(A)^2 - 4\det(A)$$
 
 </div>
-
----
-
 
 #### Non-autonomous Systems with a Forcing Function
 
@@ -1482,7 +1620,7 @@ A central concept in dynamical systems is the notion of a fixed point, which is 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Point)</span></p>
 
-A point $x^{\ast}$ is a fixed point of a discrete-time system $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
+A point $x^{\ast}$ is a **fixed point of** a discrete-time system $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
 
 
 $$x^{\ast} = f(x^{\ast})$$
@@ -1534,7 +1672,7 @@ If the absolute value of the slope is less than one, any initial condition will 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stable Fixed Point)</span></p>
 
-A fixed point $x^{\ast}$ is stable if trajectories starting near $x^{\ast}$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
+A **fixed point $x^{\ast}$ is stable** if trajectories starting near $x^{\ast}$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
 
 </div>
 
@@ -1552,7 +1690,7 @@ If the absolute value of the slope is greater than one, the system will diverge 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unstable Fixed Point)</span></p>
 
-A fixed point $x^{\ast}$ is unstable if trajectories starting near $x^{\ast}$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
+A **fixed point $x^{\ast}$ is unstable** if trajectories starting near $x^{\ast}$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
 
 </div>
 
@@ -1560,7 +1698,6 @@ A fixed point $x^{\ast}$ is unstable if trajectories starting near $x^{\ast}$ mo
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
 When $\lvert a\rvert > 1$, the function line is steeper than the bisectrix. The Cobweb Plot immediately reveals that each iteration throws the state further away from the intersection point, causing the "web" to spiral outwards. The system still possesses a fixed point, but any infinitesimal perturbation from it will lead to divergence.
-
 
 </div>
 
@@ -1616,11 +1753,9 @@ We now generalize our analysis to systems with $m$ dimensions, where the state i
 
 The state of the system is a vector $\vec{x}_t \in \mathbb{R}^m$. The evolution is given by the affine map:
 
-
 $$\vec{x}_{t+1} = A\vec{x}_t + \vec{b}$$
 
 where $A$ is an $m \times m$ square matrix and $\vec{b} \in \mathbb{R}^m$ is a constant offset vector.
-
 
 </div>
 
@@ -1659,10 +1794,9 @@ $$\vec{x}_T = A^{T-1}\vec{x}_1$$
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Role of Diagonalization Calculating)</span></p>
 
-The Role of Diagonalization Calculating matrix powers $A^{T-1}$ can be complex. However, if the matrix $A$ is diagonalizable, the calculation simplifies significantly. A diagonalizable matrix can be written as $A = V \Lambda V^{-1}$, where $V$ is the matrix of eigenvectors and $\Lambda$ is a diagonal matrix of the corresponding eigenvalues $\lambda_i$.
-
+Matrix powers $A^{T-1}$ can be complex. However, if the matrix $A$ is diagonalizable, the calculation simplifies significantly. A diagonalizable matrix can be written as $A = V \Lambda V^{-1}$, where $V$ is the matrix of eigenvectors and $\Lambda$ is a diagonal matrix of the corresponding eigenvalues $\lambda_i$.
 
 </div>
 
@@ -1712,13 +1846,13 @@ The stability of the fixed point (in this case, the origin, since $\vec{b}=\vec{
 We begin our formal study by introducing a concept central to understanding how systems evolve over time: the flow operator. Consider a system of linear ordinary differential equations with an initial value.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Flow Map (or Flow Operator))</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Flow Map / Flow Operator)</span></p>
 
 For a linear system of differential equations of the form $\dot{x} = Ax$, with an initial condition $x(0) = x_0$, the solution is given by:
 
 $$x(t) = e^{At} x_0$$
 
-The operator $e^{At}$ that propagates the initial state $x_0$ forward in time is known as the flow operator.
+The operator $e^{At}$ that propagates the initial state $x_0$ forward in time is known as the **flow operator**.
 
 More generally, we can define a flow map, denoted by $\phi$, which is a function of time $t$ and an initial condition $x_0$:
 
@@ -1755,7 +1889,7 @@ We can define a new matrix that encapsulates this discrete-time evolution.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete-Time Equivalent Matrix)</span></p>
 
-Let a continuous-time linear system be defined by $\dot{x} = Ax$. Its equivalent discrete-time evolution matrix, $\tilde{A}$, for a sampling time step $\Delta t$ is defined as:
+Let a continuous-time linear system be defined by $\dot{x} = Ax$. Its equivalent **discrete-time evolution matrix**, $\tilde{A}$, for a sampling time step $\Delta t$ is defined as:
 
 $$\tilde{A} = e^{A \Delta t}$$
 
@@ -2053,15 +2187,15 @@ Having built some intuition, we now proceed to a formal mathematical definition.
 
 A **dynamical system** is a commutative group or semigroup action, $\phi$, defined on a domain $T \times R$. It is composed of the following elements:
 1. **A Time Domain ($T$)**: This is the set from which time values are drawn.
-  * For continuous-time systems defined for all time, $T = \mathbb{R}$ (a group).
-  * For systems defined only in forward time, $T = \mathbb{R}_{\ge 0}$ (a semigroup).
-  * For discrete-time systems, $T = \mathbb{Z}$ (the integers).
+   * For continuous-time systems defined for all time, $T = \mathbb{R}$ (a group).
+   * For systems defined only in forward time, $T = \mathbb{R}_{\ge 0}$ (a semigroup).
+   * For discrete-time systems, $T = \mathbb{Z}$ (the integers).
 2. **A State Space ($R$)**: This is an open set, $R \subseteq \mathbb{R}^d$, which contains all possible states the system can occupy. It is the space spanned by the dynamical variables.
 3. **A Flow Map ($\phi$)**: An operator that maps a time and a state to a new state.
    
-  $$\phi: T \times R \to R$$  
+   $$\phi: T \times R \to R$$  
    
-  We write this as $\phi(t, x)$ or sometimes abbreviate it as $\phi_t(x)$.
+   We write this as $\phi(t, x)$ or sometimes abbreviate it as $\phi_t(x)$.
 
 </div>
 
@@ -2075,15 +2209,15 @@ Let $x$ be a point in the state space and let $s$, $t$ be elements of the time d
 The **flow map** $\phi$ must satisfy the following properties:
 * **Neutral Element:** For any state $x$ in the state space $R$, evolving for zero time leaves the state unchanged.
 
-$$\forall x \in R, \quad \phi(0, x)=\phi_0(x) = x$$ 
+  $$\forall x \in R, \quad \phi(0, x)=\phi_0(x) = x$$ 
 
 * **Semigroup (or Group) Property:** Evolving a point for a time $s+t$ is equivalent to first evolving it for time $t$ and then evolving the result for time $s$ (or vice versa). This property is described as commutative, meaning the order of time evolution operations can be exchanged.
   
-$$\phi_{s+t}(x) = \phi_s(\phi_t(x)) = \phi_t(\phi_s(x))$$ 
+  $$\phi_{s+t}(x) = \phi_s(\phi_t(x)) = \phi_t(\phi_s(x))$$ 
 
 * **Inverse Operation (for Groups):** As a consequence of the group property, if the system is time-reversible (i.e., time can be negative), we have an inverse operation. Evolving forward by time $t$ and then backward by time $t$ returns the system to its original state.
   
-$$\phi_t(\phi_{-t}(x)) = x$$
+  $$\phi_t(\phi_{-t}(x)) = x$$
 
 </div>
 
@@ -2142,11 +2276,11 @@ This system has two distinct solutions that satisfy the initial condition:
 We must verify that both functions satisfy the differential equation and the initial condition.
 
 * For $u(t) = 0$:
-  * Initial Condition: $u(0) = 0$, which is satisfied.
-  * Differential Equation: The time derivative is $\dot{u}(t) = 0$. Plugging into the equation gives $0 = (0)^{2/3} = 0$. The equation holds.
+  * **Initial Condition:** $u(0) = 0$, which is satisfied.
+  * **Differential Equation:** The time derivative is $\dot{u}(t) = 0$. Plugging into the equation gives $0 = (0)^{2/3} = 0$. The equation holds.
 * For $v(t) = t^3$:
-  * Initial Condition: $v(0) = 0^3 = 0$, which is satisfied.
-  * Differential Equation: The time derivative is $\dot{v}(t) = 3t^2 = 3v^{2/3}$. 
+  * **Initial Condition:** $v(0) = 0^3 = 0$, which is satisfied.
+  * **Differential Equation:** The time derivative is $\dot{v}(t) = 3t^2 = 3v^{2/3}$. 
 
 </div>
 
@@ -2345,9 +2479,9 @@ The **basin of attraction** for an attractor (such as a stable fixed point) is t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Attractor, Basin of Attraction)</span></p>
 
-For a dynamical $(\Phi_t)_{t\in I}$ on the metric space $(E,\text{dist})$ an attractor $A\subset B \subset E$ is a closed subset such that
+For a dynamical $(\Phi_t)_{t\in I}$ on the metric space $(E,\text{dist})$ an **attractor** $A\subset B \subset E$ is a closed subset such that
 * $\Phi_t(A) \subset A, \forall t\in I$,
-* there exists a basin of attraction $B$ of $A,$ which is defined as the open set
+* there exists a **basin of attraction** $B$ of $A,$ which is defined as the open set
 
 $$B = \lbrace x\in E \mid\lim_{t\to\infty} d(\Phi_t(x),A) = 0 \rbrace$$
 
@@ -2420,7 +2554,7 @@ Let $\mathbf{x}_0$ be an equilibrium point of the system $\dot{\mathbf{x}} = \ma
 </div>
 
 <figure>
-  <img src="{{ '/assets/Fixed_Points.gif assets/images/notes/dynamical-systems/Fixed_Points.gif' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <img src="{{ '/assets/images/notes/dynamical-systems/Fixed_Points.gif' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
   <figcaption>Schematic visualization of 4 of the most common kinds of fixed points.</figcaption>
 </figure>
 
@@ -2507,7 +2641,7 @@ For a discrete-time system
 
 $$x_{n+1} = f(x_n),$$
 
-a fixed point (x^*) satisfies
+a fixed point $x^\ast$ satisfies
 
 $$f(x^*) = x^*$$
 
@@ -2517,7 +2651,7 @@ For a continuous-time system
 
 $$\dot{x} = g(x),$$
 
-an equilibrium (x^*) satisfies
+an equilibrium $x^\ast$ satisfies
 
 $$g(x^*) = 0$$
 
@@ -2535,7 +2669,7 @@ There is also a nice connection between them. If $x^\ast$ is an equilibrium of a
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Equilibrium Point)</span></p>
 
-An equilibrium point $x_0$ of a dynamical system $\dot{x} = f(x)$ is a point where the vector field is zero.  
+An **equilibrium point** $x_0$ of a dynamical system $\dot{x} = f(x)$ is a point where the vector field is zero.  
 
 $$f(x_0) = 0$$  
 
@@ -2547,7 +2681,6 @@ $$\frac{dx}{dt} = 0 \quad \text{and} \quad \frac{dy}{dt} = 0$$
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Calculating Equilibria for the Predator-Prey Model)</span></p>
-
 
 We set the equations of motion to zero:
 
@@ -2570,7 +2703,6 @@ From this system, we can identify two distinct solutions.
   
   This corresponds to a state where both predator and prey populations coexist in a stable balance.
 
-
 </div>
 
 #### Stability Analysis via Linearization
@@ -2580,15 +2712,12 @@ Once we have found the equilibrium points, the next crucial question is: what ha
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The core idea is to approximate the complex nonlinear system with a simpler linear system in the immediate vicinity of an equilibrium point. The behavior of this local linear system is determined by the Jacobian matrix, and its properties (specifically, its eigenvalues) tell us almost everything we need to know about the stability of the equilibrium point for the original nonlinear system.
-
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Jacobian for the Predator-Prey Model)</span></p>
-
 
 Our system is:
 
@@ -2636,7 +2765,6 @@ Now, we linearize the system at each of these points.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
 
-
 First, we evaluate the general Jacobian matrix at the point $(x, y) = (0, 0)$:  
 
 $$J(0, 0) = \begin{pmatrix} \alpha - \beta(0) & -\beta(0) \\ \gamma(0) & \gamma(0) - \lambda \end{pmatrix} = \begin{pmatrix} \alpha & 0 \\ 0 & -\lambda \end{pmatrix}$$  
@@ -2648,7 +2776,6 @@ $$J(0, 0) = \begin{pmatrix} 3 & 0 \\ 0 & -(-2) \end{pmatrix} = \begin{pmatrix} 3
 The eigenvalues of a diagonal matrix are simply its diagonal entries. Therefore, the eigenvalues are $\lambda_1 = 3$ and $\lambda_2 = 2$.
 
 Since both eigenvalues are real and positive, trajectories starting near the origin will be repelled from it along all directions. This type of equilibrium is called an unstable node.
-
 
 </div>
 
@@ -2699,11 +2826,9 @@ Let $x_0$ be an equilibrium point and let $\phi_t(x)$ be the flow operator, whic
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stable Equilibrium (in the sense of Lyapunov))</span></p>
 
-
 An equilibrium point $x_0$ is called stable if for every neighborhood $\mathcal{U}$ of $x_0$ (e.g., an open ball of radius $\epsilon > 0$), there exists a smaller neighborhood $\mathcal{V}$ of $x_0$ (e.g., a ball of radius $\delta > 0$) such that any trajectory starting in $\mathcal{V}$ remains within $\mathcal{U}$ for all future time.
 
 Formally: For every $\epsilon > 0$, there exists a $\delta > 0$ such that for any point $x$ with $\lvert x - x_0\rvert < \delta$, we have $\lvert\phi_t(x) - x_0\rvert < \epsilon$ for all $t \ge 0$.
-
 
 </div>
 
@@ -2782,9 +2907,9 @@ Let $X$ be a metric space (a space endowed with a distance function), and let $A
 
 A **homeomorphism** is a function $h: A \to B$ that satisfies the following three properties:
 
-1. Continuity: The function h is continuous.
-2. One-to-One and Onto (Bijective): The function h is a one-to-one map (injective) and maps onto the entire set $B$.
-3. Continuous Inverse: The inverse function $h^{-1}: B \to A$ exists and is also continuous.
+1. **Continuity:** The function $h$ is continuous.
+2. **One-to-One and Onto (Bijective):** The function $h$ is a one-to-one map (injective) and maps onto the entire set $B$.
+3. **Continuous Inverse:** The inverse function $h^{-1}: B \to A$ exists and is also continuous.
 
 In essence, a homeomorphism is a continuous stretching and bending of space that defines a unique, reversible mapping between two sets, $A$ and $B$.
 
@@ -3991,7 +4116,7 @@ This section transitions our focus from continuous flows to discrete maps, explo
 The logistic map is a simple, scalar (one-dimensional) map defined by a quadratic equation. It was famously analyzed by Robert May in a 1976 Nature paper, which highlighted how such a simple deterministic equation could produce extraordinarily complex, chaotic dynamics.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Logistic Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Logistic Map)</span></p>
 
 The logistic map is a recursive function that maps a value $x_t$ to a new value $x_{t+1}$. It is defined by the equation:
 
@@ -4012,7 +4137,7 @@ Under these conditions, it can be shown that the state $x_t$ will remain bounded
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Visualizing the Map with a Return Plot</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Visualizing the Map with a Return Plot)</span></p>
 
 To understand the behavior of a map, we use a return plot, which graphs $x_{t+1}$ as a function of $x_t$. For the logistic map, this function is a parabola opening downwards. We also plot the line $x_{t+1} = x_t$, known as the bisector or identity line.
 
@@ -4032,7 +4157,7 @@ This graphical method provides a powerful intuition for whether the system conve
 A fixed point is a state of the system that does not change over time. It is a point where, if the system starts there, it stays there.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Fixed Point</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Point)</span></p>
 
 A point $x^\ast$ is a fixed point of a map $f$ if it satisfies the condition:
 
@@ -4041,7 +4166,7 @@ $$x^* = f(x^*)$$
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">Finding the Fixed Points of the Logistic Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Finding the Fixed Points of the Logistic Map)</span></p>
 
 To find the fixed points of the logistic map, we set $x_{t+1} = x_t = x^\ast$ and solve the resulting equation:
 
@@ -4063,7 +4188,7 @@ This equation yields two solutions for the fixed points:
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Existence of Fixed Points</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Existence of Fixed Points)</span></p>
 
 From these solutions, we can immediately see two things:
 
@@ -4121,7 +4246,7 @@ Let $x^\ast$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^\as
 This stability criterion extends naturally to multivariate (higher-dimensional) maps.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">N-Dimensional Maps and the Jacobian</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($N$-Dimensional Maps and the Jacobian)</span></p>
 
 Consider a system in $m$ dimensions described by a map $\mathbf{x}_{t+1} = \mathbf{F}(\mathbf{x}_t)$, where $\mathbf{x}_t$ is a vector in $\mathbb{R}^m$. The stability analysis is analogous, but the scalar derivative is replaced by the Jacobian matrix, $J$.
 
@@ -4132,7 +4257,7 @@ $$J = \begin{pmatrix} \frac{\partial F_1}{\partial x_1} & \cdots & \frac{\partia
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability for N-D Maps</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability for $N$-$D$ Maps)</span></p>
 
 Let $\mathbf{x}^\ast$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The stability of $\mathbf{x}^\ast$ is determined by the eigenvalues of the Jacobian matrix evaluated at the fixed point, $J(\mathbf{x}^\ast)$.
 
@@ -4148,12 +4273,12 @@ $$\max_i |\lambda_i| > 1$$
 
 </div>
 
-#### The Emergence of K-Cycles
+#### The Emergence of $K$-Cycles
 
 What happens when all fixed points in a bounded system become unstable? The trajectory cannot settle into a fixed point, but it also cannot escape to infinity. The system must find another form of stable, persistent behavior. In maps, this often leads to the emergence of cycles.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Path to a 2-Cycle</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Path to a 2-Cycle)</span></p>
 
 Consider the logistic map for $\alpha > 3$. At these parameter values, the slopes at both fixed points ($x^* = 0$ and $x^* = (\alpha - 1)/\alpha$) are greater than $1$ in absolute value. This means both fixed points are unstable.
 
@@ -4162,7 +4287,7 @@ Since we know the system is confined to the interval $[0, 1]$, the trajectory mu
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">K-Cycle</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($K$-Cycle)</span></p>
 
 A $K$-cycle is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that:
 
@@ -4173,7 +4298,7 @@ The system perpetually jumps back and forth between these two points.
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A 2-Cycle in the Logistic Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(A 2-Cycle in the Logistic Map)</span></p>
 
 For a parameter value of $\alpha = 3.3$, the logistic map exhibits a stable 2-cycle.
 
@@ -4189,7 +4314,7 @@ This behavior, where an increase in a parameter causes a stable fixed point to l
 #### Two-Cycles as Fixed Points of the Iterated Map
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">From Cycles to Fixed Points</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(From Cycles to Fixed Points)</span></p>
 
 When analyzing discrete maps, we often encounter cycles, where the system iterates between a set of distinct points. A two-cycle, for instance, involves iterating between two different points. If we start at one point, a single application of the map takes us to the second point, and the next application takes us back to the first.
 
@@ -4198,7 +4323,7 @@ This observation leads to a powerful insight: a point on a two-cycle returns to 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">The Logistic Map Iterated Twice</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Logistic Map Iterated Twice)</span></p>
 
 Let's consider the logistic map, which is a second-order polynomial (a "square map"). If we construct the twice-iterated map, $f^2(x) = f(f(x))$, by substituting the logistic equation into itself, the resulting function is a fourth-order polynomial.
 
@@ -4218,7 +4343,7 @@ The key takeaway is that an iterated map yields another function, and the fixed 
 #### Stability of Cycles
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Stability via the Iterated Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Stability via the Iterated Map)</span></p>
 
 Since we can treat the points of a cycle as fixed points of an iterated map, we can determine the stability of the cycle by analyzing the stability of these corresponding fixed points. The method is the same as for simple fixed points: we check the slope of the function at the fixed point.
 
@@ -4229,7 +4354,7 @@ The plot of $f^2(x)$ for the logistic map at $\alpha = 3.3$ reveals four fixed p
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Stability of a Cycle</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability of a Cycle)</span></p>
 
 The stability of a $k$-cycle can be determined by checking the slope of the $k$-times iterated function, $f^k(x)$, at any point $x_i^*$ on the cycle. The cycle is stable if the absolute value of this slope is less than one.
 
@@ -4239,10 +4364,10 @@ The cycle is unstable if this value is greater than one.
 
 </div>
 
-#### Generalization to k-Cycles
+#### Generalization to $k$-Cycles
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">k-Cycle</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($k$-Cycle)</span></p>
 
 For a continuous map $f$, a $k$-cycle is a set of $k$ distinct points, $\lbrace x_1^\ast, x_2^\ast, \ldots, x_k^\ast \rbrace$, which are visited sequentially by iteration of $f$. This implies two critical conditions:
 
@@ -5049,7 +5174,7 @@ Here, $x$ is the state variable and $r$ is the control parameter.
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analysis of the Transcritical Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analysis of the Transcritical Bifurcation)</span></p>
 
 To understand the behavior, we analyze the system for different values of the parameter $r$. We can find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x) = 0$. This yields two fixed points: $x^{\ast}_1 = 0$ and $x^{\ast}_2 = r$. Their existence and stability depend on the value of $r$.
 
@@ -5103,14 +5228,14 @@ At the bifurcation point $(0,0)$, the two branches cross and exchange stability.
 The pitchfork bifurcation is characteristic of systems possessing a certain symmetry. As its name suggests, the bifurcation diagram resembles a pitchfork.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Pitchfork Bifurcation Intuition</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Pitchfork Bifurcation Intuition)</span></p>
 
 In a pitchfork bifurcation, a single stable fixed point loses its stability as a parameter is varied. As it becomes unstable, two new stable fixed points are simultaneously created, branching off symmetrically from the original state. This often happens in systems where states can be equivalent but opposite (e.g., left/right, up/down).
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Normal Form of the Supercritical Pitchfork Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form of the Supercritical Pitchfork Bifurcation)</span></p>
 
 From the geometry of the bifurcation, one can guess that it involves a third-order polynomial. The normal form for the supercritical pitchfork bifurcation is:
 
@@ -5121,7 +5246,7 @@ Once again, $r$ is the control parameter. The symmetry is evident in the equatio
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analysis of the Pitchfork Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analysis of the Pitchfork Bifurcation)</span></p>
 
 We find the fixed points by setting $\dot{x} = 0$, which gives $x(r - x^2) = 0$. The solutions depend critically on the sign of $r$.
 
@@ -5150,7 +5275,7 @@ The bifurcation diagram for the supercritical pitchfork bifurcation has the foll
 ##### Supercritical and Subcritical Forms
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Supercritical vs. Subcritical</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Supercritical vs. Subcritical)</span></p>
 
 The bifurcation described above is known as a **supercritical pitchfork bifurcation**. There is also a corresponding subcritical version.
 
@@ -5160,7 +5285,7 @@ The bifurcation described above is known as a **supercritical pitchfork bifurcat
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Pitchfork Bifurcations in Neural Systems</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pitchfork Bifurcations in Neural Systems)</span></p>
 
 The pitchfork bifurcation often appears in models with inherent symmetries.
 
@@ -5174,7 +5299,7 @@ The pitchfork bifurcation often appears in models with inherent symmetries.
 A fascinating and important phenomenon occurs in the vicinity of many bifurcations, including the saddle-node and pitchfork bifurcations: critical slowing down.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Critical Slowing Down</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Critical Slowing Down)</span></p>
 
 As a system approaches a bifurcation point, the basin of attraction of a stable equilibrium point "flattens out." In the phase portrait of $\dot{x}$ vs. $x$, the curve of the vector field becomes nearly tangent to the $x$-axis near the fixed point.
 
@@ -5184,7 +5309,7 @@ As a system approaches a bifurcation point, the basin of attraction of a stable 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Observable Consequences of Critical Slowing Down</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Observable Consequences of Critical Slowing Down)</span></p>
 
 This phenomenon provides a powerful, model-independent warning sign that a system is approaching a critical transition or "tipping point." This is actively studied in fields like climate science.
 
@@ -5206,14 +5331,14 @@ The concepts of bifurcations can be extended from fixed points to limit cycles (
 However, the most important bifurcation for the creation of a limit cycle from an equilibrium point is the Hopf bifurcation.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Hopf Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hopf Bifurcation)</span></p>
 
 A **Hopf bifurcation** is a bifurcation where a fixed point of a dynamical system loses stability as a pair of complex conjugate eigenvalues of the linearized system cross the imaginary axis of the complex plane. This typically results in the birth of a small-amplitude limit cycle around the fixed point.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Mechanism of the Hopf Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mechanism of the Hopf Bifurcation)</span></p>
 
 * **The Mechanism:** Consider a stable spiral fixed point. Trajectories spiral inwards towards it. The stability is governed by the real part of the eigenvalues of the Jacobian matrix at that point; a negative real part ensures stability. As a system parameter is changed, the real part of the eigenvalues can change. At the Hopf bifurcation point, the real part becomes exactly zero. The point is no longer a stable spiral but a center, with trajectories orbiting it. As the parameter is changed further, the real part becomes positive, the fixed point becomes an unstable spiral, and trajectories spiral outwards. This outward flow is often captured by a newly born, stable limit cycle.
 * **In summary:** A Hopf bifurcation marks the transition of a fixed point from a stable spiral to an unstable spiral, giving birth to a stable oscillation (limit cycle) in the process.
@@ -5221,7 +5346,7 @@ A **Hopf bifurcation** is a bifurcation where a fixed point of a dynamical syste
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Hopf Bifurcation in Neural Models</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hopf Bifurcation in Neural Models)</span></p>
 
 The Hopf bifurcation is fundamental to the generation of rhythmic activity in many neural models.
 
@@ -5241,14 +5366,14 @@ The Hopf bifurcation is a fundamental mechanism through which oscillations are b
 A Hopf bifurcation is characterized by a specific change in the stability of an equilibrium point. For this bifurcation to occur, the system must involve at least two dimensions (or variables), as oscillations require a "plane" to unfold.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Core Intuition</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Core Intuition)</span></p>
 
 At its core, the Hopf bifurcation marks the point where a system's tendency to return to a stable equilibrium is perfectly balanced by a force pushing it away, leading to sustained, stable oscillations. Before the bifurcation, disturbances might cause damped oscillations that spiral back to the equilibrium. After the bifurcation, the equilibrium becomes unstable, and disturbances spiral outwards, eventually settling onto a newly formed limit cycle.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Core Properties</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Core Properties)</span></p>
 
 The key features of a system at a Hopf bifurcation point are rooted in the eigenvalues of the Jacobian matrix evaluated at the equilibrium.
 
@@ -5273,14 +5398,14 @@ The trajectory of the eigenvalues in the complex plane as a control parameter is
 The supercritical Hopf bifurcation is characterized by a smooth, gradual onset of oscillation.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Supercritical Hopf Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Supercritical Hopf Bifurcation)</span></p>
 
 In a supercritical Hopf bifurcation, as a control parameter is varied, a stable spiral equilibrium loses its stability and becomes an unstable spiral. At the exact moment of stability change, a stable limit cycle is born with an infinitesimally small amplitude, which then grows smoothly as the parameter continues to change.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Bifurcation Diagram for Supercritical Hopf</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bifurcation Diagram for Supercritical Hopf)</span></p>
 
 The state of the system can be visualized in a bifurcation diagram, where the vertical axis represents an oscillation amplitude (e.g., the maximum value of a variable on the limit cycle) and the horizontal axis represents the control parameter.
 
@@ -5307,7 +5432,7 @@ A known example of this phenomenon occurs in the Wilson-Cowan equations.
 In contrast to the smooth transition of the supercritical case, the subcritical Hopf bifurcation is associated with abrupt and dramatic changes in system behavior.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Subcritical Hopf Bifurcation</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Subcritical Hopf Bifurcation)</span></p>
 
 In a subcritical Hopf bifurcation, a stable spiral equilibrium loses stability and becomes an unstable spiral. However, this occurs when the equilibrium point coalesces with a pre-existing unstable limit cycle. This unstable cycle acts as a separatrix between the basin of attraction of the stable spiral and another, potentially distant, stable attractor.
 
