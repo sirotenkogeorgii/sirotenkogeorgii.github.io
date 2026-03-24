@@ -909,7 +909,7 @@ That intersection is an **equilibrium/fixed point**.
 
 </div>
 
-<div class="pmf-grid">
+<div class="gd-grid">
   <figure>
     <img src="{{ '/assets/images/notes/dynamical-systems/nullclines1.png' | relative_url }}" alt="a" loading="lazy">
   </figure>
@@ -1927,11 +1927,9 @@ An equivalent discrete-time affine system has the form:
 
 $$x_{n+1} = \tilde{A} x_n + b$$
 
-where $\tilde{A}$ is defined: 
+where $\tilde{A}$, $b$ are defined: 
 
 $$\tilde{A} = e^{A \Delta t}$$
-
-The discrete offset is
 
 $$b = (I - \tilde{A})x^{\ast}$$
 
@@ -2091,11 +2089,11 @@ $$t_k = kh$$
 
 Use the integral form:
 
-$$x(t_{k+1}) = x(t_k) + \int_{t_k}^{t_{k+1}} f(x(t)),dt$$
+$$x(t_{k+1}) = x(t_k) + \int_{t_k}^{t_{k+1}} f(x(t)) dt$$
 
 Approximate the integral by assuming $f(x(t))$ stays roughly constant on the interval:
 
-$$\int_{t_k}^{t_{k+1}} f(x(t)),dt \approx h,f(x_k)$$
+$$\int_{t_k}^{t_{k+1}} f(x(t)) dt \approx hf(x_k)$$
 
 Then
 
@@ -2103,7 +2101,7 @@ $$x_{k+1} \approx x_k + h f(x_k)$$
 
 So the discrete map becomes
 
-$$\boxed{x_{k+1}=x_k+h,f(x_k)}$$
+$$\boxed{x_{k+1}=x_k+h f(x_k)}$$
 
 This is the standard **forward Euler discretisation**.
 
@@ -2168,7 +2166,7 @@ $$
 
 </div>
 
-<div class="pmf-grid">
+<div class="gd-grid">
   <figure>
     <img src="{{ '/assets/images/notes/dynamical-systems/exact_vs_euler_large_h.png' | relative_url }}" alt="Continuous function at 0" loading="lazy">
   </figure>
@@ -2336,7 +2334,7 @@ $$
 
 So the lack of smoothness at $0$ is precisely what allows several distinct trajectories to start from the same initial condition.
 
-<div class="pmf-grid">
+<div class="gd-grid">
   <figure>
     <img src="{{ '/assets/images/notes/dynamical-systems/continuous_function_at_0.png' | relative_url }}" alt="Continuous function at 0" loading="lazy">
   </figure>
@@ -2393,7 +2391,7 @@ Let an IVP be given. Let $f$ be globally Lipschitz-continuous with respect to $x
 
 $$\lvert f(x) - f(y)\rvert \le L \lvert x - y\rvert$$
 
-For some $L \in \mayhbb{R}^+$. Then there exists a unique solution $x: I \to R$ of the IVP for each $x_0 \in R$, where $R$ is a some subset of $\mathbb{R}^n$.
+For some $L \in \mathbb{R}^+$. Then there exists a unique solution $x: I \to R$ of the IVP for each $x_0 \in R$, where $R$ is a some subset of $\mathbb{R}^n$.
 
 </div>
 
@@ -2517,7 +2515,7 @@ $$x=x^*+\epsilon$$
 
 the perturbation evolves according to
 
-$$\dot{\epsilon} \approx J(x^*),\epsilon$$
+$$\dot{\epsilon} \approx J(x^*)\epsilon$$
 
 where $J(x^\ast)$ is the Jacobian of $f$ evaluated at $x^\ast$. Thus, the local stability of the nonlinear system near $x^\ast$ is determined by the stability of this linear system.
 
@@ -2549,7 +2547,7 @@ $$\dot{\epsilon}=f(x^*+\epsilon).$$
 
 Now expand $f$ in a Taylor series about $x^\ast$. In one dimension,
 
-$$f(x^\ast+\epsilon)\approx f(x^\ast)+\left.\frac{df}{dx}\right\|_{x=x^\ast}\epsilon+O(\epsilon^2).$$
+$$f(x^\ast+\epsilon)\approx f(x^\ast)+\left.\frac{df}{dx}\right|_{x=x^\ast}\epsilon+O(\epsilon^2).$$
 
 In higher dimensions, this becomes
 
@@ -2641,6 +2639,25 @@ Intuitive Breakdown of the Terms:
 * $\boldsymbol{\gamma xy}$: The predator population grows when there is prey to eat. This growth is also proportional to the rate of encounters.
 * $\boldsymbol{-\lambda y}$: In the absence of prey, the predator population decays exponentially at a rate $\lambda$ due to starvation.
 
+</div>
+
+<div class="pmf-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/LotkaVolterraPhasePortrait1.png' | relative_url }}" alt="Normal PDF" loading="lazy">
+    <figcaption>$a=0.8, c=0.8$$</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/LotkaVolterraPhasePortrait2.png' | relative_url }}" alt="Normal PDF" loading="lazy">
+    <figcaption>$a=0.8, c=0.2$</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/LotkaVolterraPhasePortrait3.png' | relative_url }}" alt="Normal PDF" loading="lazy">
+    <figcaption>$a=0.2, c=0.8$</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/LotkaVolterraPhasePortrait4.png' | relative_url }}" alt="Normal PDF" loading="lazy">
+    <figcaption>$a=0.2, c=0.2$</figcaption>
+  </figure>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2771,32 +2788,40 @@ To analyze the stability of an equilibrium point $(x^{\ast}, y^{\ast})$, we eval
 
 </div>
 
-#### Case Study: Characterizing the Equilibria of a Predator-Prey System
+### Case Study: Characterizing the Equilibria of a Predator-Prey System
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Analysis of the Equilibrium at $(0, 0)$)</span></p>
+
 
 Let's make our model concrete with a specific set of parameters and analyze its behavior.
 
-Parameters:
-
+**Parameters:**
 * $\alpha = 3$
 * $\beta = 1$
 * $\gamma = -1$
 * $\lambda = -2$
 
-Equilibrium Points: Using the formulas derived earlier, the two equilibrium points are:
-
+**Equilibrium Points:** Using the formulas derived earlier, the two equilibrium points are:
 1. $(x^{\ast}_1, y^{\ast}_1) = (0, 0)$
 2. $(x^{\ast}_2, y^{\ast}_2) = (\frac{\lambda}{\gamma}, \frac{\alpha}{\beta}) = (\frac{-2}{-1}, \frac{3}{1}) = (2, 3)$
 
 Now, we linearize the system at each of these points.
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analysis of the Equilibrium at $(0, 0)$)</span></p>
+</div>
 
+<div class="math-callout math-callout--Proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Analysis of the Equilibrium at $(0, 0)$)</span></p>
+
+At the point $(0,0)$ the Lotka-Volterra has eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$.
+
+Since both eigenvalues are real and positive, trajectories starting near the origin will be repelled from it along all directions. This type of equilibrium is called an unstable node.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 First, we evaluate the general Jacobian matrix at the point $(x, y) = (0, 0)$:  
 
@@ -2808,18 +2833,21 @@ $$J(0, 0) = \begin{pmatrix} 3 & 0 \\ 0 & -(-2) \end{pmatrix} = \begin{pmatrix} 3
 
 The eigenvalues of a diagonal matrix are simply its diagonal entries. Therefore, the eigenvalues are $\lambda_1 = 3$ and $\lambda_2 = 2$.
 
-Since both eigenvalues are real and positive, trajectories starting near the origin will be repelled from it along all directions. This type of equilibrium is called an unstable node.
+</details>
+</div>
+
+<div class="math-callout math-callout--Proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Analysis of the Equilibrium at $(2, 3)$)</span></p>
+
+At the point $(2,3)$ the Lotka-Volterra has eigenvalues  $\lambda_1 = +\sqrt{6} \approx 2.45$ and $\lambda_2 = -\sqrt{6} \approx -2.45$.
+
+Since we have one positive real eigenvalue and one negative real eigenvalue, trajectories are attracted towards the equilibrium along one direction (the stable direction) and repelled from it along another direction (the unstable direction). This quintessential feature defines a saddle point.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Analysis of the Equilibrium at $(2, 3)$)</span></p>
-
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Next, we evaluate the Jacobian at the coexistence equilibrium $(x, y) = (2, 3)$ using our parameters $(\alpha=3, \beta=1, \gamma=-1, \lambda=-2)$:  
 
@@ -2833,8 +2861,7 @@ $$\text{det} \begin{pmatrix} -\lambda & -2 \\ -3 & -\lambda \end{pmatrix} = (-\l
 
 This gives $\lambda^2 = 6$, so the eigenvalues are $\lambda_1 = +\sqrt{6} \approx 2.45$ and $\lambda_2 = -\sqrt{6} \approx -2.45$.
 
-Since we have one positive real eigenvalue and one negative real eigenvalue, trajectories are attracted towards the equilibrium along one direction (the stable direction) and repelled from it along another direction (the unstable direction). This quintessential feature defines a saddle point.
-
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -3415,7 +3442,6 @@ This theorem gives us confidence in our analytical methods. When we encounter a 
 
 If the point is hyperbolic, Hartman-Grobman assures us that the local dynamics are completely characterized by the behavior of the linear system $\dot{\mathbf{z}} = J(\mathbf{x_0})\mathbf{z}$. The stability, the presence of saddle dynamics, and the spiral or nodal nature of the trajectories are all preserved. This allows us to use the well-understood tools of linear systems theory to draw robust conclusions about the behavior of highly nonlinear systems.
 
-
 ## Lecture 4
 
 This chapter revisits several central concepts from our previous discussions to solidify your understanding and clarify important nuances. A firm grasp of these ideas is essential before proceeding to more complex systems.
@@ -3659,13 +3685,12 @@ $$\Omega(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t > s} \phi_t(x_0)
 
 This definition works by considering the entire future path of the trajectory starting from some time $s$. As we let $s$ increase towards infinity, we take the intersection of all these future paths. This process "trims away" the transient parts of the trajectory, leaving only the set of points that the system visits infinitely often as $t \to \infty$. The closure (denoted by the overline) ensures that the limit points themselves are included in the set.
 
-
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Alpha Limit Set)</span></p>
 
-The alpha limit set of a point $x_0 \in E$, denoted $A(x_0)$, is defined analogously for reverse time $t \to -\infty$:
+The **alpha limit set** of a point $x_0 \in E$, denoted $A(x_0)$, is defined analogously for reverse time $t \to -\infty$:
 
 $$A(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t < s} \phi_t(x_0)} =  = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t < s\rbrace }$$
 
@@ -3752,9 +3777,7 @@ $$\lambda_{1,2} = \pm i\sqrt{3} \approx \pm 1.73i$$
 
 In linear systems, purely imaginary eigenvalues correspond to a center, around which trajectories form closed, neutrally stable orbits. However, we must be cautious when applying this intuition to a nonlinear system.
 
-
 The equilibrium at $(2, 3)$ is non-hyperbolic because its eigenvalues have a real part equal to zero. For such systems, the Hartman-Grobman theorem does not necessarily hold. This theorem guarantees that the behavior of a nonlinear system near a hyperbolic equilibrium is qualitatively the same as its linearization. Since the theorem does not apply here, we cannot be certain of the system's behavior based on the first-order Taylor expansion (the linearization) alone; higher-order terms could fundamentally change the dynamics.
-
 
 </div>
 
@@ -3767,9 +3790,7 @@ In this particular case, the linearization does correctly predict the qualitativ
 
 The term "neutrally stable" means that if the system is on one closed orbit and is perturbed slightly, it does not return to the original orbit nor does it spiral away. Instead, it simply settles onto a new, nearby closed orbit.
 
-
 This behavior is not typical for a randomly chosen nonlinear system. It arises here because the Lotka-Volterra system is a conservative system. This means it possesses a quantity that is conserved (remains constant) along any given trajectory. Such systems belong to a special class known as Hamiltonian systems. The existence of this conserved quantity is what enforces the structure of a continuous family of closed orbits.
-
 
 </div>
 
@@ -3777,18 +3798,10 @@ This behavior is not typical for a randomly chosen nonlinear system. It arises h
 
 The nonlinear center seen in the Lotka-Volterra system is a special case. A more common and structurally robust form of periodic behavior is the limit cycle.
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Limit Cycle)</span></p>
-
-A **limit cycle** is a closed orbit that is isolated.
-
-</div>
-
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Limit Cycle)</span></p>
 
-The key distinction is "isolated." Unlike the dense family of orbits in a nonlinear center, a limit cycle has no other closed orbits in its immediate vicinity. Trajectories near a stable limit cycle will spiral towards it, making it an attractor. Trajectories near an unstable limit cycle will spiral away from it. This property of being isolated makes limit cycles far more robust to perturbations than the neutrally stable orbits of a center.
-
+A **limit cycle** is a closed orbit that is isolated. The key distinction is "isolated." Unlike the dense family of orbits in a nonlinear center, a limit cycle has no other closed orbits in its immediate vicinity. Trajectories near a stable limit cycle will spiral towards it, making it an attractor. Trajectories near an unstable limit cycle will spiral away from it. This property of being isolated makes limit cycles far more robust to perturbations than the neutrally stable orbits of a center.
 
 </div>
 
@@ -3803,13 +3816,11 @@ Let us revisit the Wilson-Cowan model of excitatory and inhibitory neuron popula
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Consider a scenario where we adjust the parameters of the Wilson-Cowan model, specifically the $\beta$ parameter that governs the slope of the inhibitory nullcline's sigmoid function. If we make this slope sufficiently steep, a significant change occurs. The system's single fixed point can transform from a stable spiral, which draws all trajectories inward, into an unstable spiral.
 
 When the fixed point is an unstable spiral, trajectories starting near it are pushed outwards. However, due to the bounded nature of the sigmoid functions in the equations, trajectories starting very far from the origin are pushed back inwards. This creates a "push-pull" dynamic: trajectories are repelled from the center and corralled from the periphery. The result is that the system's state does not fly to infinity or settle at a point; instead, it converges to a closed orbit that encircles the unstable fixed point. This isolated, closed orbit is what we call a limit cycle.
 
 This behavior represents a nonlinear oscillation. If we were to plot one of the system's variables (e.g., the firing rate of the excitatory population) against time, we would observe a stable, repeating wave. Unlike a simple sine wave from a linear system, the shape of this oscillation can be quite complex, reflecting the underlying nonlinear dynamics.
-
 
 </div>
 
@@ -3844,7 +3855,7 @@ We can now state the formal mathematical definition of a limit cycle.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Limit Cycle)</span></p>
 
-A limit cycle, $\Gamma$, is an isolated closed orbit in the state space of a dynamical system.
+A **limit cycle**, $\Gamma$, is an isolated closed orbit in the state space of a dynamical system.
 
 A trajectory $\mathbf{x}(t) = \phi(t, \mathbf{x}_0)$ is a closed orbit if there exists a period $T > 0$ such that $\mathbf{x}(t+T) = \mathbf{x}(t)$ for all $t$. For any point $\mathbf{x}_0$ on the limit cycle $\Gamma$, its trajectory must satisfy:
 
@@ -3881,9 +3892,7 @@ The Poincaré-Bendixson Theorem provides a powerful method for proving the exist
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Trapping Region)</span></p>
 
-
-A trapping region is a closed set in the phase space such that any trajectory that starts inside the region remains inside for all future time. Critically, the vector field on the boundary of this region must point inwards everywhere.
-
+A **trapping region** is a closed set in the phase space such that any trajectory that starts inside the region remains inside for all future time. Critically, the vector field on the boundary of this region must point inwards everywhere.
 
 </div>
 
@@ -3929,7 +3938,7 @@ The core concept is the winding number. Imagine walking along a closed curve $C$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Index of a Fixed Point)</span></p>
 
-The index of a fixed point is a property of the vector field surrounding it. To calculate it, we draw a small closed curve $C$ around the fixed point and traverse it once counter-clockwise. We observe the direction of the vectors of the vector field $\dot{\mathbf{x}}$ at each point on $C$. The index is the total number of counter-clockwise revolutions that the vector field itself makes.
+The **index of a fixed point** is a property of the vector field surrounding it. To calculate it, we draw a small closed curve $C$ around the fixed point and traverse it once counter-clockwise. We observe the direction of the vectors of the vector field $\dot{\mathbf{x}}$ at each point on $C$. The index is the total number of counter-clockwise revolutions that the vector field itself makes.
 
 Let's calculate the index for different types of fixed points:
 
@@ -4037,9 +4046,7 @@ The general technique involves the following steps:
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bifurcation Graph)</span></p>
 
-
-A bifurcation graph is a diagram that plots the state of a system's stable and unstable objects (such as fixed points and limit cycles) as a function of a chosen system parameter.
-
+A **bifurcation graph** is a diagram that plots the state of a system's stable and unstable objects (such as fixed points and limit cycles) as a function of a chosen system parameter.
 
 </div>
 
@@ -4139,7 +4146,7 @@ The logistic map is a simple, scalar (one-dimensional) map defined by a quadrati
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Logistic Map)</span></p>
 
-The logistic map is a recursive function that maps a value $x_t$ to a new value $x_{t+1}$. It is defined by the equation:
+The **logistic map** is a recursive function that maps a value $x_t$ to a new value $x_{t+1}$. It is defined by the equation:
 
 $$x_{t+1} = \alpha x_t (1 - x_t)$$
 
@@ -4326,7 +4333,7 @@ Since we know the system is confined to the interval $[0, 1]$, the trajectory mu
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($K$-Cycle)</span></p>
 
-A $K$-cycle is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that:
+A **$K$-cycle** is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that:
 
 $$f(x_a) = x_b \quad \text{and} \quad f(x_b) = x_a$$
 
@@ -6006,7 +6013,15 @@ In our exploration of dynamical systems, we often encounter behavior that is com
 
 #### Lyapunov Spectrum
 
-Consider a 1D map x_t = F_{\alpha}(x_{t-1}), where \alpha is a control parameter. Map's orbit is \lbrace x_1, \dots, x_t, \dots \rbrace, looking in a finite limit of this orbit. Lyapunov number if l = \lim_{n\to\infty} \prod_{t=1}^n \lvert F'_{\alpha}(x_t) \rvert^{\frac{1}{n}}. In fact, we are taking a geometric mean of these series. Lyapunov exponent is defined a logarithm of this product series: \lambda = \lim_{n\to\infty} \frac{1}{n} \sum{t=1}^n \log \lvert F'_{\alpha}(x_t) \rvert. Let's extend this to a multivariate case.
+Consider a 1D map $x_t = F_{\alpha}(x_{t-1})$, where \alpha is a control parameter. Map's orbit is $\lbrace x_1, \dots, x_t, \dots \rbrace$, looking in a finite limit of this orbit. Lyapunov number if 
+
+$$l = \lim_{n\to\infty} \prod_{t=1}^n \lvert F'_{\alpha}(x_t) \rvert^{\frac{1}{n}}$$
+
+In fact, we are taking a geometric mean of these series. Lyapunov exponent is defined a logarithm of this product series: 
+
+$$\lambda = \lim_{n\to\infty} \frac{1}{n} \sum{t=1}^n \log \lvert F'_{\alpha}(x_t) \rvert$$
+
+Let's extend this to a multivariate case.
 
 #### Defining the Maximum Lyapunov Exponent
 
@@ -6019,7 +6034,7 @@ For a multi-dimensional discrete-time system, the evolution of a small perturbat
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Lyapunov Exponent: Discrete Time)</span></p>
 
-For a discrete-time dynamical system defined by the map $x_{n+1} = f(x_n)$, the maximum Lyapunov exponent $\lambda_{\text{max}}$ is defined as:
+For a discrete-time dynamical system defined by the map $x_{n+1} = f(x_n)$, the **maximum Lyapunov exponent** $\lambda_{\text{max}}$ is defined as:
 
 $$\lambda_{\text{max}} = \lim_{n \to \infty} \frac{1}{n} \log \left\| \prod_{i=0}^{n-1} J(x_i) \right\|$$
 
