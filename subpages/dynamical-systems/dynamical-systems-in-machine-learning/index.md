@@ -21,6 +21,10 @@ noindex: true
 
 # Dynamical Systems Theory in Machine Learning 
 
+## Problems
+
+[Selected Problems](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/problems/)
+
 ## Recommended Reading
 
 These notes are designed to be a self-contained introduction. However, the field is vast, and further reading is highly encouraged. The following texts offer different perspectives on the material.
@@ -1084,6 +1088,8 @@ We solve the simple patterns, and then translate them back into physical positio
 
 ### General Solutions for Linear Systems
 
+[Derivation of General Solutions for Linear Systems](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/long-proofs/)
+
 We previously considered linear dynamical systems defined by systems of ordinary differential equations (ODEs) of the form:
 
 $$\dot{\mathbf{x}} = A \mathbf{x}$$
@@ -1123,6 +1129,9 @@ The matrix $S$ represents an invertible transformation, or a change of variables
 
 #### Canonical Forms for 2x2 Systems
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Canonical Forms for 2x2 Systems)</span></p>
+
 For any $2 \times 2$ matrix, it can be shown that it is similar to one of three distinct canonical forms. These forms represent the fundamental classes of dynamics possible in two-dimensional linear systems.
 
 1. **Distinct Real Eigenvalues:** The matrix is similar to a diagonal form.
@@ -1145,6 +1154,8 @@ For any $2 \times 2$ matrix, it can be shown that it is similar to one of three 
 
    - **Eigenvalues:** The matrix has only one eigenvalue, $\lambda_1 = a$.
    - **Dynamics:** This matrix has one eigenvalue, $a$, with algebraic multiplicity two. However, it has only one corresponding eigenvector direction. This case is called degenerate because the eigenvectors do not form a basis for the space. The dynamics align with the single eigenvector direction, and the specific behavior depends on the initial conditions and the value of $a$.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/DefectiveRepeatedEigenvalueSystem.png' | relative_url }}" alt="a" loading="lazy">
@@ -1226,7 +1237,6 @@ So they are equivalent under the condition that all values are distinct. If they
 
 </div>
 
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Matrix Exponential)</span></p>
 
@@ -1263,35 +1273,36 @@ While the matrix exponential provides a powerful general solution, it is importa
 Let's demonstrate that for a diagonalizable matrix $A$, the two solution forms are equivalent.
 
 1. Recall the eigenvector-based solution in matrix form. The initial condition $\mathbf{x}_0$ is a linear combination of eigenvectors: $\mathbf{x}_0 = \sum c_i \mathbf{v}_i$. In matrix form, this is $\mathbf{x}_0 = V\mathbf{c}$, where $V$ is the matrix whose columns are the eigenvectors $\mathbf{v}_i$ and $\mathbf{c}$ is the vector of coefficients $c_i$. Since the eigenvectors form a basis, $V$ is invertible, so $\mathbf{c} = V^{-1}\mathbf{x}_0$.
+
 2. The solution at time $t$ is $\mathbf{x}(t) = \sum c_i e^{\lambda_i t} \mathbf{v}_i$. This can be written in matrix form as:
    
-  $$\mathbf{x}(t) = V \cdot \text{diag}(e^{\lambda_i t}) \cdot \mathbf{c} = V \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix} V^{-1} \mathbf{x}_0 $$
+   $$\mathbf{x}(t) = V \cdot \text{diag}(e^{\lambda_i t}) \cdot \mathbf{c} = V \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix} V^{-1} \mathbf{x}_0 $$
 
 3. Now, analyze the matrix exponential solution. Since $A$ is diagonalizable, we can write its eigendecomposition as $A = V \Lambda V^{-1}$, where $\Lambda$ is the diagonal matrix of eigenvalues. Let's substitute this into the series definition of $e^{At}$:
 
-  $$e^{At} = \sum_{k=0}^{\infty} \frac{(V \Lambda V^{-1}t)^k}{k!}$$
+   $$e^{At} = \sum_{k=0}^{\infty} \frac{(V \Lambda V^{-1}t)^k}{k!}$$
   
-  Consider the term $(V \Lambda V^{-1})^k$:  
+   Consider the term $(V \Lambda V^{-1})^k$:  
   
-  $$(V \Lambda V^{-1})^k = (V \Lambda V^{-1})(V \Lambda V^{-1})\dots(V \Lambda V^{-1})$$
+   $$(V \Lambda V^{-1})^k = (V \Lambda V^{-1})(V \Lambda V^{-1})\dots(V \Lambda V^{-1})$$
   
-  The inner $V^{-1}V$ terms cancel out, leaving:  
+   The inner $V^{-1}V$ terms cancel out, leaving:  
   
-  $$= V \Lambda^k V^{-1}$$  
+   $$= V \Lambda^k V^{-1}$$  
   
-  Substituting this back into the series:  
+   Substituting this back into the series:  
   
-  $$e^{At} = \sum_{k=0}^{\infty} \frac{V \Lambda^k V^{-1}t^k}{k!} = V \left( \sum_{k=0}^{\infty} \frac{(\Lambda t)^k}{k!} \right) V^{-1}$$
+   $$e^{At} = \sum_{k=0}^{\infty} \frac{V \Lambda^k V^{-1}t^k}{k!} = V \left( \sum_{k=0}^{\infty} \frac{(\Lambda t)^k}{k!} \right) V^{-1}$$
 
 4. Recognize the series. The sum in the middle is simply the definition of the matrix exponential for the diagonal matrix $\Lambda$. For a diagonal matrix, this is equivalent to taking the exponential of each diagonal element:
   
-  $$\sum_{k=0}^{\infty} \frac{(\Lambda t)^k}{k!} = \text{diag}(e^{\lambda_i t}) = \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix}$$
+   $$\sum_{k=0}^{\infty} \frac{(\Lambda t)^k}{k!} = \text{diag}(e^{\lambda_i t}) = \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix}$$
   
-  Therefore, the matrix exponential solution is:
+   Therefore, the matrix exponential solution is:
   
-  $$\mathbf{x}(t) = e^{At}\mathbf{x}_0 = V \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix} V^{-1} \mathbf{x}_0$$
+   $$\mathbf{x}(t) = e^{At}\mathbf{x}_0 = V \begin{pmatrix} e^{\lambda_1 t} & & 0 \\ & \ddots & \\ 0 & & e^{\lambda_m t} \end{pmatrix} V^{-1} \mathbf{x}_0$$
 
-This is identical to the matrix form of the eigenvector-based solution. The two forms are fully consistent when the matrix $A$ is diagonalizable.
+   This is identical to the matrix form of the eigenvector-based solution. The two forms are fully consistent when the matrix $A$ is diagonalizable.
 
 </div>
 
@@ -1344,8 +1355,7 @@ where $x, b \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Shifting the Equilibrium)</span></p>
 
-
-The addition of the constant vector b does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
+The addition of the constant vector $b$ does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
 
 To understand this, we first locate the new equilibrium, or fixed point, by finding the point $x^{\ast}$ where the flow is zero ($\dot{x}=0$).
 
@@ -1355,21 +1365,30 @@ $$0 = Ax^{\ast} + b \implies Ax^{\ast} = -b \implies x^{\ast} = -A^{-1}b$$
 
 This point $x^{\ast}$ is our new equilibrium, shifted from the origin.
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Variation of Parameters)</span></p>
+
+The addition of the constant vector $b$ does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Equivalence of Dynamics via Change of Variables)</span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-We can formally prove that the dynamics remain the same by defining a new variable y that represents the state relative to the fixed point $x^{\ast}$.
+We can formally prove that the dynamics remain the same by defining a new variable $y$ that represents the state relative to the fixed point $x^{\ast}$.
 
 1. **Define a new variable:** Let $y = x - x^{\ast}$. This is equivalent to $x = y + x^{\ast}$.
 2. **Consider the dynamics of the new variable:** The temporal derivative of $y$ is $\dot{y} = \dot{x}$, since $x^{\ast}$ is a constant and its derivative is zero.
 3. **Substitute into the original equation:** We can now express $\dot{y}$ in terms of $y$
    
-   $\dot{y} = \dot{x} = Ax + b$  
+   $$\dot{y} = \dot{x} = Ax + b$$
    
-   Substitute $$x = y + x^{\ast}: \dot{y} = A(y + x^{\ast}) + b = Ay + Ax^{\ast} + b$$  
+   Substitute $x = y + x^{\ast}$: 
+   
+   $$\dot{y} = A(y + x^{\ast}) + b = Ay + Ax^{\ast} + b$$  
    
    Now, substitute the expression for the fixed point, $x^{\ast} = -A^{-1}b$:
    
@@ -1379,47 +1398,17 @@ We can formally prove that the dynamics remain the same by defining a new variab
    
    $$\dot{y} = Ay$$
    
-   This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^{\ast}$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers $x(t) = y(t) + x^{\ast}$.
+   This is precisely the homogeneous linear system we have already analyzed. The dynamics (stability, rotation, etc.) around the fixed point $x^{\ast}$ are identical to the dynamics of the homogeneous system around the origin. To find the full solution for $x(t)$, one solves for $y(t)$ and then recovers 
+   
+   $$x(t) = y(t) + x^{\ast}$$
 
-
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Non-Invertible Case)</span></p>
 
 If the matrix $A$ is not invertible, it possesses at least one zero eigenvalue. In this scenario, a unique fixed point does not exist. This corresponds to the case of a center or, more generally, a line attractor (or plane/hyperplane attractor in higher dimensions). The system has a continuous manifold of equilibrium points along the direction of the eigenvector(s) associated with the zero eigenvalue(s).
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Characteristic polynomial)</span></p>
-
-The **characteristic polynomial** of a matrix $A \in \mathbb{C}^{n \times n}$ with respect to the variable $\lambda$ is 
-
-$$p_A(\lambda) = \det(A - \lambda I_n)$$
-
-</div>
-
-From the definition of the determinant it is clear that the characteristic polynomial can be expressed in the form
-
-$$p_A(\lambda) = \det(A - \lambda I_n) = (-1)^n \lambda^n + a_{n-1}\lambda^{n-1} + \ldots + a_1 \lambda + a_0.$$
-
-Thus it is indeed a polynomial and has degree $n$. We can easily see that $a_{n-1} = (-1)^{n-1}(a_{11} + \ldots + a_{nn})$ and by substituting $\lambda = 0$ we obtain $a_0 = \det(A)$.
-
-By the fundamental theorem of algebra, this polynomial has $n$ complex roots (counting multiplicities); denote them $\lambda_1, \ldots, \lambda_n$. Then
-
-$$p_A(\lambda) = (-1)^n (\lambda - \lambda_1) \ldots (\lambda - \lambda_n).$$
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2D case)</span></p>
-
-For the 2D case
-
-$$p_A(\lambda) = \lambda^2 - \text{trace}(A)\lambda + \det(A)$$
-
-Discriminant $D$:
-
-$$D = \text{trace}(A)^2 - 4\det(A)$$
 
 </div>
 
@@ -1430,7 +1419,7 @@ We now consider systems where the dynamics are explicitly influenced by time, dr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Non-autonomous System with Forcing Function)</span></p>
 
-A non-autonomous linear system with a forcing function $f(t)$ is defined as a system that explicitly depends on time. For simplicity, we will analyze the scalar case:
+A **non-autonomous linear system with a forcing function** $f(t)$ is defined as a system that explicitly depends on time. For simplicity, we will analyze the scalar case:
 
 $$\dot{x} = ax + f(t)$$ 
 
@@ -1488,9 +1477,9 @@ The full solution to the non-autonomous equation is therefore found by computing
 Many dynamical systems, including various types of recurrent neural networks, are defined as maps rather than differential equations. These are discrete-time systems.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete-time autonomous dynamical system)</span></p>
 
-A discrete-time autonomous dynamical system is defined by a recursive prescription:  
+A **discrete-time autonomous dynamical system** is defined by a recursive prescription:  
 
 $$\mathbf{x}_t = f(\mathbf{x}_{t-1})$$
 
@@ -1504,9 +1493,22 @@ Such a map generates a sequence of vector-valued numbers $\lbrace\mathbf{x}_1, \
 
 #### Iterative Solution and Limiting Behavior (Scalar Case)
 
-To build intuition, let's analyze the scalar case:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Iterative Solution For Scalar Discrete-time Autonomous DS)</span></p>
+
+The scalar discrete-time autonomous dynamical system is defined as
 
 $$x_t = ax_{t-1} + b$$
+
+For the given time step $T$ the (iterative) solution is
+
+$$x_T = a^{T-1}x_1 + b \sum_{i=0}^{T-2} a^i$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 **Recursive Expansion:** We can expand the expression recursively to understand its structure over time:
 
@@ -1522,15 +1524,36 @@ $$x_t = ax_{t-1} + b$$
   
   $$x_T = a^{T-1}x_1 + b \sum_{i=0}^{T-2} a^i$$
 
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(A Different View)</span></p>
+
+The fixed point or limiting solution of $x_t$ as $t \to \infty$ is
+
+$$\lim_{t \to \infty} x_t = b \left( \frac{1}{1-a} \right)$$
+
+converges for $\lvert a\rvert <1$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Limiting Behavior:** We are interested in what happens as $t \to \infty$. The convergence of this sequence depends entirely on the value of $a$.
 
-* Condition for Convergence: The sequence converges only if the absolute value of a is less than one, i.e., $\lvert a\rvert < 1$.
-* Analysis of Terms:
-  * Initial Condition Term: For $\lvert a\rvert<1$, the term $a^{T-1}x_1$ decays to zero as $T \to \infty$. This means the system forgets about the initial condition exponentially fast.
-  * Geometric Series Term: For $\lvert a\rvert <1$, the infinite geometric series converges to a fixed value:
-* The Limit: Combining these results, the limit of $x_t$ as $t \to \infty$ is: 
+* **Condition for Convergence:** The sequence converges only if the absolute value of a is less than one, i.e., $\lvert a\rvert < 1$.
+* **Analysis of Terms:**
+  * **Initial Condition Term:** For $\lvert a\rvert<1$, the term $a^{T-1}x_1$ decays to zero as $T \to \infty$. This means the system forgets about the initial condition exponentially fast.
+  * **Geometric Series Term:** For $\lvert a\rvert <1$, the infinite geometric series converges to a fixed value:
+* **The Limit:** Combining these results, the limit of $x_t$ as $t \to \infty$ is
   
   $$\lim_{t \to \infty} x_t = b \left( \frac{1}{1-a} \right)$$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Different View)</span></p>
@@ -1554,7 +1577,7 @@ The state $x_{t+1}$ of the system at time $t+1$ is given by an affine transforma
 
 $$x_{t+1} = f(x_t) = ax_t + b$$
 
-where a and b are scalar constants. The parameter $a$ represents the slope, and $b$ is the intercept or offset.
+where $a$ and $b$ are scalar constants. The parameter $a$ represents the slope, and $b$ is the intercept or offset.
 
 </div>
 
@@ -1562,10 +1585,10 @@ where a and b are scalar constants. The parameter $a$ represents the slope, and 
 
 To gain a deeper intuition for the system's evolution over time, we can visualize this recursive process graphically. We plot the function $x_{t+1} = ax_t + b$ against the bisectrix, which is the line $x_{t+1} = x_t$. The intersection of these two lines holds special significance, as we will see shortly.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Cobweb Plot)</span></p>
 
-The Cobweb Plot The Cobweb Plot is a powerful geometric technique for visualizing the trajectory of a discrete-time system. It provides an immediate feel for whether the system converges to a specific value, diverges to infinity, or exhibits other behaviors. The procedure is as follows:
+The Cobweb Plot is a powerful geometric technique for visualizing the trajectory of a discrete-time system. It provides an immediate feel for whether the system converges to a specific value, diverges to infinity, or exhibits other behaviors. The procedure is as follows:
 
 1. **Initialization:** Start with an initial condition, $x_0$, on the horizontal axis.
 2. **Evaluation:** Move vertically from $x_0$ to the function line $x_{t+1} = ax_t + b$. The height of this point gives the next state, $x_1$.
@@ -1573,6 +1596,131 @@ The Cobweb Plot The Cobweb Plot is a powerful geometric technique for visualizin
 4. **Repeat:** From this new point on the bisectrix, move vertically again to the function line to find $x_2$, then horizontally to the bisectrix, and so on.
 
 The path traced by these movements often resembles a spider's web, spiraling inwards or outwards, which gives the method its name.
+
+</div>
+
+#### Fixed Points in One Dimension
+
+A central concept in dynamical systems is the notion of a fixed point, which is analogous to an equilibrium in continuous-time systems described by differential equations.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Point of Discrete-Time System)</span></p>
+
+A point $x^{\ast}$ is a **fixed point of a discrete-time system** $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
+
+$$x^{\ast} = f(x^{\ast})$$
+
+If the system is initialized at a fixed point, it will remain there for all future time steps. There is no movement at this point.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric View of Fixed Points)</span></p>
+
+Geometrically, a fixed point is simply the intersection of the function graph $y = f(x)$ and the bisectrix $y=x$. At this specific point, the input to the function is exactly equal to its output, satisfying the definition $x^{\ast} = f(x^{\ast})$.
+
+</div>
+
+We can find the fixed point not only graphically but also by solving the defining equation algebraically.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Fixed Point of 1D Discrete-Time LDS)</span></p>
+
+Fixed point of 1D discrete-time LDS $x_t = ax_{t-1} + b$ is 
+
+$$x^{\ast} = \frac{b}{1-a}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+To find the fixed point $x^{\ast}$, we set the output equal to the input according to the definition:
+
+$$x^{\ast} = ax^{\ast} + b$$
+
+We then solve for $x^{\ast}$:
+
+$$x^{\ast} - ax^{\ast} = b$$
+
+$$(1-a)x^{\ast} = b$$
+
+Assuming $a \neq 1$, we can divide by $(1-a)$ to find the unique fixed point:
+
+$$x^{\ast} = \frac{b}{1-a}$$
+
+This algebraic solution precisely matches the limiting solution for convergent systems and identifies the point of intersection on the cobweb plot.
+
+</details>
+</div>
+
+#### Stability Analysis of Fixed Points
+
+A fixed point can be stable, unstable, or neutrally stable, depending on the behavior of nearby trajectories. This stability is determined entirely by the slope parameter, $a$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stable and Unstable Fixed Point of 1D Discrete-Time Linear Map)</span></p>
+
+* A fixed point $x^{\ast}$ is **stable** if *trajectories starting near* $x^{\ast}$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
+* A fixed point $x^{\ast}$ is **unstable** if *trajectories starting near* $x^{\ast}$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+On the Cobweb Plot, a slope with $\lvert a\rvert < 1$ is less steep than the bisectrix. This geometric configuration ensures that each step of the cobweb construction brings the state closer to the intersection point, causing the "web" to spiral inwards towards the fixed point.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+When $\lvert a\rvert > 1$, the function line is steeper than the bisectrix. The Cobweb Plot immediately reveals that each iteration throws the state further away from the intersection point, causing the "web" to spiral outwards. The system still possesses a fixed point, but any infinitesimal perturbation from it will lead to divergence.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Neutrally Stable Point of 1D Discrete-Time Linear Map)</span></p>
+
+A point or system is **neutrally stable** if *nearby trajectories* neither converge towards nor diverge away from it, but instead remain in a bounded orbit. This occurs when $\lvert a\rvert = 1$.
+
+We must consider two sub-cases:
+
+* **Case 1:** $a = 1$ 
+  * If $b \neq 0$, the system becomes $x_{t+1} = x_t + b$. This represents linear divergence, as a constant amount $b$ is added at each time step. There is no fixed point.
+  * If $b = 0$, the system is $x_{t+1} = x_t$. In this scenario, every point is a fixed point. This is sometimes referred to as a line attractor, as there is a continuous set of fixed points.
+* **Case 2:** $a = -1$
+  * The system takes the form $x_{t+1} = -x_t + b$. This leads to oscillatory behavior.
+  * If $b=0$, the system $x_{t+1} = -x_t$ simply flips the sign at each step (e.g., $x_0, -x_0, x_0, \dots$).
+  * If $b \neq 0$, the system oscillates between two distinct values. This is known as a flip oscillation.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Flip Oscillation)</span></p>
+
+Consider the system 
+
+$$x_{t+1} = -x_t + 1$$
+
+Let the initial state be $x_1 = 2$.
+
+* $x_2 = -x_1 + 1 = -(2) + 1 = -1$
+* $x_3 = -x_2 + 1 = -(-1) + 1 = 2$
+* $x_4 = -x_3 + 1 = -(2) + 1 = -1$ 
+  
+The system enters a stable 2-cycle, oscillating between the values $2$ and $-1$. The amplitude of this oscillation depends on the initial value, but the oscillatory nature is preserved. This behavior is analogous to the center case in systems of linear differential equations, where solutions form a continuous set of stable orbits.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analogy to Continuous Systems)</span></p>
+
+The spectrum of solutions observed in discrete-time linear systems—stable and unstable fixed points, and mutually stable oscillations—is precisely the same class of solutions found in continuous-time linear systems of ordinary differential equations. This parallel provides a powerful conceptual bridge between the two domains.
+
+</div>
 
 <div class="pmf-grid">
   <figure>
@@ -1609,139 +1757,6 @@ The path traced by these movements often resembles a spider's web, spiraling inw
   </figure>
 </div>
 
-</div>
-
-#### Fixed Points in One Dimension
-
-##### Definition and Geometric Intuition
-
-A central concept in dynamical systems is the notion of a fixed point, which is analogous to an equilibrium in continuous-time systems described by differential equations.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Point)</span></p>
-
-A point $x^{\ast}$ is a **fixed point of** a discrete-time system $x_{t+1} = f(x_t)$ if it remains unchanged by the map. That is, it satisfies the condition:
-
-
-$$x^{\ast} = f(x^{\ast})$$
-
-If the system is initialized at a fixed point, it will remain there for all future time steps. There is no movement at this point.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric)</span></p>
-
-View of Fixed Points Geometrically, a fixed point is simply the intersection of the function graph $y = f(x)$ and the bisectrix $y=x$. At this specific point, the input to the function is exactly equal to its output, satisfying the definition $x^{\ast} = f(x^{\ast})$.
-
-</div>
-
-##### Algebraic Solution
-
-We can find the fixed point not only graphically but also by solving the defining equation algebraically.
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the 1D Fixed Point)</span></p>
-
-To find the fixed point $x^{\ast}$, we set the output equal to the input according to the definition:
-
-$$x^{\ast} = ax^{\ast} + b$$
-
-We then solve for 
-
-$$x^{\ast}:x^{\ast} - ax^{\ast} = b$$
-
-$$(1-a)x^{\ast} = b$$
-
-Assuming $a \neq 1$, we can divide by $(1-a)$ to find the unique fixed point:
-
-$$x^{\ast} = \frac{b}{1-a}$$
-
-This algebraic solution precisely matches the limiting solution for convergent systems and identifies the point of intersection on the cobweb plot.
-
-</div>
-
-#### Stability Analysis of Fixed Points
-
-A fixed point can be stable, unstable, or neutrally stable, depending on the behavior of nearby trajectories. This stability is determined entirely by the slope parameter, $a$.
-
-##### Stable Fixed Points: $\lvert a\rvert < 1$
-
-If the absolute value of the slope is less than one, any initial condition will lead to a trajectory that converges to the fixed point.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stable Fixed Point)</span></p>
-
-A **fixed point $x^{\ast}$ is stable** if trajectories starting near $x^{\ast}$ converge towards it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert < 1$.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-On the Cobweb Plot, a slope with $\lvert a\rvert < 1$ is less steep than the bisectrix. This geometric configuration ensures that each step of the cobweb construction brings the state closer to the intersection point, causing the "web" to spiral inwards towards the fixed point.
-
-</div>
-
-##### Unstable Fixed Points: $\lvert a\rvert > 1$
-
-If the absolute value of the slope is greater than one, the system will diverge from the fixed point, unless it starts exactly on it.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unstable Fixed Point)</span></p>
-
-A **fixed point $x^{\ast}$ is unstable** if trajectories starting near $x^{\ast}$ move away from it as $t \to \infty$. In the linear 1D case, this occurs when $\lvert a\rvert > 1$.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-When $\lvert a\rvert > 1$, the function line is steeper than the bisectrix. The Cobweb Plot immediately reveals that each iteration throws the state further away from the intersection point, causing the "web" to spiral outwards. The system still possesses a fixed point, but any infinitesimal perturbation from it will lead to divergence.
-
-</div>
-
-##### Neutrally Stable Points: $\lvert a\rvert = 1$
-
-The case where the slope has an absolute value of exactly one represents a boundary between stability and instability.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Neutrally Stable Point)</span></p>
-
-A point or system is neutrally stable if nearby trajectories neither converge towards nor diverge away from it, but instead remain in a bounded orbit. This occurs when $\lvert a\rvert = 1$.
-
-We must consider two sub-cases:
-
-* **Case 1:** $a = 1$ 
-  * If $b \neq 0$, the system becomes $x_{t+1} = x_t + b$. This represents linear divergence, as a constant amount $b$ is added at each time step. There is no fixed point.
-  * If $b = 0$, the system is $x_{t+1} = x_t$. In this scenario, every point is a fixed point. This is sometimes referred to as a line attractor, as there is a continuous set of fixed points.
-* **Case 2:** $a = -1$
-  * The system takes the form $x_{t+1} = -x_t + b$. This leads to oscillatory behavior.
-  * If $b=0$, the system $x_{t+1} = -x_t$ simply flips the sign at each step (e.g., $x_0, -x_0, x_0, \dots$).
-  * If $b \neq 0$, the system oscillates between two distinct values. This is known as a flip oscillation.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Flip Oscillation)</span></p>
-
-Consider the system $x_{t+1} = -x_t + 1$. Let the initial state be $x_1 = 2$.
-
-* $x_2 = -x_1 + 1 = -(2) + 1 = -1$
-* $x_3 = -x_2 + 1 = -(-1) + 1 = 2$
-* $x_4 = -x_3 + 1 = -(2) + 1 = -1$ 
-  
-The system enters a stable 2-cycle, oscillating between the values $2$ and $-1$. The amplitude of this oscillation depends on the initial value, but the oscillatory nature is preserved. This behavior is analogous to the center case in systems of linear differential equations, where solutions form a continuous set of stable orbits.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analogy to Continuous Systems)</span></p>
-
-The spectrum of solutions observed in discrete-time linear systems—stable and unstable fixed points, and mutually stable oscillations—is precisely the same class of solutions found in continuous-time linear systems of ordinary differential equations. This parallel provides a powerful conceptual bridge between the two domains.
-
-</div>
-
 ### Higher-Dimensional Discrete-Time Linear Systems
 
 We now generalize our analysis to systems with $m$ dimensions, where the state is represented by a vector and the dynamics are governed by a matrix transformation.
@@ -1749,9 +1764,9 @@ We now generalize our analysis to systems with $m$ dimensions, where the state i
 #### The General Affine Map
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($m$-Dimensional Linear Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($m$-Dimensional Affine Map)</span></p>
 
-The state of the system is a vector $\vec{x}_t \in \mathbb{R}^m$. The evolution is given by the affine map:
+The state of the system is a vector $\vec{x}_t \in \mathbb{R}^m$. The evolution is given by the **affine map**:
 
 $$\vec{x}_{t+1} = A\vec{x}_t + \vec{b}$$
 
@@ -1761,10 +1776,20 @@ where $A$ is an $m \times m$ square matrix and $\vec{b} \in \mathbb{R}^m$ is a c
 
 #### Solving for Fixed Points in $m$ Dimensions
 
-The definition of a fixed point remains the same: it is a point that is mapped onto itself.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">($m$-Dimensional Fixed Point of Linear Map)</span></p>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the $m$-Dimensional Fixed Point)</span></p>
+Fixed point of $m$-dimensional linear map $x_t = Ax_{t-1} + b$ is 
+
+$$x^{\ast} = (I-A)^{-1}b$$
+
+If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does not exist. In this case, the system may have no fixed points or a continuous set of fixed points, such as a line attractor or a higher-dimensional manifold attractor.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Let $\vec{x}^{\ast}$ be a fixed point. It must satisfy the condition $\vec{x}^{\ast} = A\vec{x}^{\ast} + \vec{b}$. We solve for $\vec{x}^{\ast}$:
 
@@ -1778,107 +1803,65 @@ $$\vec{x}^{\ast} = (I-A)^{-1}\vec{b}$$
 
 If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does not exist. In this case, the system may have no fixed points or a continuous set of fixed points, such as a line attractor or a higher-dimensional manifold attractor.
 
+</details>
 </div>
 
 #### System Dynamics and Diagonalization
 
 To understand the system's trajectory, we analyze the behavior of the map when iterated over time. For simplicity, we first consider the homogeneous case where $\vec{b} = \vec{0}$.
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Iterated Map Dynamics)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Iterated Map Dynamics)</span></p>
 
-For the system $\vec{x}_{t+1} = A\vec{x}_t$, the state at time $T$ is related to the initial state $\vec{x}_1$ by:
+For the system $x_{t+1} = Ax_t$, the state at time $T$ is related to the initial state $x_1$ by:
 
-$$\vec{x}_T = A^{T-1}\vec{x}_1$$ 
+$$x_T = A^{T-1}x_1$$
 
-</div>
+If $A$ is diagonalizable, then for $A = V \Lambda V^{-1}$ we obtain
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Role of Diagonalization Calculating)</span></p>
-
-Matrix powers $A^{T-1}$ can be complex. However, if the matrix $A$ is diagonalizable, the calculation simplifies significantly. A diagonalizable matrix can be written as $A = V \Lambda V^{-1}$, where $V$ is the matrix of eigenvectors and $\Lambda$ is a diagonal matrix of the corresponding eigenvalues $\lambda_i$.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(System Solution via Diagonalization)</span></p>
-
-If $A = V \Lambda V^{-1}$, then the power $A^{T-1}$ becomes:
-
-
-$$A^{T-1} = (V \Lambda V^{-1})^{T-1} = V \Lambda^{T-1} V^{-1}$$
-
-Raising the diagonal matrix $\Lambda$ to a power is trivial; we simply raise each diagonal element (the eigenvalues) to that power. The solution for the system's state at time $T$ is therefore:  
-
-$$\vec{x}_T = V \Lambda^{T-1} V^{-1} \vec{x}_1$$  
-
-This expression reveals that the long-term behavior of the system is governed by the powers of the eigenvalues of $A$.
-
+$$x_T = V \Lambda^{T-1} V^{-1}x_1$$  
 
 </div>
 
 #### Stability Analysis via Eigenvalues
 
-The stability of the fixed point (in this case, the origin, since $\vec{b}=\vec{0}$) is determined by the magnitudes of the eigenvalues of the matrix $A$.
+The stability of the fixed point (in this case, the origin, since $b=0$) is determined by the magnitudes of the eigenvalues of the matrix $A$.
 
-* Convergence: The system converges to the fixed point if all eigenvalues have an absolute value less than 1.  
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stability Analysis of Multidimensional Linear Map)</span></p>
+
+* **Convergence:** The system converges to the fixed point if all eigenvalues have an absolute value less than $1$.  
   
   $$\text{If } \max_i \lvert\lambda_i\rvert < 1 \implies \text{Convergence}$$
   
-  As $T \to \infty$, $\Lambda^{T-1} \to 0$, causing $\vec{x}_T \to \vec{0}$.
-* Divergence: The system diverges if at least one eigenvalue has an absolute value greater than 1.  
+  As $T \to \infty$, $\Lambda^{T-1} \to 0$, causing $x_T \to 0$.
+
+* **Divergence:** The system diverges if at least one eigenvalue has an absolute value greater than $1$.  
   
   $$\text{If } \max_i \lvert\lambda_i\rvert > 1 \implies \text{Divergence}$$
   
   The component of the trajectory along the eigenvector corresponding to this eigenvalue will grow without bound.
-* Neutral Stability / Manifold Attractors: If at least one eigenvalue has an absolute value of exactly 1 (and no eigenvalues have absolute values greater than 1), the system has neutral directions.  
+
+* **Neutral Stability / Manifold Attractors:** If at least one eigenvalue has an absolute value of exactly $1$ (and no eigenvalues have absolute values greater than $1$), the system has neutral directions.  
   
   $$\text{If } \max_i \lvert\lambda_i\rvert = 1 \implies \text{Line or Manifold Attractor}$$
   
   The system will neither converge to the origin nor diverge to infinity, but will instead move along a stable manifold defined by the eigenvectors associated with the eigenvalues of magnitude one.
-* Saddle-like Behavior: If the matrix $A$ has a mix of eigenvalues with magnitudes greater than and less than one, the system exhibits behavior analogous to a saddle point. Trajectories will converge towards the fixed point along directions spanned by eigenvectors with $\lvert\lambda_i\rvert < 1$ but will diverge along directions spanned by eigenvectors with $\lvert\lambda_i\rvert > 1$.
 
+* **Saddle-like Behavior:** If the matrix $A$ has a mix of eigenvalues with magnitudes greater than and less than one, the system exhibits behavior analogous to a saddle point. Trajectories will converge towards the fixed point along directions spanned by eigenvectors with $\lvert\lambda_i\rvert < 1$ but will diverge along directions spanned by eigenvectors with $\lvert\lambda_i\rvert > 1$.
+
+</div>
 
 ### The Flow of Dynamical Systems
-
-#### The Flow Operator in Linear Systems
-
-We begin our formal study by introducing a concept central to understanding how systems evolve over time: the flow operator. Consider a system of linear ordinary differential equations with an initial value.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Flow Map / Flow Operator)</span></p>
-
-For a linear system of differential equations of the form $\dot{x} = Ax$, with an initial condition $x(0) = x_0$, the solution is given by:
-
-$$x(t) = e^{At} x_0$$
-
-The operator $e^{At}$ that propagates the initial state $x_0$ forward in time is known as the **flow operator**.
-
-More generally, we can define a flow map, denoted by $\phi$, which is a function of time $t$ and an initial condition $x_0$:
-
-$$\phi(t, x_0) = e^{At} x_0$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name"></span></p>
-
-You can visualize the flow map as a mechanism that takes a set of initial conditions and "transports" it forward in time by an amount $t$ to a new location in the state space. If you vary the time $t$, the path traced out by a single initial point $x_0$ is called its orbit or trajectory.
-
-</div>
 
 #### From Continuous to Discrete Time: The Sampling Equivalence
 
 In many scientific and engineering contexts, particularly in physics, systems are naturally modeled using continuous-time differential equations. However, our observation and measurement of these systems are almost always discrete, taken at specific moments in time. This raises a crucial question: can we find a discrete-time system that is equivalent to a continuous-time one?
 
-##### Equivalence for Linear Systems
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Flow Discretization using Time Periods)</span></p>
 
 Let us assume we have a continuous-time system that we sample at fixed time steps of duration $\Delta t$. The measurements are taken at times $0, \Delta t, 2\Delta t, \dots, n\Delta t$.
-
-  <figure>
-    <img src="{{ '/assets/images/notes/dynamical-systems/flow_discretization.jpeg' | relative_url }}" alt="a" loading="lazy">
-    
-  </figure>
 
 The flow map for this system transports a state from one sample point to the next:
 
@@ -1886,8 +1869,14 @@ $$x((n+1)\Delta t) = \phi(\Delta t, x(n\Delta t))$$
 
 We can define a new matrix that encapsulates this discrete-time evolution.
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Discrete-Time Equivalent Matrix)</span></p>
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/flow_discretization.jpeg' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Discrete-Time Equivalent Matrix)</span></p>
 
 Let a continuous-time linear system be defined by $\dot{x} = Ax$. Its equivalent **discrete-time evolution matrix**, $\tilde{A}$, for a sampling time step $\Delta t$ is defined as:
 
@@ -1925,22 +1914,32 @@ So the picture makes the key point explicit: the discrete system is not an appro
 
 </div>
 
-##### Equivalence for Affine Systems
-
 This concept of equivalence can be extended to affine systems of differential equations, which include a constant offset term.
 
-Consider the continuous-time affine system:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Discrete-Time Equivalent Matrix For Affine Systems)</span></p>
+
+For the continuous-time affine system:
 
 $$\dot{x} = Ax + c$$ 
 
-We seek an equivalent discrete-time affine system of the form:
+An equivalent discrete-time affine system has the form:
 
 $$x_{n+1} = \tilde{A} x_n + b$$
 
-where $\tilde{A}$ is defined as before: $\tilde{A} = e^{A \Delta t}$.
+where $\tilde{A}$ is defined: 
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Determining the Discrete Offset)</span></p>
+$$\tilde{A} = e^{A \Delta t}$$
+
+The discrete offset is
+
+$$b = (I - \tilde{A})x^{\ast}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof for discrete offset</summary>
 
 To find the corresponding offset vector $b$, we can enforce the condition that the fixed points of both the continuous and discrete systems must be identical.
 
@@ -1952,6 +1951,7 @@ To find the corresponding offset vector $b$, we can enforce the condition that t
    2. $x^{\ast} = \tilde{A}x^{\ast} + b \implies (I - \tilde{A})x^{\ast} = b$
 3. **Equate and Solve for $b$:** By substituting the expression for $x^{\ast}$ from the continuous system into the discrete system's fixed point equation, we can solve for $b$.
 
+</details>
 </div>
 
 #### Applications and Advanced Concepts
@@ -2270,8 +2270,9 @@ This system has two distinct solutions that satisfy the initial condition:
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 We must verify that both functions satisfy the differential equation and the initial condition.
 
@@ -2282,6 +2283,7 @@ We must verify that both functions satisfy the differential equation and the ini
   * **Initial Condition:** $v(0) = 0^3 = 0$, which is satisfied.
   * **Differential Equation:** The time derivative is $\dot{v}(t) = 3t^2 = 3v^{2/3}$. 
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -2370,13 +2372,6 @@ This integral expression is sometimes referred to as the solution operator.
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-This theorem is the bedrock for much of dynamical systems theory. It tells us that as long as our system's rules of evolution (the vector field $f$) are smooth, we don't have to worry about non-uniqueness. The solution might not exist for all time (it could "blow up" in finite time), but in some local time interval around our starting point, the path is uniquely determined. While the integral form of the solution is general, it may not be solvable analytically and often requires a numerical solver.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bedrock for much of dynamical systems theory)</span></p>
 
 This theorem is the bedrock for much of dynamical systems theory. It tells us that as long as our system's rules of evolution (the vector field $f$) are smooth, we don't have to worry about non-uniqueness. The solution might not exist for all time (it could "blow up" in finite time), but in some local time interval around our starting point, the path is uniquely determined. While the integral form of the solution is general, it may not be solvable analytically and often requires a numerical solver.
@@ -2394,7 +2389,11 @@ Here, $L$ is a positive real number known as the Lipschitz constant. Intuitively
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Picard-Lindelof)</span></p>
   
-Let an IVP be given. Let $f$ be globally Lipschitz-continuous with respect to $x$. Then there exists a unique solution $x: I \to R$ of the IVP for each $x_0 \in R$, where $R$ is a some subset of $\mathbb{R}^n$.
+Let an IVP be given. Let $f$ be globally Lipschitz-continuous with respect to $x$:
+
+$$\lvert f(x) - f(y)\rvert \le L \lvert x - y\rvert$$
+
+For some $L \in \mayhbb{R}^+$. Then there exists a unique solution $x: I \to R$ of the IVP for each $x_0 \in R$, where $R$ is a some subset of $\mathbb{R}^n$.
 
 </div>
 
@@ -2509,29 +2508,65 @@ The stable fixed points themselves are referred to as point attractors.
 
 While graphical analysis is insightful for 1D systems, we need a more general, analytical method to determine the stability of fixed points, especially in higher dimensions. The key technique is linearization, which involves analyzing the system's behavior in the immediate vicinity of a fixed point.
 
-Let's assume $x^{\ast}$ is a fixed point of the system $\dot{x} = f(x)$. To examine its stability, we introduce a small perturbation, $\epsilon$, and observe whether it grows or decays.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Linearization near a fixed point)</span></p>
 
-Let $x = x^{\ast} + \epsilon$. The dynamics of this perturbed state are given by:
+Consider the autonomous system $\dot{x}=f(x)$, and let $x^\ast$ be a fixed point, so that $f(x^\ast)=0$. If $f$ is differentiable near $x^\ast$, then for a small perturbation $\epsilon$ defined by
 
-$$\dot{x} = \frac{d}{dt}(x^{\ast} + \epsilon) = f(x^{\ast} + \epsilon)$$
+$$x=x^*+\epsilon$$
 
-Now, we perform a Taylor series expansion of $f(x)$ around the fixed point $x^{\ast}$. We are interested in the behavior for very small $\epsilon$, so we only keep the linear terms.
+the perturbation evolves according to
 
-$$f(x^{\ast} + \epsilon) \approx f(x^{\ast}) + \frac{df}{dx}\bigg|_{x=x^{\ast}} \cdot \epsilon + O(\epsilon^2)$$
+$$\dot{\epsilon} \approx J(x^*),\epsilon$$
 
-In higher dimensions, this becomes:
+where $J(x^\ast)$ is the Jacobian of $f$ evaluated at $x^\ast$. Thus, the local stability of the nonlinear system near $x^\ast$ is determined by the stability of this linear system.
 
-$$\mathbf{f}(\mathbf{x}^{\ast} + \boldsymbol{\epsilon}) \approx \mathbf{f}(\mathbf{x}^{\ast}) + J(\mathbf{x}^{\ast}) \boldsymbol{\epsilon} + O(\|\boldsymbol{\epsilon}\|^2)$$
+</div>
 
-Now we can formulate a differential equation for the perturbation $\boldsymbol{\epsilon}$.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-$$\dot{\boldsymbol{\epsilon}} = \dot{\mathbf{x}} - \dot{\mathbf{x}}^{\ast}$$
+Let
 
-By definition of a fixed point, $\mathbf{x}^{\ast}$ is constant, so $\dot{\mathbf{x}}^{\ast} = 0$. Furthermore, $\mathbf{f}(\mathbf{x}^{\ast}) = 0$. Substituting our Taylor expansion for $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}^{\ast} + \boldsymbol{\epsilon})$, we get:
+$$x=x^*+\epsilon,$$
 
-$$\dot{\boldsymbol{\epsilon}} \approx (\mathbf{f}(\mathbf{x}^{\ast}) + J(\mathbf{x}^{\ast}) \boldsymbol{\epsilon}) - 0$$
+where $\epsilon$ is a small perturbation from the fixed point $x^\ast$. Differentiating with respect to time gives
 
-$$\dot{\boldsymbol{\epsilon}} \approx J(\mathbf{x}^{\ast}) \boldsymbol{\epsilon}$$
+$$\dot{x}=\frac{d}{dt}(x^*+\epsilon)$$
+
+Since $x^\ast$ is a fixed point, it is constant in time, so $\dot{x}^\ast=0$. Hence,
+
+$$\dot{x}=\dot{\epsilon}$$
+
+On the other hand, from the original system,
+
+$$\dot{x}=f(x)=f(x^*+\epsilon).$$
+
+Therefore,
+
+$$\dot{\epsilon}=f(x^*+\epsilon).$$
+
+Now expand $f$ in a Taylor series about $x^\ast$. In one dimension,
+
+$$f(x^\ast+\epsilon)\approx f(x^\ast)+\left.\frac{df}{dx}\right\|_{x=x^\ast}\epsilon+O(\epsilon^2).$$
+
+In higher dimensions, this becomes
+
+$$f(x^*+\epsilon)\approx f(x^*)+J(x^*)\epsilon+O(\|\epsilon\|^2).$$
+
+Because $x^\ast$ is a fixed point, we have $f(x^\ast)=0$. Substituting this into the expansion yields
+
+$$\dot{\epsilon}\approx J(x^*)\epsilon.$$
+
+Thus, near the fixed point, the perturbation is governed by the linear system
+
+$$\dot{\epsilon}=J(x^*)\epsilon.$$
+
+This shows that the local behavior, and therefore the local stability, of the nonlinear system near $x^\ast$ is determined by the linearization at $x^\ast$. $\square$
+
+</details>
+</div>
 
 This is a linear system of differential equations describing the evolution of the perturbation. We have thus linearized the dynamics around the fixed point. The stability of the original nonlinear system, in the local vicinity of $x^{\ast}$, is determined by the stability of this linear system.
 
@@ -2544,11 +2579,11 @@ By analyzing the eigenvalues of the Jacobian matrix $J$ evaluated at the equilib
 
 Let $\mathbf{x}_0$ be an equilibrium point of the system $\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x})$, and let $J = J(\mathbf{x}_0)$ be the Jacobian evaluated at that point. Let $\lbrace\lambda_i\rbrace$ be the set of eigenvalues of $J$.
 
-* The equilibrium $\mathbf{x}_0$ is stable if all eigenvalues of $J$ have a negative real part.
+* The equilibrium $\mathbf{x}_0$ is **stable** if all eigenvalues of $J$ have a negative real part.
   * $Re(\lambda_i) < 0$ for all $i$.
-* The equilibrium $\mathbf{x}_0$ is unstable if there is at least one eigenvalue of $J$ with a positive real part.
+* The equilibrium $\mathbf{x}_0$ is **unstable** if there is at least one eigenvalue of $J$ with a positive real part.
   * There exists at least one $i$ such that $Re(\lambda_i) > 0$.
-* The equilibrium $\mathbf{x}_0$ is a saddle point if there is at least one eigenvalue with a negative real part and at least one eigenvalue with a positive real part.
+* The equilibrium $\mathbf{x}_0$ is a **saddle point** if there is at least one eigenvalue with a negative real part and at least one eigenvalue with a positive real part.
   * There exist $i, j$ such that $Re(\lambda_i) < 0$ and $Re(\lambda_j) > 0$.
 
 </div>
@@ -2575,9 +2610,9 @@ A fundamental challenge and a source of rich complexity in the study of nonlinea
 
 It is remarkable how frequently similar mathematical structures appear across disparate scientific fields. Simple polynomial systems with product terms, which we will study here, are not just academic curiosities. They are foundational in describing:
 
-* Atmospheric Convection: Simple climate models often reduce to this form.
-* Chemical Reaction Systems: The rate of reaction between two species, $X$ and $Y$, is often proportional to the likelihood of them encountering each other, leading to product terms like $XY$.
-* Epidemiology: Models for infectious diseases, such as the Susceptible-Infected-Recovered (SIR) model for epidemics like COVID, use these very types of equations to describe the dynamics of a population.
+* **Atmospheric Convection:** Simple climate models often reduce to this form.
+* **Chemical Reaction Systems:** The rate of reaction between two species, $X$ and $Y$, is often proportional to the likelihood of them encountering each other, leading to product terms like $XY$.
+* **Epidemiology:** Models for infectious diseases, such as the Susceptible-Infected-Recovered (SIR) model for epidemics like COVID, use these very types of equations to describe the dynamics of a population.
 
 Recognizing these patterns allows us to transfer insights from one field to another, which is a powerful aspect of dynamical systems theory.
 
@@ -2589,7 +2624,6 @@ To ground our discussion, we will use a classic model from population dynamics t
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lotka-Volterra Equations)</span></p>
-
 
 Let $x$ represent the population of prey (rabbits) and $y$ represent the population of predators (foxes). The dynamics of their interaction can be modeled by the following system of differential equations:
 
@@ -2606,7 +2640,6 @@ Intuitive Breakdown of the Terms:
 * $\boldsymbol{-\beta xy}$: The prey population decreases due to encounters with predators. This decrease is proportional to the size of both populations, as more of either species increases the frequency of encounters.
 * $\boldsymbol{\gamma xy}$: The predator population grows when there is prey to eat. This growth is also proportional to the rate of encounters.
 * $\boldsymbol{-\lambda y}$: In the absence of prey, the predator population decays exponentially at a rate $\lambda$ due to starvation.
-
 
 </div>
 
@@ -2826,7 +2859,7 @@ Let $x_0$ be an equilibrium point and let $\phi_t(x)$ be the flow operator, whic
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stable Equilibrium (in the sense of Lyapunov))</span></p>
 
-An equilibrium point $x_0$ is called stable if for every neighborhood $\mathcal{U}$ of $x_0$ (e.g., an open ball of radius $\epsilon > 0$), there exists a smaller neighborhood $\mathcal{V}$ of $x_0$ (e.g., a ball of radius $\delta > 0$) such that any trajectory starting in $\mathcal{V}$ remains within $\mathcal{U}$ for all future time.
+An **equilibrium point $x_0$ is stable** if for every neighborhood $\mathcal{U}$ of $x_0$ (e.g., an open ball of radius $\epsilon > 0$), there exists a smaller neighborhood $\mathcal{V}$ of $x_0$ (e.g., a ball of radius $\delta > 0$) such that any trajectory starting in $\mathcal{V}$ remains within $\mathcal{U}$ for all future time.
 
 Formally: For every $\epsilon > 0$, there exists a $\delta > 0$ such that for any point $x$ with $\lvert x - x_0\rvert < \delta$, we have $\lvert\phi_t(x) - x_0\rvert < \epsilon$ for all $t \ge 0$.
 
@@ -2837,14 +2870,13 @@ Formally: For every $\epsilon > 0$, there exists a $\delta > 0$ such that for an
 
 Note that this does not require the trajectory to approach $x_0$. A center in a frictionless pendulum system is stable, as trajectories that start nearby will orbit it, staying close but never converging.
 
-
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Asymptotically Stable Equilibrium)</span></p>
 
 
-An equilibrium point $x_0$ is asymptotically stable if:
+An **equilibrium point $x_0$ is asymptotically stable** if:
 
 1. It is stable.
 2. There exists a neighborhood $\mathcal{W}$ of $x_0$ such that every trajectory starting in $\mathcal{W}$ converges to $x_0$ as time goes to infinity.
@@ -2871,15 +2903,12 @@ This chapter introduces the fundamental topological concepts that are essential 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Previously, definitions of stability may have been restricted to hyperbolic dynamical systems—systems where the real parts of the eigenvalues of the linearized system at an equilibrium point are all non-zero. That definition, while useful, is not universally applicable. We introduce a more general definition of asymptotic stability that also covers non-hyperbolic systems, providing a more robust tool for analysis.
-
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Asymptotic Stability)</span></p>
-
 
 An equilibrium point $x_0$ is **asymptotically stable** if there exists a neighborhood around it such that any trajectory starting within that neighborhood converges to $x_0$.
 
@@ -3459,7 +3488,6 @@ To explore these concepts, we will analyze a classic and influential model from 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The Wilson-Cowan model, introduced in the 1970s, was designed to explain the origin of oscillatory activity in the brain, such as the brain waves measured by an electroencephalogram (EEG). It is a foundational model that continues to inspire modern work in both neuroscience and machine learning (e.g., Neural ODEs).
 
 The model simplifies the complexity of the brain by considering only two large, interacting populations of neurons:
@@ -3473,16 +3501,14 @@ The core mechanism for generating complex dynamics, including oscillations, aris
 
 This model is an example of a mean-field approach, where the collective activity of a large, assumedly homogeneous group of cells is described by a single continuous variable.
 
-
 </div>
 
 #### Mathematical Formulation
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Wilson-Cowan system)</span></p>
 
-
-The state of the Wilson-Cowan system is described by the average firing rates of the excitatory and inhibitory populations, denoted by $\nu_e(t)$ and $\nu_i(t)$, respectively. The dynamics are governed by the following system of nonlinear ordinary differential equations:
+The state of the **Wilson-Cowan system** is described by the average firing rates of the excitatory and inhibitory populations, denoted by $\nu_e(t)$ and $\nu_i(t)$, respectively. The dynamics are governed by the following system of nonlinear ordinary differential equations:
 
 $$\tau_e \frac{d\nu_e}{dt} = -\nu_e + f_e(w_{ee}\nu_e - w_{ie}\nu_i - \theta_e)$$
 
@@ -3494,7 +3520,6 @@ Where:
 * $w_{ab}$ represents the synaptic weight from population b to population a.
 * $\theta_e, \theta_i$ are activation thresholds.
 * $f(\cdot)$ is a nonlinear sigmoid activation function, given by: $f(x) = \frac{1}{1 + e^{-\beta x}} = (1 + e^{-\beta x})^{-1}$
-
 
 </div>
 
@@ -3623,7 +3648,7 @@ Let a dynamical system be defined by a state space $E \subseteq \mathbb{R}^m$ an
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Omega Limit Set)</span></p>
 
-The omega limit set of a point $x_0 \in E$, denoted $\Omega(x_0)$, is the set of points that the trajectory through $x_0$ approaches as $t \to \infty$. It is formally defined as the intersection of the closures of the trajectory's future paths:
+The **omega limit set** of a point $x_0 \in E$, denoted $\Omega(x_0)$, is the set of points that the trajectory through $x_0$ approaches as $t \to \infty$. It is formally defined as the intersection of the closures of the trajectory's future paths:
 
 $$\Omega(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t > s} \phi_t(x_0)} = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t > s\rbrace }$$
 
@@ -3865,7 +3890,6 @@ A trapping region is a closed set in the phase space such that any trajectory th
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 The theorem states that if a trapping region in a 2D system contains no fixed points, then it must contain at least one closed orbit. A more common application is when a trapping region contains a single fixed point that is unstable (like an unstable spiral or node).
 
 Let's apply this to our Wilson-Cowan example:
@@ -3886,7 +3910,6 @@ Unstable limit cycles are difficult to observe in simulations because trajectori
 
 For a more systematic analysis of limit cycles, especially their stability, one can use the Poincaré map. The core idea is to convert the continuous flow around the cycle into a discrete map. By analyzing the properties of this map, one can deduce properties of the limit cycle itself. This topic will be revisited in greater detail later.
 
-
 </div>
 
 
@@ -3906,7 +3929,6 @@ The core concept is the winding number. Imagine walking along a closed curve $C$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Index of a Fixed Point)</span></p>
 
-
 The index of a fixed point is a property of the vector field surrounding it. To calculate it, we draw a small closed curve $C$ around the fixed point and traverse it once counter-clockwise. We observe the direction of the vectors of the vector field $\dot{\mathbf{x}}$ at each point on $C$. The index is the total number of counter-clockwise revolutions that the vector field itself makes.
 
 Let's calculate the index for different types of fixed points:
@@ -3917,7 +3939,6 @@ Let's calculate the index for different types of fixed points:
   * Index = $+1$
 * Saddle Point: The flow moves inwards along the stable manifold and outwards along the unstable manifold. Let's trace the vector's rotation as we move around the curve $C$:
   * As we start on the right and move up (counter-clockwise), the vector field points mostly down and left. As we cross the stable manifold, the vector points... (The analysis from the source context is incomplete here).
-
 
 </div>
 
@@ -4165,8 +4186,23 @@ $$x^* = f(x^*)$$
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Finding the Fixed Points of the Logistic Map)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Fixed Points of Logistic Map)</span></p>
+
+Logistic map
+
+$$x_t = \alpha x_{t-1}(1-x_{t-1})$$
+
+has two fixed points:
+
+1. $x_1^\ast = 0$
+2. $\alpha x^\ast + 1 - \alpha = 0 \implies x_2^\ast = \frac{\alpha - 1}{\alpha}$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 To find the fixed points of the logistic map, we set $x_{t+1} = x_t = x^\ast$ and solve the resulting equation:
 
@@ -4185,6 +4221,7 @@ This equation yields two solutions for the fixed points:
 1. $x_1^\ast = 0$
 2. $\alpha x^\ast + 1 - \alpha = 0 \implies x_2^\ast = \frac{\alpha - 1}{\alpha}$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
