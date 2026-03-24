@@ -1311,17 +1311,61 @@ For instance, the probability that the algorithm runs more than $10 n^2$ steps i
 
 Let $X$ have finite mean $\mu$ and variance $\sigma^2$. Then
 
-$$P(\lvert X - \mu \rvert \ge t \cdot \sigma) \le \frac{1}{t^2}.$$
+$$P(\lvert X - \mu \rvert \ge t \cdot \sigma) \le \frac{1}{t^2}$$
+
+Or equivalently 
+
+$$P(\lvert X - \mu \rvert \ge t) \le \frac{\sigma^2}{t^2}$$
 
 </div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Proof of the first inequality</summary>
 
 Let $Y = (X - \mu)^2$. Then $Y \ge 0$ and $\mathbb{E}(Y) = \sigma^2$. Apply Markov's inequality to $Y$ with $a = t^2 \sigma^2$:
 
 $$P(\lvert X - \mu \rvert \ge t\sigma) = P(Y \ge t^2 \sigma^2) \le \frac{\sigma^2}{t^2 \sigma^2} = \frac{1}{t^2}.$$
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of the equivalence</summary>
+
+They are the same statement with a different choice of parameter.
+
+Start from
+
+$$P(\lvert X-\mu\rvert\ge t\sigma)\le \frac1{t^2}.$$
+
+Here $t$ is a dimensionless number, meaning "how many standard deviations away from the mean."
+
+Now define a new threshold
+
+$$u=t\sigma$$
+
+Then
+
+$$t=\frac{u}{\sigma}$$
+
+Substitute this into the first form:
+
+$$P(\lvert X-\mu\rvert\ge u)\le \frac{1}{(u/\sigma)^2} = \frac{\sigma^2}{u^2}$$
+
+Rename $u$ back to $t$, and you get
+
+$$P(\lvert X-\mu\rvert\ge t)\le \frac{\sigma^2}{t^2}$$
+
+So the two versions are equivalent because:
+
+* the first measures deviation in **units of standard deviation**
+* the second measures deviation in **absolute units**
+
+They describe the same bound, just with a rescaled variable.
+
+One tiny note: if $\sigma=0$, then $X=\mu$ almost surely, and the inequality is trivially true.
 
 </details>
 </div>
