@@ -27,6 +27,10 @@ tags:
 
 # Model-Based Time Series Analysis
 
+## Problems
+
+[Selected Problems](/subpages/model-based-time-series-analysis/problems/)
+
 ## Review on Statistical Inference
 
 To reason about uncertainty in a mathematically sound way, we begin with the concept of a probability space. This structure consists of three essential components that formalize an experiment and its outcomes.
@@ -1223,11 +1227,11 @@ GLMs are composed of three components:
 1.  **Random Component:** The response variable $y_t$ follows a probability distribution from the exponential family (e.g., Bernoulli, Poisson, Gamma).
 2.  **Systematic Component:** A **linear predictor**, $\eta_t$, is constructed as a linear combination of the predictors:
 
-$$\eta_t = x_t^\top \beta$$
+    $$\eta_t = x_t^\top \beta$$
 
 3.  **Link Function:** A function $g(\cdot)$ that links the expected value of the response, $\mu_t = \mathbb{E}[y_t]$, to the linear predictor:
 
-$$g(\mu_t) = \eta_t$$
+    $$g(\mu_t) = \eta_t$$
 
 The inverse of the link function, $g^{-1}(\cdot)$, maps the linear predictor back to the mean of the response: $\mu_t = g^{-1}(\eta_t)$.
 
@@ -3544,23 +3548,23 @@ The EM algorithm is an iterative procedure for finding maximum-likelihood estima
 1. **Initialize** parameters $\theta^{(0)}$.
 2. **Repeat** until convergence (let $\theta^{old}$ denote the current parameters):
 
-* **E-step (Expectation):** Fix $\theta^{old}$ and choose a distribution over latents **conditioned on the observed data** $X$ by maximizing the ELBO. The optimum is the true posterior under the current parameters (for exact EM), which makes the bound tight.
+   * **E-step (Expectation):** Fix $\theta^{old}$ and choose a distribution over latents **conditioned on the observed data** $X$ by maximizing the ELBO. The optimum is the true posterior under the current parameters (for exact EM), which makes the bound tight.
   
-  $$q^{\ast}(Z\mid X)=\arg\max_{q} \mathrm{ELBO}\big(q(Z\mid X),\theta^{old}\big)$$
+     $$q^{\ast}(Z\mid X)=\arg\max_{q} \mathrm{ELBO}\big(q(Z\mid X),\theta^{old}\big)$$
   
-  $$\iff\quad q^{\ast}(Z\mid X)=\arg\min_{q} \text{KL}\left(q(Z\mid X) \parallel p_{\theta^{old}}(Z\mid X)\right)$$
+     $$\iff\quad q^{\ast}(Z\mid X)=\arg\min_{q} \text{KL}\left(q(Z\mid X) \parallel p_{\theta^{old}}(Z\mid X)\right)$$
   
-  Hence (if exact EM, meaning we can compute $p_{\theta^{old}}(Z\mid X)$):
+     Hence (if exact EM, meaning we can compute $p_{\theta^{old}}(Z\mid X)$):
   
-  $$q^{\ast}(Z\mid X)=p_{\theta^{old}}(Z\mid X)$$
+     $$q^{\ast}(Z\mid X)=p_{\theta^{old}}(Z\mid X)$$
 
-* **M-step (Maximization):** Fix $q^{\ast}(Z\mid X)$ and update parameters by maximizing the ELBO with respect to $\theta$:
+   * **M-step (Maximization):** Fix $q^{\ast}(Z\mid X)$ and update parameters by maximizing the ELBO with respect to $\theta$:
   
-  $$\theta^{new}=\arg\max_{\theta} \mathrm{ELBO}\big(q^{\ast}(Z\mid X),\theta\big)$$
+     $$\theta^{new}=\arg\max_{\theta} \mathrm{ELBO}\big(q^{\ast}(Z\mid X),\theta\big)$$
   
-  Since the entropy term of $q^{\ast}$ does not depend on $\theta$, this is equivalent to maximizing the expected complete-data log-likelihood:
+     Since the entropy term of $q^{\ast}$ does not depend on $\theta$, this is equivalent to maximizing the expected complete-data log-likelihood:
   
-  $$\theta^{new}=\arg\max_{\theta} \mathbb{E}_{q^{\ast}(Z\mid X)}\big[\log p_{\theta}(X,Z)\big].$$
+     $$\theta^{new}=\arg\max_{\theta} \mathbb{E}_{q^{\ast}(Z\mid X)}\big[\log p_{\theta}(X,Z)\big].$$
   
 </div>
 
@@ -3975,11 +3979,11 @@ The derivation of the filtering equations relies on fundamental principles of pr
 
 1. **Bayes' Rule:** 
    
-  $$p(A\mid B) = \frac{p(B\mid A)p(A)}{p(B)}$$
+   $$p(A\mid B) = \frac{p(B\mid A)p(A)}{p(B)}$$
 
 2. **Chain Rule of Probability:**
    
-  $$p(A_1, A_2, \dots, A_n) = p(A_n \mid A_1, \dots, A_{n-1}) p(A_1, \dots, A_{n-1})$$
+   $$p(A_1, A_2, \dots, A_n) = p(A_n \mid A_1, \dots, A_{n-1}) p(A_1, \dots, A_{n-1})$$
 
 </div>
 
@@ -4217,26 +4221,26 @@ The full derivation of the update step (multiplying the Gaussian predictive dist
 Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of the state at time $t-1$.
 
 1. **Prediction Step:**
-  * **Predicted state mean:**
+   * **Predicted state mean:**
   
-  $$\hat{m}_t = A m_{t-1}$$
+     $$\hat{m}_t = A m_{t-1}$$
   
-  * **Predicted state covariance:** 
+   * **Predicted state covariance:** 
   
-  $$\hat{V}_t = A V_{t-1} A^\top + \Sigma_z$$
+     $$\hat{V}_t = A V_{t-1} A^\top + \Sigma_z$$
   
 2. **Update Step:**
-  * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
+   * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
     
-    $$K_t = \hat{V}_t B^\top (B \hat{V}_t B^\top + \Gamma)^{-1}$$
+     $$K_t = \hat{V}_t B^\top (B \hat{V}_t B^\top + \Gamma)^{-1}$$
 
-  * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B \hat{m}_t)$.  
+   * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B \hat{m}_t)$.  
   
-    $$m_t = \hat{m}_t + K_t (x_t - B \hat{m}_t)$$
+     $$m_t = \hat{m}_t + K_t (x_t - B \hat{m}_t)$$
 
-  * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
+   * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
   
-    $$V_t = [I - K_t B] \hat{V}_t$$
+     $$V_t = [I - K_t B] \hat{V}_t$$
 
 </div>
 
@@ -4340,9 +4344,9 @@ The algorithm requires the stored results (means and covariances) from the forwa
      
      $$m_T^s := m_T$$
   
-  * **Smoothed covariance at time $T$:** 
+   * **Smoothed covariance at time $T$:** 
   
-    $$V_T^s := V_T$$
+     $$V_T^s := V_T$$
 
 2. **Backward Recursion:** 
    * The algorithm proceeds backward in time, from $t = T-1$ down to $0$.
@@ -4448,9 +4452,9 @@ In the M-step, we find the parameters $\theta$ that maximize the $\mathcal{Q}$ f
 
 Let $X=\lbrace X_{1:T}\rbrace$ and $Z=\lbrace Z_{1:T}\rbrace$.
 
-**Goal:** $\theta^* = \max_\theta \mathbb{E}_q[\log p(X, Z)]$.
+* **Goal:** $\theta^* = \max_\theta \mathbb{E}_q[\log p(X, Z)]$.
 
-**Update for Latent Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$:**
+* **Update for Latent Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$:**
 
 Equivalent to the M-step of a standard linear Gaussian State Space Model:
 
@@ -4458,7 +4462,7 @@ $$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^
 
 The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion. 
 
-**Update for Observation Parameters $\lbrace b_0, B_1\rbrace$:**
+* **Update for Observation Parameters $\lbrace b_0, B_1\rbrace$:**
 
 The objective for $b_0$ and $B_1$ is: 
 
