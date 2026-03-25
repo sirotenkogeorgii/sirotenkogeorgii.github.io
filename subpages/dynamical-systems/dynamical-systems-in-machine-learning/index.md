@@ -318,7 +318,6 @@ $$A \sim \begin{pmatrix} \lambda_1 & -1 \\ 1 & -0.2 \end{pmatrix}$$
 
 </div>
 
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Solution of Linear Systems)</span></p>
 
@@ -470,6 +469,9 @@ The *equilibrium point* of a linear system of ODEs is called **node** if $A$ has
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Stability Analysis. Node - Real Eigenvalues)</span></p>
+
 The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
 
 **Case 1: Node: Real Eigenvalues ($\omega_1 = \omega_2 = 0$)**
@@ -489,6 +491,8 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
     * The line spanned by $v_1$ is the **stable manifold** ($E^s$): The set of all points that flow to the equilibrium.
     * The line spanned by $v_2$ is the **unstable manifold** ($E^u$): The set of all points that flow away from the equilibrium.
     * Manifolds are **invariant**: any trajectory starting on a manifold stays on that manifold forever.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/real_eigen_negative.png' | relative_url }}" alt="a" loading="lazy">
@@ -519,6 +523,11 @@ The *equilibrium point* of a linear system of ODEs is called **spiral point** if
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Stability Analysis. Spiral - Complex Eigenvalues)</span></p>
+
+The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
+
 **Case 2: Spiral: Complex Conjugate Eigenvalues ($\lambda = \alpha \pm i\omega$, with $\omega \neq 0$)**
 
 * **Stable Spiral (or Focus)**: The real parts of both eigenvalues are negative ($\alpha < 0$).
@@ -533,6 +542,8 @@ The *equilibrium point* of a linear system of ODEs is called **spiral point** if
   * *Geometry*: This is a very special case. Trajectories are perfect, closed orbits (ellipses or circles) around the equilibrium. The state space is filled with a continuous family of these orbits.
   * *Time Series*: Variables exhibit perfect, sustained oscillations with constant amplitude.
   * *Stability*: Neutrally stable. A small perturbation moves the system to a new, nearby orbit; it neither returns nor diverges.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/complex_negative.png' | relative_url }}" alt="a" loading="lazy">
@@ -558,11 +569,18 @@ For two real eigenvalues with one being smaller and the other being equal to zer
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Stability Analysis. Line/Plane - Some Eigenvalues with Zero Real Part)</span></p>
+
+The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. We can classify the geometry of the flow around this equilibrium based on the eigenvalues of the matrix $A$. Let's consider a 2D system with eigenvalues $\lambda_1, \lambda_2$.
+
 **Case 3: Some Eigenvalues with Zero Real Part**
 * **Line or Plane of Equilibria:** One eigenvalue is zero, and the others are negative (e.g., $\lambda_1 < 0$, $\lambda_2 = 0$).
   * *Geometry*: There is an entire line (or plane in higher dimensions) of fixed points. This line is the eigenspace corresponding to $\lambda_2 = 0$. Trajectories from off this line will converge toward it along the stable eigendirections.
   * *Stability*: Marginally stable.
   * *Remark*: This configuration, sometimes called a **line attractor**, is crucial in neuroscience and machine learning for modeling memory. The system can be placed at any point along the line and will stay there, effectively "remembering" that state.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Line Attractor: Hypothalamus of Mice)</span></p>
@@ -1766,11 +1784,11 @@ We now generalize our analysis to systems with $m$ dimensions, where the state i
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($m$-Dimensional Affine Map)</span></p>
 
-The state of the system is a vector $\vec{x}_t \in \mathbb{R}^m$. The evolution is given by the **affine map**:
+The state of the system is a vector $x_t \in \mathbb{R}^m$. The evolution is given by the **affine map**:
 
-$$\vec{x}_{t+1} = A\vec{x}_t + \vec{b}$$
+$$x_{t+1} = Ax_t + b$$
 
-where $A$ is an $m \times m$ square matrix and $\vec{b} \in \mathbb{R}^m$ is a constant offset vector.
+where $A$ is an $m \times m$ square matrix and $b \in \mathbb{R}^m$ is a constant offset vector.
 
 </div>
 
@@ -1791,15 +1809,15 @@ If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does n
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $\vec{x}^{\ast}$ be a fixed point. It must satisfy the condition $\vec{x}^{\ast} = A\vec{x}^{\ast} + \vec{b}$. We solve for $\vec{x}^{\ast}$:
+Let $x^{\ast}$ be a fixed point. It must satisfy the condition $x^{\ast} = Ax^{\ast} + b$. We solve for $x^{\ast}$:
 
-$$\vec{x}^{\ast} - A\vec{x}^{\ast} = \vec{b}$$
+$$x^{\ast} - Ax^{\ast} = b$$
 
-$$(I - A)\vec{x}^{\ast} = \vec{b}$$
+$$(I - A)x^{\ast} = b$$
 
 where $I$ is the $m \times m$ identity matrix. If the matrix $(I-A)$ is invertible, we can find the unique fixed point by multiplying by its inverse:  
 
-$$\vec{x}^{\ast} = (I-A)^{-1}\vec{b}$$
+$$x^{\ast} = (I-A)^{-1}b$$
 
 If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does not exist. In this case, the system may have no fixed points or a continuous set of fixed points, such as a line attractor or a higher-dimensional manifold attractor.
 
@@ -1808,7 +1826,7 @@ If $(I-A)$ is not invertible (i.e., it is singular), a unique fixed point does n
 
 #### System Dynamics and Diagonalization
 
-To understand the system's trajectory, we analyze the behavior of the map when iterated over time. For simplicity, we first consider the homogeneous case where $\vec{b} = \vec{0}$.
+To understand the system's trajectory, we analyze the behavior of the map when iterated over time. For simplicity, we first consider the homogeneous case where $b = 0$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Iterated Map Dynamics)</span></p>
@@ -2810,7 +2828,7 @@ Now, we linearize the system at each of these points.
 
 </div>
 
-<div class="math-callout math-callout--Proposition" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Analysis of the Equilibrium at $(0, 0)$)</span></p>
 
 At the point $(0,0)$ the Lotka-Volterra has eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$.
@@ -2836,10 +2854,10 @@ The eigenvalues of a diagonal matrix are simply its diagonal entries. Therefore,
 </details>
 </div>
 
-<div class="math-callout math-callout--Proposition" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Analysis of the Equilibrium at $(2, 3)$)</span></p>
 
-At the point $(2,3)$ the Lotka-Volterra has eigenvalues  $\lambda_1 = +\sqrt{6} \approx 2.45$ and $\lambda_2 = -\sqrt{6} \approx -2.45$.
+At the point $(2,3)$ the Lotka-Volterra has eigenvalues $\lambda_1 = +\sqrt{6} \approx 2.45$ and $\lambda_2 = -\sqrt{6} \approx -2.45$.
 
 Since we have one positive real eigenvalue and one negative real eigenvalue, trajectories are attracted towards the equilibrium along one direction (the stable direction) and repelled from it along another direction (the unstable direction). This quintessential feature defines a saddle point.
 
@@ -3217,7 +3235,6 @@ We now check if the condition for topological equivalence, $h(\phi^A_t(x_0)) = \
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
 
-
 1. **Calculate the left-hand side (LHS):** First, we apply the flow of System $A$ to a point $x_0$, and then map the result using $h$.
   
    $$h(\phi^A_t(x_0)) = h(e^{-t}x_0) = \frac{1}{e^{-t}x_0} = \frac{e^t}{x_0}$$ 
@@ -3234,8 +3251,42 @@ We now check if the condition for topological equivalence, $h(\phi^A_t(x_0)) = \
   
    $$\frac{\partial \tau}{\partial t} = \frac{d}{dt}(t) = 1$$
    
-   Since $\frac{\partial \tau}{\partial t} = 1 > 0$, the condition is satisfied.
+   Since $\frac{\partial \tau}{\partial t} = 1 > 0$, then condition is satisfied?
 
+---
+
+What is wrong in the example above is the function $h$ is not a homeomorphism. The key issue is the **domain**.
+
+The proposed map $h(x)=\frac1x$ is **not defined at (x=0)**. So it is not a homeomorphism $\mathbb{R}\to\mathbb{R}$.
+
+That matters a lot here, because $x=0$ and $y=0$ are the equilibria, and on the full line these two systems are qualitatively different:
+
+* $\dot x=-x$: $0$ is a **sink** (stable)
+* $\dot y=y$: $0$ is a **source** (unstable)
+
+So on $\mathbb{R}$, they are **not** topologically equivalent.
+
+The computation $h(\phi_t^A(x))=\phi_t^B(h(x))$ is actually correct, but only on the **punctured line** $\mathbb{R}\setminus{0}$
+
+On that space, $h(x)=1/x$ is a homeomorphism, and the systems are not just topologically equivalent but actually **topologically conjugate** with no time reparameterization needed, since $\tau=t$.
+
+So the right verdict is:
+
+* **On $\mathbb{R}$: incorrect**
+* **On $\mathbb{R}\setminus{0}$: correct**
+
+**A quick sanity check with equilibria immediately shows a contradiction**
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Quick Sanity Check For Homeomorphism)</span></p>
+
+For 1D systems, a very fast check is:
+
+* are equilibria matched?
+* are stable equilibria matched with stable ones?
+* are unstable equilibria matched with unstable ones?
 
 </div>
 
@@ -3255,6 +3306,14 @@ Two dynamical systems, defined by flows $\phi_t^A$ and $\phi_t^B$ on state space
 This means that for every point $x \in A$, the curve traced by $\phi_t^A(x)$ is mapped by $h$ to the curve traced by $\phi_t^B(h(x))$. While the direction of flow along the curve is preserved, the speed is not. The time parameter may be re-scaled, meaning a point that takes 1 second to travel a path in system $A$ might take 2 seconds (or 0.5 seconds) to travel the corresponding path in system $B$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/topological_equivalence_visualization_clean.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/not_topologically_equivalent.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
 #### A Critical Counterexample: The Importance of the Homeomorphism
 
@@ -3312,6 +3371,14 @@ Two systems with flows $\phi_t^A$ and $\phi_t^B$ are **topologically conjugate**
 $$h(\phi_t^A(x_0)) = \phi_t^B(h(x_0))$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/topological_conjugacy_visualization.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/topological_equivalent_not_conjugate.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -3432,7 +3499,15 @@ The point of the graphic is that near the origin, the nonlinear flow has the sam
 
 </div>
 
-#### The Power and Implications of Hartman-Grobman
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+
+The Hartman-Grobman Theorem is profoundly important because it provides the rigorous justification for linearization. It tells us that in the local neighborhood of a hyperbolic equilibrium point, the behavior of a nonlinear system is topologically equivalent to the behavior of its linearization around that point. This is why we can confidently use the tools of linear systems analysis (e.g., Jacobian eigenvalues) to determine the local stability and properties of equilibria even in highly nonlinear systems.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Power and Implications of Hartman-Grobman)</span></p>
 
 This theorem gives us confidence in our analytical methods. When we encounter a complex, high-dimensional nonlinear system, we can:
 
@@ -3442,26 +3517,9 @@ This theorem gives us confidence in our analytical methods. When we encounter a 
 
 If the point is hyperbolic, Hartman-Grobman assures us that the local dynamics are completely characterized by the behavior of the linear system $\dot{\mathbf{z}} = J(\mathbf{x_0})\mathbf{z}$. The stability, the presence of saddle dynamics, and the spiral or nodal nature of the trajectories are all preserved. This allows us to use the well-understood tools of linear systems theory to draw robust conclusions about the behavior of highly nonlinear systems.
 
-## Lecture 4
-
-This chapter revisits several central concepts from our previous discussions to solidify your understanding and clarify important nuances. A firm grasp of these ideas is essential before proceeding to more complex systems.
-
-#### Recap: Core Concepts of System Equivalence
-
-Previously, we introduced a set of powerful tools for comparing different dynamical systems. These include:
-
-* Homeomorphism: A continuous function between topological spaces that has a continuous inverse function. It provides a formal way to say two spaces are "topologically the same."
-* Topological Equivalence and Conjugacy: These concepts use homeomorphisms to establish when the phase portraits of two different dynamical systems are qualitatively identical. They allow us to transfer knowledge about a simpler system (like a linear one) to a more complex, nonlinear one.
-* Manifolds and Invariant Sets: We discussed key geometric structures within the state space, such as stable and unstable manifolds, which are invariant sets—meaning any trajectory that starts on the set stays on the set for all time.
-
-These ideas culminated in the Hartman-Grobman Theorem, a cornerstone of dynamical systems theory.
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-The Hartman-Grobman Theorem is profoundly important because it provides the rigorous justification for linearization. It tells us that in the local neighborhood of a hyperbolic equilibrium point, the behavior of a nonlinear system is topologically equivalent to the behavior of its linearization around that point. This is why we can confidently use the tools of linear systems analysis (e.g., Jacobian eigenvalues) to determine the local stability and properties of equilibria even in highly nonlinear systems.
-
 </div>
+
+## Lecture 4
 
 #### Clarification: The Nature of Manifolds
 
@@ -3679,6 +3737,10 @@ The **omega limit set** of a point $x_0 \in E$, denoted $\Omega(x_0)$, is the se
 $$\Omega(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t > s} \phi_t(x_0)} = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t > s\rbrace }$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/omega_limit_set_visualization.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -5577,26 +5639,6 @@ A crucial feature of this system is the existence of a parameter regime before t
 
 </div>
 
-### Co-dimension Two Bifurcations and Complex Dynamics
-
-#### A Landscape of Bifurcations
-
-#### Introduction to Co-dimension Two Bifurcations
-
-#### The Cusp Bifurcation
-
-##### Normal Form and Properties
-
-##### Parameter-Dependent Dynamics
-
-##### The Geometry of the Cusp
-
-#### Applications in Biophysical Systems
-
-##### The Bogdanov-Takens Bifurcation
-
-##### Neuronal Bursting as a Bifurcation Phenomenon
-
 ## Lecture 7
 
 ### An Introduction to Chaos and the Logistic Map
@@ -5635,7 +5677,7 @@ As we increase the parameter $\alpha$ beyond the values that produce simple fixe
 ##### Aperiodicity in Deterministic Systems
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Aperiodicity</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Aperiodicity)</span></p>
 
 The first signature of chaos is aperiodic or irregular behavior that arises in the complete absence of noise or external randomness. For a chaotic trajectory, there is no integer $n$ for which the system exactly repeats its state.
 
@@ -5648,7 +5690,7 @@ This means the system never settles into a periodic cycle. One might consider th
 ##### Sensitive Dependence on Initial Conditions
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Sensitive Dependence</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sensitive Dependence)</span></p>
 
 The second key feature of chaos is a sensitive dependence on initial conditions. This means that two trajectories starting from infinitesimally different initial states will diverge from each other at an exponential rate. Even a minuscule, imperceptible difference in starting points will lead to completely different outcomes after a short period of time. This exponential divergence is a hallmark of chaotic dynamics.
 
@@ -5657,7 +5699,7 @@ The second key feature of chaos is a sensitive dependence on initial conditions.
 ##### Boundedness
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Boundedness</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Boundedness)</span></p>
 
 A third, and somewhat puzzling, characteristic is that the system remains bounded. Despite the exponential divergence of nearby trajectories, the system's state does not grow infinitely. For the logistic map, it can be proven that for $\alpha \in [0, 4]$ and $x_0 \in [0, 1]$, the trajectory will never leave the unit interval. The system is simultaneously divergent on a local scale (nearby trajectories separate) and constrained on a global scale (the overall dynamics are confined to a specific region).
 
@@ -5666,7 +5708,7 @@ A third, and somewhat puzzling, characteristic is that the system remains bounde
 #### The Period Doubling Route to Chaos
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Period-Doubling Cascade</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Period-Doubling Cascade)</span></p>
 
 Systems can transition to chaos through various mechanisms as a control parameter is changed. For the logistic map, this transition occurs via the famous period-doubling route to chaos, also known as the period-doubling cascade.
 
@@ -5682,7 +5724,7 @@ By examining the bifurcation diagram of the logistic map, we can observe this pr
 #### The Strange Attractor
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Strange Attractor</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Strange Attractor)</span></p>
 
 Even in the chaotic regime, the object to which trajectories converge is still an attractor. This means that initial conditions from within a certain basin of attraction will converge toward this complex, bounded object. This is another puzzling aspect of chaos: there is simultaneous convergence to the attractor from the outside and divergence within the attractor itself. Such an object is often called a strange attractor.
 
@@ -5691,7 +5733,7 @@ Even in the chaotic regime, the object to which trajectories converge is still a
 #### Periodic Windows in the Chaotic Regime
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Periodic Windows</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Periodic Windows)</span></p>
 
 A final interesting feature visible in the bifurcation diagram is the presence of periodic windows embedded within the chaotic regime. As $\alpha$ is increased through the chaotic region, the system can suddenly revert to stable, periodic behavior (for example, a stable 3-cycle or 5-cycle) for a narrow range of $\alpha$ values, before returning to chaos.
 
@@ -5719,7 +5761,7 @@ The study of one-dimensional maps like the logistic map has revealed a rich math
 #### Unstable Periodic Orbits (UPOs)
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Unstable Periodic Orbits</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unstable Periodic Orbits)</span></p>
 
 For certain parameter values, the chaotic attractor is built upon a "skeleton" of infinitely many unstable periodic orbits (UPOs). For the logistic map at $\alpha = 4$, it can be shown that there exists an infinite number of these UPOs.
 
@@ -5732,16 +5774,16 @@ For certain parameter values, the chaotic attractor is built upon a "skeleton" o
 #### Topological Equivalence: The Tent Map
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Topological Equivalence</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Topological Equivalence)</span></p>
 
 The logistic map is topologically equivalent to another map called the tent map. This means there is a continuous, one-to-one mapping (a homeomorphism) that transforms one system's dynamics into the other while preserving the direction of time. Consequently, they exhibit the same fundamental dynamical phenomena, including the period-doubling route to chaos.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Tent Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Tent Map)</span></p>
 
-The tent map is a piecewise linear map defined by:
+The **tent map** is a piecewise linear map defined by:
 
 $$f(x) = \alpha \cdot \min(x, 1-x)$$
 
@@ -5750,7 +5792,7 @@ The map is typically studied for $x \in [0, 1]$ and $\alpha \in [0, 2]$. Its gra
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Importance of Piecewise Linear Systems</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Importance of Piecewise Linear Systems)</span></p>
 
 The study of piecewise linear systems is important for two main reasons:
 
@@ -5762,7 +5804,7 @@ The study of piecewise linear systems is important for two main reasons:
 #### The Li-Yorke Theorem: Period Three Implies Chaos
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Li-Yorke Theorem (1975)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Li-Yorke (1975)</span></p>
 
 For a one-dimensional map, if a period-3 cycle is observed, then the system must also exhibit chaotic behavior.
 
@@ -5778,14 +5820,14 @@ This is a powerful and surprising result. The mere existence of a cycle with per
 #### The Sharkovskii Ordering of Periodic Orbits
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">Sharkovskii's Theorem</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Sharkovskii's Theorem)</span></p>
 
 There exists a specific ordering of natural numbers, known as the Sharkovskii ordering, which dictates a hierarchy of implications for the existence of periodic orbits in one-dimensional maps.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Sharkovskii Ordering</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sharkovskii Ordering)</span></p>
 
 If a map possesses a periodic orbit of period $k$, it must also possess periodic orbits for all periods that appear to the right of $k$ in the Sharkovskii ordering.
 
@@ -5806,7 +5848,7 @@ The most significant implication of this theorem is that the number 3 is first i
 #### The Feigenbaum Constants
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Feigenbaum Constants</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Feigenbaum Constants)</span></p>
 
 For maps that exhibit the period-doubling route to chaos (like the logistic and tent maps), the rate at which the bifurcations occur is governed by a universal constant.
 
@@ -5825,7 +5867,7 @@ The principles of chaos are not just mathematical curiosities; they appear in a 
 #### Empirical Evidence: Population Dynamics in Beetles
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Population Dynamics in Beetles</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Population Dynamics in Beetles)</span></p>
 
 An empirical study of a beetle population provided evidence for the period-doubling cascade in a biological system. By manipulating a control parameter (related to the beetles' environment or resources), researchers observed the population's long-term behavior transition from a stable equilibrium to 2-cycles, then 4-cycles, and eventually to chaotic fluctuations in population numbers. This provides a real-world parallel to the dynamics of the logistic map.
 
@@ -5834,7 +5876,7 @@ An empirical study of a beetle population provided evidence for the period-doubl
 #### Biophysical Systems: The Bursting Neuron Model
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">The Bursting Neuron Model</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Bursting Neuron Model)</span></p>
 
 Chaos can also be found in more complex, higher-dimensional continuous systems. We previously discussed a three-dimensional model of a bursting neuron, described by a set of differential equations for the membrane potential ($V$) and two gating variables ($n$ and $h$).
 
@@ -5851,7 +5893,7 @@ Welcome to the study of chaotic systems. For decades, chaos was considered a mat
 At its core, chaos describes a specific type of complex, unpredictable behavior in deterministic dynamical systems. A key indicator of potential chaos is the presence of homoclinic orbits (also referred to as homoclinic intersections), which are trajectories that connect a saddle-type equilibrium point to itself.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Homoclinic Orbits and Chaos</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Homoclinic Orbits and Chaos)</span></p>
 
 The presence of these homoclinic structures is a strong hint that a system might exhibit chaotic behavior. For certain classes of systems, particularly discrete maps, the existence of homoclinic orbits is not just a hint -- it is a guarantee. There are formal theorems that prove this connection, solidifying the link between a system's geometric structure in state space and its dynamic behavior over time.
 
@@ -5866,7 +5908,7 @@ To build a concrete understanding of chaos, we will examine two canonical exampl
 Let us first consider a full three-dimensional model of a biological neuron. The dynamics of this system are governed by several parameters, one of which is a conductance parameter. By systematically increasing this single parameter, we can observe the system's trajectory through distinct behavioral regimes.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">Bifurcation in a Neuron Model</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bifurcation in a Neuron Model)</span></p>
 
 The model exhibits the following sequence of behaviors as a key conductance parameter is increased:
 
@@ -8311,6 +8353,10 @@ The objective of DSR is to estimate the underlying dynamics of a system from an 
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/properties_dsr.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 #### Mathematical Framework
 
 We describe the system using a recursive formulation, typically implemented as a Recurrent Neural Network (RNN):
@@ -8357,7 +8403,6 @@ The latent state transition in a **PLRNN** is defined by the following map:
 $$z_t = A z_{t-1} + W \phi(z_{t-1}) + h + s_t$$
 
 where:
-
 * $A$ is a (usually diagonal) weight matrix.
 * $W$ is the recurrence weight matrix.
 * $h$ is a bias vector.
@@ -8365,6 +8410,15 @@ where:
 * $\phi(z)$ is the Rectified Linear Unit (ReLU) nonlinearity: $\phi(z) = \max(0, z)$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/PLRNN.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/IllustrativePLRNNdynamicsIn2D.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Hidden-state dynamics are linear within each region of state space, but switch between regions when units cross thresholds, usually because the nonlinearity is a ReLU or thresholded ReLU.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Versatility of the Form)</span></p>
@@ -8587,6 +8641,10 @@ Consider two trajectories generated by the Lorenz 63 system using the exact same
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/InadequacyOfMSEforChaoticSystems.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The MSE Illusion)</span></p>
 
@@ -8739,6 +8797,10 @@ If a recurrent neural network $f$ successfully captures a chaotic system, the lo
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/ChaoticDynamicsAndLossGradients.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Gradient Explosion in Chaotic Reconstructions)</span></p>
 
@@ -8795,6 +8857,10 @@ By forcing the trajectory back onto the "true" latent path every $\tau$ steps, w
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/SparseTeachingForcing.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 #### Optimizing the Forcing Interval
 
 The choice of the forcing interval $\tau$ is critical for successful reconstruction.
@@ -8819,6 +8885,10 @@ The optimal choice for the forcing interval $\tau$ is approximately given by the
 $$\tau \approx \frac{\ln(2)}{\lambda_{\max}}$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/OptimalForcingInterval.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Applications of Sparse Teacher Forcing)</span></p>
@@ -9039,6 +9109,10 @@ where:
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/GeneralizedTeacherForcingTrainingIdea.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization of $\alpha$)</span></p>
 
@@ -9049,6 +9123,10 @@ $$\alpha_t = 1 - \frac{1}{\sigma_{\max}(G_t)}$$
 which keeps gradient magnitudes controlled.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/GeneralizedTeacherForcing.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
 
 ### Piecewise Linear Recurrent Neural Networks (PLRNN)
 
@@ -9341,6 +9419,10 @@ In a 1998 paper, Kenji Doya illustrated why certain configurations are unlearnab
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/bIFURCATIONS_iN_tHE_lEARNING_oF_rECURRENT_nEURAL_nETWORKS.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 #### Impact on Training: The Loss Landscape
 
 Training an RNN via gradient descent involves iteratively readjusting parameters like $H$ to minimize a loss function. However, bifurcations create significant obstacles for this process.
@@ -9351,6 +9433,10 @@ Training an RNN via gradient descent involves iteratively readjusting parameters
 Imagine the system is in a regime with two stable fixed points (lower and upper arcs). If the target $z$ requires increasing $H$, the state will move along the current arc. Upon reaching the bifurcation point, the current stable equilibrium disappears, forcing the state to "jump" abruptly to the other arc. This transition causes a steep, discontinuous jump in the loss function.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/BifurcationAsLossJump.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Gradient Behavior at Bifurcations)</span></p>
@@ -9379,6 +9465,10 @@ Standard backpropagation through time (BPTT) is highly susceptible to the instab
 Generalized Teacher Forcing (GTF), as defined earlier, is an algorithm that can formally be shown to avoid certain bifurcations. By aligning the system with the observed data at each time point, GTF "smooths out" the loss function. It effectively pushes the system into the correct dynamical regime without requiring it to cross the discontinuous "cliffs" in the loss landscape found in straightforward BPTT.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/GeneralizedTeacherForcingPreventsBifurcationsInTraining.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
 
 ### Flow Operators and Continuous-Time RNNs
 
@@ -10902,7 +10992,7 @@ In real-world applications, such as medical monitoring or climate science, syste
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multimodal Observation Vector)</span></p>
 
-The multimodal observation vector $\mathbf{y}$ represents the concatenation of different data modalities observed at the same time step. If $\mathbf{x}$ represents Gaussian observations and $\mathbf{c}$ represents count observations, the combined vector is defined as:
+The **multimodal observation vector** $\mathbf{y}$ represents the concatenation of different data modalities observed at the same time step. If $\mathbf{x}$ represents Gaussian observations and $\mathbf{c}$ represents count observations, the combined vector is defined as:
 
 $$\mathbf{y} = [\mathbf{x}, \mathbf{c}, \dots]^T$$
 
@@ -11072,6 +11162,10 @@ Where:
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/MultiModalTeacherForcing.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implementation Details)</span></p>
 
@@ -11214,6 +11308,10 @@ In this view, the depth of the network is analogous to the time dimension in an 
 
 </details>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/neuralODE_intuition.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 #### Motivation for Continuous-Time Models
 
 Why move from discrete layers to continuous differential equations? The motivations vary across disciplines.
@@ -11251,6 +11349,11 @@ $$z(t_1) = z(t_0) + \int_{t_0}^{t_1} f(z(\tau), \tau, \theta)\, d\tau$$
 where $f$ can be any differentiable function, such as a deep neural network or a convolutional neural network.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/neuralODE.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Left: A Residual network defines a discrete sequence of finite transformations. Right: A ODE network defines a vector field, which continuously transforms the state. Both: Circles represent evaluation locations.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function)</span></p>
@@ -11360,6 +11463,12 @@ We derive this by considering the recursion of the state in a small time step $\
 
 </details>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/neuralODE_results.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>(a): Reconstruction and extrapolation of spirals with irregular time points by a recurrent neural network. (b): Reconstructions and extrapolations by a latent neural ODE. Blue curve shows model prediction. Red shows extrapolation. (c) A projection of inferred 4-dimensional latent ODE trajectories onto their first two dimensions. Color indicates the direction of the corresponding trajectory. The model has learned latent dynamics which distinguishes the two directions.</figcaption>
+</figure>
+
+
 #### Gradient Computation and Augmented States
 
 The primary goal is to find $\frac{dL}{d\theta}$ to update our parameters. This is calculated by integrating the relationship between the adjoint and the vector field's sensitivity to parameters over time.
@@ -11410,6 +11519,142 @@ $$a_{\text{aug}} = \begin{bmatrix} a \\ a_\theta \end{bmatrix}$$
 By applying the adjoint ODE formula to the augmented system, we can derive the full set of differential equations required to solve the gradient descent step in one backward pass.
 
 </div>
+
+### A generative latent function time-series model using NeuralODE
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generative Latent NeuralODE)</span></p>
+
+We present a continuous-time, generative approach to modeling time series. Our model represents each time series by a latent trajectory. Each trajectory is determined from a local initial state, $z_{t_0}$, and a global set of latent dynamics shared across all time series. Given observation times $t_0, t_1, \ldots, t_N$ and an initial state $z_{t_0}$, an ODE solver produces $z_{t_1}, \ldots, z_{t_N}$, which describe the latent state at each observation. We define this generative model formally through a sampling procedure:
+
+$$
+z_{t_0} \sim p(z_{t_0})
+\quad\text{(11)}
+$$
+
+$$
+z_{t_1}, z_{t_2}, \ldots, z_{t_N} = \mathrm{ODESolve}(z_{t_0}, f, \theta_f, t_0, \ldots, t_N)
+\quad\text{(12)}
+$$
+
+$$
+\text{each } x_{t_i} \sim p(x \mid z_{t_i}, \theta_x)
+\quad\text{(13)}
+$$
+
+Function $f$ is a time-invariant function that takes the value $z$ at the current time step and outputs the gradient:
+
+$$\partial z(t) / \partial t = f(z(t), \theta_f)$$
+
+We parameterize this function using a neural net. Because $f$ is time-invariant, given any latent state $z(t)$, the entire latent trajectory is uniquely defined. Extrapolating this latent trajectory lets us make predictions arbitrarily far forwards or backwards in time.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/latentODEmodel.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Computation graph of the latent ODE model.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Generative NODE: Training and Prediction)</span></p>
+
+We can train this latent-variable model as a VAE, with sequence-valued observations. Our recognition net is an RNN, which consumes the data sequentially backwards in time, and outputs $q_\phi(z_0 \mid x_1, x_2, \ldots, x_N)$. Using ODEs as a generative model allows us to make predictions for arbitrary time points $t_1 \ldots t_M$ on a continuous timeline.
+
+To obtain the latent representation $z_{t_0}$, we traverse the sequence using RNN and obtain parameters of distribution
+
+$$q(z_{t_0}\mid {x_{t_i}, t_i}_i, \theta_{enc})$$
+
+The algorithm follows a standard VAE algorithm with an RNN variational posterior and an ODESolve model:
+
+1. Run an RNN encoder through the time series and infer the parameters for a posterior over $z_{t_0}$:
+   
+   $$
+   q(z_{t_0}\mid {x_{t_i}, t_i}_i, \phi) = \mathcal{N}(z*{t_0}\mid \mu_{z_0}, \sigma_{z_0}),
+   \quad\text{(53)}
+   $$
+
+   where $\mu_{z_0}$, $\sigma_{z_0}$ comes from hidden state of
+   
+   $$\mathrm{RNN}({x_{t_i}, t_i}_i, \phi)$$
+
+2. Sample
+   
+   $$z_{t_0} \sim q(z_{t_0}\mid {x_{t_i}, t_i}_i)$$
+
+3. Obtain $z_{t_1}, z_{t_2}, \ldots, z_{t_M}$ by solving ODE
+   
+   $$\mathrm{ODESolve}(z_{t_0}, f, \theta_f, t_0, \ldots, t_M)$$
+   
+   where $f$ is the function defining the gradient
+   
+   $$dz/dt$$
+   
+   as a function of $z$
+
+4. Maximize
+   
+   $$\mathrm{ELBO} = \sum_{i=1}^{M} \log p(x_{t_i}\mid z_{t_i}, \theta_x) + \log p(z_{t_0}) - \log q(z_{t_0}\mid {x_{t_i}, t_i}_i, \phi)$$
+
+   where
+
+   $$p(z_{t_0}) = \mathcal{N}(0,1)$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Algorithm in words)</span></p>
+
+1. **Encode the whole observed trajectory** $\lbrace(x_{t_i}, t_i)\rbrace_{i=1}^N$ into a **distribution over an initial latent state** $z_{t_0}$.
+2. **Sample** $z_{t_0}$ from that posterior.
+3. **Evolve** this latent state through continuous time using a learned ODE
+   
+   $$\frac{dz(t)}{dt} = f_\theta(z(t)).$$
+   
+4. At every observation time $t_i$, take the latent state $z(t_i)$ and **decode** it into the observation $x_{t_i}$.
+
+So the model does **not** directly decode $z_0$ to all $x_t$ in one shot. Instead, it decodes through an **entire latent trajectory** generated by the ODE.
+
+A latent ODE with an RNN encoder that outputs one posterior over $z_{t_0}$ can absolutely suffer from the same bottleneck as older seq2seq models: the whole sequence has to be summarized into one hidden state. For long, complex, or multimodal sequences, that can be limiting.
+
+**the vanilla latent ODE encoder inherits a “compress-everything-into-one-vector” problem.**
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Problem of vanilla generative NODE)</span></p>
+
+A latent ODE with an RNN encoder that outputs one posterior over $z_{t_0}$ can absolutely suffer from the same bottleneck as older seq2seq models: the whole sequence has to be summarized into one hidden state. For long, complex, or multimodal sequences, that can be limiting.
+
+**the vanilla latent ODE encoder inherits a “compress-everything-into-one-vector” problem.**
+
+In other words:
+* **RNN without attention:** bottleneck in the encoder and in the generative model.
+* **Attention encoder:** less bottleneck in the encoder, but still a bottleneck in the generative model.
+* **Richer latent model:** relaxes the generative bottleneck too.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Generative NODE: Poisson Process likelihoods)</span></p>
+
+The fact that an observation occurred often tells us something about the latent state. For example, a patient may be more likely to take a medical test if they are sick. The rate of events can be parameterized by a function of the latent state:
+
+$$p(\text{event at time } t \mid z(t)) = \lambda(z(t))$$
+
+Given this rate function, the likelihood of a set of independent observation times in the interval $[t_{\text{start}}, t_{\text{end}}]$ is given by an inhomogeneous Poisson process:
+
+$$\log p(t_1 \ldots t_N \mid t_{\text{start}}, t_{\text{end}}) =  \sum_{i=1}^{N} \log \lambda(z(t_i)) - \int_{t_{\text{start}}}^{t_{\text{end}}} \lambda(z(t))dt$$
+
+We can parameterize $\lambda(\cdot)$ using another neural network. Conveniently, we can evaluate both the latent trajectory and the Poisson process likelihood together in a single call to an ODE solver. The figure shows the event rate learned by such a model on a toy dataset.
+
+A Poisson process likelihood on observation times can be combined with a data likelihood to jointly model all observations and the times at which they were made.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/latent_neuralODE_poisson_process.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Fitting a latent ODE dynamics model with a Poisson process likelihood. Dots show event times. The line is the learned intensity $\lambda(t)$ of the Poisson process.</figcaption>
+</figure>
 
 #### Formal Derivation: Augmented Vector Field Jacobian
 
@@ -11575,7 +11820,7 @@ In the PINN framework, we do not use a traditional numerical solver. Instead, we
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(DNN Parameterization)</span></p>
 
-We approximate the unknown solution $u(t, x)$ with a deep neural network $u_{\theta}(t, x)$, where $\theta$ represents the trainable weights of the network:
+We **approximate the unknown solution $u(t, x)$ with a deep neural network** $u_{\theta}(t, x)$, where $\theta$ represents the trainable weights of the network:
 
 $$u(t, x) \approx u_{\theta}(t, x)$$
 
