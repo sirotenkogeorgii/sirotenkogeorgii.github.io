@@ -463,14 +463,12 @@ Assume **stationarity** and **ergodicity**.
 
 * Implement the **auto-correlation function** in Python.
 * Input:
-
   * an $N \times (T+1)$ matrix
     * $N$: number of sample paths
     * $T+1$: number of time points
   * $h_{\max}$: maximum lag
 * Output:
-
-  * auto-correlation values for each (h \in {0,\dots,h_{\max}})
+  * auto-correlation values for each $h \in \lbrace 0,\dots,h_{\max}\rbrace$
 * Use the estimator of the **auto-covariance function**
   
   $$\widehat{\mathrm{acov}}(t,t+h)=\frac{1}{T+1-h}\sum_{t=0}^{T-h}(x_t-\bar x)(x_{t+h}-\bar x)$$
@@ -480,6 +478,18 @@ Assume **stationarity** and **ergodicity**.
   $$\bar x = \frac{1}{T+1}\sum_{t=0}^T x_t$$
   
 * Then use the relationship between **auto-correlation** and **auto-covariance**
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Implementation strategy:**
+1. Compute the mean $\bar{x}$ across all time steps (ergodicity allows averaging over paths too).
+2. For each lag $h$, compute the auto-covariance using the given estimator.
+3. Normalize by $\widehat{\text{acov}}(0)$ to get the auto-correlation.
+
+</details>
+</div>
 
 ### Task 2
 
@@ -495,173 +505,327 @@ Assume **stationarity** and **ergodicity**.
   
   $$X_t=\varepsilon_t,\quad t\in\lbrace 0,\dots,100\rbrace$$
   
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**Gaussian White Noise** $(\varepsilon_t)$: i.i.d. $\mathcal{N}(0,1)$. 
+- Theoretical ACF: $\rho(0) = 1$, $\rho(h) = 0$ for $h \geq 1$.
+
+</details>
+</div>
 
 #### Process 2
 
 * Moving-average process of order 1, **MA(1)**:
-  [
-  X_t = 0.6\varepsilon_{t-1}+\varepsilon_t,\quad t\in{1,\dots,100}, \qquad X_0=\varepsilon_0
-  ]
+  
+  $$X_t = 0.6\varepsilon_{t-1}+\varepsilon_t,\quad t\in{1,\dots,100}, \qquad X_0=\varepsilon_0$$
 
----
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+**MA(1) process:** $X_t = 0.6\,\varepsilon_{t-1} + \varepsilon_t$, $X_0 = \varepsilon_0$.
+- Theoretical ACF: $\rho(0) = 1$, $\rho(1) = \frac{\theta}{1+\theta^2} = \frac{0.6}{1+0.36} = \frac{0.6}{1.36} \approx 0.441$, $\rho(h) = 0$ for $h \geq 2$.
+- This is the key property of MA(q) processes: ACF cuts off after lag $q$.
+
+</details>
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/ACFs.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts For Exam</summary>
+
+**Auto-covariance function** at lag $h$:
+$$\widehat{\text{acov}}(t, t+h) = \frac{1}{T+1-h} \sum_{t=0}^{T-h} (x_t - \bar{x})(x_{t+h} - \bar{x})$$
+where $\bar{x} = \frac{1}{T+1}\sum_{t=0}^T x_t$.
+
+**Auto-correlation function** (ACF) is obtained by normalizing the auto-covariance:
+$$\widehat{\text{acor}}(h) = \frac{\widehat{\text{acov}}(h)}{\widehat{\text{acov}}(0)}$$
+
+This normalization ensures $\widehat{\text{acor}}(0) = 1$ and $|\widehat{\text{acor}}(h)| \leq 1$.
+
+**Stationarity** means the statistical properties (mean, variance, auto-covariance) don't change over time, so $\text{acov}(t, t+h)$ depends only on lag $h$, not on $t$.
+
+**Ergodicity** allows us to estimate ensemble averages (over sample paths) from time averages (along a single path). With both assumptions, we can average over both time and sample paths.
+
+| Property | White Noise | MA(1) with $\theta=0.6$ |
+|---|---|---|
+| $\rho(0)$ | 1 | 1 |
+| $\rho(1)$ | 0 | $\frac{\theta}{1+\theta^2} \approx 0.441$ |
+| $\rho(h), h \geq 2$ | 0 | 0 |
+| ACF cutoff | After lag 0 | After lag 1 |
+
+- **MA(q) processes have ACF that cuts off after lag q** — this is the signature used to identify MA order.
+- Auto-correlation = auto-covariance / variance (i.e., normalized by $\widehat{\text{acov}}(0)$).
+- The estimator uses $\frac{1}{T+1-h}$ (unbiased normalization for available pairs at lag $h$).
+
+</details>
+</div>
 
 ## Exercise 2: Rosenbrock function optimization
 
 ### Given
 
 * Gradient descent with momentum:
-  [
-  u_{t+1}=\alpha u_t-\varepsilon \nabla f(x_t), \qquad x_{t+1}=x_t+u_{t+1}
-  ]
+  
+  $$u_{t+1}=\alpha u_t-\varepsilon \nabla f(x_t), \qquad x_{t+1}=x_t+u_{t+1}$$
+  
 * Parameters:
-
-  * (\alpha \in [0,1]): momentum parameter
-  * (\varepsilon): learning rate
-  * (x_0): initial value
+  * $\alpha \in [0,1]$: momentum parameter
+  * $\varepsilon$: learning rate
+  * $x_0$: initial value
 
 ### Objective
 
 * Minimize the Rosenbrock-type function
-  [
-  f(x,y)=(1-x)^2 + 100(1+y-x^2)^2
-  ]
+  
+  $$f(x,y)=(1-x)^2 + 100(1+y-x^2)^2$$
+  
 * True minimum:
-  [
-  f(1,0)=0
-  ]
+  
+  $$f(1,0)=0$$
 
 ### Given derivatives
 
 * Gradient:
-  [
+  
+  $$
   \nabla f(x,y)=
   \begin{pmatrix}
-  2x-2-400x(1+y-x^2) \
+  2x-2-400x(1+y-x^2) \\
   200(1+y-x^2)
   \end{pmatrix}
-  ]
+  $$
+
 * Hessian:
-  [
+  
+  $$
   Hf(x,y)=
   \begin{pmatrix}
-  2-400(1+y-3x^2) & -400x \
+  2-400(1+y-3x^2) & -400x \\
   -400x & 200
   \end{pmatrix}
-  ]
+  $$
 
 ### Task 1
 
 * Implement:
-
   * gradient descent with momentum for
-
-    * (\alpha=0)
-    * (\alpha=0.8)
-    * (\alpha=0.9)
-    * (\alpha=0.95)
+    * $\alpha=0$
+    * $\alpha=0.8$
+    * $\alpha=0.9$
+    * $\alpha=0.95$
   * Newton–Raphson
 * Do **not** use PyTorch or other machine learning packages
 * Use common settings for comparison:
+  * learning rate $\varepsilon=0.001$
+  * initial value $x_0=(-1,1)$
+  * number of iterations: $1000$
 
-  * learning rate (\varepsilon=0.001)
-  * initial value (x_0=(-1,1))
-  * number of iterations: (1000)
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/OptimizersTrajectoriesComparison.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
 
 ### Task 2
 
 * Plot the results:
-
   * use `imshow` from Matplotlib to display the Rosenbrock function as a 2D image
   * draw the trajectories
-    [
-    x_0,x_1,\dots,x_{1000}
-    ]
+    
+    $$x_0,x_1,\dots,x_{1000}$$
+    
     on top of it
-* Optional:
 
+* Optional:
   * use `matplotlib.animation` to animate the optimization process
 
----
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/OptimizersConvergenceComparison.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts for the Exam</summary>
+
+| Method | Update Rule | Convergence | Cost per step |
+|---|---|---|---|
+| GD ($\alpha=0$) | $x_{t+1} = x_t - \varepsilon \nabla f(x_t)$ | Linear (slow) | $O(n)$ — just gradient |
+| GD + Momentum | $u_{t+1} = \alpha u_t - \varepsilon \nabla f$; $x_{t+1} = x_t + u_{t+1}$ | Faster than vanilla GD | $O(n)$ |
+| Newton-Raphson | $x_{t+1} = x_t - H^{-1}\nabla f$ | Quadratic (fast near min) | $O(n^3)$ — Hessian inversion |
+
+**Key observations:**
+- Momentum helps escape narrow valleys by accumulating velocity in consistent directions.
+- Higher $\alpha$ = more momentum = faster but risk of overshooting.
+- Newton-Raphson converges in very few steps but requires the Hessian (expensive for high dimensions).
+- Newton-Raphson does **not** use a learning rate — the Hessian provides natural step scaling.
+
+</details>
+</div>
 
 ## Exercise 3: Barrier option pricing
 
 ### Given
 
 * Stock price process:
-  [
-  S_t = S_0 e^{\sigma B_t - \frac{\sigma^2}{2}t}, \quad t\in[0,T], \quad S_0\ge 0
-  ]
-* ( (B_t)_{t\in[0,T]} ): Brownian motion
-* (\sigma>0): volatility
+  
+  $$S_t = S_0 e^{\sigma B_t - \frac{\sigma^2}{2}t}, \quad t\in[0,T], \quad S_0\ge 0$$
+  
+* $(B_t)_{t\in[0,T]}$: Brownian motion
+* $\sigma>0$: volatility
 
 ### Barrier option payoff
 
-* For barrier (B>0), strike (K<B), and maturity (T>0):
-  [
-  P(B,K,T)=\max{0,S_T-K}\mathbf{1}*{{M_T<B}}
-  ]
+* For barrier $B>0$, strike $K<B$, and maturity $T>0$:
+  
+  $$P(B,K,T)=\max\lbrace0,S_T-K\rbrace\mathbf{1}_{{M_T<B}}$$
+  
   where
-  [
-  M_T=\max*{t\in[0,T]} S_t
-  ]
+  
+  $$M_T=\max_{t\in[0,T]} S_t$$
+  
 * Interpretation:
-
-  * payoff is (S_T-K) if positive
-  * but becomes zero if the stock price ever reaches the barrier (B)
+  * payoff is $S_T-K$ if positive
+  * but becomes zero if the stock price ever reaches the barrier $B$
 
 ### Task 1
 
 * Write a Python function that simulates a **discretized Brownian motion**
-  [
-  B_0, B_{T/N}, B_{2T/N}, \dots, B_T
-  ]
+  
+  $$B_0, B_{T/N}, B_{2T/N}, \dots, B_T$$
+  
   on the grid
-  [
-  0,\frac{T}{N},\frac{2T}{N},\dots,T
-  ]
+  
+  $$0,\frac{T}{N},\frac{2T}{N},\dots,T$$
+  
 * Hint:
-
   * use the distribution of Brownian increments
-  * (B_0=0)
+  * $B_0=0$
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/BrownianMotionPaths.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
 
 ### Task 2
 
 * Use the function from Task 1 to simulate
 
-  * (d=10{,}000) price processes
-  * initial price (S_0=5)
-  * volatility (\sigma=1)
-  * time interval ([0,1])
-  * (N=1000) discretization points
+  * $d=10.000$ price processes
+  * initial price $S_0=5$
+  * volatility $\sigma=1$
+  * time interval $[0,$1]
+  * $N=1000$ discretization points
 * Construct each price path by inserting the simulated Brownian motion into the stock-price formula
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/SampleStokPricePaths.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+Shape of price matrix: (10000, 1001)  (d=10000 paths, N+1=1001 time points)
+Mean of S_T: 4.9090  (should be close to S0=5 by martingale property)
+
+</details>
+</div>
 
 ### Task 3
 
 * Consider a barrier option with:
 
-  * strike (K=2)
-  * barrier (B=10)
-  * maturity (T=1)
-  * offered price (0.60)
+  * strike $K=2$
+  * barrier $B=10$
+  * maturity $T=1$
+  * offered price $0.60$
 * For each simulated Brownian motion path:
-
   * compute the realized payoff
 * Compute:
-
   * the sample mean payoff
 * Decide:
-
   * whether the offered price seems fair
 
-If you want, I can also turn this into a **compact tree diagram** or a **checklist version**.
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/DistributionPayOffs.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
 
-Here is the hierarchy for **Exercise Sheet 3** 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Solution</summary>
+
+=== Barrier Option Pricing ===
+Strike K = 2, Barrier B = 10, T = 1.0
+Number of paths: 10000
+
+Mean payoff (estimated fair price): 0.6681
+Std of payoff:                      1.2897
+Standard error of mean:             0.0129
+95% CI for fair price:              [0.6429, 0.6934]
+
+Offered price: 0.60
+
+Fraction of paths knocked out (M_T >= B): 0.3127
+Fraction of paths with positive payoff:   0.3662
+
+=== Is the price fair? ===
+
+The offered price (0.60) is BELOW the estimated fair value 
+(0.6681, 95% CI [0.6429, 0.6934]).
+=> The option appears UNDERPRICED. It could be a good deal.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts for the Exam</summary>
+
+**Brownian Motion Simulation:**
+- Increments $\Delta B_k = B_{t_{k+1}} - B_{t_k} \sim \mathcal{N}(0, \Delta t)$, where $\Delta t = T/N$.
+- Equivalently: $\Delta B_k = \sqrt{\Delta t} \cdot Z_k$, $Z_k \sim \mathcal{N}(0,1)$.
+- Then $B_{t_k} = \sum_{j=0}^{k-1} \Delta B_j$ (cumulative sum).
+
+**Geometric Brownian Motion:**
+- $S_t = S_0 e^{\sigma B_t - \frac{\sigma^2}{2}t}$ — the $-\frac{\sigma^2}{2}t$ is the Itô correction.
+- $\mathbb{E}[S_t] = S_0$ (martingale under risk-neutral measure).
+- $S_t$ is always positive (exponential of a real number).
+
+**Monte Carlo Pricing:**
+- Fair price $\approx$ mean of simulated payoffs.
+- Standard error decreases as $1/\sqrt{d}$ (more paths = more precision).
+- Barrier options are **path-dependent**: the payoff depends on the entire trajectory, not just $S_T$.
+- The barrier acts as a "knock-out" condition: if $M_T \geq B$, payoff = 0.
+
+---
+
+**Brownian Motion** $(B_t)_{t \geq 0}$:
+- $B_0 = 0$
+- Independent increments: $B_{t+s} - B_t \sim \mathcal{N}(0, s)$
+- Continuous paths
+- Discretization: $B_{t_{k+1}} = B_{t_k} + \sqrt{\Delta t}\,Z_k$ where $Z_k \sim \mathcal{N}(0,1)$ and $\Delta t = T/N$
+
+**Geometric Brownian Motion (Stock price):**
+$$S_t = S_0 \exp\left(\sigma B_t - \frac{\sigma^2}{2} t\right)$$
+- The $-\frac{\sigma^2}{2}t$ term is the **Itô correction** ensuring $\mathbb{E}[S_t] = S_0$ (martingale property under risk-neutral measure).
+
+**Barrier Option Payoff:**
+$$P(B, K, T) = \max\lbrace 0, S_T - K\rbrace \cdot \mathbf{1}_{\lbrace M_T < B\rbrace}$$
+where $M_T = \max_{t \in [0,T]} S_t$.
+- Like a call option (payoff = $\max(0, S_T - K)$) BUT it gets **knocked out** if the stock price ever reaches the barrier $B$.
+
+</details>
+</div>
 
 ## Exercise 1: MLE and LSE equivalence
 
 ### Goal
 
-* Derive the MLE for the coefficient matrix (B) in a multivariate Gaussian linear model
+* Derive the MLE for the coefficient matrix $B$ in a multivariate Gaussian linear model
 * Show that it coincides with the multivariate least-squares estimator
 * Check whether the estimator is unbiased
 
@@ -669,188 +833,326 @@ Here is the hierarchy for **Exercise Sheet 3**
 
 * Responses:
 
-  * (Y_1,\dots,Y_n \in \mathbb{R}^d)
+  * $Y_1,\dots,Y_n \in \mathbb{R}^d$
 * Regressors:
 
-  * (x_i \in \mathbb{R}^{p-1})
+  * $x_i \in \mathbb{R}^{p-1}$
   * augmented regressor:
-    [
-    \tilde x_i = (1, x_i^\top)^\top \in \mathbb{R}^p
-    ]
+    
+    $$\tilde x_i = (1, x_i^\top)^\top \in \mathbb{R}^p$$
+    
 * Design matrix:
-
-  * (X \in \mathbb{R}^{n\times p})
+  * $X \in \mathbb{R}^{n\times p}$
   * leading column of ones
-  * (\mathrm{rank}(X)=p), (n>p)
+  * $\mathrm{rank}(X)=p$, $n>p$
 * Model:
-  [
-  Y = XB + \varepsilon,\qquad \varepsilon \overset{i.i.d.}{\sim} N_d(0,\sigma^2 I_{n\times d})
-  ]
+  
+  $$Y = XB + \varepsilon,\qquad \varepsilon \overset{i.i.d.}{\sim} N_d(0,\sigma^2 I_{n\times d})$$
+  
 * Unknown:
-
-  * (B \in \mathbb{R}^{p\times d})
+  * $B \in \mathbb{R}^{p\times d}$
 * Known:
-
-  * (\sigma^2>0)
+  * $\sigma^2>0$
 
 ### Tasks
 
 * State the likelihood function
 * State the log-likelihood function
-* Maximize the log-likelihood by finding the roots of the score with respect to (B)
+* Maximize the log-likelihood by finding the roots of the score with respect to $B$
 * Check whether the estimator is unbiased
 
----
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>MLE Solution and comparison with MSE estimator</summary>
+
+#### Key Concept for the Exam
+
+> Under Gaussian errors, MLE and LSE produce the **same** estimator $\hat{B} = (X^\top X)^{-1} X^\top Y$. This is because maximizing the Gaussian likelihood is equivalent to minimizing the sum of squared residuals.
+
+#### Step 1: Likelihood Function
+
+Each row $Y_i^\top \in \mathbb{R}^d$ satisfies $Y_i \sim \mathcal{N}_d(\tilde{x}_i^\top B,\; \sigma^2 I_d)$ independently. So:
+
+$$L(B) = \prod_{i=1}^{n} \frac{1}{(2\pi\sigma^2)^{d/2}} \exp\!\left(-\frac{1}{2\sigma^2} \|Y_i - B^\top \tilde{x}_i\|^2\right)$$
+
+Writing this in matrix form (using the Frobenius norm $\|\cdot\|_F$):
+
+$$\boxed{L(B) = (2\pi\sigma^2)^{-nd/2} \exp\!\left(-\frac{1}{2\sigma^2} \|Y - XB\|_F^2\right)}$$
+
+where $\|A\|_F^2 = \text{tr}(A^\top A) = \sum_{i,j} A_{ij}^2$.
+
+#### Step 2: Log-Likelihood Function
+
+$$\ell(B) = \ln L(B) = -\frac{nd}{2}\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}\|Y - XB\|_F^2$$
+
+Since $\sigma^2$ is known, the first term is a constant. Maximizing $\ell(B)$ is therefore equivalent to **minimizing**:
+
+$$\|Y - XB\|_F^2 = \text{tr}\!\big((Y - XB)^\top(Y - XB)\big)$$
+
+This is exactly the **Least Squares** objective! This is why MLE $=$ LSE under Gaussian errors.
+
+#### Step 3: Score Equation (Derivative w.r.t. $B$)
+
+Expand the Frobenius norm:
+
+$$\|Y - XB\|_F^2 = \text{tr}\!\big(Y^\top Y - 2B^\top X^\top Y + B^\top X^\top X B\big)$$
+
+Taking the matrix derivative w.r.t. $B$ (using $\frac{\partial}{\partial B}\text{tr}(B^\top A) = A$ and $\frac{\partial}{\partial B}\text{tr}(B^\top C B) = 2CB$ for symmetric $C$):
+
+$$\frac{\partial \ell}{\partial B} = -\frac{1}{2\sigma^2}\big(-2X^\top Y + 2X^\top X B\big)$$
+
+Setting the score to zero:
+
+$$\frac{\partial \ell}{\partial B} = 0 \implies X^\top X B = X^\top Y$$
+
+Since $\text{rank}(X) = p$, the matrix $X^\top X$ is invertible, and:
+
+$$\boxed{\hat{B}_{\text{MLE}} = (X^\top X)^{-1} X^\top Y = \hat{B}_{\text{LSE}}}$$
+
+This confirms that MLE and LSE coincide.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Unbiasedness Check</summary>
+
+$$\mathbb{E}[\hat{B}] = (X^\top X)^{-1} X^\top \mathbb{E}[Y] = (X^\top X)^{-1} X^\top (XB) = B$$
+
+since $\mathbb{E}[Y] = XB + \mathbb{E}[\varepsilon] = XB$.
+
+> **The MLE/LSE estimator $\hat{B}$ is unbiased.**
+
+This is a direct consequence of the linearity of the estimator in $Y$ and the zero-mean noise assumption.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts for the Exam</summary>
+
+Under Gaussian errors, MLE and LSE produce the **same** estimator $\hat{B} = (X^\top X)^{-1} X^\top Y$. This is because maximizing the Gaussian likelihood is equivalent to minimizing the sum of squared residuals.
+
+</details>
+</div>
 
 ## Exercise 2: Linear regression
 
 ### Task 1
 
 * Simulate and plot the periodic noisy time series
-  [
-  X_t = f_\beta(t)+\varepsilon_t = \beta_0 + \beta_1\sin(t)+\beta_2\cos(t)+\varepsilon_t,
-  \qquad t\in{0,\dots,100}
-  ]
+  
+  $$X_t = f_\beta(t)+\varepsilon_t = \beta_0 + \beta_1\sin(t)+\beta_2\cos(t)+\varepsilon_t, \qquad t\in\lbrace 0,\dots,100\rbrace$$
+  
 * Parameters:
-  * (\beta_0=2)
-  * (\beta_1=10)
-  * (\beta_2=5)
+  * $\beta_0=2$
+  * $\beta_1=10$
+  * $\beta_2=5$
 * Noise:
 
-  * ((\varepsilon_t)_{t\in{0,\dots,100}}) is Gaussian white noise
+  * $(\varepsilon_t)_{t\in\lbrace 0,\dots,100\rbrace}$ is Gaussian white noise
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/PeriodicNoisyTimeSeries.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
 
 ### Task 2
 
-* Assume the true function (f_\beta) is unknown
+* Assume the true function $f_\beta$ is unknown
 * Perform linear regression with predictor variables:
 
-  * (u_{1,t}=\sin(t))
-  * (u_{2,t}=\cos(t))
+  * $u_{1,t}=\sin(t)$
+  * $u_{2,t}=\cos(t)$
 * Use the model
-  [
-  x_t = \beta_0 + \beta_1\sin(t)+\beta_2\cos(t)+\varepsilon_t,
-  \qquad t\in{0,\dots,100}
-  ]
-* Compute the least-squares estimator (\hat\beta_{\mathrm{LSE}})
+  
+  $$x_t = \beta_0 + \beta_1\sin(t)+\beta_2\cos(t)+\varepsilon_t, \qquad t\in\lbrace 0,\dots,100\rbrace$$
+  
+* Compute the least-squares estimator $\hat\beta_{\mathrm{LSE}}$
 
 ### Task 3
 
 * Test the predictions from the fitted model
 * Plot:
-
   * predictions against the true function
   * QQ-plot
   * histogram of residuals
   * residuals
 
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/DiagnosticPlotsCorrectModel.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Interpretation</summary>
+
+**Interpretation (correct model):**
+- The fitted curve overlaps almost perfectly with the true function — the model is well-specified.
+- The QQ-plot lies close to the diagonal, confirming the residuals are approximately Gaussian.
+- The histogram matches the $\mathcal{N}(0,1)$ density.
+- The residuals show no systematic pattern over time — they look like white noise.
+
+> **Exam takeaway:** When the model is correctly specified, residuals are i.i.d. Gaussian. All diagnostic plots look "clean."
+
+</details>
+</div>
+
 ### Task 4
 
 * Repeat Tasks 2 and 3 for the reduced model
-  [
-  x_t = \beta_0 + \beta_1\cos(t)+\varepsilon_t,
-  \qquad t\in{0,\dots,100}
-  ]
+  
+  $$x_t = \beta_0 + \beta_1\cos(t)+\varepsilon_t, \qquad t\in\lbrace 0,\dots,100\rbace$$
+  
 * Explain what changed
 
----
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/DiagnosticPlotsMisspecifiedModel.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+</figure>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>What changed</summary>
+
+Now we fit:
+$$x_t = \beta_0 + \beta_1 \cos(t) + \varepsilon_t$$
+
+This model is **missing** the $\sin(t)$ term. We expect the $\sin(t)$ component to leak into the residuals.
+
+**What changed (misspecified model)?**
+
+1. **Fit is poor:** The fitted curve no longer tracks the true function — it misses the $\sin(t)$ oscillations entirely.
+2. **QQ-plot deviates** from the diagonal — residuals are no longer Gaussian because they contain the unmodeled $\beta_1 \sin(t)$ signal.
+3. **Histogram is wider/multimodal** — the residual variance is inflated by the missing predictor.
+4. **Residuals show a clear sinusoidal pattern** — the omitted $\sin(t)$ term is absorbed into the residuals.
+
+> **Exam takeaway:** Model misspecification is revealed by **structured (non-random) residuals**. If residuals show patterns, your model is missing important predictors. The QQ-plot and residual-vs-time plot are the most informative diagnostics.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts for the Exam</summary>
+
+- The LSE estimator is $\hat{\beta} = (X^\top X)^{-1} X^\top y$, where $X$ is the design matrix (including intercept column).
+- **Residuals** $\hat{\varepsilon} = y - X\hat{\beta}$ should look like i.i.d. Gaussian noise if the model is correct.
+- **Diagnostic plots**: QQ-plot checks normality, histogram checks distribution shape, residual plot checks homoscedasticity.
+- A **misspecified model** (missing predictors) leads to biased estimates, structured residuals, and poor fit.
+
+</details>
+</div>
 
 ## Exercise 3: Linear collinearity
 
 ### Given
 
 * Standard fixed-design linear regression model:
-  [
-  Y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \varepsilon_i
-  ]
+  
+  $$Y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \varepsilon_i$$
+  
 * Errors:
-  [
-  \varepsilon_i \sim N(0,1)
-  ]
+  
+  $$\varepsilon_i \sim N(0,1)$$
+  
   independently
+
 * Sample size:
-
-  * (n=100)
+  * $n=100$
 * True parameters:
-
-  * (\beta_0=1)
-  * (\beta_1=2)
-  * (\beta_2=3)
+  * $\beta_0=1$
+  * $\beta_1=2$
+  * $\beta_2=3$
 
 ### Task 1: Approximately independent predictors
 
 #### Data generation
 
-* For (i=1,\dots,n), generate independently:
-  [
-  X_{i1}\sim N(0,1),\qquad X_{i2}\sim N(0,1)
-  ]
-* Generate:
-  [
-  \varepsilon_i\sim N(0,1)
-  ]
-* Define:
-  [
-  Y_i = 1 + 2x_{i1} + 3x_{i2} + \varepsilon_i
-  ]
-
+* For $i=1,\dots,n$, generate independently:
+  
+  $$X_{i1}\sim N(0,1),\qquad X_{i2}\sim N(0,1)$$
+  
 #### Tasks
 
 * Fit the linear model
-  [
-  Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon
-  ]
 * Report estimated coefficients:
-
-  * ((\hat\beta_0,\hat\beta_1,\hat\beta_2))
-* Compare them qualitatively to the true values ((1,2,3))
+* Compare them qualitatively to the true values $(1,2,3)$
 * Compute the sample correlation:
-  [
-  \widehat{\mathrm{corr}}(X_1,X_2)
-  ]
+  
+  $$\widehat{\mathrm{corr}}(X_1,X_2)$$
+  
 * Comment on whether the predictors appear approximately uncorrelated
 
-### Task 2: Perfectly collinear predictors
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Comment on predictors</summary>
 
-#### Data generation
+Task 1: Independent Predictors
+  beta_0_hat = 1.0886  (true: 1)
+  beta_1_hat = 2.2261  (true: 2)
+  beta_2_hat = 2.9877  (true: 3)
 
-* For (i=1,\dots,n), generate:
-  [
-  X_{i1}\sim N(0,1)
-  ]
-* Define:
-  [
-  X_{i2}=2X_{i1}
-  ]
-* Generate:
-  [
-  \varepsilon_i\sim N(0,1)
-  ]
-* Define:
-  [
-  Y_i = 1 + 2x_{i1} + 3x_{i2} + \varepsilon_i
-  ]
+  Sample correlation corr(X1, X2) = -0.1364
+  -> Predictors are approximately uncorrelated (close to 0, as expected).
 
-#### Tasks
+</details>
+</div>
 
-* Fit the same linear model
-  [
-  Y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon
-  ]
+### Task 2: Perfectly Collinear Predictors ($X_2 = 2X_1$)
+
+* Fit the linear model
 * Answer:
-
   1. What warning or error message does the software output?
   2. What happens to the reported coefficient estimates?
-
      * Is one predictor dropped automatically?
      * Is one coefficient undefined?
 * Compute the sample correlation:
-  [
-  \widehat{\mathrm{corr}}(X_1,X_2)
-  ]
+  
+  $$\widehat{\mathrm{corr}}(X_1,X_2)$$
 
-I can also merge sheets 1–3 into one clean master hierarchy.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts for the Exam</summary>
 
-Here is the hierarchy for **Exercise Sheet 4** 
+When $X_2 = 2X_1$, the design matrix $X = [1, X_1, X_2]$ has $\text{rank}(X) = 2 < 3 = p$, so $X^\top X$ is **singular**.
+
+Task 2: Perfectly Collinear Predictors
+  rank(X) = 2  (need p=3 for invertibility)
+  Condition number of X^T X = 2.40e+31
+
+  ERROR: Singular matrix
+
+  np.linalg.lstsq result (uses pseudoinverse):
+    beta_0_hat = 1.0074
+    beta_1_hat = 1.5713
+    beta_2_hat = 3.1427
+    effective rank = 2
+
+  Sample correlation corr(X1, X2) = 1.0000  (perfect collinearity!)
+
+**What happens with perfect collinearity?**
+
+1. **`np.linalg.inv`** may not throw an error (NumPy uses floating-point, so near-singular matrices can still be "inverted"), but the result is **numerically garbage** — the condition number is astronomically large.
+2. **`np.linalg.lstsq`** (which uses the SVD/pseudoinverse) detects the rank deficiency and returns a minimum-norm solution, but the individual coefficients $\hat{\beta}_1, \hat{\beta}_2$ are **not uniquely identifiable** — only the combination $\hat{\beta}_1 + 2\hat{\beta}_2$ (i.e., the coefficient on $x_1$ in the reduced model) is identified.
+3. **`corr(X_1, X_2) = 1.0`** — perfect positive correlation.
+
+> **Exam takeaway:** Perfect collinearity ($\text{rank}(X) < p$) makes $X^\top X$ singular and the LSE **non-unique**. The model can still predict $Y$ well (via the combined effect $\beta_1 x_1 + \beta_2 x_2 = (\beta_1 + 2\beta_2) x_1$), but cannot separate the individual coefficients. Software either drops one predictor or returns a minimum-norm solution via the pseudoinverse.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Key Concepts for the Exam</summary>
+
+- The LSE formula $\hat{\beta} = (X^\top X)^{-1} X^\top Y$ **requires** $X^\top X$ to be invertible, i.e., $\text{rank}(X) = p$.
+- **Perfect collinearity** ($X_2 = cX_1$) makes $X^\top X$ singular $\Rightarrow$ no unique solution exists.
+- **Near collinearity** inflates the variance of $\hat{\beta}$ (large diagonal entries of $(X^\top X)^{-1}$), making estimates unstable.
+- The **condition number** of $X^\top X$ measures sensitivity to collinearity.
+
+</details>
+</div>
 
 ## Exercise 1: Logistic Regression
 
