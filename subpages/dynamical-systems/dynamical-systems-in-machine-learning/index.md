@@ -6415,6 +6415,213 @@ The bifurcation described above is known as a **supercritical pitchfork bifurcat
 
 </div>
 
+<div id="spf-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Subcritical Pitchfork Bifurcation \(\dot{x} = rx + x^3\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
+    Click or drag on the bifurcation diagram to change \(r\). For \(r&lt;0\), two unstable branches flank the stable origin. At \(r=0\) they merge and the origin becomes unstable.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div id="spf-ltitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram</div>
+      <canvas id="spf-bc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="spf-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Flow diagram</div>
+      <canvas id="spf-fc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div id="spf-info" style="text-align:center;font-size:.82em;margin-top:.5em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500;
+  var BXL=-2.5,BXR=1.5,BYL=-2,BYR=2;
+  var XR=2.5,YLO=-3,YHI=3,YT=YHI-YLO;
+  var r=-0.8,drag=false;
+
+  var bc=document.getElementById('spf-bc'),fc=document.getElementById('spf-fc');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var B=initC(bc),F=initC(fc);
+
+  function bm(rv,xs){return[(rv-BXL)/(BXR-BXL)*S,(1-(xs-BYL)/(BYR-BYL))*S];}
+  function bc2r(cx){return BXL+cx/S*(BXR-BXL);}
+  function fm(x,y){return[(x/XR+1)*S/2,(1-(y-YLO)/YT)*S];}
+
+  function ln(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+
+  function eqs(){
+    if(r<-0.005){
+      var sq=Math.sqrt(-r);
+      return[{x:-sq,s:false},{x:0,s:true},{x:sq,s:false}];
+    }
+    if(Math.abs(r)<=0.005)return[{x:0,s:false}]; // non-hyperbolic unstable
+    return[{x:0,s:false}]; // r>0, only unstable origin
+  }
+
+  function drawBif(){
+    B.clearRect(0,0,S,S);
+    B.strokeStyle='#f0f0f0';B.lineWidth=.5;
+    [-2,-1.5,-1,-.5,.5,1].forEach(function(v){var p=bm(v,BYL),q=bm(v,BYR);ln(B,p[0],p[1],q[0],q[1]);});
+    [-1.5,-1,-.5,.5,1,1.5].forEach(function(v){var p=bm(BXL,v),q=bm(BXR,v);ln(B,p[0],p[1],q[0],q[1]);});
+    B.strokeStyle='#81D4FA';B.lineWidth=1;
+    var a=bm(BXL,0),b=bm(BXR,0);ln(B,a[0],a[1],b[0],b[1]);
+    a=bm(0,BYL);b=bm(0,BYR);ln(B,a[0],a[1],b[0],b[1]);
+
+    B.lineWidth=2.5;
+    // x*=0: stable (green) for r<0, unstable (red dashed) for r>=0
+    B.strokeStyle='#4CAF50';
+    a=bm(BXL,0);b=bm(0,0);ln(B,a[0],a[1],b[0],b[1]);
+    B.strokeStyle='#F44336';B.setLineDash([6,4]);
+    a=bm(0,0);b=bm(BXR,0);ln(B,a[0],a[1],b[0],b[1]);B.setLineDash([]);
+
+    // Upper branch x*=+sqrt(-r), UNSTABLE (red dashed) for r<0
+    B.strokeStyle='#F44336';B.lineWidth=2.5;B.setLineDash([6,4]);B.beginPath();
+    for(var rv=BXL;rv<=0.005;rv+=.015){if(-rv<0)continue;var p=bm(rv,Math.sqrt(-rv));if(rv<BXL+.02)B.moveTo(p[0],p[1]);else B.lineTo(p[0],p[1]);}
+    B.stroke();B.setLineDash([]);
+    // Lower branch x*=-sqrt(-r), UNSTABLE (red dashed) for r<0
+    B.strokeStyle='#F44336';B.lineWidth=2.5;B.setLineDash([6,4]);B.beginPath();
+    for(var rv=BXL;rv<=0.005;rv+=.015){if(-rv<0)continue;var p=bm(rv,-Math.sqrt(-rv));if(rv<BXL+.02)B.moveTo(p[0],p[1]);else B.lineTo(p[0],p[1]);}
+    B.stroke();B.setLineDash([]);
+
+    // Bifurcation point
+    var bp=bm(0,0);
+    B.fillStyle='#FF9800';circ(B,bp[0],bp[1],6,true);
+    B.strokeStyle='#E65100';B.lineWidth=1.5;circ(B,bp[0],bp[1],6,false);
+
+    // r indicator
+    B.save();B.setLineDash([4,3]);B.strokeStyle='#555';B.lineWidth=1.5;
+    var rl=bm(r,BYL),rr=bm(r,BYR);ln(B,rl[0],rl[1],rr[0],rr[1]);B.restore();
+
+    // Eq dots on r line
+    eqs().forEach(function(e){
+      var p=bm(r,e.x);
+      if(e.s){B.fillStyle='#4CAF50';circ(B,p[0],p[1],6,true);B.strokeStyle='#2E7D32';B.lineWidth=1.5;circ(B,p[0],p[1],6,false);}
+      else{B.fillStyle='#F44336';circ(B,p[0],p[1],6,true);B.strokeStyle='#C62828';B.lineWidth=1.5;circ(B,p[0],p[1],6,false);}
+    });
+
+    B.font='12px "Times New Roman",serif';B.fillStyle='#888';
+    B.fillText('r',S-15,bm(0,0)[1]-6);B.fillText('x*',bm(0,0)[0]+6,13);
+    B.font='9px sans-serif';B.fillStyle='#bbb';
+    [-2,-1,1].forEach(function(v){var t=bm(v,0);B.fillText(v,t[0]-6,t[1]+13);});
+    [-1,1].forEach(function(v){var t=bm(0,v);B.fillText(v,t[0]+5,t[1]+3);});
+    B.font='13px "Times New Roman",serif';B.fillStyle='#333';
+    B.fillText('r = '+r.toFixed(2),8,16);
+  }
+
+  function drawFlow(){
+    F.clearRect(0,0,S,S);
+    F.strokeStyle='#f0f0f0';F.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=fm(v,YLO),q=fm(v,YHI);ln(F,p[0],p[1],q[0],q[1]);});
+    [-2,-1,1,2].forEach(function(v){var p=fm(-XR,v),q=fm(XR,v);ln(F,p[0],p[1],q[0],q[1]);});
+    F.strokeStyle='#81D4FA';F.lineWidth=1;
+    var ya=fm(0,YLO),yb=fm(0,YHI);ln(F,ya[0],ya[1],yb[0],yb[1]);
+
+    var eq=eqs();
+    function shade(xA,xB,col){
+      F.fillStyle=col;F.beginPath();
+      var p0=fm(xA,0);F.moveTo(p0[0],p0[1]);
+      for(var x=xA;x<=xB+.01;x+=.02){var f=r*x+x*x*x;F.lineTo.apply(F,fm(x,Math.max(YLO,Math.min(YHI,f))));}
+      var pe=fm(xB,0);F.lineTo(pe[0],pe[1]);F.closePath();F.fill();
+    }
+    if(r<-0.005){
+      var sq=Math.sqrt(-r);
+      shade(-XR,-sq,'rgba(33,150,243,0.15)');
+      shade(-sq,0,'rgba(255,152,0,0.1)');
+      shade(0,sq,'rgba(33,150,243,0.15)');
+      shade(sq,XR,'rgba(255,152,0,0.1)');
+    }else{
+      shade(-XR,0,'rgba(33,150,243,0.15)');
+      shade(0,XR,'rgba(255,152,0,0.1)');
+    }
+
+    // x-axis (phase line)
+    F.strokeStyle='#333';F.lineWidth=2.5;
+    var xl=fm(-XR,0),xr2=fm(XR,0);ln(F,xl[0],xl[1],xr2[0],xr2[1]);
+
+    // Cubic f(x)=rx+x³
+    F.strokeStyle='#1976D2';F.lineWidth=2.5;F.beginPath();
+    var first=true;
+    for(var x=-XR;x<=XR;x+=.02){
+      var f=r*x+x*x*x;var p=fm(x,f);
+      if(p[1]<-30||p[1]>S+30){first=true;continue;}
+      if(first){F.moveTo(p[0],p[1]);first=false;}else F.lineTo(p[0],p[1]);
+    }
+    F.stroke();
+
+    // Phase line arrows
+    var arrowY=fm(0,-0.6)[1];
+    for(var x=-2.3;x<=2.3;x+=.25){
+      var skip=false;
+      eq.forEach(function(e){if(Math.abs(x-e.x)<.15)skip=true;});
+      if(skip)continue;
+      var fx=r*x+x*x*x;if(Math.abs(fx)<.01)continue;
+      var dir=fx>0?1:-1;
+      var sz=Math.min(11,Math.max(5,Math.abs(fx)*2.5));
+      var cx=fm(x,0)[0];
+      F.fillStyle=fx>0?'rgba(230,81,0,0.55)':'rgba(21,101,192,0.55)';
+      F.beginPath();
+      F.moveTo(cx+dir*sz,arrowY);
+      F.lineTo(cx-dir*sz*.55,arrowY-sz*.5);
+      F.lineTo(cx-dir*sz*.55,arrowY+sz*.5);
+      F.closePath();F.fill();
+    }
+
+    // Eq dots
+    eq.forEach(function(e){
+      var p=fm(e.x,0);
+      if(e.s){F.fillStyle='#4CAF50';circ(F,p[0],p[1],10,true);F.strokeStyle='#2E7D32';F.lineWidth=2;circ(F,p[0],p[1],10,false);}
+      else{F.fillStyle='#F44336';circ(F,p[0],p[1],10,true);F.strokeStyle='#C62828';F.lineWidth=2;circ(F,p[0],p[1],10,false);}
+    });
+
+    // Eq labels
+    F.font='11px "Times New Roman",serif';F.fillStyle='#333';
+    eq.forEach(function(e,i){
+      var p=fm(e.x,0);
+      var label=e.s?'x*='+e.x.toFixed(2)+' (stable)':'x*='+e.x.toFixed(2)+' (unstable)';
+      F.fillText(label,p[0]-35,fm(0,-1.2)[1]+i*15);
+    });
+
+    F.font='12px "Times New Roman",serif';F.fillStyle='#888';
+    F.fillText('x',S-15,fm(0,0)[1]-6);
+    F.fillText('\u1E8B = f(x)',fm(0,0)[0]+8,13);
+    F.font='9px sans-serif';F.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=fm(v,0);F.fillText(v,t[0]-4,t[1]+13);});
+    [-2,-1,1,2].forEach(function(v){var t=fm(0,v);F.fillText(v,t[0]+5,t[1]+3);});
+    F.font='13px "Times New Roman",serif';F.fillStyle='#1976D2';
+    F.fillText('f(x) = '+r.toFixed(2)+'x + x\u00B3',8,16);
+    F.font='10px sans-serif';
+    F.fillStyle='rgba(230,81,0,0.7)';F.fillText('\u25B6 \u1E8B > 0 (rightward)',8,S-20);
+    F.fillStyle='rgba(21,101,192,0.7)';F.fillText('\u25C0 \u1E8B < 0 (leftward)',8,S-6);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('spf-info'),eq=eqs();
+    var t='r = '+r.toFixed(3)+' &nbsp;|&nbsp; ';
+    eq.forEach(function(e,i){
+      if(i)t+=' &nbsp;|&nbsp; ';
+      t+='<span style="color:'+(e.s?'#4CAF50':'#F44336')+'">x*='+e.x.toFixed(3)+' ('+(e.s?'stable':'unstable')+')</span>';
+    });
+    if(r>0.005)t+=' &nbsp;|&nbsp; <span style="color:#F44336">trajectories escape to \u00B1\u221E</span>';
+    if(Math.abs(r)<0.01)t+=' &nbsp;|&nbsp; <span style="color:#FF9800">(bifurcation point)</span>';
+    el.innerHTML=t;
+  }
+  function redraw(){drawBif();drawFlow();updInfo();}
+
+  function getR(e){var rect=bc.getBoundingClientRect();var cx=(e.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<0.04)nr=0;return Math.max(BXL,Math.min(BXR,nr));}
+  bc.addEventListener('mousedown',function(e){drag=true;r=getR(e);redraw();});
+  bc.addEventListener('mousemove',function(e){if(!drag)return;r=getR(e);redraw();});
+  window.addEventListener('mouseup',function(){drag=false;});
+  bc.addEventListener('touchstart',function(e){e.preventDefault();drag=true;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.04)nr=0;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
+  bc.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.04)nr=0;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
+  bc.addEventListener('touchend',function(){drag=false;});
+
+  redraw();
+})();
+</script>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pitchfork Bifurcations in Neural Systems)</span></p>
 
