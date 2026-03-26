@@ -2057,6 +2057,224 @@ The stability of the fixed point (in this case, the origin, since $b=0$) is dete
 })();
 </script>
 
+<div id="re-container" style="margin:2em auto;max-width:780px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Two Independent Real Eigenvalues</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
+    Drag each eigenvalue independently on the real axis. The map is \(x_{n+1}=\mathrm{diag}(\lambda_1,\lambda_2)\,x_n\).
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div id="re-ltitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Eigenvalues in complex plane</div>
+      <canvas id="re-ec" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="re-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Phase portrait: stable node</div>
+      <canvas id="re-dc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div id="re-info" style="text-align:center;font-size:.82em;margin-top:.5em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=370, ER=1.8, DR=2.3, MAX=50;
+  var COL=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e'];
+  var l1=0.5, l2=-0.3; // two independent real eigenvalues
+  var drag=false, dw=0; // dw: 1=lambda1, 2=lambda2
+
+  var ec=document.getElementById('re-ec'), dc=document.getElementById('re-dc');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var E=initC(ec), D=initC(dc);
+
+  function m2c(x,y,R){return[(x/R+1)*S/2,(1-y/R)*S/2];}
+  function c2m(cx,cy,R){return[(cx/S*2-1)*R,(1-cy/S*2)*R];}
+  function ln(c,x1,y1,x2,y2){c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a,sz){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.38);c.lineTo(-sz,sz*.38);c.closePath();c.fill();c.restore();}
+
+  function grid(c,R,ticks){
+    c.strokeStyle='#f0f0f0';c.lineWidth=.5;
+    ticks.forEach(function(v){if(!v)return;
+      var p=m2c(v,-R,R),q=m2c(v,R,R);ln(c,p[0],p[1],q[0],q[1]);
+      p=m2c(-R,v,R);q=m2c(R,v,R);ln(c,p[0],p[1],q[0],q[1]);
+    });
+    c.strokeStyle='#81D4FA';c.lineWidth=1;
+    var a=m2c(-R,0,R),b=m2c(R,0,R);ln(c,a[0],a[1],b[0],b[1]);
+    a=m2c(0,-R,R);b=m2c(0,R,R);ln(c,a[0],a[1],b[0],b[1]);
+    c.font='9px sans-serif';c.fillStyle='#bbb';
+    ticks.forEach(function(v){if(!v)return;
+      var t=m2c(v,0,R);c.fillText(v,t[0]-4,t[1]+13);
+      t=m2c(0,v,R);c.fillText(v,t[0]+5,t[1]+3);
+    });
+  }
+
+  // === EIGENVALUE PLANE ===
+  function drawEigen(){
+    E.clearRect(0,0,S,S);
+    grid(E,ER,[-1.5,-1,-.5,.5,1,1.5]);
+    // Unit circle
+    E.strokeStyle='#1976D2';E.lineWidth=2;
+    var o=m2c(0,0,ER);circ(E,o[0],o[1],S/(2*ER),false);
+    // Arrows from origin to eigenvalues
+    var p1=m2c(l1,0,ER), p2=m2c(l2,0,ER);
+    E.strokeStyle='#333';E.fillStyle='#333';E.lineWidth=1.5;
+    ln(E,o[0],o[1],p1[0],p1[1]);
+    arw(E,p1[0],p1[1],Math.atan2(0,p1[0]-o[0]),8);
+    ln(E,o[0],o[1],p2[0],p2[1]);
+    arw(E,p2[0],p2[1],Math.atan2(0,p2[0]-o[0]),8);
+    // Orange dot (λ₁)
+    E.fillStyle='#FF9800';circ(E,p1[0],p1[1],7,true);
+    E.strokeStyle='#E65100';E.lineWidth=1.5;circ(E,p1[0],p1[1],7,false);
+    // Green dot (λ₂)
+    E.fillStyle='#4CAF50';circ(E,p2[0],p2[1],7,true);
+    E.strokeStyle='#2E7D32';E.lineWidth=1.5;circ(E,p2[0],p2[1],7,false);
+    // Labels (offset vertically to avoid overlap)
+    E.font='12px "Times New Roman",serif';E.fillStyle='#333';
+    E.fillText('\u03BB\u2081 = '+l1.toFixed(2),p1[0]+10,p1[1]-12);
+    E.fillText('\u03BB\u2082 = '+l2.toFixed(2),p2[0]+10,p2[1]+20);
+    // Axis labels
+    E.fillStyle='#888';
+    E.fillText('\u211C(\u03BB)',S-42,S/2-6);
+    E.fillText('\u2111(\u03BB)',S/2+6,13);
+  }
+
+  // === 2D PHASE PORTRAIT ===
+  function draw2D(){
+    D.clearRect(0,0,S,S);
+    grid(D,DR,[-2,-1,1,2]);
+    // Reference circles
+    D.strokeStyle='#ece0f0';D.lineWidth=.7;
+    var oc=m2c(0,0,DR);
+    [.5,1,1.5,2].forEach(function(r){circ(D,oc[0],oc[1],r*S/(2*DR),false);});
+
+    // Eigenvector direction lines (along axes for diagonal matrix)
+    D.save();D.setLineDash([4,4]);D.lineWidth=1;
+    // e1 direction color based on |λ₁|
+    D.strokeStyle=Math.abs(l1)<1?'#43A047':'#E53935';
+    var a=m2c(-DR,0,DR),b=m2c(DR,0,DR);ln(D,a[0],a[1],b[0],b[1]);
+    // e2 direction
+    D.strokeStyle=Math.abs(l2)<1?'#43A047':'#E53935';
+    a=m2c(0,-DR,DR);b=m2c(0,DR,DR);ln(D,a[0],a[1],b[0],b[1]);
+    D.restore();
+
+    // Initial conditions: points on circles at various angles
+    var angles=[0,Math.PI/4,Math.PI/2,3*Math.PI/4,Math.PI,5*Math.PI/4,3*Math.PI/2,7*Math.PI/4];
+    var radii=[.6,1.2,1.8];
+    var ics=[];
+    radii.forEach(function(r){angles.forEach(function(a){ics.push([r*Math.cos(a),r*Math.sin(a)]);});});
+
+    ics.forEach(function(ic,k){
+      var x=ic[0],y=ic[1],pts=[[x,y]];
+      for(var i=0;i<MAX;i++){
+        x*=l1;y*=l2;
+        if(x*x+y*y>DR*DR*4)break;
+        pts.push([x,y]);
+        // Stop if converged to origin
+        if(x*x+y*y<1e-8)break;
+      }
+      if(pts.length<2)return;
+      var col=COL[k%COL.length];
+      D.strokeStyle=col;D.fillStyle=col;D.lineWidth=1.2;
+      D.beginPath();
+      var s=m2c(pts[0][0],pts[0][1],DR);D.moveTo(s[0],s[1]);
+      for(var i=1;i<pts.length;i++){var p=m2c(pts[i][0],pts[i][1],DR);D.lineTo(p[0],p[1]);}
+      D.stroke();
+      // Arrows
+      var step=Math.max(2,Math.floor(pts.length/4));
+      for(var i=step;i<pts.length;i+=step){
+        var cu=m2c(pts[i][0],pts[i][1],DR),pr=m2c(pts[i-1][0],pts[i-1][1],DR);
+        var dx=cu[0]-pr[0],dy=cu[1]-pr[1];
+        if(dx*dx+dy*dy>3)arw(D,cu[0],cu[1],Math.atan2(dy,dx),5);
+      }
+      // Start dot
+      circ(D,s[0],s[1],2.5,true);
+    });
+
+    // Axis labels
+    D.font='12px "Times New Roman",serif';D.fillStyle='#888';
+    D.fillText('x\u2081',S-18,S/2-6);D.fillText('x\u2082',S/2+6,13);
+    // Eigenvector legend
+    D.font='11px "Times New Roman",serif';
+    D.fillStyle=Math.abs(l1)<1?'#43A047':'#E53935';
+    D.fillText('e\u2081 (\u03BB\u2081='+l1.toFixed(2)+')',6,16);
+    D.fillStyle=Math.abs(l2)<1?'#43A047':'#E53935';
+    D.fillText('e\u2082 (\u03BB\u2082='+l2.toFixed(2)+')',6,30);
+    D.fillStyle='#888';D.font='10px sans-serif';
+    D.fillText('green = stable, red = unstable',6,44);
+  }
+
+  // === UI ===
+  function classify(){
+    var a1=Math.abs(l1),a2=Math.abs(l2);
+    if(a1<1-1e-3&&a2<1-1e-3)return'Stable node';
+    if(a1>1+1e-3&&a2>1+1e-3)return'Unstable node';
+    if((a1<1-1e-3&&a2>1+1e-3)||(a1>1+1e-3&&a2<1-1e-3))return'Saddle point';
+    if(Math.abs(a1-1)<1e-2&&Math.abs(a2-1)<1e-2)return'Both neutral';
+    if(Math.abs(a1-1)<1e-2||Math.abs(a2-1)<1e-2){
+      if(a1<1||a2<1)return'Center-stable';
+      return'Center-unstable';
+    }
+    return'Mixed';
+  }
+  function updInfo(){
+    var el=document.getElementById('re-info');
+    var cls=classify();
+    el.innerHTML='\u03BB\u2081 = '+l1.toFixed(3)+' &nbsp;|&nbsp; \u03BB\u2082 = '+l2.toFixed(3)+
+      ' &nbsp;|&nbsp; |\u03BB\u2081| = '+Math.abs(l1).toFixed(3)+
+      ' &nbsp;|&nbsp; |\u03BB\u2082| = '+Math.abs(l2).toFixed(3)+
+      ' &nbsp;|&nbsp; '+cls;
+  }
+  function updTitles(){
+    document.getElementById('re-ltitle').textContent='Eigenvalues on the real axis';
+    document.getElementById('re-rtitle').textContent='Phase portrait: '+classify();
+  }
+  function redraw(){drawEigen();draw2D();updInfo();updTitles();}
+
+  // === MOUSE ===
+  function mpos(e){var r=ec.getBoundingClientRect();return c2m((e.clientX-r.left)*(S/r.width),(e.clientY-r.top)*(S/r.height),ER);}
+  ec.addEventListener('mousedown',function(e){
+    var m=mpos(e);
+    var d1=Math.abs(m[0]-l1), d2=Math.abs(m[0]-l2);
+    // Pick closest if both near, but prefer λ₁ if tied
+    if(d1<.12&&(d1<=d2||d2>=.12)){drag=true;dw=1;}
+    else if(d2<.12){drag=true;dw=2;}
+  });
+  ec.addEventListener('mousemove',function(e){
+    var m=mpos(e);
+    if(!drag){
+      var d1=Math.abs(m[0]-l1),d2=Math.abs(m[0]-l2);
+      ec.style.cursor=(d1<.12||d2<.12)?'grab':'crosshair';
+      return;
+    }
+    ec.style.cursor='grabbing';
+    var nx=Math.max(-ER+.05,Math.min(ER-.05,m[0]));
+    if(dw===1)l1=nx; else l2=nx;
+    redraw();
+  });
+  window.addEventListener('mouseup',function(){if(drag){drag=false;dw=0;ec.style.cursor='crosshair';}});
+
+  // === TOUCH ===
+  ec.addEventListener('touchstart',function(e){e.preventDefault();
+    var t=e.touches[0],r=ec.getBoundingClientRect();
+    var m=c2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height),ER);
+    var d1=Math.abs(m[0]-l1),d2=Math.abs(m[0]-l2);
+    if(d1<.15&&(d1<=d2||d2>=.15)){drag=true;dw=1;}
+    else if(d2<.15){drag=true;dw=2;}
+  },{passive:false});
+  ec.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;
+    var t=e.touches[0],r=ec.getBoundingClientRect();
+    var m=c2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height),ER);
+    var nx=Math.max(-ER+.05,Math.min(ER-.05,m[0]));
+    if(dw===1)l1=nx;else l2=nx;
+    redraw();
+  },{passive:false});
+  ec.addEventListener('touchend',function(){drag=false;dw=0;});
+
+  redraw();
+})();
+</script>
+
 ### The Flow of Dynamical Systems
 
 #### From Continuous to Discrete Time: The Sampling Equivalence
