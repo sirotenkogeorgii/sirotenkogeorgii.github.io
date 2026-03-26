@@ -7077,7 +7077,7 @@ To study the local dynamics near a Hopf bifurcation, it is useful to transform t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form: Supercritical Hopf)</span></p>
 
-The normal form for the radius (amplitude) of the supercritical Hopf bifurcation is:
+The **normal form for the radius (amplitude) of the supercritical Hopf bifurcation** is:
 
 $$\dot{r} = \mu r - r^3$$
 
@@ -7088,10 +7088,192 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
 
 </div>
 
+<div id="hb-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Supercritical Hopf Bifurcation</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Drag the eigenvalue on the left to change \(\mu\) (horizontal) and \(\omega\) (vertical). Use the slider for precise \(\omega\) control.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Eigenvalue plane</div>
+      <canvas id="hb-ec" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:crosshair;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="hb-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Phase portrait: stable spiral</div>
+      <canvas id="hb-pc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;">
+    <span style="font-size:.85em;font-family:serif;">&omega; =</span>
+    <input type="range" id="hb-omega" min="0.3" max="3" step="0.1" value="1" style="width:200px;">
+    <span id="hb-omega-val" style="font-size:.85em;font-family:serif;min-width:30px;">1.0</span>
+  </div>
+  <div id="hb-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500,ER=3,PR=2;
+  var COL=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e','#283593','#bf360c','#00695c','#6a1b9a'];
+  var mu=-0.3,omega=1,drag=false;
+
+  var ec=document.getElementById('hb-ec'),pc=document.getElementById('hb-pc');
+  var omS=document.getElementById('hb-omega'),omV=document.getElementById('hb-omega-val');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var E=initC(ec),P=initC(pc);
+
+  function em(re,im){return[(re/ER+1)*S/2,(1-im/ER)*S/2];}
+  function ec2m(cx,cy){return[(cx/S*2-1)*ER,(1-cy/S*2)*ER];}
+  function pm(x,y){return[(x/PR+1)*S/2,(1-y/PR)*S/2];}
+
+  function ln(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a,sz){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.38);c.lineTo(-sz,sz*.38);c.closePath();c.fill();c.restore();}
+
+  function odeStep(x,y,dt){
+    function fx(x,y){return mu*x-omega*y-(x*x+y*y)*x;}
+    function fy(x,y){return omega*x+mu*y-(x*x+y*y)*y;}
+    var k1x=fx(x,y),k1y=fy(x,y);
+    var k2x=fx(x+.5*dt*k1x,y+.5*dt*k1y),k2y=fy(x+.5*dt*k1x,y+.5*dt*k1y);
+    var k3x=fx(x+.5*dt*k2x,y+.5*dt*k2y),k3y=fy(x+.5*dt*k2x,y+.5*dt*k2y);
+    var k4x=fx(x+dt*k3x,y+dt*k3y),k4y=fy(x+dt*k3x,y+dt*k3y);
+    return[x+dt/6*(k1x+2*k2x+2*k3x+k4x),y+dt/6*(k1y+2*k2y+2*k3y+k4y)];
+  }
+
+  function drawEigen(){
+    E.clearRect(0,0,S,S);
+    // Stability regions
+    E.fillStyle='rgba(76,175,80,0.05)';E.fillRect(0,0,S/2,S);
+    E.fillStyle='rgba(244,67,54,0.05)';E.fillRect(S/2,0,S/2,S);
+    // Grid
+    E.strokeStyle='#f0f0f0';E.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=em(v,-ER),q=em(v,ER);ln(E,p[0],p[1],q[0],q[1]);p=em(-ER,v);q=em(ER,v);ln(E,p[0],p[1],q[0],q[1]);});
+    // Real axis
+    E.strokeStyle='#81D4FA';E.lineWidth=1;
+    var a=em(-ER,0),b=em(ER,0);ln(E,a[0],a[1],b[0],b[1]);
+    // Imaginary axis (stability boundary)
+    E.strokeStyle='#90CAF9';E.lineWidth=2.5;
+    a=em(0,-ER);b=em(0,ER);ln(E,a[0],a[1],b[0],b[1]);
+    // Eigenvalue paths (dashed horizontal lines at ±ω)
+    E.save();E.setLineDash([3,3]);E.strokeStyle='#ccc';E.lineWidth=1;
+    a=em(-ER,omega);b=em(ER,omega);ln(E,a[0],a[1],b[0],b[1]);
+    a=em(-ER,-omega);b=em(ER,-omega);ln(E,a[0],a[1],b[0],b[1]);E.restore();
+    // Arrows from origin to eigenvalues
+    var p1=em(mu,omega),p2=em(mu,-omega),o=em(0,0);
+    E.strokeStyle='#333';E.fillStyle='#333';E.lineWidth=1.5;
+    ln(E,o[0],o[1],p1[0],p1[1]);arw(E,p1[0],p1[1],Math.atan2(p1[1]-o[1],p1[0]-o[0]),7);
+    ln(E,o[0],o[1],p2[0],p2[1]);arw(E,p2[0],p2[1],Math.atan2(p2[1]-o[1],p2[0]-o[0]),7);
+    // Dots
+    E.fillStyle='#FF9800';circ(E,p1[0],p1[1],7,true);E.strokeStyle='#E65100';E.lineWidth=1.5;circ(E,p1[0],p1[1],7,false);
+    E.fillStyle='#4CAF50';circ(E,p2[0],p2[1],7,true);E.strokeStyle='#2E7D32';E.lineWidth=1.5;circ(E,p2[0],p2[1],7,false);
+    // Labels
+    E.font='11px "Times New Roman",serif';E.fillStyle='#333';
+    E.fillText('\u03BB = '+mu.toFixed(2)+' + '+omega.toFixed(1)+'i',p1[0]+10,p1[1]-8);
+    E.fillText('\u03BB\u0304 = '+mu.toFixed(2)+' \u2212 '+omega.toFixed(1)+'i',p2[0]+10,p2[1]+16);
+    E.font='12px "Times New Roman",serif';E.fillStyle='#888';
+    E.fillText('Re(\u03BB)',S-42,em(0,0)[1]-6);E.fillText('Im(\u03BB)',em(0,0)[0]+6,13);
+    E.font='11px sans-serif';E.globalAlpha=.4;
+    E.fillStyle='#4CAF50';E.fillText('Stable',15,20);
+    E.fillStyle='#F44336';E.fillText('Unstable',S-60,20);
+    E.globalAlpha=1;
+    E.font='9px sans-serif';E.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=em(v,0);E.fillText(v,t[0]-4,t[1]+13);t=em(0,v);E.fillText(v,t[0]+5,t[1]+3);});
+    E.font='13px "Times New Roman",serif';E.fillStyle='#333';
+    E.fillText('\u03BC = '+mu.toFixed(2),8,S-8);
+  }
+
+  function drawPhase(){
+    P.clearRect(0,0,S,S);
+    P.strokeStyle='#f0f0f0';P.lineWidth=.5;
+    [-1.5,-1,-.5,.5,1,1.5].forEach(function(v){var p=pm(v,-PR),q=pm(v,PR);ln(P,p[0],p[1],q[0],q[1]);p=pm(-PR,v);q=pm(PR,v);ln(P,p[0],p[1],q[0],q[1]);});
+    P.strokeStyle='#81D4FA';P.lineWidth=1;
+    var a=pm(-PR,0),b=pm(PR,0);ln(P,a[0],a[1],b[0],b[1]);a=pm(0,-PR);b=pm(0,PR);ln(P,a[0],a[1],b[0],b[1]);
+    // Reference circles
+    P.strokeStyle='#ece0f0';P.lineWidth=.7;var oc=pm(0,0);
+    [.5,1,1.5].forEach(function(r){circ(P,oc[0],oc[1],r*S/(2*PR),false);});
+    // Limit cycle
+    if(mu>0.005){
+      var lcr=Math.sqrt(mu);
+      P.strokeStyle='#4CAF50';P.lineWidth=3;circ(P,oc[0],oc[1],lcr*S/(2*PR),false);
+      P.font='10px "Times New Roman",serif';P.fillStyle='#4CAF50';
+      var lp=pm(lcr*.707,lcr*.707);P.fillText('r=\u221A\u03BC\u2248'+lcr.toFixed(2),lp[0]+5,lp[1]-5);
+    }
+    // Trajectories
+    var dt=0.03,totalT=Math.min(25,8*Math.PI/Math.max(omega,.3));
+    var steps=Math.min(600,Math.floor(totalT/dt));
+    var radii=[0.2,0.6,1.0,1.5],angles=[0,2*Math.PI/3,4*Math.PI/3];
+    var ci=0;
+    radii.forEach(function(r0){angles.forEach(function(a0){
+      var x=r0*Math.cos(a0),y=r0*Math.sin(a0),pts=[[x,y]];
+      for(var i=0;i<steps;i++){var n=odeStep(x,y,dt);x=n[0];y=n[1];if(x*x+y*y>PR*PR*4)break;pts.push([x,y]);}
+      if(pts.length<2)return;
+      var col=COL[ci%COL.length];ci++;
+      P.strokeStyle=col;P.fillStyle=col;P.lineWidth=1;P.globalAlpha=.6;
+      P.beginPath();var s=pm(pts[0][0],pts[0][1]);P.moveTo(s[0],s[1]);
+      for(var i=1;i<pts.length;i++){var p=pm(pts[i][0],pts[i][1]);P.lineTo(p[0],p[1]);}
+      P.stroke();
+      // Arrow at end
+      if(pts.length>3){var last=pm(pts[pts.length-1][0],pts[pts.length-1][1]),prev=pm(pts[pts.length-2][0],pts[pts.length-2][1]);var dx=last[0]-prev[0],dy=last[1]-prev[1];if(dx*dx+dy*dy>1)arw(P,last[0],last[1],Math.atan2(dy,dx),5);}
+      P.globalAlpha=1;circ(P,s[0],s[1],2.5,true);
+    });});
+    // Origin dot
+    var op=pm(0,0);
+    if(mu<-.003){P.fillStyle='#4CAF50';circ(P,op[0],op[1],6,true);P.strokeStyle='#2E7D32';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else if(mu>.003){P.fillStyle='#F44336';circ(P,op[0],op[1],6,true);P.strokeStyle='#C62828';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else{P.fillStyle='#FF9800';circ(P,op[0],op[1],6,true);P.strokeStyle='#E65100';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    P.font='12px "Times New Roman",serif';P.fillStyle='#888';
+    P.fillText('x\u2081',S-18,pm(0,0)[1]-6);P.fillText('x\u2082',pm(0,0)[0]+6,13);
+    P.font='9px sans-serif';P.fillStyle='#bbb';
+    [-1,1].forEach(function(v){var t=pm(v,0);P.fillText(v,t[0]-4,t[1]+13);t=pm(0,v);P.fillText(v,t[0]+5,t[1]+3);});
+  }
+
+  function updInfo(){
+    var el=document.getElementById('hb-info');
+    var st=mu<-.003?'Stable spiral (damped oscillations)':mu>.003?'Unstable spiral + stable limit cycle (r=\u221A\u03BC \u2248 '+Math.sqrt(mu).toFixed(3)+')':'Center (Hopf bifurcation point)';
+    el.innerHTML='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03C9 = '+omega.toFixed(1)+' &nbsp;|&nbsp; \u03BB = '+mu.toFixed(2)+' \u00B1 '+omega.toFixed(1)+'i &nbsp;|&nbsp; '+st;
+  }
+  function updTitle(){
+    var t=mu<-.003?'Stable spiral (damped oscillations)':mu>.003?'Unstable spiral + stable limit cycle':'Center (Hopf point)';
+    document.getElementById('hb-rtitle').textContent='Phase portrait: '+t;
+  }
+  function redraw(){drawEigen();drawPhase();updInfo();updTitle();}
+
+  // Eigenvalue plane interaction: drag eigenvalue
+  function empos(e){var r=ec.getBoundingClientRect();return ec2m((e.clientX-r.left)*(S/r.width),(e.clientY-r.top)*(S/r.height));}
+  ec.addEventListener('mousedown',function(e){
+    var m=empos(e);var d1=(m[0]-mu)*(m[0]-mu)+(m[1]-omega)*(m[1]-omega);var d2=(m[0]-mu)*(m[0]-mu)+(m[1]+omega)*(m[1]+omega);
+    if(d1<.12||d2<.12)drag=true;
+  });
+  ec.addEventListener('mousemove',function(e){
+    if(!drag){var m=empos(e);var d1=(m[0]-mu)*(m[0]-mu)+(m[1]-omega)*(m[1]-omega);var d2=(m[0]-mu)*(m[0]-mu)+(m[1]+omega)*(m[1]+omega);ec.style.cursor=(d1<.12||d2<.12)?'grab':'crosshair';return;}
+    ec.style.cursor='grabbing';var m=empos(e);
+    mu=Math.max(-ER+.1,Math.min(ER-.1,m[0]));omega=Math.max(.3,Math.min(3,Math.abs(m[1])));
+    if(Math.abs(mu)<.06)mu=0;
+    omS.value=omega;omV.textContent=omega.toFixed(1);redraw();
+  });
+  window.addEventListener('mouseup',function(){drag=false;ec.style.cursor='crosshair';});
+  ec.addEventListener('touchstart',function(e){e.preventDefault();
+    var t=e.touches[0],r=ec.getBoundingClientRect();var m=ec2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height));
+    var d1=(m[0]-mu)*(m[0]-mu)+(m[1]-omega)*(m[1]-omega);var d2=(m[0]-mu)*(m[0]-mu)+(m[1]+omega)*(m[1]+omega);
+    if(d1<.2||d2<.2)drag=true;
+  },{passive:false});
+  ec.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;
+    var t=e.touches[0],r=ec.getBoundingClientRect();var m=ec2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height));
+    mu=Math.max(-ER+.1,Math.min(ER-.1,m[0]));omega=Math.max(.3,Math.min(3,Math.abs(m[1])));
+    if(Math.abs(mu)<.06)mu=0;omS.value=omega;omV.textContent=omega.toFixed(1);redraw();
+  },{passive:false});
+  ec.addEventListener('touchend',function(){drag=false;});
+  omS.addEventListener('input',function(){omega=parseFloat(this.value);omV.textContent=omega.toFixed(1);redraw();});
+
+  redraw();
+})();
+</script>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form: Subcritical Hopf)</span></p>
 
-Analogous to the subcritical pitchfork bifurcation, the normal form for the radius is:
+Analogous to the **subcritical pitchfork bifurcation, the normal form** for the radius is:
 
 $$\dot{r} = \mu r + r^3$$
 
@@ -7107,7 +7289,7 @@ The Morris-Lecar model is a simplified 2D biophysical model describing the membr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Morris-Lecar Equations)</span></p>
 
-The model consists of two coupled ordinary differential equations for the membrane potential ($V$) and a gating variable ($n$):
+The **Morris-Lecar model** consists of two coupled ordinary differential equations for the membrane potential ($V$) and a gating variable ($n$):
 
 $$
 \begin{align*}
