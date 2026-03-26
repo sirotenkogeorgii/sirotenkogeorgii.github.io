@@ -1870,6 +1870,193 @@ The stability of the fixed point (in this case, the origin, since $b=0$) is dete
 
 </div>
 
+<div id="ee-container" style="margin:2em auto;max-width:780px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Eigenvalue Dynamics of \(x_{n+1}=Ax_n\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
+    Drag the orange eigenvalue on the left to explore dynamics. Snaps to the real axis for 1D cobweb view.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div id="ee-ltitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Eigenvalues in complex plane</div>
+      <canvas id="ee-ec" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="ee-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Linear map: rotation by 60°</div>
+      <canvas id="ee-dc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div id="ee-info" style="text-align:center;font-size:.82em;margin-top:.5em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=370, ER=1.5, DR=2.3, SNAP=0.06;
+  var COL=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f'];
+  var re=0.5, im=Math.sqrt(3)/2, drag=false, dw=0;
+  var ec=document.getElementById('ee-ec'), dc=document.getElementById('ee-dc');
+  var dpr=window.devicePixelRatio||1;
+
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var E=initC(ec), D=initC(dc);
+
+  function m2c(x,y,R){return[(x/R+1)*S/2,(1-y/R)*S/2];}
+  function c2m(cx,cy,R){return[(cx/S*2-1)*R,(1-cy/S*2)*R];}
+
+  function ln(c,x1,y1,x2,y2){c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a,sz){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.38);c.lineTo(-sz,sz*.38);c.closePath();c.fill();c.restore();}
+
+  function grid(c,R,ticks){
+    c.strokeStyle='#f0f0f0';c.lineWidth=.5;
+    ticks.forEach(function(v){if(!v)return;
+      var p=m2c(v,-R,R),q=m2c(v,R,R);ln(c,p[0],p[1],q[0],q[1]);
+      p=m2c(-R,v,R);q=m2c(R,v,R);ln(c,p[0],p[1],q[0],q[1]);
+    });
+    c.strokeStyle='#81D4FA';c.lineWidth=1;
+    var a=m2c(-R,0,R),b=m2c(R,0,R);ln(c,a[0],a[1],b[0],b[1]);
+    a=m2c(0,-R,R);b=m2c(0,R,R);ln(c,a[0],a[1],b[0],b[1]);
+    c.font='9px sans-serif';c.fillStyle='#bbb';
+    ticks.forEach(function(v){if(!v)return;
+      var t=m2c(v,0,R);c.fillText(v,t[0]-4,t[1]+13);
+      t=m2c(0,v,R);c.fillText(v,t[0]+5,t[1]+3);
+    });
+  }
+
+  function drawEigen(){
+    E.clearRect(0,0,S,S);
+    grid(E,ER,[-1,-.5,.5,1]);
+    E.strokeStyle='#1976D2';E.lineWidth=2;
+    var o=m2c(0,0,ER);circ(E,o[0],o[1],S/(2*ER),false);
+    var p1=m2c(re,im,ER),p2=m2c(re,-im,ER);
+    E.strokeStyle='#333';E.fillStyle='#333';E.lineWidth=1.5;
+    ln(E,o[0],o[1],p1[0],p1[1]);
+    arw(E,p1[0],p1[1],Math.atan2(p1[1]-o[1],p1[0]-o[0]),8);
+    if(im>SNAP){
+      ln(E,o[0],o[1],p2[0],p2[1]);
+      arw(E,p2[0],p2[1],Math.atan2(p2[1]-o[1],p2[0]-o[0]),8);
+    }
+    E.fillStyle='#FF9800';circ(E,p1[0],p1[1],7,true);
+    E.strokeStyle='#E65100';E.lineWidth=1.5;circ(E,p1[0],p1[1],7,false);
+    E.fillStyle='#4CAF50';circ(E,p2[0],p2[1],7,true);
+    E.strokeStyle='#2E7D32';E.lineWidth=1.5;circ(E,p2[0],p2[1],7,false);
+    E.font='12px "Times New Roman",serif';E.fillStyle='#333';
+    if(im>SNAP){
+      E.fillText('\u03BB = '+re.toFixed(2)+(im>=0?'+':'')+im.toFixed(2)+'i',p1[0]+10,p1[1]-10);
+      E.fillText('\u03BB\u0304 = '+re.toFixed(2)+(im>=0?'\u2212':'+')+Math.abs(im).toFixed(2)+'i',p2[0]+10,p2[1]+16);
+    }else{
+      E.fillText('\u03BB = '+re.toFixed(2),p1[0]+10,p1[1]-10);
+    }
+    E.font='12px "Times New Roman",serif';E.fillStyle='#888';
+    E.fillText('\u211C(\u03BB)',S-42,S/2-6);
+    E.fillText('\u2111(\u03BB)',S/2+6,13);
+  }
+
+  function draw2D(){
+    D.clearRect(0,0,S,S);
+    grid(D,DR,[-2,-1,1,2]);
+    D.strokeStyle='#ece0f0';D.lineWidth=.7;
+    var oc=m2c(0,0,DR);
+    [.5,1,1.5,2].forEach(function(r){circ(D,oc[0],oc[1],r*S/(2*DR),false);});
+    var rr=[.3,.5,.7,1,1.3,1.7];
+    rr.forEach(function(r0,k){
+      var x=r0,y=0,pts=[[x,y]];
+      for(var i=0;i<50;i++){
+        var nx=re*x-im*y,ny=im*x+re*y;x=nx;y=ny;
+        if(x*x+y*y>DR*DR*4)break;
+        pts.push([x,y]);
+      }
+      if(pts.length<2)return;
+      var c=COL[k%COL.length];D.strokeStyle=c;D.fillStyle=c;D.lineWidth=1.5;
+      D.beginPath();var s=m2c(pts[0][0],pts[0][1],DR);D.moveTo(s[0],s[1]);
+      for(var i=1;i<pts.length;i++){var p=m2c(pts[i][0],pts[i][1],DR);D.lineTo(p[0],p[1]);}
+      D.stroke();
+      var step=Math.max(2,Math.floor(pts.length/5));
+      for(var i=step;i<pts.length;i+=step){
+        var cu=m2c(pts[i][0],pts[i][1],DR),pr=m2c(pts[i-1][0],pts[i-1][1],DR);
+        var dx=cu[0]-pr[0],dy=cu[1]-pr[1];
+        if(dx*dx+dy*dy>4)arw(D,cu[0],cu[1],Math.atan2(dy,dx),6);
+      }
+      circ(D,s[0],s[1],3.5,true);
+    });
+    D.font='12px "Times New Roman",serif';D.fillStyle='#888';
+    D.fillText('x\u2081',S-18,S/2-6);D.fillText('x\u2082',S/2+6,13);
+  }
+
+  function drawCob(){
+    D.clearRect(0,0,S,S);var R=DR,lam=re;
+    grid(D,R,[-2,-1,1,2]);
+    D.save();D.setLineDash([6,4]);D.strokeStyle='#FF9800';D.lineWidth=1.5;
+    var b1=m2c(-R,-R,R),b2=m2c(R,R,R);ln(D,b1[0],b1[1],b2[0],b2[1]);D.restore();
+    D.strokeStyle='#1976D2';D.lineWidth=2;
+    var p1=m2c(-3,-lam*3,R),p2=m2c(3,lam*3,R);ln(D,p1[0],p1[1],p2[0],p2[1]);
+    [-1.5,-.5,.5,1.5].forEach(function(x0,k){
+      var c=COL[k%COL.length];D.strokeStyle=c;D.fillStyle=c;D.lineWidth=1.2;
+      var x=x0,pts=[m2c(x,0,R)];
+      for(var i=0;i<30;i++){
+        var y=lam*x;
+        if(Math.abs(y)>R*2){pts.push(m2c(x,Math.max(-R*2,Math.min(R*2,y)),R));break;}
+        pts.push(m2c(x,y,R));pts.push(m2c(y,y,R));x=y;
+        if(Math.abs(x)>R*2)break;
+      }
+      D.beginPath();D.moveTo(pts[0][0],pts[0][1]);
+      for(var i=1;i<pts.length;i++)D.lineTo(pts[i][0],pts[i][1]);
+      D.stroke();circ(D,pts[0][0],pts[0][1],3.5,true);
+    });
+    D.font='12px "Times New Roman",serif';
+    D.fillStyle='#1976D2';D.fillText('f(x) = '+lam.toFixed(2)+'x',8,16);
+    D.fillStyle='#FF9800';D.fillText('y = x',8,30);
+    D.fillStyle='#888';D.fillText('x\u2099',S-20,S/2-6);
+    D.fillText('x\u2099\u208A\u2081',S/2+6,13);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('ee-info');
+    var mod=Math.sqrt(re*re+im*im),ang=Math.atan2(im,re);
+    var beh=mod<.995?'Stable (converging)':mod>1.005?'Unstable (diverging)':'Neutral (|\u03BB|\u22481)';
+    if(im<=SNAP)el.innerHTML='\u03BB = '+re.toFixed(3)+' &nbsp;|&nbsp; |\u03BB| = '+mod.toFixed(3)+' &nbsp;|&nbsp; '+beh;
+    else el.innerHTML='\u03BB = '+re.toFixed(3)+(im>=0?' + ':' \u2212 ')+Math.abs(im).toFixed(3)+'i &nbsp;|&nbsp; |\u03BB| = '+mod.toFixed(3)+' &nbsp;|&nbsp; arg(\u03BB) = '+(ang*180/Math.PI).toFixed(1)+'\u00B0 &nbsp;|&nbsp; '+beh;
+  }
+  function updTitles(){
+    var mod=Math.sqrt(re*re+im*im),ang=Math.atan2(im,re);
+    var lt=document.getElementById('ee-ltitle'),rt=document.getElementById('ee-rtitle');
+    lt.textContent=im>SNAP?'Eigenvalues in complex plane':'Eigenvalue in complex plane';
+    if(im<=SNAP){
+      if(Math.abs(re-1)<.03)rt.textContent='Neutral case: x\u2099\u208A\u2081 = x\u2099';
+      else if(Math.abs(re+1)<.03)rt.textContent='Flip case: x\u2099\u208A\u2081 = \u2212x\u2099';
+      else rt.textContent='Cobweb: x\u2099\u208A\u2081 = '+re.toFixed(2)+'\u00B7x\u2099';
+    }else{
+      var d=(ang*180/Math.PI).toFixed(0);
+      if(mod<.995)rt.textContent='Contracting spiral (|\u03BB| = '+mod.toFixed(2)+')';
+      else if(mod>1.005)rt.textContent='Expanding spiral (|\u03BB| = '+mod.toFixed(2)+')';
+      else rt.textContent='Rotation by '+d+'\u00B0';
+    }
+  }
+  function redraw(){drawEigen();if(im<=SNAP)drawCob();else draw2D();updInfo();updTitles();}
+
+  function mpos(e){var r=ec.getBoundingClientRect();return c2m((e.clientX-r.left)*(S/r.width),(e.clientY-r.top)*(S/r.height),ER);}
+  ec.addEventListener('mousedown',function(e){
+    var m=mpos(e);
+    var d1=(m[0]-re)*(m[0]-re)+(m[1]-im)*(m[1]-im);
+    var d2=(m[0]-re)*(m[0]-re)+(m[1]+im)*(m[1]+im);
+    if(d1<.04){drag=true;dw=1;}else if(d2<.04&&im>SNAP){drag=true;dw=2;}
+  });
+  ec.addEventListener('mousemove',function(e){
+    if(!drag){var m=mpos(e);var d1=(m[0]-re)*(m[0]-re)+(m[1]-im)*(m[1]-im);var d2=(m[0]-re)*(m[0]-re)+(m[1]+im)*(m[1]+im);ec.style.cursor=(d1<.04||(d2<.04&&im>SNAP))?'grab':'crosshair';return;}
+    ec.style.cursor='grabbing';var m=mpos(e);
+    re=m[0];im=Math.abs(m[1])<SNAP?0:Math.abs(m[1]);
+    re=Math.max(-ER+.05,Math.min(ER-.05,re));im=Math.max(0,Math.min(ER-.05,im));
+    redraw();
+  });
+  window.addEventListener('mouseup',function(){drag=false;dw=0;ec.style.cursor='crosshair';});
+
+  ec.addEventListener('touchstart',function(e){e.preventDefault();var t=e.touches[0],r=ec.getBoundingClientRect();var m=c2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height),ER);var d1=(m[0]-re)*(m[0]-re)+(m[1]-im)*(m[1]-im);var d2=(m[0]-re)*(m[0]-re)+(m[1]+im)*(m[1]+im);if(d1<.06){drag=true;dw=1;}else if(d2<.06&&im>SNAP){drag=true;dw=2;}},{passive:false});
+  ec.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0],r=ec.getBoundingClientRect();var m=c2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height),ER);re=m[0];im=Math.abs(m[1])<SNAP?0:Math.abs(m[1]);re=Math.max(-ER+.05,Math.min(ER-.05,re));im=Math.max(0,Math.min(ER-.05,im));redraw();},{passive:false});
+  ec.addEventListener('touchend',function(){drag=false;dw=0;});
+
+  redraw();
+})();
+</script>
+
 ### The Flow of Dynamical Systems
 
 #### From Continuous to Discrete Time: The Sampling Equivalence
@@ -3929,15 +4116,19 @@ where $T$ is the smallest positive number for which this relation holds. The ter
 
 #### Stability of Limit Cycles
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Stability of Limit Cycles)</span></p>
+
 Just like fixed points, limit cycles can be classified by their stability. The stability determines whether trajectories near the cycle converge to it, diverge from it, or exhibit a combination of behaviors.
 
-* Stable Limit Cycle: Trajectories starting in a neighborhood of the cycle, both inside and outside, converge to the limit cycle as $t \to \infty$. This limit cycle is an attractor. The Wilson-Cowan example described above features a stable limit cycle.
-* Unstable Limit Cycle: Trajectories starting in a neighborhood of the cycle are repelled from it as $t \to \infty$. An unstable cycle acts as a repellor or a boundary between basins of attraction.
-* Half-Stable (or Saddle) Cycle: Trajectories approach the cycle from one direction (e.g., from the inside) but are repelled from it in another direction (e.g., from the outside).
+* **Stable Limit Cycle:** Trajectories starting in a neighborhood of the cycle, both inside and outside, converge to the limit cycle as $t \to \infty$. This limit cycle is an attractor. The Wilson-Cowan example described above features a stable limit cycle.
+* **Unstable Limit Cycle:** Trajectories starting in a neighborhood of the cycle are repelled from it as $t \to \infty$. An unstable cycle acts as a repellor or a boundary between basins of attraction.
+* **Half-Stable (or Saddle) Cycle:** Trajectories approach the cycle from one direction (e.g., from the inside) but are repelled from it in another direction (e.g., from the outside).
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
 
 The formal definition of stability for a limit cycle is analogous to the "Lyapunov-like" definition used for equilibria. For a cycle to be stable, any trajectory starting within a small neighborhood ($\epsilon$) of the cycle must remain within that neighborhood for all future time. For it to be asymptotically stable, the trajectory must also converge to the cycle as $t \to \infty$.
 
@@ -3983,7 +4174,6 @@ For a more systematic analysis of limit cycles, especially their stability, one 
 
 </div>
 
-
 ### Topological Tools: Index Theory
 
 Another powerful tool for analyzing 2D vector fields is index theory. It uses topological properties to constrain the types and numbers of fixed points that can exist within a closed curve.
@@ -3991,9 +4181,7 @@ Another powerful tool for analyzing 2D vector fields is index theory. It uses to
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Winding Number)</span></p>
 
-
 The core concept is the winding number. Imagine walking along a closed curve $C$. As you walk, consider a vector pointing from your position to a fixed point inside the curve. The winding number is the total number of full counter-clockwise rotations this vector makes during your complete circuit. Because the curve is closed, this must be an integer.
-
 
 </div>
 
@@ -4012,7 +4200,6 @@ Let's calculate the index for different types of fixed points:
   * As we start on the right and move up (counter-clockwise), the vector field points mostly down and left. As we cross the stable manifold, the vector points... (The analysis from the source context is incomplete here).
 
 </div>
-
 
 ### Topological Properties of Orbits in the Plane
 
@@ -4091,7 +4278,6 @@ This chapter explores a powerful technique for analyzing complex dynamical syste
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 Many complex systems in nature, from neural networks to climate models, feature variables that change at vastly different rates. The core idea behind timescale separation is to simplify the analysis by first understanding the behavior of the fast-moving variables while treating the slow-moving variables as temporarily constant.
 
 The general technique involves the following steps:
@@ -4115,7 +4301,6 @@ A **bifurcation graph** is a diagram that plots the state of a system's stable a
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-
 In the context of timescale separation, the "parameter" for our graph is one of the system's own slow variables. Let's consider a system with fast variables like voltage ($V$) and a slow variable, $h$. The bifurcation graph would be plotted with the slow variable h on the horizontal axis and a state variable of the fast system (e.g., $V$) on the vertical axis.
 
 Conventionally, in these graphs:
@@ -4124,7 +4309,6 @@ Conventionally, in these graphs:
 * Unstable objects (like saddle points or unstable limit cycles) are drawn with dashed lines.
 
 This visualization allows us to see, at a glance, how the fundamental nature of the fast subsystem changes as the slow variable $h$ evolves.
-
 
 </div>
 
@@ -4158,11 +4342,9 @@ To represent this limit cycle on the two-dimensioal bifurcation graph, we plot i
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Visualizing the Limit Cycle)</span></p>
 
-
 The limit cycle (represented by a yellow curve in the lecture's diagram) is added to the bifurcation graph by plotting its maximum and minimum voltage values for each corresponding value of $h$. This creates a U-shaped curve enclosing the unstable spiral.
 
 As the parameter h is increased within this intermediate range, the limit cycle grows in size. This expansion continues until a critical event occurs: the limit cycle becomes so large that it collides with the saddle point.
-
 
 </div>
 
@@ -4197,8 +4379,6 @@ This continuous process of being driven back and forth between a stable fixed po
 
 #### Introduction to Discrete-Time Systems
 
-In our study of dynamical systems, we have explored continuous-time systems described by differential equations. These are ideal for modeling phenomena where change is constant. However, many systems, particularly in fields like biology or epidemiology, are more naturally described in discrete time steps. For instance, we might count an infected population once per day or track a species' population generation by generation. For these scenarios, we use maps, which are recursive descriptions that define the state of a system at time $t+1$ based on its state at time $t$.
-
 This section transitions our focus from continuous flows to discrete maps, exploring their unique behaviors, such as fixed points and cycles. We will begin with a foundational example that is famous for its complexity and its role in the history of chaos theory: the logistic map.
 
 #### The Logistic Map: A Canonical Example
@@ -4226,34 +4406,7 @@ Under these conditions, it can be shown that the state $x_t$ will remain bounded
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Visualizing the Map with a Return Plot)</span></p>
-
-To understand the behavior of a map, we use a return plot, which graphs $x_{t+1}$ as a function of $x_t$. For the logistic map, this function is a parabola opening downwards. We also plot the line $x_{t+1} = x_t$, known as the bisector or identity line.
-
-The intersections of the map's curve with the bisector are significant, as they represent points where the input equals the output — these are the fixed points of the system. We can trace the evolution of the system graphically using a "cobweb plot":
-
-1. Start at an initial value $x_0$ on the horizontal axis.
-2. Move vertically to the parabola to find the value of $x_1$.
-3. Move horizontally from the parabola to the bisector. The corresponding point on the horizontal axis is now $x_1$.
-4. Repeat the process: move vertically to the parabola to find $x_2$, horizontally to the bisector, and so on.
-
-This graphical method provides a powerful intuition for whether the system converges to a fixed point, diverges, or enters a cycle.
-
-</div>
-
 #### Fixed Points and Their Stability
-
-A fixed point is a state of the system that does not change over time. It is a point where, if the system starts there, it stays there.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed Point)</span></p>
-
-A point $x^\ast$ is a fixed point of a map $f$ if it satisfies the condition:
-
-$$x^* = f(x^*)$$
-
-</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Fixed Points of Logistic Map)</span></p>
@@ -4293,6 +4446,13 @@ This equation yields two solutions for the fixed points:
 </details>
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Finding Fixed Points on Coweb)</span></p>
+
+The intersections of the map’s curve with the bisector represent points where the input equals the output — these are the fixed points of the system.
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Existence of Fixed Points)</span></p>
 
@@ -4308,6 +4468,11 @@ A cobweb plot starting near the origin converges to the fixed point at $x^* = 0$
 This graphical analysis suggests that the stability of a fixed point is determined by the slope of the map at that point.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/coweb_plot_logistic_map.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>First- and second-order return maps of logistic function for $\alpha=3.3$, illustrating $2$-cycle in first-order map as fixed points of second-order map.</figcaption> -->
+</figure>
 
 #### Formal Stability Analysis via Linearization
 
@@ -4479,7 +4644,7 @@ For a continuous map $f$, a $k$-cycle is a set of $k$ distinct points, $\lbrace 
 
 1. **Fixed Point of the Iterated Map:** Each point $x_i^\ast$ in the set (for $i = 1, \ldots, k$) is a fixed point of the $k$-times iterated map.
 
-$$x_i^* = f^k(x_i^*)$$
+   $$x_i^* = f^k(x_i^*)$$
 
 2. **Minimality and Distinctness:** To be a true $k$-cycle, two additional constraints must be met:
    * $k$ must be the smallest integer for which the fixed-point condition holds. This ensures that a two-cycle is not misidentified as a four-cycle, for example.
@@ -4488,7 +4653,7 @@ $$x_i^* = f^k(x_i^*)$$
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Analytical Advantage of Iterated Maps</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Analytical Advantage of Iterated Maps)</span></p>
 
 This framework provides a significant advantage. While the original map $f$ might be complex and its iterated version $f^k$ even more so, we at least have a closed-form expression. This closed form gives us direct, analytical access to the stability of cycles. This is a powerful tool that is not generally available for analyzing the stability of limit cycles in continuous-time systems described by differential equations.
 
@@ -4836,7 +5001,7 @@ remains bounded over time. This describes a state where one oscillator completes
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arnold Tongues)</span></p>
 
-Arnold tongues are regions in a parameter space that depict where phase locking of a specific $P$:$Q$ ratio occurs. Typically, this space is plotted with the difference in intrinsic frequencies ($\omega_1 - \omega_2$) on one axis and the coupling amplitude ($a$) on the other. Each "tongue" represents a combination of parameters for which the system will synchronize in a particular mode (e.g., 1:1, 1:2, 2:1).
+**Arnold tongues** are regions in a parameter space that depict where phase locking of a specific $P$:$Q$ ratio occurs. Typically, this space is plotted with the difference in intrinsic frequencies ($\omega_1 - \omega_2$) on one axis and the coupling amplitude ($a$) on the other. Each "tongue" represents a combination of parameters for which the system will synchronize in a particular mode (e.g., 1:1, 1:2, 2:1).
 
 </div>
 
@@ -5168,9 +5333,9 @@ Bifurcation theory is a broad and critical area within the study of dynamical sy
 #### Defining Bifurcations
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bifurcation)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bifurcation, Bufircation point)</span></p>
 
-A **bifurcation** is a qualitative, topological change in the state space of a system that occurs as a parameter is changed. This means the vector fields before and after the bifurcation point are not topologically equivalent. Such changes can include:
+A **bifurcation** is a qualitative, topological change in the state space of a system that occurs as a parameter is changed. This means the vector fields before and after the **bifurcation point** are not topologically equivalent. Such changes can include:
 
 * The creation or destruction of new attractors (e.g., equilibrium points).
 * A change in the stability of an existing attractor.
@@ -5322,8 +5487,8 @@ The bifurcation diagram visually summarizes these dynamics by plotting the locat
 
 The diagram for the transcritical bifurcation shows two lines intersecting at the origin $(r, x) = (0, 0)$:
 
-1. A horizontal line at $x=0$. This branch is stable for $r<0$ and becomes unstable for $r>0$.
-2. A diagonal line representing $x=r$. This branch is unstable for $r<0$ and becomes stable for $r>0$.
+1. **A horizontal line at $x=0$.** This branch is stable for $r<0$ and becomes unstable for $r>0$.
+2. **A diagonal line representing $x=r$.** This branch is unstable for $r<0$ and becomes stable for $r>0$.
 
 At the bifurcation point $(0,0)$, the two branches cross and exchange stability.
 
@@ -5343,7 +5508,7 @@ In a pitchfork bifurcation, a single stable fixed point loses its stability as a
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal Form of the Supercritical Pitchfork Bifurcation)</span></p>
 
-From the geometry of the bifurcation, one can guess that it involves a third-order polynomial. The normal form for the supercritical pitchfork bifurcation is:
+From the geometry of the bifurcation, one can guess that it involves a third-order polynomial. The **normal form for the supercritical pitchfork bifurcation** is:
 
 $$\dot{x} = rx - x^3$$
 
@@ -5428,13 +5593,16 @@ This phenomenon provides a powerful, model-independent warning sign that a syste
 
 While the bifurcations discussed so far concern fixed points (equilibria), dynamical systems can also feature more complex behaviors like oscillations. The bifurcations of these oscillatory states are crucial for understanding rhythmic phenomena in nature.
 
-##### Bifurcations of Equilibria vs. Limit Cycles
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bifurcations of Equilibria vs. Bifurcations Limit Cycles)</span></p>
 
-The concepts of bifurcations can be extended from fixed points to limit cycles (isolated, closed orbits). For example:
+The concepts of **bifurcations can be extended from fixed points to limit cycles** (isolated, closed orbits). For example:
 
 * A saddle-node bifurcation of cycles can occur, where a stable and an unstable limit cycle coalesce and annihilate each other.
 
 However, the most important bifurcation for the creation of a limit cycle from an equilibrium point is the Hopf bifurcation.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hopf Bifurcation)</span></p>
@@ -5506,7 +5674,7 @@ The supercritical Hopf bifurcation is characterized by a smooth, gradual onset o
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Supercritical Hopf Bifurcation)</span></p>
 
-In a supercritical Hopf bifurcation, as a control parameter is varied, a stable spiral equilibrium loses its stability and becomes an unstable spiral. At the exact moment of stability change, a stable limit cycle is born with an infinitesimally small amplitude, which then grows smoothly as the parameter continues to change.
+In a **supercritical Hopf bifurcation**, as a control parameter is varied, a stable spiral equilibrium loses its stability and becomes an unstable spiral. At the exact moment of stability change, a stable limit cycle is born with an infinitesimally small amplitude, which then grows smoothly as the parameter continues to change.
 
 </div>
 
@@ -5540,7 +5708,7 @@ In contrast to the smooth transition of the supercritical case, the subcritical 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Subcritical Hopf Bifurcation)</span></p>
 
-In a subcritical Hopf bifurcation, a stable spiral equilibrium loses stability and becomes an unstable spiral. However, this occurs when the equilibrium point coalesces with a pre-existing unstable limit cycle. This unstable cycle acts as a separatrix between the basin of attraction of the stable spiral and another, potentially distant, stable attractor.
+In a **subcritical Hopf bifurcation**, a stable spiral equilibrium loses stability and becomes an unstable spiral. However, this occurs when the equilibrium point coalesces with a pre-existing unstable limit cycle. This unstable cycle acts as a separatrix between the basin of attraction of the stable spiral and another, potentially distant, stable attractor.
 
 </div>
 
@@ -5644,26 +5812,6 @@ A crucial feature of this system is the existence of a parameter regime before t
 ### An Introduction to Chaos and the Logistic Map
 
 This chapter introduces the fundamental concepts of chaos theory using the logistic map as a primary example. We will explore the key signatures of chaotic systems and the process by which a simple, deterministic system can exhibit complex, aperiodic behavior.
-
-#### The Logistic Map Revisited
-
-We begin by recalling the logistic map, a simple equation originally developed to model population dynamics.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Logistic Map)</span></p>
-
-The logistic map is a discrete-time dynamical system defined by the equation:
-
-$$x_{t} = \alpha x_{t-1}(1 - x_{t-1})$$
-
-Where:
-
-* $x_t$ represents the state of the system at time $t$.
-* $\alpha$ is a control parameter.
-
-For the system to remain bounded within the unit interval $[0, 1]$, we consider initial conditions $x_0 \in [0, 1]$ and the parameter range $\alpha \in [0, 4]$. The function's graph is a parabola, and its dynamics can be visualized using bifurcation diagrams, which show the long-term behavior of the system as $\alpha$ is varied. We have previously identified its fixed points and periodic cycles.
-
-</div>
 
 #### Core Characteristics of Chaos
 
@@ -6626,6 +6774,16 @@ The limit $\epsilon \to 0$ is equivalent to the number of iterations $n \to \inf
    $$D_{box} = \frac{\log 2}{\log 3} \approx 0.6309$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Cantor set construction</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set_base3_expansion.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Cantor set could be represented in 3-base expansion</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
@@ -10565,12 +10723,12 @@ To optimize the ELBO, we approximate the integral using samples:
 
 1. **Objective:** We want to compute 
    
-   $$\nabla_\phi \mathbb{E}\_{q_\phi(z)} [f(z)]$$
+   $$\nabla_\phi \mathbb{E}_{q_\phi(z)} [f(z)]$$
 
 2. **Transformation:** Express $z = \mu + \sigma \odot \epsilon$, where $\epsilon \sim \mathcal{N}(0, I)$.
 3. **Substitution:** The expectation becomes 
    
-   $$\mathbb{E}\_{p(\epsilon)} [f(g_\phi(\epsilon))]$$
+   $$\mathbb{E}_{p(\epsilon)} [f(g_\phi(\epsilon))]$$
 
 4. **Key step:** Since the distribution of $\epsilon$ no longer depends on $\phi$, we can move the gradient inside the expectation:
 
