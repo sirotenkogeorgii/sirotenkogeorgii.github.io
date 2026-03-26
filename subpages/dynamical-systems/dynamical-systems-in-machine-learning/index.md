@@ -6199,6 +6199,16 @@ The bifurcation diagram for the supercritical pitchfork bifurcation has the foll
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Supercritical vs. Subcritical)</span></p>
+
+The bifurcation described above is known as a **supercritical pitchfork bifurcation**. There is also a corresponding subcritical version.
+
+* **Supercritical Pitchfork Bifurcation:** A stable fixed point becomes unstable and gives rise to two new stable fixed points. This is the case we analyzed, with the normal form $\dot{x} = rx - x^3$. The "fork" opens in the direction of increasing $r$.
+* **Subcritical Pitchfork Bifurcation:** This is the reverse scenario. Two unstable fixed points merge with a stable fixed point, annihilating it and leaving no stable equilibria nearby. The bifurcation graph looks like a pitchfork opening in the direction of decreasing $r$.
+
+</div>
+
 <div id="pf-container" style="margin:2em auto;max-width:1060px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Supercritical Pitchfork Bifurcation \(\dot{x} = rx - x^3\)</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
@@ -6403,18 +6413,6 @@ The bifurcation diagram for the supercritical pitchfork bifurcation has the foll
 })();
 </script>
 
-##### Supercritical and Subcritical Forms
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Supercritical vs. Subcritical)</span></p>
-
-The bifurcation described above is known as a **supercritical pitchfork bifurcation**. There is also a corresponding subcritical version.
-
-* **Supercritical Pitchfork Bifurcation:** A stable fixed point becomes unstable and gives rise to two new stable fixed points. This is the case we analyzed, with the normal form $\dot{x} = rx - x^3$. The "fork" opens in the direction of increasing $r$.
-* **Subcritical Pitchfork Bifurcation:** This is the reverse scenario. Two unstable fixed points merge with a stable fixed point, annihilating it and leaving no stable equilibria nearby. The bifurcation graph looks like a pitchfork opening in the direction of decreasing $r$.
-
-</div>
-
 <div id="spf-container" style="margin:2em auto;max-width:1060px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Subcritical Pitchfork Bifurcation \(\dot{x} = rx + x^3\)</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
@@ -6616,6 +6614,277 @@ The bifurcation described above is known as a **supercritical pitchfork bifurcat
   window.addEventListener('mouseup',function(){drag=false;});
   bc.addEventListener('touchstart',function(e){e.preventDefault();drag=true;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.04)nr=0;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
   bc.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.04)nr=0;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
+  bc.addEventListener('touchend',function(){drag=false;});
+
+  redraw();
+})();
+</script>
+
+<div id="hy-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Hysteresis in the Subcritical Pitchfork \(\dot{x}=rx+x^3-x^5\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
+    Drag \(r\) to see jumps and hysteresis. The <span style="color:#7B1FA2;font-weight:600;">purple marker</span> tracks which stable state the system occupies. Increase \(r\) past 0 to see the jump up; decrease past \(r_s\) to jump back down.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div id="hy-ltitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram with hysteresis</div>
+      <canvas id="hy-bc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="hy-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Flow diagram</div>
+      <canvas id="hy-fc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div id="hy-info" style="text-align:center;font-size:.82em;margin-top:.5em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500;
+  var BXL=-.5,BXR=.5,BYL=-1.5,BYR=1.5;
+  var XR=1.5,YLO=-1,YHI=1,YT=YHI-YLO;
+  var RS=-0.25; // saddle-node r_s
+  var r=-0.35,drag=false;
+  var branch='origin'; // hysteresis state: 'origin' or 'large'
+
+  var bc=document.getElementById('hy-bc'),fc=document.getElementById('hy-fc');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var B=initC(bc),F=initC(fc);
+
+  function bm(rv,xs){return[(rv-BXL)/(BXR-BXL)*S,(1-(xs-BYL)/(BYR-BYL))*S];}
+  function bc2r(cx){return BXL+cx/S*(BXR-BXL);}
+  function fm(x,y){return[(x/XR+1)*S/2,(1-(y-YLO)/YT)*S];}
+
+  function ln(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a,sz){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.4);c.lineTo(-sz,sz*.4);c.closePath();c.fill();c.restore();}
+
+  function ff(x){return r*x+x*x*x-x*x*x*x*x;}
+
+  // Compute u_+ and u_- from x^4 - x^2 - r = 0, u=x^2
+  function branches(){
+    var disc=1+4*r;
+    if(disc<0)return{up:null,um:null};
+    var sd=Math.sqrt(disc);
+    var up=(1+sd)/2, um=(1-sd)/2;
+    return{up:up>1e-4?up:null, um:um>1e-4?um:null};
+  }
+
+  function eqs(){
+    var eq=[{x:0,s:r<-0.003}];
+    var br=branches();
+    if(br.up!==null){var xp=Math.sqrt(br.up);eq.push({x:xp,s:true});eq.push({x:-xp,s:true});}
+    if(br.um!==null){var xm=Math.sqrt(br.um);eq.push({x:xm,s:false});eq.push({x:-xm,s:false});}
+    eq.sort(function(a,b){return a.x-b.x;});
+    return eq;
+  }
+
+  function updateBranch(){
+    if(branch==='origin'){if(r>-0.003)branch='large';}
+    else{if(r<RS+0.003)branch='origin';}
+  }
+  function stateX(){
+    if(branch==='origin')return 0;
+    var br=branches();
+    return br.up!==null?Math.sqrt(br.up):0;
+  }
+
+  function drawBif(){
+    B.clearRect(0,0,S,S);
+    B.strokeStyle='#f0f0f0';B.lineWidth=.5;
+    [-.4,-.3,-.2,-.1,.1,.2,.3,.4].forEach(function(v){var p=bm(v,BYL),q=bm(v,BYR);ln(B,p[0],p[1],q[0],q[1]);});
+    [-1,-.5,.5,1].forEach(function(v){var p=bm(BXL,v),q=bm(BXR,v);ln(B,p[0],p[1],q[0],q[1]);});
+    B.strokeStyle='#81D4FA';B.lineWidth=1;
+    var a=bm(BXL,0),b=bm(BXR,0);ln(B,a[0],a[1],b[0],b[1]);
+    a=bm(0,BYL);b=bm(0,BYR);ln(B,a[0],a[1],b[0],b[1]);
+
+    // x*=0: stable green for r<0, unstable red dashed for r>=0
+    B.lineWidth=2.5;B.strokeStyle='#4CAF50';
+    a=bm(BXL,0);b=bm(0,0);ln(B,a[0],a[1],b[0],b[1]);
+    B.strokeStyle='#F44336';B.setLineDash([6,4]);
+    a=bm(0,0);b=bm(BXR,0);ln(B,a[0],a[1],b[0],b[1]);B.setLineDash([]);
+
+    // Outer stable branches x*=±sqrt(u+), green solid, for r>=RS
+    B.strokeStyle='#4CAF50';B.lineWidth=2.5;
+    B.beginPath();var first=true;
+    for(var rv=RS;rv<=BXR;rv+=.005){var d=1+4*rv;if(d<0)continue;var xv=Math.sqrt((1+Math.sqrt(d))/2);var p=bm(rv,xv);if(first){B.moveTo(p[0],p[1]);first=false;}else B.lineTo(p[0],p[1]);}
+    B.stroke();
+    B.beginPath();first=true;
+    for(var rv=RS;rv<=BXR;rv+=.005){var d=1+4*rv;if(d<0)continue;var xv=-Math.sqrt((1+Math.sqrt(d))/2);var p=bm(rv,xv);if(first){B.moveTo(p[0],p[1]);first=false;}else B.lineTo(p[0],p[1]);}
+    B.stroke();
+
+    // Inner unstable branches x*=±sqrt(u-), red dashed, for RS<=r<0
+    B.strokeStyle='#F44336';B.lineWidth=2.5;B.setLineDash([6,4]);
+    B.beginPath();first=true;
+    for(var rv=RS;rv<=0;rv+=.005){var d=1+4*rv;if(d<0)continue;var um=(1-Math.sqrt(d))/2;if(um<1e-4)continue;var xv=Math.sqrt(um);var p=bm(rv,xv);if(first){B.moveTo(p[0],p[1]);first=false;}else B.lineTo(p[0],p[1]);}
+    B.stroke();
+    B.beginPath();first=true;
+    for(var rv=RS;rv<=0;rv+=.005){var d=1+4*rv;if(d<0)continue;var um=(1-Math.sqrt(d))/2;if(um<1e-4)continue;var xv=-Math.sqrt(um);var p=bm(rv,xv);if(first){B.moveTo(p[0],p[1]);first=false;}else B.lineTo(p[0],p[1]);}
+    B.stroke();B.setLineDash([]);
+
+    // Saddle-node points at r_s
+    var snx=1/Math.sqrt(2);
+    var ps1=bm(RS,snx),ps2=bm(RS,-snx);
+    B.fillStyle='#FF9800';circ(B,ps1[0],ps1[1],5,true);circ(B,ps2[0],ps2[1],5,true);
+    B.strokeStyle='#E65100';B.lineWidth=1;circ(B,ps1[0],ps1[1],5,false);circ(B,ps2[0],ps2[1],5,false);
+    // Pitchfork point
+    var bp=bm(0,0);B.fillStyle='#FF9800';circ(B,bp[0],bp[1],5,true);B.strokeStyle='#E65100';circ(B,bp[0],bp[1],5,false);
+
+    // Hysteresis arrows (permanent annotation)
+    B.globalAlpha=.35;B.lineWidth=2;
+    // Forward: along origin rightward
+    B.strokeStyle='#1565C0';B.fillStyle='#1565C0';
+    var ha=bm(-.38,0),hb=bm(-.03,0);
+    ln(B,ha[0],ha[1],hb[0],hb[1]);arw(B,hb[0],hb[1],0,10);
+    // Jump up at r=0
+    ha=bm(0,.05);hb=bm(0,.9);
+    ln(B,ha[0],ha[1],hb[0],hb[1]);arw(B,hb[0],hb[1],-Math.PI/2,10);
+    // Return: along large branch leftward
+    B.strokeStyle='#C62828';B.fillStyle='#C62828';
+    ha=bm(.02,1.02);hb=bm(RS+.03,.73);
+    ln(B,ha[0],ha[1],hb[0],hb[1]);arw(B,hb[0],hb[1],Math.atan2(hb[1]-ha[1],hb[0]-ha[0]),10);
+    // Jump down at r_s
+    ha=bm(RS,.65);hb=bm(RS,.08);
+    ln(B,ha[0],ha[1],hb[0],hb[1]);arw(B,hb[0],hb[1],Math.PI/2,10);
+    B.globalAlpha=1;
+
+    // r indicator
+    B.save();B.setLineDash([4,3]);B.strokeStyle='#555';B.lineWidth=1.5;
+    var rl=bm(r,BYL),rr=bm(r,BYR);ln(B,rl[0],rl[1],rr[0],rr[1]);B.restore();
+
+    // Eq dots on r line
+    eqs().forEach(function(e){
+      var p=bm(r,e.x);
+      if(e.s){B.fillStyle='#4CAF50';circ(B,p[0],p[1],5,true);B.strokeStyle='#2E7D32';B.lineWidth=1.5;circ(B,p[0],p[1],5,false);}
+      else{B.fillStyle='#F44336';circ(B,p[0],p[1],5,true);B.strokeStyle='#C62828';B.lineWidth=1.5;circ(B,p[0],p[1],5,false);}
+    });
+
+    // State marker (hysteresis tracker)
+    var sx=stateX(),sp=bm(r,sx);
+    B.fillStyle='#7B1FA2';circ(B,sp[0],sp[1],9,true);
+    B.strokeStyle='#4A148C';B.lineWidth=2;circ(B,sp[0],sp[1],9,false);
+
+    // Labels
+    B.font='12px "Times New Roman",serif';B.fillStyle='#888';
+    B.fillText('r',S-15,bm(0,0)[1]-6);B.fillText('x*',bm(0,0)[0]+6,13);
+    B.font='9px sans-serif';B.fillStyle='#bbb';
+    [-.4,-.2,.2,.4].forEach(function(v){var t=bm(v,0);B.fillText(v.toFixed(1),t[0]-8,t[1]+13);});
+    [-1,1].forEach(function(v){var t=bm(0,v);B.fillText(v,t[0]+5,t[1]+3);});
+    // Mark r_s
+    B.font='11px "Times New Roman",serif';B.fillStyle='#E65100';
+    var trs=bm(RS,0);B.fillText('r\u209B',trs[0]-4,trs[1]+22);
+    B.font='13px "Times New Roman",serif';B.fillStyle='#333';
+    B.fillText('r = '+r.toFixed(3),8,16);
+    // Hysteresis legend
+    B.font='10px sans-serif';
+    B.fillStyle='rgba(21,101,192,0.6)';B.fillText('\u2192 increasing r (forward)',8,S-22);
+    B.fillStyle='rgba(198,40,40,0.6)';B.fillText('\u2190 decreasing r (return)',8,S-8);
+  }
+
+  function drawFlow(){
+    F.clearRect(0,0,S,S);
+    F.strokeStyle='#f0f0f0';F.lineWidth=.5;
+    [-1,-.5,.5,1].forEach(function(v){var p=fm(v,YLO),q=fm(v,YHI);ln(F,p[0],p[1],q[0],q[1]);});
+    [-.5,.5].forEach(function(v){var p=fm(-XR,v),q=fm(XR,v);ln(F,p[0],p[1],q[0],q[1]);});
+    F.strokeStyle='#81D4FA';F.lineWidth=1;
+    var ya=fm(0,YLO),yb=fm(0,YHI);ln(F,ya[0],ya[1],yb[0],yb[1]);
+
+    // Shading
+    var eq=eqs();
+    var roots=eq.map(function(e){return e.x;}).sort(function(a,b){return a-b;});
+    var segs=[-XR].concat(roots).concat([XR]);
+    function shade(xA,xB,col){
+      F.fillStyle=col;F.beginPath();
+      var p0=fm(xA,0);F.moveTo(p0[0],p0[1]);
+      for(var x=xA;x<=xB+.005;x+=.015){F.lineTo.apply(F,fm(x,Math.max(YLO,Math.min(YHI,ff(x)))));}
+      F.lineTo.apply(F,fm(xB,0));F.closePath();F.fill();
+    }
+    for(var i=0;i<segs.length-1;i++){
+      var mid=(segs[i]+segs[i+1])/2;
+      shade(segs[i],segs[i+1],ff(mid)>0?'rgba(255,152,0,0.1)':'rgba(33,150,243,0.15)');
+    }
+
+    // x-axis (phase line)
+    F.strokeStyle='#333';F.lineWidth=2.5;
+    var xl=fm(-XR,0),xr2=fm(XR,0);ln(F,xl[0],xl[1],xr2[0],xr2[1]);
+
+    // f(x) curve
+    F.strokeStyle='#1976D2';F.lineWidth=2.5;F.beginPath();
+    var first=true;
+    for(var x=-XR;x<=XR;x+=.015){
+      var fv=ff(x);var p=fm(x,fv);
+      if(p[1]<-30||p[1]>S+30){first=true;continue;}
+      if(first){F.moveTo(p[0],p[1]);first=false;}else F.lineTo(p[0],p[1]);
+    }
+    F.stroke();
+
+    // Phase line arrows
+    var arrowY=fm(0,-0.2)[1];
+    for(var x=-1.4;x<=1.4;x+=.18){
+      var skip=false;
+      eq.forEach(function(e){if(Math.abs(x-e.x)<.1)skip=true;});
+      if(skip)continue;
+      var fx=ff(x);if(Math.abs(fx)<.003)continue;
+      var dir=fx>0?1:-1;
+      var sz=Math.min(10,Math.max(4,Math.abs(fx)*15));
+      var cx=fm(x,0)[0];
+      F.fillStyle=fx>0?'rgba(230,81,0,0.55)':'rgba(21,101,192,0.55)';
+      F.beginPath();
+      F.moveTo(cx+dir*sz,arrowY);
+      F.lineTo(cx-dir*sz*.55,arrowY-sz*.5);
+      F.lineTo(cx-dir*sz*.55,arrowY+sz*.5);
+      F.closePath();F.fill();
+    }
+
+    // Eq dots
+    eq.forEach(function(e){
+      var p=fm(e.x,0);
+      if(e.s){F.fillStyle='#4CAF50';circ(F,p[0],p[1],8,true);F.strokeStyle='#2E7D32';F.lineWidth=2;circ(F,p[0],p[1],8,false);}
+      else{F.fillStyle='#F44336';circ(F,p[0],p[1],8,true);F.strokeStyle='#C62828';F.lineWidth=2;circ(F,p[0],p[1],8,false);}
+    });
+
+    // State marker on flow
+    var sx=stateX(),sp=fm(sx,0);
+    F.fillStyle='#7B1FA2';circ(F,sp[0],sp[1],9,true);
+    F.strokeStyle='#4A148C';F.lineWidth=2;circ(F,sp[0],sp[1],9,false);
+
+    // Eq labels
+    F.font='10px "Times New Roman",serif';F.fillStyle='#333';
+    eq.forEach(function(e,i){
+      var p=fm(e.x,0);
+      F.fillText((e.s?'S':'U'),p[0]-3,fm(0,-0.35)[1]+3);
+    });
+
+    F.font='12px "Times New Roman",serif';F.fillStyle='#888';
+    F.fillText('x',S-15,fm(0,0)[1]-6);
+    F.fillText('\u1E8B',fm(0,0)[0]+8,13);
+    F.font='9px sans-serif';F.fillStyle='#bbb';
+    [-1,1].forEach(function(v){var t=fm(v,0);F.fillText(v,t[0]-4,t[1]+13);});
+    [-.5,.5].forEach(function(v){var t=fm(0,v);F.fillText(v,t[0]+5,t[1]+3);});
+    F.font='13px "Times New Roman",serif';F.fillStyle='#1976D2';
+    F.fillText('f(x) = '+r.toFixed(2)+'x + x\u00B3 \u2212 x\u2075',8,16);
+    F.font='10px sans-serif';
+    F.fillStyle='rgba(230,81,0,0.7)';F.fillText('\u25B6 \u1E8B > 0',8,S-20);
+    F.fillStyle='rgba(21,101,192,0.7)';F.fillText('\u25C0 \u1E8B < 0',8,S-6);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('hy-info');
+    var sx=stateX();
+    var t='r = '+r.toFixed(3)+' &nbsp;|&nbsp; r\u209B = '+RS.toFixed(2)+' &nbsp;|&nbsp; ';
+    t+='<span style="color:#7B1FA2;font-weight:600">State on '+(branch==='origin'?'origin':'large-amplitude')+' branch (x\u2248'+sx.toFixed(3)+')</span>';
+    if(r>RS&&r<0.005)t+=' &nbsp;|&nbsp; <span style="color:#FF9800">bistable region</span>';
+    el.innerHTML=t;
+  }
+  function redraw(){updateBranch();drawBif();drawFlow();updInfo();}
+
+  function getR(e){var rect=bc.getBoundingClientRect();var cx=(e.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<0.01)nr=0;if(Math.abs(nr-RS)<0.01)nr=RS;return Math.max(BXL,Math.min(BXR,nr));}
+  bc.addEventListener('mousedown',function(e){drag=true;r=getR(e);redraw();});
+  bc.addEventListener('mousemove',function(e){if(!drag)return;r=getR(e);redraw();});
+  window.addEventListener('mouseup',function(){drag=false;});
+  bc.addEventListener('touchstart',function(e){e.preventDefault();drag=true;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.01)nr=0;if(Math.abs(nr-RS)<.01)nr=RS;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
+  bc.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.01)nr=0;if(Math.abs(nr-RS)<.01)nr=RS;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
   bc.addEventListener('touchend',function(){drag=false;});
 
   redraw();
