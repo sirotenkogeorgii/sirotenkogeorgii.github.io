@@ -5055,9 +5055,20 @@ When two such neurons are coupled, they perturb each other back and forth. The f
 We can formalize this concept with a mathematical model. Let's assume we have two oscillators with their own intrinsic (natural) frequencies, $\omega_1$ and $\omega_2$. We then add a coupling term that depends on the difference between their phases.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coupled Phase Oscillator Model)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coupled Oscillators, Phase Space for Coupled Oscillators)</span></p>
 
-A common model for two **coupled oscillators** is given by the following system of differential equations:
+Besides the plane and the cylinder, another important two-dimensional phase is the **torus**. It is the natural phase space for the systems of the form
+
+$$\dot{\theta}_1 = f_1(\theta_1 - \theta_2)$$
+
+$$\dot{\theta}_2 = f_2(\theta_2 - \theta_1)$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Model of Interaction Between Human Circadian Rhythms and the sleep-wake cycle)</span></p>
+
+A common simple model for two **coupled oscillators** is given by the following system of differential equations:
 
 $$\dot{\theta}_1 = \omega_1 + A \sin(\theta_1 - \theta_2)$$
 
@@ -5628,6 +5639,212 @@ Let's analyze the behavior of this system by plotting $\dot{x}$ versus $x$ for d
 This minimal equation perfectly captures the qualitative behavior of a saddle-node bifurcation: the collision and annihilation of a stable and an unstable fixed point as a parameter is varied.
 
 </div>
+
+<div id="sn-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Saddle-Node Bifurcation \(\dot{x} = r + x^2\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
+    Click or drag on the bifurcation diagram to change the control parameter \(r\).
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div id="sn-ltitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram</div>
+      <canvas id="sn-bc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="sn-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Flow diagram</div>
+      <canvas id="sn-fc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div id="sn-info" style="text-align:center;font-size:.82em;margin-top:.5em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500;
+  var BXL=-2,BXR=1.5,BYL=-2,BYR=2;
+  var XR=2.5,YLO=-4,YHI=5.5,YT=YHI-YLO;
+  var r=-0.5,drag=false;
+
+  var bc=document.getElementById('sn-bc'),fc=document.getElementById('sn-fc');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var B=initC(bc),F=initC(fc);
+
+  function bm(rv,xs){return[(rv-BXL)/(BXR-BXL)*S,(1-(xs-BYL)/(BYR-BYL))*S];}
+  function bc2r(cx){return BXL+cx/S*(BXR-BXL);}
+  function fm(x,y){return[(x/XR+1)*S/2,(1-(y-YLO)/YT)*S];}
+
+  function ln(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+
+  function halfDot(c,cx,cy,rd){
+    c.fillStyle='#4CAF50';c.beginPath();c.arc(cx,cy,rd,Math.PI*.5,Math.PI*1.5);c.closePath();c.fill();
+    c.fillStyle='#F44336';c.beginPath();c.arc(cx,cy,rd,-Math.PI*.5,Math.PI*.5);c.closePath();c.fill();
+    c.strokeStyle='#555';c.lineWidth=1.5;circ(c,cx,cy,rd,false);
+  }
+
+  function eqs(){
+    if(r<-0.005)return[{x:-Math.sqrt(-r),s:true},{x:Math.sqrt(-r),s:false}];
+    if(Math.abs(r)<=0.005)return[{x:0,half:true}];
+    return[];
+  }
+
+  function drawBif(){
+    B.clearRect(0,0,S,S);
+    B.strokeStyle='#f0f0f0';B.lineWidth=.5;
+    [-1.5,-1,-.5,.5,1].forEach(function(v){var p=bm(v,BYL),q=bm(v,BYR);ln(B,p[0],p[1],q[0],q[1]);});
+    [-1.5,-1,-.5,.5,1,1.5].forEach(function(v){var p=bm(BXL,v),q=bm(BXR,v);ln(B,p[0],p[1],q[0],q[1]);});
+    B.strokeStyle='#81D4FA';B.lineWidth=1;
+    var a=bm(BXL,0),b=bm(BXR,0);ln(B,a[0],a[1],b[0],b[1]);
+    a=bm(0,BYL);b=bm(0,BYR);ln(B,a[0],a[1],b[0],b[1]);
+
+    // Stable branch (green solid)
+    var mx=Math.sqrt(-BXL);
+    B.strokeStyle='#4CAF50';B.lineWidth=2.5;B.beginPath();
+    for(var xs=-mx;xs<=0.005;xs+=.015){var p=bm(-xs*xs,xs);if(xs<-mx+.02)B.moveTo(p[0],p[1]);else B.lineTo(p[0],p[1]);}
+    B.stroke();
+    // Unstable branch (red dashed)
+    B.strokeStyle='#F44336';B.lineWidth=2.5;B.setLineDash([6,4]);B.beginPath();
+    for(var xs=0;xs<=mx;xs+=.015){var p=bm(-xs*xs,xs);if(xs<.02)B.moveTo(p[0],p[1]);else B.lineTo(p[0],p[1]);}
+    B.stroke();B.setLineDash([]);
+
+    // Bifurcation point
+    var bp=bm(0,0);halfDot(B,bp[0],bp[1],6);
+
+    // r indicator line
+    B.save();B.setLineDash([4,3]);B.strokeStyle='#555';B.lineWidth=1.5;
+    var rl=bm(r,BYL),rr=bm(r,BYR);ln(B,rl[0],rl[1],rr[0],rr[1]);B.restore();
+
+    // Eq dots on r line
+    var eq=eqs();
+    eq.forEach(function(e){
+      var p=bm(r,e.x);
+      if(e.half)halfDot(B,p[0],p[1],7);
+      else if(e.s){B.fillStyle='#4CAF50';circ(B,p[0],p[1],6,true);B.strokeStyle='#2E7D32';B.lineWidth=1.5;circ(B,p[0],p[1],6,false);}
+      else{B.fillStyle='#F44336';circ(B,p[0],p[1],6,true);B.strokeStyle='#C62828';B.lineWidth=1.5;circ(B,p[0],p[1],6,false);}
+    });
+
+    // Labels
+    B.font='12px "Times New Roman",serif';B.fillStyle='#888';
+    B.fillText('r',S-15,bm(0,0)[1]-6);B.fillText('x*',bm(0,0)[0]+6,13);
+    B.font='9px sans-serif';B.fillStyle='#bbb';
+    [-2,-1,1].forEach(function(v){var t=bm(v,0);B.fillText(v,t[0]-6,t[1]+13);});
+    [-1,1].forEach(function(v){var t=bm(0,v);B.fillText(v,t[0]+5,t[1]+3);});
+    B.font='13px "Times New Roman",serif';B.fillStyle='#333';
+    B.fillText('r = '+r.toFixed(2),8,16);
+  }
+
+  function drawFlow(){
+    F.clearRect(0,0,S,S);
+    // Grid
+    F.strokeStyle='#f0f0f0';F.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=fm(v,YLO),q=fm(v,YHI);ln(F,p[0],p[1],q[0],q[1]);});
+    [-3,-2,-1,1,2,3,4,5].forEach(function(v){var p=fm(-XR,v),q=fm(XR,v);ln(F,p[0],p[1],q[0],q[1]);});
+    // y-axis
+    F.strokeStyle='#81D4FA';F.lineWidth=1;
+    var ya=fm(0,YLO),yb=fm(0,YHI);ln(F,ya[0],ya[1],yb[0],yb[1]);
+
+    // Shading between parabola and x-axis
+    var eq=eqs();
+    function shade(xA,xB,col){
+      F.fillStyle=col;F.beginPath();
+      var p0=fm(xA,0);F.moveTo(p0[0],p0[1]);
+      for(var x=xA;x<=xB+.01;x+=.03){var f=r+x*x;var p=fm(x,Math.max(YLO,Math.min(YHI,f)));F.lineTo(p[0],p[1]);}
+      var pe=fm(xB,0);F.lineTo(pe[0],pe[1]);F.closePath();F.fill();
+    }
+    if(r<-0.005){
+      var x1=-Math.sqrt(-r),x2=Math.sqrt(-r);
+      shade(-XR,x1,'rgba(255,152,0,0.1)');
+      shade(x1,x2,'rgba(33,150,243,0.15)');
+      shade(x2,XR,'rgba(255,152,0,0.1)');
+    }else{
+      shade(-XR,XR,'rgba(255,152,0,0.1)');
+    }
+
+    // x-axis (phase line) - thick
+    F.strokeStyle='#333';F.lineWidth=2.5;
+    var xl=fm(-XR,0),xr=fm(XR,0);ln(F,xl[0],xl[1],xr[0],xr[1]);
+
+    // Parabola curve
+    F.strokeStyle='#1976D2';F.lineWidth=2.5;F.beginPath();
+    var first=true;
+    for(var x=-XR;x<=XR;x+=.03){
+      var f=r+x*x;var p=fm(x,f);
+      if(p[1]<-30){first=true;continue;}
+      if(first){F.moveTo(p[0],p[1]);first=false;}else F.lineTo(p[0],p[1]);
+    }
+    F.stroke();
+
+    // Phase line flow arrows
+    var arrowY=fm(0,-0.7)[1];
+    for(var x=-2.3;x<=2.3;x+=.28){
+      var skip=false;
+      eq.forEach(function(e){if(Math.abs(x-e.x)<.18)skip=true;});
+      if(skip)continue;
+      var fx=r+x*x;var dir=fx>0?1:-1;
+      var sz=Math.min(11,Math.max(5,Math.abs(fx)*2.5));
+      var cx=fm(x,0)[0];
+      F.fillStyle=fx>0?'rgba(230,81,0,0.55)':'rgba(21,101,192,0.55)';
+      F.beginPath();
+      F.moveTo(cx+dir*sz,arrowY);
+      F.lineTo(cx-dir*sz*.55,arrowY-sz*.5);
+      F.lineTo(cx-dir*sz*.55,arrowY+sz*.5);
+      F.closePath();F.fill();
+    }
+
+    // Eq dots on phase line
+    eq.forEach(function(e){
+      var p=fm(e.x,0);
+      if(e.half)halfDot(F,p[0],p[1],10);
+      else if(e.s){F.fillStyle='#4CAF50';circ(F,p[0],p[1],10,true);F.strokeStyle='#2E7D32';F.lineWidth=2;circ(F,p[0],p[1],10,false);}
+      else{F.fillStyle='#F44336';circ(F,p[0],p[1],10,true);F.strokeStyle='#C62828';F.lineWidth=2;circ(F,p[0],p[1],10,false);}
+    });
+
+    // Eq labels
+    F.font='11px "Times New Roman",serif';F.fillStyle='#333';
+    eq.forEach(function(e,i){
+      var p=fm(e.x,0);
+      var label=e.half?'x*=0 (half-stable)':e.s?'x*='+e.x.toFixed(2)+' (stable)':'x*='+e.x.toFixed(2)+' (unstable)';
+      F.fillText(label,p[0]-35,fm(0,-1.4)[1]+i*16);
+    });
+
+    // Axis labels
+    F.font='12px "Times New Roman",serif';F.fillStyle='#888';
+    F.fillText('x',S-15,fm(0,0)[1]-6);
+    F.fillText('\u1E8B = f(x)',fm(0,0)[0]+8,13);
+    F.font='9px sans-serif';F.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=fm(v,0);F.fillText(v,t[0]-4,t[1]+13);});
+    [-2,-1,1,2,3,4].forEach(function(v){var t=fm(0,v);F.fillText(v,t[0]+5,t[1]+3);});
+    // Equation
+    F.font='13px "Times New Roman",serif';F.fillStyle='#1976D2';
+    F.fillText('f(x) = '+r.toFixed(2)+' + x\u00B2',8,16);
+    // Legend
+    F.font='10px sans-serif';
+    F.fillStyle='rgba(230,81,0,0.7)';F.fillText('\u25B6 \u1E8B > 0 (rightward flow)',8,S-20);
+    F.fillStyle='rgba(21,101,192,0.7)';F.fillText('\u25C0 \u1E8B < 0 (leftward flow)',8,S-6);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('sn-info'),eq=eqs();
+    var t='r = '+r.toFixed(3)+' &nbsp;|&nbsp; ';
+    if(eq.length===2)t+='<span style="color:#4CAF50">Stable: x* = '+eq[0].x.toFixed(3)+'</span> &nbsp;|&nbsp; <span style="color:#F44336">Unstable: x* = '+eq[1].x.toFixed(3)+'</span>';
+    else if(eq.length===1)t+='<span style="color:#FF9800">Saddle-node at x* = 0 (half-stable)</span>';
+    else t+='No equilibria &mdash; flow is always rightward';
+    el.innerHTML=t;
+  }
+  function redraw(){drawBif();drawFlow();updInfo();}
+
+  function getR(e){var rect=bc.getBoundingClientRect();var cx=(e.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<0.04)nr=0;return Math.max(BXL,Math.min(BXR,nr));}
+  bc.addEventListener('mousedown',function(e){drag=true;r=getR(e);redraw();});
+  bc.addEventListener('mousemove',function(e){if(!drag)return;r=getR(e);redraw();});
+  window.addEventListener('mouseup',function(){drag=false;});
+  bc.addEventListener('touchstart',function(e){e.preventDefault();drag=true;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.04)nr=0;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
+  bc.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0],rect=bc.getBoundingClientRect();var cx=(t.clientX-rect.left)*(S/rect.width);var nr=bc2r(cx);if(Math.abs(nr)<.04)nr=0;r=Math.max(BXL,Math.min(BXR,nr));redraw();},{passive:false});
+  bc.addEventListener('touchend',function(){drag=false;});
+
+  redraw();
+})();
+</script>
 
 #### The Concept of a Normal Form
 
