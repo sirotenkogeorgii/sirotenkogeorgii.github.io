@@ -11,5 +11,6 @@ date: 2024-11-01
 
 
 - [Dynamical Systems Theory in Machine Learning Course](/subpages/dynamical-systems/dynamical-systems-in-machine-learning/)
-- [Nonlinear dynamics and Chaos (Book)](/subpages/dynamical-systems/strogatz-non-linear-dynamics/)
+- [Nonlinear dynamics and Chaos (Book)](/subpages/books/strogatz_dynamical_systems/)
 - [Neural Differential Equations](/subpages/dynamical-systems/neural-differential-equations/)
+- [Nonlinear Dynamics and Pattern Formation](/subpages/dynamical-systems/nonlinear-dynamics-pattern-formation/)
