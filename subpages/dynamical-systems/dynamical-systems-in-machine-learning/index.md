@@ -1870,7 +1870,7 @@ The stability of the fixed point (in this case, the origin, since $b=0$) is dete
 
 </div>
 
-<div id="ee-container" style="margin:2em auto;max-width:780px;">
+<div id="ee-container" style="margin:2em auto;max-width:1060px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Eigenvalue Dynamics of \(x_{n+1}=Ax_n\)</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
     Drag the orange eigenvalue on the left to explore dynamics. Snaps to the real axis for 1D cobweb view.
@@ -1890,7 +1890,7 @@ The stability of the fixed point (in this case, the origin, since $b=0$) is dete
 
 <script>
 (function(){
-  var S=370, ER=1.5, DR=2.3, SNAP=0.06;
+  var S=500, ER=1.5, DR=2.3, SNAP=0.06;
   var COL=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f'];
   var re=0.5, im=Math.sqrt(3)/2, drag=false, dw=0;
   var ec=document.getElementById('ee-ec'), dc=document.getElementById('ee-dc');
@@ -2057,7 +2057,7 @@ The stability of the fixed point (in this case, the origin, since $b=0$) is dete
 })();
 </script>
 
-<div id="re-container" style="margin:2em auto;max-width:780px;">
+<div id="re-container" style="margin:2em auto;max-width:1060px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Two Independent Real Eigenvalues</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .8em;">
     Drag each eigenvalue independently on the real axis. The map is \(x_{n+1}=\mathrm{diag}(\lambda_1,\lambda_2)\,x_n\).
@@ -2077,7 +2077,7 @@ The stability of the fixed point (in this case, the origin, since $b=0$) is dete
 
 <script>
 (function(){
-  var S=370, ER=1.8, DR=2.3, MAX=50;
+  var S=500, ER=1.8, DR=2.3, MAX=50;
   var COL=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e'];
   var l1=0.5, l2=-0.3; // two independent real eigenvalues
   var drag=false, dw=0; // dw: 1=lambda1, 2=lambda2
@@ -6629,6 +6629,11 @@ At the $n$-th iteration, the set $K_n$ consists of $2^n$ closed intervals.
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Cantor set construction</figcaption>
+</figure>
+
 ##### Ternary Representation and Properties
 
 To analyze the Cantor set more deeply, it is useful to represent the numbers in the interval $[0, 1]$ using a base-3, or ternary, number system.
@@ -6636,7 +6641,7 @@ To analyze the Cantor set more deeply, it is useful to represent the numbers in 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Ternary Representation</span></p>
 
-A number $x \in [0, 1]$ can be expressed in a ternary representation as:
+A number $x \in [0, 1]$ can be expressed in a **ternary representation** as:
 
 $$x = \sum_{i=1}^{\infty} a_i 3^{-i} = a_1 \cdot 3^{-1} + a_2 \cdot 3^{-2} + a_3 \cdot 3^{-3} + \dots$$
 
@@ -6663,6 +6668,11 @@ This reveals the fundamental property of the Cantor set: it consists of all numb
 A minor mathematical subtlety exists at the boundaries between intervals. For example, the number $\frac{1}{3}$ can be written as $(0.1)_3$ or as $(0.0222\dots)_3$. Since a representation without the digit '$1$' exists, such boundary points remain in the set.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set_base3_expansion.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Ternary Interpretation of the Cantor Construction</figcaption>
+</figure>
 
 ##### The Uncountability of the Cantor Set
 
@@ -6992,16 +7002,6 @@ The limit $\epsilon \to 0$ is equivalent to the number of iterations $n \to \inf
    $$D_{box} = \frac{\log 2}{\log 3} \approx 0.6309$$
 
 </div>
-
-<figure>
-  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>Cantor set construction</figcaption>
-</figure>
-
-<figure>
-  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set_base3_expansion.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>Cantor set could be represented in 3-base expansion</figcaption>
-</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
