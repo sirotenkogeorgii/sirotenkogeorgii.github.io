@@ -7105,7 +7105,7 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
   </div>
   <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;">
     <span style="font-size:.85em;font-family:serif;">&omega; =</span>
-    <input type="range" id="hb-omega" min="0.3" max="3" step="0.1" value="1" style="width:200px;">
+    <input type="range" id="hb-omega" min="0" max="3" step="0.1" value="1" style="width:200px;">
     <span id="hb-omega-val" style="font-size:.85em;font-family:serif;min-width:30px;">1.0</span>
   </div>
   <div id="hb-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
@@ -7230,11 +7230,18 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
 
   function updInfo(){
     var el=document.getElementById('hb-info');
-    var st=mu<-.003?'Stable spiral (damped oscillations)':mu>.003?'Unstable spiral + stable limit cycle (r=\u221A\u03BC \u2248 '+Math.sqrt(mu).toFixed(3)+')':'Center (Hopf bifurcation point)';
-    el.innerHTML='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03C9 = '+omega.toFixed(1)+' &nbsp;|&nbsp; \u03BB = '+mu.toFixed(2)+' \u00B1 '+omega.toFixed(1)+'i &nbsp;|&nbsp; '+st;
+    var isReal=omega<.05;
+    var st;
+    if(isReal){st=mu<-.003?'Stable node (real eigenvalues)':mu>.003?'Unstable node + stable limit cycle':'Degenerate (repeated zero eigenvalue)';}
+    else{st=mu<-.003?'Stable spiral (damped oscillations)':mu>.003?'Unstable spiral + stable limit cycle (r=\u221A\u03BC \u2248 '+Math.sqrt(Math.max(0,mu)).toFixed(3)+')':'Center (Hopf bifurcation point)';}
+    var lam=isReal?'\u03BB = '+mu.toFixed(2)+' (repeated)':'\u03BB = '+mu.toFixed(2)+' \u00B1 '+omega.toFixed(1)+'i';
+    el.innerHTML='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03C9 = '+omega.toFixed(1)+' &nbsp;|&nbsp; '+lam+' &nbsp;|&nbsp; '+st;
   }
   function updTitle(){
-    var t=mu<-.003?'Stable spiral (damped oscillations)':mu>.003?'Unstable spiral + stable limit cycle':'Center (Hopf point)';
+    var isReal=omega<.05;
+    var t;
+    if(isReal){t=mu<-.003?'Stable node':mu>.003?'Unstable node + stable limit cycle':'Degenerate node';}
+    else{t=mu<-.003?'Stable spiral (damped oscillations)':mu>.003?'Unstable spiral + stable limit cycle':'Center (Hopf point)';}
     document.getElementById('hb-rtitle').textContent='Phase portrait: '+t;
   }
   function redraw(){drawEigen();drawPhase();updInfo();updTitle();}
@@ -7248,7 +7255,7 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
   ec.addEventListener('mousemove',function(e){
     if(!drag){var m=empos(e);var d1=(m[0]-mu)*(m[0]-mu)+(m[1]-omega)*(m[1]-omega);var d2=(m[0]-mu)*(m[0]-mu)+(m[1]+omega)*(m[1]+omega);ec.style.cursor=(d1<.12||d2<.12)?'grab':'crosshair';return;}
     ec.style.cursor='grabbing';var m=empos(e);
-    mu=Math.max(-ER+.1,Math.min(ER-.1,m[0]));omega=Math.max(.3,Math.min(3,Math.abs(m[1])));
+    mu=Math.max(-ER+.1,Math.min(ER-.1,m[0]));omega=Math.max(0,Math.min(3,Math.abs(m[1])));
     if(Math.abs(mu)<.06)mu=0;
     omS.value=omega;omV.textContent=omega.toFixed(1);redraw();
   });
@@ -7260,7 +7267,7 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
   },{passive:false});
   ec.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;
     var t=e.touches[0],r=ec.getBoundingClientRect();var m=ec2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height));
-    mu=Math.max(-ER+.1,Math.min(ER-.1,m[0]));omega=Math.max(.3,Math.min(3,Math.abs(m[1])));
+    mu=Math.max(-ER+.1,Math.min(ER-.1,m[0]));omega=Math.max(0,Math.min(3,Math.abs(m[1])));
     if(Math.abs(mu)<.06)mu=0;omS.value=omega;omV.textContent=omega.toFixed(1);redraw();
   },{passive:false});
   ec.addEventListener('touchend',function(){drag=false;});
@@ -7648,9 +7655,9 @@ Across different examples, chaotic systems share a set of defining characteristi
 A key feature of a chaotic trajectory is that it is aperiodic.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Aperiodic)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Aperiodic Trajectory)</span></p>
 
-An aperiodic trajectory is one that never closes up or repeats itself exactly. No matter how long the system is observed, the state vector will never return to a previous value.
+An **aperiodic trajectory** is one that never closes up or repeats itself exactly. No matter how long the system is observed, the state vector will never return to a previous value.
 
 </div>
 
