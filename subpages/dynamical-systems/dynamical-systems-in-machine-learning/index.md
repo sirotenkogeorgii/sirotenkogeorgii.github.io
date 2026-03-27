@@ -4750,15 +4750,15 @@ $$J = \begin{pmatrix} \frac{\partial F_1}{\partial x_1} & \cdots & \frac{\partia
 
 Let $\mathbf{x}^\ast$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The stability of $\mathbf{x}^\ast$ is determined by the eigenvalues of the Jacobian matrix evaluated at the fixed point, $J(\mathbf{x}^\ast)$.
 
-* The fixed point $\mathbf{x}^\ast$ is stable if the maximum absolute value (or modulus, for complex eigenvalues) of all eigenvalues of $J(\mathbf{x}^\ast)$ is less than $1$.
+* The fixed point $\mathbf{x}^\ast$ is **stable** if the maximum absolute value (or modulus, for complex eigenvalues) of all eigenvalues of $J(\mathbf{x}^\ast)$ is less than $1$.
 
 $$\max_i |\lambda_i| < 1$$
 
-* The fixed point $\mathbf{x}^\ast$ is unstable if the maximum absolute value of any eigenvalue of $J(\mathbf{x}^\ast)$ is greater than $1$.
+* The fixed point $\mathbf{x}^\ast$ is **unstable** if the maximum absolute value of any eigenvalue of $J(\mathbf{x}^\ast)$ is greater than $1$.
 
 $$\max_i |\lambda_i| > 1$$
 
-* If the maximum absolute value of the eigenvalues is exactly equal to $1$ (i.e., the largest eigenvalue lies on the unit circle in the complex plane), the system is non-hyperbolic, and a linear stability analysis is inconclusive.
+* If the maximum absolute value of the eigenvalues is exactly equal to $1$ (i.e., the largest eigenvalue lies on the unit circle in the complex plane), the system is non-hyperbolic, and a **linear stability analysis is inconclusive**.
 
 </div>
 
@@ -4845,11 +4845,13 @@ The plot of $f^2(x)$ for the logistic map at $\alpha = 3.3$ reveals four fixed p
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability of a Cycle)</span></p>
 
-The stability of a $k$-cycle can be determined by checking the slope of the $k$-times iterated function, $f^k(x)$, at any point $x_i^*$ on the cycle. The cycle is stable if the absolute value of this slope is less than one.
+The stability of a $k$-cycle can be determined by checking the slope of the $k$-times iterated function, $f^k(x)$, at any point $x_i^\ast$ on the cycle. 
 
-$$\left| \frac{d}{dx} f^k(x) \bigg|_{x=x_i^*} \right| < 1$$
+* The cycle is stable if the absolute value of this slope is less than one.
 
-The cycle is unstable if this value is greater than one.
+  $$\left| \frac{d}{dx} f^k(x) \bigg|_{x=x_i^*} \right| < 1$$
+
+* The cycle is **unstable** if this value is greater than one.
 
 </div>
 
@@ -4883,12 +4885,70 @@ This framework provides a significant advantage. While the original map $f$ migh
 
 In the study of dynamical systems, oscillators represent a fundamental class of behaviors characterized by periodic motion, often visualized as a closed orbit or limit cycle in the state space. To analyze these systems, particularly when they interact, it is incredibly useful to reduce their complex dynamics to a single, essential variable: the phase.
 
+#### Flows on the Circle
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector Field On Circle)</span></p>
+
+The equation
+
+$$\dot \theta = f(\theta)$$
+
+corresonds to the **vector field on the circle**.
+
+* $\theta$ is a **point on the circle** and is the
+* $\dot \theta$ is a **velocity vector at that point**
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Vector Field on Circle via Phase Variable)</span></p>
+
+For the system
+
+$$\dot{\theta}=\sin\theta,$$
+
+consider the motion on the unit circle, where $\theta=0$ points to the right and $\theta$ increases counterclockwise.
+
+To draw the vector field, first identify the equilibria by solving
+
+$$\dot{\theta}=0 \quad \Longrightarrow \quad \sin\theta=0$$
+
+This gives two fixed points:
+
+$$\theta^*=0 \quad \text{and} \quad \theta^*=\pi$$
+
+To determine the direction of motion, look at the sign of $\sin\theta$:
+
+* On the upper semicircle, $\sin\theta>0$, so $\dot{\theta}>0$. Thus the flow moves counterclockwise.
+* On the lower semicircle, $\sin\theta<0$, so $\dot{\theta}<0$. Thus the flow moves clockwise.
+
+Therefore, trajectories move away from $\theta=0$, so $\theta=0$ is **unstable**, while trajectories move toward $\theta=\pi$, so $\theta=\pi$ is **stable**.
+
+This example is the circular version of the one-dimensional system $\dot{x}=\sin x$, but viewing it on the circle makes the geometry of the flow much easier to see.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/flow_sinx_line.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Vector field on the line</figcaption>
+  </figure>
+  
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/flow_sinx_circle.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Vector field on the circle</figcaption>
+  </figure>
+</div>
+
+</div>
+
 #### The Phase Variable
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Phase Variable)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Variable)</span></p>
 
-The phase of an oscillator describes its position along its limit cycle. It is represented by a **phase variable**, typically denoted as $\theta$. A single full iteration of the oscillator corresponds to the phase variable completing a full cycle. By convention, the phase is often defined to evolve in the interval $[0, 2\pi]$, though other intervals such as $[0, 1]$ are also used.
+* The phase of an oscillator describes its position along its limit cycle. It is represented by a **phase variable** or **angle**, typically denoted as $\theta$. 
+* A single full iteration of the oscillator corresponds to the **phase variable** completing a full cycle. 
+* By convention, the phase is often defined to evolve in the interval $[0, 2\pi]$, though other intervals such as $[0, 1]$ are also used.
 
 </div>
 
@@ -4903,24 +4963,24 @@ This simplification allows us to capture the essential timing and rhythm of the 
 
 </div>
 
-#### A Simple Oscillator: Constant Angular Velocity
+#### Uniform Oscillator: Constant Angular Velocity
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constant Angular Velocity)</span></p>
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Uniform Oscillator)</span></p>
 
 Consider the simplest case of an oscillator: one that traverses its limit cycle at a constant speed. This means its phase variable increases at a constant rate.
 
 * **Dynamics:** The differential equation for the phase is linear:
 
-$$\dot{\theta} = \omega$$
+  $$\dot{\theta} = \omega$$
 
-where $\omega$ is the constant angular velocity.
+  where $\omega$ is the constant angular velocity.
 
 * **Solution:** The explicit equation for the phase at time $t$ is:
 
-$$\theta(t) = (\omega t + \theta_0) \pmod{2\pi}$$
+  $$\theta(t) = (\omega t + \theta_0) \pmod{2\pi}$$
 
-where $\theta_0$ is the initial phase at $t = 0$.
+  where $\theta_0$ is the initial phase at $t = 0$.
 
 </div>
 
@@ -4931,12 +4991,52 @@ While this constant-speed model is a useful starting point, it is crucial to rem
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nonuniform Oscillator)</span></p>
+
+A **nonuniform oscillator** is a system on the circle whose phase $\theta$ evolves according to
+
+$$\dot{\theta}=f(\theta),$$
+
+where $f(\theta)$ is **$2\pi$-periodic** and has the **same sign for all (\theta)**, usually
+
+$$f(\theta)>0 \quad \text{for all } \theta$$
+
+This means the state keeps going around the circle forever in one direction, but its angular speed is **not constant**; it depends on where it is on the circle.
+
+So:
+
+* **uniform oscillator:** $\dot{\theta}=\omega$ with constant speed,
+* **nonuniform oscillator:** $\dot{\theta}=f(\theta)$ with position-dependent speed.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Important Nonuniform Oscillator)</span></p>
+
+The equation
+
+$$\dot \theta = \omega - a\sin \theta$$
+
+arises in many different branches of science and engineering.
+
+</div>
+
 #### Calculating the Oscillation Period
 
 If we have the differential equation for the phase, $\dot{\theta} = f(\theta)$, we can derive a formula to calculate the temporal period of one full oscillation, $T_{\text{osc}}$.
 
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Oscillation Period)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Oscillation Period for 1D Oscillator)</span></p>
+
+Oscillation period of *any* 1D osciallator defined by the angular speed $\dot \theta = f(\theta)$ is
+
+$$T_{\text{osc}} = \int_0^{2\pi} \frac{1}{f(\theta)} \, d\theta$$
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof</summary>
 
 The period $T_{\text{osc}}$ is, by definition, the time it takes to complete one cycle. We can express this with a simple integral:
 
@@ -4950,12 +5050,161 @@ We know the differential equation for the phase is $\frac{d\theta}{dt} = f(\thet
 
 $$T_{\text{osc}} = \int_0^{2\pi} \frac{1}{f(\theta)} \, d\theta$$
 
+</details>
+
+#### Study Case: Saddle-Node Bifurcation in Nonuniform Oscillators
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Saddle-Node Bifurcation in Nonuniform Oscillators (I))</span></p>
+
+Consider the differential equation
+
+$$\dot{\theta} = \omega - a \sin \theta$$
+
+To study equation this differential equation, we assume for simplicity that $\omega > 0$ and $a \geq 0$; the case of negative $\omega$ and $a$ is similar.
+
+On the figure, $\omega$ represents the average value, while $a$ gives the amplitude.
+
+**Vector fields**
+
+When $a=0$, equation becomes the equation of a uniform oscillator. Introducing the parameter $a$ makes the motion around the circle uneven: the flow is fastest at $\theta=-\pi/2$ and slowest at $\theta=\pi/2$ (see Figure). This nonuniformity grows stronger as $a$ increases.
+
+If $a$ is slightly smaller than $\omega$, the oscillation becomes highly uneven: the phase point $\theta(t)$ spends a long time moving through a **bottleneck** near $\theta=\pi/2$, then quickly travels through the rest of the circle on a much shorter timescale.
+
+When $a=\omega$, the oscillation disappears completely. At this point, a half-stable fixed point is created at $\theta=\pi/2$ through a **saddle-node bifurcation**.
+
+If $a>\omega$, this half-stable fixed point splits into two fixed points, one stable and one unstable Figure. As time goes to infinity, every trajectory approaches the stable fixed point.
+
+The same behavior can also be illustrated by drawing the vector fields directly on the circle, as in Figure.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/saddle_point_bifurcation_oscillator_line.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Vector field on the line</figcaption>
+  </figure>
+  
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/saddle_point_bifurcation_oscillator_circle.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Vector field on the circle</figcaption>
+  </figure>
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Direct Recipe)</span></p>
+</div>
 
-This formula provides a direct recipe for calculating the oscillation period for any one-dimensional phase oscillator, provided we know the function $f(\theta)$ that governs its dynamics.
+#### Period Divergence at Saddle-Node Bifurcation Point
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Period Divergence at Saddle-Node Bifurcation Point (II))</span></p>
+
+Apply linear stability analysis to determine the nature of the fixed points when $a>\omega$.
+
+The fixed points $\theta^\ast$ satisfy
+
+$$\sin\theta^*=\frac{\omega}{a}, \qquad \cos\theta^*=\pm\sqrt{1-\left(\frac{\omega}{a}\right)^2}$$
+
+Their stability is governed by the derivative
+
+$$f'(\theta^*)=-a\cos\theta^* =\mp a\sqrt{1-\left(\frac{\omega}{a}\right)^2}$$
+
+Therefore, the fixed point for which $\cos\theta^\ast>0$ is stable, because in that case $f'(\theta^\ast)<0$.
+
+**Oscillation period**
+
+For the case $a<\omega$, the oscillation period can be computed explicitly. The time needed for $\theta$ to increase by $2\pi$ is
+
+$$
+T=\int dt
+=\int_0^{2\pi}\frac{dt}{d\theta},d\theta
+=\int_0^{2\pi}\frac{d\theta}{\omega-a\sin\theta},
+$$
+
+$$T=\frac{2\pi}{\sqrt{\omega^2-a^2}}$$
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/period_divergence.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Graph of $T$ as a function of $a$. Period divergence at the bifurcation point $a=w$.</figcaption>
+</figure>
+
+When $a=0$, formula for the period $T$ simplifies to
+
+$$T=\frac{2\pi}{\omega},$$
+
+which is the standard period of a uniform oscillator. As $a$ increases, the period also increases, and it tends to infinity as $a\to\omega^{-}$.
+
+To estimate how this divergence occurs, observe that
+
+$$
+\sqrt{\omega^2-a^2}
+=\sqrt{\omega+a}\sqrt{\omega-a}
+\approx \sqrt{2\omega}\sqrt{\omega-a}
+\quad \text{as } a\to\omega^{-}.
+$$
+
+Hence,
+
+$$
+T\approx
+\left(\frac{\pi\sqrt{2}}{\sqrt{\omega}}\right)
+\frac{1}{\sqrt{\omega-a}}.
+$$
+
+This shows that $T$ diverges like
+
+$$
+(a_c-a)^{-1/2},
+\qquad \text{with } a_c=\omega.
+$$
+
+So the blow-up follows a **square-root scaling law**.
+
+</div>
+
+#### Ghosts and Bottlenecks near Saddle-Node Bifurcation Point
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Ghosts and Bottlenecks near Saddle-Node Bifurcation Point (III))</span></p>
+
+The **square-root scaling law derived above is a very common feature of systems near a saddle-node bifurcation**. Right after two fixed points merge and disappear, their influence does not vanish immediately. Instead, a leftover effect remains — often called a **saddle-node ghost** — which causes trajectories to move very slowly through a **bottleneck** region.
+
+Consider
+
+$$\dot{\theta}=\omega-a\sin\theta$$
+
+while gradually decreasing $a$ from values with $a>\omega$. As $a$ becomes smaller, the two fixed points move toward one another, collide, and then disappear. This is the same sequence shown earlier in Figure, but now it should be interpreted from right to left. When $a$ is just below $\omega$, the fixed points near $\pi/2$ are gone, but their former presence is still noticeable through the saddle-node ghost (Figure).
+
+A plot of $\theta(t)$: the trajectory spends almost all of its time slowly crossing the bottleneck region.
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/bottleneck_due_to_ghost.png' | relative_url }}" alt="a" loading="lazy">
+    <!-- <figcaption>Vector field on the line</figcaption> -->
+  </figure>
+  
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/bottleneck_in_phase_variable.png' | relative_url }}" alt="a" loading="lazy">
+    <!-- <figcaption>Vector field on the circle</figcaption> -->
+  </figure>
+</div>
+
+We now want to find a general scaling law for the time needed to pass through such a bottleneck. The essential part of the dynamics is the behavior of $\dot{\theta}$ very close to its minimum, because the time spent there dominates all other timescales in the system. In general, near that minimum, $\dot{\theta}$ has an approximately parabolic shape. This greatly simplifies the analysis, since the dynamics can then be reduced to the normal form of a saddle-node bifurcation. After a suitable local rescaling of space, the vector field can be written as
+
+$$\dot{x}=r+x^2$$
+
+where $r$ measures the distance from the bifurcation and satisfies $0<r\ll 1$. The graph of $\dot{x}$ is shown in Figure.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/saddle-node-normal-form.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+To estimate how long the system remains in the bottleneck, we compute the time required for $x$ to move from $-\infty$ to $+\infty$, meaning from one side of the bottleneck to the other. This gives
+
+$$
+T_{\text{bottleneck}}
+\approx
+\int_{-\infty}^{\infty}\frac{dx}{r+x^2} = \frac{\pi}{\sqrt{r}}.
+$$
+
+This confirms that the square-root scaling law is a general phenomenon.
 
 </div>
 
@@ -4966,12 +5215,53 @@ We now extend our analysis from a single oscillator to a system of multiple osci
 #### The State-Space Torus
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Runners on a Circular Track)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Independent Runners on a Circular Track)</span></p>
 
-Imagine two runners on a circular track, each running at their own constant, but different, velocity. Let the first runner have velocity $\omega_1$ and the second have velocity $\omega_2$.
+Two runners move around the same circular track with constant angular speeds. Let Speedy complete one lap in $T_1$ seconds and Pokey complete one lap in $T_2$ seconds, where $T_2>T_1$. Since Speedy is faster, he will eventually catch up and overtake Pokey. We want to compute the time for one such overtake.
 
-* Runner 1 phase dynamics: $\dot{\theta}_1 = \omega_1$
-* Runner 2 phase dynamics: $\dot{\theta}_2 = \omega_2$
+Let $\theta_1(t)$ and $\theta_2(t)$ denote the angular positions of Speedy and Pokey. Because each runner moves at constant speed,
+
+$$
+\dot{\theta}_1=\omega_1=\frac{2\pi}{T_1},
+\qquad
+\dot{\theta}_2=\omega_2=\frac{2\pi}{T_2}
+$$
+
+To describe when Speedy laps Pokey, define the phase difference
+
+$$\phi=\theta_1-\theta_2$$
+
+Speedy has lapped Pokey once exactly when this phase difference has increased by $2\pi$. Differentiating gives
+
+$$\dot{\phi}=\dot{\theta}_1-\dot{\theta}_2=\omega_1-\omega_2$$
+
+So the relative angle grows at the constant rate $\omega_1-\omega_2$. Therefore, the time needed for $\phi$ to increase by $2\pi$ is
+
+$$T_{\text{lap}}=\frac{2\pi}{\omega_1-\omega_2}$$
+
+Substituting $\omega_1=2\pi/T_1$ and $\omega_2=2\pi/T_2$ gives
+
+$$T_{\text{lap}} = \left(\frac{1}{T_1}-\frac{1}{T_2}\right)^{-1}$$
+
+---
+
+Another more general solution is to trivially derive 
+
+$$\theta_1(t) = \frac{\2pi}{T_1}t + \theta_1(0) \quad \text{and} \quad \theta_2(t) = \frac{\2pi}{T_2}t + \theta_2(0)$$
+
+Then
+
+$$\phi(t) = 2\pi(\frac{1}{T_1}-\frac{1}{T_2})t$$
+
+We want 
+
+$$\phi(t) (\text{mod } 1\pi) = 0 \implies (\frac{1}{T_1}-\frac{1}{T_2})t \in \mathbb{N}_0$$
+
+$\implies t = (\frac{1}{T_1}-\frac{1}{T_2})^{-1}k \quad k \in \mathbb{N}_0$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/two_runners_example.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
 
 </div>
 
@@ -5087,7 +5377,13 @@ Here, $K_1=A$, $K_2=A$ is the coupling strength, which determines how strongly t
 To analyze whether these oscillators will synchronize, the most effective technique is to study the evolution of their phase difference.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Difference)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Difference of Coupled Oscillators)</span></p>
+
+Consider two coupled oscillators defined as
+
+$$\dot{\theta}_1 = \omega_1 + A \sin(\theta_1 - \theta_2)$$
+
+$$\dot{\theta}_2 = \omega_2 + A \sin(\theta_2 - \theta_1)$$
 
 The **phase difference**, $\phi$, between the two oscillators is defined as:
 
@@ -5097,28 +5393,10 @@ If the oscillators synchronize perfectly (zero phase locking), this difference w
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Phase Difference Equation)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callPut__name">(Differentail Equation of Phase Difference of Coupled Oscillators)</span></p>
 
-We can derive a differential equation for $\phi$ by differentiating its definition with respect to time:
-
-$$\dot{\phi} = \dot{\theta}_1 - \dot{\theta}_2$$
-
-Now, substitute the model equations for $\dot{\theta}_1$ and $\dot{\theta}_2$:
-
-$$\dot{\phi} = \left( \omega_1 + A \sin(\theta_1 - \theta_2) \right) - \left( \omega_2 + A \sin(\theta_2 - \theta_1) \right)$$
-
-Group the terms:
-
-$$\dot{\phi} = (\omega_1 - \omega_2) + A \sin(\theta_1 - \theta_2) - A \sin(\theta_2 - \theta_1)$$
-
-Using the trigonometric identity that sine is an odd function, $\sin(-x) = -\sin(x)$, we have $\sin(\theta_2 - \theta_1) = -\sin(\theta_1 - \theta_2)$. Substituting this into the equation:
-
-$$\dot{\phi} = (\omega_1 - \omega_2) + A \sin(\theta_1 - \theta_2) - A \left( -\sin(\theta_1 - \theta_2) \right)$$
-
-$$\dot{\phi} = (\omega_1 - \omega_2) + A \sin(\theta_1 - \theta_2) + A \sin(\theta_1 - \theta_2)$$
-
-Finally, by substituting $\phi = \theta_1 - \theta_2$, we arrive at the differential equation for the phase difference:
+The differential equation for the phase difference:
 
 $$\dot{\phi} = (\omega_1 - \omega_2) + 2A \sin(\phi)$$
 
@@ -5163,7 +5441,7 @@ This section explores the fascinating phenomenon of synchronization, where coupl
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Locking)</span></p>
 
-Two or more oscillators are said to be synchronized or phase-locked when the difference between their phases, $\phi$, becomes constant over time. Mathematically, this corresponds to a stable fixed point of the phase difference dynamics. If $\dot{\phi} = 0$ for some phase difference $\phi^*$, the oscillators have achieved **phase locking**.
+Two or more oscillators are said to be synchronized or **phase-locked** when the difference between their phases, $\phi$, becomes constant over time. Mathematically, this corresponds to a stable fixed point of the phase difference dynamics. If $\dot{\phi} = 0$ for some phase difference $\phi^*$, the oscillators have achieved **phase locking**.
 
 </div>
 
