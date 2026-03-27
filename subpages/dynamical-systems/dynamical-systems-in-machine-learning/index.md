@@ -5574,7 +5574,7 @@ on the torus. This is not to say that the trajectory passes through each point; 
     <input type="range" id="uo-o2" min="0.1" max="5" step="0.01" value="1" style="width:120px;">
     <span id="uo-o2v" style="font-size:.85em;font-family:serif;min-width:35px;">1.00</span>
     <span style="font-size:.85em;font-family:serif;margin-left:6px;">wraps =</span>
-    <input type="range" id="uo-wr" min="1" max="150" step="1" value="5" style="width:100px;">
+    <input type="range" id="uo-wr" min="1" max="150" step="1" value="5" style="width:220px;">
     <span id="uo-wrv" style="font-size:.85em;font-family:serif;min-width:25px;">5</span>
   </div>
   <div id="uo-presets" style="display:flex;gap:5px;justify-content:center;margin-top:6px;flex-wrap:wrap;"></div>
@@ -5786,8 +5786,6 @@ When two such neurons are coupled, they perturb each other back and forth. The f
 
 #### A Model for Two Coupled Oscillators
 
-We can formalize this concept with a mathematical model. Let's assume we have two oscillators with their own intrinsic (natural) frequencies, $\omega_1$ and $\omega_2$. We then add a coupling term that depends on the difference between their phases.
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coupled Oscillators, Phase Space for Coupled Oscillators)</span></p>
 
@@ -5885,7 +5883,8 @@ This section explores the fascinating phenomenon of synchronization, where coupl
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Phase Locking)</span></p>
 
-Two or more oscillators are said to be synchronized or **phase-locked** when the difference between their phases, $\phi$, becomes constant over time. Mathematically, this corresponds to a stable fixed point of the phase difference dynamics. If $\dot{\phi} = 0$ for some phase difference $\phi^*$, the oscillators have achieved **phase locking**.
+* Two or more oscillators are said to be synchronized or **phase-locked** when the difference between their phases, $\phi$, becomes **constant over time**. 
+* Mathematically, this corresponds to a stable fixed point of the phase difference dynamics. If $\dot{\phi} = 0$ for some phase difference $\phi^*$, the oscillators have achieved **phase locking**.
 
 </div>
 
@@ -5985,7 +5984,7 @@ While the theoretical analysis of dynamical systems provides deep insights into 
 #### The Explicit Euler Method
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Explicit Euler Method)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Explicit Euler Method)</span></p>
 
 The **explicit (or forward) Euler method** is the simplest numerical method for solving an initial value problem of the form $\dot{x} = f(x, t)$ with $x(0) = x_0$. The method discretizes time into steps of size $\delta_t$ and approximates the solution at each step using the tangent line:
 
@@ -5998,6 +5997,11 @@ Or in the index notation
 $$x_{n+1} \approx x_n + \delta_t \cdot f(x_n, t_n)$$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/exact_euler_method.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Explicit Euler Method</figcaption>
+</figure>
 
 #### The Runge-Kutta Family of Methods
 
