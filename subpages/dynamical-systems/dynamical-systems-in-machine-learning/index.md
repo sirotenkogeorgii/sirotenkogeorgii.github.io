@@ -5091,6 +5091,220 @@ The same behavior can also be illustrated by drawing the vector fields directly 
 
 </div>
 
+<div id="no-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Nonuniform Oscillator \(\dot{\theta}=\omega - a\sin\theta\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Increase \(a\) past \(\omega\) to see the saddle-node bifurcation that kills the oscillation. The bottleneck and period divergence are visible in \(\theta(t)\).
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div id="no-ltitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Flow: oscillating (a &lt; &omega;)</div>
+      <canvas id="no-lc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="no-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Phase evolution &theta;(t)</div>
+      <canvas id="no-rc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">a =</span>
+    <input type="range" id="no-a" min="0" max="3" step="0.01" value="0.5" style="width:180px;">
+    <span id="no-a-val" style="font-size:.85em;font-family:serif;min-width:35px;">0.50</span>
+    <span style="font-size:.85em;font-family:serif;margin-left:12px;">&omega; =</span>
+    <input type="range" id="no-omega" min="0.1" max="3" step="0.1" value="1" style="width:140px;">
+    <span id="no-omega-val" style="font-size:.85em;font-family:serif;min-width:30px;">1.0</span>
+  </div>
+  <div id="no-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500,PI=Math.PI,PI2=2*PI;
+  var omega=1,a=0.5;
+  var lc=document.getElementById('no-lc'),rc=document.getElementById('no-rc');
+  var aS=document.getElementById('no-a'),aV=document.getElementById('no-a-val');
+  var oS=document.getElementById('no-omega'),oV=document.getElementById('no-omega-val');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var L=initC(lc),R=initC(rc);
+
+  function f(th){return omega-a*Math.sin(th);}
+  function eqs(){
+    if(a<omega-.005)return[];
+    if(Math.abs(a-omega)<.005)return[{th:PI/2,half:true}];
+    var s=Math.asin(omega/a);
+    return[{th:s,s:true},{th:PI-s,s:false}];
+  }
+  function per(){return a<omega-1e-6?PI2/Math.sqrt(omega*omega-a*a):Infinity;}
+
+  function integrate(th0,tMax,dt){
+    var pts=[{t:0,th:th0}],th=th0;
+    for(var t=dt;t<=tMax+dt/2;t+=dt){
+      var k1=f(th),k2=f(th+.5*dt*k1),k3=f(th+.5*dt*k2),k4=f(th+dt*k3);
+      th+=dt/6*(k1+2*k2+2*k3+k4);pts.push({t:t,th:th});
+    }
+    return pts;
+  }
+
+  function ln2(c,a2,b,d,e){c.beginPath();c.moveTo(a2,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,fl){c.beginPath();c.arc(x,y,r,0,PI2);if(fl)c.fill();else c.stroke();}
+  function halfDot(c,cx,cy,rd){
+    c.fillStyle='#4CAF50';c.beginPath();c.arc(cx,cy,rd,PI*.5,PI*1.5);c.closePath();c.fill();
+    c.fillStyle='#F44336';c.beginPath();c.arc(cx,cy,rd,-PI*.5,PI*.5);c.closePath();c.fill();
+    c.strokeStyle='#555';c.lineWidth=1.5;circ(c,cx,cy,rd,false);
+  }
+
+  function drawLeft(){
+    L.clearRect(0,0,S,S);
+    var yLo=Math.min(omega-a,0)-.4,yHi=Math.max(omega+a,1)+.4;
+    var PL=40,PR2=12,PT=18,PB=55,W=S-PL-PR2,H=S-PT-PB;
+    function lx(th){return PL+th/PI2*W;}
+    function ly(v){return PT+(yHi-v)/(yHi-yLo)*H;}
+
+    // Grid
+    L.strokeStyle='#f0f0f0';L.lineWidth=.5;
+    [PI/2,PI,3*PI/2].forEach(function(th){var x=lx(th);ln2(L,x,PT,x,PT+H);});
+    var step=Math.max(.5,Math.round((yHi-yLo)/6*2)/2);
+    for(var v=Math.ceil(yLo/step)*step;v<=yHi;v+=step){if(Math.abs(v)<.01)continue;var y=ly(v);ln2(L,PL,y,PL+W,y);}
+
+    // Zero line (phase line)
+    var y0=ly(0);
+    if(y0>PT&&y0<PT+H){L.strokeStyle='#333';L.lineWidth=2;ln2(L,PL,y0,PL+W,y0);}
+    L.strokeStyle='#81D4FA';L.lineWidth=1;ln2(L,PL,PT,PL,PT+H);
+
+    // Shading
+    var eq=eqs(),roots=eq.map(function(e){return e.th;}).sort(function(a2,b2){return a2-b2;});
+    var segs=[0].concat(roots).concat([PI2]);
+    for(var i=0;i<segs.length-1;i++){
+      var thA=segs[i],thB=segs[i+1],mid=(thA+thB)/2;
+      var col=f(mid)>0?'rgba(255,152,0,0.1)':'rgba(33,150,243,0.15)';
+      L.fillStyle=col;L.beginPath();L.moveTo(lx(thA),y0);
+      for(var th=thA;th<=thB+.02;th+=.03)L.lineTo(lx(th),ly(Math.max(yLo,Math.min(yHi,f(th)))));
+      L.lineTo(lx(thB),y0);L.closePath();L.fill();
+    }
+
+    // Curve
+    L.strokeStyle='#1976D2';L.lineWidth=2.5;L.beginPath();
+    for(var th=0;th<=PI2;th+=.02){if(th<.01)L.moveTo(lx(th),ly(f(th)));else L.lineTo(lx(th),ly(f(th)));}
+    L.stroke();
+
+    // ω reference line
+    var yw=ly(omega);
+    if(yw>PT&&yw<PT+H){L.save();L.setLineDash([4,3]);L.strokeStyle='#aaa';L.lineWidth=1;ln2(L,PL,yw,PL+W,yw);L.restore();}
+
+    // Flow arrows
+    var arrowY=Math.min(y0+22,PT+H+15);
+    for(var th=.2;th<PI2;th+=.28){
+      var skip=false;eq.forEach(function(e){if(Math.abs(th-e.th)<.15)skip=true;});
+      if(skip)continue;
+      var fv=f(th);if(Math.abs(fv)<.01)continue;
+      var dir=fv>0?1:-1,sz=Math.min(10,Math.max(4,Math.abs(fv)*2.5)),cx=lx(th);
+      L.fillStyle=fv>0?'rgba(230,81,0,0.55)':'rgba(21,101,192,0.55)';
+      L.beginPath();L.moveTo(cx+dir*sz,arrowY);L.lineTo(cx-dir*sz*.55,arrowY-sz*.5);L.lineTo(cx-dir*sz*.55,arrowY+sz*.5);L.closePath();L.fill();
+    }
+
+    // Eq dots
+    eq.forEach(function(e){
+      var cx=lx(e.th),cy=y0;
+      if(e.half)halfDot(L,cx,cy,9);
+      else if(e.s){L.fillStyle='#4CAF50';circ(L,cx,cy,9,true);L.strokeStyle='#2E7D32';L.lineWidth=2;circ(L,cx,cy,9,false);}
+      else{L.fillStyle='#F44336';circ(L,cx,cy,9,true);L.strokeStyle='#C62828';L.lineWidth=2;circ(L,cx,cy,9,false);}
+    });
+
+    // Labels
+    L.font='12px "Times New Roman",serif';L.fillStyle='#888';
+    L.fillText('\u03B8',PL+W+3,y0+4);L.fillText('\u03B8\u0307',PL+5,PT-3);
+    L.font='9px sans-serif';L.fillStyle='#bbb';
+    [{v:0,l:'0'},{v:PI/2,l:'\u03C0/2'},{v:PI,l:'\u03C0'},{v:3*PI/2,l:'3\u03C0/2'},{v:PI2,l:'2\u03C0'}].forEach(function(t){
+      L.fillText(t.l,lx(t.v)-6,y0>PT+H-10?y0-6:y0+14);
+    });
+    for(var v=Math.ceil(yLo/step)*step;v<=yHi;v+=step){if(Math.abs(v)<.01)continue;L.fillText(v.toFixed(1),2,ly(v)+3);}
+    L.font='11px "Times New Roman",serif';L.fillStyle='#1976D2';
+    L.fillText('\u03B8\u0307 = '+omega.toFixed(1)+' \u2212 '+a.toFixed(2)+'sin\u03B8',PL+5,PT+14);
+    if(yw>PT&&yw<PT+H){L.fillStyle='#aaa';L.fillText('\u03C9',PL+W-12,yw-4);}
+  }
+
+  function drawRight(){
+    R.clearRect(0,0,S,S);
+    var T=per();
+    var totalT=T<Infinity?Math.min(Math.max(3*T,8),50):25;
+    var dt=.02,pts=integrate(0,totalT,dt);
+    var thMax=pts[pts.length-1].th;
+    var tLo=0,tHi=totalT,thLo=-.3,thHi=Math.max(thMax+.5,PI+.5);
+    var PL=45,PR2=12,PT=18,PB=35,W=S-PL-PR2,H=S-PT-PB;
+    function rx(t){return PL+(t-tLo)/(tHi-tLo)*W;}
+    function ry(th){return PT+(thHi-th)/(thHi-thLo)*H;}
+
+    // θ=nπ grid
+    R.strokeStyle='#f0f0f0';R.lineWidth=.5;
+    for(var n=1;n*PI<=thHi;n++){var y=ry(n*PI);if(y>PT&&y<PT+H)ln2(R,PL,y,PL+W,y);}
+    var tStep=T<Infinity&&T<15?T:Math.max(1,Math.round(totalT/8));
+    for(var t=tStep;t<tHi;t+=tStep){var x=rx(t);ln2(R,x,PT,x,PT+H);}
+    var y0=ry(0);if(y0>PT&&y0<PT+H){R.strokeStyle='#ddd';R.lineWidth=1;ln2(R,PL,y0,PL+W,y0);}
+    R.strokeStyle='#81D4FA';R.lineWidth=1;ln2(R,PL,PT,PL,PT+H);ln2(R,PL,PT+H,PL+W,PT+H);
+
+    // Period markers
+    if(T<Infinity&&T<totalT){
+      R.save();R.setLineDash([4,3]);R.strokeStyle='#FF9800';R.lineWidth=1;
+      for(var k=1;k*T<=tHi;k++)ln2(R,rx(k*T),PT,rx(k*T),PT+H);
+      R.restore();
+    }
+
+    // θ=nπ labels
+    R.font='9px sans-serif';R.fillStyle='#bbb';
+    for(var n=0;n*PI<=thHi;n++){var y=ry(n*PI);if(y>PT+5&&y<PT+H-5)R.fillText(n?n+'\u03C0':'0',2,y+3);}
+
+    // Fixed point line
+    if(a>=omega-.005){
+      var eq2=eqs();eq2.forEach(function(e){
+        if(!e.s&&!e.half)return;
+        var y=ry(e.th);if(y>PT&&y<PT+H){
+          R.save();R.setLineDash([5,3]);R.strokeStyle=e.half?'#FF9800':'#4CAF50';R.lineWidth=1.5;
+          ln2(R,PL,y,PL+W,y);R.restore();
+          R.font='10px "Times New Roman",serif';R.fillStyle=e.half?'#FF9800':'#4CAF50';
+          R.fillText('\u03B8*='+e.th.toFixed(2),PL+W-55,y-4);
+        }
+      });
+    }
+
+    // Trajectory
+    R.strokeStyle='#1565C0';R.lineWidth=2;R.beginPath();
+    R.moveTo(rx(pts[0].t),ry(pts[0].th));
+    for(var i=1;i<pts.length;i++)R.lineTo(rx(pts[i].t),ry(pts[i].th));
+    R.stroke();
+    R.fillStyle='#1565C0';circ(R,rx(0),ry(0),4,true);
+
+    // Axis labels
+    R.font='12px "Times New Roman",serif';R.fillStyle='#888';
+    R.fillText('t',PL+W+3,PT+H+4);R.fillText('\u03B8(t)',PL+3,PT-3);
+    R.font='9px sans-serif';R.fillStyle='#bbb';
+    if(T<Infinity&&T<15){for(var k=1;k*T<=tHi;k++){R.fillStyle='#FF9800';R.fillText(k+'T',rx(k*T)-4,PT+H+13);}}
+    else{for(var t=tStep;t<tHi;t+=tStep){R.fillText(t.toFixed(0),rx(t)-4,PT+H+13);}}
+    R.font='11px "Times New Roman",serif';R.fillStyle='#333';
+    R.fillText(T<Infinity?'T = '+T.toFixed(2):'T = \u221E',PL+5,PT+14);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('no-info'),T=per(),eq=eqs();
+    var t='a = '+a.toFixed(2)+' &nbsp;|&nbsp; \u03C9 = '+omega.toFixed(1)+' &nbsp;|&nbsp; ';
+    if(a<omega-.005)t+='<span style="color:#1565C0">Oscillating</span> &nbsp;|&nbsp; T = '+T.toFixed(3)+' &nbsp;|&nbsp; a/\u03C9 = '+(a/omega).toFixed(2);
+    else if(Math.abs(a-omega)<.005)t+='<span style="color:#FF9800">Saddle-node bifurcation at a = \u03C9</span> &nbsp;|&nbsp; T \u2192 \u221E';
+    else t+='<span style="color:#F44336">No oscillation</span> &nbsp;|&nbsp; stable \u03B8* = '+eq[0].th.toFixed(3)+', unstable \u03B8* = '+eq[1].th.toFixed(3);
+    el.innerHTML=t;
+  }
+  function updTitles(){
+    document.getElementById('no-ltitle').textContent=a<omega-.005?'Flow: oscillating (a < \u03C9)':Math.abs(a-omega)<.005?'Flow: saddle-node (a = \u03C9)':'Flow: fixed points (a > \u03C9)';
+    var T=per();
+    document.getElementById('no-rtitle').textContent=a<omega-.005?'Phase \u03B8(t): period T = '+(T<100?T.toFixed(1):'\u221E'):'Phase \u03B8(t): convergence to \u03B8*';
+  }
+  function redraw(){drawLeft();drawRight();updInfo();updTitles();}
+
+  aS.addEventListener('input',function(){a=parseFloat(this.value);aV.textContent=a.toFixed(2);redraw();});
+  oS.addEventListener('input',function(){omega=parseFloat(this.value);oV.textContent=omega.toFixed(1);redraw();});
+  redraw();
+})();
+</script>
+
 #### Period Divergence at Saddle-Node Bifurcation Point
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -5247,7 +5461,7 @@ $$T_{\text{lap}} = \left(\frac{1}{T_1}-\frac{1}{T_2}\right)^{-1}$$
 
 Another more general solution is to trivially derive 
 
-$$\theta_1(t) = \frac{\2pi}{T_1}t + \theta_1(0) \quad \text{and} \quad \theta_2(t) = \frac{\2pi}{T_2}t + \theta_2(0)$$
+$$\theta_1(t) = \frac{2\pi}{T_1}t + \theta_1(0) \quad \text{and} \quad \theta_2(t) = \frac{2\pi}{T_2}t + \theta_2(0)$$
 
 Then
 
