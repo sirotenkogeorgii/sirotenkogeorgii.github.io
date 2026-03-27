@@ -5067,13 +5067,13 @@ On the figure, $\omega$ represents the average value, while $a$ gives the amplit
 
 **Vector fields**
 
-When $a=0$, equation becomes the equation of a uniform oscillator. Introducing the parameter $a$ makes the motion around the circle uneven: the flow is fastest at $\theta=-\pi/2$ and slowest at $\theta=\pi/2$ (see Figure). This nonuniformity grows stronger as $a$ increases.
+* **$a=0$, equation becomes the equation of a uniform oscillator.** Introducing the parameter $a$ makes the motion around the circle uneven: the flow is fastest at $\theta=-\pi/2$ and slowest at $\theta=\pi/2$ (see Figure). This nonuniformity grows stronger as $a$ increases.
 
-If $a$ is slightly smaller than $\omega$, the oscillation becomes highly uneven: the phase point $\theta(t)$ spends a long time moving through a **bottleneck** near $\theta=\pi/2$, then quickly travels through the rest of the circle on a much shorter timescale.
+* **$a$ is slightly smaller than $\omega$, the oscillation becomes highly uneven:** the phase point $\theta(t)$ spends a long time moving through a **bottleneck** near $\theta=\pi/2$, then quickly travels through the rest of the circle on a much shorter timescale.
 
-When $a=\omega$, the oscillation disappears completely. At this point, a half-stable fixed point is created at $\theta=\pi/2$ through a **saddle-node bifurcation**.
+* **$a=\omega$, the oscillation disappears completely.** At this point, a half-stable fixed point is created at $\theta=\pi/2$ through a **saddle-node bifurcation**.
 
-If $a>\omega$, this half-stable fixed point splits into two fixed points, one stable and one unstable Figure. As time goes to infinity, every trajectory approaches the stable fixed point.
+* **$a>\omega$, this half-stable fixed point splits into two fixed points, one stable and one unstable**. As time goes to infinity, every trajectory approaches the stable fixed point.
 
 The same behavior can also be illustrated by drawing the vector fields directly on the circle, as in Figure.
 
@@ -5486,11 +5486,17 @@ Since each oscillator is described by a variable on a circle (from $0$ to $2\pi$
 
 A trajectory in this two-dimensional state space represents the simultaneous evolution of both phases. As both oscillators cycle, the combined state $(\theta_1(t), \theta_2(t))$ traces a path that coils around the surface of the torus. A central question arises: Under what conditions will this trajectory eventually return to its starting point, forming a closed orbit on the torus?
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/torus_state_space.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/torus.gif' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
 </div>
 
 #### Closed Orbits and Rational Frequency Ratios
-
-A trajectory on the state-space torus will be a closed orbit if and only if the frequencies of the two oscillators are commensurate.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Commensurate Frequencies)</span></p>
@@ -5498,6 +5504,13 @@ A trajectory on the state-space torus will be a closed orbit if and only if the 
 Two frequencies, $\omega_1$ and $\omega_2$, are **commensurate** if their ratio is a rational number. That is, there exist two integers, $p$ and $q$, such that:
 
 $$\frac{\omega_1}{\omega_2} = \frac{p}{q}$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(State-Space Torus as a Closed Orbit)</span></p>
+
+A trajectory on the **state-space torus will be a closed orbit** if and only if the frequencies of the two oscillators are commensurate.
 
 </div>
 
@@ -5521,12 +5534,229 @@ If the ratio of the oscillator frequencies $\frac{\omega_1}{\omega_2}$ is an irr
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Quasi-periodicity occurs only on the torus)</span></p>
+
+**Quasiperiodicity** is significant because it is a new type of long-term behavior. Unlike the earlier entries (fixed point, closed orbit, homoclinic and heteroclinic orbits and cycles), **quasiperiodicity occurs only on the torus**.
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Middle Ground Between Periodicity and Chaos)</span></p>
 
-Quasi-periodic motion is an interesting middle ground between simple periodic behavior (like a limit cycle) and the more complex behavior of chaos. The system is "almost" periodic, but because the frequencies never align perfectly, the trajectory never repeats. Over time, the path of the system state will densely fill the entire surface of the torus. This is a unique property that arises in systems of two or more oscillators.
+**Quasi-periodic motion is an interesting middle ground between simple periodic behavior (like a limit cycle) and the more complex behavior of chaos.** The system is "almost" periodic, but because the frequencies never align perfectly, the trajectory never repeats. Over time, the path of the system state will densely fill the entire surface of the torus. This is a unique property that arises in systems of two or more oscillators.
+
+Furthermore, when the ration is irrational, each trajectory is **dense** on the torus: in other words, each trajectory comes arbitrarily close to any given point
+on the torus. This is not to say that the trajectory passes through each point; it just comes arbitrarily close.
 
 </div>
+
+<div id="uo-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Uncoupled Oscillators on the Torus</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Set \(\omega_1,\omega_2\). Rational ratio \(\to\) closed orbit. Irrational \(\to\) quasi-periodic (dense on torus). Increase wraps for irrational presets to watch the torus fill.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Flat torus (&theta;&sub1;, &theta;&sub2;)</div>
+      <canvas id="uo-fc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">3D Torus</div>
+      <canvas id="uo-tc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">&omega;&sub1; =</span>
+    <input type="range" id="uo-o1" min="0.1" max="5" step="0.01" value="2" style="width:120px;">
+    <span id="uo-o1v" style="font-size:.85em;font-family:serif;min-width:35px;">2.00</span>
+    <span style="font-size:.85em;font-family:serif;margin-left:6px;">&omega;&sub2; =</span>
+    <input type="range" id="uo-o2" min="0.1" max="5" step="0.01" value="1" style="width:120px;">
+    <span id="uo-o2v" style="font-size:.85em;font-family:serif;min-width:35px;">1.00</span>
+    <span style="font-size:.85em;font-family:serif;margin-left:6px;">wraps =</span>
+    <input type="range" id="uo-wr" min="1" max="150" step="1" value="5" style="width:100px;">
+    <span id="uo-wrv" style="font-size:.85em;font-family:serif;min-width:25px;">5</span>
+  </div>
+  <div id="uo-presets" style="display:flex;gap:5px;justify-content:center;margin-top:6px;flex-wrap:wrap;"></div>
+  <div id="uo-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500,PI=Math.PI,PI2=2*PI;
+  var omega1=2,omega2=1,wraps=5;
+  var Rm=1.5,rm=0.55; // torus radii
+  var vEl=0.45,vAz=-0.35; // view angles
+
+  var fc=document.getElementById('uo-fc'),tc=document.getElementById('uo-tc');
+  var o1S=document.getElementById('uo-o1'),o1V=document.getElementById('uo-o1v');
+  var o2S=document.getElementById('uo-o2'),o2V=document.getElementById('uo-o2v');
+  var wrS=document.getElementById('uo-wr'),wrV=document.getElementById('uo-wrv');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var F=initC(fc),T=initC(tc);
+
+  // Preset buttons
+  var presets=[
+    {l:'1:1',w1:1,w2:1},{l:'2:1',w1:2,w2:1},{l:'3:2',w1:3,w2:2},{l:'5:3',w1:5,w2:3},{l:'5:4',w1:5,w2:4},
+    {l:'\u221A2 : 1',w1:Math.sqrt(2),w2:1},{l:'\u03C0 : 1',w1:PI,w2:1},{l:'e : 1',w1:Math.E,w2:1}
+  ];
+  var pDiv=document.getElementById('uo-presets');
+  presets.forEach(function(pr){
+    var b=document.createElement('button');
+    b.textContent=pr.l;
+    b.style.cssText='font-size:.78em;padding:2px 8px;border:1px solid #ccc;border-radius:3px;background:#f8f8f8;cursor:pointer;font-family:serif;';
+    b.addEventListener('click',function(){
+      omega1=pr.w1;omega2=pr.w2;
+      o1S.value=Math.min(5,omega1);o1V.textContent=omega1.toFixed(2);
+      o2S.value=Math.min(5,omega2);o2V.textContent=omega2.toFixed(2);
+      redraw();
+    });
+    pDiv.appendChild(b);
+  });
+
+  function tPt(th1,th2){return{x:(Rm+rm*Math.cos(th2))*Math.cos(th1),y:(Rm+rm*Math.cos(th2))*Math.sin(th1),z:rm*Math.sin(th2)};}
+  function proj(p){
+    var ca=Math.cos(vAz),sa=Math.sin(vAz),ce=Math.cos(vEl),se=Math.sin(vEl);
+    var x1=p.x*ca-p.y*sa,y1=p.x*sa+p.y*ca;
+    return{sx:x1,sy:-(y1*se+p.z*ce),d:y1*ce-p.z*se};
+  }
+  var SC=S/5;
+  function tx(sx){return S/2+sx*SC;}
+  function ty(sy){return S/2+sy*SC;}
+
+  function ln2(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+
+  function approxFrac(x,mq){
+    var bp=Math.round(x),bq=1,be=Math.abs(x-bp);
+    for(var q=2;q<=mq;q++){var p=Math.round(x*q),e=Math.abs(x-p/q);if(e<be){be=e;bp=p;bq=q;}}
+    return{p:bp,q:bq,e:be};
+  }
+
+  // === FLAT TORUS ===
+  function drawFlat(){
+    F.clearRect(0,0,S,S);
+    var PL=35,PR2=10,PT=15,PB=35,W=S-PL-PR2,H=S-PT-PB;
+    function fx(th){return PL+((th%PI2+PI2)%PI2)/PI2*W;}
+    function fy(th){return PT+H-((th%PI2+PI2)%PI2)/PI2*H;}
+
+    // Grid
+    F.strokeStyle='#f0f0f0';F.lineWidth=.5;
+    [PI/2,PI,3*PI/2].forEach(function(v){
+      var x=fx(v);ln2(F,x,PT,x,PT+H);
+      var y=fy(v);ln2(F,PL,y,PL+W,y);
+    });
+    // Box
+    F.strokeStyle='#aaa';F.lineWidth=1;
+    F.strokeRect(PL,PT,W,H);
+
+    // Trajectory
+    var maxOm=Math.max(omega1,omega2);
+    var totalT=wraps*PI2/maxOm;
+    var nPts=Math.min(12000,Math.max(300,Math.floor(wraps*80)));
+    var dt=totalT/nPts;
+    var prevX=null,prevY=null;
+
+    F.lineWidth=1.2;
+    for(var i=0;i<=nPts;i++){
+      var t=i*dt;
+      var th1=(omega1*t)%PI2,th2=(omega2*t)%PI2;
+      var cx=fx(th1),cy=fy(th2);
+      if(prevX!==null){
+        var dx=Math.abs(cx-prevX),dy=Math.abs(cy-prevY);
+        if(dx<W*.4&&dy<H*.4){
+          var blend=i/nPts;
+          var r2=Math.floor(21+blend*209),g=Math.floor(101-blend*20),b=Math.floor(192-blend*192);
+          F.strokeStyle='rgba('+r2+','+g+','+b+',0.5)';
+          ln2(F,prevX,prevY,cx,cy);
+        }
+      }
+      prevX=cx;prevY=cy;
+    }
+
+    // Labels
+    F.font='12px "Times New Roman",serif';F.fillStyle='#888';
+    F.fillText('\u03B8\u2081',PL+W+3,PT+H/2+4);F.fillText('\u03B8\u2082',PL+W/2-4,PT-3);
+    F.font='9px sans-serif';F.fillStyle='#bbb';
+    F.fillText('0',PL-10,PT+H+4);F.fillText('2\u03C0',PL+W-8,PT+H+13);F.fillText('2\u03C0',PL-14,PT+4);
+  }
+
+  // === 3D TORUS ===
+  function draw3D(){
+    T.clearRect(0,0,S,S);
+
+    // Wireframe
+    T.lineWidth=.5;
+    // Longitudinal circles (constant θ₁)
+    for(var i=0;i<16;i++){
+      var th1=i*PI2/16;
+      T.strokeStyle='rgba(180,180,180,0.25)';
+      T.beginPath();
+      for(var j=0;j<=60;j++){
+        var th2=j*PI2/60,p=proj(tPt(th1,th2));
+        if(!j)T.moveTo(tx(p.sx),ty(p.sy));else T.lineTo(tx(p.sx),ty(p.sy));
+      }
+      T.stroke();
+    }
+    // Meridional circles (constant θ₂)
+    for(var i=0;i<12;i++){
+      var th2=i*PI2/12;
+      T.strokeStyle='rgba(180,180,180,0.2)';
+      T.beginPath();
+      for(var j=0;j<=80;j++){
+        var th1=j*PI2/80,p=proj(tPt(th1,th2));
+        if(!j)T.moveTo(tx(p.sx),ty(p.sy));else T.lineTo(tx(p.sx),ty(p.sy));
+      }
+      T.stroke();
+    }
+
+    // Trajectory — compute all points
+    var maxOm=Math.max(omega1,omega2);
+    var totalT=wraps*PI2/maxOm;
+    var nPts=Math.min(10000,Math.max(300,Math.floor(wraps*80)));
+    var dt=totalT/nPts;
+    var pts=[],minD=1e9,maxD=-1e9;
+    for(var i=0;i<=nPts;i++){
+      var t=i*dt,p=proj(tPt(omega1*t,omega2*t));
+      pts.push(p);
+      if(p.d<minD)minD=p.d;if(p.d>maxD)maxD=p.d;
+    }
+    var dR=maxD-minD||1,medD=(minD+maxD)/2;
+
+    // Back layer
+    T.strokeStyle='rgba(21,101,192,0.12)';T.lineWidth=.6;T.beginPath();
+    for(var i=1;i<pts.length;i++){
+      if((pts[i-1].d+pts[i].d)/2>medD){T.moveTo(tx(pts[i-1].sx),ty(pts[i-1].sy));T.lineTo(tx(pts[i].sx),ty(pts[i].sy));}
+    }
+    T.stroke();
+    // Front layer
+    T.strokeStyle='rgba(21,101,192,0.55)';T.lineWidth=1.2;T.beginPath();
+    for(var i=1;i<pts.length;i++){
+      if((pts[i-1].d+pts[i].d)/2<=medD){T.moveTo(tx(pts[i-1].sx),ty(pts[i-1].sy));T.lineTo(tx(pts[i].sx),ty(pts[i].sy));}
+    }
+    T.stroke();
+
+    // Start dot
+    var sp=pts[0];
+    T.fillStyle='#F44336';T.beginPath();T.arc(tx(sp.sx),ty(sp.sy),4,0,PI2);T.fill();
+  }
+
+  function updInfo(){
+    var el=document.getElementById('uo-info');
+    var ratio=omega1/omega2,fr=approxFrac(ratio,60);
+    var t='\u03C9\u2081 = '+omega1.toFixed(3)+' &nbsp;|&nbsp; \u03C9\u2082 = '+omega2.toFixed(3)+' &nbsp;|&nbsp; \u03C9\u2081/\u03C9\u2082 = '+ratio.toFixed(4)+' &nbsp;|&nbsp; ';
+    if(fr.e<.002)t+='<span style="color:#4CAF50">\u2248 '+fr.p+'/'+fr.q+' (closed orbit \u2014 '+fr.p+':'+fr.q+')</span>';
+    else t+='<span style="color:#1565C0">quasi-periodic (irrational ratio)</span>';
+    el.innerHTML=t;
+  }
+  function redraw(){drawFlat();draw3D();updInfo();}
+
+  o1S.addEventListener('input',function(){omega1=parseFloat(this.value);o1V.textContent=omega1.toFixed(2);redraw();});
+  o2S.addEventListener('input',function(){omega2=parseFloat(this.value);o2V.textContent=omega2.toFixed(2);redraw();});
+  wrS.addEventListener('input',function(){wraps=parseInt(this.value);wrV.textContent=wraps;redraw();});
+  redraw();
+})();
+</script>
 
 ### Coupled Oscillators and Synchronization
 
