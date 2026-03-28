@@ -8392,8 +8392,6 @@ A crucial feature of this system is the existence of a parameter regime before t
 
 ### An Introduction to Chaos and the Logistic Map
 
-This chapter introduces the fundamental concepts of chaos theory using the logistic map as a primary example. We will explore the key signatures of chaotic systems and the process by which a simple, deterministic system can exhibit complex, aperiodic behavior.
-
 #### Core Characteristics of Chaos
 
 As we increase the parameter $\alpha$ beyond the values that produce simple fixed points and low-period cycles, the system's behavior changes dramatically. The period of the cycles doubles at an accelerating rate until, at a critical value of $\alpha$, the trajectory becomes irregular and appears to fill a dense region of the state space. This phenomenon is known as chaos. Chaotic systems, though entirely deterministic, exhibit several defining characteristics.
@@ -8402,8 +8400,6 @@ As we increase the parameter $\alpha$ beyond the values that produce simple fixe
   <img src="{{ '/assets/images/notes/dynamical-systems/chaos_logistic_map.png' | relative_url }}" alt="a" loading="lazy">
   <figcaption>Higher-order cycles ($\alpha = 3.5$, top row) and chaos ($\alpha = 3.9$, center) in the logistic map. Bottom graph illustrates quick divergence of time series in chaotic regime for just slightly different (by an $\epsilon$ of $10^{-4}$) initial conditions</figcaption>
 </figure>
-
-##### Aperiodicity in Deterministic Systems
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Aperiodicity)</span></p>
@@ -8416,16 +8412,12 @@ This means the system never settles into a periodic cycle. One might consider th
 
 </div>
 
-##### Sensitive Dependence on Initial Conditions
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sensitive Dependence)</span></p>
 
 The second key feature of chaos is a sensitive dependence on initial conditions. This means that two trajectories starting from infinitesimally different initial states will diverge from each other at an exponential rate. Even a minuscule, imperceptible difference in starting points will lead to completely different outcomes after a short period of time. This exponential divergence is a hallmark of chaotic dynamics.
 
 </div>
-
-##### Boundedness
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Boundedness)</span></p>
@@ -8482,6 +8474,251 @@ A final interesting feature visible in the bifurcation diagram is the presence o
   <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption>
 </figure>
 </div>
+
+<div id="lm-container" style="margin:2em auto;max-width:1580px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: The Logistic Map \(x_{t+1}=\alpha x_t(1-x_t)\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Drag the vertical line on the bifurcation diagram to change \(\alpha\). The cobweb plot shows the iteration; the time-series panel shows sensitive dependence on initial conditions in the chaotic regime.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (orbit diagram)</div>
+      <canvas id="lm-bd" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="lm-ct" style="font-size:.82em;font-weight:600;margin-bottom:3px;">Cobweb plot</div>
+      <canvas id="lm-cw" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="lm-tt" style="font-size:.82em;font-weight:600;margin-bottom:3px;">Time series: sensitive dependence</div>
+      <canvas id="lm-ts" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">&alpha; =</span>
+    <input type="range" id="lm-a" min="0" max="4" step="0.001" value="3.5" style="width:260px;">
+    <span id="lm-av" style="font-size:.85em;font-family:serif;min-width:40px;">3.500</span>
+  </div>
+  <div id="lm-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var BW=550,CH=420,TW=470;
+  var alpha=3.5,drag=false;
+  var x0=0.4,eps=1e-4;
+
+  var bd=document.getElementById('lm-bd'),cw=document.getElementById('lm-cw'),ts=document.getElementById('lm-ts');
+  var aS=document.getElementById('lm-a'),aV=document.getElementById('lm-av');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c,w,h){c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var B=initC(bd,BW,CH),C=initC(cw,CH,CH),TT=initC(ts,TW,CH);
+
+  function f(x,a){return a*x*(1-x);}
+  function ln2(c,a2,b,d,e){c.beginPath();c.moveTo(a2,b);c.lineTo(d,e);c.stroke();}
+
+  // === BIFURCATION DIAGRAM (precomputed) ===
+  var bifData=null;
+  function computeBif(){
+    bifData=[];
+    var PL=45,W=BW-PL-10,H=CH-30-30;
+    for(var px=0;px<=W;px++){
+      var a=1+px/W*3; // alpha in [1, 4]
+      var x=0.4,pts=[];
+      for(var i=0;i<300;i++)x=f(x,a); // transient
+      for(var i=0;i<200;i++){x=f(x,a);pts.push(x);}
+      bifData.push({a:a,pts:pts});
+    }
+  }
+  computeBif();
+
+  function drawBif(){
+    B.clearRect(0,0,BW,CH);
+    var PL=45,PR2=10,PT=15,PB=30,W=BW-PL-PR2,H=CH-PT-PB;
+    function bx(a){return PL+(a-1)/3*W;}
+    function by(x){return PT+(1-x)*H;}
+
+    // Grid
+    B.strokeStyle='#f0f0f0';B.lineWidth=.5;
+    [1.5,2,2.5,3,3.5].forEach(function(v){var x=bx(v);ln2(B,x,PT,x,PT+H);});
+    [.2,.4,.6,.8].forEach(function(v){var y=by(v);ln2(B,PL,y,PL+W,y);});
+    B.strokeStyle='#81D4FA';B.lineWidth=1;
+    ln2(B,PL,PT+H,PL+W,PT+H);ln2(B,PL,PT,PL,PT+H);
+
+    // Bifurcation points
+    B.fillStyle='rgba(50,50,80,0.25)';
+    for(var i=0;i<bifData.length;i++){
+      var d=bifData[i],cx=bx(d.a);
+      for(var j=0;j<d.pts.length;j++){
+        var cy=by(d.pts[j]);
+        B.fillRect(cx,cy,.8,.8);
+      }
+    }
+
+    // Alpha indicator
+    if(alpha>=1&&alpha<=4){
+      B.save();B.setLineDash([4,3]);B.strokeStyle='#E53935';B.lineWidth=1.5;
+      var ax=bx(alpha);ln2(B,ax,PT,ax,PT+H);B.restore();
+    }
+
+    // Labels
+    B.font='12px "Times New Roman",serif';B.fillStyle='#888';
+    B.fillText('\u03B1',BW-15,PT+H+12);B.fillText('x',PL-4,PT-3);
+    B.font='9px sans-serif';B.fillStyle='#bbb';
+    [1,1.5,2,2.5,3,3.5,4].forEach(function(v){B.fillText(v.toFixed(1),bx(v)-6,PT+H+13);});
+    [0,.2,.4,.6,.8,1].forEach(function(v){B.fillText(v.toFixed(1),2,by(v)+3);});
+    B.font='12px "Times New Roman",serif';B.fillStyle='#E53935';
+    B.fillText('\u03B1 = '+alpha.toFixed(3),PL+5,PT+12);
+  }
+
+  // === COBWEB ===
+  function drawCobweb(){
+    C.clearRect(0,0,CH,CH);
+    var PL=35,PR2=10,PT=15,PB=30,W=CH-PL-PR2,H=CH-PT-PB;
+    function cx(v){return PL+v*W;}
+    function cy(v){return PT+(1-v)*H;}
+
+    // Grid
+    C.strokeStyle='#f0f0f0';C.lineWidth=.5;
+    [.2,.4,.6,.8].forEach(function(v){var x=cx(v);ln2(C,x,PT,x,PT+H);var y=cy(v);ln2(C,PL,y,PL+W,y);});
+    C.strokeStyle='#81D4FA';C.lineWidth=1;
+    ln2(C,PL,PT+H,PL+W,PT+H);ln2(C,PL,PT,PL,PT+H);
+
+    // Bisectrix y=x
+    C.save();C.setLineDash([5,3]);C.strokeStyle='#FF9800';C.lineWidth=1.5;
+    ln2(C,cx(0),cy(0),cx(1),cy(1));C.restore();
+
+    // Parabola f(x) = α x(1-x)
+    C.strokeStyle='#1976D2';C.lineWidth=2;C.beginPath();
+    for(var x=0;x<=1;x+=.005){
+      var y=f(x,alpha);if(x<.01)C.moveTo(cx(x),cy(y));else C.lineTo(cx(x),cy(y));
+    }
+    C.stroke();
+
+    // Cobweb iteration
+    var x=x0,nIter=80;
+    C.strokeStyle='rgba(50,50,50,0.5)';C.lineWidth=1;
+    C.beginPath();C.moveTo(cx(x),cy(0));
+    for(var i=0;i<nIter;i++){
+      var y=f(x,alpha);
+      if(y<-0.5||y>1.5)break;
+      C.lineTo(cx(x),cy(y)); // vertical to f
+      C.lineTo(cx(y),cy(y)); // horizontal to bisectrix
+      x=y;
+    }
+    C.stroke();
+
+    // Start dot
+    C.fillStyle='#E53935';C.beginPath();C.arc(cx(x0),cy(0),4,0,Math.PI*2);C.fill();
+
+    // Labels
+    C.font='12px "Times New Roman",serif';C.fillStyle='#888';
+    C.fillText('x\u2099',CH-20,cy(0)+14);C.fillText('x\u2099\u208A\u2081',PL+5,PT-3);
+    C.font='9px sans-serif';C.fillStyle='#bbb';
+    [0,.5,1].forEach(function(v){C.fillText(v.toFixed(1),cx(v)-4,cy(0)+13);C.fillText(v.toFixed(1),2,cy(v)+3);});
+    // Legend
+    C.font='10px "Times New Roman",serif';
+    C.fillStyle='#1976D2';C.fillText('f(x)='+alpha.toFixed(2)+'x(1\u2212x)',PL+3,PT+12);
+    C.fillStyle='#FF9800';C.fillText('y = x',PL+3,PT+24);
+  }
+
+  // === TIME SERIES ===
+  function drawTimeSeries(){
+    TT.clearRect(0,0,TW,CH);
+    var PL=35,PR2=10,PT=15,PB=30,W=TW-PL-PR2,H=CH-PT-PB;
+    var N=80;
+    function tx(t){return PL+t/N*W;}
+    function ty(v){return PT+(1-v)*H;}
+
+    // Grid
+    TT.strokeStyle='#f0f0f0';TT.lineWidth=.5;
+    [20,40,60].forEach(function(t){var x=tx(t);ln2(TT,x,PT,x,PT+H);});
+    [.2,.4,.6,.8].forEach(function(v){var y=ty(v);ln2(TT,PL,y,PL+W,y);});
+    TT.strokeStyle='#81D4FA';TT.lineWidth=1;
+    ln2(TT,PL,PT+H,PL+W,PT+H);ln2(TT,PL,PT,PL,PT+H);
+
+    // Iterate two trajectories
+    var x1=x0,x2=x0+eps;
+    var pts1=[x1],pts2=[x2];
+    for(var i=0;i<N;i++){
+      x1=f(x1,alpha);x2=f(x2,alpha);
+      if(x1<-1||x1>2)x1=NaN;if(x2<-1||x2>2)x2=NaN;
+      pts1.push(x1);pts2.push(x2);
+    }
+
+    // Draw trajectory 2 (perturbed) - green
+    TT.strokeStyle='#4CAF50';TT.lineWidth=1.5;TT.beginPath();
+    for(var i=0;i<=N;i++){if(isNaN(pts2[i]))break;var px=tx(i),py=ty(pts2[i]);if(!i)TT.moveTo(px,py);else TT.lineTo(px,py);}
+    TT.stroke();
+    // Draw markers
+    TT.fillStyle='#4CAF50';
+    for(var i=0;i<=N;i++){if(isNaN(pts2[i]))break;TT.beginPath();TT.arc(tx(i),ty(pts2[i]),1.5,0,Math.PI*2);TT.fill();}
+
+    // Draw trajectory 1 (original) - blue
+    TT.strokeStyle='#1565C0';TT.lineWidth=1.5;TT.beginPath();
+    for(var i=0;i<=N;i++){if(isNaN(pts1[i]))break;var px=tx(i),py=ty(pts1[i]);if(!i)TT.moveTo(px,py);else TT.lineTo(px,py);}
+    TT.stroke();
+    TT.fillStyle='#1565C0';
+    for(var i=0;i<=N;i++){if(isNaN(pts1[i]))break;TT.beginPath();TT.arc(tx(i),ty(pts1[i]),1.5,0,Math.PI*2);TT.fill();}
+
+    // Labels
+    TT.font='12px "Times New Roman",serif';TT.fillStyle='#888';
+    TT.fillText('t',TW-15,ty(0)+14);TT.fillText('x(t)',PL+3,PT-3);
+    TT.font='9px sans-serif';TT.fillStyle='#bbb';
+    [0,20,40,60,80].forEach(function(t){TT.fillText(t,tx(t)-4,ty(0)+13);});
+    [0,.5,1].forEach(function(v){TT.fillText(v.toFixed(1),2,ty(v)+3);});
+    // Legend
+    TT.font='10px sans-serif';
+    TT.fillStyle='#1565C0';TT.fillText('\u25CF x\u2080 = '+x0.toFixed(4),PL+3,PT+12);
+    TT.fillStyle='#4CAF50';TT.fillText('\u25CF x\u2080 = '+(x0+eps).toFixed(4),PL+3,PT+24);
+    TT.fillStyle='#888';TT.fillText('\u0394x\u2080 = '+eps.toExponential(0),PL+3,PT+36);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('lm-info');
+    // Detect period by iterating
+    var x=0.4;for(var i=0;i<500;i++)x=f(x,alpha);
+    var orbit=[x];for(var i=0;i<64;i++){x=f(x,alpha);orbit.push(x);}
+    var period=0;
+    for(var p=1;p<=32;p++){
+      var match=true;
+      for(var k=0;k<16;k++){if(Math.abs(orbit[k]-orbit[k+p])>1e-6){match=false;break;}}
+      if(match){period=p;break;}
+    }
+    var t='\u03B1 = '+alpha.toFixed(3)+' &nbsp;|&nbsp; ';
+    if(alpha<1)t+='<span style="color:#F44336">x \u2192 0 (extinction)</span>';
+    else if(period===1)t+='<span style="color:#4CAF50">Fixed point x* = '+(1-1/alpha).toFixed(4)+'</span>';
+    else if(period>0)t+='<span style="color:#1565C0">Period-'+period+' cycle</span>';
+    else t+='<span style="color:#F44336">Chaos (aperiodic)</span>';
+    el.innerHTML=t;
+  }
+  function updTitles(){
+    document.getElementById('lm-ct').textContent='Cobweb: \u03B1 = '+alpha.toFixed(3);
+    var x=0.4;for(var i=0;i<500;i++)x=f(x,alpha);
+    var orbit=[x];for(var i=0;i<64;i++){x=f(x,alpha);orbit.push(x);}
+    var per=0;for(var p=1;p<=32;p++){var m=true;for(var k=0;k<16;k++){if(Math.abs(orbit[k]-orbit[k+p])>1e-6){m=false;break;}}if(m){per=p;break;}}
+    document.getElementById('lm-tt').textContent=per>0?'Time series (period '+per+')':'Time series: sensitive dependence (chaos)';
+  }
+  function redraw(){drawBif();drawCobweb();drawTimeSeries();updInfo();updTitles();}
+
+  // Bifurcation diagram interaction
+  function getAlpha(e){
+    var rect=bd.getBoundingClientRect(),PL=45,W=BW-PL-10;
+    var cx=(e.clientX-rect.left)*(BW/rect.width);
+    var a=1+(cx-PL)/W*3;
+    return Math.max(0,Math.min(4,a));
+  }
+  bd.addEventListener('mousedown',function(e){drag=true;alpha=getAlpha(e);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();});
+  bd.addEventListener('mousemove',function(e){if(!drag)return;alpha=getAlpha(e);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();});
+  window.addEventListener('mouseup',function(){drag=false;});
+  bd.addEventListener('touchstart',function(e){e.preventDefault();drag=true;var t=e.touches[0];alpha=getAlpha(t);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();},{passive:false});
+  bd.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0];alpha=getAlpha(t);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();},{passive:false});
+  bd.addEventListener('touchend',function(){drag=false;});
+
+  aS.addEventListener('input',function(){alpha=parseFloat(this.value);aV.textContent=alpha.toFixed(3);redraw();});
+  redraw();
+})();
+</script>
 
 ### Deeper Properties of One-Dimensional Maps
 
@@ -8698,7 +8935,7 @@ By varying the parameter $r$ while keeping $s$ and $b$ fixed, the system exhibit
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Attractor)</span></p>
 
-An attractor is a set of states in the state space towards which a system's trajectory evolves over time. For a chaotic attractor, trajectories that start nearby will converge onto this object. Once on the attractor, the trajectory moves around chaotically, densely filling a region of the state space. It is important to note that chaos can also be unstable or transient; not all chaotic behavior is confined to an attractor.
+An **attractor** is a set of states in the state space towards which a system's trajectory evolves over time. For a chaotic attractor, trajectories that start nearby will converge onto this object. Once on the attractor, the trajectory moves around chaotically, densely filling a region of the state space. It is important to note that chaos can also be unstable or transient; not all chaotic behavior is confined to an attractor.
 
 </div>
 
@@ -8751,7 +8988,7 @@ Perhaps the most famous characteristic of chaos is its sensitive dependence on i
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sensitive Dependence on Initial Conditions)</span></p>
 
-This property means that two trajectories starting from arbitrarily close initial points will, on average, diverge from each other exponentially over time.
+The property of being **sensitive dependence on initial conditions** means that two trajectories starting from arbitrarily close initial points will, on average, diverge from each other exponentially over time.
 
 </div>
 
@@ -8838,7 +9075,7 @@ Here, $\lambda$ is the rate of separation, which we identify as the maximum Lyap
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Lyapunov Exponent: Continuous Time)</span></p>
 
-For a continuous-time dynamical system with flow operator $\phi_t(x_0)$, the maximum Lyapunov exponent $\lambda_{\text{max}}$ is defined by a two-step limit process:
+For a continuous-time dynamical system with flow operator $\phi_t(x_0)$, the **maximum Lyapunov exponent** $\lambda_{\text{max}}$ is defined by a two-step limit process:
 
 $$\lambda_{\text{max}} = = \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \Delta x(t) \|}{\| \Delta x_0 \|} \right) \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \phi_t(x_0 + \Delta x_0) - \phi_t(x_0) \|}{\| \Delta x_0 \|} \right)$$
 
@@ -8902,7 +9139,7 @@ While chaos is often described qualitatively by properties like aperiodic or irr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Chaos)</span></p>
 
-A dynamical system is considered chaotic if it satisfies the following core conditions:
+A dynamical system is considered **chaotic** if it satisfies the following core conditions:
 
 1. **Sensitive Dependence on Initial Conditions:** The system must have at least one positive Lyapunov exponent. That is, $\lambda_{\text{max}} > 0$. This ensures that nearby trajectories diverge exponentially over time.
 2. **Boundedness:** The system's trajectories must be confined to a bounded region of the state space. This prevents trajectories from simply exploding to infinity.
@@ -8971,7 +9208,7 @@ To understand the properties of fractal sets, we begin with a foundational examp
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Cantor Set)</span></p>
 
-The Cantor set is constructed through an iterative procedure starting with the closed interval $[0, 1]$.
+The **Cantor set** is constructed through an iterative procedure starting with the closed interval $[0, 1]$.
 
 1. **Start with $K_0$:** Let $K_0$ be the interval $[0, 1]$.
 2. **Iteration 1:** Remove the open middle third, $(\frac{1}{3}, \frac{2}{3})$, from $K_0$. The remaining set is 
@@ -9328,6 +9565,11 @@ $$D_{box} = \lim_{\epsilon \to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$$
 where $N(\epsilon)$ is the minimum number of $m$-dimensional boxes of side length $\epsilon$ required to cover the set $S$.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/box_dimension.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 
 #### Example: The Cantor Set
 
@@ -10353,7 +10595,7 @@ While SSE is used here for concreteness, any differentiable loss function (e.g.,
 #### The Gradient Descent Algorithm
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Gradient Descent Overview</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gradient Descent Overview)</span></p>
 
 Gradient descent is an iterative algorithm that seeks to find a minimum of the loss function. The process begins with an initial guess for the parameters and repeatedly adjusts them in the direction that most steeply decreases the loss.
 
@@ -10372,7 +10614,7 @@ $$\theta_0, \lambda_0 \sim \mathcal{N}(0, \sigma^2 I)$$
 #### The Core Idea: Minimizing the Loss Function
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Intuition for Gradient Descent</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition for Gradient Descent)</span></p>
 
 The central goal of training a model is to find a set of parameters, which we'll denote by $\theta$, that minimizes a loss function, $L(\theta)$. This function quantifies how poorly our model is performing on a given dataset; a lower loss value corresponds to a better model.
 
@@ -10392,7 +10634,7 @@ It is important to note that in classical machine learning, the aim was often to
 #### The Gradient Descent Algorithm
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Gradient Descent</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient Descent)</span></p>
 
 Gradient Descent is an iterative optimization algorithm used to find a local minimum of a differentiable function. The parameters are updated at each step $n$ according to the following rule:
 
@@ -10414,7 +10656,7 @@ where $\theta_1, \dots, \theta_L$ are the individual parameters of the model.
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A Simple Gradient Descent Loop</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A Simple Gradient Descent Loop)</span></p>
 
 A simple implementation of this algorithm can be formulated as a while loop, which continues as long as the improvement in loss is significant and a maximum number of iterations has not been reached.
 
@@ -10434,7 +10676,7 @@ This core idea forms the basis for the most common optimization procedures in ma
 #### The Training Algorithm as a Dynamical System
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Training as a Dynamical System</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training as a Dynamical System)</span></p>
 
 This is a fundamentally important point. The iterative update rule of gradient descent:
 
@@ -10461,7 +10703,7 @@ While powerful, the gradient descent algorithm is not without its challenges. Th
 #### Local Minima and Saddle Points
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Local Minima and Saddle Points</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Local Minima and Saddle Points)</span></p>
 
 A primary issue in gradient-based optimization is that the algorithm can get "stuck." The update rule relies on the gradient to determine the direction of movement. At any point where the gradient is zero ($\nabla L(\theta) = 0$), the update step becomes zero, and the algorithm halts.
 
@@ -10477,7 +10719,7 @@ In either case, the optimizer may fail to find a better solution, even if one ex
 #### Widely Differing Loss Slopes and Learning Rate Selection
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Learning Rate Dilemma</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Learning Rate Dilemma)</span></p>
 
 The geometry of the loss landscape presents another major challenge related to selecting an appropriate learning rate ($\gamma$). Loss functions for complex models are rarely smooth, uniform bowls. They often contain regions of vastly different curvature: some areas might be extremely steep "valleys," while others are wide, flat "plateaus."
 
@@ -10493,7 +10735,7 @@ The ideal learning rate would be adaptive: large in flat regions to speed up pro
 #### The Impact of System Dynamics on the Loss Landscape
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Dynamics Shape the Loss Landscape</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dynamics Shape the Loss Landscape)</span></p>
 
 The dynamics of the model being trained have direct implications for the structure of its loss function. While the loss function is defined over the parameter space, not the state space of the model, the behavior of the model's dynamics shapes the landscape.
 
@@ -10986,7 +11228,7 @@ The combination of these two operations allows the LSTM to selectively update it
 The flow of information into and out of the memory cell is controlled by three gates: the input gate ($i_t$), the forget gate ($f_t$), and the output gate ($o_t$). These gates are implemented using a sigmoid activation function, which outputs values between $0$ and $1$, representing the degree to which information is allowed to pass.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Gate Equations</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gate Equations)</span></p>
 
 The activation of each gate at time step $t$ is calculated as follows:
 
@@ -11020,7 +11262,7 @@ $$\sigma(y) = \frac{1}{1 + e^{-y}}$$
 The final output of the LSTM cell at time step $t$, denoted as $z_t$, is a filtered version of the memory cell state $c_t$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Final Output</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Final Output)</span></p>
 
 The total output $z_t$ is computed by passing the memory cell state through a $\tanh$ function and then multiplying it pointwise by the output gate's activation:
 
@@ -11029,7 +11271,7 @@ $$z_t = o_t \odot \tanh(c_t)$$
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Output Gate Intuition</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Output Gate Intuition)</span></p>
 
 This mechanism allows the network to control what part of its internal memory is exposed to the next layer or the next time step. The $\tanh$ function squashes the values of the memory cell to be between $-1$ and $1$, and the output gate $o_t$ then decides which of these values are relevant to pass on as the final output.
 
@@ -11042,7 +11284,7 @@ The specific architectural choices in the LSTM are not arbitrary; they embody tw
 ##### The Power of Linearity
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Power of Linearity</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Power of Linearity)</span></p>
 
 A key feature of the LSTM is the linear nature of the memory update through the forget gate. The operation $f_t \odot c_{t-1}$ is a linear interaction. This is critically important for preserving information over long time horizons.
 
@@ -11054,7 +11296,7 @@ A key feature of the LSTM is the linear nature of the memory update through the 
 ##### The Concept of Gating
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Concept of Gating</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Concept of Gating)</span></p>
 
 The second foundational concept is gating, where information flow is modulated by multiplicative units (the gates). This idea of using multiplicative interactions to control pathways in a neural network is powerful and has proven influential. This principle is not unique to LSTMs and can be found in other modern architectures, such as Mamba.
 
@@ -11063,7 +11305,7 @@ The second foundational concept is gating, where information flow is modulated b
 #### Variants and Simplifications: GRUs
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Gated Recurrent Units (GRUs)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gated Recurrent Units (GRUs))</span></p>
 
 The LSTM architecture, while powerful, is also complex. This has led to the development of several simplified variants. One of the most prominent is the Gated Recurrent Unit (GRU).
 
