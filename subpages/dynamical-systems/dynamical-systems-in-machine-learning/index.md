@@ -8364,12 +8364,26 @@ The trajectory of the eigenvalues in the complex plane as a control parameter is
 
 The supercritical Hopf bifurcation is characterized by a smooth, gradual onset of oscillation.
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Supercritical Hopf Bifurcation with String)</span></p>
+
+Suppose we have a physical system that settles down to equilibrium through exponentially damped oscillations. In other words, small disturbances decay after "ringing" for a while **(a)**. Now suppose that the decay rate depends on a control parameter $\mu_c$. If the decay becomes slower and slower and finally changes to growth at a critical value $\mu_c$, the equilibrium state will lose stability. In many cases the resulting motion is a small-amplitude, sinusoidal, limit cycle oscillation about the former steady state (**b)**. Then we say that the system has undergone a **supercritical Hopf bifurcation**.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/supercritical_hopf_bifurcation_string.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>Chaos begins, but this region is not purely chaotic</figcaption> -->
+</figure>
+</div>
+
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Supercritical Hopf Bifurcation)</span></p>
 
 In a **supercritical Hopf bifurcation**, as a control parameter is varied, a stable spiral equilibrium loses its stability and becomes an unstable spiral. At the exact moment of stability change, a stable limit cycle is born with an infinitesimally small amplitude, which then grows smoothly as the parameter continues to change.
 
 </div>
+
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bifurcation Diagram for Supercritical Hopf)</span></p>
@@ -8911,8 +8925,8 @@ That special trajectory is called a **homoclinic orbit**.
 
 </div>
 
-
-### Typical picture
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Typical picture of homoclinic bifurcation)</span></p>
 
 Before the bifurcation:
 
@@ -8926,9 +8940,11 @@ After the bifurcation:
 
 * the periodic orbit may disappear, or a new one may appear, depending on the system.
 
-### Key feature near a homoclinic bifurcation
+**Key feature near a homoclinic bifurcation**
 
 If there is a nearby periodic orbit, its period often becomes **very large** as the bifurcation is approached, because the trajectory spends a long time lingering near the saddle point.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Critical transitions induced by a saddle-node bifurcation)</span></p>
@@ -9495,39 +9511,62 @@ A final interesting feature visible in the bifurcation diagram is the presence o
 </script>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Period Doubling)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Logistic Map)</span></p>
 
-Suppose we fix $r$, choose some initial population $x_0$, and then use the logistic map to generate the subsequent $x_n$. What happens?
+The map is
 
-For small growth rate $r<1$, the population always goes extinct: $x_0 \to n$ as $n\to\infty$. This gloomy result can be proven by cobwebbing. 
+$$x_{n+1}=r x_n(1-x_n)$$
 
-For $1 < r < 3$ the population grows and eventually reaches a nonzero steady state. The results are plotted here as a time series of x
-vs. n. To
-n
-make the sequence clearer, we have connected the discrete points ( n, x
-n ) by line
-segments, but remember that only the corners of the jagged curves are meaningful.
+* For $0 \le r < 1$, every orbit in $[0,1]$ is driven to to a stable fixed point $0$. At $r=0$, the system becomes $0$ immediately after one step. With r growing the trajectory oscillates more, but still converges.
+
+* For $1 \le r \le 3$, the long-term behavior is no longer extinction. Instead, for almost any initial value in $(0,1)$, the orbit converges to the fixed point
+
+  $$x^\ast=1-\frac1r.$$
+
+* At $r=1$, there is a transcritical bifurcation: the stable fixed point switches from $0$ to $1-\frac1r$. For $1<r\le2$ the approach is monotone; for $2<r<3$ it still converges to the same fixed point, but with damped oscillations around it.
+
+* At $r=3$, the fixed point loses stability and a period-doubling bifurcation occurs. For $3 \le r \le 3.44949$, the system settles into a stable 2-cycle: the orbit alternates forever between two values instead of converging to one. ([Wikipedia][1])
+
+* For $3.44949 \le r \le 3.56995$, that 2-cycle itself loses stability, producing a 4-cycle, then 8-cycle, then 16-cycle, and so on. This is the classic period-doubling cascade. The bifurcation points get closer and closer together, accumulating at about $r \approx 3.56995$.
+
+* For $3.56995 < r < 4$, chaos begins: tiny differences in the initial condition can lead to dramatically different trajectories. But this region is not purely chaotic. It contains "islands of stability," where regular periodic behavior reappears. A famous example is the period-3 window beginning near $r \approx 3.82843$, followed inside that window by its own doubling sequence $3,6,12,\dots$. The bifurcation diagram in this regime is self-similar and fractal-like.
+
+* At $r=4$, the map is chaotic on the entire interval $[0,1]$. The Lyapunov exponent is maximal there, equal to $\log 2$. The orbit visits the whole interval in a nonuniform way: points near $0$ and $1$ occur more often than points near the middle. Wikipedia also notes that although unstable periodic orbits of every period exist, almost all initial conditions produce nonperiodic chaotic motion.
+
+* For $r>4$, most trajectories escape the interval $[0,1]$ and diverge. Still, there remains a Cantor-set-like collection of exceptional initial conditions whose trajectories stay bounded, and the dynamics restricted to that set is chaotic.
 
 <div class="pmf-grid">
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_2-8.png' | relative_url }}" alt="a" loading="lazy">
-  <!-- <figcaption>Neutrally stable harmonic oscillations in linear ODE system. The graph illustrates that the choice of numerical ODE solver is important when integrating ODEs numerically: While the exact analytical solution (blue) and that of an implicit second-order numerical solver (Rosenbrock-2, green) tightly agree (in fact, a blue curve is not visible since the green curve falls on top of it), a simple forward Euler scheme (red) diverges from the true solution. </figcaption> -->
+  <figcaption>For $1\gt r\gt3$ the population grows and eventually reaches a nonzero steady state</figcaption>
 </figure>
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_3-3.png' | relative_url }}" alt="a" loading="lazy">
-  <!-- <figcaption>Neutrally stable harmonic oscillations in linear ODE system. The graph illustrates that the choice of numerical ODE solver is important when integrating ODEs numerically: While the exact analytical solution (blue) and that of an implicit second-order numerical solver (Rosenbrock-2, green) tightly agree (in fact, a blue curve is not visible since the green curve falls on top of it), a simple forward Euler scheme (red) diverges from the true solution. </figcaption> -->
+  <figcaption>For larger $r$, say $r=3.3$, the population builds up again but now oscillates about the former steady state, alternating between a large population in one generation and a smaller population in the next. This type of oscillation, in which $x_n$ repeats every two iterations, is called a period-2 cycle.</figcaption>
 </figure>
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_3-5.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption>
+  <figcaption>At still larger $r$, say $r=3.5$, the population approaches a cycle that now repeats every four generations; the previous cycle has doubled its period to period-4</figcaption>
 </figure>
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_3-9.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption>
+  <figcaption>Chaos begins, but this region is not purely chaotic</figcaption>
 </figure>
 </div>
 
+The one-line intuition is: as $r$ increases, the logistic map goes from **simple decay**, to **a stable equilibrium**, to **periodic oscillations**, then through a **cascade of doublings**, and finally into **chaos with embedded pockets of order**.
+
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Bifurcation_diagram_of_the_logistic_map_for_parameters0to3.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Bifurcation diagram of the logistic map for parameters $0$ to $3$. The blue line represents the fixed point $x_{f1}=0$, and the red line represents the fixed point $x_{f2}=1-1/r$.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/transcritical_bifurcation_logistic_map.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Transcritical bifurcation</strong> of the logistic map occurring at $r = 1$. For $r < 1$, $x_{f2}$ exists outside $[0, 1]$ as an unstable fixed point, but for $r = 1$, the two fixed points collide, and for $r > 1$, $x_{f2}$ appears between $[0, 1]$ as a stable fixed point.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Period Doublings Biffurcation Frequency Increases)</span></p>
@@ -9538,7 +9577,7 @@ $$\delta = \lim_{n\to\infty} \frac{r_n-r_{n-1}}{r_{n+1}-r_n} = 4.669...$$
 
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_period_doublings.png' | relative_url }}" alt="a" loading="lazy">
-  <figcaption><strong>Period-doublings</string> to cycles of period $8, 16, 32, \dots$, occur as $r$ increases. Specifically, let $r_n$ denote the value of r where a $2^n$-cycle first appears.</figcaption>
+  <figcaption><strong>Period-doublings</strong> to cycles of period $8, 16, 32, \dots$, occur as $r$ increases. Specifically, let $r_n$ denote the value of r where a $2^n$-cycle first appears.</figcaption>
 </figure>
 
 </div>
@@ -9640,6 +9679,20 @@ the product of derivatives along the whole period-$2^k$ orbit. That product cros
   <img src="{{ '/assets/images/notes/dynamical-systems/Iterated_logistic_functions.svg' | relative_url }}" alt="a" loading="lazy">
   <figcaption>Logistic function $f$ (blue) and its iterated versions $f^2$, $f^3$, $f^4$ and $f^5$ for $r = 3.5$. For example, for any initial value on the horizontal axis, $f^4$ gives the value of the iterate four iterations later.</figcaption>
 </figure>
+
+<div class="pmf-grid">
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_one_iteration.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_two_iterations.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption> -->
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_three_iterations.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption> -->
+</figure>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Multiple/Cascade Doubling Detection in General for $nD$ maps)</span></p>
@@ -9789,6 +9842,11 @@ $$\delta = \lim_{n \to \infty} \frac{\alpha_n - \alpha_{n-1}}{\alpha_{n+1} - \al
 This universality is a profound property, indicating that a wide class of systems transitions to chaos in a quantitatively identical manner.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Feigenbaum_Tree.gif' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Feigenbaum Tree.</strong> Evolution of different initial conditions as a function of $r$ (The parameter $k$ from the figure corresponds to the parameter $r$ from the definition in the article.)</figcaption>
+</figure>
 
 ### Examples of Chaotic Behavior
 
