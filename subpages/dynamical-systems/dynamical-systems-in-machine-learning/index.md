@@ -2799,6 +2799,69 @@ This theorem is the bedrock for much of dynamical systems theory. It tells us th
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Fundamental Existence and Uniqueness Theorem For Non-Autonomous Systems)</span></p>
+
+The origional thoerem works not only for autonomous systems.
+
+The real principle is:
+
+If the ODE has a unique solution through each initial condition, then **two different trajectories cannot pass through the same state at the same time**.
+
+For an autonomous system
+
+$$\dot x = f(x),$$
+
+this is usually phrased as “trajectories do not intersect in phase space,” because the velocity at a point $x$ is fixed by $f(x)$. If two trajectories met at some point $x_0$, they would have the same future and past by uniqueness, so they were not really different trajectories.
+
+For a nonautonomous system
+
+$$\dot x = f(t,x),$$
+
+the situation is a bit subtler:
+
+* In the **extended state space** $(t,x)$, trajectories still do not intersect, again assuming uniqueness.
+* But if you look only at the **$x$-space** and ignore time, then yes, two solution curves can pass through the same point $x$ at different times.
+
+Why? Because the vector field now depends on $t$. Being at the same position $x$ at time $t_1$ and at time $t_2$ are different dynamical situations.
+
+Example:
+
+$$\dot x = t.$$
+
+Solutions are
+
+$$x(t)=\frac{t^2}{2}+C.$$
+
+These are parabolas. In the $t$-$x$ plane they do not intersect if $C$ is different. But if you only look at $x$ as a 1D state, different trajectories can hit the same value $x$ at different times.
+
+An even more direct forced example:
+
+$$\dot x = \cos t.$$
+
+Then
+
+$$x(t)=\sin t + C.$$
+
+Different solutions repeatedly take the same $x$-values at different times.
+
+So the clean statement is:
+
+* **Autonomous system:** trajectories cannot intersect in state space, under uniqueness.
+* **Nonautonomous system:** trajectories cannot intersect in $(t,x)$-space, but they **can** appear to intersect in $x$-space if the intersection happens at different times.
+* They still cannot have the same $x$ at the same $t$, unless they are actually the same solution, assuming uniqueness.
+
+A very standard trick is to make the nonautonomous system autonomous by adding time as a state:
+
+$$\dot x = f(t,x), \qquad \dot t = 1$$
+
+Then everything becomes autonomous in the enlarged space, and the no-intersection rule is restored there.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Continuously differentiable is sufficient but not necessary)</span></p>
+
 The requirement of being continuously differentiable ($C^1$) is sufficient, but it is actually stronger than necessary. A weaker, more general condition also guarantees uniqueness.
 
 The theorem can be proven under the weaker assumption that the function $f$ is locally Lipschitz continuous. For any two points $x$ and $y$ in some local interval, a function is Lipschitz continuous if the absolute difference in its values is bounded by a constant multiple of the distance between the points.  
@@ -2806,6 +2869,8 @@ The theorem can be proven under the weaker assumption that the function $f$ is l
 $$\lvert f(x) - f(y)\rvert \le L \lvert x - y\rvert$$
 
 Here, $L$ is a positive real number known as the Lipschitz constant. Intuitively, this condition means that the slope of the function is bounded. Every continuously differentiable function is locally Lipschitz, but not every Lipschitz continuous function is differentiable, making this a more general condition.
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Picard-Lindelof)</span></p>
@@ -3572,11 +3637,21 @@ where $\phi_t(S) = \lbrace \phi_t(x) \mid x \in S \rbrace$.
 
 </div>
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/invaraint_set_2D.png' | relative_url }}" alt="a" loading="lazy">
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/invaraint_set_1D.svg' | relative_url }}" alt="a" loading="lazy">
+  </figure>
+</div>
+
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
-* Forward and Backward Invariance: One can also define one-sided invariance. A set $S$ is forward invariant if $\phi_t(S) \subset S$ for all $t \ge 0$. This means that once you are in the set, you can never leave it as time moves forward. A set is backward invariant if $\phi_t(S) \subset S$ for all $t \le 0$.
-* Discrete Time Systems (Maps): The concept applies equally to discrete maps. For a map $f: E \to E$, a set $S$ is invariant if applying the map (or its inverse) any number of times to a point in $S$ yields a point that is still in $S$. That is, $f(S) = S$.
+* **Forward and Backward Invariance:** One can also define one-sided invariance. A set $S$ is forward invariant if $\phi_t(S) \subset S$ for all $t \ge 0$. This means that once you are in the set, you can never leave it as time moves forward. A set is backward invariant if $\phi_t(S) \subset S$ for all $t \le 0$.
+* **Discrete Time Systems (Maps):** The concept applies equally to discrete maps. For a map $f: E \to E$, a set $S$ is invariant if applying the map (or its inverse) any number of times to a point in $S$ yields a point that is still in $S$. That is, $f(S) = S$.
 
 The simplest examples of invariant sets are equilibrium points and limit cycles. Understanding which sets are invariant helps decompose the phase space into dynamically independent regions.
 
@@ -3961,7 +4036,6 @@ Think of equilibria as providing the ultimate destinations or origins for trajec
 
 </div>
 
-
 ### Multistability and the Wilson-Cowan Model
 
 We now move to a fascinating and ubiquitous phenomenon in nonlinear systems: multistability. This is the capacity for a system to possess more than one stable state (e.g., multiple stable equilibria) for a single set of parameters.
@@ -4137,9 +4211,9 @@ Let a dynamical system be defined by a state space $E \subseteq \mathbb{R}^m$ an
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Omega Limit Set)</span></p>
 
-The **omega limit set** of a point $x_0 \in E$, denoted $\Omega(x_0)$, is the set of points that the trajectory through $x_0$ approaches as $t \to \infty$. It is formally defined as the intersection of the closures of the trajectory's future paths:
+The **omega limit set** of a point $x_0 \in E$, denoted $\omega(x_0)$, is the set of points that the trajectory through $x_0$ approaches as $t \to \infty$. It is formally defined as the intersection of the closures of the trajectory's future paths:
 
-$$\Omega(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t > s} \phi_t(x_0)} = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t > s\rbrace }$$
+$$\omega(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t > s} \phi_t(x_0)} = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t > s\rbrace }$$
 
 </div>
 
@@ -4159,7 +4233,7 @@ This definition works by considering the entire future path of the trajectory st
 
 The **alpha limit set** of a point $x_0 \in E$, denoted $A(x_0)$, is defined analogously for reverse time $t \to -\infty$:
 
-$$A(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t < s} \phi_t(x_0)} =  = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t < s\rbrace }$$
+$$A(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t < s} \phi_t(x_0)} = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t < s\rbrace }$$
 
 </div>
 
@@ -4272,6 +4346,152 @@ A **limit cycle** is a closed orbit that is isolated. The key distinction is "is
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Isolation, Limit Cycle vs. Center)</span></p>
+
+Consider a **stable limit cycle** being inside of the **unstable limit cycle**. They are neighbouring, but both are limit cycles.
+
+The word **isolated** does **not** mean "there are no other closed orbits anywhere nearby in the phase plane." It means:
+
+> for a given closed orbit, there exists some small neighborhood of that orbit that contains no other closed orbits.
+
+So if you have:
+
+* one **stable** closed orbit,
+* and a larger **unstable** closed orbit around it,
+
+then each one can still be isolated **individually**, provided there is a little band around each cycle with no other closed orbits inside that band.
+
+What is forbidden is a **continuous family** of closed orbits packed arbitrarily close together, like in a center. In a center, every small neighborhood of one closed orbit contains more closed orbits, so none of them is isolated.
+
+This is completely possible. The two cycles are separate closed orbits, and each may have its own **empty "buffer zone"** with no other periodic orbit right next to it.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/two_limit_cycles_phase_portrait.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Inner stable limit cycle inside an outer unstable limit cycle</figcaption>
+</figure>
+
+The real contrast is:
+
+* **center**: infinitely many nearby closed orbits, not isolated
+* **limit cycle**: a particular closed orbit stands alone locally
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Is Limit Cycle an attracting or repelling Center?)</span></p>
+
+No.
+
+A **center** and a **limit cycle** are different kinds of objects.
+
+A **center** is:
+
+* an **equilibrium point** in the middle, and
+* around it there is a whole family of closed orbits.
+
+A **limit cycle** is:
+
+* not an equilibrium point,
+* but one particular **periodic orbit**,
+* and it is **isolated** from other periodic orbits.
+
+So the analogy is tempting, but not correct.
+
+More precisely:
+
+* a **center** has nearby trajectories that are also closed curves
+* a **stable focus** has nearby trajectories spiraling into an equilibrium
+* a **stable limit cycle** has nearby trajectories spiraling into a **closed orbit**
+* an **unstable limit cycle** has nearby trajectories spiraling away from a **closed orbit**
+
+So a stable or unstable limit cycle is much closer in spirit to a **focus**, not to a center.
+
+Why “attracting center” is not really a thing:
+
+* if trajectories spiral into the middle point, that point is a **stable focus** or node, not a center
+* if trajectories spiral away, it is an **unstable focus** or node, not a center
+* for a true center, nearby trajectories stay on closed orbits and neither approach nor leave the equilibrium asymptotically
+
+So:
+
+* **center** = equilibrium + non-isolated family of periodic orbits + neutral behavior
+* **limit cycle** = isolated periodic orbit + can be attracting, repelling, or semistable
+
+The main difference is not just attraction/repulsion.
+The crucial difference is **equilibrium point vs isolated closed orbit**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Limit Cycle is inherently a nonlinear phenomenon)</span></p>
+
+Limit cycles are inherently nonlinear phenomena; they can’t occur in linear systems. 
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Closed orbits could happen in linear DS, but not limit cycles)</span></p>
+
+Of course, a linear system 
+
+$$\dot x = x A$$
+
+can have closed orbits, but **they won’t be isolated**; if $x(t)$ is a periodic solution, then so is $cx(t)$ for any constant $c\neq 0$. Hence $x(t)$ is surrounded by a one-parameter family of closed orbits (see Figure).
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/one_parameter_family_of_closed_orbits.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>One-parameter family of closed orbits</figcaption>
+</figure>
+
+Consequently, the amplitude of a linear oscillation is set entirely by its initial conditions; **any slight disturbance to the amplitude will persist forever**. In contrast, limit cycle oscillations are determined by the structure of the system itself.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Importance of Limit Cycles)</span></p>
+
+Stable limit cycles are very important scientifically—they model systems that exhibit self-sustained oscillations. In other words, **these systems oscillate even in the absence of external periodic forcing**. Of the countless examples that could be given, we mention only a few: 
+
+* the beating of a heart; 
+* the periodic firing of a pacemaker neuron; 
+* daily rhythms in human body temperature and hormone secretion; 
+* chemical reactions that oscillate spontaneously;
+* dangerous self-excited vibrations in bridges and airplane wings. 
+
+In each case, there is a standard oscillation of some preferred period, waveform, and amplitude. If the system is perturbed slightly, it always returns to the standard cycle.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple Limit Cycle)</span></p>
+
+**It’s straightforward to construct examples of limit cycles if we use polar coordinates.**
+
+Consider the system
+
+$$\dot r = r(1 - r^2)$$
+
+$$\dot \theta = 1$$
+
+where $r\geq 0$. The radial and angular dynamics are uncoupled and so can be analyzed separately.
+
+<div class="pmf-grid">
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/simple_limit_cycle1.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/simple_limit_cycle2.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/simple_limit_cycle3.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+</div>
+
+**As expected, the solution settles down to a sinusoidal oscillation of constant amplitude, corresponding to the limit cycle solution.**
+
+</div>
+
 ### Limit Cycles and Nonlinear Oscillations
 
 In our previous analysis, we focused on systems whose long-term behavior converges to a single point in state space—an equilibrium or fixed point. However, many systems in nature, from the firing of neurons to the orbits of planets, exhibit sustained, stable oscillations. These phenomena cannot be explained by fixed points alone. This chapter introduces a new type of attractor: the limit cycle, which provides the mathematical framework for understanding stable, nonlinear oscillations.
@@ -4307,13 +4527,119 @@ A compelling biological application is modeling short-term or working memory.
 
 </div>
 
+#### Damped Oscillations
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Damped Oscillations)</span></p>
+
+A **damped oscillator** is an oscillating system in which a force or term acts to reduce the motion over time by removing energy.
+
+In differential-equation form, a basic damped oscillator is
+
+$$m\ddot x + c\dot x + kx = 0,$$
+
+where
+
+* $x(t)$ is the displacement,
+* $m\ddot x$ is inertia,
+* $kx$ is the restoring force,
+* $c\dot x$ is the **damping term**.
+
+The damping term opposes the motion and causes the amplitude of oscillation to decrease with time.
+
+So a compact definition is:
+
+> A damped oscillator is an oscillator whose motion is accompanied by energy dissipation, usually modeled by a term depending on velocity, so that the oscillations decay over time.
+
+In nonlinear systems, “damping” can depend on $x$ or $\dot x$, and then it may not always reduce motion everywhere. That is why nonlinear damping can even produce a limit cycle. But the basic meaning is still: **a mechanism that changes the oscillation by dissipating or regulating energy**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Damping Term)</span></p>
+
+It usually means a term proportional to the **velocity** that either removes or injects energy.
+
+For a second-order oscillator, you often see something like
+
+$$x'' + c,x' + f(x)=0$$
+
+or, in the van der Pol form,
+
+$$x''-\mu(1-x^2)x' + x = 0.$$
+
+Here the term involving $x'$ is called the **damping term**.
+
+What it does:
+
+* if the coefficient of $x'$ is **positive**, it opposes motion and **dissipates energy**
+* if the coefficient is **negative**, it effectively **adds energy**
+* if the coefficient depends on $x$ or amplitude, the damping is **nonlinear**
+
+Why this matters for a limit cycle:
+
+A stable limit cycle often appears when the system behaves like this:
+
+* for **small oscillations**, damping is negative, so the motion gets amplified
+* for **large oscillations**, damping is positive, so the motion gets reduced
+
+So the trajectory neither dies out nor blows up forever. It settles to one preferred amplitude: that is the **stable limit cycle**.
+
+Example: van der Pol oscillator
+
+$$x''-\mu(1-x^2)x' + x = 0$$
+
+Rewrite the damping part as
+
+$$-\mu(1-x^2)x' = \mu(x^2-1)x'.$$
+
+Now look at the sign:
+
+* when $\lvert x\rvert <1$, $x^2-1<0$: this acts like **negative damping**, so energy is pumped in
+* when $\lvert x\rvert >1$, $x^2-1>0$: this acts like **positive damping**, so energy is removed
+
+That balance creates a stable periodic oscillation.
+
+So the damping term is not some special “limit-cycle term.” It is a term controlling **amplitude growth or decay**, and in nonlinear systems it can be exactly what produces a limit cycle.
+
+A useful intuition:
+
+* **ordinary positive damping**: oscillation shrinks to an equilibrium
+* **nonlinear damping with sign change**: oscillation is pushed toward a specific finite size, giving a limit cycle
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Damped Oscialltions in Physics)</span></p>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/VanDerPol_randomly_chosen_initial_conditions_are_attracted_to_stable_orbit.jpg' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Damped_spring.gif' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Underdamped spring–mass system</figcaption>
+</figure>
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/VanDerPol_randomly_chosen_initial_conditions_are_attracted_to_stable_orbit.gif' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Van Der Pol Oscillator. Randomly chosen initial conditions are attracted to stable orbit</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/VanDerPolPhaseSpace.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Stable limit cycle (shown in bold) in phase space for the Van der Pol oscillator</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Generality of Dynamical Systems Theory)</span></p>
 
 One might question if these simple models are "expressive enough" to capture the complexity of natural phenomena. A core strength of dynamical systems theory is its generality. It describes the evolution of a system over time purely from the perspective of its dynamics. Whether the underlying substrate is a set of neurons, a physical circuit, or an ecological population, the system is described by differential equations. The principles of attractors, repellors, and orbits provide a universal language for understanding the emergent behavior, regardless of the system's specific implementation.
 
 </div>
-
 
 #### Formal Definition of a Limit Cycle
 
@@ -4345,6 +4671,11 @@ Just like fixed points, limit cycles can be classified by their stability. The s
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/stable_unstable_halfstable_limit_cycle.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
 
@@ -4356,9 +4687,149 @@ The formal definition of stability for a limit cycle is analogous to the "Lyapun
 
 Proving the existence of a limit cycle is generally more complex than finding a fixed point (which only requires solving $\dot{\mathbf{x}} = 0$). We will introduce several powerful concepts for analyzing systems in the 2D plane.
 
+##### Lyapunov Functions
+
+Even in systems that are not related to mechanics, it is sometimes possible to define an energy-like quantity that decreases as the system evolves. Such a quantity is called a **Lyapunov function**. If a Lyapunov function exists, then the system cannot have closed or periodic orbits.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lyapunov function)</span></p>
+
+Consider a system
+
+$$\dot{\mathbf{x}}=\mathbf{f}(\mathbf{x})$$
+
+with a fixed point at $\mathbf{x}^\ast$. Suppose there exists a continuously differentiable real-valued function $V(\mathbf{x})$ called **Lyapunov function** such that:
+
+1. $V(\mathbf{x})>0$ for every $\mathbf{x}\neq \mathbf{x}^\ast$, and $V(\mathbf{x}^\ast)=0$.
+   * In this case, $V$ is called **positive definite**.
+
+2. $\dot V < 0$ for every $\mathbf{x}\neq \mathbf{x}^\ast$.
+   * This means that along every trajectory, the value of $V$ strictly decreases, so the motion always goes “downhill” toward $\mathbf{x}^\ast$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/lyapunov_function.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
+</figure>
+
+The intuition is that all trajectories move steadily downward on the surface defined by $V(\mathbf{x})$, eventually reaching the minimum at $\mathbf{x}^\ast$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Fixed point stability using Lyapunov function)</span></p>
+
+Under these conditions, the fixed point $\mathbf{x}^\ast$ is **globally asymptotically stable**: no matter where the system starts, the solution $\mathbf{x}(t)$ approaches $\mathbf{x}^\ast$ as $t\to\infty$. In particular, the system cannot contain any closed orbits.
+
+A solution cannot get stuck anywhere else. If it did, then $V$ would stop changing there. But this is impossible because, by assumption, $\dot V<0$ everywhere except at $\mathbf{x}^\ast$.
+
+* if $\dot V(x)\le 0$, the equilibrium is **stable**
+* if $\dot V(x)<0$ for all $x\neq 0$, the equilibrium is **asymptotically stable**
+
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/lyapunov-functions-1.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Vector field on the line</figcaption>
+  </figure>
+  
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/Geometric-meaning-of-the-Lyapunov-function.png' | relative_url }}" alt="a" loading="lazy">
+    <figcaption>Vector field on the circle</figcaption>
+  </figure>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Drawback of Lyapunov functions method)</span></p>
+
+* Unfortunately, **there is no general procedure for finding Lyapunov functions**. 
+* In practice, constructing one often requires creativity or insight, although sometimes it is possible to work backward from the desired properties. In some cases, sums of squares provide useful candidates.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Lyapunov Function Application)</span></p>
+
+Use a Lyapunov function to show that the system
+
+$$\dot x = -x + 4y, \qquad \dot y = -x - y^3$$
+
+has no closed orbits.
+
+**Solution:**
+
+Consider the candidate Lyapunov function
+
+$$V(x,y)=x^2 + ay^2,$$
+
+where $a$ is a constant to be chosen.
+
+To check whether this works, compute its derivative along trajectories:
+
+$$\dot V = 2x\dot x + 2ay\dot y.$$
+
+Substituting the system equations gives
+
+$$\dot V = 2x(-x+4y) + 2ay(-x-y^3).$$
+
+Expanding,
+
+$$\dot V = -2x^2 + (8-2a)xy - 2ay^4.$$
+
+Now choose $a=4$. Then the mixed term $xy$ disappears, and we obtain
+
+$$\dot V = -2x^2 - 8y^4$$
+
+With this choice,
+
+$$V(x,y)=x^2+4y^2$$
+
+which is positive for every $(x,y)\neq(0,0)$, and $V(0,0)=0$. Also,
+
+$$\dot V < 0 \qquad \text{for all } (x,y)\neq (0,0)$$
+
+Therefore $V$ is a Lyapunov function. It follows that the system has no closed orbits. In fact, every trajectory approaches the origin as $t\to\infty$.
+
+<div class="pmf-grid">
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/lyapunov_function_example1.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/lyapunov_function_example2.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/lyapunov_function_example3.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+</div>
+
+</div>
+
 ##### The Poincaré-Bendixson Theorem and Trapping Regions
 
-The Poincaré-Bendixson Theorem provides a powerful method for proving the existence of a limit cycle in a 2D system without explicitly solving the equations. The theorem's central idea relies on identifying a trapping region.
+Before, we learned how to show that closed orbits do **not** exist. Now we look at the opposite question: how can we prove that closed orbits **do** exist in some systems? One of the main tools for this is the **Poincaré–Bendixson Theorem**. It is very important in planar nonlinear dynamics because it also shows that chaos cannot occur in two-dimensional phase planes.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Poincaré-Bendixson Theorem Idea)</span></p>
+
+Assume that:
+
+1. $R$ is a closed and bounded region in the plane.
+2. $\dot{\mathbf{x}}=\mathbf{f}(\mathbf{x})$ is a continuously differentiable vector field on an open set containing $R$.
+3. $R$ contains no equilibrium points.
+4. There is a trajectory $C$ that starts in $R$ and remains in $R$ for all future time.
+
+Then one of two things must happen:
+
+* either $C$ itself is a closed orbit,
+* or $C$ approaches a closed orbit as $t \to \infty$.
+
+So in either case, the **region $R$ contains at least one closed orbit**.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/PoincareBendixsonTheoremIdea.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Trapping Region)</span></p>
@@ -4367,28 +4838,43 @@ A **trapping region** is a closed set in the phase space such that any trajector
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Trapping Region Construction)</span></p>
+
+When using the Poincaré–Bendixson theorem, conditions (1)–(3) are usually easy to check. The difficult part is condition (4): how do we know there is a trajectory $C$ that stays inside the region forever?
+
+A common method is to build a **trapping region** $R$. This is a closed, connected region whose boundary has the property that the vector field points **inward** at every point. Because of this, any trajectory that enters $R$ cannot leave it, so trajectories in (R) remain confined there for all future time.
+
+If we can also make sure that $R$ contains **no equilibrium points**, then the Poincaré–Bendixson theorem tells us that $R$ must contain a **closed orbit**.
+
+In practice, the theorem can still be hard to use. It becomes much easier in special cases, for example when the system can be written simply in **polar coordinates**.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/TrappingRegion.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-The theorem states that if a trapping region in a 2D system contains no fixed points, then it must contain at least one closed orbit. A more common application is when a trapping region contains a single fixed point that is unstable (like an unstable spiral or node).
-
-Let's apply this to our Wilson-Cowan example:
-
-1. We have a single fixed point which we have made into an unstable spiral. Any trajectory starting close to this point will spiral outwards. We can therefore draw a small boundary around the fixed point where the flow is always directed outwards.
-2. The sigmoid functions in the Wilson-Cowan equations are bounded. This means that if you go far enough out in the state space, the linear $-x$ terms will dominate, and the flow will be directed back inwards towards the origin. We can therefore draw a large boundary far from the origin where the flow is always directed inwards.
-3. The annular region between these two boundaries is a trapping region. Trajectories cannot escape inwards because they are repelled by the unstable fixed point, and they cannot escape outwards because they are pushed back by the system's dynamics at large distances.
-4. Since this region contains no other fixed points, the Poincaré-Bendixson theorem guarantees that there must be a closed orbit—our limit cycle—within this annulus.
-
-##### A Note on Unstable Cycles: Time Reversal
-
-Unstable limit cycles are difficult to observe in simulations because trajectories are driven away from them. A simple but effective trick to locate them is to invert time. By making the substitution $t \to -t$, the system's differential equation $\dot{\mathbf{x}} = f(\mathbf{x})$ becomes $\dot{\mathbf{x}} = -f(\mathbf{x})$. This transformation reverses the flow of the vector field.
-
-* An unstable limit cycle, from which trajectories diverged, becomes a stable limit cycle to which trajectories converge.
-* This makes the formerly unstable cycle visible and easy to locate through numerical simulation.
-
-##### The Poincaré Map
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Poincaré Map is better or more systematic analysis of limit cycles)</span></p>
 
 For a more systematic analysis of limit cycles, especially their stability, one can use the Poincaré map. The core idea is to convert the continuous flow around the cycle into a discrete map. By analyzing the properties of this map, one can deduce properties of the limit cycle itself. This topic will be revisited in greater detail later.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Poincaré-Bendixson theorem)</span></p>
+
+Suppose you have a system of continuously differentiable differential equations in the plane ($\mathbb{R}^2$):
+
+$$\dot{x} = f(x,y)$$
+
+$$\dot{y} = g(x,y)$$
+
+Let $R$ be a closed, bounded subset of the plane. If a trajectory $C$ is confined to $R$ for all time $t \ge 0$, then the long-term behavior of $C$ (its $\omega$-limit set) must be exactly one of the following three things:
+* **A fixed point** (equilibrium point).
+* **A closed orbit** (a periodic trajectory or limit cycle).
+* **A network of fixed points joined by trajectories** (homoclinic or heteroclinic orbits).
 
 </div>
 
@@ -4410,11 +4896,11 @@ The **index of a fixed point** is a property of the vector field surrounding it.
 
 Let's calculate the index for different types of fixed points:
 
-* Stable Node: The vector field points inwards from all directions. As we move counter-clockwise around the curve $C$, the vector field also rotates counter-clockwise by one full turn.
+* **Stable Node:** The vector field points inwards from all directions. As we move counter-clockwise around the curve $C$, the vector field also rotates counter-clockwise by one full turn.
   * Index = $+1$
-* Unstable Node: The vector field points outwards in all directions. As we move counter-clockwise around $C$, the vector field again rotates counter-clockwise by one full turn.
+* **Unstable Node:** The vector field points outwards in all directions. As we move counter-clockwise around $C$, the vector field again rotates counter-clockwise by one full turn.
   * Index = $+1$
-* Saddle Point: The flow moves inwards along the stable manifold and outwards along the unstable manifold. Let's trace the vector's rotation as we move around the curve $C$:
+* **Saddle Point:** The flow moves inwards along the stable manifold and outwards along the unstable manifold. Let's trace the vector's rotation as we move around the curve $C$:
   * As we start on the right and move up (counter-clockwise), the vector field points mostly down and left. As we cross the stable manifold, the vector points... (The analysis from the source context is incomplete here).
 
 </div>
@@ -4937,8 +5423,6 @@ This reduction is especially useful because $S$ has dimension $n-1$, so the Poin
 
 </div>
 
-
-
 #### Fixed Points, Stabilities and Periodic Orbits with Poincaré Map
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -4979,6 +5463,11 @@ Thus, the local behavior of $P$ near a fixed point tells us the local behavior o
 In practice, one often studies the linearization of the Poincaré map near $\mathbf{x}^\ast$. The eigenvalues of this linearized map determine whether perturbations decay or grow from one return to the next. Even without carrying out the full calculation, the conceptual message is clear: **stability of a periodic orbit is encoded in the stability of the fixed point of the Poincaré map**.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Limit_cycle_Poincare_map.svg.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Stable limit cycle (shown in bold) and two other trajectories spiraling into it</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the Poincaré Map Is Powerful)</span></p>
@@ -5132,7 +5621,7 @@ A **nonuniform oscillator** is a system on the circle whose phase $\theta$ evolv
 
 $$\dot{\theta}=f(\theta),$$
 
-where $f(\theta)$ is **$2\pi$-periodic** and has the **same sign for all (\theta)**, usually
+where $f(\theta)$ is **$2\pi$-periodic** and has the **same sign for all $\theta$**, usually
 
 $$f(\theta)>0 \quad \text{for all } \theta$$
 
@@ -6452,6 +6941,27 @@ The system's behavior is governed by parameters such as the connection weights (
 * Conversely, decreasing $w_{EE}$ can lead to another saddle-node bifurcation at the lower bend of the S-curve.
 
 The region of parameter space between these two bifurcation points is a **bistable regime**, where the system has two stable equilibrium points separated by an unstable saddle.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bistable Dynamical System)</span></p>
+
+The plot shows the 1D bistable system
+
+$$\dot{x} = x - x^3$$
+
+with:
+
+* stable equilibria at $x=-1$ and $x=1$,
+* an unstable equilibrium at $x=0$.
+
+The arrows on the axis indicate the direction of motion, showing that trajectories move toward $-1$ or $1$, which is exactly the bistable behavior.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/bistable_dynamical_system.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Bistable dynamical system</figcaption>
+</figure>
 
 </div>
 
@@ -8722,8 +9232,6 @@ A final interesting feature visible in the bifurcation diagram is the presence o
 
 ### Deeper Properties of One-Dimensional Maps
 
-The study of one-dimensional maps like the logistic map has revealed a rich mathematical structure underlying their chaotic behavior. Here, we summarize several key theorems and concepts.
-
 #### Unstable Periodic Orbits (UPOs)
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -8739,13 +9247,6 @@ For certain parameter values, the chaotic attractor is built upon a "skeleton" o
 
 #### Topological Equivalence: The Tent Map
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Topological Equivalence)</span></p>
-
-The logistic map is topologically equivalent to another map called the tent map. This means there is a continuous, one-to-one mapping (a homeomorphism) that transforms one system's dynamics into the other while preserving the direction of time. Consequently, they exhibit the same fundamental dynamical phenomena, including the period-doubling route to chaos.
-
-</div>
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Tent Map)</span></p>
 
@@ -8754,6 +9255,15 @@ The **tent map** is a piecewise linear map defined by:
 $$f(x) = \alpha \cdot \min(x, 1-x)$$
 
 The map is typically studied for $x \in [0, 1]$ and $\alpha \in [0, 2]$. Its graph has a characteristic "tent" shape.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Connection of Logic Map and Tern Map)</span></p>
+
+The logistic map is topologically equivalent to another map called the tent map.
+
+This means there is a continuous, one-to-one mapping (a homeomorphism) that transforms one system's dynamics into the other while preserving the direction of time. Consequently, they exhibit the same fundamental dynamical phenomena, including the period-doubling route to chaos.
 
 </div>
 
@@ -8941,10 +9451,6 @@ An **attractor** is a set of states in the state space towards which a system's 
 
 #### Core Properties of Chaotic Systems
 
-Across different examples, chaotic systems share a set of defining characteristics. Understanding these properties is crucial for distinguishing chaos from other types of complex or random behavior.
-
-##### Aperiodicity and Boundedness
-
 A key feature of a chaotic trajectory is that it is aperiodic.
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -8963,8 +9469,6 @@ At the same time, a chaotic attractor is a bounded object. The trajectory is con
 
 </div>
 
-##### The Dimensionality Requirement for Continuous Systems
-
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Minimum Dimension for Chaos)</span></p>
 
@@ -8981,8 +9485,6 @@ For continuous-time dynamical systems (described by ordinary differential equati
 
 </div>
 
-##### Sensitive Dependence on Initial Conditions (The Butterfly Effect)
-
 Perhaps the most famous characteristic of chaos is its sensitive dependence on initial conditions (SDIC).
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -8998,8 +9500,6 @@ The property of being **sensitive dependence on initial conditions** means that 
 This is famously known as the butterfly effect, a metaphor suggesting that the flap of a butterfly's wings in one part of the world might ultimately cause a hurricane in another. A tiny, imperceptible change in the system's initial state can lead to macroscopically different outcomes. This property is what makes long-term prediction for chaotic systems fundamentally impossible. While the system is deterministic (the rules are fixed), our inability to measure the initial state with infinite precision means any small error will grow exponentially, rendering long-term forecasts useless.
 
 </div>
-
-##### The Structured Nature of Chaos
 
 The butterfly effect might suggest that chaotic systems are completely random and unpredictable. This is a common misconception. While individual trajectories are unpredictable in the long term, the collective behavior is highly structured.
 
@@ -9021,7 +9521,7 @@ In our exploration of dynamical systems, we often encounter behavior that is com
 
 #### Lyapunov Spectrum
 
-Consider a 1D map $x_t = F_{\alpha}(x_{t-1})$, where $\alpha$ is a control parameter. Map's orbit is $\lbrace x_1, \dots, x_t, \dots \rbrace$, looking in a finite limit of this orbit. Lyapunov number if 
+Consider a 1D map $x_t = F_{\alpha}(x_{t-1})$, where $\alpha$ is a control parameter. Map's orbit is $\lbrace x_1, \dots, x_t, \dots \rbrace$, looking in a finite limit of this orbit. Lyapunov number is
 
 $$l = \lim_{n\to\infty} \prod_{t=1}^n \lvert F'_{\alpha}(x_t) \rvert^{\frac{1}{n}}$$
 
@@ -9046,7 +9546,7 @@ For a discrete-time dynamical system defined by the map $x_{n+1} = f(x_n)$, the 
 
 $$\lambda_{\text{max}} = \lim_{n \to \infty} \frac{1}{n} \log \left\| \prod_{i=0}^{n-1} J(x_i) \right\|$$
 
-where $J(x_i)$ is the Jacobian matrix of the map $f$ evaluated at point $x_i$ on the trajectory, and $\| \cdot \|$ denotes a matrix norm, typically the spectral norm.
+where $J(x_i)$ is the Jacobian matrix of the map $f$ evaluated at point $x_i$ on the trajectory, and $\lVert \cdot \rVert$ denotes a matrix norm, typically the spectral norm.
 
 </div>
 
@@ -9077,9 +9577,9 @@ Here, $\lambda$ is the rate of separation, which we identify as the maximum Lyap
 
 For a continuous-time dynamical system with flow operator $\phi_t(x_0)$, the **maximum Lyapunov exponent** $\lambda_{\text{max}}$ is defined by a two-step limit process:
 
-$$\lambda_{\text{max}} = = \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \Delta x(t) \|}{\| \Delta x_0 \|} \right) \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \phi_t(x_0 + \Delta x_0) - \phi_t(x_0) \|}{\| \Delta x_0 \|} \right)$$
+$$\lambda_{\text{max}} = \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \Delta x(t) \|}{\| \Delta x_0 \|} \right) = \lim_{t \to \infty} \lim_{\| \Delta x_0 \| \to 0} \frac{1}{t} \log \left( \frac{\| \phi_t(x_0 + \Delta x_0) - \phi_t(x_0) \|}{\| \Delta x_0 \|} \right)$$
 
-In the limit where the initial separation $\| \Delta x_0 \|$ approaches zero, the numerator can be expressed in terms of the partial derivatives of the flow operator. This leads to an analogous form:
+In the limit where the initial separation $\lVert \Delta x_0 \rVert$ approaches zero, the numerator can be expressed in terms of the partial derivatives of the flow operator. This leads to an analogous form:
 
 $$\lambda_{\text{max}} = \lim_{t \to \infty} \frac{1}{t} \log \left\| \frac{\partial \phi_t(x_0)}{\partial x_0} \right\|$$
 
@@ -9234,8 +9734,6 @@ At the $n$-th iteration, the set $K_n$ consists of $2^n$ closed intervals.
   <figcaption>Cantor set construction</figcaption>
 </figure>
 
-##### Ternary Representation and Properties
-
 To analyze the Cantor set more deeply, it is useful to represent the numbers in the interval $[0, 1]$ using a base-3, or ternary, number system.
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -9274,8 +9772,6 @@ A minor mathematical subtlety exists at the boundaries between intervals. For ex
   <figcaption>Ternary Interpretation of the Cantor Construction</figcaption>
 </figure>
 
-##### The Uncountability of the Cantor Set
-
 Despite its construction by removing intervals, the Cantor set contains more than just the endpoints of those intervals. In fact, it contains an uncountably infinite number of points, a fact we can prove using a technique similar to Cantor's famous diagonal argument.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -9285,8 +9781,9 @@ The Cantor set is an uncountably infinite set.
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 1. **Assume for Contradiction:** Assume the Cantor set is countable. This means we can create an exhaustive list, or an enumeration, of all numbers in the set. Let this list be $x_1, x_2, x_3, \dots$.
 2. **Represent in Ternary:** Each number $x_i$ in our list belongs to the Cantor set, so its ternary representation consists only of the digits $0$ and $2$. We can write our list as follows:
@@ -9294,17 +9791,19 @@ The Cantor set is an uncountably infinite set.
    * $x_2 = 0.a_{21} a_{22} a_{23} a_{24} \dots$
    * $x_3 = 0.a_{31} a_{32} a_{33} a_{34} \dots$
    * ...
-3. where every digit $a_{ij} \in \lbrace 0, 2 \rbrace$.
-4. **Construct a New Number:** We will now construct a new number, let's call it $R$, which is also composed only of digits $0$ and $2$, but which cannot be on our list. We define the digits of $R = 0.r_1 r_2 r_3 \dots$ by examining the diagonal elements of our list ($a_{11}, a_{22}, a_{33}, \dots$).
-5. For each digit $r_i$, we set its value as follows:
+   
+   where every digit $a_{ij} \in \lbrace 0, 2 \rbrace$.
+3. **Construct a New Number:** We will now construct a new number, let's call it $R$, which is also composed only of digits $0$ and $2$, but which cannot be on our list. We define the digits of $R = 0.r_1 r_2 r_3 \dots$ by examining the diagonal elements of our list ($a_{11}, a_{22}, a_{33}, \dots$).
+4. For each digit $r_i$, we set its value as follows:
    * If $a_{ii} = 0$, then set $r_i = 2$.
    * If $a_{ii} = 2$, then set $r_i = 0$.
-6. **Show Contradiction:** By this construction, the number $R$ is composed exclusively of digits $0$ and $2$, so it must belong to the Cantor set. However, $R$ cannot be on our list.
+5. **Show Contradiction:** By this construction, the number $R$ is composed exclusively of digits $0$ and $2$, so it must belong to the Cantor set. However, $R$ cannot be on our list.
    * $R$ cannot be $x_1$ because its first digit $r_1$ is different from $a_{11}$.
    * $R$ cannot be $x_2$ because its second digit $r_2$ is different from $a_{22}$.
    * In general, $R$ cannot be $x_i$ for any $i$, because its $i$-th digit $r_i$ is different from $a_{ii}$.
-7. **Conclusion:** Our newly constructed number $R$ belongs to the Cantor set but is not in our supposedly complete list. This is a contradiction. Therefore, our initial assumption that the Cantor set is countable must be false. The set is uncountably infinite.
+6. **Conclusion:** Our newly constructed number $R$ belongs to the Cantor set but is not in our supposedly complete list. This is a contradiction. Therefore, our initial assumption that the Cantor set is countable must be false. The set is uncountably infinite.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -9336,7 +9835,7 @@ The Smale horseshoe map is an elegant abstraction of chaotic dynamics. It can be
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Smale Horseshoe Map)</span></p>
 
-The Smale horseshoe map $F$ is a mapping of the unit square $S = [0, 1] \times [0, 1]$ onto the real plane $\mathbb{R}^2$. The process involves two distinct operations.
+The **Smale horseshoe map** $F$ is a mapping of the unit square $S = [0, 1] \times [0, 1]$ onto the real plane $\mathbb{R}^2$. The process involves two distinct operations.
 
 1. **Stretching and Contraction:** The map first applies a linear transformation to the square. This transformation is characterized by a local Jacobian matrix (3 0 \\ 0 1/3) that stretches the square along one dimension and contracts it along another.
 2. This Jacobian stretches the square by a factor of $3$ in the horizontal direction and compresses it by a factor of $3$ in the vertical direction, transforming the unit square into a long, thin rectangle.
@@ -9430,11 +9929,13 @@ We can also consider the inverse of the map, $f^{-1}$, which corresponds to iter
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Invariant Set $\Lambda$</span></p>
 
-The invariant set, denoted by $\Lambda$, is defined as the set of all points in the square $S$ that remain in $S$ for all time, both forward and backward. Mathematically, it is the intersection of all forward and backward images of the square:
+The **invariant set**, denoted by $\Lambda$, is defined as the set of all points in the square $S$ that remain in $S$ for all time, both forward and backward. Mathematically, it is the intersection of all forward and backward images of the square:
 
 $$\Lambda = \bigcap_{k=-\infty}^{\infty} f^k(S)$$
 
 </div>
+
+
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Geometry of $\Lambda$</span></p>
@@ -9689,10 +10190,15 @@ Note the subtle but important difference in the denominator: $\log \epsilon$ ins
 
 ### A Note on Dimensionality and System Type
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span>(Dimensionality and System Type Requried for Chaos)</p>
+
 It is important to distinguish between discrete-time systems (maps) and continuous-time systems (ODEs) when discussing the dimensionality required for chaos.
 
-* Maps: Chaotic behavior can occur in very low-dimensional maps. The logistic map, for instance, is a one-dimensional system ($x_{n+1} = rx_n(1-x_n)$) that exhibits chaos.
-* Continuous-Time ODEs: For systems of ordinary differential equations, chaos is not possible in one or two dimensions (due to the Poincaré-Bendixson theorem). A minimum of three dimensions is required to generate the complex stretching and folding of trajectories characteristic of chaos. In four or more dimensions, even more complex phenomena like hyperchaos can emerge.
+* **Maps:** Chaotic behavior can occur in very low-dimensional maps. The logistic map, for instance, is a one-dimensional system ($x_{n+1} = rx_n(1-x_n)$) that exhibits chaos.
+* **Continuous-Time ODEs:** For systems of ordinary differential equations, chaos is not possible in one or two dimensions (due to the Poincaré-Bendixson theorem). A minimum of three dimensions is required to generate the complex stretching and folding of trajectories characteristic of chaos. In four or more dimensions, even more complex phenomena like hyperchaos can emerge.
+
+</div>
 
 ### From Theory to Practice: Analyzing Empirical Data
 
@@ -10540,7 +11046,7 @@ To train an RNN, we require three fundamental components: a dataset, a model arc
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Dataset)</span></p>
 
-The training data consists of a set of $P$ patterns or sequences. For each pattern $p \in \lbrace 1, \dots, P \rbrace$, the dataset provides:
+The training data consists of a set of $P$ patterns or sequences. For each pattern $p \in \lbrace 1, \dots, P \rbrace$, the **dataset** provides:
 
 * **Inputs:** A sequence of input vectors $\lbrace s_t^{(p)} \rbrace_{t=1}^{T_p}$, where $s_t^{(p)} \in \mathbb{R}^K$. These are optional, depending on the task.
 * **Desired Outputs (Targets):** A sequence of target vectors $\lbrace x_t^{(p)} \rbrace_{t=1}^{T_p}$, where $x_t^{(p)} \in \mathbb{R}^N$. These are the ground-truth values the model should aim to produce.
@@ -10582,7 +11088,7 @@ Here, the parameter set $\lambda$ is simply the matrix $B \in \mathbb{R}^{N \tim
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Loss Function)</span></p>
 
-The loss function, $L$, quantifies the discrepancy between the model's predicted outputs and the true target outputs. It is a function of the model's parameters ($\theta$ and $\lambda$). The goal of training is to minimize this function. A common and straightforward choice is the Sum of Squared Errors (SSE) loss, which is calculated by summing the squared deviations over all time steps and all patterns in the dataset.
+The **loss function**, $L$, quantifies the discrepancy between the model's predicted outputs and the true target outputs. It is a function of the model's parameters ($\theta$ and $\lambda$). The goal of training is to minimize this function. A common and straightforward choice is the Sum of Squared Errors (SSE) loss, which is calculated by summing the squared deviations over all time steps and all patterns in the dataset.
 
 Given the observed output $x_t^{(p)}$ and the predicted output $\hat{x}_t^{(p)}$, the SSE loss is:
 
@@ -10636,7 +11142,7 @@ It is important to note that in classical machine learning, the aim was often to
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient Descent)</span></p>
 
-Gradient Descent is an iterative optimization algorithm used to find a local minimum of a differentiable function. The parameters are updated at each step $n$ according to the following rule:
+**Gradient Descent** is an iterative optimization algorithm used to find a local minimum of a differentiable function. The parameters are updated at each step $n$ according to the following rule:
 
 $$\theta_n = \theta_{n-1} - \gamma \nabla L(\theta_{n-1})$$
 
