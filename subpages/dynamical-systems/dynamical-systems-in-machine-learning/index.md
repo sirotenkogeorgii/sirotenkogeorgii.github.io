@@ -5046,155 +5046,6 @@ A **homoclinic orbit** (or **homoclinic connection**) is a trajectory in a dynam
 
 </div>
 
-<div id="hc-container" style="margin:2em auto;max-width:780px;">
-  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Homoclinic Bifurcation</h4>
-  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
-    \(\dot x=y,\;\dot y=\mu y+x-x^2+xy\). Drag \(\mu\) to watch the limit cycle swell into the saddle and become a homoclinic orbit at \(\mu_c\approx-0.8645\).
-  </p>
-  <div style="text-align:center;">
-    <canvas id="hc-cv" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
-  </div>
-  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
-    <span style="font-size:.85em;font-family:serif;">&mu; =</span>
-    <input type="range" id="hc-mu" min="-1.1" max="-0.5" step="0.001" value="-0.92" style="width:280px;">
-    <span id="hc-muv" style="font-size:.85em;font-family:serif;min-width:45px;">-0.920</span>
-  </div>
-  <div id="hc-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
-</div>
-
-<script>
-(function(){
-  var S=600,mu=-0.92;
-  var XL=-1.8,XR2=2.5,YLo=-1.8,YHi=1.8;
-  var MU_C=-0.8645;
-
-  var cv=document.getElementById('hc-cv');
-  var muS=document.getElementById('hc-mu'),muV=document.getElementById('hc-muv');
-  var dpr=window.devicePixelRatio||1;
-  cv.width=S*dpr;cv.height=S*dpr;cv.style.width=S+'px';cv.style.height=S+'px';
-  var G=cv.getContext('2d');G.scale(dpr,dpr);
-
-  var XW=XR2-XL,YW=YHi-YLo;
-  function cpx(x){return(x-XL)/XW*S;}
-  function cpy(y){return(YHi-y)/YW*S;}
-
-  function Fx(x,y){return y;}
-  function Fy(x,y){return mu*y+x-x*x+x*y;}
-
-  function rk4(x,y,dt){
-    var k1x=Fx(x,y),k1y=Fy(x,y);
-    var k2x=Fx(x+.5*dt*k1x,y+.5*dt*k1y),k2y=Fy(x+.5*dt*k1x,y+.5*dt*k1y);
-    var k3x=Fx(x+.5*dt*k2x,y+.5*dt*k2y),k3y=Fy(x+.5*dt*k2x,y+.5*dt*k2y);
-    var k4x=Fx(x+dt*k3x,y+dt*k3y),k4y=Fy(x+dt*k3x,y+dt*k3y);
-    return[x+dt/6*(k1x+2*k2x+2*k3x+k4x),y+dt/6*(k1y+2*k2y+2*k3y+k4y)];
-  }
-
-  function ln2(ax,ay,bx,by){G.beginPath();G.moveTo(ax,ay);G.lineTo(bx,by);G.stroke();}
-
-  function eqInfo(){
-    var disc0=mu*mu+4,s0=Math.sqrt(disc0);
-    var l0a=(mu+s0)/2,l0b=(mu-s0)/2;
-    var tr1=mu+1,disc1=tr1*tr1-4;
-    return{saddle:{l1:l0a,l2:l0b},spiral:{tr:tr1,disc:disc1,stable:tr1<0}};
-  }
-
-  function draw(){
-    G.clearRect(0,0,S,S);
-
-    // Grid
-    G.strokeStyle='#f0f0f0';G.lineWidth=.5;
-    for(var v=Math.ceil(XL);v<=XR2;v++){if(!v)continue;ln2(cpx(v),0,cpx(v),S);}
-    for(var v=Math.ceil(YLo);v<=YHi;v++){if(!v)continue;ln2(0,cpy(v),S,cpy(v));}
-    G.strokeStyle='#81D4FA';G.lineWidth=1;
-    ln2(cpx(XL),cpy(0),cpx(XR2),cpy(0));
-    ln2(cpx(0),cpy(YLo),cpx(0),cpy(YHi));
-
-    // y-nullcline: y=(x²-x)/(μ+x)
-    G.save();G.setLineDash([4,3]);G.strokeStyle='rgba(76,175,80,0.3)';G.lineWidth=1;
-    G.beginPath();var first=true;
-    for(var x=-1.7;x<=2.4;x+=.02){
-      var dn=mu+x;if(Math.abs(dn)<.05){first=true;continue;}
-      var yv=(x*x-x)/dn;if(yv<YLo-.5||yv>YHi+.5){first=true;continue;}
-      if(first){G.moveTo(cpx(x),cpy(yv));first=false;}else G.lineTo(cpx(x),cpy(yv));
-    }
-    G.stroke();G.restore();
-
-    // Unstable manifold of saddle (0,0)
-    var info=eqInfo();
-    var lu=info.saddle.l1,evn=Math.sqrt(1+lu*lu);
-    var evx=1/evn,evy=lu/evn;
-    [1,-1].forEach(function(sign){
-      var x=sign*evx*.002,y=sign*evy*.002,dt=.003;
-      G.strokeStyle='rgba(229,57,53,0.3)';G.lineWidth=2;G.beginPath();G.moveTo(cpx(x),cpy(y));
-      for(var i=0;i<25000;i++){
-        var n=rk4(x,y,dt);x=n[0];y=n[1];
-        if(x<XL-1||x>XR2+1||y<YLo-1||y>YHi+1)break;
-        G.lineTo(cpx(x),cpy(y));
-      }
-      G.stroke();
-    });
-
-    // Trajectories from various ICs
-    var ics=[[.4,.3],[.4,-.2],[.6,.6],[.8,-.5],[1,.8],[1.2,-.7],[.3,.8],[.5,-.8]];
-    var cols=['#1565C0','#e65100','#7B1FA2','#00838f','#283593','#bf360c','#00695c','#4e342e'];
-    ics.forEach(function(ic,idx){
-      var x=ic[0],y=ic[1],dt=.005;
-      G.strokeStyle=cols[idx%cols.length];G.globalAlpha=.35;G.lineWidth=1;
-      G.beginPath();G.moveTo(cpx(x),cpy(y));
-      for(var i=0;i<8000;i++){var n=rk4(x,y,dt);x=n[0];y=n[1];if(x<XL-1||x>XR2+1||y<YLo-1||y>YHi+1)break;G.lineTo(cpx(x),cpy(y));}
-      G.stroke();G.globalAlpha=1;
-    });
-
-    // Main trajectory from near the spiral — shows limit cycle / homoclinic
-    var lx=1+.01,ly=.01,dt2=.004;
-    G.strokeStyle='#1a1a2e';G.lineWidth=1.8;G.beginPath();G.moveTo(cpx(lx),cpy(ly));
-    var maxT=mu<MU_C?20000:35000;
-    for(var i=0;i<maxT;i++){var n=rk4(lx,ly,dt2);lx=n[0];ly=n[1];if(lx<XL-1||lx>XR2+1||ly<YLo-2||ly>YHi+2)break;G.lineTo(cpx(lx),cpy(ly));}
-    G.stroke();
-
-    // Saddle at (0,0): half-green / half-red
-    var sx=cpx(0),sy=cpy(0);
-    G.fillStyle='#4CAF50';G.beginPath();G.arc(sx,sy,7,Math.PI*.5,Math.PI*1.5);G.closePath();G.fill();
-    G.fillStyle='#F44336';G.beginPath();G.arc(sx,sy,7,-Math.PI*.5,Math.PI*.5);G.closePath();G.fill();
-    G.strokeStyle='#333';G.lineWidth=1.5;G.beginPath();G.arc(sx,sy,7,0,Math.PI*2);G.stroke();
-
-    // Spiral at (1,0)
-    var spx2=cpx(1),spy2=cpy(0);
-    G.fillStyle=info.spiral.stable?'#4CAF50':'#F44336';
-    G.beginPath();G.arc(spx2,spy2,6,0,Math.PI*2);G.fill();
-    G.strokeStyle=info.spiral.stable?'#2E7D32':'#C62828';G.lineWidth=1.5;
-    G.beginPath();G.arc(spx2,spy2,6,0,Math.PI*2);G.stroke();
-
-    // Labels
-    G.font='12px "Times New Roman",serif';G.fillStyle='#333';
-    G.fillText('saddle (0,0)',sx+10,sy-10);
-    G.fillText((info.spiral.stable?'stable':'unstable')+' spiral (1,0)',spx2+10,spy2-10);
-    G.fillStyle='#888';G.fillText('x',cpx(XR2)-15,cpy(0)+14);G.fillText('y',cpx(0)+6,cpy(YHi)+12);
-    G.font='9px sans-serif';G.fillStyle='#bbb';
-    [-1,1,2].forEach(function(v){G.fillText(v,cpx(v)-4,cpy(0)+13);});
-    [-1,1].forEach(function(v){G.fillText(v,cpx(0)+5,cpy(v)+3);});
-    G.font='13px "Times New Roman",serif';G.fillStyle='#333';G.fillText('\u03BC = '+mu.toFixed(3),10,18);
-    var regime=mu<MU_C-.003?'Limit cycle + saddle':Math.abs(mu-MU_C)<.003?'Homoclinic orbit (\u03BC\u2248\u03BC\u209C)':'Saddle connection broken';
-    G.fillStyle=mu<MU_C-.003?'#1565C0':Math.abs(mu-MU_C)<.003?'#FF9800':'#F44336';
-    G.fillText(regime,10,34);
-  }
-
-  function updInfo(){
-    var el=document.getElementById('hc-info'),info=eqInfo();
-    var t='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03BC\u209C \u2248 '+MU_C.toFixed(4)+' &nbsp;|&nbsp; ';
-    if(mu<MU_C-.003)t+='<span style="color:#1565C0">Stable limit cycle surrounds unstable spiral</span>';
-    else if(Math.abs(mu-MU_C)<.003)t+='<span style="color:#FF9800">Homoclinic bifurcation: cycle touches saddle</span>';
-    else t+='<span style="color:#F44336">Past bifurcation: homoclinic connection broken</span>';
-    t+=' &nbsp;|&nbsp; Spiral: '+(info.spiral.stable?'<span style="color:#4CAF50">stable</span>':'<span style="color:#F44336">unstable</span>');
-    el.innerHTML=t;
-  }
-  function redraw(){draw();updInfo();}
-
-  muS.addEventListener('input',function(){mu=parseFloat(this.value);muV.textContent=mu.toFixed(3);redraw();});
-  redraw();
-})();
-</script>
-
 #### The Complete Picture: Dynamics of the Full System
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -9050,6 +8901,206 @@ Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011).
 </div>
 
 ### Homoclinic Bifurcation
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Homoclinic bifurcation)</span></p>
+
+A **homoclinic bifurcation** is a qualitative change in a dynamical system that happens when a trajectory leaves an equilibrium point and later returns to the **same** equilibrium point.
+
+That special trajectory is called a **homoclinic orbit**.
+
+</div>
+
+
+### Typical picture
+
+Before the bifurcation:
+
+* there may be a stable periodic orbit, or no orbit at all.
+
+At the bifurcation:
+
+* the periodic orbit collides with a saddle equilibrium and becomes a homoclinic loop.
+
+After the bifurcation:
+
+* the periodic orbit may disappear, or a new one may appear, depending on the system.
+
+### Key feature near a homoclinic bifurcation
+
+If there is a nearby periodic orbit, its period often becomes **very large** as the bifurcation is approached, because the trajectory spends a long time lingering near the saddle point.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Critical transitions induced by a saddle-node bifurcation)</span></p>
+
+In this scenario, part of a limit cycle moves closer and closer to a saddle point. At the bifurcation the cycle touches the saddle point and becomes a homoclinic orbit.
+
+Consider the system
+
+$$\dot x = y$$
+
+$$\dot y = \mu y + x - x^2 + xy$$
+
+Numerically, the bifurcation is found to occur at $\mu_c \approx 0.8645$. For $\mu<\mu_c$, say $\mu=-0.92$, a stable limit cycle passes close to a saddle point at the origin
+**(a)**. As $\mu$ increases to $\mu_c$, the limit cycle swells **(b)** and bangs into the saddle, creating a homoclinic orbit **(c)**. Once $\mu>\mu_c$, the saddle connection breaks and the loop is destroyed **(d)**.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/HomoclinicBifurcationExample.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>Higher-order cycles ($\alpha = 3.5$, top row) and chaos ($\alpha = 3.9$, center) in the logistic map. Bottom graph illustrates quick divergence of time series in chaotic regime for just slightly different (by an $\epsilon$ of $10^{-4}$) initial conditions</figcaption> -->
+</figure>
+
+The key to this bifurcation is the behavior of the unstable manifold of the saddle. Look at the branch of the unstable manifold that leaves the origin to the northeast: after it loops around, it either hits the origin **(c)** or veers off to one side or the other **(d)**.
+
+</div>
+
+<div id="hc-container" style="margin:2em auto;max-width:780px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Homoclinic Bifurcation</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    \(\dot x=y,\;\dot y=\mu y+x-x^2+xy\). Drag \(\mu\) to watch the limit cycle swell into the saddle and become a homoclinic orbit at \(\mu_c\approx-0.8645\).
+  </p>
+  <div style="text-align:center;">
+    <canvas id="hc-cv" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">&mu; =</span>
+    <input type="range" id="hc-mu" min="-1.1" max="-0.5" step="0.001" value="-0.92" style="width:280px;">
+    <span id="hc-muv" style="font-size:.85em;font-family:serif;min-width:45px;">-0.920</span>
+  </div>
+  <div id="hc-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=600,mu=-0.92;
+  var XL=-1.8,XR2=2.5,YLo=-1.8,YHi=1.8;
+  var MU_C=-0.8645;
+
+  var cv=document.getElementById('hc-cv');
+  var muS=document.getElementById('hc-mu'),muV=document.getElementById('hc-muv');
+  var dpr=window.devicePixelRatio||1;
+  cv.width=S*dpr;cv.height=S*dpr;cv.style.width=S+'px';cv.style.height=S+'px';
+  var G=cv.getContext('2d');G.scale(dpr,dpr);
+
+  var XW=XR2-XL,YW=YHi-YLo;
+  function cpx(x){return(x-XL)/XW*S;}
+  function cpy(y){return(YHi-y)/YW*S;}
+
+  function Fx(x,y){return y;}
+  function Fy(x,y){return mu*y+x-x*x+x*y;}
+
+  function rk4(x,y,dt){
+    var k1x=Fx(x,y),k1y=Fy(x,y);
+    var k2x=Fx(x+.5*dt*k1x,y+.5*dt*k1y),k2y=Fy(x+.5*dt*k1x,y+.5*dt*k1y);
+    var k3x=Fx(x+.5*dt*k2x,y+.5*dt*k2y),k3y=Fy(x+.5*dt*k2x,y+.5*dt*k2y);
+    var k4x=Fx(x+dt*k3x,y+dt*k3y),k4y=Fy(x+dt*k3x,y+dt*k3y);
+    return[x+dt/6*(k1x+2*k2x+2*k3x+k4x),y+dt/6*(k1y+2*k2y+2*k3y+k4y)];
+  }
+
+  function ln2(ax,ay,bx,by){G.beginPath();G.moveTo(ax,ay);G.lineTo(bx,by);G.stroke();}
+
+  function eqInfo(){
+    var disc0=mu*mu+4,s0=Math.sqrt(disc0);
+    var l0a=(mu+s0)/2,l0b=(mu-s0)/2;
+    var tr1=mu+1,disc1=tr1*tr1-4;
+    return{saddle:{l1:l0a,l2:l0b},spiral:{tr:tr1,disc:disc1,stable:tr1<0}};
+  }
+
+  function draw(){
+    G.clearRect(0,0,S,S);
+
+    // Grid
+    G.strokeStyle='#f0f0f0';G.lineWidth=.5;
+    for(var v=Math.ceil(XL);v<=XR2;v++){if(!v)continue;ln2(cpx(v),0,cpx(v),S);}
+    for(var v=Math.ceil(YLo);v<=YHi;v++){if(!v)continue;ln2(0,cpy(v),S,cpy(v));}
+    G.strokeStyle='#81D4FA';G.lineWidth=1;
+    ln2(cpx(XL),cpy(0),cpx(XR2),cpy(0));
+    ln2(cpx(0),cpy(YLo),cpx(0),cpy(YHi));
+
+    // y-nullcline: y=(x²-x)/(μ+x)
+    G.save();G.setLineDash([4,3]);G.strokeStyle='rgba(76,175,80,0.3)';G.lineWidth=1;
+    G.beginPath();var first=true;
+    for(var x=-1.7;x<=2.4;x+=.02){
+      var dn=mu+x;if(Math.abs(dn)<.05){first=true;continue;}
+      var yv=(x*x-x)/dn;if(yv<YLo-.5||yv>YHi+.5){first=true;continue;}
+      if(first){G.moveTo(cpx(x),cpy(yv));first=false;}else G.lineTo(cpx(x),cpy(yv));
+    }
+    G.stroke();G.restore();
+
+    // Unstable manifold of saddle (0,0)
+    var info=eqInfo();
+    var lu=info.saddle.l1,evn=Math.sqrt(1+lu*lu);
+    var evx=1/evn,evy=lu/evn;
+    [1,-1].forEach(function(sign){
+      var x=sign*evx*.002,y=sign*evy*.002,dt=.003;
+      G.strokeStyle='rgba(229,57,53,0.3)';G.lineWidth=2;G.beginPath();G.moveTo(cpx(x),cpy(y));
+      for(var i=0;i<25000;i++){
+        var n=rk4(x,y,dt);x=n[0];y=n[1];
+        if(x<XL-1||x>XR2+1||y<YLo-1||y>YHi+1)break;
+        G.lineTo(cpx(x),cpy(y));
+      }
+      G.stroke();
+    });
+
+    // Trajectories from various ICs
+    var ics=[[.4,.3],[.4,-.2],[.6,.6],[.8,-.5],[1,.8],[1.2,-.7],[.3,.8],[.5,-.8]];
+    var cols=['#1565C0','#e65100','#7B1FA2','#00838f','#283593','#bf360c','#00695c','#4e342e'];
+    ics.forEach(function(ic,idx){
+      var x=ic[0],y=ic[1],dt=.005;
+      G.strokeStyle=cols[idx%cols.length];G.globalAlpha=.35;G.lineWidth=1;
+      G.beginPath();G.moveTo(cpx(x),cpy(y));
+      for(var i=0;i<8000;i++){var n=rk4(x,y,dt);x=n[0];y=n[1];if(x<XL-1||x>XR2+1||y<YLo-1||y>YHi+1)break;G.lineTo(cpx(x),cpy(y));}
+      G.stroke();G.globalAlpha=1;
+    });
+
+    // Main trajectory from near the spiral — shows limit cycle / homoclinic
+    var lx=1+.01,ly=.01,dt2=.004;
+    G.strokeStyle='#1a1a2e';G.lineWidth=1.8;G.beginPath();G.moveTo(cpx(lx),cpy(ly));
+    var maxT=mu<MU_C?20000:35000;
+    for(var i=0;i<maxT;i++){var n=rk4(lx,ly,dt2);lx=n[0];ly=n[1];if(lx<XL-1||lx>XR2+1||ly<YLo-2||ly>YHi+2)break;G.lineTo(cpx(lx),cpy(ly));}
+    G.stroke();
+
+    // Saddle at (0,0): half-green / half-red
+    var sx=cpx(0),sy=cpy(0);
+    G.fillStyle='#4CAF50';G.beginPath();G.arc(sx,sy,7,Math.PI*.5,Math.PI*1.5);G.closePath();G.fill();
+    G.fillStyle='#F44336';G.beginPath();G.arc(sx,sy,7,-Math.PI*.5,Math.PI*.5);G.closePath();G.fill();
+    G.strokeStyle='#333';G.lineWidth=1.5;G.beginPath();G.arc(sx,sy,7,0,Math.PI*2);G.stroke();
+
+    // Spiral at (1,0)
+    var spx2=cpx(1),spy2=cpy(0);
+    G.fillStyle=info.spiral.stable?'#4CAF50':'#F44336';
+    G.beginPath();G.arc(spx2,spy2,6,0,Math.PI*2);G.fill();
+    G.strokeStyle=info.spiral.stable?'#2E7D32':'#C62828';G.lineWidth=1.5;
+    G.beginPath();G.arc(spx2,spy2,6,0,Math.PI*2);G.stroke();
+
+    // Labels
+    G.font='12px "Times New Roman",serif';G.fillStyle='#333';
+    G.fillText('saddle (0,0)',sx+10,sy-10);
+    G.fillText((info.spiral.stable?'stable':'unstable')+' spiral (1,0)',spx2+10,spy2-10);
+    G.fillStyle='#888';G.fillText('x',cpx(XR2)-15,cpy(0)+14);G.fillText('y',cpx(0)+6,cpy(YHi)+12);
+    G.font='9px sans-serif';G.fillStyle='#bbb';
+    [-1,1,2].forEach(function(v){G.fillText(v,cpx(v)-4,cpy(0)+13);});
+    [-1,1].forEach(function(v){G.fillText(v,cpx(0)+5,cpy(v)+3);});
+    G.font='13px "Times New Roman",serif';G.fillStyle='#333';G.fillText('\u03BC = '+mu.toFixed(3),10,18);
+    var regime=mu<MU_C-.003?'Limit cycle + saddle':Math.abs(mu-MU_C)<.003?'Homoclinic orbit (\u03BC\u2248\u03BC\u209C)':'Saddle connection broken';
+    G.fillStyle=mu<MU_C-.003?'#1565C0':Math.abs(mu-MU_C)<.003?'#FF9800':'#F44336';
+    G.fillText(regime,10,34);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('hc-info'),info=eqInfo();
+    var t='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03BC\u209C \u2248 '+MU_C.toFixed(4)+' &nbsp;|&nbsp; ';
+    if(mu<MU_C-.003)t+='<span style="color:#1565C0">Stable limit cycle surrounds unstable spiral</span>';
+    else if(Math.abs(mu-MU_C)<.003)t+='<span style="color:#FF9800">Homoclinic bifurcation: cycle touches saddle</span>';
+    else t+='<span style="color:#F44336">Past bifurcation: homoclinic connection broken</span>';
+    t+=' &nbsp;|&nbsp; Spiral: '+(info.spiral.stable?'<span style="color:#4CAF50">stable</span>':'<span style="color:#F44336">unstable</span>');
+    el.innerHTML=t;
+  }
+  function redraw(){draw();updInfo();}
+
+  muS.addEventListener('input',function(){mu=parseFloat(this.value);muV.textContent=mu.toFixed(3);redraw();});
+  redraw();
+})();
+</script>
 
 ## Lecture 7
 
