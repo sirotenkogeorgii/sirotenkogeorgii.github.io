@@ -1190,7 +1190,7 @@ The case above is describing the **defective repeated-eigenvalue** case (a **Jor
 $$A \sim \begin{pmatrix} a & 1 \\ 0 & a \end{pmatrix}$$
 
 * The eigenvalue is $a$ with **algebraic multiplicity 2** (it appears twice in the characteristic polynomial).
-* But the eigenspace is only **1-dimensional** (**geometric multiplicity 1**): there is only **one independent eigenvector direction**. You *don’t* get a basis of eigenvectors in $\mathbb R^2$. That’s what they mean by “degenerate.”
+* But the eigenspace is only **1-dimensional** (**geometric multiplicity 1**): there is only **one independent eigenvector direction**. You *don’t* get a basis of eigenvectors in $\mathbb R^2$. That’s what they mean by "degenerate."
 
 **Geometry/dynamics: it’s “scaling + shear”**
 
@@ -5035,7 +5035,7 @@ To represent this limit cycle on the two-dimensioal bifurcation graph, we plot i
 
 The limit cycle (represented by a yellow curve in the lecture's diagram) is added to the bifurcation graph by plotting its maximum and minimum voltage values for each corresponding value of $h$. This creates a U-shaped curve enclosing the unstable spiral.
 
-As the parameter h is increased within this intermediate range, the limit cycle grows in size. This expansion continues until a critical event occurs: the limit cycle becomes so large that it collides with the saddle point.
+As the parameter $h$ is increased within this intermediate range, the limit cycle grows in size. This expansion continues until a critical event occurs: the limit cycle becomes so large that it collides with the saddle point.
 
 </div>
 
@@ -5045,6 +5045,155 @@ As the parameter h is increased within this intermediate range, the limit cycle 
 A **homoclinic orbit** (or **homoclinic connection**) is a trajectory in a dynamical system that joins a saddle equilibrium point to itself. The event where the expanding limit cycle collides with the saddle point creates such an orbit. The bifurcation that occurs at this point is known as a homoclinic bifurcation.
 
 </div>
+
+<div id="hc-container" style="margin:2em auto;max-width:780px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Homoclinic Bifurcation</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    \(\dot x=y,\;\dot y=\mu y+x-x^2+xy\). Drag \(\mu\) to watch the limit cycle swell into the saddle and become a homoclinic orbit at \(\mu_c\approx-0.8645\).
+  </p>
+  <div style="text-align:center;">
+    <canvas id="hc-cv" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">&mu; =</span>
+    <input type="range" id="hc-mu" min="-1.1" max="-0.5" step="0.001" value="-0.92" style="width:280px;">
+    <span id="hc-muv" style="font-size:.85em;font-family:serif;min-width:45px;">-0.920</span>
+  </div>
+  <div id="hc-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=600,mu=-0.92;
+  var XL=-1.8,XR2=2.5,YLo=-1.8,YHi=1.8;
+  var MU_C=-0.8645;
+
+  var cv=document.getElementById('hc-cv');
+  var muS=document.getElementById('hc-mu'),muV=document.getElementById('hc-muv');
+  var dpr=window.devicePixelRatio||1;
+  cv.width=S*dpr;cv.height=S*dpr;cv.style.width=S+'px';cv.style.height=S+'px';
+  var G=cv.getContext('2d');G.scale(dpr,dpr);
+
+  var XW=XR2-XL,YW=YHi-YLo;
+  function cpx(x){return(x-XL)/XW*S;}
+  function cpy(y){return(YHi-y)/YW*S;}
+
+  function Fx(x,y){return y;}
+  function Fy(x,y){return mu*y+x-x*x+x*y;}
+
+  function rk4(x,y,dt){
+    var k1x=Fx(x,y),k1y=Fy(x,y);
+    var k2x=Fx(x+.5*dt*k1x,y+.5*dt*k1y),k2y=Fy(x+.5*dt*k1x,y+.5*dt*k1y);
+    var k3x=Fx(x+.5*dt*k2x,y+.5*dt*k2y),k3y=Fy(x+.5*dt*k2x,y+.5*dt*k2y);
+    var k4x=Fx(x+dt*k3x,y+dt*k3y),k4y=Fy(x+dt*k3x,y+dt*k3y);
+    return[x+dt/6*(k1x+2*k2x+2*k3x+k4x),y+dt/6*(k1y+2*k2y+2*k3y+k4y)];
+  }
+
+  function ln2(ax,ay,bx,by){G.beginPath();G.moveTo(ax,ay);G.lineTo(bx,by);G.stroke();}
+
+  function eqInfo(){
+    var disc0=mu*mu+4,s0=Math.sqrt(disc0);
+    var l0a=(mu+s0)/2,l0b=(mu-s0)/2;
+    var tr1=mu+1,disc1=tr1*tr1-4;
+    return{saddle:{l1:l0a,l2:l0b},spiral:{tr:tr1,disc:disc1,stable:tr1<0}};
+  }
+
+  function draw(){
+    G.clearRect(0,0,S,S);
+
+    // Grid
+    G.strokeStyle='#f0f0f0';G.lineWidth=.5;
+    for(var v=Math.ceil(XL);v<=XR2;v++){if(!v)continue;ln2(cpx(v),0,cpx(v),S);}
+    for(var v=Math.ceil(YLo);v<=YHi;v++){if(!v)continue;ln2(0,cpy(v),S,cpy(v));}
+    G.strokeStyle='#81D4FA';G.lineWidth=1;
+    ln2(cpx(XL),cpy(0),cpx(XR2),cpy(0));
+    ln2(cpx(0),cpy(YLo),cpx(0),cpy(YHi));
+
+    // y-nullcline: y=(x²-x)/(μ+x)
+    G.save();G.setLineDash([4,3]);G.strokeStyle='rgba(76,175,80,0.3)';G.lineWidth=1;
+    G.beginPath();var first=true;
+    for(var x=-1.7;x<=2.4;x+=.02){
+      var dn=mu+x;if(Math.abs(dn)<.05){first=true;continue;}
+      var yv=(x*x-x)/dn;if(yv<YLo-.5||yv>YHi+.5){first=true;continue;}
+      if(first){G.moveTo(cpx(x),cpy(yv));first=false;}else G.lineTo(cpx(x),cpy(yv));
+    }
+    G.stroke();G.restore();
+
+    // Unstable manifold of saddle (0,0)
+    var info=eqInfo();
+    var lu=info.saddle.l1,evn=Math.sqrt(1+lu*lu);
+    var evx=1/evn,evy=lu/evn;
+    [1,-1].forEach(function(sign){
+      var x=sign*evx*.002,y=sign*evy*.002,dt=.003;
+      G.strokeStyle='rgba(229,57,53,0.3)';G.lineWidth=2;G.beginPath();G.moveTo(cpx(x),cpy(y));
+      for(var i=0;i<25000;i++){
+        var n=rk4(x,y,dt);x=n[0];y=n[1];
+        if(x<XL-1||x>XR2+1||y<YLo-1||y>YHi+1)break;
+        G.lineTo(cpx(x),cpy(y));
+      }
+      G.stroke();
+    });
+
+    // Trajectories from various ICs
+    var ics=[[.4,.3],[.4,-.2],[.6,.6],[.8,-.5],[1,.8],[1.2,-.7],[.3,.8],[.5,-.8]];
+    var cols=['#1565C0','#e65100','#7B1FA2','#00838f','#283593','#bf360c','#00695c','#4e342e'];
+    ics.forEach(function(ic,idx){
+      var x=ic[0],y=ic[1],dt=.005;
+      G.strokeStyle=cols[idx%cols.length];G.globalAlpha=.35;G.lineWidth=1;
+      G.beginPath();G.moveTo(cpx(x),cpy(y));
+      for(var i=0;i<8000;i++){var n=rk4(x,y,dt);x=n[0];y=n[1];if(x<XL-1||x>XR2+1||y<YLo-1||y>YHi+1)break;G.lineTo(cpx(x),cpy(y));}
+      G.stroke();G.globalAlpha=1;
+    });
+
+    // Main trajectory from near the spiral — shows limit cycle / homoclinic
+    var lx=1+.01,ly=.01,dt2=.004;
+    G.strokeStyle='#1a1a2e';G.lineWidth=1.8;G.beginPath();G.moveTo(cpx(lx),cpy(ly));
+    var maxT=mu<MU_C?20000:35000;
+    for(var i=0;i<maxT;i++){var n=rk4(lx,ly,dt2);lx=n[0];ly=n[1];if(lx<XL-1||lx>XR2+1||ly<YLo-2||ly>YHi+2)break;G.lineTo(cpx(lx),cpy(ly));}
+    G.stroke();
+
+    // Saddle at (0,0): half-green / half-red
+    var sx=cpx(0),sy=cpy(0);
+    G.fillStyle='#4CAF50';G.beginPath();G.arc(sx,sy,7,Math.PI*.5,Math.PI*1.5);G.closePath();G.fill();
+    G.fillStyle='#F44336';G.beginPath();G.arc(sx,sy,7,-Math.PI*.5,Math.PI*.5);G.closePath();G.fill();
+    G.strokeStyle='#333';G.lineWidth=1.5;G.beginPath();G.arc(sx,sy,7,0,Math.PI*2);G.stroke();
+
+    // Spiral at (1,0)
+    var spx2=cpx(1),spy2=cpy(0);
+    G.fillStyle=info.spiral.stable?'#4CAF50':'#F44336';
+    G.beginPath();G.arc(spx2,spy2,6,0,Math.PI*2);G.fill();
+    G.strokeStyle=info.spiral.stable?'#2E7D32':'#C62828';G.lineWidth=1.5;
+    G.beginPath();G.arc(spx2,spy2,6,0,Math.PI*2);G.stroke();
+
+    // Labels
+    G.font='12px "Times New Roman",serif';G.fillStyle='#333';
+    G.fillText('saddle (0,0)',sx+10,sy-10);
+    G.fillText((info.spiral.stable?'stable':'unstable')+' spiral (1,0)',spx2+10,spy2-10);
+    G.fillStyle='#888';G.fillText('x',cpx(XR2)-15,cpy(0)+14);G.fillText('y',cpx(0)+6,cpy(YHi)+12);
+    G.font='9px sans-serif';G.fillStyle='#bbb';
+    [-1,1,2].forEach(function(v){G.fillText(v,cpx(v)-4,cpy(0)+13);});
+    [-1,1].forEach(function(v){G.fillText(v,cpx(0)+5,cpy(v)+3);});
+    G.font='13px "Times New Roman",serif';G.fillStyle='#333';G.fillText('\u03BC = '+mu.toFixed(3),10,18);
+    var regime=mu<MU_C-.003?'Limit cycle + saddle':Math.abs(mu-MU_C)<.003?'Homoclinic orbit (\u03BC\u2248\u03BC\u209C)':'Saddle connection broken';
+    G.fillStyle=mu<MU_C-.003?'#1565C0':Math.abs(mu-MU_C)<.003?'#FF9800':'#F44336';
+    G.fillText(regime,10,34);
+  }
+
+  function updInfo(){
+    var el=document.getElementById('hc-info'),info=eqInfo();
+    var t='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03BC\u209C \u2248 '+MU_C.toFixed(4)+' &nbsp;|&nbsp; ';
+    if(mu<MU_C-.003)t+='<span style="color:#1565C0">Stable limit cycle surrounds unstable spiral</span>';
+    else if(Math.abs(mu-MU_C)<.003)t+='<span style="color:#FF9800">Homoclinic bifurcation: cycle touches saddle</span>';
+    else t+='<span style="color:#F44336">Past bifurcation: homoclinic connection broken</span>';
+    t+=' &nbsp;|&nbsp; Spiral: '+(info.spiral.stable?'<span style="color:#4CAF50">stable</span>':'<span style="color:#F44336">unstable</span>');
+    el.innerHTML=t;
+  }
+  function redraw(){draw();updInfo();}
+
+  muS.addEventListener('input',function(){mu=parseFloat(this.value);muV.textContent=mu.toFixed(3);redraw();});
+  redraw();
+})();
+</script>
 
 #### The Complete Picture: Dynamics of the Full System
 
@@ -8900,6 +9049,8 @@ Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011).
 
 </div>
 
+### Homoclinic Bifurcation
+
 ## Lecture 7
 
 ### An Introduction to Chaos and the Logistic Map
@@ -9292,6 +9443,170 @@ A final interesting feature visible in the bifurcation diagram is the presence o
 })();
 </script>
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Period Doubling)</span></p>
+
+Suppose we fix $r$, choose some initial population $x_0$, and then use the logistic map to generate the subsequent $x_n$. What happens?
+
+For small growth rate $r<1$, the population always goes extinct: $x_0 \to n$ as $n\to\infty$. This gloomy result can be proven by cobwebbing. 
+
+For $1 < r < 3$ the population grows and eventually reaches a nonzero steady state. The results are plotted here as a time series of x
+vs. n. To
+n
+make the sequence clearer, we have connected the discrete points ( n, x
+n ) by line
+segments, but remember that only the corners of the jagged curves are meaningful.
+
+<div class="pmf-grid">
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_2-8.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>Neutrally stable harmonic oscillations in linear ODE system. The graph illustrates that the choice of numerical ODE solver is important when integrating ODEs numerically: While the exact analytical solution (blue) and that of an implicit second-order numerical solver (Rosenbrock-2, green) tightly agree (in fact, a blue curve is not visible since the green curve falls on top of it), a simple forward Euler scheme (red) diverges from the true solution. </figcaption> -->
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_3-3.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>Neutrally stable harmonic oscillations in linear ODE system. The graph illustrates that the choice of numerical ODE solver is important when integrating ODEs numerically: While the exact analytical solution (blue) and that of an implicit second-order numerical solver (Rosenbrock-2, green) tightly agree (in fact, a blue curve is not visible since the green curve falls on top of it), a simple forward Euler scheme (red) diverges from the true solution. </figcaption> -->
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_3-5.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption>
+</figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_r_3-9.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>The famous orbit diagram for the logistic map. Three periodic windows in the chaotic regime are marked by vertical solid lines.</figcaption>
+</figure>
+</div>
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Period Doublings Biffurcation Frequency Increases)</span></p>
+
+In the limit of large $n$, the distance between successive transitions shrinks by a constant factor
+
+$$\delta = \lim_{n\to\infty} \frac{r_n-r_{n-1}}{r_{n+1}-r_n} = 4.669...$$
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/logistic_map_period_doublings.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption><strong>Period-doublings</string> to cycles of period $8, 16, 32, \dots$, occur as $r$ increases. Specifically, let $r_n$ denote the value of r where a $2^n$-cycle first appears.</figcaption>
+</figure>
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Period-Doubling Bifurcation Intuitively)</span></p>
+
+A **period-doubling bifurcation** is a bifurcation in a dynamical system where, as a parameter passes a critical value, a stable periodic orbit of period $T$ loses stability and a new stable periodic orbit of period $2T$ appears.
+
+For a discrete-time map, it means a fixed point loses stability and a stable 2-cycle is created. However, period-doubling bifurcarcation could happen in continuous-time systems sd well.
+It typically occurs when a real eigenvalue or multiplier passes through $-1$.
+
+**Wikipedia:**
+
+In dynamical systems theory, a **period-doubling bifurcation** occurs when a slight change in a system's parameters causes a new periodic trajectory to emerge from an existing periodic trajectory—the new one having double the period of the original. With the doubled period, it takes twice as long (or, in a discrete dynamical system, twice as many iterations) for the numerical values visited by the system to repeat themselves.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Period-Halfing Bifurcation Intuitively)</span></p>
+
+A period-halving bifurcation occurs when a system switches to a new behavior with half the period of the original system.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Period-Doubling Bifurcation)</span></p>
+
+For a $C^r$ one-parameter family of maps
+
+$$f_\mu:\mathbb{R}^n\to\mathbb{R}^n,\qquad r\ge 3,$$
+
+a **period-doubling bifurcation** (or **flip bifurcation**) of a fixed point occurs at $(x_0,\mu_0)$ if:
+
+1. $f_{\mu_0}(x_0)=x_0$,
+2. the Jacobian $D f_{\mu_0}(x_0)$ has a simple eigenvalue $-1$,
+3. no other eigenvalue lies on the unit circle,
+4. as $\mu$ passes through $\mu_0$, that eigenvalue crosses transversally through $-1$,
+5. the relevant nondegeneracy coefficient in the center-manifold normal form is nonzero.
+
+Then, near $\mu_0$, the fixed point changes stability and a nearby orbit of **least period 2** is created.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Period-Halfing Bifurcation)</span></p>
+
+A **period-halving bifurcation** occurs when a system switches to a new behavior with half the period of the original system.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Period-Doubling Cascade)</span></p>
+
+A **period-doubling cascade** is an infinite sequence of period-doubling bifurcations. Such cascades are one route by which dynamical systems can develop chaos. In **hydrodynamics**, they are one of the possible routes to **turbulence**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Multiple/Cascade Doubling Detection in General and for Logistic Map)</span></p>
+
+If we consider the map $f$, then for cases where the period increases more than twice, but $\times 4, \times 8, \dots$ we need to study the control parameters for which the eigenvalues ​​$f^2, f^4, \dots$ are equal to $-1$.
+
+For the logistic map $f_r(x)=rx(1-x)$, each new doubling is studied on the **current periodic orbit** as a fixed point of an iterate:
+
+* **period $1 \to 2$**: look at a fixed point of $f$, require
+  
+  $$(f_r)'(x^*)=-1$$
+
+* **period $2 \to 4$**: look at the 2-cycle as a fixed point of $f_r^2$, require
+  
+  $$(f_r^2)'(x_1)=-1$$
+
+  for a point $x_1$ on the 2-cycle.
+
+* **period $4 \to 8$**: look at the 4-cycle as a fixed point of $f_r^4$, require
+  
+  $$(f_r^4)'(x_1)=-1.$$
+
+In general, for
+
+$$2^k \to 2^{k+1},$$
+
+you study the period-$2^k$ orbit as a fixed point of $f_r^{2^k}$, and the period-doubling occurs when the multiplier satisfies
+
+$$(f_r^{2^k})'(x_1)=-1.$$
+
+Since the logistic map is 1-dimensional, these are not really "eigenvalues" in the matrix sense, just the scalar derivative (multiplier).
+
+Also for any 2D map:
+
+$$(f_r^{2^k})'(x_1)=\prod_{j=0}^{2^k-1} f_r'(x_j),$$
+
+the product of derivatives along the whole period-$2^k$ orbit. That product crossing through $-1$ gives the next period-doubling.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Iterated_logistic_functions.svg' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Logistic function $f$ (blue) and its iterated versions $f^2$, $f^3$, $f^4$ and $f^5$ for $r = 3.5$. For example, for any initial value on the horizontal axis, $f^4$ gives the value of the iterate four iterations later.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Multiple/Cascade Doubling Detection in General for $nD$ maps)</span></p>
+
+For a **2D map** $F:\mathbb R^2\to\mathbb R^2$, the analogue is
+
+$$D(F^p)(x_1)=DF(x_p)\cdots DF(x_2),DF(x_1),$$
+
+where $x_1,\dots,x_p$ is the period-$p$ orbit and $DF(x_j)$ are $2\times 2$ Jacobian matrices.
+
+Then a period-doubling bifurcation of that (p)-cycle occurs generically when:
+
+$$\text{one eigenvalue of } D(F^p)(x_1) \text{ is } -1,$$
+
+while the other eigenvalue is not on the unit circle, plus the usual transversality/nondegeneracy conditions.
+
+</div>
+
 ### Deeper Properties of One-Dimensional Maps
 
 #### Unstable Periodic Orbits (UPOs)
@@ -9307,6 +9622,11 @@ For certain parameter values, the chaotic attractor is built upon a "skeleton" o
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/LogisticCobwebChaos.gif' | relative_url }}" alt="Normal PDF" loading="lazy">
+  <figcaption>The behavior of the logistic map is shown in Cobweb plot form. The animation shows the change in behavior as the parameter ($r$ in the figure) is increased from $1$ to $4$, starting from an initial value of $0.2$.</figcaption>
+</figure>
+
 #### Topological Equivalence: The Tent Map
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -9314,18 +9634,39 @@ For certain parameter values, the chaotic attractor is built upon a "skeleton" o
 
 The **tent map** is a piecewise linear map defined by:
 
-$$f(x) = \alpha \cdot \min(x, 1-x)$$
+$$f(x) = \mu \cdot \min(x, 1-x)$$
 
-The map is typically studied for $x \in [0, 1]$ and $\alpha \in [0, 2]$. Its graph has a characteristic "tent" shape.
+The map is typically studied for $x \in [0, 1]$ and $\mu \in [0, 2]$. Its graph has a characteristic "tent" shape.
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Tent_map.gif' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Example of iterating the initial condition $x_0 = 0.4$ over the tent map with $\mu = 1.9$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Connection of Logic Map and Tern Map)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Tent map is topologically conjugate to logistic map under some conditions)</span></p>
 
-The logistic map is topologically equivalent to another map called the tent map.
+For the **fully chaotic** logistic map with $\alpha = 4$
 
-This means there is a continuous, one-to-one mapping (a homeomorphism) that transforms one system's dynamics into the other while preserving the direction of time. Consequently, they exhibit the same fundamental dynamical phenomena, including the period-doubling route to chaos.
+$$f(x)=4x(1-x)$$
+
+and the standard **tent map** with $\mu=2$
+
+$$T(x)=1-2\lvert x-\tfrac12\rvert$$
+
+are **topologically conjugate** on $[0,1]$.
+
+A conjugacy is
+
+$$h(x)=\sin^2\left(\frac{\pi x}{2}\right)$$
+
+and it satisfies
+
+$$h\circ T = f\circ h$$
+
+Consequently, they exhibit the same fundamental dynamical phenomena, including the period-doubling route to chaos.
 
 </div>
 
