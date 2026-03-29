@@ -4098,38 +4098,6 @@ The term inside the sigmoid function, such as $w_{ee}\nu_e - w_{ie}\nu_i - \thet
 
 </div>
 
-#### State Space Analysis: Nullclines and Equilibria
-
-To understand the model's behavior, we analyze its phase portrait in the $\nu_e, \nu_i$ state space. The first step is to find the nullclines.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
-
-A nullcline for a given state variable is the set of points in the state space where the rate of change of that variable is zero.
-
-* The $\nu_e$-nullcline is the curve where $\frac{d\nu_e}{dt} = 0$. From the equations, this is defined by: 
-  
-  $$\nu_e = \left(1 + \exp\left[-\beta_e(w_{ee}\nu_e - w_{ie}\nu_i - \theta_e)\right]\right)^{-1}$$
-  
-  Graphically, this equation traces out an $N$-shaped curve in the ($\nu_e, \nu_i$) plane.
-
-* The $\nu_i$-nullcline is the curve where $\frac{d\nu_i}{dt} = 0$. This is defined by: 
-  
-  $$\nu_i = \left(1 + \exp\left[-\beta_i(w_{ei}\nu_e - \theta_i)\right]\right)^{-1}$$
-  
-  This equation is simply a sigmoid function of $\nu_e$, resulting in a monotonically increasing curve.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name"></span></p>
-
-The equilibria, or fixed points, of the system are the points where the dynamics cease, meaning all derivatives are simultaneously zero. Geometrically, these are the points where the nullclines intersect.
-
-For certain parameter settings, the $N$-shaped $\nu_e$-nullcline can intersect the sigmoid-shaped $\nu_i$-nullcline at three distinct points, giving rise to three equilibria.
-
-</div>
-
 #### Qualitative Analysis of the Vector Field
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -4214,6 +4182,25 @@ Let a dynamical system be defined by a state space $E \subseteq \mathbb{R}^m$ an
 The **omega limit set** of a point $x_0 \in E$, denoted $\omega(x_0)$, is the set of points that the trajectory through $x_0$ approaches as $t \to \infty$. It is formally defined as the intersection of the closures of the trajectory's future paths:
 
 $$\omega(x_0) = \bigcap_{s \in \mathbb{R}} \overline{\bigcup_{t > s} \phi_t(x_0)} = \bigcap_{s \in \mathbb{R}} \overline{ \lbrace \phi_t(x_0)\mid t > s\rbrace }$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Chaos would needs a complicated $\omega$-limit set)</span></p>
+
+A chaotic trajectory does **not** settle to:
+* a single equilibrium, or
+* a single periodic orbit.
+
+Instead, it keeps wandering forever in a complicated recurrent way. So its $\omega$-limit set must be something much richer: a set containing infinitely many recurrent motions, typically a strange attractor.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">($\omega$-limit set and stability)</span></p>
+
+* if the solution tends to a stable equilibrium, then the **$\omega$-limit set is just that one point**;
+* if it approaches a stable periodic orbit, then the **$\omega$-limit set is the whole closed orbit**.
 
 </div>
 
@@ -4613,7 +4600,7 @@ A useful intuition:
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Damped Oscialltions in Physics)</span></p>
 
 <figure>
-  <img src="{{ '/assets/images/notes/dynamical-systems/VanDerPol_randomly_chosen_initial_conditions_are_attracted_to_stable_orbit.jpg' | relative_url }}" alt="a" loading="lazy">
+  <img src="{{ '/assets/images/notes/dynamical-systems/damped_oscillation_physics.jpg' | relative_url }}" alt="a" loading="lazy">
   <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
 </figure>
 
@@ -4730,12 +4717,12 @@ A solution cannot get stuck anywhere else. If it did, then $V$ would stop changi
 <div class="gd-grid">
   <figure>
     <img src="{{ '/assets/images/notes/dynamical-systems/lyapunov-functions-1.png' | relative_url }}" alt="a" loading="lazy">
-    <figcaption>Vector field on the line</figcaption>
+    <!-- <figcaption>Vector field on the line</figcaption> -->
   </figure>
   
   <figure>
     <img src="{{ '/assets/images/notes/dynamical-systems/Geometric-meaning-of-the-Lyapunov-function.png' | relative_url }}" alt="a" loading="lazy">
-    <figcaption>Vector field on the circle</figcaption>
+    <!-- <figcaption>Vector field on the circle</figcaption> -->
   </figure>
 </div>
 
@@ -8898,6 +8885,21 @@ A crucial feature of this system is the existence of a parameter regime before t
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Critical transitions induced by a saddle-node bifurcation)</span></p>
+
+Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011). Panels **a**, **b** and **c** describe the critical slowing down as an early warning indicator that the system lost resilience on the way to the critical point. Local minima represent stable attractors, while the position of the ball represents the present state of the system. 
+* **(a)** Far from bifurcation: small variance and fast fluctuations. 
+* **(b)** Approaching the bifurcation: larger but slower fluctuation with increasing variance;
+* **(c)** at the bifurcation point: irreversible transition to a new local minimum
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Critical-transitions-induced-by-a-saddle-node-bifurcation-Source-Lenton-2011-Panels.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>Higher-order cycles ($\alpha = 3.5$, top row) and chaos ($\alpha = 3.9$, center) in the logistic map. Bottom graph illustrates quick divergence of time series in chaotic regime for just slightly different (by an $\epsilon$ of $10^{-4}$) initial conditions</figcaption> -->
+</figure>
+
+</div>
+
 ## Lecture 7
 
 ### An Introduction to Chaos and the Logistic Map
@@ -9008,6 +9010,9 @@ A final interesting feature visible in the bifurcation diagram is the presence o
     <span style="font-size:.85em;font-family:serif;">&alpha; =</span>
     <input type="range" id="lm-a" min="0" max="4" step="0.001" value="3.5" style="width:260px;">
     <span id="lm-av" style="font-size:.85em;font-family:serif;min-width:40px;">3.500</span>
+    <span style="font-size:.85em;font-family:serif;margin-left:12px;">x&sub0; =</span>
+    <input type="range" id="lm-x0" min="0.01" max="0.99" step="0.001" value="0.4" style="width:180px;">
+    <span id="lm-x0v" style="font-size:.85em;font-family:serif;min-width:40px;">0.400</span>
   </div>
   <div id="lm-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
 </div>
@@ -9020,22 +9025,50 @@ A final interesting feature visible in the bifurcation diagram is the presence o
 
   var bd=document.getElementById('lm-bd'),cw=document.getElementById('lm-cw'),ts=document.getElementById('lm-ts');
   var aS=document.getElementById('lm-a'),aV=document.getElementById('lm-av');
+  var x0S=document.getElementById('lm-x0'),x0V=document.getElementById('lm-x0v');
   var dpr=window.devicePixelRatio||1;
   function initC(c,w,h){c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
   var B=initC(bd,BW,CH),C=initC(cw,CH,CH),TT=initC(ts,TW,CH);
 
   function f(x,a){return a*x*(1-x);}
+  function fp(x,a){return a*(1-2*x);} // derivative f'(x)
   function ln2(c,a2,b,d,e){c.beginPath();c.moveTo(a2,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,fl){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(fl)c.fill();else c.stroke();}
+
+  // Detect period and find cycle points with stability
+  function detectCycle(){
+    var x=0.2;for(var i=0;i<800;i++)x=f(x,alpha);
+    var orbit=[x];for(var i=0;i<128;i++){x=f(x,alpha);orbit.push(x);}
+    var period=0;
+    for(var p=1;p<=64;p++){
+      var match=true;
+      for(var k=0;k<32;k++){if(Math.abs(orbit[k]-orbit[k+p])>1e-6){match=false;break;}}
+      if(match){period=p;break;}
+    }
+    if(!period)return{period:0,pts:[],multiplier:NaN};
+    // Extract cycle points (unique values in one period)
+    var pts=orbit.slice(0,period);
+    // Compute Floquet multiplier: product of f'(x) along cycle
+    var mult=1;for(var i=0;i<period;i++)mult*=fp(pts[i],alpha);
+    return{period:period,pts:pts,multiplier:mult};
+  }
+
+  // Fixed points: x*=0 and x*=(α-1)/α
+  function fixedPts(){
+    var res=[{x:0,stable:alpha<1}];
+    if(alpha>1)res.push({x:(alpha-1)/alpha,stable:Math.abs(2-alpha)<1});
+    return res;
+  }
 
   // === BIFURCATION DIAGRAM (precomputed) ===
   var bifData=null;
   function computeBif(){
     bifData=[];
-    var PL=45,W=BW-PL-10,H=CH-30-30;
+    var PL=45,W=BW-PL-10;
     for(var px=0;px<=W;px++){
-      var a=1+px/W*3; // alpha in [1, 4]
+      var a=1+px/W*3;
       var x=0.4,pts=[];
-      for(var i=0;i<300;i++)x=f(x,a); // transient
+      for(var i=0;i<300;i++)x=f(x,a);
       for(var i=0;i<200;i++){x=f(x,a);pts.push(x);}
       bifData.push({a:a,pts:pts});
     }
@@ -9048,30 +9081,29 @@ A final interesting feature visible in the bifurcation diagram is the presence o
     function bx(a){return PL+(a-1)/3*W;}
     function by(x){return PT+(1-x)*H;}
 
-    // Grid
     B.strokeStyle='#f0f0f0';B.lineWidth=.5;
     [1.5,2,2.5,3,3.5].forEach(function(v){var x=bx(v);ln2(B,x,PT,x,PT+H);});
     [.2,.4,.6,.8].forEach(function(v){var y=by(v);ln2(B,PL,y,PL+W,y);});
     B.strokeStyle='#81D4FA';B.lineWidth=1;
     ln2(B,PL,PT+H,PL+W,PT+H);ln2(B,PL,PT,PL,PT+H);
 
-    // Bifurcation points
     B.fillStyle='rgba(50,50,80,0.25)';
     for(var i=0;i<bifData.length;i++){
-      var d=bifData[i],cx=bx(d.a);
-      for(var j=0;j<d.pts.length;j++){
-        var cy=by(d.pts[j]);
-        B.fillRect(cx,cy,.8,.8);
-      }
+      var d=bifData[i],cx2=bx(d.a);
+      for(var j=0;j<d.pts.length;j++)B.fillRect(cx2,by(d.pts[j]),.8,.8);
     }
 
-    // Alpha indicator
     if(alpha>=1&&alpha<=4){
       B.save();B.setLineDash([4,3]);B.strokeStyle='#E53935';B.lineWidth=1.5;
-      var ax=bx(alpha);ln2(B,ax,PT,ax,PT+H);B.restore();
+      ln2(B,bx(alpha),PT,bx(alpha),PT+H);B.restore();
     }
 
-    // Labels
+    // Mark x0 as horizontal dashed line
+    if(x0>0&&x0<1){
+      B.save();B.setLineDash([2,3]);B.strokeStyle='rgba(156,39,176,0.4)';B.lineWidth=1;
+      ln2(B,PL,by(x0),PL+W,by(x0));B.restore();
+    }
+
     B.font='12px "Times New Roman",serif';B.fillStyle='#888';
     B.fillText('\u03B1',BW-15,PT+H+12);B.fillText('x',PL-4,PT-3);
     B.font='9px sans-serif';B.fillStyle='#bbb';
@@ -9088,38 +9120,62 @@ A final interesting feature visible in the bifurcation diagram is the presence o
     function cx(v){return PL+v*W;}
     function cy(v){return PT+(1-v)*H;}
 
-    // Grid
     C.strokeStyle='#f0f0f0';C.lineWidth=.5;
     [.2,.4,.6,.8].forEach(function(v){var x=cx(v);ln2(C,x,PT,x,PT+H);var y=cy(v);ln2(C,PL,y,PL+W,y);});
     C.strokeStyle='#81D4FA';C.lineWidth=1;
     ln2(C,PL,PT+H,PL+W,PT+H);ln2(C,PL,PT,PL,PT+H);
 
-    // Bisectrix y=x
+    // Bisectrix
     C.save();C.setLineDash([5,3]);C.strokeStyle='#FF9800';C.lineWidth=1.5;
     ln2(C,cx(0),cy(0),cx(1),cy(1));C.restore();
 
-    // Parabola f(x) = α x(1-x)
+    // Parabola
     C.strokeStyle='#1976D2';C.lineWidth=2;C.beginPath();
     for(var x=0;x<=1;x+=.005){
       var y=f(x,alpha);if(x<.01)C.moveTo(cx(x),cy(y));else C.lineTo(cx(x),cy(y));
     }
     C.stroke();
 
+    // Mark fixed points on the bisectrix
+    var fps=fixedPts();
+    fps.forEach(function(fp2){
+      var xv=fp2.x;if(xv<0||xv>1)return;
+      var px=cx(xv),py=cy(xv);
+      if(fp2.stable){C.fillStyle='#4CAF50';circ(C,px,py,6,true);C.strokeStyle='#2E7D32';C.lineWidth=1.5;circ(C,px,py,6,false);}
+      else{C.fillStyle='#F44336';circ(C,px,py,6,true);C.strokeStyle='#C62828';C.lineWidth=1.5;circ(C,px,py,6,false);}
+    });
+
+    // Mark cycle points on the parabola
+    var cyc=detectCycle();
+    if(cyc.period>1){
+      var stable=Math.abs(cyc.multiplier)<1;
+      cyc.pts.forEach(function(xv){
+        if(xv<0||xv>1)return;
+        var yv=f(xv,alpha),px=cx(xv),py=cy(yv);
+        if(stable){C.fillStyle='rgba(76,175,80,0.7)';circ(C,px,py,5,true);C.strokeStyle='#2E7D32';C.lineWidth=1.5;circ(C,px,py,5,false);}
+        else{C.fillStyle='rgba(244,67,54,0.7)';circ(C,px,py,5,true);C.strokeStyle='#C62828';C.lineWidth=1.5;circ(C,px,py,5,false);}
+        // Also mark on bisectrix
+        C.fillStyle=stable?'rgba(76,175,80,0.35)':'rgba(244,67,54,0.35)';
+        circ(C,cx(xv),cy(xv),4,true);
+      });
+    }
+
     // Cobweb iteration
-    var x=x0,nIter=80;
-    C.strokeStyle='rgba(50,50,50,0.5)';C.lineWidth=1;
+    var x=x0,nIter=100;
+    C.strokeStyle='rgba(50,50,50,0.45)';C.lineWidth=1;
     C.beginPath();C.moveTo(cx(x),cy(0));
     for(var i=0;i<nIter;i++){
       var y=f(x,alpha);
       if(y<-0.5||y>1.5)break;
-      C.lineTo(cx(x),cy(y)); // vertical to f
-      C.lineTo(cx(y),cy(y)); // horizontal to bisectrix
+      C.lineTo(cx(x),cy(y));
+      C.lineTo(cx(y),cy(y));
       x=y;
     }
     C.stroke();
 
     // Start dot
-    C.fillStyle='#E53935';C.beginPath();C.arc(cx(x0),cy(0),4,0,Math.PI*2);C.fill();
+    C.fillStyle='#9C27B0';circ(C,cx(x0),cy(0),5,true);
+    C.strokeStyle='#6A1B9A';C.lineWidth=1.5;circ(C,cx(x0),cy(0),5,false);
 
     // Labels
     C.font='12px "Times New Roman",serif';C.fillStyle='#888';
@@ -9130,6 +9186,9 @@ A final interesting feature visible in the bifurcation diagram is the presence o
     C.font='10px "Times New Roman",serif';
     C.fillStyle='#1976D2';C.fillText('f(x)='+alpha.toFixed(2)+'x(1\u2212x)',PL+3,PT+12);
     C.fillStyle='#FF9800';C.fillText('y = x',PL+3,PT+24);
+    C.fillStyle='#4CAF50';C.fillText('\u25CF stable',PL+3,CH-PB-24);
+    C.fillStyle='#F44336';C.fillText('\u25CF unstable',PL+50,CH-PB-24);
+    C.fillStyle='#9C27B0';C.fillText('\u25CF x\u2080='+x0.toFixed(3),PL+3,CH-PB-10);
   }
 
   // === TIME SERIES ===
@@ -9140,14 +9199,12 @@ A final interesting feature visible in the bifurcation diagram is the presence o
     function tx(t){return PL+t/N*W;}
     function ty(v){return PT+(1-v)*H;}
 
-    // Grid
     TT.strokeStyle='#f0f0f0';TT.lineWidth=.5;
     [20,40,60].forEach(function(t){var x=tx(t);ln2(TT,x,PT,x,PT+H);});
     [.2,.4,.6,.8].forEach(function(v){var y=ty(v);ln2(TT,PL,y,PL+W,y);});
     TT.strokeStyle='#81D4FA';TT.lineWidth=1;
     ln2(TT,PL,PT+H,PL+W,PT+H);ln2(TT,PL,PT,PL,PT+H);
 
-    // Iterate two trajectories
     var x1=x0,x2=x0+eps;
     var pts1=[x1],pts2=[x2];
     for(var i=0;i<N;i++){
@@ -9156,76 +9213,81 @@ A final interesting feature visible in the bifurcation diagram is the presence o
       pts1.push(x1);pts2.push(x2);
     }
 
-    // Draw trajectory 2 (perturbed) - green
+    // Trajectory 2 (perturbed) green
     TT.strokeStyle='#4CAF50';TT.lineWidth=1.5;TT.beginPath();
     for(var i=0;i<=N;i++){if(isNaN(pts2[i]))break;var px=tx(i),py=ty(pts2[i]);if(!i)TT.moveTo(px,py);else TT.lineTo(px,py);}
     TT.stroke();
-    // Draw markers
     TT.fillStyle='#4CAF50';
-    for(var i=0;i<=N;i++){if(isNaN(pts2[i]))break;TT.beginPath();TT.arc(tx(i),ty(pts2[i]),1.5,0,Math.PI*2);TT.fill();}
+    for(var i=0;i<=N;i++){if(isNaN(pts2[i]))break;circ(TT,tx(i),ty(pts2[i]),1.5,true);}
 
-    // Draw trajectory 1 (original) - blue
+    // Trajectory 1 (original) blue
     TT.strokeStyle='#1565C0';TT.lineWidth=1.5;TT.beginPath();
     for(var i=0;i<=N;i++){if(isNaN(pts1[i]))break;var px=tx(i),py=ty(pts1[i]);if(!i)TT.moveTo(px,py);else TT.lineTo(px,py);}
     TT.stroke();
     TT.fillStyle='#1565C0';
-    for(var i=0;i<=N;i++){if(isNaN(pts1[i]))break;TT.beginPath();TT.arc(tx(i),ty(pts1[i]),1.5,0,Math.PI*2);TT.fill();}
+    for(var i=0;i<=N;i++){if(isNaN(pts1[i]))break;circ(TT,tx(i),ty(pts1[i]),1.5,true);}
 
-    // Labels
+    // Mark attractor values as dashed lines
+    var cyc=detectCycle();
+    if(cyc.period>0&&cyc.period<=8){
+      TT.save();TT.setLineDash([3,3]);TT.lineWidth=1;
+      var stable=Math.abs(cyc.multiplier)<1;
+      TT.strokeStyle=stable?'rgba(76,175,80,0.35)':'rgba(244,67,54,0.35)';
+      cyc.pts.forEach(function(xv){
+        if(xv>=0&&xv<=1){var y=ty(xv);ln2(TT,PL,y,PL+W,y);}
+      });
+      TT.restore();
+    }
+
     TT.font='12px "Times New Roman",serif';TT.fillStyle='#888';
     TT.fillText('t',TW-15,ty(0)+14);TT.fillText('x(t)',PL+3,PT-3);
     TT.font='9px sans-serif';TT.fillStyle='#bbb';
     [0,20,40,60,80].forEach(function(t){TT.fillText(t,tx(t)-4,ty(0)+13);});
     [0,.5,1].forEach(function(v){TT.fillText(v.toFixed(1),2,ty(v)+3);});
-    // Legend
     TT.font='10px sans-serif';
     TT.fillStyle='#1565C0';TT.fillText('\u25CF x\u2080 = '+x0.toFixed(4),PL+3,PT+12);
-    TT.fillStyle='#4CAF50';TT.fillText('\u25CF x\u2080 = '+(x0+eps).toFixed(4),PL+3,PT+24);
-    TT.fillStyle='#888';TT.fillText('\u0394x\u2080 = '+eps.toExponential(0),PL+3,PT+36);
+    TT.fillStyle='#4CAF50';TT.fillText('\u25CF x\u2080+\u03B5 = '+(x0+eps).toFixed(4),PL+3,PT+24);
+    TT.fillStyle='#888';TT.fillText('\u03B5 = '+eps.toExponential(0),PL+3,PT+36);
   }
 
   function updInfo(){
     var el=document.getElementById('lm-info');
-    // Detect period by iterating
-    var x=0.4;for(var i=0;i<500;i++)x=f(x,alpha);
-    var orbit=[x];for(var i=0;i<64;i++){x=f(x,alpha);orbit.push(x);}
-    var period=0;
-    for(var p=1;p<=32;p++){
-      var match=true;
-      for(var k=0;k<16;k++){if(Math.abs(orbit[k]-orbit[k+p])>1e-6){match=false;break;}}
-      if(match){period=p;break;}
+    var cyc=detectCycle(),fps2=fixedPts();
+    var t='\u03B1 = '+alpha.toFixed(3)+' &nbsp;|&nbsp; x\u2080 = '+x0.toFixed(3)+' &nbsp;|&nbsp; ';
+    if(alpha<1){t+='<span style="color:#F44336">x \u2192 0 (extinction)</span>';}
+    else if(cyc.period===1){
+      var xs=(alpha-1)/alpha,stab=Math.abs(2-alpha)<1;
+      t+='<span style="color:'+(stab?'#4CAF50':'#F44336')+'">Fixed point x*='+xs.toFixed(4)+' ('+(stab?'stable, |f\'|='+Math.abs(2-alpha).toFixed(3):'unstable, |f\'|='+Math.abs(2-alpha).toFixed(3))+')</span>';
+    }else if(cyc.period>1){
+      var stab2=Math.abs(cyc.multiplier)<1;
+      t+='<span style="color:'+(stab2?'#1565C0':'#F44336')+'">Period-'+cyc.period+' ('+(stab2?'stable':'unstable')+', |\u039B|='+Math.abs(cyc.multiplier).toFixed(4)+')</span>';
+    }else{
+      t+='<span style="color:#F44336">Chaos (aperiodic)</span>';
     }
-    var t='\u03B1 = '+alpha.toFixed(3)+' &nbsp;|&nbsp; ';
-    if(alpha<1)t+='<span style="color:#F44336">x \u2192 0 (extinction)</span>';
-    else if(period===1)t+='<span style="color:#4CAF50">Fixed point x* = '+(1-1/alpha).toFixed(4)+'</span>';
-    else if(period>0)t+='<span style="color:#1565C0">Period-'+period+' cycle</span>';
-    else t+='<span style="color:#F44336">Chaos (aperiodic)</span>';
     el.innerHTML=t;
   }
   function updTitles(){
-    document.getElementById('lm-ct').textContent='Cobweb: \u03B1 = '+alpha.toFixed(3);
-    var x=0.4;for(var i=0;i<500;i++)x=f(x,alpha);
-    var orbit=[x];for(var i=0;i<64;i++){x=f(x,alpha);orbit.push(x);}
-    var per=0;for(var p=1;p<=32;p++){var m=true;for(var k=0;k<16;k++){if(Math.abs(orbit[k]-orbit[k+p])>1e-6){m=false;break;}}if(m){per=p;break;}}
-    document.getElementById('lm-tt').textContent=per>0?'Time series (period '+per+')':'Time series: sensitive dependence (chaos)';
+    document.getElementById('lm-ct').textContent='Cobweb: \u03B1='+alpha.toFixed(3)+', x\u2080='+x0.toFixed(3);
+    var cyc=detectCycle();
+    document.getElementById('lm-tt').textContent=cyc.period>0?'Time series (period '+cyc.period+')':'Time series: sensitive dependence (chaos)';
   }
   function redraw(){drawBif();drawCobweb();drawTimeSeries();updInfo();updTitles();}
 
   // Bifurcation diagram interaction
   function getAlpha(e){
     var rect=bd.getBoundingClientRect(),PL=45,W=BW-PL-10;
-    var cx=(e.clientX-rect.left)*(BW/rect.width);
-    var a=1+(cx-PL)/W*3;
-    return Math.max(0,Math.min(4,a));
+    var cx2=(e.clientX-rect.left)*(BW/rect.width);
+    return Math.max(0,Math.min(4,1+(cx2-PL)/W*3));
   }
   bd.addEventListener('mousedown',function(e){drag=true;alpha=getAlpha(e);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();});
   bd.addEventListener('mousemove',function(e){if(!drag)return;alpha=getAlpha(e);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();});
   window.addEventListener('mouseup',function(){drag=false;});
-  bd.addEventListener('touchstart',function(e){e.preventDefault();drag=true;var t=e.touches[0];alpha=getAlpha(t);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();},{passive:false});
-  bd.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;var t=e.touches[0];alpha=getAlpha(t);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();},{passive:false});
+  bd.addEventListener('touchstart',function(e){e.preventDefault();drag=true;alpha=getAlpha(e.touches[0]);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();},{passive:false});
+  bd.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;alpha=getAlpha(e.touches[0]);aS.value=alpha;aV.textContent=alpha.toFixed(3);redraw();},{passive:false});
   bd.addEventListener('touchend',function(){drag=false;});
 
   aS.addEventListener('input',function(){alpha=parseFloat(this.value);aV.textContent=alpha.toFixed(3);redraw();});
+  x0S.addEventListener('input',function(){x0=parseFloat(this.value);x0V.textContent=x0.toFixed(3);redraw();});
   redraw();
 })();
 </script>
