@@ -10120,7 +10120,7 @@ For a chaotic attractor, this process of stretching and folding is continuous. T
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(SVD Connection)</span></p>
 
-The stretching and reorientation of this evolving ellipsoid of initial conditions can be formally described by the Singular Value Decomposition (SVD) of the Jacobian product matrix, $G = \prod J(x_i)$. Recall that the singular values of a matrix describe its scaling action along principal axes.
+The stretching and reorientation of this evolving ellipsoid of initial conditions can be formally described by the **Singular Value Decomposition (SVD)** of the Jacobian product matrix, $G = \prod J(x_i)$. Recall that the singular values of a matrix describe its scaling action along principal axes.
 
 * The maximum Lyapunov exponent corresponds to the maximum singular value of this product matrix.
 * The singular values, $\sigma_i$, of $G$ are given by the square root of the eigenvalues of the matrix $G^\top G$.
@@ -10190,8 +10190,6 @@ This ensures that while the system stretches along at least one direction (due t
 ### Fractal Structures in Chaotic Systems
 
 #### Introduction to Fractals in Chaos
-
-In the study of chaotic systems, we often encounter geometric structures of immense complexity. These are not the simple lines, planes, or spheres of classical geometry, but intricate, jagged, and infinitely detailed objects known as fractals.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Fractal Basins of Attraction)</span></p>
@@ -10723,7 +10721,8 @@ It is important to distinguish between discrete-time systems (maps) and continuo
 
 ### From Theory to Practice: Analyzing Empirical Data
 
-#### The Fundamental Challenge of Real-World Systems
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(The Fundamental Challenge of Real-World Systems)</p>
 
 We now pivot from idealized model systems to the domain of empirical data. As experimentalists or data scientists, we are often confronted with data recorded from a real-world system—be it temperature measurements from a climate system or neural recordings from the brain. We do not know the underlying equations of motion.
 
@@ -10731,6 +10730,8 @@ The central questions we will now address are:
 
 1. How can we apply the powerful concepts of dynamical systems theory to characterize and understand real data?
 2. Can we go even further and actually derive data-driven models of the underlying data-generating process?
+
+</div>
 
 #### The Measurement Problem
 
@@ -10750,8 +10751,6 @@ Our goal is to reconstruct the dynamics of the full $m$-dimensional system from 
 
 ### State Space Reconstruction from Time Series Data
 
-In the study of complex dynamical systems, such as the climate or the human brain, we are often faced with a significant challenge: the systems are defined by a vast number of interacting variables, yet we can only measure a small fraction of them. This chapter introduces the foundational concepts that allow us to reconstruct the system's underlying dynamics from limited, often scalar, time series data.
-
 #### The Fundamental Problem: Incomplete Observations
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -10765,7 +10764,12 @@ Let a true dynamical system evolve in an $M$-dimensional state space. We typical
 
 </div>
 
-For the purposes of our initial discussion, we will consider the most extreme case where our measurements are scalar, meaning $k=1$. The central question is: can we recover the dynamics of the true, high-dimensional system from a single scalar time series? The answer, remarkably, is yes. The mathematical theorems that support this form the basis of state space reconstruction.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Reconstruction from scalar time series?)</p>
+
+For the purposes of our initial discussion, we will consider the most extreme case where our measurements are scalar, meaning $k=1$. The central question is: **can we recover the dynamics of the true, high-dimensional system from a single scalar time series?** The answer, remarkably, is yes. The mathematical theorems that support this form the basis of state space reconstruction.
+
+</div>
 
 #### The Intuition of Time Delay Embedding
 
@@ -10785,7 +10789,7 @@ However, if we also consider the value at a slightly earlier time, $t-\tau$, we 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Recall AR($p$), VAR($p$))</p>
 
 Recall that a fundamental property of a valid state space is that trajectories cannot intersect. A single dimension is often insufficient to satisfy this property for even simple oscillatory systems. By augmenting our current measurement with its own past values, we effectively create new dimensions, allowing us to "unfold" the trajectory into a higher-dimensional space where intersections are eliminated.
 
@@ -10877,8 +10881,8 @@ Let the original system's attractor live on a manifold $A$ in the true state spa
 
 $$F := G \circ h(x)$$
 
-1. The measurement function, $h$, which maps a point $x$ on the true attractor to a scalar observation $y$.
-2. The delay coordinate map, $G$, which takes the time series of observations and constructs the delay vector.
+1. The **measurement function**, $h$, which maps a point $x$ on the true attractor to a scalar observation $y$.
+2. The **delay coordinate map**, $G$, which takes the time series of observations and constructs the delay vector.
 
 The map $F$ takes the manifold $A$ to its image, $F(A)$, in the $m$-dimensional delay embedding space (also called the reconstruction space).
 
@@ -10886,13 +10890,13 @@ $$A \xrightarrow{F} F(A)$$
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Desired Properties of the Map $F$)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Desired Properties of the Map $F$)</span></p>
 
 For the reconstruction $F(A)$ to be scientifically useful, the map $F$ must preserve essential properties of the original system on $A$.
 
-1. Topological Preservation (One-to-One Mapping): At a minimum, we require the map $F$ to be one-to-one (injective). This ensures that distinct points on the original attractor are mapped to distinct points in the reconstruction space. This property guarantees that trajectories do not intersect, thereby creating a topologically faithful representation (a homeomorphism).
-2. Dynamical Preservation (Preserving the Vector Field): For a truly useful embedding, preserving the topology is not enough. We also want to preserve the local dynamics—the vector field on the attractor. This is a much stronger condition. It requires that the derivative of the map, denoted $dF$, also be one-to-one. The map $dF$ is a linear map between the tangent spaces (local vector fields, or Jacobians) at any point on $A$ and its corresponding image on $F(A)$.
+1. **Topological Preservation (One-to-One Mapping):** At a minimum, we require the map $F$ to be one-to-one (injective). This ensures that distinct points on the original attractor are mapped to distinct points in the reconstruction space. This property guarantees that trajectories do not intersect, thereby creating a topologically faithful representation (a homeomorphism).
+2. **Dynamical Preservation (Preserving the Vector Field):** For a truly useful embedding, preserving the topology is not enough. We also want to preserve the local dynamics—the vector field on the attractor. This is a much stronger condition. It requires that the derivative of the map, denoted $dF$, also be one-to-one. The map $dF$ is a linear map between the tangent spaces (local vector fields, or Jacobians) at any point on $A$ and its corresponding image on $F(A)$.
 
 </div>
 
@@ -10935,19 +10939,21 @@ The central challenge addressed by embedding theorems is finding the right embed
 
 The core principle behind embedding theorems can be understood through a simple geometric question: Given two manifolds, one of dimension $d_1$ and the other of dimension $d_2$, how large must the dimension of the ambient space be so that the manifolds will most likely not intersect?
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span>(Avoiding Intersections in Higher Dimensions)</p>
 
-The required dimensionality of the ambient space is at least $d_1 + d_2 + 1$. In a space of this dimension or higher, the probability of two randomly placed manifolds intersecting is zero (or, more formally, the measure of the set of intersecting configurations is zero).
+Given two manifolds, one of dimension $d_1$ and the other of dimension $d_2$, the dimension of the ambient space be so that the manifolds will most likely not intersect is at least $d_1 + d_2 + 1$. 
+
+In a space of this dimension or higher, the probability of two randomly placed manifolds intersecting is zero (or, more formally, the measure of the set of intersecting configurations is zero).
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-* Lines in 2D vs. 3D: Imagine randomly "throwing" straight lines (1-dimensional manifolds, so $d_1 = d_2 = 1$) into a space.
-  * In a 2-dimensional plane, it is very likely that two randomly placed lines will intersect (unless they are perfectly parallel).
-  * In a 3-dimensional space, however, two randomly placed lines will almost certainly not intersect. They will pass by each other as skew lines. With probability one, they will miss.
+Lines in 2D vs. 3D: Imagine randomly "throwing" straight lines (1-dimensional manifolds, so $d_1 = d_2 = 1$) into a space:
+* **In a 2-dimensional plane**, it is very likely that two randomly placed lines will intersect (unless they are perfectly parallel).
+* **In a 3-dimensional space**, however, two randomly placed lines will almost certainly not intersect. They will pass by each other as skew lines. With probability one, they will miss.
 
 This powerful intuitive idea—that increasing the dimension of the ambient space provides "more room" to avoid intersections—is the foundation upon which the formal embedding theorems are built.
 
@@ -10992,11 +10998,17 @@ If the embedding dimension $k$ satisfies $k \geq 2D + 1$, then the map $F_{\tau}
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Invariance and Generic Delay)</span></p>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/manifold_reconsturction.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Delay embedding of the tangent space $T_0\mathcal{M}$ of an invariant manifold $\mathcal{M}$. The full state space manifold $\mathcal{M}$ (left) has a diffeomorphic copy $\tilde{\mathcal{M}}$ in the observable space (right) by Takens’s theorem. The shape of the reconstructed manifold $\tilde{\mathcal{M}}$ depends on the flow map, but its tangent space, $T_q\tilde{\mathcal{M}}$, is directly given by the eigenvalues at the fixed point, independent of the geometry of $\mathcal{M}$ and the observable function $\mu$.</figcaption>
+</figure>
 
-* Invariance: A set $A$ is invariant under a flow $\Phi$ if any trajectory starting in $A$ remains in $A$ for all time. That is, $\Phi_t(x) \in A$ for all $x \in A$ and for all time $t$. The theorem applies to the attractors of dynamical systems, which are by definition invariant sets.
-* Generic Delay ($\tau$): The choice of the time delay $\tau$ is crucial. A "bad" choice can ruin the embedding. For example, if the system is periodic, choosing $\tau$ to be an integer multiple of the period would be a poor choice, as all delay coordinates would be identical, and the structure would collapse. The "generic" condition means that almost any choice of $\tau$ will work, as long as it avoids such special, resonant values. If a choice of $\tau$ fails, a slightly different value will succeed.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Invariance and Generic Delay)</span></p>
+
+* **Invariance:** A set $A$ is invariant under a flow $\Phi$ if any trajectory starting in $A$ remains in $A$ for all time. That is, $\Phi_t(x) \in A$ for all $x \in A$ and for all time $t$. The theorem applies to the attractors of dynamical systems, which are by definition invariant sets.
+* **Generic Delay ($\tau$):** The choice of the time delay $\tau$ is crucial. A "bad" choice can ruin the embedding. For example, if the system is periodic, choosing $\tau$ to be an integer multiple of the period would be a poor choice, as all delay coordinates would be identical, and the structure would collapse. The "generic" condition means that almost any choice of $\tau$ will work, as long as it avoids such special, resonant values. If a choice of $\tau$ fails, a slightly different value will succeed.
 
 </div>
 
@@ -11037,11 +11049,11 @@ As the embedding dimension is increased, the attractor "unfolds." When the dimen
 
 **Methodology**
 
-1. Construct Embeddings: Start with a low embedding dimension, $d=1, 2, 3, \dots$.
-2. Identify Neighbors: For each point in the $d$-dimensional embedded trajectory, find its nearest neighbor.
-3. Check in Next Dimension: Observe the distance between this same pair of points in the $d+1$-dimensional embedding.
-4. Count False Neighbors: If the distance between the points increases dramatically when moving from dimension $d$ to $d+1$, the pair is classified as a "false neighbor." This jump in distance indicates that the proximity in dimension $d$ was merely an artifact of the projection.
-5. Analyze the Trend: Plot the percentage of false neighbors as a function of the embedding dimension $d$. Typically, this curve will show a high percentage of false neighbors for low $d$, which then drops sharply and plateaus at or near zero. The embedding dimension at which this "kink" occurs and the percentage of false neighbors becomes negligible is chosen as the minimum sufficient embedding dimension.
+1. **Construct Embeddings:** Start with a low embedding dimension, $d=1, 2, 3, \dots$.
+2. **Identify Neighbors:** For each point in the $d$-dimensional embedded trajectory, find its nearest neighbor.
+3. **Check in Next Dimension:** Observe the distance between this same pair of points in the $d+1$-dimensional embedding.
+4. **Count False Neighbors:** If the distance between the points increases dramatically when moving from dimension $d$ to $d+1$, the pair is classified as a "false neighbor." This jump in distance indicates that the proximity in dimension $d$ was merely an artifact of the projection.
+5. **Analyze the Trend:** Plot the percentage of false neighbors as a function of the embedding dimension $d$. Typically, this curve will show a high percentage of false neighbors for low $d$, which then drops sharply and plateaus at or near zero. The embedding dimension at which this "kink" occurs and the percentage of false neighbors becomes negligible is chosen as the minimum sufficient embedding dimension.
 
 #### Applications: Computing Invariants in Embedded Space
 
@@ -11050,8 +11062,8 @@ Once a proper embedding has been constructed, the reconstructed state space can 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Computable Quantities)</span></p>
 
-* Attractor Dimension: If an estimate of the attractor's dimension (e.g., box-counting dimension, correlation dimension) was not available beforehand, it can be computed from the trajectories in the newly constructed delay-embedding space.
-* Lyapunov Exponents: The delay-embedding space allows for the empirical estimation of Lyapunov exponents, which quantify the rate of separation of infinitesimally close trajectories and are a hallmark of chaotic systems.
+* **Attractor Dimension:** If an estimate of the attractor's dimension (e.g., box-counting dimension, correlation dimension) was not available beforehand, it can be computed from the trajectories in the newly constructed delay-embedding space.
+* **Lyapunov Exponents:** The delay-embedding space allows for the empirical estimation of Lyapunov exponents, which quantify the rate of separation of infinitesimally close trajectories and are a hallmark of chaotic systems.
 
 </div>
 
@@ -11162,7 +11174,10 @@ Modern approaches to this problem leverage the framework of machine learning. Th
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Machine Learning Pipeline)</span></p>
 
-1. **Specify a Model:** We choose a highly flexible class of functions, such as a neural network, to serve as our model candidate, $\hat{f}\_{\theta}$ or $\hat{F}\_{\theta}$. The parameters $\theta$ represent the weights and biases of the network. We also must consider that our observations $y_t$ may be related to the true states $x_t$ via a measurement function $h_{\psi}$, which may also need to be learned: $y_t = h_{\psi}(x_t)$.
+1. **Specify a Model:** We choose a highly flexible class of functions, such as a neural network, to serve as our model candidate, $\hat{f}\_{\theta}$ or $\hat{F}\_{\theta}$. The parameters $\theta$ represent the weights and biases of the network. We also must consider that our observations $y_t$ may be related to the true states $x_t$ via a measurement function $h_{\psi}$, which may also need to be learned: 
+
+   $$y_t = h_{\psi}(x_t)$$
+
 2. **Specify a Loss Function:** We define a loss function, $R(\theta \mid \text{data})$, which quantifies the discrepancy between our model's predictions and the observed data. This function could be a mean squared error, a likelihood function, or another metric of model quality. The loss function creates a "surface" over the parameter space.
 3. **Training (Optimization):** We employ an iterative numerical optimization algorithm (often a variant of gradient descent) to search the parameter space for a set of parameters $\theta$ that minimizes the loss function. This "training" procedure refines the model until it provides the best possible fit to the data, hopefully corresponding to a global (or at least a good local) minimum of the loss function.
 
@@ -11283,7 +11298,7 @@ To find the optimal coefficient matrix $\mathbf{C}$, we define a loss function, 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mean Squared Error Loss Function)</span></p>
 
-The loss function $L(\mathbf{C})$ is defined as the sum of squared Euclidean distances between the numerically estimated derivative, $\hat{\dot{\mathbf{x}}}(t)$, and the model's approximation, $\hat{\mathbf{f}}(\mathbf{x}(t))$, summed over all time steps $T$:
+The loss function $L(\mathbf{C})$ is defined as the **sum of squared Euclidean distances** between the numerically estimated derivative, $\hat{\dot{\mathbf{x}}}(t)$, and the model's approximation, $\hat{\mathbf{f}}(\mathbf{x}(t))$, summed over all time steps $T$:
 
 $$L(\mathbf{C}) = \sum_{t=1}^{T} \| \hat{\dot{\mathbf{x}}}(t) - \hat{\mathbf{f}}(\mathbf{x}(t)) \|_2^2$$
 
@@ -11306,7 +11321,7 @@ To achieve this, we add a penalty term to the loss function that penalizes the n
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lasso Regularization Term)</span></p>
 
-A regularization term, weighted by a coefficient $\lambda$, is added to the loss function. This term is the sum of the absolute values (the $L_1$-norm) of all coefficients in the matrix $\mathbf{C}$.
+**Lasso regularization term**, weighted by a coefficient $\lambda$, is added to the loss function. This term is the sum of the absolute values (the $L_1$-norm) of all coefficients in the matrix $\mathbf{C}$.
 
 $$\text{Regularization Term} = \lambda \sum_{i,j} |c_{ij}|$$
 
@@ -11402,8 +11417,8 @@ The SINDy algorithm was successfully applied to data generated from the Lorenz s
 
 The SINDy method is beautiful in its simplicity. It transforms a difficult nonlinear system identification problem into a linear regression problem. However, its success is highly dependent on the initial choice of the basis function library.
 
-* When it works well: The Lorenz system example works nicely because the true system is already in a polynomial form, which was included in the library. SINDy is effective when the library is geared towards the system on which the discovery is being performed.
-* When it can fail: For real empirical data, where the true functional form of the dynamics is unknown, the method can easily break down. If the essential functions are not included in the library, or if the system requires a very high-dimensional library, the problem can become computationally infeasible. Therefore, the choice of the library often requires physical domain knowledge.
+* **When it works well:** The Lorenz system example works nicely because the true system is already in a polynomial form, which was included in the library. SINDy is effective when the library is geared towards the system on which the discovery is being performed.
+* **When it can fail:** For real empirical data, where the true functional form of the dynamics is unknown, the method can easily break down. If the essential functions are not included in the library, or if the system requires a very high-dimensional library, the problem can become computationally infeasible. Therefore, the choice of the library often requires physical domain knowledge.
 
 </div>
 
@@ -11427,7 +11442,7 @@ The focus of our study now shifts to a class of methods that do not have this ca
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Universal Approximation of Dynamical Systems)</span></p>
 
-All the methods discussed henceforth are universal approximators of functions in general, and of dynamical systems in particular. A key architecture in this domain is the Recurrent Neural Network (RNN).
+All the methods discussed henceforth are **universal approximators of functions in general, and of dynamical systems in particular**. A key architecture in this domain is the Recurrent Neural Network (RNN).
 
 An RNN can be formally shown to be a universal approximator of dynamical systems. While we will not delve into the formal proofs of the theorems that establish this property, we will build a comprehensive understanding of their structure, function, and application. These models were, and in many domains remain, state-of-the-art for time series prediction and the modeling of dynamical systems.
 
@@ -11583,13 +11598,13 @@ The complete model consists of two parts:
 
 1. **The Recursive Core (State Equation):** This is the RNN itself, which describes the evolution of the latent states $z_t$.
 
-$$z_t = f(z_{t-1}, s_t; \theta)$$
+   $$z_t = f(z_{t-1}, s_t; \theta)$$
 
 2. **The Decoder (Observation Model):** This is a function, $g$, that maps the latent state $z_t$ to a predicted output $\hat{x}_t$. This is necessary because the latent states are not directly observed; the decoder must learn to translate them into the space of the target outputs.
 
-$$\hat{x}_t = g(z_t; \lambda)$$
+   $$\hat{x}_t = g(z_t; \lambda)$$
 
-The decoder has its own set of parameters, denoted by $\lambda$.
+   The decoder has its own set of parameters, denoted by $\lambda$.
 
 This two-part structure is analogous to concepts in dynamical systems where an unobservable internal state generates observable measurements. Models of this form are sometimes referred to as State-Space Models, though this term often implies additional probabilistic assumptions.
 
@@ -11630,7 +11645,7 @@ Gradient descent is an iterative algorithm that seeks to find a minimum of the l
 
 1. **Initialization:** Start with an initial guess for the parameters, $\theta_0$ and $\lambda_0$. A common practice is to draw these initial values from a probability distribution, such as a Gaussian distribution with zero mean.
 
-$$\theta_0, \lambda_0 \sim \mathcal{N}(0, \sigma^2 I)$$
+   $$\theta_0, \lambda_0 \sim \mathcal{N}(0, \sigma^2 I)$$
 
 2. **Iteration:** Initialize an iteration counter, e.g., $k=1$. Begin a loop that continues until a stopping criterion is met. In each step of the loop, the parameters are updated based on the gradient of the loss function. (The process of calculating the gradient and performing the update will be detailed subsequently.)
 
@@ -11796,7 +11811,7 @@ If the loss landscape contains many local minima, starting from different points
 ##### Overparameterization: Double Descent and the Lottery Ticket Hypothesis
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Double Descent and the Lottery Ticket Hypothesis</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Double Descent and the Lottery Ticket Hypothesis)</span></p>
 
 A more modern and perhaps counter-intuitive approach involves using strongly overparameterized models -- that is, using many more parameters than one might think are necessary to represent the data.
 
@@ -11813,7 +11828,7 @@ Note: This is an active area of research, and while powerful, this approach does
 ##### Stochasticity: Adding Noise to Gradients
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Adding Noise to Gradients</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Adding Noise to Gradients)</span></p>
 
 Another strategy is to intentionally introduce randomness into the optimization process. By adding a small amount of noise, $\epsilon$, to the gradient calculation at each step, the parameter updates become probabilistic:
 
@@ -11836,7 +11851,7 @@ A primary challenge in gradient-based optimization is the risk of the algorithm 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Gradient Descent: SGD)</span></p>
 
-Stochastic Gradient Descent (SGD) is an optimization algorithm where, at each gradient step, the update is calculated based on a randomly drawn subsample (a "mini-batch") of the full training dataset, rather than the entire dataset.
+**Stochastic Gradient Descent (SGD)** is an optimization algorithm where, at each gradient step, the update is calculated based on a randomly drawn subsample (a "mini-batch") of the full training dataset, rather than the entire dataset.
 
 </div>
 
@@ -11900,11 +11915,11 @@ The virtue of second-order methods is that they are often superior to standard g
 ##### The Hessian and the Newton-Raphson Procedure
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Hessian Matrix)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient update using local curvature)</span></p>
 
 The Hessian is the matrix of second-order partial derivatives of the loss function. It describes the local curvature of the function at a given point.
 
-A naive second-order update rule modifies the parameters $\theta$ not just with the gradient of the loss $\nabla_{\theta} L$, but by pre-multiplying it with the inverse of the Hessian, $H^{-1}$:
+A **naive second-order update rule** modifies the parameters $\theta$ not just with the gradient of the loss $\nabla_{\theta} L$, but by pre-multiplying it with the inverse of the Hessian, $H^{-1}$:
 
 $$\theta_{n+1} = \theta_n - \gamma [H(\theta_n)]^{-1} \nabla_{\theta} L(\theta_n)$$
 
@@ -11930,12 +11945,15 @@ Despite their theoretical advantages, pure second-order methods are rarely used 
 To make these methods viable, adjustments are necessary. A notable proposal by Pascanu and Bengio (c. 2014) involves modifying the Hessian to ensure updates always point towards a minimum.
 
 * A Singular Value Decomposition (SVD) of the Hessian is performed.
-* All singular values are set to be positive (conceptually, taking an absolute value, denoted here as $\|H\| = Q\|\Lambda\|Q^\top$).
+* All singular values are set to be positive. Conceptually, taking an absolute value, denoted here as 
+
+  $$|H| = Q|\Lambda| Q^\top$$
+
 * This procedure ensures that the second derivatives cannot change sign at the same time as the first derivative vanishes, preventing convergence to maxima.
 
 The adjusted update rule can be conceptualized as:
 
-$$\theta_{n+1} = \theta_n - \gamma [|H(\theta_n)|]^{-1} \nabla_{\theta} L(\theta_n)$$
+$$\theta_{n+1} = \theta_n - \gamma (|H(\theta_n)|)^{-1} \nabla_{\theta} L(\theta_n)$$
 
 </div>
 
@@ -11944,7 +11962,7 @@ $$\theta_{n+1} = \theta_n - \gamma [|H(\theta_n)|]^{-1} \nabla_{\theta} L(\theta
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Quasi-Newton Methods)</span></p>
 
-Quasi-Newton methods are a class of algorithms that seek to capture the benefits of second-order information without the prohibitive cost of computing the full Hessian. They do so by building an efficient numerical approximation of the inverse Hessian at each step.
+**Quasi-Newton methods** are a class of algorithms that seek to capture the benefits of second-order information without the prohibitive cost of computing the full Hessian. They do so by building an efficient numerical approximation of the inverse Hessian at each step.
 
 </div>
 
@@ -11969,7 +11987,7 @@ We now turn to a very specific, time-efficient gradient descent algorithm tailor
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Backpropagation Through Time: BPTT)</span></p>
 
-BPTT is the standard algorithm for training RNNs. It is an adaptation of the general backpropagation algorithm that applies gradient descent to an RNN by first "unwrapping" or "unrolling" the network through its time steps.
+**BPTT** is the standard algorithm for training RNNs. It is an adaptation of the general backpropagation algorithm that applies gradient descent to an RNN by first "unwrapping" or "unrolling" the network through its time steps.
 
 </div>
 
@@ -12060,9 +12078,9 @@ Let our RNN be given by the recursive form, and let our set of trainable paramet
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function for BPTT)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function for RNN)</span></p>
 
-A typical loss function $L(\theta)$ for an RNN trained on a sequence of length $T$ is the mean squared error, averaged over time:
+A typical **loss function $L(\theta)$ for an RNN** trained on a sequence of length $T$ is the mean squared error, averaged over time:
 
 $$L(\theta) = \frac{1}{T} \sum_{t=1}^{T} \sum_{k=1}^{N} (x_k(t) - x_k^*(t))^2$$
 
@@ -12291,7 +12309,7 @@ The final output of the LSTM cell at time step $t$, denoted as $z_t$, is a filte
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Final Output)</span></p>
 
-The total output $z_t$ is computed by passing the memory cell state through a $\tanh$ function and then multiplying it pointwise by the output gate's activation:
+The **total output** $z_t$ is computed by passing the memory cell state through a $\tanh$ function and then multiplying it pointwise by the output gate's activation:
 
 $$z_t = o_t \odot \tanh(c_t)$$
 
@@ -12353,7 +12371,7 @@ Dynamical Systems Reconstruction (DSR) is the process of uncovering the hidden m
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dynamical Systems Reconstruction)</span></p>
 
-The objective of DSR is to estimate the underlying dynamics of a system from an observed time series $X = \lbrace x_1, x_2, \dots, x_T \rbrace$. We assume the existence of a latent state $z_t$ governed by a flow operator and an observation function.
+The objective of **DSR** is to estimate the underlying dynamics of a system from an observed time series $X = \lbrace x_1, x_2, \dots, x_T \rbrace$. We assume the existence of a latent state $z_t$ governed by a flow operator and an observation function.
 
 * **Data Generating System:** An unknown form that generates the data.
 * **Observation Function ($g$):** A function that maps the latent state $z_t$ to the observed value $x_t$.
@@ -12688,7 +12706,7 @@ Since precise point-by-point temporal agreement is impossible for chaotic system
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hellinger Distance)</span></p>
 
-The Hellinger distance is used to quantify the similarity between the power spectra of the original signal and the reconstructed signal. Assuming the power spectra are normalized such that the area under the curve is one:
+The **Hellinger distance** is used to quantify the similarity between the power spectra of the original signal and the reconstructed signal. Assuming the power spectra are normalized such that the area under the curve is one:
 
 $$\int P(\omega)\, d\omega = 1$$
 
@@ -12711,6 +12729,10 @@ The Hellinger distance lives within the range $[0, 1]$. When the correlation bet
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/An-illustration-of-the-behavior-of-the-Squared-Hellinger-distance-Euclidean-distance.ppm.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 #### Complexity and Chaos Measures
 
 A successful reconstruction should preserve the "complexity" of the original system, which can be quantified using the measures previously discussed in the context of dynamical systems analysis.
@@ -12730,7 +12752,7 @@ The training of RNNs is fraught with the "exploding and vanishing gradient" prob
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Generic Recurrent Neural Network)</span></p>
 
-We define a generic RNN as a recursive map $f$ with parameters $\theta$:
+We define a **generic RNN** as a recursive map $f$ with parameters $\theta$:
 
 $$z_t = f_\theta(z_{t-1}, u_t)$$
 
@@ -12881,7 +12903,7 @@ The optimal $\tau$ can be determined by the physical properties of the system be
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Predictability Time)</span></p>
 
-The predictability time provides an estimate of how long a trajectory remains "close" to its initial path before chaotic divergence becomes severe. It is inversely proportional to the maximum Lyapunov exponent $\lambda_{\max}$.
+The **predictability time** provides an estimate of how long a trajectory remains "close" to its initial path before chaotic divergence becomes severe. It is inversely proportional to the maximum Lyapunov exponent $\lambda_{\max}$.
 
 </div>
 
@@ -12939,7 +12961,7 @@ In many reconstruction tasks, it is beneficial to break a long time series into 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multiple Shooting Constraint)</span></p>
 
-In a multiple shooting framework, the initial condition of a segment $n+1$ must be contingent upon the value forward-propagated from the preceding segment $n$. If we denote the estimate at segment $n+1$ as $z_{n+1}$, we require that it matches the result of the map $f_\theta$ applied to the final state of the previous segment.
+In a **multiple shooting framework**, the initial condition of a segment $n+1$ must be contingent upon the value forward-propagated from the preceding segment $n$. If we denote the estimate at segment $n+1$ as $z_{n+1}$, we require that it matches the result of the map $f_\theta$ applied to the final state of the previous segment.
 
 </div>
 
@@ -14084,7 +14106,7 @@ To increase the stability and robustness of the learned dynamics, we often exten
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($M$-Step Latent Loss)</span></p>
 
-The $M$-step Latent Loss ensures that the linear operator remains valid over longer trajectories in the embedding space:
+The **$M$-step Latent Loss** ensures that the linear operator remains valid over longer trajectories in the embedding space:
 
 $$\mathcal{L}_{m\text{-step}} = \sum_{t} \lVert \phi(x_{t+m}) - \tilde{K}^m\, \phi(x_t) \rVert$$
 
@@ -14113,7 +14135,7 @@ While $\mathcal{L}\_{\text{obs},\, m}$ might appear redundant if $\mathcal{L}\_{
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total KAE Loss)</span></p>
 
-The total loss $\mathcal{L}_{\text{total}}$ is defined as:
+The **total KAE loss** $\mathcal{L}_{\text{total}}$ is defined as:
 
 $$\mathcal{L}_{\text{total}} = \alpha_1\, \mathcal{L}_{\text{recon}} + \alpha_2\, \mathcal{L}_{\text{obs},\, m} + \alpha_3\, \mathcal{L}_{\text{Koopman}} + \alpha_4\, \mathcal{L}_{\text{reg}}$$
 
