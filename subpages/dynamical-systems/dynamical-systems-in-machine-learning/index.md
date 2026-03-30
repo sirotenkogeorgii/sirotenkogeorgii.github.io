@@ -3411,8 +3411,6 @@ Sinks and stable spirals are asymptotically stable. This more general framework 
 
 ### Foundational Concepts in Topological Dynamics
 
-This chapter introduces the fundamental topological concepts that are essential for a deeper understanding of dynamical systems. We will move beyond simple classifications to establish a rigorous framework for comparing different systems and analyzing the geometric structures they produce.
-
 #### Asymptotic Stability: A General Definition
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -3712,8 +3710,8 @@ We now check if the condition for topological equivalence, $h(\phi^A_t(x_0)) = \
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Solution</span><span class="math-callout__name"></span></p>
 
 1. **Calculate the left-hand side (LHS):** First, we apply the flow of System $A$ to a point $x_0$, and then map the result using $h$.
   
@@ -4549,7 +4547,7 @@ It usually means a term proportional to the **velocity** that either removes or 
 
 For a second-order oscillator, you often see something like
 
-$$x'' + c,x' + f(x)=0$$
+$$x'' + cx' + f(x)=0$$
 
 or, in the van der Pol form,
 
@@ -4989,78 +4987,10 @@ A **bifurcation graph** is a diagram that plots the state of a system's stable a
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-In the context of timescale separation, the "parameter" for our graph is one of the system's own slow variables. Let's consider a system with fast variables like voltage ($V$) and a slow variable, $h$. The bifurcation graph would be plotted with the slow variable h on the horizontal axis and a state variable of the fast system (e.g., $V$) on the vertical axis.
-
-Conventionally, in these graphs:
-
-* Stable objects (like stable fixed points or stable limit cycles) are drawn with solid lines.
-* Unstable objects (like saddle points or unstable limit cycles) are drawn with dashed lines.
-
-This visualization allows us to see, at a glance, how the fundamental nature of the fast subsystem changes as the slow variable $h$ evolves.
-
-</div>
-
-#### Case Study: Analysis of a System with a Slow Variable
-
-Let us analyze a system where a slow variable, $h$, controls the dynamics of a faster subsystem (whose state can be described by variables such as voltage, $V$, and another variable, $n$).
-
-##### Fixed Point Dynamics
-
-By treating $h$ as a parameter, we can find the fixed points of the fast subsystem for each value of $h$. The analysis reveals three distinct regimes:
-
-* For low values of $h$: The system has only one stable fixed point, located at a relatively high voltage.
-* For high values of $h$: The system again has only one stable fixed point, but it is located at a much lower voltage.
-* For an intermediate range of $h$: The system exhibits three fixed points.
-  * The central fixed point is an unstable saddle point. In the bifurcation graph, this is represented by a dashed curve.
-  * The two "outer" fixed points have different stability properties. One is a stable fixed point, while the other is an unstable spiral.
-
-This appearance and disappearance of fixed points is associated with a type of bifurcation referred to in the lecture as a "set" bifurcation (likely a saddle-node bifurcation).
-
-##### Limit Cycle Dynamics and Homoclinic Orbits
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-The existence of an unstable spiral fixed point is significant. Often, such a point is surrounded by a stable limit cycle, representing a sustained oscillation in the fast subsystem. This is precisely what occurs in the intermediate range of h.
-
-To represent this limit cycle on the two-dimensioal bifurcation graph, we plot its extremities.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Visualizing the Limit Cycle)</span></p>
-
-The limit cycle (represented by a yellow curve in the lecture's diagram) is added to the bifurcation graph by plotting its maximum and minimum voltage values for each corresponding value of $h$. This creates a U-shaped curve enclosing the unstable spiral.
-
-As the parameter $h$ is increased within this intermediate range, the limit cycle grows in size. This expansion continues until a critical event occurs: the limit cycle becomes so large that it collides with the saddle point.
-
-</div>
-
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Homoclinic Orbit)</span></p>
 
 A **homoclinic orbit** (or **homoclinic connection**) is a trajectory in a dynamical system that joins a saddle equilibrium point to itself. The event where the expanding limit cycle collides with the saddle point creates such an orbit. The bifurcation that occurs at this point is known as a homoclinic bifurcation.
-
-</div>
-
-#### The Complete Picture: Dynamics of the Full System
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
-
-The true power of this analysis comes when we remember that $h$ is not a static parameter but a slowly-evolving dynamical variable. The full system's state, therefore, travels back and forth along the structures depicted in the bifurcation graph.
-
-This dynamic interplay leads to complex, emergent behavior:
-
-1. The system might start at a stable fixed point (a quiescent state).
-2. As the slow variable $h$ changes, it can drive the system into the region where the limit cycle exists.
-3. The system state will "hop onto the cycle," initiating a burst of rapid oscillations.
-4. As $h$ continues to evolve, it may then drag the system into a region where the limit cycle no longer exists, causing the oscillations to cease and the system to fall back to a stable fixed point.
-
-This continuous process of being driven back and forth between a stable fixed point and an oscillatory cycle explains the "bursting" behavior observed in many such systems.
 
 </div>
 
@@ -5249,9 +5179,9 @@ Since we know the system is confined to the interval $[0, 1]$, the trajectory mu
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($K$-Cycle)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($k$-Cycle)</span></p>
 
-A **$K$-cycle** is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that:
+A **$k$-cycle** is a periodic trajectory where the system iterates through $K$ distinct points. A 2-cycle, for example, is a pair of points $\lbrace x_a, x_b \rbrace$ such that:
 
 $$f(x_a) = x_b \quad \text{and} \quad f(x_b) = x_a$$
 
@@ -8373,7 +8303,6 @@ Suppose we have a physical system that settles down to equilibrium through expon
   <img src="{{ '/assets/images/notes/dynamical-systems/supercritical_hopf_bifurcation_string.png' | relative_url }}" alt="a" loading="lazy">
   <!-- <figcaption>Chaos begins, but this region is not purely chaotic</figcaption> -->
 </figure>
-</div>
 
 </div>
 
@@ -8928,15 +8857,15 @@ That special trajectory is called a **homoclinic orbit**.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Typical picture of homoclinic bifurcation)</span></p>
 
-Before the bifurcation:
+**Before the bifurcation:**
 
 * there may be a stable periodic orbit, or no orbit at all.
 
-At the bifurcation:
+**At the bifurcation:**
 
 * the periodic orbit collides with a saddle equilibrium and becomes a homoclinic loop.
 
-After the bifurcation:
+**After the bifurcation:**
 
 * the periodic orbit may disappear, or a new one may appear, depending on the system.
 
@@ -9519,13 +9448,13 @@ $$x_{n+1}=r x_n(1-x_n)$$
 
 * For $0 \le r < 1$, every orbit in $[0,1]$ is driven to to a stable fixed point $0$. At $r=0$, the system becomes $0$ immediately after one step. With r growing the trajectory oscillates more, but still converges.
 
+* At $r=1$, there is a **transcritical bifurcation**: the stable fixed point switches from $0$ to $1-\frac1r$. For $1<r\le2$ the approach is monotone; for $2<r<3$ it still converges to the same fixed point, but with damped oscillations around it.
+
 * For $1 \le r \le 3$, the long-term behavior is no longer extinction. Instead, for almost any initial value in $(0,1)$, the orbit converges to the fixed point
 
   $$x^\ast=1-\frac1r.$$
 
-* At $r=1$, there is a transcritical bifurcation: the stable fixed point switches from $0$ to $1-\frac1r$. For $1<r\le2$ the approach is monotone; for $2<r<3$ it still converges to the same fixed point, but with damped oscillations around it.
-
-* At $r=3$, the fixed point loses stability and a period-doubling bifurcation occurs. For $3 \le r \le 3.44949$, the system settles into a stable 2-cycle: the orbit alternates forever between two values instead of converging to one. ([Wikipedia][1])
+* At $r=3$, the fixed point loses stability and a period-doubling bifurcation occurs. For $3 \le r \le 3.44949$, the system settles into a stable 2-cycle: the orbit alternates forever between two values instead of converging to one.
 
 * For $3.44949 \le r \le 3.56995$, that 2-cycle itself loses stability, producing a 4-cycle, then 8-cycle, then 16-cycle, and so on. This is the classic period-doubling cascade. The bifurcation points get closer and closer together, accumulating at about $r \approx 3.56995$.
 
@@ -9593,13 +9522,6 @@ It typically occurs when a real eigenvalue or multiplier passes through $-1$.
 **Wikipedia:**
 
 In dynamical systems theory, a **period-doubling bifurcation** occurs when a slight change in a system's parameters causes a new periodic trajectory to emerge from an existing periodic trajectory—the new one having double the period of the original. With the doubled period, it takes twice as long (or, in a discrete dynamical system, twice as many iterations) for the numerical values visited by the system to repeat themselves.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Period-Halfing Bifurcation Intuitively)</span></p>
-
-A period-halving bifurcation occurs when a system switches to a new behavior with half the period of the original system.
 
 </div>
 
@@ -9830,8 +9752,8 @@ The most significant implication of this theorem is that the number 3 is first i
 
 #### The Feigenbaum Constants
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Feigenbaum Constants)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Feigenbaum Constants)</span></p>
 
 For maps that exhibit the period-doubling route to chaos (like the logistic and tent maps), the rate at which the bifurcations occur is governed by a universal constant.
 
@@ -9927,7 +9849,7 @@ One of the most famous and foundational examples of chaos arises from the Lorenz
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Lorenz System)</span></p>
 
-The Lorenz system is a set of three coupled, nonlinear, first-order ordinary differential equations:
+The **Lorenz system** is a set of three coupled, nonlinear, first-order ordinary differential equations:
 
 $$\begin{aligned}
 \dot{x} &= s(y - x) \\
@@ -9954,8 +9876,83 @@ By varying the parameter $r$ while keeping $s$ and $b$ fixed, the system exhibit
 
 </div>
 
+Based on the attached pages, the definitions are:
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Attractor)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Chaos (Strogatz))</span></p>
+
+**Chaos** is **aperiodic long-term behavior in a deterministic system that exhibits sensitive dependence on initial conditions**.
+
+This definition has three parts:
+
+1. **Aperiodic long-term behavior**
+   Trajectories do not settle to:
+   * fixed points,
+   * periodic orbits,
+   * or quasiperiodic orbits
+     as $t \to \infty$.
+
+2. **Deterministic system**
+   The system has **no random or noisy inputs or parameters**.
+   The irregular behavior comes from the system’s **nonlinearity**, not from noise.
+
+3. **Sensitive dependence on initial conditions**
+   Nearby trajectories separate **exponentially fast**.
+   Equivalently, the system has a **positive Lyapunov exponent**.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Attractor (Strogatz))</span></p>
+
+An **attractor** is a **closed set** $A$ with the following properties:
+
+1. **Invariant**
+   If a trajectory starts in $A$, it stays in $A$ for all time.
+
+2. **Attracts an open set of initial conditions**
+   There exists an open set $U$ containing $A$ such that if $x(0) \in U$, then
+   
+   $$\operatorname{dist}(x(t),A) \to 0 \quad \text{as } t \to \infty.$$
+   
+   The largest such $U$ is called the **basin of attraction** of $A$.
+
+3. **Minimal**
+   No proper subset of $A$ also satisfies properties 1 and 2.
+
+So loosely speaking, an attractor is a set toward which nearby trajectories converge.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Strange Attractor (Strogatz))</span></p>
+
+A **strange attractor** is an **attractor that exhibits sensitive dependence on initial conditions**.
+
+So a strange attractor is an attractor with chaotic behavior. Strange attractors were originally called “strange” because they are often **fractal**, though today the main emphasis is on the dynamical property of sensitive dependence on initial conditions.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sensitivity on initial conditions within attractor)</span></p>
+
+One says a **strange attractor** is "an attractor that exhibits sensitive dependence on initial conditions," the natural meaning is:
+
+* you look at the **dynamics on the attractor $A$**,
+* take two initial conditions that are **arbitrarily close** (typically both on $A$, or at least very near points of $A$),
+* and their trajectories eventually separate rapidly.
+
+So the clean way to think about it is:
+
+* **Attractor:** nearby points are drawn toward the set.
+* **Strange attractor:** once on that set, the dynamics are also chaotic, meaning nearby states on the attractor separate sensitively.
+
+In other words, **attraction concerns a neighborhood**, while **sensitive dependence concerns the internal dynamics of the attractor**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Attractor)</span></p>
 
 An **attractor** is a set of states in the state space towards which a system's trajectory evolves over time. For a chaotic attractor, trajectories that start nearby will converge onto this object. Once on the attractor, the trajectory moves around chaotically, densely filling a region of the state space. It is important to note that chaos can also be unstable or transient; not all chaotic behavior is confined to an attractor.
 
@@ -10237,8 +10234,6 @@ The **Cantor set** is constructed through an iterative procedure starting with t
 
 At the $n$-th iteration, the set $K_n$ consists of $2^n$ closed intervals.
 
-#TODO: Proposition: Cantor set has zero measure
-
 </div>
 
 <figure>
@@ -10405,7 +10400,7 @@ At each iteration $k$, this process generates $2^k$ horizontal stripes. This ind
 To quantify the stretching and contracting nature of the map, we can examine its Jacobian.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Jacobian of the Horseshoe Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Jacobian of the Horseshoe Map)</span></p>
 
 The map is constructed from two distinct parts: the linear transformation (stretching and contracting) and the non-linear folding. The Jacobian reflects the linear part of this operation. For the Smale Horseshoe, this Jacobian remains constant across the regions of interest.
 
@@ -10414,7 +10409,7 @@ From the Jacobian of the map, we can directly determine the Lyapunov exponents, 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">Lyapunov Exponents of the Horseshoe Map</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Lyapunov Exponents of the Horseshoe Map)</span></p>
 
 For the Smale Horseshoe map, the Jacobian reveals two constant Lyapunov exponents:
 
@@ -10430,7 +10425,7 @@ The positive exponent, $\lambda_1$, corresponds to the stretching direction, ind
 The truly interesting dynamics of the horseshoe map occur not on the entire square, but on a specific subset of points that remain within the square under all forward and backward iterations of the map. This is known as the invariant set.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">Forward and Backward Iteration</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forward and Backward Iteration)</span></p>
 
 As we iterate the map forward in time ($k \to \infty$), the horizontal stripes become progressively thinner. At iteration $k$, we have $2^k$ stripes, each with a height of $(1/3)^k$. As $k$ approaches infinity, this collection of stripes converges to a geometric structure known as a Cantor set in the vertical direction.
 
@@ -10439,7 +10434,7 @@ We can also consider the inverse of the map, $f^{-1}$, which corresponds to iter
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">The Invariant Set $\Lambda$</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Invariant Set $\Lambda$)</span></p>
 
 The **invariant set**, denoted by $\Lambda$, is defined as the set of all points in the square $S$ that remain in $S$ for all time, both forward and backward. Mathematically, it is the intersection of all forward and backward images of the square:
 
@@ -10448,9 +10443,8 @@ $$\Lambda = \bigcap_{k=-\infty}^{\infty} f^k(S)$$
 </div>
 
 
-
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">The Geometry of $\Lambda$</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Geometry of $\Lambda$)</span></p>
 
 The set $\Lambda$ is the geometric intersection of the horizontal stripes generated by forward iteration and the vertical stripes generated by backward iteration. After a finite number of forward and backward iterations, the set appears as a grid of small squares. As we approach an infinite number of iterations, this structure becomes infinitely fine. $\Lambda$ is a fractal set -- it is the product of two Cantor sets, one aligned vertically and one horizontally.
 
@@ -10571,7 +10565,7 @@ To get a precise definition, we examine the behavior in the limit as $\epsilon \
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Box-Counting Dimension)</span></p>
 
-For a set $S$ in an $m$-dimensional Euclidean space $\mathbb{R}^m$, the box-counting dimension, $D_{box}$, is defined as:
+For a set $S$ in an $m$-dimensional Euclidean space $\mathbb{R}^m$, the **box-counting dimension**, $D_{box}$, is defined as:
 
 $$D_{box} = \lim_{\epsilon \to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$$
 
@@ -10582,7 +10576,6 @@ where $N(\epsilon)$ is the minimum number of $m$-dimensional boxes of side lengt
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/box_dimension.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
 </figure>
-
 
 #### Example: The Cantor Set
 
@@ -10685,7 +10678,7 @@ where $k$ is a constant and $D$ is the correlation dimension. By again taking th
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Correlation Dimension)</span></p>
 
-The correlation dimension, $D_{corr}$, is defined as:
+The **correlation dimension**, $D_{corr}$, is defined as:
 
 $$D_{corr} = \lim_{\epsilon \to 0} \frac{\log C(\epsilon)}{\log \epsilon}$$
 
@@ -10693,10 +10686,26 @@ where $C(\epsilon)$ is the correlation integral, which measures the average numb
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/cantor_set_base3_expansion.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>The curve saturates at large $\epsilon$ because the $\epsilon$-balls engulf the whole attractor and so $N_x(\epsilon)$ can grow no further. On the other hand, at extremely small $\epsilon$, the only point in each $\epsilon$-ball is $x$ itself. So the power law is expected to hold only in the scaling region where</figcaption>
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
 Note the subtle but important difference in the denominator: $\log \epsilon$ instead of $\log(1/\epsilon)$. This is because as $\epsilon \to 0$, the number of boxes $N(\epsilon)$ needed to cover a set increases (so $\log(1/\epsilon)$ is positive and grows), whereas the number of neighbors $C(\epsilon)$ found within a small ball decreases (so $\log \epsilon$ is negative and approaches $-\infty$). The ratio remains a well-defined, positive dimension.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span>(Correlation Dimension and Box-counting Dimension)</p>
+
+In general,
+
+$$D_{corr} \leq D_{box}$$
+
+although they are usually very close.
 
 </div>
 
@@ -11072,7 +11081,7 @@ The delay embedding theorems provide a remarkable guarantee: under certain condi
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Delay Coordinate Map)</span></p>
 
-Given a time series of scalar measurements $\{s_1, s_2, ..., s_k\}$, the delay coordinate map constructs a series of state vectors in a higher-dimensional space. A vector $x_t$ in the reconstructed space is formed as:
+Given a time series of scalar measurements $\{s_1, s_2, ..., s_k\}$, the **delay coordinate map** constructs a series of state vectors in a higher-dimensional space. A vector $x_t$ in the reconstructed space is formed as:
 
 $$x_t = (s_t, s_{t-\tau}, s_{t-2\tau}, ..., s_{t-(m-1)\tau})$$
 
@@ -11120,9 +11129,9 @@ When plotting the average logarithmic distance between trajectory pairs versus t
 
 A typical empirical divergence plot can be divided into three regions:
 
-1. Initial Sharp Rise: The curve often begins with a steep, rapid increase. This is typically an artifact of noise in the measurement data. Noise is uncorrelated with the system dynamics and causes an initial, non-dynamical separation of points across all available dimensions.
-2. Linear Slope: Following the initial noise-driven rise, the plot should exhibit a linear region. This slope reflects the true exponential divergence governed by the system's underlying dynamics. The slope of this linear portion is the estimate of the maximum Lyapunov exponent.
-3. Plateau: Eventually, the curve will flatten out and plateau. This saturation occurs because the attractor is bounded in space. As trajectories diverge, their separation cannot grow indefinitely; it is limited by the maximum possible distance across the attractor. At this point, the average distance will fluctuate around this maximum value.
+1. **Initial Sharp Rise:** The curve often begins with a steep, rapid increase. This is typically an artifact of noise in the measurement data. Noise is uncorrelated with the system dynamics and causes an initial, non-dynamical separation of points across all available dimensions.
+2. **Linear Slope:** Following the initial noise-driven rise, the plot should exhibit a linear region. This slope reflects the true exponential divergence governed by the system's underlying dynamics. The slope of this linear portion is the estimate of the maximum Lyapunov exponent.
+3. **Plateau:** Eventually, the curve will flatten out and plateau. This saturation occurs because the attractor is bounded in space. As trajectories diverge, their separation cannot grow indefinitely; it is limited by the maximum possible distance across the attractor. At this point, the average distance will fluctuate around this maximum value.
 
 Therefore, the empirical task is to identify the linear region of this plot, fit a line to it, and extract its slope as the estimate for $\lambda_{max}$.
 
@@ -11141,8 +11150,8 @@ This approach, often called Dynamical Systems Reconstruction, aims to automate t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Model Inference Approaches)</span></p>
 
-1. Vector Field Approximation: For a continuous-time system described by a set of differential equations $\dot{x} = f(x)$, this approach seeks to find a function $\hat{f}_{\theta}(x)$ that approximates the true underlying vector field $f(x)$. The function $\hat{f}$ belongs to a flexible function class parameterized by a set of parameters $\theta$.
-2. Flow Operator Approximation: For a discrete-time system (or a discretized continuous system) where the state at the next time step is given by $x_{k+1} = \Phi(x_k)$, this approach seeks to find a function $\hat{F}_{\theta}(x_k)$ that directly approximates the flow operator (or map) $\Phi$.
+1. **Vector Field Approximation:** For a continuous-time system described by a set of differential equations $\dot{x} = f(x)$, this approach seeks to find a function $\hat{f}_{\theta}(x)$ that approximates the true underlying vector field $f(x)$. The function $\hat{f}$ belongs to a flexible function class parameterized by a set of parameters $\theta$.
+2. **Flow Operator Approximation:** For a discrete-time system (or a discretized continuous system) where the state at the next time step is given by $x_{k+1} = \Phi(x_k)$, this approach seeks to find a function $\hat{F}_{\theta}(x_k)$ that directly approximates the flow operator (or map) $\Phi$.
 
 </div>
 
