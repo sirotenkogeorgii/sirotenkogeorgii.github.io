@@ -75,7 +75,7 @@ These systems evolve continuously. These are typically described by differential
 
 * **Ordinary Differential Equations (ODEs):** These describe the rate of change of a system's variables with respect to a single dimension, typically time. The notation often uses a dot to represent the time derivative.
   * A system can be multi-dimensional, with a state vector $x \in \mathbb{R}^p$.
-* Here, $\dot{x}$ is a vector of temporal derivatives $[\dot{x}_1, \dot{x}_2, \dots, \dot{x}_p]^T$, and $f(x)$ is a function, often called the vector field, that maps the current state x to its rate of change. This single vector equation represents a set of $p$ coupled differential equations: 
+* Here, $\dot{x}$ is a vector of temporal derivatives $[\dot{x}_1, \dot{x}_2, \dots, \dot{x}_p]^T$, and $f(x)$ is a function, often called the vector field, that maps the current state $x$ to its rate of change. This single vector equation represents a set of $p$ coupled differential equations: 
 
 $$\begin{align*} \dot{x}_1 &= f_1(x_1, x_2, \dots, x_p) \\ \dot{x}_2 &= f_2(x_1, x_2, \dots, x_p) \\ &\vdots \\ \dot{x}_p &= f_p(x_1, x_2, \dots, x_p) \end{align*} $$
 
@@ -214,7 +214,7 @@ $$\begin{align*} \dot{x}_1 &= x_2 \\ \dot{x}_2 &= -bx_1 - ax_2 \end{align*} $$
 Linear systems are a cornerstone of dynamical systems theory. While they don't exhibit the complex behaviors of nonlinear systems (like chaos), they are fundamental for two reasons:
 
 1. They are one of the few classes of systems that can be solved completely analytically.
-> The behavior of a nonlinear system in the close vicinity of an equilibrium point can often be accurately approximated by a linear system.
+2. The behavior of a nonlinear system in the close vicinity of an equilibrium point can often be accurately approximated by a linear system.
 
 ### The One-Dimensional Case: $\dot{x} = ax$
 
@@ -243,33 +243,32 @@ Let's analyze the simplest linear system, a single variable whose rate of change
 
 1. **Rearrange the equation** to separate variables $x$ and $t$: 
   
-  $$\frac{dx}{x} = a dt$$
+   $$\frac{dx}{x} = a dt$$
 
 2. **Integrate both sides**:
   
-  $$\int \frac{1}{x} dx = \int a dt$$
+   $$\int \frac{1}{x} dx = \int a dt$$
 
 3. **Perform the integration**, which yields a logarithm and an integration constant $C$:
    
-  $$\ln \lvert x\rvert = at + C$$
+   $$\ln \lvert x\rvert = at + C$$
 
 4. **Solve for** $x$ by taking the exponent of both sides:
    
-  $$\lvert x\rvert = e^{at+C} = e^C e^{at}$$
+   $$\lvert x\rvert = e^{at+C} = e^C e^{at}$$
 
 5. **Define a new constant** $\tilde{C} = \pm e^C$ to absorb the absolute value and the constant term. This gives the general solution, which as you can see depends on the inition condition:
   
-  $$x(t) = \tilde{C} e^{at}$$
+   $$x(t) = \tilde{C} e^{at}$$
 
 6. **Apply the initial condition** $x(0) = x_0$. At $t=0$, we have $x(0) = \tilde{C}e^0 = \tilde{C}$. Therefore, $\tilde{C} = x_0$.
 
-The final solution is: 
+   The final solution is: 
 
-$$x(t) = x_0 e^{at}$$
+   $$x(t) = x_0 e^{at}$$
 
 </details>
 </div>
-
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fixed point or Equilibrium point)</span></p>
@@ -347,20 +346,20 @@ To find the solution, we can use an ansatz inspired by the 1D case, proposing a 
 
 1. **Propose a solution form**, where $v$ is a constant vector (initial position, $x(0)$) and $\lambda$ is a scalar: 
     
-  $$x(t) = v e^{\lambda t}$$
+   $$x(t) = v e^{\lambda t}$$
   
-  We assume $v \neq 0$ to find a non-trivial solution.
+   We assume $v \neq 0$ to find a non-trivial solution.
 2. **Substitute the ansatz into the ODE**. First, find the derivative $\dot{x}$: 
    
-  $$\dot{x} = \frac{d}{dt}(v e^{\lambda t}) = \lambda v e^{\lambda t}$$
+   $$\dot{x} = \frac{d}{dt}(v e^{\lambda t}) = \lambda v e^{\lambda t}$$
 
 3. **Set the two sides of the ODE equal**:
  
-  $$\dot{x} = Ax \implies \lambda v e^{\lambda t} = A(v e^{\lambda t})$$
+   $$\dot{x} = Ax \implies \lambda v e^{\lambda t} = A(v e^{\lambda t})$$
 
 4. **Simplify the equation**. Since $e^{\lambda t}$ is a non-zero scalar, we can cancel it from both sides: 
   
-  $$\lambda v = Av$$
+   $$\lambda v = Av$$
 
 This is the fundamental **eigenvalue problem**. To find the solutions to our differential equation, we need to find the **eigenvalues** $\lambda$ and corresponding **eigenvectors $v$** of the matrix $A$.
 
@@ -1266,11 +1265,11 @@ So the long-time behavior is entirely controlled by how $e^{At}$ behaves as $t\t
 
    If $\operatorname{Re}(\lambda_i)<0$, then
 
-$$\lvert e^{\lambda_i t}\rvert = e^{\operatorname{Re}(\lambda_i)t}\to 0.$$
+   $$\lvert e^{\lambda_i t}\rvert = e^{\operatorname{Re}(\lambda_i)t}\to 0.$$
 
-So every eigen-direction is multiplied by a decaying factor, which forces $e^{At}x_0\to 0$ for any initial state $x_0$. (The change of basis $V,V^{-1}$ only distorts by constant factors; it doesn’t change “decays to zero” into “doesn’t decay.”)
+   So every eigen-direction is multiplied by a decaying factor, which forces $e^{At}x_0\to 0$ for any initial state $x_0$. (The change of basis $V,V^{-1}$ only distorts by constant factors; it doesn’t change “decays to zero” into “doesn’t decay.”)
 
-1. *Complex eigenvalues: spirals are just “oscillation × decay”*
+2. *Complex eigenvalues: spirals are just “oscillation × decay”*
    
    If $\lambda=\alpha\pm i\omega$, the real solutions look like
 
@@ -1365,7 +1364,7 @@ Equilibrium points must lie at the intersection of all nullclines, as this is wh
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Very important distinction: nullcline vs trajectory)</span></p>
 
 A nullcline is **not usually a curve that the solution follows**.
@@ -1398,7 +1397,7 @@ That intersection is an **equilibrium/fixed point**.
   </figure>
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Then why do many pictures seem to show tilted arrows on the nullcline?)</span></p>
 
 Usually because the arrows are **not actually evaluated exactly on the nullcline**.
@@ -1435,7 +1434,7 @@ If you can find a change of variables $x = Py$ such that
 
 $$\dot{y} = P^{-1}AP, y$$
 
-and (P^{-1}AP) is diagonal, then the system becomes
+and $P^{-1}AP$ is diagonal, then the system becomes
 
 $$\dot{y}_i = \lambda_i y_i$$
 
@@ -1746,7 +1745,7 @@ This confirms that $\dot{\mathbf{x}} = A\mathbf{x}(t)$, satisfying the different
 
 While the matrix exponential provides a powerful general solution, it is important to verify that it is consistent with the eigenvector-based solution we derived earlier for the case where $A$ is diagonalizable (i.e., has distinct eigenvalues).
 
-<div class="math-callout math-callout--remark" markdown="1">
+<div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name"></span></p>
 
 Let's demonstrate that for a diagonalizable matrix $A$, the two solution forms are equivalent.
@@ -4593,6 +4592,126 @@ Since LHS = RHS, we have shown that $h(\phi_t^A(x)) = \phi_t^B(h(x))$. The syste
   sl1.addEventListener('input',update);
   sl2.addEventListener('input',update);
   update();
+})();
+</script>
+
+<div id="nh-container" style="margin:2em auto;max-width:920px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Nondifferentiable Homeomorphism</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    A circle deformed into a polygon via a homeomorphism \(h(\theta,t)\). The map is continuous (C&sup0;) but <em>not</em> differentiable at the corners — the tangent magnitude \(\|dh/d\theta\|\) has jump discontinuities there.
+  </p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">t =</span>
+    <input type="range" id="nh-t" min="0" max="100" step="1" value="0" style="width:220px;">
+    <span id="nh-tv" style="font-size:.85em;font-family:serif;min-width:32px;">0.00</span>
+    <button id="nh-sq" style="font-size:.78em;padding:3px 10px;border:1px solid #ccc;border-radius:3px;background:#f8f8f8;cursor:pointer;font-family:serif;">Circle &rarr; Square</button>
+    <button id="nh-star" style="font-size:.78em;padding:3px 10px;border:1px solid #ccc;border-radius:3px;background:#f8f8f8;cursor:pointer;font-family:serif;">Circle &rarr; Star</button>
+    <button id="nh-tri" style="font-size:.78em;padding:3px 10px;border:1px solid #ccc;border-radius:3px;background:#f8f8f8;cursor:pointer;font-family:serif;">Circle &rarr; Triangle</button>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Homeomorphic deformation h(&theta;, t)</div>
+      <canvas id="nh-sc" width="420" height="420" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">&Vert;dh/d&theta;&Vert; &mdash; tangent magnitude vs &theta;</div>
+      <canvas id="nh-dc" width="420" height="420" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;">
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:110px;text-align:center;">
+      <div style="font-size:11px;color:#888;">Max &Vert;dh/d&theta;&Vert;</div>
+      <div style="font-size:18px;font-weight:500;" id="nh-md">1.00</div>
+    </div>
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:110px;text-align:center;">
+      <div style="font-size:11px;color:#888;">Discontinuities in dh/d&theta;</div>
+      <div style="font-size:18px;font-weight:500;" id="nh-nd">0</div>
+    </div>
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:110px;text-align:center;">
+      <div style="font-size:11px;color:#888;">Homeomorphism class</div>
+      <div style="font-size:18px;font-weight:500;" id="nh-cl">C&infin;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var tS=document.getElementById('nh-t'),tV=document.getElementById('nh-tv');
+  var sc=document.getElementById('nh-sc'),dc=document.getElementById('nh-dc');
+  var S=sc.getContext('2d'),D=dc.getContext('2d');
+  var mdEl=document.getElementById('nh-md'),ndEl=document.getElementById('nh-nd'),clEl=document.getElementById('nh-cl');
+  var PI=Math.PI,PI2=2*PI;
+  var mode='square';
+  var lineCol='#534AB7',accentCol='#A32D2D',mutedCol='#999',gridCol='rgba(0,0,0,.06)';
+
+  function targetR(th,m){
+    if(m==='square'){return 1/Math.max(Math.abs(Math.cos(th)),Math.abs(Math.sin(th)));}
+    if(m==='star'){return 1-.45*Math.abs(Math.sin(2.5*th));}
+    var n=3,ang=((th%PI2)+PI2)%PI2,sec=Math.floor(ang/(PI2/n)),loc=ang-sec*(PI2/n)-PI/n;
+    return Math.cos(PI/n)/Math.cos(loc);
+  }
+  function hPt(th,t,m){var r=(1-t)+t*targetR(th,m);return[r*Math.cos(th),r*Math.sin(th)];}
+  function numDeriv(th,t,m){
+    var e=1e-4,a=hPt(th-e,t,m),b=hPt(th+e,t,m);
+    var dx=(b[0]-a[0])/(2*e),dy=(b[1]-a[1])/(2*e);
+    return Math.sqrt(dx*dx+dy*dy);
+  }
+  function corners(m){
+    if(m==='square')return[PI/4,3*PI/4,5*PI/4,7*PI/4];
+    if(m==='star'){var p=[];for(var k=0;k<10;k++)p.push(k*PI/5);return p;}
+    return[PI/6,PI/6+PI2/3,PI/6+4*PI/3];
+  }
+
+  function draw(){
+    var t=parseFloat(tS.value)/100;
+    tV.textContent=t.toFixed(2);
+    var W=sc.width,H=sc.height,cx=W/2,cy=H/2,scale=W*.35;
+
+    S.fillStyle='#fff';S.fillRect(0,0,W,H);
+    S.strokeStyle=gridCol;S.lineWidth=.5;
+    for(var i=-1;i<=1;i+=.5){S.beginPath();S.moveTo(cx+i*scale*1.5,0);S.lineTo(cx+i*scale*1.5,H);S.stroke();S.beginPath();S.moveTo(0,cy+i*scale*1.5);S.lineTo(W,cy+i*scale*1.5);S.stroke();}
+    // Reference circle
+    S.strokeStyle=mutedCol;S.lineWidth=.5;S.setLineDash([4,4]);S.beginPath();
+    for(var i=0;i<=200;i++){var th=i/200*PI2;var x=cx+Math.cos(th)*scale,y=cy-Math.sin(th)*scale;i?S.lineTo(x,y):S.moveTo(x,y);}
+    S.closePath();S.stroke();S.setLineDash([]);
+    // Deformed shape
+    S.strokeStyle=lineCol;S.lineWidth=2.5;S.beginPath();
+    var N=500;
+    for(var i=0;i<=N;i++){var th=i/N*PI2,p=hPt(th,t,mode);var x=cx+p[0]*scale,y=cy-p[1]*scale;i?S.lineTo(x,y):S.moveTo(x,y);}
+    S.closePath();S.stroke();
+    // Corner dots
+    if(t>.01){corners(mode).forEach(function(th){var p=hPt(th,t,mode);S.fillStyle=accentCol;S.beginPath();S.arc(cx+p[0]*scale,cy-p[1]*scale,4,0,PI2);S.fill();});}
+
+    // Derivative plot
+    var DW=dc.width,DH=dc.height;
+    D.fillStyle='#fff';D.fillRect(0,0,DW,DH);
+    var pad=45,gw=DW-2*pad,gh=DH-2*pad;
+    var samp=400,derivs=[],maxD=0;
+    for(var i=0;i<=samp;i++){var th=i/samp*PI2;var d=numDeriv(th,t,mode);derivs.push(d);if(d>maxD)maxD=d;}
+    var yMax=Math.max(2,Math.ceil(maxD*1.15));
+    D.strokeStyle=gridCol;D.lineWidth=.5;
+    var step2=Math.max(1,Math.floor(yMax/4));
+    for(var v=0;v<=yMax;v+=step2){var yy=pad+gh-(v/yMax)*gh;D.beginPath();D.moveTo(pad,yy);D.lineTo(pad+gw,yy);D.stroke();D.fillStyle=mutedCol;D.font='11px sans-serif';D.textAlign='right';D.fillText(v.toFixed(0),pad-6,yy+4);}
+    ['0','\u03C0/2','\u03C0','3\u03C0/2','2\u03C0'].forEach(function(l,i){var xx=pad+(i/4)*gw;D.beginPath();D.moveTo(xx,pad);D.lineTo(xx,pad+gh);D.stroke();D.fillStyle=mutedCol;D.font='11px sans-serif';D.textAlign='center';D.fillText(l,xx,pad+gh+16);});
+    // Derivative curve
+    D.strokeStyle=lineCol;D.lineWidth=2;D.beginPath();
+    for(var i=0;i<=samp;i++){var xx=pad+(i/samp)*gw,yy=pad+gh-(Math.min(derivs[i],yMax)/yMax)*gh;i?D.lineTo(xx,yy):D.moveTo(xx,yy);}
+    D.stroke();
+    // Corner markers
+    if(t>.01){corners(mode).forEach(function(th){var norm=((th%PI2)+PI2)%PI2;var xx=pad+(norm/PI2)*gw;D.strokeStyle=accentCol;D.lineWidth=1.5;D.setLineDash([3,3]);D.beginPath();D.moveTo(xx,pad);D.lineTo(xx,pad+gh);D.stroke();D.setLineDash([]);});}
+    D.fillStyle=mutedCol;D.font='11px sans-serif';D.textAlign='center';D.fillText('\u03B8',pad+gw/2,DH-4);
+
+    // Metrics
+    mdEl.textContent=maxD.toFixed(2);
+    ndEl.textContent=t>.01?corners(mode).length:'0';
+    clEl.innerHTML=t<.01?'C<sup>\u221E</sup>':'C\u2070 (not C\u00B9)';
+  }
+
+  tS.addEventListener('input',draw);
+  document.getElementById('nh-sq').addEventListener('click',function(){mode='square';draw();});
+  document.getElementById('nh-star').addEventListener('click',function(){mode='star';draw();});
+  document.getElementById('nh-tri').addEventListener('click',function(){mode='triangle';draw();});
+  draw();
 })();
 </script>
 
