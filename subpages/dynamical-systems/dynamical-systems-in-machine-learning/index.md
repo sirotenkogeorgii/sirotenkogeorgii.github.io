@@ -4387,6 +4387,215 @@ Since LHS = RHS, we have shown that $h(\phi_t^A(x)) = \phi_t^B(h(x))$. The syste
 
 </div>
 
+<div id="tc2-container" style="margin:2em auto;max-width:920px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Topological Conjugacy of Planar Nodes</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Two systems \(\dot x=-x,\;\dot y=-\lambda_i y\) conjugated by \(h(x,y)=(x,\,\mathrm{sgn}(y)\,|y|^{\lambda_2/\lambda_1})\). The homeomorphism \(h\) is continuous but <em>not</em> differentiable at \(y=0\) when \(\lambda_1\neq\lambda_2\).
+  </p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">&lambda;&sub1; =</span>
+    <input type="range" id="tc2-s1" min="10" max="50" step="1" value="20" style="width:160px;">
+    <span id="tc2-o1" style="font-size:.85em;font-family:serif;min-width:28px;">2.0</span>
+    <span style="font-size:.85em;font-family:serif;margin-left:10px;">&lambda;&sub2; =</span>
+    <input type="range" id="tc2-s2" min="10" max="50" step="1" value="40" style="width:160px;">
+    <span id="tc2-o2" style="font-size:.85em;font-family:serif;min-width:28px;">4.0</span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Phase portrait — system 1 (&lambda;&sub1;)</div>
+      <canvas id="tc2-c1" width="420" height="420" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Phase portrait — system 2 (&lambda;&sub2;)</div>
+      <canvas id="tc2-c2" width="420" height="420" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:10px;">
+    <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Conjugacy map h &mdash; uniform grid (left) vs image (right)</div>
+    <canvas id="tc2-c3" width="860" height="330" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+  </div>
+  <div style="text-align:center;margin-top:10px;">
+    <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">|&part;h&sub2;/&part;y| along y &mdash; derivative singularity at y = 0</div>
+    <canvas id="tc2-c4" width="860" height="260" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;">
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:100px;text-align:center;">
+      <div style="font-size:11px;color:#888;">&alpha; = &lambda;&sub2; / &lambda;&sub1;</div>
+      <div style="font-size:18px;font-weight:500;" id="tc2-mA">2.00</div>
+    </div>
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:100px;text-align:center;">
+      <div style="font-size:11px;color:#888;">&part;h&sub2;/&part;y as y&rarr;0</div>
+      <div style="font-size:18px;font-weight:500;" id="tc2-mS">&rarr; 0</div>
+    </div>
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:100px;text-align:center;">
+      <div style="font-size:11px;color:#888;">H&ouml;lder exponent</div>
+      <div style="font-size:18px;font-weight:500;" id="tc2-mH">0.50</div>
+    </div>
+    <div style="background:rgba(0,0,0,.03);border-radius:6px;padding:8px 14px;min-width:100px;text-align:center;">
+      <div style="font-size:11px;color:#888;">Smoothness class</div>
+      <div style="font-size:18px;font-weight:500;" id="tc2-mC">C&sup0; \ C&sup1;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sl1=document.getElementById('tc2-s1'),sl2=document.getElementById('tc2-s2');
+  var p1c='#534AB7',p2c='#0F6E56',acc='#A32D2D',mu2='#999',grc='rgba(0,0,0,.05)';
+  var f1c='rgba(83,74,183,.12)',f2c='rgba(15,110,86,.12)';
+
+  function ct(id){return document.getElementById(id).getContext('2d');}
+  function cv2(id){return document.getElementById(id);}
+
+  function drawPhase(id,lam,col,fc){
+    var c=cv2(id),x=ct(id),W=c.width,H=c.height;
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);
+    var cx=W/2,cy=H/2,sc=W*.38;
+    x.strokeStyle=grc;x.lineWidth=.5;
+    for(var i=-1;i<=1;i+=.5){
+      x.beginPath();x.moveTo(cx+i*sc,0);x.lineTo(cx+i*sc,H);x.stroke();
+      x.beginPath();x.moveTo(0,cy+i*sc);x.lineTo(W,cy+i*sc);x.stroke();
+    }
+    x.strokeStyle=mu2;x.lineWidth=.7;
+    x.beginPath();x.moveTo(0,cy);x.lineTo(W,cy);x.stroke();
+    x.beginPath();x.moveTo(cx,0);x.lineTo(cx,H);x.stroke();
+    for(var s=-1;s<=1;s+=2){
+      for(var c2=-1.3;c2<=1.3;c2+=.1){
+        if(Math.abs(c2)<.02)continue;
+        x.strokeStyle=fc;x.lineWidth=.8;x.beginPath();var st=true;
+        for(var xi=.002;xi<=1.5;xi+=.004){
+          var px_=cx+s*xi*sc,py_=cy-c2*Math.pow(xi,lam)*sc;
+          if(px_<-10||px_>W+10||py_<-10||py_>H+10){st=true;continue;}
+          st?(x.moveTo(px_,py_),st=false):x.lineTo(px_,py_);
+        }x.stroke();
+      }
+    }
+    var hl=[.35,-.35,.7,-.7,1.1,-1.1];
+    hl.forEach(function(c2){
+      for(var s=-1;s<=1;s+=2){
+        x.strokeStyle=col;x.lineWidth=2;x.beginPath();var st=true;
+        for(var xi=.002;xi<=1.5;xi+=.003){
+          var px_=cx+s*xi*sc,py_=cy-c2*Math.pow(xi,lam)*sc;
+          if(px_<-10||px_>W+10||py_<-10||py_>H+10){st=true;continue;}
+          st?(x.moveTo(px_,py_),st=false):x.lineTo(px_,py_);
+        }x.stroke();
+        var ax=s*.3,ay=c2*Math.pow(.3,lam);
+        var ddx=-s*.01,ddy=-c2*lam*Math.pow(.3,lam-1)*.01*s;
+        var ln2=Math.sqrt(ddx*ddx+ddy*ddy);if(ln2<1e-8)return;
+        var ux=ddx/ln2,uy=ddy/ln2;
+        var apx=cx+ax*sc,apy=cy-ay*sc;
+        x.fillStyle=col;x.beginPath();
+        x.moveTo(apx+ux*8,apy-uy*8);
+        x.lineTo(apx-ux*2+uy*4,apy+uy*2+ux*4);
+        x.lineTo(apx-ux*2-uy*4,apy+uy*2-ux*4);
+        x.closePath();x.fill();
+      }
+    });
+    x.fillStyle=acc;x.beginPath();x.arc(cx,cy,5,0,7);x.fill();
+    x.fillStyle=mu2;x.font='12px "Times New Roman",serif';x.textAlign='center';
+    x.fillText('x',W-14,cy-8);x.fillText('y',cx+10,16);
+  }
+
+  function drawConj(l1,l2){
+    var c=cv2('tc2-c3'),x=ct('tc2-c3'),W=c.width,H=c.height;
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);
+    var al=l2/l1,lC=W*.24,rC=W*.76,cy=H/2,sc=H*.36;
+    [lC,rC].forEach(function(ccx){
+      x.strokeStyle=grc;x.lineWidth=.5;
+      for(var i=-1;i<=1;i+=.5){
+        x.beginPath();x.moveTo(ccx+i*sc,cy-sc);x.lineTo(ccx+i*sc,cy+sc);x.stroke();
+        x.beginPath();x.moveTo(ccx-sc,cy+i*sc);x.lineTo(ccx+sc,cy+i*sc);x.stroke();
+      }
+      x.strokeStyle=mu2;x.lineWidth=.5;
+      x.beginPath();x.moveTo(ccx-sc,cy);x.lineTo(ccx+sc,cy);x.stroke();
+      x.beginPath();x.moveTo(ccx,cy-sc);x.lineTo(ccx,cy+sc);x.stroke();
+    });
+    var N=10;
+    for(var gi=0;gi<=N;gi++){
+      var gv=-1+2*gi/N;
+      x.strokeStyle=f1c;x.lineWidth=.7;
+      x.beginPath();x.moveTo(lC-sc,cy-gv*sc);x.lineTo(lC+sc,cy-gv*sc);x.stroke();
+      x.beginPath();x.moveTo(lC+gv*sc,cy-sc);x.lineTo(lC+gv*sc,cy+sc);x.stroke();
+      x.strokeStyle=f2c;x.lineWidth=.7;
+      x.beginPath();
+      for(var j=0;j<=60;j++){var yy=-1+2*j/60;var hy=(yy>=0?1:-1)*Math.pow(Math.abs(yy),al);x.lineTo(rC+gv*sc,cy-hy*sc);}
+      x.stroke();
+      x.beginPath();
+      for(var j=0;j<=60;j++){var xx=-1+2*j/60;var hy2=(gv>=0?1:-1)*Math.pow(Math.abs(gv),al);x.lineTo(rC+xx*sc,cy-hy2*sc);}
+      x.stroke();
+    }
+    x.strokeStyle=acc+'50';x.lineWidth=.8;
+    var Nm=7;
+    for(var i=0;i<=Nm;i++){for(var j=0;j<=Nm;j++){
+      var gx=-1+2*i/Nm,gy=-1+2*j/Nm;
+      var hy=(gy>=0?1:-1)*Math.pow(Math.abs(gy),al);
+      x.beginPath();x.moveTo(lC+gx*sc,cy-gy*sc);x.lineTo(rC+gx*sc,cy-hy*sc);x.stroke();
+    }}
+    x.fillStyle='#333';x.font='14px "Times New Roman",serif';x.textAlign='center';
+    x.fillText('h',W/2,22);
+    x.strokeStyle='#33380';x.lineWidth=1.2;
+    x.beginPath();x.moveTo(W/2-35,28);x.lineTo(W/2+35,28);x.stroke();
+    x.beginPath();x.moveTo(W/2+30,24);x.lineTo(W/2+35,28);x.lineTo(W/2+30,32);x.stroke();
+    x.fillStyle=mu2;x.font='11px "Times New Roman",serif';
+    x.fillText('Uniform grid (system 1)',lC,H-6);x.fillText('Image under h (system 2)',rC,H-6);
+  }
+
+  function drawDeriv(l1,l2){
+    var c=cv2('tc2-c4'),x=ct('tc2-c4'),W=c.width,H=c.height;
+    x.fillStyle='#fff';x.fillRect(0,0,W,H);
+    var al=l2/l1,pad=55,gw=W-2*pad,gh=H-2*pad;
+    var data=[],mx=0,NS=500;
+    for(var i=0;i<=NS;i++){var y=-1+2*i/NS;if(Math.abs(y)<.003){data.push(null);continue;}var d=al*Math.pow(Math.abs(y),al-1);data.push(d);if(d<100&&d>mx)mx=d;}
+    var yM=Math.min(Math.max(mx*1.15,3),100);
+    x.strokeStyle=grc;x.lineWidth=.5;
+    var nt=Math.min(5,Math.ceil(yM)),step=Math.max(1,Math.floor(yM/nt));
+    for(var v=0;v<=yM;v+=step){var yy=pad+gh-(v/yM)*gh;x.beginPath();x.moveTo(pad,yy);x.lineTo(pad+gw,yy);x.stroke();x.fillStyle=mu2;x.font='11px sans-serif';x.textAlign='right';x.fillText(v.toFixed(v>10?0:1),pad-8,yy+4);}
+    ['-1.0','-0.5','0','0.5','1.0'].forEach(function(l,i){var xx=pad+(i/4)*gw;x.beginPath();x.moveTo(xx,pad);x.lineTo(xx,pad+gh);x.stroke();x.fillStyle=mu2;x.font='11px sans-serif';x.textAlign='center';x.fillText(l,xx,pad+gh+16);});
+    x.strokeStyle=acc;x.lineWidth=1.5;x.setLineDash([4,4]);
+    var zx=pad+.5*gw;x.beginPath();x.moveTo(zx,pad);x.lineTo(zx,pad+gh);x.stroke();x.setLineDash([]);
+    x.strokeStyle=p1c;x.lineWidth=2.5;x.beginPath();var st=false;
+    for(var i=0;i<=NS;i++){if(data[i]===null||data[i]>yM*1.5){st=false;continue;}var xx=pad+(i/NS)*gw,yy=pad+gh-(Math.min(data[i],yM)/yM)*gh;st?x.lineTo(xx,yy):(x.moveTo(xx,yy),st=true);}x.stroke();
+    if(al>1){x.fillStyle=acc;x.font='12px "Times New Roman",serif';x.textAlign='center';x.fillText('\u2192 0',zx,pad+gh+30);}
+    else if(al<1){x.fillStyle=acc;x.font='13px "Times New Roman",serif';x.textAlign='center';x.fillText('\u2192 \u221E',zx,pad-8);x.beginPath();x.fillStyle=acc;x.moveTo(zx,pad+2);x.lineTo(zx-5,pad+10);x.lineTo(zx+5,pad+10);x.closePath();x.fill();}
+    x.fillStyle=mu2;x.font='11px "Times New Roman",serif';x.textAlign='center';x.fillText('y',pad+gw/2,H-4);
+    x.textAlign='left';x.fillText('|\u2202h\u2082/\u2202y|',pad+4,pad-10);
+    x.strokeStyle=mu2+'60';x.lineWidth=.8;x.setLineDash([2,4]);
+    var refY=pad+gh-(1/yM)*gh;
+    if(refY>pad&&refY<pad+gh){x.beginPath();x.moveTo(pad,refY);x.lineTo(pad+gw,refY);x.stroke();x.setLineDash([]);x.fillStyle=mu2;x.textAlign='right';x.fillText('1',pad-8,refY+4);}
+    x.setLineDash([]);
+  }
+
+  function update(){
+    var l1=parseInt(sl1.value)/10,l2=parseInt(sl2.value)/10;
+    document.getElementById('tc2-o1').textContent=l1.toFixed(1);
+    document.getElementById('tc2-o2').textContent=l2.toFixed(1);
+    var al=l2/l1;
+    document.getElementById('tc2-mA').textContent=al.toFixed(2);
+    if(Math.abs(al-1)<.01){
+      document.getElementById('tc2-mS').textContent='= 1';
+      document.getElementById('tc2-mC').innerHTML='C<sup>\u221E</sup> (identity)';
+      document.getElementById('tc2-mH').textContent='1.00';
+    }else if(al>1){
+      document.getElementById('tc2-mS').textContent='\u2192 0';
+      document.getElementById('tc2-mC').innerHTML='C\u2070 \\ C\u00B9';
+      document.getElementById('tc2-mH').textContent=Math.min(1,1/al).toFixed(2);
+    }else{
+      document.getElementById('tc2-mS').textContent='\u2192 \u221E';
+      document.getElementById('tc2-mC').innerHTML='C\u2070 \\ C\u00B9';
+      document.getElementById('tc2-mH').textContent=al.toFixed(2);
+    }
+    drawPhase('tc2-c1',l1,p1c,f1c);
+    drawPhase('tc2-c2',l2,p2c,f2c);
+    drawConj(l1,l2);
+    drawDeriv(l1,l2);
+  }
+
+  sl1.addEventListener('input',update);
+  sl2.addEventListener('input',update);
+  update();
+})();
+</script>
+
 ### The Hartman-Grobman Theorem
 
 We now arrive at one of the most fundamental and powerful results in the study of dynamical systems: the Hartman-Grobman Theorem. This theorem provides the rigorous justification for one of our most common analytical techniques: linearization. It formally establishes that, under certain conditions, the complex behavior of a nonlinear system in the close vicinity of an equilibrium point is qualitatively identical to the much simpler behavior of its linear approximation.
