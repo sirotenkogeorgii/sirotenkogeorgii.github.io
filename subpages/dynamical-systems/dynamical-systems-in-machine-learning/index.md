@@ -509,6 +509,276 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
   <figcaption>Saddle Node: For two real eigenvalues with one being lager and the other being smaller than zero we get a convergence in the dimension which holds the eigenvalue smaller than zero and divergence in the other. The state space trajectories behave accordingly. The dynamical system has a saddle node in the origin.</figcaption>
 </figure>
 
+<div id="rn-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: 2D Linear System with Real Eigenvalues \(\dot{x}=Ax\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Drag each eigenvalue on the real axis. Toggle between diagonalizable (two eigenvectors) and defective (one eigenvector, Jordan block) for repeated eigenvalues.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Eigenvalues on real axis</div>
+      <canvas id="rn-ec" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:crosshair;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="rn-rt" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Phase portrait: stable node</div>
+      <canvas id="rn-pc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:8px;flex-wrap:wrap;">
+    <label style="font-size:.85em;font-family:serif;cursor:pointer;"><input type="radio" name="rn-mode" id="rn-diag" checked style="margin-right:3px;">Diagonalizable <span style="color:#888">(A = PDP⁻¹)</span></label>
+    <label style="font-size:.85em;font-family:serif;cursor:pointer;"><input type="radio" name="rn-mode" id="rn-jordan" style="margin-right:3px;">Defective / Jordan block <span style="color:#888">(one eigenvector)</span></label>
+  </div>
+  <div id="rn-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500,ER=3,PR=2.5;
+  var l1=-0.5,l2=-1.5,drag=0; // drag: 0=none,1=λ₁,2=λ₂
+  var jordan=false;
+
+  var ec=document.getElementById('rn-ec'),pc=document.getElementById('rn-pc');
+  var diagR=document.getElementById('rn-diag'),jordR=document.getElementById('rn-jordan');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var E=initC(ec),P=initC(pc);
+
+  function em(re,im){return[(re/ER+1)*S/2,(1-im/ER)*S/2];}
+  function ec2re(cx){return(cx/S*2-1)*ER;}
+  function pm(x,y){return[(x/PR+1)*S/2,(1-y/PR)*S/2];}
+  function ln2(c,a,b,d,e2){c.beginPath();c.moveTo(a,b);c.lineTo(d,e2);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a,sz){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.38);c.lineTo(-sz,sz*.38);c.closePath();c.fill();c.restore();}
+
+  // Matrix exponential e^{At} for 2D
+  // Diagonalizable with distinct λ₁,λ₂: e^{At} = P diag(e^{λ₁t},e^{λ₂t}) P⁻¹
+  // P = [v₁ v₂] with fixed eigenvectors at 45° angles
+  // Defective (Jordan, λ₁=λ₂=λ): e^{At} = e^{λt}[[1,t],[0,1]]
+  var EV_ANGLE=Math.PI/6; // eigenvector angle from x-axis
+
+  function expmStep(x,y,t){
+    if(jordan){
+      // Jordan block: e^{λt}[[1,t],[0,1]]
+      var lam=l1,el=Math.exp(lam*t);
+      return[el*(x+t*y),el*y];
+    }
+    if(Math.abs(l1-l2)<1e-6){
+      // Repeated but diagonalizable (star node): e^{λt}I
+      var el=Math.exp(l1*t);
+      return[el*x,el*y];
+    }
+    // Distinct real eigenvalues: A = P D P⁻¹
+    // Eigenvectors: v₁=(cos θ, sin θ), v₂=(cos(-θ), sin(-θ)) = (cos θ, -sin θ)
+    var c1=Math.cos(EV_ANGLE),s1=Math.sin(EV_ANGLE);
+    // P = [[c1,c1],[s1,-s1]], det = -2 c1 s1
+    var det=-2*c1*s1;
+    // P⁻¹ = (1/det)[[-s1,-c1],[-s1,c1]]
+    // coefficients in eigenbasis: a1 = (P⁻¹ x)[0], a2 = (P⁻¹ x)[1]
+    var a1=(-s1*x-c1*y)/det, a2=(-s1*x+c1*y)/det;
+    var e1=Math.exp(l1*t),e2=Math.exp(l2*t);
+    return[a1*e1*c1+a2*e2*c1, a1*e1*s1-a2*e2*s1];
+  }
+
+  function drawEigen(){
+    E.clearRect(0,0,S,S);
+    // Stability regions
+    var negEnd=em(0,0)[0];
+    E.fillStyle='rgba(76,175,80,0.05)';E.fillRect(0,0,negEnd,S);
+    E.fillStyle='rgba(244,67,54,0.05)';E.fillRect(negEnd,0,S-negEnd,S);
+    // Grid
+    E.strokeStyle='#f0f0f0';E.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=em(v,-ER),q=em(v,ER);ln2(E,p[0],p[1],q[0],q[1]);p=em(-ER,v);q=em(ER,v);ln2(E,p[0],p[1],q[0],q[1]);});
+    // Real axis (thick)
+    E.strokeStyle='#81D4FA';E.lineWidth=2;
+    ln2(E,em(-ER,0)[0],em(-ER,0)[1],em(ER,0)[0],em(ER,0)[1]);
+    // Im axis (stability boundary)
+    E.strokeStyle='#90CAF9';E.lineWidth=2.5;
+    ln2(E,em(0,-ER)[0],em(0,-ER)[1],em(0,ER)[0],em(0,ER)[1]);
+    // Unit circle for reference
+    E.strokeStyle='rgba(25,118,210,0.15)';E.lineWidth=1;
+    circ(E,em(0,0)[0],em(0,0)[1],S/(2*ER),false);
+
+    // Eigenvalue dots on real axis
+    var p1=em(l1,0),p2=em(l2,0),o=em(0,0);
+    // Arrows from origin
+    E.strokeStyle='#333';E.fillStyle='#333';E.lineWidth=1.5;
+    ln2(E,o[0],o[1],p1[0],p1[1]);arw(E,p1[0],p1[1],l1>=0?0:Math.PI,7);
+    if(Math.abs(l1-l2)>.05||!jordan){
+      ln2(E,o[0],o[1],p2[0],p2[1]);arw(E,p2[0],p2[1],l2>=0?0:Math.PI,7);
+    }
+    // λ₁ (orange)
+    E.fillStyle='#FF9800';circ(E,p1[0],p1[1],8,true);E.strokeStyle='#E65100';E.lineWidth=1.5;circ(E,p1[0],p1[1],8,false);
+    // λ₂ (green)
+    E.fillStyle='#4CAF50';circ(E,p2[0],p2[1],8,true);E.strokeStyle='#2E7D32';E.lineWidth=1.5;circ(E,p2[0],p2[1],8,false);
+    // Labels
+    E.font='12px "Times New Roman",serif';E.fillStyle='#333';
+    E.fillText('\u03BB\u2081='+l1.toFixed(2),p1[0]+(l1<l2?-45:10),p1[1]-14);
+    if(Math.abs(l1-l2)>.05)E.fillText('\u03BB\u2082='+l2.toFixed(2),p2[0]+(l2<l1?-45:10),p2[1]+22);
+    else E.fillText('\u03BB\u2081=\u03BB\u2082='+l1.toFixed(2),p1[0]+10,p1[1]-14);
+    // Axis labels
+    E.font='12px "Times New Roman",serif';E.fillStyle='#888';
+    E.fillText('Re(\u03BB)',S-42,em(0,0)[1]-6);E.fillText('Im(\u03BB)',em(0,0)[0]+6,13);
+    E.font='11px sans-serif';E.globalAlpha=.4;
+    E.fillStyle='#4CAF50';E.fillText('Stable',15,20);
+    E.fillStyle='#F44336';E.fillText('Unstable',S-60,20);
+    E.globalAlpha=1;
+    E.font='9px sans-serif';E.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=em(v,0);E.fillText(v,t[0]-4,t[1]+13);});
+    // Mode label
+    E.font='11px "Times New Roman",serif';E.fillStyle='#7B1FA2';
+    if(Math.abs(l1-l2)<.05)E.fillText(jordan?'Defective (Jordan block)':'Diagonalizable (star node)',8,S-8);
+  }
+
+  function drawPhase(){
+    P.clearRect(0,0,S,S);
+    // Grid
+    P.strokeStyle='#f0f0f0';P.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=pm(v,-PR),q=pm(v,PR);ln2(P,p[0],p[1],q[0],q[1]);p=pm(-PR,v);q=pm(PR,v);ln2(P,p[0],p[1],q[0],q[1]);});
+    P.strokeStyle='#81D4FA';P.lineWidth=1;
+    ln2(P,pm(-PR,0)[0],pm(-PR,0)[1],pm(PR,0)[0],pm(PR,0)[1]);
+    ln2(P,pm(0,-PR)[0],pm(0,-PR)[1],pm(0,PR)[0],pm(0,PR)[1]);
+    P.strokeStyle='#ece0f0';P.lineWidth=.7;var oc=pm(0,0);
+    [.5,1,1.5,2].forEach(function(r){circ(P,oc[0],oc[1],r*S/(2*PR),false);});
+
+    // Draw eigenvector directions (for diagonalizable distinct case)
+    if(!jordan&&Math.abs(l1-l2)>.05){
+      var c1=Math.cos(EV_ANGLE),s1=Math.sin(EV_ANGLE);
+      P.save();P.setLineDash([5,3]);P.lineWidth=1.5;
+      P.strokeStyle=l1<0?'rgba(76,175,80,0.5)':'rgba(244,67,54,0.5)';
+      ln2(P,pm(-PR*c1,-PR*s1)[0],pm(-PR*c1,-PR*s1)[1],pm(PR*c1,PR*s1)[0],pm(PR*c1,PR*s1)[1]);
+      P.strokeStyle=l2<0?'rgba(76,175,80,0.5)':'rgba(244,67,54,0.5)';
+      ln2(P,pm(-PR*c1,PR*s1)[0],pm(-PR*c1,PR*s1)[1],pm(PR*c1,-PR*s1)[0],pm(PR*c1,-PR*s1)[1]);
+      P.restore();
+      // Eigenvector labels
+      P.font='10px "Times New Roman",serif';
+      P.fillStyle=l1<0?'#4CAF50':'#F44336';
+      var lp1=pm(1.9*c1,1.9*s1);P.fillText('v\u2081 (\u03BB\u2081)',lp1[0]+3,lp1[1]-3);
+      P.fillStyle=l2<0?'#4CAF50':'#F44336';
+      var lp2=pm(1.9*c1,-1.9*s1);P.fillText('v\u2082 (\u03BB\u2082)',lp2[0]+3,lp2[1]+12);
+    }
+    // Jordan: show single eigenvector + generalized eigenvector
+    if(jordan&&Math.abs(l1-l2)<.05){
+      P.save();P.setLineDash([5,3]);P.lineWidth=1.5;
+      P.strokeStyle='rgba(123,31,162,0.5)';
+      ln2(P,pm(-PR,0)[0],pm(-PR,0)[1],pm(PR,0)[0],pm(PR,0)[1]); // eigenvector along x-axis
+      P.restore();
+      P.save();P.setLineDash([2,3]);P.lineWidth=1;
+      P.strokeStyle='rgba(123,31,162,0.3)';
+      ln2(P,pm(0,-PR)[0],pm(0,-PR)[1],pm(0,PR)[0],pm(0,PR)[1]); // generalized eigenvector along y
+      P.restore();
+      P.font='10px "Times New Roman",serif';P.fillStyle='#7B1FA2';
+      P.fillText('eigenvector',pm(PR,0)[0]-60,pm(PR,0)[1]-6);
+      P.fillText('gen. eigenvec.',pm(0,PR)[0]+4,pm(0,PR)[1]+12);
+    }
+
+    // Trajectories
+    var cols=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e','#283593','#bf360c','#00695c','#6a1b9a'];
+    var maxLam=Math.max(Math.abs(l1),Math.abs(l2));
+    var totalT=maxLam>.01?Math.min(20,6/maxLam):20;
+    var dt=0.04,nSteps=Math.min(600,Math.floor(totalT/dt));
+    var radii=[0.3,0.6,1.0,1.5,2.0];
+    var angles=[0,Math.PI/4,Math.PI/2,3*Math.PI/4,Math.PI,5*Math.PI/4,3*Math.PI/2,7*Math.PI/4];
+    if(maxLam>1.5){radii=[0.15,0.3,0.5,0.8,1.2];nSteps=Math.min(300,nSteps);}
+    var ci=0;
+
+    radii.forEach(function(r0){angles.forEach(function(a0){
+      var x0=r0*Math.cos(a0),y0=r0*Math.sin(a0);
+      var pts=[[x0,y0]];
+      for(var i=1;i<=nSteps;i++){
+        var n=expmStep(x0,y0,i*dt);
+        if(n[0]*n[0]+n[1]*n[1]>PR*PR*9)break;
+        pts.push(n);
+      }
+      if(pts.length<2)return;
+      var col=cols[ci%cols.length];ci++;
+      P.strokeStyle=col;P.fillStyle=col;P.lineWidth=1;P.globalAlpha=.5;
+      P.beginPath();var s=pm(pts[0][0],pts[0][1]);P.moveTo(s[0],s[1]);
+      for(var i=1;i<pts.length;i++){var p=pm(pts[i][0],pts[i][1]);P.lineTo(p[0],p[1]);}
+      P.stroke();
+      // Arrow
+      if(pts.length>6){var mi=Math.floor(pts.length*.35);
+        var cu=pm(pts[mi][0],pts[mi][1]),pr=pm(pts[mi-1][0],pts[mi-1][1]);
+        var dx=cu[0]-pr[0],dy=cu[1]-pr[1];
+        if(dx*dx+dy*dy>1)arw(P,cu[0],cu[1],Math.atan2(dy,dx),5);
+      }
+      P.globalAlpha=1;circ(P,s[0],s[1],2,true);
+    });});
+
+    // Origin dot
+    var op=pm(0,0);
+    var bothNeg=l1<-.01&&l2<-.01,bothPos=l1>.01&&l2>.01,saddle=(l1<-.01&&l2>.01)||(l1>.01&&l2<-.01);
+    if(bothNeg){P.fillStyle='#4CAF50';circ(P,op[0],op[1],6,true);P.strokeStyle='#2E7D32';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else if(bothPos){P.fillStyle='#F44336';circ(P,op[0],op[1],6,true);P.strokeStyle='#C62828';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else if(saddle){
+      P.fillStyle='#4CAF50';P.beginPath();P.arc(op[0],op[1],6,Math.PI*.5,Math.PI*1.5);P.closePath();P.fill();
+      P.fillStyle='#F44336';P.beginPath();P.arc(op[0],op[1],6,-Math.PI*.5,Math.PI*.5);P.closePath();P.fill();
+      P.strokeStyle='#333';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);
+    }else{P.fillStyle='#FF9800';circ(P,op[0],op[1],6,true);P.strokeStyle='#E65100';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+
+    P.font='12px "Times New Roman",serif';P.fillStyle='#888';
+    P.fillText('x\u2081',S-18,pm(0,0)[1]-6);P.fillText('x\u2082',pm(0,0)[0]+6,13);
+    P.font='9px sans-serif';P.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=pm(v,0);P.fillText(v,t[0]-4,t[1]+13);t=pm(0,v);P.fillText(v,t[0]+5,t[1]+3);});
+  }
+
+  function classify(){
+    var saddle=(l1<-.01&&l2>.01)||(l1>.01&&l2<-.01);
+    if(saddle)return'Saddle point';
+    var rep=Math.abs(l1-l2)<.05;
+    if(l1<-.01&&l2<-.01)return rep?(jordan?'Stable degenerate node (Jordan)':'Stable star node'):'Stable node';
+    if(l1>.01&&l2>.01)return rep?(jordan?'Unstable degenerate node (Jordan)':'Unstable star node'):'Unstable node';
+    if(Math.abs(l1)<.01||Math.abs(l2)<.01)return'Line attractor / marginal';
+    return'Origin';
+  }
+
+  function updInfo(){
+    var el=document.getElementById('rn-info');
+    var cls=classify();
+    var rep=Math.abs(l1-l2)<.05;
+    var t='\u03BB\u2081='+l1.toFixed(2)+' &nbsp;|&nbsp; \u03BB\u2082='+l2.toFixed(2)+' &nbsp;|&nbsp; ';
+    if(rep)t+=(jordan?'Defective':'Diag.')+' &nbsp;|&nbsp; ';
+    t+=cls;
+    if(rep&&jordan)t+=' &nbsp;|&nbsp; <span style="color:#7B1FA2">A = \u03BBI + N (nilpotent)</span>';
+    el.innerHTML=t;
+  }
+  function updTitle(){document.getElementById('rn-rt').textContent='Phase portrait: '+classify();}
+  function redraw(){drawEigen();drawPhase();updInfo();updTitle();}
+
+  // Eigenvalue plane: drag λ₁ or λ₂ on real axis
+  function getReFromMouse(e){var r=ec.getBoundingClientRect();return ec2re((e.clientX-r.left)*(S/r.width));}
+  ec.addEventListener('mousedown',function(e){
+    var re=getReFromMouse(e);
+    var d1=Math.abs(re-l1),d2=Math.abs(re-l2);
+    if(d1<.2&&d1<=d2)drag=1;
+    else if(d2<.2)drag=2;
+    else if(d1<.3)drag=1;
+    else if(d2<.3)drag=2;
+  });
+  ec.addEventListener('mousemove',function(e){
+    if(!drag){var re=getReFromMouse(e);ec.style.cursor=(Math.abs(re-l1)<.25||Math.abs(re-l2)<.25)?'ew-resize':'crosshair';return;}
+    ec.style.cursor='ew-resize';
+    var re=Math.max(-ER+.1,Math.min(ER-.1,getReFromMouse(e)));
+    if(drag===1)l1=re;else l2=re;
+    redraw();
+  });
+  window.addEventListener('mouseup',function(){drag=0;});
+  ec.addEventListener('touchstart',function(e){e.preventDefault();
+    var t=e.touches[0],r=ec.getBoundingClientRect();var re=ec2re((t.clientX-r.left)*(S/r.width));
+    var d1=Math.abs(re-l1),d2=Math.abs(re-l2);
+    if(d1<=d2)drag=1;else drag=2;
+  },{passive:false});
+  ec.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;
+    var t=e.touches[0],r=ec.getBoundingClientRect();var re=Math.max(-ER+.1,Math.min(ER-.1,ec2re((t.clientX-r.left)*(S/r.width))));
+    if(drag===1)l1=re;else l2=re;redraw();
+  },{passive:false});
+  ec.addEventListener('touchend',function(){drag=0;});
+
+  diagR.addEventListener('change',function(){jordan=false;redraw();});
+  jordR.addEventListener('change',function(){jordan=true;redraw();});
+  redraw();
+})();
+</script>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Attractor or Manifold)</span></p>
 
