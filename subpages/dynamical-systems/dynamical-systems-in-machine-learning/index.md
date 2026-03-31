@@ -60,7 +60,7 @@ The formulation of a continuous dynamical system is the following:
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dynamical system)</span></p>
 
 Let $I \times R \subseteq \mathbb{R} \times \mathbb{R}^n$.
-A map $\Phi : I \times R \to R$ is called a dynamical system or flow if:
+A map $\Phi : I \times R \to R$ is called a **dynamical system** or flow if:
 1. $\Phi(0, x) = x, \quad \forall x \in M,$
 2. $\Phi(t + s, x) = \Phi(t, \Phi(s, x)), \quad \forall s, t \in \mathbb{R}, x \in M,$
 3. $\Phi$ is continuous in $(t, x)$.
@@ -678,7 +678,7 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
     var dt=0.04,nSteps=Math.min(600,Math.floor(totalT/dt));
     var radii=[0.3,0.6,1.0,1.5,2.0];
     var angles=[0,Math.PI/4,Math.PI/2,3*Math.PI/4,Math.PI,5*Math.PI/4,3*Math.PI/2,7*Math.PI/4];
-    if(maxLam>1.5){radii=[0.15,0.3,0.5,0.8,1.2];nSteps=Math.min(300,nSteps);}
+    if(maxLam>1.5)nSteps=Math.min(300,nSteps);
     var ci=0;
 
     radii.forEach(function(r0){angles.forEach(function(a0){
@@ -1124,7 +1124,7 @@ That part is correct.
 
 ### 2. What needs correction?
 
-#### 2.1. "If one eigenvalue is $>0$, then the component diverges" is not always true coordinate-by-coordinate**
+#### 2.1. "If one eigenvalue is $>0$, then the component diverges" is not always true coordinate-by-coordinate
 
 What is true is this:
 
@@ -4196,7 +4196,7 @@ We now check if the condition for topological equivalence, $h(\phi^A_t(x_0)) = \
 
 What is wrong in the example above is the function $h$ is not a homeomorphism. The key issue is the **domain**.
 
-The proposed map $h(x)=\frac1x$ is **not defined at (x=0)**. So it is not a homeomorphism $\mathbb{R}\to\mathbb{R}$.
+The proposed map $h(x)=\frac1x$ is **not defined at $x=0$**. So it is not a homeomorphism $\mathbb{R}\to\mathbb{R}$.
 
 That matters a lot here, because $x=0$ and $y=0$ are the equilibria, and on the full line these two systems are qualitatively different:
 
@@ -14924,6 +14924,16 @@ Observations from KAE Reconstruction:
 * The KAE identifies a latent space where the dynamics quickly converge to a lower-dimensional manifold.
 * The system learns to linearize the underlying non-linear dynamics.
 * By analyzing the learned eigenvalues of $\tilde{K}$, researchers can directly understand the composition and stability of the underlying system, such as how quickly the "fast" variable converges toward the "slow" manifold.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/slow_and_fast_manifolds.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Illustration of two examples with a slow manifold. In both cases, $\mu=−0.05$ and $\lambda=−1$.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/linearized_in_3d_nonlinear_manifold_in_2d.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Visualization of three-dimensional linear Koopman system along with projection of dynamics onto the $x_1$-$x_2$ plane. The attracting slow manifold is shown in red, the constraint $y_3 = y_1^2$ is shown in blue, and the slow unstable subspace is shown in green. Black trajectories of the linear Koopman system in $\mathbf{y}$ project onto trajectories of the full nonlinear system in $x$ in the $y_1-y_2$ plane. Here, $\mu=−0.05$ and $\lambda = 1$.</figcaption>
+</figure>
 
 </div>
 
