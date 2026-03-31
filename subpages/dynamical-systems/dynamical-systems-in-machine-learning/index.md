@@ -14446,6 +14446,8 @@ This lecture introduces Koopman Operator Theory as a principled framework for li
 
 In Lecture 11, we explored Autoencoders as a mechanism for extracting lower-dimensional embeddings from high-dimensional data. Our objective now shifts toward a more ambitious goal: identifying a specific space of observations where a nonlinear system can be approximated by a **linear** dynamical system. For linear systems, the mathematical landscape is well-defined — we possess explicit expressions for equilibria and can rigorously analyze global behavior. The formal mathematical background for this coordinate transformation is known as **Koopman Operator Theory**.
 
+**Paper:** https://arxiv.org/abs/1510.03007
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Koopman Operator)</span></p>
 
@@ -14483,6 +14485,11 @@ $$\phi(x_{t+1}) = \Lambda\, \phi(x_t)$$
 * **Chaotic Systems:** In chaotic or more complex systems, the power spectrum is often "smeared out," making an exact linear approximation significantly more difficult.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Koopman-operator-for-nonlinear-dynamical-systems.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Schematic illustrating the Koopman operator for nonlinear dynamical systems. The dashed lines from $y_k\to x_k$ indicate that we would like to be able to recover the original state.</figcaption>
+</figure>
 
 #### Mathematical Parameterization of the Linear Operator
 
