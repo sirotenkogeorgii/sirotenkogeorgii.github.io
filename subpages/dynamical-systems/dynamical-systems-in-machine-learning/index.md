@@ -560,6 +560,197 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
   <figcaption>Center: We get an undamped oscillation in both dimensions. The state space trajectory are a circles and the origin is the center of the dynamical system.</figcaption>
 </figure>
 
+<div id="cs-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: 2D Linear System with Complex Eigenvalues \(\dot{x}=Ax\)</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Drag the eigenvalue horizontally to change the real part \(\alpha\). Negative \(\to\) stable spiral, zero \(\to\) center, positive \(\to\) unstable spiral. Use the \(\omega\) slider for the imaginary part.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Eigenvalue plane</div>
+      <canvas id="cs-ec" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:crosshair;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="cs-rt" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Phase portrait: stable spiral</div>
+      <canvas id="cs-pc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;">
+    <span style="font-size:.85em;font-family:serif;">&omega; =</span>
+    <input type="range" id="cs-om" min="0" max="4" step="0.1" value="1" style="width:200px;">
+    <span id="cs-omv" style="font-size:.85em;font-family:serif;min-width:30px;">1.0</span>
+  </div>
+  <div id="cs-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500,ER=3,PR=2.5;
+  var alpha=-0.3,omega=1,drag=false;
+
+  var ec=document.getElementById('cs-ec'),pc=document.getElementById('cs-pc');
+  var omS=document.getElementById('cs-om'),omV=document.getElementById('cs-omv');
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var E=initC(ec),P=initC(pc);
+
+  function em(re,im){return[(re/ER+1)*S/2,(1-im/ER)*S/2];}
+  function ec2m(cx,cy){return[(cx/S*2-1)*ER,(1-cy/S*2)*ER];}
+  function pm(x,y){return[(x/PR+1)*S/2,(1-y/PR)*S/2];}
+
+  function ln2(c,a2,b,d,e2){c.beginPath();c.moveTo(a2,b);c.lineTo(d,e2);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a2,sz){c.save();c.translate(x,y);c.rotate(a2);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.38);c.lineTo(-sz,sz*.38);c.closePath();c.fill();c.restore();}
+
+  // ODE: dx/dt = alpha*x - omega*y, dy/dt = omega*x + alpha*y  (linear!)
+  function step(x,y,dt){
+    var ex=Math.exp(alpha*dt);
+    if(Math.abs(omega)<.01)return[x*ex,y*ex];
+    var c=Math.cos(omega*dt),s=Math.sin(omega*dt);
+    return[ex*(x*c-y*s),ex*(x*s+y*c)];
+  }
+
+  function drawEigen(){
+    E.clearRect(0,0,S,S);
+    // Stability regions
+    E.fillStyle='rgba(76,175,80,0.05)';E.fillRect(0,0,S/2,S);
+    E.fillStyle='rgba(244,67,54,0.05)';E.fillRect(S/2,0,S/2,S);
+    // Grid
+    E.strokeStyle='#f0f0f0';E.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=em(v,-ER),q=em(v,ER);ln2(E,p[0],p[1],q[0],q[1]);p=em(-ER,v);q=em(ER,v);ln2(E,p[0],p[1],q[0],q[1]);});
+    // Real axis
+    E.strokeStyle='#81D4FA';E.lineWidth=1;
+    ln2(E,em(-ER,0)[0],em(-ER,0)[1],em(ER,0)[0],em(ER,0)[1]);
+    // Im axis (stability boundary)
+    E.strokeStyle='#90CAF9';E.lineWidth=2.5;
+    ln2(E,em(0,-ER)[0],em(0,-ER)[1],em(0,ER)[0],em(0,ER)[1]);
+    // Eigenvalue path (dashed)
+    E.save();E.setLineDash([3,3]);E.strokeStyle='#ccc';E.lineWidth=1;
+    ln2(E,em(-ER,omega)[0],em(-ER,omega)[1],em(ER,omega)[0],em(ER,omega)[1]);
+    if(omega>.05)ln2(E,em(-ER,-omega)[0],em(-ER,-omega)[1],em(ER,-omega)[0],em(ER,-omega)[1]);
+    E.restore();
+    // Arrows + dots
+    var p1=em(alpha,omega),p2=em(alpha,-omega),o=em(0,0);
+    E.strokeStyle='#333';E.fillStyle='#333';E.lineWidth=1.5;
+    ln2(E,o[0],o[1],p1[0],p1[1]);arw(E,p1[0],p1[1],Math.atan2(p1[1]-o[1],p1[0]-o[0]),7);
+    if(omega>.05){ln2(E,o[0],o[1],p2[0],p2[1]);arw(E,p2[0],p2[1],Math.atan2(p2[1]-o[1],p2[0]-o[0]),7);}
+    E.fillStyle='#FF9800';circ(E,p1[0],p1[1],7,true);E.strokeStyle='#E65100';E.lineWidth=1.5;circ(E,p1[0],p1[1],7,false);
+    E.fillStyle='#4CAF50';circ(E,p2[0],p2[1],7,true);E.strokeStyle='#2E7D32';E.lineWidth=1.5;circ(E,p2[0],p2[1],7,false);
+    // Labels
+    E.font='11px "Times New Roman",serif';E.fillStyle='#333';
+    E.fillText('\u03BB = '+alpha.toFixed(2)+(omega>=.05?' + '+omega.toFixed(1)+'i':''),p1[0]+10,p1[1]-8);
+    if(omega>=.05)E.fillText('\u03BB\u0304 = '+alpha.toFixed(2)+' \u2212 '+omega.toFixed(1)+'i',p2[0]+10,p2[1]+16);
+    E.font='12px "Times New Roman",serif';E.fillStyle='#888';
+    E.fillText('Re(\u03BB)',S-42,em(0,0)[1]-6);E.fillText('Im(\u03BB)',em(0,0)[0]+6,13);
+    E.font='11px sans-serif';E.globalAlpha=.4;
+    E.fillStyle='#4CAF50';E.fillText('Stable',15,20);
+    E.fillStyle='#F44336';E.fillText('Unstable',S-60,20);
+    E.globalAlpha=1;
+    E.font='9px sans-serif';E.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=em(v,0);E.fillText(v,t[0]-4,t[1]+13);t=em(0,v);E.fillText(v,t[0]+5,t[1]+3);});
+    E.font='13px "Times New Roman",serif';E.fillStyle='#333';
+    E.fillText('\u03B1 = '+alpha.toFixed(2),8,S-8);
+  }
+
+  function drawPhase(){
+    P.clearRect(0,0,S,S);
+    // Grid
+    P.strokeStyle='#f0f0f0';P.lineWidth=.5;
+    [-2,-1,1,2].forEach(function(v){var p=pm(v,-PR),q=pm(v,PR);ln2(P,p[0],p[1],q[0],q[1]);p=pm(-PR,v);q=pm(PR,v);ln2(P,p[0],p[1],q[0],q[1]);});
+    P.strokeStyle='#81D4FA';P.lineWidth=1;
+    ln2(P,pm(-PR,0)[0],pm(-PR,0)[1],pm(PR,0)[0],pm(PR,0)[1]);
+    ln2(P,pm(0,-PR)[0],pm(0,-PR)[1],pm(0,PR)[0],pm(0,PR)[1]);
+    // Reference circles
+    P.strokeStyle='#ece0f0';P.lineWidth=.7;var oc=pm(0,0);
+    [.5,1,1.5,2].forEach(function(r){circ(P,oc[0],oc[1],r*S/(2*PR),false);});
+
+    // Trajectories using exact matrix exponential
+    var cols=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e','#283593','#bf360c','#00695c','#6a1b9a'];
+    var dt=0.04,totalT=Math.min(30,omega>.1?8*Math.PI/omega:30);
+    var nSteps=Math.min(800,Math.floor(totalT/dt));
+    var radii=[0.3,0.6,1.0,1.5,2.0],angles=[0,Math.PI/2,Math.PI,3*Math.PI/2];
+    // Reduce ICs for performance if alpha > 0 (diverging fast)
+    if(alpha>0.5){radii=[0.15,0.3,0.5,0.8];nSteps=Math.min(400,nSteps);}
+    var ci=0;
+
+    radii.forEach(function(r0){angles.forEach(function(a0){
+      var x=r0*Math.cos(a0),y=r0*Math.sin(a0);
+      var pts=[[x,y]];
+      for(var i=0;i<nSteps;i++){
+        var n=step(x,y,dt);x=n[0];y=n[1];
+        if(x*x+y*y>PR*PR*9)break;
+        pts.push([x,y]);
+      }
+      if(pts.length<2)return;
+      var col=cols[ci%cols.length];ci++;
+      P.strokeStyle=col;P.fillStyle=col;P.lineWidth=1;P.globalAlpha=.55;
+      P.beginPath();var s=pm(pts[0][0],pts[0][1]);P.moveTo(s[0],s[1]);
+      for(var i=1;i<pts.length;i++){var p=pm(pts[i][0],pts[i][1]);P.lineTo(p[0],p[1]);}
+      P.stroke();
+      // Arrow at a midpoint
+      if(pts.length>10){
+        var mi=Math.floor(pts.length*.4);
+        var cu=pm(pts[mi][0],pts[mi][1]),pr=pm(pts[mi-1][0],pts[mi-1][1]);
+        var dx=cu[0]-pr[0],dy=cu[1]-pr[1];
+        if(dx*dx+dy*dy>2)arw(P,cu[0],cu[1],Math.atan2(dy,dx),5);
+      }
+      P.globalAlpha=1;
+      circ(P,s[0],s[1],2.5,true);
+    });});
+
+    // Origin dot
+    var op=pm(0,0);
+    if(alpha<-.01){P.fillStyle='#4CAF50';circ(P,op[0],op[1],6,true);P.strokeStyle='#2E7D32';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else if(alpha>.01){P.fillStyle='#F44336';circ(P,op[0],op[1],6,true);P.strokeStyle='#C62828';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else{P.fillStyle='#FF9800';circ(P,op[0],op[1],6,true);P.strokeStyle='#E65100';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+
+    P.font='12px "Times New Roman",serif';P.fillStyle='#888';
+    P.fillText('x\u2081',S-18,pm(0,0)[1]-6);P.fillText('x\u2082',pm(0,0)[0]+6,13);
+    P.font='9px sans-serif';P.fillStyle='#bbb';
+    [-2,-1,1,2].forEach(function(v){var t=pm(v,0);P.fillText(v,t[0]-4,t[1]+13);t=pm(0,v);P.fillText(v,t[0]+5,t[1]+3);});
+  }
+
+  function updInfo(){
+    var el=document.getElementById('cs-info'),isReal=omega<.05;
+    var st;
+    if(isReal){st=alpha<-.01?'Stable node (real \u03BB='+alpha.toFixed(2)+')':alpha>.01?'Unstable node (real \u03BB='+alpha.toFixed(2)+')':'Degenerate (\u03BB=0)';}
+    else{st=alpha<-.01?'Stable spiral (\u03B1<0, damped oscillations)':alpha>.01?'Unstable spiral (\u03B1>0, growing oscillations)':'Center (\u03B1=0, pure oscillations)';}
+    var lam=isReal?'\u03BB = '+alpha.toFixed(2)+' (repeated)':'\u03BB = '+alpha.toFixed(2)+' \u00B1 '+omega.toFixed(1)+'i';
+    el.innerHTML='\u03B1 = '+alpha.toFixed(2)+' &nbsp;|&nbsp; \u03C9 = '+omega.toFixed(1)+' &nbsp;|&nbsp; '+lam+' &nbsp;|&nbsp; '+st;
+  }
+  function updTitle(){
+    var isReal=omega<.05;var t;
+    if(isReal){t=alpha<-.01?'Stable node':alpha>.01?'Unstable node':'Degenerate';}
+    else{t=alpha<-.01?'Stable spiral (damped oscillations)':alpha>.01?'Unstable spiral (growing oscillations)':'Center (pure oscillations)';}
+    document.getElementById('cs-rt').textContent='Phase portrait: '+t;
+  }
+  function redraw(){drawEigen();drawPhase();updInfo();updTitle();}
+
+  // Eigenvalue plane: drag horizontally for alpha
+  function empos(e){var r=ec.getBoundingClientRect();return ec2m((e.clientX-r.left)*(S/r.width),(e.clientY-r.top)*(S/r.height));}
+  ec.addEventListener('mousedown',function(e){
+    var m=empos(e);var d1=Math.abs(m[0]-alpha)+Math.abs(m[1]-omega)*.3;var d2=Math.abs(m[0]-alpha)+Math.abs(m[1]+omega)*.3;
+    if(d1<.4||d2<.4)drag=true;
+  });
+  ec.addEventListener('mousemove',function(e){
+    if(!drag){var m=empos(e);var d1=Math.abs(m[0]-alpha)+Math.abs(m[1]-omega)*.3;var d2=Math.abs(m[0]-alpha)+Math.abs(m[1]+omega)*.3;ec.style.cursor=(d1<.4||d2<.4)?'ew-resize':'crosshair';return;}
+    ec.style.cursor='ew-resize';var m=empos(e);
+    alpha=Math.max(-ER+.1,Math.min(ER-.1,m[0]));
+    if(Math.abs(alpha)<.08)alpha=0;
+    redraw();
+  });
+  window.addEventListener('mouseup',function(){drag=false;ec.style.cursor='crosshair';});
+  ec.addEventListener('touchstart',function(e){e.preventDefault();drag=true;},{passive:false});
+  ec.addEventListener('touchmove',function(e){e.preventDefault();if(!drag)return;
+    var t=e.touches[0],r=ec.getBoundingClientRect();var m=ec2m((t.clientX-r.left)*(S/r.width),(t.clientY-r.top)*(S/r.height));
+    alpha=Math.max(-ER+.1,Math.min(ER-.1,m[0]));if(Math.abs(alpha)<.08)alpha=0;redraw();
+  },{passive:false});
+  ec.addEventListener('touchend',function(){drag=false;});
+  omS.addEventListener('input',function(){omega=parseFloat(this.value);omV.textContent=omega.toFixed(1);redraw();});
+  redraw();
+})();
+</script>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Attractor or Manifold)</span></p>
 
@@ -9722,6 +9913,66 @@ This is a powerful and surprising result. The mere existence of a cycle with per
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Does not chaos imply aperiodicity?)</span></p>
+
+**Aperiodicity is usually a property of an individual orbit, whereas chaos is a property of the dynamical system (or of an invariant set).**
+
+So there is no contradiction.
+
+For a map $x_{n+1}=f(x_n)$:
+
+* a **periodic orbit** means there exists some initial point $x_0$ such that after $p$ steps the orbit repeats
+* **chaotic dynamics** means the map also has many other initial points whose orbits are irregular / non-periodic in the relevant sense
+
+A chaotic system can absolutely contain periodic orbits. In fact, many standard chaotic systems do.
+
+What chaos rules out is not “the existence of any periodic orbit,” but rather the idea that the dynamics is globally just one simple periodic repetition.
+
+So when Li–Yorke says:
+
+> if there is a period-3 orbit, then the map is chaotic,
+
+it does **not** mean every orbit is aperiodic. It means:
+
+* there exists a period-3 orbit
+* and, at the same time, the map also has very complicated non-periodic behavior
+
+These coexist.
+
+A good way to separate the two notions is:
+
+* **periodic orbit** = one special repeating trajectory
+* **chaos** = the whole map has a rich set of trajectories, including irregular ones
+
+So the theorem is surprising exactly because:
+
+> observing one period-3 cycle forces the system to have much more than that one periodic cycle.
+
+It forces complexity, not pure periodicity.
+
+There is also a terminology issue. In informal descriptions of chaos, people often say “chaos is aperiodic.” What they usually mean is:
+
+* a **typical chaotic trajectory** does not repeat periodically
+
+not
+
+* the system contains no periodic orbits at all
+
+In many chaotic systems, periodic orbits are actually embedded inside the chaotic set.
+
+For your intuition, think like this:
+
+* a non-chaotic system might have only fixed points or only a stable 2-cycle
+* a chaotic system may still have fixed points, 2-cycles, 3-cycles, etc.
+* but it also has orbits that never settle into a repeating pattern
+
+So your sentence can be repaired to:
+
+**Chaos involves the existence of aperiodic trajectories, not the absence of periodic trajectories.**
+
+</div>
+
 #### The Sharkovskii Ordering of Periodic Orbits
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -10907,6 +11158,11 @@ Since $dF$ is a linear map between tangent spaces, the condition that it be one-
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Schematic-of-delay-embedding-Variables.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Schematic of delay embedding. Variables $y_1(t), y_2(t), y_3(t)$ are the variables of the original system. We can reconstruct an attractor geometrically equivalent to the original attractor from the sole observed time series $y_1(t)$ via delay coordinates. Note that the map from the original attractor to the reconstructed attractor has one‐to‐one correspondence.</figcaption>
+</figure>
+
 ### Embedding Theorems: From Geometry to Dynamics
 
 #### The Concept of Diffeomorphic Equivalence
@@ -10925,13 +11181,39 @@ The derivative of the mapping, often denoted as $DF$, is also called a push-forw
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Diffeomorphism Matters)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Diffeomorphism Matters I)</span></p>
 
 Consider a trajectory in a three-dimensional space that we wish to represent, or "embed," in a lower-dimensional space. A simple one-to-one projection (a homeomorphism) is not sufficient. While it would prevent the trajectory from intersecting itself, it could introduce artificial and misleading features into the system's dynamics.
 
 For instance, a smooth, flowing trajectory in the original space might be projected in such a way that its corresponding vector field in the embedded space exhibits sudden, sharp jumps. A diffeomorphism prevents this. It guarantees that any smooth changes in the original vector field correspond to smooth changes in the embedded vector field.
 
 The central challenge addressed by embedding theorems is finding the right embedding—specifically, the right embedding dimensionality—that guarantees the existence of such a diffeomorphism.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Diffeomorphism Matters II)</span></p>
+
+* A **homeomorphism** guarantees that the reconstructed attractor has the same **topological shape** as the original one. It preserves notions like neighborhood structure, connectedness, and whether two trajectories intersect.
+* A **diffeomorphism** does more: it preserves the **smooth structure**. Because it is differentiable with differentiable inverse, it lets you transfer tangent vectors and therefore the **vector field / flow law** smoothly from the original space to the reconstructed space.
+
+**Why homeomorphism is not enough?**
+
+A homeomorphism only says:
+* points correspond one-to-one,
+* nearby points stay nearby in a topological sense,
+* trajectories do not get torn or glued together.
+
+But it does **not** control:
+
+* tangent directions,
+* derivatives,
+* smoothness of trajectories as curves in coordinates,
+* smooth transformation of the local flow.
+
+So yes: with only a homeomorphism, you may recover the **state-space geometry** topologically, but not the **differential structure** needed for the vector field.
+
+> A homeomorphism is enough to reconstruct the attractor as a topological object, but a diffeomorphism is needed to reconstruct the system as a smooth dynamical system, so that tangent vectors and the vector field are transported consistently.
 
 </div>
 
@@ -11012,6 +11294,78 @@ If the embedding dimension $k$ satisfies $k \geq 2D + 1$, then the map $F_{\tau}
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why do we embed the $D$-dimensional attractor to $(2D+1)$-dimensional space?)</span></p>
+
+We choose an embedding dimension of at least
+
+$$m \ge 2D+1$$
+
+because this is a classical **theorem-backed sufficient condition** ensuring that a $D$-dimensional attractor can be reconstructed **without self-overlaps** and with its **smooth dynamical structure preserved**.
+
+* **1. What we want from the reconstruction**
+
+  We want the reconstruction map $F$ to be an **embedding**:
+
+  * **globally one-to-one**: different states should not collapse to the same reconstructed point;
+  * **locally nondegenerate**: tangent directions should not get squashed.
+
+  This is stronger than just drawing something that “looks similar.”
+
+* **2. Why pairs of points appear**
+
+  Injectivity is about whether two distinct points can map to the same image:
+
+  $$F(x)=F(y) \Rightarrow x=y.$$
+
+  So to study failure of injectivity, we must study **pairs of points** $(x,y)$ with $x\neq y$.
+
+  If the attractor has dimension $D$, then the space of pairs has dimension about $2D$.
+  That is why the number $2D$ appears.
+
+* **3. Why collisions happen**
+
+  In reconstruction, we usually do **not** start with an already injective map $F$.
+  Instead, we start from a scalar observation $h$, and build a delay map like
+
+  $$F(x) = \bigl(h(x), h(f(x)), \dots, h(f^{m-1}(x))\bigr).$$
+
+  A single measurement $h$ is usually **not injective**: many different states can produce the same observed value.
+
+  Delay coordinates help by combining multiple observations over time, but we need enough coordinates to guarantee that distinct states are separated.
+
+* **4. Why the threshold is $2D+1$**
+
+  Very roughly:
+
+  * collisions are controlled by a set of dimension $2D$,
+  * so the target space must have dimension **greater than $2D$** to generically avoid them.
+
+  Thus we require
+
+  $$m > 2D.$$
+
+  Since $m$ must be an integer, the smallest safe choice is
+
+  $$m=2D+1$$
+
+* **5. What this guarantees**
+
+  With $m \ge 2D+1$, a generic delay-coordinate map can be an **embedding**:
+
+  * no false intersections of trajectories,
+  * no folding that destroys local smooth structure,
+  * the reconstructed attractor is a **diffeomorphic copy** of the original one.
+
+  So $2D+1$ is not necessarily the minimal dimension for every system, but it is the standard **generic sufficient bound**.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/summary-takens-theorem.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Summary</figcaption>
+</figure>
+
 #### The Fractal Delay Embedding Prevalence Theorem
 
 Many dynamical systems, particularly chaotic ones, have attractors that are not smooth manifolds but are instead fractal sets. The theorem by Sauer, Yorke, and Casdagli (1991) extends Takens' results to cover these more complex geometric objects by using the box-counting dimension.
@@ -11047,13 +11401,16 @@ As the embedding dimension is increased, the attractor "unfolds." When the dimen
 
 </div>
 
-**Methodology**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span>(Finding embedding dimension using False Neighbors)</p>
 
 1. **Construct Embeddings:** Start with a low embedding dimension, $d=1, 2, 3, \dots$.
 2. **Identify Neighbors:** For each point in the $d$-dimensional embedded trajectory, find its nearest neighbor.
 3. **Check in Next Dimension:** Observe the distance between this same pair of points in the $d+1$-dimensional embedding.
 4. **Count False Neighbors:** If the distance between the points increases dramatically when moving from dimension $d$ to $d+1$, the pair is classified as a "false neighbor." This jump in distance indicates that the proximity in dimension $d$ was merely an artifact of the projection.
 5. **Analyze the Trend:** Plot the percentage of false neighbors as a function of the embedding dimension $d$. Typically, this curve will show a high percentage of false neighbors for low $d$, which then drops sharply and plateaus at or near zero. The embedding dimension at which this "kink" occurs and the percentage of false neighbors becomes negligible is chosen as the minimum sufficient embedding dimension.
+
+</div>
 
 #### Applications: Computing Invariants in Embedded Space
 
@@ -11067,7 +11424,8 @@ Once a proper embedding has been constructed, the reconstructed state space can 
 
 </div>
 
-**Method for Estimating Lyapunov Exponents**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span>(Estimating Lyapunov Exponents)</p>
 
 1. In the delay-embedding space, for each point on a trajectory, identify a neighborhood of nearby points.
 2. Track the evolution of the distance between the reference point and each of its neighbors over time. For initially close trajectories with separation $\delta(0) = \Delta_0$, the separation typically grows exponentially for a chaotic system: 
@@ -11079,6 +11437,112 @@ Once a proper embedding has been constructed, the reconstructed state space can 
    $$\ln(\delta(t)) \approx \ln(\Delta_0) + \lambda t$$
 
 4. By averaging the evolution of $\ln(\delta(t))$ over many initial points and their respective neighbors, one can plot this quantity against time $t$ (or discrete time steps $k \cdot \Delta t$). The slope of the initial linear region of this plot provides an empirical estimate of the largest Lyapunov exponent, $\lambda$.
+
+</div>
+
+#### Delay Embedding vs. Feature Embedding
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span>(Delay Embedding vs. Feature Embedding)</p>
+
+In dynamical-system reconstruction, **delay embedding** and **feature embedding** are two different ways to build a state vector from observations.
+
+**Delay embedding**
+
+This is the classical idea from **Takens-style state-space reconstruction**.
+
+Suppose you only observe a scalar time series $x_t$.
+Instead of treating $x_t$ alone as the state, you build a vector of **time-delayed copies**:
+
+$$\mathbf{z}_t = [x_t,; x_{t-\tau},; x_{t-2\tau},; \dots,; x_{t-(m-1)\tau}]$$
+
+where:
+
+* $\tau$ = delay
+* $m$ = embedding dimension
+
+**Intuition**
+
+A single number $x_t$ usually does not tell you the full state of the system.
+But several past values together often contain enough information to recover the hidden state.
+
+**Why it works**
+
+For many deterministic dynamical systems, if $m$ is large enough and the measurement is generic enough, this reconstructed space preserves the geometry of the original attractor.
+
+**Feature embedding**
+
+This is a broader, less rigid term.
+
+A **feature embedding** means you map observations into a vector of **derived features**:
+
+$$\mathbf{z}_t = \phi(\text{observations at or around } t)$$
+
+where $\phi$ could be:
+
+**Intuition**
+
+Instead of stacking delayed copies directly, you create a representation that is supposed to capture the important structure of the dynamics.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Main difference)</span></p>
+
+**Delay embedding**
+
+* Uses **raw past observations**
+* Standard method in nonlinear time-series reconstruction
+* Strong theoretical motivation
+* Explicitly uses **time memory**
+
+**Feature embedding**
+
+* Uses **engineered or learned transformations**
+* Broader and more flexible
+* Usually more application-dependent
+* May use current observation only, or a whole window
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(In reconstruction language)</span></p>
+
+If the goal is to reconstruct the hidden state of a dynamical system:
+
+* **Delay embedding** reconstructs state by using **history**
+* **Feature embedding** reconstructs state by using a **representation map**
+
+Delay embeddings are especially useful when:
+
+* you have only one measured variable
+* you want a theorem-backed reconstruction method
+
+Feature embeddings are especially useful when:
+
+* the observations are high-dimensional
+* you want compression
+* you want robustness to noise
+* you use machine learning methods
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(One-sentence summary)</span></p>
+
+A **delay embedding** builds state vectors from **time-lagged observations**, while a **feature embedding** builds state vectors from **transformed or learned features** of the observations; delay embedding is the more classical and theoretically grounded method for dynamical-system reconstruction.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span>(Example of Delay Embedding vs. Feature Embedding)</p>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/delay-embedding-vs-feature-embedding.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Summary</figcaption>
+</figure>
+
+</div>
 
 ### From Data to Dynamics: Reconstruction and Inference
 
@@ -11093,16 +11557,16 @@ The delay embedding theorems provide a remarkable guarantee: under certain condi
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Delay Coordinate Map)</span></p>
 
-Given a time series of scalar measurements $\{s_1, s_2, ..., s_k\}$, the **delay coordinate map** constructs a series of state vectors in a higher-dimensional space. A vector $x_t$ in the reconstructed space is formed as:
+Given a time series of scalar measurements $\lbrace s_1, s_2, \dots, s_k\rbrace$, the **delay coordinate map** constructs a series of state vectors in a higher-dimensional space. A vector $x_t$ in the reconstructed space is formed as:
 
-$$x_t = (s_t, s_{t-\tau}, s_{t-2\tau}, ..., s_{t-(m-1)\tau})$$
+$$x_t = (s_t, s_{t-\tau}, s_{t-2\tau}, \dots, s_{t-(m-1)\tau})$$
 
 Where:
 
 * $m$ is the embedding dimension.
 * $\tau$ is the time lag or delay time.
 
-The collection of all such vectors $\{x_t\}$ forms a trajectory in an $m$-dimensional space that, with proper parameter choices, preserves the geometric and dynamic properties of the original system's attractor.
+The collection of all such vectors $\lbrace x_t\rbrace$ forms a trajectory in an $m$-dimensional space that, with proper parameter choices, preserves the geometric and dynamic properties of the original system's attractor.
 
 </div>
 
@@ -11110,12 +11574,15 @@ The collection of all such vectors $\{x_t\}$ forms a trajectory in an $m$-dimens
 
 The success of delay embedding hinges on the careful selection of its two key parameters, $m$ and $\tau$.
 
-* The Time Lag ($\tau$):
-  * Theoretical Role: While theoretically less critical than $m$, $\tau$ must be chosen so that it does not align with a natural periodicity of the underlying signal, which would cause the coordinates to become correlated and the embedding to collapse.
-  * Empirical Selection: A common heuristic is to choose $\tau$ based on the autocorrelation function of the time series. A value is often selected where the function first drops significantly, indicating that $s_t$ and $s_{t-\tau}$ are sufficiently independent to serve as distinct coordinates.
-* The Embedding Dimension ($m$):
-  * Theoretical Role: This parameter is theoretically crucial. Takens' theorem guarantees a successful embedding if the dimension $m$ is at least twice the box-counting dimension of the underlying attractor ($D_{box}$): $$m > 2 D_{box}$$
-  * Empirical Selection: The false neighbor technique is a practical method to determine an appropriate $m$. It works by checking how many "neighboring" points in an $m$-dimensional embedding remain neighbors when the dimension is increased to $m+1$. If they are no longer neighbors, they were "false neighbors" resulting from a projection into a space of insufficient dimension. One increases $m$ until the percentage of false neighbors drops to zero.
+* **The Time Lag ($\tau$):**
+  * **Theoretical Role:** While theoretically less critical than $m$, $\tau$ must be chosen so that it does not align with a natural periodicity of the underlying signal, which would cause the coordinates to become correlated and the embedding to collapse.
+  * **Empirical Selection:** A common heuristic is to choose $\tau$ based on the autocorrelation function of the time series. A value is often selected where the function first drops significantly, indicating that $s_t$ and $s_{t-\tau}$ are sufficiently independent to serve as distinct coordinates.
+* **The Embedding Dimension ($m$):**
+  * **Theoretical Role:** This parameter is theoretically crucial. Takens' theorem guarantees a successful embedding if the dimension $m$ is at least twice the box-counting dimension of the underlying attractor ($D_{box}$): 
+  
+  $$m > 2 D_{box}$$
+
+  * **Empirical Selection:** The false neighbor technique is a practical method to determine an appropriate $m$. It works by checking how many "neighboring" points in an $m$-dimensional embedding remain neighbors when the dimension is increased to $m+1$. If they are no longer neighbors, they were "false neighbors" resulting from a projection into a space of insufficient dimension. One increases $m$ until the percentage of false neighbors drops to zero.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
@@ -12792,11 +13259,11 @@ Let the total loss $L$ be the sum of losses at each time step: $L = \sum_{t=1}^T
 
 1. Using the chain rule, the derivative for a single time step $t$ is:
 
-$$\frac{\partial L_t}{\partial \theta} = \sum_{r=1}^t \frac{\partial L_t}{\partial z_t} \frac{\partial z_t}{\partial z_r} \frac{\partial z_r}{\partial \theta}$$
+   $$\frac{\partial L_t}{\partial \theta} = \sum_{r=1}^t \frac{\partial L_t}{\partial z_t} \frac{\partial z_t}{\partial z_r} \frac{\partial z_r}{\partial \theta}$$
 
 2. The middle term, $\frac{\partial z_t}{\partial z_r}$, represents the dependency of the state at time $t$ on the state at an earlier time $r$. This can be expanded via the chain rule as a product series of Jacobians:
 
-$$\frac{\partial z_t}{\partial z_r} = \prod_{k=0}^{t-r-1} J(z_{t-k-1}) = \frac{\partial z_t}{\partial z_{t-1}} \frac{\partial z_{t-1}}{\partial z_{t-2}} \cdots \frac{\partial z_{r+1}}{\partial z_r}$$
+   $$\frac{\partial z_t}{\partial z_r} = \prod_{k=0}^{t-r-1} J(z_{t-k-1}) = \frac{\partial z_t}{\partial z_{t-1}} \frac{\partial z_{t-1}}{\partial z_{t-2}} \cdots \frac{\partial z_{r+1}}{\partial z_r}$$
 
 </div>
 
@@ -13039,7 +13506,7 @@ We wish to find the Jacobian of the state $\tilde{z}\_t$ with respect to the sta
 2. Differentiate $\tilde{z}\_t$ with respect to $\tilde{z}\_{t-1}$. Note that $\hat{z}\_t$ (the data estimate) is independent of the model’s previous state $\tilde{z}\_{t-1}$, so its derivative is zero.
 3. Apply the chain rule to the first term:
 
-$$\frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}} = (1 - \alpha) \cdot \frac{\partial f_\theta(\tilde{z}_{t-1})}{\partial \tilde{z}_{t-1}}$$
+   $$\frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}} = (1 - \alpha) \cdot \frac{\partial f_\theta(\tilde{z}_{t-1})}{\partial \tilde{z}_{t-1}}$$
 
 4. Let $G_t$ be the Jacobian of the map $f_\theta$ at time $t$. The single-step Jacobian is: 
    
@@ -13047,7 +13514,7 @@ $$\frac{\partial \tilde{z}_t}{\partial \tilde{z}_{t-1}} = (1 - \alpha) \cdot \fr
 
 5. For a sequence of $T$ steps, the product series of Jacobians becomes:
 
-$$\prod_{k=0}^{T-1} (1 - \alpha)\, G_{T-k}$$
+   $$\prod_{k=0}^{T-1} (1 - \alpha)\, G_{T-k}$$
 
 </div>
 
@@ -14068,9 +14535,9 @@ Koopman Autoencoders bridge the gap between deep learning and classical dynamica
 The primary goal of a Koopman Autoencoder is to find a mapping $\phi$ (the encoder) and its approximate inverse $\phi^{-1}$ (the decoder) such that the dynamics in the embedding space follow a linear operator $\tilde{K}$.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reconstruction Loss)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Koopman Reconstruction Loss)</span></p>
 
-The **Reconstruction Loss** ($\mathcal{L}_{\text{recon}}$) ensures that the embedding space preserves the essential information of the observation space. It penalizes the difference between the original input $x_t$ and its reconstruction through the autoencoder:
+The **Koopman Reconstruction Loss** ($\mathcal{L}_{\text{recon}}$) ensures that the embedding space preserves the essential information of the observation space. It penalizes the difference between the original input $x_t$ and its reconstruction through the autoencoder:
 
 $$\mathcal{L}_{\text{recon}} = \sum_{t} \lVert x_t - \phi^{-1}(\phi(x_t)) \rVert$$
 
@@ -14104,9 +14571,9 @@ The matrix $\tilde{K}$ is not typically learned as a dense weight matrix. Instea
 To increase the stability and robustness of the learned dynamics, we often extend the one-step loss to an $M$-step iterated loss. This technique is philosophically similar to the sparse and generalized teacher forcing methods discussed in Lectures 10–11.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($M$-Step Latent Loss)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Koopman M-Step Latent Loss)</span></p>
 
-The **$M$-step Latent Loss** ensures that the linear operator remains valid over longer trajectories in the embedding space:
+The **Koopman M-step Latent Loss** ensures that the linear operator remains valid over longer trajectories in the embedding space:
 
 $$\mathcal{L}_{m\text{-step}} = \sum_{t} \lVert \phi(x_{t+m}) - \tilde{K}^m\, \phi(x_t) \rVert$$
 
@@ -14115,9 +14582,9 @@ where $\tilde{K}^m$ represents the $m$-th power of the linear operator, signifyi
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Observed $M$-Step Loss)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Koopman Observed M-Step Loss)</span></p>
 
-To further constrain the system and prevent the latent space from drifting into unphysical solutions, we define a loss in the actual observation space for $m$ steps ahead:
+To further constrain the system and prevent the latent space from drifting into unphysical solutions, we define a loss in the actual observation space for M steps ahead, calling it **Koopman Observed M-Step Loss**:
 
 $$\mathcal{L}_{\text{obs},\, m} = \sum_{t} \lVert x_{t+m} - \phi^{-1}(\tilde{K}^m\, \phi(x_t)) \rVert$$
 
@@ -14297,7 +14764,7 @@ In dynamical systems, we treat our observations $X_t$ as being generated by an u
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Linear Observation Model)</span></p>
 
-The observation $X_t$ is defined as:
+The **linear observation** $X_t$ is defined as:
 
 $$X_t = B\, Z_t + \eta_t$$
 
@@ -14370,14 +14837,14 @@ Variational Autoencoders represent a significant advancement in machine learning
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Encoder — Inference Model)</span></p>
 
-The encoder is a probability distribution $q_\phi(Z_t \mid X_t)$ parameterized by $\phi$. It serves as an approximation of the true (but unknown) posterior distribution of the latent states given the observations.
+The **encoder** is a probability distribution $q_\phi(Z_t \mid X_t)$ parameterized by $\phi$. It serves as an approximation of the true (but unknown) posterior distribution of the latent states given the observations.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Decoder — Generative Model)</span></p>
 
-The decoder is a probability distribution $p_\theta(X_t \mid Z_t)$ parameterized by $\theta$. It describes how to generate observations back from the latent state.
+The **decoder** is a probability distribution $p_\theta(X_t \mid Z_t)$ parameterized by $\theta$. It describes how to generate observations back from the latent state.
 
 </div>
 
@@ -14644,31 +15111,32 @@ This formulation allows for efficient, end-to-end training of latent variable mo
 
 </div>
 
-
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On Definition of SGVB above)</span></p>
 
 A better way to say it is:
 
-**SGVB (Stochastic Gradient Variational Bayes)** is a method for optimizing the ELBO by using a **Monte Carlo estimator** of the expectation together with the **reparameterization trick**, so that gradients with respect to the variational parameters ( \phi ) and model parameters ( \theta ) can be computed by standard gradient-based optimization.
+**SGVB (Stochastic Gradient Variational Bayes)** is a method for optimizing the ELBO by using a **Monte Carlo estimator** of the expectation together with the **reparameterization trick**, so that gradients with respect to the variational parameters $\phi$ and model parameters $\theta$ can be computed by standard gradient-based optimization.
 
 What is good in your slide:
 
-* reparameterizing the latent variable (z)
+* reparameterizing the latent variable $z$
 * approximating the expectation by sampling
-* computing gradients w.r.t. (\theta) and (\phi) via backpropagation
+* computing gradients w.r.t. $\theta$ and $\phi$ via backpropagation
 
 Those are exactly the core ideas.
 
 What is slightly inaccurate:
 
 * “**SGVB is the procedure of optimizing the ELBO**” is not wrong, but SGVB is more specifically the **gradient estimator / optimization framework** based on the reparameterization trick.
-* “**Reparameterizing the latent variable (z)**” is slightly imprecise. More accurately, you reparameterize the **sampling process** from the variational posterior:
-  [
+* “**Reparameterizing the latent variable $z$**” is slightly imprecise. More accurately, you reparameterize the **sampling process** from the variational posterior:
+  
+  $$
   z \sim q_\phi(z\mid x)
   \quad\Rightarrow\quad
   z = g_\phi(\varepsilon, x), ;; \varepsilon \sim p(\varepsilon)
-  ]
+  $$
+
   So we do not change the random variable in a vague sense; we rewrite it as a deterministic transform of auxiliary noise.
 * “**using standard backpropagation**” is correct in practice, but conceptually it is because the reparameterization makes the sampled objective differentiable w.r.t. parameters.
 
@@ -14677,16 +15145,13 @@ A cleaner slide version would be:
 **Definition (SGVB).**
 SGVB is a method for optimizing the ELBO by:
 
-1. rewriting samples from (q_\phi(z\mid x)) using the reparameterization trick,
+1. rewriting samples from $q_\phi(z\mid x)$ using the reparameterization trick,
 2. estimating the expectation in the ELBO with Monte Carlo samples,
-3. computing gradients of the resulting estimator w.r.t. (\theta) and (\phi) using backpropagation.
+3. computing gradients of the resulting estimator w.r.t. $\theta$ and $\phi$ using backpropagation.
 
 Or even more precise:
 
 **SGVB is a stochastic gradient estimator for the ELBO based on Monte Carlo sampling and the reparameterization trick.**
-
-So: **conceptually correct, but I would tighten the wording**.
-The main thing I would change is step 1.
 
 </div>
 
@@ -14703,11 +15168,11 @@ More precisely:
 So when people train a VAE by:
 
 1. writing the ELBO,
-2. sampling (z) from (q_\phi(z\mid x)) via
-   [
-   z=\mu_\phi(x)+\sigma_\phi(x)\odot \varepsilon,\qquad \varepsilon\sim\mathcal N(0,I),
-   ]
-3. approximating the expectation with sampled (z),
+2. sampling $z$ from $q_\phi(z\mid x)$ via
+   
+   $$z=\mu_\phi(x)+\sigma_\phi(x)\odot \varepsilon,\qquad \varepsilon\sim\mathcal N(0,I),$$
+   
+3. approximating the expectation with sampled $z$,
 4. backpropagating through that estimator,
 
 that is **SGVB**.
@@ -14734,40 +15199,33 @@ A concise exam-style statement:
 
 Yes — **in the usual VAE training procedure, we are doing Monte Carlo estimation**.
 
-For one datapoint (x), the ELBO contains
-[
-\mathbb{E}*{q*\phi(z\mid x)}[\log p_\theta(x\mid z)].
-]
+For one datapoint $x$, the ELBO contains
+
+$$\mathbb{E}_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)].$$
+
 That expectation is generally not computed analytically, so in practice we approximate it by sampling:
-[
-z^{(l)} = \mu_\phi(x) + \sigma_\phi(x)\odot \varepsilon^{(l)},
-\qquad \varepsilon^{(l)} \sim \mathcal N(0,I),
-]
+
+$$z^{(l)} = \mu_\phi(x) + \sigma_\phi(x)\odot \varepsilon^{(l)}, \qquad \varepsilon^{(l)} \sim \mathcal N(0,I)$$
+
 and then
-[
-\mathbb{E}*{q*\phi(z\mid x)}[\log p_\theta(x\mid z)]
-\approx
-\frac{1}{L}\sum_{l=1}^L \log p_\theta(x\mid z^{(l)}).
-]
+
+$$\mathbb{E}_{q_\phi(z\mid x)}[\log p_\theta(x\mid z)] \approx \frac{1}{L}\sum_{l=1}^L \log p_\theta(x\mid z^{(l)})$$
 
 That is exactly a **Monte Carlo estimator**.
 
-Why it may not feel like “Monte Carlo”:
+Why it may not feel like "Monte Carlo":
 
-* in VAEs, we often use only **one sample** per datapoint, (L=1)
+* in VAEs, we often use only **one sample** per datapoint, $L=1$
 * because of the **reparameterization trick**, it looks like ordinary backprop through noise
-* the KL term is often available in **closed form** for Gaussian (q_\phi(z\mid x)), so only the reconstruction expectation is sampled
+* the KL term is often available in **closed form** for Gaussian $q_\phi(z\mid x)$, so only the reconstruction expectation is sampled
 
 So in the standard Gaussian VAE, training usually looks like:
-[
+
+$$
 \mathcal L(x)
 \approx
-\log p_\theta(x\mid z)
-----------------------
-
-\mathrm{KL}\big(q_\phi(z\mid x),|,p(z)\big),
-\qquad z=\mu_\phi(x)+\sigma_\phi(x)\odot\varepsilon,;\varepsilon\sim\mathcal N(0,I).
-]
+\log p_\theta(x\mid z) - \mathrm{KL}\big(q_\phi(z\mid x)\parallel  p(z)\big), \qquad z=\mu_\phi(x)+\sigma_\phi(x)\odot\varepsilon,;\varepsilon\sim\mathcal N(0,I).
+$$
 
 Here:
 
@@ -14782,7 +15240,6 @@ A very precise sentence would be:
 > In VAE training, the ELBO is usually optimized using a Monte Carlo estimate of the expectation over the latent variable, combined with the reparameterization trick for low-variance gradient estimation.
 
 </div>
-
 
 #### Neural Network Integration in Probabilistic Models
 
@@ -15414,7 +15871,7 @@ Instead of unwrapping a discrete neural network into layers, we consider a state
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Adjoint State)</span></p>
 
-The adjoint state $a(t)$ is defined as the partial derivative of the loss function $L$ with respect to the state $z$ at time $t$:
+The **adjoint state** $a(t)$ is defined as the partial derivative of the loss function $L$ with respect to the state $z$ at time $t$:
 
 $$a(t) = \frac{\partial L}{\partial z(t)}$$
 
