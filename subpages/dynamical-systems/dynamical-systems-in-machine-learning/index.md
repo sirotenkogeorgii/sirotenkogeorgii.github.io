@@ -668,9 +668,9 @@ The origin $x=0$ is always an equilibrium point for the system $\dot{x} = Ax$. W
     var cols=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e','#283593','#bf360c','#00695c','#6a1b9a'];
     var dt=0.04,totalT=Math.min(30,omega>.1?8*Math.PI/omega:30);
     var nSteps=Math.min(800,Math.floor(totalT/dt));
-    var radii=[0.3,0.6,1.0,1.5,2.0],angles=[0,Math.PI/2,Math.PI,3*Math.PI/2];
+    var radii=[0.3,0.6,1.0,1.5,2.0],angles=[0,Math.PI/4,Math.PI/2,3*Math.PI/4,Math.PI,5*Math.PI/4,3*Math.PI/2,7*Math.PI/4];
     // Reduce ICs for performance if alpha > 0 (diverging fast)
-    if(alpha>0.5){radii=[0.15,0.3,0.5,0.8];nSteps=Math.min(400,nSteps);}
+    if(alpha>0.5){radii=[0.15,0.3,0.5,0.8];angles=[0,Math.PI/3,2*Math.PI/3,Math.PI,4*Math.PI/3,5*Math.PI/3];nSteps=Math.min(400,nSteps);}
     var ci=0;
 
     radii.forEach(function(r0){angles.forEach(function(a0){
