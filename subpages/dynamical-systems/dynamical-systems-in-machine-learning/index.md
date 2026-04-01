@@ -1814,8 +1814,8 @@ $$e^{At} = \sum_{k=0}^{\infty} \frac{(At)^k}{k!} = I + At + \frac{(At)^2}{2!} + 
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name"></span></p>
 
 It is straightforward to see why **this form constitutes a solution to the ODE**. If we take the temporal derivative of the solution $\mathbf{x}(t) = e^{At} \mathbf{x}_0$, we differentiate the series term-by-term:
 
@@ -1920,8 +1920,8 @@ where $x, b \in \mathbb{R}^m$ and $A$ is an $m \times m$ matrix.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Shifting the Equilibrium)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Shifting the Equilibrium)</span></p>
 
 The addition of the constant vector $b$ does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
 
@@ -1935,10 +1935,10 @@ This point $x^{\ast}$ is our new equilibrium, shifted from the origin.
 
 </div>
 
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Variation of Parameters)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Variation of Parameters)</span></p>
 
-The addition of the constant vector $b$ does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. The vector field remains unchanged relative to this new equilibrium.
+The addition of the constant vector $b$ does not alter the fundamental dynamics of the system, which are dictated by the matrix $A$. Instead, its effect is to move the system's equilibrium point. **The vector field remains unchanged relative to this new equilibrium.**
 
 </div>
 
@@ -1959,8 +1959,6 @@ We can formally prove that the dynamics remain the same by defining a new variab
    $$\dot{y} = A(y + x^{\ast}) + b = Ay + Ax^{\ast} + b$$  
    
    Now, substitute the expression for the fixed point, $x^{\ast} = -A^{-1}b$:
-   
-   $$\dot{y} = Ay + A(-A^{-1}b) + b = Ay - b + b$$
 
 4. **Result:** The dynamics for the new variable are:
    
@@ -1974,11 +1972,51 @@ We can formally prove that the dynamics remain the same by defining a new variab
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection to the Hartman-Grobman Theorem)</span></p>
+
+The coordinate shift $y = x - x^\ast$ used here is the same conceptual move that underlies the Hartman-Grobman theorem for nonlinear systems. In both cases, one translates the equilibrium to the origin and studies the dynamics of the deviation from the equilibrium's point of view (center is equilibrium). The difference is the strength of the result:
+
+- **Linear case (here):** The system is already linear (affine), so the reduction $\dot{y} = Ay$ to linear from affine is **exact and global** — no approximation is involved, and it holds everywhere in state space.
+- **Nonlinear case (Hartman-Grobman):** For $\dot{x} = f(x)$ near a hyperbolic equilibrium, the linearization $\dot{y} \approx Df(x^\ast)\, y$ is only a **topological conjugacy**, valid **locally** near $x^\ast$. The qualitative picture (stability type, saddle/node/spiral) is preserved, but the correspondence is through a continuous homeomorphism that is not necessarily smooth, and it breaks down far from the equilibrium.
+
+In this sense, the Variation of Parameters result can be viewed as the exact, global special case of the Hartman-Grobman idea: when there are no higher-order terms to discard, the linearization trick works perfectly everywhere.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Non-Invertible Case)</span></p>
 
 If the matrix $A$ is not invertible, it possesses at least one zero eigenvalue. In this scenario, a unique fixed point does not exist. This corresponds to the case of a center or, more generally, a line attractor (or plane/hyperplane attractor in higher dimensions). The system has a continuous manifold of equilibrium points along the direction of the eigenvector(s) associated with the zero eigenvalue(s).
 
 </div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Degenerate does not always mean manifold attractor)</span></p>
+
+A zero eigenvalue can happen for different reasons.
+
+1. **Case A: line/manifold of equilibria**
+
+   Example:
+
+   $$\dot{x}=0, \qquad \dot{y}=-y.$$
+
+   Every point $(x,0)$ is an equilibrium, so the $x$-axis is a manifold of equilibria. Here the zero eigenvalue corresponds to genuine neutral motion along that equilibrium manifold.
+
+1. **Case B: isolated equilibrium with zero eigenvalue**
+
+   Example:
+
+   $$\dot{x}=x^2, \qquad \dot{y}=-y.$$
+
+   At $(0,0)$, one eigenvalue is zero, but there is no line of equilibria. The only equilibrium is $(0,0)$, and the motion in the $x$-direction is determined by the nonlinear term $x^2$.
+
+   So:
+
+   > Degeneracy does not automatically mean line attractor or manifold attractor.
+
+</div>
+
 
 #### Non-autonomous Systems with a Forcing Function
 
@@ -2000,7 +2038,7 @@ To solve this type of equation, we employ a powerful technique known as variatio
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
+<div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Derivation of the Solution)</span></p>
 
 1. **Formulate the ansatz:** Let the solution be of the form
@@ -2904,7 +2942,7 @@ where $\tilde{A}$, $b$ are defined:
 
 $$\tilde{A} = e^{A \Delta t}$$
 
-$$b = (I - \tilde{A})x^{\ast}$$
+$$b = (I - \tilde{A})x^{\ast} = -(I - \tilde{A})A^{-1}c$$
 
 </div>
 
@@ -3000,7 +3038,7 @@ $$x_{k+1}=\Psi_h(x_k)$$
 
 for instance, in the explicit Euler scheme,
 
-$$x_{k+1}=x_k+h,f(x_k)$$
+$$x_{k+1}=x_k+hf(x_k)$$
 
 Hence, the exact discretization preserves the true continuous dynamics at the sampling times, whereas a numerical discretization only approximates them, with an error that depends on the method and the step size $h$.
 
@@ -6054,7 +6092,7 @@ Let $x^\ast$ be a fixed point of a nonlinear map $f(x)$. The stability of $x^\as
 This stability criterion extends naturally to multivariate (higher-dimensional) maps.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($N$-Dimensional Maps and the Jacobian)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($n$-Dimensional Maps and the Jacobian)</span></p>
 
 Consider a system in $m$ dimensions described by a map $\mathbf{x}_{t+1} = \mathbf{F}(\mathbf{x}_t)$, where $\mathbf{x}_t$ is a vector in $\mathbb{R}^m$. The stability analysis is analogous, but the scalar derivative is replaced by the Jacobian matrix, $J$.
 
@@ -6065,7 +6103,7 @@ $$J = \begin{pmatrix} \frac{\partial F_1}{\partial x_1} & \cdots & \frac{\partia
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability for $N$-$D$ Maps)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Stability for $nD$ Maps)</span></p>
 
 Let $\mathbf{x}^\ast$ be a fixed point of the map $\mathbf{F}(\mathbf{x})$. The stability of $\mathbf{x}^\ast$ is determined by the eigenvalues of the Jacobian matrix evaluated at the fixed point, $J(\mathbf{x}^\ast)$.
 
@@ -6081,7 +6119,7 @@ $$\max_i |\lambda_i| > 1$$
 
 </div>
 
-#### The Emergence of $K$-Cycles
+#### The Emergence of $k$-Cycles
 
 What happens when all fixed points in a bounded system become unstable? The trajectory cannot settle into a fixed point, but it also cannot escape to infinity. The system must find another form of stable, persistent behavior. In maps, this often leads to the emergence of cycles.
 
@@ -7489,6 +7527,12 @@ The choice between explicit and implicit solvers is a critical practical decisio
 
 ## Lecture 6
 
+Some random videos:
+* https://www.youtube.com/watch?v=uGUzPZzvPWQ
+* https://www.youtube.com/watch?v=wxRZwLFS6lk
+* https://www.youtube.com/watch?v=pY4VOskRUGA
+* https://www.youtube.com/watch?v=N4CeWehDxzk
+
 ### Dynamical Systems with Special Functionals
 
 In the study of dynamical systems, certain classes of systems exhibit unique behaviors due to the existence of special functions, or functionals, defined on their state space. These functionals, such as potentials, energy functions, or Hamiltonians, impose strong constraints on the system's dynamics. Understanding these functions allows us to predict the qualitative behavior of trajectories and the nature of equilibrium points without solving the differential equations explicitly. This chapter explores two fundamental types of such systems: Hamiltonian systems, often associated with conservation laws in physics, and Gradient systems, which describe processes moving towards local minima.
@@ -7513,6 +7557,19 @@ is defined as a **Hamiltonian system**.
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Degenerate Equilibrium)</span></p>
+
+An equilibrium is called **degenerate** if the Jacobian at that point is singular:
+
+$$\det Df(x^*) = 0$$
+
+Equivalently: **0 is an eigenvalue** of the linearization.
+
+This means that at least in one direction, the linear terms give no information about the attraction or repullsion.
+
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Equilibria of Hamiltonian Systems)</span></p>
 
@@ -7523,17 +7580,30 @@ Any non-degenerate equilibrium point of a Hamiltonian system is either a saddle 
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Significance of the Theorem)</span></p>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Phase-portrait-for-the-Hamiltonian-systemtif.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+</figure>
 
-This theorem is a powerful tool for classifying equilibrium points in non-linear systems. Typically, determining if an equilibrium is a true non-linear center requires analyzing higher-order terms of the system's Taylor expansion. However, if we can demonstrate that a system possesses a Hamiltonian function, we can classify its equilibria simply by analyzing the local extrema of $H$. This provides a direct and elegant method for proving the existence of non-linear centers, which are characterized by a dense set of closed orbits in their vicinity.
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Phase-portrait-for-Hamiltonian-system-42-q-f-p-q-p-gp-q-The-nullcline.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Hamiltonian System is Conservative)</span></p>
 
 Systems that possess a Hamiltonian are often called **conservative systems**. The value of the Hamiltonian, $H(x,y)$, remains constant along any trajectory of the system, acting as a constant of motion.
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Lotka-Volterra System)</span></p>
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Significance of the Theorem)</span></p>
+
+This theorem is a powerful tool for classifying equilibrium points in non-linear systems. Typically, determining if an equilibrium is a true non-linear center requires analyzing higher-order terms of the system's Taylor expansion. However, if we can demonstrate that a system possesses a Hamiltonian function, we can classify its equilibria simply by analyzing the local extrema of $H$. This provides a direct and elegant method for proving the existence of non-linear centers, which are characterized by a dense set of closed orbits in their vicinity.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Lotka-Volterra System Is Hamiltonian)</span></p>
 
 Let us revisit the Lotka-Volterra model for predator-prey interaction, which we can demonstrate is a Hamiltonian system.
 
@@ -7553,66 +7623,70 @@ where $x$ represents the prey population and $y$ represents the predator populat
 
 To show this system is Hamiltonian, we must construct a function $H(x,y)$ that is constant along the system's trajectories and satisfies the necessary conditions.
 
-**Step 1: Combine the Differential Equations.** We can eliminate the time variable $dt$ by dividing the two equations:
+1. **Step 1: Combine the Differential Equations.** We can eliminate the time variable $dt$ by dividing the two equations:
 
-$$\frac{dx}{dy} = \frac{\dot{x}}{\dot{y}} = \frac{\alpha x - \beta xy}{\gamma xy - \lambda y} = \frac{x(\alpha - \beta y)}{y(\gamma x - \lambda)}$$
+   $$\frac{dx}{dy} = \frac{\dot{x}}{\dot{y}} = \frac{\alpha x - \beta xy}{\gamma xy - \lambda y} = \frac{x(\alpha - \beta y)}{y(\gamma x - \lambda)}$$
 
-**Step 2: Separate Variables.** We rearrange the equation to group terms involving $x$ and $y$ on opposite sides.
+2. **Step 2: Separate Variables.** We rearrange the equation to group terms involving $x$ and $y$ on opposite sides.
 
-$$\frac{\gamma x - \lambda}{x} dx = \frac{\alpha - \beta y}{y} dy$$
+   $$\frac{\gamma x - \lambda}{x} dx = \frac{\alpha - \beta y}{y} dy$$
 
-**Step 3: Integrate Both Sides.** We integrate both sides of the equation to find the conserved quantity.
+3. **Step 3: Integrate Both Sides.** We integrate both sides of the equation to find the conserved quantity.
 
-$$\int \left(\frac{\gamma x - \lambda}{x}\right) dx = \int \left(\frac{\alpha - \beta y}{y}\right) dy$$
+   $$\int \left(\frac{\gamma x - \lambda}{x}\right) dx = \int \left(\frac{\alpha - \beta y}{y}\right) dy$$
 
-$$\int \left(\gamma - \frac{\lambda}{x}\right) dx = \int \left(\frac{\alpha}{y} - \beta\right) dy$$
+   $$\int \left(\gamma - \frac{\lambda}{x}\right) dx = \int \left(\frac{\alpha}{y} - \beta\right) dy$$
 
-This yields:
+   This yields:
 
-$$\gamma x - \lambda \ln(x) = \alpha \ln(y) - \beta y + C$$
+   $$\gamma x - \lambda \ln(x) = \alpha \ln(y) - \beta y + C$$
 
-where $C$ is a constant of integration.
+   where $C$ is a constant of integration.
 
-**Step 4: Define the Hamiltonian.** By rearranging the terms, we can define a function $H(x,y)$ that is constant along any trajectory.
+4. **Step 4: Define the Hamiltonian.** By rearranging the terms, we can define a function $H(x,y)$ that is constant along any trajectory.
 
-$$H(x,y) = \alpha \ln(y) - \beta y - \gamma x + \lambda \ln(x)$$
+   $$H(x,y) = \alpha \ln(y) - \beta y - \gamma x + \lambda \ln(x)$$
 
-Since the logarithm is only defined for positive arguments, this Hamiltonian is valid in the positive quadrant ($x > 0$, $y > 0$), which is the only biologically meaningful region for population models.
+   Since the logarithm is only defined for positive arguments, this Hamiltonian is valid in the positive quadrant ($x > 0$, $y > 0$), which is the only biologically meaningful region for population models.
 
-**Step 5: Verification with Auxiliary Variables.** To formally verify that this is a Hamiltonian system according to the definition, we introduce auxiliary variables:
+5. **Step 5: Verification with Auxiliary Variables.** To formally verify that this is a Hamiltonian system according to the definition, we introduce auxiliary variables:
 
-* Let $p = \ln(x)$ and $q = \ln(y)$.
-* This implies $x = e^p$ and $y = e^q$.
+   * Let $p = \ln(x)$ and $q = \ln(y)$.
+   * This implies $x = e^p$ and $y = e^q$.
 
-**Step 6: Rewriting the Hamiltonian** in terms of $p$ and $q$:
+6. **Step 6: Rewriting the Hamiltonian** in terms of $p$ and $q$:
 
-$$H(p, q) = \alpha q - \beta e^q + \lambda p - \gamma e^p$$
+   $$H(p, q) = \alpha q - \beta e^q + \lambda p - \gamma e^p$$
 
-**Step 7: Verify the Hamiltonian conditions.**
+7. **Step 7: Verify the Hamiltonian conditions.**
 
-We must verify that $\dot{p} = \frac{\partial H}{\partial q}$ and $\dot{q} = -\frac{\partial H}{\partial p}$.
+   We must verify that $\dot{p} = \frac{\partial H}{\partial q}$ and $\dot{q} = -\frac{\partial H}{\partial p}$.
 
-*First condition for $\dot{p}$:* Using the chain rule, $\dot{p} = \frac{d}{dt}(\ln(x)) = \frac{1}{x}\dot{x}$.
+   1. **First condition for $\dot{p}$:** 
+    
+      Using the chain rule, $\dot{p} = \frac{d}{dt}(\ln(x)) = \frac{1}{x}\dot{x}$.
 
-$$\dot{p} = \frac{1}{x}(\alpha x - \beta xy) = \alpha - \beta y = \alpha - \beta e^q$$
+      $$\dot{p} = \frac{1}{x}(\alpha x - \beta xy) = \alpha - \beta y = \alpha - \beta e^q$$
 
-Now, we compute the partial derivative of $H$ with respect to $q$:
+      Now, we compute the partial derivative of $H$ with respect to $q$:
 
-$$\frac{\partial H}{\partial q} = \frac{\partial}{\partial q} (\alpha q - \beta e^q + \lambda p - \gamma e^p) = \alpha - \beta e^q$$
+      $$\frac{\partial H}{\partial q} = \frac{\partial}{\partial q} (\alpha q - \beta e^q + \lambda p - \gamma e^p) = \alpha - \beta e^q$$
 
-The condition $\dot{p} = \frac{\partial H}{\partial q}$ is satisfied.
+      The condition $\dot{p} = \frac{\partial H}{\partial q}$ is satisfied.
 
-*Second condition for $\dot{q}$:* Similarly, $\dot{q} = \frac{1}{y}\dot{y}$.
+   2. **Second condition for $\dot{q}$:** 
+      
+      Similarly, $\dot{q} = \frac{1}{y}\dot{y}$.
 
-$$\dot{q} = \frac{1}{y}(\gamma xy - \lambda y) = \gamma x - \lambda = \gamma e^p - \lambda$$
+      $$\dot{q} = \frac{1}{y}(\gamma xy - \lambda y) = \gamma x - \lambda = \gamma e^p - \lambda$$
 
-Next, we compute the negative partial derivative of $H$ with respect to $p$:
+      Next, we compute the negative partial derivative of $H$ with respect to $p$:
 
-$$-\frac{\partial H}{\partial p} = -\frac{\partial}{\partial p} (\alpha q - \beta e^q + \lambda p - \gamma e^p) = -(\lambda - \gamma e^p) = \gamma e^p - \lambda$$
+      $$-\frac{\partial H}{\partial p} = -\frac{\partial}{\partial p} (\alpha q - \beta e^q + \lambda p - \gamma e^p) = -(\lambda - \gamma e^p) = \gamma e^p - \lambda$$
 
-The condition $\dot{q} = -\frac{\partial H}{\partial p}$ is also satisfied.
+      The condition $\dot{q} = -\frac{\partial H}{\partial p}$ is also satisfied.
 
-**Step 8: Conclusion.** We have successfully shown that the Lotka-Volterra system is a Hamiltonian system in the positive quadrant. Consequently, its equilibrium points must be either saddles or centers, which aligns with numerical simulations that show a dense set of closed orbits.
+8. **Step 8: Conclusion.** We have successfully shown that the Lotka-Volterra system is a Hamiltonian system in the positive quadrant. Consequently, its equilibrium points must be either saddles or centers, which aligns with numerical simulations that show a dense set of closed orbits.
 
 </div>
 
@@ -7629,7 +7703,7 @@ A dynamical system is a **gradient system** if its vector field is given by the 
 
 $$\dot{x} = -\frac{\partial V}{\partial x}$$
 
-This can also be written using the gradient operator as $\dot{x} = -\nabla V(x)$. The function $V(x)$ is also referred to as a **gradient field**.
+This can also be written using the gradient operator as $\dot{x} = -\nabla V(x)$. The function $\nabla V(x)$ is also referred to as a **gradient field** and $-\nabla V(x)$ is the vector field of the dynamical system.
 
 </div>
 
@@ -7673,7 +7747,7 @@ A defining characteristic of gradient systems is that they do not permit closed 
 
 Let us consider the change in the potential function, $\Delta V$, along an orbit of the system over a time interval. This change is given by the integral of the time derivative of $V$:
 
-$$\Delta V = \int \frac{dV}{dt} \, dt$$
+$$\Delta V = \int_{t}^{t+T} \frac{dV}{dt} \, dt$$
 
 Using the chain rule, we can express $\frac{dV}{dt}$ as:
 
@@ -7685,7 +7759,7 @@ $$\frac{dV}{dt} = (-\dot{x})^\top \cdot \dot{x} = - \lVert \dot{x}\rVert^2$$
 
 Substituting this back into the integral for $\Delta V$, we get:
 
-$$\Delta V = -\int \lVert \dot{x}\rVert^2 \, dt \leq 0$$
+$$\Delta V = -\int_{t}^{t+T} \lVert \dot{x}\rVert^2 \, dt \leq 0$$
 
 The term $\lVert \dot{x}\rVert^2$ is always non-negative. Therefore, the integral is also non-negative, and the entire expression for $\Delta V$ is always less than or equal to zero:
 
@@ -7701,8 +7775,8 @@ For a closed orbit, the system must return to its starting point, meaning the ne
 
 The behavior of a gradient system can be intuitively understood by visualizing the potential function $V(x)$ as a landscape of hills and valleys. The dynamics, $\dot{x} = -\nabla V(x)$, describe a state "rolling downhill" towards lower potential values.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Gradient System Equilibria as Landscape Features)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Gradient System Equilibria as Landscape Features)</span></p>
 
 * A **stable equilibrium** (a stable node) corresponds to a **local minimum** of the potential function $V$. Any small perturbation from the bottom of a "valley" will result in the system returning to that minimum.
 * An **unstable equilibrium** corresponds to a **local maximum** of the potential function $V$. Any small perturbation from the top of a "hill" will cause the system to roll away, typically towards a nearby minimum.
@@ -7716,8 +7790,8 @@ This intuitive picture is central to understanding how gradient systems store in
 
 The properties of gradient systems are essential to certain classes of neural networks, most famously the Hopfield network. John Hopfield defined a set of differential equations for a neural network that possess a potential function, which he termed an "energy function." This construction guarantees that the network's dynamics will always converge to one of several stable equilibrium points, which represent stored memory states.
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(General Class of Continuous-Time Networks)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(General Class of Continuous-Time Networks)</span></p>
 
 A general class of continuous-time neural networks, which includes Hopfield networks and the Wilson-Cowan equations, can be written in the form:
 
@@ -7807,8 +7881,8 @@ To visualize these changes, we use a bifurcation diagram. This diagram plots the
 
 For the saddle-node bifurcation in the Wilson-Cowan example, the bifurcation diagram would look like an "S" shape turned on its side:
 
-* The x-axis represents the control parameter (e.g., $w_{EE}$).
-* The y-axis represents the position of the equilibria ($\bar{x}$).
+* The $x$-axis represents the control parameter (e.g., $w_{EE}$).
+* The $y$-axis represents the position of the equilibria ($\bar{x}$).
 * The upper and lower branches of the curve represent the stable equilibria (stable nodes).
 * The middle branch (often drawn with a dashed line) represents the unstable equilibrium (the saddle).
 * The points where the upper/lower branches meet the middle branch are the saddle-node bifurcation points.
@@ -9304,6 +9378,23 @@ The equation for the phase is often given as $\dot{\theta} = \omega$, where $\om
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Connection to the Supercritical Pitchfork Bifurcation)</span></p>
+
+The radial normal form $\dot{r} = \mu r - r^3$ is identical to the normal form of the supercritical pitchfork bifurcation, $\dot{x} = \mu x - x^3$. This is not a coincidence — both describe the same underlying mechanism: a single stable attractor loses stability at a critical parameter value, and a cubic nonlinearity saturates the resulting linear instability, giving rise to new stable structure that grows as $\sqrt{\mu}$.
+
+The qualitative story is shared:
+
+- **Before bifurcation** ($\mu < 0$): one stable attractor — a fixed point in the pitchfork, a stable spiral in the Hopf.
+- **At the critical parameter** ($\mu = 0$): that attractor loses stability.
+- **After bifurcation** ($\mu > 0$): the old attractor is unstable, and new stable structure emerges — two fixed points ($x^\ast = \pm\sqrt{\mu}$) in the pitchfork, a limit cycle ($r^\ast = \sqrt{\mu}$) in the Hopf.
+
+The difference lies in the **geometry** of what branches off. In the pitchfork, $x \in (-\infty, +\infty)$, so the equation produces two symmetric branches. In the Hopf, $r \geq 0$ by definition (it is a radius), so only the upper branch $r = +\sqrt{\mu}$ is physical — but the angular dynamics $\dot{\theta} = \omega$ wrap this branch into a **circle** in the full $(x, y)$ plane. The pitchfork's two symmetric equilibria are, in the Hopf, glued together by the rotational symmetry into a single periodic orbit.
+
+In short: the same amplitude equation governs both, but the pitchfork produces static equilibria while the Hopf wraps them into a limit cycle via the angular degree of freedom.
+
+</div>
+
 <div id="hb-container" style="margin:2em auto;max-width:1060px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Supercritical Hopf Bifurcation</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
@@ -9758,6 +9849,30 @@ Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011).
 </figure>
 
 </div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/Hopf-bifurcation-The-Hopf-bifurcation-marks-the-onset-of-at-least-transient-oscillation.tif.png' | relative_url }}" alt="Continuous function at 0" loading="lazy">
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/dynamical-systems/hopf_bifurcation_diagram_3D.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+  </figure>
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/hopf_supercritical_hopf_subcritical.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+  <figcaption>Note the similarity to the supercritical and subcritical pitchfork bifurcations in one dimension we saw previously. As in the subcritical pitchfork bifurcation, in subcritical hopf bifurcation there is also the possibility of hysteresis: once trajectories are on the large amplitude limit cycle for $\mu>0$, they can’t be turned oﬀ by returning $\mu$ to zero.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ ‘/assets/images/notes/dynamical-systems/subcritical_hopf_hysteresis.png’ | relative_url }}" alt="Subcritical Hopf bifurcation with hysteresis" loading="lazy">
+  <figcaption>Hysteresis in the subcritical Hopf bifurcation. <span style="color:#c62828;">Red arrows</span>: increasing $\mu$, the system stays at the stable equilibrium until $\mu = 0$, where it jumps to the large-amplitude stable limit cycle. <span style="color:#1565C0;">Blue arrows</span>: decreasing $\mu$, the system remains on the large limit cycle past $\mu = 0$ and only drops back to the equilibrium at $\mu_s$, where the stable and unstable limit cycles annihilate in a saddle-node bifurcation of cycles. The bistable region $\mu_s < \mu < 0$ is where both attractors coexist.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/hopf_supercritical_hopf_subcritical.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+  <figcaption>3D subcritical Hopf bifurcation with hysteresis</figcaption>
+</figure>
 
 ### Homoclinic Bifurcation
 
@@ -11012,7 +11127,7 @@ $$l = \lim_{n\to\infty} \prod_{t=1}^n \lvert F'_{\alpha}(x_t) \rvert^{\frac{1}{n
 
 In fact, we are taking a geometric mean of these series. Lyapunov exponent is defined a logarithm of this product series: 
 
-$$\lambda = \lim_{n\to\infty} \frac{1}{n} \sum{t=1}^n \log \lvert F'_{\alpha}(x_t) \rvert$$
+$$\lambda = \lim_{n\to\infty} \frac{1}{n} \sum_{t=1}^n \log \lvert F'_{\alpha}(x_t) \rvert$$
 
 Let's extend this to a multivariate case.
 
