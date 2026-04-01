@@ -14556,7 +14556,7 @@ This is visualized in a bifurcation graph where the stable states are plotted as
 
 </div>
 
-<div id="rb-container" style="margin:2em auto;max-width:1120px;">
+<div id="rb-wrap" style="margin:2em auto;max-width:1120px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Pitchfork Bifurcation in a 1-Unit RNN</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
     \(Z_t = \sigma(W Z_{t-1} + h)\) with \(\sigma(x)=\frac{1}{1+e^{-x}}\). With \(h=-W/2\) the fixed point sits at the sigmoid's inflection point (\(z^*=0.5\)). Pitchfork at \(W=4\) where slope \(W\sigma'(0)=W/4=1\). Uncheck "Symmetric" and set \(h\) to break symmetry.
@@ -14564,25 +14564,25 @@ This is visualized in a bifurcation graph where the stable states are plotted as
   <div style="display:flex;justify-content:center;gap:14px;">
     <div style="text-align:center;">
       <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Sigmoid vs bisectrix</div>
-      <canvas id="rb-cw" width="520" height="520" style="border:1px solid #ddd;border-radius:3px;"></canvas>
+      <canvas id="rb2cw" width="520" height="520" style="border:1px solid #ddd;border-radius:3px;"></canvas>
     </div>
     <div style="text-align:center;">
       <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (z* vs W)</div>
-      <canvas id="rb-bd" width="520" height="520" style="border:1px solid #ddd;border-radius:3px;cursor:col-resize;"></canvas>
+      <canvas id="rb2bd" width="520" height="520" style="border:1px solid #ddd;border-radius:3px;cursor:col-resize;"></canvas>
     </div>
   </div>
   <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
     <span style="font-size:.85em;font-family:serif;">W =</span>
-    <input type="range" id="rb-w" min="0.5" max="8" step="0.01" value="3" style="width:260px;">
-    <span id="rb-wv" style="font-size:.85em;font-family:serif;min-width:35px;">3.00</span>
+    <input type="range" id="rb2w" min="0.5" max="8" step="0.01" value="3" style="width:260px;">
+    <span id="rb2wv" style="font-size:.85em;font-family:serif;min-width:35px;">3.00</span>
     <label style="margin-left:14px;font-size:.82em;font-family:serif;cursor:pointer;">
-      <input type="checkbox" id="rb-sym" checked> Symmetric (h = −W/2)
+      <input type="checkbox" id="rb2sym" checked> Symmetric (h = −W/2)
     </label>
     <span style="font-size:.85em;font-family:serif;margin-left:8px;">h =</span>
-    <input type="range" id="rb-h" min="-4" max="1" step="0.01" value="-1.5" style="width:140px;" disabled>
-    <span id="rb-hv" style="font-size:.85em;font-family:serif;min-width:40px;">-1.50</span>
+    <input type="range" id="rb2h" min="-4" max="1" step="0.01" value="-1.5" style="width:140px;" disabled>
+    <span id="rb2hv" style="font-size:.85em;font-family:serif;min-width:40px;">-1.50</span>
   </div>
-  <div id="rb-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+  <div id="rb2info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
 </div>
 
 <script>
@@ -14590,14 +14590,14 @@ This is visualized in a bifurcation graph where the stable states are plotted as
   var S=520;
   var Wp=3,hp=-1.5,sym=true,dragBif=false;
 
-  var cwEl=document.getElementById(‘rb-cw’),bdEl=document.getElementById(‘rb-bd’);
+  var cwEl=document.getElementById(‘rb2cw’),bdEl=document.getElementById(‘rb2bd’);
   var CW=cwEl.getContext(‘2d’),BD=bdEl.getContext(‘2d’);
-  var wS=document.getElementById(‘rb-w’),wV=document.getElementById(‘rb-wv’);
-  var hS=document.getElementById(‘rb-h’),hV=document.getElementById(‘rb-hv’);
-  var symCb=document.getElementById(‘rb-sym’);
+  var wS=document.getElementById(‘rb2w’),wV=document.getElementById(‘rb2wv’);
+  var hS=document.getElementById(‘rb2h’),hV=document.getElementById(‘rb2hv’);
+  var symCb=document.getElementById(‘rb2sym’);
 
   function getH(){return sym?-Wp/2:hp;}
-  function sigma(x){if(x>500)return 1;if(x<-500)return 0;return 1/(1+Math.exp(-x));}
+  function sigma(x){if(x>500)return 1;if(x< -500)return 0;return 1/(1+Math.exp(-x));}
   function fmap(z,w,h){return sigma(w*z+h);}
   function fmapD(z,w,h){var s=sigma(w*z+h);return w*s*(1-s);}
 
@@ -14697,7 +14697,7 @@ This is visualized in a bifurcation graph where the stable states are plotted as
   }
 
   function updInfo(){
-    var el=document.getElementById(‘rb-info’),h=getH(),fps=findFP(Wp,h);
+    var el=document.getElementById(‘rb2info’),h=getH(),fps=findFP(Wp,h);
     var t=’W=’+Wp.toFixed(2)+’ &nbsp;|&nbsp; h=’+h.toFixed(2)+’ &nbsp;|&nbsp; slope@0.5=’+(Wp/4).toFixed(3)+’ &nbsp;|&nbsp; ‘;
     fps.forEach(function(fp,i){
       t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(4)+’ (‘+(fp.stable?’stable’:’unstable’)+’)</span>’;
@@ -14796,8 +14796,8 @@ Research (e.g., Eisman et al.) using algorithms like PyDSTool to locate bifurcat
 
 Standard backpropagation through time (BPTT) is highly susceptible to the instabilities caused by bifurcations. However, specific algorithms can mitigate this.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Smooth Loss via Alignment)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Smooth Loss via Alignment)</span></p>
 
 Generalized Teacher Forcing (GTF), as defined earlier, is an algorithm that can formally be shown to avoid certain bifurcations. By aligning the system with the observed data at each time point, GTF "smooths out" the loss function. It effectively pushes the system into the correct dynamical regime without requiring it to cross the discontinuous "cliffs" in the loss landscape found in straightforward BPTT.
 
