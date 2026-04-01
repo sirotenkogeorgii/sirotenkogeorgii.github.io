@@ -9869,10 +9869,355 @@ Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011).
   <figcaption>Hysteresis in the subcritical Hopf bifurcation. <span style="color:#c62828;">Red arrows</span>: increasing $\mu$, the system stays at the stable equilibrium until $\mu = 0$, where it jumps to the large-amplitude stable limit cycle. <span style="color:#1565C0;">Blue arrows</span>: decreasing $\mu$, the system remains on the large limit cycle past $\mu = 0$ and only drops back to the equilibrium at $\mu_s$, where the stable and unstable limit cycles annihilate in a saddle-node bifurcation of cycles. The bistable region $\mu_s < \mu < 0$ is where both attractors coexist.</figcaption>
 </figure>
 
+
+<div class="gd-grid">
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/SubcriticalHopfBifurcationWithHysteresis.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+  <figcaption>Subcritical Hopf bifurcation with hysteresis</figcaption>
+</figure>
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/hopf_supercritical_hopf_subcritical.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
   <figcaption>3D subcritical Hopf bifurcation with hysteresis</figcaption>
 </figure>
+</div>
+
+<div id="shh-container" style="margin:2em auto;max-width:1080px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Subcritical Hopf Bifurcation with Hysteresis</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    Normal form \(\dot{r}=\mu r + r^3 - r^5\), \(\dot{\theta}=\omega\). Drag the slider or press <b>sweep</b> to see hysteresis jumps. The white dot tracks the current attractor.
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+    <div style="text-align:center;">
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (amplitude <i>r</i> vs \(\mu\))</div>
+      <canvas id="shh-bd" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:crosshair;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div id="shh-rtitle" style="font-size:.85em;font-weight:600;margin-bottom:3px;">Phase portrait: stable spiral</div>
+      <canvas id="shh-pc" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">&mu; =</span>
+    <input type="range" id="shh-mu" min="-0.5" max="0.4" step="0.002" value="-0.4" style="width:260px;">
+    <span id="shh-mu-val" style="font-size:.85em;font-family:serif;min-width:50px;">-0.400</span>
+    <button id="shh-sweep" style="padding:3px 12px;font-size:.82em;cursor:pointer;">&#9654; sweep</button>
+    <span style="font-size:.85em;font-family:serif;">&omega; =</span>
+    <input type="range" id="shh-omega" min="0" max="3" step="0.1" value="1" style="width:120px;">
+    <span id="shh-omega-val" style="font-size:.85em;font-family:serif;min-width:30px;">1.0</span>
+  </div>
+  <div id="shh-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500, PR=1.8;
+  var MU_MIN=-0.5, MU_MAX=0.4, R_DISP=1.4;
+  var PAD={top:30,right:30,bottom:40,left:50};
+  var BW=S-PAD.left-PAD.right, BH=S-PAD.top-PAD.bottom;
+  var COL=['#1a1a2e','#1565C0','#c62828','#e65100','#1b5e20','#7b1fa2','#00838f','#4e342e','#283593','#bf360c','#00695c','#6a1b9a'];
+
+  var mu=-0.4, omega=1;
+  var branch='trivial';
+  var sweepDir=1, animId=null;
+
+  var bd=document.getElementById('shh-bd'), pc=document.getElementById('shh-pc');
+  var muS=document.getElementById('shh-mu'), muV=document.getElementById('shh-mu-val');
+  var omS=document.getElementById('shh-omega'), omV=document.getElementById('shh-omega-val');
+  var swBtn=document.getElementById('shh-sweep');
+  var dpr=window.devicePixelRatio||1;
+
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+'px';c.style.height=S+'px';var x=c.getContext('2d');x.scale(dpr,dpr);return x;}
+  var B=initC(bd), P=initC(pc);
+
+  function bx(m){return PAD.left+((m-MU_MIN)/(MU_MAX-MU_MIN))*BW;}
+  function by(r){return PAD.top+((R_DISP-r)/(2*R_DISP))*BH;}
+  function bxInv(cx){return MU_MIN+((cx-PAD.left)/BW)*(MU_MAX-MU_MIN);}
+  function pm(x,y){return[(x/PR+1)*S/2,(1-y/PR)*S/2];}
+
+  function ln(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+  function arw(c,x,y,a,sz){c.save();c.translate(x,y);c.rotate(a);c.beginPath();c.moveTo(0,0);c.lineTo(-sz,-sz*.38);c.lineTo(-sz,sz*.38);c.closePath();c.fill();c.restore();}
+
+  var MU_FOLD=-0.25, R_FOLD=1/Math.sqrt(2);
+  function muOfR(r){return Math.pow(r,4)-r*r;}
+
+  function stableLCRadius(m){
+    var disc=1+4*m; if(disc<0)return NaN;
+    var u=(1+Math.sqrt(disc))/2; return u>0?Math.sqrt(u):NaN;
+  }
+  function unstableLCRadius(m){
+    var disc=1+4*m; if(disc<0)return NaN;
+    var u=(1-Math.sqrt(disc))/2; return u>0.0001?Math.sqrt(u):NaN;
+  }
+
+  function currentR(){
+    if(branch==='trivial') return 0;
+    var r=stableLCRadius(mu);
+    return isNaN(r)?0:r;
+  }
+
+  function updateBranch(){
+    if(branch==='trivial'){
+      if(mu>0.001) branch='cycle';
+    }else{
+      if(mu<MU_FOLD+0.001) branch='trivial';
+    }
+  }
+
+  function drawBD(){
+    B.clearRect(0,0,S,S);
+
+    var x1=bx(MU_FOLD), x2=bx(0);
+    B.fillStyle='rgba(255,165,0,0.07)';
+    B.fillRect(x1,PAD.top,x2-x1,BH);
+    B.font='10px sans-serif'; B.fillStyle='rgba(255,165,0,0.5)';
+    B.fillText('bistable',(x1+x2)/2-18,PAD.top+14);
+
+    B.strokeStyle='#f0f0f0'; B.lineWidth=0.5;
+    for(var v=Math.ceil(MU_MIN*10)/10;v<=MU_MAX;v+=0.1){
+      var cx=bx(v); ln(B,cx,PAD.top,cx,S-PAD.bottom);
+    }
+    for(var v=-1.2;v<=1.2;v+=0.2){
+      var cy=by(v); if(cy>PAD.top&&cy<S-PAD.bottom) ln(B,PAD.left,cy,S-PAD.right,cy);
+    }
+
+    B.strokeStyle='#bbb'; B.lineWidth=1;
+    ln(B,PAD.left,by(0),S-PAD.right,by(0));
+    ln(B,bx(0),PAD.top,bx(0),S-PAD.bottom);
+
+    B.font='13px "Times New Roman",serif'; B.fillStyle='#555';
+    B.fillText('\u03BC',S-PAD.right+8,by(0)+4);
+    B.fillText('r',PAD.left-4,PAD.top-10);
+
+    B.font='9px sans-serif'; B.fillStyle='#999';
+    [-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3].forEach(function(v){
+      B.fillText(v.toFixed(1),bx(v)-10,S-PAD.bottom+14);
+    });
+    [-1,-0.5,0.5,1].forEach(function(v){
+      B.fillText(v.toFixed(1),PAD.left-30,by(v)+4);
+    });
+
+    var steps=600;
+
+    B.strokeStyle='#4fc3f7'; B.lineWidth=2.5;
+    B.beginPath(); B.moveTo(bx(MU_MIN),by(0)); B.lineTo(bx(0),by(0)); B.stroke();
+    B.save(); B.setLineDash([6,4]); B.strokeStyle='#4fc3f7'; B.lineWidth=1.5; B.globalAlpha=0.5;
+    B.beginPath(); B.moveTo(bx(0),by(0)); B.lineTo(bx(MU_MAX),by(0)); B.stroke();
+    B.restore();
+
+    var stU=[],stL=[],unU=[],unL=[];
+    for(var i=1;i<=steps;i++){
+      var rv=0.01+1.19*(i/steps);
+      var m=muOfR(rv);
+      if(m<MU_MIN||m>MU_MAX) continue;
+      var deriv=m+3*rv*rv-5*Math.pow(rv,4);
+      if(deriv<0){stU.push({m:m,r:rv});stL.push({m:m,r:-rv});}
+      else{unU.push({m:m,r:rv});unL.push({m:m,r:-rv});}
+    }
+
+    function drawBranch(pts,color,w,dash,alpha){
+      if(!pts.length)return;
+      pts.sort(function(a,b){return a.m-b.m;});
+      B.save(); B.strokeStyle=color; B.lineWidth=w; B.globalAlpha=alpha||1;
+      if(dash)B.setLineDash(dash);
+      B.beginPath(); B.moveTo(bx(pts[0].m),by(pts[0].r));
+      for(var i=1;i<pts.length;i++) B.lineTo(bx(pts[i].m),by(pts[i].r));
+      B.stroke(); B.restore();
+    }
+
+    drawBranch(stU,'#66bb6a',2.5,null,1);
+    drawBranch(stL,'#66bb6a',2.5,null,1);
+    drawBranch(unU,'#ef5350',1.5,[6,4],0.6);
+    drawBranch(unL,'#ef5350',1.5,[6,4],0.6);
+
+    B.fillStyle='#f5a623'; B.strokeStyle='#e08600'; B.lineWidth=1.5;
+    circ(B,bx(MU_FOLD),by(R_FOLD),5,true); circ(B,bx(MU_FOLD),by(R_FOLD),5,false);
+    circ(B,bx(MU_FOLD),by(-R_FOLD),5,true); circ(B,bx(MU_FOLD),by(-R_FOLD),5,false);
+    B.font='9px "Times New Roman",serif'; B.fillStyle='#f5a623';
+    B.fillText('fold (\u03BC=-\u00BC)',bx(MU_FOLD)+8,by(R_FOLD)-6);
+
+    B.font='9px sans-serif';
+    var ly=S-PAD.bottom+28;
+    B.fillStyle='#4fc3f7'; B.fillRect(PAD.left,ly,16,2); B.fillText('stable equil.',PAD.left+20,ly+4);
+    B.fillStyle='#66bb6a'; B.fillRect(PAD.left+110,ly,16,2); B.fillText('stable LC',PAD.left+130,ly+4);
+    B.save();B.setLineDash([4,3]);B.strokeStyle='#ef5350';B.lineWidth=1.5;
+    B.beginPath();B.moveTo(PAD.left+200,ly+1);B.lineTo(PAD.left+216,ly+1);B.stroke();B.restore();
+    B.fillStyle='#ef5350'; B.fillText('unstable LC',PAD.left+220,ly+4);
+
+    B.save(); B.setLineDash([3,3]); B.strokeStyle='#333'; B.lineWidth=1; B.globalAlpha=0.3;
+    ln(B,bx(mu),PAD.top,bx(mu),S-PAD.bottom); B.restore();
+
+    var cr=currentR();
+    B.fillStyle='#fff'; B.strokeStyle='#333'; B.lineWidth=2;
+    circ(B,bx(mu),by(cr),7,true); circ(B,bx(mu),by(cr),7,false);
+    if(cr!==0){
+      circ(B,bx(mu),by(-cr),7,true); circ(B,bx(mu),by(-cr),7,false);
+    }
+
+    if(animId!==null){
+      B.fillStyle='rgba(0,0,0,0.3)';
+      var ax=bx(mu)+(sweepDir>0?12:-12), ay=PAD.top+20;
+      arw(B,ax,ay,sweepDir>0?0:Math.PI,8);
+    }
+  }
+
+  function odeStep(x,y,dt){
+    function fx(x,y){var r2=x*x+y*y;return mu*x-omega*y+r2*x-r2*r2*x;}
+    function fy(x,y){var r2=x*x+y*y;return omega*x+mu*y+r2*y-r2*r2*y;}
+    var k1x=fx(x,y),k1y=fy(x,y);
+    var k2x=fx(x+.5*dt*k1x,y+.5*dt*k1y),k2y=fy(x+.5*dt*k1x,y+.5*dt*k1y);
+    var k3x=fx(x+.5*dt*k2x,y+.5*dt*k2y),k3y=fy(x+.5*dt*k2x,y+.5*dt*k2y);
+    var k4x=fx(x+dt*k3x,y+dt*k3y),k4y=fy(x+dt*k3x,y+dt*k3y);
+    return[x+dt/6*(k1x+2*k2x+2*k3x+k4x),y+dt/6*(k1y+2*k2y+2*k3y+k4y)];
+  }
+
+  function drawPhase(){
+    P.clearRect(0,0,S,S);
+    P.strokeStyle='#f0f0f0'; P.lineWidth=0.5;
+    [-1.5,-1,-.5,.5,1,1.5].forEach(function(v){
+      var p=pm(v,-PR),q=pm(v,PR); ln(P,p[0],p[1],q[0],q[1]);
+      p=pm(-PR,v);q=pm(PR,v); ln(P,p[0],p[1],q[0],q[1]);
+    });
+    P.strokeStyle='#81D4FA'; P.lineWidth=1;
+    var a=pm(-PR,0),b=pm(PR,0); ln(P,a[0],a[1],b[0],b[1]);
+    a=pm(0,-PR);b=pm(0,PR); ln(P,a[0],a[1],b[0],b[1]);
+    P.strokeStyle='#ece0f0'; P.lineWidth=0.7; var oc=pm(0,0);
+    [0.5,1,1.5].forEach(function(r){circ(P,oc[0],oc[1],r*S/(2*PR),false);});
+
+    var rStab=stableLCRadius(mu);
+    if(!isNaN(rStab)){
+      P.strokeStyle='#4CAF50'; P.lineWidth=3;
+      circ(P,oc[0],oc[1],rStab*S/(2*PR),false);
+      P.font='10px "Times New Roman",serif'; P.fillStyle='#4CAF50';
+      var lp=pm(rStab*.707,rStab*.707);
+      P.fillText('stable LC r\u2248'+rStab.toFixed(2),lp[0]+5,lp[1]-5);
+    }
+    var rUnst=unstableLCRadius(mu);
+    if(!isNaN(rUnst)){
+      P.save(); P.setLineDash([6,4]); P.strokeStyle='#F44336'; P.lineWidth=2.5;
+      circ(P,oc[0],oc[1],rUnst*S/(2*PR),false); P.restore();
+      P.font='10px "Times New Roman",serif'; P.fillStyle='#F44336';
+      var lp2=pm(-rUnst*.707,rUnst*.707);
+      P.fillText('unstable LC r\u2248'+rUnst.toFixed(2),lp2[0]-80,lp2[1]-5);
+    }
+
+    var dt=0.02, totalT=Math.min(25,8*Math.PI/Math.max(omega,0.3));
+    var steps=Math.min(800,Math.floor(totalT/dt));
+    var rU=isNaN(rUnst)?0:rUnst, rS2=isNaN(rStab)?1.2:rStab;
+    var radii;
+    if(!isNaN(rUnst)&&mu<0){
+      radii=[rU*0.3,rU*0.7,rU*0.95,rU*1.05,(rU+rS2)/2,rS2*0.95,rS2*1.1];
+    }else if(mu>=0){
+      radii=[0.05,0.2,0.5,rS2*0.7,rS2*0.95,rS2*1.1,rS2*1.3];
+    }else{
+      radii=[0.1,0.3,0.6,1.0];
+    }
+    var angles=[0,2*Math.PI/3,4*Math.PI/3];
+    var ci=0;
+    radii.forEach(function(r0){if(r0<0.01||r0>PR)return; angles.forEach(function(a0){
+      var x=r0*Math.cos(a0),y=r0*Math.sin(a0),pts=[[x,y]];
+      for(var i=0;i<steps;i++){var n=odeStep(x,y,dt);x=n[0];y=n[1];if(x*x+y*y>PR*PR*4)break;pts.push([x,y]);}
+      if(pts.length<2)return;
+      var col=COL[ci%COL.length];ci++;
+      P.strokeStyle=col;P.fillStyle=col;P.lineWidth=1;P.globalAlpha=0.6;
+      P.beginPath();var s=pm(pts[0][0],pts[0][1]);P.moveTo(s[0],s[1]);
+      for(var i=1;i<pts.length;i++){var p=pm(pts[i][0],pts[i][1]);P.lineTo(p[0],p[1]);}
+      P.stroke();
+      if(pts.length>3){var last=pm(pts[pts.length-1][0],pts[pts.length-1][1]),prev=pm(pts[pts.length-2][0],pts[pts.length-2][1]);var dx=last[0]-prev[0],dy=last[1]-prev[1];if(dx*dx+dy*dy>1)arw(P,last[0],last[1],Math.atan2(dy,dx),5);}
+      P.globalAlpha=1;circ(P,s[0],s[1],2.5,true);
+    });});
+
+    var op=pm(0,0);
+    if(mu<-0.003){P.fillStyle='#4CAF50';circ(P,op[0],op[1],6,true);P.strokeStyle='#2E7D32';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else if(mu>0.003){P.fillStyle='#F44336';circ(P,op[0],op[1],6,true);P.strokeStyle='#C62828';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+    else{P.fillStyle='#FF9800';circ(P,op[0],op[1],6,true);P.strokeStyle='#E65100';P.lineWidth=1.5;circ(P,op[0],op[1],6,false);}
+
+    var cr=currentR();
+    if(cr>0.01){
+      P.strokeStyle='#fff'; P.lineWidth=2;
+      circ(P,oc[0],oc[1],cr*S/(2*PR),false);
+    }
+
+    P.font='12px "Times New Roman",serif';P.fillStyle='#888';
+    P.fillText('x\u2081',S-18,pm(0,0)[1]-6);P.fillText('x\u2082',pm(0,0)[0]+6,13);
+    P.font='9px sans-serif';P.fillStyle='#bbb';
+    [-1,1].forEach(function(v){var t=pm(v,0);P.fillText(v,t[0]-4,t[1]+13);t=pm(0,v);P.fillText(v,t[0]+5,t[1]+3);});
+  }
+
+  function updInfo(){
+    var el=document.getElementById('shh-info');
+    var cr=currentR();
+    var rS2=stableLCRadius(mu);
+    var st;
+    if(mu<MU_FOLD+0.005){
+      st='Stable spiral at origin (only attractor)';
+    }else if(mu<0.003){
+      st='Bistable: stable origin + stable LC (r\u2248'+(isNaN(rS2)?'?':rS2.toFixed(3))+')';
+      st+=branch==='trivial'?' \u2014 on equilibrium':' \u2014 on limit cycle';
+    }else{
+      st='Unstable origin + stable LC (r\u2248'+(isNaN(rS2)?'?':rS2.toFixed(3))+')';
+    }
+    el.innerHTML='\u03BC = '+mu.toFixed(3)+' &nbsp;|&nbsp; \u03C9 = '+omega.toFixed(1)+' &nbsp;|&nbsp; current r = '+cr.toFixed(3)+' &nbsp;|&nbsp; '+st;
+  }
+  function updTitle(){
+    var t;
+    if(mu<MU_FOLD+0.005) t='Stable spiral (single attractor)';
+    else if(mu<0.003) t='Bistable: spiral + limit cycle (branch: '+branch+')';
+    else t='Unstable spiral + stable limit cycle';
+    document.getElementById('shh-rtitle').textContent='Phase portrait: '+t;
+  }
+
+  function redraw(){updateBranch();drawBD();drawPhase();updInfo();updTitle();}
+
+  bd.addEventListener('click',function(e){
+    if(animId!==null)return;
+    var rect=bd.getBoundingClientRect();
+    var cx=(e.clientX-rect.left)*(S/rect.width);
+    var newMu=bxInv(cx);
+    if(newMu>=MU_MIN&&newMu<=MU_MAX){
+      mu=Math.max(MU_MIN,Math.min(MU_MAX,newMu));
+      muS.value=mu; muV.textContent=mu.toFixed(3);
+      redraw();
+    }
+  });
+
+  muS.addEventListener('input',function(){
+    if(animId!==null)return;
+    mu=parseFloat(this.value); muV.textContent=mu.toFixed(3); redraw();
+  });
+  omS.addEventListener('input',function(){
+    omega=parseFloat(this.value); omV.textContent=omega.toFixed(1); redraw();
+  });
+
+  function animate(){
+    var speed=0.004;
+    mu+=sweepDir*speed;
+    if(mu>MU_MAX-0.02){sweepDir=-1;mu=MU_MAX-0.02;}
+    if(mu<MU_MIN+0.02){sweepDir=1;mu=MU_MIN+0.02;}
+    muS.value=mu; muV.textContent=mu.toFixed(3);
+    redraw();
+    animId=requestAnimationFrame(animate);
+  }
+  swBtn.addEventListener('click',function(){
+    if(animId!==null){cancelAnimationFrame(animId);animId=null;swBtn.innerHTML='&#9654; sweep';}
+    else{sweepDir=1;animId=requestAnimationFrame(animate);swBtn.innerHTML='&#9632; stop';}
+  });
+
+  bd.addEventListener('touchstart',function(e){e.preventDefault();},{passive:false});
+  bd.addEventListener('touchmove',function(e){
+    e.preventDefault();if(animId!==null)return;
+    var t=e.touches[0],rect=bd.getBoundingClientRect();
+    var cx=(t.clientX-rect.left)*(S/rect.width);
+    var newMu=bxInv(cx);
+    if(newMu>=MU_MIN&&newMu<=MU_MAX){
+      mu=Math.max(MU_MIN,Math.min(MU_MAX,newMu));
+      muS.value=mu;muV.textContent=mu.toFixed(3);redraw();
+    }
+  },{passive:false});
+
+  redraw();
+})();
+</script>
 
 ### Homoclinic Bifurcation
 
