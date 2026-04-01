@@ -14556,200 +14556,169 @@ This is visualized in a bifurcation graph where the stable states are plotted as
 
 </div>
 
-<div id="rb-container" style="margin:2em auto;max-width:1260px;">
+<div id="rb-container" style="margin:2em auto;max-width:1120px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Pitchfork Bifurcation in a 1-Unit RNN</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
-    \(Z_t = \sigma(W Z_{t-1} + h)\) with \(\sigma(x)=\frac{1}{1+e^{-x}}\). Increasing \(W\) steepens the sigmoid. At \(W=4\) with \(h=0\) the single fixed point at \(z^*=0.5\) becomes unstable and two new stable fixed points appear (pitchfork). Set \(h\neq0\) to break the symmetry.
+    \(Z_t = \sigma(W Z_{t-1} + h)\) with \(\sigma(x)=\frac{1}{1+e^{-x}}\). With \(h=-W/2\) the fixed point sits at the sigmoid's inflection point (\(z^*=0.5\)). Pitchfork at \(W=4\) where slope \(W\sigma'(0)=W/4=1\). Uncheck "Symmetric" and set \(h\) to break symmetry.
   </p>
-  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+  <div style="display:flex;justify-content:center;gap:14px;">
     <div style="text-align:center;">
-      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Cobweb: fixed points of the map</div>
-      <canvas id="rb-cw" width="600" height="600" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Sigmoid vs bisectrix</div>
+      <canvas id="rb-cw" width="520" height="520" style="border:1px solid #ddd;border-radius:3px;"></canvas>
     </div>
     <div style="text-align:center;">
-      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (W vs z*)</div>
-      <canvas id="rb-bd" width="600" height="600" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (z* vs W)</div>
+      <canvas id="rb-bd" width="520" height="520" style="border:1px solid #ddd;border-radius:3px;cursor:col-resize;"></canvas>
     </div>
   </div>
-  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap;">
     <span style="font-size:.85em;font-family:serif;">W =</span>
-    <input type="range" id="rb-w" min="0" max="10" step="0.01" value="2" style="width:240px;">
-    <span id="rb-wv" style="font-size:.85em;font-family:serif;min-width:35px;">2.00</span>
-    <span style="font-size:.85em;font-family:serif;margin-left:12px;">h =</span>
-    <input type="range" id="rb-h" min="-2" max="2" step="0.01" value="0" style="width:180px;">
-    <span id="rb-hv" style="font-size:.85em;font-family:serif;min-width:35px;">0.00</span>
+    <input type="range" id="rb-w" min="0.5" max="8" step="0.01" value="3" style="width:260px;">
+    <span id="rb-wv" style="font-size:.85em;font-family:serif;min-width:35px;">3.00</span>
+    <label style="margin-left:14px;font-size:.82em;font-family:serif;cursor:pointer;">
+      <input type="checkbox" id="rb-sym" checked> Symmetric (h = −W/2)
+    </label>
+    <span style="font-size:.85em;font-family:serif;margin-left:8px;">h =</span>
+    <input type="range" id="rb-h" min="-4" max="1" step="0.01" value="-1.5" style="width:140px;" disabled>
+    <span id="rb-hv" style="font-size:.85em;font-family:serif;min-width:40px;">-1.50</span>
   </div>
   <div id="rb-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
 </div>
 
 <script>
 (function(){
-  var S=600;
-  var Wp=2,hp=0,dragBif=false;
+  var S=520;
+  var Wp=3,hp=-1.5,sym=true,dragBif=false;
 
-  var cwC=document.getElementById(‘rb-cw’),bdC=document.getElementById(‘rb-bd’);
+  var cwEl=document.getElementById(‘rb-cw’),bdEl=document.getElementById(‘rb-bd’);
+  var CW=cwEl.getContext(‘2d’),BD=bdEl.getContext(‘2d’);
   var wS=document.getElementById(‘rb-w’),wV=document.getElementById(‘rb-wv’);
   var hS=document.getElementById(‘rb-h’),hV=document.getElementById(‘rb-hv’);
-  var dpr=window.devicePixelRatio||1;
-  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+’px’;c.style.height=S+’px’;var x=c.getContext(‘2d’);x.scale(dpr,dpr);return x;}
-  var CW=initC(cwC),BD=initC(bdC);
+  var symCb=document.getElementById(‘rb-sym’);
 
-  // Standard logistic sigmoid σ(x) = 1/(1+e^{-x})
-  function sigma(x){return 1/(1+Math.exp(-x));}
-  function sigmaPrime(x){var s=sigma(x);return s*(1-s);}
-  function fmap(z){return sigma(Wp*z+hp);}
-  function fmapDeriv(z){return Wp*sigmaPrime(Wp*z+hp);}
+  function getH(){return sym?-Wp/2:hp;}
+  function sigma(x){if(x>500)return 1;if(x<-500)return 0;return 1/(1+Math.exp(-x));}
+  function fmap(z,w,h){return sigma(w*z+h);}
+  function fmapD(z,w,h){var s=sigma(w*z+h);return w*s*(1-s);}
 
-  function ln2(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
-  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
-
-  function findFP(){
-    var fps=[],N2=500;
-    var zLo=-.1,zHi=1.1;
-    var prev=fmap(zLo)-zLo;
+  function findFP(w,h){
+    var fps=[],N2=800,zL=-0.15,zH=1.15;
+    if(Math.abs(fmap(0.5,w,h)-0.5)<1e-8)fps.push({z:0.5,slope:fmapD(0.5,w,h)});
+    var prev=fmap(zL,w,h)-zL;
     for(var i=1;i<=N2;i++){
-      var z=zLo+(zHi-zLo)*i/N2,val=fmap(z)-z;
+      var z=zL+(zH-zL)*i/N2,val=fmap(z,w,h)-z;
       if(prev*val<0){
-        var zn=zLo+(zHi-zLo)*(i-.5)/N2;
-        for(var k=0;k<30;k++){var fv=fmap(zn)-zn,fd=fmapDeriv(zn)-1;if(Math.abs(fd)<1e-14)break;zn-=fv/fd;if(Math.abs(fv)<1e-12)break;}
-        var dup=false;fps.forEach(function(fp){if(Math.abs(fp.z-zn)<1e-5)dup=true;});
-        if(!dup&&zn>-0.05&&zn<1.05){
-          var slope=fmapDeriv(zn);
-          fps.push({z:zn,stable:Math.abs(slope)<1-1e-6,slope:slope});
-        }
+        var zn=zL+(zH-zL)*(i-.5)/N2;
+        for(var k=0;k<40;k++){var fv=fmap(zn,w,h)-zn,fd=fmapD(zn,w,h)-1;if(Math.abs(fd)<1e-14)break;zn-=fv/fd;if(Math.abs(fv)<1e-13)break;}
+        var dup=false;fps.forEach(function(fp){if(Math.abs(fp.z-zn)<1e-4)dup=true;});
+        if(!dup&&zn>=-0.1&&zn<=1.1)fps.push({z:zn,slope:fmapD(zn,w,h)});
       }
       prev=val;
     }
+    fps.forEach(function(fp){fp.stable=Math.abs(fp.slope)<1-1e-6;});
     fps.sort(function(a,b){return a.z-b.z;});
     return fps;
   }
 
-  function drawCobweb(){
-    CW.clearRect(0,0,S,S);
-    var PL=45,PR2=15,PT=20,PB=40,W2=S-PL-PR2,H2=S-PT-PB;
-    var zLo=-.05,zHi=1.05,zR=zHi-zLo;
-    function cx(v){return PL+(v-zLo)/zR*W2;}
-    function cy(v){return PT+(zHi-v)/zR*H2;}
+  function drawCW(){
+    var h=getH();
+    CW.clearRect(0,0,S,S);CW.fillStyle=’#fff’;CW.fillRect(0,0,S,S);
+    var PL=50,PR2=15,PT=25,PB=45,W2=S-PL-PR2,H2=S-PT-PB;
+    var zL=-0.05,zH=1.05,zR=zH-zL;
+    function cx(v){return PL+(v-zL)/zR*W2;}
+    function cy(v){return PT+(zH-v)/zR*H2;}
 
-    CW.strokeStyle=’#f0f0f0’;CW.lineWidth=.5;
-    [.2,.4,.6,.8,1].forEach(function(v){ln2(CW,cx(v),PT,cx(v),PT+H2);ln2(CW,PL,cy(v),PL+W2,cy(v));});
+    CW.strokeStyle=’#eee’;CW.lineWidth=.5;
+    [.2,.4,.6,.8].forEach(function(v){CW.beginPath();CW.moveTo(cx(v),PT);CW.lineTo(cx(v),PT+H2);CW.stroke();CW.beginPath();CW.moveTo(PL,cy(v));CW.lineTo(PL+W2,cy(v));CW.stroke();});
     CW.strokeStyle=’#81D4FA’;CW.lineWidth=1;
-    ln2(CW,PL,cy(0),PL+W2,cy(0));ln2(CW,cx(0),PT,cx(0),PT+H2);
+    CW.beginPath();CW.moveTo(PL,cy(0));CW.lineTo(PL+W2,cy(0));CW.stroke();
+    CW.beginPath();CW.moveTo(cx(0),PT);CW.lineTo(cx(0),PT+H2);CW.stroke();
 
-    // Bisectrix y=z
-    CW.save();CW.setLineDash([5,3]);CW.strokeStyle=’#FF9800’;CW.lineWidth=1.5;
-    ln2(CW,cx(zLo),cy(zLo),cx(zHi),cy(zHi));CW.restore();
-
-    // Sigmoid curve
-    CW.strokeStyle=’#1976D2’;CW.lineWidth=2.5;CW.beginPath();
-    for(var z=zLo;z<=zHi;z+=.003){var y=fmap(z);if(z<=zLo+.01)CW.moveTo(cx(z),cy(y));else CW.lineTo(cx(z),cy(y));}
+    // Bisectrix
+    CW.strokeStyle=’#555’;CW.lineWidth=1.5;
+    CW.beginPath();CW.moveTo(cx(zL),cy(zL));CW.lineTo(cx(zH),cy(zH));CW.stroke();
+    // Sigmoid
+    CW.strokeStyle=’#1976D2’;CW.lineWidth=3;CW.beginPath();
+    for(var z=zL;z<=zH;z+=.002){var y=fmap(z,Wp,h);if(z<=zL+.005)CW.moveTo(cx(z),cy(y));else CW.lineTo(cx(z),cy(y));}
     CW.stroke();
-
     // Fixed points
-    var fps=findFP();
+    var fps=findFP(Wp,h);
     fps.forEach(function(fp){
       var px=cx(fp.z),py=cy(fp.z);
-      if(fp.stable){CW.fillStyle=’#4CAF50’;circ(CW,px,py,8,true);CW.strokeStyle=’#2E7D32’;CW.lineWidth=2;circ(CW,px,py,8,false);}
-      else{CW.fillStyle=’#F44336’;circ(CW,px,py,8,true);CW.strokeStyle=’#C62828’;CW.lineWidth=2;circ(CW,px,py,8,false);}
+      CW.fillStyle=fp.stable?’#4CAF50’:’#F44336’;CW.beginPath();CW.arc(px,py,8,0,Math.PI*2);CW.fill();
+      CW.strokeStyle=fp.stable?’#1B5E20’:’#B71C1C’;CW.lineWidth=2;CW.beginPath();CW.arc(px,py,8,0,Math.PI*2);CW.stroke();
     });
-
-    // Cobweb from z₀=0.1
-    var z=0.1,nIter=80;
-    CW.strokeStyle=’rgba(50,50,50,0.4)’;CW.lineWidth=1;
-    CW.beginPath();CW.moveTo(cx(z),cy(0));
-    for(var i=0;i<nIter;i++){
-      var y=fmap(z);if(y<-.5||y>1.5)break;
-      CW.lineTo(cx(z),cy(y));CW.lineTo(cx(y),cy(y));z=y;
-    }
+    // Cobweb from z0=0.2
+    var z=0.2,nIter=60;
+    CW.strokeStyle=’rgba(100,100,100,0.25)’;CW.lineWidth=1;CW.beginPath();CW.moveTo(cx(z),cy(0));
+    for(var i=0;i<nIter;i++){var y=fmap(z,Wp,h);if(y<-1||y>2)break;CW.lineTo(cx(z),cy(y));CW.lineTo(cx(y),cy(y));z=y;}
     CW.stroke();
-
-    CW.font=’13px "Times New Roman",serif’;CW.fillStyle=’#888’;
-    CW.fillText(‘Z\u209C\u208B\u2081’,S-30,cy(0)+16);CW.fillText(‘Z\u209C’,PL+5,PT-5);
-    CW.font=’10px sans-serif’;CW.fillStyle=’#bbb’;
-    [0,.2,.4,.6,.8,1].forEach(function(v){CW.fillText(v.toFixed(1),cx(v)-8,cy(zLo)+15);CW.fillText(v.toFixed(1),2,cy(v)+4);});
-    CW.font=’11px "Times New Roman",serif’;
-    CW.fillStyle=’#1976D2’;CW.fillText(‘\u03C3(W\u00B7z + h)’,PL+5,PT+14);
-    CW.fillStyle=’#FF9800’;CW.fillText(‘z\u209C = z\u209C\u208B\u2081’,PL+5,PT+28);
-    CW.fillStyle=’#4CAF50’;CW.fillText(‘\u25CF stable’,PL+5,S-PB-8);
-    CW.fillStyle=’#F44336’;CW.fillText(‘\u25CF unstable’,PL+65,S-PB-8);
+    // Labels
+    CW.font=’14px "Times New Roman",serif’;CW.fillStyle=’#666’;
+    CW.fillText(‘x’,S-20,cy(0)+18);CW.fillText(‘\u03C3(Wx+h)’,PL+5,PT-6);
+    CW.font=’10px sans-serif’;CW.fillStyle=’#aaa’;
+    [0,.2,.4,.6,.8,1].forEach(function(v){CW.fillText(v.toFixed(1),cx(v)-8,cy(zL)+16);CW.fillText(v.toFixed(1),4,cy(v)+4);});
+    CW.font=’12px "Times New Roman",serif’;
+    CW.fillStyle=’#1976D2’;CW.fillText(‘\u03C3(Wx+h)’,PL+8,PT+16);
+    CW.fillStyle=’#555’;CW.fillText(‘y = x’,PL+8,PT+32);
+    CW.fillStyle=’#4CAF50’;CW.fillText(‘\u25CF stable’,PL+8,S-PB-6);
+    CW.fillStyle=’#F44336’;CW.fillText(‘\u25CF unstable’,PL+70,S-PB-6);
   }
 
-  function drawBifurcation(){
-    BD.clearRect(0,0,S,S);
-    var PL=50,PR2=15,PT=20,PB=40,W2=S-PL-PR2,H2=S-PT-PB;
-    var wLo=0,wHi=10,zLo2=-.05,zHi2=1.05;
+  function drawBD(){
+    BD.clearRect(0,0,S,S);BD.fillStyle=’#fff’;BD.fillRect(0,0,S,S);
+    var PL=50,PR2=15,PT=25,PB=45,W2=S-PL-PR2,H2=S-PT-PB;
+    var wLo=0.5,wHi=8,zL2=-0.05,zH2=1.05;
     function bx(w){return PL+(w-wLo)/(wHi-wLo)*W2;}
-    function by(z){return PT+(zHi2-z)/(zHi2-zLo2)*H2;}
+    function by(z){return PT+(zH2-z)/(zH2-zL2)*H2;}
 
-    BD.strokeStyle=’#f0f0f0’;BD.lineWidth=.5;
-    [2,4,6,8].forEach(function(v){ln2(BD,bx(v),PT,bx(v),PT+H2);});
-    [.2,.4,.6,.8].forEach(function(v){ln2(BD,PL,by(v),PL+W2,by(v));});
+    BD.strokeStyle=’#eee’;BD.lineWidth=.5;
+    [2,4,6].forEach(function(v){BD.beginPath();BD.moveTo(bx(v),PT);BD.lineTo(bx(v),PT+H2);BD.stroke();});
+    [.2,.4,.6,.8].forEach(function(v){BD.beginPath();BD.moveTo(PL,by(v));BD.lineTo(PL+W2,by(v));BD.stroke();});
     BD.strokeStyle=’#81D4FA’;BD.lineWidth=1;
-    ln2(BD,PL,by(0),PL+W2,by(0));ln2(BD,PL,PT,PL,PT+H2);
-
-    var savedW=Wp;
+    BD.beginPath();BD.moveTo(PL,by(0));BD.lineTo(PL+W2,by(0));BD.stroke();
+    BD.beginPath();BD.moveTo(PL,PT);BD.lineTo(PL,PT+H2);BD.stroke();
+    // Scan
     for(var pw=0;pw<=W2;pw+=1){
-      Wp=wLo+(pw/W2)*(wHi-wLo);if(Wp<.01)Wp=.01;
-      var fps=findFP();
-      fps.forEach(function(fp){
-        BD.fillStyle=fp.stable?’rgba(76,175,80,0.5)’:’rgba(244,67,54,0.35)’;
-        BD.fillRect(PL+pw-.5,by(fp.z)-.5,1.5,1.5);
-      });
+      var w=wLo+(pw/W2)*(wHi-wLo);var hh=sym?-w/2:hp;
+      var fps=findFP(w,hh);
+      fps.forEach(function(fp){BD.fillStyle=fp.stable?’rgba(76,175,80,0.5)’:’rgba(244,67,54,0.4)’;BD.fillRect(PL+pw-.5,by(fp.z)-.5,1.5,1.5);});
     }
-    Wp=savedW;
-
-    BD.save();BD.setLineDash([4,3]);BD.strokeStyle=’#7B1FA2’;BD.lineWidth=2;
-    ln2(BD,bx(Wp),PT,bx(Wp),PT+H2);BD.restore();
-
-    // Mark W=4 bifurcation (σ’(0)=1/4, so W·σ’(0)=W/4=1 → W=4)
-    if(Math.abs(hp)<.1){
-      BD.save();BD.setLineDash([2,4]);BD.strokeStyle=’#FF9800’;BD.lineWidth=1;
-      ln2(BD,bx(4),PT,bx(4),PT+H2);BD.restore();
-      BD.font=’11px "Times New Roman",serif’;BD.fillStyle=’#FF9800’;
-      BD.fillText(‘W=4’,bx(4)+4,PT+14);
-    }
-
-    BD.font=’13px "Times New Roman",serif’;BD.fillStyle=’#888’;
-    BD.fillText(‘W’,S-18,by(0.5)+16);BD.fillText(‘z*’,PL+5,PT-5);
-    BD.font=’10px sans-serif’;BD.fillStyle=’#bbb’;
-    [0,2,4,6,8,10].forEach(function(v){BD.fillText(v,bx(v)-4,by(zLo2)+15);});
+    // W indicator
+    BD.setLineDash([4,3]);BD.strokeStyle=’#7B1FA2’;BD.lineWidth=2;
+    BD.beginPath();BD.moveTo(bx(Wp),PT);BD.lineTo(bx(Wp),PT+H2);BD.stroke();BD.setLineDash([]);
+    if(sym){BD.setLineDash([2,4]);BD.strokeStyle=’#FF9800’;BD.lineWidth=1;BD.beginPath();BD.moveTo(bx(4),PT);BD.lineTo(bx(4),PT+H2);BD.stroke();BD.setLineDash([]);BD.font=’11px "Times New Roman",serif’;BD.fillStyle=’#FF9800’;BD.fillText(‘W=4’,bx(4)+4,PT+14);}
+    BD.font=’14px "Times New Roman",serif’;BD.fillStyle=’#666’;BD.fillText(‘W’,S-18,by(0.5)+18);BD.fillText(‘z*’,PL+5,PT-6);
+    BD.font=’10px sans-serif’;BD.fillStyle=’#aaa’;
+    [1,2,3,4,5,6,7,8].forEach(function(v){BD.fillText(v,bx(v)-4,by(zL2)+16);});
     [0,.2,.4,.6,.8,1].forEach(function(v){BD.fillText(v.toFixed(1),4,by(v)+4);});
-    BD.font=’13px "Times New Roman",serif’;BD.fillStyle=’#7B1FA2’;
-    BD.fillText(‘W = ‘+Wp.toFixed(2),PL+5,PT+14);
-    BD.font=’10px sans-serif’;
-    BD.fillStyle=’#4CAF50’;BD.fillText(‘\u25A0 stable’,PL+5,S-PB-8);
-    BD.fillStyle=’#F44336’;BD.fillText(‘\u25A0 unstable’,PL+65,S-PB-8);
+    BD.font=’13px "Times New Roman",serif’;BD.fillStyle=’#7B1FA2’;BD.fillText(‘W = ‘+Wp.toFixed(2),PL+5,PT+14);
+    BD.font=’10px sans-serif’;BD.fillStyle=’#4CAF50’;BD.fillText(‘\u25A0 stable’,PL+5,S-PB-6);BD.fillStyle=’#F44336’;BD.fillText(‘\u25A0 unstable’,PL+65,S-PB-6);
   }
 
   function updInfo(){
-    var el=document.getElementById(‘rb-info’),fps=findFP();
-    var t=’W = ‘+Wp.toFixed(2)+’ &nbsp;|&nbsp; h = ‘+hp.toFixed(2)+’ &nbsp;|&nbsp; ‘;
-    if(fps.length===1){
-      t+=’<span style="color:’+(fps[0].stable?’#4CAF50’:’#F44336’)+’">1 fixed point z*=’+fps[0].z.toFixed(4)+’ (‘+(fps[0].stable?’stable’:’unstable’)+’, |f\’|=’+Math.abs(fps[0].slope).toFixed(3)+’)</span>’;
-    }else if(fps.length>=3){
-      t+=’<span style="color:#7B1FA2">Pitchfork: ‘+fps.length+’ fixed points</span> &nbsp; ‘;
-      fps.forEach(function(fp,i){t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">’+fp.z.toFixed(3)+’</span>’+(i<fps.length-1?’, ‘:’’);});
-    }else{
-      fps.forEach(function(fp,i){t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(3)+’</span>’+(i<fps.length-1?’, ‘:’’);});
-    }
+    var el=document.getElementById(‘rb-info’),h=getH(),fps=findFP(Wp,h);
+    var t=’W=’+Wp.toFixed(2)+’ &nbsp;|&nbsp; h=’+h.toFixed(2)+’ &nbsp;|&nbsp; slope@0.5=’+(Wp/4).toFixed(3)+’ &nbsp;|&nbsp; ‘;
+    fps.forEach(function(fp,i){
+      t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(4)+’ (‘+(fp.stable?’stable’:’unstable’)+’)</span>’;
+      if(i<fps.length-1)t+=’ &nbsp; ‘;
+    });
+    if(fps.length>=3)t+=’ &nbsp;<b style="color:#7B1FA2">PITCHFORK</b>’;
     el.innerHTML=t;
   }
-  function redraw(){drawCobweb();drawBifurcation();updInfo();}
+  function redraw(){drawCW();drawBD();updInfo();}
 
-  function getWfromBif(e){
-    var rect=bdC.getBoundingClientRect(),PL2=50,W2=S-PL2-15;
-    var cx2=(e.clientX-rect.left)*(S/rect.width);
-    return Math.max(0,Math.min(10,(cx2-PL2)/W2*10));
-  }
-  bdC.addEventListener(‘mousedown’,function(e){dragBif=true;Wp=getWfromBif(e);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();});
-  bdC.addEventListener(‘mousemove’,function(e){if(!dragBif)return;Wp=getWfromBif(e);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();});
+  function getWfromBD(e){var rect=bdEl.getBoundingClientRect(),PL2=50,W2=S-PL2-15;var cx2=(e.clientX-rect.left)*(S/rect.width);return Math.max(0.5,Math.min(8,0.5+(cx2-PL2)/W2*7.5));}
+  bdEl.addEventListener(‘mousedown’,function(e){dragBif=true;Wp=getWfromBD(e);wS.value=Wp;wV.textContent=Wp.toFixed(2);if(sym){hp=-Wp/2;hS.value=hp;hV.textContent=hp.toFixed(2);}redraw();});
+  bdEl.addEventListener(‘mousemove’,function(e){if(!dragBif)return;Wp=getWfromBD(e);wS.value=Wp;wV.textContent=Wp.toFixed(2);if(sym){hp=-Wp/2;hS.value=hp;hV.textContent=hp.toFixed(2);}redraw();});
   window.addEventListener(‘mouseup’,function(){dragBif=false;});
-  bdC.addEventListener(‘touchstart’,function(e){e.preventDefault();dragBif=true;Wp=getWfromBif(e.touches[0]);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();},{passive:false});
-  bdC.addEventListener(‘touchmove’,function(e){e.preventDefault();if(!dragBif)return;Wp=getWfromBif(e.touches[0]);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();},{passive:false});
-  bdC.addEventListener(‘touchend’,function(){dragBif=false;});
+  bdEl.addEventListener(‘touchstart’,function(e){e.preventDefault();dragBif=true;Wp=getWfromBD(e.touches[0]);wS.value=Wp;wV.textContent=Wp.toFixed(2);if(sym){hp=-Wp/2;hS.value=hp;hV.textContent=hp.toFixed(2);}redraw();},{passive:false});
+  bdEl.addEventListener(‘touchmove’,function(e){e.preventDefault();if(!dragBif)return;Wp=getWfromBD(e.touches[0]);wS.value=Wp;wV.textContent=Wp.toFixed(2);if(sym){hp=-Wp/2;hS.value=hp;hV.textContent=hp.toFixed(2);}redraw();},{passive:false});
+  bdEl.addEventListener(‘touchend’,function(){dragBif=false;});
 
-  wS.addEventListener(‘input’,function(){Wp=parseFloat(this.value);wV.textContent=Wp.toFixed(2);redraw();});
+  wS.addEventListener(‘input’,function(){Wp=parseFloat(this.value);wV.textContent=Wp.toFixed(2);if(sym){hp=-Wp/2;hS.value=hp;hV.textContent=hp.toFixed(2);}redraw();});
   hS.addEventListener(‘input’,function(){hp=parseFloat(this.value);hV.textContent=hp.toFixed(2);redraw();});
+  symCb.addEventListener(‘change’,function(){sym=this.checked;hS.disabled=sym;if(sym){hp=-Wp/2;hS.value=hp;hV.textContent=hp.toFixed(2);}redraw();});
   redraw();
 })();
 </script>
@@ -15111,8 +15080,8 @@ By forcing the network to predict multiple steps into the future using its own p
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Statistical Regularization)</span></p>
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Statistical Regularization)</span></p>
 
 The total loss $\mathcal{L}$ can be augmented by a penalty term that measures the deviation of invariant statistics:
 
@@ -15149,10 +15118,10 @@ The architecture follows an "hourglass" shape, where the inner layer (the bottle
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(The Reconstruction Objective)</span></p>
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Autoencoder Objective)</span></p>
 
-The objective of the Autoencoder is to approximate the identity function through a bottleneck. We minimize the Mean Squared Error (MSE):
+The **objective of the Autoencoder** is to approximate the identity function through a bottleneck. We minimize the Mean Squared Error (MSE):
 
 $$\mathcal{L}_{\text{AE}} = \sum_{t} \lVert x_t - \hat{x}_t \rVert^2 = \sum_{t} \lVert x_t - \phi^{-1}(\phi(x_t)) \rVert^2$$
 
