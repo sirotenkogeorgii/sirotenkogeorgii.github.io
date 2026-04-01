@@ -15003,11 +15003,16 @@ To prevent the reservoir from exhibiting "boring" dynamics (such as immediately 
 
 </div>
 
-The prediction $\hat{x}_t$ is generated via a linear mapping from the reservoir state:
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Reservoir Systems Prediction)</span></p>
+
+The **prediction** $\hat{x}_t$ is generated via a linear mapping from the reservoir state:
 
 $$\hat{x}_t = B z_t$$
 
 In some cases, a basis expansion of $z_t$ is performed to improve performance. For example, concatenating $z_t$ with its squared terms: $\hat{x}_t = B [z_t;\, z_t^2]$. Importantly, the system remains linear in the parameters $B$.
+
+</div>
 
 #### Training Reservoir Computers via Linear Regression
 
