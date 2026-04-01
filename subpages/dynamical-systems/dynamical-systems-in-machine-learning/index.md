@@ -12537,7 +12537,7 @@ The key components of this model are:
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(RNN Activation Dynamics)</span></p>
 
-The activation of a specific unit $i$ at time $t$, denoted $x_i^t$, is determined by an activation function, $\phi$. This function processes a weighted sum of inputs from other units at the previous time step ($t-1$), any external inputs at the current time step ($t$), and a unit-specific bias term.
+The **activation** of a specific unit $i$ at time $t$, denoted $x_i^t$, is determined by an activation function, $\phi$. This function processes a weighted sum of inputs from other units at the previous time step ($t-1$), any external inputs at the current time step ($t$), and a unit-specific bias term.
 
 The general formulation for the activation of unit $i$ is:
 
@@ -12611,8 +12611,8 @@ This formulation makes it explicit that the state at time $t$ is a function of t
 
 #### The RNN as a Discrete-Time Dynamical System
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(RNNs as Dynamical Systems)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(RNNs as Dynamical Systems)</span></p>
 
 The recursive formulation $z_t = f(z_{t-1}, s_t; \theta)$ is of profound importance. It reveals that a recurrent neural network is, in essence, a discrete-time, multi-dimensional recursive map. This directly parallels the discrete-time maps, such as the logistic map, that are central to the study of dynamical systems.
 
@@ -12636,7 +12636,7 @@ Understanding these potential behaviors is crucial for both analyzing and effect
 
 While numerous techniques exist for training machine learning models, the field is overwhelmingly dominated by methods based on gradient descent. This is not because gradient descent is the most powerful optimization technique available -- other methods may yield more accurate parameter estimates. Rather, its dominance stems from its effectiveness and scalability. Gradient descent-based techniques are generally well-understood, straightforward to implement, and scale favorably with the size of the dataset. For these reasons, it is the primary method for training RNNs.
 
-The objective of training is to find a set of model parameters that minimizes a given loss function. Since RNNs are highly nonlinear devices, it is impossible to find an analytical, closed-form solution for the optimal parameters. We must therefore rely on iterative numerical optimization algorithms like gradient descent.
+The objective of training is to find a set of model parameters that minimizes a given loss function. **Since RNNs are highly nonlinear devices, it is impossible to find an analytical, closed-form solution for the optimal parameters.** We must therefore rely on iterative numerical optimization algorithms like gradient descent.
 
 </div>
 
@@ -12687,7 +12687,7 @@ Here, the parameter set $\lambda$ is simply the matrix $B \in \mathbb{R}^{N \tim
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Loss Function)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MSE loss function for sequences)</span></p>
 
 The **loss function**, $L$, quantifies the discrepancy between the model's predicted outputs and the true target outputs. It is a function of the model's parameters ($\theta$ and $\lambda$). The goal of training is to minimize this function. A common and straightforward choice is the Sum of Squared Errors (SSE) loss, which is calculated by summing the squared deviations over all time steps and all patterns in the dataset.
 
@@ -12841,8 +12841,8 @@ The ideal learning rate would be adaptive: large in flat regions to speed up pro
 
 #### The Impact of System Dynamics on the Loss Landscape
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dynamics Shape the Loss Landscape)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Dynamics Shape the Loss Landscape)</span></p>
 
 The dynamics of the model being trained have direct implications for the structure of its loss function. While the loss function is defined over the parameter space, not the state space of the model, the behavior of the model's dynamics shapes the landscape.
 
@@ -13071,8 +13071,8 @@ BPTT was introduced and refined by several researchers over the years, with key 
 
 ##### The Core Idea: Unwrapping in Time
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(From Recurrence to Depth)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(From Recurrence to Depth)</span></p>
 
 The foundational insight of BPTT is to train a recurrent network in the exact same way as a standard feed-forward network. This is achieved by conceptually transforming the RNN's temporal recursion into a spatial deep structure.
 
@@ -13096,8 +13096,8 @@ This unwrapped structure is simply another way to write down the recursive updat
 
 ##### The Backpropagation Procedure
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Backpropagation Procedure)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(The Backpropagation Procedure)</span></p>
 
 BPTT is a specific, algorithmically efficient implementation of gradient descent.
 
@@ -13107,8 +13107,8 @@ BPTT is a specific, algorithmically efficient implementation of gradient descent
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Algorithmic Efficiency)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Algorithmic Efficiency)</span></p>
 
 BPTT is a highly storage-efficient procedure. At each step of the backward pass, it only needs to account for the values present at that particular time step, as it leverages the already-computed values from the subsequent step. The complexity is linear in time, as it proceeds layer by layer.
 
@@ -13155,16 +13155,14 @@ where $N$ is the number of units, $x_k(t)$ is the activation of unit $k$ at time
 
 ### Training Recurrent Networks: Backpropagation Through Time (Detailed Derivation)
 
-This section delves into the fundamental mechanics of training Recurrent Neural Networks (RNNs). The core challenge in training these models lies in how to properly assign credit -- or blame -- to parameters that are reused at every step of a temporal sequence. The algorithm for this is a special case of backpropagation known as Backpropagation Through Time (BPTT). We will derive the gradient calculations step-by-step and, in doing so, uncover a critical instability that plagued early research in this area: the exploding and vanishing gradient problem.
-
 #### The Optimization Problem: Minimizing a Loss Function
 
 To train any neural network, we must first define an objective. This objective is typically formulated as the minimization of a loss function, $L$, which measures the discrepancy between the network's predictions and the observed data. For a single observed time series, we can define a total loss over the entire sequence.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total Loss)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Total toss as a sum of steps)</span></p>
 
-The total loss, $L$, for a given time series is the sum of the losses incurred at each individual time step. If we denote the loss at a specific time step $t$ as $l_t$, the total loss is given by:
+The total loss, $L$, for a given time series is the **sum of the losses incurred at each individual time step**. If we denote the loss at a specific time step $t$ as $l_t$, the total loss is given by:
 
 $$L = \sum_t l_t$$
 
@@ -13192,7 +13190,7 @@ While we use the squared error for this example, the derivations that follow are
 
 Our goal is to adjust the model's parameters, $\theta_i$, to minimize the total loss $L$. We achieve this using gradient descent, which requires computing the derivative of the loss with respect to each parameter, $\frac{\partial L}{\partial \theta_i}$.
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(The Total Loss Gradient)</span></p>
 
 By the linearity of the gradient operator, the derivative of the total loss is the sum of the derivatives of the per-time-step losses:
@@ -13205,7 +13203,7 @@ Consequently, to calculate the gradient of the loss at time $t$, we must sum ove
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Decomposing the Gradient with the Chain Rule)</span></p>
 
 Applying the chain rule to the term $\frac{\partial l_t}{\partial \theta_i}$ reveals this dependency. The loss $l_t$ is an explicit function of the state $x_t$. The state $x_t$, in turn, is a function of all previous states, including $x_\tau$, where the parameter $\theta_i$ has an effect. This creates a recursive dependency that we must unroll.
@@ -13237,7 +13235,7 @@ To better understand the mathematical objects we are manipulating, consider an R
 
 The most important and complex term in our gradient expression is the temporal Jacobian, $\frac{\partial x_t}{\partial x_\tau}$. This term quantifies the long-range dependencies in the sequence. We can decompose it further by another application of the chain rule.
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proof</span><span class="math-callout__name">(Unrolling the Temporal Jacobian)</span></p>
 
 The state $x_t$ is a direct function of $x_{t-1}$, which is a function of $x_{t-2}$, and so on. We can express the derivative of $x_t$ with respect to a distant past state $x_\tau$ as a product of intermediate, single-step Jacobians:
@@ -13286,7 +13284,7 @@ This product of matrices is the source of a fundamental instability in training 
 * **Exploding Gradients:** If the magnitudes of the leading eigenvalues of the Jacobian matrices are, on average, greater than $1$, their product will grow exponentially as the time gap $t-\tau$ increases. The gradients will "explode" to enormous values, leading to unstable training and divergent weight updates.
 * **Vanishing Gradients:** If the magnitudes of the leading eigenvalues are, on average, less than $1$, their product will shrink exponentially towards zero as $t-\tau$ increases. The gradients will "vanish." This is also highly problematic, as it means the influence of early time steps on the loss at later time steps is effectively erased. The network becomes incapable of learning long-range dependencies, as the information required to update the parameters is lost during backpropagation.
 
-This exploding and vanishing gradient problem is not merely a numerical inconvenience; it is a fundamental obstacle to learning long-term structure in sequential data with simple RNNs. The dynamics of this process are deeply connected to concepts from dynamical systems theory, such as the calculation of Lyapunov exponents and the stability analysis of linear systems converging to fixed points. The repeated matrix multiplication is precisely the process used to determine the stability of a linear dynamical system. This insight highlights why these "vanilla" training approaches are no longer standard practice and motivated the development of more sophisticated architectures.
+This exploding and vanishing gradient problem is not merely a numerical inconvenience; it is a fundamental obstacle to learning long-term structure in sequential data with simple RNNs. The dynamics of this process are deeply connected to concepts from dynamical systems theory, such as the calculation of Lyapunov exponents and the stability analysis of linear systems converging to fixed points. **The repeated matrix multiplication is precisely the process used to determine the stability of a linear dynamical system.** This insight highlights why these "vanilla" training approaches are no longer standard practice and motivated the development of more sophisticated architectures.
 
 </div>
 
@@ -13367,6 +13365,10 @@ $$\sigma(y) = \frac{1}{1 + e^{-y}}$$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/lstm_straka_deep_learning.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 ##### The Final Output
 
 The final output of the LSTM cell at time step $t$, denoted as $z_t$, is a filtered version of the memory cell state $c_t$.
@@ -13411,6 +13413,10 @@ A key feature of the LSTM is the linear nature of the memory update through the 
 The second foundational concept is gating, where information flow is modulated by multiplicative units (the gates). This idea of using multiplicative interactions to control pathways in a neural network is powerful and has proven influential. This principle is not unique to LSTMs and can be found in other modern architectures, such as Mamba.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/input_output_forget_gates.JPG' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
 
 #### Variants and Simplifications: GRUs
 
@@ -13511,8 +13517,8 @@ where:
   <figcaption>Hidden-state dynamics are linear within each region of state space, but switch between regions when units cross thresholds, usually because the nonlinearity is a ReLU or thresholded ReLU.</figcaption>
 </figure>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Versatility of the Form)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Versatility of the Form)</span></p>
 
 While the formulation places the nonlinearity outside the weight multiplication for the $W$ term, any standard RNN where the affine mapping is inside the nonlinearity can be rewritten into this piecewise linear form through a substitution of variables:
 
@@ -13676,7 +13682,7 @@ To assess the similarity between the geometries of two attractors (the "true" ob
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Kullback-Leibler Divergence, State Space)</span></p>
 
-The KL divergence assesses the overlap between the true probability distribution of observations $P_{\text{true}}(x)$ and the generated probability distribution $P_{\text{gen}}(x)$ produced by the model (often conditioned on latent states). It is defined as:
+The **KL divergence** assesses the overlap between the true probability distribution of observations $P_{\text{true}}(x)$ and the generated probability distribution $P_{\text{gen}}(x)$ produced by the model (often conditioned on latent states). It is defined as:
 
 $$D_{\text{KL}}(P_{\text{true}} \| P_{\text{gen}}) = \int_D P_{\text{true}}(x) \log \left( \frac{P_{\text{true}}(x)}{P_{\text{gen}}(x \mid \text{latent})} \right) dx$$
 
@@ -13707,8 +13713,8 @@ Before performing these comparisons on empirical data, one must ensure the data 
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(High-Dimensional Challenges and Gaussian Mixture Models)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(High-Dimensional Challenges and Gaussian Mixture Models)</span></p>
 
 The binning approach suffers from the "curse of dimensionality"; as the number of dimensions increases, the number of bins required grows exponentially, making it difficult to get reliable frequency estimates.
 
@@ -13787,8 +13793,8 @@ where:
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Hellinger Distance Interpretation)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Hellinger Distance Interpretation)</span></p>
 
 The Hellinger distance lives within the range $[0, 1]$. When the correlation between power spectra is very high, the integral term approaches $1$, and the distance becomes $0$. If there is no overlap, the distance approaches $1$. This makes it a normalized, robust measure of temporal similarity.
 
@@ -13800,6 +13806,9 @@ The Hellinger distance lives within the range $[0, 1]$. When the correlation bet
 
 #### Complexity and Chaos Measures
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Good reconstruction should preserve the complexity of the original system)</span></p>
+
 A successful reconstruction should preserve the "complexity" of the original system, which can be quantified using the measures previously discussed in the context of dynamical systems analysis.
 
 * **Lyapunov Exponents:** One can estimate the Maximum Lyapunov Exponent (MLE) from both the real data (via delay embedding) and the RNN. For an RNN where the equations are known, the full Lyapunov Spectrum can be computed directly from the Jacobians.
@@ -13807,6 +13816,8 @@ A successful reconstruction should preserve the "complexity" of the original sys
   * **Box-counting Dimension:** Suitable for lower-dimensional systems.
   * **Correlation Dimension:** Used for higher-dimensional systems to describe behavior within an $\epsilon$-ball around data points along trajectories.
   * **Kaplan-Yorke Dimension:** An estimator for fractal dimensionality derived from the Lyapunov spectrum.
+
+</div>
 
 ### The Gradient-Lyapunov Connection in RNNs
 
@@ -13834,9 +13845,9 @@ where:
 The Lyapunov spectrum characterizes the rates of exponential divergence or convergence of nearby trajectories in state space.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Lyapunov Exponent)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Maximum Lyapunov Exponent Along a Trajectory)</span></p>
 
-The MLE is derived from the geometric mean of the product of Jacobians along a trajectory. In the limit $T \to \infty$:
+The **Maximum Lyapunov Exponent** is derived from the geometric mean of the product of Jacobians **along a trajectory**. In the limit $T \to \infty$:
 
 $$\lambda_{\max} = \lim_{T \to \infty} \frac{1}{T} \ln \left\| \prod_{r=0}^{T-2} J(z_r) \right\|$$
 
@@ -13945,8 +13956,8 @@ To implement STF, we perform the following steps:
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(Sparse Teacher Forcing)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Sparse Teacher Forcing)</span></p>
 
 By forcing the trajectory back onto the "true" latent path every $\tau$ steps, we prevent the model’s trajectory from diverging too far from the data. Crucially, because $\tilde{z}\_t$ is derived directly from the data and is not a function of the previous hidden state $z_{t-1}$ in the computational graph, the gradient $\frac{\partial \tilde{z}\_t}{\partial z_{t-1}}$ is zero. This effectively "cuts" the gradient chain every $\tau$ steps, preventing the product series from exploding.
 
@@ -13958,12 +13969,17 @@ By forcing the trajectory back onto the "true" latent path every $\tau$ steps, w
 
 #### Optimizing the Forcing Interval
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Forcing Interval Choice Trade-off)</span></p>
+
 The choice of the forcing interval $\tau$ is critical for successful reconstruction.
 
 * If $\tau$ is **too small:** The system only learns one-step-ahead predictions. It loses the ability to capture long-term properties, such as the overall geometry of the attractor or temporal agreement.
 * If $\tau$ is **too large:** The system runs back into the exploding gradient problem as the chaotic divergence dominates the product series.
 
 The optimal $\tau$ can be determined by the physical properties of the system being studied.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Predictability Time)</span></p>
@@ -14008,8 +14024,12 @@ $$\min_{\theta, m_0^{(n)}} \sum_{n} \sum_{t} \| x_{n,t} - \hat{x}_{n,t}(\theta, 
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Multiple Shooting vs. Teacher Forcing)</span></p>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/MultipleShooting.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Multiple Shooting vs. Teacher Forcing)</span></p>
 
 Similar to Sparse Teacher Forcing, Multiple Shooting breaks the long-term dependency into manageable pieces. The primary challenge is ensuring "temporal contingency" — meaning that the end of one segment should logically connect to the beginning of the next, despite the segments being treated as independent initial-value problems during optimization.
 
@@ -14035,7 +14055,7 @@ To enforce this continuity without strictly constraining the optimizer, we intro
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Continuity Regularization Loss)</span></p>
 
-The total loss $L_{\text{total}}$ is formulated by adding a regularization term $L_{\text{reg}}$ to the primary loss $L_{\text{usual}}$, weighted by a parameter $\lambda$:
+The **Continuity Regularization Loss** $L_{\text{total}}$ is formulated by adding a regularization term $L_{\text{reg}}$ to the primary loss $L_{\text{usual}}$, weighted by a parameter $\lambda$:
 
 $$L_{\text{total}} = L_{\text{usual}} + \lambda \sum_{n} \| z_{n+1} - f_\theta^T(z_n) \|^2$$
 
@@ -14099,7 +14119,7 @@ We wish to find the Jacobian of the state $\tilde{z}\_t$ with respect to the sta
 
 1. Start with the GTF definition: 
    
-   $$\tilde{z}\_t = (1 - \alpha)\, f_\theta(\tilde{z}\_{t-1}) + \alpha\, \hat{z}\_t$$
+   $$\tilde{z}_t = (1 - \alpha)\, f_\theta(\tilde{z}_{t-1}) + \alpha\, \hat{z}\_t$$
 
 2. Differentiate $\tilde{z}\_t$ with respect to $\tilde{z}\_{t-1}$. Note that $\hat{z}\_t$ (the data estimate) is independent of the model’s previous state $\tilde{z}\_{t-1}$, so its derivative is zero.
 3. Apply the chain rule to the first term:
@@ -14125,13 +14145,12 @@ $$\alpha \approx 1 - \frac{1}{\sigma_{\max}(G_t)}$$
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical Considerations for GTF)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Practical Considerations for GTF)</span></p>
 
 By adapting $\alpha$ at each time step (or every few steps), we can automatically ensure that the gradients remain stable. While calculating the Singular Value Decomposition (SVD) at every step is computationally expensive, one can use effective proxies to adapt $\alpha$ efficiently. GTF strikes an optimal balance between the true data trajectory and the model’s predicted trajectory. By choosing $\alpha$ correctly, the loss landscape becomes almost convex, facilitating efficient convergence in complex dynamical reconstruction tasks.
 
 </div>
-
 
 ## Lecture 11
 
@@ -14481,6 +14500,218 @@ This is visualized in a bifurcation graph where the stable states are plotted as
 
 </div>
 
+<div id="rb-container" style="margin:2em auto;max-width:1060px;">
+  <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Pitchfork Bifurcation in a 1-Unit RNN</h4>
+  <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
+    \(Z_t = \phi(W Z_{t-1} + h)\) with \(\phi = \tanh\). Drag \(W\) to see the pitchfork at \(W=1\). Use the \(h\) slider to break the symmetry (saddle-node instead of pitchfork).
+  </p>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Cobweb: fixed points of the map</div>
+      <canvas id="rb-cw" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (W vs z*)</div>
+      <canvas id="rb-bd" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+    <span style="font-size:.85em;font-family:serif;">W =</span>
+    <input type="range" id="rb-w" min="0" max="4" step="0.01" value="0.8" style="width:220px;">
+    <span id="rb-wv" style="font-size:.85em;font-family:serif;min-width:35px;">0.80</span>
+    <span style="font-size:.85em;font-family:serif;margin-left:12px;">h =</span>
+    <input type="range" id="rb-h" min="-1" max="1" step="0.01" value="0" style="width:160px;">
+    <span id="rb-hv" style="font-size:.85em;font-family:serif;min-width:35px;">0.00</span>
+  </div>
+  <div id="rb-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
+</div>
+
+<script>
+(function(){
+  var S=500;
+  var W=0.8,h=0,dragBif=false;
+
+  var cwC=document.getElementById(‘rb-cw’),bdC=document.getElementById(‘rb-bd’);
+  var wS=document.getElementById(‘rb-w’),wV=document.getElementById(‘rb-wv’);
+  var hS=document.getElementById(‘rb-h’),hV=document.getElementById(‘rb-hv’);
+  var dpr=window.devicePixelRatio||1;
+  function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+’px’;c.style.height=S+’px’;var x=c.getContext(‘2d’);x.scale(dpr,dpr);return x;}
+  var CW=initC(cwC),BD=initC(bdC);
+
+  function phi(x){return Math.tanh(x);}
+  function fmap(z){return phi(W*z+h);}
+  function fmapDeriv(z){var t=Math.tanh(W*z+h);return W*(1-t*t);}
+  function ln2(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
+  function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
+
+  // Find fixed points by scanning f(z)-z sign changes, then Newton
+  function findFP(){
+    var fps=[];
+    var N=400,prev=fmap(-1.5)-(-1.5);
+    for(var i=1;i<=N;i++){
+      var z=-1.5+3*i/N,val=fmap(z)-z;
+      if(prev*val<0){
+        // Newton from midpoint
+        var zn=-1.5+3*(i-.5)/N;
+        for(var k=0;k<20;k++){var fv=fmap(zn)-zn,fd=fmapDeriv(zn)-1;if(Math.abs(fd)<1e-12)break;zn-=fv/fd;if(Math.abs(fv)<1e-10)break;}
+        // Check duplicate
+        var dup=false;fps.forEach(function(fp){if(Math.abs(fp.z-zn)<1e-4)dup=true;});
+        if(!dup&&zn>-1.5&&zn<1.5){
+          var slope=fmapDeriv(zn);
+          fps.push({z:zn,stable:Math.abs(slope)<1-1e-6,slope:slope});
+        }
+      }
+      prev=val;
+    }
+    fps.sort(function(a,b){return a.z-b.z;});
+    return fps;
+  }
+
+  // === COBWEB ===
+  function drawCobweb(){
+    CW.clearRect(0,0,S,S);
+    var PL=35,PR2=10,PT=15,PB=30,Wd=S-PL-PR2,H=S-PT-PB;
+    var zLo=-1.2,zHi=1.2,zR=zHi-zLo;
+    function cx(v){return PL+(v-zLo)/zR*Wd;}
+    function cy(v){return PT+(zHi-v)/zR*H;}
+
+    // Grid
+    CW.strokeStyle=’#f0f0f0’;CW.lineWidth=.5;
+    [-1,-.5,.5,1].forEach(function(v){ln2(CW,cx(v),PT,cx(v),PT+H);ln2(CW,PL,cy(v),PL+Wd,cy(v));});
+    CW.strokeStyle=’#81D4FA’;CW.lineWidth=1;
+    ln2(CW,PL,cy(0),PL+Wd,cy(0));ln2(CW,cx(0),PT,cx(0),PT+H);
+
+    // Bisectrix
+    CW.save();CW.setLineDash([5,3]);CW.strokeStyle=’#FF9800’;CW.lineWidth=1.5;
+    ln2(CW,cx(zLo),cy(zLo),cx(zHi),cy(zHi));CW.restore();
+
+    // Sigmoid curve f(z)=tanh(Wz+h)
+    CW.strokeStyle=’#1976D2’;CW.lineWidth=2;CW.beginPath();
+    for(var z=zLo;z<=zHi;z+=.005){var y=fmap(z);if(z<=zLo+.01)CW.moveTo(cx(z),cy(y));else CW.lineTo(cx(z),cy(y));}
+    CW.stroke();
+
+    // Fixed points
+    var fps=findFP();
+    fps.forEach(function(fp){
+      var px=cx(fp.z),py=cy(fp.z);
+      if(fp.stable){CW.fillStyle=’#4CAF50’;circ(CW,px,py,7,true);CW.strokeStyle=’#2E7D32’;CW.lineWidth=1.5;circ(CW,px,py,7,false);}
+      else{CW.fillStyle=’#F44336’;circ(CW,px,py,7,true);CW.strokeStyle=’#C62828’;CW.lineWidth=1.5;circ(CW,px,py,7,false);}
+    });
+
+    // Cobweb from z₀=0.1
+    var z=0.1,nIter=60;
+    CW.strokeStyle=’rgba(50,50,50,0.4)’;CW.lineWidth=1;
+    CW.beginPath();CW.moveTo(cx(z),cy(zLo>.01?zLo:0));
+    for(var i=0;i<nIter;i++){
+      var y=fmap(z);if(y<zLo-.5||y>zHi+.5)break;
+      CW.lineTo(cx(z),cy(y));CW.lineTo(cx(y),cy(y));z=y;
+    }
+    CW.stroke();
+
+    // Labels
+    CW.font=’12px "Times New Roman",serif’;CW.fillStyle=’#888’;
+    CW.fillText(‘Z\u209C\u208B\u2081’,S-22,cy(0)+14);CW.fillText(‘Z\u209C’,PL+5,PT-3);
+    CW.font=’9px sans-serif’;CW.fillStyle=’#bbb’;
+    [-1,-.5,.5,1].forEach(function(v){CW.fillText(v.toFixed(1),cx(v)-6,cy(zLo)+13);CW.fillText(v.toFixed(1),2,cy(v)+3);});
+    CW.font=’10px "Times New Roman",serif’;
+    CW.fillStyle=’#1976D2’;CW.fillText(‘\u03C6(W\u00B7z+h)’,PL+3,PT+12);
+    CW.fillStyle=’#FF9800’;CW.fillText(‘z\u209C = z\u209C\u208B\u2081’,PL+3,PT+24);
+    CW.fillStyle=’#4CAF50’;CW.fillText(‘\u25CF stable’,PL+3,S-PB-22);
+    CW.fillStyle=’#F44336’;CW.fillText(‘\u25CF unstable’,PL+55,S-PB-22);
+  }
+
+  // === BIFURCATION DIAGRAM ===
+  function drawBifurcation(){
+    BD.clearRect(0,0,S,S);
+    var PL=45,PR2=10,PT=15,PB=30,Wd=S-PL-PR2,H=S-PT-PB;
+    var wLo=0,wHi=4,zLo2=-1.2,zHi2=1.2;
+    function bx(w){return PL+(w-wLo)/(wHi-wLo)*Wd;}
+    function by(z){return PT+(zHi2-z)/(zHi2-zLo2)*H;}
+
+    BD.strokeStyle=’#f0f0f0’;BD.lineWidth=.5;
+    [1,2,3].forEach(function(v){ln2(BD,bx(v),PT,bx(v),PT+H);});
+    [-.5,.5,-1,1].forEach(function(v){ln2(BD,PL,by(v),PL+Wd,by(v));});
+    BD.strokeStyle=’#81D4FA’;BD.lineWidth=1;
+    ln2(BD,PL,by(0),PL+Wd,by(0));ln2(BD,PL,PT,PL,PT+H);
+
+    // Scan W and plot fixed points
+    var savedW=W;
+    for(var pw=0;pw<=Wd;pw+=1){
+      W=wLo+(pw/Wd)*(wHi-wLo);if(W<.01)W=.01;
+      var fps=findFP();
+      fps.forEach(function(fp){
+        var px=PL+pw,py=by(fp.z);
+        BD.fillStyle=fp.stable?’rgba(76,175,80,0.5)’:’rgba(244,67,54,0.35)’;
+        BD.fillRect(px-.5,py-.5,1.2,1.2);
+      });
+    }
+    W=savedW;
+
+    // W indicator
+    BD.save();BD.setLineDash([4,3]);BD.strokeStyle=’#7B1FA2’;BD.lineWidth=1.5;
+    ln2(BD,bx(W),PT,bx(W),PT+H);BD.restore();
+
+    // Mark W=1 (bifurcation point when h=0)
+    if(Math.abs(h)<.05){
+      BD.save();BD.setLineDash([2,4]);BD.strokeStyle=’#FF9800’;BD.lineWidth=1;
+      ln2(BD,bx(1),PT,bx(1),PT+H);BD.restore();
+      BD.font=’10px "Times New Roman",serif’;BD.fillStyle=’#FF9800’;
+      BD.fillText(‘W=1’,bx(1)+3,PT+12);
+    }
+
+    BD.font=’12px "Times New Roman",serif’;BD.fillStyle=’#888’;
+    BD.fillText(‘W’,S-15,by(0)+14);BD.fillText(‘z*’,PL+5,PT-3);
+    BD.font=’9px sans-serif’;BD.fillStyle=’#bbb’;
+    [0,1,2,3,4].forEach(function(v){BD.fillText(v,bx(v)-4,by(zLo2)+13);});
+    [-1,-.5,.5,1].forEach(function(v){BD.fillText(v.toFixed(1),2,by(v)+3);});
+    BD.font=’12px "Times New Roman",serif’;BD.fillStyle=’#7B1FA2’;
+    BD.fillText(‘W = ‘+W.toFixed(2),PL+5,PT+12);
+    // Legend
+    BD.font=’10px sans-serif’;
+    BD.fillStyle=’#4CAF50’;BD.fillText(‘\u25A0 stable’,PL+5,S-PB-10);
+    BD.fillStyle=’#F44336’;BD.fillText(‘\u25A0 unstable’,PL+55,S-PB-10);
+  }
+
+  function updInfo(){
+    var el=document.getElementById(‘rb-info’),fps=findFP();
+    var t=’W = ‘+W.toFixed(2)+’ &nbsp;|&nbsp; h = ‘+h.toFixed(2)+’ &nbsp;|&nbsp; ‘;
+    if(fps.length===1){
+      t+=’<span style="color:’+(fps[0].stable?’#4CAF50’:’#F44336’)+’">1 fixed point z*=’+fps[0].z.toFixed(3)+’ (‘+(fps[0].stable?’stable’:’unstable’)+’, |f\’|=’+Math.abs(fps[0].slope).toFixed(3)+’)</span>’;
+    }else if(fps.length===3){
+      t+=’<span style="color:#7B1FA2">Pitchfork: 3 fixed points</span> &nbsp; ‘;
+      fps.forEach(function(fp,i){
+        t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(3)+’</span>’;
+        if(i<2)t+=’, ‘;
+      });
+    }else{
+      fps.forEach(function(fp,i){
+        t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(3)+’</span>’;
+        if(i<fps.length-1)t+=’, ‘;
+      });
+    }
+    el.innerHTML=t;
+  }
+  function redraw(){drawCobweb();drawBifurcation();updInfo();}
+
+  // Bif diagram interaction
+  function getW(e){
+    var rect=bdC.getBoundingClientRect(),PL2=45,Wd2=S-PL2-10;
+    var cx2=(e.clientX-rect.left)*(S/rect.width);
+    return Math.max(0,Math.min(4,(cx2-PL2)/Wd2*4));
+  }
+  bdC.addEventListener(‘mousedown’,function(e){dragBif=true;W=getW(e);wS.value=W;wV.textContent=W.toFixed(2);redraw();});
+  bdC.addEventListener(‘mousemove’,function(e){if(!dragBif)return;W=getW(e);wS.value=W;wV.textContent=W.toFixed(2);redraw();});
+  window.addEventListener(‘mouseup’,function(){dragBif=false;});
+  bdC.addEventListener(‘touchstart’,function(e){e.preventDefault();dragBif=true;W=getW(e.touches[0]);wS.value=W;wV.textContent=W.toFixed(2);redraw();},{passive:false});
+  bdC.addEventListener(‘touchmove’,function(e){e.preventDefault();if(!dragBif)return;W=getW(e.touches[0]);wS.value=W;wV.textContent=W.toFixed(2);redraw();},{passive:false});
+  bdC.addEventListener(‘touchend’,function(){dragBif=false;});
+
+  wS.addEventListener(‘input’,function(){W=parseFloat(this.value);wV.textContent=W.toFixed(2);redraw();});
+  hS.addEventListener(‘input’,function(){h=parseFloat(this.value);hV.textContent=h.toFixed(2);redraw();});
+  redraw();
+})();
+</script>
+
 ### Bifurcations in Neural Dynamics
 
 In high-dimensional recurrent networks, the system’s behavior is governed by its fixed points and their stability. As we adjust parameters during training, the system may undergo qualitative changes in its topological structure, known as **bifurcations**. This connects to the general bifurcation theory introduced in Part I.
@@ -14778,17 +15009,17 @@ $$B = \left( \sum_{t=1}^T x_t\, z_t^\top \right) \left( \sum_{t=1}^T z_t\, z_t^\
 
 3. Differentiate with respect to $B$:
    
-   $$\frac{\partial (-2\, x_t^T B z_t)}{\partial B} = -2\, x_t\, z_t^T$$
+   $$\frac{\partial (-2\, x_t^\top B z_t)}{\partial B} = -2\, x_t\, z_t^\top$$
    
-   $$\frac{\partial (z_t^T B^T B z_t)}{\partial B} = 2\, B z_t\, z_t^T$$
+   $$\frac{\partial (z_t^\top B^\top B z_t)}{\partial B} = 2\, B z_t\, z_t^\top$$
 
 4. Equate to zero:
    
-   $$\sum_{t=1}^{T} x_t\, z_t^T = B \sum_{t=1}^{T} z_t\, z_t^T$$
+   $$\sum_{t=1}^{T} x_t\, z_t^\top = B \sum_{t=1}^{T} z_t\, z_t^\top$$
 
 5. Isolate $B$ by multiplying by the inverse of the covariance-like matrix of reservoir states:
 
-   $$B = \left(\sum_{t=1}^{T} x_t\, z_t^T\right) \left(\sum_{t=1}^{T} z_t\, z_t^T\right)^{-1}$$
+   $$B = \left(\sum_{t=1}^{T} x_t\, z_t^\top\right) \left(\sum_{t=1}^{T} z_t\, z_t^\top\right)^{-1}$$
 
 </div>
 
@@ -16096,7 +16327,7 @@ In real-world applications, such as medical monitoring or climate science, syste
 
 The **multimodal observation vector** $\mathbf{y}$ represents the concatenation of different data modalities observed at the same time step. If $\mathbf{x}$ represents Gaussian observations and $\mathbf{c}$ represents count observations, the combined vector is defined as:
 
-$$\mathbf{y} = [\mathbf{x}, \mathbf{c}, \dots]^T$$
+$$\mathbf{y} = [\mathbf{x}, \mathbf{c}, \dots]^\top$$
 
 </div>
 
