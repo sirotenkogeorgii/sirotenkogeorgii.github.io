@@ -1415,6 +1415,96 @@ On the images above, that is very likely what is happening. The nullclines are t
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Infinitely Many Fixed Points, No Line Attractor)</span></p>
+
+Consider the following system
+
+$$
+\begin{cases}
+\dot{x} = \sin x \\
+\dot{y} = -y
+\end{cases}
+$$
+
+**Fixed points:** $\sin(x) = 0 \Rightarrow x = n\pi$ for $n \in \mathbb{Z}$, and $y = 0$. So FPs at $(n\pi, 0)$ — **infinitely many**, all isolated.
+
+**Stability:**
+- $n$ even: $J = [[\cos(0), 0], [0, -1]] = [[1, 0], [0, -1]]$ — **saddle**
+- $n$ odd: $J = [[\cos(\pi), 0], [0, -1]] = [[-1, 0], [0, -1]]$ — **stable node**
+
+No line attractor because all FPs are discrete/isolated points on the x-axis (separated by $\pi$), and the system has distinct basins of attraction for each stable node.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/infinitely_many_fps_no_line_attractor.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Infinitely Many Fixed Points, No Line Attractor.</figcaption>
+</figure>
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Stable FP at $(-1, 1)$ and Saddle-Node at $(1, 1)$)</span></p>
+
+Consider the following system
+
+$$
+\begin{cases}
+\dot{x} = -(x+1)(x-1)^2 \\
+\dot{y} = -(y-1)
+\end{cases}
+$$
+
+**Verification:**
+- **Fixed points:** $\dot{x}=0 \Rightarrow x=-1$ or $x=1$; $\dot{y}=0 \Rightarrow y=1$. FPs: $(-1,1)$ and $(1,1)$ only. $\checkmark$
+- **At** $(-1,1)$: $f'(x) = -(x-1)(3x+1)$, $f'(-1) = (-2)(-2) = 4 \ne 0$... wait: $\dot{x} = -(x+1)(x-1)^2$.
+
+  $J = \text{diag}(-\frac{d}{dx}[(x+1)(x-1)^2],\; -1)$
+
+  At $(-1,1)$: eigenvalues $-4, -1$ $\Rightarrow$ **stable node** $\checkmark$
+
+- **At** $(1,1)$: eigenvalues $0, -1$ $\Rightarrow$ **saddle-node** (one zero eigenvalue) $\checkmark$
+
+The center manifold at $(1,1)$: let $u=x-1$, then $\dot{u} = -(u+2)u^2 \approx -2u^2$, which is $<0$ for $u \ne 0$, so the node is reached from the right ($u>0$) and repelled from the left in finite time — classic half-stable saddle-node behavior.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/stable_node_saddle_node.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Stable FP at $(-1, 1)$ and Saddle-Node at $(1, 1)$</figcaption>
+</figure>
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Two Saddle-Nodes, One Stable Node, One Unstable Node)</span></p>
+
+Consider the following system
+
+$$
+\begin{cases}
+\dot{x} = -x(x-2)^2(x-4) \\ 
+\dot{y} = y(y-2)
+\end{cases}
+$$
+
+**Fixed points** at $y \in \{0, 2\}$ and $x \in \{0, 2, 4\}$, giving 6 FPs:
+
+| FP | $f'(x)$ | $g'(y)$ | Eigenvalues | Type |
+|---|---|---|---|---|
+| $(0, 0)$ | $16$ | $-2$ | $16, -2$ | Saddle |
+| $(0, 2)$ | $16$ | $2$ | $16, 2$ | **Unstable node** $\checkmark$ |
+| $(2, 0)$ | $0$ | $-2$ | $0, -2$ | **Saddle-node** $\checkmark$ |
+| $(2, 2)$ | $0$ | $2$ | $0, 2$ | **Saddle-node** $\checkmark$ |
+| $(4, 0)$ | $-16$ | $-2$ | $-16, -2$ | **Stable node** $\checkmark$ |
+| $(4, 2)$ | $-16$ | $2$ | $-16, 2$ | Saddle |
+
+Contains: 2 saddle-nodes + 1 stable node + 1 unstable node (plus 2 saddles). $\checkmark$
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/two_saddles_stable_unstable.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Two Saddle-Nodes, One Stable Node, One Unstable Node</figcaption>
+</figure>
+
+</div>
+
 ## Lecture 2
 
 ### Decoupling Technique
@@ -1539,10 +1629,10 @@ However, if you observe carefully, you will notice there are two specific ways y
   
 These hidden, pure patterns are called **Normal Modes**. In these specific patterns, the complex system acts like a simple, single entity.
 
-  <figure>
-    <img src="{{ '/assets/images/notes/dynamical-systems/Two-pendulums-connected-by-a-spring.png' | relative_url }}" alt="a" loading="lazy">
-    <figcaption>Two pendulums connected by a spring.</figcaption>
-  </figure>
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/Two-pendulums-connected-by-a-spring.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Two pendulums connected by a spring.</figcaption>
+</figure>
 
 </div>
 
@@ -4071,7 +4161,7 @@ Homoclinic and heteroclinic orbits are of fundamental importance in the study of
 
 * **Structural Skeletons:** These orbits act as organizing centers or "skeletons" for the dynamics in phase space.
 * **Indicators of Chaos:** The existence of a homoclinic orbit, in particular, is often a strong indicator—almost a guarantee—that the system exhibits chaotic behavior. We will explore this connection in greater detail later.
-* **Separatrix Cycles:** Structures built from sequences of heteroclinic (and sometimes homoclinic) orbits are called separatrix cycles. These cycles can create boundaries in the phase space that separate regions of qualitatively different behavior.
+* **Separatrixs:** Structures built from sequences of heteroclinic (and sometimes homoclinic) orbits are called separatrix cycles. These cycles can create boundaries in the phase space that separate regions of qualitatively different behavior.
 
 </div>
 
@@ -4797,10 +4887,10 @@ There was a subtle but critical point regarding the definition of manifolds, spe
 
 Let us clarify the nature of a manifold with respect to its own dimensionality versus its embedding in a higher-dimensional ambient space.
 
-* A Manifold is Locally an Open Set: When we say a manifold is an "open set," we are speaking locally and with respect to its own dimension. At any point $p$ on a $k$-dimensional manifold, one can always find a $k$-dimensional neighborhood around $p$ that contains only other points from the manifold. This neighborhood is homeomorphic to a $k$-dimensional open Euclidean ball.
-  * Example: Consider a 1D limit cycle (a closed orbit) living in a 2D state space. If you pick any point on this circular manifold, you can always find a small 1D line segment (an open interval) around it that is entirely contained within the manifold.
-* A Manifold is a Closed Set in its Ambient Space: When viewed from the perspective of the higher-dimensional space it resides in (the "ambient space"), the manifold is a closed set.
-  * Example: For the same 1D limit cycle in 2D space, you cannot draw a 2D open ball around any point on the cycle that is completely contained within the manifold. Any such 2D ball will inevitably contain points from the surrounding 2D space that are not on the 1D limit cycle. Therefore, with respect to the 2D topology, the limit cycle is a closed set.
+* **A Manifold is Locally an Open Set:** When we say a manifold is an "open set," we are speaking locally and with respect to its own dimension. At any point $p$ on a $k$-dimensional manifold, one can always find a $k$-dimensional neighborhood around $p$ that contains only other points from the manifold. This neighborhood is homeomorphic to a $k$-dimensional open Euclidean ball.
+  * **Example:** Consider a 1D limit cycle (a closed orbit) living in a 2D state space. If you pick any point on this circular manifold, you can always find a small 1D line segment (an open interval) around it that is entirely contained within the manifold.
+* **A Manifold is a Closed Set in its Ambient Space:** When viewed from the perspective of the higher-dimensional space it resides in (the "ambient space"), the manifold is a closed set.
+  * **Example:** For the same 1D limit cycle in 2D space, you cannot draw a 2D open ball around any point on the cycle that is completely contained within the manifold. Any such 2D ball will inevitably contain points from the surrounding 2D space that are not on the 1D limit cycle. Therefore, with respect to the 2D topology, the limit cycle is a closed set.
 
 This distinction is crucial for a precise understanding of the geometric structures that govern system dynamics.
 
@@ -5449,6 +5539,43 @@ Just like fixed points, limit cycles can be classified by their stability. The s
   <img src="{{ '/assets/images/notes/dynamical-systems/stable_unstable_halfstable_limit_cycle.png' | relative_url }}" alt="a" loading="lazy">
   <!-- <figcaption>One-parameter family of closed orbits</figcaption> -->
 </figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Half-Stable "Saddle" Cycle Around the Origin)</span></p>
+
+Consider the following system in 
+
+**In Polar:**
+
+$$
+\begin{cases}
+\dot{r} = r(r^2 - 1)^2 \\
+\dot{\theta} = 1
+\end{cases}
+$$
+
+**In Cartesian:**
+
+$$
+\begin{cases}
+\dot{x} = (x^2 + y^2 - 1)^2 x - y \\
+\dot{y} = (x^2 + y^2 - 1)^2 y + x
+\end{cases}
+$$
+
+**Properties:**
+- **$r = 1$ is a cycle**: $\dot{r}|_{r=1} = 1 \cdot 0 = 0$ and $\dot{\theta} = 1 > 0$ (counter-clockwise rotation).
+- **Half-stable**: For $r < 1$: $(r^2-1)^2 > 0$, so $\dot{r} > 0$ (approach from inside). For $r > 1$: $(r^2-1)^2 > 0$, so $\dot{r} > 0$ (repel from outside).
+- **Origin is the only FP**: At $(0,0)$, $\dot{x} = 0, \dot{y} = 0$. The origin has $J = [[1,-1],[1,1]]$, eigenvalues $1 \pm i$ (unstable spiral).
+
+> The cycle is **semistable**: attracting from inside, repelling from outside.
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/half_stable_cycle.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Half-Stable "Saddle" Cycle Around the Origin</figcaption>
+</figure>
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
@@ -16684,190 +16811,10 @@ Because Neural ODEs run in continuous time, they can simply integrate the state 
 
 </div>
 
-#### Training Neural ODEs
-
-To train these systems, we treat the state transitions as an integration problem.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Neural ODE State Integration)</span></p>
-
-We define the state of the system as $z(t)$. To find the state at time $t_1$ given an initial state at $t_0$, we integrate the vector field $f$:
-
-$$z(t_1) = z(t_0) + \int_{t_0}^{t_1} f(z(\tau), \tau, \theta)\, d\tau$$
-
-where $f$ can be any differentiable function, such as a deep neural network or a convolutional neural network.
-
-</div>
-
-<figure>
-  <img src="{{ '/assets/images/notes/dynamical-systems/neuralODE.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
-  <figcaption>Left: A Residual network defines a discrete sequence of finite transformations. Right: A ODE network defines a vector field, which continuously transforms the state. Both: Circles represent evaluation locations.</figcaption>
-</figure>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function)</span></p>
-
-The loss function $L$ is calculated based on observations $\mathbf{x}$ at specific time points $t_i$. It is the sum of the differences between the observations and the decoded latent states $h(t_i)$:
-
-$$L = \sum_{i} \text{Loss}(x(t_i), \text{decoder}(h(t_i)))$$
-
-$$L = \sum_{i} \|x(t_i) - Bh(t_i)\|_2^2$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training via Adjoint Sensitivity)</span></p>
-
-Standard gradient descent would require backpropagating through every operation of the numerical ODE solver. This is problematic because it is computationally expensive and restricts the choice of solver (especially for implicit solvers). To solve this, we treat the ODE solver as a black box and use the **Adjoint Sensitivity Method** (a technique dating back to the 1960s), which allows for a "reverse mode automatic differentiation" that is much more flexible and efficient.
-
-</div>
-
-### The Adjoint Sensitivity Method
-
-In the study of dynamical systems, particularly when integrated with machine learning (such as Neural ODEs), we often need to compute the gradient of a loss function with respect to the parameters of a vector field. This process is essentially a continuous-time version of Backpropagation Through Time (BPTT).
-
-Instead of unwrapping a discrete neural network into layers, we consider a state $z(t)$ that evolves according to a differential equation defined by a vector field $f_\theta(z, t)$. To perform gradient descent on the parameters $\theta$, we require the derivative of the loss $L$ with respect to $\theta$. This is achieved through the Adjoint Sensitivity Method.
-
-#### The Adjoint State
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Adjoint State)</span></p>
-
-The **adjoint state** $a(t)$ is defined as the partial derivative of the loss function $L$ with respect to the state $z$ at time $t$:
-
-$$a(t) = \frac{\partial L}{\partial z(t)}$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Physical Intuition)</span></p>
-
-The adjoint can be thought of as an "error signal" that we propagate backward in time. Just as standard backpropagation uses the chain rule to send gradients from the output layer back to the input, the adjoint method uses a differential equation to move the gradient from the final time $t_1$ back to the initial time $t_0$.
-
-</div>
-
-#### Derivation of the Adjoint Differential Equation
-
-To use the adjoint in a computational framework, we must define how it evolves over time. It turns out that $a(t)$ follows its own differential equation, which depends on the Jacobian of the system's vector field.
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Adjoint ODE)</span></p>
-
-The dynamics of the adjoint state $a(t)$ are governed by the following linear differential equation:
-
-$$\frac{da(t)}{dt} = -a(t)^\top \frac{\partial f_\theta(z, t)}{\partial z}$$
-
-where $\frac{\partial f_\theta}{\partial z}$ is the Jacobian of the vector field with respect to the state $z$.
-
-</div>
-
-<details class="accordion" markdown="1">
-<summary>Proof: Derivation via Limit Definition</summary>
-
-We derive this by considering the recursion of the state in a small time step $\epsilon$ and applying the chain rule, then taking the limit as $\epsilon \to 0$.
-
-1. **State Evolution:** Assume we have a state at time $t + \epsilon$. By integrating the ODE 
-   
-   $$z' = f_\theta(z, t)$$
-   
-   we can approximate the state as:
-
-   $$z(t + \epsilon) = z(t) + \int_{t}^{t+\epsilon} f_\theta(z, t)\, dt \approx z(t) + \epsilon f_\theta(z(t), t)$$
-
-   We define this mapping as $T_\epsilon(z(t))$.
-
-2. **Chain Rule Recursion:** In the spirit of backpropagation, the derivative of the loss with respect to the state at time $t$ depends on the state at $t + \epsilon$:
-
-   $$\frac{\partial L}{\partial z(t)} = \frac{\partial L}{\partial z(t + \epsilon)} \frac{\partial z(t + \epsilon)}{\partial z(t)}$$
-
-   Substituting the definition of the adjoint $a(t)$:
-
-   $$a(t) = a(t + \epsilon) \frac{\partial T_\epsilon(z(t))}{\partial z(t)}$$
-
-3. **Applying the Derivative:** Using our Taylor approximation 
-   
-   $$T_\epsilon(z(t)) \approx z(t) + \epsilon f_\theta(z, t)$$
-
-   we take the derivative with respect to $z(t)$:
-
-   $$\frac{\partial T_\epsilon(z(t))}{\partial z(t)} = I + \epsilon \frac{\partial f_\theta(z, t)}{\partial z} + O(\epsilon^2)$$
-
-   where $I$ is the identity matrix.
-
-4. **Forming the Difference Quotient:**
-
-   $$a(t) = a(t + \epsilon) \left( I + \epsilon \frac{\partial f_\theta}{\partial z} + O(\epsilon^2) \right)$$
-
-   $$a(t) = a(t + \epsilon) + \epsilon\, a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon^2)$$
-
-   Rearranging to find the change in $a$ over time:
-
-   $$\frac{a(t + \epsilon) - a(t)}{\epsilon} = -a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon)$$
-
-5. **Taking the Limit:** As $\epsilon \to 0$, the left side becomes the derivative $\frac{da}{dt}$, and $a(t + \epsilon)$ becomes $a(t)$:
-
-   $$\frac{da(t)}{dt} = -a(t) \frac{\partial f_\theta(z, t)}{\partial z}$$
-
-   The negative sign arises because we are looking at the change in the reverse direction relative to the standard derivative definition.
-
-</details>
-
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/neuralODE_results.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
   <figcaption>(a): Reconstruction and extrapolation of spirals with irregular time points by a recurrent neural network. (b): Reconstructions and extrapolations by a latent neural ODE. Blue curve shows model prediction. Red shows extrapolation. (c) A projection of inferred 4-dimensional latent ODE trajectories onto their first two dimensions. Color indicates the direction of the corresponding trajectory. The model has learned latent dynamics which distinguishes the two directions.</figcaption>
 </figure>
-
-
-#### Gradient Computation and Augmented States
-
-The primary goal is to find $\frac{dL}{d\theta}$ to update our parameters. This is calculated by integrating the relationship between the adjoint and the vector field's sensitivity to parameters over time.
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Parameter Gradient)</span></p>
-
-The derivative of the loss with respect to the parameters $\theta$ is given by the integral:
-
-$$\frac{dL}{d\theta} = -\int_{t_1}^{t_0} a(t)^\top \frac{\partial f_\theta(z, t)}{\partial \theta}\, dt$$
-
-This integration is performed backward in time from the final state $t_1$ to the initial state $t_0$, which is referred to as reverse mode differentiation.
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented State)</span></p>
-
-To solve for the state $z$, the adjoint $a$, and the parameter gradients $\frac{dL}{d\theta}$ simultaneously, we construct an augmented state. This is a mathematical trick to treat parameters as part of the dynamical system:
-
-$$z_{\text{aug}} = \begin{bmatrix} z \\ \theta \end{bmatrix}$$
-
-</div>
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented Vector Field)</span></p>
-
-The augmented vector field $f_{\text{aug}}$ describes the dynamics of the augmented state:
-
-$$f_{\text{aug}}(z, \theta, t) = \begin{bmatrix} f_\theta(z, t) \\ 0 \end{bmatrix}$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dynamics of Parameters)</span></p>
-
-In the augmented vector field, the second component is $0$ because the parameters $\theta$ do not depend on time ($\frac{d\theta}{dt} = 0$). By concatenating these, we can use a single ODE solver to integrate the entire system—states and adjoints—jointly across the time interval.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Augmented Adjoint)</span></p>
-
-Just as we augmented the state, we can augment the adjoint to include $a_\theta$, which corresponds to $\frac{\partial L}{\partial \theta}$. The augmented adjoint $a_{\text{aug}}$ is:
-
-$$a_{\text{aug}} = \begin{bmatrix} a \\ a_\theta \end{bmatrix}$$
-
-By applying the adjoint ODE formula to the augmented system, we can derive the full set of differential equations required to solve the gradient descent step in one backward pass.
-
-</div>
 
 ### A generative latent function time-series model using NeuralODE
 
@@ -17004,6 +16951,185 @@ A Poisson process likelihood on observation times can be combined with a data li
   <img src="{{ '/assets/images/notes/dynamical-systems/latent_neuralODE_poisson_process.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
   <figcaption>Fitting a latent ODE dynamics model with a Poisson process likelihood. Dots show event times. The line is the learned intensity $\lambda(t)$ of the Poisson process.</figcaption>
 </figure>
+
+#### Training Neural ODEs
+
+To train these systems, we treat the state transitions as an integration problem.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Neural ODE State Integration)</span></p>
+
+We define the state of the system as $z(t)$. To find the state at time $t_1$ given an initial state at $t_0$, we integrate the vector field $f$:
+
+$$z(t_1) = z(t_0) + \int_{t_0}^{t_1} f(z(\tau), \tau, \theta)\, d\tau$$
+
+where $f$ can be any differentiable function, such as a deep neural network or a convolutional neural network.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/neuralODE.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Left: A Residual network defines a discrete sequence of finite transformations. Right: A ODE network defines a vector field, which continuously transforms the state. Both: Circles represent evaluation locations.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Loss Function)</span></p>
+
+The loss function $L$ is calculated based on observations $\mathbf{x}$ at specific time points $t_i$. It is the sum of the differences between the observations and the decoded latent states $h(t_i)$:
+
+$$L = \sum_{i} \text{Loss}(x(t_i), \text{decoder}(h(t_i)))$$
+
+$$L = \sum_{i} \|x(t_i) - Bh(t_i)\|_2^2$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Training via Adjoint Sensitivity)</span></p>
+
+Standard gradient descent would require backpropagating through every operation of the numerical ODE solver. This is problematic because it is computationally expensive and restricts the choice of solver (especially for implicit solvers). To solve this, we treat the ODE solver as a black box and use the **Adjoint Sensitivity Method** (a technique dating back to the 1960s), which allows for a "reverse mode automatic differentiation" that is much more flexible and efficient.
+
+</div>
+
+### The Adjoint Sensitivity Method
+
+In the study of dynamical systems, particularly when integrated with machine learning (such as Neural ODEs), we often need to compute the gradient of a loss function with respect to the parameters of a vector field. This process is essentially a continuous-time version of Backpropagation Through Time (BPTT).
+
+Instead of unwrapping a discrete neural network into layers, we consider a state $z(t)$ that evolves according to a differential equation defined by a vector field $f_\theta(z, t)$. To perform gradient descent on the parameters $\theta$, we require the derivative of the loss $L$ with respect to $\theta$. This is achieved through the Adjoint Sensitivity Method.
+
+#### The Adjoint State
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(The Adjoint State)</span></p>
+
+The **adjoint state** $a(t)$ is defined as the partial derivative of the loss function $L$ with respect to the state $z$ at time $t$:
+
+$$a(t) = \frac{\partial L}{\partial z(t)}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Physical Intuition)</span></p>
+
+The adjoint can be thought of as an "error signal" that we propagate backward in time. Just as standard backpropagation uses the chain rule to send gradients from the output layer back to the input, the adjoint method uses a differential equation to move the gradient from the final time $t_1$ back to the initial time $t_0$.
+
+</div>
+
+#### Derivation of the Adjoint Differential Equation
+
+To use the adjoint in a computational framework, we must define how it evolves over time. It turns out that $a(t)$ follows its own differential equation, which depends on the Jacobian of the system's vector field.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The Adjoint ODE)</span></p>
+
+The dynamics of the adjoint state $a(t)$ are governed by the following linear differential equation:
+
+$$\frac{da(t)}{dt} = -a(t)^\top \frac{\partial f_\theta(z, t)}{\partial z}$$
+
+where $\frac{\partial f_\theta}{\partial z}$ is the Jacobian of the vector field with respect to the state $z$.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Proof: Derivation via Limit Definition</summary>
+
+We derive this by considering the recursion of the state in a small time step $\epsilon$ and applying the chain rule, then taking the limit as $\epsilon \to 0$.
+
+1. **State Evolution:** Assume we have a state at time $t + \epsilon$. By integrating the ODE 
+   
+   $$z' = f_\theta(z, t)$$
+   
+   we can approximate the state as:
+
+   $$z(t + \epsilon) = z(t) + \int_{t}^{t+\epsilon} f_\theta(z, t)\, dt \approx z(t) + \epsilon f_\theta(z(t), t)$$
+
+   We define this mapping as $T_\epsilon(z(t))$.
+
+2. **Chain Rule Recursion:** In the spirit of backpropagation, the derivative of the loss with respect to the state at time $t$ depends on the state at $t + \epsilon$:
+
+   $$\frac{\partial L}{\partial z(t)} = \frac{\partial L}{\partial z(t + \epsilon)} \frac{\partial z(t + \epsilon)}{\partial z(t)}$$
+
+   Substituting the definition of the adjoint $a(t)$:
+
+   $$a(t) = a(t + \epsilon) \frac{\partial T_\epsilon(z(t))}{\partial z(t)}$$
+
+3. **Applying the Derivative:** Using our Taylor approximation 
+   
+   $$T_\epsilon(z(t)) \approx z(t) + \epsilon f_\theta(z, t)$$
+
+   we take the derivative with respect to $z(t)$:
+
+   $$\frac{\partial T_\epsilon(z(t))}{\partial z(t)} = I + \epsilon \frac{\partial f_\theta(z, t)}{\partial z} + O(\epsilon^2)$$
+
+   where $I$ is the identity matrix.
+
+4. **Forming the Difference Quotient:**
+
+   $$a(t) = a(t + \epsilon) \left( I + \epsilon \frac{\partial f_\theta}{\partial z} + O(\epsilon^2) \right)$$
+
+   $$a(t) = a(t + \epsilon) + \epsilon\, a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon^2)$$
+
+   Rearranging to find the change in $a$ over time:
+
+   $$\frac{a(t + \epsilon) - a(t)}{\epsilon} = -a(t + \epsilon) \frac{\partial f_\theta}{\partial z} + O(\epsilon)$$
+
+5. **Taking the Limit:** As $\epsilon \to 0$, the left side becomes the derivative $\frac{da}{dt}$, and $a(t + \epsilon)$ becomes $a(t)$:
+
+   $$\frac{da(t)}{dt} = -a(t) \frac{\partial f_\theta(z, t)}{\partial z}$$
+
+   The negative sign arises because we are looking at the change in the reverse direction relative to the standard derivative definition.
+
+</details>
+
+#### Gradient Computation and Augmented States
+
+The primary goal is to find $\frac{dL}{d\theta}$ to update our parameters. This is calculated by integrating the relationship between the adjoint and the vector field's sensitivity to parameters over time.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Parameter Gradient)</span></p>
+
+The derivative of the loss with respect to the parameters $\theta$ is given by the integral:
+
+$$\frac{dL}{d\theta} = -\int_{t_1}^{t_0} a(t)^\top \frac{\partial f_\theta(z, t)}{\partial \theta}\, dt$$
+
+This integration is performed backward in time from the final state $t_1$ to the initial state $t_0$, which is referred to as reverse mode differentiation.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented State)</span></p>
+
+To solve for the state $z$, the adjoint $a$, and the parameter gradients $\frac{dL}{d\theta}$ simultaneously, we construct an augmented state. This is a mathematical trick to treat parameters as part of the dynamical system:
+
+$$z_{\text{aug}} = \begin{bmatrix} z \\ \theta \end{bmatrix}$$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented Vector Field)</span></p>
+
+The augmented vector field $f_{\text{aug}}$ describes the dynamics of the augmented state:
+
+$$f_{\text{aug}}(z, \theta, t) = \begin{bmatrix} f_\theta(z, t) \\ 0 \end{bmatrix}$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Dynamics of Parameters)</span></p>
+
+In the augmented vector field, the second component is $0$ because the parameters $\theta$ do not depend on time ($\frac{d\theta}{dt} = 0$). By concatenating these, we can use a single ODE solver to integrate the entire system—states and adjoints—jointly across the time interval.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The Augmented Adjoint)</span></p>
+
+Just as we augmented the state, we can augment the adjoint to include $a_\theta$, which corresponds to $\frac{\partial L}{\partial \theta}$. The augmented adjoint $a_{\text{aug}}$ is:
+
+$$a_{\text{aug}} = \begin{bmatrix} a \\ a_\theta \end{bmatrix}$$
+
+By applying the adjoint ODE formula to the augmented system, we can derive the full set of differential equations required to solve the gradient descent step in one backward pass.
+
+</div>
 
 #### Formal Derivation: Augmented Vector Field Jacobian
 
