@@ -14343,6 +14343,12 @@ To find the fixed point $z^\ast$, we assume the system has settled into a specif
 
 While the above formula provides a candidate for a fixed point, it is not purely analytical. One must verify that the resulting $z^\ast$ is **consistent** with the matrix $D^\ast$. That is, the signs of the components of the calculated $z^\ast$ must actually produce the diagonal entries of $D^\ast$ used in the calculation.
 
+The reason is that $D^\ast$ is **not a free parameter** — it is determined by $z^\ast$ itself. Recall that $D^\ast_{ii} = 1$ if $z^\ast_i > 0$ and $D^\ast_{ii} = 0$ if $z^\ast_i \leq 0$, which creates a circular dependency: to solve for $z^\ast$ we need $D^\ast$, but to know $D^\ast$ we need $z^\ast$.
+
+The formula $(I - A - WD^\ast)^{-1} h$ resolves this by **guessing** a region (i.e., a particular $D^\ast$) and solving the corresponding affine system. However, the PLRNN partitions state space into $2^M$ regions, each defined by which components of $z$ are positive or negative, and in each region the system is governed by a **different** affine map. The candidate $z^\ast$ is only a true fixed point if it lies inside the region where the assumed map actually applies.
+
+For instance, if we assume $D^\ast_{ii} = 0$ (i.e., $z^\ast_i \leq 0$), but the solution yields $z^\ast_i > 0$, then in the real system $\max(0, z^\ast_i) = z^\ast_i \neq 0$, meaning the ReLU is active for component $i$. The actual dynamics at that point use $D_{ii} = 1$, not $0$, so the equation we solved does not govern the system at the computed $z^\ast$. Iterating the true map from this candidate would not return $z^\ast$ — it is a fixed point of a neighboring affine map, not of the PLRNN itself.
+
 </div>
 
 ### Fixed Points and Periodic Orbits in RNNs
@@ -14431,6 +14437,56 @@ A highly efficient heuristic for finding fixed points and cycles involves the fo
 2. **Candidate Computation:** Solve the affine equation to find a candidate solution $Z^*$ (a "virtual" fixed point).
 3. **Consistency Check:** Verify if the signs of $Z^*$ match the configuration $D$.
 4. **Update:** If inconsistent, use the configuration $D$ derived from the current $Z^*$ to initialize the next round.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition Behind the Heuristic)</span></p>
+
+The problem we had before is: finding a fixed point requires knowing $D^*$, which requires knowing $z^*$, which requires knowing $D^*$ — a chicken-and-egg problem. And brute-forcing all $2^m$ configurations is intractable.
+
+The heuristic resolves this by turning it into an iterative refinement:
+
+1. Guess any $D$ (e.g., all ones, or random).
+2. Solve $(I - A - WD)^{-1}h = z^*$. This $z^*$ is called "virtual" because it's almost certainly not a true fixed point — it lives in the wrong region of state space (its signs don't match the $D$ we assumed).
+3. Read off the signs of $z^*$ to get a new $D'$: set $D'_{ii} = 1$ where $z^*_i > 0$, and $0$ otherwise.
+4. Repeat with $D'$: solve again, check signs again.
+
+If at any step the signs of $z^*$ match the $D$ used to compute it, you've found a true fixed point. The "virtual" points along the way are not fixed points — they're guideposts that tell you which region to look in next.
+
+The intuition is: even though $z^*$ is wrong, it "knows something" about where the true fixed point is. Its signs point toward the correct region, so each iteration corrects the configuration. Instead of blindly searching $2^m$ regions, the system steers itself.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Termination Condition)</span></p>
+
+The algorithm does not run for a fixed number of iterations. It repeats until one of two outcomes:
+
+- **Convergence:** the signs of the computed $z^\ast$ match the configuration $D$ used to produce it, meaning a true fixed point has been found.
+- **Failure:** the algorithm cycles between configurations without settling, or a maximum iteration limit is reached.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Fixed Points vs. $k$-Cycles)</span></p>
+
+As stated, the algorithm solves $(I - A - WD)^{-1} h$ for a candidate $z^\ast$, which is the fixed point equation for the **single-step** map. This finds **1-cycles** (fixed points) only. To find a $k$-cycle, one must apply the same heuristic to the $k$-times iterated map, which involves guessing a **sequence** of $k$ configuration matrices $(D_{t-1}, \dots, D_{t-k})$ rather than a single $D$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Refinement for $k$-Cycles)</span></p>
+
+Extending the heuristic to $k$-cycles raises the question of how to refine all $k$ matrices simultaneously, since solving the $k$-iterated fixed point equation yields only **one** cycle point $Z_1^\ast$. The answer is to **forward-propagate** through the single-step map to recover all intermediate states:
+
+$$Z_2^\ast = (A + W D_1)\, Z_1^\ast + h, \quad Z_3^\ast = (A + W D_2)\, Z_2^\ast + h, \quad \dots, \quad Z_1^\ast = (A + W D_k)\, Z_k^\ast + h$$
+
+With all $k$ states in hand, each matrix is updated from its corresponding state:
+
+$$D_j \leftarrow \operatorname{signs}(Z_j^\ast) \quad \text{for } j = 1, \dots, k$$
+
+The procedure then repeats: solve the $k$-iterated fixed point equation with the updated sequence $(D_1, \dots, D_k)$, forward-propagate to obtain all cycle points, check consistency for every pair $(Z_j^\ast, D_j)$, and update if needed.
 
 </div>
 
