@@ -3984,7 +3984,7 @@ An **equilibrium point $x_0$ is asymptotically stable** if:
 1. It is stable.
 2. There exists a neighborhood $\mathcal{W}$ of $x_0$ such that every trajectory starting in $\mathcal{W}$ converges to $x_0$ as time goes to infinity.
 
-Formally: It is stable, and there exists $a \eta > 0$ such that if $\lvert x - x_0\rvert < \eta$, then
+Formally: It is stable, and there exists $\eta > 0$ such that if $\lvert x - x_0\rvert < \eta$, then
 
 $$\lim_{t \to \infty} \phi_t(x) = x_0$$
 
@@ -5602,7 +5602,7 @@ $$
 $$
 
 **Properties:**
-- **$r = 1$ is a cycle**: $\dot{r}|_{r=1} = 1 \cdot 0 = 0$ and $\dot{\theta} = 1 > 0$ (counter-clockwise rotation).
+- **$r = 1$ is a cycle**: $\dot{r}\lvert_{r=1} = 1 \cdot 0 = 0$ and $\dot{\theta} = 1 > 0$ (counter-clockwise rotation).
 - **Half-stable**: For $r < 1$: $(r^2-1)^2 > 0$, so $\dot{r} > 0$ (approach from inside). For $r > 1$: $(r^2-1)^2 > 0$, so $\dot{r} > 0$ (repel from outside).
 - **Origin is the only FP**: At $(0,0)$, $\dot{x} = 0, \dot{y} = 0$. The origin has $J = [[1,-1],[1,1]]$, eigenvalues $1 \pm i$ (unstable spiral).
 
@@ -9280,6 +9280,23 @@ The trajectory of the eigenvalues in the complex plane as a control parameter is
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Formal Conditions for the Hopf Bifurcation)</span></p>
+
+Having one pair of complex conjugate eigenvalues cross the imaginary axis is **necessary** but **not sufficient** for a Hopf bifurcation. The full set of conditions required by the Hopf bifurcation theorem is:
+
+1. **Purely imaginary pair:** At the critical parameter value $\mu_c$, the Jacobian has a pair of eigenvalues $\lambda(\mu_c) = \pm i\omega$ with $\omega \neq 0$.
+
+2. **Transversality condition:** The eigenvalues must genuinely **cross** the imaginary axis, not merely touch it and turn back. Formally:
+
+   $$\frac{d}{d\mu} \operatorname{Re}(\lambda(\mu)) \bigg|_{\mu = \mu_c} \neq 0$$
+
+3. **All other eigenvalues in the left half-plane:** In a system of dimension $n > 2$, the remaining $n - 2$ eigenvalues must have strictly negative real parts at $\mu = \mu_c$. If another eigenvalue is also on or past the imaginary axis, the result is a more complicated (possibly codimension-2) bifurcation, not a standard Hopf.
+
+4. **Non-degeneracy (first Lyapunov coefficient):** The first Lyapunov coefficient $\ell_1 \neq 0$. This nonlinear condition determines whether the bifurcation is supercritical ($\ell_1 < 0$, stable limit cycle born) or subcritical ($\ell_1 > 0$, unstable limit cycle disappears). If $\ell_1 = 0$, the bifurcation is degenerate and higher-order terms must be analyzed.
+
+</div>
+
 #### The Supercritical Hopf Bifurcation
 
 The supercritical Hopf bifurcation is characterized by a smooth, gradual onset of oscillation.
@@ -9869,14 +9886,13 @@ Critical transitions induced by a saddle-node bifurcation (Source: Lenton 2011).
   <figcaption>Hysteresis in the subcritical Hopf bifurcation. <span style="color:#c62828;">Red arrows</span>: increasing $\mu$, the system stays at the stable equilibrium until $\mu = 0$, where it jumps to the large-amplitude stable limit cycle. <span style="color:#1565C0;">Blue arrows</span>: decreasing $\mu$, the system remains on the large limit cycle past $\mu = 0$ and only drops back to the equilibrium at $\mu_s$, where the stable and unstable limit cycles annihilate in a saddle-node bifurcation of cycles. The bistable region $\mu_s < \mu < 0$ is where both attractors coexist.</figcaption>
 </figure>
 
-
 <div class="gd-grid">
 <figure>
   <img src="{{ '/assets/images/notes/dynamical-systems/SubcriticalHopfBifurcationWithHysteresis.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
   <figcaption>Subcritical Hopf bifurcation with hysteresis</figcaption>
 </figure>
 <figure>
-  <img src="{{ '/assets/images/notes/dynamical-systems/hopf_supercritical_hopf_subcritical.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
+  <img src="{{ '/assets/images/notes/dynamical-systems/3DSubcriticalHopfBifurcationWithHysteresis.png' | relative_url }}" alt="Discontinuous derivative at 0" loading="lazy">
   <figcaption>3D subcritical Hopf bifurcation with hysteresis</figcaption>
 </figure>
 </div>
@@ -13956,26 +13972,6 @@ $$\sigma(y) = \frac{1}{1 + e^{-y}}$$
   <img src="{{ '/assets/images/notes/dynamical-systems/lstm_straka_deep_learning.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
 </figure>
 
-##### The Final Output
-
-The final output of the LSTM cell at time step $t$, denoted as $z_t$, is a filtered version of the memory cell state $c_t$.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Final Output)</span></p>
-
-The **total output** $z_t$ is computed by passing the memory cell state through a $\tanh$ function and then multiplying it pointwise by the output gate's activation:
-
-$$z_t = o_t \odot \tanh(c_t)$$
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Output Gate Intuition)</span></p>
-
-This mechanism allows the network to control what part of its internal memory is exposed to the next layer or the next time step. The $\tanh$ function squashes the values of the memory cell to be between $-1$ and $1$, and the output gate $o_t$ then decides which of these values are relevant to pass on as the final output.
-
-</div>
-
 #### Fundamental Design Principles of LSTMs
 
 The specific architectural choices in the LSTM are not arbitrary; they embody two crucial principles for processing sequential data: linearity and gating.
@@ -14706,7 +14702,7 @@ We wish to find the Jacobian of the state $\tilde{z}\_t$ with respect to the sta
 
 1. Start with the GTF definition: 
    
-   $$\tilde{z}_t = (1 - \alpha)\, f_\theta(\tilde{z}_{t-1}) + \alpha\, \hat{z}\_t$$
+   $$\tilde{z}_t = (1 - \alpha)\, f_\theta(\tilde{z}_{t-1}) + \alpha\, \hat{z}_t$$
 
 2. Differentiate $\tilde{z}\_t$ with respect to $\tilde{z}\_{t-1}$. Note that $\hat{z}\_t$ (the data estimate) is independent of the model’s previous state $\tilde{z}\_{t-1}$, so its derivative is zero.
 3. Apply the chain rule to the first term:
@@ -17558,7 +17554,7 @@ This integration is performed backward in time from the final state $t_1$ to the
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented State)</span></p>
 
-To solve for the state $z$, the adjoint $a$, and the parameter gradients $\frac{dL}{d\theta}$ simultaneously, we construct an augmented state. This is a mathematical trick to treat parameters as part of the dynamical system:
+To solve for the state $z$, the adjoint $a$, and the parameter gradients $\frac{dL}{d\theta}$ simultaneously, we construct an **augmented state**. This is a mathematical trick to treat parameters as part of the dynamical system:
 
 $$z_{\text{aug}} = \begin{bmatrix} z \\ \theta \end{bmatrix}$$
 
@@ -17567,7 +17563,7 @@ $$z_{\text{aug}} = \begin{bmatrix} z \\ \theta \end{bmatrix}$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented Vector Field)</span></p>
 
-The augmented vector field $f_{\text{aug}}$ describes the dynamics of the augmented state:
+The **augmented vector field** $f_{\text{aug}}$ describes the dynamics of the augmented state:
 
 $$f_{\text{aug}}(z, \theta, t) = \begin{bmatrix} f_\theta(z, t) \\ 0 \end{bmatrix}$$
 
@@ -17598,7 +17594,7 @@ The Adjoint Sensitivity Method allows us to compute gradients of a loss function
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Augmented Vector Field Jacobian)</span></p>
 
-To compute gradients in a continuous-time system, we consider an augmented vector field that incorporates both the state $z$ and the parameters $\theta$. The Jacobian of this augmented vector field with respect to the augmented states is defined as:
+To compute gradients in a continuous-time system, we consider an augmented vector field that incorporates both the state $z$ and the parameters $\theta$. The **Jacobian of this augmented vector field** with respect to the augmented states is defined as:
 
 $$J = \begin{pmatrix} \frac{\partial f_\theta}{\partial z} & \frac{\partial f_\theta}{\partial \theta} \\ 0 & 0 \end{pmatrix}$$
 
@@ -17636,6 +17632,13 @@ $$\frac{dL}{d\theta} = -\int_{t_1}^{t_0} a(t)^\top \frac{\partial f_\theta}{\par
    This result allows us to propagate gradients backwards through time in a mathematically rigorous and computationally efficient manner.
 
 </details>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Time Dependence of the Jacobian)</span></p>
+
+The notation $\frac{\partial f_\theta}{\partial \theta}$ in the formula above can be misleading: this Jacobian is **not constant** over time. The full expression is $\frac{\partial f_\theta(z(t), t)}{\partial \theta}$, which depends on $t$ implicitly through the state $z(t)$. Since $z(t)$ changes along the trajectory, the sensitivity of the vector field to the parameters changes at every time point. The Theorem (Parameter Gradient) makes this dependence more explicit by writing $\frac{\partial f_\theta(z, t)}{\partial \theta}$.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition on Continuous Time)</span></p>
