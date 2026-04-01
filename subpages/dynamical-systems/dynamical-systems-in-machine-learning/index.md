@@ -14443,18 +14443,18 @@ A highly efficient heuristic for finding fixed points and cycles involves the fo
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Intuition Behind the Heuristic)</span></p>
 
-The problem we had before is: finding a fixed point requires knowing $D^*$, which requires knowing $z^*$, which requires knowing $D^*$ — a chicken-and-egg problem. And brute-forcing all $2^m$ configurations is intractable.
+The problem we had before is: finding a fixed point requires knowing $D^\ast$, which requires knowing $z^\ast$, which requires knowing $D^\ast$ — a chicken-and-egg problem. And brute-forcing all $2^m$ configurations is intractable.
 
 The heuristic resolves this by turning it into an iterative refinement:
 
 1. Guess any $D$ (e.g., all ones, or random).
-2. Solve $(I - A - WD)^{-1}h = z^*$. This $z^*$ is called "virtual" because it's almost certainly not a true fixed point — it lives in the wrong region of state space (its signs don't match the $D$ we assumed).
-3. Read off the signs of $z^*$ to get a new $D'$: set $D'_{ii} = 1$ where $z^*_i > 0$, and $0$ otherwise.
+2. Solve $(I - A - WD)^{-1}h = z^\ast$. This $z^\ast$ is called "virtual" because it's almost certainly not a true fixed point — it lives in the wrong region of state space (its signs don't match the $D$ we assumed).
+3. Read off the signs of $z^\ast$ to get a new $D'$: set $D'_{ii} = 1$ where $z^\ast_i > 0$, and $0$ otherwise.
 4. Repeat with $D'$: solve again, check signs again.
 
-If at any step the signs of $z^*$ match the $D$ used to compute it, you've found a true fixed point. The "virtual" points along the way are not fixed points — they're guideposts that tell you which region to look in next.
+If at any step the signs of $z^\ast$ match the $D$ used to compute it, you've found a true fixed point. The "virtual" points along the way are not fixed points — they're guideposts that tell you which region to look in next.
 
-The intuition is: even though $z^*$ is wrong, it "knows something" about where the true fixed point is. Its signs point toward the correct region, so each iteration corrects the configuration. Instead of blindly searching $2^m$ regions, the system steers itself.
+The intuition is: even though $z^\ast$ is wrong, it "knows something" about where the true fixed point is. Its signs point toward the correct region, so each iteration corrects the configuration. Instead of blindly searching $2^m$ regions, the system steers itself.
 
 </div>
 
@@ -14556,27 +14556,27 @@ This is visualized in a bifurcation graph where the stable states are plotted as
 
 </div>
 
-<div id="rb-container" style="margin:2em auto;max-width:1060px;">
+<div id="rb-container" style="margin:2em auto;max-width:1260px;">
   <h4 style="text-align:center;margin:0 0 .2em;">Interactive: Pitchfork Bifurcation in a 1-Unit RNN</h4>
   <p style="text-align:center;color:#888;font-size:.82em;margin:0 0 .5em;">
-    \(Z_t = \phi(W Z_{t-1} + h)\) with \(\phi = \tanh\). Drag \(W\) to see the pitchfork at \(W=1\). Use the \(h\) slider to break the symmetry (saddle-node instead of pitchfork).
+    \(Z_t = \sigma(W Z_{t-1} + h)\) with \(\sigma(x)=\frac{1}{1+e^{-x}}\). Increasing \(W\) steepens the sigmoid. At \(W=4\) with \(h=0\) the single fixed point at \(z^*=0.5\) becomes unstable and two new stable fixed points appear (pitchfork). Set \(h\neq0\) to break the symmetry.
   </p>
-  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;">
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
     <div style="text-align:center;">
-      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Cobweb: fixed points of the map</div>
-      <canvas id="rb-cw" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Cobweb: fixed points of the map</div>
+      <canvas id="rb-cw" width="600" height="600" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;"></canvas>
     </div>
     <div style="text-align:center;">
-      <div style="font-size:.82em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (W vs z*)</div>
-      <canvas id="rb-bd" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
+      <div style="font-size:.85em;font-weight:600;margin-bottom:3px;">Bifurcation diagram (W vs z*)</div>
+      <canvas id="rb-bd" width="600" height="600" style="border:1px solid #ddd;border-radius:3px;background:#fff;max-width:100%;cursor:col-resize;"></canvas>
     </div>
   </div>
   <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
     <span style="font-size:.85em;font-family:serif;">W =</span>
-    <input type="range" id="rb-w" min="0" max="4" step="0.01" value="0.8" style="width:220px;">
-    <span id="rb-wv" style="font-size:.85em;font-family:serif;min-width:35px;">0.80</span>
+    <input type="range" id="rb-w" min="0" max="10" step="0.01" value="2" style="width:240px;">
+    <span id="rb-wv" style="font-size:.85em;font-family:serif;min-width:35px;">2.00</span>
     <span style="font-size:.85em;font-family:serif;margin-left:12px;">h =</span>
-    <input type="range" id="rb-h" min="-1" max="1" step="0.01" value="0" style="width:160px;">
+    <input type="range" id="rb-h" min="-2" max="2" step="0.01" value="0" style="width:180px;">
     <span id="rb-hv" style="font-size:.85em;font-family:serif;min-width:35px;">0.00</span>
   </div>
   <div id="rb-info" style="text-align:center;font-size:.82em;margin-top:.4em;font-family:serif;color:#555;"></div>
@@ -14584,8 +14584,8 @@ This is visualized in a bifurcation graph where the stable states are plotted as
 
 <script>
 (function(){
-  var S=500;
-  var W=0.8,h=0,dragBif=false;
+  var S=600;
+  var Wp=2,hp=0,dragBif=false;
 
   var cwC=document.getElementById(‘rb-cw’),bdC=document.getElementById(‘rb-bd’);
   var wS=document.getElementById(‘rb-w’),wV=document.getElementById(‘rb-wv’);
@@ -14594,25 +14594,26 @@ This is visualized in a bifurcation graph where the stable states are plotted as
   function initC(c){c.width=S*dpr;c.height=S*dpr;c.style.width=S+’px’;c.style.height=S+’px’;var x=c.getContext(‘2d’);x.scale(dpr,dpr);return x;}
   var CW=initC(cwC),BD=initC(bdC);
 
-  function phi(x){return Math.tanh(x);}
-  function fmap(z){return phi(W*z+h);}
-  function fmapDeriv(z){var t=Math.tanh(W*z+h);return W*(1-t*t);}
+  // Standard logistic sigmoid σ(x) = 1/(1+e^{-x})
+  function sigma(x){return 1/(1+Math.exp(-x));}
+  function sigmaPrime(x){var s=sigma(x);return s*(1-s);}
+  function fmap(z){return sigma(Wp*z+hp);}
+  function fmapDeriv(z){return Wp*sigmaPrime(Wp*z+hp);}
+
   function ln2(c,a,b,d,e){c.beginPath();c.moveTo(a,b);c.lineTo(d,e);c.stroke();}
   function circ(c,x,y,r,f){c.beginPath();c.arc(x,y,r,0,Math.PI*2);if(f)c.fill();else c.stroke();}
 
-  // Find fixed points by scanning f(z)-z sign changes, then Newton
   function findFP(){
-    var fps=[];
-    var N=400,prev=fmap(-1.5)-(-1.5);
-    for(var i=1;i<=N;i++){
-      var z=-1.5+3*i/N,val=fmap(z)-z;
+    var fps=[],N2=500;
+    var zLo=-.1,zHi=1.1;
+    var prev=fmap(zLo)-zLo;
+    for(var i=1;i<=N2;i++){
+      var z=zLo+(zHi-zLo)*i/N2,val=fmap(z)-z;
       if(prev*val<0){
-        // Newton from midpoint
-        var zn=-1.5+3*(i-.5)/N;
-        for(var k=0;k<20;k++){var fv=fmap(zn)-zn,fd=fmapDeriv(zn)-1;if(Math.abs(fd)<1e-12)break;zn-=fv/fd;if(Math.abs(fv)<1e-10)break;}
-        // Check duplicate
-        var dup=false;fps.forEach(function(fp){if(Math.abs(fp.z-zn)<1e-4)dup=true;});
-        if(!dup&&zn>-1.5&&zn<1.5){
+        var zn=zLo+(zHi-zLo)*(i-.5)/N2;
+        for(var k=0;k<30;k++){var fv=fmap(zn)-zn,fd=fmapDeriv(zn)-1;if(Math.abs(fd)<1e-14)break;zn-=fv/fd;if(Math.abs(fv)<1e-12)break;}
+        var dup=false;fps.forEach(function(fp){if(Math.abs(fp.z-zn)<1e-5)dup=true;});
+        if(!dup&&zn>-0.05&&zn<1.05){
           var slope=fmapDeriv(zn);
           fps.push({z:zn,stable:Math.abs(slope)<1-1e-6,slope:slope});
         }
@@ -14623,147 +14624,132 @@ This is visualized in a bifurcation graph where the stable states are plotted as
     return fps;
   }
 
-  // === COBWEB ===
   function drawCobweb(){
     CW.clearRect(0,0,S,S);
-    var PL=35,PR2=10,PT=15,PB=30,Wd=S-PL-PR2,H=S-PT-PB;
-    var zLo=-1.2,zHi=1.2,zR=zHi-zLo;
-    function cx(v){return PL+(v-zLo)/zR*Wd;}
-    function cy(v){return PT+(zHi-v)/zR*H;}
+    var PL=45,PR2=15,PT=20,PB=40,W2=S-PL-PR2,H2=S-PT-PB;
+    var zLo=-.05,zHi=1.05,zR=zHi-zLo;
+    function cx(v){return PL+(v-zLo)/zR*W2;}
+    function cy(v){return PT+(zHi-v)/zR*H2;}
 
-    // Grid
     CW.strokeStyle=’#f0f0f0’;CW.lineWidth=.5;
-    [-1,-.5,.5,1].forEach(function(v){ln2(CW,cx(v),PT,cx(v),PT+H);ln2(CW,PL,cy(v),PL+Wd,cy(v));});
+    [.2,.4,.6,.8,1].forEach(function(v){ln2(CW,cx(v),PT,cx(v),PT+H2);ln2(CW,PL,cy(v),PL+W2,cy(v));});
     CW.strokeStyle=’#81D4FA’;CW.lineWidth=1;
-    ln2(CW,PL,cy(0),PL+Wd,cy(0));ln2(CW,cx(0),PT,cx(0),PT+H);
+    ln2(CW,PL,cy(0),PL+W2,cy(0));ln2(CW,cx(0),PT,cx(0),PT+H2);
 
-    // Bisectrix
+    // Bisectrix y=z
     CW.save();CW.setLineDash([5,3]);CW.strokeStyle=’#FF9800’;CW.lineWidth=1.5;
     ln2(CW,cx(zLo),cy(zLo),cx(zHi),cy(zHi));CW.restore();
 
-    // Sigmoid curve f(z)=tanh(Wz+h)
-    CW.strokeStyle=’#1976D2’;CW.lineWidth=2;CW.beginPath();
-    for(var z=zLo;z<=zHi;z+=.005){var y=fmap(z);if(z<=zLo+.01)CW.moveTo(cx(z),cy(y));else CW.lineTo(cx(z),cy(y));}
+    // Sigmoid curve
+    CW.strokeStyle=’#1976D2’;CW.lineWidth=2.5;CW.beginPath();
+    for(var z=zLo;z<=zHi;z+=.003){var y=fmap(z);if(z<=zLo+.01)CW.moveTo(cx(z),cy(y));else CW.lineTo(cx(z),cy(y));}
     CW.stroke();
 
     // Fixed points
     var fps=findFP();
     fps.forEach(function(fp){
       var px=cx(fp.z),py=cy(fp.z);
-      if(fp.stable){CW.fillStyle=’#4CAF50’;circ(CW,px,py,7,true);CW.strokeStyle=’#2E7D32’;CW.lineWidth=1.5;circ(CW,px,py,7,false);}
-      else{CW.fillStyle=’#F44336’;circ(CW,px,py,7,true);CW.strokeStyle=’#C62828’;CW.lineWidth=1.5;circ(CW,px,py,7,false);}
+      if(fp.stable){CW.fillStyle=’#4CAF50’;circ(CW,px,py,8,true);CW.strokeStyle=’#2E7D32’;CW.lineWidth=2;circ(CW,px,py,8,false);}
+      else{CW.fillStyle=’#F44336’;circ(CW,px,py,8,true);CW.strokeStyle=’#C62828’;CW.lineWidth=2;circ(CW,px,py,8,false);}
     });
 
     // Cobweb from z₀=0.1
-    var z=0.1,nIter=60;
+    var z=0.1,nIter=80;
     CW.strokeStyle=’rgba(50,50,50,0.4)’;CW.lineWidth=1;
-    CW.beginPath();CW.moveTo(cx(z),cy(zLo>.01?zLo:0));
+    CW.beginPath();CW.moveTo(cx(z),cy(0));
     for(var i=0;i<nIter;i++){
-      var y=fmap(z);if(y<zLo-.5||y>zHi+.5)break;
+      var y=fmap(z);if(y<-.5||y>1.5)break;
       CW.lineTo(cx(z),cy(y));CW.lineTo(cx(y),cy(y));z=y;
     }
     CW.stroke();
 
-    // Labels
-    CW.font=’12px "Times New Roman",serif’;CW.fillStyle=’#888’;
-    CW.fillText(‘Z\u209C\u208B\u2081’,S-22,cy(0)+14);CW.fillText(‘Z\u209C’,PL+5,PT-3);
-    CW.font=’9px sans-serif’;CW.fillStyle=’#bbb’;
-    [-1,-.5,.5,1].forEach(function(v){CW.fillText(v.toFixed(1),cx(v)-6,cy(zLo)+13);CW.fillText(v.toFixed(1),2,cy(v)+3);});
-    CW.font=’10px "Times New Roman",serif’;
-    CW.fillStyle=’#1976D2’;CW.fillText(‘\u03C6(W\u00B7z+h)’,PL+3,PT+12);
-    CW.fillStyle=’#FF9800’;CW.fillText(‘z\u209C = z\u209C\u208B\u2081’,PL+3,PT+24);
-    CW.fillStyle=’#4CAF50’;CW.fillText(‘\u25CF stable’,PL+3,S-PB-22);
-    CW.fillStyle=’#F44336’;CW.fillText(‘\u25CF unstable’,PL+55,S-PB-22);
+    CW.font=’13px "Times New Roman",serif’;CW.fillStyle=’#888’;
+    CW.fillText(‘Z\u209C\u208B\u2081’,S-30,cy(0)+16);CW.fillText(‘Z\u209C’,PL+5,PT-5);
+    CW.font=’10px sans-serif’;CW.fillStyle=’#bbb’;
+    [0,.2,.4,.6,.8,1].forEach(function(v){CW.fillText(v.toFixed(1),cx(v)-8,cy(zLo)+15);CW.fillText(v.toFixed(1),2,cy(v)+4);});
+    CW.font=’11px "Times New Roman",serif’;
+    CW.fillStyle=’#1976D2’;CW.fillText(‘\u03C3(W\u00B7z + h)’,PL+5,PT+14);
+    CW.fillStyle=’#FF9800’;CW.fillText(‘z\u209C = z\u209C\u208B\u2081’,PL+5,PT+28);
+    CW.fillStyle=’#4CAF50’;CW.fillText(‘\u25CF stable’,PL+5,S-PB-8);
+    CW.fillStyle=’#F44336’;CW.fillText(‘\u25CF unstable’,PL+65,S-PB-8);
   }
 
-  // === BIFURCATION DIAGRAM ===
   function drawBifurcation(){
     BD.clearRect(0,0,S,S);
-    var PL=45,PR2=10,PT=15,PB=30,Wd=S-PL-PR2,H=S-PT-PB;
-    var wLo=0,wHi=4,zLo2=-1.2,zHi2=1.2;
-    function bx(w){return PL+(w-wLo)/(wHi-wLo)*Wd;}
-    function by(z){return PT+(zHi2-z)/(zHi2-zLo2)*H;}
+    var PL=50,PR2=15,PT=20,PB=40,W2=S-PL-PR2,H2=S-PT-PB;
+    var wLo=0,wHi=10,zLo2=-.05,zHi2=1.05;
+    function bx(w){return PL+(w-wLo)/(wHi-wLo)*W2;}
+    function by(z){return PT+(zHi2-z)/(zHi2-zLo2)*H2;}
 
     BD.strokeStyle=’#f0f0f0’;BD.lineWidth=.5;
-    [1,2,3].forEach(function(v){ln2(BD,bx(v),PT,bx(v),PT+H);});
-    [-.5,.5,-1,1].forEach(function(v){ln2(BD,PL,by(v),PL+Wd,by(v));});
+    [2,4,6,8].forEach(function(v){ln2(BD,bx(v),PT,bx(v),PT+H2);});
+    [.2,.4,.6,.8].forEach(function(v){ln2(BD,PL,by(v),PL+W2,by(v));});
     BD.strokeStyle=’#81D4FA’;BD.lineWidth=1;
-    ln2(BD,PL,by(0),PL+Wd,by(0));ln2(BD,PL,PT,PL,PT+H);
+    ln2(BD,PL,by(0),PL+W2,by(0));ln2(BD,PL,PT,PL,PT+H2);
 
-    // Scan W and plot fixed points
-    var savedW=W;
-    for(var pw=0;pw<=Wd;pw+=1){
-      W=wLo+(pw/Wd)*(wHi-wLo);if(W<.01)W=.01;
+    var savedW=Wp;
+    for(var pw=0;pw<=W2;pw+=1){
+      Wp=wLo+(pw/W2)*(wHi-wLo);if(Wp<.01)Wp=.01;
       var fps=findFP();
       fps.forEach(function(fp){
-        var px=PL+pw,py=by(fp.z);
         BD.fillStyle=fp.stable?’rgba(76,175,80,0.5)’:’rgba(244,67,54,0.35)’;
-        BD.fillRect(px-.5,py-.5,1.2,1.2);
+        BD.fillRect(PL+pw-.5,by(fp.z)-.5,1.5,1.5);
       });
     }
-    W=savedW;
+    Wp=savedW;
 
-    // W indicator
-    BD.save();BD.setLineDash([4,3]);BD.strokeStyle=’#7B1FA2’;BD.lineWidth=1.5;
-    ln2(BD,bx(W),PT,bx(W),PT+H);BD.restore();
+    BD.save();BD.setLineDash([4,3]);BD.strokeStyle=’#7B1FA2’;BD.lineWidth=2;
+    ln2(BD,bx(Wp),PT,bx(Wp),PT+H2);BD.restore();
 
-    // Mark W=1 (bifurcation point when h=0)
-    if(Math.abs(h)<.05){
+    // Mark W=4 bifurcation (σ’(0)=1/4, so W·σ’(0)=W/4=1 → W=4)
+    if(Math.abs(hp)<.1){
       BD.save();BD.setLineDash([2,4]);BD.strokeStyle=’#FF9800’;BD.lineWidth=1;
-      ln2(BD,bx(1),PT,bx(1),PT+H);BD.restore();
-      BD.font=’10px "Times New Roman",serif’;BD.fillStyle=’#FF9800’;
-      BD.fillText(‘W=1’,bx(1)+3,PT+12);
+      ln2(BD,bx(4),PT,bx(4),PT+H2);BD.restore();
+      BD.font=’11px "Times New Roman",serif’;BD.fillStyle=’#FF9800’;
+      BD.fillText(‘W=4’,bx(4)+4,PT+14);
     }
 
-    BD.font=’12px "Times New Roman",serif’;BD.fillStyle=’#888’;
-    BD.fillText(‘W’,S-15,by(0)+14);BD.fillText(‘z*’,PL+5,PT-3);
-    BD.font=’9px sans-serif’;BD.fillStyle=’#bbb’;
-    [0,1,2,3,4].forEach(function(v){BD.fillText(v,bx(v)-4,by(zLo2)+13);});
-    [-1,-.5,.5,1].forEach(function(v){BD.fillText(v.toFixed(1),2,by(v)+3);});
-    BD.font=’12px "Times New Roman",serif’;BD.fillStyle=’#7B1FA2’;
-    BD.fillText(‘W = ‘+W.toFixed(2),PL+5,PT+12);
-    // Legend
+    BD.font=’13px "Times New Roman",serif’;BD.fillStyle=’#888’;
+    BD.fillText(‘W’,S-18,by(0.5)+16);BD.fillText(‘z*’,PL+5,PT-5);
+    BD.font=’10px sans-serif’;BD.fillStyle=’#bbb’;
+    [0,2,4,6,8,10].forEach(function(v){BD.fillText(v,bx(v)-4,by(zLo2)+15);});
+    [0,.2,.4,.6,.8,1].forEach(function(v){BD.fillText(v.toFixed(1),4,by(v)+4);});
+    BD.font=’13px "Times New Roman",serif’;BD.fillStyle=’#7B1FA2’;
+    BD.fillText(‘W = ‘+Wp.toFixed(2),PL+5,PT+14);
     BD.font=’10px sans-serif’;
-    BD.fillStyle=’#4CAF50’;BD.fillText(‘\u25A0 stable’,PL+5,S-PB-10);
-    BD.fillStyle=’#F44336’;BD.fillText(‘\u25A0 unstable’,PL+55,S-PB-10);
+    BD.fillStyle=’#4CAF50’;BD.fillText(‘\u25A0 stable’,PL+5,S-PB-8);
+    BD.fillStyle=’#F44336’;BD.fillText(‘\u25A0 unstable’,PL+65,S-PB-8);
   }
 
   function updInfo(){
     var el=document.getElementById(‘rb-info’),fps=findFP();
-    var t=’W = ‘+W.toFixed(2)+’ &nbsp;|&nbsp; h = ‘+h.toFixed(2)+’ &nbsp;|&nbsp; ‘;
+    var t=’W = ‘+Wp.toFixed(2)+’ &nbsp;|&nbsp; h = ‘+hp.toFixed(2)+’ &nbsp;|&nbsp; ‘;
     if(fps.length===1){
-      t+=’<span style="color:’+(fps[0].stable?’#4CAF50’:’#F44336’)+’">1 fixed point z*=’+fps[0].z.toFixed(3)+’ (‘+(fps[0].stable?’stable’:’unstable’)+’, |f\’|=’+Math.abs(fps[0].slope).toFixed(3)+’)</span>’;
-    }else if(fps.length===3){
-      t+=’<span style="color:#7B1FA2">Pitchfork: 3 fixed points</span> &nbsp; ‘;
-      fps.forEach(function(fp,i){
-        t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(3)+’</span>’;
-        if(i<2)t+=’, ‘;
-      });
+      t+=’<span style="color:’+(fps[0].stable?’#4CAF50’:’#F44336’)+’">1 fixed point z*=’+fps[0].z.toFixed(4)+’ (‘+(fps[0].stable?’stable’:’unstable’)+’, |f\’|=’+Math.abs(fps[0].slope).toFixed(3)+’)</span>’;
+    }else if(fps.length>=3){
+      t+=’<span style="color:#7B1FA2">Pitchfork: ‘+fps.length+’ fixed points</span> &nbsp; ‘;
+      fps.forEach(function(fp,i){t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">’+fp.z.toFixed(3)+’</span>’+(i<fps.length-1?’, ‘:’’);});
     }else{
-      fps.forEach(function(fp,i){
-        t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(3)+’</span>’;
-        if(i<fps.length-1)t+=’, ‘;
-      });
+      fps.forEach(function(fp,i){t+=’<span style="color:’+(fp.stable?’#4CAF50’:’#F44336’)+’">z*=’+fp.z.toFixed(3)+’</span>’+(i<fps.length-1?’, ‘:’’);});
     }
     el.innerHTML=t;
   }
   function redraw(){drawCobweb();drawBifurcation();updInfo();}
 
-  // Bif diagram interaction
-  function getW(e){
-    var rect=bdC.getBoundingClientRect(),PL2=45,Wd2=S-PL2-10;
+  function getWfromBif(e){
+    var rect=bdC.getBoundingClientRect(),PL2=50,W2=S-PL2-15;
     var cx2=(e.clientX-rect.left)*(S/rect.width);
-    return Math.max(0,Math.min(4,(cx2-PL2)/Wd2*4));
+    return Math.max(0,Math.min(10,(cx2-PL2)/W2*10));
   }
-  bdC.addEventListener(‘mousedown’,function(e){dragBif=true;W=getW(e);wS.value=W;wV.textContent=W.toFixed(2);redraw();});
-  bdC.addEventListener(‘mousemove’,function(e){if(!dragBif)return;W=getW(e);wS.value=W;wV.textContent=W.toFixed(2);redraw();});
+  bdC.addEventListener(‘mousedown’,function(e){dragBif=true;Wp=getWfromBif(e);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();});
+  bdC.addEventListener(‘mousemove’,function(e){if(!dragBif)return;Wp=getWfromBif(e);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();});
   window.addEventListener(‘mouseup’,function(){dragBif=false;});
-  bdC.addEventListener(‘touchstart’,function(e){e.preventDefault();dragBif=true;W=getW(e.touches[0]);wS.value=W;wV.textContent=W.toFixed(2);redraw();},{passive:false});
-  bdC.addEventListener(‘touchmove’,function(e){e.preventDefault();if(!dragBif)return;W=getW(e.touches[0]);wS.value=W;wV.textContent=W.toFixed(2);redraw();},{passive:false});
+  bdC.addEventListener(‘touchstart’,function(e){e.preventDefault();dragBif=true;Wp=getWfromBif(e.touches[0]);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();},{passive:false});
+  bdC.addEventListener(‘touchmove’,function(e){e.preventDefault();if(!dragBif)return;Wp=getWfromBif(e.touches[0]);wS.value=Wp;wV.textContent=Wp.toFixed(2);redraw();},{passive:false});
   bdC.addEventListener(‘touchend’,function(){dragBif=false;});
 
-  wS.addEventListener(‘input’,function(){W=parseFloat(this.value);wV.textContent=W.toFixed(2);redraw();});
-  hS.addEventListener(‘input’,function(){h=parseFloat(this.value);hV.textContent=h.toFixed(2);redraw();});
+  wS.addEventListener(‘input’,function(){Wp=parseFloat(this.value);wV.textContent=Wp.toFixed(2);redraw();});
+  hS.addEventListener(‘input’,function(){hp=parseFloat(this.value);hV.textContent=hp.toFixed(2);redraw();});
   redraw();
 })();
 </script>
