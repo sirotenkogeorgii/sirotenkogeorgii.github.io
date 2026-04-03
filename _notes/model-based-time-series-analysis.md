@@ -659,7 +659,6 @@ In practice, MCMC is used for
 
 </div>
 
-
 <div class="accordion">
   <details>
     <summary>Why does autocorrelation matter?</summary>
@@ -874,7 +873,7 @@ where $\stackrel{d}{=}$ denotes equality in distribution.
 
 </div>
 
-<div class="math-callout math-callout--auestion" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Where Strong Stationarity holds)</span></p>
 
 Despite being "unrealistic," the assumption is a necessary "working fiction" in several fields:
@@ -928,7 +927,7 @@ $$\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu$$
 
 </div>
 
-<div class="math-callout math-callout--proposition" markdown="1">
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Strong Stationarity for Ergodicity?)</span></p>
 
 **Why Strong Stationarity?**
@@ -964,7 +963,7 @@ Under the assumptions of **weak stationarity and ergodicity**, we can estimate t
 
 ### Dealing with Non-stationarity
 
-<div class="math-callout math-callout--proposition" markdown="1">
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Transformation of non-stationarity data)</span></p>
 
 If a time series is non-stationary, it must often be transformed before standard models can be applied. Common techniques include:
@@ -3423,8 +3422,8 @@ State-space models are built upon two critical assumptions that simplify the pro
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Joint distribution under assumptions above)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Joint distribution under assumptions above)</span></p>
 
 Under these assumptions, the **joint distribution** over a sequence of observations $X_{1:T}$ and latent states $Z_{1:T}$ factorizes as follows:  
 
@@ -3478,7 +3477,7 @@ Let $X = X_{1:T}$ and $Z = Z_{1:T}$. We can introduce an arbitrary **"proposal d
 The ELBO can be expressed in two common, equivalent forms.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Expected Joint + Entropy )</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(ELBO = Expected Joint + Entropy)</span></p>
 
    $$\text{ELBO}(q, p_\theta) = \mathbb{E}_{q(Z\mid X)}[\log p_\theta(X, Z)] - \mathbb{E}_{q(Z\mid X)}[\log q(Z\mid X)]$$ 
    
@@ -3516,7 +3515,15 @@ $$\begin{aligned} \text{ELBO}(q, p_\theta) &= \int q(Z) \log \frac{p_\theta(X, Z
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of the second form of ELBO)</span></p>
 
-From the second form of the ELBO, we see that if $\text{KL}(q(Z) \parallel p_\theta(Z\mid X)) = 0$ (i.e., the proposal density $q(Z)$ is equal to the true posterior $p_\theta(Z\mid X)$), the bound becomes exact: $\text{ELBO} = \log p_\theta(X)$. Therefore, maximizing the ELBO becomes equivalent to maximizing the log-likelihood.
+From the second form of the ELBO, we see that if 
+
+$$\text{KL}(q(Z) \parallel p_\theta(Z\mid X)) = 0$$
+
+(i.e., the proposal density $q(Z)$ is equal to the true posterior $p_\theta(Z\mid X)$), the bound becomes exact: 
+
+$$\text{ELBO} = \log p_\theta(X)$$
+
+Therefore, maximizing the ELBO becomes equivalent to maximizing the log-likelihood.
 
 </div>
 
@@ -3686,13 +3693,13 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
 
 1. Recall that for a Gaussian variable $y \in \mathbb{R}^k \sim \mathcal{N}(\mu, \Sigma)$, the log-probability is: 
 
-  $$\log p(y) = -\frac{k}{2}\log(2\pi) - \frac{1}{2}\log\lvert \Sigma\rvert - \frac{1}{2}(y-\mu)^\top\Sigma^{-1}(y-\mu)$$
+   $$\log p(y) = -\frac{k}{2}\log(2\pi) - \frac{1}{2}\log\lvert \Sigma\rvert - \frac{1}{2}(y-\mu)^\top\Sigma^{-1}(y-\mu)$$
 
-1. $x^\top A y = \text{tr}(A yx^\top)$
-2. $\mathbb{E}[\text{tr}(A)] = \text{tr}(\mathbb{E}[A])$
-3. $\frac{\partial \text{tr}(CXB)}{\partial X} = C^\top B^\top$
-4. $\frac{\partial \text{tr}(X^\top C)}{\partial X} = C$
-5. $\frac{\partial \text{tr}(X^\top BXC)}{\partial X} = BXC + B^\top XC^\top$
+2. $x^\top A y = \text{tr}(A yx^\top)$
+3. $\mathbb{E}[\text{tr}(A)] = \text{tr}(\mathbb{E}[A])$
+4. $\frac{\partial \text{tr}(CXB)}{\partial X} = C^\top B^\top$
+5. $\frac{\partial \text{tr}(X^\top C)}{\partial X} = C$
+6. $\frac{\partial \text{tr}(X^\top BXC)}{\partial X} = BXC + B^\top XC^\top$
 
 </div>
 
@@ -3736,7 +3743,7 @@ In the M-step for an LDS, all parameter updates can be written in terms of the f
 
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof</summary>
+<summary>Proof of EM for LDS Models (M-Step)</summary>
 
 We consider the linear–Gaussian LDS (time-homogeneous):
 
@@ -3759,7 +3766,8 @@ so $Q(\theta)$ splits into three independent maximizations: initial, dynamics, o
 
 ---
 
-### Expected sufficient statistics (from the smoother)
+**Expected sufficient statistics (from the smoother)**
+
 Let
 
 $$
@@ -3786,9 +3794,9 @@ $$
 
 ---
 
-## 1) Dynamics parameters $(A,\Sigma)$
+**1) Dynamics parameters $(A,\Sigma)$**
 
-### Update for $A$
+**Update for $A$**
 The dynamics contribution to $Q$ is
 
 $$
@@ -3840,7 +3848,7 @@ A^{new}=S_{10}\,S_{00}^{-1}
 }
 $$
 
-### Update for $\Sigma$
+**Update for $\Sigma$**
 For fixed $A$, $Q_{\text{dyn}}$ has the form
 
 $$
@@ -3872,9 +3880,9 @@ $$
 
 ---
 
-## 2) Observation parameters $(B,\Gamma)$
+**1) Observation parameters $(B,\Gamma)$**
 
-### Update for $B$
+**Update for $B$**
 Similarly,
 
 $$
@@ -3892,7 +3900,7 @@ B^{new}=S_{xz}\,S_{zz}^{-1}
 }
 $$
 
-### Update for $\Gamma$
+**Update for $\Gamma$**
 For fixed $B$,
 
 $$
@@ -3911,7 +3919,7 @@ $$
 
 ---
 
-## 3) Initial parameters $(\mu_0,\Sigma_0)$
+**3) Initial parameters $(\mu_0,\Sigma_0)$**
 From
 
 $$Q_{\text{init}}(\mu_0,\Sigma_0)=\mathbb E_q[\log \mathcal N(z_1\mid \mu_0,\Sigma_0)],$$
@@ -3924,7 +3932,7 @@ $$
 
 ---
 
-### Interpretation (why this proof is “clean”)
+**Interpretation (why this proof is “clean”)**
 Each M-step is just a **Gaussian linear regression** with “data” replaced by posterior expectations:
 - $A,\Sigma$ regress $z_t$ on $z_{t-1}$,
 - $B,\Gamma$ regress $x_t$ on $z_t$,
@@ -4062,7 +4070,7 @@ We prove by induction that the filtering distribution is Gaussian:
 $$p(z_t\mid x_{1:t})=\mathcal N(z_t\mid m_t,V_t)$$
 
 
-### Step 0 (base case)
+**Step 0 (base case)**
 
 By assumption the initial state is Gaussian, e.g.
 
@@ -4070,14 +4078,14 @@ $$p(z_0)=\mathcal N(z_0\mid m_0,V_0),$$
 
 so the claim holds at $t=0$.
 
-### Induction hypothesis
+**Induction hypothesis**
 
 Assume for some $t-1\ge 0$ that
 
 $$p(z_{t-1}\mid x_{1:t-1})=\mathcal N(z_{t-1}\mid m_{t-1},V_{t-1}).$$
 
 
-### 1) Prediction is Gaussian (pushforward of a Gaussian)
+**1) Prediction is Gaussian (pushforward of a Gaussian)**
 
 The dynamics are linear-Gaussian:
 
@@ -4092,7 +4100,7 @@ p(z_t\mid x_{1:t-1})=\mathcal N(z_t\mid \hat m_t,\hat V_t),
 \hat V_t = A V_{t-1}A^\top + \Sigma_z.
 $$
 
-### 2) Update keeps it Gaussian (product of Gaussians in canonical form)
+**2) Update keeps it Gaussian (product of Gaussians in canonical form)**
 
 The observation model is
 
@@ -4456,23 +4464,23 @@ Let $X=\lbrace X_{1:T}\rbrace$ and $Z=\lbrace Z_{1:T}\rbrace$.
 
 * **Update for Latent Parameters $\lbrace A, \Sigma, \mu_0, \Sigma_0\rbrace$:**
 
-Equivalent to the M-step of a standard linear Gaussian State Space Model:
+  Equivalent to the M-step of a standard linear Gaussian State Space Model:
 
-$$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
+  $$A = \left(\sum_{t=2}^T \mathbb{E}_q[z_t z_{t-1}^\top]\right) \left(\sum_{t=2}^T \mathbb{E}_q[z_{t-1} z_{t-1}^\top]\right)^{-1}$$
 
-The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion. 
+  The M-step for the other parameters ($B, \Sigma, \Gamma, \mu_0, \Sigma_0$) proceeds in a similar fashion. 
 
 * **Update for Observation Parameters $\lbrace b_0, B_1\rbrace$:**
 
-The objective for $b_0$ and $B_1$ is: 
+  The objective for $b_0$ and $B_1$ is: 
 
-$$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^\top(b_0 + B_1 \mu_t) - \mathbf{1}^\top \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$ 
+  $$\mathcal{L}(b_0, B_1) = \sum_{t=1}^{T} \left( c_t^\top(b_0 + B_1 \mu_t) - \mathbf{1}^\top \mathbb{E}_{q(z_t)}[\lambda_t] \right)$$ 
 
-where 
+  where 
 
-$$\mathbb{E}[\lambda_t] = \exp\left(b_0 + B_1\mu_t + \frac{1}{2}\mathrm{diag}(B_1 V_t B_1^\top)\right)$$
+  $$\mathbb{E}[\lambda_t] = \exp\left(b_0 + B_1\mu_t + \frac{1}{2}\mathrm{diag}(B_1 V_t B_1^\top)\right)$$
 
-the outer $\exp(\cdot)$ is elementwise.
+  the outer $\exp(\cdot)$ is elementwise.
 
 </div>
 
@@ -4907,13 +4915,13 @@ $$+ \mathbb{E}_q \left[ -\frac{1}{2}\sum_t \log\lvert \Sigma\rvert  - \frac{1}{2
   * The **EKF/EKS provides the necessary smoothed expectations for linear terms**, such as $\mathbb{E}[z_t]$ and $\mathbb{E}[z_t z_t^\top]$.
 * However, the non-linear term $F_\theta(z_{t-1})$ introduces a significant problem. We now need to compute **expectations involving this non-linearity**, such as:  
 
-$$\mathbb{E}[F_\theta(z_t)]$$  
+  $$\mathbb{E}[F_\theta(z_t)]$$  
 
-and other related terms. This requires solving integrals of the form 
+  and other related terms. This requires solving integrals of the form 
 
-$$\int p(z_t)F_\theta(z_t) dz_t$$ 
+  $$\int p(z_t)F_\theta(z_t) dz_t$$ 
 
-which are often **intractable for arbitrary non-linearities** $\phi$.
+  which are often **intractable for arbitrary non-linearities** $\phi$.
 
 </div>
 
@@ -4924,9 +4932,9 @@ which are often **intractable for arbitrary non-linearities** $\phi$.
 * One potential idea is to **select a non-linearity that simplifies these integrals**. 
   * For example, structuring the transition as:  
 
-$$F_\theta(z_{t-1}) = W h(z_{t-1}) + h$$  
+    $$F_\theta(z_{t-1}) = W h(z_{t-1}) + h$$  
 
-where $h(z) = \max(0, z)$ (the ReLU function), might lead to a **more tractable expectation** calculation for **certain distributions**.
+    where $h(z) = \max(0, z)$ (the ReLU function), might lead to a **more tractable expectation** calculation for **certain distributions**.
 
 </div>
 
@@ -4975,21 +4983,21 @@ The weights are normalized such that $\sum_{k=1}^K w_t^{(k)} = 1$.
 The algorithm proceeds sequentially through time:
 
 1. **Initialization ($t=1$):**
-  * Draw $K$ initial particles $\lbrace z_1^{(k)}\rbrace_{k=1}^K$ from the prior distribution, $p(z_1\mid z_0)$. This set serves as the initial estimate of the one-step forward density.
-  * Pass these samples through the observation model and normalize to obtain the initial weights: $w_1^{(k)} \propto p(x_1\mid z_1^{(k)})$.
+   * Draw $K$ initial particles $\lbrace z_1^{(k)}\rbrace_{k=1}^K$ from the prior distribution, $p(z_1\mid z_0)$. This set serves as the initial estimate of the one-step forward density.
+   * Pass these samples through the observation model and normalize to obtain the initial weights: $w_1^{(k)} \propto p(x_1\mid z_1^{(k)})$.
 2. **Iteration (for $t > 1$):** The process for each subsequent time step involves three stages: Resample, Propagate, and Weight.
-  * (**a) Resample:** Generate a new set of particles $\lbrace z'^{(k)}\_{t-1}\rbrace_{k=1}^K$ by sampling with replacement from the previous particle set $\lbrace z\_{t-1}^{(k)}\rbrace_{k=1}^K$, where the probability of drawing particle $k$ is given by its weight $w_{t-1}^{(k)}$.
-  * **(b) Propagate / Predict:** For each new particle $z'^{(k)}\_{t-1}$, pass it through the process model to obtain a new particle for the current time step:  
+   * (**a) Resample:** Generate a new set of particles $\lbrace z'^{(k)}\_{t-1}\rbrace_{k=1}^K$ by sampling with replacement from the previous particle set $\lbrace z\_{t-1}^{(k)}\rbrace_{k=1}^K$, where the probability of drawing particle $k$ is given by its weight $w_{t-1}^{(k)}$.
+   * **(b) Propagate / Predict:** For each new particle $z'^{(k)}\_{t-1}$, pass it through the process model to obtain a new particle for the current time step:  
     
-    $$\lbrace z_t^{(k)}\rbrace_{k=1}^K \sim p(z_t \mid  z'^{(k)}_{t-1})$$  
+     $$\lbrace z_t^{(k)}\rbrace_{k=1}^K \sim p(z_t \mid  z'^{(k)}_{t-1})$$  
     
-    This new set of unweighted particles represents the estimate of the one-step forward density, $p(z_t\mid x_1, \dots, x_{t-1})$.
+     This new set of unweighted particles represents the estimate of the one-step forward density, $p(z_t\mid x_1, \dots, x_{t-1})$.
   
-  * **(c) Update Weights:** Pass the propagated particles through the observation model to obtain the new, unnormalized weights:  
+   * **(c) Update Weights:** Pass the propagated particles through the observation model to obtain the new, unnormalized weights:  
   
-    $$\tilde{w}_t^{(k)} = p(x_t \mid  z_t^{(k)})$$  
+     $$\tilde{w}_t^{(k)} = p(x_t \mid  z_t^{(k)})$$  
     
-    Normalize the weights to obtain the final set $\lbrace w_t^{(k)}\rbrace_{k=1}^K$.
+     Normalize the weights to obtain the final set $\lbrace w_t^{(k)}\rbrace_{k=1}^K$.
 
 </div>
 
@@ -5149,9 +5157,9 @@ The core idea is to use simple, tractable distributional forms (e.g., Gaussian) 
   * **Low-rank factorization:** $\Sigma_x = V V^\top$, where $V$ is the output of a neural network.
 * **Inference Model (Encoder):**  
  
-$$q_\phi(z_t \mid  x_{\le t}, \dots) = \mathcal{N}(\mu_\phi, \Sigma_\phi) \implies g_\phi(X\mid Z) = \prod_{t=1}^T g_\phi(z_t\mid x_t)$$  
+  $$q_\phi(z_t \mid  x_{\le t}, \dots) = \mathcal{N}(\mu_\phi, \Sigma_\phi) \implies g_\phi(X\mid Z) = \prod_{t=1}^T g_\phi(z_t\mid x_t)$$  
 
-where the variational parameters $\mu_\phi$ and $\Sigma_\phi$ are complex functions of the input data, typically implemented by a recurrent neural network that processes the sequence $X$.
+  where the variational parameters $\mu_\phi$ and $\Sigma_\phi$ are complex functions of the input data, typically implemented by a recurrent neural network that processes the sequence $X$.
 
 </div>
 
