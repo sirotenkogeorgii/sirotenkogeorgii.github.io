@@ -33,7 +33,7 @@ Bayesian inference, instead, aims to characterize
 
 $$p(\theta\mid X),$$ 
 
-the posterior distribution of parameters given the data. Computing this posterior exactly is often intractable because the **evidence** (also called the marginal likelihood) $p(X)=\int p(X\mid\theta)p(\theta),d\theta$ is difficult to evaluate.
+the posterior distribution of parameters given the data. Computing this posterior exactly is often intractable because the **evidence** (also called the marginal likelihood) $p(X)=\int p(X\mid\theta)p(\theta)d\theta$ is difficult to evaluate.
 
 In practice, two common strategies are used:
 1. **Sampling-based methods**, e.g. Markov chain Monte Carlo (MCMC)

@@ -24,3 +24,4 @@ date: 2024-10-20
 - [Mathematical Analysis 1](/subpages/books/mathematical_analysis_matfyz/semester1/)
 - [Mathematical Analysis 2](/subpages/books/mathematical_analysis_matfyz/semester2/) (unfinished)
 - [Mathematical Analysis 3](/subpages/books/mathematical_analysis_matfyz/semester3/)
+- [Representation Theory: A First Course — Harris & Fulton](/subpages/books/representation_theory_first_course_harris/)

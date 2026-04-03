@@ -210,7 +210,13 @@ The SVD (Singular Value Decomposition) is one of the most important numerical te
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(SVD Decomposition)</span></p>
 
-Let $A \in \mathbb{R}^{m \times n}$, $q \coloneqq \min\lbrace m,n \rbrace$. Then there exists a diagonal matrix $\Sigma \in \mathbb{R}^{m \times n}$ with entries $\sigma_{11} \geq \ldots \geq \sigma_{qq} \geq 0$ and orthogonal matrices $U \in \mathbb{R}^{m \times m}$, $V \in \mathbb{R}^{n \times n}$ such that $A = U \Sigma V^\top$.
+Let $A \in \mathbb{R}^{m \times n}$, $q \coloneqq \min\lbrace m,n \rbrace$. Then there exists a diagonal matrix $\Sigma \in \mathbb{R}^{m \times n}$ with entries 
+
+$$\sigma_{11} \geq \ldots \geq \sigma_{qq} \geq 0$$
+
+and orthogonal matrices $U \in \mathbb{R}^{m \times m}$, $V \in \mathbb{R}^{n \times n}$ such that 
+
+$$A = U \Sigma V^\top$$
 
 </div>
 
@@ -227,7 +233,13 @@ The reduced SVD uses only a portion of the full SVD but contains the essential i
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Relationship Between Singular Values and Eigenvalues I)</span></p>
 
-Let $A \in \mathbb{R}^{m \times n}$, $r = \operatorname{rank}(A)$, and let $A^\top A$ have eigenvalues $\lambda_1 \geq \ldots \geq \lambda_n$. Then the positive singular values of $A$ are $\sigma_i = \sqrt{\lambda_i}$, $i = 1, \ldots, r$.
+Let $A \in \mathbb{R}^{m \times n}$, $r = \operatorname{rank}(A)$, and let $A^\top A$ have eigenvalues 
+
+$\lambda_1 \geq \ldots \geq \lambda_n$
+
+Then the positive singular values of $A$ are 
+
+$$\sigma_i = \sqrt{\lambda_i} \quad i = 1, \ldots, r$$
 
 </div>
 
@@ -1254,21 +1266,25 @@ The concept was introduced by Turing in 1948 for the Frobenius norm, though a si
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Condition Number)</span></p>
 
-The **condition number** of a regular matrix $A \in \mathbb{R}^{n \times n}$ is $k(A) = \lVert A \rVert \cdot \lVert A^{-1} \rVert$, where $\lVert \cdot \rVert$ is an induced matrix norm. For the $p$-norm specifically, $k_p(A) = \lVert A \rVert_p \cdot \lVert A^{-1} \rVert_p$.
+The **condition number** of a regular matrix $A \in \mathbb{R}^{n \times n}$ is $k(A) = \lVert A \rVert \cdot \lVert A^{-1} \rVert$, where $\lVert \cdot \rVert$ is an induced matrix norm. For the $p$-norm specifically, 
+
+$$k_p(A) = \lVert A \rVert_p \cdot \lVert A^{-1} \rVert_p$$
 
 </div>
 
 Although the definition also makes sense for non-induced matrix norms, induced norms are preferred due to the following properties:
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
 
-For an induced matrix norm: $\lVert I_n \rVert = 1$.
+For an induced matrix norm: 
+
+$$\lVert I_n \rVert = 1$$
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
 
 It holds that
 
@@ -1279,7 +1295,7 @@ Equality holds, in particular, when $A$ is symmetric and $k_2$ is used.
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
 
 It holds that 
 
@@ -1290,7 +1306,7 @@ Equality holds when $A$ is symmetric and $k_2(A)$ is used.
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Claim</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
 
 1. $k(AB) \leq k(A) k(B)$.
 2. $k(\alpha A) = k(A)$ for $\alpha \neq 0$.
@@ -1447,7 +1463,7 @@ $$
 1 = \lVert \tilde{x} \rVert = \lVert S(\Lambda - \tilde{\lambda}I_n)^{-1}S^{-1}r \rVert \leq \lVert S \rVert \cdot \lVert (\Lambda - \tilde{\lambda}I_n)^{-1} \rVert \cdot \lVert S^{-1} \rVert \cdot \lVert r \rVert = k_p(S) \cdot \lVert r \rVert \cdot \lVert (\Lambda - \tilde{\lambda}I_n)^{-1} \rVert \leq k_p(S) \cdot \lVert r \rVert \cdot |\lambda - \tilde{\lambda}|^{-1},
 $$
 
-from which $|\lambda - \tilde{\lambda}| \leq k_p(S) \cdot \lVert r \rVert$.
+from which $\|\lambda - \tilde{\lambda}\| \leq k_p(S) \cdot \lVert r \rVert$.
 
 </details>
 </div>
@@ -1457,7 +1473,9 @@ For symmetric matrices, the eigenvector matrix $S$ is orthogonal, so $k_2(S) = 1
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span></p>
 
-If $A \in \mathbb{R}^{n \times n}$ is symmetric, then $\lvert \lambda - \tilde{\lambda}\rvert \leq \lVert r \rVert_2$.
+If $A \in \mathbb{R}^{n \times n}$ is symmetric, then 
+
+$$\lvert \lambda - \tilde{\lambda}\rvert \leq \lVert r \rVert_2$$
 
 </div>
 
@@ -1497,9 +1515,7 @@ $$
 
 If $A$ is symmetric, then $S$ is orthogonal and $k_2(S) = 1$, giving the bound
 
-$$
-|\lambda - \mu| \leq \lVert B \rVert_2.
-$$
+$$|\lambda - \mu| \leq \lVert B \rVert_2$$
 
 For symmetric matrices we can derive stronger results --- we can compare individual eigenvalues of $A$ and $A + B$. Denote eigenvalues of a symmetric matrix in decreasing order: $\lambda_1 \geq \ldots \geq \lambda_n$.
 
@@ -1803,13 +1819,13 @@ If $A$ is symmetric and only a diagonal entry $a_{ii}$ changes, then $\lambda' =
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-Consider $A = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$. It has eigenvalues $3$ and $1$ with eigenvectors $\frac{\sqrt{2}}{2}(1,1)^\top$ and $\frac{\sqrt{2}}{2}(1,-1)^\top$. By the theorem:
+Consider $A = \begin{pmatrix} 2 & 1 \\\ 1 & 2 \end{pmatrix}$. It has eigenvalues $3$ and $1$ with eigenvectors $\frac{\sqrt{2}}{2}(1,1)^\top$ and $\frac{\sqrt{2}}{2}(1,-1)^\top$. By the theorem:
 
 $$
 \frac{\partial \lambda_1}{\partial a_{11}} = \frac{1}{2}, \quad \frac{\partial \lambda_1}{\partial a_{12}} = \frac{1}{2}, \quad \frac{\partial \lambda_2}{\partial a_{11}} = \frac{1}{2}, \quad \frac{\partial \lambda_2}{\partial a_{12}} = -\frac{1}{2}.
 $$
 
-So the matrix $\begin{pmatrix} 2.1 & 1 \\ 1 & 2 \end{pmatrix}$ should have eigenvalues $\approx 3.05$ and $\approx 1.05$, and the matrix $\begin{pmatrix} 2 & 1.1 \\ 1.1 & 2 \end{pmatrix}$ should have eigenvalues $\approx 3.1$ and $\approx 0.9$.
+So the matrix $\begin{pmatrix} 2.1 & 1 \\\ 1 & 2 \end{pmatrix}$ should have eigenvalues $\approx 3.05$ and $\approx 1.05$, and the matrix $\begin{pmatrix} 2 & 1.1 \\\ 1.1 & 2 \end{pmatrix}$ should have eigenvalues $\approx 3.1$ and $\approx 0.9$.
 
 </div>
 
@@ -1848,8 +1864,6 @@ $$
 This is a convex function, so the minimum is attained where the gradient vanishes. The gradient is $2A^\top Ax - 2A^\top b$. Setting it to zero gives the **normal equations** $A^\top Ax = A^\top b$. Since $A$ has linearly independent columns, $A^\top A$ is regular and the unique solution is $x = (A^\top A)^{-1} A^\top b$.
 
 </div>
-
----
 
 ## Nonnegative and Positive Matrices
 
@@ -2007,11 +2021,11 @@ Part of Perron's theorem for nonnegative matrices can be shown simply by a limit
 
 This shows that the largest eigenvalue is real nonnegative and the corresponding eigenvector is nonnegative. However, the remaining properties of positive matrices are generally lost:
 
-- $\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$ has the largest eigenvalue of multiplicity greater than one.
-- $\begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$ has the largest eigenvalue $1$ with eigenvector $(1,0)^\top$ which is not positive. Another eigenvalue $0$ also has a nonnegative eigenvector $(0,1)^\top$.
-- $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ has the largest eigenvalue $0$, even though it is nonnegative and nonzero.
+- $\begin{pmatrix} 1 & 0 \\\ 0 & 1 \end{pmatrix}$ has the largest eigenvalue of multiplicity greater than one.
+- $\begin{pmatrix} 1 & 0 \\\ 0 & 0 \end{pmatrix}$ has the largest eigenvalue $1$ with eigenvector $(1,0)^\top$ which is not positive. Another eigenvalue $0$ also has a nonnegative eigenvector $(0,1)^\top$.
+- $\begin{pmatrix} 0 & 1 \\\ 1 & 0 \end{pmatrix}$ has the largest eigenvalue $0$, even though it is nonnegative and nonzero.
 
-For certain nonnegative matrices, the properties of positive matrices can be strengthened. This leads to the theory of **irreducible** matrices. A matrix $A$ is irreducible if no permutation matrix $P$ exists such that $P^\top AP$ is block upper triangular. For a nonnegative irreducible matrix, $\rho(A) > 0$ is an eigenvalue of multiplicity $1$ with a positive eigenvector. Thus nearly all properties of positive matrices hold; the only exception is that $\rho(A)$ may be attained by multiple eigenvalues (e.g., $A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$ has eigenvalues $\pm 1$).
+For certain nonnegative matrices, the properties of positive matrices can be strengthened. This leads to the theory of **irreducible** matrices. A matrix $A$ is irreducible if no permutation matrix $P$ exists such that $P^\top AP$ is block upper triangular. For a nonnegative irreducible matrix, $\rho(A) > 0$ is an eigenvalue of multiplicity $1$ with a positive eigenvector. Thus nearly all properties of positive matrices hold; the only exception is that $\rho(A)$ may be attained by multiple eigenvalues (e.g., $A = \begin{pmatrix} 0 & 1 \\\ 1 & 0 \end{pmatrix}$ has eigenvalues $\pm 1$).
 
 ### Application --- Verification of Linear Systems
 
@@ -2028,11 +2042,11 @@ The approach uses **interval arithmetic** --- operations on intervals $[\underli
 
 If
 
-$$
-C(b - Ax^*) + (I - CA)[-y^\Delta, y^\Delta] \subseteq \operatorname{int}[-y^\Delta, y^\Delta],
-$$
+$$C(b - Ax^\ast) + (I - CA)[-y^\Delta, y^\Delta] \subseteq \operatorname{int}[-y^\Delta, y^\Delta]$$
 
-then $A$ and $C$ are regular and $A^{-1}b \in x^* + [-y^\Delta, y^\Delta]$.
+then $A$ and $C$ are regular and 
+
+$$A^{-1}b \in x^\ast + [-y^\Delta, y^\Delta]$$
 
 </div>
 
@@ -2040,7 +2054,7 @@ then $A$ and $C$ are regular and $A^{-1}b \in x^* + [-y^\Delta, y^\Delta]$.
 <details markdown="1">
 <summary>Proof</summary>
 
-Consider the map $y \mapsto C(b - Ax^*) + (I - CA)y$. The inclusion condition says that $[-y^\Delta, y^\Delta]$ maps into its own interior. By Brouwer's fixed-point theorem (continuous maps of convex compact sets into themselves have a fixed point), there exists a fixed point $y$: $y = C(b - Ax^*) + (I - CA)y$, i.e., $CA(x^* + y) = Cb$. By Theorems 8.2 and 8.6, the inclusion implies $|I - CA| y^\Delta < y^\Delta$, so $\rho(|I - CA|) < 1$. The eigenvalues of $CA$ are all nonzero, hence $CA$ (and individually $A$, $C$) are regular.
+Consider the map $y \mapsto C(b - Ax^\ast) + (I - CA)y$. The inclusion condition says that $[-y^\Delta, y^\Delta]$ maps into its own interior. By Brouwer's fixed-point theorem (continuous maps of convex compact sets into themselves have a fixed point), there exists a fixed point $y$: $y = C(b - Ax^\ast) + (I - CA)y$, i.e., $CA(x^\ast + y) = Cb$. By Theorems 8.2 and 8.6, the inclusion implies $\|I - CA\| y^\Delta < y^\Delta$, so $\rho(\|I - CA\|) < 1$. The eigenvalues of $CA$ are all nonzero, hence $CA$ (and individually $A$, $C$) are regular.
 
 </details>
 </div>
@@ -2053,29 +2067,62 @@ We have already briefly encountered matrix power series in the Neumann series th
 
 ### Matrix Functions
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Defining the matrix function element-wise)</span></p>
+
 The question is: how to define a matrix function such as $\cos(A)$, $e^A$, etc.? For a real function $f \colon \mathbb{R} \to \mathbb{R}$ and a matrix $A \in \mathbb{R}^{n \times n}$, defining $f(A)$ by applying $f$ to each entry individually,
 
 $$
 f(A) = \begin{pmatrix} f(a_{11}) & \ldots & f(a_{1n}) \\ \vdots & & \vdots \\ f(a_{n1}) & \ldots & f(a_{nn}) \end{pmatrix},
 $$
 
-is possible but lacks nice properties. Instead, assume $f \colon \mathbb{R} \to \mathbb{R}$ is smooth enough to be expressed as a power series $f(x) = \sum_{k=0}^{\infty} a_k x^k$ (i.e., $f$ is analytic --- real analytic functions like $\sin(x)$, $e^x$ satisfy this). Then we naturally define
+is possible but lacks nice properties. We will define the matrix function differently.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matrix function)</span></p>
+
+Assume $f \colon \mathbb{R} \to \mathbb{R}$ is smooth enough to be expressed as a power series $f(x) = \sum_{k=0}^{\infty} a_k x^k$ (i.e., $f$ is analytic --- real analytic functions like $\sin(x)$, $e^x$ satisfy this). Then we naturally define
+
+$$f(A) = \sum_{k=0}^{\infty} a_k A^k$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Evaluation matrix function using Jordan normal form)</span></p>
+
+Let $A = SJS^{-1}$ where $J$ is the **Jordan normal form** of $A$. Since $A^k = SJ^kS^{-1}$, we get
+
+$$f(A) = Sf(J)S^{-1}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+$$f(A) = \sum_{k=0}^{\infty} a_k SJ^kS^{-1} = Sf(J)S^{-1}$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Matrix function for diagonal matrices)</span></p>
+
+Let $A$ be **diagonalizable** with diagonal entries $\lambda_1, \ldots, \lambda_n$ (eigenvalues of $A$), then
 
 $$
-f(A) = \sum_{k=0}^{\infty} a_k A^k.
+f(J) = \begin{pmatrix} f(\lambda_1) & & \\ & \ddots & \\ & & f(\lambda_n) \end{pmatrix}.
 $$
 
-This series is evaluated using the Jordan normal form. Let $A = SJS^{-1}$ where $J$ is the Jordan normal form of $A$. Since $A^k = SJ^kS^{-1}$, we get
+</div>
 
-$$
-f(A) = \sum_{k=0}^{\infty} a_k SJ^kS^{-1} = Sf(J)S^{-1}.
-$$
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
-We have reduced the problem to evaluating $f$ for matrices in Jordan normal form. Starting with the simplest case: when $J$ is diagonal (i.e., $A$ is diagonalizable) with diagonal entries $\lambda_1, \ldots, \lambda_n$ (eigenvalues of $A$), then
-
-$$
-J^k = \operatorname{diag}(\lambda_1, \ldots, \lambda_n)^k = \operatorname{diag}(\lambda_1^k, \ldots, \lambda_n^k),
-$$
+$$J^k = \operatorname{diag}(\lambda_1, \ldots, \lambda_n)^k = \operatorname{diag}(\lambda_1^k, \ldots, \lambda_n^k)$$
 
 and therefore
 
@@ -2083,11 +2130,21 @@ $$
 f(J) = \begin{pmatrix} \lambda_1^k & & \\ & \ddots & \\ & & \lambda_n^k \end{pmatrix} = \begin{pmatrix} \sum_{k=0}^{\infty} a_k \lambda_1^k & & \\ & \ddots & \\ & & \sum_{k=0}^{\infty} a_k \lambda_n^k \end{pmatrix} = \begin{pmatrix} f(\lambda_1) & & \\ & \ddots & \\ & & f(\lambda_n) \end{pmatrix}.
 $$
 
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Matrix function for jordan block diagonal matrices)</span></p>
+
 In the general case, when $J$ is block diagonal with Jordan blocks $J_{k_1}(\lambda_1), \ldots, J_{k_m}(\lambda_m)$, we have
 
-$$
-f(J) \coloneqq \begin{pmatrix} f(J_{k_1}(\lambda_1)) & & \\ & \ddots & \\ & & f(J_{k_m}(\lambda_m)) \end{pmatrix}.
-$$
+$$f(J) \coloneqq \begin{pmatrix} f(J_{k_1}(\lambda_1)) & & \\ & \ddots & \\ & & f(J_{k_m}(\lambda_m)) \end{pmatrix}$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Image of a single Jordan block for $k_i = 1$</summary>
 
 It remains to define the image of a single Jordan block $J_{k_i}(\lambda_i)$. For $k_i = 1$ this is simply $f(\lambda_i)$. For $k_i > 1$, one shows:
 
@@ -2095,9 +2152,12 @@ $$
 f(J_{k_i}(\lambda_i)) \coloneqq \begin{pmatrix} f(\lambda_i) & f'(\lambda_i) & \ldots & \frac{f^{(k_i-1)}(\lambda_i)}{(k_i-1)!} \\ 0 & \ddots & \ddots & \vdots \\ \vdots & \ddots & \ddots & f'(\lambda_i) \\ 0 & \ldots & 0 & f(\lambda_i) \end{pmatrix}.
 $$
 
+</details>
+</div>
+
 <div class="accordion" markdown="1">
 <details markdown="1">
-<summary>Proof sketch (for $k_i = 2$)</summary>
+<summary>Image of a single Jordan block for $k_i = 2$</summary>
 
 Consider a Jordan block of size $2$: $A = J_2(\lambda) = \begin{pmatrix} \lambda & 1 \\\ 0 & \lambda \end{pmatrix}$. Define $A_\varepsilon \coloneqq \begin{pmatrix} \lambda & 1 \\\ 0 & \lambda + \varepsilon \end{pmatrix}$ where $\varepsilon \neq 0$. This matrix is diagonalizable:
 
@@ -2119,11 +2179,26 @@ Taking the limit $\varepsilon \to 0$ gives $f(A) = \begin{pmatrix} f(\lambda) & 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-1. The function $f(x) = x^2$ gives the matrix function $f(A) = A^2$, which is the standard matrix squaring. Note that applying $f$ entry-wise would square individual entries --- not what we want.
-2. For $f(x) = \sqrt{x}$ and a positive semidefinite matrix, $f(A) = \sqrt{A}$ yields the standard matrix square root.
-3. For $f(x) = \frac{1}{1-x}$ and a matrix $A \in \mathbb{R}^{n \times n}$ with $\rho(A) < 1$, we recover the Neumann series: $(I_n - A)^{-1} = \sum_{k=0}^{\infty} A^k$.
+1. The function $f(x) = x^2$ gives the matrix function 
+   
+   $$f(A) = A^2$$
+   
+   which is the standard matrix squaring. Note that applying $f$ entry-wise would square individual entries --- not what we want.
+
+2. For $f(x) = \sqrt{x}$ and a positive semidefinite matrix, 
+   
+   $$f(A) = \sqrt{A}$$
+   
+   yields the standard matrix square root.
+
+3. For $f(x) = \frac{1}{1-x}$ and a matrix $A \in \mathbb{R}^{n \times n}$ with $\rho(A) < 1$, we recover the Neumann series:
+   
+   $$(I_n - A)^{-1} = \sum_{k=0}^{\infty} A^k$$
 
 </div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
 The above approach allows defining matrix functions for many real functions, especially analytic ones. Thus we can consider $\sin(A)$, $\cos(A)$, $e^A$, and study their properties. Some well-known identities generalize, for example
 
@@ -2131,9 +2206,46 @@ $$
 \sin(2A) = 2\sin(A)\cos(A), \qquad \sin^2(A) + \cos^2(A) = I_n.
 $$
 
-Others, however, do not generalize straightforwardly (see Theorem 9.4 below).
+Others, however, do not generalize straightforwardly.
+
+</div>
 
 ### Matrix Exponential
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(Scalar Exponential)</span></p>
+
+For ordinary **real numbers**, the exponential has the power series
+
+$$e^x=\sum_{k=0}^\infty \frac{1}{k!}x^k$$
+
+A useful analogy is:
+
+* scalar: (\cos x = \sum_{k=0}^\infty (-1)^k \dfrac{x^{2k}}{(2k)!})
+* matrix:
+  
+  $$\cos(A)=\sum_{k=0}^\infty (-1)^k \frac{A^{2k}}{(2k)!}$$
+
+and similarly
+
+* scalar: $e^x=\sum_{k=0}^\infty \dfrac{x^k}{k!}$
+* matrix:
+  
+  $$e^A=\sum_{k=0}^\infty \frac{A^k}{k!}.$$
+
+One small note: in your pasted text, there is a typo in the diagonal case. It should be
+
+$$f(J)=\operatorname{diag}(f(\lambda_1),\dots,f(\lambda_n)),$$
+
+not a matrix with $\lambda_i^k$ on the diagonal.
+
+If you want, I can also show why this definition gives the familiar formula
+
+$$e^{SJS^{-1}} = S e^J S^{-1}$$
+
+and compute $e^A$ for a $2\times2$ Jordan block explicitly.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matrix Exponential)</span></p>
@@ -2218,7 +2330,7 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
 
-The commutativity condition $AB = BA$ is essential. For non-commuting matrices, the identity $e^{A+B} = e^A e^B$ generally fails. A counterexample: $A = \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$; then $e^{A+B} = \begin{pmatrix} e & e-1 \\ 0 & 1 \end{pmatrix} \neq \begin{pmatrix} e & e \\ 0 & 1 \end{pmatrix} = e^A e^B$.
+The commutativity condition $AB = BA$ is essential. For non-commuting matrices, the identity $e^{A+B} = e^A e^B$ generally fails. A counterexample: $A = \begin{pmatrix} 1 & 0 \\\ 0 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$; then $e^{A+B} = \begin{pmatrix} e & e-1 \\\ 0 & 1 \end{pmatrix} \neq \begin{pmatrix} e & e \\\ 0 & 1 \end{pmatrix} = e^A e^B$.
 
 </div>
 
@@ -2228,17 +2340,15 @@ The commutativity condition $AB = BA$ is essential. For non-commuting matrices, 
 
 Now consider a system of $n$ linear ODEs
 
-$$
-y' = Ay,
-$$
+$$y' = Ay$$
 
 where $y = y(t) \colon \mathbb{R}^n \to \mathbb{R}$ is the unknown vector function and $A \in \mathbb{R}^{n \times n}$ is a fixed matrix. The solution is $y(t) = e^{At}c$, where $c \in \mathbb{R}^n$ is an arbitrary vector. Indeed:
 
 $$
-y(t)' = \Big(\sum_{k=0}^{\infty} \frac{1}{k!} A^k t^k c\Big)' = \sum_{k=1}^{\infty} \frac{1}{k!} A^k k t^{k-1} c = A \sum_{k=1}^{\infty} \frac{1}{(k-1)!} A^{k-1} t^{k-1} c = A e^{At} c = Ay.
+y(t)' = \Big(\sum_{k=0}^{\infty} \frac{1}{k!} A^k t^k c\Big)' = \sum_{k=1}^{\infty} \frac{1}{k!} A^k k t^{k-1} c = A \sum_{k=1}^{\infty} \frac{1}{(k-1)!} A^{k-1} t^{k-1} c = A e^{At} c = Ay
 $$
 
-**Graph centrality.** Let $A$ be the adjacency matrix of an undirected graph, i.e., $A_{ij} = 1$ if vertices $i,j$ are connected by an edge and $A_{ij} = 0$ otherwise. Then $(A^k)_{ij}$ counts the number of walks of length $k$ between vertices $i$ and $j$. The matrix exponential $e^A = \sum_{k=0}^{\infty} \frac{1}{k!} A^k$ can be interpreted as a weighted average count of walks. The largest diagonal entry of $e^A$ is called the **graph centrality** and identifies the most important vertex in a certain sense.
+**Graph centrality.** Let $A$ be the adjacency matrix of an undirected graph, i.e., $A_{ij} = 1$ if vertices $i,j$ are connected by an edge and $A_{ij} = 0$ otherwise. Then $(A^k)\_{ij}$ counts the number of walks of length $k$ between vertices $i$ and $j$. The matrix exponential $e^A = \sum_{k=0}^{\infty} \frac{1}{k!} A^k$ can be interpreted as a weighted average count of walks. The largest diagonal entry of $e^A$ is called the **graph centrality** and identifies the most important vertex in a certain sense.
 
 **Rotation matrices.** The matrix exponential can be used to express rotations in $\mathbb{R}^3$. The matrix $e^R$, where
 
@@ -2382,7 +2492,9 @@ The $(i,j)$-th equation in $AXC = B$ is $\sum_{k,\ell} a_{ik} x_{k\ell} c_{\ell 
 
 Rewriting a matrix system in the classical form is useful for establishing properties of different systems. However, for actually solving the system, it may not be the best approach because the system size grows: if $AX = B$ has a square matrix of order $n$, then $(I \otimes A)\operatorname{vec}(X) = \operatorname{vec}(B)$ is a system of order $n^2$.
 
-There also exist explicit solutions for matrix systems. For example, the Sylvester equation $AX - XB = C$ can be solved using the matrix exponential as $X = -\int_0^{\infty} e^{At} C e^{-Bt} dt$.
+There also exist explicit solutions for matrix systems. For example, the Sylvester equation $AX - XB = C$ can be solved using the matrix exponential as 
+
+$$X = -\int_0^{\infty} e^{At} C e^{-Bt} dt$$
 
 </div>
 
@@ -2662,8 +2774,13 @@ From the properties above we can derive further results. For instance, $A \succe
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hadamard Inequality)</span></p>
 
-1. If $A \succ 0$, then $\det(A) \leq \prod_{i=1}^n a_{ii}$.
-2. If $B \in \mathbb{R}^{n \times n}$, then $\lvert\det(B)\rvert \leq \prod_{i=1}^n \lVert B_{*i} \rVert_2$.
+1. If $A \succ 0$, then 
+   
+   $$\det(A) \leq \prod_{i=1}^n a_{ii}$$
+
+2. If $B \in \mathbb{R}^{n \times n}$, then
+   
+   $$\lvert\det(B)\rvert \leq \prod_{i=1}^n \lVert B_{*i} \rVert_2$$
 
 </div>
 
