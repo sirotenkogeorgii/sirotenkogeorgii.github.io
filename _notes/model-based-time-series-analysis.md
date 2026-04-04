@@ -3249,6 +3249,10 @@ The model can learn to set $f_t$ close to $1$ to circumvent the vanishing gradie
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/dynamical-systems/lstm_straka_deep_learning.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+</figure>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(LSTM)</span></p>
 
@@ -3948,7 +3952,21 @@ Each M-step is just a **Gaussian linear regression** with “data” replaced by
 
 For an LDS, the posterior distribution $p_\theta(Z\mid X)$ is also Gaussian and can be computed analytically and efficiently. The algorithm for this is the Kalman filter-smoother (developed by Rudolph Kalman in 1960). This algorithm was famously used for navigation in the Apollo program and is now widely used in GPS tracking, self-driving cars, and more.
 
-The Kalman filter-smoother operates in two passes:
+From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^\top]$, $\mathbb{E}[z_t z_{t-1}^\top]$) required for the M-step. We compute all the moments using Kalman filter-smoother.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Backward Pass (Smoothing): Practical point)</span></p>
+
+To compute $\mathbb{E}[z_t z_{t-1}^\top]$ you typically need **pairwise smoothed marginals** $p(z_{t-1},z_t\mid x_{1:T})$, not just the single-time smoothed $p(z_t\mid x_{1:T})$. The Kalman **smoother** (often specifically the RTS smoother) provides exactly what you need.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Kalman filter-smoother)</span></p>
+
+The **Kalman filter-smoother** operates in two passes:
 
 1. **Forward Pass (Filtering):** This pass iterates from $t=1$ to $T$, computing the filtered distributions 
    
@@ -3957,15 +3975,6 @@ The Kalman filter-smoother operates in two passes:
 2. **Backward Pass (Smoothing):** This pass iterates from $t=T-1$ down to $1$, using the results of the forward pass to compute the smoothed distributions 
   
   $$p(z_t \mid x_1, \dots, x_T)$$
-
-From these smoothed distributions, we can compute all the moments ($\mathbb{E}[z_t]$, $\mathbb{E}[z_t z_t^\top]$, $\mathbb{E}[z_t z_{t-1}^\top]$) required for the M-step.
-
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Backward Pass (Smoothing): Practical point)</span></p>
-
-To compute $\mathbb{E}[z_t z_{t-1}^\top]$ you typically need **pairwise smoothed marginals** $p(z_{t-1},z_t\mid x_{1:T})$, not just the single-time smoothed $p(z_t\mid x_{1:T})$. The Kalman **smoother** (often specifically the RTS smoother) provides exactly what you need.
 
 </div>
 
@@ -4163,60 +4172,51 @@ $$
 
 Therefore $p(z_t\mid x_{1:t})$ is Gaussian, completing the induction.
 
-> (These information-form updates are algebraically equivalent to the usual Kalman-gain form
-> $K_t=\hat V_t B^\top(B\hat V_t B^\top+\Gamma)^{-1}$,
-> $m_t=\hat m_t+K_t(x_t-B\hat m_t)$,
-> $V_t=(I-K_tB)\hat V_t$.)
+**Equivalence with the Kalman gain form**
+
+These information-form updates are algebraically equivalent to the classical Kalman filter equations. We now derive this equivalence.
+
+**Deriving $V_t$.**
+
+Apply the Woodbury matrix identity,
+
+$$(A + UCV)^{-1} = A^{-1} - A^{-1}U(C^{-1} + VA^{-1}U)^{-1}VA^{-1},$$
+
+to $V_t = (\hat V_t^{-1} + B^\top\Gamma^{-1}B)^{-1}$ with $A=\hat V_t^{-1}$, $U=B^\top$, $C=\Gamma^{-1}$, $V=B$:
+
+$$V_t = \hat V_t - \hat V_t B^\top(\Gamma + B\hat V_t B^\top)^{-1}B\hat V_t.$$
+
+Define the **Kalman gain**:
+
+$$K_t := \hat V_t B^\top(B\hat V_t B^\top + \Gamma)^{-1}.$$
+
+Then:
+
+$$\boxed{V_t = (I - K_tB)\hat V_t.}$$
+
+**Deriving $m_t$.**
+
+From the information-form mean equation: $m_t = V_t(\hat V_t^{-1}\hat m_t + B^\top\Gamma^{-1} x_t)$. Distributing $V_t$:
+
+$$m_t = \underbrace{V_t\hat V_t^{-1}}_{(\star)}\hat m_t + \underbrace{V_t B^\top\Gamma^{-1}}_{(\star\star)} x_t.$$
+
+For $(\star)$: substitute $V_t = (I - K_tB)\hat V_t$ to get $V_t\hat V_t^{-1} = I - K_tB$.
+
+For $(\star\star)$: we show that $V_t B^\top\Gamma^{-1} = K_t$. Start from $V_t^{-1} = \hat V_t^{-1} + B^\top\Gamma^{-1}B$ and right-multiply both sides by $\hat V_t B^\top$:
+
+$$V_t^{-1}\hat V_t B^\top = B^\top + B^\top\Gamma^{-1}B\hat V_t B^\top = B^\top\Gamma^{-1}\underbrace{(\Gamma + B\hat V_t B^\top)}_{S_t}.$$
+
+Left-multiply by $V_t$ and right-multiply by $S_t^{-1}$:
+
+$$\underbrace{\hat V_t B^\top S_t^{-1}}_{K_t} = V_t B^\top\Gamma^{-1}.$$
+
+Substituting both results:
+
+$$m_t = (I - K_tB)\hat m_t + K_t x_t = \hat m_t + K_t(x_t - B\hat m_t).$$
+
+$$\boxed{m_t = \hat m_t + K_t(x_t - B\hat m_t).}$$
 
   </details>
-</div>
-
-<div class="accordion" markdown="1">
-<details markdown="1">
-<summary>Proof</summary>
-
-We assume the **filtered posterior at time $t-1$** is Gaussian:
-
-$$z_{t-1}\mid x_{1:t-1}\sim \mathcal{N}(m_{t-1},V_{t-1})$$
-
-The **linear Gaussian dynamics** are
-
-$$z_t = A z_{t-1} + w_t,\qquad w_t\sim\mathcal{N}(0,\Sigma_z),\quad w_t \perp z_{t-1}.$$
-
-
-Define $y := A z_{t-1}$. Since an affine map of a Gaussian is Gaussian,
-
-$$y\mid x_{1:t-1}\sim \mathcal{N}(A m_{t-1}, A V_{t-1}A^\top).$$
-
-
-Now $z_t = y + w_t$ is a sum of two **independent Gaussians**, hence also Gaussian. Its mean and covariance follow from linearity of expectation and independence:
-
-$$
-\mathbb{E}[z_t\mid x_{1:t-1}]
-= \mathbb{E}[y\mid x_{1:t-1}] + \mathbb{E}[w_t]
-= A m_{t-1},
-$$
-
-and
-
-$$
-\mathrm{Cov}(z_t\mid x_{1:t-1})
-= \mathrm{Cov}(y\mid x_{1:t-1}) + \mathrm{Cov}(w_t)
-= A V_{t-1}A^\top + \Sigma_z,
-$$
-
-because the cross-covariance terms vanish $y$ and $w_t$ are independent.
-
-Therefore the **predictive (one-step-ahead) distribution** is Gaussian:
-
-$$
-p(z_t\mid x_{1:t-1})=\mathcal{N}\big(z_t \mid \hat m_t,\hat V_t\big),
-\qquad
-\hat m_t = A m_{t-1},\quad
-\hat V_t = A V_{t-1}A^\top + \Sigma_z.
-$$
-
-</details>
 </div>
 
 #### The Kalman Filter Recursion Equations
