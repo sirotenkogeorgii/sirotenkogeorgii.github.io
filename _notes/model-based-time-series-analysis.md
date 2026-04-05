@@ -4350,13 +4350,33 @@ Recursion comes from the dependence of $\gamma_t$ on $\gamma_{t+1}$ (backward in
 <div class="accordion">
   <details>
     <summary>proof</summary>
-    $$\underbrace{p(z_t \mid x_{1:T})}_{\gamma_t} = \underbrace{\frac{p(z_t, x_{1:t})}{p(x_{1:t})}}_{=p(z_t\mid x_{1:t})=\mathcal{N}(\mu_t,V_t) := \alpha_t} \times \underbrace{\frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}}_{:= \beta_t}$$
-    $$\gamma_t = \alpha_t \cdot \beta_t$$
-    $$= \alpha_t \cdot \frac{\int p(z_{t+1}, x_{t+1:T}\mid z_t)dz_{t+1}}{p(x_{t+1:T}\mid x_{1:t})}$$
-    $$= \alpha_t \cdot \frac{\int p(x_{t+2:T}\mid \cancel{x_{t+1}, z_t}, z_{t+1})\overbrace{p(x_{t+1} \mid z_{t+1})}^{\text{obs. model}}\overbrace{p(z_{t+1} \mid z_t)}^{\text{lat. model}}dz_{t+1}}{p(x_{t+2:T}\mid x_{1:t+1})p(x_{t+1}\mid x_{1:t})}$$
-    <p>where</p>
-    $$\beta_{t+1}=\alpha_{t+1}^{-1}\gamma_{t+1}={p(x_{t+2:T}\mid \cancel{x_{t+1}, z_t}, z_{t+1})}{p(x_{t+2:T}\mid x_{1:t+1})}$$
-    $$\implies \gamma_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1} p(x_{t+1} \mid z_{t+1})p(z_{t+1} \mid z_t)dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+    <p><strong>Step 1: Split $\gamma_t$ into forward and backward parts.</strong></p>
+    $$\underbrace{p(z_t \mid x_{1:T})}_{\gamma_t} = \underbrace{\frac{p(z_t, x_{1:t})}{p(x_{1:t})}}_{=p(z_t\mid x_{1:t}) := \alpha_t} \times \underbrace{\frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}}_{:= \beta_t}$$
+    <p>This follows from $p(z_t \mid x_{1:T}) = \frac{p(x_{t+1:T}\mid z_t)\,p(z_t \mid x_{1:t})}{p(x_{t+1:T}\mid x_{1:t})}$, which is Bayes' rule applied to $z_t$ with "data" $x_{t+1:T}$ and "prior" $p(z_t \mid x_{1:t})$, using the Markov property to write $p(x_{t+1:T}\mid z_t, x_{1:t}) = p(x_{t+1:T}\mid z_t)$ (future observations are conditionally independent of past observations given the current state).</p>
+    <p><strong>Step 2: Marginalize $\beta_t$ over $z_{t+1}$.</strong></p>
+    $$\beta_t = \frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})} = \frac{\int p(z_{t+1}, x_{t+1:T}\mid z_t)\,dz_{t+1}}{p(x_{t+1:T}\mid x_{1:t})}$$
+    <p><strong>Step 3: Factor the joint inside the integral.</strong> Apply the chain rule to $p(z_{t+1}, x_{t+1:T}\mid z_t)$:</p>
+    $$p(z_{t+1}, x_{t+1:T}\mid z_t) = p(x_{t+2:T}\mid z_{t+1}, x_{t+1}, z_t)\cdot p(x_{t+1}\mid z_{t+1}, z_t)\cdot p(z_{t+1}\mid z_t)$$
+    <p>Now apply the SSM assumptions:</p>
+    <ul>
+      <li><strong>Conditional independence of observations:</strong> $p(x_{t+1}\mid z_{t+1}, z_t) = p(x_{t+1}\mid z_{t+1})$ — the observation only depends on the current state.</li>
+      <li><strong>Markov property:</strong> $p(x_{t+2:T}\mid z_{t+1}, x_{t+1}, z_t) = p(x_{t+2:T}\mid z_{t+1})$ — given $z_{t+1}$, future observations are independent of $z_t$ and $x_{t+1}$.</li>
+    </ul>
+    <p>This gives:</p>
+    $$p(z_{t+1}, x_{t+1:T}\mid z_t) = p(x_{t+2:T}\mid z_{t+1})\cdot p(x_{t+1}\mid z_{t+1})\cdot p(z_{t+1}\mid z_t)$$
+    <p><strong>Step 4: Split the denominator.</strong> By the chain rule:</p>
+    $$p(x_{t+1:T}\mid x_{1:t}) = p(x_{t+2:T}\mid x_{1:t+1})\cdot p(x_{t+1}\mid x_{1:t})$$
+    <p>Substituting Steps 3 and 4 into Step 2:</p>
+    $$\beta_t = \frac{\int p(x_{t+2:T}\mid z_{t+1})\,p(x_{t+1}\mid z_{t+1})\,p(z_{t+1}\mid z_t)\,dz_{t+1}}{p(x_{t+2:T}\mid x_{1:t+1})\cdot p(x_{t+1}\mid x_{1:t})}$$
+    <p><strong>Step 5: Identify $\beta_{t+1}$ and substitute.</strong> By definition:</p>
+    $$\beta_{t+1} = \frac{p(x_{t+2:T}\mid z_{t+1})}{p(x_{t+2:T}\mid x_{1:t+1})}$$
+    <p>Also, $\beta_{t+1} = \alpha_{t+1}^{-1}\gamma_{t+1}$ since $\gamma_{t+1} = \alpha_{t+1}\cdot\beta_{t+1}$. We can now factor $\beta_{t+1}$ out of the integral by separating the $p(x_{t+2:T}\mid z_{t+1})$ and $p(x_{t+2:T}\mid x_{1:t+1})$ terms:</p>
+    $$\beta_t = \frac{\int \frac{p(x_{t+2:T}\mid z_{t+1})}{p(x_{t+2:T}\mid x_{1:t+1})}\cdot p(x_{t+1}\mid z_{t+1})\cdot p(z_{t+1}\mid z_t)\,dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+    $$= \frac{\int \beta_{t+1}\cdot p(x_{t+1}\mid z_{t+1})\cdot p(z_{t+1}\mid z_t)\,dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+    $$= \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1}\cdot p(x_{t+1}\mid z_{t+1})\cdot p(z_{t+1}\mid z_t)\,dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}$$
+    <p><strong>Step 6: Combine.</strong> Since $\gamma_t = \alpha_t \cdot \beta_t$:</p>
+    $$\boxed{\gamma_t = \alpha_t \cdot \frac{\int \alpha_{t+1}^{-1}\gamma_{t+1}\, p(x_{t+1} \mid z_{t+1})\,p(z_{t+1} \mid z_t)\,dz_{t+1}}{p(x_{t+1}\mid x_{1:t})}}$$
+    <p>This is recursive backward in time: $\gamma_t$ depends on $\gamma_{t+1}$.</p>
   </details>
 </div>
 
