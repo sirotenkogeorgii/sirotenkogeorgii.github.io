@@ -4126,11 +4126,23 @@ $$
 
 which is quadratic in $z_t$.
 
-Now apply Bayes’ rule:
+Now apply Bayes’ rule. Lemma:
 
 $$
 p(z_t\mid x_{1:t}) \propto p(x_t\mid z_t)\,p(z_t\mid x_{1:t-1}).
 $$
+
+*Lemma proof:*
+
+$$p(z_t\mid x_{1:t})p(x_{1:t}) = p(x_t\mid z_t, \cancel{x_{1:t-1}})p(z_t\mid x_{1:t-1})p(x_{1:t-1})$$
+
+$$p(z_t\mid x_{1:t}) = p(x_t\mid z_t)p(z_t\mid x_{1:t-1})\cdot\frac{p(x_{1:t-1})}{p(x_{1:t})}$$
+
+The term $\frac{p(x_{1:t-1})}{p(x_{1:t})}$ does not depend on $z_t$, so it could be viewed as a constant, thus
+
+$$p(z_t\mid x_{1:t}) \propto p(x_t\mid z_t)\,p(z_t\mid x_{1:t-1})$$
+
+$\square$
 
 Both factors are Gaussians in $z_t$, so their product is also Gaussian. The cleanest way to see this is to use **information form**.
 
@@ -4146,13 +4158,21 @@ $$
 p(z_t\mid x_{1:t-1}) \propto \exp\!\left(-\tfrac12 z_t^\top \Lambda_t z_t + \eta_t^\top z_t\right).
 $$
 
-Similarly, the likelihood contributes the quadratic/linear terms
+Similarly, the likelihood contributes the quadratic/linear terms. Starting from $p(x_t\mid z_t) = \mathcal{N}(x_t\mid Bz_t, \Gamma)$, expand the quadratic in the exponent:
+
+$$(x_t - Bz_t)^\top \Gamma^{-1}(x_t - Bz_t) = \underbrace{x_t^\top \Gamma^{-1} x_t}_{\text{const in } z_t} - 2x_t^\top \Gamma^{-1} Bz_t + z_t^\top B^\top \Gamma^{-1} B z_t.$$
+
+Dropping the constant term and noting that $x_t^\top \Gamma^{-1} B z_t = (B^\top \Gamma^{-1} x_t)^\top z_t$ by symmetry of $\Gamma^{-1}$:
 
 $$
 p(x_t\mid z_t)\propto \exp\!\left(-\tfrac12 z_t^\top (B^\top\Gamma^{-1}B) z_t + (B^\top\Gamma^{-1}x_t)^\top z_t\right).
 $$
 
-Multiplying the exponentials just **adds** these natural parameters, giving
+Multiplying the two factors $p(z_t\mid x_{1:t}) \propto p(x_t\mid z_t)\,p(z_t\mid x_{1:t-1})$ means multiplying the exponentials, which **adds** the exponents:
+
+$$p(z_t\mid x_{1:t}) \propto \exp\!\left(-\tfrac12 z_t^\top \underbrace{(\Lambda_t + B^\top\Gamma^{-1}B)}_{\text{new precision}} z_t + \underbrace{(\eta_t + B^\top\Gamma^{-1}x_t)^\top}_{\text{new info vector}} z_t\right).$$
+
+This is again a Gaussian in information form $\exp(-\tfrac12 z_t^\top \Lambda_{\text{post}} z_t + \eta_{\text{post}}^\top z_t)$, so we can read off the posterior precision and information vector, and convert back to moment form using $V_t = \Lambda_{\text{post}}^{-1}$ and $m_t = V_t \eta_{\text{post}}$:
 
 $$
 V_t^{-1} = \hat V_t^{-1} + B^\top\Gamma^{-1}B,

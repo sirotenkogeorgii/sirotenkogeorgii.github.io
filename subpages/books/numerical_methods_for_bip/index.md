@@ -268,8 +268,8 @@ The Moore-Penrose inverse $A^\dagger$ satisfies $\mathcal{R}(A^\dagger) = \mathc
 
 1. $AA^\dagger A = A$
 2. $A^\dagger A A^\dagger = A^\dagger$
-3. $A^\dagger A = \mathrm{Id}_X - P_{\mathcal{N}}$
-4. $AA^\dagger = (P_{\overline{\mathcal{R}}})\big|_{\mathcal{D}(A^\dagger)}$
+3. $A^\dagger A = \mathrm{Id}\_X - P_{\mathcal{N}}$
+4. $AA^\dagger = (P_{\overline{\mathcal{R}}})\big\|_{\mathcal{D}(A^\dagger)}$
 
 where $P_{\mathcal{N}}$ and $P_{\overline{\mathcal{R}}}$ are the orthogonal projections to $\mathcal{N}(A)$ and $\overline{\mathcal{R}(A)}$, respectively. *(The Moore-Penrose equations characterise $A^\dagger$ uniquely.)*
 
@@ -472,7 +472,7 @@ $$K^* u_n = \sigma_n^{-1} K^* K v_n = \sigma_n^{-1} \lambda_n v_n = \sigma_n v_n
 
 i.e., the second equation in (2.3.1) holds.
 
-To show that $(v_n)$ is not only an ONB of $\overline{\mathcal{R}(K^* K)}$ but also of $\overline{\mathcal{R}(K^*)}$, it suffices to show that $\overline{\mathcal{R}(K^*)} \subset \overline{\mathcal{R}(K^* K)}$. Let $x \in \overline{\mathcal{R}(K^*)}$. For any $\epsilon > 0$, there exists a
+To show that $(v_n)$ is not only an ONB of $\overline{\mathcal{R}(K^* K)}$ but also of $\overline{\mathcal{R}(K^\ast)}$, it suffices to show that $\overline{\mathcal{R}(K^\ast)} \subset \overline{\mathcal{R}(K^\ast K)}$. Let $x \in \overline{\mathcal{R}(K^\ast)}$. For any $\epsilon > 0$, there exists a
 
 $$y \in \mathcal{N}(K^*)^\perp = \overline{\mathcal{R}(K)} \text{ with } \lVert K^* y - x \rVert_X < \frac{\epsilon}{2} \quad \text{and} \quad \tilde{x} \in X \text{ with } \lVert K\tilde{x} - y \rVert < \frac{\epsilon}{2} \lVert K \rVert_{\mathcal{L}(X,Y)}^{-1},$$
 
@@ -505,11 +505,11 @@ This implies that $(u_n)$ is an ONB of $\overline{\mathcal{R}(K)}$.
 </details>
 </div>
 
-Since eigenvalues $\lambda_n$ of $K^* K$ with eigenvector $v_n$ are eigenvalues of $KK^*$ with eigenvector $u_n$ as well, (2.3.1) also provides a SVD of $K^*$:
+Since eigenvalues $\lambda_n$ of $K^\ast K$ with eigenvector $v_n$ are eigenvalues of $KK^\ast$ with eigenvector $u_n$ as well, (2.3.1) also provides a SVD of $K^\ast$:
 
 $$K^* y = \sum_{n \in \mathbb{N}} \sigma_n \langle y, u_n \rangle_Y v_n \quad \text{for all } y \in Y.$$
 
-We will now use the SVD of $K$ to characterise the domain $\mathcal{D}(K^\dagger) = \mathcal{R}(K) \oplus \mathcal{R}(K)^\perp$ of the Moore-Penrose inverse $K^\dagger$. Recall that minimum-norm solution for $y \in \mathcal{R}(K)^\perp = \mathcal{N}(K^*)$ is $x^\dagger = 0$, and conversely $\mathcal{N}(K^*)^\perp = \overline{\mathcal{R}(K)}$. Thus, the crucial question is whether an element $y \in \overline{\mathcal{R}(K)}$ also lies in $\mathcal{R}(K)$.
+We will now use the SVD of $K$ to characterise the domain $\mathcal{D}(K^\dagger) = \mathcal{R}(K) \oplus \mathcal{R}(K)^\perp$ of the Moore-Penrose inverse $K^\dagger$. Recall that minimum-norm solution for $y \in \mathcal{R}(K)^\perp = \mathcal{N}(K^\ast)$ is $x^\dagger = 0$, and conversely $\mathcal{N}(K^\ast)^\perp = \overline{\mathcal{R}(K)}$. Thus, the crucial question is whether an element $y \in \overline{\mathcal{R}(K)}$ also lies in $\mathcal{R}(K)$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.3.2</span><span class="math-callout__name">(Picard Condition)</span></p>
@@ -532,7 +532,7 @@ First let $y \in \mathcal{R}(K)$, i.e. there exists a $x \in X$ with $Kx = y$. T
 
 $$\sum_{n \in \mathbb{N}} \sigma_n^{-2} |\langle y, u_n \rangle_Y|^2 = \sum_{n \in \mathbb{N}} \sigma_n^{-2} |\langle x, K^* u_n \rangle_X|^2 = \sum_{n \in \mathbb{N}} |\langle x, v_n \rangle_X|^2 \le \lVert x \rVert_X^2 < \infty.$$
 
-To show the reverse implication, let $y \in \overline{\mathcal{R}(K)}$ and suppose that (2.3.4) holds. Then, the sequence $(s_N)\_{N \in \mathbb{N}}$ of partial sums $s_N := \sum_{n=1}^{N} \sigma_n^{-2} |\langle y, u_n \rangle_Y|^2$ is a Cauchy sequence and thus
+To show the reverse implication, let $y \in \overline{\mathcal{R}(K)}$ and suppose that (2.3.4) holds. Then, the sequence $(s_N)\_{N \in \mathbb{N}}$ of partial sums $s_N := \sum_{n=1}^{N} \sigma_n^{-2} \|\langle y, u_n \rangle_Y\|^2$ is a Cauchy sequence and thus
 
 $$(x_N)\_{N \in \mathbb{N}} \quad \text{with} \quad x_N := \sum_{n=1}^{N} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n$$
 
@@ -540,7 +540,7 @@ is also a Cauchy sequence. In other words,
 
 $$\lVert x_N - x_M \rVert_X^2 = \left\lVert \sum_{n=N}^{M} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n \right\rVert_X^2 = \sum_{n=N}^{M} |\sigma_n^{-1} \langle y, u_n \rangle_Y|^2 \to 0,$$
 
-where we used that $(v_n)\_{n \in \mathbb{N}}$ is an orthonormal system in $\overline{\mathcal{R}(K^*)}$. Thus, $(x_N)\_{N \in \mathbb{N}} \subset \overline{\mathcal{R}(K^*)}$ converges to
+where we used that $(v_n)\_{n \in \mathbb{N}}$ is an orthonormal system in $\overline{\mathcal{R}(K^\ast)}$. Thus, $(x_N)\_{N \in \mathbb{N}} \subset \overline{\mathcal{R}(K^\ast)}$ converges to
 
 $$x := \sum_{n \in \mathbb{N}} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n \in \overline{\mathcal{R}(K^*)} = \mathcal{N}(K)^\perp$$
 
@@ -582,7 +582,7 @@ In the case of a linear operator on a Hilbert space this can be achieved by defi
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2.4.1</span><span class="math-callout__name">(Regularisation)</span></p>
 
-Let $X, Y$ be two Hilbert spaces and $A \in \mathcal{L}(X, Y)$ a bounded, linear operator. A family $(A_\alpha^\dagger)_{\alpha > 0}$ of linear operators $A_\alpha^\dagger : Y \to X$ is called a **regularisation** of $A^\dagger$ for $\alpha > 0$ if
+Let $X, Y$ be two Hilbert spaces and $A \in \mathcal{L}(X, Y)$ a bounded, linear operator. A family $(A_\alpha^\dagger)\_{\alpha > 0}$ of linear operators $A_\alpha^\dagger : Y \to X$ is called a **regularisation** of $A^\dagger$ for $\alpha > 0$ if
 
 1. $A_\alpha^\dagger \in \mathcal{L}(Y, X)$ for all $\alpha > 0$,
 2. $A_\alpha^\dagger y \to A^\dagger y$ for all $y \in \mathcal{D}(A^\dagger)$, as $\alpha \to 0$.
@@ -594,14 +594,14 @@ Thus, a regularisation is a pointwise approximation of the Moore-Penrose inverse
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.2</span><span class="math-callout__name">(Non-Uniform Boundedness)</span></p>
 
-Let $A \in \mathcal{L}(X, Y)$ and $(A_\alpha^\dagger)_{\alpha > 0} \subset \mathcal{L}(Y, X)$ a regularisation. If $A^\dagger$ is unbounded then the family $(A_\alpha^\dagger)_{\alpha > 0}$ is not uniformly bounded. In particular, there exists a $y \in Y$ such that $\lVert A_\alpha^\dagger y \rVert_X \to \infty$ as $\alpha \to 0$.
+Let $A \in \mathcal{L}(X, Y)$ and $(A_\alpha^\dagger)\_{\alpha > 0} \subset \mathcal{L}(Y, X)$ a regularisation. If $A^\dagger$ is unbounded then the family $(A_\alpha^\dagger)\_{\alpha > 0}$ is not uniformly bounded. In particular, there exists a $y \in Y$ such that $\lVert A_\alpha^\dagger y \rVert_X \to \infty$ as $\alpha \to 0$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.3</span><span class="math-callout__name">(Divergence Outside Domain)</span></p>
 
-Let $A \in \mathcal{L}(X, Y)$ with $A^\dagger$ unbounded and $(A_\alpha^\dagger)_{\alpha > 0} \subset \mathcal{L}(Y, X)$ a regularisation. If
+Let $A \in \mathcal{L}(X, Y)$ with $A^\dagger$ unbounded and $(A_\alpha^\dagger)\_{\alpha > 0} \subset \mathcal{L}(Y, X)$ a regularisation. If
 
 $$\sup_{\alpha > 0} \lVert A A_\alpha^\dagger \rVert_{\mathcal{L}(Y,Y)} < \infty, \tag{2.4.1}$$
 
