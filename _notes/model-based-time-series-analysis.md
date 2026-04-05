@@ -4352,17 +4352,10 @@ Recursion comes from the dependence of $\gamma_t$ on $\gamma_{t+1}$ (backward in
     <summary>proof</summary>
     <p><strong>Step 1: Split $\gamma_t$ into forward and backward parts.</strong></p>
     $$\underbrace{p(z_t \mid x_{1:T})}_{\gamma_t} = \underbrace{\frac{p(z_t, x_{1:t})}{p(x_{1:t})}}_{=p(z_t\mid x_{1:t}) := \alpha_t} \times \underbrace{\frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})}}_{:= \beta_t}$$
-    <p>This follows from $p(z_t \mid x_{1:T}) = \frac{p(x_{t+1:T}\mid z_t)\,p(z_t \mid x_{1:t})}{p(x_{t+1:T}\mid x_{1:t})}$, which is Bayes' rule applied to $z_t$ with "data" $x_{t+1:T}$ and "prior" $p(z_t \mid x_{1:t})$, using the Markov property to write $p(x_{t+1:T}\mid z_t, x_{1:t}) = p(x_{t+1:T}\mid z_t)$ (future observations are conditionally independent of past observations given the current state).</p>
     <p><strong>Step 2: Marginalize $\beta_t$ over $z_{t+1}$.</strong></p>
     $$\beta_t = \frac{p(x_{t+1:T}\mid z_t)}{p(x_{t+1:T}\mid x_{1:t})} = \frac{\int p(z_{t+1}, x_{t+1:T}\mid z_t)\,dz_{t+1}}{p(x_{t+1:T}\mid x_{1:t})}$$
     <p><strong>Step 3: Factor the joint inside the integral.</strong> Apply the chain rule to $p(z_{t+1}, x_{t+1:T}\mid z_t)$:</p>
     $$p(z_{t+1}, x_{t+1:T}\mid z_t) = p(x_{t+2:T}\mid z_{t+1}, x_{t+1}, z_t)\cdot p(x_{t+1}\mid z_{t+1}, z_t)\cdot p(z_{t+1}\mid z_t)$$
-    <p>Now apply the SSM assumptions:</p>
-    <ul>
-      <li><strong>Conditional independence of observations:</strong> $p(x_{t+1}\mid z_{t+1}, z_t) = p(x_{t+1}\mid z_{t+1})$ — the observation only depends on the current state.</li>
-      <li><strong>Markov property:</strong> $p(x_{t+2:T}\mid z_{t+1}, x_{t+1}, z_t) = p(x_{t+2:T}\mid z_{t+1})$ — given $z_{t+1}$, future observations are independent of $z_t$ and $x_{t+1}$.</li>
-    </ul>
-    <p>This gives:</p>
     $$p(z_{t+1}, x_{t+1:T}\mid z_t) = p(x_{t+2:T}\mid z_{t+1})\cdot p(x_{t+1}\mid z_{t+1})\cdot p(z_{t+1}\mid z_t)$$
     <p><strong>Step 4: Split the denominator.</strong> By the chain rule:</p>
     $$p(x_{t+1:T}\mid x_{1:t}) = p(x_{t+2:T}\mid x_{1:t+1})\cdot p(x_{t+1}\mid x_{1:t})$$
@@ -4649,8 +4642,12 @@ The E-step for the Poisson SSM consists of a forward filtering pass using the La
   * $\mu_{t\mid t-1} = A \mu_{t-1}$
   * $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
 * **Update:** 
-  * Approximate the posterior $p(z_t \mid c_{1:t})$ with a Gaussian $\mathcal{N}(\mu_t, V_t)$ where:
-  * $\mu_t = \arg\max_{z_t} Q(z_t)$
+  * Define the log unnormalized posterior:
+  
+    $$Q(z_t) = \log p(c_t \mid z_t) + \log p(z_t \mid c_{1:t-1}) = c_t^\top(b_0 + B_1 z_t) - \mathbf{1}^\top \exp(b_0 + B_1 z_t) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top V_{t\mid t-1}^{-1}(z_t - \mu_{t\mid t-1}) + \text{const}$$
+  
+  * Approximate the posterior $p(z_t \mid c_{1:t})$ with a Gaussian $\mathcal{N}(\mu_t, V_t)$ via Laplace approximation:
+  * $\mu_t = \arg\max_{z_t} Q(z_t)$ (found numerically, e.g. Newton-Raphson)
   * $V_t = (-\nabla_{z_t}^2 Q(z_t)\mid_{z_t=\mu_t})^{-1}$
 
 </div>
@@ -4659,21 +4656,6 @@ The E-step for the Poisson SSM consists of a forward filtering pass using the La
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Procedure is repeated)</span></p>
 
 This **procedure is repeated for each time step** $t=1, \dots, T$ to obtain the approximate filtering distributions required for the M-step. To get the full posterior $q(Z)$, a subsequent backward pass (analogous to the Rauch-Tung-Striebel smoother) is typically performed.
-
-</div>
-
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($V_t$ for Gaussian (our case))</span></p>
-
-Laplace Estimate for Gaussian:
-
-$$V_t = \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
-
-$$ = \left[ -\nabla_{z_t}^2 \log \mathcal{N}(\mu, \Sigma) \right]^{-1}_{z_t=\mu_t} = -\Sigma^{-1}$$
-
-**Recall:**
-
-$$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z \partial z^\top} -\frac{1}{2}(z-\mu)^\top\Sigma^{-1}(z-\mu) = -\Sigma^{-1}$$
 
 </div>
 
@@ -4749,6 +4731,21 @@ and the integral becomes approximately
 $$\int \exp(f(z))dz \approx \exp(f(z^\star)) (2\pi)^{d/2}\lvert {-H} \rvert^{-1/2}$$
 
 That’s the “Laplace approximation”: approximate a peaked density (or the integrand of a marginal likelihood) by a Gaussian formed from the **mode + curvature**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($V_t$ for Gaussian (our case))</span></p>
+
+Laplace Estimate for Gaussian:
+
+$$V_t = \left[ -\nabla_{z_t}^2 Q(z_t) \right]^{-1}_{z_t=\mu_t}$$
+
+$$ = \left[ -\nabla_{z_t}^2 \log \mathcal{N}(\mu, \Sigma) \right]^{-1}_{z_t=\mu_t} = -\Sigma^{-1}$$
+
+**Recall:**
+
+$$\frac{\partial f(z)}{\partial z \partial z^\top} = \frac{\partial}{\partial z \partial z^\top} -\frac{1}{2}(z-\mu)^\top\Sigma^{-1}(z-\mu) = -\Sigma^{-1}$$
 
 </div>
 
@@ -4843,12 +4840,12 @@ The core idea of the **Extended Kalman Filter** is to perform a **local lineariz
 
 This linearization is achieved using a first-order Taylor expansion of $F_\theta(z_{t-1})$ around $m_{t-1}$:  
 
-$$F_\theta(z_{t-1})\biggr\rvert_{m_{t-1}} \approx F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1})$$  
+$$F_\theta(z_{t-1})\biggr\rvert_{m_{t-1}} \approx F_\theta(m_{t-1}) + \tilde{A}_{t-1}(z_{t-1} - m_{t-1})$$  
 
-where $J_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$:  
+where $\tilde{A}_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$ (playing the role of $A$ in the linearized system):  
 
 $$
-J_{t-1} = 
+\tilde{A}_{t-1} = \frac{\partial F_\theta}{\partial z}\bigg|_{m_{t-1}} =
 \begin{pmatrix}
 \frac{\partial F^{\theta}_1}{\partial z^{(t-1)}_1} & \dots & \frac{\partial F^{\theta}_1}{\partial z^{(t-1)}_M} \\
 \vdots & \dots & \vdots \\
@@ -4858,7 +4855,7 @@ $$
 
 By substituting this approximation back into the latent model, the **transition distribution** becomes:  
 
-$$p(z_t \mid  z_{t-1}, \theta) \approx \mathcal{N}(F_\theta(m_{t-1}) + J_{t-1}(z_{t-1} - m_{t-1}), \Sigma)$$
+$$p(z_t \mid  z_{t-1}, \theta) \approx \mathcal{N}(F_\theta(m_{t-1}) + \tilde{A}_{t-1}(z_{t-1} - m_{t-1}), \Sigma)$$
 
 </div>
 
@@ -4886,42 +4883,47 @@ $$z_t\mid z_{t_t} \sim \mathcal{N}(F(z_{t-1}), \Sigma)$$
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Extended Kalman Filter)</span></p>
 
 * Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of $p(z_{t-1}\mid x_1, \dots, x_{t-1})$.
-* Let $J_{t-1} := \frac{\partial F}{\partial z}\mid_{m_{t-1}}$. 
-* Let $\nabla_t := \frac{\partial G}{\partial z}\mid_{F(m_{t-1})}$.
+* Let $\tilde{A}_{t-1} := \frac{\partial F}{\partial z}\big\vert_{m_{t-1}}$ be the Jacobian of $F$ (plays the role of $A$). 
+* Let $\tilde{B}_t := \frac{\partial G}{\partial z}\big\vert_{F(m_{t-1})}$ be the Jacobian of $G$ (plays the role of $B$).
 
-1. **Prediction Step:** The one-step-ahead predictive distribution $p(z_t\mid x_1, \dots, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(m_{t\mid t-1}, V_{t\mid t-1})$ with:
+1. **Prediction Step:** The one-step-ahead predictive distribution $p(z_t\mid x_1, \dots, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(\hat{m}_t, \hat{V}_t)$ with:
    * **Predicted state mean:**
   
-     $$m_{t\mid t-1} = F_\theta(m_{t-1})$$
+     $$\hat{m}_t = F_\theta(m_{t-1})$$
   
    * **Predicted state covariance:** 
   
-     $$V_{t\mid t-1} = J_{t-1} V_{t-1} J_{t-1}^\top + \Sigma$$ 
+     $$\hat{V}_t = \tilde{A}_{t-1} V_{t-1} \tilde{A}_{t-1}^\top + \Sigma$$ 
   
 2. **Update Step:** The filtering distribution $p(z_t\mid x_1, \dots, x_t)$ is approximated as a Gaussian $\mathcal{N}(m_t, V_t)$ with:
    * **Kalman Gain $K_t$:** The gain determines how much the new observation $x_t$ influences the updated state estimate.
     
-     $$K_t = V_{t\mid t-1} \nabla_t^\top (\nabla_t V_{t\mid t-1} \nabla_t^\top + \Gamma)^{-1}$$
+     $$K_t = \hat{V}_t \tilde{B}_t^\top (\tilde{B}_t \hat{V}_t \tilde{B}_t^\top + \Gamma)^{-1}$$
 
-   * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - B m_{t\mid t-1})$.  
+   * **Updated state mean $m_t$:** The new mean is the predicted mean plus a correction term based on the prediction error $(x_t - G(\hat{m}_t))$.  
   
-     $$m_t = m_{t\mid t-1} + K_t (x_t - G(m_{t\mid t-1}))$$
+     $$m_t = \hat{m}_t + K_t (x_t - G(\hat{m}_t))$$
 
-   * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance. The equation from the source is presented as:  
+   * **Updated state covariance $V_t$:** The new covariance is reduced from the predicted covariance:  
   
-     $$V_t = V_{t\mid t-1} - K_t \nabla_t V_{t\mid t-1}$$
+     $$V_t = \hat{V}_t - K_t \tilde{B}_t \hat{V}_t$$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Comparison with Standard Kalman Filter)</span></p>
 
-It is instructive to compare the EKF prediction equations with those of the standard Kalman Filter, where the transition is linear ($z_t = A z_{t-1} + w_t$):
+It is instructive to compare the EKF equations with those of the standard Kalman Filter, where the transition is linear ($z_t = A z_{t-1} + w_t$) and the observation is linear ($x_t = B z_t + \eta_t$):
 
-* **KF Predicted Mean:** $m_{t\mid t-1} = A m_{t-1}$
-* **KF Predicted Covariance:** $V_{t\mid t-1} = A V_{t-1} A^\top + \Sigma$
+| Quantity | KF | EKF |
+|---|---|---|
+| Predicted mean | $\hat{m}_t = A m_{t-1}$ | $\hat{m}_t = F_\theta(m_{t-1})$ |
+| Predicted covariance | $\hat{V}_t = A V_{t-1} A^\top + \Sigma$ | $\hat{V}_t = \tilde{A}_{t-1} V_{t-1} \tilde{A}_{t-1}^\top + \Sigma$ |
+| Kalman gain | $K_t = \hat{V}_t B^\top (B \hat{V}_t B^\top + \Gamma)^{-1}$ | $K_t = \hat{V}_t \tilde{B}_t^\top (\tilde{B}_t \hat{V}_t \tilde{B}_t^\top + \Gamma)^{-1}$ |
+| Updated mean | $m_t = \hat{m}_t + K_t(x_t - B\hat{m}_t)$ | $m_t = \hat{m}_t + K_t(x_t - G(\hat{m}_t))$ |
+| Updated covariance | $V_t = (I - K_t B)\hat{V}_t$ | $V_t = (I - K_t \tilde{B}_t)\hat{V}_t$ |
 
-The EKF replaces the static transition matrix $A$ with the non-linear function $F_\theta$ for propagating the mean and with its local Jacobian $J_{t-1}$ for propagating the covariance.
+The EKF replaces the static matrices $A$ and $B$ with the non-linear functions $F_\theta$ and $G$ for propagating/evaluating means, and with their local Jacobians $\tilde{A}_{t-1}$ and $\tilde{B}_t$ for propagating covariances.
 
 </div>
 
