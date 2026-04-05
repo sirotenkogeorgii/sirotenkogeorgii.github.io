@@ -26,3 +26,4 @@ date: 2024-10-20
 - [Mathematical Analysis 3](/subpages/books/mathematical_analysis_matfyz/semester3/)
 - [Representation Theory: A First Course — Harris & Fulton](/subpages/books/representation_theory_first_course_harris/)
 - [Basic Category Theory](/subpages/books/category_theory/basic_category_theory/)
+- [Numerical Methods for Bayesian Inverse Problems](/subpages/books/numerical_methods_for_bip/)
