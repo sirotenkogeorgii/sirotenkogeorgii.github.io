@@ -2414,7 +2414,7 @@ This term is **constant** for each model when evaluated at its own MLE. The MLE 
 
 $$Q(\varepsilon) = \text{tr}\left(\hat{\Sigma}^{-1} \cdot T'\hat{\Sigma}\right) = T' \cdot \text{tr}(I_N) = N \cdot T'$$
 
-Since this evaluates to the same constant $N \cdot T'$ for **both** the restricted and full models (each using their own MLE $\hat{\Sigma}_0$ or $\hat{\Sigma}$), the quadratic terms cancel in the difference $\ell_{\text{restricted}} - \ell_{\text{full}}$, leaving only the log-determinant terms:
+Since this evaluates to the same constant $N \cdot T'$ for **both** the restricted and full models (each using their own MLE $\hat{\Sigma}\_0$ or $\hat{\Sigma}$), the quadratic terms cancel in the difference $\ell_{\text{restricted}} - \ell_{\text{full}}$, leaving only the log-determinant terms:
 
 $$\ell_{\text{restricted}} = -\sum_{t=p+2}^T\frac{1}{2} \log(\lvert\hat{\Sigma}_0\rvert) + \text{const}$$
 
@@ -4626,6 +4626,11 @@ The E-step requires computing the posterior distribution over the latent states,
 It is a second-order saddle-point approximation.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/laplace-approximation.png' | relative_url }}" alt="Binomial PMF" loading="lazy">
+  <figcaption>Laplace Approximation.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Problem and Solution</span><span class="math-callout__name">(Non-Gaussian Distribution $\implies$ Laplace Approximation)</span></p>
