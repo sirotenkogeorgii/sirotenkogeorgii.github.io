@@ -2432,6 +2432,21 @@ This statistic is compared to a $\chi^2(N^2)$ distribution, as the VAR($p+1$) mo
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the quadratic terms vanish from the test statistic)</span></p>
+
+The LR test uses **maximized** log-likelihoods ($\sup_\theta \mathcal{L}(\theta)$), meaning we maximize over **all** parameters including $\Sigma$. The residuals differ between models — the restricted model gives $\varepsilon_t^{(0)} = x_t - \hat{x}_t^{(0)}$ and the full model gives $\varepsilon_t^{(1)} = x_t - \hat{x}_t^{(1)}$ — and consequently $\hat{\Sigma}_0 \neq \hat{\Sigma}$. However, each model's MLE is defined as the sample covariance of its own residuals:
+
+$$\hat{\Sigma}_0 = \frac{1}{T'}\sum_t \varepsilon_t^{(0)}(\varepsilon_t^{(0)})^\top, \qquad \hat{\Sigma} = \frac{1}{T'}\sum_t \varepsilon_t^{(1)}(\varepsilon_t^{(1)})^\top$$
+
+When the quadratic term of each model is evaluated at its own MLE, the $\hat{\Sigma}^{-1}$ cancels against $\sum \varepsilon_t\varepsilon_t^\top = T'\hat{\Sigma}$:
+
+$$Q_{\text{each model}} = \text{tr}\!\left(\hat{\Sigma}^{-1}_{\text{model}} \cdot T'\hat{\Sigma}_{\text{model}}\right) = T' \cdot \text{tr}(I_N) = N \cdot T'$$
+
+This is **self-normalizing**: regardless of what the residuals look like, the quadratic form at the MLE always equals $N \cdot T'$. Since both models yield the same constant, it cancels in $D = -2(\ell_{\text{restricted}} - \ell_{\text{full}})$, and only the **log-determinant** terms survive. The full model can only reduce the residual covariance ($\lvert\hat{\Sigma}\rvert \leq \lvert\hat{\Sigma}_0\rvert$), and the LR test asks whether that reduction is statistically significant.
+
+</div>
+
 ### Granger Causality
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -3295,6 +3310,11 @@ $$\mathbf{z}_t = (1 - u_t) \odot \mathbf{z}_{t-1} + u_t \odot \tilde{\mathbf{z}}
 GRUs have 2 gates (vs. 3 for LSTM) and no explicit memory cell.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/GatedRecurrentUnit.png' | relative_url }}" alt="Filtering Smoothing Schema" loading="lazy">
+  <figcaption>Gated Recurrent Unit.</figcaption>
+</figure>
 
 ##### (c) Role of Activation Functions
 
