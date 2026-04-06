@@ -2401,12 +2401,20 @@ $$
 (x_t-\hat{x}_t) \eqqcolon \varepsilon_t
 $$
 
+Consider the quadratic (rightmost) term in each log-likelihood, summed over $t$. Denoting $T' = T - (p+1)$ for the number of summands:
+
 $$
 Q(\varepsilon)
 = \sum_{t=p+2}^{T} \varepsilon_t^{\top}\hat{\Sigma}^{-1}\varepsilon_t
 = \text{tr}\left(\hat{\Sigma}^{-1}\sum_{t=p+2}^{T}\varepsilon_t\varepsilon_t^{\top}\right)
-\quad \text{(trace identity)}
+\quad \text{(trace identity: } a^\top M a = \text{tr}(Maa^\top)\text{)}
 $$
+
+This term is **constant** for each model when evaluated at its own MLE. The MLE of the residual covariance is $\hat{\Sigma} = \frac{1}{T'}\sum_{t}\varepsilon_t\varepsilon_t^\top$, so $\sum_t \varepsilon_t\varepsilon_t^\top = T'\hat{\Sigma}$. Substituting:
+
+$$Q(\varepsilon) = \text{tr}\left(\hat{\Sigma}^{-1} \cdot T'\hat{\Sigma}\right) = T' \cdot \text{tr}(I_N) = N \cdot T'$$
+
+Since this evaluates to the same constant $N \cdot T'$ for **both** the restricted and full models (each using their own MLE $\hat{\Sigma}_0$ or $\hat{\Sigma}$), the quadratic terms cancel in the difference $\ell_{\text{restricted}} - \ell_{\text{full}}$, leaving only the log-determinant terms:
 
 $$\ell_{\text{restricted}} = -\sum_{t=p+2}^T\frac{1}{2} \log(\lvert\hat{\Sigma}_0\rvert) + \text{const}$$
 
@@ -4644,7 +4652,9 @@ The E-step for the Poisson SSM consists of a forward filtering pass using the La
 * **Update:** 
   * Define the log unnormalized posterior:
   
-    $$Q(z_t) = \log p(c_t \mid z_t) + \log p(z_t \mid c_{1:t-1}) = c_t^\top(b_0 + B_1 z_t) - \mathbf{1}^\top \exp(b_0 + B_1 z_t) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top V_{t\mid t-1}^{-1}(z_t - \mu_{t\mid t-1}) + \text{const}$$
+    $$Q(z_t) = \log p(c_t \mid z_t) + \log p(z_t \mid c_{1:t-1})$$
+
+    $$= c_t^\top(b_0 + B_1 z_t) - \mathbf{1}^\top \exp(b_0 + B_1 z_t) - \frac{1}{2}(z_t - \mu_{t\mid t-1})^\top V_{t\mid t-1}^{-1}(z_t - \mu_{t\mid t-1}) + \text{const}$$
   
   * Approximate the posterior $p(z_t \mid c_{1:t})$ with a Gaussian $\mathcal{N}(\mu_t, V_t)$ via Laplace approximation:
   * $\mu_t = \arg\max_{z_t} Q(z_t)$ (found numerically, e.g. Newton-Raphson)
@@ -4842,7 +4852,7 @@ This linearization is achieved using a first-order Taylor expansion of $F_\theta
 
 $$F_\theta(z_{t-1})\biggr\rvert_{m_{t-1}} \approx F_\theta(m_{t-1}) + \tilde{A}_{t-1}(z_{t-1} - m_{t-1})$$  
 
-where $\tilde{A}_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$ (playing the role of $A$ in the linearized system):  
+where $\tilde{A}\_{t-1}$ is the Jacobian matrix of $F_\theta$ evaluated at $m_{t-1}$ (playing the role of $A$ in the linearized system):  
 
 $$
 \tilde{A}_{t-1} = \frac{\partial F_\theta}{\partial z}\bigg|_{m_{t-1}} =
@@ -4883,8 +4893,8 @@ $$z_t\mid z_{t_t} \sim \mathcal{N}(F(z_{t-1}), \Sigma)$$
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Extended Kalman Filter)</span></p>
 
 * Let $m_{t-1}$ and $V_{t-1}$ be the mean and covariance of $p(z_{t-1}\mid x_1, \dots, x_{t-1})$.
-* Let $\tilde{A}_{t-1} := \frac{\partial F}{\partial z}\big\vert_{m_{t-1}}$ be the Jacobian of $F$ (plays the role of $A$). 
-* Let $\tilde{B}_t := \frac{\partial G}{\partial z}\big\vert_{F(m_{t-1})}$ be the Jacobian of $G$ (plays the role of $B$).
+* Let $\tilde{A}\_{t-1} := \frac{\partial F}{\partial z}\big\vert_{m_{t-1}}$ be the Jacobian of $F$ (plays the role of $A$). 
+* Let $\tilde{B}\_t := \frac{\partial G}{\partial z}\big\vert_{F(m_{t-1})}$ be the Jacobian of $G$ (plays the role of $B$).
 
 1. **Prediction Step:** The one-step-ahead predictive distribution $p(z_t\mid x_1, \dots, x_{t-1})$ is approximated as a Gaussian $\mathcal{N}(\hat{m}_t, \hat{V}_t)$ with:
    * **Predicted state mean:**
@@ -4917,8 +4927,8 @@ It is instructive to compare the EKF equations with those of the standard Kalman
 
 | Quantity | KF | EKF |
 |---|---|---|
-| Predicted mean | $\hat{m}_t = A m_{t-1}$ | $\hat{m}_t = F_\theta(m_{t-1})$ |
-| Predicted covariance | $\hat{V}_t = A V_{t-1} A^\top + \Sigma$ | $\hat{V}_t = \tilde{A}_{t-1} V_{t-1} \tilde{A}_{t-1}^\top + \Sigma$ |
+| Predicted mean | $\hat{m}\_t = A m_{t-1}$ | $\hat{m}\_t = F_\theta(m_{t-1})$ |
+| Predicted covariance | $\hat{V}\_t = A V_{t-1} A^\top + \Sigma$ | $\hat{V}\_t = \tilde{A}\_{t-1} V_{t-1} \tilde{A}_{t-1}^\top + \Sigma$ |
 | Kalman gain | $K_t = \hat{V}_t B^\top (B \hat{V}_t B^\top + \Gamma)^{-1}$ | $K_t = \hat{V}_t \tilde{B}_t^\top (\tilde{B}_t \hat{V}_t \tilde{B}_t^\top + \Gamma)^{-1}$ |
 | Updated mean | $m_t = \hat{m}_t + K_t(x_t - B\hat{m}_t)$ | $m_t = \hat{m}_t + K_t(x_t - G(\hat{m}_t))$ |
 | Updated covariance | $V_t = (I - K_t B)\hat{V}_t$ | $V_t = (I - K_t \tilde{B}_t)\hat{V}_t$ |
