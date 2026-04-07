@@ -143,6 +143,11 @@ A key concept in this model is **parallel slackness**, which refers to having ma
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/The-bulk-synchronous-parallel-computing-paradigm.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>The Bulk Synchronous Parallel Computing Paradigm.</figcaption>
+</figure>
+
 > GPUs hide long memory latencies by running many more independent threads ($v$) than they have execution lanes/pipelines ($p$). When some threads stall on memory, the hardware instantly swaps to other ready threads—so the lanes stay busy. That “excess” of runnable work over hardware lanes is the slackness $v ≫ p$.
 
 ## CUDA
@@ -156,7 +161,13 @@ In a typical computer system, the CPU and GPU are distinct components with their
   <figcaption>CPU + GPU System</figcaption>
 </figure>
 
-The GPU's memory bandwidth can be over 7x higher than the CPU's, and its computational throughput an order of magnitude greater. CUDA (Compute Unified Device Architecture) allows us to leverage this power for general-purpose computing tasks.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU and CPU memory bandwidth)</span></p>
+
+* The **GPU's memory bandwidth can be over 7x higher than the CPU's**, and its computational throughput an order of magnitude greater. 
+* **CUDA** (Compute Unified Device Architecture) allows us to leverage this power for general-purpose computing tasks.
+
+</div>
 
 #### The GPU Architecture for General-Purpose Computing
 
@@ -218,7 +229,6 @@ GPUs combine both: TLP at the grid/block level and DLP-like execution at the war
 
 * If your program is “one loop over big arrays”: **DLP first** (vectorize/GPU-style).
 * If your program is “many independent jobs or stages”: **TLP first** (threads/tasks).
-
 
 #### Thread Hierarchy
 
