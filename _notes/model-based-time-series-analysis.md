@@ -5376,8 +5376,8 @@ The reparameterization trick, introduced by Rezende et al. (2014), resolves this
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reparameterization Trick: Univariate Gaussian)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Reparameterization Trick: Univariate Gaussian)</span></p>
 
 If $z \sim \mathcal{N}(\mu, \sigma^2)$, we can reparameterize the sampling process as:  
 
@@ -5387,8 +5387,8 @@ Here, $z = g(\mu, \sigma, \epsilon)$ is a deterministic function of the paramete
 
 </div>
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reparameterization Trick: Multivariate Gaussian)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Reparameterization Trick: Multivariate Gaussian)</span></p>
 
 If $z \sim \mathcal{N}(\mu, \Sigma)$, we can reparameterize as:  
 
@@ -5396,11 +5396,13 @@ $$z = \mu + R \cdot \epsilon \quad \text{where } \epsilon \sim \mathcal{N}(0, I)
 
 $R$ can be obtained via Cholesky decomposition of the covariance matrix $\Sigma$.
 
-This trick works for many distributions. By reparameterizing, we can move the expectation with respect to the parameters outside the gradient operator, making the objective differentiable with respect to $\phi$:  
+This trick works for many distributions. By reparameterizing, we can move the gradient operator inside the expectation, making the objective differentiable with respect to $\phi$. For any differentiable function $f$ (in the ELBO context, $f(z) = \log p_\theta(X, z) - \log q_\phi(z \mid X)$):
 
 $$
-\nabla_\phi \mathbb{E}_{z \sim q\phi(z\mid X)}[f(z)] = \nabla_\phi \mathbb{E}_{\epsilon \sim p(\epsilon)}[f(g(\phi, \epsilon))] = \mathbb{E}_{\epsilon \sim p(\epsilon)}[\nabla_\phi f(g(\phi, \epsilon))]
+\nabla_\phi \underbrace{\mathbb{E}_{z \sim q_\phi(z\mid X)}[f(z)]}_{\text{can't move } \nabla_\phi \text{ inside: } q_\phi \text{ depends on } \phi} = \nabla_\phi \underbrace{\mathbb{E}_{\epsilon \sim p(\epsilon)}[f(g(\phi, \epsilon))]}_{\text{can move } \nabla_\phi \text{ inside: } p(\epsilon) \text{ does not depend on } \phi} = \mathbb{E}_{\epsilon \sim p(\epsilon)}[\nabla_\phi f(g(\phi, \epsilon))]
 $$
+
+The last expression is an expectation-of-a-gradient, which can be approximated by Monte Carlo: sample $\epsilon^{(l)} \sim p(\epsilon)$, compute $\nabla_\phi f(g(\phi, \epsilon^{(l)}))$, and average.
 
 </div>
 
