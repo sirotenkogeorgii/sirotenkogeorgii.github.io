@@ -625,7 +625,7 @@ This decomposition is a fundamental tool of regularisation theory that will be u
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2.4.4</span><span class="math-callout__name">(Parameter Choice Rule)</span></p>
 
-A function $\alpha : \mathbb{R}_+ \times Y \to \mathbb{R}_+$, $(\delta, y^\delta) \mapsto \alpha(\delta, y^\delta)$ is called **parameter choice rule**. A regularisation $(A_\alpha^\dagger)_{\alpha > 0} \subset \mathcal{L}(Y, X)$ of $A^\dagger$ together with a parameter choice rule $\alpha$ is called a **regularisation method** of (2.2.1). The regularisation method $(A_\alpha^\dagger, \alpha)$ is called **convergent** if
+A function $\alpha : \mathbb{R}_\+ \times Y \to \mathbb{R}_\+$, $(\delta, y^\delta) \mapsto \alpha(\delta, y^\delta)$ is called **parameter choice rule**. A regularisation $(A_\alpha^\dagger)\_{\alpha > 0} \subset \mathcal{L}(Y, X)$ of $A^\dagger$ together with a parameter choice rule $\alpha$ is called a **regularisation method** of (2.2.1). The regularisation method $(A_\alpha^\dagger, \alpha)$ is called **convergent** if
 
 $$\lim_{\delta \to 0} \sup \lbrace \lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert_X : y^\delta \in Y, \lVert y^\delta - y \rVert_Y \le \delta \rbrace = 0, \quad \text{for all } y \in \mathcal{D}(A^\dagger). \tag{2.4.3}$$
 
@@ -642,7 +642,7 @@ It can be shown that for all regularisations there exists an a priori rule and t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.5</span><span class="math-callout__name">(Convergent A Priori Rule)</span></p>
 
-Let $(A_\alpha^\dagger)_{\alpha > 0}$ be a regularisation and $\alpha : \mathbb{R}_+ \to \mathbb{R}_+$ an a-priori rule with
+Let $(A_\alpha^\dagger)\_{\alpha > 0}$ be a regularisation and $\alpha : \mathbb{R}_+ \to \mathbb{R}_+$ an a-priori rule with
 
 1. $\lim_{\delta \to 0} \alpha(\delta) = 0$,
 2. $\lim_{\delta \to 0} \delta \lVert A_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(Y,X)} = 0$.
@@ -689,7 +689,7 @@ $$\lVert Ax^\dagger - y \rVert_Y = \lVert AA^\dagger y - y \rVert_Y = \lVert P_{
 
 Thus, we have to assume that this is not possible. It suffices to assume that $\mathcal{R}(A)$ is dense in $Y$, since in that case $\mathcal{R}(A)^\perp = \lbrace 0 \rbrace$.
 
-A practical approach to implement such an a posteriori rule is to choose a null sequence $(\alpha_n)_{n \in \mathbb{N}}$, to successively calculate $x_{\alpha_n}^\delta$ for $n = 1, \ldots$ and to terminate the iteration as soon as the discrepancy principle (2.4.4) is satisfied. The following theorem justifies this approach.
+A practical approach to implement such an a posteriori rule is to choose a null sequence $(\alpha_n)\_{n \in \mathbb{N}}$, to successively calculate $x_{\alpha_n}^\delta$ for $n = 1, \ldots$ and to terminate the iteration as soon as the discrepancy principle (2.4.4) is satisfied. The following theorem justifies this approach.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.7</span><span class="math-callout__name">(Discrepancy Principle Termination)</span></p>
@@ -716,7 +716,7 @@ The existence of an $n^* \in \mathbb{N}$ then follows directly, since $\tau > 1$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.8</span><span class="math-callout__name">(Bakushinskii Veto)</span></p>
 
-*(Bakushinskii, 1985).* Let $(A_\alpha^\dagger)_{\alpha > 0}$ be a regularisation. If there exists a heuristic parameter choice rule $\alpha \neq \alpha(\delta)$ such that $(A_\alpha^\dagger, \alpha)$ is a convergent regularisation method, then $A^\dagger$ is bounded.
+*(Bakushinskii, 1985).* Let $(A_\alpha^\dagger)\_{\alpha > 0}$ be a regularisation. If there exists a heuristic parameter choice rule $\alpha \neq \alpha(\delta)$ such that $(A_\alpha^\dagger, \alpha)$ is a convergent regularisation method, then $A^\dagger$ is bounded.
 
 </div>
 
@@ -728,7 +728,7 @@ A central question in the regularisation of inverse problems is the derivation o
 
 $$\lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert \le \phi(\delta)$$
 
-for some function $\phi : \mathbb{R}_+ \to \mathbb{R}_+$ with $\lim_{t \to 0} \phi(t) = 0$ that is independent of $y$. We are interested in particular in the **worst case error**
+for some function $\phi : \mathbb{R}_\+ \to \mathbb{R}_+$ with $\lim_{t \to 0} \phi(t) = 0$ that is independent of $y$. We are interested in particular in the **worst case error**
 
 $$e(y, \delta) := \sup \lbrace \lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert_X : y^\delta \in Y \text{ with } \lVert y - y^\delta \rVert_Y \le \delta \rbrace. \tag{2.4.5}$$
 
@@ -778,7 +778,7 @@ Thus, recall the SVD of $K^\dagger$ with respect to the singular system $(\sigma
 
 $$K_\alpha^\dagger y := \sum_{n=1}^{\infty} g_\alpha(\sigma_n) \langle y, u_n \rangle_Y v_n \qquad \text{for } y \in Y,$$
 
-with a suitable function $g_\alpha : \mathbb{R}_+ \to \mathbb{R}_+$ that satisfies $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for all $\sigma > 0$ as $\alpha \to 0$. We will see that $(K_\alpha^\dagger)_{\alpha \ge 0}$ is a regularisation if
+with a suitable function $g_\alpha : \mathbb{R}_\+ \to \mathbb{R}_\+$ that satisfies $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for all $\sigma > 0$ as $\alpha \to 0$. We will see that $(K_\alpha^\dagger)\_{\alpha \ge 0}$ is a regularisation if
 
 $$g_\alpha(\sigma) \le C_\alpha < \infty, \qquad \text{for all } \sigma > 0. \tag{2.5.1}$$
 
@@ -870,7 +870,7 @@ Now we interpret the iteration number as the regularisation parameter and set $\
 
 $$x_\alpha^\delta = K_\alpha^\dagger y^\delta = \sum_{j=1}^{\infty} \frac{1 - (1 - \omega \sigma_j^2)^{1/\alpha}}{\sigma_j} \langle y^\delta, u_j \rangle_Y,$$
 
-i.e. $g_\alpha(\sigma) = (1 - (1 - \omega\sigma^2)^{1/\alpha}) \frac{1}{\sigma}$. This function converges to $\frac{1}{\sigma}$ as $\alpha \to 0$ provided $|1 - \omega\sigma^2| < 1$. A sufficient condition for $\sigma \in \lbrace \sigma_n \rbrace$ is
+i.e. $g_\alpha(\sigma) = (1 - (1 - \omega\sigma^2)^{1/\alpha}) \frac{1}{\sigma}$. This function converges to $\frac{1}{\sigma}$ as $\alpha \to 0$ provided $\|1 - \omega\sigma^2\| < 1$. A sufficient condition for $\sigma \in \lbrace \sigma_n \rbrace$ is
 
 $$0 < \omega < 2 \lVert K \rVert_{\mathcal{L}(X,Y)}^{-2}.$$
 
@@ -883,7 +883,7 @@ Under the stated conditions on $g_\alpha(\sigma)$, we can now prove the converge
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.5.5</span><span class="math-callout__name">(Convergence of Spectral Regularisation)</span></p>
 
-Let $g_\alpha : \mathbb{R}_+ \to \mathbb{R}_+$ be a piecewise continuous function such that $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for $\sigma > 0$ as $\alpha \to 0$, and suppose that there exist a constant $C_\alpha > 0$ depending on $\alpha$ and a constant $\gamma > 0$ independent of $\alpha$ such that
+Let $g_\alpha : \mathbb{R}_\+ \to \mathbb{R}_\+$ be a piecewise continuous function such that $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for $\sigma > 0$ as $\alpha \to 0$, and suppose that there exist a constant $C_\alpha > 0$ depending on $\alpha$ and a constant $\gamma > 0$ independent of $\alpha$ such that
 
 $$\sigma g_\alpha(\sigma) \le \gamma \qquad \text{and} \qquad g_\alpha(\sigma) \le C_\alpha < \infty \quad \text{for all } \sigma, \alpha > 0.$$
 
@@ -945,7 +945,7 @@ $$K_\alpha^\dagger y^\delta := \arg\min_{x \in X} \left\lbrace \frac{1}{2} \lVer
 
 This is how Tikhonov regularisation is typically introduced. In this variational setting, it is easier to generalise to other regularising functionals and to nonlinear inverse problems.
 
-Indeed, if $\Phi(x) := \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \frac{\alpha}{2} \lVert x \rVert_X^2$, the first-order optimality condition for a minimiser $x^* \in X$ of $\Phi$ is equivalent to setting $\frac{\mathrm{d}}{\mathrm{d}t} \Phi(x^* + th)\big|_{t=0} = 0$ for arbitrary $h \in X$ with $\lVert h \rVert_X = 1$. Expanding, we get
+Indeed, if $\Phi(x) := \frac{1}{2} \lVert Kx - y^\delta \rVert_Y^2 + \frac{\alpha}{2} \lVert x \rVert_X^2$, the first-order optimality condition for a minimiser $x^* \in X$ of $\Phi$ is equivalent to setting $\frac{\mathrm{d}}{\mathrm{d}t} \Phi(x^\ast + th)\big\|_{t=0} = 0$ for arbitrary $h \in X$ with $\lVert h \rVert_X = 1$. Expanding, we get
 
 $$\Phi(x + th) = \Phi(x) + t\Big( \langle Kx - y^\delta, Kh \rangle_Y + \alpha \langle x, h \rangle_X \Big) + \frac{t^2}{2} \Big( \lVert Kh \rVert_Y^2 + \alpha \lVert h \rVert_X^2 \Big)$$
 
@@ -1064,7 +1064,7 @@ defines a $\sigma$-algebra called the **$\sigma$-algebra generated by $\mathcal{
 <details markdown="1">
 <summary>Proof of Proposition 3.1.4</summary>
 
-The intersection in (3.1.1) is not empty since $2^\Omega$ is a $\sigma$-algebra containing $\mathcal{E}$. Let $(\mathcal{A}_i)_{i \in I}$ be a family of $\sigma$-algebras ($I$ is not necessarily countable). Then it is simple to check that $\bigcap_{i \in I} \mathcal{A}_i$ (by which we mean $\lbrace A \subseteq \Omega : A \in \mathcal{A}_i \ \forall i \in I \rbrace$) is again a $\sigma$-algebra (by verifying each item in Def. 3.1.1 for this intersection). Hence (3.1.1) defines a $\sigma$-algebra containing $\mathcal{E}$.
+The intersection in (3.1.1) is not empty since $2^\Omega$ is a $\sigma$-algebra containing $\mathcal{E}$. Let $(\mathcal{A}\_i)\_{i \in I}$ be a family of $\sigma$-algebras ($I$ is not necessarily countable). Then it is simple to check that $\bigcap_{i \in I} \mathcal{A}\_i$ (by which we mean $\lbrace A \subseteq \Omega : A \in \mathcal{A}\_i \ \forall i \in I \rbrace$) is again a $\sigma$-algebra (by verifying each item in Def. 3.1.1 for this intersection). Hence (3.1.1) defines a $\sigma$-algebra containing $\mathcal{E}$.
 
 </details>
 </div>
@@ -1103,7 +1103,7 @@ $$\mu\Big(\bigcup_{i \in \mathbb{N}} A_i\Big) = \sum_{i \in \mathbb{N}} \mu(A_i)
 
 </div>
 
-A measure is called **$\sigma$-finite** if there exist $(A_j)_{j \in \mathbb{N}} \in \mathcal{A}$ such that $\Omega = \bigcup_{j \in I} A_j$ and $\mu(A_j) < \infty$ for all $j \in \mathbb{N}$. A measure $\mu$ with $\mu(\Omega) = 1$ is called a **probability measure**.
+A measure is called **$\sigma$-finite** if there exist $(A_j)\_{j \in \mathbb{N}} \in \mathcal{A}$ such that $\Omega = \bigcup_{j \in I} A_j$ and $\mu(A_j) < \infty$ for all $j \in \mathbb{N}$. A measure $\mu$ with $\mu(\Omega) = 1$ is called a **probability measure**.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.1.9</span><span class="math-callout__name">(Measure Space, Probability Space)</span></p>
@@ -1141,7 +1141,7 @@ Let $(\Omega, \mathcal{A}, \mu)$ be a $\sigma$-finite measure space. Let $\mathc
 
 #### 3.1.3 Product Measures
 
-For measurable spaces $(\Omega_j, \mathcal{A}_j)_{j=1}^n$ the $\sigma$-algebra
+For measurable spaces $(\Omega_j, \mathcal{A}\_j)_{j=1}^n$ the $\sigma$-algebra
 
 $$\otimes_{j=1}^n \mathcal{A}_j := \sigma(\lbrace \times_{j=1}^n A_j : A_j \in \mathcal{A}_j \ \forall j \rbrace)$$
 
@@ -1150,7 +1150,7 @@ is called the **product $\sigma$-algebra** on the space $\times_{j=1}^n \Omega_j
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.1.13</span><span class="math-callout__name">(Product Measure)</span></p>
 
-Let $(\Omega_j, \mathcal{A}_j, \mu_j)$ for $j = 1, \ldots, n$ be a family of $\sigma$-finite measure spaces. Then there exists a unique measure $\mu$ on $(\times_{j=1}^n \Omega_j, \otimes_{j=1}^n \mathcal{A}_j)$ such that
+Let $(\Omega_j, \mathcal{A}\_j, \mu_j)$ for $j = 1, \ldots, n$ be a family of $\sigma$-finite measure spaces. Then there exists a unique measure $\mu$ on $(\times_{j=1}^n \Omega_j, \otimes_{j=1}^n \mathcal{A}\_j)$ such that
 
 $$\mu(\times_{j=1}^n A_j) = \prod_{j=1}^n \mu_j(A_j) \qquad \forall A_j \in \mathcal{A}_j.$$
 
@@ -2903,7 +2903,7 @@ We are now in a position to extend these results to bound the bias in the poster
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.2.6</span><span class="math-callout__name">(Discretisation Error in Posterior)</span></p>
 
-Let us assume that $a_{\min}^{-1} \in L^2(\Omega)$ and the assumptions of Theorem 5.2.5 hold for $p = 2$. Suppose $B : H_0^1(D) \to \mathbb{R}^m$ is a bounded linear operator and let the (exact) forward operator $\Phi : L^\infty(D) \to \mathbb{R}^m$ be defined by $\Phi(a) := Bu$. Under the noise model (5.2.2) this induces the posterior measure $\nu := \mu_{a|y}$ on the diffusion coefficient $a \in L^\infty(D)$, as described in Chapter 4. In the same way, the discretised observation operator $\Phi_h(a) := Bu_h$ induces an approximate posterior measure $\nu_h$ on $a$ and
+Let us assume that $a_{\min}^{-1} \in L^2(\Omega)$ and the assumptions of Theorem 5.2.5 hold for $p = 2$. Suppose $B : H_0^1(D) \to \mathbb{R}^m$ is a bounded linear operator and let the (exact) forward operator $\Phi : L^\infty(D) \to \mathbb{R}^m$ be defined by $\Phi(a) := Bu$. Under the noise model (5.2.2) this induces the posterior measure $\nu := \mu_{a\mid y}$ on the diffusion coefficient $a \in L^\infty(D)$, as described in Chapter 4. In the same way, the discretised observation operator $\Phi_h(a) := Bu_h$ induces an approximate posterior measure $\nu_h$ on $a$ and
 
 $$D_{\mathrm{H}}(\nu, \nu_h) \le Ch^2. \tag{5.2.7}$$
 
@@ -2924,12 +2924,12 @@ $$\left| \mathbb{E}_\nu[\Psi(a)] - \mathbb{E}_{\nu_h}[\Psi_h(a)] \right| \le Ch^
 
 ### 5.3 Linear Problems and the Laplace Approximation
 
-If the observational noise is additive and Gaussian, the prior $\mu_X$ is Gaussian and the forward operator $\Phi$ is linear, then the posterior measure $\mu_{X|y}$ is also Gaussian and can be given explicitly.
+If the observational noise is additive and Gaussian, the prior $\mu_X$ is Gaussian and the forward operator $\Phi$ is linear, then the posterior measure $\mu_{X\mid y}$ is also Gaussian and can be given explicitly.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.3.1</span><span class="math-callout__name">(Posterior for Linear Gaussian Problems)</span></p>
 
-Let $H$ be a separable Hilbert space and $X : \Omega \to H$ a RV with prior distribution $\mathcal{N}(\overline{x}, C)$ with positive covariance operator $C$. Let $W = \mathbb{R}^m$ and assume $E : \Omega \to \mathbb{R}^m$ is a Gaussian RV independent of $X$ that is distributed according to $\mathcal{N}(0, \Sigma)$ with SPD covariance matrix $\Sigma \in \mathbb{R}^{m \times m}$. Suppose furthermore that the forward operator $\Phi : H \to \mathbb{R}^m$ is linear, i.e. $\Phi(x) = Ax$ and $Y = AX + E$. Then the posterior measure $\mu_{X|y}$ is Gaussian $\mathcal{N}(x_{\mathrm{CM}}, C_{X|y})$ with
+Let $H$ be a separable Hilbert space and $X : \Omega \to H$ a RV with prior distribution $\mathcal{N}(\overline{x}, C)$ with positive covariance operator $C$. Let $W = \mathbb{R}^m$ and assume $E : \Omega \to \mathbb{R}^m$ is a Gaussian RV independent of $X$ that is distributed according to $\mathcal{N}(0, \Sigma)$ with SPD covariance matrix $\Sigma \in \mathbb{R}^{m \times m}$. Suppose furthermore that the forward operator $\Phi : H \to \mathbb{R}^m$ is linear, i.e. $\Phi(x) = Ax$ and $Y = AX + E$. Then the posterior measure $\mu_{X\mid y}$ is Gaussian $\mathcal{N}(x_{\mathrm{CM}}, C_{X\mid y})$ with
 
 $$x_{\mathrm{CM}} := \overline{x} + CA^*(\Sigma + ACA^*)^{-1}(y - A\overline{x}) \tag{5.3.1}$$
 
@@ -2957,11 +2957,11 @@ and thus, since
 
 $$\begin{pmatrix} I & -CA^*C_Y^{-1} \\ 0 & I \end{pmatrix} \begin{pmatrix} x - \overline{x} \\ Y - A\overline{x} \end{pmatrix} = \begin{pmatrix} x - x_{\mathrm{CM}} \\ Y - A\overline{x} \end{pmatrix}$$
 
-with $x_{\mathrm{CM}}$ as defined in (5.3.1) and with $C_{X|y} := C - CA^*C_Y^{-1}AC$, it follows that
+with $x_{\mathrm{CM}}$ as defined in (5.3.1) and with $C_{X\mid y} := C - CA^*C_Y^{-1}AC$, it follows that
 
 $$(z - m_Z)^* C_Z^{-1} (z - m_Z) = \begin{pmatrix} x - \overline{x} \\ y - A\overline{x} \end{pmatrix}^* \begin{pmatrix} C & CA^* \\ AC & C_Y \end{pmatrix}^{-1} \begin{pmatrix} x - \overline{x} \\ y - A\overline{x} \end{pmatrix} = \begin{pmatrix} x - x_{\mathrm{CM}} \\ y - A\overline{x} \end{pmatrix}^* \begin{pmatrix} C_{X|y}^{-1} & 0 \\ 0 & C_Y^{-1} \end{pmatrix} \begin{pmatrix} x - x_{\mathrm{CM}} \\ y - A\overline{x} \end{pmatrix}$$
 
-Due to the diagonal structure of the covariance and the formula for conditional densities, $\pi_{X,Y}(x, y) = \pi_{X|Y}(x|y)\pi(y)$, this completes the proof. The employed technique is sometimes called *"completing the square"*.
+Due to the diagonal structure of the covariance and the formula for conditional densities, $\pi_{X,Y}(x, y) = \pi_{X\mid Y}(x\mid y)\pi(y)$, this completes the proof. The employed technique is sometimes called *"completing the square"*.
 
 </details>
 </div>
@@ -2985,7 +2985,7 @@ As in numerical optimisation for general, nonlinear deterministic problems, and 
 
 $$\nabla \Psi(x_{\mathrm{MAP}}) = 0 \quad \text{and} \quad \nabla^2 \Psi(x_{\mathrm{MAP}}) \text{ is SPD.}$$
 
-Then, the **Laplace approximation** of $\mu_{X|y}$ is given by the Gaussian measure
+Then, the **Laplace approximation** of $\mu_{X\mid y}$ is given by the Gaussian measure
 
 $$\mathcal{L}_{\mu_{X|y}} := \mathcal{N}(x_{\mathrm{MAP}}, C_{\mathrm{MAP}}) \quad \text{with} \quad C_{\mathrm{MAP}}^{-1} := \nabla^2 \Psi(x_{\mathrm{MAP}}). \tag{5.3.4}$$
 
@@ -3027,7 +3027,7 @@ with penalisation functional $\log \pi_X : \mathbb{R}^s \to \mathbb{R}$, with no
 
 ### 5.4 High-Dimensional Quadrature
 
-Even though mathematically speaking the solution to a Bayesian inverse problem is the posterior distribution $\mu_{X|y}$, it is of little practical value (especially in high dimensions). As highlighted already, the central task in Bayesian inference is the computation of expectations of certain functionals of the parameter with respect to the posterior, so called **statistics** or **quantities of interest**.
+Even though mathematically speaking the solution to a Bayesian inverse problem is the posterior distribution $\mu_{X\mid y}$, it is of little practical value (especially in high dimensions). As highlighted already, the central task in Bayesian inference is the computation of expectations of certain functionals of the parameter with respect to the posterior, so called **statistics** or **quantities of interest**.
 
 Care is required, when designing quadrature algorithms in high dimensions; the computational cost of simple tensor product rules of standard 1D quadrature rules explodes as the dimension $s \to \infty$. The workhorses in high dimensions are sampling based methods that do not suffer from this so-called **"curse of dimensionality"**, and in particular Monte Carlo type methods.
 
@@ -3046,7 +3046,7 @@ $$\frac{1}{N} \sum_{i=1}^{N} F(x^{(i)}) \approx \mathbb{E}[F(X)]$$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5.4.1</span><span class="math-callout__name">(Monte Carlo Convergence)</span></p>
 
-Let $X \in L^2(\Omega; V)$ and iid $X^{(i)} \sim \mu_X$, $i \in \mathbb{N}$. Then for the associated estimator $\widehat{F(X)}_N := \frac{1}{N} \sum_{i=1}^{N} F(X^{(i)})$:
+Let $X \in L^2(\Omega; V)$ and iid $X^{(i)} \sim \mu_X$, $i \in \mathbb{N}$. Then for the associated estimator $\widehat{F(X)}\_N := \frac{1}{N} \sum_{i=1}^{N} F(X^{(i)})$:
 
 $$\widehat{F(X)}_N \xrightarrow{\mathbb{P}\text{-a.s.}}{N \to \infty} \mathbb{E}[F(X)], \tag{5.4.1}$$
 
@@ -3129,7 +3129,7 @@ If $\lVert Q_h - Q \rVert_{L^2(\Omega)} \to 0$ as $h \to 0$, i.e., if the RV $Q_
 
 Let $\varepsilon < e^{-1}$ and let $\alpha, \beta, \gamma > 0$ be such that $\alpha \ge \frac{1}{2}\min\lbrace \beta, \gamma \rbrace$ and such that for all $\ell \in \mathbb{N}_0$
 
-**(M1)** $|\mathbb{E}[Q_{h_\ell}] - \mathbb{E}[Q]| \le Ch_\ell^\alpha$, &nbsp; **(M2)** $\mathrm{Var}[Y_\ell] \le Ch_\ell^\beta$, &nbsp; **(M3)** $\mathcal{C}(Y_\ell) \le Ch_\ell^{-\gamma}$.
+**(M1)** $\|\mathbb{E}[Q_{h_\ell}] - \mathbb{E}[Q]\| \le Ch_\ell^\alpha$, &nbsp; **(M2)** $\mathrm{Var}[Y_\ell] \le Ch_\ell^\beta$, &nbsp; **(M3)** $\mathcal{C}(Y_\ell) \le Ch_\ell^{-\gamma}$.
 
 Then there are $L \in \mathbb{N}$ and $\lbrace N_\ell \rbrace_{\ell=0}^L \subset \mathbb{N}$ such that
 
@@ -3142,7 +3142,7 @@ A sufficient condition to achieve this asymptotic $\varepsilon$-cost is that $N_
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.4.7</span><span class="math-callout__name">(MLMC Complexity for Elliptic PDE)</span></p>
 
-Consider again the elliptic PDE in Section 5.2.1 under the assumptions of Theorem 5.2.5 with $d = 1, 2, 3$, $p = 2$ and $a_{\min}^{-1} \in L^2(\Omega)$. Let $Q := Bu$ and, for $\ell \in \mathbb{N}_0$, let $Q_{h_\ell} := Bu_{h_\ell}$. Suppose the FE solution on each level is computed with an optimal multigrid method, such that $\mathcal{C}(Q_{h_\ell}) \le Ch_\ell^{-d}$. Then, for any $0 < \varepsilon < e^{-1}$, there exists $L \in \mathbb{N}$ and $\lbrace N_\ell \rbrace_{\ell=0}^L \subset \mathbb{N}$ such that
+Consider again the elliptic PDE in Section 5.2.1 under the assumptions of Theorem 5.2.5 with $d = 1, 2, 3$, $p = 2$ and $a_{\min}^{-1} \in L^2(\Omega)$. Let $Q := Bu$ and, for $\ell \in \mathbb{N}\_0$, let $Q_{h_\ell} := Bu_{h_\ell}$. Suppose the FE solution on each level is computed with an optimal multigrid method, such that $\mathcal{C}(Q_{h_\ell}) \le Ch_\ell^{-d}$. Then, for any $0 < \varepsilon < e^{-1}$, there exists $L \in \mathbb{N}$ and $\lbrace N_\ell \rbrace_{\ell=0}^L \subset \mathbb{N}$ such that
 
 $$\mathcal{C}_\varepsilon\Big(\widehat{Q}_{L, \lbrace N_\ell \rbrace}^{ML}\Big) \le C\varepsilon^{-2}.$$
 
