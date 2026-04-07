@@ -53,7 +53,7 @@ An **experiment** is a process that yields an observation. The mathematical abst
   1. $P(\emptyset) = 0$.
   2. $P(\Omega) = 1$.
   3. For any sequence of pairwise disjoint events $A_1, A_2, \dots$, the probability of their union is the sum of their probabilities:
-     $P\!\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i).$
+     $P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i).$
 
 The pair $(\Omega, \mathcal{A})$ is called a **measurable space**. Elements of $\mathcal{A}$ are **measurable sets**.
 
@@ -556,9 +556,8 @@ The update rule is derived from the first-order Taylor expansion of the function
     * $\theta_1 f'(\theta_0) = \theta_0 f'(\theta_0) - f(\theta_0)$
     * $\theta_1 = \theta_0 - \frac{f(\theta_0)}{f'(\theta_0)}$
 
-
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name"></span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Newton-Raphson vs. Gradient Descent)</span></p>
 
 * While Gradient Descent searches linearly, the Newton-Raphson method, using the Hessian, searches quadratically. This requires the computation of second derivatives and matrix inversions.
 * The method converges more quickly than Gradient Descent.
@@ -586,7 +585,9 @@ $p(\theta \mid X) \propto p(X \mid \theta) p(\theta)$. A significant problem ari
     \mathbb{E}[h(\theta) \mid X] \approx \frac{1}{N} \sum_{i=1}^{N} h(\theta^{(i)})
     $$
 
-* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as $p(\theta_t \mid \theta_{t-1}, \dots, \theta_0) = p(\theta_t \mid \theta_{t-1})$.
+* **Markov Chain:** This is a method to generate samples sequentially, where the next state depends only on the current state (a memoryless transition). The transition probability is defined as 
+  
+$$p(\theta_t \mid \theta_{t-1}, \dots, \theta_0) = p(\theta_t \mid \theta_{t-1})$$
 
 </div>
 
@@ -604,7 +605,10 @@ $\text{Posterior Density} \propto p(X \mid \theta)p(\theta)$
 
 1.  **Initialization:** Choose an initial parameter value $\theta^{(0)}$ and specify the number of samples $N$.
 2.  **Iteration:** Loop for $i = 1, \dots, N$:
-    * **Propose:** Generate a new candidate sample $\theta_{\text{prop}}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: $\theta_{\text{prop}} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$.
+    * **Propose:** Generate a new candidate sample $\theta_{\text{prop}}$ from a symmetric proposal distribution $q(\cdot \mid \theta^{(i-1)})$. A common choice is a normal distribution centered at the current sample: 
+    
+      $$\theta_{\text{prop}} \sim \mathcal{N}(\theta^{(i-1)}, \sigma^2 I)$$
+    
     * **Compute Acceptance Ratio:** Calculate the ratio of the posterior densities at the proposed and current points. This is typically done in log-space for numerical stability.
         * $r_{\text{prop}} := p(X \mid \theta_{\text{prop}})p(\theta_{\text{prop}})$
         * $r_{\text{curr}} := p(X \mid \theta^{(i-1)})p(\theta^{(i-1)})$
@@ -926,6 +930,8 @@ $$\lim_{T \to \infty} \frac{1}{T} \sum_{t=1}^T X_t = \mathbb{E}[X_t] = \mu$$
 * **Ergodicity requires (strong) stationarity.** It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time).
 
 </div>
+
+#TODO: Explore some relation to the dynamical systems and stability: "It also typically requires conditions of stability (small perturbations do not cause large changes) and mixing (the influence of initial conditions fades over time)."
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why Strong Stationarity for Ergodicity?)</span></p>
@@ -2090,11 +2096,61 @@ This provides a clear signature: the ACF of an MA($q$) process **sharply cuts of
 
 #### The Partial Autocorrelation Function (PACF)
 
-The PACF at lag $k$ measures the correlation between $X_t$ and $X_{t-k}$ after removing the linear dependence on the intervening variables ($X_{t-1}, X_{t-2}, \dots, X_{t-k+1}$). A key property of the PACF for an AR($p$) process is:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial Autocorrelation Function)</span></p>
 
-$$\text{PACF}(k) = 0 \quad \text{for all } k > p$$
+The **partial autocorrelation function (PACF)** at lag $k$, denoted $\phi_{kk}$, is the correlation between $X_t$ and $X_{t-k}$ after removing the linear dependence on the intervening variables $X_{t-1}, \dots, X_{t-k+1}$:
 
-This is because in an AR($p$) model, the direct relationship between $X_t$ and $X_{t-k}$ (for $k>p$) is fully mediated by the first $p$ lags.
+$$\phi_{kk} = \text{Corr}\!\left(X_t - P(X_t \mid X_{t-1}, \dots, X_{t-k+1}),\; X_{t-k} - P(X_{t-k} \mid X_{t-1}, \dots, X_{t-k+1})\right)$$
+
+where $P(X \mid \cdot)$ denotes the best linear prediction. Equivalently, $\phi_{kk}$ is the **last coefficient** when fitting an AR($k$) model by linear projection:
+
+$$X_t = \phi_{k1} X_{t-1} + \phi_{k2} X_{t-2} + \cdots + \phi_{kk} X_{t-k} + \varepsilon_t^{(k)}$$
+
+The PACF at lag $k$ is precisely $\phi_{kk}$ — the direct linear dependence of $X_t$ on $X_{t-k}$ that is not mediated by intermediate lags.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Computing the PACF via Yule-Walker equations)</span></p>
+
+For a stationary process with autocorrelation $\rho(h) = \gamma(h)/\gamma(0)$, the PACF at lag $k$ is obtained by solving the Yule-Walker system for $\phi_{k1}, \dots, \phi_{kk}$:
+
+$$\begin{pmatrix} 1 & \rho(1) & \cdots & \rho(k-1) \\ \rho(1) & 1 & \cdots & \rho(k-2) \\ \vdots & \vdots & \ddots & \vdots \\ \rho(k-1) & \rho(k-2) & \cdots & 1 \end{pmatrix} \begin{pmatrix} \phi_{k1} \\ \phi_{k2} \\ \vdots \\ \phi_{kk} \end{pmatrix} = \begin{pmatrix} \rho(1) \\ \rho(2) \\ \vdots \\ \rho(k) \end{pmatrix}$$
+
+Then $\text{PACF}(k) = \phi_{kk}$ (the last component of the solution vector).
+
+Special cases:
+* $\text{PACF}(1) = \rho(1)$
+* $\text{PACF}(2) = \frac{\rho(2) - \rho(1)^2}{1 - \rho(1)^2}$
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Empirical PACF)</span></p>
+
+The **empirical (sample) PACF** $\hat{\phi}_{kk}$ is computed by replacing the theoretical autocorrelations $\rho(h)$ with the sample autocorrelations $\hat{\rho}(h) = \hat{\gamma}(h)/\hat{\gamma}(0)$ in the Yule-Walker system above, where:
+
+$$\hat{\gamma}(h) = \frac{1}{T}\sum_{t=1}^{T-h}(X_t - \bar{X})(X_{t+h} - \bar{X})$$
+
+Equivalently, $\hat{\phi}_{kk}$ can be computed by fitting successive OLS regressions: for each $k = 1, 2, \dots$, regress $X_t$ on $X_{t-1}, \dots, X_{t-k}$ and read off the last coefficient.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(PACF signatures for model identification)</span></p>
+
+The PACF complements the ACF for identifying ARMA model orders:
+
+| Model | ACF | PACF |
+|-------|-----|------|
+| AR($p$) | Tails off (decays gradually) | **Cuts off after lag $p$**: $\phi_{kk} = 0$ for $k > p$ |
+| MA($q$) | **Cuts off after lag $q$**: $\rho(k) = 0$ for $k > q$ | Tails off (decays gradually) |
+| ARMA($p,q$) | Tails off | Tails off |
+
+For an AR($p$) process, $\text{PACF}(k) = 0$ for all $k > p$ because the direct relationship between $X_t$ and $X_{t-k}$ (for $k > p$) is fully mediated by the first $p$ lags.
+
+</div>
 
 ### Modeling with ARMA
 
@@ -2489,8 +2545,8 @@ We then perform a likelihood ratio test (or an F-test) comparing these two model
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Interpretation)</span></p>
 
 If adding the past of $X$ significantly reduces the residual covariance (i.e., the prediction error) for $Y$, then the test statistic will be large, leading to a rejection of the null hypothesis. We conclude that $X$ Granger-causes $Y$.
 
@@ -2650,8 +2706,8 @@ For time series of counts, $C_t \in \lbrace 0, 1, 2, \dots\rbrace$, we can use a
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(No closed-form solution for the parameters of Poisson GLM)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(No closed-form solution for the parameters of Poisson GLM)</span></p>
 
 * Although there is **no closed-form solution for the parameters of Poisson GLM**, the **Poisson log-likelihood function is concave**. 
 * This is a **significant advantage**, as it guarantees that standard numerical optimization methods (like Gradient Descent) will converge to the **unique global maximum**.
@@ -5231,12 +5287,18 @@ The core idea is to use simple, tractable distributional forms (e.g., Gaussian) 
   
   where the mean $\mu_x = g_\mu(z_t)$ and covariance $\Sigma_x = g_\Sigma(z_t)$ are functions of the current latent state. For $\Sigma_x$ to be a valid covariance matrix, it must be positive semi-definite. Common choices include:
   * **Diagonal covariance:** $\Sigma_x = \text{diag}(f(z_t))$
-  * **Low-rank factorization:** $\Sigma_x = V V^\top$, where $V$ is the output of a neural network.
+  * **Low-rank factorization:** $\Sigma_x = V V^\top + \epsilon I$, where $V$ is the output of a neural network and $\epsilon > 0$ ensures positive definiteness.
 * **Inference Model (Encoder):**  
+  
+  The approximate posterior factorizes over time steps:
  
-  $$q_\phi(z_t \mid  x_{\le t}, \dots) = \mathcal{N}(\mu_\phi, \Sigma_\phi) \implies g_\phi(X\mid Z) = \prod_{t=1}^T g_\phi(z_t\mid x_t)$$  
+  $$q_\phi(Z \mid X) = \prod_{t=1}^T q_\phi(z_t \mid x_{\le t})$$  
 
-  where the variational parameters $\mu_\phi$ and $\Sigma_\phi$ are complex functions of the input data, typically implemented by a recurrent neural network that processes the sequence $X$.
+  where each factor is Gaussian with neural-network-parameterized moments:
+
+  $$q_\phi(z_t \mid x_{\le t}) = \mathcal{N}(\mu_\phi(x_{\le t}),\; \Sigma_\phi(x_{\le t}))$$
+
+  The variational parameters $\mu_\phi$ and $\Sigma_\phi$ are typically implemented by a recurrent neural network that processes the observed sequence $X$ up to time $t$.
 
 </div>
 
