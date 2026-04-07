@@ -2133,7 +2133,7 @@ The **empirical (sample) PACF** $\hat{\phi}_{kk}$ is computed by replacing the t
 
 $$\hat{\gamma}(h) = \frac{1}{T}\sum_{t=1}^{T-h}(X_t - \bar{X})(X_{t+h} - \bar{X})$$
 
-Equivalently, $\hat{\phi}_{kk}$ can be computed by fitting successive OLS regressions: for each $k = 1, 2, \dots$, regress $X_t$ on $X_{t-1}, \dots, X_{t-k}$ and read off the last coefficient.
+Equivalently, $\hat{\phi}\_{kk}$ can be computed by fitting successive OLS regressions: for each $k = 1, 2, \dots$, regress $X_t$ on $X_{t-1}, \dots, X_{t-k}$ and read off the last coefficient.
 
 </div>
 

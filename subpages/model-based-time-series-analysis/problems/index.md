@@ -104,7 +104,7 @@ That means $\bar y_k$ does **not** converge to $0$ in probability, hence it also
 Using the standard normal CDF $\Phi$,
 
 $$
-\mathbb P(\lvert \bar y_k\rvert >\varepsilon) = # \mathbb P\left(\lvert Z\rvert>\frac{\varepsilon}{\sigma_k}\right) = 2\left(1-\Phi\left(\frac{\varepsilon}{\sigma_k}\right)\right)
+\mathbb P(\lvert \bar y_k\rvert >\varepsilon) = \mathbb P\left(\lvert Z\rvert>\frac{\varepsilon}{\sigma_k}\right) = 2\left(1-\Phi\left(\frac{\varepsilon}{\sigma_k}\right)\right)
 $$
 
 As $k\to\infty$,
@@ -567,7 +567,7 @@ This normalization ensures $\widehat{\text{acor}}(0) = 1$ and $|\widehat{\text{a
 </details>
 </div>
 
-## Exercise 2: Rosenbrock function optimization
+## Exercise 4: Rosenbrock function optimization
 
 ### Given
 
@@ -667,7 +667,7 @@ This normalization ensures $\widehat{\text{acor}}(0) = 1$ and $|\widehat{\text{a
 </details>
 </div>
 
-## Exercise 3: Barrier option pricing
+## Exercise 5: Barrier option pricing
 
 ### Given
 
@@ -821,7 +821,7 @@ where $M_T = \max_{t \in [0,T]} S_t$.
 </details>
 </div>
 
-## Exercise 1: MLE and LSE equivalence
+## Exercise 6: MLE and LSE equivalence
 
 ### Goal
 
@@ -938,7 +938,7 @@ Under Gaussian errors, MLE and LSE produce the **same** estimator $\hat{B} = (X^
 </details>
 </div>
 
-## Exercise 2: Linear regression
+## Exercise 7: Linear regression
 
 ### Task 1
 
@@ -1044,7 +1044,7 @@ This model is **missing** the $\sin(t)$ term. We expect the $\sin(t)$ component 
 </details>
 </div>
 
-## Exercise 3: Linear collinearity
+## Exercise 8: Linear collinearity
 
 ### Given
 
