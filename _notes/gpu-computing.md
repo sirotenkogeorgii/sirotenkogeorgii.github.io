@@ -123,7 +123,7 @@ Gene Amdahl, who formulated this law in 1967, originally used it to argue that t
 To manage the immense parallelism, GPUs employ a specific execution and programming model. While the hardware itself is a multi-core vector architecture (SIMD - Single Instruction, Multiple Data), it presents a simpler abstraction to the programmer.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMD vs. SIMT)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMD vs. SIMT)</span></p>
 
 - **Hardware View (SIMD):** The hardware groups threads together and executes them on wide vector units. A single instruction is fetched and executed simultaneously on multiple data elements.
 - **Software View (SIMT):** The programmer writes code for a single scalar thread, and the hardware and compiler manage the complexity of grouping these threads into "warps" or "wavefronts" for execution. This is known as SIMT (Single Instruction, Multiple Thread). It gives the programmer the illusion of writing simple scalar code while the hardware provides the efficiency of a vector architecture.
@@ -162,7 +162,7 @@ In a typical computer system, the CPU and GPU are distinct components with their
 </figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU and CPU memory bandwidth)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU and CPU memory bandwidth)</span></p>
 
 * The **GPU's memory bandwidth can be over 7x higher than the CPU's**, and its computational throughput an order of magnitude greater. 
 * **CUDA** (Compute Unified Device Architecture) allows us to leverage this power for general-purpose computing tasks.
@@ -218,7 +218,7 @@ A CUDA program is a hybrid program consisting of two parts: a host part that run
 CUDA programs exploit two complementary forms of parallelism:
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class=”math-callout__title”><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></p>
+<p class=”math-callout__title”><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></p>
 
 - **Data-Level Parallelism (DLP):** Perform the *same* operation on *many* data elements simultaneously. Exploited by SIMD/vector units and GPU warps. Best for dense, regular computations (linear algebra, convolutions, elementwise ops). The main limitation is branch divergence and irregular memory access.
 - **Thread-Level Parallelism (TLP):** Run multiple *independent threads* concurrently, each with its own instruction stream. Exploited by multi-core CPUs, SMT, and GPU thread blocks. Best for coarse-grained parallel work (serving requests, pipeline stages, independent simulations). The main limitation is coordination overhead (synchronization, contention, false sharing).
@@ -408,7 +408,7 @@ Understanding the memory hierarchy is critical for writing high-performance CUDA
 A diagram of the memory hierarchy shows that each Thread has its own private Registers. A group of threads in a Block shares a common Shared Memory. All blocks in the Grid can access the larger but slower Global Memory. The Host (CPU) also interacts with the device via this Global Memory.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Memory)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Memory)</span></p>
 
 - **Scope:** Accessible by all threads in the grid (R/W), as well as the host (CPU), communication between host and device.
 - **Lifetime:** Persists for the lifetime of the application, beyond the execution of any single kernel.
@@ -449,7 +449,7 @@ free(h_mem);
 > **Note:** When calling a kernel, you can only pass pointers to device memory (like `d_mem`), not host memory.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shared Memory)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shared Memory)</span></p>
 
 - **Scope:** Accessible only by threads within the same block.
 - **Lifetime:** Persists only for the lifetime of the block. Once a block finishes executing, its shared memory is gone.
@@ -794,7 +794,7 @@ You can query the properties of the GPU in your system to make informed decision
 | Max Grid Dimension | 65535 x 65535 x 65535 | 2G x 65535 x 65535 | 2G x 65535 x ? |
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common CUDA Errors)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common CUDA Errors)</span></p>
 
 - **the launch timed out and was terminated:** Kernel took too long. Common on systems with a graphical display where the OS kills kernels to prevent screen freezing. Solution: stop the X11 server.
 - **unspecified launch failure:** Often indicates a segfault inside the kernel (out-of-bounds access or invalid pointer).
@@ -2119,7 +2119,7 @@ where $r$ is the arithmetic intensity in FLOPs/Byte, $f$ is the number of floati
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Types of Intensity)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Types of Intensity)</span></p>
 
 * **Algorithmic Intensity:** The inherent ratio of operations to memory accesses in the pure, mathematical algorithm.
 * **Computational Intensity:** The actual ratio achieved by a specific code implementation. Caching can reduce memory accesses and increase it.
@@ -2442,7 +2442,7 @@ We now apply the optimization principles discussed so far to a classic, computat
 Before tackling the N-body problem, we address a foundational optimization: how data is arranged in memory. Since memory access is far more expensive than arithmetic, streamlining access patterns is critical.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AoS vs. SoA)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AoS vs. SoA)</span></p>
 
 - **Array of Structures (AoS):** All fields of one element are stored contiguously. Intuitive but causes non-coalesced GPU memory access.
 - **Structure of Arrays (SoA):** All values of one field are stored contiguously. Naturally suited for coalesced memory access on GPUs.
@@ -2803,7 +2803,7 @@ Analysis:
 ### N-Body Summary
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(N-Body Optimization Takeaways)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(N-Body Optimization Takeaways)</span></p>
 
 * **Data Layout Matters:** Choosing SoA layout is often critical for coalesced memory access on the GPU.
 * **Maximize Data Reuse:** Tiling combined with explicit shared memory management reduces expensive global memory traffic.
@@ -3218,7 +3218,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 ### Summary: CUDA Streams and Host-Device Communication
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Streams for Latency Hiding)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Streams for Latency Hiding)</span></p>
 
 * **Problem:** The PCIe bus is much slower than the GPU's internal memory and compute capabilities.
 * **Solution:** Task-level parallelism via CUDA Streams overlaps communication with computation.
@@ -3228,7 +3228,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unified Memory as an Alternative)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unified Memory as an Alternative)</span></p>
 
 * **UVA:** Provides a single address space but still requires manual data movement for good performance.
 * **Unified Memory (UM):** Automates data migration between host and device based on access patterns. Eliminates explicit `cudaMemcpy` calls at the cost of some migration overhead.
@@ -3519,7 +3519,7 @@ In older or smaller systems, we used a **Shared Bus**. A bus is like a single ha
 While coherence ensures that everyone eventually sees the same value for a single address, **consistency** deals with the ordering of operations across *different* addresses.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coherence vs. Consistency)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coherence vs. Consistency)</span></p>
 
 * **Coherence:** Focuses on the "last write" to a *single address*. It is usually invisible to the software.
 * **Consistency:** Defines constraints on the order in which memory operations to *different locations* become visible. It is a contract between the programmer and the architecture and is visible to the software.
@@ -3539,7 +3539,7 @@ In a "perfect" world, it should be impossible for both `if` statements to be tru
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Producer-Consumer)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Producer-Consumer)</span></p>
 
 * Thread 0 (Producer): Sets `a = 1`, then sets `flag = 1`.
 * Thread 1 (Consumer): Waits for `flag == 1`, then prints `a`.
@@ -3676,7 +3676,7 @@ This leads to a loss of efficiency. If only one thread takes a specific branch, 
 To manage this divergence, the hardware utilizes a **Per-warp stack** that stores Program Counters (PCs) and Active Masks.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMT Stack Components)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMT Stack Components)</span></p>
 
 * **Active Mask:** A bitmask where each bit represents whether a specific thread in the warp is "active" or "inactive" for the current instruction.
 * **Re-convergence:** The hardware attempts to find the **Immediate Post-Dominator** (the point where the divergent paths meet again) to resume full parallel execution as quickly as possible.
@@ -3884,7 +3884,7 @@ To overcome the power limits of CMOS (the current standard chip technology), res
 ### Course Summary
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(GPU Computing)</span></p>
+<p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(GPU Computing)</span></p>
 
 * **CUDA Basics:** Thread hierarchies, shared memory, and barrier synchronization.
 * **Architecture:** The SMX architecture, memory hierarchies, and warp scheduling.

@@ -5144,6 +5144,17 @@ $$\mathbb{E}[\varphi(z_t)] \approx \sum_{k=1}^K w_t^{(k)} \varphi(z_t^{(k)})$$
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Particle filter solves the M-step intractability for non-linear models)</span></p>
+
+Recall that the M-step for generative RNNs requires expectations of the non-linear transition function, such as $\mathbb{E}_q[F_\theta(z_{t-1})]$ and $\mathbb{E}_q[F_\theta(z_{t-1})F_\theta(z_{t-1})^\top]$, arising from the quadratic term $(z_t - F_\theta(z_{t-1}))^\top \Sigma^{-1}(z_t - F_\theta(z_{t-1}))$ in the expected log-joint. For the linear case ($F(z) = Az$), the Kalman smoother provides these moments exactly. For a non-linear $F_\theta$, the integrals $\int p(z_t) F_\theta(z_t)\,dz_t$ are generally intractable. The particle filter resolves this: by representing the posterior with weighted particles, **any** expectation — including of arbitrary non-linear functions — reduces to a finite weighted sum:
+
+$$\mathbb{E}_q[F_\theta(z_t)] \approx \sum_{k=1}^K w_t^{(k)} F_\theta(z_t^{(k)})$$
+
+This is the formula above with $\varphi = F_\theta$. No special structure of $F_\theta$ is required, unlike the ReLU simplification proposed earlier.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Challenges of the Particle Filter)</span></p>
 
 Despite its theoretical appeal, the particle filter faces significant practical challenges:
