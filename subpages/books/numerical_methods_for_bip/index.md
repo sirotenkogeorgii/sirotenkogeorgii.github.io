@@ -625,7 +625,7 @@ This decomposition is a fundamental tool of regularisation theory that will be u
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2.4.4</span><span class="math-callout__name">(Parameter Choice Rule)</span></p>
 
-A function $\alpha : \mathbb{R}_{+} \times Y \to \mathbb{R}_{+}$, $(\delta, y^\delta) \mapsto \alpha(\delta, y^\delta)$ is called **parameter choice rule**. A regularisation $(A_\alpha^\dagger)\_{\alpha > 0} \subset \mathcal{L}(Y, X)$ of $A^\dagger$ together with a parameter choice rule $\alpha$ is called a **regularisation method** of (2.2.1). The regularisation method $(A_\alpha^\dagger, \alpha)$ is called **convergent** if
+A function $\alpha : \mathbb{R}\_{+} \times Y \to \mathbb{R}\_{+}$, $(\delta, y^\delta) \mapsto \alpha(\delta, y^\delta)$ is called **parameter choice rule**. A regularisation $(A_\alpha^\dagger)\_{\alpha > 0} \subset \mathcal{L}(Y, X)$ of $A^\dagger$ together with a parameter choice rule $\alpha$ is called a **regularisation method** of (2.2.1). The regularisation method $(A_\alpha^\dagger, \alpha)$ is called **convergent** if
 
 $$\lim_{\delta \to 0} \sup \lbrace \lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert_X : y^\delta \in Y, \lVert y^\delta - y \rVert_Y \le \delta \rbrace = 0, \quad \text{for all } y \in \mathcal{D}(A^\dagger). \tag{2.4.3}$$
 
@@ -728,14 +728,14 @@ A central question in the regularisation of inverse problems is the derivation o
 
 $$\lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert \le \phi(\delta)$$
 
-for some function $\phi : \mathbb{R}_{+} \to \mathbb{R}_+$ with $\lim_{t \to 0} \phi(t) = 0$ that is independent of $y$. We are interested in particular in the **worst case error**
+for some function $\phi : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ with $\lim_{t \to 0} \phi(t) = 0$ that is independent of $y$. We are interested in particular in the **worst case error**
 
 $$e(y, \delta) := \sup \lbrace \lVert A_{\alpha(\delta, y^\delta)}^\dagger y^\delta - A^\dagger y \rVert_X : y^\delta \in Y \text{ with } \lVert y - y^\delta \rVert_Y \le \delta \rbrace. \tag{2.4.5}$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.9</span><span class="math-callout__name">(No Uniform Convergence Rate Without Source Conditions)</span></p>
 
-Let $(A_\alpha^\dagger, \alpha)$ be a convergent regularisation method. If there exists a function $\phi : \mathbb{R}_+ \to \mathbb{R}_+$ with $\lim_{t \to 0} \phi(t) = 0$ and
+Let $(A_\alpha^\dagger, \alpha)$ be a convergent regularisation method. If there exists a function $\phi : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ with $\lim_{t \to 0} \phi(t) = 0$ and
 
 $$\sup_{y \in \mathcal{D}(A^\dagger) \text{ s.t. } \lVert y \rVert_Y \le 1} e(y, \delta) \le \phi(\delta), \tag{2.4.6}$$
 
@@ -778,7 +778,7 @@ Thus, recall the SVD of $K^\dagger$ with respect to the singular system $(\sigma
 
 $$K_\alpha^\dagger y := \sum_{n=1}^{\infty} g_\alpha(\sigma_n) \langle y, u_n \rangle_Y v_n \qquad \text{for } y \in Y,$$
 
-with a suitable function $g_\alpha : \mathbb{R}_{+} \to \mathbb{R}_{+}$ that satisfies $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for all $\sigma > 0$ as $\alpha \to 0$. We will see that $(K_\alpha^\dagger)\_{\alpha \ge 0}$ is a regularisation if
+with a suitable function $g_\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ that satisfies $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for all $\sigma > 0$ as $\alpha \to 0$. We will see that $(K_\alpha^\dagger)\_{\alpha \ge 0}$ is a regularisation if
 
 $$g_\alpha(\sigma) \le C_\alpha < \infty, \qquad \text{for all } \sigma > 0. \tag{2.5.1}$$
 
@@ -883,7 +883,7 @@ Under the stated conditions on $g_\alpha(\sigma)$, we can now prove the converge
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.5.5</span><span class="math-callout__name">(Convergence of Spectral Regularisation)</span></p>
 
-Let $g_\alpha : \mathbb{R}_{+} \to \mathbb{R}_{+}$ be a piecewise continuous function such that $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for $\sigma > 0$ as $\alpha \to 0$, and suppose that there exist a constant $C_\alpha > 0$ depending on $\alpha$ and a constant $\gamma > 0$ independent of $\alpha$ such that
+Let $g_\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ be a piecewise continuous function such that $g_\alpha(\sigma) \to \frac{1}{\sigma}$ for $\sigma > 0$ as $\alpha \to 0$, and suppose that there exist a constant $C_\alpha > 0$ depending on $\alpha$ and a constant $\gamma > 0$ independent of $\alpha$ such that
 
 $$\sigma g_\alpha(\sigma) \le \gamma \qquad \text{and} \qquad g_\alpha(\sigma) \le C_\alpha < \infty \quad \text{for all } \sigma, \alpha > 0.$$
 
@@ -1863,7 +1863,7 @@ $$\mathbb{E}[X|Y](\omega) = \begin{cases} 1/3 & \omega \in \lbrace 1, 2, 3 \rbra
 
 #### 3.5.3 Regular Conditional Distribution
 
-So far we have defined $\mathbb{P}[A\mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}$ in case $\mathbb{P}[B] > 0$. The goal of this section is to define the conditional probability $\mathbb{P}[A|X = x]$ even if $\mathbb{P}[X = x] = 0$.
+So far we have defined $\mathbb{P}[A\mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}$ in case $\mathbb{P}[B] > 0$. The goal of this section is to define the conditional probability $\mathbb{P}[A\mid X = x]$ even if $\mathbb{P}[X = x] = 0$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.5.22</span><span class="math-callout__name">(Regular Conditional Distribution I)</span></p>
@@ -2767,7 +2767,7 @@ where $\theta(x) \ge 0$ is the mass absorption coefficient of the material. If a
 
 $$\log I_r^\ell - \log I_0^\ell = \int_{I_0^\ell}^{I_r^\ell} \frac{\mathrm{d}I}{I} = -\int_\ell \theta(x) \, \mathrm{d}s. \tag{5.1.1}$$
 
-The inverse problem of X-ray tomography can thus be stated as a problem of integral geometry: Estimate the function $\theta : D \to \mathbb{R}_{+}$ from the values of its integrals along a set of straight lines passing through $D$. This leads to the linear operator equation
+The inverse problem of X-ray tomography can thus be stated as a problem of integral geometry: Estimate the function $\theta : D \to \mathbb{R}\_{+}$ from the values of its integrals along a set of straight lines passing through $D$. This leads to the linear operator equation
 
 $$y = \mathcal{R}\theta$$
 
@@ -3407,7 +3407,7 @@ Let $\mu \in \mathcal{P}(H)$ and let $K : H \times \mathcal{B}(H) \to [0, 1]$ be
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.6.7</span><span class="math-callout__name">(Geometric Ergodicity)</span></p>
 
-A Markov chain $(X_j)\_{j \in \mathbb{N}}$ in $H$ with transition kernel $K$ is $L^2_\mu(H)$**-geometrically ergodic** if there exists a number $r \in [0, 1)$ such that for any probability measure $\nu$ which has a density $\frac{\mathrm{d}\nu}{\mathrm{d}\mu} \in L^2_\mu(H)$ w.r.t. $\mu$
+A Markov chain $(X_j)\_{j \in \mathbb{N}}$ in $H$ with transition kernel $K$ is $L^2\_\mu(H)$**-geometrically ergodic** if there exists a number $r \in [0, 1)$ such that for any probability measure $\nu$ which has a density $\frac{\mathrm{d}\nu}{\mathrm{d}\mu} \in L^2_\mu(H)$ w.r.t. $\mu$
 
 $$D_{\mathrm{TV}}(\nu K^j, \mu) \le C_\nu r^j \quad \text{for all } j \in \mathbb{N}.$$
 

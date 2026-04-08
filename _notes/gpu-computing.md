@@ -83,7 +83,7 @@ When moving from serial to parallel computing, it is crucial to understand the t
 #### Amdahl's Law
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Amdahl's Law)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Amdahl's Law)</span></div>
 
 Amdahl's Law models the maximum expected improvement to an overall system when only a part of the system is improved. Every program contains a serial part and a parallel part.
 
@@ -102,14 +102,14 @@ The serial fraction $s$ places a hard limit on the maximum possible speed-up. As
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Amdahl's Law)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Amdahl's Law)</span></div>
 
 If $90$% of your program is parallel ($p = 0.9$), the serial fraction is $10$% ($s = 0.1$). The maximum speed-up you can ever achieve is $1 / 0.1 = 10 \times$, even with a million cores.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Perspectives on Amdahl's Law)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Perspectives on Amdahl's Law)</span></div>
 
 Gene Amdahl, who formulated this law in 1967, originally used it to argue that the single-processor approach was superior. However, his law can be viewed from different perspectives:
 
@@ -123,7 +123,7 @@ Gene Amdahl, who formulated this law in 1967, originally used it to argue that t
 To manage the immense parallelism, GPUs employ a specific execution and programming model. While the hardware itself is a multi-core vector architecture (SIMD - Single Instruction, Multiple Data), it presents a simpler abstraction to the programmer.
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMD vs. SIMT)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMD vs. SIMT)</span></div>
 
 - **Hardware View (SIMD):** The hardware groups threads together and executes them on wide vector units. A single instruction is fetched and executed simultaneously on multiple data elements.
 - **Software View (SIMT):** The programmer writes code for a single scalar thread, and the hardware and compiler manage the complexity of grouping these threads into "warps" or "wavefronts" for execution. This is known as SIMT (Single Instruction, Multiple Thread). It gives the programmer the illusion of writing simple scalar code while the hardware provides the efficiency of a vector architecture.
@@ -131,7 +131,7 @@ To manage the immense parallelism, GPUs employ a specific execution and programm
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bulk-Synchronous Parallel Model)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bulk-Synchronous Parallel Model)</span></div>
 
 This model is a near-perfect incarnation of the **Bulk-Synchronous Parallel (BSP)** model proposed by Leslie Valiant in 1990. The BSP model structures parallel computation into a sequence of "supersteps," where each step consists of:
 
@@ -162,7 +162,7 @@ In a typical computer system, the CPU and GPU are distinct components with their
 </figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU and CPU memory bandwidth)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU and CPU memory bandwidth)</span></div>
 
 * The **GPU's memory bandwidth can be over 7x higher than the CPU's**, and its computational throughput an order of magnitude greater. 
 * **CUDA** (Compute Unified Device Architecture) allows us to leverage this power for general-purpose computing tasks.
@@ -191,7 +191,7 @@ A simplified diagram for general-purpose processing shows how a program interact
 3. The work is distributed across an array of Streaming Multiprocessors (SMs).
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Streaming Multiprocessor)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Streaming Multiprocessor)</span></div>
 
 A **Streaming Multiprocessor (SM)** is the fundamental processing unit of a CUDA-capable GPU. It is a group of simple cores that execute threads in parallel. Each SM has its own execution units, schedulers, and a small, fast, on-chip memory called Shared Memory.
 
@@ -218,7 +218,7 @@ A CUDA program is a hybrid program consisting of two parts: a host part that run
 CUDA programs exploit two complementary forms of parallelism:
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></div>
+<div class="math-callout__title" markdown="0"><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></div>
 
 - **Data-Level Parallelism (DLP):** Perform the *same* operation on *many* data elements simultaneously. Exploited by SIMD/vector units and GPU warps. Best for dense, regular computations (linear algebra, convolutions, elementwise ops). The main limitation is branch divergence and irregular memory access.
 - **Thread-Level Parallelism (TLP):** Run multiple *independent threads* concurrently, each with its own instruction stream. Exploited by multi-core CPUs, SMT, and GPU thread blocks. Best for coarse-grained parallel work (serving requests, pipeline stages, independent simulations). The main limitation is coordination overhead (synchronization, contention, false sharing).
@@ -233,7 +233,7 @@ GPUs combine both: TLP at the grid/block level and DLP-like execution at the war
 #### Thread Hierarchy
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thread Hierarchy)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thread Hierarchy)</span></div>
 
 The most fundamental concept in CUDA is the **thread hierarchy**. When you launch a computation on the GPU, you are launching a kernel function that is executed by a grid of threads. This hierarchy is organized into three levels:
 
@@ -379,7 +379,7 @@ int main() {
 #### Thread Communication and Synchronization
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thread Communication Mechanisms)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thread Communication Mechanisms)</span></div>
 
 A key feature of the CUDA model is that threads within the same block can cooperate. This is achieved through two main mechanisms:
 
@@ -408,7 +408,7 @@ Understanding the memory hierarchy is critical for writing high-performance CUDA
 A diagram of the memory hierarchy shows that each Thread has its own private Registers. A group of threads in a Block shares a common Shared Memory. All blocks in the Grid can access the larger but slower Global Memory. The Host (CPU) also interacts with the device via this Global Memory.
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Memory)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Memory)</span></div>
 
 - **Scope:** Accessible by all threads in the grid (R/W), as well as the host (CPU), communication between host and device.
 - **Lifetime:** Persists for the lifetime of the application, beyond the execution of any single kernel.
@@ -449,7 +449,7 @@ free(h_mem);
 > **Note:** When calling a kernel, you can only pass pointers to device memory (like `d_mem`), not host memory.
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shared Memory)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shared Memory)</span></div>
 
 - **Scope:** Accessible only by threads within the same block.
 - **Lifetime:** Persists only for the lifetime of the block. Once a block finishes executing, its shared memory is gone.
@@ -521,7 +521,7 @@ Finally, `nvcc` links the compiled host and device code with the necessary CUDA 
 ### A Complete Example: SAXPY
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SAXPY)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SAXPY)</span></div>
 
 **SAXPY** stands for **S**calar **A**lpha **X** **P**lus **Y**. It is a common, simple vector operation used to benchmark computational performance:
 
@@ -570,7 +570,7 @@ This is a perfect demonstration of the SPMD model. Every thread runs this exact 
 Initial performance tests often show that even for large vectors, the GPU version can be slower than the CPU version. This is usually because the time taken to transfer data between host and device memory (`cudaMemcpy`) dominates the total runtime.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pinned Memory)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Pinned Memory)</span></div>
 
 **Pinned memory** (or page-locked memory) is host memory that the OS cannot page out or relocate. By default, host memory allocated with `malloc` is pageable, meaning the operating system can move it around in physical memory. For the GPU to access this data, the CUDA driver must first copy it into a temporary, pinned buffer before transferring it to the device.
 
@@ -794,7 +794,7 @@ You can query the properties of the GPU in your system to make informed decision
 | Max Grid Dimension | 65535 x 65535 x 65535 | 2G x 65535 x 65535 | 2G x 65535 x ? |
 
 <div class="math-callout math-callout--remark" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common CUDA Errors)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common CUDA Errors)</span></div>
 
 - **the launch timed out and was terminated:** Kernel took too long. Common on systems with a graphical display where the OS kills kernels to prevent screen freezing. Solution: stop the X11 server.
 - **unspecified launch failure:** Often indicates a segfault inside the kernel (out-of-bounds access or invalid pointer).
@@ -808,7 +808,7 @@ You can query the properties of the GPU in your system to make informed decision
 ### Vector Architectures: The Foundation of Efficiency
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vector ISA Efficiency)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vector ISA Efficiency)</span></div>
 
 The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (Instruction Set Architectures)**, which are efficient in three key ways:
 
@@ -878,7 +878,7 @@ The GPU memory hierarchy can be understood by its scope—what threads can "see"
 | **Host Memory** | System-wide | Multiple TBs (off-device) | Main system RAM, connected to the CPU. Accessible via PCIe. |
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Victim Cache)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Victim Cache)</span></div>
 
 A victim cache is **a small, fast, fully associative cache that sits between a primary cache (like a direct-mapped L1) and the next level (L2/memory) to store recently evicted data blocks**, preventing "conflict misses" by giving those "victims" a second chance for quick retrieval, significantly boosting performance by reducing penalties from needing to fetch data from slower memory. Proposed by Norman Jouppi in 1990, it leverages temporal locality, storing discarded lines in case they're needed soon, improving hit rates for memory-intensive programs. 
 
@@ -906,7 +906,7 @@ Each thread has private **registers**, the fastest memory. The total number of r
 Despite its name, **Local Memory** is not on-chip; it is a private section of the slow, off-chip **Global Memory**. Stores to local memory are cached in the L1 cache.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Local memory)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Local memory)</span></div>
 
 “Local memory” is *not* a separate physical memory. It’s a **per-thread region in device DRAM** (global memory) that the compiler uses when registers aren’t enough (spills, large per-thread arrays, etc.). The word “local” refers to **scope/visibility** (only that thread can address it), not location.
 
@@ -1000,7 +1000,7 @@ A system diagram shows the CPU/Host Memory connection (\~64 GB/s) is vastly diff
 ### Global Memory Coalescing: The Key to Bandwidth
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Memory Coalescing)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Memory Coalescing)</span></div>
 
 **Coalescing** is the process of **combining many fine-grained memory accesses from multiple threads in a warp into a single, large GDDR memory transaction**. This is paramount for achieving high bandwidth.
 
@@ -1017,7 +1017,7 @@ When threads in a warp access memory, the ideal pattern is for them to access co
 **Misaligned accesses:** One warp is scheduled, but accesses misaligned addresses.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Access Penalties)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Access Penalties)</span></div>
 
   * **Offset Access:** `data[addr + offset]`. If a warp's access crosses a cache line boundary, it may require fetching 5 cache lines instead of 4, reducing effective bandwidth.
   * **Strided Access:** `data[addr * stride]`. A stride of 2 means only half the data loaded into a cache line is used, resulting in 50% load/store efficiency.
@@ -1060,7 +1060,7 @@ As the table shows, multi-threading requires substantial hardware support but re
 ### The Warp: The Unit of Scheduling
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Warp)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Warp)</span></div>
 
 The GPU hardware does not manage individual threads. Instead, it groups them into a **warp**.
 
@@ -1081,7 +1081,7 @@ On Kepler:
 ### The SM Scheduler at Work
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fine-Grained Multi-Threading)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fine-Grained Multi-Threading)</span></div>
 
 Each SM has its own scheduler(s) to keep its execution units busy. This is called **Fine-Grained Multi-Threading (FGMT)**. The scheduling loop is:
 
@@ -1129,7 +1129,7 @@ This cycle of executing, stalling, and switching between ready warps ensures the
 ### Scoreboarding and Instruction Issue
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Scoreboarding)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Scoreboarding)</span></div>
 
 Modern schedulers use a **scoreboard**, a hardware table that tracks the status of instructions for all active warps.
 
@@ -1150,7 +1150,7 @@ The Kepler scheduler
 </figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Data Hazards)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Data Hazards)</span></div>
 
 Data hazards in computer architecture are **pipeline stalls caused by instruction dependencies**, where an instruction needs data from a previous instruction that hasn't finished yet, leading to incorrect results, most commonly **Read After Write (RAW)** hazards, but also **Write After Read (WAR)** and **Write After Write (WAW)** hazards in parallel systems. These are managed with techniques like **forwarding (bypassing)** (sending data directly) or **stalling the pipeline** (inserting NOPs/bubbles) to ensure data correctness, especially when a load instruction precedes its use. 
 
@@ -1176,7 +1176,7 @@ Data hazards in computer architecture are **pipeline stalls caused by instructio
 ### The Challenge of Branch Divergence
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Branch Divergence)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Branch Divergence)</span></div>
 
 Since all 32 threads in a warp execute the same instruction, `if-else` statements can cause **branch divergence**.
 
@@ -1223,7 +1223,7 @@ __global__ void kernel2(float* out) {
 ### Key Performance Considerations
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Key Performance Pitfalls)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Key Performance Pitfalls)</span></div>
 
 The most common CUDA performance issues are:
 
@@ -1278,7 +1278,7 @@ Performance is rarely limited by pure math; it is limited by memory.
 * **Total Accesses (Naive):** Without caching, every calculation fetches data from main memory. To compute $n^2$ elements, we perform $2n^3$ reads.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computational Intensity)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Computational Intensity)</span></div>
 
 **Computational Intensity ($r$)** is the ratio of arithmetic operations to memory operations (FLOPs/Byte). A high ratio indicates a compute-bound algorithm (good); a low ratio indicates a memory-bound algorithm (bad).
 
@@ -1392,7 +1392,7 @@ vmovups ymmword ptr [rcx + 4*rbp], ymm4
 To overcome the memory wall, we use **tiling**. We divide the matrices into small sub-matrices (tiles) that fit into the cache. We load a tile from $A$ and $B$, perform all possible multiplications between them, and then move to the next tile.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Locality of Reference)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Locality of Reference)</span></div>
 
 Tiling maximizes **Locality of Reference**:
 
@@ -1525,7 +1525,7 @@ __global__ void MM_SM(float* Md, float* Nd, float* Pd, int Width) {
 #### Bank Conflicts
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bank Conflicts)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bank Conflicts)</span></div>
 
 Shared memory is divided into **32 banks** (like parallel filing cabinets). Ideally, threads in a warp (32 threads) access different banks simultaneously.
 
@@ -1547,7 +1547,7 @@ To close the gap to theoretical peak performance, further techniques are require
   * **Double Buffering:** Loading the *next* tile into registers while computing the *current* tile hides memory latency completely.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Matrix Multiplication Summary)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Matrix Multiplication Summary)</span></div>
 
   * **Performance is Memory-Bound:** High-performance computing is often less about math and more about data movement.
   * **Hierarchy is King:** Tiling (blocking) is the fundamental technique to exploit the memory hierarchy.
@@ -1581,7 +1581,7 @@ The reduction example below will demonstrate all of the key performance pitfalls
 ### The Parallel Reduction Problem
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parallel Reduction)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Parallel Reduction)</span></div>
 
 A **reduction** is a common parallel operation where an array of elements is "reduced" to a single value using an associative operator like addition, multiplication, or finding the maximum value.
 
@@ -1596,7 +1596,7 @@ Examples of reduction include:
 Reduction is a perfect candidate for optimization analysis because it is **memory-bound**: performance is limited by the speed at which data can be read from memory, not by the speed of the arithmetic. Therefore, our key performance metric will be **effective bandwidth (GB/s)**.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Effective Bandwidth)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Effective Bandwidth)</span></div>
 
 **Effective bandwidth** is a real-world measure of data transfer speed, accounting for inefficiencies like latency, protocol overhead, and packet loss, unlike **theoretical (asymptotic) bandwidth**. It quantifies the actual data throughput for specific applications, representing the sustainable rate under typical conditions, often lower than the maximum possible speed.
 
@@ -1614,7 +1614,7 @@ To process a large array, we must launch many CTAs, each responsible for reducin
 This would be simple if we had a global synchronization mechanism that could make all CTAs across the entire GPU wait for each other. However, *CUDA provides no such feature*.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Question</span><span class="math-callout__name">(Can we synchronise blocks within one SM?)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Question</span><span class="math-callout__name">(Can we synchronise blocks within one SM?)</span></div>
 
 Not in the way people usually mean by “block synchronization.”
 
@@ -1656,7 +1656,7 @@ So: **within one SM**, you can *sometimes hack coordination* if you ensure all r
 2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  #\text{CTAs} $\leq$ #\text{SMs} $\cdot$ $b_r$  where $b_r$ is the number of resident blocks per SM.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deadlock from Global Synchronization)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deadlock from Global Synchronization)</span></div>
 
 The classic deadlock scenario works as follows:
 
@@ -1681,7 +1681,7 @@ $$\#\text{CTAs} \le \#\text{SMs} \cdot b_r$$
 The standard solution is kernel decomposition. We write a kernel that performs a partial reduction, where each CTA writes its partial sum to global memory. After this first kernel completes, we launch it again on the smaller array of partial sums. **A kernel completion boundary acts as a de facto global synchronization point**. Because the reduction operation is the same at each level, we can reuse the same kernel code. **Negligible HW overhead, low SW overhead**
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kernel Reuse in Practice)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Kernel Reuse in Practice)</span></div>
 
 In practice, the final reduction stage often uses a different, simpler kernel (or is completed on the CPU). However, the same kernel *can* be reused at every level since the reduction operation is identical.
 
@@ -1837,7 +1837,7 @@ __global__ void Reduction0a_kernel( int *out, int *in, size_t N ) {
 * `if (tid == 0)`: After the loop, thread 0 of the block holds the partial sum for the entire block, which it writes out to the global output array out.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Multiple Blocks and Shared Memory)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Multiple Blocks and Shared Memory)</span></div>
 
 The code could be used with multiple blocks, not just one, because **`sPartials` is in shared memory**, and **shared memory is per-block**.
 
@@ -2064,7 +2064,7 @@ This progression clearly shows how systematically identifying and eliminating bo
 ### A Framework for Optimization
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Three Levels of CUDA Optimization)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Three Levels of CUDA Optimization)</span></div>
 
 The techniques used in the reduction example generalize into three optimization levels:
 
@@ -2090,7 +2090,7 @@ The techniques used in the reduction example generalize into three optimization 
 ### Summary
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization Workflow)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization Workflow)</span></div>
 
 1. **Set the Right Goal:** Identify whether your application is memory-bound (measure in GB/s) or compute-bound (measure in GFLOP/s).
 2. **Identify Bottlenecks:** Systematically look for issues like memory access patterns, branch divergence, instruction overhead, and resource underutilization.
@@ -2108,7 +2108,7 @@ Writing a parallel program that runs correctly is only the first step; making it
 Computational intensity — the ratio of FLOPs to memory operations — is the key metric for performance analysis. Here we formalize it precisely.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arithmetic Intensity)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Arithmetic Intensity)</span></div>
 
 **Arithmetic Intensity** is defined as the ratio of floating-point operations (FLOPs) performed for every byte of data moved from memory:
 
@@ -2119,7 +2119,7 @@ where $r$ is the arithmetic intensity in FLOPs/Byte, $f$ is the number of floati
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Types of Intensity)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Types of Intensity)</span></div>
 
 * **Algorithmic Intensity:** The inherent ratio of operations to memory accesses in the pure, mathematical algorithm.
 * **Computational Intensity:** The actual ratio achieved by a specific code implementation. Caching can reduce memory accesses and increase it.
@@ -2130,7 +2130,7 @@ where $r$ is the arithmetic intensity in FLOPs/Byte, $f$ is the number of floati
 ### Memory-Bound vs. Compute-Bound
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Boundedness Classification)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Boundedness Classification)</span></div>
 
 Based on arithmetic intensity, algorithms are classified as:
 
@@ -2145,7 +2145,7 @@ Identifying which category your application falls into is the first step toward 
 ### The Roofline Model: A Visual Guide to Performance
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Roofline Model)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Roofline Model)</span></div>
 
 The **Roofline Model** is a powerful tool for visualizing performance limitations. The model is a 2D plot with Arithmetic Intensity $r$ (FLOPs/Byte) on the x-axis and Attainable Performance $p$ (GFLOP/s) on the y-axis.
 
@@ -2165,7 +2165,7 @@ If you are under the slanted part, you are **memory-bound**. If under the flat p
 ### Optimization Strategy
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Roofline-Guided Optimization)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Roofline-Guided Optimization)</span></div>
 
 **If compute-bound** (hitting the flat roof): balance additions/multiplications, improve ILP, and exploit SIMD instructions.
 
@@ -2178,7 +2178,7 @@ Arithmetic intensity is not fixed — it can scale with problem size, and effect
 ### GPU Profiling
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Profiling)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Profiling)</span></div>
 
 **Profiling** is the process of analyzing an application's behavior to understand its performance characteristics. It involves collecting data about both its static and dynamic properties.
 
@@ -2203,7 +2203,7 @@ Profiling at the SASS level gives you the most accurate and detailed view of wha
 ### Prerequisites for Profiling
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Before You Profile)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Before You Profile)</span></div>
 
 1. **Ensure Correctness First:** Use tools like `cuda-memcheck` to find and fix memory errors before any performance analysis.
 2. **Compile with Correct Flags:**
@@ -2389,7 +2389,7 @@ On older architectures, a warp operated as a single unit with **one program coun
 ### The Modern SIMT Model (Volta and Later)
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Independent Thread Scheduling)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Independent Thread Scheduling)</span></div>
 
 Starting with the Volta architecture, NVIDIA introduced **Independent Thread Scheduling (ITS)**. In the ITS model, the GPU maintains the execution state (program counter, register state) for each individual thread. A **schedule optimizer** dynamically groups active threads from the same warp that are executing the same instruction. Threads can now diverge and reconverge at sub-warp granularity.
 
@@ -2400,7 +2400,7 @@ Execution is still SIMT at the core — the hardware executes one instruction ac
 One subtlety: the hardware does not automatically force full warp reconvergence at the join point. To explicitly reconverge, developers use the `__syncwarp()` intrinsic.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Starvation-Free Algorithms)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Starvation-Free Algorithms)</span></div>
 
 ITS enables **starvation-free algorithms**: if threads within a warp contend for a lock, the scheduler guarantees every thread will eventually be scheduled. In the old model, a thread holding a lock might never be re-scheduled if another thread in the same warp was spinning, causing deadlock.
 
@@ -2442,7 +2442,7 @@ We now apply the optimization principles discussed so far to a classic, computat
 Before tackling the N-body problem, we address a foundational optimization: how data is arranged in memory. Since memory access is far more expensive than arithmetic, streamlining access patterns is critical.
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AoS vs. SoA)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AoS vs. SoA)</span></div>
 
 - **Array of Structures (AoS):** All fields of one element are stored contiguously. Intuitive but causes non-coalesced GPU memory access.
 - **Structure of Arrays (SoA):** All values of one field are stored contiguously. Naturally suited for coalesced memory access on GPUs.
@@ -2508,7 +2508,7 @@ While AoS can sometimes be improved using packed types like `float4`, SoA is the
 The tiling principle from matrix multiplication — load a tile into shared memory, compute all interactions within it, then move on — applies directly to the N-body problem.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(N-Body Simulation)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(N-Body Simulation)</span></div>
 
 **N-body simulations** are a class of problems where the goal is to simulate the evolution of a system of $N$ bodies (particles) that interact with each other through a fundamental force like gravity or electromagnetism. The computational complexity is $O(N^2)$ for all-pairs calculations, making them extremely well-suited for GPU acceleration.
 
@@ -2803,7 +2803,7 @@ Analysis:
 ### N-Body Summary
 
 <div class="math-callout math-callout--remark" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(N-Body Optimization Takeaways)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(N-Body Optimization Takeaways)</span></div>
 
 * **Data Layout Matters:** Choosing SoA layout is often critical for coalesced memory access on the GPU.
 * **Maximize Data Reuse:** Tiling combined with explicit shared memory management reduces expensive global memory traffic.
@@ -2830,7 +2830,7 @@ To hide this latency, we employ **task parallelism**: instead of sequentially pe
 ### CUDA Streams
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA Stream)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA Stream)</span></div>
 
 A **CUDA Stream** is an ordered queue of operations submitted to the GPU. Key properties:
 
@@ -2851,7 +2851,7 @@ Streams unlock **coarse-grained concurrency**: CPU/GPU concurrency, concurrent c
 Since the CPU queues up work asynchronously, we need mechanisms to ensure results are ready before using them. CUDA provides three synchronization granularities:
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Synchronization Granularities)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Synchronization Granularities)</span></div>
 
 **Context-Based Synchronization** — blocks the CPU until *all* CUDA operations complete:
 
@@ -2879,7 +2879,7 @@ Events allow synchronization at specific points in the workflow rather than wait
 #### The Default Stream and Sequential Execution
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Default Stream)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Default Stream)</span></div>
 
 When you launch a kernel or call `cudaMemcpy` without specifying a stream, you are using the **default stream** (stream 0). It is a **synchronizing stream**: an operation in the default stream will wait for all preceding operations in all other streams to complete before it begins, and any subsequent operation in any other stream will wait for the default stream operation to complete. This creates an inherent synchronization point, making overlap impossible with the default stream.
 
@@ -3048,7 +3048,7 @@ By issuing all input copies first, followed by all kernel launches, we maximize 
 #### Common Pitfalls: Implicit Synchronization
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implicit Synchronization)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Implicit Synchronization)</span></div>
 
 The following operations act like `cudaDeviceSynchronize()`, destroying any stream overlap:
 
@@ -3099,7 +3099,7 @@ $$\frac{r \cdot (4N)}{c} \ge \frac{4N}{b}$$
 We can cancel out the $4N$ term from both sides and rearrange the inequality to solve for $r$:
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Streaming Effectiveness Condition)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Streaming Effectiveness Condition)</span></div>
 
 For streaming to effectively hide PCIe latency, the arithmetic intensity $r$ of the kernel must satisfy:
 
@@ -3114,7 +3114,7 @@ where $c$ is the GPU's peak compute performance (FLOPs/s) and $b$ is the PCIe ba
 The complexity of manually managing memory buffers and cudaMemcpyAsync calls led NVIDIA to develop simpler memory models. The first step in this direction was Unified Virtual Addressing (UVA).
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Virtual Addressing)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Virtual Addressing)</span></div>
 
 With **UVA**, the CPU and all GPUs in a system share a single virtual address space. A pointer, regardless of whether it points to host or device memory, has a unique address. However, while the GPU can access host memory directly, doing so is extremely slow as data must still travel over the PCIe bus. The programmer is still responsible for explicit locality optimizations. UVA primarily simplifies pointer management in multi-GPU applications.
 
@@ -3123,7 +3123,7 @@ With **UVA**, the CPU and all GPUs in a system share a single virtual address sp
 #### Unified Memory (UM)
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Memory)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Memory)</span></div>
 
 **Unified Memory (UM)** creates a pool of managed memory accessible to both the CPU and the GPU through a single pointer. The CUDA runtime automatically migrates data between host and device on demand. When the CPU accesses managed data, it is ensured to be in host memory. When a GPU kernel accesses it, it is automatically paged to device memory.
 
@@ -3218,7 +3218,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 ### Summary: CUDA Streams and Host-Device Communication
 
 <div class="math-callout math-callout--remark" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Streams for Latency Hiding)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Streams for Latency Hiding)</span></div>
 
 * **Problem:** The PCIe bus is much slower than the GPU's internal memory and compute capabilities.
 * **Solution:** Task-level parallelism via CUDA Streams overlaps communication with computation.
@@ -3228,7 +3228,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unified Memory as an Alternative)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unified Memory as an Alternative)</span></div>
 
 * **UVA:** Provides a single address space but still requires manual data movement for good performance.
 * **Unified Memory (UM):** Automates data migration between host and device based on access patterns. Eliminates explicit `cudaMemcpy` calls at the cost of some migration overhead.
@@ -3244,7 +3244,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 In the world of high-performance computing, many problems involve updating values in a large, organized grid. Whether we are simulating weather patterns, analyzing medical images, or calculating how heat moves through a metal part, we often use a technique called **Stencil Computation**.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stencil)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stencil)</span></div>
 
 A **stencil** is a geometric pattern used to update elements in a regular array (a grid). The value of a center element is updated based on the values of its neighbors. This specific "neighborhood" of cells used for the calculation is the stencil.
 
@@ -3266,7 +3266,7 @@ While stencils are used for regular grids, more complex, irregular grids (like t
 Most stencil computations aim to approximate the solutions to Partial Differential Equations (PDEs).
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial Differential Equation)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partial Differential Equation)</span></div>
 
 A **Partial Differential Equation** is a function of multiple independent variables (like position $x$ and time $t$). These equations are used in physics, biology, economics, and chemistry to describe phenomena like heat transfer, Newtonian gravity, seismic wave propagation, and electrostatics.
 
@@ -3291,7 +3291,7 @@ In practice, we use three main types of "differences" to approximate these chang
 | Central Difference | $f_x \approx \frac{f(x + k) - f(x - k)}{2k}$ | $O(k^2)$ |
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Error Order)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Error Order)</span></div>
 
 $O(k)$ represents the "order of error." An $O(k^2)$ method is generally much more accurate than an $O(k)$ method because the error shrinks faster as the spacing $k$ gets smaller.
 
@@ -3306,7 +3306,7 @@ To solve these on a GPU, we turn continuous space into a grid. We define points 
 The Heat Equation describes how thermal conductivity ($c$) transports heat through a material over time. It is a parabolic equation, and there are two primary ways to solve it using stencils.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Explicit Method)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Explicit Method)</span></div>
 
 In the **Explicit Method**, we calculate the state of a point at the next time step ($j+1$) using only the values from the current time step ($j$):
 
@@ -3322,7 +3322,7 @@ where $r = \frac{ck}{h^2}$.
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Implicit Method)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Implicit Method)</span></div>
 
 The **Implicit Method** calculates the next time step by solving a system of equations where multiple unknown points at $t+k$ are related to each other.
 
@@ -3336,7 +3336,7 @@ The **Implicit Method** calculates the next time step by solving a system of equ
 This is a hybrid approach. It averages the explicit and implicit methods to achieve higher accuracy ($O(h^2 + k^2)$). For a simulation requiring 4 digits of accuracy, an implicit method might need 1 million points, while the Crank-Nicholson Method would only need 560 points to achieve the same result.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU Connection)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU Connection)</span></div>
 
 Because implicit methods and hybrid methods like CNM are computationally heavy but involve massive amounts of similar calculations, they are perfectly suited for the parallel architecture of a GPU.
 
@@ -3351,7 +3351,7 @@ Stencil codes are typically **memory-bound**. This means the GPU spends more tim
 To parallelize a stencil, we divide the data grid into chunks and assign each chunk to a thread block.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Halo)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Halo)</span></div>
 
 Because each point needs its neighbor's data, thread blocks must store an overlapping area of data from neighboring blocks. This overlap is called the **halo**.
 
@@ -3417,7 +3417,7 @@ You can also use the `async` clause to allow the GPU to work on one task while t
 A great example of stencil computation in image processing is **Connected Component Labeling (CCL)**. The goal is to identify and color separate "blobs" or shapes in a black-and-white image.
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Connected Component Labeling)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Connected Component Labeling)</span></div>
 
 1. **Thresholding:** Convert a color image to black and white (bitmapping).
 2. **Initial Labeling:** Every pixel is given a unique label.
@@ -3442,14 +3442,14 @@ Stencil computations represent a perfect marriage between physical mathematics a
 To understand how memory works in a GPU, we must first recall what a GPU actually is. Depending on whether you are looking at it from a programmer’s perspective (software) or an engineer’s perspective (hardware), the GPU takes on two different roles.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Software View: Many-Core Scalar Architecture)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Software View: Many-Core Scalar Architecture)</span></div>
 
 From a software perspective, the GPU is a programmable **many-core scalar architecture**. It is designed to handle a massive number of scalar threads. The GPU manages a huge number of these workers to exploit **parallel slackness**, which means having so many threads available that the hardware can always find work to do, even if some threads are waiting for data. This software model is known as **SIMT** (Single Instruction, Multiple Threads) and is a near-perfect implementation of the **BSP** (Bulk Synchronous Parallel) model.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hardware View: Multi-Core Vector Architecture)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hardware View: Multi-Core Vector Architecture)</span></div>
 
 Under the hood, the GPU is actually a programmable **multi-core vector architecture**. While the software thinks it is dealing with individual scalar threads, the hardware actually operates using **SIMD** (Single Instruction, Multiple Data). The hardware creates an "illusion" of scalar threads by packing them into compound units. In essence, a GPU is a vector architecture that cleverly hides its vector units from the programmer.
 
@@ -3460,7 +3460,7 @@ Under the hood, the GPU is actually a programmable **multi-core vector architect
 In parallel computing, we often use **Shared Memory Multiprocessors**. This describes a system where multiple execution units (processors or cores) share a single address space.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Process)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Process)</span></div>
 
 A **process** is defined as a single virtual address space that contains one or more threads of control. By definition, multiple threads within a process share the same address space.
 
@@ -3494,7 +3494,7 @@ A communication abstraction acts as a contract between the hardware and the soft
 The goal of a memory system is to reduce latency (the time it takes to access data). We use caches—small, fast storage areas near the processor—to achieve this. However, caches introduce a major challenge in multi-core systems: **Coherence**.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cache Coherence)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cache Coherence)</span></div>
 
 **Coherence** is the protocol that ensures all processors see the same (most recent) value for a specific memory location. Imagine a system with two processors, P0 and P1, each with its own local cache. If both processors have a copy of variable $A$ (initially 0), and P0 changes $A$ to 1, P1 might still see 0 in its own local cache. Coherence protocols prevent this inconsistency.
 
@@ -3519,7 +3519,7 @@ In older or smaller systems, we used a **Shared Bus**. A bus is like a single ha
 While coherence ensures that everyone eventually sees the same value for a single address, **consistency** deals with the ordering of operations across *different* addresses.
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coherence vs. Consistency)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coherence vs. Consistency)</span></div>
 
 * **Coherence:** Focuses on the "last write" to a *single address*. It is usually invisible to the software.
 * **Consistency:** Defines constraints on the order in which memory operations to *different locations* become visible. It is a contract between the programmer and the architecture and is visible to the software.
@@ -3527,7 +3527,7 @@ While coherence ensures that everyone eventually sees the same value for a singl
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Store Buffering)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Store Buffering)</span></div>
 
 Consider two threads:
 
@@ -3539,7 +3539,7 @@ In a "perfect" world, it should be impossible for both `if` statements to be tru
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Producer-Consumer)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Producer-Consumer)</span></div>
 
 * Thread 0 (Producer): Sets `a = 1`, then sets `flag = 1`.
 * Thread 1 (Consumer): Waits for `flag == 1`, then prints `a`.
@@ -3564,7 +3564,7 @@ We relax consistency (allow reordering) for one primary reason: **Performance**.
 | Data-Race-Free (DRF) | Programmer must mark races using strong operations. | Found in C++ and Java. |
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sequential Consistency)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sequential Consistency)</span></div>
 
 A system is **Sequentially Consistent** if the result of execution is the same as if all operations were executed in some sequential order, and the operations of each individual processor appear in the sequence in the order specified by its program.
 
@@ -3594,7 +3594,7 @@ In CUDA, you can define the scope of consistency:
 * `system`: Across the GPU and CPU.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Release-Acquire Sequence)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Release-Acquire Sequence)</span></div>
 
 Below is an example of how a producer-consumer relationship is handled using CUDA atomics to ensure consistency.
 
@@ -3646,7 +3646,7 @@ In reality, the GPU hardware bundles these individual threads into groups of 32,
 A major challenge arises when threads within the same warp want to do different things—a concept called **Divergent Control Flow**.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Masked Execution)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Masked Execution)</span></div>
 
 Imagine an `if-else` statement:
 
@@ -3676,7 +3676,7 @@ This leads to a loss of efficiency. If only one thread takes a specific branch, 
 To manage this divergence, the hardware utilizes a **Per-warp stack** that stores Program Counters (PCs) and Active Masks.
 
 <div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMT Stack Components)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SIMT Stack Components)</span></div>
 
 * **Active Mask:** A bitmask where each bit represents whether a specific thread in the warp is "active" or "inactive" for the current instruction.
 * **Re-convergence:** The hardware attempts to find the **Immediate Post-Dominator** (the point where the divergent paths meet again) to resume full parallel execution as quickly as possible.
@@ -3701,7 +3701,7 @@ Historically, CUDA provided the `__syncthreads()` function to synchronize thread
 ### Core Concepts of Thread Groups
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thread Group)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thread Group)</span></div>
 
 A **Thread Group** is a generic type in the CG API that can represent any subset of threads. This allows you to perform collective operations (like synchronization or data shuffling) on specific groups rather than the whole block.
 
@@ -3714,7 +3714,7 @@ Supported hierarchies include:
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Block-Level Synchronization)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Block-Level Synchronization)</span></div>
 
 Using Cooperative Groups improves code readability and provides a standardized way to handle synchronization.
 
@@ -3741,7 +3741,7 @@ __global__ void blockSyncKernel(float* data) {
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Warp-Level Aggregated Atomics)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Warp-Level Aggregated Atomics)</span></div>
 
 A powerful feature of CG is the ability to create opportunistic groups of threads that happen to be executing together (coalesced).
 
@@ -3775,7 +3775,7 @@ As Deep Learning became dominant, NVIDIA introduced **Tensor Cores**. These are 
 ### What is a Tensor Core?
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tensor Core)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Tensor Core)</span></div>
 
 Standard CUDA cores handle one calculation at a time. A **Tensor Core** operates on entire **Matrix Tiles** (e.g., $4 \times 4$ or $8 \times 8$ matrices). It performs a **Fused Multiply-Add (FMA)**, calculating $D = A \cdot B + C$.
 
@@ -3798,7 +3798,7 @@ To use Tensor Cores in CUDA C++, you use the **WMMA (Warp Matrix Multiply Accumu
 2. `accumulator`: Holds the intermediate and final results.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix Multiplication with WMMA)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Example</span><span class="math-callout__name">(Matrix Multiplication with WMMA)</span></div>
 
 Below is a simplified example of how a warp processes a $16 \times 16 \times 16$ matrix operation.
 
@@ -3867,7 +3867,7 @@ Energy consumption is the sum of two parts:
 2. **Data Movement Energy** ($\epsilon_{\text{mem}}$): The energy cost of moving data from RAM to the processor. Moving data is often far more expensive than the calculation itself!
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <div class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Hardware Lottery)</span></div>
+  <div class="math-callout__title" markdown="0"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Hardware Lottery)</span></div>
 
 There is a concept known as the **Hardware Lottery**, suggesting that the success of certain AI models (like Deep Neural Networks) is partly because they happen to run very well on current GPU architectures. This creates a bias toward "standard" solutions.
 
@@ -3884,7 +3884,7 @@ To overcome the power limits of CMOS (the current standard chip technology), res
 ### Course Summary
 
 <div class="math-callout math-callout--info" markdown="1">
-<div class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(GPU Computing)</span></div>
+<div class="math-callout__title" markdown="0"><span class="math-callout__label">Summary</span><span class="math-callout__name">(GPU Computing)</span></div>
 
 * **CUDA Basics:** Thread hierarchies, shared memory, and barrier synchronization.
 * **Architecture:** The SMX architecture, memory hierarchies, and warp scheduling.
