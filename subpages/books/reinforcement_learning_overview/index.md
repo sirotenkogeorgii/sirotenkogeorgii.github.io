@@ -304,7 +304,7 @@ where $\hat{a} = \pi_T(a_{1:T}, r_{1:T})$ is the estimated optimal arm as comput
 
 **Active learning** is similar to BayesOpt, but instead of finding the point at which $R$ is largest (i.e., $\boldsymbol{w}^\ast$), we try to learn the whole function $R$ by querying it at different points. The optimal strategy requires maintaining a belief state over the unknown function.
 
-**Stochastic Gradient Descent (SGD)** can be interpreted as a sequential decision making process. The action space consists of querying $R$ at locations $\boldsymbol{a}_t = \boldsymbol{w}\_t$, observing the function value $r_t = R(\boldsymbol{w}\_t)$ and the gradient $\boldsymbol{g}\_t = \nabla_{\boldsymbol{w}} R(\boldsymbol{w})\|_{\boldsymbol{w}\_t}$. The update rule for vanilla SGD is $\boldsymbol{w}\_{t+1} = \boldsymbol{w}\_t + \alpha_t \boldsymbol{g}\_t$, where the stepsize $\alpha_t$ is chosen by the policy. The terminal policy is $\pi(s_T) = \boldsymbol{w}\_T$.
+**Stochastic Gradient Descent (SGD)** can be interpreted as a sequential decision making process. The action space consists of querying $R$ at locations $\boldsymbol{a}\_t = \boldsymbol{w}\_t$, observing the function value $r_t = R(\boldsymbol{w}\_t)$ and the gradient $\boldsymbol{g}\_t = \nabla_{\boldsymbol{w}} R(\boldsymbol{w})\|_{\boldsymbol{w}\_t}$. The update rule for vanilla SGD is $\boldsymbol{w}\_{t+1} = \boldsymbol{w}\_t + \alpha_t \boldsymbol{g}\_t$, where the stepsize $\alpha_t$ is chosen by the policy. The terminal policy is $\pi(s_T) = \boldsymbol{w}\_T$.
 
 ## Reinforcement Learning: A High-Level Summary
 
@@ -389,13 +389,13 @@ One way to reduce variance is to learn an approximate value function $V_{\boldsy
 
 ### Model-Based RL
 
-Value-based and policy search methods can be very **sample inefficient**, requiring many interactions with the environment. In **model-based RL**, we first learn the MDP (the transition $p_S(s'|s,a)$ and reward $R(s,a)$ functions), then compute the policy using approximate dynamic programming or lookahead search. In practice, we often interleave the model learning and planning phases, using the partially learned policy to decide what data to collect.
+Value-based and policy search methods can be very **sample inefficient**, requiring many interactions with the environment. In **model-based RL**, we first learn the MDP (the transition $p_S(s'\mid s,a)$ and reward $R(s,a)$ functions), then compute the policy using approximate dynamic programming or lookahead search. In practice, we often interleave the model learning and planning phases, using the partially learned policy to decide what data to collect.
 
 ### State Uncertainty (Partial Observability)
 
 In many problems, the observation $o_t$ only gives partial information about the underlying state (e.g., a rodent navigating a maze). This is called **partial observability**. A policy of the form $a_t = \pi(o_t)$ is suboptimal; instead we need $a_t = \pi(\boldsymbol{h}\_t)$, where $\boldsymbol{h}\_t = (a_1, o_1, \ldots, a_{t-1}, o_t)$ is the entire past history.
 
-**Optimal solution:** If we know the true latent structure ($p(o|z)$ and $p(z'|z,a)$), we can compute a belief state $\boldsymbol{b}\_t = p(w_t|\boldsymbol{h}_t)$ and use POMDP solution methods. However, this is computationally very difficult.
+**Optimal solution:** If we know the true latent structure ($p(o\mid z)$ and $p(z'\mid z,a)$), we can compute a belief state $\boldsymbol{b}\_t = p(w_t\mid\boldsymbol{h}\_t)$ and use POMDP solution methods. However, this is computationally very difficult.
 
 **Predictive state representation (PSR):** We can marginalize out the POMDP latent state $w_t$ to derive a prediction over the next observable state, $p(\boldsymbol{o}\_{t+1}|\boldsymbol{h}\_t, \boldsymbol{a}\_t)$, providing a learning target without explicitly invoking latent state.
 
@@ -505,7 +505,7 @@ This tells us the benefit of picking action $a$ in state $s$ then switching to p
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman's Optimality Equations)</span></p>
 
-Suppose $\pi^*$ is a policy such that $V_{\pi^\ast} \ge V_\pi$ for all $s \in \mathcal{S}$ and all policies $\pi$; then it is an **optimal policy**. There can be multiple optimal policies, but their value functions must be the same, denoted $V^*$ and $Q^*$. Any finite MDP must have at least one deterministic optimal policy.
+Suppose $\pi^\ast$ is a policy such that $V_{\pi^\ast} \ge V_\pi$ for all $s \in \mathcal{S}$ and all policies $\pi$; then it is an **optimal policy**. There can be multiple optimal policies, but their value functions must be the same, denoted $V^\ast$ and $Q^\ast$. Any finite MDP must have at least one deterministic optimal policy.
 
 The optimal value functions satisfy **Bellman's optimality equations**:
 
@@ -542,7 +542,7 @@ $$
 
 The maximizing action is called the **greedy action** with respect to the value functions $Q^*$ or $V^*$.
 
-The problem of solving for $V^*$, $Q^*$ or $\pi^*$ is called **policy optimization**. Solving for $V_\pi$ or $Q_\pi$ for a given policy $\pi$ is called **policy evaluation**. For policy evaluation, we have similar Bellman equations which simply replace $\max_a\lbrace\cdot\rbrace$ with $\mathbb{E}\_{\pi(a\mid s)}[\cdot]$.
+The problem of solving for $V^\ast$, $Q^\ast$ or $\pi^\ast$ is called **policy optimization**. Solving for $V_\pi$ or $Q_\pi$ for a given policy $\pi$ is called **policy evaluation**. For policy evaluation, we have similar Bellman equations which simply replace $\max_a\lbrace\cdot\rbrace$ with $\mathbb{E}\_{\pi(a\mid s)}[\cdot]$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Grid World)</span></p>
@@ -584,7 +584,7 @@ Every iteration reduces the maximum value function error by a constant factor. $
 
 ### Real-Time Dynamic Programming (RTDP)
 
-In value iteration, we compute $V^*(s)$ and $\pi^*(s)$ for all possible states $s$ at each iteration. However, for some problems we may only be interested in the value for certain starting states (e.g., **shortest path problems**).
+In value iteration, we compute $V^\ast(s)$ and $\pi^\ast(s)$ for all possible states $s$ at each iteration. However, for some problems we may only be interested in the value for certain starting states (e.g., **shortest path problems**).
 
 **Real-time dynamic programming** (RTDP) efficiently computes an **optimal partial policy**, which only specifies what to do for the reachable states. At each step, it performs a Bellman backup for the current state, picks an action (often with some exploration), reaches a next state, and repeats. This is a form of **asynchronous value iteration**, focusing computational effort on parts of the state space more likely to be reachable from the current state.
 
@@ -595,7 +595,7 @@ In value iteration, we compute $V^*(s)$ and $\pi^*(s)$ for all possible states $
 
 **Policy iteration** (PI) is an iterative algorithm that searches in the space of deterministic policies until converging to an optimal policy. Each iteration consists of two steps: **policy evaluation** and **policy improvement**.
 
-**Policy Evaluation:** Compute the value function for the current policy $\pi$. Let $\boldsymbol{v}(s) = V_\pi(s)$, $r(s) = \sum_a \pi(a|s)R(s,a)$, and $\mathbf{T}(s'\mid s) = \sum_a \pi(a\mid s)p(s'\mid s,a)$. Bellman's equation in matrix-vector form is:
+**Policy Evaluation:** Compute the value function for the current policy $\pi$. Let $\boldsymbol{v}(s) = V_\pi(s)$, $r(s) = \sum_a \pi(a\mid s)R(s,a)$, and $\mathbf{T}(s'\mid s) = \sum_a \pi(a\mid s)p(s'\mid s,a)$. Bellman's equation in matrix-vector form is:
 
 $$
 \boldsymbol{v} = \boldsymbol{r} + \gamma \mathbf{T} \boldsymbol{v}
@@ -751,7 +751,7 @@ where $a' \sim \pi(s')$ is the action the agent will take in state $s'$. This co
 
 ### Convergence
 
-For SARSA to converge to $Q^*$, every state-action pair must be visited infinitely often (at least in the tabular case). One way to ensure this is to use a "greedy in the limit with infinite exploration" (**GLIE**) policy, such as the $\epsilon$-greedy policy with $\epsilon$ vanishing to $0$ gradually. SARSA with a GLIE policy will converge to $Q^*$ and $\pi^*$.
+For SARSA to converge to $Q^\ast$, every state-action pair must be visited infinitely often (at least in the tabular case). One way to ensure this is to use a "greedy in the limit with infinite exploration" (**GLIE**) policy, such as the $\epsilon$-greedy policy with $\epsilon$ vanishing to $0$ gradually. SARSA with a GLIE policy will converge to $Q^\ast$ and $\pi^\ast$.
 
 ### Sarsa($\lambda$)
 
@@ -793,11 +793,14 @@ This is the update rule of **Q-learning**. Since it is off-policy, the method ca
 2. **repeat**
 3. &emsp; Sample starting state $s$ of new episode
 4. &emsp; **repeat**
-5. &emsp;&emsp; Sample action $a = \begin{cases} \arg\max_b Q(s,b), & \text{with probability } 1-\epsilon \\ \text{random action}, & \text{with probability } \epsilon \end{cases}$
+5. &emsp;&emsp; Sample action 
+   
+   $$a = \begin{cases} \arg\max_b Q(s,b), & \text{with probability } 1-\epsilon \\ \text{random action}, & \text{with probability } \epsilon \end{cases}$$
+
 6. &emsp;&emsp; $(s', r) = \text{env.step}(a)$
 7. &emsp;&emsp; Compute TD error: $\delta = r + \gamma \max_{a'} Q(s', a') - Q(s,a)$
 8. &emsp;&emsp; $Q(s,a) \leftarrow Q(s,a) + \eta \delta$
-9. &emsp;&emsp; $s \leftarrow s'$
+9.  &emsp;&emsp; $s \leftarrow s'$
 10. &emsp; **until** state $s$ is terminal
 11. **until** converged
 
@@ -1103,7 +1106,7 @@ where $G_k \triangleq r_k + \gamma r_{k+1} + \cdots + \gamma^{T-k-1} r_{T-1} = \
 The **REINFORCE** algorithm uses the gradient estimate of the policy value together with SGD to fit a policy:
 
 $$
-\boldsymbol{\theta}\_{j+1} := \boldsymbol{\theta}\_j + \eta \sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}\_j}(a_k\mid s_k) \gamma^{k-1} G_k
+\boldsymbol{\theta}_{j+1} := \boldsymbol{\theta}_j + \eta \sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}_j}(a_k\mid s_k) \gamma^{k-1} G_k
 $$
 
 where $j$ is the SGD iteration number, and we draw a single trajectory at each step. The update can be interpreted as follows: we compute the sum of discounted future rewards induced by a trajectory, and if this is positive, we increase $\boldsymbol{\theta}$ to make this trajectory more likely; otherwise we decrease $\boldsymbol{\theta}$. Thus, we reinforce good behaviors and reduce the chances of generating bad ones.
@@ -1113,7 +1116,7 @@ where $j$ is the SGD iteration number, and we draw a single trajectory at each s
 3. &emsp; Sample an episode $\boldsymbol{\tau} = (s_1, a_1, r_1, s_2, \ldots, s_T)$ using $\pi_{\boldsymbol{\theta}}$
 4. &emsp; **for** $k = 1, \ldots, T$ **do**
 5. &emsp;&emsp; $G_k = \sum_{l=k}^{T} \gamma^{l-k} R_l$
-6. &emsp;&emsp; $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \eta_{\boldsymbol{\theta}} \gamma^{k-1} G_k \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k|s_k)$
+6. &emsp;&emsp; $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \eta_{\boldsymbol{\theta}} \gamma^{k-1} G_k \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k\mid s_k)$
 7. **until** converged
 
 </div>
@@ -1156,7 +1159,7 @@ $$
 \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \mathbb{E}_{\rho_{\boldsymbol{\theta}}(s) \pi_{\boldsymbol{\theta}}(a|s)}\left[(Q_{\pi_{\boldsymbol{\theta}}}(s,a) - b(s)) \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a|s)\right]
 $$
 
-Any function that satisfies $\mathbb{E}\left[\nabla_{\boldsymbol{\theta}} b(s)\right] = 0$ is a valid baseline. This follows since $\sum_a \nabla_{\boldsymbol{\theta}} \pi_{\boldsymbol{\theta}}(a|s)(Q(s,a) - b(s)) = \nabla_{\boldsymbol{\theta}} \sum_a \pi_{\boldsymbol{\theta}}(a|s) Q(s,a) - 0$.
+Any function that satisfies $\mathbb{E}\left[\nabla_{\boldsymbol{\theta}} b(s)\right] = 0$ is a valid baseline. This follows since $\sum_a \nabla_{\boldsymbol{\theta}} \pi_{\boldsymbol{\theta}}(a\mid s)(Q(s,a) - b(s)) = \nabla_{\boldsymbol{\theta}} \sum_a \pi_{\boldsymbol{\theta}}(a\mid s) Q(s,a) - 0$.
 
 A common choice is $b(s) = V(s)$, which is valid if we use an old (frozen) version of the policy that is independent of $\boldsymbol{\theta}$. Since $Q(s,a) - V(s) = A(s,a)$ is the advantage function, we get:
 
@@ -1184,7 +1187,7 @@ $$
 5. &emsp;&emsp; $G_k = \sum_{l=k}^{T} \gamma^{l-k} R_l$
 6. &emsp;&emsp; $\delta_k = G_k - V_{\boldsymbol{w}}(s_k)$
 7. &emsp;&emsp; $\boldsymbol{w} \leftarrow \boldsymbol{w} - \eta_w \delta_k \nabla_{\boldsymbol{w}} V_{\boldsymbol{w}}(s_k)$
-8. &emsp;&emsp; $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \eta_{\boldsymbol{\theta}} \gamma^{k-1} \delta_k \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k|s_k)$
+8. &emsp;&emsp; $\boldsymbol{\theta} \leftarrow \boldsymbol{\theta} + \eta_{\boldsymbol{\theta}} \gamma^{k-1} \delta_k \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k\mid s_k)$
 9. **until** converged
 
 </div>
@@ -1258,7 +1261,7 @@ Here $\lambda \in [0,1]$ controls the bias-variance tradeoff: larger values decr
 
 </div>
 
-The gradient estimator $\nabla J(\boldsymbol{\theta}) = \mathbb{E}\left[\sum_{t=0}^{\infty} \Psi_t \nabla \log \pi_{\boldsymbol{\theta}}(a_t|s_t)\right]$ admits several choices for $\Psi_t$:
+The gradient estimator $\nabla J(\boldsymbol{\theta}) = \mathbb{E}\left[\sum_{t=0}^{\infty} \Psi_t \nabla \log \pi_{\boldsymbol{\theta}}(a_t\mid s_t)\right]$ admits several choices for $\Psi_t$:
 
 | $\Psi_t$ | Description |
 | --- | --- |
@@ -1281,7 +1284,7 @@ An alternative is to alternate between updating the policy and the value functio
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Natural Gradient Descent)</span></p>
 
-**Natural gradient descent** (NGD) is a second-order method for optimizing the parameters of probability distributions such as policies $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}\mid \boldsymbol{s})$. Standard SGD uses a **proximal update**: $\boldsymbol{\theta}\_{k+1} = \arg\min_{\boldsymbol{\theta}} \hat{\mathcal{L}}\_k(\boldsymbol{\theta})$ s.t. $\|\boldsymbol{\theta} - \boldsymbol{\theta}_k\|_2^2 \le \epsilon$. However, Euclidean distance in parameter space does not make sense for probabilistic models (changes in $\mu$ matter more when $\sigma$ is small).
+**Natural gradient descent** (NGD) is a second-order method for optimizing the parameters of probability distributions such as policies $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}\mid \boldsymbol{s})$. Standard SGD uses a **proximal update**: $\boldsymbol{\theta}\_{k+1} = \arg\min_{\boldsymbol{\theta}} \hat{\mathcal{L}}\_k(\boldsymbol{\theta})$ s.t. $\lVert\boldsymbol{\theta} - \boldsymbol{\theta}_k\rVert_2^2 \le \epsilon$. However, Euclidean distance in parameter space does not make sense for probabilistic models (changes in $\mu$ matter more when $\sigma$ is small).
 
 The key idea of NGD is to measure distance between distributions using the **KL divergence**, approximated by the **Fisher information matrix** (FIM):
 
@@ -1289,15 +1292,15 @@ $$
 D_{KL}(p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x}) \| p_{\boldsymbol{\theta}+\boldsymbol{\delta}}(\boldsymbol{y}|\boldsymbol{x})) \approx \frac{1}{2} \boldsymbol{\delta}^\top \mathbf{F}_{\boldsymbol{x}} \boldsymbol{\delta}
 $$
 
-where $\mathbf{F}_{\boldsymbol{x}}(\boldsymbol{\theta}) = \mathbb{E}_{p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x})}\left[(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x}))(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x}))^\top\right]$.
+where $\mathbf{F}\_{\boldsymbol{x}}(\boldsymbol{\theta}) = \mathbb{E}\_{p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x})}\left[(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid |\boldsymbol{x}))(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid\boldsymbol{x}))^\top\right]$.
 
-Replacing the Euclidean constraint with $\boldsymbol{\delta}^\top \mathbf{F}_k \boldsymbol{\delta} \le \epsilon$ and solving gives the **natural gradient** update:
+Replacing the Euclidean constraint with $\boldsymbol{\delta}^\top \mathbf{F}\_k \boldsymbol{\delta} \le \epsilon$ and solving gives the **natural gradient** update:
 
 $$
 \boldsymbol{\delta} = -\eta_k \mathbf{F}_k^{-1} \boldsymbol{g}_k
 $$
 
-This is equivalent to a preconditioned gradient update using the inverse FIM. The adaptive learning rate is $\eta_k = \sqrt{\frac{\epsilon}{\boldsymbol{g}_k^\top \mathbf{F}_k^{-1} \boldsymbol{g}_k}}$.
+This is equivalent to a preconditioned gradient update using the inverse FIM. The adaptive learning rate is $\eta_k = \sqrt{\frac{\epsilon}{\boldsymbol{g}\_k^\top \mathbf{F}\_k^{-1} \boldsymbol{g}\_k}}$.
 
 The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsymbol{\theta}) \approx \frac{1}{\|\mathcal{D}\|} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in \mathcal{D}} \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta}) \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta})^\top$.
 
@@ -1305,9 +1308,9 @@ The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsym
 
 #### Natural Actor Critic
 
-To apply NGD to RL, define $g_{kt} = \nabla_{\boldsymbol{\theta}\_k} A_t \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t\mid \boldsymbol{s}_t)$ and compute $\boldsymbol{g}_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt}$, $\mathbf{F}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt} g_{kt}^\top$, then $\boldsymbol{\delta}\_{k+1} = -\eta_k \mathbf{F}_k^{-1} \boldsymbol{g}_k$. This is called **natural policy gradient**.
+To apply NGD to RL, define $g_{kt} = \nabla_{\boldsymbol{\theta}\_k} A_t \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t\mid \boldsymbol{s}_t)$ and compute $\boldsymbol{g}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt}$, $\mathbf{F}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt} g_{kt}^\top$, then $\boldsymbol{\delta}\_{k+1} = -\eta_k \mathbf{F}\_k^{-1} \boldsymbol{g}\_k$. This is called **natural policy gradient**.
 
-We can compute $\mathbf{F}_k^{-1} \boldsymbol{g}_k$ without having to invert $\mathbf{F}_k$ by using the conjugate gradient method (**Hessian free optimization**). The **KFAC** method approximates the FIM of a DNN as a block diagonal matrix, where each block is a Kronecker product of two small matrices.
+We can compute $\mathbf{F}\_k^{-1} \boldsymbol{g}\_k$ without having to invert $\mathbf{F}\_k$ by using the conjugate gradient method (**Hessian free optimization**). The **KFAC** method approximates the FIM of a DNN as a block diagonal matrix, where each block is a Kronecker product of two small matrices.
 
 ### Architectural Issues
 
@@ -1372,9 +1375,9 @@ where $Q_{\overline{\boldsymbol{w}}}$ is the target critic network. The **D4PG**
 
 2. **Clipped double Q learning:** Target values are defined using the minimum of two target critic networks to avoid over-estimation bias:
 
-$$
-y(r, \boldsymbol{s}'; \overline{\boldsymbol{w}}_{1:2}, \overline{\boldsymbol{\theta}}) = r + \gamma \min_{i=1,2} Q_{\overline{\boldsymbol{w}}_i}(\boldsymbol{s}', \pi_{\overline{\boldsymbol{\theta}}}(\boldsymbol{s}'))
-$$
+   $$
+   y(r, \boldsymbol{s}'; \overline{\boldsymbol{w}}_{1:2}, \overline{\boldsymbol{\theta}}) = r + \gamma \min_{i=1,2} Q_{\overline{\boldsymbol{w}}_i}(\boldsymbol{s}', \pi_{\overline{\boldsymbol{\theta}}}(\boldsymbol{s}'))
+   $$
 
 3. **Delayed policy updates:** The policy is only updated after the value function has stabilized.
 
@@ -1405,7 +1408,7 @@ $$
 J(\pi) - J(\pi_k) \ge \frac{1}{1-\gamma} \underbrace{\mathbb{E}_{p_{\pi_k}^\gamma(s) \pi_k(a|s)}\left[\frac{\pi(a|s)}{\pi_k(a|s)} A^{\pi_k}(s,a)\right]}_{L(\pi, \pi_k)} - \frac{2\gamma C^{\pi, \pi_k}}{(1-\gamma)^2} \mathbb{E}_{p_{\pi_k}^\gamma(s)}\left[\text{TV}(\pi(\cdot|s), \pi_k(\cdot|s))\right]
 $$
 
-where $C^{\pi, \pi_k} = \max_s |\mathbb{E}_{\pi(a|s)}[A^{\pi_k}(s,a)]|$, $L(\pi, \pi_k)$ is a surrogate objective, and the second term is a penalty based on the total variation distance $\text{TV}(p,q) = \frac{1}{2}\|\boldsymbol{p} - \boldsymbol{q}\|_1$.
+where $C^{\pi, \pi_k} = \max_s \|\mathbb{E}_{\pi(a\mid s)}[A^{\pi_k}(s,a)]\|$, $L(\pi, \pi_k)$ is a surrogate objective, and the second term is a penalty based on the total variation distance $\text{TV}(p,q) = \frac{1}{2}\|\boldsymbol{p} - \boldsymbol{q}\|_1$.
 
 If we can optimize this lower bound (or a stochastic approximation), we can guarantee monotonic policy improvement (in expectation) at each step.
 
@@ -1436,7 +1439,7 @@ $$
 \mathbb{E}_{p_{\pi_k}^\gamma(s)}[D_{KL}(\pi_k \| \pi)(s)] \approx \frac{1}{2}(\boldsymbol{\theta} - \boldsymbol{\theta}_k)^\top \mathbf{F}_k (\boldsymbol{\theta} - \boldsymbol{\theta}_k)
 $$
 
-Then the update is $\boldsymbol{\theta}_{k+1} = \boldsymbol{\theta}_k + \eta_k \boldsymbol{v}_k$ where $\boldsymbol{v}_k = \mathbf{F}_k^{-1} \boldsymbol{g}_k$ is the natural gradient, and $\eta_k = \sqrt{\frac{2\delta}{\boldsymbol{v}_k^\top \mathbf{F}_k \boldsymbol{v}_k}}$. We use a backtracking line search to ensure the trust region is satisfied.
+Then the update is $\boldsymbol{\theta}\_{k+1} = \boldsymbol{\theta}\_k + \eta_k \boldsymbol{v}_k$ where $\boldsymbol{v}\_k = \mathbf{F}\_k^{-1} \boldsymbol{g}\_k$ is the natural gradient, and $\eta_k = \sqrt{\frac{2\delta}{\boldsymbol{v}\_k^\top \mathbf{F}\_k \boldsymbol{v}\_k}}$. We use a backtracking line search to ensure the trust region is satisfied.
 
 </div>
 
@@ -1445,23 +1448,19 @@ Then the update is $\boldsymbol{\theta}_{k+1} = \boldsymbol{\theta}_k + \eta_k \
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(PPO --- Proximal Policy Optimization)</span></p>
 
-**PPO** is a simplification of TRPO. Let $\rho_k(s,a) = \frac{\pi(a|s)}{\pi_k(a|s)}$ be the likelihood ratio and $\tilde{\rho}_k(s,a) = \text{clip}(\rho_k(s,a), 1-\epsilon, 1+\epsilon)$. The policy update is:
+**PPO** is a simplification of TRPO. Let $\rho_k(s,a) = \frac{\pi(a\mid s)}{\pi_k(a\mid s)}$ be the likelihood ratio and $\tilde{\rho}\_k(s,a) = \text{clip}(\rho_k(s,a), 1-\epsilon, 1+\epsilon)$. The policy update is:
 
-$$
-\pi_{k+1} = \arg\max_\pi \mathbb{E}_{(s,a) \sim p_{\pi_k}^\gamma}\left[\min\left(\rho_k(s,a) A^{\pi_k}(s,a), \; \tilde{\rho}_k(s,a) A^{\pi_k}(s,a)\right)\right]
-$$
+$$\pi_{k+1} = \arg\max_\pi \mathbb{E}_{(s,a) \sim p_{\pi_k}^\gamma}\left[\min\left(\rho_k(s,a) A^{\pi_k}(s,a), \; \tilde{\rho}_k(s,a) A^{\pi_k}(s,a)\right)\right]$$
 
 **Simplified form of the clipping term:**
 
-$$
-L(s, a, \theta_k, \theta) = \min(\rho A, \; g(\epsilon, A))
-$$
+$$L(s, a, \theta_k, \theta) = \min(\rho A, \; g(\epsilon, A))$$
 
 where $g(\epsilon, A) = \begin{cases} (1+\epsilon)A & \text{if } A \ge 0 \\ (1-\epsilon)A & \text{if } A < 0 \end{cases}$
 
 If $A > 0$ (action better than expected), we want to increase $\rho$, but $\text{clip}(\rho)A$ restricts the increase to at most $(1+\epsilon)A$. If $A < 0$ (action worse than expected), we want to decrease $\rho$, but the clip restricts the decrease to at most $(1-\epsilon)A$. This prevents the new policy from straying too far from the old one.
 
-PPO pseudocode with GAE is essentially identical to the AC code, except the policy loss uses $\min(\rho_t A_t, \tilde{\rho}_t A_t)$ instead of $A_t \log \pi_\phi(a_t|s_t)$, and we perform multiple policy updates per rollout for increased sample efficiency.
+PPO pseudocode with GAE is essentially identical to the AC code, except the policy loss uses $\min(\rho_t A_t, \tilde{\rho}\_t A_t)$ instead of $A_t \log \pi_\phi(a_t|s_t)$, and we perform multiple policy updates per rollout for increased sample efficiency.
 
 </div>
 
@@ -1479,7 +1478,7 @@ PPO relies on computing the likelihood of a candidate action, which is difficult
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(VMPO)</span></p>
 
-**VMPO** is an on-policy extension of the off-policy MPO algorithm. It leverages the fact that if $\mathbb{E}_{p_{\pi_k}^\gamma(s)}[D_{KL}(\pi \| \pi_k)(s)] \le \delta$, then $\pi$ also satisfies the TV constraint (note the reversed KL compared to TRPO, which encourages mode-covering and improved robustness).
+**VMPO** is an on-policy extension of the off-policy MPO algorithm. It leverages the fact that if $\mathbb{E}\_{p_{\pi_k}^\gamma(s)}[D_{KL}(\pi \| \pi_k)(s)] \le \delta$, then $\pi$ also satisfies the TV constraint (note the reversed KL compared to TRPO, which encourages mode-covering and improved robustness).
 
 VMPO adopts an EM-type approach:
 
@@ -1499,9 +1498,9 @@ $$
 
 ## Off-Policy Methods
 
-In many cases, it is useful to train a policy using data collected from a distinct **behavior policy** $\pi_b(a|s)$ that is not the same as the **target policy** $\pi(a|s)$ being learned. This could be data from earlier trials, parallel workers, a **replay buffer**, or **demonstration data** from human experts. This is called **off-policy RL**, and can be much more sample efficient since it can use data from multiple sources.
+In many cases, it is useful to train a policy using data collected from a distinct **behavior policy** $\pi_b(a\mid s)$ that is not the same as the **target policy** $\pi(a\mid s)$ being learned. This could be data from earlier trials, parallel workers, a **replay buffer**, or **demonstration data** from human experts. This is called **off-policy RL**, and can be much more sample efficient since it can use data from multiple sources.
 
-The basic difficulty is that the target policy may want to try an action in a state that has not been experienced before, so there is no way to predict the outcome. We tackle this by assuming the target policy is not too different from the behavior policy (so that $\pi(a|s)/\pi_b(a|s)$ is bounded), using methods based on **importance sampling**.
+The basic difficulty is that the target policy may want to try an action in a state that has not been experienced before, so there is no way to predict the outcome. We tackle this by assuming the target policy is not too different from the behavior policy (so that $\pi(a\mid s)/\pi_b(a\mid s)$ is bounded), using methods based on **importance sampling**.
 
 ### Policy Evaluation Using Importance Sampling
 
@@ -1511,14 +1510,14 @@ The basic difficulty is that the target policy may want to try an action in a st
 Given a dataset $\mathcal{D} = \lbrace \boldsymbol{\tau}^{(i)} \rbrace_{1 \le i \le n}$ of trajectories sampled according to a behavior policy $\pi_b$, we want to evaluate the performance of a target policy $\pi$; this is called **off-policy policy evaluation** (OPE). Using **importance sampling** (IS) to correct for the distributional mismatch:
 
 $$
-\hat{J}_{\text{IS}}(\pi) \triangleq \frac{1}{n} \sum_{i=1}^{n} \frac{p(\boldsymbol{\tau}^{(i)}|\pi)}{p(\boldsymbol{\tau}^{(i)}|\pi_b)} \sum_{t=0}^{T-1} \gamma^t r_t^{(i)}
+\hat{J}_{\text{IS}}(\pi) \triangleq \frac{1}{n} \sum_{i=1}^{n} \frac{p(\boldsymbol{\tau}^{(i)}\mid\pi)}{p(\boldsymbol{\tau}^{(i)}\mid\pi_b)} \sum_{t=0}^{T-1} \gamma^t r_t^{(i)}
 $$
 
-The basic difficulty is that the target policy may want to try an action in a state that has not been experienced before. We assume the target policy is not too different from the behavior policy so that the ratio $\pi(a|s)/\pi_b(a|s)$ is bounded.
+The basic difficulty is that the target policy may want to try an action in a state that has not been experienced before. We assume the target policy is not too different from the behavior policy so that the ratio $\pi(a\mid s)/\pi_b(a\mid s)$ is bounded.
 
 </div>
 
-The IS estimate is **unbiased**, provided that $p(\boldsymbol{\tau}|\pi_b) > 0$ whenever $p(\boldsymbol{\tau}|\pi) > 0$. The **importance ratio** simplifies because the transition dynamics and reward model cancel:
+The IS estimate is **unbiased**, provided that $p(\boldsymbol{\tau}\mid\pi_b) > 0$ whenever $p(\boldsymbol{\tau}\mid\pi) > 0$. The **importance ratio** simplifies because the transition dynamics and reward model cancel:
 
 $$
 \frac{p(\boldsymbol{\tau}|\pi)}{p(\boldsymbol{\tau}|\pi_b)} = \prod_{t=0}^{T-1} \frac{\pi(a_t|s_t)}{\pi_b(a_t|s_t)}
@@ -1588,7 +1587,7 @@ $$
 \mathcal{L}(\boldsymbol{\phi}) = \mathbb{E}_{t \sim \mathcal{D}}\left[\lambda_{TD}(V_\phi(s_t) - v_t)^2 - \lambda_{PG} \rho_t A_t \log \pi_\phi(a_t|s_t) - \lambda_{ent} \mathbb{H}(\pi_\phi(\cdot|s_t))\right]
 $$
 
-The only difference from standard A2C is that we also store $\pi_b(a_t|s_t)$ in the dataset to compute $\rho_t$. IMPALA was able to train a single agent (using a shared CNN and LSTM) to play all 57 Atari games at a high level, outperforming the A3C method thanks to its off-policy corrections.
+The only difference from standard A2C is that we also store $\pi_b(a_t\mid s_t)$ in the dataset to compute $\rho_t$. IMPALA was able to train a single agent (using a shared CNN and LSTM) to play all 57 Atari games at a high level, outperforming the A3C method thanks to its off-policy corrections.
 
 </div>
 
@@ -1616,7 +1615,7 @@ $$
 A_\text{trace}^{\pi_k}(s_t, a_t) = \delta_t + \sum_{j=0}^{n-1} \gamma^j \left(\prod_{m=1}^{j} c_{t+m}\right) \delta_{t+j}
 $$
 
-where $c_t = \min\left(\bar{c}, \frac{\pi_k(a_t|s_t)}{\pi_{k-i}(a_t|s_t)}\right)$ is the truncated importance sampling ratio.
+where $c_t = \min\left(\bar{c}, \frac{\pi_k(a_t\mid s_t)}{\pi_{k-i}(a_t\mid s_t)}\right)$ is the truncated importance sampling ratio.
 
 We can derive **Generalized PPO** (an off-policy version of PPO):
 
@@ -1624,7 +1623,7 @@ $$
 \pi_{k+1} = \arg\max_\pi \mathbb{E}_{t \sim \nu}\left[\mathbb{E}_{(s,a) \sim p_{\pi_{k-i}}^\gamma}\left[\min(\rho_{k-i}(s,a) A^{\pi_k}(s,a), \; \tilde{\rho}_{k-i}(s,a) A^{\pi_k}(s,a))\right]\right]
 $$
 
-where $\rho_{k-i}(s,a) = \frac{\pi(a|s)}{\pi_{k-i}(a|s)}$ and $\tilde{\rho}_{k-i}$ is its clipped version.
+where $\rho_{k-i}(s,a) = \frac{\pi(a\mid s)}{\pi_{k-i}(a\mid s)}$ and $\tilde{\rho}\_{k-i}$ is its clipped version.
 
 ## Gradient-Free Policy Optimization
 
@@ -1639,7 +1638,7 @@ We can consider other kinds of methods for policy learning based on **blackbox o
 
 **Control as inference** (or **RL as inference**) is an approach to policy optimization that reduces it to probabilistic inference. The primary advantage is that it enables policy learning using off-policy data while avoiding the need for (potentially high-variance) importance sampling corrections. It also enables us to use the large toolkit of methods for probabilistic modeling and inference.
 
-The core idea is based on a probabilistic model that augments an MDP with **optimality variables** $\mathcal{O}_t$, indicating whether the action at time $t$ is optimal or not:
+The core idea is based on a probabilistic model that augments an MDP with **optimality variables** $\mathcal{O}\_t$, indicating whether the action at time $t$ is optimal or not:
 
 $$
 p(\mathcal{O}_t = 1 | s_t, a_t) \propto \exp(\eta^{-1} G(s_t, a_t))
@@ -1651,10 +1650,10 @@ where $\eta > 0$ is a temperature parameter and $G(s,a)$ is some quality functio
 
 ### Deterministic Case (Planning/Control as Inference)
 
-In the deterministic case, where $p(s_{t+1}|s_t, a_t)$ is either 1 or 0, rather than learning a policy $\pi$ that maps states to actions, we just need to learn a plan (a specific sequence of actions $\boldsymbol{a}_{1:T}$). We want to maximize:
+In the deterministic case, where $p(s_{t+1}|s_t, a_t)$ is either 1 or 0, rather than learning a policy $\pi$ that maps states to actions, we just need to learn a plan (a specific sequence of actions $\boldsymbol{a}\_{1:T}$). We want to maximize:
 
 $$
-p(\boldsymbol{\tau}|\mathcal{O}=1, \boldsymbol{a}_{1:T}) \propto \left[\prod_{t=1}^{T-1} p(s_{t+1}|s_t, a_t)\right]\left[\exp\left(\sum_{t=1}^{T} R(s_t, a_t)\right)\right]
+p(\boldsymbol{\tau}\mid\mathcal{O}=1, \boldsymbol{a}\_{1:T}) \propto \left[\prod_{t=1}^{T-1} p(s_{t+1}|s_t, a_t)\right]\left[\exp\left(\sum_{t=1}^{T} R(s_t, a_t)\right)\right]
 $$
 
 The MAP sequence of actions is the optimal **open loop plan**. Computing this trajectory is known as the **control as inference** problem and can be solved using model predictive control methods.
@@ -1664,9 +1663,9 @@ The MAP sequence of actions is the optimal **open loop plan**. Computing this tr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Policy Learning as Variational Inference)</span></p>
 
-In the stochastic case, we want to learn a policy $\pi$ that generates a distribution over optimal trajectories. We define the objective as $\log p(\mathcal{O} = 1|\pi) = \log \int p_\pi(\boldsymbol{\tau}) p(\mathcal{O}=1|\boldsymbol{\tau}) d\boldsymbol{\tau}$.
+In the stochastic case, we want to learn a policy $\pi$ that generates a distribution over optimal trajectories. We define the objective as $\log p(\mathcal{O} = 1\mid\pi) = \log \int p_\pi(\boldsymbol{\tau}) p(\mathcal{O}=1\mid\boldsymbol{\tau}) d\boldsymbol{\tau}$.
 
-We introduce a variational distribution $q(\boldsymbol{\tau}) = p(s_1) \prod_t p(s_{t+1}|s_t, a_t) \pi_q(a_t|s_t)$ (note that we only introduce the variational distribution for the actions $\pi_q$, not for the dynamics, to avoid **optimism bias**).
+We introduce a variational distribution $q(\boldsymbol{\tau}) = p(s_1) \prod_t p(s_{t+1}\mid s_t, a_t) \pi_q(a_t\mid s_t)$ (note that we only introduce the variational distribution for the actions $\pi_q$, not for the dynamics, to avoid **optimism bias**).
 
 This gives us the **evidence lower bound** (ELBO):
 
@@ -1718,7 +1717,7 @@ $$
 \eta J(\pi_p, \pi_q) = \sum_{t=1}^{T} \mathbb{E}_q\left[R(s_t, a_t) - \eta H(\pi_q(\cdot|s_t))\right]
 $$
 
-where $-H(q) = D_{KL}(q \| \text{unif})$ is the negative entropy function. This is called the **maximum entropy RL** objective. It differs from the standard RL objective by the addition of the entropy regularizer on the policy, which provides a lower bound on the sum of expected rewards.
+where $-H(q) = D_{KL}(q \|\| \text{unif})$ is the negative entropy function. This is called the **maximum entropy RL** objective. It differs from the standard RL objective by the addition of the entropy regularizer on the policy, which provides a lower bound on the sum of expected rewards.
 
 </div>
 
@@ -1731,23 +1730,23 @@ where $-H(q) = D_{KL}(q \| \text{unif})$ is the negative entropy function. This 
 
 **E step:** Compute $q^k(a|s) = \frac{1}{Z(s)} \pi_{\theta_p}^{k-1}(a|s) \exp(\eta^{-1} G(s,a))$, where $Z(s)$ is approximated with Monte Carlo: $Z(s) \approx \frac{1}{M} \sum_{j=1}^{M} \exp(\eta^{-1} G(s, a_j))$ with $a_j \sim \pi_{\theta_p}^{k-1}(\cdot|s)$. The temperature $\eta$ is solved for by minimizing the dual of the constrained problem.
 
-**M step:** Augment the weighted MLE objective with a prior centered at the previous parameters (a Gaussian with covariance $\lambda \mathbf{F}_k$, where $\mathbf{F}_k$ is the Fisher information matrix), giving:
+**M step:** Augment the weighted MLE objective with a prior centered at the previous parameters (a Gaussian with covariance $\lambda \mathbf{F}\_k$, where $\mathbf{F}\_k$ is the Fisher information matrix), giving:
 
 $$
 \max_{\theta_p} E_{d_q(s)}\left[E_{q(a|s)} \log \pi(a|s, \theta_p) - \lambda D_{KL}(\pi(a|s, \theta_k) \| \pi(a|s, \theta_p))\right]
 $$
 
-This can also be rewritten as a constrained optimization problem with a KL trust region: $E_{d_q(s)}[D_{KL}(\pi(a|s, \theta_k) \| \pi(a|s, \theta_p))] \le \epsilon_m$.
+This can also be rewritten as a constrained optimization problem with a KL trust region: $E_{d_q(s)}[D_{KL}(\pi(a\mid s, \theta_k) \|\| \pi(a\mid s, \theta_p))] \le \epsilon_m$.
 
 </div>
 
 ### SMC-PO
 
-**SMC-PO** is a model-based version of MPO which uses Sequential Monte Carlo (SMC) to perform approximate inference in the E step. It samples from a distribution over optimal future trajectories starting from the current state $s_t$, using the current policy $\pi_{\theta_p}$ and dynamics model $\mathcal{T}(s'|s,a)$, to derive a non-parametric distribution over optimal actions.
+**SMC-PO** is a model-based version of MPO which uses Sequential Monte Carlo (SMC) to perform approximate inference in the E step. It samples from a distribution over optimal future trajectories starting from the current state $s_t$, using the current policy $\pi_{\theta_p}$ and dynamics model $\mathcal{T}(s'\mid s,a)$, to derive a non-parametric distribution over optimal actions.
 
 ### AWR and AWAC
 
-The **Advantage Weighted Regression** (AWR) and **Advantage Weighted Actor Critic** (AWAC) are both EM control methods where $G(s,a) = A(s,a)$ (the advantage function). AWR estimates $V(s)$ using TD($\lambda$) and the value for the average of all previous policies, $\tilde{\pi}_{p^k} = \frac{1}{k} \sum_{j=0}^{k-1} \pi_{\theta_p}^j$. AWAC instead uses $G(s,a) = Q(s,a)$, estimated by TD(0).
+The **Advantage Weighted Regression** (AWR) and **Advantage Weighted Actor Critic** (AWAC) are both EM control methods where $G(s,a) = A(s,a)$ (the advantage function). AWR estimates $V(s)$ using TD($\lambda$) and the value for the average of all previous policies, $\tilde{\pi}\_{p^k} = \frac{1}{k} \sum_{j=0}^{k-1} \pi_{\theta_p}^j$. AWAC instead uses $G(s,a) = Q(s,a)$, estimated by TD(0).
 
 ### Soft Actor Critic (SAC)
 
@@ -1789,7 +1788,7 @@ $$
 \pi^*(a|s) = \frac{\exp\left(\frac{Q^*(s,a)}{\alpha}\right)}{\sum_{a'} \exp\left(\frac{Q^*(s,a')}{\alpha}\right)}
 $$
 
-The optimal soft value function is then $V^*(s) = \alpha \log \sum_a \exp\left(\frac{Q^*(s,a)}{\alpha}\right)$.
+The optimal soft value function is then $V^\ast(s) = \alpha \log \sum_a \exp\left(\frac{Q^\ast(s,a)}{\alpha}\right)$.
 
 </div>
 
@@ -1801,7 +1800,7 @@ $$
 J_Q(\boldsymbol{w}) = \mathbb{E}_{(\boldsymbol{s}_t, \boldsymbol{a}_t, r_{t+1}, \boldsymbol{s}_{t+1}) \sim \mathcal{D}}\left[\frac{1}{2}(Q_{\boldsymbol{w}}(\boldsymbol{s}_t, \boldsymbol{a}_t) - y(r_{t+1}, \boldsymbol{s}_{t+1}))^2\right]
 $$
 
-where $y(r_{t+1}, \boldsymbol{s}_{t+1}) = r_{t+1} + \gamma V_{\overline{\boldsymbol{w}}}^\pi(\boldsymbol{s}_{t+1})$ is the frozen target value, with $V_{\overline{\boldsymbol{w}}}(\boldsymbol{s}_t) = \mathbb{E}_{\pi(\boldsymbol{a}_t|\boldsymbol{s}_t)}[Q_{\overline{\boldsymbol{w}}}(\boldsymbol{s}_t, \boldsymbol{a}_t) - \alpha \log \pi(\boldsymbol{a}_t|\boldsymbol{s}_t)]$.
+where $y(r_{t+1}, \boldsymbol{s}_{t+1}) = r_{t+1} + \gamma V_{\overline{\boldsymbol{w}}}^\pi(\boldsymbol{s}_{t+1})$ is the frozen target value, with $V_{\overline{\boldsymbol{w}}}(\boldsymbol{s}\_t) = \mathbb{E}_{\pi(\boldsymbol{a}\_t|\boldsymbol{s}\_t)}[Q_{\overline{\boldsymbol{w}}}(\boldsymbol{s}\_t, \boldsymbol{a}\_t) - \alpha \log \pi(\boldsymbol{a}\_t|\boldsymbol{s}\_t)]$.
 
 To avoid overestimation bias, SAC fits two soft Q functions (inspired by clipped double Q learning in TD3) with targets:
 
@@ -1825,7 +1824,7 @@ $$
 J_\pi(\boldsymbol{\theta}) = \mathbb{E}_{\boldsymbol{s}_t \sim \mathcal{D}}\left[\mathbb{E}_{\boldsymbol{a}_t \sim \pi_{\boldsymbol{\theta}}}\left[\alpha \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t|\boldsymbol{s}_t) - Q_{\boldsymbol{w}}(\boldsymbol{s}_t, \boldsymbol{a}_t)\right]\right]
 $$
 
-We use the **reparameterization trick** (writing $\boldsymbol{a}_t = \boldsymbol{\mu}(\boldsymbol{s}_t) + \sigma^2 \boldsymbol{\epsilon}_t$ with $\boldsymbol{\epsilon}_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$) instead of the REINFORCE estimator, since it has much lower variance. For discrete actions, we use the gumbel-softmax reparameterization or **SAC-Discrete**.
+We use the **reparameterization trick** (writing $\boldsymbol{a}\_t = \boldsymbol{\mu}(\boldsymbol{s}\_t) + \sigma^2 \boldsymbol{\epsilon}\_t$ with $\boldsymbol{\epsilon}\_t \sim \mathcal{N}(\mathbf{0}, \mathbf{I})$) instead of the REINFORCE estimator, since it has much lower variance. For discrete actions, we use the gumbel-softmax reparameterization or **SAC-Discrete**.
 
 #### Adjusting the Temperature
 
@@ -1842,7 +1841,7 @@ where $\overline{H}$ is the target entropy (a hyper-parameter). This is approxim
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Active Inference)</span></p>
 
-**Active inference** is closely related to control as inference. It was developed in the neuroscience community and is based on the **free energy principle** (FEP). The FEP is equivalent to using variational inference to perform state estimation (perception) and parameter estimation (learning) in a latent variable model $p(\boldsymbol{z}, \boldsymbol{o}|\boldsymbol{\theta})$ with hidden states $\boldsymbol{z}$, observations $\boldsymbol{o}$, and parameters $\boldsymbol{\theta}$.
+**Active inference** is closely related to control as inference. It was developed in the neuroscience community and is based on the **free energy principle** (FEP). The FEP is equivalent to using variational inference to perform state estimation (perception) and parameter estimation (learning) in a latent variable model $p(\boldsymbol{z}, \boldsymbol{o}\mid\boldsymbol{\theta})$ with hidden states $\boldsymbol{z}$, observations $\boldsymbol{o}$, and parameters $\boldsymbol{\theta}$.
 
 The **variational free energy** (VFE) is:
 
@@ -1863,7 +1862,7 @@ The EFE decomposes into two terms:
 * The **intrinsic value** (or **epistemic drive**): minimizing this encourages the agent to choose actions that maximize the mutual information between observations $\boldsymbol{o}$ and hidden states $\boldsymbol{z}$, reducing uncertainty (**epistemic foraging**).
 * The **extrinsic value** (or **exploitation term**): maximizing this encourages the agent to choose actions that result in observations matching its prior. This prior can be related to a reward function by defining $p(\boldsymbol{o}) \propto e^{R(\boldsymbol{o})}$, encouraging goal-directed behavior.
 
-The agent picks actions to reduce its uncertainty about hidden states (improving its predictive model $p_{\boldsymbol{\theta}}$), which in turn helps minimize the VFE of future observations. The agent acts so it becomes less surprised by what it sees --- achieving **homeostasis** with its environment. Training a policy network $\pi(\boldsymbol{a}|\boldsymbol{h}) = \arg\min_{\boldsymbol{a}} \mathcal{G}(\boldsymbol{a}|\boldsymbol{h})$ to amortize the cost of solving for the optimal action at each step is called **deep active inference**.
+The agent picks actions to reduce its uncertainty about hidden states (improving its predictive model $p_{\boldsymbol{\theta}}$), which in turn helps minimize the VFE of future observations. The agent acts so it becomes less surprised by what it sees --- achieving **homeostasis** with its environment. Training a policy network $\pi(\boldsymbol{a}\mid\boldsymbol{h}) = \arg\min_{\boldsymbol{a}} \mathcal{G}(\boldsymbol{a}\mid\boldsymbol{h})$ to amortize the cost of solving for the optimal action at each step is called **deep active inference**.
 
 </div>
 
@@ -1871,7 +1870,7 @@ The agent picks actions to reduce its uncertainty about hidden states (improving
 
 ## Introduction
 
-Model-free approaches to RL typically need a lot of interactions with the environment to achieve good performance. A promising approach to greater sample efficiency is **model-based RL** (MBRL). In the simplest approach, we first learn the state transition or dynamics model $p_S(s'|s,a)$ --- also called a **world model** --- and the reward function $R(s,a)$, using some offline trajectory data, and then use these models to compute a policy (e.g., using dynamic programming or model-free policy learning on simulated data).
+Model-free approaches to RL typically need a lot of interactions with the environment to achieve good performance. A promising approach to greater sample efficiency is **model-based RL** (MBRL). In the simplest approach, we first learn the state transition or dynamics model $p_S(s'\mid s,a)$ --- also called a **world model** --- and the reward function $R(s,a)$, using some offline trajectory data, and then use these models to compute a policy (e.g., using dynamic programming or model-free policy learning on simulated data).
 
 The two-stage approach (learn model, then plan) can suffer from the usual problems of offline RL: the policy may query the model at states for which no data has been collected, so predictions can be unreliable. To get better results, we have to interleave the model learning and policy learning.
 
@@ -1902,7 +1901,7 @@ In **receding horizon control** (RHC), we plan from the current state $s_t$ to a
 
 #### Forward Search
 
-In **forward search**, we examine all possible transitions up to depth $d$ by starting from the current state and considering all possible actions, then all possible next states, etc. The resulting **search tree** has the reward associated with each edge. At the leaves, we compute the remaining reward-to-go using a value function $V(s)$. This takes $O((|\mathcal{S}| \times |\mathcal{A}|)^d)$ time.
+In **forward search**, we examine all possible transitions up to depth $d$ by starting from the current state and considering all possible actions, then all possible next states, etc. The resulting **search tree** has the reward associated with each edge. At the leaves, we compute the remaining reward-to-go using a value function $V(s)$. This takes $O((\|\mathcal{S}\| \times \|\mathcal{A}\|)^d)$ time.
 
 #### Branch and Bound
 
@@ -1910,11 +1909,11 @@ In **branch and bound**, we prune suboptimal paths using a lower bound on the va
 
 #### Sparse Sampling
 
-**Sparse sampling** speeds up forward search by sampling a subset of $m$ possible next states for each action, giving complexity $O((m \times |\mathcal{A}|)^d)$, which is independent of $|\mathcal{S}|$.
+**Sparse sampling** speeds up forward search by sampling a subset of $m$ possible next states for each action, giving complexity $O((m \times \|\mathcal{A}\|)^d)$, which is independent of $\|\mathcal{S}\|$.
 
 #### Heuristic Search
 
-In **heuristic search**, we start with a heuristic function $\overline{V}(s)$ to initialize $V(s)$. We perform $m$ Monte Carlo rollouts starting from the root node $s$, greedily picking actions and sampling next states, updating $V(s) = \max_a R(s,a) + \gamma \sum_{s'} p(s'|s,a)V(s')$ at each node. If the heuristic function is an upper bound on the optimal value function, it is called an **admissible heuristic**, and heuristic search is guaranteed to converge to the optimal value.
+In **heuristic search**, we start with a heuristic function $\overline{V}(s)$ to initialize $V(s)$. We perform $m$ Monte Carlo rollouts starting from the root node $s$, greedily picking actions and sampling next states, updating $V(s) = \max_a R(s,a) + \gamma \sum_{s'} p(s'\mid s,a)V(s')$ at each node. If the heuristic function is an upper bound on the optimal value function, it is called an **admissible heuristic**, and heuristic search is guaranteed to converge to the optimal value.
 
 ### Monte Carlo Tree Search (MCTS)
 
@@ -1931,7 +1930,7 @@ $$
 
 where $N(s) = \sum_a N(s,a)$ is the total visit count to $s$, and $c$ is an exploration bonus scaling term. If we have a predictor or prior $P(s,a)$, we can use: $a = \arg\max_{a \in \mathcal{A}(s)} Q(s,a) + c\left(P(s,a) \frac{\sqrt{N(s)}}{1+N(s,a)}\right)$
 
-2. **Expansion:** Sample the next state $s' \sim p(s'|s,a)$.
+2. **Expansion:** Sample the next state $s' \sim p(s'\mid s,a)$.
 
 3. **Rollout:** Recursively estimate $u = U(s')$ using MCTS from that node. At some depth, stop and use the value function: $u = r + \gamma v(s')$.
 
@@ -1954,7 +1953,7 @@ $$
 \mathcal{L}(\boldsymbol{\theta}) = \mathbb{E}_{(s, \boldsymbol{\pi}_s^\text{MCTS}, V^\text{MCTS}(s)) \sim \mathcal{D}}\left[(V^\text{MCTS}(s) - V_{\boldsymbol{\theta}}(s))^2 - \sum_a \boldsymbol{\pi}_s^\text{MCTS}(a) \log \boldsymbol{\pi}_{\boldsymbol{\theta}}(a|s)\right]
 $$
 
-where $\boldsymbol{\pi}_s^\text{MCTS}(a) = [N(s,a)/(\sum_b N(s,b))]^{1/\tau}$ is the MCTS-derived action distribution.
+where $\boldsymbol{\pi}\_s^\text{MCTS}(a) = [N(s,a)/(\sum_b N(s,b))]^{1/\tau}$ is the MCTS-derived action distribution.
 
 </div>
 
@@ -1963,7 +1962,7 @@ where $\boldsymbol{\pi}_s^\text{MCTS}(a) = [N(s,a)/(\sum_b N(s,b))]^{1/\tau}$ is
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MuZero)</span></p>
 
-**MuZero** learns a world model by training a latent representation (embedding function) $\boldsymbol{z}_t = e_\phi(\boldsymbol{o}_t)$ and a corresponding latent dynamics (and reward) model $(\boldsymbol{z}_t, r_t) = M_w(\boldsymbol{z}_t, a_t)$. The model is trained to predict the immediate reward, future reward (value), and the optimal policy, where the optimal policy is computed using MCTS. The loss augments the actor-critic loss with a reward prediction term:
+**MuZero** learns a world model by training a latent representation (embedding function) $\boldsymbol{z}\_t = e_\phi(\boldsymbol{o}\_t)$ and a corresponding latent dynamics (and reward) model $(\boldsymbol{z}\_t, r_t) = M_w(\boldsymbol{z}\_t, a_t)$. The model is trained to predict the immediate reward, future reward (value), and the optimal policy, where the optimal policy is computed using MCTS. The loss augments the actor-critic loss with a reward prediction term:
 
 $$
 \mathcal{L}(\boldsymbol{\theta}, \boldsymbol{w}, \boldsymbol{\phi}) = (V^\text{MCTS}(z) - V_{\boldsymbol{\theta}}(e_\phi(\boldsymbol{o})))^2 - \sum_a \boldsymbol{\pi}_z^\text{MCTS}(a) \log \boldsymbol{\pi}_{\boldsymbol{\theta}}(a|e_\phi(\boldsymbol{o})) + (r - M_w^r(e_\phi(\boldsymbol{o}), a_t))^2
@@ -1992,7 +1991,7 @@ $$
 q(\tau) \propto d_q(s_0) \prod_{t \ge 0} \mathcal{T}(s_{t+1}|s_t, a_t) \pi(a_t|s_t, \boldsymbol{\theta}_i) \exp\left(\frac{A(s_t, a_t)}{\eta}\right)
 $$
 
-where $A(s_t, a_t) = Q(s_t, a_t) - V(s_t) \approx r_t + V(s_{t+1}) - V(s_t)$ is the advantage function and $\eta$ is a temperature. We sample trajectories using **SMC** (a generalization of **particle filtering**): at each step we propose a new particle according to $\beta_i(\tau_t | \tau_{1:t-1}) \propto \hat{\mathcal{T}}(s_{t+1}|s_t, a_t)\pi(a_t|s_t, \boldsymbol{\theta}_i)$, then weight it according to $w(\tau_{1:t}) \propto w(\tau_{1:t-1}) \cdot \exp(A(s_t, a_t)/\eta)$. Optionally resample particles when effective sample size becomes too small. The resulting empirical distribution over actions can be used to estimate the next best action.
+where $A(s_t, a_t) = Q(s_t, a_t) - V(s_t) \approx r_t + V(s_{t+1}) - V(s_t)$ is the advantage function and $\eta$ is a temperature. We sample trajectories using **SMC** (a generalization of **particle filtering**): at each step we propose a new particle according to $\beta_i(\tau_t \mid \tau_{1:t-1}) \propto \hat{\mathcal{T}}(s_{t+1}\mid s_t, a_t)\pi(a_t\mid s_t, \boldsymbol{\theta}\_i)$, then weight it according to $w(\tau_{1:t}) \propto w(\tau_{1:t-1}) \cdot \exp(A(s_t, a_t)/\eta)$. Optionally resample particles when effective sample size becomes too small. The resulting empirical distribution over actions can be used to estimate the next best action.
 
 This framework is a special case of **twisted SMC**, where the advantage function plays the role of a "twist" function summarizing expected future rewards.
 
@@ -2038,11 +2037,11 @@ For general nonlinear models (such as neural networks), **random shooting** pick
 
 #### CEM
 
-The **cross-entropy method** (CEM) improves upon random shooting. We start with a multivariate Gaussian $\mathcal{N}(\boldsymbol{\mu}_0, \boldsymbol{\Sigma}_0)$ representing a distribution over possible actions, sample from it, evaluate all proposals, pick the top $K$, refit the Gaussian to these top $K$, and repeat.
+The **cross-entropy method** (CEM) improves upon random shooting. We start with a multivariate Gaussian $\mathcal{N}(\boldsymbol{\mu}\_0, \boldsymbol{\Sigma}\_0)$ representing a distribution over possible actions, sample from it, evaluate all proposals, pick the top $K$, refit the Gaussian to these top $K$, and repeat.
 
 #### MPPI
 
-The **model predictive path integral** (MPPI) approach is a version of CEM where the initial mean of the Gaussian at step $t$ is computed based on shifting $\hat{\boldsymbol{\mu}}_{t-1}$ forward by one step (the previous reference trajectory). It has been applied to robot control by training the model using the **Dagger** method (alternating between supervised learning and deployment).
+The **model predictive path integral** (MPPI) approach is a version of CEM where the initial mean of the Gaussian at step $t$ is computed based on shifting $\hat{\boldsymbol{\mu}}\_{t-1}$ forward by one step (the previous reference trajectory). It has been applied to robot control by training the model using the **Dagger** method (alternating between supervised learning and deployment).
 
 #### GP-MPC
 
@@ -2057,7 +2056,7 @@ Decision-time planning can be slow. We can amortize the planning process into a 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MBRL as a Game)</span></p>
 
-We define the value of a policy $\pi$ when rolled out in some model $M'$ as $J(\pi, M') = \mathbb{E}_{M', \pi}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t)\right]$. The loss of a model $\hat{M}$ given a state-action distribution $\mu(s,a)$ is $\ell(\hat{M}, \mu) = \mathbb{E}_{(s,a) \sim \mu}\left[D_{KL}(M_\text{env}(\cdot|s,a) \| \hat{M}(\cdot|s,a))\right]$.
+We define the value of a policy $\pi$ when rolled out in some model $M'$ as $J(\pi, M') = \mathbb{E}\_{M', \pi}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t)\right]$. The loss of a model $\hat{M}$ given a state-action distribution $\mu(s,a)$ is $\ell(\hat{M}, \mu) = \mathbb{E}\_{(s,a) \sim \mu}\left[D_{KL}(M_\text{env}(\cdot|s,a) \|\| \hat{M}(\cdot\mid s,a))\right]$.
 
 MBRL can be defined as a two-player general-sum game:
 
@@ -2071,8 +2070,8 @@ A **Nash equilibrium** $(\pi, \hat{M})$ satisfies that the model is accurate whe
 
 Two approaches to finding the equilibrium:
 
-* **Policy as leader (PAL):** First fit the model $\hat{M}_{k+1} = \arg\min_{\hat{M}} \ell(\hat{M}, \mu_{M_\text{env}}^{\pi_k})$ on data from $\pi_k$, then improve the policy using conservative updates (e.g., natural actor-critic, TRPO) on "imaginary" model rollouts from $\hat{M}_{k+1}$.
-* **Model as leader (MAL):** First fully optimize the policy $\pi_{k+1} = \arg\max_\pi J(\pi, \hat{M}_k)$, then update the model using a gradient step on data from $\pi_{k+1}$ in the real world. A conservative model update by mixing data from earlier models (**data aggregation**) helps build a more global model.
+* **Policy as leader (PAL):** First fit the model $\hat{M}\_{k+1} = \arg\min_{\hat{M}} \ell(\hat{M}, \mu_{M_\text{env}}^{\pi_k})$ on data from $\pi_k$, then improve the policy using conservative updates (e.g., natural actor-critic, TRPO) on "imaginary" model rollouts from $\hat{M}\_{k+1}$.
+* **Model as leader (MAL):** First fully optimize the policy $\pi_{k+1} = \arg\max_\pi J(\pi, \hat{M}\_k)$, then update the model using a gradient step on data from $\pi_{k+1}$ in the real world. A conservative model update by mixing data from earlier models (**data aggregation**) helps build a more global model.
 
 ### Dyna
 
@@ -2085,7 +2084,7 @@ $$
 \pi_{k+1} = \pi_k + \eta_\pi \nabla_\pi J(\pi_k, \hat{D}_k \cup \mathcal{D}_k)
 $$
 
-where $\mathcal{D}_k$ is data from the real environment and $\hat{D}_k = \text{rollout}(\pi_k, M_k)$ is imaginary data from the model. This makes Dyna a hybrid model-free and model-based RL method.
+where $\mathcal{D}\_k$ is data from the real environment and $\hat{D}\_k = \text{rollout}(\pi_k, M_k)$ is imaginary data from the model. This makes Dyna a hybrid model-free and model-based RL method.
 
 At each step: (1) collect new data from the environment and add to a real replay buffer; (2) do an off-policy update on real data; (3) update the world model on real data; (4) simulate imaginary data (starting from a previously visited state, rolling out the current policy in the learned model); (5) add imaginary data to an imaginary replay buffer and do an on-policy update.
 
@@ -2111,48 +2110,48 @@ World models can be trained to predict future observations (generative WMs) or j
 
 ### World Models Trained to Predict Observation Targets
 
-These models learn $\mathcal{T}(\boldsymbol{s}'|\boldsymbol{s}, a)$ to generate imaginary trajectories:
+These models learn $\mathcal{T}(\boldsymbol{s}'\mid\boldsymbol{s}, a)$ to generate imaginary trajectories:
 
 $$
 p(\boldsymbol{s}_{t+1:T}, \boldsymbol{r}_{t+1:T}, \boldsymbol{a}_{t:T-1}|\boldsymbol{s}_t) = \prod_{i=t}^{T-1} \pi(\boldsymbol{a}_i|\boldsymbol{s}_i) \mathcal{T}(\boldsymbol{s}_{i+1}|\boldsymbol{s}_i, \boldsymbol{a}_i) R(r_{i+1}|\boldsymbol{s}_i, \boldsymbol{a}_i)
 $$
 
-If the state space is high-dimensional (e.g., images, denoted $\boldsymbol{o}$), we can learn $\mathcal{T}(\boldsymbol{o}'|\boldsymbol{o}, a)$ using standard techniques for conditional image generation such as diffusion. This kind of world model is equivalent to an action-conditional version of a **video generative model** (such as **Sora**, **Veo-3**, **seedance**, etc.). Examples include the **Diamond** method, **Genie2**, and **GAIA-1**.
+If the state space is high-dimensional (e.g., images, denoted $\boldsymbol{o}$), we can learn $\mathcal{T}(\boldsymbol{o}'\mids\boldsymbol{o}, a)$ using standard techniques for conditional image generation such as diffusion. This kind of world model is equivalent to an action-conditional version of a **video generative model** (such as **Sora**, **Veo-3**, **seedance**, etc.). Examples include the **Diamond** method, **Genie2**, and **GAIA-1**.
 
 Note that these methods are trained to predict the entire observation vector, even if we use latent variables. (This is what we mean by "generative world model".) One big disadvantage is that observations may contain irrelevant or distractor variables not necessary for task performance. In addition, such models are often slow to use, and there may be a distribution shift in the observation process between train and test time.
 
 #### Generative World Models without Latent Variables
 
-The simplest approach is to define $\mathcal{T}(\boldsymbol{o}'|\boldsymbol{o}, a)$ as a conditional generative model over states. If the observed states are low-dimensional vectors (e.g., proprioceptive states), we can use transformers (see e.g., the **Transformer Dynamics Model**).
+The simplest approach is to define $\mathcal{T}(\boldsymbol{o}'\mid\boldsymbol{o}, a)$ as a conditional generative model over states. If the observed states are low-dimensional vectors (e.g., proprioceptive states), we can use transformers (see e.g., the **Transformer Dynamics Model**).
 
-In some cases, the dimensions of the state vector $\boldsymbol{s}$ represent distinct variables, and the joint Markov transition matrix $p(\boldsymbol{s}'|\boldsymbol{s}, a)$ has conditional independence properties which can be represented as a sparse graphical model. This is called a **factored MDP**.
+In some cases, the dimensions of the state vector $\boldsymbol{s}$ represent distinct variables, and the joint Markov transition matrix $p(\boldsymbol{s}'\mid\boldsymbol{s}, a)$ has conditional independence properties which can be represented as a sparse graphical model. This is called a **factored MDP**.
 
 #### Generative World Models with Latent Variables
 
 Some methods use latent variables as part of their world model. This can improve the speed of generating imaginary futures and can provide a compact latent space as input to a policy.
 
-Let $\boldsymbol{z}_t$ denote the latent (or hidden) state at time $t$; this can be a discrete or continuous variable (or vector of variables). The generative model has the form of a controlled HMM:
+Let $\boldsymbol{z}\_t$ denote the latent (or hidden) state at time $t$; this can be a discrete or continuous variable (or vector of variables). The generative model has the form of a controlled HMM:
 
 $$
 p(\boldsymbol{o}_{t+1:T}, \boldsymbol{z}_{t+1:T}, \boldsymbol{r}_{t+1:T}, \boldsymbol{a}_{t:T-1}|\boldsymbol{z}_t) = \prod_{i=t}^{T-1} \pi(\boldsymbol{a}_i|\boldsymbol{z}_i) \mathcal{M}(\boldsymbol{z}_{i+1}|\boldsymbol{z}_i, \boldsymbol{a}_i) R(r_i|\boldsymbol{z}_i) D(\boldsymbol{o}_i|\boldsymbol{z}_i)
 $$
 
-where $p(\boldsymbol{o}_t|\boldsymbol{z}_t) = D(\boldsymbol{o}_t|\boldsymbol{z}_t)$ is the decoder or likelihood function, $\mathcal{M}(\boldsymbol{z}'|\boldsymbol{z}, \boldsymbol{a})$ is the dynamics in latent space, and $\pi(\boldsymbol{a}_t|\boldsymbol{z}_t)$ is the policy in latent space.
+where $p(\boldsymbol{o}\_t\mid\boldsymbol{z}\_t) = D(\boldsymbol{o}\_t\mid\boldsymbol{z}\_t)$ is the decoder or likelihood function, $\mathcal{M}(\boldsymbol{z}'\mid\boldsymbol{z}, \boldsymbol{a})$ is the dynamics in latent space, and $\pi(\boldsymbol{a}\_t\mid\boldsymbol{z}\_t)$ is the policy in latent space.
 
-The world model is usually trained by maximizing the marginal likelihood of the observed outputs given an action sequence. Computing the marginal likelihood requires marginalizing over the hidden variables $\boldsymbol{z}_{t+1:T}$. To make this computationally tractable, it is common to use amortized variational inference, in which we train an encoder network $p(\boldsymbol{z}_t|\boldsymbol{o}_t) = E(\boldsymbol{z}_t|\boldsymbol{o}_t)$ to approximate the posterior over the latents.
+The world model is usually trained by maximizing the marginal likelihood of the observed outputs given an action sequence. Computing the marginal likelihood requires marginalizing over the hidden variables $\boldsymbol{z}_{t+1:T}$. To make this computationally tractable, it is common to use amortized variational inference, in which we train an encoder network $p(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t) = E(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t)$ to approximate the posterior over the latents.
 
 #### Example: Dreamer
 
 The **Dreamer** approach and its extensions (DreamerV2, DreamerV3, DreamerV4) are all based on background planning, in which the policy is trained on imaginary trajectories generated by a latent variable world model. (Dreamer is based on an earlier approach called **PlaNet**, which used MPC instead of background planning.)
 
-In Dreamer, the stochastic dynamic latent variables are replaced by deterministic dynamic latent variables $\boldsymbol{h}_t$, since this makes the model easier to train. ($\boldsymbol{h}_t$ acts like the posterior over the hidden state at time $t-1$; this is also the prior predictive belief state before we see $\boldsymbol{o}_t$.) A static stochastic variable $\boldsymbol{z}_t$ is generated for each time step and acts like a "random effect" to help generate the observations, without relying on $\boldsymbol{h}_t$ to store all the necessary information. Dreamer defines the following functions:
+In Dreamer, the stochastic dynamic latent variables are replaced by deterministic dynamic latent variables $\boldsymbol{h}\_t$, since this makes the model easier to train. ($\boldsymbol{h}\_t$ acts like the posterior over the hidden state at time $t-1$; this is also the prior predictive belief state before we see $\boldsymbol{o}\_t$.) A static stochastic variable $\boldsymbol{z}\_t$ is generated for each time step and acts like a "random effect" to help generate the observations, without relying on $\boldsymbol{h}\_t$ to store all the necessary information. Dreamer defines the following functions:
 
-* A hidden dynamics (sequence) model: $\boldsymbol{h}_{t+1} = \mathcal{U}(\boldsymbol{h}_t, \boldsymbol{a}_t, \boldsymbol{z}_t)$
-* A latent state conditional prior: $\hat{\boldsymbol{z}}_t \sim P(\hat{\boldsymbol{z}}_t|\boldsymbol{h}_t)$
-* A latent state decoder (observation predictor): $\hat{\boldsymbol{o}}_t \sim D(\hat{\boldsymbol{o}}_t|\boldsymbol{h}_t, \hat{\boldsymbol{z}}_t)$
-* A reward predictor: $\hat{r}_t \sim R(\hat{r}_t|\boldsymbol{h}_t, \hat{\boldsymbol{z}}_t)$
-* A latent state encoder: $\boldsymbol{z}_t \sim E(\boldsymbol{z}_t|\boldsymbol{h}_t, \boldsymbol{o}_t)$
-* A policy function: $\boldsymbol{a}_t \sim \pi(\boldsymbol{a}_t|\boldsymbol{h}_t)$
+* A hidden dynamics (sequence) model: $\boldsymbol{h}\_{t+1} = \mathcal{U}(\boldsymbol{h}\_t, \boldsymbol{a}\_t, \boldsymbol{z}\_t)$
+* A latent state conditional prior: $\hat{\boldsymbol{z}}\_t \sim P(\hat{\boldsymbol{z}}\_t\mid\boldsymbol{h}\_t)$
+* A latent state decoder (observation predictor): $\hat{\boldsymbol{o}}\_t \sim D(\hat{\boldsymbol{o}}\_t\mid\boldsymbol{h}\_t, \hat{\boldsymbol{z}}\_t)$
+* A reward predictor: $\hat{r}\_t \sim R(\hat{r}\_t\mid\boldsymbol{h}\_t, \hat{\boldsymbol{z}}\_t)$
+* A latent state encoder: $\boldsymbol{z}\_t \sim E(\boldsymbol{z}\_t\mid\boldsymbol{h}\_t, \boldsymbol{o}\_t)$
+* A policy function: $\boldsymbol{a}\_t \sim \pi(\boldsymbol{a}\_t\mid\boldsymbol{h}\_t)$
 
 The world model loss has the form
 
@@ -2198,7 +2197,7 @@ $$
 * **DreamerV2** adds categorical (discrete) latents and KL balancing between prior and posterior estimates. It was the first imagination-based agent to outperform humans in Atari games.
 * **DayDreamer** applies DreamerV2 to real robots.
 * **DreamerV3** builds upon DreamerV2 using various tricks (such as symlog encodings for the reward, critic, and decoder) to enable more stable optimization and domain-independent choice of hyper-parameters. It was the first method to create diamonds in Minecraft without requiring human demonstration data.
-* **DreamerV4** uses a standard conditional latent video diffusion model $p(\boldsymbol{z}_t|\boldsymbol{z}_{t-c:t-1}, a_t)$ with a transformer backbone, combined with an autoencoder. The WM is trained offline on 2500 hours of reward-free but action-labeled videos. The key difference from prior Dreamer models is that the world model is more powerful and trained offline on diverse human-collected data.
+* **DreamerV4** uses a standard conditional latent video diffusion model $p(\boldsymbol{z}\_t\mid\boldsymbol{z}\_{t-c:t-1}, a_t)$ with a transformer backbone, combined with an autoencoder. The WM is trained offline on 2500 hours of reward-free but action-labeled videos. The key difference from prior Dreamer models is that the world model is more powerful and trained offline on diverse human-collected data.
 
 Other variants include **TransDreamer** and **STORM** (replacing the RNN with transformers), the **S4WM** method (using S4 models), and **DreamingV2** (replacing the generative loss with a non-generative self-prediction loss).
 
@@ -2210,7 +2209,7 @@ The **IRIS** method ("Imagination with auto-Regression over an Inner Speech") fo
 
 #### Code World Models
 
-It has become popular to represent the world model $p(s'|s, a)$ using code, such as Python. This is called a **code world model**. It is possible to learn such models from trajectory data using LLMs.
+It has become popular to represent the world model $p(s'\mid s, a)$ using code, such as Python. This is called a **code world model**. It is possible to learn such models from trajectory data using LLMs.
 
 #### Partial Observation Prediction
 
@@ -2262,9 +2261,9 @@ A representation that satisfies ZP and RP is enough to satisfy value equivalence
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Value Equivalence and State Abstraction)</span></p>
 
-Let $\boldsymbol{h}_t = (\boldsymbol{h}_{t-1}, \boldsymbol{a}_{t-1}, r_{t-1}, \boldsymbol{o}_t)$ be all the visible data (history) at time $t$, and let $\boldsymbol{z}_t = \phi(\boldsymbol{h}_t)$ be a latent representation (compressed encoding) of this history, where $\phi$ is called an encoder or a **state abstraction** function. We train the policy $\boldsymbol{a}_t = \pi(\boldsymbol{z}_t)$ in the usual way.
+Let $\boldsymbol{h}\_t = (\boldsymbol{h}\_{t-1}, \boldsymbol{a}\_{t-1}, r_{t-1}, \boldsymbol{o}\_t)$ be all the visible data (history) at time $t$, and let $\boldsymbol{z}\_t = \phi(\boldsymbol{h}\_t)$ be a latent representation (compressed encoding) of this history, where $\phi$ is called an encoder or a **state abstraction** function. We train the policy $\boldsymbol{a}\_t = \pi(\boldsymbol{z}\_t)$ in the usual way.
 
-An optimal representation $\boldsymbol{z}_t = \phi(\boldsymbol{h}_t)$ is a sufficient statistic for the optimal action-value function $Q^*$. It satisfies the **value equivalence** principle: two states $s_1$ and $s_2$ are value equivalent (given a policy) if $V^\pi(s_1) = V^\pi(s_2)$. In particular, if the representation is optimal, it will satisfy value equivalence w.r.t. the optimal policy, i.e., if $\phi(\boldsymbol{h}_i) = \phi(\boldsymbol{h}_j)$ then $Q^*(\boldsymbol{h}_i, a) = Q^*(\boldsymbol{h}_j, a)$.
+An optimal representation $\boldsymbol{z}\_t = \phi(\boldsymbol{h}\_t)$ is a sufficient statistic for the optimal action-value function $Q^*$. It satisfies the **value equivalence** principle: two states $s_1$ and $s_2$ are value equivalent (given a policy) if $V^\pi(s_1) = V^\pi(s_2)$. In particular, if the representation is optimal, it will satisfy value equivalence w.r.t. the optimal policy, i.e., if $\phi(\boldsymbol{h}\_i) = \phi(\boldsymbol{h}\_j)$ then $Q^*(\boldsymbol{h}\_i, a) = Q^*(\boldsymbol{h}\_j, a)$.
 
 We can train such a representation function by using its output $\boldsymbol{z} = \phi(\boldsymbol{h})$ as input to the Q function or to the policy. (We call such a loss **VP**, for value prediction.)
 
@@ -2279,7 +2278,7 @@ There is a stronger property than value equivalence called **bisimulation**: two
 
 #### Policy Prediction
 
-The value function and reward losses may be too sparse to learn efficiently. Although self-prediction loss can help somewhat, it does not use any extra information from the environment as feedback. When using MCTS, it is possible to compute what the policy should be for a given state, and this can be used as a prediction target for the reactive policy $a_t = \pi(\boldsymbol{z}_t)$, which in turn can be used as a feedback signal for the latent state. This method is used by MuZero and EfficientZero.
+The value function and reward losses may be too sparse to learn efficiently. Although self-prediction loss can help somewhat, it does not use any extra information from the environment as feedback. When using MCTS, it is possible to compute what the policy should be for a given state, and this can be used as a prediction target for the reactive policy $a_t = \pi(\boldsymbol{z}\_t)$, which in turn can be used as a feedback signal for the latent state. This method is used by MuZero and EfficientZero.
 
 #### Self Prediction (Self Distillation)
 
@@ -2298,7 +2297,7 @@ where the LHS is the predicted mean of the next latent state under the true mode
 
 #### Avoiding Self-Prediction Collapse Using Frozen Targets
 
-A trivial way to minimize the self-prediction loss is to learn an embedding that maps everything to a constant vector, say $E(\boldsymbol{h}) = \boldsymbol{0}$, in which case $\boldsymbol{z}_{t+1}$ will be trivial for the dynamics model $M$ to predict. This is called **representational collapse**. We can provably prevent collapse (at least for linear encoders) by using a frozen target network. The auxiliary loss is:
+A trivial way to minimize the self-prediction loss is to learn an embedding that maps everything to a constant vector, say $E(\boldsymbol{h}) = \boldsymbol{0}$, in which case $\boldsymbol{z}\_{t+1}$ will be trivial for the dynamics model $M$ to predict. This is called **representational collapse**. We can provably prevent collapse (at least for linear encoders) by using a frozen target network. The auxiliary loss is:
 
 $$
 \mathcal{L}_{\text{EZP}}(\boldsymbol{\phi}, \boldsymbol{\theta}; \boldsymbol{h}, a, \boldsymbol{h}') = \|M_\phi(E_\phi(\boldsymbol{h}, a)) - \text{sg}(E_{\overline{\boldsymbol{\phi}}}(\boldsymbol{h}'))\|_2^2
@@ -2325,7 +2324,7 @@ Minimizing the self-prediction objective (with the stop-gradient term) has been 
 
 #### Avoiding Self-Prediction Collapse Using Information-Theoretic Regularization
 
-An alternative way to avoid the latent collapse problem is to add regularization terms that try to maximize the information content in $\boldsymbol{z}_t$ and $\boldsymbol{z}_{t+1}$, while also minimizing the prediction error:
+An alternative way to avoid the latent collapse problem is to add regularization terms that try to maximize the information content in $\boldsymbol{z}\_t$ and $\boldsymbol{z}\_{t+1}$, while also minimizing the prediction error:
 
 $$
 J(\boldsymbol{\phi}) = E_{\boldsymbol{o}_t, \boldsymbol{a}_t, \boldsymbol{o}_{t+1}, \epsilon_t} \left( \|\boldsymbol{z}_{t+1} - \hat{\boldsymbol{z}}_{t+1}\|_2^2 - \lambda I(\boldsymbol{z}_t) - \lambda I(\boldsymbol{z}_{t+1}) \right)
@@ -2333,7 +2332,7 @@ $$
 
 where $\boldsymbol{z}_t = E(\boldsymbol{o}_t; \boldsymbol{\phi})$, $\boldsymbol{z}_{t+1} = E(\boldsymbol{o}_{t+1}; \boldsymbol{\phi})$, $\hat{\boldsymbol{z}}_{t+1} = \mathcal{M}(\boldsymbol{z}_t, \boldsymbol{a}_t, \epsilon_t; \boldsymbol{\theta})$.
 
-Various methods have been proposed to approximate the information content $I(\boldsymbol{z}_t)$, mostly based on some function of the outer product matrix $\sum_t \boldsymbol{z}_t \boldsymbol{z}_t^\top$, which captures second-order moments.
+Various methods have been proposed to approximate the information content $I(\boldsymbol{z}\_t)$, mostly based on some function of the outer product matrix $\sum_t \boldsymbol{z}\_t \boldsymbol{z}\_t^\top$, which captures second-order moments.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Barlow Twins and VICReg)</span></p>
@@ -2389,15 +2388,15 @@ $$
 
 #### Example: JEPA
 
-The **JEPA** (Joint Embedding Prediction Architecture) approach to world modeling jointly embeds the current and following observations, computing $\boldsymbol{z}_t = E(\boldsymbol{o}_t)$ and $\boldsymbol{z}_{t+1} = E(\boldsymbol{o}_{t+1})$, and then comparing the actual latent embedding $\boldsymbol{z}_{t+1}$ to its prediction $\boldsymbol{z}_{t+1}' = \mathcal{M}(\boldsymbol{z}_t, a_t; \epsilon_t)$, where $\epsilon_t$ is a random noise source and $M$ is the deterministic world model. The encoder is then trained to minimize the difference between $\boldsymbol{z}_t$ and $\boldsymbol{z}_t'$.
+The **JEPA** (Joint Embedding Prediction Architecture) approach to world modeling jointly embeds the current and following observations, computing $\boldsymbol{z}\_t = E(\boldsymbol{o}\_t)$ and $\boldsymbol{z}\_{t+1} = E(\boldsymbol{o}\_{t+1})$, and then comparing the actual latent embedding $\boldsymbol{z}\_{t+1}$ to its prediction $\boldsymbol{z}\_{t+1}' = \mathcal{M}(\boldsymbol{z}\_t, a_t; \epsilon_t)$, where $\epsilon_t$ is a random noise source and $M$ is the deterministic world model. The encoder is then trained to minimize the difference between $\boldsymbol{z}\_t$ and $\boldsymbol{z}\_t'$.
 
-To prevent collapse, two classes of methods have been considered: (1) using a frozen EMA version of the encoder, and (2) adding regularization terms that try to maximize the information content in $\boldsymbol{z}_t$ and $\boldsymbol{z}_{t+1}$ while minimizing prediction error. These can also be combined.
+To prevent collapse, two classes of methods have been considered: (1) using a frozen EMA version of the encoder, and (2) adding regularization terms that try to maximize the information content in $\boldsymbol{z}\_t$ and $\boldsymbol{z}\_{t+1}$ while minimizing prediction error. These can also be combined.
 
 JEPA also leverages the fact that the encoder is a low-dimensional embedding of the input, and the predictor is a shallow network, to create an information bottleneck. The **I-JEPA** method is designed for images, and the **V-JEPA** method is designed for videos (also training on masked versions of the inputs to create a harder learning problem).
 
 #### Example: DinoWM
 
-In the case where the observations are high-dimensional (such as images), it is natural to use a pre-trained representation $\boldsymbol{z}_t = \phi(\boldsymbol{o}_t)$ as input to the world model (or policy). The representation function $\phi$ can be pretrained on a large dataset using a non-reconstructive loss, such as the **DINOv2** method. Although this can sometimes give gains (as in the **DinoWM** and **Dino-World** papers), in other cases better results are obtained by training the representation from scratch. The performance is highly dependent on the similarity or differences between the pretraining distribution and the agent's distribution.
+In the case where the observations are high-dimensional (such as images), it is natural to use a pre-trained representation $\boldsymbol{z}\_t = \phi(\boldsymbol{o}\_t)$ as input to the world model (or policy). The representation function $\phi$ can be pretrained on a large dataset using a non-reconstructive loss, such as the **DINOv2** method. Although this can sometimes give gains (as in the **DinoWM** and **Dino-World** papers), in other cases better results are obtained by training the representation from scratch. The performance is highly dependent on the similarity or differences between the pretraining distribution and the agent's distribution.
 
 #### Example: TD-MPC
 
@@ -2509,9 +2508,9 @@ One popular approach is to use posterior sampling RL, which applies Thompson sam
 
 ## Beyond One-Step Models: Predictive Representations
 
-The "world models" described in Section 4.4 are **one-step models** of the form $p(s'|s, a)$, or $p(z'|z, a)$ for $z = \phi(s)$, where $\phi$ is a state-abstraction function. However, such models are problematic when it comes to predicting many kinds of future events, such as "will a car pull in front of me?" or "when will it start raining?", since it is hard to predict exactly when these events will occur, and these events may correspond to many different "ground states".
+The "world models" described in Section 4.4 are **one-step models** of the form $p(s'\mid s, a)$, or $p(z'\mid z, a)$ for $z = \phi(s)$, where $\phi$ is a state-abstraction function. However, such models are problematic when it comes to predicting many kinds of future events, such as "will a car pull in front of me?" or "when will it start raining?", since it is hard to predict exactly when these events will occur, and these events may correspond to many different "ground states".
 
-In principle we can roll out many possible long-term futures, and apply some abstraction function to the resulting generated trajectories to extract features of interest, and thus derive a predictive model of the form $p(t', \phi(s_{t+1:t'})|s_t, \pi)$, where $t'$ is the random duration of the sampled trajectory, and $\phi$ maps from state trajectories to features. However, it would be more efficient if we could directly predict this distribution without having to know the value of $t'$, and without having to predict all the details of all the intermediate future states. These are called **predictive representations**, and are a compromise between standard model-based RL and model-free RL.
+In principle we can roll out many possible long-term futures, and apply some abstraction function to the resulting generated trajectories to extract features of interest, and thus derive a predictive model of the form $p(t', \phi(s_{t+1:t'})\mid s_t, \pi)$, where $t'$ is the random duration of the sampled trajectory, and $\phi$ maps from state trajectories to features. However, it would be more efficient if we could directly predict this distribution without having to know the value of $t'$, and without having to predict all the details of all the intermediate future states. These are called **predictive representations**, and are a compromise between standard model-based RL and model-free RL.
 
 ### General Value Functions
 
@@ -2528,7 +2527,7 @@ If $C(s_{t+1}) = R_{t+1}$, this reduces to the value function. If we define the 
 
 </div>
 
-Predicting the GVFs for multiple cumulants can be useful as an auxiliary task while solving the main task (e.g., as a form of auxiliary input to the policy, or just to "densify" the training signal). One can use an approach (based on meta-gradients) to learn which cumulants are worth predicting. In the inner loop, the model $f$ predicts the policy $\pi_t$ and value function $V_t$, as usual, and also predicts the GVFs $\boldsymbol{y}_t$ for the specified cumulants. In the outer loop, the model $g$ learns to extract the cumulants and their discounts given future observations; this is called the question network, denoted by $(\boldsymbol{c}_t, \boldsymbol{\gamma}_t) = g_{\boldsymbol{\eta}}(\boldsymbol{o}_{t+1:t+j})$.
+Predicting the GVFs for multiple cumulants can be useful as an auxiliary task while solving the main task (e.g., as a form of auxiliary input to the policy, or just to "densify" the training signal). One can use an approach (based on meta-gradients) to learn which cumulants are worth predicting. In the inner loop, the model $f$ predicts the policy $\pi_t$ and value function $V_t$, as usual, and also predicts the GVFs $\boldsymbol{y}\_t$ for the specified cumulants. In the outer loop, the model $g$ learns to extract the cumulants and their discounts given future observations; this is called the question network, denoted by $(\boldsymbol{c}\_t, \boldsymbol{\gamma}\_t) = g_{\boldsymbol{\eta}}(\boldsymbol{o}\_{t+1:t+j})$.
 
 ### Successor Representations
 
@@ -4192,19 +4191,19 @@ One simple approach is to create an intrinsic **exploration bonus** $R_t^i(s_t)$
 
 #### Random Network Distillation (RND)
 
-The **Random Network Distillation** or **RND** method uses a fixed random neural network feature extractor $\boldsymbol{z}_t = f(\boldsymbol{s}_t; \boldsymbol{\theta}^*)$ to define a target, and then trains a predictor $\hat{\boldsymbol{z}}_t = f(\boldsymbol{s}_t; \hat{\boldsymbol{\theta}}_t)$ to predict these targets. If $s_t$ is similar to previously seen states, then the trained model will have low prediction error. We can thus define the intrinsic reward as proportional to $\|\hat{\boldsymbol{z}}_t - \boldsymbol{z}_t\|_2^2$. The **BYOL-Explore** method goes beyond RND by learning the target representation (for the next state), rather than using a fixed random projection, but is still based on prediction error.
+The **Random Network Distillation** or **RND** method uses a fixed random neural network feature extractor $\boldsymbol{z}\_t = f(\boldsymbol{s}\_t; \boldsymbol{\theta}^\ast)$ to define a target, and then trains a predictor $\hat{\boldsymbol{z}}\_t = f(\boldsymbol{s}\_t; \hat{\boldsymbol{\theta}}\_t)$ to predict these targets. If $s_t$ is similar to previously seen states, then the trained model will have low prediction error. We can thus define the intrinsic reward as proportional to $\|\hat{\boldsymbol{z}}\_t - \boldsymbol{z}\_t\|_2^2$. The **BYOL-Explore** method goes beyond RND by learning the target representation (for the next state), rather than using a fixed random projection, but is still based on prediction error.
 
 #### Information-Theoretic Measures
 
-We can define an intrinsic reward in terms of the information-theoretic **surprise** of the next state given the current one: $R(\boldsymbol{s}, \boldsymbol{a}, \boldsymbol{s}') = -\log q(\boldsymbol{s}'|\boldsymbol{s}, \boldsymbol{a})$. Unfortunately such methods can suffer from the **noisy TV problem** (also called a **stochastic trap**), in which an agent is attracted to states which are intrinsically difficult to predict. To help filter out such random noise, the **Intrinsic Curiosity Module** first learns an **inverse dynamics model** of the form $a = f(\boldsymbol{s}, \boldsymbol{s}')$, which tries to predict which action was used. The classifier focuses on parts of the state that the agent can control. Then the agent learns a forwards dynamics model in $\boldsymbol{z}$-space and defines the intrinsic reward as
+We can define an intrinsic reward in terms of the information-theoretic **surprise** of the next state given the current one: $R(\boldsymbol{s}, \boldsymbol{a}, \boldsymbol{s}') = -\log q(\boldsymbol{s}'\mid\boldsymbol{s}, \boldsymbol{a})$. Unfortunately such methods can suffer from the **noisy TV problem** (also called a **stochastic trap**), in which an agent is attracted to states which are intrinsically difficult to predict. To help filter out such random noise, the **Intrinsic Curiosity Module** first learns an **inverse dynamics model** of the form $a = f(\boldsymbol{s}, \boldsymbol{s}')$, which tries to predict which action was used. The classifier focuses on parts of the state that the agent can control. Then the agent learns a forwards dynamics model in $\boldsymbol{z}$-space and defines the intrinsic reward as
 
 $$
 R(\boldsymbol{s}, \boldsymbol{a}, \boldsymbol{s}') = -\log q(\phi(\boldsymbol{s}')|\phi(\boldsymbol{s}), a)
 $$
 
-Another solution is to replace the cross entropy with the KL divergence, $R(\boldsymbol{s}, \boldsymbol{a}) = D_{\text{KL}}(p\|q) = \mathbb{H}_{ce}(p, q) - \mathbb{H}(p)$, which goes to zero once the learned model matches the true model, even for unpredictable states. This encourages exploration towards states with epistemic uncertainty (reducible noise) but not aleatoric uncertainty (irreducible noise).
+Another solution is to replace the cross entropy with the KL divergence, $R(\boldsymbol{s}, \boldsymbol{a}) = D_{\text{KL}}(p\|\|q) = \mathbb{H}\_{ce}(p, q) - \mathbb{H}(p)$, which goes to zero once the learned model matches the true model, even for unpredictable states. This encourages exploration towards states with epistemic uncertainty (reducible noise) but not aleatoric uncertainty (irreducible noise).
 
-A related idea is to use the **information gain** as a reward: $R_t(s_t, a_t) = D_{\text{KL}}(q(\boldsymbol{s}_t|\boldsymbol{h}_t, a_t, \theta_t) \| q(\boldsymbol{s}_t|\boldsymbol{h}_t, a_t, \theta_{t-1}))$, where $\theta_t = \text{update}(\theta_{t-1}, h_t, a_t, s_t)$ are the new model parameters. This is closely related to the BALD (Bayesian Active Learning by Disagreement) criterion, and has the advantage of being easier to compute since it does not reference the true distribution $p$.
+A related idea is to use the **information gain** as a reward: $R_t(s_t, a_t) = D_{\text{KL}}(q(\boldsymbol{s}_t\mid\boldsymbol{h}\_t, a_t, \theta_t) \|\| q(\boldsymbol{s}\_t\mid\boldsymbol{h}\_t, a_t, \theta_{t-1}))$, where $\theta_t = \text{update}(\theta_{t-1}, h_t, a_t, s_t)$ are the new model parameters. This is closely related to the BALD (Bayesian Active Learning by Disagreement) criterion, and has the advantage of being easier to compute since it does not reference the true distribution $p$.
 
 ### Competence-Based Intrinsic Motivation
 
@@ -4244,7 +4243,7 @@ The **Go-Explore** algorithm proposes to first follow a goal-conditioned policy 
 
 **Hierarchical RL** or **HRL** extends standard RL to consider actions that operate at multiple levels of **temporal abstraction**. Formally, an **option** $\omega = (I, \pi, \beta)$ is a form of temporally extended action, consisting of:
 
-* The **subpolicy** (aka **intra-option policy**, or **action policy**) $\pi_\omega(a|s) \in [0, 1]$.
+* The **subpolicy** (aka **intra-option policy**, or **action policy**) $\pi_\omega(a\mid s) \in [0, 1]$.
 * The **termination probability** $\beta_\omega(s) \in [0, 1]$, which gives the probability of finishing in state $s$. This induces a geometric distribution over option durations, $\tau \sim \beta_\omega$.
 * The **initiation set** $I_\omega \subset S$, which is the set of states this option can start from. Alternatively, $I_\omega(s) \in [0, 1]$ as the probability that $\omega$ can be started from $s$ and achieve its goal. (The **affordances** of a state, $A(s) = \lbrace \omega : I_\omega(s) > \epsilon \rbrace$, is the set of options that can be initiated from $s$.)
 
@@ -4254,7 +4253,7 @@ Executing an option at step $t$ entails choosing an action using $a_t = \pi_\ome
 
 Note that goal-conditioned RL can be considered a special case of options where each option corresponds to a different goal. The reward function for each option has the form $R_\omega(s) = \text{sim}(s, \omega)$, the termination function is $\beta_\omega(s) = \text{sim}(s, \omega) > \text{thresh}$, and the initiation set is the entire state space (a **global option**).
 
-To create a semi-MDP with options, we need to define the reward function and dynamics model. The reward is $R(s, \omega) = \mathbb{E}[R_1 + \gamma R^2 + \cdots + \gamma^{\tau-1}R_\tau | S_0 = s, A_{0:\tau-1} \sim \pi_\omega, \tau \sim \beta_\omega]$, and the dynamics model is $T_\gamma(s'|s, \omega) = \sum_{k=1}^{\infty} \gamma^k \Pr(S_k = s', \beta_\omega(s_k)|S_0 = s, A_{0:k-1} \sim \pi_\omega)$. Note that a dynamics model that can predict multiple steps ahead is sometimes called a **jumpy model**. The value function for a hierarchical policy using a generalized Bellman equation:
+To create a semi-MDP with options, we need to define the reward function and dynamics model. The reward is $R(s, \omega) = \mathbb{E}[R_1 + \gamma R^2 + \cdots + \gamma^{\tau-1}R_\tau \mid S_0 = s, A_{0:\tau-1} \sim \pi_\omega, \tau \sim \beta_\omega]$, and the dynamics model is $T_\gamma(s'\mid s, \omega) = \sum_{k=1}^{\infty} \gamma^k \Pr(S_k = s', \beta_\omega(s_k)\mid S_0 = s, A_{0:k-1} \sim \pi_\omega)$. Note that a dynamics model that can predict multiple steps ahead is sometimes called a **jumpy model**. The value function for a hierarchical policy using a generalized Bellman equation:
 
 $$
 V_\pi(s) = \sum_{\omega \in \Omega(s)} \pi(\omega|s) \left[R(s, \omega) + \sum_{s'} T_\gamma(s'|s, \omega) V_\pi(s')\right]
@@ -4291,7 +4290,7 @@ To avoid excessive option switching, a regularizer called the **deliberation cos
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Feudal RL vs Options)</span></p>
 
-The other main framework for HRL is **feudal RL**. In this approach, the policy at level $l$ (known as a **manager**) chooses a goal from some goal space (equal to the state space, or some abstraction thereof), and passes that down to the level below (known as a **worker**). Thus rather than having a finite number of options to choose from, we can have a nested set of parameterized (universal) policies, $\pi_l(g_{l-1}|s, g_l)$, for each manager level $l$, and $\pi_1(a|s, g_1)$ for the worker level. The value for a policy at a given level is the expected reward until the policy finishes, where the reward is defined intrinsically in terms of reaching the specified goal. Thus only the top level manager gets to see the external (environment) reward, a principle known as **reward hiding**.
+The other main framework for HRL is **feudal RL**. In this approach, the policy at level $l$ (known as a **manager**) chooses a goal from some goal space (equal to the state space, or some abstraction thereof), and passes that down to the level below (known as a **worker**). Thus rather than having a finite number of options to choose from, we can have a nested set of parameterized (universal) policies, $\pi_l(g_{l-1}\mid s, g_l)$, for each manager level $l$, and $\pi_1(a\mid s, g_1)$ for the worker level. The value for a policy at a given level is the expected reward until the policy finishes, where the reward is defined intrinsically in terms of reaching the specified goal. Thus only the top level manager gets to see the external (environment) reward, a principle known as **reward hiding**.
 
 | Feature | Options Framework | Feudal RL |
 | --- | --- | --- |
@@ -4360,7 +4359,7 @@ A prominent strategy for discovering diverse skills involves maximizing the Mutu
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Imitation Learning)</span></p>
 
-**Imitation learning** (IL), also known as **apprenticeship learning** and **learning from demonstration** (LfD), is a different setting in which the agent does not observe rewards, but has access to a collection $\mathcal{D}_{\text{exp}}$ of trajectories generated by an expert policy $\pi_{\text{exp}}$; that is, $\boldsymbol{\tau} = (s_0, a_0, s_1, a_1, \ldots, s_T)$ and $a_t \sim \pi_{\text{exp}}(s_t)$ for $\boldsymbol{\tau} \in \mathcal{D}_{\text{exp}}$. The goal is to learn a good policy by imitating the expert, in the absence of reward signals. IL finds many applications in scenarios where we have demonstrations of experts (often humans) but designing a good reward function is not easy, such as car driving and conversational systems.
+**Imitation learning** (IL), also known as **apprenticeship learning** and **learning from demonstration** (LfD), is a different setting in which the agent does not observe rewards, but has access to a collection $\mathcal{D}\_{\text{exp}}$ of trajectories generated by an expert policy $\pi_{\text{exp}}$; that is, $\boldsymbol{\tau} = (s_0, a_0, s_1, a_1, \ldots, s_T)$ and $a_t \sim \pi_{\text{exp}}(s_t)$ for $\boldsymbol{\tau} \in \mathcal{D}\_{\text{exp}}$. The goal is to learn a good policy by imitating the expert, in the absence of reward signals. IL finds many applications in scenarios where we have demonstrations of experts (often humans) but designing a good reward function is not easy, such as car driving and conversational systems.
 
 </div>
 
@@ -4387,7 +4386,7 @@ $$
 p(\boldsymbol{\tau}) \propto \exp\left(\sum_{t=0}^{T-1} R_\theta(s_t, a_t)\right)
 $$
 
-This model assigns exponentially small probabilities to trajectories with lower cumulative rewards. We may infer $\boldsymbol{\theta}$ by maximizing the likelihood $p(\mathcal{D}_{\text{exp}}|\boldsymbol{\theta})$, or equivalently, minimizing the negative log-likelihood loss:
+This model assigns exponentially small probabilities to trajectories with lower cumulative rewards. We may infer $\boldsymbol{\theta}$ by maximizing the likelihood $p(\mathcal{D}\_{\text{exp}}\mid\boldsymbol{\theta})$, or equivalently, minimizing the negative log-likelihood loss:
 
 $$
 \mathcal{L}(\boldsymbol{\theta}) = -\frac{1}{|\mathcal{D}_{\text{exp}}|} \sum_{\boldsymbol{\tau} \in \mathcal{D}_{\text{exp}}} R_\theta(\boldsymbol{\tau}) + \log \frac{1}{|\mathcal{D}|} \sum_{\boldsymbol{\tau} \in \mathcal{D}} \frac{\exp(R_\theta(\boldsymbol{\tau}))}{q(\boldsymbol{\tau})}
@@ -4425,7 +4424,7 @@ A very simple and widely used offline RL method is **behavior cloning** (BC), wh
 
 ### Offline Model-Free RL
 
-In principle, we can tackle offline RL using the off-policy methods: use some form of importance sampling, based on $\pi(a|s)/\pi_b(a|s)$, to reweight the data in the replay buffer $D$, which was collected by the behavior policy, towards the current policy (the one being evaluated/learned). Unfortunately, such methods only work well if the behavior policy is close to the new policy.
+In principle, we can tackle offline RL using the off-policy methods: use some form of importance sampling, based on $\pi(a\mid s)/\pi_b(a\mid s)$, to reweight the data in the replay buffer $D$, which was collected by the behavior policy, towards the current policy (the one being evaluated/learned). Unfortunately, such methods only work well if the behavior policy is close to the new policy.
 
 #### Policy Constraint Methods
 
@@ -4438,7 +4437,7 @@ $$
 \pi_{k+1} \leftarrow \text{argmax}_\pi \mathbb{E}_{s \sim D} \left[\mathbb{E}_{\pi(a|s)} \left[Q_{k+1}^\pi(s, a)\right]\right] \quad \text{s.t.} \; D(\pi(\cdot|s), \pi_b(\cdot|s)) \le \epsilon
 $$
 
-Alternatively, we can add a penalty of $\alpha D(\pi(\cdot|s), \pi_b(\cdot|s'))$ to the target $Q$ value and the actor objective. In the case of KL divergence, this can be enforced implicitly, as in the **advantage weighted regression** (AWR), **reward weighted regression**, **advantage weighted actor critic** (AWAC), and **advantage weighted behavior model** (ABM) methods. In this approach, we first solve (nonparametrically) for the new policy:
+Alternatively, we can add a penalty of $\alpha D(\pi(\cdot\mid s), \pi_b(\cdot\mid s'))$ to the target $Q$ value and the actor objective. In the case of KL divergence, this can be enforced implicitly, as in the **advantage weighted regression** (AWR), **reward weighted regression**, **advantage weighted actor critic** (AWAC), and **advantage weighted behavior model** (ABM) methods. In this approach, we first solve (nonparametrically) for the new policy:
 
 $$
 \bar{\pi}_{k+1}(a|s) \leftarrow \frac{1}{Z} \pi_b(a|s) \exp\left(\frac{1}{\alpha} Q_k^\pi(s, a)\right)
@@ -4450,7 +4449,7 @@ and then project it into the required policy function class: $\pi_{k+1} \leftarr
 
 #### Behavior-Constrained Policy Gradient Methods
 
-A class of methods first learns a baseline policy $\pi(a|s)$ (using BC) and a $Q$ function (using Bellman minimization) on the offline data, and then updates the policy to pick actions that have high expected value according to $Q$ and which are also likely under the BC prior. An early example is the $Q^f$ algorithm. The **DDPG+BC** method optimizes $\max_\pi J(\pi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} [Q(s, \mu^\pi(s)) + \alpha \log \pi(a|s)]$. The **DQL** method optimizes a diffusion policy using $\min_\pi \mathcal{L}(\pi) = \mathcal{L}_{\text{diffusion}}(\pi) - \alpha \mathbb{E}_{s \sim D, a \sim \pi(\cdot|s)} [Q(s, a)]$.
+A class of methods first learns a baseline policy $\pi(a|s)$ (using BC) and a $Q$ function (using Bellman minimization) on the offline data, and then updates the policy to pick actions that have high expected value according to $Q$ and which are also likely under the BC prior. An early example is the $Q^f$ algorithm. The **DDPG+BC** method optimizes $\max_\pi J(\pi) = \mathbb{E}\_{(s,a) \sim \mathcal{D}} [Q(s, \mu^\pi(s)) + \alpha \log \pi(a\mid s)]$. The **DQL** method optimizes a diffusion policy using $\min_\pi \mathcal{L}(\pi) = \mathcal{L}\_{\text{diffusion}}(\pi) - \alpha \mathbb{E}\_{s \sim D, a \sim \pi(\cdot\mid s)} [Q(s, a)]$.
 
 #### Uncertainty Penalties
 
@@ -4477,9 +4476,9 @@ $$
 \mathcal{C}(\mathcal{B}, \boldsymbol{w}) = \mathbb{E}_{s \sim \mathcal{D}} \left[\mathbb{E}_{a \sim \mu(\cdot|s)} [Q_{\boldsymbol{w}}(s, a)] - \mathbb{E}_{a \sim \pi_b(\cdot|s)} [Q_{\boldsymbol{w}}(s, a)]\right] + R(\mu)
 $$
 
-where $\mu$ is the new policy derived from $Q$, and $R(\mu) = -D_{\text{KL}}(\mu \| \rho)$ is the action prior. Since we are minimizing $\mathcal{C}$ (in addition to $\mathcal{E}$), we see that we are simultaneously maximizing the Q values for actions that are drawn from the behavior policy while minimizing the Q values for actions sampled from $\mu$. This is to combat the optimism bias of Q-learning (hence the term "conservative").
+where $\mu$ is the new policy derived from $Q$, and $R(\mu) = -D_{\text{KL}}(\mu \|\| \rho)$ is the action prior. Since we are minimizing $\mathcal{C}$ (in addition to $\mathcal{E}$), we see that we are simultaneously maximizing the Q values for actions that are drawn from the behavior policy while minimizing the Q values for actions sampled from $\mu$. This is to combat the optimism bias of Q-learning (hence the term "conservative").
 
-The optimal solution has the form $\mu(a|s) = \frac{1}{Z}\rho(a|s)\exp(Q(s, a))$. If we set $\rho(a|s)$ to be the previous policy, we can approximate the first term in the penalty using importance sampling. Alternatively, if $\rho(a|s)$ is uniform (as in maxent RL), we should replace the value function with the soft value function: $\mathbb{E}_a[Q_{\text{soft}}(s, a)] = V_{\text{soft}}(s) = \log \sum_a \exp(Q(s, a))$.
+The optimal solution has the form $\mu(a\mid s) = \frac{1}{Z}\rho(a\mid s)\exp(Q(s, a))$. If we set $\rho(a|s)$ to be the previous policy, we can approximate the first term in the penalty using importance sampling. Alternatively, if $\rho(a\mid s)$ is uniform (as in maxent RL), we should replace the value function with the soft value function: $\mathbb{E}_a[Q_{\text{soft}}(s, a)] = V_{\text{soft}}(s) = \log \sum_a \exp(Q(s, a))$.
 
 </div>
 
@@ -4504,10 +4503,10 @@ In both cases, it is possible to prove that the model-based estimate of the poli
 
 Recently an approach to offline RL based on sequence modeling has become very popular. The basic idea --- known as **upside down RL** or **RvS** (RL via Supervised learning) --- is to train a generative model over future states and/or actions conditioned on the observed reward, rather than predicting the reward given a state-action trajectory. At test time, the conditioning is changed to represent the desired reward, and futures are sampled from the model.
 
-* The **trajectory transformer** learns a joint model of the form $p(\boldsymbol{s}_{1:T}, \boldsymbol{a}_{1:T}, \boldsymbol{r}_{1:T})$ using a transformer, and then samples from this using beam search, selecting the ones with high reward (similar to MPC).
-* The **decision transformer** just generates action sequences, and conditions on the past observations and the future reward-to-go: $\text{argmax}_\theta \mathbb{E}_{p_\mathcal{D}} [\log \pi_\theta(a_t|s_{0:t}, a_{0:t-1}, \text{RTG}_{0:t})]$, where $\text{RTG}_t = \sum_{k=t}^{T} r_k$. At run time, $\text{RTG}_0$ is set to some desired high value. The **Q-learning Decision Transformer** (QDT) conditions on a Q value (learned using Q learning) instead of RTG.
-* The **diffuser** method is a diffusion version of trajectory transformer, so it fits $p(\boldsymbol{s}_{1:T}, \boldsymbol{a}_{1:T}, \boldsymbol{r}_{1:T})$ using diffusion, where the action space is assumed to be continuous. The **decision diffuser** extends diffuser by using classifier-free guidance conditioned on the reward-to-go; however, unlike diffuser, the decision diffuser just models the future state trajectories, and infers the actions using an **inverse dynamics model** $a_t = \pi(s_t, s_{t+1})$.
-* The **latent plan transformer** replaces conditioning on the reward-to-go with conditioning on a latent "plan", $\boldsymbol{z} \in \mathbb{R}^D$. It fits the following latent variable sequence model using MC-EM: $p(\boldsymbol{z})p(\tau|\boldsymbol{z})p(y|\boldsymbol{z})$, where $\tau$ is the state-action trajectory and $y$ is the observed (trajectory-level) reward. The latent variables provide a way to "stitch together" individual (high performing) trajectories. During decision time, they infer $\hat{\boldsymbol{z}} = \text{argmax} \, p(\boldsymbol{z}|y = y_{\max})$ using gradient ascent, and then autoregressively generate actions.
+* The **trajectory transformer** learns a joint model of the form $p(\boldsymbol{s}\_{1:T}, \boldsymbol{a}\_{1:T}, \boldsymbol{r}\_{1:T})$ using a transformer, and then samples from this using beam search, selecting the ones with high reward (similar to MPC).
+* The **decision transformer** just generates action sequences, and conditions on the past observations and the future reward-to-go: $\text{argmax}\_\theta \mathbb{E}\_{p_\mathcal{D}} [\log \pi_\theta(a_t\mid s_{0:t}, a_{0:t-1}, \text{RTG}\_{0:t})]$, where $\text{RTG}\_t = \sum_{k=t}^{T} r_k$. At run time, $\text{RTG}\_0$ is set to some desired high value. The **Q-learning Decision Transformer** (QDT) conditions on a Q value (learned using Q learning) instead of RTG.
+* The **diffuser** method is a diffusion version of trajectory transformer, so it fits $p(\boldsymbol{s}\_{1:T}, \boldsymbol{a}\_{1:T}, \boldsymbol{r}\_{1:T})$ using diffusion, where the action space is assumed to be continuous. The **decision diffuser** extends diffuser by using classifier-free guidance conditioned on the reward-to-go; however, unlike diffuser, the decision diffuser just models the future state trajectories, and infers the actions using an **inverse dynamics model** $a_t = \pi(s_t, s_{t+1})$.
+* The **latent plan transformer** replaces conditioning on the reward-to-go with conditioning on a latent "plan", $\boldsymbol{z} \in \mathbb{R}^D$. It fits the following latent variable sequence model using MC-EM: $p(\boldsymbol{z})p(\tau\mid\boldsymbol{z})p(y\mid\boldsymbol{z})$, where $\tau$ is the state-action trajectory and $y$ is the observed (trajectory-level) reward. The latent variables provide a way to "stitch together" individual (high performing) trajectories. During decision time, they infer $\hat{\boldsymbol{z}} = \text{argmax} \, p(\boldsymbol{z}\mid y = y_{\max})$ using gradient ascent, and then autoregressively generate actions.
 
 One problem with all these approaches is that conditioning on a desired return and taking the predicted action can fail dramatically in stochastic environments, since trajectories that result in a return may have only achieved that return due to chance (this is the optimism bias problem in the control-as-inference approach).
 
@@ -4526,7 +4525,7 @@ Despite the progress in offline RL, it is fundamentally more limited in what it 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(DAgger)</span></p>
 
-The **DAgger** algorithm (Dataset Aggregation) iteratively trains the policy on expert-provided data. We start with an initial dataset $\mathcal{D}$ (e.g., empty) and an initial policy $\pi_1$ (e.g., random). At iteration $t$, we run the current policy $\pi_t$ in the environment to collect states $\lbrace s_i \rbrace$. We then ask an expert policy for the correct actions $a_i^* = \pi^*(s_i)$. We aggregate the data to compute $\mathcal{D} = \mathcal{D} \cup \lbrace (s_i, a_i^*) \rbrace$, and train the new policy $\pi_{t+1}$ on $\mathcal{D}$.
+The **DAgger** algorithm (Dataset Aggregation) iteratively trains the policy on expert-provided data. We start with an initial dataset $\mathcal{D}$ (e.g., empty) and an initial policy $\pi_1$ (e.g., random). At iteration $t$, we run the current policy $\pi_t$ in the environment to collect states $\lbrace s_i \rbrace$. We then ask an expert policy for the correct actions $a_i^\ast = \pi^\ast(s_i)$. We aggregate the data to compute $\mathcal{D} = \mathcal{D} \cup \lbrace (s_i, a_i^\ast) \rbrace$, and train the new policy $\pi_{t+1}$ on $\mathcal{D}$.
 
 The key idea is to not train passively on expert trajectories as in BC, but to train on the states that the policy actually visits. This avoids overfitting to idealized data and improves robustness (avoids compounding error), since the policy is learning the effects of its own causal interventions.
 

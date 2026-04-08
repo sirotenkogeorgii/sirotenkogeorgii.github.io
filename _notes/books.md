@@ -28,3 +28,4 @@ date: 2024-10-20
 - [Basic Category Theory](/subpages/books/category_theory/basic_category_theory/)
 - [Numerical Methods for Bayesian Inverse Problems](/subpages/books/numerical_methods_for_bip/)
 - [Reinforcement Learning Overview](/subpages/books/reinforcement_learning_overview/)
+- [Functional Analysis](/subpages/books/functional_analysis/mit_rogriguez/)
