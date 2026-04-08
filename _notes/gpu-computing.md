@@ -217,8 +217,8 @@ A CUDA program is a hybrid program consisting of two parts: a host part that run
 
 CUDA programs exploit two complementary forms of parallelism:
 
-<div class="math-callout math-callout--definition" markdown="1">
-<div class="math-callout__title" markdown="0"><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></div>
+<div class=”math-callout math-callout--definition” markdown=”1”>
+  <div class=”math-callout__title” markdown=”0”><span class=”math-callout__label”>Definition</span><span class=”math-callout__name”>(Data-Level vs. Thread-Level Parallelism)</span></div>
 
 - **Data-Level Parallelism (DLP):** Perform the *same* operation on *many* data elements simultaneously. Exploited by SIMD/vector units and GPU warps. Best for dense, regular computations (linear algebra, convolutions, elementwise ops). The main limitation is branch divergence and irregular memory access.
 - **Thread-Level Parallelism (TLP):** Run multiple *independent threads* concurrently, each with its own instruction stream. Exploited by multi-core CPUs, SMT, and GPU thread blocks. Best for coarse-grained parallel work (serving requests, pipeline stages, independent simulations). The main limitation is coordination overhead (synchronization, contention, false sharing).
