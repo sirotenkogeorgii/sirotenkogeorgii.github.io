@@ -113,7 +113,7 @@ $$
 z_{t+1} = SU(z_t, a_t, o_{t+1})
 $$
 
-We can break the state-update function into two parts. First the agent predicts its own next state, $z_{t+1|t} = P(z_t, a_t)$, using a **prediction function** $P$, and then it updates this prediction given the observation using an **update function** $U$, to give $z_{t+1} = U(z_{t+1|t}, o_{t+1})$. Thus:
+We can break the state-update function into two parts. First the agent predicts its own next state, $z_{t+1\mid t} = P(z_t, a_t)$, using a **prediction function** $P$, and then it updates this prediction given the observation using an **update function** $U$, to give $z_{t+1} = U(z_{t+1\mid t}, o_{t+1})$. Thus:
 
 $$
 z_{t+1} = U(P(z_t, a_t), o_{t+1})
@@ -150,7 +150,7 @@ $$
 
 </div>
 
-If the world model (both $p(o|w)$ and $p(w'|w,a)$) is known, then we can --- in principle --- solve for the optimal policy. The method requires that the agent's internal state correspond to the **belief state** $s_t = \boldsymbol{b}_t = p(w_t | \boldsymbol{h}_t)$, where $\boldsymbol{h}_t = (o_{1:t}, a_{1:t-1})$ is the observation history. The belief state can be updated recursively using Bayes' rule and forms a sufficient statistic for the optimal policy. Unfortunately, computing the belief state and the resulting optimal policy is wildly intractable.
+If the world model (both $p(o\mid w)$ and $p(w'\mid w,a)$) is known, then we can --- in principle --- solve for the optimal policy. The method requires that the agent's internal state correspond to the **belief state** $s_t = \boldsymbol{b}\_t = p(w_t \mid \boldsymbol{h}\_t)$, where $\boldsymbol{h}\_t = (o_{1:t}, a_{1:t-1})$ is the observation history. The belief state can be updated recursively using Bayes' rule and forms a sufficient statistic for the optimal policy. Unfortunately, computing the belief state and the resulting optimal policy is wildly intractable.
 
 ### Markov Decision Processes (MDPs)
 
@@ -163,7 +163,7 @@ $$
 p_S(s_{t+1}|s_t, a_t) = \mathbb{E}_{\epsilon_t^s}\left[\mathbb{I}(s_{t+1} = W(s_t, a_t, \epsilon_t^s))\right]
 $$
 
-In lieu of an observation model, the environment sends out a reward signal, sampled from $p_R(r_t | s_t, a_t, s_{t+1})$. The expected reward is:
+In lieu of an observation model, the environment sends out a reward signal, sampled from $p_R(r_t \mid s_t, a_t, s_{t+1})$. The expected reward is:
 
 $$
 R(s_t, a_t, s_{t+1}) = \sum_r r \; p_R(r|s_t, a_t, s_{t+1})
@@ -178,13 +178,13 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Control Theory Terminology)</span></p>
 
-The field of control theory uses slightly different terminology: the environment is the **plant**, the agent is the **controller**, states are denoted by $\boldsymbol{x}_t \in \mathcal{X} \subseteq \mathbb{R}^D$, actions by $\boldsymbol{u}_t \in \mathcal{U} \subseteq \mathbb{R}^K$, and rewards are replaced by costs $c_t \in \mathbb{R}$.
+The field of control theory uses slightly different terminology: the environment is the **plant**, the agent is the **controller**, states are denoted by $\boldsymbol{x}\_t \in \mathcal{X} \subseteq \mathbb{R}^D$, actions by $\boldsymbol{u}\_t \in \mathcal{U} \subseteq \mathbb{R}^K$, and rewards are replaced by costs $c_t \in \mathbb{R}$.
 
 </div>
 
 When both state and action sets are finite, we can represent functions as lookup tables; this is known as a **tabular representation**. We can represent the MDP as a **finite state machine**, where nodes correspond to states and edges to actions and resulting rewards/next states.
 
-Given a stochastic policy $\pi(a_t|s_t)$, each step is a **transition** $(s_t, a_t, r_t, s_{t+1})$. Under policy $\pi$, the probability of generating a **trajectory** of length $T$, $\boldsymbol{\tau} = (s_0, a_0, r_0, s_1, a_1, r_1, \ldots, s_T)$, is:
+Given a stochastic policy $\pi(a_t\mid s_t)$, each step is a **transition** $(s_t, a_t, r_t, s_{t+1})$. Under policy $\pi$, the probability of generating a **trajectory** of length $T$, $\boldsymbol{\tau} = (s_0, a_0, r_0, s_1, a_1, r_1, \ldots, s_T)$, is:
 
 $$
 p(\boldsymbol{\tau}) = p_0(s_0) \prod_{t=0}^{T-1} \pi(a_t|s_t) p_S(s_{t+1}|s_t, a_t) p_R(r_t|s_t, a_t, s_{t+1})
@@ -195,7 +195,7 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Goal-Conditioned MDP)</span></p>
 
-A **goal-conditioned MDP** is one in which the reward is defined as $R(s,a|g) = 1$ iff the goal state is achieved, i.e., $R(s,a|s) = \mathbb{I}(s = g)$. We can also define a dense reward signal using a state abstraction function $\phi$, by defining $R(s,a|g) = \text{sim}(s,g)$, where $\text{sim}$ is some similarity metric. For example, using cosine similarity:
+A **goal-conditioned MDP** is one in which the reward is defined as $R(s,a\mid g) = 1$ iff the goal state is achieved, i.e., $R(s,a\mid s) = \mathbb{I}(s = g)$. We can also define a dense reward signal using a state abstraction function $\phi$, by defining $R(s,a\mid g) = \text{sim}(s,g)$, where $\text{sim}$ is some similarity metric. For example, using cosine similarity:
 
 $$
 \text{sim}(s,g) = \frac{\phi(s)^\top \psi(g)}{\|\phi(s)\| \; \|\psi(g)\|}
@@ -203,7 +203,7 @@ $$
 
 where $\phi(s)$ is an embedding of the state and $\psi(g)$ is an embedding of the goal.
 
-A goal-conditioned policy $\pi(a|s,g)$ is sometimes called a **universal policy**.
+A goal-conditioned policy $\pi(a\mid s,g)$ is sometimes called a **universal policy**.
 
 </div>
 
@@ -241,7 +241,7 @@ In an **online advertising system**, the state $s_t$ represents features of the 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Belief State MDP)</span></p>
 
-A **belief state MDP** is a kind of MDP where the state represents a probability distribution, known as a **belief state** or **information state**, which is updated by the agent as it receives information from the environment. The agent approximates the unknown reward by a function $R(o,a) = f(o, a; \boldsymbol{w})$. Let $\boldsymbol{b}_t = p(\boldsymbol{w}|\boldsymbol{h}_t)$ denote the posterior over the unknown parameters, where $\boldsymbol{h}_t = \lbrace o_{1:t}, a_{1:t}, r_{1:t} \rbrace$ is the history. This belief state can be updated deterministically using Bayes' rule:
+A **belief state MDP** is a kind of MDP where the state represents a probability distribution, known as a **belief state** or **information state**, which is updated by the agent as it receives information from the environment. The agent approximates the unknown reward by a function $R(o,a) = f(o, a; \boldsymbol{w})$. Let $\boldsymbol{b}\_t = p(\boldsymbol{w}\mid \boldsymbol{h}\_t)$ denote the posterior over the unknown parameters, where $\boldsymbol{h}\_t = \lbrace o_{1:t}, a_{1:t}, r_{1:t} \rbrace$ is the history. This belief state can be updated deterministically using Bayes' rule:
 
 $$
 \boldsymbol{b}_{t+1} = \text{BayesRule}(\boldsymbol{b}_t, o_{t+1}, a_{t+1}, r_{t+1})
@@ -264,7 +264,7 @@ $$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bernoulli Bandit)</span></p>
 
-Consider a context-free **Bernoulli bandit**, where $p_R(r|a) = \text{Ber}(r|\mu_a)$, and $\mu_a = p_R(r=1|a) = R(a)$ is the expected reward. The only unknown parameters are $\boldsymbol{w} = \mu_{1:A}$. With a factored Beta prior $p_0(\boldsymbol{w}) = \prod_a \text{Beta}(\mu_a | \alpha_0^a, \beta_0^a)$, the posterior in closed form is:
+Consider a context-free **Bernoulli bandit**, where $p_R(r\mid a) = \text{Ber}(r\mid\mu_a)$, and $\mu_a = p_R(r=1\mid a) = R(a)$ is the expected reward. The only unknown parameters are $\boldsymbol{w} = \mu_{1:A}$. With a factored Beta prior $p_0(\boldsymbol{w}) = \prod_a \text{Beta}(\mu_a \mid \alpha_0^a, \beta_0^a)$, the posterior in closed form is:
 
 $$
 p(\boldsymbol{w}|\mathcal{D}_t) = \prod_a \text{Beta}(\mu_a | \alpha_0^a + N_t^0(a), \beta_0^a + N_t^1(a))
@@ -274,7 +274,7 @@ where $N_t^r(a) = \sum_{i=1}^{t-1} \mathbb{I}(a_i = a, r_i = r)$ counts how many
 
 </div>
 
-We can use a similar method for a **Gaussian bandit** ($p_R(r|a) = \mathcal{N}(r|\mu_a, \sigma_a^2)$), a **linear regression bandit** ($p_R(r|s,a;\boldsymbol{w}) = \mathcal{N}(r|\phi(s,a)^\top \boldsymbol{w}, \sigma^2)$) with Bayesian linear regression in closed form, a **logistic regression bandit** requiring approximate Bayesian methods, or a **neural bandit** ($p_R(r|s,a;\boldsymbol{w}) = \mathcal{N}(r|f(s,a;\boldsymbol{w}))$) where posterior inference is equivalent to inference in Bayesian neural networks.
+We can use a similar method for a **Gaussian bandit** ($p_R(r\mid a) = \mathcal{N}(r\mid \mu_a, \sigma_a^2)$), a **linear regression bandit** ($p_R(r\mid s,a;\boldsymbol{w}) = \mathcal{N}(r\mid \phi(s,a)^\top \boldsymbol{w}, \sigma^2)$) with Bayesian linear regression in closed form, a **logistic regression bandit** requiring approximate Bayesian methods, or a **neural bandit** ($p_R(r\mid s,a;\boldsymbol{w}) = \mathcal{N}(r\mid f(s,a;\boldsymbol{w}))$) where posterior inference is equivalent to inference in Bayesian neural networks.
 
 Once the belief state is computed, we can derive a policy with optimal regret using methods like UCB or Thompson sampling.
 
@@ -298,13 +298,13 @@ where $\hat{a} = \pi_T(a_{1:T}, r_{1:T})$ is the estimated optimal arm as comput
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bayesian Optimization)</span></p>
 
-**Bayesian optimization** (BayesOpt) is a gradient-free approach to optimizing expensive blackbox functions. The goal is to find $\boldsymbol{w}^* = \arg\max_{\boldsymbol{w}} R(\boldsymbol{w})$ for some unknown function $R$, where $\boldsymbol{w} \in \mathbb{R}^N$, using as few function evaluations as possible. The agent's state $s_t$ is a belief state over the unknown function, $s_t = p(R|\boldsymbol{h}_t)$. A common way to represent this distribution is to use Gaussian processes, combined with heuristics like expected improvement, knowledge gradient, or Thompson sampling.
+**Bayesian optimization** (BayesOpt) is a gradient-free approach to optimizing expensive blackbox functions. The goal is to find $\boldsymbol{w}^\ast = \arg\max_{\boldsymbol{w}} R(\boldsymbol{w})$ for some unknown function $R$, where $\boldsymbol{w} \in \mathbb{R}^N$, using as few function evaluations as possible. The agent's state $s_t$ is a belief state over the unknown function, $s_t = p(R\mid \boldsymbol{h}\_t)$. A common way to represent this distribution is to use Gaussian processes, combined with heuristics like expected improvement, knowledge gradient, or Thompson sampling.
 
 </div>
 
-**Active learning** is similar to BayesOpt, but instead of finding the point at which $R$ is largest (i.e., $\boldsymbol{w}^*$), we try to learn the whole function $R$ by querying it at different points. The optimal strategy requires maintaining a belief state over the unknown function.
+**Active learning** is similar to BayesOpt, but instead of finding the point at which $R$ is largest (i.e., $\boldsymbol{w}^\ast$), we try to learn the whole function $R$ by querying it at different points. The optimal strategy requires maintaining a belief state over the unknown function.
 
-**Stochastic Gradient Descent (SGD)** can be interpreted as a sequential decision making process. The action space consists of querying $R$ at locations $\boldsymbol{a}_t = \boldsymbol{w}_t$, observing the function value $r_t = R(\boldsymbol{w}_t)$ and the gradient $\boldsymbol{g}_t = \nabla_{\boldsymbol{w}} R(\boldsymbol{w})|_{\boldsymbol{w}_t}$. The update rule for vanilla SGD is $\boldsymbol{w}_{t+1} = \boldsymbol{w}_t + \alpha_t \boldsymbol{g}_t$, where the stepsize $\alpha_t$ is chosen by the policy. The terminal policy is $\pi(s_T) = \boldsymbol{w}_T$.
+**Stochastic Gradient Descent (SGD)** can be interpreted as a sequential decision making process. The action space consists of querying $R$ at locations $\boldsymbol{a}_t = \boldsymbol{w}\_t$, observing the function value $r_t = R(\boldsymbol{w}\_t)$ and the gradient $\boldsymbol{g}\_t = \nabla_{\boldsymbol{w}} R(\boldsymbol{w})\|_{\boldsymbol{w}\_t}$. The update rule for vanilla SGD is $\boldsymbol{w}\_{t+1} = \boldsymbol{w}\_t + \alpha_t \boldsymbol{g}\_t$, where the stepsize $\alpha_t$ is chosen by the policy. The terminal policy is $\pi(s_T) = \boldsymbol{w}\_T$.
 
 ## Reinforcement Learning: A High-Level Summary
 
@@ -352,7 +352,7 @@ $$
 V(s) \leftarrow V(s) + \eta\left[r + \gamma V(s') - V(s)\right]
 $$
 
-where $s' \sim p_S(\cdot|s,a)$ is the next state and $r = R(s,a)$ is the observed reward.
+where $s' \sim p_S(\cdot\mid s,a)$ is the next state and $r = R(s,a)$ is the observed reward.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Q Function)</span></p>
@@ -381,7 +381,7 @@ The action at each step is chosen from the implicit policy $a = \arg\max_{a'} Q(
 
 ### Policy-Based RL
 
-In policy-based methods, we try to directly maximize $J(\pi_{\boldsymbol{\theta}}) = \mathbb{E}_{p_0(s_0)}\left[V_{\pi}(s_0)\right]$ with respect to the parameter $\boldsymbol{\theta}$; this is called **policy search**. If $J(\pi_{\boldsymbol{\theta}})$ is differentiable with respect to $\boldsymbol{\theta}$, we can use stochastic gradient ascent, known as **policy gradient**.
+In policy-based methods, we try to directly maximize $J(\pi_{\boldsymbol{\theta}}) = \mathbb{E}\_{p_0(s_0)}\left[V_{\pi}(s_0)\right]$ with respect to the parameter $\boldsymbol{\theta}$; this is called **policy search**. If $J(\pi_{\boldsymbol{\theta}})$ is differentiable with respect to $\boldsymbol{\theta}$, we can use stochastic gradient ascent, known as **policy gradient**.
 
 Policy gradient methods provably converge to a local optimum for many common policy classes, whereas Q-learning may diverge with approximation. They can also handle continuous action spaces easily, since they do not need $\arg\max_a Q(s,a)$. However, the score function estimator for $\nabla_{\boldsymbol{\theta}} J(\pi_{\boldsymbol{\theta}})$ can have very high variance.
 
@@ -393,15 +393,15 @@ Value-based and policy search methods can be very **sample inefficient**, requir
 
 ### State Uncertainty (Partial Observability)
 
-In many problems, the observation $o_t$ only gives partial information about the underlying state (e.g., a rodent navigating a maze). This is called **partial observability**. A policy of the form $a_t = \pi(o_t)$ is suboptimal; instead we need $a_t = \pi(\boldsymbol{h}_t)$, where $\boldsymbol{h}_t = (a_1, o_1, \ldots, a_{t-1}, o_t)$ is the entire past history.
+In many problems, the observation $o_t$ only gives partial information about the underlying state (e.g., a rodent navigating a maze). This is called **partial observability**. A policy of the form $a_t = \pi(o_t)$ is suboptimal; instead we need $a_t = \pi(\boldsymbol{h}\_t)$, where $\boldsymbol{h}\_t = (a_1, o_1, \ldots, a_{t-1}, o_t)$ is the entire past history.
 
-**Optimal solution:** If we know the true latent structure ($p(o|z)$ and $p(z'|z,a)$), we can compute a belief state $\boldsymbol{b}_t = p(w_t|\boldsymbol{h}_t)$ and use POMDP solution methods. However, this is computationally very difficult.
+**Optimal solution:** If we know the true latent structure ($p(o|z)$ and $p(z'|z,a)$), we can compute a belief state $\boldsymbol{b}\_t = p(w_t|\boldsymbol{h}_t)$ and use POMDP solution methods. However, this is computationally very difficult.
 
-**Predictive state representation (PSR):** We can marginalize out the POMDP latent state $w_t$ to derive a prediction over the next observable state, $p(\boldsymbol{o}_{t+1}|\boldsymbol{h}_t, \boldsymbol{a}_t)$, providing a learning target without explicitly invoking latent state.
+**Predictive state representation (PSR):** We can marginalize out the POMDP latent state $w_t$ to derive a prediction over the next observable state, $p(\boldsymbol{o}\_{t+1}|\boldsymbol{h}\_t, \boldsymbol{a}\_t)$, providing a learning target without explicitly invoking latent state.
 
-**Finite observation history:** Define the state as the last $k$ observations, $s_t = \boldsymbol{h}_{t-k:t}$; when observations are images, this is called **frame stacking**. This cannot capture long-range dependencies.
+**Finite observation history:** Define the state as the last $k$ observations, $s_t = \boldsymbol{h}\_{t-k:t}$; when observations are images, this is called **frame stacking**. This cannot capture long-range dependencies.
 
-**Stateful (recurrent) policies:** Represent the policy by an RNN whose hidden state $w_t$ implicitly summarizes the past observations $\boldsymbol{h}_t$, and can be used in lieu of the state $s_t$ in any standard RL algorithm (e.g., **R2D2**). RNN policies are widely used but typically will not plan to perform information-gathering actions, since there is no explicit notion of belief state or uncertainty.
+**Stateful (recurrent) policies:** Represent the policy by an RNN whose hidden state $w_t$ implicitly summarizes the past observations $\boldsymbol{h}\_t$, and can be used in lieu of the state $s_t$ in any standard RL algorithm (e.g., **R2D2**). RNN policies are widely used but typically will not plan to perform information-gathering actions, since there is no explicit notion of belief state or uncertainty.
 
 ### Model Uncertainty (Exploration-Exploitation Tradeoff)
 
@@ -411,9 +411,9 @@ In RL problems, the underlying transition and reward models are typically unknow
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Exploration Strategies)</span></p>
 
 * **Greedy policy:** $a_t = \arg\max_a Q(s,a)$ --- exploits current knowledge without exploration.
-* **$\epsilon$-greedy policy:** Pick the greedy action with probability $1-\epsilon$ and a random action with probability $\epsilon$. Suboptimal since it explores every action with at least probability $\epsilon/|\mathcal{A}|$, but can be improved by annealing $\epsilon$ to $0$.
+* **$\epsilon$-greedy policy:** Pick the greedy action with probability $1-\epsilon$ and a random action with probability $\epsilon$. Suboptimal since it explores every action with at least probability $\epsilon/\|\mathcal{A}\|$, but can be improved by annealing $\epsilon$ to $0$.
 * **$\epsilon z$-greedy policy:** With probability $1-\epsilon$ exploit, and with probability $\epsilon$ repeat the sampled action for $n \sim z()$ steps. This helps escape local minima.
-* **Boltzmann exploration:** Uses the policy $\pi_\tau(a|s) = \frac{\exp(\hat{R}_t(s_t, a)/\tau)}{\sum_{a'} \exp(\hat{R}_t(s_t, a')/\tau)}$, where $\tau > 0$ is a temperature parameter. As $\tau \to 0$, this becomes greedy; higher $\tau$ encourages more exploration.
+* **Boltzmann exploration:** Uses the policy $\pi_\tau(a\mid s) = \frac{\exp(\hat{R}\_t(s_t, a)/\tau)}{\sum_{a'} \exp(\hat{R}\_t(s_t, a')/\tau)}$, where $\tau > 0$ is a temperature parameter. As $\tau \to 0$, this becomes greedy; higher $\tau$ encourages more exploration.
 * **Exploration bonus:** Add an **intrinsic reward** $R^b_t(s,a)$ (large if state-action is rarely visited) to the regular reward, biasing behavior toward information-gathering.
 
 </div>
@@ -496,7 +496,7 @@ $$
 \text{Adv}_\pi(s,a) \triangleq Q_\pi(s,a) - V_\pi(s)
 $$
 
-This tells us the benefit of picking action $a$ in state $s$ then switching to policy $\pi$, relative to the baseline return of always following $\pi$. Note that $\text{Adv}_\pi(s,a)$ can be both positive and negative, and $\mathbb{E}_{\pi(a|s)}\left[\text{Adv}_\pi(s,a)\right] = 0$ due to $V_\pi(s) = \mathbb{E}_{\pi(a|s)}\left[Q_\pi(s,a)\right]$.
+This tells us the benefit of picking action $a$ in state $s$ then switching to policy $\pi$, relative to the baseline return of always following $\pi$. Note that $\text{Adv}\_\pi(s,a)$ can be both positive and negative, and $\mathbb{E}\_{\pi(a\mid s)}\left[\text{Adv}\_\pi(s,a)\right] = 0$ due to $V_\pi(s) = \mathbb{E}\_{\pi(a\mid s)}\left[Q_\pi(s,a)\right]$.
 
 </div>
 
@@ -505,7 +505,7 @@ This tells us the benefit of picking action $a$ in state $s$ then switching to p
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman's Optimality Equations)</span></p>
 
-Suppose $\pi^*$ is a policy such that $V_{\pi^*} \ge V_\pi$ for all $s \in \mathcal{S}$ and all policies $\pi$; then it is an **optimal policy**. There can be multiple optimal policies, but their value functions must be the same, denoted $V^*$ and $Q^*$. Any finite MDP must have at least one deterministic optimal policy.
+Suppose $\pi^*$ is a policy such that $V_{\pi^\ast} \ge V_\pi$ for all $s \in \mathcal{S}$ and all policies $\pi$; then it is an **optimal policy**. There can be multiple optimal policies, but their value functions must be the same, denoted $V^*$ and $Q^*$. Any finite MDP must have at least one deterministic optimal policy.
 
 The optimal value functions satisfy **Bellman's optimality equations**:
 
@@ -542,7 +542,7 @@ $$
 
 The maximizing action is called the **greedy action** with respect to the value functions $Q^*$ or $V^*$.
 
-The problem of solving for $V^*$, $Q^*$ or $\pi^*$ is called **policy optimization**. Solving for $V_\pi$ or $Q_\pi$ for a given policy $\pi$ is called **policy evaluation**. For policy evaluation, we have similar Bellman equations which simply replace $\max_a\lbrace\cdot\rbrace$ with $\mathbb{E}_{\pi(a|s)}[\cdot]$.
+The problem of solving for $V^*$, $Q^*$ or $\pi^*$ is called **policy optimization**. Solving for $V_\pi$ or $Q_\pi$ for a given policy $\pi$ is called **policy evaluation**. For policy evaluation, we have similar Bellman equations which simply replace $\max_a\lbrace\cdot\rbrace$ with $\mathbb{E}\_{\pi(a\mid s)}[\cdot]$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(1D Grid World)</span></p>
@@ -595,13 +595,13 @@ In value iteration, we compute $V^*(s)$ and $\pi^*(s)$ for all possible states $
 
 **Policy iteration** (PI) is an iterative algorithm that searches in the space of deterministic policies until converging to an optimal policy. Each iteration consists of two steps: **policy evaluation** and **policy improvement**.
 
-**Policy Evaluation:** Compute the value function for the current policy $\pi$. Let $\boldsymbol{v}(s) = V_\pi(s)$, $r(s) = \sum_a \pi(a|s)R(s,a)$, and $\mathbf{T}(s'|s) = \sum_a \pi(a|s)p(s'|s,a)$. Bellman's equation in matrix-vector form is:
+**Policy Evaluation:** Compute the value function for the current policy $\pi$. Let $\boldsymbol{v}(s) = V_\pi(s)$, $r(s) = \sum_a \pi(a|s)R(s,a)$, and $\mathbf{T}(s'\mid s) = \sum_a \pi(a\mid s)p(s'\mid s,a)$. Bellman's equation in matrix-vector form is:
 
 $$
 \boldsymbol{v} = \boldsymbol{r} + \gamma \mathbf{T} \boldsymbol{v}
 $$
 
-This can be solved by matrix inversion: $\boldsymbol{v} = (\mathbf{I} - \gamma \mathbf{T})^{-1} \boldsymbol{r}$, or iteratively by computing $\boldsymbol{v}_{t+1} = \boldsymbol{r} + \gamma \mathbf{T} \boldsymbol{v}_t$.
+This can be solved by matrix inversion: $\boldsymbol{v} = (\mathbf{I} - \gamma \mathbf{T})^{-1} \boldsymbol{r}$, or iteratively by computing $\boldsymbol{v}\_{t+1} = \boldsymbol{r} + \gamma \mathbf{T} \boldsymbol{v}\_t$.
 
 **Policy Improvement:** Compute a deterministic policy $\pi'$ that acts greedily with respect to $V_\pi$:
 
@@ -617,7 +617,7 @@ $$
 \pi_0 \xrightarrow{E} V_{\pi_0} \xrightarrow{I} \pi_1 \xrightarrow{E} V_{\pi_1} \cdots \xrightarrow{I} \pi^* \xrightarrow{E} V^*
 $$
 
-Since there are at most $|\mathcal{A}|^{|\mathcal{S}|}$ deterministic policies, and every iteration strictly improves the policy, the algorithm must converge after finite iterations.
+Since there are at most $\|\mathcal{A}\|^{\|\mathcal{S}\|}$ deterministic policies, and every iteration strictly improves the policy, the algorithm must converge after finite iterations.
 
 </div>
 
@@ -632,14 +632,14 @@ Note that policy evaluation computes $V_\pi$ whereas value iteration computes $V
 
 ## Value Function Learning Using Samples from the World Model
 
-In the rest of this chapter, the agent only has access to samples from the environment, $(s', r) \sim p(s', r|s, a)$. We show how to use these samples to estimate the optimal value function and Q-function, even without explicitly knowing the MDP dynamics. This is "learning" as opposed to "planning."
+In the rest of this chapter, the agent only has access to samples from the environment, $(s', r) \sim p(s', r\mid s, a)$. We show how to use these samples to estimate the optimal value function and Q-function, even without explicitly knowing the MDP dynamics. This is "learning" as opposed to "planning."
 
 ### Monte Carlo Estimation
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Monte Carlo Estimation)</span></p>
 
-Recall that $V_\pi(s) = \mathbb{E}\left[G_t | s_t = s\right]$ is the sum of expected (discounted) returns from state $s$ under policy $\pi$. **Monte Carlo estimation** estimates this by rolling out the policy and computing the average sum of discounted rewards. The update rule is:
+Recall that $V_\pi(s) = \mathbb{E}\left[G_t \mid s_t = s\right]$ is the sum of expected (discounted) returns from state $s$ under policy $\pi$. **Monte Carlo estimation** estimates this by rolling out the policy and computing the average sum of discounted rewards. The update rule is:
 
 $$
 V(s_t) \leftarrow V(s_t) + \eta\left[G_t - V(s_t)\right]
@@ -849,7 +849,7 @@ Experience replay requires the use of off-policy learning methods, since the tra
 
 #### Prioritized Experience Replay
 
-It is possible to replace the uniform sampling from the buffer with one that favors more important transition tuples. **Prioritized sweeping** iterates over all state-action pairs $(s^-, a^-)$ that can immediately transition into $s$ and increases their priority based on $\mathcal{T}(s|s^-, a^-) \times |V(s) - V^{\text{old}}(s)|$.
+It is possible to replace the uniform sampling from the buffer with one that favors more important transition tuples. **Prioritized sweeping** iterates over all state-action pairs $(s^-, a^-)$ that can immediately transition into $s$ and increases their priority based on $\mathcal{T}(s\mid s^-, a^-) \times \|V(s) - V^{\text{old}}(s)\|$.
 
 In **prioritized experience replay**, the priority of the $i$'th tuple $\tau_i$ is based on the TD error:
 
@@ -966,7 +966,7 @@ Q learning is not directly applicable to continuous actions due to the need to c
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dueling DQN)</span></p>
 
-**Dueling DQN** learns a value function and an advantage function, and derives the Q function rather than learning it directly. This is helpful when there are many actions with similar Q-values. We define a network with $|\mathcal{A}|+1$ output heads, computing $A_{\boldsymbol{w}}(\boldsymbol{s}, a)$ for each action $a$ and $V_{\boldsymbol{w}}(\boldsymbol{s})$. The naive composition $Q_{\boldsymbol{w}}(\boldsymbol{s},a) = V_{\boldsymbol{w}}(\boldsymbol{s}) + A_{\boldsymbol{w}}(\boldsymbol{s},a)$ ignores the constraint $\mathbb{E}_{\pi(a|s)}[A^\pi(s,a)] = 0$. To satisfy this, we subtract off $\max_a A(\boldsymbol{s},a)$ from the advantage head:
+**Dueling DQN** learns a value function and an advantage function, and derives the Q function rather than learning it directly. This is helpful when there are many actions with similar Q-values. We define a network with $\|\mathcal{A}\|+1$ output heads, computing $A_{\boldsymbol{w}}(\boldsymbol{s}, a)$ for each action $a$ and $V_{\boldsymbol{w}}(\boldsymbol{s})$. The naive composition $Q_{\boldsymbol{w}}(\boldsymbol{s},a) = V_{\boldsymbol{w}}(\boldsymbol{s}) + A_{\boldsymbol{w}}(\boldsymbol{s},a)$ ignores the constraint $\mathbb{E}\_{\pi(a\mid s)}[A^\pi(s,a)] = 0$. To satisfy this, we subtract off $\max_a A(\boldsymbol{s},a)$ from the advantage head:
 
 $$
 Q_{\boldsymbol{w}}(\boldsymbol{s},a) = V_{\boldsymbol{w}}(\boldsymbol{s}) + A_{\boldsymbol{w}}(\boldsymbol{s},a) - \max_{a'} A_{\boldsymbol{w}}(\boldsymbol{s}, a')
@@ -1025,7 +1025,7 @@ The **BBF** algorithm achieved SOTA on the 100k sample-efficient Atari benchmark
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hindsight Experience Replay)</span></p>
 
-To learn a goal-conditioned policy, we collect trajectories from $s_0$ to some terminal state $s_T$, then define the goal as $g = s_T$; this trajectory serves as a demonstration of how to achieve this goal. This is called **hindsight experience relabeling** (HER) or just **hindsight relabeling**. We relabel the trajectories in the replay buffer: if we have $(s, a, R(s|g), s', g)$ tuples, we replace them with $(s, a, R(s|g'), g')$ where $g' = s_T$. We can then use any off-policy RL method to learn $\pi(a|s,g)$.
+To learn a goal-conditioned policy, we collect trajectories from $s_0$ to some terminal state $s_T$, then define the goal as $g = s_T$; this trajectory serves as a demonstration of how to achieve this goal. This is called **hindsight experience relabeling** (HER) or just **hindsight relabeling**. We relabel the trajectories in the replay buffer: if we have $(s, a, R(s\mid g), s', g)$ tuples, we replace them with $(s, a, R(s\mid g'), g')$ where $g' = s_T$. We can then use any off-policy RL method to learn $\pi(a\mid s,g)$.
 
 HER can be viewed as a special case of maximum-entropy inverse RL, since it is estimating the reward for which the corresponding trajectory was optimal. One limitation is that it only works when the reward is Markovian ($R(s,a) = 1$ iff $s = g$).
 
@@ -1037,7 +1037,7 @@ In Chapter 2, we considered methods that estimate $Q(s,a)$, from which we derive
 
 In this chapter, we discuss **policy search** methods, which directly optimize the parameters of the policy so as to maximize its expected return. We mostly focus on **policy gradient** methods, that use the gradient of the loss to guide the search. These methods often benefit from estimating a value or advantage function to reduce variance, so they also use techniques from Chapter 2.
 
-The parametric policy is denoted by $\pi_{\boldsymbol{\theta}}(a|s)$, which is usually some form of neural network. For discrete actions, the final layer uses softmax to produce a categorical distribution. For continuous actions, a Gaussian output layer is typically used (potentially clipped to $[-1,1]$), although more expressive distributions such as diffusion models can also be used (a **diffusion policy**).
+The parametric policy is denoted by $\pi_{\boldsymbol{\theta}}(a\mid s)$, which is usually some form of neural network. For discrete actions, the final layer uses softmax to produce a categorical distribution. For continuous actions, a Gaussian output layer is typically used (potentially clipped to $[-1,1]$), although more expressive distributions such as diffusion models can also be used (a **diffusion policy**).
 
 ## Policy Gradient Methods
 
@@ -1070,13 +1070,13 @@ $$
 \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \mathbb{E}_{\boldsymbol{\tau}}\left[\nabla_{\boldsymbol{\theta}} \log p_{\boldsymbol{\theta}}(\boldsymbol{\tau}) R(\boldsymbol{\tau})\right]
 $$
 
-Since $\nabla_{\boldsymbol{\theta}} \log p_{\boldsymbol{\theta}}(\boldsymbol{\tau}) = \sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k|s_k)$, we get:
+Since $\nabla_{\boldsymbol{\theta}} \log p_{\boldsymbol{\theta}}(\boldsymbol{\tau}) = \sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k\mid s_k)$, we get:
 
 $$
 \nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \mathbb{E}_{\boldsymbol{\tau}}\left[\left(\sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k|s_k)\right) R(\boldsymbol{\tau})\right]
 $$
 
-The term $\nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a|s)$ is called the (Fisher) **score function**, so this is sometimes called the **score function estimator** (SFE). The expectations can be estimated using Monte Carlo sampling.
+The term $\nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a\mid s)$ is called the (Fisher) **score function**, so this is sometimes called the **score function estimator** (SFE). The expectations can be estimated using Monte Carlo sampling.
 
 </div>
 
@@ -1088,7 +1088,7 @@ The term $\nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a|s)$ is c
 The likelihood ratio estimator can have high variance since we are sampling entire trajectories. We can reduce the variance using the temporal/causal structure: the reward at step $k$ cannot depend on actions at future time steps. This gives:
 
 $$
-\nabla J(\boldsymbol{\theta}) = \mathbb{E}_{\boldsymbol{\tau}}\left[\sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k|s_k) \gamma^{k-1} G_k\right]
+\nabla J(\boldsymbol{\theta}) = \mathbb{E}\_{\boldsymbol{\tau}}\left[\sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a_k\mid s_k) \gamma^{k-1} G_k\right]
 $$
 
 where $G_k \triangleq r_k + \gamma r_{k+1} + \cdots + \gamma^{T-k-1} r_{T-1} = \sum_{l=k}^{T-1} \gamma^{l-k} r_l$ is the **reward-to-go** (or return). The reward-to-go of a state-action pair $(s,a)$ can be considered as a single sample approximation of the state-action value function $Q_{\boldsymbol{\theta}}(s,a)$.
@@ -1103,7 +1103,7 @@ where $G_k \triangleq r_k + \gamma r_{k+1} + \cdots + \gamma^{T-k-1} r_{T-1} = \
 The **REINFORCE** algorithm uses the gradient estimate of the policy value together with SGD to fit a policy:
 
 $$
-\boldsymbol{\theta}_{j+1} := \boldsymbol{\theta}_j + \eta \sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}_j}(a_k|s_k) \gamma^{k-1} G_k
+\boldsymbol{\theta}\_{j+1} := \boldsymbol{\theta}\_j + \eta \sum_{k=1}^{T} \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}\_j}(a_k\mid s_k) \gamma^{k-1} G_k
 $$
 
 where $j$ is the SGD iteration number, and we draw a single trajectory at each step. The update can be interpreted as follows: we compute the sum of discounted future rewards induced by a trajectory, and if this is positive, we increase $\boldsymbol{\theta}$ to make this trajectory more likely; otherwise we decrease $\boldsymbol{\theta}$. Thus, we reinforce good behaviors and reduce the chances of generating bad ones.
@@ -1134,7 +1134,7 @@ where $p_t^\pi(s)$ is the marginal probability of being in state $s$ at time $t$
 The **policy gradient theorem** states:
 
 $$
-\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \mathbb{E}_{\rho_\pi^\gamma(s) \pi_{\boldsymbol{\theta}}(a|s)}\left[Q^{\pi_{\boldsymbol{\theta}}}(s,a) \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a|s)\right]
+\nabla_{\boldsymbol{\theta}} J(\boldsymbol{\theta}) = \mathbb{E}\_{\rho_\pi^\gamma(s) \pi_{\boldsymbol{\theta}}(a|s)}\left[Q^{\pi_{\boldsymbol{\theta}}}(s,a) \nabla_{\boldsymbol{\theta}} \log \pi_{\boldsymbol{\theta}}(a|s)\right]
 $$
 
 $$
@@ -1219,7 +1219,7 @@ $$
 \mathcal{L}(\boldsymbol{\phi}; \tau) = \frac{1}{T} \sum_{t=1}^{T}\left[\lambda_{TD} \mathcal{L}_{TD}(s_t, a_t, r_t, s_{t+1}) - \lambda_{PG} J_{PG}(s_t, a_t, r_t, s_{t+1}) - \lambda_{ent} J_{ent}(s_t)\right]
 $$
 
-where $\mathcal{L}_{TD} = (\text{sg}(y_t) - V_\phi(s))^2$, $J_{PG} = (\text{sg}(y_t - V_\phi(s_t))) \log \pi_\phi(a_t|s_t)$, and $J_{ent} = -\sum_a \pi_\phi(a|s_t) \log \pi_\phi(a|s_t)$ is an entropy regularizer that encourages the policy to remain stochastic.
+where $\mathcal{L}\_{TD} = (\text{sg}(y_t) - V_\phi(s))^2$, $J_{PG} = (\text{sg}(y_t - V_\phi(s_t))) \log \pi_\phi(a_t\mid s_t)$, and $J_{ent} = -\sum_a \pi_\phi(a\mid s_t) \log \pi_\phi(a\mid s_t)$ is an entropy regularizer that encourages the policy to remain stochastic.
 
 The **PopArt** method can be used to dynamically normalize the TD and policy gradient losses to allow for a fixed set of hyper-parameter values $\lambda_i$ even as the range of losses changes over time.
 
@@ -1281,7 +1281,7 @@ An alternative is to alternate between updating the policy and the value functio
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Natural Gradient Descent)</span></p>
 
-**Natural gradient descent** (NGD) is a second-order method for optimizing the parameters of probability distributions such as policies $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}|\boldsymbol{s})$. Standard SGD uses a **proximal update**: $\boldsymbol{\theta}_{k+1} = \arg\min_{\boldsymbol{\theta}} \hat{\mathcal{L}}_k(\boldsymbol{\theta})$ s.t. $\|\boldsymbol{\theta} - \boldsymbol{\theta}_k\|_2^2 \le \epsilon$. However, Euclidean distance in parameter space does not make sense for probabilistic models (changes in $\mu$ matter more when $\sigma$ is small).
+**Natural gradient descent** (NGD) is a second-order method for optimizing the parameters of probability distributions such as policies $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}\mid \boldsymbol{s})$. Standard SGD uses a **proximal update**: $\boldsymbol{\theta}\_{k+1} = \arg\min_{\boldsymbol{\theta}} \hat{\mathcal{L}}\_k(\boldsymbol{\theta})$ s.t. $\|\boldsymbol{\theta} - \boldsymbol{\theta}_k\|_2^2 \le \epsilon$. However, Euclidean distance in parameter space does not make sense for probabilistic models (changes in $\mu$ matter more when $\sigma$ is small).
 
 The key idea of NGD is to measure distance between distributions using the **KL divergence**, approximated by the **Fisher information matrix** (FIM):
 
@@ -1299,13 +1299,13 @@ $$
 
 This is equivalent to a preconditioned gradient update using the inverse FIM. The adaptive learning rate is $\eta_k = \sqrt{\frac{\epsilon}{\boldsymbol{g}_k^\top \mathbf{F}_k^{-1} \boldsymbol{g}_k}}$.
 
-The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsymbol{\theta}) \approx \frac{1}{|\mathcal{D}|} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in \mathcal{D}} \nabla \log p(\boldsymbol{y}|\boldsymbol{x}, \boldsymbol{\theta}) \nabla \log p(\boldsymbol{y}|\boldsymbol{x}, \boldsymbol{\theta})^\top$.
+The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsymbol{\theta}) \approx \frac{1}{\|\mathcal{D}\|} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in \mathcal{D}} \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta}) \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta})^\top$.
 
 </div>
 
 #### Natural Actor Critic
 
-To apply NGD to RL, define $g_{kt} = \nabla_{\boldsymbol{\theta}_k} A_t \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t|\boldsymbol{s}_t)$ and compute $\boldsymbol{g}_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt}$, $\mathbf{F}_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt} g_{kt}^\top$, then $\boldsymbol{\delta}_{k+1} = -\eta_k \mathbf{F}_k^{-1} \boldsymbol{g}_k$. This is called **natural policy gradient**.
+To apply NGD to RL, define $g_{kt} = \nabla_{\boldsymbol{\theta}\_k} A_t \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t\mid \boldsymbol{s}_t)$ and compute $\boldsymbol{g}_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt}$, $\mathbf{F}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt} g_{kt}^\top$, then $\boldsymbol{\delta}\_{k+1} = -\eta_k \mathbf{F}_k^{-1} \boldsymbol{g}_k$. This is called **natural policy gradient**.
 
 We can compute $\mathbf{F}_k^{-1} \boldsymbol{g}_k$ without having to invert $\mathbf{F}_k$ by using the conjugate gradient method (**Hessian free optimization**). The **KFAC** method approximates the FIM of a DNN as a block diagonal matrix, where each block is a Kronecker product of two small matrices.
 
@@ -1385,7 +1385,7 @@ $$
 **WPO** approximates **Wasserstein gradient flows** over the space of all parametric policies, arriving at an update similar to DPG but for general stochastic policies:
 
 $$
-\boldsymbol{\theta}_{t+1} = \boldsymbol{\theta}_t + \mathcal{F}^{-1} \mathbb{E}_{\boldsymbol{s} \sim \mathcal{D}, \boldsymbol{a} \sim \pi_{\boldsymbol{\theta}}(\cdot|\boldsymbol{s})}\left[\nabla_{\boldsymbol{\theta}} \left(\nabla_{\boldsymbol{a}} \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}|\boldsymbol{s})^\top\right) \nabla_{\boldsymbol{a}} Q^{\pi_{\boldsymbol{\theta}}}(\boldsymbol{s}, \boldsymbol{a})\right]
+\boldsymbol{\theta}\_{t+1} = \boldsymbol{\theta}_t + \mathcal{F}^{-1} \mathbb{E}_{\boldsymbol{s} \sim \mathcal{D}, \boldsymbol{a} \sim \pi_{\boldsymbol{\theta}}(\cdot|\boldsymbol{s})}\left[\nabla_{\boldsymbol{\theta}} \left(\nabla_{\boldsymbol{a}} \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}|\boldsymbol{s})^\top\right) \nabla_{\boldsymbol{a}} Q^{\pi_{\boldsymbol{\theta}}}(\boldsymbol{s}, \boldsymbol{a})\right]
 $$
 
 where $\mathcal{F}$ is the Fisher information matrix. If we ignore the FIM preconditioner, WPO reduces to the DPG theorem except that $\nabla_{\boldsymbol{\theta}} \mu_{\boldsymbol{\theta}}(\boldsymbol{s})$ is replaced by $\nabla_{\boldsymbol{\theta}}(\nabla_{\boldsymbol{a}} \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}|\boldsymbol{s}))^\top$, capturing the change in **probability flow** over the action space. The FIM preconditioner keeps the update closer to the true gradient flow and avoids numerical issues when the policy converges to a deterministic one.
