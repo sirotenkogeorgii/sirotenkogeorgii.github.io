@@ -88,7 +88,10 @@ A **seminorm** is a function $\lVert \cdot \rVert : V \to [0, \infty)$ satisfyin
 
 </div>
 
-A norm induces a metric, so we can think of our normed space as a metric space. Recall that a **metric** $d : X \times X \to [0, \infty)$ satisfies: (1) $d(x, y) = 0 \iff x = y$, (2) $d(x, y) = d(y, x)$, and (3) $d(x, y) + d(y, z) \ge d(x, z)$.
+A norm induces a metric, so we can think of our normed space as a metric space. Recall that a **metric** $d : X \times X \to [0, \infty)$ satisfies: 
+* (1) $d(x, y) = 0 \iff x = y$, 
+* (2) $d(x, y) = d(y, x)$,
+* (3) $d(x, y) + d(y, z) \ge d(x, z)$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Norm Induces a Metric)</span></p>
@@ -833,7 +836,7 @@ In particular, $m^*(\mathbb{Q}) = 0$, even though $\mathbb{Q}$ is dense in $\mat
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Monotonicity of Outer Measure)</span></p>
 
-If $A \subset B$, then $m^*(A) \le m^*(B)$.
+If $A \subset B$, then $m^\ast(A) \le m^\ast(B)$.
 
 </div>
 
@@ -874,7 +877,7 @@ If $I$ is an interval of $\mathbb{R}$, then $m^*(I) = \ell(I)$.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Approximation by Open Sets)</span></p>
 
-For every subset $A \subset \mathbb{R}$ and $\varepsilon > 0$, there exists an open set $O$ such that $A \subset O$ and $m^*(A) \le m^*(O) \le m^*(A) + \varepsilon$.
+For every subset $A \subset \mathbb{R}$ and $\varepsilon > 0$, there exists an open set $O$ such that $A \subset O$ and $m^\ast(A) \le m^\ast(O) \le m^\ast(A) + \varepsilon$.
 
 </div>
 
@@ -894,7 +897,7 @@ A set $E \subset \mathbb{R}$ is **Lebesgue measurable** if for all $A \subset \m
 
 $$m^*(A) = m^*(A \cap E) + m^*(A \cap E^c).$$
 
-In other words, $E$ is well-behaved in that it always cuts any set $A$ into reasonable parts. Since subadditivity gives $m^*(A) \le m^*(A \cap E) + m^*(A \cap E^c)$ for free, measurability amounts to showing the reverse inequality.
+In other words, $E$ is well-behaved in that it always cuts any set $A$ into reasonable parts. Since subadditivity gives $m^\ast(A) \le m^\ast(A \cap E) + m^\ast(A \cap E^c)$ for free, measurability amounts to showing the reverse inequality.
 
 </div>
 
@@ -1107,7 +1110,11 @@ Let $E \subset \mathbb{R}$ be measurable, and suppose $f, g : E \to \mathbb{R}$ 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Closure Under Limits)</span></p>
 
-Let $E \subset \mathbb{R}$ be measurable and $f_n : E \to [-\infty, \infty]$ a sequence of measurable functions. Then the functions $\sup_n f_n$, $\inf_n f_n$, $\limsup_{n \to \infty} f_n$, and $\liminf_{n \to \infty} f_n$ are all measurable.
+Let $E \subset \mathbb{R}$ be measurable and $f_n : E \to [-\infty, \infty]$ a sequence of measurable functions. Then the functions 
+
+$$\sup_n f_n, \quad \inf_n f_n, \quad \limsup_{n \to \infty} f_n, \quad \liminf_{n \to \infty} f_n$$
+
+are all measurable.
 
 </div>
 
@@ -1824,7 +1831,7 @@ The set $\lbrace (0, 1), (1, 0) \rbrace$ is an orthonormal set in $\mathbb{C}^2$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 153</span><span class="math-callout__name">(Standard Basis in $\ell^2$)</span></p>
 
-Let $\underline{e}_n$ be the sequence which is $1$ in the $n$th entry and $0$ everywhere else. Then $\lbrace e_n \rbrace_{n \ge 1}$ is an orthonormal subset of $\ell^2$.
+Let $\underline{e}\_n$ be the sequence which is $1$ in the $n$th entry and $0$ everywhere else. Then $\lbrace e_n \rbrace_{n \ge 1}$ is an orthonormal subset of $\ell^2$.
 
 </div>
 
@@ -2042,7 +2049,7 @@ This is equivalent to asking whether $\left\lbrace \frac{e^{inx}}{\sqrt{2\pi}} \
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 170</span></p>
 
-For all $f \in L^2([-\pi, \pi])$ and all $N \in \mathbb{Z}_{\ge 0}$, we have $S_N f(x) = \int_{-\pi}^{\pi} D_N(x - t) f(t)\,dt$, where
+For all $f \in L^2([-\pi, \pi])$ and all $N \in \mathbb{Z}\_{\ge 0}$, we have $S_N f(x) = \int_{-\pi}^{\pi} D_N(x - t) f(t)\,dt$, where
 
 $$D_N(x) = \begin{cases} \frac{2N+1}{2\pi} & x = 0, \\[6pt] \frac{\sin\left((N + \frac{1}{2})x\right)}{2\pi \sin \frac{x}{2}} & x \ne 0. \end{cases}$$
 
@@ -2292,14 +2299,14 @@ for all $u, v \in H$. In addition, we have that $\lVert A^* \rVert = \lVert A \r
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 186</span><span class="math-callout__name">(Matrices on $\mathbb{C}^n$)</span></p>
 
-If $H = \mathbb{C}^n$ and $A$ is represented by a matrix $(A_{ij})$, then the adjoint $A^*$ is the conjugate transpose: $(A^* v)_i = \sum_{j=1}^{n} \overline{A_{ji}} v_j$.
+If $H = \mathbb{C}^n$ and $A$ is represented by a matrix $(A_{ij})$, then the adjoint $A^*$ is the conjugate transpose: $(A^\ast v)\_i = \sum_{j=1}^{n} \overline{A_{ji}} v_j$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 187</span><span class="math-callout__name">(Operators on $\ell^2$)</span></p>
 
-On $\ell^2$, an operator described by a double sequence $\lbrace A_{ij} \rbrace$ with $\sum_{i,j} \lvert A_{ij} \rvert^2 < \infty$ acts as $(A\underline{a})_i = \sum_{j=1}^{\infty} A_{ij} a_j$. The adjoint is $(A^* \underline{b})_i = \sum_{j=1}^{\infty} \overline{A_{ji}} b_j$ — again, the conjugate transpose.
+On $\ell^2$, an operator described by a double sequence $\lbrace A_{ij} \rbrace$ with $\sum_{i,j} \lvert A_{ij} \rvert^2 < \infty$ acts as $(A\underline{a})\_i = \sum_{j=1}^{\infty} A_{ij} a_j$. The adjoint is $(A^\ast \underline{b})\_i = \sum_{j=1}^{\infty} \overline{A_{ji}} b_j$ — again, the conjugate transpose.
 
 </div>
 
@@ -2319,7 +2326,7 @@ Let $H$ be a Hilbert space, and let $A : H \to H$ be a bounded linear operator. 
 
 $$(\operatorname{Ran}(A))^\perp = \operatorname{Null}(A^*),$$
 
-where $\operatorname{Ran}(A)$ is the range of $A$ and $\operatorname{Null}(A^*)$ is the nullspace of $A^*$.
+where $\operatorname{Ran}(A)$ is the range of $A$ and $\operatorname{Null}(A^\ast)$ is the nullspace of $A^*$.
 
 </div>
 
@@ -2330,7 +2337,7 @@ where $\operatorname{Ran}(A)$ is the range of $A$ and $\operatorname{Null}(A^*)$
   </details>
 </div>
 
-In particular, if $\operatorname{Ran}(A)$ is a closed subspace, then surjectivity of $A$ is equivalent to injectivity of $A^*$ (an infinite-dimensional version of rank-nullity).
+In particular, if $\operatorname{Ran}(A)$ is a closed subspace, then surjectivity of $A$ is equivalent to injectivity of $A^\ast$ (an infinite-dimensional version of rank-nullity).
 
 ## Compactness in Hilbert Spaces
 

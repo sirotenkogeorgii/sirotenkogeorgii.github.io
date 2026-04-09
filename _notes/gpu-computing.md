@@ -197,21 +197,38 @@ A **Streaming Multiprocessor (SM)** is the fundamental processing unit of a CUDA
 
 </div>
 
-All SMs on the GPU can access a large, shared Global Memory through a system of parallel data caches. The host CPU initiates data transfers to and from this Global Memory to set up computations and retrieve results. This load/store architecture, where data is explicitly moved between different memory spaces, is a central concept in GPU programming.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Global Memory is used by SMs and host CPU)</span></p>
+
+* All SMs on the GPU can access a large, shared **Global Memory** through a system of parallel data caches. 
+* The **host CPU** initiates data transfers to and from this Global Memory to **set up computations** and **retrieve results**. 
+* This load/store architecture, where data is explicitly moved between **different memory spaces**, is a central concept in GPU programming.
+
+</div>
 
 ### CUDA Programming
 
-CUDA is an extension of the C programming language created by NVIDIA that exposes the GPU's parallel architecture directly to the developer. CUDA extends C with three main abstractions:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA)</span></p>
+
+**CUDA** is an extension of the C programming language created by NVIDIA that exposes the GPU's parallel architecture directly to the developer. CUDA extends C with three main abstractions:
 1. **hierarchy of threads**
 2. **shared memory**
 3. **barrier synchronization**
 
+</div>
+
 #### CUDA Programming Model
 
-A CUDA program is a hybrid program consisting of two parts: a host part that runs on the CPU and a device part that runs on the GPU.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA Programm)</span></p>
+
+A **CUDA program** is a hybrid program consisting of two parts: a host part that runs on the CPU and a device part that runs on the GPU.
 
 - The **CPU (host) part** is responsible for serial or low-parallelism tasks, such as setting up data, managing memory transfers, and launching computations on the GPU.
 - The **GPU (device) part** handles massively parallel operations by executing kernels across many threads, SPMD-style.
+
+</div>
 
 ### Two Types of Parallelism
 
@@ -225,10 +242,15 @@ CUDA programs exploit two complementary forms of parallelism:
 
 </div>
 
-GPUs combine both: TLP at the grid/block level and DLP-like execution at the warp level. A useful rule of thumb:
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU combines both)</span></p>
+
+**GPU combines both:** TLP at the grid/block level and DLP-like execution at the warp level. A useful rule of thumb:
 
 * If your program is “one loop over big arrays”: **DLP first** (vectorize/GPU-style).
 * If your program is “many independent jobs or stages”: **TLP first** (threads/tasks).
+
+</div>
 
 #### Thread Hierarchy
 
@@ -241,7 +263,8 @@ The most fundamental concept in CUDA is the **thread hierarchy**. When you launc
 - **Block**:
   - A group of threads. All blocks are equal size.
   - Threads within the same block can cooperate by sharing data through a fast, on-chip **shared memory** and can synchronize their execution using **barriers**.
-  - Threads from different blocks cannot interact. Exception: **global memory**.
+  - Threads from different blocks cannot interact.
+    - Exception: **global memory**.
 - **Grid**: A group of blocks. A kernel is launched as a single grid of thread blocks. Blocks within a grid are executed independently and in any order, and they cannot directly synchronize with each other.
 
 </div>
@@ -262,9 +285,12 @@ This hierarchical structure allows you to naturally map the parallelism in your 
 
 #### Launching a Kernel
 
-A CUDA kernel is a function that runs on the device. You define it in your C/C++ code using the `__global__` declaration specifier.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(Defining a Kernel)</span></p>
 
-A kernel is defined like a C function but with the `__global__` prefix, which indicates it can be called from the host and is executed on the device. A kernel function must have a void return type.
+A CUDA kernel is a function that runs on the device. You **define** it in your C/C++ code using the `__global__` declaration specifier.
+
+A kernel is defined like a C function but with the `__global__` prefix, which indicates it can be called from the host and is executed on the device. A kernel function must have a **void return type**.
 
 ```c++
 // Kernel function declaration
@@ -273,25 +299,38 @@ __global__ void MyKernel(float* data) {
 }
 ```
 
-To execute this function, you call it from the host using a special `<<< ... >>>` syntax, known as the execution configuration. This tells the CUDA runtime how many threads to launch.
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(Executing a Kernel)</span></p>
+
+To **execute this function**, you call it from the host using a special `<<< ... >>>` syntax, known as the execution configuration. This tells the CUDA runtime how many threads to launch.
 
 ```c++
 kernel_name<<<numBlocks, threadsPerBlock>>>(arguments);
 ```
 
-- `numBlocks`: The number of thread blocks to launch in the grid.
-- `threadsPerBlock`: The number of threads to launch in each block.
+- `numBlocks`: The **number of thread blocks** to launch in the **grid**.
+- `threadsPerBlock`: The **number of threads** to launch in each **block**.
 
-**Unique Thread Identification**
+</div>
 
-Inside a kernel, each thread needs a way to identify itself so it can work on a unique piece of data. CUDA provides built-in variables for this purpose:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Unique Thread Identification)</span></p>
 
-- `threadIdx`: A 3-component vector (x, y, z) that contains the unique index of a thread within its block.
-- `blockIdx`: A 3-component vector (x, y, z) that contains the unique index of a block within its grid.
-- `blockDim`: A 3-component vector (x, y, z) that contains the dimensions of the block (the number of threads in each dimension).
-- `gridDim`: A 3-component vector (x, y, z) that contains the dimensions of the grid (the number of blocks in each dimension).
+Inside a kernel, each thread needs a way to identify itself so it can **work on a unique piece of data**. CUDA provides built-in variables for this purpose:
+
+- `threadIdx`: A 3-component vector (x, y, z) that contains the **unique index of a thread within its block**.
+- `blockIdx`: A 3-component vector (x, y, z) that contains the **unique index of a block within its grid**.
+- `blockDim`: A 3-component vector (x, y, z) that contains the **dimensions of the block** (the number of threads in each dimension).
+- `gridDim`: A 3-component vector (x, y, z) that contains the **dimensions of the grid** (the number of blocks in each dimension).
 
 **Important: It is always a 3D vector, even if you logically use 2D, for example, for matrix multiplication.**
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Simple matrix addition)</span></p>
 
 Let's see a simple example of adding two matrices, where each thread computes one element of the result.
 
@@ -312,9 +351,14 @@ int main() {
 
 In this simple case, we launch a single block (1) with $N\times N$ threads (`dimBlock` of type `dim3`). Each thread uses its `threadIdx.x` and `threadIdx.y` to find its unique (i, j) coordinate and computes a single element `C[i][j]`.
 
+</div>
+
 **Scaling Up with Grids**
 
 The previous example only works if the matrix size `N` is small enough to fit within a single thread block (e.g., up to 1024 threads total). To handle larger problems, we must launch a grid of multiple blocks.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Using multiple blocks)</span></p>
 
 When using multiple blocks, we need a way to calculate a global index for each thread across the entire grid. The standard formula for a 1D problem is:
 
@@ -326,6 +370,11 @@ Let's break this down:
 
 - `blockIdx.x * blockDim.x`: This calculates the starting index for the current block. For example, if each block has 256 threads (`blockDim.x`), then block 0 starts at index 0, block 1 starts at index 256, block 2 starts at index 512, and so on.
 - `+ threadIdx.x`: This adds the thread's local index within the block to get its unique global index.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Revised `matAdd` kernel with any size matrix)</span></p>
 
 Here is the revised `matAdd` kernel that can handle any size matrix by using a grid of blocks.
 
@@ -363,18 +412,23 @@ int main() {
 2. **Boundary Check:** The `if (i < N && j < N)` statement is crucial. Because we must launch a whole number of blocks, the total number of threads launched might be greater than the number of elements in our matrix. This check ensures that only threads corresponding to valid matrix elements perform a write, preventing memory corruption.
 3. **Grid Calculation:** The formula `(N + dimBlock.x - 1) / dimBlock.x` is a standard C/C++ integer arithmetic trick for calculating the ceiling of a division. It ensures we launch enough blocks to cover all `N` elements. For example, if `N=50` and `dimBlock.x=16`, the calculation is `(50 + 16 - 1) / 16 = 65 / 16`, which results in 4 in integer division, correctly launching 4 blocks to cover the 50 elements.
 
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/grid_sketch.png' | relative_url }}" alt="Thread hierarchy 1" loading="lazy">
   <!-- <figcaption>Thread hierarchy 1</figcaption> -->
 </figure>
 
-**Choosing Block and Grid Sizes**
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Choosing Block and Grid Sizes)</span></p>
 
 - **Threads per Block:** This should be a multiple of the warp size (typically 32, a concept we'll cover later). A common starting point is $128$, $256$, or $512$ threads per block. The ideal number balances resource usage with the ability to hide memory latency. 
   - **A range of $100-1000$ threads is often optimal.**
 - **Blocks per Grid:** You should launch enough blocks to keep all the SMs on the GPU busy.
   - **A good heuristic is to launch at least twice as many blocks as there are SMs on your GPU.**
 - **Number of blocks is limited:** $512 \times 512 \times 64 \to 1024 \times 1024 \times 64$, depending on the GPU generation.
+
+</div>
 
 #### Thread Communication and Synchronization
 
@@ -405,7 +459,12 @@ A key feature of the CUDA model is that threads within the same block can cooper
 
 Understanding the memory hierarchy is critical for writing high-performance CUDA code. A thread has access to several distinct memory spaces, each with different characteristics regarding scope, lifetime, and speed.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Memory Hierarchy: registers, shared memory, global memory)</span></p>
+
 A diagram of the memory hierarchy shows that each Thread has its own private Registers. A group of threads in a Block shares a common Shared Memory. All blocks in the Grid can access the larger but slower Global Memory. The Host (CPU) also interacts with the device via this Global Memory.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Global Memory)</span></p>
@@ -416,12 +475,20 @@ A diagram of the memory hierarchy shows that each Thread has its own private Reg
 
 </div>
 
-You manage global memory from the host using the CUDA runtime API:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(CUDA global memory runtime API)</span></p>
+
+You manage **global memory from the host using the CUDA runtime API**:
 
 - `cudaMalloc(&d_ptr, size)`: Allocates `size` bytes of memory on the device and returns a pointer in `d_ptr`.
 - `cudaFree(d_ptr)`: Frees device memory.
 - `cudaMemcpy(dst, src, size, type)`: A blocking function to copy data between host and device. The `type` can be `cudaMemcpyHostToDevice`, `cudaMemcpyDeviceToHost`, or `cudaMemcpyDeviceToDevice`.
 - `cudaMemcpyAsync(...)`: A non-blocking version for overlapping data transfers with computation.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Workflow for a CUDA program)</span></p>
 
 The standard workflow for a CUDA program looks like this:
 
@@ -448,6 +515,8 @@ free(h_mem);
 
 > **Note:** When calling a kernel, you can only pass pointers to device memory (like `d_mem`), not host memory.
 
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shared Memory)</span></p>
 
@@ -464,7 +533,8 @@ free(h_mem);
 
 CUDA extends C/C++ with special specifiers for declaring variables and functions.
 
-**Variable Declaration Specifiers**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(Variable Declaration Specifiers)</span></p>
 
 These specifiers determine where a variable is stored and its scope.
 
@@ -475,11 +545,10 @@ These specifiers determine where a variable is stored and its scope.
 | `__shared__ float var;` | Shared Memory | All threads in block | Block |
 | `texture <float> ref;` | Texture Memory | All threads + Host API | Application |
 
-`__device__` can be combined with others.
+</div>
 
-A key function related to shared memory is `__syncthreads()`. This intrinsic creates a barrier, forcing all threads in a block to wait until everyone has reached this point. It is essential for managing dependencies when using shared memory, ensuring that data is fully written before it is read by other threads.
-
-**Function Declaration Specifiers**
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(Function Declaration Specifiers)</span></p>
 
 These specifiers determine where a function is executed and where it can be called from.
 
@@ -492,26 +561,51 @@ These specifiers determine where a function is executed and where it can be call
 - `__global__` defines a kernel, which can only be called from the host.
 - `__device__` functions can only be called from other `__device__` or `__global__` functions.
 - `__host__` is the default and can be combined with `__device__` to create a function that can be compiled for and called from both the CPU and GPU.
-- Device functions have several restrictions: they do not support recursion, variable numbers of arguments, or non-static variable declarations inside the function.
+- **Device functions have several restrictions:** they do not support recursion, variable numbers of arguments, or non-static variable declarations inside the function.
 
-**Type Specifiers**
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(Type Specifiers)</span></p>
 
 CUDA introduces several built-in types:
 
-- Vector types: Such as `float2`, `float4`, `int2`, `int4`, which are simple structs containing 2 or 4 components. These are useful for representing coordinates or colors and can lead to more efficient memory access.
-- `dim3` type: A struct based on `uint3` used for specifying dimensions for grids and blocks. Unspecified components are automatically initialized to 1.
+- **Vector types:** Such as `float2`, `float4`, `int2`, `int4`, which are simple structs containing 2 or 4 components. These are useful for representing coordinates or colors and can lead to more efficient memory access.
+- **`dim3` type:** A struct based on `uint3` used for specifying dimensions for grids and blocks. Unspecified components are automatically initialized to 1.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(`__device__` can be combined with others)</span></p>
+
+A key function related to shared memory is `__syncthreads()`. This intrinsic creates a barrier, forcing all threads in a block to wait until everyone has reached this point. It is essential for managing dependencies when using shared memory, ensuring that data is fully written before it is read by other threads.
+
+</div>
 
 #### Compilation and Execution
 
-CUDA code is compiled using the `nvcc` (NVIDIA C Compiler) driver. `nvcc` is a powerful tool that separates the host and device code.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA compiler)</span></p>
+
+CUDA code is compiled using the `nvcc` (**NVIDIA C Compiler**) driver. `nvcc` is a powerful tool that separates the host and device code.
 
 1. It processes the CUDA source code, separating host (`__host__`) code from device (`__global__`, `__device__`) code.
 2. The host code is compiled by a standard C++ compiler like `g++` or `clang`.
 3. The device code is compiled into PTX (Parallel Thread Execution) code.
 
-PTX is a virtual machine and instruction set architecture (ISA) for GPUs. It acts as a stable assembly-like language for the GPU. This is a key part of CUDA's forward compatibility. When you compile your code, `nvcc` can embed the PTX in your executable. When you run your application, the GPU driver performs a final Just-In-Time (JIT) compilation step, translating the PTX into the specific machine code for the target GPU (e.g., GF100, GK110, GP100) you are running on.
-
 Finally, `nvcc` links the compiled host and device code with the necessary CUDA libraries (`cudart`, `cuda`) to produce the final executable.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(PTX (Parallel Thread Execution))</span></p>
+
+* **PTX** is a virtual machine and instruction set architecture (ISA) for GPUs. It acts as a stable assembly-like language for the GPU. 
+* This is a key part of CUDA's forward compatibility. 
+  * **When you compile your code**, `nvcc` can embed the PTX in your executable. 
+  * **When you run your application**, the GPU driver performs a final Just-In-Time (JIT) compilation step, translating the PTX into the specific machine code for the target GPU (e.g., GF100, GK110, GP100) you are running on.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/cuda_program_compilation1.png' | relative_url }}" alt="Thread hierarchy 1" loading="lazy">
@@ -533,7 +627,8 @@ Here, `x` and `y` are vectors, $\alpha$ is a scalar, and `i` is the index of the
 
 </div>
 
-#### Serial CPU Implementation
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Serial CPU Implementation of SAXPY)</span></p>
 
 A standard C implementation of SAXPY uses a simple `for` loop.
 
@@ -546,7 +641,10 @@ void saxpy_serial(int n, float alpha, float *x, float *y) {
 }
 ```
 
-#### Parallel CUDA Implementation
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Parallel CUDA Implementation of SAXPY)</span></p>
 
 The CUDA version replaces the loop with a kernel where each thread processes one element.
 
@@ -563,7 +661,10 @@ __global__ void saxpy_parallel(int n, float alpha, float *x, float *y) {
 }
 ```
 
-This is a perfect demonstration of the SPMD model. Every thread runs this exact same code, but because each thread has a unique `i` calculated from `blockIdx.x` and `threadIdx.x`, each thread operates on a different element of the vectors `x` and `y`.
+This is a perfect demonstration of the SPMD model. Every thread runs this exact same code, but because each thread has a unique `i` calculated from `blockIdx.x` and 
+`threadIdx.x`, each thread operates on a different element of the vectors `x` and `y`.
+
+</div>
 
 #### Performance Considerations: Pinned Memory
 
@@ -577,6 +678,9 @@ Initial performance tests often show that even for large vectors, the GPU versio
 By allocating host memory directly as pinned memory, we eliminate this extra copy. Pinned memory is a scarce resource, so it should be used judiciously.
 
 </div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Pinned Memory)</span></p>
 
 ```c++
 float *h_x;
@@ -596,7 +700,14 @@ cudaMalloc ( (void**)&d_x, N*sizeof(float) );
 cudaMalloc ( (void**)&d_y, N*sizeof(float) );
 ```
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(`cudaMallocHost` vs. `malloc`)</span></p>
+
 Using `cudaMallocHost` instead of `malloc` can lead to a significant reduction in data transfer times, making the GPU's computational advantage more apparent.
+
+</div>
 
 **What `cudaMalloc` actually is?**
 <div class="accordion">
@@ -776,7 +887,6 @@ If your source is pageable (`malloc()`), the driver can’t lock arbitrary pages
   </details>
 </div>
 
-
 ### Device Properties and Common Errors
 
 You can query the properties of the GPU in your system to make informed decisions about kernel launch configurations. The `deviceQuery` utility provides a survey of these properties.
@@ -793,8 +903,8 @@ You can query the properties of the GPU in your system to make informed decision
 | Max Block Dimension | 1024 x 1024 x 64 | 1024 x 1024 x 64 | 1024 x 1024 x 64 |
 | Max Grid Dimension | 65535 x 65535 x 65535 | 2G x 65535 x 65535 | 2G x 65535 x ? |
 
-<div class="math-callout math-callout--remark" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common CUDA Errors)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Common CUDA Errors)</span></p>
 
 - **the launch timed out and was terminated:** Kernel took too long. Common on systems with a graphical display where the OS kills kernels to prevent screen freezing. Solution: stop the X11 server.
 - **unspecified launch failure:** Often indicates a segfault inside the kernel (out-of-bounds access or invalid pointer).
@@ -1071,12 +1181,15 @@ The GPU hardware does not manage individual threads. Instead, it groups them int
 
 </div>
 
-On Kepler:
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(On Kepler)</span></p>
 
-  * Up to 1024 threads can be in a **thread block**.
-  * One thread block executes entirely on **one SM**.
-  * Each thread block is divided into **warps** of 32 threads.
-  * One SM can hold multiple thread blocks (up to 4) and up to 32 warps per block.
+* Up to 1024 threads can be in a **thread block**.
+* One thread block executes entirely on **one SM**.
+* Each thread block is divided into **warps** of 32 threads.
+* One SM can hold multiple thread blocks (up to 4) and up to 32 warps per block.
+
+</div>
 
 ### The SM Scheduler at Work
 
