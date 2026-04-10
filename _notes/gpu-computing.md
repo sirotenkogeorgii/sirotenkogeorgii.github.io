@@ -917,8 +917,15 @@ You can query the properties of the GPU in your system to make informed decision
 
 ### Vector Architectures: The Foundation of Efficiency
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Vector ISA Efficiency)</span></p>
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector ISA)</span></p>
+
+**Vector ISA:** an instruction set architecture that provides instructions for performing the same operation over multiple data elements arranged as a vector.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Vector ISA Efficiency)</span></p>
 
 The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (Instruction Set Architectures)**, which are efficient in three key ways:
 
@@ -927,7 +934,6 @@ The underlying hardware of a GPU is a vector machine leveraging **Vector ISAs (I
   * **Expressive:** Vector memory instructions describe regular access patterns, allowing the hardware to prefetch data and amortize memory latency.
 
 </div>
-
 
 ### The GK110 Architecture: A High-Level View
 
@@ -946,7 +952,8 @@ The GK110 chip consists of up to 15 **Streaming Multiprocessors (SMX)**, which a
   </figure>
 </div>
 
-### The Streaming Multiprocessor (SMX): The "GPU Core"
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler's SM's (SMX))</span></p>
 
 The **Streaming Multiprocessor**, often abbreviated as **SM** (or **SMX** in the Kepler architecture), is the true "core" of the GPU where threads are scheduled and instructions are executed. Each GK110 SMX contains:
 
@@ -957,6 +964,8 @@ The **Streaming Multiprocessor**, often abbreviated as **SM** (or **SMX** in the
 
 To manage execution, each SMX also contains **4 warp schedulers**. A key design philosophy of the GK110 was optimizing for **performance-per-watt** by reducing clock frequency (which has a cubic relationship with power) while increasing parallelism.
 
+</div>
+
 ## The GPU Memory Hierarchy
 
 Understanding the memory hierarchy is critical for high-performance GPU programming. Unlike CPUs with deep, transparent cache hierarchies, GPUs feature a complex, multi-level memory hierarchy that is **manually controlled by the programmer**. 
@@ -965,12 +974,17 @@ On a GPU, caches are used less for reducing latency and more for reducing memory
 
 ### A Collaborative Approach
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(GPU's Collaborative Approach)</span></p>
+
 The GPU philosophy is built on collaboration:
 
   * **Collaborative Computing:** In CUDA, you typically launch one thread per output element, grouped into **thread blocks**. Schedulers use the massive number of threads (parallel slack) to keep hardware busy. SIMT – Single Instruction, Multiple Threads.
   * **Collaborative Memory Access:** Memory access should be a team sport. Thread-collective computation and memory accesses. Threads within a block work together to load data efficiently. The memory controllers (MCs) are optimized to exploit that concurrency, especially through **memory coalescing**.
 
 > **Key Takeaway:** If you do something on a GPU, do it collaboratively with all threads.
+
+</div>
 
 ### The Levels of Memory
 
@@ -1097,7 +1111,8 @@ On Kepler, the L1 Cache and Shared Memory are backed by the same physical hardwa
 
 **Global Memory** refers to the large pool of GDDR memory on the graphics card. It has very high bandwidth but also very high latency (400-600 cycles). The **L2 Cache** is a large, on-chip cache shared by all SMs, designed to reduce contention on the global memory subsystem. The GPU's memory subsystem is fully featured, with support for virtual addresses, an MMU, and a TLB.
 
-#### Host Memory
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Host memory)</span></p>
 
 This is the main system RAM attached to the CPU. Data must be transferred between host and GPU global memory.
 
@@ -1105,7 +1120,14 @@ This is the main system RAM attached to the CPU. Data must be transferred betwee
   * **Pinned Memory:** Standard host memory is "pageable" (unpinned). The GPU must copy it to a "staging buffer" first. **Pinning** memory (e.g., with `cudaMallocHost`) locks it in physical RAM, allowing for autonomous device access and faster transfers.
   * **Zero Copy:** On modern GPUs (Compute Capability \>= 2.0), threads can directly operate on pinned host memory.
 
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Host memory is much slower than GPU memory)</span></p>
+
 A system diagram shows the CPU/Host Memory connection (\~64 GB/s) is vastly different from the GPU-GDDR connection (\~460 GB/s) and internal GPU memory bandwidth (\~3.3 TB/s).
+
+</div>
 
 ### Global Memory Coalescing: The Key to Bandwidth
 
@@ -1116,11 +1138,15 @@ A system diagram shows the CPU/Host Memory connection (\~64 GB/s) is vastly diff
 
 </div>
 
-On Kepler, 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler's cache lines)</span></p>
+
 * the L1 cache line size is 128 bytes (**latency-optimized**)
   * **latency-optimized, warp-aligned, spatially coherent** $\implies$ **large cache line size**
 * the L2 cache line size is 32 bytes (**bandwidth-optimized**)
   * **bandwidth-optimized, multi-client, fine-grained access, matched to GDDR transfer size** $\implies$ **small cache line size**
+
+</div>
 
 When threads in a warp access memory, the ideal pattern is for them to access contiguous, aligned locations.
 
@@ -1209,7 +1235,8 @@ The goal of FGMT is **latency hiding**. With enough active warps, the scheduler 
 
 </div>
 
-### Hardware Multi-Threading Example (G80)
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hardware Multi-Threading on G80)</span></p>
 
 An older G80 architecture provides a clear example. Assume 
 * 4 warp contexts and maximum 1 being executed simultaneously, 
@@ -1234,6 +1261,8 @@ A timing diagram for this G80 example shows four warps (T0, T1, T2, T3).
 
 This cycle of executing, stalling, and switching between ready warps ensures the ALUs are constantly fed with instructions.
 
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/example_for_hardware_multithreading_g80.png' | relative_url }}" alt="GPU global memory" loading="lazy">
   <figcaption>Example for Hardware Multi-Threading G80</figcaption>
@@ -1252,10 +1281,15 @@ Modern schedulers use a **scoreboard**, a hardware table that tracks the status 
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Kepler's scheduler)</span></p>
+
 The Kepler scheduler 
 1. **checks** the scoreboard
 2. **issues** an instruction to a ready warp using a **prioritized round-robin scheme**. 
    * The instruction is then broadcast to all 32 threads in that warp.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/kepler_scheduler_instruction_issue.png' | relative_url }}" alt="GPU global memory" loading="lazy">
@@ -1700,16 +1734,26 @@ A **reduction** is a common parallel operation where an array of elements is "re
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Reductions)</span></p>
+
 Examples of reduction include:
 
-* Global sum: $s = \sum_{i=0}^{N} f(x_i)$
-* Global product: $p = \prod_{i=0}^{N} f(x_i)$
-* Histogram: $h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0$
+* **Global sum:** $s = \sum_{i=0}^{N} f(x_i)$
+* **Global product:** $p = \prod_{i=0}^{N} f(x_i)$
+* **Histogram:** $h_k = \sum_{i=0}^{N} (x_i = k) ? 1 : 0$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Optimization of Reduction)</span></p>
 
 Reduction is a perfect candidate for optimization analysis because it is **memory-bound**: performance is limited by the speed at which data can be read from memory, not by the speed of the arithmetic. Therefore, our key performance metric will be **effective bandwidth (GB/s)**.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Effective Bandwidth)</span></p>
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Effective Bandwidth)</span></p>
 
 **Effective bandwidth** is a real-world measure of data transfer speed, accounting for inefficiencies like latency, protocol overhead, and packet loss, unlike **theoretical (asymptotic) bandwidth**. It quantifies the actual data throughput for specific applications, representing the sustainable rate under typical conditions, often lower than the maximum possible speed.
 
@@ -1766,7 +1810,11 @@ So: **within one SM**, you can *sometimes hack coordination* if you ensure all r
 #### Why is there no global synchronization?
 
 1. **Scalability**: A global barrier would be extremely expensive to implement in hardware across a device with a high SM count.
-2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula:  #\text{CTAs} $\leq$ #\text{SMs} $\cdot$ $b_r$  where $b_r$ is the number of resident blocks per SM.
+2. **Scheduling Guarantees**: GPU scheduling is non-preemptive. A CTA, once scheduled on an SM, runs to completion. If a CTA were to wait at a global barrier for a CTA that hasn't even been scheduled yet, it could lead to a deadlock, where the entire GPU grinds to a halt. This would also conflict with the principle of parallel slackness needed to hide memory latency. The number of CTAs that could be synchronized would be limited by the number of resident blocks per SM, according to the formula: 
+   
+   $$\#\text{CTAs} \leq \#\text{SMs} \cdot b_r$$
+   
+   where $b_r$ is the number of resident blocks per SM.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Deadlock from Global Synchronization)</span></p>
@@ -1777,7 +1825,7 @@ The classic deadlock scenario works as follows:
    
    $$\#\text{CTAs} > \#\text{SMs} \cdot b_r$$
    
-2. The GPU schedules up to $\char"0023 \text{SMs} \cdot b_r$ blocks. These become **resident** and start running.
+2. The GPU schedules up to #$\text{SMs} \cdot b_r$ blocks. These become **resident** and start running.
 3. All resident blocks reach the **global barrier** and **wait** there.
 4. While waiting, they **still occupy the SM resources** (registers, shared memory, block slots).
 5. Because the SMs are "full" of waiting resident blocks, **no new blocks can become resident**, so the remaining (not-yet-scheduled) CTAs never start.
@@ -2306,10 +2354,10 @@ To gather this data, profilers rely on hardware performance counters. These are 
 
 When we write a CUDA C++ program, it goes through several stages of compilation before it can run on the GPU. We can analyze performance at any of these levels:
 
-1. C/C++: The high-level source code we write.
-2. IR (Intermediate Representation): A lower-level, platform-agnostic representation of the code, such as LLVM IR.
-3. PTX (Parallel Thread Execution): An assembly-like language for NVIDIA GPUs. It's a stable instruction set that can be compiled for different GPU architectures.
-4. SASS (Shader Assembly): The native, machine-level assembly language for a specific GPU architecture. This is what the hardware actually executes.
+1. **C/C++:** The high-level source code we write.
+2. **IR (Intermediate Representation):** A lower-level, platform-agnostic representation of the code, such as LLVM IR.
+3. **PTX (Parallel Thread Execution):** An assembly-like language for NVIDIA GPUs. It's a stable instruction set that can be compiled for different GPU architectures.
+4. **SASS (Shader Assembly):** The native, machine-level assembly language for a specific GPU architecture. This is what the hardware actually executes.
 
 Profiling at the SASS level gives you the most accurate and detailed view of what the hardware is doing, as it's closest to the metal.
 
@@ -2401,7 +2449,6 @@ sleep(100);
 nvtxRangePop();
 ```
 
-
 ### Case Study: Profiling a Matrix Multiplication Kernel
 
 We now apply these tools to a concrete example: profiling a cuBLAS matrix multiplication routine and examining how performance changes with matrix shape.
@@ -2414,26 +2461,26 @@ Consider this example of running a test on a 1024x1024 matrix multiplication (SG
 
 1. Baseline (No Profiling): The application runs extremely fast, achieving over 8,000 GFLOP/s.
 
-```bash
-$ ./cuBLAS-test-sm75 1024 1024 1024
-SGEMM (  1024 x   1024 x   1024):     0.0002 sec,    8363.55 GFLOP/s
-```
+   ```bash
+   $ ./cuBLAS-test-sm75 1024 1024 1024
+   SGEMM (  1024 x   1024 x   1024):     0.0002 sec,    8363.55 GFLOP/s
+   ```
 
 2. Profiling with the default set: Using ncu with the default set requires 8 passes. The execution time balloons from 0.2 milliseconds to over half a second, and the measured performance plummets to just 3.46 GFLOP/s.
 
-```bash
-$ ncu -f --set default -o <file> ./cuBLAS-test-sm75 1024 1024 1024
-==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 8 passes
-SGEMM (  1024 x   1024 x   1024):     0.5779 sec,       3.46 GFLOP/s
-```
+   ```bash
+   $ ncu -f --set default -o <file> ./cuBLAS-test-sm75 1024 1024 1024
+   ==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 8 passes
+   SGEMM (  1024 x   1024 x   1024):     0.5779 sec,       3.46 GFLOP/s
+   ```
 
 3. Profiling with the full set: Using the full set is even more expensive, requiring 33 passes. The execution takes 1.7 seconds, and measured performance is a paltry 1.17 GFLOP/s.
 
-```bash
-$ ncu -f --set full --section ComputeWorkloadAnalysis -o <file> ./cuBLAS-test-sm75 1024 1024 1024
-==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 33 passes
-SGEMM (  1024 x   1024 x   1024):     1.7117 sec,       1.17 GFLOP/s
-```
+   ```bash
+   $ ncu -f --set full --section ComputeWorkloadAnalysis -o <file> ./cuBLAS-test-sm75 1024 1024 1024
+   ==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 33 passes
+   SGEMM (  1024 x   1024 x   1024):     1.7117 sec,       1.17 GFLOP/s
+   ```
 
 This is a critical lesson: the performance numbers you see during a detailed profiling run are not the true performance of your application; they are the performance under heavy observation. You must always establish a non-profiled baseline first.
 
@@ -2484,10 +2531,10 @@ By plotting these metrics against the different matrix shapes, the source of the
 
 **Internal Kernel Switching:** An interesting detail revealed by the profiling data is that the cuBLAS library is not using the same kernel for all matrix shapes. It intelligently selects different internal implementations based on the problem size and shape. For example:
 
-* 1024-1024-1024 uses volta_sgemm_128x64_nn
-* 32768-32-1024 uses volta_sgemm_128x32_sliced1x4_nn
-* 524288-2-1024 uses gemmSN_NN_kernel
-* 1048576-1-1024 uses a combination of kernel and splitKreduce_kernel
+* 1024-1024-1024 uses `volta_sgemm_128x64_nn`
+* 32768-32-1024 uses `volta_sgemm_128x32_sliced1x4_nn`
+* 524288-2-1024 uses `gemmSN_NN_kernel`
+* 1048576-1-1024 uses a combination of kernel and `splitKreduce_kernel`
 
 This shows the complexity of high-performance libraries, which contain multiple specialized algorithms to handle different types of inputs. However, even with these specialized kernels, the fundamental problem of poor data locality in skewed matrices leads to catastrophic cache performance and a massive drop in overall GFLOP/s.
 
@@ -2578,9 +2625,9 @@ struct p_t {
 p_t particles[MAX_SIZE];
 ```
 
-This is called an Array of Structures (AoS). In memory, the data for each particle is laid out contiguously. The position, velocity, and mass of particle[0] are stored together, followed immediately by all the data for particle[1], and so on.
+This is called an Array of Structures (AoS). In memory, the data for each particle is laid out contiguously. The position, velocity, and mass of `particle[0]` are stored together, followed immediately by all the data for particle[1], and so on.
 
-Memory Layout (AoS): [x0, y0, z0, vx0, ..., m0] [x1, y1, z1, vx1, ..., m1] [x2, ...] 
+**Memory Layout (AoS):** `[x0, y0, z0, vx0, ..., m0] [x1, y1, z1, vx1, ..., m1] [x2, ...]`
 
 This layout is intuitive and works well for many single-threaded applications where you typically process one entire object at a time.
 
@@ -2606,7 +2653,7 @@ p_t particles;
 
 In this layout, all the x-positions are stored together, all the y-positions are stored together, and so on.
 
-Memory Layout (SoA): [x0, x1, x2, ...] [y0, y1, y2, ...] [z0, z1, z2, ...] ...
+Memory Layout (SoA): `[x0, x1, x2, ...] [y0, y1, y2, ...] [z0, z1, z2, ...] ...`
 
 While this might seem less intuitive and requires more pointers to manage, it is often the superior choice for GPU applications. To understand why, we need to revisit the concept of memory coalescing.
 
@@ -2661,14 +2708,14 @@ $$x_i(t + \delta t) = x_i(t) + \delta t \cdot v_i\!\left(t + \tfrac{1}{2}\delta 
 
 ### Implementing an N-Body Simulation on the GPU
 
-Our goal is to implement the force calculation step on the GPU, as it is the most computationally expensive part (O(N^2)).
+Our goal is to implement the force calculation step on the GPU, as it is the most computationally expensive part $O(N^2)$.
 
 #### Initial Design: One Thread Per Body
 
 A natural way to partition the problem for a GPU is to assign one thread to calculate the total force for one body. Each thread will:
 
 1. Load the position and mass of its assigned body.
-2. Iterate through all other N-1 bodies.
+2. Iterate through all other $N-1$ bodies.
 3. For each other body, calculate the interaction force and add it to an accumulator.
 4. Write the final total force back to global memory.
 
@@ -2676,11 +2723,11 @@ This approach requires communication (each thread needs to read the data of all 
 
 #### A Naive GPU Implementation
 
-Let's start with a straightforward implementation. First, a helper function to calculate the interaction between two bodies. This function can be used by both the CPU (__host__) and GPU (__device__).
+Let's start with a straightforward implementation. First, a helper function to calculate the interaction between two bodies. This function can be used by both the CPU (`__host__`) and GPU (`__device__`).
 
 ##### bodyBodyInteraction Helper Function
 
-This function takes the properties of two bodies and calculates the force components (fx, fy, fz) that body 1 exerts on body 0. It performs approximately 16 single-precision floating-point operations (FLOPs).
+This function takes the properties of two bodies and calculates the force components (`fx`, `fy`, `fz`) that body 1 exerts on body 0. It performs approximately 16 single-precision floating-point operations (FLOPs).
 
 ```c++
 __host__ __device__ void bodyBodyInteraction(
@@ -2710,10 +2757,9 @@ __host__ __device__ void bodyBodyInteraction(
 }
 ```
 
-
 ##### The ComputeNBodyGravitation_GPU_AOS Kernel
 
-Now for the main kernel. This kernel uses the AoS data layout with packed float4 values to improve memory access. Each thread calculates the total force for one body i.
+Now for the main kernel. This kernel uses the AoS data layout with packed `float4` values to improve memory access. Each thread calculates the total force for one body i.
 
 ```c++
 __global__ void ComputeNBodyGravitation_GPU_AOS(
@@ -2755,18 +2801,17 @@ __global__ void ComputeNBodyGravitation_GPU_AOS(
 }
 ```
 
-
 ##### Code Breakdown
 
-* i = blockIdx.x*blockDim.x + threadIdx.x: This is the standard formula to calculate a unique global index for each thread. The outer for loop is a grid-stride loop, which makes the kernel flexible—it works correctly even if we launch fewer threads than the number of bodies N.
-* float4 me = ((float4 *) posMass)[i]: We load the data for the thread's assigned body (me). By casting the posMass pointer to float4*, we are telling the hardware to perform a single 16-byte load, which can be more efficient. The x, y, z components store position, and the w component stores mass.
-* for (int j = 0; j < N; j++): This is the critical inner loop. The thread iterates through all N bodies in the system.
-* float4 body = ((float4 *) posMass)[j]: Inside the loop, the thread loads the data for each body j from global memory.
-* Data Reuse: Notice that me is loaded once and reused N times inside the inner loop. The data for body is loaded from global memory in every single iteration. However, because all threads in the GPU are executing this same inner loop, they will all be requesting the same body data at roughly the same time. This means the data for body j will be loaded from global memory and can be temporarily stored in the L1/L2 caches, benefiting all threads that need it.
+* `i = blockIdx.x*blockDim.x + threadIdx.x`: This is the standard formula to calculate a unique global index for each thread. The outer for loop is a grid-stride loop, which makes the kernel flexible—it works correctly even if we launch fewer threads than the number of bodies $N$.
+* `float4 me = ((float4 *) posMass)[i]`: We load the data for the thread's assigned body (me). By casting the posMass pointer to `float4*`, we are telling the hardware to perform a single 16-byte load, which can be more efficient. The `x`, `y`, `z` components store position, and the w component stores mass.
+* `for (int j = 0; j < N; j++)`: This is the critical inner loop. The thread iterates through all $N$ bodies in the system.
+* `float4 body = ((float4 *) posMass)[j]`: Inside the loop, the thread loads the data for each body `j` from global memory.
+* **Data Reuse:** Notice that me is loaded once and reused $N$ times inside the inner loop. The data for body is loaded from global memory in every single iteration. However, because all threads in the GPU are executing this same inner loop, they will all be requesting the same body data at roughly the same time. This means the data for body `j` will be loaded from global memory and can be temporarily stored in the L1/L2 caches, benefiting all threads that need it.
 
 #### Performance and the Power of Loop Unrolling
 
-Even in this naive implementation, we can apply a simple but effective optimization: loop unrolling. This technique reduces branch overhead by expanding the loop body, performing more work per iteration. We can hint to the compiler to do this using a #pragma.
+Even in this naive implementation, we can apply a simple but effective optimization: loop unrolling. This technique reduces branch overhead by expanding the loop body, performing more work per iteration. We can hint to the compiler to do this using a `#pragma`.
 
 ```c++
 #pragma unroll 16
@@ -2791,16 +2836,16 @@ The naive version relies on the GPU's hardware caches to exploit data reuse. We 
 
 #### Applying the Tiling Strategy to N-Body
 
-The idea is to break the N \times N interaction calculation into smaller tiles. Each thread block will work on one tile at a time.
+The idea is to break the $N \times N$ interaction calculation into smaller tiles. Each thread block will work on one tile at a time.
 
-1. Each thread is still responsible for one body i.
-2. The inner loop that iterates over all j bodies is tiled.
-3. In each step of the tiled loop, all threads in the block cooperate to load a "tile" of blockDim.x bodies into shared memory.
-4. A synchronization barrier (__syncthreads()) is used to ensure all threads have finished loading before any thread starts computing.
+1. Each thread is still responsible for one body `i`.
+2. The inner loop that iterates over all `j` bodies is tiled.
+3. In each step of the tiled loop, all threads in the block cooperate to load a "tile" of `blockDim.x` bodies into shared memory.
+4. A synchronization barrier (`__syncthreads()`) is used to ensure all threads have finished loading before any thread starts computing.
 5. Each thread then iterates through the bodies in the shared memory tile, accumulating forces.
 6. Another synchronization barrier is used before the block proceeds to load the next tile.
 
-This strategy drastically reduces global memory traffic. A tile of body data is loaded once from global memory into fast shared memory, and then every thread in the block can reuse it blockDim.x times.
+This strategy drastically reduces global memory traffic. A tile of body data is loaded once from global memory into fast shared memory, and then every thread in the block can reuse it `blockDim.x` times.
 
 #### Code Breakdown: The Tiled ComputeNBodyGravitation_Shared Kernel
 
@@ -2851,11 +2896,11 @@ __global__ void ComputeNBodyGravitation_Shared(
 
 ##### Key Differences
 
-* extern __shared__ float4 shPosMass[]: This declares a dynamically sized shared memory array. The actual size is specified during kernel launch.
-* for (int j = 0; j < N; j += blockDim.x): This is the tiling loop. Instead of incrementing j by 1, we jump by the block size.
-* shPosMass[threadIdx.x] = ...: This is the cooperative load. Each thread threadIdx.x in the block is responsible for loading one body's data into the corresponding slot in shPosMass. This is a perfectly coalesced read from global memory.
-* __syncthreads(): This is a barrier synchronization. It forces all threads in the block to wait at this point until every single thread has reached it. This is essential to prevent a thread from trying to read data from shPosMass before another thread has finished writing it.
-* float4 bodyPosMass = shPosMass[k]: Inside the innermost loop, the body data is now read from the extremely fast on-chip shared memory, not slow global memory. This is the source of the performance gain.
+* `extern __shared__ float4 shPosMass[]`: This declares a dynamically sized shared memory array. The actual size is specified during kernel launch.
+* `for (int j = 0; j < N; j += blockDim.x)`: This is the tiling loop. Instead of incrementing `j` by 1, we jump by the block size.
+* `shPosMass[threadIdx.x] = ...`: This is the cooperative load. Each thread `threadIdx.x` in the block is responsible for loading one body's data into the corresponding slot in `shPosMass`. This is a perfectly coalesced read from global memory.
+* `__syncthreads()`: This is a barrier synchronization. It forces all threads in the block to wait at this point until every single thread has reached it. This is essential to prevent a thread from trying to read data from `shPosMass` before another thread has finished writing it.
+* `float4 bodyPosMass = shPosMass[k]`: Inside the innermost loop, the body data is now read from the extremely fast on-chip shared memory, not slow global memory. This is the source of the performance gain.
 
 #### Performance Analysis: The Impact of Shared Memory
 
@@ -2876,7 +2921,7 @@ While GPUs are excellent for this problem, it's insightful to see how an optimiz
 
 #### Vectorization on the CPU
 
-The provided code snippet for bodyBodyInteraction using __m128 data types is an example of a CPU implementation using SSE intrinsics. __m128 is a 128-bit data type that can hold four 32-bit floating-point numbers. Functions like _mm_add_ps perform a parallel add on all four floats at once. This is a form of fine-grained parallelism available on the CPU.
+The provided code snippet for `bodyBodyInteraction` using `__m128` data types is an example of a CPU implementation using SSE intrinsics. `__m128` is a 128-bit data type that can hold four 32-bit floating-point numbers. Functions like `_mm_add_ps` perform a parallel add on all four floats at once. This is a form of fine-grained parallelism available on the CPU.
 
 ```c++
 // Example of a CPU SSE vectorized function
@@ -2929,7 +2974,8 @@ Analysis:
 
 ## CUDA Streams and Host-Device Communication
 
-### The Host-Device Bottleneck
+<div class="math-callout math-callout--info" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(The Host-Device Bottleneck)</span></p>
 
 The CPU (host) and GPU (device) are connected via PCIe, which creates a massive bandwidth mismatch:
 
@@ -2939,6 +2985,8 @@ The CPU (host) and GPU (device) are connected via PCIe, which creates a massive 
 The GPU can compute at 34–67 TFLOP/s but can only receive data at a fraction of that rate. If data transfers are not overlapped with computation, the GPU sits idle — a condition known as being **PCIe-bound**. The key objective is to **overlap communication and computation**.
 
 To hide this latency, we employ **task parallelism**: instead of sequentially performing H2D copy → kernel → D2H copy, we overlap these operations across independent data chunks using **CUDA Streams**.
+
+</div>
 
 ### CUDA Streams
 
@@ -2957,7 +3005,12 @@ A **CUDA Stream** is an ordered queue of operations submitted to the GPU. Key pr
 
 By placing independent operations into different streams, we can enable the GPU's hardware to execute them concurrently, effectively hiding the latency of data transfers behind useful computation.
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coarse-Grained Concurrency in GPUs)</span></p>
+
 Streams unlock **coarse-grained concurrency**: CPU/GPU concurrency, concurrent copy & execute, concurrent kernel execution, and multi-GPU parallelism — complementing the fine-grained thread-level concurrency within a kernel.
+
+</div>
 
 ### Host-Device Synchronization
 
@@ -2986,7 +3039,6 @@ Events allow synchronization at specific points in the workflow rather than wait
 
 </div>
 
-
 ### Programming with CUDA Streams
 
 #### The Default Stream and Sequential Execution
@@ -2998,7 +3050,7 @@ When you launch a kernel or call `cudaMemcpy` without specifying a stream, you a
 
 </div>
 
-Consider this typical sequence of operations for a SAXPY kernel, which computes y[i] = \alpha \cdot x[i] + y[i]:
+Consider this typical sequence of operations for a SAXPY kernel, which computes `y[i] = $\alpha$ $\cdot$ x[i] + y[i]`:
 
 ```c++
 // All operations below are implicitly in the default stream
@@ -3012,8 +3064,7 @@ saxpy<<<numBlocks, blockSize>>>(dx, dy, alpha, N);
 cudaMemcpy(hy, dy, numBytes, cudaMemcpyDeviceToHost);
 ```
 
-
-Because all three operations are in the default stream, they will execute in a strictly sequential order. The kernel will not start until the first cudaMemcpy is completely finished, and the second cudaMemcpy will not start until the kernel is completely finished. This serialization is exactly what we want to avoid and is a prime example of the "serial fraction" described by Amdahl's Law, which limits the potential speedup of any parallel program.
+Because all three operations are in the default stream, they will execute in a strictly sequential order. The kernel will not start until the first `cudaMemcpy` is completely finished, and the second `cudaMemcpy` will not start until the kernel is completely finished. This serialization is exactly what we want to avoid and is a prime example of the "serial fraction" described by Amdahl's Law, which limits the potential speedup of any parallel program.
 
 ##### Device Overlap Capability
 
@@ -3032,22 +3083,21 @@ for (int i = 0; i < dev_count; i++) {
 }
 ```
 
-
 Without this hardware feature, using streams for overlap is impossible. Fortunately, it is standard on nearly all modern GPUs.
 
 #### Pipelining with Multiple Streams
 
 To achieve overlap, we need to break our problem into smaller, independent pieces and process them in a pipeline. The strategy is as follows:
 
-1. Divide Data: Split your large input and output data structures (e.g., arrays) into smaller segments or chunks.
-2. Create Streams: Create two or more non-default streams.
-3. Process in a Loop: Loop through the data segments, assigning each segment's workflow (Copy-Execute-Copy) to a different stream.
+1. **Divide Data:** Split your large input and output data structures (e.g., arrays) into smaller segments or chunks.
+2. **Create Streams:** Create two or more non-default streams.
+3. **Process in a Loop:** Loop through the data segments, assigning each segment's workflow (Copy-Execute-Copy) to a different stream.
 
 This creates a pipeline with three distinct phases:
 
-* Fill: In the beginning, the first few stages of the pipeline are being filled. For example, Stream 1 is copying data while the GPU is otherwise idle. Then, Stream 2 starts copying while Stream 1 starts computing.
-* Steady State: The pipeline is full. This is the ideal state where data is being copied in for chunk N+1, the kernel is executing on chunk N, and results are being copied out for chunk N-1, all at the same time.
-* Drain: As the loop finishes, the final chunks work their way through the now-emptying pipeline.
+* **Fill:** In the beginning, the first few stages of the pipeline are being filled. For example, Stream 1 is copying data while the GPU is otherwise idle. Then, Stream 2 starts copying while Stream 1 starts computing.
+* **Steady State:** The pipeline is full. This is the ideal state where data is being copied in for chunk $N+1$, the kernel is executing on chunk $N$, and results are being copied out for chunk $N-1$, all at the same time.
+* **Drain:** As the loop finishes, the final chunks work their way through the now-emptying pipeline.
 
 The effectiveness of this technique depends on computational intensity. If the kernel is too fast compared to the data transfer time, the pipeline will stall, waiting for data. Conversely, if the data transfers are much faster than the kernel, the benefit of overlap is minimal. We will analyze this trade-off mathematically in the next chapter.
 
@@ -3055,31 +3105,29 @@ The effectiveness of this technique depends on computational intensity. If the k
 
 Let's see how to implement this in code. First, we need to know the relevant API calls.
 
-1. Creating a Stream: A stream is represented by the cudaStream_t type. You create one with cudaStreamCreate().
+1. **Creating a Stream:** A stream is represented by the `cudaStream_t` type. You create one with `cudaStreamCreate()`.
 
-```c++
-cudaStream_t my_stream;
-cudaStreamCreate(&my_stream);
-```
+   ```c++
+   cudaStream_t my_stream;
+   cudaStreamCreate(&my_stream);
+   ```
 
+2. **Asynchronous Memory Copies:** To use streams, you must use the asynchronous version of `cudaMemcpy`, which is `cudaMemcpyAsync()`. It takes an additional argument: the stream ID.
 
-2. Asynchronous Memory Copies: To use streams, you must use the asynchronous version of cudaMemcpy, which is cudaMemcpyAsync(). It takes an additional argument: the stream ID.
+   ```c++
+   cudaMemcpyAsync(dst, src, count, kind, stream);
+   ```
 
-```c++
-cudaMemcpyAsync(dst, src, count, kind, stream);
-```
+   **Important Note:** Asynchronous memory transfers require the host memory to be page-locked (or "pinned"). You must allocate host memory using `cudaMallocHost()` or `cudaHostAlloc()` instead of the standard `malloc()`. This prevents the operating system from moving the memory while the GPU is trying to access it via Direct Memory Access (DMA).
 
+3. **Launching a Kernel in a Stream:** The kernel launch configuration is extended to include the stream ID as a fourth optional parameter (after grid dimensions, block dimensions, and shared memory size).
 
-Important Note: Asynchronous memory transfers require the host memory to be page-locked (or "pinned"). You must allocate host memory using cudaMallocHost() or cudaHostAlloc() instead of the standard malloc(). This prevents the operating system from moving the memory while the GPU is trying to access it via Direct Memory Access (DMA).
+   ```c++
+   kernel_name<<<grid, block, shared_mem_size, stream>>>(args...);
+   ```
 
-3. Launching a Kernel in a Stream: The kernel launch configuration is extended to include the stream ID as a fourth optional parameter (after grid dimensions, block dimensions, and shared memory size).
-
-```c++
-kernel_name<<<grid, block, shared_mem_size, stream>>>(args...);
-```
-
-
-##### Example: Multi-Stream SAXPY (Version 1)
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multi-Stream SAXPY (Version 1))</span></p>
 
 Below is a conceptual code snippet showing how to process a large SAXPY operation by breaking it into two segments and processing them in two different streams.
 
@@ -3119,20 +3167,22 @@ cudaMemcpyAsync(h_C + segSize, d_C1, segSize * sizeof(float), cudaMemcpyDeviceTo
 cudaDeviceSynchronize();
 ```
 
+The intent here is that while the saxpy kernel for `stream0` is running, the `cudaMemcpyAsync` operations for `stream1` can also be running, achieving our desired overlap. However, due to the architecture of older GPUs, this might not happen as we expect.
 
-The intent here is that while the saxpy kernel for stream0 is running, the cudaMemcpyAsync operations for stream1 can also be running, achieving our desired overlap. However, due to the architecture of older GPUs, this might not happen as we expect.
+</div>
 
 #### Architecture Matters: Fermi vs. Kepler and Newer
 
 The way a GPU executes commands from streams depends heavily on its architecture.
 
-* Fermi Architecture (and older): These GPUs have a single work queue for the copy engine and a single work queue for the compute engine. Even though we issued commands to two different software streams, they are all fed into the same two hardware queues. In our "Version 1" code, the device driver would schedule the operations like this:
-  1. Copy Queue: H2D(A0), H2D(B0), D2H(C0), H2D(A1), H2D(B1), D2H(C1)
-  2. Execute Queue: Kernel(0), Kernel(1)
-* The problem is that the D2H(C0) operation (copying the result for stream 0) is placed in the copy queue before the input copies for stream 1 (H2D(A1) and H2D(B1)). Since operations within a queue are serial, the input copies for the second segment cannot begin until the output copy for the first segment is complete, destroying our desired overlap.
-* Kepler Architecture (and newer): These GPUs introduced a feature called "Hyper-Q," which provides multiple hardware work queues (e.g., 32 queues each for copy and execute). This allows different software streams to map to different hardware queues, enabling true concurrent execution. On a Kepler or newer GPU, the "Version 1" code would likely achieve the desired overlap.
+* **Fermi Architecture (and older):** These GPUs have a single work queue for the copy engine and a single work queue for the compute engine. Even though we issued commands to two different software streams, they are all fed into the same two hardware queues. In our "Version 1" code, the device driver would schedule the operations like this:
+  1. **Copy Queue:** `H2D(A0)`, `H2D(B0)`, `D2H(C0)`, `H2D(A1)`, `H2D(B1)`, `D2H(C1)`
+  2. **Execute Queue:** `Kernel(0)`, `Kernel(1)`
+* The problem is that the `D2H(C0)` operation (copying the result for stream 0) is placed in the copy queue before the input copies for stream 1 (`H2D(A1)` and `H2D(B1)`). Since operations within a queue are serial, the input copies for the second segment cannot begin until the output copy for the first segment is complete, destroying our desired overlap.
+* **Kepler Architecture (and newer):** These GPUs introduced a feature called "Hyper-Q," which provides multiple hardware work queues (e.g., 32 queues each for copy and execute). This allows different software streams to map to different hardware queues, enabling true concurrent execution. On a Kepler or newer GPU, the "Version 1" code would likely achieve the desired overlap.
 
-##### A More Robust Approach (Version 2)
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multi-Stream SAXPY: More Robust Approach (Version 2))</span></p>
 
 To ensure overlap even on older hardware, we can reorder the commands we issue from the host. The goal is to issue all independent operations first to allow the hardware scheduler more flexibility.
 
@@ -3155,8 +3205,9 @@ cudaMemcpyAsync(h_C, d_C0, segSize * sizeof(float), cudaMemcpyDeviceToHost, stre
 cudaMemcpyAsync(h_C + segSize, d_C1, segSize * sizeof(float), cudaMemcpyDeviceToHost, stream1);
 ```
 
+By issuing all input copies first, followed by all kernel launches, we maximize the opportunity for the GPU to overlap the execution of `Kernel(0)` with the input copies for stream 1 (`H2D(A1)` and `H2D(B1)`). This reordering makes the code more robust across different GPU architectures.
 
-By issuing all input copies first, followed by all kernel launches, we maximize the opportunity for the GPU to overlap the execution of Kernel(0) with the input copies for stream 1 (H2D(A1) and H2D(B1)). This reordering makes the code more robust across different GPU architectures.
+</div>
 
 #### Common Pitfalls: Implicit Synchronization
 
@@ -3182,9 +3233,33 @@ While CUDA Streams are powerful, they add programmer complexity. The key questio
 
 The goal of streaming is to hide the time it takes to transfer data over the PCIe bus ($t_{\text{PCIe}}$) by overlapping it with computation time ($t_{\text{COMP}}$). This strategy is only effective if the computation is long enough to mask the transfer. We can formalize this with the concept of Arithmetic Intensity.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(Arithmetic Intensity)</span></p>
+
 **Arithmetic Intensity** ($r$) is defined as the ratio of floating-point operations (FLOPs) performed to the number of bytes transferred to or from memory:
 
 $$r = \frac{\text{FLOPs}}{\text{Byte}}$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Streaming Effectiveness Condition)</span></p>
+
+For streaming to effectively hide PCIe latency, the arithmetic intensity $r$ of the kernel must satisfy:
+
+$$r \ge \frac{c}{b}$$
+
+where 
+* $c$ is the **GPU's peak compute performance** (FLOPs/s)
+* $b$ is the **PCIe bandwidth** (Bytes/s). 
+  
+If the kernel performs too few calculations per byte of data, it will finish long before the next chunk arrives, and the GPU will sit idle.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Let's derive the condition required to successfully hide the PCIe latency. We'll make the following assumptions:
 
@@ -3195,11 +3270,11 @@ Let's derive the condition required to successfully hide the PCIe latency. We'll
 | $c$ | The peak compute performance of the GPU. | FLOPs/s |
 | $r$ | The arithmetic intensity of our kernel. | FLOPs/Byte |
 
-The total amount of data to be transferred for a segment of $N$ floats is $4N$ bytes (since a float is 4 bytes). The time required for this transfer is:
+The **total amount of data to be transferred** for a segment of $N$ floats is $4N$ bytes (since a float is 4 bytes). The time required for this transfer is:
 
 $$t_{\text{PCIe}} = \frac{4N}{b}$$
 
-The total number of floating-point operations performed on this segment is the arithmetic intensity multiplied by the number of bytes, which is $r \cdot (4N)$. The time required for this computation is:
+The **total number of floating-point operations performed** on this segment is the arithmetic intensity multiplied by the number of bytes, which is $r \cdot (4N)$. The time required for this computation is:
 
 $$t_{\text{COMP}} = \frac{\text{Total FLOPs}}{\text{Performance}} = \frac{r \cdot (4N)}{c}$$
 
@@ -3209,22 +3284,14 @@ Substituting our expressions for time:
 
 $$\frac{r \cdot (4N)}{c} \ge \frac{4N}{b}$$
 
-We can cancel out the $4N$ term from both sides and rearrange the inequality to solve for $r$:
+We can cancel out the $4N$ term from both sides and rearrange the inequality to solve for $r$.
 
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Streaming Effectiveness Condition)</span></p>
-
-For streaming to effectively hide PCIe latency, the arithmetic intensity $r$ of the kernel must satisfy:
-
-$$r \ge \frac{c}{b}$$
-
-where $c$ is the GPU's peak compute performance (FLOPs/s) and $b$ is the PCIe bandwidth (Bytes/s). If the kernel performs too few calculations per byte of data, it will finish long before the next chunk arrives, and the GPU will sit idle.
-
+</details>
 </div>
 
 #### Unified Virtual Addressing (UVA)
 
-The complexity of manually managing memory buffers and cudaMemcpyAsync calls led NVIDIA to develop simpler memory models. The first step in this direction was Unified Virtual Addressing (UVA).
+The complexity of manually managing memory buffers and `cudaMemcpyAsync` calls led NVIDIA to develop simpler memory models. The first step in this direction was Unified Virtual Addressing (UVA).
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Virtual Addressing)</span></p>
@@ -3242,7 +3309,8 @@ With **UVA**, the CPU and all GPUs in a system share a single virtual address sp
 
 </div>
 
-Here is how you would write a SAXPY application using Unified Memory:
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(SAXPY application using Unified Memory)</span></p>
 
 ```c++
 // Allocate managed memory accessible by both host and device
@@ -3271,29 +3339,53 @@ cudaFree(X);
 cudaFree(Y);
 ```
 
+Notice the complete absence of `cudaMemcpy` calls! This dramatically simplifies the code.
 
-Notice the complete absence of cudaMemcpy calls! This dramatically simplifies the code.
+</div>
 
 ##### Performance of Unified Memory
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Memory Management Comparison)</span></p>
+
 While UM is convenient, the automated data migration has overhead. The source context provides bar charts comparing the performance of matrix multiplication for different memory strategies on a Pascal-generation GPU. The strategies are:
 
-* malloc: Traditional C-style host allocation with explicit cudaMemcpy.
-* pinned: Page-locked host allocation (cudaMallocHost) with explicit cudaMemcpy.
-* UM: Unified Memory with on-demand migration.
-* UM prefetch: Unified Memory where the programmer provides hints to the runtime about where data will be needed next, allowing it to pre-migrate the data.
+* **malloc:** Traditional C-style host allocation with explicit `cudaMemcpy`.
+* **pinned:** Page-locked host allocation (`cudaMallocHost`) with explicit `cudaMemcpy`.
+* **UM:** Unified Memory with on-demand migration.
+* **UM prefetch:** Unified Memory where the programmer provides hints to the runtime about where data will be needed next, allowing it to pre-migrate the data.
 
-The charts illustrate the breakdown of time spent in host2device copy, kernel execution, and device2host copy for different matrix sizes:
+The charts illustrate the breakdown of time spent in `host2device` copy, kernel execution, and `device2host` copy for different matrix sizes:
 
-* 1k x 1k Matrix: For smaller problem sizes, the overhead of UM's page faulting mechanism is significant, making it slower than traditional pinned memory with manual copies.
-* 4k x 4k Matrix: As the problem size grows, the kernel execution time becomes more dominant. The convenience of UM starts to become more competitive, though still slightly slower than the manual approach.
-* 8k x 8k Matrix: For very large problems, the kernel time dwarfs the transfer and overhead time. Here, the performance of UM is very close to that of manual memory management, and using prefetching hints can close the gap even further.
+* **$1k \times 1k$ Matrix:** For smaller problem sizes, the overhead of UM's page faulting mechanism is significant, making it slower than traditional pinned memory with manual copies.
+* **$4k \times 4k$ Matrix:** As the problem size grows, the kernel execution time becomes more dominant. The convenience of UM starts to become more competitive, though still slightly slower than the manual approach.
+* **$8k \times 8k$ Matrix:** For very large problems, the kernel time dwarfs the transfer and overhead time. Here, the performance of UM is very close to that of manual memory management, and using prefetching hints can close the gap even further.
 
-The conclusion is that Unified Memory offers a promising trade-off between programmer productivity and performance, especially for applications where development speed is critical or memory access patterns are complex.
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/pascal_unified_memory_comparison.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <!-- <figcaption>CPU + GPU System</figcaption> -->
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Unified Memory Trade-off)</span></p>
+
+Unified Memory offers a promising trade-off between programmer productivity and performance, especially for applications where development speed is critical or memory access patterns are complex.
+
+</div>
 
 #### Peer-to-Peer Access for Multi-GPU Systems
 
-In systems with multiple GPUs connected by a high-speed interconnect like NVLink, it's possible for one GPU to directly access the memory of another without involving the host CPU. This is known as Peer-to-Peer (P2P) Access.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Peer-to-Peer Access for Multi-GPU Systems)</span></p>
+
+In systems with multiple GPUs connected by a high-speed interconnect like NVLink, it's possible for one GPU to directly access the memory of another without involving the host CPU. This is known as **Peer-to-Peer (P2P) Access**.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Rule</span><span class="math-callout__name">(Enabling P2P Access)</span></p>
 
 You must first enable this capability between the GPUs:
 
@@ -3313,8 +3405,14 @@ if (can_access_peer) {
 }
 ```
 
+Once P2P access is enabled, you can perform a `cudaMemcpy` directly between the buffers of two different GPUs by specifying `cudaMemcpyDefault`. Even more powerfully, a kernel running on `gpu0` can directly read from or write to a pointer that resides in `gpu1`'s memory, as if it were its own.
 
-Once P2P access is enabled, you can perform a cudaMemcpy directly between the buffers of two different GPUs by specifying cudaMemcpyDefault. Even more powerfully, a kernel running on gpu0 can directly read from or write to a pointer that resides in gpu1's memory, as if it were its own.
+This capability is essential for scaling applications across multiple GPUs efficiently.
+
+</div>
+
+<div class="math-callout math-callout--example" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(P2P Access)</span></p>
 
 ```c++
 // Example: Copy from GPU 1 to GPU 0
@@ -3325,8 +3423,7 @@ cudaMemcpy(gpu0_buf, gpu1_buf, buf_size, cudaMemcpyDefault);
 gpu0_buf[idx] = gpu1_buf[idx];
 ```
 
-
-This capability is essential for scaling applications across multiple GPUs efficiently.
+</div>
 
 ### Summary: CUDA Streams and Host-Device Communication
 
@@ -3349,7 +3446,6 @@ This capability is essential for scaling applications across multiple GPUs effic
 
 </div>
 
-
 ## Stencil Computations
 
 ### Introduction to Stencil Computations
@@ -3366,13 +3462,16 @@ A **stencil** is a geometric pattern used to update elements in a regular array 
 
 </div>
 
-**Real-World Applications:**
+<div class="math-callout math-callout--example" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Real-World Applications of Stencils)</span></p>
 
 1. **Image Processing:** Used in blob analysis, which helps computers identify and categorize distinct shapes within an image.
 2. **Partial Differential Equations (PDEs):** Mathematical equations that describe how physical quantities change over space and time.
 3. **Computational Fluid Dynamics (CFD):** Engineers use stencils to simulate the flow of liquids and gases, essential for designing airplanes, cars, and turbines.
 
 While stencils are used for regular grids, more complex, irregular grids (like those used to model complex mechanical parts) often require Finite Element Methods (FEM).
+
+</div>
 
 ### The Mathematics of PDEs and Finite Differences
 
@@ -3387,7 +3486,15 @@ A **Partial Differential Equation** is a function of multiple independent variab
 
 #### Finite-Difference Methods (FDM)
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Finite-Difference Methods (FDM))</span></p>
+
 Since computers cannot solve complex calculus equations exactly, we use **Finite-Difference Methods**. These methods approximate a derivative (the rate of change) by looking at the difference between two points separated by a small spacing $k$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Derivative Approximation Technique)</span></p>
 
 Using Taylor's polynomial, we can approximate the derivative of a function $f(x)$:
 
@@ -3399,9 +3506,11 @@ In practice, we use three main types of "differences" to approximate these chang
 
 | Method | Formula Approximation | Error Level |
 | --- | --- | --- |
-| Forward Difference | $f_x \approx \frac{f(x + k) - f(x)}{k}$ | $O(k)$ |
-| Backward Difference | $f_x \approx \frac{f(x) - f(x - k)}{k}$ | $O(k)$ |
-| Central Difference | $f_x \approx \frac{f(x + k) - f(x - k)}{2k}$ | $O(k^2)$ |
+| **Forward Difference** | $f_x \approx \frac{f(x + k) - f(x)}{k}$ | $O(k)$ |
+| **Backward Difference** | $f_x \approx \frac{f(x) - f(x - k)}{k}$ | $O(k)$ |
+| **Central Difference** | $f_x \approx \frac{f(x + k) - f(x - k)}{2k}$ | $O(k^2)$ |
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Error Order)</span></p>
@@ -3470,15 +3579,23 @@ Because each point needs its neighbor's data, thread blocks must store an overla
 
 </div>
 
-#### Strategies for Memory Optimization
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Strategies for Memory Optimization)</span></p>
 
 1. **1D vs 2D Partitioning:** 2D partitioning is common but can lead to "poorly aligned" memory access for vertical halos. 1D partitioning (strips) can sometimes be more efficient for communication.
 2. **Shared Memory (Scratchpad):** Shared memory is a fast, small memory area on the GPU. Instead of reading from the slow global memory every time, threads can load a "tile" of the grid into shared memory, use it, and then move on.
 3. **Marching Planes:** When dealing with 3D data, we don't have enough shared memory to store everything. Instead, we keep only three planes (top, middle, bottom) in shared memory and "march" through the 3D volume, cycling the buffers as we go.
 
+</div>
+
 ### Directive-Based Programming (OpenACC)
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(OpenACC)</span></p>
+
 Writing raw CUDA code can be difficult for beginners. **OpenACC** is a directive-based standard that allows you to parallelize code by adding simple "pragmas" (hints to the compiler) to standard C, C++, or Fortran.
+
+</div>
 
 #### The Execution Model
 
@@ -3546,8 +3663,6 @@ A great example of stencil computation in image processing is **Connected Compon
 
 Stencil computations represent a perfect marriage between physical mathematics and parallel hardware. While memory limits often present a challenge, techniques like domain decomposition and productivity tools like OpenACC make it possible to simulate complex physical systems with incredible speed and accuracy.
 
-
-
 ## GPU Memory Model: Coherence and Consistency
 
 ### A Review of GPU Architecture
@@ -3579,12 +3694,16 @@ A **process** is defined as a single virtual address space that contains one or 
 
 </div>
 
-#### Mapping Virtual to Physical Addresses
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(Mapping Virtual to Physical Addresses)</span></p>
 
 Computers use **Virtual Addresses (VA)** to manage memory. However, the actual data lives at a **Physical Address (PA)** in the hardware.
 
 * **Shared Segments:** Portions of the address space can be shared such that multiple virtual addresses map to a single physical address.
 * **Structured Address Space:** Typically, the virtual address space is organized into private segments (accessible only by one thread) and shared segments (accessible by all).
+
+</div>
+
 
 #### Communication and Synchronization
 
@@ -3594,7 +3713,7 @@ In a shared memory system, threads communicate by writing to and reading from sh
 
 A communication abstraction acts as a contract between the hardware and the software, much like an ISA (Instruction Set Architecture). It defines how data is moved and managed. There are five key pillars to this design:
 
-1. **Naming:** Determines what data can be identified. In shared memory, threads "name" locations in their registers and virtual address spaces (code, stack, heap). In message passing, naming involves local addresses and process identifiers.
+1. **Naming:** Determines what data can be identified (named). In shared memory, threads "name" locations in their registers and virtual address spaces (code, stack, heap). In message passing, naming involves local addresses and process identifiers.
 2. **Operations:** The actions performed on named data.
    * *Shared Memory:* Uses simple load and store instructions, plus atomic read-modify-write operations.
    * *Message Passing:* Uses send and receive operations, which are generally more complex than simple memory loads.
@@ -3604,12 +3723,19 @@ A communication abstraction acts as a contract between the hardware and the soft
 
 ### The Coherence Problem
 
-The goal of a memory system is to reduce latency (the time it takes to access data). We use caches—small, fast storage areas near the processor—to achieve this. However, caches introduce a major challenge in multi-core systems: **Coherence**.
+<div class="math-callout math-callout--info" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Coherence Problem)</span></p>
+
+* The goal of a memory system is to r**educe latency** (the time it takes to access data).
+* We **use caches—small**, fast storage areas near the processor—to achieve this. 
+* However, caches introduce a major challenge in multi-core systems: **Coherence**.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cache Coherence)</span></p>
 
-**Coherence** is the protocol that ensures all processors see the same (most recent) value for a specific memory location. Imagine a system with two processors, P0 and P1, each with its own local cache. If both processors have a copy of variable $A$ (initially 0), and P0 changes $A$ to 1, P1 might still see 0 in its own local cache. Coherence protocols prevent this inconsistency.
+**Coherence** is the protocol that ensures all processors see the same (most recent) value for a specific memory location. Imagine a system with two processors, `P0` and `P1`, each with its own local cache. If both processors have a copy of variable $A$ (initially 0), and `P0` changes $A$ to 1, `P1` might still see 0 in its own local cache. Coherence protocols prevent this inconsistency.
 
 </div>
 
@@ -3644,8 +3770,8 @@ While coherence ensures that everyone eventually sees the same value for a singl
 
 Consider two threads:
 
-* Thread 0: Sets `a = 1`, then checks if `b == 0`.
-* Thread 1: Sets `b = 1`, then checks if `a == 0`.
+* **Thread 0:** Sets `a = 1`, then checks if `b == 0`.
+* **Thread 1:** Sets `b = 1`, then checks if `a == 0`.
 
 In a "perfect" world, it should be impossible for both `if` statements to be true. However, in reality, both can be true if the hardware uses write buffering (delaying the actual store to memory).
 
@@ -3654,10 +3780,10 @@ In a "perfect" world, it should be impossible for both `if` statements to be tru
 <div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Producer-Consumer)</span></p>
 
-* Thread 0 (Producer): Sets `a = 1`, then sets `flag = 1`.
-* Thread 1 (Consumer): Waits for `flag == 1`, then prints `a`.
+* **Thread 0 (Producer):** Sets `a = 1`, then sets `flag = 1`.
+* **Thread 1 (Consumer):** Waits for `flag == 1`, then prints `a`.
 
-In many modern systems, Thread 1 might print 0 instead of 1. This happens because the system might reorder the operations, making the `flag` update visible before the data `a` update is visible.
+In many modern systems, **Thread 1** might print 0 instead of 1. This happens because the system might reorder the operations, making the `flag` update visible before the data `a` update is visible.
 
 </div>
 
@@ -3727,10 +3853,10 @@ while(flag.load(memory_order_acquire) != 1);
 assert(x == 42);
 ```
 
-1. Thread 0 writes data to `x`.
-2. Thread 0 then performs a store on a flag using `memory_order_release`. This acts as a "fence," pushing the write of `x` out to memory before the flag is updated.
-3. Thread 1 loops (polls) the flag using `memory_order_acquire`.
-4. Once Thread 1 sees the flag change to 1, the `memory_order_acquire` ensures it also sees the most recent value of `x`.
+1. **Thread 0** writes data to `x`.
+2. **Thread 0** then performs a store on a flag using `memory_order_release`. This acts as a "fence," pushing the write of `x` out to memory before the flag is updated.
+3. **Thread 1** loops (polls) the flag using `memory_order_acquire`.
+4. Once **Thread 1** sees the flag change to 1, the `memory_order_acquire` ensures it also sees the most recent value of `x`.
 
 </div>
 
@@ -3894,8 +4020,8 @@ Standard CUDA cores handle one calculation at a time. A **Tensor Core** operates
 
 The primary advantage is **Mixed-Precision Arithmetic:**
 
-* **Input** ($A$ and $B$): Usually lower precision like FP16 (16-bit floating point).
-* **Accumulation** ($C$ and $D$): Can be higher precision like FP32 to maintain accuracy.
+* **Input** ($A$ and $B$): Usually lower precision like `FP16` (16-bit floating point).
+* **Accumulation** ($C$ and $D$): Can be higher precision like `FP32` to maintain accuracy.
 
 By using Tensor Cores, a GPU can generate significantly more Multiply-Accumulate (MAC) operations per clock cycle than standard cores.
 
@@ -3954,11 +4080,11 @@ NVIDIA has updated Tensor Core technology with every major architecture generati
 
 | Generation | Architecture | Key Additions |
 | --- | --- | --- |
-| Gen 1 | Volta | Introduced FP16/FP32 support |
-| Gen 2 | Turing | Added integer formats (INT8, INT4) for faster inference |
-| Gen 3 | Ampere | Added TF32 (Tensor Float 32) and BF16 (BFloat16) |
-| Gen 4 | Hopper | Introduced FP8 support for massive HPC and AI scaling |
-| Gen 5 | Blackwell | Added FP6 and FP4 support; introduced Tensor Memory (TMEM) |
+| Gen 1 | Volta | Introduced `FP16`/`FP32` support |
+| Gen 2 | Turing | Added integer formats (`INT8`, `INT4`) for faster inference |
+| Gen 3 | Ampere | Added `TF32` (Tensor Float 32) and `BF16` (BFloat16) |
+| Gen 4 | Hopper | Introduced `FP8` support for massive HPC and AI scaling |
+| Gen 5 | Blackwell | Added `FP6` and `FP4` support; introduced Tensor Memory (`TMEM`) |
 
 ## Performance Scaling and the Future of GPU Computing
 
