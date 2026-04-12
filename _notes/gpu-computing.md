@@ -20,6 +20,10 @@ tags:
   }
 </style>
 
+**Table of Contents**
+- TOC
+{:toc}
+
 # GPU Computing
 
 [summary](/subpages/gpu-computing/summary)
@@ -2275,18 +2279,29 @@ Computational intensity — the ratio of FLOPs to memory operations — is the k
 
 $$r = \frac{f}{b}$$
 
-where $r$ is the arithmetic intensity in FLOPs/Byte, $f$ is the number of floating-point operations, and $b$ is the number of bytes of memory accessed.
+where 
+
+* $r$ is the arithmetic intensity in **FLOPs/Byte**
+* $f$ is the number of **floating-point operations**
+* $b$ is the number of **bytes of memory accessed**.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Types of Intensity)</span></p>
 
-* **Algorithmic Intensity:** The inherent ratio of operations to memory accesses in the pure, mathematical algorithm.
-* **Computational Intensity:** The actual ratio achieved by a specific code implementation. Caching can reduce memory accesses and increase it.
-* **Machine Intensity:** The ratio of peak FLOPs/sec to peak memory bandwidth (Bytes/sec). This is the intensity an application needs to fully utilize the hardware.
+* **Arithmetic Intensity:** (algorithm) The inherent ratio of operations to memory accesses in the pure, mathematical algorithm.
+* **Computational Intensity:** (implementation) The actual ratio achieved by a specific code implementation. Caching can reduce memory accesses and increase it.
+* **Machine Intensity:** (hardware capability) The ratio of peak FLOPs/sec to peak memory bandwidth (Bytes/sec). This is the intensity an application needs to fully utilize the hardware.
+
+All are not equal in general.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_computational_intensity_required_for_peak_compute_performance.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>Extreme Amount of Computational Intensity (Data Reuse) Required</figcaption>
+</figure>
 
 ### Memory-Bound vs. Compute-Bound
 
@@ -2312,7 +2327,10 @@ The **Roofline Model** is a powerful tool for visualizing performance limitation
 
 The "roofline" consists of two parts:
 
-1. **The Slanted Roof:** Represents peak memory bandwidth ($m_p$, in GB/s). Performance is proportional to intensity: $p = m_p \cdot r$.
+1. **The Slanted Roof:** Represents peak memory bandwidth ($m_p$, in GB/s). Performance is proportional to intensity: 
+   
+   $$p = m_p \cdot r$$
+
 2. **The Flat Roof:** Represents peak compute performance ($f_p$, in GFLOP/s). Once intensity is high enough, the GPU's computational units are fully saturated.
 
 The attainable performance is:
@@ -2323,14 +2341,33 @@ If you are under the slanted part, you are **memory-bound**. If under the flat p
 
 </div>
 
-### Optimization Strategy
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_roofline_model_1.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <!-- <figcaption>Explicit Method</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_roofline_model_2.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <!-- <figcaption>Implicit Method</figcaption> -->
+  </figure>
+</div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Roofline-Guided Optimization)</span></p>
+<div class="math-callout math-callout--pro" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Algorithms could be divided into three classes)</span></p>
 
-**If compute-bound** (hitting the flat roof): balance additions/multiplications, improve ILP, and exploit SIMD instructions.
+**If compute-bound** (hitting the flat roof).
+* Algorithm includes plenty of memory accesses, but for each memory access only few calculations are performed.
+* Execution time dominated by memory accesses
+* **Optimization:** balance additions/multiplications, improve ILP, and exploit SIMD instructions.
 
-**If memory-bound** (hitting the slanted roof): use software prefetching, avoid load stalls, ensure memory affinity, and avoid non-local data accesses.
+**If memory-bound** (hitting the slanted roof).
+* Algorithm includes plenty of integer and floating point operations; for each memory access many calculations are performed
+* Execution time dominated by computations
+* **Optimization:** use software prefetching, avoid load stalls, ensure memory affinity, and avoid non-local data accesses.
+
+**IO-bound:** (limited in performance by IO operations)
+* Usually disk or network access
+* In the context of GPUs: PCIe bottleneck affecting host-device data movements
 
 Arithmetic intensity is not fixed — it can scale with problem size, and effective caching directly increases the *effective* intensity by reducing main memory traffic.
 
@@ -2348,7 +2385,15 @@ Arithmetic intensity is not fixed — it can scale with problem size, and effect
 
 </div>
 
-To gather this data, profilers rely on hardware performance counters. These are special registers built into the processor that can count events like cache misses, instructions executed, or cycles the processor was stalled. However, these counters are an expensive and limited resource. Accessing them can be costly and will inevitably affect the performance of the code you are trying to measure. This is known as profiling overhead.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Caveat</span><span class="math-callout__name">(Profiling is not free)</span></p>
+
+* To gather this data, profilers rely on **hardware performance counters**. 
+* These are special registers built into the processor that can count events like cache misses, instructions executed, or cycles the processor was stalled. 
+* However, these counters are an expensive and limited resource. Accessing them can be costly and will inevitably affect the performance of the code you are trying to measure. 
+* This is known as **profiling overhead**.
+
+</div>
 
 ### Levels of Profiling: From C++ to Machine Code
 
@@ -2359,7 +2404,7 @@ When we write a CUDA C++ program, it goes through several stages of compilation 
 3. **PTX (Parallel Thread Execution):** An assembly-like language for NVIDIA GPUs. It's a stable instruction set that can be compiled for different GPU architectures.
 4. **SASS (Shader Assembly):** The native, machine-level assembly language for a specific GPU architecture. This is what the hardware actually executes.
 
-Profiling at the SASS level gives you the most accurate and detailed view of what the hardware is doing, as it's closest to the metal.
+Profiling at the **SASS level gives you the most accurate and detailed view of what the hardware is doing**, as it's **closest to the metal**.
 
 ### Prerequisites for Profiling
 
@@ -2375,62 +2420,87 @@ Profiling at the SASS level gives you the most accurate and detailed view of wha
 
 ## NVIDIA's Professional Profiling Toolkit
 
-NVIDIA provides a powerful suite of tools called Nsight for profiling and debugging GPU applications. For performance analysis, we will focus on two key components: Nsight Compute and Nsight Systems.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nsight)</span></p>
+
+NVIDIA provides a powerful suite of tools called Nsight for profiling and debugging GPU applications. For performance analysis, we will focus on two key components: **Nsight Compute** and **Nsight Systems**.
+
+</div>
 
 ### Nsight Compute: Deep-Diving into Kernels
 
-Nsight Compute is the primary tool for detailed analysis of individual CUDA kernels. It can collect an immense amount of data—nearly 1,700 different metrics on a modern GPU like the TU102—giving you an unprecedented view into your kernel's execution.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nsight Compute)</span></p>
+
+**Nsight Compute** is the primary tool for detailed analysis of individual CUDA kernels. It can collect an immense amount of data—nearly 1,700 different metrics on a modern GPU like the TU102—giving you an unprecedented view into your kernel's execution.
 
 Nsight Compute offers two interfaces:
 
-* A command-line interface (CLI) called ncu.
-* A graphical user interface (GUI) called nv-nsight-cu.
+* A **command-line interface** (CLI) called `ncu`.
+* A **graphical user interface** (GUI) called `nv-nsight-cu`.
 
-A common workflow is to use ncu on a remote server (where the powerful GPU is) to collect performance data and save it to a report file. You can then download this file and open it with the nv-nsight-cu GUI on your local machine for in-depth visual analysis.
+</div>
 
-By default, ncu prints its results to the console (stdout). To save the results, you use the --export or -o flag.
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Workflow</span><span class="math-callout__name">(Nsight Compute)</span></p>
+
+A common workflow is to use `ncu` on a remote server (where the powerful GPU is) to collect performance data and save it to a report file. You can then download this file and open it with the `nv-nsight-cu` GUI on your local machine for in-depth visual analysis.
+
+By default, `ncu` prints its results to the console (stdout). To save the results, you use the `--export` or `-o` flag.
 
 ```bash
 # To run a profiler on an application and save the report
 ncu --export my_report.ncu-rep ./my_application
 ```
 
+</div>
+
 ### Working with Metrics
 
-Querying all 1,700+ metrics at once is overwhelming and inefficient. Instead, ncu provides predefined sets of metrics for common analysis tasks. You can list these sets with the command:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Nsight Compute: Listing Metrics)</span></p>
+
+Querying all 1,700+ metrics at once is overwhelming and inefficient. Instead, `ncu` provides predefined sets of metrics for common analysis tasks. You can list these sets with the command:
 
 ```bash
 ncu --list-sets
 ```
 
-This will display a table of available sets, such as default, detailed, and full, showing how many metrics each set collects.
-
-| Identifier | Sections | Enabled | Estimated Metrics |
-| --- | --- | --- | --- |
-| default | LaunchStats, Occupancy, SpeedOfLight | yes | 36 |
-| detailed | ComputeWorkloadAnalysis, InstructionStats, LaunchStats, MemoryWorkloadAnalysis, Occupancy, SchedulerStats, SourceCounters, SpeedOfLight, SpeedOfLight_RooflineChart, WarpStateStats | no | 172 |
-| full | ComputeWorkloadAnalysis, InstructionStats, LaunchStats, MemoryWorkloadAnalysis, MemoryWorkloadAnalysis_Chart, MemoryWorkloadAnalysis_Tables, Nvlink_Tables, Nvlink_Topology, Occupancy, SchedulerStats, SourceCounters, SpeedOfLight, SpeedOfLight_RooflineChart, WarpStateStats | no | 177 |
-| source | SourceCounters | no | 58 |
-
-You can also create custom profiling runs by combining sets, sections, and individual metrics.
+or **custom combinations** of sets, sections, and metrics
 
 ```bash
-# Run with the 'default' set, but also collect the 'SourceCounters' section
-# and one specific metric related to shared memory instructions.
-ncu --set default --section SourceCounters --metrics sm__sass_inst_executed_op_shared ./my_application
+ncu --set default --section SourceCounters --metrics sm__sass_inst_executed_op_shared <app>
 ```
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_ncu_list_sets.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <!-- <figcaption>Implicit Method</figcaption> -->
+</figure>
+
+</div>
 
 ### Nsight Systems: Analyzing the Entire Application
 
-While Nsight Compute is for kernels, Nsight Systems is designed to analyze the performance of the entire system, focusing particularly on CPU-GPU interactions. It helps you identify high-level bottlenecks, such as:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Nsight Systems)</span></p>
+
+While Nsight Compute is for kernels, **Nsight Systems** is designed to analyze the performance of the entire system, focusing particularly on CPU-GPU interactions. It helps you identify high-level bottlenecks, such as:
 
 * Time spent transferring data over the PCIe bus.
 * Gaps in GPU execution where the GPU is idle waiting for the CPU.
 * How different CUDA API calls and kernel launches overlap (or fail to overlap) over time.
 
-Like Nsight Compute, it has a CLI (nsys) and a GUI (nsight-sys).
+Like Nsight Compute, it has a **CLI (`nsys`)** and a **GUI (`nsight-sys`)**.
 
-A powerful feature of Nsight Systems is the ability to add custom annotations to your host code using the NVTX (NVIDIA Tools Extension) library. This lets you mark specific regions of your C++ code, which will then appear as labeled ranges in the profiler's timeline, making it easy to correlate profiler output with your application's logic.
+Recording and analyzing can be separated:
+* Record into file using `nsys profile <app>`, download for local use.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Nsight Systems Annotations)</span></p>
+
+A powerful feature of Nsight Systems is the ability to add **custom annotations** to your host code using the **NVTX (NVIDIA Tools Extension)** library. This lets you mark specific regions of your C++ code, which will then appear as labeled ranges in the profiler's timeline, making it easy to correlate profiler output with your application's logic.
 
 To use NTX, you need to include the header and link against the library:
 
@@ -2440,7 +2510,7 @@ To use NTX, you need to include the header and link against the library:
 // Link your application with -lnvToolsExt
 ```
 
-You can then bracket sections of your code with nvtxRangePush and nvtxRangePop:
+You can then bracket sections of your code with `nvtxRangePush` and `nvtxRangePop`:
 
 ```c++
 // This code block will appear as a labeled "sleeping" range in the nsys GUI.
@@ -2449,56 +2519,53 @@ sleep(100);
 nvtxRangePop();
 ```
 
+</div>
+
 ### Case Study: Profiling a Matrix Multiplication Kernel
 
-We now apply these tools to a concrete example: profiling a cuBLAS matrix multiplication routine and examining how performance changes with matrix shape.
+We now apply these tools to a concrete example: profiling a `cuBLAS` matrix multiplication routine and examining how performance changes with matrix shape.
 
 ### The High Cost of Detailed Profiling
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(Profiling Has Overhead)</span></p>
+
 First, it is crucial to understand that profiling has an overhead. The more metrics you collect, the more the profiler interferes with the application's execution, slowing it down. This happens because the GPU has a limited number of hardware performance counters. To collect many metrics, the profiler must re-run the kernel multiple times (called "passes" or "replays"), collecting a different subset of metrics each time.
 
-Consider this example of running a test on a 1024x1024 matrix multiplication (SGEMM):
+**This is a critical lesson:** the performance numbers you see during a detailed profiling run are not the true performance of your application; they are the performance under heavy observation. You must always establish a non-profiled baseline first.
 
-1. Baseline (No Profiling): The application runs extremely fast, achieving over 8,000 GFLOP/s.
+</div>
 
-   ```bash
-   $ ./cuBLAS-test-sm75 1024 1024 1024
-   SGEMM (  1024 x   1024 x   1024):     0.0002 sec,    8363.55 GFLOP/s
-   ```
-
-2. Profiling with the default set: Using ncu with the default set requires 8 passes. The execution time balloons from 0.2 milliseconds to over half a second, and the measured performance plummets to just 3.46 GFLOP/s.
-
-   ```bash
-   $ ncu -f --set default -o <file> ./cuBLAS-test-sm75 1024 1024 1024
-   ==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 8 passes
-   SGEMM (  1024 x   1024 x   1024):     0.5779 sec,       3.46 GFLOP/s
-   ```
-
-3. Profiling with the full set: Using the full set is even more expensive, requiring 33 passes. The execution takes 1.7 seconds, and measured performance is a paltry 1.17 GFLOP/s.
-
-   ```bash
-   $ ncu -f --set full --section ComputeWorkloadAnalysis -o <file> ./cuBLAS-test-sm75 1024 1024 1024
-   ==PROF== Profiling "volta_sgemm_128x64_nn" - 2: 0%....50%....100% - 33 passes
-   SGEMM (  1024 x   1024 x   1024):     1.7117 sec,       1.17 GFLOP/s
-   ```
-
-This is a critical lesson: the performance numbers you see during a detailed profiling run are not the true performance of your application; they are the performance under heavy observation. You must always establish a non-profiled baseline first.
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_ncu_profiling_expensive.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <figcaption>`ncu` profiling can be expensive...</figcaption>
+</figure>
 
 ### The Challenge of Skewed Matrices
 
-The peak performance of libraries like cuBLAS is often benchmarked using square matrices (e.g., $1024 \times 1024$). But what happens if the matrices are "skewed"—for instance, very tall and thin, or very short and wide?
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(The Challenge of Skewed Matrices)</span></p>
+
+* The peak performance of libraries like `cuBLAS` is often benchmarked using square matrices (e.g., $1024 \times 1024$). **Peak performance assumption only holds true for square matrices**.
+* But what happens if the matrices are **"skewed"**—for instance, very tall and thin, or very short and wide?
 
 Let's consider the matrix multiplication $C = A \cdot B$, where the dimensions are $m \times k$ for matrix $A$ and $k \times n$ for matrix $B$. We will keep the total amount of work roughly the same but dramatically alter the shapes of $A$ and $B$.
 
-The lecture slide presents a bar chart that illustrates this scenario.
+This **massive performance degradation** suggests that the **skewed shapes** are causing a **major problem with memory access patterns**.
 
-* Description of the Diagram: The chart plots GFLOP/s (y-axis) against various matrix dimensions m-n-k (x-axis). The first bar, representing a square matrix 1024-1024-1024, shows a very high performance of nearly 8400 GFLOP/s. As the matrices become more skewed (e.g., 2048-512-1024, 4096-256-1024, and so on, up to an extreme 1048576-1-1024), the performance drops dramatically, eventually falling below 500 GFLOP/s. This shows a substantial performance loss even though the total number of floating-point operations remains identical.
+</div>
 
-This massive performance degradation suggests that the skewed shapes are causing a major problem with memory access patterns.
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_skewed_matrices.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <figcaption>The chart plots GFLOP/s (y-axis) against various matrix dimensions $m-n-k$ (x-axis). The first bar, representing a square matrix 1024-1024-1024, shows a very high performance of nearly 8400 GFLOP/s. As the matrices become more skewed (e.g., 2048-512-1024, 4096-256-1024, and so on, up to an extreme 1048576-1-1024), the performance drops dramatically, eventually falling below 500 GFLOP/s. This shows a substantial performance loss even though the total number of floating-point operations remains identical.</figcaption>
+</figure>
 
 ### Using Nsight Compute to Uncover the Truth
 
-To diagnose this, we can use ncu to profile the application for each skewed matrix configuration. A simple shell for loop can automate this process, saving a unique report file for each run.
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Using Nsight Compute to Uncover the Truth)</span></p>
+
+To diagnose this, we can use `ncu` to profile the application for each skewed matrix configuration. A simple shell for loop can automate this process, saving a unique report file for each run.
 
 ```bash
 # This loop iterates, making the 'm' dimension larger and 'n' smaller each time,
@@ -2509,27 +2576,46 @@ for ((i=1;i<=1024;i*=2)); do
 done
 ```
 
-After collecting the data, we can import the report files (.ncu-rep) and examine specific metrics related to memory performance. Some key metrics of interest include:
+After collecting the data, we can import the report files (`.ncu-rep`) and examine specific metrics related to memory performance. Some key metrics of interest include:
 
-* L1 Cache Hit Rate: l1tex__t_sector_hit_rate.pct
-* L2 Cache Hit Rate: lts__t_sector_hit_rate.pct
-* Shared Memory Accesses: sass__inst_executed_shared_loads, sass__inst_executed_shared_stores
-* Global Memory Traffic (L1 to L2): l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum
-* Global Memory Traffic (L2 to DRAM): dram__sectors_read.sum
+* **L1 Cache Hit Rate:** `l1tex__t_sector_hit_rate.pct`
+* **L2 Cache Hit Rate:** `lts__t_sector_hit_rate.pct`
+* **Shared Memory Accesses:** `sass__inst_executed_shared_loads`, `sass__inst_executed_shared_stores`
+* **Global Memory Traffic (L1 to L2):** `l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum`
+* **Global Memory Traffic (L2 to DRAM):** `dram__sectors_read.sum`
+
+</div>
 
 ### Analyzing Memory Traffic and Cache Performance
 
 By plotting these metrics against the different matrix shapes, the source of the problem becomes clear.
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Global Read Traffic)</span></p>
+
 **Global Read Traffic:**
 
-* Description of the Diagram: A line graph shows two metrics: "L1->L2 LD [MB]" and "DRAM RD [MB]". For square-like matrices on the left, both traffic volumes are low. As the matrices become highly skewed to the right, the traffic from the L1 cache to the L2 cache (the blue line) explodes, increasing from a small amount to nearly 3000 MB. In contrast, the traffic from the L2 cache to main DRAM (the red line) stays relatively flat and low. This indicates that data is being constantly evicted from the L1 cache and must be re-fetched from L2, but the L2 cache is large enough to absorb most of this traffic, preventing a complete collapse from DRAM access. The read traffic amplification factor ranges from 1.25x for a moderately skewed case to an enormous 256x for the most skewed case.
+**Description of the Diagram:** A line graph shows two metrics: "L1->L2 LD [MB]" and "DRAM RD [MB]". For square-like matrices on the left, both traffic volumes are low. As the matrices become highly skewed to the right, the traffic from the L1 cache to the L2 cache (the blue line) explodes, increasing from a small amount to nearly 3000 MB. In contrast, the traffic from the L2 cache to main DRAM (the red line) stays relatively flat and low. This indicates that data is being constantly evicted from the L1 cache and must be re-fetched from L2, but the L2 cache is large enough to absorb most of this traffic, preventing a complete collapse from DRAM access. The read traffic amplification factor ranges from 1.25x for a moderately skewed case to an enormous 256x for the most skewed case.
 
-**Cache Hit Rates:**
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_skewed_matrices_global_read_traffic.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>Global Read Traffic</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_skewed_matrices_global_shared_mem_transaction.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>Shared memory VS. global memory transactions</figcaption>
+  </figure>
+</div>
 
-* Description of the Diagram: A line graph plots the L1 and L2 hit rates. For square matrices, both hit rates are very high (L1 at ~95%, L2 at ~85%). As the matrix shape skews, the L1 hit rate plummets dramatically, falling close to 0% for the most extreme cases. The L2 hit rate also declines but remains much higher, confirming that L2 is catching most of the L1 misses.
+</div>
 
-**Internal Kernel Switching:** An interesting detail revealed by the profiling data is that the cuBLAS library is not using the same kernel for all matrix shapes. It intelligently selects different internal implementations based on the problem size and shape. For example:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Cache Hit Rates)</span></p>
+
+* **Description of the Diagram:** A line graph plots the L1 and L2 hit rates. For square matrices, both hit rates are very high (L1 at ~95%, L2 at ~85%). As the matrix shape skews, the L1 hit rate plummets dramatically, falling close to 0% for the most extreme cases. The L2 hit rate also declines but remains much higher, confirming that L2 is catching most of the L1 misses.
+
+**Internal Kernel Switching:** An interesting detail revealed by the profiling data is that the `cuBLAS` library is not using the same kernel for all matrix shapes. It intelligently selects different internal implementations based on the problem size and shape. For example:
 
 * 1024-1024-1024 uses `volta_sgemm_128x64_nn`
 * 32768-32-1024 uses `volta_sgemm_128x32_sliced1x4_nn`
@@ -2538,13 +2624,25 @@ By plotting these metrics against the different matrix shapes, the source of the
 
 This shows the complexity of high-performance libraries, which contain multiple specialized algorithms to handle different types of inputs. However, even with these specialized kernels, the fundamental problem of poor data locality in skewed matrices leads to catastrophic cache performance and a massive drop in overall GFLOP/s.
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_skewed_matrices_cache_hits_rate.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <figcaption>Cache hit rates and internals</figcaption>
+</figure>
+
+</div>
+
 ### Independent Thread Scheduling
 
 The SIMT execution model has evolved significantly across GPU generations. Understanding this evolution explains why certain programming patterns are more efficient than others.
 
 #### The Classic SIMT Model (Pascal and Earlier)
 
-On older architectures, a warp operated as a single unit with **one program counter (PC) and one call stack**. As described in the branch divergence section above, divergent `if-else` paths were serialized using an active mask. The major drawback is that this model could also lead to **deadlock** if threads within a warp tried to synchronize with each other across a divergent branch.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Scheduling Before Volta)</span></p>
+
+On older architectures, a warp operated as a single unit with **one program counter (PC) and one call stack**. As described in the branch divergence section, divergent `if-else` paths were serialized using an active mask. The major drawback is that this model could also lead to **deadlock** if threads within a warp tried to synchronize with each other across a divergent branch.
+
+</div>
 
 ### The Modern SIMT Model (Volta and Later)
 
@@ -2553,22 +2651,39 @@ On older architectures, a warp operated as a single unit with **one program coun
 
 Starting with the Volta architecture, NVIDIA introduced **Independent Thread Scheduling (ITS)**. In the ITS model, the GPU maintains the execution state (program counter, register state) for each individual thread. A **schedule optimizer** dynamically groups active threads from the same warp that are executing the same instruction. Threads can now diverge and reconverge at sub-warp granularity.
 
-</div>
+**Each thread now has its own program counter and register state bookkeeping, but instruction issue (and execution) is still at warp granularity.**
 
 Execution is still SIMT at the core — the hardware executes one instruction across multiple threads. However, the scheduler can now group *any* threads from a warp that are at the same PC, rather than being constrained by a single warp-wide program counter. Crucially, after one branch finishes, its threads can immediately proceed without waiting for the other branch to complete.
 
-One subtlety: the hardware does not automatically force full warp reconvergence at the join point. To explicitly reconverge, developers use the `__syncwarp()` intrinsic.
+**One subtlety:** the hardware does not automatically force full warp reconvergence at the join point. To explicitly reconverge, developers use the `__syncwarp()` intrinsic.
+
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_pascal_simt_model.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>Pascal's (and before) SIMT model</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_06_volta_simt_model.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>Volta's (and after) SIMT model</figcaption>
+  </figure>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Starvation-Free Algorithms)</span></p>
 
 ITS enables **starvation-free algorithms**: if threads within a warp contend for a lock, the scheduler guarantees every thread will eventually be scheduled. In the old model, a thread holding a lock might never be re-scheduled if another thread in the same warp was spinning, causing deadlock.
 
-To recover strict warp-synchronous behavior (e.g., for warp-level reductions), use `__shfl_down_sync()`, call `__syncwarp()`, or compile for an older architecture (`-arch=compute_60`).
+<!-- To recover strict warp-synchronous behavior (e.g., for warp-level reductions), use `__shfl_down_sync()`, call `__syncwarp()`, or compile for an older architecture (`-arch=compute_60`). -->
+
+**Consider a lock (mutual exclusion):**
+* Thread #0 holds the lock, but thread #1 is scheduled for execution and impedes the progress of thread #0.
+* Volta’s ITS: thread #0 will eventually (question of when, not if) be scheduled for execution.
 
 </div>
 
-### A Survey of Profiling Tools
+<!-- ### A Survey of Profiling Tools
 
 Beyond NVIDIA's Nsight suite, several alternative profiling tools exist:
 
@@ -2591,7 +2706,7 @@ Beyond NVIDIA's Nsight suite, several alternative profiling tools exist:
 
 ### Predictive Performance Modeling (GPU Mangrove)
 
-**GPU Mangrove** uses a machine-learning approach to predict kernel performance without running on every target GPU. It extracts portable code features (instruction counts, memory footprint, launch configuration, computational intensity) using tools like CUDA Flux, then trains a RandomForest model on measured execution time and power from 189 benchmark kernels. Results: 8.86–52.0% accuracy for execution time and 1.84–2.94% for power consumption across five GPUs, with prediction taking only 15–108 ms.
+**GPU Mangrove** uses a machine-learning approach to predict kernel performance without running on every target GPU. It extracts portable code features (instruction counts, memory footprint, launch configuration, computational intensity) using tools like CUDA Flux, then trains a RandomForest model on measured execution time and power from 189 benchmark kernels. Results: 8.86–52.0% accuracy for execution time and 1.84–2.94% for power consumption across five GPUs, with prediction taking only 15–108 ms. -->
 
 ## N-Body Simulations: A Case Study in Optimization
 
@@ -2625,7 +2740,7 @@ struct p_t {
 p_t particles[MAX_SIZE];
 ```
 
-This is called an Array of Structures (AoS). In memory, the data for each particle is laid out contiguously. The position, velocity, and mass of `particle[0]` are stored together, followed immediately by all the data for particle[1], and so on.
+This is called an Array of Structures (AoS). In memory, the data for each particle is laid out contiguously. The position, velocity, and mass of `particle[0]` are stored together, followed immediately by all the data for `particle[1]`, and so on.
 
 **Memory Layout (AoS):** `[x0, y0, z0, vx0, ..., m0] [x1, y1, z1, vx1, ..., m1] [x2, ...]`
 
@@ -2651,9 +2766,9 @@ struct p_t {
 p_t particles;
 ```
 
-In this layout, all the x-positions are stored together, all the y-positions are stored together, and so on.
+In this layout, all the `x`-positions are stored together, all the `y`-positions are stored together, and so on.
 
-Memory Layout (SoA): `[x0, x1, x2, ...] [y0, y1, y2, ...] [z0, z1, z2, ...] ...`
+**Memory Layout (SoA):** `[x0, x1, x2, ...] [y0, y1, y2, ...] [z0, z1, z2, ...] ...`
 
 While this might seem less intuitive and requires more pointers to manage, it is often the superior choice for GPU applications. To understand why, we need to revisit the concept of memory coalescing.
 
@@ -2692,7 +2807,7 @@ $$f_{ij} = G \cdot \frac{m_i m_j}{\|d_{ij}\|^2} \cdot \frac{d_{ij}}{\|d_{ij}\|}$
 
 where $d_{ij} = x_j - x_i$ is the vector between them and $G$ is the gravitational constant.
 
-To avoid a division-by-zero error if two particles get too close ($\|d_{ij}\| \to 0$), a **softening factor** ($\epsilon^2$) is introduced in the denominator:
+To avoid a division-by-zero error if two particles get too close ($\lVert d_{ij}\rVert \to 0$), a **softening factor** ($\epsilon^2$) is introduced in the denominator:
 
 $$f_{ij} = G \cdot \frac{m_i m_j\, d_{ij}}{(\|d_{ij}\|^2 + \epsilon^2)^{3/2}}$$
 
@@ -2759,7 +2874,7 @@ __host__ __device__ void bodyBodyInteraction(
 
 ##### The ComputeNBodyGravitation_GPU_AOS Kernel
 
-Now for the main kernel. This kernel uses the AoS data layout with packed `float4` values to improve memory access. Each thread calculates the total force for one body i.
+Now for the main kernel. This kernel uses the AoS data layout with packed `float4` values to improve memory access. Each thread calculates the total force for one body `i`.
 
 ```c++
 __global__ void ComputeNBodyGravitation_GPU_AOS(
@@ -2804,7 +2919,7 @@ __global__ void ComputeNBodyGravitation_GPU_AOS(
 ##### Code Breakdown
 
 * `i = blockIdx.x*blockDim.x + threadIdx.x`: This is the standard formula to calculate a unique global index for each thread. The outer for loop is a grid-stride loop, which makes the kernel flexible—it works correctly even if we launch fewer threads than the number of bodies $N$.
-* `float4 me = ((float4 *) posMass)[i]`: We load the data for the thread's assigned body (me). By casting the posMass pointer to `float4*`, we are telling the hardware to perform a single 16-byte load, which can be more efficient. The `x`, `y`, `z` components store position, and the w component stores mass.
+* `float4 me = ((float4 *) posMass)[i]`: We load the data for the thread's assigned body (me). By casting the posMass pointer to `float4*`, we are telling the hardware to perform a single 16-byte load, which can be more efficient. The `x`, `y`, `z` components store position, and the `w` component stores mass.
 * `for (int j = 0; j < N; j++)`: This is the critical inner loop. The thread iterates through all $N$ bodies in the system.
 * `float4 body = ((float4 *) posMass)[j]`: Inside the loop, the thread loads the data for each body `j` from global memory.
 * **Data Reuse:** Notice that me is loaded once and reused $N$ times inside the inner loop. The data for body is loaded from global memory in every single iteration. However, because all threads in the GPU are executing this same inner loop, they will all be requesting the same body data at roughly the same time. This means the data for body `j` will be loaded from global memory and can be temporarily stored in the L1/L2 caches, benefiting all threads that need it.
@@ -3050,7 +3165,7 @@ When you launch a kernel or call `cudaMemcpy` without specifying a stream, you a
 
 </div>
 
-Consider this typical sequence of operations for a SAXPY kernel, which computes `y[i] = $\alpha$ $\cdot$ x[i] + y[i]`:
+Consider this typical sequence of operations for a SAXPY kernel, which computes $y[i] = $\alpha$ $\cdot$ x[i] + y[i]$:
 
 ```c++
 // All operations below are implicitly in the default stream
@@ -3095,7 +3210,7 @@ To achieve overlap, we need to break our problem into smaller, independent piece
 
 This creates a pipeline with three distinct phases:
 
-* **Fill:** In the beginning, the first few stages of the pipeline are being filled. For example, Stream 1 is copying data while the GPU is otherwise idle. Then, Stream 2 starts copying while Stream 1 starts computing.
+* **Fill:** In the beginning, the first few stages of the pipeline are being filled. For example, **Stream 1** is copying data while the GPU is otherwise idle. Then, **Stream 2** starts copying while **Stream 1** starts computing.
 * **Steady State:** The pipeline is full. This is the ideal state where data is being copied in for chunk $N+1$, the kernel is executing on chunk $N$, and results are being copied out for chunk $N-1$, all at the same time.
 * **Drain:** As the loop finishes, the final chunks work their way through the now-emptying pipeline.
 
@@ -3411,7 +3526,7 @@ This capability is essential for scaling applications across multiple GPUs effic
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(P2P Access)</span></p>
 
 ```c++
@@ -3462,7 +3577,7 @@ A **stencil** is a geometric pattern used to update elements in a regular array 
 
 </div>
 
-<div class="math-callout math-callout--example" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Real-World Applications of Stencils)</span></p>
 
 1. **Image Processing:** Used in blob analysis, which helps computers identify and categorize distinct shapes within an image.
@@ -3494,7 +3609,7 @@ Since computers cannot solve complex calculus equations exactly, we use **Finite
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Derivative Approximation Technique)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Derivative Approximation Methods)</span></p>
 
 Using Taylor's polynomial, we can approximate the derivative of a function $f(x)$:
 
@@ -3523,20 +3638,26 @@ $O(k)$ represents the "order of error." An $O(k^2)$ method is generally much mor
 
 To solve these on a GPU, we turn continuous space into a grid. We define points $x_i = ih$ and $t_j = jk$, where $h$ is the space step and $k$ is the time step. This allows us to represent a physical object as a series of indexed points in a computer's memory.
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_finite_differences.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Finite Differences.</figcaption>
+</figure>
+
 ### Solving the Heat Equation: Explicit vs. Implicit Methods
 
-The Heat Equation describes how thermal conductivity ($c$) transports heat through a material over time. It is a parabolic equation, and there are two primary ways to solve it using stencils.
+The **Heat Equation** describes how thermal conductivity ($c$) transports heat through a material over time. It is a parabolic equation, and there are two primary ways to solve it using stencils.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Explicit Method)</span></p>
 
 In the **Explicit Method**, we calculate the state of a point at the next time step ($j+1$) using only the values from the current time step ($j$):
 
-$$
-u_{i,j+1} = r\, u_{i-1,j} + (1 - 2r)\,u_{i,j} + r\, u_{i+1,j}
-$$
+$$u_{i,j+1} = r\, u_{i-1,j} + (1 - 2r)\,u_{i,j} + r\, u_{i+1,j}$$
 
-where $r = \frac{ck}{h^2}$.
+where 
+
+* $r = \frac{ck}{h^2}$
+* $c$ - thermal conductivity or how fast heat $u(x, t)$ is transported through material.
 
 * **Pros:** Very simple to calculate. Each point can be computed independently.
 * **Cons:** Unstable. Requires impractically small time steps ($k < \frac{h^2}{2c}$).
@@ -3546,16 +3667,29 @@ where $r = \frac{ck}{h^2}$.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Implicit Method)</span></p>
 
-The **Implicit Method** calculates the next time step by solving a system of equations where multiple unknown points at $t+k$ are related to each other.
+The **Implicit Method** calculates the next time step by solving a system of equations where multiple unknown points at $t+k$ are related to each other:
+
+$$u_{i,j} = -r\, u_{i-1,j+1} + (1 + 2r)\,u_{i,j+1} - r\, u_{i+1,j+1}$$
 
 * **Pros:** Numerically stable. Much larger time steps are possible.
-* **Cons:** Computationally intensive, requiring solving a linear system.
+* **Cons:** Computationally intensive, requiring solving a linear system. (Here GPUs come in)
 
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_explicit_method.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>Explicit Method</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_implicit_method.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>Implicit Method</figcaption>
+  </figure>
 </div>
 
 #### The Crank-Nicholson Method (CNM)
 
-This is a hybrid approach. It averages the explicit and implicit methods to achieve higher accuracy ($O(h^2 + k^2)$). For a simulation requiring 4 digits of accuracy, an implicit method might need 1 million points, while the Crank-Nicholson Method would only need 560 points to achieve the same result.
+This is a hybrid approach. It applies weighted average ($\beta\cdot\dots\(1-\beta)\cdot\dots$) the explicit and implicit methods to achieve higher accuracy ($O(h^2 + k^2)$). For a simulation requiring 4 digits of accuracy, an implicit method might need 1 million points, while the Crank-Nicholson Method would only need 560 points to achieve the same result.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU Connection)</span></p>
@@ -3566,7 +3700,12 @@ Because implicit methods and hybrid methods like CNM are computationally heavy b
 
 ### Optimizing Stencil Codes for GPU Architecture
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Stencil is memory-bound)</span></p>
+
 Stencil codes are typically **memory-bound**. This means the GPU spends more time waiting for data to arrive from memory than it does actually performing math.
+
+</div>
 
 #### Domain Decomposition and Halos
 
@@ -3579,14 +3718,24 @@ Because each point needs its neighbor's data, thread blocks must store an overla
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_parallelization_of_stencil_codes.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Parallelization of Stencil Codes.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Strategies for Memory Optimization)</span></p>
 
-1. **1D vs 2D Partitioning:** 2D partitioning is common but can lead to "poorly aligned" memory access for vertical halos. 1D partitioning (strips) can sometimes be more efficient for communication.
+1. **1D vs 2D Partitioning:** 2D partitioning is common but can lead to "poorly aligned" memory access for vertical halos (vertical halos are poorly aligned in memory). 1D partitioning (strips) can sometimes be more efficient for communication (only horizontal).
 2. **Shared Memory (Scratchpad):** Shared memory is a fast, small memory area on the GPU. Instead of reading from the slow global memory every time, threads can load a "tile" of the grid into shared memory, use it, and then move on.
 3. **Marching Planes:** When dealing with 3D data, we don't have enough shared memory to store everything. Instead, we keep only three planes (top, middle, bottom) in shared memory and "march" through the 3D volume, cycling the buffers as we go.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_marching_through_3-dimensional_data_array.png' | relative_url }}" alt="Newton–Raphson iteration animation" loading="lazy">
+  <figcaption>Marching through a 3-dimensional data array.</figcaption>
+</figure>
 
 ### Directive-Based Programming (OpenACC)
 
@@ -3597,17 +3746,38 @@ Writing raw CUDA code can be difficult for beginners. **OpenACC** is a directive
 
 </div>
 
-#### The Execution Model
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(OpenACC Execution Model)</span></p>
 
-OpenACC uses a host-directed model: the CPU (host) manages the program and "offloads" compute-heavy loops to the GPU (accelerator).
+OpenACC uses a **host-directed model** with an attached accelerator device:
+* CPU (host) manages the program and "offloads" compute-heavy loops to the GPU (accelerator).
+* Three parallelism levels
 
 Parallelism in OpenACC is organized into three levels:
 
-1. **Gang:** The coarsest level (similar to a CUDA thread block).
-2. **Worker:** A middle level (similar to a CUDA warp).
-3. **Vector:** The finest level (similar to individual threads or SIMD operations).
+1. **Gang Parallelism:** The coarsest level (CUDA: multiple thread blocks -> grid level).
+   1. Fully parallel execution across execution units
+   2. Limited support for synchronization
+2. **Worker Parallelism:** A middle level (CUDA: warps at block level).
+   1. Multiple threads on a single execution unit
+   2. Latency hiding techniques
+3. **Vector Parallelism:** The finest level (CUDA: threads at block level).
+   1. Multiple operations per thread
+   2. SIMD/vector operations
 
-#### Basic Syntax and Directives
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Choosing parallelism type)</span></p>
+
+**Programmer has to identify appropriate parallelism type**
+* Fully-parallel loop (no dependencies) $\implies$ **gang**
+* Vectorizable loop but with dependencies $\implies$ **fine-grain parallelism**, or **sequential implementation**
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Basic Syntax and Directives in OpenACC)</span></p>
 
 To tell the compiler to run a loop on the GPU, you use:
 
@@ -3619,6 +3789,8 @@ To tell the compiler to run a loop on the GPU, you use:
     }
 }
 ```
+
+</div>
 
 **Key Directives and Clauses:**
 
@@ -3632,6 +3804,38 @@ To tell the compiler to run a loop on the GPU, you use:
 | `copyout` | Only moves data from device to host. |
 | `present` | Tells the compiler the data is already on the GPU. |
 
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_openacc_1_compilation.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>SAXPY – OPENACC #1 (Compilation)</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_openacc_1_running.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>SAXPY – OPENACC #1 (Running)</figcaption>
+  </figure>
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_openacc_2.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>SAXPY – OPENACC #2</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_openacc_3.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>SAXPY – OPENACC #3</figcaption>
+  </figure>
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_openacc_4.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <figcaption>SAXPY – OPENACC #4</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_performance_results_of_pragmas.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <!-- <figcaption>SAXPY – OPENACC #4</figcaption> -->
+</figure>
+
 #### Performance Optimization in OpenACC
 
 A common problem is **pointer aliasing**, where the compiler isn't sure if two memory pointers overlap. To fix this and allow parallelization, use the `restrict` keyword:
@@ -3641,6 +3845,11 @@ float* restrict x; // Tells the compiler this pointer is unique
 ```
 
 You can also use the `async` clause to allow the GPU to work on one task while the CPU continues with another, enabling overlapping execution.
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_09_openacc_optimization.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+  <!-- <figcaption>SAXPY – OPENACC #4</figcaption> -->
+</figure>
 
 ### Practical Application: Connected Component Labeling
 
@@ -3704,20 +3913,26 @@ Computers use **Virtual Addresses (VA)** to manage memory. However, the actual d
 
 </div>
 
-
-#### Communication and Synchronization
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Communication and Synchronization in Shared Memory)</span></p>
 
 In a shared memory system, threads communicate by writing to and reading from shared addresses. For example, if Thread 0 performs a store operation to a shared memory location, that change should eventually be visible when Thread 1 performs a load operation from that same location. This reliance on memory operations—including **atomic operations** (operations that happen completely or not at all, without interruption)—is the basis for synchronization.
 
+</div>
+
 ### Designing Communication Abstractions
 
-A communication abstraction acts as a contract between the hardware and the software, much like an ISA (Instruction Set Architecture). It defines how data is moved and managed. There are five key pillars to this design:
+A communication abstraction acts as a contract between the hardware and the software, much like an ISA (Instruction Set Architecture). It defines how data is moved and managed. There are five key pillars to this design, and each one can be understood by contrasting two fundamental approaches: **shared memory** (threads communicate implicitly through a common address space) vs. **message passing** (threads communicate explicitly by sending/receiving data).
 
-1. **Naming:** Determines what data can be identified (named). In shared memory, threads "name" locations in their registers and virtual address spaces (code, stack, heap). In message passing, naming involves local addresses and process identifiers.
-2. **Operations:** The actions performed on named data.
-   * *Shared Memory:* Uses simple load and store instructions, plus atomic read-modify-write operations.
-   * *Message Passing:* Uses send and receive operations, which are generally more complex than simple memory loads.
-3. **Ordering:** Defines the sequence in which operations appear to happen. For a single thread, we follow sequential program order (top-to-bottom). In parallel systems, determining the order is much harder because threads operate independently.
+1. **Naming:** Determines what data can be identified (named). The issue of naming arises at every abstraction level of a parallel architecture.
+   * *Shared Memory:* Threads name locations in their registers and virtual address space (segments for code, stack, heap). Access to shared variables is mapped to load/store instructions on virtual addresses. Shared virtual addresses map to the same physical address (global physical address space); with independent local physical address spaces, communication relies on page faults.
+   * *Message Passing:* Message passing is done in hardware, but matching and buffering happen in software. Naming involves local addresses and process identifiers.
+2. **Operations:** The actions performed on named data. Note the complexity difference between the two models.
+   * *Shared Memory:* Loads and stores on addresses and registers (CISC) or only on registers (RISC). Includes reading/writing shared variables and atomic read-modify-write operations.
+   * *Message Passing:* Sending/receiving on private local addresses and process identifiers, plus collective operations. Generally more complex than simple memory loads.
+3. **Ordering:** Defines the sequence in which operations appear to happen. Ordering has a big performance impact, which motivates relaxed ordering models.
+   * *Shared Memory:* Threads operate independently, so which order to apply? Among memory operations, we follow sequential program order (top-to-bottom, left-to-right order of the program).
+   * *Message Passing:* MPI guarantees strong ordering. Tag matching results in linear search(es); receiving with any tag/sender returns the first matched queue entry.
 4. **Communication/Replication:** Refers to how data is physically moved or copied across the system.
 5. **Performance:** Focuses on the efficiency of data transfer, involving the application, the communication hardware, and the physical medium.
 
@@ -3935,7 +4150,12 @@ The core uses **Fine-grained Multithreading** to hide latency. While one warp is
 
 ## Flexible Synchronization with Cooperative Groups
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(__syncthreads() is good, but rigid)</span></p>
+
 Historically, CUDA provided the `__syncthreads()` function to synchronize threads within a block. While effective, it is "rigid"—it's all-or-nothing for the entire block. **Cooperative Groups (CG)** is a modern API that allows for much more flexible, fine-grained synchronization.
+
+</div>
 
 ### Core Concepts of Thread Groups
 
@@ -3946,8 +4166,8 @@ A **Thread Group** is a generic type in the CG API that can represent any subset
 
 Supported hierarchies include:
 
-* **Warp-Level Groups:** Represented by `coalesced_group`, allowing threads within a warp to cooperate using Warp-level intrinsics like `shfl` (shuffle).
-* **Block-Level Groups:** Represented by `thread_block`.
+* **Warp-Level Groups:** Represented by `coalesced_group` (`cooperative_groups::coalesced_group`), allowing threads within a warp to cooperate using Warp-level intrinsics like `__shfl__` (shuffle). 
+* **Block-Level Groups:** Represented by `thread_block` (`cooperative_groups::thread_block`).
 * **Grid Groups:** Allows for synchronization across the entire grid (all blocks). This requires a "Cooperative Launch" and hardware with Compute Capability $\geq 6.0$.
 
 </div>
@@ -3955,7 +4175,12 @@ Supported hierarchies include:
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Block-Level Synchronization)</span></p>
 
-Using Cooperative Groups improves code readability and provides a standardized way to handle synchronization.
+Using **Cooperative Groups**
+
+* `thread_block block = this_thread_block();`
+* `block.sync();`
+
+improves code readability and provides a standardized way to handle synchronization.
 
 ```c++
 #include <cooperative_groups.h>
@@ -3976,6 +4201,8 @@ __global__ void blockSyncKernel(float* data) {
     data[idx] += 1.0f;
 }
 ```
+
+An equivalent way to synchronize is `cg::synchronize(block)`.
 
 </div>
 
@@ -4009,7 +4236,12 @@ In this code, we reduce the pressure on global memory by combining multiple indi
 
 ## Accelerated Matrix Operations with Tensor Cores
 
-As Deep Learning became dominant, NVIDIA introduced **Tensor Cores**. These are specialized hardware units designed specifically for Matrix-Multiply-Accumulate (MMA) operations.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(More effective CUDA cores for MMA)</span></p>
+
+As Deep Learning became dominant, NVIDIA introduced **Tensor Cores**. These are specialized hardware units designed specifically for Matrix-Multiply-Accumulate (MMA) operations. Standard CUDA cores can do these operations, but Tensor Cores are specialized hardware units that handle matrix ops much faster with mixed-precision arithmetic. Key changes: wider, specialized ALUs
+
+</div>
 
 ### What is a Tensor Core?
 
@@ -4047,28 +4279,62 @@ const int WMMA_M = 16;
 const int WMMA_N = 16;
 const int WMMA_K = 16;
 
-__global__ void wmma_example(half *a, half *b, float *c) {
+__global__ void wmma_example(half *a, half *b, float *c,
+                             int M, int N, int K,
+                             float alpha, float beta)
+{
+    // Leading dimensions. Packed with no transpositions.
+    int lda = M;
+    int ldb = K;
+    int ldc = M;
+
+    // Tile using a 2D grid
+    int warpM = (blockIdx.x*blockDim.x+threadIdx.x)/warpSize;
+    int warpN = (blockIdx.y*blockDim.y+threadIdx.y);
+
     // Declare the fragments (placeholders for matrix tiles in registers)
     wmma::fragment<wmma::matrix_a, WMMA_M, WMMA_N, WMMA_K, half, wmma::col_major> a_frag;
     wmma::fragment<wmma::matrix_b, WMMA_M, WMMA_N, WMMA_K, half, wmma::col_major> b_frag;
     wmma::fragment<wmma::accumulator, WMMA_M, WMMA_N, WMMA_K, float> acc_frag;
+    wmma::fragment<wmma::accumulator, WMMA_M, WMMA_N, WMMA_K, float> c_frag;
 
     // Initialize the accumulator fragment with zeros
     wmma::fill_fragment(acc_frag, 0.0f);
 
-    // Loop over the K-dimension to perform the multiplication
+    // Loop over the K-dimension
     for (int i = 0; i < K; i += WMMA_K) {
-        // Load tiles from memory into fragments
-        wmma::load_matrix_sync(a_frag, a + (warpM * WMMA_M) + i * lda, lda);
-        wmma::load_matrix_sync(b_frag, b + i + (warpN * WMMA_N) * ldb, ldb);
+        int aRow = warpM * WMMA_M;
+        int aCol = i;
+        int bRow = i;
+        int bCol = warpN * WMMA_N;
+    
+        // Bounds checking
+        if (aRow < M && aCol < K && bRow < K && bCol < N) {
 
-        // Perform the specialized Matrix-Multiply-Accumulate operation
-        wmma::mma_sync(acc_frag, a_frag, b_frag, acc_frag);
+          // Load the inputs
+          wmma::load_matrix_sync(a_frag, a + aRow + aCol * lda, lda);
+          wmma::load_matrix_sync(b_frag, b + bRow + bCol * ldb, ldb);
+          
+          // Perform the matrix multiplication
+          wmma::mma_sync(acc_frag, a_frag, b_frag, acc_frag);
+        }
     }
 
-    // Store the final result fragment back to global memory
-    wmma::store_matrix_sync(c + (warpM * WMMA_M) + (warpN * WMMA_N) * ldc,
-                            acc_frag, ldc, wmma::mem_col_major);
+    // Load in current value of c, scale by beta, and add to result scaled by alpha
+    int cRow = warpM * WMMA_M;
+    int cCol = warpN * WMMA_N;
+    
+    if (cRow < M && cCol < N) {
+      
+      wmma::load_matrix_sync(c_frag, c + cRow + cCol * ldc, ldc, wmma::mem_col_major);
+      
+      for(int i=0; i < c_frag.num_elements; i++) {
+        c_frag.x[i] = alpha * acc_frag.x[i] + beta * c_frag.x[i];
+      }
+
+      // Store the output
+      wmma::store_matrix_sync(c + cRow + cCol * ldc, c_frag, ldc, wmma::mem_col_major);
+    }
 }
 ```
 
@@ -4080,11 +4346,11 @@ NVIDIA has updated Tensor Core technology with every major architecture generati
 
 | Generation | Architecture | Key Additions |
 | --- | --- | --- |
-| Gen 1 | Volta | Introduced `FP16`/`FP32` support |
+| Gen 1 | Volta | Introduced Tensor Cores supporting FP16 for inputs and FP32 accumulation. (V100 GPU contains 640 Tensor Cores (8 per SM))|
 | Gen 2 | Turing | Added integer formats (`INT8`, `INT4`) for faster inference |
-| Gen 3 | Ampere | Added `TF32` (Tensor Float 32) and `BF16` (BFloat16) |
+| Gen 3 | Ampere | More Tensor Cores per SM, higher throughput. Mixed-precision support: TF32, FP16, BF16, INT8, FP8 (E4M3/E5M2), etc. |
 | Gen 4 | Hopper | Introduced `FP8` support for massive HPC and AI scaling |
-| Gen 5 | Blackwell | Added `FP6` and `FP4` support; introduced Tensor Memory (`TMEM`) |
+| Gen 5 | Blackwell | Added `FP6` and `FP4` support; introduced Tensor Memory (`TMEM`) - previous generations operated on SM & RF. Replaced warp-synchronous MMA with a single-thread instruction (`tcgen05.mma`) |
 
 ## Performance Scaling and the Future of GPU Computing
 
@@ -4120,14 +4386,4 @@ To overcome the power limits of CMOS (the current standard chip technology), res
 * **Resistive Memory:** Performing calculations directly inside the memory.
 * **Specialized AI Chips:** Examples include GraphCore IPU, Cerebras, and SiPearl.
 
-### Course Summary
-
-<div class="math-callout math-callout--info" markdown="1">
-<p class="math-callout__title"><span class="math-callout__label">Summary</span><span class="math-callout__name">(GPU Computing)</span></p>
-
-* **CUDA Basics:** Thread hierarchies, shared memory, and barrier synchronization.
-* **Architecture:** The SMX architecture, memory hierarchies, and warp scheduling.
-* **Optimizations:** Bank conflict resolution, loop unrolling, and templating.
-* **Advanced Features:** SIMT divergence management, Cooperative Groups for flexible syncing, and Tensor Cores for AI acceleration.
-
-</div>
+[Cerebras Architecture Deep Dive: First Look Inside the HW/SW Co-Design for Deep Learning](https://www.cerebras.ai/blog/cerebras-architecture-deep-dive-first-look-inside-the-hw-sw-co-design-for-deep-learning)
