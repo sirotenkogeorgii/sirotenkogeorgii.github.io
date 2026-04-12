@@ -2724,7 +2724,8 @@ Before tackling the N-body problem, we address a foundational optimization: how 
 
 </div>
 
-#### Array of Structures (AoS): The Intuitive Approach
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Array of Structures (AoS): The Intuitive Approach)</span></p>
 
 When programming in languages like C or C++, the most common way to group related data is using a struct. For a particle simulation, we might define a particle like this:
 
@@ -2740,15 +2741,23 @@ struct p_t {
 p_t particles[MAX_SIZE];
 ```
 
-This is called an Array of Structures (AoS). In memory, the data for each particle is laid out contiguously. The position, velocity, and mass of `particle[0]` are stored together, followed immediately by all the data for `particle[1]`, and so on.
+This is called an **Array of Structures (AoS)**. In memory, the data for each particle is laid out contiguously. The position, velocity, and mass of `particle[0]` are stored together, followed immediately by all the data for `particle[1]`, and so on.
 
 **Memory Layout (AoS):** `[x0, y0, z0, vx0, ..., m0] [x1, y1, z1, vx1, ..., m1] [x2, ...]`
 
-This layout is intuitive and works well for many single-threaded applications where you typically process one entire object at a time.
+</div>
 
-#### Structure of Arrays (SoA): The GPU-Friendly Approach
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(AoS is good for single-threaded applications)</span></p>
 
-An alternative data layout is the Structure of Arrays (SoA). Instead of one large array of particle structures, we create a single structure that contains arrays for each attribute.
+This layout is intuitive and works well for many single-threaded applications where you **typically process one entire object at a time**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Structure of Arrays (SoA): The GPU-Friendly Approach)</span></p>
+
+An alternative data layout is the **Structure of Arrays (SoA)**. Instead of one large array of particle structures, we create a single structure that contains arrays for each attribute.
 
 ```c++
 // Define a structure containing arrays for each particle attribute
@@ -2770,13 +2779,35 @@ In this layout, all the `x`-positions are stored together, all the `y`-positions
 
 **Memory Layout (SoA):** `[x0, x1, x2, ...] [y0, y1, y2, ...] [z0, z1, z2, ...] ...`
 
-While this might seem less intuitive and requires more pointers to manage, it is often the superior choice for GPU applications. To understand why, we need to revisit the concept of memory coalescing.
 
-#### Impact on Memory Coalescing
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(SoA is superior choice for GPU applications)</span></p>
+
+While this might seem less intuitive and requires more pointers to manage, it is often the **superior choice for GPU applications**. To understand why, we need to revisit the concept of memory coalescing.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Coalescing encourages SoA)</span></p>
 
 Recall that coalesced memory access requires threads in a warp to access consecutive addresses. With **AoS**, threads reading the `x` coordinate of consecutive particles access non-contiguous locations (separated by `y`, `z`, `m` fields) — a non-coalesced pattern. With **SoA**, the `x` values of all particles are contiguous, yielding perfectly coalesced access.
 
 While AoS can sometimes be improved using packed types like `float4`, SoA is the naturally GPU-friendly layout for memory-bound applications.
+
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_07_coalesced_aos.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>Non-Coalesced AoS vs. Coalesced SoA</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_07_uncoalesced_aos_coalesced_soa.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>Coalesced AoS --- Packed Values</figcaption>
+  </figure>
+</div>
 
 ### Applying Tiling to N-Body Simulations
 
@@ -2789,11 +2820,23 @@ The tiling principle from matrix multiplication — load a tile into shared memo
 
 </div>
 
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(N-Body Simulation)</span></p>
+
 Applications include astrophysics (galaxy formation, neutron star collisions) and biomolecular simulation (protein folding, virus modeling).
 
-The all-pairs force calculation has $O(N^2)$ computational complexity but only $O(N)$ memory, making it compute-bound and ideal for GPUs. For very large $N$, hierarchical algorithms like Barnes-Hut ($O(N \log N)$) approximate distant interactions, but the all-pairs kernel remains the inner loop.
+</div>
 
-#### The Physics Behind the Simulation
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(N-Body Simulation Complexity)</span></p>
+
+* The all-pairs force calculation has $O(N^2)$ computational complexity but only $O(N)$ memory, making it **compute-bound** and ideal for GPUs. 
+* For very large $N$, hierarchical algorithms like Barnes-Hut ($O(N \log N)$) approximate distant interactions, but the all-pairs kernel remains the inner loop.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The Physics Behind the Simulation)</span></p>
 
 The simulation is based on Newton's second law of motion:
 
@@ -2821,11 +2864,26 @@ $$v_i\!\left(t + \tfrac{1}{2}\delta t\right) = v_i\!\left(t - \tfrac{1}{2}\delta
 
 $$x_i(t + \delta t) = x_i(t) + \delta t \cdot v_i\!\left(t + \tfrac{1}{2}\delta t\right)$$
 
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_07_single_body_force.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <figcaption>Single Body Force</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_07_force_matrix.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>Force Matrix</figcaption>
+  </figure>
+</div>
+
+
 ### Implementing an N-Body Simulation on the GPU
 
 Our goal is to implement the force calculation step on the GPU, as it is the most computationally expensive part $O(N^2)$.
 
-#### Initial Design: One Thread Per Body
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Initial Design: One Thread Per Body)</span></p>
 
 A natural way to partition the problem for a GPU is to assign one thread to calculate the total force for one body. Each thread will:
 
@@ -2834,13 +2892,21 @@ A natural way to partition the problem for a GPU is to assign one thread to calc
 3. For each other body, calculate the interaction force and add it to an accumulator.
 4. Write the final total force back to global memory.
 
-This approach requires communication (each thread needs to read the data of all other bodies) and offers a prime opportunity to optimize for data re-use. We will explore two implementations: a naive one and a tiled one.
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Requires thread communication)</span></p>
+
+This **approach requires communication** (each thread needs to read the data of all other bodies) and offers a prime opportunity to optimize for data re-use. We will explore two implementations: a naive one and a tiled one.
+
+</div>
 
 #### A Naive GPU Implementation
 
 Let's start with a straightforward implementation. First, a helper function to calculate the interaction between two bodies. This function can be used by both the CPU (`__host__`) and GPU (`__device__`).
 
-##### bodyBodyInteraction Helper Function
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(bodyBodyInteraction Helper Function)</span></p>
 
 This function takes the properties of two bodies and calculates the force components (`fx`, `fy`, `fz`) that body 1 exerts on body 0. It performs approximately 16 single-precision floating-point operations (FLOPs).
 
@@ -2861,7 +2927,7 @@ __host__ __device__ void bodyBodyInteraction(
     distSqr += softeningSquared;
 
     // Calculate 1 / (dist^3) using the fast reciprocal square root intrinsic
-    float invDist = rsqrtf(distSqr);
+    float invDist = rsqrtf(distSqr); // rsqrtf is a single-precision floating-point function that computes the reciprocal (inverse) square root of a number
     float invDistCube =  invDist * invDist * invDist;
     float s = mass1 * invDistCube;
 
@@ -2872,30 +2938,29 @@ __host__ __device__ void bodyBodyInteraction(
 }
 ```
 
-##### The ComputeNBodyGravitation_GPU_AOS Kernel
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(ComputeNBodyGravitation_GPU_AOS Kernel)</span></p>
 
 Now for the main kernel. This kernel uses the AoS data layout with packed `float4` values to improve memory access. Each thread calculates the total force for one body `i`.
 
 ```c++
-__global__ void ComputeNBodyGravitation_GPU_AOS(
-    float *force, float *posMass, size_t N, float softeningSquared)
-{
+__global__ void ComputeNBodyGravitation_GPU_AOS(float *force, float *posMass, size_t N, float softeningSquared){
     // Outer loop to handle cases where N > number of threads (grid-stride loop)
-    for (int i = blockIdx.x*blockDim.x + threadIdx.x;
-         i < N;
-         i += blockDim.x*gridDim.x)
+    for (int i = blockIdx.x*blockDim.x + threadIdx.x; i < N; i += blockDim.x*gridDim.x)
     {
         // Accumulator for total force on body 'i'
         float acc[3] = {0};
 
         // Load position and mass of body 'i'
-        float4 me = ((float4 *) posMass)[i];
+        float4 me = ((float4*)posMass)[i];
         float myX = me.x; float myY = me.y; float myZ = me.z;
 
         // Inner loop to iterate through all other bodies 'j'
         for (int j = 0; j < N; j++) {
             // Load position and mass of body 'j'
-            float4 body = ((float4 *) posMass)[j];
+            float4 body = ((float4*)posMass)[j];
 
             // Calculate interaction force
             float fx, fy, fz;
@@ -2916,17 +2981,25 @@ __global__ void ComputeNBodyGravitation_GPU_AOS(
 }
 ```
 
-##### Code Breakdown
+</div>
 
-* `i = blockIdx.x*blockDim.x + threadIdx.x`: This is the standard formula to calculate a unique global index for each thread. The outer for loop is a grid-stride loop, which makes the kernel flexible—it works correctly even if we launch fewer threads than the number of bodies $N$.
-* `float4 me = ((float4 *) posMass)[i]`: We load the data for the thread's assigned body (me). By casting the posMass pointer to `float4*`, we are telling the hardware to perform a single 16-byte load, which can be more efficient. The `x`, `y`, `z` components store position, and the `w` component stores mass.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Code Breakdown)</span></p>
+
+* `i = blockIdx.x*blockDim.x + threadIdx.x`: This is the standard formula to calculate a unique global index for each thread. The outer for loop is a **grid-stride loop**: the stride is `blockDim.x * gridDim.x`, i.e. the total number of threads in the grid. If fewer threads are launched than bodies (e.g. 1024 threads for 10000 bodies), each thread handles multiple bodies by striding forward by the grid size—thread 0 handles bodies 0, 1024, 2048, etc. This decouples the launch configuration from the problem size $N$.
+* `float4 me = ((float4 *) posMass)[i]`: We load the data for the thread's assigned body (`me`). By casting the posMass pointer to `float4*`, we are telling the hardware to perform a single 16-byte load, which can be more efficient. The `x`, `y`, `z` components store position, and the `w` component stores mass.
 * `for (int j = 0; j < N; j++)`: This is the critical inner loop. The thread iterates through all $N$ bodies in the system.
 * `float4 body = ((float4 *) posMass)[j]`: Inside the loop, the thread loads the data for each body `j` from global memory.
-* **Data Reuse:** Notice that me is loaded once and reused $N$ times inside the inner loop. The data for body is loaded from global memory in every single iteration. However, because all threads in the GPU are executing this same inner loop, they will all be requesting the same body data at roughly the same time. This means the data for body `j` will be loaded from global memory and can be temporarily stored in the L1/L2 caches, benefiting all threads that need it.
+* **Data Reuse:** Notice that `me` is loaded once and reused $N$ times inside the inner loop. The data for body is loaded from global memory in every single iteration. However, because **all threads in the GPU are executing this same inner loop, they will all be requesting the same body data at roughly the same time. This means the data for body `j` will be loaded from global memory and can be temporarily stored in the L1/L2 caches, benefiting all threads that need it.**
+
+</div>
 
 #### Performance and the Power of Loop Unrolling
 
-Even in this naive implementation, we can apply a simple but effective optimization: loop unrolling. This technique reduces branch overhead by expanding the loop body, performing more work per iteration. We can hint to the compiler to do this using a `#pragma`.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Optimization</span><span class="math-callout__name">(Loop Unrolling using Pragma)</span></p>
+
+Even in this naive implementation, we can apply a simple but effective optimization: **loop unrolling**. This technique reduces branch overhead by expanding the loop body, performing more work per iteration. We can hint to the compiler to do this using a `#pragma`.
 
 ```c++
 #pragma unroll 16
@@ -2934,6 +3007,9 @@ for (int j = 0; j < N; j++) {
     // ... body of the loop ...
 }
 ```
+
+* `#pragma` unroll 1 will prevent the compiler from ever unrolling a loop.
+* If no number is specified after `#pragma unroll`, the loop is completely unrolled if its trip count is constant, otherwise it is not unrolled at all.
 
 The optimal unroll factor must be found empirically by testing different values. The results show a significant performance gain:
 
@@ -2945,11 +3021,14 @@ The optimal unroll factor must be found empirically by testing different values.
 
 Loop unrolling improves performance by over 37% in this case.
 
+</div>
+
 ### An Optimized Tiled Implementation Using Shared Memory
 
-The naive version relies on the GPU's hardware caches to exploit data reuse. We can achieve even better performance by explicitly managing data reuse with tiling and shared memory.
+The naive version relies on the GPU's hardware caches to exploit data reuse. We can achieve even better performance by explicitly managing data reuse with tiling and **shared memory**.
 
-#### Applying the Tiling Strategy to N-Body
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Optimized Tiled Implementation Using Shared Memory)</span></p>
 
 The idea is to break the $N \times N$ interaction calculation into smaller tiles. Each thread block will work on one tile at a time.
 
@@ -2960,30 +3039,29 @@ The idea is to break the $N \times N$ interaction calculation into smaller tiles
 5. Each thread then iterates through the bodies in the shared memory tile, accumulating forces.
 6. Another synchronization barrier is used before the block proceeds to load the next tile.
 
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tiled ComputeNBodyGravitation_Shared Kernel)</span></p>
+
 This strategy drastically reduces global memory traffic. A tile of body data is loaded once from global memory into fast shared memory, and then every thread in the block can reuse it `blockDim.x` times.
 
-#### Code Breakdown: The Tiled ComputeNBodyGravitation_Shared Kernel
-
 ```c++
-__global__ void ComputeNBodyGravitation_Shared(
-    float *force, float *posMass, float softeningSquared, size_t N)
-{
+__global__ void ComputeNBodyGravitation_Shared(float *force, float *posMass, float softeningSquared, size_t N){
     // Dynamically allocated shared memory for a tile of bodies
     extern __shared__ float4 shPosMass[];
 
     // Grid-stride loop for each thread to work on a body 'i'
-    for (int i = blockIdx.x*blockDim.x + threadIdx.x;
-         i < N;
-         i += blockDim.x*gridDim.x)
+    for (int i = blockIdx.x*blockDim.x + threadIdx.x; i < N; i += blockDim.x*gridDim.x)
     {
         float acc[3] = {0};
-        float4 myPosMass = ((float4 *) posMass)[i];
+        float4 myPosMass = ((float4*)posMass)[i];
 
         // Outer loop that strides through the N bodies in tiles of size blockDim.x
         #pragma unroll 32 // Unroll factor can be applied here too
         for (int j = 0; j < N; j += blockDim.x) {
             // Cooperative load: each thread loads one body into the shared memory tile
-            shPosMass[threadIdx.x] = ((float4 *) posMass)[j + threadIdx.x];
+            shPosMass[threadIdx.x] = ((float4*)posMass)[j + threadIdx.x];
 
             // Synchronize to ensure all data is loaded before computation
             __syncthreads();
@@ -3009,15 +3087,21 @@ __global__ void ComputeNBodyGravitation_Shared(
 }
 ```
 
-##### Key Differences
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Key Differences)</span></p>
 
 * `extern __shared__ float4 shPosMass[]`: This declares a dynamically sized shared memory array. The actual size is specified during kernel launch.
-* `for (int j = 0; j < N; j += blockDim.x)`: This is the tiling loop. Instead of incrementing `j` by 1, we jump by the block size.
+* `for (int j = 0; j < N; j += blockDim.x)`: This is the tiling loop. Instead of incrementing `j` by 1, we jump by the block size. The tiles are **non-overlapping**: with 4 threads and $N=16$, the first tile loads bodies $[0,1,2,3]$, the second $[4,5,6,7]$, etc. Each thread (e.g. thread 0, assigned to body $i=0$) accumulates forces from all $N$ bodies across all tiles. The data reuse comes from the fact that one cooperative global memory load per tile serves every thread in the block.
 * `shPosMass[threadIdx.x] = ...`: This is the cooperative load. Each thread `threadIdx.x` in the block is responsible for loading one body's data into the corresponding slot in `shPosMass`. This is a perfectly coalesced read from global memory.
 * `__syncthreads()`: This is a barrier synchronization. It forces all threads in the block to wait at this point until every single thread has reached it. This is essential to prevent a thread from trying to read data from `shPosMass` before another thread has finished writing it.
 * `float4 bodyPosMass = shPosMass[k]`: Inside the innermost loop, the body data is now read from the extremely fast on-chip shared memory, not slow global memory. This is the source of the performance gain.
 
-#### Performance Analysis: The Impact of Shared Memory
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(The Impact of Shared Memory)</span></p>
 
 Adding tiling and shared memory provides another significant performance boost on top of our previous optimizations.
 
@@ -3028,7 +3112,9 @@ Adding tiling and shared memory provides another significant performance boost o
 | GPU Shmem | 2 | 44.5 |
 | GPU Shmem | 4 | 45.2 |
 
-The optimized version with shared memory achieves 45.2 G-interactions/sec, a 32% improvement over the best naive version and an 80% improvement over the original unoptimized kernel.
+The optimized version with shared memory achieves 45.2 G-interactions/sec, a **32% improvement over the best naive version and an 80% improvement over the original unoptimized kernel**.
+
+</div>
 
 ### A Look at CPU Optimizations and Performance Comparison
 
@@ -3051,10 +3137,12 @@ inline void bodyBodyInteraction(__m128& fx, /*...*/) {
 }
 ```
 
-
 This is fundamentally different from the GPU's SIMT (Single Instruction, Multiple Thread) model. In SIMD, the programmer explicitly manages vectors of data. In SIMT, the programmer writes code for a single scalar thread, and the hardware executes many of these threads in parallel on its vector-like units.
 
 #### Performance Showdown: CPU vs. GPU
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(CPU vs. GPU)</span></p>
 
 The performance comparison uses an Intel E5-2670 CPU and a GK104 GPU.
 
@@ -3066,12 +3154,12 @@ The performance comparison uses an Intel E5-2670 CPU and a GK104 GPU.
 | GPU naive, best unroll | 34.3 |
 | GPU shmem, best unroll | 45.2 |
 
-Analysis:
-
 * Vectorizing the CPU code (SSE) gives a 18x speedup over the naive single-threaded version.
 * Using all 32 threads of the multicore CPU gives another 18x speedup.
 * However, even the best multi-threaded, vectorized CPU implementation (5.65 G-interactions/sec) is significantly slower than the GPU.
 * The optimized GPU implementation is 8x faster than the highly optimized 32-thread CPU version, showcasing why GPUs are the prime architecture for problems like N-body simulations.
+
+</div>
 
 ### N-Body Summary
 
@@ -3851,27 +3939,6 @@ You can also use the `async` clause to allow the GPU to work on one task while t
   <!-- <figcaption>SAXPY – OPENACC #4</figcaption> -->
 </figure>
 
-### Practical Application: Connected Component Labeling
-
-A great example of stencil computation in image processing is **Connected Component Labeling (CCL)**. The goal is to identify and color separate "blobs" or shapes in a black-and-white image.
-
-<div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Connected Component Labeling)</span></p>
-
-1. **Thresholding:** Convert a color image to black and white (bitmapping).
-2. **Initial Labeling:** Every pixel is given a unique label.
-3. **Merging (Stencil Step):** Each pixel looks at its neighbors (using a 4-way or 8-way stencil). If a neighbor has a lower label value, the pixel updates its own label to match.
-4. **Iteration:** This merging step repeats until no labels change across the entire image.
-
-</div>
-
-**Optimization Techniques for CCL:**
-
-* **Marching Order:** Reading data in "Row-Major" order (across rows) provides better cache hits, while "Column-Major" order can sometimes offer better coalescing (combining multiple memory requests into one), which is vital for GPU performance.
-* **Wavefront Merging:** This optimization uses shared memory to store previous results, reducing the number of times the GPU has to reach out to slow global memory. Threads process the image in "waves," ensuring that as many pixels as possible are updated in a single pass.
-
-Stencil computations represent a perfect marriage between physical mathematics and parallel hardware. While memory limits often present a challenge, techniques like domain decomposition and productivity tools like OpenACC make it possible to simulate complex physical systems with incredible speed and accuracy.
-
 ## GPU Memory Model: Coherence and Consistency
 
 ### A Review of GPU Architecture
@@ -4258,6 +4325,11 @@ The primary advantage is **Mixed-Precision Arithmetic:**
 By using Tensor Cores, a GPU can generate significantly more Multiply-Accumulate (MAC) operations per clock cycle than standard cores.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_11_4_floating-point_FMA_mixed-precision_operations_per_clock.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>64 floating-point FMA mixed-precision operations per clock</figcaption>
+</figure>
 
 ### The WMMA API
 
