@@ -767,7 +767,7 @@ So it’s best used for:
 
 * Frequently transferred buffers
 * Large transfers
-* Streaming pipelines (especially combined with `cudaMemcpyAsync`), where pinned memory is required for true async H2D/D2H.
+* Streaming pipelines (especially combined with `cudaMemcpyAsync`), where pinned memory is required for true async `H2D`/`D2H`.
 
 That’s the core story: `malloc()` gives pageable memory → driver must stage into pinned memory anyway → extra copy. `cudaMallocHost()` gives pinned memory up front → enables direct DMA → faster transfers (when transfers are the bottleneck).
 
@@ -3186,7 +3186,10 @@ The CPU (host) and GPU (device) are connected via PCIe, which creates a massive 
 
 The GPU can compute at 34–67 TFLOP/s but can only receive data at a fraction of that rate. If data transfers are not overlapped with computation, the GPU sits idle — a condition known as being **PCIe-bound**. The key objective is to **overlap communication and computation**.
 
-To hide this latency, we employ **task parallelism**: instead of sequentially performing H2D copy → kernel → D2H copy, we overlap these operations across independent data chunks using **CUDA Streams**.
+To hide this latency, we employ **task parallelism**: instead of sequentially performing `H2D` copy → kernel → `D2H` copy, we overlap these operations across independent data chunks using **CUDA Streams**.
+
+**Up to now:** kernels to exploit data parallelism, host code still sequential
+**Now:** exploit task parallelism on the host side GPUs are accelerators, thus CPU overhead should be as small as possible
 
 </div>
 
@@ -3195,13 +3198,27 @@ To hide this latency, we employ **task parallelism**: instead of sequentially pe
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(CUDA Stream)</span></p>
 
-A **CUDA Stream** is an ordered queue of operations submitted to the GPU. Key properties:
+A **CUDA Stream** is an **ordered queue** of operations submitted to the GPU. Key properties:
 
 * **Ordered Execution:** Within a single stream, operations execute in FIFO order.
 * **Asynchronous Execution:** When the CPU issues a command to a stream, it returns immediately, allowing the CPU to continue queuing more work.
 * **Inter-Stream Independence:** Operations in different streams have no guaranteed execution order relative to each other, enabling concurrency.
 
+If CUDA events pop out of the queue, previous operations have completed (FIFO)
+
 </div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_08_multiple_streams.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+    <figcaption>If CUDA events pop out of the queue, previous operations have completed (FIFO)</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_08_multiple_streams_conceptual_view.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <figcaption>Multiple CUDA streams - conceptual view</figcaption>
+  </figure>
+</div>
+
 
 *Analogy: The Supermarket Checkout.* A single checkout lane (the default stream) serializes everything. Multiple checkout lanes (multiple CUDA Streams) allow one lane to process a large order (kernel execution) while another handles a quick transaction (data transfer).
 
@@ -3210,7 +3227,7 @@ By placing independent operations into different streams, we can enable the GPU'
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Coarse-Grained Concurrency in GPUs)</span></p>
 
-Streams unlock **coarse-grained concurrency**: CPU/GPU concurrency, concurrent copy & execute, concurrent kernel execution, and multi-GPU parallelism — complementing the fine-grained thread-level concurrency within a kernel.
+Streams unlock **coarse-grained concurrency**: CPU/GPU concurrency, concurrent copy & execute, concurrent kernel execution, and multi-GPU parallelism — complementing the **fine-grained thread-level concurrency** within a kernel.
 
 </div>
 
@@ -3228,7 +3245,7 @@ Since the CPU queues up work asynchronously, we need mechanisms to ensure result
 
 **Stream-Based Synchronization** — targets a *specific stream*:
 
-* `cudaStreamSynchronize(stream)`: Pauses the host thread until the specified stream is empty.
+* `cudaStreamSynchronize(stream)`: Pauses the host thread until all outstanding CUDA operations in a stream have completed.
 * `cudaStreamQuery(stream)`: Non-blocking check; returns `cudaSuccess` or `cudaErrorNotReady`.
 
 **Event-Based Synchronization** — the most *fine-grained* method:
@@ -3252,7 +3269,10 @@ When you launch a kernel or call `cudaMemcpy` without specifying a stream, you a
 
 </div>
 
-Consider this typical sequence of operations for a SAXPY kernel, which computes $y[i] = $\alpha$ $\cdot$ x[i] + y[i]$:
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Default Stream)</span></p>
+
+Consider this typical sequence of operations for a SAXPY kernel, which computes y[i] = $\alpha$ $\cdot$ x[i] + y[i]:
 
 ```c++
 // All operations below are implicitly in the default stream
@@ -3266,11 +3286,16 @@ saxpy<<<numBlocks, blockSize>>>(dx, dy, alpha, N);
 cudaMemcpy(hy, dy, numBytes, cudaMemcpyDeviceToHost);
 ```
 
-Because all three operations are in the default stream, they will execute in a strictly sequential order. The kernel will not start until the first `cudaMemcpy` is completely finished, and the second `cudaMemcpy` will not start until the kernel is completely finished. This serialization is exactly what we want to avoid and is a prime example of the "serial fraction" described by Amdahl's Law, which limits the potential speedup of any parallel program.
+Because all three operations are in the default stream, they will execute in a strictly sequential order. The kernel will not start until the first `cudaMemcpy` is completely finished, and the second `cudaMemcpy` will not start until the kernel is completely finished. **This serialization is exactly what we want to avoid** and is a prime example of the "serial fraction" described by Amdahl's Law, which limits the potential speedup of any parallel program.
+
+</div>
 
 ##### Device Overlap Capability
 
-Most modern CUDA devices support a feature called "Device Overlap," often referred to as "Concurrent copy and execute." This is the hardware capability that allows a kernel to run at the same time as a data transfer. You can programmatically check for this capability:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">("Device Overlap" in CUDA)</span></p>
+
+Most modern CUDA devices support a feature called **"Device Overlap"**, often referred to as "Concurrent copy and execute." This is the hardware capability that **allows a kernel to run at the same time as a data transfer**. You can programmatically check for this capability:
 
 ```c++
 int dev_count;
@@ -3285,9 +3310,14 @@ for (int i = 0; i < dev_count; i++) {
 }
 ```
 
-Without this hardware feature, using streams for overlap is impossible. Fortunately, it is standard on nearly all modern GPUs.
+**Without this hardware feature, using streams for overlap is impossible**. Fortunately, it is standard on nearly all modern GPUs.
+
+</div>
 
 #### Pipelining with Multiple Streams
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Pipelining with Multiple Streams)</span></p>
 
 To achieve overlap, we need to break our problem into smaller, independent pieces and process them in a pipeline. The strategy is as follows:
 
@@ -3303,7 +3333,24 @@ This creates a pipeline with three distinct phases:
 
 The effectiveness of this technique depends on computational intensity. If the kernel is too fast compared to the data transfer time, the pipeline will stall, waiting for data. Conversely, if the data transfers are much faster than the kernel, the benefit of overlap is minimal. We will analyze this trade-off mathematically in the next chapter.
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Effectivness of Pipelining with Multiple Streams)</span></p>
+
+The effectiveness of this technique depends on computational intensity. If the kernel is too fast compared to the data transfer time, the pipeline will stall, waiting for data. Conversely, if the data transfers are much faster than the kernel, the benefit of overlap is minimal. We will analyze this trade-off mathematically in the next chapter.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_08_pipelining_multiple_streams.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>Pipelining Data Transfers with Kernel Execution</figcaption>
+</figure>
+
 #### Implementing a Multi-Stream Workflow
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Building Blocks for Multi-Stream Workflow)</span></p>
 
 Let's see how to implement this in code. First, we need to know the relevant API calls.
 
@@ -3327,6 +3374,8 @@ Let's see how to implement this in code. First, we need to know the relevant API
    ```c++
    kernel_name<<<grid, block, shared_mem_size, stream>>>(args...);
    ```
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multi-Stream SAXPY (Version 1))</span></p>
@@ -3375,6 +3424,9 @@ The intent here is that while the saxpy kernel for `stream0` is running, the `cu
 
 #### Architecture Matters: Fermi vs. Kepler and Newer
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Issues Using Streams)</span></p>
+
 The way a GPU executes commands from streams depends heavily on its architecture.
 
 * **Fermi Architecture (and older):** These GPUs have a single work queue for the copy engine and a single work queue for the compute engine. Even though we issued commands to two different software streams, they are all fed into the same two hardware queues. In our "Version 1" code, the device driver would schedule the operations like this:
@@ -3382,6 +3434,8 @@ The way a GPU executes commands from streams depends heavily on its architecture
   2. **Execute Queue:** `Kernel(0)`, `Kernel(1)`
 * The problem is that the `D2H(C0)` operation (copying the result for stream 0) is placed in the copy queue before the input copies for stream 1 (`H2D(A1)` and `H2D(B1)`). Since operations within a queue are serial, the input copies for the second segment cannot begin until the output copy for the first segment is complete, destroying our desired overlap.
 * **Kepler Architecture (and newer):** These GPUs introduced a feature called "Hyper-Q," which provides multiple hardware work queues (e.g., 32 queues each for copy and execute). This allows different software streams to map to different hardware queues, enabling true concurrent execution. On a Kepler or newer GPU, the "Version 1" code would likely achieve the desired overlap.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Multi-Stream SAXPY: More Robust Approach (Version 2))</span></p>
@@ -3423,17 +3477,23 @@ The following operations act like `cudaDeviceSynchronize()`, destroying any stre
 * **Synchronous memory operations:** Any function without the `Async` suffix (e.g., `cudaMemcpy()`, `cudaMemset()`).
 * **L1/Shared Memory configuration changes:** `cudaDeviceSetCacheConfig()`.
 
-Always use the Async versions and perform all memory allocations before your pipelined stream loop.
+Always use the `Async` versions and perform all memory allocations before your pipelined stream loop.
 
 </div>
 
 ### Advanced Topics and Modern Alternatives
 
-While CUDA Streams are powerful, they add programmer complexity. The key question is: when is streaming mathematically justified? Beyond streams, modern CUDA features like Unified Memory and Peer-to-Peer Access simplify host-device memory management, sometimes at the cost of performance.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(When Is Streaming Justfied?)</span></p>
+
+* While CUDA Streams are powerful, they add programmer complexity. The key question is: **when is streaming mathematically justified?** 
+* Beyond streams, modern CUDA features like **Unified Memory** and **Peer-to-Peer Access** simplify host-device memory management, sometimes at the cost of performance.
+
+</div>
 
 #### Is Streaming Always Worth It? An Analysis of Arithmetic Intensity
 
-The goal of streaming is to hide the time it takes to transfer data over the PCIe bus ($t_{\text{PCIe}}$) by overlapping it with computation time ($t_{\text{COMP}}$). This strategy is only effective if the computation is long enough to mask the transfer. We can formalize this with the concept of Arithmetic Intensity.
+The goal of streaming is to hide the time it takes to transfer data over the PCIe bus ($t_{\text{PCIe}}$) by overlapping it with computation time ($t_{\text{COMP}}$). This strategy is only effective if the **computation is long enough to mask the transfer**. We can formalize this with the concept of Arithmetic Intensity.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Recall</span><span class="math-callout__name">(Arithmetic Intensity)</span></p>
@@ -3493,12 +3553,18 @@ We can cancel out the $4N$ term from both sides and rearrange the inequality to 
 
 #### Unified Virtual Addressing (UVA)
 
-The complexity of manually managing memory buffers and `cudaMemcpyAsync` calls led NVIDIA to develop simpler memory models. The first step in this direction was Unified Virtual Addressing (UVA).
+The complexity of manually managing memory buffers and `cudaMemcpyAsync` calls led NVIDIA to develop simpler memory models. The first step in this direction was **Unified Virtual Addressing (UVA)**.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Virtual Addressing)</span></p>
 
-With **UVA**, the CPU and all GPUs in a system share a single virtual address space. A pointer, regardless of whether it points to host or device memory, has a unique address. However, while the GPU can access host memory directly, doing so is extremely slow as data must still travel over the PCIe bus. The programmer is still responsible for explicit locality optimizations. UVA primarily simplifies pointer management in multi-GPU applications.
+With **UVA**, the CPU and all GPUs in a system share a single virtual address space. A pointer, regardless of whether it points to host or device memory, has a unique address. However, while the GPU can access host memory directly, doing so is extremely slow as data must still travel over the PCIe bus. The programmer is still responsible for explicit locality optimizations:
+
+* Single virtual address space for all memory in the system
+* GPU code can access all memory
+* Manual locality optimizations (cudaMemcpy)
+
+**UVA primarily simplifies pointer management in multi-GPU applications.**
 
 </div>
 
@@ -3507,7 +3573,7 @@ With **UVA**, the CPU and all GPUs in a system share a single virtual address sp
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Unified Memory)</span></p>
 
-**Unified Memory (UM)** creates a pool of managed memory accessible to both the CPU and the GPU through a single pointer. The CUDA runtime automatically migrates data between host and device on demand. When the CPU accesses managed data, it is ensured to be in host memory. When a GPU kernel accesses it, it is automatically paged to device memory.
+**Unified Memory (UM)** creates a pool of managed memory accessible to both the CPU and the GPU through a single pointer (the pool is shared between CPU and GPU). The CUDA runtime automatically migrates data between host and device on demand. When the CPU accesses managed data, it is ensured to be in host memory. When a GPU kernel accesses it, it is automatically paged to device memory.
 
 </div>
 
@@ -3516,7 +3582,7 @@ With **UVA**, the CPU and all GPUs in a system share a single virtual address sp
 
 ```c++
 // Allocate managed memory accessible by both host and device
-float *X, *Y;
+float *X, *Y; // unified pointers
 cudaMallocManaged(&X, N * sizeof(float));
 cudaMallocManaged(&Y, N * sizeof(float));
 
@@ -3547,7 +3613,7 @@ Notice the complete absence of `cudaMemcpy` calls! This dramatically simplifies 
 
 ##### Performance of Unified Memory
 
-<div class="math-callout math-callout--proposition" markdown="1">
+<!-- <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Analysis</span><span class="math-callout__name">(Memory Management Comparison)</span></p>
 
 While UM is convenient, the automated data migration has overhead. The source context provides bar charts comparing the performance of matrix multiplication for different memory strategies on a Pascal-generation GPU. The strategies are:
@@ -3563,7 +3629,7 @@ The charts illustrate the breakdown of time spent in `host2device` copy, kernel 
 * **$4k \times 4k$ Matrix:** As the problem size grows, the kernel execution time becomes more dominant. The convenience of UM starts to become more competitive, though still slightly slower than the manual approach.
 * **$8k \times 8k$ Matrix:** For very large problems, the kernel time dwarfs the transfer and overhead time. Here, the performance of UM is very close to that of manual memory management, and using prefetching hints can close the gap even further.
 
-</div>
+</div> -->
 
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/pascal_unified_memory_comparison.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
