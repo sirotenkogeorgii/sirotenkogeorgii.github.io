@@ -4282,13 +4282,13 @@ where the last inequality follows from the Cauchy–Schwarz inequality.
 The norm induced by an inner product is just one type of norm, but the concept of a norm is defined more generally. We will mostly work with the norm induced by an inner product, so the following section is only a brief digression.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 8.11 — Norm)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 8.11</span><span class="math-callout__name">(Norm)</span></p>
 
-Let $V$ be a vector space over $\mathbb{R}$ or $\mathbb{C}$. Then a *norm* is a mapping $\|\cdot\| \colon V \to \mathbb{R}$ satisfying:
+Let $V$ be a vector space over $\mathbb{R}$ or $\mathbb{C}$. Then a *norm* is a mapping $\lVert \cdot\rVert \colon V \to \mathbb{R}$ satisfying:
 
-1. $\|x\| \ge 0$ for all $x \in V$, and equality holds only for $x = 0$,
-2. $\|\alpha x\| = \|\alpha\| \cdot \|x\|$ for all $x \in V$ and for all $\alpha \in \mathbb{R}$ resp. $\alpha \in \mathbb{C}$,
-3. $\|x + y\| \le \|x\| + \|y\|$.
+1. $\lVert x\rVert \ge 0$ for all $x \in V$, and equality holds only for $x = 0$,
+2. $\lVert\alpha x\rVert = \lVert\alpha\rVert \cdot \lVert x\rVert$ for all $x \in V$ and for all $\alpha \in \mathbb{R}$ resp. $\alpha \in \mathbb{C}$,
+3. $\lVert x + y\rVert \le \lVert x\rVert + \lVert y\rVert$.
 
 </div>
 
@@ -4312,9 +4312,9 @@ $$\|x\|_p = \left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p}.$$
 
 Special choices of $p$ lead to well-known norms:
 
-- for $p = 2$: the Euclidean norm $\|x\|_2 = \sqrt{\sum_{i=1}^{n} x_i^2}$, which is the norm induced by the standard inner product,
-- for $p = 1$: the sum norm $\|x\|_1 = \sum_{i=1}^{n} \|x_i\|$; it is called the Manhattan norm because it corresponds to real distances when traversing a rectangular grid of streets in a city,
-- for $p = \infty$ (by a limiting process): the maximum (Chebyshev) norm $\|x\|\_\infty = \max_{i=1,\ldots,n} \|x_i\|$.
+- for $p = 2$: the Euclidean norm $\lVert x\rVert_2 = \sqrt{\sum_{i=1}^{n} x_i^2}$, which is the norm induced by the standard inner product,
+- for $p = 1$: the sum norm $\lVert x\rVert_1 = \sum_{i=1}^{n} \lVert x_i\rVert$; it is called the Manhattan norm because it corresponds to real distances when traversing a rectangular grid of streets in a city,
+- for $p = \infty$ (by a limiting process): the maximum (Chebyshev) norm $\lVert x\rVert_\infty = \max_{i=1,\ldots,n} \lVert x_i\rVert$.
 
 </div>
 
@@ -4356,8 +4356,8 @@ Using this, we can easily see that the sum norm and the maximum norm are not ind
 
 The norm allows us to introduce distance (or metric) between vectors $x, y$ as $\|x - y\|$. And once we have distance, we can introduce limits, etc. Moreover, to define a metric we do not even need a vector space; any set suffices.
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 8.17 — Metric)</span></p>
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 8.17</span><span class="math-callout__name">(Metric)</span></p>
 
 A metric on a set $M$ is defined as a mapping $d \colon M^2 \to \mathbb{R}$ satisfying:
 
@@ -4365,7 +4365,7 @@ A metric on a set $M$ is defined as a mapping $d \colon M^2 \to \mathbb{R}$ sati
 2. $d(x, y) = d(y, x)$ for all $x, y \in M$,
 3. $d(x, z) \le d(x, y) + d(y, z)$ for all $x, y, z \in M$.
 
-Every norm determines a metric by the formula $d(x, y) := \|x - y\|$, i.e., it defines the distance of vectors $x, y$ as the magnitude of their difference. In the opposite direction, however, this is generally not true. There exist spaces with a metric that is not induced by any norm, e.g., the discrete metric $d(x, y) := \lceil \|x - y\|_2 \rceil$, or the discrete metric $d(x, y) := 1$ for $x \neq y$ and $d(x, y) := 0$ for $x = y$.
+Every norm determines a metric by the formula $d(x, y) := \lVert x - y\rVert$, i.e., it defines the distance of vectors $x, y$ as the magnitude of their difference. In the opposite direction, however, this is generally not true. There exist spaces with a metric that is not induced by any norm, e.g., the discrete metric $d(x, y) := \lceil \lVert x - y\rVert_2 \rceil$, or the discrete metric $d(x, y) := 1$ for $x \neq y$ and $d(x, y) := 0$ for $x = y$.
 
 </div>
 
@@ -6848,7 +6848,7 @@ Although the nonstandard inner product $\langle x, y \rangle = x^\top Ay$ may lo
 Another application is the matrix square root. For positive semidefinite matrices we can introduce the positive semidefinite square root $\sqrt{A}$. The square root is even unique.
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 11.20 — Matrix square root)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.20</span><span class="math-callout__name">(Matrix square root)</span></p>
 
 For every positive semidefinite matrix $A \in \mathbb{R}^{n \times n}$, there exists a positive semidefinite matrix $B \in \mathbb{R}^{n \times n}$ such that $B^2 = A$.
 
@@ -6859,9 +6859,9 @@ For every positive semidefinite matrix $A \in \mathbb{R}^{n \times n}$, there ex
 It is appropriate here to compare the matrix square root with matrix functions from Example 10.47. The square root can be expressed by an infinite series only in a small neighborhood of a given positive number; however, where it exists, both definitions will agree.
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.21 — Positive definiteness and optimization)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark 11.21</span><span class="math-callout__name">(Positive definiteness and optimization)</span></p>
 
-Positive (semi-)definiteness appears in optimization when determining the minimum of a function $f \colon \mathbb{R}^n \to \mathbb{R}$. The matrix that arises here is the so-called Hessian, the matrix of second partial derivatives. Assuming we are at a point $x^* \in \mathbb{R}^n$ with zero gradient, positive definiteness gives a sufficient condition for $x^*$ to be a local minimum, while conversely positive semidefiniteness gives a necessary condition. This is a generalization of the one-dimensional case, where a real smooth function $f \colon \mathbb{R} \to \mathbb{R}$ has a local minimum at a point $x^* \in \mathbb{R}$ if its derivative at $a$ is zero and the second derivative is positive.
+Positive (semi-)definiteness appears in optimization when determining the minimum of a function $f \colon \mathbb{R}^n \to \mathbb{R}$. The matrix that arises here is the so-called Hessian, the matrix of second partial derivatives. Assuming we are at a point $x^\ast \in \mathbb{R}^n$ with zero gradient, positive definiteness gives a sufficient condition for $x^\ast$ to be a local minimum, while conversely positive semidefiniteness gives a necessary condition. This is a generalization of the one-dimensional case, where a real smooth function $f \colon \mathbb{R} \to \mathbb{R}$ has a local minimum at a point $x^\ast \in \mathbb{R}$ if its derivative at $a$ is zero and the second derivative is positive.
 
 The Hessian is similarly used in determining the convexity of a function. Positive definiteness on some open convex set implies convexity of the function $f$.
 
@@ -6909,7 +6909,7 @@ We define a positive definite matrix as a symmetric matrix $A$ for which the fun
 The word *linear* in the expression "linear algebra" does not mean that the field deals only with linear objects such as lines and planes in geometric applications. In this chapter we take a closer look at quadratic forms. In principle, we have already encountered them with the Euclidean norm (p. 130) and positive definiteness (Definition 11.1). In this chapter we discuss quadratic forms in more detail. We show connections with positive (semi-)definiteness, the signs of eigenvalues, and the description of certain geometric objects.
 
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.1 — Motivation for quadratic forms)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 12.1</span><span class="math-callout__name">(Motivation for quadratic forms)</span></p>
 
 To begin with, we can think of a quadratic form as a polynomial in $n$ variables where the sum of degrees of each term is exactly two. That is,
 
@@ -6930,15 +6930,15 @@ where $A$ is the $n \times n$ matrix of the corresponding coefficients. We will 
 ### 12.1 Bilinear and quadratic forms
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 12.2 — Bilinear and quadratic form)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition 12.2</span><span class="math-callout__name">(Bilinear and quadratic form)</span></p>
 
-Let $V$ be a vector space over $\mathbb{T}$. A *bilinear form* is a mapping $b \colon V^2 \to \mathbb{T}$ that is linear in both the first and second argument, i.e.,
+Let $V$ be a vector space over $\mathbb{T}$. A **bilinear form** is a mapping $b \colon V^2 \to \mathbb{T}$ that is linear in both the first and second argument, i.e.,
 
 $$b(\alpha u + \beta v, w) = \alpha b(u, w) + \beta b(v, w), \quad \forall \alpha, \beta \in \mathbb{T}, \; \forall u, v, w \in V,$$
 
 $$b(w, \alpha u + \beta v) = \alpha b(w, u) + \beta b(w, v), \quad \forall \alpha, \beta \in \mathbb{T}, \; \forall u, v, w \in V.$$
 
-A bilinear form is called *symmetric* if $b(u, v) = b(v, u)$ for all $u, v \in V$. A mapping $f \colon V \to \mathbb{T}$ is a *quadratic form* if it can be expressed as $f(u) = b(u, u)$ for some symmetric bilinear form $b$.
+A bilinear form is called **symmetric** if $b(u, v) = b(v, u)$ for all $u, v \in V$. A mapping $f \colon V \to \mathbb{T}$ is a **quadratic form** if it can be expressed as $f(u) = b(u, u)$ for some symmetric bilinear form $b$.
 
 It is easy to see that $b(o, v) = b(v, o) = 0$ and $f(o) = 0$ always hold.
 
@@ -6996,7 +6996,7 @@ $$f(u) = [u]_B^\top A [u]_B.$$
 
 $$b(u, v) = b\!\left(\sum_{i=1}^n x_i w_i, \sum_{j=1}^n y_j w_j\right) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j b(w_i, w_j) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j a_{ij} = x^\top Ay.$$
 
-Conversely, if (12.1) holds for every $u, v \in V$, then substituting $u \coloneqq w_i$, $v \coloneqq w_j$ we get $b(w_i, w_j) = [w_i]_B^\top A [w_j]_B = e_i^\top A e_j = a_{ij}$ for all $i, j = 1, \ldots, n$.
+Conversely, if (12.1) holds for every $u, v \in V$, then substituting $u \coloneqq w_i$, $v \coloneqq w_j$ we get $b(w_i, w_j) = [w_i]\_B^\top A [w_j]\_B = e_i^\top A e_j = a_{ij}$ for all $i, j = 1, \ldots, n$.
 Finally, $f(u) = b(u, u) = x^\top Ax$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -7027,7 +7027,7 @@ for a certain symmetric matrix $A \in \mathbb{T}^{n \times n}$.
 
 </div>
 
-*Proof.* It suffices to take $A$ as the matrix of the form with respect to the canonical basis. Then $b(x, y) = [x]_{\text{kan}}^\top A [y]_{\text{kan}} = x^\top Ay$. For the quadratic form we then have $f(x) = b(x, x) = x^\top Ax$. If $A$ is not symmetric, we replace it by the symmetric matrix $\frac{1}{2}(A + A^\top)$ in the sense of Remark 11.2, because $x^\top Ax = x^\top \frac{1}{2}(A + A^\top)x$. We use here the convention $2 \equiv 1 + 1$. Since the characteristic of the field is not 2, we have $1 + 1 \neq 0$ and we can construct the matrix.
+*Proof.* It suffices to take $A$ as the matrix of the form with respect to the canonical basis. Then $b(x, y) = [x]\_{\text{kan}}^\top A [y]\_{\text{kan}} = x^\top Ay$. For the quadratic form we then have $f(x) = b(x, x) = x^\top Ax$. If $A$ is not symmetric, we replace it by the symmetric matrix $\frac{1}{2}(A + A^\top)$ in the sense of Remark 11.2, because $x^\top Ax = x^\top \frac{1}{2}(A + A^\top)x$. We use here the convention $2 \equiv 1 + 1$. Since the characteristic of the field is not 2, we have $1 + 1 \neq 0$ and we can construct the matrix.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.10)</span></p>

@@ -2877,7 +2877,6 @@ $$x_i(t + \delta t) = x_i(t) + \delta t \cdot v_i\!\left(t + \tfrac{1}{2}\delta 
   </figure>
 </div>
 
-
 ### Implementing an N-Body Simulation on the GPU
 
 Our goal is to implement the force calculation step on the GPU, as it is the most computationally expensive part $O(N^2)$.
@@ -3987,28 +3986,105 @@ In a shared memory system, threads communicate by writing to and reading from sh
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_shared_memory_two_threads.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <!-- <figcaption>64 floating-point FMA mixed-precision operations per clock</figcaption> -->
+</figure>
+
 ### Designing Communication Abstractions
 
-A communication abstraction acts as a contract between the hardware and the software, much like an ISA (Instruction Set Architecture). It defines how data is moved and managed. There are five key pillars to this design, and each one can be understood by contrasting two fundamental approaches: **shared memory** (threads communicate implicitly through a common address space) vs. **message passing** (threads communicate explicitly by sending/receiving data).
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Communication)</span></p>
 
-1. **Naming:** Determines what data can be identified (named). The issue of naming arises at every abstraction level of a parallel architecture.
-   * *Shared Memory:* Threads name locations in their registers and virtual address space (segments for code, stack, heap). Access to shared variables is mapped to load/store instructions on virtual addresses. Shared virtual addresses map to the same physical address (global physical address space); with independent local physical address spaces, communication relies on page faults.
-   * *Message Passing:* Message passing is done in hardware, but matching and buffering happen in software. Naming involves local addresses and process identifiers.
-2. **Operations:** The actions performed on named data. Note the complexity difference between the two models.
-   * *Shared Memory:* Loads and stores on addresses and registers (CISC) or only on registers (RISC). Includes reading/writing shared variables and atomic read-modify-write operations.
-   * *Message Passing:* Sending/receiving on private local addresses and process identifiers, plus collective operations. Generally more complex than simple memory loads.
-3. **Ordering:** Defines the sequence in which operations appear to happen. Ordering has a big performance impact, which motivates relaxed ordering models.
-   * *Shared Memory:* Threads operate independently, so which order to apply? Among memory operations, we follow sequential program order (top-to-bottom, left-to-right order of the program).
-   * *Message Passing:* MPI guarantees strong ordering. Tag matching results in linear search(es); receiving with any tag/sender returns the first matched queue entry.
-4. **Communication/Replication:** Refers to how data is physically moved or copied across the system.
-5. **Performance:** Focuses on the efficiency of data transfer, involving the application, the communication hardware, and the physical medium.
+**The problem:** When multiple processors or threads need to work together, they must exchange data. But *how* should they communicate? There are two fundamentally different approaches, and a **communication abstraction** is a framework (a contract between hardware and software, like an ISA) that lets us compare them systematically.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Solutions</span><span class="math-callout__name">(Shared Memory and Message Passing)</span></p>
+
+The two approaches are:
+
+* **Shared memory:** Threads communicate *implicitly* through a common address space. Think of a whiteboard in a shared office -- thread A writes `x = 42` on the whiteboard, thread B walks over and reads it. Nobody explicitly "sends" anything. This is simple to program (it looks like ordinary single-threaded code with loads and stores), but raises hard questions: what if A is still writing when B reads? What if B has a cached copy that is now stale?
+* **Message passing:** Threads communicate *explicitly* by sending and receiving messages. Think of email -- thread A packs up the data and calls `MPI_Send(data, to=B)`, thread B explicitly calls `MPI_Recv(from=A)`. More work for the programmer, but the communication is visible and easier to reason about.
+
+**GPUs chose the shared memory model, which is why the rest of this lecture focuses on coherence and consistency** -- problems that arise specifically because communication is implicit.
+
+</div>
+
+A communication abstraction has **five pillars**, each of which looks different depending on which approach is used:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Pillar 1</span><span class="math-callout__name">(Naming)</span></p>
+
+**Naming:** How do you refer to (identify, point at) the data you want to communicate?
+
+ * *Shared Memory:* A thread can refer to two kinds of storage: its own **private registers** (not shared -- only that thread can see them) and **memory addresses** in the virtual address space (organized into code, stack, and heap segments). All threads within the same process share one virtual address space, so if thread A writes to address `0x1000`, thread B can read from the same address `0x1000`. The "name" for shared data is simply a memory address. Under the hood, accessing a shared variable compiles to ordinary `load`/`store` instructions on these virtual addresses.
+   * How does this work physically? There are two hardware designs:
+     * **Global physical address space** (e.g. GPU, SMP): All processors share the same physical RAM. Virtual address `0x1000` in thread A and in thread B maps to the same DRAM chip. Simple and fast.
+     * **Independent local physical address spaces** (e.g. NUMA cluster): Each processor has its own physical RAM. If thread B on machine B accesses a virtual address whose data lives on machine A's RAM, there is no local copy -- the hardware triggers a **page fault**. The OS intercepts this, fetches the page from machine A over the network, and maps it locally. This is called **Distributed Shared Memory (DSM)** -- it looks like shared memory to the programmer, but is secretly message passing underneath.
+ * *Message Passing:* You don't name a memory address at all. Instead you name a *destination process* (by its rank/ID) and attach a *tag* to the message. The hardware handles the physical transport, but matching incoming messages to the right `recv` call and buffering them is done in software.
+ * *Example:* To share a value `x`, shared memory just does `x = 42` (naming the address of `x`). Message passing does `MPI_Send(&x, 1, MPI_INT, dest=3, tag=0)` (naming process 3).
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Pillar 2</span><span class="math-callout__name">(Operations)</span></p>
+
+**Operations:** Now that you can name data, what can you actually *do* with it?
+
+* *Shared Memory:* The operations are just ordinary CPU instructions -- **loads** (read from memory into a register) and **stores** (write from a register to memory). On CISC architectures (like x86) you can operate directly on memory addresses; on RISC architectures (like ARM) you must first load into a register, operate, then store back. On top of basic loads/stores, shared memory also provides **atomic read-modify-write** operations (e.g. `atomicAdd`, `compare-and-swap`) that guarantee no other thread can interfere mid-operation. This is how you build locks, counters, etc.
+* *Message Passing:* The operations are fundamentally different -- **send** and **receive**. A thread packs data into a message and sends it; another thread posts a receive to get it. There are also **collective operations** that coordinate many processes at once (e.g. `MPI_Bcast` sends data from one process to all, `MPI_Reduce` combines values from all processes into one). This is more complex than a simple `load` -- you have to specify who you're talking to, how much data, what format, etc.
+* *Example:* To atomically increment a shared counter: in shared memory, one instruction -- `atomicAdd(&counter, 1)`. In message passing, process B must send a request to process A (the "owner" of the counter), A increments it, and sends back the new value. Three messages for one increment.
+* *Key difference:* Shared memory operations are simple and look like normal code. Message passing operations are explicit and verbose, but that explicitness makes communication visible and easier to optimize.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Pillar 3</span><span class="math-callout__name">(Ordering)</span></p>
+
+**Ordering:** When multiple threads run simultaneously and issue loads/stores (or sends/receives), in what order do those operations actually take effect? This is surprisingly tricky.
+
+* *Shared Memory:* Each thread individually follows **sequential program order** -- its own instructions execute top-to-bottom as written. But across threads there is no inherent ordering. If thread A does `x = 1` then `y = 2`, and thread B does `a = load(y)` then `b = load(x)`, the question is: can B see `y = 2` but still see the old `x = 0`? In a "perfect" world, no. In reality, **yes** -- hardware may reorder stores (via store buffers), execute out-of-order, or delay cache updates. This is the core problem that consistency models address.
+* *Message Passing:* MPI provides **strong ordering** between a given sender-receiver pair: if process A sends message 1 then message 2 to process B, B is guaranteed to receive them in that order. Internally, MPI matches incoming messages by `(sender, tag)` using a linear search through a queue, and `MPI_Recv(ANY_SOURCE, ANY_TAG)` simply returns the first match.
+* *Example:* Thread A does `x = 1; flag = 1`. Thread B spins on `while(flag == 0); print(x)`. You'd expect B to print 1. But in shared memory with relaxed ordering, B might see `flag = 1` (the store arrived) but still read `x = 0` (that store hasn't arrived yet). This is why we need memory fences and acquire/release semantics. In MPI, if A sends `x` then sends `flag` to B in two separate messages, B receives `x` first -- the ordering is guaranteed.
+* *Why it matters for performance:* Enforcing strict global ordering is extremely expensive -- it prevents store buffers, out-of-order execution, and overlapping memory transactions. So real hardware **relaxes** ordering and lets the programmer insert explicit fences where ordering matters. GPUs are a very radical example of this relaxation.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Pillar 4</span><span class="math-callout__name">(Communication/Replication)</span></p>
+
+**Communication/Replication:** How does data physically get from one processor to another?
+
+*Shared Memory:* Communication is **implicit** -- it happens through the cache/memory hierarchy without the programmer doing anything explicit. When thread A writes `x = 42`, the value goes into A's cache. When thread B later reads `x`, the hardware must somehow get that value from A's cache to B. This is done through **cache coherence protocols** (snooping, directory-based) that automatically propagate and replicate data between caches. The programmer never sees this -- it's all handled by hardware. The downside is that you can't easily control *when* or *how* data moves, making optimization harder.
+*Message Passing:* Communication is **explicit** -- the programmer decides exactly what data to send, when, and to whom. The data is physically copied from the sender's local memory into a network buffer, transmitted over the interconnect (e.g. InfiniBand, Ethernet), and placed into the receiver's local memory. There is no hidden data movement. The programmer has full control, which makes optimization easier but programming harder.
+*Replication:* In shared memory, caches automatically create *replicas* of data -- multiple caches can hold copies of the same address. This improves read performance (data is close to each processor) but creates the coherence problem (keeping replicas in sync). In message passing, there are no automatic replicas; each process has its own private copy, and the programmer explicitly manages any duplication.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Pillar 5</span><span class="math-callout__name">(Performance)</span></p>
+
+**Performance:** How efficient is the data transfer? This is ultimately what all the design choices above are trying to optimize.
+ 
+*Shared Memory:* Performance depends on the cache hit rate, the coherence protocol overhead, and the memory hierarchy latency. Communication is "free" when data is already in the local cache (a few cycles) but very expensive on a cache miss (hundreds of cycles to fetch from remote memory). The implicit nature makes it hard to predict and optimize -- the programmer can't easily tell which accesses will be cache hits vs. misses.
+*Message Passing:* Performance depends on message latency (time to send one message), bandwidth (data rate for large messages), and software overhead (packing/unpacking, matching). Communication cost is explicit and predictable -- the programmer knows exactly when data is being moved and can overlap communication with computation (e.g. `MPI_Isend` for non-blocking sends). The downside is the fixed overhead per message, which makes fine-grained communication (many small messages) expensive.
+*Trade-off:* Shared memory is easier to program and efficient for fine-grained, irregular communication patterns (just read/write addresses). Message passing is better for coarse-grained, structured communication patterns where the programmer can batch data into large messages and overlap with computation.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_PRAM.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>**Symmetric Multiprocessors** (SMP) and **Chip Multiprocessors** (CMP) are the most successful parallel machines ever</figcaption>
+</figure>
 
 ### The Coherence Problem
 
 <div class="math-callout math-callout--info" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Coherence Problem)</span></p>
 
-* The goal of a memory system is to r**educe latency** (the time it takes to access data).
+* The goal of a memory system is to **reduce latency** (the time it takes to access data).
 * We **use caches—small**, fast storage areas near the processor—to achieve this. 
 * However, caches introduce a major challenge in multi-core systems: **Coherence**.
 
@@ -4023,17 +4099,46 @@ A communication abstraction acts as a contract between the hardware and the soft
 
 #### Cache Write Policies
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Cache Write Policies)</span></p>
+
 How a cache handles updates affects coherence:
 
 * **Write-back (WB):** Updates are only made to the local cache and written to main memory later. This creates a significant coherence problem because other processors won’t see the change until the "write-back" occurs.
 * **Write-through (WT):** Every update to the cache is immediately written to main memory. This makes coherence easier to manage but can be slower due to constant memory traffic.
 
+</div>
+
 #### Scalable Coherence Protocols
 
-In older or smaller systems, we used a **Shared Bus**. A bus is like a single hallway; only one person can talk at a time. This is not scalable (it doesn’t work well as you add more cores).
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Shared Bus Directory Protocol)</span></p>
 
-* **Snooping:** Processors "snoop" on the bus to see if others are changing data they have cached. However, most "snoops" result in no action, wasting bandwidth.
-* **Directory Protocol:** Instead of broadcasting every change to everyone, the system maintains a directory. It only sends updates to the specific processors that are known to hold a copy of that specific cache line.
+A **shared bus** is a single physical wire that connects all processors to memory. Only one transaction can use the bus at a time -- if P0 is writing, everyone else must wait. This constraint is actually *useful* for coherence: because all processors see bus transactions in the same order, there is a natural serialization point. If P0 writes `A=1` and P2 writes `A=2`, one goes first on the bus, and every processor sees them in that same sequence. However, this single-wire design is not scalable -- with many cores, the bus becomes a bottleneck (all cores compete for one shared wire).
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Snooping (bus-based coherence))</span></p>
+
+**Snooping** is *not* periodic polling -- it is **passive, continuous listening**. Every processor’s cache controller is physically wired to the bus and sees every transaction that passes by, automatically. When P0 writes to address `A`, that write appears on the bus as an electrical signal. P1’s cache controller immediately checks: "do I have address `A` in my cache?" If yes, it invalidates or updates its copy. If no, it does nothing.
+
+The bandwidth problem: snooping uses **broadcast** -- every write is announced to *all* processors. With 64 cores, every single write goes to all 64 cache controllers. But most of them don’t have a copy of that cache line, so they check and do nothing. The bus bandwidth is consumed by these useless announcements. This is why broadcast-based snooping does not scale.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Directory Protocol (the scalable alternative))</span></p>
+
+Instead of broadcasting, the system maintains a **directory** -- a table (stored in main memory alongside the data) that records, for each cache line, which processors currently hold a copy. The flow:
+
+1. P0 reads cache line `X` -- the directory records "P0 has X."
+2. P2 also reads `X` -- the directory now records "P0 and P2 have X."
+3. P0 writes to `X` -- P0 contacts the directory. The directory looks up who else has `X` (just P2) and sends an invalidation **only to P2**. Not to P1, P3, ..., P63.
+
+This changes broadcast (tell everyone) to **multicast** (tell only the sharers), which scales much better. The trade-off is the storage cost for the directory itself and the extra latency of an indirection (going through the directory instead of directly snooping the bus).
+
+</div>
 
 ### Understanding Memory Consistency
 
@@ -4065,16 +4170,36 @@ In a "perfect" world, it should be impossible for both `if` statements to be tru
 * **Thread 0 (Producer):** Sets `a = 1`, then sets `flag = 1`.
 * **Thread 1 (Consumer):** Waits for `flag == 1`, then prints `a`.
 
-In many modern systems, **Thread 1** might print 0 instead of 1. This happens because the system might reorder the operations, making the `flag` update visible before the data `a` update is visible.
+In many modern systems, **Thread 1** might print 0 instead of 1. This happens because the system might **reorder the operations**, making the `flag` update visible before the data `a` update is visible.
 
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_coherence.png' | relative_url }}" alt="G80 architecture for graphics processing" loading="lazy">
+    <!-- <figcaption>SAXPY – OPENACC #2</figcaption> -->
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_consistency.png' | relative_url }}" alt="G80 architecture for general-purpose processing" loading="lazy">
+    <!-- <figcaption>SAXPY – OPENACC #3</figcaption> -->
+  </figure>
 </div>
 
 ### Relaxed Consistency and Performance
 
-We relax consistency (allow reordering) for one primary reason: **Performance**. Maintaining a strict global order is incredibly expensive and prevents hardware optimizations like:
+<div class="math-callout math-callout--info" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Strict global ordering is expensive)</span></p>
+
+* We relax consistency (allow reordering) for one primary reason: **Performance**. 
+* Maintaining a strict global order is incredibly expensive and prevents hardware optimizations like:
 
 * **Out-of-Order (OOO) execution:** Processors doing work out of sequence to stay busy.
 * **Store Buffers:** Temporarily holding writes to avoid waiting for slow memory.
+* **Sliced (banked) caches**
+
+As we will see, GPUs are a very radical example of such relaxations.
+
+</div>
 
 | Model | Description | Impact on Optimization |
 | --- | --- | --- |
@@ -4090,22 +4215,63 @@ We relax consistency (allow reordering) for one primary reason: **Performance**.
 A system is **Sequentially Consistent** if the result of execution is the same as if all operations were executed in some sequential order, and the operations of each individual processor appear in the sequence in the order specified by its program.
 
 * **Requirement:** A processor must wait for a store to complete before issuing the next operation.
-* **Problem:** This prevents "latency hiding"—the ability to overlap memory access with other work.
+* **Problem:** This prevents "latency hiding"—the ability to overlap memory access with other work. Memory operations happen (start and end) atomically:
+  * Must wait for a store to complete before issuing next operation
+  * After a load, issuing processor waits for load to complete, before issuing next operation
+
+Easily implemented with a shared bus
+* Bus as **synchronization point**, serializing all accesses
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Problems with Sequential Consistency)</span></p>
+
+* **Aspect 1:** difficult to implement efficiently in hardware
+  * No concurrency among memory access
+  * Strict ordering of memory accesses at each processor (node)
+  * Essentially precludes out-of-order CPUs
+* **Aspect 2:** unnecessarily restrictive
+  * Most parallel programs won‘t notice out-of-order accesses
+* **Aspect 3:** conflicts with latency hiding techniques
+  * Which relies on many concurrent outstanding requests
+
+**Fixing SC performance**
+* Revert to a less strict consistency model (relaxed or weak consistency)
+* Programmer specifies when ordering matters
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_coco_nutshell.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>Coherence and Consistency in a nutshell</figcaption>
+</figure>
+
 ### GPU Coherence and Consistency Models
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(GPU: relaxed memory consistency)</span></p>
 
 GPUs use a **relaxed memory consistency** model because they are built to prioritize throughput and tolerate high latency.
 
+</div>
+
 #### The Data-Race-Free (DRF) Model
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Data-Race-Free (DRF))</span></p>
 
 The GPU consistency model is **Data-Race-Free (DRF)**, similar to the models used in C++ or Java. It relies on **Release-Acquire** semantics:
 
 * **Release Store:** A "release" operation ensures that all memory writes performed by the thread before the release become visible to other threads.
 * **Acquire Load:** An "acquire" operation ensures that after observing the load, the thread will also see everything the releasing thread did before its release.
 
+</div>
+
 #### Scoped Memory
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Scoped Memory)</span></p>
 
 In CUDA, you can define the scope of consistency:
 
@@ -4114,25 +4280,29 @@ In CUDA, you can define the scope of consistency:
 * `device`: Across the entire GPU.
 * `system`: Across the GPU and CPU.
 
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Release-Acquire Sequence)</span></p>
 
 Below is an example of how a producer-consumer relationship is handled using CUDA atomics to ensure consistency.
 
 ```c++
-// Thread 0 on Processor 0 (Producer)
+// Thread 0 on SM 0 (Producer)
 x = 42;
 // Create a reference to a flag in device scope
 cuda::atomic_ref<int, cuda::thread_scope_device> flag(f);
 // Store with ‘release’ semantics to ensure x=42 is visible first
 flag.store(1, memory_order_release);
+////////////////////////////////////////////////////////////////////
 
-// Thread 1 on Processor 1 (Consumer)
+// Thread 1 on SM 1 (Consumer)
 cuda::atomic_ref<int, cuda::thread_scope_device> flag(f);
 // Load with ‘acquire’ semantics to ensure we see the producer’s writes
 while(flag.load(memory_order_acquire) != 1);
 // Because of Release-Acquire, this assertion is guaranteed to pass
 assert(x == 42);
+////////////////////////////////////////////////////////////////////
 ```
 
 1. **Thread 0** writes data to `x`.
@@ -4142,15 +4312,146 @@ assert(x == 42);
 
 </div>
 
-#### GPU Memory Hierarchy and Coherence
+<figure>
+  <img src="{{ ‘/assets/images/notes/gpu-computing/lecture_10_coherence_in_gpus_cpus.png’ | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>Coherence in GPUs and CPUs</figcaption>
+</figure>
 
-The GPU hierarchy is typically "flat" compared to CPUs:
+### Address Space Views: From Uniprocessor to GPU
 
-* **L1 Cache:** Exclusive to a Streaming Multiprocessor (SM). It is private and only provides consistency guarantees for the start and end of a thread block.
-* **L2 Cache:** Shared across the whole GPU.
-* **Write-Through Policy:** GPUs often use a Write-Through policy for L1 caches to make writes globally visible to the L2 cache immediately.
-* **Software-Controlled Coherence:** Instead of expensive hardware protocols like snooping, GPUs often use "software-controlled" coherence. This involves invalidating caches at kernel completion boundaries. Because GPUs can tolerate high latency, they don’t need the complex, non-scalable hardware coherence found in CPUs.
+To understand *why* GPUs can get away without hardware coherence, it helps to build up from the simplest case and see what breaks at each step.
 
+#### Uniprocessor (Single Memory Controller)
+
+With a single processor and a single memory controller, there is **no coherence problem** even with caches -- there’s only one entity reading and writing, so the cache is always consistent with the processor’s view.
+
+However, there is a different issue: **homonyms** -- the same virtual address can refer to different physical data depending on which process is running. For example, virtual address `0x1000` in process A maps to physical address `0x5000`, but in process B it maps to `0x9000`. If process A’s cache line for `0x1000` is still in the cache when process B runs, B might read A’s stale data.
+
+Solutions:
+* **Flush caches on context switch** (`WBINVD` instruction): simple but expensive -- you throw away all cached data every time the OS switches processes.
+* **ID-tagged caches using ASID (Address Space Identifier):** Each cache line is tagged with the process ID, so the hardware can distinguish "address `0x1000` belonging to process A" from "address `0x1000` belonging to process B." No flushing needed.
+
+#### Multiprocessor with a Single Memory Controller
+
+Now add multiple processors, each with its own cache, but still a single shared memory controller. This is where coherence becomes necessary: multiple caches can hold copies of the same address, and one processor might update its copy without the others knowing.
+
+The key insight: the **memory controller acts as a natural synchronization point**. Since all memory requests funnel through this single controller, it can enforce coherence -- it sees every read and write and can coordinate invalidations or updates. This is the classic SMP (Symmetric Multiprocessor) setup.
+
+#### Multiprocessor with Multiple Memory Controllers
+
+As systems grow, a single memory controller becomes a bottleneck (just like a single bus). So we add multiple memory controllers, each responsible for a portion of the address space.
+
+Now the question: **which memory controller is responsible for a given address?** This is determined by **static mapping** -- a fixed function (e.g. based on address bits) that maps each address range to a specific memory controller. For example, addresses `0x0000-0x3FFF` go to MC0, `0x4000-0x7FFF` go to MC1, etc.
+
+Each memory controller now acts as a synchronization point for its own address range. All of them together must coordinate to maintain coherence.
+
+*Excursion -- COMA (Cache-Only Memory Architecture):* An alternative where there is no static mapping at all. Main memory is treated as a giant cache, and data migrates dynamically to wherever it’s needed. This avoids the problem of data being "far" from the processor that needs it, but is more complex to implement.
+
+#### Adding a Cache Hierarchy (CPU-style)
+
+Modern CPUs add a cache hierarchy: exclusive **L1/L2 caches per core** and a shared **L3/LLC (Last-Level Cache)** that all cores can access. The LLC is typically **sliced (banked)** -- divided into multiple slices that can be accessed concurrently, improving bandwidth.
+
+The important point: this cache hierarchy does not change the coherence picture. The same coherence protocols (snooping or directory) apply. Having a shared LLC just adds another level where data can be found before going to main memory.
+
+#### GPU Memory Hierarchy -- L2 (LLC)
+
+The GPU’s L2 cache is also sliced, similar to CPU LLCs. But there’s a crucial difference: **GPUs don’t need hardware coherence for the L2**.
+
+Why? Because the GPU’s L2 slices are part of the **fixed address mapping** -- each L2 slice is paired with a memory controller, and the address-to-slice mapping is static. A given address always goes to the same L2 slice. There is no situation where two different L2 slices hold conflicting copies of the same address, because a given address is *owned* by exactly one slice.
+
+Trade-offs of this design:
+* **Latency increases:** A core (SM) might need to access an L2 slice on the other side of the chip. This adds latency compared to a local cache.
+* **GPUs don’t care:** GPUs are designed to tolerate memory latency (by switching to other warps while waiting). CPUs would care because they are latency-sensitive.
+* **Effective cache size can be reduced:** If data is not equally distributed among the memory controllers, some L2 slices fill up while others sit empty. But cache size is less critical for GPUs than for CPUs (again, latency tolerance).
+
+#### GPU Memory Hierarchy -- L1
+
+The L1 cache is **local to each Streaming Multiprocessor (SM)** and is private to the thread blocks running on that SM. This is where things get interesting for coherence:
+
+* **Exclusive cache:** The L1 is not shared between SMs. Two SMs *can* have copies of the same address in their L1 caches.
+* **Consistency guarantees only at thread block boundaries:** The GPU only guarantees that memory is consistent at the **start and end of a thread block’s life**. Within a thread block, threads on the same SM use `__syncthreads()` for synchronization. Between SMs, there are no guarantees during execution.
+* **Write-through, no write-allocate policy:** When an SM writes to global memory through L1, the write goes directly through to the L2 (write-through). The L1 does not allocate a cache line for the written data (no write-allocate). This means writes are always immediately visible at the L2 level.
+* **Invalidation at kernel completion boundaries:** When a kernel finishes, the L1 caches are invalidated -- all cached data is thrown away. The next kernel starts with clean L1 caches. This eliminates the possibility of stale data across kernel launches.
+* **No memory traffic from invalidation:** Because L1 uses write-through, all data is already in L2 at the time of invalidation. Invalidating L1 just discards local copies -- no data needs to be written back. This is essentially free.
+
+This is **software-controlled coherence**: instead of complex hardware protocols tracking every cache line, the GPU relies on the programming model (BSP-like: compute phase, then synchronize) to ensure correctness. The hardware just needs to invalidate at boundaries.
+
+#### GPU Memory Architecture (Detailed)
+
+<figure>
+  <img src="{{ ‘/assets/images/notes/gpu-computing/lecture_10_gpu_memory_architecture.png’ | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <figcaption>GPU memory architecture</figcaption>
+</figure>
+
+The data path from SM to DRAM:
+1. Each SM has an **L1 cache** and **shared memory**, connected via a MUX (they share the same on-chip SRAM).
+2. Below the SM, **address-sliced crossbars** provide a high-bandwidth, contention-free path into the memory system. The crossbar routes each address to the correct L2 slice based on address bits.
+3. The **L2 cache (LLC)** is split into slices, each paired with a memory controller and GDDR channel.
+
+Cache policies:
+* **L1:** 128B cache line size (= 32 threads x 4B, matching a warp), **write-invalidate** (on a write, invalidate the local copy and write through), **no write-allocate** (writes don’t bring data into L1).
+* **L2:** 32B cache line size (stores and over-fetches), **write-back** (dirty data stays in L2 until evicted), **write-allocate** (a write miss brings the line into L2 first).
+
+GPU kernels are typically **write-once** -- each thread writes its output once. This means L1 write-allocate is unnecessary (why cache a value you’ll never read again?), which is why L1 uses no-write-allocate.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why is L2’s cache line smaller than L1’s?)</span></p>
+
+On CPUs, L2 lines are typically the same size or larger than L1 lines, and L2 *contains* L1’s data (inclusive hierarchy) or holds evicted lines (exclusive hierarchy). So it seems counterintuitive that GPU L1 = 128B but L2 = 32B.
+
+The reason is that GPU L1 and L2 are **not in a containment relationship** -- they serve different roles with different access patterns:
+
+* **L1 (128B) is optimized for reading in bulk.** The line size matches one coalesced warp access: 32 threads x 4B = 128B. One L1 line serves an entire warp in a single transaction.
+* **L2 (32B) is optimized for fine-grained memory management.** It handles traffic from *all* SMs, including small write-through stores (one thread writes 4B, not 128B). Using 32B granularity means a small store doesn’t force L2 to fetch/allocate 128B just to update a few bytes. It also reduces false sharing when different SMs access different 32B portions of the same 128B region.
+
+L1 is write-through, so writes skip L1 and go directly to L2. L1 is invalidated entirely at kernel boundaries. L2 is not "holding evicted L1 data" -- it’s an independent, memory-side cache with its own granularity chosen for its own workload.
+
+**But if coalescing always fetches 128B into L1, when does 32B matter?** The interaction depends on the operation:
+
+* **Reads (L1 miss):** L1 needs 128B but doesn’t talk to DRAM directly -- it goes through L2. That 128B request is fulfilled by **4 separate 32B L2 sectors**. Some of those sectors might already be in L2 (hit), while others must come from DRAM (miss). So L2 can serve a *partial* hit -- e.g. 3 of 4 sectors cached, only 1 fetched from DRAM. This is more efficient than treating 128B as all-or-nothing.
+* **Writes:** L1 is write-through, no write-allocate. The new value is sent directly to L2 and is **not stored** in L1. However, if the written address already has a cached copy in L1, that copy is **invalidated** (write-invalidate policy) so no stale data can be read. The next read to that address will miss in L1 and fetch the fresh value from L2. Because the write goes to L2 at its native 32B granularity, a single thread writing 4B does not trigger a 128B fetch.
+* **Non-coalesced reads:** If a warp’s accesses are scattered, L1 might fetch multiple 128B lines but use only a few bytes from each. At L2, these become separate 32B sector accesses -- finer-grained, reducing wasted DRAM bandwidth.
+
+In short: coalescing determines how many **L1 lines** are touched. L2’s 32B granularity determines how efficiently those L1 misses (and all writes) are handled at the memory side.
+
+**Why invalidate L1 on write instead of updating it?** One might ask: why not just change the value in the L1 cache line and also write through to L2? That way L1 stays warm for future reads. The answer is that **there is no coherence protocol between L1 caches**. If SM0 and SM1 both have address X cached in their L1, and SM0 writes `X = 42`, updating SM0’s L1 would make SM0 correct -- but SM1’s L1 still has the stale value, and there is no hardware mechanism to notify SM1. By invalidating SM0’s L1 copy instead, the GPU forces all future reads (from any SM, including SM0) through L2 -- the single source of truth (each address maps to exactly one L2 slice, so L2 is inherently coherent). This sacrifices L1 hit rate on writes to avoid needing expensive inter-SM coherence hardware. Two additional reasons this makes sense: (1) GPU kernels are typically write-once (the written value is never read back, so caching it in L1 wastes capacity), and (2) L1 never holds dirty data, keeping the hardware simple -- no write-back logic, and invalidation at kernel boundaries is free.
+
+**In summary, L1 is effectively a read-only cache.** A write invalidates the *specific cache line* containing the written address (not the entire L1 -- the entire L1 is only invalidated at kernel completion boundaries). The typical lifecycle of an L1 cache line is:
+
+1. Warp reads address X → L1 miss → fetch 128B from L2 → cache in L1.
+2. Subsequent reads of X → L1 hit (fast).
+3. Some thread writes to X → that L1 line is invalidated, value goes to L2.
+4. Next read of X → L1 miss again → fetch fresh value from L2.
+
+This is why GPU code that reads data many times benefits greatly from L1 (e.g. the N-body inner loop reading body positions), but code that interleaves reads and writes to the same address gets no L1 benefit.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Coalescing is not a CUDA method)</span></p>
+
+Coalescing is **not** a CUDA API call or a feature you enable -- it is a **hardware behavior** that happens automatically. When a warp of 32 threads issues a load instruction, the memory hardware examines all 32 addresses simultaneously and groups them by which cache lines they fall into. It then issues **one memory transaction per cache line touched**:
+
+* Thread 0 reads addr 0, thread 1 reads addr 4, ..., thread 31 reads addr 124 → all 32 addresses fall within one 128B cache line → **1 transaction** (coalesced).
+* Thread 0 reads addr 0, thread 1 reads addr 512, thread 2 reads addr 1024, ... → addresses span many cache lines → **many transactions** (uncoalesced).
+
+Coalescing is simply the natural consequence of how cache lines work -- the hardware always fetches a whole cache line regardless. A "coalesced" access just means the warp’s access pattern happens to align with cache line boundaries, so all 32 threads are served by the minimum number of transactions. The programmer’s role is to arrange data layouts so that consecutive threads access consecutive addresses (e.g. SoA over AoS). The hardware does the rest.
+
+</div>
+
+### Summary: Why GPUs Don’t Need CPU-Style Coherence
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Key Takeaways)</span></p>
+
+* **Coherence is an artificial problem introduced by caches.** Without caches there would be no coherence issue -- everyone would just read from the same memory. Caches create replicas, and replicas can diverge.
+* **CPUs provide strong coherence guarantees** because they must support legacy code, arbitrary user programs, and are latency-sensitive (they need caches close to the core, which forces complex coherence).
+* **GPUs provide very relaxed consistency** because:
+  * There is no legacy GPU code -- the programming model was designed from scratch with these constraints in mind.
+  * The execution model is **BSP-like** (Bulk Synchronous Parallel): compute, then synchronize. Synchronization points are essentially the start and end of a thread block’s life. This constrained model can be leveraged as the foundation for consistency.
+  * GPUs can **tolerate latency** (by switching warps), so they can live with small caches and place the LLC far away next to the memory controllers -- eliminating the need for coherence between L2 slices.
+
+</div>
 
 ## Deep Dive into the SIMT Execution Model
 
