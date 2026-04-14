@@ -4379,7 +4379,7 @@ assert(x == 42);
 </div>
 
 <figure>
-  <img src="{{ ‘/assets/images/notes/gpu-computing/lecture_10_coherence_in_gpus_cpus.png’ | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_coherence_in_gpus_cpus.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
   <figcaption>Coherence in GPUs and CPUs</figcaption>
 </figure>
 
@@ -4504,6 +4504,143 @@ Coalescing is **not** a CUDA API call or a feature you enable -- it is a **hardw
 Coalescing is simply the natural consequence of how cache lines work -- the hardware always fetches a whole cache line regardless. A "coalesced" access just means the warp’s access pattern happens to align with cache line boundaries, so all 32 threads are served by the minimum number of transactions. The programmer’s role is to arrange data layouts so that consecutive threads access consecutive addresses (e.g. SoA over AoS). The hardware does the rest.
 
 </div>
+
+### How L1, L2, and Global Memory Are Connected
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(GPU cache hierarchy is not like a CPU)</span></p>
+
+In a CPU, caches form a nested hierarchy close to the core: `Core → L1 → L2 → L3/LLC → DRAM`. Each level is physically near the previous one, optimized for latency, and typically inclusive (data in L1 is also in L2).
+
+In a GPU, L1 and L2 are **not in a containment relationship** -- they are two independent caches connected by a crossbar:
+
+```
+SM → L1 → address-sliced crossbar → L2 slice 0 → Memory Controller 0 → GDDR
+                                   → L2 slice 1 → Memory Controller 1 → GDDR
+                                   → L2 slice 2 → Memory Controller 2 → GDDR
+                                   → ...
+```
+
+The critical difference: **L2 is not next to L1 -- it’s on the other side of the chip, physically paired with the memory controllers.** The address-sliced crossbar routes each request to the correct L2 slice based on address bits (static mapping).
+
+| Design choice | CPU rationale | GPU rationale |
+| --- | --- | --- |
+| L2 location | Close to cores (minimize latency) | Next to memory controllers (maximize bandwidth) |
+| Inclusion | L1 ⊂ L2 (coherence simplicity) | Independent (no coherence between L1s) |
+| L1 write policy | Write-back (keep data close) | Write-through (L1 is a read-only cache) |
+| L2 role | Catch L1 evictions, reduce L3 traffic | Shared source of truth, absorb writes from all SMs |
+
+CPUs optimize for **latency** -- every cache level is as close and fast as possible. GPUs optimize for **bandwidth** -- L2 is placed where the memory bandwidth is (next to the controllers), and the latency is hidden by switching warps.
+
+</div>
+
+#### Data Flow: Reads
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(L1 always operates at 128B granularity)</span></p>
+
+L1 has no concept of a "partial" cache line -- it either has the full 128B line or it doesn’t.
+
+</div>
+
+1. Warp issues a load → L1 checks: do I have this 128B line?
+2. **L1 hit:** Serve immediately (fast, a few cycles). L2 is not involved.
+3. **L1 miss:** The request travels through the crossbar to the specific L2 slice that *owns* that address (determined by static mapping).
+4. The hardware needs the full 128B for L1. This maps to **4 × 32B sectors** at L2. Crucially, which 4 sectors is determined by **alignment**, not by which address was accessed. L1 lines are 128B-aligned (they always start at addresses that are multiples of 128), so the 4 sectors are the fixed group that falls within that 128B boundary:
+   ```
+   L2 sectors:  [0:32B][1:32B][2:32B][3:32B][4:32B][5:32B][6:32B][7:32B][8:32B]...
+                |_________ L1 line 0 _________||_________ L1 line 1 _________|
+                addr 0-127                      addr 128-255
+   ```
+   For example, if the accessed address falls in sector 5 (addr 160-191), the 128B-aligned L1 line starts at addr 128, so L1 fetches sectors **{4, 5, 6, 7}** -- not {5, 6, 7, 8}. The grouping is fixed by alignment, not by the access point.
+5. **How does L2 find these 4 sectors?** Caches are not arrays where consecutive addresses sit next to each other in physical SRAM. They are lookup structures (like hash tables). Each address maps to a specific location via index bits extracted from the address:
+   ```
+   Address: [  tag  |  index  |  offset  ]
+                          ↓
+                  direct lookup into this "set" in the cache
+   ```
+   The hardware does not search the whole L2. It extracts the index bits, jumps directly to the right set, and checks the tag. Each of the 4 sectors is looked up independently by its own address. They don’t need to be physically adjacent in L2’s SRAM -- they just need to be retrievable by address, which they always are.
+
+   Furthermore, all 4 sectors share the same high-order address bits (they fall within the same 128B-aligned region), which guarantees they all map to the **same L2 slice**. So the hardware only talks to one L2 slice and does 4 independent lookups within it:
+   ```
+   Sector 4 addr: 0b...0001_00|000  → L2 slice X
+   Sector 5 addr: 0b...0001_01|000  → L2 slice X (same high bits)
+   Sector 6 addr: 0b...0001_10|000  → L2 slice X (same high bits)
+   Sector 7 addr: 0b...0001_11|000  → L2 slice X (same high bits)
+   ```
+
+6. L2 checks each of the 4 sectors independently:
+   * Sectors that are **L2 hits** are served directly from L2.
+   * Sectors that are **L2 misses** are fetched by the paired memory controller from GDDR.
+7. Once all 4 sectors are gathered, the complete 128B line is assembled and delivered to L1.
+
+This is where L2’s 32B granularity pays off: if 3 of 4 sectors are already in L2, only 1 sector (32B) needs to come from GDDR -- not the full 128B.
+
+**Important caveat:** An L1 miss always requires the **full 128B line**, even if the address you actually need is just 4 bytes in one sector. If L2 has only the sector you missed on (say sector 5) but not the other three, the hardware must still fetch the missing sectors from GDDR:
+
+* Sector 4: L2 miss → fetch from GDDR
+* Sector 5: L2 hit → served from L2
+* Sector 6: L2 miss → fetch from GDDR
+* Sector 7: L2 miss → fetch from GDDR
+
+Three GDDR fetches even though the address you cared about was in L2. The L1 line won’t be delivered until all 4 sectors are gathered. This is a real cost of the large L1 line size. GPUs accept this trade-off because: (1) **coalesced access is the common case** -- well-written GPU code has consecutive threads accessing consecutive addresses, so all 128B is typically useful; (2) **GDDR is optimized for burst transfers** -- fetching 32B vs. 128B doesn’t save as much as you’d think, since DRAM naturally transfers data in bursts (often 32-64B per burst); (3) **latency is hidden** -- while waiting for missing sectors, the SM switches to other warps.
+
+#### Data Flow: Writes
+
+1. SM issues a store → L1 invalidates its copy of that line (if cached).
+2. The write travels through the crossbar to the owning L2 slice.
+3. L2 handles it with write-back policy -- the dirty data stays in L2 and is **not** immediately written to GDDR.
+
+#### When Does L2 Write Back to GDDR?
+
+L2 uses write-back, so dirty data can stay in L2 indefinitely. It is only written to GDDR when something forces it out:
+
+1. **Eviction:** L2 is full and a new sector needs space. If the evicted sector is dirty, it gets written back to GDDR. This is the normal, ongoing mechanism.
+2. **Data must leave the GPU:** For example, `cudaMemcpy(device→host)` -- the driver ensures L2 dirty data is flushed to GDDR before the transfer begins, so the CPU reads correct values.
+3. **Explicit synchronization:** Certain CUDA operations (e.g. memory visibility operations at `system` scope) may trigger an L2 flush to ensure data is visible outside the GPU.
+
+**Kernel completion does NOT flush L2.** Only L1 is invalidated at kernel boundaries. L2 persists across kernel launches -- if kernel A writes results that kernel B needs, those results are already in L2. There's no reason to push them to GDDR just because the kernel ended. L2 only writes back when something *outside* L2 needs the data.
+
+This is also why L1 and L2 use different write policies: L1 uses write-through because there are many L1 caches that are not coherent with each other -- writes must reach the single source of truth (L2) immediately. But there is only one L2 (logically), so there is no urgency to push data further to GDDR until it's actually needed.
+
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Does flushing L2 hurt a concurrently running kernel?)</span></p>
+
+If kernel A finishes and the CPU copies its results back (`cudaMemcpyAsync` on stream 1), while kernel B is still running on stream 2, does the L2 flush hurt kernel B?
+
+First, note that `cudaDeviceSynchronize()` waits for **all** work on **all** streams to finish -- so you cannot have "A done, B still running" with a device-wide synchronize. This scenario only arises with **CUDA streams**, where each stream synchronizes independently.
+
+In the streams case, kernel B is not hurt because:
+
+1. **The flush is targeted, not a full L2 wipe.** The hardware/driver only ensures the specific addresses being transferred are written back from L2 to GDDR. Kernel B's data (at different addresses) stays in L2 untouched.
+2. **Write-back does not necessarily invalidate.** Flushing pushes dirty data to GDDR but can leave a clean copy in L2. Kernel B can still hit on it.
+3. **Even in the worst case** (an L2 line gets evicted), the data is still in GDDR. Kernel B would see cache misses and re-fetch -- a performance hit, not a correctness issue.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(When is L2 fully flushed?)</span></p>
+
+In normal GPU operation, **a full L2 flush essentially never happens.** L2 is designed to persist as the source of truth. It is important to distinguish **flush** (write dirty data to GDDR, keep clean copy) from **invalidate** (discard all cached data):
+
+| Situation | Full L2 flush/invalidate? | What actually happens |
+| --- | --- | --- |
+| Eviction (ongoing) | No | Individual dirty sectors written back as they're replaced. Normal cache behavior. |
+| `cudaMemcpy` D→H | No | Targeted write-back of specific addresses being transferred. |
+| Kernel completion | No | Only L1 is invalidated. L2 persists. |
+| `cudaDeviceSynchronize()` | No | Just waits for work to finish. Doesn't touch L2. |
+| `cudaCtxResetPersistingL2Cache()` | Yes | Explicit API to reset L2 persistent cache reservations (CUDA 11+). |
+| `cudaDeviceReset()` | Yes | Entire GPU state is torn down, including all caches. |
+| Context destruction | Yes | CUDA context is destroyed, GPU state is cleaned up. |
+
+A full L2 invalidation is drastic -- it only happens when the GPU context is being destroyed or explicitly reset. Data flows in and out of L2 through evictions and targeted write-backs, but the cache as a whole is never wholesale cleared during normal execution. This is fundamentally different from L1, which is invalidated at every kernel boundary.
+
+</div>
+
+#### L1 Eviction
+
+When L1 evicts a cache line (to make room for a new one), it simply **discards** the full 128B line. Since L1 is write-through, there is never dirty data in L1 -- everything has already been written to L2. No write-back is needed, making eviction free.
 
 ### Summary: Why GPUs Don’t Need CPU-Style Coherence
 
