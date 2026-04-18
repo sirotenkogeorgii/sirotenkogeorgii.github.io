@@ -2702,6 +2702,7 @@ This is why modern AI accelerators (like Google's TPU) use massive arrays of low
 ### XNOR-based binary multiplication
 
 > **`popc` instruction:** The popcnt instructions, short for population count, are used to count the amount of 1s in a numbers binary representation.
+
 > **`xnor` instruction:** Exclusive NOR instruction performs logical equality, outputting a high (1) if all inputs are the same (all 0s or all 1s) and a low (0) if inputs differ, essentially checking for similarity; while not a single common instruction in basic x86, it's implemented via XOR/NOT or specific vector instructions
 
 **Coding (XNOR):**
@@ -2783,6 +2784,10 @@ where $\tilde{f}'(w)$ is a surrogate derivative, often just set to 1. This allow
 
 **Re-training/Fine-tuning:** A hybrid approach where a pre-trained model is quantized and then fine-tuned for a few epochs using QAT. This can often recover much of the accuracy lost during initial quantization.
 
+<figure>
+  <img src="{{ '/assets/images/notes/embedded-machine-learning/qat_and_ste.png' | relative_url }}" alt="a" loading="lazy">
+</figure>
+
 > **Highlight**
 > QAT + fine-tuning is often necessary for low-bit quantization without major accuracy loss.
 
@@ -2806,6 +2811,7 @@ Performance data for these methods on the AlexNet/ImageNet task shows that while
 
 > **Trade-off summary**
 > Lower bits → strong memory/latency improvements, but accuracy recovers substantially by 2–3 bits depending on method.
+
 > **Key observation:** DNNs contain plenty of redundancy. Nonuniform quantization outperforms uniform quantization
 
 ## Pruning: Engineering Sparsity in Neural Networks
@@ -3665,16 +3671,17 @@ Ultimately, successful model compression for embedded systems requires a holisti
 
 ---
 
-(lecture 10)
-Chapter 1: The Optimization Imperative in Embedded ML
+# Safe Optimization
 
-The core challenge in Embedded Machine Learning is bridging the gap between computationally intensive ML algorithms and the severe resource constraints of edge devices. This involves a deep understanding of how both software and hardware can be co-designed to achieve efficiency in terms of energy, memory, and latency.
+## The Optimization Imperative in Embedded ML
 
-The "Simplicity Wall" of Deep Neural Networks
+The core challenge in Embedded Machine Learning is bridging the gap between computationally intensive ML algorithms and the severe **resource constraints** of edge devices. This involves a deep understanding of how both software and hardware can be co-designed to achieve efficiency in terms of energy, memory, and latency.
 
-Deep Neural Networks (DNNs), despite their complex behavior, are computationally uniform. They spend the vast majority of their execution time performing matrix multiplications and convolutions, which are fundamentally composed of Multiply-Accumulate (MAC) operations. This phenomenon is known as the "Simplicity Wall." This computational regularity, characterized by static loop-trip counts and minimal control overhead, makes DNNs highly predictable and an ideal target for hardware acceleration. It allows architects to design specialized processors that excel at this one task, leading to significant performance and efficiency gains.
+### The "Simplicity Wall" of Deep Neural Networks
 
-The Energy Cost of Computation and Data Movement
+Deep Neural Networks (DNNs), despite their complex behavior, are computationally uniform. They spend the vast majority of their execution time performing matrix multiplications and convolutions, which are fundamentally composed of **Multiply-Accumulate (MAC) operations**. This phenomenon is known as the "Simplicity Wall." This computational regularity, characterized by static loop-trip counts and minimal control overhead, makes DNNs highly predictable and an ideal target for hardware acceleration. It allows architects to design specialized processors that excel at this one task, leading to significant performance and efficiency gains.
+
+### The Energy Cost of Computation and Data Movement
 
 A foundational principle in embedded systems design is that moving data is far more expensive than computing on it. This is especially true when data has to be fetched from off-chip memory. As documented by M. Horowitz in "Computing's energy problem," the energy cost increases exponentially as data moves further from the processing unit.
 
@@ -3688,29 +3695,29 @@ Operation / Memory Access	Energy (pJ)	Location
 1MB SRAM Read (64 bit)	100	On-Die
 DRAM Read	2,000	Off-Die
 
-This stark reality highlights a primary goal of Embedded ML optimization: minimize data movement. The most effective hardware architectures are those that maximize data reuse, keeping operands and intermediate results in fast, low-power SRAM (Static Random-Access Memory) close to the compute units, and avoiding costly trips to off-chip DRAM (Dynamic Random-Access Memory).
+This stark reality highlights a primary goal of Embedded ML optimization: **minimize data movement**. The most effective hardware architectures are those that maximize data reuse, keeping operands and intermediate results in fast, low-power **SRAM** (Static Random-Access Memory) close to the compute units, and avoiding costly trips to off-chip **DRAM** (Dynamic Random-Access Memory).
 
-Safe vs. Unsafe Optimizations
+### Safe vs. Unsafe Optimizations
 
 Optimizations in ML can be categorized into two main types based on their impact on model accuracy.
 
-Safe Optimizations
+#### Safe Optimizations
 
-Safe optimizations are techniques that improve performance without any impact on the model's accuracy. These are purely architectural or data-layout improvements that exploit the structure of the ML workload.
+**Safe optimizations** are techniques that improve performance without any impact on the model's accuracy. These are purely architectural or data-layout improvements that exploit the structure of the ML workload.
 
-* Shorter communication paths: Designing hardware to keep compute and local memory physically close.
-* Data reuse: Structuring computation to use each piece of data loaded from memory multiple times before discarding it.
+* **Shorter communication paths:** Designing hardware to keep compute and local memory physically close.
+* **Data reuse:** Structuring computation to use each piece of data loaded from memory multiple times before discarding it.
 
-These principles directly lead to the development of dedicated architectures, such as array-based processors, which are designed from the ground up to minimize data transfer volume.
+These principles directly lead to the development of **dedicated architectures**, such as array-based processors, which are designed from the ground up to minimize data transfer volume.
 
-Unsafe Optimizations
+#### Unsafe Optimizations
 
-Unsafe optimizations are techniques that can potentially alter the model's accuracy. They achieve efficiency by modifying the model itself or the precision of its calculations. While they risk a drop in accuracy, the performance gains can be substantial, making them essential for deployment on highly constrained devices.
+**Unsafe optimizations** are techniques that can potentially alter the model's accuracy. They achieve efficiency by modifying the model itself or the precision of its calculations. While they risk a drop in accuracy, the performance gains can be substantial, making them essential for deployment on highly constrained devices.
 
-* Pruning: Reducing the model size and operation count by removing redundant weights or connections.
-* Quantization: Reducing the precision of operations and operands. This is a powerful technique where, for instance, 32-bit floating-point numbers are converted to 8-bit fixed-point integers (Quantization) or even single bits (Binarization). This dramatically reduces memory footprint and energy consumption, as lower-precision arithmetic is much cheaper.
+* **Pruning:** Reducing the model size and operation count by removing redundant weights or connections.
+* **Quantization:** Reducing the precision of operations and operands. This is a powerful technique where, for instance, 32-bit floating-point numbers are converted to 8-bit fixed-point integers (**Quantization**) or even single bits (**Binarization**). This dramatically reduces memory footprint and energy consumption, as lower-precision arithmetic is much cheaper.
 
-Chapter 2: The Rise of Array Processors for ML Acceleration
+## The Rise of Array Processors for ML Acceleration
 
 The "Simplicity Wall" of DNNs has driven a paradigm shift in processor design, moving away from general-purpose cores towards highly specialized, parallel architectures. This trend is visible across the industry, with a plethora of ML accelerators being developed in both research and commercial sectors.
 
@@ -3750,11 +3757,11 @@ Data Flow	Programmer-managed data movement	Implicit, hardware-managed dataflow
 
 This specialization makes array processors incredibly efficient for their target workload (matrix multiplication) but less flexible for general-purpose tasks.
 
-Chapter 3: Case Study: Google's Tensor Processing Unit (TPU)
+## Case Study: Google's Tensor Processing Unit (TPU)
 
 The Google TPU is one of the first and most prominent production-class ML accelerators. It is essentially a coprocessor designed to offload matrix multiplications from a host CPU, and its design philosophy provides valuable insights into building hardware tailored to real-world ML workloads.
 
-The Roofline Model: Analyzing Performance Bottlenecks
+### The Roofline Model: Analyzing Performance Bottlenecks
 
 To understand the performance of a given architecture, the Roofline Model is an invaluable tool. It plots the attainable performance of a processor (in GFLOP/s or TOP/s) as a function of an application's operational intensity.
 
@@ -3797,7 +3804,7 @@ Data for TPU v4 Training is from a 30-day period in Oct 2022. Over 90% of traini
 
 The most dramatic shift is the rise of Transformer models, which grew from non-existent on v1 to dominating the v4 training workload (57%). In response, newer TPUs like the v4 have introduced specialized hardware such as the SparseCore for efficiently handling embeddings common in these models and Optical Circuit Switches (OSC) for high-speed interconnects in large-scale training pods.
 
-Chapter 4: Field-Programmable Gate Arrays (FPGA) for Flexible Acceleration
+## Field-Programmable Gate Arrays (FPGA) for Flexible Acceleration
 
 While ASICs like the TPU offer peak performance and efficiency, they lack flexibility. Field-Programmable Gate Arrays (FPGAs) offer a middle ground, providing customizable hardware acceleration with the ability to be reconfigured after manufacturing.
 
@@ -3831,7 +3838,7 @@ Main Drawback	Amount of data movements required	Memory performance can be a bott
 
 The key advantage of an FPGA is its flexibility. It allows designers to create custom data paths and precision for their specific neural network, avoiding the overhead of a fixed instruction set. This is particularly beneficial for highly quantized models.
 
-Chapter 5: FINN: An End-to-End FPGA Deployment Framework
+## FINN: An End-to-End FPGA Deployment Framework
 
 To bridge the gap between high-level ML frameworks and the complexity of FPGA programming, tools like FINN have been developed. FINN is an open-source, end-to-end framework from AMD/Xilinx for deploying quantized neural networks on Xilinx FPGAs.
 
@@ -3873,7 +3880,7 @@ The FINN compiler automates the complex process of hardware generation through a
 3. HLS Code Generation: The compiler generates C++ code from templates using a dedicated HLS library (finn-hlslib). This code describes the behavior of the custom dataflow accelerator.
 4. HLS Synthesis & Deployment: The generated code is synthesized using the Vitis HLS tool to produce a hardware bitstream, which can then be deployed to a PYNQ-enabled board like the Xilinx Ultra96.
 
-Chapter 6: Performance Analysis and Conclusion
+## Performance Analysis and Conclusion
 
 The ultimate goal of these advanced architectures and frameworks is to deliver high performance within a strict power budget. Analysis using emulators and real-world benchmarks demonstrates the effectiveness of these hardware-aware optimization strategies.
 
@@ -3900,6 +3907,7 @@ This benchmark demonstrates the core principle of Embedded ML: there is no singl
 
 ---
 
+(lecture 11)
 Chapter 1: The New Era of Specialized ML Processors
 
 This chapter introduces the rapidly expanding landscape of hardware designed specifically for machine learning and explores the fundamental principle that hardware capabilities often dictate which algorithmic ideas thrive.
@@ -4146,3 +4154,155 @@ Future Trends and Unsafe Optimizations: The pursuit of ever-greater efficiency i
 * Reduced Precision Data Types: Moving beyond 8-bit integers to even lower precision formats.
 * Analog Computing: Performing computation in the analog domain to potentially reduce power consumption, though this introduces challenges with noise and precision.
 * Emerging Memory Technologies: Utilizing novel memory devices like memristors for in-memory computing, where computation happens directly where data is stored, eliminating the memory-compute bottleneck entirely.
+
+---
+
+(lecture 12)
+Chapter 1: Resource-Efficient Convolutional Architectures
+
+The central challenge in embedded machine learning is achieving high model accuracy within the severe Resource Constraints of edge devices. This necessitates a shift from simply building larger models to designing fundamentally more efficient architectures. This chapter explores key innovations in convolutional neural networks (CNNs) that were designed from the ground up for computational efficiency, forming a cornerstone of the HW-ML Interplay.
+
+Revisiting the Standard Convolution Operation
+
+A standard 2D convolution is the workhorse of modern computer vision, but it is computationally expensive. The operation involves sliding a set of filters over an input volume to produce an output volume.
+
+A diagram in the source material illustrates this process. A set of M filters, each with dimensions R x S x C (Height x Width x Channels), is convolved with an input feature map (fmap) of size H x W x C. Each filter produces a 2D output map, and stacking these M maps results in a final output fmap of size E x F x M. This operation exhaustively combines spatial and cross-channel information in a single step, leading to a high number of Multiply-Accumulate (MAC) operations. The computational cost is a primary bottleneck for deployment on resource-constrained hardware.
+
+The MobileNet V1 Revolution: Depthwise Separable Convolutions
+
+The MobileNet V1 architecture, introduced in 2017, proposed a core idea to address the high cost of standard convolutions: replace them with a cheaper, factorized alternative known as the depthwise separable convolution. This technique significantly reduces both the number of trainable parameters and the required MAC operations.
+
+Understanding Separable Convolutions
+
+Before diving into depthwise separable convolutions, it's useful to understand the concept of a spatially separable convolution. This technique applies to a 2D filter matrix K that can be decomposed into the outer product of two vectors, e.g., K = v_1 \cdot v_2^T.
+
+For example, a 3 \times 3 Sobel filter can be separated:  \begin{bmatrix} 1 & 2 & 1 \ 2 & 4 & 2 \ 1 & 2 & 1 \end{bmatrix} = \begin{bmatrix} 1 \ 2 \ 1 \end{bmatrix} \cdot \begin{bmatrix} 1 & 2 & 1 \end{bmatrix}  Performing the convolution I * K can be replaced by two sequential 1D convolutions: (I * v_1) * v_2^T. This reduces the computational complexity from O(MN) multiplications for an M \times N kernel to just O(M+N). However, this method is not widely used in machine learning because not all kernels are separable, which limits the search space during training. Additionally, it can increase space complexity due to the storage of intermediate results.
+
+The Two-Step Process of Depthwise Separable Convolutions
+
+Instead of spatial separation, MobileNet factorizes a standard convolution into two distinct, more efficient steps:
+
+1. Depthwise Convolution (Spatial Filtering): In this step, a single filter of size R \times S \times 1 is applied to each input channel independently. For an input with C channels, this involves C separate convolutions. This step efficiently filters spatial information within each channel but crucially, it does not mix information across channels. The output is an intermediate feature map of size E \times F \times C.
+2. Pointwise Convolution (Channel Mixing): To compensate for the lack of cross-channel information mixing in the first step, a pointwise convolution is applied. This is simply a standard convolution with a kernel size of 1 \times 1. Specifically, M filters of size 1 \times 1 \times C are used to combine the C channels of the intermediate feature map into a final output of size E \times F \times M.
+
+The source material includes a diagram illustrating this flow: an initial 7 \times 7 \times 3 input is processed by three 3 \times 3 \times 1 depthwise filters, producing a 5 \times 5 \times 3 intermediate map. This is then processed by 128 pointwise (1 \times 1 \times 3) filters to create the final 5 \times 5 \times 128 output.
+
+Efficiency Gains of Depthwise Separable Convolutions
+
+The true power of this factorization lies in its computational savings. Let's analyze the number of MACs required, assuming a stride of 1 and appropriate padding.
+
+* Standard Convolution: The cost is the output feature map size (E \times F) multiplied by the operations per pixel (R \times S \times C) and the number of filters (M).  MAC_c = (E \cdot F \cdot R \cdot S \cdot C) \cdot M 
+* Depthwise Separable Convolution: The cost is the sum of the depthwise and pointwise steps.
+  * Depthwise step: MAC_{ds1} = (E \cdot F \cdot R \cdot S) \cdot C
+  * Pointwise step: MAC_{ds2} = (E \cdot F \cdot 1 \cdot 1 \cdot C) \cdot M
+  * Total: MAC_{cds} = E \cdot F \cdot (RSC + CM)
+
+The reduction ratio r is:  r = \frac{MAC_{cds}}{MAC_c} = \frac{E \cdot F \cdot (RSC + CM)}{E \cdot F \cdot RSCM} = \frac{1}{M} + \frac{1}{RS}  In modern architectures, the number of output channels M is typically much larger than the kernel dimensions R and S. Therefore, the ratio is dominated by the kernel size, approaching r \approx \frac{1}{RS}. For a common 3 \times 3 kernel, this results in an ~8-9x reduction in computation with only a minor drop in accuracy.
+
+The following table, derived from the source material, empirically demonstrates these savings on the ImageNet dataset.
+
+Model	ImageNet Accuracy	Million Mult-Adds	Million Parameters
+Conv MobileNet	71.7%	4866	29.3
+MobileNet (Depthwise)	70.6%	569	4.2
+
+The Width Multiplier: A Knob for Model Scaling
+
+MobileNet introduces a hyperparameter called the width multiplier, denoted by \alpha \in (0, 1], which allows developers to create uniformly thinner models. This parameter scales the number of input and output channels in each layer, providing a direct way to trade off accuracy for latency and model size.
+
+Width Multiplier (α)	ImageNet Accuracy	Million Mult-Adds	Million Parameters
+1.0 MobileNet-224	70.6%	569	4.2
+0.75 MobileNet-224	68.4%	325	2.6
+0.5 MobileNet-224	63.7%	149	1.3
+0.25 MobileNet-224	50.6%	41	0.5
+
+This systematic approach to model scaling is critical for embedded systems, where a single architecture can be adapted to a wide range of hardware targets with varying computational budgets.
+
+Squeeze-and-Excitation Networks (SENet): Adaptive Channel Recalibration
+
+While MobileNet focuses on reducing computational cost, Squeeze-and-Excitation Networks (SENet) introduce a mechanism to improve model performance by making it smarter about feature representation. The intuition is to allow the model to learn where to attend, specifically by adaptively re-weighting the importance of each feature channel.
+
+The SENet block, which can be added to existing architectures, performs this recalibration in three steps, as illustrated in the source material's diagram:
+
+1. Squeeze (F_sq): This module aggregates global spatial information into a channel descriptor. It takes an input feature map U of size H \times W \times C and uses global average pooling to "squeeze" it into a 1 \times 1 \times C vector. Each element of this vector represents a summary of the corresponding input channel.
+2. Excitation (F_ex): This module learns a non-linear, non-mutually-exclusive relationship between channels to produce a set of channel-wise weights. It uses a simple bottleneck architecture composed of two fully connected layers: a dimensionality-reduction layer that maps the C channels to C/r (where r is a reduction ratio), followed by a ReLU activation, and a dimensionality-increasing layer back to C channels. A final sigmoid activation function scales the output weights to the range [0, 1]. The entire operation is defined as:  F_{ex}(z, W) = \sigma(W_1 \cdot \text{ReLU}(W_2 \cdot z))  where z is the output of the squeeze module, and W_1 and W_2 are the weights of the fully connected layers.
+3. Scale (F_scale): The final step is a simple and computationally cheap channel-wise multiplication. The output of the excitation module (a vector of C weights) is used to rescale the original input feature map U. This effectively emphasizes important feature channels and suppresses less useful ones.
+
+While SENet blocks add a small number of parameters and MACs, they can significantly boost representational power, demonstrating a powerful technique for improving model efficiency not by reducing computation, but by using it more intelligently.
+
+The Evolution of Efficient Architectures
+
+The principles pioneered by MobileNet and SENet have become foundational building blocks for a new generation of highly efficient neural networks. Subsequent research has focused on combining these ideas and using automated methods to discover optimal architectures.
+
+* MNASNet (2018): Employed Neural Architecture Search (NAS) to find efficient mobile-sized models, explicitly including SE blocks within its search space.
+* MobileNet v3 (2019): Combined the effective structures from MNASNet with the inverted residual blocks of MobileNet v2 to create an even more efficient architecture.
+* EfficientNet (2019, 2020): Proposed a compound scaling method that uniformly scales network depth, width, and resolution. It uses a baseline architecture discovered through NAS that combines depthwise-separable convolutions, SE blocks, and skip connections. The NAS optimization goal explicitly balances accuracy and computational cost:  \text{Maximize} \quad ACC(m) \cdot \left(\frac{FLOPs(m)}{T}\right)^w  Here, ACC(m) and FLOPs(m) are the accuracy and floating-point operations of a model m, T is a target FLOP count, and w is a hyperparameter to control the trade-off.
+
+Other notable architectures in this lineage include ShuffleNet, SqueezeNext, and LogicNets, each exploring different ways to optimize the balance between accuracy and computational efficiency for embedded systems.
+
+Chapter 2: Quantifying Efficiency in Deep Learning Models
+
+To effectively co-design machine learning models and hardware, it is essential to have precise metrics for quantifying computational and memory costs. These metrics allow engineers to analyze bottlenecks, compare different architectures, and predict performance on target devices.
+
+Core Efficiency Metrics
+
+Three primary metrics are used to characterize the resource requirements of a neural network layer:
+
+1. MACs (Multiply-Accumulate operations): This metric counts the number of multiplication and addition operations required to execute a layer. It serves as a strong proxy for computational complexity and inference latency on hardware accelerators like DSPs and GPUs, which are optimized for these operations.
+2. Parameters (Weight State): This refers to the number of trainable weights in a model (e.g., convolution kernels, fully connected weight matrices). This metric directly determines the model's storage size on disk or in non-volatile memory (e.g., Flash).
+3. Units (Activation State): This measures the size of the intermediate feature maps (activations) that must be stored in memory during inference. This is a critical metric for embedded systems because activations often need to reside in fast but small on-chip memory like SRAM to avoid slow and power-hungry access to external DRAM. A large activation footprint can severely limit the feasibility of a model on a given microcontroller.
+
+Comparative Analysis of Layer Costs
+
+The following table summarizes the formulas for calculating these three metrics for different common neural network layers. Understanding these equations is fundamental to architecture design for embedded systems.
+
+Layer Type	MACs	Parameters (Weight State)	Units (Activation State)
+Fully Connected (FC)	WHCO	WHCO	O
+Standard Convolution	(EF * RSC) * M	RSCM	EFM
+Grouped Convolution	MACc / g	Wc / g	EFM
+Depthwise Separable Convolution	EF * (RSC + CM)	RSC + CM	EFC + EFM
+
+Variable Definitions:
+
+* W, H, C: Width, Height, and Channels of the input tensor.
+* O: Number of output neurons.
+* R, S: Height and Width of the convolution kernel.
+* M: Number of output channels (filters).
+* E, F: Height and Width of the output feature map.
+* g: Number of groups in a grouped convolution.
+
+This table clearly highlights the HW-ML Interplay: the massive reduction in MACs and Parameters for depthwise separable convolutions comes at the cost of a larger activation state (EFC + EFM vs. EFM), as intermediate results from the depthwise step must be stored. This trade-off is central to designing models that fit within the tight SRAM budgets of microcontrollers.
+
+Chapter 3: Future Directions in Embedded ML and Hardware
+
+As efficient model architectures mature, the frontier of embedded ML is expanding to address more complex challenges related to Real-World Data and the fundamental limitations of current hardware. This chapter looks at the critical need for uncertainty reasoning and the emerging hardware paradigms designed to overcome the next set of bottlenecks.
+
+The Challenge of Uncertainty in Real-World Data
+
+Standard deep neural networks are deterministic functions: for a given input, they always produce the same output. A major limitation of this approach is their tendency to be overconfident, even when presented with noisy, ambiguous, or out-of-distribution (OOD) data.
+
+This is a critical safety and reliability concern for real-world applications. The source material provides two striking examples:
+
+1. In-Distribution Input: When a state-of-the-art neural network is shown a picture of a cat, it correctly classifies it as a "Persian cat" with 65.3% confidence.
+2. Out-of-Distribution Input: When the same network is fed an image of pure random noise, it confidently misclassifies it as a "jellyfish" with 13.1% confidence, followed by other nonsensical predictions like "jigsaw puzzle" (3.5%) and "prayer rug" (2.0%).
+
+This behavior highlights that standard models do not "know what they don't know." To address this, there is growing interest in Bayesian Neural Networks (BNNs). A diagram in the source material contrasts a standard network with fixed, scalar weights against a BNN where the weights are represented by probability distributions. This allows the BNN to model uncertainty, providing not just a single prediction but a distribution of possible outcomes, which is crucial for robust decision-making in unpredictable environments.
+
+The Hardware Bottleneck and the "Hardware Lottery"
+
+The relentless demand for more powerful models has been met by a corresponding increase in hardware performance, primarily from GPUs. However, this scaling is becoming unsustainable. A bar chart in the source material projects the total power consumption for future high-performance computing systems, showing a dramatic increase from 1,192 W (Blackwell) to a staggering 15,360 W (Next-Gen), with memory power becoming a significant portion of the total budget.
+
+This trend poses two problems:
+
+1. Power Wall: The sheer energy cost and thermal dissipation challenges make it impractical to deploy such systems at the edge.
+2. The "Hardware Lottery": The dominance of GPUs, which are exceptionally well-suited for dense matrix multiplications in standard DNNs, may be creating a bias in the research community. This phenomenon, termed the "hardware lottery," suggests that architectures which align with the strengths of today's hardware are more likely to succeed and be explored, while potentially promising but architecturally different ideas are left behind. The source explicitly confirms this bias exists.
+
+Emerging Hardware Paradigms and HW-ML Co-Design
+
+To break past these limitations, researchers are exploring alternative hardware platforms that move beyond conventional digital computing. Promising avenues include:
+
+* Analog Computation: Using physical properties of electrical or photonic circuits to perform computations like matrix-vector multiplication in a highly parallel and energy-efficient manner.
+* Resistive Memory (ReRAM): A type of non-volatile memory that can store synaptic weights and perform in-memory computing, drastically reducing the data movement between memory and processing units—a major source of energy consumption.
+
+A crucial aspect of this HW-ML Interplay is that these emerging hardware platforms are often imperfect. They suffer from noise, non-linearities, saturation effects, and device variations. Therefore, ML models cannot be naively deployed. They must be co-designed with the hardware in mind, for instance, by developing training methods that make the models robust to the specific noise characteristics of the underlying analog substrate.
+
+One example of this co-design is the Photonic Probabilistic Processor mentioned in the source material. This is an example of hardware that is inherently probabilistic, making it a natural fit for implementing Bayesian neural networks and directly addressing the challenge of uncertainty in a power-efficient manner. This tight integration of algorithm and hardware represents the future of building truly intelligent and robust embedded systems.

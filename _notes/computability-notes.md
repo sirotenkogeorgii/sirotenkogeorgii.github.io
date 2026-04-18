@@ -13,7 +13,7 @@ date: 2024-11-01
 
 ## Solovay Reducibility and Its Extensions
 
-This guide explores the concept of **Solovay reducibility**, a fundamental tool used to compare the relative randomness of real numbers. We will begin by defining the classes of numbers we are interested in, from simple **computable reals** to more complex **computably approximable** ones. We will then introduce the original **Solovay reducibility**, designed for **computably enumerable (c.e.) reals**, and examine its properties. The core of our study will focus on the challenges and successes of extending this reducibility to larger classes of real numbers, revealing why a straightforward extension fails and how a more nuanced approach involving a "tolerance" term leads to a robust and well-behaved system for classifying randomness.
+This guide explores the concept of **Solovay reducibility**, a fundamental tool used to compare the relative randomness of real numbers. We will begin by defining the classes of numbers we are interested in, from simple **computable reals** to more complex **computably approximable** ones. We will then introduce the original **Solovay reducibility**, designed for **computably enumerable (c.e.) reals**, and examine its properties. The core of the study will focus on the challenges and successes of extending this reducibility to larger classes of real numbers, revealing why a straightforward extension fails and how a more nuanced approach involving a "tolerance" term leads to a robust and well-behaved system for classifying randomness.
 
 ### Foundational Concepts: Real Numbers and Computability
 

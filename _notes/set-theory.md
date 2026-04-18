@@ -16,7 +16,12 @@ The **axiom of choice (AC)** is a rule in set theory that says:
 
 > If you have any collection of nonempty sets, then you can choose **one element from each set**, all at once.
 
-$\textbf{Axiom (Axiom of choice):}$ For any family of nonempty sets $\lbrace A_i \rbrace_{i\in I}$, there exists a function $f$ (a **choice function**) with $f(i)\in A_i$ for every $i\in I$.
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Axiom of choice)</span></p>
+
+For any family of nonempty sets $\lbrace A_i \rbrace_{i\in I}$, there exists a function $f$ (a **choice function**) with $f(i)\in A_i$ for every $i\in I$.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/set-theory/ac_figure.png' | relative_url }}" alt="a" loading="lazy">

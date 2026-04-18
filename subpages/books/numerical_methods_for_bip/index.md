@@ -41,15 +41,80 @@ If any of these properties is violated, we speak of an **ill-posed** problem.
 
 </div>
 
-Let $X, Y$ be Hilbert spaces and $A : X \to Y$ be linear and bounded (we write $A \in \mathcal{L}(X, Y)$). Then the (forward) problem to compute $y = Ax$ for a given $x \in X$ is clearly well-posed. For the corresponding **inverse problem**, to solve the linear equation $Ax = y$ for a given $y \in Y$, the conditions of Hadamard are:
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Well-Posed Problem of System of Linear Equations)</span></p>
 
-1. Existence: $y \in \mathcal{R}(A)$, i.e. $A$ is surjective.
-2. Uniqueness: $A$ is injective.
-3. Stability: $A^{-1}$ is bounded.
+Let $X, Y$ be Hilbert spaces and $A : X \to Y$ be linear and bounded (we write $A \in \mathcal{L}(X, Y)$). Then the (forward) problem to compute $y = Ax$ for a given $x \in X$ is clearly well-posed. For the corresponding **inverse problem**, to solve the linear equation $Ax = y$ for a given $y \in Y$ (find $x$), the conditions of Hadamard are:
 
-For finite dimensional problems, these conditions may be satisfied for a bounded linear operator $A$, although the problem typically gets more and more **ill-conditioned** as the dimension increases. In infinite dimensions on the other hand, it is in general impossible. In particular, for compact operators $A$ the singular values have to accumulate at 0, which implies that $A^{-1}$ is unbounded. Thus, fundamentally the inverse problem is ill-posed if the forward problem is well-posed.
+1. **Existence:** $y \in \mathcal{R}(A)$, i.e. $A$ is surjective.
+2. **Uniqueness:** $A$ is injective.
+3. **Stability:** $A^{-1}$ is bounded. ($\exists c \|\|A^{-1}y\|\| \leq c\|\|y\|\| \forall y$)
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">()</span></p>
+
+For finite dimensional problems, these conditions may be satisfied for a bounded linear operator $A$, although the problem typically gets more and more **ill-conditioned** as the dimension increases. In infinite dimensions on the other hand, it is in general impossible. In particular, for compact operators $A$ the singular values have to accumulate at $0$, which implies that $A^{-1}$ is unbounded. Thus, fundamentally the inverse problem is ill-posed if the forward problem is well-posed.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Compact operators)</span></p>
+
+A **compact operator** $A \in \mathcal{L}(X, Y)$ between Banach spaces is one that maps bounded sets to *relatively compact* sets — equivalently, every bounded sequence $(x_n) \subset X$ admits a subsequence such that $(Ax_n)$ converges in $Y$. In Hilbert spaces, three equivalent characterisations are useful:
+
+1. **Approximation by finite-rank operators:** $A$ is the norm limit of operators with finite dimensional range, i.e. $A$ is "almost finite dimensional."
+2. **Singular values:** $A$ admits an SVD $A = \sum_n \sigma_n \langle \cdot, v_n \rangle u_n$ with $\sigma_n \to 0$.
+3. **Smoothing:** integral operators $(Af)(x) = \int k(x, y)\, f(y)\, dy$ with square-integrable kernel $k$ are compact — they "blur" fine-scale features of $f$.
+
+**Why this matters for inverse problems.** In infinite dimensions, the identity operator is *not* compact (the unit ball is not relatively compact, by Riesz's lemma). Hence, if $A$ is compact and injective, $A^{-1}$ cannot be bounded: otherwise $A^{-1}A = I$ would be compact, a contradiction. Concretely, $\sigma_n \to 0$ implies $\sigma_n^{-1} \to \infty$, so $A^{-1}$ amplifies high-frequency components without bound — which is precisely the failure of Hadamard's stability condition. This is why compact forward operators are the canonical source of ill-posed inverse problems: the forward map smooths, and inversion must un-smooth.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why singular values of compact operators accumulate at $0$)</span></p>
+
+Let $A \in \mathcal{L}(X, Y)$ be compact between Hilbert spaces, with SVD $A = \sum_n \sigma_n \langle \cdot, v_n\rangle u_n$, where $(v_n) \subset X$ and $(u_n) \subset Y$ are orthonormal and $\sigma_1 \geq \sigma_2 \geq \cdots \geq 0$. We claim $\sigma_n \to 0$.
+
+**Intuition.** Compactness forces "almost finite dimensionality": $A$ must be well-approximated by its finite rank truncations $A_N = \sum_{n \leq N} \sigma_n \langle \cdot, v_n\rangle u_n$. Since $\lVert A - A_N \rVert = \sigma_{N+1}$, approximability forces $\sigma_{N+1} \to 0$.
+
+**Spectral-theorem view.** $A^*A$ is compact and self-adjoint. The spectral theorem for such operators says the spectrum consists of eigenvalues with $0$ as the only possible accumulation point. The $\sigma_n^2$ are those eigenvalues, so $\sigma_n^2 \to 0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof (by contradiction)</summary>
+
+If $A$ has finite rank, only finitely many $\sigma_n$ are nonzero and we are done. Otherwise $(\sigma_n)$ is non-increasing in $[0, \infty)$ and converges to some $\sigma_* \geq 0$. Suppose $\sigma_* > 0$.
+
+The sequence $(v_n)$ is bounded ($\lVert v_n \rVert = 1$). By compactness of $A$, $(Av_n)$ must have a convergent — hence Cauchy — subsequence. But for $n \neq m$,
+
+$$\lVert Av_n - Av_m \rVert^2 = \lVert \sigma_n u_n - \sigma_m u_m \rVert^2 = \sigma_n^2 + \sigma_m^2 \geq 2\sigma_*^2 > 0,$$
+
+using orthonormality of $(u_n)$. So no subsequence of $(Av_n)$ is Cauchy — contradiction. Hence $\sigma_* = 0$. $\blacksquare$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Ill-posed vs. ill-conditioned)</span></p>
+
+**Ill-posed** is qualitative: one of Hadamard's three conditions fails outright — no solution exists, solutions are non-unique, or $A^{-1}$ is unbounded (discontinuous dependence on the data).
+
+**Ill-conditioned** is quantitative: the problem is technically well-posed (all three conditions hold), but the condition number $\kappa(A) = \lVert A \rVert\, \lVert A^{-1} \rVert$ is large, so small perturbations of the data produce large errors in the solution.
+
+The two live on a spectrum: as $\kappa(A) \to \infty$, an ill-conditioned problem degenerates into an ill-posed one. This is exactly what the proposition above describes: discretising the inverse of a compact operator yields a sequence of well-posed but increasingly ill-conditioned finite dimensional problems, which inherit the ill-posedness of the underlying infinite dimensional problem in the limit.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Focus of this course)</span></p>
 
 In this course, we will study how ill-posed problems can be solved in a numerically stable manner. Our particular focus will lie on the Bayesian approach and Bayesian techniques, but before we get there, we will first study classical approaches.
+
+</div>
 
 ### 1.1 A Motivating Example
 
@@ -126,7 +191,7 @@ for some $\delta > 0$ in the Euclidean norm on $\mathbb{R}^n$, and denote by $x^
 
 $$x^\delta - x = \sum_{i=1}^{n} \frac{u_i^\top (y^\delta - y)}{\lambda_i} \, u_i.$$
 
-Since the eigenvectors of $A$ can be chosen to be orthonormal, we can apply the Bessel inequality to obtain the bound
+Since the eigenvectors of $A$ can be chosen to be orthonormal, we can apply the Bessel inequality (TODO: search) to obtain the bound
 
 $$\lVert x^\delta - x \rVert^2 = \sum_{i=1}^{n} \lambda_i^{-2} |u_i^\top (y^\delta - y)|^2 \le \lambda_n^{-2} \lVert y^\delta - y \rVert^2 \le \lambda_n^{-2} \delta^2.$$
 
@@ -136,7 +201,7 @@ $$\lVert x^\delta - x \rVert \le \kappa \lambda_1^{-1} \delta = \mathcal{O}(\kap
 
 The bound is sharp, which can be seen easily by choosing $y^\delta - y = \delta u_n$. Thus, any growth in the condition number of $A$ directly leads to an amplification of noise in the data in the solution.
 
-Thus, for large condition numbers we say that the problem (2.1.1) is ill-posed -- recall for example that the condition number of the stiffness matrix $A$ in finite element discretisations of elliptic PDEs typically grows like $\mathcal{O}(h^{-2})$, where $h$ is the mesh width. Note however that for finite dimensional problems Hadamard's third condition is not strictly speaking violated and so (2.1.1) is not ill-posed in the sense of Hadamard, it is only **ill-conditioned**, but it is **asymptotically ill-posed** for $\kappa \to \infty$ (e.g. as $h \to 0$ in the FE problem).
+Thus, for large condition numbers we say that the problem (2.1.1) is ill-posed -- recall for example that the condition number of the stiffness matrix $A$ in finite element discretisations of elliptic PDEs typically grows like $\mathcal{O}(h^{-2})$, where $h$ is the mesh width. Note however that for finite dimensional problems Hadamard's third condition is not strictly speaking violated and so (2.1.1) is not ill-posed in the sense of Hadamard, it is only **ill-conditioned**, but it is **asymptotically ill-posed** for $\kappa \to \infty$ (e.g. as $h \to 0$ in the FE problem). (TODO: ill-conditioned vs. ill-posed)
 
 On the positive side, the above expansion shows clearly that errors in the low frequency components $i \ll n$, i.e., the components in the direction of eigenvectors corresponding to the larger eigenvalues, are not amplified as much. This is a typical situation in inverse problems (recall the introductory example in Section 1.1).
 
@@ -148,9 +213,9 @@ where $\mathcal{R}$ is the range and $\mathcal{N}$ is the kernel. Let $\lambda_m
 
 $$x = \sum_{i=1}^{m} \lambda_i^{-1} u_i u_i^\top y$$
 
-and the problem is solvable (Hadamard's first condition) iff $u_i^\top y = 0$ for $i > m$.
+and the problem is solvable (Hadamard's first condition) iff $u_i^\top y = 0$ for $i > m$. (TODO: truncation / similarly high-pass filter ; why? )
 
-In the general noisy case, this will usually not be satisfied, but we can for example project the noisy data $y^\delta$ into the range of $A$ via a projection $P : \mathbb{R}^n \to \mathcal{R}(A)$. Now the problem is solvable and the solution $x_P^\delta$ with data $P y^\delta$ satisfies
+In the general noisy case, this will usually not be satisfied, but we can for example project the noisy data $y^\delta$ into the range of $A$ via a projection $P : \mathbb{R}^n \to \mathcal{R}(A)$. (TODO: is it rigorous) Now the problem is solvable and the solution $x_P^\delta$ with data $P y^\delta$ satisfies
 
 $$x_P^\delta - x = \sum_{i=1}^{m} \lambda_i^{-1} u_i u_i^\top (P y^\delta - y).$$
 
@@ -172,7 +237,7 @@ We saw above that small eigenvalues of $A$ are causing instabilities. A natural 
 
 $$A_\alpha := A + \alpha I, \qquad \alpha > 0.$$
 
-The eigenvalues of $A_\alpha$ are $\lambda_i + \alpha$, $i = 1, \ldots, n$ and the eigenvectors remain unchanged.
+The eigenvalues of $A_\alpha$ are $\lambda_i + \alpha$, $i = 1, \ldots, n$ and the eigenvectors remain unchanged. (TODO: intuition: regularization as a tax)
 
 To estimate the **regularisation error** consider again the regular (SPD) case, i.e. $\lambda_n > 0$ and let $x = A^{-1}y$ and $x_\alpha = A_\alpha^{-1} y$. Then
 
@@ -190,13 +255,19 @@ and thus the perturbation error can be estimated by
 
 $$E_\delta(\alpha, \delta) := \lVert x_\alpha^\delta - x_\alpha \rVert \le \frac{\delta}{\lambda_n + \alpha}.$$
 
+(TODO: I guess after rearrangement we can see the ration of the observarion error and the estimate error, which is instable in some cases, basically making the loss function useless, because it does not give much signal (low loss, but extremely bad / far estimate of the true value))
+
 Finally, using the triangle inequality the total error between the exact solution and the solution of the regularised problem with noisy data can be bounded by
 
 $$\lVert x - x_\alpha^\delta \rVert \le E_\alpha(\alpha) + E_\delta(\alpha, \delta) \le \left( \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert + \frac{\delta}{\lambda_n + \alpha} \right).$$
 
+(TODO: \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert from regularization and \frac{\delta}{\lambda_n + \alpha} from noise)
+
 In practice, the exact data is not known, but we can bound $\lVert y \rVert \le \lVert y^\delta \rVert + \delta$ using (2.1.3) and thus obtain
 
 $$\lVert x - x_\alpha^\delta \rVert \le \left( \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} (1 + \delta_{\text{rel}}) + \frac{\delta_{\text{rel}}}{\lambda_n + \alpha} \right) \lVert y^\delta \rVert,$$
+
+(TODO: derive connection with loss function and lagrangian)
 
 where $\delta_{\text{rel}} = \delta / \lVert y^\delta \rVert$ is the relative noise level (or the inverse signal-to-noise ratio).
 
@@ -3602,11 +3673,11 @@ There are a number of more efficient and more cutting-edge proposal distribution
 
 ### 5.7 Variational Methods
 
-Contrary to MCMC methods, variational inference is based on optimization instead of sampling. The general idea can be described as follows: Let $\mathcal{H}$ be a **variational family** of probability measures on $\mathbb{R}^n$. To approximate the posterior $\mu_{X|y}$, we determine as a surrogate the best approximation within the class $\mathcal{H}$ w.r.t. the KL-divergence
+Contrary to MCMC methods, variational inference is based on optimization instead of sampling. The general idea can be described as follows: Let $\mathcal{H}$ be a **variational family** of probability measures on $\mathbb{R}^n$. To approximate the posterior $\mu_{X\mid y}$, we determine as a surrogate the best approximation within the class $\mathcal{H}$ w.r.t. the KL-divergence
 
 $$\rho^* \in \operatorname{argmin}_{\rho \in \mathcal{H}} D_{\mathrm{KL}}(\rho \| \mu_{X|y}). \tag{5.7.1}$$
 
-Depending on the choice of $\mathcal{H}$, in general such $\rho^*$ need not exist or be unique. However, if it does exist, it can be used in place of $\mu_{X\mid y}$ to approximate the quantities we are interested in, such as the conditional mean $\mathbb{E}\_{\mu_{X\mid y}}[X] \approx \mathbb{E}\_{\rho^*}[X]$. For this reason the family $\mathcal{H}$ has to be chosen such that expectations $\mathbb{E}\_\rho[f]$ for $\rho \in \mathcal{H}$ are easy and cheap to compute (this is loosely referred to as being "tractable").
+Depending on the choice of $\mathcal{H}$, in general such $\rho^\ast$ need not exist or be unique. However, if it does exist, it can be used in place of $\mu_{X\mid y}$ to approximate the quantities we are interested in, such as the conditional mean $\mathbb{E}\_{\mu_{X\mid y}}[X] \approx \mathbb{E}\_{\rho^\ast}[X]$. For this reason the family $\mathcal{H}$ has to be chosen such that expectations $\mathbb{E}\_\rho[f]$ for $\rho \in \mathcal{H}$ are easy and cheap to compute (this is loosely referred to as being "tractable").
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.7.1</span><span class="math-callout__name">(Gaussian Variational Family)</span></p>
@@ -3639,7 +3710,7 @@ with the equality being an equality of sets in case there are multiple minimizer
 
 $$\mathrm{ELBO}(\rho) = \mathbb{E}_\rho\left[\log\left(\frac{\pi_{X,Y}(\cdot, y)}{f_\rho}\right)\right] \le \log\left(\mathbb{E}_\rho\left[\frac{\pi_{X,Y}(\cdot, y)}{f_\rho}\right]\right) = \log(Z(y)).$$
 
-Therefore $\mathrm{ELBO}(\rho)$ is a lower bound of the logarithm of the model evidence; hence the acronym ELBO (**evidence lower bound**). This could also be deduced from $0 \le D_{\mathrm{KL}}(\rho \| \mu_{X|y}) = \log(Z(y)) - \mathrm{ELBO}(\rho)$.
+Therefore $\mathrm{ELBO}(\rho)$ is a lower bound of the logarithm of the model evidence; hence the acronym ELBO (**evidence lower bound**). This could also be deduced from $0 \le D_{\mathrm{KL}}(\rho \| \mu_{X\mid y}) = \log(Z(y)) - \mathrm{ELBO}(\rho)$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.7.2</span></p>
@@ -3734,8 +3805,9 @@ with iid samples $S_j \sim \eta$. This optimization problem is in general noncon
 
 **Input:** $f_\eta$, $\pi_{X,Y}$, $n$
 
-$\tilde{T} \leftarrow \operatorname{argmin}_{T \in \mathcal{T}} \mathbb{E}_{x \sim \eta}[\log(f_\eta) - \log(\pi_{X,Y}(T(x), y)) - \log(\det \mathrm{d}T(x))]$
-$S_j \sim \eta$ iid for $j = 1, \ldots, n$
+$$\tilde{T} \leftarrow \operatorname{argmin}_{T \in \mathcal{T}} \mathbb{E}_{x \sim \eta}[\log(f_\eta) - \log(\pi_{X,Y}(T(x), y)) - \log(\det \mathrm{d}T(x))]$
+$S_j \sim \eta$ iid for $j = 1, \ldots, n$$
+
 **return** $\frac{1}{n} \sum_{j=1}^{n} \tilde{T}(S_j)$
 
 </div>
@@ -3936,13 +4008,13 @@ In general, particle filters of this form can be viewed as sequential importance
 
 A map $\lVert \cdot \rVert : X \to [0, \infty)$ is a **norm** on a vector space $X$ (over $\mathbb{K} = \mathbb{R}$), if
 
-1. $\lVert \lambda x \rVert = |\lambda| \lVert x \rVert$ for all $\lambda \in \mathbb{K}$, $x \in X$,
+1. $\lVert \lambda x \rVert = \|\lambda\| \lVert x \rVert$ for all $\lambda \in \mathbb{K}$, $x \in X$,
 2. $\lVert x + y \rVert \le \lVert x \rVert + \lVert y \rVert$ for all $x, y \in X$,
 3. $\lVert x \rVert = 0$ iff $x = 0$.
 
 The pair $(X, \lVert \cdot \rVert)$ is called a **normed space**. Two norms $\lVert \cdot \rVert_\alpha$ and $\lVert \cdot \rVert_\beta$ are **equivalent** if there are constants $c_1, c_2 > 0$ such that $c_1 \lVert x \rVert_\beta \le \lVert x \rVert_\alpha \le c_2 \lVert x \rVert_\beta$ for all $x \in X$. If $\dim(X) < \infty$ all norms on $X$ are equivalent.
 
-A normed space $(X, |\cdot|_X)$ with $X \subset Y$ is said to be **continuously embedded** in $(Y, \lVert \cdot \rVert_Y)$, denoted by $X \hookrightarrow Y$, if there is a constant $C > 0$ such that $\lVert x \rVert_Y \le C \lVert x \rVert_X$ for all $x \in X$.
+A normed space $(X, \|\cdot\|_X)$ with $X \subset Y$ is said to be **continuously embedded** in $(Y, \lVert \cdot \rVert_Y)$, denoted by $X \hookrightarrow Y$, if there is a constant $C > 0$ such that $\lVert x \rVert_Y \le C \lVert x \rVert_X$ for all $x \in X$.
 
 A sequence $(x_n) \subset X$ **converges strongly** in $X$ to $x \in X$, denoted $x_n \to x$ as $n \to \infty$, if $\lim_{n \to \infty} \lVert x_n - x \rVert_X = 0$.
 

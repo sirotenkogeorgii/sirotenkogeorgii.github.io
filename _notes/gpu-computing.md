@@ -1582,7 +1582,7 @@ void MatrixMulOnHostBlocked(float* M, float* N, float* P, int Width, int blockSi
 
 #### Naive CUDA Implementation
 
-Our first GPU attempt assigns one thread to compute one element of the output matrix $P$.
+Our first GPU attempt assigns one thread to compute one element of the output matrix $P$. The key insight: the two outer loops of the CPU version (`for i`, `for j`) are replaced by the 2D thread array -- each thread's `blockIdx` and `threadIdx` determine which output element it computes. Only the inner `k`-loop remains.
 
 ```c++
 __global__ void MatrixMulKernel(float* Md, float* Nd, float* Pd, int Width) {
@@ -1601,36 +1601,63 @@ __global__ void MatrixMulKernel(float* Md, float* Nd, float* Pd, int Width) {
 }
 ```
 
+**Issue 1: Matrix size is limited by threads/block.** If using a single block (`dimGrid(1,1)`), the block size equals the matrix width, limiting us to small matrices. The fix is to use multiple blocks organized in a 2D grid: each block has `(TILE_WIDTH)²` threads, computes a `(TILE_WIDTH)²` sub-matrix of the output, resulting in `(WIDTH/TILE_WIDTH)²` blocks.
+
 #### The Memory Bandwidth Bottleneck
 
 While this kernel runs in parallel, it suffers from **abysmal computational intensity**.
 
-  * Every multiply-add (2 FLOPs) requires two float reads (8 Bytes).
-  * Intensity = 0.25 FLOPs/Byte.
-  * Required Bandwidth for 13 TFLOP/s (RTX 2080 Ti) $\approx$ **52 TB/s**.
-  * Actual Hardware Bandwidth $\approx$ **616 GB/s**.
+**Issue 2: Compute/memory ratio.** Per loop iteration: 2 FLOPs (one multiply, one add) and 4 memory accesses (load `Md`, load `Nd`, load accumulator, store accumulator). Without caching, total memory accesses $m = m_{all} = 4n^3$:
 
-The hardware provides nearly 100x less bandwidth than this naive algorithm requires. The GPU spends almost all its time waiting for data from global memory.
+$$r = \frac{f}{m} = \frac{2n^3}{4n^3} = 0.5 \text{ (very low)}$$
 
-To solve the bandwidth bottleneck, we must program the **Shared Memory**. This is a user-managed L1 cache (scratchpad) that is orders of magnitude faster than global memory.
+In FLOPS/Byte this is even worse: 2 FLOPs per iteration vs. 2 float loads × 4 Bytes + accumulator reads = 16 Bytes → **1/8 FLOPS/Byte** (horrible).
+
+**Upper bound analysis on RTX 2080 Ti:**
+* Peak compute: $4352 \text{ cores} \times 1.54 \text{ GHz} \times 2 = 13{,}404$ GFLOP/s (single precision)
+* Each thread does 2 × 32-bit accesses per multiply-add → 4 Bytes per FLOP
+* 13 TFLOPs would require **52 TB/s** of memory bandwidth
+* Actual bandwidth: $352 \text{ bit} \times 1750 \text{ MHz} = 616$ GB/s (GDDR6)
+* Memory bandwidth limits performance to **~150 GFLOP/s** -- nearly 100x below peak
+
+**Performance scaling (RTX 2080, 1k×1k matrix):** Varying threads per block, the naive kernel reaches up to ~900 GFLOP/s at ~1k threads/block. In general, more threads are better, but not always -- e.g. register pressure can reduce occupancy. Note: FLOP/s ≠ FLOPs (rate vs. total count).
+
+To close this gap, we must increase the flop/memory ratio. The solution: program the **Shared Memory** -- a user-managed on-chip scratchpad that is orders of magnitude faster than global memory. This is similar to CPU blocking, but on the GPU we have to define data reuse manually.
 
 <figure>
   <img src="{{ '/assets/images/notes/gpu-computing/shared_memory_tiling.png' | relative_url }}" alt="Tiling with Shared Memory" loading="lazy">
   <figcaption>Collaborative Loading into Shared Memory</figcaption>
 </figure>
 
-#### The Algorithm
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(MatMul using Shared Memory)</span></p>
 
 We adapt the tiling strategy for the GPU architecture:
 
-1.  **Collaborative Load:** A thread block collectively loads a tile of $A$ and a tile of $B$ from Global Memory into Shared Memory.
+1.  **Collaborative Load:** A thread block collectively loads a tile of $A$ and a tile of $B$ from **Global Memory into Shared Memory**.
 2.  **Synchronize:** `__syncthreads()` ensures the tile is fully loaded.
 3.  **Compute:** Threads perform dot products using the fast data in Shared Memory.
 4.  **Repeat:** Move to the next tile.
 
-This increases computational intensity by a factor of `TILE_WIDTH`. For a $16 \times 16$ tile, we reduce global memory traffic by 16x.
+**Concrete analysis** with `TILE_WIDTH = 16` and a 1k × 1k matrix:
+* $16^2 = 256$ threads per block, $1000/16 \approx 64 \times 64$ blocks in the grid.
+* Per tile iteration, each block does: 2 loads per thread × 256 threads = **512 global memory loads**. Each thread performs 16 multiply-adds = **8k FLOPs** per block.
+* New flop/memory ratio: $8000 : 512 = 16 : 1$.
+* In FLOPS/Byte: 16 FLOPs per 4 Bytes = **4 FLOPS/Byte** (vs. 1/8 before -- a 32× improvement).
+* Plus improved coalescing: threads in a warp load consecutive elements from global memory.
+
+</div>
 
 #### Shared Memory Kernel
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Tile size must equal block size)</span></p>
+
+In this implementation, `TILE_WIDTH` defines both the shared memory tile dimensions **and** the block dimensions (the kernel is launched with `blockDim = (TILE_WIDTH, TILE_WIDTH)`). This is not a coincidence -- it is a requirement of the cooperative loading pattern.
+
+Each thread loads exactly **one element** of `Mds` and one element of `Nds` (using its `threadIdx` as the index into shared memory). If the block has `TILE_WIDTH × TILE_WIDTH` threads, that is exactly enough to fill a `TILE_WIDTH × TILE_WIDTH` shared memory tile -- one element per thread. If the tile were larger than the block, some elements would never get loaded. If smaller, some threads would have nothing to load.
+
+</div>
 
 ```c++
 #define TILE_WIDTH 16
@@ -1649,27 +1676,31 @@ __global__ void MM_SM(float* Md, float* Nd, float* Pd, int Width) {
 
     float Pvalue = 0;
 
-    // Loop over the Md and Nd tiles required to compute the Pd element
-    for (int m = 0; m < Width / TILE_WIDTH; ++m) {
+    // Bounds check: handle cases where Width is not divisible by TILE_WIDTH
+    if (!(row > Width || col > Width)) {
 
-        // --- Phase 1: Collaborative Loading ---
-        // Each thread loads one element of Mds and Nds
-        Mds[ty][tx] = Md[row * Width + (m * TILE_WIDTH + tx)];
-        Nds[ty][tx] = Nd[(m * TILE_WIDTH + ty) * Width + col];
+        // Loop over the Md and Nd tiles required to compute the Pd element
+        for (int m = 0; m < Width / TILE_WIDTH; ++m) {
 
-        // Ensure all threads have loaded data before computing
-        __syncthreads();
+            // --- Phase 1: Collaborative Loading ---
+            // Each thread loads one element of Mds and Nds
+            Mds[ty][tx] = Md[row * Width + (m * TILE_WIDTH + tx)];
+            Nds[ty][tx] = Nd[(m * TILE_WIDTH + ty) * Width + col];
 
-        // --- Phase 2: Compute ---
-        for (int k = 0; k < TILE_WIDTH; ++k) {
-            Pvalue += Mds[ty][k] * Nds[k][tx];
+            // Ensure all threads have loaded data before computing
+            __syncthreads();
+
+            // --- Phase 2: Compute ---
+            for (int k = 0; k < TILE_WIDTH; ++k) {
+                Pvalue += Mds[ty][k] * Nds[k][tx];
+            }
+
+            // Ensure computation is done before overwriting shared mem in next iter
+            __syncthreads();
         }
 
-        // Ensure computation is done before overwriting shared mem in next iter
-        __syncthreads();
+        Pd[row * Width + col] = Pvalue;
     }
-
-    Pd[row * Width + col] = Pvalue;
 }
 ```
 
@@ -1680,22 +1711,34 @@ __global__ void MM_SM(float* Md, float* Nd, float* Pd, int Width) {
 
 Shared memory is divided into **32 banks** (like parallel filing cabinets). Ideally, threads in a warp (32 threads) access different banks simultaneously.
 
-  * **Conflict-Free:** Thread $i$ accesses Bank $i$.
+  * **Conflict-Free:** Thread `i` accesses Bank `i`.
   * **Bank Conflict:** Multiple threads in a warp access the *same* bank. The hardware serializes these requests, destroying performance.
 
 </div>
 
 A common cause is strided access. If threads access `array[threadIdx.x * 2]`, they only hit even banks, potentially causing 2-way conflicts. The implementation above generally avoids this by loading $16 \times 16$ tiles where `tx` maps directly to columns.
 
-#### Advanced Optimizations
+#### Performance Results (RTX 2080, 1k × 1k matrix)
 
-To close the gap to theoretical peak performance, further techniques are required:
+The shared memory version reaches **~1200 GFLOP/s** vs. ~900 GFLOP/s for the plain version. Both code optimizations and kernel launch configuration matter. However, there is still a gap of about **10× to peak performance**. (Note: GPU L1 cache was turned off for this comparison to isolate the shared memory effect.)
 
-  * **Data Dependencies:** We use `__syncthreads()` to handle Read-After-Write (RAW) and Write-After-Read (WAR) hazards.
-  * **Dynamic Allocation:** Using `extern __shared__` allows sizing shared memory at runtime rather than compile time.
-    * `extern` say: "This shared-memory array is declared here, but its size is not known at compile time; it will be provided at kernel launch."
-  * **Thread Coarsening:** Having one thread compute multiple output elements (e.g., a $4 \times 4$ patch) increases register reuse.
-  * **Double Buffering:** Loading the *next* tile into registers while computing the *current* tile hides memory latency completely.
+#### Three Types of Dependencies
+
+The two `__syncthreads()` barriers in the kernel each solve a different dependency:
+
+1. **Barrier 1** (after loading, before computing): Solves the **RAW (Read-After-Write) dependency** -- a true data dependency. Thread A writes to `Mds[ty][tx]`, then thread B reads `Mds[ty][k]`. Without the barrier, B might read before A has written. This is a true dependency, only solvable by synchronization.
+2. **Barrier 2** (after computing, before next tile load): Solves the **WAR (Write-After-Read) dependency** -- an anti dependency. Thread A is still reading `Mds[ty][k]` from the current tile, while thread B (in the next iteration) wants to overwrite `Mds[ty][tx]` with new data. Without the barrier, B might overwrite data that A hasn't finished reading. This is a name dependency, solvable by synchronization or renaming.
+3. **WAW (Write-After-Write):** An output dependency. Not applicable here because each thread writes to a unique `Mds[ty][tx]` location.
+
+#### Further Optimizations
+
+To close the remaining ~10× gap to peak performance:
+
+  * **Multiple output values per thread (Thread Coarsening):** Having one thread compute multiple output elements (e.g., a $4 \times 4$ patch) reduces pressure on shared memory, as tile data can be reused in multiple calculations. This is an ILP (Instruction-Level Parallelism) optimization.
+  * **Bank conflict mitigation:** Use `nvprof` to detect bank conflicts in shared memory accesses.
+  * **Vectorized shared memory loads:** Using compound data types (`float2`, `float4`) for shared memory loads and stores increases effective shared memory bandwidth.
+  * **Double Buffering:** Loading the *next* tile into shared memory while computing the *current* tile overlaps memory latency with computation. Shared memory capacity requirements double.
+  * **Dynamic Allocation:** Using `extern __shared__` allows sizing shared memory at runtime rather than compile time. `extern` says: "This shared-memory array is declared here, but its size is not known at compile time; it will be provided at kernel launch."
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Matrix Multiplication Summary)</span></p>
@@ -2352,7 +2395,7 @@ If you are under the slanted part, you are **memory-bound**. If under the flat p
   </figure>
 </div>
 
-<div class="math-callout math-callout--pro" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Algorithms could be divided into three classes)</span></p>
 
 **If compute-bound** (hitting the flat roof).
@@ -3330,8 +3373,6 @@ This creates a pipeline with three distinct phases:
 * **Fill:** In the beginning, the first few stages of the pipeline are being filled. For example, **Stream 1** is copying data while the GPU is otherwise idle. Then, **Stream 2** starts copying while **Stream 1** starts computing.
 * **Steady State:** The pipeline is full. This is the ideal state where data is being copied in for chunk $N+1$, the kernel is executing on chunk $N$, and results are being copied out for chunk $N-1$, all at the same time.
 * **Drain:** As the loop finishes, the final chunks work their way through the now-emptying pipeline.
-
-The effectiveness of this technique depends on computational intensity. If the kernel is too fast compared to the data transfer time, the pipeline will stall, waiting for data. Conversely, if the data transfers are much faster than the kernel, the benefit of overlap is minimal. We will analyze this trade-off mathematically in the next chapter.
 
 </div>
 
@@ -4445,7 +4486,7 @@ This is **software-controlled coherence**: instead of complex hardware protocols
 #### GPU Memory Architecture (Detailed)
 
 <figure>
-  <img src="{{ ‘/assets/images/notes/gpu-computing/lecture_10_gpu_memory_architecture.png’ | relative_url }}" alt="CPU + GPU system" loading="lazy">
+  <img src="{{ '/assets/images/notes/gpu-computing/lecture_10_gpu_memory_architecture.png' | relative_url }}" alt="CPU + GPU system" loading="lazy">
   <figcaption>GPU memory architecture</figcaption>
 </figure>
 
@@ -4722,7 +4763,7 @@ The core uses **Fine-grained Multithreading** to hide latency. While one warp is
 ## Flexible Synchronization with Cooperative Groups
 
 <div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(__syncthreads() is good, but rigid)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(`__syncthreads()` is good, but rigid)</span></p>
 
 Historically, CUDA provided the `__syncthreads()` function to synchronize threads within a block. While effective, it is "rigid"—it's all-or-nothing for the entire block. **Cooperative Groups (CG)** is a modern API that allows for much more flexible, fine-grained synchronization.
 

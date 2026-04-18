@@ -9,6 +9,8 @@ date: 2024-11-01
 #   - theory
 ---
 
+- [Randomized Numerical Linear Algebra](/subpages/books/randomized-numerical-linear-algebra/)
+
 # Linear Algebra
 
 <figure>
@@ -276,7 +278,7 @@ Equality holds iff $v$, $w$ are linearly dependent and point in the same directi
 
 Two nonzero vectors $v, w \in V$ are **orthogonal** if
 
-$$\langle v, w \rangle = 0.$$
+$$\langle v, w \rangle = 0$$
 
 </div>
 
@@ -311,7 +313,7 @@ Every finite-dimensional inner product space admits an orthonormal basis.
 
 If $\lbrace e_i \rbrace$ is orthonormal, then
 
-$$\left\langle \sum a_i e_i, \sum b_i e_i \right\rangle = \sum a_i b_i.$$
+$$\left\langle \sum a_i e_i, \sum b_i e_i \right\rangle = \sum a_i b_i$$
 
 Thus all finite-dimensional inner products look like the dot product in an orthonormal basis.
 
@@ -332,11 +334,11 @@ A **Hilbert space** is an inner product space whose induced metric is complete.
 
 Let $\lbrace e_i\rbrace$ be orthonormal and define
 
-$$v_n = \sum_{i=1}^n c_i e_i.$$
+$$v_n = \sum_{i=1}^n c_i e_i$$
 
 Then $(v_n)$ converges iff
 
-$$\sum_{i=1}^\infty \lvert c_i\rvert^2 < \infty.$$
+$$\sum_{i=1}^\infty \lvert c_i\rvert^2 < \infty$$
 
 
 </div>
@@ -348,7 +350,6 @@ An **orthonormal basis** of a Hilbert space is a (possibly infinite) sequence
 $\lbrace e_i \rbrace$ such that every $v \in V$ has a unique expansion
 
 $$v = \sum_i c_i e_i, \quad \sum_i \lvert c_i\rvert^2 < \infty.$$
-
 
 </div>
 
@@ -1034,7 +1035,9 @@ Rewriting: $e_1 \mapsto 2e_1$ and $e_1 + e_2 \mapsto 3(e_1 + e_2)$. Changing to 
 
 $$T = \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} \quad \text{in basis } e_1, e_1 + e_2.$$
 
-Under a suitable change of basis, the map becomes diagonal.
+Under a suitable change of basis, the map becomes diagonal. The key idea is
+
+**The same linear map can look like a non-diagonal matrix in one basis, but become diagonal in a better basis.**
 
 </div>
 
@@ -1094,13 +1097,13 @@ However, over algebraically closed fields eigenvalues always exist:
 
 Suppose $k$ is an **algebraically closed** field. Let $V$ be a finite-dimensional $k$-vector space. Then if $T: V \to V$ is a linear map, there exists an eigenvalue $\lambda \in k$.
 
+</div>
+
 **Proof.** Fix any nonzero $v \in V$. The $n + 1$ vectors $v, T(v), \dots, T^n(v)$ (where $n = \dim V$) cannot be linearly independent, so there exists a nonzero monic polynomial $P$ with $P(T)(v) = 0$. Factor $P(z) = (z - r_1)\cdots(z - r_m)$ over $k$. Then
 
 $$0 = (T - r_1 \mathrm{id}) \circ (T - r_2 \mathrm{id}) \circ \cdots \circ (T - r_m \mathrm{id})(v)$$
 
 so at least one $T - r_i \mathrm{id}$ is not injective, giving an eigenvector. $\square$
-
-</div>
 
 ### The Jordan Form
 
@@ -1216,9 +1219,9 @@ $$V = V_1 \oplus V_2 \oplus \cdots \oplus V_m$$
 
 where each $V_i$ is $T$-invariant, and $T: V_i \to V_i$ is indecomposable for every $i$.
 
-**Proof.** Same as the proof that every integer is a product of primes. If $V$ is not decomposable, we are done. Otherwise write $V = W_1 \oplus W_2$ and repeat on each factor. $\square$
-
 </div>
+
+**Proof.** Same as the proof that every integer is a product of primes. If $V$ is not decomposable, we are done. Otherwise write $V = W_1 \oplus W_2$ and repeat on each factor. $\square$
 
 With this decomposition, consider $T: V_1 \to V_1$ indecomposable. It has an eigenvalue $\lambda_1$, so let $S = T - \lambda_1 \mathrm{id}$, giving $\ker S \neq \lbrace 0 \rbrace$. Since $V_1 = \ker S^N \oplus \operatorname{im} S^N$ for some $N$, and $T$ is indecomposable, we must have $\operatorname{im} S^N = \lbrace 0 \rbrace$ and $\ker S^N = V_1$. Hence $S$ is nilpotent, and since $T$ is indecomposable there is only one staircase. Thus $V_1$ is a Jordan block.
 

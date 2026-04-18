@@ -2507,7 +2507,7 @@ So divergence is a local measure of **expansion/compression** or **source/sink b
 <div class="math-callout math-callout--question" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Constant field)</span></p>
 
-In 2D, if (F(x,y) = (P(x,y), Q(x,y))), then
+In 2D, if $F(x,y) = (P(x,y), Q(x,y))$, then
 
 $$\operatorname{div} F = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y}$$
 
@@ -2980,26 +2980,1417 @@ Then $x = Az$.
 
 </div>
 
+## On Covariance Matrix of Gaussian I
+
+For a 2D Gaussian with mean $0$, rotation and elongation are described by the **covariance matrix**
+
+### The natural variances are along the ellipse’s principal axes
+
+If you diagonalize (\Sigma),
+[
+\Sigma = Q \Lambda Q^\top,
+\qquad
+\Lambda=
+\begin{pmatrix}
+\lambda_1 & 0\
+0 & \lambda_2
+\end{pmatrix},
+]
+then:
+
+* the columns of (Q) give the two principal directions
+* (\lambda_1,\lambda_2) are the variances in those directions
+
+So the elongated rotated Gaussian has:
+
+* one **large eigenvalue** = large variance along the long axis
+* one **small eigenvalue** = small variance along the short axis
+
+### Is variance the radius of the ellipse?
+
+Not exactly.
+
+The ellipse is usually drawn as a **constant-density** or **constant Mahalanobis distance** contour:
+[
+x^\top \Sigma^{-1} x = c.
+]
+
+Along the principal axes, the semi-axis lengths of this ellipse are
+[
+\sqrt{c,\lambda_1}, \qquad \sqrt{c,\lambda_2}.
+]
+
+So:
+
+* **variance** = (\lambda_i)
+* **standard deviation** = (\sqrt{\lambda_i})
+* **ellipse radius / semi-axis length** at contour level (c) = (\sqrt{c,\lambda_i})
+
+Thus the “radius” is proportional to the **standard deviation**, not the variance.
+
+### Example
+
+Suppose
+[
+\Sigma = Q
+\begin{pmatrix}
+9 & 0\
+0 & 1
+\end{pmatrix}
+Q^\top
+]
+for some rotation matrix (Q).
+
+Then the Gaussian is rotated, centered at (0), and:
+
+* variance along one principal axis = (9)
+* variance along the other = (1)
+* standard deviations are (3) and (1)
+
+So the cloud is 3 times wider in one principal direction than in the other.
+
+If you draw the contour
+[
+x^\top \Sigma^{-1}x = 1,
+]
+the ellipse semi-axes are (3) and (1).
+
+### Important distinction
+
+If the Gaussian is rotated, then the diagonal entries of (\Sigma) are usually **not** the principal variances. They are only variances along the coordinate axes.
+
+The actual elongation is captured by the eigenvalues of (\Sigma).
+
+A good summary is:
+
+* mean = center of the Gaussian
+* eigenvectors of covariance = orientation
+* eigenvalues of covariance = variances along the principal axes
+* square roots of eigenvalues = ellipse radii up to a scaling constant
+
+### Example
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/2D_Gaussian_Ellipse.png' | relative_url }}" alt="a" loading="lazy">
+  <!-- <figcaption>The dynamical system is linear, but the trajectory is not necessarily linear</figcaption> -->
+</figure>
+
+Yes — here is a sketch:
+
+[rotated_gaussian_sketch.png](sandbox:/mnt/data/rotated_gaussian_sketch.png)
+
+How to read it:
+
+* The center is the mean, here (\mu=(0,0)).
+* The ellipse is a contour of equal density, for example
+  [
+  x^\top \Sigma^{-1}x = 1.
+  ]
+* The long and short tilted directions are the eigenvector directions of (\Sigma).
+* Their lengths on this contour are
+  [
+  \sqrt{\lambda_1},\quad \sqrt{\lambda_2},
+  ]
+  where (\lambda_1,\lambda_2) are the eigenvalues of (\Sigma).
+
+So in the picture:
+
+* variance along the long principal axis is (\lambda_1 = 9)
+* variance along the short principal axis is (\lambda_2 = 1)
+* the semi-axis lengths of this particular ellipse are (3) and (1)
+
+So the “radius of the ellipse” corresponds to **standard deviation**, not variance.
+
+### in \Sigma = Q\Lambda Q^\top, the columns of Q are in which basis?
+
+They are usually written in the **original coordinate basis** you are using for (x), for example the standard basis (e_1,e_2).
+
+So in
+[
+\Sigma = Q \Lambda Q^\top,
+]
+the columns of (Q) are the eigenvectors of (\Sigma), expressed in your current coordinates.
+
+More concretely, in 2D:
+
+* suppose you describe points as (x=(x_1,x_2)) in the standard basis
+* then each column (q_1,q_2) of (Q) is a vector in that same (x_1,x_2) coordinate system
+* these vectors give the directions of the principal axes of the Gaussian ellipse
+
+If
+
+$$
+Q=\begin{pmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{pmatrix},
+$$
+
+then:
+
+* first column:
+  [
+  q_1=\begin{pmatrix}\cos\theta\ \sin\theta\end{pmatrix}
+  ]
+  is the first principal direction, written in the standard basis
+* second column:
+  [
+  q_2=\begin{pmatrix}-\cos? \text{ no, } -\sin\theta\ \cos\theta\end{pmatrix}
+  ]
+  sorry, correctly:
+  [
+  q_2=\begin{pmatrix}-\sin\theta\ \cos\theta\end{pmatrix}
+  ]
+  is the second principal direction, also in the standard basis
+
+So the answer is:
+
+* **the columns of (Q) are the new principal-axis basis vectors**
+* but they are **represented in the old/original basis**
+
+This is the standard linear algebra convention.
+
+A useful interpretation:
+
+* $\Lambda$ describes the variances in the principal-axis coordinate system
+* $Q$ tells you how that principal-axis system sits inside the original coordinates
+
+Equivalently, if $z$ are coordinates in the principal basis and $x$ are coordinates in the original basis, then
+
+$$x = Q z.$$
+
+So:
+
+* columns of $Q$ = principal basis vectors
+* written in the original basis
+
+For the Gaussian, if
+
+$$z \sim \mathcal N(0,\Lambda),$$
+
+and
+
+$$x=Qz,$$
+
+then
+
+$$
+x \sim \mathcal N(0,Q\Lambda Q^\top).
+$$
+
+That is exactly why the rotated covariance has that form.
+
+If you want, I can also explain the difference between “basis vectors as geometric vectors” and “coordinates of a vector in a basis,” since that is usually the point that causes confusion here.
+
+### Do roots of the Lambda values correspond to the radius?
+
+Yes — for the usual covariance ellipse, the **square roots of the eigenvalues** are the semi-axis lengths.
+
+If
+
+$$
+\Sigma = Q\Lambda Q^\top,\qquad
+\Lambda=\operatorname{diag}(\lambda_1,\lambda_2),
+$$
+
+then the contour
+
+$$x^\top \Sigma^{-1} x = 1$$
+
+is an ellipse whose principal semi-axes have lengths
+
+$$\sqrt{\lambda_1},\qquad \sqrt{\lambda_2}.$$
+
+So:
+
+* (\lambda_i) = variance along principal direction (q_i)
+* (\sqrt{\lambda_i}) = standard deviation along that direction
+* on the contour (x^\top\Sigma^{-1}x=1), that is exactly the “radius” in that principal direction
+
+More generally, for the contour
+
+$$x^\top \Sigma^{-1}x = c,$$
+
+the semi-axis lengths are
+
+$$\sqrt{c,\lambda_1},\qquad \sqrt{c,\lambda_2}$$
+
+So the root of the eigenvalue is the radius only for the (c=1) ellipse; otherwise it is scaled by (\sqrt c).
+
+A compact way to see it:
+set $x = Qy$. Then
+
+$$
+x^\top \Sigma^{-1}x
+= y^\top \Lambda^{-1} y
+= \frac{y_1^2}{\lambda_1} + \frac{y_2^2}{\lambda_2}.
+$$
+
+For level $1$, this is
+
+$$
+\frac{y_1^2}{\lambda_1}+\frac{y_2^2}{\lambda_2}=1,
+$$
+
+which is the standard ellipse equation with semi-axes $\sqrt{\lambda_1},\sqrt{\lambda_2}$.
+
+So yes: **roots of the $\Lambda$ values correspond to the ellipse radii along the principal axes**.
+
+### What is the connection between the elongation of the ellipse of 2D gaussian and the regularity of the covariance matrix? what about the conditional number of the covariance matrix?
+
+Yes — the elongation of a 2D Gaussian ellipse is **directly tied** to the eigenvalues of the covariance matrix, and the **condition number** is exactly a measure of that elongation.
+
+Let
+
+$$
+\Sigma = Q \Lambda Q^\top,
+\qquad
+\Lambda=\operatorname{diag}(\lambda_1,\lambda_2),
+\qquad
+\lambda_1 \ge \lambda_2 \ge 0.
+$$
+
+Then the Gaussian’s principal axes are given by the columns of (Q), and the covariance ellipse
+
+$$x^\top \Sigma^{-1} x = 1$$
+
+has semi-axis lengths
+
+$$\sqrt{\lambda_1},\qquad \sqrt{\lambda_2}.$$
+
+So the shape is controlled by the eigenvalues.
+
+---
+
+## Elongation
+
+The ellipse is elongated when one eigenvalue is much bigger than the other.
+
+Its aspect ratio is
+[
+\frac{\text{long radius}}{\text{short radius}}
+==============================================
+
+# \frac{\sqrt{\lambda_1}}{\sqrt{\lambda_2}}
+
+\sqrt{\frac{\lambda_1}{\lambda_2}}.
+]
+
+So:
+
+* if (\lambda_1=\lambda_2), the contour is a circle
+* if (\lambda_1 \gg \lambda_2), the contour is a very stretched ellipse
+* if (\lambda_2=0), it collapses to a line
+
+---
+
+## Condition number
+
+For a symmetric positive definite covariance matrix, the 2-norm condition number is
+
+$$\kappa(\Sigma)=\frac{\lambda_{\max}}{\lambda_{\min}} =\frac{\lambda_1}{\lambda_2}$$
+
+Therefore,
+
+$$\text{aspect ratio of ellipse} = \sqrt{\kappa(\Sigma)}$$
+
+This is the cleanest connection.
+
+So:
+
+* **small condition number** $\approx 1$ means nearly round ellipse
+* **large condition number** means highly elongated ellipse
+* **infinite condition number** means singular covariance
+
+---
+
+## What “regularity” means here
+
+There are two common meanings people use.
+
+### 1. Positive definite / nonsingular
+
+A covariance matrix is:
+
+* **positive definite** if $\lambda_1>0$ and $\lambda_2>0$
+* **singular** if one eigenvalue is zero
+
+Geometrically:
+
+* positive definite $\Rightarrow$ genuine 2D ellipse
+* singular $\Rightarrow$ ellipse collapses into a lower-dimensional object
+
+So if the ellipse gets more and more elongated because $\lambda_2\to 0$, the covariance becomes closer and closer to singular.
+
+### 2. Well-conditioned
+
+A covariance matrix is “regular” in the numerical sense if it is not close to singular, meaning its condition number is not too large.
+
+Geometrically:
+
+* well-conditioned covariance = not too elongated
+* ill-conditioned covariance = very thin ellipse
+
+---
+
+## Intuition
+
+Variance in direction $u$ is
+
+$$u^\top \Sigma u$$
+
+So if one direction has huge variance and an orthogonal one has tiny variance, the Gaussian spreads a lot in one direction and barely at all in the other. That is exactly what a long thin ellipse is.
+
+The matrix becomes hard to invert stably when one variance is tiny, because inversion turns
+
+$$\lambda_i \mapsto \frac{1}{\lambda_i}$$
+
+So a very small $\lambda_2$ becomes a very large $1/\lambda_2$, which is why near-singular covariance matrices are numerically unstable.
+
+---
+
+## Example
+
+If
+
+$$
+\Lambda=
+\begin{pmatrix}
+9 & 0\
+0 & 1
+\end{pmatrix},
+$$
+
+then:
+
+* radii are $3$ and $1$
+* aspect ratio is $3$
+* condition number is $9$
+
+Indeed,
+
+$$\sqrt{\kappa(\Sigma)}=\sqrt{9}=3.$$
+
+If instead
+
+$$
+\Lambda=
+\begin{pmatrix}
+100 & 0\\
+0 & 0.01
+\end{pmatrix},
+$$
+
+then:
+
+* radii are $10$ and $0.1$
+* aspect ratio is $100$
+* condition number is $10000$
+
+That is a very elongated, nearly degenerate ellipse.
+
+---
+
+## Bottom line
+
+The elongation of the 2D Gaussian ellipse is controlled by the ratio of covariance eigenvalues:
+
+$$\text{elongation} = \sqrt{\frac{\lambda_{\max}}{\lambda_{\min}}}.$$
+
+And since
+
+$$\kappa(\Sigma)=\frac{\lambda_{\max}}{\lambda_{\min}},$$
+
+the condition number is the **square of the ellipse aspect ratio**.
+
+So a large condition number means the covariance is close to singular and the Gaussian is highly elongated.
+
+I can also show this from the equation $x^\top \Sigma^{-1}x=1$ step by step if you want.
+
+## Diagonalization vs. Spectral Decomposition vs. Eigendecomposition
+
+They are related, but not identical.
+
+For a square matrix $A$:
+
+### Diagonalization
+
+This means writing
+
+$$A = P D P^{-1}$$
+
+where $D$ is diagonal.
+
+What it says:
+
+* (A) has a basis of eigenvectors.
+* The columns of (P) are those eigenvectors.
+* The diagonal entries of (D) are the corresponding eigenvalues.
+
+A matrix is diagonalizable **iff** it has enough linearly independent eigenvectors.
+
+---
+
+### Eigendecomposition
+
+This is usually just the same idea, written in eigenvalue language:
+[
+A = V \Lambda V^{-1}
+]
+where
+
+* (V) contains eigenvectors,
+* (\Lambda) is diagonal with eigenvalues.
+
+So in most linear algebra contexts:
+
+**eigendecomposition = diagonalization using eigenvectors**
+
+It is basically the same concept, just a more descriptive name.
+
+---
+
+### Spectral decomposition
+
+This is a more specific and more structured form, usually used when (A) is a matrix/operator covered by the spectral theorem, especially:
+
+* real symmetric matrices,
+* complex Hermitian matrices,
+* more generally normal matrices.
+
+Then one can write
+[
+A = Q \Lambda Q^*
+]
+with (Q) unitary/orthogonal, so the eigenvectors are orthonormal.
+
+For a real symmetric or complex Hermitian matrix, spectral decomposition is often written as
+[
+A = \sum_{i=1}^n \lambda_i u_i u_i^*
+]
+or, grouping repeated eigenvalues,
+[
+A = \sum_{\lambda} \lambda P_\lambda
+]
+where (P_\lambda) is the orthogonal projector onto the eigenspace for (\lambda).
+
+What is special here:
+
+* eigenvectors can be chosen **orthonormally**,
+* the decomposition uses **orthogonal projections**,
+* it usually relies on the **spectral theorem**.
+
+---
+
+## Main difference in one sentence
+
+* **Diagonalization**: “Can I turn this matrix into a diagonal one by a change of basis?”
+* **Eigendecomposition**: “Write the diagonalization explicitly in terms of eigenvalues and eigenvectors.”
+* **Spectral decomposition**: “A special orthonormal/projector-based eigendecomposition, usually for symmetric/Hermitian/normal matrices.”
+
+---
+
+## Relationship
+
+Every spectral decomposition is an eigendecomposition, and every eigendecomposition is a diagonalization.
+
+But not every diagonalization is called spectral decomposition.
+
+So:
+[
+\text{spectral decomposition} \subset \text{eigendecomposition} \approx \text{diagonalization}
+]
+
+---
+
+## Example 1: diagonalizable but not spectral in the symmetric sense
+
+[
+A=\begin{pmatrix}1&1\0&2\end{pmatrix}
+]
+This matrix has two distinct eigenvalues, so it is diagonalizable:
+[
+A = P D P^{-1}
+]
+But its eigenvectors are not orthogonal, and (A) is not symmetric/Hermitian, so this is not usually called a spectral decomposition in the projector/orthonormal sense.
+
+---
+
+## Example 2: spectral decomposition
+
+[
+A=\begin{pmatrix}2&1\1&2\end{pmatrix}
+]
+This is real symmetric, so it has an orthonormal eigenbasis. Hence
+[
+A = Q \Lambda Q^T
+]
+and also
+[
+A = \lambda_1 u_1 u_1^T + \lambda_2 u_2 u_2^T
+]
+This is a spectral decomposition.
+
+---
+
+## Important caveat
+
+Some books use the terms a little loosely:
+
+* some use **spectral decomposition** to mean any eigendecomposition,
+* others reserve it strictly for the spectral-theorem case.
+
+So the safest interpretation is:
+
+* **diagonalization / eigendecomposition**: general diagonalizable matrix,
+* **spectral decomposition**: usually the orthonormal decomposition from the spectral theorem.
+
+If you want, I can also give you a small table comparing the three notions by assumptions, formula, and when they exist.
+
+---
+
+### Diagonalization == Eigendecomposition?
+
+Yes — **conceptually, diagonalization and eigendecomposition are the same thing**.
+
+A matrix $A$ is diagonalizable **iff** there exists a basis of eigenvectors.
+So if
+
+$$A = P D P^{-1}$$
+
+then the columns of $P$ must be eigenvectors of $A$.
+
+Why? Because from
+
+$$AP = PD$$
+
+if $p_i$ is the $i$-th column of $P$ and $d_i$ is the corresponding diagonal entry of $D$, then
+
+$$A p_i = d_i p_i$$
+
+So each column of $P$ is an eigenvector.
+
+So in that strict mathematical sense:
+
+* **diagonalization** = existence of a basis of eigenvectors,
+* **eigendecomposition** = writing that diagonalization explicitly with eigenvectors.
+
+They are not merely similar; they are essentially the same statement.
+
+### Can you “diagonalize without using eigenvectors”?
+
+There are two senses here.
+
+#### 1. In theory: no
+
+If you truly diagonalize a matrix by similarity, eigenvectors are unavoidable. Even if you do not mention them, they are built into the change-of-basis matrix $P$.
+
+#### 2. In computation or derivation: sometimes yes, implicitly
+
+You might reach a diagonal form without first solving “find all eigenvectors” in the usual classroom way. For example, you could:
+
+* use invariant subspaces,
+* use minimal polynomial information,
+* use spectral theorem arguments,
+* use Schur decomposition first and then conclude the matrix is diagonal.
+
+But if you end up with
+
+$$A=PDP^{-1}$$
+
+then $P$ still consists of eigenvectors, whether you explicitly computed them that way or not.
+
+So you can avoid **talking about** eigenvectors first, but you cannot avoid them **existing inside the result**.
+
+### Important contrast: row reduction is not diagonalization
+
+Sometimes people think:
+“Can I just use row operations to make a matrix diagonal?”
+
+Usually no, because row operations produce a row-equivalent matrix, not a **similar** matrix. Diagonalization is about similarity:
+
+$$B = P^{-1} A P$$
+
+Row reduction does not preserve eigenvalues in the needed way.
+
+### Spectral decomposition is slightly more specific
+
+For symmetric/Hermitian matrices, the change-of-basis matrix can be chosen orthogonal/unitary, so
+
+$$A = Q \Lambda Q^\ast$$
+
+That is still an eigendecomposition, but with the extra property that the eigenvectors are orthonormal.
+
+So your intuition is right:
+
+* **Diagonalization and eigendecomposition are truly identical in substance.**
+* **Spectral decomposition is a special nicer version** when the eigenvectors can be chosen orthonormally.
+
+A very compact summary is:
+
+$$A \text{ is diagonalizable } \iff A \text{ has a basis of eigenvectors.}$$
+
+So there is no diagonalization without eigenvectors in the actual mathematical sense.
+
+---
+
+### Only symmetric matrices can have orthogonal eigenbasis? 
+
+Not in full generality.
+
+The clean answer is:
+
+* **Over $\mathbb R$:** a **real matrix has an orthonormal eigenbasis over $\mathbb R$** **iff** it is **symmetric**.
+* **Over $\mathbb C$:** the right class is larger: a matrix has an **orthonormal eigenbasis** **iff** it is **normal** $(A^\ast A=AA^\ast)$. Hermitian matrices are only one special case.
+
+### Real case
+
+If a real matrix $A$ has an orthonormal eigenbasis, then
+
+$$A = Q D Q^\top$$
+
+with $Q$ orthogonal and $D$ diagonal. Then
+
+$$A^\top = (QDQ^\top)^\top = QD^\top Q^\top = QDQ^\top = A$$
+
+since $D$ is diagonal. So $A$ must be symmetric.
+
+And conversely, every real symmetric matrix has an orthonormal eigenbasis.
+
+So for **real matrices with real eigenvectors**, the answer is:
+
+**yes, exactly symmetric matrices.**
+
+---
+
+### Complex case
+
+For complex matrices, “having an orthonormal eigenbasis” does **not** force the matrix to be Hermitian/symmetric. It only forces it to be **normal**.
+
+Example:
+
+$$A=\begin{pmatrix}1&0 \\ 0&i \end{pmatrix}$$
+
+Its standard basis vectors are orthonormal eigenvectors, but $A$ is **not Hermitian** because $A^\ast \neq A$.
+
+So:
+
+* **Hermitian** $\Rightarrow$ orthonormal eigenbasis
+* **Normal** $\Rightarrow$ orthonormal eigenbasis
+* but **not only Hermitian/symmetric**
+
+---
+
+### Important wording point
+
+There are two slightly different phrases:
+
+* **orthogonal eigenvectors**: just some eigenvectors happen to be orthogonal
+* **orthogonal eigenbasis**: a full basis of eigenvectors that are mutually orthogonal
+
+A non-symmetric matrix might have **some** orthogonal eigenvectors, but having a **full orthogonal/orthonormal eigenbasis** is much stronger.
+
+### Best summary
+
+* For **real matrices**:
+  
+  $$\text{orthonormal eigenbasis} \iff \text{symmetric}$$
+  
+* For **complex matrices**:
+  
+  $$\text{orthonormal eigenbasis} \iff \text{normal}$$
+  
+
+If you want, I can also explain why **distinct eigenvalues of a symmetric matrix automatically give orthogonal eigenvectors**.
+
+## Covariance of Sum and Average
+
+For the sample average
+
+$$\bar X=\frac1n\sum_{i=1}^n X_i,$$
+
+the covariance shrinks by a factor of $n$ when the $X_i$ are i.i.d. with covariance $\Sigma$.
+
+So:
+
+$$\boxed{\operatorname{Cov}(\bar X)=\frac{\Sigma}{n}}.$$
+
+## Why?
+
+Use the rule
+
+$$\operatorname{Cov}(aY)=a^2\operatorname{Cov}(Y)$$
+
+for scalars $a$, and
+
+$$\operatorname{Cov}!\left(\sum_i Y_i\right) = \sum_i \operatorname{Cov}(Y_i) + \sum_{i\neq j}\operatorname{Cov}(Y_i,Y_j)$$
 
 
+Now if $X_1,\dots,X_n$ are independent, then for $i\neq j$,
+
+$$\operatorname{Cov}(X_i,X_j)=0$$
+
+Hence
+[
+\operatorname{Cov}(\bar X)
+==========================
+
+# \operatorname{Cov}!\left(\frac1n\sum_{i=1}^n X_i\right)
+
+# \frac1{n^2}\operatorname{Cov}!\left(\sum_{i=1}^n X_i\right)
+
+\frac1{n^2}\sum_{i=1}^n \operatorname{Cov}(X_i).
+]
+
+Since each $X_i$ has covariance $\Sigma$,
+[
+\operatorname{Cov}(\bar X)
+==========================
+
+# \frac1{n^2}\cdot n\Sigma
+
+\frac{\Sigma}{n}.
+]
+
+## Scalar case
+
+If $X_i$ are one-dimensional with variance $\sigma^2$, then this becomes
+
+$$\operatorname{Var}(\bar X)=\frac{\sigma^2}{n}.$$
+
+## In your earlier derivation
+
+That is why
+[
+\mathbb E!\left[n(\bar X-\mu)(\bar X-\mu)^T\right]
+==================================================
+
+# n,\operatorname{Cov}(\bar X)
+
+# n\cdot \frac{\Sigma}{n}
+
+\Sigma.
+]
+
+If you want, I can also show how this changes when the $X_i$ are **not independent**.
+
+## Qualitative Change in Dynamical Systems
+
+In dynamical systems, a **qualitative change** means the system’s **overall behavior pattern** changes, not just the exact numerical values.
+
+For example, a small parameter change might cause the system to go from:
+
+* settling to a stable equilibrium,
+* to oscillating in a periodic cycle,
+* to having multiple equilibria,
+* or to becoming unstable.
+
+That is a qualitative change because the **type of motion** changes.
+
+A standard example is a **bifurcation**: as a parameter passes a critical value, the structure of the system changes in a meaningful way. For instance, an equilibrium can switch from stable to unstable, or new equilibria can appear.
+
+What **“qualitative”** means here:
+
+It refers to properties like:
+
+* how many equilibria there are,
+* whether they are stable or unstable,
+* whether trajectories converge, diverge, or oscillate,
+* whether there are periodic orbits,
+* how phase portraits are organized.
+
+So “qualitative” means **structural / behavioral / geometric**, rather than **exactly quantitative**.
+
+A good contrast is:
+
+* **Quantitative change**: an equilibrium moves from $x=1.2$ to $x=1.3$.
+* **Qualitative change**: the equilibrium changes from stable to unstable, or disappears entirely.
+
+So in this context, “qualitative” stands for:
+
+**the kind of behavior the system has**, rather than the precise numbers describing it.
+
+Example:
+Consider
+
+$$\dot x = r - x^2$$
 
 
+* If (r>0), there are two equilibria.
+* If (r=0), there is one degenerate equilibrium.
+* If (r<0), there are no real equilibria.
 
+This is a qualitative change as (r) crosses (0), because the phase portrait changes in structure.
 
+If you want, I can also explain this in a more intuitive way with phase portraits and bifurcations.
 
+## Why are bifurcations usually considered to be harmful in application of dynamical systems?
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Are bifurcations harmful?)</span></p>
 
+They are not inherently harmful. They are often *treated* as harmful in applications because a bifurcation means a **small parameter change can cause a big qualitative change in behavior**.
 
+In pure math, that is interesting. In engineering or applied settings, it is often a problem because people usually want the system to behave **smoothly, predictably, and robustly**.
 
+The main reasons are:
 
+1. **Loss of stability**
+   A stable equilibrium or periodic motion can disappear or become unstable at a bifurcation. Then the system may jump to oscillations, multiple steady states, or runaway behavior.
 
+2. **High sensitivity near the bifurcation point**
+   Close to a bifurcation, tiny changes in parameters, noise, delays, or modeling error can change the outcome a lot. That makes design and control harder.
 
+3. **Sudden regime changes**
+   The system can switch from “works fine” to “works badly” without much warning. In applications, abrupt transitions are often undesirable.
 
+4. **Reduced predictability**
+   After a bifurcation, there may be several possible long-term behaviors, or even chaotic motion. Then forecasting and control become much more difficult.
 
+5. **Safety and performance concerns**
+   In real systems, a bifurcation may correspond to flutter in aircraft, voltage collapse in power systems, unwanted oscillations in control loops, population collapse in ecology, or arrhythmias in physiology.
 
+So the issue is less “bifurcations are bad” and more:
 
+**applications often value robustness, while bifurcations mark loss of robustness.**
 
+That said, bifurcations are sometimes useful or even intentionally exploited. For example, switching devices, pattern formation, lasers, neural models, and some sensing mechanisms rely on operating near a bifurcation because the system becomes very responsive.
 
+But sometimes they are useful:
+* Saddle-node behavior can be used for switching and memory.
+* Hopf bifurcations can be used to model or generate rhythms, clocks, lasers, and neural oscillators.
+
+A good one-line summary is:
+
+**Bifurcations are usually considered harmful when the goal is reliable operation, because they are thresholds where qualitative behavior can change dramatically under small perturbations.**
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span>(Saddle-node bifurcation application)</p>
+
+A simple model is
+
+$$\dot x = \mu - x^2$$
+
+where $\mu$ is a parameter.
+
+What happens:
+
+* If $\mu > 0$, there are two equilibria:
+  
+  $$x = \pm \sqrt{\mu}$$
+  
+  The positive one is stable, the negative one is unstable.
+* If $\mu = 0$, the two equilibria merge at $x=0$.
+* If $\mu < 0$, there is **no equilibrium at all**.
+
+Why this is harmful in applications:
+
+Imagine $x$ is the operating state of a device and $\mu$ is a control parameter.
+
+* For $\mu>0$, the system has a stable resting state, so it behaves normally.
+* As $\mu$ decreases toward $0$, that stable state moves and becomes weaker.
+* Once $\mu$ crosses $0$, the stable equilibrium **disappears**.
+
+So the system can no longer “settle down.” It may drift away, hit physical limits, or jump to some other regime.
+
+**Application intuition:**
+This is the mathematical picture behind things like voltage collapse, mechanical snap-through, or sudden failure of an operating point. A tiny parameter change can destroy the state you were relying on.
+
+The harmful part is not the bifurcation itself, but that **the desired stable state vanishes**.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span>(Hopf bifurcation application)</p>
+
+A standard normal form is
+
+$$
+\dot x = \mu x - y - x(x^2+y^2), \qquad
+\dot y = x + \mu y - y(x^2+y^2)
+$$
+
+What happens:
+
+* If $\mu < 0$, the equilibrium at $(0,0)$ is stable.
+* At $\mu = 0$, stability changes.
+* If $\mu > 0$, the equilibrium becomes unstable and a **stable limit cycle** appears.
+
+So the system changes from “settling to a steady state” to “sustained oscillation.”
+
+Why this is harmful in applications:
+
+Suppose $(0,0)$ is the desired operating condition.
+
+* Before the bifurcation, disturbances die out.
+* After the bifurcation, disturbances do not die out; instead the system keeps oscillating.
+
+**Application intuition:**
+That can mean unwanted vibration in a machine, chatter in a control loop, oscillating chemical concentrations in a reactor, or rhythmic instability in physiology.
+
+So the issue is that the system goes from:
+
+* **stable steady operation**
+  to
+* **self-excited oscillation**
+
+Even if the oscillation is bounded, it may still be bad because it reduces accuracy, increases wear, creates noise, or threatens safety.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The contrast)</span></p>
+
+**For a saddle-node bifurcation:**
+* the problem is often **loss of equilibrium**
+
+**For a Hopf bifurcation:**
+* the problem is often **loss of steady behavior and onset of oscillations**
+
+</div>
+
+## Chaos Needs At Least 3D for Continuous-time Autonomous ODEs
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Chaos is impossible in 2D)</span></p>
+
+In 2D continuous-time autonomous systems, the long-term behavior is too restricted.
+
+The key point is this:
+
+For a trajectory that stays in a bounded region of the plane, the **Poincaré–Bendixson theorem** says its long-term limit set can only be very simple:
+
+* an equilibrium point,
+* a closed orbit,
+* or a set involving equilibria and trajectories connecting them.
+
+What it **cannot** be is a complicated aperiodic invariant set of the kind needed for chaos.
+
+Chaos needs a trajectory to do something like this forever:
+
+* remain bounded,
+* never settle to an equilibrium,
+* never settle to a periodic orbit,
+* and still keep wandering in a complicated sensitive way.
+
+But Poincaré–Bendixson says that in the plane, once you rule out equilibria in the limit region, the trajectory must approach a **periodic orbit**. So there is no room for a strange attractor.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Chaos is impossible in 1D)</span></p>
+
+**In 1D it is even more impossible**
+
+For a 1D autonomous ODE
+
+$$\dot x = f(x)$$
+
+solutions cannot cross each other. The motion is just left, right, or toward an equilibrium. There are not even periodic orbits.
+
+So:
+
+* **1D:** no chaos
+* **2D:** no chaos because of Poincaré–Bendixson
+* **3D and higher:** chaos becomes possible
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why this blocks chaos in 2D)</span></p>
+
+A chaotic attractor is not:
+
+* a single fixed point,
+* and not a single periodic orbit.
+
+It is a much more complicated **invariant set** with recurrent but nonperiodic motion.
+
+The theorem says that kind of set cannot arise as the omega-limit set of a bounded trajectory in a smooth 2D autonomous ODE. So genuine chaos is impossible there.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why 3D changes things)</span></p>
+
+In 3 dimensions, trajectories can wind around each other without being forced into a fixed point or closed orbit. That extra degree of freedom allows complicated invariant sets such as strange attractors.
+
+That is why systems like the Lorenz system can be chaotic, while planar autonomous systems cannot.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(One important caveat)</span></p>
+
+This statement is about **continuous-time autonomous ODEs**.
+
+It does **not** say:
+
+* 2D discrete maps cannot be chaotic — they can
+* forced 2D systems cannot be chaotic — periodic forcing effectively adds another variable, making the autonomous version 3D
+
+So the clean statement is:
+
+> Smooth autonomous continuous-time systems need at least 3 dimensions for chaos, because in 2 dimensions the Poincaré–Bendixson theorem forces bounded long-term behavior to be too simple.
+
+If you want, I can also explain this using the idea of an **omega-limit set**, which is the most precise way to see it.
+
+</div>
+
+## Strange Attractor vs. Chaotic Attractor
+
+* https://en.wikipedia.org/wiki/Strange_nonchaotic_attractor
+* https://www.quantamagazine.org/variable-stars-have-strange-nonchaotic-attractors-20150310/
+* KIC 5520878
+
+They are related, but not exactly the same.
+
+A **chaotic attractor** is an attractor whose dynamics are **chaotic**, meaning roughly:
+
+* trajectories stay in a bounded attracting set,
+* they are aperiodic,
+* and they show sensitive dependence on initial conditions.
+
+A **strange attractor** is an attractor with a **complicated geometric structure**, typically fractal or non-smooth.
+
+So the distinction is:
+
+* **chaotic** describes the **time behavior**
+* **strange** describes the **shape/geometry**
+
+Often the same attractor is both, which is why the terms are sometimes used almost interchangeably.
+
+### Typical situation
+
+For famous examples like the Lorenz attractor:
+
+* it is **chaotic** because motion on it is sensitive and nonperiodic
+* it is **strange** because its set has a fractal-type geometry
+
+So it is both a **chaotic attractor** and a **strange attractor**.
+
+### Can one exist without the other?
+
+In principle, yes, at least conceptually:
+
+* an attractor could be **chaotic** without emphasizing fractal geometry
+* an attractor could be called **strange** because of complicated geometry, even if the chaos aspect is not the point
+
+But in many dynamical systems courses, “strange attractor” usually means an attractor that is also chaotic.
+
+### Good short definitions
+
+You can remember it like this:
+
+> A **chaotic attractor** is defined by chaotic dynamics.
+> A **strange attractor** is defined by strange geometry.
+
+Or even shorter:
+
+> **chaotic = behavior**,
+> **strange = shape**.
+
+### One subtlety
+
+Different books are not always perfectly strict with the terminology. Some use “strange attractor” almost as a synonym for “chaotic attractor,” especially in physics-style texts.
+
+So if your course is informal, the instructor may treat them as basically the same thing. But mathematically, the clean distinction is:
+
+* **chaotic attractor** → focus on dynamics
+* **strange attractor** → focus on geometry
+
+If you want, I can also give you a tiny table comparing:
+fixed point attractor, limit cycle attractor, torus attractor, and strange/chaotic attractor.
+
+## Ghost Attractor
+
+The **ghost region** is the place where the two fixed points **used to be** just before they collided and disappeared.
+
+For this system
+
+$$\dot x=\mu-x^2,\qquad \dot y=-y,$$
+
+when $\mu>0$, there are two equilibria at $x=\pm \sqrt{\mu}$, $y=0$.
+
+When $\mu=0$, they collide.
+
+When $\mu<0$, there are **no fixed points anymore**. But if (\mu<0) is only slightly negative, the vector field is still very small near the old collision point. In particular,
+
+$$\dot x=\mu-x^2=-(\lvert \mu\rvert+x^2),$$
+
+so near $x=0$,
+
+$$\dot x \approx -\lvert \mu\rvert$$
+
+which is small if $\lvert\mu\rvert$ is small. That means trajectories move **very slowly** through that neighborhood.
+
+So the "ghost" is:
+
+* **not** a real fixed point,
+* but a **bottleneck / slow region** in the flow,
+* caused by the lingering influence of the saddle and node that have just annihilated each other.
+
+In the phase portrait for $\mu<0$, trajectories get pulled toward $y=0$ because $\dot y=-y$, then they drift slowly through the dotted region before finally moving away. It looks as though an equilibrium is still “almost there,” hence the name **ghost**.
+
+A good intuition is:
+
+* before bifurcation: two equilibria actually trap/organize trajectories,
+* after bifurcation: the equilibria are gone, but the flow still remembers them for a while.
+
+That is why the time spent in the ghost region becomes very large near the bifurcation.
+
+## Hysteresis
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Hysteresis)</span></p>
+
+**Hysteresis** is the dependence of the state of a system on its history. System’s output depends not only on its current input, but also on its past.
+
+So the system has a kind of **memory**.
+
+</div>
+
+<div class="gd-grid">
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/Irreversible_Hysteresis.png' | relative_url }}" alt="Gradient descent stuck in local minima" loading="lazy">
+    <figcaption>Irreversible hysteresis graph</figcaption>
+  </figure>
+  <figure>
+    <img src="{{ '/assets/images/notes/model-based-time-series-analysis/Reversible_Hysteresis.png' | relative_url }}" alt="Gradient descent slow convergence" loading="lazy">
+    <figcaption>Reversible hysteresis graph</figcaption>
+  </figure>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(History and memory)</span></p>
+
+In systems with bistability, the same input level can correspond to two distinct stable states (e.g., "low output" and "high output"). The actual state of the system depends on its history –whether the input level was increasing (forward trajectory) or decreasing (backward trajectory). Thus, it is difficult to determine which state a cell is in if given only a bistability curve. The cell's ability to "remember" its prior state ensures stability and prevents it from switching states unnecessarily due to minor fluctuations in input.
+
+This memory is often maintained through molecular feedback loops, such as positive feedback in signaling pathways
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(History and memory)</span></p>
+
+This memory is often maintained through molecular feedback loops, such as positive feedback in signaling pathways, or the persistence of regulatory molecules like proteins or phosphorylated components. For example, the refractory period in action potentials is primarily controlled by history. Absolute refraction period prevents a volted-gated sodium channel from activating or refiring after it has just fired. This is because following the absolute refractory period, the neuron is less excitable due to hyperpolarization caused by potassium efflux. This molecular inhibitory feedback creates a memory for the neuron or cell, so that the neuron does not fire too soon. As time passes, the neuron or cell will slowly lose the memory of having fired and will begin to fire again. Thus, memory is time-dependent, which is important in maintaining homeostasis and regulating many different biological processes.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Hysteretic Current-Voltage Curve)</span></p>
+
+Suppose $\alpha$ is small and $I$ is initially below the homoclinic bifurcation (thick line in Figure). Then the junction will be operating at the stable fixed point, corresponding to the zero-voltage state. As $I$ is increased, nothing changes until $I$ exceeds $1$. Then the stable fixed point disappears in a saddle-node bifurcation, and the junction jumps into a nonzero voltage state (the limit cycle).
+
+If $I$ is brought back down, the limit cycle persists below $I=1$ but its frequency tends to zero continuously as $I_c$ is approached. Specifically, the frequency tends to zero like $[\ln( I I_c )]^{–1}$, just as expected from the scaling law. The voltage also returns to zero continuously as $I\to I_c$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/model-based-time-series-analysis/HystereticCurrentVoltageCurve.png' | relative_url }}" alt="Gradient descent slow convergence" loading="lazy">
+</figure>
+
+In practice, the voltage appears to jump discontinuously back to zero, but that is to be expected because $[\ln( I- I_c )]^{–1}$ has **infinite derivatives of all orders at $I_c$!** The steepness of the curve makes it impossible to resolve the
+continuous return to zero.
+
+</div>
+
+Here is a clean summary you can put into your notes.
+
+## Degenerate equilibrium — summary
+
+Consider a dynamical system
+
+[
+\dot{x} = f(x), \qquad x \in \mathbb{R}^n,
+]
+
+and let (x_*) be an equilibrium, so
+
+[
+f(x_*) = 0.
+]
+
+### 1. Linearization
+
+Near (x_*), the vector field is approximated by
+
+[
+f(x_*+\delta) = f(x_*) + Df(x_*)\delta + o(|\delta|).
+]
+
+Since (f(x_*)=0) at an equilibrium, the local dynamics is approximated by
+
+[
+\dot{\delta} = Df(x_*)\delta.
+]
+
+So the Jacobian (Df(x_*)) gives the first-order local behavior near the equilibrium.
+
+---
+
+### 2. What “degenerate” means
+
+An equilibrium is called **degenerate** if the Jacobian at that point is singular:
+
+[
+\det Df(x_*) = 0.
+]
+
+Equivalently: **(0) is an eigenvalue** of the linearization.
+
+This means that in at least one direction, the linear term gives no information about attraction or repulsion.
+
+---
+
+### 3. Intuition
+
+Degeneracy means the equilibrium is **flat to first order**.
+
+It does **not** mean there is no motion in that direction in the true nonlinear system.
+It only means there is no motion visible in the **linear approximation** in that direction.
+
+So higher-order terms become important.
+
+A good slogan is:
+
+> Zero eigenvalue means “flat to first order,” not “frozen.”
+
+---
+
+### 4. Why linearization may fail
+
+In nondegenerate cases, the linearization often captures the local phase portrait well.
+
+In degenerate cases, it may be inconclusive, because the missing first-order effect can be replaced by quadratic or higher-order terms.
+
+Example:
+
+[
+\dot{x} = x^2.
+]
+
+At (x=0),
+
+[
+f(0)=0, \qquad f'(0)=0,
+]
+
+so (x=0) is degenerate.
+
+But the linearization
+
+[
+\dot{x}=0
+]
+
+does not describe the true behavior:
+
+* if (x>0), then (\dot{x}>0),
+* if (x<0), then (\dot{x}>0).
+
+So the nonlinear term determines the dynamics.
+
+---
+
+### 5. Degenerate does not always mean manifold attractor
+
+A zero eigenvalue can happen for different reasons.
+
+#### Case A: line/manifold of equilibria
+
+Example:
+
+[
+\dot{x}=0, \qquad \dot{y}=-y.
+]
+
+Every point ((x,0)) is an equilibrium, so the (x)-axis is a manifold of equilibria.
+Here the zero eigenvalue corresponds to genuine neutral motion along that equilibrium manifold.
+
+#### Case B: isolated equilibrium with zero eigenvalue
+
+Example:
+
+[
+\dot{x}=x^2, \qquad \dot{y}=-y.
+]
+
+At ((0,0)), one eigenvalue is zero, but there is no line of equilibria.
+The only equilibrium is ((0,0)), and the motion in the (x)-direction is determined by the nonlinear term (x^2).
+
+So:
+
+> Degeneracy does not automatically mean line attractor or manifold attractor.
+
+---
+
+### 6. Relation to non-hyperbolicity
+
+An equilibrium is **hyperbolic** if no eigenvalue of $Df(x^\ast)$ has real part zero.
+
+It is **non-hyperbolic** if at least one eigenvalue has real part zero.
+
+A degenerate equilibrium is a special case of non-hyperbolicity where $0$ itself is an eigenvalue.
+
+So:
+
+$$\text{degenerate} \implies \text{non-hyperbolic}.$$
+
+But not conversely.
+
+Example of non-hyperbolic but not degenerate:
+
+$$A=\begin{pmatrix}0 & -1\\ 1 & 0\end{pmatrix}$$
+
+has eigenvalues $\pm i$, so it is non-hyperbolic, but
+
+$$\det A = 1 \neq 0,$$
+
+so it is not degenerate.
+
+---
+
+### 7. In 2D Hamiltonian systems
+
+For a planar Hamiltonian system
+
+[
+\dot{x} = H_y, \qquad \dot{y} = -H_x,
+]
+
+equilibria occur at critical points of (H):
+
+[
+\nabla H(x_*,y_*)=0.
+]
+
+The equilibrium is **nondegenerate** if the Hessian of (H) is invertible:
+
+[
+\det \nabla^2 H(x_*,y_*) \neq 0.
+]
+
+It is **degenerate** if
+
+[
+\det \nabla^2 H(x_*,y_*) = 0.
+]
+
+In the nondegenerate case:
+
+* saddle point of (H) (\Rightarrow) saddle equilibrium,
+* local minimum or maximum of (H) (\Rightarrow) center.
+
+A local maximum also gives a center because Hamiltonian trajectories follow **level sets of (H)**, not gradient descent.
+
+---
+
+## Short final definition
+
+A **degenerate equilibrium** is an equilibrium where the Jacobian has a zero eigenvalue, so the linearization loses information in at least one direction and higher-order nonlinear terms are needed to determine the true local dynamics.
+
+If you want, I can turn this into a shorter “exam-style” version too.
 
 
 

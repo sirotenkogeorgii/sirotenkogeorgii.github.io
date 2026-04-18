@@ -1,0 +1,4 @@
+#separator:tab
+#html:true
+#tags column:3
+How does the classification of equilibria differ between 2D and higher-dimensional linear systems?	In <b>2D</b>: phase portraits give names like node, saddle, center, spiral.<br>In <b>\(n\)D</b>: describe dimensions of \(E^s\), \(E^u\), \(E^c\). E.g., "3D stable subspace, 1D unstable subspace" rather than "saddle."	dstml::lecture1

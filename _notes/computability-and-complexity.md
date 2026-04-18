@@ -6211,9 +6211,7 @@ Why? Because $\emptyset^{[n+1]}$ belongs to level $\Sigma_{n+1}$, but by Lemma 2
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(The set of true arithmetic sentences is not arithmetical)</span></p>
 
-Let $T$ be the set of Gödel numbers of all **true arithmetic sentences**.
-
-$T$ is **not arithmetical**.
+The set $T$ of true arithmetic sentences is not arithmetic.
 
 This means $T$ is not in any finite level $\Sigma_n$ of the arithmetic hierarchy.
 
@@ -6666,12 +6664,12 @@ A group is defined as a structure $(G, \cdot, e)$ consisting of a set $G$, a bin
 
 </div>
 
-A sentence is a semantical consequence of a set of axioms if it is true in every structure where the axioms are true. In this case, we say the axioms entail the sentence.
+A sentence is a **semantical consequence** of a set of axioms if it is true in every structure where the axioms are true. In this case, we say the axioms entail the sentence.
 
 An inference system is a collection of syntactical rules that allow new sentences to be derived from a given set of sentences. A classic example is modus ponens, which allows the derivation of sentence $\beta$ if one is given both $\alpha$ and $\alpha → \beta$.
 
-* An inference system is sound if it can only derive sentences that are semantical consequences of the given set.
-* An inference system is complete if it can derive all semantical consequences of the given set.
+* An inference system is **sound** if it can only derive sentences that are semantical consequences of the given set.
+* An inference system is **complete** if it can derive all semantical consequences of the given set.
 
 First-order logic is restricted to quantification over members of the domain; it does not allow quantification over sets, functions, or other higher-order objects. While this limits its expressive power compared to formalisms like set theory, it has a significant advantage: first-order logic possesses effective inference systems that are both sound and complete. This implies that if a set of axioms is finite, decidable, or recursively enumerable (r.e.), then the set of all its semantical consequences is also r.e. This is because one can systematically search through all possible derivations from the axioms, and due to completeness, a derivation for any true consequence will eventually be found.
 
