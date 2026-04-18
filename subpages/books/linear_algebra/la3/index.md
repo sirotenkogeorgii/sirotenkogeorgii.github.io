@@ -1266,7 +1266,11 @@ The concept was introduced by Turing in 1948 for the Frobenius norm, though a si
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Condition Number)</span></p>
 
-The **condition number** of a regular matrix $A \in \mathbb{R}^{n \times n}$ is $k(A) = \lVert A \rVert \cdot \lVert A^{-1} \rVert$, where $\lVert \cdot \rVert$ is an induced matrix norm. For the $p$-norm specifically, 
+The **condition number** of a regular matrix $A \in \mathbb{R}^{n \times n}$ is 
+
+$$k(A) = \lVert A \rVert \cdot \lVert A^{-1} \rVert$$
+
+where $\lVert \cdot \rVert$ is an induced matrix norm. For the $p$-norm specifically, 
 
 $$k_p(A) = \lVert A \rVert_p \cdot \lVert A^{-1} \rVert_p$$
 
@@ -1283,6 +1287,15 @@ $$\lVert I_n \rVert = 1$$
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+trivial.
+
+</details>
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
 
@@ -1297,11 +1310,7 @@ Equality holds, in particular, when $A$ is symmetric and $k_2$ is used.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
 
-It holds that 
-
-$$k(A) \geq \frac{\lvert \lambda_{\max}(A)\rvert}{\lvert \lambda_{\min}(A)\rvert}$$
-
-Equality holds when $A$ is symmetric and $k_2(A)$ is used.
+Follows from $\|\|A\|\|\cdot\|\|A^{-1}\|\| \geq \|\|AA^{-1}\|\|$.
 
 </div>
 
@@ -1371,6 +1380,332 @@ Geometrically, $k_2(A) = \cot(\varphi/2)$, where $\varphi$ is the minimum angle 
 For $A \in \mathbb{R}^{n \times n}$ regular, the SVD shows that the image of the unit ball under $x \mapsto Ax$ is an ellipsoid with semi-axes of lengths $\sigma_1, \ldots, \sigma_n$. The condition number $k_2(A) = \sigma_1/\sigma_n$ measures how much the map deforms circles into ellipses. If $k_2(A) = 1$, the ellipsoid is a ball; the larger the condition number, the more elongated it is.
 
 </div>
+
+The condition number measures how much a matrix stretches and distorts space. For a $2 \times 2$ matrix, the cleanest way to see it is to watch the unit circle get transformed into an ellipse --- the ratio between the ellipse's longest and shortest axes *is* the condition number. Here's an interactive widget that lets you manipulate the matrix and see exactly that happen:
+
+<style>
+.cond-widget {
+  --color-background-primary: var(--surface);
+  --color-background-secondary: rgba(15, 23, 42, 0.05);
+  --color-text-secondary: var(--muted);
+  --color-text-tertiary: rgba(91, 98, 112, 0.75);
+  --color-border-tertiary: var(--line);
+  --border-radius-md: 10px;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-background-danger: rgba(239, 68, 68, 0.14);
+  --color-text-danger: #b91c1c;
+  --color-background-warning: rgba(234, 179, 8, 0.18);
+  --color-text-warning: #a16207;
+  --color-background-success: rgba(34, 197, 94, 0.15);
+  --color-text-success: #15803d;
+}
+[data-theme="dark"] .cond-widget {
+  --color-background-secondary: rgba(226, 232, 240, 0.07);
+  --color-text-tertiary: rgba(154, 163, 184, 0.75);
+  --color-background-danger: rgba(239, 68, 68, 0.22);
+  --color-text-danger: #fca5a5;
+  --color-background-warning: rgba(234, 179, 8, 0.22);
+  --color-text-warning: #fcd34d;
+  --color-background-success: rgba(34, 197, 94, 0.22);
+  --color-text-success: #86efac;
+}
+.cond-widget .preset-btn {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  transition: background 0.15s ease;
+}
+.cond-widget .preset-btn:hover { background: var(--accent-muted); }
+.cond-widget input[type="range"] { width: 100%; accent-color: var(--accent); }
+.cond-widget .cond-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.cond-widget .m-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
+.cond-widget .m-label { font-size: 12px; color: var(--color-text-secondary); }
+.cond-widget .m-val { font-size: 22px; font-weight: 500; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.cond-widget .m-val-big { font-size: 28px; font-weight: 500; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.cond-widget .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; margin-top: 4px; }
+.cond-widget .ctrls { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 16px; }
+.cond-widget .slider-row { display: grid; grid-template-columns: 18px 1fr 42px; gap: 10px; align-items: center; font-size: 13px; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.cond-widget .slider-label { font-family: var(--font-mono); color: var(--color-text-secondary); text-align: center; }
+.cond-widget .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.cond-widget .preset-btn { font-size: 12px; padding: 6px 8px; }
+.cond-widget .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cond-widget .viz-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; text-align: center; font-variant-numeric: tabular-nums; }
+.cond-widget .viz-svg { width: 100%; aspect-ratio: 1; background: var(--color-background-primary); border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); display: block; }
+.cond-widget .matrix-box { padding: 8px 12px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-family: var(--font-mono); font-size: 13px; margin-top: 10px; font-variant-numeric: tabular-nums; }
+.cond-widget .insight { margin-top: 14px; padding: 12px 16px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 14px; line-height: 1.6; }
+.cond-widget .legend { display: flex; gap: 14px; justify-content: center; font-size: 11px; color: var(--color-text-secondary); margin-top: 4px; }
+.cond-widget .legend-swatch { display: inline-block; width: 12px; height: 3px; vertical-align: middle; margin-right: 4px; }
+</style>
+
+<div class="cond-widget">
+<div style="padding: 1rem 0;">
+
+  <div class="cond-row">
+    <div class="m-card" id="cond-card">
+      <div class="m-label">Condition number κ(A)</div>
+      <div class="m-val-big" id="cond-val">1.00</div>
+      <span class="pill" id="cond-pill">Perfect</span>
+    </div>
+    <div class="m-card">
+      <div class="m-label">σ₁ (max stretch)</div>
+      <div class="m-val" id="sig1-val">1.00</div>
+    </div>
+    <div class="m-card">
+      <div class="m-label">σ₂ (min stretch)</div>
+      <div class="m-val" id="sig2-val">1.00</div>
+    </div>
+    <div class="m-card">
+      <div class="m-label">det(A)</div>
+      <div class="m-val" id="det-val">1.00</div>
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <div>
+      <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px;">Matrix entries</div>
+      <div class="slider-row"><span class="slider-label">a</span><input type="range" min="-3" max="3" step="0.02" value="1" id="s-a"><span id="v-a">1.00</span></div>
+      <div class="slider-row"><span class="slider-label">b</span><input type="range" min="-3" max="3" step="0.02" value="0" id="s-b"><span id="v-b">0.00</span></div>
+      <div class="slider-row"><span class="slider-label">c</span><input type="range" min="-3" max="3" step="0.02" value="0" id="s-c"><span id="v-c">0.00</span></div>
+      <div class="slider-row"><span class="slider-label">d</span><input type="range" min="-3" max="3" step="0.02" value="1" id="s-d"><span id="v-d">1.00</span></div>
+      <div class="matrix-box">A = [ <span id="mat-a">1.00</span>, <span id="mat-b">0.00</span> ; <span id="mat-c">0.00</span>, <span id="mat-d">1.00</span> ]</div>
+    </div>
+    <div>
+      <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px;">Presets</div>
+      <div class="preset-grid">
+        <button class="preset-btn" data-preset="identity">Identity</button>
+        <button class="preset-btn" data-preset="rotation">Rotation 45°</button>
+        <button class="preset-btn" data-preset="stretch">Pure stretch</button>
+        <button class="preset-btn" data-preset="shear">Shear</button>
+        <button class="preset-btn" data-preset="ill">Ill-conditioned</button>
+        <button class="preset-btn" data-preset="nearsing">Near-singular</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="viz-grid">
+    <div>
+      <div class="viz-label">Input: unit circle {x : ‖x‖ = 1}</div>
+      <svg id="svg-in" class="viz-svg" viewBox="-150 -150 300 300"></svg>
+    </div>
+    <div>
+      <div class="viz-label" id="out-label">Output: {Ax : ‖x‖ = 1}</div>
+      <svg id="svg-out" class="viz-svg" viewBox="-150 -150 300 300"></svg>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="legend-swatch" style="background: #D4537E;"></span>v₁ / σ₁u₁ (longest axis)</span>
+    <span><span class="legend-swatch" style="background: #1D9E75;"></span>v₂ / σ₂u₂ (shortest axis)</span>
+    <span>colored dots show how points map</span>
+  </div>
+
+  <div class="insight" id="insight"></div>
+
+</div>
+</div>
+
+<script>
+(function() {
+  const ids = ['a','b','c','d'];
+  const sliders = {}, vals = {}, mats = {};
+  ids.forEach(k => { sliders[k] = document.getElementById('s-'+k); vals[k] = document.getElementById('v-'+k); mats[k] = document.getElementById('mat-'+k); });
+
+  const presets = {
+    identity:  [1, 0, 0, 1],
+    rotation:  [Math.SQRT1_2, -Math.SQRT1_2, Math.SQRT1_2, Math.SQRT1_2],
+    stretch:   [2.4, 0, 0, 0.6],
+    shear:     [1, 1.2, 0, 1],
+    ill:       [1.5, 1.4, 1.0, 1.0],
+    nearsing:  [2.0, 2.0, 1.0, 1.005]
+  };
+
+  function svd2x2(a, b, c, d) {
+    const m11 = a*a + c*c;
+    const m22 = b*b + d*d;
+    const m12 = a*b + c*d;
+    const tr = m11 + m22;
+    const dt = m11*m22 - m12*m12;
+    const disc = Math.max(0, tr*tr - 4*dt);
+    const s = Math.sqrt(disc);
+    const lam1 = (tr + s) / 2;
+    const lam2 = Math.max(0, (tr - s) / 2);
+    const sig1 = Math.sqrt(lam1);
+    const sig2 = Math.sqrt(lam2);
+    let v1x, v1y, v2x, v2y;
+    if (Math.abs(m12) > 1e-12) {
+      v1x = m12; v1y = lam1 - m11;
+      const n = Math.hypot(v1x, v1y);
+      v1x /= n; v1y /= n;
+      v2x = -v1y; v2y = v1x;
+    } else {
+      if (m11 >= m22) { v1x = 1; v1y = 0; v2x = 0; v2y = 1; }
+      else            { v1x = 0; v1y = 1; v2x = 1; v2y = 0; }
+    }
+    let u1x, u1y, u2x, u2y;
+    if (sig1 > 1e-12) {
+      u1x = (a*v1x + b*v1y) / sig1;
+      u1y = (c*v1x + d*v1y) / sig1;
+    } else { u1x = 1; u1y = 0; }
+    if (sig2 > 1e-12) {
+      u2x = (a*v2x + b*v2y) / sig2;
+      u2y = (c*v2x + d*v2y) / sig2;
+    } else { u2x = -u1y; u2y = u1x; }
+    return { sig1, sig2, v1:[v1x,v1y], v2:[v2x,v2y], u1:[u1x,u1y], u2:[u2x,u2y] };
+  }
+
+  function gridLines(scale) {
+    let g = '';
+    for (let i = -6; i <= 6; i++) {
+      if (i === 0) continue;
+      const p = i * scale;
+      if (Math.abs(p) < 150) {
+        g += '<line x1="'+p+'" y1="-150" x2="'+p+'" y2="150" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>';
+        g += '<line x1="-150" y1="'+p+'" x2="150" y2="'+p+'" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>';
+      }
+    }
+    return g;
+  }
+
+  function axes() {
+    return '<line x1="-150" y1="0" x2="150" y2="0" stroke="var(--color-text-tertiary)" stroke-width="1" opacity="0.6"/>' +
+           '<line x1="0" y1="-150" x2="0" y2="150" stroke="var(--color-text-tertiary)" stroke-width="1" opacity="0.6"/>';
+  }
+
+  function arrow(x1, y1, x2, y2, color, label) {
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    if (len < 2) return '';
+    const ang = Math.atan2(dy, dx);
+    const hl = Math.min(9, len * 0.4);
+    const hx1 = x2 - hl*Math.cos(ang - Math.PI/6);
+    const hy1 = y2 - hl*Math.sin(ang - Math.PI/6);
+    const hx2 = x2 - hl*Math.cos(ang + Math.PI/6);
+    const hy2 = y2 - hl*Math.sin(ang + Math.PI/6);
+    let lx = x2 + 12*Math.cos(ang), ly = y2 + 12*Math.sin(ang) + 4;
+    lx = Math.max(-140, Math.min(140, lx));
+    ly = Math.max(-135, Math.min(145, ly));
+    return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+color+'" stroke-width="2.5" stroke-linecap="round"/>' +
+           '<polygon points="'+x2+','+y2+' '+hx1+','+hy1+' '+hx2+','+hy2+'" fill="'+color+'"/>' +
+           '<text x="'+lx+'" y="'+ly+'" fill="'+color+'" font-size="13" font-weight="500" text-anchor="middle" font-family="var(--font-sans)">'+label+'</text>';
+  }
+
+  function draw() {
+    const a = parseFloat(sliders.a.value);
+    const b = parseFloat(sliders.b.value);
+    const c = parseFloat(sliders.c.value);
+    const d = parseFloat(sliders.d.value);
+    ids.forEach(k => {
+      const v = parseFloat(sliders[k].value).toFixed(2);
+      vals[k].textContent = v;
+      mats[k].textContent = v;
+    });
+
+    const det = a*d - b*c;
+    const { sig1, sig2, v1, v2, u1, u2 } = svd2x2(a, b, c, d);
+    const cond = sig2 > 1e-10 ? sig1 / sig2 : Infinity;
+
+    document.getElementById('sig1-val').textContent = sig1.toFixed(3);
+    document.getElementById('sig2-val').textContent = sig2.toFixed(3);
+    document.getElementById('det-val').textContent  = det.toFixed(3);
+    const condEl = document.getElementById('cond-val');
+    if (!isFinite(cond) || cond > 1e6) condEl.textContent = '∞';
+    else if (cond >= 1000) condEl.textContent = cond.toExponential(1);
+    else if (cond >= 100)  condEl.textContent = cond.toFixed(0);
+    else                   condEl.textContent = cond.toFixed(2);
+
+    const pill = document.getElementById('cond-pill');
+    let label, bg, fg;
+    if (!isFinite(cond) || cond > 1e4) { label = 'Nearly singular'; bg = 'var(--color-background-danger)';  fg = 'var(--color-text-danger)'; }
+    else if (cond > 100)  { label = 'Ill-conditioned';  bg = 'var(--color-background-warning)'; fg = 'var(--color-text-warning)'; }
+    else if (cond > 10)   { label = 'Moderately ill';   bg = 'var(--color-background-warning)'; fg = 'var(--color-text-warning)'; }
+    else if (cond > 2)    { label = 'Well-conditioned'; bg = 'var(--color-background-success)'; fg = 'var(--color-text-success)'; }
+    else                  { label = 'Excellent';        bg = 'var(--color-background-success)'; fg = 'var(--color-text-success)'; }
+    pill.textContent = label;
+    pill.style.background = bg; pill.style.color = fg;
+
+    const maxExtent = Math.max(1.25, sig1 * 1.18);
+    const scale = 135 / maxExtent;
+
+    let inHtml = gridLines(scale) + axes();
+    inHtml += '<circle cx="0" cy="0" r="'+(scale)+'" fill="#378ADD" fill-opacity="0.08" stroke="#378ADD" stroke-width="2"/>';
+    const N = 32;
+    for (let i = 0; i < N; i++) {
+      const ang = (i / N) * 2 * Math.PI;
+      const x =  Math.cos(ang) * scale;
+      const y = -Math.sin(ang) * scale;
+      const hue = (i / N) * 360;
+      inHtml += '<circle cx="'+x.toFixed(2)+'" cy="'+y.toFixed(2)+'" r="3" fill="hsl('+hue+', 65%, 50%)"/>';
+    }
+    inHtml += arrow(0, 0, v1[0]*scale, -v1[1]*scale, '#D4537E', 'v₁');
+    inHtml += arrow(0, 0, v2[0]*scale, -v2[1]*scale, '#1D9E75', 'v₂');
+    inHtml += '<text x="-140" y="-135" fill="var(--color-text-tertiary)" font-size="11" font-family="var(--font-sans)">1 unit = '+(scale).toFixed(0)+' px</text>';
+    document.getElementById('svg-in').innerHTML = inHtml;
+
+    let outHtml = gridLines(scale) + axes();
+    let path = '';
+    const M = 120;
+    for (let i = 0; i <= M; i++) {
+      const t = (i / M) * 2 * Math.PI;
+      const xc = Math.cos(t), yc = Math.sin(t);
+      const xe =  (a*xc + b*yc) * scale;
+      const ye = -(c*xc + d*yc) * scale;
+      path += (i === 0 ? 'M' : 'L') + xe.toFixed(2) + ',' + ye.toFixed(2);
+    }
+    outHtml += '<path d="'+path+'Z" fill="#D85A30" fill-opacity="0.1" stroke="#D85A30" stroke-width="2"/>';
+    for (let i = 0; i < N; i++) {
+      const ang = (i / N) * 2 * Math.PI;
+      const xc = Math.cos(ang), yc = Math.sin(ang);
+      const xe =  (a*xc + b*yc) * scale;
+      const ye = -(c*xc + d*yc) * scale;
+      const hue = (i / N) * 360;
+      outHtml += '<circle cx="'+xe.toFixed(2)+'" cy="'+ye.toFixed(2)+'" r="3" fill="hsl('+hue+', 65%, 50%)"/>';
+    }
+    outHtml += arrow(0, 0, sig1*u1[0]*scale, -sig1*u1[1]*scale, '#D4537E', 'σ₁u₁');
+    outHtml += arrow(0, 0, sig2*u2[0]*scale, -sig2*u2[1]*scale, '#1D9E75', 'σ₂u₂');
+    document.getElementById('svg-out').innerHTML = outHtml;
+
+    let msg;
+    if (Math.abs(det) < 1e-4) {
+      msg = 'The matrix is singular or essentially so — det(A) ≈ 0. The unit circle collapses onto a line segment (or a point), meaning one direction gets flattened to zero. The condition number is effectively infinite and A has no stable inverse.';
+    } else if (cond < 2) {
+      msg = 'A nearly orthogonal transformation. Every direction gets stretched by roughly the same amount, so the image is nearly a circle. Linear systems Ax = b are extremely stable — tiny errors stay tiny.';
+    } else if (cond < 10) {
+      msg = 'Well-conditioned. The stretch ratio σ₁/σ₂ ≈ '+cond.toFixed(1)+' is modest, so relative errors in b can be amplified by at most '+cond.toFixed(1)+'× when you solve for x. Safe for direct methods.';
+    } else if (cond < 100) {
+      msg = 'Moderately ill-conditioned. Small perturbations in b can be amplified up to '+cond.toFixed(0)+'× in the solution x. The ellipse is visibly elongated — one direction is being squashed much harder than the others.';
+    } else if (cond < 1e4) {
+      msg = 'Ill-conditioned. Relative errors can be magnified by ~'+cond.toFixed(0)+'×. In floating-point arithmetic, you can expect to lose roughly '+Math.log10(cond).toFixed(1)+' digits of precision when solving Ax = b.';
+    } else {
+      msg = 'Nearly singular — the ellipse has nearly collapsed to a line. A tiny change in b can completely flip the answer x. Direct solvers will return garbage; you would need regularization (e.g. Tikhonov) or the pseudoinverse.';
+    }
+    document.getElementById('insight').textContent = msg;
+  }
+
+  ids.forEach(k => sliders[k].addEventListener('input', draw));
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = presets[btn.dataset.preset];
+      sliders.a.value = p[0]; sliders.b.value = p[1];
+      sliders.c.value = p[2]; sliders.d.value = p[3];
+      draw();
+    });
+  });
+
+  draw();
+})();
+</script>
+
+Here's what's happening mathematically, so you can play with the widget with intent:
+
+Every $2 \times 2$ matrix $A$ has a singular value decomposition $A = U\Sigma V^\top$, which says the transformation is really three simple things in sequence --- rotate by $V^\top$, scale the axes by $\sigma_1$ and $\sigma_2$, then rotate by $U$. The visualization makes this concrete: the pink vector $v_1$ in the input is the direction that gets stretched the *most*, and the green vector $v_2$ is the direction that gets stretched the *least*. After you apply $A$, they become $\sigma_1 u_1$ and $\sigma_2 u_2$ --- the two semi-axes of the output ellipse.
+
+The condition number $\kappa(A) = \sigma_1/\sigma_2$ is literally the aspect ratio of that ellipse. Three things worth trying:
+
+Hit "Rotation 45°" and notice $\kappa = 1$ --- pure rotations don't distort, the ellipse stays a circle. Then hit "Pure stretch" with diagonal entries $2.4$ and $0.6$, and you see $\kappa = 4$ --- the ellipse is exactly $4\times$ wider than tall. Finally, hit "Near-singular": the ellipse collapses into a sliver, $\kappa$ explodes, and the insight text warns you'd lose several digits of precision solving $Ax = b$. That's the whole story --- $\kappa$ is a visual measurement of how unfair the matrix is to different directions, and that unfairness is exactly what makes numerical linear algebra hard.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Numerical Interpretation)</span></p>
