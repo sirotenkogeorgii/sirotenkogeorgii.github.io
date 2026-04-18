@@ -48,7 +48,7 @@ Let $X, Y$ be Hilbert spaces and $A : X \to Y$ be linear and bounded (we write $
 
 1. **Existence:** $y \in \mathcal{R}(A)$, i.e. $A$ is surjective.
 2. **Uniqueness:** $A$ is injective.
-3. **Stability:** $A^{-1}$ is bounded. ($\exists c \|\|A^{-1}y\|\| \leq c\|\|y\|\| \forall y$)
+3. **Stability:** $A^{-1}$ is bounded. ($\exists c \forall y \|\|A^{-1}y\|\| \leq c\|\|y\|\|$)
 
 </div>
 
@@ -65,8 +65,15 @@ For finite dimensional problems, these conditions may be satisfied for a bounded
 A **compact operator** $A \in \mathcal{L}(X, Y)$ between Banach spaces is one that maps bounded sets to *relatively compact* sets — equivalently, every bounded sequence $(x_n) \subset X$ admits a subsequence such that $(Ax_n)$ converges in $Y$. In Hilbert spaces, three equivalent characterisations are useful:
 
 1. **Approximation by finite-rank operators:** $A$ is the norm limit of operators with finite dimensional range, i.e. $A$ is "almost finite dimensional."
-2. **Singular values:** $A$ admits an SVD $A = \sum_n \sigma_n \langle \cdot, v_n \rangle u_n$ with $\sigma_n \to 0$.
-3. **Smoothing:** integral operators $(Af)(x) = \int k(x, y)\, f(y)\, dy$ with square-integrable kernel $k$ are compact — they "blur" fine-scale features of $f$.
+2. **Singular values:** $A$ admits an SVD 
+   
+   $$A = \sum_n \sigma_n \langle \cdot, v_n \rangle u_n \text{ with } \sigma_n \to 0$$
+
+3. **Smoothing:** integral operators 
+   
+   $$(Af)(x) = \int k(x, y)\, f(y)\, dy$$
+   
+   with square-integrable kernel $k$ are compact — they "blur" fine-scale features of $f$.
 
 **Why this matters for inverse problems.** In infinite dimensions, the identity operator is *not* compact (the unit ball is not relatively compact, by Riesz's lemma). Hence, if $A$ is compact and injective, $A^{-1}$ cannot be bounded: otherwise $A^{-1}A = I$ would be compact, a contradiction. Concretely, $\sigma_n \to 0$ implies $\sigma_n^{-1} \to \infty$, so $A^{-1}$ amplifies high-frequency components without bound — which is precisely the failure of Hadamard's stability condition. This is why compact forward operators are the canonical source of ill-posed inverse problems: the forward map smooths, and inversion must un-smooth.
 
@@ -165,7 +172,7 @@ The solution is plotted at the initial time $t = 0$ and at $t = 1$ and $t = 4$. 
 
 ## Chapter 2: Linear Inverse Problems and Regularisation
 
-To motivate the remainder of this chapter, we will first consider the finite dimensional setting. However, the most relevant issue in the numerical treatment of ill-posed problems, namely the lack of continuous dependence on the data, only emerges in infinite dimensions. Thus, in the remainder of this chapter we analyse infinite dimensional linear inverse problems and introduce regularisation techniques to solve them approximatively in a numerically stable way.
+To motivate the remainder of this chapter, we will first consider the finite dimensional setting. However, **the most relevant issue in the numerical treatment of ill-posed problems, namely the lack of continuous dependence on the data, only emerges in infinite dimensions**. Thus, in the remainder of this chapter we analyse infinite dimensional linear inverse problems and introduce regularisation techniques to solve them approximatively in a numerically stable way.
 
 ### 2.1 Finite Dimensional Ill-Posed Problems (Matrix Equations)
 
@@ -181,6 +188,15 @@ $$A = \sum_{i=1}^{n} \lambda_i u_i u_i^\top \quad \left( = U \Lambda U^\top \rig
 
 where the $i$th column of $U$ is $u_i$ and $\Lambda$ is a diagonal matrix with $\Lambda_{ii} = \lambda_i$. W.l.o.g. assume that $\lambda_1 = \mathcal{O}(1)$, in particular independent of $n$, otherwise rescale $A$ and $y$.
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Meaning of $\lambda_1 = \mathcal{O}(1)$)</span></p>
+
+$\mathcal{O}(1)$ is big-O of one — a *constant*, independent of $n$. Formally, $f(n) = \mathcal{O}(1)$ means there exists $C > 0$ such that $\lvert f(n) \rvert \le C$ for all $n$: no growth and no decay as $n \to \infty$.
+
+**Why the assumption is made.** We study a sequence of problems indexed by dimension $n$, and the object of interest is the condition number $\kappa(A) = \lambda_1 / \lambda_n$. If $\lambda_1$ itself scaled with $n$, a large $\kappa$ could come from $\lambda_1$ blowing up rather than from $\lambda_n$ collapsing — which would obscure the ill-posedness mechanism. Fixing $\lambda_1 = \mathcal{O}(1)$ by rescaling $A$ and $y$ (which does not change $\kappa$) pins the top of the spectrum to a fixed scale, so that any growth in $\kappa$ is attributable to $\lambda_n \to 0$.
+
+</div>
+
 The **condition number** of $A$ provides a measure for how accurate and stable the system (2.1.1) can be solved. It is given by the ratio of the largest and the smallest eigenvalue of $A$, i.e., $\kappa(A) = \lambda_1 / \lambda_n$.
 
 Consider that the data, namely the right hand side $y$, is only available in only a perturbed (or noisy) form as $y^\delta$, such that
@@ -191,7 +207,7 @@ for some $\delta > 0$ in the Euclidean norm on $\mathbb{R}^n$, and denote by $x^
 
 $$x^\delta - x = \sum_{i=1}^{n} \frac{u_i^\top (y^\delta - y)}{\lambda_i} \, u_i.$$
 
-Since the eigenvectors of $A$ can be chosen to be orthonormal, we can apply the Bessel inequality (TODO: search) to obtain the bound
+Since the eigenvectors of $A$ can be chosen to be orthonormal, we can apply the Bessel inequality to obtain the bound
 
 $$\lVert x^\delta - x \rVert^2 = \sum_{i=1}^{n} \lambda_i^{-2} |u_i^\top (y^\delta - y)|^2 \le \lambda_n^{-2} \lVert y^\delta - y \rVert^2 \le \lambda_n^{-2} \delta^2.$$
 
@@ -201,9 +217,27 @@ $$\lVert x^\delta - x \rVert \le \kappa \lambda_1^{-1} \delta = \mathcal{O}(\kap
 
 The bound is sharp, which can be seen easily by choosing $y^\delta - y = \delta u_n$. Thus, any growth in the condition number of $A$ directly leads to an amplification of noise in the data in the solution.
 
-Thus, for large condition numbers we say that the problem (2.1.1) is ill-posed -- recall for example that the condition number of the stiffness matrix $A$ in finite element discretisations of elliptic PDEs typically grows like $\mathcal{O}(h^{-2})$, where $h$ is the mesh width. Note however that for finite dimensional problems Hadamard's third condition is not strictly speaking violated and so (2.1.1) is not ill-posed in the sense of Hadamard, it is only **ill-conditioned**, but it is **asymptotically ill-posed** for $\kappa \to \infty$ (e.g. as $h \to 0$ in the FE problem). (TODO: ill-conditioned vs. ill-posed)
+Thus, for large condition numbers we say that the problem (2.1.1) is ill-posed -- recall for example that the condition number of the stiffness matrix $A$ in finite element discretisations of elliptic PDEs typically grows like $\mathcal{O}(h^{-2})$, where $h$ is the mesh width. Note however that for finite dimensional problems Hadamard's third condition is not strictly speaking violated and so (2.1.1) is not ill-posed in the sense of Hadamard, it is only **ill-conditioned**, but it is **asymptotically ill-posed** for $\kappa \to \infty$ (e.g. as $h \to 0$ in the FE problem).
 
 On the positive side, the above expansion shows clearly that errors in the low frequency components $i \ll n$, i.e., the components in the direction of eigenvectors corresponding to the larger eigenvalues, are not amplified as much. This is a typical situation in inverse problems (recall the introductory example in Section 1.1).
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why low-frequency components are not amplified as much)</span></p>
+
+Read the expansion term-by-term rather than in aggregate. The component of the error along direction $u_i$ has magnitude
+
+$$\bigl\lvert \text{coef}_i \bigr\rvert = \frac{\lvert u_i^\top (y^\delta - y) \rvert}{\lambda_i},$$
+
+so the noise projected onto mode $i$ (numerator, bounded by $\delta$) gets amplified by the factor $1/\lambda_i$. Which $\lambda_i$ you divide by is the whole story:
+
+- **Small $i$ (i.e. $i \ll n$):** $\lambda_i$ is close to $\lambda_1 = \mathcal{O}(1)$, so $1/\lambda_i = \mathcal{O}(1)$. The noise passes through essentially unamplified.
+- **Large $i$ (close to $n$):** $\lambda_i$ is close to $\lambda_n$, which is tiny, so $1/\lambda_i \approx \kappa$ is huge. The noise is blown up by the full condition number.
+
+Concretely: if $\lambda_1 = 1$ and $\lambda_n = 10^{-6}$, then noise in the $u_1$-direction is amplified by $1$, while noise in the $u_n$-direction is amplified by $10^6$. The catastrophe lives at the bottom of the spectrum; the top is fine.
+
+The "low frequency $\leftrightarrow$ large $\lambda_i$" convention comes from smoothing forward operators (e.g. compact integral operators): slowly varying eigenvectors are the ones that survive the forward map best and therefore carry the largest eigenvalues / singular values. This is why the heat-equation example in Section 1.1 loses high-frequency information first.
+
+</div>
 
 **The singular case.** Let us now consider the case that $A$ in (2.1.1) is positive semi-definite, i.e. it has a nontrivial kernel. Since $A^* = A^T = A$, we can decompose the vector space in
 
@@ -215,7 +249,7 @@ $$x = \sum_{i=1}^{m} \lambda_i^{-1} u_i u_i^\top y$$
 
 and the problem is solvable (Hadamard's first condition) iff $u_i^\top y = 0$ for $i > m$. (TODO: truncation / similarly high-pass filter ; why? )
 
-In the general noisy case, this will usually not be satisfied, but we can for example project the noisy data $y^\delta$ into the range of $A$ via a projection $P : \mathbb{R}^n \to \mathcal{R}(A)$. (TODO: is it rigorous) Now the problem is solvable and the solution $x_P^\delta$ with data $P y^\delta$ satisfies
+In the general noisy case, this will usually not be satisfied, but we can for example project the noisy data $y^\delta$ into the range of $A$ via a projection $P : \mathbb{R}^n \to \mathcal{R}(A)$. Now the problem is solvable and the solution $x_P^\delta$ with data $P y^\delta$ satisfies
 
 $$x_P^\delta - x = \sum_{i=1}^{m} \lambda_i^{-1} u_i u_i^\top (P y^\delta - y).$$
 
@@ -229,7 +263,7 @@ No (arbitrary) contributions in the kernel components are included and the error
 
 $$X = \mathcal{N}(A) + \overline{\mathcal{R}(A^*)} \quad \text{and} \quad Y = \mathcal{N}(A^*) + \overline{\mathcal{R}(A)}$$
 
-If the range of $A$ is not closed, i.e., $\overline{\mathcal{R}(A)} \neq \mathcal{R}(A)$, then the projection $P$ is not bounded, which leads again to instabilities. Any operator $A$ with eigenvalues arbitrarily close to 0 will have this behaviour, in particular every compact operator.
+If the range of $A$ is not closed, i.e., $\overline{\mathcal{R}(A)} \neq \mathcal{R}(A)$, then the projection $P$ is not bounded, which leads again to instabilities. Any operator $A$ with eigenvalues arbitrarily close to $0$ will have this behaviour, in particular every compact operator.
 
 #### Regularisation
 
@@ -237,7 +271,7 @@ We saw above that small eigenvalues of $A$ are causing instabilities. A natural 
 
 $$A_\alpha := A + \alpha I, \qquad \alpha > 0.$$
 
-The eigenvalues of $A_\alpha$ are $\lambda_i + \alpha$, $i = 1, \ldots, n$ and the eigenvectors remain unchanged. (TODO: intuition: regularization as a tax)
+The eigenvalues of $A_\alpha$ are $\lambda_i + \alpha$, $i = 1, \ldots, n$ and the eigenvectors remain unchanged. (small regularization: the problem is still instable. big regularization: we are solving different problem)
 
 To estimate the **regularisation error** consider again the regular (SPD) case, i.e. $\lambda_n > 0$ and let $x = A^{-1}y$ and $x_\alpha = A_\alpha^{-1} y$. Then
 
@@ -255,13 +289,13 @@ and thus the perturbation error can be estimated by
 
 $$E_\delta(\alpha, \delta) := \lVert x_\alpha^\delta - x_\alpha \rVert \le \frac{\delta}{\lambda_n + \alpha}.$$
 
-(TODO: I guess after rearrangement we can see the ration of the observarion error and the estimate error, which is instable in some cases, basically making the loss function useless, because it does not give much signal (low loss, but extremely bad / far estimate of the true value))
+(TODO: I guess after rearrangement we can see the ratio of the observarion error and the estimate error, which is instable in some cases, basically making the loss function useless, because it does not give much signal (low loss, but extremely bad / far estimate of the true value))
 
 Finally, using the triangle inequality the total error between the exact solution and the solution of the regularised problem with noisy data can be bounded by
 
 $$\lVert x - x_\alpha^\delta \rVert \le E_\alpha(\alpha) + E_\delta(\alpha, \delta) \le \left( \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert + \frac{\delta}{\lambda_n + \alpha} \right).$$
 
-(TODO: \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert from regularization and \frac{\delta}{\lambda_n + \alpha} from noise)
+(TODO: $\frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert$ from regularization and $\frac{\delta}{\lambda_n + \alpha}$ from noise)
 
 In practice, the exact data is not known, but we can bound $\lVert y \rVert \le \lVert y^\delta \rVert + \delta$ using (2.1.3) and thus obtain
 
@@ -3923,15 +3957,15 @@ Given the initial mean $m_0 \in \mathbb{R}^n$ and symmetric, positive definite c
 
 1. **Prediction step:** Given the mean $m_j$ and covariance $C_j$ of iteration $j$, we first update based on the stochastic dynamical system (5.8.4). Since we have assumed that $\xi_j$ is independent of $Z_j \sim \mathcal{N}(m_j, C_j)$, the prediction step computes
 
-$$\widehat{m}_{j+1} = Fm_j, \quad \widehat{C}_{j+1} = FC_j F^\top + \Sigma.$$
+   $$\widehat{m}_{j+1} = Fm_j, \quad \widehat{C}_{j+1} = FC_j F^\top + \Sigma.$$
 
 2. **Bayesian assimilation step:** We set the prior distribution $\pi_Z = \mathcal{N}(\widehat{m}_{j+1}, \widehat{C}\_{j+1})$ and update the mean and the covariance according to Bayes' Theorem (compare Theorem 5.3.1.)
 
-$$m_{j+1} = \widehat{m}_{j+1} + \widehat{C}_{j+1} A^\top (A\widehat{C}_{j+1} A^\top + \Gamma)^{-1}(y_{j+1} - A\widehat{m}_{j+1})$$
+   $$m_{j+1} = \widehat{m}_{j+1} + \widehat{C}_{j+1} A^\top (A\widehat{C}_{j+1} A^\top + \Gamma)^{-1}(y_{j+1} - A\widehat{m}_{j+1})$$
 
-$$C_{j+1} = \widehat{C}_{j+1} - \widehat{C}_{j+1} A^\top (A\widehat{C}_{j+1} A^\top + \Gamma)^{-1} A\widehat{C}_{j+1} \tag{5.8.6}$$
+   $$C_{j+1} = \widehat{C}_{j+1} - \widehat{C}_{j+1} A^\top (A\widehat{C}_{j+1} A^\top + \Gamma)^{-1} A\widehat{C}_{j+1} \tag{5.8.6}$$
 
-Defining the **Kalman gain** $K_j = \widehat{C}\_j A^\top (A\widehat{C}\_j A^\top + \Gamma)^{-1}$, we can write the Bayesian update step as $m_{j+1} = \widehat{m}\_{j+1} + K_{j+1}(y_{j+1} - A\widehat{m}\_{j+1})$ and $C_{j+1} = \widehat{C}\_{j+1} - K_{j+1} A\widehat{C}\_{j+1}$.
+   Defining the **Kalman gain** $K_j = \widehat{C}\_j A^\top (A\widehat{C}\_j A^\top + \Gamma)^{-1}$, we can write the Bayesian update step as $m_{j+1} = \widehat{m}\_{j+1} + K_{j+1}(y_{j+1} - A\widehat{m}\_{j+1})$ and $C_{j+1} = \widehat{C}\_{j+1} - K_{j+1} A\widehat{C}\_{j+1}$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.8.4</span><span class="math-callout__name">(Positive Definiteness of Kalman Covariance)</span></p>
@@ -3958,19 +3992,19 @@ Given the current particle system $(v_j^{(m)})\_{m=1,\ldots,M}$ of size $M$, we 
 
 1. **Prediction step:** We apply the dynamical system to predict the system's state by
 
-$$\widehat{v}_{j+1}^{(m)} = H(v_j^{(m)}) + \xi_j^{(m)}, \quad m = 1, \ldots, M,$$
+   $$\widehat{v}_{j+1}^{(m)} = H(v_j^{(m)}) + \xi_j^{(m)}, \quad m = 1, \ldots, M,$$
 
-where $(\xi_j^{(m)})\_{m=1,\ldots,M}$ is an i.i.d. sample of $\mathcal{N}(0, \Sigma)$. The empirical mean and the empirical covariance are given by
+   where $(\xi_j^{(m)})\_{m=1,\ldots,M}$ is an i.i.d. sample of $\mathcal{N}(0, \Sigma)$. The empirical mean and the empirical covariance are given by
 
-$$\widehat{m}_{j+1} = \frac{1}{M} \sum_{m=1}^{M} \widehat{v}_{j+1}^{(m)}, \quad \widehat{C}_{j+1} = \frac{1}{M} \sum_{m=1}^{M} (\widehat{v}_{j+1}^{(m)} - \widehat{m}_{j+1})(\widehat{v}_{j+1}^{(m)} - \widehat{m}_{j+1})^\top. \tag{5.8.7}$$
+   $$\widehat{m}_{j+1} = \frac{1}{M} \sum_{m=1}^{M} \widehat{v}_{j+1}^{(m)}, \quad \widehat{C}_{j+1} = \frac{1}{M} \sum_{m=1}^{M} (\widehat{v}_{j+1}^{(m)} - \widehat{m}_{j+1})(\widehat{v}_{j+1}^{(m)} - \widehat{m}_{j+1})^\top. \tag{5.8.7}$$
 
 2. **Analysis step:** We apply to each particle the linear Kalman filter update corresponding to a Gaussian approximation. The particles are updated by
 
-$$v_{j+1}^{(m)} = \widehat{v}_{j+1}^{(m)} + K_{j+1}(\tilde{y}_{j+1}^{(m)} - A\widehat{v}_{j+1}^{(m)}),$$
+   $$v_{j+1}^{(m)} = \widehat{v}_{j+1}^{(m)} + K_{j+1}(\tilde{y}_{j+1}^{(m)} - A\widehat{v}_{j+1}^{(m)}),$$
 
-where $\tilde{y}\_{j+1}^{(m)} = y_j + \eta_{j+1}^{(m)}$, $\eta_{j+1}^{(m)} \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \Gamma)$ denotes perturbed observation and $K_j = \widehat{C}\_j A^\top (A\widehat{C}\_j A^\top + \Gamma)^{-1}$ is again the Kalman gain. The filtering distribution is approximated empirically by
+   where $\tilde{y}\_{j+1}^{(m)} = y_j + \eta_{j+1}^{(m)}$, $\eta_{j+1}^{(m)} \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, \Gamma)$ denotes perturbed observation and $K_j = \widehat{C}\_j A^\top (A\widehat{C}\_j A^\top + \Gamma)^{-1}$ is again the Kalman gain. The filtering distribution is approximated empirically by
 
-$$\pi_{Z_j | y^{1:j}}(\mathrm{y}) \approx \widehat{\pi}_j(\mathrm{y}) = \frac{1}{M} \sum_{m=1}^{M} \delta_{v_j^{(m)}}(\mathrm{y}).$$
+   $$\pi_{Z_j | y^{1:j}}(\mathrm{y}) \approx \widehat{\pi}_j(\mathrm{y}) = \frac{1}{M} \sum_{m=1}^{M} \delta_{v_j^{(m)}}(\mathrm{y}).$$
 
 One advantage of the EnKF is the application in nonlinear dynamical systems. Furthermore, through the computation of the empirical covariance we save computational costs compared to updating the covariance in each iteration according to (5.8.6).
 
@@ -3982,15 +4016,15 @@ Given the current weighted particle system $(w_j^{(m)}, \widehat{Z}\_j^{(m)})\_{
 
 1. **Prediction step:** Given the current state approximations $\widehat{Z}\_j^{(m)}$, we first update the particles based on the stochastic dynamical system by
 
-$$\widehat{Z}_{j+1}^{(m)} = \widehat{Z}_j^{(m)} + \Delta \cdot b(\widehat{Z}_j^{(m)}) + \xi_{j+1}^{(m)}, \quad \xi_{j+1}^{(m)} \sim N(0, \Delta \cdot RR^\top)$$
+   $$\widehat{Z}_{j+1}^{(m)} = \widehat{Z}_j^{(m)} + \Delta \cdot b(\widehat{Z}_j^{(m)}) + \xi_{j+1}^{(m)}, \quad \xi_{j+1}^{(m)} \sim N(0, \Delta \cdot RR^\top)$$
 
-such that the marginal distribution of the state $Z_{j+1}$ can be approximated by $\pi_{Z_{j+1}}(\mathrm{d}z) \approx \sum_{m=1}^{M} w_j^{(m)} \delta_{\widehat{Z}\_{j+1}^{(m)}}(\mathrm{d}z)$.
+   such that the marginal distribution of the state $Z_{j+1}$ can be approximated by $\pi_{Z_{j+1}}(\mathrm{d}z) \approx \sum_{m=1}^{M} w_j^{(m)} \delta_{\widehat{Z}\_{j+1}^{(m)}}(\mathrm{d}z)$.
 
 2. **Bayesian assimilation step:** Following Bayes' Theorem we approximate the filtering distribution by
 
-$$\pi_{Z_{j+1}|y^{[1:j+1]}}(\mathrm{d}z) \approx \sum_{m=1}^{M} w_{j+1}^{(m)} \delta_{\widehat{Z}_{j+1}^{(m)}}(\mathrm{d}z),$$
+   $$\pi_{Z_{j+1}|y^{[1:j+1]}}(\mathrm{d}z) \approx \sum_{m=1}^{M} w_{j+1}^{(m)} \delta_{\widehat{Z}_{j+1}^{(m)}}(\mathrm{d}z),$$
 
-where we have updated and normalized the weights $w_{j+1}^{(m)} = \frac{w_j^{(m)} \pi_{Y_{j+1}}(y_{j+1} \mid \widehat{Z}\_{j+1}^{(m)})}{\sum_{m=1}^{M} w_j^{(m)} \pi_{Y_{j+1}}(y_{j+1} \mid \widehat{Z}\_{j+1}^{(m)})}$.
+   where we have updated and normalized the weights $w_{j+1}^{(m)} = \frac{w_j^{(m)} \pi_{Y_{j+1}}(y_{j+1} \mid \widehat{Z}\_{j+1}^{(m)})}{\sum_{m=1}^{M} w_j^{(m)} \pi_{Y_{j+1}}(y_{j+1} \mid \widehat{Z}\_{j+1}^{(m)})}$.
 
 Given the weighted particle system $(w_{j+1}^{(m)}, \widehat{Z}\_{j+1}^{(m)})\_{m=1,\ldots,M}$ in iteration $j+1$, we are able to approximate expectation values for functionals $F : \mathbb{R}^n \to \mathbb{R}$ of the following kind
 
