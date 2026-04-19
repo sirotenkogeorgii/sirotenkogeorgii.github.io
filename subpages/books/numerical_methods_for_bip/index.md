@@ -329,6 +329,21 @@ $$\lVert x_P^\delta - x \rVert \le \lambda_m^{-1} \delta = \mathcal{O}(\kappa_{\
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why $u_i^\top P y^\delta = u_i^\top y^\delta$ for $i \le m$)</span></p>
+
+Since $A$ is symmetric PSD, its eigenvectors split as $u_1,\ldots,u_m$ spanning $\mathcal{R}(A)$ (nonzero eigenvalues) and $u_{m+1},\ldots,u_n$ spanning $\mathcal{N}(A)$, with the two subspaces mutually orthogonal. Any vector decomposes uniquely as
+
+$$v = Pv + (I-P)v,\quad Pv \in \mathcal{R}(A),\ (I-P)v \in \mathcal{N}(A).$$
+
+For $i \le m$, $u_i \in \mathcal{R}(A)$, hence $u_i \perp (I-P)v$ and
+
+$$u_i^\top v = u_i^\top P v + \underbrace{u_i^\top (I-P)v}_{=\,0} = u_i^\top P v.$$
+
+Applied to $v = y^\delta$ this gives the claimed identity. Its role in the bound: plugging into (2.1) yields $u_i^\top(P y^\delta - y) = u_i^\top(y^\delta - y)$, so each coefficient is controlled by the raw noise $\lvert u_i^\top(y^\delta - y) \rvert \le \delta$, and summing with $\lambda_i^{-1} \le \lambda_m^{-1}$ yields the $\mathcal{O}(\kappa_{\text{eff}} \delta)$ bound. The projection $P$ silently killed the kernel-direction noise (indices $i > m$, otherwise uncontrolled) without distorting the range-direction noise.
+
+</div>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Error bound scaling with noise for singular linear systems)</span></p>
 
@@ -362,6 +377,9 @@ The eigenvalues of $A_\alpha$ are $\lambda_i + \alpha$, $i = 1, \ldots, n$ and t
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Regularization error of linear system)</span></p>
+
 To estimate the **regularisation error** consider again the regular (SPD) case, i.e. $\lambda_n > 0$ and let $x = A^{-1}y$ and $x_\alpha = A_\alpha^{-1} y$. Then
 
 $$x - x_\alpha = \sum_{i=1}^{n} \left( \frac{1}{\lambda_i} - \frac{1}{\lambda_i + \alpha} \right) u_i u_i^\top y = \sum_{i=1}^{n} \frac{\alpha}{\lambda_i(\lambda_i + \alpha)} (u_i^\top y) \, u_i$$
@@ -370,29 +388,46 @@ and using again the Bessel inequality we can estimate the regularisation error b
 
 $$E_\alpha(\alpha) := \lVert x - x_\alpha \rVert \le \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert.$$
 
-In particular, we have $E_\alpha \to 0$ as $\alpha \to 0$. In the case of a noisy data $y^\delta$, with $x_\alpha^\delta$ the solution of $A_\alpha x_\alpha^\delta = y^\delta$, the spectral decomposition gives
+In particular, we have $E_\alpha \to 0$ as $\alpha \to 0$. 
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Perturbation error of regularized linear system)</span></p>
+
+In the case of a noisy data $y^\delta$, with $x_\alpha^\delta$ the solution of $A_\alpha x_\alpha^\delta = y^\delta$, the spectral decomposition gives
 
 $$x_\alpha^\delta - x_\alpha = \sum_{i=1}^{n} (\lambda_i + \alpha)^{-1} u_i u_i^\top (y^\delta - y).$$
 
-and thus the perturbation error can be estimated by
+and thus the **perturbation error** can be estimated by
 
 $$E_\delta(\alpha, \delta) := \lVert x_\alpha^\delta - x_\alpha \rVert \le \frac{\delta}{\lambda_n + \alpha}.$$
 
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Error Bound of regularized noisy estimator)</span></p>
+
+Using the triangle inequality the total error between the exact solution and the solution of the regularised problem with noisy data can be bounded by
+
+$$\lVert x - x_\alpha^\delta \rVert \le E_\alpha(\alpha) + E_\delta(\alpha, \delta) \le \left( \underbrace{\frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert}_{\text{from regularization}} + \underbrace{\frac{\delta}{\lambda_n + \alpha}}_{\text{from noise}} \right).$$
+
+</div>
+
 (TODO: I guess after rearrangement we can see the ratio of the observarion error and the estimate error, which is instable in some cases, basically making the loss function useless, because it does not give much signal (low loss, but extremely bad / far estimate of the true value))
 
-Finally, using the triangle inequality the total error between the exact solution and the solution of the regularised problem with noisy data can be bounded by
-
-$$\lVert x - x_\alpha^\delta \rVert \le E_\alpha(\alpha) + E_\delta(\alpha, \delta) \le \left( \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert + \frac{\delta}{\lambda_n + \alpha} \right).$$
-
-(TODO: $\frac{\alpha}{\lambda_n(\lambda_n + \alpha)} \lVert y \rVert$ from regularization and $\frac{\delta}{\lambda_n + \alpha}$ from noise)
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Practical error bound)</span></p>
 
 In practice, the exact data is not known, but we can bound $\lVert y \rVert \le \lVert y^\delta \rVert + \delta$ using (2.1.3) and thus obtain
 
 $$\lVert x - x_\alpha^\delta \rVert \le \left( \frac{\alpha}{\lambda_n(\lambda_n + \alpha)} (1 + \delta_{\text{rel}}) + \frac{\delta_{\text{rel}}}{\lambda_n + \alpha} \right) \lVert y^\delta \rVert,$$
 
-(TODO: derive connection with loss function and lagrangian)
-
 where $\delta_{\text{rel}} = \delta / \lVert y^\delta \rVert$ is the relative noise level (or the inverse signal-to-noise ratio).
+
+</div>
+
+(TODO: derive connection with loss function and lagrangian)
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Regularisation Trade-off)</span></p>
@@ -401,11 +436,16 @@ For fixed $\delta_{\text{rel}}$ the two terms in the error bound behave very dif
 
 </div>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Generalization to rectangular matrices)</span></p>
+
 The discussion can easily be generalised also to arbitrary rectangular linear equation systems with $A \in \mathbb{R}^{n \times m}$ (and thus also to arbitrary linear operators between finite dimensional vector spaces of possibly different dimension) by considering the normal equations
 
 $$A^\top A x = A^\top y.$$
 
 However, the ill-conditioning is significantly worse since $\kappa(A^T A) = \kappa(A)^2$.
+
+</div>
 
 ### 2.2 Generalised Inverse -- The Infinite Dimensional Setting
 
