@@ -16,11 +16,19 @@ tags:
 
 ## Sequential Decision Making
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Reinforcement learning)</span></p>
+
 **Reinforcement learning** (RL) is a class of methods for solving various kinds of sequential decision making tasks. The agent maintains an internal state $z_t$, which it passes to its **policy** $\pi$ to choose an action $a_t = \pi(z_t)$. The environment responds by sending back an observation $o_{t+1}$, which the agent uses to update its internal state using the state-update function $z_{t+1} = SU(z_t, a_t, o_{t+1})$.
 
-To simplify things, we often assume that the environment is a Markovian process with hidden internal world state $w_t$, from which the observations $o_t$ are derived (this is called a POMDP). We often simplify further by assuming that the observation $o_t$ reveals the hidden environment state; in this case $s_t = o_t = w_t = z_t$ (this is called an MDP).
+</div>
+
+To simplify things, we often assume that the environment is a Markovian process with hidden internal world state $w_t$, from which the observations $o_t$ are derived (this is called a **POMDP**). We often simplify further by assuming that the observation $o_t$ reveals the hidden environment state; in this case $s_t = o_t = w_t = z_t$ (this is called an **MDP**).
 
 ### Maximum Expected Utility Principle
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Agent Goal in RL)</span></p>
 
 The goal of the agent is to choose a policy $\pi$ so as to maximize the sum of expected rewards:
 
@@ -30,11 +38,22 @@ $$
 
 where $s_0$ is the agent's initial state, $R(s_t, a_t)$ is the **reward function**, and $V_\pi(s_0)$ is the **value function** for policy $\pi$ evaluated at $s_0$. The expectation is with respect to
 
-$$
+<!-- $$
 p(a_0, s_1, a_1, \ldots, a_T, s_T | s_0, \pi) = \pi(a_0|s_0) p_{\text{env}}(o_1|a_0) \delta(s_1 = U(s_0, a_0, o_1)) \times \pi(a_1|s_1) p_{\text{env}}(o_2|a_1, o_1) \delta(s_2 = U(s_1, a_1, o_2)) \times \cdots
+$$ -->
+$$
+\begin{aligned}
+p(a_0, s_1, a_1, \ldots, a_T, s_T \mid s_0, \pi)
+&= \pi(a_0 \mid s_0)\, p_{\mathrm{env}}(o_1 \mid a_0)\, \delta(s_1 = U(s_0, a_0, o_1)) \\
+&\quad \times \pi(a_1 \mid s_1)\, p_{\mathrm{env}}(o_2 \mid a_1, o_1)\, \delta(s_2 = U(s_1, a_1, o_2)) \\
+&\quad \times \pi(a_2 \mid s_2)\, p_{\mathrm{env}}(o_3 \mid a_{1:2}, o_{1:2})\, \delta(s_3 = U(s_2, a_2, o_3)) \\
+&\quad \times \cdots
+\end{aligned}
 $$
 
-where $p_{\text{env}}$ is the environment's distribution over observations (usually unknown).
+where $p_{\text{env}}$ is the **environment's distribution over observations** (usually unknown).
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Optimal Policy)</span></p>
@@ -136,21 +155,24 @@ In general, there are three interacting stochastic processes to deal with: the e
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(POMDP)</span></p>
 
-A **partially observable Markov decision process** (POMDP, pronounced "pom-dee-pee") is the general model where the environment's dynamics are represented by a stochastic transition function rather than a deterministic function with noise as input. The stochastic transition function is:
+A **partially observable Markov decision process** (POMDP, pronounced "pom-dee-pee") is the general model where the environment's dynamics are represented by a stochastic transition function rather than a deterministic function with noise as input.
 
-$$
-p(w_{t+1}|w_t, a_t) = \mathbb{E}_{\epsilon_t^w}\left[\mathbb{I}(w_{t+1} = W(w_t, a_t, \epsilon_t^w))\right]
-$$
+1. The **stochastic transition function** is:
 
-The stochastic observation function is:
+   $$p(w_{t+1}|w_t, a_t) = \mathbb{E}_{\epsilon_t^w}\left[\mathbb{I}(w_{t+1} = W(w_t, a_t, \epsilon_t^w))\right]$$
 
-$$
-p(o_{t+1}|w_{t+1}) = \mathbb{E}_{\epsilon_{t+1}^o}\left[\mathbb{I}(o_{t+1} = O(w_{t+1}, \epsilon_{t+1}^o))\right]
-$$
+2. The **stochastic observation function** is:
+
+   $$p(o_{t+1}|w_{t+1}) = \mathbb{E}_{\epsilon_{t+1}^o}\left[\mathbb{I}(o_{t+1} = O(w_{t+1}, \epsilon_{t+1}^o))\right]$$
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sometimes Optimal Policy Could be Found Analytically)</span></p>
+
 If the world model (both $p(o\mid w)$ and $p(w'\mid w,a)$) is known, then we can --- in principle --- solve for the optimal policy. The method requires that the agent's internal state correspond to the **belief state** $s_t = \boldsymbol{b}\_t = p(w_t \mid \boldsymbol{h}\_t)$, where $\boldsymbol{h}\_t = (o_{1:t}, a_{1:t-1})$ is the observation history. The belief state can be updated recursively using Bayes' rule and forms a sufficient statistic for the optimal policy. Unfortunately, computing the belief state and the resulting optimal policy is wildly intractable.
+
+</div>
 
 ### Markov Decision Processes (MDPs)
 
@@ -225,7 +247,7 @@ A contextual MDP is a special kind of POMDP where the hidden variable correspond
 
 A **contextual bandit** is a special case of a POMDP where the world state transition function is independent of the action and the previous state, i.e., $p(w_t\mid w_{t-1}, a_t) = p(w_t)$. The world states are called "contexts" and are observable ($o_t = w_t$). Since the world state distribution is independent of the agent's actions, the agent has no effect on the external environment. However, its actions do affect the rewards.
 
-A special case with no context ($s_t$ is a fixed constant) and a finite number of possible actions $\mathcal{A} = \lbrace a_1, \ldots, a_K \rbrace$ is called a **multi-armed bandit**. The reward model has the form $R(a) = f(\boldsymbol{w}_a)$.
+A special case with no context ($s_t$ is a fixed constant) and a finite number of possible actions $\mathcal{A} = \lbrace a_1, \ldots, a_K \rbrace$ is called a **multi-armed bandit**. The reward model has the form $R(a) = f(\boldsymbol{w}\_a)$.
 
 </div>
 
