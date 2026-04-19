@@ -34,7 +34,7 @@ Sums are taken "automatically" over repeated indices, without the $\sum$ symbol,
 
 ### A.1. Basic Euclidean Set-Up
 
-We supply finite-dimensional real vector spaces $\mathcal{X}$ and $\mathcal{Y}$ with scalar products $\ell$ and $m$.
+We supply finite-dimensional real vector spaces $\mathcal{X}$ and $\mathcal{Y}$ with **scalar products** $\ell$ and $m$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dual spaces)</span></p>
@@ -42,7 +42,7 @@ We supply finite-dimensional real vector spaces $\mathcal{X}$ and $\mathcal{Y}$ 
 The **dual spaces** of $\mathcal{X}$ and $\mathcal{Y}$ are denoted by
 
 $$
-\widetilde{\mathcal{X}} = \mathcal{L}(\mathcal{X}, \mathbb{R}), \qquad \widetilde{\mathcal{Y}} = \mathcal{L}(\mathcal{Y}, \mathbb{R}). \tag{A.1}
+\widecheck{\mathcal{X}} = \mathcal{L}(\mathcal{X}, \mathbb{R}), \qquad \widecheck{\mathcal{Y}} = \mathcal{L}(\mathcal{Y}, \mathbb{R}). \tag{A.1}
 $$
 
 </div>
@@ -54,8 +54,8 @@ The **duality mappings** and associated **duality pairings** are
 
 $$
 \begin{aligned}
-L \in \mathcal{L}(\mathcal{X}, \widetilde{\mathcal{X}}): & \quad \langle L x, x' \rangle = \ell(x, x'), \quad \forall\, x, x' \in \mathcal{X}, &&\text{(A.2a)} \\
-M \in \mathcal{L}(\mathcal{Y}, \widetilde{\mathcal{Y}}): & \quad \langle M y, y' \rangle = m(y, y'), \quad \forall\, y, y' \in \mathcal{Y}. &&\text{(A.2b)}
+L \in \mathcal{L}(\mathcal{X}, \widecheck{\mathcal{X}}): & \quad \langle L x, x' \rangle := \ell(x, x'), \quad \forall\, x, x' \in \mathcal{X}, &&\text{(A.2a)} \\
+M \in \mathcal{L}(\mathcal{Y}, \widecheck{\mathcal{Y}}): & \quad \langle M y, y' \rangle := m(y, y'), \quad \forall\, y, y' \in \mathcal{Y}. &&\text{(A.2b)}
 \end{aligned}
 $$
 
@@ -64,7 +64,7 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Induced norms)</span></p>
 
-The norms induced by the scalar products are
+The norms induced by those scalar products are
 
 $$
 \lambda(x) := \sqrt{\ell(x, x)}, \qquad \mu(y) := \sqrt{m(y, y)}. \tag{A.3}
@@ -75,29 +75,29 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Gramian representation)</span></p>
 
-For a basis $(x_i)\_{1 \le i \le n}$ of $\mathcal{X}$, one has $\det L > 0$ with
+For a basis $(e_i)\_{1 \le i \le d}$, one has (cf. Remark A.1)
 
 $$
-L_{ij} = \ell(x_i, x_j) = \langle x_i, L x_j \rangle. \tag{A.4}
+\ell(x, x') = \ell(x^ie_i, x^je_j) = x^ix^j\ell(e_i,e_j). \tag{A.4}
 $$
 
-The Gramian matrix $(L_{ij})\_{1 \le i, j \le n}$ is symmetric, positive definite, and invertible. It represents the operator $L$ in the basis $(x_i)_{1 \le i \le n}$.
+The Gramian matrix $(\ell(e_i,e_j))\_{1 \le i, j \le d}$ is symmetric, positive definite, and invertible. It represents the operator $L$ in the basis $(e_i)_{1 \le i \le d}$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dual scalar product and dual norm)</span></p>
 
-The **dual scalar product** on $\widetilde{\mathcal{X}}$ is given by
+The **dual scalar product** on $\widecheck{\mathcal{X}}$ is given by
 
 $$
-\widetilde{\ell}(p, p') = L^{-1}_{ij}\, p_i\, p'_j = \langle p, L^{-1} p' \rangle, \qquad p, p' \in \widetilde{\mathcal{X}}, \tag{A.5}
+\widecheck{\ell}(p, p') = \ell(L^{-1}p, L^{-1}p') = \langle p, L^{-1} p' \rangle, \qquad p, p' \in \widecheck{\mathcal{X}}, \tag{A.5a}
 $$
 
 with corresponding norm
 
 $$
-\widetilde{\lambda}(p) := \sqrt{\widetilde{\ell}(p, p)}. \tag{A.6}
+\widecheck{\lambda}(p) := \sqrt{\widecheck{\ell}(p, p)}. \tag{A.5b}
 $$
 
 </div>
@@ -105,10 +105,10 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Canonical Euclidean basis)</span></p>
 
-The canonical Euclidean basis $(b_k)_{1 \le k \le n} \subset \mathbb{R}^n$ is
+The canonical Euclidean basis $(\delta_i)\_{1 \le i \le d} \subset \mathbb{R}^d$ is
 
 $$
-b_k = (0, \dots, 0, \underbrace{1}_{k\text{-th}}, 0, \dots, 0)^{\top}, \tag{A.7}
+\delta_i = (0, \dots, 0, \underbrace{1}_{i\text{-th}}, 0, \dots, 0)^{\top}, \tag{A.6}
 $$
 
 and the corresponding coordinate vectors are often arbitrary and do not relate to the application at hand. Scalar products can then be used to adjust the geometry.
@@ -118,29 +118,31 @@ and the corresponding coordinate vectors are often arbitrary and do not relate t
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">A.2 (Making bases orthonormal)</span></p>
 
-Let $(x_i)_{1 \le i \le n} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
+1. Let $(e_i)_{1 \le i \le d} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
 
-$$
-B \in \mathcal{L}(\mathbb{R}^n, \mathcal{X}), \qquad B\, b_k := x_k, \quad k \in \{1, \dots, n\}. \tag{A.8}
-$$
+   $$
+   B \in \mathcal{L}(\mathbb{R}^d, \mathcal{X}), \qquad B\, v := v^i e_i \in \mathcal{X}, \quad v \in \mathbb{R}^d. \tag{A.7}
+   $$
 
-Then the basis $(x_i)_{1 \le i \le n}$ is orthonormal for the scalar product on $\mathcal{X}$ iff
+2. Then the basis $(e_i)_{1 \le i \le d}$ is **orthonormal for the scalar product** on $\mathcal{X}$ iff
 
-$$
-\ell(x_i, x_j) = \langle x_i, L x_j \rangle = \delta_{ij}, \tag{A.9}
-$$
+   $$
+   \ell(x, x') := \langle B^{-1}x, B^{-1}x' \rangle, \tag{A.8}
+   $$
 
-where $\langle \cdot, \cdot \rangle$ denotes the canonical scalar product on $\mathbb{R}^n$. The duality mapping is
+   where $\langle \cdot, \cdot \rangle$ denotes the **canonical scalar product** on $\mathbb{R}^d$. 
 
-$$
-L = (B B^{\top})^{-1} \tag{A.10}
-$$
+3. The **duality mapping** is
 
-with the transposed operator (and the identification $\widetilde{\mathbb{R}}^n \cong \mathbb{R}^n$):
+   $$
+   L = (B \widecheck{B})^{-1} \tag{A.9}
+   $$
 
-$$
-B^{\top} \in \mathcal{L}(\widetilde{\mathcal{X}}, \mathbb{R}^n). \tag{A.11}
-$$
+   with the **transposed operator** (and the identification $\widecheck{\mathbb{R}}^d \cong \mathbb{R}^d$):
+
+   $$
+   \widecheck{B} \in \mathcal{L}(\widecheck{\mathcal{X}}, \mathbb{R}^d). \tag{A.10}
+   $$
 
 </div>
 
@@ -149,32 +151,32 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">A.3 (Orthogonal Left- and Right-Inverses)</span></p>
 
-**(a)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be injective. Then
+**(a)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be *injective*. Then
 
 $$
-A^{-} := (A^{\top} M A)^{-1} A^{\top} M \in \mathcal{L}(\mathcal{Y}, \mathcal{X}) \tag{A.11}
+A^{-} := (\widecheck{A} M A)^{-1} \widecheck{A} M \in \mathcal{L}(\mathcal{Y}, \mathcal{X}) \tag{A.11}
 $$
 
 is the **orthogonal left-inverse** of $A$. In particular,
 
 $$
 \begin{aligned}
-A^{-} A &= I_{\mathcal{X}}, &&\text{(A.12a)} \\
+A^{-} Ax &=x  && \forall x\in \mathcal{X}, &&\text{(A.12a)} \\
 A A^{-} &= \Pi_{\mathrm{rge}(A)} &&\text{(orthogonal projection onto the range of } A\text{).} &&\text{(A.12b)}
 \end{aligned}
 $$
 
-**(b)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be surjective. Then
+**(b)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be *surjective*. Then
 
 $$
-A^{+} := L^{-1} A^{\top} (A L^{-1} A^{\top})^{-1} \in \mathcal{L}(\mathcal{Y}, \mathcal{X}) \tag{A.13}
+A^{+} := L^{-1} \widecheck{A} (A L^{-1} \widecheck{A})^{-1} \in \mathcal{L}(\mathcal{Y}, \mathcal{X}) \tag{A.13}
 $$
 
 is the **orthogonal right-inverse** of $A$. In particular,
 
 $$
 \begin{aligned}
-A A^{+} &= I_{\mathcal{Y}}, &&\text{(A.14a)} \\
+A A^{+}y &= y && \forall y\in \mathcal{Y}, &&\text{(A.14a)} \\
 I - A^{+} A &= \Pi_{\ker(A)} &&\text{(orthogonal projection onto the kernel (nullspace) of } A\text{).} &&\text{(A.14b)}
 \end{aligned}
 $$
@@ -184,24 +186,24 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.4 (Properties of orthogonal partial inverses)</span></p>
 
-**(a)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be injective. Then
+**(a)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be *injective*. Then
 
 $$
 \begin{aligned}
-\widetilde{A^{-}} &= \widetilde{A}^{+}, &&\text{(A.15a)} \\
+\widecheck{A^{-}} &= \widecheck{A}^{+}, &&\text{(A.15a)} \\
 A^{--} &= A, &&\text{(A.15b)} \\
-(A^{\top} M A)^{-1} &= A^{-} M^{-1} (A^{\top})^{-1}, &&\text{(A.15c)} \\
+(\widecheck{A} M A)^{-1} &= A^{-} M^{-1} (\widecheck{A})^{-1}, &&\text{(A.15c)} \\
 (A V)^{-} &= V^{-1} A^{-} &&\text{if } V \in \mathcal{L}(\mathcal{X}, \mathcal{X}) \text{ is invertible.} &&\text{(A.15d)}
 \end{aligned}
 $$
 
-**(b)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be surjective. Then
+**(b)** Let $A \in \mathcal{L}(\mathcal{X}, \mathcal{Y})$ be *surjective*. Then
 
 $$
 \begin{aligned}
-\widetilde{A^{+}} &= \widetilde{A}^{-}, &&\text{(A.16a)} \\
+\widecheck{A^{+}} &= \widecheck{A}^{-}, &&\text{(A.16a)} \\
 A^{++} &= A, &&\text{(A.16b)} \\
-(A L^{-1} A^{\top})^{-1} &= (A^{+})^{\top} L A^{+}, &&\text{(A.16c)} \\
+(A L^{-1} \widecheck{A})^{-1} &= \widecheck{(A^{+})} L A^{+}, &&\text{(A.16c)} \\
 (V A)^{+} &= A^{+} V^{-1} &&\text{if } V \in \mathcal{L}(\mathcal{Y}, \mathcal{Y}) \text{ is invertible.} &&\text{(A.16d)}
 \end{aligned}
 $$
@@ -217,7 +219,7 @@ $$
 C = B A \in \mathcal{L}(\mathcal{X}, \mathcal{Y}) \tag{A.17}
 $$
 
-with injective factor $B$ and surjective factor $A$. Then
+with *injective* factor $B$ and *surjective* factor $A$. Then
 
 $$
 C^{\dagger} := A^{+} B^{-} \in \mathcal{L}(\mathcal{Y}, \mathcal{X}) \tag{A.18}
@@ -226,16 +228,16 @@ $$
 is called the **pseudo-inverse** of $C$. For a given $y \in \mathcal{Y}$, the vector
 
 $$
-\widehat{x} = C^{\dagger} y \tag{A.19}
+\overline{x} = C^{\dagger} y \tag{A.19}
 $$
 
-has minimal norm $\lambda(\widehat{x})$ among all points $x \in \mathcal{X}$ mapped by $C$ to the closest point to $y$ in $\mathrm{rge}(C)$. One has
+has *minimal* norm $\lambda(\overline{x})$ among all points $x \in \mathcal{X}$ mapped by $C$ to the *closest* point to $y$ in $\mathrm{rge}(C)$. One has
 
 $$
 \begin{aligned}
-C^{\dagger} &= A^{+} B^{-}, &&\text{(A.20a)} \\
-C^{\dagger} &= A^{+} B^{-1} &&\text{if } B \text{ bijective}, &&\text{(A.20b)} \\
-C^{\dagger} &= A^{-1} B^{-} &&\text{if } A \text{ bijective}. &&\text{(A.20c)}
+C^{\dagger} &= C^{-} &&\text{if } C \text{ injective}, &&\text{(A.20a)} \\
+C^{\dagger} &= C^{+} &&\text{if } C \text{ surjective}, &&\text{(A.20b)} \\
+C^{\dagger} &= C^{-1} &&\text{if } C \text{ bijective}. &&\text{(A.20c)}
 \end{aligned}
 $$
 
@@ -253,7 +255,7 @@ C C^{\dagger} C &= C, &&\text{(A.21b)} \\
 C^{\dagger} C &= \Pi_{\ker(C)^{\perp}}, &&\text{(A.21c)} \\
 C C^{\dagger} &= \Pi_{\mathrm{rge}(C)}, &&\text{(A.21d)} \\
 (C^{\dagger})^{\dagger} &= C, &&\text{(A.21e)} \\
-\widetilde{C^{\dagger}} &= \widetilde{C}^{\dagger}, &&\text{(A.21f)} \\
+\widecheck{C^{\dagger}} &= \widecheck{C}^{\dagger}, &&\text{(A.21f)} \\
 (C_2 C_1)^{\dagger} &= C_1^{\dagger} C_2^{\dagger}. &&\text{(A.21g)}
 \end{aligned}
 $$
@@ -265,13 +267,13 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Scalar product on $\mathcal{X} \otimes \mathcal{Y}$)</span></p>
 
-In the situation (A.2), (A.3), the space $\mathcal{X} \otimes \mathcal{Y} \cong \mathcal{L}(\widetilde{\mathcal{X}}, \mathcal{Y})$ is equipped with the scalar product (cf. Remark A.1)
+In the situation (A.2), (A.3), the space $\mathcal{X} \otimes \mathcal{Y} \cong \mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y})$ is equipped with the scalar product (cf. Remark A.1)
 
 $$
-(\ell \otimes m)(V, V') := \langle V_i, V'_j \rangle_{\mathcal{Y}}\, L^{ij}, \qquad V, V' \in \mathcal{L}(\widetilde{\mathcal{X}}, \mathcal{Y}), \tag{A.22}
+(\ell \otimes m)(V, V') := \langle V_i, V'_j \rangle_{\mathcal{Y}}\, L^{ij}, \qquad V, V' \in \mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y}), \tag{A.22}
 $$
 
-where $(x_i)_{1 \le i \le n} \subset \mathcal{X}$ is any basis of $\mathcal{X}$ and $V_i = V(\widetilde{x}_i)$ denote the images of the corresponding co-basis.
+where $(x_i)_{1 \le i \le n} \subset \mathcal{X}$ is any basis of $\mathcal{X}$ and $V_i = V(\widecheck{x}_i)$ denote the images of the corresponding co-basis.
 
 </div>
 
@@ -282,8 +284,8 @@ The expression defining the inner product (A.22) does not depend on the choice o
 
 $$
 \begin{aligned}
-(\ell \otimes m)(V, V') &= \langle V_i, V'_j \rangle_{\mathcal{Y}}\, L^{ij} = \langle V(L^{-1} \widetilde{x}_i), V'(\widetilde{x}_j) \rangle_{\mathcal{Y}} &&\text{(A.23a)} \\
-&= \langle V, V' \rangle_{\mathcal{L}(\widetilde{\mathcal{X}}, \mathcal{Y})} &&\text{(A.23b)} \\
+(\ell \otimes m)(V, V') &= \langle V_i, V'_j \rangle_{\mathcal{Y}}\, L^{ij} = \langle V(L^{-1} \widecheck{x}_i), V'(\widecheck{x}_j) \rangle_{\mathcal{Y}} &&\text{(A.23a)} \\
+&= \langle V, V' \rangle_{\mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y})} &&\text{(A.23b)} \\
 &= (M \otimes L^{-1})(V, V'). &&\text{(A.23c)}
 \end{aligned}
 $$
@@ -293,13 +295,13 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Companion scalar products)</span></p>
 
-Similarly, using $V_i = V(x_i) \in \widetilde{\mathcal{Y}}$,
+Similarly, using $V_i = V(x_i) \in \widecheck{\mathcal{Y}}$,
 
 $$
 \begin{aligned}
-(\widetilde{\ell} \otimes \widetilde{m})(P, P') &= \langle P_i, P'_j \rangle_{\widetilde{\mathcal{Y}}}\, (L^{-1})_{ij} = \langle P, P' \rangle_{\mathcal{L}(\mathcal{X}, \widetilde{\mathcal{Y}})}, &&\text{(A.24a)} \\
-(\ell \otimes \widetilde{m})(Q, Q') &= \langle Q_i, Q'_j \rangle_{\widetilde{\mathcal{Y}}}\, L^{ij}, &&\text{(A.24b)} \\
-(\widetilde{\ell} \otimes m)(W, W') &= \langle W_i, W'_j \rangle_{\mathcal{Y}}\, (L^{-1})_{ij}. &&\text{(A.24c)}
+(\widecheck{\ell} \otimes \widecheck{m})(P, P') &= \langle P_i, P'_j \rangle_{\widecheck{\mathcal{Y}}}\, (L^{-1})_{ij} = \langle P, P' \rangle_{\mathcal{L}(\mathcal{X}, \widecheck{\mathcal{Y}})}, &&\text{(A.24a)} \\
+(\ell \otimes \widecheck{m})(Q, Q') &= \langle Q_i, Q'_j \rangle_{\widecheck{\mathcal{Y}}}\, L^{ij}, &&\text{(A.24b)} \\
+(\widecheck{\ell} \otimes m)(W, W') &= \langle W_i, W'_j \rangle_{\mathcal{Y}}\, (L^{-1})_{ij}. &&\text{(A.24c)}
 \end{aligned}
 $$
 
@@ -311,10 +313,10 @@ $$
 The definition (A.22) is equivalent to the expression
 
 $$
-(\ell \otimes m)(V, V') = \langle V, (L^{-1} \otimes M)\, V' \rangle_{\mathcal{L}(\widetilde{\mathcal{X}}, \mathcal{Y})}, \tag{A.25}
+(\ell \otimes m)(V, V') = \langle V, (L^{-1} \otimes M)\, V' \rangle_{\mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y})}, \tag{A.25}
 $$
 
-independent of the choice of the bases. Recall from (A.6) that $\widetilde{\mathcal{L}}(\mathcal{X}, \mathcal{Y}) = \mathcal{L}(\mathcal{X}, \mathcal{Y})^{\vee}$.
+independent of the choice of the bases. Recall from (A.6) that $\widecheck{\mathcal{L}}(\mathcal{X}, \mathcal{Y}) = \mathcal{L}(\mathcal{X}, \mathcal{Y})^{\vee}$.
 
 </div>
 
@@ -324,13 +326,13 @@ independent of the choice of the bases. Recall from (A.6) that $\widetilde{\math
 The duality mapping corresponding to the scalar product (A.25) is
 
 $$
-L^{-1} \otimes M \in \mathcal{L}\bigl(\mathcal{L}(\mathcal{X}, \mathcal{Y}),\, \mathcal{L}(\widetilde{\mathcal{X}}, \widetilde{\mathcal{Y}})\bigr). \tag{A.26}
+L^{-1} \otimes M \in \mathcal{L}\bigl(\mathcal{L}(\mathcal{X}, \mathcal{Y}),\, \mathcal{L}(\widecheck{\mathcal{X}}, \widecheck{\mathcal{Y}})\bigr). \tag{A.26}
 $$
 
 We denote the norm on $\mathcal{L}(\mathcal{X}, \mathcal{Y})$ induced by the scalar product (A.25) by
 
 $$
-(\widetilde{\lambda} \otimes \mu)(U) := \sqrt{(\widetilde{\ell} \otimes m)(U, U)}. \tag{A.27}
+(\widecheck{\lambda} \otimes \mu)(U) := \sqrt{(\widecheck{\ell} \otimes m)(U, U)}. \tag{A.27}
 $$
 
 </div>
@@ -338,13 +340,13 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.8 (Orthogonal right-inverse)</span></p>
 
-Let $A \in \mathcal{L}(\mathcal{X}', \mathcal{X})$ be injective and $B \in \mathcal{L}(\mathcal{Y}, \mathcal{Y}')$ be surjective. Then $\widetilde{A} \otimes B$ is surjective with the orthogonal right-inverse
+Let $A \in \mathcal{L}(\mathcal{X}', \mathcal{X})$ be injective and $B \in \mathcal{L}(\mathcal{Y}, \mathcal{Y}')$ be surjective. Then $\widecheck{A} \otimes B$ is surjective with the orthogonal right-inverse
 
 $$
-(\widetilde{A} \otimes B)^{+} = \widetilde{A}^{+} \otimes B^{+} \in \mathcal{L}\bigl(\mathcal{L}(\mathcal{X}', \mathcal{Y}'),\, \mathcal{L}(\mathcal{X}, \mathcal{Y})\bigr). \tag{A.28}
+(\widecheck{A} \otimes B)^{+} = \widecheck{A}^{+} \otimes B^{+} \in \mathcal{L}\bigl(\mathcal{L}(\mathcal{X}', \mathcal{Y}'),\, \mathcal{L}(\mathcal{X}, \mathcal{Y})\bigr). \tag{A.28}
 $$
 
-Furthermore, the minimal $(\widetilde{\lambda} \otimes \mu)$-norm solution to the equation
+Furthermore, the minimal $(\widecheck{\lambda} \otimes \mu)$-norm solution to the equation
 
 $$
 \begin{aligned}
@@ -358,7 +360,7 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">A.9</span></p>
 
-Assume $A \in \mathcal{L}(\mathcal{X}', \mathcal{X})$ is injective. Then the minimal $(\widetilde{\lambda} \otimes \mu)$-norm solution to the equation
+Assume $A \in \mathcal{L}(\mathcal{X}', \mathcal{X})$ is injective. Then the minimal $(\widecheck{\lambda} \otimes \mu)$-norm solution to the equation
 
 $$
 \begin{aligned}
