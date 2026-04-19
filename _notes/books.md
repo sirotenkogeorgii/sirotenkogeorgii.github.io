@@ -29,3 +29,4 @@ date: 2024-10-20
 - [Numerical Methods for Bayesian Inverse Problems](/subpages/books/numerical_methods_for_bip/)
 - [Reinforcement Learning Overview](/subpages/books/reinforcement_learning_overview/)
 - [Functional Analysis](/subpages/books/functional_analysis/mit_rogriguez/)
+- [Geometric Deep Learning HD](/subpages/books/geometric_deep_learning_hd/)
