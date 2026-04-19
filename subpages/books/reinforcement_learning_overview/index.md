@@ -2988,13 +2988,13 @@ In the multi-agent setting the definition of "optimality" is much more complex t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Expected Return and Best Response)</span></p>
 
-Let $\hat{\boldsymbol{h}}_t = \lbrace (s_k, \boldsymbol{o}_k, \boldsymbol{a}_k)_{k=1}^{t-1}, s_t, \boldsymbol{o}_t \rbrace$ be the **full history**, containing all the past states, joint observations, and joint actions. We define the expected return for agent $i$ under joint policy $\boldsymbol{\pi}$ by
+Let $\hat{\boldsymbol{h}}\_t = \lbrace (s_k, \boldsymbol{o}\_k, \boldsymbol{a}\_k)\_{k=1}^{t-1}, s_t, \boldsymbol{o}\_t \rbrace$ be the **full history**, containing all the past states, joint observations, and joint actions. We define the expected return for agent $i$ under joint policy $\boldsymbol{\pi}$ by
 
 $$
 U_i(\boldsymbol{\pi}) = \sum_{\hat{\boldsymbol{h}}_t} p(\hat{\boldsymbol{h}}_t|\boldsymbol{\pi}) u_i(\hat{\boldsymbol{h}}_t)
 $$
 
-where $u_i(\hat{\boldsymbol{h}}_t) = \sum_{k=0}^{t-1} \gamma^k \mathcal{R}_i(s_k, \boldsymbol{a}_k, s_{k+1})$ is the discounted actual return for agent $i$ in a given full history.
+where $u_i(\hat{\boldsymbol{h}}\_t) = \sum_{k=0}^{t-1} \gamma^k \mathcal{R}\_i(s_k, \boldsymbol{a}\_k, s_{k+1})$ is the discounted actual return for agent $i$ in a given full history.
 
 We can derive Bellman-like equations:
 
@@ -3025,7 +3025,7 @@ $$
 U_i(\boldsymbol{\pi}) = \max_{\pi_i'} \min_{\pi_j'} U_i(\pi_i', \pi_j') = \min_{\pi_j'} \max_{\pi_i'} U_i(\pi_i', \pi_j') = -U_j(\boldsymbol{\pi})
 $$
 
-In other words, $\boldsymbol{\pi}$ is a minimax solution iff $\pi_i \in \text{BR}_i(\pi_j)$ and $\pi_j \in \text{BR}_j(\pi_i)$. We can solve for the minimax solution using linear programming.
+In other words, $\boldsymbol{\pi}$ is a minimax solution iff $\pi_i \in \text{BR}\_i(\pi_j)$ and $\pi_j \in \text{BR}\_j(\pi_i)$. We can solve for the minimax solution using linear programming.
 
 Minimax solutions also exist for two-player zero-sum stochastic games with finite episode lengths, such as chess and Go. In the case of perfect information games, dynamic programming can be used; in general, minimax search (a depth-limited version of DP that requires a heuristic function) can be used.
 
@@ -3276,7 +3276,7 @@ Applying policy gradient methods to multiple agents in parallel may not result i
 
 We can improve performance beyond independent learning by using a paradigm known as **Centralized Training and Decentralized Execution** (**CTDE**), in which the learning algorithm has access to all the information (from all agents) at training time, but at test time, agents only observe their own local observations. The **central information** can contain the joint action taken by all agents, and/or the joint observation vector, even such joint information is not available at execution time.
 
-We can modify the multi-agent A2C algorithm to exploit this by writing the $i$'th value/advantage function as $V(h_t^i, c_t; \boldsymbol{w}_i) / \text{Adv}(h_t^i, c_t, a_t^i)$, where $c_t$ is the shared central information. This is known as **centralized critics** with **decentralized actors**. A CTDE version of PPO is known as **MAPPO**.
+We can modify the multi-agent A2C algorithm to exploit this by writing the $i$'th value/advantage function as $V(h_t^i, c_t; \boldsymbol{w}\_i) / \text{Adv}(h_t^i, c_t, a_t^i)$, where $c_t$ is the shared central information. This is known as **centralized critics** with **decentralized actors**. A CTDE version of PPO is known as **MAPPO**.
 
 </div>
 
@@ -3295,7 +3295,7 @@ $$
 \forall \boldsymbol{a}. \; \boldsymbol{a} \in A^*(\boldsymbol{h}, c; \boldsymbol{\theta}) \Leftrightarrow \forall i. \; a_i \in A_i^*(h^i; \boldsymbol{\theta}_i)
 $$
 
-where $A^*(\boldsymbol{h}, c; \boldsymbol{\theta}) = \text{argmax}_{\boldsymbol{a}} Q(\boldsymbol{h}, c, \boldsymbol{a}; \boldsymbol{\theta})$ and $A_i^*(h^i; \boldsymbol{\theta}_i) = \text{argmax}_a Q(h^i, a^i; \boldsymbol{\theta}_i)$. This ensures that picking actions locally for each agent will also be optimal globally.
+where $A^\ast(\boldsymbol{h}, c; \boldsymbol{\theta}) = \text{argmax}\_{\boldsymbol{a}} Q(\boldsymbol{h}, c, \boldsymbol{a}; \boldsymbol{\theta})$ and $A_i^\ast(h^i; \boldsymbol{\theta}\_i) = \text{argmax}\_a Q(h^i, a^i; \boldsymbol{\theta}\_i)$. This ensures that picking actions locally for each agent will also be optimal globally.
 
 </div>
 
@@ -3305,7 +3305,7 @@ The **VDN** method assumes a linear decomposition: $Q(\boldsymbol{h}_t, c_t, \bo
 
 #### QMIX
 
-**QMIX** assumes $Q(\boldsymbol{h}_t, c_t, \boldsymbol{a}_t; \boldsymbol{\theta}) = f_{\text{mix}}(Q(h_t^1, a_t^1; \boldsymbol{\theta}_1), \ldots, Q(h_t^n, a_t^n; \boldsymbol{\theta}_n))$, where $f_{\text{mix}}$ is a neural network constructed so that it is monotonically increasing in each of its arguments (ensured by requiring all weights of the mixing network to be non-negative; the weights themselves are predicted by another "hyper-network" conditioned on the state $h_t^i$). This satisfies IGM since
+**QMIX** assumes $Q(\boldsymbol{h}\_t, c_t, \boldsymbol{a}\_t; \boldsymbol{\theta}) = f_{\text{mix}}(Q(h_t^1, a_t^1; \boldsymbol{\theta}\_1), \ldots, Q(h_t^n, a_t^n; \boldsymbol{\theta}\_n))$, where $f_{\text{mix}}$ is a neural network constructed so that it is monotonically increasing in each of its arguments (ensured by requiring all weights of the mixing network to be non-negative; the weights themselves are predicted by another "hyper-network" conditioned on the state $h_t^i$). This satisfies IGM since
 
 $$
 \max_{\boldsymbol{a}} Q(\boldsymbol{h}_{t+1}, c_{t+1}, \boldsymbol{a}; \bar{\boldsymbol{\theta}}) = f_{\text{mix}}\left(\max_{a^1} Q(h_{t+1}^1, a^1; \bar{\theta}_1), \ldots, \max_{a^n} Q(h_{t+1}^n, a^n; \bar{\theta}_n)\right)
@@ -3313,7 +3313,7 @@ $$
 
 ### Policy Learning with Self-Play
 
-For symmetric zero-sum games, where $r_i(s) = -r_j(s)$, we can assume that each player uses the same policy, modulo rearrangement of the input state: $\pi_j(\cdot|s) = \pi_i(\cdot|\psi(s))$, where $\psi(s)$ deterministically modifies the state to reflect the symmetry. The result is a single-agent problem in which we treat player $j$ as part of the environment:
+For symmetric zero-sum games, where $r_i(s) = -r_j(s)$, we can assume that each player uses the same policy, modulo rearrangement of the input state: $\pi_j(\cdot\mid s) = \pi_i(\cdot\mid\psi(s))$, where $\psi(s)$ deterministically modifies the state to reflect the symmetry. The result is a single-agent problem in which we treat player $j$ as part of the environment:
 
 $$
 p^\pi(s'|s, a^i) = \sum_{a^j} \pi(a^j|\psi(s)) p(s'|s, a^i, a^j)
@@ -3323,7 +3323,7 @@ This lets us learn $\pi$ using standard single-agent policy learning methods. Th
 
 ### Policy Learning with Learned Opponent Models
 
-Instead of using self-play, we can learn an **opponent model**. In the CTDE paradigm, where each agent sees the other agents' actions, agent $i$ can use supervised learning to predict the actions of agent $j$ given $i$'s observations. For example, we can train an encoder-decoder network to predict the actions of other agents via a bottleneck, and then pass this bottleneck embedding to the policy as side information: let $m_t^i = f^e(h_t^i; \psi_i^e)$ be the encoding, which is then passed to the decoder $f^d$ to predict the other agents' actions $\hat{\boldsymbol{\pi}}_{-i}^{i,t} = f^d(m_t^i; \psi_i^d)$, and also to the policy $a_t^i \sim \pi(\cdot|h_t^i, m_t^i; \theta_i)$.
+Instead of using self-play, we can learn an **opponent model**. In the CTDE paradigm, where each agent sees the other agents' actions, agent $i$ can use supervised learning to predict the actions of agent $j$ given $i$'s observations. For example, we can train an encoder-decoder network to predict the actions of other agents via a bottleneck, and then pass this bottleneck embedding to the policy as side information: let $m_t^i = f^e(h_t^i; \psi_i^e)$ be the encoding, which is then passed to the decoder $f^d$ to predict the other agents' actions $\hat{\boldsymbol{\pi}}\_{-i}^{i,t} = f^d(m_t^i; \psi_i^d)$, and also to the policy $a_t^i \sim \pi(\cdot\mid h_t^i, m_t^i; \theta_i)$.
 
 ### Best Response
 
@@ -3336,7 +3336,7 @@ $$
 AV_i^\pi(h^i, a^i) = \sum_{\boldsymbol{a}^{-i}} Q_i(\boldsymbol{h}^i, (a^i, \boldsymbol{a}^{-i})) \prod_{j \ne i} \pi_j(a^j|h^i; \theta_j^i)
 $$
 
-The best response is then $\text{BR}_i(h^i) = \text{argmax}_{a^i} AV_i^\pi(h^i, a^i)$.
+The best response is then $\text{BR}\_i(h^i) = \text{argmax}\_{a^i} AV_i^\pi(h^i, a^i)$.
 
 </div>
 
@@ -3348,11 +3348,11 @@ $$
 \hat{\pi}_j^t(a^j) = \frac{C_j^t(a^j)}{\sum_{a'} C_j^t(a')}
 $$
 
-where $C_j^t(a^j)$ is the number of times agent $j$ chose action $a^j$ in episodes up to step $t$. For two-player zero-sum finite games, the exploitability of the average $\overline{\pi}_t$ generated by FP converges to zero as $t$ grows large.
+where $C_j^t(a^j)$ is the number of times agent $j$ chose action $a^j$ in episodes up to step $t$. For two-player zero-sum finite games, the exploitability of the average $\overline{\pi}\_t$ generated by FP converges to zero as $t$ grows large.
 
 #### Neural Fictitious Self Play (NFSP)
 
-We can extend FP to the partially observed, non-tabular setting. Agent $i$ will learn a model of $j$'s policy, given $i$'s state (history), which we denote by $\overline{\pi}_{j|i}^t(a^j|h^i)$. We fit this by minimizing the cross-entropy loss:
+We can extend FP to the partially observed, non-tabular setting. Agent $i$ will learn a model of $j$'s policy, given $i$'s state (history), which we denote by $\overline{\pi}\_{j\mid i}^t(a^j\mid h^i)$. We fit this by minimizing the cross-entropy loss:
 
 $$
 \mathcal{L}(\overline{\pi}_{j|i}^t) = \mathbb{E}_{k \sim U(1,t), (h_k^i, a_k^j) \in \mathcal{D}_i} \left[-\log \overline{\pi}_{j|i}^t(a_k^j|h_k^i)\right]
@@ -3369,7 +3369,7 @@ In self-play, we model the opponent as using the same policy as the agent itself
 
 The **policy space response oracle** or **PSRO** method is a game-theoretic instance of population-based training, which can compute policies that satisfy various solution concepts for any kind of stochastic game, including partially observed, general-sum games.
 
-At generation $k$, each agent $i$ has a finite set of policies it can use, denoted $\Pi_i^k$. We define a normal-form **meta-game** $M^k$ from this by letting each agent choose one of its policies, where the reward is $\mathcal{R}_i(\boldsymbol{\pi}) = U_i(\boldsymbol{\pi})$. Once we have the reward matrix, we solve for some kind of equilibrium solution using a **meta-strategy solver**, extracting the probability distributions over policies $\sigma_i^k$ for each agent.
+At generation $k$, each agent $i$ has a finite set of policies it can use, denoted $\Pi_i^k$. We define a normal-form **meta-game** $M^k$ from this by letting each agent choose one of its policies, where the reward is $\mathcal{R}\_i(\boldsymbol{\pi}) = U_i(\boldsymbol{\pi})$. Once we have the reward matrix, we solve for some kind of equilibrium solution using a **meta-strategy solver**, extracting the probability distributions over policies $\sigma_i^k$ for each agent.
 
 We expand the set of policies by using an oracle to compute a new policy $\pi_i'$, e.g., a best response:
 
@@ -3410,7 +3410,7 @@ $$
 \pi_i^{k+1}(\boldsymbol{h}^i, a^i) = \begin{cases} \frac{R_i^{k,+}(\boldsymbol{h}^i, a^i)}{\sum_{a \in \mathcal{A}_i(\boldsymbol{h}^i)} R_i^{k,+}(\boldsymbol{h}^i, a)} & \text{if denominator is positive} \\ \frac{1}{|\mathcal{A}_i(\boldsymbol{h}^i)|} & \text{otherwise} \end{cases}
 $$
 
-where $x^+ = \max(x, 0)$. This converges to an $\epsilon$-Nash equilibrium where $\epsilon = O(\max_i |\mathcal{H}_i| \sqrt{|\mathcal{A}_i|} / \sqrt{t})$.
+where $x^{+} = \max(x, 0)$. This converges to an $\epsilon$-Nash equilibrium where $\epsilon = O(\max_i \|\mathcal{H}_i\| \sqrt{\|\mathcal{A}_i\|} / \sqrt{t})$.
 
 </div>
 
@@ -3479,7 +3479,7 @@ Note that if we use a uniform magnet, this is equivalent to adding an entropy re
 
 #### Belief State Approximations
 
-To implement MMDS, we need to sample from $P_\pi(s_t|h_t^i)$, the distribution over world states given agent $i$'s local history. One approach is particle filtering. Another is to train a **belief model** to predict the other player's private information, and the underlying environment state, given the current player's history. The **learned belief search** (LBS) method (designed for Hanabi, which is a Dec-POMDP) learns to predict private information (card hands) for each agent as a sequence of tokens.
+To implement MMDS, we need to sample from $P_\pi(s_t\mid h_t^i)$, the distribution over world states given agent $i$'s local history. One approach is particle filtering. Another is to train a **belief model** to predict the other player's private information, and the underlying environment state, given the current player's history. The **learned belief search** (LBS) method (designed for Hanabi, which is a Dec-POMDP) learns to predict private information (card hands) for each agent as a sequence of tokens.
 
 ### MARL for LLM Agents
 
@@ -3521,7 +3521,7 @@ For problems such as math and coding, it can be easy to determine if an answer i
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(PRM and ORM)</span></p>
 
-If the reward function $R(s_t)$ is defined on partial trajectories, it is called a **process reward model** or **PRM**. This provides a form of dense feedback. If the reward is just defined on the final sequence $R(s_T) = R(s_0, \boldsymbol{a}_{1:T})$, it is called an **outcome reward model** or **ORM**, and corresponds to a sparse reward.
+If the reward function $R(s_t)$ is defined on partial trajectories, it is called a **process reward model** or **PRM**. This provides a form of dense feedback. If the reward is just defined on the final sequence $R(s_T) = R(s_0, \boldsymbol{a}\_{1:T})$, it is called an **outcome reward model** or **ORM**, and corresponds to a sparse reward.
 
 For example, suppose we are solving a math problem using a thinking model: if we just check the final answer, we have an ORM, but if we also check correctness of the intermediate proof steps, we have a PRM. Note that a PRM is related to a value function (that models expected future reward), and is typically harder to learn than an ORM.
 
@@ -3601,15 +3601,15 @@ $$
 J(\boldsymbol{\theta}) = \mathbb{E}_{s \sim \mathcal{D}, \boldsymbol{a} \sim \pi_\theta(\boldsymbol{a}|s)} [R(s, \boldsymbol{a})]
 $$
 
-where $\pi_\theta(\boldsymbol{a}|s) = \prod_{t=1}^{T} \pi_\theta(a_t|\boldsymbol{a}_{1:t-1}, s)$ and $T = |\boldsymbol{a}|$ is the length of the generated output (terminated by generating an $\langle\text{eos}\rangle$ token).
+where $\pi_\theta(\boldsymbol{a}\mid s) = \prod_{t=1}^{T} \pi_\theta(a_t\mid \boldsymbol{a}\_{1:t-1}, s)$ and $T = \|\boldsymbol{a}\|$ is the length of the generated output (terminated by generating an $\langle\text{eos}\rangle$ token).
 
-We can convert this into an MDP by defining the deterministic state transition $p(s_t|s_{t-1}, a_t) = \delta(s_t = \text{concat}(s_{t-1}, a_t))$, with initial distribution $\delta(s_0 = s)$. Thus the state $s_t$ is just the set of tokens from the initial prompt $s$ plus the generated tokens up until time $t$. The reward is sparse:
+We can convert this into an MDP by defining the deterministic state transition $p(s_t\mid s_{t-1}, a_t) = \delta(s_t = \text{concat}(s_{t-1}, a_t))$, with initial distribution $\delta(s_0 = s)$. Thus the state $s_t$ is just the set of tokens from the initial prompt $s$ plus the generated tokens up until time $t$. The reward is sparse:
 
 $$
 R(s_t, a_t) = \begin{cases} 0 & \text{if } t < T \\ R(s_T, a_T = \text{eos}) = R(s, a_1, \ldots, a_T) & \text{if } t = T \end{cases}
 $$
 
-In practice, we usually regularize the problem to ensure the policy $\pi_\theta$ remains close to the base pre-trained LLM $\pi_{\text{ref}}$, by adding a penalty $-\beta D_{\text{KL}}(\pi_\theta(a_t|s_t) \| \pi_{\text{ref}}(a_t|s_t))$ to the per-token reward.
+In practice, we usually regularize the problem to ensure the policy $\pi_\theta$ remains close to the base pre-trained LLM $\pi_{\text{ref}}$, by adding a penalty $-\beta D_{\text{KL}}(\pi_\theta(a_t\mid s_t) \parallel \pi_{\text{ref}}(a_t\mid s_t))$ to the per-token reward.
 
 </div>
 
@@ -3621,14 +3621,14 @@ $$
 J_{\text{ppo}}(\boldsymbol{\theta}) = \mathbb{E}_{s_n \sim D} \mathbb{E}_{\boldsymbol{a}_n \sim \pi_{\text{old}}(\cdot|s_n)} \min\left(\rho_n(\boldsymbol{\theta}) \cdot A_n, \text{clip}(\rho_n(\boldsymbol{\theta}), \cdot A_n)\right)
 $$
 
-where $\rho_n(\boldsymbol{\theta}) = \frac{\pi_\theta(\boldsymbol{a}_n|s_n)}{\pi_{\text{old}}(\boldsymbol{a}_n|s_n)}$ is the likelihood ratio, $A_n = R_n - b_n$ is the advantage, $R_n = R(s_n + \boldsymbol{a}_n)$ is the trajectory-level reward, and $b_n = V(s_n + \boldsymbol{a}_n)$ is the baseline.
+where $\rho_n(\boldsymbol{\theta}) = \frac{\pi_\theta(\boldsymbol{a}\_n\mid s_n)}{\pi_{\text{old}}(\boldsymbol{a}\_n\mid s_n)}$ is the likelihood ratio, $A_n = R_n - b_n$ is the advantage, $R_n = R(s_n + \boldsymbol{a}\_n)$ is the trajectory-level reward, and $b_n = V(s_n + \boldsymbol{a}\_n)$ is the baseline.
 
 #### GRPO
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Group Relative Policy Optimization)</span></p>
 
-The **Group Relative PPO** or **GRPO** algorithm (used to train DeepSeek-R1-Zero) is a variant of PPO which replaces the critic network with a Monte Carlo estimate of the value function. For each prompt $s_n$, we generate $J$ answers $\boldsymbol{a}_n^j \sim \pi_{\text{old}}(\cdot|s_n)$ (called a **group**, often of size $J \sim 8$) which give final rewards $R_n^j$. We compute the advantage by subtracting the group average and dividing by the group standard deviation:
+The **Group Relative PPO** or **GRPO** algorithm (used to train DeepSeek-R1-Zero) is a variant of PPO which replaces the critic network with a Monte Carlo estimate of the value function. For each prompt $s_n$, we generate $J$ answers $\boldsymbol{a}\_n^j \sim \pi_{\text{old}}(\cdot\mid s_n)$ (called a **group**, often of size $J \sim 8$) which give final rewards $R_n^j$. We compute the advantage by subtracting the group average and dividing by the group standard deviation:
 
 $$
 \hat{A}_n^j = \frac{R_n^j - \mu_n}{\sigma_n}
@@ -3636,19 +3636,19 @@ $$
 
 where $\mu_n = \text{mean}(R_n^j)$ and $\sigma_n = \text{std}(R_n^j)$. The use of the normalization term ensures the rewards are **calibrated**. This is related to the use of **reward centering** in continual RL.
 
-Since the policy generates a sequence, we expand out the loss for each sequence into a sum of per-token losses. In GRPO, the step-level advantage is set to equal the normalized trajectory-level advantage, $\hat{A}_{nt}^j = \hat{A}_n^j$:
+Since the policy generates a sequence, we expand out the loss for each sequence into a sum of per-token losses. In GRPO, the step-level advantage is set to equal the normalized trajectory-level advantage, $\hat{A}\_{nt}^j = \hat{A}\_n^j$:
 
 $$
 J_{\text{GRPO}}(\boldsymbol{\theta}) = \frac{1}{N} \sum_{n=1}^{N} \frac{1}{J} \sum_{j=1}^{J} \frac{1}{|\boldsymbol{a}_n^j|} \sum_{t=1}^{|\boldsymbol{a}_n^j|} \min\left(\rho_{nt}^j(\boldsymbol{\theta}) \hat{A}_{nt}^j, \text{clip}(\rho_{nt}(\boldsymbol{\theta}), 1-\epsilon, 1+\epsilon) \hat{A}_{nt}^j\right)
 $$
 
-where $\rho_{nt}^j(\boldsymbol{\theta}) = \frac{\pi_\theta(a_{nt}^j|a_{n,<t}, s_n)}{\pi_{\text{old}}(a_{nt}^j|a_{n,<t}, s_n)}$ is the per-token likelihood ratio.
+where $\rho_{nt}^j(\boldsymbol{\theta}) = \frac{\pi_\theta(a_{nt}^j\mid a_{n,<t}, s_n)}{\pi_{\text{old}}(a_{nt}^j\mid a_{n,<t}, s_n)}$ is the per-token likelihood ratio.
 
 </div>
 
 #### DAPO
 
-The **DAPO** method suggests an asymmetric clipping of the likelihood ratio term: $\text{clip}(\rho_{nt}(\boldsymbol{\theta}), 1 - \epsilon_{\text{low}}, 1 + \epsilon_{\text{high}}) \hat{A}_{nt}^j$, with $\epsilon_{\text{high}} = 0.28 > \epsilon_{\text{low}} = 0.2$, so that actions which are low-probability under the previous model (and which therefore get large likelihood ratio $\rho_{it}$) are not clipped as much, which would otherwise suppress exploration and result in "entropy collapse".
+The **DAPO** method suggests an asymmetric clipping of the likelihood ratio term: $\text{clip}(\rho_{nt}(\boldsymbol{\theta}), 1 - \epsilon_{\text{low}}, 1 + \epsilon_{\text{high}}) \hat{A}\_{nt}^j$, with $\epsilon_{\text{high}} = 0.28 > \epsilon_{\text{low}} = 0.2$, so that actions which are low-probability under the previous model (and which therefore get large likelihood ratio $\rho_{it}$) are not clipped as much, which would otherwise suppress exploration and result in "entropy collapse".
 
 #### GSPO
 
@@ -3715,7 +3715,7 @@ $$
 \pi^*(y|x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y|x) \exp\left(\frac{1}{\beta} R(x, y)\right)
 $$
 
-from which we can derive the optimal reward as $R^*(x, y) = \beta \log \frac{\pi^*(y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z(x)$.
+from which we can derive the optimal reward as $R^\ast(x, y) = \beta \log \frac{\pi^\ast(y\mid x)}{\pi_{\text{ref}}(y\mid x)} + \beta \log Z(x)$.
 
 Plugging this into the Bradley-Terry model, the $Z(x)$ terms cancel, and we can fit the policy by minimizing
 
@@ -3732,7 +3732,7 @@ The main downside of DPO is that it is limited to learning from preference data,
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Inference-Time Scaling)</span></p>
 
-We can view the problem of generating samples from an LLM that maximizes some reward as equivalent to posterior sampling from a **tilted distribution**, that combines the prior $\pi_{\text{ref}}(y|x)$ with a likelihood $p(O=1|x,y) = \exp(R(x,y)/\beta)$. The target posterior is:
+We can view the problem of generating samples from an LLM that maximizes some reward as equivalent to posterior sampling from a **tilted distribution**, that combines the prior $\pi_{\text{ref}}(y\mid x)$ with a likelihood $p(O=1\mid x,y) = \exp(R(x,y)/\beta)$. The target posterior is:
 
 $$
 \pi^*(y|x) \propto e^{\frac{1}{\beta}R(x,y)} \pi_{\text{ref}}(y|x)
@@ -3740,7 +3740,7 @@ $$
 
 This is the optimal solution to the KL-regularized RL problem: $\max_{\pi(\cdot|x)} \mathbb{E}_{\pi(y|x)} R(x,y) - \beta D_{\text{KL}}(\pi(\cdot|x) \| \pi_{\text{ref}}(\cdot|x))$.
 
-Note that if we set $\beta = 1$ and define $R(x,y) = \log(\pi_{\text{ref}}(y|x)^{\alpha-1})$, the optimal solution becomes the **tempered distribution** or **power distribution**: $\pi^*(y|x) = \pi_{\text{ref}}(y|x)^\alpha$, which can be flatter if $\alpha < 1$ or sharper if $\alpha > 1$.
+Note that if we set $\beta = 1$ and define $R(x,y) = \log(\pi_{\text{ref}}(y\mid x)^{\alpha-1})$, the optimal solution becomes the **tempered distribution** or **power distribution**: $\pi^\ast(y\mid x) = \pi_{\text{ref}}(y\mid x)^\alpha$, which can be flatter if $\alpha < 1$ or sharper if $\alpha > 1$.
 
 Sampling from such distributions can be done using various methods:
 * **Best-of-N** sampling: generate $N$ trajectories, pick the best. This is equivalent to ancestral sampling from the forwards model, and then weighting by the final likelihood (a soft version of rejection sampling). However, performance can decrease when $N$ increases, due to deviating too far from the base model.
@@ -3802,9 +3802,13 @@ $$
 \min_{x \sim \pi_{\text{Adv}}} \max_{y \sim \pi_{\text{Def}}} r_\theta(x, y)
 $$
 
-At the Nash equilibrium $(\pi_A^*, \pi_D^*)$, we have $r_\theta(x, \pi_D^*(x)) \ge 0$ for any prompt $x \sim \pi_A^*$, meaning the response is safe.
+At the Nash equilibrium $(\pi_A^\ast, \pi_D^\ast)$, we have $r_\theta(x, \pi_D^\ast(x)) \ge 0$ for any prompt $x \sim \pi_A^\ast$, meaning the response is safe.
 
-The **SPIRAL** algorithm trains a single LLM to play various zero-sum two-player games (Tic-Tac-Toe, Kuhn Poker, and Simple Negotiation) using self-play. They show that the resulting system is better able to solve math and reasoning problems, which share some commonalities with game play. Training uses REINFORCE with **Role-conditioned Advantage Estimation** (**RAE**), which is an EMA estimator: $b_{G,p} = \alpha b_{G,p} + (1-\alpha) R_p(\tau)$, $A_{G,p}(\tau) = R_p(\tau) - b_{G,p}$.
+The **SPIRAL** algorithm trains a single LLM to play various zero-sum two-player games (Tic-Tac-Toe, Kuhn Poker, and Simple Negotiation) using self-play. They show that the resulting system is better able to solve math and reasoning problems, which share some commonalities with game play. Training uses REINFORCE with **Role-conditioned Advantage Estimation** (**RAE**), which is an EMA estimator: 
+
+$$b_{G,p} = \alpha b_{G,p} + (1-\alpha) R_p(\tau)$$
+
+$$A_{G,p}(\tau) = R_p(\tau) - b_{G,p}$$
 
 </div>
 
@@ -3825,7 +3829,7 @@ In this section, we discuss how to use LLMs to help create agents that themselve
 
 ### LLMs for Pre-Processing the Input
 
-If the input observations $\boldsymbol{o}_t$ sent to the agent are in natural language (or some other textual representation, such as JSON), it is natural to use an LLM to process them, in order to compute a more compact representation, $\boldsymbol{s}_t = \phi(\boldsymbol{o}_t)$, where $\phi$ can be the hidden state of the last layer of an LLM. This encoder can either be frozen, or fine-tuned with the policy network. We can also pass in the entire past observation history, $\boldsymbol{o}_{1:t}$, as well as static "side information", such as instruction manuals or human hints; these can all be concatenated to form the LLM prompt.
+If the input observations $\boldsymbol{o}\_t$ sent to the agent are in natural language (or some other textual representation, such as JSON), it is natural to use an LLM to process them, in order to compute a more compact representation, $\boldsymbol{s}\_t = \phi(\boldsymbol{o}\_t)$, where $\phi$ can be the hidden state of the last layer of an LLM. This encoder can either be frozen, or fine-tuned with the policy network. We can also pass in the entire past observation history, $\boldsymbol{o}\_{1:t}$, as well as static "side information", such as instruction manuals or human hints; these can all be concatenated to form the LLM prompt.
 
 #### Example: AlphaProof
 

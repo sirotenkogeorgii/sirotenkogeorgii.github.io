@@ -178,6 +178,9 @@ To motivate the remainder of this chapter, we will first consider the finite dim
 
 It suffices to consider matrix equations. Every finite dimensional vector space $X$ over $\mathbb{R}$ is isomorphic to $\mathbb{R}^n$ and every linear operator on $\mathbb{R}^n$ has a matrix representation.
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Linear System: Regular Case)</span></p>
+
 **The regular case.** Consider a linear equation system of the form
 
 $$Ax = y \tag{2.1.1}$$
@@ -187,6 +190,8 @@ with a symmetric, positive definite (SPD) $n \times n$ square matrix $A \in \mat
 $$A = \sum_{i=1}^{n} \lambda_i u_i u_i^\top \quad \left( = U \Lambda U^\top \right), \tag{2.1.2}$$
 
 where the $i$th column of $U$ is $u_i$ and $\Lambda$ is a diagonal matrix with $\Lambda_{ii} = \lambda_i$. W.l.o.g. assume that $\lambda_1 = \mathcal{O}(1)$, in particular independent of $n$, otherwise rescale $A$ and $y$.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Meaning of $\lambda_1 = \mathcal{O}(1)$)</span></p>
@@ -199,27 +204,77 @@ $\mathcal{O}(1)$ is big-O of one — a *constant*, independent of $n$. Formally,
 
 The **condition number** of $A$ provides a measure for how accurate and stable the system (2.1.1) can be solved. It is given by the ratio of the largest and the smallest eigenvalue of $A$, i.e., $\kappa(A) = \lambda_1 / \lambda_n$.
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Error bound scaling with noise for regular linear systems)</span></p>
+
 Consider that the data, namely the right hand side $y$, is only available in only a perturbed (or noisy) form as $y^\delta$, such that
 
 $$\lVert y^\delta - y \rVert \le \delta \tag{2.1.3}$$
 
-for some $\delta > 0$ in the Euclidean norm on $\mathbb{R}^n$, and denote by $x^\delta$ the solution of the perturbed system with right hand side $y^\delta$. Using the decomposition (2.1.2) of $A$, we get
-
-$$x^\delta - x = \sum_{i=1}^{n} \frac{u_i^\top (y^\delta - y)}{\lambda_i} \, u_i.$$
-
-Since the eigenvectors of $A$ can be chosen to be orthonormal, we can apply the Bessel inequality to obtain the bound
-
-$$\lVert x^\delta - x \rVert^2 = \sum_{i=1}^{n} \lambda_i^{-2} |u_i^\top (y^\delta - y)|^2 \le \lambda_n^{-2} \lVert y^\delta - y \rVert^2 \le \lambda_n^{-2} \delta^2.$$
+for some $\delta > 0$ in the Euclidean norm on $\mathbb{R}^n$, and denote by $x^\delta$ the solution of the perturbed system with right hand side $y^\delta$.
 
 Using the condition number and our assumption on the scaling of $\lambda_1$ this can also be expressed as
 
 $$\lVert x^\delta - x \rVert \le \kappa \lambda_1^{-1} \delta = \mathcal{O}(\kappa \delta).$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Using the decomposition (2.1.2) of $A$, we get
+
+$$x^\delta - x = \sum_{i=1}^{n} \frac{u_i^\top (y^\delta - y)}{\lambda_i} \, u_i.$$
+
+Since the eigenvectors of $A$ can be chosen to be orthonormal, we can apply the Bessel inequality (two times) to obtain the bound
+
+$$\lVert x^\delta - x \rVert^2 = \sum_{i=1}^{n} \lambda_i^{-2} |u_i^\top (y^\delta - y)|^2 \le \lambda_n^{-2} \lVert y^\delta - y \rVert^2 \le \lambda_n^{-2} \delta^2.$$
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Intermediate Steps</summary>
+
+$$x^\delta - x = \sum_{i=1}^{n} \underbrace{\frac{u_i^\top (y^\delta - y)}{\lambda_i}}_{:= c_i} \, u_i = \sum_{i=1}^{n} c_i \, u.$$
+
+$$\lVert x^\delta - x \rVert^2 = \left\|\sum_{i=1}^n c_i u_i\right\|^2 = \left(\sum_{i=1}^n c_i u_i\right)^\top \left(\sum_{j=1}^n c_j u_j\right) = \sum_{i,j} c_i c_j, u_i^\top u_j$$
+
+Because the $u_i$ are orthonormal,
+
+$$
+u_i^\top u_j=
+\begin{cases}
+1,& i=j,\\
+0,& i\ne j,
+\end{cases}
+$$
+
+so all cross terms vanish (remember that $c_i$ is a scalar), leaving only
+
+$$\sum_{i=1}^n |c_i|^2$$
+
+**We are using here Bessel inequality two times.**
+
+</details>
+</div>
+
+Using the condition number and our assumption on the scaling of $\lambda_1$ this can also be expressed as
+
+$$\lVert x^\delta - x \rVert \le \kappa \lambda_1^{-1} \delta = \mathcal{O}(\kappa \delta).$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Error bound scaling with noise for regular linear systems)</span></p>
 
 The bound is sharp, which can be seen easily by choosing $y^\delta - y = \delta u_n$. Thus, any growth in the condition number of $A$ directly leads to an amplification of noise in the data in the solution.
 
 Thus, for large condition numbers we say that the problem (2.1.1) is ill-posed -- recall for example that the condition number of the stiffness matrix $A$ in finite element discretisations of elliptic PDEs typically grows like $\mathcal{O}(h^{-2})$, where $h$ is the mesh width. Note however that for finite dimensional problems Hadamard's third condition is not strictly speaking violated and so (2.1.1) is not ill-posed in the sense of Hadamard, it is only **ill-conditioned**, but it is **asymptotically ill-posed** for $\kappa \to \infty$ (e.g. as $h \to 0$ in the FE problem).
 
 On the positive side, the above expansion shows clearly that errors in the low frequency components $i \ll n$, i.e., the components in the direction of eigenvectors corresponding to the larger eigenvalues, are not amplified as much. This is a typical situation in inverse problems (recall the introductory example in Section 1.1).
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why low-frequency components are not amplified as much)</span></p>
@@ -239,15 +294,30 @@ The "low frequency $\leftrightarrow$ large $\lambda_i$" convention comes from sm
 
 </div>
 
-**The singular case.** Let us now consider the case that $A$ in (2.1.1) is positive semi-definite, i.e. it has a nontrivial kernel. Since $A^* = A^T = A$, we can decompose the vector space in
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Linear System: Singular Case)</span></p>
+
+**The singular case.** Let us now consider the case that $A$ in (2.1.1) is positive semi-definite, i.e. it has a nontrivial kernel. Since $A^\ast = A^T = A$, we can decompose the vector space in
 
 $$\mathbb{R}^n = \mathcal{N}(A) + \mathcal{R}(A),$$
 
-where $\mathcal{R}$ is the range and $\mathcal{N}$ is the kernel. Let $\lambda_m$ be the smallest nonzero eigenvalue and let $\kappa_{\text{eff}} = \lambda_1 / \lambda_m$ be the **effective condition number**. Then
+where $\mathcal{R}$ is the range and $\mathcal{N}$ is the kernel. Let $\lambda_m$ be the smallest nonzero eigenvalue and let $\kappa_{\text{eff}} = \lambda_1 / \lambda_m$ be the **effective condition number**.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Solution in singular case)</span></p>
+
+In the singular case the solution is
 
 $$x = \sum_{i=1}^{m} \lambda_i^{-1} u_i u_i^\top y$$
 
-and the problem is solvable (Hadamard's first condition) iff $u_i^\top y = 0$ for $i > m$. (TODO: truncation / similarly high-pass filter ; why? )
+and the problem is solvable (Hadamard's first condition) **iff** $u_i^\top y = 0$ for $i > m$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Error bound scaling with noise for singular linear systems)</span></p>
 
 In the general noisy case, this will usually not be satisfied, but we can for example project the noisy data $y^\delta$ into the range of $A$ via a projection $P : \mathbb{R}^n \to \mathcal{R}(A)$. Now the problem is solvable and the solution $x_P^\delta$ with data $P y^\delta$ satisfies
 
@@ -257,21 +327,40 @@ Since by construction $u_i^\top P y^\delta = u_i^\top y^\delta$, for $i \le m$, 
 
 $$\lVert x_P^\delta - x \rVert \le \lambda_m^{-1} \delta = \mathcal{O}(\kappa_{\text{eff}} \delta).$$
 
-No (arbitrary) contributions in the kernel components are included and the error amplification is again determined by the smallest nonzero eigenvalue (or equivalently by the effective condition number). However, in practice it may be difficult to find $P$ without first performing a spectral decomposition of $A$.
+</div>
 
-**Outlook to infinite dimensions.** In the general case of a linear operator $A$ between two infinite dimensional Hilbert spaces $X$ and $Y$, the range of $A$ and $A^*$ are not necessarily closed. In that case we have
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Error bound scaling with noise for singular linear systems)</span></p>
+
+No (arbitrary) contributions in the kernel components are included and the **error amplification is again determined by the smallest nonzero eigenvalue (or equivalently by the effective condition number)**. 
+
+However, in practice it may be difficult to find $P$ without first performing a spectral decomposition of $A$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Outlook to infinite dimensions)</span></p>
+
+In the general case of a linear operator $A$ between two infinite dimensional Hilbert spaces $X$ and $Y$, the range of $A$ and $A^*$ are not necessarily closed. In that case we have
 
 $$X = \mathcal{N}(A) + \overline{\mathcal{R}(A^*)} \quad \text{and} \quad Y = \mathcal{N}(A^*) + \overline{\mathcal{R}(A)}$$
 
 If the range of $A$ is not closed, i.e., $\overline{\mathcal{R}(A)} \neq \mathcal{R}(A)$, then the projection $P$ is not bounded, which leads again to instabilities. Any operator $A$ with eigenvalues arbitrarily close to $0$ will have this behaviour, in particular every compact operator.
 
+</div>
+
 #### Regularisation
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Small eigenvalues cause instabilities - regularization)</span></p>
 
 We saw above that small eigenvalues of $A$ are causing instabilities. A natural approach would thus be to approximate the matrix $A$ with a family of matrices with eigenvalues bounded away from zero. One such family is
 
 $$A_\alpha := A + \alpha I, \qquad \alpha > 0.$$
 
 The eigenvalues of $A_\alpha$ are $\lambda_i + \alpha$, $i = 1, \ldots, n$ and the eigenvectors remain unchanged. (small regularization: the problem is still instable. big regularization: we are solving different problem)
+
+</div>
 
 To estimate the **regularisation error** consider again the regular (SPD) case, i.e. $\lambda_n > 0$ and let $x = A^{-1}y$ and $x_\alpha = A_\alpha^{-1} y$. Then
 
@@ -320,11 +409,16 @@ However, the ill-conditioning is significantly worse since $\kappa(A^T A) = \kap
 
 ### 2.2 Generalised Inverse -- The Infinite Dimensional Setting
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Target $y$ is out of range $A$)</span></p>
+
 In this section, throughout $A \in \mathcal{L}(X, Y)$ is a linear bounded operator between the Hilbert spaces $X$ and $Y$, and we are interested in solutions of the linear operator equation
 
 $$Ax = y \tag{2.2.1}$$
 
 for possibly non-injective and/or non-surjective $A$. For $y \notin \mathcal{R}(A)$, (2.2.1) has no solution (Hadamard 1). A sensible thing to do is to find $x \in X$ that minimises $\lVert Ax - y \rVert_Y$. On the other hand, for $\mathcal{N}(A) \neq \lbrace 0 \rbrace$ there are infinitely many solutions (Hadamard 2). In that case, we choose the one that minimises $\lVert x \rVert_X$. This leads to the following definition.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2.2.1</span><span class="math-callout__name">(Least-Squares and Minimum-Norm Solutions)</span></p>
@@ -541,13 +635,13 @@ Let $K \in \mathcal{K}(X, Y)$. Then there exists
 2. an orthonormal basis $(u_n)\_{n \in \mathbb{N}} \subset Y$ of $\overline{\mathcal{R}(K)}$, and
 3. an orthonormal basis $(v_n)\_{n \in \mathbb{N}} \subset X$ of $\overline{\mathcal{R}(K^*)}$,
 
-with
+   with
 
-$$Kv_n = \sigma_n u_n \quad \text{and} \quad K^* u_n = \sigma_n v_n, \quad \text{for all } n \in \mathbb{N}, \tag{2.3.1}$$
+   $$Kv_n = \sigma_n u_n \quad \text{and} \quad K^* u_n = \sigma_n v_n, \quad \text{for all } n \in \mathbb{N}, \tag{2.3.1}$$
 
-and
+   and
 
-$$Kx = \sum_{n \in \mathbb{N}} \sigma_n \langle x, v_n \rangle_X u_n, \quad \text{for all } x \in X. \tag{2.3.2}$$
+   $$Kx = \sum_{n \in \mathbb{N}} \sigma_n \langle x, v_n \rangle_X u_n, \quad \text{for all } x \in X. \tag{2.3.2}$$
 
 A sequence $(\sigma_n, u_n, v_n)\_{n \in \mathbb{N}}$ that provides such a **singular value decomposition (SVD)** (2.3.2) of $K$, is called **singular system**.
 
@@ -747,7 +841,7 @@ It can be shown that for all regularisations there exists an a priori rule and t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.5</span><span class="math-callout__name">(Convergent A Priori Rule)</span></p>
 
-Let $(A_\alpha^\dagger)\_{\alpha > 0}$ be a regularisation and $\alpha : \mathbb{R}_+ \to \mathbb{R}_+$ an a-priori rule with
+Let $(A_\alpha^\dagger)\_{\alpha > 0}$ be a regularisation and $\alpha : \mathbb{R}_{+} \to \mathbb{R}_{+}$ an a-priori rule with
 
 1. $\lim_{\delta \to 0} \alpha(\delta) = 0$,
 2. $\lim_{\delta \to 0} \delta \lVert A_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(Y,X)} = 0$.
@@ -1573,14 +1667,14 @@ In this case $\frac{\mathrm{d}\nu}{\mathrm{d}\mu}$ is $\mathcal{A}$-measurable a
 
 #### 3.2.6 Transformation of Measures
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.23</span><span class="math-callout__name">(Pushforward Measure)</span></p>
+
 Let $(\Omega_1, \mathcal{A}_1, \mu)$ be a measure space and $(\Omega_2, \mathcal{A}_2)$ a measurable space. Let $T : \Omega_1 \to \Omega_2$ be measurable. Then
 
 $$T_\sharp \mu(A_2) := \mu(\underbrace{\lbrace \omega \in \Omega_1 : T(\omega) \in A_2 \rbrace}_{= T^{-1}(A_2)}) \qquad \forall A_2 \in \mathcal{A}_2$$
 
 defines a measure on $(\Omega_2, \mathcal{A}_2)$.
-
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition 3.2.23</span><span class="math-callout__name">(Pushforward Measure)</span></p>
 
 We call $T_\sharp \mu$ the **pushforward measure**.
 
@@ -1591,7 +1685,11 @@ For real valued measurable functions, we have the usual change of variables form
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.2.24</span><span class="math-callout__name">(Change of Variables)</span></p>
 
-Let $T : \Omega_1 \to \Omega_2$ and $f : \Omega_2 \to \mathbb{R}$ be measurable. Then $\int_{\Omega_2} \|f(\omega_2)\| \, \mathrm{d}T_\sharp\mu(\omega_2) < \infty$ iff $\int_{\Omega_1} \|f \circ T\| \, \mathrm{d}\mu(\omega_1) < \infty$ and in this case
+Let $T : \Omega_1 \to \Omega_2$ and $f : \Omega_2 \to \mathbb{R}$ be measurable. Then 
+
+$$\int_{\Omega_2} |f(\omega_2)| \, \mathrm{d}T_\sharp\mu(\omega_2) < \infty \iff \int_{\Omega_1} |f \circ T| \, \mathrm{d}\mu(\omega_1) < \infty$$
+
+and in this case
 
 $$\int_{\Omega_1} f \circ T(\omega_1) \, \mathrm{d}\mu(\omega_1) = \int_{\Omega_2} f(\omega_2) \, \mathrm{d}T_\sharp\mu(\omega_2).$$
 
@@ -1604,7 +1702,11 @@ Assume that $\mu \ll \lambda$ is a measure on $(\mathbb{R}^d, \mathcal{B}(\mathb
 
 $$T_\sharp \mu(A) = \mu(T^{-1}(A)) = \int_{T^{-1}(A)} f(x) \, \mathrm{d}x = \int_A f(T^{-1}(x)) \det \mathrm{d}T^{-1}(x) \, \mathrm{d}x.$$
 
-Hence the density transforms under the pushforward as $\frac{\mathrm{d}T_\sharp \mu}{\mathrm{d}\lambda} = \frac{\mathrm{d}\mu}{\mathrm{d}\lambda} \circ T^{-1} \det \mathrm{d}T^{-1}$, where $\mathrm{d}T^{-1} : \mathbb{R}^d \to \mathbb{R}^{d \times d}$ denotes the Jacobian matrix of $T^{-1}$.
+Hence the density transforms under the pushforward as 
+
+$$\frac{\mathrm{d}T_\sharp \mu}{\mathrm{d}\lambda} = \frac{\mathrm{d}\mu}{\mathrm{d}\lambda} \circ T^{-1} \det \mathrm{d}T^{-1}$$
+
+where $\mathrm{d}T^{-1} : \mathbb{R}^d \to \mathbb{R}^{d \times d}$ denotes the Jacobian matrix of $T^{-1}$.
 
 </div>
 
@@ -3585,11 +3687,11 @@ Given this proposal kernel we can now define the **Metropolis-Hastings algorithm
 3. &emsp; Given the current state $X_j = x_j$, draw a realisation $x'$ from $Q(x_j, \cdot)$.
 4. &emsp; Compute the acceptance probability
 
-$$\alpha(x_j, x') := \min\left(1, \frac{p(x') \, q(x', x_j)}{p(x_j) \, q(x_j, x')}\right). \tag{5.6.8}$$
+   $$\alpha(x_j, x') := \min\left(1, \frac{p(x') \, q(x', x_j)}{p(x_j) \, q(x_j, x')}\right). \tag{5.6.8}$$
 
 5. &emsp; Draw an independent sample $u_{j+1} \sim \mathrm{uniform}[0, 1]$ and set
 
-$$x_{j+1} = \begin{cases} x', & \text{if } u_{j+1} \le \alpha(x_j, x'), \\ x_j, & \text{otherwise.} \end{cases}$$
+   $$x_{j+1} = \begin{cases} x', & \text{if } u_{j+1} \le \alpha(x_j, x'), \\ x_j, & \text{otherwise.} \end{cases}$$
 
 6. **end for**
 
@@ -3621,7 +3723,9 @@ $$Q(s; x, \cdot) = \mathcal{N}(x, s^2 I), \tag{5.6.12}$$
 
 where $s > 0$ is the **step size** parameter that can be optimised or calibrated. A well established rule of thumb (which also has some theoretical foundations) is that
 
-$s$ should be chosen such that $\bar{\alpha} := \int_{\mathbb{R}^n} \alpha(x, x') \, Q(s; x, \mathrm{d}x') \mu(\mathrm{d}x) \approx 0.21$,
+$s$ should be chosen such that 
+
+$$\bar{\alpha} := \int_{\mathbb{R}^n} \alpha(x, x') \, Q(s; x, \mathrm{d}x') \mu(\mathrm{d}x) \approx 0.21$$
 
 where $\bar{\alpha}$ is called the *mean acceptance rate* which can be estimated on the basis of a short trial run of the Markov chain in practice.
 
@@ -3720,7 +3824,11 @@ Set $\mathcal{H} := \lbrace \mathcal{N}(\mu, \Sigma) : \mu \in \mathbb{R}^m, \Si
 
 </div>
 
-In this section we concentrate on the finite dimensional case and let the parameter $X \in \mathbb{R}^n$, the data $y \in \mathbb{R}^m$, and the posterior $\mu_{X\mid y} \ll \lambda_n$ with density $\pi_{X\mid y}(x) = \frac{\pi_{X,Y}(x,y)}{Z(y)} = \frac{\pi_{Y\mid x}(y)\pi_X(x)}{Z(y)}$, and normalization constant
+In this section we concentrate on the finite dimensional case and let the parameter $X \in \mathbb{R}^n$, the data $y \in \mathbb{R}^m$, and the posterior $\mu_{X\mid y} \ll \lambda_n$ with density 
+
+$$\pi_{X\mid y}(x) = \frac{\pi_{X,Y}(x,y)}{Z(y)} = \frac{\pi_{Y\mid x}(y)\pi_X(x)}{Z(y)}$$
+
+and normalization constant
 
 $$Z(y) = \int_{\mathbb{R}^n} \pi_{X,Y}(x, y) \, \mathrm{d}x = \int_{\mathbb{R}^n} \pi_{Y|x}(x) \pi_X(x) \, \mathrm{d}x \tag{5.7.2}$$
 
@@ -3862,7 +3970,7 @@ Let $\eta$, $\mu$ be two probability measures on $\mathbb{R}$ with CDFs $F_\eta 
 
 </div>
 
-The above lemma shows the existence of a transport map pushing forward $\eta$ to $\mu$ for two measures on $\mathbb{R}$. Next, we generalize this construction to the case of two measures on $\mathbb{R}^n$, using marginal and conditional densities. For a vector $x = (x_1, \ldots, x_d)^\top \in \mathbb{R}^n$, we use the notation $\bar{x}_k := (x_1, \ldots, x_k)^\top \in \mathbb{R}^k$, and define $f^k(\bar{x}_k) := \int_{\mathbb{R}^{n-k}} f(\bar{x}_n) \, \mathrm{d}x_{k+1} \ldots \mathrm{d}x_n$ (the marginal density of the first $k$ variables of $\eta$) and $f_{\bar{x}_{k-1}}^k(x_k) := \frac{f^k(\bar{x}_k)}{f^{k-1}(\bar{x}_{k-1})}$ (the conditional density of $x_k$ given $\bar{x}_{k-1}$). Analogously for $g$.
+The above lemma shows the existence of a transport map pushing forward $\eta$ to $\mu$ for two measures on $\mathbb{R}$. Next, we generalize this construction to the case of two measures on $\mathbb{R}^n$, using marginal and conditional densities. For a vector $x = (x_1, \ldots, x_d)^\top \in \mathbb{R}^n$, we use the notation $\bar{x}\_k := (x_1, \ldots, x_k)^\top \in \mathbb{R}^k$, and define $f^k(\bar{x}\_k) := \int_{\mathbb{R}^{n-k}} f(\bar{x}\_n) \, \mathrm{d}x_{k+1} \ldots \mathrm{d}x_n$ (the marginal density of the first $k$ variables of $\eta$) and $f_{\bar{x}\_{k-1}}^k(x_k) := \frac{f^k(\bar{x}\_k)}{f^{k-1}(\bar{x}\_{k-1})}$ (the conditional density of $x_k$ given $\bar{x}\_{k-1}$). Analogously for $g$.
 
 We next construct $T = (T_1, \ldots, T_n)$. Let $T_1 : \mathbb{R} \to \mathbb{R}$ be such that $(T_1)\_\sharp \eta^1 = \mu^1$ (pushes forward the marginal of $\eta$ in the first variable to the marginal of $\mu$ in the first variable). This exists by Lemma 5.7.6.
 

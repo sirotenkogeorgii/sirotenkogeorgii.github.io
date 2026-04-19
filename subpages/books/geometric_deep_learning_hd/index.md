@@ -1,5 +1,5 @@
 ---
-layout: note
+layout: default
 title: "Introduction to Geometric Deep Learning"
 date: 2026-04-19
 excerpt: "Notes on 'Introduction to Geometric Deep Learning' (SS 2026) — starting with the appendix on mathematical background: Euclidean structure, orthogonal inverses, pseudo-inverses, tensor products and generalized inverses."
