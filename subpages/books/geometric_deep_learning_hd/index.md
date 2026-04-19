@@ -10,7 +10,7 @@ tags:
   - pseudo-inverse
 ---
 
-<style>
+<!-- <style>
   .accordion summary {
     font-weight: 600;
     color: var(--accent-strong, #2c3e94);
@@ -19,7 +19,7 @@ tags:
     border-left: 3px solid var(--accent-strong, #2c3e94);
     border-radius: 0.25rem;
   }
-</style>
+</style> -->
 
 # Introduction to Geometric Deep Learning
 
@@ -75,13 +75,13 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Gramian representation)</span></p>
 
-For a basis $(x_i)_{1 \le i \le n}$ of $\mathcal{X}$, one has $\det L > 0$ with
+For a basis $(x_i)\_{1 \le i \le n}$ of $\mathcal{X}$, one has $\det L > 0$ with
 
 $$
 L_{ij} = \ell(x_i, x_j) = \langle x_i, L x_j \rangle. \tag{A.4}
 $$
 
-The Gramian matrix $(L_{ij})_{1 \le i, j \le n}$ is symmetric, positive definite, and invertible. It represents the operator $L$ in the basis $(x_i)_{1 \le i \le n}$.
+The Gramian matrix $(L_{ij})\_{1 \le i, j \le n}$ is symmetric, positive definite, and invertible. It represents the operator $L$ in the basis $(x_i)_{1 \le i \le n}$.
 
 </div>
 
@@ -115,7 +115,7 @@ and the corresponding coordinate vectors are often arbitrary and do not relate t
 
 </div>
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">A.2 (Making bases orthonormal)</span></p>
 
 Let $(x_i)_{1 \le i \le n} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
@@ -318,7 +318,7 @@ independent of the choice of the bases. Recall from (A.6) that $\widetilde{\math
 
 </div>
 
-<div class="math-callout math-callout--lemma" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">A.7 (Scalar product of tensor products: duality mapping)</span></p>
 
 The duality mapping corresponding to the scalar product (A.25) is
@@ -355,7 +355,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--corollary" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">A.9</span></p>
 
 Assume $A \in \mathcal{L}(\mathcal{X}', \mathcal{X})$ is injective. Then the minimal $(\widetilde{\lambda} \otimes \mu)$-norm solution to the equation

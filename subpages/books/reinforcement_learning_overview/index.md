@@ -223,7 +223,7 @@ A contextual MDP is a special kind of POMDP where the hidden variable correspond
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Contextual Bandit)</span></p>
 
-A **contextual bandit** is a special case of a POMDP where the world state transition function is independent of the action and the previous state, i.e., $p(w_t|w_{t-1}, a_t) = p(w_t)$. The world states are called "contexts" and are observable ($o_t = w_t$). Since the world state distribution is independent of the agent's actions, the agent has no effect on the external environment. However, its actions do affect the rewards.
+A **contextual bandit** is a special case of a POMDP where the world state transition function is independent of the action and the previous state, i.e., $p(w_t\mid w_{t-1}, a_t) = p(w_t)$. The world states are called "contexts" and are observable ($o_t = w_t$). Since the world state distribution is independent of the agent's actions, the agent has no effect on the external environment. However, its actions do affect the rewards.
 
 A special case with no context ($s_t$ is a fixed constant) and a finite number of possible actions $\mathcal{A} = \lbrace a_1, \ldots, a_K \rbrace$ is called a **multi-armed bandit**. The reward model has the form $R(a) = f(\boldsymbol{w}_a)$.
 
@@ -397,7 +397,7 @@ In many problems, the observation $o_t$ only gives partial information about the
 
 **Optimal solution:** If we know the true latent structure ($p(o\mid z)$ and $p(z'\mid z,a)$), we can compute a belief state $\boldsymbol{b}\_t = p(w_t\mid\boldsymbol{h}\_t)$ and use POMDP solution methods. However, this is computationally very difficult.
 
-**Predictive state representation (PSR):** We can marginalize out the POMDP latent state $w_t$ to derive a prediction over the next observable state, $p(\boldsymbol{o}\_{t+1}|\boldsymbol{h}\_t, \boldsymbol{a}\_t)$, providing a learning target without explicitly invoking latent state.
+**Predictive state representation (PSR):** We can marginalize out the POMDP latent state $w_t$ to derive a prediction over the next observable state, $p(\boldsymbol{o}\_{t+1}\mid \boldsymbol{h}\_t, \boldsymbol{a}\_t)$, providing a learning target without explicitly invoking latent state.
 
 **Finite observation history:** Define the state as the last $k$ observations, $s_t = \boldsymbol{h}\_{t-k:t}$; when observations are images, this is called **frame stacking**. This cannot capture long-range dependencies.
 
@@ -413,7 +413,11 @@ In RL problems, the underlying transition and reward models are typically unknow
 * **Greedy policy:** $a_t = \arg\max_a Q(s,a)$ --- exploits current knowledge without exploration.
 * **$\epsilon$-greedy policy:** Pick the greedy action with probability $1-\epsilon$ and a random action with probability $\epsilon$. Suboptimal since it explores every action with at least probability $\epsilon/\|\mathcal{A}\|$, but can be improved by annealing $\epsilon$ to $0$.
 * **$\epsilon z$-greedy policy:** With probability $1-\epsilon$ exploit, and with probability $\epsilon$ repeat the sampled action for $n \sim z()$ steps. This helps escape local minima.
-* **Boltzmann exploration:** Uses the policy $\pi_\tau(a\mid s) = \frac{\exp(\hat{R}\_t(s_t, a)/\tau)}{\sum_{a'} \exp(\hat{R}\_t(s_t, a')/\tau)}$, where $\tau > 0$ is a temperature parameter. As $\tau \to 0$, this becomes greedy; higher $\tau$ encourages more exploration.
+* **Boltzmann exploration:** Uses the policy 
+  
+  $$\pi_\tau(a\mid s) = \frac{\exp(\hat{R}\_t(s_t, a)/\tau)}{\sum_{a'} \exp(\hat{R}\_t(s_t, a')/\tau)}$$
+  
+  where $\tau > 0$ is a temperature parameter. As $\tau \to 0$, this becomes greedy; higher $\tau$ encourages more exploration.
 * **Exploration bonus:** Add an **intrinsic reward** $R^b_t(s,a)$ (large if state-action is rarely visited) to the regular reward, biasing behavior toward information-gathering.
 
 </div>
@@ -549,8 +553,8 @@ The problem of solving for $V^\ast$, $Q^\ast$ or $\pi^\ast$ is called **policy o
 
 Consider a 1D **grid world** with 5 possible states. States $S_{T1}$ and $S_{T2}$ are absorbing states. There are 2 actions ($\uparrow$ and $\downarrow$). The reward function is zero everywhere except at the goal state $S_{T2}$, which gives a reward of 1.
 
-* $\gamma = 0$: $Q^*(s_3, \downarrow) = 1.0$ and $Q^*(s,a) = 0$ for all other state-action pairs. This is completely myopic and ignores the future.
-* $\gamma = 1$: $Q^*(s,a) = 1$ for all state-action pairs, since the agent can always reach the goal eventually. This is infinitely far-sighted but gives no short-term guidance.
+* $\gamma = 0$: $Q^\ast(s_3, \downarrow) = 1.0$ and $Q^\ast(s,a) = 0$ for all other state-action pairs. This is completely myopic and ignores the future.
+* $\gamma = 1$: $Q^\ast(s,a) = 1$ for all state-action pairs, since the agent can always reach the goal eventually. This is infinitely far-sighted but gives no short-term guidance.
 * $\gamma = 0.9$: Reflects a preference for near-term rewards while also taking future reward into account. This encourages the agent to seek the shortest path to the goal.
 
 </div>
@@ -1292,7 +1296,7 @@ $$
 D_{KL}(p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x}) \| p_{\boldsymbol{\theta}+\boldsymbol{\delta}}(\boldsymbol{y}|\boldsymbol{x})) \approx \frac{1}{2} \boldsymbol{\delta}^\top \mathbf{F}_{\boldsymbol{x}} \boldsymbol{\delta}
 $$
 
-where $\mathbf{F}\_{\boldsymbol{x}}(\boldsymbol{\theta}) = \mathbb{E}\_{p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x})}\left[(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid |\boldsymbol{x}))(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid\boldsymbol{x}))^\top\right]$.
+where $\mathbf{F}\_{\boldsymbol{x}}(\boldsymbol{\theta}) = \mathbb{E}\_{p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x})}\left[(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid \boldsymbol{x}))(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid\boldsymbol{x}))^\top\right]$.
 
 Replacing the Euclidean constraint with $\boldsymbol{\delta}^\top \mathbf{F}\_k \boldsymbol{\delta} \le \epsilon$ and solving gives the **natural gradient** update:
 
@@ -1308,7 +1312,7 @@ The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsym
 
 #### Natural Actor Critic
 
-To apply NGD to RL, define $g_{kt} = \nabla_{\boldsymbol{\theta}\_k} A_t \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}_t\mid \boldsymbol{s}_t)$ and compute $\boldsymbol{g}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt}$, $\mathbf{F}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt} g_{kt}^\top$, then $\boldsymbol{\delta}\_{k+1} = -\eta_k \mathbf{F}\_k^{-1} \boldsymbol{g}\_k$. This is called **natural policy gradient**.
+To apply NGD to RL, define $g_{kt} = \nabla_{\boldsymbol{\theta}\_k} A_t \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}\_t\mid \boldsymbol{s}\_t)$ and compute $\boldsymbol{g}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt}$, $\mathbf{F}\_k = \frac{1}{T} \sum_{t=1}^{T} g_{kt} g_{kt}^\top$, then $\boldsymbol{\delta}\_{k+1} = -\eta_k \mathbf{F}\_k^{-1} \boldsymbol{g}\_k$. This is called **natural policy gradient**.
 
 We can compute $\mathbf{F}\_k^{-1} \boldsymbol{g}\_k$ without having to invert $\mathbf{F}\_k$ by using the conjugate gradient method (**Hessian free optimization**). The **KFAC** method approximates the FIM of a DNN as a block diagonal matrix, where each block is a Kronecker product of two small matrices.
 
@@ -1408,7 +1412,7 @@ $$
 J(\pi) - J(\pi_k) \ge \frac{1}{1-\gamma} \underbrace{\mathbb{E}_{p_{\pi_k}^\gamma(s) \pi_k(a|s)}\left[\frac{\pi(a|s)}{\pi_k(a|s)} A^{\pi_k}(s,a)\right]}_{L(\pi, \pi_k)} - \frac{2\gamma C^{\pi, \pi_k}}{(1-\gamma)^2} \mathbb{E}_{p_{\pi_k}^\gamma(s)}\left[\text{TV}(\pi(\cdot|s), \pi_k(\cdot|s))\right]
 $$
 
-where $C^{\pi, \pi_k} = \max_s \|\mathbb{E}_{\pi(a\mid s)}[A^{\pi_k}(s,a)]\|$, $L(\pi, \pi_k)$ is a surrogate objective, and the second term is a penalty based on the total variation distance $\text{TV}(p,q) = \frac{1}{2}\|\boldsymbol{p} - \boldsymbol{q}\|_1$.
+where $C^{\pi, \pi_k} = \max_s \|\mathbb{E}\_{\pi(a\mid s)}[A^{\pi_k}(s,a)]\|$, $L(\pi, \pi_k)$ is a surrogate objective, and the second term is a penalty based on the total variation distance $\text{TV}(p,q) = \frac{1}{2}\|\boldsymbol{p} - \boldsymbol{q}\|_1$.
 
 If we can optimize this lower bound (or a stochastic approximation), we can guarantee monotonic policy improvement (in expectation) at each step.
 
@@ -1425,7 +1429,7 @@ $$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(TRPO)</span></p>
 
-**Trust region policy optimization** (TRPO) implements the policy improvement lower bound approximately. It leverages the fact that if $\mathbb{E}_{p_{\pi_k}^\gamma(s)}[D_{KL}(\pi_k \| \pi)(s)] \le \delta$, then $\pi$ also satisfies the TV constraint with $\delta = \frac{\epsilon^2}{2}$.
+**Trust region policy optimization** (TRPO) implements the policy improvement lower bound approximately. It leverages the fact that if $\mathbb{E}\_{p_{\pi_k}^\gamma(s)}[D_{KL}(\pi_k \| \pi)(s)] \le \delta$, then $\pi$ also satisfies the TV constraint with $\delta = \frac{\epsilon^2}{2}$.
 
 It considers a first-order expansion of the surrogate objective:
 
@@ -1523,7 +1527,7 @@ $$
 \frac{p(\boldsymbol{\tau}|\pi)}{p(\boldsymbol{\tau}|\pi_b)} = \prod_{t=0}^{T-1} \frac{\pi(a_t|s_t)}{\pi_b(a_t|s_t)}
 $$
 
-Define the **per-step importance ratio** $\rho_t(\boldsymbol{\tau}) \triangleq \pi(a_t|s_t)/\pi_b(a_t|s_t)$. We can reduce the variance by noting that the reward $r_t$ is independent of the trajectory beyond time $t$, leading to a **per-decision importance sampling** variant:
+Define the **per-step importance ratio** $\rho_t(\boldsymbol{\tau}) \triangleq \pi(a_t\mid s_t)/\pi_b(a_t\mid s_t)$. We can reduce the variance by noting that the reward $r_t$ is independent of the trajectory beyond time $t$, leading to a **per-decision importance sampling** variant:
 
 $$
 \hat{J}_{\text{PDIS}}(\pi) \triangleq \frac{1}{n} \sum_{i=1}^{n} \sum_{t=0}^{T-1} \prod_{t' \le t} \rho_{t'}(\boldsymbol{\tau}^{(i)}) \gamma^t r_t^{(i)}
@@ -1650,10 +1654,10 @@ where $\eta > 0$ is a temperature parameter and $G(s,a)$ is some quality functio
 
 ### Deterministic Case (Planning/Control as Inference)
 
-In the deterministic case, where $p(s_{t+1}|s_t, a_t)$ is either 1 or 0, rather than learning a policy $\pi$ that maps states to actions, we just need to learn a plan (a specific sequence of actions $\boldsymbol{a}\_{1:T}$). We want to maximize:
+In the deterministic case, where $p(s_{t+1}\mid s_t, a_t)$ is either 1 or 0, rather than learning a policy $\pi$ that maps states to actions, we just need to learn a plan (a specific sequence of actions $\boldsymbol{a}\_{1:T}$). We want to maximize:
 
 $$
-p(\boldsymbol{\tau}\mid\mathcal{O}=1, \boldsymbol{a}\_{1:T}) \propto \left[\prod_{t=1}^{T-1} p(s_{t+1}|s_t, a_t)\right]\left[\exp\left(\sum_{t=1}^{T} R(s_t, a_t)\right)\right]
+p(\boldsymbol{\tau}\mid\mathcal{O}=1, \boldsymbol{a}_{1:T}) \propto \left[\prod_{t=1}^{T-1} p(s_{t+1}|s_t, a_t)\right]\left[\exp\left(\sum_{t=1}^{T} R(s_t, a_t)\right)\right]
 $$
 
 The MAP sequence of actions is the optimal **open loop plan**. Computing this trajectory is known as the **control as inference** problem and can be solved using model predictive control methods.
@@ -1663,7 +1667,9 @@ The MAP sequence of actions is the optimal **open loop plan**. Computing this tr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Policy Learning as Variational Inference)</span></p>
 
-In the stochastic case, we want to learn a policy $\pi$ that generates a distribution over optimal trajectories. We define the objective as $\log p(\mathcal{O} = 1\mid\pi) = \log \int p_\pi(\boldsymbol{\tau}) p(\mathcal{O}=1\mid\boldsymbol{\tau}) d\boldsymbol{\tau}$.
+In the stochastic case, we want to learn a policy $\pi$ that generates a distribution over optimal trajectories. We define the objective as 
+
+$$\log p(\mathcal{O} = 1\mid\pi) = \log \int p_\pi(\boldsymbol{\tau}) p(\mathcal{O}=1\mid\boldsymbol{\tau}) d\boldsymbol{\tau}$$
 
 We introduce a variational distribution $q(\boldsymbol{\tau}) = p(s_1) \prod_t p(s_{t+1}\mid s_t, a_t) \pi_q(a_t\mid s_t)$ (note that we only introduce the variational distribution for the actions $\pi_q$, not for the dynamics, to avoid **optimism bias**).
 
@@ -1696,7 +1702,7 @@ $$
 \pi_q^k(a|s) = Z(s)^{-1} \pi_{\theta_p}^{k-1}(a|s) \exp(\eta^{-1} G(s,a))
 $$
 
-where $Z(s) = \int \pi_{\theta_p}^{k-1}(a|s) \exp(\eta^{-1} G(s,a)) da$ is the partition function.
+where $Z(s) = \int \pi_{\theta_p}^{k-1}(a\mid s) \exp(\eta^{-1} G(s,a)) da$ is the partition function.
 
 **M step:** Maximize $J$ with respect to $\pi_{\theta_p}$, holding $\pi_q^k$ fixed. This reduces to a weighted maximum likelihood problem:
 
@@ -1728,7 +1734,7 @@ where $-H(q) = D_{KL}(q \|\| \text{unif})$ is the negative entropy function. Thi
 
 **MPO** is an instance of EM control, where $G(s,a) = Q(s,a)$, estimated using the retrace algorithm or a single-step Bellman update.
 
-**E step:** Compute $q^k(a|s) = \frac{1}{Z(s)} \pi_{\theta_p}^{k-1}(a|s) \exp(\eta^{-1} G(s,a))$, where $Z(s)$ is approximated with Monte Carlo: $Z(s) \approx \frac{1}{M} \sum_{j=1}^{M} \exp(\eta^{-1} G(s, a_j))$ with $a_j \sim \pi_{\theta_p}^{k-1}(\cdot|s)$. The temperature $\eta$ is solved for by minimizing the dual of the constrained problem.
+**E step:** Compute $q^k(a\mid s) = \frac{1}{Z(s)} \pi_{\theta_p}^{k-1}(a\mid s) \exp(\eta^{-1} G(s,a))$, where $Z(s)$ is approximated with Monte Carlo: $Z(s) \approx \frac{1}{M} \sum_{j=1}^{M} \exp(\eta^{-1} G(s, a_j))$ with $a_j \sim \pi_{\theta_p}^{k-1}(\cdot\mid s)$. The temperature $\eta$ is solved for by minimizing the dual of the constrained problem.
 
 **M step:** Augment the weighted MLE objective with a prior centered at the previous parameters (a Gaussian with covariance $\lambda \mathbf{F}\_k$, where $\mathbf{F}\_k$ is the Fisher information matrix), giving:
 
@@ -1736,7 +1742,9 @@ $$
 \max_{\theta_p} E_{d_q(s)}\left[E_{q(a|s)} \log \pi(a|s, \theta_p) - \lambda D_{KL}(\pi(a|s, \theta_k) \| \pi(a|s, \theta_p))\right]
 $$
 
-This can also be rewritten as a constrained optimization problem with a KL trust region: $E_{d_q(s)}[D_{KL}(\pi(a\mid s, \theta_k) \|\| \pi(a\mid s, \theta_p))] \le \epsilon_m$.
+This can also be rewritten as a constrained optimization problem with a KL trust region: 
+
+$$E_{d_q(s)}[D_{KL}(\pi(a\mid s, \theta_k) \| \pi(a\mid s, \theta_p))] \le \epsilon_m$$
 
 </div>
 
@@ -1800,7 +1808,9 @@ $$
 J_Q(\boldsymbol{w}) = \mathbb{E}_{(\boldsymbol{s}_t, \boldsymbol{a}_t, r_{t+1}, \boldsymbol{s}_{t+1}) \sim \mathcal{D}}\left[\frac{1}{2}(Q_{\boldsymbol{w}}(\boldsymbol{s}_t, \boldsymbol{a}_t) - y(r_{t+1}, \boldsymbol{s}_{t+1}))^2\right]
 $$
 
-where $y(r_{t+1}, \boldsymbol{s}_{t+1}) = r_{t+1} + \gamma V_{\overline{\boldsymbol{w}}}^\pi(\boldsymbol{s}_{t+1})$ is the frozen target value, with $V_{\overline{\boldsymbol{w}}}(\boldsymbol{s}\_t) = \mathbb{E}_{\pi(\boldsymbol{a}\_t|\boldsymbol{s}\_t)}[Q_{\overline{\boldsymbol{w}}}(\boldsymbol{s}\_t, \boldsymbol{a}\_t) - \alpha \log \pi(\boldsymbol{a}\_t|\boldsymbol{s}\_t)]$.
+where $y(r_{t+1}, \boldsymbol{s}\_{t+1}) = r_{t+1} + \gamma V_{\overline{\boldsymbol{w}}}^\pi(\boldsymbol{s}\_{t+1})$ is the frozen target value, with 
+
+$$V_{\overline{\boldsymbol{w}}}(\boldsymbol{s}\_t) = \mathbb{E}\_{\pi(\boldsymbol{a}\_t|\boldsymbol{s}\_t)}[Q_{\overline{\boldsymbol{w}}}(\boldsymbol{s}\_t, \boldsymbol{a}\_t) - \alpha \log \pi(\boldsymbol{a}\_t|\boldsymbol{s}\_t)]$$
 
 To avoid overestimation bias, SAC fits two soft Q functions (inspired by clipped double Q learning in TD3) with targets:
 
@@ -1808,7 +1818,7 @@ $$
 y(r_{t+1}, \boldsymbol{s}_{t+1}; \overline{\boldsymbol{w}}_{1:2}, \boldsymbol{\theta}) = r_{t+1} + \gamma\left[\min_{i=1,2} Q_{\overline{\boldsymbol{w}}_i}(\boldsymbol{s}_{t+1}, \tilde{\boldsymbol{a}}_{t+1}) - \alpha \log \pi_{\boldsymbol{\theta}}(\tilde{\boldsymbol{a}}_{t+1}|\boldsymbol{s}_{t+1})\right]
 $$
 
-where $\tilde{\boldsymbol{a}}_{t+1} \sim \pi_{\boldsymbol{\theta}}(\boldsymbol{s}_{t+1})$ is a sampled next action.
+where $\tilde{\boldsymbol{a}}\_{t+1} \sim \pi_{\boldsymbol{\theta}}(\boldsymbol{s}\_{t+1})$ is a sampled next action.
 
 #### Policy Improvement
 
