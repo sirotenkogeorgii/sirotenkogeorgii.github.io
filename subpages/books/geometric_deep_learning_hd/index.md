@@ -191,9 +191,9 @@ $$
 $$
 \begin{aligned}
 \widecheck{A^{-}} &= \widecheck{A}^{+}, &&\text{(A.15a)} \\
-A^{--} &= A, &&\text{(A.15b)} \\
+A &= (A^{+})^{-}, &&\text{(A.15b)} \\
 (\widecheck{A} M A)^{-1} &= A^{-} M^{-1} (\widecheck{A})^{-1}, &&\text{(A.15c)} \\
-(A V)^{-} &= V^{-1} A^{-} &&\text{if } V \in \mathcal{L}(\mathcal{X}, \mathcal{X}) \text{ is invertible.} &&\text{(A.15d)}
+(A V)^{-} &= V^{-1} A^{-} &&\text{if } V \in \mathcal{L}(\mathcal{Z}, \mathcal{X}) \text{ is invertible.} &&\text{(A.15d)}
 \end{aligned}
 $$
 
@@ -202,9 +202,9 @@ $$
 $$
 \begin{aligned}
 \widecheck{A^{+}} &= \widecheck{A}^{-}, &&\text{(A.16a)} \\
-A^{++} &= A, &&\text{(A.16b)} \\
+A &= (A^{+})^{-}, &&\text{(A.16b)} \\
 (A L^{-1} \widecheck{A})^{-1} &= \widecheck{(A^{+})} L A^{+}, &&\text{(A.16c)} \\
-(V A)^{+} &= A^{+} V^{-1} &&\text{if } V \in \mathcal{L}(\mathcal{Y}, \mathcal{Y}) \text{ is invertible.} &&\text{(A.16d)}
+(V A)^{+} &= A^{+} V^{-1} &&\text{if } V \in \mathcal{L}(\mathcal{Y}, \mathcal{Z}) \text{ is invertible.} &&\text{(A.16d)}
 \end{aligned}
 $$
 
