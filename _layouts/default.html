@@ -22,11 +22,12 @@
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <script>
     window.MathJax = {
+      loader: {load: ['[tex]/mathtools']},
       tex: {
         inlineMath: [['\\(', '\\)'], ['$', '$']],
         displayMath: [['\\[', '\\]'], ['$$', '$$']],
         processEscapes: true,
-        packages: {'[+]': ['ams']}
+        packages: {'[+]': ['ams', 'mathtools']}
       },
       options: {
         skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],

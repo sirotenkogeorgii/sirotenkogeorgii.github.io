@@ -501,16 +501,23 @@ The determinant is not a good measure of matrix regularity. Singular values are 
 
 The natural desire to generalize the concept of matrix inverse so that the generalized inverse (= pseudoinverse) exists even for singular and rectangular matrices has led to several concepts. The most well-known is the Moore--Penrose pseudoinverse, which exists for every matrix and appears in the orthogonal least squares problem. The Drazin pseudoinverse exists only for square matrices and is more common in non-orthogonal problems.
 
-It is useful to keep in mind that pseudoinverses are rarely computed explicitly. They are used more for establishing and expressing certain properties. Similar to the classical inverse for solving systems $Ax = b$ --- we do not solve via $x = A^{-1}b$, yet the explicit formula is very useful.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Pseudoinverses are rarely computed explicitly)</span></p>
+
+It is useful to keep in mind that **pseudoinverses are rarely computed explicitly**. They are used more for establishing and expressing certain properties. Similar to the classical inverse for solving systems $Ax = b$ --- we do not solve via $x = A^{-1}b$, yet the explicit formula is very useful.
+
+</div>
 
 ### Moore--Penrose Pseudoinverse
 
 The most common pseudoinverse is the Moore--Penrose pseudoinverse, which is based on the SVD.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Moore--Penrose Pseudoinverse)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Moore-Penrose Pseudoinverse)</span></p>
 
-Let $A \in \mathbb{R}^{m \times n}$ with reduced SVD $A = U_1 S V_1^\top$. If $A \neq 0$, its **pseudoinverse** is $A^\dagger = V_1 S^{-1} U_1^\top \in \mathbb{R}^{n \times m}$. For $A = 0$ we define $A^\dagger = A^\top$.
+Let $A \in \mathbb{R}^{m \times n}$ with reduced SVD $A = U_1 S V_1^\top$. 
+* If $A \neq 0$, its **pseudoinverse** is $A^\dagger = V_1 S^{-1} U_1^\top \in \mathbb{R}^{n \times m}$. 
+* If $A = 0$ we define $A^\dagger = A^\top$.
 
 </div>
 
@@ -651,14 +658,14 @@ The second type of pseudoinverse is the **Drazin pseudoinverse**. It exists only
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Drazin Pseudoinverse)</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$ and let $A = SJS^{-1}$, where $J$ is the Jordan normal form of $A$. Suppose $J$ has the form $J = \begin{pmatrix} C & 0 \\ 0 & N \end{pmatrix}$, where $C$ is regular and $N$ contains the Jordan blocks for the zero eigenvalue. Then the **Drazin pseudoinverse** is $A^D = S \begin{pmatrix} C^{-1} & 0 \\ 0 & 0 \end{pmatrix} S^{-1}$.
+Let $A \in \mathbb{R}^{n \times n}$ and let $A = SJS^{-1}$, where $J$ is the Jordan normal form of $A$. Suppose $J$ has the form $J = \begin{pmatrix} C & 0 \\\ 0 & N \end{pmatrix}$, where $C$ is regular and $N$ contains the Jordan blocks for the zero eigenvalue. Then the **Drazin pseudoinverse** is $A^D = S \begin{pmatrix} C^{-1} & 0 \\\ 0 & 0 \end{pmatrix} S^{-1}$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span></p>
 
-Let $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$. Then $A^\dagger = \begin{pmatrix} 0 & 0 \\ 1 & 0 \end{pmatrix}$, but $A^D = \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$. Thus the Moore--Penrose and Drazin pseudoinverses generally differ.
+Let $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$. Then $A^\dagger = \begin{pmatrix} 0 & 0 \\\ 1 & 0 \end{pmatrix}$, but $A^D = \begin{pmatrix} 0 & 0 \\\ 0 & 0 \end{pmatrix}$. Thus the Moore--Penrose and Drazin pseudoinverses generally differ.
 
 </div>
 
@@ -680,7 +687,7 @@ Let $A \in \mathbb{R}^{m \times n}$, then
 
 **(1):** If $A$ is regular, then $A = SCS^{-1}$. Hence $A^{-1} = SC^{-1}S^{-1} = A^D$.
 
-**(2):** $A^D A A^D = S \begin{pmatrix} C^{-1} & 0 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} C & 0 \\ 0 & N \end{pmatrix} \begin{pmatrix} C^{-1} & 0 \\ 0 & 0 \end{pmatrix} S^{-1} = S \begin{pmatrix} C^{-1}CC^{-1} & 0 \\ 0 & 0 \end{pmatrix} S^{-1} = S \begin{pmatrix} C^{-1} & 0 \\ 0 & 0 \end{pmatrix} S^{-1} = A^D$.
+**(2):** $A^D A A^D = S \begin{pmatrix} C^{-1} & 0 \\\ 0 & 0 \end{pmatrix} \begin{pmatrix} C & 0 \\\ 0 & N \end{pmatrix} \begin{pmatrix} C^{-1} & 0 \\\ 0 & 0 \end{pmatrix} S^{-1} = S \begin{pmatrix} C^{-1}CC^{-1} & 0 \\\ 0 & 0 \end{pmatrix} S^{-1} = S \begin{pmatrix} C^{-1} & 0 \\\ 0 & 0 \end{pmatrix} S^{-1} = A^D$.
 
 </details>
 </div>
@@ -694,7 +701,7 @@ The Drazin pseudoinverse appears, for example, in solving systems of linear diff
 
 It is well known that regular matrices in $\mathbb{R}^{n \times n}$ with multiplication form a group, with the inverse being the classical matrix inverse. In $\mathbb{R}^{n \times n}$ we can find other groups with multiplication.
 
-Let $S \in \mathbb{R}^{n \times n}$ be fixed and regular, and let $k < n$. Define the set $\mathcal{G}$ of all $n \times n$ matrices of the form $S \begin{pmatrix} C & 0 \\ 0 & 0 \end{pmatrix} S^{-1}$, where $C \in \mathbb{R}^{k \times k}$ is regular. All matrices in $\mathcal{G}$ are singular, yet $\mathcal{G}$ forms a group with multiplication. The identity element is $S \begin{pmatrix} I_k & 0 \\ 0 & 0 \end{pmatrix} S^{-1}$ and the inverse of $A = S \begin{pmatrix} C & 0 \\ 0 & 0 \end{pmatrix} S^{-1}$ is $S \begin{pmatrix} C^{-1} & 0 \\ 0 & 0 \end{pmatrix} S^{-1} = A^D$. Thus the group inverses correspond exactly to the Drazin pseudoinverse.
+Let $S \in \mathbb{R}^{n \times n}$ be fixed and regular, and let $k < n$. Define the set $\mathcal{G}$ of all $n \times n$ matrices of the form $S \begin{pmatrix} C & 0 \\\ 0 & 0 \end{pmatrix} S^{-1}$, where $C \in \mathbb{R}^{k \times k}$ is regular. All matrices in $\mathcal{G}$ are singular, yet $\mathcal{G}$ forms a group with multiplication. The identity element is $S \begin{pmatrix} I_k & 0 \\\ 0 & 0 \end{pmatrix} S^{-1}$ and the inverse of $A = S \begin{pmatrix} C & 0 \\\ 0 & 0 \end{pmatrix} S^{-1}$ is $S \begin{pmatrix} C^{-1} & 0 \\\ 0 & 0 \end{pmatrix} S^{-1} = A^D$. Thus the group inverses correspond exactly to the Drazin pseudoinverse.
 
 </div>
 
@@ -762,7 +769,7 @@ For every matrix norm and $k \in \mathbb{N}$: $\lVert A^k \rVert \leq \lVert A \
 
 1. $\lVert A \rVert_{\ell_1}$ is a matrix norm.
 2. $\lVert A \rVert_{\ell_2} = \lVert A \rVert_F$ is a matrix norm.
-3. $\lVert A \rVert_{\ell_\infty}$ is **not** a matrix norm, but $n \cdot \max_{i,j} |a_{ij}|$ is.
+3. $\lVert A \rVert_{\ell_\infty}$ is **not** a matrix norm, but $n \cdot \max_{i,j} \|a_{ij}\|$ is.
 
 </div>
 
@@ -772,9 +779,9 @@ For every matrix norm and $k \in \mathbb{N}$: $\lVert A^k \rVert \leq \lVert A \
 
 It suffices to verify property (4):
 
-1. $\lVert AB \rVert_{\ell_1} = \sum_{i,j} |\sum_k a_{ik} b_{kj}| \leq \sum_{i,j,k} |a_{ik} b_{kj}| = (\sum_{i,k} |a_{ik}|)(\sum_{\ell,j} |b_{\ell j}|) = \lVert A \rVert_{\ell_1} \lVert B \rVert_{\ell_1}$.
+1. $\lVert AB \rVert_{\ell_1} = \sum_{i,j} \|\sum_k a_{ik} b_{kj}\| \leq \sum_{i,j,k} \|a_{ik} b_{kj}\| = (\sum_{i,k} \|a_{ik}\|)(\sum_{\ell,j} \|b_{\ell j}\|) = \lVert A \rVert_{\ell_1} \lVert B \rVert_{\ell_1}$.
 2. Using the Cauchy--Schwarz inequality: $\lVert AB \rVert_F^2 = \sum_{i,j} (\sum_k a_{ik} b_{kj})^2 \leq \sum_{i,j} (\sum_k a_{ik}^2)(\sum_\ell b_{\ell j}^2) = (\sum_{i,k} a_{ik}^2)(\sum_{\ell,j} b_{\ell j}^2) = \lVert A \rVert_F^2 \lVert B \rVert_F^2$.
-3. $\lVert A \rVert_{\ell_\infty}$ is not a matrix norm since for $A = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$ we get $2 = \lVert A^2 \rVert \not\leq \lVert A \rVert^2 = 1$. However, for the scaled variant $n \cdot \max_{i,j} \lvert a_{ij}\rvert$: $n \cdot \max_{i,j} |\sum_k a_{ik} b_{kj}| \leq n \cdot \max_{i,j} \sum_k |a_{ik}| |b_{kj}| \leq n \cdot \lVert A \rVert_{\ell_\infty} \cdot n \cdot \lVert B \rVert_{\ell_\infty}$.
+3. $\lVert A \rVert_{\ell_\infty}$ is not a matrix norm since for $A = \begin{pmatrix} 1 & 1 \\\ 1 & 1 \end{pmatrix}$ we get $2 = \lVert A^2 \rVert \not\leq \lVert A \rVert^2 = 1$. However, for the scaled variant $n \cdot \max_{i,j} \lvert a_{ij}\rvert$: $n \cdot \max_{i,j} \|\sum_k a_{ik} b_{kj}\| \leq n \cdot \max_{i,j} \sum_k \|a_{ik}\| \|b_{kj}\| \leq n \cdot \lVert A \rVert_{\ell_\infty} \cdot n \cdot \lVert B \rVert_{\ell_\infty}$.
 
 </details>
 </div>
@@ -828,7 +835,10 @@ The induced norm is a matrix norm, and moreover $\lVert Ax \rVert \leq \lVert A 
 1. Clearly $\lVert A \rVert \geq 0$. Equality holds iff $\lVert Ax \rVert = 0$ for all $x$, which happens only when $A = 0$.
 2. $\lVert \alpha A \rVert = \lvert \alpha\rvert \cdot \lVert A \rVert$ is clear.
 3. $\lVert A + B \rVert = \max_{\lVert x \rVert = 1} \lVert (A+B)x \rVert \leq \max_{\lVert x \rVert = 1} (\lVert Ax \rVert + \lVert Bx \rVert) \leq \lVert A \rVert + \lVert B \rVert$.
-4. For $Bx \neq 0$: $\lVert AB \rVert = \max_{x \neq 0} \frac{\lVert ABx \rVert}{\lVert x \rVert} = \max_{x \neq 0} \frac{\lVert ABx \rVert}{\lVert Bx \rVert} \cdot \frac{\lVert Bx \rVert}{\lVert x \rVert} \leq \max_{y \neq 0} \frac{\lVert Ay \rVert}{\lVert y \rVert} \cdot \max_{x \neq 0} \frac{\lVert Bx \rVert}{\lVert x \rVert} = \lVert A \rVert \cdot \lVert B \rVert$.
+4. For $Bx \neq 0$: 
+   
+   $$\lVert AB \rVert = \max_{x \neq 0} \frac{\lVert ABx \rVert}{\lVert x \rVert} = \max_{x \neq 0} \frac{\lVert ABx \rVert}{\lVert Bx \rVert} \cdot \frac{\lVert Bx \rVert}{\lVert x \rVert} \leq \max_{y \neq 0} \frac{\lVert Ay \rVert}{\lVert y \rVert} \cdot \max_{x \neq 0} \frac{\lVert Bx \rVert}{\lVert x \rVert} = \lVert A \rVert \cdot \lVert B \rVert$$
+
 5. Consistency: from the equivalent expression $\lVert A \rVert \geq \frac{\lVert Ax \rVert}{\lVert x \rVert}$ for all $x \neq 0$, we get $\lVert Ax \rVert \leq \lVert A \rVert \cdot \lVert x \rVert$.
 
 </details>
@@ -931,9 +941,9 @@ One important relationship between matrix norms is their connection to the spect
 
 The spectral radius is not a matrix norm because:
 
-1. $\rho(A) = 0$ even for $A \neq 0$, e.g., $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$.
-2. $\rho(A+B) \leq \rho(A) + \rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$, $B = A^\top$.
-3. $\rho(AB) \leq \rho(A)\rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}$, since $\rho(A) = \rho(B) = 1$ but $\rho(AB) = (1+\sqrt{5})/2$.
+1. $\rho(A) = 0$ even for $A \neq 0$, e.g., $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$.
+2. $\rho(A+B) \leq \rho(A) + \rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$, $B = A^\top$.
+3. $\rho(AB) \leq \rho(A)\rho(B)$ does not hold, e.g., $A = \begin{pmatrix} 0 & 1 \\\ 1 & 0 \end{pmatrix}$, $B = \begin{pmatrix} 1 & 1 \\\ 0 & 1 \end{pmatrix}$, since $\rho(A) = \rho(B) = 1$ but $\rho(AB) = (1+\sqrt{5})/2$.
 
 </div>
 
@@ -944,7 +954,9 @@ Nevertheless, the spectral radius can be approximated from above by matrix norms
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bounding the Spectral Radius)</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$. For every matrix norm: $\rho(A) \leq \lVert A \rVert$.
+Let $A \in \mathbb{R}^{n \times n}$. For every matrix norm: 
+
+$$\rho(A) \leq \lVert A \rVert$$
 
 </div>
 
@@ -977,7 +989,9 @@ Let $S \in \mathbb{R}^{n \times n}$ be regular and $\lVert \cdot \rVert$ a matri
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span></p>
 
-Let $A \in \mathbb{R}^{n \times n}$ and $\varepsilon > 0$. Then there exists a matrix norm such that $\rho(A) \leq \lVert A \rVert \leq \rho(A) + \varepsilon$.
+Let $A \in \mathbb{R}^{n \times n}$ and $\varepsilon > 0$. Then there exists a matrix norm such that 
+
+$$\rho(A) \leq \lVert A \rVert \leq \rho(A) + \varepsilon$$
 
 </div>
 
@@ -1005,7 +1019,7 @@ $$
 C(p) \coloneqq \begin{pmatrix} 0 & \ldots & \ldots & 0 & -a_0 \\ 1 & \ddots & & \vdots & -a_1 \\ 0 & \ddots & \ddots & \vdots & -a_2 \\ \vdots & \ddots & \ddots & 0 & \vdots \\ 0 & \ldots & 0 & 1 & -a_{n-1} \end{pmatrix},
 $$
 
-and the roots of $p(x)$ equal the eigenvalues of $C(p)$. For any root $x^*$ and any matrix norm: $\lvertx^\ast\rvert \leq \rho(C(p)) \leq \lVert C(p) \rVert$. Using $\lVert \cdot \rVert_\infty$:
+and the roots of $p(x)$ equal the eigenvalues of $C(p)$. For any root $x^\ast$ and any matrix norm: $\lvert x^\ast\rvert \leq \rho(C(p)) \leq \lVert C(p) \rVert$. Using $\lVert \cdot \rVert_\infty$:
 
 $$
 |x^*| \leq \lVert C(p) \rVert_\infty = \max\lbrace |a_0|, 1 + |a_1|, \ldots, 1 + |a_{n-1}| \rbrace \leq 1 + \max_{i=0,\ldots,n-1} |a_i|,
@@ -1035,7 +1049,7 @@ By the sub-multiplicativity property, $\lVert A^k \rVert \leq \lVert A \rVert^k 
 </details>
 </div>
 
-The converse does not hold for every norm (consider $A = \begin{pmatrix} 0 & 1 \\ 0 & 0 \end{pmatrix}$ and certain norms; also $A = \begin{pmatrix} 0 & \alpha \\ 0 & 0 \end{pmatrix}$ with $\alpha$ large). On the other hand, via the spectral radius we reach a full equivalence --- bringing power sequences and Neumann series together:
+The converse does not hold for every norm (consider $A = \begin{pmatrix} 0 & 1 \\\ 0 & 0 \end{pmatrix}$ and certain norms; also $A = \begin{pmatrix} 0 & \alpha \\\ 0 & 0 \end{pmatrix}$ with $\alpha$ large). On the other hand, via the spectral radius we reach a full equivalence --- bringing power sequences and Neumann series together:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Neumann Series)</span></p>
@@ -1058,7 +1072,7 @@ $$(I_n - A)^{-1} = \sum_{k=0}^\infty A^k$$
 
 **(1)$\Rightarrow$(2):** Since $\rho(A) < 1$, by Theorem 5.15 there exists a matrix norm with $\lVert A \rVert < 1$. By Theorem 5.17, $A^k \to 0$.
 
-**(1)$\Leftarrow$(2):** Let $\lambda$ be an eigenvalue and $x$ the eigenvector. Then $A^k x = \lambda^k x$. Since $A^k \to 0$, we need $\lambda^k \to 0$, hence $|\lambda| < 1$. Thus $\rho(A) < 1$.
+**(1)$\Leftarrow$(2):** Let $\lambda$ be an eigenvalue and $x$ the eigenvector. Then $A^k x = \lambda^k x$. Since $A^k \to 0$, we need $\lambda^k \to 0$, hence $\|\lambda\| < 1$. Thus $\rho(A) < 1$.
 
 **(3)$\Rightarrow$(2):** Clear (terms of a convergent series tend to zero).
 
@@ -1244,13 +1258,13 @@ $$\lVert A - A' \rVert < \varepsilon$$
 <details markdown="1">
 <summary>Proof</summary>
 
-By the Schur decomposition (Theorem 2.1), $A = UTU^*$, where $U$ is unitary and $T$ is upper triangular. Set $A' = UT'U^*$, where $T' = T + \operatorname{diag}(\delta, \ldots, \delta^n)$ for small $\delta > 0$. If $\delta < |t_{ii} - t_{jj}|/2$ for all $i \neq j$, then $T'$ has distinct diagonal entries, hence distinct eigenvalues, and $A'$ is diagonalizable. Moreover,
+By the Schur decomposition (Theorem 2.1), $A = UTU^\ast$, where $U$ is unitary and $T$ is upper triangular. Set $A' = UT'U^\ast$, where $T' = T + \operatorname{diag}(\delta, \ldots, \delta^n)$ for small $\delta > 0$. If $\delta < \|t_{ii} - t_{jj}\|/2$ for all $i \neq j$, then $T'$ has distinct diagonal entries, hence distinct eigenvalues, and $A'$ is diagonalizable. Moreover,
 
 $$
 \lVert A - A' \rVert_2 = \lVert U \operatorname{diag}(\delta, \ldots, \delta^n) U^* \rVert_2 = \lVert \operatorname{diag}(\delta, \ldots, \delta^n) \rVert_2 = \delta,
 $$
 
-so for the spectral norm it suffices to take $\delta < \min_{i \neq j} \lbrace \varepsilon, \frac{1}{2}|t_{ii} - t_{jj}| \rbrace$.
+so for the spectral norm it suffices to take $\delta < \min_{i \neq j} \lbrace \varepsilon, \frac{1}{2}\|t_{ii} - t_{jj}\| \rbrace$.
 
 </details>
 </div>
@@ -1306,12 +1320,13 @@ $$k(A) \geq 1$$
 Equality holds, in particular, when $A$ is symmetric and $k_2$ is used.
 
 </div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span></p>
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 Follows from $\|\|A\|\|\cdot\|\|A^{-1}\|\| \geq \|\|AA^{-1}\|\|$.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">

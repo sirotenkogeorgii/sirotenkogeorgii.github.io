@@ -1100,7 +1100,7 @@ Let $A = \begin{pmatrix} 1 & 1 & 3 \\ 0 & 2 & -1 \\ 3 & 5 & 7 \end{pmatrix}$. We
 
 $$(A \mid I_3) = \begin{pmatrix} 1 & 1 & 3 & 1 & 0 & 0 \\ 0 & 2 & -1 & 0 & 1 & 0 \\ 3 & 5 & 7 & 0 & 0 & 1 \end{pmatrix} \xrightarrow{\text{RREF}} \begin{pmatrix} 1 & 0 & 0 & -9.5 & -4 & 3.5 \\ 0 & 1 & 0 & 1.5 & 1 & -0.5 \\ 0 & 0 & 1 & 3 & 1 & -1 \end{pmatrix} = (I_3 \mid A^{-1}).$$
 
-Thus $A^{-1} = \begin{pmatrix} -9.5 & -4 & 3.5 \\ 1.5 & 1 & -0.5 \\ 3 & 1 & -1 \end{pmatrix}$.
+Thus $A^{-1} = \begin{pmatrix} -9.5 & -4 & 3.5 \\\ 1.5 & 1 & -0.5 \\\ 3 & 1 & -1 \end{pmatrix}$.
 
 </div>
 
@@ -1195,13 +1195,13 @@ The computational complexity of the entire algorithm is asymptotically the same 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 3.49 — PA = LU)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 3.49</span><span class="math-callout__name">(PA = LU)</span></p>
 
 Every matrix $A \in \mathbb{R}^{n \times n}$ can be decomposed in the form $PA = LU$, where $P \in \mathbb{R}^{n \times n}$ is a *permutation matrix* (a matrix with ones on the diagonal after a suitable reordering of rows), $L \in \mathbb{R}^{n \times n}$ is a lower triangular matrix with ones on the diagonal, and $U \in \mathbb{R}^{n \times n}$ is an upper triangular matrix.
 
 </div>
 
-The LU decomposition without row swaps may not exist for every matrix (e.g., for $A = \bigl(\begin{smallmatrix} 0 & 1 \\ 1 & 0 \end{smallmatrix}\bigr)$), but after a suitable permutation of rows (permutation matrix $P$) it always does.
+The LU decomposition without row swaps may not exist for every matrix (e.g., for $A = \bigl(\begin{smallmatrix} 0 & 1 \\\ 1 & 0 \end{smallmatrix}\bigr)$), but after a suitable permutation of rows (permutation matrix $P$) it always does.
 
 ### Numerical stability in solving systems, iterative methods
 
@@ -2073,10 +2073,17 @@ The definition of linear independence somewhat resembles the definition of regul
 
 Let $V$ be a vector space over $\mathbb{T}$, and let $v_1, \ldots, v_n \in V$. Then the vectors $v_1, \ldots, v_n$ are linearly dependent if and only if there exists $k \in \lbrace 1, \ldots, n \rbrace$ such that $v_k = \sum_{i \neq k} \alpha_i v_i$ for some $\alpha_1, \ldots, \alpha_n \in \mathbb{T}$, that is $v_k \in \operatorname{span}\lbrace v_1, \ldots, v_{k-1}, v_{k+1}, \ldots, v_n \rbrace$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Implication "$\Rightarrow$". If the vectors are linearly dependent, then there exists a nontrivial linear combination equal to zero, i.e., $\sum_{i=1}^{n} \beta_i v_i = o$ for $\beta_1, \ldots, \beta_n \in \mathbb{T}$ with $\beta_k \neq 0$ for some $k \in \lbrace 1, \ldots, n \rbrace$. Here we may choose any $k$ such that $\beta_k \neq 0$. We express the $k$-th term $\beta_k v_k = -\sum_{i \neq k} \beta_i v_i$ and after dividing we obtain the required formula $v_k = \sum_{i \neq k} (-\beta_k^{-1}\beta_i)v_i$.
 
 Implication "$\Leftarrow$". If $v_k = \sum_{i \neq k} \alpha_i v_i$, then $v_k - \sum_{i \neq k} \alpha_i v_i = o$, which is the required nontrivial combination equal to zero, since the coefficient of $v_k$ is $1 \neq 0$.
 
+</details>
 </div>
 
 A consequence is yet another characterization of linear dependence. It says, among other things, that vectors are linearly dependent if and only if removing some (but not necessarily any, see Example 5.30) of them does not decrease their linear span. Thus there is some redundant vector among them. For a linearly independent system the opposite holds: removing any one of them strictly decreases their linear span, so none of them is redundant.
@@ -2635,10 +2642,17 @@ The theorem says that row spaces are directly comparable — after multiplying b
 Let $Q \in \mathbb{T}^{m \times m}$ be regular and $A \in \mathbb{T}^{m \times n}$. Then
 
 1. $\mathcal{R}(QA) = \mathcal{R}(A)$,
-2. The equality $A_{\ast k} = \sum_{j \neq k} \alpha_j A_{\ast j}$ holds if and only if $(QA)_{\ast k} = \sum_{j \neq k} \alpha_j (QA)_{\ast j}$, where $k \in \lbrace 1, \ldots, n \rbrace$ and $\alpha_j \in \mathbb{T}$, $j \neq k$.
+2. The equality $A_{\ast k} = \sum_{j \neq k} \alpha_j A_{\ast j}$ holds if and only if $(QA)\_{\ast k} = \sum_{j \neq k} \alpha_j (QA)\_{\ast j}$, where $k \in \lbrace 1, \ldots, n \rbrace$ and $\alpha_j \in \mathbb{T}$, $j \neq k$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* (1) By Proposition 5.64 we have $\mathcal{R}(QA) \subseteq \mathcal{R}(A)$. Applying Proposition 5.64 to the matrix $(QA)$ multiplied on the left by $Q^{-1}$, we get $\mathcal{R}(Q^{-1}QA) \subseteq \mathcal{R}(QA)$, i.e., $\mathcal{R}(A) \subseteq \mathcal{R}(QA)$. Together we have $\mathcal{R}(QA) = \mathcal{R}(A)$. (2) The left-to-right implication follows from Proposition 5.64. The reverse implication follows from Proposition 5.64 applied to the matrix $(QA)$ multiplied on the left by $Q^{-1}$.
 
+</details>
 </div>
 
 A consequence of the preceding theorem is that if some columns of matrix $A$ are linearly independent, they remain so after multiplication by a regular matrix on the left.
@@ -2667,8 +2681,15 @@ Let $A \in \mathbb{T}^{m \times n}$ and let $A^R$ be its RREF form with pivots a
 2. the columns $A_{\ast p_1}, \ldots, A_{\ast p_r}$ form a basis of $\mathcal{S}(A)$,
 3. $\dim \mathcal{R}(A) = \dim \mathcal{S}(A) = r$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* We know from Theorem 3.31 that $A^R = QA$ for some regular matrix $Q$. (1) By Proposition 5.66 we have $\mathcal{R}(A) = \mathcal{R}(QA) = \mathcal{R}(A^R)$. The nonzero rows of $A^R$ are linearly independent, so they form a basis of both $\mathcal{R}(A^R)$ and $\mathcal{R}(A)$. (2) The vectors $A^R_{\ast p_1}, \ldots, A^R_{\ast p_r}$ form a basis of $\mathcal{S}(A^R)$. These vectors are certainly linearly independent (they are unit vectors). They generate $\mathcal{S}(A^R)$, since any non-pivot column can be expressed as a linear combination of the pivot ones: $A^R_{\ast j} = \sum_{i=1}^{r} a^R_{ij} e_i = \sum_{i=1}^{r} a^R_{ij} A^R_{\ast p_i}$. Now we use Proposition 5.66, which guarantees that $A_{\ast p_1}, \ldots, A_{\ast p_r}$ are also linearly independent and generate $\mathcal{S}(A)$, thus forming a basis of $\mathcal{S}(A)$. (3) The value $\dim \mathcal{R}(A)$ is the size of the basis of $\mathcal{R}(A)$, i.e., $r$, and similarly $\dim \mathcal{S}(A)$ is also $r$. Moreover $r = \operatorname{rank}(A)$.
 
+</details>
 </div>
 
 Let us emphasize that a basis of the row space $\mathcal{R}(A)$ is found in the rows of the matrix $A^R$, while a basis of the column space $\mathcal{S}(A)$ is found in the columns of the original matrix $A$.
@@ -3445,7 +3466,7 @@ Suppose for example $V=\mathbb{R}^3$. We can think of elements of $V$ as column 
 
 $$v=\begin{bmatrix}2\\5\\9\end{bmatrix} \in V$$
 
-Then a linear map $f: V\to\mathbb \mathbb{T}$ can be interpreted as a **row matrix**:
+Then a linear map $f: V\to\mathbb{T}$ can be interpreted as a **row matrix**:
 
 $$f=\begin{bmatrix}3&4&5\end{bmatrix} \in V^\vee$$
 
@@ -3454,7 +3475,7 @@ Then
 $$
 f(v)=
 \begin{bmatrix}3&4&5\end{bmatrix}
-\begin{bmatrix}2\5\9\end{bmatrix}
+\begin{bmatrix}2\\5\\9\end{bmatrix}
 =71
 $$
 
@@ -3465,7 +3486,7 @@ $$
 
 More precisely: **to specify a linear map $V\to k$, I only have to tell you where each basis element of $V$ goes.** In the above example, $f$ sends $e_1$ to $3$, $e_2$ to $4$, and $e_3$ to $5$. So $f$ sends
 
-$$2e_1 + 5e_2 + 9e_3 \mapto 2\cdot 3 + 5\cdot 4 + 9\cdot 5 = 71$$
+$$2e_1 + 5e_2 + 9e_3 \mapsto 2\cdot 3 + 5\cdot 4 + 9\cdot 5 = 71$$
 
 Let’s make all this precise.
 
