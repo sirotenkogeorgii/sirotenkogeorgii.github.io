@@ -6849,15 +6849,24 @@ The operation $\langle x, y \rangle$ is an inner product on $\mathbb{R}^n$ if an
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Implication "$\Rightarrow$": Define the matrix $A \in \mathbb{R}^{n \times n}$ by $a_{ij} = \langle e_i, e_j \rangle$, where $e_i, e_j$ are the standard unit vectors. The matrix $A$ is obviously symmetric. Now, by linearity of the inner product in both the first and second argument, we can write
 
 $$\langle x, y \rangle = \left\langle \sum_{i=1}^n x_i e_i, \sum_{j=1}^n y_j e_j \right\rangle = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \langle e_i, e_j \rangle = \sum_{i=1}^n \sum_{j=1}^n x_i y_j a_{ij} = x^\top Ay.$$
 
 The matrix $A$ must be positive definite, since by the definition of the inner product $x^\top Ax = \langle x, x \rangle \ge 0$ and equals zero only for $x = o$.
 
-Implication "$\Leftarrow$": Let $A$ be positive definite. Then $\langle x, y \rangle = x^\top Ay$ forms an inner product: $\langle x, x \rangle = x^\top Ax \ge 0$ and equals zero only for $x = o$, it is linear in the first argument, and it is symmetric since $\langle x, y \rangle = x^\top Ay = (x^\top Ay)^\top = y^\top A^\top x = y^\top Ax = \langle y, x \rangle$.
+Implication "$\Leftarrow$": Let $A$ be positive definite. Then $\langle x, y \rangle = x^\top Ay$ forms an inner product: $\langle x, x \rangle = x^\top Ax \ge 0$ and equals zero only for $x = o$, it is linear in the first argument, and it is symmetric since 
 
-We know that an inner product induces a norm (Definition 8.5). The norm induced by the above inner product is $\|x\| = \sqrt{x^\top Ax}$. In this norm, the unit ball is an ellipsoid (see Example 12.22). For $A = I_n$ we obtain the standard inner product on $\mathbb{R}^n$ and the Euclidean norm.
+$$\langle x, y \rangle = x^\top Ay = (x^\top Ay)^\top = y^\top A^\top x = y^\top Ax = \langle y, x \rangle$$
+
+We know that an inner product induces a norm (Definition 8.5). The norm induced by the above inner product is $\lVert x\rVert = \sqrt{x^\top Ax}$. In this norm, the unit ball is an ellipsoid (see Example 12.22). For $A = I_n$ we obtain the standard inner product on $\mathbb{R}^n$ and the Euclidean norm.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 11.19)</span></p>
@@ -6875,7 +6884,13 @@ For every positive semidefinite matrix $A \in \mathbb{R}^{n \times n}$, there ex
 
 </div>
 
-*Proof.* Let $A$ have the spectral decomposition $A = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n)$, $\lambda_1, \ldots, \lambda_n \ge 0$. Define the diagonal matrix $\Lambda' = \operatorname{diag}(\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n})$ and the matrix $B = Q\Lambda' Q^\top$. Then $B^2 = Q\Lambda' Q^\top Q\Lambda' Q^\top = Q\Lambda'^2 Q^\top = Q\Lambda Q^\top = A$.
+*Proof.* Let $A$ have the spectral decomposition 
+
+$$A = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n) \quad \lambda_1, \ldots, \lambda_n \ge 0$$
+
+Define the diagonal matrix $\Lambda' = \operatorname{diag}(\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n})$ and the matrix $B = Q\Lambda' Q^\top$. Then 
+
+$$B^2 = Q\Lambda' Q^\top Q\Lambda' Q^\top = Q\Lambda'^2 Q^\top = Q\Lambda Q^\top = A$$
 
 It is appropriate here to compare the matrix square root with matrix functions from Example 10.47. The square root can be expressed by an infinite series only in a small neighborhood of a given positive number; however, where it exists, both definitions will agree.
 
@@ -6901,17 +6916,17 @@ The occurrence of positive (semi-)definite matrices is even broader. For example
 
 One of the fundamental tasks in protein modeling is determining the three-dimensional structure of proteins. A typical procedure is to determine the distance matrix of individual atoms using nuclear magnetic resonance and then derive the structure.
 
-Let $X \in \mathbb{R}^{n \times 3}$ be the matrix of positions of individual atoms, that is, the row $X_{i*}$ gives the coordinates of the $i$-th atom in space. We denote by $D \in \mathbb{R}^{n \times n}$ the distances between individual atoms, so $d_{ij} = $ the distance between the $i$-th and $j$-th atom. If we know $X$, then we can compute $D$. We shift the coordinate system so that the $n$-th atom is at the origin, i.e., $X_{n*} = (0, 0, 0)$, and remove the last row from the matrix $X$, which is now redundant. Denote the auxiliary matrix $D^* \coloneqq XX^\top$ and the coordinates of any two atoms $u \coloneqq X_{i*}$, $v \coloneqq X_{j*}$. The relationship between the matrices $D$ and $D^*$ is as follows:
+Let $X \in \mathbb{R}^{n \times 3}$ be the matrix of positions of individual atoms, that is, the row $X_{i\ast}$ gives the coordinates of the $i$-th atom in space. We denote by $D \in \mathbb{R}^{n \times n}$ the distances between individual atoms, so $d_{ij} = $ the distance between the $i$-th and $j$-th atom. If we know $X$, then we can compute $D$. We shift the coordinate system so that the $n$-th atom is at the origin, i.e., $X_{n\ast} = (0, 0, 0)$, and remove the last row from the matrix $X$, which is now redundant. Denote the auxiliary matrix $D^\ast \coloneqq XX^\top$ and the coordinates of any two atoms $u \coloneqq X_{i\ast}$, $v \coloneqq X_{j\ast}$. The relationship between the matrices $D$ and $D^\ast$ is as follows:
 
 $$d_{ij}^2 = \|u - v\|^2 = \langle u - v, u - v \rangle = \langle u, u \rangle + \langle v, v \rangle - 2\langle u, v \rangle = d_{ii}^* + d_{jj}^* - 2d_{ij}^*.$$
 
-Using this formula we compute the matrix $D^*$ from the matrix $D$:
+Using this formula we compute the matrix $D^\ast$ from the matrix $D$:
 
 $$d_{ij}^* = \frac{1}{2}(d_{ii}^* + d_{jj}^* - d_{ij}^2) = \frac{1}{2}(d_{in}^2 + d_{jn}^2 - d_{ij}^2).$$
 
-Since $D^*$ is symmetric and positive semidefinite, from the spectral decomposition $D^* = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \lambda_2, \lambda_3)$, we construct the desired matrix $X = Q \cdot \operatorname{diag}(\sqrt{\lambda_1}, \sqrt{\lambda_2}, \sqrt{\lambda_3})$. Then indeed $D^* = XX^\top$.
+Since $D^\ast$ is symmetric and positive semidefinite, from the spectral decomposition $D^\ast = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \lambda_2, \lambda_3)$, we construct the desired matrix $X = Q \cdot \operatorname{diag}(\sqrt{\lambda_1}, \sqrt{\lambda_2}, \sqrt{\lambda_3})$. Then indeed $D^\ast = XX^\top$.
 
-Another problem from this field is the so-called *Procrustes problem*, in which we compare two protein structures to determine how similar they are. Denote the matrices of the two structures by $X, Y$. A linear mapping $f$ by an orthogonal matrix $Q$ preserves angles and distances, so $YQ$ corresponds to the same structure as $Y$, only rotated or reflected in some way. If we want to determine the similarity of both structures, we seek an orthogonal matrix $Q \in \mathbb{R}^{3 \times 3}$ such that the matrices $X$ and $YQ$ are "as close as possible." The mathematical formulation leads to the optimization problem of minimizing the matrix norm $\|X - YQ\|$ over the set of orthogonal matrices $Q$.
+Another problem from this field is the so-called *Procrustes problem*, in which we compare two protein structures to determine how similar they are. Denote the matrices of the two structures by $X, Y$. A linear mapping $f$ by an orthogonal matrix $Q$ preserves angles and distances, so $YQ$ corresponds to the same structure as $Y$, only rotated or reflected in some way. If we want to determine the similarity of both structures, we seek an orthogonal matrix $Q \in \mathbb{R}^{3 \times 3}$ such that the matrices $X$ and $YQ$ are "as close as possible." The mathematical formulation leads to the optimization problem of minimizing the matrix norm $\lVert X - YQ\rVert$ over the set of orthogonal matrices $Q$.
 
 </div>
 
@@ -7017,7 +7032,11 @@ $$f(u) = [u]_B^\top A [u]_B.$$
 
 $$b(u, v) = b\!\left(\sum_{i=1}^n x_i w_i, \sum_{j=1}^n y_j w_j\right) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j b(w_i, w_j) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j a_{ij} = x^\top Ay.$$
 
-Conversely, if (12.1) holds for every $u, v \in V$, then substituting $u \coloneqq w_i$, $v \coloneqq w_j$ we get $b(w_i, w_j) = [w_i]\_B^\top A [w_j]\_B = e_i^\top A e_j = a_{ij}$ for all $i, j = 1, \ldots, n$.
+Conversely, if (12.1) holds for every $u, v \in V$, then substituting $u \coloneqq w_i$, $v \coloneqq w_j$ we get 
+
+$$b(w_i, w_j) = [w_i]\_B^\top A [w_j]\_B = e_i^\top A e_j = a_{ij}$$
+
+for all $i, j = 1, \ldots, n$.
 Finally, $f(u) = b(u, u) = x^\top Ax$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -7048,7 +7067,11 @@ for a certain symmetric matrix $A \in \mathbb{T}^{n \times n}$.
 
 </div>
 
-*Proof.* It suffices to take $A$ as the matrix of the form with respect to the canonical basis. Then $b(x, y) = [x]\_{\text{kan}}^\top A [y]\_{\text{kan}} = x^\top Ay$. For the quadratic form we then have $f(x) = b(x, x) = x^\top Ax$. If $A$ is not symmetric, we replace it by the symmetric matrix $\frac{1}{2}(A + A^\top)$ in the sense of Remark 11.2, because $x^\top Ax = x^\top \frac{1}{2}(A + A^\top)x$. We use here the convention $2 \equiv 1 + 1$. Since the characteristic of the field is not 2, we have $1 + 1 \neq 0$ and we can construct the matrix.
+*Proof.* It suffices to take $A$ as the matrix of the form with respect to the canonical basis. Then 
+
+$$b(x, y) = [x]\_{\text{kan}}^\top A [y]\_{\text{kan}} = x^\top Ay$$
+
+For the quadratic form we then have $f(x) = b(x, x) = x^\top Ax$. If $A$ is not symmetric, we replace it by the symmetric matrix $\frac{1}{2}(A + A^\top)$ in the sense of Remark 11.2, because $x^\top Ax = x^\top \frac{1}{2}(A + A^\top)x$. We use here the convention $2 \equiv 1 + 1$. Since the characteristic of the field is not 2, we have $1 + 1 \neq 0$ and we can construct the matrix.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 12.10)</span></p>
@@ -7057,7 +7080,7 @@ Consider the bilinear form on $\mathbb{R}^2$
 
 $$b(x, y) = x_1 y_1 + 2x_1 y_2 + 4x_2 y_1 + 10x_2 y_2.$$
 
-The matrix of $b$ with respect to the canonical basis is $A = \begin{pmatrix} 1 & 2 \\ 4 & 10 \end{pmatrix}$, which we can also easily see from the expression
+The matrix of $b$ with respect to the canonical basis is $A = \begin{pmatrix} 1 & 2 \\\ 4 & 10 \end{pmatrix}$, which we can also easily see from the expression
 
 $$b(x, y) = x^\top Ay = \begin{pmatrix} x_1 & x_2 \end{pmatrix} \begin{pmatrix} 1 & 2 \\ 4 & 10 \end{pmatrix} \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}.$$
 
@@ -7065,7 +7088,7 @@ This bilinear form is not symmetric, unlike the bilinear form
 
 $$b'(x, y) = x_1 y_1 + 3x_1 y_2 + 3x_2 y_1 + 10x_2 y_2.$$
 
-The matrix of $b'$ with respect to the canonical basis is $A' = \begin{pmatrix} 1 & 3 \\ 3 & 10 \end{pmatrix}$, so $b'(x, y) = x^\top A' y$. The corresponding quadratic form satisfies
+The matrix of $b'$ with respect to the canonical basis is $A' = \begin{pmatrix} 1 & 3 \\\ 3 & 10 \end{pmatrix}$, so $b'(x, y) = x^\top A' y$. The corresponding quadratic form satisfies
 
 $$f'(x) = b'(x, x) = x^\top A' x = \begin{pmatrix} x_1 & x_2 \end{pmatrix} \begin{pmatrix} 1 & 3 \\ 3 & 10 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}.$$
 
@@ -7074,7 +7097,11 @@ $$f'(x) = b'(x, x) = x^\top A' x = \begin{pmatrix} x_1 & x_2 \end{pmatrix} \begi
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 12.11 — Why symmetric bilinear forms)</span></p>
 
-One might ask why we define quadratic forms only using symmetric bilinear forms. After all, nothing prevents us from defining $f(u) = b(u, u)$ also for a non-symmetric bilinear form $b$. The reason is similar to what we stated for positive definite matrices, see Remark 11.2. We can introduce the bilinear form $b_s(u, v) \coloneqq \frac{1}{2}\bigl(b(u, v) + b(v, u)\bigr)$, which will be symmetric. Moreover, as is easy to see, both forms $b$, $b_s$ induce the same quadratic form $f$. Here, however, the field $\mathbb{T}$ must not have characteristic 2, otherwise the fraction would not make sense. By restricting to the symmetric case, we also consequently have uniqueness of the matrix of the quadratic form, again under the assumption that the field $\mathbb{T}$ does not have characteristic 2.
+One might ask why we define quadratic forms only using symmetric bilinear forms. After all, nothing prevents us from defining $f(u) = b(u, u)$ also for a non-symmetric bilinear form $b$. The reason is similar to what we stated for positive definite matrices, see Remark 11.2. We can introduce the bilinear form 
+
+$$b_s(u, v) \coloneqq \frac{1}{2}\bigl(b(u, v) + b(v, u)\bigr)$$
+
+which will be symmetric. Moreover, as is easy to see, both forms $b$, $b_s$ induce the same quadratic form $f$. Here, however, the field $\mathbb{T}$ must not have characteristic 2, otherwise the fraction would not make sense. By restricting to the symmetric case, we also consequently have uniqueness of the matrix of the quadratic form, again under the assumption that the field $\mathbb{T}$ does not have characteristic 2.
 
 </div>
 
@@ -7083,7 +7110,7 @@ The matrices of forms depend on the choice of basis. How does the matrix change 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 12.12 — Matrix of a quadratic form under change of basis)</span></p>
 
-Let $A \in \mathbb{T}^{n \times n}$ be the matrix of a quadratic form $f$ with respect to basis $B$ of a space $V$. Let $B'$ be another basis and $S = {}_B[id]_{B'}$ the change-of-basis matrix from $B'$ to $B$. Then the matrix of the form $f$ with respect to basis $B'$ is $S^\top AS$ and corresponds to the same symmetric bilinear form.
+Let $A \in \mathbb{T}^{n \times n}$ be the matrix of a quadratic form $f$ with respect to basis $B$ of a space $V$. Let $B'$ be another basis and $S = {}\_B[id]\_{B'}$ the change-of-basis matrix from $B'$ to $B$. Then the matrix of the form $f$ with respect to basis $B'$ is $S^\top AS$ and corresponds to the same symmetric bilinear form.
 
 </div>
 

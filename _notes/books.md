@@ -30,3 +30,4 @@ date: 2024-10-20
 - [Reinforcement Learning Overview](/subpages/books/reinforcement_learning_overview/)
 - [Functional Analysis](/subpages/books/functional_analysis/mit_rogriguez/)
 - [Geometric Deep Learning HD](/subpages/books/geometric_deep_learning_hd/)
+- [SDEs and Diffusion Models HD](/subpages/books/sde_hd/)

@@ -52,7 +52,7 @@ Throughout, let $(\Omega, \mathcal{A}, \mathbb{P})$ be an underlying probability
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.1 (Gaussian Process)</span></p>
 
-A real-valued stochastic process $(X_t)_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is called a **Gaussian process** iff there exist a **mean function** $\mu : I \to \mathbb{R}$ and a **covariance function** $\gamma : I \times I \to \mathbb{R}$ such that for any $n \in \mathbb{N}$ and $t_1, \dots, t_n \in I$, the matrix $\bigl(\gamma(t_i, t_j)\bigr)_{1 \le i, j \le n}$ is positive semidefinite and
+A real-valued stochastic process $(X_t)\_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is called a **Gaussian process** iff there exist a **mean function** $\mu : I \to \mathbb{R}$ and a **covariance function** $\gamma : I \times I \to \mathbb{R}$ such that for any $n \in \mathbb{N}$ and $t_1, \dots, t_n \in I$, the matrix $\bigl(\gamma(t_i, t_j)\bigr)\_{1 \le i, j \le n}$ is positive semidefinite and
 
 $$
 \begin{pmatrix} X_{t_1} \\ \vdots \\ X_{t_n} \end{pmatrix}
@@ -63,7 +63,7 @@ $$
 \right).
 $$
 
-If $\mu \equiv 0$ on $I$, the Gaussian process $(X_t)_{t \in I}$ is called **centred**.
+If $\mu \equiv 0$ on $I$, the Gaussian process $(X_t)\_{t \in I}$ is called **centred**.
 
 </div>
 
@@ -76,7 +76,7 @@ For any mean function $\mu : I \to \mathbb{R}$ and covariance function $\gamma :
 
 </div>
 
-**Motivation for Brownian motion.** We would like a random walk with "infinitesimal" time steps modelling the movement of a particle. Let $Z_i \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0,1)$ for $i \in \mathbb{N}$. For any $n \in \mathbb{N}$, define the process $W^n := (W^n_t)_{t \in I}$ by
+**Motivation for Brownian motion.** We would like a random walk with "infinitesimal" time steps modelling the movement of a particle. Let $Z_i \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0,1)$ for $i \in \mathbb{N}$. For any $n \in \mathbb{N}$, define the process $W^n := (W^n_t)\_{t \in I}$ by
 
 $$
 W^n_t := \frac{1}{\sqrt{n}} \sum_{i=1}^{\lfloor nt \rfloor} Z_i \sim \mathcal{N}\!\left(0, \frac{\lfloor nt \rfloor}{n}\right) \approx \mathcal{N}(0, t), \qquad t \in I,
@@ -93,7 +93,7 @@ so that the particle can change direction at *any* instant $t \in I$. Mathematic
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.3 (Standard Brownian Motion)</span></p>
 
-A real-valued stochastic process $W := (W_t)_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is called a **one-dimensional standard Brownian motion** iff it satisfies:
+A real-valued stochastic process $W := (W_t)\_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is called a **one-dimensional standard Brownian motion** iff it satisfies:
 
 * **(W1) Starting in 0:** $W_0 = 0$, $\mathbb{P}$-a.s.
 * **(W2) Independent increments:** For any $n \in \mathbb{N}$ and $0 =: t_0 < t_1 < \dots < t_n$ in $I$, the increments $W_{t_1} - W_{t_0},\, W_{t_2} - W_{t_1},\, \dots,\, W_{t_n} - W_{t_{n-1}}$ are mutually stochastically independent.
@@ -126,7 +126,7 @@ The starting point is the characterisation of Brownian motion as a Gaussian proc
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">0.5 (Characterisation via Gaussian Processes)</span></p>
 
-A real-valued stochastic process $W := (W_t)_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is a one-dimensional standard Brownian motion if and only if
+A real-valued stochastic process $W := (W_t)\_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is a one-dimensional standard Brownian motion if and only if
 
 * **(W123)** $W$ is a centred Gaussian process with covariance function $\gamma(s, t) := \mathrm{Cov}[W_s, W_t] = s \wedge t$ for all $s, t \in I$;
 * **(W4)** the paths $t \mapsto W_t$ are $\mathbb{P}$-a.s. continuous on $I$.
@@ -178,13 +178,13 @@ The main tool behind the modification argument (accepted without proof) is Kolmo
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">0.8 (Kolmogorov's Continuity Theorem)</span></p>
 
-Let $\widetilde{X} := (\widetilde{X}_t)_{t \in [0,T]}$ be a real-valued stochastic process on $(\Omega, \mathcal{A}, \mathbb{P})$ such that there exist $\alpha > 0$, $\beta > 1$, and $C > 0$ with
+Let $\widetilde{X} := (\widetilde{X}_t)\_{t \in [0,T]}$ be a real-valued stochastic process on $(\Omega, \mathcal{A}, \mathbb{P})$ such that there exist $\alpha > 0$, $\beta > 1$, and $C > 0$ with
 
 $$
 \mathbb{E}\!\left[\,\lvert \widetilde{X}_t - \widetilde{X}_s \rvert^{\alpha}\,\right] \le C \cdot \lvert t - s \rvert^{\beta} \quad \text{for all } s, t \in [0, T]. \tag{0.1}
 $$
 
-Then there exists a modification $X := (X_t)_{t \in [0,T]}$ of $\widetilde{X}$ that has $\gamma$-Hölder-continuous paths for all $\gamma \in \bigl(0, \tfrac{\beta-1}{\alpha}\bigr)$, with a random Hölder constant $K_\gamma : \Omega \to (0, \infty)$:
+Then there exists a modification $X := (X_t)\_{t \in [0,T]}$ of $\widetilde{X}$ that has $\gamma$-Hölder-continuous paths for all $\gamma \in \bigl(0, \tfrac{\beta-1}{\alpha}\bigr)$, with a random Hölder constant $K_\gamma : \Omega \to (0, \infty)$:
 
 $$
 \lvert X_t(\omega) - X_s(\omega) \rvert \le K_\gamma(\omega) \cdot \lvert t - s \rvert^{\gamma} \quad \text{for all } \omega \in \Omega.
@@ -206,7 +206,7 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">0.9 (Continuity on $[0, \infty)$)</span></p>
 
-Let $\widetilde{X} := (\widetilde{X}_t)_{t \ge 0}$ be a real-valued stochastic process on $(\Omega, \mathcal{A}, \mathbb{P})$ satisfying condition (0.1) for all $s, t \ge 0$ with some $\alpha > 0$, $\beta > 1$, $C > 0$. Then there exists a continuous modification $X := (X_t)_{t \ge 0}$ of $\widetilde{X}$.
+Let $\widetilde{X} := (\widetilde{X}_t)\_{t \ge 0}$ be a real-valued stochastic process on $(\Omega, \mathcal{A}, \mathbb{P})$ satisfying condition (0.1) for all $s, t \ge 0$ with some $\alpha > 0$, $\beta > 1$, $C > 0$. Then there exists a continuous modification $X := (X_t)\_{t \ge 0}$ of $\widetilde{X}$.
 
 </div>
 
@@ -215,7 +215,7 @@ Let $\widetilde{X} := (\widetilde{X}_t)_{t \ge 0}$ be a real-valued stochastic p
 
 There exists a Brownian motion: one can find a probability space and a stochastic process $W := (W_t)_{t \in I}$ on it satisfying all conditions (W1)–(W4) of Definition 0.3.
 
-*Proof.* By Lemma 0.2 and Proposition 0.5 there is $\widetilde{W} = (\widetilde{W}_t)_{t \in I}$ with properties (W1), (W2), (W3). Since $\widetilde{W}_t - \widetilde{W}_s \sim \mathcal{N}(0, t-s)$ by (W3), for any $s < t$
+*Proof.* By Lemma 0.2 and Proposition 0.5 there is $\widetilde{W} = (\widetilde{W}_t)\_{t \in I}$ with properties (W1), (W2), (W3). Since $\widetilde{W}\_t - \widetilde{W}\_s \sim \mathcal{N}(0, t-s)$ by (W3), for any $s < t$
 
 $$
 \mathbb{E}\!\left[\,\lvert \widetilde{W}_t - \widetilde{W}_s \rvert^4\,\right] = 3 \cdot (t - s)^2,
@@ -230,7 +230,7 @@ As Theorem 0.8 hints, Brownian motion enjoys many striking path properties.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">0.11 (Path Properties)</span></p>
 
-Let $W := (W_t)_{t \ge 0}$ be a standard Brownian motion on $(\Omega, \mathcal{A}, \mathbb{P})$. Define $l, u : [0,1] \to \mathbb{R}$ by $l(t) := t$ and $u(t) := 2t$. Then $W$ has the following path properties:
+Let $W := (W_t)\_{t \ge 0}$ be a standard Brownian motion on $(\Omega, \mathcal{A}, \mathbb{P})$. Define $l, u : [0,1] \to \mathbb{R}$ by $l(t) := t$ and $u(t) := 2t$. Then $W$ has the following path properties:
 
 (i) On every interval $[a, b] \subseteq [0, \infty)$ with $a < b$, the paths $t \mapsto W_t$ are $\mathbb{P}$-a.s. $\gamma$-Hölder continuous with exponent $\gamma \in \bigl(0, \tfrac{1}{2}\bigr)$.
 
@@ -251,13 +251,13 @@ fails.
 
 ### 0.4 Donsker's Theorem (Classical Version)
 
-In this subsection we make the random-walk heuristic from §0.2 rigorous. Let $(X_i)_{i \in \mathbb{N}}$ be i.i.d., real-valued, centred random variables on $(\Omega, \mathcal{A}, \mathbb{P})$ with $\sigma^2 := \mathrm{Var}[X_1] \in (0, \infty)$. For any $n \in \mathbb{N}$ define the **partial sum process** $W^n := (W^n_t)_{t \in [0, T]}$ via
+In this subsection we make the random-walk heuristic from §0.2 rigorous. Let $(X_i)\_{i \in \mathbb{N}}$ be i.i.d., real-valued, centred random variables on $(\Omega, \mathcal{A}, \mathbb{P})$ with $\sigma^2 := \mathrm{Var}[X_1] \in (0, \infty)$. For any $n \in \mathbb{N}$ define the **partial sum process** $W^n := (W^n_t)\_{t \in [0, T]}$ via
 
 $$
 W^n_t := \frac{1}{\sigma\sqrt{n}} \sum_{i=1}^{\lfloor n t \rfloor} X_i, \quad t \in [0, T].
 $$
 
-To simplify the analysis, introduce the *continuous approximation* $\widehat{W^n} := (\widehat{W^n}_t)_{t \in [0,T]}$:
+To simplify the analysis, introduce the *continuous approximation* $\widehat{W^n} := (\widehat{W^n}\_t)\_{t \in [0,T]}$:
 
 $$
 \widehat{W^n}_t := \frac{1}{\sigma\sqrt{n}} \sum_{i=1}^{\lfloor n t \rfloor} X_i + \frac{n t - \lfloor n t \rfloor}{\sigma \sqrt{n}} \cdot X_{\lfloor n t \rfloor + 1}, \quad t \in [0,T].
@@ -268,9 +268,9 @@ This ensures $\widehat{W^n}$ takes values in the Banach space $\bigl(C([0, T]),\
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">0.12 (Weak Convergence in $C([0,T])$)</span></p>
 
-Let $(Y^n)_{n \in \mathbb{N}}$ be a sequence of continuous, real-valued processes $Y^n := (Y^n_t)_{t \in [0,T]}$ on $(\Omega, \mathcal{A}, \mathbb{P})$. Suppose both conditions below hold:
+Let $(Y^n)\_{n \in \mathbb{N}}$ be a sequence of continuous, real-valued processes $Y^n := (Y^n_t)\_{t \in [0,T]}$ on $(\Omega, \mathcal{A}, \mathbb{P})$. Suppose both conditions below hold:
 
-(i) **Fidi convergence.** The finite-dimensional distributions of $Y^n$ converge weakly to those of some continuous process $Y := (Y_t)_{t \in [0,T]}$, that is, for any $k \in \mathbb{N}$ and $t_1, \dots, t_k \in [0, T]$
+(i) **Fidi convergence.** The finite-dimensional distributions of $Y^n$ converge weakly to those of some continuous process $Y := (Y_t)\_{t \in [0,T]}$, that is, for any $k \in \mathbb{N}$ and $t_1, \dots, t_k \in [0, T]$
 
 $$
 (Y^n_{t_1}, \dots, Y^n_{t_k})^\top \xrightarrow{d} (Y_{t_1}, \dots, Y_{t_k})^\top \quad \text{as } n \to \infty.
@@ -282,7 +282,7 @@ $$
 \mathbb{E}\!\left[\,\lvert Y^n_s - Y^n_t \rvert^\alpha \,\right] \le C \cdot \lvert s - t \rvert^\beta \quad \text{for all } s, t \in [0, T].
 $$
 
-Then $(Y^n)_{n \in \mathbb{N}}$ converges weakly in $\bigl(C([0,T]),\ \lVert \cdot \rVert_\infty\bigr)$ to $Y$.
+Then $(Y^n)\_{n \in \mathbb{N}}$ converges weakly in $\bigl(C([0,T]),\ \lVert \cdot \rVert_\infty\bigr)$ to $Y$.
 
 </div>
 
@@ -312,15 +312,15 @@ where $W$ is a one-dimensional standard Brownian motion on $(\Omega, \mathcal{A}
 
 ### 0.5 Markov Properties of Brownian Motion
 
-For the rest of this section, let $\mathbb{F} := (\mathcal{F}_t)_{t \in I}$ be a filtration in $\mathcal{A}$ and consider a one-dimensional (standard) Brownian motion $W := (W_t)_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$.
+For the rest of this section, let $\mathbb{F} := (\mathcal{F}\_t)\_{t \in I}$ be a filtration in $\mathcal{A}$ and consider a one-dimensional (standard) Brownian motion $W := (W_t)\_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.14 ($\mathbb{F}$-Brownian Motion)</span></p>
 
-The stochastic process $(W_t, \mathcal{F}_t)_{t \in I}$ (or simply $W$, for short) is called a one-dimensional **(standard) $\mathbb{F}$-Brownian motion** (equivalently: standard Brownian motion with respect to $\mathbb{F}$) iff, additionally:
+The stochastic process $(W_t, \mathcal{F}\_t)\_{t \in I}$ (or simply $W$, for short) is called a one-dimensional **(standard) $\mathbb{F}$-Brownian motion** (equivalently: standard Brownian motion with respect to $\mathbb{F}$) iff, additionally:
 
-* $W_t$ is $\mathcal{F}_t$-measurable for every $t \in I$;
-* the process $(W_{t+s} - W_t)_{s \in I}$ is independent of $\mathcal{F}_t$.
+* $W_t$ is $\mathcal{F}\_t$-measurable for every $t \in I$;
+* the process $(W_{t+s} - W_t)\_{s \in I}$ is independent of $\mathcal{F}\_t$.
 
 </div>
 
@@ -360,7 +360,7 @@ $$
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Markov Property)</span></p>
 
-Conditionally on $\mathcal{F}_s$, the future path of $W$ behaves in mean like a *fresh* Brownian motion starting at $W_s$: the conditional expectation of a functional $\Phi$ is the integral of $\Phi$ against the shifted law $\mathbf{P}^{W_s}_W$ — i.e. the integral over all future paths $w$ shifted by the current value $W_s$.
+Conditionally on $\mathcal{F}\_s$, the future path of $W$ behaves in mean like a *fresh* Brownian motion starting at $W_s$: the conditional expectation of a functional $\Phi$ is the integral of $\Phi$ against the shifted law $\mathbf{P}^{W_s}\_W$ — i.e. the integral over all future paths $w$ shifted by the current value $W_s$.
 
 </div>
 
@@ -382,7 +382,7 @@ $$
 = \exp\!\left(a \sum_{i=1}^k \lambda_i\right) \int_{C(I)} \exp\!\left(\sum_{i=1}^k \lambda_i w(t_i)\right) \mathrm{d}\mathbf{P}^0_W(w).
 $$
 
-On the other hand, writing $\overline{W}_t := W_{s+t} - W_s$ — which is independent of $\mathcal{F}_s$, while $W_s$ is $\mathcal{F}_s$-measurable — properties of conditional expectation give
+On the other hand, writing $\overline{W}\_t := W_{s+t} - W_s$ — which is independent of $\mathcal{F}\_s$, while $W_s$ is $\mathcal{F}\_s$-measurable — properties of conditional expectation give
 
 $$
 \mathbb{E}\!\left[\, \exp\!\left(\sum_i \lambda_i W_{s+t_i}\right) \,\Big|\, \mathcal{F}_s \,\right]
@@ -407,7 +407,7 @@ Before strengthening Proposition 0.15 to a version allowing random times, we nee
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.16 (Right-Continuous and Stopped $\sigma$-Algebras)</span></p>
 
-(a) Define the **right-continuous filtration** $\mathbb{F}^+ := (\mathcal{F}_{t+})_{t \in I}$ by
+(a) Define the **right-continuous filtration** $\mathbb{F}^{+} := (\mathcal{F}_{t+})\_{t \in I}$ by
 
 $$
 \mathcal{F}_{t+} := \bigcap_{s > t} \mathcal{F}_s, \qquad t \in I.
@@ -434,15 +434,15 @@ $$
 
 It holds that:
 
-(i) $\mathcal{F}_t \subseteq \mathcal{F}_{t+}$ for all $t \in I$.
+(i) $\mathcal{F}\_t \subseteq \mathcal{F}\_{t+}$ for all $t \in I$.
 
 Let $\tau : \Omega \to \mathbb{R} \cup \lbrace \infty \rbrace$ be a stopping time with respect to $\mathbb{F}$. Then:
 
-(ii) $\mathcal{F}_\tau \subseteq \mathcal{F}_\tau^+$;
+(ii) $\mathcal{F}\_\tau \subseteq \mathcal{F}\_\tau^+$;
 
 (iii) $\tau$ is also a stopping time with respect to $\mathbb{F}^+$;
 
-(iv) $\mathcal{F}_\tau^+ = \bigl\lbrace A \in \mathcal{A} : A \cap \lbrace \tau < t \rbrace \in \mathcal{F}_t\ \text{ for all } t \in I \bigr\rbrace$.
+(iv) $\mathcal{F}\_\tau^{+} = \bigl\lbrace A \in \mathcal{A} : A \cap \lbrace \tau < t \rbrace \in \mathcal{F}\_t\ \text{ for all } t \in I \bigr\rbrace$.
 
 </div>
 
@@ -457,14 +457,14 @@ $$
 \overline{W}_t := W_{\tau + t} - W_\tau, \qquad t \in I,
 $$
 
-is a one-dimensional (standard) Brownian motion, independent of $\mathcal{F}_\tau^+$.
+is a one-dimensional (standard) Brownian motion, independent of $\mathcal{F}\_\tau^{+}$.
 
 </div>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Strong Markov Property)</span></p>
 
-The strong Markov property allows one to restart a Brownian motion at *random* times as though beginning anew — with complete independence from the entire past up to (and, via $\mathcal{F}_\tau^+$, just after) $\tau$.
+The strong Markov property allows one to restart a Brownian motion at *random* times as though beginning anew — with complete independence from the entire past up to (and, via $\mathcal{F}\_\tau^{+}$, just after) $\tau$.
 
 </div>
 
@@ -477,7 +477,7 @@ Complementing the path properties from Proposition 0.11, we record distributiona
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">0.19 (Reflection Principle)</span></p>
 
-Let $\tau : \Omega \to \mathbb{R} \cup \lbrace \infty \rbrace$ be an $\mathbb{F}$-stopping time. Then $W$ has the same distribution as the **reflected process** $\widetilde{W} := (\widetilde{W}_t)_{t \in I}$ defined by
+Let $\tau : \Omega \to \mathbb{R} \cup \lbrace \infty \rbrace$ be an $\mathbb{F}$-stopping time. Then $W$ has the same distribution as the **reflected process** $\widetilde{W} := (\widetilde{W}\_t)\_{t \in I}$ defined by
 
 $$
 \widetilde{W}_t := W_{t \wedge \tau} - \bigl(W_t - W_{t \wedge \tau}\bigr), \qquad t \in I.
@@ -499,21 +499,28 @@ If a Brownian path crosses a level $x \in \mathbb{R}$, the "reflected" path — 
 
 We prove it for $\mathbb{P}$-a.s. finite stopping times $\tau$ (the general case follows by localisation). Verify (W1)–(W4) for $\widetilde{W}$:
 
-* **(W1) Starting in 0.** Clearly $\widetilde{W}_0 = 0$, $\mathbb{P}$-a.s.
-* **(W4) Continuous paths.** $W$ has $\mathbb{P}$-a.s. continuous paths, so does $\widetilde{W}$; in particular, at $t = \tau$, $\lim_{t \uparrow \tau} \widetilde{W}_t = W_\tau = \lim_{t \downarrow \tau} \widetilde{W}_t$.
+* **(W1) Starting in 0.** Clearly $\widetilde{W}\_0 = 0$, $\mathbb{P}$-a.s.
+* **(W4) Continuous paths.** $W$ has $\mathbb{P}$-a.s. continuous paths, so does $\widetilde{W}$; in particular, at $t = \tau$, $\lim_{t \uparrow \tau} \widetilde{W}\_t = W_\tau = \lim_{t \downarrow \tau} \widetilde{W}\_t$.
 
-For $t < \tau$, $\widetilde{W}_t = W_t$, so (W2), (W3) hold trivially. Consider the "post-$\tau$" process $\overline{W} = (\overline{W}_t)_{t \in I}$, $\overline{W}_t := W_{\tau + t} - W_\tau$; by Theorem 0.18, $\overline{W}$ is a standard Brownian motion independent of $\mathcal{F}_\tau \subseteq \mathcal{F}_\tau^+$ (Lemma 0.17 (ii)). For $t \ge \tau$,
+For $t < \tau$, $\widetilde{W}_t = W_t$, so (W2), (W3) hold trivially. Consider the "post-$\tau$" process $\overline{W} = (\overline{W}\_t)\_{t \in I}$, $\overline{W}\_t := W_{\tau + t} - W_\tau$; by Theorem 0.18, $\overline{W}$ is a standard Brownian motion independent of $\mathcal{F}\_\tau \subseteq \mathcal{F}\_\tau^+$ (Lemma 0.17 (ii)). For $t \ge \tau$,
 
 $$
 \widetilde{W}_t = 2 W_\tau - W_t = W_\tau - (W_t - W_\tau) = W_\tau - \overline{W}_{t - \tau},
 $$
 
-so $\widetilde{W}_{\tau + t} = W_\tau - \overline{W}_t$ for any $t \in I$.
+so $\widetilde{W}\_{\tau + t} = W_\tau - \overline{W}\_t$ for any $t \in I$.
 
-* **(W2) Independent increments.** Increments of $\widetilde{W}$ after $\tau$ only depend on increments of $\overline{W}$, independent of $\mathcal{F}_\tau$. Hence increments after $\tau$ are independent of the $\tau$-past, and increments among themselves are independent by (W2) of $\overline{W}$.
+* **(W2) Independent increments.** Increments of $\widetilde{W}$ after $\tau$ only depend on increments of $\overline{W}$, independent of $\mathcal{F}\_\tau$. Hence increments after $\tau$ are independent of the $\tau$-past, and increments among themselves are independent by (W2) of $\overline{W}$.
 * **(W3) Normal increments.** Let $s < t$ in $I$. Distinguish the two remaining cases:
-  * If $t > s \ge \tau$: by (W3) of $\overline{W}$, $\widetilde{W}_t - \widetilde{W}_s = -(\overline{W}_{t-\tau} - \overline{W}_{s-\tau}) \sim -\mathcal{N}(0, t - s) \stackrel{d}{=} \mathcal{N}(0, t - s)$.
-  * If $s < \tau < t$: $\widetilde{W}_t - \widetilde{W}_s = (W_\tau - W_s) - \overline{W}_{t - \tau}$. The first summand is $\mathcal{F}_\tau$-measurable, the second is independent of $\mathcal{F}_\tau$. Both are Gaussian conditionally on $\tau$, and unconditionally,
+  * If $t > s \ge \tau$: by (W3) of 
+  
+    $$\overline{W}$, $\widetilde{W}_t - \widetilde{W}_s = -(\overline{W}_{t-\tau} - \overline{W}_{s-\tau}) \sim -\mathcal{N}(0, t - s) \stackrel{d}{=} \mathcal{N}(0, t - s)$$
+  
+  * If $s < \tau < t$: 
+    
+    $$\widetilde{W}_t - \widetilde{W}_s = (W_\tau - W_s) - \overline{W}_{t - \tau}$$
+    
+    The first summand is $\mathcal{F}\_\tau$-measurable, the second is independent of $\mathcal{F}\_\tau$. Both are Gaussian conditionally on $\tau$, and unconditionally,
 
     $$
     \widetilde{W}_t - \widetilde{W}_s = (W_\tau - W_s) - \overline{W}_{t - \tau} \sim \mathcal{N}(0, t - s). \qquad \blacksquare
@@ -542,7 +549,7 @@ the first time $W$ reaches the value $x$ in $I$.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">0.20 (Maximum Process of Brownian Motion)</span></p>
 
-Define the **maximum process** $M := (M_t)_{t \in I}$ of $W$ by $M_t := \max_{s \in [0, t]} W_s$ for $t \in I$. Then
+Define the **maximum process** $M := (M_t)\_{t \in I}$ of $W$ by $M_t := \max_{s \in [0, t]} W_s$ for $t \in I$. Then
 
 $$
 M_t \stackrel{d}{=} \lvert W_t \rvert, \qquad t \in I.
@@ -743,7 +750,7 @@ $$
 \frac{\partial p(t, x)}{\partial t} = \mathscr{L}^* p(t, x) = -\sum_{i=1}^d \frac{\partial}{\partial x_i}\!\left[\mu_i(t, x)\, p(t, x)\right] + \frac{1}{2} \sum_{i,j=1}^d \frac{\partial^2}{\partial x_i \partial x_j}\!\left[\Sigma_{ij}(t, x)\, p(t, x)\right].
 $$
 
-**Reversing time: the bridge to generative models.** We have now described how a diffusion process $(X_t)_{t \in [0, T]}$ evolves forwards from an initial distribution $p_0$ to a terminal distribution $p_T$. A natural and fundamental question is:
+**Reversing time: the bridge to generative models.** We have now described how a diffusion process $(X_t)\_{t \in [0, T]}$ evolves forwards from an initial distribution $p_0$ to a terminal distribution $p_T$. A natural and fundamental question is:
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Question</span><span class="math-callout__name">(Time-Reversal)</span></p>
@@ -752,18 +759,18 @@ If we observe this stochastic process backwards in time, starting from $T$ and m
 
 </div>
 
-Define the reversed time $\bar{t} := T - t$ and the reversed process $\bar{X}_{\bar t} := X_{T - \bar t}$. A priori, reversing a Markov process need not yield a process with a continuous local-martingale part. However, a foundational result by *Anderson (1982)* shows that — under mild regularity on the density $p(t, x)$ — the time-reversed process is itself a diffusion.
+Define the reversed time $\bar{t} := T - t$ and the reversed process $\bar{X}\_{\bar t} := X_{T - \bar t}$. A priori, reversing a Markov process need not yield a process with a continuous local-martingale part. However, a foundational result by *Anderson (1982)* shows that — under mild regularity on the density $p(t, x)$ — the time-reversed process is itself a diffusion.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">1.1 (Time-Reversal of Diffusions)</span></p>
 
-Let $X_t$ be the solution to the forward SDE (1.2), and let $\bar{\mathcal{F}}_{\bar t}$ be the reversed filtration generated by $\sigma(X_s : s \ge T - \bar t)$. Then the reversed process $\bar{X}_{\bar t}$ satisfies the **reverse SDE**
+Let $X_t$ be the solution to the forward SDE (1.2), and let $\bar{\mathcal{F}}\_{\bar t}$ be the reversed filtration generated by $\sigma(X_s : s \ge T - \bar t)$. Then the reversed process $\bar{X}\_{\bar t}$ satisfies the **reverse SDE**
 
 $$
 \mathrm{d}\bar{X}_{\bar t} = \bar{\mu}(\bar t, \bar{X}_{\bar t})\, \mathrm{d} \bar t + \sigma(T - \bar t, \bar{X}_{\bar t})\, \mathrm{d} \bar{W}_{\bar t},
 $$
 
-where $\bar{W}_{\bar t}$ is a standard Brownian motion with respect to the reversed filtration $\bar{\mathcal{F}}_{\bar t}$, and the reverse drift $\bar{\mu}$ is given by
+where $\bar{W}\_{\bar t}$ is a standard Brownian motion with respect to the reversed filtration $\bar{\mathcal{F}}\_{\bar t}$, and the reverse drift $\bar{\mu}$ is given by
 
 $$
 \bar{\mu}(\bar t, x) = -\mu(T - \bar t, x) + \frac{1}{p(T - \bar t, x)} \nabla_x \cdot \bigl[\Sigma(T - \bar t, x)\, p(T - \bar t, x)\bigr],
@@ -800,7 +807,7 @@ $$
 \mathcal{J}_{\mathrm{ESM}}(\theta) = \frac{1}{2} \int_0^T \lambda(t)\, \mathbb{E}_{X_t \sim p_t}\!\left[\,\bigl\lVert s_\theta(X_t, t) - \nabla_{X_t} \log p(t, X_t) \bigr\rVert_2^2 \,\right] \mathrm{d} t,
 $$
 
-with a positive weighting $\lambda(t) > 0$. Minimising $\mathcal{J}_{\mathrm{ESM}}$ directly is impossible in practice: the marginal density at time $t$ is $p(t, x) = \int_{\mathbb{R}^d} p_{t\mid 0}(x \mid x_0)\, p_0(x_0)\, \mathrm{d} x_0$; since $p_0$ is unknown and the integral is high-dimensional, the true marginal score $\nabla_x \log p(t, x)$ is fundamentally intractable.
+with a positive weighting $\lambda(t) > 0$. Minimising $\mathcal{J}\_{\mathrm{ESM}}$ directly is impossible in practice: the marginal density at time $t$ is $p(t, x) = \int_{\mathbb{R}^d} p_{t\mid 0}(x \mid x_0)\, p_0(x_0)\, \mathrm{d} x_0$; since $p_0$ is unknown and the integral is high-dimensional, the true marginal score $\nabla_x \log p(t, x)$ is fundamentally intractable.
 
 To circumvent this intractability one relies on a profound equivalence (Hyvärinen 2005; extended to conditional distributions by Vincent 2011) allowing one to bypass the marginal score entirely by substituting the *conditional* score of the forward process.
 
