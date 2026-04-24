@@ -754,7 +754,10 @@ For a bounded function $f : J = \langle a, b \rangle \to \mathbb{R}$ and a parti
 
 $$s(f, P) = \sum_{j=1}^{n} m_j (t_j - t_{j-1}) \quad \text{resp.} \quad S(f, P) = \sum_{j=1}^{n} M_j (t_j - t_{j-1})$$
 
-where $m_j = \inf\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$ and $M_j = \sup\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$.
+where 
+
+* $m_j = \inf\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$
+* $M_j = \sup\lbrace f(x) \mid t_{j-1} \le x \le t_j \rbrace$
 
 </div>
 
@@ -888,7 +891,7 @@ A function $f : \langle a, b \rangle \to \mathbb{R}$ is continuous if and only i
 
 *Proof.* Let $f$ not be uniformly continuous. We will prove it is not continuous either.
 
-Since the formula for uniform continuity does not hold we have an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $\lvert x(\delta) - y(\delta) \rvert < \delta$ while $\lvert f(x(\delta)) - f(y(\delta)) \rvert \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$ and $y_n = y(\frac{1}{n})$. By IV.1.3.1 we can choose convergent subsequences $(\widetilde{x}_n)_n$, $(\widetilde{y}_n)_n$ (first choose a convergent subsequence $(x_{k_n})_n$ of $(x_n)_n$ then a convergent subsequence $(y_{k_{l_n}})_n$ of $(y_{n_k})_k$ and finally set $\widetilde{x}_n = x_{k_{l_n}}$ and $\widetilde{y}_n = y_{k_{l_n}}$). Then $\lvert \widetilde{x}_n - \widetilde{y}_n \rvert < \frac{1}{n}$ and hence $\lim \widetilde{x}_n = \lim \widetilde{y}_n$. Because of $\lvert f(\widetilde{x}_n) - f(\widetilde{y}_n) \rvert \ge \varepsilon_0$, however, we cannot have $\lim f(\widetilde{x}_n) = \lim f(\widetilde{y}_n)$ so that by IV.5.1 $f$ is not continuous. $\square$
+Since the formula for uniform continuity does not hold we have an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $\lvert x(\delta) - y(\delta) \rvert < \delta$ while $\lvert f(x(\delta)) - f(y(\delta)) \rvert \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$ and $y_n = y(\frac{1}{n})$. By IV.1.3.1 we can choose convergent subsequences $(\widetilde{x}\_n)\_n$, $(\widetilde{y}\_n)\_n$ (first choose a convergent subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ then a convergent subsequence $(y_{k_{l_n}})\_n$ of $(y_{n_k})\_k$ and finally set $\widetilde{x}\_n = x_{k_{l_n}}$ and $\widetilde{y}\_n = y_{k_{l_n}}$). Then $\lvert \widetilde{x}\_n - \widetilde{y}\_n \rvert < \frac{1}{n}$ and hence $\lim \widetilde{x}\_n = \lim \widetilde{y}\_n$. Because of $\lvert f(\widetilde{x}\_n) - f(\widetilde{y}\_n) \rvert \ge \varepsilon_0$, however, we cannot have $\lim f(\widetilde{x}\_n) = \lim f(\widetilde{y}\_n)$ so that by IV.5.1 $f$ is not continuous. $\square$
 
 </div>
 
@@ -954,7 +957,9 @@ $$s(f, P_1 + P_2) = s(f, P_1) + s(f, P_2)$$
 
 and hence
 
-$$\underline{\int_a^b} f + \underline{\int_b^c} f = \sup_{P_1 \in \mathcal{P}(a,b)} s(f, P_1) + \sup_{P_2 \in \mathcal{P}(b,c)} s(f, P_2) = \sup\lbrace s(f, P_1) + s(f, P_2) \mid P_1 \in \mathcal{P}(a, b),\, P_2 \in \mathcal{P}(b, c) \rbrace = \sup\lbrace s(f, P_1 + P_2) \mid P_1 \in \mathcal{P}(a, b),\, P_2 \in \mathcal{P}(b, c) \rbrace.$$
+$$\underline{\int_a^b} f + \underline{\int_b^c} f = \sup_{P_1 \in \mathcal{P}(a,b)} s(f, P_1) + \sup_{P_2 \in \mathcal{P}(b,c)} s(f, P_2) = $$
+
+$$= \sup\lbrace s(f, P_1) + s(f, P_2) \mid P_1 \in \mathcal{P}(a, b),\, P_2 \in \mathcal{P}(b, c) \rbrace = \sup\lbrace s(f, P_1 + P_2) \mid P_1 \in \mathcal{P}(a, b),\, P_2 \in \mathcal{P}(b, c) \rbrace.$$
 
 Now every $P \in \mathcal{P}(a, c)$ can be refined to a $P_1 + P_2$: it suffices to add $b$ into the sequence. Thus, by 2.3.1 this last supremum is equal to
 
@@ -1051,7 +1056,7 @@ $$\int_a^b (\alpha f + \beta g) = \alpha \int_a^b f + \beta \int_a^b g.$$
 
 *Proof.* I. First we easily see that $\underline{\int_a^b} \alpha f = \alpha \int_a^b f$. Indeed, for $\alpha \ge 0$ we obviously have $s(\alpha f, P) = \alpha s(f, P)$ and $S(\alpha f, P) = \alpha S(f, P)$, and for $\alpha \le 0$ we have $s(\alpha f, P) = \alpha S(f, P)$ and $S(\alpha f, P) = \alpha s(f, P)$.
 
-II. Thus, it suffices to prove the statement for the sum $f + g$. Set $m_i = \inf\lbrace f(x) + g(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$, $m'_i = \inf\lbrace f(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$ and $m''_i = \inf\lbrace g(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$. Obviously $m'_i + m''_i \le m_i$ and consequently
+II. Thus, it suffices to prove the statement for the sum $f + g$. Set $m_i = \inf\lbrace f(x) + g(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$, $m'\_i = \inf\lbrace f(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$ and $m''\_i = \inf\lbrace g(x) \mid x \in \langle t_{i-1}, t_i \rangle \rbrace$. Obviously $m'\_i + m''\_i \le m_i$ and consequently
 
 $$s(f, P) + s(g, P) \le s(f + g, P), \quad \text{and similarly} \quad S(f + g, P) \le S(f, P) + S(g, P)$$
 
@@ -1439,7 +1444,7 @@ We then speak of a **convergent sequence** and the $x$ is called its **limit**, 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(3.1.1)</span></p>
 
-Let $(x_n)_n$ be a convergent sequence and let $x$ be its limit. Then each subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ converges and we have $\lim_n x_{k_n} = x$.
+Let $(x_n)\_n$ be a convergent sequence and let $x$ be its limit. Then each subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ converges and we have $\lim_n x_{k_n} = x$.
 
 </div>
 

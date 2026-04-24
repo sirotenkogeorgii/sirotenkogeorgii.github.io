@@ -312,6 +312,130 @@ $$(R)\int_a^b f = F(b)-F(a) = (N)\int_a^b f$$
 
 ## Integration by substitution
 
+## Measure theory is blind to sets of probability zero
+
+The slogan *"measure theory is blind to null sets"* is precise: integrals, expectations, and probabilities against $\mathbb{P}$ cannot detect what happens on a set $N \in \mathcal{A}$ with $\mathbb{P}(N) = 0$. Below is what this actually means, why it holds, and why it is the reason almost-sure statements are the natural language for stochastic processes.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Principle</span><span class="math-callout__name">(Blindness to null sets)</span></p>
+
+Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a measure space and $N \in \mathcal{A}$ with $\mathbb{P}(N) = 0$. For any integrable random variables $X, Y$ with $X = Y$ on $\Omega \setminus N$,
+
+$$
+\mathbb{E}[X] \;=\; \int_\Omega X \, \mathrm{d}\mathbb{P} \;=\; \int_\Omega Y \, \mathrm{d}\mathbb{P} \;=\; \mathbb{E}[Y].
+$$
+
+In particular, probabilities are unchanged: $\mathbb{P}(A) = \mathbb{P}(A')$ whenever the symmetric difference $A \triangle A' \subseteq N$.
+
+</div>
+
+### Why this holds
+
+For a non-negative simple function $\varphi = \sum_i c_i \mathbf{1}_{A_i}$,
+
+$$
+\int \varphi \, \mathrm{d}\mathbb{P} = \sum_i c_i \, \mathbb{P}(A_i),
+$$
+
+and $\mathbb{P}(A_i \cap N) = 0$ for every $i$, so any mass sitting inside $N$ contributes $c_i \cdot 0 = 0$. Extending to general integrable $X$ by monotone / dominated convergence preserves the property: modifying the integrand on a null set can neither change a simple-function approximation nor its limit.
+
+### What "blindness" looks like concretely
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(finite-set modification)</span></p>
+
+Take $f(x) = \sin(2\pi x)$ on $[0,1]$ and define $g$ by
+
+$$
+g(x) = \begin{cases} y_i, & x = x_i \in N := \lbrace x_1, \dots, x_4 \rbrace, \\ f(x), & x \notin N, \end{cases}
+$$
+
+for *any* values $y_1, \dots, y_4 \in \mathbb{R}$. The set $N$ has Lebesgue measure $0$, so
+
+$$
+\int_0^1 g(x) \, \mathrm{d}x \;=\; \int_0^1 f(x) \, \mathrm{d}x \;=\; 0,
+$$
+
+no matter how we choose the $y_i$. Visually the two functions disagree at four points, but the integral cannot tell them apart.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/null_set_finite_modification.png' | relative_url }}" alt="Two functions on [0,1] that agree off a four-point null set have the same integral" loading="lazy">
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dirichlet function)</span></p>
+
+The rationals $\mathbb{Q} \cap [0,1]$ are **dense** in $[0,1]$ yet have Lebesgue measure $0$. The Dirichlet function
+
+$$
+\mathbf{1}_\mathbb{Q}(x) = \begin{cases} 1, & x \in \mathbb{Q}, \\ 0, & x \notin \mathbb{Q}, \end{cases}
+$$
+
+equals the constant function $0$ *almost everywhere*, hence
+
+$$
+\int_0^1 \mathbf{1}_\mathbb{Q}(x) \, \mathrm{d}x \;=\; 0.
+$$
+
+(Lebesgue integrable, though not Riemann integrable: the set of discontinuities is $[0,1]$, which does *not* have measure zero.)
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/null_set_dirichlet.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
+
+### $L^p$ spaces are built on this blindness
+
+The $L^p$ norm
+
+$$
+\|X\|_{L^p} \;=\; \bigl( \mathbb{E}[|X|^p] \bigr)^{1/p}
+$$
+
+cannot distinguish $X$ from $Y$ when $X = Y$ $\mathbb{P}$-a.s. If we treated such $X$ and $Y$ as different objects, then $\|X - Y\|_{L^p} = 0$ would *not* imply $X = Y$, and $\|\cdot\|_{L^p}$ would fail to be a norm. The fix: define $L^p(\Omega, \mathcal{A}, \mathbb{P})$ as the space of *equivalence classes* under the relation
+
+$$
+X \sim Y \;\iff\; X = Y \ \mathbb{P}\text{-a.s.}
+$$
+
+So $L^p$ lives *one level above* functions — its elements are equivalence classes of functions that are indistinguishable to the integral.
+
+### Why this matters for stochastic processes
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Modification / version)</span></p>
+
+Two stochastic processes $X = (X_t)\_{t \in I}$ and $Y = (Y_t)\_{t \in I}$ on the same space $(\Omega, \mathcal{A}, \mathbb{P})$ are called **modifications** (or *versions*) of each other iff
+
+$$
+\mathbb{P}(X_t = Y_t) = 1 \qquad \text{for every } t \in I.
+$$
+
+</div>
+
+Modifications are **statistically indistinguishable**: every finite-dimensional distribution, every expectation, every integral against $\mathbb{P}$ agrees. So if one construction of Brownian motion happens to produce discontinuous paths on some null set $N$, one can *modify* the process on $N$ to repair continuity — and the modified process is still Brownian motion (it still satisfies the measure-theoretic axioms and is now also continuous). This is exactly the operation used in **Kolmogorov's continuity theorem**.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/null_set_brownian_modification.png' | relative_url }}" alt="Two modifications of the same Brownian motion: identical in distribution and in all integrals, yet only one has continuous paths" loading="lazy">
+</figure>
+
+### What blindness does *not* mean
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(pathwise vs. measure-theoretic properties)</span></p>
+
+The blindness is about quantities defined as integrals against $\mathbb{P}$ — *not* about pathwise or topological properties of a single sample realisation.
+
+* Two modifications can differ pathwise in drastic ways. One sample path can be continuous and another can have jumps — continuity is a *uniform* pathwise property, not a measure-theoretic one.
+* The events $\lbrace \omega : t \mapsto X_t(\omega) \text{ is continuous on } I \rbrace$ and $\lbrace \omega : t \mapsto Y_t(\omega) \text{ is continuous on } I \rbrace$ may literally be different sets, even when $X, Y$ are modifications of each other.
+
+That is precisely why (W4) in the definition of Brownian motion (continuity of paths) has to be stated as a separate axiom: it is a property of the whole random function that is *not* deducible from the finite-dimensional distributions alone, and it is exactly the kind of property that null-set modifications can create or destroy.
+
+</div>
+
 ## Measurable function
 
 ## Limsup and Liminf
