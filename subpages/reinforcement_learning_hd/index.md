@@ -28,6 +28,9 @@ math: true
 
 ## Lecture 2: Multi-Armed Bandits
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Multi-Armed Bandits)</span></p>
+
 In full reinforcement learning, an action simultaneously affects three things: the reward we receive now, the state we transition into, and — through that state — *what data we get to see in the future*. These three entanglements make the full problem hard. The multi-armed bandit is the setting obtained by deliberately stripping the last two entanglements away: there are no states to transition between and no delayed credit to assign. The only thing left is the interaction loop
 
 $$
@@ -35,6 +38,8 @@ $$
 $$
 
 and yet even here, one essential RL difficulty refuses to disappear: the tension between **exploration** and **exploitation**. Because of this, bandits are the cleanest laboratory for isolating the central learning problem of RL — how to act in a world that only tells you how good your choices were, never what the right choice would have been.
+
+</div>
 
 ### Evaluative versus Instructive Feedback
 
@@ -53,7 +58,9 @@ Reinforcement learning operates under evaluative feedback.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why evaluative feedback forces exploration)</span></p>
 
-If you never try an action, you never observe its reward, so you never learn its value. Under evaluative feedback this is not a minor inconvenience — it is a hard wall. Unlike supervised learning, where a teacher can reveal the right label for an input the model has never actively chosen, an RL agent learns *only* about actions it samples. Exploration is therefore not optional: it is the only channel through which information about unused actions reaches the agent.
+**If you never try an action, you never observe its reward, so you never learn its value.**
+
+Under evaluative feedback this is not a minor inconvenience — it is a hard wall. Unlike supervised learning, where a teacher can reveal the right label for an input the model has never actively chosen, an RL agent learns *only* about actions it samples. Exploration is therefore not optional: it is the only channel through which information about unused actions reaches the agent.
 
 </div>
 
@@ -123,14 +130,38 @@ In a stationary problem, by the law of large numbers $Q_t(a) \to q_\ast(a)$ as $
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What "stationary" means here)</span></p>
+
+**Formal statement.** A bandit problem is **stationary** if the reward distribution of every arm is fixed in time: for every action $a$ and every pair of time steps $s, t$,
+
+$$
+R_s \mid A_s = a \;\stackrel{d}{=}\; R_t \mid A_t = a.
+$$
+
+In particular the true action value $q_\ast(a) = \mathbb{E}[R_t \mid A_t = a]$ does **not** depend on $t$ — it is a single unknown number per arm that never moves.
+
+**Why the assumption matters here.** The convergence $Q_t(a) \to q_\ast(a)$ we just stated relies on it in two places:
+
+* the rewards $\{R_i : A_i = a\}$ sampled from arm $a$ are i.i.d. draws from one fixed distribution, so the LLN applies,
+* the limit $q_\ast(a)$ that the sample mean converges to is itself a well-defined constant.
+
+If either of these breaks, sample averages are the wrong estimator.
+
+**Non-stationary, for contrast.** A non-stationary bandit is one where $q_\ast(a)$ is allowed to *drift over time*: the true means themselves change as the agent interacts. Classical examples are slot machines whose underlying probabilities shift, or a restaurant whose cook changes mid-year. In that regime, averaging *all* past rewards equally is actively harmful — ancient rewards from a stale regime pull the estimate just as strongly as fresh ones do. We return to this case in the section on constant step sizes, where the goal is no longer convergence to a fixed number but **tracking** a moving target.
+
+**Why "almost" was avoided.** Unlike LLN statements that speak of almost-sure convergence of arbitrary $(X_i)_{i \ge 1}$, here convergence of $Q_t(a)$ is contingent on the agent *actually sampling arm $a$ infinitely often* — $N_t(a) \to \infty$. A control rule that stops pulling arm $a$ after finitely many steps prevents convergence entirely, even in a stationary problem. The stationarity assumption concerns the environment; the "sample often enough" condition concerns the algorithm.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Estimation is rarely the bottleneck)</span></p>
 
 Sample averages are asymptotically exact, so *given enough pulls* they recover the true value of any arm. The bottleneck is not the quality of the estimator — it is the quality of the control policy. We need a rule that *chooses* actions in a way that gathers enough informative data about the right arms. The rest of this lecture is essentially a taxonomy of such rules.
 
 </div>
 
-<div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Greedy Action and Pure-Greedy Selection)</span></p>
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Greedy Action and Pure-Greedy Selection)</span></p>
 
 Given estimates $Q_t(a)$, the **greedy action** at time $t$ is any action that currently looks best:
 
@@ -179,7 +210,7 @@ $$
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What $\varepsilon$-greedy buys us)</span></p>
 
-$\varepsilon$-greedy is the minimal fix for pure greedy. It guarantees that every action continues to be sampled with probability at least $\varepsilon / k$ at every time step. Combined with the LLN, this means $Q_t(a) \to q_\ast(a)$ for *every* arm $a$ — so in the long run the greedy argmax identifies the true best arm. The price is that an $\varepsilon$ fraction of steps are "wasted" on uniformly random exploration even after the problem is well-understood.
+$\varepsilon$-greedy is the minimal fix for pure greedy. **It guarantees that every action continues to be sampled** with probability at least $\varepsilon / k$ at every time step. Combined with the LLN, this means $Q_t(a) \to q_\ast(a)$ for *every* arm $a$ — so in the long run the greedy argmax identifies the true best arm. The price is that an $\varepsilon$ fraction of steps are "wasted" on uniformly random exploration even after the problem is well-understood.
 
 </div>
 
@@ -200,7 +231,7 @@ A **testbed** is a fixed *distribution over bandit instances* used to evaluate a
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(The 10-armed Testbed)</span></p>
 
 * **Across runs:** each arm's true value is drawn independently, $q_\ast(a) \sim \mathcal{N}(0, 1)$, for $a = 1, \dots, 10$.
-* **Within a run:** rewards are noisy samples $R_t \sim \mathcal{N}(q_*(A_t), 1)$.
+* **Within a run:** rewards are noisy samples $R_t \sim \mathcal{N}(q_\ast(A_t), 1)$.
 
 This testbed contains *two sources of randomness* that a learning curve has to average over:
 
@@ -208,6 +239,10 @@ This testbed contains *two sources of randomness* that a learning curve has to a
 * **Within-run randomness:** rewards are noisy even if the underlying means were known.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/reward_distribution.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Reading the standard learning curves)</span></p>
@@ -226,6 +261,10 @@ On the 10-armed testbed, a few empirical regularities stand out:
 The general lesson: greedy looks good *early*, exploration pays off *late*.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/reward_curves.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Tracking the Updates by Hand)</span></p>
@@ -248,14 +287,14 @@ At step $4$, which arm does $\varepsilon$-greedy choose?
 
 ### Incremental Implementation
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Question</span><span class="math-callout__name">(A thought experiment)</span></p>
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(A thought experiment)</span></p>
 
 If you have already computed the average of $99$ numbers and now receive a $100$th, do you really need to re-sum all $100$ of them to update the average?
 
-</div>
+The **answer is no**, and the observation behind this is the single most reused pattern in RL.
 
-The answer is no, and the observation behind this is the single most reused pattern in RL.
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Incremental Mean)</span></p>
@@ -295,10 +334,16 @@ For the sample-average rule we just derived, the target is $R_n$ and the step si
 
 ### Non-stationarity and Constant Step Sizes
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why sample averages fail when the world drifts)</span></p>
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Sample averages fails in nonstationary problems)</span></p>
 
-The sample average weights every observed reward *equally*. This is ideal when the true value $q_\ast(a)$ is a fixed constant — the LLN then tells us $Q_t(a) \to q_\ast(a)$. But if $q_\ast(a)$ *drifts over time*, equal weighting is a disaster: ancient rewards from a stale regime drag the estimate away from the current truth just as hard as fresh rewards pull it toward it. In a non-stationary bandit, convergence to a fixed number is the *wrong* goal. What we want is **tracking** — an estimate that follows the moving target.
+The sample average weights every observed reward *equally*. This is ideal when the true value $q_\ast(a)$ is a fixed constant — the LLN then tells us $Q_t(a) \to q_\ast(a)$. But if $q_\ast(a)$ *drifts over time*, equal weighting is a disaster: ancient rewards from a stale regime drag the estimate away from the current truth just as hard as fresh rewards pull it toward it. 
+
+**In a non-stationary bandit, convergence to a fixed number is the *wrong* goal** 
+
+$$\implies$$
+
+What we want is **tracking** — an estimate that follows the moving target.
 
 </div>
 
@@ -357,9 +402,25 @@ A greedy agent starting from this configuration initially believes every arm is 
 
 Optimism creates exploration *without any random action selection*: the policy can be purely greedy and still explore the whole action set early on. On stationary problems, optimistic-greedy typically sweeps the arms broadly in the first few hundred steps and ends up picking the true best arm more reliably than realistic $\varepsilon$-greedy.
 
-The limitation is structural: the optimism budget is **spent once**. Once every arm has been tried and its estimate has dropped to its true value, the artificially high initialization no longer drives exploration. If the environment later changes, the original optimism does not magically return — this method is essentially a one-time mechanism and is ill-suited to non-stationary problems.
+**Strength:**
+* Useful in stationary tasks.
+* Encourages a broad initial sweep of the arms.
+
+The limitation is structural: the optimism budget is **spent once**. Once every arm has been tried and its estimate has dropped to its true value, the artificially high initialization no longer drives exploration. If the environment later changes, the original optimism does not magically return — this method is essentially a one-time mechanism and is **ill-suited to non-stationary problems**.
+
+**Weakness:**
+* Mostly a one-time mechanism.
+* If the environment changes later, the optimism does not magically return.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/optimistic_greedy_vs_realistic_epsilon_greedy.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/ucb_epsilon_greedy.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why $\varepsilon$-greedy is crude)</span></p>
@@ -390,17 +451,22 @@ where $c > 0$ is a tuning parameter.
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(How the UCB bonus evolves)</span></p>
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(How the UCB bonus evolves)</span></p>
 
 The bonus has two competing dynamics:
 
 * Whenever action $a$ is selected, $N_t(a)$ increases — so the bonus for $a$ **shrinks**.
 * Whenever $a$ is *not* selected, $t$ still increases, $\ln t$ grows, and the bonus for $a$ **slowly rises**.
 
-The net effect is that UCB revisits uncertain actions again and again, but with decreasing frequency, concentrating progressively on the arms that turn out to be genuinely good. In this sense UCB explores **directedly**: it prefers actions that are simultaneously *plausible* (high $Q_t$) and *insufficiently tested* (low $N_t$).
+The net effect is that UCB revisits uncertain actions again and again, but with decreasing frequency, concentrating progressively on the arms that turn out to be genuinely good. In this sense UCB explores **directedly**: 
+* it prefers actions that are simultaneously *plausible* (high $Q_t$) and *insufficiently tested* (low $N_t$).
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/ucb_epsilon_greedy.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Placing the methods on one axis)</span></p>
@@ -419,9 +485,18 @@ All three live between the extremes; they only differ in *how* they strike the b
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/ExplorationExploitationSpectrum.png' | relative_url }}" alt="Dirichlet function plotted on a dense set of rationals; its Lebesgue integral equals that of the zero function" loading="lazy">
+</figure>
+
 ### Gradient Bandits
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">New Paradigm</span><span class="math-callout__name">(From learning expecrted rewards (values) to learning action policy)</span></p>
+
 Every method above shares the same basic recipe: estimate $Q_t(a)$, then act nearly greedily on those estimates. Gradient bandits take a genuinely different route — they parameterize the **policy directly** and improve it by gradient ascent on expected reward. This is the first appearance in the course of the idea of **policy gradients**.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Preferences and the Softmax Policy)</span></p>
@@ -551,6 +626,11 @@ $$
 If the reward is **above** the baseline, the chosen action's preference goes up and every other preference goes down; if it is **below**, the chosen action is pushed down and the others up.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/baseline_subtraction_trick.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Baseline: same expected direction, less noise. That typically makes learning smoother and faster.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the baseline helps)</span></p>
