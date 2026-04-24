@@ -78,7 +78,7 @@ $$
 E(x(T)) + \int_0^T |\dot{x}(t)|^2 \, dt \le E(x(0)). \tag{1.3}
 $$
 
-At the risk of stating the obvious: $-\nabla E(x(t))$ is the *direction of steepest descent* of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $|v| = |\nabla E(x(t))|$,
+At the risk of stating the obvious: $-\nabla E(x(t))$ is the *direction of steepest descent* of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $|v| = \|\nabla E(x(t))\|$,
 
 $$
 -\langle \nabla E(x(t)), \nabla E(x(t)) \rangle \le \langle v, \nabla E(x(t)) \rangle.
@@ -264,13 +264,17 @@ In particular, the solution to (1.8) is **unique** (given an initial condition).
 
 </div>
 
-The proof is short: we only need to check that $\tfrac{d}{dt} |x_1(t) - x_2(t)| \le 0$, or — equivalently and more conveniently —
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The proof is short: we only need to check that $\tfrac{d}{dt} \|x_1(t) - x_2(t)\| \le 0$, or — equivalently and more conveniently —
 
 $$
 \frac{d}{dt} \, \tfrac{1}{2} |x_1(t) - x_2(t)|^2 \le 0.
 $$
 
-*Proof of Theorem 2.* Set $f(t) := \tfrac{1}{2} |x_1(t) - x_2(t)|^2$. Then
+*Proof of Theorem 2.* Set $f(t) := \tfrac{1}{2} \|x_1(t) - x_2(t)\|^2$. Then
 
 $$
 \frac{d}{dt} f = \langle x_1(t) - x_2(t), \, \dot{x}_1(t) - \dot{x}_2(t) \rangle. \tag{1.15}
@@ -282,10 +286,14 @@ $$
 \langle x_1(t) - x_2(t), \, p_1 - p_2 \rangle \ge 0.
 $$
 
-By assumption, $-\dot{x}_i(t) \in \partial E(x_i(t))$, so we may pick $p_i$ with $\dot{x}_i(t) = -p_i$. Substituting,
+By assumption, $-\dot{x}\_i(t) \in \partial E(x_i(t))$, so we may pick $p_i$ with $\dot{x}\_i(t) = -p_i$. Substituting,
 
 $$
 \frac{d}{dt} f = \langle x_1(t) - x_2(t), \, -(p_1 - p_2) \rangle = -\langle x_1(t) - x_2(t), \, p_1 - p_2 \rangle \le 0,
 $$
 
 which proves the monotonicity. **Uniqueness** follows by taking equal initial conditions $x_1(0) = x_2(0)$, so that $f(0) = 0$, and hence $f \equiv 0$. $\square$
+
+</details>
+</div>
+

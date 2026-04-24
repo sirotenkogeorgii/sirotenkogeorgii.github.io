@@ -31,3 +31,4 @@ date: 2024-10-20
 - [Functional Analysis](/subpages/books/functional_analysis/mit_rogriguez/)
 - [Geometric Deep Learning HD](/subpages/books/geometric_deep_learning_hd/)
 - [SDEs and Diffusion Models HD](/subpages/books/sde_hd/)
+- [PDEs in Data Science HD](/subpages/books/pdeds/)
