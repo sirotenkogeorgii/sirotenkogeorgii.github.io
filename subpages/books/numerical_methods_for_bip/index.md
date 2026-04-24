@@ -456,7 +456,11 @@ In this section, throughout $A \in \mathcal{L}(X, Y)$ is a linear bounded operat
 
 $$Ax = y \tag{2.2.1}$$
 
-for possibly non-injective and/or non-surjective $A$. For $y \notin \mathcal{R}(A)$, (2.2.1) has no solution (Hadamard 1). A sensible thing to do is to find $x \in X$ that minimises $\lVert Ax - y \rVert_Y$. On the other hand, for $\mathcal{N}(A) \neq \lbrace 0 \rbrace$ there are infinitely many solutions (Hadamard 2). In that case, we choose the one that minimises $\lVert x \rVert_X$. This leads to the following definition.
+for possibly non-injective and/or non-surjective $A$. 
+* For $y \notin \mathcal{R}(A)$, (2.2.1) **has no solution** **(Hadamard 1)**. A sensible thing to do is to find $x \in X$ that minimises $\lVert Ax - y \rVert_Y$. 
+* On the other hand, for $\mathcal{N}(A) \neq \lbrace 0 \rbrace$ there are **infinitely many solutions** **(Hadamard 2)**. 
+  
+In that case, we choose the one that minimises $\lVert x \rVert_X$. This leads to the following definition.
 
 </div>
 
@@ -494,11 +498,16 @@ $$\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp.$$
 
 </div>
 
-Due to the restriction to $\mathcal{N}(A)^\perp$ and $\mathcal{R}(A)$ the operator $\tilde{A}$ in (2.2.2) is bijective. For arbitrary $y \in \mathcal{D}(A^\dagger)$, an orthogonal decomposition guarantees the existence of $y_1 \in \mathcal{R}(A)$ and $y_2 \in \mathcal{R}(A)^\perp$ such that $y = y_1 + y_2$. Finally, due to $\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp$ we have
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Moore-Penrose Equations)</span></p>
+
+Due to the restriction to $\mathcal{N}(A)^\perp\to\mathcal{R}(A)$ the operator $\tilde{A}$ in (2.2.2) is bijective. For arbitrary $y \in \mathcal{D}(A^\dagger)$, an orthogonal decomposition guarantees the existence of $y_1 \in \mathcal{R}(A)$ and $y_2 \in \mathcal{R}(A)^\perp$ such that $y = y_1 + y_2$. Finally, due to $\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp$ we have
 
 $$A^\dagger y = A^\dagger y_1 + A^\dagger y_2 = A^\dagger y_1 = \tilde{A}^{-1} y_1, \tag{2.2.4}$$
 
 and thus $A^\dagger$ is well-defined on all of $\mathcal{D}(A^\dagger)$, defined in (2.2.3).
+
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.2.3</span><span class="math-callout__name">(Moore-Penrose Equations)</span></p>
@@ -558,7 +567,7 @@ $$\lVert Az - y \rVert_Y = \lVert P_{\overline{\mathcal{R}}} y - y \rVert_Y = \m
 
 i.e., $z$ is least-squares solution of $Ax = y$. Conversely, let $z \in X$ be a least squares solution. Then it follows again from $P_{\overline{\mathcal{R}}} y \in \mathcal{R}(A)$ that
 
-$$\lVert P_{\overline{\mathcal{R}}} y - y \rVert = \min_{x \in X} \lVert Ax - y \rVert = \min_{w \in \mathcal{R}(A)} \lVert w - y \rVert_Y = \lVert P_{\overline{\mathcal{R}}} y - y \rVert_Y,$$
+$$\lVert P_{\overline{\mathcal{R}}} y - y \rVert \leq \lVert Az-y \rVert = \min_{x \in X} \lVert Ax - y \rVert = \min_{w \in \mathcal{R}(A)} \lVert w - y \rVert_Y \leq \lVert P_{\overline{\mathcal{R}}} y - y \rVert_Y,$$
 
 i.e., $Az$ is the orthogonal projection of $y$ onto $\overline{\mathcal{R}(A)}$. In summary,
 
@@ -568,7 +577,7 @@ Each element $z \in S$ can be decomposed uniquely into $x = \tilde{x} + x_0$ wit
 
 $$\tilde{x} = \tilde{A}^{-1} P_{\overline{\mathcal{R}}} y = A^\dagger y = x^\dagger.$$
 
-Thus, the set of all least-squares solutions is $x^\dagger + \mathcal{N}(A)$. Finally, due to the orthogonality of $x^\dagger$ and $x_0$,
+Thus, the set of all least-squares solutions is $x^\dagger + \mathcal{N}(A)$. Finally, due to the orthogonality of $x^\dagger=\tilde{x}$ and $x_0$,
 
 $$\lVert z \rVert_X^2 = \lVert x^\dagger + x_0 \rVert_X^2 = \lVert x^\dagger \rVert_X^2 + \lVert x_0 \rVert_X^2 \ge \lVert x^\dagger \rVert_X^2$$
 
@@ -588,6 +597,8 @@ If in addition $x \in \mathcal{N}(A)^\perp$, then $x = x^\dagger$.
 
 </div>
 
+TODO: put a proof here of the theorem above.
+
 The minimum-norm solution $x^\dagger$ of $Ax = y$ is the solution of the normal equations with minimum norm, i.e.,
 
 $$x^\dagger = (A^* A)^\dagger A^* y.$$
@@ -603,7 +614,9 @@ The central question is if $\mathcal{R}(A)$ is closed. If it is then $A^\dagger$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.2.6</span><span class="math-callout__name">(Boundedness of Pseudoinverse)</span></p>
 
-Let $A \in \mathcal{L}(X, Y)$. Then $A^\dagger \in \mathcal{L}(\mathcal{D}(A^\dagger), X)$ iff $\mathcal{R}(A)$ is closed.
+Let $A \in \mathcal{L}(X, Y)$. Then 
+
+$$A^\dagger \in \mathcal{L}(\mathcal{D}(A^\dagger), X) \iff \mathcal{R}(A) \text{ is closed}$$
 
 </div>
 
@@ -697,7 +710,7 @@ $$K^* K x = \sum \lambda_n \langle x, v_n \rangle_X v_n \quad \text{for all } x 
 
 Moreover, $(v_n)$ is an ONB of $\overline{\mathcal{R}(K^* K)}$.
 
-Now, since $\lambda_n \lVert v_n \rVert_X^2 = \langle \lambda_n v_n, v_n \rangle_X = \langle K^* K v_n, v_n \rangle_X = \lVert K v_n \rVert_X^2 > 0$, we can define for all $n \in \mathbb{N}$
+Now, since $\lambda_n = \lambda_n \lVert v_n \rVert_X^2 = \langle \lambda_n v_n, v_n \rangle_X = \langle K^* K v_n, v_n \rangle_X = \lVert K v_n \rVert_X^2 > 0$, we can define for all $n \in \mathbb{N}$
 
 $$\sigma_n := \sqrt{\lambda_n} > 0 \quad \text{and} \quad u_n := \frac{1}{\sigma_n} K v_n \in Y$$
 
@@ -773,11 +786,11 @@ $$\sum_{n \in \mathbb{N}} \sigma_n^{-2} |\langle y, u_n \rangle_Y|^2 = \sum_{n \
 
 To show the reverse implication, let $y \in \overline{\mathcal{R}(K)}$ and suppose that (2.3.4) holds. Then, the sequence $(s_N)\_{N \in \mathbb{N}}$ of partial sums $s_N := \sum_{n=1}^{N} \sigma_n^{-2} \|\langle y, u_n \rangle_Y\|^2$ is a Cauchy sequence and thus
 
-$$(x_N)\_{N \in \mathbb{N}} \quad \text{with} \quad x_N := \sum_{n=1}^{N} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n$$
+$$(x_N)_{N \in \mathbb{N}} \quad \text{with} \quad x_N := \sum_{n=1}^{N} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n$$
 
 is also a Cauchy sequence. In other words,
 
-$$\lVert x_N - x_M \rVert_X^2 = \left\lVert \sum_{n=N}^{M} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n \right\rVert_X^2 = \sum_{n=N}^{M} |\sigma_n^{-1} \langle y, u_n \rangle_Y|^2 \to 0,$$
+$$\lVert x_N - x_M \rVert_X^2 = \left\lVert \sum_{n=N}^{M} \sigma_n^{-1} \langle y, u_n \rangle_Y v_n \right\rVert_X^2 = \sum_{n=N+1}^{M} \sigma_n^{-2}|\langle y, u_n \rangle_Y|^2 = S_M - S_N \to 0,$$
 
 where we used that $(v_n)\_{n \in \mathbb{N}}$ is an orthonormal system in $\overline{\mathcal{R}(K^\ast)}$. Thus, $(x_N)\_{N \in \mathbb{N}} \subset \overline{\mathcal{R}(K^\ast)}$ converges to
 
@@ -881,7 +894,7 @@ It can be shown that for all regularisations there exists an a priori rule and t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.4.5</span><span class="math-callout__name">(Convergent A Priori Rule)</span></p>
 
-Let $(A_\alpha^\dagger)\_{\alpha > 0}$ be a regularisation and $\alpha : \mathbb{R}_{+} \to \mathbb{R}_{+}$ an a-priori rule with
+Let $(A_\alpha^\dagger)\_{\alpha > 0}$ be a regularisation and $\alpha : \mathbb{R}\_{+} \to \mathbb{R}\_{+}$ an a-priori rule with
 
 1. $\lim_{\delta \to 0} \alpha(\delta) = 0$,
 2. $\lim_{\delta \to 0} \delta \lVert A_{\alpha(\delta)}^\dagger \rVert_{\mathcal{L}(Y,X)} = 0$.
