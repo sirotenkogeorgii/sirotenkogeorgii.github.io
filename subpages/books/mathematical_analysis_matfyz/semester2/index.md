@@ -1373,11 +1373,11 @@ $$d(f, g) = \sup\lbrace \lvert f(x) - g(x) \rvert \mid x \in J \rbrace.$$
 
 $$\lvert x \cdot y \rvert \le \lVert x \rVert \cdot \lVert y \rVert.$$
 
-From this inequality one easily infers that $d(x, y) = \lVert x - y \rVert$ is a distance on $V_n$. Now $\mathbb{E}_n$ is nothing else than $(V_n, d)$ with the structure of vector space neglected.
+From this inequality one easily infers that $d(x, y) = \lVert x - y \rVert$ is a distance on $V_n$. Now $\mathbb{E}\_n$ is nothing else than $(V_n, d)$ with the structure of vector space neglected.
 
 (b) The Gauss plane is the Euclidean plane $\mathbb{E}_2$. Only, similarly as $V_n$ as compared with $\mathbb{E}_n$, it has more structure.
 
-(c) The (Pythagorean) metric $(*)$ in $\mathbb{E}_n$ is in accordance with the standard Euclidean geometry. It can be, however, somewhat inconvenient to work with. More expedient distances (equivalent with $(*)$ for our purposes) will be introduced in 4.3 below.
+(c) The (Pythagorean) metric $(\ast)$ in $\mathbb{E}\_n$ is in accordance with the standard Euclidean geometry. It can be, however, somewhat inconvenient to work with. More expedient distances (equivalent with $(\ast)$ for our purposes) will be introduced in 4.3 below.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(2.3 - Continuous and uniformly continuous maps)</span></p>
@@ -1413,7 +1413,7 @@ Let $(X, d)$ be a metric space and let $Y \subseteq X$ be a subset. Defining $d_
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(2.4.1)</span></p>
 
-Let $f : (X_1, d_1) \to (X_2, d_2)$ be a (uniformly) continuous mapping. Let $Y_i \subseteq X_i$ be such that $f[Y_1] \subseteq Y_2$. Then the mapping $g : (Y_1, d_{1_{Y_1}}) \to (Y_2, d_{2_{Y_2}})$ defined by $g(x) = f(x)$ is (uniformly) continuous.
+Let $f : (X_1, d_1) \to (X_2, d_2)$ be a (uniformly) continuous mapping. Let $Y_i \subseteq X_i$ be such that $f[Y_1] \subseteq Y_2$. Then the mapping $g : (Y_1, d\_{1\_{Y\_1}}) \to (Y_2, d\_{2\_{Y\_2}})$ defined by $g(x) = f(x)$ is (uniformly) continuous.
 
 </div>
 
@@ -1439,7 +1439,7 @@ We then speak of a **convergent sequence** and the $x$ is called its **limit**, 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Observation</span><span class="math-callout__name">(3.1.1)</span></p>
 
-Let $(x_n)_n$ be a convergent sequence and let $x$ be its limit. Then each subsequence $(x_{k_n})_n$ of $(x_n)_n$ converges and we have $\lim_n x_{k_n} = x$.
+Let $(x_n)_n$ be a convergent sequence and let $x$ be its limit. Then each subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ converges and we have $\lim_n x_{k_n} = x$.
 
 </div>
 
@@ -1751,10 +1751,17 @@ $\Leftarrow$: Let each of the $(x_i^k)_k$ converge to $x_i$. For an $\varepsilon
 
 2. Let $f_j : (Y, d') \to (X_j, d_j)$ be arbitrary continuous mappings. Then the unique mapping $f : (Y, d') \to \prod_{i=1}^{n}(X_i, d_i)$ such that $p_j \circ f = f_j$, namely that defined by $f(y) = (f_1(y), \ldots, f_n(y))$, is continuous.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* 1 immediately follows from the fact that $d_j(x_j, y_j) \le d((x_i)_i, (y_i)_i)$.
 
 2: Follows from 3.1.2 and 5.2. If $\lim_k y_k = y$ in $(Y, d')$ then $\lim_k f_j(y_k) = f_j(y)$ in $(X_j, d_j)$ for all $j$ and hence $(f(y_k))_k$, that is, $(f_1(y_1), \ldots, f_n(y_1)), (f_1(y_2), \ldots, f_n(y_2)), \ldots$ converges to $(f_1(y), \ldots, f_n(y))$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -1787,10 +1794,17 @@ Each convergent sequence is Cauchy. (Just like in $\mathbb{R}$: if $d(x_n, x) < 
 
 Let a Cauchy sequence have a convergent subsequence. Then it converges (to the limit of the subsequence).
 
-*Proof.* Let $(x_n)_n$ be Cauchy and let $\lim_n x_{k_n} = x$. Let $d(x_m, x_n) < \varepsilon$ for $m, n \ge n_1$ and $d(x_{k_n}, x) \le \varepsilon$ for $n \ge n_2$. If we set $n_0 = \max(n_1, n_2)$ we have for $n \ge n_0$ (since $k_n \ge n$)
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $(x_n)\_n$ be Cauchy and let $\lim_n x_{k_n} = x$. Let $d(x_m, x_n) < \varepsilon$ for $m, n \ge n_1$ and $d(x_{k_n}, x) \le \varepsilon$ for $n \ge n_2$. If we set $n_0 = \max(n_1, n_2)$ we have for $n \ge n_0$ (since $k_n \ge n$)
 
 $$d(x_n, x) \le d(x_n, x_{k_n}) + d(x_{k_n}, x) < 2\varepsilon. \quad \square$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -1807,10 +1821,17 @@ Thus, by Bolzano-Cauchy Theorem (II.3.4) the real line $\mathbb{R}$ with the sta
 
 A subspace of a complete space is complete if and only if it is closed.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* I. Let $Y \subseteq (X, d)$ be closed. Let $(y_n)_n$ be Cauchy in $Y$. Then it is Cauchy and hence convergent in $X$, and the limit, by closedness, is in $Y$.
 
 II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent in $X$ such that $\lim_n y_n \notin Y$. Then $(y_n)_n$ is Cauchy in $X$, but since the distance is the same, also in $Y$. But in $Y$ it does not converge. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1818,10 +1839,17 @@ II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent 
 
 A sequence $(x_1^k, \ldots, x_n^k), \ldots$ is Cauchy in $\prod_{i=1}^{n}(X_i, d_i)$ if and only if each of the sequences $(x_i^k)_k$ is Cauchy in $(X_i, d_i)$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* $\Rightarrow$ immediately follows from the fact that $d_i(u_i, v_i) \le d((u_j)_j, (v_j)_j)$.
 
 $\Leftarrow$: Let each of the $(x_i^k)_k$ be Cauchy. For an $\varepsilon > 0$ and $i$ we have $k_i$ such that for $k, l \ge k_i$, $d_i(x_i^k, x_i^l) < \varepsilon$. Then for $k, l \ge \max_i k_i$ we have $d((x_1^k, \ldots, x_n^k), (x_1^l, \ldots, x_n^l)) < \varepsilon$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1834,7 +1862,7 @@ A product of complete spaces is complete. In particular, the Euclidean space $\m
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(6.7 - Complete subspaces of $\mathbb{E}_n$)</span></p>
 
-A subspace $Y$ of the Euclidean space $\mathbb{E}_n$ is complete if and only if it is closed.
+A subspace $Y$ of the Euclidean space $\mathbb{E}\_n$ is complete if and only if it is closed.
 
 </div>
 
@@ -1843,7 +1871,7 @@ A subspace $Y$ of the Euclidean space $\mathbb{E}_n$ is complete if and only if 
 
 Neither the Cauchy property nor completeness is a topological property. Consider $\mathbb{R}$ and any bounded open interval $J$ in $\mathbb{R}$. They are homeomorphic (if for instance $J = (-\frac{\pi}{2}, +\frac{\pi}{2})$ we have the mutually inverse homeomorphisms $\tan : J \to \mathbb{R}$ and $\arctan : \mathbb{R} \to J$). But $\mathbb{R}$ is complete and $J$ is not.
 
-But it is easy to see that the properties are preserved when replacing a metric by a strongly equivalent one. This concerns, of course, in particular the metrics in $\mathbb{E}_n$ mentioned in Section 4.
+But it is easy to see that the properties are preserved when replacing a metric by a strongly equivalent one. This concerns, of course, in particular the metrics in $\mathbb{E}\_n$ mentioned in Section 4.
 
 </div>
 
@@ -1868,10 +1896,17 @@ Thus the compact intervals, that is the bounded closed intervals $\langle a, b \
 
 A subspace of a compact space is compact if and only if it is closed.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* I. Let $Y \subseteq (X, d)$ be closed. Let $(y_n)_n$ be a sequence in $Y$. In $X$ it has a convergent subsequence $(y_{k_n})_n$ convergent in $X$, and the limit, by closedness, is in $Y$.
 
 II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent in $X$ such that $y = \lim_n y_n \notin Y$. Then $(y_n)_n$ cannot have a subsequence convergent in $Y$ since each subsequence converges to $y$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1879,8 +1914,15 @@ II. Let $Y$ not be closed. Then there is a sequence $(y_n)_n$ in $Y$ convergent 
 
 Let $(X, d)$ be arbitrary and let a subspace $Y$ of $X$ be compact. Then $Y$ is closed in $(X, d)$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $(y_n)_n$ be a sequence in $Y$ convergent in $X$ to a limit $y$. Then each subsequence of $(y_n)_n$ converges to $y$ and hence $y \in Y$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -1895,14 +1937,27 @@ A metric space $(X, d)$ is said to be **bounded** if there is a constant $K$ suc
 
 Each compact metric space is bounded.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Suppose not. Choose $x_1$ arbitrarily and then $x_n$ so that $d(x_1, x_n) > n$. The sequence $(x_n)_n$ has no convergent subsequence: if $x$ were a limit of such a subsequence we would have infinitely many members of this subsequence closer to $x_1$ than $d(x_1, n) + 1$, a contradiction. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(7.5 - Products of compact spaces)</span></p>
 
 A product of finitely many compact metric spaces is compact.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* By 5.4 it suffices to prove the statement for two spaces.
 
@@ -1912,17 +1967,25 @@ $$((x_{k_{l_n}}, y_{k_{l_n}}))_n$$
 
 is a convergent subsequence of $((x_n, y_n))_n$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(7.6 - Heine-Borel for $\mathbb{E}_n$)</span></p>
 
-A subspace of the Euclidean space $\mathbb{E}_n$ is compact if and only if it is bounded and closed.
+A subspace of the Euclidean space $\mathbb{E}\_n$ is compact if and only if it is bounded and closed.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
 
 *Proof.* I. A compact subspace of any metric space is closed by 7.3 and bounded by 7.4.1.
 
 II. Now let $Y \subseteq \mathbb{E}_n$ be bounded and closed. Since it is bounded we have for a sufficiently large compact interval $Y \subseteq J^n \subseteq \mathbb{E}_n$. Now by 7.5 $J^n$ is compact and since $Y$ is closed in $\mathbb{E}_n$ it is also closed in $J^n$ and hence compact by 7.2. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1930,8 +1993,15 @@ II. Now let $Y \subseteq \mathbb{E}_n$ be bounded and closed. Since it is bounde
 
 Each compact space is complete.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* A Cauchy sequence has by compactness a convergent subsequence and hence it converges, by 6.2. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1939,8 +2009,15 @@ Each compact space is complete.
 
 Let $f : (X, d) \to (Y, d')$ be a continuous mapping and let $A \subseteq X$ be compact. Then $f[A]$ is compact.
 
-*Proof.* Let $(y_n)_n$ be a sequence in $f[A]$. Choose $x_n \in A$ such that $y_n = f(x_n)$. Let $(x_{k_n})_n$ be a convergent subsequence of $(x_n)_n$. Then $(y_{k_n})_n = (f(x_{k_n}))_n$ is by 3.1.2 a convergent subsequence of $(x_n)_n$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Let $(y_n)\_n$ be a sequence in $f[A]$. Choose $x_n \in A$ such that $y_n = f(x_n)$. Let $(x\_{k\_n})\_n$ be a convergent subsequence of $(x_n)\_n$. Then $(y\_{k\_n})\_n = (f(x_\{k\_n}))\_n$ is by 3.1.2 a convergent subsequence of $(x_n)_n$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1948,8 +2025,15 @@ Let $f : (X, d) \to (Y, d')$ be a continuous mapping and let $A \subseteq X$ be 
 
 Let $(X, d)$ be compact. Then a continuous function $f : (X, d) \to \mathbb{R}$ attains a maximum and a minimum.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* By 7.8, $Y = f[X] \subseteq \mathbb{R}$ is compact. Hence it is bounded by 7.4.1 and it has to have a supremum $M$ and an infimum $m$. We have obviously $d(m, Y) = d(M, Y) = 0$ and since $Y$ is closed, $m, M \in Y$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1966,6 +2050,12 @@ Let $(X, d)$ be compact and let $f : (X, d) \to (Y, d')$ be a one-to-one and ont
 
 More generally, let $f : (X, d) \to (Y, d')$ be an onto continuous map, let $g : (X, d) \to (Z, d'')$ be a continuous map, and let $h : (Y, d') \to (Z, d'')$ be such that $h \circ f = g$. Then $h$ is continuous.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* We will prove the second statement: the first one follows by setting $g = \mathrm{id}_Y$.
 
 Let $B$ be closed in $Z$. Then $A = g^{-1}[B]$ is closed and hence compact in $X$ and hence $f[A]$ is compact and hence closed in $Y$. Since $f$ is onto we have $f[f^{-1}[C]] = C$ for any $C$. Thus,
@@ -1974,6 +2064,7 @@ $$h^{-1}[B] = f[f^{-1}[h^{-1}[B]]] = f[(h \circ f)^{-1}[B]] = f[g^{-1}[B]] = f[A
 
 is closed. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1981,10 +2072,17 @@ is closed. $\square$
 
 Let $(X, d)$ be a compact space. Then a mapping $f : (X, d) \to (Y, d')$ is continuous if and only if it is uniformly continuous.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $f$ not be uniformly continuous. We will prove it is not continuous either.
 
-Since the formula for uniform continuity does not hold we have an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $d(x(\delta), y(\delta)) < \delta$ while $d'(f(x(\delta)), f(y(\delta))) \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$ and $y_n = y(\frac{1}{n})$. Choose convergent subsequences $(\widetilde{x}_n)_n$, $(\widetilde{y}_n)_n$ (first choose a convergent subsequence $(x_{k_n})_n$ of $(x_n)_n$ then a convergent subsequence $(y_{k_{l_n}})_n$ of $(y_{n_k})_k$ and finally set $\widetilde{x}_n = x_{k_{l_n}}$ and $\widetilde{y}_n = y_{k_{l_n}}$). Then $d(\widetilde{x}_n, \widetilde{y}_n) < \frac{1}{n}$ and hence $\lim \widetilde{x}_n = \lim \widetilde{y}_n$. Because of $d'(f(\widetilde{x}_n), f(\widetilde{y}_n)) \ge \varepsilon_0$, however, we cannot have $\lim f(\widetilde{x}_n) = \lim f(\widetilde{y}_n)$ so that by 3.1.2, $f$ is not continuous. $\square$
+Since the formula for uniform continuity does not hold we have an $\varepsilon_0 > 0$ such that for every $\delta > 0$ there are $x(\delta), y(\delta)$ such that $d(x(\delta), y(\delta)) < \delta$ while $d'(f(x(\delta)), f(y(\delta))) \ge \varepsilon_0$. Set $x_n = x(\frac{1}{n})$ and $y_n = y(\frac{1}{n})$. Choose convergent subsequences $(\widetilde{x}\_n)\_n$, $(\widetilde{y}\_n)\_n$ (first choose a convergent subsequence $(x_{k_n})\_n$ of $(x_n)\_n$ then a convergent subsequence $(y\_{k\_{l\_n}})_n$ of $(y\_{n\_k})\_k$ and finally set $\widetilde{x}\_n = x\_{k\_{l\_n}}$ and $\widetilde{y}\_n = y\_{k\_{l\_n}}$). Then $d(\widetilde{x}\_n, \widetilde{y}\_n) < \frac{1}{n}$ and hence $\lim \widetilde{x}\_n = \lim \widetilde{y}\_n$. Because of $d'(f(\widetilde{x}\_n), f(\widetilde{y}\_n)) \ge \varepsilon_0$, however, we cannot have $\lim f(\widetilde{x}\_n) = \lim f(\widetilde{y}\_n)$ so that by 3.1.2, $f$ is not continuous. $\square$
 
+</details>
 </div>
 
 ## XIV. Partial Derivatives and Total Differential. Chain Rule
