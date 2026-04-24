@@ -32,3 +32,4 @@ date: 2024-10-20
 - [Geometric Deep Learning HD](/subpages/books/geometric_deep_learning_hd/)
 - [SDEs and Diffusion Models HD](/subpages/books/sde_hd/)
 - [PDEs in Data Science HD](/subpages/books/pdeds/)
+- [Reinforcement Learning HD](/subpages/books/pdeds/)
