@@ -227,7 +227,8 @@ then $f$ is **Riemann–Stieltjes integrable with respect to $g$** and we write 
 
 ### Classical sufficient conditions for existence
 
-The cleanest classical statements are:
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Propositions</span><span class="math-callout__name">(The cleanest classical statements on Riemann–Stieltjes integral)</span></p>
 
 * If $f$ is **continuous** on $[a, b]$ and $g$ is of **bounded variation** on $[a, b]$, then $\int_a^b f \, \mathrm{d}g$ exists.
 * More generally (Helly–Stieltjes): $\int_a^b f \, \mathrm{d}g$ exists whenever $f$ and $g$ have no common discontinuities and one of them is BV.
@@ -239,6 +240,8 @@ V_a^b(g) \;:=\; \sup_{P} \, \sum_{i=1}^{n} \bigl|g(t_i) - g(t_{i-1})\bigr|
 $$
 
 is finite (sup over all partitions $P$). Equivalently (Jordan decomposition), $g$ is a difference of two non-decreasing functions, which lets one identify $\mathrm{d}g$ with a signed Borel measure on $[a, b]$.
+
+</div>
 
 ### Bounded variation is the load-bearing hypothesis
 
@@ -363,19 +366,207 @@ whose extra $\frac{1}{2} \mathrm{d}t$ term is yet another manifestation of the *
 
 Riemann–Stieltjes integration depends on the integrator having **bounded variation** (equivalently, vanishing quadratic variation). Brownian paths are pathwise of unbounded variation and have positive quadratic variation $[W]_t = t$, so the Riemann–Stieltjes sums fail to have a tag-independent limit, and one must instead choose a tagging convention up front and develop a *probabilistic* integration theory (Itô, Stratonovich, …) around it.
 
+## Signed Borel measure
+
+A **signed Borel measure** generalises the notion of a measure by allowing negative values. It is what makes "$\mathrm{d}g$" rigorous when $g$ is a BV function (and is the object underlying the Riemann–Stieltjes / Lebesgue–Stieltjes integral above).
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Signed measure)</span></p>
+
+A function $\mu : \mathcal{B}(X) \to [-\infty, +\infty]$ on the Borel $\sigma$-algebra of a topological space $X$ is a **signed measure** iff
+
+1. $\mu(\emptyset) = 0$.
+2. $\mu$ takes at most one of the values $+\infty$ or $-\infty$ (so that no expression of the form $\infty - \infty$ ever arises).
+3. **Countable additivity**: for every disjoint sequence $(A_n) \subset \mathcal{B}(X)$,
+
+$$
+\mu\!\left(\bigsqcup_{n=1}^{\infty} A_n\right) = \sum_{n=1}^{\infty} \mu(A_n),
+$$
+
+with the series converging unconditionally.
+
+It is **finite** if $|\mu(X)| < \infty$ and **$\sigma$-finite** if $X$ is a countable union of sets of finite total variation (defined below).
+
+</div>
+
+### Comparison with positive measures
+
+| Property | Positive measure | Signed measure |
+|---|---|---|
+| Range | $[0, \infty]$ | $[-\infty, +\infty]$ (one infinity allowed) |
+| Monotone? | $A \subseteq B \Rightarrow \mu(A) \leq \mu(B)$ | **No** (a subset can have more negative mass) |
+| Countably additive? | Yes | Yes |
+| Continuity from above/below? | Yes | Yes (with finite-mass caveats) |
+
+### Examples
+
+* **Difference of two positive measures**: $\mu = \mu_1 - \mu_2$ where at least one is finite. The Jordan decomposition (below) says *every* signed measure has this form, and uniquely so under a mutual-singularity constraint.
+* **$\mu_g$ from a BV function**: for $g : [a, b] \to \mathbb{R}$ of bounded variation (and right-continuous), the rule $\mu_g((s, t]) := g(t) - g(s)$ extends to a signed Borel measure on $[a, b]$. This is the measure that makes "$\mathrm{d}g$" rigorous in $\int f \, \mathrm{d}g$.
+* **Density against a positive measure**: if $f \in L^1(\mu)$ for a positive measure $\mu$, then $\nu(A) := \int_A f \, \mathrm{d}\mu$ is a signed measure (positive iff $f \geq 0$ a.e.). Radon–Nikodym goes the other way.
+* **Physical "charge"**: net electric charge in a region; positive and negative contributions can cancel.
+
+### Total variation measure
+
+To every signed measure $\mu$ one associates a positive measure $|\mu|$, the **total variation measure**:
+
+$$
+|\mu|(A) \;:=\; \sup \!\left\lbrace \sum_{n} |\mu(A_n)| \,:\, (A_n) \text{ a measurable partition of } A \right\rbrace .
+$$
+
+The **total variation norm** is $\|\mu\| := |\mu|(X)$. The space of finite signed Borel measures with this norm is a Banach space, and by the Riesz representation theorem it is the dual of $C_0(X)$ when $X$ is locally compact Hausdorff.
+
+## Hahn and Jordan decompositions
+
+Hahn and Jordan are two faces of the same fundamental theorem about signed measures: **every signed measure splits canonically into a positive and a negative part**. Hahn states it set-theoretically (split the *space*); Jordan states it measure-theoretically (split the *measure*).
+
+### Hahn decomposition (set-theoretic)
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Hahn decomposition)</span></p>
+
+Let $\mu$ be a signed measure on $(X, \mathcal{A})$. There exist measurable sets $P, N \subseteq X$ with $X = P \sqcup N$ such that:
+
+* $P$ is **positive** for $\mu$: $\mu(E) \geq 0$ for every measurable $E \subseteq P$.
+* $N$ is **negative** for $\mu$: $\mu(E) \leq 0$ for every measurable $E \subseteq N$.
+
+The pair $(P, N)$ is unique up to *$\mu$-null* sets: any other decomposition $(P', N')$ satisfies $|\mu|(P \triangle P') = 0$.
+
+</div>
+
+**Intuition.** Cut $X$ into the regions where $\mu$ is positive and where it is negative. On $P$, $\mu$ behaves like a non-negative measure; on $N$, it behaves like the negative of a non-negative measure.
+
+**Construction sketch.** Repeatedly extract subsets of maximal $\mu$-mass: find $P_1 \subseteq X$ with $\mu(P_1) \geq \tfrac{1}{2} \sup\lbrace \mu(E) : E \in \mathcal{A} \rbrace$, then $P_2 \subseteq X \setminus P_1$ likewise, etc. Set $P := \bigcup P_n$. Countable additivity of $\mu$ together with the "at most one infinity" rule force $P$ to be positive and its complement negative. Non-uniqueness on $\mu$-null sets is unavoidable, since adding a $\mu$-null set to $P$ does not change positivity.
+
+For an absolutely continuous signed measure $\mathrm{d}\mu = f(x) \, \mathrm{d}x$ on $[0, 1]$, the Hahn decomposition is *visibly* the partition of $[0, 1]$ into the sign-sets of $f$:
+
+$$
+P = \lbrace x : f(x) \geq 0 \rbrace, \qquad N = \lbrace x : f(x) < 0 \rbrace.
+$$
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/hahn_decomposition.png' | relative_url }}" alt="Hahn decomposition of a signed density on [0,1]: the positive set P and negative set N partition the interval according to the sign of the density" loading="lazy">
+</figure>
+
+### Jordan decomposition (measure-theoretic)
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jordan decomposition of a signed measure)</span></p>
+
+Every signed measure $\mu$ admits a *unique* decomposition
+
+$$
+\mu \;=\; \mu^{+} \;-\; \mu^{-}
+$$
+
+into two **mutually singular positive measures** $\mu^{+}, \mu^{-} \geq 0$ — that is, there exists a measurable set on which $\mu^{+}$ vanishes and $\mu^{-}$ is concentrated, and vice versa. The total variation measure is
+
+$$
+|\mu| \;=\; \mu^{+} + \mu^{-}.
+$$
+
+</div>
+
+**Construction from Hahn.** Let $(P, N)$ be a Hahn decomposition. Define
+
+$$
+\mu^{+}(A) \;:=\; \mu(A \cap P), \qquad \mu^{-}(A) \;:=\; -\mu(A \cap N).
+$$
+
+Then:
+
+* $\mu^{+}, \mu^{-} \geq 0$ by the positivity / negativity of $P, N$.
+* $\mu^{+} + \mu^{-} \,=\, \mu(\,\cdot\, \cap P) - \mu(\,\cdot\, \cap N) \,=\, |\mu|$ on $A = (A \cap P) \sqcup (A \cap N)$.
+* $\mu^{+} - \mu^{-} \,=\, \mu(\,\cdot\, \cap P) + \mu(\,\cdot\, \cap N) \,=\, \mu$.
+* $\mu^{+} \perp \mu^{-}$: $\mu^{+}$ lives on $P$, $\mu^{-}$ lives on $N$, and $P \cap N = \emptyset$.
+
+So Hahn $\to$ Jordan is mechanical. The reverse direction is also straightforward: given $\mu = \mu^{+} - \mu^{-}$ with $\mu^{+} \perp \mu^{-}$, the supports of $\mu^{+}$ and $\mu^{-}$ recover $(P, N)$ up to a null set.
+
+For the absolutely continuous case $\mathrm{d}\mu = f \, \mathrm{d}x$, the Jordan decomposition reads off as
+
+$$
+\mathrm{d}\mu^{+} = f_{+} \, \mathrm{d}x, \qquad \mathrm{d}\mu^{-} = f_{-} \, \mathrm{d}x, \qquad \mathrm{d}|\mu| = |f| \, \mathrm{d}x ,
+$$
+
+with $f_{+} := \max(f, 0)$ and $f_{-} := \max(-f, 0)$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/jordan_measure.png' | relative_url }}" alt="Jordan decomposition: positive part f+ = max(f,0), negative part f- = max(-f,0), total variation density |f|" loading="lazy">
+</figure>
+
+Notice the **disjoint supports** in the figure: $\mu^{+}$ lives where $f > 0$ and $\mu^{-}$ lives where $f < 0$. This is exactly the mutual singularity $\mu^{+} \perp \mu^{-}$.
+
+### Why "mutually singular" matters for uniqueness
+
+The decomposition $\mu = \mu_1 - \mu_2$ as a difference of positive measures is **not unique** without an extra constraint: e.g., $\mu = (\mu_1 + \rho) - (\mu_2 + \rho)$ for any positive $\rho$. Mutual singularity ($\mu^{+} \perp \mu^{-}$) pins down the *minimal* such decomposition — equivalently, the one with smallest total mass
+
+$$
+\mu^{+}(X) + \mu^{-}(X) \;=\; |\mu|(X).
+$$
+
+So Jordan is uniqueness *up to mutually singular positive parts*.
+
+### Jordan decomposition for BV functions
+
+There is a closely related — but distinct — function-level result, also due to Jordan, that connects BV functions to signed Lebesgue–Stieltjes measures:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Jordan decomposition of a BV function)</span></p>
+
+A function $g : [a, b] \to \mathbb{R}$ is of bounded variation iff it can be written as
+
+$$
+g \;=\; g^{\uparrow} - g^{\downarrow}
+$$
+
+for two non-decreasing functions $g^{\uparrow}, g^{\downarrow} : [a, b] \to \mathbb{R}$. The minimal such decomposition is given by
+
+$$
+g^{\uparrow}(x) := \tfrac{1}{2}\bigl(V_a^x(g) + g(x) - g(a)\bigr), \qquad g^{\downarrow}(x) := \tfrac{1}{2}\bigl(V_a^x(g) - g(x) + g(a)\bigr),
+$$
+
+where $V_a^x(g)$ is the total variation of $g$ on $[a, x]$.
+
+</div>
+
+This is the bridge between BV functions and signed measures: each non-decreasing $g^{\uparrow}$ defines a positive Lebesgue–Stieltjes measure $\mu_{g^{\uparrow}}$, and the *measure-level* Jordan decomposition of $\mu_g$ is
+
+$$
+\mu_g \;=\; \mu_{g^{\uparrow}} \;-\; \mu_{g^{\downarrow}}.
+$$
+
+So the BV hypothesis on $g$ is what makes "$\mathrm{d}g$" make sense as a signed Borel measure: BV $\Rightarrow$ Jordan-decomposable into monotone parts $\Rightarrow$ each part defines a positive Stieltjes measure $\Rightarrow$ their difference is a signed Borel measure.
+
+The figure below illustrates the construction for $g(x) = \sin(2\pi x)$ on $[0, 1]$. The total variation function $V(x)$ is non-decreasing and reaches $V_0^1(g) = 4$. Both $g^{\uparrow}$ and $g^{\downarrow}$ are non-decreasing — $g^{\uparrow}$ rises on intervals where $g$ is increasing and is flat elsewhere, and conversely for $g^{\downarrow}$. The dotted reconstruction confirms $g^{\uparrow} - g^{\downarrow} + g(0) = g$:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/jordan_bv_function.png' | relative_url }}" alt="Jordan decomposition of g(x) = sin(2 pi x) into two non-decreasing functions g_up and g_down" loading="lazy">
+</figure>
+
+### One-line summary
+
+A **signed Borel measure** is a Borel set function with all properties of a measure except non-negativity. **Hahn** and **Jordan** are two equivalent ways of saying *it is canonically a difference of two positive measures*: Hahn does it by partitioning the *space*, Jordan by decomposing the *measure*. The function-level Jordan decomposition (for BV functions) is the analogue that connects the two worlds and is exactly what makes $\int f \, \mathrm{d}g$ well-defined when $g$ is BV.
+
 ## Lebesgue integral
 
-$\textbf{Theorem (Lebesgue's Criterion for Riemann Integrability):}$ For any function $f: [a,b] \to \mathbb{R}$ the following equivalence holds 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Lebesgue's Criterion for Riemann Integrability)</span></p>
+
+For any function $f: [a,b] \to \mathbb{R}$ the following equivalence holds 
 
 $$f \in R(a,b) \iff f \text{ is bounded and } DC(f) \text{ has measure zero},$$
 
 where $DC(f) := \lbrace x \in M \mid f \text{ is discontinuous in } x  \rbrace$ for $f: M \to \mathbb{R}$.
 
+</div>
+
 *proof*: #TODO:
 
 ## Partition of an interval
 
-$\textbf{Definition (Partition of an interval):}$ Let $a,b \in \mathbb{R}$ with $a < b$. A **partition** of the interval $[a,b]$ is a finite ordered set
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Partition of an interval)</span></p>
+
+Let $a,b \in \mathbb{R}$ with $a < b$. A **partition** of the interval $[a,b]$ is a finite ordered set
 
 $$P = (a_0,a_1,\dots,a_k)$$
 
@@ -383,15 +574,23 @@ such that
 
 $$a = a_0 < a_1 < \cdots < a_k = b, \qquad k \in \mathbb{N}.$$
 
+</div>
+
 ## Norm of partition
 
-$\textbf{Definition (Norm of a partition):}$ The **norm** of a partition $P$ is defined by
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Norm of a partition)</span></p>
+
+The **norm** of a partition $P$ is defined by
 
 $$\Delta(P) := \max_{i=1,\dots,k} (a_i - a_{i-1}).$$
 
+</div>
+
 ## Choice of tags / sample points
 
-$\textbf{Definition (Choice of tags / sample points):}$ Given a partition $P = (a_0,\dots,a_k)$, a **tag vector**
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Choice of tags / sample points)</span></p>
+
+Given a partition $P = (a_0,\dots,a_k)$, a **tag vector**
 
 $$\bar t = (t_1,\dots,t_k)$$
 
@@ -399,15 +598,23 @@ is a choice of points such that
 
 $$t_i \in [a_{i-1},a_i], \qquad i=1,\dots,k.$$
 
+</div>
+
 ## Riemann sum
 
-$\textbf{Definition (Riemann sum):}$ Let $f : [a,b] \to \mathbb{R}$ be an arbitrary function. For a partition $P$ of $[a,b]$ and a corresponding tag vector $\bar t$, the **Riemann sum** of $f$ with respect to $P$ and $\bar t$ is
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Riemann sum)</span></p>
+
+Let $f : [a,b] \to \mathbb{R}$ be an arbitrary function. For a partition $P$ of $[a,b]$ and a corresponding tag vector $\bar t$, the **Riemann sum** of $f$ with respect to $P$ and $\bar t$ is
 
 $$R(P,\bar t,f) := \sum_{i=1}^{k} (a_i - a_{i-1}) f(t_i).$$
 
+</div>
+
 ## Riemann Integral
 
-$\textbf{Definition (Riemann integral):}$ Let $a<b$ and let $f:[a,b]\to\mathbb{R}$. We say that $f$ is **Riemann integrable** on $[a,b]$, and write $f \in \mathcal{R}(a,b),$ if there exists a real number $L\in\mathbb{R}$ such that $\forall \varepsilon>0\;\exists \delta>0$ s.t. for every partition $P$ of $[a,b]$ and every choice of tags $\bar t$ for $P$,
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Riemann integral)</span></p>
+
+Let $a<b$ and let $f:[a,b]\to\mathbb{R}$. We say that $f$ is **Riemann integrable** on $[a,b]$, and write $f \in \mathcal{R}(a,b),$ if there exists a real number $L\in\mathbb{R}$ such that $\forall \varepsilon>0\;\exists \delta>0$ s.t. for every partition $P$ of $[a,b]$ and every choice of tags $\bar t$ for $P$,
 
 
 $$\Delta(P)<\delta \Longrightarrow \bigl|R(P,\bar t,f)-L\bigr|<\varepsilon.$$
@@ -423,11 +630,19 @@ $$(R)\int_a^b f = L.$$
 
 The number $L$ is called the **(Riemann) integral of $f$ over $[a,b]$**.
 
+</div>
 
-## Proposition (unbounded functions are bad): 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Unbounded functions are bad)</span></p>
+
 Function $f: [a,b] \to \mathbb{R}$ is unbounded $\implies$ $f \notin \mathcal{R}(a,b)$
 
+</div>
+
 ## Zvana 1
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Zvana 1)</span></p>
 
 Let $f: [a,b] \to \mathbb{R}$ be in $\mathcal{R}(a,b)$. Then $f\in \mathcal{R}(a,x)$ for every $x \in (a,b]$ and the function $F: [a,b]\to\mathbb{R}$ is given as
 
@@ -435,11 +650,18 @@ $$F(x):=\int_a^x f$$
 
 is Lipschitz continuous and $F'(x)=f(x)$ in every point  $x\in [a,b]$ of continuity $f$.
 
+</div>
+
 ## Zvana 2
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Zvana 2)</span></p>
 
 Let $f:(a,b)\to\mathbb{R}$ has primitive function $F:(a,b)\to\mathbb{R}$ and let $f\in \mathcal{R}(a,b)$. Then there exists finite limit $F(a):=\lim_{x\to a}F(x)$ and $F(b):=\lim_{x\to b}F(x)$ and
 
 $$(R)\int_a^b f = F(b)-F(a) = (N)\int_a^b f$$
+
+</div>
 
 ## Lebesgue–Stieltjes integral
 
