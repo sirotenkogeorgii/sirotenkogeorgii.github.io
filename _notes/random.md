@@ -904,6 +904,667 @@ In every one of these, the $\mathrm{d}W$ term answers a specific modelling quest
 
 We integrate against $\mathrm{d}W_t$ because $W_t$ is the universal carrier of **continuous Gaussian noise**, and $\int_0^T f_t \, \mathrm{d}W_t$ is the natural operation that **accumulates a time-varying response** $f_t$ **to that noise** — a question that simply cannot be posed in the language of $\mathrm{d}t$-integration alone, since $\mathrm{d}t$ knows nothing about random shocks.
 
+## Infinitesimal generator of a Markov / diffusion process
+
+The **infinitesimal generator** $\mathscr{L}$ is the operator that plays the role of "derivative of the process at the present instant", just as the time derivative $\partial_t$ does for a deterministic flow. For a Markov process $(X_t)_{t \geq 0}$ with state space $\mathbb{R}^d$, $\mathscr{L}$ is the linear operator that, applied to a smooth test function $f$, returns the *expected instantaneous rate of change* of $f$ along the process:
+
+$$
+(\mathscr{L} f)(x) \;=\; \lim_{t \downarrow 0} \frac{\mathbb{E}\!\left[f(X_t) \mid X_0 = x\right] - f(x)}{t}.
+$$
+
+Everything else in the theory — Kolmogorov's PDEs, Itô's formula in expectation, Feynman–Kac, Dynkin's formula, even the score-based view of diffusion generative models — is a consequence of how this single operator looks for the process in question.
+
+### From the Markov semigroup to its generator
+
+The starting point is not the operator itself but the **Markov semigroup** of the process. For each $t \geq 0$ define a linear operator $P_t$ acting on bounded measurable functions by
+
+$$
+(P_t f)(x) \;:=\; \mathbb{E}\!\left[f(X_t) \mid X_0 = x\right] \;=\; \int f(y) \, p(t, x, \mathrm{d}y),
+$$
+
+i.e. *integrate $f$ against the transition kernel of the process started at $x$*. By the Markov property,
+
+$$
+P_{t + s} \;=\; P_t \, P_s \qquad \text{(semigroup property)},
+$$
+
+with $P_0 = \mathrm{Id}$. So $\{P_t\}_{t \geq 0}$ is a one-parameter semigroup of operators — formally analogous to $e^{tA}$ for a matrix $A$.
+
+Just as $A = \frac{\mathrm{d}}{\mathrm{d}t}\big|_{t=0} e^{tA}$, the **generator** is the derivative of the semigroup at $t = 0$:
+
+$$
+\boxed{\;\mathscr{L} f \;:=\; \lim_{t \downarrow 0} \frac{P_t f - f}{t}\;}
+$$
+
+(on the domain of $f$'s where the limit exists in a suitable norm). Heuristically:
+
+$$
+P_t \;=\; e^{t \mathscr{L}}, \qquad \frac{\mathrm{d}}{\mathrm{d}t} P_t f \;=\; \mathscr{L} P_t f \;=\; P_t \mathscr{L} f.
+$$
+
+This last identity is the **Kolmogorov backward equation** in disguise — and it says the entire stochastic dynamics is recoverable from the single operator $\mathscr{L}$ by exponentiation.
+
+### What $\mathscr{L}$ looks like for a diffusion (the Itô-formula derivation)
+
+Suppose $X_t$ solves the SDE
+
+$$
+\mathrm{d} X_t \;=\; b(X_t) \, \mathrm{d} t \;+\; \sigma(X_t) \, \mathrm{d} W_t, \qquad X_0 = x,
+$$
+
+with drift $b: \mathbb{R}^d \to \mathbb{R}^d$ and diffusion coefficient $\sigma: \mathbb{R}^d \to \mathbb{R}^{d \times m}$ (so $W$ is $m$-dimensional Brownian motion). Apply Itô's formula to $f \in C^2(\mathbb{R}^d)$:
+
+$$
+\mathrm{d} f(X_t) \;=\; \nabla f(X_t)^\top \, b(X_t) \, \mathrm{d} t \;+\; \tfrac{1}{2} \, \mathrm{tr}\!\left(\sigma(X_t) \sigma(X_t)^\top \, \mathrm{Hess}\, f(X_t)\right) \mathrm{d} t \;+\; \nabla f(X_t)^\top \sigma(X_t) \, \mathrm{d} W_t.
+$$
+
+Integrate from $0$ to $t$ and take expectation: the $\mathrm{d}W$-term is a martingale and vanishes in expectation (started from $x$), leaving
+
+$$
+\mathbb{E}\!\left[f(X_t)\right] - f(x) \;=\; \mathbb{E} \int_0^t \!\Big(b \cdot \nabla f \;+\; \tfrac{1}{2} \mathrm{tr}(\sigma \sigma^\top \mathrm{Hess}\, f)\Big)(X_s) \, \mathrm{d} s.
+$$
+
+Divide by $t$ and let $t \downarrow 0$. The right-hand side tends to the integrand at $s = 0$ — and that integrand is, by definition, $(\mathscr{L} f)(x)$. We have *derived* the explicit formula for the generator of an Itô diffusion:
+
+$$
+\boxed{\;(\mathscr{L} f)(x) \;=\; \sum_{i=1}^d b_i(x) \, \partial_i f(x) \;+\; \tfrac{1}{2} \sum_{i,j=1}^d a_{ij}(x) \, \partial_i \partial_j f(x), \qquad a := \sigma \sigma^\top.\;}
+$$
+
+So **$\mathscr{L}$ is a second-order partial differential operator**: a first-order "drift" piece $b \cdot \nabla$ and a second-order "noise" piece $\frac{1}{2} a : \nabla^2$. Two facts to internalise:
+
+* The *drift* $b$ shows up with $\nabla f$ — it transports the process deterministically.
+* The *diffusion* $\sigma$ shows up only through $a = \sigma \sigma^\top$ and only with second derivatives — that is the **Itô correction** at the operator level. Stochasticity, at the level of $\mathscr{L}$, is *exactly* the second-order term.
+
+The matrix $a(x) = \sigma(x) \sigma(x)^\top$ is symmetric positive semidefinite. If $a(x)$ is strictly positive definite for every $x$, $\mathscr{L}$ is an **(uniformly) elliptic operator**; this is what guarantees the noise is "non-degenerate in every direction" and yields smooth transition densities, strong existence/uniqueness, etc.
+
+### A concrete example: the Ornstein–Uhlenbeck generator at work
+
+Take the OU process $\mathrm{d} X_t = -\theta X_t \, \mathrm{d} t + \sigma \, \mathrm{d} W_t$ with $\theta = \sigma = 1$. The general formula above specialises to
+
+$$
+(\mathscr{L} f)(x) \;=\; -x \, f'(x) \;+\; \tfrac{1}{2} f''(x).
+$$
+
+The picture below shows the operator in action on three test functions $f$. Top row: the test function $f$ itself. Bottom row: $\mathscr{L} f$, the *expected instantaneous rate of change* of $f$ along the OU process at each starting point $x$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/generator_action_on_test_functions.png' | relative_url }}" alt="2x3 grid showing three test functions f(x) — quadratic x^2, sin(πx), and Gaussian exp(-x²/2) — in the top row, with the action of the OU generator Lf = -x f'(x) + (1/2) f''(x) plotted in the bottom row." loading="lazy">
+</figure>
+
+Read the columns:
+
+* **$f(x) = x^2$.** Then $\mathscr{L} f = 1 - 2 x^2$. At $x = 0$, $\mathscr{L} f = 1 > 0$: the process diffuses *outward* from the origin, so $\mathbb{E}[X_t^2 \mid X_0 = 0]$ is increasing. At $|x| > 1/\sqrt{2}$, $\mathscr{L} f < 0$: the mean-reversion $-\theta x$ is strong enough to drag $X_t^2$ down. The zero-crossings $x = \pm 1/\sqrt{2}$ identify the **stationary level** of $X^2$, i.e. the variance of the invariant Gaussian, namely $\mathrm{Var}_\pi(X) = \sigma^2 / (2\theta) = 1/2$.
+* **$f(x) = \sin(\pi x)$.** The diffusion term $\frac{1}{2} f''$ contributes $-\frac{\pi^2}{2} \sin(\pi x)$: noise *smooths* oscillating $f$ toward its mean, exactly because the second derivative of an oscillation is large and opposes the bumps. The drift adds a sign-twisting $-\pi x \cos(\pi x)$ term.
+* **$f(x) = e^{-x^2/2}$.** The bell shape gets bent: noise *flattens* it (negative $\mathscr{L} f$ near $x = 0$), drift pulls mass toward $0$ (negative $\mathscr{L} f$ on the wings).
+
+In every case, the *sign* of $(\mathscr{L} f)(x)$ tells you which way $\mathbb{E}\!\left[f(X_t) \mid X_0 = x\right]$ moves at the very first instant, and the *magnitude* tells you how fast.
+
+### Verifying the limit definition numerically
+
+The definition of $\mathscr{L}$ is a limit; let us watch that limit happen on the OU process. Take $f(x) = x^2$, for which we already computed $\mathscr{L} f(x) = 1 - 2 x^2$. Using the closed-form OU transition $X_t \mid X_0 = x_0 \sim \mathcal{N}\!\left(x_0 e^{-t}, \, \tfrac{1}{2}(1 - e^{-2t})\right)$, one computes
+
+$$
+\frac{(P_t f - f)(x_0)}{t} \;=\; \frac{(1 - e^{-2 t})\,(\tfrac{1}{2} - x_0^2)}{t} \;\xrightarrow[t \downarrow 0]{}\; 2 \cdot (\tfrac{1}{2} - x_0^2) \;=\; 1 - 2 x_0^2 \;=\; (\mathscr{L} f)(x_0). \checkmark
+$$
+
+The figure plots the left-hand side as a function of $t$ (log scale) at three starting points $x_0 \in \{-1, 0, 1.5\}$ and shows the corresponding theoretical limits $\mathscr{L} f(x_0) \in \{-1, 1, -3.5\}$ as dashed horizontal lines:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/generator_limit_verification.png' | relative_url }}" alt="Log-scale plot of (P_t f - f)/t as a function of t for the OU process with f(x)=x^2 at three starting points x_0=-1, 0, 1.5; each curve converges as t→0 to the dashed horizontal line giving the theoretical limit Lf(x_0)=1-2x_0^2." loading="lazy">
+</figure>
+
+The convergence is exactly what the definition says: the difference quotient $(P_t f - f)/t$ collapses onto $(\mathscr{L} f)(x_0)$ as $t \downarrow 0$, *for every starting point* $x_0$.
+
+### A small zoo of generators
+
+| Process | Drift $b$ / jump rate | Diffusion $\sigma$ | Generator $\mathscr{L}$ |
+|---|---|---|---|
+| Brownian motion $W_t$ in $\mathbb{R}^d$ | $0$ | $I$ | $\frac{1}{2} \Delta f$ |
+| Drifted Brownian motion $W_t + \mu t$ | $\mu$ | $I$ | $\mu \cdot \nabla f + \frac{1}{2} \Delta f$ |
+| Ornstein–Uhlenbeck $\mathrm{d} X = -\theta X \, \mathrm{d} t + \sigma \, \mathrm{d} W$ | $-\theta x$ | $\sigma$ | $-\theta x \cdot \nabla f + \frac{\sigma^2}{2} \Delta f$ |
+| Geometric Brownian motion $\mathrm{d} S = \mu S \, \mathrm{d} t + \sigma S \, \mathrm{d} W$ | $\mu x$ | $\sigma x$ | $\mu x \, f'(x) + \frac{\sigma^2 x^2}{2} f''(x)$ |
+| Compound Poisson with intensity $\lambda$, jump law $\nu$ | — | — | $\lambda \int \!\big(f(x + y) - f(x)\big) \, \nu(\mathrm{d}y)$ |
+| Continuous-time Markov chain on a discrete state space | — | — | $(\mathscr{L} f)(i) = \sum_j Q_{ij} f(j)$,  $Q$ the rate matrix |
+
+Two patterns to notice:
+
+* **Diffusions** give *second-order differential* operators.
+* **Jump processes** give *integral* operators (or, for discrete chains, *matrix* operators).
+
+The general Lévy–Khintchine generator combines both: drift, second-order diffusion, and a Lévy jump integral.
+
+### The two PDEs that fall out — backward and forward (Fokker–Planck)
+
+Because $P_t = e^{t \mathscr{L}}$, two evolution equations are immediate.
+
+**Kolmogorov backward equation.** Apply $\partial_t$ to $u(t, x) := (P_t f)(x) = \mathbb{E}\!\left[f(X_t) \mid X_0 = x\right]$:
+
+$$
+\partial_t u(t, x) \;=\; \mathscr{L}_x u(t, x), \qquad u(0, x) = f(x).
+$$
+
+This describes the evolution of *the conditional expectation as a function of the starting point* $x$ — hence "backward" (in the initial condition).
+
+**Kolmogorov forward / Fokker–Planck equation.** Apply $\partial_t$ to the *density* $p(t, x)$ of $X_t$ (assuming it exists and starts from a known $p_0$). The duality $\langle P_t f, p_0 \rangle = \langle f, P_t^{*} p_0 \rangle$ gives that the density evolves under the *adjoint* $\mathscr{L}^{*}$:
+
+$$
+\partial_t p(t, x) \;=\; \mathscr{L}^{*} p(t, x), \qquad p(0, \cdot) = p_0.
+$$
+
+For a non-degenerate diffusion this is the explicit Fokker–Planck PDE
+
+$$
+\partial_t p \;=\; -\nabla \cdot (b \, p) \;+\; \tfrac{1}{2} \, \nabla^2 : (a \, p),
+$$
+
+i.e. drift becomes a transport term and diffusion becomes a divergence-of-flux term. The picture below shows this evolution for the OU process started at $x_0 = 2$, sampled and overlaid with the analytic transition density at four times. The dashed curve is the **invariant density** $\pi = \mathcal{N}(0, 1/2)$, which is precisely the stationary solution $\mathscr{L}^{*} \pi = 0$:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/generator_fokker_planck.png' | relative_url }}" alt="Four panels showing the OU transition density at times t=0.1, 0.5, 1.0, 3.0 starting from x_0=2: empirical histograms (60000 samples) overlaid with the analytic Gaussian transition and the dashed invariant density N(0, 1/2). The density starts as a sharp bump near x=2 and progressively converges to the invariant Gaussian." loading="lazy">
+</figure>
+
+What you see: the density starts as a sharp Gaussian bump near $x = 2$ (the deterministic starting point), then *both* drifts back toward $0$ (driven by $b(x) = -x$) *and* spreads out (driven by $\frac{1}{2} \partial_x^2$). At $t = 3$ it is essentially indistinguishable from the invariant $\pi$. The whole picture is the operator $\mathscr{L}^{*}$ at work in real time.
+
+### Why $\mathscr{L}$ is *the* invariant of the process
+
+Several different-looking objects all encode the same information about a Markov process; the generator is the lightest among them.
+
+* **Transition kernel $p(t, x, \cdot)$.** Heaviest representation; one function for every $t > 0$.
+* **Semigroup $P_t = e^{t \mathscr{L}}$.** One operator for every $t > 0$, but they are all generated by one of them.
+* **Generator $\mathscr{L}$.** A *single* operator. Contains all transition kernels via exponentiation, all conditional expectations via the backward PDE, and all densities via the forward PDE.
+
+This is why textbook taxonomies of stochastic processes (Brownian, OU, GBM, CIR, jump-diffusion, …) are organised by their generators: they are the most economical complete description.
+
+### Where the generator shows up in the wild
+
+Once you have $\mathscr{L}$, an enormous amount of probabilistic content follows mechanically.
+
+* **Dynkin's formula.** For nice $f$ and stopping time $\tau$,
+  
+  $$
+  \mathbb{E}\!\left[f(X_\tau) \mid X_0 = x\right] \;=\; f(x) \;+\; \mathbb{E}\!\left[\int_0^\tau (\mathscr{L} f)(X_s) \, \mathrm{d}s \,\Big|\, X_0 = x\right].
+  $$
+  
+  This is the workhorse for computing exit-time distributions, ruin probabilities, hitting times, etc.
+* **Feynman–Kac.** The PDE $\partial_t u + \mathscr{L} u - V u + h = 0$ with terminal condition $u(T, x) = g(x)$ has the probabilistic representation
+  
+  $$
+  u(t, x) \;=\; \mathbb{E}\!\left[g(X_T) \, e^{-\int_t^T V(X_s)\,\mathrm{d}s} + \int_t^T h(X_s) \, e^{-\int_t^s V(X_r)\,\mathrm{d}r} \, \mathrm{d}s \,\Big|\, X_t = x\right].
+  $$
+  
+  This is the bridge between linear parabolic PDEs and Markov processes; in finance it is what underlies risk-neutral pricing.
+* **Martingale problem (Stroock–Varadhan).** A process $X_t$ is "the diffusion with generator $\mathscr{L}$" *iff* $f(X_t) - \int_0^t (\mathscr{L} f)(X_s) \, \mathrm{d}s$ is a martingale for every $f \in C_c^\infty$. This is an alternative *definition* of the process, often more flexible than the SDE itself (no need for a Brownian filtration up front).
+* **Carré du champ and functional inequalities.** The bilinear form $\Gamma(f, g) := \frac{1}{2}\!\left(\mathscr{L}(fg) - f \mathscr{L} g - g \mathscr{L} f\right)$ — the *carré du champ* — measures "how much variance the noise injects into $f$" per unit time. For the OU generator, $\Gamma(f, f) = \frac{1}{2} (f')^2$. Spectral / functional inequalities (Poincaré, log-Sobolev) on $\mathscr{L}$ control mixing rates and concentration; this is the analytic backbone of modern probability.
+* **Diffusion generative models.** The forward noising SDE $\mathrm{d} X_t = -\frac{1}{2} \beta_t X_t \, \mathrm{d}t + \sqrt{\beta_t} \, \mathrm{d} W_t$ has generator $\mathscr{L}_t f = -\frac{\beta_t}{2} x \cdot \nabla f + \frac{\beta_t}{2} \Delta f$ (a time-inhomogeneous OU); the reverse-time SDE used for sampling is built from the *adjoint* of this generator together with the score $\nabla \log p_t$. The whole "score-based" framework is, at the operator level, a statement about $\mathscr{L}$ and $\mathscr{L}^{*}$.
+
+### One-sentence summary
+
+The infinitesimal generator $\mathscr{L}$ is the **time-derivative at $t = 0$** of the Markov semigroup $P_t = e^{t \mathscr{L}}$; for an Itô diffusion it is the second-order elliptic operator $\mathscr{L} f = b \cdot \nabla f + \frac{1}{2} \mathrm{tr}(\sigma \sigma^\top \mathrm{Hess}\, f)$ (drift + Itô-corrected diffusion), and from this single operator one recovers the Kolmogorov backward and Fokker–Planck PDEs, expectations along the path (Dynkin), Feynman–Kac, the martingale-problem characterisation, and — ultimately — the score-based reverse-SDE machinery of diffusion generative models.
+
+## Filtration
+
+A **filtration** is the mathematical formalisation of "the flow of information through time" — an increasing family of σ-algebras, one for every time $t$, where $\mathcal{F}_t$ encodes everything that has been *observed / decided / become measurable* by time $t$. It is the missing first ingredient that gives meaning to the words "by time $t$" or "given the past" in every subsequent definition (adapted, martingale, stopping time, BM-with-respect-to-$\mathbb{F}$, Itô integral, …).
+
+### Reading the notation
+
+Textbooks compress a lot into a line like "let $\mathbb{F} := (\mathcal{F}_t)_{t \in I}$ be a filtration in $\mathcal{A}$." Decomposed:
+
+| Symbol | What it is | Role |
+|---|---|---|
+| $\mathcal{A}$ | a fixed σ-algebra on the sample space $\Omega$ | the *ambient* universe of "all events that could ever be considered" — typically the σ-algebra carrying the probability measure $\mathbb{P}$ |
+| $I$ | the **index set** (= "time set") | typically $I = \mathbb{N}_0$ (discrete time), $I = [0, T]$ (finite horizon), or $I = [0, \infty)$ (infinite horizon) |
+| $\mathcal{F}_t$ | a σ-algebra on $\Omega$, one for each $t \in I$ | "what is observable / decidable by time $t$" |
+| $\mathbb{F}$ | a *shorthand name* for the whole indexed family $(\mathcal{F}_t)_{t \in I}$ | one bold letter for "the entire filtration" — convenient when writing things like "$X$ is $\mathbb{F}$-adapted" |
+
+The phrase "*in $\mathcal{A}$*" is the requirement
+
+$$
+\mathcal{F}_t \;\subseteq\; \mathcal{A} \qquad \text{for every } t \in I.
+$$
+
+That is: every "time-$t$ knowledge" σ-algebra lives inside the master σ-algebra $\mathcal{A}$. You are never observing more than the universe contains.
+
+### The actual definition
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Filtration)</span></p>
+
+Let $(\Omega, \mathcal{A})$ be a measurable space and $I \subseteq [0, \infty)$ a totally ordered index set. A **filtration in $\mathcal{A}$** indexed by $I$ is a family
+
+$$
+\mathbb{F} \;=\; (\mathcal{F}_t)_{t \in I}
+$$
+
+of sub-σ-algebras of $\mathcal{A}$ such that
+
+$$
+\mathcal{F}_s \;\subseteq\; \mathcal{F}_t \;\subseteq\; \mathcal{A} \qquad \text{whenever } s \leq t.
+$$
+
+The triple $(\Omega, \mathcal{A}, \mathbb{F})$ is a **filtered measurable space**; if a probability measure $\mathbb{P}$ is fixed on $(\Omega, \mathcal{A})$, the quadruple $(\Omega, \mathcal{A}, \mathbb{P}, \mathbb{F})$ is a **filtered probability space** — the standard setting for stochastic processes.
+
+</div>
+
+So the *only* axiom — beyond "each $\mathcal{F}_t$ is a sub-σ-algebra of the ambient $\mathcal{A}$" — is **monotonicity in $t$**:
+
+$$
+\boxed{\;s \leq t \;\Longrightarrow\; \mathcal{F}_s \;\subseteq\; \mathcal{F}_t.\;}
+$$
+
+That single inclusion encodes the asymmetry of time: information can only *grow*, never shrink. Once an event is "decided" (it happened or it didn't), it stays decided forever.
+
+### Three equivalent ways to picture it
+
+* **As an information ladder.** $\mathcal{F}_t$ is the collection of events whose occurrence has been *resolved* by time $t$. As $t$ increases, more and more events become resolved. The filtration is the entire "ladder" of resolution levels.
+* **As partition refinement.** Each σ-algebra $\mathcal{F}_t$ corresponds (up to refinement, in nice cases) to a partition of $\Omega$ into "indistinguishable cells" — outcomes that look identical given the information at time $t$. Monotonicity says these partitions get *finer* as $t$ grows; cells split, never merge.
+* **As an observer's diary.** Imagine an observer who writes down what they have seen so far. $\mathcal{F}_t$ is the σ-algebra generated by their diary entries up to time $t$. The diary is append-only — that is the monotonicity.
+
+### Visualisation 1: filtration as partition refinement (3 fair coin flips)
+
+The "partition refinement" picture is cleanest on a finite sample space. Take $\Omega = \{H, T\}^3$, the space of outcomes of three fair coin flips, with $\mathcal{A} = 2^\Omega$ as the ambient σ-algebra. The natural filtration of the flip sequence $\xi_1, \xi_2, \xi_3$ is
+
+$$
+\mathcal{F}_n \;:=\; \sigma(\xi_1, \dots, \xi_n) \qquad (n = 0, 1, 2, 3),
+$$
+
+with the convention $\mathcal{F}_0 = \{\emptyset, \Omega\}$ (no flips observed yet). At each $n$, $\mathcal{F}_n$ is generated by the partition of $\Omega$ into "outcomes that agree on the first $n$ flips":
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/filtration_tree_coin_flips.png' | relative_url }}" alt="Four-column tree showing the natural filtration of 3 fair coin flips: at n=0 the entire sample space Ω={H,T}^3 is one cell; at n=1 it splits into 2 cells (H··· and T···); at n=2 it splits into 4 cells (HH···, HT···, TH···, TT···); at n=3 it splits into 8 singleton cells. Grey lines show parent-child refinement edges." loading="lazy">
+</figure>
+
+Reading the picture:
+
+* **$n = 0$**: nothing has been observed; $\mathcal{F}_0$ is *trivial*, with one partition cell $\Omega$. The only $\mathcal{F}_0$-measurable random variables are constants — you cannot distinguish any two outcomes yet.
+* **$n = 1$**: the first flip is observed; $\mathcal{F}_1$ has two cells, $H\cdots$ and $T\cdots$. A random variable is $\mathcal{F}_1$-measurable iff it is constant on each of these two cells (= a function of $\xi_1$ alone).
+* **$n = 2$**: the first two flips are observed; $\mathcal{F}_2$ has four cells.
+* **$n = 3$**: every flip is observed; $\mathcal{F}_3$ has eight *singleton* cells, $\mathcal{F}_3 = \mathcal{A} = 2^\Omega$. Now *every* random variable on $\Omega$ is $\mathcal{F}_3$-measurable; perfect information.
+
+The grey lines between consecutive columns are the *refinement edges*: each cell at level $n$ splits into exactly two children at level $n+1$. This is precisely the content of $\mathcal{F}_n \subseteq \mathcal{F}_{n+1}$ at the level of partitions: the new σ-algebra is obtained by *splitting cells*, never by merging.
+
+### Concrete examples
+
+* **Natural filtration of a process $X$.** Given any process $X = (X_t)_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$, the *natural filtration* of $X$ is
+  
+  $$
+  \mathcal{F}_t^X \;:=\; \sigma\!\left(X_s \,:\, s \leq t,\; s \in I\right)
+  $$
+  
+  — the σ-algebra generated by all events of the form "$X_s \in B$" for $s \leq t$, $B$ Borel. This is the filtration of "what an observer who only sees $X$ knows by time $t$." Every process is automatically adapted to its own natural filtration.
+* **Brownian filtration.** When $X = W$ is Brownian motion, $\mathbb{F}^W := (\mathcal{F}_t^W)$ is *the* canonical filtration on which BM and the Itô integral are constructed. Most textbook SDEs are formulated on $\mathbb{F}^W$ unless the model needs more.
+* **Filtration with a random initial condition.** If you want $X_0 = \xi$ to be a *random* starting point (independent of $W$), you take
+  
+  $$
+  \mathcal{F}_t \;:=\; \sigma\!\left(\xi,\; W_s : s \leq t\right),
+  $$
+  
+  i.e. the natural filtration of $W$ *enlarged by* $\sigma(\xi)$. Then $X_0$ is $\mathcal{F}_0$-measurable — which the natural filtration of $W$ alone could not give, since $\mathcal{F}_0^W = \{\emptyset, \Omega\}$ knows nothing.
+* **Joint filtration of two processes.** For SDE systems driven by two independent Brownian motions $W^1, W^2$, one works on
+  
+  $$
+  \mathcal{F}_t \;:=\; \sigma\!\left(W^1_s, W^2_s : s \leq t\right).
+  $$
+  
+  Both BMs remain $(\mathcal{F}_t)$-Brownian motions on this filtration (their increments are still independent of $\mathcal{F}_t$ because of the independence of $W^1, W^2$).
+* **Discrete filtration of coin flips.** $\Omega = \{H, T\}^\infty$ with $\mathcal{F}_n := \sigma(\xi_1, \dots, \xi_n)$, where $\xi_k$ is the outcome of the $k$-th flip. $\mathcal{F}_n$ knows the first $n$ flips and nothing else (the picture above is the first three levels of this).
+* **The trivial extreme: $\mathcal{F}_t = \{\emptyset, \Omega\}$ for all $t$.** No information ever; nothing is observable. Every random variable except constants fails to be adapted.
+* **The other trivial extreme: $\mathcal{F}_t = \mathcal{A}$ for all $t$.** Total clairvoyance; every random variable is adapted at every time. The filtration "knows the whole future at $t = 0$" — stochastic calculus collapses (adaptedness becomes vacuous).
+
+The interesting filtrations live strictly between these two extremes.
+
+### Visualisation 2: filtration as cell structure on a path space
+
+For a process taking finitely many values, the picture is even more direct. Below we plot all $2^3 = 8$ sample paths of a 3-step ±1 random walk $X_n = \xi_1 + \dots + \xi_n$ on the same axes, four times — once for each $n \in \{0, 1, 2, 3\}$. In each panel, the paths are *coloured by which cell of $\mathcal{F}_n$ they belong to* (= which prefix $\xi_1, \dots, \xi_n$ they share):
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/filtration_random_walk_paths.png' | relative_url }}" alt="Four side-by-side panels showing the same eight ±1 random-walk paths, coloured by partition cell of F_n at n=0, 1, 2, 3. At n=0 all 8 paths share one colour (one cell); at n=1 the paths split into 2 colour groups (one cell per first-step direction); at n=2 into 4 groups; at n=3 each path is its own colour (8 singleton cells)." loading="lazy">
+</figure>
+
+Reading the panels:
+
+* **$n = 0$ (1 cell).** No information yet; all 8 paths are visually indistinguishable to $\mathcal{F}_0$ — same colour.
+* **$n = 1$ (2 cells).** Knowing $\xi_1$ splits the 8 paths into two groups of 4 (those starting up vs those starting down). Two colours appear.
+* **$n = 2$ (4 cells).** Knowing $(\xi_1, \xi_2)$ splits the paths further into 4 groups of 2.
+* **$n = 3$ (8 cells).** Knowing the entire trajectory $(\xi_1, \xi_2, \xi_3)$ resolves each path uniquely. Every path is alone in its own cell — perfect information for the natural filtration.
+
+The dashed vertical line in each panel is the time $n$ at which the σ-algebra $\mathcal{F}_n$ is being read off. *Before* the line, paths in the same cell are *forced to coincide* (because they share the prefix). *After* the line, paths in the same cell may diverge — the filtration $\mathcal{F}_n$ has *no information* about what happens after $n$. That is exactly the visual content of "$\mathcal{F}_n$ is the σ-algebra of what is decided by time $n$".
+
+The same picture applies in continuous time with $W$ in place of $X_n$: cells of $\mathcal{F}_t^W$ are paths that *agree on $[0, t]$* (and may differ arbitrarily after). Since BM paths almost never agree exactly, every cell is a singleton with probability one — but the conceptual picture is identical.
+
+### What "adapted" and "previsible" mean given a filtration
+
+Once you have $\mathbb{F}$, you can classify processes by *how* they relate to it.
+
+* **Adapted.** A process $X = (X_t)_{t \in I}$ is **$\mathbb{F}$-adapted** if $X_t$ is $\mathcal{F}_t$-measurable for every $t \in I$. "$X_t$ is decided by time-$t$ information." This is the minimum requirement to even talk about $X$ in the filtered model.
+* **Previsible (predictable).** Loosely: $X_t$ is $\mathcal{F}_{t-}$-measurable, i.e. determined by *strictly earlier* information. In discrete time: $X_n$ is $\mathcal{F}_{n-1}$-measurable. This is what the "non-anticipating" condition for Itô integrands really means.
+* **Stopping time.** A random time $\tau: \Omega \to I \cup \{\infty\}$ such that $\{\tau \leq t\} \in \mathcal{F}_t$ for every $t$ — "by time $t$ you know whether $\tau$ has fired." Defined entirely in terms of $\mathbb{F}$.
+
+All three of these notions are *meaningless without a filtration*; they are statements about the relationship between a process and a flow of information.
+
+### The "usual conditions" (a small but important refinement)
+
+In continuous-time stochastic calculus, textbooks often demand that $\mathbb{F}$ satisfies the **usual conditions**:
+
+* **Completeness.** Every subset of a $\mathbb{P}$-null set in $\mathcal{A}$ already lies in $\mathcal{F}_0$. (Null sets are "decided" from the start.)
+* **Right-continuity.** $\mathcal{F}_t = \mathcal{F}_{t+} := \bigcap_{s > t} \mathcal{F}_s$ for every $t$. Information at $t$ equals "information observable just after $t$" — no hidden surprises that require an infinitesimal peek into the future.
+
+These two technical conditions are what make stopping-time theory, optional projection, and the construction of càdlàg modifications of martingales work cleanly. Most "natural" filtrations don't satisfy them on the nose; one usually replaces $\mathbb{F}^W$ by its *augmented* / *right-continuous* version, sometimes denoted $\mathbb{F}^W_+$ or written without notation as a tacit convention.
+
+### How this connects to the upcoming sections
+
+The notion of filtration is the *exact* object underneath the concepts that follow.
+
+* **"$X$ is a martingale w.r.t. $\mathbb{F}$"** = $\mathbb{F}$-adapted, integrable, with $\mathbb{E}[X_t \mid \mathcal{F}_s] = X_s$ for $s \leq t$.
+* **"$W$ is a Brownian motion w.r.t. $(\mathcal{F}_t)$"** = the joint statement (i) $W_t$ is $\mathcal{F}_t$-measurable for every $t$ (= $W$ is $\mathbb{F}$-adapted) and (ii) future increments are $\mathcal{F}_t$-independent.
+* **"$W_t$ is $\mathcal{F}_t$-measurable"** = adaptedness at the single time $t$, where $\mathcal{F}_t$ is the time-$t$ slice of $\mathbb{F}$.
+* **"$(W_{t+s} - W_t)_{s}$ is independent of $\mathcal{F}_t$"** = increment-independence relative to the time-$t$ slice.
+
+In every one of these, the **filtration is the missing first ingredient** — the object that gives meaning to "by time $t$" or "given the past". Defining it explicitly is the price of admission to stochastic calculus.
+
+### One-sentence summary
+
+A **filtration** $\mathbb{F} = (\mathcal{F}_t)_{t \in I}$ in $\mathcal{A}$ is an increasing family of sub-σ-algebras of the ambient σ-algebra $\mathcal{A}$ — one for each "time" $t \in I$ — that formalises the *append-only flow of information* through time, equivalent to a *partition of $\Omega$ that gets finer as $t$ grows*; this single object is the missing first ingredient that gives meaning to "what is known by time $t$" in every subsequent definition (adapted, martingale, stopping time, BM-with-respect-to-$\mathbb{F}$, Itô integral, …).
+
+## Martingale property
+
+A **martingale** is the mathematical formalisation of a *fair game* — a stochastic process whose future expected value, conditional on everything you know now, equals its present value. Nothing about the past or present gives you a statistical edge in predicting the next move. This single property is the backbone of stochastic calculus: it is what makes Itô integrals "noise" (mean zero), what makes the $\mathrm{d} W$-term vanish in expectation in Itô's formula, and what makes the operator $\mathscr{L}$ in the previous section the *unique* drift-killer for $f(X_t)$.
+
+### Setup: filtration and adaptedness
+
+You cannot define "what you know at time $t$" without naming the history of information up to $t$. That object is a **filtration** $(\mathcal{F}_t)_{t \geq 0}$: an increasing family of $\sigma$-algebras with
+
+$$
+\mathcal{F}_s \;\subseteq\; \mathcal{F}_t \qquad \text{whenever } s \leq t.
+$$
+
+Concretely, $\mathcal{F}_t$ is the collection of events whose occurrence has been *decided* by time $t$ — every coin flip, every Brownian increment, every random thing that has already happened up to that instant.
+
+A process $(X_t)$ is **adapted** to $(\mathcal{F}_t)$ if $X_t$ is $\mathcal{F}_t$-measurable for every $t$, i.e. observing the history up to time $t$ is enough to know the value of $X_t$. Without adaptedness the equation defining the martingale property does not even make sense.
+
+### The definition
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Martingale)</span></p>
+
+A real-valued process $(X_t)_{t \geq 0}$ adapted to a filtration $(\mathcal{F}_t)$ is a **martingale** (with respect to that filtration) if
+
+1. **Integrability:** $\mathbb{E}[\lvert X_t \rvert] < \infty$ for every $t$.
+2. **Adaptedness:** $X_t$ is $\mathcal{F}_t$-measurable for every $t$.
+3. **Martingale property:** for every $s \leq t$,
+   
+   $$
+   \mathbb{E}\!\left[X_t \mid \mathcal{F}_s\right] \;=\; X_s \quad \text{a.s.}
+   $$
+
+</div>
+
+That single equation is *the* martingale property. Read it as: "given everything you know up to time $s$, the best forecast of $X_t$ for any later $t$ is just the current value $X_s$." There is no expected drift up or down — the process is, on average, going nowhere.
+
+The discrete-time version is identical, with $n$ in place of $t$:  $\mathbb{E}[X_{n+1} \mid \mathcal{F}_n] = X_n$.
+
+### Three siblings: martingale, sub-, super-
+
+Same setup; replace the equality with an inequality and you get the two close relatives:
+
+| Type | Defining condition | Interpretation |
+|---|---|---|
+| **Martingale** | $\mathbb{E}[X_t \mid \mathcal{F}_s] = X_s$ | fair game |
+| **Submartingale** | $\mathbb{E}[X_t \mid \mathcal{F}_s] \geq X_s$ | favourable game (drifts upward in expectation) |
+| **Supermartingale** | $\mathbb{E}[X_t \mid \mathcal{F}_s] \leq X_s$ | unfavourable game (drifts downward in expectation) |
+
+The mnemonic that catches everyone the wrong way: a *super*martingale is the one that goes *down* in expectation. The "super" is from the casino's point of view, not the gambler's.
+
+The picture below makes the three regimes visible by drawing many sample paths of a discrete random walk $X_n = \xi_1 + \dots + \xi_n$ with i.i.d. increments of mean $\mu \in \{+0.05, 0, -0.05\}$. The black curve in each panel is the empirical mean across $K = 5000$ paths; the orange dashed line is the theoretical mean $\mu \cdot n$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/martingale_sub_super_comparison.png' | relative_url }}" alt="Three side-by-side panels showing 40 sample paths and the empirical mean (black) of random walks with i.i.d. increments of mean +0.05 (submartingale, drifting up), 0 (martingale, mean stays at 0), and -0.05 (supermartingale, drifting down). Orange dashed reference line gives the theoretical mean μ·n." loading="lazy">
+</figure>
+
+The middle panel is the diagnostic for "martingale": no matter how wild the individual paths look, *the average of many of them stays flat at $0$ for all $n$*. The left and right panels show what *non*-martingales look like — a clear linear drift in the empirical mean.
+
+### What follows immediately
+
+Take $s = 0$ in the defining identity and apply the tower property:
+
+$$
+\mathbb{E}[X_t] \;=\; \mathbb{E}\!\big[\mathbb{E}[X_t \mid \mathcal{F}_0]\big] \;=\; \mathbb{E}[X_0] \quad \text{for all } t.
+$$
+
+So **every martingale has constant expectation** — the unconditional mean is preserved through time. This is the most-used corollary in practice; it is what makes statements like $\mathbb{E}\!\left[\int_0^T f \, \mathrm{d}W_t\right] = 0$ collapse to a one-line proof.
+
+A second consequence: for $s \leq t$, the *increment* $X_t - X_s$ is uncorrelated with anything in $\mathcal{F}_s$. Every $\mathcal{F}_s$-measurable bounded $Z$ satisfies
+
+$$
+\mathbb{E}\!\left[Z \, (X_t - X_s)\right] \;=\; 0,
+$$
+
+i.e. martingale increments are **orthogonal to the past** in $L^2$. This is the ingredient that powers Itô isometry.
+
+The picture below visualises the "constant expectation" corollary on Brownian motion. Sixty light purple paths show the wild path-by-path behaviour; the red curve is the empirical mean across $K = 10000$ paths, and the dashed black line is the theoretical $\mathbb{E}[W_t] = 0$:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/martingale_brownian_mean.png' | relative_url }}" alt="60 sample paths of standard Brownian motion plotted lightly in purple over [0,1], with the empirical mean across 10000 paths shown in red, hugging the dashed black line E[W_t]=0 for all t — confirming that BM is a martingale." loading="lazy">
+</figure>
+
+The individual paths spread out (their *variance* grows linearly with $t$, since $\mathrm{Var}(W_t) = t$), but their *mean* is locked to $0$ for all $t$. That is the visible signature of the martingale property.
+
+### Canonical examples
+
+* **Brownian motion $W_t$.** With its own filtration, $\mathbb{E}[W_t \mid \mathcal{F}_s] = W_s + \mathbb{E}[W_t - W_s] = W_s$ by independent increments and zero mean. So $W$ is the prototypical continuous-time martingale.
+* **$W_t^2 - t$.** Pure $W_t^2$ is *not* a martingale (its expectation grows as $t$, so it can't have constant mean). But $W_t^2 - t$ *is*: the deterministic $-t$ exactly cancels the variance growth. This is the simplest visible **Itô correction** at the level of martingales.
+* **The Doléans exponential** $\mathcal{E}(W)_t := \exp\!\left(W_t - \tfrac{t}{2}\right)$. The defining example of a positive martingale; foundational for Girsanov / change of measure.
+* **Itô integrals.** For $f \in L^2$ adapted, $M_t := \int_0^t f_s \, \mathrm{d}W_s$ is a martingale. This is the operator-level reason why the $\mathrm{d}W$-term *vanishes in expectation* in Itô's formula — exactly the step we used in the previous section to derive the generator.
+* **Random walks.** $S_n = X_1 + \dots + X_n$ with i.i.d. mean-zero increments is a discrete-time martingale (positive mean → submartingale, negative mean → supermartingale).
+* **Likelihood ratios.** If $P, Q$ are equivalent measures and $L_n := \frac{\mathrm{d}Q}{\mathrm{d}P}\big|_{\mathcal{F}_n}$, then $L_n$ is a $P$-martingale. This is the abstract engine behind Bayesian updating and Girsanov.
+
+### The simplest visible Itô correction: $W_t^2$ vs $W_t^2 - t$
+
+The bullet "$W_t^2 - t$ is a martingale" deserves a picture. Both panels below use the *same* $K = 20000$ Brownian sample paths.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/martingale_ito_correction.png' | relative_url }}" alt="Two-panel figure. Left: 50 sample paths of W_t^2 in purple, with the empirical mean across 20000 paths in red tracking the dashed line E[W_t^2]=t — clear linear drift, so W_t^2 is NOT a martingale. Right: 50 sample paths of W_t^2 - t in green with the empirical mean in red hugging the dashed line at 0 — the -t exactly kills the drift, so W_t^2 - t IS a martingale." loading="lazy">
+</figure>
+
+* **Left:** $W_t^2$. The empirical mean (red) tracks the theoretical curve $\mathbb{E}[W_t^2] = t$ (dashed black) almost exactly. Constant mean is *violated*: $\mathbb{E}[W_t^2]$ grows linearly in $t$. So $W_t^2$ is *not* a martingale — it is a sub-martingale.
+* **Right:** $W_t^2 - t$. The empirical mean is now indistinguishable from zero. The deterministic compensator $-t$ has *exactly* removed the variance-driven drift, restoring the martingale property.
+
+This is the conceptual content of the Itô correction in its cleanest form: the second-order operator $\frac{1}{2} f''(W_t)$ in Itô's formula contributes a deterministic drift to $f(W_t)$, and subtracting its time-integral is what produces a martingale. For $f(x) = x^2$, $\frac{1}{2} f'' = 1$, so the compensator is $\int_0^t 1 \, \mathrm{d}s = t$ — exactly the term we subtracted.
+
+### The "filtration matters" subtlety
+
+The martingale property is *always* relative to a specific filtration. The same process $X$ can be a martingale w.r.t. one filtration $(\mathcal{F}_t)$ and *not* a martingale w.r.t. a larger one $(\mathcal{G}_t)$ that knows more — for instance one that already "peeks ahead" at later randomness. Whenever you write "$X$ is a martingale" without naming a filtration, the convention is the **natural filtration**
+
+$$
+\mathcal{F}_t^X \;:=\; \sigma\!\left(X_s \,:\, s \leq t\right),
+$$
+
+i.e. exactly the information generated by observing $X$ itself up to time $t$.
+
+### Two big theorems that make martingales powerful
+
+* **Optional stopping theorem.** For a martingale $X$ and a "nice" stopping time $\tau$ (e.g. bounded, or such that $X^\tau$ is uniformly integrable),
+  
+  $$
+  \mathbb{E}[X_\tau] \;=\; \mathbb{E}[X_0].
+  $$
+  
+  This is what lets you compute exit probabilities, gambler's-ruin probabilities, and expected hitting times — all standard barrier problems collapse to one line of algebra once an appropriate martingale is in hand.
+* **Martingale convergence theorem (Doob).** Any $L^1$-bounded martingale converges almost surely to a finite limit $X_\infty$. Submartingales bounded above and supermartingales bounded below also converge a.s. This is the clean replacement for "monotone bounded sequences converge" in the random setting, and it is the structural reason behind a vast range of "averages stabilise" results in probability.
+
+### Connection to the generator (the section just above)
+
+This is the bridge to what you were just reading. The **martingale problem** of Stroock–Varadhan says: a process $(X_t)$ *is* the diffusion with generator $\mathscr{L}$ if and only if, for every $f \in C_c^\infty(\mathbb{R}^d)$,
+
+$$
+M_t^f \;:=\; f(X_t) \;-\; f(X_0) \;-\; \int_0^t (\mathscr{L} f)(X_s) \, \mathrm{d}s
+$$
+
+is a martingale with respect to the natural filtration of $X$.
+
+Read this carefully. The first part $f(X_t) - f(X_0)$ is the change in $f$ along the path. The integral is the *expected* change you should subtract to make a fair game out of the result. So **the generator $\mathscr{L}$ is precisely the operator whose subtraction kills the drift in $f(X_t)$**, and the martingale property is the meta-axiom that defines what "kills the drift" means.
+
+Two angles on this same equivalence:
+
+* From SDE → generator: applying Itô's formula to $f(X_t)$ produces a $\mathrm{d}t$-integral with integrand $\mathscr{L} f(X_s)$ plus a $\mathrm{d}W$-integral; the latter is a martingale, so subtracting the former produces $M_t^f$.
+* From generator → process: *defining* the process by demanding $M_t^f$ be a martingale for every test $f$ characterises the law of $X$ uniquely (under regularity). This is the flexible alternative to specifying an SDE — useful exactly when you do not have a Brownian filtration up front.
+
+### One-sentence summary
+
+A **martingale** is an integrable, adapted process whose conditional expectation $\mathbb{E}[X_t \mid \mathcal{F}_s] = X_s$ encodes a *fair game* — the future is, in expectation, the present — and this property is the abstract device through which stochastic calculus turns randomness into something quantifiable: it makes Itô integrals mean-zero, makes Itô's formula's $\mathrm{d}W$-term disappear in expectation, and (via Stroock–Varadhan) characterises a diffusion uniquely by which $f(X_t) - \int_0^t \mathscr{L} f(X_s) \, \mathrm{d}s$ are martingales.
+
+## Brownian motion with respect to a filtration: adaptedness, independence, and change of measure
+
+When SDE textbooks write phrases like "$W$ is a Brownian motion *with respect to* the filtration $(\mathcal{F}_t)$", or "$W_t$ is $\mathcal{F}_t$-measurable", or "the increments $W_{t+s} - W_t$ are independent of $\mathcal{F}_t$", what looks like extra measure-theoretic decoration is actually the *real* definition of Brownian motion — the part that makes Itô integration work. This section unpacks each piece, then connects them to the genuinely different notion of "Brownian motion *with respect to a probability measure $\mathbb{P}$*" (Girsanov).
+
+### Three different "with respect to"s
+
+It is worth separating three objects that get conflated in casual reading:
+
+| Object | Type | Role | "BM is …" with respect to it |
+|---|---|---|---|
+| $\mathbb{P}$ | a probability *measure* on $(\Omega, \mathcal{F})$ | "how likely is each event" | $W$ has a particular law; under another measure $\mathbb{Q}$ the same path is no longer BM (Girsanov) |
+| $\mathcal{F}$ | a *σ-algebra* on $\Omega$ | "what events are observable / decidable" | $W_t$ is $\mathcal{F}$-measurable iff $\mathcal{F}$ resolves its value |
+| $(\mathcal{F}_t)_{t \geq 0}$ | a *filtration* (increasing family of σ-algebras) | "what is observable *by time $t$*" | $W$ is an "$(\mathcal{F}_t)$-Brownian motion" iff it is adapted *and* its future increments are independent of $\mathcal{F}_t$ |
+
+In what follows, "BM w.r.t. $\mathcal{F}_t$" means the *filtration* sense (the standard one in stochastic calculus); the *measure* sense is treated separately at the end.
+
+### Brownian motion with respect to a filtration $(\mathcal{F}_t)$
+
+The textbook definition of BM you may have seen specifies only the *law*: $W_0 = 0$, independent stationary Gaussian increments $W_t - W_s \sim \mathcal{N}(0, t-s)$, continuous paths a.s. But once you do stochastic calculus you also need to say *with respect to which information set* the process is unfolding. The richer notion is:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($(\mathcal{F}_t)$-Brownian motion)</span></p>
+
+A process $W = (W_t)_{t \geq 0}$ on $(\Omega, \mathcal{F}, \mathbb{P})$ is a **Brownian motion with respect to the filtration $(\mathcal{F}_t)$** (an "$(\mathcal{F}_t)$-Brownian motion") if
+
+1. $W_0 = 0$ a.s.;
+2. $W$ is **adapted** to $(\mathcal{F}_t)$, i.e. $W_t$ is $\mathcal{F}_t$-measurable for every $t$;
+3. $W$ has continuous paths a.s.;
+4. for every $s, t \geq 0$, the increment $W_{t+s} - W_t$ is **independent of $\mathcal{F}_t$** and $\sim \mathcal{N}(0, s)$.
+
+</div>
+
+So "$W$ is a BM w.r.t. $(\mathcal{F}_t)$" is a *joint* statement about $W$ and the filtration. Two things must hold simultaneously:
+
+* The filtration is **rich enough** to "see" $W$ — that is condition 2 (adaptedness).
+* The filtration is **not too rich** — it must not contain any information about future increments of $W$. That is condition 4 (independence).
+
+The natural choice is the *natural filtration* $\mathcal{F}_t^W := \sigma(W_s : s \leq t)$, with which any BM is automatically a $(\mathcal{F}_t^W)$-BM. But many models need a *bigger* filtration (e.g. one carrying additional independent randomness, or independent jump processes), and then both conditions become real constraints.
+
+### What "$W_t$ is $\mathcal{F}$-measurable" means
+
+For a real-valued random variable $X: \Omega \to \mathbb{R}$ on $(\Omega, \mathcal{F}_0, \mathbb{P})$, *$X$ is $\mathcal{F}$-measurable* (for some sub-σ-algebra $\mathcal{F} \subseteq \mathcal{F}_0$) means
+
+$$
+X^{-1}(B) \;\in\; \mathcal{F} \qquad \text{for every Borel set } B \subseteq \mathbb{R}.
+$$
+
+Every event of the form "$X$ falls in $B$" is one of the events that $\mathcal{F}$ already knows about. Equivalently, by the Doob–Dynkin lemma, there exists a deterministic Borel function $g$ such that $X = g(\text{the part of } \omega \text{ that } \mathcal{F} \text{ resolves})$ — so *$X$ is a deterministic function of the information in $\mathcal{F}$*. Three increasingly intuitive readings:
+
+* **Operational:** "If you know which events in $\mathcal{F}$ occurred, you know the value of $X$."
+* **Coarse-graining:** $\mathcal{F}$ is (up to refinement) a partition of $\Omega$; $X$ is $\mathcal{F}$-measurable iff $X$ is constant on each cell.
+* **Information-theoretic:** $X$ contributes no information beyond what $\mathcal{F}$ already has, $\sigma(X) \subseteq \mathcal{F}$.
+
+For BM, "$W_t$ is $\mathcal{F}_t$-measurable" specialises to: by time $t$ the value $W_t$ has been *observed* (or is at least determined by what has been observed). The picture below makes this tangible by progressively "unveiling" a sample path: at each time $t$, the *past* segment is solid (decided, $\mathcal{F}_t$-measurable) while the *future* segment is dotted in grey (not yet $\mathcal{F}_t$-measurable):
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/filtration_adaptedness.png' | relative_url }}" alt="Four-panel figure showing the same Brownian sample path at four growing times t=0.15, 0.40, 0.65, 0.90. In each panel, the past portion of the path is drawn solid in purple (F_t-measurable: decided), the future portion is dotted in grey (not yet F_t-measurable), and the value W_t at the present moment is highlighted with a red dot — illustrating how the filtration progressively decides more and more of the path." loading="lazy">
+</figure>
+
+The σ-algebra $\mathcal{F}_t$ grows monotonically as $t$ grows; what was random at time $t_1$ becomes decided by time $t_2 > t_1$. If $\mathcal{F}_t$ is the natural filtration $\mathcal{F}_t^W$, adaptedness is automatic; if $\mathcal{F}_t$ is *bigger* than $\mathcal{F}_t^W$, adaptedness is *still* automatic — bigger σ-algebras only make it easier to be measurable. The non-trivial requirement on bigger filtrations is the next one.
+
+### What "$(W_{t+s} - W_t)_{s \in I}$ is independent of $\mathcal{F}$" means
+
+Two random objects are *independent* in the measure-theoretic sense if the σ-algebras they generate are independent. For the increment process
+
+$$
+\Delta W^{(t)} \;:=\; (W_{t+s} - W_t)_{s \in I},
+$$
+
+independence from a σ-algebra $\mathcal{F}$ means
+
+$$
+\mathbb{P}\!\left(\{\Delta W^{(t)} \in A\} \cap B\right) \;=\; \mathbb{P}\!\left(\Delta W^{(t)} \in A\right) \cdot \mathbb{P}(B)
+\qquad \text{for all } A,\, B \in \mathcal{F},
+$$
+
+equivalently $\sigma(\Delta W^{(t)}) \perp \mathcal{F}$. Three increasingly geometric readings:
+
+* **No information leakage.** Knowing that some event in $\mathcal{F}$ happened does *not* shift the conditional law of any future increment $W_{t+s} - W_t$. In symbols, $\mathbb{P}(\Delta W^{(t)} \in A \mid \mathcal{F}) = \mathbb{P}(\Delta W^{(t)} \in A)$ a.s.
+* **Conditional expectations factor.** For any bounded measurable $\varphi$ of the future increments,
+  
+  $$
+  \mathbb{E}\!\left[\varphi(\Delta W^{(t)}) \,\big|\, \mathcal{F}\right] \;=\; \mathbb{E}\!\left[\varphi(\Delta W^{(t)})\right] \quad \text{a.s.}
+  $$
+  
+  Conditioning on $\mathcal{F}$ does nothing — the future increments are statistically detached from $\mathcal{F}$.
+* **Strong Markov in distribution.** When $\mathcal{F} = \mathcal{F}_t$, this is the *Markov property in its strongest σ-algebraic form*: the future of $W$ after time $t$ is independent of the *entire past*, not just of the present location $W_t$.
+
+The picture below visualises this on $K = 30000$ Brownian sample paths. We pick $t^* = 0.5$ and partition the paths into three groups by the *quartile* of $W_{t^*}$ they fell into (a coarse summary of their past behaviour). Then we plot the empirical density of the *future* increment $W_{t^* + s} - W_{t^*}$ ($s = 0.3$) for each group separately, all on the same axes:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/filtration_increment_independence.png' | relative_url }}" alt="Two-panel figure. Left: past Brownian paths up to t*=0.5, coloured by which quartile W_{t*} fell into (bottom 25% in blue, middle 50% in green, top 25% in red). Right: empirical densities of the future increment W_{t*+s} - W_{t*} (s=0.3) for each of the three past-quartile groups, all overlapping the dashed black theoretical N(0, 0.3) density — visually demonstrating that the conditional law of the future increment is the same regardless of past behaviour." loading="lazy">
+</figure>
+
+The three coloured histograms are *visually indistinguishable* and all match the theoretical $\mathcal{N}(0, s)$ density (dashed black). That is the empirical picture of independence: no matter how the past went, the future increment is the same Gaussian. By contrast, *position-dependence* would show as the three histograms being shifted relative to each other — which is exactly what would happen for a non-BM process whose increments depend on the past.
+
+A subtle but important point: independence of $\Delta W^{(t)}$ from $\mathcal{F}_t$ is **strictly stronger** than independence from just $W_t$, or even from the natural past $\mathcal{F}_t^W$. If $\mathcal{F}_t$ is enlarged with extra randomness (e.g. a coin flip $C$ that is independent of $W$), independence from $\mathcal{F}_t = \sigma(\mathcal{F}_t^W, C)$ is the additional requirement that $C$ does not encode anything about future BM increments — automatic if $C$ was constructed independently of $W$, but not free in general.
+
+### Why all three together — the "$(\mathcal{F}_t)$-BM" package
+
+Adaptedness and increment-independence are the two halves of "$W$ unfolds in time *along with* the filtration $(\mathcal{F}_t)$":
+
+* Adaptedness says **the past of $W$ is contained in the filtration**:  $\sigma(W_s : s \leq t) \subseteq \mathcal{F}_t$.
+* Increment-independence says **the future increments of $W$ are independent of the filtration**:  $\sigma(W_{t+s} - W_t : s \geq 0) \perp \mathcal{F}_t$.
+
+These two together are exactly what the constructions of stochastic calculus need:
+
+* In the **Itô integral** $\int_0^t H_s \, \mathrm{d}W_s$, the integrand $H_s$ is required to be $\mathcal{F}_s$-measurable (*non-anticipating*). This makes the increment $W_{s + \mathrm{d}s} - W_s$ — independent of $\mathcal{F}_s$ — independent of $H_s$ as well, and that independence is what powers the Itô isometry $\mathbb{E}\big[(\int H \, \mathrm{d}W)^2\big] = \mathbb{E}\!\int H^2 \, \mathrm{d}s$ and the martingale property of the integral (recall the previous section).
+* In **SDE solutions** $\mathrm{d} X_t = b(X_t) \, \mathrm{d}t + \sigma(X_t) \, \mathrm{d}W_t$, the noise driving $X$ must be independent of the part of the filtration the solution may use; without increment-independence one cannot even define the right-hand side cleanly.
+
+Real models routinely *need* a filtration strictly larger than $\mathcal{F}_t^W$:
+
+* **Coupled SDE systems** $\mathrm{d}X = \dots, \mathrm{d}Y = \dots$ where each equation is driven by its own BM but whose coefficients use both $X_t, Y_t$.
+* **Filtering**: the filtration carries both the signal $X$ and the noisy observation $Y$.
+* **Jump-diffusions**: the filtration carries both a BM and an independent Poisson process.
+* **Random initial conditions**: $X_0$ is a $\mathcal{F}_0$-measurable random variable independent of $W$.
+
+In every one of these, you genuinely need a filtration *strictly larger* than $\mathcal{F}_t^W$, and the requirement that $W$ remains a Brownian motion *with respect to that bigger filtration* is the non-trivial part — exactly the content of the increment-independence condition.
+
+### And the genuinely measure-theoretic reading: BM with respect to *measure* $\mathbb{P}$
+
+Up to here, "with respect to" referred to a *filtration*. The phrase "BM with respect to a probability measure $\mathbb{P}$" is a *different* concept and shows up in **Girsanov's theorem**. Two equivalent measures $\mathbb{P}, \mathbb{Q}$ on the same $(\Omega, \mathcal{F})$ can disagree on whether a given process is a BM:
+
+* Under $\mathbb{P}$, the process $W_t$ is a standard BM (mean $0$, increments $\mathcal{N}(0, \mathrm{d}t)$).
+* Define an equivalent measure $\mathbb{Q}$ by the **Radon–Nikodym density**
+  
+  $$
+  \frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}} \;=\; L_T \;:=\; \exp\!\left(\theta W_T - \tfrac{1}{2} \theta^2 T\right) \qquad \text{(Cameron–Martin–Girsanov density)}.
+  $$
+  
+* Under $\mathbb{Q}$, the *new* process $\widetilde{W}_t := W_t - \theta t$ is a BM, while the *original* $W_t$ has acquired a drift $\theta t$ and is *no longer Brownian*.
+
+So the statement "$W$ is a BM" is not absolute — it depends on which measure you compute expectations against. The picture below illustrates this with $K = 8000$ sample paths and $\theta = 1.5$. **Left:** the same $\omega$-paths plotted with line opacity proportional to their importance weight $L_T(\omega)$; the empirical $\mathbb{P}$-mean (green) hugs $0$ as expected, while the *importance-weighted* empirical $\mathbb{Q}$-mean (red) tracks the theoretical drift line $\theta t$ (black dashed). **Right:** empirical density of $W_T$ under $\mathbb{P}$ (centred at $0$) and under $\mathbb{Q}$ (centred at $\theta T$), both matching their theoretical Gaussians:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/filtration_girsanov.png' | relative_url }}" alt="Two-panel Girsanov visualisation with theta=1.5. Left: 100 Brownian sample paths from 8000 simulated, with line opacity proportional to the importance weight L_T = exp(θ W_T - θ²T/2); the empirical P-mean (green) sits at 0, the L_T-weighted empirical Q-mean (red) tracks the theoretical drift line θt (black dashed). Right: empirical density of W_T under P (green, centred at 0) and the L_T-weighted Q-density (red, centred at θT=1.5), both overlapping their theoretical N(0,T) and N(θT,T) densities respectively." loading="lazy">
+</figure>
+
+The intuition: under $\mathbb{Q}$, the paths with *higher* terminal value $W_T$ are *more probable* (because $L_T = e^{\theta W_T - \theta^2 T / 2}$ is increasing in $W_T$). When we resample / reweight by $L_T$, the typical path acquires an *upward bias*, and the operation is exactly equivalent to having added a deterministic drift $\theta t$. This is the abstract engine of:
+
+* **Risk-neutral pricing** in mathematical finance (change to the measure under which discounted assets are martingales).
+* **Maximum-likelihood / importance-sampling** changes of measure in statistics.
+* **Bayesian posterior updates** in their measure-theoretic form (likelihood ratio = Radon–Nikodym density).
+
+So if you ever read "$W$ is a BM under $\mathbb{P}$" in a context where another measure $\mathbb{Q}$ is in play, the statement is genuinely measure-dependent and not a casual phrasing.
+
+### One-sentence summaries
+
+* **"$W$ w.r.t. filtration $(\mathcal{F}_t)$"** = the joint specification "$W$ is observed by $\mathcal{F}_t$ (adapted) *and* has no information leakage into $\mathcal{F}_t$ from the future (independent increments)" — the standard hypothesis under which Itô calculus actually works.
+* **"$W_t$ is $\mathcal{F}$-measurable"** = the value $W_t$ is a deterministic function of the information in $\mathcal{F}$; equivalently, every event $\{W_t \in B\}$ is decided by $\mathcal{F}$.
+* **"$(W_{t+s} - W_t)_{s \in I}$ independent of $\mathcal{F}$"** = no event in $\mathcal{F}$ shifts the conditional law of any future Brownian increment; equivalently, $\mathbb{E}[\varphi(\text{future inc.}) \mid \mathcal{F}] = \mathbb{E}[\varphi(\text{future inc.})]$ for all bounded $\varphi$ — the strong "no anticipation" condition.
+* **"$W$ w.r.t. measure $\mathbb{P}$"** = a *different* "with respect to": the property of being BM is measure-dependent, and Girsanov shows how multiplying by a Radon–Nikodym density turns BM under $\mathbb{P}$ into BM-with-drift under $\mathbb{Q}$.
+
 ## Lebesgue integral
 
 <div class="math-callout math-callout--theorem" markdown="1">
