@@ -10,6 +10,10 @@ tags:
   - machine-learning
 ---
 
+# Partial Differential Equations in Data Science
+
+Notes based on the Summer 2026 lecture course by Prof. Dr. Tim Laux.
+
 <style>
   .accordion summary {
     font-weight: 600;
@@ -24,10 +28,6 @@ tags:
 **Table of Contents**
 - TOC
 {:toc}
-
-# Partial Differential Equations in Data Science
-
-Notes based on the Summer 2026 lecture course by Prof. Dr. Tim Laux.
 
 ## Problems
 
@@ -48,7 +48,10 @@ After an introduction in the finite-dimensional setting — which gives rise to 
 
 ### 1.2 Outline
 
-Instead of directly defining gradient flows in a general setup, we first start with the simple **Euclidean case**. In this setting, a gradient flow is a system of ordinary differential equations: given an "energy" (or "entropy") $E: \mathbb{R}^N \to [0, \infty)$ and initial data $x_0 \in \mathbb{R}^N$, solve
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient Flow in Euclidean space)</span></p>
+
+Instead of directly defining gradient flows in a general setup, we first start with the simple **Euclidean case**. In this setting, a **gradient flow** is a system of ordinary differential equations: given an "*energy*" (or "*entropy*") $E: \mathbb{R}^N \to [0, \infty)$ and initial data $x_0 \in \mathbb{R}^N$, solve
 
 $$
 \begin{cases}
@@ -57,7 +60,11 @@ x(0) = x_0,
 \end{cases} \tag{1.1}
 $$
 
-where $\dot{x} = \tfrac{dx}{dt}$. By classical ODE theory (Picard–Lindelöf / Cauchy–Lipschitz), there exists a unique solution whenever $\nabla E$ is Lipschitz, i.e., $E \in C^{1,1}(\mathbb{R}^N)$.
+where $\dot{x} = \tfrac{dx}{dt}$. 
+
+By classical ODE theory (Picard–Lindelöf / Cauchy–Lipschitz), there exists a unique solution whenever $\nabla E$ is Lipschitz, i.e., $E \in C^{1,1}(\mathbb{R}^N)$.
+
+</div>
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/gradient_flow_trajectory.png' | relative_url }}" alt="Gradient-flow trajectories on an anisotropic quadratic energy landscape, all converging to the unique minimizer at the origin" loading="lazy">
@@ -73,7 +80,7 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On the dot in $dE(x(t)).\dot{x}(t)$)</span></p>
 
-The dot "$.$" here is **not division** — it denotes *application of a linear map to a vector*. Reading it as $dE(x(t))/\dot{x}(t)$ or $\frac{dE(x(t))}{dx(t)} \cdot \dot{x}(t)$ would be a category error, because $dE(x(t))$ is itself a linear map, not a quantity one divides by.
+The dot "$.$" here is **not multiplication** — it denotes *application of a linear map to a vector*. Reading it as $dE(x(t))/\dot{x}(t)$ or $\frac{dE(x(t))}{dx(t)} \cdot \dot{x}(t)$ would be a category error, because $dE(x(t))$ is itself a linear map, not a quantity one multiplies by.
 
 * The object $dE(x(t))$ is the **differential** of $E$ at the point $x(t)$, i.e., the linear map
 
@@ -99,11 +106,16 @@ The notation above is pedantic on purpose, distinguishing between the **differen
 
 </div>
 
-In particular, the energy is **non-increasing** in time. Integrating (1.2) yields, for any $T > 0$,
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Energy is non-decreasing in time in gradient flow)</span></p>
+
+The energy is **non-increasing** in time. Integrating (1.2) yields, for any $T > 0$,
 
 $$
 E(x(T)) + \int_0^T |\dot{x}(t)|^2 \, dt \le E(x(0)). \tag{1.3}
 $$
+
+</div>
 
 <div class="accordion" markdown="1">
 <details markdown="1">
@@ -148,24 +160,34 @@ In the smooth Euclidean setting treated here, ($\ast$) and (1.3) are equivalent,
   <figcaption>The identity $E(x(t))+\int_0^t |\dot{x}|^2\,ds = E(x_0)$ visualised. Energy (blue) drains away along the trajectory and is exactly recovered as accumulated dissipation (orange); the dashed line shows their sum, which is conserved.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Direction of steepest descent* of the energy)</span></p>
+
 At the risk of stating the obvious: $-\nabla E(x(t))$ is the *direction of steepest descent* of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $\|v\| = \|\nabla E(x(t))\|$,
 
 $$
 -\langle \nabla E(x(t)), \nabla E(x(t)) \rangle \le \langle v, \nabla E(x(t)) \rangle.
 $$
 
+This is exactly what characterizes a gradient flow: **it is the steepest descent in an energy landscape**. Moreover, we expect that in the long-time limit $t \to \infty$, the trajectory $x(t)$ converges to a critical point, or a local (or even global!) minimizer of $E$.
+
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/steepest_descent.png' | relative_url }}" alt="Unit directions at a point colored by their inner product with the gradient; the minimum is attained at minus the normalized gradient" loading="lazy">
   <figcaption>At a fixed point $x_*$, the directional derivative $\langle v,\nabla E(x_*)\rangle$ varies as $\cos$ over the unit sphere (right). Among unit vectors, it is minimized exactly when $v=-\nabla E/|\nabla E|$ (left, green) and maximized at $v=+\nabla E/|\nabla E|$ (red).</figcaption>
 </figure>
 
-This is exactly what characterizes a gradient flow: **it is the steepest descent in an energy landscape**. Moreover, we expect that in the long-time limit $t \to \infty$, the trajectory $x(t)$ converges to a critical point, or a local (or even global!) minimizer of $E$.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Typical Questions</span><span class="math-callout__name">(Scope of our interest in Gradient Flows)</span></p>
 
 **Typical questions** we will learn to appreciate and to answer (partially):
 
 1. **Existence, uniqueness, and stability** beyond the Picard–Lindelöf / Cauchy–Lipschitz framework. The standard regularity requirement is too restrictive for most interesting gradient flows. The additional structure of the right-hand side of (1.1) allows us to develop tools tailored to these equations and therefore very robust.
 2. **Long-term asymptotics** towards (local or global?) minimizers under suitable conditions.
 3. **Convergence of gradient flows**: given a sequence of energy functionals $E_k$ (possibly defined on different spaces $X_k$), under which conditions do the corresponding gradient flows converge?
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why study gradient flows?)</span></p>
@@ -174,15 +196,7 @@ Many ODEs and PDEs have a gradient flow structure, and the gradient flow framewo
 
 </div>
 
-In the first two sections, we will (in the Euclidean case with $E$ convex)
-
-1. prove existence of solutions;
-2. prove uniqueness and stability properties;
-3. study the long-term behavior of solutions.
-
-Later in the course, we will see examples of partial differential equations and free boundary problems that can be interpreted as gradient flows, touching on recent (and possibly current) research. Although the questions above are quite simple in the convex Euclidean setting (as we will see in the first few lectures), they become very subtle in other applications.
-
-**Critical points and the Euler–Lagrange equation.** The long-time limit of a gradient flow, when it exists, is a *critical point* of $E$ — a point $x_*$ with $\nabla E(x_*) = 0$ (or $0 \in \partial E(x_*)$ in the non-smooth setting). For functionals defined on infinite-dimensional spaces of functions, the analogue of "$\nabla E = 0$" is a differential equation in its own right, called the **Euler–Lagrange equation**.
+**Critical points and the Euler–Lagrange equation.** The long-time limit of a gradient flow, when it exists, is a *critical point* of $E$ — a point $x_*$ with $\nabla E(x_\ast) = 0$ (or $0 \in \partial E(x_\ast)$ in the non-smooth setting). For functionals defined on infinite-dimensional spaces of functions, the analogue of "$\nabla E = 0$" is a differential equation in its own right, called the **Euler–Lagrange equation**.
 
 Concretely, consider a functional
 
@@ -247,6 +261,50 @@ $$
 v = \dot{x}. \tag{1.6}
 $$
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why $-\nabla E$ instead of "force"? Energy and force, related)</span></p>
+
+We are not replacing forces with energies — we are using the **energy form of a conservative force**. Equation (1.5) is just Newton's law $m\ddot x = F_{\text{total}}$ with the force split into two pieces: the conservative force $F_{\text{pot}} = -\nabla E$ from the potential, and the dissipative force $F_{\text{fric}} = -\lambda v$ from friction.
+
+**Conservative forces and the relation $F = -\nabla V$.** A force field $F:\mathbb R^N\to\mathbb R^N$ is **conservative** if any of the following equivalent conditions holds:
+
+1. **Path-independent work.** The work $\int_\gamma F\cdot d\ell$ along a path $\gamma$ from $a$ to $b$ depends only on $a$ and $b$, not on the path.
+2. **Zero work around any closed loop.** $\oint F\cdot d\ell = 0$ for every closed loop.
+3. **Existence of a potential.** There exists a scalar function $V$ (called the **potential energy**) with
+
+   $$F(x) \;=\; -\nabla V(x).$$
+
+These are the same statement. Given (1), define $V(x) := -\int_{x_0}^{x} F\cdot d\ell$ along *any* path from a fixed reference point — well-defined by path-independence; then $F=-\nabla V$ by the FTC.
+
+The minus sign is conventional and makes the **force point in the direction of decreasing potential energy**: a ball rolls *down* the energy landscape; equilibria are critical points of $V$; stable equilibria are minima.
+
+**Three canonical examples:**
+
+| Force | Potential | Verification |
+|---|---|---|
+| Uniform gravity $F = -mg\,\hat z$ | $V(z) = mgz$ | $-\partial_z V = -mg$ ✓ |
+| Linear spring $F = -kx$ | $V(x) = \tfrac{1}{2}kx^2$ | $-V'(x) = -kx$ ✓ |
+| Coulomb / Newtonian gravity $F(r) = -\dfrac{C}{r^2}\hat r$ | $V(r) = -\dfrac{C}{r}$ | $-\partial_r V = -C/r^2$ ✓ |
+
+**Why friction is a separate term.** Not every force admits a potential. Friction *always* opposes motion, so the work $\oint F_{\text{fric}}\cdot d\ell$ around a closed loop is *negative*, not zero — condition (2) fails. There is no scalar function $V$ with $F_{\text{fric}}=-\nabla V$. That is why $-\lambda v$ appears in (1.5) as a separate term rather than being folded into the gradient of some energy.
+
+A useful classification:
+
+| Force type | Form | Energy behavior |
+|---|---|---|
+| Conservative | $F=-\nabla V(x)$ | $T+V$ conserved |
+| Linear friction (dissipative) | $F=-\lambda v$ | $T+V$ decreases at rate $-\lambda \lvert v\rvert^2$ |
+| Magnetic Lorentz | $F=qv\times B$ | $\perp v$; does no work; $T$ alone conserved |
+| External driving | $F=F(t)$ | $T+V$ changes by external work $\int F\cdot v\,dt$ |
+
+**Why the energy form is what we want.** Three reasons the notes prefer $-\nabla E$ to a generic "$F$":
+
+1. **It surfaces the energy structure.** The total-energy dissipation calculation (just below) reads $\frac{d}{dt}(E+\frac{1}{2}m\lvert v\rvert^2)=-\lambda\lvert v\rvert^2$, which depends precisely on the force being a gradient. Writing $F=-\nabla E$ from the start makes the calculation transparent.
+2. **It makes the overdamped limit produce the gradient flow.** As $\lambda\to\infty$, the inertia $m\ddot x$ becomes negligible and the equation reduces to $0 = -\nabla E - \lambda v$, i.e. $\dot x = -\frac{1}{\lambda}\nabla E$ — after rescaling time, this is exactly the gradient flow (1.1). The derivation only works when the conservative force is the gradient of an energy.
+3. **It is the right form for generalisation.** In Hilbert spaces and metric spaces "force" has no canonical meaning, but **energy** does — energies are scalar functionals one can define on any space. The whole abstract gradient-flow framework (Otto / Wasserstein, JKO) is built on the energy side of this equivalence, not the force side.
+
+</div>
+
 The **total energy** (potential + kinetic) satisfies
 
 $$
@@ -291,6 +349,13 @@ $$
 
 which is precisely our gradient flow equation (1.1). In words: **the gradient flow is the overdamped limit of Newtonian mechanics with friction**.
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Gradient Flow via Newtonain mechanics with friction)</span></p>
+
+The gradient flow is the overdamped limit of Newtonian mechanics with friction, where the friction parameter $\lambda \geq 0$ goes to infinity.
+
+</div>
+
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/overdamped_limit.png' | relative_url }}" alt="Newton trajectories: oscillating for small friction, smoothly descending for large friction; in the rescaled time they collapse onto the gradient flow as lambda grows" loading="lazy">
   <figcaption>Left: Newton-with-friction trajectories $\ddot{x}+\lambda\dot{x}+x=0$ in original time, transitioning from underdamped oscillation to overdamped descent as $\lambda$ grows. Right: the same trajectories plotted against the rescaled time $t'=t/\lambda$. As $\lambda\to\infty$ they collapse onto the gradient flow $x(t')=e^{-t'}$ (dashed).</figcaption>
@@ -325,6 +390,52 @@ Elements of $\partial E(x)$ are called **subgradients** of $E$ at $x$.
   <figcaption>The subdifferential at a kink. For $E(x)=|x|$ the graph at $x=0$ admits a whole interval of supporting affine minorants (slopes in $[-1,1]$, blue/green); a slope outside this interval (red, $1.4$) fails the inequality on one side. Hence $\partial E(0)=[-1,+1]$.</figcaption>
 </figure>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Is the subdifferential defined for convex functions only?)</span></p>
+
+The definition (1.7) is meaningful only when $E$ is convex. The defining inequality $E(y)\ge E(x)+\langle p,y-x\rangle$ for **all** $y$ asks for a *global* supporting affine minorant tangent at $x$, and asking that to hold globally implicitly demands convexity. For a non-convex $E$ the set (1.7) is typically empty everywhere — there is no global affine minorant tangent at $x$.
+
+For non-convex functions, several *generalizations* called "subdifferential" exist. They all collapse to the convex subdifferential when $E$ is convex, and to $\lbrace\nabla E(x)\rbrace$ when $E$ is smooth at $x$.
+
+* **Fréchet (regular) subdifferential.**
+
+  $$
+  \partial^F E(x)=\left\lbrace p:\liminf_{y\to x}\frac{E(y)-E(x)-\langle p,y-x\rangle}{\|y-x\|}\ge 0\right\rbrace.
+  $$
+
+  A *local* one-sided first-order condition; does not require convexity.
+
+* **Proximal subdifferential.**
+
+  $$
+  \partial^P E(x)=\left\lbrace p:\exists\,\sigma,\delta>0\ \text{ s.t. } E(y)\ge E(x)+\langle p,y-x\rangle-\sigma\|y-x\|^2\ \forall \|y-x\|<\delta\right\rbrace.
+  $$
+
+  Like Fréchet, with a quadratic correction.
+
+* **Limiting (Mordukhovich) subdifferential.** $\partial^L E(x)$ is the closure of $\partial^F E$ under sequential limits $x_k\to x,\ E(x_k)\to E(x),\ p_k\in\partial^F E(x_k)$. Has the best calculus rules in non-convex variational analysis.
+
+* **Clarke subdifferential.** For $E$ locally Lipschitz, $\partial^C E(x)$ is the convex hull of all limits $\lim\nabla E(x_k)$ at points $x_k\to x$ where $E$ is differentiable (Rademacher).
+
+The hierarchy of inclusions is
+
+$$
+\partial^P E(x)\;\subseteq\;\partial^F E(x)\;\subseteq\;\partial^L E(x)\;\subseteq\;\partial^C E(x).
+$$
+
+**Why these notes use only the convex one.** The §1.5 contraction proof is driven by the *monotonicity* property of the convex subdifferential,
+
+$$
+p_i\in\partial E(x_i)\;\Longrightarrow\;\langle p_1-p_2,\,x_1-x_2\rangle\ge 0,
+$$
+
+and the long-time asymptotics rely on the fact that $0\in\partial E(x)$ is *equivalent* (not just necessary) to $x$ being a *global* minimizer. Both properties hold **only** for convex $E$. The non-convex generalizations above lose them: $0\in\partial^F E(x)$ is necessary but not sufficient for a local minimizer, and the operator $-\partial^F E$ is not monotone, so the contraction argument fails. This is why the course chooses convexity as a structural hypothesis — it is the regularity replacement that keeps the gradient-flow theory clean.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient Flow as a Differential Inclusion)</span></p>
+
 With the subdifferential in hand, we formulate the gradient flow as a **differential inclusion**:
 
 $$
@@ -334,10 +445,12 @@ x(0) = x_0.
 \end{cases} \tag{1.8}
 $$
 
+</div>
+
 A few facts about the subdifferential are collected in the following exercise.
 
-<div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Exercise 1</span><span class="math-callout__name">(Convex analysis)</span></p>
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Subdifferential)</span></p>
 
 Let $E: \mathbb{R}^N \to [0, +\infty]$ be convex, i.e.,
 
@@ -345,15 +458,18 @@ $$
 E(\lambda x + (1-\lambda) y) \le \lambda E(x) + (1-\lambda) E(y) \quad \text{for all } x, y \in \mathbb{R}^N \text{ and } \lambda \in [0, 1]. \tag{1.9}
 $$
 
-Show the following:
-
 1. If $E \in C^1$, then $\partial E(x) = \lbrace \nabla E(x) \rbrace$.
-2. $E$ is differentiable at $x$ if and only if $\partial E(x)$ is a singleton.
+2. $E$ is differentiable at $x$ $\iff$ $\partial E(x)$ is a singleton.
 3. The set $\partial E(x)$ is convex; it is nonempty whenever $E(x) < +\infty$.
 
 </div>
 
-**Minimizing movements.** We will prove existence of solutions via the so-called **minimizing movements** (also known as JKO / variational) scheme. Let $E: \mathbb{R}^N \to [0, \infty)$ be convex, let $x_0 \in \mathbb{R}^N$ be given, and let $h > 0$ denote a time-step size. For $\ell = 1, 2, 3, \dots$, define iteratively
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Minimizing movements)</span></p>
+
+We will prove existence of solutions via the so-called **minimizing movements** (also known as JKO / variational) scheme. Minimizing movements, introduced by Ennio De Giorgi, refers to a variational approach for defining **gradient flows of non-smooth energies**, often approximating solutions by discretizing time and finding local minima at each step. It links to Euler schemes to describe steep descent for nonlinear diffusion, geometric evolution equations like mean curvature flow, and is used to study viscosity solutions. 
+
+Let $E: \mathbb{R}^N \to [0, \infty)$ be convex, let $x_0 \in \mathbb{R}^N$ be given, and let $h > 0$ denote a time-step size. For $\ell = 1, 2, 3, \dots$, define iteratively
 
 $$
 \chi_h^{(\ell)} := \arg \min_{x \in \mathbb{R}^N} \left\lbrace E(x) + \frac{1}{2h} \left| x - \chi_h^{(\ell-1)} \right|^2 \right\rbrace, \tag{1.10}
@@ -366,6 +482,759 @@ x_h(t) := \chi_h^{(\ell)} \quad \text{for } t \in [(\ell-1)h, \ell h) \tag{1.11}
 $$
 
 be its piecewise-constant interpolation in time.
+
+</div>
+
+<figure>
+  <div class="mm-viz">
+    <style>
+      .mm-viz {
+        --color-text-primary: #1a1a1a;
+        --color-text-secondary: #4a4a4a;
+        --color-text-tertiary: #777777;
+        --color-background-primary: #ffffff;
+        --color-background-secondary: #f3f4f8;
+        --color-border-primary: #aaaaaa;
+        --color-border-secondary: #c8c8c8;
+        --color-border-tertiary: #dddddd;
+        --border-radius-md: 6px;
+        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      .mm-viz .mm-controls { display: grid; gap: 14px; margin-top: 1rem; }
+      .mm-viz .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+      .mm-viz .row > label.lbl { font-size: 13px; color: var(--color-text-secondary); min-width: 92px; }
+      .mm-viz .row > input[type="range"] { flex: 1; min-width: 160px; max-width: 320px; }
+      .mm-viz .val { font-size: 13px; min-width: 36px; font-variant-numeric: tabular-nums; color: var(--color-text-primary); text-align: right; }
+      .mm-viz .pill-group { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+      .mm-viz .pill { font-size: 12px; padding: 5px 10px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); background: transparent; cursor: pointer; color: var(--color-text-primary); font-family: var(--font-sans); }
+      .mm-viz .pill.active { background: var(--color-background-secondary); border-color: var(--color-border-primary); }
+      .mm-viz .toggles { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--color-text-secondary); }
+      .mm-viz .toggles label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+      .mm-viz .info-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 0.25rem; }
+      .mm-viz .info-cell { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
+      .mm-viz .info-label { font-size: 12px; color: var(--color-text-secondary); }
+      .mm-viz .info-val { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; margin-top: 2px; color: var(--color-text-primary); }
+      .mm-viz .hint { font-size: 12px; color: var(--color-text-tertiary); }
+      .mm-viz .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+      .mm-viz #mm-plot { user-select: none; touch-action: none; }
+    </style>
+
+    <svg id="mm-plot" width="100%" viewBox="0 0 680 360" style="display: block; cursor: ew-resize;" role="img">
+      <title>One-step minimizing-movements construction in 1D</title>
+      <desc>Plot of energy E(x), parabola pull, and their sum F(x); the next iterate is the minimum of F.</desc>
+      <defs>
+        <clipPath id="mm-plot-clip"><rect x="30" y="20" width="480" height="300"/></clipPath>
+        <marker id="mm-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <g id="mm-grid"></g>
+      <g id="mm-curve-e" clip-path="url(#mm-plot-clip)"></g>
+      <g id="mm-curve-p" clip-path="url(#mm-plot-clip)"></g>
+      <g id="mm-curve-f" clip-path="url(#mm-plot-clip)"></g>
+      <g id="mm-markers" clip-path="url(#mm-plot-clip)"></g>
+      <g id="mm-legend"></g>
+    </svg>
+
+    <div class="mm-controls">
+      <div class="row">
+        <label class="lbl" for="mm-h-slider">Time step h</label>
+        <input id="mm-h-slider" type="range" min="0.05" max="1.5" step="0.05" value="0.30">
+        <span class="val" id="mm-h-val">0.30</span>
+      </div>
+      <div class="row">
+        <label class="lbl">Energy E(x)</label>
+        <div class="pill-group" id="mm-energy-group">
+          <button class="pill active" data-energy="quad">½ x²</button>
+          <button class="pill" data-energy="quartic">x⁴ / 8</button>
+          <button class="pill" data-energy="abs">|x|</button>
+        </div>
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" id="mm-t-e" checked> Energy E(x)</label>
+        <label><input type="checkbox" id="mm-t-p" checked> Parabola pull</label>
+        <label><input type="checkbox" id="mm-t-f" checked> Combined F(x)</label>
+      </div>
+      <div class="hint">Drag along the x-axis to move χ<sub>ℓ-1</sub>; the next iterate χ<sub>ℓ</sub> always sits at the minimum of F</div>
+      <div class="info-row">
+        <div class="info-cell">
+          <div class="info-label">Previous χ<sub>ℓ-1</sub></div>
+          <div class="info-val" id="mm-i-prev">1.50</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">Next χ<sub>ℓ</sub></div>
+          <div class="info-val" id="mm-i-next">1.15</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">Step |χ<sub>ℓ</sub> − χ<sub>ℓ-1</sub>|</div>
+          <div class="info-val" id="mm-i-step">0.35</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function() {
+      const PLOT_X = 30, PLOT_Y = 20, PLOT_W = 480, PLOT_H = 300;
+      const X_MIN = -3, X_MAX = 3, Y_MIN = -1, Y_MAX = 5;
+      const SX = PLOT_W / (X_MAX - X_MIN);
+      const SY = PLOT_H / (Y_MAX - Y_MIN);
+      const NS = 'http://www.w3.org/2000/svg';
+      const m2sX = x => PLOT_X + (x - X_MIN) * SX;
+      const m2sY = y => PLOT_Y + (Y_MAX - y) * SY;
+      const s2mX = sx => (sx - PLOT_X) / SX + X_MIN;
+
+      const COLORS = {
+        e: '#888780', parab: '#BA7517', f: '#7F77DD',
+        prev: '#185FA5', next: '#D85A30', arrow: '#444441'
+      };
+
+      const energies = {
+        quad: { E: x => 0.5*x*x, prox: (y,h) => y/(1+h) },
+        quartic: {
+          E: x => Math.pow(x,4)/8,
+          prox: (y,h) => {
+            let x = y;
+            for (let i = 0; i < 25; i++) {
+              const f = (h/2)*x*x*x + x - y;
+              const fp = (3*h/2)*x*x + 1;
+              if (Math.abs(fp) < 1e-12) break;
+              x -= f/fp;
+            }
+            return x;
+          }
+        },
+        abs: { E: x => Math.abs(x), prox: (y,h) => Math.sign(y)*Math.max(Math.abs(y)-h,0) }
+      };
+
+      const state = {
+        eKey: 'quad', h: 0.30, prev: 1.5,
+        showE: true, showP: true, showF: true, dragging: false
+      };
+
+      function svgEl(name, attrs = {}) {
+        const el = document.createElementNS(NS, name);
+        for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+        return el;
+      }
+      const fmt = (x, d=2) => x.toFixed(d);
+      function E(x) { return energies[state.eKey].E(x); }
+      function nextIter() { return energies[state.eKey].prox(state.prev, state.h); }
+      function P(x) { return (1/(2*state.h))*(x-state.prev)*(x-state.prev); }
+      function F(x) { return E(x) + P(x); }
+
+      function renderGrid() {
+        const g = document.getElementById('mm-grid');
+        g.innerHTML = '';
+        g.appendChild(svgEl('rect', { x: PLOT_X, y: PLOT_Y, width: PLOT_W, height: PLOT_H, fill: 'var(--color-background-secondary)', 'fill-opacity': 0.45, stroke: 'var(--color-border-tertiary)', 'stroke-width': 0.5, rx: 4 }));
+        g.appendChild(svgEl('line', { x1: m2sX(X_MIN), y1: m2sY(0), x2: m2sX(X_MAX), y2: m2sY(0), stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5 }));
+        g.appendChild(svgEl('line', { x1: m2sX(0), y1: m2sY(Y_MIN), x2: m2sX(0), y2: m2sY(Y_MAX), stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5 }));
+        for (let i = -3; i <= 3; i++) {
+          if (i === 0) continue;
+          const sx = m2sX(i), sy = m2sY(0);
+          g.appendChild(svgEl('line', { x1: sx, y1: sy-3, x2: sx, y2: sy+3, stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5 }));
+          const lbl = svgEl('text', { x: sx, y: sy+13, 'font-size': 10, 'text-anchor': 'middle', 'font-family': 'var(--font-sans)', fill: 'var(--color-text-tertiary)' });
+          lbl.textContent = i;
+          g.appendChild(lbl);
+        }
+        for (let j = 1; j <= 5; j++) {
+          const sx = m2sX(0), sy = m2sY(j);
+          g.appendChild(svgEl('line', { x1: sx-3, y1: sy, x2: sx+3, y2: sy, stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5 }));
+          const lbl = svgEl('text', { x: sx-6, y: sy+3, 'font-size': 10, 'text-anchor': 'end', 'font-family': 'var(--font-sans)', fill: 'var(--color-text-tertiary)' });
+          lbl.textContent = j;
+          g.appendChild(lbl);
+        }
+        const xL = svgEl('text', { x: m2sX(X_MAX)-5, y: m2sY(0)-6, 'font-size': 11, 'text-anchor': 'end', 'font-family': 'var(--font-sans)', fill: 'var(--color-text-tertiary)' });
+        xL.textContent = 'x';
+        g.appendChild(xL);
+      }
+
+      function drawCurve(gid, fn, color, dashed, weight, opacity) {
+        const g = document.getElementById(gid);
+        g.innerHTML = '';
+        if (!fn) return;
+        const N = 320;
+        let d = '', inPath = false;
+        for (let i = 0; i <= N; i++) {
+          const x = X_MIN + (X_MAX-X_MIN)*i/N;
+          let y;
+          try { y = fn(x); } catch (err) { y = NaN; }
+          if (!isFinite(y) || y > Y_MAX+2 || y < Y_MIN-2) { inPath = false; continue; }
+          const sx = m2sX(x), sy = m2sY(y);
+          d += (inPath ? ' L ' : ' M ') + sx.toFixed(1) + ',' + sy.toFixed(1);
+          inPath = true;
+        }
+        if (d) {
+          const attrs = { d: d, fill: 'none', stroke: color, 'stroke-width': weight, opacity: opacity, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' };
+          if (dashed) attrs['stroke-dasharray'] = '4 3';
+          g.appendChild(svgEl('path', attrs));
+        }
+      }
+
+      function renderCurves() {
+        drawCurve('mm-curve-e', state.showE ? E : null, COLORS.e, false, 1.4, 0.75);
+        drawCurve('mm-curve-p', state.showP ? P : null, COLORS.parab, true, 1.2, 0.75);
+        drawCurve('mm-curve-f', state.showF ? F : null, COLORS.f, false, 1.9, 0.92);
+      }
+
+      function renderMarkers() {
+        const g = document.getElementById('mm-markers');
+        g.innerHTML = '';
+        const xp = state.prev, xn = nextIter();
+        const ep = E(xp), fmin = F(xn);
+        const topPrev = Math.min(Y_MAX, Math.max(ep, fmin));
+        g.appendChild(svgEl('line', { x1: m2sX(xp), y1: m2sY(0), x2: m2sX(xp), y2: m2sY(topPrev), stroke: COLORS.prev, 'stroke-width': 0.75, 'stroke-dasharray': '3 3', opacity: 0.55 }));
+        g.appendChild(svgEl('line', { x1: m2sX(xn), y1: m2sY(0), x2: m2sX(xn), y2: m2sY(Math.min(Y_MAX, fmin)), stroke: COLORS.next, 'stroke-width': 0.75, 'stroke-dasharray': '3 3', opacity: 0.55 }));
+        if (Math.abs(xp-xn) > 0.05) {
+          const sy = m2sY(0)-12, x1 = m2sX(xp), x2 = m2sX(xn);
+          const dir = x2 > x1 ? 1 : -1;
+          g.appendChild(svgEl('line', { x1: x1+8*dir, y1: sy, x2: x2-9*dir, y2: sy, stroke: COLORS.arrow, 'stroke-width': 1.25, opacity: 0.7, 'marker-end': 'url(#mm-arrow)' }));
+        }
+        if (state.showE && ep >= Y_MIN && ep <= Y_MAX) {
+          g.appendChild(svgEl('circle', { cx: m2sX(xp), cy: m2sY(ep), r: 4, fill: COLORS.prev, opacity: 0.6 }));
+        }
+        if (state.showF && fmin >= Y_MIN && fmin <= Y_MAX) {
+          g.appendChild(svgEl('circle', { cx: m2sX(xn), cy: m2sY(fmin), r: 5, fill: COLORS.next, stroke: 'var(--color-background-primary)', 'stroke-width': 2 }));
+        }
+        g.appendChild(svgEl('circle', { cx: m2sX(xp), cy: m2sY(0), r: 7.5, fill: COLORS.prev, stroke: 'var(--color-background-primary)', 'stroke-width': 2, style: 'cursor: grab' }));
+        g.appendChild(svgEl('circle', { cx: m2sX(xn), cy: m2sY(0), r: 5, fill: COLORS.next, stroke: 'var(--color-background-primary)', 'stroke-width': 1.5 }));
+        const lblP = svgEl('text', { x: m2sX(xp), y: m2sY(0)+30, 'font-size': 12, 'text-anchor': 'middle', 'font-family': 'var(--font-sans)', fill: COLORS.prev, 'font-weight': 500 });
+        const t1 = svgEl('tspan'); t1.textContent = 'χ'; lblP.appendChild(t1);
+        const sub1 = svgEl('tspan', { 'font-size': 9, dy: 3 }); sub1.textContent = 'ℓ−1'; lblP.appendChild(sub1);
+        g.appendChild(lblP);
+        const lblN = svgEl('text', { x: m2sX(xn), y: m2sY(0)+30, 'font-size': 12, 'text-anchor': 'middle', 'font-family': 'var(--font-sans)', fill: COLORS.next, 'font-weight': 500 });
+        const t2 = svgEl('tspan'); t2.textContent = 'χ'; lblN.appendChild(t2);
+        const sub2 = svgEl('tspan', { 'font-size': 9, dy: 3 }); sub2.textContent = 'ℓ'; lblN.appendChild(sub2);
+        g.appendChild(lblN);
+      }
+
+      function renderLegend() {
+        const g = document.getElementById('mm-legend');
+        g.innerHTML = '';
+        const items = [
+          { color: COLORS.e, label: 'Energy E(x)', visible: state.showE, opacity: 0.75 },
+          { color: COLORS.parab, label: 'Parabola pull', dashed: true, visible: state.showP, opacity: 0.8 },
+          { color: COLORS.f, label: 'Combined F(x)', visible: state.showF, opacity: 0.95 },
+          { color: COLORS.prev, label: 'Previous iterate', visible: true, isDot: true },
+          { color: COLORS.next, label: 'Next iterate', visible: true, isDot: true }
+        ].filter(it => it.visible);
+        const lx = 524, ly = 24, lh = 18*items.length+12, lw = 138;
+        g.appendChild(svgEl('rect', { x: lx, y: ly, width: lw, height: lh, rx: 6, fill: 'var(--color-background-secondary)', stroke: 'var(--color-border-tertiary)', 'stroke-width': 0.5 }));
+        let y = ly+16;
+        for (const it of items) {
+          if (it.isDot) {
+            g.appendChild(svgEl('circle', { cx: lx+19, cy: y, r: 4.5, fill: it.color, stroke: 'var(--color-background-primary)', 'stroke-width': 1.5 }));
+          } else {
+            const la = { x1: lx+10, y1: y, x2: lx+28, y2: y, stroke: it.color, 'stroke-width': 1.75 };
+            if (it.dashed) la['stroke-dasharray'] = '3 2';
+            if (it.opacity !== undefined) la.opacity = it.opacity;
+            g.appendChild(svgEl('line', la));
+          }
+          const t = svgEl('text', { x: lx+34, y: y+4, 'font-size': 11, fill: 'var(--color-text-secondary)', 'font-family': 'var(--font-sans)' });
+          t.textContent = it.label;
+          g.appendChild(t);
+          y += 18;
+        }
+      }
+
+      function updateInfo() {
+        const xn = nextIter();
+        document.getElementById('mm-i-prev').textContent = fmt(state.prev);
+        document.getElementById('mm-i-next').textContent = fmt(xn);
+        document.getElementById('mm-i-step').textContent = fmt(Math.abs(state.prev-xn));
+      }
+
+      function render() {
+        renderGrid(); renderCurves(); renderMarkers(); renderLegend(); updateInfo();
+      }
+
+      document.getElementById('mm-h-slider').addEventListener('input', (e) => {
+        state.h = parseFloat(e.target.value);
+        document.getElementById('mm-h-val').textContent = state.h.toFixed(2);
+        render();
+      });
+      document.querySelectorAll('#mm-energy-group .pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#mm-energy-group .pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.eKey = btn.dataset.energy;
+          render();
+        });
+      });
+      document.getElementById('mm-t-e').addEventListener('change', (e) => { state.showE = e.target.checked; render(); });
+      document.getElementById('mm-t-p').addEventListener('change', (e) => { state.showP = e.target.checked; render(); });
+      document.getElementById('mm-t-f').addEventListener('change', (e) => { state.showF = e.target.checked; render(); });
+
+      const svg = document.getElementById('mm-plot');
+      function getCoords(cx, cy) {
+        const pt = svg.createSVGPoint();
+        pt.x = cx; pt.y = cy;
+        const c = pt.matrixTransform(svg.getScreenCTM().inverse());
+        return [c.x, c.y];
+      }
+      function setPrevFromX(sx) {
+        const mx = Math.max(X_MIN+0.05, Math.min(X_MAX-0.05, s2mX(sx)));
+        state.prev = mx;
+        render();
+      }
+      svg.addEventListener('mousedown', (e) => {
+        const [sx, sy] = getCoords(e.clientX, e.clientY);
+        if (sx < PLOT_X || sx > PLOT_X+PLOT_W || sy < PLOT_Y || sy > PLOT_Y+PLOT_H) return;
+        state.dragging = true;
+        setPrevFromX(sx);
+        e.preventDefault();
+      });
+      svg.addEventListener('mousemove', (e) => {
+        if (!state.dragging) return;
+        const [sx] = getCoords(e.clientX, e.clientY);
+        setPrevFromX(sx);
+      });
+      window.addEventListener('mouseup', () => { state.dragging = false; });
+      svg.addEventListener('touchstart', (e) => {
+        if (!e.touches[0]) return;
+        const [sx, sy] = getCoords(e.touches[0].clientX, e.touches[0].clientY);
+        if (sx < PLOT_X || sx > PLOT_X+PLOT_W || sy < PLOT_Y || sy > PLOT_Y+PLOT_H) return;
+        state.dragging = true;
+        setPrevFromX(sx);
+        e.preventDefault();
+      }, { passive: false });
+      svg.addEventListener('touchmove', (e) => {
+        if (!state.dragging || !e.touches[0]) return;
+        const [sx] = getCoords(e.touches[0].clientX, e.touches[0].clientY);
+        setPrevFromX(sx);
+        e.preventDefault();
+      }, { passive: false });
+      window.addEventListener('touchend', () => { state.dragging = false; });
+
+      render();
+    })();
+    </script>
+  </div>
+  <figcaption>Interactive: one step of the minimizing-movements scheme (1.10). Drag the previous iterate $\chi_{\ell-1}$ along the $x$-axis; the next iterate $\chi_\ell$ always sits at the minimum of the combined function $F(x)=E(x)+\frac{1}{2h}(x-\chi_{\ell-1})^2$ (the parabola pull penalises moving far from $\chi_{\ell-1}$). Use the slider to vary the time step $h$, and the buttons to switch the energy ($\frac{1}{2}x^2$, $x^4/8$, $|x|$).</figcaption>
+</figure>
+
+<figure>
+  <div class="mm2d-viz">
+    <style>
+      .mm2d-viz {
+        --color-text-primary: #1a1a1a;
+        --color-text-secondary: #4a4a4a;
+        --color-text-tertiary: #777777;
+        --color-text-danger: #c0392b;
+        --color-background-primary: #ffffff;
+        --color-background-secondary: #f3f4f8;
+        --color-border-primary: #aaaaaa;
+        --color-border-secondary: #c8c8c8;
+        --color-border-tertiary: #dddddd;
+        --border-radius-md: 6px;
+        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      .mm2d-viz .mm-controls { display: grid; gap: 14px; margin-top: 1rem; }
+      .mm2d-viz .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+      .mm2d-viz .row > label.lbl { font-size: 13px; color: var(--color-text-secondary); min-width: 92px; }
+      .mm2d-viz .row > input[type="range"] { flex: 1; min-width: 160px; max-width: 320px; }
+      .mm2d-viz .val { font-size: 13px; min-width: 36px; font-variant-numeric: tabular-nums; color: var(--color-text-primary); text-align: right; }
+      .mm2d-viz .pill-group { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+      .mm2d-viz .pill { font-size: 12px; padding: 5px 10px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); background: transparent; cursor: pointer; color: var(--color-text-primary); font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
+      .mm2d-viz .pill.active { background: var(--color-background-secondary); border-color: var(--color-border-primary); }
+      .mm2d-viz .toggles { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--color-text-secondary); }
+      .mm2d-viz .toggles label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+      .mm2d-viz .info-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 0.25rem; }
+      .mm2d-viz .info-cell { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
+      .mm2d-viz .info-label { font-size: 12px; color: var(--color-text-secondary); }
+      .mm2d-viz .info-val { font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; margin-top: 2px; color: var(--color-text-primary); }
+      .mm2d-viz .stability { font-size: 12px; color: var(--color-text-secondary); min-height: 16px; }
+      .mm2d-viz .stability.warn { color: var(--color-text-danger); }
+      .mm2d-viz .hint { font-size: 12px; color: var(--color-text-tertiary); }
+      .mm2d-viz .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+      .mm2d-viz button { font-family: var(--font-sans); font-size: 13px; padding: 6px 12px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; }
+      .mm2d-viz button:hover { background: var(--color-background-secondary); }
+    </style>
+
+    <svg id="mm2d-plot" width="100%" viewBox="0 0 680 380" style="display: block; cursor: crosshair;" role="img">
+      <title>Minimizing movements visualization</title>
+      <desc>Two-dimensional plot showing iterates of the minimizing-movements scheme on a quadratic energy, alongside continuous gradient flow and explicit Euler.</desc>
+      <defs>
+        <clipPath id="mm2d-plot-clip"><rect x="30" y="10" width="480" height="360"/></clipPath>
+      </defs>
+      <g id="mm2d-grid"></g>
+      <g id="mm2d-contours" clip-path="url(#mm2d-plot-clip)"></g>
+      <g id="mm2d-flow" clip-path="url(#mm2d-plot-clip)"></g>
+      <g id="mm2d-ee-traj" clip-path="url(#mm2d-plot-clip)"></g>
+      <g id="mm2d-prox" clip-path="url(#mm2d-plot-clip)"></g>
+      <g id="mm2d-mm-traj" clip-path="url(#mm2d-plot-clip)"></g>
+      <g id="mm2d-current" clip-path="url(#mm2d-plot-clip)"></g>
+      <g id="mm2d-legend"></g>
+    </svg>
+
+    <div class="mm-controls">
+      <div class="row">
+        <label class="lbl" for="mm2d-h-slider">Time step h</label>
+        <input id="mm2d-h-slider" type="range" min="0.05" max="1.5" step="0.05" value="0.30">
+        <span class="val" id="mm2d-h-val">0.30</span>
+      </div>
+      <div class="row">
+        <label class="lbl">Energy E(x, y)</label>
+        <div class="pill-group" id="mm2d-aniso-group">
+          <button class="pill" data-b="1">½(x² + y²)</button>
+          <button class="pill active" data-b="2">½(x² + 2y²)</button>
+          <button class="pill" data-b="4">½(x² + 4y²)</button>
+          <button class="pill" data-b="8">½(x² + 8y²)</button>
+        </div>
+      </div>
+      <div class="row">
+        <button id="mm2d-btn-step">Step</button>
+        <button id="mm2d-btn-run">Auto</button>
+        <button id="mm2d-btn-reset">Reset</button>
+        <span class="hint">Click anywhere on the plot to set a new initial point χ₀</span>
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" id="mm2d-t-flow" checked> Gradient flow</label>
+        <label><input type="checkbox" id="mm2d-t-ee" checked> Explicit Euler</label>
+        <label><input type="checkbox" id="mm2d-t-prox" checked> Proximal pull</label>
+      </div>
+      <div class="stability" id="mm2d-stab-line"></div>
+      <div class="info-row">
+        <div class="info-cell">
+          <div class="info-label">Iteration ℓ</div>
+          <div class="info-val" id="mm2d-i-l">0</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">Position χ<sub>ℓ</sub></div>
+          <div class="info-val" id="mm2d-i-x">(2.50, 2.00)</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-label">Energy E(χ<sub>ℓ</sub>)</div>
+          <div class="info-val" id="mm2d-i-e">3.13</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function() {
+      const PLOT_X = 30, PLOT_Y = 10, PLOT_W = 480, PLOT_H = 360, SCALE = 60;
+      const X_MIN = -4, X_MAX = 4, Y_MIN = -3, Y_MAX = 3;
+      const NS = 'http://www.w3.org/2000/svg';
+      const m2sX = x => PLOT_X + (x - X_MIN) * SCALE;
+      const m2sY = y => PLOT_Y + (Y_MAX - y) * SCALE;
+      const s2mX = sx => (sx - PLOT_X) / SCALE + X_MIN;
+      const s2mY = sy => Y_MAX - (sy - PLOT_Y) / SCALE;
+
+      const COLORS = {
+        contour: '#888780',
+        mm: '#185FA5',
+        ee: '#D85A30',
+        flow: '#1D9E75',
+        prox: '#BA7517'
+      };
+
+      const state = {
+        a: 1, b: 2, h: 0.30,
+        x0: [2.5, 2.0],
+        trajMM: [[2.5, 2.0]],
+        trajEE: [[2.5, 2.0]],
+        showFlow: true, showEE: true, showProx: true,
+        running: false, timer: null
+      };
+
+      const fmt = (x, d=2) => {
+        if (!isFinite(x)) return '∞';
+        if (Math.abs(x) > 999) return x.toExponential(1).replace('+', '');
+        return x.toFixed(d);
+      };
+
+      function svgEl(name, attrs = {}) {
+        const el = document.createElementNS(NS, name);
+        for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+        return el;
+      }
+
+      function E(x, y) { return 0.5 * (state.a*x*x + state.b*y*y); }
+
+      function renderGrid() {
+        const g = document.getElementById('mm2d-grid');
+        g.innerHTML = '';
+        g.appendChild(svgEl('rect', {
+          x: PLOT_X, y: PLOT_Y, width: PLOT_W, height: PLOT_H,
+          fill: 'var(--color-background-secondary)', 'fill-opacity': 0.45,
+          stroke: 'var(--color-border-tertiary)', 'stroke-width': 0.5,
+          rx: 4
+        }));
+        g.appendChild(svgEl('line', {
+          x1: m2sX(X_MIN), y1: m2sY(0), x2: m2sX(X_MAX), y2: m2sY(0),
+          stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5
+        }));
+        g.appendChild(svgEl('line', {
+          x1: m2sX(0), y1: m2sY(Y_MIN), x2: m2sX(0), y2: m2sY(Y_MAX),
+          stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5
+        }));
+        for (let i = -3; i <= 3; i++) {
+          if (i === 0) continue;
+          g.appendChild(svgEl('line', {
+            x1: m2sX(i), y1: m2sY(0)-3, x2: m2sX(i), y2: m2sY(0)+3,
+            stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5
+          }));
+        }
+        for (let j = -2; j <= 2; j++) {
+          if (j === 0) continue;
+          g.appendChild(svgEl('line', {
+            x1: m2sX(0)-3, y1: m2sY(j), x2: m2sX(0)+3, y2: m2sY(j),
+            stroke: 'var(--color-border-secondary)', 'stroke-width': 0.5
+          }));
+        }
+        const xLab = svgEl('text', { x: m2sX(X_MAX) - 10, y: m2sY(0) - 6, 'font-size': 11, 'font-family': 'var(--font-sans)', fill: 'var(--color-text-tertiary)', 'text-anchor': 'end' });
+        xLab.textContent = 'x';
+        g.appendChild(xLab);
+        const yLab = svgEl('text', { x: m2sX(0) + 6, y: m2sY(Y_MAX) + 12, 'font-size': 11, 'font-family': 'var(--font-sans)', fill: 'var(--color-text-tertiary)' });
+        yLab.textContent = 'y';
+        g.appendChild(yLab);
+      }
+
+      function renderContours() {
+        const g = document.getElementById('mm2d-contours');
+        g.innerHTML = '';
+        const levels = [0.25, 0.5, 1, 2, 4, 8];
+        const cx = m2sX(0), cy = m2sY(0);
+        for (const c of levels) {
+          const rx = Math.sqrt(2*c/state.a) * SCALE;
+          const ry = Math.sqrt(2*c/state.b) * SCALE;
+          g.appendChild(svgEl('ellipse', {
+            cx: cx, cy: cy, rx: rx, ry: ry,
+            fill: 'none', stroke: COLORS.contour,
+            'stroke-width': 0.5, opacity: 0.4
+          }));
+        }
+        g.appendChild(svgEl('circle', { cx: cx, cy: cy, r: 2.5, fill: '#5F5E5A' }));
+        const lbl = svgEl('text', { x: cx + 5, y: cy + 12, 'font-size': 10, 'font-family': 'var(--font-sans)', fill: 'var(--color-text-tertiary)' });
+        lbl.textContent = 'argmin E';
+        g.appendChild(lbl);
+      }
+
+      function renderFlow() {
+        const g = document.getElementById('mm2d-flow');
+        g.innerHTML = '';
+        if (!state.showFlow) return;
+        const T = 6 * Math.max(1/state.a, 1/state.b);
+        const N = 140;
+        const pts = [];
+        for (let i = 0; i <= N; i++) {
+          const t = T * i / N;
+          const x = state.x0[0] * Math.exp(-state.a * t);
+          const y = state.x0[1] * Math.exp(-state.b * t);
+          pts.push([m2sX(x), m2sY(y)]);
+        }
+        const d = 'M ' + pts.map(p => p.map(v => v.toFixed(1)).join(',')).join(' L ');
+        g.appendChild(svgEl('path', {
+          d: d, fill: 'none', stroke: COLORS.flow,
+          'stroke-width': 1.5, 'stroke-dasharray': '4 3', opacity: 0.85
+        }));
+      }
+
+      function renderTrajectory(id, traj, color) {
+        const g = document.getElementById(id);
+        g.innerHTML = '';
+        if (traj.length === 0) return;
+        if (traj.length > 1) {
+          const pts = traj.map(p => [m2sX(p[0]), m2sY(p[1])]);
+          const d = 'M ' + pts.map(p => p.map(v => isFinite(v) ? v.toFixed(1) : '0').join(',')).join(' L ');
+          g.appendChild(svgEl('path', {
+            d: d, fill: 'none', stroke: color, 'stroke-width': 1.75, opacity: 0.9
+          }));
+        }
+        for (let i = 1; i < traj.length - 1; i++) {
+          const mx = traj[i][0], my = traj[i][1];
+          if (!isFinite(mx) || !isFinite(my)) continue;
+          g.appendChild(svgEl('circle', {
+            cx: m2sX(mx), cy: m2sY(my), r: 2.5, fill: color
+          }));
+        }
+      }
+
+      function renderProx() {
+        const g = document.getElementById('mm2d-prox');
+        g.innerHTML = '';
+        if (!state.showProx) return;
+        const tip = state.trajMM[state.trajMM.length - 1];
+        const cx = m2sX(tip[0]), cy = m2sY(tip[1]);
+        for (const c of [0.5, 1, 2]) {
+          const r = Math.sqrt(2 * state.h * c) * SCALE;
+          g.appendChild(svgEl('circle', {
+            cx: cx, cy: cy, r: r, fill: 'none', stroke: COLORS.prox,
+            'stroke-width': 0.75, 'stroke-dasharray': '3 3', opacity: 0.6
+          }));
+        }
+      }
+
+      function renderCurrent() {
+        const g = document.getElementById('mm2d-current');
+        g.innerHTML = '';
+        g.appendChild(svgEl('circle', {
+          cx: m2sX(state.x0[0]), cy: m2sY(state.x0[1]), r: 6,
+          fill: 'var(--color-background-primary)',
+          stroke: COLORS.mm, 'stroke-width': 2
+        }));
+        if (state.trajMM.length > 1) {
+          const tip = state.trajMM[state.trajMM.length - 1];
+          g.appendChild(svgEl('circle', {
+            cx: m2sX(tip[0]), cy: m2sY(tip[1]), r: 5,
+            fill: COLORS.mm, stroke: 'var(--color-background-primary)', 'stroke-width': 1.5
+          }));
+        }
+      }
+
+      function renderLegend() {
+        const g = document.getElementById('mm2d-legend');
+        g.innerHTML = '';
+        const items = [
+          { color: COLORS.contour, label: 'Energy contours', visible: true, opacity: 0.6 },
+          { color: COLORS.mm, label: 'Min. movements', visible: true },
+          { color: COLORS.ee, label: 'Explicit Euler', visible: state.showEE },
+          { color: COLORS.flow, label: 'Gradient flow', dashed: true, visible: state.showFlow },
+          { color: COLORS.prox, label: 'Proximal pull', dashed: true, visible: state.showProx, opacity: 0.7 }
+        ].filter(it => it.visible);
+
+        const lx = 524, ly = 16, lh = 18 * items.length + 12, lw = 138;
+        g.appendChild(svgEl('rect', {
+          x: lx, y: ly, width: lw, height: lh, rx: 6,
+          fill: 'var(--color-background-secondary)',
+          stroke: 'var(--color-border-tertiary)', 'stroke-width': 0.5
+        }));
+        let y = ly + 16;
+        for (const it of items) {
+          const lineAttrs = {
+            x1: lx + 10, y1: y, x2: lx + 28, y2: y,
+            stroke: it.color, 'stroke-width': 1.75
+          };
+          if (it.dashed) lineAttrs['stroke-dasharray'] = '3 2';
+          if (it.opacity !== undefined) lineAttrs.opacity = it.opacity;
+          g.appendChild(svgEl('line', lineAttrs));
+          const t = svgEl('text', {
+            x: lx + 34, y: y + 4, 'font-size': 11,
+            fill: 'var(--color-text-secondary)', 'font-family': 'var(--font-sans)'
+          });
+          t.textContent = it.label;
+          g.appendChild(t);
+          y += 18;
+        }
+      }
+
+      function updateInfo() {
+        document.getElementById('mm2d-i-l').textContent = state.trajMM.length - 1;
+        const tip = state.trajMM[state.trajMM.length - 1];
+        document.getElementById('mm2d-i-x').textContent = '(' + fmt(tip[0]) + ', ' + fmt(tip[1]) + ')';
+        document.getElementById('mm2d-i-e').textContent = fmt(E(tip[0], tip[1]), 3);
+
+        const stabLine = document.getElementById('mm2d-stab-line');
+        if (!state.showEE) {
+          stabLine.textContent = '';
+          stabLine.classList.remove('warn');
+        } else {
+          const factor = state.h * Math.max(state.a, state.b);
+          if (factor >= 2) {
+            stabLine.textContent = 'Explicit Euler unstable: h · max(a,b) = ' + fmt(factor) + ' ≥ 2. Implicit Euler still converges.';
+            stabLine.classList.add('warn');
+          } else {
+            stabLine.textContent = 'Both methods stable: h · max(a,b) = ' + fmt(factor) + ' < 2.';
+            stabLine.classList.remove('warn');
+          }
+        }
+      }
+
+      function render() {
+        renderGrid();
+        renderContours();
+        renderFlow();
+        renderTrajectory('mm2d-ee-traj', state.showEE ? state.trajEE : [], COLORS.ee);
+        renderProx();
+        renderTrajectory('mm2d-mm-traj', state.trajMM, COLORS.mm);
+        renderCurrent();
+        renderLegend();
+        updateInfo();
+      }
+
+      function step() {
+        const tip = state.trajMM[state.trajMM.length - 1];
+        state.trajMM.push([
+          tip[0] / (1 + state.h * state.a),
+          tip[1] / (1 + state.h * state.b)
+        ]);
+        if (state.trajEE.length === state.trajMM.length - 1) {
+          const eeT = state.trajEE[state.trajEE.length - 1];
+          let nx = (1 - state.h * state.a) * eeT[0];
+          let ny = (1 - state.h * state.b) * eeT[1];
+          if (Math.abs(nx) > 50) nx = Math.sign(nx) * 50;
+          if (Math.abs(ny) > 50) ny = Math.sign(ny) * 50;
+          state.trajEE.push([nx, ny]);
+        }
+        render();
+      }
+
+      function reset() {
+        state.trajMM = [state.x0.slice()];
+        state.trajEE = [state.x0.slice()];
+        if (state.running) toggleAuto();
+        render();
+      }
+
+      function toggleAuto() {
+        if (state.running) {
+          clearInterval(state.timer);
+          state.timer = null;
+          state.running = false;
+          document.getElementById('mm2d-btn-run').textContent = 'Auto';
+        } else {
+          state.timer = setInterval(() => {
+            step();
+            if (state.trajMM.length > 60) {
+              clearInterval(state.timer);
+              state.timer = null;
+              state.running = false;
+              document.getElementById('mm2d-btn-run').textContent = 'Auto';
+            }
+          }, 320);
+          state.running = true;
+          document.getElementById('mm2d-btn-run').textContent = 'Pause';
+        }
+      }
+
+      document.getElementById('mm2d-h-slider').addEventListener('input', (e) => {
+        state.h = parseFloat(e.target.value);
+        document.getElementById('mm2d-h-val').textContent = state.h.toFixed(2);
+        reset();
+      });
+      document.querySelectorAll('#mm2d-aniso-group .pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#mm2d-aniso-group .pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.b = parseFloat(btn.dataset.b);
+          reset();
+        });
+      });
+      document.getElementById('mm2d-btn-step').addEventListener('click', step);
+      document.getElementById('mm2d-btn-run').addEventListener('click', toggleAuto);
+      document.getElementById('mm2d-btn-reset').addEventListener('click', reset);
+      document.getElementById('mm2d-t-flow').addEventListener('change', (e) => { state.showFlow = e.target.checked; render(); });
+      document.getElementById('mm2d-t-ee').addEventListener('change', (e) => { state.showEE = e.target.checked; render(); });
+      document.getElementById('mm2d-t-prox').addEventListener('change', (e) => { state.showProx = e.target.checked; render(); });
+
+      const svg = document.getElementById('mm2d-plot');
+      svg.addEventListener('click', (e) => {
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX; pt.y = e.clientY;
+        const cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
+        if (cursor.x < PLOT_X || cursor.x > PLOT_X + PLOT_W) return;
+        if (cursor.y < PLOT_Y || cursor.y > PLOT_Y + PLOT_H) return;
+        const mx = s2mX(cursor.x);
+        const my = s2mY(cursor.y);
+        state.x0 = [Math.round(mx*100)/100, Math.round(my*100)/100];
+        reset();
+      });
+
+      render();
+    })();
+    </script>
+  </div>
+  <figcaption>Interactive: full iteration of (1.10) on the 2D anisotropic energy $E(x,y)=\frac{1}{2}(a x^2+b y^2)$. The blue trail is the minimizing-movements scheme, the red trail is explicit Euler, the green dashed curve is the continuous gradient flow, and the dashed orange rings show the parabolic "pull" $\frac{1}{2h}|x-\chi_{\ell-1}|^2$ around the current iterate. Use <em>Step</em> for a single iteration, <em>Auto</em> to play, <em>Reset</em> to clear; click anywhere to set a new initial point $\chi_0$. Try the most anisotropic energy ($\frac{1}{2}(x^2+8y^2)$) at moderate $h$: explicit Euler oscillates and blows up while minimizing movements stays put — the very statement of $A$-stability.</figcaption>
+</figure>
 
 The **Euler–Lagrange equation** (TODO: what is it?) (necessary optimality condition) for (1.10) is
 
