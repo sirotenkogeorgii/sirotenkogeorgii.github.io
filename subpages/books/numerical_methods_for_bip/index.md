@@ -498,6 +498,11 @@ $$\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp.$$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/pseudo_four_subspaces.png' | relative_url }}" alt="Decomposition X = N(A)^perp + N(A) and Y = R(A) + R(A)^perp; the restriction Ã: N(A)^perp → R(A) is a bijection inverted by A†, which is zero on R(A)^perp" loading="lazy">
+  <figcaption>The geometry behind Definition 2.2.2 (rank-1 example $A=\begin{pmatrix}1&1\\\\0&0\end{pmatrix}$). Every $x \in X$ splits as $x = x_\perp + x_N$ with $x_\perp \in \mathcal{N}(A)^\perp$ and $x_N \in \mathcal{N}(A)$, and every $y \in Y$ splits along $\mathcal{R}(A) \oplus \mathcal{R}(A)^\perp$. The restriction $\tilde{A} : \mathcal{N}(A)^\perp \to \mathcal{R}(A)$ is bijective; $A^\dagger$ extends $\tilde{A}^{-1}$ by zero on $\mathcal{R}(A)^\perp$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Moore-Penrose Equations)</span></p>
 
@@ -542,6 +547,11 @@ which due to $\tilde{A}^{-1} P_{\overline{\mathcal{R}}} y \in \mathcal{N}(A)^\pe
 </details>
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/pseudo_mp_projections.png' | relative_url }}" alt="A†A acts as projection onto N(A)^perp (kills the kernel component of x); AA† acts as projection onto R(A) (kills the orthogonal-to-range component of y)" loading="lazy">
+  <figcaption>Equations (iii) and (iv) of Theorem 2.2.3 read off as orthogonal projections. <em>Left:</em> $A^\dagger A$ kills the $\mathcal{N}(A)$ component of $x$, so $A^\dagger A x \in \mathcal{N}(A)^\perp$. <em>Right:</em> $AA^\dagger$ kills the $\mathcal{R}(A)^\perp$ component of $y$, so $AA^\dagger y \in \mathcal{R}(A)$. Equations (i) and (ii) are then automatic — $A$ is already injective on $\mathcal{N}(A)^\perp$, and $A^\dagger$ already lives in $\mathcal{N}(A)^\perp$.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.2.4</span><span class="math-callout__name">(Minimum-Norm Solution via Pseudoinverse)</span></p>
 
@@ -585,6 +595,11 @@ so that $x^\dagger$ is also the unique minimum-norm solution.
 
 </details>
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/pseudo_lsq_minnorm.png' | relative_url }}" alt="Two-step picture of A† y: first orthogonally project y onto closure of R(A) (least-squares), then among the affine line of preimages x† + N(A), pick the one in N(A)^perp closest to the origin (minimum-norm)" loading="lazy">
+  <figcaption>Two-step picture of $A^\dagger y$ when both Hadamard conditions fail. <em>Left:</em> the least-squares condition is the orthogonal projection $AA^\dagger y = P_{\overline{\mathcal{R}}}\, y$ — among all elements of $\mathcal{R}(A)$, this is the one closest to $y$. <em>Right:</em> the preimage of $P_{\overline{\mathcal{R}}}\, y$ is the affine line $x^\dagger + \mathcal{N}(A)$ of all least-squares solutions; the minimum-norm one is the foot of the perpendicular from the origin and lies in $\mathcal{N}(A)^\perp$. That foot is $x^\dagger = A^\dagger y$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 2.2.5</span><span class="math-callout__name">(Normal Equations)</span></p>
@@ -674,6 +689,11 @@ is a bijective operator with bounded inverse $\tilde{K}^{-1} \in \mathcal{L}(\ma
 
 </details>
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/pseudo_compact_unbounded.png' | relative_url }}" alt="Singular values of a compact operator decay to zero, so the amplification factors 1/sigma_n diverge; a Cauchy sequence y^(N) in Y has bounded norm but ||A† y^(N)|| diverges, exhibiting an element of the closure of R(A) outside R(A)" loading="lazy">
+  <figcaption>Why compact operators with infinite-dimensional range cannot have a bounded pseudoinverse. <em>Left:</em> $\sigma_n \to 0$ forces the per-mode amplification $1/\sigma_n \to \infty$ (here $\sigma_n = 1/n$). <em>Right:</em> a concrete witness — the partial sums $y^{(N)} = \sum_{n=1}^N n^{-3/2} u_n$ are Cauchy and converge in $Y$ (the norm plateaus at $\sqrt{\zeta(3)}$), yet $\| A^\dagger y^{(N)} \|_X = \sqrt{H_N} \sim \sqrt{\log N}$ diverges. The limit therefore lives in $\overline{\mathcal{R}(A)} \setminus \mathcal{R}(A)$ — exactly the obstruction that Theorem 2.2.6 forbids in the bounded case.</figcaption>
+</figure>
 
 ### 2.3 Singular Value Decomposition of Compact Operators
 
