@@ -6215,3 +6215,196 @@ https://timvieira.github.io/blog/post/2016/05/27/dimensional-analysis-of-gradien
 https://math.stackexchange.com/questions/223252/why-is-gradient-the-direction-of-steepest-ascent
 https://www.reddit.com/r/MachineLearning/comments/9sfv8x/d_a_note_on_why_gradient_descent_is_even_needed/
 https://www.reddit.com/r/MachineLearning/comments/48u7aw/is_there_any_good_theory_on_why_gradient_descent/
+
+## Chain rule in general settings (Fréchet, Hilbert, manifolds)
+
+The 1D chain rule, the multivariable chain rule, and the various chain rules one meets in PDE and geometry are all the same statement, written for different spaces. The unifying picture stops thinking of "the derivative of $f$ at $x$" as a number (or a row of numbers), and starts thinking of it as a **linear map** between the right vector spaces. Once this is in place, the chain rule has a one-line statement that does not change as the spaces become richer.
+
+### Why a derivative is "really" a linear map
+
+In one variable we conflate two ideas because they coincide:
+
+* The number $f'(x) \in \mathbb R$ — "the slope."
+* The linear map $h \mapsto f'(x)\,h$ from $\mathbb R$ to $\mathbb R$ — "the best linear approximation of the increment $f(x+h)-f(x)$."
+
+The first is a *representation* of the second by a single number, available because $\mathrm{Hom}(\mathbb R,\mathbb R)\cong\mathbb R$. In higher (or infinite) dimensions, no single number can capture what a derivative does — but the linear-map picture continues to make sense, and is in fact the *intrinsic* object.
+
+### Fréchet differentiability
+
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Fréchet derivative)</span></p>
+
+Let $V,W$ be normed vector spaces, $U\subseteq V$ open, and $f:U\to W$. We say $f$ is **Fréchet-differentiable at $x\in U$** if there exists a *bounded linear map* $Df(x):V\to W$ such that
+
+$$
+\lim_{h\to 0}\frac{\bigl\|f(x+h)-f(x)-Df(x)\,h\bigr\|_W}{\|h\|_V} = 0.
+$$
+
+The map $Df(x)$ is called the **(Fréchet) differential** of $f$ at $x$. Equivalent names you will encounter: $df(x)$, $f'(x)$, the *total derivative*.
+
+</div>
+
+The displayed limit just says: $f(x+h)$ is well-approximated by the affine map $h\mapsto f(x)+Df(x)\,h$, with error of higher order than $\|h\|$. The "boundedness" of $Df(x)$ — i.e. continuity as a linear map — is automatic when $V$ is finite-dimensional, but a real condition in infinite dimensions.
+
+### Coordinate renderings
+
+In familiar settings, $Df(x)$ is represented by a familiar object:
+
+| $V$ | $W$ | What $Df(x)$ "is" (as an object you compute with) |
+|---|---|---|
+| $\mathbb R$ | $\mathbb R$ | the number $f'(x)$, acting by $h\mapsto f'(x)h$ |
+| $\mathbb R^n$ | $\mathbb R^m$ | the $m\times n$ Jacobian matrix |
+| $\mathbb R^n$ | $\mathbb R$ | the $1\times n$ row of partials = the differential $dE(x)$ |
+| $\mathbb R$ | $\mathbb R^n$ | the column $\dot c(t)\in\mathbb R^n$ (velocity), acting by $\tau\mapsto\tau\,\dot c(t)$ |
+| Hilbert $\mathcal H$ | $\mathbb R$ | a bounded linear functional $\mathcal H\to\mathbb R$, *represented by* a gradient via Riesz |
+
+In every case $Df(x)$ is a linear map. The matrix / number / vector is one *representation* of that map; it is never the map itself.
+
+### The chain rule, one line
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Chain rule, abstract form)</span></p>
+
+Let $V\xrightarrow{f}W\xrightarrow{g}Z$ be maps between normed spaces, $f$ Fréchet-differentiable at $x$, $g$ Fréchet-differentiable at $f(x)$. Then $g\circ f$ is Fréchet-differentiable at $x$, and
+
+$$
+D(g\circ f)(x) \;=\; Dg\bigl(f(x)\bigr)\;\circ\;Df(x).
+$$
+
+The $\circ$ on the right is **composition of linear maps**.
+
+</div>
+
+The intuition is the same one that makes the 1D rule plausible:
+
+$$
+g(f(x+h))\approx g\bigl(f(x)+Df(x)h\bigr)\approx g(f(x))+Dg(f(x))\bigl(Df(x)h\bigr),
+$$
+
+and the composition of the two linearizations reads off the slope of $g\circ f$.
+
+In coordinates on $\mathbb R^n,\mathbb R^m,\mathbb R^p$, "composition of linear maps" is matrix multiplication: the Jacobian of $g\circ f$ is the product $J_g(f(x))\cdot J_f(x)$. The familiar one-variable rule is the $1\times 1$ case.
+
+### Worked case: a curve into a Euclidean landscape
+
+This is the situation that produces the notation $dE(x(t)).\dot x(t)$ in gradient-flow theory. Compose
+
+$$
+\mathbb R\;\xrightarrow{\;x\;}\;\mathbb R^N\;\xrightarrow{\;E\;}\;\mathbb R,\qquad f:=E\circ x.
+$$
+
+Each piece has a derivative which is a linear map:
+
+* $Dx(t):\mathbb R\to\mathbb R^N$, the linear map $\tau\mapsto\tau\,\dot x(t)$. So $Dx(t)$ "is" the velocity vector $\dot x(t)$, viewed as a linear map $\mathbb R\to\mathbb R^N$.
+* $DE(x(t)):\mathbb R^N\to\mathbb R$, the linear functional $v\mapsto DE(x(t))\,v$. So $DE(x(t))$ "is" the differential $dE(x(t))$.
+
+The chain rule says $D(E\circ x)(t)=DE(x(t))\circ Dx(t)$, a linear map $\mathbb R\to\mathbb R$. Apply both sides to the unit tangent vector $1\in\mathbb R$:
+
+$$
+\underbrace{D(E\circ x)(t)\cdot 1}_{=\,\frac{d}{dt}E(x(t))}
+\;=\;DE(x(t))\bigl(\underbrace{Dx(t)\cdot 1}_{=\,\dot x(t)}\bigr)
+\;=\;DE(x(t)).\dot x(t).
+$$
+
+The expression $DE(x(t)).\dot x(t)$ is "the differential $DE(x(t))$ *applied to* the vector $\dot x(t)$." The dot is **evaluation of one linear map on a vector**, not multiplication and not division. The next equality $\;=\langle\nabla E(x(t)),\dot x(t)\rangle$ is the Riesz identification turning the linear functional $dE(x(t))$ into the gradient vector $\nabla E(x(t))$ — a coordinate-dependent picture.
+
+### Chain rule in Hilbert spaces
+
+Let $\mathcal H$ be a (real) Hilbert space with inner product $\langle\cdot,\cdot\rangle_{\mathcal H}$. Suppose $E:\mathcal H\to\mathbb R$ is Fréchet-differentiable at $u\in\mathcal H$. The differential $dE(u)$ is then a *bounded linear functional* on $\mathcal H$:
+
+$$
+dE(u):\mathcal H\to\mathbb R,\qquad v\mapsto dE(u).v.
+$$
+
+By the **Riesz representation theorem**, every bounded linear functional on $\mathcal H$ is represented by a unique vector. Concretely, there exists a unique $\nabla_{\mathcal H} E(u)\in\mathcal H$ such that
+
+$$
+dE(u).v \;=\; \langle\nabla_{\mathcal H} E(u),\,v\rangle_{\mathcal H}\qquad\text{for all } v\in\mathcal H.
+$$
+
+This $\nabla_{\mathcal H} E(u)$ is called the **gradient** of $E$ at $u$ *with respect to the inner product $\langle\cdot,\cdot\rangle_{\mathcal H}$*. The differential is intrinsic; the gradient is metric-dependent.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Chain rule for a curve in a Hilbert space)</span></p>
+
+Let $u:I\to\mathcal H$ be Fréchet-differentiable on an interval $I\subseteq\mathbb R$ (so $\partial_t u(t)\in\mathcal H$ for each $t$), and let $E:\mathcal H\to\mathbb R$ be Fréchet-differentiable. Then $t\mapsto E(u(t))$ is differentiable on $I$, and
+
+$$
+\frac{d}{dt}E(u(t)) \;=\; dE(u(t)).\,\partial_t u(t)
+\;=\; \langle\nabla_{\mathcal H} E(u(t)),\,\partial_t u(t)\rangle_{\mathcal H}.
+$$
+
+</div>
+
+Read the chain: the first equality is the abstract chain rule (composition of two Fréchet derivatives, applied to the unit tangent in $\mathbb R$); the second equality is Riesz, identifying the linear functional $dE$ with a vector $\nabla_{\mathcal H} E$ via the inner product.
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The gradient depends on the inner product)</span></p>
+
+Because the gradient is *defined* by the Riesz identity $\langle\nabla_{\mathcal H} E(u),v\rangle_{\mathcal H}=dE(u).v$, switching the inner product changes the gradient. A different inner product $\langle\cdot,\cdot\rangle_{\mathcal H'}$ on the same space yields a *different* gradient $\nabla_{\mathcal H'} E$, and a different gradient flow
+
+$$
+\partial_t u = -\nabla_{\mathcal H'} E(u).
+$$
+
+This is the entire reason that Otto / Wasserstein gradient flows look different from $L^2$-gradient flows on the same energy: same $E$, different inner product, different evolution. The differential $dE$ does not depend on which inner product you choose.
+
+</div>
+
+### Worked example: the heat equation as an $L^2$-gradient flow
+
+Let $\Omega\subset\mathbb R^d$ be bounded with smooth boundary, $\mathcal H=L^2(\Omega)$, and consider the **Dirichlet energy**
+
+$$
+E[u]=\frac{1}{2}\int_\Omega |\nabla u|^2\,dx
+$$
+
+restricted to (say) $H^1_0(\Omega)$. Compute the differential by varying $u\rightsquigarrow u+\varepsilon\eta$ with $\eta\in H^1_0(\Omega)$:
+
+$$
+\frac{d}{d\varepsilon}\bigg|_0 E[u+\varepsilon\eta]
+= \int_\Omega\nabla u\cdot\nabla\eta\,dx
+\;\stackrel{\text{int. by parts}}{=}\;
+-\int_\Omega(\Delta u)\,\eta\,dx.
+$$
+
+So $dE[u].\eta = -\int_\Omega(\Delta u)\eta\,dx$. By Riesz in $L^2$,
+
+$$
+dE[u].\eta = \langle\nabla_{L^2}E[u],\,\eta\rangle_{L^2} = \int_\Omega (\nabla_{L^2}E[u])\,\eta\,dx,
+$$
+
+so $\nabla_{L^2}E[u]=-\Delta u$. The $L^2$-gradient flow is therefore
+
+$$
+\partial_t u = -\nabla_{L^2}E[u] = \Delta u,
+$$
+
+i.e. the **heat equation**. Its stationary solutions ($\Delta u=0$) are exactly the critical points of $E$, the Euler–Lagrange solutions — same picture as in finite dimensions, with the inner-product structure spelled out.
+
+### Why this picture pays off
+
+This abstract viewpoint is what allows the same chain rule to operate across:
+
+* **Hilbert spaces.** As above; gradient $=$ Riesz representative of the differential.
+* **Riemannian manifolds.** $M$ smooth, $E:M\to\mathbb R$, $\gamma:I\to M$. Then $\dot\gamma(t)\in T_{\gamma(t)}M$, $dE(\gamma(t)):T_{\gamma(t)}M\to\mathbb R$, and the chain rule
+
+  $$
+  \frac{d}{dt}E(\gamma(t)) = dE(\gamma(t)).\dot\gamma(t)
+  $$
+
+  is *the very definition* of the action of cotangent on tangent. There is no $\nabla E$ until you choose a Riemannian metric.
+* **Wasserstein / metric measure spaces.** In Otto calculus, "tangent vectors" at a probability measure are velocity fields modulo gradients, with no canonical inner product until one is chosen; the differential of a functional remains a linear map on tangents, the chain rule still reads $\frac{d}{dt}\mathcal F(\rho_t)=d\mathcal F(\rho_t).\partial_t\rho_t$, and the gradient is the metric-dependent representative.
+
+In all of these the chain rule is the same one-line composition statement; only the spaces $V,W,Z$ and the available identifications change.
+
+### Sanity-check exercise
+
+Take $E(x_1,x_2)=\tfrac12(x_1^2+3x_2^2)$ and $x(t)=(e^{-t},e^{-3t})$ (the closed-form gradient-flow trajectory from $(1,1)$ for this energy).
+
+* $\dot x(t)=(-e^{-t},-3e^{-3t})$.
+* $dE(x(t))$ is the row $(x_1(t),3x_2(t))=(e^{-t},3e^{-3t})$.
+* Apply: $dE(x(t)).\dot x(t)=e^{-t}\cdot(-e^{-t})+3e^{-3t}\cdot(-3e^{-3t})=-e^{-2t}-9e^{-6t}$.
+* Compare to $\frac{d}{dt}E(x(t))=\frac{d}{dt}\bigl[\tfrac12 e^{-2t}+\tfrac32 e^{-6t}\bigr]=-e^{-2t}-9e^{-6t}.$ ✓
+
+The two computations agree because the chain rule is true. The first line is the *conceptual* statement (apply a linear map to a vector); the second is the *coordinate calculation* (sum of products of partials and components). Once the spaces are not $\mathbb R^n$, only the first line still makes sense — that is why the abstract picture is the durable one.
