@@ -6218,7 +6218,12 @@ https://www.reddit.com/r/MachineLearning/comments/48u7aw/is_there_any_good_theor
 
 ## Chain rule in general settings (Fréchet, Hilbert, manifolds)
 
+<div class="math-callout math-callout--definition" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Starting thinking about the derivative as a linear map)</span></p>
+
 The 1D chain rule, the multivariable chain rule, and the various chain rules one meets in PDE and geometry are all the same statement, written for different spaces. The unifying picture stops thinking of "the derivative of $f$ at $x$" as a number (or a row of numbers), and starts thinking of it as a **linear map** between the right vector spaces. Once this is in place, the chain rule has a one-line statement that does not change as the spaces become richer.
+
+</div>
 
 ### Why a derivative is "really" a linear map
 
@@ -6245,6 +6250,72 @@ The map $Df(x)$ is called the **(Fréchet) differential** of $f$ at $x$. Equival
 </div>
 
 The displayed limit just says: $f(x+h)$ is well-approximated by the affine map $h\mapsto f(x)+Df(x)\,h$, with error of higher order than $\|h\|$. The "boundedness" of $Df(x)$ — i.e. continuity as a linear map — is automatic when $V$ is finite-dimensional, but a real condition in infinite dimensions.
+
+### Why this looks like a Taylor expansion
+
+The numerator $f(x+h)-f(x)-Df(x)\,h$ is *exactly* the first-order Taylor remainder. The resemblance is not a coincidence: the Fréchet definition is the first-order Taylor expansion taken as the **definition** of differentiability.
+
+It pays to separate two distinct statements:
+
+* **First-order Taylor.** $f(x+h)=f(x)+L\,h+o(\|h\|)$, with $L$ a linear map.
+* **Higher-order Taylor's theorem.** $f(x+h)=f(x)+Df(x)h+\tfrac12 D^2 f(x)(h,h)+\dots+\tfrac{1}{n!}D^nf(x)(h,\dots,h)+R_n(h)$, with $R_n(h)/\|h\|^n\to 0$ (or with a Lagrange/integral remainder if you want a closed form).
+
+The relationship between the Fréchet definition and Taylor expansion is then:
+
+$$
+\boxed{\;\text{Fréchet differentiability at }x\;\Longleftrightarrow\;\text{first-order Taylor expansion exists at }x.\;}
+$$
+
+This is a **definition** — there is nothing to prove. One side is just a rewording of the other.
+
+**Higher-order Taylor's theorem** is the *theorem* one deduces from this by *iterating* differentiability: assume $C^k$ regularity, differentiate the Fréchet definition $k$ times, and the higher-order expansion with controlled remainder falls out by induction on the order. So:
+
+1. **Definition:** differentiability $=$ first-order Taylor.
+2. **Theorem:** $C^k$ regularity $\Rightarrow$ $k$-th order Taylor with controlled remainder.
+
+Higher-order Taylor is downstream of the first-order definition, not the other way around.
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Historical: how this view crystallized)</span></p>
+
+* **Newton/Leibniz (17th c.).** $f'(x)$ as a ratio of "infinitesimals" — not rigorous by modern standards.
+* **Cauchy/Weierstrass (19th c.).** $f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}$. The **limit-quotient definition** taught in calculus courses.
+* **Carathéodory (early 20th c.).** Reformulated 1D differentiability as: there exists a number $L$ with $f(x+h)=f(x)+Lh+o(h)$. The **first-order-Taylor-as-definition** view — equivalent to Cauchy in 1D.
+* **Fréchet (1911).** Generalized the Carathéodory form to normed/Banach spaces. The reason is forced by the spaces themselves: in 1D you can divide by $h$, so the limit-quotient form makes sense; in higher (or infinite) dimensions you *cannot divide by a vector*, so the limit-quotient form is unavailable. The "$L$ plus $o(\|h\|)$" form, being division-free, generalizes — and the Fréchet derivative is born.
+
+In 1D the two formulations are equivalent twins; in higher dimensions only the Carathéodory/Fréchet form survives.
+
+</div>
+
+### Two operationalizations of one idea
+
+The "first-order Taylor" *form* of differentiability — "linear approximation plus higher-order remainder" — is the **definitional** content. The familiar limit-quotient form $\lim\frac{f(x+h)-f(x)}{h}$ in 1D is one *operationalization* of that idea, available because we can divide. The Fréchet definition is *another* operationalization, available even when we can't divide.
+
+```
+                 first-order Taylor
+       (the IDEA: f(x+h) ≈ f(x) + linear·h + o(||h||))
+                /                       \
+               /                         \
+   limit-quotient form           Fréchet/Carathéodory form
+   (only works in 1D,            (works in any normed
+    because you divide            space — division-free)
+    by h)
+```
+
+In modern multivariable and functional analysis one skips the limit-quotient road and goes directly to Fréchet, because that is the form that scales. In 1D textbooks the limit-quotient form is taught first because it is computationally friendly, but conceptually it is one of two equivalent renderings of "first-order Taylor."
+
+<div class="math-callout math-callout--remark" markdown="1">
+<p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Two practical consequences)</span></p>
+
+* **Multivariable case.** Existence of all partial derivatives at a point $x\in\mathbb R^n$ is *not* enough for Fréchet differentiability — there are classical counterexamples where every directional derivative at $x$ exists but no global linear approximation does. This is precisely the failure of Carathéodory's first-order Taylor expansion, even though every "1D slice" is differentiable.
+
+* **Higher-order chain rule.** The one-line chain rule $D(g\circ f)(x)=Dg(f(x))\circ Df(x)$ is what one obtains by composing two **first-order** Taylor expansions. Higher-order versions (e.g., the Faà di Bruno formula) come from composing higher-order Taylor expansions and reading off the polynomial coefficients — same engine, applied at each order.
+
+</div>
+
+### One-line summary
+
+> The Fréchet definition is "first-order Taylor expansion exists, with a linear leading term." Higher-order Taylor's theorem is the result one proves from this by iterating differentiability. The resemblance is the *content*, not a coincidence.
 
 ### Coordinate renderings
 
