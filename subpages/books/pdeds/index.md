@@ -78,7 +78,7 @@ $$
 E(x(T)) + \int_0^T |\dot{x}(t)|^2 \, dt \le E(x(0)). \tag{1.3}
 $$
 
-At the risk of stating the obvious: $-\nabla E(x(t))$ is the *direction of steepest descent* of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $|v| = \|\nabla E(x(t))\|$,
+At the risk of stating the obvious: $-\nabla E(x(t))$ is the *direction of steepest descent* of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $\|v\| = \|\nabla E(x(t))\|$,
 
 $$
 -\langle \nabla E(x(t)), \nabla E(x(t)) \rangle \le \langle v, \nabla E(x(t)) \rangle.
@@ -128,9 +128,9 @@ The **total energy** (potential + kinetic) satisfies
 
 $$
 \begin{aligned}
-\frac{d}{dt}\!\left( E(x(t)) + \tfrac{1}{2} m |v(t)|^2 \right) &= \langle \nabla E(x(t)), \dot{x} \rangle + \langle m v(t), \dot{v}(t) \rangle \\
-&= \langle \nabla E(x(t)), v(t) \rangle - \langle v(t), \nabla E(x(t)) \rangle - \lambda |v(t)|^2 \\
-&= -\lambda |v(t)|^2.
+\frac{d}{dt}\!\left( E(x(t)) + \tfrac{1}{2} m \lvert v(t)\rvert^2 \right) &= \langle \nabla E(x(t)), \dot{x} \rangle + \langle m v(t), \dot{v}(t) \rangle \\
+&= \langle \nabla E(x(t)), v(t) \rangle - \langle v(t), \nabla E(x(t)) \rangle - \lambda \lvert v(t)\rvert^2 \\
+&= -\lambda \lvert v(t)\rvert^2.
 \end{aligned}
 $$
 
