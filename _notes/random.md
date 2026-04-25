@@ -385,7 +385,7 @@ $$
 
 with the series converging unconditionally.
 
-It is **finite** if $|\mu(X)| < \infty$ and **$\sigma$-finite** if $X$ is a countable union of sets of finite total variation (defined below).
+It is **finite** if $\|\mu(X)\| < \infty$ and **$\sigma$-finite** if $X$ is a countable union of sets of finite total variation (defined below).
 
 </div>
 
@@ -407,13 +407,13 @@ It is **finite** if $|\mu(X)| < \infty$ and **$\sigma$-finite** if $X$ is a coun
 
 ### Total variation measure
 
-To every signed measure $\mu$ one associates a positive measure $|\mu|$, the **total variation measure**:
+To every signed measure $\mu$ one associates a positive measure $\|\mu\|$, the **total variation measure**:
 
 $$
 |\mu|(A) \;:=\; \sup \!\left\lbrace \sum_{n} |\mu(A_n)| \,:\, (A_n) \text{ a measurable partition of } A \right\rbrace .
 $$
 
-The **total variation norm** is $\|\mu\| := |\mu|(X)$. The space of finite signed Borel measures with this norm is a Banach space, and by the Riesz representation theorem it is the dual of $C_0(X)$ when $X$ is locally compact Hausdorff.
+The **total variation norm** is $\|\mu\| := \|\mu\|(X)$. The space of finite signed Borel measures with this norm is a Banach space, and by the Riesz representation theorem it is the dual of $C_0(X)$ when $X$ is locally compact Hausdorff.
 
 ## Hahn and Jordan decompositions
 
@@ -429,7 +429,7 @@ Let $\mu$ be a signed measure on $(X, \mathcal{A})$. There exist measurable sets
 * $P$ is **positive** for $\mu$: $\mu(E) \geq 0$ for every measurable $E \subseteq P$.
 * $N$ is **negative** for $\mu$: $\mu(E) \leq 0$ for every measurable $E \subseteq N$.
 
-The pair $(P, N)$ is unique up to *$\mu$-null* sets: any other decomposition $(P', N')$ satisfies $|\mu|(P \triangle P') = 0$.
+The pair $(P, N)$ is unique up to *$\mu$-null* sets: any other decomposition $(P', N')$ satisfies $\|\mu\|(P \triangle P') = 0$.
 
 </div>
 
@@ -475,7 +475,7 @@ $$
 Then:
 
 * $\mu^{+}, \mu^{-} \geq 0$ by the positivity / negativity of $P, N$.
-* $\mu^{+} + \mu^{-} \,=\, \mu(\,\cdot\, \cap P) - \mu(\,\cdot\, \cap N) \,=\, |\mu|$ on $A = (A \cap P) \sqcup (A \cap N)$.
+* $\mu^{+} + \mu^{-} \,=\, \mu(\,\cdot\, \cap P) - \mu(\,\cdot\, \cap N) \,=\, \|\mu\|$ on $A = (A \cap P) \sqcup (A \cap N)$.
 * $\mu^{+} - \mu^{-} \,=\, \mu(\,\cdot\, \cap P) + \mu(\,\cdot\, \cap N) \,=\, \mu$.
 * $\mu^{+} \perp \mu^{-}$: $\mu^{+}$ lives on $P$, $\mu^{-}$ lives on $N$, and $P \cap N = \emptyset$.
 
@@ -546,6 +546,364 @@ The figure below illustrates the construction for $g(x) = \sin(2\pi x)$ on $[0, 
 
 A **signed Borel measure** is a Borel set function with all properties of a measure except non-negativity. **Hahn** and **Jordan** are two equivalent ways of saying *it is canonically a difference of two positive measures*: Hahn does it by partitioning the *space*, Jordan by decomposing the *measure*. The function-level Jordan decomposition (for BV functions) is the analogue that connects the two worlds and is exactly what makes $\int f \, \mathrm{d}g$ well-defined when $g$ is BV.
 
+## Why Itô calculus needs measure theory
+
+Every key object in Itô calculus is a measure-theoretic object that **cannot** be defined or analysed by pathwise / classical-analysis methods. The figure below pictures the dependency: each layer of stochastic calculus rests on the layer below, with the foundations themselves living in measure theory.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/ito_dependency_stack.png' | relative_url }}" alt="Stack diagram: Itô calculus on top, Brownian motion below, probabilistic structures below that, measure-theoretic foundations at the bottom" loading="lazy">
+</figure>
+
+### 1. Brownian motion itself is a measure-theoretic construction
+
+Itô calculus is built *on top of* Brownian motion, but $W$ is not a function — it is a **family of random variables** $\lbrace W_t : t \geq 0 \rbrace$ on a probability space $(\Omega, \mathcal{A}, \mathbb{P})$. The standard properties already require measure theory:
+
+* **Existence**: Kolmogorov's extension theorem builds $W$ from a consistent family of finite-dimensional Gaussian distributions on $\mathbb{R}^I$ — the construction lives entirely in measure theory (cylinder $\sigma$-algebras, projective limits).
+* **Continuity of paths** is a $\mathbb{P}$-almost-sure statement, repaired by Kolmogorov's continuity theorem via *modification on a null set*. Both the statement and the proof are measure-theoretic.
+* **Sample paths are nowhere differentiable, with infinite total variation $\mathbb{P}$-a.s.** — you cannot do calculus on individual paths in the classical sense; you can only do it under $\mathbb{P}$.
+
+So the very ground beneath Itô calculus is a probability space, not a Euclidean space.
+
+### 2. The Itô integral cannot be defined pathwise
+
+This is the central reason. We saw earlier that for a Brownian integrator,
+
+$$
+\sum_i f(\xi_i) \, \bigl[W_{t_i} - W_{t_{i-1}}\bigr]
+$$
+
+has **no tag-independent limit** — Riemann–Stieltjes integration *flatly fails*. The Itô integral $\int_0^T f_t \, \mathrm{d}W_t$ exists only as a limit in a *probabilistic* sense:
+
+$$
+\int_0^T f_t \, \mathrm{d}W_t \;:=\; L^2\text{-}\!\lim_{n \to \infty} \sum_i f_{t_{i-1}^{(n)}} \bigl(W_{t_i^{(n)}} - W_{t_{i-1}^{(n)}}\bigr).
+$$
+
+The "$L^2$-lim" requires:
+
+* The Hilbert space $L^2(\Omega, \mathcal{A}, \mathbb{P})$ — measure-theoretic by definition.
+* **Itô's isometry** $\mathbb{E}\bigl[(\int f \, \mathrm{d}W)^2\bigr] = \mathbb{E}\bigl[\int f^2 \, \mathrm{d}t\bigr]$ — both sides are Lebesgue integrals (the right-hand side over the product space $\Omega \times [0, T]$ via Fubini).
+* A **density argument**: the integral is first defined for simple integrands, then extended by completeness of $L^2$ to all suitable predictable $f$. The argument relies on $L^2$ being a *complete* metric space — measure-theoretic.
+
+Without $L^2(\Omega)$ and the dominated/monotone convergence theorems, there is no Itô integral.
+
+The figure below illustrates Itô's isometry as a Monte Carlo identity. Take the deterministic integrand $f(t) = \sin(2\pi t)$, so $\int_0^T f^2 \, \mathrm{d}t = T/2 = 0.5$. The left panel shows the running sample mean of $(\int f \, \mathrm{d}W^{(k)})^2$ over $K$ Brownian paths, converging to $0.5$ — exactly the prediction of Itô's isometry. The right panel shows that the distribution of the Itô integral $\int_0^T f \, \mathrm{d}W$ is *Gaussian* with variance $\int_0^T f^2 \, \mathrm{d}t$ — a fact provable only inside the $L^2$-construction.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/ito_isometry.png' | relative_url }}" alt="Left: Monte Carlo running mean of squared Itô integral converges to ∫ f^2 dt. Right: histogram of integral values matches a centered Gaussian with that variance." loading="lazy">
+</figure>
+
+### 3. Filtrations encode information flow — that is, $\sigma$-algebras
+
+A central concept in stochastic calculus is the **filtration** $(\mathcal{F}_t)_{t \geq 0}$, an increasing family of sub-$\sigma$-algebras of $\mathcal{A}$ where $\mathcal{F}_t$ models "information available up to time $t$". The integrand $f_t$ in $\int f_t \, \mathrm{d}W_t$ must be **adapted** (or **predictable**) — meaning $f_t$ is $\mathcal{F}_t$-measurable for each $t$ — so that one is "not allowed to peek into the future" when forming the Riemann sum.
+
+This non-anticipation requirement is **the** thing that makes the left-endpoint convention (Itô) physically meaningful and turns the integral into a martingale. It is *literally a measurability condition* — there is no way to express it without $\sigma$-algebras.
+
+The figure below makes the filtration tangible. At time $t^\ast = 0.55$, the path of $W$ to the left of the dashed line is the information visible to $\mathcal{F}_{t^\ast}$; the shaded right-hand region is the *future*, which an adapted integrand is forbidden to see. The green dot shows an Itô-admissible value $f_{t^\ast} = \max_{s \leq t^\ast} W_s$ (depends only on the past); the red dot shows a *forbidden* anticipating choice $f_{t^\ast} = \max_{s \geq t^\ast} W_s$ (depends on the future, hence is **not** $\mathcal{F}_{t^\ast}$-measurable).
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/ito_adapted_vs_anticipating.png' | relative_url }}" alt="Brownian path with a vertical filtration boundary at t*: green dot uses past only (adapted, Itô-admissible); red dot peeks into the future (anticipating, not Itô-admissible)." loading="lazy">
+</figure>
+
+Stopping times $\tau$ are equally measure-theoretic: the condition "$\tau$ is an $\mathcal{F}_t$-stopping time" means $\lbrace \tau \leq t \rbrace \in \mathcal{F}_t$. The optional sampling theorem, localisation, and the construction of *local* martingales all rest on this.
+
+### 4. Conditional expectation — and hence martingales — are measure-theoretic
+
+A martingale is defined by
+
+$$
+\mathbb{E}[M_t \mid \mathcal{F}_s] \;=\; M_s \qquad \text{for } s \leq t .
+$$
+
+The conditional expectation $\mathbb{E}[\,\cdot\, \mid \mathcal{F}_s]$ is **defined via Radon–Nikodym**: it is the (a.s.-unique) $\mathcal{F}_s$-measurable random variable whose integrals over $\mathcal{F}_s$-events match those of the original variable. It does not exist in classical analysis. Yet the entire theory of Itô integrals, semimartingales, and SDE solutions is organised around martingale and supermartingale properties.
+
+### 5. Almost-sure properties dominate the theory
+
+Statements in Itô calculus are typically of the form:
+
+* "$X$ has continuous paths $\mathbb{P}$-a.s." (existence of solutions).
+* "Two solutions $X, Y$ are pathwise unique iff $\mathbb{P}(X_t = Y_t \text{ for all } t) = 1$."
+* "The exceptional set on which Itô's formula fails has probability zero."
+
+All of these are inseparable from the notion of a **null set** — a measure-theoretic notion. The associated equivalence classes (modifications, indistinguishable processes) live one level above functions and require the language built in the *blindness-to-null-sets* section.
+
+### 6. Itô's isometry, Itô's formula, and SDE existence rely on Lebesgue integration
+
+The proofs of the foundational identities of Itô calculus — Itô's isometry, the Burkholder–Davis–Gundy inequalities, Itô's formula, Doob's maximal inequality — all use:
+
+* Dominated and monotone convergence,
+* Fubini's theorem (to swap $\mathbb{E}$ with $\int_0^T \cdots \, \mathrm{d}t$),
+* Properties of $L^p(\Omega)$ (Hölder, BDG, completeness),
+* Conditional Jensen's inequality.
+
+These are **the** core theorems of Lebesgue integration; without them the standard Picard-iteration existence proof for SDE solutions, and the $L^2$-construction of the Itô integral itself, do not work.
+
+### 7. Change of measure (Girsanov) is *intrinsically* about measures
+
+Girsanov's theorem says: under an equivalent measure $\mathbb{Q} \ll \mathbb{P}$ with Radon–Nikodym derivative
+
+$$
+\frac{\mathrm{d}\mathbb{Q}}{\mathrm{d}\mathbb{P}} \;=\; \exp\!\left(-\int_0^T \theta_t \, \mathrm{d}W_t \;-\; \tfrac{1}{2} \int_0^T \theta_t^2 \, \mathrm{d}t\right) ,
+$$
+
+the process $W^{\mathbb{Q}}_t := W_t + \int_0^t \theta_s \, \mathrm{d}s$ is a Brownian motion. This is **the** workhorse of mathematical finance (risk-neutral pricing) and stochastic control — and the entire statement is a sentence about *signed* Radon–Nikodym derivatives between equivalent probability measures. There is no way to phrase it without measure theory.
+
+### 8. Modes of convergence
+
+Random sequences can converge in *several* inequivalent ways: a.s., in $L^p$, in probability, in distribution. Each is a measure-theoretic construct, with its own machinery (Borel–Cantelli, dominated convergence, Slutsky). Itô calculus uses all of them: SDE solutions converge $\mathbb{P}$-a.s., the Itô integral converges in $L^2$, weak convergence of measures appears in the convergence of approximation schemes (e.g. Donsker $\to$ Brownian motion).
+
+Treating all these convergence modes as "the same kind of limit" — as classical analysis must — would silently conflate genuinely different statements.
+
+### Summary table
+
+| Object in Itô calculus | What measure-theoretic ingredient it requires |
+|---|---|
+| Brownian motion | Probability space, Kolmogorov extension/continuity, null sets |
+| The Itô integral | $L^2(\Omega, \mathcal{A}, \mathbb{P})$, Itô isometry, Fubini |
+| Adapted / predictable integrands | Filtrations $\mathcal{F}_t$, measurability w.r.t. sub-$\sigma$-algebras |
+| Stopping times, localisation | Measurable events $\lbrace \tau \leq t \rbrace \in \mathcal{F}_t$ |
+| Martingale property | Conditional expectation via Radon–Nikodym |
+| SDE existence and uniqueness | Picard iteration in $L^2$, dominated convergence |
+| Pathwise vs. distributional uniqueness | Modifications, indistinguishability — null-set arguments |
+| Girsanov change of measure | Equivalent measures, Radon–Nikodym derivative |
+| Convergence of approximation schemes | Weak convergence of measures, tightness |
+
+### One-line summary
+
+Itô calculus is the calculus of **integrals against rough random integrators on a probability space**, and *every* word in that phrase — "rough" (positive quadratic variation), "random" ($L^2(\Omega)$), "integrator" (signed/martingale measures), "probability space" — is a measure-theoretic object. Without measure theory there is no probability space, no $L^2$ to take limits in, no $\sigma$-algebras to express adaptedness, no conditional expectations for martingales, no null sets for almost-sure properties, and ultimately no Itô integral.
+
+## Why integrate against $\mathrm{d}W_t$ rather than $\mathrm{d}t$?
+
+A natural question is: if the integrand $f$ is allowed to depend on $\omega$, why is the stochastic integral $\int_0^T f_t \, \mathrm{d}W_t$ a *new* object — why can't we absorb the randomness of $\mathrm{d}W$ into $f$ and reduce everything to a pathwise Lebesgue / Riemann integral $\int_0^T g(t, \omega) \, \mathrm{d}t$?
+
+The short answer: **you cannot**, because the formal "thing" you would need to absorb — namely $\dot{W}_t$ — *does not exist as a function*. The stochasticity in $\mathrm{d}W_t$ lives at a finer scale than $\mathrm{d}t$ and cannot be reduced to it.
+
+### 1. SDEs already separate $\mathrm{d}t$ and $\mathrm{d}W_t$ on purpose
+
+The standard form of an SDE is
+
+$$
+\mathrm{d}X_t \;=\; \underbrace{a(t, X_t) \, \mathrm{d}t}_{\text{drift}} \;+\; \underbrace{b(t, X_t) \, \mathrm{d}W_t}_{\text{diffusion / noise}} ,
+$$
+
+interpreted as the integral identity
+
+$$
+X_t = X_0 + \int_0^t a(s, X_s) \, \mathrm{d}s + \int_0^t b(s, X_s) \, \mathrm{d}W_s .
+$$
+
+The two integrals are *genuinely different objects*:
+
+* $\int_0^t a(s, X_s) \, \mathrm{d}s$ is an ordinary **Lebesgue integral** in $s$ for each fixed $\omega$ (a.s.). The integrand is a continuous random function; pathwise Riemann integration works fine.
+* $\int_0^t b(s, X_s) \, \mathrm{d}W_s$ is a **stochastic integral**. The integrand may be the same kind of well-behaved object, but the *integrator* $W$ has unbounded total variation, so this integral is not pathwise Riemann–Stieltjes and lives in $L^2(\Omega)$, not in any function space of $s$.
+
+These two terms encode fundamentally different content: the drift is *predictable* (no surprises from $\omega$), while the diffusion is *uncorrelated random kicks* whose typical size scales like $\sqrt{\mathrm{d}t}$, not $\mathrm{d}t$.
+
+### 2. Why you can't absorb the noise into $f$ and integrate against $\mathrm{d}t$
+
+The natural attempt is "if $W$ is the integrator, write $\mathrm{d}W_t = \dot{W}_t \, \mathrm{d}t$, absorb the new factor into $f$, and reduce to":
+
+$$
+\int_0^T f(t) \, \mathrm{d}W_t \;\;\stackrel{?}{=}\;\; \int_0^T f(t) \, \dot{W}_t \, \mathrm{d}t .
+$$
+
+This **does not work** because $\dot{W}_t$ does not exist as a random variable. Specifically:
+
+* By Lévy's modulus, Brownian paths are nowhere differentiable $\mathbb{P}$-a.s.: for every $t$, the difference quotient $(W_{t+h} - W_t)/h$ has typical size $1/\sqrt{h} \to \infty$ as $h \downarrow 0$. There is no finite-valued $\dot{W}_t$ to plug in.
+* Even formally, $\dot{W}_t$ would have variance $\delta(0) = \infty$ (the "white noise" formal calculation): it cannot be a random *number*, only a random *distribution* (in Schwartz's sense). One cannot multiply a function by a distribution and integrate the product like a Lebesgue integral.
+
+So the operation "$f \cdot \mathrm{d}W \to f \dot{W} \cdot \mathrm{d}t$" requires dividing by $\mathrm{d}t$, but $\dot{W}_t$ is *infinitely large* with random sign — there is nothing finite to absorb.
+
+The figure below shows the difference quotient $(W(t^\ast + h) - W(t^\ast))/h$ for shrinking $h$, sampled at three base times $t^\ast \in \lbrace 0.2, 0.5, 0.8 \rbrace$ on a single Brownian path. The magnitudes track the dashed reference $1/\sqrt{h}$ (which $\to \infty$) — they do *not* settle on a finite limit as $h \downarrow 0$:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/difference_quotient_blowup.png' | relative_url }}" alt="Difference quotient |W(t*+h) - W(t*)|/h diverges like 1/sqrt(h) at three base times t*=0.2, 0.5, 0.8" loading="lazy">
+</figure>
+
+### 3. The deeper reason: $\mathrm{d}W_t$ and $\mathrm{d}t$ are scaled differently
+
+Brownian increments scale as
+
+$$
+\mathrm{d}W_t \;\sim\; \sqrt{\mathrm{d}t}, \qquad \text{not} \qquad \mathrm{d}W_t \;\sim\; \mathrm{d}t .
+$$
+
+This is the meaning of $[W]_t = t$ and is the entire reason quadratic-variation effects (the "Itô correction") appear. A $\mathrm{d}t$-integral is **first-order** in the partition mesh: replacing $\mathrm{d}t$ by $\sqrt{\mathrm{d}t}$ would require a totally different limit theory. Concretely, the two integrals collect mass at different orders:
+
+$$
+\sum_i f(t_i)\, \Delta_i t \;\;\xrightarrow{n \to \infty}\;\; \int_0^T f(t)\, \mathrm{d}t \quad (\text{Riemann; needs only continuity of } f) ,
+$$
+
+$$
+\sum_i f(t_i)\, \Delta_i W \;\;\xrightarrow{n \to \infty}\;\; \int_0^T f(t)\, \mathrm{d}W_t \quad (\text{Itô; needs adaptedness, } L^2\text{-limit, isometry}) .
+$$
+
+Even when both limits exist, they live in different worlds: the first is a smooth $\omega$-by-$\omega$ Riemann integral; the second is a Hilbert-space limit of random variables with variance $\int_0^T f(t)^2 \, \mathrm{d}t$.
+
+The figure makes the scaling difference visible. As the partition mesh $\Delta t$ shrinks, the deterministic increment $\Delta t$ goes to zero linearly (slope 1 in log-log), while the typical Brownian increment $\sqrt{\mathbb{E}[(\Delta W)^2]}$ goes to zero only at rate $\sqrt{\Delta t}$ (slope $1/2$):
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/dW_vs_dt_scaling.png' | relative_url }}" alt="Log-log plot of typical increment magnitude vs partition mesh: dt (slope 1, deterministic) and sqrt(E[dW^2]) (slope 1/2, Brownian)" loading="lazy">
+</figure>
+
+### 4. The discrete picture: random walk → Brownian motion
+
+In a Donsker-type discrete model, an SDE looks like
+
+$$
+X_{k+1} - X_k \;=\; a(k, X_k) \cdot \Delta t \;+\; b(k, X_k) \cdot \sqrt{\Delta t} \cdot Z_k, \qquad Z_k \stackrel{\text{i.i.d.}}{\sim} \mathcal{N}(0, 1) .
+$$
+
+The two terms scale differently in $\Delta t$:
+
+* The drift contributes $\Delta t$ per step — order-1 in time.
+* The noise contributes $\sqrt{\Delta t}$ per step — half-order in time.
+
+In the continuum limit these become $a(t, X_t) \, \mathrm{d}t$ and $b(t, X_t) \, \mathrm{d}W_t$. The reason there are *two* integrators is that there are **two different scalings** in the discrete model, and you cannot collapse them into one without erasing one or the other.
+
+If you tried to absorb the noise into the $\mathrm{d}t$-integral, you'd need
+
+$$
+b(k, X_k) \cdot \sqrt{\Delta t} \cdot Z_k \;\;\stackrel{?}{=}\;\; \tilde{g}(k, X_k, \omega) \cdot \Delta t,
+$$
+
+i.e. $\tilde{g} = b \cdot Z_k / \sqrt{\Delta t}$, which **diverges** as $\Delta t \to 0$. This is exactly the formal "$\dot{W}_t$" problem: nothing finite plays the role of the absorbed factor.
+
+### 5. Concrete example: the Itô correction is the "missing" $\frac{1}{2} T$
+
+Take $f = W$ on $[0, T]$. The classical-chain-rule guess (i.e. pretending $\dot{W}$ exists) would give
+
+$$
+\int_0^T W_t \, \dot{W}_t \, \mathrm{d}t \;\;\stackrel{?}{=}\;\; \tfrac{1}{2} W_T^2 \qquad (\text{by } \mathrm{d}(W^2/2) = W \dot{W}\, \mathrm{d}t) .
+$$
+
+But the Itô integral is
+
+$$
+\int_0^T W_t \, \mathrm{d}W_t \;=\; \tfrac{1}{2} W_T^2 \;-\; \tfrac{1}{2} T .
+$$
+
+The extra **$-\frac{1}{2}T$** is the **Itô correction** and comes directly from the quadratic variation $[W]_T = T$. It is *not* an artefact of how you set up the integral — it is a real, measurable quantity present in the limit. Pretending you could absorb $\mathrm{d}W$ into $\mathrm{d}t$ would *erase this term*, and the resulting "integral" would conflict with experiment (e.g. the wrong drift in geometric Brownian motion / Black–Scholes). The $-\frac{1}{2}T$ is the price you pay for the integrator being rough; no amount of absorbing the noise into $f$ makes it disappear.
+
+The figure below confirms this Monte-Carlo. The left panel scatters $\bigl(\frac{1}{2}W_T^2,\, \int_0^T W \, \mathrm{d}W\bigr)$ over $K = 800$ Brownian paths with $T = 1$. The points lie on the line $y = x - T/2$ (red dashed), *not* on the would-be classical line $y = x$ (black dotted). The right panel is the histogram of the differences $\frac{1}{2} W_T^2 - \int_0^T W \, \mathrm{d}W$: tightly concentrated around the *deterministic* value $T/2 = 0.5$ (the small spread is finite-time discretisation error). The Itô correction is **constant across all sample paths** — a fingerprint that no $\mathrm{d}t$-integral can produce.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/ito_correction_vs_classical.png' | relative_url }}" alt="Left: scatter of (W_T^2/2, Itô integral of W dW) lying on y = x - T/2, not y = x. Right: histogram of the difference concentrated at T/2 = 0.5." loading="lazy">
+</figure>
+
+### 6. The white-noise perspective: it doesn't simplify anything
+
+There *is* a framework — Hida / white-noise calculus — that takes the formal $\dot{W}_t$ seriously by treating it as a random Schwartz distribution. In that framework one can write
+
+$$
+\int_0^T f(t) \, \mathrm{d}W_t \;=\; \int_0^T f(t) \, \dot{W}_t \, \mathrm{d}t \qquad (\text{interpreted distributionally}) .
+$$
+
+But:
+
+* $\dot{W}_t$ is *not* a function — it lives in a space of distributions $\mathcal{S}'(\mathbb{R})$ that is itself measure-theoretic (Bochner / Minlos theorem on cylindrical Gaussian measures).
+* Multiplying $f \cdot \dot{W}$ requires Wick products and Hida–Sobolev spaces — strictly *more* machinery, not less.
+* The Itô correction reappears in the form of Wick-vs-pointwise multiplication conventions.
+
+So even when you take the white-noise perspective, you are not "removing" the stochastic integral — you are repackaging it in an equally measure-theoretic vocabulary.
+
+### 7. Bottom line
+
+| Question | Answer |
+|---|---|
+| Can we write $\int f(t) \, \mathrm{d}W_t = \int f(t) \cdot \dot{W}_t \, \mathrm{d}t$? | No — $\dot{W}_t$ does not exist as a random variable. |
+| Can we absorb the stochasticity into $f$? | No — the noise scales like $\sqrt{\mathrm{d}t}$, but $\mathrm{d}t$-integration only sees order-$\mathrm{d}t$ contributions. |
+| Why is $\mathrm{d}W_t$ a *necessary* integrator? | Because Brownian increments are uncorrelated, mean-zero, of typical size $\sqrt{\mathrm{d}t}$, contributing at quadratic-variation order to sums. This contribution is invisible to $\mathrm{d}t$-integration but real (e.g. the $-\frac{1}{2}T$ in $\int W \, \mathrm{d}W$). |
+| Where does the "extra" content of $\mathrm{d}W_t$ live? | In the quadratic variation $[W]_t = t$ — a probabilistic invariant of the integrator, with no analogue for $\mathrm{d}t$. |
+
+**Summary.** $\mathrm{d}t$ is "smooth time" and integrates first-order quantities; $\mathrm{d}W_t$ is "rough random time" and integrates *half-order* quantities. They are not interchangeable, and there is no nontrivial way to express one as the other. The whole reason stochastic calculus needs its own integral against $\mathrm{d}W_t$ — with its own convergence theory, isometry, and chain rule (Itô's formula) — is precisely that the $\mathrm{d}W_t$-integral captures content (quadratic variation, martingale property, Itô correction) that no $\mathrm{d}t$-integral with a clever integrand can reproduce.
+
+## What integrating against $\mathrm{d}W_t$ accomplishes (the positive answer)
+
+The previous section explained why you *cannot* reduce $\int f \, \mathrm{d}W$ to a $\mathrm{d}t$-integral. This section gives the complementary positive picture: *what* the stochastic integral $\int f \, \mathrm{d}W$ actually computes, *why* $W_t$ specifically is the right integrator, and *how* the same noise source produces genuinely different processes when filtered through different response functions.
+
+### The right question
+
+Forget for a moment whether $\dot{W}$ exists. Ask instead: *what kind of object* is $\int_0^T f_t \, \mathrm{d}W_t$, and *what is it computing*?
+
+The answer is: **it accumulates time-varying responses to random shocks**.
+
+* $W_t$ is a model for "cumulative random noise up to time $t$".
+* The increment $\mathrm{d}W_t$ (more precisely $W_{t + \mathrm{d}t} - W_t$) is the **random shock** in the infinitesimal interval $[t, t + \mathrm{d}t]$.
+* $f_t$ is the **sensitivity** / **exposure** / **response coefficient** to that shock at time $t$.
+* The integral $\int_0^T f_t \, \mathrm{d}W_t$ is the total weighted accumulation of shocks: at each instant $t$, take the random shock $\mathrm{d}W_t$, scale it by $f_t$, and sum.
+
+So $\mathrm{d}W_t$ plays the role of "**the random thing being weighted**", while $f_t$ plays the role of "**how strongly we respond to it**". You cannot reduce this to a $\mathrm{d}t$-integral because in a $\mathrm{d}t$-integral *there is no random thing being weighted* — $\mathrm{d}t$ is deterministic.
+
+### Why $W_t$ specifically — out of all possible integrators
+
+Brownian motion is *uniquely characterised* (Lévy's theorem) by four properties:
+
+| Property of $W$ | What it gives the integrator |
+|---|---|
+| Independent increments | random shocks across disjoint intervals are uncorrelated — "memoryless noise" |
+| Stationary increments | the noise distribution is the same at every time — "time-homogeneous" |
+| Continuous paths | no jumps — appropriate for "many small kicks" rather than "rare large shocks" |
+| $W_t \sim \mathcal{N}(0, t)$ | each increment is Gaussian — the natural CLT-limit of independent perturbations |
+
+These are exactly the four properties one wants from a model of **continuous Gaussian noise integrated over time**. They are not arbitrary: they are forced by the natural physical / modelling assumption that the noise is the cumulative effect of many small independent disturbances (Donsker's theorem makes this precise — every diffusive scaling limit of bounded-variance random walks is Brownian motion).
+
+So **we integrate against $\mathrm{d}W_t$ because $W_t$ is the universal model of continuous Gaussian noise**, and $\int f \, \mathrm{d}W$ is the natural object that accumulates a time-varying response to it.
+
+### Other choices of integrator exist — and they have other roles
+
+Integrating against $W$ is not the *only* option; it is the *canonical Gaussian-noise* option. Other integrators model other phenomena:
+
+| Integrator $X$ | Models | Stochastic integral $\int f \, \mathrm{d}X$ represents |
+|---|---|---|
+| $\mathrm{d}t$ | smooth time | ordinary deterministic accumulation (drift) |
+| $\mathrm{d}W_t$ | continuous Gaussian noise | cumulative response to Brownian shocks |
+| $\mathrm{d}N_t$ (Poisson) | rare random jumps | cumulative jump-triggered effect |
+| $\mathrm{d}\widetilde{N}_t$ (compensated Poisson) | jump noise without drift | jump martingale integral |
+| $\mathrm{d}M_t$ (martingale) | general "fair game" noise | general Itô-type integral |
+| $\mathrm{d}X_t$ (semimartingale) | drift + martingale | most general stochastic integral |
+
+The reason **$W$** is the default in textbooks is that it is the "Gaussian, continuous" prototype — every other integrator that one builds (jump-diffusions, semimartingales, …) is constructed from $W$ and Poisson processes via the Lévy–Itô decomposition.
+
+### Same noise, different responses → different processes
+
+The picture below makes the "weighted accumulation of shocks" interpretation tangible. **Top panel:** a single Brownian sample path $W_t$ — the common noise source. **Middle panel:** five response functions $f$ — uniform exposure $f \equiv 1$, increasing $f(t) = t$, decreasing $f(t) = T - t$, early-only $f = \mathbf{1}_{[0, T/2]}$, oscillating $f(t) = \sin(2\pi t)$. **Bottom panel:** the running Itô integrals $M_t(f) := \int_0^t f(s) \, \mathrm{d}W_s$ on the *same* path.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/dW_response_functions.png' | relative_url }}" alt="Three-panel figure: Brownian path on top, five response functions f(t) in the middle, running Itô integrals at the bottom, demonstrating that different f's filter the same noise into different processes." loading="lazy">
+</figure>
+
+What to read off:
+
+* **$f \equiv 1$** (blue): integral is exactly $W_t$ — the unweighted accumulator just *is* the noise process.
+* **$f(t) = t$** (green): early shocks count for little, late shocks dominate. The integral grows mostly toward the right end of $[0, T]$.
+* **$f(t) = T - t$** (orange): the opposite — early shocks dominate, late ones are damped. The integral makes its big moves early and then "settles".
+* **$f(t) = \mathbf{1}_{[0, T/2]}$** (red): the integrator literally **freezes** after $t = T/2$, because $f$ is zero there — the shocks are still happening but they are not being recorded. This visually shows that $f$ is the *gate* through which noise enters the integral.
+* **$f(t) = \sin(2\pi t)$** (purple): negative on $(1/2, 1)$, so the integral *unwinds* late shocks in the opposite direction.
+
+Crucially, *all five integrals are driven by the same $W_t$*. The differences between them are entirely the work of $f$. There is no clever way to write any of them as $\int g(t, \omega) \, \mathrm{d}t$ for some function $g$ — the random "thing being weighted" lives in $\mathrm{d}W$ itself.
+
+### Where $\mathrm{d}W_t$ shows up — concrete interpretations
+
+In each application below, $\mathrm{d}W_t$ is the "**unit of randomness**" being aggregated and $f_t$ is the "**weighting**":
+
+* **Mathematical finance.** $W_t$ models the random part of asset log-returns. If $f_t$ is the number of shares you hold at time $t$ and $S_t$ is the price (with $\mathrm{d}S_t / S_t = \mu \, \mathrm{d}t + \sigma \, \mathrm{d}W_t$), then
+  
+  $$
+  \int_0^T f_t \, \mathrm{d}S_t = \int_0^T f_t \, \mu \, S_t \, \mathrm{d}t + \int_0^T f_t \, \sigma \, S_t \, \mathrm{d}W_t
+  $$
+  
+  is your cumulative P&L. The $\mathrm{d}W$ part is the **random** P&L; you cannot model trading without it.
+* **Physics (Langevin equation).** $m \dot{v} = -\gamma v + \sqrt{2 \gamma k_B T} \, \xi$ with $\xi = \dot{W}$ formally; the integrated form $\mathrm{d}v = -(\gamma / m) v \, \mathrm{d}t + (\sqrt{2 \gamma k_B T} / m) \, \mathrm{d}W_t$ writes the random thermal force *as an integrator* because the molecular kicks are too rough to be a function. $\int (\text{response}) \, \mathrm{d}W$ is then the cumulative momentum transfer.
+* **Filtering / Kalman.** The "innovation process" of a Kalman filter is a Brownian motion under the optimal filter measure; the filter integrates the prediction error against this $\mathrm{d}W$ with the **Kalman gain** as $f_t$.
+* **Stochastic control / RL.** Cost functionals of the form $\int_0^T \ell(t, X_t) \, \mathrm{d}t + \int_0^T \sigma(t, X_t) \, \mathrm{d}W_t$ have a deterministic accrual term and a **martingale noise term**; the latter is what stochastic Bellman equations have to handle.
+* **Diffusion generative models.** The forward noising SDE $\mathrm{d}X_t = -\frac{1}{2} \beta_t X_t \, \mathrm{d}t + \sqrt{\beta_t} \, \mathrm{d}W_t$ literally *defines* the corruption process via integration against $\mathrm{d}W$; $f_t = \sqrt{\beta_t}$ is the **noise schedule**.
+
+In every one of these, the $\mathrm{d}W$ term answers a specific modelling question: **"how do random shocks at each instant in time accumulate, weighted by how much I respond to them?"** That is what no $\mathrm{d}t$-integral can express, because $\mathrm{d}t$ has no random shock to weight.
+
+### One-sentence answer
+
+We integrate against $\mathrm{d}W_t$ because $W_t$ is the universal carrier of **continuous Gaussian noise**, and $\int_0^T f_t \, \mathrm{d}W_t$ is the natural operation that **accumulates a time-varying response** $f_t$ **to that noise** — a question that simply cannot be posed in the language of $\mathrm{d}t$-integration alone, since $\mathrm{d}t$ knows nothing about random shocks.
+
 ## Lebesgue integral
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -578,6 +936,7 @@ $$a = a_0 < a_1 < \cdots < a_k = b, \qquad k \in \mathbb{N}.$$
 
 ## Norm of partition
 
+<div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Norm of a partition)</span></p>
 
 The **norm** of a partition $P$ is defined by
@@ -588,6 +947,7 @@ $$\Delta(P) := \max_{i=1,\dots,k} (a_i - a_{i-1}).$$
 
 ## Choice of tags / sample points
 
+<div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Choice of tags / sample points)</span></p>
 
 Given a partition $P = (a_0,\dots,a_k)$, a **tag vector**
@@ -602,6 +962,7 @@ $$t_i \in [a_{i-1},a_i], \qquad i=1,\dots,k.$$
 
 ## Riemann sum
 
+<div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Riemann sum)</span></p>
 
 Let $f : [a,b] \to \mathbb{R}$ be an arbitrary function. For a partition $P$ of $[a,b]$ and a corresponding tag vector $\bar t$, the **Riemann sum** of $f$ with respect to $P$ and $\bar t$ is
@@ -612,13 +973,12 @@ $$R(P,\bar t,f) := \sum_{i=1}^{k} (a_i - a_{i-1}) f(t_i).$$
 
 ## Riemann Integral
 
+<div class="math-callout math-callout--definition" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Riemann integral)</span></p>
 
 Let $a<b$ and let $f:[a,b]\to\mathbb{R}$. We say that $f$ is **Riemann integrable** on $[a,b]$, and write $f \in \mathcal{R}(a,b),$ if there exists a real number $L\in\mathbb{R}$ such that $\forall \varepsilon>0\;\exists \delta>0$ s.t. for every partition $P$ of $[a,b]$ and every choice of tags $\bar t$ for $P$,
 
-
 $$\Delta(P)<\delta \Longrightarrow \bigl|R(P,\bar t,f)-L\bigr|<\varepsilon.$$
-
 
 In this case, we define
 
