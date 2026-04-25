@@ -1864,10 +1864,10 @@ If $\gamma > 1$ and $f$ is $\gamma$-Hölder on a connected interval, then taking
 
 ### Hierarchy of regularity
 
-$\gamma$-Hölder continuity sits **between continuity and differentiability**:
+Throughout this hierarchy we work on a **compact / bounded** index set $I \subseteq \mathbb{R}^d$ (typically $I = [0, T]$ for the sample-path / SDE setting); without compactness the leftmost inclusion only holds *locally* (a $C^1$ function on $\mathbb{R}$ such as $x \mapsto x^2$ has unbounded derivative and so is not globally Lipschitz). With this proviso, $\gamma$-Hölder continuity sits **between continuity and differentiability**:
 
 $$
-\underbrace{C^1}_{\text{differentiable}} \;\subsetneq\; \underbrace{\text{Lipschitz} \;=\; 1\text{-Hölder}}_{\gamma = 1} \;\subsetneq\; \underbrace{\gamma\text{-Hölder}, \; 0 < \gamma < 1}_{\text{fractional smoothness}} \;\subsetneq\; \underbrace{C^0}_{\text{continuous}}.
+\underbrace{C^1(I)}_{\text{differentiable}} \;\subsetneq\; \underbrace{\text{Lipschitz}(I) \;=\; 1\text{-Hölder}(I)}_{\gamma = 1} \;\subsetneq\; \underbrace{\gamma\text{-Hölder}(I), \; 0 < \gamma < 1}_{\text{fractional smoothness}} \;\subsetneq\; \underbrace{C^0(I)}_{\text{continuous}}.
 $$
 
 Intuitively:
@@ -1876,6 +1876,27 @@ Intuitively:
 * $\gamma < 1$ (**strictly fractional**) allows the slope to blow up as $s \to t$, but at a controlled rate: the difference quotient grows at most like $\|t-s\|^{\gamma - 1} \to \infty$. Example: $f(t) = \sqrt{t}$ is $\tfrac{1}{2}$-Hölder on $[0,1]$ but not Lipschitz at $0$.
 * The **smaller** $\gamma$ is, the *weaker* the regularity — smaller exponents permit wilder local fluctuations.
 * $\gamma$-Hölder for *any* $\gamma > 0$ implies uniform continuity (hence continuity).
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(which $C^1$ — pinning down the domain)</span></p>
+
+The "$C^1$" appearing on the leftmost end of the chain is the **specific** space $C^1(I)$ on a *compact / bounded* domain $I$, not $C^1$ on an arbitrary domain. The distinction is genuine:
+
+* On a **compact** domain $K$ (e.g. $K = [0, T]$), $f \in C^1(K)$ implies $f$ is **globally Lipschitz on $K$** with constant $\sup_K \|f'\|$, which is finite because the continuous function $f'$ attains its maximum on the compact $K$. The mean value theorem then gives $|f(x) - f(y)| \leq \sup_K |f'| \cdot |x - y|$ for all $x, y \in K$.
+* On an **open or unbounded** domain $U$ (e.g. $U = \mathbb{R}$), $f \in C^1(U)$ implies $f$ is only **locally Lipschitz** (Lipschitz on every compact subset of $U$), not necessarily globally Lipschitz. The standard counterexample is $f(x) = x^2$ on $\mathbb{R}$: it is $C^\infty$, but
+  
+  $$
+  \frac{|f(x) - f(y)|}{|x - y|} \;=\; |x + y| \;\xrightarrow{|x|, |y| \to \infty}\; \infty,
+  $$
+  
+  so $f$ is *not* (globally) Lipschitz on $\mathbb{R}$.
+* The clean global statement is **bounded derivative $\Leftrightarrow$ globally Lipschitz** (on a convex / path-connected domain). Continuity of $f'$ alone gives boundedness only on compacts; that is exactly why the inclusion $C^1 \subsetneq \text{Lipschitz}$ requires the domain to be compact.
+
+If you want a globally-defined function space whose elements are *automatically* Lipschitz everywhere — without assuming the domain is compact — the right object is $C^1_b(U)$, the space of continuously differentiable functions on $U$ with **bounded** derivative; that one fits into the hierarchy on any $U$.
+
+This subtlety is harmless for sample paths of stochastic processes on a bounded time interval $I = [0, T]$ — the implicit setting throughout this section — but worth flagging when transferring the hierarchy to function classes on $\mathbb{R}^d$.
+
+</div>
 
 ### Geometric picture: the Hölder cusp
 
@@ -6748,7 +6769,7 @@ For the dissipative ODE $\dot x=-x$ with $x_k=1$ and a coarse $h=0.6$, the two s
 
 The classical test problem is the linear decay $\dot x=\lambda x$ with $\lambda<0$. Exact solution: $x(t)=x_0 e^{\lambda t}$, smoothly decaying.
 
-* **Forward Euler:** $x_{k+1}=(1+h\lambda)x_k$, so $x_k=(1+h\lambda)^k x_0$. Stable iff $|1+h\lambda|<1$, i.e. iff $h<2/|\lambda|$. For *stiff* problems (large $|\lambda|$), this forces a microscopic step.
+* **Forward Euler:** $x_{k+1}=(1+h\lambda)x_k$, so $x_k=(1+h\lambda)^k x_0$. Stable iff $\|1+h\lambda\|<1$, i.e. iff $h<2/\|\lambda\|$. For *stiff* problems (large $\|\lambda\|$), this forces a microscopic step.
 * **Backward Euler:** $x_{k+1}=x_k/(1-h\lambda)$, so $x_k=\bigl(1/(1-h\lambda)\bigr)^k x_0$. Stable for **every** $h>0$; the discrete dynamics inherit the dissipativity of the continuous ones, regardless of step size.
 
 Backward Euler is **A-stable** (unconditionally stable); forward Euler is only conditionally stable. In stiff regimes, this difference is decisive — and it is *the* reason implicit methods dominate parabolic-PDE numerics.
