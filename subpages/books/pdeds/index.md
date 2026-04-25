@@ -182,6 +182,53 @@ In the first two sections, we will (in the Euclidean case with $E$ convex)
 
 Later in the course, we will see examples of partial differential equations and free boundary problems that can be interpreted as gradient flows, touching on recent (and possibly current) research. Although the questions above are quite simple in the convex Euclidean setting (as we will see in the first few lectures), they become very subtle in other applications.
 
+**Critical points and the Euler–Lagrange equation.** The long-time limit of a gradient flow, when it exists, is a *critical point* of $E$ — a point $x_*$ with $\nabla E(x_*) = 0$ (or $0 \in \partial E(x_*)$ in the non-smooth setting). For functionals defined on infinite-dimensional spaces of functions, the analogue of "$\nabla E = 0$" is a differential equation in its own right, called the **Euler–Lagrange equation**.
+
+Concretely, consider a functional
+
+$$
+J[y] = \int_a^b L\big(x,\,y(x),\,y'(x)\big)\,dx
+$$
+
+acting on smooth curves $y:[a,b]\to\mathbb{R}$ with prescribed boundary values $y(a)=\alpha$, $y(b)=\beta$. The smooth function $L:\mathbb{R}^3\to\mathbb{R}$ is called the **Lagrangian**. Plugging in a variation $y_\varepsilon = y + \varepsilon\,\eta$ with $\eta(a)=\eta(b)=0$, expanding to first order, and integrating by parts on the $\eta'$-term gives
+
+$$
+\frac{d}{d\varepsilon}\bigg|_{\varepsilon=0} J[y_\varepsilon]
+= \int_a^b \!\left[\frac{\partial L}{\partial y} - \frac{d}{dx}\frac{\partial L}{\partial y'}\right]\eta(x)\,dx.
+$$
+
+Demanding this vanish for every admissible $\eta$ and applying the fundamental lemma of the calculus of variations yields the **Euler–Lagrange equation**:
+
+$$
+\frac{\partial L}{\partial y} - \frac{d}{dx}\!\left(\frac{\partial L}{\partial y'}\right) = 0.
+$$
+
+This is a (generally nonlinear, generally second-order) ODE in $y$. Three canonical examples illustrate its scope:
+
+* **Geodesics in the plane.** With $L(x,y,y') = \sqrt{1+(y')^2}$, the EL equation reduces to $y'' = 0$, recovering straight lines as the curves of shortest length.
+* **Classical mechanics.** With $L(q,\dot q) = \frac{1}{2} m\,\lvert\dot q\rvert^2 - E(q)$ (kinetic minus potential energy), the EL equation reads $m\ddot q = -\nabla E(q)$ — exactly Newton's law without friction (cf. (1.5) below with $\lambda=0$). This is **Hamilton's principle of stationary action**: physical trajectories are precisely the stationary points of $\int L\,dt$.
+* **Dirichlet energy.** For $J[u] = \frac{1}{2}\int_\Omega \lvert\nabla u\rvert^2\,dx$ on functions $u:\Omega\to\mathbb{R}$, the multivariable analogue of (1.4) is the **Laplace equation** $\Delta u = 0$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(EL equation vs. gradient flow)</span></p>
+
+The Euler–Lagrange equation is a *static* condition — it picks out the critical points of a functional $J$. A **gradient flow of $J$** is the corresponding *dynamic* equation
+
+$$
+\partial_t u = -\nabla_{\!\mathcal H}\, J[u],
+$$
+
+where $\nabla_{\!\mathcal H}$ denotes the gradient with respect to a chosen Hilbert structure $\mathcal H$ on the space of admissible $u$'s. Its steady states, when they exist, are exactly the EL solutions of $J$.
+
+Two viewpoints on the same picture:
+
+* **Static (variational):** look for critical points of $J$ directly by solving the EL equation.
+* **Dynamic (evolutionary):** start from any $u_0$, run the gradient flow, and let $t\to\infty$.
+
+For instance, the $L^2$-gradient flow of the Dirichlet energy is the **heat equation** $\partial_t u = \Delta u$, and its stationary solutions are harmonic. We will return to this duality repeatedly when we lift the finite-dimensional theory of (1.1) into PDE settings.
+
+</div>
+
 ### 1.3 Gradient Flow as Overdamped Limit
 
 **Newtonian motivation.** Newton's law dictates that the trajectory $x: [0, T) \to \mathbb{R}^N$ (think of $N = 2$ or $N = 3$) of a particle with mass $m$ satisfies
