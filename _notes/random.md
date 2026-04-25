@@ -341,7 +341,7 @@ and $\mathbb{P}(A_i \cap N) = 0$ for every $i$, so any mass sitting inside $N$ c
 
 ### What "blindness" looks like concretely
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(finite-set modification)</span></p>
 
 Take $f(x) = \sin(2\pi x)$ on $[0,1]$ and define $g$ by
@@ -364,7 +364,7 @@ no matter how we choose the $y_i$. Visually the two functions disagree at four p
   <img src="{{ '/assets/images/notes/random/null_set_finite_modification.png' | relative_url }}" alt="Two functions on [0,1] that agree off a four-point null set have the same integral" loading="lazy">
 </figure>
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Dirichlet function)</span></p>
 
 The rationals $\mathbb{Q} \cap [0,1]$ are **dense** in $[0,1]$ yet have Lebesgue measure $0$. The Dirichlet function
@@ -395,7 +395,7 @@ $$
 \|X\|_{L^p} \;=\; \bigl( \mathbb{E}[|X|^p] \bigr)^{1/p}
 $$
 
-cannot distinguish $X$ from $Y$ when $X = Y$ $\mathbb{P}$-a.s. If we treated such $X$ and $Y$ as different objects, then $\|X - Y\|_{L^p} = 0$ would *not* imply $X = Y$, and $\|\cdot\|_{L^p}$ would fail to be a norm. The fix: define $L^p(\Omega, \mathcal{A}, \mathbb{P})$ as the space of *equivalence classes* under the relation
+cannot distinguish $X$ from $Y$ when $X = Y$ $\mathbb{P}$-a.s. If we treated such $X$ and $Y$ as different objects, then $\|X - Y\|\_{L^p} = 0$ would *not* imply $X = Y$, and $\|\cdot\|\_{L^p}$ would fail to be a norm. The fix: define $L^p(\Omega, \mathcal{A}, \mathbb{P})$ as the space of *equivalence classes* under the relation
 
 $$
 X \sim Y \;\iff\; X = Y \ \mathbb{P}\text{-a.s.}
@@ -435,6 +435,133 @@ The blindness is about quantities defined as integrals against $\mathbb{P}$ — 
 That is precisely why (W4) in the definition of Brownian motion (continuity of paths) has to be stated as a separate axiom: it is a property of the whole random function that is *not* deducible from the finite-dimensional distributions alone, and it is exactly the kind of property that null-set modifications can create or destroy.
 
 </div>
+
+## Hölder continuity
+
+Hölder continuity generalises Lipschitz continuity by allowing a *weaker* modulus of continuity than a linear one. It is the natural regularity class for sample paths of stochastic processes such as Brownian motion, and it is the class produced by **Kolmogorov's continuity theorem**.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($\gamma$-Hölder continuity)</span></p>
+
+Let $I \subseteq \mathbb{R}$ be an interval and $\gamma \in (0, 1]$. A function $f : I \to \mathbb{R}$ is **$\gamma$-Hölder continuous** iff there exists a constant $K \ge 0$ such that
+
+$$
+|f(t) - f(s)| \le K \, |t - s|^{\gamma} \qquad \text{for all } s, t \in I.
+$$
+
+The smallest such $K$ is the **Hölder constant** of $f$ (sometimes written $\lVert f \rVert_{C^{0,\gamma}}$).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why $\gamma \leq 1$)</span></p>
+
+If $\gamma > 1$ and $f$ is $\gamma$-Hölder on a connected interval, then taking $s \to t$ in $|f(t)-f(s)|/|t-s| \le K |t-s|^{\gamma - 1}$ gives $f'(t) = 0$ everywhere, hence $f$ is constant. So the interesting range is $\gamma \in (0, 1]$.
+
+</div>
+
+### Hierarchy of regularity
+
+$\gamma$-Hölder continuity sits **between continuity and differentiability**:
+
+$$
+\underbrace{C^1}_{\text{differentiable}} \;\subsetneq\; \underbrace{\text{Lipschitz} \;=\; 1\text{-Hölder}}_{\gamma = 1} \;\subsetneq\; \underbrace{\gamma\text{-Hölder}, \; 0 < \gamma < 1}_{\text{fractional smoothness}} \;\subsetneq\; \underbrace{C^0}_{\text{continuous}}.
+$$
+
+Intuitively:
+
+* $\gamma = 1$ (**Lipschitz**) means the difference quotients are bounded — no vertical tangents; differentiable almost everywhere (Rademacher's theorem).
+* $\gamma < 1$ (**strictly fractional**) allows the slope to blow up as $s \to t$, but at a controlled rate: the difference quotient grows at most like $|t-s|^{\gamma - 1} \to \infty$. Example: $f(t) = \sqrt{t}$ is $\tfrac{1}{2}$-Hölder on $[0,1]$ but not Lipschitz at $0$.
+* The **smaller** $\gamma$ is, the *weaker* the regularity — smaller exponents permit wilder local fluctuations.
+* $\gamma$-Hölder for *any* $\gamma > 0$ implies uniform continuity (hence continuity).
+
+### Geometric picture: the Hölder cusp
+
+Fix $s \in I$. The $\gamma$-Hölder condition confines the graph of $f$ near $(s, f(s))$ to the "cusp" region
+
+$$
+\bigl\lbrace (t, y) \,:\, |y - f(s)| \le K \, |t - s|^{\gamma} \bigr\rbrace.
+$$
+
+For $\gamma = 1$ the cusp is a double cone (a linear envelope). For $\gamma = \tfrac{1}{2}$ it is the *parabolic* envelope $y \sim \sqrt{|t-s|}$ characteristic of Brownian scaling. For smaller $\gamma$ the envelope is *narrower* near $s$ but opens *faster* — permitting steeper short-time excursions.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/holder_cusps.png' | relative_url }}" alt="Hölder envelopes |t-s|^gamma for gamma = 1, 3/4, 1/2, 1/4 around s=0" loading="lazy">
+</figure>
+
+### Concrete examples
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">(different Hölder exponents)</span></p>
+
+* **$f(x) = x$** on $[0,1]$ is **1-Hölder** (Lipschitz) with constant $K = 1$: $|f(x)-f(y)| = |x-y|$.
+* **$f(x) = \sqrt{x}$** on $[0,1]$ is **$\tfrac{1}{2}$-Hölder** but *not* Lipschitz: the derivative $1/(2\sqrt{x})$ blows up at $x = 0$, yet $|\sqrt{x}-\sqrt{y}| \le |x-y|^{1/2}$.
+* **$f(x) = x^{1/3}$** on $[0,1]$ is **$\tfrac{1}{3}$-Hölder**: even wilder near $0$ (steeper cusp), but the $\tfrac{1}{3}$-power envelope still contains it.
+* **$f(x) = \mathbf{1}_{\lbrace x \geq 1/2 \rbrace}$** (step function) is *not* $\gamma$-Hölder for any $\gamma > 0$ on an interval containing $1/2$: the jump violates continuity, let alone Hölder continuity.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/holder_examples.png' | relative_url }}" alt="Three functions with Hölder exponents gamma = 1 (linear), gamma = 1/2 (square root), gamma = 1/3 (cube root)" loading="lazy">
+</figure>
+
+### Hölder-continuous *paths* of a stochastic process
+
+For a stochastic process $X = (X_t)\_{t \in [0, T]}$, the statement "$X$ has $\gamma$-Hölder-continuous paths" is a **pathwise** assertion: for every (or $\mathbb{P}$-a.e.) $\omega \in \Omega$, the realisation $t \mapsto X_t(\omega)$ is $\gamma$-Hölder on $[0, T]$ in the ordinary analytic sense, with a constant $K_\gamma(\omega)$ that may depend on $\omega$:
+
+$$
+|X_t(\omega) - X_s(\omega)| \le K_\gamma(\omega) \, |t - s|^{\gamma} \qquad \text{for all } s, t \in [0, T].
+$$
+
+Two features matter:
+
+* The inequality is **uniform in $s, t$**: once $\omega$ is fixed, *the same* constant works for every pair of times.
+* The constant $K_\gamma : \Omega \to (0, \infty)$ is itself a **random variable** — different sample paths need different constants. The theorem does *not* claim a deterministic $K$ that works for every $\omega$ (for Brownian motion such a uniform bound fails: $\sup_\omega K_\gamma(\omega) = +\infty$).
+
+### Kolmogorov's continuity theorem: moments $\Rightarrow$ Hölder paths
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Kolmogorov's continuity theorem)</span></p>
+
+Let $\widetilde{X} = (\widetilde{X}_t)\_{t \in [0, T]}$ be a real-valued stochastic process such that
+
+$$
+\mathbb{E}\!\left[\,|\widetilde{X}_t - \widetilde{X}_s|^{\alpha}\,\right] \;\le\; C \, |t - s|^{\beta} \qquad \text{for all } s, t \in [0, T],
+$$
+
+for some $\alpha > 0$, $\beta > 1$, $C > 0$. Then there exists a modification $X$ of $\widetilde{X}$ whose paths are $\gamma$-Hölder continuous for every $\gamma \in \bigl(0, \tfrac{\beta - 1}{\alpha}\bigr)$, with a random Hölder constant $K_\gamma(\omega)$.
+
+</div>
+
+The theorem converts a **moment condition** on increments into **pathwise regularity** of a modification — which is exactly the kind of argument that uses the "measure-theoretic blindness" discussed above: one starts with *any* version of the process and surgically replaces it on a null set to gain continuity.
+
+### Why Brownian motion is $\gamma$-Hölder for $\gamma < \tfrac{1}{2}$ but *not* for $\gamma \geq \tfrac{1}{2}$
+
+For standard Brownian motion $W$, the increment $W_t - W_s \sim \mathcal{N}(0, t-s)$ has Gaussian moments
+
+$$
+\mathbb{E}\!\left[\,|W_t - W_s|^{2p}\,\right] \;=\; C_p \, |t - s|^{p} \qquad (p \in \mathbb{N}),
+$$
+
+so Kolmogorov's theorem applies with $\alpha = 2p$, $\beta = p$, giving Hölder exponents up to
+
+$$
+\gamma \;<\; \frac{\beta - 1}{\alpha} \;=\; \frac{p - 1}{2p} \;\;\xrightarrow[p \to \infty]{}\;\; \frac{1}{2}.
+$$
+
+Hence Brownian paths are $\gamma$-Hölder for **every** $\gamma < \tfrac{1}{2}$. The critical exponent $\gamma = \tfrac{1}{2}$ is **not attained**: by **Lévy's modulus of continuity**, the true pathwise modulus of Brownian motion is
+
+$$
+\limsup_{h \downarrow 0} \; \sup_{0 \le s \le T - h} \; \frac{|W_{s+h} - W_s|}{\sqrt{2 h \log(1/h)}} \;=\; 1 \qquad \mathbb{P}\text{-a.s.},
+$$
+
+which is **slightly coarser** than $\sqrt{h}$ — so $|W_t - W_s| \le K \, |t-s|^{1/2}$ cannot hold with a finite $K$ on any interval. Consequently Brownian paths are **nowhere differentiable** $\mathbb{P}$-a.s., consistent with $\gamma < 1$ being strict.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/holder_brownian_envelope.png' | relative_url }}" alt="Sample Brownian path inside Hölder envelopes K t^gamma for gamma = 0.25, 0.4, 0.49; tight 1/2-envelope illustrating Lévy's modulus" loading="lazy">
+</figure>
+
+The figure shows a single sample path $W_t(\omega)$ on $[0,1]$ together with the **tightest-possible** envelope $K_\gamma(\omega) \, t^{\gamma}$ for $\gamma \in \lbrace 0.25,\, 0.40,\, 0.49 \rbrace$. All three envelopes comfortably contain the path. The dotted envelope at $\gamma = 1/2$ has to be tightened to the supremum of $|W_t|/\sqrt{t}$ over the sample — and Lévy's modulus says this supremum fails to be a.s. finite as the time resolution is refined, which is why $\gamma = 1/2$ is *not* an admissible Hölder exponent for Brownian paths.
 
 ## Measurable function
 
