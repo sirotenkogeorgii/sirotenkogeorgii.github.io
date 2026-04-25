@@ -202,7 +202,166 @@ An **involutive distribution** (or system) is one closed under the Lie bracket; 
 
 ## Darboux integral
 
-### Riemann–Stieltjes integral
+## Riemann–Stieltjes integration
+
+The Riemann–Stieltjes integral generalises the Riemann integral by integrating $f$ against another **function** $g$ — the *integrator* — instead of against $\mathrm{d}x$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Riemann–Stieltjes integral)</span></p>
+
+Let $f, g : [a, b] \to \mathbb{R}$. For a partition $P = (a = t_0 < t_1 < \cdots < t_n = b)$ with tags $\xi_i \in [t_{i-1}, t_i]$, form the **Riemann–Stieltjes sum**
+
+$$
+S(P, \xi, f, g) \;:=\; \sum_{i=1}^{n} f(\xi_i) \, \bigl[g(t_i) - g(t_{i-1})\bigr].
+$$
+
+If there exists $L \in \mathbb{R}$ such that for every $\varepsilon > 0$ there is $\delta > 0$ with
+
+$$
+\bigl|S(P, \xi, f, g) - L\bigr| < \varepsilon \qquad \text{whenever the mesh } \Delta(P) < \delta, \text{ for } \textbf{every} \text{ tag choice } \xi,
+$$
+
+then $f$ is **Riemann–Stieltjes integrable with respect to $g$** and we write $\int_a^b f \, \mathrm{d}g := L$. Setting $g(x) = x$ recovers the ordinary Riemann integral.
+
+</div>
+
+### Classical sufficient conditions for existence
+
+The cleanest classical statements are:
+
+* If $f$ is **continuous** on $[a, b]$ and $g$ is of **bounded variation** on $[a, b]$, then $\int_a^b f \, \mathrm{d}g$ exists.
+* More generally (Helly–Stieltjes): $\int_a^b f \, \mathrm{d}g$ exists whenever $f$ and $g$ have no common discontinuities and one of them is BV.
+
+A function $g$ is of **bounded variation (BV)** on $[a, b]$ iff its total variation
+
+$$
+V_a^b(g) \;:=\; \sup_{P} \, \sum_{i=1}^{n} \bigl|g(t_i) - g(t_{i-1})\bigr|
+$$
+
+is finite (sup over all partitions $P$). Equivalently (Jordan decomposition), $g$ is a difference of two non-decreasing functions, which lets one identify $\mathrm{d}g$ with a signed Borel measure on $[a, b]$.
+
+### Bounded variation is the load-bearing hypothesis
+
+The whole machinery of Riemann–Stieltjes integration rests on the BV assumption. **Why?** Two consequences of BV are essential:
+
+1. **Tag-independence of the limit.** If $g$ is BV and $f$ is continuous, then *every* tag choice $\xi$ produces sums that converge to the **same** limit. Were the limit to depend on $\xi$, the integral would not be well-defined. The cancellation that makes this work is exactly what fails when $g$ is rough.
+
+2. **Existence of the signed measure $\mathrm{d}g$.** BV $\Leftrightarrow$ $g$ defines a signed Borel measure (via Jordan + Hahn decomposition). Without this, "$\mathrm{d}g$" is just notation with no underlying measure-theoretic object.
+
+The figure below illustrates point (1) for the BV integrator $g(x) = x^2$ on $[0,1]$ with $f(x) = x$. The true value is $\int_0^1 x \, \mathrm{d}(x^2) = \int_0^1 x \cdot 2x \, \mathrm{d}x = 2/3$. All three tag rules — left, midpoint, right — converge to this single value as the mesh refines, regardless of the (sometimes large) initial bias for coarse $n$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/rs_bv_tag_independence.png' | relative_url }}" alt="For BV integrator g(x)=x^2, left/mid/right Riemann-Stieltjes sums all converge to 2/3" loading="lazy">
+</figure>
+
+### Worked manifestations
+
+* **Discrete sums.** If $g$ jumps by $\Delta g(c_k) := g(c_k^+) - g(c_k^-)$ at finitely many points $c_k$ and is constant elsewhere, then $\int f \, \mathrm{d}g = \sum_k f(c_k) \, \Delta g(c_k)$ — the Riemann–Stieltjes integral collapses to a finite weighted sum.
+* **Lebesgue–Stieltjes.** When $g$ is BV (and right-continuous), $\mathrm{d}g$ extends to a signed Borel measure $\mu_g$, and $\int f \, \mathrm{d}g = \int f \, \mathrm{d}\mu_g$ — Riemann–Stieltjes *is* Lebesgue–Stieltjes integration on continuous integrands.
+* **Integration by parts.** If $f, g$ are BV with no common discontinuities,
+  
+  $$
+  \int_a^b f \, \mathrm{d}g + \int_a^b g \, \mathrm{d}f = f(b) g(b) - f(a) g(a) ,
+  $$
+  
+  a clean generalisation of integration by parts that does *not* require differentiability.
+
+## Why Riemann–Stieltjes integration fails for Brownian motion (and SDEs)
+
+The Riemann–Stieltjes machinery presumes the integrator has bounded variation. Brownian motion violates this assumption catastrophically — and this failure is the *reason* stochastic calculus (Itô, Stratonovich) had to be invented.
+
+### Two pathological properties of Brownian paths
+
+For standard Brownian motion $W$ on $[0, T]$, the following hold $\mathbb{P}$-a.s.:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Fact</span><span class="math-callout__name">(pathwise variations of Brownian motion)</span></p>
+
+* **Total variation is infinite** on every subinterval:
+  
+  $$
+  V_a^b\bigl(W(\omega)\bigr) = +\infty \qquad \text{for every } 0 \leq a < b \leq T.
+  $$
+
+* **Quadratic variation equals time elapsed**: along any sequence of partitions whose mesh tends to zero,
+  
+  $$
+  [W]_t := \lim_{|P| \to 0} \sum_{i} \bigl(W_{t_i} - W_{t_{i-1}}\bigr)^2 = t \qquad (\text{in } L^2 \text{ and } \mathbb{P}\text{-a.s. along refining partitions}).
+  $$
+
+</div>
+
+These two facts are *connected*: any function $g$ of bounded variation has quadratic variation **zero**, since
+
+$$
+\sum_i \bigl(g(t_i) - g(t_{i-1})\bigr)^2 \;\leq\; \max_i \bigl|g(t_i) - g(t_{i-1})\bigr| \cdot V_a^b(g) \;\to\; 0
+$$
+
+as the mesh shrinks (the max factor vanishes by continuity, the sum is bounded by $V_a^b(g) < \infty$). Contrapositive: positive quadratic variation **forces** unbounded total variation. Brownian motion is the canonical example of this "rough" scaling — increments behave like $\sqrt{\mathrm{d}t}$ rather than $\mathrm{d}t$.
+
+The two divergent behaviours are visible numerically. Below, $V_n = \sum_i \|\Delta_i W\|$ grows like $\sqrt{n}$ (left, log-log), while $Q_n = \sum_i (\Delta_i W)^2$ converges to $T = 1$ (right):
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/rs_bm_variations.png' | relative_url }}" alt="Total variation of Brownian motion grows like sqrt(n); quadratic variation converges to T=1" loading="lazy">
+</figure>
+
+### Why the Riemann–Stieltjes limit ceases to exist
+
+Riemann–Stieltjes integrability requires the sums
+
+$$
+S_n \;=\; \sum_{i=1}^{n} f\bigl(\xi_i^{(n)}\bigr) \, \bigl[W_{t_i^{(n)}}(\omega) - W_{t_{i-1}^{(n)}}(\omega)\bigr]
+$$
+
+to converge to **the same** limit no matter how the tags $\xi_i^{(n)} \in [t_{i-1}^{(n)}, t_i^{(n)}]$ are chosen. With $W$ as integrator this **flatly fails**: the limit *depends on the tag rule*. The reason is structural — $f(\xi_i) - f(t_{i-1})$ is correlated with $\Delta_i W$ in a way that does **not** vanish in the limit when $g$ has positive quadratic variation, while it *does* vanish when $g$ is BV.
+
+### The canonical example: $\int_0^T W_t \, \mathrm{d}W_t$
+
+Take the simplest non-trivial integrand, $f = W$. Different tag choices give *genuinely different* limits in $L^2$:
+
+| Tag choice $\xi_i$ | $L^2$-limit of $\sum f(\xi_i) \, \Delta_i W$ | Calculus name |
+|---|---|---|
+| Left endpoint $\xi_i = t_{i-1}$ | $\frac{1}{2}(W_T^2 - T)$ | **Itô** |
+| Midpoint $\xi_i = (t_{i-1} + t_i)/2$ | $\frac{1}{2} W_T^2$ | **Stratonovich** |
+| Right endpoint $\xi_i = t_i$ | $\frac{1}{2}(W_T^2 + T)$ | "anti-Itô" |
+
+The discrepancy between any two consecutive choices is exactly the **quadratic-variation term**:
+
+$$
+\sum_i \bigl(W_{t_i} - W_{t_{i-1}}\bigr)^2 \;\xrightarrow[n \to \infty]{L^2}\; T \;\neq\; 0 .
+$$
+
+For a BV integrator this term would vanish and all tag choices would agree — that is the very content of the Riemann–Stieltjes existence theorem. For Brownian motion it does not vanish, so the three sums separate and stay separated as $n \to \infty$. The figure shows this for a single sample path on $[0, 1]$: as $n$ grows, the three running sums settle onto three distinct horizontal asymptotes separated by exactly $T/2$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/rs_bm_tag_dependence.png' | relative_url }}" alt="Three tag rules for the sum of W times dW converge to three distinct limits separated by T/2" loading="lazy">
+</figure>
+
+### The fix: stochastic calculus
+
+Both standard resolutions *commit to a tag rule* and use probabilistic structure on the integrand and on the notion of convergence:
+
+* **Itô integral.** Always evaluate the integrand at the **left endpoint** $\xi_i = t_{i-1}$, restrict to **adapted** integrands ($f_t$ depends only on the information up to time $t$), and use $L^2$-convergence based on **Itô's isometry**:
+  
+  $$
+  \mathbb{E}\!\left[\,\Bigl(\int_0^T f_t \, \mathrm{d}W_t\Bigr)^{\!2}\,\right] \;=\; \mathbb{E}\!\left[\,\int_0^T f_t^2 \, \mathrm{d}t\,\right].
+  $$
+  
+  The left-endpoint convention makes the resulting integral a **martingale** — the property that makes Itô calculus the default in mathematical finance and stochastic analysis.
+
+* **Stratonovich integral.** Use the **midpoint** rule. The resulting integral obeys the *ordinary* chain rule (no Itô correction term), making it the natural choice in physics and on manifolds, but loses the martingale property.
+
+The two are linked by the **Itô–Stratonovich correction**
+
+$$
+\int_0^T f_t \circ \mathrm{d}W_t \;=\; \int_0^T f_t \, \mathrm{d}W_t \;+\; \frac{1}{2} \int_0^T \frac{\partial f}{\partial W}(t, W_t) \, \mathrm{d}t,
+$$
+
+whose extra $\frac{1}{2} \mathrm{d}t$ term is yet another manifestation of the **quadratic variation** $[W]\_t = t$.
+
+### Summary in one line
+
+Riemann–Stieltjes integration depends on the integrator having **bounded variation** (equivalently, vanishing quadratic variation). Brownian paths are pathwise of unbounded variation and have positive quadratic variation $[W]_t = t$, so the Riemann–Stieltjes sums fail to have a tag-independent limit, and one must instead choose a tagging convention up front and develop a *probabilistic* integration theory (Itô, Stratonovich, …) around it.
 
 ## Lebesgue integral
 
@@ -456,7 +615,7 @@ The smallest such $K$ is the **Hölder constant** of $f$ (sometimes written $\lV
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(why $\gamma \leq 1$)</span></p>
 
-If $\gamma > 1$ and $f$ is $\gamma$-Hölder on a connected interval, then taking $s \to t$ in $|f(t)-f(s)|/|t-s| \le K |t-s|^{\gamma - 1}$ gives $f'(t) = 0$ everywhere, hence $f$ is constant. So the interesting range is $\gamma \in (0, 1]$.
+If $\gamma > 1$ and $f$ is $\gamma$-Hölder on a connected interval, then taking $s \to t$ in $\|f(t)-f(s)\|/\|t-s\| \le K \|t-s\|^{\gamma - 1}$ gives $f'(t) = 0$ everywhere, hence $f$ is constant. So the interesting range is $\gamma \in (0, 1]$.
 
 </div>
 
@@ -471,7 +630,7 @@ $$
 Intuitively:
 
 * $\gamma = 1$ (**Lipschitz**) means the difference quotients are bounded — no vertical tangents; differentiable almost everywhere (Rademacher's theorem).
-* $\gamma < 1$ (**strictly fractional**) allows the slope to blow up as $s \to t$, but at a controlled rate: the difference quotient grows at most like $|t-s|^{\gamma - 1} \to \infty$. Example: $f(t) = \sqrt{t}$ is $\tfrac{1}{2}$-Hölder on $[0,1]$ but not Lipschitz at $0$.
+* $\gamma < 1$ (**strictly fractional**) allows the slope to blow up as $s \to t$, but at a controlled rate: the difference quotient grows at most like $\|t-s\|^{\gamma - 1} \to \infty$. Example: $f(t) = \sqrt{t}$ is $\tfrac{1}{2}$-Hölder on $[0,1]$ but not Lipschitz at $0$.
 * The **smaller** $\gamma$ is, the *weaker* the regularity — smaller exponents permit wilder local fluctuations.
 * $\gamma$-Hölder for *any* $\gamma > 0$ implies uniform continuity (hence continuity).
 
@@ -483,7 +642,7 @@ $$
 \bigl\lbrace (t, y) \,:\, |y - f(s)| \le K \, |t - s|^{\gamma} \bigr\rbrace.
 $$
 
-For $\gamma = 1$ the cusp is a double cone (a linear envelope). For $\gamma = \tfrac{1}{2}$ it is the *parabolic* envelope $y \sim \sqrt{|t-s|}$ characteristic of Brownian scaling. For smaller $\gamma$ the envelope is *narrower* near $s$ but opens *faster* — permitting steeper short-time excursions.
+For $\gamma = 1$ the cusp is a double cone (a linear envelope). For $\gamma = \tfrac{1}{2}$ it is the *parabolic* envelope $y \sim \sqrt{\|t-s\|}$ characteristic of Brownian scaling. For smaller $\gamma$ the envelope is *narrower* near $s$ but opens *faster* — permitting steeper short-time excursions.
 
 <figure>
   <img src="{{ '/assets/images/notes/random/holder_cusps.png' | relative_url }}" alt="Hölder envelopes |t-s|^gamma for gamma = 1, 3/4, 1/2, 1/4 around s=0" loading="lazy">
@@ -494,10 +653,10 @@ For $\gamma = 1$ the cusp is a double cone (a linear envelope). For $\gamma = \t
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">(different Hölder exponents)</span></p>
 
-* **$f(x) = x$** on $[0,1]$ is **1-Hölder** (Lipschitz) with constant $K = 1$: $|f(x)-f(y)| = |x-y|$.
-* **$f(x) = \sqrt{x}$** on $[0,1]$ is **$\tfrac{1}{2}$-Hölder** but *not* Lipschitz: the derivative $1/(2\sqrt{x})$ blows up at $x = 0$, yet $|\sqrt{x}-\sqrt{y}| \le |x-y|^{1/2}$.
+* **$f(x) = x$** on $[0,1]$ is **1-Hölder** (Lipschitz) with constant $K = 1$: $\|f(x)-f(y)\| = \|x-y\|$.
+* **$f(x) = \sqrt{x}$** on $[0,1]$ is **$\tfrac{1}{2}$-Hölder** but *not* Lipschitz: the derivative $1/(2\sqrt{x})$ blows up at $x = 0$, yet $\|\sqrt{x}-\sqrt{y}\| \le \|x-y\|^{1/2}$.
 * **$f(x) = x^{1/3}$** on $[0,1]$ is **$\tfrac{1}{3}$-Hölder**: even wilder near $0$ (steeper cusp), but the $\tfrac{1}{3}$-power envelope still contains it.
-* **$f(x) = \mathbf{1}_{\lbrace x \geq 1/2 \rbrace}$** (step function) is *not* $\gamma$-Hölder for any $\gamma > 0$ on an interval containing $1/2$: the jump violates continuity, let alone Hölder continuity.
+* **$f(x) = \mathbf{1}\_{\lbrace x \geq 1/2 \rbrace}$** (step function) is *not* $\gamma$-Hölder for any $\gamma > 0$ on an interval containing $1/2$: the jump violates continuity, let alone Hölder continuity.
 
 </div>
 
@@ -555,13 +714,13 @@ $$
 \limsup_{h \downarrow 0} \; \sup_{0 \le s \le T - h} \; \frac{|W_{s+h} - W_s|}{\sqrt{2 h \log(1/h)}} \;=\; 1 \qquad \mathbb{P}\text{-a.s.},
 $$
 
-which is **slightly coarser** than $\sqrt{h}$ — so $|W_t - W_s| \le K \, |t-s|^{1/2}$ cannot hold with a finite $K$ on any interval. Consequently Brownian paths are **nowhere differentiable** $\mathbb{P}$-a.s., consistent with $\gamma < 1$ being strict.
+which is **slightly coarser** than $\sqrt{h}$ — so $\|W_t - W_s\| \le K \, \|t-s\|^{1/2}$ cannot hold with a finite $K$ on any interval. Consequently Brownian paths are **nowhere differentiable** $\mathbb{P}$-a.s., consistent with $\gamma < 1$ being strict.
 
 <figure>
   <img src="{{ '/assets/images/notes/random/holder_brownian_envelope.png' | relative_url }}" alt="Sample Brownian path inside Hölder envelopes K t^gamma for gamma = 0.25, 0.4, 0.49; tight 1/2-envelope illustrating Lévy's modulus" loading="lazy">
 </figure>
 
-The figure shows a single sample path $W_t(\omega)$ on $[0,1]$ together with the **tightest-possible** envelope $K_\gamma(\omega) \, t^{\gamma}$ for $\gamma \in \lbrace 0.25,\, 0.40,\, 0.49 \rbrace$. All three envelopes comfortably contain the path. The dotted envelope at $\gamma = 1/2$ has to be tightened to the supremum of $|W_t|/\sqrt{t}$ over the sample — and Lévy's modulus says this supremum fails to be a.s. finite as the time resolution is refined, which is why $\gamma = 1/2$ is *not* an admissible Hölder exponent for Brownian paths.
+The figure shows a single sample path $W_t(\omega)$ on $[0,1]$ together with the **tightest-possible** envelope $K_\gamma(\omega) \, t^{\gamma}$ for $\gamma \in \lbrace 0.25,\, 0.40,\, 0.49 \rbrace$. All three envelopes comfortably contain the path. The dotted envelope at $\gamma = 1/2$ has to be tightened to the supremum of $\|W_t\|/\sqrt{t}$ over the sample — and Lévy's modulus says this supremum fails to be a.s. finite as the time resolution is refined, which is why $\gamma = 1/2$ is *not* an admissible Hölder exponent for Brownian paths.
 
 ## Measurable function
 
