@@ -6317,6 +6317,84 @@ In modern multivariable and functional analysis one skips the limit-quotient roa
 
 > The Fréchet definition is "first-order Taylor expansion exists, with a linear leading term." Higher-order Taylor's theorem is the result one proves from this by iterating differentiability. The resemblance is the *content*, not a coincidence.
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Notation: $d$ vs $D$ vs $\nabla$ vs $J$ — what each means</summary>
+
+A natural reader question at this point: why is the same object sometimes written $dE$, sometimes $DE$, sometimes $\nabla E$, sometimes $J_f$? Are these different things, or different conventions for the same thing?
+
+**Short answer.** $dE$ and $DE$ denote *the same mathematical object* — a linear map. The choice between them is conventional/stylistic, not about whether the object is a vector, a matrix, or a general operator. The notations $\nabla E$ and $J_f$ refer to *different* objects: a *vector* (the Riesz representative of $dE$) and a *matrix* (a coordinate representation of $Df$), respectively.
+
+A common misconception worth fixing first: **the differential $dE$ is not a vector.** It is a *linear functional* — an element of the dual space. What you may be picturing as "the vector" is the gradient $\nabla E$, which is a different object that happens to have the same numerical components in $\mathbb R^N$.
+
+#### The categorical picture
+
+For a smooth $E:\mathbb R^N\to\mathbb R$, three things at the point $x$ deserve separate names:
+
+| object | notation | type | "shape" in coordinates |
+|---|---|---|---|
+| **differential** | $dE(x)=DE(x)$ | linear functional $\mathbb R^N\to\mathbb R$ | row (1×N) |
+| **gradient** | $\nabla E(x)$ | vector in $\mathbb R^N$ (Riesz representative of $dE(x)$) | column (N×1) |
+| **partials** | $\partial_i E(x)$ | numbers (components in a chosen basis) | scalars |
+
+For a vector-valued map $f:\mathbb R^n\to\mathbb R^m$:
+
+| object | notation | type | shape |
+|---|---|---|---|
+| **differential** | $df(x)=Df(x)$ | linear map $\mathbb R^n\to\mathbb R^m$ | m×n |
+| **Jacobian matrix** | $J_f(x)$ | the matrix *representation* of $Df(x)$ in standard bases | m×n |
+
+A few things to absorb from these tables:
+
+* **The matrix is never the differential itself.** The matrix is one *representation* of the differential, available once you pick a basis. The differential is the abstract linear map.
+* **$dE$ is dual ("row"); $\nabla E$ is primal ("column").** They have the same components numerically but live in different spaces. They get identified only because of the inner product on $\mathbb R^N$ via the Riesz representation theorem.
+* **The same object has many names.** $dE(x)$, $DE(x)$, $E'(x)$, the *total derivative*, the *Fréchet derivative* — same thing. Likewise $df$, $Df$, $f'$, the *Jacobian* (as a linear map, not as the matrix), the *pushforward*.
+
+#### What the $d$ vs $D$ convention actually tracks
+
+The hypothesis "$d$ for scalar output, $D$ for vector/operator output" is a *soft pattern* observable in many books, but it is not a rule:
+
+* **Differential-geometry / forms tradition.** Lowercase $d$ is preferred and carries algebraic baggage: $df$ is a **1-form**, $d$ is the **exterior derivative** with $d^2=0$, and the basis $\lbrace dx^1,\dots,dx^n\rbrace$ uses the same letter. This is the source of the lowercase. Most natural when the codomain is $\mathbb R$, but not restricted to it.
+* **Analysis / functional-analysis tradition.** Uppercase $D$ is preferred, with no geometric baggage; it just denotes "the linear-map-valued first derivative." Codomain-agnostic.
+* **Multivariable calculus textbooks.** Often use $Df$ for vector-valued $f$ and $df$ for scalar-valued $f$, which is probably the pattern most students notice. But Spivak (*Calculus on Manifolds*) uses $Df$ for everything, while Lee (*Smooth Manifolds*) uses $df$ for everything.
+
+So the choice is **stylistic and field-dependent**, not dimensional. The same author may write $dE$ for a scalar-valued energy on one page and $df$ for a vector-valued map on the next.
+
+#### In the general setting (Hilbert/Banach spaces, manifolds, operators)
+
+There is **no "always use $D$" rule**. Both $d$ and $D$ remain in use:
+
+* On a smooth manifold $M$ with $E:M\to\mathbb R$, the differential is $dE_x:T_xM\to\mathbb R$ — a covector. Most differential-geometry books write $dE$.
+* For $f:M\to N$ between manifolds, the differential is $df_x:T_xM\to T_{f(x)}N$, also called the *pushforward* and sometimes written $f_{*,x}$ or $Tf$. Many analysis-flavored geometry books prefer $Df_x$.
+* On a Hilbert space $\mathcal H$ with $E:\mathcal H\to\mathbb R$, the differential is a bounded linear functional $dE(u)\in\mathcal H^*$. Both $dE(u)$ and $DE(u)$ are common; the Riesz representative is the gradient $\nabla_{\mathcal H}E(u)\in\mathcal H$.
+* For $f:\mathcal X\to\mathcal Y$ between Banach spaces (so the derivative is a bounded linear *operator*), most functional-analysis textbooks write $Df(u)\in\mathcal L(\mathcal X,\mathcal Y)$, but you'll also see $df(u)$.
+
+#### The dictionary that carries through every setting
+
+* **Differential / total derivative.** A linear map between the appropriate tangent / ambient spaces. Notations: $df$, $Df$, sometimes $f_{*}$, $Tf$, $f'$.
+* **Gradient.** The Riesz / metric-dual representative of the differential. Requires an inner product (or a Riemannian metric on a manifold). Notation: $\nabla f$, $\mathrm{grad}\,f$, or $\nabla_{\mathcal H}f$ to specify the metric.
+* **Partial derivatives / coordinate components.** $\partial_i f$, $\frac{\partial f}{\partial x^i}$. These appear once a basis is fixed.
+* **Jacobian matrix.** The matrix representation of $Df$ in chosen bases. Notation: $J_f$ — and this *is* genuinely a matrix, distinct from the linear map it represents.
+
+#### Why gradient-flow theory uses $dE$
+
+The choice of writing $dE(x(t)).\dot x(t)$ rather than $DE(x(t)).\dot x(t)$ has nothing to do with the differential being "a vector":
+
+* Gradient-flow theory eventually passes to non-Euclidean settings (Hilbert spaces, Wasserstein space) where $\nabla E$ is metric-dependent and $\partial E/\partial x$ is meaningless. The differential $dE$ as a linear functional is the intrinsic object that survives.
+* Lowercase $d$ matches the differential-geometry / Otto-calculus tradition that the surrounding literature uses, so the notation is forward-compatible with later chapters.
+
+One could equally well write $DE(x)\cdot\dot x$, $E'(x)\cdot\dot x$, or $\langle\nabla E(x),\dot x\rangle$ — all four denote the same number. The first three are the "differential applied to a velocity" picture; the fourth is "gradient inner-producted with velocity," which sneaks in an inner product.
+
+#### Practical takeaways
+
+* When you see $df$ or $Df$, mentally translate to "the linear-map first derivative." Don't read anything into the case of the letter.
+* When you see $\nabla f$, mentally flag "this requires an inner product; the choice of inner product matters."
+* When you see $J_f$, that's specifically the matrix.
+* The dot in $dE(x).\dot x$ (or $Df(x).\dot x$, etc.) is **always** "linear map evaluated on a vector," regardless of whether the case is upper or lower.
+
+</details>
+</div>
+
 ### Coordinate renderings
 
 In familiar settings, $Df(x)$ is represented by a familiar object:
@@ -6353,6 +6431,65 @@ g(f(x+h))\approx g\bigl(f(x)+Df(x)h\bigr)\approx g(f(x))+Dg(f(x))\bigl(Df(x)h\bi
 $$
 
 and the composition of the two linearizations reads off the slope of $g\circ f$.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Decoding the two $\approx$'s</summary>
+
+The two $\approx$'s above are *the same operation* — the first-order Taylor approximation — applied to **two different functions** at **two different base points**.
+
+**The pattern.** For any differentiable $\varphi$ and any base point $y$ with small perturbation $k$,
+
+$$
+\varphi(y+k) \;\approx\; \varphi(y)+D\varphi(y)\,k. \qquad(\star)
+$$
+
+This is the Fréchet definition rebranded as "approximation"; the error is $o(\|k\|)$ as $k\to 0$.
+
+**Both $\approx$'s are instances of $(\star)$:**
+
+| step | function $\varphi$ | base point $y$ | perturbation $k$ | $(\star)$ becomes |
+|---|---|---|---|---|
+| **1st $\approx$** | $f$ | $x$ | $h$ | $f(x+h)\approx f(x)+Df(x)\,h$ |
+| **2nd $\approx$** | $g$ | $f(x)$ | $Df(x)\,h$ | $g\bigl(f(x)+Df(x)h\bigr)\approx g(f(x))+Dg(f(x))\bigl(Df(x)h\bigr)$ |
+
+**Naming the pieces.** Setting $y:=f(x)$ and $k:=Df(x)\,h$, the second step reads
+
+$$
+g(\underbrace{f(x+h)}_{\approx\,y+k})\;\approx\;g(y+k)\;\stackrel{(\star)\text{ for }g}{\approx}\;g(y)+Dg(y)\,k,
+$$
+
+and substituting $y=f(x)$, $k=Df(x)\,h$ recovers $g(f(x))+Dg(f(x))\bigl(Df(x)h\bigr)$.
+
+**Why $(\star)$ is justified for $g$ at $f(x)$.** $(\star)$ requires the perturbation $k$ to be small. Here $k=Df(x)\,h$, and:
+
+* $Df(x)$ is a *bounded* linear map (part of Fréchet differentiability), so there is a constant $C$ with $\|Df(x)\,h\|\le C\,\|h\|$;
+* hence $\|k\|\le C\,\|h\|\to 0$ as $h\to 0$.
+
+So whenever $h$ is small enough that the Taylor expansion of $f$ at $x$ is valid, $k=Df(x)\,h$ is small enough that the Taylor expansion of $g$ at $f(x)$ is valid too. Both approximations have $o(\|h\|)$ error, and composing them keeps that order — which is the rigorous content behind the chain rule.
+
+**Reading the line LHS-to-RHS.**
+
+$$
+\underbrace{g(f(x+h))}_{\text{LHS}}
+\;\stackrel{\text{Taylor of }f}{\approx}\;
+g\bigl(\underbrace{f(x)+Df(x)h}_{=\,y+k}\bigr)
+\;\stackrel{\text{Taylor of }g}{\approx}\;
+\underbrace{g(f(x))+Dg(f(x))\bigl(Df(x)h\bigr)}_{\text{RHS}}.
+$$
+
+Comparing LHS and RHS,
+
+$$
+g(f(x+h))\;\approx\;g(f(x))+\bigl[Dg(f(x))\circ Df(x)\bigr]h,
+$$
+
+which is exactly $(\star)$ applied to the composition $g\circ f$ — i.e. it reads off $D(g\circ f)(x)=Dg(f(x))\circ Df(x)$, the chain rule.
+
+So the derivation is **two applications of the same Taylor approximation, glued together**: first push $h$ inside (linearize $f$), then pull the linearized increment $Df(x)\,h$ out through $g$ (linearize $g$). The chain rule is what falls out when you compose those two linearizations.
+
+</details>
+</div>
 
 In coordinates on $\mathbb R^n,\mathbb R^m,\mathbb R^p$, "composition of linear maps" is matrix multiplication: the Jacobian of $g\circ f$ is the product $J_g(f(x))\cdot J_f(x)$. The familiar one-variable rule is the $1\times 1$ case.
 
@@ -6408,6 +6545,91 @@ $$
 </div>
 
 Read the chain: the first equality is the abstract chain rule (composition of two Fréchet derivatives, applied to the unit tangent in $\mathbb R$); the second equality is Riesz, identifying the linear functional $dE$ with a vector $\nabla_{\mathcal H} E$ via the inner product.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why $\partial_t u(t)$ instead of $Du(t)$?</summary>
+
+A natural reader question at this point: in the curve case earlier we wrote things like $Du(t)$ for the Fréchet derivative of a curve, but here in the chain rule we suddenly write $\partial_t u(t)$. Why?
+
+#### Short answer
+
+$\partial_t u(t)$ is the **vector** in $\mathcal H$ — not the linear map. It is what you actually plug into the linear functional $dE(u(t))$. The object $Du(t)$, in strict Fréchet terms, is a *linear map* $\mathbb R\to\mathcal H$, not a vector. The two are equivalent under the canonical isomorphism $\mathrm{Hom}(\mathbb R,\mathcal H)\cong\mathcal H$, but writing $\partial_t u(t)$ explicitly picks out the vector and matches PDE conventions.
+
+#### The three things, three notations
+
+For a curve $u:I\to\mathcal H$ on an interval $I\subseteq\mathbb R$:
+
+| object | type | how the others are derived from it |
+|---|---|---|
+| $Du(t)$ | linear map $\mathbb R\to\mathcal H$ (Fréchet derivative) | — |
+| $u'(t)$ | vector in $\mathcal H$ (the velocity) | $u'(t):=Du(t)\cdot 1$ |
+| $\partial_t u(t)$ | vector in $\mathcal H$, identical to $u'(t)$ | PDE name for the same thing |
+
+So $u'(t)$ and $\partial_t u(t)$ are the same object — a vector in $\mathcal H$. The notation $Du(t)$ is the *abstract* linear-map version; $\partial_t u(t)$ is the *concrete* vector version.
+
+#### Why $\partial_t$ specifically — disambiguation in PDE-land
+
+The reason you almost always see $\partial_t$ rather than $Du$ in this context is that in PDE settings $u$ is virtually never just "a curve in $\mathcal H$" — it is a function of *several* variables, and you need the notation to say *which* variable you are differentiating with respect to.
+
+Concretely, an evolution equation like the heat equation has $u:[0,T]\times\Omega\to\mathbb R$, equivalent to a curve $u:[0,T]\to\mathcal H$ with $\mathcal H=L^2(\Omega)$ via $u(t)\equiv u(t,\cdot)$. Two natural derivatives are in play:
+
+* $\partial_t u$ — the time derivative (in $\mathcal H$), which is what the chain rule needs.
+* $\partial_{x_i} u,\ \nabla u,\ \Delta u$ — spatial derivatives (in $\Omega$), which appear on the other side of the PDE.
+
+If $Du$ were used for the time derivative, there would be immediate trouble: the same PDE has spatial $D$'s on the right-hand side. PDE notation reserves $\partial_t$ specifically for "differentiate the curve in $\mathcal H$ with respect to the curve parameter," and reserves $\partial_x,\nabla,\Delta$ for "differentiate the values of $u$ with respect to spatial coordinates."
+
+#### The other reason — already-overloaded $D$
+
+Even setting aside spatial derivatives, $D$ is **already in use** in the chain rule for the Fréchet derivative of the *energy*:
+
+$$
+dE(u):\mathcal H\to\mathbb R\text{ — the differential of the energy } E:\mathcal H\to\mathbb R.
+$$
+
+Writing $Du$ for the time derivative of the curve creates a notation collision: $Du$ would be a derivative with respect to time, $dE$ a derivative with respect to the curve's value. Same letter, two different "directions" of differentiation. PDE notation breaks the collision by reserving $\partial_t$ for the time slot.
+
+#### What the chain rule actually does, fully decoded
+
+Start from the abstract chain rule for $E\circ u:I\to\mathbb R$:
+
+$$
+D(E\circ u)(t)\;=\;dE(u(t))\;\circ\;Du(t).
+$$
+
+Both sides are linear maps $\mathbb R\to\mathbb R$. To extract the *number* $\frac{d}{dt}E(u(t))$, apply both sides to the unit tangent $1\in\mathbb R$:
+
+$$
+\underbrace{D(E\circ u)(t)\cdot 1}_{=\,\frac{d}{dt}E(u(t))}
+\;=\;dE(u(t))\Bigl(\underbrace{Du(t)\cdot 1}_{=\,u'(t)\,=\,\partial_t u(t)}\Bigr)
+\;=\;dE(u(t)).\partial_t u(t).
+$$
+
+Read the second equality slowly: $dE(u(t))$ is a *linear functional on $\mathcal H$*, so it eats *vectors in $\mathcal H$*. The thing being fed in is $Du(t)\cdot 1$ — the vector that $Du(t)$ produces when the unit tangent is plugged in. That vector is $\partial_t u(t)$. So writing $\partial_t u(t)$ in the chain rule is exactly the right move: it is the object whose *type* matches the input of $dE$.
+
+If $Du(t)$ were written in that slot, it would technically be wrong — $Du(t)$ is a linear map, and $dE(u(t))$ does not eat linear maps; it eats elements of $\mathcal H$. The chain rule
+
+$$
+\frac{d}{dt}E(u(t))\;=\;dE(u(t)).\partial_t u(t)
+$$
+
+silently performs the identification "linear map $\mathbb R\to\mathcal H$ ↔ its value at $1$" by writing $\partial_t u(t)$ in the slot where the vector belongs.
+
+#### Quick notation dictionary in the PDE / curve-in-$\mathcal H$ setting
+
+* $\partial_t u$ — the time derivative of the curve, a vector in $\mathcal H$. Same as $u'(t)$ or $\dot u(t)$.
+* $\partial_{x_i} u,\ \nabla u,\ \Delta u$ — spatial derivatives of $u$ regarded as a function of $x$.
+* $du$ — almost never used in this slot, because $d$ is reserved for differentials of *functionals* and for forms.
+* $Du$ — used when one wants to emphasize the abstract Fréchet picture (often in functional-analysis textbooks), with the understanding that $Du(t)\cdot 1=\partial_t u(t)$.
+* $dE(u)$ — the Fréchet differential of the energy $E$ at the point $u\in\mathcal H$; a linear functional on $\mathcal H$.
+* $\nabla_{\mathcal H}E(u)$ — the Riesz representative of $dE(u)$; a vector in $\mathcal H$. Metric-dependent.
+
+#### One-line summary
+
+> $\partial_t u(t)$ is the *vector* in $\mathcal H$ — the object that goes into linear functionals like $dE(u(t))$. $Du(t)$ is the abstract linear map $\mathbb R\to\mathcal H$ that *produces* this vector when applied to $1$. PDE notation prefers $\partial_t$ because it (a) explicitly names the variable of differentiation, distinguishing it from spatial derivatives, and (b) avoids notation collision with the Fréchet derivative $dE$ of the energy.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
 <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The gradient depends on the inner product)</span></p>
@@ -6473,9 +6695,376 @@ In all of these the chain rule is the same one-line composition statement; only 
 
 Take $E(x_1,x_2)=\tfrac12(x_1^2+3x_2^2)$ and $x(t)=(e^{-t},e^{-3t})$ (the closed-form gradient-flow trajectory from $(1,1)$ for this energy).
 
-* $\dot x(t)=(-e^{-t},-3e^{-3t})$.
-* $dE(x(t))$ is the row $(x_1(t),3x_2(t))=(e^{-t},3e^{-3t})$.
-* Apply: $dE(x(t)).\dot x(t)=e^{-t}\cdot(-e^{-t})+3e^{-3t}\cdot(-3e^{-3t})=-e^{-2t}-9e^{-6t}$.
-* Compare to $\frac{d}{dt}E(x(t))=\frac{d}{dt}\bigl[\tfrac12 e^{-2t}+\tfrac32 e^{-6t}\bigr]=-e^{-2t}-9e^{-6t}.$ ✓
+  $$\dot x(t)=(-e^{-t},-3e^{-3t})$$
+
+* $dE(x(t))$ is the row 
+  
+  $$(x_1(t),3x_2(t))=(e^{-t},3e^{-3t})$$
+  
+* Apply: 
+  
+  $$dE(x(t)).\dot x(t)=e^{-t}\cdot(-e^{-t})+3e^{-3t}\cdot(-3e^{-3t})=-e^{-2t}-9e^{-6t}$$
+
+* Compare to 
+  
+  $$\frac{d}{dt}E(x(t))=\frac{d}{dt}\bigl[\tfrac12 e^{-2t}+\tfrac32 e^{-6t}\bigr]=-e^{-2t}-9e^{-6t}. ✓$$
 
 The two computations agree because the chain rule is true. The first line is the *conceptual* statement (apply a linear map to a vector); the second is the *coordinate calculation* (sum of products of partials and components). Once the spaces are not $\mathbb R^n$, only the first line still makes sense — that is why the abstract picture is the durable one.
+
+## Implicit (backward) Euler vs explicit (forward) Euler
+
+Forward Euler (a.k.a. *explicit Euler*) is the discretisation that every numerical analyst meets first; *implicit Euler* (a.k.a. *backward Euler*) is its much-more-stable partner. The two differ by **a single character** in their update rule, but the consequences are large — and in the gradient-flow / non-smooth-ODE setting, the implicit scheme is not a numerical curiosity but the **analytical engine** that proves existence of solutions when the right-hand side fails to be Lipschitz.
+
+### The two schemes side by side
+
+For an ODE $\dot x = f(x)$ with step size $h>0$:
+
+| scheme | update rule | RHS evaluated at |
+|---|---|---|
+| **Explicit (forward) Euler** | $x_{k+1}=x_k+h\,f(x_k)$ | the **old** point $x_k$ |
+| **Implicit (backward) Euler** | $x_{k+1}=x_k+h\,f(x_{k+1})$ | the **new** point $x_{k+1}$ |
+
+Forward Euler is an *explicit formula* in $x_k$ — just plug in. Backward Euler is an **equation**
+
+$$
+x_{k+1}-h\,f(x_{k+1}) = x_k,
+$$
+
+generally nonlinear, that must be solved at every time step (typically by Newton, fixed-point iteration, or — in the gradient-flow case — by minimization). That extra work is the cost; what one buys with it is **stability**.
+
+### Geometric picture: tangent at start vs tangent at end
+
+* **Forward Euler** uses the *initial* tangent of the step: stand at $x_k$, look at the slope $f(x_k)$ there, walk in that direction for time $h$.
+* **Backward Euler** uses the *final* tangent: choose $x_{k+1}$ so that the line through it with slope $f(x_{k+1})$ passes back through $x_k$ at time $t_k$.
+
+For the dissipative ODE $\dot x=-x$ with $x_k=1$ and a coarse $h=0.6$, the two schemes overshoot in **opposite directions**: forward Euler lands too low (it commits to the steepest initial slope and overruns), backward Euler lands too high (it uses a less-steep terminal slope). The exact value $e^{-h}$ sits in between.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/euler_geometric.png' | relative_url }}" alt="Geometric picture of one step of forward and backward Euler on the linear decay ODE: forward Euler follows the tangent at the start and undershoots, backward Euler uses the tangent at the end and overshoots, the exact solution sits between them" loading="lazy">
+  <figcaption>One step on $\dot{x}=-x$ from $x_k=1$ with $h=0.6$. Forward Euler (red) extrapolates the tangent at $x_k$ and lands at $x_{k+1}^{\rm FE}=0.4$. Backward Euler (blue) draws the line of slope $f(x_{k+1})$ through the new point that reaches back to $x_k$ at time $t_k$, landing at $x_{k+1}^{\rm BE}=1/(1+h)\approx 0.625$. The true value $x_k e^{-h}\approx 0.549$ (green diamond) sits in between.</figcaption>
+</figure>
+
+### Why bother — stability
+
+The classical test problem is the linear decay $\dot x=\lambda x$ with $\lambda<0$. Exact solution: $x(t)=x_0 e^{\lambda t}$, smoothly decaying.
+
+* **Forward Euler:** $x_{k+1}=(1+h\lambda)x_k$, so $x_k=(1+h\lambda)^k x_0$. Stable iff $|1+h\lambda|<1$, i.e. iff $h<2/|\lambda|$. For *stiff* problems (large $|\lambda|$), this forces a microscopic step.
+* **Backward Euler:** $x_{k+1}=x_k/(1-h\lambda)$, so $x_k=\bigl(1/(1-h\lambda)\bigr)^k x_0$. Stable for **every** $h>0$; the discrete dynamics inherit the dissipativity of the continuous ones, regardless of step size.
+
+Backward Euler is **A-stable** (unconditionally stable); forward Euler is only conditionally stable. In stiff regimes, this difference is decisive — and it is *the* reason implicit methods dominate parabolic-PDE numerics.
+
+The next figure shows the three regimes for $\lambda=-50$: well inside the forward-Euler stability disk (smooth on both sides), just inside (forward Euler oscillates but stays bounded), outside (forward Euler blows up exponentially while backward Euler keeps decaying smoothly).
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/euler_stability_decay.png' | relative_url }}" alt="Three panels showing forward and backward Euler on the linear decay equation x-dot equals minus 50 x for three step sizes; forward Euler is stable only when h is below 2 over absolute lambda" loading="lazy">
+  <figcaption>$\dot x=\lambda x,\ \lambda=-50$: as $h$ crosses $2/|\lambda|=0.04$, forward Euler (red) goes from smooth decay to bounded oscillation to outright divergence; backward Euler (blue) stays close to the exact solution at every step size.</figcaption>
+</figure>
+
+### Stability regions in the complex $h\lambda$ plane
+
+Plotting the stability conditions in the complex plane $z=h\lambda$ exposes the structural difference. Forward Euler is stable only on a **disk** of radius $1$ centred at $-1$ — a tiny corner of the complex plane that excludes most of the left half-plane. Backward Euler is stable on the **complement of a disk** of radius $1$ centred at $+1$, which covers the *entire* left half-plane (where the exact solution itself decays) and much else besides.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/euler_stability_regions.png' | relative_url }}" alt="Linear stability regions in the complex plane: forward Euler is stable only inside a small disk centered at minus one, while backward Euler is stable everywhere outside a disk centered at plus one, including the entire left half-plane" loading="lazy">
+  <figcaption>Stability regions in $z=h\lambda$. Left: forward Euler is stable on the red disk $|1+h\lambda|\le 1$. Right: backward Euler is stable on the blue region $|1-h\lambda|\ge 1$. The grey strip is the left half-plane $\mathrm{Re}(h\lambda)<0$ where the *exact* solution decays — backward Euler covers this entire strip, forward Euler only a fraction.</figcaption>
+</figure>
+
+The takeaway: backward Euler's stable region **strictly contains** the half-plane on which the exact ODE is dissipative. Forward Euler's region is a small disk that misses most of it.
+
+<figure>
+  <div class="ee-viz">
+    <style>
+      .ee-viz {
+        --color-text-primary: #1a1a1a;
+        --color-text-secondary: #4a4a4a;
+        --color-text-tertiary: #777777;
+        --color-background-primary: #ffffff;
+        --color-background-secondary: #f3f4f8;
+        --color-border-primary: #aaaaaa;
+        --color-border-secondary: #c8c8c8;
+        --color-border-tertiary: #dddddd;
+        --border-radius-md: 6px;
+        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      .ee-viz select { font-family: var(--font-sans); font-size: 13px; padding: 6px 8px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); }
+    </style>
+
+    <div style="padding: 1rem 0;">
+
+      <div style="margin-bottom: 1.25rem;">
+        <label for="ee-ode-select" style="display: block; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px;">Initial value problem</label>
+        <select id="ee-ode-select" style="width: 100%;">
+          <option value="0">dy/dt = y,&nbsp;&nbsp;y(0) = 1&nbsp;&nbsp;(exponential growth)</option>
+          <option value="1">dy/dt = -y,&nbsp;&nbsp;y(0) = 1&nbsp;&nbsp;(exponential decay)</option>
+          <option value="2" selected>dy/dt = -10y,&nbsp;&nbsp;y(0) = 1&nbsp;&nbsp;(stiff — implicit handles any h)</option>
+          <option value="3">dy/dt = -2ty,&nbsp;&nbsp;y(0) = 1&nbsp;&nbsp;(Gaussian)</option>
+          <option value="4">dy/dt = t - y,&nbsp;&nbsp;y(0) = 1</option>
+        </select>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 1rem;">
+        <div>
+          <label style="display: flex; justify-content: space-between; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px;">
+            <span>Step size&nbsp;&nbsp;<em>h</em></span>
+            <span id="ee-h-out" style="color: var(--color-text-primary); font-weight: 500; font-variant-numeric: tabular-nums;">0.30</span>
+          </label>
+          <input type="range" id="ee-h-slider" min="0.02" max="1" step="0.02" value="0.3" style="width: 100%;">
+        </div>
+        <div>
+          <label style="display: flex; justify-content: space-between; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px;">
+            <span>Final time&nbsp;&nbsp;<em>t<sub>max</sub></em></span>
+            <span id="ee-t-out" style="color: var(--color-text-primary); font-weight: 500; font-variant-numeric: tabular-nums;">2.0</span>
+          </label>
+          <input type="range" id="ee-t-slider" min="0.5" max="6" step="0.5" value="2" style="width: 100%;">
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <label style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-secondary); cursor: pointer;">
+          <input type="checkbox" id="ee-compare-toggle" checked style="width: 16px; height: 16px;">
+          <span>Show explicit Euler for comparison</span>
+        </label>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.25rem;">
+        <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 16px;">
+          <div style="font-size: 12px; color: var(--color-text-secondary);">Steps</div>
+          <div id="ee-stat-steps" style="font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums;">—</div>
+        </div>
+        <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 16px;">
+          <div style="font-size: 12px; color: var(--color-text-secondary);">Max |error| (implicit)</div>
+          <div id="ee-stat-maxerr" style="font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums;">—</div>
+        </div>
+        <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 16px;">
+          <div style="font-size: 12px; color: var(--color-text-secondary);">y(t<sub>max</sub>) implicit</div>
+          <div id="ee-stat-final" style="font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums;">—</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 18px; margin-bottom: 8px; font-size: 13px; color: var(--color-text-secondary); flex-wrap: wrap;">
+        <span style="display: inline-flex; align-items: center; gap: 8px;">
+          <svg width="28" height="10" viewBox="0 0 28 10"><line x1="0" y1="5" x2="28" y2="5" stroke="#888780" stroke-width="2"/></svg>
+          Exact
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 8px;">
+          <svg width="28" height="10" viewBox="0 0 28 10"><line x1="0" y1="5" x2="28" y2="5" stroke="#D85A30" stroke-width="2" stroke-dasharray="5,3"/><circle cx="14" cy="5" r="2.5" fill="#D85A30"/></svg>
+          Implicit Euler
+        </span>
+        <span id="ee-explicit-legend" style="display: inline-flex; align-items: center; gap: 8px;">
+          <svg width="28" height="10" viewBox="0 0 28 10"><line x1="0" y1="5" x2="28" y2="5" stroke="#378ADD" stroke-width="2" stroke-dasharray="2,3"/><polygon points="11,9 17,9 14,2" fill="#378ADD"/></svg>
+          Explicit Euler
+        </span>
+      </div>
+
+      <div style="position: relative; width: 100%; height: 320px;">
+        <canvas id="ee-euler-chart" role="img" aria-label="Plot comparing the exact ODE solution to its implicit Euler approximation, optionally overlaid with the explicit Euler method.">Plot comparing exact, implicit Euler, and optionally explicit Euler approximations.</canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+  (function () {
+    if (typeof Chart === 'undefined') { return; }
+    const ODES = [
+      { f: (t, y) => y,          exact: t => Math.exp(t),                y0: 1,
+        implicit: (tn, yn, h) => { const d = 1 - h; return Math.abs(d) < 1e-9 ? NaN : yn / d; } },
+      { f: (t, y) => -y,         exact: t => Math.exp(-t),               y0: 1,
+        implicit: (tn, yn, h) => yn / (1 + h) },
+      { f: (t, y) => -10 * y,    exact: t => Math.exp(-10 * t),          y0: 1,
+        implicit: (tn, yn, h) => yn / (1 + 10 * h) },
+      { f: (t, y) => -2 * t * y, exact: t => Math.exp(-t * t),           y0: 1,
+        implicit: (tn, yn, h) => yn / (1 + 2 * h * (tn + h)) },
+      { f: (t, y) => t - y,      exact: t => t - 1 + 2 * Math.exp(-t),   y0: 1,
+        implicit: (tn, yn, h) => (yn + h * (tn + h)) / (1 + h) },
+    ];
+
+    const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+    const grid = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+    const tick = isDark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.65)';
+
+    const ctx = document.getElementById('ee-euler-chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: { datasets: [
+        { label: 'Exact',    data: [], borderColor: '#888780', borderWidth: 2, pointRadius: 0, tension: 0 },
+        { label: 'Implicit', data: [], borderColor: '#D85A30', backgroundColor: '#D85A30', borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, borderDash: [5, 3], pointStyle: 'circle' },
+        { label: 'Explicit', data: [], borderColor: '#378ADD', backgroundColor: '#378ADD', borderWidth: 2, pointRadius: 4, pointHoverRadius: 6, borderDash: [2, 3], pointStyle: 'triangle' },
+      ]},
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        spanGaps: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: 'nearest', intersect: false,
+            callbacks: {
+              title: (items) => 't = ' + (+items[0].parsed.x).toFixed(3),
+              label: (item) => item.dataset.label + ': ' + (Number.isFinite(item.parsed.y) ? (+item.parsed.y).toFixed(4) : '—'),
+            }
+          }
+        },
+        scales: {
+          x: { type: 'linear', title: { display: true, text: 't', color: tick }, grid: { color: grid }, ticks: { color: tick } },
+          y: { title: { display: true, text: 'y', color: tick }, grid: { color: grid }, ticks: { color: tick } },
+        }
+      }
+    });
+
+    function fmt(v) {
+      if (Number.isNaN(v)) return 'NaN';
+      if (!Number.isFinite(v)) return v > 0 ? '+∞' : '-∞';
+      const a = Math.abs(v);
+      if (a !== 0 && (a < 0.01 || a >= 1000)) return v.toExponential(2);
+      return v.toFixed(3);
+    }
+
+    function compute() {
+      const i = +document.getElementById('ee-ode-select').value;
+      const h = +document.getElementById('ee-h-slider').value;
+      const tmax = +document.getElementById('ee-t-slider').value;
+      const showExplicit = document.getElementById('ee-compare-toggle').checked;
+      const ode = ODES[i];
+
+      const exactPts = [];
+      const N = 240;
+      for (let k = 0; k <= N; k++) {
+        const t = (tmax * k) / N;
+        exactPts.push({ x: t, y: ode.exact(t) });
+      }
+
+      const exactMax = exactPts.reduce((m, p) => Math.max(m, Math.abs(p.y)), 0);
+      const threshold = Math.max(exactMax * 15, 8);
+
+      const impPts = [{ x: 0, y: ode.y0 }];
+      let t = 0, y = ode.y0;
+      let maxErr = 0;
+      let lastFinite = y;
+      let guard = 0;
+      while (t < tmax - 1e-9 && guard++ < 10000) {
+        const step = Math.min(h, tmax - t);
+        y = ode.implicit(t, y, step);
+        t = t + step;
+        if (!Number.isFinite(y) || Math.abs(y) > threshold) {
+          impPts.push({ x: t, y: NaN });
+          break;
+        }
+        impPts.push({ x: t, y: y });
+        lastFinite = y;
+        const err = Math.abs(y - ode.exact(t));
+        if (err > maxErr) maxErr = err;
+      }
+
+      const expPts = [];
+      if (showExplicit) {
+        let te = 0, ye = ode.y0;
+        expPts.push({ x: te, y: ye });
+        let g2 = 0;
+        while (te < tmax - 1e-9 && g2++ < 10000) {
+          const step = Math.min(h, tmax - te);
+          ye = ye + step * ode.f(te, ye);
+          te = te + step;
+          if (!Number.isFinite(ye) || Math.abs(ye) > threshold) {
+            expPts.push({ x: te, y: NaN });
+            break;
+          }
+          expPts.push({ x: te, y: ye });
+        }
+      }
+
+      chart.data.datasets[0].data = exactPts;
+      chart.data.datasets[1].data = impPts;
+      chart.data.datasets[1].pointRadius = impPts.length > 60 ? 2 : (impPts.length > 30 ? 3 : 4);
+      chart.data.datasets[2].data = expPts;
+      chart.data.datasets[2].hidden = !showExplicit;
+      chart.data.datasets[2].pointRadius = expPts.length > 60 ? 2 : (expPts.length > 30 ? 3 : 4);
+      chart.update('none');
+
+      document.getElementById('ee-h-out').textContent = h.toFixed(2);
+      document.getElementById('ee-t-out').textContent = tmax.toFixed(1);
+      document.getElementById('ee-stat-steps').textContent = String(impPts.length - 1);
+      document.getElementById('ee-stat-maxerr').textContent = fmt(maxErr);
+      document.getElementById('ee-stat-final').textContent = fmt(lastFinite);
+
+      document.getElementById('ee-explicit-legend').style.display = showExplicit ? 'inline-flex' : 'none';
+    }
+
+    document.getElementById('ee-ode-select').addEventListener('change', compute);
+    document.getElementById('ee-h-slider').addEventListener('input', compute);
+    document.getElementById('ee-t-slider').addEventListener('input', compute);
+    document.getElementById('ee-compare-toggle').addEventListener('change', compute);
+    compute();
+  })();
+  </script>
+  <figcaption>Interactive ODE explorer: pick an initial-value problem, adjust the step size $h$ and the final time $t_{\max}$, and toggle the explicit-Euler overlay. Try the stiff problem $\dot y=-10y$ at large $h$: implicit Euler stays close to the exact solution, explicit Euler oscillates and blows up. Stats show step count, the maximum absolute error of implicit Euler against the exact solution, and the final value $y(t_{\max})$.</figcaption>
+</figure>
+
+### Implicit Euler step = proximal step (the gradient-flow connection)
+
+Apply backward Euler to a gradient flow $\dot x=-\nabla E(x)$:
+
+$$
+\frac{x_{k+1}-x_k}{h}=-\nabla E(x_{k+1})\quad\Longleftrightarrow\quad x_{k+1}+h\,\nabla E(x_{k+1})=x_k.\qquad(\heartsuit)
+$$
+
+The magic identity: $(\heartsuit)$ is exactly the first-order optimality condition of the optimization problem
+
+$$
+\boxed{\quad x_{k+1}\;\in\;\arg\min_{y\in\mathbb R^N}\;\Bigl\lbrace\,E(y)+\frac{1}{2h}\,\|y-x_k\|^2\,\Bigr\rbrace.\quad}
+$$
+
+Indeed, differentiating the bracket in $y$ yields $\nabla E(y)+\frac1h(y-x_k)$, and zeroing this at $y=x_{k+1}$ recovers $(\heartsuit)$.
+
+So **one implicit Euler step = one minimization step** of "energy plus quadratic penalty for moving." The map $x_k\mapsto x_{k+1}$ is called the **proximal map** of $E$, often denoted $\mathrm{prox}_{hE}(x_k)$. The discrete trajectory $x_0,x_1,x_2,\dots$ is the **minimizing-movement scheme** in finite dimensions, and the **JKO scheme** (after Jordan–Kinderlehrer–Otto) on Wasserstein space.
+
+The reason this matters for non-smooth gradient-flow theory:
+
+* The minimization problem makes sense **even when $\nabla E$ does not exist or is not Lipschitz**, provided $E$ is convex, proper, lsc — the quadratic penalty makes the bracketed functional strictly convex and coercive, so $x_{k+1}$ exists and is unique.
+* In the non-smooth case the optimality condition becomes the *differential inclusion*
+
+  $$
+  \frac{x_{k+1}-x_k}{h}\;\in\;-\partial E(x_{k+1}),
+  $$
+
+  i.e. the time-discretisation of the subgradient flow.
+* As $h\downarrow 0$, the piecewise-constant or piecewise-linear interpolations of the iterates converge (under mild hypotheses) to a solution of the continuous gradient flow — *even if classical ODE theory has no purchase*. The implicit Euler scheme is thereby the **analytical** tool for proving existence of gradient flows of irregular energies.
+
+### Concrete non-smooth case: $E(x)=|x|$ and soft-thresholding
+
+This is the canonical non-smooth example: $\nabla E$ does not exist at $0$, so forward Euler cannot even be defined there. The proximal step is solvable in closed form:
+
+$$
+\mathrm{prox}_{h|\cdot|}(x)=\arg\min_y\Bigl\lbrace |y|+\tfrac{1}{2h}(y-x)^2\Bigr\rbrace=\mathrm{sign}(x)\cdot\max(|x|-h,\,0).
+$$
+
+This is the **soft-thresholding operator** — a workhorse of compressed sensing, LASSO, and many proximal-gradient algorithms. Iterated from $x_0$ with step $h$, it descends linearly at speed $1$ toward $0$ and then *stops*:
+
+$$
+2\;\mapsto\;1.6\;\mapsto\;1.2\;\mapsto\;0.8\;\mapsto\;0.4\;\mapsto\;0\;\mapsto\;0\;\mapsto\;\cdots
+$$
+
+(starting from $x_0=2$ with $h=0.4$). This matches the exact subgradient flow $x(t)=\max(2-t,0)$ on the nose, hitting the kink and parking there.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/euler_softthreshold.png' | relative_url }}" alt="Two panels: left shows the soft-thresholding map as the piecewise-linear function with a flat zero region near the origin; right shows iterates of implicit Euler from x_0 equals 2 descending linearly to zero and remaining at zero, matching the exact subgradient flow" loading="lazy">
+  <figcaption>Implicit Euler for $E(x)=|x|$. Left: one step is the soft-thresholding operator $x\mapsto\mathrm{sign}(x)\max(|x|-h,0)$, which collapses the band $|x|\le h$ to zero. Right: iterates from $x_0=2$ with $h=0.4$ exactly track the subgradient flow $\max(2-t,0)$, descend at unit speed, and stop dead at the kink. Forward Euler cannot be applied here at all.</figcaption>
+</figure>
+
+### Comparison summary
+
+| property | forward Euler | backward Euler |
+|---|---|---|
+| update | explicit formula | requires solving an equation |
+| cost per step | cheap | expensive (one nonlinear solve) |
+| stability for stiff problems | requires tiny $h$ | unconditionally stable (A-stable) |
+| order of accuracy | first-order | first-order |
+| works when $\nabla E$ Lipschitz | yes | yes |
+| works when $\nabla E$ non-Lipschitz / non-existent | no | yes (proximal step) |
+| variational interpretation | none | minimizing-movement / JKO |
+| analytical role | numerical only | proves existence in non-smooth gradient-flow theory |
+
+### One-line summary
+
+> Forward Euler $x_{k+1}=x_k+h\,f(x_k)$ uses the slope at the *start* of the step; backward Euler $x_{k+1}=x_k+h\,f(x_{k+1})$ uses the slope at the *end*, requiring an equation solve. The reward is **unconditional stability** (A-stability) — and in the gradient-flow case, the backward-Euler step coincides with the **proximal step** $x_{k+1}=\arg\min_y\{E(y)+\frac1{2h}\|y-x_k\|^2\}$, which is well-defined for convex $E$ regardless of smoothness, and is the analytical engine that proves existence of gradient flows when classical ODE theory cannot.
