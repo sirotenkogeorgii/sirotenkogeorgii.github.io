@@ -71,11 +71,16 @@ By classical ODE theory (Picard–Lindelöf / Cauchy–Lipschitz), there exists 
   <figcaption>Gradient-flow trajectories on $E(x_1,x_2)=\frac{1}{2}(x_1^2+3x_2^2)$. Each curve solves $\dot{x}=-\nabla E$ from a different initial condition; all converge to the minimizer $x_*=0$. Trajectories cross level sets at right angles.</figcaption>
 </figure>
 
-**Energy dissipation.** Differentiating the energy along the trajectory,
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Energy dissipation)</span></p>
+
+Differentiating the energy along the trajectory,
 
 $$
 \frac{d}{dt} E(x(t)) = dE(x(t)).\dot{x}(t) = \langle \nabla E(x(t)), \dot{x}(t) \rangle = -|\dot{x}(t)|^2 \le 0. \tag{1.2}
 $$
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On the dot in $dE(x(t)).\dot{x}(t)$)</span></p>
@@ -161,9 +166,9 @@ In the smooth Euclidean setting treated here, ($\ast$) and (1.3) are equivalent,
 </figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Direction of steepest descent* of the energy)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Property</span><span class="math-callout__name">(Direction of steepest descent of the energy)</span></p>
 
-At the risk of stating the obvious: $-\nabla E(x(t))$ is the *direction of steepest descent* of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $\|v\| = \|\nabla E(x(t))\|$,
+$-\nabla E(x(t))$ is the **direction of steepest descent** of the energy (or entropy) $E$. For all $v \in \mathbb{R}^N$ with $\|v\| = \|\nabla E(x(t))\|$,
 
 $$
 -\langle \nabla E(x(t)), \nabla E(x(t)) \rangle \le \langle v, \nabla E(x(t)) \rangle.
@@ -615,6 +620,168 @@ $$
 be its piecewise-constant interpolation in time.
 
 </div>
+
+The **Euler–Lagrange equation** for (1.10) — i.e. the *first-order optimality condition* for $\chi_h^{(\ell)}$ to be a minimizer of the bracketed functional, in the same variational sense as in §1.2 — is
+
+$$
+\frac{\chi_h^{(\ell)} - \chi_h^{(\ell-1)}}{h} \in -\partial E(\chi_h^{(\ell)}). \tag{1.12}
+$$
+
+When $E$ is differentiable, this reduces to
+
+$$
+\frac{\chi_h^{(\ell)} - \chi_h^{(\ell-1)}}{h} = -\nabla E(\chi_h^{(\ell)}), \tag{1.13}
+$$
+
+which is precisely the **implicit Euler scheme** for the ODE (1.1):
+
+$$
+\chi_h^{(\ell)}= \chi_h^{(\ell-1)} -h\nabla E(\chi_h^{(\ell)}).
+$$
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why is (1.12) called an Euler–Lagrange equation, and how is it the first-order optimality condition?</summary>
+
+**What is being minimized.** Equation (1.10) defines $\chi_h^{(\ell)}$ as the minimizer of
+
+$$
+F(x) \;:=\; E(x) \;+\; \tfrac{1}{2h}\bigl|x-\chi_h^{(\ell-1)}\bigr|^2.
+$$
+
+So the question "what equation does $\chi_h^{(\ell)}$ satisfy?" is the same as "what does it mean for $\chi_h^{(\ell)}$ to be a minimizer of $F$?"
+
+**First-order optimality, in plain calculus.** If $F$ is differentiable, the very first thing one learns about minimizers is the **first-order optimality condition**:
+
+$$
+x^\ast \text{ is a (local) minimizer of } F \;\Longrightarrow\; \nabla F(x^\ast)=0.
+$$
+
+It is called *first-order* because it involves only the first derivative (no Hessian), and it is *necessary, not sufficient* — every maximizer and every saddle satisfies it too. For convex but possibly non-smooth $E$, the analogue is
+
+$$
+0 \in \partial F(x^\ast),
+$$
+
+which is *necessary and sufficient* once $F$ is convex.
+
+**Apply it to (1.10).** Decompose $F = E + Q$ where $Q(x):=\tfrac{1}{2h}|x-\chi_h^{(\ell-1)}|^2$. Then
+
+* $Q$ is smooth with $\nabla Q(x) = \tfrac{1}{h}(x-\chi_h^{(\ell-1)})$,
+* $E$ is convex with subdifferential $\partial E(x)$,
+* by the sum rule for subdifferentials, $\partial F(x) = \partial E(x) + \nabla Q(x)$.
+
+The first-order optimality condition $0 \in \partial F(\chi_h^{(\ell)})$ becomes
+
+$$
+0 \;\in\; \partial E\bigl(\chi_h^{(\ell)}\bigr) \;+\; \tfrac{1}{h}\bigl(\chi_h^{(\ell)}-\chi_h^{(\ell-1)}\bigr),
+$$
+
+and rearranging gives (1.12) exactly. If $E\in C^1$, $\partial E=\lbrace\nabla E\rbrace$ and the inclusion becomes the equality (1.13).
+
+**Why call this an Euler–Lagrange equation?** In §1.2 the EL equation came from a recipe: take the functional $J$, compute the first variation $\delta J[y;\eta] = \tfrac{d}{d\varepsilon}|_{\varepsilon=0} J[y+\varepsilon\eta]$, set it to zero for every admissible $\eta$. That is literally the first-order optimality condition, written in function-space language: differentiate the objective along every admissible perturbation, demand stationarity. In §1.2 the integration-by-parts step gave the classical PDE/ODE form (EL); in (1.10) one does not need integration by parts because the variable is just $x\in\mathbb R^N$, but **the underlying logic is identical**:
+
+| §1.2 (function space) | (1.10) (finite-dim, non-smooth) |
+|---|---|
+| Variable: $y\in\mathcal A$ | Variable: $x\in\mathbb R^N$ |
+| Admissible perturbations: $\eta\in\mathcal V$ | Admissible perturbations: any $v\in\mathbb R^N$ |
+| Stationarity: $\delta J[y;\eta]=0\ \forall\eta$ | Stationarity: $\nabla F(x)=0$ (or $0\in\partial F(x)$) |
+| ⇓ integration by parts | ⇓ algebra (sum rule for $\partial$) |
+| Classical EL equation (PDE/ODE) | Equation (1.12) |
+
+**Step-for-step derivation in the smooth case.** One can derive (1.12) by mimicking §1.2 verbatim. Set $\Phi(\varepsilon):=F(\chi_h^{(\ell)}+\varepsilon v)$ for arbitrary $v\in\mathbb R^N$. Stationarity demands $\Phi'(0)=0$:
+
+$$
+\Phi'(0) \;=\; \bigl\langle \nabla E(\chi_h^{(\ell)}),\,v\bigr\rangle + \tfrac{1}{h}\bigl\langle \chi_h^{(\ell)}-\chi_h^{(\ell-1)},\,v\bigr\rangle \;=\; 0 \quad\forall v\in\mathbb R^N,
+$$
+
+which forces $\nabla E(\chi_h^{(\ell)})+\tfrac{1}{h}(\chi_h^{(\ell)}-\chi_h^{(\ell-1)})=0$ — exactly (1.13). Same recipe as §1.2: vary in every admissible direction, set the first variation to zero. The non-smooth (1.12) is the same statement read through the subdifferential.
+
+**Summary.** "Euler–Lagrange equation" and "first-order optimality condition" are two names for the same idea: the equation that says the first variation of the objective vanishes in every admissible direction. In §1.2 the objective is a functional and the equation is a PDE/ODE; in (1.10) the objective is a function on $\mathbb R^N$ and the equation is (1.12), which in the smooth case collapses to "gradient = zero."
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why is $\nabla E$ evaluated at the new point $\chi_h^{(\ell)}$ and not at the starting point $\chi_h^{(\ell-1)}$?</summary>
+
+A natural intuition says: "for the optimal step from $\chi_h^{(\ell-1)}$, the next point should move in the direction of $-\nabla E(\chi_h^{(\ell-1)})$ — the steepest descent direction *at the current point*." That intuition is correct — but it is the **explicit Euler scheme**, not (1.13). (1.10) defines the **implicit Euler scheme**. The two are *different algorithms*, and the reason $\nabla E$ ends up at $\chi_h^{(\ell)}$ rather than at $\chi_h^{(\ell-1)}$ is that (1.10) asks a different question.
+
+**Two competing recipes for "next point."**
+
+* **Explicit Euler (the natural intuition).** "I am at $\chi_h^{(\ell-1)}$. The steepest descent direction *here* is $-\nabla E(\chi_h^{(\ell-1)})$. Step a distance $h$ in that direction":
+
+  $$
+  \chi_h^{(\ell)} \;=\; \chi_h^{(\ell-1)} - h\,\nabla E(\chi_h^{(\ell-1)}). \tag{$\star$}
+  $$
+
+  This is gradient descent. It is **not** what (1.10) defines.
+
+* **Implicit Euler / JKO ((1.10)).** Among all candidate points $x$, pick the one that minimizes the auxiliary function
+
+  $$
+  F(x) \;=\; E(x) \;+\; \tfrac{1}{2h}\bigl|x-\chi_h^{(\ell-1)}\bigr|^2.
+  $$
+
+  This is not "take a step from where I am" — it is "find the bottom of $F$." And the gradient of $F$ that we set to zero is evaluated **at the candidate point being tested**, not at the anchor $\chi_h^{(\ell-1)}$.
+
+The difference is the same as between "walk one step in this direction" and "find the equilibrium of a force field." The first names a recipe; the second names a fixed-point problem.
+
+**Spring picture.** Think of $\chi_h^{(\ell-1)}$ as a fixed peg in the ground. Attach one end of a spring (stiffness $1/h$) to the peg; attach the other end to a ball that lives in the potential energy landscape $E$. Two forces act on the ball at any candidate position $x$:
+
+* spring force, pulling the ball toward the peg: $-\tfrac{1}{h}(x - \chi_h^{(\ell-1)})$,
+* energy force, pushing the ball downhill: $-\nabla E(x)$.
+
+The ball comes to rest where these forces **cancel**. Crucially, both are evaluated **at the ball's resting position**, because that is where the ball actually sits:
+
+$$
+-\nabla E(\chi_h^{(\ell)}) \;-\; \tfrac{1}{h}(\chi_h^{(\ell)} - \chi_h^{(\ell-1)}) \;=\; 0,
+$$
+
+which rearranges to (1.13). The peg location $\chi_h^{(\ell-1)}$ enters only through the spring's anchor point; it never enters as a place where $\nabla E$ is evaluated. If you were to evaluate $\nabla E$ at the peg instead, you would be solving a different problem — namely, "where does the ball sit if the energy force is constant, equal to its value at the peg?" — and that answer is exactly $(\star)$.
+
+**Mathematical statement: why the first-order condition lives at $\chi_h^{(\ell)}$.** (1.10) asks for the minimizer of $F(x)$. The first-order condition is $\nabla F(x^\ast) = 0$, i.e. *the gradient of $F$ vanishes at the minimizer*. Compute:
+
+$$
+\nabla F(x) \;=\; \nabla E(x) \;+\; \tfrac{1}{h}(x - \chi_h^{(\ell-1)}).
+$$
+
+Setting this to zero at $x = \chi_h^{(\ell)}$:
+
+$$
+\nabla E(\chi_h^{(\ell)}) \;+\; \tfrac{1}{h}(\chi_h^{(\ell)} - \chi_h^{(\ell-1)}) \;=\; 0.
+$$
+
+The point $\chi_h^{(\ell-1)}$ is a *frozen parameter* of $F$, not a variable. So when we differentiate $F$ in $x$ and evaluate at the minimizer, the only place $\chi_h^{(\ell-1)}$ shows up is inside the spring term. The $\nabla E$ slot is unconditionally evaluated at the variable $x$, which at the minimum equals $\chi_h^{(\ell)}$.
+
+**A 1D example by hand.** Let $E(x)=\tfrac12 x^2$ (so $\nabla E(x)=x$) and $\chi_h^{(\ell-1)}=1$.
+
+* *Explicit:* $\chi_h^{(\ell)} = 1 - h\cdot 1 = 1-h$.
+* *Implicit:* solve $x + (x-1)/h = 0 \;\Rightarrow\; \chi_h^{(\ell)} = \tfrac{1}{1+h}$.
+
+Compare with the exact gradient flow $\dot x=-x$, $x(0)=1$, whose value at time $h$ is $e^{-h}$:
+
+| $h$ | explicit $1-h$ | implicit $1/(1+h)$ | exact $e^{-h}$ |
+|---|---|---|---|
+| $0.1$ | $0.900$ | $0.909$ | $0.905$ |
+| $1$ | $0$ | $0.5$ | $0.368$ |
+| $10$ | $-9$ | $0.091$ | $4.5\!\times\!10^{-5}$ |
+| $100$ | $-99$ | $0.0099$ | $\approx 0$ |
+
+For small $h$ both schemes agree, and both approximate the true flow. For large $h$ the explicit scheme **overshoots wildly** — it shoots to $-9$ when the true trajectory is monotonically decreasing toward $0$ — while the implicit scheme stays well-behaved. This is the famous *unconditional stability* of implicit Euler for gradient flows of convex energies.
+
+**Reconciliation.** Both intuitions are correct *for their own algorithm*. As $h \to 0$, both ($\star$) and (1.13) converge to the same continuous flow $\dot x = -\nabla E(x)$, so in the limit they agree. For finite $h$, however, they are genuinely different schemes:
+
+* The *explicit* scheme is what you get if you literally "take a step in the steepest descent direction at the current point."
+* The *implicit / JKO* scheme is what you get if you instead **solve a small minimization problem at each step**, where the proximity to the previous point is penalized but the new point is otherwise allowed to settle wherever $F$ has its minimum.
+
+(1.10) defines the second one. That is why $\nabla E$ is evaluated at $\chi_h^{(\ell)}$ — the new point is found by *solving an equation*, not by *stepping from the old point*. The reason the chapter prefers the implicit (JKO) version, even though it is computationally more expensive, is that the variational structure "$\chi_h^{(\ell)}$ is the *minimizer* of $E + \tfrac{1}{2h}|\cdot - \chi_h^{(\ell-1)}|^2$" is what generalizes to non-smooth $E$, to infinite-dimensional spaces, and (later in the chapter) to metric spaces where there is no "$\nabla E$" at all. The price paid for that generality is that the gradient lives at the new point.
+
+</details>
+</div>
+
+With this construction in hand, we state the existence result. Its proof is more technical than the results in the next section and will be deferred.
 
 <figure>
   <div class="mm-viz">
@@ -1366,22 +1533,6 @@ be its piecewise-constant interpolation in time.
   </div>
   <figcaption>Interactive: full iteration of (1.10) on the 2D anisotropic energy $E(x,y)=\frac{1}{2}(a x^2+b y^2)$. The blue trail is the minimizing-movements scheme, the red trail is explicit Euler, the green dashed curve is the continuous gradient flow, and the dashed orange rings show the parabolic "pull" $\frac{1}{2h}|x-\chi_{\ell-1}|^2$ around the current iterate. Use <em>Step</em> for a single iteration, <em>Auto</em> to play, <em>Reset</em> to clear; click anywhere to set a new initial point $\chi_0$. Try the most anisotropic energy ($\frac{1}{2}(x^2+8y^2)$) at moderate $h$: explicit Euler oscillates and blows up while minimizing movements stays put — the very statement of $A$-stability.</figcaption>
 </figure>
-
-The **Euler–Lagrange equation** for (1.10) — i.e. the *first-order optimality condition* for $\chi_h^{(\ell)}$ to be a minimizer of the bracketed functional, in the same variational sense as in §1.2 — is
-
-$$
-\frac{\chi_h^{(\ell)} - \chi_h^{(\ell-1)}}{h} \in -\partial E(\chi_h^{(\ell)}). \tag{1.12}
-$$
-
-When $E$ is differentiable, this reduces to
-
-$$
-\frac{\chi_h^{(\ell)} - \chi_h^{(\ell-1)}}{h} = -\nabla E(\chi_h^{(\ell)}), \tag{1.13}
-$$
-
-which is precisely the **implicit Euler scheme** (TODO: what is it?) for the ODE (1.1).
-
-With this construction in hand, we state the existence result. Its proof is more technical than the results in the next section and will be deferred.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 1</span><span class="math-callout__name">(Existence via minimizing movements)</span></p>
