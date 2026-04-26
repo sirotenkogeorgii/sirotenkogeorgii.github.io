@@ -665,7 +665,7 @@ $$
 
 which is *necessary and sufficient* once $F$ is convex.
 
-**Apply it to (1.10).** Decompose $F = E + Q$ where $Q(x):=\tfrac{1}{2h}|x-\chi_h^{(\ell-1)}|^2$. Then
+**Apply it to (1.10).** Decompose $F = E + Q$ where $Q(x):=\tfrac{1}{2h}\|x-\chi_h^{(\ell-1)}\|^2$. Then
 
 * $Q$ is smooth with $\nabla Q(x) = \tfrac{1}{h}(x-\chi_h^{(\ell-1)})$,
 * $E$ is convex with subdifferential $\partial E(x)$,
@@ -679,7 +679,7 @@ $$
 
 and rearranging gives (1.12) exactly. If $E\in C^1$, $\partial E=\lbrace\nabla E\rbrace$ and the inclusion becomes the equality (1.13).
 
-**Why call this an Euler–Lagrange equation?** In §1.2 the EL equation came from a recipe: take the functional $J$, compute the first variation $\delta J[y;\eta] = \tfrac{d}{d\varepsilon}|_{\varepsilon=0} J[y+\varepsilon\eta]$, set it to zero for every admissible $\eta$. That is literally the first-order optimality condition, written in function-space language: differentiate the objective along every admissible perturbation, demand stationarity. In §1.2 the integration-by-parts step gave the classical PDE/ODE form (EL); in (1.10) one does not need integration by parts because the variable is just $x\in\mathbb R^N$, but **the underlying logic is identical**:
+**Why call this an Euler–Lagrange equation?** In §1.2 the EL equation came from a recipe: take the functional $J$, compute the first variation $\delta J[y;\eta] = \tfrac{d}{d\varepsilon}\|\_{\varepsilon=0} J[y+\varepsilon\eta]$, set it to zero for every admissible $\eta$. That is literally the first-order optimality condition, written in function-space language: differentiate the objective along every admissible perturbation, demand stationarity. In §1.2 the integration-by-parts step gave the classical PDE/ODE form (EL); in (1.10) one does not need integration by parts because the variable is just $x\in\mathbb R^N$, but **the underlying logic is identical**:
 
 | §1.2 (function space) | (1.10) (finite-dim, non-smooth) |
 |---|---|
@@ -776,7 +776,7 @@ For small $h$ both schemes agree, and both approximate the true flow. For large 
 * The *explicit* scheme is what you get if you literally "take a step in the steepest descent direction at the current point."
 * The *implicit / JKO* scheme is what you get if you instead **solve a small minimization problem at each step**, where the proximity to the previous point is penalized but the new point is otherwise allowed to settle wherever $F$ has its minimum.
 
-(1.10) defines the second one. That is why $\nabla E$ is evaluated at $\chi_h^{(\ell)}$ — the new point is found by *solving an equation*, not by *stepping from the old point*. The reason the chapter prefers the implicit (JKO) version, even though it is computationally more expensive, is that the variational structure "$\chi_h^{(\ell)}$ is the *minimizer* of $E + \tfrac{1}{2h}|\cdot - \chi_h^{(\ell-1)}|^2$" is what generalizes to non-smooth $E$, to infinite-dimensional spaces, and (later in the chapter) to metric spaces where there is no "$\nabla E$" at all. The price paid for that generality is that the gradient lives at the new point.
+(1.10) defines the second one. That is why $\nabla E$ is evaluated at $\chi_h^{(\ell)}$ — the new point is found by *solving an equation*, not by *stepping from the old point*. The reason the chapter prefers the implicit (JKO) version, even though it is computationally more expensive, is that the variational structure "$\chi_h^{(\ell)}$ is the *minimizer* of $E + \tfrac{1}{2h}\|\cdot - \chi_h^{(\ell-1)}\|^2$" is what generalizes to non-smooth $E$, to infinite-dimensional spaces, and (later in the chapter) to metric spaces where there is no "$\nabla E$" at all. The price paid for that generality is that the gradient lives at the new point.
 
 </details>
 </div>
@@ -1602,7 +1602,7 @@ which proves the monotonicity. **Uniqueness** follows by taking equal initial co
 
 A natural worry: at a kink of $E$, the subdifferential $\partial E$ contains many distinct supporting linear functionals — many "tangents that minimize the linear-approximation error in different ways". If two solutions starting at the same point pick two different tangents, will they not drift apart, contradicting (1.14)?
 
-The picture *of the function* is correct: a kink really has a whole interval of subgradients. What rescues uniqueness is that being a *solution* of the differential inclusion is a constraint over an entire forward time interval, not at a single instant. Almost every supporting tangent at a kink is exposed as a fake the moment the trajectory tries to step on it, because the trajectory leaves the kink and lands in a smooth segment whose unique gradient disagrees with the chosen tangent. Out of the entire interval $\partial E(x)$ at a kink, exactly one element is consistent with the inclusion for $t>0$: the **minimum-norm element** $\partial^0\!E(x)$, the projection of $0$ onto the closed convex set $\partial E(x)$.
+The picture *of the function* is correct: a kink really has a whole interval of subgradients. What rescues uniqueness is that being a *solution* of the differential inclusion is a constraint over an entire forward time interval, not at a single instant. Almost every supporting tangent at a kink is exposed as a fake the moment the trajectory tries to step on it, because the trajectory leaves the kink and lands in a smooth segment whose unique gradient disagrees with the chosen tangent. Out of the entire interval $\partial E(x)$ at a kink, exactly one element is consistent with the inclusion for $t>0$: the **minimum-norm element** $\partial^0 E(x)$, the projection of $0$ onto the closed convex set $\partial E(x)$.
 
 We illustrate this on a piecewise-linear bowl with several kinks.
 
@@ -1661,7 +1661,7 @@ We check each candidate against this hard constraint:
 
 Out of the entire interval $\partial E(2)=[1,2]$, exactly one element gives a valid solution: the closest one to $0$. Every other "tangent at the kink" is exposed as a fake by the very next moment of the flow. Two solutions trying to "pick different tangents" produce one solution and one **non-solution** — not two solutions drifting apart.
 
-**The full trajectory from $x_0=2$.** Tracking $\partial^0\!E$ at every instant:
+**The full trajectory from $x_0=2$.** Tracking $\partial^0 E$ at every instant:
 
 * For $t\in[0,1]$: $x(t)=2-t$, on the segment $(1,2)$ where $\nabla E=1$. Velocity $-1$.
 * At $t=1$: $x=1$, the kink between rising segment and plateau. $\partial E(1)=[0,1]$, min-norm $0$.
@@ -1694,15 +1694,15 @@ $$
 * $x_1$ with $p_1=1$: $x_1(t)=2-t$. Inclusion holds for $t>0$. ✓
 * $x_2$ with $p_2=2$: $x_2(t)=2-2t$. Inclusion fails on every $t\in(0,1/2)$. ✗
 
-The would-be drift $|x_1(t)-x_2(t)|=t$ is between *one* solution and *one phantom*. The phantom satisfies the inclusion only at $t=0$, not on any open interval. If we instead force $x_2$ to be a real solution from $x_0=2$, it has to pick $p_2=1$ as well, and then $x_1\equiv x_2$. No drift. Uniqueness.
+The would-be drift $\|x_1(t)-x_2(t)\|=t$ is between *one* solution and *one phantom*. The phantom satisfies the inclusion only at $t=0$, not on any open interval. If we instead force $x_2$ to be a real solution from $x_0=2$, it has to pick $p_2=1$ as well, and then $x_1\equiv x_2$. No drift. Uniqueness.
 
 **Summary.**
 
 * Each kink has a whole interval of supporting tangents — the multivaluedness of $\partial E$ at kinks is real.
-* But only one tangent per kink is consistent with the differential inclusion remaining satisfied for $t>0$: the min-norm element $\partial^0\!E$.
+* But only one tangent per kink is consistent with the differential inclusion remaining satisfied for $t>0$: the min-norm element $\partial^0 E$.
 * Every other tangent in $\partial E$ becomes a "bad subgradient" the instant the trajectory tries to step on it, because the trajectory leaves the kink and lands in a smooth segment whose unique gradient disagrees with the chosen tangent.
 * The "two drifting solutions" are then revealed as one solution and one phantom: the phantom is a curve that satisfies the inclusion at $t=0$ only, not on any open interval.
-* Theorem 2 then holds across genuine solutions: $|x_1-x_2|$ never grows.
+* Theorem 2 then holds across genuine solutions: $\|x_1-x_2\|$ never grows.
 
 </details>
 </div>
