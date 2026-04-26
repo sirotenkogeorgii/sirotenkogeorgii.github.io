@@ -75,13 +75,13 @@ $$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Gramian representation)</span></p>
 
-For a basis $(e_i)\_{1 \le i \le d}$, one has (cf. Remark A.1)
+For a basis $(e_i)\_{i \in [d]} \subset \mathcal{X}$, one has (cf. Remark A.1)
 
 $$
 \ell(x, x') = \ell(x^ie_i, x^je_j) = x^ix^j\ell(e_i,e_j). \tag{A.4}
 $$
 
-The Gramian matrix $(\ell(e_i,e_j))\_{1 \le i, j \le d}$ is symmetric, positive definite, and invertible. It represents the operator $L$ in the basis $(e_i)_{1 \le i \le d}$.
+The Gramian matrix $(\ell(e_i,e_j))\_{i, j \in [d]}$ is symmetric, positive definite, and invertible. It represents the operator $L$ in the basis $(e_i)\_{i \in [d]}$.
 
 </div>
 
@@ -105,7 +105,7 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Canonical Euclidean basis)</span></p>
 
-The canonical Euclidean basis $(\delta_i)\_{1 \le i \le d} \subset \mathbb{R}^d$ is
+The canonical Euclidean basis $(\delta_i)\_{i \in [d]} \subset \lbrace 0,1 \rbrace^d$ is
 
 $$
 \delta_i = (0, \dots, 0, \underbrace{1}_{i\text{-th}}, 0, \dots, 0)^{\top}, \tag{A.6}
@@ -118,13 +118,13 @@ and the corresponding coordinate vectors are often arbitrary and do not relate t
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">A.2 (Making bases orthonormal)</span></p>
 
-1. Let $(e_i)_{1 \le i \le d} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
+1. Let $(e_i)_{i \in [d]} \subset \mathcal{X}$ be any basis. Define (cf. Remark A.1)
 
    $$
    B \in \mathcal{L}(\mathbb{R}^d, \mathcal{X}), \qquad B\, v := v^i e_i \in \mathcal{X}, \quad v \in \mathbb{R}^d. \tag{A.7}
    $$
 
-2. Then the basis $(e_i)_{1 \le i \le d}$ is **orthonormal for the scalar product** on $\mathcal{X}$ iff
+2. Then the basis $(e_i)_{i \in [d]}$ is **orthonormal for the scalar product** on $\mathcal{X}$ iff
 
    $$
    \ell(x, x') := \langle B^{-1}x, B^{-1}x' \rangle, \tag{A.8}
