@@ -2158,8 +2158,8 @@ The concept of coordinates is more important than it might seem at first glance.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.35 — Coordinates of a Vector with Respect to a Basis in $\mathbb{R}^2$)</span></p>
 
-- Coordinates of the vector $(-2, 3)^\top$ with respect to the canonical basis: $[(-2, 3)^\top]_{\text{kan}} = (-2, 3)^\top$.
-- Coordinates of the vector $(-2, 3)^\top$ with respect to the basis $B = \lbrace (-3, 1)^\top, (1, 1)^\top \rbrace$: $[(-2, 3)^\top]_B = (\tfrac{5}{4}, \tfrac{7}{4})^\top$.
+- Coordinates of the vector $(-2, 3)^\top$ with respect to the canonical basis: $[(-2, 3)^\top]\_{\text{kan}} = (-2, 3)^\top$.
+- Coordinates of the vector $(-2, 3)^\top$ with respect to the basis $B = \lbrace (-3, 1)^\top, (1, 1)^\top \rbrace$: $[(-2, 3)^\top]\_B = (\tfrac{5}{4}, \tfrac{7}{4})^\top$.
 
 </div>
 
@@ -2173,14 +2173,14 @@ For every $v \in \mathbb{R}^n$ we have $[v]\_{\text{kan}} = v$, since the vector
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.37)</span></p>
 
-Consider the basis $B = \lbrace 1, x, x^2 \rbrace$ of the space $\mathcal{P}^2$. Then $[3x^2 - 5]_B = (-5, 0, 3)^\top$. In general, every polynomial $p \in \mathcal{P}^n$ in standard form $p(x) = a_n x^n + \ldots + a_1 x + a_0$ has coordinates with respect to the basis $B = \lbrace 1, x, x^2, \ldots, x^n \rbrace$ given by $[p]_B = (a_0, a_1, \ldots, a_n)^\top$.
+Consider the basis $B = \lbrace 1, x, x^2 \rbrace$ of the space $\mathcal{P}^2$. Then $[3x^2 - 5]\_B = (-5, 0, 3)^\top$. In general, every polynomial $p \in \mathcal{P}^n$ in standard form $p(x) = a_n x^n + \ldots + a_1 x + a_0$ has coordinates with respect to the basis $B = \lbrace 1, x, x^2, \ldots, x^n \rbrace$ given by $[p]\_B = (a_0, a_1, \ldots, a_n)^\top$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.38)</span></p>
 
-Let $B = \lbrace v_1, \ldots, v_n \rbrace$ be a basis of the space $V$. Then $[v_1]_B = (1, 0, \ldots, 0)^\top = e_1$, $[v_2]_B = e_2$, $\ldots$, $[v_n]_B = e_n$.
+Let $B = \lbrace v_1, \ldots, v_n \rbrace$ be a basis of the space $V$. Then $[v_1]\_B = (1, 0, \ldots, 0)^\top = e_1$, $[v_2]\_B = e_2$, $\ldots$, $[v_n]\_B = e_n$.
 
 </div>
 
@@ -2208,7 +2208,7 @@ $$[u + v]_B = [u]_B + [v]_B, \qquad [\alpha v]_B = \alpha [v]_B.$$
 <details markdown="1">
 <summary>Proof</summary>
 
-Let the basis $B$ consist of vectors $z_1, \ldots, z_n$, let $u = \sum_{i=1}^{n} \beta_i z_i$ and let $v = \sum_{i=1}^{n} \gamma_i z_i$. Then $u + v = \sum_{i=1}^{n} (\beta_i + \gamma_i) z_i$ and thus $[u + v]_B = (\beta_1 + \gamma_1, \ldots, \beta_n + \gamma_n)^\top = [u]_B + [v]_B$. Similarly for scalar multiples $\alpha[u]_B = \alpha(\beta_1, \ldots, \beta_n)^\top = (\alpha \beta_1, \ldots, \alpha \beta_n)^\top = [\alpha u]_B$.
+Let the basis $B$ consist of vectors $z_1, \ldots, z_n$, let $u = \sum_{i=1}^{n} \beta_i z_i$ and let $v = \sum_{i=1}^{n} \gamma_i z_i$. Then $u + v = \sum_{i=1}^{n} (\beta_i + \gamma_i) z_i$ and thus $[u + v]\_B = (\beta_1 + \gamma_1, \ldots, \beta_n + \gamma_n)^\top = [u]\_B + [v]\_B$. Similarly for scalar multiples $\alpha[u]\_B = \alpha(\beta_1, \ldots, \beta_n)^\top = (\alpha \beta_1, \ldots, \alpha \beta_n)^\top = [\alpha u]_B$.
 
 </details>
 </div>
@@ -2677,7 +2677,7 @@ $$QA' = \begin{pmatrix} 1 & 2 & -1 \\ -2 & 1 & 1 \end{pmatrix} \begin{pmatrix} 1
 
 Let $A \in \mathbb{T}^{m \times n}$ and let $A^R$ be its RREF form with pivots at positions $(1, p_1), \ldots, (r, p_r)$, where $r = \operatorname{rank}(A)$. Then
 
-1. the nonzero rows of $A^R$, i.e., the vectors $A^R_{1*}, \ldots, A^R_{r\ast}$, form a basis of $\mathcal{R}(A)$,
+1. the nonzero rows of $A^R$, i.e., the vectors $A^R_{1\ast}, \ldots, A^R_{r\ast}$, form a basis of $\mathcal{R}(A)$,
 2. the columns $A_{\ast p_1}, \ldots, A_{\ast p_r}$ form a basis of $\mathcal{S}(A)$,
 3. $\dim \mathcal{R}(A) = \dim \mathcal{S}(A) = r$.
 
@@ -2769,7 +2769,7 @@ Thus the vectors $(6, -4, 1, 0)^\top$, $(4, -3, 0, 1)^\top$ form a basis of $\op
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 5.75 — More on Coding)</span></p>
 
-Let us continue from Example 4.42 about the Hamming code $(7, 4, 3)$. For encoding we used the generating matrix $H$ of size $7 \times 4$ simply by encoding an input segment $a$ of length $4$ into a segment $b := Ha$ of length $7$. All encoded segments thus represent the column space of matrix $H$. Since $H$ has linearly independent columns, this is a subspace of dimension $4$ in the space $\mathbb{Z}_2^7$.
+Let us continue from Example 4.42 about the Hamming code $(7, 4, 3)$. For encoding we used the generating matrix $H$ of size $7 \times 4$ simply by encoding an input segment $a$ of length $4$ into a segment $b := Ha$ of length $7$. All encoded segments thus represent the column space of matrix $H$. Since $H$ has linearly independent columns, this is a subspace of dimension $4$ in the space $\mathbb{Z}\_2^7$.
 
 Error detection of a received segment $b$ is performed using a detection matrix $D$ of size $3 \times 7$. If $Db = o$, no error occurred (or at least two errors occurred). We therefore want the detection matrix to map (only) vectors from the column space of matrix $H$ to the zero vector. Hence we need $\mathcal{S}(H) = \operatorname{Ker}(D)$. We can now see why matrix $D$ has these dimensions — for its kernel to be a four-dimensional subspace, it must by Theorem 5.72 have rank $3$, and therefore $3$ linearly independent rows suffice.
 
@@ -2879,11 +2879,11 @@ $$\begin{pmatrix} I & & & \\ & \cos(\alpha) & & -\sin(\alpha) & \\ & & I & & \\ 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 6.5 — Properties of Linear Maps)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 6.5</span><span class="math-callout__name">(Properties of Linear Maps)</span></p>
 
 Let $f \colon U \to V$ be a linear map. Then
 
-1. $f\!\left(\sum_{i=1}^{n} \alpha_i x_i\right) = \sum_{i=1}^{n} \alpha_i f(x_i)$ for every $\alpha_i \in \mathbb{T}$, $x_i \in U$, $i = 1, \ldots, n$,
+1. $f\left(\sum_{i=1}^{n} \alpha_i x_i\right) = \sum_{i=1}^{n} \alpha_i f(x_i)$ for every $\alpha_i \in \mathbb{T}$, $x_i \in U$, $i = 1, \ldots, n$,
 2. $f(o) = o$.
 
 </div>
@@ -3020,7 +3020,7 @@ we clearly have $f(x) = Ax$. Every linear map $f \colon \mathbb{T}^n \to \mathbb
 
 </div>
 
-Now consider a linear map $f \colon U \to \mathbb{T}^m$ and a basis $B = \lbrace v_1, \ldots, v_n \rbrace$ of the space $U$. Let the vector $x \in U$ have the expression $x = \sum_{i=1}^{n} \alpha_i v_i$, i.e., $[x]_B = (\alpha_1, \ldots, \alpha_n)^\top$. Then
+Now consider a linear map $f \colon U \to \mathbb{T}^m$ and a basis $B = \lbrace v_1, \ldots, v_n \rbrace$ of the space $U$. Let the vector $x \in U$ have the expression $x = \sum_{i=1}^{n} \alpha_i v_i$, i.e., $[x]\_B = (\alpha_1, \ldots, \alpha_n)^\top$. Then
 
 $$f(x) = f\!\left(\sum_{i=1}^{n} \alpha_i v_i\right) = \sum_{i=1}^{n} \alpha_i f(v_i).$$
 
@@ -3028,12 +3028,12 @@ Denoting the matrix with columns $f(v_1), \ldots, f(v_n)$ as
 
 $$A = \begin{pmatrix} | & & | \\ f(v_1) & \cdots & f(v_n) \\ | & & | \end{pmatrix},$$
 
-we clearly have $f(x) = A \cdot [x]_B$. Unlike the previous case, we multiply the matrix by the coordinate vector $[x]_B$ of the vector $x$, not by the vector itself.
+we clearly have $f(x) = A \cdot [x]\_B$. Unlike the previous case, we multiply the matrix by the coordinate vector $[x]\_B$ of the vector $x$, not by the vector itself.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 6.17 — Matrix of a Linear Map)</span></p>
 
-Let $f \colon U \to V$ be a linear map, $B_U = \lbrace x_1, \ldots, x_n \rbrace$ a basis of the space $U$ over $\mathbb{T}$, and $B_V = \lbrace y_1, \ldots, y_m \rbrace$ a basis of the space $V$ over $\mathbb{T}$. Let $f(x_j) = \sum_{i=1}^{m} a_{ij} y_i$. Then the matrix $A \in \mathbb{T}^{m \times n}$ with entries $a_{ij}$, $i = 1, \ldots, m$, $j = 1, \ldots, n$, is called the *matrix of the linear map* $f$ with respect to the bases $B_U, B_V$ and is denoted ${}_{B_V}[f]_{B_U}$.
+Let $f \colon U \to V$ be a linear map, $B_U = \lbrace x_1, \ldots, x_n \rbrace$ a basis of the space $U$ over $\mathbb{T}$, and $B_V = \lbrace y_1, \ldots, y_m \rbrace$ a basis of the space $V$ over $\mathbb{T}$. Let $f(x_j) = \sum_{i=1}^{m} a_{ij} y_i$. Then the matrix $A \in \mathbb{T}^{m \times n}$ with entries $a_{ij}$, $i = 1, \ldots, m$, $j = 1, \ldots, n$, is called the *matrix of the linear map* $f$ with respect to the bases $B_U, B_V$ and is denoted ${}\_{B_V}[f]\_{B_U}$.
 
 </div>
 
@@ -3050,7 +3050,7 @@ $$A = \begin{pmatrix} 1 & 2 \\ 3 & -4 \end{pmatrix}.$$
 
 Let us choose the bases $B_U = \lbrace (1, 2)^\top, (2, 1)^\top \rbrace$, $B_V = \lbrace (1, -1)^\top, (0, 1)^\top \rbrace$ and find the matrix of the map $f$ with respect to the bases $B_U, B_V$.
 
-The image of the first vector of the basis $B_U$ is $f(1, 2) = (5, -5)^\top$, and its coordinates with respect to the basis $B_V$ are $[f(1, 2)]_{B_V} = (5, 0)^\top$. Similarly, the image of the second vector of the basis $B_U$ is $f(2, 1) = (4, 2)^\top$, and its coordinates with respect to the basis $B_V$ are $[f(2, 1)]_{B_V} = (4, 6)^\top$. Therefore
+The image of the first vector of the basis $B_U$ is $f(1, 2) = (5, -5)^\top$, and its coordinates with respect to the basis $B_V$ are $[f(1, 2)]\_{B_V} = (5, 0)^\top$. Similarly, the image of the second vector of the basis $B_U$ is $f(2, 1) = (4, 2)^\top$, and its coordinates with respect to the basis $B_V$ are $[f(2, 1)]\_{B_V} = (4, 6)^\top$. Therefore
 
 $${}_{B_V}[f]_{B_U} = \begin{pmatrix} 5 & 4 \\ 0 & 6 \end{pmatrix}.$$
 
@@ -3065,11 +3065,11 @@ $$[f(x)]_{B_V} = {}_{B_V}[f]_{B_U} \cdot [x]_{B_U}. \tag{6.1}$$
 
 </div>
 
-*Proof.* Denote $A := {}_{B_V}[f]_{B_U}$. Let $x \in U$, so $x = \sum_{i=1}^{n} \alpha_i x_i$, i.e., $[x]_{B_U} = (\alpha_1, \ldots, \alpha_n)^\top$. Then
+*Proof.* Denote $A := {}\_{B_V}[f]\_{B_U}$. Let $x \in U$, so $x = \sum_{i=1}^{n} \alpha_i x_i$, i.e., $[x]\_{B_U} = (\alpha_1, \ldots, \alpha_n)^\top$. Then
 
 $$f(x) = f\!\left(\sum_{j=1}^{n} \alpha_j x_j\right) = \sum_{j=1}^{n} \alpha_j f(x_j) = \sum_{j=1}^{n} \alpha_j \left(\sum_{i=1}^{m} a_{ij} y_i\right) = \sum_{i=1}^{m} \left(\sum_{j=1}^{n} \alpha_j a_{ij}\right) y_i.$$
 
-Thus the expression $\sum_{j=1}^{n} \alpha_j a_{ij}$ represents the $i$-th coordinate of the vector $[f(x)]_{B_V}$, and its value is $\sum_{j=1}^{n} \alpha_j a_{ij} = (A \cdot [x]_{B_U})_i$, which is the $i$-th component of the vector ${}_{B_V}[f]_{B_U} \cdot [x]_{B_U}$.
+Thus the expression $\sum_{j=1}^{n} \alpha_j a_{ij}$ represents the $i$-th coordinate of the vector $[f(x)]\_{B_V}$, and its value is $\sum_{j=1}^{n} \alpha_j a_{ij} = (A \cdot [x]\_{B_U})\_i$, which is the $i$-th component of the vector ${}\_{B_V}[f]\_{B_U} \cdot [x]\_{B_U}$.
 
 The matrix of a linear map thus converts the coordinates of a vector with respect to a given basis into the coordinates of its image, and moreover, the image of any vector can be expressed simply as matrix multiplication.
 
@@ -3085,23 +3085,23 @@ Every linear map $f \colon \mathbb{T}^n \to \mathbb{T}^m$ can be expressed as $f
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 6.21 — Uniqueness of the Matrix of a Linear Map)</span></p>
 
-Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V$ a basis of the space $V$. Then the only matrix $A$ satisfying (6.1) is $A = {}_{B_V}[f]_{B_U}$.
+Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V$ a basis of the space $V$. Then the only matrix $A$ satisfying (6.1) is $A = {}\_{B_V}[f]\_{B_U}$.
 
 </div>
 
-*Proof.* Let the basis $B_U$ consist of vectors $z_1, \ldots, z_n$. For contradiction, assume that the linear map $f$ has two matrix representations (6.1) via matrices $A \neq A'$. Then there exists a vector $s \in \mathbb{T}^n$ such that $As \neq A's$; such a vector can be chosen, for example, as the unit vector with a one in the position where the columns of the matrices $A, A'$ differ. Define the vector $x := \sum_{i=1}^{n} s_i z_i$. Then $[f(x)]_{B_V} = As \neq A's = [f(x)]_{B_V}$, which contradicts the uniqueness of coordinates (Theorem 5.33).
+*Proof.* Let the basis $B_U$ consist of vectors $z_1, \ldots, z_n$. For contradiction, assume that the linear map $f$ has two matrix representations (6.1) via matrices $A \neq A'$. Then there exists a vector $s \in \mathbb{T}^n$ such that $As \neq A's$; such a vector can be chosen, for example, as the unit vector with a one in the position where the columns of the matrices $A, A'$ differ. Define the vector $x := \sum_{i=1}^{n} s_i z_i$. Then $[f(x)]\_{B_V} = As \neq A's = [f(x)]\_{B_V}$, which contradicts the uniqueness of coordinates (Theorem 5.33).
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 6.22)</span></p>
 
-Not only can every linear map be represented by a matrix, but conversely, every matrix represents the matrix of some linear map. Let $B_U, B_V$ be bases of spaces $U, V$ of dimensions $n, m$, and let $A \in \mathbb{T}^{m \times n}$. Then there exists a unique linear map $f \colon U \to V$ such that $A = {}_{B_V}[f]_{B_U}$; the columns of the matrix $A$ give the coordinates of the images of the basis vectors $B_U$, which fully determines the map $f$ by Theorem 6.15. This means that there is a one-to-one correspondence between linear maps $f \colon U \to V$ and the space of matrices $\mathbb{T}^{m \times n}$.
+Not only can every linear map be represented by a matrix, but conversely, every matrix represents the matrix of some linear map. Let $B_U, B_V$ be bases of spaces $U, V$ of dimensions $n, m$, and let $A \in \mathbb{T}^{m \times n}$. Then there exists a unique linear map $f \colon U \to V$ such that $A = {}\_{B_V}[f]\_{B_U}$; the columns of the matrix $A$ give the coordinates of the images of the basis vectors $B_U$, which fully determines the map $f$ by Theorem 6.15. This means that there is a one-to-one correspondence between linear maps $f \colon U \to V$ and the space of matrices $\mathbb{T}^{m \times n}$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Definition 6.23 — Change-of-Basis Matrix)</span></p>
 
-Let $V$ be a vector space and $B_1, B_2$ two of its bases. Then the *change-of-basis matrix* from $B_1$ to $B_2$ is the matrix ${}_{B_2}[id]_{B_1}$.
+Let $V$ be a vector space and $B_1, B_2$ two of its bases. Then the *change-of-basis matrix* from $B_1$ to $B_2$ is the matrix ${}\_{B_2}[id]\_{B_1}$.
 
 </div>
 
@@ -3109,7 +3109,7 @@ The change-of-basis matrix then has the following meaning according to the matri
 
 $$[x]_{B_2} = {}_{B_2}[id]_{B_1} \cdot [x]_{B_1},$$
 
-so by simple matrix multiplication we obtain coordinates with respect to a different basis. Clearly ${}_{B}[id]_{B} = I_n$ for any basis $B$.
+so by simple matrix multiplication we obtain coordinates with respect to a different basis. Clearly ${}\_{B}[id]\_{B} = I_n$ for any basis $B$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.24 — Change-of-Basis Matrix)</span></p>
@@ -3175,7 +3175,7 @@ $${}_{B_W}[g \circ f]_{B_U} = {}_{B_W}[g]_{B_V} \cdot {}_{B_V}[f]_{B_U}. \tag{6.
 
 $$[(g \circ f)(x)]_{B_W} = [g(f(x))]_{B_W} = {}_{B_W}[g]_{B_V} \cdot [f(x)]_{B_V} = {}_{B_W}[g]_{B_V} \cdot {}_{B_V}[f]_{B_U} \cdot [x]_{B_U}.$$
 
-By the uniqueness of the matrix of a linear map (Theorem 6.21), ${}_{B_W}[g]_{B_V} \cdot {}_{B_V}[f]_{B_U}$ is the desired matrix of the composite map.
+By the uniqueness of the matrix of a linear map (Theorem 6.21), ${}\_{B_W}[g]\_{B_V} \cdot {}\_{B_V}[f]\_{B_U}$ is the desired matrix of the composite map.
 
 In formula (6.2), the mnemonic in the notation of matrices of linear maps is again useful. Specifically, the matrix of the map $g \circ f$ has the same input basis $B_U$ as the matrix of the map $f$ and the same output basis $B_W$ as the matrix of the map $g$. Moreover, the output basis $B_V$ of the matrix of the map $f$ must be the same as the input basis of the matrix of the map $g$.
 
@@ -3195,7 +3195,7 @@ $$\begin{pmatrix} \cos(\alpha + \beta) & -\sin(\alpha + \beta) \\ \sin(\alpha + 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Example 6.29 — Converting the Matrix of a Map Between Bases)</span></p>
 
-Suppose we are given the matrix of a linear map $f$ with respect to bases $B_1, B_2$, i.e., ${}_{B_2}[f]_{B_1}$. How do we determine the matrix with respect to bases $B_3, B_4$, i.e., ${}_{B_4}[f]_{B_3}$? By the theorem on the matrix of a composite map applied to $f = id \circ f \circ id$ and the appropriate bases, we have
+Suppose we are given the matrix of a linear map $f$ with respect to bases $B_1, B_2$, i.e., ${}\_{B_2}[f]\_{B_1}$. How do we determine the matrix with respect to bases $B_3, B_4$, i.e., ${}\_{B_4}[f]\_{B_3}$? By the theorem on the matrix of a composite map applied to $f = id \circ f \circ id$ and the appropriate bases, we have
 
 $${}_{B_4}[f]_{B_3} = {}_{B_4}[id]_{B_2} \cdot {}_{B_2}[f]_{B_1} \cdot {}_{B_1}[id]_{B_3}.$$
 
@@ -3206,7 +3206,7 @@ Thus all the work is done by the change-of-basis matrices.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 6.30 — Multivariable Derivatives and Composition of Maps)</span></p>
 
-Consider differentiable functions $f(x) \colon \mathbb{R}^n \to \mathbb{R}^p$, $g(y) \colon \mathbb{R}^p \to \mathbb{R}^m$ and points $x^* \in \mathbb{R}^n$ and $y^* := f(x^*)$. From a course on multivariable calculus, we know the formula for partial derivatives of a composite map
+Consider differentiable functions $f(x) \colon \mathbb{R}^n \to \mathbb{R}^p$, $g(y) \colon \mathbb{R}^p \to \mathbb{R}^m$ and points $x^\ast \in \mathbb{R}^n$ and $y^\ast := f(x^\ast)$. From a course on multivariable calculus, we know the formula for partial derivatives of a composite map
 
 $$\frac{\partial (g \circ f)_i}{\partial x_k} = \sum_{j=1}^{p} \frac{\partial g_i}{\partial y_j} \cdot \frac{\partial f_j}{\partial x_k}.$$
 
@@ -3297,7 +3297,7 @@ $${}_{B_U}[f^{-1}]_{B_V} = {}_{B_V}[f]_{B_U}^{-1}.$$
 
 $${}_{B_U}[f^{-1}]_{B_V} \cdot {}_{B_V}[f]_{B_U} = {}_{B_U}[f^{-1} \circ f]_{B_U} = {}_{B_U}[id]_{B_U} = I.$$
 
-Since ${}\_{B_V}[f]_{B_U}$ is square by Theorem 6.34(4), ${}\_{B_U}[f^{-1}]_{B_V}$ is its inverse matrix.
+Since ${}\_{B_V}[f]\_{B_U}$ is square by Theorem 6.34(4), ${}\_{B_U}[f^{-1}]_{B_V}$ is its inverse matrix.
 
 The matrix of an isomorphism has an inverse matrix, so it must be nonsingular. This statement also holds in reverse: If the matrix of a linear map $f$ is nonsingular, then $f$ is an isomorphism, because the inverse matrix gives the formula for the inverse map $f^{-1}$.
 
@@ -3315,11 +3315,11 @@ $${}_{B_U}[id]_{B_V} = {}_{B_V}[id]_{B_U}^{-1}.$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(6.37 — Mnemonic for Computing Change-of-Basis Matrices)</span></p>
 
-For computing the change-of-basis matrix in $\mathbb{R}^n$ from basis $B_U$ to basis $B_V$, i.e., ${}_{B_V}[id]_{B_U}$, one can use the following mnemonic:
+For computing the change-of-basis matrix in $\mathbb{R}^n$ from basis $B_U$ to basis $B_V$, i.e., ${}\_{B_V}[id]\_{B_U}$, one can use the following mnemonic:
 
 $$(B_V \mid B_U) \xrightarrow{\text{RREF}} (I_n \mid {}_{B_V}[id]_{B_U}).$$
 
-The first matrix has the basis $B_V$ in its columns and then the basis $B_U$, which are essentially the matrices ${}_{\text{kan}}[id]_{B_V}$ and ${}_{\text{kan}}[id]_{B_U}$. By reducing to RREF form, we obtain the desired change-of-basis matrix on the right. The reason stems from the relation ${}_{B_V}[id]_{B_U} = {}_{B_V}[id]_{\text{kan}} \cdot {}_{\text{kan}}[id]_{B_U} = {}_{\text{kan}}[id]_{B_V}^{-1} \cdot {}_{\text{kan}}[id]_{B_U}$. Reducing the matrix to RREF form can be expressed as left-multiplication by the matrix ${}_{\text{kan}}[id]_{B_V}^{-1}$.
+The first matrix has the basis $B_V$ in its columns and then the basis $B_U$, which are essentially the matrices ${}\_{\text{kan}}[id]\_{B_V}$ and ${}\_{\text{kan}}[id]\_{B_U}$. By reducing to RREF form, we obtain the desired change-of-basis matrix on the right. The reason stems from the relation ${}\_{B_V}[id]\_{B_U} = {}\_{B_V}[id]\_{\text{kan}} \cdot {}\_{\text{kan}}[id]\_{B_U} = {}\_{\text{kan}}[id]\_{B_V}^{-1} \cdot {}\_{\text{kan}}[id]\_{B_U}$. Reducing the matrix to RREF form can be expressed as left-multiplication by the matrix ${}\_{\text{kan}}[id]\_{B_V}^{-1}$.
 
 Specifically, for Example 6.24, we obtain
 
@@ -3334,7 +3334,7 @@ Let $V$ be a vector space over a field $\mathbb{T}$ of dimension $n$ with basis 
 
 </div>
 
-*Proof.* Let the basis $B$ consist of vectors $v_1, \ldots, v_n$. It is easy to see that the map $x \mapsto [x]_B$ is linear, injective, and surjective, because every $n$-tuple $(\alpha_1, \ldots, \alpha_n) \in \mathbb{T}^n$ represents the coordinates of a specific vector $\sum_{i=1}^{n} \alpha_i v_i$.
+*Proof.* Let the basis $B$ consist of vectors $v_1, \ldots, v_n$. It is easy to see that the map $x \mapsto [x]\_B$ is linear, injective, and surjective, because every $n$-tuple $(\alpha_1, \ldots, \alpha_n) \in \mathbb{T}^n$ represents the coordinates of a specific vector $\sum_{i=1}^{n} \alpha_i v_i$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 6.39 — Isomorphism of $n$-dimensional Spaces)</span></p>
@@ -3372,8 +3372,8 @@ Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V
 
 *Proof.*
 
-1. By Theorem 6.34(4), it suffices to construct an isomorphism between the spaces $\operatorname{Ker}(f)$ and $\operatorname{Ker}(A)$. An isomorphism can be, for example, the map $x \in \operatorname{Ker}(f) \mapsto [x]_{B_U}$. From Proposition 6.38, we know it is linear and injective. It remains to show that $[x]_{B_U} \in \operatorname{Ker}(A)$ and that the map is surjective. Let $x \in \operatorname{Ker}(f)$, then $o = [f(x)]_{B_V} = {}_{B_V}[f]_{B_U} \cdot [x]_{B_U}$, so $[x]_{B_U} \in \operatorname{Ker}(A)$. Conversely, for every $[x]_{B_U} \in \operatorname{Ker}(A)$ we have $f(x) = o$.
-2. Denote $\dim U = n$, $\dim V = m$. Again we construct an isomorphism, now between $f(U)$ and $\mathcal{S}(A)$, namely $y \in f(U) \mapsto [y]_{B_V}$. Again, the map is linear and injective. Furthermore, for $y \in f(U)$ there exists $x \in U$ such that $f(x) = y$. Now $[y]_{B_V} = [f(x)]_{B_V} = A \cdot [x]_{B_U}$, so $[y]_{B_V}$ belongs to the column space $\mathcal{S}(A)$. Conversely, for every $b \in \mathcal{S}(A)$ there exists $a \in \mathbb{T}^n$ such that $b = Aa$. So for the vector $x \in U$ such that $[x]_{B_U} = a$, we have $y := f(x) \in f(U)$ and at the same time $[y]_{B_V} = [f(x)]_{B_V} = A \cdot [x]_{B_U} = Aa = b \in \mathcal{S}(A)$.
+1. By Theorem 6.34(4), it suffices to construct an isomorphism between the spaces $\operatorname{Ker}(f)$ and $\operatorname{Ker}(A)$. An isomorphism can be, for example, the map $x \in \operatorname{Ker}(f) \mapsto [x]\_{B_U}$. From Proposition 6.38, we know it is linear and injective. It remains to show that $[x]\_{B_U} \in \operatorname{Ker}(A)$ and that the map is surjective. Let $x \in \operatorname{Ker}(f)$, then $o = [f(x)]\_{B_V} = {}\_{B_V}[f]\_{B_U} \cdot [x]\_{B_U}$, so $[x]\_{B_U} \in \operatorname{Ker}(A)$. Conversely, for every $[x]\_{B_U} \in \operatorname{Ker}(A)$ we have $f(x) = o$.
+2. Denote $\dim U = n$, $\dim V = m$. Again we construct an isomorphism, now between $f(U)$ and $\mathcal{S}(A)$, namely $y \in f(U) \mapsto [y]\_{B_V}$. Again, the map is linear and injective. Furthermore, for $y \in f(U)$ there exists $x \in U$ such that $f(x) = y$. Now $[y]\_{B_V} = [f(x)]\_{B_V} = A \cdot [x]\_{B_U}$, so $[y]\_{B_V}$ belongs to the column space $\mathcal{S}(A)$. Conversely, for every $b \in \mathcal{S}(A)$ there exists $a \in \mathbb{T}^n$ such that $b = Aa$. So for the vector $x \in U$ such that $[x]\_{B_U} = a$, we have $y := f(x) \in f(U)$ and at the same time $[y]\_{B_V} = [f(x)]\_{B_V} = A \cdot [x]\_{B_U} = Aa = b \in \mathcal{S}(A)$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 6.42)</span></p>
@@ -3391,21 +3391,21 @@ Let $f \colon U \to V$ be a linear map. Then $\dim U = \dim \operatorname{Ker}(f
 
 </div>
 
-*Proof.* By Theorem 5.72, for a matrix $A$ of type $m \times n$, the equality $n = \dim \operatorname{Ker}(A) + \operatorname{rank}(A)$ holds. In particular, for $A = {}\_{B_V}[f]_{B_U}$ we obtain the desired identity, since $n = \dim U$, $\dim \operatorname{Ker}(f) = \dim \operatorname{Ker}(A)$, and $\dim f(U) = \operatorname{rank}(A)$.
+*Proof.* By Theorem 5.72, for a matrix $A$ of type $m \times n$, the equality $n = \dim \operatorname{Ker}(A) + \operatorname{rank}(A)$ holds. In particular, for $A = {}\_{B_V}[f]\_{B_U}$ we obtain the desired identity, since $n = \dim U$, $\dim \operatorname{Ker}(f) = \dim \operatorname{Ker}(A)$, and $\dim f(U) = \operatorname{rank}(A)$.
 
 Already on page 102 we observed that the kernel of a linear map describes how much the map degenerates. Corollary 6.43 then expresses the degree of degeneracy numerically. The dimension of the kernel gives the difference between the dimension of the space $U$ and the dimension of its image.
 
-With regard to Theorems 6.12 and 6.41, we obtain that a linear map $f \colon U \to V$ is injective if and only if $\dim U = \dim f(U)$, i.e., $\dim U = \operatorname{rank}({}\_{B_V}[f]_{B_U})$. A necessary and sufficient condition for $f$ to be injective is therefore that the matrix of the map $f$ with respect to any bases has linearly independent columns.
+With regard to Theorems 6.12 and 6.41, we obtain that a linear map $f \colon U \to V$ is injective if and only if $\dim U = \dim f(U)$, i.e., $\dim U = \operatorname{rank}({}\_{B_V}[f]\_{B_U})$. A necessary and sufficient condition for $f$ to be injective is therefore that the matrix of the map $f$ with respect to any bases has linearly independent columns.
 
-How do we determine that a linear map $f \colon U \to V$ is surjective? This situation can be expressed by the condition $\dim V = \dim f(U)$, i.e., $\dim V = \operatorname{rank}({}\_{B_V}[f]_{B_U})$. Equivalently, the matrix of $f$ with respect to any bases must have linearly independent rows. We thus obtain the following proposition.
+How do we determine that a linear map $f \colon U \to V$ is surjective? This situation can be expressed by the condition $\dim V = \dim f(U)$, i.e., $\dim V = \operatorname{rank}({}\_{B_V}[f]\_{B_U})$. Equivalently, the matrix of $f$ with respect to any bases must have linearly independent rows. We thus obtain the following proposition.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Proposition 6.44)</span></p>
 
 Let $f \colon U \to V$ be a linear map, $B_U$ a basis of the space $U$, and $B_V$ a basis of the space $V$. Then:
 
-1. $f$ is injective if and only if ${}_{B_V}[f]_{B_U}$ has linearly independent columns,
-2. $f$ is surjective if and only if ${}_{B_V}[f]_{B_U}$ has linearly independent rows.
+1. $f$ is injective if and only if ${}\_{B_V}[f]\_{B_U}$ has linearly independent columns,
+2. $f$ is surjective if and only if ${}\_{B_V}[f]\_{B_U}$ has linearly independent rows.
 
 </div>
 
@@ -3446,7 +3446,7 @@ $$1(x^2 - 2x + 3) + 2(x - 1) + 1(2x^2 + x) = 3x^2 + x + 1.$$
 
 It is not difficult to see that the set of linear maps from a space $U$ over $\mathbb{T}$ of dimension $n$ to a space $V$ over $\mathbb{T}$ of dimension $m$ forms a vector space: the sum of linear maps $f, g \colon U \to V$ is again a linear map $(f + g) \colon U \to V$, and the scalar multiple $\alpha f$ of a linear map $f \colon U \to V$ is also a linear map. The zero vector is the map $u \mapsto o_V$ $\forall u \in U$.
 
-Moreover, since every linear map is uniquely determined by a matrix with respect to given bases, this space of linear maps is isomorphic to the space of matrices $\mathbb{T}^{m \times n}$ and therefore has dimension $mn$. The corresponding isomorphism can be the map $f \mapsto {}\_{B_V}[f]_{B_U}$, where $B_U$ is any fixed basis of the space $U$ and $B_V$ is any fixed basis of the space $V$. The linearity of this map follows easily (due to linearity of coordinates) from the properties
+Moreover, since every linear map is uniquely determined by a matrix with respect to given bases, this space of linear maps is isomorphic to the space of matrices $\mathbb{T}^{m \times n}$ and therefore has dimension $mn$. The corresponding isomorphism can be the map $f \mapsto {}\_{B_V}[f]\_{B_U}$, where $B_U$ is any fixed basis of the space $U$ and $B_V$ is any fixed basis of the space $V$. The linearity of this map follows easily (due to linearity of coordinates) from the properties
 
 $${}_{B_V}[f + g]_{B_U} = {}_{B_V}[f]_{B_U} + {}_{B_V}[g]_{B_U},$$
 

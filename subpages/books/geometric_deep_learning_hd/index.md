@@ -264,61 +264,64 @@ $$
 
 ### A.1.3. Tensor-Products and Generalized Inverses
 
+*Mathematical background: Section A.2.1.*
+
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Scalar product on $\mathcal{X} \otimes \mathcal{Y}$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Scalar product on $\widecheck{\mathcal{X}} \otimes \mathcal{Y}$)</span></p>
 
-In the situation (A.2), (A.3), the space $\mathcal{X} \otimes \mathcal{Y} \cong \mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y})$ is equipped with the scalar product (cf. Remark A.1)
+In the situation (A.2), (A.3), the space $\widecheck{\mathcal{X}} \otimes \mathcal{Y} \cong \mathcal{L}(\mathcal{X}, \mathcal{Y})$ is equipped with the scalar product (cf. Remark A.1)
 
 $$
-(\ell \otimes m)(V, V') := \langle V_i, V'_j \rangle_{\mathcal{Y}}\, L^{ij}, \qquad V, V' \in \mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y}), \tag{A.22}
+(\widecheck{\ell} \otimes m)(U, V) := \langle \widecheck{f}^i, U e_j\rangle\, \langle \widecheck{f}^i, V e_j\rangle, \qquad \forall\, U, V \in \mathcal{L}(\mathcal{X}, \mathcal{Y}), \tag{A.22}
 $$
 
-where $(x_i)_{1 \le i \le n} \subset \mathcal{X}$ is any basis of $\mathcal{X}$ and $V_i = V(\widecheck{x}_i)$ denote the images of the corresponding co-basis.
+where $(e_i)\_{i \in [d]} \subset \mathcal{X}$ and $(f_i)\_{i \in [d]} \subset \mathcal{Y}$ are $\ell$-orthonormal and $m$-orthonormal bases:
+
+$$
+\langle \widecheck{e}^i, e_j\rangle = \ell(e_i, e_j) = \delta^i_j, \qquad \langle \widecheck{f}^i, f_j\rangle = m(f_i, f_j) = \delta^i_j, \qquad i, j \in [d]. \tag{A.23}
+$$
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Basis-independence of (A.22))</span></p>
 
-The expression defining the inner product (A.22) does not depend on the choice of these bases, since
+The expression defining the inner product (A.25) does *not* depend on the choice of these bases, since
 
 $$
 \begin{aligned}
-(\ell \otimes m)(V, V') &= \langle V_i, V'_j \rangle_{\mathcal{Y}}\, L^{ij} = \langle V(L^{-1} \widecheck{x}_i), V'(\widecheck{x}_j) \rangle_{\mathcal{Y}} &&\text{(A.23a)} \\
-&= \langle V, V' \rangle_{\mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y})} &&\text{(A.23b)} \\
-&= (M \otimes L^{-1})(V, V'). &&\text{(A.23c)}
+(\widecheck{\ell} \otimes m)(U, V) &= \langle \widecheck{f}^i, U e_j\rangle\, \langle \widecheck{f}^i, V e_j\rangle &&\text{(A.24a)} \\
+&= \widecheck{f}^i(U e_j)\, \widecheck{f}^i(V e_j)\, \underbrace{\delta^i_l}_{=\,1} \;=\; \widecheck{f}^i(U e_j)\, \widecheck{f}^l(V e_j)\, \underbrace{\langle M f_i, f_l\rangle}_{=\,\delta^i_l} &&\text{(A.24b)} \\
+&= \langle M\, \underbrace{\widecheck{f}^i(U e_j)\, f_i}_{=\,U e_j},\; \underbrace{\widecheck{f}^l(V e_j)\, f_l}_{=\,V e_j}\rangle \;=\; \langle M U e_j, V e_j\rangle &&\text{(A.24c)} \\
+&= m(U e_j, V e_j). &&\text{(A.24d)}
 \end{aligned}
 $$
 
-</div>
-
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Companion scalar products)</span></p>
-
-Similarly, using $V_i = V(x_i) \in \widecheck{\mathcal{Y}}$,
+Similarly, using $\delta^j_k = \langle \widecheck{e}^j, e_k\rangle = \langle \widecheck{e}^j, L^{-1}\widecheck{e}^k\rangle$,
 
 $$
 \begin{aligned}
-(\widecheck{\ell} \otimes \widecheck{m})(P, P') &= \langle P_i, P'_j \rangle_{\widecheck{\mathcal{Y}}}\, (L^{-1})_{ij} = \langle P, P' \rangle_{\mathcal{L}(\mathcal{X}, \widecheck{\mathcal{Y}})}, &&\text{(A.24a)} \\
-(\ell \otimes \widecheck{m})(Q, Q') &= \langle Q_i, Q'_j \rangle_{\widecheck{\mathcal{Y}}}\, L^{ij}, &&\text{(A.24b)} \\
-(\widecheck{\ell} \otimes m)(W, W') &= \langle W_i, W'_j \rangle_{\mathcal{Y}}\, (L^{-1})_{ij}. &&\text{(A.24c)}
+(\widecheck{\ell} \otimes m)(U, V) &= \langle \widecheck{f}^i, U e_j\rangle\, \langle \widecheck{f}^i, V e_j\rangle &&\text{(A.24e)} \\
+&= \langle \widecheck{U}\widecheck{f}^i, e_j\rangle\, \langle \widecheck{V}\widecheck{f}^i, e_j\rangle\, \underbrace{\delta^j_k}_{=\,1} \;=\; \langle \widecheck{U}\widecheck{f}^i, e_j\rangle\, \langle \widecheck{V}\widecheck{f}^i, e_k\rangle\, \underbrace{\langle \widecheck{e}^j, L^{-1}\widecheck{e}^k\rangle}_{=\,\delta^j_k} &&\text{(A.24f)} \\
+&= \langle\, \underbrace{\langle \widecheck{U}\widecheck{f}^i, e_j\rangle\, \widecheck{e}^j}_{=\,\widecheck{U}\widecheck{f}^i},\; L^{-1}\, \underbrace{\langle \widecheck{V}\widecheck{f}^i, e_k\rangle\, \widecheck{e}^k}_{=\,\widecheck{V}\widecheck{f}^i}\rangle \;=\; \langle \widecheck{U}\widecheck{f}^i, L^{-1}\widecheck{V}\widecheck{f}^i\rangle &&\text{(A.24g)} \\
+&= \widecheck{\ell}(\widecheck{U}\widecheck{f}^i, \widecheck{V}\widecheck{f}^i). &&\text{(A.24h)}
 \end{aligned}
 $$
 
-</div>
-
-<div class="math-callout math-callout--proposition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Compact form of (A.22))</span></p>
-
-The definition (A.22) is equivalent to the expression
+Thus, the definition (A.22) is equivalent to the expressions
 
 $$
-(\ell \otimes m)(V, V') = \langle V, (L^{-1} \otimes M)\, V' \rangle_{\mathcal{L}(\widecheck{\mathcal{X}}, \mathcal{Y})}, \tag{A.25}
+\begin{aligned}
+(\widecheck{\ell} \otimes m)(U, V) &= \langle \widecheck{f}^i, U e_j\rangle\, \langle \widecheck{f}^i, V e_j\rangle &&\text{(A.25a)} \\
+&= m(U e_j, V e_j) \;=\; \widecheck{\ell}(\widecheck{U}\widecheck{f}^i, \widecheck{V}\widecheck{f}^i) &&\text{(A.25b)}
+\end{aligned}
 $$
 
-independent of the choice of the bases. Recall from (A.6) that $\widecheck{\mathcal{L}}(\mathcal{X}, \mathcal{Y}) = \mathcal{L}(\mathcal{X}, \mathcal{Y})^{\vee}$.
+and independent of the choice of the bases.
 
 </div>
+
+Recall from (A.63) that $\mathcal{L}(\widecheck{\mathcal{X}}, \widecheck{\mathcal{Y}}) = \mathcal{L}(\mathcal{X}, \mathcal{Y})^{\vee}$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">A.7 (Scalar product of tensor products: duality mapping)</span></p>
