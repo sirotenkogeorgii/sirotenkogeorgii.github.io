@@ -198,30 +198,163 @@ Many ODEs and PDEs have a gradient flow structure, and the gradient flow framewo
 
 **Critical points and the Euler–Lagrange equation.** The long-time limit of a gradient flow, when it exists, is a *critical point* of $E$ — a point $x_*$ with $\nabla E(x_\ast) = 0$ (or $0 \in \partial E(x_\ast)$ in the non-smooth setting). For functionals defined on infinite-dimensional spaces of functions, the analogue of "$\nabla E = 0$" is a differential equation in its own right, called the **Euler–Lagrange equation**.
 
-Concretely, consider a functional
+**Why study it.** The Euler–Lagrange equation is the central object of the **calculus of variations**, one of the oldest branches of analysis (its founding problem, the *brachistochrone* of Johann Bernoulli, 1696, asks for the curve along which a bead slides between two given points in the shortest time). The same equation appears wherever a quantity is determined by minimisation:
+
+* **Mechanics.** Hamilton's *principle of stationary action*: physical trajectories are stationary points of an action functional $\int L\,dt$.
+* **Geometry.** Geodesics on a Riemannian manifold are stationary points of an arc-length functional; minimal surfaces are stationary points of an area functional.
+* **Optics.** Fermat's *principle of least time*: light rays follow stationary points of an optical-path-length functional.
+* **PDE / mathematical physics.** Many fundamental PDEs — Laplace, Poisson, the harmonic-map equation, the minimal-surface equation, the equations of nonlinear elasticity — are EL equations of natural energy functionals.
+* **Optimisation.** Modern variational problems in image processing, optimal transport, machine learning are formulated as energy minimisation; their stationarity conditions are EL equations.
+
+In each setting the EL equation is the *necessary first-order condition* for a function to be a stationary point of a functional. Below we formalize this in the simplest one-dimensional setting; the same idea extends to vector-valued curves, multivariate domains, and abstract Banach/Hilbert/manifold settings.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Functional, Lagrangian, admissible class)</span></p>
+
+A **functional** is a real-valued map $J:\mathcal A\to\mathbb R$ defined on a set $\mathcal A$ of functions. The classical first-order one-dimensional case is
 
 $$
-J[y] = \int_a^b L\big(x,\,y(x),\,y'(x)\big)\,dx
+J[y] = \int_a^b L\bigl(x,\,y(x),\,y'(x)\bigr)\,dx,
 $$
 
-acting on smooth curves $y:[a,b]\to\mathbb{R}$ with prescribed boundary values $y(a)=\alpha$, $y(b)=\beta$. The smooth function $L:\mathbb{R}^3\to\mathbb{R}$ is called the **Lagrangian**. Plugging in a variation $y_\varepsilon = y + \varepsilon\,\eta$ with $\eta(a)=\eta(b)=0$, expanding to first order, and integrating by parts on the $\eta'$-term gives
+where:
+
+* $L:U\subseteq\mathbb R^3\to\mathbb R$ is a $C^2$ function called the **Lagrangian** (or *Lagrangian density*);
+* the **admissible class** $\mathcal A$ consists of $C^1$ (or $C^2$) curves $y:[a,b]\to\mathbb R$ with prescribed boundary values $y(a)=\alpha,\ y(b)=\beta$;
+* $J[y]$ is finite for all $y\in\mathcal A$.
+
+The space of **admissible variations** is
 
 $$
-\frac{d}{d\varepsilon}\bigg|_{\varepsilon=0} J[y_\varepsilon]
-= \int_a^b \!\left[\frac{\partial L}{\partial y} - \frac{d}{dx}\frac{\partial L}{\partial y'}\right]\eta(x)\,dx.
+\mathcal V := \bigl\lbrace \eta\in C^1([a,b]):\eta(a)=\eta(b)=0\bigr\rbrace,
 $$
 
-Demanding this vanish for every admissible $\eta$ and applying the fundamental lemma of the calculus of variations yields the **Euler–Lagrange equation**:
+so that $y+\varepsilon\eta\in\mathcal A$ whenever $y\in\mathcal A$ and $\eta\in\mathcal V$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stationary point of a functional)</span></p>
+
+A curve $y\in\mathcal A$ is a **stationary point** (or **critical point**) of $J$ if
 
 $$
-\frac{\partial L}{\partial y} - \frac{d}{dx}\!\left(\frac{\partial L}{\partial y'}\right) = 0.
+\delta J[y;\eta]\;:=\;\left.\frac{d}{d\varepsilon}\right|_{\varepsilon=0}\!J[y+\varepsilon\eta]\;=\;0\qquad\text{for every }\eta\in\mathcal V.
 $$
 
-This is a (generally nonlinear, generally second-order) ODE in $y$. Three canonical examples illustrate its scope:
+The quantity $\delta J[y;\eta]$ is called the **first variation** of $J$ at $y$ in the direction $\eta$.
 
-* **Geodesics in the plane.** With $L(x,y,y') = \sqrt{1+(y')^2}$, the EL equation reduces to $y'' = 0$, recovering straight lines as the curves of shortest length.
-* **Classical mechanics.** With $L(q,\dot q) = \frac{1}{2} m\,\lvert\dot q\rvert^2 - E(q)$ (kinetic minus potential energy), the EL equation reads $m\ddot q = -\nabla E(q)$ — exactly Newton's law without friction (cf. (1.5) below with $\lambda=0$). This is **Hamilton's principle of stationary action**: physical trajectories are precisely the stationary points of $\int L\,dt$.
-* **Dirichlet energy.** For $J[u] = \frac{1}{2}\int_\Omega \lvert\nabla u\rvert^2\,dx$ on functions $u:\Omega\to\mathbb{R}$, the multivariable analogue of (1.4) is the **Laplace equation** $\Delta u = 0$.
+In particular every (local) minimizer or maximizer of $J$ in $\mathcal A$ is a stationary point — but not every stationary point is an extremum (saddles also satisfy $\delta J=0$).
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Euler–Lagrange equation)</span></p>
+
+Let $L\in C^2(U)$ and let $y\in C^2([a,b])$ be a stationary point of
+
+$$
+J[y]=\int_a^b L\bigl(x,y(x),y'(x)\bigr)\,dx
+$$
+
+in the admissible class $\mathcal A$ with fixed endpoints. Then $y$ satisfies the **Euler–Lagrange equation**
+
+$$
+\frac{\partial L}{\partial y}\bigl(x,y(x),y'(x)\bigr) \;-\; \frac{d}{dx}\!\left(\frac{\partial L}{\partial y'}\bigl(x,y(x),y'(x)\bigr)\right) = 0\qquad\text{for all }x\in(a,b). \tag{EL}
+$$
+
+Together with the boundary conditions $y(a)=\alpha,\ y(b)=\beta$, this is a (generally nonlinear, generally second-order) two-point boundary-value problem for $y$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Derivation of (EL) — the variational argument</summary>
+
+Fix $\eta\in\mathcal V$ (so $\eta(a)=\eta(b)=0$) and define
+
+$$
+\Phi(\varepsilon)\;:=\;J[y+\varepsilon\eta]\;=\;\int_a^b L\bigl(x,\,y(x)+\varepsilon\eta(x),\,y'(x)+\varepsilon\eta'(x)\bigr)\,dx.
+$$
+
+Since $L\in C^2$ and the integrand is smooth in $\varepsilon$, we may differentiate under the integral sign:
+
+$$
+\Phi'(0) \;=\; \int_a^b \left[\frac{\partial L}{\partial y}(x,y,y')\,\eta(x)\;+\;\frac{\partial L}{\partial y'}(x,y,y')\,\eta'(x)\right]dx.
+$$
+
+Apply integration by parts to the $\eta'$-term:
+
+$$
+\int_a^b \frac{\partial L}{\partial y'}\,\eta'(x)\,dx
+\;=\;\left[\frac{\partial L}{\partial y'}\,\eta\right]_a^b\;-\;\int_a^b \frac{d}{dx}\!\left(\frac{\partial L}{\partial y'}\right)\eta(x)\,dx.
+$$
+
+The boundary term vanishes because $\eta(a)=\eta(b)=0$. Substituting back,
+
+$$
+\Phi'(0)\;=\;\int_a^b\!\left[\frac{\partial L}{\partial y}\;-\;\frac{d}{dx}\!\left(\frac{\partial L}{\partial y'}\right)\right]\eta(x)\,dx.
+$$
+
+By the definition of stationarity, this must vanish for every $\eta\in\mathcal V$. Apply the **fundamental lemma of the calculus of variations**:
+
+> If $g\in C([a,b])$ and $\int_a^b g(x)\,\eta(x)\,dx=0$ for every $\eta\in C_c^\infty((a,b))$, then $g\equiv 0$ on $[a,b]$.
+
+(Proof sketch: if $g(x_0)>0$ at some interior $x_0$, choose a non-negative bump $\eta\in C_c^\infty((a,b))$ supported in a small neighbourhood of $x_0$ where $g>0$; the integral is then strictly positive, a contradiction.)
+
+Apply this lemma with
+
+$$
+g(x)\;:=\;\frac{\partial L}{\partial y}\bigl(x,y(x),y'(x)\bigr)-\frac{d}{dx}\!\left(\frac{\partial L}{\partial y'}\bigl(x,y(x),y'(x)\bigr)\right),
+$$
+
+which is continuous on $[a,b]$ since $y\in C^2$ and $L\in C^2$. The conclusion is $g\equiv 0$ on $(a,b)$, which is exactly (EL). $\square$
+
+</details>
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/el_first_variation.png' | relative_url }}" alt="Two-by-two grid: top row shows perturbations of a stationary curve and a non-stationary curve; bottom row shows the value of the arc-length functional along each one-parameter family. The stationary case has minimum at zero with horizontal tangent; the non-stationary case has slanted tangent at zero." loading="lazy">
+  <figcaption>Stationarity, visualized for the arc-length functional $J[y]=\int_0^1\sqrt{1+y'(x)^2}\,dx$. <em>Left column</em>: $y_0(x)=x$ is the stationary point (the EL solution); the family $y_0+\varepsilon\eta$ with $\eta(x)=\sin(\pi x)$ has functional value $\Phi(\varepsilon)$ minimised at $\varepsilon=0$ with horizontal tangent — i.e. $\Phi'(0)=0$. <em>Right column</em>: $y_0(x)=x+\frac{1}{2}\sin(\pi x)$ is a non-stationary curve; the same family has $\Phi'(0)\neq 0$, signalling that perturbing in the right direction strictly decreases $J$. The Euler–Lagrange equation is the equation that distinguishes the left case from the right.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Generalizations)</span></p>
+
+The same variational argument extends without conceptual change:
+
+* **Vector-valued curves $y:[a,b]\to\mathbb R^N$.** Then (EL) becomes a *system* of $N$ equations $\partial_{y_i}L - \frac{d}{dx}\partial_{y'_i}L = 0$ for $i=1,\dots,N$.
+* **Multivariate domains.** For functionals $J[u]=\int_\Omega L(x,u,\nabla u)\,dx$ on functions $u:\Omega\subseteq\mathbb R^d\to\mathbb R$, the integration-by-parts step produces a divergence and the EL equation becomes a PDE: $\partial_u L - \mathrm{div}\bigl(\nabla_p L\bigr)=0$, where $p:=\nabla u$.
+* **Higher-order Lagrangians** ($L$ depending on $y''$, etc.) yield higher-order EL equations after multiple integrations by parts.
+* **Free boundaries** (boundary values not prescribed) yield additional **natural boundary conditions** from the boundary terms that no longer vanish automatically.
+
+In all of these the underlying logic — first variation $=0$ for all admissible perturbations, integrate by parts, apply the fundamental lemma — is the same.
+
+</div>
+
+**Canonical examples.**
+
+* **Geodesics in the plane.** With $L(x,y,y') = \sqrt{1+(y')^2}$ (arc length), the EL equation reduces to $y'' = 0$, recovering straight lines as the curves of shortest length.
+
+* **Brachistochrone.** A bead slides under gravity along a curve from $A=(0,0)$ to $B$ in the lower half-plane, starting at rest. By energy conservation its speed at height $y$ is $v=\sqrt{-2gy}$, so the transit time is
+
+  $$T[y]=\int_0^{x_B}\frac{\sqrt{1+y'(x)^2}}{\sqrt{-2g\,y(x)}}\,dx.$$
+
+  This is a Lagrangian of the form $L(x,y,y')$ with no explicit $x$-dependence, so the EL equation has a first integral (Beltrami's identity). Solving it gives a **cycloid** — the curve traced by a point on a rolling circle — as the unique brachistochrone. The figure below shows the cycloid winning a head-to-head against three other reasonable candidate curves between the same endpoints.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/el_brachistochrone.png' | relative_url }}" alt="Four candidate curves between two points A and B with gravity: a straight line, a parabola, a cubic dip, and a cycloid; each labeled with the bead's transit time. The cycloid has the smallest transit time." loading="lazy">
+  <figcaption>Brachistochrone: bead from $A=(0,0)$ to $B=(1,-1)$ under gravity ($g=1$). For each candidate curve the transit time $T[y]=\int\sqrt{1+y'^2}/\sqrt{-2gy}\,dx$ is shown. The cycloid (the EL solution) wins ($T\approx 1.83$) — narrowly over the parabola and cubic dip, decisively over the straight line. This is the founding problem of the calculus of variations (Bernoulli, 1696).</figcaption>
+</figure>
+
+* **Classical mechanics.** With $L(q,\dot q) = \frac{1}{2} m\,\lvert\dot q\rvert^2 - E(q)$ (kinetic minus potential energy), the EL equation reads $m\ddot q = -\nabla E(q)$ — exactly Newton's law without friction (cf. (1.5) below with $\lambda=0$). This is **Hamilton's principle of stationary action**: physical trajectories are precisely the stationary points of $\int L\,dt$. The figure below illustrates this for a 1D free particle thrown up under gravity with prescribed endpoints.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/el_hamilton_action.png' | relative_url }}" alt="Two panels: left shows the physical parabolic trajectory of a particle under gravity together with several perturbed trajectories sharing the same endpoints; right shows the action as a function of the perturbation amplitude, with horizontal tangent at zero indicating the physical trajectory is a stationary point of the action." loading="lazy">
+  <figcaption>Hamilton's principle for a particle in 1D under gravity, $L=\frac{1}{2}\dot q^2-q$, fixed endpoints $q(0)=q(1)=0$. <em>Left</em>: the physical trajectory is the parabola $q_*(t)=\frac{1}{2}t(1-t)$ (red); other admissible trajectories sharing the same endpoints differ from $q_*$ by $\alpha\sin(\pi t)$. <em>Right</em>: the action $S[q_\alpha]=\int_0^1(\frac{1}{2}\dot q^2-q)\,dt$ as a function of $\alpha$. The graph has horizontal tangent at $\alpha=0$, i.e. $\frac{dS}{d\alpha}|_{0}=0$, which is exactly the EL equation $\ddot q_*=-1$.</figcaption>
+</figure>
+
+* **Dirichlet energy.** For $J[u] = \frac{1}{2}\int_\Omega \lvert\nabla u\rvert^2\,dx$ on functions $u:\Omega\to\mathbb{R}$, the multivariate EL equation is the **Laplace equation** $\Delta u = 0$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(EL equation vs. gradient flow)</span></p>
@@ -446,8 +579,6 @@ x(0) = x_0.
 $$
 
 </div>
-
-A few facts about the subdifferential are collected in the following exercise.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Subdifferential)</span></p>
@@ -1236,7 +1367,7 @@ be its piecewise-constant interpolation in time.
   <figcaption>Interactive: full iteration of (1.10) on the 2D anisotropic energy $E(x,y)=\frac{1}{2}(a x^2+b y^2)$. The blue trail is the minimizing-movements scheme, the red trail is explicit Euler, the green dashed curve is the continuous gradient flow, and the dashed orange rings show the parabolic "pull" $\frac{1}{2h}|x-\chi_{\ell-1}|^2$ around the current iterate. Use <em>Step</em> for a single iteration, <em>Auto</em> to play, <em>Reset</em> to clear; click anywhere to set a new initial point $\chi_0$. Try the most anisotropic energy ($\frac{1}{2}(x^2+8y^2)$) at moderate $h$: explicit Euler oscillates and blows up while minimizing movements stays put — the very statement of $A$-stability.</figcaption>
 </figure>
 
-The **Euler–Lagrange equation** (TODO: what is it?) (necessary optimality condition) for (1.10) is
+The **Euler–Lagrange equation** for (1.10) — i.e. the *first-order optimality condition* for $\chi_h^{(\ell)}$ to be a minimizer of the bracketed functional, in the same variational sense as in §1.2 — is
 
 $$
 \frac{\chi_h^{(\ell)} - \chi_h^{(\ell-1)}}{h} \in -\partial E(\chi_h^{(\ell)}). \tag{1.12}

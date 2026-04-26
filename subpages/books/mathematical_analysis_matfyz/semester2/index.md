@@ -413,6 +413,9 @@ In the following two sections we will learn two useful methods for finding primi
 
 ### 3. Integration Per Partes
 
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Integration Technique</span><span class="math-callout__name">(Integration By Parts)</span></p>
+
 Let $f, g$ have derivatives. From the rule of differentiating products we immediately obtain
 
 $$\int f' \cdot g = f \cdot g - \int f \cdot g'. \qquad (*)$$
@@ -424,6 +427,8 @@ At the first sight we have not achieved much: we wish to integrate the product $
 3. the formula may yield a recursive one that leads to our goal.
 
 Using the formula $(*)$ is called **integration per partes**.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(3.2 - Illustration of 3.1.(1): $\int x^a \lg x$)</span></p>

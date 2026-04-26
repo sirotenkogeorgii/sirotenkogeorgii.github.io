@@ -2288,9 +2288,9 @@ In practice, a simpler optimality condition is often desirable, which could be c
 
 In the following, we will use two functions, which turn real-valued vectors from the primal space $\mathbb{R}^{\mathcal{I}}$ into binary ones:
 
-- For any $\mu \in \mathbb{R}$ let $\operatorname{nz}[\mu] = \llbracket \mu \neq 0 \rrbracket$ be the indicator function of $\mu$ being **non-zero**. When applied to a vector $\boldsymbol{\mu} \in \mathbb{R}^n$, it acts coordinate-wise, i.e. $\operatorname{nz}[\boldsymbol{\mu}]_i = \operatorname{nz}[\mu_i]$.
+- For any $\mu \in \mathbb{R}$ let $\operatorname{nz}[\mu] = \lbracket \mu \neq 0 \rbracket$ be the indicator function of $\mu$ being **non-zero**. When applied to a vector $\boldsymbol{\mu} \in \mathbb{R}^n$, it acts coordinate-wise, i.e. $\operatorname{nz}[\boldsymbol{\mu}]_i = \operatorname{nz}[\mu_i]$.
 
-- For $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$ let $\operatorname{mi}[\boldsymbol{\theta}]$ be defined such that locally minimal labels and label pairs (w.r.t. $\theta$) obtain the value 1 and others zero, i.e. $\operatorname{mi}[\boldsymbol{\theta}]_w(x_w) := \llbracket \theta_w(x_w) = \min_{x_w \in \mathcal{Y}_w} \theta_w(x_w) \rrbracket$ for $w \in \mathcal{V} \cup \mathcal{E}$. Here $\operatorname{mi}$ stands for $\min$.
+- For $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$ let $\operatorname{mi}[\boldsymbol{\theta}]$ be defined such that locally minimal labels and label pairs (w.r.t. $\theta$) obtain the value 1 and others zero, i.e. $\operatorname{mi}[\boldsymbol{\theta}]\_w(x_w) := \lbracket \theta_w(x_w) = \min_{x_w \in \mathcal{Y}\_w} \theta_w(x_w) \rbracket$ for $w \in \mathcal{V} \cup \mathcal{E}$. Here $\operatorname{mi}$ stands for $\min$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 5.24</span></p>
@@ -2310,8 +2310,8 @@ $\operatorname{mi}[(0, -2), (1, 1, 2, 0), (7, -1)] = (0, 1), (0, 0, 0, 1), (0, 1
 
 A binary vector $\boldsymbol{\xi} \in \lbrace 0, 1 \rbrace^{\mathcal{I}}$ is called *arc-consistent* if
 
-1. $\xi_{uv}(s, t) = 1$ implies $\xi_u(s) = \xi_v(t) = 1$ for all $uv \in \mathcal{E}$, $(s, t) \in \mathcal{Y}_{uv}$, and
-2. $\xi_u(s) = 1$ implies that for any $v \in \mathcal{N}(u)$ there exists $t \in \mathcal{Y}_v$ such that $\xi_{uv}(s, t) = 1$.
+1. $\xi_{uv}(s, t) = 1$ implies $\xi_u(s) = \xi_v(t) = 1$ for all $uv \in \mathcal{E}$, $(s, t) \in \mathcal{Y}\_{uv}$, and
+2. $\xi_u(s) = 1$ implies that for any $v \in \mathcal{N}(u)$ there exists $t \in \mathcal{Y}\_v$ such that $\xi_{uv}(s, t) = 1$.
 
 The set of arc-consistent vectors from $\lbrace 0, 1 \rbrace^{\mathcal{I}}$ will be denoted as $\mathcal{AC}^{\mathcal{I}}$.
 
@@ -2320,7 +2320,7 @@ The set of arc-consistent vectors from $\lbrace 0, 1 \rbrace^{\mathcal{I}}$ will
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.26</span><span class="math-callout__name">(Strict Arc-Consistency)</span></p>
 
-$\boldsymbol{\xi} \in \lbrace 0, 1 \rbrace^{\mathcal{I}}$ is *strictly arc-consistent* if it is arc-consistent and $\sum_{s \in \mathcal{Y}_u} \xi_u(s) = 1$ for all $u \in \mathcal{V}$ as well as $\sum_{(s,t) \in \mathcal{Y}_{uv}} \xi_{uv}(s,t) = 1$ for all $uv \in \mathcal{E}$.
+$\boldsymbol{\xi} \in \lbrace 0, 1 \rbrace^{\mathcal{I}}$ is *strictly arc-consistent* if it is arc-consistent and $\sum_{s \in \mathcal{Y}\_u} \xi_u(s) = 1$ for all $u \in \mathcal{V}$ as well as $\sum_{(s,t) \in \mathcal{Y}\_{uv}} \xi_{uv}(s,t) = 1$ for all $uv \in \mathcal{E}$.
 
 </div>
 
@@ -2344,7 +2344,7 @@ Proposition 5.27(1) defines a *necessary* condition for the dual optimum given i
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.28</span><span class="math-callout__name">(Node-Edge Agreement)</span></p>
 
-One says that nodes and edges *agree* (or there is a *node-edge agreement*) for a cost vector $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$, if for each node (edge) $w \in \mathcal{V} \cup \mathcal{E}$ there is a non-empty subset of locally optimal labels (label pairs) $\mathbb{S}_w \subseteq \arg \min_{s \in \mathcal{Y}_w} \theta_w(s)$ such that the vector $\boldsymbol{\xi}$ with coordinates $\xi_w(s) = \llbracket s \in \mathbb{S}_w \rrbracket$ is arc-consistent.
+One says that nodes and edges *agree* (or there is a *node-edge agreement*) for a cost vector $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$, if for each node (edge) $w \in \mathcal{V} \cup \mathcal{E}$ there is a non-empty subset of locally optimal labels (label pairs) $\mathbb{S}\_w \subseteq \arg \min_{s \in \mathcal{Y}\_w} \theta_w(s)$ such that the vector $\boldsymbol{\xi}$ with coordinates $\xi_w(s) = \llbracket s \in \mathbb{S}\_w \rrbracket$ is arc-consistent.
 
 </div>
 
@@ -2357,9 +2357,9 @@ By construction, node-edge agreement is only necessary, but not sufficient dual 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5.29</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem with the graph $\mathcal{G}$ being acyclic. Then the node-edge agreement implies $\boldsymbol{\phi}$ is the dual optimum. Moreover, there is an optimal integer labeling $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$ such that $\boldsymbol{\delta}(\mathbf{y}) \leq \boldsymbol{\xi}$, where $\boldsymbol{\xi}$ is the vector defining the node-edge agreement.
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem with the graph $\mathcal{G}$ being acyclic. Then the node-edge agreement implies $\boldsymbol{\phi}$ is the dual optimum. Moreover, there is an optimal integer labeling $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$ such that $\boldsymbol{\delta}(\mathbf{y}) \leq \boldsymbol{\xi}$, where $\boldsymbol{\xi}$ is the vector defining the node-edge agreement.
 
-Furthermore, for any $(w, s) \in (\mathcal{V} \cup \mathcal{E}) \times \mathcal{Y}_w$ such that $\boldsymbol{\xi} \neq \mathbf{0}$ there is an optimal integer labeling $\mathbf{y}^* \in \mathcal{Y}_\mathcal{V}$ such that $y_w^* = s$.
+Furthermore, for any $(w, s) \in (\mathcal{V} \cup \mathcal{E}) \times \mathcal{Y}\_w$ such that $\boldsymbol{\xi} \neq \mathbf{0}$ there is an optimal integer labeling $\mathbf{y}^\ast \in \mathcal{Y}\_\mathcal{V}$ such that $y_w^\ast = s$.
 
 </div>
 

@@ -4238,13 +4238,13 @@ If $A < B$ and $C < D$ are in $\mathbb{R}^*$, $g\colon (A, B) \to (C, D)$, $f\co
 <details markdown="1">
 <summary>Proof</summary>
 
-**1.** Let $A$, $B$, $C$, $D$, $g$, $f$ and $F$ be as stated and let the right-hand side be defined. This means that the limits $g(A) := \lim_{x \to A} g(x) \in \mathbb{R}^*$ and $g(B) := \lim_{x \to B} g(x) \in \mathbb{R}^*$ exist. It follows that $g(A)$ and $g(B)$ are limit points of $(C, D)$. It also means that the right-hand side has the value $\lim_{y \to g(B)} F(y) - \lim_{y \to g(A)} F(y)$, in particular the last two limits exist and are finite. We already know that $F(g)$ is on $(A, B)$ a primitive of $f(g) \cdot g'$. Thus
+**1.** Let $A$, $B$, $C$, $D$, $g$, $f$ and $F$ be as stated and let the right-hand side be defined. This means that the limits $g(A) := \lim_{x \to A} g(x) \in \mathbb{R}^\ast$ and $g(B) := \lim_{x \to B} g(x) \in \mathbb{R}^\ast$ exist. It follows that $g(A)$ and $g(B)$ are limit points of $(C, D)$. It also means that the right-hand side has the value $\lim_{y \to g(B)} F(y) - \lim_{y \to g(A)} F(y)$, in particular the last two limits exist and are finite. We already know that $F(g)$ is on $(A, B)$ a primitive of $f(g) \cdot g'$. Thus
 
 $$\text{(N)} \int_{g(A)}^{g(B)} f = \lim_{y \to g(B)} F(y) - \lim_{y \to g(A)} F(y) = \lim_{x \to B} F(g(x)) - \lim_{x \to A} F(g(x)) = \text{(N)} \int_A^B f(g) \cdot g'.$$
 
 Here the first and third equality follow from the definition of the general Newton integral. The crucial middle equality follows by the theorem on limits of composite functions (Theorem 14 in Lecture 5) whose Condition 1 holds as the outer function $F$ is continuous.
 
-**2.** Let $A$, $B$, $C$, $D$, $g$ and $f$ be as stated and let the right-hand side be defined. From the proof of part 2 of Theorem 13 in Lecture 10 we know that $g$ is an increasing or decreasing bijection, and therefore so is the inverse $g^{-1}\colon (C, D) \to (A, B)$ (which is also continuous). Thus the limits $g^{-1}(C) := \lim_{y \to C} g^{-1}(y) \in \mathbb{R}^*$ and $g^{-1}(D) := \lim_{y \to D} g^{-1}(y) \in \mathbb{R}^*$ exist and are equal $\lbrace A, B \rbrace$ (in some order). Since the right-hand side is defined, $f(g) \cdot g'$ has on $(A, B)$ a primitive function $G$ and the right-hand side has a finite value. We already know that $G(g^{-1})$ is on $(C, D)$ a primitive of $f$. Thus
+**2.** Let $A$, $B$, $C$, $D$, $g$ and $f$ be as stated and let the right-hand side be defined. From the proof of part 2 of Theorem 13 in Lecture 10 we know that $g$ is an increasing or decreasing bijection, and therefore so is the inverse $g^{-1}\colon (C, D) \to (A, B)$ (which is also continuous). Thus the limits $g^{-1}(C) := \lim_{y \to C} g^{-1}(y) \in \mathbb{R}^\ast$ and $g^{-1}(D) := \lim_{y \to D} g^{-1}(y) \in \mathbb{R}^\ast$ exist and are equal $\lbrace A, B \rbrace$ (in some order). Since the right-hand side is defined, $f(g) \cdot g'$ has on $(A, B)$ a primitive function $G$ and the right-hand side has a finite value. We already know that $G(g^{-1})$ is on $(C, D)$ a primitive of $f$. Thus
 
 $$\text{(N)} \int_{g^{-1}(C)}^{g^{-1}(D)} f(g) \cdot g' = \lim_{x \to g^{-1}(D)} G(x) - \lim_{x \to g^{-1}(C)} G(x) = \lim_{y \to D} G(g^{-1}(y)) - \lim_{y \to C} G(g^{-1}(y)) = \text{(N)} \int_C^D f.$$
 
@@ -4268,8 +4268,8 @@ This table is obtained completely mechanically by inverting the rules for differ
 
 The following formulas hold.
 
-1. On $\mathbb{R}$: $\int \exp(x) = \exp(x)$, $\int \sin x = -\cos x$, $\int \cos x = \sin x$, $\int 1/(1+x^2) = \arctan x$ (and also $= -\text{arccot}\, x$) and $\int x^n = x^{n+1}/(n+1)$ for every $n \in \mathbb{N}_0$.
-2. Both on $(-\infty, 0)$ and on $(0, +\infty)$: $\int 1/x = \log(|x|)$ and $\int x^n = x^{n+1}/(n+1)$ for every $n \in \lbrace -2, -3, \dots \rbrace$.
+1. On $\mathbb{R}$: $\int \exp(x) = \exp(x)$, $\int \sin x = -\cos x$, $\int \cos x = \sin x$, $\int 1/(1+x^2) = \arctan x$ (and also $= -\text{arccot}\, x$) and $\int x^n = x^{n+1}/(n+1)$ for every $n \in \mathbb{N}\_0$.
+2. Both on $(-\infty, 0)$ and on $(0, +\infty)$: $\int 1/x = \log(\|x\|)$ and $\int x^n = x^{n+1}/(n+1)$ for every $n \in \lbrace -2, -3, \dots \rbrace$.
 3. On $(0, +\infty)$: $\int x^b = x^{b+1}/(b+1)$ for every $b \in \mathbb{R} \setminus \mathbb{Z}$ and $(\log x)' = 1/x$.
 4. On every interval $(k\pi - \pi/2, k\pi + \pi/2)$ with $k \in \mathbb{Z}$: $\int 1/(\cos x)^2 = \tan x$.
 5. On every interval $(k\pi, (k+1)\pi)$ with $k \in \mathbb{Z}$: $\int 1/(\sin x)^2 = -\cot x$.
@@ -4285,7 +4285,7 @@ This is a large class of functions for which antiderivatives can be explicitly c
 
 $$r(x) = \frac{p(x)}{q(x)}\colon \underbrace{\mathbb{R} \setminus Z(r)}_{\mathrm{Def}(r)} \to \mathbb{R}.$$
 
-Here $p(x), q(x) \in \mathbb{R}[x]$ are polynomials with real coefficients, $q(x)$ is not the zero polynomial and $Z(r) = \lbrace a \in \mathbb{R} \mid q(a) = 0 \rbrace$ is the zero set (the set of real roots) of the denominator $q(x)$. It is well known that $|Z(r)| \le \deg q$, the **degree** of the polynomial $q = q(x)$. An **irreducible trinomial** $a(x)$ is any real monic (= with the leading coefficient 1) quadratic polynomial
+Here $p(x), q(x) \in \mathbb{R}[x]$ are polynomials with real coefficients, $q(x)$ is not the zero polynomial and $Z(r) = \lbrace a \in \mathbb{R} \mid q(a) = 0 \rbrace$ is the zero set (the set of real roots) of the denominator $q(x)$. It is well known that $\|Z(r)\| \le \deg q$, the **degree** of the polynomial $q = q(x)$. An **irreducible trinomial** $a(x)$ is any real monic (= with the leading coefficient 1) quadratic polynomial
 
 $$a(x) := x^2 + bx + c$$
 
@@ -4408,7 +4408,7 @@ We express the given rational function $r(x)$ as a sum of partial fractions as i
 
 $$r(x) = s(x) + \sum_{i=1}^{k} \sum_{j=1}^{m_i} \frac{\beta_{i,j}}{(x - \alpha_i)^j} + \sum_{i=1}^{l} \sum_{j=1}^{n_i} \frac{\gamma_{i,j} x + \delta_{i,j}}{a_i(x)^j}.$$
 
-We use linearity of antiderivatives and integrate each summand in the expression separately. It is easy to integrate the first two terms: $\int s(x)$ is a polynomial (on any nontrivial real interval $I$), $\int \beta/(x - \alpha)^j = -\beta/(j-1)(x - \alpha)^{j-1}$ for any $j \ge 2$ and $\int \beta/(x - \alpha) = \beta \log(|x - \alpha|)$, where the last two antiderivatives hold on any nontrivial interval $I \subset \mathbb{R} \setminus \lbrace \alpha \rbrace$. Thus these contributions to $\int r(x)$ are of the first two types given in Theorem 7.
+We use linearity of antiderivatives and integrate each summand in the expression separately. It is easy to integrate the first two terms: $\int s(x)$ is a polynomial (on any nontrivial real interval $I$), $\int \beta/(x - \alpha)^j = -\beta/(j-1)(x - \alpha)^{j-1}$ for any $j \ge 2$ and $\int \beta/(x - \alpha) = \beta \log(\|x - \alpha\|)$, where the last two antiderivatives hold on any nontrivial interval $I \subset \mathbb{R} \setminus \lbrace \alpha \rbrace$. Thus these contributions to $\int r(x)$ are of the first two types given in Theorem 7.
 
 It remains to integrate the third term, which means to compute primitives of the form
 
@@ -4465,7 +4465,7 @@ For simplicity of notation we omit the qualification (R) when it is clear that t
 Let $f\colon [a, b] \to \mathbb{R}$ be any function. The next three claims are logically equivalent.
 
 1. $f \in \mathrm{R}(a, b)$.
-2. *(Cauchy's condition)* $\forall\, \varepsilon\; \exists\, \delta$ such that for any partitions $P$ and $Q$ of $[a, b]$ with respective test points $\bar{t}$ and $\bar{u}$, if $\Delta(P), \Delta(Q) < \delta$ then $|R(P, \bar{t}, f) - R(Q, \bar{u}, f)| < \varepsilon$.
+2. *(Cauchy's condition)* $\forall\, \varepsilon\; \exists\, \delta$ such that for any partitions $P$ and $Q$ of $[a, b]$ with respective test points $\bar{t}$ and $\bar{u}$, if $\Delta(P), \Delta(Q) < \delta$ then $\|R(P, \bar{t}, f) - R(Q, \bar{u}, f)\| < \varepsilon$.
 3. *(Heine's definition)* For any sequence $(P_n)$ of partitions of $[a, b]$ with test points $\overline{t(n)}$, if $\lim \Delta(P_n) = 0$ then the sequence $(R(P_n, \overline{t(n)}, f))$ is convergent.
 
 If 1 holds then every sequence of Riemann sums in 3 with norms going to 0 has the limit $\lim R(P_n, \overline{t(n)}, f) = \int_a^b f$.
@@ -4524,7 +4524,7 @@ In the positive case, $\int_a^c f = \int_a^b f + \int_b^c f$.
 <details markdown="1">
 <summary>Proof</summary>
 
-**Implication $\Rightarrow$.** Let $f \in \mathrm{R}(a, c)$ and let an $\varepsilon$ be given. We prove for the restriction of $f$ to $[a, b]$ Cauchy's condition of Proposition 2. Let $P_0$ and $Q_0$ be two partitions of $[a, b]$ with respective test points $\overline{t(0)}$ and $\overline{u(0)}$ and such that $\Delta(P_0), \Delta(Q_0) < \delta$, where $\delta$ guarantees satisfaction of Cauchy's condition for $\mathrm{R}(a, c)$ and $\varepsilon$. We extend $P_0$ and $Q_0$ to partitions $P$ and $Q$ of $[a, c]$ arbitrarily but so that $\Delta(P), \Delta(Q) < \delta$ and that the intervals of $P$ and $Q$ contained in $[b, c]$ are identical. We also extend $\overline{t(0)}$ and $\overline{u(0)}$ identically to test points $\bar{t}$ and $\bar{u}$ of, respectively, $P$ and $Q$. Then indeed $|R(P_0, \overline{t(0)}, f) - R(Q_0, \overline{u(0)}, f)| = |R(P, \bar{t}, f) - R(Q, \bar{u}, f)| < \varepsilon$. The proof of Cauchy's condition for the restriction $f$ to $[b, c]$ is similar. The identity $\int_a^c f = \int_a^b f + \int_b^c f$ follows by merging partitions of $[a, b]$ and $[b, c]$ in partitions of $[a, c]$ (with norms going to 0) and using the last claim in Proposition 2.
+**Implication $\Rightarrow$.** Let $f \in \mathrm{R}(a, c)$ and let an $\varepsilon$ be given. We prove for the restriction of $f$ to $[a, b]$ Cauchy's condition of Proposition 2. Let $P_0$ and $Q_0$ be two partitions of $[a, b]$ with respective test points $\overline{t(0)}$ and $\overline{u(0)}$ and such that $\Delta(P_0), \Delta(Q_0) < \delta$, where $\delta$ guarantees satisfaction of Cauchy's condition for $\mathrm{R}(a, c)$ and $\varepsilon$. We extend $P_0$ and $Q_0$ to partitions $P$ and $Q$ of $[a, c]$ arbitrarily but so that $\Delta(P), \Delta(Q) < \delta$ and that the intervals of $P$ and $Q$ contained in $[b, c]$ are identical. We also extend $\overline{t(0)}$ and $\overline{u(0)}$ identically to test points $\bar{t}$ and $\bar{u}$ of, respectively, $P$ and $Q$. Then indeed $\|R(P_0, \overline{t(0)}, f) - R(Q_0, \overline{u(0)}, f)\| = \|R(P, \bar{t}, f) - R(Q, \bar{u}, f)\| < \varepsilon$. The proof of Cauchy's condition for the restriction $f$ to $[b, c]$ is similar. The identity $\int_a^c f = \int_a^b f + \int_b^c f$ follows by merging partitions of $[a, b]$ and $[b, c]$ in partitions of $[a, c]$ (with norms going to 0) and using the last claim in Proposition 2.
 
 **Implication $\Leftarrow$.** Let $f \in \mathrm{R}(a, b) \cap \mathrm{R}(b, c)$. It follows that $f$ is bounded and we denote by $d > 0$ the bounding constant. Let $P$ be any partition of $[a, c]$ with test points $\bar{t}$. We split $P$ in the partitions $P_1$ and $P_2$ of, respectively, $[a, b]$ and $[b, c]$ and with respective test points $\overline{t(1)}$ and $\overline{t(2)}$ as follows. If $b \in P$, we do the splitting in the obvious way. If $b \notin P$, we obtain $P_1$ and $P_2$ by splitting the interval $[a_{i-1}, a_i]$ of $P$ such that $b \in (a_{i-1}, a_i)$ in the intervals $[a_{i-1}, b]$ and $[b, a_i]$, and get $\overline{t(1)}$ and $\overline{t(2)}$ by selecting two arbitrary test points in the two new intervals. Then $R(P, \bar{t}, f) = R(P_1, \overline{t(1)}, f) + R(P_2, \overline{t(2)}, f) + O(\Delta(P)d)$. Thus satisfaction of Cauchy's condition for $\mathrm{R}(a, b)$ and $\mathrm{R}(b, c)$ follows its satisfaction for $\mathrm{R}(a, c)$ by the same argument as for the opposite implication. The identity $\int_a^c f = \int_a^b f + \int_b^c f$ follows by the same argument as above. $\square$
 
@@ -4536,7 +4536,7 @@ We also state the analogous result for the Newton integral, including the opposi
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 6</span><span class="math-callout__name">($\Leftarrow$ for the Newton $\int$)</span></p>
 
-Let $A < C < B < D$ be in $\mathbb{R}^*$, $f\colon (A, D) \to \mathbb{R}$ and let $f \in \mathrm{N}(A, B) \cap \mathrm{N}(C, D)$. Then $f \in \mathrm{N}(A, D) \cap \mathrm{N}(C, B)$ and
+Let $A < C < B < D$ be in $\mathbb{R}^\ast$, $f\colon (A, D) \to \mathbb{R}$ and let $f \in \mathrm{N}(A, B) \cap \mathrm{N}(C, D)$. Then $f \in \mathrm{N}(A, D) \cap \mathrm{N}(C, B)$ and
 
 $$\text{(N)} \int_A^D f = \text{(N)} \int_A^B f + \text{(N)} \int_C^D f - \text{(N)} \int_C^B f.$$
 
@@ -4570,7 +4570,7 @@ If the function $f\colon [a, b] \to \mathbb{R}$ is unbounded then $f \notin \mat
 
 We suppose that $f\colon [a, b] \to \mathbb{R}$ is unbounded and show that for every $n$ there exists a partition $P$ of $[a, b]$ with test points $\bar{t}$ such that $\Delta(P) < 1/n$ and $|R(P, \bar{t}, f)| > n$. This refutes Cauchy's condition for the Riemann integrability of $f$.
 
-It follows from the unboundedness of $f$ and from the compactness of $[a, b]$ that there is a convergent sequence $(b_n) \subset [a, b]$ with $\lim b_n = \alpha \in [a, b]$ and with $\lim |f(b_n)| = +\infty$. Let an $n \in \mathbb{N}$ be given. For $P$ we take any partition $P = (a_0, \dots, a_k)$ of $[a, b]$ with $\Delta(P) < 1/n$ and such that there is a *unique* index $j \in \lbrace 1, \dots, k \rbrace$ for which $\alpha \in [a_{j-1}, a_j]$. Then we select arbitrary test points $t_i \in [a_{i-1}, a_i]$ for all $i \neq j$ and consider the incomplete Riemann sum $s := \sum_{i=1, i \neq j}^{k} (a_i - a_{i-1})f(t_i)$. Now we can select the remaining test point $t_j \in [a_{j-1}, a_j]$ so that $|(a_j - a_{j-1})f(t_j)| > |s| + n$ (because $b_n \in [a_{j-1}, a_j]$ for every large enough $n$). We then define $\bar{t}$ as consisting of all these test points and get (by the triangle inequality $|u + v| \ge |u| - |v|$) that $|R(P, \bar{t}, f)| \ge |(a_j - a_{j-1})f(t_j)| - |s| > n$, as required. $\square$
+It follows from the unboundedness of $f$ and from the compactness of $[a, b]$ that there is a convergent sequence $(b_n) \subset [a, b]$ with $\lim b_n = \alpha \in [a, b]$ and with $\lim \|f(b_n)\| = +\infty$. Let an $n \in \mathbb{N}$ be given. For $P$ we take any partition $P = (a_0, \dots, a_k)$ of $[a, b]$ with $\Delta(P) < 1/n$ and such that there is a *unique* index $j \in \lbrace 1, \dots, k \rbrace$ for which $\alpha \in [a_{j-1}, a_j]$. Then we select arbitrary test points $t_i \in [a_{i-1}, a_i]$ for all $i \neq j$ and consider the incomplete Riemann sum $s := \sum_{i=1, i \neq j}^{k} (a_i - a_{i-1})f(t_i)$. Now we can select the remaining test point $t_j \in [a_{j-1}, a_j]$ so that $\|(a_j - a_{j-1})f(t_j)\| > \|s\| + n$ (because $b_n \in [a_{j-1}, a_j]$ for every large enough $n$). We then define $\bar{t}$ as consisting of all these test points and get (by the triangle inequality $\|u + v\| \ge \|u\| - \|v\|$) that $\|R(P, \bar{t}, f)\| \ge \|(a_j - a_{j-1})f(t_j)\| - \|s\| > n$, as required. $\square$
 
 </details>
 </div>
