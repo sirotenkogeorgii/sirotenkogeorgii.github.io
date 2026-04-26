@@ -7440,3 +7440,154 @@ When a system fits the gradient-flow framework, an entire toolkit comes for free
 ### One-line summary
 
 > The gradient flow $\partial_t u=-\nabla_{\!\mathcal H}E(u)$ is an abstract three-ingredient framework — *space*, *energy*, *metric* — that captures an enormous range of evolution equations across PDE, geometry, optimisation, probability, biology, and image processing. It is *not* universal: anything energy-conserving, externally driven, or non-integrable falls outside. But for the very large class of dissipative first-order evolutions that *do* fit, the framework provides automatic energy decay, existence and uniqueness theorems beyond classical regularity, a proximal / minimising-movement numerical scheme, and a structural bridge between dynamics and optimisation. The most striking instances (heat equation as Wasserstein flow of entropy, Ricci flow as gradient flow of Perelman's $\mathcal F$, neural-network training as gradient flow on the loss landscape) are paradigm-shifting precisely because they reveal hidden gradient-flow structure invisible from the equation in its naïve form.
+
+## Decomposing forces in Newton's second law: conservative vs non-conservative
+
+Newton's second law $m\ddot x=F_{\rm total}$ is happy with any forces. For the structural analysis underlying gradient-flow theory, the cleanest decomposition is
+
+$$
+F_{\rm total}\;=\;F_{\rm cons}\;+\;F_{\rm non\text{-}cons},
+$$
+
+where $F_{\rm cons}=-\nabla V$ for some scalar potential and $F_{\rm non\text{-}cons}$ is *everything else*. The non-conservative side is *not* monolithic — it splits into several physically distinct kinds (dissipative, gyroscopic, driving, constraint), each failing to be conservative for a *different reason* and contributing differently to the energy balance. The decomposition $F=-\nabla E-\lambda v$ used in the gradient-flow notes is the simplest non-trivial special case: conservative + linear friction.
+
+### The four equivalent definitions of "conservative"
+
+A position-dependent force field $F:\mathbb R^N\to\mathbb R^N$ is **conservative** iff *any* of the following equivalent conditions holds:
+
+1. **Path-independent work.** $\int_\gamma F\cdot d\ell$ depends only on the endpoints of $\gamma$.
+2. **Closed-loop work zero.** $\oint F\cdot d\ell=0$ for every closed loop.
+3. **Existence of a potential.** $\exists\,V:\mathbb R^N\to\mathbb R$ with $F=-\nabla V$.
+4. **Irrotational** (in 3D, on simply connected domains). $\nabla\times F=0$.
+
+Important caveat: criterion (4) only applies to forces depending **only on position**. For velocity-dependent forces (friction, drag, magnetic Lorentz), one tests directly via (1)–(3) — does a position-only $V$ exist, what is the closed-loop work?
+
+The **closed-loop work test** is the most operationally useful diagnostic. The next figure runs it on a unit-circle path for the three force types whose behavior is most informative — a conservative spring-like force, friction, and the magnetic Lorentz force:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/closed_loop_work.png' | relative_url }}" alt="Top row: three small panels showing a unit circle traversed counterclockwise with force vectors drawn at sample points along the loop, one panel for each force type (conservative, dissipative friction, magnetic Lorentz). Bottom panel: cumulative work along the loop as a function of angular position, with the conservative case oscillating and returning to zero at theta equals two pi, the friction case strictly decreasing to negative two pi, and the magnetic case identically zero." loading="lazy">
+  <figcaption>Closed-loop work test on a particle traversing the unit circle CCW with unit speed. <em>Top</em>: force vectors at sample points for three force types — conservative ($F=-\nabla(xy)=-(y,x)$, blue), dissipative friction ($F=-\lambda v$, red), gyroscopic magnetic Lorentz ($F=qv\times B$, purple). <em>Bottom</em>: the cumulative work $W(\theta)=\int_0^\theta F\cdot v\,d\phi$ along the loop. The conservative case oscillates and returns to $W(2\pi)=0$ — the closed-loop work vanishes, as required. Friction has $W(\theta)=-\theta$, strictly decreasing — closed-loop work is $-2\pi$, and the force is dissipative. The magnetic force has $W\equiv 0$ pointwise, since $F\perp v$ — it does no work even instantaneously, but it is *not* conservative (no scalar $V(x)$ exists with $F=-\nabla V$, because $F$ depends on $v$ rather than $x$).</figcaption>
+</figure>
+
+### The four kinds of non-conservative force
+
+The non-conservative side of $F_{\rm total}$ is a heterogeneous category. Common non-conservative forces split into four physically distinct kinds:
+
+| kind | example | failure of conservativeness |
+|---|---|---|
+| **Dissipative** (friction, drag) | $F=-\lambda v,\ F=-c\lvert v\rvert^2\,\hat v,\ F=-\mu N\,\hat v$ | $\oint F\cdot d\ell<0$ on every closed loop — work is *strictly negative* on round trips. Energy is removed from the system. |
+| **Gyroscopic** (magnetic Lorentz) | $F=qv\times B$ | $F\cdot v\equiv 0$, so does no work — but no $V(x)$ exists with $F=-\nabla V$, because the force depends on velocity. |
+| **External driving** (time-dependent) | $F=F_0\cos(\omega t)$, periodic forcing | Force is not autonomous. The closed-loop test is inapplicable; the system can gain or lose energy depending on phase. |
+| **Constraint forces** | normal force on a frictionless track, tension in a rigid rod | Often do no work (perpendicular to allowed motion), but not derivable from a potential — they enforce kinematic constraints. |
+
+These are genuinely different physical phenomena, even though all are lumped together under "non-conservative" in classical mechanics textbooks.
+
+### Examples in detail
+
+#### Conservative forces
+
+| force | potential $V$ | verification |
+|---|---|---|
+| Uniform gravity (Earth's surface) $F=-mg\hat z$ | $V(z)=mgz$ | $-\partial_z V=-mg$ ✓ |
+| Linear spring $F=-kx$ | $V(x)=\frac{1}{2}kx^2$ | $-V'(x)=-kx$ ✓ |
+| Newtonian gravity $F(r)=-\dfrac{GMm}{r^2}\hat r$ | $V(r)=-\dfrac{GMm}{r}$ | $-\partial_r V=-GMm/r^2$ ✓ |
+| Coulomb $F(r)=\dfrac{kq_1q_2}{r^2}\hat r$ | $V(r)=\dfrac{kq_1q_2}{r}$ | as above ✓ |
+| Conservative external field $F=-\nabla V(x)$ | $V$ given | by definition ✓ |
+
+In each case, *because* a potential $V$ exists, all four equivalent conditions of conservativeness are satisfied. Closed-loop work vanishes (e.g., a ball thrown up to height $h$ and caught at the same height has zero net gravitational work). Total mechanical energy $T+V$ is conserved if these are the only forces present.
+
+#### Non-conservative forces — and why each fails to be conservative
+
+**Linear (viscous) friction $F=-\lambda v,\ \lambda>0$.** The kind appearing in §1.3 of the pdeds notes.
+
+* On any motion with $v\neq 0$, $F\cdot v=-\lambda\lvert v\rvert^2<0$.
+* Therefore $\oint F\cdot d\ell=\int F\cdot v\,dt=-\lambda\int\lvert v\rvert^2\,dt<0$ on every closed loop where the particle actually moves.
+* Closed-loop work is strictly negative — condition (2) fails.
+* No $V(x)$ satisfies $F=-\nabla V$ because $F$ depends on $v$, not $x$.
+
+**Kinetic (Coulomb) friction $F=-\mu N\,\hat v$.** Same logic — opposes velocity, work along closed loop is strictly negative. Magnitude is constant (depends on normal force $N$, not speed), but direction always opposes $v$.
+
+**Air drag (quadratic) $F=-c\lvert v\rvert v$.** $F\cdot v=-c\lvert v\rvert^3<0$, so closed-loop work strictly negative.
+
+**Magnetic Lorentz force $F=qv\times B$.** This is the most interesting non-conservative force because *it does no work*:
+
+$$
+F\cdot v=q(v\times B)\cdot v=0\quad(\text{cross product perpendicular to }v).
+$$
+
+So along *any* path, the work done by the magnetic force is zero — neither energy-conserving in the conservative-force sense (no global $V$) nor dissipative. It is not conservative because no scalar potential $V(x)$ satisfies $F=-\nabla V(x)$:
+
+* $F$ depends on velocity $v$, not just position $x$. Any function $V(x)$ would give $-\nabla V(x)$ depending only on $x$ — incompatible with $F=qv\times B$.
+* In Lagrangian mechanics, magnetism is encoded by a *vector* potential $A(x)$ via $B=\nabla\times A$, and the Lorentz force comes from a "generalised potential" $U(x,v)=q(\phi(x)-v\cdot A(x))$ — not from a scalar $V(x)$ alone.
+
+So the magnetic force is **gyroscopic**: kinetic energy is conserved (it does no work), but the force is not conservative in the strict $F=-\nabla V$ sense.
+
+**Time-dependent driving $F=F_0\cos(\omega t)$.** Force is not autonomous. The closed-loop work test (1)–(2) is inapplicable because closed *spatial* loops are traversed at different times, and the force *value* depends on when you are there. Energy injected over a cycle depends on phase relations — the system can gain or lose energy.
+
+**Normal force from a constraint (frictionless rail).** A bead constrained to slide on a curve experiences a normal force from the curve. This force is perpendicular to the velocity (tangent to the curve), so does no work: $F_N\cdot v=0$. But it is *not* derivable from a scalar potential — it is whatever it needs to be to keep the bead on the rail, determined by the constraint, not by a position-dependent $V$. So constraint forces are non-conservative in the strict definition, even though they do no work and don't dissipate energy. They are "structural" — they enforce kinematic constraints.
+
+### Energy balance for each kind
+
+Suppose $E_{\rm tot}=T+V$ where $T$ is kinetic energy and $V$ is the potential of the conservative part of the force. Then
+
+$$
+\frac{dE_{\rm tot}}{dt}\;=\;F_{\rm non\text{-}cons}\cdot v.
+$$
+
+This is the master energy-bookkeeping identity. The behavior of $E_{\rm tot}$ depends entirely on which kind of non-conservative force is at work:
+
+| kind | $F_{\rm non\text{-}cons}\cdot v$ | $\frac{dE_{\rm tot}}{dt}$ | physical meaning |
+|---|---|---|---|
+| no non-conservative force | $0$ | $0$ | energy conserved |
+| dissipative (friction, drag) | $\le 0$, often $<0$ | $\le 0$ | energy lost to heat |
+| gyroscopic (magnetic) | $=0$ | $0$ | kinetic energy conserved, despite force not being conservative |
+| external driving | sign of $F\cdot v$ | varies | energy pumped in or out by external source |
+| frictionless constraint | $=0$ ($F\perp v$) | $0$ | energy conserved, force enforces constraint |
+
+The *only* kinds that strictly preserve $E_{\rm tot}$ are: no non-conservative force, gyroscopic, and frictionless constraint. Dissipative and driving forces always change $E_{\rm tot}$.
+
+The figure below shows the energy balance explicitly for a 1D harmonic oscillator under three force regimes: pure conservative, with friction added, and with periodic driving added.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/oscillator_energy_balance.png' | relative_url }}" alt="Two panels. Left panel: position x(t) of a 1D harmonic oscillator under three different force regimes — pure spring, with friction, with periodic external driving — showing pure sinusoid, damped oscillation, and a beating-like pattern respectively. Right panel: total mechanical energy E_tot(t) for each regime, showing constant energy for the pure case, monotonically decaying energy for the friction case, and oscillating energy for the driving case." loading="lazy">
+  <figcaption>1D harmonic oscillator $\ddot x=-x+F_{\rm non\text{-}cons}$ with $x(0)=1,\dot x(0)=0$, under three regimes: pure (no extra force), with linear friction $-\lambda\dot x$ ($\lambda=0.1$), and with periodic driving $F_0\cos(\omega t)$ ($F_0=0.3,\omega=0.7$). <em>Left</em>: position $x(t)$. <em>Right</em>: total mechanical energy $E_{\rm tot}(t)=\frac{1}{2}(\dot x^2+x^2)$ — constant for the pure case (energy conserved), monotonically decaying for the friction case (energy dissipated), and oscillating for the driving case (energy pumped in and out by the external source).</figcaption>
+</figure>
+
+### Why this matters for the gradient-flow story
+
+The decomposition $F=-\nabla E-\lambda v$ in §1.3 of the pdeds notes is a *minimal model*: simplest possible conservative force (gradient of a scalar) plus simplest possible dissipative force (linear friction). The energy balance is exactly
+
+$$
+\frac{d}{dt}\bigl(E(x)+\tfrac{1}{2}m\lvert v\rvert^2\bigr)\;=\;-\lambda\lvert v\rvert^2,
+$$
+
+and the **overdamped limit** $\lambda\to\infty$ produces the gradient flow $\dot x=-\nabla E$ — the cleanest possible passage from "Newton + dissipation" to a pure gradient flow.
+
+In a richer physical setting one might write
+
+$$
+m\ddot x\;=\;-\nabla V(x)\;+\;F_{\rm ext}(t)\;+\;F_{\rm drag}(v)\;+\;qv\times B(x).
+$$
+
+The total force still splits into conservative + non-conservative; the non-conservative side now has multiple distinct subcomponents, each contributing differently:
+
+* $-\nabla V$: contributes $-\nabla V\cdot v=-\frac{d}{dt}V$, conservative bookkeeping.
+* $F_{\rm ext}\cdot v$: pumps energy in/out.
+* $F_{\rm drag}\cdot v\le 0$: dissipates energy.
+* $(qv\times B)\cdot v=0$: no energy change but trajectory is bent (cyclotron motion).
+
+Only the *dissipative* part drives the system toward a gradient-flow regime in an overdamped limit. Gyroscopic and driving forces produce genuinely different dynamics — cyclotron motion, driven oscillators, limit cycles — that fall *outside* the gradient-flow framework.
+
+### Lagrangian / Hamiltonian perspective (brief)
+
+A more refined classification comes from **Lagrangian mechanics**:
+
+* **Conservative** forces fit directly into a Lagrangian $L=T-V(x)$, whose Euler-Lagrange equation gives $m\ddot x=-\nabla V$.
+* **Generalised-potential** forces — including the magnetic Lorentz force — fit into Lagrangian mechanics via a *velocity-dependent* potential $U(x,v,t)$ such that $F=-\partial_x U+\frac{d}{dt}\partial_v U$. For the EM Lagrangian, $U=q(\phi-v\cdot A)$.
+* **Truly non-conservative** forces (friction, drag) require either a Rayleigh dissipation function $\mathcal R(v)$ added to the Euler-Lagrange equations, or extending the framework to non-variational settings.
+
+So the "conservative vs non-conservative" split in Newtonian mechanics is refined in Lagrangian mechanics into "derivable from a (possibly velocity-dependent) potential" vs "needs a dissipation function or external term." This refinement is what allows magnetic forces to fit cleanly into Lagrangian mechanics despite not being conservative in the strict Newtonian sense.
+
+### One-line summary
+
+> The total force in Newton's second law decomposes into **conservative** ($F=-\nabla V$, with the four equivalent characterisations: path-independent work, zero closed-loop work, scalar potential, irrotational on simply connected domains) plus **non-conservative** (everything else). The non-conservative side is itself heterogeneous: **dissipative** (friction, drag — strictly negative closed-loop work), **gyroscopic** (magnetic Lorentz — does no work but no scalar potential), **driving** (time-dependent, can pump energy in/out), and **constraint** forces (perpendicular to motion, enforce kinematics). The decomposition $F=-\nabla E-\lambda v$ used in the pdeds notes is the simplest non-trivial special case — conservative + linear dissipation — and it is *exactly* the case whose overdamped limit produces a pure gradient flow.
