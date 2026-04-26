@@ -1596,3 +1596,114 @@ which proves the monotonicity. **Uniqueness** follows by taking equal initial co
   <figcaption>The contraction property. Two trajectories of the same gradient flow (left) are joined by grey segments at corresponding times; the segment lengths shrink monotonically. The right panel plots $|x_1(t)-x_2(t)|$ as a function of $t$, confirming the non-increasing behavior that yields uniqueness.</figcaption>
 </figure>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Why don't kinks of $E$ break uniqueness? A worked piecewise-linear example</summary>
+
+A natural worry: at a kink of $E$, the subdifferential $\partial E$ contains many distinct supporting linear functionals — many "tangents that minimize the linear-approximation error in different ways". If two solutions starting at the same point pick two different tangents, will they not drift apart, contradicting (1.14)?
+
+The picture *of the function* is correct: a kink really has a whole interval of subgradients. What rescues uniqueness is that being a *solution* of the differential inclusion is a constraint over an entire forward time interval, not at a single instant. Almost every supporting tangent at a kink is exposed as a fake the moment the trajectory tries to step on it, because the trajectory leaves the kink and lands in a smooth segment whose unique gradient disagrees with the chosen tangent. Out of the entire interval $\partial E(x)$ at a kink, exactly one element is consistent with the inclusion for $t>0$: the **minimum-norm element** $\partial^0\!E(x)$, the projection of $0$ onto the closed convex set $\partial E(x)$.
+
+We illustrate this on a piecewise-linear bowl with several kinks.
+
+**Setup: a five-segment convex bowl.** Define
+
+$$
+E(x) \;=\;
+\begin{cases}
+-2x-3 & x\le -2 \\
+-x-1 & -2\le x\le -1 \\
+0 & -1\le x\le 1 \\
+x-1 & 1\le x\le 2 \\
+2x-3 & x\ge 2
+\end{cases}
+$$
+
+Slopes (left-to-right) $-2,\,-1,\,0,\,+1,\,+2$ — strictly increasing, so $E$ is convex. There are four kinks at $x=-2,\,-1,\,1,\,2$, plus a flat plateau on $[-1,1]$ where $E\equiv 0$ (the global minimum set).
+
+**Subdifferential at every point.** The subdifferential is the closed interval between the left-slope and right-slope:
+
+| $x$ | $\partial E(x)$ | $\partial^0\!E(x)$ |
+|---|---|---|
+| $x<-2$ | $\{-2\}$ | $-2$ |
+| $x=-2$ | $[-2,-1]$ | $-1$ |
+| $-2<x<-1$ | $\{-1\}$ | $-1$ |
+| $x=-1$ | $[-1,\;0]$ | $\;\;0$ |
+| $-1<x<1$ | $\{0\}$ | $\;\;0$ |
+| $x=1$ | $[\;0,\;+1]$ | $\;\;0$ |
+| $1<x<2$ | $\{+1\}$ | $+1$ |
+| $x=2$ | $[+1,+2]$ | $+1$ |
+| $x>2$ | $\{+2\}$ | $+2$ |
+
+At every kink $\partial E$ is a non-trivial interval — the multivaluedness is real. The min-norm column is the *unique* element each kink contributes to the actual gradient flow; everything else in the interval is a tangent that fails to be a velocity.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/uniqueness_multi_segment.png' | relative_url }}" alt="Four-panel figure: (a) piecewise-linear bowl with fan of supporting tangents at x=2; (b) subdifferential as a multivalued staircase with min-norm selection overlaid; (c) candidate trajectories from x_0=2 showing only the minimum-norm choice satisfies the inclusion; (d) two genuine solutions from ±2 with their non-increasing pairwise distance" loading="lazy">
+  <figcaption>(a) The piecewise-linear bowl with kinks at $\pm 1,\pm 2$ and the fan of supporting linear functionals at the kink $x=2$ — slope $1$ (the min-norm tangent, green) and the rest of $\partial E(2)=[1,2]$ (dashed red). (b) The subdifferential as a multivalued map: blue traces $\partial E$ (singletons on smooth segments, vertical intervals at kinks); the green dashed line is the min-norm selection $\partial^0\!E$. (c) Three candidate trajectories starting at $x_0=2$: only $p=1$ satisfies the inclusion for $t>0$ (the other choices land in $(1,2)$ where $\partial E=\{1\}$ forces $\dot x=-1$, contradicting $\dot x=-p$). (d) Two genuine solutions from $x_0=\pm 2$, with their pairwise distance (red dashed) decreasing from $4$ to $2$ until each parks at the boundary of the flat plateau — illustrating the contraction (1.14).</figcaption>
+</figure>
+
+**The kink at $x_0=2$: enumerate the candidates and watch them fail.** Start two solutions at $x_1(0)=x_2(0)=2$. The kinematic options at $t=0$ are: pick any $p\in\partial E(2)=[1,2]$ and set $\dot x=-p$. So $\dot x\in[-2,-1]$ at $t=0$.
+
+For any small $t>0$ the trajectory is at $x(t)=2-pt\in(1,2)$, *strictly inside the linear segment* where $E(x)=x-1$. On that segment $E$ is smooth with $\nabla E\equiv 1$, so the inclusion at time $t>0$ has only one option:
+
+$$
+\dot x(t) \;\in\; -\partial E(x(t)) \;=\; \{-1\}.
+$$
+
+We check each candidate against this hard constraint:
+
+| Tangent $p\in\partial E(2)$ | Velocity $\dot x = -p$ | Required $\dot x$ on $(1,2)$ | Verdict |
+|---|---|---|---|
+| $p=1$ (min-norm) | $-1$ | $-1$ | ✓ consistent |
+| $p=1.25$ | $-1.25$ | $-1$ | ✗ contradiction |
+| $p=1.5$ | $-1.5$ | $-1$ | ✗ contradiction |
+| $p=2$ (max) | $-2$ | $-1$ | ✗ contradiction |
+
+Out of the entire interval $\partial E(2)=[1,2]$, exactly one element gives a valid solution: the closest one to $0$. Every other "tangent at the kink" is exposed as a fake by the very next moment of the flow. Two solutions trying to "pick different tangents" produce one solution and one **non-solution** — not two solutions drifting apart.
+
+**The full trajectory from $x_0=2$.** Tracking $\partial^0\!E$ at every instant:
+
+* For $t\in[0,1]$: $x(t)=2-t$, on the segment $(1,2)$ where $\nabla E=1$. Velocity $-1$.
+* At $t=1$: $x=1$, the kink between rising segment and plateau. $\partial E(1)=[0,1]$, min-norm $0$.
+* For $t>1$: $\dot x = 0$, so $x(t)\equiv 1$ forever.
+
+Why doesn't the trajectory keep going into the flat region? If $x(t)$ ever ventured into $(-1,1)$, it would land in $\partial E=\{0\}$, forcing $\dot x=0$, so it can't move there in the first place. The trajectory parks exactly at the boundary of the flat region. The "lazy" min-norm selection is precisely what produces this behavior — the trajectory stops as soon as it can.
+
+**Sanity-check Theorem 2 with two trajectories.** Take $x_1(0)=2$ and $x_2(0)=-2$. By symmetry, the unique solutions are
+
+$$
+x_1(t) = \begin{cases} 2-t & 0\le t\le 1 \\ 1 & t\ge 1 \end{cases},
+\qquad
+x_2(t) = \begin{cases} -2+t & 0\le t\le 1 \\ -1 & t\ge 1 \end{cases}.
+$$
+
+Their pairwise distance is
+
+$$
+|x_1(t)-x_2(t)| =
+\begin{cases}
+4-2t & 0\le t\le 1 \\
+2 & t\ge 1
+\end{cases}
+$$
+
+— monotonically non-increasing, exactly as (1.14) predicts. The two trajectories converge toward the flat plateau but, once they reach its boundary, freeze at distance $2$: they never reach a single common minimizer because the plateau gives them an entire continuum of minimizers to choose from. *Distance is non-increasing, not strictly decreasing* — the non-strictness of (1.14) comes precisely from non-uniqueness of the minimizer of $E$.
+
+**The "drift" scenario, made fully explicit.** Insist that $x_1(0)=x_2(0)=2$ and that they pick different tangents $p_1=1,\,p_2=2$. Then:
+
+* $x_1$ with $p_1=1$: $x_1(t)=2-t$. Inclusion holds for $t>0$. ✓
+* $x_2$ with $p_2=2$: $x_2(t)=2-2t$. Inclusion fails on every $t\in(0,1/2)$. ✗
+
+The would-be drift $|x_1(t)-x_2(t)|=t$ is between *one* solution and *one phantom*. The phantom satisfies the inclusion only at $t=0$, not on any open interval. If we instead force $x_2$ to be a real solution from $x_0=2$, it has to pick $p_2=1$ as well, and then $x_1\equiv x_2$. No drift. Uniqueness.
+
+**Summary.**
+
+* Each kink has a whole interval of supporting tangents — the multivaluedness of $\partial E$ at kinks is real.
+* But only one tangent per kink is consistent with the differential inclusion remaining satisfied for $t>0$: the min-norm element $\partial^0\!E$.
+* Every other tangent in $\partial E$ becomes a "bad subgradient" the instant the trajectory tries to step on it, because the trajectory leaves the kink and lands in a smooth segment whose unique gradient disagrees with the chosen tangent.
+* The "two drifting solutions" are then revealed as one solution and one phantom: the phantom is a curve that satisfies the inclusion at $t=0$ only, not on any open interval.
+* Theorem 2 then holds across genuine solutions: $|x_1-x_2|$ never grows.
+
+</details>
+</div>
+
