@@ -7089,3 +7089,354 @@ $$
 ### One-line summary
 
 > Forward Euler $x_{k+1}=x_k+h\,f(x_k)$ uses the slope at the *start* of the step; backward Euler $x_{k+1}=x_k+h\,f(x_{k+1})$ uses the slope at the *end*, requiring an equation solve. The reward is **unconditional stability** (A-stability) — and in the gradient-flow case, the backward-Euler step coincides with the **proximal step** $x_{k+1}=\arg\min_y\{E(y)+\frac1{2h}\|y-x_k\|^2\}$, which is well-defined for convex $E$ regardless of smoothness, and is the analytical engine that proves existence of gradient flows when classical ODE theory cannot.
+
+## Three structural tiers in the gradient-flow chain rule
+
+The energy-dissipation identity for a Euclidean gradient flow,
+
+$$
+\frac{d}{dt}E(x(t))\;=\;dE(x(t)).\dot x(t)\;=\;\langle\nabla E(x(t)),\,\dot x(t)\rangle\;=\;-\lvert\dot x(t)\rvert^2\;\le 0,\qquad(\star)
+$$
+
+is a chain of three equalities. Each one demands strictly more structural input than the previous: the first is intrinsic to differentiation, the second requires an inner product, and the third requires the gradient-flow equation itself. In $\mathbb R^N$ the first two collapse into one because of a canonical identification — but the distinction matters as soon as one moves to Hilbert spaces, manifolds, or metric measure spaces.
+
+This section dissects $(\star)$ into its three structural tiers, addresses six common confusions that arise (covector vs vector, "coordinate-free" vs "metric-free", what the Riesz isomorphism actually is, and so on), and visualises the central pictures.
+
+### The three tiers at a glance
+
+| equality in $(\star)$ | structure required | what depends on it |
+|---|---|---|
+| $\frac{d}{dt}E(x(t))=dE(x(t)).\dot x(t)$ | $E$ Fréchet-differentiable | nothing else — intrinsic chain rule |
+| $dE(x).\dot x=\langle\nabla E(x),\dot x\rangle$ | inner product on $\mathbb R^N$ | the gradient $\nabla E$ depends on the choice of inner product |
+| $\langle\nabla E(x),\dot x\rangle=-\lvert\dot x\rvert^2$ | the gradient-flow equation $\dot x=-\nabla E$ | the *dynamics* — equality fails for non-gradient flows |
+
+Going down the table, the structural cost grows: chain rule → metric → dynamics. The dissipation calculation rides on all three holding *simultaneously* — which is what makes gradient flows a special class of dynamical systems.
+
+### Tier 1: the abstract chain rule (intrinsic)
+
+The first equality
+
+$$
+\frac{d}{dt}E(x(t))\;=\;dE(x(t)).\dot x(t)
+$$
+
+is the **abstract Fréchet chain rule**. It requires only that $E:V\to\mathbb R$ be Fréchet-differentiable and that $x:I\to V$ be a differentiable curve, where $V$ is any normed vector space. No inner product, no metric, no coordinate choice.
+
+The dot here is *evaluation of a linear functional on a vector*: $dE(x(t))$ is a bounded linear functional on $V$ (an element of the dual $V^*$), and $\dot x(t)$ is a vector in $V$. (See the earlier section *Chain rule in general settings* for the full derivation.) This statement is **forward-compatible** with every generalisation that the gradient-flow theory will eventually need: Hilbert spaces, Riemannian manifolds, Wasserstein space.
+
+### Tier 2: the Riesz identification (inner-product-dependent)
+
+The second equality
+
+$$
+dE(x).\dot x\;=\;\langle\nabla E(x),\,\dot x\rangle
+$$
+
+is the **Riesz identification**. It is *not* intrinsic to differentiation — it requires an inner product $\langle\cdot,\cdot\rangle$ on $V$, which makes $V$ a (pre-)Hilbert space and lets us identify the dual functional $dE(x)\in V^*$ with a *vector* $\nabla E(x)\in V$ via the Riesz isomorphism. Concretely, $\nabla E(x)$ is the unique element of $V$ such that
+
+$$
+dE(x).v\;=\;\langle\nabla E(x),v\rangle\qquad\text{for every }v\in V.
+$$
+
+In $\mathbb R^N$ with the standard inner product, $dE(x)$ has components $(\partial_1 E,\dots,\partial_N E)$ as a row, $\nabla E(x)$ has the same components as a column, and the identification is invisible. Two pictures of the same first-order data:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/chain_rule_differential_vs_gradient.png' | relative_url }}" alt="Two side-by-side panels of the same energy landscape. Left: the differential at a point shown as a family of parallel level lines (a covector). Right: the gradient at the same point shown as an arrow perpendicular to the energy level set, with a separate tangent-to-level-set arrow drawn for contrast." loading="lazy">
+  <figcaption>Two visualisations of the same first-order linear data on $E(x_1,x_2)=\frac{1}{2}(x_1^2+2x_2^2)$. <em>Left</em>: the differential $dE(x_*)$ is a *linear functional* on $\mathbb R^2$; pictured as the family of parallel level lines $\lbrace v: dE(x_*).v=c\rbrace$ in the tangent space at $x_*$. <em>Right</em>: the gradient $\nabla E(x_*)$ is a *vector* — the Riesz representative of $dE(x_*)$ — perpendicular to the energy level set through $x_*$, in the direction of steepest ascent.</figcaption>
+</figure>
+
+The crucial subtlety: **changing the inner product changes the gradient**. Take $V=\mathbb R^2$ with the standard $\langle\cdot,\cdot\rangle_{\mathrm{std}}$ and a weighted inner product $\langle u,v\rangle_M=u_1v_1+4u_2v_2$ (the "$M$-metric" with $M=\mathrm{diag}(1,4)$). For $E(x_1,x_2)=\frac{1}{2}(x_1^2+2x_2^2)$ the differential $dE(x_*).v=v_1+2v_2$ at $x_*=(1,1)$ is **the same** under either inner product (it doesn't depend on a metric). But:
+
+* under $\langle\cdot,\cdot\rangle_{\mathrm{std}}$: $\nabla_{\mathrm{std}}E(x_*)=(1,2)$,
+* under $\langle\cdot,\cdot\rangle_M$: $\nabla_M E(x_*)=(1,\frac{1}{2})$ — different vector, same differential.
+
+The two gradients differ because "perpendicular to the level set" means different things under different inner products. Each gradient is perpendicular to the level set *in its own metric*, even though only one looks Euclidean-perpendicular.
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/chain_rule_metric_dependent.png' | relative_url }}" alt="Left panel: the same energy landscape with two arrows drawn from a point, one labelled standard gradient, the other labelled M-weighted gradient — the two arrows point in different directions. Right panel: trajectories of the standard gradient flow and the M-weighted gradient flow from the same initial condition, ending at the origin via different routes." loading="lazy">
+  <figcaption>Tier 2 in action. <em>Left</em>: at $x_*=(1,1)$ the differential is $dE(x_*).v=v_1+2v_2$ regardless of inner product, but the gradient depends on the choice of inner product: $\nabla_{\mathrm{std}}E=(1,2)$, $\nabla_M E=(1,\frac{1}{2})$ where $\langle u,v\rangle_M=u_1v_1+4u_2v_2$. <em>Right</em>: the resulting two gradient flows from the same initial condition trace genuinely different trajectories — different inner product gives different dynamics, even though the energy landscape is identical.</figcaption>
+</figure>
+
+This metric-dependence is the structural reason that Otto/Wasserstein gradient flows look so different from $L^2$-gradient flows on the same energy. Same energy, different inner product, different gradient, different evolution.
+
+### Tier 3: gradient-flow dissipation (dynamics-specific)
+
+The third equality
+
+$$
+\langle\nabla E(x),\dot x\rangle\;=\;-\lvert\dot x\rvert^2
+$$
+
+is *not* a chain-rule fact. It is a *substitution* using the gradient-flow equation $\dot x(t)=-\nabla E(x(t))$:
+
+$$
+\langle\nabla E(x),\dot x\rangle\;=\;\langle-\dot x,\dot x\rangle\;=\;-\lvert\dot x\rvert^2.
+$$
+
+For a *general* curve in $\mathbb R^N$ with no relationship between $\dot x$ and $\nabla E$, this fails — the left-hand side is just some number that could be anything. The negative-square-norm form is the **signature of the gradient-flow equation**, not a feature of chain rule or Riesz.
+
+The cleanest illustration is to compare a gradient flow with another natural dynamics on the same energy landscape — a **Hamiltonian flow** $(\dot x_1, \dot x_2)=(-\partial_2 E,\,+\partial_1 E)$, which conserves $E$ rather than dissipating it:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/chain_rule_dissipation_vs_hamiltonian.png' | relative_url }}" alt="Two-by-two grid. Top row: gradient-flow trajectory spiralling toward the origin (left), and Hamiltonian-flow trajectory tracing a closed elliptical orbit (right) on the same energy landscape. Bottom row: time series of d/dt E and -|x-dot|^2 along each trajectory. For the gradient flow they coincide; for the Hamiltonian flow d/dt E is identically zero while -|x-dot|^2 is strictly negative." loading="lazy">
+  <figcaption>Tier 3 isolated. <em>Top</em>: gradient flow $\dot x=-\nabla E$ (left) and Hamiltonian flow $\dot x_1=-\partial_2 E,\ \dot x_2=+\partial_1 E$ (right) starting from the same initial condition on the same energy. <em>Bottom</em>: along each trajectory, plot the actual rate $\frac{d}{dt}E(x(t))$ and the would-be rate $-\lvert\dot x(t)\rvert^2$. For the gradient flow the two coincide — the third equality of $(\star)$ holds. For the Hamiltonian flow the actual rate is identically zero (energy conserved) while $-\lvert\dot x\rvert^2$ is strictly negative — the third equality fails by an arbitrarily large margin.</figcaption>
+</figure>
+
+So the Tier-3 equality is *the dynamical equation written in disguise*: it is not derivable from the chain rule and the inner product alone — it requires the velocity to be the negative gradient.
+
+### Q&A digest: the six confusions
+
+This is the dictionary that comes out of dissecting $(\star)$:
+
+#### Q1: Does the Tier-2 equality break the abstract setting?
+
+In a literal reading, **yes** — it adds inner-product structure that the chain rule itself does not require. In $\mathbb R^N$ the canonical inner product is invisible so the "break" is silent, but the moment one moves to Hilbert spaces or metric measure spaces, this step becomes a genuine *choice* with downstream consequences (different inner products give different gradients, hence different dynamics). The Tier-1 statement is forward-compatible to every abstraction; the Tier-2 statement requires committing to an inner-product structure.
+
+#### Q2: Does the Tier-3 equality work only for gradient flows?
+
+**Yes — exactly only there.** It is obtained by substituting $\dot x=-\nabla E$ into $\langle\nabla E,\dot x\rangle$. Any other choice of $\dot x$ — Hamiltonian, reverse gradient flow $\dot x=+\nabla E$, an externally driven system, etc. — fails the equality. The bottom-right panel of the figure above shows this most dramatically: a Hamiltonian flow on the same energy has $\frac{d}{dt}E=0$ but $-\lvert\dot x\rvert^2<0$, a complete mismatch.
+
+#### Q3: Does the Riesz representative depend on the coordinate system, or on the inner product?
+
+**Only on the inner product.** The Riesz isomorphism $R_{\mathcal H}:\mathcal H\to\mathcal H^*,\ v\mapsto\langle v,\cdot\rangle_{\mathcal H}$ is intrinsic to the pair $(\mathcal H,\langle\cdot,\cdot\rangle)$ — no basis or coordinate choice is involved. Switching basis does not change the gradient (it just changes its representation in the new basis). Switching the inner product, however, *does* change the gradient — exactly as illustrated by the two gradient arrows in the metric-dependence figure.
+
+In the infinite-dimensional setting "coordinate system" is the wrong vocabulary anyway. Correct phrasing:
+
+* **basis-independent / coordinate-free**: yes, Riesz is intrinsic.
+* **inner-product-dependent**: yes, the Riesz identification depends entirely on the inner product.
+* **topology-dependent**: yes — different inner products may even induce different topologies, in which case the very meaning of "Hilbert space" changes.
+
+#### Q4: Does the inner product bridge the abstract setting and a specific Hilbert space?
+
+**Yes — that is precisely its role.** The structural ladder reads
+
+| level | structure | what one gets |
+|---|---|---|
+| Set | none | nothing |
+| Vector space | linearity | linear maps, dual $V^*$ |
+| Normed space | norm | bounded linear maps, $V^* :=$ space of bounded functionals |
+| Banach space | norm + completeness | Fréchet derivative $df:V\to W$ as a bounded linear map |
+| Inner-product space | adds inner product | angles, orthogonality, Riesz when complete |
+| Hilbert space | inner product + completeness | Riesz isomorphism $\mathcal H\cong\mathcal H^*$ |
+
+Going from "Banach" to "Hilbert" *is* "adding an inner product." The inner product is therefore exactly the structural ingredient that turns dual-side data ($dE\in\mathcal H^*$) into primal-side data ($\nabla E\in\mathcal H$) — and the latter is what one needs to *write down* a gradient-flow equation $\partial_t u=-\nabla E$, because $\partial_t u$ is a vector in $\mathcal H$, not a functional on it.
+
+#### Q5: Is the Riesz representative a functional?
+
+**No — the Riesz representative is a *vector* in the primal space.** This naming is a known pitfall. To untangle:
+
+* The **Riesz representation theorem** is the *theorem* asserting that every bounded linear functional has a representative.
+* The **Riesz isomorphism** is the *map* $R_{\mathcal H}:\mathcal H\to\mathcal H^*$, $v\mapsto\langle v,\cdot\rangle_{\mathcal H}$.
+* The **Riesz representative** of a functional $\ell\in\mathcal H^*$ is the *vector* $v_\ell\in\mathcal H$ with $\ell(u)=\langle v_\ell,u\rangle_{\mathcal H}$ for every $u$.
+
+In our setting:
+
+* $dE(u)\in\mathcal H^*$: a **functional** (covector). The differential.
+* $\nabla E(u)\in\mathcal H$: a **vector** in the primal. The gradient.
+
+These live in different spaces. Their numerical components match in the standard basis of $\mathbb R^N$, but the categorical types differ — and the type-difference is what makes the equation $\partial_t u=-\nabla E$ well-typed (both sides are vectors in $\mathcal H$).
+
+#### Q6: Inner product vs Riesz isomorphism — which is the bridge?
+
+**Both descriptions are correct; they are the same bridge at different levels of abstraction.**
+
+* The **inner product** is the *data* — the structural input.
+* The **Riesz isomorphism** is the *constructed map* — the consequence of the data, defined by $R_{\mathcal H}(v):=\langle v,\cdot\rangle_{\mathcal H}$.
+
+Saying "the inner product is the bridge" is correct in the sense that it carries all the information needed to identify $\mathcal H$ with $\mathcal H^*$. Saying "the Riesz isomorphism is the bridge" is correct in the sense that it *is* the explicit bijection one uses. Same content, different vantage points.
+
+A useful analogy: a **Riemannian metric** $g$ on a smooth manifold $M$ is the inner-product-on-tangent-spaces analogue. From $g$ one constructs the **musical isomorphisms** $\flat:TM\to T^*M,\ \sharp:T^*M\to TM$ — the manifold version of Riesz. Asking "is the metric the bridge or are the musical isomorphisms?" is the same question. The metric is the data; the isomorphisms are the constructed maps it induces.
+
+#### Q7: Why is $E$ called an "energy *functional*" if its gradient $\nabla E$ is not a functional?
+
+This looks like a contradiction with Q5 above (which says the Riesz representative is **not** a functional), but it isn't — the word "functional" is being used in **two different senses** that overlap by accident in everyday speech.
+
+**Sense 1 — the *classical-analysis* meaning.** A "functional" is a scalar-valued map whose argument is itself a function (or, more generally, an element of an infinite-dimensional space). It need not be linear; in practice it usually is not. This is the sense going back to the 19th-century calculus of variations, where one distinguished a *function* (input: a number) from a *functional* (input: a function). Examples:
+
+* $J[y]=\int_a^b\sqrt{1+y'(x)^2}\,dx$ — the arc-length functional. Quadratic in $y'$, **not** linear in $y$.
+* $S[q]=\int_0^T\bigl(\frac{1}{2}m\dot q^2-V(q)\bigr)dt$ — the action functional. Generally nonlinear.
+* $E[u]=\frac{1}{2}\int_\Omega|\nabla u|^2\,dx$ — the Dirichlet energy. Quadratic in $u$, **not** linear.
+
+**Sense 2 — the *functional-analysis* meaning.** A "linear functional" is a *linear* map $\ell:V\to\mathbb R$ — and a *bounded* one (continuous in the norm) is an element of the dual space $V^*$. This is the sense used when we say "$dE(u)\in\mathcal H^*$ is a linear functional."
+
+The two senses overlap when the functional happens to be linear. $\ell[v]=\int g(x)v(x)\,dx$ for fixed $g$ is *both* a functional (sense 1) *and* a linear functional (sense 2). But:
+
+* $E:\mathcal H\to\mathbb R$ in sense 1 is *not* required to be linear.
+* $dE(u):\mathcal H\to\mathbb R$ in sense 2 *is* required to be linear (it is the linearization of $E$ at $u$).
+
+**The cast of characters in the gradient flow $\partial_t u=-\nabla E(u)$:**
+
+| object | type | "lives in" | linear in its argument? | which sense of "functional"? |
+|---|---|---|---|---|
+| $E$ | the energy | a map $\mathcal H\to\mathbb R$ | nonlinear in general | **sense 1** ("energy functional") |
+| $dE(u)$ | the differential at $u$ | a map $\mathcal H\to\mathbb R$, lives in $\mathcal H^*$ | linear in its argument | **sense 2** ("linear functional") |
+| $\nabla E(u)$ | the gradient at $u$ | a *vector* in $\mathcal H$ | not a map at all (just a vector) | **neither** |
+| $u$, $\partial_t u$ | the curve and its velocity | vectors in $\mathcal H$ | not maps | **neither** |
+
+**Type-checking the gradient flow equation:**
+
+* LHS $\partial_t u\in\mathcal H$ — a vector (the velocity of a curve in $\mathcal H$).
+* RHS $-\nabla E(u)\in\mathcal H$ — a vector (the gradient at the current state).
+
+Both sides live in $\mathcal H$, so the equation type-checks. If the right-hand side were a linear functional ($-dE(u)\in\mathcal H^*$), the equation would mix a vector on the left with a covector on the right and would be ill-typed. **This is exactly why the Riesz step is needed**: it converts the differential (a covector) into the gradient (a vector) so that the dynamical equation can even be written down.
+
+**Reading conventions in the literature:**
+
+* "energy **functional**", "action **functional**", "variational **functional**", "Dirichlet **functional**" — sense 1 (a generally nonlinear scalar map on a function space).
+* "**linear** functional", "**bounded** functional", "elements of the dual space $\mathcal H^*$", "**covector**" — sense 2 (an element of $\mathcal H^*$, *required* to be linear).
+
+So: $E$ is called a "functional" in sense 1, but $E$ is **not** a linear functional. Its derivative $dE(u)$ at each fixed $u$ *is* a linear functional (sense 2). And $\nabla E(u)$ — the Riesz representative of $dE(u)$ — is a **vector**, not a functional in either sense.
+
+A useful mental check every time you see $\nabla E$:
+
+* Type of $\nabla E(u)$: a **vector** in $\mathcal H$.
+* Type of $dE(u)$: a **linear functional** on $\mathcal H$ (an element of $\mathcal H^*$).
+* Type of $E$: a **(generally nonlinear) map** $\mathcal H\to\mathbb R$ — a "functional" only in the classical analysis sense.
+
+These are three different categorical types. The phrase "energy functional" never asserts that $E$ is linear; it just says $E$'s argument is a function (or a vector in an infinite-dimensional space).
+
+### One-line summary
+
+> Equation $(\star)$ is a chain of three equalities, each strictly more structurally demanding than the previous: **chain rule** (intrinsic), **Riesz** (inner-product-dependent), **dynamics** (gradient-flow-equation-dependent). In $\mathbb R^N$ the canonical inner product makes the first two indistinguishable, but in Hilbert spaces, manifolds, and Wasserstein space the second tier becomes a *choice* with consequences (different gradients, different flows). The third tier is the dynamical signature of being a gradient flow at all — without it, the energy-dissipation identity fails and the system is some other kind of dynamics entirely (Hamiltonian, driven, rotating).
+
+## Catalogue of gradient flows: an abstract framework spanning many domains
+
+The gradient-flow equation
+
+$$
+\partial_t u(t)\;=\;-\nabla_{\!\mathcal H}\,E\bigl(u(t)\bigr)
+$$
+
+is built from **three structural ingredients**:
+
+| ingredient | what it is | what it controls |
+|---|---|---|
+| state space $\mathcal H$ | where the unknown lives | the type of objects evolving (vectors, functions, densities, maps, surfaces, …) |
+| energy $E:\mathcal H\to\mathbb R$ | a scalar functional | what is being minimised; sets the *direction* of evolution |
+| inner product / metric $\langle\cdot,\cdot\rangle_{\mathcal H}$ | the geometry on $\mathcal H$ | what counts as "perpendicular," and hence what *gradient* means |
+
+The framework is genuinely abstract: many concrete equations from physics, optimisation, geometry, probability, biology, and image processing turn out to be gradient flows under appropriate choices of $(\mathcal H, E, \langle\cdot,\cdot\rangle)$. This section catalogues the most important examples, visualises six of them, and points out which dynamics do *not* fit the framework.
+
+### A gallery of gradient flows
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/gradient_flow_gallery.png' | relative_url }}" alt="A two-by-three gallery of plots showing six gradient flows from different domains: 1D heat equation Gaussian spreading; Allen-Cahn random data forming kink interfaces; mean curvature flow concentric shrinking circles; gradient descent trajectories on a non-convex 2D landscape converging to local minima; Fokker-Planck density relaxing to a Gaussian equilibrium; replicator dynamics on a 2-simplex with all trajectories converging to the fittest vertex." loading="lazy">
+  <figcaption>Six gradient flows from very different domains — PDE, geometry, optimisation, probability, evolutionary dynamics — all sharing the same abstract form $\partial_t u=-\nabla_{\!\mathcal H}E(u)$. The gallery is annotated with the explicit (energy, metric) pair for each example.</figcaption>
+</figure>
+
+### Catalogue by domain
+
+#### Heat / diffusion equations
+
+* **Heat equation** $\partial_t u=\Delta u$ on $\Omega\subset\mathbb R^d$ — has *two* gradient-flow structures (see the next subsection):
+  * $L^2$-gradient flow of the Dirichlet energy $E[u]=\frac{1}{2}\int|\nabla u|^2$;
+  * **Wasserstein** gradient flow of the Boltzmann negentropy $E[\rho]=\int\rho\log\rho$ on probability measures (Jordan–Kinderlehrer–Otto, 1998).
+* **Fokker–Planck** $\partial_t\rho=\nabla\cdot(\rho\nabla V)+\Delta\rho$ — Wasserstein gradient flow of the **free energy** $E[\rho]=\int V\rho\,dx+\int\rho\log\rho\,dx$.
+* **Porous medium equation** $\partial_t\rho=\Delta(\rho^m)$ — Wasserstein gradient flow of $E[\rho]=\frac{1}{m-1}\int\rho^m\,dx$.
+
+#### Phase fields and reaction–diffusion
+
+* **Allen–Cahn** $\partial_t u=\Delta u-W'(u)$ — $L^2$-gradient flow of the **Modica energy** $E[u]=\int\bigl(\frac{1}{2}|\nabla u|^2+W(u)\bigr)\,dx$ with double-well $W$. Models phase separation; mass not conserved.
+* **Cahn–Hilliard** $\partial_t u=-\Delta(\Delta u-W'(u))$ — $H^{-1}$-gradient flow of the *same* Modica energy. Same energy, *different* metric: now mass is conserved.
+* **Many reaction–diffusion systems** with detailed-balance or symmetry conditions — gradient flows of free-energy-like functionals.
+
+#### Geometric flows (state space = surfaces or maps)
+
+* **Mean curvature flow** $\partial_t\Gamma=-H\nu$ for a hypersurface $\Gamma$ — $L^2$-gradient flow of the **area functional**.
+* **Willmore flow** — $L^2$-gradient flow of the Willmore (bending) energy $\frac{1}{2}\int H^2$.
+* **Harmonic map flow** $\partial_t u=\tau(u)$ — gradient flow of the **Dirichlet energy** for maps between manifolds.
+* **Ricci flow** $\partial_t g=-2\,\mathrm{Ric}_g$ — Perelman: gradient flow of $\mathcal F$-functional under a particular metric on the space of Riemannian metrics. Used in the Hamilton–Perelman solution of the Poincaré conjecture.
+* **Yang–Mills flow** $\partial_t A=-d_A^*F_A$ — gradient flow of the Yang–Mills functional on connections.
+
+#### Optimisation and machine learning
+
+* **Continuous-time gradient descent** $\dot\theta=-\nabla L(\theta)$ — the prototypical finite-dimensional Euclidean gradient flow on a loss $L:\mathbb R^N\to\mathbb R$.
+* **Mirror descent** — gradient flow under a non-Euclidean metric induced by a Bregman divergence; standard in convex optimisation and online learning.
+* **Natural gradient descent** (Amari) — gradient flow under the **Fisher information metric** on a parametric family of probability distributions; the "right" metric for statistical estimation.
+* **Stochastic gradient descent / Langevin dynamics** — gradient flow plus Brownian noise; the law $\rho_t$ of the iterates evolves via Fokker–Planck (above).
+* **Implicit bias of overparameterised neural networks** — analysed via continuous-time gradient flow on the loss surface.
+* **Wasserstein gradient flow of KL divergence** — used in variational inference, particle methods, and "GAN training as gradient flow."
+
+#### Mechanics
+
+* **Overdamped Newton** — $\dot x=-\nabla V$, the friction-dominated limit of $m\ddot x=-\nabla V-\lambda v$ as $\lambda\to\infty$.
+* **Sweeping process** (Moreau) — particle confined to a moving convex set under gradient-flow-like dynamics; used in elasto-plasticity and nonsmooth mechanics.
+
+#### Probability, information, and statistics
+
+* **Fokker–Planck** as Wasserstein gradient flow (above).
+* **Variational inference** as Wasserstein gradient flow of the KL divergence.
+* **Score-based generative models / diffusion models** — closely tied to Fokker–Planck and reverse-time gradient flows.
+* **Replicator dynamics** in evolutionary game theory — Shahshahani-gradient flow of the mean-fitness function on the probability simplex; trajectories converge to the most-fit vertex (Fisher's fundamental theorem).
+
+#### Biology, chemistry, networks
+
+* **Hopfield networks** — neural-network dynamics $\dot x_i=-\partial_{x_i}E(x)$ on a quadratic energy. *The* canonical gradient flow in computational neuroscience.
+* **Keller–Segel** chemotaxis model — Wasserstein-style gradient flow under appropriate scaling.
+* **Population genetics** / Fisher's fundamental theorem — gradient-flow interpretation in terms of mean fitness on the simplex.
+
+#### Image processing and inverse problems
+
+* **Total-variation flow** $\partial_t u\in -\partial(\mathrm{TV})(u)$ — subgradient flow of the TV seminorm; image denoising (Rudin–Osher–Fatemi).
+* **Mumford–Shah** functional — minimisers studied via gradient-flow / minimising-movement schemes.
+* **Perona–Malik diffusion** — energy-decreasing in some regimes (a degenerate gradient flow), used for edge-preserving smoothing.
+
+### Same equation, multiple gradient-flow structures
+
+A particularly striking feature of the framework: the *same* equation can be a gradient flow under *different* (energy, metric) pairs, each illuminating different properties. The cleanest case is the heat equation:
+
+| structure | space | energy | metric | what it tells you |
+|---|---|---|---|---|
+| (a) | $L^2(\Omega)$ | $\frac{1}{2}\int\lvert\nabla u\rvert^2$ | $L^2$ | smoothing, Sobolev regularity, spectral analysis |
+| (b) | $\mathcal P_2(\mathbb R^d)$ (probability measures with finite 2nd moment) | $\int\rho\log\rho$ | Wasserstein | entropy increase, mass transport, particle interpretation |
+
+For a Gaussian solving the heat equation, both energies are simultaneously decreasing along the trajectory:
+
+<figure>
+  <img src="{{ '/assets/images/notes/random/heat_two_structures.png' | relative_url }}" alt="Three panels: top panel shows a Gaussian density spreading at five different times; bottom-left panel shows the L² Dirichlet energy of the Gaussian decreasing strictly with time; bottom-right panel shows the negentropy of the Gaussian also decreasing strictly with time." loading="lazy">
+  <figcaption>The same heat equation evolution from a Gaussian initial datum, viewed through two different gradient-flow structures. <em>Top</em>: density $\rho(x,t)$ at five times. <em>Bottom-left</em>: the $L^2$-Dirichlet energy $\frac{1}{2}\int|\partial_x\rho|^2\,dx=\frac{1}{8\sqrt{\pi}\sigma^3}$ — strictly decreasing, as required by the $L^2$-gradient-flow structure. <em>Bottom-right</em>: the Wasserstein-side negentropy $\int\rho\log\rho\,dx=-\frac{1}{2}\log(2\pi e\sigma^2)$ — also strictly decreasing, as required by the Wasserstein-gradient-flow structure. Both structures are correct and complementary.</figcaption>
+</figure>
+
+The discovery of structure (b) (Jordan–Kinderlehrer–Otto, 1998) was paradigm-shifting precisely because the heat equation had been thoroughly studied under (a) for a century, and the Wasserstein viewpoint revealed an entirely orthogonal layer of structure (entropy-as-driving-quantity, mass-transport interpretation, JKO discretisation, …) that powered subsequent work in optimal transport, particle methods, and modern machine learning. Choosing the *right* gradient-flow structure for a given equation is sometimes the entire research project.
+
+Other equations with multiple gradient-flow structures:
+
+* **Allen–Cahn vs Cahn–Hilliard.** Same Modica energy, different metric ($L^2$ vs $H^{-1}$), different conservation laws (mass not conserved vs conserved).
+* **Wasserstein vs Hellinger–Kantorovich.** Different metrics on probability measures, give different gradient flows of the same free energy when mass varies.
+
+### What is *not* a gradient flow
+
+The framework is enormous, but it is *not* universal. Common dynamics that are **not** gradient flows (or only become so under non-trivial structure):
+
+| dynamics | why it is not a gradient flow |
+|---|---|
+| **Hamiltonian flow** $\dot x=J\nabla H$ | Conserves $H$; symplectic, not gradient. |
+| **Schrödinger equation** $i\partial_t\psi=H\psi$ | Unitary; conserves energy and norm. |
+| **Wave equation** $\partial_{tt}u=\Delta u$ | Second-order in time, energy-conserving. |
+| **Lotka–Volterra** with closed orbits | Energy-conserving on cycles. |
+| **Driven / forced oscillators**, climate models, financial markets | External input; no global energy. |
+| Generic ODEs $\dot x=f(x)$ where $f$ is *not* a gradient of any potential | The vector field lacks the integrability needed for a gradient structure. |
+| **Stochastic processes that are not reversible** | Reversibility is closely tied to gradient-flow structure; non-reversible chains break it. |
+
+The defining feature: a first-order autonomous evolution $\dot u=f(u)$ is a gradient flow iff there exists an energy $E$ and an inner product such that $f=-\nabla_{\!\mathcal H}E$. In finite dimensions with the standard inner product, this is the Helmholtz integrability condition $\partial_i f_j=\partial_j f_i$ (the field $f$ must be irrotational). In infinite dimensions / non-Euclidean metrics it is more subtle but conceptually the same.
+
+A useful one-line characterisation:
+
+> A dynamical system is a gradient flow iff there is a scalar function (the energy) whose negative gradient — under *some* choice of geometry — equals the velocity field. The "under some choice" is doing real work: many systems that don't *look* like gradient flows in their original form become gradient flows once the right metric is found.
+
+### Why the unification matters
+
+When a system fits the gradient-flow framework, an entire toolkit comes for free:
+
+1. **Energy dissipation.** $\frac{d}{dt}E(u(t))=-\lvert\partial_t u\rvert_{\mathcal H}^2\le 0$ — automatic monotonicity, automatic Lyapunov function, automatic stability.
+2. **Long-time behaviour.** Trajectories generically converge to critical points / minimisers of $E$. Convexity of $E$ implies global convergence.
+3. **Existence theory beyond classical regularity.** The minimising-movement / JKO / proximal scheme exists whenever $E$ is convex + lsc + proper, not just $C^{1,1}$.
+4. **Stability and contraction.** Convex energies give monotone semigroups, contraction in the metric, uniqueness.
+5. **Bridge between dynamics and optimisation.** Discretise a gradient flow (implicit Euler / proximal point) → an optimisation algorithm; conversely, lift an optimiser to continuous time → a flow whose properties are easier to analyse.
+6. **Numerical schemes with structure-preservation.** Implicit Euler / proximal gradient / JKO preserve dissipation and are unconditionally stable.
+7. **Asymptotic analysis.** $\Gamma$-convergence of energies $\Rightarrow$ convergence of gradient flows (Sandier–Serfaty, Mosco-convergence theory). This is how one passes from microscopic to macroscopic models rigorously.
+8. **Connection to physics.** Hamilton's principle, dissipative thermodynamics (GENERIC framework), Onsager's reciprocal relations — all sit naturally in or near the gradient-flow picture.
+
+### One-line summary
+
+> The gradient flow $\partial_t u=-\nabla_{\!\mathcal H}E(u)$ is an abstract three-ingredient framework — *space*, *energy*, *metric* — that captures an enormous range of evolution equations across PDE, geometry, optimisation, probability, biology, and image processing. It is *not* universal: anything energy-conserving, externally driven, or non-integrable falls outside. But for the very large class of dissipative first-order evolutions that *do* fit, the framework provides automatic energy decay, existence and uniqueness theorems beyond classical regularity, a proximal / minimising-movement numerical scheme, and a structural bridge between dynamics and optimisation. The most striking instances (heat equation as Wasserstein flow of entropy, Ricci flow as gradient flow of Perelman's $\mathcal F$, neural-network training as gradient flow on the loss landscape) are paradigm-shifting precisely because they reveal hidden gradient-flow structure invisible from the equation in its naïve form.
