@@ -65,7 +65,7 @@ Show the following statements.
 
 **c)** Let $E \in C^1(\mathbb{R}^N)$. Then $\partial E(x) = \lbrace \nabla E(x)\rbrace$ for all $x \in \mathbb{R}^N$.
 
-**d)** $E$ is differentiable at $x$ if and only if $\partial E(x)$ is a singleton, i.e. $\#\partial E(x) = 1$.
+**d)** $E$ is differentiable at $x$ if and only if $\partial E(x)$ is a singleton, i.e. #$\partial E(x) = 1$.
 
 <details class="accordion" markdown="1">
 <summary>Solution 1.1 (a) — convexity and non-emptiness of $\partial E(x)$</summary>

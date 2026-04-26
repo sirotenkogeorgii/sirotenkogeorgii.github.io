@@ -7126,7 +7126,7 @@ $$
 
 is the **abstract Fréchet chain rule**. It requires only that $E:V\to\mathbb R$ be Fréchet-differentiable and that $x:I\to V$ be a differentiable curve, where $V$ is any normed vector space. No inner product, no metric, no coordinate choice.
 
-The dot here is *evaluation of a linear functional on a vector*: $dE(x(t))$ is a bounded linear functional on $V$ (an element of the dual $V^*$), and $\dot x(t)$ is a vector in $V$. (See the earlier section *Chain rule in general settings* for the full derivation.) This statement is **forward-compatible** with every generalisation that the gradient-flow theory will eventually need: Hilbert spaces, Riemannian manifolds, Wasserstein space.
+The dot here is *evaluation of a linear functional on a vector*: $dE(x(t))$ is a bounded linear functional on $V$ (an element of the dual $V^\ast$), and $\dot x(t)$ is a vector in $V$. (See the earlier section *Chain rule in general settings* for the full derivation.) This statement is **forward-compatible** with every generalisation that the gradient-flow theory will eventually need: Hilbert spaces, Riemannian manifolds, Wasserstein space.
 
 ### Tier 2: the Riesz identification (inner-product-dependent)
 
@@ -7136,7 +7136,7 @@ $$
 dE(x).\dot x\;=\;\langle\nabla E(x),\,\dot x\rangle
 $$
 
-is the **Riesz identification**. It is *not* intrinsic to differentiation — it requires an inner product $\langle\cdot,\cdot\rangle$ on $V$, which makes $V$ a (pre-)Hilbert space and lets us identify the dual functional $dE(x)\in V^*$ with a *vector* $\nabla E(x)\in V$ via the Riesz isomorphism. Concretely, $\nabla E(x)$ is the unique element of $V$ such that
+is the **Riesz identification**. It is *not* intrinsic to differentiation — it requires an inner product $\langle\cdot,\cdot\rangle$ on $V$, which makes $V$ a (pre-)Hilbert space and lets us identify the dual functional $dE(x)\in V^\ast$ with a *vector* $\nabla E(x)\in V$ via the Riesz isomorphism. Concretely, $\nabla E(x)$ is the unique element of $V$ such that
 
 $$
 dE(x).v\;=\;\langle\nabla E(x),v\rangle\qquad\text{for every }v\in V.
@@ -7149,7 +7149,7 @@ In $\mathbb R^N$ with the standard inner product, $dE(x)$ has components $(\part
   <figcaption>Two visualisations of the same first-order linear data on $E(x_1,x_2)=\frac{1}{2}(x_1^2+2x_2^2)$. <em>Left</em>: the differential $dE(x_*)$ is a *linear functional* on $\mathbb R^2$; pictured as the family of parallel level lines $\lbrace v: dE(x_*).v=c\rbrace$ in the tangent space at $x_*$. <em>Right</em>: the gradient $\nabla E(x_*)$ is a *vector* — the Riesz representative of $dE(x_*)$ — perpendicular to the energy level set through $x_*$, in the direction of steepest ascent.</figcaption>
 </figure>
 
-The crucial subtlety: **changing the inner product changes the gradient**. Take $V=\mathbb R^2$ with the standard $\langle\cdot,\cdot\rangle_{\mathrm{std}}$ and a weighted inner product $\langle u,v\rangle_M=u_1v_1+4u_2v_2$ (the "$M$-metric" with $M=\mathrm{diag}(1,4)$). For $E(x_1,x_2)=\frac{1}{2}(x_1^2+2x_2^2)$ the differential $dE(x_*).v=v_1+2v_2$ at $x_*=(1,1)$ is **the same** under either inner product (it doesn't depend on a metric). But:
+The crucial subtlety: **changing the inner product changes the gradient**. Take $V=\mathbb R^2$ with the standard $\langle\cdot,\cdot\rangle_{\mathrm{std}}$ and a weighted inner product $\langle u,v\rangle_M=u_1v_1+4u_2v_2$ (the "$M$-metric" with $M=\mathrm{diag}(1,4)$). For $E(x_1,x_2)=\frac{1}{2}(x_1^2+2x_2^2)$ the differential $dE(x_\ast).v=v_1+2v_2$ at $x_\ast=(1,1)$ is **the same** under either inner product (it doesn't depend on a metric). But:
 
 * under $\langle\cdot,\cdot\rangle_{\mathrm{std}}$: $\nabla_{\mathrm{std}}E(x_*)=(1,2)$,
 * under $\langle\cdot,\cdot\rangle_M$: $\nabla_M E(x_*)=(1,\frac{1}{2})$ — different vector, same differential.
@@ -7202,7 +7202,7 @@ In a literal reading, **yes** — it adds inner-product structure that the chain
 
 #### Q3: Does the Riesz representative depend on the coordinate system, or on the inner product?
 
-**Only on the inner product.** The Riesz isomorphism $R_{\mathcal H}:\mathcal H\to\mathcal H^*,\ v\mapsto\langle v,\cdot\rangle_{\mathcal H}$ is intrinsic to the pair $(\mathcal H,\langle\cdot,\cdot\rangle)$ — no basis or coordinate choice is involved. Switching basis does not change the gradient (it just changes its representation in the new basis). Switching the inner product, however, *does* change the gradient — exactly as illustrated by the two gradient arrows in the metric-dependence figure.
+**Only on the inner product.** The Riesz isomorphism $R_{\mathcal H}:\mathcal H\to\mathcal H^\ast,\ v\mapsto\langle v,\cdot\rangle_{\mathcal H}$ is intrinsic to the pair $(\mathcal H,\langle\cdot,\cdot\rangle)$ — no basis or coordinate choice is involved. Switching basis does not change the gradient (it just changes its representation in the new basis). Switching the inner product, however, *does* change the gradient — exactly as illustrated by the two gradient arrows in the metric-dependence figure.
 
 In the infinite-dimensional setting "coordinate system" is the wrong vocabulary anyway. Correct phrasing:
 
@@ -7259,9 +7259,9 @@ This looks like a contradiction with Q5 above (which says the Riesz representati
 
 * $J[y]=\int_a^b\sqrt{1+y'(x)^2}\,dx$ — the arc-length functional. Quadratic in $y'$, **not** linear in $y$.
 * $S[q]=\int_0^T\bigl(\frac{1}{2}m\dot q^2-V(q)\bigr)dt$ — the action functional. Generally nonlinear.
-* $E[u]=\frac{1}{2}\int_\Omega|\nabla u|^2\,dx$ — the Dirichlet energy. Quadratic in $u$, **not** linear.
+* $E[u]=\frac{1}{2}\int_\Omega\|\nabla u\|^2\,dx$ — the Dirichlet energy. Quadratic in $u$, **not** linear.
 
-**Sense 2 — the *functional-analysis* meaning.** A "linear functional" is a *linear* map $\ell:V\to\mathbb R$ — and a *bounded* one (continuous in the norm) is an element of the dual space $V^*$. This is the sense used when we say "$dE(u)\in\mathcal H^*$ is a linear functional."
+**Sense 2 — the *functional-analysis* meaning.** A "linear functional" is a *linear* map $\ell:V\to\mathbb R$ — and a *bounded* one (continuous in the norm) is an element of the dual space $V^\ast$. This is the sense used when we say "$dE(u)\in\mathcal H^\ast$ is a linear functional."
 
 The two senses overlap when the functional happens to be linear. $\ell[v]=\int g(x)v(x)\,dx$ for fixed $g$ is *both* a functional (sense 1) *and* a linear functional (sense 2). But:
 
@@ -7287,7 +7287,7 @@ Both sides live in $\mathcal H$, so the equation type-checks. If the right-hand 
 **Reading conventions in the literature:**
 
 * "energy **functional**", "action **functional**", "variational **functional**", "Dirichlet **functional**" — sense 1 (a generally nonlinear scalar map on a function space).
-* "**linear** functional", "**bounded** functional", "elements of the dual space $\mathcal H^*$", "**covector**" — sense 2 (an element of $\mathcal H^*$, *required* to be linear).
+* "**linear** functional", "**bounded** functional", "elements of the dual space $\mathcal H^\ast$", "**covector**" — sense 2 (an element of $\mathcal H^\ast$, *required* to be linear).
 
 So: $E$ is called a "functional" in sense 1, but $E$ is **not** a linear functional. Its derivative $dE(u)$ at each fixed $u$ *is* a linear functional (sense 2). And $\nabla E(u)$ — the Riesz representative of $dE(u)$ — is a **vector**, not a functional in either sense.
 
