@@ -375,3 +375,347 @@ $$
 which does not depend on the scalar product $m$ on $\mathcal{Y}$.
 
 </div>
+
+### A.2. Multilinear Functions, Tensors on a Vector Space
+
+### A.2.1. General Functions and Tensors, Duality, Scalar Products
+
+Let $E, F$ be vector spaces of $\mathbb{R}$. Let $\widecheck{E}$ be the dual space of $E$. Throughout this section, if $(e_i)\_{i \in [n]}$ is a basis of $E$ and $(\widecheck{e}^i)\_{i \in [n]}$ is a dual basis of $\widecheck{E}$, then
+
+$$
+\langle \widecheck{e}^i, e_j\rangle = \delta^i_j = \begin{cases} 1 & \text{if } i = j, \\ 0 & \text{otherwise.} \end{cases} \qquad \textbf{(Kronecker delta)} \tag{A.31}
+$$
+
+The space of $F$-valued tensors
+
+$$
+T^{p,q}(E, F), \qquad p, q \in \mathbb{N} \tag{A.32a}
+$$
+
+contains multilinear functions of the form
+
+$$
+f: \widecheck{E} \times \overset{p}{\cdots} \times \widecheck{E} \times E \times \overset{q}{\cdots} \times E \to F. \tag{A.32b}
+$$
+
+We set
+
+$$
+\begin{aligned}
+T^{0,0}(E, F) &:= F, &&\text{(A.33a)} \\
+T^{p,q}(E) &:= T^{p,q}(E, \mathbb{R}) &&\text{(A.33b)}
+\end{aligned}
+$$
+
+with elements
+
+$$
+T^{p,q}(E) \ni u_1 \otimes \cdots \otimes u_p \otimes \widecheck{v}^1 \otimes \cdots \otimes \widecheck{v}^q, \qquad u_1, \dots, u_p \in E,\ \widecheck{v}^1, \dots, \widecheck{v}^q \in \widecheck{E} \tag{A.34a}
+$$
+
+defined by
+
+$$
+(u_1 \otimes \cdots \otimes \widecheck{v}^q)(\widecheck{x}^1, \dots, \widecheck{x}^p, y_1, \dots, y_q) = \widecheck{x}^1(u_1) \cdots \widecheck{x}^p(u_p)\, \widecheck{v}^1(y_1) \cdots \widecheck{v}^q(y_q). \tag{A.34b}
+$$
+
+Let $e_1, \dots, e_n \in E$ be a basis with dual basis $\widecheck{e}^1, \dots, \widecheck{e}^n$. Then any function $f \in T^{p,q}(E)$ can be uniquely specified as
+
+$$
+f = \sum f^{i_1 \cdots i_p}_{j_1 \cdots j_q}\, e_{i_1} \otimes \cdots \otimes e_{i_p} \otimes \widecheck{e}^{j_1} \otimes \cdots \otimes \widecheck{e}^{j_q} \tag{A.35}
+$$
+
+with coefficients
+
+$$
+f^{i_1 \cdots i_p}_{j_1 \cdots j_q} = f(\widecheck{e}^{i_1}, \dots, \widecheck{e}^{i_p}, e_{j_1}, \dots, e_{j_q}) \in \mathbb{R}. \tag{A.36}
+$$
+
+Here the sum ranges over all $p$-tuples $1 \leq i_1, \dots, i_p \leq n$ and all $q$-tuples $1 \leq j_1, \dots, j_q \leq n$ with $n = \dim(E)$.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.10 (tensors, duality)</span></p>
+
+**(1)** The coefficients (A.36) of a multilinear function $f \in T^{2,2}(E)$, with $n = \dim(E) = 2$, form a $2 \times 2 \times 2 \times 2$ array, here plotted after reshaping it to matrix form
+
+$$
+\begin{pmatrix}
+\begin{pmatrix} f^{1,1}_{1,1} & f^{1,1}_{1,2} \\ f^{1,1}_{2,1} & f^{1,1}_{2,2} \end{pmatrix} & \begin{pmatrix} f^{1,2}_{1,1} & f^{1,2}_{1,2} \\ f^{1,2}_{2,1} & f^{1,2}_{2,2} \end{pmatrix} \\[8pt]
+\begin{pmatrix} f^{2,1}_{1,1} & f^{2,1}_{1,2} \\ f^{2,1}_{2,1} & f^{2,1}_{2,2} \end{pmatrix} & \begin{pmatrix} f^{2,2}_{1,1} & f^{2,2}_{1,2} \\ f^{2,2}_{2,1} & f^{2,2}_{2,2} \end{pmatrix}
+\end{pmatrix}
+$$
+
+**(2)** Let $(e_i)\_{i \in [n]}$ be a basis of $E$ and let $(f_j)\_{j \in [m]}$ be a basis of $F$. The bilinear form
+
+$$
+\langle \widecheck{x}, x \rangle := \widecheck{x}(x) \tag{A.37}
+$$
+
+on $\widecheck{E} \times E$ is also called **duality pairing** or **duality product**. The $j$th component of $x \in E$ in this basis is given by
+
+$$
+x^j = \langle \widecheck{e}^j, x\rangle, \qquad j \in [n]. \tag{A.38}
+$$
+
+The $j$th component of $\widecheck{x} \in \widecheck{E}$ in the dual basis is given by
+
+$$
+\widecheck{x}_j = \langle \widecheck{x}, e_j\rangle. \tag{A.39}
+$$
+
+Hence (cf. Remark A.1)
+
+$$
+\langle \widecheck{x}, x \rangle = \langle \widecheck{x}_i \widecheck{e}^i,\, x^j e_j\rangle = \widecheck{x}_i x^j \langle \widecheck{e}^i, e_j\rangle = \widecheck{x}_i x^j \delta^i_j = \widecheck{x}_i x^i. \tag{A.40}
+$$
+
+**(3)** Let $y \in F$ and the mapping $f_y \in T^{1,1}(E, F)$ be given by
+
+$$
+f_y(\widecheck{x}, x) = \langle \widecheck{x}, x\rangle\, y. \tag{A.41}
+$$
+
+This expression is also bilinear in $\widecheck{x}, y$. Hence we may define
+
+$$
+\boxed{\,x \mapsto (\widecheck{x} \otimes y)(x) := \widecheck{x}(x)\, y\,}. \tag{A.42}
+$$
+
+Thus
+
+$$
+\boxed{\,\widecheck{x} \otimes y \in \mathcal{L}(E, F)\,} \tag{A.43}
+$$
+
+becomes an element of the vector space of *linear* maps from $E$ to $F$ and we may identify
+
+$$
+\boxed{\,\widecheck{E} \otimes F \cong \mathcal{L}(E, F)\,}. \tag{A.44}
+$$
+
+Likewise
+
+$$
+E \otimes F \cong \mathcal{L}(\widecheck{E}, F) \tag{A.45}
+$$
+
+and
+
+$$
+\widecheck{E}_1 \otimes \cdots \otimes \widecheck{E}_q \otimes F \cong T^{0,q}(E, F) \tag{A.46}
+$$
+
+is the space of all multilinear functions
+
+$$
+f: E_1 \otimes \cdots \otimes E_q \to F. \tag{A.47}
+$$
+
+We write
+
+$$
+\widecheck{E}^{\otimes 2} := \widecheck{E} \otimes \widecheck{E} := \widecheck{E} \otimes \widecheck{E} \otimes \mathbb{R} \tag{A.48}
+$$
+
+for the space of all **real-valued bilinear forms** on $E$ and similarly
+
+$$
+\widecheck{E}^{\otimes q} := \widecheck{E} \otimes \overset{q}{\cdots} \otimes \widecheck{E} \qquad \text{for } 2 \leq q \in \mathbb{N}. \tag{A.49}
+$$
+
+**(4)** Let $(e_i)\_{i \in [n]}$ be a basis of $E$ and let $(f_j)\_{j \in [m]}$ be a basis of $F$. The mappings
+
+$$
+(\widecheck{e}^j \otimes f_i)\_{\substack{i \in [m] \\ j \in [n]}} \tag{A.50}
+$$
+
+form a basis of the space $\mathcal{L}(E, F)$. The transformation of the basis $(e_j)\_{j \in [n]}$ determines the components of the matrix $W$ which represents the transformation in $\mathcal{L}(E, F)$ in the basis (A.50),
+
+$$
+\begin{aligned}
+F \ni Wx &= \langle \widecheck{f}^i, Wx\rangle f_i = \langle \widecheck{f}^i, W(x^j e_j)\rangle f_i = \langle \widecheck{f}^i, W(\langle \widecheck{e}^j, x\rangle e_j)\rangle f_i &&\text{(A.51a)} \\
+&= \langle \widecheck{f}^i, W e_j\rangle\, \langle \widecheck{e}^j, x\rangle\, f_i = \underbrace{\langle \widecheck{f}^i, W e_j\rangle}\_{=:\,W^i_j}\, (\widecheck{e}^j \otimes f_i)(x) &&\text{(A.51b)} \\
+&= (W^i_j\, \widecheck{e}^j \otimes f_i)(x). &&\text{(A.51c)}
+\end{aligned}
+$$
+
+**(5)** A vector $x \in E$ is transformed by the operator (A.43) to
+
+$$
+(\widecheck{x} \otimes y)(x) = (\widecheck{x}_j \widecheck{e}^j) \otimes (y^i f_i)(x) = (y^i \widecheck{x}_j)(\widecheck{e}^j \otimes f_i)(x) = (W^i_j\, \widecheck{e}^j \otimes f_i)(x). \tag{A.52}
+$$
+
+Thus, in terms of the coordinates and matrix-vector notation, the matrix representing this linear mapping is
+
+$$
+W = (W^i_j)\_{\substack{i \in [m] \\ j \in [n]}} = y\, \widecheck{x}^{\top}. \tag{A.53}
+$$
+
+**(6)** The **transpose**
+
+$$
+(\widecheck{x} \otimes y)^{\vee} \in \mathcal{L}(\widecheck{F}, \widecheck{E}) \tag{A.54}
+$$
+
+maps a vector $\widecheck{y} \in \widecheck{F}$ to
+
+$$
+\boxed{\,(\widecheck{x} \otimes y)^{\vee}(\widecheck{y}) = \langle y, \widecheck{y}\rangle\, \widecheck{x}\,} \tag{A.55}
+$$
+
+since
+
+$$
+\begin{aligned}
+\langle \widecheck{y}, (\widecheck{x} \otimes y)(x)\rangle &= \langle \widecheck{y}, \widecheck{x}(x) y\rangle = \langle \widecheck{y}, \langle \widecheck{x}, x\rangle y\rangle = \langle\langle \widecheck{y}, y\rangle\, \widecheck{x},\, x\rangle &&\text{(A.56a)} \\
+&= \langle (\widecheck{x} \otimes y)^{\vee}(\widecheck{y}),\, x\rangle. &&\text{(A.56b)}
+\end{aligned}
+$$
+
+Consequently, because
+
+$$
+(\widecheck{x} \otimes y)^{\vee}(\widecheck{y}) = \langle y, \widecheck{y}\rangle\, \widecheck{x} = (y \otimes \widecheck{x})(\widecheck{y}) \tag{A.57}
+$$
+
+we identify
+
+$$
+\boxed{\,(\widecheck{x} \otimes y)^{\vee} \cong y \otimes \widecheck{x}\,} \in \mathcal{L}(\widecheck{F}, \widecheck{E}). \tag{A.58}
+$$
+
+The matrix representation of this map is the transposed matrix (A.53)
+
+$$
+W^{\top} = \widecheck{x}\, y^{\top}. \tag{A.59}
+$$
+
+</div>
+
+We focus on *linear* mappings
+
+$$
+\mathcal{A}: \mathcal{L}(E, F) \to G, \tag{A.60}
+$$
+
+that is, on elements $\mathcal{A} \in \mathcal{L}(\mathcal{L}(E, F), G)$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">A.11 (isomorphism)</span></p>
+
+One has the isomorphism
+
+$$
+\mathcal{L}(\mathcal{L}(E, F), G) \cong \mathcal{L}(\widecheck{E}, \mathcal{L}(F, G)) \tag{A.61}
+$$
+
+which is identified by the equation
+
+$$
+G \ni \underbrace{\mathcal{A}(\overbrace{\widecheck{x} \otimes y}^{\in\, \mathcal{L}(E, F)})}\_{\text{l.h.s.}} := \underbrace{\mathcal{A}(\widecheck{x})(y)}\_{\text{r.h.s.}} \in G, \qquad \forall\, \widecheck{x} \in \widecheck{E},\ \forall\, y \in F. \tag{A.62}
+$$
+
+Note that when $G = \mathbb{R}$, then (A.61) characterizes **dual spaces** of linear operators
+
+$$
+(\widecheck{E} \otimes F)^{\vee} \cong \boxed{\,\mathcal{L}(E, F)^{\vee} \cong \mathcal{L}(\widecheck{E}, \widecheck{F})\,} \cong E \otimes \widecheck{F}. \tag{A.63}
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.12 (mapping $\mathcal{A} \in \mathcal{L}(\mathcal{L}(E, F), G)$)</span></p>
+
+Let $x \in E$ and $B \in \mathcal{L}(F, G)$ and set
+
+$$
+\mathcal{A} = x \otimes B:\ W \in \mathcal{L}(E, F) \mapsto \mathcal{A}(W) = (x \otimes B)(W) := BWx \in G. \tag{A.64}
+$$
+
+On the one hand, this definition clearly reveals $\mathcal{A} = x \otimes B \in \mathcal{L}(\mathcal{L}(E, F), G)$ which *linearly* maps $W$ to an element of $G$. On the other hand, by the isomorphism (A.61), $\mathcal{A} = x \otimes B \in \mathcal{L}(\widecheck{E}, \mathcal{L}(F, G))$ which becomes explicit by the right-hand side of (A.62): representing the action of $W$ by $W = \widecheck{x} \otimes y$, one has
+
+$$
+\mathcal{A}(W) = (x \otimes B)(\widecheck{x} \otimes y) \stackrel{(A.64)}{=} B(\widecheck{x} \otimes y)x = \langle \widecheck{x}, x\rangle\, By = \underbrace{\mathcal{A}(\widecheck{x})}\_{\in\, \mathcal{L}(F, G)}(y) \in G. \tag{A.65}
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">A.13 (dual spaces of linear operators)</span></p>
+
+Based on the identification (A.63), one has $x \otimes \widecheck{y} \in \mathcal{L}(E, F)^{\vee}$ and
+
+$$
+\begin{aligned}
+\langle x \otimes \widecheck{y},\, W \rangle &= \langle \widecheck{y}, Wx \rangle, &&\text{(A.66a)} \\
+\langle x \otimes \widecheck{y},\, \widecheck{x} \otimes y \rangle &= \langle \widecheck{x}, x \rangle\, \langle \widecheck{y}, y \rangle. &&\text{(A.66b)}
+\end{aligned}
+$$
+
+If $(e_j)\_{j \in [n]}, (\widecheck{e}^j)\_{j \in [n]}$ and $(f_i)\_{i \in [m]}, (\widecheck{f}^i)\_{i \in [m]}$ are dual bases of $E, \widecheck{E}$ and $F, \widecheck{F}$, then
+
+$$
+(\widecheck{e}^j \otimes f_i)\_{\substack{i \in [m] \\ j \in [n]}} \qquad \text{and} \qquad (e_l \otimes \widecheck{f}^k)\_{\substack{k \in [m] \\ l \in [n]}} \tag{A.67}
+$$
+
+are dual bases of $\mathcal{L}(E, F)$ and $\mathcal{L}(\widecheck{E}, \widecheck{F})$. Independent of the choice of the dual bases, the duality product for $\mathcal{L}(E, F)$ and $\mathcal{L}(\widecheck{E}, \widecheck{F}) \cong \mathcal{L}(E, F)^{\vee}$ is given with $U \in \mathcal{L}(E, F),\ \widecheck{V} \in \mathcal{L}(\widecheck{E}, \widecheck{F})$ by (recall the summation convention, Remark A.1)
+
+$$
+\begin{aligned}
+\langle \widecheck{V}, U \rangle &:= \langle \widecheck{V} \widecheck{e}^j, f_i\rangle\, \langle \widecheck{f}^i, U e_j\rangle &&\text{(A.68a)} \\
+&= \langle \widecheck{V} \widecheck{e}^j,\, U e_j\rangle = \langle \widecheck{U} \widecheck{f}^i,\, V f_i\rangle, &&\text{(A.68b)}
+\end{aligned}
+$$
+
+with the transposed mappings $\widecheck{U} \in \mathcal{L}(\widecheck{F}, \widecheck{E}),\ V \in \mathcal{L}(F, E)$.
+
+</div>
+
+We generalize the mapping $\mathcal{A}$ in (A.64) to **tensor products of linear operators**. Given pairs of vector spaces $E, E'$ and $F, F'$, consider
+
+$$
+A \in \mathcal{L}(E', E) \qquad \text{and} \qquad B \in \mathcal{L}(F, F') \tag{A.69a}
+$$
+
+and the *linear* mapping
+
+$$
+\boxed{\,\widecheck{A} \otimes B \in \mathcal{L}(\mathcal{L}(E, F),\, \mathcal{L}(E', F'))\,}, \qquad \boxed{\,(\widecheck{A} \otimes B)(W) := BWA\,}. \tag{A.69b}
+$$
+
+This reduces to (A.64) by choosing $G = F' \cong \mathcal{L}(\mathbb{R}, F')$, i.e. $E' = \mathbb{R}$, and $A = x: E' = \mathbb{R} \ni \lambda \mapsto \lambda x \in E$. For the special case $W = \widecheck{x} \otimes y \in \mathcal{L}(E, F)$, (A.69) generalizes the equation $(x \otimes B)(\widecheck{x} \otimes y) = \langle \widecheck{x}, x\rangle\, By$ as given by (A.65) to
+
+$$
+(\widecheck{A} \otimes B)(\widecheck{x} \otimes y) = \underbrace{\widecheck{A}\widecheck{x}}\_{\in\, \widecheck{E}'} \otimes\, By \in \mathcal{L}(E', F'). \tag{A.70}
+$$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.14 (transposed tensor products of linear operators)</span></p>
+
+The transpose of the linear operator (A.69) is
+
+$$
+\boxed{\,(\widecheck{A} \otimes B)^{\vee} = A \otimes \widecheck{B} \in \mathcal{L}(\mathcal{L}(\widecheck{E}', \widecheck{F}'),\, \mathcal{L}(\widecheck{E}, \widecheck{F}))\,}. \tag{A.71}
+$$
+
+Now assume (A.69) and in addition $A' \in \mathcal{L}(E'', E')$ and $B' \in \mathcal{L}(F', F'')$ to be given. Then, with $\widecheck{A'} \otimes B' \in \mathcal{L}(\mathcal{L}(E', F'),\, \mathcal{L}(E'', F''))$, one has
+
+$$
+\begin{aligned}
+\boxed{\,(\widecheck{A'} \otimes B')(\widecheck{A} \otimes B)\,} &= (\underbrace{AA'}\_{\in\, \mathcal{L}(E'', E)})^{\vee} \otimes (\underbrace{B'B}\_{\in\, \mathcal{L}(F, F'')}) &&\text{(A.72a)} \\
+&\boxed{\,= \widecheck{(A'A)} \otimes (B'B) \in \mathcal{L}(\mathcal{L}(E, F),\, \mathcal{L}(E'', F''))\,}. &&\text{(A.72b)}
+\end{aligned}
+$$
+
+In addition, one has:
+
+$$
+\begin{aligned}
+A \text{ and } B \text{ are invertible} &\;\Longrightarrow\; (\widecheck{A} \otimes B)^{-1} = \widecheck{A^{-1}} \otimes B^{-1} &&\text{(A.73a)} \\
+A \text{ left-invertible (injective)},\ B \text{ right-invertible (surjective)} &\;\Longrightarrow\; \widecheck{A} \otimes B \text{ right-invertible (surjective)} &&\text{(A.73c)} \\
+A \text{ right-invertible (surjective)},\ B \text{ left-invertible (injective)} &\;\Longrightarrow\; \widecheck{A} \otimes B \text{ left-invertible (injective)} &&\text{(A.73e)} \\
+A \text{ and } B \text{ are projections} &\;\Longrightarrow\; \widecheck{A} \otimes B \text{ is a projection.} &&\text{(A.73f)}
+\end{aligned}
+$$
+
+</div>
