@@ -23,6 +23,14 @@ tags:
 
 # Introduction to Geometric Deep Learning
 
+**Table of Contents**
+- TOC
+{:toc}
+
+## Problems
+
+[Selected Problems](/subpages/books/geometric_deep_learning_hd/problems/)
+
 ## Appendix A. Mathematical Background
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -633,7 +641,7 @@ $$
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.12 (Mapping $\mathcal{A} \in \mathcal{L}(\mathcal{L}(E, F), G)$)</span></p>
 
 Let $x \in E$ and $B \in \mathcal{L}(F, G)$ and set
