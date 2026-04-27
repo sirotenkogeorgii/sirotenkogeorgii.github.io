@@ -1514,7 +1514,10 @@ The crucial point: $\Psi$ is **basis-free**, so although the *expression* on the
 
 </div>
 
-**Proof of the Theorem.** Two steps.
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of the Theorem</summary>
 
 1. *Surjectivity.* Take any $T \in \operatorname{Hom}(V, W)$. Pick a basis $e_1, \dots, e_n$ of $V$ and let $w_i = T(e_i) \in W$. Then the element
 
@@ -1525,6 +1528,9 @@ maps under $\Psi$ to a linear map agreeing with $T$ on each basis vector $e_i$ â
 2. *Injectivity by dimension count.* It now suffices to check $\dim(V^\vee \otimes W) = \dim \operatorname{Hom}(V, W)$. From the basis proposition, $\dim(V^\vee \otimes W) = \dim V^\vee \cdot \dim W = \dim V \cdot \dim W$. Viewing $\operatorname{Hom}(V, W)$ as the space of $\dim W \times \dim V$ matrices gives the same dimension, so a surjection between finite-dimensional spaces of equal dimension is an isomorphism. $\square$
 
 The proof used a basis to construct a preimage, but the *map* $\Psi$ itself is defined without one. The resulting isomorphism $V^\vee \otimes W \cong \operatorname{Hom}(V, W)$ is therefore canonical â€” it depends only on $V$ and $W$, not on any choice of basis.
+
+</details>
+</div>
 
 ### The Trace, Coordinate-Free
 
