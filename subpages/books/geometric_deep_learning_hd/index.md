@@ -33,10 +33,19 @@ tags:
 
 ## Appendix A. Mathematical Background
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">A.1 (Summation convention)</span></p>
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">A.1 (Summation convention)</span></p>
 
 Sums are taken "automatically" over repeated indices, without the $\sum$ symbol, whenever the summands and their range make sense in the context.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">A.1 (Summation convention)</span></p>
+
+$$
+\langle L\cdot, \cdot\rangle = \langle \cdot, \cdot\rangle_{\widecheck{\mathcal X} \times \mathcal X}
+$$
 
 </div>
 
@@ -79,6 +88,11 @@ $$
 $$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_scalar_product_geometry.png' | relative_url }}" alt="Three side-by-side panels of R² with the same canonical basis δ₁, δ₂ but three different scalar products: a circle for G = I, a horizontally-stretched ellipse for G = diag(1, 4), and a tilted ellipse for an oblique G with off-diagonal entries. Inset heatmaps show each Gramian." loading="lazy">
+  <figcaption>The same vector space $\mathcal X = \mathbb R^2$ acquires entirely different geometries depending on which scalar product $\ell$ we install on it. Concretely, the unit ball $\{x : \ell(x,x) \le 1\}$ is the level-1 set of the quadratic form $x^\top G x$, where $G = (\ell(\delta_i, \delta_j))_{ij}$ is the Gramian. For $G = I$ it is the round disc; for $G = \mathrm{diag}(1, 4)$ it is squashed along $\delta_2$ (lengths in that direction are now twice as expensive); for the oblique $G$ it tilts away from the axes because $\delta_1, \delta_2$ are no longer $\ell$-orthogonal. The basis arrows themselves do not move — only the geometry painted on top of them.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Gramian representation)</span></p>
@@ -153,6 +167,11 @@ and the corresponding coordinate vectors are often arbitrary and do not relate t
    $$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_orthonormalization.png' | relative_url }}" alt="Three panels: left, R^d with canonical inner product and standard basis δ₁, δ₂ inside a circular unit ball; middle, the space X with an oblique basis e₁, e₂ inside the same circle, where e₁ and e₂ are not orthonormal; right, the same space X with an elliptical unit ball aligned to e₁, e₂, where they become orthonormal under the induced metric." loading="lazy">
+  <figcaption>Lemma A.2 in three pictures. <em>Left:</em> $\mathbb R^d$ with the canonical inner product, where the standard basis $(\delta_i)$ is automatically orthonormal — its unit ball is the round disc. <em>Middle:</em> transport the $\delta_i$ via $B$ to land at the (oblique) basis $e_1, e_2 \in \mathcal X$; under the canonical inner product on $\mathcal X$, the $e_i$ are not orthonormal — they are not orthogonal ($\langle e_1, e_2\rangle \ne 0$) and their lengths differ from $1$. <em>Right:</em> swap the metric for the pulled-back inner product $\ell(x, x') := \langle B^{-1}x, B^{-1}x'\rangle$. Its unit ball is the image $B(\text{round disc})$ — an ellipse whose principal directions are exactly the $e_i$, restoring orthonormality.</figcaption>
+</figure>
 
 ### A.1.2. Orthogonal Left- and Right-Inverses
 
@@ -251,6 +270,11 @@ $$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_pseudoinverse_minnorm.png' | relative_url }}" alt="Two panels for the pseudo-inverse picture. Left: the source space X with ker(C) drawn as a dashed line, ker(C)^perp as a solid line, and an affine line of preimages of ŷ parallel to ker(C); the special preimage x̄ = C†y sits where this affine line meets ker(C)^perp, closer to the origin than the other (grey) candidate preimages. Right: the target space Y with rge(C) as a line, a target point y above it, and ŷ = CC†y as the orthogonal projection of y onto rge(C); the residual y − ŷ is shown perpendicular to rge(C)." loading="lazy">
+  <figcaption>The pseudo-inverse $C^\dagger = A^+ B^-$ from Definition A.5 read right-to-left. <em>Right:</em> a target $y \in \mathcal Y$ that may not lie in $\mathrm{rge}(C)$. The orthogonal projection $\hat y = CC^\dagger y$ is the closest point of $\mathrm{rge}(C)$ to $y$ in the $m$-metric; the residual $y - \hat y$ is $m$-orthogonal to $\mathrm{rge}(C)$. <em>Left:</em> the preimage $C^{-1}(\hat y)$ is an affine line — a coset of $\ker(C)$. All grey points map to $\hat y$, but $\bar x = C^\dagger y$ is the unique element of that coset closest to the origin in $\mathcal X$, equivalently the unique element lying in $\ker(C)^\perp = \mathrm{rge}(C^\dagger)$. So $C^\dagger$ realises in a single linear map the two-step recipe: <em>project to the range, then take the minimum-norm preimage.</em></figcaption>
+</figure>
+
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.6 (Properties of the pseudo-inverse)</span></p>
 
@@ -269,6 +293,11 @@ C C^{\dagger} &= \Pi_{\mathrm{rge}(C)}, &&\text{(A.21d)} \\
 $$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_penrose_conditions.png' | relative_url }}" alt="Two-by-two grid of small diagrams illustrating the four Penrose–Moore conditions for a fixed rank-1 example C: R² → R². Top-left (a): a target vector y and its projection ŷ = CC†y onto rge(C). Top-right (b): a vector Cx already in rge(C). Bottom-left (c): a vector x in source space and its projection C†Cx onto ker(C)^perp. Bottom-right (d): a vector y in target space and its projection CC†y onto rge(C)." loading="lazy">
+  <figcaption>The four Penrose–Moore identities (A.21a–d) read off geometrically for a fixed rank-1 example $C : \mathcal X \to \mathcal Y$. <strong>(a)</strong> $C^\dagger$ ignores the $\mathrm{rge}(C)^\perp$-component of its input, so feeding it $y$ versus its projection $\hat y = CC^\dagger y$ produces the same answer — hence $C^\dagger CC^\dagger = C^\dagger$. <strong>(b)</strong> $Cx$ already lives in $\mathrm{rge}(C)$, where $CC^\dagger$ acts as the identity, so $CC^\dagger Cx = Cx$. <strong>(c)</strong> $C^\dagger C$ is the orthogonal projection in $\mathcal X$ onto $\ker(C)^\perp$ — it strips off the kernel component and keeps the rest. <strong>(d)</strong> $CC^\dagger$ is the orthogonal projection in $\mathcal Y$ onto $\mathrm{rge}(C)$. Together (c) and (d) capture the symmetry that makes $C^\dagger$ unique among all generalized inverses.</figcaption>
+</figure>
 
 ### A.1.3. Tensor-Products and Generalized Inverses
 
@@ -328,6 +357,11 @@ $$
 and independent of the choice of the bases.
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_tensor_scalar_product.png' | relative_url }}" alt="A single R² panel with four arrows from the origin: two blue arrows Ue₁ and Ue₂ representing U applied to the orthonormal basis vectors, and two orange arrows Ve₁ and Ve₂ representing V applied to the same basis. Annotations show the per-index inner products m(Ue_j, Ve_j) and their sum equal to (ℓ̌ ⊗ m)(U, V)." loading="lazy">
+  <figcaption>How the tensor scalar product (A.22) / (A.25b) really works. Pick an $\ell$-orthonormal frame $(e_j)$ of $\mathcal X$ and apply $U$ and $V$ to each frame vector — this produces two "image frames" $(Ue_j), (Ve_j) \subset \mathcal Y$ (here in $\mathbb R^2$ with $e_1, e_2$ canonical). The scalar product of $U$ and $V$ as elements of $\mathcal L(\mathcal X, \mathcal Y) \cong \widecheck{\mathcal X} \otimes \mathcal Y$ is then the sum of the pointwise $m$-inner products $m(Ue_j, Ve_j)$, evaluated index-by-index. The basis-independence proposition (A.24) says this sum does not depend on which orthonormal frame we picked — a clean way to see why $\widecheck\ell \otimes m$ is intrinsically defined on operators rather than on matrices.</figcaption>
+</figure>
 
 Recall from (A.63) that $\mathcal{L}(\widecheck{\mathcal{X}}, \widecheck{\mathcal{Y}}) = \mathcal{L}(\mathcal{X}, \mathcal{Y})^{\vee}$.
 
@@ -610,6 +644,21 @@ $$
 
 </div>
 
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_22tensor_reshape.png' | relative_url }}" alt="A 4×4 heatmap divided by heavy lines into a 2×2 grid of 2×2 blocks. Each cell shows a numeric value and an index label f^{i₁i₂}_{j₁j₂}. The outer block rows and columns are labelled by i₁ and i₂; the inner cell rows and columns by j₁ and j₂." loading="lazy">
+  <figcaption>The $(2,2)$-tensor $f \in T^{2,2}(E)$ from Example A.10(1) made tangible. With $\dim E = 2$, the coefficients $f^{i_1 i_2}_{j_1 j_2}$ form a $2 \times 2 \times 2 \times 2$ array of $16$ real numbers — too many dimensions to display directly. The trick used in Example A.10(1) is to read the upper indices $(i_1, i_2)$ as the address of an outer $2 \times 2$ <em>block</em>, and the lower indices $(j_1, j_2)$ as the address of a <em>cell</em> within that block. The four coloured outer blocks (separated by the heavy grid lines) are themselves $2 \times 2$ matrices indexed by $(j_1, j_2)$. This nested layout is exactly the matrix-of-matrices arrangement printed in the original definition.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_outer_product_rank1.png' | relative_url }}" alt="Three panels left-to-right. Left: input space E with the covector x̌ drawn as a family of equally-spaced parallel level lines, and an input vector x crossing several of them. Middle: an arrow indicating the scalar value ⟨x̌, x⟩ multiplies the direction y. Right: output space F showing the direction y (faded) and the scaled output ⟨x̌, x⟩ y along the same line. A small heatmap on the far right shows the rank-1 matrix W = y x̌^⊤." loading="lazy">
+  <figcaption>The outer product $\widecheck x \otimes y$ acting on a vector $x \in E$, in three steps. <em>Left:</em> the covector $\widecheck x \in \widecheck E$ is drawn as the family of its level lines $\{x : \langle\widecheck x, x\rangle = c\}$ — equally-spaced parallel lines in $E$, with the dark line being the kernel ($c = 0$). The number $\langle\widecheck x, x\rangle$ counts how many level lines $x$ has crossed past zero. <em>Middle:</em> that scalar then scales the fixed direction $y \in F$ to produce the output $\langle\widecheck x, x\rangle\, y$, always lying along the same ray through $y$. <em>Right:</em> in matrix form (A.53), $W = y\,\widecheck x^\top$ is a rank-$1$ matrix — every column is a scalar multiple of $y$, so the image of $E$ collapses onto the one-dimensional subspace $\mathbb R\cdot y \subset F$.</figcaption>
+</figure>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_transpose_duality.png' | relative_url }}" alt="Two-row layout. Top: side-by-side schematic diagrams. Left shows an arrow E → F labelled x̌ ⊗ y; right shows an arrow F̌ → Ě labelled (x̌ ⊗ y)^v ≅ y ⊗ x̌. Bottom: two heatmaps — left, the 2×3 matrix W = y x̌^⊤; right, the 3×2 transposed matrix W^⊤ = x̌ y^⊤." loading="lazy">
+  <figcaption>The transpose identity $(\widecheck x \otimes y)^\vee \cong y \otimes \widecheck x$ from (A.55)–(A.58). <em>Top:</em> the original map sends $x \in E$ to $\langle\widecheck x, x\rangle\,y \in F$ along the direction $y$; its transpose sends $\widecheck y \in \widecheck F$ to $\langle y, \widecheck y\rangle\,\widecheck x \in \widecheck E$ — the roles of "vector direction" and "covector measurement" swap between the two spaces. <em>Bottom:</em> the same statement at the matrix level — taking the transpose of $W = y\,\widecheck x^\top \in \mathbb R^{m\times n}$ gives $W^\top = \widecheck x\,y^\top \in \mathbb R^{n \times m}$, with rows and columns simply swapped.</figcaption>
+</figure>
+
 We focus on *linear* mappings
 
 $$
@@ -640,6 +689,11 @@ $$
 $$
 
 </div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_isomorphism_currying.png' | relative_url }}" alt="Two side-by-side block diagrams. Left: a single arrow from a large box labelled L(E, F) (containing the element W = x̌ ⊗ y) to a smaller box labelled G, with the arrow labelled 𝒜 and W ↦ 𝒜(W). Right: a chain of three boxes — Ě, then L(F, G), then G — connected by two arrows; the first labelled 𝒜 with x̌ ↦, the second labelled eval_y, and the middle box noting y ↦ 𝒜(x̌)(y)." loading="lazy">
+  <figcaption>Theorem A.11 in pictures: the same operator $\mathcal A$ admits two equivalent readings. <em>Left:</em> as a single map $\mathcal L(E, F) \to G$, eating an entire linear map $W = \widecheck x \otimes y$ and returning an element of $G$. <em>Right:</em> in curried form, $\mathcal A$ is a map $\widecheck E \to \mathcal L(F, G)$: feed it just the covector part $\widecheck x$, get back another linear map $\mathcal A(\widecheck x) : F \to G$, then evaluate that on the vector part $y$. The defining identity $\mathcal A(\widecheck x \otimes y) = \mathcal A(\widecheck x)(y)$ from (A.62) is precisely the assertion that these two readings produce the same answer, so the two function spaces are isomorphic via uncurrying / currying.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">A.12 (Mapping $\mathcal{A} \in \mathcal{L}(\mathcal{L}(E, F), G)$)</span></p>
@@ -706,6 +760,11 @@ This reduces to (A.64) by choosing $G = F' \cong \mathcal{L}(\mathbb{R}, F')$, i
 $$
 (\widecheck{A} \otimes B)(\widecheck{x} \otimes y) = \underbrace{\widecheck{A}\widecheck{x}}_{\in\, \widecheck{E}'} \otimes\, By \in \mathcal{L}(E', F'). \tag{A.70}
 $$
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/geometric_deep_learning_hd/gdl_a_tensor_product_operators.png' | relative_url }}" alt="A four-stage horizontal pipeline: rounded boxes labelled E', E, F, F' connected by arrows labelled A (purple), W (red), and B (purple) in turn. Below, the formula (Ǎ ⊗ B)(W) := BWA ∈ L(E', F') and the action on outer products (Ǎ ⊗ B)(x̌ ⊗ y) = (Ǎx̌) ⊗ (By)." loading="lazy">
+  <figcaption>The tensor product of operators $\widecheck A \otimes B$ from (A.69) as a four-stage pipeline. Given $W \in \mathcal L(E, F)$ — an arbitrary linear map between the "inner" spaces — the operator $\widecheck A \otimes B$ pre-composes with $A$ on the input side and post-composes with $B$ on the output side, producing $BWA \in \mathcal L(E', F')$. The pipeline view makes clear why $\widecheck A \otimes B$ acts on the entire space of operators $\mathcal L(E, F)$ rather than on individual vectors. On rank-$1$ operators it factors as in (A.70): $(\widecheck A \otimes B)(\widecheck x \otimes y) = (\widecheck A\widecheck x) \otimes (By)$, with $A$ pulling back the covector and $B$ pushing forward the vector.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">A.14 (Transposed tensor products of Linear Operators)</span></p>
