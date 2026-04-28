@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "18.102: Introduction to Functional Analysis"
+title: Introduction to Functional Analysis"
 date: 2025-01-01
 excerpt: "Notes on MIT 18.102 by Casey Rodriguez — normed spaces, Banach spaces, bounded operators, and fundamental theorems."
 tags:
@@ -18,13 +18,53 @@ tags:
     border-left: 3px solid var(--accent-strong, #2c3e94);
     border-radius: 0.25rem;
   }
+  .math-figure {
+    margin: 1.4rem auto;
+    text-align: center;
+  }
+  .math-figure svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .math-figure figcaption {
+    font-size: 0.88rem;
+    color: var(--text-muted, #555);
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+  .math-figure-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+  .math-figure-row > div {
+    flex: 1 1 280px;
+    text-align: center;
+  }
+  .math-figure-row .panel-label {
+    font-weight: 600;
+    color: var(--accent-strong, #2c3e94);
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
 </style>
 
-# 18.102: Introduction to Functional Analysis
+# Introduction to Functional Analysis
+
+**Table of Contents**
+- TOC
+{:toc}
 
 ## Introduction
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Infinitely many independent variables)</span></p>
+
 In many math courses — calculus, linear algebra — the methods we learn help us solve **equations with finitely many variables**. We might want to find the minimum of a function whose inputs are in $\mathbb{R}^n$, or solve a system of linear equations. But when we encounter ODEs, PDEs, minimization, and other problems where the set of independent variables is no longer finite-dimensional, we need new tools.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Shortest Curve)</span></p>
@@ -76,7 +116,7 @@ The set $E = \lbrace f_n(x) = x^n : n \in \mathbb{Z}_{\ge 0} \rbrace$ is linearl
 Facts like the Heine–Borel theorem for $\mathbb{R}^n$ become false in infinite-dimensional spaces, so we need to develop more machinery. In analysis, we need a notion of "how close things are." In metric spaces we use metrics; here we define a distance on our vector spaces via norms.
 
 <div class="math-callout math-callout--definition" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Norm)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Norm, Seminorm, Normed Space)</span></p>
 
 A **norm** on a vector space $V$ is a function $\lVert \cdot \rVert : V \to [0, \infty)$ satisfying:
 
@@ -129,6 +169,41 @@ $$\lVert x \rVert_p = \left( \sum_{i=1}^{n} \lvert x_i \rvert^p \right)^{1/p}.$$
 The "unit balls" $B(0, 1)$ under these norms have different shapes in $\mathbb{R}^2$: a circle for $\lVert \cdot \rVert_2$, a square (rotated 45°) for $\lVert \cdot \rVert_1$, and a square (axis-aligned) for $\lVert \cdot \rVert_\infty$. In general, a large enough $\ell^1$ ball always swallows an $\ell^\infty$ ball of any fixed size, meaning the norms are essentially equivalent — a fact we will prove later.
 
 </div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" width="340" aria-label="Unit balls of l1, l2, and l-infinity norms in R^2">
+    <g stroke="#e8e8e8" stroke-width="0.5" fill="none">
+      <line x1="60"  y1="20"  x2="60"  y2="300" />
+      <line x1="110" y1="20"  x2="110" y2="300" />
+      <line x1="210" y1="20"  x2="210" y2="300" />
+      <line x1="260" y1="20"  x2="260" y2="300" />
+      <line x1="20"  y1="60"  x2="300" y2="60" />
+      <line x1="20"  y1="110" x2="300" y2="110" />
+      <line x1="20"  y1="210" x2="300" y2="210" />
+      <line x1="20"  y1="260" x2="300" y2="260" />
+    </g>
+    <g stroke="#444" stroke-width="1.2" fill="none">
+      <line x1="20"  y1="160" x2="300" y2="160" />
+      <line x1="160" y1="20"  x2="160" y2="300" />
+    </g>
+    <polygon points="300,160 292,156 292,164" fill="#444" />
+    <polygon points="160,20 156,28 164,28" fill="#444" />
+    <rect x="60" y="60" width="200" height="200" fill="rgba(214,83,54,0.07)" stroke="#d65336" stroke-width="2" />
+    <circle cx="160" cy="160" r="100" fill="rgba(44,73,148,0.10)" stroke="#2c4994" stroke-width="2" />
+    <polygon points="160,60 260,160 160,260 60,160" fill="rgba(60,120,40,0.10)" stroke="#3d7a26" stroke-width="2" />
+    <circle cx="160" cy="160" r="2.5" fill="#222" />
+    <text x="305" y="156" font-size="12" fill="#444">x₁</text>
+    <text x="166" y="22"  font-size="12" fill="#444">x₂</text>
+    <text x="262" y="155" font-size="11" fill="#666">1</text>
+    <text x="148" y="60"  font-size="11" fill="#666">1</text>
+    <text x="46"  y="155" font-size="11" fill="#666">−1</text>
+    <text x="148" y="278" font-size="11" fill="#666">−1</text>
+    <text x="178" y="78"  font-size="13" font-weight="600" fill="#3d7a26">‖·‖₁</text>
+    <text x="232" y="100" font-size="13" font-weight="600" fill="#2c4994">‖·‖₂</text>
+    <text x="262" y="55"  font-size="13" font-weight="600" fill="#d65336">‖·‖∞</text>
+  </svg>
+  <figcaption>Unit balls $B(0,1)$ in $\mathbb{R}^2$ for the three canonical norms. As $p$ grows, the ball "puffs out" from the diamond ($p=1$) through the circle ($p=2$) toward the square ($p=\infty$), with each one inscribed in or circumscribing the next.</figcaption>
+</figure>
 
 ### Norms on Function Spaces
 
@@ -808,6 +883,48 @@ We always have $m^*(A) \ge 0$.
 
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" width="500" aria-label="Outer measure: covering a set A by open intervals">
+    <line x1="20" y1="100" x2="460" y2="100" stroke="#444" stroke-width="1.2" />
+    <polygon points="460,100 452,96 452,104" fill="#444" />
+    <text x="450" y="120" font-size="11" fill="#666">ℝ</text>
+    <g fill="#2c4994">
+      <circle cx="80"  cy="100" r="3" />
+      <circle cx="110" cy="100" r="3" />
+      <circle cx="155" cy="100" r="3" />
+      <circle cx="175" cy="100" r="3" />
+      <circle cx="225" cy="100" r="3" />
+      <circle cx="280" cy="100" r="3" />
+      <circle cx="305" cy="100" r="3" />
+      <circle cx="345" cy="100" r="3" />
+      <circle cx="395" cy="100" r="3" />
+    </g>
+    <text x="232" y="135" font-size="13" font-weight="600" fill="#2c4994">A ⊂ ℝ</text>
+    <g stroke="#d65336" stroke-width="2" fill="rgba(214,83,54,0.10)">
+      <rect x="65"  y="60" width="60"  height="20" rx="10" />
+      <rect x="140" y="60" width="55"  height="20" rx="10" />
+      <rect x="205" y="60" width="40"  height="20" rx="10" />
+      <rect x="265" y="60" width="55"  height="20" rx="10" />
+      <rect x="325" y="60" width="40"  height="20" rx="10" />
+      <rect x="380" y="60" width="35"  height="20" rx="10" />
+    </g>
+    <text x="83"  y="55" font-size="11" fill="#d65336">I₁</text>
+    <text x="158" y="55" font-size="11" fill="#d65336">I₂</text>
+    <text x="218" y="55" font-size="11" fill="#d65336">I₃</text>
+    <text x="283" y="55" font-size="11" fill="#d65336">I₄</text>
+    <text x="338" y="55" font-size="11" fill="#d65336">I₅</text>
+    <text x="390" y="55" font-size="11" fill="#d65336">I₆</text>
+    <g stroke="#444" stroke-width="0.8">
+      <line x1="65"  y1="95" x2="65"  y2="105" />
+      <line x1="125" y1="95" x2="125" y2="105" />
+      <line x1="140" y1="95" x2="140" y2="105" />
+      <line x1="195" y1="95" x2="195" y2="105" />
+    </g>
+    <text x="20" y="35" font-size="11" fill="#666" font-style="italic">m*(A) = inf Σ ℓ(Iₙ) over all such coverings</text>
+  </svg>
+  <figcaption>Outer measure approximates a set $A$ from above: any countable collection of open intervals covering $A$ gives an upper bound on $m^*(A)$ via the sum of their lengths. We then take the infimum over all such coverings, allowing intervals to overlap, repeat, or shrink onto isolated points.</figcaption>
+</figure>
+
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Outer Measure of a Point)</span></p>
 
@@ -877,7 +994,9 @@ If $I$ is an interval of $\mathbb{R}$, then $m^*(I) = \ell(I)$.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Approximation by Open Sets)</span></p>
 
-For every subset $A \subset \mathbb{R}$ and $\varepsilon > 0$, there exists an open set $O$ such that $A \subset O$ and $m^\ast(A) \le m^\ast(O) \le m^\ast(A) + \varepsilon$.
+For every subset $A \subset \mathbb{R}$ and $\varepsilon > 0$, there exists an open set $O$ such that $A \subset O$ and 
+
+$$m^\ast(A) \le m^\ast(O) \le m^\ast(A) + \varepsilon$$
 
 </div>
 
@@ -1021,6 +1140,86 @@ The collection $\mathcal{M}$ of Lebesgue measurable sets is a $\sigma$-algebra.
 ## Measurable Functions
 
 The motivation for defining Lebesgue measurable sets is to build towards a theory of integration that surpasses Riemann integration. While Riemann integration chops up the **domain** into intervals, Lebesgue's theory chops up the **range** — looking at the piece of $f$ between two values $y_i$ and $y_{i+1}$, finding the corresponding $x$-values where $f$ intersects those $y$-values, and measuring that set. This is why we care about preimages of closed intervals being measurable.
+
+<figure class="math-figure">
+  <div class="math-figure-row">
+    <div>
+      <div class="panel-label">Riemann: partition the domain</div>
+      <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg" width="280" aria-label="Riemann partition of the domain">
+        <g stroke="#444" stroke-width="1.2" fill="none">
+          <line x1="30" y1="180" x2="240" y2="180" />
+          <line x1="30" y1="20"  x2="30"  y2="190" />
+        </g>
+        <polygon points="240,180 232,176 232,184" fill="#444" />
+        <polygon points="30,20 26,28 34,28" fill="#444" />
+        <text x="244" y="184" font-size="11" fill="#666">x</text>
+        <text x="20"  y="22"  font-size="11" fill="#666">y</text>
+        <g fill="rgba(44,73,148,0.18)" stroke="#2c4994" stroke-width="1">
+          <rect x="30"  y="138" width="30" height="42" />
+          <rect x="60"  y="106" width="30" height="74" />
+          <rect x="90"  y="80"  width="30" height="100" />
+          <rect x="120" y="76"  width="30" height="104" />
+          <rect x="150" y="92"  width="30" height="88" />
+          <rect x="180" y="118" width="30" height="62" />
+          <rect x="210" y="155" width="30" height="25" />
+        </g>
+        <path d="M 30,150 Q 75,80 135,72 T 240,170" stroke="#222" stroke-width="2" fill="none" />
+        <g stroke="#444" stroke-width="0.8" stroke-dasharray="2,2">
+          <line x1="60"  y1="180" x2="60"  y2="190" />
+          <line x1="90"  y1="180" x2="90"  y2="190" />
+          <line x1="120" y1="180" x2="120" y2="190" />
+          <line x1="150" y1="180" x2="150" y2="190" />
+          <line x1="180" y1="180" x2="180" y2="190" />
+          <line x1="210" y1="180" x2="210" y2="190" />
+        </g>
+        <text x="40"  y="200" font-size="9" fill="#666">x₀</text>
+        <text x="70"  y="200" font-size="9" fill="#666">x₁</text>
+        <text x="100" y="200" font-size="9" fill="#666">x₂</text>
+        <text x="130" y="200" font-size="9" fill="#666">x₃</text>
+        <text x="160" y="200" font-size="9" fill="#666">x₄</text>
+        <text x="190" y="200" font-size="9" fill="#666">x₅</text>
+        <text x="220" y="200" font-size="9" fill="#666">x₆</text>
+      </svg>
+    </div>
+    <div>
+      <div class="panel-label">Lebesgue: partition the range</div>
+      <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg" width="280" aria-label="Lebesgue partition of the range">
+        <g stroke="#444" stroke-width="1.2" fill="none">
+          <line x1="30" y1="180" x2="240" y2="180" />
+          <line x1="30" y1="20"  x2="30"  y2="190" />
+        </g>
+        <polygon points="240,180 232,176 232,184" fill="#444" />
+        <polygon points="30,20 26,28 34,28" fill="#444" />
+        <text x="244" y="184" font-size="11" fill="#666">x</text>
+        <text x="20"  y="22"  font-size="11" fill="#666">y</text>
+        <g fill="rgba(214,83,54,0.18)" stroke="#d65336" stroke-width="1">
+          <rect x="30"  y="160" width="210" height="20" />
+          <rect x="30"  y="140" width="210" height="20" />
+          <rect x="34"  y="120" width="200" height="20" />
+          <rect x="42"  y="100" width="184" height="20" />
+          <rect x="58"  y="80"  width="140" height="20" />
+          <rect x="86"  y="68"  width="74"  height="12" />
+        </g>
+        <path d="M 30,150 Q 75,80 135,72 T 240,170" stroke="#222" stroke-width="2" fill="none" />
+        <g stroke="#444" stroke-width="0.8" stroke-dasharray="2,2">
+          <line x1="20" y1="160" x2="30" y2="160" />
+          <line x1="20" y1="140" x2="30" y2="140" />
+          <line x1="20" y1="120" x2="30" y2="120" />
+          <line x1="20" y1="100" x2="30" y2="100" />
+          <line x1="20" y1="80"  x2="30" y2="80" />
+          <line x1="20" y1="68"  x2="30" y2="68" />
+        </g>
+        <text x="6" y="163" font-size="9" fill="#666">y₁</text>
+        <text x="6" y="143" font-size="9" fill="#666">y₂</text>
+        <text x="6" y="123" font-size="9" fill="#666">y₃</text>
+        <text x="6" y="103" font-size="9" fill="#666">y₄</text>
+        <text x="6" y="83"  font-size="9" fill="#666">y₅</text>
+        <text x="6" y="71"  font-size="9" fill="#666">y₆</text>
+      </svg>
+    </div>
+  </div>
+  <figcaption>Two strategies for the same area. Riemann sums approximate $\int f$ by $\sum f(\xi_j)\Delta x_j$ over a domain partition — fragile when $f$ wiggles wildly within a strip. Lebesgue sums use a range partition $\sum y_i \cdot m(f^{-1}([y_{i-1}, y_i]))$ — robust because measurability of preimages, not regularity of $f$, is what matters.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name"></span></p>
@@ -1223,6 +1422,80 @@ If $f : E \to [0, \infty]$ is a nonnegative measurable function, then there exis
 * (c) For all $B \ge 0$, $\phi_n \to f$ converges uniformly on $\lbrace x \in E : f(x) \le B \rbrace$.
 
 </div>
+
+<figure class="math-figure">
+  <div class="math-figure-row">
+    <div>
+      <div class="panel-label">Resolution n = 1 (step 2⁻¹)</div>
+      <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" width="280" aria-label="Dyadic simple approximation, coarse">
+        <g stroke="#e8e8e8" stroke-width="0.7" stroke-dasharray="3,3">
+          <line x1="30" y1="145" x2="230" y2="145" />
+          <line x1="30" y1="120" x2="230" y2="120" />
+          <line x1="30" y1="95"  x2="230" y2="95" />
+          <line x1="30" y1="70"  x2="230" y2="70" />
+          <line x1="30" y1="45"  x2="230" y2="45" />
+        </g>
+        <g stroke="#444" stroke-width="1.2" fill="none">
+          <line x1="30" y1="170" x2="230" y2="170" />
+          <line x1="30" y1="30"  x2="30"  y2="178" />
+        </g>
+        <polygon points="230,170 222,166 222,174" fill="#444" />
+        <polygon points="30,30 26,38 34,38" fill="#444" />
+        <text x="234" y="174" font-size="10" fill="#666">x</text>
+        <text x="20"  y="32"  font-size="10" fill="#666">y</text>
+        <text x="14" y="148" font-size="9" fill="#888">½</text>
+        <text x="14" y="123" font-size="9" fill="#888">1</text>
+        <text x="11" y="98"  font-size="9" fill="#888">3⁄2</text>
+        <text x="14" y="73"  font-size="9" fill="#888">2</text>
+        <path d="M 30,170 L 57.5,170 L 57.5,145 L 79.5,145 L 79.5,120 L 101.5,120 L 101.5,95 L 158.5,95 L 158.5,70 L 180.5,70 L 180.5,95 L 202.5,95 L 202.5,120 L 230,120 L 230,170 Z"
+              fill="rgba(214,83,54,0.15)" stroke="none" />
+        <path d="M 30,145 L 57.5,145 L 57.5,120 L 79.5,120 L 79.5,95 L 101.5,95 L 101.5,70 L 158.5,70 L 158.5,95 L 180.5,95 L 180.5,120 L 202.5,120 L 202.5,145 L 230,145"
+              stroke="#d65336" stroke-width="2" fill="none" />
+        <path d="M 30,142 C 55,124 80,95 105,67 C 117,57 143,57 155,67 C 180,95 205,124 230,142"
+              stroke="#2c4994" stroke-width="2" fill="none" />
+        <text x="180" y="42" font-size="11" fill="#2c4994" font-weight="600">f</text>
+        <text x="38"  y="160" font-size="10" fill="#d65336" font-weight="600">φ₁</text>
+      </svg>
+    </div>
+    <div>
+      <div class="panel-label">Resolution n = 2 (step 2⁻²)</div>
+      <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" width="280" aria-label="Dyadic simple approximation, fine">
+        <g stroke="#e8e8e8" stroke-width="0.7" stroke-dasharray="3,3">
+          <line x1="30" y1="157.5" x2="230" y2="157.5" />
+          <line x1="30" y1="145"   x2="230" y2="145" />
+          <line x1="30" y1="132.5" x2="230" y2="132.5" />
+          <line x1="30" y1="120"   x2="230" y2="120" />
+          <line x1="30" y1="107.5" x2="230" y2="107.5" />
+          <line x1="30" y1="95"    x2="230" y2="95" />
+          <line x1="30" y1="82.5"  x2="230" y2="82.5" />
+          <line x1="30" y1="70"    x2="230" y2="70" />
+          <line x1="30" y1="57.5"  x2="230" y2="57.5" />
+        </g>
+        <g stroke="#444" stroke-width="1.2" fill="none">
+          <line x1="30" y1="170" x2="230" y2="170" />
+          <line x1="30" y1="30"  x2="30"  y2="178" />
+        </g>
+        <polygon points="230,170 222,166 222,174" fill="#444" />
+        <polygon points="30,30 26,38 34,38" fill="#444" />
+        <text x="234" y="174" font-size="10" fill="#666">x</text>
+        <text x="20"  y="32"  font-size="10" fill="#666">y</text>
+        <text x="14" y="148" font-size="9" fill="#888">½</text>
+        <text x="14" y="123" font-size="9" fill="#888">1</text>
+        <text x="11" y="98"  font-size="9" fill="#888">3⁄2</text>
+        <text x="14" y="73"  font-size="9" fill="#888">2</text>
+        <path d="M 30,170 L 50,170 L 50,132.5 L 60,132.5 L 60,120 L 70,120 L 70,107.5 L 80,107.5 L 80,95 L 90,95 L 90,82.5 L 110,82.5 L 110,70 L 120,70 L 120,57.5 L 150,57.5 L 150,70 L 160,70 L 160,82.5 L 180,82.5 L 180,95 L 190,95 L 190,107.5 L 200,107.5 L 200,120 L 210,120 L 210,132.5 L 230,132.5 L 230,170 Z"
+              fill="rgba(214,83,54,0.15)" stroke="none" />
+        <path d="M 30,145 L 50,145 L 50,132.5 L 60,132.5 L 60,120 L 70,120 L 70,107.5 L 80,107.5 L 80,95 L 90,95 L 90,82.5 L 110,82.5 L 110,70 L 120,70 L 120,57.5 L 150,57.5 L 150,70 L 160,70 L 160,82.5 L 180,82.5 L 180,95 L 190,95 L 190,107.5 L 200,107.5 L 200,120 L 210,120 L 210,132.5 L 220,132.5 L 220,145 L 230,145"
+              stroke="#d65336" stroke-width="2" fill="none" />
+        <path d="M 30,142 C 55,124 80,95 105,67 C 117,57 143,57 155,67 C 180,95 205,124 230,142"
+              stroke="#2c4994" stroke-width="2" fill="none" />
+        <text x="180" y="42" font-size="11" fill="#2c4994" font-weight="600">f</text>
+        <text x="38"  y="160" font-size="10" fill="#d65336" font-weight="600">φ₂</text>
+      </svg>
+    </div>
+  </div>
+  <figcaption>Each $\phi_n$ slices the range into bands of height $2^{-n}$ and assigns the lower edge of whichever band $f(x)$ falls into. Refining $n \mapsto n+1$ subdivides every band in two, so $\phi_n \le \phi_{n+1} \le f$ pointwise; on $\{f \le B\}$ the gap $f - \phi_n \le 2^{-n}$ shrinks uniformly. The shaded region is the area under $\phi_n$, which converges to $\int f$ by monotone convergence.</figcaption>
+</figure>
 
 <div class="accordion">
   <details>
@@ -1810,6 +2083,33 @@ In addition, if $H$ is a normed vector space satisfying this equality, then $H$ 
 
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" width="380" aria-label="Parallelogram law: sum of squared diagonals equals twice sum of squared sides">
+    <g stroke="#444" stroke-width="0.8" fill="none">
+      <line x1="20"  y1="200" x2="340" y2="200" />
+      <line x1="60"  y1="20"  x2="60"  y2="220" />
+    </g>
+    <polygon points="60,200 230,200 290,90 120,90" fill="rgba(44,73,148,0.08)" stroke="#2c4994" stroke-width="1.5" />
+    <line x1="60"  y1="200" x2="120" y2="90"  stroke="#2c4994" stroke-width="2.2" />
+    <line x1="60"  y1="200" x2="230" y2="200" stroke="#3d7a26" stroke-width="2.2" />
+    <line x1="60"  y1="200" x2="290" y2="90"  stroke="#a23ec3" stroke-width="2.2" stroke-dasharray="5,3" />
+    <line x1="120" y1="90"  x2="230" y2="200" stroke="#d65336" stroke-width="2.2" stroke-dasharray="5,3" />
+    <g fill="#222">
+      <circle cx="60"  cy="200" r="3" />
+      <circle cx="120" cy="90"  r="3" />
+      <circle cx="230" cy="200" r="3" />
+      <circle cx="290" cy="90"  r="3" />
+    </g>
+    <text x="46"  y="216" font-size="12" fill="#222">0</text>
+    <text x="108" y="80"  font-size="13" font-weight="600" fill="#2c4994">u</text>
+    <text x="234" y="216" font-size="13" font-weight="600" fill="#3d7a26">v</text>
+    <text x="295" y="84"  font-size="13" font-weight="600" fill="#a23ec3">u + v</text>
+    <text x="160" y="142" font-size="13" font-weight="600" fill="#d65336">u − v</text>
+    <text x="20"  y="40" font-size="12" fill="#444" font-style="italic">‖u+v‖² + ‖u−v‖² = 2(‖u‖² + ‖v‖²)</text>
+  </svg>
+  <figcaption>The two diagonals (purple, orange) of the parallelogram spanned by $u$ and $v$ are $u+v$ and $u-v$. Their squared lengths sum to twice the sum of squared sides — a Euclidean fact that, remarkably, characterizes inner-product spaces among all normed spaces. Whenever this identity fails, no inner product can induce the norm.</figcaption>
+</figure>
+
 One can verify by computation that there are always $u, v$ making this inequality fail if $p \ne 2$ for the $\ell^p$ and $L^p$ spaces.
 
 ### Orthogonality and Orthonormal Sets
@@ -2097,6 +2397,58 @@ The function $K_N(x)$ is called the **Fejér kernel**. It has the following prop
 
 The Fejér kernel grows more and more concentrated at the origin as $N \to \infty$, but the area under the curve is always $1$ (like the Dirac delta function). The key difference from the Dirichlet kernel is that the Fejér kernel is **nonnegative**.
 
+<figure class="math-figure">
+  <div class="math-figure-row">
+    <div>
+      <div class="panel-label">Dirichlet kernel D₅</div>
+      <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="340" aria-label="Dirichlet kernel D_5 over [-pi, pi]">
+        <g stroke="#e8e8e8" stroke-width="0.5">
+          <line x1="3"   y1="80"  x2="317" y2="80" />
+          <line x1="3"   y1="105" x2="317" y2="105" />
+          <line x1="3"   y1="155" x2="317" y2="155" />
+        </g>
+        <line x1="3"   y1="130" x2="317" y2="130" stroke="#444" stroke-width="1" />
+        <line x1="160" y1="20"  x2="160" y2="180" stroke="#444" stroke-width="1" />
+        <polygon points="317,130 311,127 311,133" fill="#444" />
+        <polygon points="160,20 157,26 163,26" fill="#444" />
+        <polyline points="3,138 17,130 32,122 46,130 60,139 74,130 89,118 103,130 117,149 131,130 146,74 160,42 174,74 189,130 203,149 217,130 231,118 246,130 260,139 274,130 288,122 303,130 317,138"
+                  stroke="#2c4994" stroke-width="2" fill="none" />
+        <g fill="#666" font-size="10">
+          <text x="0"   y="194">−π</text>
+          <text x="153" y="194">0</text>
+          <text x="313" y="194">π</text>
+          <text x="166" y="46">2N+1⁄2π</text>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div class="panel-label">Fejér kernel K₅</div>
+      <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" width="340" aria-label="Fejér kernel K_5 over [-pi, pi]">
+        <g stroke="#e8e8e8" stroke-width="0.5">
+          <line x1="3"   y1="105" x2="317" y2="105" />
+          <line x1="3"   y1="80"  x2="317" y2="80" />
+          <line x1="3"   y1="55"  x2="317" y2="55" />
+        </g>
+        <line x1="3"   y1="170" x2="317" y2="170" stroke="#444" stroke-width="1" />
+        <line x1="160" y1="20"  x2="160" y2="180" stroke="#444" stroke-width="1" />
+        <polygon points="317,170 311,167 311,173" fill="#444" />
+        <polygon points="160,20 157,26 163,26" fill="#444" />
+        <polygon points="3,170 16,169 29,166 42,168 55,170 68,167 81,163 95,167 108,170 121,158 134,119 147,70 160,46 173,70 186,119 199,158 212,170 225,167 238,163 251,167 265,170 278,168 291,166 304,169 317,170 317,170 3,170"
+                 fill="rgba(60,120,40,0.10)" stroke="none" />
+        <polyline points="3,170 16,169 29,166 42,168 55,170 68,167 81,163 95,167 108,170 121,158 134,119 147,70 160,46 173,70 186,119 199,158 212,170 225,167 238,163 251,167 265,170 278,168 291,166 304,169 317,170"
+                  stroke="#3d7a26" stroke-width="2" fill="none" />
+        <g fill="#666" font-size="10">
+          <text x="0"   y="194">−π</text>
+          <text x="153" y="194">0</text>
+          <text x="313" y="194">π</text>
+          <text x="166" y="50">N+1⁄2π</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <figcaption>Both kernels deliver $\sigma_N f$ or $S_N f$ as a convolution against $f$, but with very different behavior. $D_N$ oscillates with sign changes and tail $L^1$-norm $\sim \log N$, so it is <em>not</em> an approximate identity; $K_N$ is nonnegative, integrates to $1$, and concentrates at the origin — exactly the conditions needed for $\sigma_N f \to f$ uniformly on continuous periodic data (Fejér's theorem).</figcaption>
+</figure>
+
 ### Fejér's Theorem
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -2183,6 +2535,30 @@ The condition that $C$ is closed is required: for example, we can let $C$ be an 
 
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg" width="380" aria-label="Length minimizer in a closed convex set">
+    <g stroke="#888" stroke-width="0.6" fill="none">
+      <circle cx="100" cy="160" r="40" stroke-dasharray="3,3" />
+      <circle cx="100" cy="160" r="80" stroke-dasharray="3,3" />
+      <circle cx="100" cy="160" r="120" stroke-dasharray="3,3" />
+    </g>
+    <path d="M 220,40 Q 290,60 305,140 Q 295,210 215,220 Q 165,210 175,150 Q 188,55 220,40 Z"
+          fill="rgba(44,73,148,0.10)" stroke="#2c4994" stroke-width="2" />
+    <text x="240" y="118" font-size="14" font-weight="600" fill="#2c4994">C</text>
+    <line x1="100" y1="160" x2="180" y2="143" stroke="#d65336" stroke-width="2.5" />
+    <circle cx="100" cy="160" r="3" fill="#222" />
+    <circle cx="180" cy="143" r="4" fill="#d65336" stroke="#fff" stroke-width="1" />
+    <text x="80"  y="178" font-size="12" fill="#222">0</text>
+    <text x="187" y="135" font-size="13" font-weight="600" fill="#d65336">v</text>
+    <text x="118" y="148" font-size="11" fill="#666" font-style="italic">d</text>
+    <g stroke="#3d7a26" stroke-width="1.6" fill="none" stroke-dasharray="2,3">
+      <line x1="200" y1="80" x2="260" y2="200" />
+    </g>
+    <text x="208" y="78" font-size="11" fill="#3d7a26" font-style="italic">tu₁ + (1−t)u₂ ∈ C</text>
+  </svg>
+  <figcaption>The closed convex set $C$ is "approached" from outside by expanding norm balls; the smallest one that touches $C$ does so at exactly one point $v$. Convexity is what makes the minimizer unique: the parallelogram law together with the midpoint $(u_1+u_2)/2 \in C$ forces $u_1 = u_2$ whenever both achieve the infimum.</figcaption>
+</figure>
+
 <div class="accordion">
   <details>
     <summary>proof</summary>
@@ -2204,6 +2580,31 @@ $$W^\perp = \lbrace u \in H : \langle u, w \rangle = 0 \quad \forall w \in W \rb
 is a closed linear subspace of $H$. Furthermore, if $W$ is closed, then $H = W \oplus W^\perp$; in other words, for all $u \in H$, we can write $u = w + w^\perp$ for some unique $w \in W$ and $w^\perp \in W^\perp$.
 
 </div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" width="400" aria-label="Orthogonal decomposition u = w + w_perp">
+    <polygon points="40,180 340,140 340,200 40,240" fill="rgba(44,73,148,0.10)" stroke="#2c4994" stroke-width="1.5" />
+    <text x="280" y="220" font-size="14" font-weight="600" fill="#2c4994">W</text>
+    <text x="56"  y="195" font-size="11" fill="#666" font-style="italic">closed subspace</text>
+    <line x1="160" y1="190" x2="270" y2="60" stroke="#a23ec3" stroke-width="2.5" />
+    <line x1="160" y1="190" x2="240" y2="174" stroke="#3d7a26" stroke-width="2.5" />
+    <line x1="240" y1="174" x2="270" y2="60"  stroke="#d65336" stroke-width="2.5" />
+    <line x1="237" y1="170" x2="225" y2="155" stroke="#666" stroke-width="0.8" />
+    <line x1="225" y1="155" x2="244" y2="150" stroke="#666" stroke-width="0.8" />
+    <g fill="#222">
+      <circle cx="160" cy="190" r="3" />
+      <circle cx="240" cy="174" r="3" />
+      <circle cx="270" cy="60"  r="3" />
+    </g>
+    <text x="142" y="208" font-size="12" fill="#222">0</text>
+    <text x="275" y="56"  font-size="14" font-weight="600" fill="#a23ec3">u</text>
+    <text x="208" y="195" font-size="13" font-weight="600" fill="#3d7a26">w = Π_W u</text>
+    <text x="266" y="118" font-size="13" font-weight="600" fill="#d65336">w⊥</text>
+    <text x="36"  y="34"  font-size="11" fill="#444" font-style="italic">u = w + w⊥,    ⟨w, w⊥⟩ = 0</text>
+    <text x="36"  y="50"  font-size="11" fill="#444" font-style="italic">‖u‖² = ‖w‖² + ‖w⊥‖²</text>
+  </svg>
+  <figcaption>Every $u \in H$ splits uniquely into a part along the closed subspace $W$ and a part perpendicular to it. The decomposition is realized by the length minimizer in the affine set $u + W$, and the variational condition $\frac{d}{dt}\|v + tw\|^2 \big|_{t=0} = 0$ is exactly what makes $w^\perp \perp W$. The Pythagorean identity $\|u\|^2 = \|w\|^2 + \|w^\perp\|^2$ follows immediately.</figcaption>
+</figure>
 
 <div class="accordion">
   <details>
@@ -2611,7 +3012,7 @@ Let $A \in \mathcal{B}(H)$ be a bounded linear operator. The **resolvent set** o
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 215</span></p>
 
-Let $A : \mathbb{C}^2 \to \mathbb{C}^2$ be the matrix $\begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{bmatrix}$. Then $A - \lambda$ is not invertible exactly when $\lambda = \lambda_1$ or $\lambda = \lambda_2$, so $\operatorname{Spec}(A) = \lbrace \lambda_1, \lambda_2 \rbrace$.
+Let $A : \mathbb{C}^2 \to \mathbb{C}^2$ be the matrix $\begin{bmatrix} \lambda_1 & 0 \\\ 0 & \lambda_2 \end{bmatrix}$. Then $A - \lambda$ is not invertible exactly when $\lambda = \lambda_1$ or $\lambda = \lambda_2$, so $\operatorname{Spec}(A) = \lbrace \lambda_1, \lambda_2 \rbrace$.
 
 </div>
 
@@ -2723,6 +3124,45 @@ If $A = A^* \in \mathcal{B}(H)$ is a self-adjoint bounded linear operator, and w
 
 </div>
 
+<figure class="math-figure">
+  <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" width="480" aria-label="Spectrum of a self-adjoint operator on the complex plane">
+    <g stroke="#bbb" stroke-width="0.5" fill="none">
+      <circle cx="230" cy="110" r="150" stroke-dasharray="4,4" />
+    </g>
+    <text x="380" y="40" font-size="11" fill="#888" font-style="italic">‖A‖-disk in ℂ</text>
+    <line x1="40"  y1="110" x2="420" y2="110" stroke="#444" stroke-width="1.2" />
+    <line x1="230" y1="20"  x2="230" y2="200" stroke="#444" stroke-width="1.2" />
+    <polygon points="420,110 412,106 412,114" fill="#444" />
+    <polygon points="230,20 226,28 234,28" fill="#444" />
+    <text x="425" y="114" font-size="11" fill="#666">Re λ</text>
+    <text x="236" y="20"  font-size="11" fill="#666">Im λ</text>
+    <line x1="80" y1="105" x2="80" y2="115" stroke="#444" stroke-width="1.2" />
+    <line x1="380" y1="105" x2="380" y2="115" stroke="#444" stroke-width="1.2" />
+    <text x="56"  y="135" font-size="11" fill="#666">−‖A‖</text>
+    <text x="370" y="135" font-size="11" fill="#666">‖A‖</text>
+    <line x1="125" y1="108" x2="320" y2="108" stroke="#2c4994" stroke-width="6" stroke-linecap="round" opacity="0.35" />
+    <line x1="125" y1="110" x2="320" y2="110" stroke="#2c4994" stroke-width="3" stroke-linecap="round" />
+    <g fill="#d65336">
+      <circle cx="125" cy="110" r="4" />
+      <circle cx="320" cy="110" r="4" />
+    </g>
+    <g fill="#2c4994">
+      <circle cx="160" cy="110" r="3.5" />
+      <circle cx="200" cy="110" r="3.5" />
+      <circle cx="248" cy="110" r="3.5" />
+      <circle cx="285" cy="110" r="3.5" />
+    </g>
+    <text x="100" y="100" font-size="12" fill="#d65336" font-weight="600">a₋</text>
+    <text x="320" y="100" font-size="12" fill="#d65336" font-weight="600">a₊</text>
+    <text x="160" y="146" font-size="11" fill="#2c4994">λ₁</text>
+    <text x="200" y="146" font-size="11" fill="#2c4994">λ₂</text>
+    <text x="248" y="146" font-size="11" fill="#2c4994">λ₃</text>
+    <text x="285" y="146" font-size="11" fill="#2c4994">λ₄</text>
+    <text x="40" y="180" font-size="11" fill="#444" font-style="italic">a₋ = inf ⟨Au,u⟩,    a₊ = sup ⟨Au,u⟩,    Spec(A) ⊂ [a₋, a₊] ⊂ ℝ</text>
+  </svg>
+  <figcaption>For a self-adjoint operator the entire spectrum collapses onto the real axis (the imaginary part of $\langle (A-it)u, u\rangle$ is $-t\|u\|^2$, blocking complex eigenvalues), and is further pinched into the numerical range $[a_-, a_+]$. Both endpoints are themselves spectral — they are realized by sequences of unit vectors driving $\langle Au,u\rangle$ to the supremum or infimum.</figcaption>
+</figure>
+
 <div class="accordion">
   <details>
     <summary>proof</summary>
@@ -2759,6 +3199,43 @@ Suppose $A^* = A \in \mathcal{B}(H)$ is a compact self-adjoint operator. Then we
 3. The set of nonzero eigenvalues of $A$ is either finite or countably infinite, and if it is countably infinite and given by a sequence $\lbrace \lambda_n \rbrace_n$, then $\lvert \lambda_n \rvert \to 0$.
 
 </div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg" width="500" aria-label="Eigenvalues of a compact self-adjoint operator accumulating at 0">
+    <line x1="20"  y1="100" x2="460" y2="100" stroke="#444" stroke-width="1.2" />
+    <polygon points="460,100 452,96 452,104" fill="#444" />
+    <text x="450" y="120" font-size="11" fill="#666">ℝ</text>
+    <line x1="240" y1="92" x2="240" y2="108" stroke="#444" stroke-width="1.2" />
+    <text x="234" y="125" font-size="11" fill="#222">0</text>
+    <g fill="#2c4994">
+      <circle cx="80"  cy="100" r="10" />
+      <circle cx="135" cy="100" r="7.5" />
+      <circle cx="178" cy="100" r="5.6" />
+      <circle cx="208" cy="100" r="4.2" />
+      <circle cx="225" cy="100" r="3.1" />
+      <circle cx="234" cy="100" r="2.3" />
+    </g>
+    <g fill="#d65336">
+      <circle cx="400" cy="100" r="10" />
+      <circle cx="345" cy="100" r="7.5" />
+      <circle cx="302" cy="100" r="5.6" />
+      <circle cx="272" cy="100" r="4.2" />
+      <circle cx="255" cy="100" r="3.1" />
+      <circle cx="246" cy="100" r="2.3" />
+    </g>
+    <text x="68"  y="86"  font-size="11" fill="#2c4994">λ₁</text>
+    <text x="123" y="86"  font-size="11" fill="#2c4994">λ₂</text>
+    <text x="167" y="86"  font-size="10" fill="#2c4994">λ₃</text>
+    <text x="396" y="86"  font-size="11" fill="#d65336">μ₁</text>
+    <text x="338" y="86"  font-size="11" fill="#d65336">μ₂</text>
+    <text x="294" y="86"  font-size="10" fill="#d65336">μ₃</text>
+    <line x1="60"  y1="138" x2="240" y2="138" stroke="#666" stroke-width="0.8" />
+    <text x="100" y="152" font-size="10" fill="#666" font-style="italic">|λₙ| → 0</text>
+    <line x1="240" y1="138" x2="420" y2="138" stroke="#666" stroke-width="0.8" />
+    <text x="305" y="152" font-size="10" fill="#666" font-style="italic">|μₙ| → 0</text>
+  </svg>
+  <figcaption>For a compact self-adjoint operator the nonzero spectrum is purely a sequence (or finite list) of real eigenvalues, with $0$ as the only possible accumulation point. The size of each disk indicates $|\lambda_n|$; eigenvectors of distinct eigenvalues are orthogonal, and once compactness forces $\|Au_n\| = |\lambda_n|$ to be small, no infinite subset can stay separated from $0$.</figcaption>
+</figure>
 
 <div class="accordion">
   <details>
@@ -2928,6 +3405,45 @@ $$u_k(x) = \sqrt{2}\sin(k\pi x), \quad k \in \mathbb{N},$$
 with associated eigenvalues $\lambda_k = \frac{1}{k^2 \pi^2}$.
 
 </div>
+
+<figure class="math-figure">
+  <svg viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg" width="400" aria-label="First three Dirichlet eigenfunctions on [0,1]">
+    <g stroke="#e8e8e8" stroke-width="0.5">
+      <line x1="30" y1="30"  x2="350" y2="30" />
+      <line x1="30" y1="170" x2="350" y2="170" />
+    </g>
+    <line x1="30" y1="100" x2="350" y2="100" stroke="#444" stroke-width="1.2" />
+    <line x1="30" y1="20"  x2="30"  y2="180" stroke="#444" stroke-width="1.2" />
+    <polygon points="350,100 342,96 342,104" fill="#444" />
+    <polygon points="30,20 26,28 34,28" fill="#444" />
+    <text x="354" y="104" font-size="11" fill="#666">x</text>
+    <text x="22"  y="22"  font-size="11" fill="#666">y</text>
+    <text x="14"  y="34"  font-size="10" fill="#888">1</text>
+    <text x="12"  y="174" font-size="10" fill="#888">−1</text>
+    <text x="34"  y="116" font-size="10" fill="#666">0</text>
+    <text x="346" y="116" font-size="10" fill="#666">1</text>
+    <line x1="350" y1="95" x2="350" y2="105" stroke="#444" stroke-width="1.2" />
+    <polyline points="30,100 62,78 94,59 126,43 158,33 190,30 222,33 254,43 286,59 318,78 350,100"
+              stroke="#2c4994" stroke-width="2.2" fill="none" />
+    <polyline points="30,100 62,59 94,33 126,33 158,59 190,100 222,141 254,167 286,167 318,141 350,100"
+              stroke="#3d7a26" stroke-width="2.2" fill="none" />
+    <polyline points="30,100 62,43 94,33 126,78 158,141 190,170 222,141 254,78 286,33 318,43 350,100"
+              stroke="#d65336" stroke-width="2.2" fill="none" />
+    <g fill="#222">
+      <circle cx="30"  cy="100" r="3" />
+      <circle cx="350" cy="100" r="3" />
+    </g>
+    <g font-size="11" font-weight="600">
+      <rect x="60"  y="194" width="14" height="3" fill="#2c4994" />
+      <text x="79"  y="200" fill="#2c4994">u₁,  λ₁ = 1/π²</text>
+      <rect x="170" y="194" width="14" height="3" fill="#3d7a26" />
+      <text x="189" y="200" fill="#3d7a26">u₂,  λ₂ = 1/4π²</text>
+      <rect x="285" y="194" width="14" height="3" fill="#d65336" />
+      <text x="304" y="200" fill="#d65336">u₃,  λ₃ = 1/9π²</text>
+    </g>
+  </svg>
+  <figcaption>The first three orthonormal eigenfunctions $u_k(x) = \sqrt{2}\sin(k\pi x)$ of the Green-function operator $A$ on $L^2([0,1])$. Each vanishes at the endpoints (Dirichlet condition), oscillates with $k$ half-periods on $[0,1]$, and corresponds to a smaller eigenvalue $\lambda_k = 1/(k\pi)^2 \to 0$ — the spectral theorem then declares $\{u_k\}$ a Hilbert basis of $L^2([0,1])$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 237</span></p>
