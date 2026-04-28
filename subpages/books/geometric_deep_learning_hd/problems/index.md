@@ -538,9 +538,9 @@ So $v + w \in \mathcal D_x$.
 
 So $\alpha v \in \mathcal D_x$.
 
-**Step 4 — vector-space axioms inherited.** Associativity and commutativity of $+$, distributivity, the unit law $1 \cdot v = v$, and existence of inverses $(-1) \cdot v = -v$ all hold in $\mathrm{Hom}_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$ pointwise; since $\mathcal D_x$ is a subset closed under these operations and contains $0$, all axioms transfer. $\blacksquare$
+**Step 4 — vector-space axioms inherited.** Associativity and commutativity of $+$, distributivity, the unit law $1 \cdot v = v$, and existence of inverses $(-1) \cdot v = -v$ all hold in $\mathrm{Hom}\_{\mathbb R}(\mathcal F(\mathcal M), \mathbb R)$ pointwise; since $\mathcal D_x$ is a subset closed under these operations and contains $0$, all axioms transfer. $\blacksquare$
 
-**Why this matters.** This abstract definition of $T_x \mathcal M$ via derivations is exactly the one that lifts to manifolds without an ambient $\mathbb R^n$ — there is no notion of "velocity vector in $\mathbb R^3$" on an abstract manifold, so the definition through Leibniz is what survives. The vector-space structure shown here is what makes $T_x \mathcal M$ a *linear* tangent space, which in turn is what makes the differential $df_x : T_x \mathcal M \to T_{f(x)} \mathcal N$ a linear map and gives the chain rule its tensorial form. A coordinate basis of $T_x \mathcal M$ is then provided by the partial derivatives $\partial_{u^i}|_x$ in any chart — exactly the four vectors that appeared in Exercise 3.
+**Why this matters.** This abstract definition of $T_x \mathcal M$ via derivations is exactly the one that lifts to manifolds without an ambient $\mathbb R^n$ — there is no notion of "velocity vector in $\mathbb R^3$" on an abstract manifold, so the definition through Leibniz is what survives. The vector-space structure shown here is what makes $T_x \mathcal M$ a *linear* tangent space, which in turn is what makes the differential $df_x : T_x \mathcal M \to T_{f(x)} \mathcal N$ a linear map and gives the chain rule its tensorial form. A coordinate basis of $T_x \mathcal M$ is then provided by the partial derivatives $\partial_{u^i}\|_x$ in any chart — exactly the four vectors that appeared in Exercise 3.
 
 </details>
 
