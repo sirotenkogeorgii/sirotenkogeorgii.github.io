@@ -34,4 +34,5 @@ date: 2024-10-20
 - [PDEs in Data Science HD](/subpages/books/pdeds/)
 - [Reinforcement Learning HD](/subpages/reinforcement_learning_hd/)
 - [Applied Combinatorial Optimization HD](/subpages/books/aco/)
-- [DSO CU](/subpages/books/dso/)
+- [DSO CUNI](/subpages/books/dso/)
+- [Foundations of Schroedinger Bridges for Generative Modeling](/subpages/books/schroedinger_bridges_generative_modeling/)

@@ -4242,7 +4242,7 @@ Vectors $x, y \in V$ are *orthogonal* if $\langle x, y \rangle = 0$. Notation: $
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.8 — Pythagorean)</span></p>
 
-*If $x, y \in V$ are orthogonal, then $\|x + y\|^2 = \|x\|^2 + \|y\|^2$.*
+If $x, y \in V$ are orthogonal, then $\|x + y\|^2 = \|x\|^2 + \|y\|^2$.
 
 *Proof.* $\|x + y\|^2 = \langle x + y, x + y \rangle = \langle x, x \rangle + \underbrace{\langle x, y \rangle}\_{=0} + \underbrace{\langle y, x \rangle}\_{=0} + \langle y, y \rangle = \|x\|^2 + \|y\|^2$.
 
@@ -4253,7 +4253,7 @@ Note that over $\mathbb{R}$ the converse implication also holds, but over $\math
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.9 — Cauchy–Schwarz inequality)</span></p>
 
-*For every $x, y \in V$, $|\langle x, y \rangle| \le \|x\| \cdot \|y\|$.*
+For every $x, y \in V$, $\|\langle x, y \rangle\| \le \|x\| \cdot \|y\|$.
 
 *Proof.* (Real version) We first show the real version. For $y = o$ the inequality holds trivially, so assume $y \neq o$. Consider the real function $f(t) = \langle x + ty, x + ty \rangle \ge 0$ of the variable $t \in \mathbb{R}$. Then
 
@@ -4269,11 +4269,11 @@ From this we get $\langle x, y \rangle^2 \le \langle x, x \rangle \langle y, y \
 
 $$0 \le \langle z, z \rangle = \langle x - \alpha y, \, x - \alpha y \rangle = \langle x, x \rangle - \overline{\alpha}\langle x, y \rangle - \alpha \langle y, x \rangle + \alpha \overline{\alpha} \langle y, y \rangle.$$
 
-Since $\alpha \overline{\alpha} = |\alpha|^2$, $\langle y, y \rangle = 1$, and $\alpha = \langle x, y \rangle$, we get
+Since $\alpha \overline{\alpha} = \|\alpha\|^2$, $\langle y, y \rangle = 1$, and $\alpha = \langle x, y \rangle$, we get
 
 $$0 \le \langle x, x \rangle - |\alpha|^2 = \langle x, x \rangle - |\langle x, y \rangle|^2.$$
 
-Thus $\|\alpha\|^2 \le \langle x, x \rangle$ and taking square roots of both sides we have $|\langle x, y \rangle| \le \|x\|$.
+Thus $\|\alpha\|^2 \le \langle x, x \rangle$ and taking square roots of both sides we have $\|\langle x, y \rangle\| \le \|x\|$.
 
 </div>
 
@@ -4288,7 +4288,7 @@ $$\left(\sum_{i=1}^{n} x_i y_i\right)^2 \le \left(\sum_{i=1}^{n} x_i^2\right) \l
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 8.10 — Triangle inequality)</span></p>
 
-*For every $x, y \in V$, $\|x + y\| \le \|x\| + \|y\|$.*
+For every $x, y \in V$, $\|x + y\| \le \|x\| + \|y\|$.
 
 *Proof.* First recall that for every complex number $z = a + bi$: $z + \overline{z} = 2a = 2\operatorname{Re}(z)$, and furthermore $a \le \|z\|$. Now we can derive:
 
@@ -4355,10 +4355,10 @@ Different norms have different geometric objects as their unit balls. However, e
 
 The norm of a continuous function $f \colon [a, b] \to \mathbb{R}$ can be introduced analogously to the Euclidean space:
 
-- analogue of the Euclidean norm: $\|f\|_2 = \sqrt{\int_a^b f(x)^2 \, dx}$,
-- analogue of the sum norm: $\|f\|_1 = \int_a^b |f(x)| \, dx$,
-- analogue of the maximum norm: $\|f\|\_\infty = \max_{x \in [a,b]} |f(x)|$,
-- analogue of the $p$-norm: $\|f\|_p = \left(\int_a^b |f(x)|^p \, dx\right)^{1/p}$.
+- analogue of the Euclidean norm: $\|f\|\_2 = \sqrt{\int_a^b f(x)^2 \, dx}$,
+- analogue of the sum norm: $\|f\|\_1 = \int_a^b \|f(x)\| \, dx$,
+- analogue of the maximum norm: $\|f\|\_\infty = \max_{x \in [a,b]} \|f(x)\|$,
+- analogue of the $p$-norm: $\|f\|\_p = \left(\int_a^b \|f(x)\|^p \, dx\right)^{1/p}$.
 
 </div>
 
@@ -4437,7 +4437,7 @@ $$0 = \langle o, z_k \rangle = \left\langle \sum_{i=1}^{n} \alpha_i z_i, z_k \ri
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem 8.22 — Fourier coefficients)</span></p>
 
-*Let $z_1, \ldots, z_n$ be an orthonormal basis of the space $V$. Then for every $x \in V$, $x = \sum_{i=1}^{n} \langle x, z_i \rangle z_i$.*
+Let $z_1, \ldots, z_n$ be an orthonormal basis of the space $V$. Then for every $x \in V$, $x = \sum_{i=1}^{n} \langle x, z_i \rangle z_i$.
 
 *Proof.* We know that $x = \sum_{i=1}^{n} \alpha_i z_i$ and the coordinates $\alpha_1, \ldots, \alpha_n$ are unique (Theorem 5.33). Now for every $k = 1, \ldots, n$:
 
@@ -6665,7 +6665,11 @@ Let $A \in \mathbb{R}^{n \times n}$ be symmetric. Then the following conditions 
 
 *Proof.* Implication (1) $\Rightarrow$ (2): By contradiction, suppose there exists an eigenvalue $\lambda \le 0$, and let $x$ be the corresponding eigenvector with Euclidean norm equal to 1. Then $Ax = \lambda x$ implies $x^\top Ax = \lambda x^\top x = \lambda \le 0$. This contradicts the positive definiteness of $A$.
 
-Implication (2) $\Rightarrow$ (3): Since $A$ is symmetric, it has a spectral decomposition $A = Q\Lambda Q^\top$, where $\Lambda$ is a diagonal matrix with entries $\lambda_1, \ldots, \lambda_n > 0$. Define the matrix $\Lambda'$ as diagonal with entries $\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n} > 0$. Then the desired matrix is, for example, $U = \Lambda' Q^\top$, since $U^\top U = Q\Lambda' \Lambda' Q^\top = Q\Lambda'^2 Q^\top = Q\Lambda Q^\top = A$. Note that $U$ has rank $n$ and is therefore nonsingular, being the product of two nonsingular matrices.
+Implication (2) $\Rightarrow$ (3): Since $A$ is symmetric, it has a spectral decomposition $A = Q\Lambda Q^\top$, where $\Lambda$ is a diagonal matrix with entries $\lambda_1, \ldots, \lambda_n > 0$. Define the matrix $\Lambda'$ as diagonal with entries $\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n} > 0$. Then the desired matrix is, for example, $U = \Lambda' Q^\top$, since 
+
+$$U^\top U = Q\Lambda' \Lambda' Q^\top = Q\Lambda'^2 Q^\top = Q\Lambda Q^\top = A$$
+
+Note that $U$ has rank $n$ and is therefore nonsingular, being the product of two nonsingular matrices.
 
 Implication (3) $\Rightarrow$ (1): By contradiction, suppose $x^\top Ax \le 0$ for some $x \neq o$. Then 
 
@@ -6767,8 +6771,8 @@ $$\begin{pmatrix} 2 & 0 & 0 \\ -1 & 3 & 0 \\ 2 & 1 & 1 \end{pmatrix} \begin{pmat
 Using the Cholesky decomposition for solving the system $Ax = b$ with a positive definite matrix $A$. If we have the decomposition $A = LL^\top$, then the system has the form $L(L^\top x) = b$. First we solve the system $Ly = b$ by forward substitution, then $L^\top x = y$ by back substitution. The procedure is thus as follows:
 
 1. Find the Cholesky decomposition $A = LL^\top$.
-2. Find the solution $y^*$ of the system $Ly = b$ by forward substitution.
-3. Find the solution $x^*$ of the system $L^\top x = y^*$ by back substitution.
+2. Find the solution $y^\ast$ of the system $Ly = b$ by forward substitution.
+3. Find the solution $x^\ast$ of the system $L^\top x = y^\ast$ by back substitution.
 
 This procedure is roughly $50\%$ faster than solving by Gaussian elimination.
 
@@ -6884,13 +6888,20 @@ For every positive semidefinite matrix $A \in \mathbb{R}^{n \times n}$, there ex
 
 </div>
 
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $A$ have the spectral decomposition 
 
-$$A = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n) \quad \lambda_1, \ldots, \lambda_n \ge 0$$
+$$A = Q\Lambda Q^\top, \quad\text{where}\quad \Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n) \quad \lambda_1, \ldots, \lambda_n \ge 0$$
 
 Define the diagonal matrix $\Lambda' = \operatorname{diag}(\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n})$ and the matrix $B = Q\Lambda' Q^\top$. Then 
 
 $$B^2 = Q\Lambda' Q^\top Q\Lambda' Q^\top = Q\Lambda'^2 Q^\top = Q\Lambda Q^\top = A$$
+
+</details>
+</div>
 
 It is appropriate here to compare the matrix square root with matrix functions from Example 10.47. The square root can be expressed by an infinite series only in a small neighborhood of a given positive number; however, where it exists, both definitions will agree.
 
@@ -7028,16 +7039,23 @@ $$f(u) = [u]_B^\top A [u]_B.$$
 
 </div>
 
-*Proof.* Denote $x \coloneqq [u]_B$, $y \coloneqq [v]_B$, and let $B$ consist of vectors $w_1, \ldots, w_n$. If $A$ is the matrix of the form $b$, then
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* Denote $x \coloneqq [u]\_B$, $y \coloneqq [v]\_B$, and let $B$ consist of vectors $w_1, \ldots, w_n$. If $A$ is the matrix of the form $b$, then
 
 $$b(u, v) = b\!\left(\sum_{i=1}^n x_i w_i, \sum_{j=1}^n y_j w_j\right) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j b(w_i, w_j) = \sum_{i=1}^n \sum_{j=1}^n x_i y_j a_{ij} = x^\top Ay.$$
 
 Conversely, if (12.1) holds for every $u, v \in V$, then substituting $u \coloneqq w_i$, $v \coloneqq w_j$ we get 
 
-$$b(w_i, w_j) = [w_i]\_B^\top A [w_j]\_B = e_i^\top A e_j = a_{ij}$$
+$$b(w_i, w_j) = [w_i]_B^\top A [w_j]_B = e_i^\top A e_j = a_{ij}$$
 
 for all $i, j = 1, \ldots, n$.
 Finally, $f(u) = b(u, u) = x^\top Ax$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">(Corollary 12.8)</span></p>
@@ -7046,9 +7064,16 @@ Let $B = \lbrace w_1, \ldots, w_n \rbrace$ be a basis of a vector space $V$ over
 
 </div>
 
-*Proof.* "Existence." It suffices to verify that the mapping $b \colon V^2 \to \mathbb{T}$ given by $b(u, v) = [u]_B^\top A [v]_B$ satisfies the conditions of a bilinear form. This is easy to see, since the mapping $u \mapsto [u]_B$ is linear (cf. Proposition 6.38). "Uniqueness." From (12.1) it follows that for every $u, v \in V$ we have $b(u, v) = [u]_B^\top A [v]_B$, so the images are uniquely determined.
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+*Proof.* "Existence." It suffices to verify that the mapping $b \colon V^2 \to \mathbb{T}$ given by $b(u, v) = [u]\_B^\top A [v]_B$ satisfies the conditions of a bilinear form. This is easy to see, since the mapping $u \mapsto [u]\_B$ is linear (cf. Proposition 6.38). "Uniqueness." From (12.1) it follows that for every $u, v \in V$ we have $b(u, v) = [u]\_B^\top A [v]\_B$, so the images are uniquely determined.
 
 Let $B$ be a fixed basis of a space $V$ of dimension $n$. Each bilinear form thus uniquely corresponds to a matrix $A \in \mathbb{T}^{n \times n}$, and conversely each matrix $A \in \mathbb{T}^{n \times n}$ uniquely corresponds to a bilinear form. There is therefore a bijective correspondence between the set of bilinear forms and the space of matrices $\mathbb{T}^{n \times n}$. Moreover, this is an isomorphism, since bilinear forms form a vector space with naturally defined addition and scalar multiples (cf. the space $\mathcal{F}$ from p. 79).
+
+</details>
+</div>
 
 In the vector space $\mathbb{T}^n$, bilinear forms have a special form.
 
@@ -7069,7 +7094,7 @@ for a certain symmetric matrix $A \in \mathbb{T}^{n \times n}$.
 
 *Proof.* It suffices to take $A$ as the matrix of the form with respect to the canonical basis. Then 
 
-$$b(x, y) = [x]\_{\text{kan}}^\top A [y]\_{\text{kan}} = x^\top Ay$$
+$$b(x, y) = [x]_{\text{kan}}^\top A [y]_{\text{kan}} = x^\top Ay$$
 
 For the quadratic form we then have $f(x) = b(x, x) = x^\top Ax$. If $A$ is not symmetric, we replace it by the symmetric matrix $\frac{1}{2}(A + A^\top)$ in the sense of Remark 11.2, because $x^\top Ax = x^\top \frac{1}{2}(A + A^\top)x$. We use here the convention $2 \equiv 1 + 1$. Since the characteristic of the field is not 2, we have $1 + 1 \neq 0$ and we can construct the matrix.
 
@@ -7135,19 +7160,19 @@ Let $f(x) = x^\top Ax$ be a quadratic form on $\mathbb{R}^n$. Then there exists 
 
 </div>
 
-*Proof.* "Existence." Since $A$ is symmetric, it has a spectral decomposition $A = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n)$. Thus $\Lambda = Q^\top AQ$ is the diagonalization of the form. To achieve $\pm 1$ on the diagonal, we perform the additional transformation $\Lambda' Q^\top A Q \Lambda'$, where $\Lambda'$ is the diagonal matrix with entries $\Lambda'_{ii} = |\lambda_i|^{-1/2}$ if $\lambda_i \neq 0$ and $\Lambda'_{ii} = 1$ otherwise. We can now regard $Q\Lambda'$ as the matrix ${}\_{\text{kan}}[id]_B$ of change of basis from the desired basis $B$ to the canonical basis. Thus the basis $B$ can be read from the columns of the matrix $Q\Lambda'$.
+*Proof.* "Existence." Since $A$ is symmetric, it has a spectral decomposition $A = Q\Lambda Q^\top$, where $\Lambda = \operatorname{diag}(\lambda_1, \ldots, \lambda_n)$. Thus $\Lambda = Q^\top AQ$ is the diagonalization of the form. To achieve $\pm 1$ on the diagonal, we perform the additional transformation $\Lambda' Q^\top A Q \Lambda'$, where $\Lambda'$ is the diagonal matrix with entries $\Lambda'_{ii} = \|\lambda_i\|^{-1/2}$ if $\lambda_i \neq 0$ and $\Lambda'_{ii} = 1$ otherwise. We can now regard $Q\Lambda'$ as the matrix ${}\_{\text{kan}}[id]\_B$ of change of basis from the desired basis $B$ to the canonical basis. Thus the basis $B$ can be read from the columns of the matrix $Q\Lambda'$.
 
 "Uniqueness." By contradiction, suppose we have two different diagonalizations $D$, $D'$:
 
 $$D = \operatorname{diag}(\underbrace{1, \ldots, 1}_{p}, \underbrace{-1, \ldots, -1}_{q-p}, \underbrace{0, \ldots, 0}_{n-q}), \qquad D' = \operatorname{diag}(\underbrace{1, \ldots, 1}_{s}, \underbrace{-1, \ldots, -1}_{t-s}, \underbrace{0, \ldots, 0}_{n-t}).$$
 
-Let the first correspond to basis $B = \lbrace w_1, \ldots, w_n \rbrace$ and the second to basis $B' = \lbrace w'_1, \ldots, w'_n \rbrace$. Let $u \in \mathbb{R}^n$ be arbitrary with coordinates $y = [u]_B$, $z = [u]_{B'}$. Then by Theorem 12.7
+Let the first correspond to basis $B = \lbrace w_1, \ldots, w_n \rbrace$ and the second to basis $B' = \lbrace w'_1, \ldots, w'_n \rbrace$. Let $u \in \mathbb{R}^n$ be arbitrary with coordinates $y = [u]\_B$, $z = [u]\_{B'}$. Then by Theorem 12.7
 
 $$f(u) = [u]_B^\top D [u]_B = y^\top D y = y_1^2 + \ldots + y_p^2 - y_{p+1}^2 - \ldots - y_q^2 + 0 y_{q+1}^2 + \ldots + 0 y_n^2,$$
 
 $$f(u) = [u]_{B'}^\top D' [u]_{B'} = z^\top D' z = z_1^2 + \ldots + z_s^2 - z_{s+1}^2 - \ldots - z_t^2 + 0 z_{t+1}^2 + \ldots + 0 z_n^2.$$
 
-First, notice that $q = t$. Since $D = S^\top D' S$ for some nonsingular $S$, specifically for $S = {}_{B'}[id]_B$, the matrices $D, D'$ have the same rank. Hence $q = t$. It remains to show that necessarily $p = s$. Without loss of generality, assume $p > s$. Define the spaces $P = \operatorname{span}\lbrace w_1, \ldots, w_p \rbrace$ and $R = \operatorname{span}\lbrace w'_{s+1}, \ldots, w'_n \rbrace$. Then
+First, notice that $q = t$. Since $D = S^\top D' S$ for some nonsingular $S$, specifically for $S = {}\_{B'}[id]\_B$, the matrices $D, D'$ have the same rank. Hence $q = t$. It remains to show that necessarily $p = s$. Without loss of generality, assume $p > s$. Define the spaces $P = \operatorname{span}\lbrace w_1, \ldots, w_p \rbrace$ and $R = \operatorname{span}\lbrace w'_{s+1}, \ldots, w'_n \rbrace$. Then
 
 $$\dim P \cap R = \dim P + \dim R - \dim(P + R) \ge p + (n - s) - n = p - s \ge 1.$$
 
@@ -7257,7 +7282,7 @@ Interestingly, however, the matrix $AB$, although not necessarily symmetric, sti
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Remark 12.21 — Block test for positive definiteness)</span></p>
 
-There is a close relationship between diagonalization of a matrix using elementary operations and the recurrence formula for testing positive definiteness (Theorem 11.9). If we consider the matrix $A = \begin{pmatrix} \alpha & a^\top \\ a & \tilde{A} \end{pmatrix}$ as the matrix of a quadratic form and use elementary operations to zero out elements below and to the right of the pivot, the resulting block diagonal matrix can be expressed in matrix form as
+There is a close relationship between diagonalization of a matrix using elementary operations and the recurrence formula for testing positive definiteness (Theorem 11.9). If we consider the matrix $A = \begin{pmatrix} \alpha & a^\top \\\ a & \tilde{A} \end{pmatrix}$ as the matrix of a quadratic form and use elementary operations to zero out elements below and to the right of the pivot, the resulting block diagonal matrix can be expressed in matrix form as
 
 $$\begin{pmatrix} \alpha & o^\top \\ o & \tilde{A} - \frac{1}{\alpha}aa^\top \end{pmatrix}.$$
 

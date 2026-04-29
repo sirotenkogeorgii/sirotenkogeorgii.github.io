@@ -4674,20 +4674,22 @@ For a 2D Gaussian with mean $0$, rotation and elongation are described by the **
 
 ### The natural variances are along the ellipse’s principal axes
 
-If you diagonalize (\Sigma),
-[
+If you diagonalize $\Sigma$,
+
+$$
 \Sigma = Q \Lambda Q^\top,
 \qquad
 \Lambda=
 \begin{pmatrix}
-\lambda_1 & 0\
+\lambda_1 & 0\\
 0 & \lambda_2
 \end{pmatrix},
-]
+$$
+
 then:
 
-* the columns of (Q) give the two principal directions
-* (\lambda_1,\lambda_2) are the variances in those directions
+* the columns of $Q$ give the two principal directions
+* $\lambda_1,\lambda_2$ are the variances in those directions
 
 So the elongated rotated Gaussian has:
 
@@ -4699,55 +4701,55 @@ So the elongated rotated Gaussian has:
 Not exactly.
 
 The ellipse is usually drawn as a **constant-density** or **constant Mahalanobis distance** contour:
-[
-x^\top \Sigma^{-1} x = c.
-]
+
+$$x^\top \Sigma^{-1} x = c.$$
 
 Along the principal axes, the semi-axis lengths of this ellipse are
-[
-\sqrt{c,\lambda_1}, \qquad \sqrt{c,\lambda_2}.
-]
+
+$$\sqrt{c,\lambda_1}, \qquad \sqrt{c,\lambda_2}.$$
 
 So:
 
-* **variance** = (\lambda_i)
-* **standard deviation** = (\sqrt{\lambda_i})
-* **ellipse radius / semi-axis length** at contour level (c) = (\sqrt{c,\lambda_i})
+* **variance** = $\lambda_i$
+* **standard deviation** = $\sqrt{\lambda_i}$
+* **ellipse radius / semi-axis length** at contour level $(c) = \sqrt{c,\lambda_i}$
 
 Thus the “radius” is proportional to the **standard deviation**, not the variance.
 
 ### Example
 
 Suppose
-[
+
+$$
 \Sigma = Q
 \begin{pmatrix}
-9 & 0\
+9 & 0\\
 0 & 1
 \end{pmatrix}
 Q^\top
-]
-for some rotation matrix (Q).
+$$
 
-Then the Gaussian is rotated, centered at (0), and:
+for some rotation matrix $Q$.
 
-* variance along one principal axis = (9)
-* variance along the other = (1)
-* standard deviations are (3) and (1)
+Then the Gaussian is rotated, centered at $0$, and:
 
-So the cloud is 3 times wider in one principal direction than in the other.
+* variance along one principal axis = $9$
+* variance along the other = $1$
+* standard deviations are $3$ and $1$
+
+So the cloud is $3$ times wider in one principal direction than in the other.
 
 If you draw the contour
-[
-x^\top \Sigma^{-1}x = 1,
-]
-the ellipse semi-axes are (3) and (1).
+
+$$x^\top \Sigma^{-1}x = 1,$$
+
+the ellipse semi-axes are $3$ and $1$.
 
 ### Important distinction
 
-If the Gaussian is rotated, then the diagonal entries of (\Sigma) are usually **not** the principal variances. They are only variances along the coordinate axes.
+If the Gaussian is rotated, then the diagonal entries of $\Sigma$ are usually **not** the principal variances. They are only variances along the coordinate axes.
 
-The actual elongation is captured by the eigenvalues of (\Sigma).
+The actual elongation is captured by the eigenvalues of $\Sigma$.
 
 A good summary is:
 
@@ -4763,46 +4765,44 @@ A good summary is:
   <!-- <figcaption>The dynamical system is linear, but the trajectory is not necessarily linear</figcaption> -->
 </figure>
 
-Yes — here is a sketch:
-
 [rotated_gaussian_sketch.png](sandbox:/mnt/data/rotated_gaussian_sketch.png)
 
 How to read it:
 
-* The center is the mean, here (\mu=(0,0)).
+* The center is the mean, here $\mu=(0,0)$.
 * The ellipse is a contour of equal density, for example
-  [
-  x^\top \Sigma^{-1}x = 1.
-  ]
-* The long and short tilted directions are the eigenvector directions of (\Sigma).
+  
+  $$x^\top \Sigma^{-1}x = 1.$$
+  
+* The long and short tilted directions are the eigenvector directions of $\Sigma$.
 * Their lengths on this contour are
-  [
-  \sqrt{\lambda_1},\quad \sqrt{\lambda_2},
-  ]
-  where (\lambda_1,\lambda_2) are the eigenvalues of (\Sigma).
+  
+  $$\sqrt{\lambda_1},\quad \sqrt{\lambda_2},$$
+  
+  where $\lambda_1,\lambda_2$ are the eigenvalues of $\Sigma$.
 
 So in the picture:
 
-* variance along the long principal axis is (\lambda_1 = 9)
-* variance along the short principal axis is (\lambda_2 = 1)
-* the semi-axis lengths of this particular ellipse are (3) and (1)
+* variance along the long principal axis is $\lambda_1 = 9$
+* variance along the short principal axis is $\lambda_2 = 1$
+* the semi-axis lengths of this particular ellipse are $3$ and $1$
 
 So the “radius of the ellipse” corresponds to **standard deviation**, not variance.
 
-### in \Sigma = Q\Lambda Q^\top, the columns of Q are in which basis?
+### in $\Sigma = Q\Lambda Q^\top$, the columns of $Q$ are in which basis?
 
-They are usually written in the **original coordinate basis** you are using for (x), for example the standard basis (e_1,e_2).
+They are usually written in the **original coordinate basis** you are using for $x$, for example the standard basis $e_1,e_2$.
 
 So in
-[
-\Sigma = Q \Lambda Q^\top,
-]
-the columns of (Q) are the eigenvectors of (\Sigma), expressed in your current coordinates.
+
+$$\Sigma = Q \Lambda Q^\top,$$
+
+the columns of $Q$ are the eigenvectors of $\Sigma$, expressed in your current coordinates.
 
 More concretely, in 2D:
 
-* suppose you describe points as (x=(x_1,x_2)) in the standard basis
-* then each column (q_1,q_2) of (Q) is a vector in that same (x_1,x_2) coordinate system
+* suppose you describe points as $x=(x_1,x_2)$ in the standard basis
+* then each column $q_1,q_2$ of $Q$ is a vector in that same $x_1,x_2$ coordinate system
 * these vectors give the directions of the principal axes of the Gaussian ellipse
 
 If
@@ -4817,23 +4817,23 @@ $$
 then:
 
 * first column:
-  [
-  q_1=\begin{pmatrix}\cos\theta\ \sin\theta\end{pmatrix}
-  ]
+  
+  $$q_1=\begin{pmatrix}\cos\theta\ \sin\theta\end{pmatrix}$$
+  
   is the first principal direction, written in the standard basis
 * second column:
-  [
-  q_2=\begin{pmatrix}-\cos? \text{ no, } -\sin\theta\ \cos\theta\end{pmatrix}
-  ]
+  
+  $$q_2=\begin{pmatrix}-\cos? \text{ no, } -\sin\theta\ \cos\theta\end{pmatrix}$$
+  
   sorry, correctly:
-  [
-  q_2=\begin{pmatrix}-\sin\theta\ \cos\theta\end{pmatrix}
-  ]
+  
+  $$q_2=\begin{pmatrix}-\sin\theta\ \cos\theta\end{pmatrix}$$
+  
   is the second principal direction, also in the standard basis
 
 So the answer is:
 
-* **the columns of (Q) are the new principal-axis basis vectors**
+* **the columns of $Q$ are the new principal-axis basis vectors**
 * but they are **represented in the old/original basis**
 
 This is the standard linear algebra convention.
@@ -4891,9 +4891,9 @@ $$\sqrt{\lambda_1},\qquad \sqrt{\lambda_2}.$$
 
 So:
 
-* (\lambda_i) = variance along principal direction (q_i)
-* (\sqrt{\lambda_i}) = standard deviation along that direction
-* on the contour (x^\top\Sigma^{-1}x=1), that is exactly the “radius” in that principal direction
+* $\lambda_i$ = variance along principal direction $q_i$
+* $\sqrt{\lambda_i}$ = standard deviation along that direction
+* on the contour $x^\top\Sigma^{-1}x=1$, that is exactly the “radius” in that principal direction
 
 More generally, for the contour
 
@@ -4903,7 +4903,7 @@ the semi-axis lengths are
 
 $$\sqrt{c,\lambda_1},\qquad \sqrt{c,\lambda_2}$$
 
-So the root of the eigenvalue is the radius only for the (c=1) ellipse; otherwise it is scaled by (\sqrt c).
+So the root of the eigenvalue is the radius only for the $c=1$ ellipse; otherwise it is scaled by $\sqrt c$.
 
 A compact way to see it:
 set $x = Qy$. Then
@@ -4938,7 +4938,7 @@ $$
 \lambda_1 \ge \lambda_2 \ge 0.
 $$
 
-Then the Gaussian’s principal axes are given by the columns of (Q), and the covariance ellipse
+Then the Gaussian’s principal axes are given by the columns of $Q$, and the covariance ellipse
 
 $$x^\top \Sigma^{-1} x = 1$$
 
@@ -4947,8 +4947,6 @@ has semi-axis lengths
 $$\sqrt{\lambda_1},\qquad \sqrt{\lambda_2}.$$
 
 So the shape is controlled by the eigenvalues.
-
----
 
 ## Elongation
 
@@ -4966,11 +4964,9 @@ Its aspect ratio is
 
 So:
 
-* if (\lambda_1=\lambda_2), the contour is a circle
-* if (\lambda_1 \gg \lambda_2), the contour is a very stretched ellipse
-* if (\lambda_2=0), it collapses to a line
-
----
+* if $\lambda_1=\lambda_2$, the contour is a circle
+* if $\lambda_1 \gg \lambda_2$, the contour is a very stretched ellipse
+* if $\lambda_2=0$, it collapses to a line
 
 ## Condition number
 
@@ -4989,8 +4985,6 @@ So:
 * **small condition number** $\approx 1$ means nearly round ellipse
 * **large condition number** means highly elongated ellipse
 * **infinite condition number** means singular covariance
-
----
 
 ## What “regularity” means here
 
@@ -5018,8 +5012,6 @@ Geometrically:
 
 * well-conditioned covariance = not too elongated
 * ill-conditioned covariance = very thin ellipse
-
----
 
 ## Intuition
 
@@ -5077,8 +5069,6 @@ then:
 
 That is a very elongated, nearly degenerate ellipse.
 
----
-
 ## Bottom line
 
 The elongation of the 2D Gaussian ellipse is controlled by the ratio of covariance eigenvalues:
@@ -5111,24 +5101,22 @@ where $D$ is diagonal.
 
 What it says:
 
-* (A) has a basis of eigenvectors.
-* The columns of (P) are those eigenvectors.
-* The diagonal entries of (D) are the corresponding eigenvalues.
+* $A$ has a basis of eigenvectors.
+* The columns of $P$ are those eigenvectors.
+* The diagonal entries of $D$ are the corresponding eigenvalues.
 
 A matrix is diagonalizable **iff** it has enough linearly independent eigenvectors.
-
----
 
 ### Eigendecomposition
 
 This is usually just the same idea, written in eigenvalue language:
-[
-A = V \Lambda V^{-1}
-]
+
+$$A = V \Lambda V^{-1}$$
+
 where
 
-* (V) contains eigenvectors,
-* (\Lambda) is diagonal with eigenvalues.
+* $V$ contains eigenvectors,
+* $\Lambda$ is diagonal with eigenvalues.
 
 So in most linear algebra contexts:
 
@@ -5136,31 +5124,29 @@ So in most linear algebra contexts:
 
 It is basically the same concept, just a more descriptive name.
 
----
-
 ### Spectral decomposition
 
-This is a more specific and more structured form, usually used when (A) is a matrix/operator covered by the spectral theorem, especially:
+This is a more specific and more structured form, usually used when $A$ is a matrix/operator covered by the spectral theorem, especially:
 
 * real symmetric matrices,
 * complex Hermitian matrices,
 * more generally normal matrices.
 
 Then one can write
-[
-A = Q \Lambda Q^*
-]
-with (Q) unitary/orthogonal, so the eigenvectors are orthonormal.
+
+$$A = Q \Lambda Q^*$$
+
+with $Q$ unitary/orthogonal, so the eigenvectors are orthonormal.
 
 For a real symmetric or complex Hermitian matrix, spectral decomposition is often written as
-[
-A = \sum_{i=1}^n \lambda_i u_i u_i^*
-]
+
+$$A = \sum_{i=1}^n \lambda_i u_i u_i^*$$
+
 or, grouping repeated eigenvalues,
-[
-A = \sum_{\lambda} \lambda P_\lambda
-]
-where (P_\lambda) is the orthogonal projector onto the eigenspace for (\lambda).
+
+$$A = \sum_{\lambda} \lambda P_\lambda$$
+
+where $P_\lambda$ is the orthogonal projector onto the eigenspace for (\lambda).
 
 What is special here:
 
@@ -5168,15 +5154,11 @@ What is special here:
 * the decomposition uses **orthogonal projections**,
 * it usually relies on the **spectral theorem**.
 
----
-
 ## Main difference in one sentence
 
 * **Diagonalization**: “Can I turn this matrix into a diagonal one by a change of basis?”
 * **Eigendecomposition**: “Write the diagonalization explicitly in terms of eigenvalues and eigenvectors.”
 * **Spectral decomposition**: “A special orthonormal/projector-based eigendecomposition, usually for symmetric/Hermitian/normal matrices.”
-
----
 
 ## Relationship
 
@@ -5185,41 +5167,32 @@ Every spectral decomposition is an eigendecomposition, and every eigendecomposit
 But not every diagonalization is called spectral decomposition.
 
 So:
-[
-\text{spectral decomposition} \subset \text{eigendecomposition} \approx \text{diagonalization}
-]
 
----
+$$\text{spectral decomposition} \subset \text{eigendecomposition} \approx \text{diagonalization}$$
 
 ## Example 1: diagonalizable but not spectral in the symmetric sense
 
-[
-A=\begin{pmatrix}1&1\0&2\end{pmatrix}
-]
-This matrix has two distinct eigenvalues, so it is diagonalizable:
-[
-A = P D P^{-1}
-]
-But its eigenvectors are not orthogonal, and (A) is not symmetric/Hermitian, so this is not usually called a spectral decomposition in the projector/orthonormal sense.
+$$A=\begin{pmatrix}1&1\\0&2\end{pmatrix}$$
 
----
+This matrix has two distinct eigenvalues, so it is diagonalizable:
+
+$$A = P D P^{-1}$$
+
+But its eigenvectors are not orthogonal, and $A$ is not symmetric/Hermitian, so this is not usually called a spectral decomposition in the projector/orthonormal sense.
 
 ## Example 2: spectral decomposition
 
-[
-A=\begin{pmatrix}2&1\1&2\end{pmatrix}
-]
-This is real symmetric, so it has an orthonormal eigenbasis. Hence
-[
-A = Q \Lambda Q^T
-]
-and also
-[
-A = \lambda_1 u_1 u_1^T + \lambda_2 u_2 u_2^T
-]
-This is a spectral decomposition.
+$$A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$$
 
----
+This is real symmetric, so it has an orthonormal eigenbasis. Hence
+
+$$A = Q \Lambda Q^T$$
+
+and also
+
+$$A = \lambda_1 u_1 u_1^T + \lambda_2 u_2 u_2^T$$
+
+This is a spectral decomposition.
 
 ## Important caveat
 
@@ -5234,8 +5207,6 @@ So the safest interpretation is:
 * **spectral decomposition**: usually the orthonormal decomposition from the spectral theorem.
 
 If you want, I can also give you a small table comparing the three notions by assumptions, formula, and when they exist.
-
----
 
 ### Diagonalization == Eigendecomposition?
 
@@ -5320,8 +5291,6 @@ $$A \text{ is diagonalizable } \iff A \text{ has a basis of eigenvectors.}$$
 
 So there is no diagonalization without eigenvectors in the actual mathematical sense.
 
----
-
 ### Only symmetric matrices can have orthogonal eigenbasis? 
 
 Not in full generality.
@@ -5349,8 +5318,6 @@ So for **real matrices with real eigenvectors**, the answer is:
 
 **yes, exactly symmetric matrices.**
 
----
-
 ### Complex case
 
 For complex matrices, “having an orthonormal eigenbasis” does **not** force the matrix to be Hermitian/symmetric. It only forces it to be **normal**.
@@ -5366,8 +5333,6 @@ So:
 * **Hermitian** $\Rightarrow$ orthonormal eigenbasis
 * **Normal** $\Rightarrow$ orthonormal eigenbasis
 * but **not only Hermitian/symmetric**
-
----
 
 ### Important wording point
 
@@ -5504,11 +5469,11 @@ Consider
 $$\dot x = r - x^2$$
 
 
-* If (r>0), there are two equilibria.
-* If (r=0), there is one degenerate equilibrium.
-* If (r<0), there are no real equilibria.
+* If $r>0$, there are two equilibria.
+* If $r=0$, there is one degenerate equilibrium.
+* If $r<0$, there are no real equilibria.
 
-This is a qualitative change as (r) crosses (0), because the phase portrait changes in structure.
+This is a qualitative change as $r$ crosses $0$, because the phase portrait changes in structure.
 
 If you want, I can also explain this in a more intuitive way with phase portraits and bifurcations.
 
@@ -5883,53 +5848,37 @@ continuous return to zero.
 
 </div>
 
-Here is a clean summary you can put into your notes.
-
 ## Degenerate equilibrium — summary
 
 Consider a dynamical system
 
-[
-\dot{x} = f(x), \qquad x \in \mathbb{R}^n,
-]
+$$\dot{x} = f(x), \qquad x \in \mathbb{R}^n,$$
 
-and let (x_*) be an equilibrium, so
+and let $x_*$ be an equilibrium, so
 
-[
-f(x_*) = 0.
-]
+$$f(x_*) = 0.$$
 
 ### 1. Linearization
 
-Near (x_*), the vector field is approximated by
+Near $x_*$, the vector field is approximated by
 
-[
-f(x_*+\delta) = f(x_*) + Df(x_*)\delta + o(|\delta|).
-]
+$$f(x_*+\delta) = f(x_*) + Df(x_*)\delta + o(|\delta|).$$
 
-Since (f(x_*)=0) at an equilibrium, the local dynamics is approximated by
+Since $f(x_*)=0$ at an equilibrium, the local dynamics is approximated by
 
-[
-\dot{\delta} = Df(x_*)\delta.
-]
+$$\dot{\delta} = Df(x_*)\delta.$$
 
-So the Jacobian (Df(x_*)) gives the first-order local behavior near the equilibrium.
-
----
+So the Jacobian $Df(x_*)$ gives the first-order local behavior near the equilibrium.
 
 ### 2. What “degenerate” means
 
 An equilibrium is called **degenerate** if the Jacobian at that point is singular:
 
-[
-\det Df(x_*) = 0.
-]
+$$\det Df(x_*) = 0.$$
 
-Equivalently: **(0) is an eigenvalue** of the linearization.
+Equivalently: **$0$ is an eigenvalue** of the linearization.
 
 This means that in at least one direction, the linear term gives no information about attraction or repulsion.
-
----
 
 ### 3. Intuition
 
@@ -5944,8 +5893,6 @@ A good slogan is:
 
 > Zero eigenvalue means “flat to first order,” not “frozen.”
 
----
-
 ### 4. Why linearization may fail
 
 In nondegenerate cases, the linearization often captures the local phase portrait well.
@@ -5954,32 +5901,24 @@ In degenerate cases, it may be inconclusive, because the missing first-order eff
 
 Example:
 
-[
-\dot{x} = x^2.
-]
+$$\dot{x} = x^2.$$
 
-At (x=0),
+At $x=0$,
 
-[
-f(0)=0, \qquad f'(0)=0,
-]
+$$f(0)=0, \qquad f'(0)=0,$$
 
-so (x=0) is degenerate.
+so $x=0$ is degenerate.
 
 But the linearization
 
-[
-\dot{x}=0
-]
+$$\dot{x}=0$$
 
 does not describe the true behavior:
 
-* if (x>0), then (\dot{x}>0),
-* if (x<0), then (\dot{x}>0).
+* if $x>0$, then $\dot{x}>0$,
+* if $x<0$, then $\dot{x}>0$.
 
 So the nonlinear term determines the dynamics.
-
----
 
 ### 5. Degenerate does not always mean manifold attractor
 
@@ -5989,29 +5928,23 @@ A zero eigenvalue can happen for different reasons.
 
 Example:
 
-[
-\dot{x}=0, \qquad \dot{y}=-y.
-]
+$$\dot{x}=0, \qquad \dot{y}=-y.$$
 
-Every point ((x,0)) is an equilibrium, so the (x)-axis is a manifold of equilibria.
+Every point $(x,0)$ is an equilibrium, so the $x$-axis is a manifold of equilibria.
 Here the zero eigenvalue corresponds to genuine neutral motion along that equilibrium manifold.
 
 #### Case B: isolated equilibrium with zero eigenvalue
 
 Example:
 
-[
-\dot{x}=x^2, \qquad \dot{y}=-y.
-]
+$$\dot{x}=x^2, \qquad \dot{y}=-y.$$
 
-At ((0,0)), one eigenvalue is zero, but there is no line of equilibria.
-The only equilibrium is ((0,0)), and the motion in the (x)-direction is determined by the nonlinear term (x^2).
+At $(0,0)$, one eigenvalue is zero, but there is no line of equilibria.
+The only equilibrium is $(0,0)$, and the motion in the $x$-direction is determined by the nonlinear term $x^2$.
 
 So:
 
 > Degeneracy does not automatically mean line attractor or manifold attractor.
-
----
 
 ### 6. Relation to non-hyperbolicity
 
@@ -6037,50 +5970,34 @@ $$\det A = 1 \neq 0,$$
 
 so it is not degenerate.
 
----
-
 ### 7. In 2D Hamiltonian systems
 
 For a planar Hamiltonian system
 
-[
-\dot{x} = H_y, \qquad \dot{y} = -H_x,
-]
+$$\dot{x} = H_y, \qquad \dot{y} = -H_x,$$
 
-equilibria occur at critical points of (H):
+equilibria occur at critical points of $H$:
 
-[
-\nabla H(x_*,y_*)=0.
-]
+$$\nabla H(x_*,y_*)=0.$$
 
-The equilibrium is **nondegenerate** if the Hessian of (H) is invertible:
+The equilibrium is **nondegenerate** if the Hessian of $H$ is invertible:
 
-[
-\det \nabla^2 H(x_*,y_*) \neq 0.
-]
+$$\det \nabla^2 H(x_*,y_*) \neq 0.$$
 
 It is **degenerate** if
 
-[
-\det \nabla^2 H(x_*,y_*) = 0.
-]
+$$\det \nabla^2 H(x_*,y_*) = 0.$$
 
 In the nondegenerate case:
 
-* saddle point of (H) (\Rightarrow) saddle equilibrium,
-* local minimum or maximum of (H) (\Rightarrow) center.
+* saddle point of $H$ $\Rightarrow$ saddle equilibrium,
+* local minimum or maximum of $H$ $\Rightarrow$ center.
 
 A local maximum also gives a center because Hamiltonian trajectories follow **level sets of (H)**, not gradient descent.
-
----
 
 ## Short final definition
 
 A **degenerate equilibrium** is an equilibrium where the Jacobian has a zero eigenvalue, so the linearization loses information in at least one direction and higher-order nonlinear terms are needed to determine the true local dynamics.
-
-If you want, I can turn this into a shorter “exam-style” version too.
-
-
 
 ## Computational Learning Theory
 
