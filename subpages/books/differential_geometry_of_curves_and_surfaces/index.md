@@ -80,7 +80,7 @@ The map $\alpha\colon R \to R^2$ given by $\alpha(t) = (t^3 - 4t,\; t^2 - 4)$, $
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Non-Differentiable Map)</span></p>
 
-The map $\alpha\colon R \to R^2$ given by $\alpha(t) = (t, |t|)$, $t \in R$, is *not* a parametrized differentiable curve, since $|t|$ is not differentiable at $t = 0$.
+The map $\alpha\colon R \to R^2$ given by $\alpha(t) = (t, \|t\|)$, $t \in R$, is *not* a parametrized differentiable curve, since $|t|$ is not differentiable at $t = 0$.
 
 </div>
 
@@ -101,7 +101,7 @@ Let $u = (u_1, u_2, u_3) \in R^3$ and define its **norm** (or **length**) by
 
 $$|u| = \sqrt{u_1^2 + u_2^2 + u_3^2}.$$
 
-Geometrically, $|u|$ is the distance from the point $(u_1, u_2, u_3)$ to the origin $0 = (0, 0, 0)$. Let $u = (u_1, u_2, u_3)$ and $v = (v_1, v_2, v_3)$ belong to $R^3$, and let $\theta$, $0 \le \theta \le \pi$, be the angle formed by the segments $0u$ and $0v$. The **inner product** $u \cdot v$ is defined by
+Geometrically, $\|u\|$ is the distance from the point $(u_1, u_2, u_3)$ to the origin $0 = (0, 0, 0)$. Let $u = (u_1, u_2, u_3)$ and $v = (v_1, v_2, v_3)$ belong to $R^3$, and let $\theta$, $0 \le \theta \le \pi$, be the angle formed by the segments $0u$ and $0v$. The **inner product** $u \cdot v$ is defined by
 
 $$u \cdot v = |u|\,|v|\cos\theta.$$
 
@@ -144,11 +144,11 @@ where
 
 $$|\alpha'(t)| = \sqrt{(x'(t))^2 + (y'(t))^2 + (z'(t))^2}.$$
 
-Since $\alpha'(t) \neq 0$, the arc-length $s$ is a differentiable function of $t$ and $ds/dt = |\alpha'(t)|$.
+Since $\alpha'(t) \neq 0$, the arc-length $s$ is a differentiable function of $t$ and $ds/dt = \|\alpha'(t)\|$.
 
 </div>
 
-It can happen that the parameter $t$ is already the arc length measured from some point. In this case, $ds/dt = 1 = |\alpha'(t)|$; that is, the velocity vector has constant length equal to 1. Conversely, if $|\alpha'(t)| \equiv 1$, then
+It can happen that the parameter $t$ is already the arc length measured from some point. In this case, $ds/dt = 1 = \|\alpha'(t)\|$; that is, the velocity vector has constant length equal to 1. Conversely, if $\|\alpha'(t)\| \equiv 1$, then
 
 $$s = \int_{t_0}^{t} dt = t - t_0;$$
 
@@ -232,7 +232,7 @@ $$\frac{d}{dt}(u(t) \wedge v(t)) = \frac{du}{dt} \wedge v(t) + u(t) \wedge \frac
 
 This section contains the main results of curves which will be used in later parts of the book.
 
-Let $\alpha\colon I = (a, b) \to R^3$ be a curve parametrized by arc length $s$. Since the tangent vector $\alpha'(s)$ has unit length, the norm $|\alpha''(s)|$ of the second derivative measures the rate of change of the angle which neighboring tangents make with the tangent at $s$. $|\alpha''(s)|$ gives, therefore, a measure of how rapidly the curve pulls away from the tangent line at $s$, in a neighborhood of $s$.
+Let $\alpha\colon I = (a, b) \to R^3$ be a curve parametrized by arc length $s$. Since the tangent vector $\alpha'(s)$ has unit length, the norm $\|\alpha''(s)\|$ of the second derivative measures the rate of change of the angle which neighboring tangents make with the tangent at $s$. $\|\alpha''(s)\|$ gives, therefore, a measure of how rapidly the curve pulls away from the tangent line at $s$, in a neighborhood of $s$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Curvature)</span></p>
@@ -241,7 +241,7 @@ Let $\alpha\colon I \to R^3$ be a curve parametrized by arc length $s \in I$. Th
 
 </div>
 
-If $\alpha$ is a straight line, $\alpha(s) = us + v$, where $u$ and $v$ are constant vectors ($|u| = 1$), then $k \equiv 0$. Conversely, if $k = |\alpha''(s)| \equiv 0$, then by integration $\alpha(s) = us + v$, and the curve is a straight line.
+If $\alpha$ is a straight line, $\alpha(s) = us + v$, where $u$ and $v$ are constant vectors ($\|u\| = 1$), then $k \equiv 0$. Conversely, if $k = \|\alpha''(s)\| \equiv 0$, then by integration $\alpha(s) = us + v$, and the curve is a straight line.
 
 Notice that by a change of orientation, the tangent vector changes its direction; that is, if $\beta(-s) = \alpha(s)$, then
 
@@ -264,7 +264,7 @@ The unit vector $b(s) = t(s) \wedge n(s)$ is normal to the osculating plane and 
 
 </div>
 
-Since $b(s)$ is a unit vector, the length $|b'(s)|$ measures the rate of change of the neighboring osculating planes with the osculating plane at $s$; that is, $b'(s)$ measures how rapidly the curve pulls away from the osculating plane at $s$, in a neighborhood of $s$.
+Since $b(s)$ is a unit vector, the length $\|b'(s)\|$ measures the rate of change of the neighboring osculating planes with the osculating plane at $s$; that is, $b'(s)$ measures how rapidly the curve pulls away from the osculating plane at $s$, in a neighborhood of $s$.
 
 To compute $b'(s)$ we observe that, on the one hand, $b'(s)$ is normal to $b(s)$ and that, on the other hand,
 
@@ -339,7 +339,7 @@ We first remark that arc length, curvature, and torsion are invariant under rigi
 
 $$\int_a^b \left|\frac{d\alpha}{dt}\right| dt = \int_a^b \left|\frac{d(M \circ \alpha)}{dt}\right| dt.$$
 
-Now, assume that two curves $\alpha = \alpha(s)$ and $\tilde{\alpha} = \tilde{\alpha}(s)$ satisfy the conditions $k(s) = \tilde{k}(s)$ and $\tau(s) = \tilde{\tau}(s)$, $s \in I$. Let $t_0, n_0, b_0$ and $\tilde{t}_0, \tilde{n}_0, \tilde{b}_0$ be the Frenet trihedrons at $s = s_0$ of $\alpha$ and $\tilde{\alpha}$, respectively. Clearly, there is a rigid motion which takes $\tilde{\alpha}(s_0)$ into $\alpha(s_0)$ and $\tilde{t}_0, \tilde{n}_0, \tilde{b}_0$ into $t_0, n_0, b_0$. Thus, after performing this rigid motion on $\tilde{\alpha}$, we have that $\tilde{\alpha}(s_0) = \alpha(s_0)$ and that the Frenet trihedrons $t(s), n(s), b(s)$ and $\tilde{t}(s), \tilde{n}(s), \tilde{b}(s)$ of $\alpha$ and $\tilde{\alpha}$, respectively, satisfy the Frenet equations:
+Now, assume that two curves $\alpha = \alpha(s)$ and $\tilde{\alpha} = \tilde{\alpha}(s)$ satisfy the conditions $k(s) = \tilde{k}(s)$ and $\tau(s) = \tilde{\tau}(s)$, $s \in I$. Let $t_0, n_0, b_0$ and $\tilde{t}\_0, \tilde{n}\_0, \tilde{b}\_0$ be the Frenet trihedrons at $s = s_0$ of $\alpha$ and $\tilde{\alpha}$, respectively. Clearly, there is a rigid motion which takes $\tilde{\alpha}(s_0)$ into $\alpha(s_0)$ and $\tilde{t}\_0, \tilde{n}\_0, \tilde{b}\_0$ into $t_0, n_0, b_0$. Thus, after performing this rigid motion on $\tilde{\alpha}$, we have that $\tilde{\alpha}(s_0) = \alpha(s_0)$ and that the Frenet trihedrons $t(s), n(s), b(s)$ and $\tilde{t}(s), \tilde{n}(s), \tilde{b}(s)$ of $\alpha$ and $\tilde{\alpha}$, respectively, satisfy the Frenet equations:
 
 $$\frac{dt}{ds} = kn, \qquad \frac{d\tilde{t}}{ds} = k\tilde{n},$$
 
@@ -375,7 +375,7 @@ In the particular case of a plane curve $\alpha\colon I \to R^2$, it is possible
 
 $$\frac{dt}{ds} = kn$$
 
-and might be either positive or negative. It is clear that $|k|$ agrees with the previous definition and that $k$ changes sign when we change either the orientation of $\alpha$ or the orientation of $R^2$.
+and might be either positive or negative. It is clear that $\|k\|$ agrees with the previous definition and that $k$ changes sign when we change either the orientation of $\alpha$ or the orientation of $R^2$.
 
 </div>
 
@@ -388,7 +388,7 @@ Given a regular parametrized curve $\alpha\colon I \to R^3$ (not necessarily par
 
 $$s = s(t) = \int_{t_0}^{t} |\alpha'(t)|\,dt, \qquad t, t_0 \in I.$$
 
-Since $ds/dt = |\alpha'(t)| \neq 0$, the function $s = s(t)$ has a differentiable inverse $t = t(s)$, $s \in s(I) = J$. Now set $\beta = \alpha \circ t\colon J \to R^3$. Clearly, $\beta(J) = \alpha(I)$ and $|\beta'(s)| = |\alpha'(t) \cdot (dt/ds)| = 1$. This shows that $\beta$ has the same trace as $\alpha$ and is parametrized by arc length. It is usual to say that $\beta$ is a **reparametrization of $\alpha(I)$ by arc length**.
+Since $ds/dt = \|\alpha'(t)\| \neq 0$, the function $s = s(t)$ has a differentiable inverse $t = t(s)$, $s \in s(I) = J$. Now set $\beta = \alpha \circ t\colon J \to R^3$. Clearly, $\beta(J) = \alpha(I)$ and $\|\beta'(s)\| = \|\alpha'(t) \cdot (dt/ds)\| = 1$. This shows that $\beta$ has the same trace as $\alpha$ and is parametrized by arc length. It is usual to say that $\beta$ is a **reparametrization of $\alpha(I)$ by arc length**.
 
 This fact allows us to extend all local concepts previously defined to regular curves with an arbitrary parameter. Thus, we say that the curvature $k(t)$ of $\alpha\colon I \to R^3$ at $t \in I$ is the curvature of a reparametrization $\beta\colon J \to R^3$ of $\alpha(I)$ by arc length at the corresponding point $s = s(t)$. This is clearly independent of the choice of $\beta$ and shows that the restriction, made at the end of Sec. 1-3, of considering only curves parametrized by arc length is not essential.
 
@@ -1040,7 +1040,7 @@ Let $S$ be a regular surface and $V \subset R^3$ be an open set such that $S \su
 
 1. The **height function** relative to a unit vector $v \in R^3$, $h\colon S \to R$, given by $h(p) = p \cdot v$, $p \in S$, where the dot denotes the usual inner product in $R^3$. $h(p)$ is the height of $p \in S$ relative to a plane normal to $v$ and passing through the origin of $R^3$.
 
-2. The square of the distance from a fixed point $p_0 \in R^3$, $f(p) = |p - p_0|^2$, $p \in S$. The need for taking the square comes from the fact that the distance $|p - p_0|$ is not differentiable at $p = p_0$.
+2. The square of the distance from a fixed point $p_0 \in R^3$, $f(p) = \|p - p_0\|^2$, $p \in S$. The need for taking the square comes from the fact that the distance $|p - p_0|$ is not differentiable at $p = p_0$.
 
 </div>
 
@@ -1075,13 +1075,13 @@ If $\mathbf{x}\colon U \subset R^2 \to S$ is a parametrization, $\mathbf{x}^{-1}
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Differentiable Maps from Ambient Space)</span></p>
 
-Let $S_1$ and $S_2$ be regular surfaces. Assume that $S_1 \subset V \subset R^3$, where $V$ is an open set of $R^3$, and that $\varphi\colon V \to R^3$ is a differentiable map such that $\varphi(S_1) \subset S_2$. Then the restriction $\varphi|_{S_1}\colon S_1 \to S_2$ is a differentiable map. In particular:
+Let $S_1$ and $S_2$ be regular surfaces. Assume that $S_1 \subset V \subset R^3$, where $V$ is an open set of $R^3$, and that $\varphi\colon V \to R^3$ is a differentiable map such that $\varphi(S_1) \subset S_2$. Then the restriction $\varphi\|\_{S_1}\colon S_1 \to S_2$ is a differentiable map. In particular:
 
 1. If $S$ is symmetric relative to the $xy$ plane, then the map $\sigma\colon S \to S$, $\sigma(x, y, z) = (x, y, -z)$, which takes each $p \in S$ into its symmetrical point, is differentiable. This generalizes to surfaces symmetric relative to any plane of $R^3$.
 
-2. Let $R_{z,\theta}\colon R^3 \to R^3$ be the rotation of angle $\theta$ about the $z$ axis, and let $S \subset R^3$ be a regular surface invariant by this rotation. Then the restriction $R_{z,\theta}|_S\colon S \to S$ is a differentiable map.
+2. Let $R_{z,\theta}\colon R^3 \to R^3$ be the rotation of angle $\theta$ about the $z$ axis, and let $S \subset R^3$ be a regular surface invariant by this rotation. Then the restriction $R_{z,\theta}\|\_S\colon S \to S$ is a differentiable map.
 
-3. Let $\varphi\colon R^3 \to R^3$ be given by $\varphi(x, y, z) = (xa, yb, zc)$, where $a$, $b$, and $c$ are nonzero real numbers. $\varphi$ is clearly differentiable, and the restriction $\varphi|_{S^2}$ is a differentiable map from the sphere $S^2$ into the ellipsoid $x^2/a^2 + y^2/b^2 + z^2/c^2 = 1$.
+3. Let $\varphi\colon R^3 \to R^3$ be given by $\varphi(x, y, z) = (xa, yb, zc)$, where $a$, $b$, and $c$ are nonzero real numbers. $\varphi$ is clearly differentiable, and the restriction $\varphi\|\_{S^2}$ is a differentiable map from the sphere $S^2$ into the ellipsoid $x^2/a^2 + y^2/b^2 + z^2/c^2 = 1$.
 
 </div>
 
@@ -3372,7 +3372,7 @@ In the particular case of the plane, the notion of parallel field along a parame
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 1</span><span class="math-callout__name">(Parallel Fields Preserve Inner Products)</span></p>
 
-Let $w$ and $v$ be parallel vector fields along $\alpha\colon I \to S$. Then $\langle w(t), v(t) \rangle$ is constant. In particular, $|w(t)|$ and $|v(t)|$ are constant, and the angle between $v(t)$ and $w(t)$ is constant.
+Let $w$ and $v$ be parallel vector fields along $\alpha\colon I \to S$. Then $\langle w(t), v(t) \rangle$ is constant. In particular, $\|w(t)\|$ and $\|v(t)\|$ are constant, and the angle between $v(t)$ and $w(t)$ is constant.
 
 </div>
 
@@ -3429,7 +3429,7 @@ $\gamma$ is a **parametrized geodesic** if it is geodesic for all $t \in I$.
 
 </div>
 
-By Prop. 1, we obtain immediately that $|\gamma'(t)| = \text{const.} = c \neq 0$. Therefore, we may introduce the arc length $s = ct$ as a parameter, and we conclude that the parameter $t$ of a parametrized geodesic $\gamma$ is proportional to the arc length of $\gamma$.
+By Prop. 1, we obtain immediately that $\|\gamma'(t)\| = \text{const.} = c \neq 0$. Therefore, we may introduce the arc length $s = ct$ as a parameter, and we conclude that the parameter $t$ of a parametrized geodesic $\gamma$ is proportional to the arc length of $\gamma$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Geodesic — Regular Curve)</span></p>
@@ -3575,7 +3575,7 @@ $$r\cos\theta = |c| = \text{const.}$$
 
 </div>
 
-This relation follows from the first geodesic equation, which can be rewritten as $(f^2 u')' = 0$, hence $f^2 u' = c = \text{const.}$ Since $\cos\theta = |\langle \mathbf{x}_u, \mathbf{x}_u u' + \mathbf{x}_v v' \rangle|/|\mathbf{x}_u| = |fu'|$, we obtain $r\cos\theta = |c|$.
+This relation follows from the first geodesic equation, which can be rewritten as $(f^2 u')' = 0$, hence $f^2 u' = c = \text{const.}$ Since $\cos\theta = \|\langle \mathbf{x}\_u, \mathbf{x}\_u u' + \mathbf{x}_v v' \rangle\|/\|\mathbf{x}\_u\| = \|fu'\|$, we obtain $r\cos\theta = \|c\|$.
 
 The geodesic equations can also be integrated by means of primitives. Let $u = u(s)$, $v = v(s)$ be a geodesic parametrized by arc length, which we shall assume not to be a meridian or a parallel of the surface. The first equation gives $f^2 u' = \text{const.} = c \neq 0$. The first fundamental form along $(u(s), v(s))$ gives
 
@@ -3616,14 +3616,14 @@ Let $\alpha\colon [0, l] \to S$ be a continuous map from the closed interval $[0
 
 The points $\alpha(t_i)$, $i = 0, \dots, k$, are called the **vertices** of $\alpha$ and the traces $\alpha([t_i, t_{i+1}])$ are called the **regular arcs** of $\alpha$. It is usual to call the trace $\alpha([0, l])$ of $\alpha$ a **closed piecewise regular curve**.
 
-For each vertex $\alpha(t_i)$ there exist the limits $\alpha'(t_i - 0) \neq 0$ and $\alpha'(t_i + 0) \neq 0$. Let $|\theta_i|$, $0 < |\theta_i| \le \pi$, be the smallest determination of the angle from $\alpha'(t_i - 0)$ to $\alpha'(t_i + 0)$. The signed angle $\theta_i$, $-\pi < \theta_i < \pi$, is called the **external angle** at the vertex $\alpha(t_i)$.
+For each vertex $\alpha(t_i)$ there exist the limits $\alpha'(t_i - 0) \neq 0$ and $\alpha'(t_i + 0) \neq 0$. Let $\|\theta_i\|$, $0 < \|\theta_i\| \le \pi$, be the smallest determination of the angle from $\alpha'(t_i - 0)$ to $\alpha'(t_i + 0)$. The signed angle $\theta_i$, $-\pi < \theta_i < \pi$, is called the **external angle** at the vertex $\alpha(t_i)$.
 
 ### The Theorem of Turning Tangents
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Theorem of Turning Tangents)</span></p>
 
-Let $\mathbf{x}\colon U \to S$ be a parametrization compatible with the orientation of $S$, where $U$ is homeomorphic to an open disk in the plane. Let $\alpha\colon [0, l] \to \mathbf{x}(U)$ be a simple closed, piecewise regular, parametrized curve, with vertices $\alpha(s_0), \dots, \alpha(s_k)$ and external angles $\theta_0, \dots, \theta_k$. Let $\varphi_i\colon [t_i, t_{i+1}] \to R$ be differentiable functions which measure at each $t \in [t_i, t_{i+1}]$ the positive angle from $\mathbf{x}_u$ to $\alpha'(t)$. Then
+Let $\mathbf{x}\colon U \to S$ be a parametrization compatible with the orientation of $S$, where $U$ is homeomorphic to an open disk in the plane. Let $\alpha\colon [0, l] \to \mathbf{x}(U)$ be a simple closed, piecewise regular, parametrized curve, with vertices $\alpha(s_0), \dots, \alpha(s_k)$ and external angles $\theta_0, \dots, \theta_k$. Let $\varphi_i\colon [t_i, t_{i+1}] \to R$ be differentiable functions which measure at each $t \in [t_i, t_{i+1}]$ the positive angle from $\mathbf{x}\_u$ to $\alpha'(t)$. Then
 
 $$\sum_{i=0}^{k} (\varphi_i(t_{i+1}) - \varphi_i(t_i)) + \sum_{i=0}^{k} \theta_i = \pm 2\pi,$$
 
@@ -3664,7 +3664,7 @@ Let $u = u(s)$, $v = v(s)$ be the expression of $\alpha$ in the parametrization 
 
 $$k_g(s) = \frac{1}{2\sqrt{EG}}\left\lbrace G_u \frac{dv}{ds} - E_v \frac{du}{ds} \right\rbrace + \frac{d\varphi_i}{ds},$$
 
-where $\varphi_i = \varphi_i(s)$ is a differentiable function which measures the positive angle from $\mathbf{x}_u$ to $\alpha'(s)$ in $[s_i, s_{i+1}]$. By integrating the above expression in every interval $[s_i, s_{i+1}]$ and adding up the results,
+where $\varphi_i = \varphi_i(s)$ is a differentiable function which measures the positive angle from $\mathbf{x}\_u$ to $\alpha'(s)$ in $[s_i, s_{i+1}]$. By integrating the above expression in every interval $[s_i, s_{i+1}]$ and adding up the results,
 
 $$\sum_{i=0}^{k} \int_{s_i}^{s_{i+1}} k_g(s)\,ds = \sum_{i=0}^{k} \int_{s_i}^{s_{i+1}} \left(\frac{G_u}{2\sqrt{EG}} \frac{dv}{ds} - \frac{E_v}{2\sqrt{EG}} \frac{du}{ds}\right) ds + \sum_{i=0}^{k} \int_{s_i}^{s_{i+1}} \frac{d\varphi_i}{ds}\,ds.$$
 
@@ -3898,17 +3898,17 @@ Intuitively, Lemma 1 means that since the speed of a geodesic is constant, we ca
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Exponential Map)</span></p>
 
-If $v \in T_p(S)$, $v \neq 0$, is such that $\gamma(|v|, v/|v|) = \gamma(1, v)$ is defined, we set
+If $v \in T_p(S)$, $v \neq 0$, is such that $\gamma(\|v\|, v/\|v\|) = \gamma(1, v)$ is defined, we set
 
 $$\exp_p(v) = \gamma(1, v) \qquad \text{and} \qquad \exp_p(0) = p.$$
 
 </div>
 
-Geometrically, the construction corresponds to laying off (if possible) a length equal to $|v|$ along the geodesic that passes through $p$ in the direction of $v$; the point of $S$ thus obtained is denoted by $\exp_p(v)$.
+Geometrically, the construction corresponds to laying off (if possible) a length equal to $\|v\|$ along the geodesic that passes through $p$ in the direction of $v$; the point of $S$ thus obtained is denoted by $\exp_p(v)$.
 
 For example, $\exp_p(v)$ is defined on the unit sphere $S^2$ for every $v \in T_p(S^2)$. The points of the circles of radii $\pi, 3\pi, \dots, (2n+1)\pi$ are mapped into the antipodal point $q$ of $p$. The points of the circles of radii $2\pi, 4\pi, \dots, 2n\pi$ are mapped back into $p$.
 
-On the other hand, on the regular surface $C$ formed by the one-sheeted cone minus the vertex, $\exp_p(v)$ is not defined for a vector $v \in T_p(C)$ in the direction of the meridian that connects $p$ to the vertex, when $|v| \ge d$ and $d$ is the distance from $p$ to the vertex.
+On the other hand, on the regular surface $C$ formed by the one-sheeted cone minus the vertex, $\exp_p(v)$ is not defined for a vector $v \in T_p(C)$ in the direction of the meridian that connects $p$ to the vertex, when $\|v\| \ge d$ and $d$ is the distance from $p$ to the vertex.
 
 The important point is that $\exp_p$ is always defined and differentiable in some neighborhood of $p$.
 
@@ -4026,9 +4026,9 @@ Any two regular surfaces with the same constant Gaussian curvature $K$ are local
 <details markdown="1">
 <summary>Proof</summary>
 
-Let us first consider the equation $(\sqrt{G})_{\rho\rho} + \bar{K}\sqrt{G} = 0$ and study separately the cases (1) $K = 0$, (2) $K > 0$, and (3) $K < 0$.
+Let us first consider the equation $(\sqrt{G})\_{\rho\rho} + \bar{K}\sqrt{G} = 0$ and study separately the cases (1) $K = 0$, (2) $K > 0$, and (3) $K < 0$.
 
-1. If $K = 0$, $(\sqrt{G})_{\rho\rho} = 0$. Thus, $(\sqrt{G})_\rho = g(\theta)$, where $g(\theta)$ is a function of $\theta$. Since $\lim_{\rho \to 0} (\sqrt{G})_\rho = 1$, we conclude that $(\sqrt{G})_\rho \equiv 1$ and $\sqrt{G} = \rho + f(\theta)$. Since $\lim_{\rho \to 0} \sqrt{G} = 0$, we finally have, in this case,
+1. If $K = 0$, $(\sqrt{G})\_{\rho\rho} = 0$. Thus, $(\sqrt{G})\_\rho = g(\theta)$, where $g(\theta)$ is a function of $\theta$. Since $\lim_{\rho \to 0} (\sqrt{G})\_\rho = 1$, we conclude that $(\sqrt{G})\_\rho \equiv 1$ and $\sqrt{G} = \rho + f(\theta)$. Since $\lim_{\rho \to 0} \sqrt{G} = 0$, we finally have, in this case,
 
 $$E = 1, \qquad F = 0, \qquad G(\rho, \theta) = \rho^2.$$
 
@@ -4036,7 +4036,7 @@ $$E = 1, \qquad F = 0, \qquad G(\rho, \theta) = \rho^2.$$
 
 $$\sqrt{G} = A(\theta)\cos(\sqrt{K}\,\rho) + B(\theta)\sin(\sqrt{K}\,\rho).$$
 
-Since $\lim \sqrt{G} = 0$, we obtain $A(\theta) = 0$. Since $\lim (\sqrt{G})_\rho = 1$, we obtain $B(\theta) = 1/\sqrt{K}$. Therefore, in this case,
+Since $\lim \sqrt{G} = 0$, we obtain $A(\theta) = 0$. Since $\lim (\sqrt{G})\_\rho = 1$, we obtain $B(\theta) = 1/\sqrt{K}$. Therefore, in this case,
 
 $$E = 1, \qquad F = 0, \qquad G = \frac{1}{K}\sin^2(\sqrt{K}\,\rho).$$
 
@@ -4059,12 +4059,12 @@ We claim that $\psi$ is the required isometry. In fact, the restriction $\bar{\p
 
 ### Geometric Interpretation of $K$ via Geodesic Circles
 
-The expression $K = -(\sqrt{G})_{\rho\rho}/\sqrt{G}$ in geodesic polar coordinates provides a nice geometric interpretation of the Gaussian curvature $K$.
+The expression $K = -(\sqrt{G})\_{\rho\rho}/\sqrt{G}$ in geodesic polar coordinates provides a nice geometric interpretation of the Gaussian curvature $K$.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Spreading of Geodesics and the Sign of $K$)</span></p>
 
-If $K < 0$, since $\lim_{\rho \to 0} (\sqrt{G})_\rho = 1$ and $(\sqrt{G})_{\rho\rho} = -K\sqrt{G} > 0$, the function $L(\rho)$ (arc length of a geodesic circle of radius $\rho$) increases with $\rho$; that is, the geodesics $\theta = \theta_0$ and $\theta = \theta_1$ get farther and farther apart. On the other hand, if $K > 0$, $L(\rho)$ behaves as in the sphere: the geodesics may (case I) or may not (case II) come closer together after a certain value of $\rho$, and this depends on the Gaussian curvature.
+If $K < 0$, since $\lim_{\rho \to 0} (\sqrt{G})\_\rho = 1$ and $(\sqrt{G})\_{\rho\rho} = -K\sqrt{G} > 0$, the function $L(\rho)$ (arc length of a geodesic circle of radius $\rho$) increases with $\rho$; that is, the geodesics $\theta = \theta_0$ and $\theta = \theta_1$ get farther and farther apart. On the other hand, if $K > 0$, $L(\rho)$ behaves as in the sphere: the geodesics may (case I) or may not (case II) come closer together after a certain value of $\rho$, and this depends on the Gaussian curvature.
 
 </div>
 
@@ -4190,7 +4190,7 @@ Given $p \in S$ there exist a neighborhood $W$ of $p$ in $S$ and a number $\delt
 <details markdown="1">
 <summary>Proof</summary>
 
-Let $V$ be a coordinate neighborhood of $p$. Let $\epsilon$, $\epsilon_1$, $\epsilon_2$ and $\gamma\colon (-\epsilon_2, \epsilon_2) \times \mathfrak{U} \to V$ be as in Theorem 1a. By choosing $\epsilon_1 < \epsilon_2$, we can make sure that, for $(q, v) \in \mathfrak{U}$, $\exp_q(v) = \gamma(|v|, q, v)$ is well defined. Thus, we can define a differentiable map $\varphi\colon \mathfrak{U} \to V \times V$ by
+Let $V$ be a coordinate neighborhood of $p$. Let $\epsilon$, $\epsilon_1$, $\epsilon_2$ and $\gamma\colon (-\epsilon_2, \epsilon_2) \times \mathfrak{U} \to V$ be as in Theorem 1a. By choosing $\epsilon_1 < \epsilon_2$, we can make sure that, for $(q, v) \in \mathfrak{U}$, $\exp_q(v) = \gamma(\|v\|, q, v)$ is well defined. Thus, we can define a differentiable map $\varphi\colon \mathfrak{U} \to V \times V$ by
 
 $$\varphi(q, v) = (q, \exp_q(v)).$$
 
@@ -4370,7 +4370,7 @@ we arrive at
 
 $$-(k_1 - k_2)KEG = -2E(k_1)_{vv} + 2G(k_2)_{uu} + \tilde{M}(k_1)_v + \tilde{N}(k_2)_u.$$
 
-Since $K > 0$ and $k_1 > k_2$ at $p$, the first member is strictly negative. Since $k_1$ reaches a local maximum at $p$ and $k_2$ reaches a local minimum at $p$, we have $(k_1)_v = (k_2)_u = 0$, $(k_1)_{vv} \le 0$, $(k_2)_{uu} \ge 0$ at $p$. However, this implies that the second member of the equation is positive or zero, which is a contradiction. **Q.E.D.**
+Since $K > 0$ and $k_1 > k_2$ at $p$, the first member is strictly negative. Since $k_1$ reaches a local maximum at $p$ and $k_2$ reaches a local minimum at $p$, we have $(k_1)\_v = (k_2)\_u = 0$, $(k_1)\_{vv} \le 0$, $(k_2)\_{uu} \ge 0$ at $p$. However, this implies that the second member of the equation is positive or zero, which is a contradiction. **Q.E.D.**
 
 </details>
 </div>
@@ -4503,7 +4503,7 @@ where $p$, $q$, $r$ are arbitrary points of $S$.
 
 </div>
 
-The intrinsic distance $d$ gives $S$ the structure of a **metric space**. It is an important fact that the intrinsic metric $d$ and the metric $\bar{d}$ induced by $R^3$ on $S$ (where $\bar{d}(p, q) = |p - q|$) determine the same topology on $S$.
+The intrinsic distance $d$ gives $S$ the structure of a **metric space**. It is an important fact that the intrinsic metric $d$ and the metric $\bar{d}$ induced by $R^3$ on $S$ (where $\bar{d}(p, q) = \|p - q\|$) determine the same topology on $S$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5</span><span class="math-callout__name">(Closed Surfaces are Complete)</span></p>
@@ -4518,7 +4518,7 @@ A closed surface $S \subset R^3$ is complete.
 
 Let $\gamma\colon [0, \epsilon) \to S$, $\gamma(0) = p \in S$, be a parametrized geodesic of $S$, parametrized by arc length. We need to show that it is possible to extend $\gamma$ to a geodesic $\bar{\gamma}\colon R \to S$, defined on the entire line $R$. Observe first that when $\bar{\gamma}(s_0)$, $s_0 \in R$, is defined, then, by the theorem of existence and uniqueness of geodesics (Sec. 4-4, Prop. 5), it is possible to extend $\bar{\gamma}$ to a neighborhood of $s_0$ in $R$. Therefore, the set of all $s \in R$ where $\bar{\gamma}$ is defined is open in $R$.
 
-Let us assume that $\bar{\gamma}$ is defined for $s < s_0$ and let us show that $\bar{\gamma}$ is defined for $s = s_0$. Consider a sequence $\lbrace s_n \rbrace \to s_0$, with $s_n < s_0$. We shall first prove that the sequence $\lbrace \bar{\gamma}(s_n) \rbrace$ converges in $S$. Given $\epsilon > 0$, there exists $n_0$ such that if $n, m > n_0$, then $|s_n - s_m| < \epsilon$. Denote by $\bar{d}$ the distance in $R^3$, and observe that $\bar{d}(p, q) \le d(p, q)$ for $p, q \in S$. Thus,
+Let us assume that $\bar{\gamma}$ is defined for $s < s_0$ and let us show that $\bar{\gamma}$ is defined for $s = s_0$. Consider a sequence $\lbrace s_n \rbrace \to s_0$, with $s_n < s_0$. We shall first prove that the sequence $\lbrace \bar{\gamma}(s_n) \rbrace$ converges in $S$. Given $\epsilon > 0$, there exists $n_0$ such that if $n, m > n_0$, then $\|s_n - s_m\| < \epsilon$. Denote by $\bar{d}$ the distance in $R^3$, and observe that $\bar{d}(p, q) \le d(p, q)$ for $p, q \in S$. Thus,
 
 $$\bar{d}(\bar{\gamma}(s_n), \bar{\gamma}(s_m)) \le d(\bar{\gamma}(s_n), \bar{\gamma}(s_m)) \le |s_n - s_m| < \epsilon.$$
 
@@ -4554,7 +4554,7 @@ Let $S$ be a complete surface. Given two points $p, q \in S$, there exists a min
 
 Let $r = d(p, q)$ be the distance between $p$ and $q$. Let $B_\delta(0) \subset T_p(S)$ be a disk of radius $\delta$, centered in the origin $0$ of the tangent plane and contained in a neighborhood $U \subset T_p(S)$ of $0$, where $\exp_p$ is a diffeomorphism. Let $B_\delta(p) = \exp_p(B_\delta(0))$. Observe that the boundary $\text{Bd}\,B_\delta(p) = \Sigma$ is compact since it is the continuous image of the compact set $\text{Bd}\,B_\delta(0)$.
 
-If $x \in \Sigma$, the continuous function $d(x, q)$ reaches a minimum at a point $x_0 \in \Sigma$. The point $x_0$ may be written as $x_0 = \exp_p(\delta v)$, $|v| = 1$, $v \in T_p(S)$.
+If $x \in \Sigma$, the continuous function $d(x, q)$ reaches a minimum at a point $x_0 \in \Sigma$. The point $x_0$ may be written as $x_0 = \exp_p(\delta v)$, $\|v\| = 1$, $v \in T_p(S)$.
 
 Let $\gamma$ be the geodesic parametrized by arc length, given by $\gamma(s) = \exp_p(sv)$. Since $S$ is complete, $\gamma$ is defined for every $s \in R$. In particular, $\gamma$ is defined in the interval $[0, r]$. If we show that $\gamma(r) = q$, then $\gamma$ must be a geodesic joining $p$ to $q$ which is minimal, since $l(\gamma) = r = d(p, q)$, and this will conclude the proof.
 
@@ -4653,9 +4653,9 @@ Suppose now that $L'(0) = 0$ for every proper variation of $\alpha$ and consider
 
 $$L'(0) = -\int_0^l \langle f(s)A(s),\; A(s) \rangle\,ds = -\int_0^l f(s)|A(s)|^2\,ds = 0.$$
 
-Therefore, since $f(s)|A(s)|^2 \ge 0$, we obtain $f(s)|A(s)|^2 \equiv 0$.
+Therefore, since $f(s)\|A(s)\|^2 \ge 0$, we obtain $f(s)|A(s)|^2 \equiv 0$.
 
-We shall prove that $A(s) = 0$, $s \in [0, l]$. In fact, if $|A(s_0)| \neq 0$, $s_0 \in (0, l)$, there exists an interval $I = (s_0 - \epsilon, s_0 + \epsilon)$ such that $|A(s)| \neq 0$ for $s \in I$. By choosing $f$ such that $f(s_0) > 0$, we contradict $f(s_0)|A(s_0)| = 0$. Therefore, $|A(s)| = 0$ when $s \in (0, l)$. By continuity, $A(0) = A(l) = 0$ as asserted. Since the acceleration vector of $\alpha$ is identically zero, $\alpha$ is geodesic. **Q.E.D.**
+We shall prove that $A(s) = 0$, $s \in [0, l]$. In fact, if $\|A(s_0)\| \neq 0$, $s_0 \in (0, l)$, there exists an interval $I = (s_0 - \epsilon, s_0 + \epsilon)$ such that $\|A(s)\| \neq 0$ for $s \in I$. By choosing $f$ such that $f(s_0) > 0$, we contradict $f(s_0)\|A(s_0)\| = 0$. Therefore, $\|A(s)\| = 0$ when $s \in (0, l)$. By continuity, $A(0) = A(l) = 0$ as asserted. Since the acceleration vector of $\alpha$ is identically zero, $\alpha$ is geodesic. **Q.E.D.**
 
 </details>
 </div>
@@ -4705,7 +4705,7 @@ Starting from the first variation formula and differentiating again, using the s
 
 $$L''(t) = \int_0^l \frac{d}{dt}\left\langle \frac{D}{\partial s}\frac{\partial h}{\partial t},\; \frac{\partial h}{\partial s}\right\rangle ds - \int_0^l \frac{\left(\left\langle \frac{D}{\partial s}\frac{\partial h}{\partial t},\; \frac{\partial h}{\partial s}\right\rangle\right)^2}{|\partial h/\partial s|^{3/2}}\,ds.$$
 
-Evaluating at $t = 0$, using the facts that $|\partial h/\partial s(s, 0)| = 1$, $(D/\partial s)(\partial h/\partial s)(s, 0) = 0$ (since $\gamma$ is a geodesic), and $\langle \partial h/\partial s, \partial h/\partial t \rangle = 0$ (orthogonal variation), and applying Lemma 6 to handle the commutator of covariant derivatives, one obtains the stated formula. **Q.E.D.**
+Evaluating at $t = 0$, using the facts that $\|\partial h/\partial s(s, 0)\| = 1$, $(D/\partial s)(\partial h/\partial s)(s, 0) = 0$ (since $\gamma$ is a geodesic), and $\langle \partial h/\partial s, \partial h/\partial t \rangle = 0$ (orthogonal variation), and applying Lemma 6 to handle the commutator of covariant derivatives, one obtains the stated formula. **Q.E.D.**
 
 </details>
 </div>
@@ -4742,7 +4742,7 @@ $$\rho \le \frac{\pi}{\sqrt{\delta}}.$$
 
 Since $S$ is complete, given two points $p, q \in S$, there exists, by the Hopf-Rinow theorem, a minimal geodesic $\gamma$ of $S$ joining $p$ to $q$. We shall prove that the length $l = d(p, q)$ of this geodesic satisfies the inequality $l \le \pi/\sqrt{\delta}$.
 
-We shall assume that $l > \pi/\sqrt{\delta}$ and consider a variation of the geodesic $\gamma\colon [0, l] \to S$, defined as follows. Let $w_0$ be a unit vector of $T_{\gamma(0)}(S)$ such that $\langle w_0, \gamma'(0) \rangle = 0$ and let $w(s)$, $s \in [0, l]$, be the parallel transport of $w_0$ along $\gamma$. It is clear that $|w(s)| = 1$ and that $\langle w(s), \gamma'(s) \rangle = 0$, $s \in [0, l]$. Consider the vector field $V(s)$ defined by
+We shall assume that $l > \pi/\sqrt{\delta}$ and consider a variation of the geodesic $\gamma\colon [0, l] \to S$, defined as follows. Let $w_0$ be a unit vector of $T_{\gamma(0)}(S)$ such that $\langle w_0, \gamma'(0) \rangle = 0$ and let $w(s)$, $s \in [0, l]$, be the parallel transport of $w_0$ along $\gamma$. It is clear that $\|w(s)\| = 1$ and that $\langle w(s), \gamma'(s) \rangle = 0$, $s \in [0, l]$. Consider the vector field $V(s)$ defined by
 
 $$V(s) = w(s)\sin\frac{\pi}{l}s, \qquad s \in [0, l].$$
 
@@ -5395,7 +5395,7 @@ For simplicity, the surfaces in this section are assumed to be complete and the 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 1</span><span class="math-callout__name">(Arc Length Comparison)</span></p>
 
-Let $p \in S$, $u \in T_p(S)$, $l = |u| \neq 0$, and let $\tilde{\gamma}\colon [0, l] \to T_p(S)$ be the line of $T_p(S)$ given by $\tilde{\gamma}(s) = sv$, $s \in [0, l]$, $v = u/|u|$. Let $\tilde{\alpha}\colon [0, l] \to T_p(S)$ be a differentiable parametrized curve of $T_p(S)$, with $\tilde{\alpha}(0) = 0$, $\tilde{\alpha}(l) = u$, and $\tilde{\alpha}(s) \neq 0$ if $s \neq 0$. Furthermore, let
+Let $p \in S$, $u \in T_p(S)$, $l = \|u\| \neq 0$, and let $\tilde{\gamma}\colon [0, l] \to T_p(S)$ be the line of $T_p(S)$ given by $\tilde{\gamma}(s) = sv$, $s \in [0, l]$, $v = u/|u|$. Let $\tilde{\alpha}\colon [0, l] \to T_p(S)$ be a differentiable parametrized curve of $T_p(S)$, with $\tilde{\alpha}(0) = 0$, $\tilde{\alpha}(l) = u$, and $\tilde{\alpha}(s) \neq 0$ if $s \neq 0$. Furthermore, let
 
 $$\alpha(s) = \exp_p \tilde{\alpha}(s) \quad \text{and} \quad \gamma(s) = \exp_p \tilde{\gamma}(s).$$
 
@@ -5411,7 +5411,7 @@ Then:
 <details markdown="1">
 <summary>Proof of Lemma 1</summary>
 
-Let $\tilde{\alpha}(s)/|\tilde{\alpha}(s)| = r$, and let $n$ be a unit vector of $T_p(S)$ with $\langle r, n \rangle = 0$. In the basis $\lbrace r, n \rbrace$ of $T_p(S)$ we can write $\tilde{\alpha}'(s) = ar + bn$, where $a = \langle \tilde{\alpha}'(s), r \rangle$ and $b = \langle \tilde{\alpha}'(s), n \rangle$.
+Let $\tilde{\alpha}(s)/\|\tilde{\alpha}(s)\| = r$, and let $n$ be a unit vector of $T_p(S)$ with $\langle r, n \rangle = 0$. In the basis $\lbrace r, n \rbrace$ of $T_p(S)$ we can write $\tilde{\alpha}'(s) = ar + bn$, where $a = \langle \tilde{\alpha}'(s), r \rangle$ and $b = \langle \tilde{\alpha}'(s), n \rangle$.
 
 By definition,
 
@@ -5425,7 +5425,7 @@ $$l(\alpha) = \int_0^l \langle \alpha'(s), \alpha'(s) \rangle^{1/2}\,ds \ge \int
 
 and this proves part 1.
 
-To prove part 2, let us assume that $l(\alpha) = l(\gamma)$. Then $\int_0^l \langle \alpha'(s), \alpha'(s) \rangle^{1/2}\,ds = \int_0^l a\,ds$, and since $\langle \alpha'(s), \alpha'(s) \rangle^{1/2} \ge a$, the equality must hold for every $s \in [0, l]$. Therefore, $c = |b|\,|(d\exp_p)_{\tilde{\alpha}(s)}(n)| = 0$. Since $\tilde{\alpha}(s)$ is not a critical point of $\exp_p$, we conclude that $b \equiv 0$. It follows that the tangent lines to the curve $\tilde{\alpha}$ all pass through the origin $O$ of $T_p(S)$. Thus, $\tilde{\alpha}$ is a line of $T_p(S)$ which passes through $O$. Since $\tilde{\alpha}(l) = \tilde{\gamma}(l)$, the lines $\tilde{\alpha}$ and $\tilde{\gamma}$ coincide, thus contradicting the assumption that the traces of $\alpha$ and $\gamma$ are distinct. From this contradiction it follows that $l(\alpha) > l(\gamma)$, which proves part 2. **Q.E.D.**
+To prove part 2, let us assume that $l(\alpha) = l(\gamma)$. Then $\int_0^l \langle \alpha'(s), \alpha'(s) \rangle^{1/2}\,ds = \int_0^l a\,ds$, and since $\langle \alpha'(s), \alpha'(s) \rangle^{1/2} \ge a$, the equality must hold for every $s \in [0, l]$. Therefore, $c = \|b\|\,\|(d\exp_p)_{\tilde{\alpha}(s)}(n)\| = 0$. Since $\tilde{\alpha}(s)$ is not a critical point of $\exp_p$, we conclude that $b \equiv 0$. It follows that the tangent lines to the curve $\tilde{\alpha}$ all pass through the origin $O$ of $T_p(S)$. Thus, $\tilde{\alpha}$ is a line of $T_p(S)$ which passes through $O$. Since $\tilde{\alpha}(l) = \tilde{\gamma}(l)$, the lines $\tilde{\alpha}$ and $\tilde{\gamma}$ coincide, thus contradicting the assumption that the traces of $\alpha$ and $\gamma$ are distinct. From this contradiction it follows that $l(\alpha) > l(\gamma)$, which proves part 2. **Q.E.D.**
 
 </details>
 </div>
@@ -5853,7 +5853,7 @@ Let $p \in H$, $p' \in S'$, and choose a linear isometry $\psi\colon T_p(H) \to 
 
 For the rest of this section we shall assume that there exists an isometric immersion $\varphi\colon S' \to R^3$, where $S'$ is a geometric surface homeomorphic to a plane and with $K \equiv -1$.
 
-To avoid the difficulties associated with possible self-intersections of $\varphi(S')$, we shall work with $S'$ and use the immersion $\varphi$ to induce on $S'$ the local extrinsic geometry of $\varphi(S') \subset R^3$. More precisely, since $\varphi$ is an immersion, for each $p \in S'$ there exists a neighborhood $V' \subset S'$ of $p$ such that the restriction $\varphi|_{V'} = \tilde{\varphi}$ is a diffeomorphism. At each $\tilde{\varphi}(q) \in \tilde{\varphi}(V')$, there exist two asymptotic directions. Through $\tilde{\varphi}$, these directions induce two directions at $q$, which will be called the **asymptotic directions on $S'$**, and the same procedure can be applied to any other local entity of $\varphi(S')$.
+To avoid the difficulties associated with possible self-intersections of $\varphi(S')$, we shall work with $S'$ and use the immersion $\varphi$ to induce on $S'$ the local extrinsic geometry of $\varphi(S') \subset R^3$. More precisely, since $\varphi$ is an immersion, for each $p \in S'$ there exists a neighborhood $V' \subset S'$ of $p$ such that the restriction $\varphi\|\_{V'} = \tilde{\varphi}$ is a diffeomorphism. At each $\tilde{\varphi}(q) \in \tilde{\varphi}(V')$, there exist two asymptotic directions. Through $\tilde{\varphi}$, these directions induce two directions at $q$, which will be called the **asymptotic directions on $S'$**, and the same procedure can be applied to any other local entity of $\varphi(S')$.
 
 We now recall that the coordinate curves of a parametrization constitute a **Tchebyshef net** if the opposite sides of any quadrilateral formed by them have equal length (cf. Exercise 7, Sec. 2-5). If this is the case, it is possible to reparametrize the coordinate neighborhood in such a way that $E = G = 1$, $F = \cos\theta$, where $\theta$ is the angle formed by the coordinate curves (Sec. 2-5, Exercise 8). Furthermore, in this situation, $K = -(\theta_{uv}/\sin\theta)$ (Sec. 4-3, Exercise 5).
 
@@ -5994,7 +5994,7 @@ In Chapter 5 we have used more freely some elementary topological properties of 
 
 ## A. Preliminaries
 
-In what follows $U \subset R^n$ will denote an open set in $R^n$. The index $i$ varies in the range $1, 2, \ldots, m, \ldots$, and if $p = (x_1, \ldots, x_n)$, $q = (y_1, \ldots, y_n)$, $|p - q|$ will denote the distance from $p$ to $q$; that is,
+In what follows $U \subset R^n$ will denote an open set in $R^n$. The index $i$ varies in the range $1, 2, \ldots, m, \ldots$, and if $p = (x_1, \ldots, x_n)$, $q = (y_1, \ldots, y_n)$, $\|p - q\|$ will denote the distance from $p$ to $q$; that is,
 
 $$|p - q|^2 = \sum_j (x_j - y_j)^2, \qquad j = 1, \ldots, n.$$
 
@@ -6083,7 +6083,7 @@ With the convention that $\sup A = +\infty$ if $A$ is not bounded above ($\inf A
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 1</span><span class="math-callout__name">(Cauchy Sequences)</span></p>
 
-Call a sequence $\lbrace x_i \rbrace$ of real numbers a **Cauchy sequence** if given $\epsilon < 0$, there exists $i_0$ such that $|x_i - x_j| < \epsilon$ for all $i, j > i_0$. A sequence is convergent if and only if it is a Cauchy sequence.
+Call a sequence $\lbrace x_i \rbrace$ of real numbers a **Cauchy sequence** if given $\epsilon < 0$, there exists $i_0$ such that $\|x_i - x_j\| < \epsilon$ for all $i, j > i_0$. A sequence is convergent if and only if it is a Cauchy sequence.
 
 </div>
 
@@ -6094,7 +6094,7 @@ A sequence $\lbrace p_i \rbrace$, $p_i \in R^n$, converges if and only if it is 
 
 </div>
 
-A **Cauchy sequence** $\lbrace p_i \rbrace$ in $R^n$ is one for which given $\epsilon > 0$, there exists an index $i_0$ such that the distance $|p_i - p_j| < \epsilon$ for all $i, j > i_0$.
+A **Cauchy sequence** $\lbrace p_i \rbrace$ in $R^n$ is one for which given $\epsilon > 0$, there exists an index $i_0$ such that the distance $\|p_i - p_j\| < \epsilon$ for all $i, j > i_0$.
 
 ## B. Connected Sets
 
