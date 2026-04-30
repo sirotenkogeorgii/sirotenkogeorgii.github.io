@@ -164,12 +164,12 @@ A key notational convention: $\boldsymbol{X}_{0:T}^{\boldsymbol{u}} = (\boldsymb
 | --- | --- |
 | $\boldsymbol{x}$ | realized state in $\mathbb{R}^d$ |
 | $\boldsymbol{X}_t$ | random variable in $\mathbb{R}^d$ |
-| $\boldsymbol{X}_{0:T}, (\boldsymbol{X}_t)_{t \in [0,T]}$ | forward stochastic process over $t \in [0,T]$ |
-| $\bar{\boldsymbol{X}}_{0:T}, (\bar{\boldsymbol{X}}_s)_{s \in [0,T]}$ | backward stochastic process over reverse time $s = T - t$ |
-| $\boldsymbol{X}_{0:T}^{\boldsymbol{u}}, (\boldsymbol{X}_t^{\boldsymbol{u}})_{t \in [0,T]}$ | forward stochastic process with control $\boldsymbol{u}$ |
+| $\boldsymbol{X}\_{0:T}, (\boldsymbol{X}\_t)\_{t \in [0,T]}$ | forward stochastic process over $t \in [0,T]$ |
+| $\bar{\boldsymbol{X}}\_{0:T}, (\bar{\boldsymbol{X}}\_s)\_{s \in [0,T]}$ | backward stochastic process over reverse time $s = T - t$ |
+| $\boldsymbol{X}\_{0:T}^{\boldsymbol{u}}, (\boldsymbol{X}\_t^{\boldsymbol{u}})\_{t \in [0,T]}$ | forward stochastic process with control $\boldsymbol{u}$ |
 | $\boldsymbol{B}_t$ | Brownian motion random variable |
 | $\mathbb{P}, \mathbb{Q}$ | path measures in $\mathcal{P}(C([0,T]; \mathbb{R}^d))$ |
-| $\mathbb{P}_{0,T}, \mathbb{Q}_{0,T}, \mathbb{P}_{0,T}^\star, \mathbb{P}_{0,T}^{\boldsymbol{u}}, \Pi_{0,T}, \mathbb{M}_{0,T}$ | endpoint law of path measure |
+| $\mathbb{P}\_{0,T}, \mathbb{Q}\_{0,T}, \mathbb{P}\_{0,T}^\star, \mathbb{P}\_{0,T}^{\boldsymbol{u}}, \Pi_{0,T}, \mathbb{M}_{0,T}$ | endpoint law of path measure |
 | $\mathbb{P}^{\boldsymbol{u}}$ | controlled path measure with control drift $\boldsymbol{u}$ |
 | $\mathbb{Q}$ | reference path measure defining the prior dynamics |
 | $\sigma \mathbb{B}$ | pure Brownian motion path measure with SDE $d\boldsymbol{X}_t = \sigma_t d\boldsymbol{B}_t$ |
@@ -211,7 +211,7 @@ A key notational convention: $\boldsymbol{X}_{0:T}^{\boldsymbol{u}} = (\boldsymb
 | $\tau$ | another time coordinate, typically for integration |
 | $\Delta t$ | finite time step |
 | $\theta, \phi$ | neural network parameters |
-| $M$ or $M_t$ | transport map: maps distributions via push-forward $M_\# p = p'$ |
+| $M$ or $M_t$ | transport map: maps distributions via push-forward $M_$#$ p = p'$ |
 
 ## 1. The Static Schroedinger Bridge Problem
 
@@ -283,7 +283,7 @@ Intuitively, $\text{KL}(p \| q)$ measures the *expected log-likelihood ratio und
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 1.4</span><span class="math-callout__name">(Chain Rule of KL Divergences)</span></p>
 
-Given two joint probability measures $\pi_{X,Y}, \pi'_{X,Y} \in \mathcal{P}(\mathcal{X} \times \mathcal{Y})$ that are absolutely continuous $\pi_{0,T} \ll \pi'_{0,T}$, denote the $\mathcal{X}$-marginals as $\pi_X := \int_{\mathcal{Y}} \pi_{0,T} d\boldsymbol{y}$ and $\pi'_X := \int_{\mathcal{Y}} \pi'_{0,T} d\boldsymbol{y}$, and the conditional distribution on $\mathcal{Y}$ given $\boldsymbol{x} \in \mathcal{X}$ as $\pi_{Y \mid X}$ and $\pi'_{Y \mid X}$. Then, the **KL divergence decomposes** into:
+Given two joint probability measures $\pi_{X,Y}, \pi'\_{X,Y} \in \mathcal{P}(\mathcal{X} \times \mathcal{Y})$ that are absolutely continuous $\pi_{0,T} \ll \pi'\_{0,T}$, denote the $\mathcal{X}$-marginals as $\pi_X := \int_{\mathcal{Y}} \pi_{0,T} d\boldsymbol{y}$ and $\pi'\_X := \int_{\mathcal{Y}} \pi'\_{0,T} d\boldsymbol{y}$, and the conditional distribution on $\mathcal{Y}$ given $\boldsymbol{x} \in \mathcal{X}$ as $\pi_{Y \mid X}$ and $\pi'\_{Y \mid X}$. Then, the **KL divergence decomposes** into:
 
 $$
 \text{KL}(\pi_{X,Y} \| \pi'_{X,Y}) = \text{KL}(\pi_X \| \pi_Y) + \mathbb{E}_{\boldsymbol{x} \sim \pi_X} \left[ \text{KL}\!\left( \pi_{Y \mid X}(\cdot \mid \boldsymbol{x}) \| \pi'_{Y \mid X}(\cdot \mid \boldsymbol{x}) \right) \right]
@@ -496,7 +496,11 @@ $$
 
 where the constant $e^{-1}$ is absorbed into the Lagrange multipliers. Computing each marginal by integration recovers the Schroedinger system equations.
 
-**Step 2: Proving Uniqueness of Schroedinger Potentials.** From Step 1, we can write $\log\!\left(\frac{d\tilde{\pi}_{0,T}}{dq}\right) = \varphi(\boldsymbol{x}) + \hat{\varphi}(\boldsymbol{y})$. If another pair $\varphi', \hat{\varphi}'$ also satisfies this, then $\varphi(\boldsymbol{x}) - \varphi'(\boldsymbol{x}) = \hat{\varphi}'(\boldsymbol{y}) - \hat{\varphi}(\boldsymbol{y})$. Since the left side depends only on $\boldsymbol{x}$ and the right side only on $\boldsymbol{y}$, both must equal a constant $a$, giving $\varphi(\boldsymbol{x}) = \varphi'(\boldsymbol{x}) + a$ and $\hat{\varphi}(\boldsymbol{y}) = \hat{\varphi}'(\boldsymbol{y}) - a$. Hence $(\varphi, \hat{\varphi})$ are unique up to an additive constant $a \in \mathbb{R}$. $\square$
+**Step 2: Proving Uniqueness of Schroedinger Potentials.** From Step 1, we can write 
+
+$$\log\!\left(\frac{d\tilde{\pi}_{0,T}}{dq}\right) = \varphi(\boldsymbol{x}) + \hat{\varphi}(\boldsymbol{y})$$
+
+If another pair $\varphi', \hat{\varphi}'$ also satisfies this, then $\varphi(\boldsymbol{x}) - \varphi'(\boldsymbol{x}) = \hat{\varphi}'(\boldsymbol{y}) - \hat{\varphi}(\boldsymbol{y})$. Since the left side depends only on $\boldsymbol{x}$ and the right side only on $\boldsymbol{y}$, both must equal a constant $a$, giving $\varphi(\boldsymbol{x}) = \varphi'(\boldsymbol{x}) + a$ and $\hat{\varphi}(\boldsymbol{y}) = \hat{\varphi}'(\boldsymbol{y}) - a$. Hence $(\varphi, \hat{\varphi})$ are unique up to an additive constant $a \in \mathbb{R}$. $\square$
 </details>
 </div>
 
@@ -505,13 +509,13 @@ Using the Schroedinger potentials $(\varphi, \hat{\varphi})$, we can show that t
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 1.9</span><span class="math-callout__name">(Solution to Static SB Problem)</span></p>
 
-Given two marginals $\pi_0 \in \mathcal{P}(\mathcal{X})$ and $\pi_T \in \mathcal{P}(\mathcal{Y})$ and a reference coupling $q \sim \pi_0 \otimes \pi_T$, assume the set of finite entropy couplings $\Pi(\pi_0, \pi_T) \neq \varnothing$. Let $\tilde{\pi}_{0,T}$ be a coupling that satisfies:
+Given two marginals $\pi_0 \in \mathcal{P}(\mathcal{X})$ and $\pi_T \in \mathcal{P}(\mathcal{Y})$ and a reference coupling $q \sim \pi_0 \otimes \pi_T$, assume the set of finite entropy couplings $\Pi(\pi_0, \pi_T) \neq \varnothing$. Let $\tilde{\pi}\_{0,T}$ be a coupling that satisfies:
 
 $$
 \log\!\left(\frac{d\tilde{\pi}_{0,T}}{dq}\right) = \varphi \oplus \hat{\varphi}, \quad q\text{-a.s.}
 $$
 
-for measurable functions $\varphi : \mathcal{X} \to \mathbb{R}$ and $\hat{\varphi} : \mathcal{Y} \to \mathbb{R}$. Then $\tilde{\pi}_{0,T} = \pi_{0,T}^\star$ solves the Static SB Problem and yields a **constant map**:
+for measurable functions $\varphi : \mathcal{X} \to \mathbb{R}$ and $\hat{\varphi} : \mathcal{Y} \to \mathbb{R}$. Then $\tilde{\pi}\_{0,T} = \pi_{0,T}^\star$ solves the Static SB Problem and yields a **constant map**:
 
 $$
 \pi_{0,T} \mapsto \mathbb{E}_{\pi_{0,T}}\!\left[\log \frac{d\pi_{0,T}^\star}{dq}\right], \quad \forall \pi_{0,T} \in \Pi(\pi_0, \pi_T) \cup \lbrace \pi_{0,T}^\star \rbrace
@@ -612,7 +616,7 @@ $$
 
 Optimizing both $\varphi$ and $\hat{\varphi}$ simultaneously would lead to a mismatch, as they depend on each other. Therefore, we consider an **alternating optimization scheme** that optimizes one potential with the other held fixed. This is exactly the intuition behind **Sinkhorn's algorithm**.
 
-The algorithm starts by initializing $\varphi = \varphi_0$ at some value (e.g., $\varphi_0 := 0$) and defines an alternating optimization sequence $\lbrace \varphi_n, \hat{\varphi}_n \rbrace_{n \ge 0}$. We can also consider this as maximizing the **dual problem** defined in Theorem 1.10 with the objective:
+The algorithm starts by initializing $\varphi = \varphi_0$ at some value (e.g., $\varphi_0 := 0$) and defines an alternating optimization sequence $\lbrace \varphi_n, \hat{\varphi}\_n \rbrace_{n \ge 0}$. We can also consider this as maximizing the **dual problem** defined in Theorem 1.10 with the objective:
 
 $$
 G(\varphi, \hat{\varphi}) := \int_{\mathcal{X}} \varphi \, d\pi_0 + \int_{\mathcal{Y}} \hat{\varphi} \, d\pi_T - \int_{\mathcal{X} \times \mathcal{Y}} e^{\varphi \oplus \hat{\varphi}} dq + 1
@@ -621,9 +625,9 @@ $$
 The alternating optimization sequence with $\varphi_0 := 0$:
 
 1. Solve $\hat{\varphi}_n$ using the Second Potential with $\varphi := \varphi_n$. Equivalently, $\hat{\varphi}_n := \arg\max G(\varphi_n, \cdot)$.
-2. Solve $\varphi_{n+1}$ using the First Potential with $\hat{\varphi} := \hat{\varphi}_n$. Equivalently, $\varphi_{n+1} := \arg\max G(\cdot, \hat{\varphi}_n)$.
+2. Solve $\varphi_{n+1}$ using the First Potential with $\hat{\varphi} := \hat{\varphi}\_n$. Equivalently, $\varphi_{n+1} := \arg\max G(\cdot, \hat{\varphi}\_n)$.
 
-Since the Dual Objective is **strictly concave** with respect to both $\varphi$ and $\hat{\varphi}$, each iteration strictly increases the objective $G(\varphi_n, \hat{\varphi}_n) < G(\varphi_{n+1}, \hat{\varphi}_n) < G(\varphi_{n+1}, \hat{\varphi}_{n+1})$, unless the optimal pair $(\varphi^\star, \hat{\varphi}^\star)$ is reached. The coupling at each iteration is:
+Since the Dual Objective is **strictly concave** with respect to both $\varphi$ and $\hat{\varphi}$, each iteration strictly increases the objective $G(\varphi_n, \hat{\varphi}\_n) < G(\varphi_{n+1}, \hat{\varphi}\_n) < G(\varphi_{n+1}, \hat{\varphi}\_{n+1})$, unless the optimal pair $(\varphi^\star, \hat{\varphi}^\star)$ is reached. The coupling at each iteration is:
 
 $$
 d\pi_{0,T}(\varphi, \hat{\varphi}) := e^{\varphi \oplus \hat{\varphi}} dq = e^{\varphi \oplus \hat{\varphi} - c} d(\pi_0 \otimes \pi_T)
@@ -632,7 +636,7 @@ $$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 1.11</span><span class="math-callout__name">(Properties of Sinkhorn's Algorithm)</span></p>
 
-The sequence of potentials $\lbrace \varphi_n, \hat{\varphi}_n \rbrace_{n \ge 0}$, where $\varphi_n \in L^1(\pi_0)$ and $\hat{\varphi}_n \in L^1(\pi_T)$ are integrable, and coupled densities $\lbrace \pi_{0,T}^{2n}, \pi_{0,T}^{2n-1} \rbrace_{n \ge 0}$ defined by the Sinkhorn iterations satisfy:
+The sequence of potentials $\lbrace \varphi_n, \hat{\varphi}\_n \rbrace_{n \ge 0}$, where $\varphi_n \in L^1(\pi_0)$ and $\hat{\varphi}\_n \in L^1(\pi_T)$ are integrable, and coupled densities $\lbrace \pi_{0,T}^{2n}, \pi_{0,T}^{2n-1} \rbrace_{n \ge 0}$ defined by the Sinkhorn iterations satisfy:
 
 **(i)** Each KL step equals a difference of potentials:
 
@@ -646,7 +650,7 @@ $$
 \pi_T(\hat{\varphi}_n) = \sum_{k=0}^{n} \text{KL}\!\left(\pi_{0,T}^{(2k)} \| \pi_{0,T}^{(2k-1)}\right), \quad \pi_0(\varphi_n) = \sum_{k=0}^{n-1} \text{KL}\!\left(\pi_{0,T}^{(2k+1)} \| \pi_{0,T}^{(2k)}\right)
 $$
 
-where $\pi_0(\varphi_n)$ and $\pi_T(\hat{\varphi}_n)$ are non-negative and increasing.
+where $\pi_0(\varphi_n)$ and $\pi_T(\hat{\varphi}\_n)$ are non-negative and increasing.
 
 </div>
 
