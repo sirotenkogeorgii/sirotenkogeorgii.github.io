@@ -37,3 +37,4 @@ date: 2024-10-20
 - [DSO CUNI](/subpages/books/dso/)
 - [Foundations of Schroedinger Bridges for Generative Modeling](/subpages/books/schroedinger_bridges_generative_modeling/)
 - [Differential Geometry of Curves and Surfaces](/subpages/books/differential_geometry_of_curves_and_surfaces/)
+- [Introduction to Manifolds](/subpages/books/introduction_to_manifolds/)
