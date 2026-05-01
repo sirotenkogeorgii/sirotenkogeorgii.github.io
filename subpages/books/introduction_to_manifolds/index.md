@@ -191,7 +191,7 @@ For each tangent vector $v$ at a point $p$ in $\mathbb{R}^n$, the directional de
 
 $$D_v(fg) = (D_v f)\,g(p) + f(p)\,D_v g,$$
 
-precisely because the partial derivatives $\partial / \partial x^i |_p$ have these properties.
+precisely because the partial derivatives $\partial / \partial x^i \|\_p$ have these properties.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Derivation at a Point)</span></p>
@@ -264,18 +264,18 @@ This proves that $D = D_v$ for $v = \langle Dx^1, \dots, Dx^n \rangle$.
 </details>
 </div>
 
-This theorem shows that one may identify the tangent vectors at $p$ with the derivations at $p$. Under the vector space isomorphism $T_p(\mathbb{R}^n) \simeq \mathcal{D}_p(\mathbb{R}^n)$, the standard basis $e_1, \dots, e_n$ for $T_p(\mathbb{R}^n)$ corresponds to the set $\lbrace \partial/\partial x^1|_p, \dots, \partial/\partial x^n|_p \rbrace$ of partial derivatives. From now on, we will make this identification and write a tangent vector $v = \langle v^1, \dots, v^n \rangle = \sum v^i e_i$ as
+This theorem shows that one may identify the tangent vectors at $p$ with the derivations at $p$. Under the vector space isomorphism $T_p(\mathbb{R}^n) \simeq \mathcal{D}\_p(\mathbb{R}^n)$, the standard basis $e_1, \dots, e_n$ for $T_p(\mathbb{R}^n)$ corresponds to the set $\lbrace \partial/\partial x^1\|\_p, \dots, \partial/\partial x^n\|\_p \rbrace$ of partial derivatives. From now on, we will make this identification and write a tangent vector $v = \langle v^1, \dots, v^n \rangle = \sum v^i e_i$ as
 
 $$v = \sum v^i \left.\frac{\partial}{\partial x^i}\right|_p.$$
 
-The vector space $\mathcal{D}_p(\mathbb{R}^n)$ of derivations at $p$, although not as geometric as arrows, turns out to be more suitable for generalization to manifolds.
+The vector space $\mathcal{D}\_p(\mathbb{R}^n)$ of derivations at $p$, although not as geometric as arrows, turns out to be more suitable for generalization to manifolds.
 
 ### 2.4 Vector Fields
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector Field)</span></p>
 
-A **vector field** $X$ on an open subset $U$ of $\mathbb{R}^n$ is a function that assigns to each point $p$ in $U$ a tangent vector $X_p$ in $T_p(\mathbb{R}^n)$. Since $T_p(\mathbb{R}^n)$ has basis $\lbrace \partial/\partial x^i|_p \rbrace$, the vector $X_p$ is a linear combination
+A **vector field** $X$ on an open subset $U$ of $\mathbb{R}^n$ is a function that assigns to each point $p$ in $U$ a tangent vector $X_p$ in $T_p(\mathbb{R}^n)$. Since $T_p(\mathbb{R}^n)$ has basis $\lbrace \partial/\partial x^i\|\_p \rbrace$, the vector $X_p$ is a linear combination
 
 $$X_p = \sum a^i(p) \left.\frac{\partial}{\partial x^i}\right|_p, \quad p \in U, \quad a^i(p) \in \mathbb{R}.$$
 
@@ -904,7 +904,7 @@ Differential forms extend Grassmann's exterior algebra from the tangent space at
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Cotangent Space)</span></p>
 
-The **cotangent space** to $\mathbb{R}^n$ at $p$, denoted by $T_p^*(\mathbb{R}^n)$ or $T_p^*\mathbb{R}^n$, is defined to be the dual space $(T_p\mathbb{R}^n)^\vee$ of the tangent space $T_p(\mathbb{R}^n)$. Thus, an element of the cotangent space $T_p^*(\mathbb{R}^n)$ is a covector or a linear functional on the tangent space $T_p(\mathbb{R}^n)$.
+The **cotangent space** to $\mathbb{R}^n$ at $p$, denoted by $T_p^\ast(\mathbb{R}^n)$ or $T_p^\ast\mathbb{R}^n$, is defined to be the dual space $(T_p\mathbb{R}^n)^\vee$ of the tangent space $T_p(\mathbb{R}^n)$. Thus, an element of the cotangent space $T_p^\ast(\mathbb{R}^n)$ is a covector or a linear functional on the tangent space $T_p(\mathbb{R}^n)$.
 
 </div>
 
@@ -1071,7 +1071,7 @@ $$f\,dx \wedge dy \wedge dz.$$
 
 </div>
 
-With the wedge product as multiplication and the degree of a form as the grading, the direct sum $\Omega^*(U) = \bigoplus_{k=0}^n \Omega^k(U)$ becomes an anticommutative graded algebra over $\mathbb{R}$. Since one can multiply $C^\infty$ $k$-forms by $C^\infty$ functions, the set $\Omega^k(U)$ of $C^\infty$ $k$-forms on $U$ is both a vector space over $\mathbb{R}$ and a module over $C^\infty(U)$, and so the direct sum $\Omega^*(U) = \bigoplus_{k=0}^n \Omega^k(U)$ is also a module over the ring $C^\infty(U)$ of $C^\infty$ functions.
+With the wedge product as multiplication and the degree of a form as the grading, the direct sum $\Omega^\ast(U) = \bigoplus_{k=0}^n \Omega^k(U)$ becomes an anticommutative graded algebra over $\mathbb{R}$. Since one can multiply $C^\infty$ $k$-forms by $C^\infty$ functions, the set $\Omega^k(U)$ of $C^\infty$ $k$-forms on $U$ is both a vector space over $\mathbb{R}$ and a module over $C^\infty(U)$, and so the direct sum $\Omega^\ast(U) = \bigoplus_{k=0}^n \Omega^k(U)$ is also a module over the ring $C^\infty(U)$ of $C^\infty$ functions.
 
 ## §4.3 Differential Forms as Multilinear Functions on Vector Fields
 
@@ -1169,7 +1169,7 @@ In this sum if $i = j$, then $dx^i \wedge dx^i = 0$; if $i \neq j$, then $\parti
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 4.8</span><span class="math-callout__name">(Characterization of the Exterior Derivative)</span></p>
 
-The three properties of Proposition 4.7 uniquely characterize exterior differentiation on an open set $U$ in $\mathbb{R}^n$; that is, if $D \colon \Omega^*(U) \to \Omega^*(U)$ is (i) an antiderivation of degree 1 such that (ii) $D^2 = 0$ and (iii) $(Df)(X) = Xf$ for $f \in C^\infty(U)$ and $X \in \mathfrak{X}(U)$, then $D = d$.
+The three properties of Proposition 4.7 uniquely characterize exterior differentiation on an open set $U$ in $\mathbb{R}^n$; that is, if $D \colon \Omega^\ast(U) \to \Omega^\ast(U)$ is (i) an antiderivation of degree 1 such that (ii) $D^2 = 0$ and (iii) $(Df)(X) = Xf$ for $f \in C^\infty(U)$ and $X \in \mathfrak{X}(U)$, then $D = d$.
 
 </div>
 
@@ -1353,7 +1353,7 @@ For the dimension of a topological manifold to be well defined, we need to know 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Euclidean Space)</span></p>
 
-The Euclidean space $\mathbb{R}^n$ is covered by a single chart $(\mathbb{R}^n, \mathbb{1}_{\mathbb{R}^n})$, where $\mathbb{1}_{\mathbb{R}^n} \colon \mathbb{R}^n \to \mathbb{R}^n$ is the identity map. It is the prime example of a topological manifold. Every open subset of $\mathbb{R}^n$ is also a topological manifold, with chart $(U, \mathbb{1}_U)$.
+The Euclidean space $\mathbb{R}^n$ is covered by a single chart $(\mathbb{R}^n, \mathbb{1}\_{\mathbb{R}^n})$, where $\mathbb{1}\_{\mathbb{R}^n} \colon \mathbb{R}^n \to \mathbb{R}^n$ is the identity map. It is the prime example of a topological manifold. Every open subset of $\mathbb{R}^n$ is also a topological manifold, with chart $(U, \mathbb{1}\_U)$.
 
 </div>
 

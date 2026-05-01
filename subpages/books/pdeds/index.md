@@ -1707,3 +1707,703 @@ The would-be drift $\|x_1(t)-x_2(t)\|=t$ is between *one* solution and *one phan
 </details>
 </div>
 
+### 1.6 Long-term Asymptotics
+
+So far we have established that solutions to the gradient-flow equation (1.1) (or the differential inclusion (1.8) in the convex non-smooth setting) **exist** and are **unique**. The next natural question is: what does the trajectory $x(t)$ do as $t\to\infty$? We expect convergence to a critical point — and, under suitable convexity, to the unique global minimizer of $E$. The next two theorems make this expectation quantitative. They differ only in how strong the convexity assumption is:
+
+* **uniform convexity** $\Rightarrow$ *exponential* convergence;
+* mere **convexity** $\Rightarrow$ *algebraic* (rate $1/t$) convergence.
+
+These are the simplest cases. For general non-convex energies, even existence of a long-time limit is delicate — the trajectory may oscillate, get stuck at a saddle, or escape to infinity.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Uniformly convex function)</span></p>
+
+A differentiable $E:\mathbb R^N\to\mathbb R$ is **uniformly convex** with parameter $\lambda>0$ if
+
+$$
+E(y) \;\ge\; E(x) + \langle \nabla E(x),\,y-x\rangle + \tfrac12\lambda\,|y-x|^2
+\qquad\text{for all } x,y\in\mathbb R^N. \tag{1.16}
+$$
+
+Equivalently (in the smooth case), $\nabla^2 E(x)\succeq \lambda\,\mathrm{Id}$ for all $x$, i.e. all eigenvalues of the Hessian are bounded below by $\lambda$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric meaning of uniform convexity)</span></p>
+
+Plain convexity says the graph of $E$ lies above every tangent plane:
+
+$$E(y) \ge E(x) + \langle \nabla E(x),\,y-x\rangle.$$
+
+**Uniform convexity** strengthens this by requiring the graph to lie above the tangent plane *plus a quadratic margin* $\tfrac12\lambda|y-x|^2$:
+
+* The margin grows quadratically with the displacement, which means $E$ is "lifted" off its tangents by a fixed parabola from below — the function is no flatter than a quadratic of curvature $\lambda$.
+* In particular, $E$ has a **unique** global minimizer $x^\ast$, and $E$ grows at least quadratically away from it: $E(y)\ge E(x^\ast)+\tfrac12\lambda|y-x^\ast|^2$ (apply (1.16) with $x=x^\ast$, where $\nabla E(x^\ast)=0$).
+* The prototype is $E(x)=\tfrac12\lambda|x|^2$, for which (1.16) holds with equality. Adding any convex function preserves uniform convexity with the same $\lambda$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 3</span><span class="math-callout__name">(Long-term asymptotics from uniform convexity)</span></p>
+
+Assume $E$ is differentiable and uniformly convex in the sense of (1.16) with parameter $\lambda>0$. Let $x^\ast := \arg\min_{x\in\mathbb R^N} E(x)$, and let $x:[0,\infty)\to\mathbb R^N$ be the unique solution to (1.1). Then
+
+$$
+|x(t)-x^\ast|^2 \;\le\; \tfrac{2}{\lambda}\,e^{-2\lambda t}\bigl(E(x_0)-E(x^\ast)\bigr). \tag{1.17}
+$$
+
+In other words, the trajectory of the gradient flow converges to the global minimizer **exponentially fast**, with rate $\lambda$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 3 — Gronwall on the excess energy</summary>
+
+The strategy is to introduce two scalar functionals along the trajectory, derive a differential inequality between them, and apply Gronwall.
+
+**Step 1 — excess energy and dissipation.** Define
+
+$$
+\mathcal E(t) := E(x(t)) - E(x^\ast)\ge 0,
+\qquad
+\mathcal D(t) := |\nabla E(x(t))|^2 \ge 0.
+$$
+
+Apply uniform convexity (1.16) with $x=x(t)$ and $y=x^\ast$:
+
+$$
+E(x^\ast) \;\ge\; E(x(t)) + \langle \nabla E(x(t)),\,x^\ast - x(t)\rangle + \tfrac12\lambda\,|x^\ast - x(t)|^2.
+$$
+
+Rearranging and using Cauchy–Schwarz,
+
+$$
+\mathcal E(t)
+\;\le\; \langle \nabla E(x(t)),\,x(t)-x^\ast\rangle - \tfrac12\lambda\,|x^\ast - x(t)|^2
+\;\le\; |\nabla E(x(t))|\,|x(t)-x^\ast| - \tfrac12\lambda\,|x^\ast - x(t)|^2.
+$$
+
+Now apply **Young's inequality** $ab\le \tfrac{1}{2\lambda}a^2+\tfrac{\lambda}{2}b^2$ to the first term with $a=|\nabla E(x(t))|$ and $b=|x(t)-x^\ast|$. The two $\tfrac{\lambda}{2}|x-x^\ast|^2$ terms cancel and we are left with
+
+$$
+\mathcal E(t)\;\le\; \tfrac{1}{2\lambda}|\nabla E(x(t))|^2 \;=\; \tfrac{1}{2\lambda}\,\mathcal D(t).
+$$
+
+**Step 2 — differential inequality.** By the chain rule and the gradient-flow equation (1.1),
+
+$$
+\frac{d}{dt}\mathcal E(t)
+\;=\; \langle \nabla E(x(t)),\,\dot x(t)\rangle
+\;=\; -|\nabla E(x(t))|^2
+\;=\; -\mathcal D(t)
+\;\le\; -2\lambda\,\mathcal E(t).
+$$
+
+**Step 3 — Gronwall.** The differential inequality $\dot{\mathcal E} \le -2\lambda \mathcal E$ implies
+
+$$
+\mathcal E(t) \;\le\; e^{-2\lambda t}\,\mathcal E(0).
+$$
+
+**Step 4 — translate energy into distance.** Apply uniform convexity (1.16) once more, with the roles reversed: $x=x^\ast$ and $y=x(t)$. Since $\nabla E(x^\ast)=0$, (1.16) reduces to
+
+$$
+E(x(t)) \;\ge\; E(x^\ast) + \tfrac12\lambda\,|x(t)-x^\ast|^2,
+$$
+
+i.e. $\tfrac12\lambda\,|x(t)-x^\ast|^2 \le \mathcal E(t)$. Combined with Step 3,
+
+$$
+|x(t)-x^\ast|^2 \;\le\; \tfrac{2}{\lambda}\,\mathcal E(t) \;\le\; \tfrac{2}{\lambda}\,e^{-2\lambda t}\bigl(E(x_0)-E(x^\ast)\bigr).
+$$
+
+This is (1.17). $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why uniform convexity is crucial)</span></p>
+
+The proof of Theorem 3 used uniform convexity twice — once to bound $\mathcal E$ in terms of $\mathcal D$, and once to translate energy into distance. Both steps used the **quadratic margin** $\tfrac12\lambda|y-x|^2$. Without it, the differential inequality $\dot{\mathcal E}\le -2\lambda\mathcal E$ collapses to merely $\dot{\mathcal E}\le -\mathcal D$ — true but useless on its own, since $\mathcal D$ may decay arbitrarily fast (or slow).
+
+For a merely convex $E$, convergence to equilibrium is therefore **slower** — typically $1/t$, as we will see in Theorem 5 — and one cannot in general single out a unique limit point: the minimizer set $\arg\min E$ may be a non-trivial convex set rather than a single point.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Convex but not uniformly convex)</span></p>
+
+Give an example of a convex (but not uniformly convex) energy $E:\mathbb R\to[0,\infty)$ such that different initial conditions lead to different long-term limits.
+
+*Hint.* Either let $E$ be flat on a non-trivial interval (e.g. $E(x)=\max\lbrace 0,|x|-1\rbrace$), or let $E$ be strictly convex but not uniformly so (e.g. $E(x)=x^4/4$, where the Hessian degenerates at $x=0$).
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 5</span><span class="math-callout__name">(Long-term asymptotics from convexity)</span></p>
+
+Let $E\in C^2(\mathbb R^N)$ be convex, let $x^\ast\in\arg\min_{x\in\mathbb R^N}E(x)$, and let $x:[0,\infty)\to\mathbb R^N$ be the unique solution to (1.1). Define
+
+$$
+\mathcal E(t):=E(x(t))-E(x^\ast),\qquad
+\mathcal D(t):=-\frac{d}{dt}\mathcal E(t)=|\nabla E(x(t))|^2,\qquad
+\mathcal H(t):=|x(t)-x^\ast|^2.
+$$
+
+Then
+
+$$
+\mathcal E(t) \;\le\; \min\Bigl\lbrace\mathcal E(0),\; \tfrac{\mathcal H(0)}{t}\Bigr\rbrace, \qquad
+\mathcal D(t) \;\le\; \tfrac{4\,\mathcal H(0)}{t^2}, \qquad
+\mathcal H(t) \;\le\; \mathcal H(0). \tag{1.22}
+$$
+
+In particular, $\mathcal E(t)=O(1/t)$ and $\mathcal D(t)=O(1/t^2)$ as $t\to\infty$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 5 — three differential and one algebraic relation</summary>
+
+The proof has three steps: (i) check that $\mathcal E,\mathcal D,\mathcal H$ are all non-increasing along the flow, (ii) derive an algebraic comparison $\mathcal E^2\le\mathcal H\,\mathcal D$, and (iii) combine to extract the rate.
+
+**Step 1 — differential relations.** We claim
+
+$$
+\frac{d\mathcal E}{dt}\le -\mathcal D, \tag{1.18}
+$$
+
+$$
+\frac{d\mathcal D}{dt}\le 0, \tag{1.19}
+$$
+
+$$
+\frac{d\mathcal H}{dt}\le 0. \tag{1.20}
+$$
+
+The first holds with **equality** by (1.1) and the chain rule, $\dot{\mathcal E}=\langle\nabla E,\dot x\rangle=-|\nabla E|^2$. For the second, differentiating $\mathcal D=|\nabla E(x)|^2$ once more,
+
+$$
+\frac{d\mathcal D}{dt} \;=\; 2\bigl\langle \nabla E(x(t)),\,\nabla^2 E(x(t))\,\dot x(t)\bigr\rangle \;=\; -2\,\nabla^2 E(x(t))\bigl[\nabla E(x(t)),\nabla E(x(t))\bigr] \;\le\; 0,
+$$
+
+since $\nabla^2 E\succeq 0$ by convexity. The third specialises Theorem 2: $|x_1-x_2|$ is non-increasing for any pair of solutions, so applying it to $x_2\equiv x^\ast$ (a stationary solution) gives $\mathcal H(t)\le \mathcal H(0)$ and indeed $\dot{\mathcal H}\le 0$.
+
+**Step 2 — algebraic relation.** We claim
+
+$$
+\mathcal E \;\le\; (\mathcal H\,\mathcal D)^{1/2}. \tag{1.21}
+$$
+
+Indeed, by **convexity** $E(y)\ge E(x)+\langle\nabla E(x),y-x\rangle$ applied with $x=x(t),\,y=x^\ast$,
+
+$$
+\mathcal E(t) \;=\; E(x(t))-E(x^\ast) \;\le\; \langle \nabla E(x(t)),\,x(t)-x^\ast\rangle \;\le\; |\nabla E(x(t))|\,|x(t)-x^\ast| \;=\; \bigl(\mathcal D\,\mathcal H\bigr)^{1/2}.
+$$
+
+**Step 3 — decay estimates.** Combine (1.18), (1.21), and (1.20):
+
+$$
+\frac{d\mathcal E}{dt} \;\stackrel{(1.18)}{\le}\; -\mathcal D \;\stackrel{(1.21)}{\le}\; -\frac{\mathcal E^2}{\mathcal H}\;\stackrel{(1.20)}{\le}\;-\frac{\mathcal E^2}{\mathcal H(0)}.
+$$
+
+Set $u:=1/\mathcal E$ (assuming $\mathcal E>0$; else there is nothing to show). Then $\dot u = -\dot{\mathcal E}/\mathcal E^2 \ge 1/\mathcal H(0)$, so $u(t)\ge u(0)+t/\mathcal H(0)\ge t/\mathcal H(0)$, i.e.
+
+$$
+\mathcal E(t) \;\le\; \frac{\mathcal H(0)}{t}.\tag{1.22a}
+$$
+
+The complementary bound $\mathcal E(t)\le\mathcal E(0)$ follows from (1.18) and $\mathcal D\ge 0$.
+
+For $\mathcal D$, integrate (1.19) — which says $\mathcal D$ is non-increasing — and note that for any $0<t<T$,
+
+$$
+(T-t)\,\mathcal D(T) \;\stackrel{(1.19)}{\le}\; \int_t^T \mathcal D(\tau)\,d\tau \;=\; \mathcal E(t)-\mathcal E(T) \;\le\; \mathcal E(t) \;\stackrel{(1.22a)}{\le}\; \frac{\mathcal H(0)}{t}.
+$$
+
+Hence $\mathcal D(T)\le\mathcal H(0)/(t(T-t))$ for any $T>t$. Choose $T=2t$ to get $\mathcal D(2t)\le\mathcal H(0)/t^2$; rescaling $t\mapsto t/2$ yields $\mathcal D(t)\le 4\mathcal H(0)/t^2$.
+
+Finally, $\mathcal H(t)\le\mathcal H(0)$ is just (1.20). $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the rates worsen from $\lambda$ to $1/t$)</span></p>
+
+Compare the two regimes:
+
+* **Uniform convexity** gave $\dot{\mathcal E}\le -2\lambda\mathcal E$ — a *linear* differential inequality, whose solution decays exponentially in $t$.
+* **Plain convexity** gives only $\dot{\mathcal E}\le -\mathcal E^2/\mathcal H(0)$ — a *nonlinear* differential inequality that integrates to $1/t$ decay.
+
+The shift is the same as the one between the gradient flow of $E(x)=\tfrac12\lambda x^2$ (linear ODE, exponential decay) and that of $E(x)=\tfrac14 x^4$ (nonlinear ODE, $\dot x = -x^3$, algebraic decay). Without the quadratic margin of uniform convexity, the energy can become "flat" near the minimizer, the gradient becomes too small to produce a fixed exponential rate, and we lose the cleanest version of Gronwall.
+
+</div>
+
+### 1.7 Convergence rates for minimizing movements
+
+We now compare the **discrete** minimizing-movements scheme (1.10) to the **continuous** gradient flow (1.1), under the same convexity assumption that made the long-term asymptotics work. The result quantifies what we already saw in §1.4 informally: as $h\downarrow 0$, the discrete iterates $\chi_h^{(\ell)}$ converge to the continuous trajectory $x(\ell h)$, and the rate is $O(h)$.
+
+A subtle point on logical structure: the result below assumes a-priori that a continuous solution $x$ to (1.1) exists. We will actually prove existence rigorously in §1.8 (Theorem 8) — but the convergence-rate proof here uses only the gradient-flow equation and convexity, not existence per se, so the two arguments are logically independent.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 6</span><span class="math-callout__name">(Quantitative convergence of minimizing movements; Rulla '96, Nochetto–Savaré–Verdi '00)</span></p>
+
+Let $E$ be convex and differentiable, let $x:[0,\infty)\to\mathbb R^N$ solve the gradient-flow equation (1.1), and let $\chi_\ell:=\chi_h^{(\ell)}$ be the iterates of the minimizing-movements scheme (1.10) starting from the same initial condition $\chi_h^{(0)}=x_0=x(0)$. Then
+
+$$
+\sup_{\ell\in\mathbb N}\,|\chi_\ell - x(\ell h)| \;\le\; \frac{h}{\sqrt 2}\,|\nabla E(x_0)|. \tag{1.23}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(On the constant $\tfrac1{\sqrt 2}$ and on regularity)</span></p>
+
+The bound says the discrete trajectory is within $O(h)$ of the continuous one *uniformly in $\ell$* — not only on a finite time window. Of course, under stricter regularity assumptions (e.g. $E\in C^2$ with bounded Hessian), classical numerical-analysis arguments give the same $O(h)$ rate. The point of this proof is that **convexity alone** suffices: no Hessian bound, no Lipschitz constant for $\nabla E$, no time-cutoff $T<\infty$. Convexity does the work of regularity.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 6 — telescoping a convex-combination energy</summary>
+
+We pursue a one-step bound and iterate.
+
+**Step 1 — reduction to one step.** It suffices to prove
+
+$$
+|\chi_\ell - x(\ell h)|^2 + \tfrac{h^2}{2}\,|\nabla E(\chi_\ell)|^2 \;\le\; |\chi_{\ell-1}-x((\ell-1)h)|^2 + \tfrac{h^2}{2}\,|\nabla E(\chi_{\ell-1})|^2. \tag{1.24}
+$$
+
+Iterating (1.24) from $\ell=L$ down to $\ell=1$ and using $\chi_0=x(0)$,
+
+$$
+|\chi_L-x(Lh)|^2 + \tfrac{h^2}{2}|\nabla E(\chi_L)|^2 \;\le\; \tfrac{h^2}{2}|\nabla E(x_0)|^2,
+$$
+
+which gives $|\chi_L-x(Lh)|^2\le \tfrac{h^2}{2}|\nabla E(x_0)|^2$, i.e. (1.23).
+
+**Step 2 — one-step argument.** Without loss of generality $\ell=1$. Define the **convex-combination error**
+
+$$
+e(t) \;:=\; \frac{t}{h}\cdot\tfrac12|\chi_1-x(t)|^2 + \frac{h-t}{h}\cdot\tfrac12|x_0-x(t)|^2, \qquad t\in[0,h]. \tag{1.25}
+$$
+
+So $e(0)=\tfrac12|x_0-x(0)|^2=0$ (under matched initial conditions) and $e(h)=\tfrac12|\chi_1-x(h)|^2$.
+
+Differentiate $e$ in $t$:
+
+$$
+\dot e(t) = \tfrac{1}{2h}|\chi_1-x(t)|^2 - \tfrac{1}{2h}|x_0-x(t)|^2 + \tfrac{t}{h}\langle\chi_1-x(t),-\dot x(t)\rangle + \tfrac{h-t}{h}\langle x_0-x(t),-\dot x(t)\rangle.
+$$
+
+*First two terms.* Using the polarization identity $|a|^2-|b|^2=\langle a-b,a+b\rangle$ with $a=\chi_1-x(t),\ b=x_0-x(t)$:
+
+$$
+\tfrac{1}{2h}\bigl(|\chi_1-x(t)|^2-|x_0-x(t)|^2\bigr) \;=\; \tfrac12\bigl\langle \tfrac{\chi_1-x_0}{h},\,2(\chi_1-x(t))-(\chi_1-x_0)\bigr\rangle.
+$$
+
+Apply the **Euler–Lagrange equation** (1.13), $\nabla E(\chi_1)+\tfrac{\chi_1-x_0}{h}=0$, i.e. $\tfrac{\chi_1-x_0}{h}=-\nabla E(\chi_1)$ and $\chi_1-x_0=-h\nabla E(\chi_1)$. Substituting,
+
+$$
+=\;-\tfrac12\bigl\langle\nabla E(\chi_1),\,2(\chi_1-x(t))+h\nabla E(\chi_1)\bigr\rangle \;=\; -\langle\nabla E(\chi_1),\chi_1-x(t)\rangle - \tfrac{h}{2}|\nabla E(\chi_1)|^2.
+$$
+
+By convexity $E(x(t))\ge E(\chi_1)+\langle\nabla E(\chi_1),x(t)-\chi_1\rangle$, so $-\langle\nabla E(\chi_1),\chi_1-x(t)\rangle\le E(x(t))-E(\chi_1)$. Hence
+
+$$
+\tfrac{1}{2h}\bigl(|\chi_1-x(t)|^2-|x_0-x(t)|^2\bigr) \;\le\; -\tfrac{h}{2}|\nabla E(\chi_1)|^2 + E(x(t))-E(\chi_1).
+$$
+
+*Last two terms.* Use $\dot x(t)=-\nabla E(x(t))$ and convexity $\langle\nabla E(x(t)),y-x(t)\rangle\le E(y)-E(x(t))$ once for $y=\chi_1$ and once for $y=x_0$:
+
+$$
+\tfrac{t}{h}\langle\chi_1-x(t),-\dot x(t)\rangle + \tfrac{h-t}{h}\langle x_0-x(t),-\dot x(t)\rangle \;\le\; \tfrac{t}{h}E(\chi_1) + \tfrac{h-t}{h}E(x_0) - E(x(t)).
+$$
+
+*Combining.* The two estimates add to
+
+$$
+\dot e(t) \;\le\; -\tfrac{h}{2}|\nabla E(\chi_1)|^2 + \tfrac{h-t}{h}\bigl(E(x_0)-E(\chi_1)\bigr).
+$$
+
+*Bound the energy gap.* Apply convexity in the form $E(\chi_1)\ge E(x_0)+\langle\nabla E(x_0),\chi_1-x_0\rangle$ together with EL ($\chi_1-x_0=-h\nabla E(\chi_1)$):
+
+$$
+E(x_0)-E(\chi_1) \;\le\; -\langle\nabla E(x_0),\chi_1-x_0\rangle \;=\; h\langle\nabla E(x_0),\nabla E(\chi_1)\rangle \;\le\; \tfrac{h}{2}|\nabla E(x_0)|^2 + \tfrac{h}{2}|\nabla E(\chi_1)|^2,
+$$
+
+where the last step is Cauchy–Schwarz followed by Young's inequality. Hence
+
+$$
+\dot e(t) \;\le\; -\tfrac{h}{2}|\nabla E(\chi_1)|^2 + (h-t)\,\Bigl(\tfrac12|\nabla E(x_0)|^2+\tfrac12|\nabla E(\chi_1)|^2\Bigr).
+$$
+
+**Step 3 — integrate from $0$ to $h$.** Since $\int_0^h(h-t)\,dt=h^2/2$,
+
+$$
+e(h)-e(0) \;\le\; -\tfrac{h^2}{2}|\nabla E(\chi_1)|^2 + \tfrac{h^2}{4}|\nabla E(x_0)|^2 + \tfrac{h^2}{4}|\nabla E(\chi_1)|^2 \;=\; \tfrac{h^2}{4}|\nabla E(x_0)|^2 - \tfrac{h^2}{4}|\nabla E(\chi_1)|^2.
+$$
+
+Substituting $e(0)=0,\ e(h)=\tfrac12|\chi_1-x(h)|^2$, multiplying by $2$ and reordering yields (1.24) for $\ell=1$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Mismatched initial conditions)</span></p>
+
+Inspect the proof above and state the corresponding result when the initial conditions of the discrete and continuous schemes differ: $\chi_h^{(0)}\ne x(0)$. How does the resulting estimate relate to Theorem 2 (uniqueness/stability)?
+
+</div>
+
+### 1.8 Existence via minimizing movements
+
+We now make rigorous the existence claim previewed informally as Theorem 1 in §1.4. The strategy is the standard **compactness + passage to the limit** argument:
+
+1. **A priori estimate.** Use the energy-dissipation identity along the discrete iterates to bound — uniformly in $h$ — the discrete derivative of an interpolation $\tilde x_h$.
+2. **Compactness.** The bound, combined with Arzelà–Ascoli and reflexivity of $L^2$, yields a subsequence and a limit $x$.
+3. **Pass to the limit.** Take $h\downarrow 0$ in the Euler–Lagrange inequality (1.12) (or equation (1.13) in the smooth case), using the lower semi-continuity of $E$.
+
+We work with two interpolations of the discrete data $\chi_h^{(0)},\chi_h^{(1)},\dots$:
+
+* the **piecewise-constant** interpolation $x_h$ defined in §1.4 by (1.11);
+* the **piecewise-linear** interpolation
+
+$$
+\tilde x_h(t) \;:=\; \frac{t-(\ell-1)h}{h}\,\chi_h^{(\ell)} + \frac{\ell h - t}{h}\,\chi_h^{(\ell-1)} \qquad\text{for } t\in[(\ell-1)h,\ell h]. \tag{1.26}
+$$
+
+(This is well-defined because $\mathbb R^N$ is a convex space: the convex combination is itself a point of the ambient space. In a metric or non-Euclidean setting, such a linear interpolation generally fails to make sense.) The piecewise-linear interpolation is differentiable a.e. — its derivative is the discrete velocity $(\chi_h^{(\ell)}-\chi_h^{(\ell-1)})/h$ on each subinterval — which is what we will pass to the limit on. The piecewise-constant interpolation, on the other hand, is the natural "snapshot" of the discrete iterate at time $t$, and the EL equation directly constrains $x_h$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 8</span><span class="math-callout__name">(Existence via minimizing movements — formal restatement)</span></p>
+
+Let $E:\mathbb R^N\to[0,+\infty]$ and $x_0\in\mathbb R^N$ with $E(x_0)<+\infty$. Let $x_h$ and $\tilde x_h$ be the piecewise-constant (1.11) and piecewise-linear (1.26) interpolations of the minimizing-movements iterates (1.10), starting from $\chi_h^{(0)}=x_0$. Then:
+
+**(i) Compactness.** The a priori bound
+
+$$
+\int_0^\infty \Bigl|\tfrac{d\tilde x_h}{dt}\Bigr|^2\,dt \;\le\; 2\,E(x_0) \tag{1.27}
+$$
+
+holds, and for any $0\le s\le t<\infty$,
+
+$$
+|\tilde x_h(t)-\tilde x_h(s)| \;\le\; \sqrt{2E(x_0)}\,\sqrt{t-s}. \tag{1.28}
+$$
+
+The families $(\tilde x_h)_{h\in(0,1]}$ and $(x_h)_{h\in(0,1]}$ are precompact: for any sequence $h\downarrow 0$, there exists a (non-relabeled) subsequence and a limit $x\in C^{1/2}([0,\infty);\mathbb R^N)\cap H^1((0,\infty);\mathbb R^N)$ with
+
+$$
+\tilde x_h\to x\quad\text{locally uniformly on }[0,\infty), \tag{1.29}
+$$
+
+$$
+\frac{d\tilde x_h}{dt}\rightharpoonup \frac{dx}{dt}\quad\text{weakly in }L^2((0,\infty);\mathbb R^N), \tag{1.30}
+$$
+
+and analogously
+
+$$
+x_h\to x\quad\text{locally uniformly on }[0,\infty), \tag{1.31}
+$$
+
+$$
+\frac{x_h(\cdot+h)-x_h(\cdot)}{h}\rightharpoonup \frac{dx}{dt}\quad\text{weakly in }L^2((0,\infty);\mathbb R^N). \tag{1.32}
+$$
+
+**(ii) Convergence in the equation.**
+
+*(a)* If $E\in C^1(\mathbb R^N)$, then $x$ solves $\dot x(t)=-\nabla E(x(t))$ for all $t>0$.
+
+*(b)* If $E$ is convex (possibly non-smooth), then $x$ satisfies the differential inclusion
+
+$$
+\frac{dx}{dt}\in -\partial E(x(t)) \qquad\text{for almost every }t>0. \tag{1.33}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why two interpolations)</span></p>
+
+The seemingly redundant pair $(x_h,\tilde x_h)$ plays distinct roles:
+
+* **$\tilde x_h$ (piecewise-linear)** is *Lipschitz continuous in $t$* with derivative $\frac{d\tilde x_h}{dt}=\frac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}$ on $((\ell-1)h,\ell h)$. This is the object whose derivative converges to $\dot x$ in $L^2$.
+* **$x_h$ (piecewise-constant)** equals $\chi_h^{(\ell)}$ on $((\ell-1)h,\ell h]$. It is the natural "snapshot" interpolation, and the discrete EL equation (1.12) is a literal statement about $x_h$ (not $\tilde x_h$).
+
+The two interpolations differ only on a set of measure $h$ per subinterval, so in the limit $h\downarrow 0$ they converge to the same continuous $x(t)$. But on the way, we need both: $\tilde x_h$ for the regularity (1.27)–(1.28), and $x_h$ for the EL passage to the limit.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Theorem 8</summary>
+
+**Argument for (i) — compactness via discrete energy dissipation.**
+
+From the very definition of $\chi_h^{(\ell)}$ as a minimizer of $E(x)+\tfrac{1}{2h}|x-\chi_h^{(\ell-1)}|^2$, comparing the value at $\chi_h^{(\ell)}$ against the value at $\chi_h^{(\ell-1)}$ (which is a candidate point) gives
+
+$$
+E(\chi_h^{(\ell)}) + \tfrac{1}{2h}|\chi_h^{(\ell)}-\chi_h^{(\ell-1)}|^2 \;\le\; E(\chi_h^{(\ell-1)}).
+$$
+
+Iterating from $\ell=1$ to $\ell=L$ and telescoping,
+
+$$
+E(\chi_h^{(L)}) + \tfrac{h}{2}\sum_{\ell=1}^L \Bigl|\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}\Bigr|^2 \;\le\; E(x_0). \tag{1.34}
+$$
+
+Note that $\tilde x_h$ is Lipschitz with $\tfrac{d\tilde x_h}{dt}=\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}$ on $((\ell-1)h,\ell h)$, so
+
+$$
+h\,\Bigl|\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}\Bigr|^2 = \int_{(\ell-1)h}^{\ell h} \Bigl|\tfrac{d\tilde x_h}{dt}\Bigr|^2\,dt,
+$$
+
+and summing,
+
+$$
+E(\tilde x_h(Lh)) + \tfrac12\int_0^{Lh}\Bigl|\tfrac{d\tilde x_h}{dt}\Bigr|^2\,dt \;\le\; E(x_0). \tag{1.35}
+$$
+
+Since $E\ge 0$, dropping the energy term and letting $L\to\infty$ gives (1.27). The Hölder estimate (1.28) follows from Jensen's (or Cauchy–Schwarz against the constant function $1$):
+
+$$
+|\tilde x_h(t)-\tilde x_h(s)| \;\le\; \int_s^t \Bigl|\tfrac{d\tilde x_h}{d\tau}\Bigr|\,d\tau \;\le\; \sqrt{t-s}\,\Bigl(\int_s^t \Bigl|\tfrac{d\tilde x_h}{d\tau}\Bigr|^2 d\tau\Bigr)^{1/2} \;\le\; \sqrt{t-s}\cdot\sqrt{2E(x_0)}.
+$$
+
+Now extract a convergent subsequence: fix any $T<\infty$. By (1.28), $(\tilde x_h)$ is uniformly Hölder $C^{1/2}$ on $[0,T]$, hence equicontinuous, hence (by **Arzelà–Ascoli**) precompact in $C([0,T];\mathbb R^N)$. Passing to a subsequence and a diagonal extraction over $T\uparrow\infty$, $\tilde x_h\to x$ locally uniformly on $[0,\infty)$ for some limit $x\in C^{1/2}\cap H^1$. This is (1.29).
+
+For the weak convergence (1.30), the bound (1.27) controls $\tfrac{d\tilde x_h}{dt}$ in $L^2$, so along a further subsequence $\tfrac{d\tilde x_h}{dt}\rightharpoonup f$ weakly in $L^2$ for some $f$. Identify $f=\dot x$ in distributions: for any $\varphi\in C_c^\infty((0,\infty))$,
+
+$$
+\int_0^\infty \varphi(t)\,\tfrac{d\tilde x_h}{dt}\,dt = -\int_0^\infty \tilde x_h(t)\,\dot\varphi(t)\,dt \;\xrightarrow{h\downarrow 0}\; -\int_0^\infty x(t)\,\dot\varphi(t)\,dt,
+$$
+
+which is precisely the definition of $f$ being the weak derivative of $x$. The corresponding statements (1.31)–(1.32) for $x_h$ and its discrete-difference quotient follow by an analogous argument (left as Exercise 4 below).
+
+**Argument for (ii)(b) — passing to the limit in the EL inequality.**
+
+The Euler–Lagrange inclusion (1.12) of the minimizing-movements scheme reads, for each $\ell$,
+
+$$
+-\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h} \in \partial E(\chi_h^{(\ell)}).
+$$
+
+By the very definition of the subdifferential of a convex function,
+
+$$
+0 \;\ge\; E(x_h(t)) - E(y) + \Bigl\langle -\tfrac{x_h(t)-x_h(t-h)}{h},\,y-x_h(t)\Bigr\rangle \quad \text{for all } y\in\mathbb R^N.
+$$
+
+Test against $\varphi\in C_c((0,\infty))$ with $\varphi\ge 0$ and integrate:
+
+$$
+0 \;\ge\; \int_0^\infty \varphi(t)\Bigl(E(x_h(t)) - E(y) + \Bigl\langle -\tfrac{x_h(t)-x_h(t-h)}{h},\,y-x_h(t)\Bigr\rangle\Bigr)\,dt.
+$$
+
+Pass $h\downarrow 0$:
+
+* For the $E(x_h)$ term, use **lower semi-continuity** of $E$ (which holds since $E$ is convex) together with the strong convergence (1.31) and Fatou.
+* The discrete-difference quotient converges weakly in $L^2$ to $\dot x$ by (1.32), and $y-x_h(t)\to y-x(t)$ strongly in $L^2_{\mathrm{loc}}$ by (1.31), so the inner product passes to the limit (weak $\times$ strong $\to$ weak).
+
+The result is
+
+$$
+0 \;\ge\; \int_0^\infty \varphi(t)\Bigl(E(x(t)) - E(y) + \Bigl\langle -\dot x(t),\,y-x(t)\Bigr\rangle\Bigr)\,dt,
+$$
+
+valid for all $\varphi\ge 0$. Hence the bracketed integrand is $\le 0$ for almost every $t\in(0,\infty)$:
+
+$$
+0 \;\ge\; E(x(t)) - E(y) + \Bigl\langle -\dot x(t),\,y-x(t)\Bigr\rangle \quad \text{for a.e. } t.
+$$
+
+Use this for all $y$ in a countable dense subset $Y\subset\mathbb R^N$. Countable unions of null sets are null, so for almost every $t\in(0,\infty)$ the inequality holds simultaneously for **every** $y\in Y$, and density plus lower semi-continuity extend it to every $y\in\mathbb R^N$. By the definition of the subdifferential, this is exactly $\dot x(t)\in -\partial E(x(t))$ for a.e. $t$, i.e. (1.33).
+
+The smooth case (a) is similar but easier — pass to the limit directly in the equation $\nabla E(x_h)+\tfrac{x_h-x_h(\cdot-h)}{h}=0$ — and is left as Exercise 5. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Convergence of the piecewise-constant interpolation)</span></p>
+
+Building on (1.29) and (1.34), show (1.31) and (1.32). *(Hint: $|x_h(t)-\tilde x_h(t)|\le |\chi_h^{(\ell)}-\chi_h^{(\ell-1)}|$ on each subinterval, and (1.34) controls the right-hand side in $L^2$.)*
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Smooth case)</span></p>
+
+Show part (ii)(a): if $E\in C^1$, then the limit $x$ solves $\dot x=-\nabla E(x)$ pointwise. *(Hint: pass to the limit in the Euler–Lagrange equation (1.13) using the continuity of $\nabla E$.)*
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Sharpness: the missing factor $\tfrac12$)</span></p>
+
+The a priori estimate (1.34) is **not sharp** by a factor of $\tfrac12$. To see this, recall that for a smooth solution of the gradient flow,
+
+$$
+\frac{d}{dt}E(x(t)) = \langle \nabla E(x(t)),\dot x(t)\rangle = -|\dot x(t)|^2.
+$$
+
+Integrating yields the **energy dissipation identity**
+
+$$
+E(x(T)) + \int_0^T |\dot x(t)|^2\,dt = E(x_0). \tag{1.36}
+$$
+
+But (1.34) is
+
+$$
+E(\chi_h^{(L)}) + \tfrac12\cdot h\sum_{\ell=1}^L \Bigl|\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}\Bigr|^2 \;\le\; E(x_0),
+$$
+
+with the factor $\tfrac12$ in front of the dissipation, whereas (1.36) has full unity. So the discrete dissipation is *under-counted* by a factor of $2$ relative to the continuous identity. For a convex energy, a sharper computation recovers the full factor: applying the EL equation $-\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}\in \partial E(\chi_h^{(\ell)})$ in the *definition* of the subdifferential yields
+
+$$
+E(\chi_h^{(\ell)}) \;\le\; E(\chi_h^{(\ell-1)}) + \Bigl\langle -\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h},\,\chi_h^{(\ell)}-\chi_h^{(\ell-1)}\Bigr\rangle \;=\; E(\chi_h^{(\ell-1)}) - h\,\Bigl|\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}\Bigr|^2.
+$$
+
+Summing over $\ell=1,\dots,L$,
+
+$$
+E(\chi_h^{(L)}) + h\sum_{\ell=1}^L \Bigl|\tfrac{\chi_h^{(\ell)}-\chi_h^{(\ell-1)}}{h}\Bigr|^2 \;\le\; E(x_0), \tag{1.37}
+$$
+
+which exactly resembles (1.36).
+
+This $1/2$ vs.\ $1$ discrepancy turns out to be the same phenomenon as the gap between the "naive" identity (1.2) and the symmetric form (1.39) below — and is the entry point for the **energy-dissipation inequality** of §1.9.
+
+</div>
+
+### 1.9 The energy-dissipation inequality
+
+The identity (1.36) is the cleanest expression of "the gradient flow dissipates energy." We now derive a *stronger* inequality which has the surprising property of being **equivalent** to the gradient-flow equation itself.
+
+Let $T>0$ and $x:[0,T]\to\mathbb R^N$ solve the gradient flow
+
+$$
+\begin{cases}\dot x(t) = -\nabla E(x(t)) & \text{for } t\in(0,T),\\ x(0)=x_0,\end{cases} \tag{1.38}
+$$
+
+with $E\in C^1(\mathbb R^N)$. On the gradient flow, $|\dot x|=|\nabla E|$, so $-|\dot x|^2 = -\tfrac12|\dot x|^2-\tfrac12|\nabla E|^2$. Equation (1.2) thus may be rewritten symmetrically as
+
+$$
+\frac{d}{dt}E(x(t)) \;=\; \langle \nabla E(x(t)),\dot x(t)\rangle \;=\; -\tfrac12|\dot x(t)|^2 - \tfrac12|\nabla E(x(t))|^2. \tag{1.39}
+$$
+
+This is *the same number* as (1.2), just expressed as a symmetric average of two non-negative quantities. Integrating yields the **energy-dissipation inequality (EDI)**
+
+$$
+E(x(T)) + \tfrac12\int_0^T|\dot x(t)|^2\,dt + \tfrac12\int_0^T|\nabla E(x(t))|^2\,dt \;\le\; E(x_0). \tag{1.40}
+$$
+
+We state (1.40) as an *inequality* because the next lemma will go in the *converse* direction: any curve satisfying (1.40) is automatically a solution of the gradient-flow equation. So the equality "$=$" version is equivalent to the inequality "$\le$" version, and both are equivalent to (1.38).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 9</span><span class="math-callout__name">(EDI implies the gradient-flow equation)</span></p>
+
+Let $E\in C^1(\mathbb R^N)$ and let $x:[0,T]\to\mathbb R^N$ be continuous on $[0,T]$ and differentiable on $(0,T)$ with $x(0)=x_0$. If $x$ satisfies the energy-dissipation inequality (1.40), then $x$ solves the gradient-flow equation (1.38).
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 9 — completing the square</summary>
+
+By the fundamental theorem of calculus and the chain rule,
+
+$$
+E(x(T))-E(x(0)) \;=\; \int_0^T \frac{d}{dt}E(x(t))\,dt \;=\; \int_0^T\langle\nabla E(x(t)),\dot x(t)\rangle\,dt.
+$$
+
+Substituting in (1.40) and rearranging, we get
+
+$$
+\int_0^T \Bigl(\langle\nabla E(x(t)),\dot x(t)\rangle + \tfrac12|\dot x(t)|^2 + \tfrac12|\nabla E(x(t))|^2\Bigr)\,dt \;\le\; 0.
+$$
+
+The integrand is exactly $\tfrac12|\dot x(t)+\nabla E(x(t))|^2 \ge 0$. A non-negative integrand whose integral is $\le 0$ must vanish a.e., so
+
+$$
+\dot x(t) = -\nabla E(x(t)) \qquad\text{for a.e. }t\in(0,T).
+$$
+
+By continuity of both sides, the equation holds for every $t$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(EDI as a robust definition of "gradient flow")</span></p>
+
+Lemma 9 is the cornerstone of the abstract theory of gradient flows in metric and Banach spaces. The key insight: although (1.38) refers to the *velocity* $\dot x$ (which requires a vector-space structure on the target) and the *gradient* $\nabla E$ (which requires a Riemannian structure), the EDI (1.40) refers only to **scalar quantities**:
+
+* $E(x(t))$ — the energy at a point, defined on any space where $E$ makes sense;
+* $|\dot x(t)|$ — a *speed*, definable in any metric space via the metric derivative
+
+  $$|\dot x|(t):=\liminf_{s\to t}\frac{d(x(s),x(t))}{|s-t|};$$
+
+* $|\nabla E(x(t))|$ — a *slope*, definable in any metric space via the local Lipschitz constant
+
+  $$|\nabla E|(x):=\limsup_{y\to x}\frac{\bigl(E(x)-E(y)\bigr)^+}{d(x,y)}.$$
+
+This is the entry point for **De Giorgi's theory** of *minimizing movements in metric spaces* and the **Ambrosio–Gigli–Savaré** abstract framework for gradient flows in Wasserstein space. We do not pursue this generalization in this course, but the punchline is: *the EDI is the "right" definition of a gradient flow in the sense that it survives outside the smooth Euclidean setting*.
+
+We have already seen the discrete analogue: equation (1.37), the sharp form of the minimizing-movements energy estimate, is the *discrete* EDI. The fact that the naive estimate (1.34) is off by a factor of $2$ but the convex-EL improvement (1.37) is sharp foreshadows the same phenomenon in the continuous case: the gradient-flow equation gives the sharp factor automatically.
+
+</div>
+
+### 1.10 Gradient flows in Riemannian manifolds
+
+Throughout the Euclidean discussion we systematically distinguished between the **differential** $dE(x)$ (a linear functional on $\mathbb R^N$) and the **gradient** $\nabla E(x)$ (a vector in $\mathbb R^N$), tied together by Riesz representation, $dE(x).v=\langle\nabla E(x),v\rangle$. In Euclidean space this distinction was pedantic. On a manifold it becomes essential.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Gradient flow on a Riemannian manifold)</span></p>
+
+Let $(M,g)$ be a compact Riemannian manifold, $E\in C^1(M)$, and $x_0\in M$. The **gradient-flow equation** for $E$ on $(M,g)$ is
+
+$$
+\dot x(t) = -\nabla E(x(t)) \in T_{x(t)}M, \qquad x(0)=x_0,
+$$
+
+where $\nabla E(x)\in T_xM$ is the **gradient** of $E$ at $x$ — i.e. the **unique tangent vector** characterized by
+
+$$
+dE(x).v \;=\; g\bigl(\nabla E(x),\,v\bigr) \qquad\text{for all } v\in T_xM. \tag{1.41}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Differential vs. gradient on a manifold)</span></p>
+
+Why is the distinction now unavoidable? Three points:
+
+* **The differential lives in the cotangent space.** $dE(x)$ is a linear functional on $T_xM$, i.e. an element of $T_x^\ast M = (T_xM)^\ast$. It exists as soon as $E$ is differentiable, and depends only on the smooth structure of $M$ — not on any metric.
+* **The gradient lives in the tangent space, and depends on the metric.** $\nabla E(x)\in T_xM$ is the **Riesz representative** of $dE(x)$ with respect to the metric $g$. Different metrics on the same $M$ yield different gradients of the same $E$. In coordinates, if $g$ is given by the matrix $(g_{ij})$ with inverse $(g^{ij})$, then $\nabla E$ has components $(\nabla E)^i = g^{ij}\partial_j E$ — the metric "raises the index" on $dE$.
+* **The gradient-flow equation lives in the tangent bundle.** Both sides of $\dot x=-\nabla E(x)$ are in $T_{x(t)}M$ — the equation makes sense fibrewise. The differential alone is *not enough*: $dE(x)\in T_x^\ast M$ would not even be of the right type to equate to $\dot x\in T_xM$.
+
+In Euclidean space we silently used the canonical inner product $g_{\text{Eucl}}=\delta_{ij}$, which trivially identifies $T_x\mathbb R^N\cong \mathbb R^N\cong (\mathbb R^N)^\ast\cong T_x^\ast\mathbb R^N$, and the distinction collapses. As soon as we change the metric — even on $\mathbb R^N$, say to a position-dependent quadratic form $g_x(v,w)=\langle v,A(x)w\rangle$ — the gradient $A^{-1}(x)\nabla_{\text{Eucl}} E(x)$ differs from the Euclidean gradient $\nabla_{\text{Eucl}} E(x)$.
+
+This is the entry point for **gradient flows in non-Euclidean geometries** — most notably in **Wasserstein space** $(\mathcal P_2(\mathbb R^N),W_2)$, where the gradient flow of an energy $\mathcal F:\mathcal P_2\to\mathbb R$ recovers a host of evolutionary PDEs (heat equation, Fokker–Planck, porous medium, Keller–Segel, …). We will return to these examples later in the course.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Manifold versions of the previous results)</span></p>
+
+Inspect the proofs of Theorems 3, 5, 6, 8 and Lemma 9 and check which statements generalise to the Riemannian setting. Replace $|\cdot|$ by $g(\cdot,\cdot)^{1/2}$, $\nabla E$ by the Riesz representative defined via (1.41), and $\langle\cdot,\cdot\rangle$ by $g(\cdot,\cdot)$. Which steps require *flatness* of the ambient space (e.g. the convex-combination interpolation (1.26)), and which survive the curvature?
+
+</div>
+
