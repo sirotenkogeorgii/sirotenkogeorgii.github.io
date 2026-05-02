@@ -1737,11 +1737,11 @@ Plain convexity says the graph of $E$ lies above every tangent plane:
 
 $$E(y) \ge E(x) + \langle \nabla E(x),\,y-x\rangle.$$
 
-**Uniform convexity** strengthens this by requiring the graph to lie above the tangent plane *plus a quadratic margin* $\tfrac12\lambda|y-x|^2$:
+**Uniform convexity** strengthens this by requiring the graph to lie above the tangent plane *plus a quadratic margin* $\tfrac12\lambda\|y-x\|^2$:
 
 * The margin grows quadratically with the displacement, which means $E$ is "lifted" off its tangents by a fixed parabola from below — the function is no flatter than a quadratic of curvature $\lambda$.
-* In particular, $E$ has a **unique** global minimizer $x^\ast$, and $E$ grows at least quadratically away from it: $E(y)\ge E(x^\ast)+\tfrac12\lambda|y-x^\ast|^2$ (apply (1.16) with $x=x^\ast$, where $\nabla E(x^\ast)=0$).
-* The prototype is $E(x)=\tfrac12\lambda|x|^2$, for which (1.16) holds with equality. Adding any convex function preserves uniform convexity with the same $\lambda$.
+* In particular, $E$ has a **unique** global minimizer $x^\ast$, and $E$ grows at least quadratically away from it: $E(y)\ge E(x^\ast)+\tfrac12\lambda\|y-x^\ast\|^2$ (apply (1.16) with $x=x^\ast$, where $\nabla E(x^\ast)=0$).
+* The prototype is $E(x)=\tfrac12\lambda\|x\|^2$, for which (1.16) holds with equality. Adding any convex function preserves uniform convexity with the same $\lambda$.
 
 </div>
 
@@ -1814,7 +1814,7 @@ $$
 E(x(t)) \;\ge\; E(x^\ast) + \tfrac12\lambda\,|x(t)-x^\ast|^2,
 $$
 
-i.e. $\tfrac12\lambda\,|x(t)-x^\ast|^2 \le \mathcal E(t)$. Combined with Step 3,
+i.e. $\tfrac12\lambda\,\|x(t)-x^\ast\|^2 \le \mathcal E(t)$. Combined with Step 3,
 
 $$
 |x(t)-x^\ast|^2 \;\le\; \tfrac{2}{\lambda}\,\mathcal E(t) \;\le\; \tfrac{2}{\lambda}\,e^{-2\lambda t}\bigl(E(x_0)-E(x^\ast)\bigr).
@@ -1828,7 +1828,7 @@ This is (1.17). $\square$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why uniform convexity is crucial)</span></p>
 
-The proof of Theorem 3 used uniform convexity twice — once to bound $\mathcal E$ in terms of $\mathcal D$, and once to translate energy into distance. Both steps used the **quadratic margin** $\tfrac12\lambda|y-x|^2$. Without it, the differential inequality $\dot{\mathcal E}\le -2\lambda\mathcal E$ collapses to merely $\dot{\mathcal E}\le -\mathcal D$ — true but useless on its own, since $\mathcal D$ may decay arbitrarily fast (or slow).
+The proof of Theorem 3 used uniform convexity twice — once to bound $\mathcal E$ in terms of $\mathcal D$, and once to translate energy into distance. Both steps used the **quadratic margin** $\tfrac12\lambda\|y-x\|^2$. Without it, the differential inequality $\dot{\mathcal E}\le -2\lambda\mathcal E$ collapses to merely $\dot{\mathcal E}\le -\mathcal D$ — true but useless on its own, since $\mathcal D$ may decay arbitrarily fast (or slow).
 
 For a merely convex $E$, convergence to equilibrium is therefore **slower** — typically $1/t$, as we will see in Theorem 5 — and one cannot in general single out a unique limit point: the minimizer set $\arg\min E$ may be a non-trivial convex set rather than a single point.
 
@@ -1839,7 +1839,7 @@ For a merely convex $E$, convergence to equilibrium is therefore **slower** — 
 
 Give an example of a convex (but not uniformly convex) energy $E:\mathbb R\to[0,\infty)$ such that different initial conditions lead to different long-term limits.
 
-*Hint.* Either let $E$ be flat on a non-trivial interval (e.g. $E(x)=\max\lbrace 0,|x|-1\rbrace$), or let $E$ be strictly convex but not uniformly so (e.g. $E(x)=x^4/4$, where the Hessian degenerates at $x=0$).
+*Hint.* Either let $E$ be flat on a non-trivial interval (e.g. $E(x)=\max\lbrace 0,\|x\|-1\rbrace$), or let $E$ be strictly convex but not uniformly so (e.g. $E(x)=x^4/4$, where the Hessian degenerates at $x=0$).
 
 </div>
 
@@ -1886,13 +1886,13 @@ $$
 \frac{d\mathcal H}{dt}\le 0. \tag{1.20}
 $$
 
-The first holds with **equality** by (1.1) and the chain rule, $\dot{\mathcal E}=\langle\nabla E,\dot x\rangle=-|\nabla E|^2$. For the second, differentiating $\mathcal D=|\nabla E(x)|^2$ once more,
+The first holds with **equality** by (1.1) and the chain rule, $\dot{\mathcal E}=\langle\nabla E,\dot x\rangle=-\|\nabla E\|^2$. For the second, differentiating $\mathcal D=|\\nabla E(x)\|^2$ once more,
 
 $$
 \frac{d\mathcal D}{dt} \;=\; 2\bigl\langle \nabla E(x(t)),\,\nabla^2 E(x(t))\,\dot x(t)\bigr\rangle \;=\; -2\,\nabla^2 E(x(t))\bigl[\nabla E(x(t)),\nabla E(x(t))\bigr] \;\le\; 0,
 $$
 
-since $\nabla^2 E\succeq 0$ by convexity. The third specialises Theorem 2: $|x_1-x_2|$ is non-increasing for any pair of solutions, so applying it to $x_2\equiv x^\ast$ (a stationary solution) gives $\mathcal H(t)\le \mathcal H(0)$ and indeed $\dot{\mathcal H}\le 0$.
+since $\nabla^2 E\succeq 0$ by convexity. The third specialises Theorem 2: $\|x_1-x_2\|$ is non-increasing for any pair of solutions, so applying it to $x_2\equiv x^\ast$ (a stationary solution) gives $\mathcal H(t)\le \mathcal H(0)$ and indeed $\dot{\mathcal H}\le 0$.
 
 **Step 2 — algebraic relation.** We claim
 
@@ -1987,7 +1987,7 @@ $$
 |\chi_L-x(Lh)|^2 + \tfrac{h^2}{2}|\nabla E(\chi_L)|^2 \;\le\; \tfrac{h^2}{2}|\nabla E(x_0)|^2,
 $$
 
-which gives $|\chi_L-x(Lh)|^2\le \tfrac{h^2}{2}|\nabla E(x_0)|^2$, i.e. (1.23).
+which gives $\|\chi_L-x(Lh)\|^2\le \tfrac{h^2}{2}\|\nabla E(x_0)\|^2$, i.e. (1.23).
 
 **Step 2 — one-step argument.** Without loss of generality $\ell=1$. Define the **convex-combination error**
 
@@ -1995,7 +1995,7 @@ $$
 e(t) \;:=\; \frac{t}{h}\cdot\tfrac12|\chi_1-x(t)|^2 + \frac{h-t}{h}\cdot\tfrac12|x_0-x(t)|^2, \qquad t\in[0,h]. \tag{1.25}
 $$
 
-So $e(0)=\tfrac12|x_0-x(0)|^2=0$ (under matched initial conditions) and $e(h)=\tfrac12|\chi_1-x(h)|^2$.
+So $e(0)=\tfrac12\|x_0-x(0)\|^2=0$ (under matched initial conditions) and $e(h)=\tfrac12\|\chi_1-x(h)\|^2$.
 
 Differentiate $e$ in $t$:
 
@@ -2003,7 +2003,7 @@ $$
 \dot e(t) = \tfrac{1}{2h}|\chi_1-x(t)|^2 - \tfrac{1}{2h}|x_0-x(t)|^2 + \tfrac{t}{h}\langle\chi_1-x(t),-\dot x(t)\rangle + \tfrac{h-t}{h}\langle x_0-x(t),-\dot x(t)\rangle.
 $$
 
-*First two terms.* Using the polarization identity $|a|^2-|b|^2=\langle a-b,a+b\rangle$ with $a=\chi_1-x(t),\ b=x_0-x(t)$:
+*First two terms.* Using the polarization identity $\|a\|^2-\|b\|^2=\langle a-b,a+b\rangle$ with $a=\chi_1-x(t),\ b=x_0-x(t)$:
 
 $$
 \tfrac{1}{2h}\bigl(|\chi_1-x(t)|^2-|x_0-x(t)|^2\bigr) \;=\; \tfrac12\bigl\langle \tfrac{\chi_1-x_0}{h},\,2(\chi_1-x(t))-(\chi_1-x_0)\bigr\rangle.
@@ -2051,7 +2051,7 @@ $$
 e(h)-e(0) \;\le\; -\tfrac{h^2}{2}|\nabla E(\chi_1)|^2 + \tfrac{h^2}{4}|\nabla E(x_0)|^2 + \tfrac{h^2}{4}|\nabla E(\chi_1)|^2 \;=\; \tfrac{h^2}{4}|\nabla E(x_0)|^2 - \tfrac{h^2}{4}|\nabla E(\chi_1)|^2.
 $$
 
-Substituting $e(0)=0,\ e(h)=\tfrac12|\chi_1-x(h)|^2$, multiplying by $2$ and reordering yields (1.24) for $\ell=1$. $\square$
+Substituting $e(0)=0,\ e(h)=\tfrac12\|\chi_1-x(h)\|^2$, multiplying by $2$ and reordering yields (1.24) for $\ell=1$. $\square$
 
 </details>
 </div>
@@ -2099,7 +2099,7 @@ $$
 |\tilde x_h(t)-\tilde x_h(s)| \;\le\; \sqrt{2E(x_0)}\,\sqrt{t-s}. \tag{1.28}
 $$
 
-The families $(\tilde x_h)_{h\in(0,1]}$ and $(x_h)_{h\in(0,1]}$ are precompact: for any sequence $h\downarrow 0$, there exists a (non-relabeled) subsequence and a limit $x\in C^{1/2}([0,\infty);\mathbb R^N)\cap H^1((0,\infty);\mathbb R^N)$ with
+The families $(\tilde x_h)\_{h\in(0,1]}$ and $(x_h)\_{h\in(0,1]}$ are precompact: for any sequence $h\downarrow 0$, there exists a (non-relabeled) subsequence and a limit $x\in C^{1/2}([0,\infty);\mathbb R^N)\cap H^1((0,\infty);\mathbb R^N)$ with
 
 $$
 \tilde x_h\to x\quad\text{locally uniformly on }[0,\infty), \tag{1.29}
@@ -2149,7 +2149,7 @@ The two interpolations differ only on a set of measure $h$ per subinterval, so i
 
 **Argument for (i) — compactness via discrete energy dissipation.**
 
-From the very definition of $\chi_h^{(\ell)}$ as a minimizer of $E(x)+\tfrac{1}{2h}|x-\chi_h^{(\ell-1)}|^2$, comparing the value at $\chi_h^{(\ell)}$ against the value at $\chi_h^{(\ell-1)}$ (which is a candidate point) gives
+From the very definition of $\chi_h^{(\ell)}$ as a minimizer of $E(x)+\tfrac{1}{2h}\|x-\chi_h^{(\ell-1)}\|^2$, comparing the value at $\chi_h^{(\ell)}$ against the value at $\chi_h^{(\ell-1)}$ (which is a candidate point) gives
 
 $$
 E(\chi_h^{(\ell)}) + \tfrac{1}{2h}|\chi_h^{(\ell)}-\chi_h^{(\ell-1)}|^2 \;\le\; E(\chi_h^{(\ell-1)}).
@@ -2236,7 +2236,7 @@ The smooth case (a) is similar but easier — pass to the limit directly in the 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Convergence of the piecewise-constant interpolation)</span></p>
 
-Building on (1.29) and (1.34), show (1.31) and (1.32). *(Hint: $|x_h(t)-\tilde x_h(t)|\le |\chi_h^{(\ell)}-\chi_h^{(\ell-1)}|$ on each subinterval, and (1.34) controls the right-hand side in $L^2$.)*
+Building on (1.29) and (1.34), show (1.31) and (1.32). *(Hint: $\|x_h(t)-\tilde x_h(t)\|\le \|\chi_h^{(\ell)}-\chi_h^{(\ell-1)}\|$ on each subinterval, and (1.34) controls the right-hand side in $L^2$.)*
 
 </div>
 
@@ -2296,7 +2296,7 @@ $$
 \begin{cases}\dot x(t) = -\nabla E(x(t)) & \text{for } t\in(0,T),\\ x(0)=x_0,\end{cases} \tag{1.38}
 $$
 
-with $E\in C^1(\mathbb R^N)$. On the gradient flow, $|\dot x|=|\nabla E|$, so $-|\dot x|^2 = -\tfrac12|\dot x|^2-\tfrac12|\nabla E|^2$. Equation (1.2) thus may be rewritten symmetrically as
+with $E\in C^1(\mathbb R^N)$. On the gradient flow, $\|\dot x\|=|\nabla E|$, so $-\|\dot x\|^2 = -\tfrac12\|\dot x\|^2-\tfrac12\|\nabla E\|^2$. Equation (1.2) thus may be rewritten symmetrically as
 
 $$
 \frac{d}{dt}E(x(t)) \;=\; \langle \nabla E(x(t)),\dot x(t)\rangle \;=\; -\tfrac12|\dot x(t)|^2 - \tfrac12|\nabla E(x(t))|^2. \tag{1.39}
@@ -2333,7 +2333,7 @@ $$
 \int_0^T \Bigl(\langle\nabla E(x(t)),\dot x(t)\rangle + \tfrac12|\dot x(t)|^2 + \tfrac12|\nabla E(x(t))|^2\Bigr)\,dt \;\le\; 0.
 $$
 
-The integrand is exactly $\tfrac12|\dot x(t)+\nabla E(x(t))|^2 \ge 0$. A non-negative integrand whose integral is $\le 0$ must vanish a.e., so
+The integrand is exactly $\tfrac12\|\dot x(t)+\nabla E(x(t))\|^2 \ge 0$. A non-negative integrand whose integral is $\le 0$ must vanish a.e., so
 
 $$
 \dot x(t) = -\nabla E(x(t)) \qquad\text{for a.e. }t\in(0,T).
@@ -2350,11 +2350,11 @@ By continuity of both sides, the equation holds for every $t$. $\square$
 Lemma 9 is the cornerstone of the abstract theory of gradient flows in metric and Banach spaces. The key insight: although (1.38) refers to the *velocity* $\dot x$ (which requires a vector-space structure on the target) and the *gradient* $\nabla E$ (which requires a Riemannian structure), the EDI (1.40) refers only to **scalar quantities**:
 
 * $E(x(t))$ — the energy at a point, defined on any space where $E$ makes sense;
-* $|\dot x(t)|$ — a *speed*, definable in any metric space via the metric derivative
+* $\|\dot x(t)\|$ — a *speed*, definable in any metric space via the metric derivative
 
   $$|\dot x|(t):=\liminf_{s\to t}\frac{d(x(s),x(t))}{|s-t|};$$
 
-* $|\nabla E(x(t))|$ — a *slope*, definable in any metric space via the local Lipschitz constant
+* $\|\nabla E(x(t))\|$ — a *slope*, definable in any metric space via the local Lipschitz constant
 
   $$|\nabla E|(x):=\limsup_{y\to x}\frac{\bigl(E(x)-E(y)\bigr)^+}{d(x,y)}.$$
 
@@ -2403,7 +2403,7 @@ This is the entry point for **gradient flows in non-Euclidean geometries** — m
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Manifold versions of the previous results)</span></p>
 
-Inspect the proofs of Theorems 3, 5, 6, 8 and Lemma 9 and check which statements generalise to the Riemannian setting. Replace $|\cdot|$ by $g(\cdot,\cdot)^{1/2}$, $\nabla E$ by the Riesz representative defined via (1.41), and $\langle\cdot,\cdot\rangle$ by $g(\cdot,\cdot)$. Which steps require *flatness* of the ambient space (e.g. the convex-combination interpolation (1.26)), and which survive the curvature?
+Inspect the proofs of Theorems 3, 5, 6, 8 and Lemma 9 and check which statements generalise to the Riemannian setting. Replace $\|\cdot\|$ by $g(\cdot,\cdot)^{1/2}$, $\nabla E$ by the Riesz representative defined via (1.41), and $\langle\cdot,\cdot\rangle$ by $g(\cdot,\cdot)$. Which steps require *flatness* of the ambient space (e.g. the convex-combination interpolation (1.26)), and which survive the curvature?
 
 </div>
 

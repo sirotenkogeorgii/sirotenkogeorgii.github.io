@@ -24,15 +24,25 @@ tags:
 
 # Chapter 1 — Euclidean Spaces
 
-The Euclidean space $\mathbb{R}^n$ is the prototype of all manifolds. Not only is it the simplest, but locally every manifold looks like $\mathbb{R}^n$. Euclidean space is special in having a set of standard global coordinates — this is both a blessing (all constructions can be carried out explicitly) and a handicap (it is often not obvious which concepts are intrinsic, i.e., independent of coordinates). Since a manifold in general does not have standard coordinates, only coordinate-independent concepts will make sense on a manifold.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Euclidean Spaces are crusial for manifolds)</span></p>
 
-The goal of this chapter is to recast calculus on $\mathbb{R}^n$ in a coordinate-free way suitable for generalization to manifolds: tangent vectors as derivations on functions, and differential forms via alternating multilinear functions on a vector space.
+The Euclidean space $\mathbb{R}^n$ is the prototype of all manifolds. Not only is it the simplest, but locally every manifold looks like $\mathbb{R}^n$. Euclidean space is special in having a set of standard global coordinates — this is both a blessing (all constructions can be carried out explicitly) and a handicap (it is often not obvious which concepts are intrinsic, i.e., independent of coordinates). **Since a manifold in general does not have standard coordinates, only coordinate-independent concepts will make sense on a manifold.**
+
+The goal of this chapter is to recast calculus on $\mathbb{R}^n$ in a **coordinate-free** way suitable for generalization to manifolds: tangent vectors as derivations on functions, and differential forms via alternating multilinear functions on a vector space.
+
+</div>
 
 ## §1 Smooth Functions on a Euclidean Space
 
 ### 1.1 $C^\infty$ Versus Analytic Functions
 
-Write the coordinates on $\mathbb{R}^n$ as $x^1, \dots, x^n$ and let $p = (p^1, \dots, p^n)$ be a point in an open set $U$ in $\mathbb{R}^n$. In keeping with the conventions of differential geometry, the indices on coordinates are *superscripts*, not subscripts.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name">(Superscripts)</span></p>
+
+Write the coordinates on $\mathbb{R}^n$ as $x^1, \dots, x^n$ and let $p = (p^1, \dots, p^n)$ be a point in an open set $U$ in $\mathbb{R}^n$. In keeping with the conventions of differential geometry, the indices on coordinates are **superscripts**, not subscripts.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 1.1</span><span class="math-callout__name">($C^k$ and $C^\infty$ Functions)</span></p>
@@ -44,6 +54,13 @@ $$\frac{\partial^j f}{\partial x^{i_1} \cdots \partial x^{i_j}}$$
 of all orders $j \le k$ exist and are continuous at $p$. The function $f$ is $C^\infty$ at $p$ if it is $C^k$ for all $k \ge 0$; in other words, its partial derivatives of all orders exist and are continuous at $p$.
 
 A vector-valued function $f \colon U \to \mathbb{R}^m$ is $C^k$ at $p$ if all of its component functions $f^1, \dots, f^m$ are $C^k$ at $p$. We say that $f \colon U \to \mathbb{R}^m$ is $C^k$ *on* $U$ if it is $C^k$ at every point in $U$. We treat the terms "$C^\infty$" and "smooth" as synonymous.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($C^\infty$ == "smoothness")</span></p>
+
+We treat the terms "$C^\infty$" and "smooth" as synonymous.
 
 </div>
 
@@ -68,14 +85,31 @@ Then $g'(x) = f(x) = x^{1/3}$, so $g(x)$ is $C^1$ but not $C^2$ at $x = 0$. In t
 
 </div>
 
-A **neighborhood** of a point in $\mathbb{R}^n$ is an open set containing the point. The function $f$ is **real-analytic** at $p$ if in some neighborhood of $p$ it is equal to its Taylor series at $p$:
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Neighborhood of a point in $\mathbb{R}^n$)</span></p>
+
+A **neighborhood** of a point in $\mathbb{R}^n$ is an open set containing the point.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Real-analytic functions)</span></p>
+
+The function $f$ is **real-analytic** at $p$ if in some neighborhood of $p$ it is equal to its Taylor series at $p$:
 
 $$f(x) = f(p) + \sum_i \frac{\partial f}{\partial x^i}(p)(x^i - p^i) + \frac{1}{2!} \sum_{i,j} \frac{\partial^2 f}{\partial x^i \partial x^j}(p)(x^i - p^i)(x^j - p^j) + \cdots$$
 
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Real-analytic functions and $C^\infty$)</span></p>
+
 A real-analytic function is necessarily $C^\infty$, because a convergent power series can be differentiated term by term. However, a $C^\infty$ function need not be real-analytic.
 
+</div>
+
 <div class="math-callout math-callout--question" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">(A $C^\infty$ function very flat at $0$)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">($C^\infty$ function, but not real-analytic)</span></p>
 
 Define $f(x)$ on $\mathbb{R}$ by
 
@@ -83,13 +117,28 @@ $$f(x) = \begin{cases} e^{-1/x} & \text{for } x > 0, \\ 0 & \text{for } x \le 0.
 
 By induction, one can show that $f$ is $C^\infty$ on $\mathbb{R}$ and that the derivatives $f^{(k)}(0)$ are equal to $0$ for all $k \ge 0$. The Taylor series of this function at the origin is identically zero in any neighborhood of the origin, since all derivatives $f^{(k)}(0)$ equal $0$. Therefore, $f(x)$ cannot be equal to its Taylor series and $f(x)$ is not real-analytic at $0$.
 
+<figure>
+  <img src="{{ 'assets/images/notes/introduction_to_manifolds/c_infty_flat_near_zero.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>A $C^\infty$ function very flat at $0$.</figcaption>
+</figure>
+
 </div>
 
 ### 1.2 Taylor's Theorem with Remainder
 
 Although a $C^\infty$ function need not be equal to its Taylor series, there is a Taylor's theorem with remainder for $C^\infty$ functions that is often good enough for our purposes.
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Star-shaped subset wrt a point)</span></p>
+
 We say that a subset $S$ of $\mathbb{R}^n$ is **star-shaped** with respect to a point $p$ in $S$ if for every $x$ in $S$, the line segment from $p$ to $x$ lies in $S$.
+
+</div>
+
+<figure>
+  <img src="{{ 'assets/images/notes/introduction_to_manifolds/star_shaped_subset.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>Star-shaped with respect to $p$, but not with respect to $q$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 1.4</span><span class="math-callout__name">(Taylor's theorem with remainder)</span></p>
@@ -126,6 +175,11 @@ In case $n = 1$ and $p = 0$, the lemma says that $f(x) = f(0) + x\,g_1(x)$ for s
 $$f(x) = f(0) + g_1(0)\,x + g_2(0)\,x^2 + \cdots + g_i(0)\,x^i + g_{i+1}(x)\,x^{i+1},$$
 
 where $g_k(0) = \frac{1}{k!} f^{(k)}(0)$ for $k = 1, 2, \dots, i$. So this is a polynomial expansion of $f(x)$ whose terms up to the last term agree with the Taylor series of $f(x)$ at $0$.
+
+<figure>
+  <img src="{{ 'assets/images/notes/introduction_to_manifolds/line_segment_from_p_to_x.png' | relative_url }}" alt="a" loading="lazy">
+  <figcaption>The line segment from $p$ to $x$.</figcaption>
+</figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span></p>
@@ -5165,7 +5219,7 @@ On the Lie group $\mathbb{R}$, the group operation is addition and the identity 
 
 $$\ell_g(x) = g + x.$$
 
-Let us compute $\ell_{g*}(d/dx\vert_0)$. Since $\ell_{g*}(d/dx\vert_0)$ is a tangent vector at $g$, it is a scalar multiple of $d/dx\vert_g$:
+Let us compute $\ell_{g\ast}(d/dx\vert_0)$. Since $\ell_{g\ast}(d/dx\vert_0)$ is a tangent vector at $g$, it is a scalar multiple of $d/dx\vert_g$:
 
 $$\ell_{g*}\!\left(\frac{d}{dx}\bigg\vert_0\right) = a\,\frac{d}{dx}\bigg\vert_g. \tag{16.4}$$
 
@@ -5480,7 +5534,7 @@ Differential forms play a crucial role in manifold theory. First and foremost, t
 
 ### 17.1 The Differential of a Function
 
-Let $M$ be a smooth manifold and $p$ a point in $M$. The **cotangent space** of $M$ at $p$, denoted by $T_p^*(M)$ or $T_p^* M$, is defined to be the dual space of the tangent space $T_p M$:
+Let $M$ be a smooth manifold and $p$ a point in $M$. The **cotangent space** of $M$ at $p$, denoted by $T_p^\ast(M)$ or $T_p^\ast M$, is defined to be the dual space of the tangent space $T_p M$:
 
 $$T_p^* M = (T_p M)^\vee = \operatorname{Hom}(T_p M, \mathbb{R}).$$
 
@@ -5584,7 +5638,7 @@ In terms of the cotangent bundle, a 1-form on $M$ is simply a section of the cot
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 17.4</span><span class="math-callout__name">(Liouville form on the cotangent bundle)</span></p>
 
-If a manifold $M$ has dimension $n$, then the total space $T^* M$ of its cotangent bundle $\pi \colon T^* M \to M$ is a manifold of dimension $2n$. Remarkably, on $T^* M$ there is a 1-form $\lambda$, called the **Liouville form** (or the **Poincaré form** in some books), defined independently of charts as follows. A point in $T^* M$ is a covector $\omega_p \in T_p^* M$ at some point $p \in M$. If $X_{\omega_p}$ is a tangent vector to $T^* M$ at $\omega_p$, then the pushforward $\pi_*\!\left(X_{\omega_p}\right)$ is a tangent vector to $M$ at $p$. Therefore, one can pair up $\omega_p$ and $\pi_*\!\left(X_{\omega_p}\right)$ to obtain a real number $\omega_p\!\left(\pi_*\!\left(X_{\omega_p}\right)\right)$. Define
+If a manifold $M$ has dimension $n$, then the total space $T^\ast M$ of its cotangent bundle $\pi \colon T^\ast M \to M$ is a manifold of dimension $2n$. Remarkably, on $T^\ast M$ there is a 1-form $\lambda$, called the **Liouville form** (or the **Poincaré form** in some books), defined independently of charts as follows. A point in $T^\ast M$ is a covector $\omega_p \in T_p^\ast M$ at some point $p \in M$. If $X_{\omega_p}$ is a tangent vector to $T^\ast M$ at $\omega_p$, then the pushforward $\pi_\ast\left(X_{\omega_p}\right)$ is a tangent vector to $M$ at $p$. Therefore, one can pair up $\omega_p$ and $\pi_\ast\left(X_{\omega_p}\right)$ to obtain a real number $\omega_p\left(\pi_\ast\left(X_{\omega_p}\right)\right)$. Define
 
 $$\lambda_{\omega_p}\!\left(X_{\omega_p}\right) = \omega_p\!\left(\pi_*\!\left(X_{\omega_p}\right)\right).$$
 
@@ -5696,13 +5750,13 @@ is a linear map that pushes forward vectors at $p$ from $N$ to $M$. The **codiff
 
 $$(F_{*,p})^\vee \colon T_{F(p)}^* M \to T_p^* N,$$
 
-reverses the arrow and pulls back a covector at $F(p)$ from $M$ to $N$. Another notation for the codifferential is $F^* = (F_{*,p})^\vee$. By the definition of the dual, if $\omega_{F(p)} \in T_{F(p)}^* M$ is a covector at $F(p)$ and $X_p \in T_p N$ is a tangent vector at $p$, then
+reverses the arrow and pulls back a covector at $F(p)$ from $M$ to $N$. Another notation for the codifferential is $F^\ast = (F_{\ast,p})^\vee$. By the definition of the dual, if $\omega_{F(p)} \in T_{F(p)}^\ast M$ is a covector at $F(p)$ and $X_p \in T_p N$ is a tangent vector at $p$, then
 
 $$F^*\!\left(\omega_{F(p)}\right)(X_p) = \left((F_{*,p})^\vee\,\omega_{F(p)}\right)(X_p) = \omega_{F(p)}(F_{*,p} X_p).$$
 
-We call $F^*\!\left(\omega_{F(p)}\right)$ the **pullback** of the covector $\omega_{F(p)}$ by $F$. Thus, the pullback of covectors is simply the codifferential.
+We call $F^\ast\left(\omega_{F(p)}\right)$ the **pullback** of the covector $\omega_{F(p)}$ by $F$. Thus, the pullback of covectors is simply the codifferential.
 
-Unlike vector fields, which in general cannot be pushed forward under a $C^\infty$ map, every covector field can be pulled back by a $C^\infty$ map. If $\omega$ is a 1-form on $M$, its **pullback** $F^* \omega$ is the 1-form on $N$ defined pointwise by
+Unlike vector fields, which in general cannot be pushed forward under a $C^\infty$ map, every covector field can be pulled back by a $C^\infty$ map. If $\omega$ is a 1-form on $M$, its **pullback** $F^\ast \omega$ is the 1-form on $N$ defined pointwise by
 
 $$(F^* \omega)_p = F^*\!\left(\omega_{F(p)}\right), \quad p \in N.$$
 
@@ -5745,9 +5799,9 @@ Pullback of functions and 1-forms respects addition and scalar multiplication.
 
 Let $F \colon N \to M$ be a $C^\infty$ map of manifolds. Suppose $\omega, \tau \in \Omega^1(M)$ and $g \in C^\infty(M)$. Then
 
-**(i)** $F^*(\omega + \tau) = F^* \omega + F^* \tau$,
+**(i)** $F^\ast(\omega + \tau) = F^\ast \omega + F^\ast \tau$,
 
-**(ii)** $F^*(g\omega) = (F^* g)(F^* \omega)$.
+**(ii)** $F^\ast(g\omega) = (F^\ast g)(F^\ast \omega)$.
 
 </div>
 
@@ -5909,7 +5963,7 @@ where $dx^I$ stands for $dx^{i_1} \wedge \cdots \wedge dx^{i_k}$.
 
 </div>
 
-By Example 18.2, on a coordinate chart $(U, x^1, \dots, x^n)$ of a manifold $M$, a $k$-form on $U$ is a linear combination $\omega = \sum a_I\,dx^I$, where $I \in \mathcal{J}_{k,n}$ and the $a_I$ are functions on $U$. As a shorthand, we write $\partial_i = \partial/\partial x^i$ for the $i$th coordinate vector field. Evaluating pointwise as in Lemma 3.28, we obtain the following equality on $U$ for $I, J \in \mathcal{J}_{k,n}$:
+By Example 18.2, on a coordinate chart $(U, x^1, \dots, x^n)$ of a manifold $M$, a $k$-form on $U$ is a linear combination $\omega = \sum a_I\,dx^I$, where $I \in \mathcal{J}\_{k,n}$ and the $a_I$ are functions on $U$. As a shorthand, we write $\partial_i = \partial/\partial x^i$ for the $i$th coordinate vector field. Evaluating pointwise as in Lemma 3.28, we obtain the following equality on $U$ for $I, J \in \mathcal{J}\_{k,n}$:
 
 $$dx^I(\partial_{j_1}, \dots, \partial_{j_k}) = \delta_J^I = \begin{cases} 1 & \text{for } I = J, \\ 0 & \text{for } I \neq J. \end{cases} \tag{18.2}$$
 
@@ -6017,23 +6071,23 @@ Suppose $\tau$ is a $C^\infty$ differential form defined on a neighborhood $U$ o
 
 ### 18.5 Pullback of $k$-Forms
 
-We have defined the pullback of 0-forms and 1-forms under a $C^\infty$ map $F \colon N \to M$. For a $C^\infty$ 0-form on $M$, i.e., a $C^\infty$ function on $M$, the pullback $F^* f$ is simply the composition $F^*(f) = f \circ F \in \Omega^0(N)$.
+We have defined the pullback of 0-forms and 1-forms under a $C^\infty$ map $F \colon N \to M$. For a $C^\infty$ 0-form on $M$, i.e., a $C^\infty$ function on $M$, the pullback $F^\ast f$ is simply the composition $F^\ast(f) = f \circ F \in \Omega^0(N)$.
 
-To generalize the pullback to $k$-forms for all $k \ge 1$, we first recall the pullback of $k$-covectors from Subsection 10.3. A linear map $L \colon V \to W$ of vector spaces induces a pullback map $L^* \colon A_k(W) \to A_k(V)$ by
+To generalize the pullback to $k$-forms for all $k \ge 1$, we first recall the pullback of $k$-covectors from Subsection 10.3. A linear map $L \colon V \to W$ of vector spaces induces a pullback map $L^\ast \colon A_k(W) \to A_k(V)$ by
 
 $$(L^* \alpha)(v_1, \dots, v_k) = \alpha(L(v_1), \dots, L(v_k))$$
 
 for $\alpha \in A_k(W)$ and $v_1, \dots, v_k \in V$.
 
-Now suppose $F \colon N \to M$ is a $C^\infty$ map of manifolds. At each point $p \in N$, the differential $F_{*,p} \colon T_p N \to T_{F(p)} M$ is a linear map of tangent spaces, and so by the preceding paragraph there is a pullback map
+Now suppose $F \colon N \to M$ is a $C^\infty$ map of manifolds. At each point $p \in N$, the differential $F_{\ast,p} \colon T_p N \to T_{F(p)} M$ is a linear map of tangent spaces, and so by the preceding paragraph there is a pullback map
 
 $$(F_{*,p})^* \colon A_k(T_{F(p)} M) \to A_k(T_p N).$$
 
-This ugly notation is usually simplified to $F^*$. Thus, if $\omega_{F(p)}$ is a $k$-covector at $F(p)$ in $M$, then its **pullback** $F^*\!\left(\omega_{F(p)}\right)$ is the $k$-covector at $p$ in $N$ given by
+This ugly notation is usually simplified to $F^\ast$. Thus, if $\omega_{F(p)}$ is a $k$-covector at $F(p)$ in $M$, then its **pullback** $F^\ast\left(\omega_{F(p)}\right)$ is the $k$-covector at $p$ in $N$ given by
 
 $$F^*\!\left(\omega_{F(p)}\right)(v_1, \dots, v_k) = \omega_{F(p)}(F_{*,p} v_1, \dots, F_{*,p} v_k), \quad v_i \in T_p N.$$
 
-Finally, if $\omega$ is a $k$-form on $M$, then its **pullback** $F^* \omega$ is the $k$-form on $N$ defined pointwise by $(F^* \omega)_p = F^*\!\left(\omega_{F(p)}\right)$ for all $p \in N$. Equivalently,
+Finally, if $\omega$ is a $k$-form on $M$, then its **pullback** $F^\ast \omega$ is the $k$-form on $N$ defined pointwise by $(F^\ast \omega)_p = F^\ast\left(\omega_{F(p)}\right)$ for all $p \in N$. Equivalently,
 
 $$(F^* \omega)_p(v_1, \dots, v_k) = \omega_{F(p)}(F_{*,p} v_1, \dots, F_{*,p} v_k), \quad v_i \in T_p N. \tag{18.4}$$
 
@@ -6046,9 +6100,9 @@ $$T_p N \times \cdots \times T_p N \xrightarrow{F_* \times \cdots \times F_*} T_
 
 Let $F \colon N \to M$ be a $C^\infty$ map. If $\omega, \tau$ are $k$-forms on $M$ and $a$ is a real number, then
 
-**(i)** $F^*(\omega + \tau) = F^* \omega + F^* \tau$;
+**(i)** $F^\ast(\omega + \tau) = F^\ast \omega + F^\ast \tau$;
 
-**(ii)** $F^*(a\omega) = a F^* \omega$.
+**(ii)** $F^\ast(a\omega) = a F^\ast \omega$.
 
 </div>
 
@@ -6109,7 +6163,7 @@ Define the vector space $\Omega^*(M)$ of $C^\infty$ differential forms on a mani
 
 $$\Omega^*(M) = \bigoplus_{k=0}^n \Omega^k(M).$$
 
-What this means is that each element of $\Omega^*(M)$ is uniquely a sum $\sum_{k=0}^n \omega_k$, where $\omega_k \in \Omega^k(M)$. With the wedge product, the vector space $\Omega^*(M)$ becomes a graded algebra, the grading being the degree of differential forms.
+What this means is that each element of $\Omega^\ast(M)$ is uniquely a sum $\sum_{k=0}^n \omega_k$, where $\omega_k \in \Omega^k(M)$. With the wedge product, the vector space $\Omega^\ast(M)$ becomes a graded algebra, the grading being the degree of differential forms.
 
 ### 18.7 Differential Forms on a Circle
 
@@ -6117,7 +6171,7 @@ Consider the map
 
 $$h \colon \mathbb{R} \to S^1, \quad h(t) = (\cos t, \sin t).$$
 
-Since the derivative $h'(t) = (-\sin t, \cos t)$ is nonzero for all $t$, the map $h \colon \mathbb{R} \to S^1$ is a submersion. By Problem 18.8, the pullback map $h^* \colon \Omega^*(S^1) \to \Omega^*(\mathbb{R})$ on smooth differential forms is injective. This will allow us to identify the differential forms on $S^1$ with a subspace of differential forms on $\mathbb{R}$.
+Since the derivative $h'(t) = (-\sin t, \cos t)$ is nonzero for all $t$, the map $h \colon \mathbb{R} \to S^1$ is a submersion. By Problem 18.8, the pullback map $h^\ast \colon \Omega^\ast(S^1) \to \Omega^\ast(\mathbb{R})$ on smooth differential forms is injective. This will allow us to identify the differential forms on $S^1$ with a subspace of differential forms on $\mathbb{R}$.
 
 Let $\omega = -y\,dx + x\,dy$ be the nowhere-vanishing form on $S^1$ from Example 17.15. In Example 17.16, we showed that $h^* \omega = dt$. Since $\omega$ is nowhere vanishing, it is a frame for the cotangent bundle $T^* S^1$ over $S^1$, and every $C^\infty$ 1-form $\alpha$ on $S^1$ can be written as $\alpha = f\omega$ for some function $f$ on $S^1$. The function $f$ is $C^\infty$. Its pullback $\tilde{f} := h^* f$ is a $C^\infty$ function on $\mathbb{R}$. Since pulling back preserves multiplication (Proposition 18.11),
 
@@ -6128,7 +6182,7 @@ We say that a function $g$ or a 1-form $g\,dt$ on $\mathbb{R}$ is **periodic of 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 18.12</span></p>
 
-For $k = 0, 1$, under the pullback map $h^* \colon \Omega^*(S^1) \to \Omega^*(\mathbb{R})$, smooth $k$-forms on $S^1$ are identified with smooth periodic $k$-forms of period $2\pi$ on $\mathbb{R}$.
+For $k = 0, 1$, under the pullback map $h^* \colon \Omega^\ast(S^1) \to \Omega^\ast(\mathbb{R})$, smooth $k$-forms on $S^1$ are identified with smooth periodic $k$-forms of period $2\pi$ on $\mathbb{R}$.
 
 </div>
 
@@ -6208,7 +6262,7 @@ $$\deg D\omega = \deg \omega + m$$
 
 for all homogeneous elements $\omega \in A$.
 
-Let $M$ be a manifold and $\Omega^*(M)$ the graded algebra of $C^\infty$ differential forms on $M$. On the graded algebra $\Omega^*(M)$ there is a uniquely and intrinsically defined antiderivation called the **exterior derivative**. The process of applying the exterior derivative is called **exterior differentiation**.
+Let $M$ be a manifold and $\Omega^\ast(M)$ the graded algebra of $C^\infty$ differential forms on $M$. On the graded algebra $\Omega^\ast(M)$ there is a uniquely and intrinsically defined antiderivation called the **exterior derivative**. The process of applying the exterior derivative is called **exterior differentiation**.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 19.1</span><span class="math-callout__name">(Exterior Derivative)</span></p>
@@ -6260,7 +6314,7 @@ The derivative has the property that the value of $f'(x)$ at a point $p$ depends
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 19.2</span><span class="math-callout__name">(Local Operator)</span></p>
 
-An operator $D \colon \Omega^*(M) \to \Omega^*(M)$ is said to be **local** if for all $k \ge 0$, whenever a $k$-form $\omega \in \Omega^k(M)$ restricts to 0 on an open set $U$ in $M$, then $D\omega \equiv 0$ on $U$.
+An operator $D \colon \Omega^\ast(M) \to \Omega^\ast(M)$ is said to be **local** if for all $k \ge 0$, whenever a $k$-form $\omega \in \Omega^k(M)$ restricts to 0 on an open set $U$ in $M$, then $D\omega \equiv 0$ on $U$.
 
 </div>
 
@@ -6315,7 +6369,7 @@ Define $(d\omega)_p = (d_U \omega)_p$. We now show that $(d_U \omega)_p$ is inde
 
 $$\sum a_I\,dx^I = \sum b_J\,dy^J.$$
 
-On $U \cap V$ there is a unique exterior derivative $d_{U \cap V} \colon \Omega^*(U \cap V) \to \Omega^*(U \cap V)$. By the properties of the exterior derivative, on $U \cap V$,
+On $U \cap V$ there is a unique exterior derivative $d_{U \cap V} \colon \Omega^\ast(U \cap V) \to \Omega^\ast(U \cap V)$. By the properties of the exterior derivative, on $U \cap V$,
 
 $$\sum da_I \wedge dx^I = \sum db_J \wedge dy^J.$$
 
@@ -6331,7 +6385,7 @@ To check properties (i), (ii), and (iii), it suffices to check them at each poin
 
 ### 19.4 Uniqueness of the Exterior Derivative
 
-Suppose $D \colon \Omega^*(M) \to \Omega^*(M)$ is an exterior derivative. We will show that $D$ coincides with the exterior derivative $d$ defined in Subsection 19.3.
+Suppose $D \colon \Omega^\ast(M) \to \Omega^\ast(M)$ is an exterior derivative. We will show that $D$ coincides with the exterior derivative $d$ defined in Subsection 19.3.
 
 If $f$ is a $C^\infty$ function and $X$ a $C^\infty$ vector field on $M$, then by condition (iii) of Definition 19.1,
 
@@ -6670,11 +6724,11 @@ $$(\mathcal{L}_X Y)_p = \lim_{t \to 0} \frac{\varphi_{-t*}\!\left(Y_{\varphi_t(p
 
 </div>
 
-In this definition the limit is taken in the finite-dimensional vector space $T_pM$. For the derivative to exist, it suffices that $\lbrace \varphi_{-t*}Y \rbrace$ be a smooth family of vector fields on $M$. To show the smoothness of the family $\lbrace \varphi_{-t*}Y \rbrace$, we write out $\varphi_{-t*}Y$ in local coordinates $x^1, \dots, x^n$ in a chart. Let $\varphi_t^i$ and $\varphi^i$ be the $i$th components of $\varphi_t$ and $\varphi$ respectively. Then
+In this definition the limit is taken in the finite-dimensional vector space $T_pM$. For the derivative to exist, it suffices that $\lbrace \varphi_{-t\ast}Y \rbrace$ be a smooth family of vector fields on $M$. To show the smoothness of the family $\lbrace \varphi_{-t\ast}Y \rbrace$, we write out $\varphi_{-t\ast}Y$ in local coordinates $x^1, \dots, x^n$ in a chart. Let $\varphi_t^i$ and $\varphi^i$ be the $i$th components of $\varphi_t$ and $\varphi$ respectively. Then
 
 $$(\varphi_t)^i(p) = \varphi^i(t, p) = (x^i \circ \varphi)(t, p).$$
 
-By Proposition 8.11, relative to the frame $\lbrace \partial/\partial x^j \rbrace$, the differential $\varphi_{t*}$ at $p$ is represented by the Jacobian matrix $[\partial(\varphi_t)^i / \partial x^j(p)] = [\partial\varphi^i / \partial x^j(t, p)]$. This means that
+By Proposition 8.11, relative to the frame $\lbrace \partial/\partial x^j \rbrace$, the differential $\varphi_{t\ast}$ at $p$ is represented by the Jacobian matrix $[\partial(\varphi_t)^i / \partial x^j(p)] = [\partial\varphi^i / \partial x^j(t, p)]$. This means that
 
 $$\varphi_{t*}\!\left(\frac{\partial}{\partial x^j}\bigg\vert_p\right) = \sum_i \frac{\partial \varphi^i}{\partial x^j}(t, p)\,\frac{\partial}{\partial x^i}\bigg\vert_{\varphi_t(p)}.$$
 
@@ -6724,7 +6778,7 @@ Although the Lie derivative of a vector field gives us nothing new, in conjuncti
 
 ### 20.3 The Lie Derivative of a Differential Form
 
-Let $X$ be a smooth vector field and $\omega$ a smooth $k$-form on a manifold $M$. Fix a point $p \in M$ and let $\varphi_t \colon U \to M$ be a flow of $X$ in a neighborhood $U$ of $p$. The definition of the Lie derivative of a differential form is similar to that of the Lie derivative of a vector field. However, instead of pushing a vector at $\varphi_t(p)$ to $p$ via $(\varphi_{-t})_*$, we now pull the $k$-covector $\omega_{\varphi_t(p)}$ back to $p$ via $\varphi_t^*$.
+Let $X$ be a smooth vector field and $\omega$ a smooth $k$-form on a manifold $M$. Fix a point $p \in M$ and let $\varphi_t \colon U \to M$ be a flow of $X$ in a neighborhood $U$ of $p$. The definition of the Lie derivative of a differential form is similar to that of the Lie derivative of a vector field. However, instead of pushing a vector at $\varphi_t(p)$ to $p$ via $(\varphi_{-t})\_\ast$, we now pull the $k$-covector $\omega_{\varphi_t(p)}$ back to $p$ via $\varphi_t^\ast$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 20.5</span><span class="math-callout__name">(Lie Derivative of a Differential Form)</span></p>
@@ -7695,11 +7749,11 @@ $$L(f, P) := \sum (\inf_{R_j} f) \operatorname{vol}(R_j), \quad U(f, P) := \sum 
 
 where each sum runs over all subrectangles of the partition $P$. For any partition $P$, clearly $L(f, P) \le U(f, P)$.
 
-A partition $P' = \lbrace P'_1, \dots, P'_n \rbrace$ is a **refinement** of the partition $P = \lbrace P_1, \dots, P_n \rbrace$ if $P_i \subset P'_i$ for all $i = 1, \dots, n$. If $P'$ is a refinement of $P$, then each subrectangle $R_j$ of $P$ is subdivided into subrectangles $R'_{jk}$ of $P'$, and it is easily seen that
+A partition $P' = \lbrace P'\_1, \dots, P'\_n \rbrace$ is a **refinement** of the partition $P = \lbrace P_1, \dots, P_n \rbrace$ if $P_i \subset P'\_i$ for all $i = 1, \dots, n$. If $P'$ is a refinement of $P$, then each subrectangle $R_j$ of $P$ is subdivided into subrectangles $R'\_{jk}$ of $P'$, and it is easily seen that
 
 $$L(f, P) \le L(f, P'), \quad U(f, P') \le U(f, P).$$
 
-Any two partitions $P$ and $P'$ of the rectangle $R$ have a common refinement $Q = \lbrace Q_1, \dots, Q_n \rbrace$ with $Q_i = P_i \cup P'_i$, and so
+Any two partitions $P$ and $P'$ of the rectangle $R$ have a common refinement $Q = \lbrace Q_1, \dots, Q_n \rbrace$ with $Q_i = P_i \cup P'\_i$, and so
 
 $$L(f, P) \le L(f, Q) \le U(f, Q) \le U(f, P').$$
 
@@ -8250,7 +8304,7 @@ $$d\tilde{g} = \tilde{g}'(t)\,dt = \tilde{f}(t)\,dt. \quad \square$$
 </details>
 </div>
 
-Let $\tilde{g}$ be the periodic function of period $2\pi$ on $\mathbb{R}$ from Lemma 24.5. By Proposition 18.12, $\tilde{g} = h^*g$ for some $C^\infty$ function $g$ on $S^1$. It follows that
+Let $\tilde{g}$ be the periodic function of period $2\pi$ on $\mathbb{R}$ from Lemma 24.5. By Proposition 18.12, $\tilde{g} = h^\ast g$ for some $C^\infty$ function $g$ on $S^1$. It follows that
 
 $$d\tilde{g} = dh^*g = h^*(dg).$$
 
@@ -8258,7 +8312,7 @@ On the other hand,
 
 $$\tilde{f}(t)\,dt = (h^*f)(h^*\omega) = h^*(f\omega) = h^*\alpha.$$
 
-Since $h^* \colon \Omega^1(S^1) \to \Omega^1(\mathbb{R})$ is injective, $\alpha = dg$. This proves that the kernel of $\varphi$ consists of exact forms. Therefore, integration induces an isomorphism
+Since $h^\ast \colon \Omega^1(S^1) \to \Omega^1(\mathbb{R})$ is injective, $\alpha = dg$. This proves that the kernel of $\varphi$ consists of exact forms. Therefore, integration induces an isomorphism
 
 $$H^1(S^1) = \frac{Z^1(S^1)}{B^1(S^1)} \xrightarrow{\;\sim\;} \mathbb{R}.$$
 
@@ -8266,7 +8320,7 @@ $$H^1(S^1) = \frac{Z^1(S^1)}{B^1(S^1)} \xrightarrow{\;\sim\;} \mathbb{R}.$$
 
 ### 24.3 Diffeomorphism Invariance
 
-For any smooth map $F \colon N \to M$ of manifolds, there is a pullback map $F^* \colon \Omega^*(M) \to \Omega^*(N)$ of differential forms. Moreover, the pullback $F^*$ commutes with the exterior derivative $d$ (Proposition 19.5).
+For any smooth map $F \colon N \to M$ of manifolds, there is a pullback map $F^\ast \colon \Omega^\ast(M) \to \Omega^\ast(N)$ of differential forms. Moreover, the pullback $F^*$ commutes with the exterior derivative $d$ (Proposition 19.5).
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 24.6</span></p>
@@ -9249,13 +9303,13 @@ Let $U$ be an open subset of a manifold $M$. If a smooth $k$-form $\tau \in \Ome
 
 </div>
 
-### 29.4 A Cochain Homotopy Between $i_0^*$ and $i_1^*$
+### 29.4 A Cochain Homotopy Between $i_0^\ast$ and $i_1^\ast$
 
-Fix an atlas $\lbrace (U_\alpha, \phi_\alpha) \rbrace$ for $M$, a $C^\infty$ partition of unity $\lbrace \rho_\alpha \rbrace$ subordinate to $\lbrace U_\alpha \rbrace$, and a collection $\lbrace g_\alpha \rbrace$ of $C^\infty$ functions on $M$ such that $g_\alpha \equiv 1$ on $\operatorname{supp} \rho_\alpha$ and $\operatorname{supp} g_\alpha \subset U_\alpha$. Let $\omega \in \Omega^k(M \times \mathbb{R})$ and let $\omega_\alpha = (\pi^* \rho_\alpha) \omega$. Since $\sum \pi^* \rho_\alpha = 1$,
+Fix an atlas $\lbrace (U_\alpha, \phi_\alpha) \rbrace$ for $M$, a $C^\infty$ partition of unity $\lbrace \rho_\alpha \rbrace$ subordinate to $\lbrace U_\alpha \rbrace$, and a collection $\lbrace g_\alpha \rbrace$ of $C^\infty$ functions on $M$ such that $g_\alpha \equiv 1$ on $\operatorname{supp} \rho_\alpha$ and $\operatorname{supp} g_\alpha \subset U_\alpha$. Let $\omega \in \Omega^k(M \times \mathbb{R})$ and let $\omega_\alpha = (\pi^\ast \rho_\alpha) \omega$. Since $\sum \pi^\ast \rho_\alpha = 1$,
 
 $$\omega = \sum_\alpha (\pi^* \rho_\alpha) \omega = \sum_\alpha \omega_\alpha.$$
 
-Each $\omega_\alpha$ can be uniquely decomposed into type-I and type-II forms on $\pi^{-1}U_\alpha$, using the local coordinates $\pi^* x^1, \ldots, \pi^* x^n, t$. Extending by zero using $g_\alpha$, this gives a globally defined decomposition.
+Each $\omega_\alpha$ can be uniquely decomposed into type-I and type-II forms on $\pi^{-1}U_\alpha$, using the local coordinates $\pi^\ast x^1, \ldots, \pi^\ast x^n, t$. Extending by zero using $g_\alpha$, this gives a globally defined decomposition.
 
 Define the linear operator
 
@@ -9263,8 +9317,8 @@ $$K \colon \Omega^*(M \times \mathbb{R}) \to \Omega^{*-1}(M)$$
 
 by the following rules:
 
-- (i) On type-I forms: $K(f \pi^* \eta) = 0$;
-- (ii) On type-II forms: $K(f\, dt \wedge \pi^* \eta) = \left(\int_0^1 f(x, t)\, dt\right) \eta$;
+- (i) On type-I forms: $K(f \pi^\ast \eta) = 0$;
+- (ii) On type-II forms: $K(f\, dt \wedge \pi^\ast \eta) = \left(\int_0^1 f(x, t)\, dt\right) \eta$;
 - (iii) $K$ is linear over locally finite sums.
 
 Thus,
@@ -9286,7 +9340,7 @@ $$d \circ K + K \circ d = i_1^* - i_0^*.$$
 
 </div>
 
-By linearity of $K$, $d$, $i_0^*$, and $i_1^*$ over locally finite sums, it suffices to check the equality $d \circ K + K \circ d = i_1^* - i_0^*$ on a coordinate open set $(U \times \mathbb{R}, \pi^* x^1, \ldots, \pi^* x^n, t)$ on $M \times \mathbb{R}$.
+By linearity of $K$, $d$, $i_0^\ast$, and $i_1^\ast$ over locally finite sums, it suffices to check the equality $d \circ K + K \circ d = i_1^\ast - i_0^\ast$ on a coordinate open set $(U \times \mathbb{R}, \pi^\ast x^1, \ldots, \pi^\ast x^n, t)$ on $M \times \mathbb{R}$.
 
 **On type-I forms** $f \pi^* \eta$:
 
@@ -9296,17 +9350,17 @@ In the sum on the right-hand side, the second and third terms are type-I forms; 
 
 $$Kd(f \pi^* \eta) = K\!\left(\frac{\partial f}{\partial t}\, dt \wedge \pi^* \eta\right) = \left(\int_0^1 \frac{\partial f}{\partial t}\, dt\right) \eta = (f(x, 1) - f(x, 0))\,\eta = (i_1^* - i_0^*)(f \pi^* \eta).$$
 
-Since $dK(f \pi^* \eta) = d(0) = 0$, on type-I forms, $d \circ K + K \circ d = i_1^* - i_0^*$.
+Since $dK(f \pi^\ast \eta) = d(0) = 0$, on type-I forms, $d \circ K + K \circ d = i_1^\ast - i_0^\ast$.
 
-**On type-II forms** $f\, dt \wedge \pi^* \eta$:
+**On type-II forms** $f\, dt \wedge \pi^\ast \eta$:
 
 $$i_1^*(f(x, t)\, dt \wedge \pi^* \eta) = 0$$
 
-because $i_1^* dt = d(i_1^* t) = d(1) = 0$. Similarly, $i_0^*$ also vanishes on type-II forms. Therefore, $d \circ K + K \circ d = 0 = i_1^* - i_0^*$ on type-II forms.
+because $i_1^\ast dt = d(i_1^\ast t) = d(1) = 0$. Similarly, $i_0^\ast$ also vanishes on type-II forms. Therefore, $d \circ K + K \circ d = 0 = i_1^\ast - i_0^\ast$ on type-II forms.
 
 One verifies separately that $dK + Kd = 0$ on type-II forms by a direct computation using the Leibniz rule for $d$ and the fact that differentiation under the integral sign is permissible for $C^\infty$ functions.
 
-This completes the proof that $K$ is a cochain homotopy between $i_0^*$ and $i_1^*$. The existence of the cochain homotopy $K$ proves that the induced maps in cohomology $i_0^\#$ and $i_1^\#$ are equal. As we pointed out in Section 29.1,
+This completes the proof that $K$ is a cochain homotopy between $i_0^\ast$ and $i_1^\ast$. The existence of the cochain homotopy $K$ proves that the induced maps in cohomology $i_0^\#$ and $i_1^\#$ are equal. As we pointed out in Section 29.1,
 
 $$f^\# = i_0^\# \circ F^\# = i_1^\# \circ F^\# = g^\#.$$
 
@@ -9566,7 +9620,7 @@ So $x \in B(p, r)$. This proves the claim. Because $p \in B(q, r/2) \subset U$, 
 </details>
 </div>
 
-Both of the sets $\mathbb{Q}$ and $\mathbb{Q}^+$ are countable. Since the centers of the balls in $\mathcal{B}_{\mathrm{rat}}$ are indexed by $\mathbb{Q}^n$, a countable set, and the radii are indexed by $\mathbb{Q}^+$, also a countable set, the collection $\mathcal{B}_{\mathrm{rat}}$ is countable.
+Both of the sets $\mathbb{Q}$ and $\mathbb{Q}^+$ are countable. Since the centers of the balls in $\mathcal{B}\_{\mathrm{rat}}$ are indexed by $\mathbb{Q}^n$, a countable set, and the radii are indexed by $\mathbb{Q}^+$, also a countable set, the collection $\mathcal{B}\_{\mathrm{rat}}$ is countable.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.12</span><span class="math-callout__name">(Second countable)</span></p>
@@ -11541,9 +11595,9 @@ $$= [F_* X, F_* Y].$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Solution 18.8*</span><span class="math-callout__name">(Pullback by a surjective submersion)</span></p>
 
-The fact that $\pi^* \colon \Omega^*(M) \to \Omega^*(\tilde{M})$ is an algebra homomorphism follows from Propositions 18.9 and 18.11.
+The fact that $\pi^\ast \colon \Omega^\ast(M) \to \Omega^\ast(\tilde{M})$ is an algebra homomorphism follows from Propositions 18.9 and 18.11.
 
-Suppose $\omega \in \Omega^k(M)$ is a $k$-form on $M$ for which $\pi^* \omega = 0$ in $\Omega^k(\tilde{M})$. To show that $\omega = 0$, pick an arbitrary point $p \in M$, and arbitrary vectors $v_1, \ldots, v_k \in T_p M$. Since $\pi$ is surjective, there is a point $\tilde{p} \in \tilde{M}$ that maps to $p$. Since $\pi$ is a submersion at $\tilde{p}$, there exist $\tilde{v}_1, \ldots, \tilde{v}_k \in T_{\tilde{p}} \tilde{M}$ such that $\pi_{*\tilde{p}} \tilde{v}_i = v_i$. Then
+Suppose $\omega \in \Omega^k(M)$ is a $k$-form on $M$ for which $\pi^\ast \omega = 0$ in $\Omega^k(\tilde{M})$. To show that $\omega = 0$, pick an arbitrary point $p \in M$, and arbitrary vectors $v_1, \ldots, v_k \in T_p M$. Since $\pi$ is surjective, there is a point $\tilde{p} \in \tilde{M}$ that maps to $p$. Since $\pi$ is a submersion at $\tilde{p}$, there exist $\tilde{v}_1, \ldots, \tilde{v}_k \in T_{\tilde{p}} \tilde{M}$ such that $\pi_{*\tilde{p}} \tilde{v}_i = v_i$. Then
 
 $$0 = (\pi^* \omega)_{\tilde{p}}(\tilde{v}_1, \ldots, \tilde{v}_k) = \omega_{\pi(\tilde{p})}(\pi_* \tilde{v}_1, \ldots, \pi_* \tilde{v}_k) = \omega_p(v_1, \ldots, v_k).$$
 
@@ -11773,7 +11827,7 @@ A reference of symbols and notations used throughout the book, organized by topi
 | --- | --- |
 | $T_p(M)$ or $T_pM$ | tangent space to $M$ at $p$ |
 | $\partial/\partial x^i\big\|_p$ | coordinate tangent vector at $p$ |
-| $F_{*,p}$ or $F_*$ | differential of $F$ at $p$ |
+| $F_{\ast,p}$ or $F_\ast$ | differential of $F$ at $p$ |
 | $c(t)$ | curve in a manifold |
 | $c'(t) := c_*(d/dt\big\|_{t_0})$ | velocity vector of a curve |
 | $TM$ | tangent bundle |
@@ -11806,7 +11860,7 @@ A reference of symbols and notations used throughout the book, organized by topi
 
 | Notation | Meaning |
 | --- | --- |
-| $T_p^*(M)$ or $T_p^*M$ | cotangent space at $p$ |
+| $T_p^\ast(M)$ or $T_p^\ast M$ | cotangent space at $p$ |
 | $T^*M$ | cotangent bundle |
 | $F^* \colon T_{F(p)}^* M \to T_p^* N$ | codifferential |
 | $\bigwedge^k(V^\vee) = A_k(V)$ | $k$-covectors on $V$ |
