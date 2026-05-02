@@ -2130,7 +2130,7 @@ and consequently $x(t)$ converges to some $x^\ast\in\mathbb R^N$ as $t\to\infty$
 <details markdown="1">
 <summary>Proof — differentiating $\mathcal E^{1-\theta}$ along the flow</summary>
 
-The trick is to track *not* the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ itself, but its concave power $\mathcal E^{1-\theta}$. The exponent $1-\theta\in(0,1)$ is the bridge that turns Łojasiewicz into a finite-length statement.
+The trick is to track *not* the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ itself, but its concave power $\mathcal E^{1-\theta}$. The exponent $1-\theta\in(0,1)$ is the bridge that turns Łojasiewicz into a finite-length statement. This is the canonical instance of a **desingularizing function**; the general framework, and why the exponent is forced rather than chosen, is unpacked in [Appendix A](#appendix-a).
 
 **Setup.** By energy decrease (1.2), $E(x(t))$ is non-increasing in $t$; since $E\ge 0$, the limit $E_\infty := \lim_{t\to\infty}E(x(t))$ exists. Set $\mathcal E(t):=E(x(t))-E_\infty\ge 0$. Note $\mathcal E$ is non-increasing in $t$, so in particular $\mathcal E^{1-\theta}$ is well-defined and non-increasing (we set $\mathcal E^{1-\theta}=0$ if $\mathcal E=0$).
 
@@ -2185,7 +2185,7 @@ A continuous, non-negative function on $[0,\infty)$ whose integral is finite mus
 * **No convexity needed.** The proof uses only differentiability and the local inequality (Ł') — there is no convexity assumption on $E$ anywhere. This is decisive in non-convex settings (deep-network losses, phase-field energies, semilinear PDEs) where convexity simply fails.
 * **Convergence to a single point.** Theorem 5 only gave $\mathcal E(t),\mathcal D(t)\to 0$, and even when $E$ is strictly convex, the minimizer set may have many points (Exercise 2). Łojasiewicz pins down a *single* limit point $x^\ast$ — at the cost of finite-length, not rate.
 * **No rate, in general.** The proof gives finite length but **no quantitative rate** of convergence. To extract a rate, one needs to know the Łojasiewicz exponent $\theta$ at the limit point: $\theta=\tfrac12$ recovers exponential convergence (the "tame" case), while $\theta\in(\tfrac12,1)$ gives algebraic decay $\|x(t)-x^\ast\|=O\bigl(t^{-(1-\theta)/(2\theta-1)}\bigr)$. Computing $\theta$ for a given energy is in general hard.
-* **The role of $\mathcal E^{1-\theta}$.** Why does the proof differentiate $\mathcal E^{1-\theta}$ rather than $\mathcal E$ itself? Because the Łojasiewicz inequality controls $\mathcal E^\theta$ by $\|\nabla E\|$, so the natural scalar quantity whose decay rate is dimensionally homogeneous to $\|\dot x\|$ — and therefore integrates to the *length* of the trajectory rather than to its squared $L^2$ norm — is $\mathcal E^{1-\theta}$. This concave reparametrization is the heart of the trick.
+* **The role of $\mathcal E^{1-\theta}$.** Why does the proof differentiate $\mathcal E^{1-\theta}$ rather than $\mathcal E$ itself? Because the Łojasiewicz inequality controls $\mathcal E^\theta$ by $\|\nabla E\|$, so the natural scalar quantity whose decay rate is dimensionally homogeneous to $\|\dot x\|$ — and therefore integrates to the *length* of the trajectory rather than to its squared $L^2$ norm — is $\mathcal E^{1-\theta}$. This concave reparametrization is the heart of the trick, and a special case of a recurring template called the **Kurdyka–Łojasiewicz desingularization**. See [Appendix A](#appendix-a) for the general principle and a list of other places where the same idea reappears.
 
 </div>
 
@@ -2648,6 +2648,153 @@ This is the entry point for **gradient flows in non-Euclidean geometries** — m
   <p class="math-callout__title"><span class="math-callout__label">Exercise</span><span class="math-callout__name">(Manifold versions of the previous results)</span></p>
 
 Inspect the proofs of Theorems 3, 5, 6, 8 and Lemma 9 and check which statements generalise to the Riemannian setting. Replace $\|\cdot\|$ by $g(\cdot,\cdot)^{1/2}$, $\nabla E$ by the Riesz representative defined via (1.41), and $\langle\cdot,\cdot\rangle$ by $g(\cdot,\cdot)$. Which steps require *flatness* of the ambient space (e.g. the convex-combination interpolation (1.26)), and which survive the curvature?
+
+</div>
+
+## Appendix A: Desingularizing Functions and the Kurdyka–Łojasiewicz Framework {#appendix-a}
+
+In §1.6, the proof of long-term asymptotics via Łojasiewicz uses an unusual move: rather than tracking the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ along the gradient flow, it tracks the **concave power** $\mathcal E^{1-\theta}(t)$. Why this exact exponent, and not $\mathcal E$ itself, or $\sqrt{\mathcal E}$, or anything else? The answer is *not* a technicality — it points to a deep recurring template in analysis, often called **desingularization** or the **Kurdyka–Łojasiewicz (KL) framework**.
+
+This appendix unpacks the principle at three levels: the narrow technical answer, why the exponent is forced, and the general framework that subsumes it.
+
+### A.1 The narrow answer: matching units
+
+We want **finite arc-length** — the integral
+
+$$\int_0^\infty |\dot x(t)|\,dt < \infty$$
+
+— because finite length implies the trajectory is Cauchy, and Cauchy in $\mathbb R^N$ means convergent. The natural Lyapunov candidate is the energy $\mathcal E$ itself, but on the gradient flow
+
+$$\dot{\mathcal E} = -|\dot x|^2.$$
+
+Integrating gives $\int_0^\infty |\dot x|^2\,dt < \infty$ — the *squared* speed integrates, not the speed. We are off by a square root.
+
+So we need a *different* Lyapunov function $G(\mathcal E)$ whose time derivative is bounded *linearly* by $|\dot x|$ rather than quadratically. Łojasiewicz tells us how the slope $|\nabla E|$ controls $\mathcal E$, and "matching units" forces a specific exponent.
+
+### A.2 Why the exponent $1-\theta$ is forced
+
+Try $G(\mathcal E) := \mathcal E^\alpha$ for some $\alpha\in(0,1)$. Differentiating along the flow,
+
+$$\frac{d}{dt}\mathcal E^\alpha = \alpha\,\mathcal E^{\alpha-1}\dot{\mathcal E} = -\alpha\,\mathcal E^{\alpha-1}|\dot x|^2 = -\alpha\,\mathcal E^{\alpha-1}|\nabla E|\,|\dot x|.$$
+
+Now apply **Łojasiewicz** $\mathcal E^\theta \le C|\nabla E|$, i.e. $|\nabla E|\ge \mathcal E^\theta/C$:
+
+$$\frac{d}{dt}\mathcal E^\alpha \;\le\; -\frac{\alpha}{C}\,\mathcal E^{\alpha-1+\theta}\,|\dot x|.$$
+
+For this to control $|\dot x|$ uniformly — independently of how small $\mathcal E$ has become — we need
+
+$$\boxed{\;\alpha-1+\theta = 0 \;\Longleftrightarrow\; \alpha = 1-\theta.\;}$$
+
+Any other exponent fails:
+
+* If $\alpha > 1-\theta$, the exponent of $\mathcal E$ on the right is positive, so the bound on $|\dot x|$ degrades to $0$ as $\mathcal E\to 0$ — useless near the limit.
+* If $\alpha < 1-\theta$, the exponent is negative, and the bound *blows up* as $\mathcal E\to 0$ — the inequality formally survives, but you no longer get a clean integrable bound.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_exponent_choice.png' | relative_url }}" alt="Two-panel figure: left panel shows the Łojasiewicz factor E^(α-1+θ) along a 1D Łojasiewicz gradient flow for three values of α — only α=1-θ yields a constant-in-t factor, α<1-θ blows up, α>1-θ decays to zero; right panel compares cumulative arc length to E^(1-θ) and E itself, with E^(1-θ) tracking the remaining length while E decays too fast" loading="lazy">
+  <figcaption>Why $\alpha=1-\theta$ is forced. <strong>Left.</strong> Along the Łojasiewicz gradient flow on $E(x)=x^4/4$ (so $\theta=1/2$), the Łojasiewicz factor $\mathcal E^{\alpha-1+\theta}$ is constant in $t$ only at $\alpha=1-\theta=0.5$ (green); smaller $\alpha$ overshoots and the factor blows up (red), larger $\alpha$ degrades and the factor decays to $0$ (orange). <strong>Right.</strong> The cumulative arc length $\int_0^t|\dot x|\,ds$ (blue) converges to $1$. The right reparametrization $\mathcal E^{1-\theta}(t)$ (green dashed) tracks the <em>remaining</em> length; the bare energy $\mathcal E(t)$ (red dotted) decays too fast and undercounts.</figcaption>
+</figure>
+
+So $1-\theta$ is the **unique** exponent at which the units balance — the only place where the ratio $\mathcal E^{\alpha-1}|\nabla E|$ stays dimensionally constant along the flow.
+
+### A.3 The general principle: desingularizing functions
+
+Step back. The structure of the problem is:
+
+* a **dissipation rate** $\dot{\mathcal E} = -|\dot x|^2$ (from the gradient-flow structure);
+* a **slope inequality** $|\nabla E| \ge f(\mathcal E)$ for some non-decreasing $f:[0,\infty)\to[0,\infty)$ with $f(0)=0$ (for Łojasiewicz, $f(s)=s^\theta/C$);
+* a desired **arc-length bound** $\int|\dot x|\,dt < \infty$.
+
+The general question is: when can we extract finite length, and how?
+
+**Construction.** Define the **desingularizing function**
+
+$$\varphi(s) := \int_0^s \frac{1}{f(\sigma)}\,d\sigma. \tag{A.1}$$
+
+This $\varphi$ is the unique (up to constants) primitive of $1/f$, and it is well-defined on a neighborhood of $0$ whenever $1/f$ is integrable near $0$. For Łojasiewicz, $f(s)=s^\theta/C$, so
+
+$$\varphi(s) = C\int_0^s \sigma^{-\theta}\,d\sigma = \frac{C}{1-\theta}\,s^{1-\theta}.$$
+
+**There it is** — the power $\mathcal E^{1-\theta}$ from §1.6 is *exactly the antiderivative of $1/f$*, up to the constant $C/(1-\theta)$.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_desingularizing_function.png' | relative_url }}" alt="Two-panel figure: left shows desingularizing function φ(s)=s^(1-θ) plotted for θ=0.1,0.3,0.5,0.7,0.9, all concave and equal at s=1, with the dashed identity line for reference; right shows derivative φ'(s)=(1-θ)s^(-θ) on a log scale, blowing up as s→0 for every θ>0" loading="lazy">
+  <figcaption>The desingularizing function $\varphi(s)=s^{1-\theta}$ for several Łojasiewicz exponents $\theta\in(0,1)$. <strong>Left.</strong> $\varphi$ is concave with $\varphi(0)=0$; the larger $\theta$, the more pronounced the concavity. <strong>Right.</strong> The slope $\varphi'(s)=(1-\theta)s^{-\theta}$ blows up at $s\to 0^+$ — that is precisely what "desingularizes" the flat critical point. The borderline $\theta\to 1^-$ is where $\varphi'$ becomes non-integrable, $\varphi$ ceases to be finite, and the finite-length argument fails.</figcaption>
+</figure>
+
+**General theorem.** Compute the time derivative of $\varphi(\mathcal E(t))$ along the gradient flow:
+
+$$\frac{d}{dt}\,\varphi(\mathcal E(t)) \;=\; \varphi'(\mathcal E)\,\dot{\mathcal E} \;=\; -\frac{|\dot x|^2}{f(\mathcal E)} \;\le\; -|\dot x|,$$
+
+where the last step uses $|\dot x|=|\nabla E|\ge f(\mathcal E)$. Integrating from $0$ to $\infty$,
+
+$$\boxed{\;\int_0^\infty|\dot x|\,dt \;\le\; \varphi(\mathcal E(0)) - \varphi(\mathcal E_\infty) \;\le\; \varphi(\mathcal E(0)).\;}$$
+
+So the deep statement is:
+
+> **A gradient flow has finite length whenever the slope-vs-energy relation $|\nabla E|\ge f(\mathcal E)$ has an integrable reciprocal $1/f$ near $0$.**
+
+Łojasiewicz with exponent $\theta\in(0,1)$ corresponds to $f(s)=s^\theta$, whose reciprocal $s^{-\theta}$ is integrable near $0$ iff $\theta<1$ — exactly the hypothesis in the theorem of §1.6. The borderline $\theta\to 1^-$ marks the regime where $\varphi$ blows up: $\int 1/f$ diverges, length is infinite, and the trajectory may wander indefinitely without converging.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_finite_length.png' | relative_url }}" alt="Two-panel figure: left shows contour plot of the degenerate energy E=(x1²+x2²)²/4 with four gradient-flow trajectories spiraling into the flat critical point at the origin; right shows for one of those trajectories the cumulative arc length growing to about 1.63 and saturating, the remaining length decaying to zero, and the rescaled φ(E)=E^(1-θ) tracking the remaining length" loading="lazy">
+  <figcaption>Finite arc-length under Łojasiewicz, illustrated. <strong>Left.</strong> Gradient flow on the degenerate energy $E(x)=\tfrac14(x_1^2+x_2^2)^2$ (Łojasiewicz exponent $\theta=3/4$): four trajectories converge to the flat minimizer at the origin. <strong>Right.</strong> For one trajectory, the cumulative arc length $\int_0^t|\dot x|\,ds$ (solid blue) saturates at finite total length $\approx 1.63$; the desingularizing function $\varphi(\mathcal E(t))=\mathcal E^{1-\theta}$ (green dashed, rescaled) decreases from this asymptotic length to $0$ in lockstep with the <em>remaining</em> length (dotted blue). The two are equal up to the constant $C/(1-\theta)$ — the bound $\int_0^\infty|\dot x|\le \varphi(\mathcal E(0))$ is tight here.</figcaption>
+</figure>
+
+### A.4 The Kurdyka–Łojasiewicz framework
+
+The construction of A.3 admits a much cleaner abstract formulation, due to **Kurdyka (1998)** building on Łojasiewicz:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Kurdyka–Łojasiewicz inequality)</span></p>
+
+$E\in C^1(\mathbb R^N)$ satisfies the **Kurdyka–Łojasiewicz inequality** at $x_\ast$ if there exist a neighborhood $U$ of $x_\ast$, a constant $r>0$, and a **desingularizing function** $\varphi:[0,r)\to[0,\infty)$ — i.e. $\varphi$ is continuous on $[0,r)$, $C^1$ on $(0,r)$, concave, with $\varphi(0)=0$ and $\varphi'(s)>0$ — such that
+
+$$
+\varphi'\bigl(E(y)-E(x_\ast)\bigr)\,|\nabla E(y)| \;\ge\; 1 \qquad\text{for all } y\in U \text{ with } 0<E(y)-E(x_\ast)<r. \tag{KL}
+$$
+
+</div>
+
+The condition (KL) is exactly the assertion "$\varphi'(\mathcal E)\,|\nabla E|\ge 1$" that drove the proof in A.3.
+
+**Łojasiewicz as a special case.** The classical Łojasiewicz inequality $\mathcal E^\theta\le C|\nabla E|$ corresponds to $\varphi(s) = \frac{C}{1-\theta}\,s^{1-\theta}$, since then
+
+$$\varphi'(s) = \frac{C}{s^\theta}, \qquad \varphi'(\mathcal E)\,|\nabla E| = \frac{C\,|\nabla E|}{\mathcal E^\theta} \ge 1$$
+
+— precisely (KL).
+
+**Why "desingularizing"?** Geometrically, $\varphi$ takes the *graph* of $E$ near a critical point and "unfolds" the singularity at $E(x_\ast)$ into a smooth curve. After the change of coordinates $u\leftrightarrow\varphi(\mathcal E)$, the apparently degenerate gradient flow becomes uniformly Lipschitz in the new variable, in the sense that $|du/dt|\le -|\dot x|$ — bounded purely by the speed. The pathological flatness of $E$ near its critical point has been "regularized" by the change of variable.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_unfolding.png' | relative_url }}" alt="Two-panel figure: left shows energies E(x)=|x|^k for k=2,4,6,10, all with a critical point at the origin but progressively flatter wells as k increases; right shows the same after applying the desingularizing map φ(s)=s^(2/k), which collapses every curve to the same parabola x²" loading="lazy">
+  <figcaption>Geometric desingularization. <strong>Left.</strong> Energies $E(x)=|x|^k$ have a critical point at the origin that becomes increasingly degenerate as $k$ grows ($k=2$ is non-degenerate, $k=4,6,10$ are progressively flatter). <strong>Right.</strong> After reparametrization by the matching desingularizing function $\varphi(s)=s^{2/k}$ (corresponding to Łojasiewicz exponent $\theta=1-2/k$), every flat well collapses to the same canonical parabola $x^2$. The "singularity" at the critical point — the unbounded slope $\varphi'(s)\to\infty$ as $s\to 0$ — is exactly what is needed to compensate the unbounded flatness of $E$.</figcaption>
+</figure>
+
+**Modern significance.** The KL framework, developed in the 2000s by Bolte, Daniilidis, Lewis and others, has become the workhorse of convergence theory for non-convex optimization algorithms (proximal gradient, ADMM, block-coordinate descent) on **tame functions** — i.e., functions definable in an o-minimal structure, which include all real-analytic, semi-algebraic, and globally subanalytic functions encountered in practice. The function $\varphi$ from (KL) directly controls the convergence *rate* of these algorithms: the Łojasiewicz exponent $\theta=\tfrac12$ gives linear (geometric) convergence, $\theta\in(\tfrac12,1)$ gives sublinear $O(t^{-(1-\theta)/(2\theta-1)})$ convergence, and $\theta=0$ (the *finite-time-convergence* regime) gives exact arrival in finite time.
+
+### A.5 Where this idea recurs
+
+The pattern "**find the right monotone reparametrization $\varphi$ of the Lyapunov function so its derivative cleanly bounds what you want to integrate**" appears in many places under different names:
+
+| Setting | Lyapunov | Reparametrization $\varphi$ |
+|---|---|---|
+| **KL gradient flow** (§1.6) | $\mathcal E$ | $\mathcal E^{1-\theta}$, antiderivative of $\mathcal E^{-\theta}$ |
+| **Bihari–LaSalle nonlinear Gronwall** ($\dot u\le -f(u)$) | $u$ | antiderivative of $1/f$, gives implicit decay rate |
+| **Carleman / log-Sobolev → exponential entropy decay** | entropy $H$ | $H$ itself; log-Sobolev gives $\dot H\le -\lambda H$ |
+| **Polynomial decay in degenerate parabolic PDE** ($\dot u\le -u^{1+\alpha}$) | $u$ | $u^{-\alpha}$, antiderivative of $u^{-1-\alpha}$ — *Aronson–Bénilan estimate* |
+| **Forward–backward / proximal methods on tame objectives** | objective $f$ | KL function $\varphi(f-f_\ast)$ |
+| **Geometric measure theory: rectifiability via density bounds** | density $\Theta$ | a power $\Theta^\beta$ chosen so its derivative integrates |
+| **Kondratiev / weighted Sobolev for elliptic regularity at corners** | distance to corner $r$ | $r^\beta$ with $\beta$ tuned to integrate the singularity |
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The unifying moral)</span></p>
+
+When you have a self-referential bound — "the rate of change of $X$ is controlled by some function of $X$" — the right move is rarely to work with $X$ itself. It is to find the **monotone change of variable $\varphi(X)$** under which the bound becomes affine (or even constant). That change of variable is *forced* by the form of the bound: it is the **antiderivative of the reciprocal** of the bounding function.
+
+In ODEs this is "separation of variables"; in dynamical systems it's "the right Lyapunov function"; in PDE it's the "right test function" or "weighted norm"; in non-smooth optimization it's a "desingularizing function." All are the same idea wearing different hats.
+
+So: the choice of $\mathcal E^{1-\theta}$ in §1.6 is *not* a technicality. It is the canonical example of a recurring template — the **Kurdyka–Łojasiewicz desingularization** — that is worth learning once and recognizing forever.
 
 </div>
 
