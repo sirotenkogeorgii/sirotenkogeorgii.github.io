@@ -162,7 +162,7 @@ In the smooth Euclidean setting treated here, ($\ast$) and (1.3) are equivalent,
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/energy_dissipation.png' | relative_url }}" alt="Energy E(x(t)) decreases along the trajectory while the integral of squared velocity grows; their sum stays constant and equal to E(x_0)" loading="lazy">
-  <figcaption>The identity $E(x(t))+\int_0^t |\dot{x}|^2\,ds = E(x_0)$ visualised. Energy (blue) drains away along the trajectory and is exactly recovered as accumulated dissipation (orange); the dashed line shows their sum, which is conserved.</figcaption>
+  <figcaption>The identity $E(x(t))+\int_0^t \|\dot{x}\|^2\,ds = E(x_0)$ visualised. Energy (blue) drains away along the trajectory and is exactly recovered as accumulated dissipation (orange); the dashed line shows their sum, which is conserved.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -180,7 +180,7 @@ This is exactly what characterizes a gradient flow: **it is the steepest descent
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/steepest_descent.png' | relative_url }}" alt="Unit directions at a point colored by their inner product with the gradient; the minimum is attained at minus the normalized gradient" loading="lazy">
-  <figcaption>At a fixed point $x_*$, the directional derivative $\langle v,\nabla E(x_*)\rangle$ varies as $\cos$ over the unit sphere (right). Among unit vectors, it is minimized exactly when $v=-\nabla E/|\nabla E|$ (left, green) and maximized at $v=+\nabla E/|\nabla E|$ (red).</figcaption>
+  <figcaption>At a fixed point $x_*$, the directional derivative $\langle v,\nabla E(x_*)\rangle$ varies as $\cos$ over the unit sphere (right). Among unit vectors, it is minimized exactly when $v=-\nabla E/\|\nabla E\|$ (left, green) and maximized at $v=+\nabla E/\|\nabla E\|$ (red).</figcaption>
 </figure>
 
 <div class="math-callout math-callout--info" markdown="1">
@@ -356,7 +356,7 @@ In all of these the underlying logic — first variation $=0$ for all admissible
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/el_hamilton_action.png' | relative_url }}" alt="Two panels: left shows the physical parabolic trajectory of a particle under gravity together with several perturbed trajectories sharing the same endpoints; right shows the action as a function of the perturbation amplitude, with horizontal tangent at zero indicating the physical trajectory is a stationary point of the action." loading="lazy">
-  <figcaption>Hamilton's principle for a particle in 1D under gravity, $L=\frac{1}{2}\dot q^2-q$, fixed endpoints $q(0)=q(1)=0$. <em>Left</em>: the physical trajectory is the parabola $q_*(t)=\frac{1}{2}t(1-t)$ (red); other admissible trajectories sharing the same endpoints differ from $q_*$ by $\alpha\sin(\pi t)$. <em>Right</em>: the action $S[q_\alpha]=\int_0^1(\frac{1}{2}\dot q^2-q)\,dt$ as a function of $\alpha$. The graph has horizontal tangent at $\alpha=0$, i.e. $\frac{dS}{d\alpha}|_{0}=0$, which is exactly the EL equation $\ddot q_*=-1$.</figcaption>
+  <figcaption>Hamilton's principle for a particle in 1D under gravity, $L=\frac{1}{2}\dot q^2-q$, fixed endpoints $q(0)=q(1)=0$. <em>Left</em>: the physical trajectory is the parabola $q_*(t)=\frac{1}{2}t(1-t)$ (red); other admissible trajectories sharing the same endpoints differ from $q_*$ by $\alpha\sin(\pi t)$. <em>Right</em>: the action $S[q_\alpha]=\int_0^1(\frac{1}{2}\dot q^2-q)\,dt$ as a function of $\alpha$. The graph has horizontal tangent at $\alpha=0$, i.e. $\frac{dS}{d\alpha}\|_{0}=0$, which is exactly the EL equation $\ddot q_*=-1$.</figcaption>
 </figure>
 
 * **Dirichlet energy.** For $J[u] = \frac{1}{2}\int_\Omega \lvert\nabla u\rvert^2\,dx$ on functions $u:\Omega\to\mathbb{R}$, the multivariate EL equation is the **Laplace equation** $\Delta u = 0$.
@@ -458,7 +458,7 @@ $$
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/total_energy_friction.png' | relative_url }}" alt="Total mechanical energy under Newton dynamics with friction: flat for lambda zero, monotonically decreasing for positive friction" loading="lazy">
-  <figcaption>Total energy $E(x)+\frac{1}{2}m|v|^2$ along the Newton-with-friction dynamics for the harmonic potential $E(x)=\frac{1}{2}x^2$. For $\lambda=0$ it is conserved (oscillation between potential and kinetic); for $\lambda>0$ it strictly decreases at rate $-\lambda|v|^2$.</figcaption>
+  <figcaption>Total energy $E(x)+\frac{1}{2}m\|v\|^2$ along the Newton-with-friction dynamics for the harmonic potential $E(x)=\frac{1}{2}x^2$. For $\lambda=0$ it is conserved (oscillation between potential and kinetic); for $\lambda>0$ it strictly decreases at rate $-\lambda\|v\|^2$.</figcaption>
 </figure>
 
 **The overdamped limit $\lambda \to \infty$.** One can think of a heavy ball sinking into a glass of honey under the influence of gravity. Since we expect slow motion, we pass to a slow time scale:
@@ -525,7 +525,7 @@ Elements of $\partial E(x)$ are called **subgradients** of $E$ at $x$.
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/subdifferential_kink.png' | relative_url }}" alt="The convex function E(x) = absolute value of x, shown together with its fan of supporting lines at the kink x = 0; subgradients have slope between minus one and one" loading="lazy">
-  <figcaption>The subdifferential at a kink. For $E(x)=|x|$ the graph at $x=0$ admits a whole interval of supporting affine minorants (slopes in $[-1,1]$, blue/green); a slope outside this interval (red, $1.4$) fails the inequality on one side. Hence $\partial E(0)=[-1,+1]$.</figcaption>
+  <figcaption>The subdifferential at a kink. For $E(x)=\|x\|$ the graph at $x=0$ admits a whole interval of supporting affine minorants (slopes in $[-1,1]$, blue/green); a slope outside this interval (red, $1.4$) fails the inequality on one side. Hence $\partial E(0)=[-1,+1]$.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -1107,7 +1107,7 @@ With this construction in hand, we state the existence result. Its proof is more
     })();
     </script>
   </div>
-  <figcaption>Interactive: one step of the minimizing-movements scheme (1.10). Drag the previous iterate $\chi_{\ell-1}$ along the $x$-axis; the next iterate $\chi_\ell$ always sits at the minimum of the combined function $F(x)=E(x)+\frac{1}{2h}(x-\chi_{\ell-1})^2$ (the parabola pull penalises moving far from $\chi_{\ell-1}$). Use the slider to vary the time step $h$, and the buttons to switch the energy ($\frac{1}{2}x^2$, $x^4/8$, $|x|$).</figcaption>
+  <figcaption>Interactive: one step of the minimizing-movements scheme (1.10). Drag the previous iterate $\chi_{\ell-1}$ along the $x$-axis; the next iterate $\chi_\ell$ always sits at the minimum of the combined function $F(x)=E(x)+\frac{1}{2h}(x-\chi_{\ell-1})^2$ (the parabola pull penalises moving far from $\chi_{\ell-1}$). Use the slider to vary the time step $h$, and the buttons to switch the energy ($\frac{1}{2}x^2$, $x^4/8$, $\|x\|$).</figcaption>
 </figure>
 
 <figure>
@@ -1531,7 +1531,7 @@ With this construction in hand, we state the existence result. Its proof is more
     })();
     </script>
   </div>
-  <figcaption>Interactive: full iteration of (1.10) on the 2D anisotropic energy $E(x,y)=\frac{1}{2}(a x^2+b y^2)$. The blue trail is the minimizing-movements scheme, the red trail is explicit Euler, the green dashed curve is the continuous gradient flow, and the dashed orange rings show the parabolic "pull" $\frac{1}{2h}|x-\chi_{\ell-1}|^2$ around the current iterate. Use <em>Step</em> for a single iteration, <em>Auto</em> to play, <em>Reset</em> to clear; click anywhere to set a new initial point $\chi_0$. Try the most anisotropic energy ($\frac{1}{2}(x^2+8y^2)$) at moderate $h$: explicit Euler oscillates and blows up while minimizing movements stays put — the very statement of $A$-stability.</figcaption>
+  <figcaption>Interactive: full iteration of (1.10) on the 2D anisotropic energy $E(x,y)=\frac{1}{2}(a x^2+b y^2)$. The blue trail is the minimizing-movements scheme, the red trail is explicit Euler, the green dashed curve is the continuous gradient flow, and the dashed orange rings show the parabolic "pull" $\frac{1}{2h}\|x-\chi_{\ell-1}\|^2$ around the current iterate. Use <em>Step</em> for a single iteration, <em>Auto</em> to play, <em>Reset</em> to clear; click anywhere to set a new initial point $\chi_0$. Try the most anisotropic energy ($\frac{1}{2}(x^2+8y^2)$) at moderate $h$: explicit Euler oscillates and blows up while minimizing movements stays put — the very statement of $A$-stability.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1593,7 +1593,7 @@ which proves the monotonicity. **Uniqueness** follows by taking equal initial co
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/contraction.png' | relative_url }}" alt="Two gradient-flow trajectories from nearby initial points, with their pairwise distance shown as a non-increasing function of time" loading="lazy">
-  <figcaption>The contraction property. Two trajectories of the same gradient flow (left) are joined by grey segments at corresponding times; the segment lengths shrink monotonically. The right panel plots $|x_1(t)-x_2(t)|$ as a function of $t$, confirming the non-increasing behavior that yields uniqueness.</figcaption>
+  <figcaption>The contraction property. Two trajectories of the same gradient flow (left) are joined by grey segments at corresponding times; the segment lengths shrink monotonically. The right panel plots $\|x_1(t)-x_2(t)\|$ as a function of $t$, confirming the non-increasing behavior that yields uniqueness.</figcaption>
 </figure>
 
 <div class="accordion" markdown="1">
@@ -2667,9 +2667,9 @@ $$\int_0^\infty |\dot x(t)|\,dt < \infty$$
 
 $$\dot{\mathcal E} = -|\dot x|^2.$$
 
-Integrating gives $\int_0^\infty |\dot x|^2\,dt < \infty$ — the *squared* speed integrates, not the speed. We are off by a square root.
+Integrating gives $\int_0^\infty \|\dot x\|^2\,dt < \infty$ — the *squared* speed integrates, not the speed. We are off by a square root.
 
-So we need a *different* Lyapunov function $G(\mathcal E)$ whose time derivative is bounded *linearly* by $|\dot x|$ rather than quadratically. Łojasiewicz tells us how the slope $|\nabla E|$ controls $\mathcal E$, and "matching units" forces a specific exponent.
+So we need a *different* Lyapunov function $G(\mathcal E)$ whose time derivative is bounded *linearly* by $\|\dot x\|$ rather than quadratically. Łojasiewicz tells us how the slope $\|\nabla E\|$ controls $\mathcal E$, and "matching units" forces a specific exponent.
 
 ### A.2 Why the exponent $1-\theta$ is forced
 
@@ -2677,33 +2677,33 @@ Try $G(\mathcal E) := \mathcal E^\alpha$ for some $\alpha\in(0,1)$. Differentiat
 
 $$\frac{d}{dt}\mathcal E^\alpha = \alpha\,\mathcal E^{\alpha-1}\dot{\mathcal E} = -\alpha\,\mathcal E^{\alpha-1}|\dot x|^2 = -\alpha\,\mathcal E^{\alpha-1}|\nabla E|\,|\dot x|.$$
 
-Now apply **Łojasiewicz** $\mathcal E^\theta \le C|\nabla E|$, i.e. $|\nabla E|\ge \mathcal E^\theta/C$:
+Now apply **Łojasiewicz** $\mathcal E^\theta \le C\|\nabla E\|$, i.e. $\|\nabla E\|\ge \mathcal E^\theta/C$:
 
 $$\frac{d}{dt}\mathcal E^\alpha \;\le\; -\frac{\alpha}{C}\,\mathcal E^{\alpha-1+\theta}\,|\dot x|.$$
 
-For this to control $|\dot x|$ uniformly — independently of how small $\mathcal E$ has become — we need
+For this to control $\|\dot x\|$ uniformly — independently of how small $\mathcal E$ has become — we need
 
 $$\boxed{\;\alpha-1+\theta = 0 \;\Longleftrightarrow\; \alpha = 1-\theta.\;}$$
 
 Any other exponent fails:
 
-* If $\alpha > 1-\theta$, the exponent of $\mathcal E$ on the right is positive, so the bound on $|\dot x|$ degrades to $0$ as $\mathcal E\to 0$ — useless near the limit.
+* If $\alpha > 1-\theta$, the exponent of $\mathcal E$ on the right is positive, so the bound on $\|\dot x\|$ degrades to $0$ as $\mathcal E\to 0$ — useless near the limit.
 * If $\alpha < 1-\theta$, the exponent is negative, and the bound *blows up* as $\mathcal E\to 0$ — the inequality formally survives, but you no longer get a clean integrable bound.
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_exponent_choice.png' | relative_url }}" alt="Two-panel figure: left panel shows the Łojasiewicz factor E^(α-1+θ) along a 1D Łojasiewicz gradient flow for three values of α — only α=1-θ yields a constant-in-t factor, α<1-θ blows up, α>1-θ decays to zero; right panel compares cumulative arc length to E^(1-θ) and E itself, with E^(1-θ) tracking the remaining length while E decays too fast" loading="lazy">
-  <figcaption>Why $\alpha=1-\theta$ is forced. <strong>Left.</strong> Along the Łojasiewicz gradient flow on $E(x)=x^4/4$ (so $\theta=1/2$), the Łojasiewicz factor $\mathcal E^{\alpha-1+\theta}$ is constant in $t$ only at $\alpha=1-\theta=0.5$ (green); smaller $\alpha$ overshoots and the factor blows up (red), larger $\alpha$ degrades and the factor decays to $0$ (orange). <strong>Right.</strong> The cumulative arc length $\int_0^t|\dot x|\,ds$ (blue) converges to $1$. The right reparametrization $\mathcal E^{1-\theta}(t)$ (green dashed) tracks the <em>remaining</em> length; the bare energy $\mathcal E(t)$ (red dotted) decays too fast and undercounts.</figcaption>
+  <figcaption>Why $\alpha=1-\theta$ is forced. <strong>Left.</strong> Along the Łojasiewicz gradient flow on $E(x)=x^4/4$ (so $\theta=1/2$), the Łojasiewicz factor $\mathcal E^{\alpha-1+\theta}$ is constant in $t$ only at $\alpha=1-\theta=0.5$ (green); smaller $\alpha$ overshoots and the factor blows up (red), larger $\alpha$ degrades and the factor decays to $0$ (orange). <strong>Right.</strong> The cumulative arc length $\int_0^t\|\dot x\|\,ds$ (blue) converges to $1$. The right reparametrization $\mathcal E^{1-\theta}(t)$ (green dashed) tracks the <em>remaining</em> length; the bare energy $\mathcal E(t)$ (red dotted) decays too fast and undercounts.</figcaption>
 </figure>
 
-So $1-\theta$ is the **unique** exponent at which the units balance — the only place where the ratio $\mathcal E^{\alpha-1}|\nabla E|$ stays dimensionally constant along the flow.
+So $1-\theta$ is the **unique** exponent at which the units balance — the only place where the ratio $\mathcal E^{\alpha-1}\|\nabla E\|$ stays dimensionally constant along the flow.
 
 ### A.3 The general principle: desingularizing functions
 
 Step back. The structure of the problem is:
 
-* a **dissipation rate** $\dot{\mathcal E} = -|\dot x|^2$ (from the gradient-flow structure);
-* a **slope inequality** $|\nabla E| \ge f(\mathcal E)$ for some non-decreasing $f:[0,\infty)\to[0,\infty)$ with $f(0)=0$ (for Łojasiewicz, $f(s)=s^\theta/C$);
-* a desired **arc-length bound** $\int|\dot x|\,dt < \infty$.
+* a **dissipation rate** $\dot{\mathcal E} = -\|\dot x\|^2$ (from the gradient-flow structure);
+* a **slope inequality** $\|\nabla E\| \ge f(\mathcal E)$ for some non-decreasing $f:[0,\infty)\to[0,\infty)$ with $f(0)=0$ (for Łojasiewicz, $f(s)=s^\theta/C$);
+* a desired **arc-length bound** $\int\|\dot x\|\,dt < \infty$.
 
 The general question is: when can we extract finite length, and how?
 
@@ -2726,19 +2726,19 @@ $$\varphi(s) = C\int_0^s \sigma^{-\theta}\,d\sigma = \frac{C}{1-\theta}\,s^{1-\t
 
 $$\frac{d}{dt}\,\varphi(\mathcal E(t)) \;=\; \varphi'(\mathcal E)\,\dot{\mathcal E} \;=\; -\frac{|\dot x|^2}{f(\mathcal E)} \;\le\; -|\dot x|,$$
 
-where the last step uses $|\dot x|=|\nabla E|\ge f(\mathcal E)$. Integrating from $0$ to $\infty$,
+where the last step uses $\|\dot x\|=\|\nabla E\|\ge f(\mathcal E)$. Integrating from $0$ to $\infty$,
 
 $$\boxed{\;\int_0^\infty|\dot x|\,dt \;\le\; \varphi(\mathcal E(0)) - \varphi(\mathcal E_\infty) \;\le\; \varphi(\mathcal E(0)).\;}$$
 
 So the deep statement is:
 
-> **A gradient flow has finite length whenever the slope-vs-energy relation $|\nabla E|\ge f(\mathcal E)$ has an integrable reciprocal $1/f$ near $0$.**
+> **A gradient flow has finite length whenever the slope-vs-energy relation $\|\nabla E\|\ge f(\mathcal E)$ has an integrable reciprocal $1/f$ near $0$.**
 
 Łojasiewicz with exponent $\theta\in(0,1)$ corresponds to $f(s)=s^\theta$, whose reciprocal $s^{-\theta}$ is integrable near $0$ iff $\theta<1$ — exactly the hypothesis in the theorem of §1.6. The borderline $\theta\to 1^-$ marks the regime where $\varphi$ blows up: $\int 1/f$ diverges, length is infinite, and the trajectory may wander indefinitely without converging.
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_finite_length.png' | relative_url }}" alt="Two-panel figure: left shows contour plot of the degenerate energy E=(x1²+x2²)²/4 with four gradient-flow trajectories spiraling into the flat critical point at the origin; right shows for one of those trajectories the cumulative arc length growing to about 1.63 and saturating, the remaining length decaying to zero, and the rescaled φ(E)=E^(1-θ) tracking the remaining length" loading="lazy">
-  <figcaption>Finite arc-length under Łojasiewicz, illustrated. <strong>Left.</strong> Gradient flow on the degenerate energy $E(x)=\tfrac14(x_1^2+x_2^2)^2$ (Łojasiewicz exponent $\theta=3/4$): four trajectories converge to the flat minimizer at the origin. <strong>Right.</strong> For one trajectory, the cumulative arc length $\int_0^t|\dot x|\,ds$ (solid blue) saturates at finite total length $\approx 1.63$; the desingularizing function $\varphi(\mathcal E(t))=\mathcal E^{1-\theta}$ (green dashed, rescaled) decreases from this asymptotic length to $0$ in lockstep with the <em>remaining</em> length (dotted blue). The two are equal up to the constant $C/(1-\theta)$ — the bound $\int_0^\infty|\dot x|\le \varphi(\mathcal E(0))$ is tight here.</figcaption>
+  <figcaption>Finite arc-length under Łojasiewicz, illustrated. <strong>Left.</strong> Gradient flow on the degenerate energy $E(x)=\tfrac14(x_1^2+x_2^2)^2$ (Łojasiewicz exponent $\theta=3/4$): four trajectories converge to the flat minimizer at the origin. <strong>Right.</strong> For one trajectory, the cumulative arc length $\int_0^t\|\dot x\|\,ds$ (solid blue) saturates at finite total length $\approx 1.63$; the desingularizing function $\varphi(\mathcal E(t))=\mathcal E^{1-\theta}$ (green dashed, rescaled) decreases from this asymptotic length to $0$ in lockstep with the <em>remaining</em> length (dotted blue). The two are equal up to the constant $C/(1-\theta)$ — the bound $\int_0^\infty\|\dot x\|\le \varphi(\mathcal E(0))$ is tight here.</figcaption>
 </figure>
 
 ### A.4 The Kurdyka–Łojasiewicz framework
@@ -2756,19 +2756,19 @@ $$
 
 </div>
 
-The condition (KL) is exactly the assertion "$\varphi'(\mathcal E)\,|\nabla E|\ge 1$" that drove the proof in A.3.
+The condition (KL) is exactly the assertion "$\varphi'(\mathcal E)\,\|\nabla E\|\ge 1$" that drove the proof in A.3.
 
-**Łojasiewicz as a special case.** The classical Łojasiewicz inequality $\mathcal E^\theta\le C|\nabla E|$ corresponds to $\varphi(s) = \frac{C}{1-\theta}\,s^{1-\theta}$, since then
+**Łojasiewicz as a special case.** The classical Łojasiewicz inequality $\mathcal E^\theta\le C\|\nabla E\|$ corresponds to $\varphi(s) = \frac{C}{1-\theta}\,s^{1-\theta}$, since then
 
 $$\varphi'(s) = \frac{C}{s^\theta}, \qquad \varphi'(\mathcal E)\,|\nabla E| = \frac{C\,|\nabla E|}{\mathcal E^\theta} \ge 1$$
 
 — precisely (KL).
 
-**Why "desingularizing"?** Geometrically, $\varphi$ takes the *graph* of $E$ near a critical point and "unfolds" the singularity at $E(x_\ast)$ into a smooth curve. After the change of coordinates $u\leftrightarrow\varphi(\mathcal E)$, the apparently degenerate gradient flow becomes uniformly Lipschitz in the new variable, in the sense that $|du/dt|\le -|\dot x|$ — bounded purely by the speed. The pathological flatness of $E$ near its critical point has been "regularized" by the change of variable.
+**Why "desingularizing"?** Geometrically, $\varphi$ takes the *graph* of $E$ near a critical point and "unfolds" the singularity at $E(x_\ast)$ into a smooth curve. After the change of coordinates $u\leftrightarrow\varphi(\mathcal E)$, the apparently degenerate gradient flow becomes uniformly Lipschitz in the new variable, in the sense that $\|du/dt\|\le -\|\dot x\|$ — bounded purely by the speed. The pathological flatness of $E$ near its critical point has been "regularized" by the change of variable.
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/appendix_a_unfolding.png' | relative_url }}" alt="Two-panel figure: left shows energies E(x)=|x|^k for k=2,4,6,10, all with a critical point at the origin but progressively flatter wells as k increases; right shows the same after applying the desingularizing map φ(s)=s^(2/k), which collapses every curve to the same parabola x²" loading="lazy">
-  <figcaption>Geometric desingularization. <strong>Left.</strong> Energies $E(x)=|x|^k$ have a critical point at the origin that becomes increasingly degenerate as $k$ grows ($k=2$ is non-degenerate, $k=4,6,10$ are progressively flatter). <strong>Right.</strong> After reparametrization by the matching desingularizing function $\varphi(s)=s^{2/k}$ (corresponding to Łojasiewicz exponent $\theta=1-2/k$), every flat well collapses to the same canonical parabola $x^2$. The "singularity" at the critical point — the unbounded slope $\varphi'(s)\to\infty$ as $s\to 0$ — is exactly what is needed to compensate the unbounded flatness of $E$.</figcaption>
+  <figcaption>Geometric desingularization. <strong>Left.</strong> Energies $E(x)=\|x\|^k$ have a critical point at the origin that becomes increasingly degenerate as $k$ grows ($k=2$ is non-degenerate, $k=4,6,10$ are progressively flatter). <strong>Right.</strong> After reparametrization by the matching desingularizing function $\varphi(s)=s^{2/k}$ (corresponding to Łojasiewicz exponent $\theta=1-2/k$), every flat well collapses to the same canonical parabola $x^2$. The "singularity" at the critical point — the unbounded slope $\varphi'(s)\to\infty$ as $s\to 0$ — is exactly what is needed to compensate the unbounded flatness of $E$.</figcaption>
 </figure>
 
 **Modern significance.** The KL framework, developed in the 2000s by Bolte, Daniilidis, Lewis and others, has become the workhorse of convergence theory for non-convex optimization algorithms (proximal gradient, ADMM, block-coordinate descent) on **tame functions** — i.e., functions definable in an o-minimal structure, which include all real-analytic, semi-algebraic, and globally subanalytic functions encountered in practice. The function $\varphi$ from (KL) directly controls the convergence *rate* of these algorithms: the Łojasiewicz exponent $\theta=\tfrac12$ gives linear (geometric) convergence, $\theta\in(\tfrac12,1)$ gives sublinear $O(t^{-(1-\theta)/(2\theta-1)})$ convergence, and $\theta=0$ (the *finite-time-convergence* regime) gives exact arrival in finite time.
