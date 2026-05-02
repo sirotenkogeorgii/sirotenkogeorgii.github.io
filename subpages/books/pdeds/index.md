@@ -2659,17 +2659,101 @@ This appendix unpacks the principle at three levels: the narrow technical answer
 
 ### A.1 The narrow answer: matching units
 
+#### A.1.1 The arc-length goal and the Lyapunov template
+
 We want **finite arc-length** — the integral
 
-$$\int_0^\infty |\dot x(t)|\,dt < \infty$$
+$$\int_0^\infty \|\dot x(t)\|\,dt < \infty.$$
 
-— because finite length implies the trajectory is Cauchy, and Cauchy in $\mathbb R^N$ means convergent. The natural Lyapunov candidate is the energy $\mathcal E$ itself, but on the gradient flow
+The reason is one short implication: finite length means the trajectory is *Cauchy*, and Cauchy in $\mathbb R^N$ means convergent. So once we control the integral above, the limit $x^\ast = \lim_{t\to\infty} x(t)$ exists automatically.
 
-$$\dot{\mathcal E} = -|\dot x|^2.$$
+The whole machinery rests on a single recurring **template trick** in analysis:
 
-Integrating gives $\int_0^\infty \|\dot x\|^2\,dt < \infty$ — the *squared* speed integrates, not the speed. We are off by a square root.
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Lyapunov template for finite arc-length)</span></p>
 
-So we need a *different* Lyapunov function $G(\mathcal E)$ whose time derivative is bounded *linearly* by $\|\dot x\|$ rather than quadratically. Łojasiewicz tells us how the slope $\|\nabla E\|$ controls $\mathcal E$, and "matching units" forces a specific exponent.
+If we can find a scalar function $L(t)\ge 0$ that is non-increasing along the flow and satisfies
+
+$$
+\dot L(t) \;\le\; -\|\dot x(t)\| \qquad \text{for a.e. } t, \tag{A.0}
+$$
+
+then the trajectory has finite arc-length, with the explicit bound
+
+$$
+\int_0^\infty \|\dot x(t)\|\,dt \;\le\; L(0).
+$$
+
+</div>
+
+The proof is one line. Integrate (A.0) from $0$ to $\infty$:
+
+$$
+\int_0^\infty \|\dot x(t)\|\,dt \;\le\; -\int_0^\infty \dot L(t)\,dt \;=\; L(0)-L(\infty) \;\le\; L(0).
+$$
+
+Note carefully: $L$ is a **scalar** quantity, just a real number depending on $t$. There is no vector field associated with $L$; the only thing that matters is its *time derivative* $\dot L(t)$ along the trajectory. The whole game of A.1–A.3 is to **construct such an $L$** out of the energy.
+
+#### A.1.2 Why the energy $\mathcal E$ itself is the wrong $L$
+
+The most obvious candidate is $L(t) := \mathcal E(t) = E(x(t))-E_\infty$. By the chain rule and the gradient-flow equation $\dot x = -\nabla E$,
+
+$$
+\dot{\mathcal E}(t) \;=\; \langle \nabla E(x(t)),\dot x(t)\rangle \;=\; -\|\nabla E(x(t))\|^2 \;=\; -\|\dot x(t)\|^2.
+$$
+
+So $\mathcal E$ **is** a perfectly good Lyapunov function — non-negative, non-increasing, and dissipating energy. The issue is only the **rate** at which it decreases:
+
+| Template (A.0) wants | What $\mathcal E$ gives us |
+|---|---|
+| $\dot L \;\le\; -\|\dot x\|$ (first power of speed) | $\dot{\mathcal E} \;=\; -\|\dot x\|^2$ (squared speed) |
+
+A single power of $\|\dot x\|$ short — but that one power is decisive.
+
+Naively integrating $\dot{\mathcal E} = -\|\dot x\|^2$ gives
+
+$$
+\int_0^\infty \|\dot x(t)\|^2\,dt \;=\; \mathcal E(0)-\mathcal E_\infty \;<\; \infty,
+$$
+
+i.e., the **squared** speed integrates. This is the standard energy-dissipation identity (1.36). But $\int\|\dot x\|^2\,dt < \infty$ does **not** imply $\int\|\dot x\|\,dt < \infty$ — a slowly oscillating tail can have $\|\dot x\|^2$ integrable while $\|\dot x\|$ is not. So $\mathcal E$ controls the wrong norm of the speed, and energy decrease alone cannot conclude finite length.
+
+#### A.1.3 What "matching units" actually means
+
+We need to **modify** $\mathcal E$ so its derivative loses one factor of $\|\dot x\|$. The general ansatz: try $L = G(\mathcal E)$ for some smooth increasing $G$. Chain rule:
+
+$$
+\dot L(t) \;=\; G'(\mathcal E(t))\cdot \dot{\mathcal E}(t) \;=\; -G'(\mathcal E(t))\cdot \|\dot x(t)\|^2.
+$$
+
+For this to satisfy the template $\dot L \le -\|\dot x\|$ we need
+
+$$
+G'(\mathcal E)\cdot \|\dot x\|^2 \;\ge\; \|\dot x\| \quad\Longleftrightarrow\quad \boxed{\;G'(\mathcal E)\cdot \|\dot x\| \;\ge\; 1\;} \tag{A.0'}
+$$
+
+uniformly along the trajectory — even as $\mathcal E\to 0$ and $\|\dot x\|\to 0$.
+
+This is what "matching units" means. It is a **product** condition between two factors that are both shrinking:
+
+* $\|\dot x\|$ is shrinking because the trajectory is slowing down.
+* $G'(\mathcal E)$ must therefore **grow** at the same rate, so that the product (A.0') stays bounded below by $1$.
+
+The Łojasiewicz inequality is precisely the input that makes this possible: it tells us *how fast* $\|\dot x\| = \|\nabla E\|$ can shrink as a function of the energy gap,
+
+$$\|\dot x\| \;=\; \|\nabla E\| \;\ge\; \mathcal E^\theta / C.$$
+
+Plugging into (A.0'), the requirement becomes $G'(\mathcal E)\cdot \mathcal E^\theta/C \ge 1$, i.e.
+
+$$G'(\mathcal E) \;\ge\; \frac{C}{\mathcal E^\theta}.$$
+
+The minimal $G$ — the one that just barely satisfies the bound — is the **antiderivative**:
+
+$$
+G(\mathcal E) \;=\; \int_0^{\mathcal E} \frac{C}{\sigma^\theta}\,d\sigma \;=\; \frac{C}{1-\theta}\,\mathcal E^{1-\theta}.
+$$
+
+That is the **desingularizing function** $\varphi$, and the appearance of the exponent $1-\theta$ is now demystified: it is the unique power that (a) integrates the singular slope $\sigma^{-\theta}$ near $0$, and (b) makes $G'(\mathcal E)\cdot\|\dot x\|$ bounded below by a constant along the flow — i.e., the unique power that turns the wrong-rate Lyapunov function $\mathcal E$ into a right-rate one. Sections A.2 and A.3 below pick up from here and verify the forcing in two different ways.
 
 ### A.2 Why the exponent $1-\theta$ is forced
 

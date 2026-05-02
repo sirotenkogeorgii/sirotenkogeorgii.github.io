@@ -131,7 +131,7 @@ The polynomials $s, r$ obtained when dividing polynomial $p$ by a polynomial $q$
 
 #### 2.4. Multiple Roots
 
-On the other hand, $p(x)$ does not have to have $\deg(p)$ many distinct roots: see for instance $p(x) = x^n$ with only one root, namely zero. The roots $\alpha_k$ in the decomposition $(*)$ can appear several times, and after suitable permutation of the factors, $(*)$ can be rewritten as
+On the other hand, $p(x)$ does not have to have $\deg(p)$ many distinct roots: see for instance $p(x) = x^n$ with only one root, namely zero. The roots $\alpha_k$ in the decomposition $(\ast)$ can appear several times, and after suitable permutation of the factors, $(\ast)$ can be rewritten as
 
 $$p(x) = a(x - \beta_1)^{k_1}(x - \beta_2)^{k_2} \cdots (x - \beta_r)^{k_r} \quad \text{with } \beta_k \text{ distinct.} \qquad (**)$$
 
@@ -160,7 +160,8 @@ The set of all complex polynomials forms an integral domain (similarly like the 
 
 Let the coefficients $a_n$ of a polynomial $p(x) = a_n x^n + \cdots + a_1 x + a_0$ be real. Let $\alpha$ be a root of $p$. Then the complex conjugate $\overline{\alpha}$ is also a root of $p$.
 
-*Proof.* We have (recall 1.1) $p(\overline{\alpha}) = a_n \overline{\alpha}^n + \cdots + a_1 \overline{\alpha} + a_0 = \overline{a_n} \overline{\alpha}^n + \cdots + \overline{a_1} \overline{\alpha} + \overline{a_0} = \overline{a_n \alpha^n + \cdots + a_1 \alpha + a_0} = \overline{0} = 0.$ $\square$
+*Proof.* We have (recall 1.1) 
+$p(\overline{\alpha}) = a_n \overline{\alpha}^n + \cdots + a_1 \overline{\alpha} + a_0 = \overline{a_n} \overline{\alpha}^n + \cdots + \overline{a_1} \overline{\alpha} + \overline{a_0} = \overline{a_n \alpha^n + \cdots + a_1 \alpha + a_0} = \overline{0} = 0.$ $\square$
 
 </div>
 
@@ -773,7 +774,7 @@ Let $P'$ refine $P$. Then
 
 $$s(f, P) \le s(f, P') \quad \text{and} \quad S(f, P) \ge S(f, P').$$
 
-*Proof* will be done for the upper sum. Let $t_{k-1} = t'_l < t'_{l+1} < \cdots < t'_{l+r} = t_k$. For $M'_{l+j} = \sup\lbrace f(x) \mid t'_{l+j-1} \le x \le t'_{l+j} \rbrace$ and $M_k = \sup\lbrace f(x) \mid t_{k-1} \le x \le t_k \rbrace$ we have $\sum_j M'_j(t'_{l+j} - t'_{l+j-1}) \le \sum_j M_k(t'_{l+j} - t'_{l+j-1}) = M_k(t_k - t_{k-1})$ and the statement follows. $\square$
+*Proof* will be done for the upper sum. Let $t_{k-1} = t'\_l < t'\_{l+1} < \cdots < t'\_{l+r} = t_k$. For $M'\_{l+j} = \sup\lbrace f(x) \mid t'\_{l+j-1} \le x \le t'\_{l+j} \rbrace$ and $M_k = \sup\lbrace f(x) \mid t_{k-1} \le x \le t_k \rbrace$ we have $\sum_j M'\_j(t'\_{l+j} - t'\_{l+j-1}) \le \sum_j M_k(t'\_{l+j} - t'\_{l+j-1}) = M_k(t_k - t_{k-1})$ and the statement follows. $\square$
 
 </div>
 
@@ -1702,6 +1703,12 @@ $$d((x_i), (y_i)) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2}, \quad \lambda((x_i), (y_
 
 are strongly equivalent.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* It is easy to see that $\lambda$ and $\sigma$ are metrics. Now we have
 
 $$\lambda((x_i), (y_i)) = \sum_{i=1}^{n} \lvert x_i - y_i \rvert \le n\sigma((x_j), (y_j))$$
@@ -1714,6 +1721,7 @@ On the other hand obviously
 
 $$\sigma((x_i), (y_i)) \le \lambda((x_i), (y_i)) \quad \text{and} \quad \sigma((x_i), (y_i)) \le d((x_i), (y_i)). \quad \square$$
 
+</details>
 </div>
 
 In the sequel we will mostly work with the Euclidean space as with $(\mathbb{E}_n, \sigma)$.
@@ -1748,10 +1756,17 @@ A sequence $(x_1^k, \ldots, x_n^k), \ldots$ **converges** to $(x_1, \ldots, x_n)
 
 (Caution: the superscripts $k$ are indices, not powers.)
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* $\Rightarrow$ immediately follows from the fact that $d_i(u_i, v_i) \le d((u_j)_j, (v_j)_j)$.
 
 $\Leftarrow$: Let each of the $(x_i^k)_k$ converge to $x_i$. For an $\varepsilon > 0$ and $i$ we have $k_i$ such that for $k \ge k_i$, $d_i(x_i^k, x_i) < \varepsilon$. Then for $k \ge \max_i k_i$ we have $d((x_1^k, \ldots, x_n^k), (x_1, \ldots, x_n)) < \varepsilon$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1953,7 +1968,19 @@ Each compact metric space is bounded.
 <details markdown="1">
 <summary>Proof</summary>
 
-*Proof.* Suppose not. Choose $x_1$ arbitrarily and then $x_n$ so that $d(x_1, x_n) > n$. The sequence $(x_n)_n$ has no convergent subsequence: if $x$ were a limit of such a subsequence we would have infinitely many members of this subsequence closer to $x_1$ than $d(x_1, n) + 1$, a contradiction. $\square$
+This is a proof by contradiction that uses **sequential compactness**: in a metric space, "compact" is equivalent to "every sequence has a convergent subsequence." That's the engine of the argument. Let me unpack it step by step.
+
+**The setup.** We want to show the metric space $X$ is bounded. Suppose it isn't. Recall that "bounded" means: fixing any point $x_1$, all other points lie within some finite distance $M$ of $x_1$. So "not bounded" means the opposite: no matter how big a number we pick, *some* point is farther than that. In particular, for every natural number $n$, we can find a point $x_n$ with $d(x_1, x_n) > n$. We use this to build a sequence $(x_n)$ that "runs off to infinity" away from $x_1$.
+
+**The key claim.** This sequence has no convergent subsequence. Once we prove this, we're done — because compactness *forces* every sequence to have a convergent subsequence, so we'll have our contradiction.
+
+**Why no convergent subsequence?** Suppose, for contradiction, that some subsequence $(x_{n_k})$ converged to a point $x \in X$. Then eventually $d(x_{n_k}, x) < 1$. By the triangle inequality:
+
+$$d(x_1, x_{n_k}) \;\leq\; d(x_1, x) + d(x, x_{n_k}) \;<\; d(x_1, x) + 1.$$
+
+So infinitely many terms of the subsequence sit within distance $d(x_1, x) + 1$ of $x_1$. But we *constructed* the sequence so that $d(x_1, x_n) > n$, which grows without bound. Once $n_k$ exceeds $d(x_1, x) + 1$, the term $x_{n_k}$ can't possibly be that close to $x_1$. Contradiction.
+
+**The conclusion.** Compactness says $(x_n)$ must have a convergent subsequence; our construction says it can't. The only thing we assumed was that $X$ is unbounded, so that assumption fails: $X$ must be bounded. $\square$
 
 </details>
 </div>
@@ -2372,7 +2399,7 @@ $$F(h) = \frac{\partial}{\partial x}\left(\frac{\partial f(x + \theta_2 h, y + \
 
 for some $\theta_1, \theta_2$ between 0 and 1. Similarly, computing 
 
-$$\frac{1}{h^2}(\psi_h(x + h) - \psi_h(x))$ $
+$$\frac{1}{h^2}(\psi_h(x + h) - \psi_h(x))$$
 
 we obtain
 
@@ -2625,7 +2652,7 @@ The first partial derivatives of $F$ are continuous and $A(\delta)$ is closed an
 
 $$\frac{\partial F(\mathbf{x}, y)}{\partial y} \ge a \quad \text{and} \quad \left\lvert \frac{\partial F(\mathbf{x}, y)}{\partial x_i}\right\rvert \le K. \qquad (*)$$
 
-**I. The function $f$:** Fix an $\mathbf{x} \in U(\delta_1)$, and define a function of one variable $y \in (y_0 - \Delta, y_0 + \Delta)$ by $\varphi_{\mathbf{x}}(y) = F(\mathbf{x}, y)$. Then $\varphi'_{\mathbf{x}}(y) = \frac{\partial F(\mathbf{x},y)}{\partial y} > 0$ and hence all $\varphi_{\mathbf{x}}(y)$ are increasing functions of $y$, and $\varphi_{\mathbf{x}_0}(y_0 - \Delta) < \varphi_{\mathbf{x}_0}(y_0) = 0 < \varphi_{\mathbf{x}_0}(y_0 + \Delta)$.
+**I. The function $f$:** Fix an $\mathbf{x} \in U(\delta_1)$, and define a function of one variable $y \in (y_0 - \Delta, y_0 + \Delta)$ by $\varphi_{\mathbf{x}}(y) = F(\mathbf{x}, y)$. Then $\varphi'_{\mathbf{x}}(y) = \frac{\partial F(\mathbf{x},y)}{\partial y} > 0$ and hence all $\varphi_{\mathbf{x}}(y)$ are increasing functions of $y$, and $\varphi_{\mathbf{x}\_0}(y_0 - \Delta) < \varphi_{\mathbf{x}\_0}(y_0) = 0 < \varphi_{\mathbf{x}\_0}(y_0 + \Delta)$.
 
 By XIV.2.5 and XIV.3.4, $F$ is continuous, and hence there is a $\delta$, $0 < \delta \le \delta_1$, such that $\forall \mathbf{x} \in U(\delta)$, $\varphi_{\mathbf{x}}(y_0 - \Delta) < 0 < \varphi_{\mathbf{x}}(y_0 + \Delta)$.
 
@@ -2633,7 +2660,7 @@ Now $\varphi_{\mathbf{x}}$ is increasing and hence one-to-one. Thus, by IV.3 the
 
 Note this $f$ is so far just a function; we know nothing about its properties, in particular, we do not know whether it is continuous or not.
 
-**II. The first derivatives.** Fix an index $j$, abbreviate the sequence $x_1, \ldots, x_{j-1}$ by $\mathbf{x}_b$ and the sequence $x_{j+1}, \ldots, x_n$ by $\mathbf{x}_a$; thus, we have $\mathbf{x} = (\mathbf{x}_b, x_j, \mathbf{x}_a)$. We will compute $\frac{\partial f}{\partial x_j}$ as the derivative of $\psi(t) = f(\mathbf{x}_b, t, \mathbf{x}_a)$.
+**II. The first derivatives.** Fix an index $j$, abbreviate the sequence $x_1, \ldots, x_{j-1}$ by $\mathbf{x}\_b$ and the sequence $x_{j+1}, \ldots, x_n$ by $\mathbf{x}\_a$; thus, we have $\mathbf{x} = (\mathbf{x}\_b, x_j, \mathbf{x}\_a)$. We will compute $\frac{\partial f}{\partial x_j}$ as the derivative of $\psi(t) = f(\mathbf{x}\_b, t, \mathbf{x}\_a)$.
 
 By XIV.5.4.1 we have
 
@@ -3175,7 +3202,7 @@ $$\lim_n \Sigma(f, P_n) = \int_J f.$$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(4.1 - Fubini Theorem)</span></p>
 
-Consider the product $J = J' \times J'' \subseteq \mathbb{E}_{m+n}$ of intervals $J' \subseteq \mathbb{E}_m$, $J'' \subseteq \mathbb{E}_n$. Let $f : J \to \mathbb{R}$ be such that $\int_J f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\mathbf{y}$ exists and that for every $\mathbf{x} \in J'$ (resp. every $\mathbf{y} \in J''$) the integral $\int_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}$ (resp. $\int_{J'} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}$) exists (this holds in particular for every continuous function). Then
+Consider the product $J = J' \times J'' \subseteq \mathbb{E}\_{m+n}$ of intervals $J' \subseteq \mathbb{E}\_m$, $J'' \subseteq \mathbb{E}\_n$. Let $f : J \to \mathbb{R}$ be such that $\int_J f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\mathbf{y}$ exists and that for every $\mathbf{x} \in J'$ (resp. every $\mathbf{y} \in J''$) the integral $\int_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}$ (resp. $\int_{J'} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}$) exists (this holds in particular for every continuous function). Then
 
 $$\int_J f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\mathbf{y} = \int_{J'}\left(\int_{J''} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{y}\right)\mathrm{d}\mathbf{x} = \int_{J''}\left(\int_{J'} f(\mathbf{x}, \mathbf{y})\mathrm{d}\mathbf{x}\right)\mathrm{d}\mathbf{y}.$$
 
