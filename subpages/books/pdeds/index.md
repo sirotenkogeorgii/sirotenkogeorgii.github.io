@@ -1716,6 +1716,134 @@ So far we have established that solutions to the gradient-flow equation (1.1) (o
 
 These are the simplest cases. For general non-convex energies, even existence of a long-time limit is delicate — the trajectory may oscillate, get stuck at a saddle, or escape to infinity.
 
+#### Auxiliary inequalities
+
+Two analytical workhorses appear repeatedly in the proofs that follow: **Young's inequality**, which converts a product into a weighted sum of squares, and **Gronwall's inequality**, which converts a differential inequality into an exponential bound. We record them here for reference.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Young's inequality)</span></p>
+
+For all $a,b\ge 0$ and any conjugate exponents $p,q\in(1,\infty)$ with $\tfrac1p+\tfrac1q=1$,
+
+$$
+ab \;\le\; \frac{a^p}{p} + \frac{b^q}{q}, \tag{Y}
+$$
+
+with equality iff $a^p=b^q$. The most important special case is $p=q=2$:
+
+$$
+ab \;\le\; \tfrac12 a^2 + \tfrac12 b^2, \tag{Y$_2$}
+$$
+
+with equality iff $a=b$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Young's inequality</summary>
+
+The case $p=q=2$ follows immediately from the trivial $(a-b)^2\ge 0$:
+
+$$
+0\;\le\;(a-b)^2 = a^2 - 2ab + b^2 \quad\Longleftrightarrow\quad 2ab\;\le\; a^2+b^2.
+$$
+
+The general case follows from the **convexity of $\exp$**. For $a,b>0$, write $a=\exp(\tfrac1p\log a^p)$ and $b=\exp(\tfrac1q\log b^q)$, so that, using $\tfrac1p+\tfrac1q=1$ and Jensen's inequality applied to $\exp$,
+
+$$
+ab \;=\; \exp\!\Bigl(\tfrac1p\log a^p+\tfrac1q\log b^q\Bigr) \;\le\; \tfrac1p\exp(\log a^p) + \tfrac1q\exp(\log b^q) \;=\; \frac{a^p}{p}+\frac{b^q}{q}.
+$$
+
+Equality in Jensen's holds iff the two values $\log a^p$ and $\log b^q$ agree — i.e. iff $a^p=b^q$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Weighted Young's inequality)</span></p>
+
+For all $a,b\ge 0$ and any $\varepsilon>0$,
+
+$$
+ab \;\le\; \frac{1}{2\varepsilon}\,a^2 + \frac{\varepsilon}{2}\,b^2, \tag{Y$_\varepsilon$}
+$$
+
+with equality iff $a=\varepsilon b$. More generally, for conjugate exponents $p,q$ as above and any $\varepsilon>0$,
+
+$$
+ab \;\le\; \frac{a^p}{p\,\varepsilon^{p-1}} + \frac{\varepsilon\, b^q}{q}.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the weight $\varepsilon$ matters)</span></p>
+
+The weighted form is just (Y) applied to the rescaled pair $(a/\sqrt\varepsilon,\,b\sqrt\varepsilon)$ — same content, same proof. The point is the **free parameter** $\varepsilon$:
+
+* Choosing $\varepsilon$ small concentrates the weight on $a^2$ (with cost $1/\varepsilon$ amplifying it).
+* Choosing $\varepsilon$ large concentrates the weight on $b^2$ (with cost $\varepsilon$ amplifying it).
+
+In practice, $\varepsilon$ is chosen so that one of the two squared terms — typically the $b^2$ term — *cancels exactly* a quantity already present in the inequality with the opposite sign. This was the maneuver in the proof of Theorem 3, where $\varepsilon=\lambda$ was chosen so that $\tfrac\varepsilon2 b^2 = \tfrac\lambda2\|x-x^\ast\|^2$ cancelled the $-\tfrac\lambda2\|x-x^\ast\|^2$ supplied by uniform convexity. The same trick reappears in the proof of Theorem 6.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">(Gronwall's inequality, differential form)</span></p>
+
+Let $u:[0,T]\to\mathbb R$ be absolutely continuous and let $\alpha:[0,T]\to\mathbb R$ be locally integrable. If
+
+$$
+\dot u(t) \;\le\; \alpha(t)\,u(t) \qquad \text{for a.e. } t\in[0,T], \tag{G}
+$$
+
+then
+
+$$
+u(t) \;\le\; u(0)\,\exp\!\Bigl(\int_0^t \alpha(s)\,ds\Bigr) \qquad \text{for all } t\in[0,T].
+$$
+
+In particular, if $\alpha\equiv -c$ is a negative constant,
+
+$$
+\dot u(t) \le -c\,u(t) \quad\Longrightarrow\quad u(t) \le u(0)\,e^{-c t}.
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Gronwall — the integrating-factor trick</summary>
+
+Set $F(t):=\exp\bigl(-\int_0^t\alpha(s)\,ds\bigr)>0$. Then $F$ is absolutely continuous with $\dot F(t) = -\alpha(t)\,F(t)$. Compute the derivative of the product $u(t)F(t)$ using the product rule:
+
+$$
+\frac{d}{dt}\bigl(u(t)\,F(t)\bigr) \;=\; \dot u(t)\,F(t) + u(t)\,\dot F(t) \;=\; \bigl(\dot u(t) - \alpha(t)\,u(t)\bigr)\,F(t) \;\le\; 0,
+$$
+
+where the last step uses (G) and $F>0$. So $t\mapsto u(t)F(t)$ is non-increasing, giving $u(t)F(t)\le u(0)F(0)=u(0)$, i.e.
+
+$$
+u(t)\;\le\; \frac{u(0)}{F(t)} \;=\; u(0)\,\exp\!\Bigl(\int_0^t\alpha(s)\,ds\Bigr). \qquad\square
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Variants of Gronwall)</span></p>
+
+Gronwall's inequality has several common variants, all built on the same integrating-factor trick:
+
+* **Integral form.** If $u(t)\le \alpha + \int_0^t \beta(s)\,u(s)\,ds$ for $\alpha\ge 0$ and $\beta\ge 0$ locally integrable, then $u(t)\le \alpha\exp\bigl(\int_0^t\beta(s)\,ds\bigr)$. This is the version most often invoked in ODE/PDE existence theory.
+* **Nonlinear (Bihari–LaSalle).** If $\dot u\le f(u)$ for some non-decreasing $f>0$, then $u$ is bounded by the solution of $\dot v=f(v)$ with the same initial data. Yields polynomial/algebraic decay when $f$ is nonlinear — this is implicitly the engine behind Theorem 5, where $\dot{\mathcal E}\le -\mathcal E^2/\mathcal H(0)$ leads to the $1/t$ rate (the linear Gronwall would have given exponential decay, which is unavailable here).
+* **Discrete form.** If $a_{n+1}\le (1+\alpha_n)\,a_n$ with $\alpha_n\ge 0$, then $a_n\le a_0\,\prod_{k=0}^{n-1}(1+\alpha_k)\le a_0\,\exp\bigl(\sum_{k=0}^{n-1}\alpha_k\bigr)$. This is the version one typically meets when proving stability of numerical schemes.
+
+In every variant, the moral is the same: a self-referential bound of the shape "$u$ is controlled by something involving $u$ itself" can be unwound into a closed-form bound by an integrating factor.
+
+</div>
+
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Uniformly convex function)</span></p>
 
@@ -1786,7 +1914,7 @@ $$
 \;\le\; |\nabla E(x(t))|\,|x(t)-x^\ast| - \tfrac12\lambda\,|x^\ast - x(t)|^2.
 $$
 
-Now apply **Young's inequality** $ab\le \tfrac{1}{2\lambda}a^2+\tfrac{\lambda}{2}b^2$ to the first term with $a=|\nabla E(x(t))|$ and $b=|x(t)-x^\ast|$. The two $\tfrac{\lambda}{2}|x-x^\ast|^2$ terms cancel and we are left with
+Now apply **Young's inequality** $ab\le \tfrac{1}{2\lambda}a^2+\tfrac{\lambda}{2}b^2$ to the first term with $a=\|\nabla E(x(t))\|$ and $b=\|x(t)-x^\ast\|$. The two $\tfrac{\lambda}{2}\|x-x^\ast\|^2$ terms cancel and we are left with
 
 $$
 \mathcal E(t)\;\le\; \tfrac{1}{2\lambda}|\nabla E(x(t))|^2 \;=\; \tfrac{1}{2\lambda}\,\mathcal D(t).
@@ -1886,7 +2014,7 @@ $$
 \frac{d\mathcal H}{dt}\le 0. \tag{1.20}
 $$
 
-The first holds with **equality** by (1.1) and the chain rule, $\dot{\mathcal E}=\langle\nabla E,\dot x\rangle=-\|\nabla E\|^2$. For the second, differentiating $\mathcal D=|\\nabla E(x)\|^2$ once more,
+The first holds with **equality** by (1.1) and the chain rule, $\dot{\mathcal E}=\langle\nabla E,\dot x\rangle=-\|\nabla E\|^2$. For the second, differentiating $\mathcal D=\|\nabla E(x)\|^2$ once more,
 
 $$
 \frac{d\mathcal D}{dt} \;=\; 2\bigl\langle \nabla E(x(t)),\,\nabla^2 E(x(t))\,\dot x(t)\bigr\rangle \;=\; -2\,\nabla^2 E(x(t))\bigl[\nabla E(x(t)),\nabla E(x(t))\bigr] \;\le\; 0,
@@ -1942,6 +2070,122 @@ Compare the two regimes:
 * **Plain convexity** gives only $\dot{\mathcal E}\le -\mathcal E^2/\mathcal H(0)$ — a *nonlinear* differential inequality that integrates to $1/t$ decay.
 
 The shift is the same as the one between the gradient flow of $E(x)=\tfrac12\lambda x^2$ (linear ODE, exponential decay) and that of $E(x)=\tfrac14 x^4$ (nonlinear ODE, $\dot x = -x^3$, algebraic decay). Without the quadratic margin of uniform convexity, the energy can become "flat" near the minimizer, the gradient becomes too small to produce a fixed exponential rate, and we lose the cleanest version of Gronwall.
+
+</div>
+
+#### Long-term asymptotics via the Łojasiewicz inequality
+
+So far, both Theorem 3 and Theorem 5 used **convexity** to prove convergence — Theorem 3 to a unique global minimizer, Theorem 5 to a (possibly non-unique) minimizer with a quantitative rate. There is a strikingly different approach — pioneered by **Stanisław Łojasiewicz** in 1963 in the analytic setting, and extended to many non-analytic settings since — that proves convergence to a *single* limit point under a purely **local** inequality between the energy gap and the gradient. No convexity is required.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Łojasiewicz inequality at a point)</span></p>
+
+A continuously differentiable $E:\mathbb R^N\to\mathbb R$ is said to satisfy the **Łojasiewicz inequality** at $x_\ast\in\mathbb R^N$ if there exist a neighborhood $U$ of $x_\ast$, a constant $C<\infty$, and an exponent $\theta\in(0,1)$ such that
+
+$$
+|E(y)-E(x_\ast)|^\theta \;\le\; C\,|\nabla E(y)| \qquad \text{for all } y\in U. \tag{Ł}
+$$
+
+The exponent $\theta$ is called the **Łojasiewicz exponent** at $x_\ast$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(When is (Ł) a non-trivial constraint?)</span></p>
+
+(Ł) is only a *genuine* constraint at **critical points** $x_\ast$ (where $\nabla E(x_\ast)=0$):
+
+* **Non-critical $x_\ast$.** If $\nabla E(x_\ast)\ne 0$, then $\|\nabla E(y)\|$ is bounded away from $0$ on a small enough neighborhood, while $\|E(y)-E(x_\ast)\|$ is small. So the inequality holds trivially with any $\theta$ and a suitable $C$.
+* **Critical $x_\ast$.** If $\nabla E(x_\ast)=0$, the right-hand side vanishes at $y=x_\ast$, and (Ł) becomes a quantitative statement: the energy gap $\|E(y)-E(x_\ast)\|$ is no flatter than $\|\nabla E(y)\|^{1/\theta}$ near $x_\ast$.
+
+The exponent $\theta$ encodes how flat the critical point is allowed to be:
+
+* $\theta=\tfrac12$ corresponds to a **non-degenerate** critical point — the energy looks locally quadratic, $E(y)-E(x_\ast)\sim\|y-x_\ast\|^2$, and (Ł) reduces to $\|y-x_\ast\|\lesssim\|\nabla E(y)\|$. This is essentially the local form of uniform convexity (Theorem 3) and yields *exponential* convergence.
+* $\theta\to 1^-$ corresponds to **very flat** critical points (e.g. $E(y)=\|y\|^k$ for large $k$). The trajectory still converges, but arbitrarily slowly.
+
+A landmark theorem of **Łojasiewicz (1963)** asserts that *every real-analytic function* $E$ satisfies (Ł) at every critical point with some $\theta\in(0,1)$. This is what makes the inequality applicable in essentially all "natural" optimization landscapes — including, with various caveats, the loss surfaces that arise in deep learning.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Long-term asymptotics via the Łojasiewicz inequality)</span></p>
+
+Let $E\in C^1(\mathbb R^N)$ and let $x:[0,\infty)\to\mathbb R^N$ solve the gradient flow (1.1). Suppose there exist a constant $E_\infty\in\mathbb R$, a constant $C<\infty$, and an exponent $\theta\in(0,1)$ such that
+
+$$
+|E(x(t))-E_\infty|^\theta \;\le\; C\,|\nabla E(x(t))| \qquad \text{for all sufficiently large } t. \tag{Ł'}
+$$
+
+Then the curve $t\mapsto x(t)$ has **finite length**,
+
+$$
+\int_0^\infty |\dot x(t)|\,dt \;<\; \infty,
+$$
+
+and consequently $x(t)$ converges to some $x^\ast\in\mathbb R^N$ as $t\to\infty$. Moreover, $x^\ast$ is a **critical point** of $E$, i.e. $\nabla E(x^\ast)=0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof — differentiating $\mathcal E^{1-\theta}$ along the flow</summary>
+
+The trick is to track *not* the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ itself, but its concave power $\mathcal E^{1-\theta}$. The exponent $1-\theta\in(0,1)$ is the bridge that turns Łojasiewicz into a finite-length statement.
+
+**Setup.** By energy decrease (1.2), $E(x(t))$ is non-increasing in $t$; since $E\ge 0$, the limit $E_\infty := \lim_{t\to\infty}E(x(t))$ exists. Set $\mathcal E(t):=E(x(t))-E_\infty\ge 0$. Note $\mathcal E$ is non-increasing in $t$, so in particular $\mathcal E^{1-\theta}$ is well-defined and non-increasing (we set $\mathcal E^{1-\theta}=0$ if $\mathcal E=0$).
+
+**Compute the derivative of $\mathcal E^{1-\theta}$.** On the set where $\mathcal E>0$,
+
+$$
+\frac{d}{dt}\mathcal E^{1-\theta}(t)
+\;=\; (1-\theta)\,\mathcal E^{-\theta}(t)\,\frac{d\mathcal E}{dt}
+\;=\; (1-\theta)\,\mathcal E^{-\theta}(t)\,\langle\nabla E(x(t)),\dot x(t)\rangle.
+$$
+
+On the gradient flow $\dot x=-\nabla E$, so $\langle\nabla E,\dot x\rangle = -\|\nabla E\|^2 = -\|\nabla E\|\,\|\dot x\|$ (since $\|\dot x\|=\|\nabla E\|$ on (1.1)). Hence
+
+$$
+\frac{d}{dt}\mathcal E^{1-\theta}(t) \;=\; -(1-\theta)\,\mathcal E^{-\theta}(t)\,|\nabla E(x(t))|\,|\dot x(t)|.
+$$
+
+**Apply Łojasiewicz.** Hypothesis (Ł') gives $\mathcal E(t)^\theta\le C\,\|\nabla E(x(t))\|$, i.e. $\mathcal E^{-\theta}(t)\,\|\nabla E(x(t))\|\ge 1/C$. Substituting,
+
+$$
+\frac{d}{dt}\mathcal E^{1-\theta}(t) \;\le\; -\frac{1-\theta}{C}\,|\dot x(t)|.
+$$
+
+**Integrate.** Since $\mathcal E^{1-\theta}$ is non-increasing and bounded below by $0$, $\lim_{t\to\infty}\mathcal E^{1-\theta}(t)=:L\ge 0$ exists. Integrating from $0$ to $\infty$,
+
+$$
+\frac{1-\theta}{C}\int_0^\infty |\dot x(t)|\,dt \;\le\; \mathcal E^{1-\theta}(0)-L \;\le\; \mathcal E^{1-\theta}(0) \;<\; \infty.
+$$
+
+So $\int_0^\infty\|\dot x\|\,dt<\infty$ — the trajectory has *finite length*.
+
+**Limit point and criticality.** Finite length means $x(t)$ is Cauchy: for any $\varepsilon>0$, choose $T$ so that $\int_T^\infty\|\dot x\|<\varepsilon$; then for $t,s>T$,
+
+$$
+|x(t)-x(s)|\;\le\; \int_s^t|\dot x(\tau)|\,d\tau \;<\;\varepsilon.
+$$
+
+Hence $x^\ast := \lim_{t\to\infty}x(t)\in\mathbb R^N$ exists. Moreover, on the gradient flow $\|\nabla E(x(t))\|=\|\dot x(t)\|$, so
+
+$$
+\int_0^\infty |\nabla E(x(t))|\,dt \;=\; \int_0^\infty |\dot x(t)|\,dt \;<\; \infty.
+$$
+
+A continuous, non-negative function on $[0,\infty)$ whose integral is finite must have $\liminf_{t\to\infty}=0$. Combined with continuity of $\nabla E$ and $x(t)\to x^\ast$, this forces $\|\nabla E(x^\ast)\|=0$. So $x^\ast$ is a critical point. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What Łojasiewicz buys us, beyond convexity)</span></p>
+
+* **No convexity needed.** The proof uses only differentiability and the local inequality (Ł') — there is no convexity assumption on $E$ anywhere. This is decisive in non-convex settings (deep-network losses, phase-field energies, semilinear PDEs) where convexity simply fails.
+* **Convergence to a single point.** Theorem 5 only gave $\mathcal E(t),\mathcal D(t)\to 0$, and even when $E$ is strictly convex, the minimizer set may have many points (Exercise 2). Łojasiewicz pins down a *single* limit point $x^\ast$ — at the cost of finite-length, not rate.
+* **No rate, in general.** The proof gives finite length but **no quantitative rate** of convergence. To extract a rate, one needs to know the Łojasiewicz exponent $\theta$ at the limit point: $\theta=\tfrac12$ recovers exponential convergence (the "tame" case), while $\theta\in(\tfrac12,1)$ gives algebraic decay $\|x(t)-x^\ast\|=O\bigl(t^{-(1-\theta)/(2\theta-1)}\bigr)$. Computing $\theta$ for a given energy is in general hard.
+* **The role of $\mathcal E^{1-\theta}$.** Why does the proof differentiate $\mathcal E^{1-\theta}$ rather than $\mathcal E$ itself? Because the Łojasiewicz inequality controls $\mathcal E^\theta$ by $\|\nabla E\|$, so the natural scalar quantity whose decay rate is dimensionally homogeneous to $\|\dot x\|$ — and therefore integrates to the *length* of the trajectory rather than to its squared $L^2$ norm — is $\mathcal E^{1-\theta}$. This concave reparametrization is the heart of the trick.
 
 </div>
 
@@ -2296,7 +2540,7 @@ $$
 \begin{cases}\dot x(t) = -\nabla E(x(t)) & \text{for } t\in(0,T),\\ x(0)=x_0,\end{cases} \tag{1.38}
 $$
 
-with $E\in C^1(\mathbb R^N)$. On the gradient flow, $\|\dot x\|=|\nabla E|$, so $-\|\dot x\|^2 = -\tfrac12\|\dot x\|^2-\tfrac12\|\nabla E\|^2$. Equation (1.2) thus may be rewritten symmetrically as
+with $E\in C^1(\mathbb R^N)$. On the gradient flow, $\|\dot x\|=\|\nabla E\|$, so $-\|\dot x\|^2 = -\tfrac12\|\dot x\|^2-\tfrac12\|\nabla E\|^2$. Equation (1.2) thus may be rewritten symmetrically as
 
 $$
 \frac{d}{dt}E(x(t)) \;=\; \langle \nabla E(x(t)),\dot x(t)\rangle \;=\; -\tfrac12|\dot x(t)|^2 - \tfrac12|\nabla E(x(t))|^2. \tag{1.39}
