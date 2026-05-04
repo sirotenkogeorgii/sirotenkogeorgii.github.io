@@ -735,3 +735,737 @@ The contextual bandit is the cleanest stepping stone into full RL: it introduces
 **Final message.** Bandits are a compact setting where the essential logic of RL becomes visible before we add states, transitions, and long-term planning.
 
 </div>
+
+## Lecture 3: Finite Markov Decision Processes
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(From One-Step Bandits to Sequential Decisions)</span></p>
+
+In bandits we deliberately stripped away two of the three things an action can do: it could no longer change the state of the world, and it could no longer affect what data we would see in the future. Only the first effect remained — the immediate reward. **Markov decision processes (MDPs) put those two things back in.** An action now affects three quantities at once:
+
+1. the **immediate reward** $R_{t+1}$,
+2. the **next state** $S_{t+1}$ — the situation we will face on the next step,
+3. and, indirectly through that state, the **distribution of all future rewards**.
+
+The third effect is what people call **delayed consequences** or the **credit-assignment problem**: a decision made now can change the reward we receive ten steps from now, and the agent has to learn to attribute that distant reward to the action that actually caused it. The remaining lectures of the course are essentially a long answer to one **guiding question**:
+
+> *How do we evaluate actions when their main effect is not just the immediate reward, but also the future states they lead to?*
+
+</div>
+
+### From Bandits to MDPs
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(What MDPs add beyond bandits)</span></p>
+
+Two new objects are introduced and one familiar object is upgraded.
+
+* **State $S_t$** tells us *which situation we are in*. In bandits we had no states — every step was a fresh, identical instance of the same one-shot decision.
+* **Dynamics** tell us *how actions change the future*. Choosing $a$ in state $s$ now produces a (possibly random) next state $s'$ in addition to a reward.
+* **Value** is no longer indexed by an action only, but by a **state** (or by a state-action pair):
+
+  $$
+  \text{Bandits: } q_*(a) \quad\Longrightarrow\quad \text{MDPs: } v_*(s),\; q_*(s, a).
+  $$
+
+The contextual bandit at the end of the previous lecture was a small step in this direction: it added an *observation* (context) before each action, but the agent's actions still did not control which context would appear next. An MDP is the next step — actions now actually *steer* the state.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gridworld — value depends on where you are)</span></p>
+
+Place an agent on a $5 \times 5$ grid. Some cells are walls (obstacles), one cell is a terminal goal, and the agent receives a constant per-step penalty until it reaches the goal. Two non-terminal cells $(4,1)$ and $(5,1)$ both *look* like ordinary cells. Yet they are not equally good places to be: one is closer to the goal, has fewer obstacles between it and the terminal cell, and so it requires fewer per-step penalties to escape from. **The "value" of a state is exactly this kind of information** — and it is something a one-step bandit could never represent, because in a bandit there is no notion of "where you are".
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/gridworld.png' | relative_url }}" alt="Gridworld with obstacles and a terminal cell — a small concrete finite MDP" loading="lazy">
+  <figcaption>A small finite MDP. Different non-terminal cells are not equally good — their value depends on how cheaply the agent can reach the terminal cell from there.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why MDPs are the core RL model)</span></p>
+
+MDPs sit at the intersection of four properties that, taken together, are the defining features of the RL problem:
+
+* **Evaluative feedback.** The environment only tells us *how good* the chosen action was — not what we should have done instead. (Carried over from bandits.)
+* **Associative setting.** The best action depends on the current state. The same action can be excellent in one state and terrible in another.
+* **Delayed consequences.** An action's effect on reward may not show up until many steps later.
+* **Credit assignment.** Given a reward, the agent has to figure out *which* earlier decision was responsible.
+
+Bandits had only the first; contextual bandits added the second; MDPs add the last two — and that is what makes them the standard mathematical model for **sequential decision making under uncertainty**.
+
+</div>
+
+### The Agent–Environment Interface
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Agent–Environment Loop)</span></p>
+
+At each discrete time step $t = 0, 1, 2, \dots$ the agent and environment exchange three quantities:
+
+1. The agent **observes a state** $S_t \in \mathcal{S}$.
+2. The agent **chooses an action** $A_t \in \mathcal{A}(S_t)$, where $\mathcal{A}(s)$ is the set of actions allowed in state $s$.
+3. The environment **emits a reward** $R_{t+1} \in \mathcal{R} \subset \mathbb{R}$ and **transitions** to a next state $S_{t+1} \in \mathcal{S}$.
+
+This produces an alternating trajectory
+
+$$
+S_0,\, A_0,\, R_1,\, S_1,\, A_1,\, R_2,\, S_2,\, A_2,\, \dots
+$$
+
+The reward is conventionally indexed at $t+1$ to emphasize that it is a *consequence* of taking $A_t$ in $S_t$, not part of the state at time $t$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/agent_environment_loop.png' | relative_url }}" alt="Agent-environment interaction loop with action, reward, and next state arrows" loading="lazy">
+  <figcaption>The closed loop: the agent emits an action, the environment responds with a reward and a next state, and the cycle repeats.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Finite MDP — Tabular Setting)</span></p>
+
+The MDP is **finite** when the state and action sets are finite,
+
+$$
+\mathcal{S} = \lbrace s^{(1)}, \dots, s^{(n)} \rbrace, \qquad \mathcal{A}(s) \text{ finite for each } s,
+$$
+
+and rewards are bounded (or, more weakly, have finite expectation). In this regime the value functions $v(s)$ and $q(s, a)$ are quite literally **tables of numbers** — one entry per state, or per state-action pair.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why "finite" matters here)</span></p>
+
+The whole first half of an RL course is built on top of the finite/tabular case for one reason: it lets us write everything as elementary arithmetic on finite sums, with no approximation involved. Once $\mathcal{S}$ becomes huge or continuous, value functions can no longer be stored as tables and we have to *approximate* them with parametric functions — neural networks, linear features, etc. That extension (function approximation) is genuinely harder, but the entire conceptual machinery — Bellman equations, optimal policies, greedy improvement — is developed cleanly in the tabular case first.
+
+</div>
+
+### MDP Dynamics and the Markov Property
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(One-Step Dynamics)</span></p>
+
+The environment is fully described by the **joint one-step dynamics**
+
+$$
+p(s', r \mid s, a) \;\doteq\; \Pr\lbrace S_{t+1} = s',\; R_{t+1} = r \mid S_t = s,\, A_t = a \rbrace.
+$$
+
+For each fixed $(s, a)$ this is a probability distribution over next-state/reward pairs:
+
+$$
+\sum_{s' \in \mathcal{S}} \sum_{r \in \mathcal{R}} p(s', r \mid s, a) \;=\; 1.
+$$
+
+A single function $p$ contains all the information about how the environment responds to actions.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Derived Models from $p$)</span></p>
+
+Several quantities are routinely derived from $p$ by marginalisation:
+
+* **State-transition probability** (rewards marginalised out):
+
+  $$
+  p(s' \mid s, a) \;=\; \sum_{r \in \mathcal{R}} p(s', r \mid s, a).
+  $$
+
+* **Expected reward given state and action**:
+
+  $$
+  r(s, a) \;\doteq\; \mathbb{E}[R_{t+1} \mid S_t = s,\, A_t = a] \;=\; \sum_{s', r} r\, p(s', r \mid s, a).
+  $$
+
+* **Expected reward given state, action, *and* next state**:
+
+  $$
+  r(s, a, s') \;\doteq\; \mathbb{E}[R_{t+1} \mid S_t = s,\, A_t = a,\, S_{t+1} = s'] \;=\; \sum_{r} r \,\frac{p(s', r \mid s, a)}{p(s' \mid s, a)}.
+  $$
+
+The last form is a conditioning step: we incorporate the additional information that the next state turned out to be $s'$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Markov Property)</span></p>
+
+A state representation is **Markov** if the joint distribution of the next state and reward depends on the past *only through the current state and action*:
+
+$$
+\Pr(S_{t+1}, R_{t+1} \mid S_0, A_0, \dots, S_t, A_t) \;=\; \Pr(S_{t+1}, R_{t+1} \mid S_t, A_t).
+$$
+
+Equivalently: once the present is known, the rest of the past adds no extra predictive power for the future.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Markov is a constraint on state design, not on the world)</span></p>
+
+The Markov property is best read **not** as an assumption about reality, but as a *requirement on what we put inside the state vector*. Almost no real environment is Markov in its raw observation: a single image of a Pong screen does not tell you the ball's velocity. But if you stack the last few frames into the state, the joint object becomes Markov — at least to a good approximation. So:
+
+* "The world is Markov" is usually false.
+* "The state I designed is Markov" is something *I* am responsible for making true, by including in $S_t$ everything the future depends on.
+
+Whenever a method seems to fail because past information matters, the right diagnosis is usually **the state is too small**, not that the math is wrong.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Where is the agent–environment boundary?)</span></p>
+
+The split between "agent" and "environment" is a **modelling choice**, not a physical fact. A working rule of thumb:
+
+* Anything the agent **cannot arbitrarily change** is part of the environment — including the robot's own sensors, motors, and battery.
+* The agent is the locus of *decision-making*: the policy and the learned value functions.
+
+The agent may *know* the environment dynamics, but it does **not** get to redefine the reward function: the reward is what tells the agent what we want, and letting the agent choose its own reward defeats the purpose.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Finite Markov Decision Process)</span></p>
+
+A **finite Markov decision process** is a tuple
+
+$$
+(\mathcal{S},\, \mathcal{A},\, p,\, \gamma),
+$$
+
+where
+
+* $\mathcal{S}$ is a finite state set;
+* $\mathcal{A}$ is the action set, or $\mathcal{A}(s)$ the set of admissible actions per state;
+* $p(s', r \mid s, a)$ specifies the one-step dynamics;
+* $\gamma \in [0, 1]$ is the **discount factor** (defined precisely in the next section).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Deterministic vs. stochastic MDPs)</span></p>
+
+The transition kernel can be either:
+
+* **Deterministic**, $p(s' \mid s, a) \in \lbrace 0, 1 \rbrace$ — every $(s, a)$ has exactly one possible next state. Gridworld with rigid movement is the canonical example.
+* **Stochastic**, $p(\cdot \mid s, a)$ is a non-trivial distribution — slot machines, weather, opponents, sensor noise; anywhere the world is not perfectly predictable.
+
+Two sources of randomness coexist in any RL trajectory:
+
+* **Environment randomness**: the next state and reward are drawn from $p(\cdot, \cdot \mid s, a)$.
+* **Policy randomness**: the agent itself can act stochastically.
+
+Both can be present, both can be absent — and they are independent design choices.
+
+</div>
+
+### Goals, Rewards, and Return
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Hypothesis</span><span class="math-callout__name">(The Reward Hypothesis)</span></p>
+
+> Everything we mean by the agent's *goal* can be expressed as the maximisation of the expected value of the cumulative sum of a received scalar signal, called **reward**.
+
+The agent does not get to negotiate this signal: at each step, the environment emits a scalar $R_{t+1}$, and the entire job of the agent is to *maximise the expected total reward over time*.
+
+The reward specifies **what** we want — not **how** to achieve it.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Reward design and reward hacking)</span></p>
+
+The reward signal carries the entire definition of "what the agent should do", so getting it right is unusually consequential. Some canonical examples:
+
+* **Chess.** $R = +1$ on win, $0$ on draw, $-1$ on loss, $0$ otherwise. The reward says nothing about *how* to play — it only specifies the outcome we care about.
+* **Maze / shortest path.** $R = -1$ per step until the goal is reached. Maximising total reward $=$ minimising number of steps.
+* **Recycling robot.** Positive reward for picking up cans, large negative reward if the battery runs out. The trade-off between collecting and recharging emerges by itself.
+
+The pitfall is when the designer rewards a **proxy** instead of the true objective:
+
+* Reward "moving toward the goal" $\to$ the agent learns to approach the goal cell *and stay near it*, never entering, because entering ends the episode.
+* Reward "eating points" in a video game $\to$ the agent finds a wall-glitch that lets it loop a single point forever.
+
+This is **reward hacking**: the agent maximises exactly what you wrote down, which turns out not to be what you wanted. The right principle is *reward the goal, not the path you imagine taking to it*.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Return — Episodic Tasks)</span></p>
+
+In an **episodic task** the interaction terminates at a (random) time $T$, and the agent's objective at step $t$ is the **return**
+
+$$
+G_t \;\doteq\; R_{t+1} + R_{t+2} + \cdots + R_T.
+$$
+
+By convention $G_T = 0$: once the terminal state has been reached, no more reward can be accrued.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Return — Continuing Tasks, Discounting)</span></p>
+
+In a **continuing task** the interaction never terminates, and an undiscounted sum can diverge. We instead define the **discounted return**
+
+$$
+G_t \;\doteq\; R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \;=\; \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}, \qquad 0 \le \gamma < 1.
+$$
+
+The discount factor $\gamma$ controls how much the agent cares about distant rewards: $\gamma$ near $0$ makes it short-sighted, $\gamma$ near $1$ makes it far-sighted.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/discount_decay.png' | relative_url }}" alt="Geometric decay of gamma^k for several values of gamma" loading="lazy">
+  <figcaption>How heavily a reward $k$ steps in the future contributes to today's return. Smaller $\gamma$ produces a short-sighted agent; $\gamma$ near $1$ produces a far-sighted one.</figcaption>
+</figure>
+
+If rewards are uniformly bounded by $\lvert R_{t+k} \rvert \le R_{\max}$ and $\gamma < 1$, then
+
+$$
+\lvert G_t \rvert \;\le\; \sum_{k=0}^{\infty} \gamma^k R_{\max} \;=\; \frac{R_{\max}}{1 - \gamma} \;<\; \infty.
+$$
+
+So the discounted return is *guaranteed* to be a well-defined finite random variable, and expectations of it are finite. This is the basic reason that the entire MDP machinery does not break on continuing tasks.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(The Recursive Identity for the Return)</span></p>
+
+Starting from the discounted return,
+
+$$
+G_t \;=\; R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots,
+$$
+
+factor a $\gamma$ out of the tail:
+
+$$
+G_t \;=\; R_{t+1} + \gamma \underbrace{\bigl( R_{t+2} + \gamma R_{t+3} + \cdots \bigr)}_{=\, G_{t+1}}.
+$$
+
+This gives the **fundamental recursive identity**
+
+$$
+\boxed{\,G_t \;=\; R_{t+1} + \gamma\, G_{t+1}\,}.
+$$
+
+The return at time $t$ equals the immediate reward plus a discounted version of the *return one step later*. This is the seed from which every Bellman equation is grown — and the formal reason behind the bootstrap idea ("estimate now from estimate next") that pervades the rest of RL.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/recursive_return.png' | relative_url }}" alt="Recursive identity G_t = R_{t+1} + gamma G_{t+1}" loading="lazy">
+  <figcaption>Factoring out one step turns an infinite tail into a single discounted copy of the return — the trick on which every Bellman equation rests.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Unifying episodic and continuing tasks)</span></p>
+
+Episodic and continuing tasks look like two different objects, but they can be merged into a single framework with a small trick. Add an **absorbing terminal state**: a special state that, once entered, transitions to itself forever and emits reward $0$ on every step. After termination, the trajectory continues — but contributes nothing further to any sum. Then *any* episodic task can be written as
+
+$$
+G_t \;=\; \sum_{k=0}^{\infty} \gamma^k R_{t+k+1},
+$$
+
+with the same formula as for continuing tasks. From now on we can write a single sum and not worry about whether the episode "ended".
+
+</div>
+
+### Policies and Value Functions
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Policy)</span></p>
+
+A **policy** is a (possibly stochastic) map from states to action distributions:
+
+$$
+\pi(a \mid s) \;\doteq\; \Pr(A_t = a \mid S_t = s).
+$$
+
+For each state $s$, $\pi(\cdot \mid s)$ is a valid probability distribution on $\mathcal{A}(s)$. Deterministic policies are the special case where $\pi(\cdot \mid s)$ puts mass $1$ on a single action.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(RL in one sentence)</span></p>
+
+> **Reinforcement learning is the problem of changing the policy on the basis of experience so as to increase expected return.**
+
+Every algorithm in the rest of the course is a particular answer to "how do you change $\pi$?", under the constraint that the only thing the agent ever observes is the trajectory $(S_0, A_0, R_1, S_1, A_1, \dots)$ that the current policy produces.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(State-Value and Action-Value Functions)</span></p>
+
+Fix a policy $\pi$. The **state-value function** measures how good it is to *be in state $s$* and follow $\pi$ thereafter:
+
+$$
+v_\pi(s) \;\doteq\; \mathbb{E}_\pi[\,G_t \mid S_t = s\,].
+$$
+
+The **action-value function** (or Q-function) measures how good it is to *take action $a$ in state $s$* and follow $\pi$ thereafter:
+
+$$
+q_\pi(s, a) \;\doteq\; \mathbb{E}_\pi[\,G_t \mid S_t = s,\, A_t = a\,].
+$$
+
+The two are related by averaging $q$ over actions chosen by the policy:
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, q_\pi(s, a).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why both $v$ and $q$ exist)</span></p>
+
+At first glance $v$ and $q$ encode the same information — and indeed $v_\pi$ can be recovered from $q_\pi$ via the formula above. So why carry both?
+
+* **$v_\pi(s)$ is what you want when you only have to evaluate states.** Cheaper to store ($\lvert\mathcal{S}\rvert$ vs. $\lvert\mathcal{S}\rvert\,\lvert\mathcal{A}\rvert$ entries) and easier to interpret as "how good is this situation".
+* **$q_\pi(s, a)$ is what you need for control**, because acting greedily means picking $\arg\max_a$. With only $v_\pi$ you cannot pick a good action without also knowing the dynamics $p$ to look one step ahead.
+
+The control algorithms in later lectures (Q-learning, SARSA, $\dots$) all learn $q$ for exactly this reason.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Two Fundamental Problems — Prediction and Control)</span></p>
+
+* **Prediction (policy evaluation).** Given an MDP and a fixed policy $\pi$, compute $v_\pi$ and $q_\pi$.
+* **Control.** Find an *optimal* policy $\pi^*$ that maximises $v_\pi(s)$ at every state:
+
+  $$
+  \pi^* \;\in\; \arg\max_{\pi}\, v_\pi(s) \quad \forall s \in \mathcal{S}.
+  $$
+
+Almost every method in the next lectures fits into one of these two slots — or alternates between them, as in policy iteration.
+
+</div>
+
+### Bellman Expectation Equations
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Why Bellman equations are needed)</span></p>
+
+Computing $v_\pi(s) = \mathbb{E}_\pi[G_t \mid S_t = s]$ directly would require averaging over the **entire future trajectory**
+
+$$
+(A_t,\, S_{t+1},\, R_{t+1},\, A_{t+1},\, S_{t+2},\, R_{t+2},\, \dots),
+$$
+
+i.e. summing over an exponentially large branching tree of all paths. This is hopeless for any non-trivial MDP.
+
+**Bellman's idea.** Replace the full path expectation by a **recursive one-step decomposition**: relate $v_\pi(s)$ to the values of states reachable in one step. The exponential blow-up collapses to a fixed-point equation in $\lvert\mathcal{S}\rvert$ unknowns.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/trajectory_tree.png' | relative_url }}" alt="Branching tree of all future trajectories from S_t, alternating policy and dynamics layers" loading="lazy">
+  <figcaption>Computing $\mathbb{E}_\pi[G_t \mid S_t = s]$ directly means averaging over this exponentially branching tree. Bellman's trick replaces it by a single one-step lookahead plus a value at the next level.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Where the randomness comes from)</span></p>
+
+The expectation in $v_\pi(s) = \mathbb{E}_\pi[G_t \mid S_t = s]$ averages over **all** future random draws, which come from two independent sources:
+
+* **Agent randomness:** $A_t \sim \pi(\cdot \mid S_t)$.
+* **Environment randomness:** $(S_{t+1}, R_{t+1}) \sim p(\cdot, \cdot \mid S_t, A_t)$.
+
+The same loop then repeats from $S_{t+1}$ onwards, so $G_t$ is a function of the random sequence $(A_t, S_{t+1}, R_{t+1}, A_{t+1}, S_{t+2}, R_{t+2}, \dots)$. Splitting the expectation into "first action, then environment, then *the rest of the future*" is exactly what the Bellman equation does.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman Expectation Equation for $v_\pi$)</span></p>
+
+For every state $s \in \mathcal{S}$,
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a) \bigl[\, r + \gamma\, v_\pi(s') \,\bigr].
+$$
+
+Reading the formula left to right traces the three layers of the Bellman backup:
+
+* first average over the action selected by $\pi$;
+* then average over the environment outcome $(s', r)$;
+* finally back up the future return through the value of the successor state $v_\pi(s')$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/backup_v_pi.png' | relative_url }}" alt="Backup diagram for v_pi: state branches over actions weighted by policy, then over (s', r) pairs weighted by dynamics" loading="lazy">
+  <figcaption>Backup diagram for $v_\pi$. Open circles are states, filled circles are state-action pairs. Blue edges are weighted by the policy $\pi(a \mid s)$; green edges by the dynamics $p(s', r \mid s, a)$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Bellman Expectation for $v_\pi$ — three lines)</span></p>
+
+Start from the definition and substitute the recursive identity for $G_t$:
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[G_t \mid S_t = s] \;=\; \mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid S_t = s].
+$$
+
+**Step 1.** Condition on the first action via the law of total expectation. Since $\Pr(A_t = a \mid S_t = s) = \pi(a \mid s)$,
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\, \mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid S_t = s,\, A_t = a].
+$$
+
+**Step 2.** Expand the inner expectation over the environment outcome $(S_{t+1}, R_{t+1}) \sim p(\cdot, \cdot \mid s, a)$:
+
+$$
+\mathbb{E}_\pi[R_{t+1} + \gamma G_{t+1} \mid s, a] \;=\; \sum_{s', r} p(s', r \mid s, a)\, \bigl[\, r + \gamma\, \mathbb{E}_\pi[G_{t+1} \mid s, a, s', r]\,\bigr].
+$$
+
+**Step 3.** Apply the **Markov property**: once $S_{t+1} = s'$ is known, the past $(s, a, r)$ adds no information about the future, so
+
+$$
+\mathbb{E}_\pi[G_{t+1} \mid S_t = s,\, A_t = a,\, S_{t+1} = s',\, R_{t+1} = r] \;=\; \mathbb{E}_\pi[G_{t+1} \mid S_{t+1} = s'] \;=\; v_\pi(s').
+$$
+
+Combining,
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\, \bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
+$$
+
+Each of the three lines uses exactly one MDP ingredient: the **policy**, the **dynamics**, and the **Markov property**.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman Expectation Equation for $q_\pi$)</span></p>
+
+For every $(s, a)$,
+
+$$
+q_\pi(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a) \Bigl[\, r + \gamma \sum_{a'} \pi(a' \mid s')\, q_\pi(s', a') \,\Bigr].
+$$
+
+The order of operations is reversed compared to $v_\pi$: we first commit to taking action $a$ in state $s$, *then* let the environment draw $(s', r)$, *then* let $\pi$ control all subsequent actions.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/backup_q_pi.png' | relative_url }}" alt="Backup diagram for q_pi: rooted at (s,a), branching over environment outcomes then over policy actions" loading="lazy">
+  <figcaption>Backup diagram for $q_\pi$. The root is now a state-action pair: the environment branches first (green), then the policy branches at the next state (blue).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Backup diagrams — picturing the equation)</span></p>
+
+The Bellman expectation equation is best read off a **backup diagram**: a small two-level tree rooted at $s$ with open circles for states and filled circles for state-action pairs.
+
+* From $s$ we branch over actions $a$, weighted by $\pi(a \mid s)$.
+* From each $(s, a)$ we branch over outcomes $(s', r)$, weighted by $p(s', r \mid s, a)$.
+* At each leaf we read off $r + \gamma\, v_\pi(s')$ and average everything.
+
+A Bellman backup is therefore *always* the same operation — **one-step lookahead, then plug in the future value** — even though it shows up in many disguises in subsequent algorithms (TD(0), SARSA, expected SARSA, DP sweeps, $\dots$).
+
+</div>
+
+### Gridworld Example
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gridworld as a Concrete Finite MDP)</span></p>
+
+* **State space:** $\mathcal{S} = \lbrace (i, j) : i \in \lbrace 1, \dots, H \rbrace,\, j \in \lbrace 1, \dots, W \rbrace \rbrace$.
+* **Action space:** $\mathcal{A}(s) = \lbrace \mathsf{N},\, \mathsf{S},\, \mathsf{E},\, \mathsf{W} \rbrace$ for non-terminal $s$.
+* **Dynamics (deterministic).** Define a transition function $s' = f(s, a)$:
+  - if the move stays inside the grid, go to the neighbouring cell;
+  - if the move would leave the grid, stay put ("bump rule").
+
+  The transition kernel collapses to
+
+  $$
+  P(\tilde s \mid s, a) \;=\; \begin{cases} 1 & \tilde s = f(s, a), \\ 0 & \text{otherwise.} \end{cases}
+  $$
+
+* **Reward.** A constant per-step cost $r(s, a, s') = -1$ until a terminal cell is reached.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(One Concrete Bellman Equation — top-left corner)</span></p>
+
+In the simple gridworld with $r(s, a, s') = -1$ and $\gamma \in (0, 1)$, the Bellman expectation equation simplifies because the reward is constant:
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s)\bigl[\, -1 + \gamma\, v_\pi(f(s, a))\,\bigr].
+$$
+
+Pick the corner state $s = (1, 1)$. Under the bump rule,
+
+$$
+f((1,1), \mathsf{N}) = (1,1), \quad f((1,1), \mathsf{W}) = (1,1), \quad f((1,1), \mathsf{E}) = (1,2), \quad f((1,1), \mathsf{S}) = (2,1).
+$$
+
+For a uniform random policy $\pi(a \mid s) = \tfrac{1}{4}$,
+
+$$
+v_\pi(1,1) \;=\; \tfrac{1}{4}\bigl[-1 + \gamma\, v_\pi(1,1)\bigr] + \tfrac{1}{4}\bigl[-1 + \gamma\, v_\pi(1,1)\bigr] + \tfrac{1}{4}\bigl[-1 + \gamma\, v_\pi(1,2)\bigr] + \tfrac{1}{4}\bigl[-1 + \gamma\, v_\pi(2,1)\bigr],
+$$
+
+which simplifies to
+
+$$
+v_\pi(1,1) \;=\; -1 + \frac{\gamma}{4}\bigl(\, 2\, v_\pi(1,1) + v_\pi(1,2) + v_\pi(2,1)\,\bigr).
+$$
+
+Doing the same for *every* state gives a linear system in $\lvert\mathcal{S}\rvert$ unknowns — the Bellman expectation equation as a *single matrix equation* — which is the engine behind the policy-evaluation step of dynamic programming.
+
+</div>
+
+### Optimal Policies and Optimal Values
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Ordering of Policies and Optimality)</span></p>
+
+Compare policies **pointwise** by their state values:
+
+$$
+\pi \succeq \pi' \quad\Longleftrightarrow\quad v_\pi(s) \ge v_{\pi'}(s) \quad \forall s \in \mathcal{S}.
+$$
+
+A policy $\pi^*$ is **optimal** if it dominates every other policy, $\pi^* \succeq \pi$ for all $\pi$. Equivalently, $\pi^*$ is at least as good as every other policy in every state simultaneously.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Many optimal policies, one optimal value)</span></p>
+
+A few facts about optimality that are often glossed over:
+
+* **Optimal policies need not be unique.** Whenever two actions tie for the argmax in some state, *any* of them gives an optimal policy. Tie-breaking does not change the value.
+* **Optimal value functions are unique.** For any discounted finite MDP, $v_*$ and $q_*$ are well-defined functions. Any optimal policy attains *the same* values.
+* **A deterministic optimal policy always exists.** This is non-obvious — one might worry that some MDPs require randomisation — but for finite discounted MDPs there is always at least one purely deterministic policy that is optimal.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Optimal Value Functions)</span></p>
+
+The **optimal state-value function** is the best $v_\pi(s)$ achievable over policies:
+
+$$
+v_*(s) \;\doteq\; \max_{\pi}\, v_\pi(s).
+$$
+
+The **optimal action-value function** is defined analogously:
+
+$$
+q_*(s, a) \;\doteq\; \max_{\pi}\, q_\pi(s, a).
+$$
+
+The two are related by maximising over actions:
+
+$$
+v_*(s) \;=\; \max_{a}\, q_*(s, a).
+$$
+
+</div>
+
+### Bellman Optimality Equations
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman Optimality Equation for $v_*$)</span></p>
+
+For every state $s$,
+
+$$
+v_*(s) \;=\; \max_{a \in \mathcal{A}(s)} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_*(s')\,\bigr].
+$$
+
+Compare with the Bellman *expectation* equation: the **expectation over actions weighted by $\pi$** has been replaced by a **max over actions**. Interpretation: choose the best first action, then act optimally thereafter.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Bellman Optimality Equation for $q_*$)</span></p>
+
+For every $(s, a)$,
+
+$$
+q_*(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a)\Bigl[\, r + \gamma\, \max_{a'}\, q_*(s', a')\,\Bigr].
+$$
+
+Take action $a$ once, then — after arriving in $s'$ — pick the best possible *next* action. This is exactly the equation behind value iteration and (later) Q-learning.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Expectation backup vs. max backup)</span></p>
+
+The Bellman expectation and Bellman optimality equations differ in **exactly one** place:
+
+* Expectation backup: average over actions according to $\pi$.
+* Optimality backup: replace that average by a maximisation.
+
+That single change is what turns *evaluation of a fixed policy* into *control*. Diagrammatically, the upper branching (over actions) becomes a max instead of a weighted sum; the lower branching (over environment outcomes) is unchanged because randomness in the world is not something we can max away.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/backup_optimality.png' | relative_url }}" alt="Side-by-side backup diagrams comparing expectation backup and max backup" loading="lazy">
+  <figcaption>The two Bellman backups differ at exactly one layer: expectation averages over actions weighted by $\pi$ (left); optimality keeps only the best action and discards the others (right).</figcaption>
+</figure>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Greedy Policies from Optimal Values)</span></p>
+
+Given the optimal state-value function $v_*$, define the **greedy policy** by
+
+$$
+\pi_{\text{greedy}}(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_*(s')\,\bigr].
+$$
+
+Then **any policy greedy with respect to $v_*$ is optimal.** With $q_*$ the rule is even simpler — and no model is required:
+
+$$
+\pi^*(s) \;\in\; \arg\max_{a}\, q_*(s, a).
+$$
+
+This is the punchline of MDP theory: once you can solve the Bellman optimality equations, optimal control reduces to a *one-step argmax* in every state.
+
+</div>
+
+### Summary
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Method Map — the five core objects)</span></p>
+
+| Object         | Meaning                                  | Bellman form                                                  |
+| :------------- | :--------------------------------------- | :------------------------------------------------------------ |
+| $\pi(a \mid s)$  | behaviour rule                           | choose actions in each state                                  |
+| $v_\pi(s)$     | value of state $s$ under $\pi$           | expectation over action *and* environment                     |
+| $q_\pi(s, a)$  | value of taking $a$ then following $\pi$ | expectation over environment, then policy                     |
+| $v_*(s)$       | best achievable state value              | max over actions                                              |
+| $q_*(s, a)$    | best achievable value after forcing $(s, a)$ | one-step transition + max over future actions             |
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core Takeaways)</span></p>
+
+* MDPs extend bandits by adding **state** and **dynamics** — actions now affect *what happens next*, not just *what we get now*.
+* The **Markov property** is a constraint on state design: the state must summarise enough of the past for the future to be predictable from it alone.
+* **Return** formalises the agent's objective; **discounting** keeps it finite for continuing tasks and underwrites the contraction-mapping arguments that make later algorithms converge.
+* **Policies** define behaviour; **value functions** evaluate long-term quality. Two fundamental problems: **prediction** ($v_\pi$, $q_\pi$ for a fixed $\pi$) and **control** (find $\pi^*$).
+* **Bellman expectation equations** convert long-horizon reasoning into recursive one-step lookahead; **Bellman optimality equations** define the unique optimal value functions.
+* Once $q_*$ is known, optimal control collapses to $\arg\max_a q_*(s, a)$ — a *one-step* decision per state, no planning required.
+
+**Final message.** RL on MDPs is built around a single core idea: **solve the Bellman equations exactly or approximately**. Everything that follows — dynamic programming, Monte Carlo, TD, Q-learning, policy gradients, actor-critic — is a different way of attacking those equations.
+
+</div>
