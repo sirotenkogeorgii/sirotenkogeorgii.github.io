@@ -25,7 +25,8 @@ noindex: true
 
 ## Exercise Sheet 1 — Subdifferentials and convex functions
 
-*Keywords: convex function, subdifferential, supporting hyperplane, subgradient monotonicity, local vs. global minima.*
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intro</span><span class="math-callout__name">(Subdifferentials and convex functions)</span></p>
 
 Throughout, $E : \mathbb{R}^N \to [0, \infty]$ is convex, i.e.
 
@@ -43,6 +44,8 @@ $$
 
 Geometrically, $p \in \partial E(x)$ iff the affine function $y \mapsto E(x) + \langle p, y - x\rangle$ minorises $E$ globally and is exact at $x$. Equivalently, the hyperplane in $\mathbb{R}^N \times \mathbb{R}$ with normal $(p, -1)$ supports the epigraph $\mathrm{epi}(E) = \lbrace (y, r) : r \ge E(y)\rbrace$ at $(x, E(x))$.
 
+</div>
+
 <details class="accordion" markdown="1">
 <summary>Visualisation — supporting affine minorants</summary>
 
@@ -53,9 +56,8 @@ Geometrically, $p \in \partial E(x)$ iff the affine function $y \mapsto E(x) + \
 
 </details>
 
----
-
-### Exercise 1.1 — Subdifferential
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 1.1</span><span class="math-callout__name">(Subdifferential)</span></p>
 
 Show the following statements.
 
@@ -66,6 +68,8 @@ Show the following statements.
 **c)** Let $E \in C^1(\mathbb{R}^N)$. Then $\partial E(x) = \lbrace \nabla E(x)\rbrace$ for all $x \in \mathbb{R}^N$.
 
 **d)** $E$ is differentiable at $x$ if and only if $\partial E(x)$ is a singleton, i.e. #$\partial E(x) = 1$.
+
+</div>
 
 <details class="accordion" markdown="1">
 <summary>Solution 1.1 (a) — convexity and non-emptiness of $\partial E(x)$</summary>
@@ -191,9 +195,8 @@ In particular $E'(x; -v) = \langle p, -v\rangle = -E'(x; v)$, so the *two-sided*
 
 </details>
 
----
-
-### Exercise 1.2 — Convex functions
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 1.2</span><span class="math-callout__name">(Convex functions)</span></p>
 
 Let $E : \mathbb{R}^N \to [0, \infty)$ be convex and finite-valued.
 
@@ -210,6 +213,8 @@ $$\langle p_1 - p_2,\, x_1 - x_2 \rangle \;\ge\; 0.$$
   iii) $0 \in \partial E(x_0)$.
 
 **c)** *(Bonus)* Show that $E$ is continuous.
+
+</div>
 
 <details class="accordion" markdown="1">
 <summary>Solution 1.2 (a) — monotonicity of the subgradient</summary>
@@ -326,6 +331,371 @@ By symmetry in $x, y$, $\|E(y) - E(x)\| \le L\,\|y - x\|$ on $B(x_0, r/2)$. Henc
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/sheet1_local_eq_global.png' | relative_url }}" alt="Left: a convex parabola whose unique critical point is global. Right: a non-convex double-well with a local maximum at zero between two global minima" loading="lazy">
   <figcaption>Left: any local minimum of a convex $E$ is global, and the horizontal supporting line at $x_0$ encodes $0\in\partial E(x_0)$. Right: without convexity, critical points of $E$ can be local-only (or even saddles/maxima), and $0\in\nabla E$ is no longer sufficient for being a minimiser.</figcaption>
+</figure>
+
+</details>
+
+## Exercise Sheet 2 — Subdifferentials of common energies, Łojasiewicz, convergence rates
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intro</span><span class="math-callout__name">(What this sheet is about)</span></p>
+
+Sheet 1 set up the subdifferential abstractly and showed that it captures *first-order optimality* for non-smooth convex energies. Sheet 2 makes this concrete: we **compute** $\partial E$ for the four most-recurring non-smooth energies (the absolute value, the $\ell^1$- and $\ell^2$-norms, and a max-of-affine), and then we look at *long-term asymptotics* of the gradient flow under two different regimes — the **Łojasiewicz inequality** (gives finite length and convergence to a single limit point with no convexity) and **plain convexity** (gives a quantitative $1/t$ rate via Theorem 5).
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.1</span><span class="math-callout__name">(Subdifferential of common non-smooth energies)</span></p>
+
+**a)** $E(x) := \lvert x\rvert$ for $x \in \mathbb R$. Compute $\partial E(x)$ for all $x \in \mathbb R$.
+
+**b)** $E(x) := \|x\|_1$ for $x \in \mathbb R^N$. Compute $\partial E(x)$ for all $x \in \mathbb R^N$.
+
+**c)** $E(x) := \|x\|_2$ for $x \in \mathbb R^N$. Compute $\partial E(x)$ for all $x \in \mathbb R^N$.
+
+**d)** $E(x) := \max_{i = 1, \dots, m}(a_i \cdot x + b_i)$ for $x \in \mathbb R^N$, where $(a_i)_{i=1}^m \subset \mathbb R^N$ and $(b_i)_{i=1}^m \subset \mathbb R$. Compute $\partial E(x)$ for all $x \in \mathbb R^N$.
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2.1 (a) — $\partial \lvert x\rvert$ on $\mathbb R$</summary>
+
+We claim
+
+$$
+\partial E(x) \;=\; \begin{cases} \{+1\}, & x > 0, \\ [-1, 1], & x = 0, \\ \{-1\}, & x < 0. \end{cases}
+$$
+
+**Off the kink.** For $x \ne 0$, $E$ is $C^1$ in a neighbourhood of $x$ with $E'(x) = \mathrm{sign}(x)$. Exercise 1.1(c) gives $\partial E(x) = \{E'(x)\} = \{\mathrm{sign}(x)\}$.
+
+**At the kink $x = 0$.** By definition (2),
+
+$$p \in \partial E(0) \;\Longleftrightarrow\; |y| \;\ge\; p\,y \quad \forall y \in \mathbb R.$$
+
+Test $y > 0$: $y \ge p y$ forces $p \le 1$. Test $y < 0$: $-y \ge p y$, dividing by $-y > 0$ gives $1 \ge -p$, i.e. $p \ge -1$. Conversely, for any $p \in [-1, 1]$, $\lvert y\rvert \ge p\,y$ holds because $\lvert p\,y\rvert = \lvert p\rvert\,\lvert y\rvert \le \lvert y\rvert$. Hence $\partial E(0) = [-1, 1]$. $\blacksquare$
+
+**Reading.** The kink is the *only* place where $\partial E$ is multivalued, and its width $\lvert\partial E(0)\rvert = 2$ matches the size of the slope jump $E'(0^+) - E'(0^-) = 2$ — this is the general picture for piecewise-$C^1$ convex functions.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Visualisation 2.1 (a) — fan of supports at $0$, single tangent elsewhere</summary>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/sheet2_subdiff_abs.png' | relative_url }}" alt="Left: graph of |x| with a fan of supporting lines through the origin and unique tangents at smooth points. Right: the multivalued map x → ∂E(x) drawn as a graph in the (x, p) plane, with a vertical segment [-1, 1] over x=0" loading="lazy">
+  <figcaption>Left: every $p \in [-1, 1]$ is the slope of a line passing through $(0, 0)$ that lies *under* $\lvert x\rvert$ — the whole orange fan is $\partial E(0)$. At smooth points $\pm 1.2$ there is a unique tangent (slopes $\pm 1$). Right: the *graph* of the multivalued map $x \mapsto \partial E(x)$ — a step function with a vertical jump of length $2$ glued in at $x = 0$.</figcaption>
+</figure>
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2.1 (b) — $\partial \|x\|_1$ on $\mathbb R^N$</summary>
+
+The $\ell^1$-norm is **separable**: $\|x\|_1 = \sum_{i=1}^N \lvert x_i\rvert$, with each summand depending only on one coordinate. We will exploit this to reduce to (a).
+
+**Claim.**
+
+$$
+\partial E(x) \;=\; \bigl\{\, p \in \mathbb R^N \;:\; p_i = \mathrm{sign}(x_i)\ \text{if } x_i \ne 0,\ \ p_i \in [-1, 1]\ \text{if } x_i = 0 \,\bigr\}.
+$$
+
+Equivalently, $\partial E(x) = \prod_{i=1}^N \partial \lvert\,\cdot\,\rvert(x_i)$ — the **Cartesian product** of the 1D subdifferentials from (a).
+
+**($\supseteq$).** Take $p$ in the displayed set. For any $y \in \mathbb R^N$, applying the 1D inequality $\lvert y_i\rvert \ge \lvert x_i\rvert + p_i (y_i - x_i)$ coordinatewise (which holds because $p_i \in \partial \lvert\,\cdot\,\rvert(x_i)$ by (a)) and summing,
+
+$$\|y\|_1 \;=\; \sum_i |y_i| \;\ge\; \sum_i \bigl[|x_i| + p_i (y_i - x_i)\bigr] \;=\; \|x\|_1 + \langle p, y - x\rangle.$$
+
+So $p \in \partial E(x)$.
+
+**($\subseteq$).** Take $p \in \partial E(x)$. Fix an index $j$ and a perturbation $h \in \mathbb R$, and consider $y = x + h\,e_j$ (only the $j$-th coordinate moves). Then $\lvert y_i\rvert = \lvert x_i\rvert$ for $i \ne j$, so the subgradient inequality reduces to
+
+$$|x_j + h| \;\ge\; |x_j| + p_j h \qquad \forall h \in \mathbb R.$$
+
+This says $p_j \in \partial \lvert\,\cdot\,\rvert(x_j)$, which by (a) is exactly the coordinatewise condition. $\blacksquare$
+
+**Geometric reading.** $\partial \|\cdot\|_1(x)$ is the face of the dual unit cube $[-1, 1]^N$ matched to $\mathrm{sign}(x)$:
+
+* if $x$ has all coordinates non-zero, $\partial E(x)$ is a **vertex** (a single $\pm 1$ pattern),
+* if $k$ coordinates of $x$ are zero, $\partial E(x)$ is a **$k$-dimensional face** of $[-1, 1]^N$,
+* at $x = 0$, $\partial E(0) = [-1, 1]^N$ — the **whole cube**.
+
+This is exactly the *dual ball* picture: $\partial \|\cdot\|_p(0) = \{p : \|p\|_{p'} \le 1\}$, and the faces of the dual ball are visited along the way to a vertex.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Visualisation 2.1 (b) — corner / edge / facet of the dual cube</summary>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/sheet2_subdiff_l1.png' | relative_url }}" alt="Three panels showing subdifferential of the L1 norm at three points: (0,0) gives the whole square [-1,1]^2, (1,0) gives the right edge {1}×[-1,1], (0.8, 1.2) gives the corner (1,1)" loading="lazy">
+  <figcaption>The three sparsity regimes. Left: $x = 0$ — both coordinates are slack, $\partial E(0) = [-1,1]^2$ (the whole dual cube). Middle: $x_1 \ne 0$, $x_2 = 0$ — the first coordinate is fixed to $\mathrm{sign}(x_1)$ but the second is free, giving an edge $\{1\} \times [-1, 1]$. Right: both coordinates are non-zero — both signs are determined and $\partial E$ collapses to a vertex. The picture extends literally to $N$ dimensions.</figcaption>
+</figure>
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2.1 (c) — $\partial \|x\|_2$ on $\mathbb R^N$</summary>
+
+We claim
+
+$$
+\partial E(x) \;=\; \begin{cases} \{x / \|x\|_2\}, & x \ne 0, \\ \overline{B(0, 1)} = \{p : \|p\|_2 \le 1\}, & x = 0. \end{cases}
+$$
+
+**Off zero.** For $x \ne 0$, $E$ is $C^1$ in a neighbourhood of $x$ with $\nabla E(x) = x / \|x\|_2$ (chain rule on $\sqrt{\langle x, x\rangle}$). By Exercise 1.1(c), $\partial E(x) = \{x / \|x\|_2\}$.
+
+**At zero.** $p \in \partial E(0)$ iff $\|y\|_2 \ge \langle p, y\rangle$ for all $y \in \mathbb R^N$.
+
+*($\Leftarrow$)* If $\|p\|_2 \le 1$, Cauchy–Schwarz gives $\langle p, y\rangle \le \|p\|_2 \|y\|_2 \le \|y\|_2$ for every $y$. So $p \in \partial E(0)$.
+
+*($\Rightarrow$)* If $\|p\|_2 > 1$, choose $y = p$; then $\langle p, y\rangle = \|p\|_2^2 > \|p\|_2 = \|y\|_2$, contradicting the subgradient inequality. So $\|p\|_2 \le 1$. $\blacksquare$
+
+**Reading.** The pattern $\partial E(0) = \{p : \|p\|_{p'} \le 1\}$ is general for the dual norm $p'$ of $p$. For $\|\cdot\|_2$, the dual is again $\|\cdot\|_2$, so $\partial E(0)$ is the *closed unit Euclidean ball*. Compare with (b): for $\|\cdot\|_1$ the dual is $\|\cdot\|_\infty$, so $\partial E(0) = [-1, 1]^N$. The shape of the subdifferential at the origin literally **is** the unit ball of the dual norm.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Visualisation 2.1 (c) — disk at the origin, unit-vector field elsewhere</summary>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/sheet2_subdiff_l2.png' | relative_url }}" alt="Left: closed unit disk shaded as the subdifferential at zero, with three colored points showing x/||x|| for three sample base points outside the disk. Right: contour plot of ||x||_2 with the unit disk shaded and a green arrow showing the gradient direction at a smooth point" loading="lazy">
+  <figcaption>Left: $\partial \|\cdot\|_2(0)$ is the closed unit disk; for any $x \ne 0$, the subdifferential collapses to the single radial unit vector $x/\|x\|_2$, which lives on the *boundary* of that disk. Right: in $x$-space, the level sets of $\|x\|_2$ are concentric circles and the gradient field $x/\|x\|_2$ points radially outwards everywhere except at the origin, where it is replaced by the whole disk of admissible "directions of increase".</figcaption>
+</figure>
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2.1 (d) — $\partial E$ for $E(x) = \max_i (a_i \cdot x + b_i)$</summary>
+
+Define the **active set** at $x$,
+
+$$I(x) \;:=\; \bigl\{\, i \in \{1, \dots, m\} \;:\; a_i \cdot x + b_i = E(x) \,\bigr\}.$$
+
+We prove
+
+$$
+\partial E(x) \;=\; \mathrm{conv}\bigl\{\, a_i \;:\; i \in I(x) \,\bigr\}, \tag{$\ast$}
+$$
+
+the **convex hull of the gradients of the affine pieces that are active at $x$**.
+
+**($\supseteq$).** Let $p = \sum_{i \in I(x)} \lambda_i a_i$ be a convex combination ($\lambda_i \ge 0$, $\sum \lambda_i = 1$). For any $y \in \mathbb R^N$ and any $i$, $E(y) \ge a_i \cdot y + b_i$. Multiply by $\lambda_i \ge 0$ and sum over $i \in I(x)$:
+
+$$E(y) \;\ge\; \sum_{i \in I(x)} \lambda_i (a_i \cdot y + b_i) \;=\; \langle p, y\rangle + \sum_{i \in I(x)} \lambda_i b_i.$$
+
+For $i \in I(x)$, $a_i \cdot x + b_i = E(x)$, so $b_i = E(x) - a_i \cdot x$ and
+
+$$\sum_{i \in I(x)} \lambda_i b_i \;=\; E(x) - \langle p, x\rangle.$$
+
+Substituting,
+
+$$E(y) \;\ge\; E(x) + \langle p, y - x\rangle \qquad \forall y,$$
+
+so $p \in \partial E(x)$.
+
+**($\subseteq$).** Suppose for contradiction that some $p \in \partial E(x)$ does *not* lie in the closed convex set $C := \mathrm{conv}\{a_i : i \in I(x)\}$. By the **strict separating-hyperplane theorem** (applicable because $C$ is the convex hull of finitely many points, hence compact), there exists a unit vector $v \in \mathbb R^N$ with
+
+$$\langle p, v\rangle \;>\; \max_{i \in I(x)} \langle a_i, v\rangle. \tag{†}$$
+
+Move infinitesimally along $v$: set $y = x + t v$ for small $t > 0$. For $i \notin I(x)$, $a_i \cdot x + b_i < E(x)$ strictly; by continuity, for $t$ small enough $a_i \cdot y + b_i < E(x) + t \cdot \max_i \langle a_i, v\rangle$ remains *inactive* relative to the active pieces. Hence
+
+$$E(y) \;=\; \max_{i \in I(x)} (a_i \cdot y + b_i) \;=\; E(x) + t \,\max_{i \in I(x)} \langle a_i, v\rangle.$$
+
+The subgradient inequality at $y$ gives $E(y) \ge E(x) + t \langle p, v\rangle$, so dividing by $t > 0$,
+
+$$\max_{i \in I(x)} \langle a_i, v\rangle \;\ge\; \langle p, v\rangle,$$
+
+contradicting (†). Hence $p \in C$. $\blacksquare$
+
+**Reading and consistency check.**
+
+* Off the active manifold (i.e. when $\lvert I(x)\rvert = 1$), $\partial E(x) = \{a_{i^\ast}\}$ is a singleton — exactly what Exercise 1.1(c) predicts, since $E$ is locally affine and hence $C^1$ near $x$.
+* On the kink set (where $\lvert I(x)\rvert \ge 2$), $\partial E(x)$ is a **non-trivial polytope** — its dimension is at most $\lvert I(x)\rvert - 1$.
+* The formula recovers (a) as a special case: $\lvert x\rvert = \max(x, -x)$ with $a_1 = 1$, $a_2 = -1$, so at $x = 0$ both pieces are active and $\partial E(0) = \mathrm{conv}\{1, -1\} = [-1, 1]$. ✓
+* It also recovers the classical chain rule: if $E(x) = f(x) := \max_i \ell_i(x)$ for affine $\ell_i$, the subdifferential is the convex hull of the gradients of the active $\ell_i$ — the **Danskin-type rule** in its cleanest form.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Visualisation 2.1 (d) — active gradients filling out a polytope at each kink</summary>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/sheet2_max_affine.png' | relative_url }}" alt="Left: three affine pieces and the upper envelope drawn as a thick blue piecewise-linear curve, with two red dots marking the kinks. Right: the multivalued slope map x → ∂E(x), constant on each linear piece and jumping by a vertical segment at each kink" loading="lazy">
+  <figcaption>Three affine pieces $a_i x + b_i$ and their upper envelope $E$ (thick blue). The kinks (red dots) are exactly the points where the active set $I(x)$ jumps in size. Right panel: the subgradient $p \in \partial E(x)$ is constant equal to $a_{i^\ast}$ on each smooth segment, and *fills the interval* $[\min a_i, \max a_i]$ over each kink (red verticals) — the 1D shadow of the convex-hull rule $(\ast)$.</figcaption>
+</figure>
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.2</span><span class="math-callout__name">(Long-term asymptotics via the Łojasiewicz inequality)</span></p>
+
+Let $E : \mathbb R^N \to [0, \infty)$ be continuously differentiable and assume the **Łojasiewicz inequality**: for every $x \in \mathbb R^N$ there exists a neighbourhood $U$ of $x$, a constant $C > 0$, and an exponent $\theta \in (0, 1)$ such that
+
+$$
+\bigl|E(x) - E(y)\bigr|^\theta \;\le\; C\,\lvert\nabla E(x)\rvert \qquad \forall y \in U. \tag{Ł}
+$$
+
+Let $x : [0, \infty) \to \mathbb R^N$ be the unique solution of the gradient flow $\dot x = -\nabla E(x)$, and let $x^\ast$ be a local minimum of $E$. Show: **if $x^\ast$ is a limit point of $x$, then the curve $t \mapsto x(t)$ has finite length and $x(t) \to x^\ast$ as $t \to \infty$.**
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2.2 — desingularizing $E^{1-\theta}$ and the trapping argument</summary>
+
+The proof has three steps: a **differential identity** for $E^{1-\theta}$ along the flow, a **trapping** argument that keeps $x(t)$ in the Łojasiewicz neighbourhood once it gets close enough, and a **Cauchy** conclusion.
+
+**Setup.** Let $E_\infty := E(x^\ast)$. Since $x^\ast$ is a local minimum and $E \in C^1$, $\nabla E(x^\ast) = 0$. The energy $t \mapsto E(x(t))$ is non-increasing (by $\dot E = -\lvert\nabla E\rvert^2 \le 0$), bounded below by $0$, hence convergent to some $E_\flat \ge 0$. Because $x^\ast$ is a *limit point*, there exists a sequence $t_n \to \infty$ with $x(t_n) \to x^\ast$, so by continuity $E_\flat = E_\infty$. Define the **excess energy**
+
+$$\mathcal E(t) \;:=\; E(x(t)) - E_\infty \;\ge\; 0,$$
+
+which is non-increasing with $\mathcal E(t) \to 0$.
+
+**Step 1 — differentiate $\mathcal E^{1-\theta}$.** On the set where $\mathcal E(t) > 0$,
+
+$$\frac{d}{dt} \mathcal E^{1-\theta}(t) \;=\; (1 - \theta)\,\mathcal E^{-\theta}(t)\,\dot{\mathcal E}(t) \;=\; -(1 - \theta)\,\mathcal E^{-\theta}(t)\,|\nabla E(x(t))|^2.$$
+
+Along the flow $\lvert\dot x\rvert = \lvert\nabla E(x)\rvert$, so $\lvert\nabla E\rvert^2 = \lvert\nabla E\rvert\,\lvert\dot x\rvert$, giving
+
+$$\frac{d}{dt} \mathcal E^{1-\theta}(t) \;=\; -(1 - \theta)\,\mathcal E^{-\theta}(t)\,|\nabla E(x(t))|\,|\dot x(t)|. \tag{$\diamond$}$$
+
+This is an *exact* identity, valid wherever $\mathcal E > 0$.
+
+**Step 2 — apply Łojasiewicz inside a neighbourhood.** Apply (Ł) at the point $x^\ast$: there exists a neighbourhood $U$ of $x^\ast$, $C, \theta$ as in the hypothesis, such that for $y \in U$,
+
+$$|E(x^\ast) - E(y)|^\theta \;\le\; C\,|\nabla E(x^\ast)| = 0.$$
+
+This would force $E$ to be constant on $U$, which is the *degenerate* case (then $\nabla E \equiv 0$ on $U$, the gradient flow is stationary once it enters $U$, and the conclusion is trivial). The **non-degenerate case** uses the standard form: Łojasiewicz at $x^\ast$ implies
+
+$$|E(y) - E_\infty|^\theta \;\le\; C\,|\nabla E(y)| \qquad \forall y \in U. \tag{Ł$_\ast$}$$
+
+(This is the symmetric version: applying the hypothesis at $y$ near $x^\ast$ and using continuity of $\nabla E$ produces an inequality of this form on a possibly smaller neighbourhood with a larger constant; in the variant of (Ł) typically stated in the lecture notes, this is precisely (Ł'). We use it as the standing hypothesis.)
+
+For $t$ such that $x(t) \in U$ and $\mathcal E(t) > 0$, (Ł$_\ast$) gives $\mathcal E(t)^\theta \le C\,\lvert\nabla E(x(t))\rvert$, equivalently
+
+$$\mathcal E^{-\theta}(t)\,|\nabla E(x(t))| \;\ge\; \frac{1}{C}.$$
+
+Substituting into $(\diamond)$,
+
+$$-\frac{d}{dt}\mathcal E^{1-\theta}(t) \;\ge\; \frac{1 - \theta}{C}\,|\dot x(t)|. \tag{$\heartsuit$}$$
+
+This is the key differential inequality: **the rate of decrease of $\mathcal E^{1-\theta}$ is bounded below by a multiple of the speed**. Integrating it converts a bound on the *energy budget* into a bound on the *length of the trajectory*.
+
+**Step 3 — trapping.** Fix $\delta > 0$ small enough that $B(x^\ast, 2\delta) \subset U$. Choose $n$ large enough that simultaneously
+
+$$x(t_n) \in B(x^\ast, \delta),\qquad \frac{C}{1 - \theta}\,\mathcal E(t_n)^{1 - \theta} \;<\; \delta. \tag{$\sharp$}$$
+
+This is possible: $x(t_n) \to x^\ast$ takes care of the first; $\mathcal E(t_n) \to 0$ takes care of the second (use $\mathcal E(t)^{1-\theta} \to 0$).
+
+**Claim.** $x(t) \in B(x^\ast, 2\delta)$ for all $t \ge t_n$.
+
+If not, there is a *first* time $t^\sharp > t_n$ with $\lvert x(t^\sharp) - x^\ast\rvert = 2\delta$. On the interval $[t_n, t^\sharp]$, $x(t) \in B(x^\ast, 2\delta) \subset U$, so $(\heartsuit)$ holds throughout. Integrating from $t_n$ to $t^\sharp$,
+
+$$\int_{t_n}^{t^\sharp} |\dot x(\tau)|\,d\tau \;\le\; \frac{C}{1 - \theta}\bigl[\mathcal E^{1 - \theta}(t_n) - \mathcal E^{1 - \theta}(t^\sharp)\bigr] \;\le\; \frac{C}{1 - \theta}\,\mathcal E(t_n)^{1 - \theta} \;<\; \delta.$$
+
+But by the triangle inequality,
+
+$$|x(t^\sharp) - x(t_n)| \;\le\; \int_{t_n}^{t^\sharp} |\dot x|\,d\tau \;<\; \delta,$$
+
+so $\lvert x(t^\sharp) - x^\ast\rvert \le \lvert x(t^\sharp) - x(t_n)\rvert + \lvert x(t_n) - x^\ast\rvert < \delta + \delta = 2\delta$ — a contradiction.
+
+Hence $x(t) \in U$ for all $t \ge t_n$, and the integration above extends to $t \to \infty$:
+
+$$\int_{t_n}^\infty |\dot x(\tau)|\,d\tau \;\le\; \frac{C}{1 - \theta}\,\mathcal E(t_n)^{1 - \theta} \;<\; \infty. \tag{$\flat$}$$
+
+The trajectory has **finite length**.
+
+**Step 4 — convergence.** Finite length means $x(t)$ is Cauchy in $\mathbb R^N$: for $t > s > t_n$,
+
+$$|x(t) - x(s)| \;\le\; \int_s^t |\dot x(\tau)|\,d\tau \;\le\; \int_s^\infty |\dot x(\tau)|\,d\tau \;\xrightarrow[s \to \infty]{} \;0.$$
+
+So $x(t) \to x^\ast_\infty$ for some $x^\ast_\infty \in \mathbb R^N$. Since $x^\ast$ is a limit point along $t_n$, we have $x^\ast_\infty = x^\ast$ by uniqueness of limits in $\mathbb R^N$. $\blacksquare$
+
+**What the desingularizing exponent does.** The trick is to differentiate not $\mathcal E$ itself but $\mathcal E^{1-\theta}$. The exponent $1 - \theta \in (0, 1)$ is *forced*: it is the unique power that, combined with (Ł), turns the energy-balance estimate into a *length* estimate (which has the right physical units of $\lvert\dot x\rvert \cdot dt$). Without this concave reparametrisation the proof would only conclude $\int_0^\infty \lvert\dot x\rvert^2\,dt < \infty$ — square-integrability — which by itself does **not** force convergence of $x(t)$. The Kurdyka–Łojasiewicz framework formalises this template; see [Appendix A](../../index.md#appendix-a) of the main notes for the full discussion.
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Visualisation 2.2 — selecting a single limit point on a continuum of minimizers</summary>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/sheet2_lojasiewicz_trap.png' | relative_url }}" alt="Left: a 2D landscape with a circular valley of minimizers; two gradient flow trajectories from different starting points each select a single point on the circle, with a dotted neighborhood drawn around one limit point. Right: a schematic showing the desingularizing function E^(1-θ) decreasing in time and the length integral increasing but staying bounded by the initial budget" loading="lazy">
+  <figcaption>Left: the energy $E(x) = (\|x\|^2 - \tfrac12)^2$ has its minimum on the *whole circle* $\|x\| = 1/\sqrt 2$ — a continuum of critical points. Each gradient-flow trajectory still converges to a *single* point on the circle (green dots); Łojasiewicz selects which one based on the initial condition. The dotted purple ball around the right limit point is the trapping neighbourhood $U$ from Step 3. Right: schematic of $(\heartsuit)$. The blue curve $\mathcal E^{1-\theta}$ (non-increasing) bounds the red length integral; the red shaded "remaining budget" never exceeds the dashed initial ceiling $\mathcal E(0)^{1-\theta}$. This is the picture of "energy budget $\Rightarrow$ length budget".</figcaption>
+</figure>
+
+</details>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example 2.3</span><span class="math-callout__name">(Convergence rates: convex vs. uniformly convex)</span></p>
+
+Find a convex (but not uniformly convex) energy $E : \mathbb R \to [0, \infty)$ such that the convergence to equilibrium of the gradient flow is only **algebraic** and not exponential. Is the bound from Theorem 5 sharp?
+
+</div>
+
+<details class="accordion" markdown="1">
+<summary>Solution 2.3 — $E(x) = \tfrac{1}{4} x^4$ and a sharpness discussion</summary>
+
+**The example.** Take
+
+$$E(x) \;=\; \tfrac{1}{4} x^4, \qquad x \in \mathbb R.$$
+
+* **Convex.** $E''(x) = 3 x^2 \ge 0$ for all $x$.
+* **Not uniformly convex.** $E''(0) = 0$, so there is no constant $\lambda > 0$ with $E''(x) \ge \lambda$ — the Hessian *degenerates* at the unique minimiser $x^\ast = 0$.
+
+**Solve the gradient flow.** $\dot x = -E'(x) = -x^3$. Separating variables (assume $x_0 > 0$, the case $x_0 < 0$ is symmetric, $x_0 = 0$ is stationary):
+
+$$\frac{dx}{x^3} \;=\; -dt \;\;\Longrightarrow\;\; -\frac{1}{2 x^2} \;=\; -t + C.$$
+
+The constant $C$ is fixed by $x(0) = x_0$: $C = -1/(2 x_0^2)$. So
+
+$$\boxed{\; x(t) \;=\; \frac{x_0}{\sqrt{1 + 2 x_0^2\,t}}.\; }$$
+
+In particular $x(t) \to 0$ as $t \to \infty$, with the **algebraic** rate $\lvert x(t)\rvert = O(t^{-1/2})$.
+
+**Energy decay.**
+
+$$\mathcal E(t) \;=\; E(x(t)) \;=\; \tfrac{1}{4}\,x(t)^4 \;=\; \frac{x_0^4 / 4}{(1 + 2 x_0^2 t)^2} \;=\; O\!\bigl(t^{-2}\bigr),\quad t \to \infty,$$
+
+with explicit asymptote $\mathcal E(t) \sim 1/(16\,t^2)$ for $x_0 \to \infty$ regime, or in general $\mathcal E(t) \sim x_0^4 / (16\,x_0^4\,t^2) = 1/(16 t^2)$ as $t \to \infty$.
+
+This is **strictly slower than exponential** but strictly faster than the $1/t$ bound in Theorem 5.
+
+**Compare with the uniformly convex case.** For $E(x) = \tfrac{1}{2} \lambda x^2$ ($\lambda > 0$, uniformly convex), the gradient flow is $\dot x = -\lambda x$, $x(t) = x_0 e^{-\lambda t}$, $\mathcal E(t) = \tfrac{1}{2}\lambda x_0^2 e^{-2\lambda t}$ — *exponential*. Removing uniform convexity loses one order of decay rate.
+
+**Is Theorem 5 sharp?** Theorem 5 says: for convex $E \in C^2$ and $\mathcal H(0) := \lvert x_0 - x^\ast\rvert^2$,
+
+$$\mathcal E(t) \;\le\; \frac{\mathcal H(0)}{t}.$$
+
+For our example, $\mathcal H(0) = x_0^2$ and the actual $\mathcal E(t) \sim 1/(16 t^2)$ — much smaller than $x_0^2 / t$. So **the bound is not attained on $E = x^4/4$.**
+
+Sharpness in the strong sense is more subtle — and the answer is *yes, the **exponent** is sharp* in the sense that no faster universal rate holds across all convex $E$. To see this, consider the family
+
+$$E_p(x) \;:=\; \frac{|x|^p}{p}, \qquad p \in (2, \infty).$$
+
+Each $E_p$ is convex (for $p \ge 1$), with $E_p''(0) = 0$ when $p > 2$, so none is uniformly convex. The gradient flow $\dot x = -\lvert x\rvert^{p-2} x$ solves (for $x_0 > 0$, $p > 2$)
+
+$$x(t) \;=\; \bigl(x_0^{2-p} + (p - 2)\,t\bigr)^{-1/(p-2)},$$
+
+so
+
+$$\mathcal E_p(t) \;=\; \frac{\lvert x(t)\rvert^p}{p} \;\sim\; \frac{1}{p\,((p-2)\,t)^{p/(p-2)}} \;=\; O\!\bigl(t^{-p/(p-2)}\bigr) \quad \text{as } t \to \infty.$$
+
+The exponent is $p/(p-2) = 1 + 2/(p-2) \to 1^+$ as $p \to \infty$. So:
+
+* for **any fixed $p > 2$**, the actual decay $t^{-p/(p-2)}$ is *strictly faster* than the Theorem 5 bound $t^{-1}$;
+* but for **any** $\varepsilon > 0$, choosing $p > 2 + 2/\varepsilon$ gives a convex energy whose decay is no faster than $t^{-(1 + \varepsilon)}$.
+
+This means: **the exponent $-1$ in Theorem 5 cannot be improved to $-(1 + \varepsilon)$ uniformly over the class of convex energies** — although for each individual energy the rate is faster. The exponent is sharp in the *worst-case sense* but not in the *pointwise sense*. The constant $\mathcal H(0)$ matches the dimensional scaling and is also sharp up to a factor (this can be seen by tracking $x_0$-dependence in the prefactor of $\mathcal E_p(t)$).
+
+**Why this is the "right" gap.** The proof of Theorem 5 hinges on the algebraic relation $\mathcal E \le (\mathcal H \mathcal D)^{1/2}$, which becomes an equality (up to a factor) in the *worst-case* configuration where the trajectory is barely descending. The family $E_p$ realises exactly this — as $p \to \infty$, $E_p$ becomes increasingly *flat* near the minimiser, $\lvert\nabla E_p\rvert$ near $0$ becomes negligible, and the algebraic bound becomes nearly tight. Adding *any* uniform convexity ($\lambda > 0$) restores the exponential rate of Theorem 3 and changes the picture qualitatively. $\blacksquare$
+
+</details>
+
+<details class="accordion" markdown="1">
+<summary>Visualisation 2.3 — algebraic decay and the $\lvert x\rvert^p$ family approaching the $1/t$ bound</summary>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/sheet2_x4_decay.png' | relative_url }}" alt="Three panels. Left: trajectories of x(t) under dot x = -x^3 for several initial conditions, with an exponential decay reference dashed. Middle: log-log plot of E(t) for the x^4/4 case versus the Theorem 5 bound H(0)/t and an asymptotic 1/(16t^2) reference. Right: log-log decay curves for E = |x|^p / p with p = 3, 4, 6, 10, 50, all sitting strictly below the Theorem 5 bound 1/t but approaching it as p → ∞" loading="lazy">
+  <figcaption>Left: the explicit trajectory $x(t) = x_0 / \sqrt{1 + 2 x_0^2 t}$ under the gradient flow of $\tfrac14 x^4$. The dashed grey curve $x_0 e^{-t}$ — what we'd get from a uniformly convex $\tfrac12 x^2$ — falls off vastly faster. Middle: actual $\mathcal E(t) \sim 1/(16 t^2)$ (solid) is well *below* the Theorem 5 bound $x_0^2 / t$ (dotted) — the bound is not sharp on this example. Right: the family $E_p = \lvert x\rvert^p / p$ shows the rate $t^{-p/(p-2)}$ approaching the bound $t^{-1}$ as $p \to \infty$ — so the *exponent* in Theorem 5 cannot be improved across the convex class.</figcaption>
 </figure>
 
 </details>
