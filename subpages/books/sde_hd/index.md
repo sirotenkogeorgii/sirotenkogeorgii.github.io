@@ -29,6 +29,10 @@ tags:
 
 # SDEs & Diffusion Models
 
+## Problems
+
+[Selected Problems](/subpages/books/sde_hd/problems/)
+
 ## 0 Brownian Motion (Outline)
 
 ### 0.1 Introduction
@@ -79,7 +83,7 @@ If $\mu \equiv 0$ on $I$, the Gaussian process $(X_t)\_{t \in I}$ is called **ce
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
+<!-- <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Matrix Notation for Continuous Time)</span></p>
 
 At first glance it may look suspicious to speak of a "covariance matrix" when $I$ is a continuous index set — a matrix is a finite object, while $I$ has uncountably many instants. The resolution is that the definition does not assert a single matrix for the whole process.
@@ -96,7 +100,7 @@ which encodes the covariance of *any* two time instants. Matrices appear only as
 
 **Link to Kolmogorov's extension theorem.** A Gaussian process is thus fully characterised by its *finite-dimensional distributions*, and each such distribution is genuinely finite-dimensional (hence a matrix). This is precisely the setup of Kolmogorov's extension theorem (Lemma 0.2), which assembles a continuous-time process from a consistent family of finite-dimensional marginals.
 
-</div>
+</div> -->
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The existence of Gaussian Process guaranteed by Kolmogorov's extension theorem)</span></p>
@@ -105,7 +109,7 @@ The existence of such processes on a suitable probability space is guaranteed by
 
 </div>
 
-<div class="math-callout math-callout--theorem" markdown="1">
+<div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">0.2 (Existence of Gaussian Processes)</span></p>
 
 For any mean function $\mu : I \to \mathbb{R}$ and covariance function $\gamma : I \times I \to \mathbb{R}$ (with $\gamma$ positive semidefinite), there exist a probability space and a Gaussian process on it with mean $\mu$ and covariance $\gamma$.
@@ -338,14 +342,14 @@ so that the particle can change direction at *any* instant $t \in I$. Mathematic
 
 A real-valued stochastic process $W := (W_t)\_{t \in I}$ on $(\Omega, \mathcal{A}, \mathbb{P})$ is called a **one-dimensional standard Brownian motion** iff it satisfies:
 
-* **(W1) Starting in 0:** $W_0 = 0$, $\mathbb{P}$-a.s.
+* **(W1) Starting in $0$:** $W_0 = 0$, $\mathbb{P}$-a.s.
 * **(W2) Independent increments:** For any $n \in \mathbb{N}$ and $0 =: t_0 < t_1 < \dots < t_n$ in $I$, the increments $W_{t_1} - W_{t_0},\, W_{t_2} - W_{t_1},\, \dots,\, W_{t_n} - W_{t_{n-1}}$ are mutually stochastically independent.
 * **(W3) Normal increments:** For any $s < t$ in $I$, $W_t - W_s \sim \mathcal{N}(0, t - s)$.
 * **(W4) Continuous paths:** The paths $t \mapsto W_t$ are $\mathbb{P}$-a.s. continuous on $I$.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
+<!-- <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Notation: $\mathbb{P}$-a.s.)</span></p>
 
 The abbreviation "$\mathbb{P}$-a.s." stands for **"$\mathbb{P}$-almost surely"**, i.e. *with probability $1$ under the measure $\mathbb{P}$*. Formally, a statement holds $\mathbb{P}$-a.s. iff the set of $\omega \in \Omega$ on which it **fails** is contained in a measurable set of probability zero — that is, there exists $N \in \mathcal{A}$ with $\mathbb{P}(N) = 0$ such that the statement holds for every $\omega \in \Omega \setminus N$.
@@ -376,7 +380,7 @@ $$
 * *Pointwise a.s. continuity at a single $t$*: $\mathbb{P}(W_s \to W_t \text{ as } s \to t) = 1$. The null set is allowed to depend on $t$ — strictly weaker.
 * *Uniform (path-wise) a.s. continuity on $I$*: one null set $N$ works for **all** $t \in I$ simultaneously. This is the stronger statement demanded by (W4).
 
-</div>
+</div> -->
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">0.4 (Standard vs. Non-Standard; Wiener Process)</span></p>
@@ -430,7 +434,12 @@ A real-valued stochastic process $W := (W_t)\_{t \in I}$ on $(\Omega, \mathcal{A
 </details>
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Centred Gaussian Process must be modified)</span></p>
+
 Combining Proposition 0.5 with Lemma 0.2, we obtain a stochastic process that fulfils (W1), (W2), (W3). However, this process is *not* automatically guaranteed to satisfy (W4) — we must *modify* it.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.6 (Versions / Modifications / Indistinguishability)</span></p>
@@ -447,9 +456,45 @@ $$\mathbb{P}(X_t = Y_t \text{ for all } t \in I) = 1.$$
 
 </div>
 
-Note that indistinguishability is strictly stronger: it requires $\mathbb{P}$-almost-sure equality *simultaneously* on the (uncountable) whole index set, whereas a version only gives almost-sure equality *pointwise* in $t$.
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Indistinguishability is stronger)</span></p>
 
-TODO: put an example, where they differ.
+Note that **indistinguishability is strictly stronger**: it requires $\mathbb{P}$-almost-sure equality *simultaneously* on the (uncountable) whole index set, whereas a version only gives almost-sure equality *pointwise* in $t$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Versions but not indistinguishable)</span></p>
+
+Take $(\Omega, \mathcal{A}, \mathbb{P}) := ([0,1], \mathcal{B}([0,1]), \mathrm{Leb})$ and let $T(\omega) := \omega$, so $T \sim \mathrm{Unif}([0,1])$. On $I := [0,1]$ define
+
+$$
+X_t(\omega) := 0, \qquad Y_t(\omega) := \mathbf{1}_{\{t \,=\, T(\omega)\}} = \mathbf{1}_{\{t \,=\, \omega\}}.
+$$
+
+* **Versions** *(pointwise in $t$).* For every fixed $t \in I$ the bad set $\lbrace \omega : Y_t(\omega) \neq 0 \rbrace = \lbrace t \rbrace$ is a single point, hence Lebesgue-null:
+  
+  $$
+  \mathbb{P}(X_t = Y_t) \;=\; \mathbb{P}(T \neq t) \;=\; 1.
+  $$
+
+* **Not indistinguishable** *(uniformly in $t$).* For *every* $\omega \in \Omega$ the path $Y_\cdot(\omega)$ has a spike at $t = T(\omega) = \omega$, so $Y_{T(\omega)}(\omega) = 1 \neq 0 = X_{T(\omega)}(\omega)$. The event $\lbrace Y_\cdot = X_\cdot \text{ on } I \rbrace$ is therefore empty:
+  
+  $$
+  \mathbb{P}\bigl(X_t = Y_t \text{ for all } t \in I\bigr) \;=\; 0.
+  $$
+
+<figure>
+  <img src="{{ 'assets/images/notes/sdes_diffusion_models/version_vs_indistinguishability.png' | relative_url }}" alt="Version vs. indistinguishability: P(X_t = Y_t) = 1 for every t, but P(X_. = Y_.) = 0" loading="lazy">
+</figure>
+
+* **Reading off the picture.** In the $(t,\omega)$-plane (left), the disagreement set $\lbrace Y \neq X \rbrace$ is the *diagonal* $\lbrace t = \omega \rbrace$ — a Lebesgue-null line in $[0,1]^2$.
+  * **Vertical slices** (blue, $t = t^\ast$ fixed) intersect the diagonal in a single point of $\Omega$: that is the *version* property, $\mathbb{P}(X_{t^\ast} \neq Y_{t^\ast}) = 0$.
+  * **Horizontal slices** (orange, $\omega = \omega^\ast$ fixed) are *whole sample paths*: each one already carries a spike at $t = \omega^\ast$, so $Y_\cdot(\omega^\ast) \neq X_\cdot$ as functions on $I$ — and this happens for *every* $\omega$. The right panel redraws several such slices as paths.
+
+The mismatch is exactly the "countable vs. uncountable" gap behind Fubini-type subtleties: each vertical slice is null in $\Omega$, yet the union of slices over all $t \in I$ — the diagonal itself — has full projection onto $\Omega$.
+
+</div>
 
 Even when a process has finite-dimensional distributions fulfilling (W1)–(W3), the path property (W4) cannot be inferred on an uncountable index $I$, because countable unions of $\mathbb{P}$-null sets need no longer be $\mathbb{P}$-null (TODO: does not it violate the third Kolmogorov's axiom?). Nevertheless, we *can* define a modification preserving the finite-dimensional distributions (cf. Kolmogorov's extension theorem).
 

@@ -12,6 +12,10 @@ tags:
 
 # Functional Analysis, Sobolev Spaces and PDEs — Brezis
 
+**Table of Contents**
+- TOC
+{:toc}
+
 ## Chapter 1: The Hahn–Banach Theorems. Introduction to the Theory of Conjugate Convex Functions
 
 The Hahn–Banach theorem is one of the cornerstones of linear functional analysis. It exists in two complementary guises:
@@ -31,10 +35,10 @@ Let $E$ be a vector space over $\mathbb{R}$. We recall that a *functional* is a 
 Let $p : E \to \mathbb{R}$ be a function satisfying
 
 $$
-\begin{aligned}
-&p(\lambda x) = \lambda p(x) &&\forall x \in E,\ \forall \lambda > 0, \tag{1} \\
-&p(x + y) \le p(x) + p(y) &&\forall x, y \in E. \tag{2}
-\end{aligned}
+\begin{align}
+p(\lambda x) &= \lambda p(x) && \forall x \in E,\ \forall \lambda > 0, \tag{1} \\
+p(x + y) &\le p(x) + p(y) && \forall x, y \in E. \tag{2}
+\end{align}
 $$
 
 Let $G \subset E$ be a linear subspace and let $g : G \to \mathbb{R}$ be a linear functional such that
@@ -338,10 +342,10 @@ $$
 ($p$ is called the **gauge** of $C$, or the **Minkowski functional** of $C$.) Then $p$ satisfies $(1)$, $(2)$, and the following properties:
 
 $$
-\begin{aligned}
-&\text{there is a constant } M \text{ such that } 0 \le p(x) \le M\|x\|\ \forall x \in E, \tag{9} \\
-&C = \lbrace x \in E\,;\ p(x) < 1 \rbrace. \tag{10}
-\end{aligned}
+\begin{align}
+\text{there is a constant } M \text{ such that } 0 \le p(x) \le M\|x\|\ \forall x \in E, \tag{9} \\
+C = \lbrace x \in E\,;\ p(x) < 1 \rbrace. \tag{10}
+\end{align}
 $$
 
 </div>
@@ -1185,9 +1189,9 @@ Here are a few direct consequences of the uniform boundedness principle.
 
 Let $E$ and $F$ be two Banach spaces. Let $(T_n)$ be a sequence of continuous linear operators from $E$ into $F$ such that for every $x \in E$, $T_n x$ converges (as $n \to \infty$) to a limit denoted by $Tx$. Then:
 
-1. $\sup_n \|T_n\|_{\mathcal{L}(E, F)} < \infty$,
+1. $\sup_n \|T_n\|\_{\mathcal{L}(E, F)} < \infty$,
 2. $T \in \mathcal{L}(E, F)$,
-3. $\|T\|_{\mathcal{L}(E, F)} \le \liminf_{n \to \infty} \|T_n\|_{\mathcal{L}(E, F)}$.
+3. $\|T\|\_{\mathcal{L}(E, F)} \le \liminf_{n \to \infty} \|T_n\|\_{\mathcal{L}(E, F)}$.
 
 </div>
 
@@ -1492,7 +1496,7 @@ We then say $G$ and $L$ are **complementary subspaces** of $E$. If this holds, e
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Examples</span><span class="math-callout__name">(Subspaces that admit a complement)</span></p>
 
-1. **Finite-dimensional subspaces.** Every finite-dimensional subspace $G$ admits a complement. Let $e_1, \ldots, e_n$ be a basis of $G$; every $x \in G$ writes $x = \sum x_i e_i$. Set $\varphi_i(x) = x_i$ on $G$. By Hahn–Banach (Corollary 1.2), each $\varphi_i$ extends to $\widetilde{\varphi}_i \in E^\star$. Then $L = \bigcap_{i=1}^n \widetilde{\varphi}_i^{-1}(0)$ is a closed complement of $G$.
+1. **Finite-dimensional subspaces.** Every finite-dimensional subspace $G$ admits a complement. Let $e_1, \ldots, e_n$ be a basis of $G$; every $x \in G$ writes $x = \sum x_i e_i$. Set $\varphi_i(x) = x_i$ on $G$. By Hahn–Banach (Corollary 1.2), each $\varphi_i$ extends to $\widetilde{\varphi}\_i \in E^\star$. Then $L = \bigcap_{i=1}^n \widetilde{\varphi}\_i^{-1}(0)$ is a closed complement of $G$.
 
 2. **Closed subspaces of finite codimension.** Every closed subspace $G$ of finite codimension admits a complement: choose any finite-dimensional $L$ with $G \cap L = \lbrace 0 \rbrace$ and $G + L = E$ (closed since finite-dimensional).
 
@@ -1991,7 +1995,7 @@ $$
 A \text{ surjective} \Longrightarrow A^\star \text{ injective}, \qquad A^\star \text{ surjective} \Longrightarrow A \text{ injective}.
 $$
 
-The converses *fail*. **Counterexample.** Let $E = F = \ell^2$; for $x = (x_n)_{n \ge 1} \in \ell^2$, $Ax = (\tfrac{1}{n}x_n)_{n \ge 1}$. Then $A$ is bounded with $A^\star = A$. Both $A$ and $A^\star$ are injective but *not* surjective: $R(A)$ is dense in $\ell^2$ but not closed.
+The converses *fail*. **Counterexample.** Let $E = F = \ell^2$; for $x = (x_n)\_{n \ge 1} \in \ell^2$, $Ax = (\tfrac{1}{n}x_n)\_{n \ge 1}$. Then $A$ is bounded with $A^\star = A$. Both $A$ and $A^\star$ are injective but *not* surjective: $R(A)$ is dense in $\ell^2$ but not closed.
 
 </div>
 
@@ -2030,14 +2034,14 @@ Construct a topology on $X$ that makes all the maps $(\varphi_i)_{i \in I}$ cont
 
 </div>
 
-The discrete topology trivially works but is far from cheapest — it is the most expensive. As we shall see, there is always a (unique) cheapest topology, called the **coarsest** or **weakest** (or *initial*) topology associated to the collection $(\varphi_i)_{i \in I}$.
+The discrete topology trivially works but is far from cheapest — it is the most expensive. As we shall see, there is always a (unique) cheapest topology, called the **coarsest** or **weakest** (or *initial*) topology associated to the collection $(\varphi_i)\_{i \in I}$.
 
 If $\omega_i \subset Y_i$ is any open set, then $\varphi_i^{-1}(\omega_i)$ *must* be open in $\mathcal{T}$. As $\omega_i$ runs through the family of open sets of $Y_i$ and $i$ runs through $I$, we obtain a family of subsets of $X$, each of which must be open. Denote this family by $(U_\lambda)_{\lambda \in \Lambda}$. This family need not be a topology, leading to:
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Problem 2</span><span class="math-callout__name">(Cheapest topology containing $(U_\lambda)$)</span></p>
 
-Given a set $X$ and a family $(U_\lambda)_{\lambda \in \Lambda}$ of subsets, construct the cheapest topology $\mathcal{T}$ on $X$ in which $U_\lambda$ is open for all $\lambda$.
+Given a set $X$ and a family $(U_\lambda)\_{\lambda \in \Lambda}$ of subsets, construct the cheapest topology $\mathcal{T}$ on $X$ in which $U_\lambda$ is open for all $\lambda$.
 
 </div>
 
@@ -3916,7 +3920,7 @@ uniformly small in $u \in \mathcal{B}$. Apply Theorem 4.26. $\square$
    <div class="math-callout math-callout--theorem" markdown="1">
      <p class="math-callout__title"><span class="math-callout__label">Theorem 4.32</span><span class="math-callout__name">(Schur, M. Riesz, Thorin)</span></p>
 
-   Let $\Omega$ be a measure space with $\lvert \Omega\rvert < \infty$, and $T : L^1 \to L^1$, $T : L^\infty \to L^\infty$ a bounded linear operator, with norms $M_1 = \|T\|_{\mathcal{L}(L^1, L^1)}$, $M_\infty = \|T\|_{\mathcal{L}(L^\infty, L^\infty)}$. Then $T : L^p \to L^p$ is bounded for every $1 < p < \infty$, with
+   Let $\Omega$ be a measure space with $\lvert \Omega\rvert < \infty$, and $T : L^1 \to L^1$, $T : L^\infty \to L^\infty$ a bounded linear operator, with norms $M_1 = \|T\|\_{\mathcal{L}(L^1, L^1)}$, $M_\infty = \|T\|\_{\mathcal{L}(L^\infty, L^\infty)}$. Then $T : L^p \to L^p$ is bounded for every $1 < p < \infty$, with
 
    $$
    M_p \le M_1^{1/p}\,M_\infty^{1/p'}.
@@ -4202,7 +4206,7 @@ $$
 \langle T\varphi, v\rangle_{V^\star, V} = \langle \varphi, v\rangle_{H^\star, H}.
 $$
 
-Properties of $T$: (i) $\|T\varphi\|_{V^\star} \le C\|\varphi\|_{H^\star}$; (ii) $T$ is injective; (iii) $R(T)$ is dense in $V^\star$ if $V$ is reflexive.
+Properties of $T$: (i) $\|T\varphi\|\_{V^\star} \le C\|\varphi\|\_{H^\star}$; (ii) $T$ is injective; (iii) $R(T)$ is dense in $V^\star$ if $V$ is reflexive.
 
 Identifying $H^\star$ with $H$ and using $T$ to embed $H \hookrightarrow V^\star$, one writes
 
@@ -5947,9 +5951,9 @@ Let $1 \le p \le \infty$. There exists a bounded linear *extension operator* $P 
 
 (i) $Pu\rvert_I = u$ for every $u \in W^{1, p}(I)$;
 
-(ii) $\|Pu\|_{L^p(\mathbb{R})} \le C\|u\|_{L^p(I)}$;
+(ii) $\|Pu\|\_{L^p(\mathbb{R})} \le C\|u\|\_{L^p(I)}$;
 
-(iii) $\|Pu\|_{W^{1, p}(\mathbb{R})} \le C\|u\|_{W^{1, p}(I)}$,
+(iii) $\|Pu\|\_{W^{1, p}(\mathbb{R})} \le C\|u\|\_{W^{1, p}(I)}$,
 
 where $C$ depends only on $\lvert I\rvert \le \infty$.
 
@@ -6342,8 +6346,8 @@ When $f \in C(\bar I)$ and $u \in C^2$, the maximum principle is also classical:
 Let $u$ solve (34). Then:
 
 * **(i)** If $u = 0$ on $\partial I$ and $f \ge 0$, then $u \ge 0$ on $I$;
-* **(ii)** If $u = 0$ on $\partial I$ and $f \in L^\infty$, then $\|u\|_{L^\infty(I)} \le \|f\|_{L^\infty(I)}$;
-* **(iii)** If $f = 0$ on $I$, then $\|u\|_{L^\infty(I)} \le \|u\|_{L^\infty(\partial I)}$.
+* **(ii)** If $u = 0$ on $\partial I$ and $f \in L^\infty$, then $\|u\|\_{L^\infty(I)} \le \|f\|\_{L^\infty(I)}$;
+* **(iii)** If $f = 0$ on $I$, then $\|u\|\_{L^\infty(I)} \le \|u\|\_{L^\infty(\partial I)}$.
 
 </div>
 
@@ -7011,3 +7015,2085 @@ Let $u \in W^{1, p}(\Omega)$ with $1 \le p < \infty$. If $\mathrm{supp}\,u$ is a
 </div>
 
 (Proof: pick $\alpha \in C^1_c(\omega)$ with $\alpha = 1$ on $\mathrm{supp}\,u$ and $\omega \subset\!\subset \Omega$, so $\alpha u = u$. Apply Theorem 9.2 to obtain $u_n \in C^\infty_c(\mathbb{R}^N)$ with $u_n \to u$ in $L^p$ and $\nabla u_n \to \nabla u$ in $L^p(\omega)$; the cutoff makes $u_n\rvert_\Omega \in C^\infty_c(\Omega)$ for $n$ large. The full characterization of $W^{1, p}_0$ via traces requires the *theory of traces* — see Comment 16.)
+
+The cleanest characterization of $W^{1, p}_0$ functions, *for sufficiently regular $\Omega$*, is the one we expected:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.17</span><span class="math-callout__name">(Boundary-vanishing characterization of $W^{1, p}_0$)</span></p>
+
+Suppose $\Omega$ is of class $C^1$ and let $u \in W^{1, p}(\Omega) \cap C(\bar\Omega)$ with $1 \le p < \infty$. Then the following are equivalent:
+
+(i) $u = 0$ on $\Gamma$;
+
+(ii) $u \in W^{1, p}_0(\Omega)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 9.17</summary>
+
+**(i) $\Rightarrow$ (ii).** First assume $\mathrm{supp}\,u$ is bounded. Fix $G \in C^1(\mathbb{R})$ with $\lvert G(t)\rvert \le \lvert t\rvert$, $G(t) = 0$ for $\lvert t\rvert \le 1$, $G(t) = t$ for $\lvert t\rvert \ge 2$. Set $u_n = (1/n) G(nu)$; by Proposition 9.5, $u_n \in W^{1, p}$ with $u_n \to u$ in $W^{1, p}$ (dominated convergence). Moreover
+
+$$
+\mathrm{supp}\,u_n \subset \lbrace x \in \Omega\,;\ \lvert u(x)\rvert \ge 1/n\rbrace,
+$$
+
+a *compact* subset of $\Omega$ (since $u \in C(\bar\Omega)$ with $u = 0$ on $\Gamma$). By Lemma 9.5, $u_n \in W^{1, p}_0$, hence $u \in W^{1, p}_0$. For unbounded $\mathrm{supp}\,u$, multiply by cutoffs $\zeta_n$ first.
+
+**(ii) $\Rightarrow$ (i).** Using local charts the problem reduces to: $u \in W^{1, p}_0(Q_+) \cap C(\bar Q_+)$ implies $u = 0$ on $Q_0 = \lbrace x_N = 0\rbrace \cap Q$. Let $u_n \in C^1_c(Q_+)$ with $u_n \to u$ in $W^{1, p}(Q_+)$. For $(x', x_N) \in Q_+$,
+
+$$
+\lvert u_n(x', x_N)\rvert \le \int_0^{x_N}\Big\lvert \frac{\partial u_n}{\partial x_N}(x', t)\Big\rvert\,dt,
+$$
+
+so for $0 < \varepsilon < 1$,
+
+$$
+\frac{1}{\varepsilon}\int_{\lvert x'\rvert < 1}\int_0^\varepsilon \lvert u_n(x', x_N)\rvert\,dx'\,dx_N \le \int_{\lvert x'\rvert < 1}\int_0^\varepsilon \Big\lvert \frac{\partial u_n}{\partial x_N}(x', t)\Big\rvert\,dx'\,dt.
+$$
+
+Let $n \to \infty$, then $\varepsilon \to 0$: $\int_{\lvert x'\rvert < 1} \lvert u(x', 0)\rvert\,dx' = 0$, so $u = 0$ on $Q_0$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Smoothness needed for ⇐, not ⇒)</span></p>
+
+The implication (i) $\Rightarrow$ (ii) does *not* use smoothness of $\Omega$. By contrast, (ii) $\Rightarrow$ (i) requires it: e.g., for $\Omega = \mathbb{R}^N \setminus \lbrace 0\rbrace$ with $N \ge 2$ and $p \le N$, $W^{1, p}_0(\Omega) = W^{1, p}(\Omega)$, so functions in $W^{1, p}_0$ need not vanish at $\lbrace 0\rbrace$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 9.18</span><span class="math-callout__name">(Two more characterizations of $W^{1, p}_0$)</span></p>
+
+Suppose $\Omega$ is of class $C^1$ and let $u \in L^p(\Omega)$ with $1 < p < \infty$. The following are equivalent:
+
+(i) $u \in W^{1, p}_0(\Omega)$;
+
+(ii) $\exists C: \big\lvert\int_\Omega u \partial \varphi/\partial x_i\big\rvert \le C\|\varphi\|_{L^{p'}(\mathbb{R}^N)}\ \forall \varphi \in C^1_c(\mathbb{R}^N),\ \forall i$;
+
+(iii) the zero-extension
+
+$$
+\bar u(x) = \begin{cases} u(x) & x \in \Omega, \\ 0 & x \in \mathbb{R}^N \setminus \Omega, \end{cases}
+$$
+
+belongs to $W^{1, p}(\mathbb{R}^N)$, and in this case $\partial \bar u/\partial x_i = \overline{\partial u/\partial x_i}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why this matters: extension by 0)</span></p>
+
+The extension theorem (Theorem 9.7) and Sobolev embeddings on $\Omega$ require *smoothness* of $\Omega$, since the proof rectifies $\partial\Omega$ via local charts. **For $W^{1, p}_0(\Omega)$ no smoothness is needed**: the canonical extension by $0$ is always valid (Proposition 9.18 (i) ⇒ (iii)). Consequently:
+
+* Sobolev embeddings (Corollary 9.14) hold on $W^{1, p}_0(\Omega)$ for *arbitrary* open $\Omega$;
+* Rellich–Kondrachov (Theorem 9.16) holds on $W^{1, p}_0(\Omega)$ for *arbitrary* bounded open $\Omega$;
+* The Sobolev inequality $\|u\|_{L^{p^\star}(\Omega)} \le C(p, N)\|\nabla u\|_{L^p(\Omega)}\ \forall u \in W^{1, p}_0(\Omega)$ holds for arbitrary $\Omega$ and $1 \le p < N$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 9.19</span><span class="math-callout__name">(Poincaré's inequality)</span></p>
+
+Suppose $1 \le p < \infty$ and $\Omega$ is **bounded**. There exists $C$ (depending on $\Omega, p$) such that
+
+$$
+\boxed{\;\|u\|_{L^p(\Omega)} \le C\|\nabla u\|_{L^p(\Omega)}\quad \forall u \in W^{1, p}_0(\Omega).\;}
+$$
+
+In particular, $\|\nabla u\|\_{L^p}$ is a norm on $W^{1, p}_0$ equivalent to the $W^{1, p}$ norm. On $H^1_0(\Omega)$, $(u, v) = \sum_i \int_\Omega \partial u/\partial x_i \partial v/\partial x_i$ is a scalar product inducing the norm $\|\nabla u\|\_{L^2}$, equivalent to the $H^1$ norm.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Extensions of Poincaré)</span></p>
+
+Poincaré's inequality remains true if $\Omega$ has *finite measure*, or if $\Omega$ has a bounded projection on some axis (a strip).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">($W^{m, p}_0$)</span></p>
+
+For $m \ge 1$ and $1 \le p < \infty$, $W^{m, p}_0(\Omega)$ is the closure of $C^\infty_c(\Omega)$ in $W^{m, p}$. Roughly, $u \in W^{m, p}_0$ iff $u \in W^{m, p}$ and $D^\alpha u = 0$ on $\Gamma$ for all $\lvert\alpha\rvert \le m - 1$. **Distinction**: $W^{m, p}_0(\Omega) \subsetneq W^{m, p}(\Omega) \cap W^{1, p}_0(\Omega)$ for $m \ge 2$ (the former requires *all* derivatives up to order $m - 1$ to vanish on $\Gamma$; the latter only requires $u$ itself).
+
+</div>
+
+#### The dual space of $W^{1, p}_0$
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Notation</span><span class="math-callout__name">($W^{-1, p'}$ and $H^{-1}$)</span></p>
+
+The dual of $W^{1, p}_0(\Omega)$ is denoted $W^{-1, p'}(\Omega)$, $1 \le p < \infty$. The dual of $H^1_0$ is $H^{-1}$. We identify $L^2$ with its dual but **not** $H^1_0$ with its dual — leading to the **Gelfand triple**
+
+$$
+\boxed{\;H^1_0(\Omega) \subset L^2(\Omega) \subset H^{-1}(\Omega)\;}
+$$
+
+with continuous dense injections. If $\Omega$ is bounded, $W^{1, p}_0(\Omega) \subset L^2(\Omega) \subset W^{-1, p'}(\Omega)$ for $2N/(N + 2) \le p < \infty$; if $\Omega$ is unbounded the same holds only for $2N/(N+2) \le p \le 2$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 9.20</span><span class="math-callout__name">(Representation of $W^{-1, p'}$)</span></p>
+
+For every $F \in W^{-1, p'}(\Omega)$ there exist $f_0, f_1, \ldots, f_N \in L^{p'}(\Omega)$ with
+
+$$
+\langle F, v\rangle = \int_\Omega f_0 v + \sum_{i=1}^N \int_\Omega f_i \frac{\partial v}{\partial x_i}\quad \forall v \in W^{1, p}_0(\Omega),
+$$
+
+and $\|F\|_{W^{-1, p'}} = \max_{0 \le i \le N} \|f_i\|_{p'}$. If $\Omega$ is bounded, one can take $f_0 = 0$.
+
+</div>
+
+(Proof adapts Proposition 8.14: embed $W^{1, p}_0 \hookrightarrow L^p \times (L^p)^N$ via $u \mapsto [u, \nabla u]$, apply Hahn–Banach + Riesz.)
+
+### 9.5 Variational Formulation of Some Boundary Value Problems
+
+We now apply the multidimensional Sobolev machinery to elliptic PDEs of second order. The four-step program (Steps A–D from §8.1) carries over verbatim.
+
+#### Example 1: Homogeneous Dirichlet for the Laplacian
+
+Let $\Omega \subset \mathbb{R}^N$ be open bounded. Find $u : \bar\Omega \to \mathbb{R}$ with
+
+$$
+\begin{cases} -\Delta u + u = f & \text{in } \Omega, \\ u = 0 & \text{on } \Gamma = \partial\Omega, \end{cases}\qquad \Delta u = \sum_{i=1}^N \partial^2 u/\partial x_i^2. \tag{31}
+$$
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Classical and weak solution)</span></p>
+
+A **classical solution** is $u \in C^2(\bar\Omega)$ satisfying $(31)$. A **weak solution** is $u \in H^1_0(\Omega)$ satisfying
+
+$$
+\boxed{\;\int_\Omega \nabla u \cdot \nabla v + \int_\Omega uv = \int_\Omega fv\quad \forall v \in H^1_0(\Omega).\;} \tag{32}
+$$
+
+</div>
+
+**Step A: classical ⇒ weak.** Multiply $(31)$ by $v \in C^1_c(\Omega)$, integrate by parts, and extend by density (Theorem 9.17 says $u \in H^1_0$ since $u = 0$ on $\Gamma$).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.21</span><span class="math-callout__name">(Dirichlet, Riemann, Poincaré, Hilbert)</span></p>
+
+Given any $f \in L^2(\Omega)$, there exists a unique weak solution $u \in H^1_0(\Omega)$ of $(31)$. Furthermore, $u$ minimizes the energy:
+
+$$
+\boxed{\;u = \arg\min_{v \in H^1_0(\Omega)}\Big\lbrace \tfrac{1}{2}\int_\Omega(\lvert\nabla v\rvert^2 + v^2) - \int_\Omega fv\Big\rbrace.\;}
+$$
+
+This is **Dirichlet's principle**.
+
+</div>
+
+(Proof: apply Lax–Milgram in $H = H^1_0$ with $a(u, v) = \int(\nabla u \cdot \nabla v + uv)$ and $\varphi(v) = \int fv$.)
+
+**Step C: regularity** is delicate — see §9.6.
+
+**Step D: classical recovery.** If a weak solution $u \in C^2(\bar\Omega)$ and $\Omega$ is $C^1$, then $u = 0$ on $\Gamma$ (Theorem 9.17), and integration by parts gives $-\Delta u + u = f$ a.e. (Corollary 4.24).
+
+#### Example 2: Inhomogeneous Dirichlet
+
+$-\Delta u + u = f$ in $\Omega$, $u = g$ on $\Gamma$. Suppose there is $\tilde g \in H^1(\Omega) \cap C(\bar\Omega)$ with $\tilde g = g$ on $\Gamma$ — set
+
+$$
+K = \lbrace v \in H^1(\Omega)\,;\ v - \tilde g \in H^1_0(\Omega)\rbrace,
+$$
+
+a nonempty closed convex set in $H^1$ depending only on $g$. A **weak solution** is $u \in K$ satisfying $\int(\nabla u \cdot \nabla v + uv) = \int fv\ \forall v \in H^1_0$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 9.22</span><span class="math-callout__name">()</span></p>
+
+Given $f \in L^2(\Omega)$, there exists a unique weak solution $u \in K$ of the inhomogeneous Dirichlet problem, given by
+
+$$
+u = \arg\min_{v \in K}\Big\lbrace \tfrac{1}{2}\int(\lvert\nabla v\rvert^2 + v^2) - \int fv\Big\rbrace.
+$$
+
+</div>
+
+(Proof: $u$ is a weak solution iff $\int \nabla u \cdot \nabla(v - u) + \int u(v - u) \ge \int f(v - u)\ \forall v \in K$ — a *variational inequality*. Apply Stampacchia (Theorem 5.6).)
+
+#### Example 3: General second-order elliptic equation
+
+Given $a_{ij}(x) \in C^1(\bar\Omega)$ satisfying the **ellipticity condition**
+
+$$
+\boxed{\;\sum_{i, j = 1}^N a_{ij}(x)\xi_i\xi_j \ge \alpha\lvert\xi\rvert^2\quad \forall x \in \Omega,\ \forall \xi \in \mathbb{R}^N,\text{ for some }\alpha > 0,\;} \tag{36}
+$$
+
+and $a_0 \in C(\bar\Omega)$, find $u : \bar\Omega \to \mathbb{R}$ with
+
+$$
+\begin{cases} -\sum_{i, j} \partial/\partial x_j(a_{ij} \partial u/\partial x_i) + a_0 u = f & \text{in } \Omega, \\ u = 0 & \text{on } \Gamma. \end{cases} \tag{37}
+$$
+
+A weak solution is $u \in H^1_0$ satisfying
+
+$$
+\sum_{i, j}\int_\Omega a_{ij}\frac{\partial u}{\partial x_i}\frac{\partial v}{\partial x_j} + \int_\Omega a_0 u v = \int_\Omega fv\quad \forall v \in H^1_0.
+$$
+
+If $a_0 \ge 0$, the bilinear form $a(u, v) = \sum \int a_{ij}\partial u/\partial x_i \partial v/\partial x_j + \int a_0 uv$ is continuous and coercive (using ellipticity, $a_0 \ge 0$, and Poincaré). Lax–Milgram yields a unique weak solution. If $(a_{ij})$ is symmetric, $u$ minimizes $\tfrac{1}{2}\big(\sum \int a_{ij}\partial v/\partial x_i \partial v/\partial x_j + \int a_0 v^2\big) - \int fv$.
+
+#### General elliptic with first-order term
+
+$$
+-\sum_{i,j} \partial/\partial x_j(a_{ij}\partial u/\partial x_i) + \sum_i a_i \partial u/\partial x_i + a_0 u = f, \quad u = 0 \text{ on } \Gamma. \tag{39}
+$$
+
+Bilinear form $a(u, v) = \sum \int a_{ij} \partial u/\partial x_i \partial v/\partial x_j + \sum \int a_i \partial u/\partial x_i v + \int a_0 uv$ — *not* symmetric in general, *not* always coercive. In coercive cases, Lax–Milgram applies directly. In the general (non-coercive) case:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.23</span><span class="math-callout__name">(Fredholm-type alternative for general elliptic)</span></p>
+
+If $f = 0$, the set of weak solutions $u \in H^1_0$ of $(40)$ is a finite-dimensional vector space, say of dimension $d$. There is a subspace $F \subset L^2$ of dimension $d$ such that the equation $(40)$ has a solution iff
+
+$$
+\Big[\int_\Omega fv = 0\quad \forall v \in F\Big].
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Fix $\lambda > 0$ large enough that $a(u, v) + \lambda\int uv$ is coercive on $H^1_0$. For $f \in L^2$, this yields a unique $u \in H^1_0$ with $a(u, \varphi) + \lambda\int u\varphi = \int f\varphi\ \forall \varphi \in H^1_0$. Set $u = Tf$, so $T : L^2 \to L^2$ is *compact* (since $H^1_0 \subset L^2$ is compact for bounded $\Omega$ — Theorem 9.16 + Remark 20). Equation $(40)$ becomes $u = T(f + \lambda u)$, i.e., setting $v = f + \lambda u$,
+
+$$
+v - \lambda T v = f.
+$$
+
+Apply Fredholm's alternative (Theorem 6.6). $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Existence ⇔ uniqueness for elliptic problems)</span></p>
+
+If the homogeneous equation $f = 0$ has $u = 0$ as its *unique* solution, then for *every* $f \in L^2$ there is a unique solution. (This is Fredholm's "either/or" specialized to elliptic operators.) When $a_0 \ge 0$ on $\Omega$, *no* assumption on $a_i$ is needed — uniqueness comes from a maximum-principle argument (Gilbarg–Trudinger).
+
+</div>
+
+#### Example 4: Homogeneous Neumann
+
+$-\Delta u + u = f$ in $\Omega$, $\partial u/\partial n = 0$ on $\Gamma$, where $\partial u/\partial n = \nabla u \cdot \mathbf{n}$ is the outward normal derivative. A **weak solution** is $u \in H^1(\Omega)$ (note: $H^1$, not $H^1_0$, since $u\rvert_\Gamma$ is *not* prescribed) satisfying
+
+$$
+\int_\Omega \nabla u \cdot \nabla v + \int_\Omega uv = \int_\Omega fv\quad \forall v \in H^1(\Omega). \tag{45}
+$$
+
+**Step A** uses Green's formula
+
+$$
+\int_\Omega (\Delta u) v = \int_\Gamma \frac{\partial u}{\partial n} v\,d\sigma - \int_\Omega \nabla u \cdot \nabla v\quad \forall u \in C^2(\bar\Omega), \forall v \in C^1(\bar\Omega),
+$$
+
+and density (Corollary 9.8).
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 9.24</span><span class="math-callout__name">(Existence and uniqueness for Neumann)</span></p>
+
+For every $f \in L^2(\Omega)$ there is a unique weak solution $u \in H^1(\Omega)$ of the Neumann problem, with the variational characterization
+
+$$
+u = \arg\min_{v \in H^1(\Omega)}\Big\lbrace \tfrac{1}{2}\int(\lvert\nabla v\rvert^2 + v^2) - \int fv\Big\rbrace.
+$$
+
+</div>
+
+(Proof: Lax–Milgram in $H = H^1(\Omega)$.)
+
+**Step D: classical recovery.** If $u \in C^2(\bar\Omega)$ is a weak solution, Green's formula gives
+
+$$
+\int_\Omega(-\Delta u + u)v + \int_\Gamma \frac{\partial u}{\partial n} v\,d\sigma = \int fv\quad \forall v \in C^1(\bar\Omega).
+$$
+
+Choose $v \in C^1_c(\Omega)$ first to get $-\Delta u + u = f$ in $\Omega$; then for general $v \in C^1(\bar\Omega)$, $\int_\Gamma \partial u/\partial n\,v\,d\sigma = 0$, hence $\partial u/\partial n = 0$ on $\Gamma$ — the **natural boundary condition**.
+
+#### Example 5: Unbounded domains
+
+For $\Omega$ unbounded, one imposes (in addition to the boundary conditions on $\Gamma$) a *boundary condition at infinity* — typically $u(x) \to 0$ as $\lvert x\rvert \to \infty$. At the level of weak formulation this translates to $u \in H^1$. Three illustrative cases:
+
+* **(a) $\Omega = \mathbb{R}^N$.** $-\Delta u + u = f \in L^2(\mathbb{R}^N)$ has a unique weak solution $u \in H^1(\mathbb{R}^N)$ with $\int \nabla u \cdot \nabla v + \int uv = \int fv\ \forall v \in H^1(\mathbb{R}^N)$.
+
+* **(b) $\Omega = \mathbb{R}^N_+$ with Dirichlet.** $-\Delta u + u = f$ in $\mathbb{R}^N_+$, $u(x', 0) = 0$ on $\partial\mathbb{R}^N_+$. Weak solution $u \in H^1_0(\Omega)$.
+
+* **(c) $\Omega = \mathbb{R}^N_+$ with Neumann.** $-\Delta u + u = f$ in $\mathbb{R}^N_+$, $\partial u/\partial x_N(x', 0) = 0$. Weak solution $u \in H^1(\Omega)$.
+
+### 9.6 Regularity of Weak Solutions
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Class $C^m, C^\infty$)</span></p>
+
+$\Omega$ is of **class $C^m$** ($m \ge 1$) if for every $x \in \Gamma$ there is a neighborhood $U$ and a bijective $H : Q \to U$ with $H \in C^m(\bar Q)$, $H^{-1} \in C^m(\bar U)$, $H(Q_+) = U \cap \Omega$, $H(Q_0) = U \cap \Gamma$. $\Omega$ is **$C^\infty$** if it is $C^m$ for all $m$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.25</span><span class="math-callout__name">(Regularity for the Dirichlet problem)</span></p>
+
+Let $\Omega$ be of class $C^2$ with bounded $\Gamma$, or $\Omega = \mathbb{R}^N_+$. Let $f \in L^2(\Omega)$ and $u \in H^1_0(\Omega)$ satisfy $(48)$. Then
+
+$$
+\boxed{\;u \in H^2(\Omega)\quad \text{and}\quad \|u\|_{H^2} \le C\|f\|_{L^2},\;}
+$$
+
+with $C$ depending only on $\Omega$. Moreover, if $\Omega$ is of class $C^{m+2}$ and $f \in H^m(\Omega)$, then
+
+$$
+u \in H^{m+2}(\Omega),\qquad \|u\|_{H^{m+2}} \le C\|f\|_{H^m}.
+$$
+
+In particular, if $f \in H^m$ with $m > N/2$, $u \in C^2(\bar\Omega)$. Finally, if $\Omega$ is $C^\infty$ and $f \in C^\infty(\bar\Omega)$, then $u \in C^\infty(\bar\Omega)$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.26</span><span class="math-callout__name">(Regularity for the Neumann problem)</span></p>
+
+Same hypotheses and conclusions for $u \in H^1(\Omega)$ satisfying $(49)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(General elliptic operators)</span></p>
+
+The same conclusions hold for general second-order elliptic operators (Example 3): if $f \in L^2$, $a_{ij} \in C^1(\bar\Omega)$, $a_i \in C(\bar\Omega)$, then $u \in H^2$. For higher regularity, $a_{ij} \in C^{m+1}$, $a_i \in C^m$, $f \in H^m \Rightarrow u \in H^{m+2}$.
+
+</div>
+
+#### Method of translations (Nirenberg)
+
+We sketch the proof of Theorem 9.25; the proof of Theorem 9.26 is analogous. The strategy: split into
+
+1. **Interior regularity** — $u$ is regular on every $\omega \subset\!\subset \Omega$. Same pattern as the case $\Omega = \mathbb{R}^N$.
+2. **Boundary regularity** — $u$ is regular near $\Gamma$. Reduces (via local charts) to the half-space case $\Omega = \mathbb{R}^N_+$.
+
+The essential ingredient is the **method of translations** (or *difference quotients*) due to Nirenberg.
+
+#### A. The case $\Omega = \mathbb{R}^N$
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Notation</span><span class="math-callout__name">(Difference quotients $D_h u$)</span></p>
+
+For $h \in \mathbb{R}^N \setminus \lbrace 0\rbrace$:
+
+$$
+D_h u(x) = \frac{u(x + h) - u(x)}{\lvert h\rvert} = \frac{1}{\lvert h\rvert}(\tau_h u - u).
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 9.25 — Case $\Omega = \mathbb{R}^N$, $f \in L^2 \Rightarrow u \in H^2$</summary>
+
+In $(48)$ take $\varphi = D_{-h}(D_h u) \in H^1(\mathbb{R}^N)$:
+
+$$
+\int \lvert\nabla D_h u\rvert^2 + \int \lvert D_h u\rvert^2 = \int f\,D_{-h}(D_h u) \le \|f\|_2\|D_{-h}(D_h u)\|_2.
+$$
+
+Recall (Proposition 9.3) that $\|D_{-h}v\|_2 \le \|\nabla v\|_2\ \forall v \in H^1$. Apply this to $v = D_h u$:
+
+$$
+\|D_h u\|_{H^1}^2 \le \|f\|_2 \|\nabla(D_h u)\|_2 \le \|f\|_2 \|D_h u\|_{H^1},
+$$
+
+so $\|D_h u\|_{H^1} \le \|f\|_2$ uniformly in $h$. In particular $\|D_h \partial u/\partial x_i\|_2 \le \|f\|_2$. By Proposition 9.3, $\partial u/\partial x_i \in H^1$, hence $u \in H^2$.
+
+For $f \in H^m \Rightarrow u \in H^{m+2}$: induct on $m$ by replacing $\varphi$ with $D\varphi$ in $(48)$ and verifying that the derivative $Du$ satisfies the same equation with right-hand side $Df$. $\square$
+
+</details>
+</div>
+
+#### B. The case $\Omega = \mathbb{R}^N_+$
+
+The key new tool: **translations parallel to the boundary**. Write $h \parallel \Gamma$ if $h \in \mathbb{R}^{N-1} \times \lbrace 0\rbrace$ (tangential direction). The crucial observation:
+
+$$
+\boxed{\;u \in H^1_0(\mathbb{R}^N_+) \Rightarrow \tau_h u \in H^1_0(\mathbb{R}^N_+)\quad \text{if } h \parallel \Gamma.\;}
+$$
+
+So $H^1_0$ is *invariant* under tangential translations (but not normal ones).
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 9.6</span><span class="math-callout__name">(Tangential difference-quotient bound)</span></p>
+
+$\|D_h v\|_{L^2(\Omega)} \le \|\nabla v\|_{L^2(\Omega)}\ \forall v \in H^1(\Omega), \forall h \parallel \Gamma$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 9.25 — Case $\Omega = \mathbb{R}^N_+$ (sketch)</summary>
+
+Tangential second derivatives $\partial^2 u/\partial x_j \partial x_k$ for $j \ne N$ or $k \ne N$ are obtained by applying difference quotients along tangential directions $h \parallel \Gamma$ — this works because of $H^1_0$-invariance under tangential translations:
+
+$$
+\Big\lvert \int u \frac{\partial^2 \varphi}{\partial x_j\partial x_k}\Big\rvert \le \|f\|_2 \|\varphi\|_2\quad \forall (j, k) \neq (N, N),\ \forall \varphi \in C^\infty_c(\Omega). \tag{56}
+$$
+
+For the **normal-normal** second derivative $\partial^2 u/\partial x_N^2$: return to the equation $-\Delta u + u = f$, which gives
+
+$$
+\frac{\partial^2 u}{\partial x_N^2} = -\sum_{i=1}^{N-1}\frac{\partial^2 u}{\partial x_i^2} + u - f.
+$$
+
+Combining with $(56)$ and the equation gives the missing estimate. Thus all $\partial^2 u/\partial x_j \partial x_k \in L^2$, i.e., $u \in H^2$. The induction $f \in H^m \Rightarrow u \in H^{m+2}$ proceeds via Lemma 9.7 below. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 9.7</span><span class="math-callout__name">(Tangential derivatives of $u$ stay in $H^1_0$)</span></p>
+
+Let $u \in H^2(\Omega) \cap H^1_0(\Omega)$ satisfy $(48)$. For tangential derivatives $Du = \partial u/\partial x_j$, $1 \le j \le N - 1$, $Du \in H^1_0(\Omega)$ and
+
+$$
+\int \nabla(Du) \cdot \nabla\varphi + \int (Du)\varphi = \int (Df)\varphi\quad \forall \varphi \in H^1_0(\Omega). \tag{58}
+$$
+
+</div>
+
+#### C. The general case
+
+Localize via partition of unity $u = \sum_{i=0}^k \theta_i u$ as in the proof of Theorem 9.7 (extension). Two pieces:
+
+* **C₁. Interior estimates.** $\theta_0 u \in C^\infty_c(\Omega)$, so it solves a perturbed equation in $\mathbb{R}^N$ with $L^2$ right-hand side; by Case A, $\theta_0 u \in H^2(\mathbb{R}^N)$ with $\|\theta_0 u\|_{H^2} \le C\|f\|_2$.
+
+* **C₂. Boundary estimates.** Each $\theta_i u$ ($i \ge 1$) is supported in $U_i$; transfer to $Q_+$ via $H_i$ to obtain $w(y) = (\theta_i u)(H_i(y))$. By Lemma 9.8, $w \in H^1_0(Q_+)$ satisfies a *new* second-order elliptic equation in $Q_+$ (with new coefficients $a_{k\ell}$ involving the Jacobian of $H_i$, still satisfying ellipticity since the change of variable preserves ellipticity).
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 9.8</span><span class="math-callout__name">(Change of variables preserves ellipticity)</span></p>
+
+With the notation above, $w \in H^1_0(Q_+)$ satisfies
+
+$$
+\sum_{k, \ell = 1}^N \int_{Q_+} a_{k\ell}\frac{\partial w}{\partial y_k}\frac{\partial \psi}{\partial y_\ell}\,dy = \int_{Q_+} \tilde g \psi\,dy\quad \forall \psi \in H^1_0(Q_+),
+$$
+
+with $\tilde g = (g \circ H)\lvert\det\mathrm{Jac}\,H\rvert \in L^2(Q_+)$ and $a_{k\ell} \in C^1(\bar Q_+)$ satisfying the ellipticity condition $(36)$.
+
+</div>
+
+Apply Case B (with the $a_{k\ell}$-weighted equation) to deduce $w \in H^2(Q_+)$, then return to $\Omega \cap U_i$ to get $\theta_i u \in H^2$. Sum: $u \in H^2(\Omega)$.
+
+The induction on $m$ proceeds the same way using Lemma 9.7.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Local nature of regularity / hypoellipticity)</span></p>
+
+The regularity results are *local*: if $u \in H^1(\Omega)$ satisfies $\int \nabla u \cdot \nabla \varphi = \int f\varphi\ \forall \varphi \in C^\infty_c(\Omega)$ (a *very weak* solution; no boundary condition prescribed), and $f \in H^m_{\mathrm{loc}}(\Omega)$, then $u \in H^{m+2}_{\mathrm{loc}}(\Omega)$. So if $f \in C^\infty(\omega)$ on some $\omega \subset\!\subset \Omega$, then $u \in C^\infty(\omega)$ — even if $f$ is very irregular outside $\omega$. This property is called **hypoellipticity**.
+
+But in the absence of a prescribed boundary condition, *we cannot conclude* $u \in C(\bar\Omega)$ even if $\Omega$ and $f$ are very smooth.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A surprising consequence)</span></p>
+
+The regularity results are a little surprising: an assumption on $\Delta u = \sum \partial^2 u/\partial x_i^2$ (the *sum* of second derivatives) forces a conclusion of the same nature on *every individual* $\partial^2 u/\partial x_i \partial x_j$.
+
+</div>
+
+### 9.7 The Maximum Principle
+
+The maximum principle is a very useful tool with many formulations.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.27</span><span class="math-callout__name">(Maximum principle for the Dirichlet problem)</span></p>
+
+Let $\Omega \subset \mathbb{R}^N$ open, $f \in L^2(\Omega)$, $u \in H^1(\Omega) \cap C(\bar\Omega)$ satisfy
+
+$$
+\int_\Omega \nabla u \cdot \nabla \varphi + \int_\Omega u\varphi = \int_\Omega f\varphi\quad \forall \varphi \in H^1_0(\Omega). \tag{70}
+$$
+
+Then for every $x \in \bar\Omega$,
+
+$$
+\boxed{\;\min\Big\lbrace \mathrm{ess\,inf}_\Gamma u,\ \mathrm{ess\,inf}_\Omega f\Big\rbrace \le u(x) \le \max\Big\lbrace \mathrm{ess\,sup}_\Gamma u,\ \mathrm{ess\,sup}_\Omega f\Big\rbrace.\;}
+$$
+
+</div>
+
+(The proof, using **Stampacchia's truncation method**, parallels the 1D proof of Theorem 8.19: take a $C^1$ function $G$ vanishing on $(-\infty, 0]$ and strictly increasing on $(0, +\infty)$; for $K = \max\lbrace \mathrm{ess\,sup}_\Gamma u, \mathrm{ess\,sup}_\Omega f\rbrace$ assumed finite, $v = G(u - K) \in H^1_0$ since $u - K \le 0$ on $\Gamma$. Plug into $(70)$ and use $G(t)t \ge 0$ together with $f - K \le 0$ to force $u \le K$ a.e.)
+
+The argument splits into two cases depending on whether $\Omega$ has finite measure:
+
+* **(a) $\lvert\Omega\rvert < \infty$.** Then $v = G(u - K) \in H^1$ via Proposition 9.5 (apply chain rule to $t \mapsto G(t - K) - G(-K)$ which is $C^1$ with bounded derivative; Proposition 9.5 yields $v \in H^1$, and $v = 0$ on $\Gamma$ since $u - K \le 0$ there, so $v \in H^1_0$ by Theorem 9.17).
+* **(b) $\lvert\Omega\rvert = \infty$.** Pick $K' > K$ and use $v = G(u - K')$ instead; on the set $\lbrace u \ge K'\rbrace$ we have $K'\int_{\lbrace u \ge K'\rbrace}\lvert u\rvert \le \int_\Omega u^2 < \infty$, ensuring $G(u - K') \in L^1(\Omega)$. Plugging into $(70)$:
+
+$$
+\int_\Omega \lvert\nabla u\rvert^2 G'(u - K') + \int_\Omega u G(u - K') = \int_\Omega f G(u - K'), \tag{71}
+$$
+
+so $\int_\Omega (u - K') G(u - K') \le \int_\Omega (f - K') G(u - K') \le 0$. Since $tG(t) \ge 0$, $u \le K'$ a.e. Let $K' \to K$.
+
+#### Corollaries and refinements
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 9.28</span><span class="math-callout__name">(Comparison and $L^\infty$ bounds)</span></p>
+
+Let $f \in L^2(\Omega)$, $u \in H^1(\Omega) \cap C(\bar\Omega)$ satisfy $(70)$. Then:
+
+* $[u \ge 0\text{ on }\Gamma\text{ and }f \ge 0\text{ in }\Omega] \Rightarrow [u \ge 0\text{ in }\Omega]$,
+* $\|u\|_{L^\infty(\Omega)} \le \max\lbrace \|u\|_{L^\infty(\Gamma)}, \|f\|_{L^\infty(\Omega)}\rbrace$.
+
+In particular:
+
+$$
+\boxed{\;[f = 0\text{ in }\Omega] \Rightarrow \|u\|_{L^\infty(\Omega)} \le \|u\|_{L^\infty(\Gamma)},\;}
+$$
+
+$$
+\boxed{\;[u = 0\text{ on }\Gamma] \Rightarrow \|u\|_{L^\infty(\Omega)} \le \|f\|_{L^\infty(\Omega)}.\;}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Classical PDE proof for smooth $u$)</span></p>
+
+If $\Omega$ is bounded and $u$ is a *classical* solution of $-\Delta u + u = f$, here is a more direct proof. Let $x_0 \in \bar\Omega$ achieve $\max u$. Either $x_0 \in \Gamma$, so $u(x_0) \le \sup_\Gamma u \le K$, or $x_0 \in \Omega$, where $\nabla u(x_0) = 0$ and $\partial^2 u/\partial x_i^2(x_0) \le 0$ for all $i$, so $\Delta u(x_0) \le 0$ and
+
+$$
+u(x_0) = f(x_0) + \Delta u(x_0) \le f(x_0) \le K.
+$$
+
+This argument has the advantage that **it generalizes directly to general elliptic operators**:
+
+$$
+-\sum_{i,j}\frac{\partial}{\partial x_j}\Big(a_{ij}\frac{\partial u}{\partial x_i}\Big) + \sum_i a_i \frac{\partial u}{\partial x_i} + u = f,
+$$
+
+since at a maximum $x_0$, $\sum a_{ij}(x_0) \partial^2 u/\partial x_i\partial x_j(x_0) \le 0$ (reduce to the diagonal case by a coordinate change). The same conclusion holds for *weak* solutions, but the proof is more delicate (Gilbarg–Trudinger).
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 9.29</span><span class="math-callout__name">(Maximum principle for general elliptic operators)</span></p>
+
+Suppose $a_{ij} \in L^\infty(\Omega)$ satisfies the ellipticity condition $(36)$, $a_i \in L^\infty(\Omega)$, $a_0 \in L^\infty(\Omega)$ with $a_0 \ge 0$ in $\Omega$. Let $f \in L^2(\Omega)$ and $u \in H^1(\Omega) \cap C(\bar\Omega)$ satisfy
+
+$$
+\sum_{i, j}\int_\Omega a_{ij}\frac{\partial u}{\partial x_i}\frac{\partial \varphi}{\partial x_j} + \sum_i\int_\Omega a_i \frac{\partial u}{\partial x_i}\varphi + \int_\Omega a_0 u\varphi = \int_\Omega f\varphi\quad \forall \varphi \in H^1_0(\Omega). \tag{78}
+$$
+
+Then
+
+$$
+[u \ge 0\text{ on }\Gamma\text{ and }f \ge 0\text{ in }\Omega] \Rightarrow [u \ge 0\text{ in }\Omega]. \tag{79}
+$$
+
+If, in addition, $a_0 \equiv 0$ and $\Omega$ is bounded, then
+
+$$
+[f \ge 0\text{ in }\Omega] \Rightarrow [u \ge \inf_\Gamma u\text{ in }\Omega], \tag{80}
+$$
+
+$$
+[f = 0\text{ in }\Omega] \Rightarrow [\inf_\Gamma u \le u \le \sup_\Gamma u\text{ in }\Omega]. \tag{81}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof (case $a_i \equiv 0$; the general case is more delicate)</summary>
+
+To prove $(79)$ it suffices to show $[u \le 0\text{ on }\Gamma\text{ and }f \le 0\text{ in }\Omega] \Rightarrow [u \le 0\text{ in }\Omega]$. Choose $\varphi = G(u)$ in $(78)$ with $G$ as in Theorem 9.27:
+
+$$
+\sum_{i, j}\int a_{ij}\frac{\partial u}{\partial x_i}\frac{\partial u}{\partial x_j} G'(u) + \int a_0 u G(u) = \int f G(u) \le 0,
+$$
+
+so $\int \lvert\nabla u\rvert^2 G'(u) \le 0$ (using ellipticity and $a_0 u G(u) \ge 0$). Set $H(t) = \int_0^t [G'(s)]^{1/2}\,ds$; then $H(u) \in H^1_0$ and $\lvert\nabla H(u)\rvert^2 = \lvert\nabla u\rvert^2 G'(u) = 0$ a.e. Hence $H(u)$ is constant, in fact $H(u) = 0$, so $u \le 0$ in $\Omega$.
+
+For $(80)$: set $K = \sup_\Gamma u$; $(u - K) \in H^1(\Omega)$ satisfies $(78)$ with $a_0 \equiv 0$ (so the equation is unchanged), and $u - K \le 0$ on $\Gamma$. Apply $(79')$ to get $u \le K$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 9.30</span><span class="math-callout__name">(Maximum principle for the Neumann problem)</span></p>
+
+Let $f \in L^2(\Omega)$ and $u \in H^1(\Omega)$ satisfy $\int \nabla u \cdot \nabla \varphi + \int u\varphi = \int f\varphi\ \forall \varphi \in H^1(\Omega)$. Then
+
+$$
+\inf_\Omega f \le u(x) \le \sup_\Omega f\quad \text{a.e. } x \in \Omega.
+$$
+
+</div>
+
+(Proof analogous to Theorem 9.27, choosing test functions in $H^1$ rather than $H^1_0$.)
+
+### 9.8 Eigenfunctions and Spectral Decomposition
+
+We now return to the multi-dimensional analogue of the Sturm–Liouville spectral theorem of §8.6. In this section $\Omega$ is bounded.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.31</span><span class="math-callout__name">(Spectral decomposition of the Dirichlet Laplacian)</span></p>
+
+There exist a Hilbert basis $(e_n)_{n \ge 1}$ of $L^2(\Omega)$ and a sequence $(\lambda_n)_{n \ge 1}$ of real numbers with $\lambda_n > 0\ \forall n$ and $\lambda_n \to +\infty$ such that
+
+$$
+e_n \in H^1_0(\Omega) \cap C^\infty(\Omega), \qquad -\Delta e_n = \lambda_n e_n\text{ in }\Omega.
+$$
+
+The $\lambda_n$'s are called the **eigenvalues** of $-\Delta$ (with Dirichlet boundary condition); the $e_n$'s are the corresponding **eigenfunctions**.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+For $f \in L^2$, let $u = Tf$ be the unique weak solution in $H^1_0(\Omega)$ of $\int \nabla u \cdot \nabla \varphi = \int f\varphi\ \forall \varphi \in H^1_0$ (Lax–Milgram). View $T : L^2 \to L^2$:
+
+* $T$ is **compact**: it is bounded $L^2 \to H^1_0$ (Lax–Milgram estimate $\|u\|_{H^1_0} \le C\|f\|_2$), and $H^1_0 \subset L^2$ is compact (Theorem 9.16 + Remark 20).
+* $T$ is **self-adjoint**: $\int (Tf) g = \int f (Tg) = \int \nabla(Tf) \cdot \nabla(Tg)$ (symmetry of the Dirichlet form).
+* $N(T) = \lbrace 0\rbrace$ and $(Tf, f)_{L^2} = \int \lvert\nabla u\rvert^2 \ge 0$.
+
+By the spectral theorem for compact self-adjoint operators (Theorem 6.11), $L^2$ admits a Hilbert basis $(e_n)$ of eigenvectors of $T$, with eigenvalues $(\mu_n)$, $\mu_n > 0$, $\mu_n \to 0$. Set $\lambda_n = 1/\mu_n$. Then $e_n \in H^1_0$ and
+
+$$
+\int \nabla e_n \cdot \nabla \varphi = \frac{1}{\mu_n}\int e_n \varphi\quad \forall \varphi \in H^1_0,
+$$
+
+i.e., $-\Delta e_n = \lambda_n e_n$ weakly. By the regularity results of §9.6 (interior version, Remark 25), $e_n \in H^m_{\mathrm{loc}}(\Omega)$ for all $m$, hence $e_n \in C^\infty(\Omega)$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bases for $H^1_0$)</span></p>
+
+The sequence $(e_n/\sqrt{\lambda_n})$ is a Hilbert basis of $H^1_0$ equipped with the scalar product $\int \nabla u \cdot \nabla v$, and $(e_n/\sqrt{\lambda_n + 1})$ is a Hilbert basis of $H^1_0$ equipped with $\int (\nabla u \cdot \nabla v + uv)$. Indeed, orthonormality follows from $-\Delta e_n = \lambda_n e_n$, and density from the fact that $(e_n)$ is dense in $L^2$ (use $f \in H^1_0$ orthogonal to all $e_n$ in $H^1_0$ and pass through the equation).
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Smoothness of $e_n$ up to the boundary)</span></p>
+
+For *general* bounded $\Omega$ one can show $e_n \in L^\infty(\Omega)$. If $\Omega$ is of class $C^\infty$, then $e_n \in C^\infty(\bar\Omega)$ — by Theorem 9.25 applied iteratively.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(General elliptic version)</span></p>
+
+Let $a_{ij} \in L^\infty$ satisfy ellipticity and $a_0 \in L^\infty$. There exist a Hilbert basis $(e_n)$ of $L^2(\Omega)$ and $\lambda_n \to +\infty$ with $e_n \in H^1_0$ and
+
+$$
+\sum_{i, j}\int a_{ij}\frac{\partial e_n}{\partial x_i}\frac{\partial \varphi}{\partial x_j} + \int a_0 e_n \varphi = \lambda_n \int e_n \varphi\quad \forall \varphi \in H^1_0.
+$$
+
+</div>
+
+### Comments on Chapter 9
+
+#### 1. Domains less regular than $C^1$
+
+We have often supposed $\Omega$ of class $C^1$, which excludes domains with *corners*. One can weaken this to: $\Omega$ piecewise of class $C^1$, $\Omega$ Lipschitz, $\Omega$ has the cone property, $\Omega$ has the segment property, etc. (Adams, Agmon).
+
+#### 2. Extension for $W^{m, p}$
+
+Theorem 9.7 (existence of an extension operator) adapts to $W^{m, p}(\Omega)$ for $\Omega$ of class $C^m$, with a generalization of the reflection technique.
+
+#### 3. Useful Sobolev-norm inequalities
+
+**A. Poincaré–Wirtinger.** Let $\Omega$ be a connected open set of class $C^1$, $1 \le p \le \infty$. Then there exists $C$ with
+
+$$
+\boxed{\;\|u - \bar u\|_p \le C\|\nabla u\|_p\quad \forall u \in W^{1, p}(\Omega),\quad \bar u = \frac{1}{\lvert\Omega\rvert}\int_\Omega u.\;}
+$$
+
+If additionally $p < N$, this combined with the Sobolev inequality gives $\|u - \bar u\|_{p^\star} \le C\|\nabla u\|_p$.
+
+**B. Hardy.** Let $\Omega$ be a bounded domain of class $C^1$, $1 < p < \infty$, $d(x) = \mathrm{dist}(x, \Gamma)$. There exists $C$ such that
+
+$$
+\boxed{\;\Big\|\frac{u}{d}\Big\|_p \le C\|\nabla u\|_p\quad \forall u \in W^{1, p}_0(\Omega).\;}
+$$
+
+Conversely, $u \in W^{1, p}(\Omega)$ with $u/d \in L^p(\Omega) \Rightarrow u \in W^{1, p}_0(\Omega)$ (Lions–Magenes).
+
+**C. Gagliardo–Nirenberg interpolation.** Let $\Omega$ be a regular bounded open set in $\mathbb{R}^N$.
+
+* **Example 1.** For $u \in L^p(\Omega) \cap W^{2, r}(\Omega)$ with $1 \le p, r \le \infty$ and $q$ the *harmonic mean* of $p, r$ (i.e., $1/q = \tfrac{1}{2}(1/p + 1/r)$), $u \in W^{1, q}(\Omega)$ and
+
+  $$
+  \|Du\|_{L^q} \le C\|u\|_{W^{2, r}}^{1/2}\|u\|_{L^p}^{1/2}.
+  $$
+
+  In particular, for $p = \infty$:
+
+  $$
+  \|Du\|_{L^q} \le C\|u\|_{W^{2, r}}^{1/2}\|u\|_{L^\infty}^{1/2},
+  $$
+
+  showing that $W^{2, r} \cap L^\infty$ is an *algebra*.
+
+  For $p = q = r$: $\|Du\|_{L^p} \le C\|u\|_{W^{2, p}}^{1/2}\|u\|_{L^p}^{1/2}$, hence $\|Du\|_{L^p} \le \varepsilon\|D^2 u\|_{L^p} + C_\varepsilon\|u\|_{L^p}$ for every $\varepsilon > 0$.
+
+* **Example 2.** $1 \le q \le p < \infty$, $u \in W^{1, N}(\Omega)$:
+
+  $$
+  \|u\|_{L^p} \le C\|u\|_{L^q}^{1 - a}\|u\|_{W^{1, N}}^a,\quad a = 1 - q/p.
+  $$
+
+  Specialized to $N = 2, p = 4, q = 2, a = 1/2$:
+
+  $$
+  \|u\|_{L^4} \le C\|u\|_{L^2}^{1/2}\|u\|_{H^1}^{1/2}\quad \forall u \in H^1(\Omega).
+  $$
+
+* **Example 3.** $1 \le q \le p \le \infty$, $r > N$:
+
+  $$
+  \|u\|_{L^p} \le C\|u\|_{L^q}^{1 - a}\|u\|_{W^{1, r}}^a,\quad a = \tfrac{1/q - 1/p}{1/q + 1/N - 1/r}.
+  $$
+
+#### 4. A useful property
+
+For $u \in W^{1, p}(\Omega)$ and any constant $k$, $\nabla u = 0$ a.e. on $\lbrace x \in \Omega\,;\ u(x) = k\rbrace$.
+
+#### 5. A.e. differentiability for $p > N$
+
+If $u \in W^{1, p}(\Omega)$ with $p > N$, then $u$ is differentiable in the *usual sense* a.e.: there is $A \subset \Omega$ of measure zero such that
+
+$$
+\lim_{h \to 0}\frac{u(x + h) - u(x) - h \cdot \nabla u(x)}{\lvert h\rvert} = 0\quad \forall x \in \Omega \setminus A.
+$$
+
+This fails for $p \le N$ when $N > 1$ (Stein, Ch. 8).
+
+#### 6. Fractional Sobolev spaces
+
+For $0 < s < 1$ and $1 \le p < \infty$, the **fractional Sobolev space** $W^{s, p}(\Omega)$ is
+
+$$
+\boxed{\;W^{s, p}(\Omega) = \Big\lbrace u \in L^p(\Omega)\,;\ \frac{\lvert u(x) - u(y)\rvert}{\lvert x - y\rvert^{s + N/p}} \in L^p(\Omega \times \Omega)\Big\rbrace,\;}
+$$
+
+with the natural norm. Set $H^s = W^{s, 2}$. For non-integer $s > 1$, write $s = m + \sigma$ with $m$ integer; then
+
+$$
+W^{s, p}(\Omega) = \lbrace u \in W^{m, p}(\Omega)\,;\ D^\alpha u \in W^{\sigma, p}(\Omega)\ \forall \lvert\alpha\rvert = m\rbrace.
+$$
+
+These spaces can also be defined as *interpolation spaces* between $W^{1, p}$ and $L^p$, or via the Fourier transform when $p = 2$. By local charts, $W^{s, p}(\Gamma)$ is defined for smooth manifolds $\Gamma$ — they play a key role in trace theory.
+
+#### 7. Theory of traces
+
+The theory of traces gives a precise meaning to "the values of $u$ on $\Gamma$" for $u \in W^{1, p}(\Omega)$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma 9.9</span><span class="math-callout__name">(Trace estimate on the half-space)</span></p>
+
+For $\Omega = \mathbb{R}^N_+$ there exists $C$ such that
+
+$$
+\Big(\int_{\mathbb{R}^{N-1}}\lvert u(x', 0)\rvert^p\,dx'\Big)^{1/p} \le C\|u\|_{W^{1, p}(\Omega)}\quad \forall u \in C^1_c(\mathbb{R}^N).
+$$
+
+</div>
+
+(Proof: $G(u(x', 0)) = -\int_0^\infty G'(u(x', x_N)) \partial u/\partial x_N\,dx_N$ for $G(t) = \lvert t\rvert^{p-1}t$.)
+
+By density, $u \mapsto u\rvert_\Gamma$ extends to a bounded linear operator $W^{1, p}(\Omega) \to L^p(\Gamma)$ — the **trace** of $u$, written $u\rvert_\Gamma$. This makes sense for $\Omega$ of class $C^1$ with bounded $\Gamma$. Three key properties:
+
+* **(i) Better regularity.** $u\rvert_\Gamma \in W^{1 - 1/p, p}(\Gamma)$ with $\|u\rvert_\Gamma\|_{W^{1 - 1/p, p}(\Gamma)} \le C\|u\|_{W^{1, p}(\Omega)}$. The trace operator is *surjective* onto $W^{1 - 1/p, p}(\Gamma)$.
+
+* **(ii) Kernel.** $W^{1, p}_0(\Omega) = \lbrace u \in W^{1, p}(\Omega)\,;\ u\rvert_\Gamma = 0\rbrace$.
+
+* **(iii) Green's formula.** For $u, v \in H^1(\Omega)$ with $\Omega$ of class $C^1$,
+
+  $$
+  \int_\Omega \frac{\partial u}{\partial x_i} v = -\int_\Omega u \frac{\partial v}{\partial x_i} + \int_\Gamma uv\,(\mathbf{n} \cdot \mathbf{e}_i)\,d\sigma.
+  $$
+
+  Similarly, for $u \in W^{2, p}(\Omega)$ the **normal derivative** $\partial u/\partial n = (\nabla u)\rvert_\Gamma \cdot \mathbf{n}$ is well defined (in $L^p(\Gamma)$, in fact in $W^{1 - 1/p, p}(\Gamma)$), and Green's formula reads
+
+  $$
+  -\int_\Omega (\Delta u)v = \int_\Omega \nabla u \cdot \nabla v - \int_\Gamma \frac{\partial u}{\partial n} v\,d\sigma\quad \forall v \in H^2(\Omega).
+  $$
+
+* **(iv) Traces of $W^{2, p}$.** $u \mapsto \lbrace u\rvert_\Gamma, \partial u/\partial n\rbrace$ is bounded, linear, and *surjective* from $W^{2, p}(\Omega)$ onto $W^{2 - 1/p, p}(\Gamma) \times W^{1 - 1/p, p}(\Gamma)$ (Lions–Magenes).
+
+**Warning:** functions in $L^p(\mathbb{R}^N_+)$ do *not* have a trace on $\Gamma$ — trace theory genuinely uses the existence of one weak derivative.
+
+#### 8. Operators of order $2m$ and elliptic systems
+
+Existence and regularity extend to elliptic operators of order $2m$ and to elliptic systems via Gårding's inequality (Agmon, Lions–Magenes, Agmon–Douglis–Nirenberg). The **biharmonic** $\Delta^2$ (theory of plates), the **elasticity system**, and the **Stokes** system (fluid mechanics) are leading examples.
+
+#### 9. Regularity in $L^p$ and $C^{0, \alpha}$
+
+The regularity theorems of Chapter 9 (proved for $p = 2$) extend to general $p$:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.32</span><span class="math-callout__name">(Agmon–Douglis–Nirenberg: $L^p$ regularity)</span></p>
+
+Suppose $\Omega$ is of class $C^2$ with bounded $\Gamma$, $1 < p < \infty$. For every $f \in L^p(\Omega)$ there is a unique solution $u \in W^{2, p}(\Omega) \cap W^{1, p}_0(\Omega)$ of $-\Delta u + u = f$ in $\Omega$, with $\|u\|_{W^{2, p}} \le C\|f\|_{L^p}$. Moreover, if $\Omega \in C^{m+2}$ and $f \in W^{m, p}$, then $u \in W^{m+2, p}$.
+
+</div>
+
+The proof rests either on (a) an explicit fundamental-solution representation $u = G \star f$ on $\mathbb{R}^N$ (with $G(x) = c_N \lvert x\rvert^{2-N}e^{-\lvert x\rvert}$ in $\mathbb{R}^3$), but the second derivatives of $G$ have a critical singularity that fails to lie in $L^1$; or (b) the **theory of singular integrals** of Calderón–Zygmund (Stein, Bers–John–Schechter). Theorem 9.32 *fails* for $p = 1, \infty$.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.33</span><span class="math-callout__name">(Schauder: Hölder regularity)</span></p>
+
+Suppose $\Omega$ is bounded of class $C^{2, \alpha}$, $0 < \alpha < 1$. For every $f \in C^{0, \alpha}(\bar\Omega)$ there is a unique solution $u \in C^{2, \alpha}(\bar\Omega)$ of $-\Delta u + u = f$ in $\Omega$, $u = 0$ on $\Gamma$. If additionally $\Omega \in C^{m+2, \alpha}$ and $f \in C^{m, \alpha}(\bar\Omega)$, then $u \in C^{m+2, \alpha}(\bar\Omega)$, with $\|u\|_{C^{m+2, \alpha}} \le C\|f\|_{C^{m, \alpha}}$.
+
+</div>
+
+These are the *optimal regularity* results — they fail in the spaces $L^1, L^\infty, C(\bar\Omega)$, which is why one avoids these spaces in PDE.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.34</span><span class="math-callout__name">(De Giorgi–Nash–Stampacchia)</span></p>
+
+Let $\Omega \subset \mathbb{R}^N$ ($N \ge 2$) be bounded regular, $a_{ij} \in L^\infty$ satisfying ellipticity $(36)$. Let $f \in L^p(\Omega)$ with $p > N/2$ and $u \in H^1_0(\Omega)$ satisfy
+
+$$
+\sum_{i, j}\int a_{ij}\frac{\partial u}{\partial x_i}\frac{\partial \varphi}{\partial x_j} = \int f\varphi\quad \forall \varphi \in H^1_0(\Omega).
+$$
+
+Then $u \in C^{0, \alpha}(\bar\Omega)$ for some $\alpha = \alpha(\Omega, a_{ij}, p) \in (0, 1)$.
+
+</div>
+
+This is the celebrated regularity result for elliptic equations with **discontinuous coefficients** — the resolution of Hilbert's 19th problem. References: Stampacchia, Gilbarg–Trudinger, Ladyzhenskaya–Uraltseva, Giusti.
+
+#### 10. Drawbacks of the variational method
+
+The variational method gives weak solutions easily — but is *not always applicable*. Two completion strategies:
+
+**(a) Duality method.** For $f \in L^1(\Omega)$ — or even $f$ a Radon measure — the linear functional $\varphi \mapsto \int f\varphi$ is *not* defined on every $\varphi \in H^1_0$ when $N > 1$, so the variational method is ineffective. Instead, define $T : L^2 \to L^2$ via the variational solution. By Theorem 9.32, $T : L^p \to W^{2, p}$, and Sobolev gives $T : L^p \to C_0(\bar\Omega)$ for $p > N/2$. By duality, $T^\star : \mathcal{M}(\Omega) = C_0(\bar\Omega)^\star \to L^{p'}(\Omega)$ (with $p > N/2$). Since $T = T^\star$ in $L^2$, set $u = T^\star f$ as a generalized solution. For $f \in L^1$ this gives $u \in L^q$ for $q < N/(N-2)$, the **(very weak) solution** in the sense
+
+$$
+-\int_\Omega u\Delta\varphi + \int_\Omega u\varphi = \int_\Omega f\varphi\quad \forall \varphi \in C^2(\bar\Omega),\ \varphi = 0\text{ on }\Gamma.
+$$
+
+**(b) Density method.** For $g \in C(\Gamma)$ but $g$ not necessarily the trace of an $H^1$ function, find $u \in C(\bar\Omega)$ with $-\Delta u + u = 0$ in $\Omega$, $u = g$ on $\Gamma$:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.35</span><span class="math-callout__name">(Continuous Dirichlet data)</span></p>
+
+For every $g \in C(\Gamma)$ there exists a unique $u \in C(\bar\Omega) \cap C^\infty(\Omega)$ solving $-\Delta u + u = 0$ in $\Omega$, $u = g$ on $\Gamma$.
+
+</div>
+
+(Proof: extend $g$ to $\tilde g \in C(\mathbb{R}^N)$ by Tietze–Urysohn, mollify $g_n = \tilde g_n\rvert_\Gamma$ to get smooth boundary data, solve $u_n \in C^2(\bar\Omega)$ for each, and use the maximum principle (Corollary 9.28) $\|u_m - u_n\|_\infty \le \|g_m - g_n\|_\infty$ to deduce convergence to $u \in C(\bar\Omega)$. Smoothness inside $\Omega$ comes from interior regularity (Remark 25).)
+
+The classical alternative is the **Perron method** of potential theory: $u(x) = \sup\lbrace v(x)\,;\ -\Delta v + v \le 0,\ v \le g\text{ on }\Gamma\rbrace$ ("subsolutions").
+
+#### 11. The strong maximum principle
+
+The maximum principle (Proposition 9.29) admits a *stronger* form for *classical* solutions:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 9.36</span><span class="math-callout__name">(Hopf: strong maximum principle)</span></p>
+
+Let $\Omega$ be a connected, bounded, regular open set. Suppose $a_{ij} \in C^1(\bar\Omega)$ satisfies ellipticity, $a_i, a_0 \in C(\bar\Omega)$ with $a_0 \ge 0$ on $\Omega$. Let $u \in C(\bar\Omega) \cap C^2(\Omega)$ satisfy
+
+$$
+-\sum_{i, j}\frac{\partial}{\partial x_j}\Big(a_{ij}\frac{\partial u}{\partial x_i}\Big) + \sum_i a_i \frac{\partial u}{\partial x_i} + a_0 u = f\text{ in }\Omega. \tag{91}
+$$
+
+Suppose $f \ge 0$ in $\Omega$. If there is $x_0 \in \Omega$ with $u(x_0) = \min_{\bar\Omega} u$ and $u(x_0) \le 0$, then **$u$ is constant on $\Omega$** (and furthermore $f \equiv 0$).
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 9.37</span><span class="math-callout__name">(Strict positivity / dichotomy)</span></p>
+
+Under the same hypotheses, with $f \ge 0$ in $\Omega$ and $u \ge 0$ on $\Gamma$:
+
+$$
+\boxed{\;\text{either}\quad u > 0\text{ in }\Omega\quad \text{or}\quad u \equiv 0\text{ in }\Omega.\;}
+$$
+
+</div>
+
+(Bers–John–Schechter, Gilbarg–Trudinger, Protter–Weinberger, Pucci–Serrin.)
+
+#### 12. Laplace–Beltrami operators
+
+Elliptic operators on Riemannian manifolds (with or without boundary) — in particular the **Laplace–Beltrami operator** — play a key role in differential geometry and physics (Choquet–Dewitt–Dillard).
+
+#### 13. Spectral properties. Inverse problems
+
+For $\Omega$ a connected, bounded, regular open set, $a_{ij} \in C^1(\bar\Omega)$ satisfying ellipticity, $a_0 \in C(\bar\Omega)$, and $A u = -\sum \partial/\partial x_j(a_{ij}\partial u/\partial x_i) + a_0 u$ with Dirichlet conditions, let $\lambda_n$ denote the eigenvalues in increasing order. Then:
+
+* **(i) Simple first eigenvalue.** $\lambda_1$ has multiplicity 1, and $e_1$ can be chosen $> 0$ in $\Omega$ — by **Krein–Rutman** (cf. comments on Chapter 6 + Problem 41). In dimension $N \ge 2$ the higher eigenvalues *can* have multiplicity > 1.
+* **(ii) Weyl asymptotics.** $\lambda_n \sim c n^{2/N}$ as $n \to \infty$ for some $c > 0$ (Agmon).
+
+The **spectral geometry** problem asks how much of $\Omega$ can be recovered purely from the spectrum $(\lambda_n)$:
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Famous Question</span><span class="math-callout__name">(Mark Kac, 1966: "Can one hear the shape of a drum?")</span></p>
+
+Let $\Omega_1, \Omega_2 \subset \mathbb{R}^2$ be bounded with the same Dirichlet eigenvalues of $-\Delta$. Are $\Omega_1$ and $\Omega_2$ isometric?
+
+The answer is *positive* if $\Omega_1$ is a disk. In **1991, Gordon–Webb–Wolpert** gave a **negative answer for domains with corners**. The problem is still open for *smooth* domains.
+
+</div>
+
+Other **inverse problems** seek to determine coefficients/parameters or shape from boundary measurements (Dirichlet-to-Neumann map) or scattering data — applications to medical imaging, seismology, etc. (Uhlmann, Croke).
+
+#### 14. Degenerate elliptic problems
+
+Problems with $\sum a_{ij}\xi_i\xi_j \ge 0$ instead of $\ge \alpha\lvert\xi\rvert^2$ — the matrix may degenerate at points of $\Omega$ (Kohn–Nirenberg, Baouendi–Goulaouic, Oleinik–Radkevitch).
+
+#### 15. Nonlinear elliptic problems
+
+A vast field motivated by geometry, mechanics, physics, optimal control, probability theory, etc. — with major development since Leray–Schauder (1930s).
+
+* **(a) Semilinear problems.** $-\Delta u = f(x, u)$ in $\Omega$, $u = 0$ on $\Gamma$. Includes **bifurcation problems** $-\Delta u = f_\lambda(x, u)$ with parameter $\lambda$.
+* **(b) Quasilinear problems.** $-\sum \partial/\partial x_j(a_{ij}(x, u, \nabla u)\partial u/\partial x_i) = f(x, u, \nabla u)$, possibly degenerate. Example: **minimal surfaces** with $a_{ij}(x, u, p) = \delta_{ij}(1 + \lvert p\rvert^2)^{-1/2}$. **Fully nonlinear:** $F(x, u, Du, D^2 u) = 0$ (e.g., **Monge–Ampère**).
+* **(c) Free boundary problems.** Solve a linear elliptic equation in an unknown set $\Omega$ — compensated by *two* boundary conditions on $\Gamma$ (e.g., Dirichlet + Neumann).
+
+**Techniques:**
+
+* Monotonicity methods (Browder, Lions);
+* Topological methods (Schauder fixed-point, Leray–Schauder degree theory) — Schwartz, Krasnoselskii, Nirenberg;
+* Variational methods (critical point theory, min–max techniques, Morse theory) — Rabinowitz, Berger, Krasnoselskii, Nirenberg, Mawhin–Willem, Struwe.
+
+#### 16. Geometric measure theory
+
+At the interface of geometry and PDE, with major development since the 1960s (Federer, De Giorgi, Volpert, Almgren) — applications to calculus of variations, isoperimetric inequalities, phase transitions, fractures in mechanics, edge detection in image processing, line vortices, superconductors, superfluids. The space $BV$ plays a distinguished role. References: Ambrosio–Fusco–Pallara, Simon, Evans–Gariepy, Lin–Yang.
+
+## Chapter 10: Evolution Problems — The Heat Equation and the Wave Equation
+
+The previous chapters built the *static* picture: solving $-\Delta u + u = f$ in a domain, with various boundary conditions. We now add *time*. The two emblematic linear evolution PDEs of mathematical physics are:
+
+* the **heat equation** $\partial u/\partial t - \Delta u = 0$ — a *parabolic* equation, modeling diffusion of heat / chemical species / probability mass;
+* the **wave equation** $\partial^2 u/\partial t^2 - \Delta u = 0$ — a *hyperbolic* equation, modeling vibrations and propagation of signals.
+
+The strategy is to view $u(x, t)$ as a *function of time alone* with values in a Hilbert space $H$ of functions in the spatial variable $x$ — say $H = L^2(\Omega)$ or $H = H^1_0(\Omega)$. Writing $u(t)$ for the function $x \mapsto u(x, t)$ converts both PDEs into abstract Cauchy problems
+
+$$
+\frac{du}{dt} + Au = 0 \quad \text{(heat)},\qquad \frac{d^2 u}{dt^2} + Au = 0 \quad \text{(wave)},
+$$
+
+with $A = -\Delta$ a *self-adjoint maximal monotone* operator on $H$ (with domain reflecting the boundary conditions). The Hille–Yosida theory of Chapter 7 then handles existence, uniqueness, and regularity automatically.
+
+The **structural contrasts** between the two equations are striking:
+
+| | **Heat** | **Wave** |
+| --- | --- | --- |
+| Order in $t$ | first | second |
+| Dynamics | semigroup of contractions | group of isometries |
+| Smoothing | $u_0 \in L^2 \Rightarrow u \in C^\infty$ for $t > 0$ | no smoothing — singularities propagate |
+| Time direction | irreversible | reversible |
+| Speed of propagation | infinite (Brownian) | finite (cone of dependence) |
+| Conservation law | dissipation $\tfrac12\frac{d}{dt}\lvert u\rvert^2 = -\lvert\nabla u\rvert^2$ | $\lvert\partial u/\partial t\rvert^2 + \lvert\nabla u\rvert^2$ conserved |
+| Maximum principle | yes | only in special cases |
+
+Throughout this chapter $\Omega \subset \mathbb{R}^N$ is open, $\Gamma = \partial\Omega$, and we set
+
+$$
+Q = \Omega \times (0, +\infty),\qquad \Sigma = \Gamma \times (0, +\infty)
+$$
+
+(the *lateral boundary* of the cylinder $Q$). To simplify, we assume throughout that **$\Omega$ is of class $C^\infty$ with $\Gamma$ bounded** (the assumption can be considerably weakened if one only seeks weak solutions).
+
+### 10.1 The Heat Equation: Existence, Uniqueness, and Regularity
+
+We seek $u(x, t) : \bar\Omega \times [0, +\infty) \to \mathbb{R}$ satisfying
+
+$$
+\boxed{\;\begin{cases} \dfrac{\partial u}{\partial t} - \Delta u = 0 & \text{in } Q, \\ u = 0 & \text{on } \Sigma, \\ u(x, 0) = u_0(x) & \text{on } \Omega, \end{cases}\;} \tag{1, 2, 3}
+$$
+
+where $\Delta = \sum_{i=1}^N \partial^2/\partial x_i^2$ is the Laplacian in *space* variables, $t$ is time, and $u_0$ is the **initial (Cauchy) data**. Equation $(1)$ is the **heat equation**; $(2)$ is the (homogeneous) **Dirichlet boundary condition** ($\Gamma$ kept at zero temperature). One could replace $(2)$ by the Neumann condition $\partial u/\partial n = 0$ on $\Sigma$ (zero heat flux through $\Gamma$) or any of the boundary conditions of Chapters 8–9.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.1</span><span class="math-callout__name">(Existence and uniqueness, $u_0 \in L^2$)</span></p>
+
+Assume $u_0 \in L^2(\Omega)$. There exists a unique function $u(x, t)$ satisfying $(1), (2), (3)$ and
+
+$$
+u \in C([0, \infty); L^2(\Omega)) \cap C((0, \infty); H^2(\Omega) \cap H^1_0(\Omega)), \tag{4}
+$$
+
+$$
+u \in C^1((0, \infty); L^2(\Omega)). \tag{5}
+$$
+
+Moreover
+
+$$
+\boxed{\;u \in C^\infty(\bar\Omega \times [\varepsilon, \infty))\quad \forall \varepsilon > 0,\;}
+$$
+
+and $u \in L^2(0, \infty; H^1_0(\Omega))$ with the **energy identity**
+
+$$
+\boxed{\;\tfrac{1}{2}\lvert u(T)\rvert_{L^2}^2 + \int_0^T \lvert\nabla u(t)\rvert_{L^2}^2\,dt = \tfrac{1}{2}\lvert u_0\rvert_{L^2}^2\quad \forall T > 0.\;} \tag{6}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Apply Hille–Yosida (more precisely Theorem 7.7 — the *self-adjoint case with smoothing*) in $H = L^2(\Omega)$ to the unbounded operator
+
+$$
+A : D(A) \subset H \to H,\qquad D(A) = H^2(\Omega) \cap H^1_0(\Omega),\quad Au = -\Delta u.
+$$
+
+The boundary condition $(2)$ is *encoded* in the choice of $D(A)$ (functions in $H^1_0$ vanish on $\Gamma$ — see Theorem 9.17). We check $A$ is self-adjoint maximal monotone:
+
+* **Monotone**: $(Au, u)_{L^2} = \int_\Omega(-\Delta u)u = \int_\Omega \lvert\nabla u\rvert^2 \ge 0$ (integration by parts in $H^1_0$).
+* **Maximal monotone**: $R(I + A) = L^2$ — for every $f \in L^2$, the equation $u - \Delta u = f$ has a unique solution $u \in H^2 \cap H^1_0$ (Theorem 9.25).
+* **Self-adjoint**: by Proposition 7.6 it suffices to check symmetry, $(Au, v)_{L^2} = \int \nabla u \cdot \nabla v = (u, Av)_{L^2}$.
+
+Theorem 7.7 then yields a unique $u$ satisfying $(4), (5)$ with $\lvert u(t)\rvert \le \lvert u_0\rvert$ and $\lvert du/dt\rvert \le \tfrac{1}{t}\lvert u_0\rvert$.
+
+By Theorem 9.25 (regularity), $D(A^\ell) = \lbrace u \in H^{2\ell}(\Omega)\,;\ u = \Delta u = \cdots = \Delta^{\ell - 1}u = 0\text{ on }\Gamma\rbrace$, with continuous injection. Theorem 7.7 gives $u \in C^k((0, \infty); D(A^\ell))$ for all $k, \ell$, and the Sobolev embedding $H^{2\ell} \hookrightarrow C^k(\bar\Omega)$ for large $\ell$ gives $u \in C^k((0, \infty); C^k(\bar\Omega))$ for every $k$, hence $u \in C^\infty(\bar\Omega \times [\varepsilon, \infty))$.
+
+For the energy identity $(6)$: formally multiply $(1)$ by $u$ and integrate. Rigorously, $\varphi(t) = \tfrac{1}{2}\lvert u(t)\rvert^2$ is $C^1$ on $(0, \infty)$ with $\varphi'(t) = (du/dt, u) = (\Delta u, u) = -\int \lvert\nabla u\rvert^2$. Integrate over $[\varepsilon, T]$ and let $\varepsilon \to 0$. $\square$
+
+</details>
+</div>
+
+#### Improved regularity at $t = 0$
+
+If we add hypotheses on $u_0$, the solution becomes regular *up to* $t = 0$ (Theorem 10.1 only guarantees regularity for $t \ge \varepsilon > 0$).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.2</span><span class="math-callout__name">(Regularity up to $t = 0$)</span></p>
+
+Let $u$ be the solution of $(1), (2), (3)$ from Theorem 10.1.
+
+* **(a)** If $u_0 \in H^1_0(\Omega)$, then
+
+  $$u \in C([0, \infty); H^1_0(\Omega)) \cap L^2(0, \infty; H^2(\Omega)),\qquad \frac{du}{dt} \in L^2(0, \infty; L^2(\Omega)),$$
+
+  and $\int_0^T \lvert du/dt(t)\rvert_{L^2}^2\,dt + \tfrac{1}{2}\lvert\nabla u(T)\rvert_{L^2}^2 = \tfrac{1}{2}\lvert\nabla u_0\rvert_{L^2}^2$.
+
+* **(b)** If $u_0 \in H^2(\Omega) \cap H^1_0(\Omega)$, then $u \in C([0, \infty); H^2) \cap L^2(0, \infty; H^3)$ and $du/dt \in L^2(0, \infty; H^1_0)$.
+
+* **(c)** If $u_0 \in H^k(\Omega)$ for every $k$ and satisfies the **compatibility conditions**
+
+  $$
+  \boxed{\;u_0 = \Delta u_0 = \cdots = \Delta^j u_0 = \cdots = 0\text{ on }\Gamma\;} \tag{8}
+  $$
+
+  for every $j$, then $u \in C^\infty(\bar\Omega \times [0, \infty))$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof (sketch)</summary>
+
+* **(a)** Work in $H_1 = H^1_0(\Omega)$ with the scalar product $(u, v)_{H_1} = \int(\nabla u \cdot \nabla v + uv)$. Let $A_1 : D(A_1) \subset H_1 \to H_1$ be defined by $D(A_1) = \lbrace u \in H^3 \cap H^1_0\,;\ \Delta u \in H^1_0\rbrace$ and $A_1 u = -\Delta u$. One checks $A_1$ is self-adjoint maximal monotone in $H_1$ (using Theorem 9.25 for maximality + Theorem 9.17 for the kernel structure). Apply Theorem 7.7 in $H_1$ — uniqueness gives this is the same $u$ as in Theorem 10.1.
+* **(b)** Same scheme with $H_2 = H^2 \cap H^1_0$ and $A_2$ defined accordingly.
+* **(c)** Apply Theorem 7.5 (higher regularity in Hille–Yosida) — assumption $(8)$ says exactly $u_0 \in D(A^k)$ for every $k$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Smoothing effect and time irreversibility)</span></p>
+
+Theorem 10.1 says the heat equation has a **strong smoothing effect**: $u(x, t)$ is $C^\infty$ in $x$ for every $t > 0$ even if $u_0$ is discontinuous! As a corollary, the heat equation is **time-irreversible**: in general one cannot solve the *backward* problem
+
+$$
+\frac{\partial u}{\partial t} - \Delta u = 0 \text{ in } \Omega \times (0, T),\quad u = 0 \text{ on } \Sigma,\quad u(x, T) = u_T(x).
+$$
+
+For solvability one would need at minimum $u_T \in C^\infty(\bar\Omega)$ with $\Delta^j u_T = 0$ on $\Gamma$ for every $j$ — and even then, in general, *no* such backward solution exists. (This is **not** the same as $-\partial u/\partial t - \Delta u = 0$ with final data, which always has a solution by the change $t \to T - t$.)
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Neumann variant)</span></p>
+
+The above results are also true — with slight modifications — if the Dirichlet condition $u = 0$ on $\Sigma$ is replaced by the Neumann condition $\partial u/\partial n = 0$.
+
+</div>
+
+#### Spectral / Fourier method
+
+When $\Omega$ is bounded, problem $(1), (2), (3)$ can be solved via *decomposition in a Hilbert basis* of $L^2(\Omega)$. Take $(e_i)$ to be eigenfunctions of $-\Delta$ with Dirichlet condition (Theorem 9.31): $-\Delta e_i = \lambda_i e_i$, $e_i = 0$ on $\Gamma$, $\lambda_i > 0$. Seek $u(x, t) = \sum_i a_i(t) e_i(x)$. Substituting into $(1)$ gives $a'_i(t) + \lambda_i a_i(t) = 0$, hence $a_i(t) = a_i(0) e^{-\lambda_i t}$, with $a_i(0) = (u_0, e_i)_{L^2} = \int_\Omega u_0 e_i$. Thus
+
+$$
+\boxed{\;u(x, t) = \sum_{i=1}^\infty a_i(0) e^{-\lambda_i t} e_i(x).\;} \tag{14}
+$$
+
+This is the **method of separation of variables** (or **Fourier method**) — the original setting in which Fourier discovered Fourier series, studying the heat equation in one space dimension. (For convergence and regularity of this series, see Weinberger.)
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why the compatibility conditions look mysterious)</span></p>
+
+The compatibility conditions $(8)$ are *necessary* for $u \in C^\infty(\bar\Omega \times [0, \infty))$. Indeed, if such $u$ exists, then $u = 0$ on $\Sigma$ extends by continuity to give $\partial^j u/\partial t^j = 0$ on $\Gamma \times [0, \infty)$ for all $j$. On the other hand, $\partial^2 u/\partial t^2 = \Delta(\partial u/\partial t) = \Delta^2 u$ in $Q$, and inductively $\partial^j u/\partial t^j = \Delta^j u$ in $Q$, hence on $\bar\Omega \times [0, \infty)$ by continuity. Comparing on $\Gamma \times \lbrace 0\rbrace$ gives $(8)$.
+
+</div>
+
+### 10.2 The Maximum Principle
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.3</span><span class="math-callout__name">(Maximum principle for the heat equation)</span></p>
+
+Assume $u_0 \in L^2(\Omega)$ and let $u$ be the solution of $(1), (2), (3)$. Then for all $(x, t) \in Q$,
+
+$$
+\boxed{\;\min\Big\lbrace 0, \inf_\Omega u_0\Big\rbrace \le u(x, t) \le \max\Big\lbrace 0, \sup_\Omega u_0\Big\rbrace.\;}
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof (Stampacchia's truncation method)</summary>
+
+Set $K = \max\lbrace 0, \sup_\Omega u_0\rbrace$, assume $K < \infty$. Take $G$ as in Theorem 9.27 ($G(s) = 0$ for $s \le 0$, strictly increasing for $s > 0$, $\lvert G'\rvert \le M$), and set $H(s) = \int_0^s G(\sigma)\,d\sigma$. Define
+
+$$
+\varphi(t) = \int_\Omega H(u(x, t) - K)\,dx.
+$$
+
+Then $\varphi \in C([0, \infty); \mathbb{R}) \cap C^1((0, \infty); \mathbb{R})$ with $\varphi(0) = 0$ and $\varphi \ge 0$. Compute
+
+$$
+\varphi'(t) = \int_\Omega G(u - K)\frac{\partial u}{\partial t} = \int_\Omega G(u - K)\Delta u = -\int_\Omega G'(u - K)\lvert\nabla u\rvert^2 \le 0,
+$$
+
+using integration by parts (valid since $G(u - K) \in H^1_0(\Omega)$ for every $t > 0$ — because $u(t) \in H^1_0$ and $u \le 0 \le K$ on $\Gamma$, so $u - K \le 0$ on $\Gamma$, and $G$ vanishes there). Hence $\varphi \equiv 0$, so $u \le K$ a.e. The lower bound applies to $-u$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 10.4</span><span class="math-callout__name">(Comparison + $L^\infty$ bound)</span></p>
+
+Let $u_0 \in L^2(\Omega)$.
+
+* **(i)** $u_0 \ge 0$ a.e. on $\Omega \Rightarrow u \ge 0$ in $Q$.
+* **(ii)** $u_0 \in L^\infty(\Omega) \Rightarrow u \in L^\infty(Q)$ with
+
+$$
+\|u\|_{L^\infty(Q)} \le \|u_0\|_{L^\infty(\Omega)}. \tag{19}
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary 10.5</span><span class="math-callout__name">(Continuity up to $\bar Q$)</span></p>
+
+Let $u_0 \in C(\bar\Omega) \cap L^2(\Omega)$ with $u_0 = 0$ on $\Gamma$. Then the solution $u$ of $(1), (2), (3)$ belongs to $C(\bar Q)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 10.5</summary>
+
+Approximate $u_0$ by $u_{0n} \in C^\infty_c(\Omega)$ with $u_{0n} \to u_0$ in $L^\infty(\Omega)$ and in $L^2(\Omega)$. By Theorem 10.2(c), $u_n \in C^\infty(\bar Q)$. The maximum-principle estimate $(19)$ gives $\|u_n - u_m\|_{L^\infty(Q)} \le \|u_{0n} - u_{0m}\|_{L^\infty(\Omega)}$, so $(u_n)$ is Cauchy in $C(\bar Q)$, with limit $u \in C(\bar Q)$. $\square$
+
+</details>
+</div>
+
+#### Classical maximum principle
+
+There is also a classical proof — we sketch it for a more general parabolic inequality.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.6</span><span class="math-callout__name">(Parabolic maximum principle, classical form)</span></p>
+
+Suppose $\Omega$ is bounded and $u \in C(\bar\Omega \times [0, T])$ is $C^1$ in $t$, $C^2$ in $x$, with
+
+$$
+\frac{\partial u}{\partial t} - \Delta u \le 0\quad \text{in } \Omega \times (0, T). \tag{22}
+$$
+
+Then
+
+$$
+\boxed{\;\max_{\bar\Omega \times [0, T]} u = \max_P u,\;}
+$$
+
+where $P = (\bar\Omega \times \lbrace 0\rbrace) \cup (\Gamma \times [0, T])$ is the **parabolic boundary** of the cylinder.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Set $v(x, t) = u(x, t) + \varepsilon\lvert x\rvert^2$ with $\varepsilon > 0$. Then $\partial v/\partial t - \Delta v = (\partial u/\partial t - \Delta u) - 2\varepsilon N \le -2\varepsilon N < 0$. Suppose, for contradiction, $\max_{\bar\Omega \times [0, T]} v$ is attained at $(x_0, t_0) \notin P$, so $x_0 \in \Omega, 0 < t_0 \le T$. Then $\Delta v(x_0, t_0) \le 0$ (interior maximum in $x$) and $\partial v/\partial t(x_0, t_0) \ge 0$ (max in $t$, with $\ge 0$ since either $t_0 < T$ giving $= 0$ or $t_0 = T$ giving $\ge 0$). Hence $(\partial v/\partial t - \Delta v)(x_0, t_0) \ge 0$ — contradiction.
+
+So $\max v = \max_P v \le \max_P u + \varepsilon C$ where $C = \sup_\Omega \lvert x\rvert^2$. Then $\max u \le \max v \le \max_P u + \varepsilon C$ for every $\varepsilon > 0$, giving the result. $\square$
+
+</details>
+</div>
+
+### 10.3 The Wave Equation
+
+We seek $u(x, t) : \bar\Omega \times [0, +\infty) \to \mathbb{R}$ satisfying
+
+$$
+\boxed{\;\begin{cases} \dfrac{\partial^2 u}{\partial t^2} - \Delta u = 0 & \text{in } Q, \\ u = 0 & \text{on } \Sigma, \\ u(x, 0) = u_0(x) & \text{on } \Omega, \\ \dfrac{\partial u}{\partial t}(x, 0) = v_0(x) & \text{on } \Omega. \end{cases}\;} \tag{27, 28, 29, 30}
+$$
+
+This is the **wave equation**. The operator $\partial^2/\partial t^2 - \Delta$ is often denoted $\Box$ and called the **d'Alembertian**. The wave equation is the prototype *hyperbolic* equation; it models small vibrations (a string for $N = 1$, a membrane for $N = 2$) and propagation of acoustic / electromagnetic waves in homogeneous elastic media. $(28)$ says the boundary is *fixed*; $(29), (30)$ are the **Cauchy data** — initial position and initial velocity.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.7</span><span class="math-callout__name">(Existence and uniqueness for the wave equation)</span></p>
+
+Assume $u_0 \in H^2(\Omega) \cap H^1_0(\Omega)$ and $v_0 \in H^1_0(\Omega)$. There exists a unique solution $u$ of $(27), (28), (29), (30)$ satisfying
+
+$$
+u \in C([0, \infty); H^2(\Omega) \cap H^1_0(\Omega)) \cap C^1([0, \infty); H^1_0(\Omega)) \cap C^2([0, \infty); L^2(\Omega)). \tag{31}
+$$
+
+Moreover, the **energy is conserved**:
+
+$$
+\boxed{\;\Big\lvert\frac{\partial u}{\partial t}(t)\Big\rvert_{L^2}^2 + \lvert\nabla u(t)\rvert_{L^2}^2 = \lvert v_0\rvert_{L^2}^2 + \lvert\nabla u_0\rvert_{L^2}^2\quad \forall t \ge 0.\;} \tag{32}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Conservation law)</span></p>
+
+Equation $(32)$ is a **conservation law**: the total energy (kinetic $\tfrac{1}{2}\lvert\partial u/\partial t\rvert^2$ + potential $\tfrac{1}{2}\lvert\nabla u\rvert^2$) is *invariant* in time. Contrast this with the heat equation, where energy *dissipates*: $\tfrac{d}{dt}\tfrac{1}{2}\lvert u\rvert^2 = -\lvert\nabla u\rvert^2 \le 0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 10.7</summary>
+
+Convert to a first-order system by setting $v = \partial u/\partial t$. Then $(27)$ becomes
+
+$$
+\frac{\partial u}{\partial t} - v = 0,\qquad \frac{\partial v}{\partial t} - \Delta u = 0\quad \text{in } Q. \tag{33}
+$$
+
+Set $U = (u, v)^T$, so $(33)$ becomes $dU/dt + AU = 0$ with
+
+$$
+AU = \begin{pmatrix} 0 & -I \\ -\Delta & 0 \end{pmatrix}\begin{pmatrix} u \\ v\end{pmatrix} = \begin{pmatrix} -v \\ -\Delta u\end{pmatrix}. \tag{35}
+$$
+
+Apply Hille–Yosida in $H = H^1_0(\Omega) \times L^2(\Omega)$ with the scalar product $(U_1, U_2)_H = \int \nabla u_1 \cdot \nabla u_2 + \int u_1 u_2 + \int v_1 v_2$. Define $A : D(A) \subset H \to H$ by $(35)$ and $D(A) = (H^2 \cap H^1_0) \times H^1_0$.
+
+We check $A + I$ is maximal monotone:
+
+* **$A + I$ monotone**: $(AU, U)_H + \lvert U\rvert_H^2 = -\int \nabla v \cdot \nabla u - \int uv + \int(-\Delta u)v + \int u^2 + \int \lvert\nabla u\rvert^2 + \int v^2$. The first term equals $\int(-\Delta u)v$ on $H^1_0$ (integration by parts), so the cross-terms cancel: $= -\int uv + \int u^2 + \int v^2 + \int \lvert\nabla u\rvert^2 \ge 0$.
+
+* **$A + I$ maximal monotone**: must show $A + 2I$ is surjective. Given $F = (f, g) \in H$, solve $-v + 2u = f$, $-\Delta u + 2v = g$. Eliminate: $-\Delta u + 4u = 2f + g$, which by Theorem 9.25 has a unique $u \in H^2 \cap H^1_0$. Then $v = 2u - f \in H^1_0$.
+
+Apply Theorem 7.4 (Hille–Yosida): for $U_0 = (u_0, v_0) \in D(A)$ — hence $u_0 \in H^2 \cap H^1_0$, $v_0 \in H^1_0$ — there is a unique $U \in C^1([0, \infty); H) \cap C([0, \infty); D(A))$ satisfying $dU/dt + AU = 0$, $U(0) = U_0$. This gives $(31)$.
+
+Energy conservation $(32)$: multiply $(27)$ by $\partial u/\partial t$ and integrate over $\Omega$:
+
+$$
+\frac{1}{2}\frac{d}{dt}\Big[\Big\lvert\frac{\partial u}{\partial t}\Big\rvert_{L^2}^2 + \lvert\nabla u\rvert_{L^2}^2\Big] = 0. \quad \square
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Group of isometries)</span></p>
+
+For bounded $\Omega$, an alternative is to work on $H^1_0$ with the *equivalent* scalar product $\int \nabla u_1 \cdot \nabla u_2$ (by Poincaré). Then on $H = H^1_0 \times L^2$, $(AU, U) = -\int \nabla v \cdot \nabla u + \int(-\Delta u)v = 0$ for $U = (u, v) \in D(A)$. So **both $A$ and $-A$ are maximal monotone**, and $A^\star = -A$ — i.e., $A$ is *skew-adjoint*. The semigroup $S_A(t)$ extends to a *group* on $\mathbb{R}$:
+
+$$
+\boxed{\;\frac{dU}{dt} - AU = 0\text{ on } [0, +\infty)\quad \Longleftrightarrow\quad \frac{dU}{dt} + AU = 0\text{ on } (-\infty, 0]\text{ (via }t \mapsto -t\text{).}\;}
+$$
+
+Equation $(32)$ becomes $\lvert U(t)\rvert_H = \lvert U_0\rvert_H\ \forall t \in \mathbb{R}$, so $\lbrace S_A(t)\rbrace_{t \in \mathbb{R}}$ is a **group of isometries** on $H$. **Time is reversible.**
+
+</div>
+
+#### Higher regularity
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.8</span><span class="math-callout__name">(Smooth solutions for compatible smooth data)</span></p>
+
+Assume $u_0, v_0 \in H^k(\Omega)$ for every $k$, and the **compatibility conditions**
+
+$$
+\Delta^j u_0 = 0\text{ on }\Gamma\quad \forall j \ge 0,\qquad \Delta^j v_0 = 0\text{ on }\Gamma\quad \forall j \ge 0.
+$$
+
+Then the solution $u$ of $(27), (28), (29), (30)$ belongs to $C^\infty(\bar\Omega \times [0, \infty))$.
+
+</div>
+
+(The proof identifies $D(A^k)$ explicitly and applies Theorem 7.5.)
+
+#### No smoothing — propagation of singularities
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(No smoothing for the wave equation)</span></p>
+
+The wave equation has **no smoothing effect** on initial data — sharply contrasting with the heat equation. To see this, consider $\Omega = \mathbb{R}$. The explicit **d'Alembert solution** of $(27)$ on $\mathbb{R}$:
+
+$$
+\boxed{\;u(x, t) = \tfrac{1}{2}(u_0(x + t) + u_0(x - t)) + \tfrac{1}{2}\int_{x-t}^{x+t} v_0(s)\,ds.\;} \tag{40}
+$$
+
+If $v_0 = 0$, $u(x, t) = \tfrac{1}{2}(u_0(x + t) + u_0(x - t))$. So $u$ is *no more regular than $u_0$*. More precisely, if $u_0 \in C^\infty(\mathbb{R} \setminus \lbrace x_0\rbrace)$ with a singularity at $x_0$, then $u$ is $C^\infty$ on $\mathbb{R} \times \mathbb{R}$ except on the two lines $x + t = x_0$ and $x - t = x_0$ — the **characteristics** through $(x_0, 0)$. Thus *singularities propagate along the characteristics*.
+
+</div>
+
+#### Spectral / Fourier method
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Series solution on bounded $\Omega$)</span></p>
+
+For bounded $\Omega$, one can solve $(27)$–$(30)$ via decomposition in the Hilbert basis $(e_i)$ of $L^2(\Omega)$ from §9.8. Seek $u(x, t) = \sum_i a_i(t) e_i(x)$. Substituting into $(27)$ gives $a''_i(t) + \lambda_i a_i(t) = 0$, hence
+
+$$
+a_i(t) = a_i(0)\cos(\sqrt{\lambda_i}\,t) + \frac{a'_i(0)}{\sqrt{\lambda_i}}\sin(\sqrt{\lambda_i}\,t),
+$$
+
+with $a_i(0) = (u_0, e_i)$ and $a'_i(0) = (v_0, e_i)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Klein–Gordon variant)</span></p>
+
+The methods of §10.3 also apply to the **Klein–Gordon equation**
+
+$$
+\frac{\partial^2 u}{\partial t^2} - \Delta u + m^2 u = 0\text{ in } Q,\quad m > 0. \tag{27'}
+$$
+
+Note that $(27')$ *cannot* be reduced to $(27)$ by a change of unknown like $v(x, t) = e^{\lambda t}u(x, t)$.
+
+</div>
+
+### Comments on Chapter 10
+
+#### Comments on the heat equation
+
+##### 1. The approach of J.-L. Lions
+
+A general framework that proves existence + uniqueness of *weak solutions* for parabolic problems — viewed as a *parabolic counterpart of Lax–Milgram*. Let $H$ be a Hilbert space (identify $H^\star$ with $H$), $V \subset H$ a Hilbert space densely and continuously injected, so $V \subset H \subset V^\star$. For each $t \in [0, T]$ we are given a bilinear form $a(t; u, v) : V \times V \to \mathbb{R}$ satisfying:
+
+* **(i)** $t \mapsto a(t; u, v)$ measurable for all $u, v \in V$;
+* **(ii)** $\lvert a(t; u, v)\rvert \le M\|u\|\|v\|$ a.e.;
+* **(iii)** $a(t; v, v) \ge \alpha\|v\|^2 - C\lvert v\rvert^2$ a.e., for some $\alpha > 0, C \ge 0$ (Gårding-type coercivity).
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.9</span><span class="math-callout__name">(J.-L. Lions)</span></p>
+
+Given $f \in L^2(0, T; V^\star)$ and $u_0 \in H$, there exists a unique $u$ with
+
+$$
+u \in L^2(0, T; V) \cap C([0, T]; H),\qquad \frac{du}{dt} \in L^2(0, T; V^\star),
+$$
+
+satisfying $\langle du/dt(t), v\rangle + a(t; u(t), v) = \langle f(t), v\rangle$ for a.e. $t$, for all $v \in V$, and $u(0) = u_0$.
+
+</div>
+
+**Application.** $H = L^2(\Omega)$, $V = H^1_0(\Omega)$, $a(t; u, v) = \sum \int a_{ij}(x, t)\partial u/\partial x_i \partial v/\partial x_j + \sum \int a_i(x, t)\partial u/\partial x_i v + \int a_0(x, t)uv$ with $a_{ij}, a_i, a_0 \in L^\infty$ and uniform ellipticity yields a weak solution of the parabolic problem with general elliptic operator in space, Dirichlet boundary condition, and initial data $u_0$.
+
+##### 2. $C^\infty$-regularity
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.10</span><span class="math-callout__name">($C^\infty$ regularity)</span></p>
+
+If $\Omega$ is bounded $C^\infty$ and the coefficients $a_{ij}, a_i, a_0 \in C^\infty(\bar\Omega \times [0, T])$ satisfy ellipticity, then for $u_0 \in L^2$ and $f \in C^\infty(\bar\Omega \times [0, T])$, the solution $u$ of $(43)$ belongs to $C^\infty(\bar\Omega \times [\varepsilon, T])$ for every $\varepsilon > 0$. If additionally $u_0 \in C^\infty(\bar\Omega)$ and $\lbrace f, u_0\rbrace$ satisfy appropriate compatibility conditions on $\Gamma \times \lbrace 0\rbrace$, then $u \in C^\infty(\bar\Omega \times [0, T])$.
+
+</div>
+
+There is also an *abstract* Hille–Yosida-type theory for $du/dt + A(t)u = f(t)$ with each $A(t)$ maximal monotone — Kato, Tanabe, Sobolevski, Friedman, Yosida.
+
+##### 3. $L^p$ and $C^{0, \alpha}$ regularity
+
+For the model heat equation $\partial u/\partial t - \Delta u = f$ in $\Omega \times (0, T)$, $u = 0$ on $\Sigma$, $u(\cdot, 0) = u_0$:
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.11</span><span class="math-callout__name">($L^2$-regularity)</span></p>
+
+For $f \in L^2(\Omega \times (0, T))$ and $u_0 \in H^1_0(\Omega)$, there is a unique solution with
+
+$$
+u \in C([0, T]; H^1_0) \cap L^2(0, T; H^2 \cap H^1_0),\qquad \partial u/\partial t \in L^2(0, T; L^2).
+$$
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.12</span><span class="math-callout__name">($L^p$-regularity)</span></p>
+
+For $1 < p < \infty$, $f \in L^p(\Omega \times (0, T))$ and $u_0 = 0$, there is a unique solution $u$ with $u, \partial u/\partial t, \partial u/\partial x_i, \partial^2 u/\partial x_i \partial x_j \in L^p(\Omega \times (0, T))$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.13</span><span class="math-callout__name">(Hölder regularity)</span></p>
+
+For $0 < \alpha < 1$, $f \in C^{\alpha, \alpha/2}(\bar\Omega \times [0, T])$ (Hölder $\alpha$ in $x$, $\alpha/2$ in $t$) and $u_0 \in C^{2+\alpha}(\bar\Omega)$ satisfying the natural compatibility conditions $u_0 = 0$ on $\Gamma$, $-\Delta u_0 = f(\cdot, 0)$ on $\Gamma$, there is a unique solution $u$ with $u, \partial u/\partial t, \partial u/\partial x_i, \partial^2 u/\partial x_i \partial x_j \in C^{\alpha, \alpha/2}(\bar\Omega \times [0, T])$.
+
+</div>
+
+The proofs (except $p = 2$) rely on (i) explicit fundamental-solution representations (the **heat kernel** $E(x, t) = (4\pi t)^{-N/2}e^{-\lvert x\rvert^2/4t}$ on $\mathbb{R}^N$) and (ii) singular-integral techniques. The general philosophy: if $u$ solves the heat equation with $u_0 = 0$, then $\partial u/\partial t$ and $\Delta u$ have the *same regularity as $f$*. **Nash–Moser** for irregular $a_{ij} \in L^\infty$: there is some $\alpha > 0$ with $u \in C^{\alpha, \alpha/2}(\bar\Omega \times [0, T])$.
+
+##### 4. Some examples of parabolic equations
+
+Linear and nonlinear parabolic equations occur in mechanics, physics, chemistry, biology, optimal control, probability, finance, image processing, etc.:
+
+* **(i) Navier–Stokes**: $\partial u_i/\partial t - \Delta u_i + \sum_j u_j \partial u_i/\partial x_j = f_i + \partial p/\partial x_i$ with $\mathrm{div}\,u = 0$ (Temam).
+* **(ii) Reaction–diffusion systems**: $\partial \mathbf{u}/\partial t - M\Delta\mathbf{u} = f(\mathbf{u})$, $M$ a diagonal matrix, $f : \mathbb{R}^m \to \mathbb{R}^m$ nonlinear. Models phenomena in chemistry, biology, neurophysiology, epidemiology, combustion, population genetics, ecology, geology — with rich behaviors including traveling waves and self-organized patterns.
+* **(iii) Free boundary problems**: e.g., the **Stefan problem** (evolution of an ice/water mixture).
+* **(iv) Diffusion** in probability — Brownian motion, Markov processes, stochastic differential equations.
+* **(v)** Semilinear parabolic problems (Henry, Cazenave–Haraux).
+* **(vi)** Atiyah–Singer index via the heat equation.
+* **(vii) Image processing** uses sophisticated nonlinear diffusion (Perona–Malik). The **Perelman** proof of the Poincaré conjecture relies on Hamilton's study of **Ricci flow** — a kind of nonlinear heat equation.
+
+##### 5. Maximum principle for parabolic equations
+
+A *strong maximum principle* holds: if $u$ solves $(1), (2), (3)$ with $u_0 \ge 0$ and $u_0 \not\equiv 0$, then $u(x, t) > 0$ for *every* $x \in \Omega$ and $t > 0$ — strict positivity, with infinite speed of propagation.
+
+#### Comments on the wave equation
+
+##### 6. Weak solutions of the wave equation
+
+A general abstract framework in the spirit of Lions (Comment 1):
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10.14</span><span class="math-callout__name">(J.-L. Lions, weak solutions of wave equation)</span></p>
+
+Let $V \subset H \subset V^\star$. Given a $C^1$-in-$t$ symmetric continuous coercive bilinear form $a(t; u, v)$ on $V \times V$, $f \in L^2(0, T; H)$, $u_0 \in V$, $v_0 \in H$, there is a unique $u$ with $u \in C([0, T]; V)$, $du/dt \in C([0, T]; H)$, $d^2 u/dt^2 \in L^2(0, T; V^\star)$, satisfying
+
+$$
+\Big\langle\frac{d^2 u}{dt^2}, v\Big\rangle + a(t; u, v) = \langle f, v\rangle\quad \forall v \in V,\ a.e.\ t,
+$$
+
+with $u(0) = u_0$, $du/dt(0) = v_0$.
+
+</div>
+
+Note the initial-data assumptions ($u_0 \in H^1_0$, $v_0 \in L^2$) are *weaker* than in Theorem 10.7. Lions–Magenes contains the proof.
+
+##### 7. The $L^p$-theory for wave equation
+
+Delicate; **Strichartz estimates** are an important tool (Klainerman).
+
+##### 8. Maximum principle for the wave equation
+
+Special forms of maximum principle hold (Protter–Weinberger). For example, for $u$ solving $(27), (28), (29), (30)$:
+
+* **(i)** $\Omega = \mathbb{R}$, $u_0 \ge 0$, $v_0 \ge 0$ $\Rightarrow$ $u \ge 0$ (from formula $(40)$).
+* **(ii)** $\Omega = \mathbb{R}^N$, $u_0 \ge 0$, $v_0 = 0$ $\Rightarrow$ $u \ge 0$ (Mizohata, Folland, Weinberger, Courant–Hilbert, Mikhlin).
+* **(iii)** $\Omega = (0, 1)$, $u_0 \ge 0$, $v_0 = 0$: in general one *cannot* conclude $u \ge 0$.
+* **(iv)** $\Omega = \mathbb{R}^2$, $u_0 \ge 0$, $v_0 = 0$: in general one *cannot* conclude $u \ge 0$.
+
+##### 9. Domain of dependence. Wave propagation. Huygens' principle
+
+There is a **fundamental difference** between heat and wave:
+
+* For the **heat equation**, a small perturbation of the initial data is *immediately felt everywhere*: $u_0 \ge 0$ and $u_0 \not\equiv 0$ implies $u(x, t) > 0$ for every $x \in \Omega, t > 0$. The heat propagates **at infinite speed**.
+* For the **wave equation**, the situation is **completely different**. For $\Omega = \mathbb{R}$, the d'Alembert formula $(40)$ shows $u(\bar x, \bar t)$ depends *solely* on the values of $u_0, v_0$ in $[\bar x - \bar t, \bar x + \bar t]$ — the **domain of dependence**. In $\mathbb{R}^N$, the domain of dependence is the ball $\lbrace x\,;\ \lvert x - \bar x\rvert \le \bar t\rbrace$. **Waves propagate at speed at most $1$**: a signal localized in a domain $D$ at time $0$ is felt at $x$ only after time $\ge \mathrm{dist}(x, D)$.
+
+For *odd* $N \ge 3$ (e.g., $N = 3$), there is an even more striking effect: $u(\bar x, \bar t)$ depends *only* on values of $u_0, v_0$ on the **sphere** $\lbrace x\,;\ \lvert x - \bar x\rvert = \bar t\rbrace$ — **Huygens' principle**. A signal localized in $D$ at time $0$ is observed at $x$ only during the time interval $[t_1, t_2]$ with $t_1 = \inf_{y \in D}\mathrm{dist}(x, y)$, $t_2 = \sup_{y \in D}\mathrm{dist}(x, y)$. After $t_2$ the signal has *passed*.
+
+For *even* $N$ (e.g., $N = 2$), the signal *persists* at $x$ for all $t > t_1$.
+
+**Application to music.** A listener in $\mathbb{R}^3$ at distance $d$ from a small instrument hears at time $t$ the note played at time $t - d$ and *nothing else*. (In $\mathbb{R}^2$ they would hear a weighted average of all notes played during $[0, t - d]$.)
+
+References on Huygens' principle: Courant–Hilbert, Folland, Garabedian, Mikhlin.
+
+## Chapter 11: Miscellaneous Complements
+
+This chapter gathers technical complements that were left out of the main text to keep the presentation streamlined. The material is connected to Chapters 1–7 and clusters around four themes:
+
+* **§11.1** — finite-dimensional and finite-codimensional subspaces, with the structural theorem on complementability of $G + L$ via finite-dimensional perturbations;
+* **§11.2** — quotient spaces $E/M$ and the canonical isomorphism between $(E/M)^\star$ and $M^\perp$;
+* **§11.3** — the classical sequence spaces $\ell^p, c, c_0$ — concrete realizations of the abstract reflexivity / separability / duality theory of Chapters 3 and 4;
+* **§11.4** — the general theory of Banach spaces over $\mathbb{C}$, where most of Chapters 1–5 carries over verbatim but Chapter 6 (spectrum) acquires a substantially richer flavor (the spectrum is *always* nonempty over $\mathbb{C}$, normal operators have well-behaved spectral theory, etc.).
+
+Several proofs are deliberately sketchy; the interested reader is invited to consult the references.
+
+### 11.1 Finite-Dimensional and Finite-Codimensional Spaces
+
+Recall: every finite-dimensional space $X$ of dimension $p$ is isomorphic to $\mathbb{R}^p$, complete, all norms on $X$ are equivalent, and $B_X$ is compact.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.1</span><span class="math-callout__name">(Finite-dimensional subspaces are closed)</span></p>
+
+Let $E$ be a Banach space and $X \subset E$ a finite-dimensional subspace. Then $X$ is closed.
+
+</div>
+
+(Proof: a Cauchy sequence in $X$ converges in $E$, hence in the complete space $X$.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.2</span><span class="math-callout__name">(Operators from finite-dim are bounded)</span></p>
+
+If $X$ is finite-dimensional and $F$ is a Banach space, every linear $T : X \to F$ is bounded.
+
+</div>
+
+In particular, every linear functional on a finite-dimensional space is continuous, $X^\star$ is finite-dimensional with $\dim X^\star = \dim X$, and a basis $(e_i)$ of $X$ induces a dual basis $(f_i)$ of $X^\star$ via $f_i(x) = x_i$ when $x = \sum x_j e_j$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.3</span><span class="math-callout__name">($X^\star$ finite-dim ⇒ $X$ finite-dim)</span></p>
+
+Let $X$ be a Banach space (with $\dim X \le \infty$). If $X^\star$ is finite-dimensional, then $X$ is finite-dimensional and $\dim X = \dim X^\star$.
+
+</div>
+
+(Proof: Hahn–Banach (Corollary 1.4) gives an isometric embedding $J : X \to X^{\star\star}$. Since $\dim X^{\star\star} = \dim X^\star < \infty$, $X$ is finite-dimensional.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.4</span><span class="math-callout__name">(Adding a finite-dim subspace preserves closedness + complementability)</span></p>
+
+Let $E$ be a Banach space, $M \subset E$ a closed subspace, and $X \subset E$ a finite-dimensional subspace. Then $M + X$ is closed. Moreover, $M + X$ admits a complement in $E$ if and only if $M$ does.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Warning</span><span class="math-callout__name">(In general $M_1 + M_2$ need not be closed)</span></p>
+
+The sum of two *closed* subspaces of a Banach space need not be closed (Exercise 1.14). Proposition 11.4 says that adding a *finite-dimensional* perturbation does preserve closedness.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 11.4 (sketch)</summary>
+
+**Closedness.** First reduce to the case $M \cap X = \lbrace 0\rbrace$ by replacing $X$ with a complement of $M \cap X$ in $X$ — a finite-dim manipulation. Then if $u_n = x_n + y_n \in M + X$ converges to $u$, with $x_n \in X$ and $y_n \in M$, we claim $(x_n)$ stays bounded. If not, $\|x_{n_k}\| \to \infty$ for a subsequence, and $x_{n_k}/\|x_{n_k}\|$ has a further subsequence converging to some $\xi \in X$ with $\|\xi\| = 1$. Then $y_{n_k}/\|x_{n_k}\| \to -\xi$, but $M$ is closed, so $\xi \in M \cap X = \lbrace 0\rbrace$ — contradiction. Bounded $(x_n)$ in finite-dim $X$ has a convergent subsequence; the corresponding $y_n$ also converges in $M$.
+
+**Complementability.** If $M$ has a complement $N$ and $X$ has a complement $\widetilde N$ inside $N$ (which exists because $\dim P_N(X) \le \dim X < \infty$), then $\widetilde N$ is a complement of $M + X$. Conversely, given a complement $W$ of $M + X$ and a complement $\widetilde X$ of $M \cap X$ in $X$, $W + \widetilde X$ is a complement of $M$. $\square$
+
+</details>
+</div>
+
+#### Codimension
+
+Let $M$ be a subspace of $E$. We say $M$ has **finite codimension** if there is a finite-dimensional $X \subset E$ with $M + X = E$. We may always assume $M \cap X = \lbrace 0\rbrace$. The **codimension** $\mathrm{codim}\,M$ is $\dim X$ — independent of the choice of $X$, and equal to $\dim(E/M)$.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Warning</span><span class="math-callout__name">(Finite codim ⇏ closed)</span></p>
+
+A subspace of finite codimension need *not* be closed. For example, take a discontinuous linear functional $f$ on an infinite-dim $E$ (Exercise 1.5). Then $M = f^{-1}(\lbrace 0\rbrace)$ has codimension 1 but is *not closed* (Proposition 1.5); in fact $M$ is dense in $E$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.5</span><span class="math-callout__name">(Sandwich between closed finite-codim subspaces)</span></p>
+
+Let $M$ be a closed subspace of finite codimension. Any subspace $\widetilde M$ of $E$ containing $M$ is closed.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.6</span><span class="math-callout__name">(Complement inside a dense subspace)</span></p>
+
+If $M$ is closed of finite codimension and $D$ is a dense subspace of $E$, there exists a complement $X$ of $M$ with $X \subset D$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.7</span><span class="math-callout__name">(Complementability for $G + L$ closed)</span></p>
+
+Let $G, L \subset E$ be closed subspaces. Assume there exist finite-dimensional $X_1, X_2 \subset E$ with
+
+$$
+G + L + X_1 = E\quad \text{and}\quad G \cap L \subset X_2.
+$$
+
+Then $G$ (resp. $L$) admits a complement.
+
+</div>
+
+(Proof: a two-step argument — first the case $X_2 = \lbrace 0\rbrace$, then localize to $G \cap L$ via a finite-dim splitting.)
+
+### 11.2 Quotient Spaces
+
+Let $E$ be a Banach space and $M \subset E$ a closed subspace. The equivalence relation $x \sim y \iff x - y \in M$ partitions $E$ into equivalence classes; the **quotient space** $E/M$ is the vector space of these classes. The canonical projection $\pi : E \to E/M$, $\pi(x) = [x]$, is surjective and linear. The **quotient norm** is
+
+$$
+\boxed{\;\|[x]\|_{E/M} = \inf_{m \in M}\|x - m\|.\;}
+$$
+
+This is a norm (using $M$ closed), and $\pi$ is bounded with $\|\pi\| \le 1$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.8</span><span class="math-callout__name">($E/M$ is Banach)</span></p>
+
+Equipped with the quotient norm, $E/M$ is a Banach space.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Take a Cauchy sequence $(\pi(x_k))$ in $E/M$. Pass to a subsequence with $\|\pi(x_{k+1}) - \pi(x_k)\|_{E/M} < 1/2^k$. Choose $m_k \in M$ with $\|x_{k+1} - x_k - m_k\| < 1/2^k$ (using the inf in the quotient norm). Set $\bar x_k = x_k - \sum_{j < k} m_j$; then $\|\bar x_{k+1} - \bar x_k\| < 1/2^k$, so $(\bar x_k)$ is Cauchy in $E$, with limit $\ell \in E$. Then $\pi(x_k) = \pi(\bar x_k) \to \pi(\ell)$. $\square$
+
+</details>
+</div>
+
+#### Duality: $(E/M)^\star \cong M^\perp$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.9</span><span class="math-callout__name">($\pi^\star$ is an isometry $(E/M)^\star \to M^\perp$)</span></p>
+
+Let $M \subset E$ be a closed subspace and $\pi^\star : (E/M)^\star \to E^\star$ the adjoint of $\pi$. Then $R(\pi^\star) = M^\perp$, and $\pi^\star$ is an *isometric isomorphism* from $(E/M)^\star$ onto $M^\perp$:
+
+$$
+\boxed{\;(E/M)^\star \cong M^\perp\quad \text{(isomorphism + isometry).}\;}
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.10</span><span class="math-callout__name">($E^\star/M^\perp \cong M^\star$)</span></p>
+
+Let $T : E^\star \to M^\star$ be restriction-to-$M$. Then $T$ factors as $T = \widetilde T \circ \pi$ with $\widetilde T : E^\star/M^\perp \to M^\star$, and $\widetilde T$ is a bijective *isometry*:
+
+$$
+\boxed{\;E^\star/M^\perp \cong M^\star\quad \text{(isomorphism + isometry).}\;}
+$$
+
+</div>
+
+(Proof: Hahn–Banach (Corollary 1.2) ensures every $f \in M^\star$ extends to $\tilde f \in E^\star$ with $\|\tilde f\| = \|f\|$, and the equivalence class $[\tilde f] \in E^\star/M^\perp$ is independent of the extension.)
+
+#### Inheritance of structural properties
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.11</span><span class="math-callout__name">(Reflexivity descends to quotients)</span></p>
+
+If $E$ is reflexive and $M \subset E$ is a closed subspace, then $E/M$ is reflexive.
+
+</div>
+
+(Proof: $E^\star$ is reflexive (Corollary 3.21), so its closed subspace $M^\perp$ is reflexive (Proposition 3.20). By Proposition 11.9, $(E/M)^\star \cong M^\perp$ is reflexive, hence so is $E/M$ — Corollary 3.21 again.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.12</span><span class="math-callout__name">(Uniform convexity descends)</span></p>
+
+If $E$ is uniformly convex and $M \subset E$ is a closed subspace, then $E/M$ is uniformly convex.
+
+</div>
+
+(Proof: given $\pi(x), \pi(y) \in E/M$ with norms $\le 1$ and $\|\pi(x) - \pi(y)\| > \varepsilon$, reflexivity of $E$ + Corollary 3.23 give $m_1, m_2 \in M$ achieving $\|x - m_1\|, \|y - m_2\| \le 1$. Apply uniform convexity in $E$ to $(x - m_1)$ and $(y - m_2)$.)
+
+#### Dimension / codimension duality
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.13</span><span class="math-callout__name">(Dimension ↔ codimension via $\perp$)</span></p>
+
+Let $M \subset E$ be a closed subspace.
+
+* **(a)** $\dim M < \infty$ iff $\mathrm{codim}\,M^\perp < \infty$, in which case $\dim M = \mathrm{codim}\,M^\perp$.
+* **(b)** $\mathrm{codim}\,M < \infty$ iff $\dim M^\perp < \infty$, in which case $\mathrm{codim}\,M = \dim M^\perp$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.14</span><span class="math-callout__name">(Dual statement, partially true)</span></p>
+
+Let $N \subset E^\star$ be a closed subspace. Then $\dim N < \infty$ iff $\mathrm{codim}\,N^\perp < \infty$, and in that case $\dim N = \mathrm{codim}\,N^\perp$. It is *also* true that $\dim N^\perp \le \mathrm{codim}\,N$, but in general one may have $\dim N^\perp < \mathrm{codim}\,N < \infty$.
+
+</div>
+
+(The asymmetry comes from the failure of $\overline N = N^{\perp\perp}$ in general — see the remark after Proposition 1.9. Concrete example: $\xi \in E^{\star\star} \setminus J(E)$ and $N = \xi^{-1}(\lbrace 0\rbrace) \subset E^\star$ a hyperplane, but $N^\perp = \lbrace 0\rbrace$ in $E$.)
+
+### 11.3 Some Classical Spaces of Sequences
+
+For $x = (x_1, x_2, \ldots, x_k, \ldots)$ set
+
+$$
+\|x\|_p = \Big(\sum_{k=1}^\infty \lvert x_k\rvert^p\Big)^{1/p},\ 1 \le p < \infty,\qquad \|x\|_\infty = \sup_k \lvert x_k\rvert,
+$$
+
+and define
+
+$$
+\boxed{\;\ell^p = \lbrace x\,;\ \|x\|_p < \infty\rbrace,\quad \ell^\infty = \lbrace x\,;\ \|x\|_\infty < \infty\rbrace.\;}
+$$
+
+These are Banach spaces (either via Theorem 4.8 with $\Omega = \mathbb{N}$ + counting measure, or directly).
+
+Two important subspaces of $\ell^\infty$:
+
+$$
+c = \lbrace x\,;\ \lim_k x_k\text{ exists}\rbrace,\qquad c_0 = \lbrace x\,;\ \lim_k x_k = 0\rbrace,
+$$
+
+both equipped with the $\ell^\infty$ norm; $c_0 \subset c \subset \ell^\infty$ with $c_0$ closed in $c$ and $c$ closed in $\ell^\infty$. Hölder's inequality reads
+
+$$
+\Big\lvert\sum x_k y_k\Big\rvert \le \|x\|_p \|y\|_{p'}\quad \forall x \in \ell^p, y \in \ell^{p'},\quad \tfrac{1}{p} + \tfrac{1}{p'} = 1.
+$$
+
+$\ell^2$ is a Hilbert space with $(x, y) = \sum x_k y_k$. The inclusions $\ell^p \subset \ell^q$ for $p \le q$ hold with $\|x\|_q \le \|x\|_p$; $\ell^p \subset c_0$ for every $p < \infty$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.15</span><span class="math-callout__name">($\ell^p$ is reflexive + uniformly convex, $1 < p < \infty$)</span></p>
+
+$\ell^p$ is uniformly convex (and thus reflexive) for $1 < p < \infty$.
+
+</div>
+
+(Apply Theorem 4.10 + Exercise 4.12 with $\Omega = \mathbb{N}$.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.16</span><span class="math-callout__name">(Separability)</span></p>
+
+$c, c_0$ and $\ell^p$ for $1 \le p < \infty$ are separable.
+
+</div>
+
+(Proof: $D = \lbrace x = (x_k)\,;\ x_k \in \mathbb{Q},\ x_k = 0\text{ for }k\text{ large}\rbrace$ is countable and dense in $\ell^p$ ($p < \infty$) and $c_0$; $D + \lambda(1, 1, 1, \ldots)$ with $\lambda \in \mathbb{Q}$ is countable dense in $c$.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.17</span><span class="math-callout__name">($\ell^\infty$ is *not* separable)</span></p>
+
+$\ell^\infty$ is not separable.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+For any countable $A = (a^k) \subset \ell^\infty$, define $b = (b_k)$ by $b_k = a_k^k + 1$ if $\lvert a_k^k\rvert \le 1$, $b_k = 0$ otherwise. Then $\lvert b_k - a_k^k\rvert \ge 1\ \forall k$, so $\|b - a^k\|_\infty \ge 1$ — Cantor diagonalization in disguise. $\square$
+
+</details>
+</div>
+
+#### Duals of sequence spaces
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.18</span><span class="math-callout__name">($(\ell^p)^\star = \ell^{p'}$, $1 \le p < \infty$)</span></p>
+
+Given $\phi \in (\ell^p)^\star$, there exists a unique $u = (u_k) \in \ell^{p'}$ with
+
+$$
+\langle\phi, x\rangle = \sum_{k=1}^\infty u_k x_k\quad \forall x \in \ell^p,\qquad \|u\|_{p'} = \|\phi\|_{(\ell^p)^\star}.
+$$
+
+</div>
+
+(Proof: take $u_k = \phi(e_k)$ with $e_k$ the canonical basis. For $1 < p < \infty$, choose $x_k = \lvert u_k\rvert^{p'-2} u_k$ truncated to get a lower bound on $\|u\|_{p'}$.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.19</span><span class="math-callout__name">($(c_0)^\star = \ell^1$)</span></p>
+
+Given $\phi \in (c_0)^\star$, there is a unique $u \in \ell^1$ with $\langle\phi, x\rangle = \sum u_k x_k\ \forall x \in c_0$, and $\|u\|_1 = \|\phi\|_{(c_0)^\star}$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.20</span><span class="math-callout__name">($c^\star = \ell^1 \times \mathbb{R}$)</span></p>
+
+Given $\phi \in c^\star$, there is a unique pair $(u, \lambda) \in \ell^1 \times \mathbb{R}$ such that
+
+$$
+\langle\phi, x\rangle = \sum_{k=1}^\infty u_k x_k + \lambda\lim_{k \to \infty} x_k\quad \forall x \in c,
+$$
+
+with $\|u\|_1 + \lvert\lambda\rvert = \|\phi\|_{c^\star}$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.21</span><span class="math-callout__name">($\ell^1, \ell^\infty, c, c_0$ are not reflexive)</span></p>
+
+The spaces $\ell^1, \ell^\infty, c, c_0$ are *not* reflexive.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+From Proposition 11.18 ($p = 1$) and Proposition 11.19, $(c_0)^\star = \ell^1$ and $(\ell^1)^\star = \ell^\infty$. The canonical injection $J : c_0 \to (c_0)^{\star\star} = \ell^\infty$ is the identity inclusion, which is *not* surjective (since $c_0 \subsetneq \ell^\infty$). Hence $c_0$ is not reflexive. By Corollary 3.21, $\ell^1$ and $\ell^\infty$ are not reflexive. By Proposition 3.20, $c$ — having $c_0$ as a closed subspace — cannot be reflexive either. $\square$
+
+</details>
+</div>
+
+#### Summary table
+
+| | Reflexive | Separable | Dual |
+| --- | --- | --- | --- |
+| $\ell^p,\ 1 < p < \infty$ | YES | YES | $\ell^{p'}$ |
+| $\ell^1$ | NO | YES | $\ell^\infty$ |
+| $c_0$ | NO | YES | $\ell^1$ |
+| $c$ | NO | YES | $\ell^1 \times \mathbb{R}$ |
+| $\ell^\infty$ | NO | NO | strictly bigger than $\ell^1$ |
+
+### 11.4 Banach Spaces over $\mathbb{C}$: What Is Similar and What Is Different?
+
+We now sketch the changes when the scalar field is $\mathbb{C}$ instead of $\mathbb{R}$. **Most of Chapters 1–5 carries over verbatim with cosmetic adjustments**; the *major* change is in Chapter 6 (spectrum / eigenvalues), where the complex theory is *substantially richer*.
+
+For an $\mathbb{R}$-vector space underlying a $\mathbb{C}$-vector space $E$, write $E_\mathbb{R}$ for $E$ regarded over $\mathbb{R}$. **Warning:** an $\mathbb{R}$-linear subspace of $E$ need not be $\mathbb{C}$-linear (e.g., a line in $\mathbb{R}^2 \cong \mathbb{C}$ rotated by $\pi/2$ is an $\mathbb{R}$-subspace but not a $\mathbb{C}$-subspace).
+
+A norm on $E$ over $\mathbb{C}$ is a function $E \to [0, +\infty)$ with $\|\lambda x\| = \lvert\lambda\rvert\|x\|\ \forall \lambda \in \mathbb{C}$ (so it is also a norm on $E_\mathbb{R}$, but not conversely).
+
+#### Real ↔ complex duals
+
+A linear functional on a $\mathbb{C}$-space $E$ is a $\mathbb{C}$-linear $f : E \to \mathbb{C}$. Notation $\langle f, x\rangle = f(x) \in \mathbb{C}$, $\|f\|_{E^\star} = \sup_{\|x\| \le 1}\lvert f(x)\rvert$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.22</span><span class="math-callout__name">(Complex dual ↔ real dual via $\mathrm{Re}$)</span></p>
+
+The map $I : f \in E^\star \mapsto \mathrm{Re}\,f \in E_\mathbb{R}^\star$ is a *bijective isometry* from $E^\star$ onto $E_\mathbb{R}^\star$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+**Inverse formula.** Given $\varphi \in E_\mathbb{R}^\star$, define $f : E \to \mathbb{C}$ by
+
+$$
+f(x) = \varphi(x) - i\,\varphi(ix)\quad \forall x \in E.
+$$
+
+Verify $f$ is $\mathbb{C}$-linear: $f(\lambda x) = \varphi(\lambda x) - i\varphi(i\lambda x)$ for $\lambda \in \mathbb{C}$. Splitting $\lambda = a + ib$ and using $\varphi$'s $\mathbb{R}$-linearity gives $f(\lambda x) = \lambda f(x)$. Then $\mathrm{Re}\,f = \varphi$, so $I$ is surjective.
+
+**Isometry.** Let $f \in E^\star$. Clearly $\lvert\mathrm{Re}\,f(x)\rvert \le \lvert f(x)\rvert \le \|f\|\|x\|$, so $\|\mathrm{Re}\,f\|_{E_\mathbb{R}^\star} \le \|f\|_{E^\star}$. For the reverse, given $x \neq 0$ with $f(x) \neq 0$, set $\lambda = f(x)/\lvert f(x)\rvert$ ($\lvert\lambda\rvert = 1$). Then $\lvert f(x)\rvert = \tfrac{1}{\lambda}f(x) = f(x/\lambda)$. Since the result is real and nonneg, $\lvert f(x)\rvert = \mathrm{Re}\,f(x/\lambda) = \varphi(x/\lambda) \le \|\varphi\|\|x\|$. Hence $\|f\| \le \|\varphi\| = \|I(f)\|$. $\square$
+
+</details>
+</div>
+
+This proposition lets one *transport* almost every result from the real to the complex setting, by working in $E_\mathbb{R}$ and using $\mathrm{Re}$.
+
+#### Chapters 1–5: minor adjustments
+
+* **Chapter 1.** Real Hahn–Banach extends a continuous $\mathbb{C}$-linear $g : G \to \mathbb{C}$ to $f \in E^\star$ with $\|f\| = \|g\|$ (Proposition 11.23). The geometric form (Proposition 11.24): nonempty disjoint convex $A, B$ with one open are separated by a *closed real* hyperplane $\lbrace \mathrm{Re}\,f = \alpha\rbrace$. Conjugates: $\varphi^\star(f) = \sup_x\lbrace \mathrm{Re}\langle f, x\rangle - \varphi(x)\rbrace$, and Theorem 1.11 (Fenchel–Moreau, Proposition 11.25) is unchanged.
+* **Chapter 2.** All statements unchanged (with $\mathbb{R}$ replaced by $\mathbb{C}$).
+* **Chapter 3.** All statements unchanged.
+* **Chapter 4.** Totally unchanged.
+* **Chapter 5.** A *complex Hilbert space* $H$ has a sesquilinear form $(u, v) : H \times H \to \mathbb{C}$ with $(u, v) = \overline{(v, u)}$, $v \mapsto (u, v)$ linear, and $(u, u) > 0\ \forall u \neq 0$. Then $\lvert u\rvert = (u, u)^{1/2}$ is a norm with $\lvert u + v\rvert^2 = \lvert u\rvert^2 + 2\mathrm{Re}(u, v) + \lvert v\rvert^2$ and Cauchy–Schwarz $\lvert(u, v)\rvert \le \lvert u\rvert\lvert v\rvert$. **Example.** $L^2(\Omega; \mathbb{C})$ with $(u, v) = \int u\overline v\,d\mu$.
+
+If $H$ is a complex Hilbert space, $H_\mathbb{R}$ with $\mathrm{Re}(u, v)$ is a real Hilbert space, so all of Chapter 5 transfers. The complex versions of the projection theorem, Riesz–Fréchet, and Lax–Milgram read:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.26</span><span class="math-callout__name">(Projection — complex case)</span></p>
+
+For $K \subset H$ nonempty closed convex, every $f \in H$ has a unique nearest point $u \in K$, characterized by
+
+$$
+u \in K\quad \text{and}\quad \mathrm{Re}(f - u, v - u) \le 0\quad \forall v \in K.
+$$
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.27</span><span class="math-callout__name">(Riesz–Fréchet — complex case)</span></p>
+
+For every $\varphi \in H^\star$ there is a unique $f \in H$ with $\varphi(u) = (u, f)\ \forall u \in H$, and $\lvert f\rvert = \|\varphi\|$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.28</span><span class="math-callout__name">(Stampacchia — complex case)</span></p>
+
+Let $a : H \times H \to \mathbb{C}$ be linear in the first argument, conjugate-linear in the second, continuous, and *coercive* in the sense $\mathrm{Re}\,a(u, u) \ge \alpha\lvert u\rvert^2$. Let $K \subset H$ be nonempty closed convex. For every $\varphi \in H^\star$ there is a unique $u \in K$ satisfying
+
+$$
+\mathrm{Re}\,a(u, v - u) \ge \mathrm{Re}\langle\varphi, v - u\rangle\quad \forall v \in K,
+$$
+
+and if $a$ is *Hermitian-symmetric* ($a(v, w) = \overline{a(w, v)}$), $u$ minimizes $\tfrac{1}{2}a(v, v) - \mathrm{Re}\langle\varphi, v\rangle$ on $K$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.29</span><span class="math-callout__name">(Lax–Milgram — complex case)</span></p>
+
+If $T \in \mathcal{L}(H)$ satisfies $\lvert(Tu, u)\rvert \ge \alpha\lvert u\rvert^2\ \forall u$, then $T$ is bijective.
+
+</div>
+
+#### Chapter 6 over $\mathbb{C}$: the major change — the spectrum
+
+**Sections 6.1 and 6.2 are totally unchanged** — the Riesz–Fredholm theory works equally well over $\mathbb{C}$.
+
+The **major change** appears in Section 6.3 (spectrum). For $T \in \mathcal{L}(E)$ with $E$ over $\mathbb{C}$, define resolvent / spectrum / eigenvalues exactly as in §6.3 but with $\lambda \in \mathbb{C}$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.30</span><span class="math-callout__name">(Compactness + non-emptiness of $\sigma(T)$ over $\mathbb{C}$)</span></p>
+
+For $T \in \mathcal{L}(E)$ with $E$ a Banach space over $\mathbb{C}$, $\sigma(T)$ is a *nonempty* compact subset of $\mathbb{C}$, contained in $\lbrace\lambda\,;\ \lvert\lambda\rvert \le \|T\|\rbrace$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why $\sigma(T) \neq \emptyset$ over $\mathbb{C}$ — Liouville)</span></p>
+
+The proof relies on **complex analysis / Liouville's theorem**: if $\sigma(T) = \emptyset$, then $\lambda \mapsto (T - \lambda I)^{-1}$ would be entire and bounded on $\mathbb{C}$, hence constant — absurd. (References: Taylor–Lay, Rudin, Knapp.)
+
+This nonemptiness *fails* over $\mathbb{R}$: a rotation by $\pi/2$ in $\mathbb{R}^2$ has empty real spectrum but eigenvalues $\pm i \in \mathbb{C}$.
+
+</div>
+
+#### Spectral radius
+
+The **spectral radius** $r(T) = \lim_n \|T^n\|^{1/n}$ exists (Exercise 6.23), with $r(T) \le \|T\|$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.31</span><span class="math-callout__name">(Spectral radius formula)</span></p>
+
+For $T \in \mathcal{L}(E)$ over $\mathbb{C}$,
+
+$$
+\boxed{\;r(T) = \max\lbrace\lvert\lambda\rvert\,;\ \lambda \in \sigma(T)\rbrace.\;}
+$$
+
+</div>
+
+(References: Taylor–Lay, Rudin, Knapp. Over $\mathbb{R}$ one only has $\max\lvert\lambda\rvert \le r(T)$ with possible strict inequality even when $\sigma(T) \neq \emptyset$.)
+
+#### Spectral mapping theorem
+
+For polynomials $Q(t) = \sum a_k t^k$:
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.32</span><span class="math-callout__name">(Polynomial spectral mapping over $\mathbb{C}$)</span></p>
+
+For $T \in \mathcal{L}(E)$ over $\mathbb{C}$ and $Q \in \mathbb{C}[t]$,
+
+$$
+Q(\sigma(T)) = \sigma(Q(T)),\qquad Q(EV(T)) = EV(Q(T)).
+$$
+
+</div>
+
+(Both inclusions $\subset$ are easy; the reverse uses factorization $Q(t) - \mu = \alpha\prod(t - t_i)$ over $\mathbb{C}$ — *not available* over $\mathbb{R}$, hence the equalities can fail in the real case, where one only has $\subset$.)
+
+#### Numerical range
+
+For $H$ complex Hilbert and $T \in \mathcal{L}(H)$, the **numerical range** is
+
+$$
+\boxed{\;W(T) = \lbrace(Tu, u)\,;\ u \in H,\ \lvert u\rvert = 1\rbrace \subset \mathbb{C}.\;}
+$$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.33</span><span class="math-callout__name">($\sigma(T) \subset \overline{W(T)}$ + convexity)</span></p>
+
+$\sigma(T) \subset \overline{W(T)}$, and more precisely if $\lambda \notin \overline{W(T)}$ then $\lambda \in \rho(T)$ with
+
+$$
+\|(T - \lambda I)^{-1}\| \le 1/\mathrm{dist}(\lambda, \overline{W(T)}).
+$$
+
+Furthermore, $W(T)$ is **convex** (Toeplitz–Hausdorff).
+
+</div>
+
+(For $\sigma(T) \subset \overline{W(T)}$: dist condition + Lax–Milgram. The convexity of $W(T)$ is a counterintuitive theorem — see Halmos.)
+
+#### Adjoints in complex Hilbert spaces
+
+A small point of caution. For $T \in \mathcal{L}(H)$ over $\mathbb{C}$, the abstract adjoint via $H^\star$ satisfies $T^\star \in \mathcal{L}(H^\star)$ and $(\lambda T)^\star = \lambda T^\star$ (genuine, since the dual map $H^\star \to \mathbb{C}$ is $\mathbb{C}$-linear). After identifying $H^\star \cong H$ via Riesz–Fréchet, however, one defines $T^\star \in \mathcal{L}(H)$ by
+
+$$
+\boxed{\;(Tu, v) = (u, T^\star v)\quad \forall u, v \in H,\;}
+$$
+
+and then
+
+$$
+(\lambda T)^\star = \overline\lambda\,T^\star\quad \forall \lambda \in \mathbb{C}.
+$$
+
+This convention is standard. $T$ is **self-adjoint** (Hermitian) if $T^\star = T$, equivalently $(Tu, v) = (u, Tv)$. Then $(Tu, u) \in \mathbb{R}$, so $W(T) \subset \mathbb{R}$ and $\sigma(T) \subset \mathbb{R}$.
+
+#### Spectral decomposition over $\mathbb{C}$
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.34</span><span class="math-callout__name">(Spectral theorem for compact self-adjoint, complex case)</span></p>
+
+Let $H$ be a separable complex Hilbert space and $T \in \mathcal{K}(H)$ self-adjoint. Then $H$ has a Hilbert basis of eigenvectors of $T$, with corresponding eigenvalues *real*.
+
+</div>
+
+(Identical to Theorem 6.11.) But the complex theory goes further:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal operator)</span></p>
+
+$T \in \mathcal{L}(H)$ is **normal** if $T^\star \circ T = T \circ T^\star$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.35</span><span class="math-callout__name">(Spectral radius for normal operators)</span></p>
+
+If $T \in \mathcal{L}(H)$ is normal on a complex Hilbert space, then
+
+$$
+\max\lbrace\lvert\lambda\rvert\,;\ \lambda \in \sigma(T)\rbrace = \|T\|.
+$$
+
+</div>
+
+(Proof: normality $\Rightarrow \|T^p\| = \|T\|^p\ \forall p$, so $r(T) = \|T\|$, and Proposition 11.31 gives the conclusion.)
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.36</span><span class="math-callout__name">(Spectral theorem for compact normal, complex case)</span></p>
+
+Let $H$ be a separable complex Hilbert space and $T \in \mathcal{K}(H)$ *normal*. Then $H$ has a Hilbert basis of eigenvectors of $T$ — but the eigenvalues may now be *complex*.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Numerical range of a normal compact)</span></p>
+
+For compact normal $T$, $\overline{W(T)} = \mathrm{conv}\,\sigma(T)$ — the closed convex hull. (For *general* normal $T$, this still holds; see Halmos.)
+
+</div>
+
+#### Isometries and unitaries
+
+$T \in \mathcal{L}(H)$ is an **isometry** if $\lvert Tu\rvert = \lvert u\rvert\ \forall u$ (equivalently $T^\star T = I$); a **unitary** is an isometry that is also surjective ($T^\star T = T T^\star = I$).
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11.37</span><span class="math-callout__name">(Spectrum of isometries / unitaries)</span></p>
+
+* If $T$ is an isometry, $EV(T) \subset S^1 = \lbrace\lambda \in \mathbb{C}\,;\ \lvert\lambda\rvert = 1\rbrace$.
+* If $T$ is unitary, $\sigma(T) \subset S^1$.
+* If $T$ is an isometry but **not** unitary, $\sigma(T) = \overline{D} = \lbrace\lambda\,;\ \lvert\lambda\rvert \le 1\rbrace$ — the *closed* unit disk.
+
+</div>
+
+A **skew-adjoint** (or antisymmetric) operator is one with $T^\star = -T$. Equivalently, $iT$ is self-adjoint, so $EV(iT) \subset \mathbb{R}$, hence $EV(T) \subset i\mathbb{R}$ and $\sigma(T) \subset \overline{W(T)} \subset i\mathbb{R}$.
+
+#### Chapter 7 over $\mathbb{C}$
+
+Very little needs to change. The notion of monotone operator becomes: $\mathrm{Re}(Av, v) \ge 0\ \forall v \in D(A)$. Many computations in §§7.2–7.4 rely on the identity (for $\varphi \in C^1([0, +\infty); H)$):
+
+$$
+\frac{d}{dt}\lvert\varphi\rvert^2 = \frac{d}{dt}(\varphi, \varphi) = \Big(\frac{d\varphi}{dt}, \varphi\Big) + \Big(\varphi, \frac{d\varphi}{dt}\Big) = 2\,\mathrm{Re}\Big(\frac{d\varphi}{dt}, \varphi\Big).
+$$
+
+#### Chapters 8 and 9 over $\mathbb{C}$
+
+Properties of the spectrum of *non-self-adjoint* second-order elliptic operators are richer over $\mathbb{C}$. See S. Agmon, Section 16.
