@@ -64,6 +64,8 @@ tags:
 
 In many math courses — calculus, linear algebra — the methods we learn help us solve **equations with finitely many variables**. We might want to find the minimum of a function whose inputs are in $\mathbb{R}^n$, or solve a system of linear equations. But when we encounter ODEs, PDEs, minimization, and other problems where the set of independent variables is no longer finite-dimensional, we need new tools.
 
+**Functional analysis** helps us solve problems where the vector space is no longer finite-dimensional, and this situation arises very naturally in many concrete problems.
+
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -72,8 +74,6 @@ In many math courses — calculus, linear algebra — the methods we learn help 
 Finding the shortest possible curve between two points amounts to specifying a **functional** — the input is a function. We need infinitely many real numbers to specify a real-valued function $f : [0, 1] \to \mathbb{R}$.
 
 </div>
-
-Functional analysis helps us solve problems where the vector space is no longer finite-dimensional, and this situation arises very naturally in many concrete problems.
 
 ## Normed Spaces
 
@@ -91,9 +91,9 @@ A **vector space** $V$ over a field $\mathbb{K}$ (which we take to be either $\m
 
 $\mathbb{R}^n$ and $\mathbb{C}^n$ are vector spaces, and so is $C([0, 1])$, the space of continuous functions $[0, 1] \to \mathbb{C}$. The latter is a vector space because the sum of two continuous functions is continuous, and so is a scalar multiple of a continuous function.
 
-</div>
-
 But $C([0, 1])$ is a completely different **size** from $\mathbb{R}^n$ or $\mathbb{C}^n$: it is infinite-dimensional.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Finite- and Infinite-Dimensional)</span></p>
@@ -113,7 +113,12 @@ The set $E = \lbrace f_n(x) = x^n : n \in \mathbb{Z}_{\ge 0} \rbrace$ is linearl
 
 </div>
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">(Many theorems fail in infinite-dim --- we need generalization)</span></p>
+
 Facts like the Heine–Borel theorem for $\mathbb{R}^n$ become false in infinite-dimensional spaces, so we need to develop more machinery. In analysis, we need a notion of "how close things are." In metric spaces we use metrics; here we define a distance on our vector spaces via norms.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Norm, Seminorm, Normed Space)</span></p>
@@ -128,10 +133,15 @@ A **seminorm** is a function $\lVert \cdot \rVert : V \to [0, \infty)$ satisfyin
 
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Matric)</span></p>
+
 A norm induces a metric, so we can think of our normed space as a metric space. Recall that a **metric** $d : X \times X \to [0, \infty)$ satisfies: 
-* (1) $d(x, y) = 0 \iff x = y$, 
+* (1) $d(x, y) = 0 \iff x = y$,
 * (2) $d(x, y) = d(y, x)$,
 * (3) $d(x, y) + d(y, z) \ge d(x, z)$.
+
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Norm Induces a Metric)</span></p>
@@ -236,11 +246,16 @@ $$\lVert u \rVert_\infty = \sup_{x \in X} \lvert u(x) \rvert.$$
   </details>
 </div>
 
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Uniform Convergence)</span></p>
+
 Convergence $u_n \to u$ in $C_\infty(X)$ means $\lVert u_n - u \rVert_\infty \to 0$, which unpacks to
 
 $$\forall \varepsilon > 0,\; \exists N \in \mathbb{N} : \forall n \ge N,\; \forall x \in X,\; \lvert u_n(x) - u(x) \rvert < \varepsilon.$$
 
 This is precisely the definition of **uniform convergence** on $X$.
+
+</div>
 
 ### $\ell^p$ Spaces
 
@@ -273,7 +288,12 @@ A normed space is a **Banach space** if it is complete with respect to the metri
 
 </div>
 
-We know from real analysis that $\mathbb{Q}$ is not complete — one can construct a sequence of rationals that converges to an irrational. We want our Banach spaces to "fill in the holes," analogously to how $\mathbb{R}$ completes $\mathbb{Q}$.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Banach Spaces)</span></p>
+
+We know from real analysis that $\mathbb{Q}$ is not **complete** — one can construct a sequence of rationals that converges to an irrational. We want our Banach spaces to "fill in the holes," analogously to how $\mathbb{R}$ completes $\mathbb{Q}$.
+
+</div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Completeness of $\mathbb{R}^n$ and $\mathbb{C}^n$)</span></p>
@@ -305,7 +325,17 @@ For any metric space $X$, the space of bounded, continuous functions on $X$ is c
   </details>
 </div>
 
-The same technique can be used to show that the $\ell^p$ spaces are Banach, and also that the space $c_0 = \lbrace a \in \ell^\infty : \lim_{j \to \infty} a_j = 0 \rbrace$ is Banach.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Proof Technique of being Banach Space)</span></p>
+
+The same technique can be used to show that the $\ell^p$ spaces are Banach, and also that the space 
+
+$$c_0 = \lbrace a \in \ell^\infty : \lim_{j \to \infty} a_j = 0 \rbrace$$
+
+is Banach.
+
+</div>
 
 ### Summability Characterization of Banach Spaces
 
@@ -368,7 +398,12 @@ We often use the phrase **linear operator** instead of "linear map" or "linear t
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Linear Operator are not continuous in general)</span></p>
+
 In finite-dimensional vector spaces, all linear transformations are continuous. This is **not** always true when we have a map between two Banach spaces.
+
+</div>
 
 ### Bounded Operators
 
@@ -2847,7 +2882,12 @@ Let $K$ be the set (not subspace) of sequences $\lbrace a_k \rbrace_k$ in $\ell^
 
 ## Classes of Operators
 
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Convention</span><span class="math-callout__name">($\mathcal{B}(H, H)$ = $\mathcal{B}(H)$)</span></p>
+
 From here on, $H$ will be a Hilbert space, and we denote $\mathcal{B}(H, H)$ by $\mathcal{B}(H)$.
+
+</div>
 
 ### Finite Rank Operators
 
@@ -3070,7 +3110,7 @@ The spectrum is always nonempty. If it were empty, then for all $u, v \in H$, $f
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 221</span></p>
 
-If we have a self-adjoint operator $A \in \mathcal{B}(H)$, meaning that $A = A^*$, then $\langle Au, u \rangle$ is real for all $u$, and $\lVert A \rVert = \sup_{\lVert u \rVert = 1} \lvert \langle Au, u \rangle \rvert$.
+If we have a self-adjoint operator $A \in \mathcal{B}(H)$, meaning that $A = A^\ast$, then $\langle Au, u \rangle$ is real for all $u$, and $\lVert A \rVert = \sup_{\lVert u \rVert = 1} \lvert \langle Au, u \rangle \rvert$.
 
 </div>
 
