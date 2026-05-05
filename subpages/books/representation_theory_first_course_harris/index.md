@@ -70,11 +70,11 @@ For a representation $V$, the $n$th tensor power $V^{\otimes n}$ is again a repr
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dual Representation)</span></p>
 
-The **dual** $V^* = \mathrm{Hom}(V, \mathbb{C})$ of $V$ is also a representation. We want the two representations of $G$ to respect the natural pairing $\langle\, ,\, \rangle$ between $V^*$ and $V$, so that if $\rho\colon G \to \mathrm{GL}(V)$ is a representation and $\rho^*\colon G \to \mathrm{GL}(V^*)$ is the dual, we should have
+The **dual** $V^\ast = \mathrm{Hom}(V, \mathbb{C})$ of $V$ is also a representation. We want the two representations of $G$ to respect the natural pairing $\langle\, ,\, \rangle$ between $V^\ast$ and $V$, so that if $\rho\colon G \to \mathrm{GL}(V)$ is a representation and $\rho^\ast\colon G \to \mathrm{GL}(V^\ast)$ is the dual, we should have
 
 $$\langle \rho^*(g)(v^*),\, \rho(g)(v) \rangle = \langle v^*,\, v \rangle$$
 
-for all $g \in G$, $v \in V$, and $v^* \in V^*$. This forces us to define the dual representation by
+for all $g \in G$, $v \in V$, and $v^\ast \in V^\ast$. This forces us to define the dual representation by
 
 $$\rho^*(g) = {}^t\!\rho(g^{-1})\colon V^* \to V^*.$$
 
@@ -129,6 +129,12 @@ A representation is **indecomposable** if it cannot be expressed as a direct sum
 
 If $W$ is a subrepresentation of a representation $V$ of a finite group $G$, then there is a complementary invariant subspace $W'$ of $V$, so that $V = W \oplus W'$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof sketch.** One can introduce a (positive definite) Hermitian inner product $H$ on $V$ which is preserved by each $g \in G$ (i.e., $H(gv, gw) = H(v, w)$ for all $v, w \in V$ and $g \in G$). Indeed, if $H_0$ is any Hermitian product on $V$, one gets such an $H$ by averaging over $G$:
 
 $$H(v, w) = \sum_{g \in G} H_0(gv, gw).$$
@@ -141,6 +147,7 @@ $$\pi(v) = \sum_{g \in G} g(\pi_0(g^{-1}v)).$$
 
 This will be a $G$-linear map from $V$ onto $W$, which is multiplication by $\lvert G \rvert$ on $W$; its kernel will therefore be a subspace of $V$ invariant under $G$ and complementary to $W$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -171,8 +178,15 @@ If $V$ and $W$ are irreducible representations of $G$ and $\varphi\colon V \to W
 1. Either $\varphi$ is an isomorphism, or $\varphi = 0$.
 2. If $V = W$, then $\varphi = \lambda \cdot I$ for some $\lambda \in \mathbb{C}$, $I$ the identity.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof.** The first claim follows from the fact that $\ker \varphi$ and $\operatorname{Im} \varphi$ are invariant subspaces. For the second, since $\mathbb{C}$ is algebraically closed, $\varphi$ must have an eigenvalue $\lambda$, i.e., for some $\lambda \in \mathbb{C}$, $\varphi - \lambda I$ has a nonzero kernel. By (1), then, we must have $\varphi - \lambda I = 0$, so $\varphi = \lambda I$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -184,8 +198,15 @@ $$V = V_1^{\oplus a_1} \oplus \cdots \oplus V_k^{\oplus a_k},$$
 
 where the $V_i$ are distinct irreducible representations. The decomposition of $V$ into a direct sum of the $k$ factors is unique, as are the $V_i$ that occur and their multiplicities $a_i$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof.** It follows from Schur's lemma that if $W$ is another decomposition of $G$, with a decomposition $W = \bigoplus W_j^{\oplus b_j}$, and $\varphi\colon V \to W$ is a map of representations, then $\varphi$ must map the factor $V_i^{\oplus a_i}$ into that factor $W_j^{\oplus b_j}$ for which $W_j \cong V_i$; when applied to the identity map of $V$ to $V$, the stated uniqueness follows. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -288,18 +309,25 @@ $$\chi_{V \oplus W} = \chi_V + \chi_W, \qquad \chi_{V \otimes W} = \chi_V \cdot 
 
 $$\chi_{V^*} = \overline{\chi}_V \quad \text{and} \quad \chi_{\wedge^2 V}(g) = \tfrac{1}{2}[\chi_V(g)^2 - \chi_V(g^2)].$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof.** We compute the values of these characters on a fixed element $g \in G$. For the action of $g$, $V$ has eigenvalues $\lbrace \lambda_i \rbrace$ and $W$ has eigenvalues $\lbrace \mu_j \rbrace$. Then $\lbrace \lambda_i \rbrace \cup \lbrace \mu_j \rbrace$ and $\lbrace \lambda_i \cdot \mu_j \rbrace$ are eigenvalues for $V \oplus W$ and $V \otimes W$, from which the first two formulas follow. Similarly, $\lbrace \lambda_i^{-1} = \bar{\lambda}_i \rbrace$ are the eigenvalues for $g$ on $V^*$, since all eigenvalues are $n$th roots of unity, with $n$ the order of $g$. Finally, $\lbrace \lambda_i \lambda_j \mid i < j \rbrace$ are the eigenvalues for $g$ on $\bigwedge^2 V$, and
 
 $$\sum_{i < j} \lambda_i \lambda_j = \frac{(\sum \lambda_i)^2 - \sum \lambda_i^2}{2},$$
 
 and since $g^2$ has eigenvalues $\lbrace \lambda_i^2 \rbrace$, the last formula follows. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(2.6 — Character Table of $\mathfrak{S}_3$)</span></p>
 
-The conjugacy classes of $\mathfrak{S}_3$ are $[1]$, $[(12)]$, and $[(123)]$, with 1, 3, and 2 elements respectively. The trivial representation takes values $(1, 1, 1)$; the alternating representation has values $(1, -1, 1)$. The character of the standard representation is found from the permutation representation: since $\mathbb{C}^3 = U \oplus V$, we have $\chi_V = \chi_{\mathbb{C}^3} - \chi_U = (3, 1, 0) - (1, 1, 1) = (2, 0, -1)$. The character table is:
+The conjugacy classes of $\mathfrak{S}\_3$ are $[1]$, $[(12)]$, and $[(123)]$, with 1, 3, and 2 elements respectively. The trivial representation takes values $(1, 1, 1)$; the alternating representation has values $(1, -1, 1)$. The character of the standard representation is found from the permutation representation: since $\mathbb{C}^3 = U \oplus V$, we have $\chi_V = \chi_{\mathbb{C}^3} - \chi_U = (3, 1, 0) - (1, 1, 1) = (2, 0, -1)$. The character table is:
 
 | $\mathfrak{S}_3$ | $1$ | $(12)$ | $(123)$ |
 |---|---|---|---|
@@ -308,7 +336,13 @@ The conjugacy classes of $\mathfrak{S}_3$ are $[1]$, $[(12)]$, and $[(123)]$, wi
 | alternating $U'$ | 1 | $-1$ | 1 |
 | standard $V$ | 2 | 0 | $-1$ |
 
-A representation $W$ is **determined up to isomorphism by its character** $\chi_W$: if $W \cong U^{\oplus a} \oplus U'^{\oplus b} \oplus V^{\oplus c}$, then $\chi_W = a\chi_U + b\chi_{U'} + c\chi_V$.
+A representation $W$ is **determined up to isomorphism by its character** $\chi_W$: if 
+
+$$W \cong U^{\oplus a} \oplus U'^{\oplus b} \oplus V^{\oplus c}$$
+
+then 
+
+$$\chi_W = a\chi_U + b\chi_{U'} + c\chi_V$$
 
 </div>
 
@@ -332,8 +366,15 @@ $$\varphi = \frac{1}{\lvert G \rvert} \sum_{g \in G} g \in \mathrm{End}(V)$$
 
 is a projection of $V$ onto $V^G$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof.** If $v = \varphi(w) = (1/\lvert G \rvert)\sum gw$, then for any $h \in G$, $hv = (1/\lvert G \rvert)\sum hgw = (1/\lvert G \rvert)\sum gw = v$, so the image of $\varphi$ is contained in $V^G$. Conversely, if $v \in V^G$, then $\varphi(v) = (1/\lvert G \rvert)\sum v = v$, so $V^G \subset \mathrm{Im}(\varphi)$; and $\varphi \circ \varphi = \varphi$. $\square$
 
+</details>
 </div>
 
 We have
@@ -345,7 +386,7 @@ In particular, for an irreducible representation $V$ other than the trivial one,
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Inner Product on Class Functions)</span></p>
 
-Let $\mathbb{C}_\mathrm{class}(G) = \lbrace \text{class functions on } G \rbrace$ and define a Hermitian inner product on $\mathbb{C}_\mathrm{class}(G)$ by
+Let $\mathbb{C}\_\mathrm{class}(G) = \lbrace \text{class functions on } G \rbrace$ and define a Hermitian inner product on $\mathbb{C}\_\mathrm{class}(G)$ by
 
 $$(\alpha, \beta) = \frac{1}{\lvert G \rvert} \sum_{g \in G} \overline{\alpha(g)}\beta(g). \tag{2.11}$$
 
@@ -358,8 +399,15 @@ In terms of the inner product $(2.11)$, the characters of the irreducible repres
 
 $$\frac{1}{\lvert G \rvert} \sum_{g \in G} \overline{\chi_V(g)}\chi_W(g) = \begin{cases} 1 & \text{if } V \cong W, \\ 0 & \text{if } V \not\cong W. \end{cases} \tag{2.10}$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof sketch.** The key is to use $\mathrm{Hom}(V, W)^G = \lbrace G\text{-module homomorphisms from } V \text{ to } W \rbrace$. If $V$ is irreducible, then by Schur's lemma $\dim \mathrm{Hom}_G(V, W)$ is the multiplicity of $V$ in $W$; similarly, if $W$ is irreducible, $\dim \mathrm{Hom}_G(V, W)$ is the multiplicity of $W$ in $V$; in the case where both $V$ and $W$ are irreducible, we have $\dim \mathrm{Hom}_G(V, W) = 1$ if $V \cong W$ and $0$ otherwise. The character of $\mathrm{Hom}(V, W) = V^* \otimes W$ is $\overline{\chi_V} \cdot \chi_W$. Applying formula (2.9) to this case gives the result. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -503,12 +551,19 @@ $$\varphi_{\alpha, V} = \sum_{g} \alpha(g) \cdot g \colon V \to V.$$
 
 Then $\varphi_{\alpha, V}$ is a homomorphism of $G$-modules for all $V$ if and only if $\alpha$ is a **class function**.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof.** We write out the condition that $\varphi_{\alpha, V}$ be $G$-linear:
 
 $$\varphi_{\alpha, V}(hv) = \sum \alpha(g) \cdot g(hv) = \sum \alpha(hgh^{-1}) \cdot hg(v) = h(\sum \alpha(hgh^{-1}) \cdot g(v)),$$
 
 which equals $h(\varphi_{\alpha, V}(v)) = h(\sum \alpha(g) \cdot g(v))$ if and only if $\alpha$ is a class function. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -516,12 +571,19 @@ which equals $h(\varphi_{\alpha, V}(v)) = h(\sum \alpha(g) \cdot g(v))$ if and o
 
 The number of irreducible representations of $G$ is equal to the number of conjugacy classes of $G$. Equivalently, their characters $\lbrace \chi_V \rbrace$ form an **orthonormal basis** for $\mathbb{C}_\mathrm{class}(G)$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 **Proof.** Suppose $\alpha\colon G \to \mathbb{C}$ is a class function and $(\alpha, \chi_V) = 0$ for all irreducible representations $V$; we must show that $\alpha = 0$. Consider the endomorphism $\varphi_{\alpha, V} = \sum \alpha(g) \cdot g\colon V \to V$ as defined above. By Proposition 2.28, $\varphi_{\alpha, V}$ is a $G$-module homomorphism. Hence, if $V$ is irreducible, by Schur's lemma $\varphi_{\alpha, V} = \lambda \cdot \mathrm{Id}$, and then
 
 $$\lambda = \frac{1}{n}\mathrm{trace}(\varphi_{\alpha, V}) = \frac{1}{n}\sum \alpha(g)\chi_V(g) = \frac{\lvert G \rvert}{n}(\alpha, \chi_{V^*}) = 0.$$
 
 Thus $\varphi_{\alpha, V} = 0$ or $\sum \alpha(g) \cdot g = 0$ on any representation $V$ of $G$; in particular, this is true for the regular representation $V = R$. But in $R$ the elements $\lbrace g(e) \rbrace$, thought of as elements of $\mathrm{End}(R)$, are linearly independent. Thus $\alpha(g) = 0$ for all $g$, as required. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">

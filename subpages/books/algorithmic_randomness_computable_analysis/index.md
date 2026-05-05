@@ -456,6 +456,12 @@ For every infinite binary sequence $A$ and every constant $c$, there exist infin
 
 $$C(A \upharpoonright n) < n - c.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* We enumerate the set $S = (\sigma_0, \sigma_1, \dots)$ in stages: at stage $n$, enumerate into $S$ all words of length $n$ that begin with $w_n$ (recall $(w_0, w_1, w_2, w_3, \dots) = (\lambda, 0, 1, 00, \dots)$ is the length-lexicographic enumeration of all binary words). The first few stages produce
 
 $$
@@ -472,6 +478,7 @@ $$C_M(\sigma_n) \le l(\mathrm{bin}(n)) \le \log(n) + 1, \qquad \text{hence} \qqu
 
 It remains to observe that every infinite sequence $A$ contains infinitely many prefixes in the enumeration $S$, and that $l(\sigma_n) - \log(n) \to \infty$ as $n \to \infty$, so the slack $l(\sigma_n) - C(\sigma_n)$ becomes arbitrarily large.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -492,7 +499,7 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 
 * For $X$: $X(2i) = 0$ and $X(2i+1) = 1$ for every $i$, so *every* bit of $X$ is predictable. The same holds for $\tilde X$. In particular, betting one dollar that $\tilde X(2i+1) = 0$ (or $= 1$ depending on indexing) yields an unbounded increase of capital.
 * For $Z$: $Z(2i+1) = 0$ for every $i$, so every second bit of $Z$ is predictable. The same holds for $\tilde Z$.
-* For $Y$: for every $n$ from 0 to 1999 we can bet one dollar that the bit at position $n$ is 0 and earn approximately a $1800\$$ profit (since at most 200 of the 2000 bits are 1). Similarly, for $\tilde Y$ we can secure an unbounded increase of capital without knowing exactly which positions hold the rare ones.
+* For $Y$: for every $n$ from 0 to 1999 we can bet one dollar that the bit at position $n$ is 0 and earn approximately a $1800$ dollars profit (since at most 200 of the 2000 bits are 1). Similarly, for $\tilde Y$ we can secure an unbounded increase of capital without knowing exactly which positions hold the rare ones.
 
 </div>
 
@@ -623,8 +630,15 @@ There exists a constant $c$ such that the Kolmogorov complexity of every binary 
 
 $$\forall w \in \lbrace 0, 1 \rbrace^{\ast}: \quad C(w) \le l(w) + c.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* The identity Turing machine $M$ on $\lbrace 0, 1 \rbrace^{\ast}$ satisfies $M(w) = w$, hence $C_M(w) = l(w)$. By (1), there exists a constant $c_M$ with $C(w) \le C_M(w) + c_M = l(w) + c_M$ for every $w$.
 
+</details>
 </div>
 
 The next theorem expresses that no computable process can blow up Kolmogorov complexity by more than an additive constant — the constant depends on the *process* but not on the *input*.
@@ -636,6 +650,12 @@ For every computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \to \lbr
 
 $$C(f(w)) < C(w) + c_f \qquad \text{for every } w \in \mathrm{dom}(f).$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $M_f$ be a Turing machine computing $f$, and consider the machine $M$ that, on input $\sigma$, computes $f(U(\sigma))$. For every $w \in \mathrm{dom}(f)$, let $\sigma_w$ be an optimal encoding of $w$, i.e., $U(\sigma_w) = w$ and $l(\sigma_w) = C(w)$. Then
 
 $$M(\sigma_w) = f(U(\sigma_w)) = f(w),$$
@@ -646,6 +666,7 @@ $$C(f(w)) \le C_M(f(w)) + c_M \le C(w) + c_M,$$
 
 which concludes the proof.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -655,8 +676,15 @@ For every $n$, there exist at most $2^n - 1$ words of Kolmogorov complexity less
 
 $$\forall n: \quad \#\lbrace w \in \lbrace 0, 1 \rbrace^{\ast} : C(w) < n \rbrace < 2^n.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* For every $w$ with $C(w) = k$, there exists at least one optimal encoding $\sigma$ with $U(\sigma) = w$ and $l(\sigma) = k$. There are exactly $2^n - 1$ words of length less than $n$, and each can be the optimal encoding of at most one word $w$. The bound follows.
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -764,6 +792,12 @@ Let $g(n)$ be the average Kolmogorov complexity of a word of length $n$. Then
 
 $$\frac{g(n)}{n} \xrightarrow[n \to \infty]{} 1.$$
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* By Proposition 2.1, there is a constant $c$ such that $C(w) < l(w) + c = n + c$ for every word $w$ of length $n$, giving the upper bound. For the lower bound, distribute the $2^n$ words of length $n$ across complexity strata using Corollary 2.3.1:
 
 $$
@@ -777,6 +811,7 @@ $$
 \ge 1 - 2^{-n} - \frac{\sum_{i=1}^{\infty} 2^{-i} \cdot i}{n} \xrightarrow[n \to \infty]{} 1.
 $$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -856,12 +891,19 @@ A function $f$ is upper-semicomputable if and only if there exists a computable 
 
 The Kolmogorov complexity is an upper-semicomputable function.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Apply Proposition 2.9 to
 
 $$F(w, t) := \min \lbrace l(\sigma) : U(\sigma)[t] \!\downarrow\, = w \rbrace,$$
 
 where $U(\sigma)[t]$ denotes the result of running $U$ on $\sigma$ for at most $t$ steps. As $t$ increases, more inputs $\sigma$ have $U(\sigma)[t]$ converging to $w$, so $F(w, t)$ is monotonically nonincreasing in $t$ and converges to $C(w)$.
 
+</details>
 </div>
 
 <figure class="math-figure">
@@ -944,6 +986,12 @@ There exists no computable function $f :\subseteq \lbrace 0, 1 \rbrace^{\ast} \t
 * $f$ is unbounded (for every $n$ there exists $w$ with $f(w) \!\downarrow\, > n$);
 * $C(w) > f(w)$ for every $w \in \mathrm{dom}(f)$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Suppose such $f$ exists. Construct a Turing machine $M$ that, on input $\mathrm{bin}(n)$, runs $f(\lambda), f(0), f(1), f(00), \dots$ in parallel and returns the first word $\sigma$ for which $f(\sigma) \!\downarrow\, > n$. Since $f$ is unbounded, $M$ is computable and total. By the assumed bound on $f$,
 
 $$C(M(\mathrm{bin}(n))) \ge f(M(\mathrm{bin}(n))) > n. \tag{3}$$
@@ -958,6 +1006,7 @@ $$n < C(M(\mathrm{bin}(n))) \le \log(n) + c_M,$$
 
 which is false for all sufficiently large $n$ (e.g., $n > 2^{c_M + 1}$).
 
+</details>
 </div>
 
 Applying the previous theorem with $f(w) := C(w) - 1$ — which would be computable and unbounded if $C$ were — yields:
@@ -991,6 +1040,12 @@ For every $n$, there exists a word $w$ and:
 
 (iii) a word $w^{-}$ obtained from $w$ by **deleting** one bit at some position with $C(w^{-}) > C(w) + n$.
 
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
 *Proof.* Let $M$ be the Turing machine that on input $\mathrm{bin}(n)$ returns $(01)^{2^n}$. Set $w_n := (01)^{2^n}$. Then $C_M(w_n) \le l(\mathrm{bin}(n)) \le \log(n)$, hence $C(w_n) \le \log(n) + c_M$.
 
 For (i), define
@@ -1007,6 +1062,7 @@ $$W_n^{c} = \lbrace (01)^{k-1} 11 (01)^{2^n - k} : 1 \le k \le 2^n \rbrace, \qqu
 
 respectively.
 
+</details>
 </div>
 
 <figure class="math-figure">
