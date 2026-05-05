@@ -726,7 +726,9 @@ The contextual bandit is the cleanest stepping stone into full RL: it introduces
 * Evaluative feedback makes exploration unavoidable.
 * The central tension is always **exploration vs. exploitation**.
 * The update pattern
+  
   $$\text{estimate} \leftarrow \text{estimate} + \alpha(\text{target} - \text{estimate})$$
+  
   appears everywhere in RL.
 * In non-stationary problems, **constant step sizes** let us *track* changing values instead of merely converging.
 * UCB explores by uncertainty; gradient bandits learn action probabilities directly.
@@ -1339,7 +1341,7 @@ $$
 \pi \succeq \pi' \quad\Longleftrightarrow\quad v_\pi(s) \ge v_{\pi'}(s) \quad \forall s \in \mathcal{S}.
 $$
 
-A policy $\pi^*$ is **optimal** if it dominates every other policy, $\pi^* \succeq \pi$ for all $\pi$. Equivalently, $\pi^*$ is at least as good as every other policy in every state simultaneously.
+A policy $\pi^\ast$ is **optimal** if it dominates every other policy, $\pi^\ast \succeq \pi$ for all $\pi$. Equivalently, $\pi^\ast$ is at least as good as every other policy in every state simultaneously.
 
 </div>
 
@@ -1349,7 +1351,7 @@ A policy $\pi^*$ is **optimal** if it dominates every other policy, $\pi^* \succ
 A few facts about optimality that are often glossed over:
 
 * **Optimal policies need not be unique.** Whenever two actions tie for the argmax in some state, *any* of them gives an optimal policy. Tie-breaking does not change the value.
-* **Optimal value functions are unique.** For any discounted finite MDP, $v_*$ and $q_*$ are well-defined functions. Any optimal policy attains *the same* values.
+* **Optimal value functions are unique.** For any discounted finite MDP, $v_\ast$ and $q_\ast$ are well-defined functions. Any optimal policy attains *the same* values.
 * **A deterministic optimal policy always exists.** This is non-obvious — one might worry that some MDPs require randomisation — but for finite discounted MDPs there is always at least one purely deterministic policy that is optimal.
 
 </div>
@@ -1431,7 +1433,7 @@ $$
 \pi_{\text{greedy}}(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_*(s')\,\bigr].
 $$
 
-Then **any policy greedy with respect to $v_*$ is optimal.** With $q_*$ the rule is even simpler — and no model is required:
+Then **any policy greedy with respect to $v_\ast$ is optimal.** With $q_\ast$ the rule is even simpler — and no model is required:
 
 $$
 \pi^*(s) \;\in\; \arg\max_{a}\, q_*(s, a).
@@ -1462,9 +1464,9 @@ This is the punchline of MDP theory: once you can solve the Bellman optimality e
 * MDPs extend bandits by adding **state** and **dynamics** — actions now affect *what happens next*, not just *what we get now*.
 * The **Markov property** is a constraint on state design: the state must summarise enough of the past for the future to be predictable from it alone.
 * **Return** formalises the agent's objective; **discounting** keeps it finite for continuing tasks and underwrites the contraction-mapping arguments that make later algorithms converge.
-* **Policies** define behaviour; **value functions** evaluate long-term quality. Two fundamental problems: **prediction** ($v_\pi$, $q_\pi$ for a fixed $\pi$) and **control** (find $\pi^*$).
+* **Policies** define behaviour; **value functions** evaluate long-term quality. Two fundamental problems: **prediction** ($v_\pi$, $q_\pi$ for a fixed $\pi$) and **control** (find $\pi^\ast$).
 * **Bellman expectation equations** convert long-horizon reasoning into recursive one-step lookahead; **Bellman optimality equations** define the unique optimal value functions.
-* Once $q_*$ is known, optimal control collapses to $\arg\max_a q_*(s, a)$ — a *one-step* decision per state, no planning required.
+* Once $q_\ast$ is known, optimal control collapses to $\arg\max_a q_\ast(s, a)$ — a *one-step* decision per state, no planning required.
 
 **Final message.** RL on MDPs is built around a single core idea: **solve the Bellman equations exactly or approximately**. Everything that follows — dynamic programming, Monte Carlo, TD, Q-learning, policy gradients, actor-critic — is a different way of attacking those equations.
 

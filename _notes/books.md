@@ -39,3 +39,4 @@ date: 2024-10-20
 - [Differential Geometry of Curves and Surfaces](/subpages/books/differential_geometry_of_curves_and_surfaces/)
 - [Introduction to Manifolds](/subpages/books/introduction_to_manifolds/)
 - [Calculus of Variations (Fomin)](/subpages/books/calculus_of_variations_fomin/)
+- [ARCA HD](/subpages/books/algorithmic_randomness_computable_analysis/)

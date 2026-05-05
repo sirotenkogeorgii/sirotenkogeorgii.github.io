@@ -155,7 +155,7 @@ so that the particle can change direction at *any* instant $t \in I$. Mathematic
 
 <p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: slide to refine $n$; each setting redraws the step-function path $W^n_t$ on $[0,1]$ against the limit's $\pm\sqrt{t}$ and $\pm 2\sqrt{t}$ envelopes. Click "Resample $Z_i$" to draw a new i.i.d. sequence.</p>
 
-<h2 class="sr-only">Interactive visualization of the discrete process W_t^n as a step function on [0,1], with a slider controlling n and reference bands at plus/minus sqrt(t) and plus/minus two sqrt(t).</h2>
+<!-- <h2 class="sr-only">Interactive visualization of the discrete process $W_t^n$ as a step function on $[0,1]$, with a slider controlling $n$ and reference bands at $\pm sqrt(t)$ and plus/minus two $sqrt(t)$.</h2> -->
 
 <div style="margin: 1rem 0;">
   <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
@@ -449,7 +449,9 @@ $$\mathbb{P}(X_t = Y_t \text{ for all } t \in I) = 1.$$
 
 Note that indistinguishability is strictly stronger: it requires $\mathbb{P}$-almost-sure equality *simultaneously* on the (uncountable) whole index set, whereas a version only gives almost-sure equality *pointwise* in $t$.
 
-Even when a process has finite-dimensional distributions fulfilling (W1)–(W3), the path property (W4) cannot be inferred on an uncountable index $I$, because countable unions of $\mathbb{P}$-null sets need no longer be $\mathbb{P}$-null. Nevertheless, we *can* define a modification preserving the finite-dimensional distributions (cf. Kolmogorov's extension theorem).
+TODO: put an example, where they differ.
+
+Even when a process has finite-dimensional distributions fulfilling (W1)–(W3), the path property (W4) cannot be inferred on an uncountable index $I$, because countable unions of $\mathbb{P}$-null sets need no longer be $\mathbb{P}$-null (TODO: does not it violate the third Kolmogorov's axiom?). Nevertheless, we *can* define a modification preserving the finite-dimensional distributions (cf. Kolmogorov's extension theorem).
 
 **Principle strategy for proving existence** of a real-valued (standard) Brownian motion:
 
@@ -628,7 +630,7 @@ For the rest of this section, let $\mathbb{F} := (\mathcal{F}\_t)\_{t \in I}$ be
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">0.14 ($\mathbb{F}$-Brownian Motion)</span></p>
 
-The stochastic process $(W_t, \mathcal{F}\_t)\_{t \in I}$ (or simply $W$, for short) is called a one-dimensional **(standard) $\mathbb{F}$-Brownian motion** (equivalently: standard Brownian motion with respect to $\mathbb{F}$) iff, additionally:
+The stochastic process $(W_t, \mathcal{F}\_t)\_{t \in I}$ (or simply $W$, for short) is called a one-dimensional **(standard) $\mathbb{F}$-Brownian motion** (equivalently: standard Brownian motion with respect to $\mathbb{F}$) (TODO: wdit do be Brownian motion wrt some measure?) iff, additionally:
 
 * $W_t$ is $\mathcal{F}\_t$-measurable for every $t \in I$;
 * the process $(W_{t+s} - W_t)\_{s \in I}$ is independent of $\mathcal{F}\_t$.
@@ -882,9 +884,9 @@ $$
 
 For any $x > 0$:
 
-(i) $\displaystyle \mathbb{P}(\tau_x \le t) = 2 \cdot \mathbb{P}(W_t \ge x) = \frac{x}{\sqrt{2\pi}} \int_0^t \frac{1}{s^{3/2}} \cdot \exp\!\left(-\frac{x^2}{2s}\right) \mathrm{d}s$ for all $t \in I$;
+(i) $\displaystyle \mathbb{P}(\tau_x \le t) = 2 \cdot \mathbb{P}(W_t \ge x) = \frac{x}{\sqrt{2\pi}} \int_0^t \frac{1}{s^{3/2}} \cdot \exp\left(-\frac{x^2}{2s}\right) \mathrm{d}s$ for all $t \in I$;
 
-(ii) $\displaystyle \mathbb{P}(M_t \ge x) \le \sqrt{\frac{2}{\pi}} \cdot \frac{\sqrt{t}}{x} \cdot \exp\!\left(-\frac{x^2}{2 t}\right)$ for all $t \in I$.
+(ii) $\displaystyle \mathbb{P}(M_t \ge x) \le \sqrt{\frac{2}{\pi}} \cdot \frac{\sqrt{t}}{x} \cdot \exp\left(-\frac{x^2}{2 t}\right)$ for all $t \in I$.
 
 </div>
 
@@ -938,14 +940,14 @@ Before formalising the theory of continuous-time stochastic processes, we briefl
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Stochastic Differential Equations)</span></p>
 
-To model dynamical systems subject to continuous random fluctuations, one naturally considers differential equations driven by a noise process, where the canonical mathematical object for continuous noise is **Brownian motion**. However, the sample paths of Brownian motion are almost surely nowhere differentiable and possess infinite first variation (see Proposition 0.11 (ii) and §1.1), rendering classical Riemann–Stieltjes integration inapplicable.
+To model dynamical systems subject to continuous random fluctuations, one naturally considers differential equations driven by a noise process, where the canonical mathematical object for continuous noise is **Brownian motion**. However, the sample paths of Brownian motion are almost surely nowhere differentiable and possess infinite first variation (see Proposition 0.11 (ii) and §1.1), rendering classical Riemann–Stieltjes integration inapplicable. (TODO: why?)
 
 SDEs, formalised via *Itô calculus*, provide the rigorous measure-theoretic framework required to integrate against such processes. By doing so, an SDE defines a flow not merely on a state space, but on the underlying probability space — allowing for rigorous analysis of stochastic dynamics in continuous time.
 
 </div>
 
-<div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Diffusion Models)</span></p>
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Problem</span><span class="math-callout__name">(Generative Modeling)</span></p>
 
 In the context of machine learning, *generative modelling* poses the problem:
 
@@ -962,15 +964,20 @@ Thus diffusion models provide a constructive, mathematically rigorous algorithm 
 
 To build a rigorous theory of continuous stochastic dynamics, we must construct a framework capable of handling random motion that is nowhere differentiable. We base the exposition on the classical works of *Øksendal* (2013), *Revuz & Yor* (1999), and *Karatzas & Shreve* (1991).
 
-**Foundations.** The cornerstone of continuous-time stochastic processes is the Brownian motion from Chapter 0. It is the canonical model for purely random, unpredictable continuous motion. As observed earlier (Paley–Wiener–Zygmund 1933), the paths of Brownian motion are $\mathbb{P}$-almost surely nowhere differentiable, with *infinite first variation* — hence classical Riemann–Stieltjes integration fails entirely for integrals of the form $\int f(t) \mathrm{d} W_t$.
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Foundation and a Problem</span><span class="math-callout__name">(BM is a cornerstone of continuous-time stochastic processes, but classical RS integration fails there)</span></p>
 
-**Diffusion processes.** A general *diffusion process* may be characterised as a continuous-time, continuous-state Markov process with almost surely continuous sample paths. The Markov property ensures that future evolution depends only on the present state, not on history. Since paths are continuous and memoryless, the process is fully determined by its local, *infinitesimal* behaviour, captured by the **infinitesimal generator** $\mathscr{L}$:
+The cornerstone of continuous-time stochastic processes is the Brownian motion from Chapter 0. It is the canonical model for purely random, unpredictable continuous motion. As observed earlier (Paley–Wiener–Zygmund 1933), the paths of Brownian motion are $\mathbb{P}$-almost surely nowhere differentiable, with *infinite first variation* — hence classical Riemann–Stieltjes integration fails entirely for integrals of the form $\int f(t) \mathrm{d} W_t$. (TODO: why do we integrate over $W_t$?)
+
+</div>
+
+**Diffusion processes.** A general *diffusion process* may be characterised as a continuous-time, continuous-state Markov process with almost surely continuous sample paths. The Markov property ensures that future evolution depends only on the present state, not on history. Since paths are continuous and memoryless, the process is fully determined by its local, *infinitesimal* behaviour, captured by the **infinitesimal generator** (TODO: what? The definition below looks like a generalization of the derivative, where the next values is not deterministic, but defined by some distribution) $\mathscr{L}$:
 
 $$
 (\mathscr{L} f)(x) := \lim_{t \searrow 0} \frac{\mathbb{E}[\,f(X_t)\,\mid X_0 = x\,] - f(x)}{t}.
 $$
 
-For sufficiently regular diffusions in $\mathbb{R}^d$, $\mathscr{L}$ takes the form of a second-order elliptic differential operator,
+For sufficiently regular diffusions (TODO: wdim "sufficiently regular diffusion"?) in $\mathbb{R}^d$, $\mathscr{L}$ takes the form of a second-order elliptic differential operator (TODO: what? What is differential operator? What is elliptic differential operator?),
 
 $$
 \mathscr{L} = \sum_{i=1}^d \mu_i(x) \frac{\partial}{\partial x_i} + \frac{1}{2} \sum_{i,j=1}^d \Sigma_{ij}(x) \frac{\partial^2}{\partial x_i \partial x_j}. \tag{1.1}
@@ -1001,7 +1008,7 @@ where the second integral is constructed in the **Itô sense**, capitalising on 
   \lim_{h \searrow 0} \frac{1}{h} \mathbb{E}[\,X_{t+h} - X_t \mid X_t = x\,] = \mu(t, x).
   $$
 
-* **The diffusion matrix $\Sigma(t, x) := \sigma(t, x) \sigma(t, x)^\top$.** The function $\sigma(t, x)$ determines the *volatility*. Due to the Brownian scaling $(\mathrm{d} W_t)^2 = \mathrm{d} t$, the local covariance is dominated entirely by the stochastic term. Applying *Itô's isometry* yields
+* **The diffusion matrix $\Sigma(t, x) := \sigma(t, x) \sigma(t, x)^\top$.** The function $\sigma(t, x)$ determines the *volatility*. Due to the Brownian scaling $(\mathrm{d} W_t)^2 = \mathrm{d} t$ (TODO: what and why?), the local covariance is dominated entirely by the stochastic term. Applying *Itô's isometry* yields
 
   $$
   \lim_{h \searrow 0} \frac{1}{h} \mathbb{E}\!\left[(X_{t+h} - X_t)(X_{t+h} - X_t)^\top \,\big|\, X_t = x\right] = \sigma(t, x) \sigma(t, x)^\top =: \Sigma(t, x).
@@ -1134,7 +1141,11 @@ $$
 \mathcal{J}_{\mathrm{ESM}}(\theta) = \frac{1}{2} \int_0^T \lambda(t)\, \mathbb{E}_{X_t \sim p_t}\!\left[\,\bigl\lVert s_\theta(X_t, t) - \nabla_{X_t} \log p(t, X_t) \bigr\rVert_2^2 \,\right] \mathrm{d} t,
 $$
 
-with a positive weighting $\lambda(t) > 0$. Minimising $\mathcal{J}\_{\mathrm{ESM}}$ directly is impossible in practice: the marginal density at time $t$ is $p(t, x) = \int_{\mathbb{R}^d} p_{t\mid 0}(x \mid x_0)\, p_0(x_0)\, \mathrm{d} x_0$; since $p_0$ is unknown and the integral is high-dimensional, the true marginal score $\nabla_x \log p(t, x)$ is fundamentally intractable.
+with a positive weighting $\lambda(t) > 0$. Minimising $\mathcal{J}\_{\mathrm{ESM}}$ directly is impossible in practice: the marginal density at time $t$ is 
+
+$$p(t, x) = \int_{\mathbb{R}^d} p_{t\mid 0}(x \mid x_0)\, p_0(x_0)\, \mathrm{d} x_0$$
+
+since $p_0$ is unknown and the integral is high-dimensional, the true marginal score $\nabla_x \log p(t, x)$ is fundamentally intractable.
 
 To circumvent this intractability one relies on a profound equivalence (Hyvärinen 2005; extended to conditional distributions by Vincent 2011) allowing one to bypass the marginal score entirely by substituting the *conditional* score of the forward process.
 
@@ -1169,7 +1180,11 @@ $$
 p_{t \mid 0}(x \mid x_0) = \mathcal{N}\bigl(x;\, m(t) x_0,\, v(t) I\bigr),
 $$
 
-with mean scaling $m(t) = \exp\!\bigl(-\tfrac{1}{2} \int_0^t \beta(s)\, \mathrm{d} s\bigr)$ and variance $v(t) = 1 - \exp\!\bigl(-\int_0^t \beta(s)\, \mathrm{d} s\bigr)$. Consequently, the conditional score is simply the score of a Gaussian, with trivial closed form:
+with
+* **mean scaling** $m(t) = \exp\bigl(-\tfrac{1}{2} \int_0^t \beta(s)\, \mathrm{d} s\bigr)$ and 
+* **variance** $v(t) = 1 - \exp\bigl(-\int_0^t \beta(s)\, \mathrm{d} s\bigr)$. 
+ 
+Consequently, the conditional score is simply the score of a Gaussian, with trivial closed form:
 
 $$
 \nabla_x \log p_{t \mid 0}(x \mid x_0) = -\frac{x - m(t) x_0}{v(t)}. \tag{1.6}
