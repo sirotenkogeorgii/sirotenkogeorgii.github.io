@@ -463,7 +463,7 @@ Note that **indistinguishability is strictly stronger**: it requires $\mathbb{P}
 
 </div>
 
-<div class="math-callout math-callout--info" markdown="1">
+<div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Versions but not indistinguishable)</span></p>
 
 Take $(\Omega, \mathcal{A}, \mathbb{P}) := ([0,1], \mathcal{B}([0,1]), \mathrm{Leb})$ and let $T(\omega) := \omega$, so $T \sim \mathrm{Unif}([0,1])$. On $I := [0,1]$ define
@@ -488,22 +488,23 @@ $$
   <img src="{{ 'assets/images/notes/sdes_diffusion_models/version_vs_indistinguishability.png' | relative_url }}" alt="Version vs. indistinguishability: P(X_t = Y_t) = 1 for every t, but P(X_. = Y_.) = 0" loading="lazy">
 </figure>
 
-* **Reading off the picture.** In the $(t,\omega)$-plane (left), the disagreement set $\lbrace Y \neq X \rbrace$ is the *diagonal* $\lbrace t = \omega \rbrace$ — a Lebesgue-null line in $[0,1]^2$.
-  * **Vertical slices** (blue, $t = t^\ast$ fixed) intersect the diagonal in a single point of $\Omega$: that is the *version* property, $\mathbb{P}(X_{t^\ast} \neq Y_{t^\ast}) = 0$.
-  * **Horizontal slices** (orange, $\omega = \omega^\ast$ fixed) are *whole sample paths*: each one already carries a spike at $t = \omega^\ast$, so $Y_\cdot(\omega^\ast) \neq X_\cdot$ as functions on $I$ — and this happens for *every* $\omega$. The right panel redraws several such slices as paths.
-
-The mismatch is exactly the "countable vs. uncountable" gap behind Fubini-type subtleties: each vertical slice is null in $\Omega$, yet the union of slices over all $t \in I$ — the diagonal itself — has full projection onto $\Omega$.
-
 </div>
 
-Even when a process has finite-dimensional distributions fulfilling (W1)–(W3), the path property (W4) cannot be inferred on an uncountable index $I$, because countable unions of $\mathbb{P}$-null sets need no longer be $\mathbb{P}$-null (TODO: does not it violate the third Kolmogorov's axiom?). Nevertheless, we *can* define a modification preserving the finite-dimensional distributions (cf. Kolmogorov's extension theorem).
+Even when a process has finite-dimensional distributions fulfilling (W1)–(W3), the path property (W4) cannot be inferred on an uncountable index $I$, because uncountable unions of $\mathbb{P}$-null sets need no longer be $\mathbb{P}$-null (example above shows that version is not always indistinguishable). Nevertheless, we **can** define a modification preserving the finite-dimensional distributions (cf. Kolmogorov's extension theorem).
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Info</span><span class="math-callout__name">Strategy for creating real-valued (standard) Brownian motion</span></p>
 
 **Principle strategy for proving existence** of a real-valued (standard) Brownian motion:
 
-1. Define a stochastic process $\widetilde{W}$ with properties (W1), (W2), (W3).
+1. Define a stochastic process $\widetilde{W}$ with properties (W1), (W2), (W3). (important: we say nothing about measure)
 2. Define a modification $W$ of $\widetilde{W}$ that additionally fulfils (W4).
 
 &rarr; $W$ satisfies (W1)–(W4), i.e. $W$ is a real-valued (standard) Brownian motion.
+
+The main tool behind the modification argument is **Kolmogorov's continuity theorem**.
+
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">0.7 (Completion)</span></p>
@@ -515,8 +516,6 @@ $$
 $$
 
 </div>
-
-The main tool behind the modification argument (accepted without proof) is Kolmogorov's continuity theorem.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">0.8 (Kolmogorov's Continuity Theorem)</span></p>
@@ -605,6 +604,176 @@ fails.
 *Proof.* See Exercise 1.4.
 
 </details>
+</div>
+
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: one Brownian sample path on $[0,1]$ with the linear envelopes $l(t)=t$ and $u(t)=2t$ overlaid. Slide the zoom center and shrink the window — the path stays equally jagged at every magnification, visualising the failure of Lipschitz continuity (Prop 0.11 (ii)) and the inability to be trapped between $l$ and $u$ on $[0,1]$ (Prop 0.11 (iv)). The right panel shows the full path with the current zoom window highlighted.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+    <label for="path-center" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 110px;">Zoom center t<sub>0</sub></label>
+    <input type="range" min="0" max="1000" value="500" step="1" id="path-center" style="flex: 1; min-width: 200px;" />
+    <span id="path-center-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">0.500</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="path-width" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 110px;">Window width</label>
+    <input type="range" min="-3" max="0" value="0" step="0.05" id="path-width" style="flex: 1; min-width: 200px;" />
+    <span id="path-width-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">1.000</span>
+    <button id="path-resample" style="padding: 6px 14px;">Resample path</button>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #534AB7;"></span>
+      W<sub>t</sub>
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 0; border-top: 1.5px dashed rgba(83,74,183,0.55);"></span>
+      l(t)=t and u(t)=2t
+    </span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 12px;">
+    <div style="position: relative; height: 320px;">
+      <canvas id="path-zoom" role="img" aria-label="Brownian motion path zoomed in to a chosen subinterval, with the linear envelopes l(t)=t and u(t)=2t overlaid."></canvas>
+    </div>
+    <div style="position: relative; height: 320px;">
+      <canvas id="path-overview" role="img" aria-label="Full Brownian motion path on the unit interval with the current zoom window highlighted."></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const N = 4096;
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  const times = new Array(N + 1);
+  const path = new Array(N + 1);
+  function resample() {
+    times[0] = 0; path[0] = 0;
+    const dt = 1 / N, sdt = Math.sqrt(dt);
+    for (let i = 1; i <= N; i++) {
+      times[i] = i * dt;
+      path[i] = path[i - 1] + sdt * randn();
+    }
+  }
+  resample();
+
+  const overviewData = [];
+  function recomputeOverview() {
+    overviewData.length = 0;
+    for (let i = 0; i <= N; i++) overviewData.push({ x: times[i], y: path[i] });
+  }
+  recomputeOverview();
+
+  const centerEl = document.getElementById('path-center');
+  const widthEl = document.getElementById('path-width');
+  const centerValEl = document.getElementById('path-center-val');
+  const widthValEl = document.getElementById('path-width-val');
+  const resampleBtn = document.getElementById('path-resample');
+
+  const accent = '#534AB7';
+  const envColor = 'rgba(83, 74, 183, 0.55)';
+  const highlightColor = 'rgba(83, 74, 183, 0.18)';
+
+  let lo = 0, hi = 1;
+  let zoomChart = null;
+  let overviewChart = null;
+
+  function buildZoomData() {
+    const arr = [];
+    for (let i = 0; i <= N; i++) {
+      const t = times[i];
+      if (t >= lo && t <= hi) arr.push({ x: t, y: path[i] });
+    }
+    return arr;
+  }
+
+  function update() {
+    const c = parseInt(centerEl.value, 10) / 1000;
+    const w = Math.pow(10, parseFloat(widthEl.value));
+    const half = w / 2;
+    lo = Math.max(0, c - half);
+    hi = Math.min(1, c + half);
+    if (hi - lo < 1e-5) hi = Math.min(1, lo + 1e-5);
+    centerValEl.textContent = c.toFixed(3);
+    widthValEl.textContent = w.toFixed(3);
+
+    const zoomData = buildZoomData();
+    const lEnv = [{ x: lo, y: lo }, { x: hi, y: hi }];
+    const uEnv = [{ x: lo, y: 2 * lo }, { x: hi, y: 2 * hi }];
+
+    if (!zoomChart) {
+      zoomChart = new Chart(document.getElementById('path-zoom'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'W', data: zoomData, borderColor: accent, borderWidth: 1.2, pointRadius: 0, fill: false, order: 1 },
+          { label: 'l', data: lEnv, borderColor: envColor, borderWidth: 1, borderDash: [4, 4], pointRadius: 0, fill: false, order: 3 },
+          { label: 'u', data: uEnv, borderColor: envColor, borderWidth: 1, borderDash: [4, 4], pointRadius: 0, fill: false, order: 4 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: lo, max: hi, title: { display: true, text: 't' }, ticks: { maxTicksLimit: 6 } },
+            y: { title: { display: true, text: 'value' } }
+          }
+        }
+      });
+    } else {
+      zoomChart.data.datasets[0].data = zoomData;
+      zoomChart.data.datasets[1].data = lEnv;
+      zoomChart.data.datasets[2].data = uEnv;
+      zoomChart.options.scales.x.min = lo;
+      zoomChart.options.scales.x.max = hi;
+      zoomChart.update('none');
+    }
+
+    if (!overviewChart) {
+      overviewChart = new Chart(document.getElementById('path-overview'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'W', data: overviewData, borderColor: accent, borderWidth: 0.6, pointRadius: 0, fill: false, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: 1, ticks: { maxTicksLimit: 3 } },
+            y: { ticks: { maxTicksLimit: 4 } }
+          }
+        },
+        plugins: [{
+          id: 'window-highlight',
+          beforeDatasetsDraw(chart) {
+            const { ctx, chartArea, scales } = chart;
+            const xLo = scales.x.getPixelForValue(lo);
+            const xHi = scales.x.getPixelForValue(hi);
+            ctx.save();
+            ctx.fillStyle = highlightColor;
+            ctx.fillRect(xLo, chartArea.top, Math.max(2, xHi - xLo), chartArea.bottom - chartArea.top);
+            ctx.restore();
+          }
+        }]
+      });
+    } else {
+      overviewChart.update('none');
+    }
+  }
+
+  centerEl.addEventListener('input', update);
+  widthEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', () => { resample(); recomputeOverview(); update(); });
+  update();
+})();
+</script>
+
 </div>
 
 ### 0.4 Donsker's Theorem (Classical Version)
@@ -942,6 +1111,241 @@ The reflection principle doubles the probability of paths crossing a level $x \i
 
 </div>
 
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: a single Brownian path $W_t$ on $[0,1]$ together with its reflection $\widetilde W_t = W_{t \wedge \tau_x} - (W_t - W_{t \wedge \tau_x})$ about the level $x$ from the first hitting time $\tau_x$ onward (the two coincide before $\tau_x$). Slide $x$ and resample to verify visually that $\widetilde W$ has the same law as $W$. Below: empirical histogram of $\tau_x$ over $5{,}000$ independent paths against the theoretical density $\frac{x}{\sqrt{2\pi t^3}} \exp\!\left(-\frac{x^2}{2t}\right)$.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="refl-x" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 80px;">Level x</label>
+    <input type="range" min="0.1" max="2.5" value="0.7" step="0.01" id="refl-x" style="flex: 1; min-width: 200px;" />
+    <span id="refl-x-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">0.70</span>
+    <button id="refl-resample" style="padding: 6px 14px;">Resample</button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1rem;">
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">Level x</div>
+      <div id="refl-stat-x" style="font-size: 20px; font-weight: 500;">0.70</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">Hitting time &tau;<sub>x</sub> (this path)</div>
+      <div id="refl-stat-tau" style="font-size: 20px; font-weight: 500;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">P(&tau;<sub>x</sub> &le; 1) (theory)</div>
+      <div id="refl-stat-prob" style="font-size: 20px; font-weight: 500;">&mdash;</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #534AB7;"></span>
+      original W<sub>t</sub>
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #D97757;"></span>
+      reflected W&#771;<sub>t</sub>
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 0; border-top: 1.5px dashed rgba(83,74,183,0.55);"></span>
+      level x
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 0; border-top: 1.5px dashed rgba(217,119,87,0.55);"></span>
+      &tau;<sub>x</sub>
+    </span>
+  </div>
+
+  <div style="position: relative; width: 100%; height: 280px; margin-bottom: 1rem;">
+    <canvas id="refl-paths" role="img" aria-label="Brownian path and its reflection about the chosen level x, drawn against time on the unit interval."></canvas>
+  </div>
+
+  <p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Empirical density of $\tau_x$ over $5{,}000$ independent paths vs. theoretical density (truncated to $\tau_x \le 1$).</p>
+  <div style="position: relative; width: 100%; height: 240px;">
+    <canvas id="refl-hist" role="img" aria-label="Histogram of simulated hitting times for the chosen level x, overlaid with the theoretical hitting-time density."></canvas>
+  </div>
+</div>
+
+<script>
+(function () {
+  const N = 1024;
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function buildBM(steps) {
+    const dt = 1 / steps, sdt = Math.sqrt(dt);
+    const arr = new Array(steps + 1);
+    arr[0] = 0;
+    for (let i = 1; i <= steps; i++) arr[i] = arr[i - 1] + sdt * randn();
+    return arr;
+  }
+  function erfc(z) {
+    const a = Math.abs(z);
+    const t = 1 / (1 + 0.5 * a);
+    const ans = t * Math.exp(-a * a - 1.26551223 + t * (1.00002368 + t * (0.37409196 +
+      t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 +
+      t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+    return z >= 0 ? ans : 2 - ans;
+  }
+
+  let path = buildBM(N);
+
+  const M = 5000;
+  const hits = new Float64Array(M);
+
+  const xEl = document.getElementById('refl-x');
+  const xValEl = document.getElementById('refl-x-val');
+  const statX = document.getElementById('refl-stat-x');
+  const statTau = document.getElementById('refl-stat-tau');
+  const statProb = document.getElementById('refl-stat-prob');
+  const resampleBtn = document.getElementById('refl-resample');
+
+  const accent = '#534AB7';
+  const reflColor = '#D97757';
+  const levelColor = 'rgba(83, 74, 183, 0.55)';
+  const tauColor = 'rgba(217, 119, 87, 0.55)';
+
+  let pathsChart = null;
+  let histChart = null;
+
+  function rebuildHits(x) {
+    const dt = 1 / N, sdt = Math.sqrt(dt);
+    for (let k = 0; k < M; k++) {
+      let w = 0, t = -1;
+      for (let i = 1; i <= N; i++) {
+        w += sdt * randn();
+        if (w >= x) { t = i / N; break; }
+      }
+      hits[k] = t;
+    }
+  }
+
+  function findTauIndex(arr, x) {
+    for (let i = 0; i < arr.length; i++) if (arr[i] >= x) return i;
+    return -1;
+  }
+
+  function update() {
+    const x = parseFloat(xEl.value);
+    xValEl.textContent = x.toFixed(2);
+    statX.textContent = x.toFixed(2);
+
+    const idx = findTauIndex(path, x);
+    const tau = idx < 0 ? -1 : idx / (path.length - 1);
+    statTau.textContent = tau < 0 ? 'not before T = 1' : tau.toFixed(3);
+
+    statProb.textContent = erfc(x / Math.SQRT2).toFixed(3);
+
+    const wPath = new Array(path.length);
+    const refl = new Array(path.length);
+    const wTau = idx >= 0 ? path[idx] : 0;
+    for (let i = 0; i < path.length; i++) {
+      const t = i / (path.length - 1);
+      wPath[i] = { x: t, y: path[i] };
+      refl[i] = { x: t, y: (idx < 0 || i <= idx) ? path[i] : 2 * wTau - path[i] };
+    }
+    const levelData = [{ x: 0, y: x }, { x: 1, y: x }];
+    const yMin = Math.min(-x - 0.5, -2);
+    const yMax = Math.max(x + 1, 2.5);
+    const tauLine = tau < 0 ? [] : [{ x: tau, y: yMin }, { x: tau, y: yMax }];
+
+    if (!pathsChart) {
+      pathsChart = new Chart(document.getElementById('refl-paths'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'W', data: wPath, borderColor: accent, borderWidth: 1.4, pointRadius: 0, fill: false, order: 1 },
+          { label: 'reflected', data: refl, borderColor: reflColor, borderWidth: 1.4, pointRadius: 0, fill: false, order: 2 },
+          { label: 'level', data: levelData, borderColor: levelColor, borderWidth: 1, borderDash: [5, 4], pointRadius: 0, fill: false, order: 3 },
+          { label: 'tau', data: tauLine, borderColor: tauColor, borderWidth: 1, borderDash: [3, 3], pointRadius: 0, fill: false, order: 4 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: 1, title: { display: true, text: 't' } },
+            y: { title: { display: true, text: 'value' } }
+          }
+        }
+      });
+    } else {
+      pathsChart.data.datasets[0].data = wPath;
+      pathsChart.data.datasets[1].data = refl;
+      pathsChart.data.datasets[2].data = levelData;
+      pathsChart.data.datasets[3].data = tauLine;
+      pathsChart.update('none');
+    }
+
+    rebuildHits(x);
+    const bins = 40;
+    const counts = new Array(bins).fill(0);
+    let nHit = 0;
+    for (let k = 0; k < M; k++) {
+      if (hits[k] >= 0 && hits[k] <= 1) {
+        nHit++;
+        const b = Math.min(bins - 1, Math.floor(hits[k] * bins));
+        counts[b]++;
+      }
+    }
+    const binWidth = 1 / bins;
+    const denom = Math.max(1, M) * binWidth;
+    const histData = [{ x: 0, y: 0 }];
+    for (let b = 0; b < bins; b++) {
+      const left = b / bins, right = (b + 1) / bins;
+      const h = counts[b] / denom;
+      histData.push({ x: left, y: h });
+      histData.push({ x: right, y: h });
+    }
+    histData.push({ x: 1, y: 0 });
+
+    const NP = 240;
+    const theoryData = [];
+    let yMaxTheory = 0;
+    for (let i = 1; i <= NP; i++) {
+      const t = i / NP;
+      const d = (x / Math.sqrt(2 * Math.PI * t * t * t)) * Math.exp(-x * x / (2 * t));
+      if (d > yMaxTheory) yMaxTheory = d;
+      theoryData.push({ x: t, y: d });
+    }
+    let histPeak = 0;
+    for (let b = 0; b < bins; b++) histPeak = Math.max(histPeak, counts[b] / denom);
+    const yMaxAxis = Math.max(yMaxTheory, histPeak) * 1.15 + 1e-9;
+
+    if (!histChart) {
+      histChart = new Chart(document.getElementById('refl-hist'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'empirical', data: histData, borderColor: 'rgba(83,74,183,0.7)', backgroundColor: 'rgba(83,74,183,0.18)', borderWidth: 1, pointRadius: 0, fill: 'origin', tension: 0, order: 2 },
+          { label: 'theory', data: theoryData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: 1, title: { display: true, text: 't' } },
+            y: { title: { display: true, text: 'density' }, beginAtZero: true, max: yMaxAxis }
+          }
+        }
+      });
+    } else {
+      histChart.data.datasets[0].data = histData;
+      histChart.data.datasets[1].data = theoryData;
+      histChart.options.scales.y.max = yMaxAxis;
+      histChart.update('none');
+    }
+  }
+
+  xEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', () => { path = buildBM(N); update(); });
+  update();
+})();
+</script>
+
+</div>
+
 More involved distributional consequences of the strong Markov property are collected in the last proposition of this chapter. For $T > 0$, define
 
 $$
@@ -976,6 +1380,173 @@ $$
 *Proof.* See Exercise 2.4.
 
 </details>
+</div>
+
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: empirical histograms of the last zero $L(T)/T$ and the argmax $A(1)$ over $N$ independent Brownian paths, against the common arcsine density $\dfrac{1}{\pi \sqrt{t(1-t)}}$ (the derivative of the CDF in Prop 0.22). Increase $N$ and resample — the bimodal U-shape that emerges is what makes the arcsine law so counterintuitive: the typical Brownian path on $[0,1]$ is far more likely to take its maximum (and to last touch zero) near the endpoints than near the middle.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="arc-n" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 110px;">Sample size N</label>
+    <input type="range" min="0" max="4" value="2" step="1" id="arc-n" style="flex: 1; min-width: 200px;" />
+    <span id="arc-n-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">2,000</span>
+    <button id="arc-resample" style="padding: 6px 14px;">Resample</button>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 14px; height: 8px; background: rgba(83,74,183,0.18); border: 1px solid rgba(83,74,183,0.7);"></span>
+      empirical histogram
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #D97757;"></span>
+      arcsine density 1/(&pi;&radic;(t(1&minus;t)))
+    </span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+    <div>
+      <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #2c3e94;">Last zero L(T)/T on [0,1]</div>
+      <div style="position: relative; height: 260px;">
+        <canvas id="arc-last-zero" role="img" aria-label="Histogram of the rescaled last zero of Brownian motion on the unit interval, against the arcsine density."></canvas>
+      </div>
+    </div>
+    <div>
+      <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #2c3e94;">Argmax A(1) on [0,1]</div>
+      <div style="position: relative; height: 260px;">
+        <canvas id="arc-argmax" role="img" aria-label="Histogram of the location of the maximum of Brownian motion on the unit interval, against the arcsine density."></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const Nsteps = 1024;
+  const NSchedule = [200, 500, 2000, 5000, 10000];
+
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  const nEl = document.getElementById('arc-n');
+  const nValEl = document.getElementById('arc-n-val');
+  const resampleBtn = document.getElementById('arc-resample');
+
+  let lastZeroChart = null;
+  let argmaxChart = null;
+
+  function simulate(N) {
+    const dt = 1 / Nsteps, sdt = Math.sqrt(dt);
+    const lastZeros = new Float64Array(N);
+    const argmaxes = new Float64Array(N);
+    for (let k = 0; k < N; k++) {
+      let w = 0, prev = 0;
+      let maxVal = 0, maxIdx = 0;
+      let lastZeroIdx = 0;
+      for (let i = 1; i <= Nsteps; i++) {
+        prev = w;
+        w += sdt * randn();
+        if ((prev <= 0 && w >= 0) || (prev >= 0 && w <= 0)) {
+          // approximate zero crossing time linearly
+          const denom = (w - prev);
+          const frac = denom !== 0 ? -prev / denom : 0;
+          lastZeroIdx = (i - 1 + frac);
+        }
+        if (w > maxVal) { maxVal = w; maxIdx = i; }
+      }
+      lastZeros[k] = lastZeroIdx / Nsteps;
+      argmaxes[k] = maxIdx / Nsteps;
+    }
+    return { lastZeros, argmaxes };
+  }
+
+  function histogram(samples, bins) {
+    const counts = new Array(bins).fill(0);
+    for (let i = 0; i < samples.length; i++) {
+      const v = samples[i];
+      if (v >= 0 && v <= 1) {
+        const b = Math.min(bins - 1, Math.floor(v * bins));
+        counts[b]++;
+      }
+    }
+    const binWidth = 1 / bins;
+    const denom = samples.length * binWidth;
+    const data = [{ x: 0, y: 0 }];
+    let peak = 0;
+    for (let b = 0; b < bins; b++) {
+      const left = b / bins, right = (b + 1) / bins;
+      const h = counts[b] / denom;
+      data.push({ x: left, y: h });
+      data.push({ x: right, y: h });
+      if (h > peak) peak = h;
+    }
+    data.push({ x: 1, y: 0 });
+    return { data, peak };
+  }
+
+  const NP = 240;
+  const arcsineData = [];
+  for (let i = 1; i < NP; i++) {
+    const t = i / NP;
+    arcsineData.push({ x: t, y: 1 / (Math.PI * Math.sqrt(t * (1 - t))) });
+  }
+
+  function makeChart(canvasId, histData, peak) {
+    return new Chart(document.getElementById(canvasId), {
+      type: 'line',
+      data: { datasets: [
+        { label: 'empirical', data: histData, borderColor: 'rgba(83,74,183,0.7)', backgroundColor: 'rgba(83,74,183,0.18)', borderWidth: 1, pointRadius: 0, fill: 'origin', tension: 0, order: 2 },
+        { label: 'arcsine', data: arcsineData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0, order: 1 }
+      ]},
+      options: {
+        animation: false, responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: { type: 'linear', min: 0, max: 1, title: { display: true, text: 't' } },
+          y: { title: { display: true, text: 'density' }, beginAtZero: true, max: Math.max(peak, 3.2) }
+        }
+      }
+    });
+  }
+
+  function update() {
+    const idx = parseInt(nEl.value, 10);
+    const N = NSchedule[idx];
+    nValEl.textContent = N.toLocaleString();
+
+    const { lastZeros, argmaxes } = simulate(N);
+    const bins = 40;
+    const lz = histogram(lastZeros, bins);
+    const am = histogram(argmaxes, bins);
+    const peak = Math.max(lz.peak, am.peak, 3.2);
+
+    if (!lastZeroChart) {
+      lastZeroChart = makeChart('arc-last-zero', lz.data, peak);
+    } else {
+      lastZeroChart.data.datasets[0].data = lz.data;
+      lastZeroChart.options.scales.y.max = peak;
+      lastZeroChart.update('none');
+    }
+    if (!argmaxChart) {
+      argmaxChart = makeChart('arc-argmax', am.data, peak);
+    } else {
+      argmaxChart.data.datasets[0].data = am.data;
+      argmaxChart.options.scales.y.max = peak;
+      argmaxChart.update('none');
+    }
+  }
+
+  nEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', update);
+  update();
+})();
+</script>
+
 </div>
 
 ## 1 Introduction
@@ -1013,6 +1584,184 @@ To build a rigorous theory of continuous stochastic dynamics, we must construct 
   <p class="math-callout__title"><span class="math-callout__label">Foundation and a Problem</span><span class="math-callout__name">(BM is a cornerstone of continuous-time stochastic processes, but classical RS integration fails there)</span></p>
 
 The cornerstone of continuous-time stochastic processes is the Brownian motion from Chapter 0. It is the canonical model for purely random, unpredictable continuous motion. As observed earlier (Paley–Wiener–Zygmund 1933), the paths of Brownian motion are $\mathbb{P}$-almost surely nowhere differentiable, with *infinite first variation* — hence classical Riemann–Stieltjes integration fails entirely for integrals of the form $\int f(t) \mathrm{d} W_t$. (TODO: why do we integrate over $W_t$?)
+
+</div>
+
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: refine the partition $0 = t_0 < t_1 < \dots < t_n = 1$ and watch the partition sums for a Brownian sample path $W_t$ (top) versus the smooth function $f(t) = \sin(2\pi t)$ (bottom). As $n \to \infty$ the <em>quadratic variation</em> of $W$ converges to $1$ while its <em>first variation</em> blows up to $\infty$; for $f$ both stay bounded, with quadratic variation collapsing to $0$. This is the precise reason classical Riemann–Stieltjes integration against $W$ fails — and why $(\mathrm{d}W_t)^2 = \mathrm{d}t$ in Itô calculus.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="qv-n" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 110px;">Partition size n</label>
+    <input type="range" min="0" max="10" value="4" step="1" id="qv-n" style="flex: 1; min-width: 200px;" />
+    <span id="qv-n-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">64</span>
+    <button id="qv-resample" style="padding: 6px 14px;">Resample W</button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1rem;">
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">&Sigma;(&Delta;W)<sup>2</sup> &nbsp;&rarr; T = 1</div>
+      <div id="qv-stat-w2" style="font-size: 20px; font-weight: 500; color: #534AB7;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">&Sigma;|&Delta;W| &nbsp;&rarr; &infin;</div>
+      <div id="qv-stat-w1" style="font-size: 20px; font-weight: 500; color: #534AB7;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">&Sigma;(&Delta;sin)<sup>2</sup> &nbsp;&rarr; 0</div>
+      <div id="qv-stat-s2" style="font-size: 20px; font-weight: 500; color: #D97757;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">&Sigma;|&Delta;sin| &nbsp;&rarr; 4</div>
+      <div id="qv-stat-s1" style="font-size: 20px; font-weight: 500; color: #D97757;">&mdash;</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #534AB7;"></span>
+      Brownian path W<sub>t</sub>
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #D97757;"></span>
+      sin(2&pi;t)
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 5px; height: 5px; background: #2c3e94; border-radius: 50%;"></span>
+      partition points
+    </span>
+  </div>
+
+  <div style="position: relative; width: 100%; height: 220px; margin-bottom: 8px;">
+    <canvas id="qv-w" role="img" aria-label="Brownian path on the unit interval with partition nodes marked, illustrating the divergence of first variation."></canvas>
+  </div>
+  <div style="position: relative; width: 100%; height: 220px;">
+    <canvas id="qv-s" role="img" aria-label="The smooth function sin(2 pi t) on the unit interval with the same partition nodes marked, illustrating bounded first variation and vanishing quadratic variation."></canvas>
+  </div>
+</div>
+
+<script>
+(function () {
+  const Nfine = 4096;
+  const partitions = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096];
+
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  const wPath = new Array(Nfine + 1);
+  function resampleW() {
+    wPath[0] = 0;
+    const sdt = Math.sqrt(1 / Nfine);
+    for (let i = 1; i <= Nfine; i++) wPath[i] = wPath[i - 1] + sdt * randn();
+  }
+  resampleW();
+
+  const f = (t) => Math.sin(2 * Math.PI * t);
+
+  const wFineData = [];
+  const sFineData = [];
+  for (let i = 0; i <= Nfine; i++) {
+    const t = i / Nfine;
+    wFineData.push({ x: t, y: wPath[i] });
+    sFineData.push({ x: t, y: f(t) });
+  }
+  function rebuildWFine() {
+    for (let i = 0; i <= Nfine; i++) wFineData[i] = { x: i / Nfine, y: wPath[i] };
+  }
+
+  const nEl = document.getElementById('qv-n');
+  const nValEl = document.getElementById('qv-n-val');
+  const resampleBtn = document.getElementById('qv-resample');
+  const statW2 = document.getElementById('qv-stat-w2');
+  const statW1 = document.getElementById('qv-stat-w1');
+  const statS2 = document.getElementById('qv-stat-s2');
+  const statS1 = document.getElementById('qv-stat-s1');
+
+  let wChart = null;
+  let sChart = null;
+
+  function update() {
+    const idx = parseInt(nEl.value, 10);
+    const n = partitions[idx];
+    nValEl.textContent = n.toLocaleString();
+
+    const stride = Nfine / n;
+    const wNodes = new Array(n + 1);
+    const sNodes = new Array(n + 1);
+    for (let k = 0; k <= n; k++) {
+      const i = Math.round(k * stride);
+      const t = i / Nfine;
+      wNodes[k] = { x: t, y: wPath[i] };
+      sNodes[k] = { x: t, y: f(t) };
+    }
+
+    let qvW = 0, fvW = 0, qvS = 0, fvS = 0;
+    for (let k = 0; k < n; k++) {
+      const dW = wNodes[k + 1].y - wNodes[k].y;
+      const dS = sNodes[k + 1].y - sNodes[k].y;
+      qvW += dW * dW; fvW += Math.abs(dW);
+      qvS += dS * dS; fvS += Math.abs(dS);
+    }
+
+    statW2.textContent = qvW.toFixed(3);
+    statW1.textContent = fvW.toFixed(2);
+    statS2.textContent = qvS.toFixed(3);
+    statS1.textContent = fvS.toFixed(3);
+
+    if (!wChart) {
+      wChart = new Chart(document.getElementById('qv-w'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'W', data: wFineData, borderColor: '#534AB7', borderWidth: 0.8, pointRadius: 0, fill: false, order: 2 },
+          { label: 'nodes', data: wNodes, borderColor: '#2c3e94', borderWidth: 0, pointRadius: 2.5, pointBackgroundColor: '#2c3e94', showLine: false, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: 1, title: { display: true, text: 't' } },
+            y: { title: { display: true, text: 'W' } }
+          }
+        }
+      });
+    } else {
+      wChart.data.datasets[0].data = wFineData;
+      wChart.data.datasets[1].data = wNodes;
+      wChart.update('none');
+    }
+
+    if (!sChart) {
+      sChart = new Chart(document.getElementById('qv-s'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'sin', data: sFineData, borderColor: '#D97757', borderWidth: 1, pointRadius: 0, fill: false, order: 2 },
+          { label: 'nodes', data: sNodes, borderColor: '#2c3e94', borderWidth: 0, pointRadius: 2.5, pointBackgroundColor: '#2c3e94', showLine: false, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: 1, title: { display: true, text: 't' } },
+            y: { title: { display: true, text: 'sin(2&#960;t)' }, min: -1.2, max: 1.2 }
+          }
+        }
+      });
+    } else {
+      sChart.data.datasets[1].data = sNodes;
+      sChart.update('none');
+    }
+  }
+
+  nEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', () => { resampleW(); rebuildWFine(); update(); });
+  update();
+})();
+</script>
 
 </div>
 
@@ -1129,6 +1878,206 @@ $$
 \frac{\partial p(t, x)}{\partial t} = \mathscr{L}^* p(t, x) = -\sum_{i=1}^d \frac{\partial}{\partial x_i}\!\left[\mu_i(t, x)\, p(t, x)\right] + \frac{1}{2} \sum_{i,j=1}^d \frac{\partial^2}{\partial x_i \partial x_j}\!\left[\Sigma_{ij}(t, x)\, p(t, x)\right].
 $$
 
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: micro/macro view of the Ornstein–Uhlenbeck SDE $\mathrm{d}X_t = -X_t\, \mathrm{d}t + \sqrt{2}\, \mathrm{d}W_t$ with $X_0 = 2$. <strong>Left:</strong> $30$ pathwise (microscopic) Euler–Maruyama trajectories on $[0, 4]$ with a vertical line at the current time. <strong>Right:</strong> the macroscopic density $p(t, x) = \mathcal{N}\!\bigl(x;\, 2 e^{-t},\, 1 - e^{-2t}\bigr)$ — the closed-form solution of the Fokker–Planck equation above for these coefficients — alongside a histogram of the path values at time $t$. Scrub $t$ to watch the $\delta_{X_0}$ initial mass smear into the stationary $\mathcal{N}(0,1)$.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="fp-t" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 80px;">Time t</label>
+    <input type="range" min="0" max="4" value="0.5" step="0.01" id="fp-t" style="flex: 1; min-width: 200px;" />
+    <span id="fp-t-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">0.50</span>
+    <button id="fp-resample" style="padding: 6px 14px;">Resample paths</button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1rem;">
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">Mean m(t) = 2 e<sup>&minus;t</sup></div>
+      <div id="fp-stat-m" style="font-size: 20px; font-weight: 500;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">Variance v(t) = 1 &minus; e<sup>&minus;2t</sup></div>
+      <div id="fp-stat-v" style="font-size: 20px; font-weight: 500;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">Stationary law</div>
+      <div style="font-size: 20px; font-weight: 500;">&Nscr;(0, 1)</div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 12px;">
+    <div>
+      <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #2c3e94;">Sample paths X<sub>t</sub></div>
+      <div style="position: relative; height: 300px;">
+        <canvas id="fp-paths" role="img" aria-label="Thirty Euler-Maruyama sample paths of the Ornstein-Uhlenbeck process on the time interval from 0 to 4, with a vertical line marking the current time."></canvas>
+      </div>
+    </div>
+    <div>
+      <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #2c3e94;">Density p(t, x)</div>
+      <div style="position: relative; height: 300px;">
+        <canvas id="fp-dens" role="img" aria-label="Gaussian density p(t, x) at the current time, alongside a histogram of the simulated path values at the current time."></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const T = 4;
+  const Nsteps = 400;
+  const dt = T / Nsteps;
+  const sdt = Math.sqrt(dt);
+  const sigma = Math.SQRT2;
+  const x0 = 2;
+  const numPaths = 30;
+  const histPaths = 2000;
+
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  // Visible (small) paths for left panel.
+  let paths = [];
+  // Many lightweight paths for right-panel histogram (only need value at current time).
+  let bigEnsemble = new Float64Array(histPaths * (Nsteps + 1));
+
+  function simulate() {
+    paths = [];
+    for (let p = 0; p < numPaths; p++) {
+      const arr = new Float64Array(Nsteps + 1);
+      arr[0] = x0;
+      for (let i = 1; i <= Nsteps; i++) arr[i] = arr[i - 1] - arr[i - 1] * dt + sigma * sdt * randn();
+      paths.push(arr);
+    }
+    for (let p = 0; p < histPaths; p++) {
+      let prev = x0;
+      bigEnsemble[p * (Nsteps + 1)] = x0;
+      for (let i = 1; i <= Nsteps; i++) {
+        prev = prev - prev * dt + sigma * sdt * randn();
+        bigEnsemble[p * (Nsteps + 1) + i] = prev;
+      }
+    }
+  }
+  simulate();
+
+  const tEl = document.getElementById('fp-t');
+  const tValEl = document.getElementById('fp-t-val');
+  const statM = document.getElementById('fp-stat-m');
+  const statV = document.getElementById('fp-stat-v');
+  const resampleBtn = document.getElementById('fp-resample');
+
+  let pathsChart = null;
+  let densChart = null;
+
+  // x-grid for density plot
+  const xGrid = [];
+  const NX = 240;
+  const xMin = -4, xMax = 4;
+  for (let i = 0; i <= NX; i++) xGrid.push(xMin + (xMax - xMin) * i / NX);
+
+  function gauss(x, m, v) {
+    return Math.exp(-(x - m) * (x - m) / (2 * v)) / Math.sqrt(2 * Math.PI * v);
+  }
+
+  function update() {
+    const t = parseFloat(tEl.value);
+    tValEl.textContent = t.toFixed(2);
+    const m = x0 * Math.exp(-t);
+    const v = 1 - Math.exp(-2 * t);
+    statM.textContent = m.toFixed(3);
+    statV.textContent = v.toFixed(3);
+
+    // Path datasets for left panel
+    const pathDatasets = paths.map((arr) => {
+      const data = [];
+      for (let i = 0; i <= Nsteps; i++) data.push({ x: i * dt, y: arr[i] });
+      return { data, borderColor: 'rgba(83, 74, 183, 0.45)', borderWidth: 0.7, pointRadius: 0, fill: false };
+    });
+    pathDatasets.push({ data: [{ x: t, y: -4 }, { x: t, y: 4 }], borderColor: '#D97757', borderWidth: 1.4, borderDash: [4, 4], pointRadius: 0, fill: false });
+
+    if (!pathsChart) {
+      pathsChart = new Chart(document.getElementById('fp-paths'), {
+        type: 'line',
+        data: { datasets: pathDatasets },
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: T, title: { display: true, text: 't' } },
+            y: { min: -4, max: 4, title: { display: true, text: 'X' } }
+          }
+        }
+      });
+    } else {
+      pathsChart.data.datasets = pathDatasets;
+      pathsChart.update('none');
+    }
+
+    // Histogram of bigEnsemble at index = t/dt
+    const idx = Math.min(Nsteps, Math.max(0, Math.round(t / dt)));
+    const stride = Nsteps + 1;
+    const bins = 50;
+    const counts = new Array(bins).fill(0);
+    let inRange = 0;
+    for (let p = 0; p < histPaths; p++) {
+      const val = bigEnsemble[p * stride + idx];
+      if (val >= xMin && val <= xMax) {
+        const b = Math.min(bins - 1, Math.floor((val - xMin) / (xMax - xMin) * bins));
+        counts[b]++; inRange++;
+      }
+    }
+    const binWidth = (xMax - xMin) / bins;
+    const denom = histPaths * binWidth;
+    const histData = [{ x: xMin, y: 0 }];
+    for (let b = 0; b < bins; b++) {
+      const left = xMin + b * binWidth, right = left + binWidth;
+      const h = counts[b] / denom;
+      histData.push({ x: left, y: h });
+      histData.push({ x: right, y: h });
+    }
+    histData.push({ x: xMax, y: 0 });
+
+    const safeV = Math.max(v, 1e-4);
+    const densData = xGrid.map((xx) => ({ x: xx, y: gauss(xx, m, safeV) }));
+    let peak = 0;
+    for (const d of densData) if (d.y > peak) peak = d.y;
+    for (let b = 0; b < bins; b++) peak = Math.max(peak, counts[b] / denom);
+
+    if (!densChart) {
+      densChart = new Chart(document.getElementById('fp-dens'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'empirical', data: histData, borderColor: 'rgba(83,74,183,0.55)', backgroundColor: 'rgba(83,74,183,0.16)', borderWidth: 1, pointRadius: 0, fill: 'origin', tension: 0, order: 2 },
+          { label: 'p(t,x)', data: densData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: xMin, max: xMax, title: { display: true, text: 'x' } },
+            y: { title: { display: true, text: 'density' }, beginAtZero: true, max: Math.max(peak * 1.1, 0.6) }
+          }
+        }
+      });
+    } else {
+      densChart.data.datasets[0].data = histData;
+      densChart.data.datasets[1].data = densData;
+      densChart.options.scales.y.max = Math.max(peak * 1.1, 0.6);
+      densChart.update('none');
+    }
+  }
+
+  tEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', () => { simulate(); update(); });
+  update();
+})();
+</script>
+
+</div>
+
 **Reversing time: the bridge to generative models.** We have now described how a diffusion process $(X_t)\_{t \in [0, T]}$ evolves forwards from an initial distribution $p_0$ to a terminal distribution $p_T$. A natural and fundamental question is:
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1180,6 +2129,177 @@ Equation (1.4) is the bridge between classical stochastic analysis and modern ge
 
 The second term, known in statistics as the **Stein score function**, is the sole unknown. If we can estimate this vector field, we can reverse the arrow of time.
 
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: the score field $\nabla_x \log p(x)$ for a 2D mixture $p = \tfrac{1}{2}\mathcal{N}\!\bigl(\mu_-, \tfrac{1}{2} I\bigr) + \tfrac{1}{2}\mathcal{N}\!\bigl(\mu_+, \tfrac{1}{2} I\bigr)$ with modes $\mu_\pm = (\pm d, 0)$. The shaded background is the density $p$; arrows are the score, which always points <em>uphill</em> on $\log p$ — toward the nearest mode of the data distribution. Reverse-time diffusion is, in essence, gradient ascent along this field with added Brownian noise.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="score-d" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 130px;">Mode separation d</label>
+    <input type="range" min="0.3" max="2.5" value="1.2" step="0.05" id="score-d" style="flex: 1; min-width: 200px;" />
+    <span id="score-d-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">1.20</span>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 14px; height: 8px; background: linear-gradient(to right, #f5f6ff, #534AB7); border: 1px solid rgba(83,74,183,0.4);"></span>
+      density p(x)
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #D97757;"></span>
+      score &nabla;<sub>x</sub> log p
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 7px; height: 7px; background: #2c3e94; border-radius: 50%;"></span>
+      modes &mu;<sub>&plusmn;</sub>
+    </span>
+  </div>
+
+  <div style="position: relative; width: 100%; aspect-ratio: 3 / 2; max-width: 760px; margin: 0 auto; background: #f5f6ff;">
+    <canvas id="score-canvas" role="img" aria-label="Two-dimensional density of a Gaussian mixture with two modes, overlaid by the score vector field which points toward the nearest mode."></canvas>
+  </div>
+</div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('score-canvas');
+  const dEl = document.getElementById('score-d');
+  const dValEl = document.getElementById('score-d-val');
+
+  const xMin = -3, xMax = 3, yMin = -2, yMax = 2;
+  const sigma2 = 0.5;
+  const wts = [0.5, 0.5];
+
+  function modes(d) { return [[-d, 0], [d, 0]]; }
+  function densityAt(x, y, mu) {
+    return (1 / (2 * Math.PI * sigma2)) * Math.exp(-((x - mu[0]) * (x - mu[0]) + (y - mu[1]) * (y - mu[1])) / (2 * sigma2));
+  }
+  function totalDensity(x, y, mus) {
+    let s = 0;
+    for (let i = 0; i < mus.length; i++) s += wts[i] * densityAt(x, y, mus[i]);
+    return s;
+  }
+  function score(x, y, mus) {
+    const ps = [];
+    let p = 0;
+    for (let i = 0; i < mus.length; i++) { const pi = densityAt(x, y, mus[i]); ps.push(pi); p += wts[i] * pi; }
+    if (p === 0) return [0, 0];
+    let sx = 0, sy = 0;
+    for (let i = 0; i < mus.length; i++) {
+      const w = wts[i] * ps[i] / p;
+      sx += w * (-(x - mus[i][0]) / sigma2);
+      sy += w * (-(y - mus[i][1]) / sigma2);
+    }
+    return [sx, sy];
+  }
+
+  function colorFor(t) {
+    const tt = Math.pow(t, 0.7);
+    const r = Math.round(245 + (83 - 245) * tt);
+    const g = Math.round(246 + (74 - 246) * tt);
+    const b = Math.round(255 + (183 - 255) * tt);
+    return `rgb(${r},${g},${b})`;
+  }
+
+  function draw() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width < 10) { requestAnimationFrame(draw); return; }
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = rect.width, H = rect.height;
+
+    const d = parseFloat(dEl.value);
+    dValEl.textContent = d.toFixed(2);
+    const mus = modes(d);
+
+    const cell = 4;
+    const cols = Math.ceil(W / cell), rows = Math.ceil(H / cell);
+    let pmax = 0;
+    const grid = new Float64Array(cols * rows);
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const x = xMin + (i + 0.5) / cols * (xMax - xMin);
+        const y = yMax - (j + 0.5) / rows * (yMax - yMin);
+        const p = totalDensity(x, y, mus);
+        grid[j * cols + i] = p;
+        if (p > pmax) pmax = p;
+      }
+    }
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const t = Math.min(1, grid[j * cols + i] / (pmax + 1e-9));
+        ctx.fillStyle = colorFor(t);
+        ctx.fillRect(i * cell, j * cell, cell + 0.6, cell + 0.6);
+      }
+    }
+
+    const aCols = 22, aRows = 14;
+    let smax = 0;
+    const sxs = new Float64Array(aCols * aRows);
+    const sys = new Float64Array(aCols * aRows);
+    for (let j = 0; j < aRows; j++) {
+      for (let i = 0; i < aCols; i++) {
+        const x = xMin + (i + 0.5) / aCols * (xMax - xMin);
+        const y = yMax - (j + 0.5) / aRows * (yMax - yMin);
+        const [sx, sy] = score(x, y, mus);
+        sxs[j * aCols + i] = sx;
+        sys[j * aCols + i] = sy;
+        const m = Math.hypot(sx, sy);
+        if (m > smax) smax = m;
+      }
+    }
+    const arrowMaxLen = Math.min(W / aCols, H / aRows) * 0.7;
+    ctx.strokeStyle = 'rgba(217, 119, 87, 0.9)';
+    ctx.fillStyle = 'rgba(217, 119, 87, 0.9)';
+    ctx.lineWidth = 1;
+    for (let j = 0; j < aRows; j++) {
+      for (let i = 0; i < aCols; i++) {
+        const px = (i + 0.5) / aCols * W;
+        const py = (j + 0.5) / aRows * H;
+        const sx = sxs[j * aCols + i], sy = sys[j * aCols + i];
+        const m = Math.hypot(sx, sy);
+        if (m < 1e-3) continue;
+        const lenScale = Math.pow(m / (smax + 1e-9), 0.7) * arrowMaxLen;
+        const dx = sx / m * lenScale;
+        const dy = -sy / m * lenScale;
+        const ex = px + dx, ey = py + dy;
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(ex, ey);
+        ctx.stroke();
+        const ang = Math.atan2(dy, dx);
+        const ah = 4.5;
+        ctx.beginPath();
+        ctx.moveTo(ex, ey);
+        ctx.lineTo(ex - ah * Math.cos(ang - Math.PI / 6), ey - ah * Math.sin(ang - Math.PI / 6));
+        ctx.lineTo(ex - ah * Math.cos(ang + Math.PI / 6), ey - ah * Math.sin(ang + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+
+    ctx.fillStyle = '#2c3e94';
+    for (const mu of mus) {
+      const px = (mu[0] - xMin) / (xMax - xMin) * W;
+      const py = (yMax - mu[1]) / (yMax - yMin) * H;
+      ctx.beginPath();
+      ctx.arc(px, py, 4, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+
+  dEl.addEventListener('input', draw);
+  window.addEventListener('resize', draw);
+  window.addEventListener('load', draw);
+  requestAnimationFrame(draw);
+})();
+</script>
+
+</div>
+
 **Score matching and generative synthesis.** The challenge of generative modelling reduces to estimating the time-dependent vector field $\nabla_x \log p(t, x)$. Assuming access to an i.i.d. dataset $X_1, \dots, X_n \sim p_0$ (the unknown, highly complex data distribution), introduce a parametric family — typically a neural network — $s_\theta(x, t) : \mathbb{R}^d \times [0, T] \to \mathbb{R}^d$. We aim to find parameters $\theta$ such that $s_\theta(x, t) \approx \nabla_x \log p(t, x)$ for all $t \in [0, T]$. The natural loss for this regression task is the expected $L^2$-distance, integrated over time — **explicit score matching (ESM)**:
 
 $$
@@ -1228,7 +2348,224 @@ $$
 with
 * **mean scaling** $m(t) = \exp\bigl(-\tfrac{1}{2} \int_0^t \beta(s)\, \mathrm{d} s\bigr)$ and 
 * **variance** $v(t) = 1 - \exp\bigl(-\int_0^t \beta(s)\, \mathrm{d} s\bigr)$. 
- 
+
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: VP-SDE transition kernel under the linear schedule $\beta(t) = \beta_{\min} + \tfrac{t}{T}(\beta_{\max} - \beta_{\min})$ on $[0, T = 1]$ with $x_0 = 1.5$. <strong>Top:</strong> the mean-scaling $m(t)$ decaying from $1$ toward $0$ alongside the variance $v(t)$ rising toward $1$ — together they implement the <em>variance-preserving</em> property $m(t)^2 + v(t) = 1$ for the case $x_0 \sim \mathcal{N}(0, 1)$. <strong>Bottom:</strong> at the chosen time $t$, an empirical histogram of $5{,}000$ noised samples $X_t = m(t) x_0 + \sqrt{v(t)}\,\varepsilon$ alongside the analytic Gaussian density. As $t \to T$ the cloud collapses to standard noise — exactly what the reverse SDE of (1.4) starts from.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <label for="vp-bmin" style="font-size: 13px; color: var(--color-text-secondary, #5F5E5A); min-width: 60px;">&beta;<sub>min</sub></label>
+      <input type="range" min="0.05" max="2" value="0.1" step="0.01" id="vp-bmin" style="flex: 1;" />
+      <span id="vp-bmin-val" style="font-size: 13px; font-weight: 500; min-width: 40px; text-align: right;">0.10</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <label for="vp-bmax" style="font-size: 13px; color: var(--color-text-secondary, #5F5E5A); min-width: 60px;">&beta;<sub>max</sub></label>
+      <input type="range" min="2" max="40" value="20" step="0.5" id="vp-bmax" style="flex: 1;" />
+      <span id="vp-bmax-val" style="font-size: 13px; font-weight: 500; min-width: 40px; text-align: right;">20.0</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <label for="vp-t" style="font-size: 13px; color: var(--color-text-secondary, #5F5E5A); min-width: 60px;">time t</label>
+      <input type="range" min="0" max="1" value="0.4" step="0.01" id="vp-t" style="flex: 1;" />
+      <span id="vp-t-val" style="font-size: 13px; font-weight: 500; min-width: 40px; text-align: right;">0.40</span>
+    </div>
+  </div>
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <button id="vp-resample" style="padding: 6px 14px;">Resample &epsilon;</button>
+    <span style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">x<sub>0</sub> = 1.5, T = 1</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1rem;">
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">m(t)</div>
+      <div id="vp-stat-m" style="font-size: 20px; font-weight: 500;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">v(t)</div>
+      <div id="vp-stat-v" style="font-size: 20px; font-weight: 500;">&mdash;</div>
+    </div>
+    <div style="background: var(--color-background-secondary, #f5f6ff); border-radius: var(--border-radius-md, 8px); padding: 10px 12px;">
+      <div style="font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">m(T), v(T)</div>
+      <div id="vp-stat-end" style="font-size: 16px; font-weight: 500;">&mdash;</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary, #5F5E5A);">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #534AB7;"></span>
+      m(t)
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 2px; background: #D97757;"></span>
+      v(t)
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-block; width: 18px; height: 0; border-top: 1.5px dashed rgba(83,74,183,0.55);"></span>
+      current t
+    </span>
+  </div>
+
+  <div style="position: relative; width: 100%; height: 220px; margin-bottom: 12px;">
+    <canvas id="vp-mv" role="img" aria-label="Plot of the mean-scaling m of t and variance v of t over the unit time interval, with a dashed vertical line at the current time."></canvas>
+  </div>
+  <p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Histogram of $X_t$ at current $t$ (5,000 samples) vs. $\mathcal{N}\!\bigl(m(t) x_0,\, v(t)\bigr)$.</p>
+  <div style="position: relative; width: 100%; height: 240px;">
+    <canvas id="vp-kernel" role="img" aria-label="Histogram of the noised samples X_t at the current time, overlaid with the analytic Gaussian density of the transition kernel."></canvas>
+  </div>
+</div>
+
+<script>
+(function () {
+  const T = 1, x0 = 1.5;
+  const Mhist = 5000;
+  const epsilons = new Float64Array(Mhist);
+
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function resampleEps() { for (let i = 0; i < Mhist; i++) epsilons[i] = randn(); }
+  resampleEps();
+
+  const bminEl = document.getElementById('vp-bmin');
+  const bmaxEl = document.getElementById('vp-bmax');
+  const tEl = document.getElementById('vp-t');
+  const bminValEl = document.getElementById('vp-bmin-val');
+  const bmaxValEl = document.getElementById('vp-bmax-val');
+  const tValEl = document.getElementById('vp-t-val');
+  const statM = document.getElementById('vp-stat-m');
+  const statV = document.getElementById('vp-stat-v');
+  const statEnd = document.getElementById('vp-stat-end');
+  const resampleBtn = document.getElementById('vp-resample');
+
+  let mvChart = null;
+  let kernelChart = null;
+
+  // integral of beta from 0 to t for linear schedule
+  function intBeta(t, bmin, bmax) {
+    return bmin * t + 0.5 * (bmax - bmin) * t * t / T;
+  }
+  function mAt(t, bmin, bmax) { return Math.exp(-0.5 * intBeta(t, bmin, bmax)); }
+  function vAt(t, bmin, bmax) { return 1 - Math.exp(-intBeta(t, bmin, bmax)); }
+
+  const Ng = 200;
+  const tGrid = [];
+  for (let i = 0; i <= Ng; i++) tGrid.push(i * T / Ng);
+
+  const xMin = -3.5, xMax = 3.5;
+  const Nx = 240;
+  const xGrid = [];
+  for (let i = 0; i <= Nx; i++) xGrid.push(xMin + (xMax - xMin) * i / Nx);
+
+  function update() {
+    const bmin = parseFloat(bminEl.value);
+    const bmax = parseFloat(bmaxEl.value);
+    const t = parseFloat(tEl.value);
+    bminValEl.textContent = bmin.toFixed(2);
+    bmaxValEl.textContent = bmax.toFixed(1);
+    tValEl.textContent = t.toFixed(2);
+
+    const mNow = mAt(t, bmin, bmax);
+    const vNow = vAt(t, bmin, bmax);
+    statM.textContent = mNow.toFixed(3);
+    statV.textContent = vNow.toFixed(3);
+    statEnd.textContent = `${mAt(T, bmin, bmax).toFixed(3)},  ${vAt(T, bmin, bmax).toFixed(3)}`;
+
+    const mData = tGrid.map((tt) => ({ x: tt, y: mAt(tt, bmin, bmax) }));
+    const vData = tGrid.map((tt) => ({ x: tt, y: vAt(tt, bmin, bmax) }));
+    const tLine = [{ x: t, y: -0.05 }, { x: t, y: 1.1 }];
+
+    if (!mvChart) {
+      mvChart = new Chart(document.getElementById('vp-mv'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'm', data: mData, borderColor: '#534AB7', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0.1, order: 1 },
+          { label: 'v', data: vData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0.1, order: 2 },
+          { label: 'tline', data: tLine, borderColor: 'rgba(83,74,183,0.55)', borderWidth: 1, borderDash: [4, 4], pointRadius: 0, fill: false, order: 3 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: 0, max: T, title: { display: true, text: 't' } },
+            y: { min: -0.05, max: 1.1, title: { display: true, text: 'value' } }
+          }
+        }
+      });
+    } else {
+      mvChart.data.datasets[0].data = mData;
+      mvChart.data.datasets[1].data = vData;
+      mvChart.data.datasets[2].data = tLine;
+      mvChart.update('none');
+    }
+
+    // histogram of X_t = m * x0 + sqrt(v) * eps
+    const sigma = Math.sqrt(Math.max(vNow, 1e-10));
+    const center = mNow * x0;
+    const bins = 50;
+    const counts = new Array(bins).fill(0);
+    for (let i = 0; i < Mhist; i++) {
+      const xv = center + sigma * epsilons[i];
+      if (xv >= xMin && xv <= xMax) {
+        const b = Math.min(bins - 1, Math.floor((xv - xMin) / (xMax - xMin) * bins));
+        counts[b]++;
+      }
+    }
+    const binWidth = (xMax - xMin) / bins;
+    const denom = Mhist * binWidth;
+    const histData = [{ x: xMin, y: 0 }];
+    let peakHist = 0;
+    for (let b = 0; b < bins; b++) {
+      const left = xMin + b * binWidth, right = left + binWidth;
+      const h = counts[b] / denom;
+      histData.push({ x: left, y: h });
+      histData.push({ x: right, y: h });
+      if (h > peakHist) peakHist = h;
+    }
+    histData.push({ x: xMax, y: 0 });
+
+    const densData = xGrid.map((xx) => ({ x: xx, y: Math.exp(-(xx - center) * (xx - center) / (2 * Math.max(vNow, 1e-10))) / Math.sqrt(2 * Math.PI * Math.max(vNow, 1e-10)) }));
+    let peakD = 0;
+    for (const d of densData) if (d.y > peakD) peakD = d.y;
+    const yMax = Math.max(peakD, peakHist) * 1.1 + 1e-9;
+
+    if (!kernelChart) {
+      kernelChart = new Chart(document.getElementById('vp-kernel'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'empirical', data: histData, borderColor: 'rgba(83,74,183,0.7)', backgroundColor: 'rgba(83,74,183,0.18)', borderWidth: 1, pointRadius: 0, fill: 'origin', tension: 0, order: 2 },
+          { label: 'analytic', data: densData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: xMin, max: xMax, title: { display: true, text: 'x' } },
+            y: { title: { display: true, text: 'density' }, beginAtZero: true, max: yMax }
+          }
+        }
+      });
+    } else {
+      kernelChart.data.datasets[0].data = histData;
+      kernelChart.data.datasets[1].data = densData;
+      kernelChart.options.scales.y.max = yMax;
+      kernelChart.update('none');
+    }
+  }
+
+  bminEl.addEventListener('input', update);
+  bmaxEl.addEventListener('input', update);
+  tEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', () => { resampleEps(); update(); });
+  update();
+})();
+</script>
+
+</div>
+
 Consequently, the conditional score is simply the score of a Gaussian, with trivial closed form:
 
 $$
@@ -1252,3 +2589,241 @@ Once the network is optimally trained such that $s_{\theta^\ast}(x, t) \approx \
 </div>
 
 By integrating (1.7) numerically (e.g. via the Euler–Maruyama scheme), the path of $X_t$ is drawn deterministically towards the regions of high data density, eventually producing a sample $X_0$ that follows the original, unknown distribution $p_0$. The theory of stochastic processes therefore provides a rigorous, constructive mechanism for generative modelling.
+
+<div style="margin: 1.2rem 0 1.5rem;">
+
+<p style="margin: 0 0 0.4rem 0; font-style: italic; color: #5F5E5A;">Interactive: a 1D toy diffusion model. The data distribution is the bimodal mixture $p_0 = 0.4\,\mathcal{N}(-1.5,\,0.16) + 0.6\,\mathcal{N}(1.5,\,0.25)$. The forward VP SDE smears it into $\mathcal{N}(0,1)$ over $[0,T]$; the reverse SDE — driven by the <em>exact</em> score $\nabla_x \log p_t$ (closed-form for a Gaussian mixture under VP dynamics) — transports $\mathcal{N}(0,1)$ back into $p_0$. <strong>Top:</strong> forward trajectories $X_0 \to X_T$. <strong>Bottom:</strong> reverse trajectories $X_T \to X_0$. The orange curve is the analytic marginal $p_t$; both histograms should match it at every $t$. Press <strong>Play</strong> to ping-pong $t$ across $[0,T]$.</p>
+
+<div style="margin: 1rem 0;">
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap;">
+    <label for="diff-t" style="font-size: 14px; color: var(--color-text-secondary, #5F5E5A); min-width: 60px;">time t</label>
+    <input type="range" min="0" max="1" value="0" step="0.01" id="diff-t" style="flex: 1; min-width: 200px;" />
+    <span id="diff-t-val" style="font-size: 14px; font-weight: 500; min-width: 56px; text-align: right;">0.00</span>
+    <button id="diff-play" style="padding: 6px 14px;">&#9658; Play</button>
+    <button id="diff-resample" style="padding: 6px 14px;">Resample</button>
+  </div>
+
+  <div>
+    <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #2c3e94;">Forward: data &rarr; noise</div>
+    <div style="position: relative; height: 220px; margin-bottom: 12px;">
+      <canvas id="diff-fwd" role="img" aria-label="Histogram of forward-diffused samples and analytic marginal density at the current time."></canvas>
+    </div>
+    <div style="font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #2c3e94;">Reverse: noise &rarr; data (exact score)</div>
+    <div style="position: relative; height: 220px;">
+      <canvas id="diff-rev" role="img" aria-label="Histogram of reverse-diffused samples driven by the exact score, and analytic marginal density at the current time."></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const T = 1, Nsteps = 100, dt = T / Nsteps;
+  const bmin = 0.1, bmax = 10;
+  const Np = 600;
+
+  function randn() {
+    let u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  const muData = [-1.5, 1.5];
+  const sigData = [0.4, 0.5];
+  const wData = [0.4, 0.6];
+  function sampleData() {
+    const i = Math.random() < wData[0] ? 0 : 1;
+    return muData[i] + sigData[i] * randn();
+  }
+  function beta(t) { return bmin + (bmax - bmin) * t; }
+  function intBeta(t) { return bmin * t + 0.5 * (bmax - bmin) * t * t; }
+  function mAt(t) { return Math.exp(-0.5 * intBeta(t)); }
+  function vAt(t) { return 1 - Math.exp(-intBeta(t)); }
+  function pAt(x, t) {
+    const m = mAt(t), v = vAt(t);
+    let p = 0;
+    for (let i = 0; i < 2; i++) {
+      const mu = m * muData[i];
+      const s2 = m * m * sigData[i] * sigData[i] + v;
+      p += wData[i] * Math.exp(-(x - mu) * (x - mu) / (2 * s2)) / Math.sqrt(2 * Math.PI * s2);
+    }
+    return p;
+  }
+  function scoreAt(x, t) {
+    const m = mAt(t), v = vAt(t);
+    let p = 0;
+    const ps = new Array(2), mus = new Array(2), s2s = new Array(2);
+    for (let i = 0; i < 2; i++) {
+      mus[i] = m * muData[i];
+      s2s[i] = m * m * sigData[i] * sigData[i] + v;
+      ps[i] = Math.exp(-(x - mus[i]) * (x - mus[i]) / (2 * s2s[i])) / Math.sqrt(2 * Math.PI * s2s[i]);
+      p += wData[i] * ps[i];
+    }
+    if (p === 0) return 0;
+    let s = 0;
+    for (let i = 0; i < 2; i++) {
+      const r = wData[i] * ps[i] / p;
+      s += r * (-(x - mus[i]) / s2s[i]);
+    }
+    return s;
+  }
+
+  let fwd = new Array(Np);
+  let rev = new Array(Np);
+
+  function precompute() {
+    for (let pIdx = 0; pIdx < Np; pIdx++) {
+      const f = new Float64Array(Nsteps + 1);
+      const r = new Float64Array(Nsteps + 1);
+      f[0] = sampleData();
+      for (let k = 1; k <= Nsteps; k++) {
+        const t = (k - 1) * dt;
+        const b = beta(t);
+        f[k] = f[k - 1] - 0.5 * b * f[k - 1] * dt + Math.sqrt(b * dt) * randn();
+      }
+      r[Nsteps] = randn();
+      for (let k = Nsteps - 1; k >= 0; k--) {
+        const t = (k + 1) * dt;
+        const b = beta(t);
+        const s = scoreAt(r[k + 1], t);
+        r[k] = r[k + 1] + 0.5 * b * r[k + 1] * dt + b * s * dt + Math.sqrt(b * dt) * randn();
+      }
+      fwd[pIdx] = f;
+      rev[pIdx] = r;
+    }
+  }
+  precompute();
+
+  const tEl = document.getElementById('diff-t');
+  const tValEl = document.getElementById('diff-t-val');
+  const playBtn = document.getElementById('diff-play');
+  const resampleBtn = document.getElementById('diff-resample');
+
+  const xMin = -4, xMax = 4;
+  const Nx = 240;
+  const xGrid = [];
+  for (let i = 0; i <= Nx; i++) xGrid.push(xMin + (xMax - xMin) * i / Nx);
+
+  let fwdChart = null, revChart = null;
+
+  function buildHist(samples) {
+    const bins = 50;
+    const counts = new Array(bins).fill(0);
+    for (let i = 0; i < samples.length; i++) {
+      const v = samples[i];
+      if (v >= xMin && v <= xMax) {
+        const b = Math.min(bins - 1, Math.floor((v - xMin) / (xMax - xMin) * bins));
+        counts[b]++;
+      }
+    }
+    const binWidth = (xMax - xMin) / bins;
+    const denom = samples.length * binWidth;
+    const data = [{ x: xMin, y: 0 }];
+    let peak = 0;
+    for (let b = 0; b < bins; b++) {
+      const left = xMin + b * binWidth, right = left + binWidth;
+      const h = counts[b] / denom;
+      data.push({ x: left, y: h });
+      data.push({ x: right, y: h });
+      if (h > peak) peak = h;
+    }
+    data.push({ x: xMax, y: 0 });
+    return { data, peak };
+  }
+
+  function update() {
+    const t = parseFloat(tEl.value);
+    tValEl.textContent = t.toFixed(2);
+    const k = Math.min(Nsteps, Math.max(0, Math.round(t / dt)));
+
+    const fwdSamples = new Float64Array(Np);
+    const revSamples = new Float64Array(Np);
+    for (let i = 0; i < Np; i++) {
+      fwdSamples[i] = fwd[i][k];
+      revSamples[i] = rev[i][k];
+    }
+    const fHist = buildHist(fwdSamples);
+    const rHist = buildHist(revSamples);
+
+    const densData = xGrid.map((x) => ({ x, y: pAt(x, Math.max(t, 1e-4)) }));
+    let densPeak = 0;
+    for (const d of densData) if (d.y > densPeak) densPeak = d.y;
+
+    const yMax = Math.max(densPeak, fHist.peak, rHist.peak) * 1.1 + 1e-9;
+
+    if (!fwdChart) {
+      fwdChart = new Chart(document.getElementById('diff-fwd'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'fwd hist', data: fHist.data, borderColor: 'rgba(83,74,183,0.7)', backgroundColor: 'rgba(83,74,183,0.18)', borderWidth: 1, pointRadius: 0, fill: 'origin', tension: 0, order: 2 },
+          { label: 'p_t', data: densData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: xMin, max: xMax, title: { display: true, text: 'x' } },
+            y: { title: { display: true, text: 'density' }, beginAtZero: true, max: yMax }
+          }
+        }
+      });
+    } else {
+      fwdChart.data.datasets[0].data = fHist.data;
+      fwdChart.data.datasets[1].data = densData;
+      fwdChart.options.scales.y.max = yMax;
+      fwdChart.update('none');
+    }
+
+    if (!revChart) {
+      revChart = new Chart(document.getElementById('diff-rev'), {
+        type: 'line',
+        data: { datasets: [
+          { label: 'rev hist', data: rHist.data, borderColor: 'rgba(83,74,183,0.7)', backgroundColor: 'rgba(83,74,183,0.18)', borderWidth: 1, pointRadius: 0, fill: 'origin', tension: 0, order: 2 },
+          { label: 'p_t', data: densData, borderColor: '#D97757', borderWidth: 1.6, pointRadius: 0, fill: false, tension: 0, order: 1 }
+        ]},
+        options: {
+          animation: false, responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } },
+          scales: {
+            x: { type: 'linear', min: xMin, max: xMax, title: { display: true, text: 'x' } },
+            y: { title: { display: true, text: 'density' }, beginAtZero: true, max: yMax }
+          }
+        }
+      });
+    } else {
+      revChart.data.datasets[0].data = rHist.data;
+      revChart.data.datasets[1].data = densData;
+      revChart.options.scales.y.max = yMax;
+      revChart.update('none');
+    }
+  }
+
+  let playing = false;
+  let dir = 1;
+  let last = 0;
+  function frame(now) {
+    if (!playing) return;
+    if (!last) last = now;
+    const elapsed = (now - last) / 1000;
+    last = now;
+    let t = parseFloat(tEl.value) + dir * 0.4 * elapsed;
+    if (t >= T) { t = T; dir = -1; }
+    if (t <= 0) { t = 0; dir = 1; }
+    tEl.value = t.toFixed(3);
+    update();
+    requestAnimationFrame(frame);
+  }
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    playBtn.innerHTML = playing ? '&#10074;&#10074; Pause' : '&#9658; Play';
+    last = 0;
+    if (playing) requestAnimationFrame(frame);
+  });
+
+  tEl.addEventListener('input', update);
+  resampleBtn.addEventListener('click', () => { precompute(); update(); });
+  update();
+})();
+</script>
+
+</div>

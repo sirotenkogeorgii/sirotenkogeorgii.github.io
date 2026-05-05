@@ -482,7 +482,7 @@ This pattern recurs throughout PDE theory (e.g., density of smooth functions in 
 
 ### 1.3 The Bidual $E^{\star\star}$. Orthogonality Relations
 
-Let $E$ be an n.v.s. and $E^\star$ its dual with norm $\|f\|_{E^\star} = \sup_{\|x\| \le 1,\, x \in E} \lvert \langle f, x\rangle \rvert$. The **bidual** $E^{\star\star}$ is the dual of $E^\star$ with norm
+Let $E$ be an n.v.s. and $E^\star$ its dual with norm $\|f\|\_{E^\star} = \sup_{\|x\| \le 1,\, x \in E} \lvert \langle f, x\rangle \rvert$. The **bidual** $E^{\star\star}$ is the dual of $E^\star$ with norm
 
 $$
 \|\xi\|_{E^{\star\star}} = \sup_{\substack{f \in E^\star \\ \|f\| \le 1}} |\langle \xi, f \rangle| \quad (\xi \in E^{\star\star}).
@@ -527,8 +527,11 @@ It may happen that $J$ is *not surjective* from $E$ onto $E^{\star\star}$ (see C
   <p class="math-callout__title"><span class="math-callout__label">Notation</span><span class="math-callout__name">(Orthogonal subspaces)</span></p>
 
 * If $M \subset E$ is a linear subspace,
+  
   $$\boxed{\;M^\perp = \lbrace f \in E^\star\,;\ \langle f, x \rangle = 0\ \forall x \in M \rbrace.\;}$$
+
 * If $N \subset E^\star$ is a linear subspace,
+  
   $$\boxed{\;N^\perp = \lbrace x \in E\,;\ \langle f, x \rangle = 0\ \forall f \in N \rbrace.\;}$$
 
 By definition, $N^\perp$ is a subset of **$E$ rather than $E^{\star\star}$**. Both $M^\perp$ and $N^\perp$ are *closed* linear subspaces (of $E^\star$ and $E$ respectively). We say $M^\perp$ (resp. $N^\perp$) is **orthogonal** to $M$ (resp. $N$).
@@ -590,6 +593,7 @@ In this section we consider functions $\varphi$ defined on a set $E$ with values
 
 * The **(effective) domain** of $\varphi$ is $D(\varphi) = \lbrace x \in E\,;\ \varphi(x) < +\infty \rbrace$.
 * The **epigraph** of $\varphi$ is the set
+  
   $$
   \mathrm{epi}\,\varphi = \lbrace [x, \lambda] \in E \times \mathbb{R}\,;\ \varphi(x) \le \lambda \rbrace.
   $$
@@ -620,9 +624,11 @@ is closed.
 
 1. $\varphi$ is l.s.c. $\iff$ $\mathrm{epi}\,\varphi$ is closed in $E \times \mathbb{R}$.
 2. If $\varphi$ is l.s.c., then for every $x \in E$ and every $\varepsilon > 0$ there is a neighborhood $V$ of $x$ such that $\varphi(y) \ge \varphi(x) - \varepsilon$ for all $y \in V$. Conversely, this characterizes l.s.c. In particular, in a *metric space*, $\varphi$ is l.s.c. iff $\liminf_{n \to \infty} \varphi(x_n) \ge \varphi(x)$ for every sequence $x_n \to x$ — i.e.,
+   
    $$\boxed{\;\liminf_{n \to \infty} \varphi(x_n) \ge \varphi(x).\;}$$
+
 3. If $\varphi_1, \varphi_2$ are l.s.c., then $\varphi_1 + \varphi_2$ is l.s.c.
-4. If $(\varphi_i)_{i \in I}$ is a family of l.s.c. functions, then their **superior envelope** $\varphi(x) = \sup_{i \in I} \varphi_i(x)$ is l.s.c.
+4. If $(\varphi_i)\_{i \in I}$ is a family of l.s.c. functions, then their **superior envelope** $\varphi(x) = \sup_{i \in I} \varphi_i(x)$ is l.s.c.
 5. If $E$ is **compact** and $\varphi$ is l.s.c., then $\inf_E \varphi$ is achieved.
 
 </div>
@@ -996,9 +1002,11 @@ The first geometric form of Hahn–Banach (Theorem 1.6) remains valid in *genera
 The Hahn–Banach theorems have a *wide* and *diversified* range of applications. Two emblematic examples:
 
 * **(a) The Krein–Milman theorem.** The second geometric form of Hahn–Banach is a basic ingredient in its proof. Recall: the **convex hull** of $A \subset E$, denoted $\mathrm{conv}\,A$, is the smallest convex set containing $A$; equivalently, $\mathrm{conv}\,A$ consists of all *finite* convex combinations of elements of $A$:
+  
   $$
   \mathrm{conv}\,A = \Big\lbrace \sum_{i \in I} t_i a_i\,;\ I \text{ finite},\ a_i \in A,\ t_i \ge 0,\ \sum_i t_i = 1 \Big\rbrace.
   $$
+  
   The **closed convex hull** of $A$, denoted $\overline{\mathrm{conv}}\,A$, is its closure. A point $x$ in a convex set $K$ is **extremal** if it cannot be written as $x = (1-t)x_0 + tx_1$ with $t \in (0,1)$ and $x_0, x_1 \in K$, $x_0 \neq x_1$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -3181,7 +3189,7 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Pointwise control by $\|f\|_\infty$)</span></p>
 
-If $f \in L^\infty$, then $\lvert f(x)\rvert \le \|f\|_\infty$ a.e. (the inf in the definition of $\|f\|_\infty$ *is* attained — pick a sequence $C_n \to \|f\|_\infty$ with $\lvert f\rvert \le C_n$ outside a null set $E_n$, and put $E = \bigcup_n E_n$).
+If $f \in L^\infty$, then $\lvert f(x)\rvert \le \|f\|\_\infty$ a.e. (the inf in the definition of $\|f\|\_\infty$ *is* attained — pick a sequence $C_n \to \|f\|\_\infty$ with $\lvert f\rvert \le C_n$ outside a null set $E_n$, and put $E = \bigcup_n E_n$).
 
 </div>
 
@@ -3366,7 +3374,7 @@ $$
 \langle \phi, f\rangle = \int u f\quad \forall f \in L^p,
 $$
 
-with $\|u\|_{p'} = \|\phi\|_{(L^p)^\star}$.
+with $\|u\|\_{p'} = \|\phi\|\_{(L^p)^\star}$.
 
 </div>
 
@@ -3455,7 +3463,7 @@ $$
 \langle \phi, f\rangle = \int u f\quad \forall f \in L^1,
 $$
 
-with $\|u\|_\infty = \|\phi\|_{(L^1)^\star}$.
+with $\|u\|\_\infty = \|\phi\|\_{(L^1)^\star}$.
 
 </div>
 
@@ -3486,7 +3494,7 @@ The map $L^2(\Omega) \to \mathbb{R}$, $f \mapsto \langle \phi, \theta f\rangle$,
 
 $L^1(\Omega)$ is *never* reflexive — except in the trivial case where $\Omega$ consists of a finite number of atoms (so $L^1$ is finite-dimensional). Two case sketches:
 
-* **(i) Diffuse part exists.** Choose nested $\omega_n$ with $0 < \mu(\omega_n) \to 0$. The unit-norm sequence $u_n = \chi_{\omega_n}/\|\chi_{\omega_n}\|_1$ has, by Theorem 3.18, a weakly convergent subsequence $u_n \rightharpoonup u$ in $\sigma(L^1, L^\infty)$. Test against $\chi_{\omega_j}$ ($j$ fixed, $n > j$): $\int u_n \chi_{\omega_j} = 1$, so $\int u\chi_{\omega_j} = 1\ \forall j$; but $\chi_{\omega_j} \to 0$ in $L^\infty$ pointwise/dominated, so $\int u\chi_{\omega_j} \to 0$ — contradiction.
+* **(i) Diffuse part exists.** Choose nested $\omega_n$ with $0 < \mu(\omega_n) \to 0$. The unit-norm sequence $u_n = \chi_{\omega_n}/\|\chi_{\omega_n}\|\_1$ has, by Theorem 3.18, a weakly convergent subsequence $u_n \rightharpoonup u$ in $\sigma(L^1, L^\infty)$. Test against $\chi_{\omega_j}$ ($j$ fixed, $n > j$): $\int u_n \chi_{\omega_j} = 1$, so $\int u\chi_{\omega_j} = 1\ \forall j$; but $\chi_{\omega_j} \to 0$ in $L^\infty$ pointwise/dominated, so $\int u\chi_{\omega_j} \to 0$ — contradiction.
 
 * **(ii) Purely atomic, infinite atoms.** Then $L^1 \cong \ell^1$. Test the canonical basis $e_n = (0, \ldots, 1, 0, \ldots)$: if $\ell^1$ were reflexive, some subsequence $e_{n_k} \rightharpoonup x \in \ell^1$. Test against $\varphi_j = (0, \ldots, 0, 1, 1, \ldots)$ (zeros in positions $< j$): $\langle \varphi_j, e_{n_k}\rangle = 1$ for $n_k \ge j$, hence $\langle \varphi_j, x\rangle = 1\ \forall j$; but $\langle \varphi_j, x\rangle \to 0$ since $x \in \ell^1$ — contradiction.
 
@@ -3513,9 +3521,9 @@ The dual of $L^\infty$ does *not* coincide with $L^1$. To describe it concretely
 
 $L^\infty(\Omega)$ is **not separable** (except when $\Omega$ has finitely many atoms). Tool:
 
-* **Lemma 4.2.** Let $E$ be a Banach space. If there exists an uncountable family $(O_i)_{i \in I}$ of pairwise disjoint nonempty open sets, then $E$ is *not* separable. (A countable dense set must hit each $O_i$, contradiction.)
+* **Lemma 4.2.** Let $E$ be a Banach space. If there exists an uncountable family $(O_i)\_{i \in I}$ of pairwise disjoint nonempty open sets, then $E$ is *not* separable. (A countable dense set must hit each $O_i$, contradiction.)
 
-In $L^\infty(\Omega)$ apply this to $O_i = \lbrace f\,;\ \|f - \chi_{\omega_i}\|_\infty < 1/2\rbrace$ for an uncountable family $(\omega_i)$ with $\mu(\omega_i \,\Delta\, \omega_j) > 0$ for $i \neq j$. Existence of $(\omega_i)$ comes from either an open ball decomposition (in $\mathbb{R}^N$) or, on atomic $\Omega = \bigcup_n \lbrace a_n\rbrace$, from $\omega_A = \bigcup_{n \in A} a_n$ as $A$ ranges over the uncountable family of subsets of $\mathbb{N}$.
+In $L^\infty(\Omega)$ apply this to $O_i = \lbrace f\,;\ \|f - \chi_{\omega_i}\|\_\infty < 1/2\rbrace$ for an uncountable family $(\omega_i)$ with $\mu(\omega_i \,\Delta\, \omega_j) > 0$ for $i \neq j$. Existence of $(\omega_i)$ comes from either an open ball decomposition (in $\mathbb{R}^N$) or, on atomic $\Omega = \bigcup_n \lbrace a_n\rbrace$, from $\omega_A = \bigcup_{n \in A} a_n$ as $A$ ranges over the uncountable family of subsets of $\mathbb{N}$.
 
 </div>
 
