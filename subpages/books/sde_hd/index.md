@@ -504,7 +504,7 @@ $$
 \bigl\lbrace \omega \in \mathbb{R}^I : (\omega(t_1), \dots, \omega(t_n)) \in B \bigr\rbrace, \qquad B \in \mathcal{B}(\mathbb{R}^n).
 $$
 
-Crucially, every $A \in \mathcal{A}$ depends on **only countably many coordinates**: for each $A$ there is a countable $S \subseteq I$ such that membership of $\omega$ in $A$ is determined by $\omega|_S$ alone. Continuity, by contrast, is a genuinely uncountable condition, so the event
+Crucially, every $A \in \mathcal{A}$ depends on **only countably many coordinates**: for each $A$ there is a countable $S \subseteq I$ such that membership of $\omega$ in $A$ is determined by $\omega\|\_S$ alone. Continuity, by contrast, is a genuinely uncountable condition, so the event
 
 $$
 \bigl\lbrace \omega \in \mathbb{R}^I : t \mapsto \omega(t) \text{ is continuous on } I \bigr\rbrace
@@ -513,6 +513,37 @@ $$
 is **not** in $\mathcal{A}$ when $I$ is uncountable. The extension theorem can therefore deliver (W1)–(W3) on $\mathbb{R}^I$ but cannot even assign a probability to (W4), let alone guarantee it. To upgrade the process to one with continuous paths one needs a *modification* — produced here by Kolmogorov's continuity theorem (Theorem 0.8 below).
 
 Nevertheless, we **can** define a modification preserving the finite-dimensional distributions, which is precisely what the strategy below executes.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why (W4) is non-trivial given (W1)–(W3))</span></p>
+
+At first glance one might hope that, since (W1)–(W3) already specify the entire Gaussian-process structure, continuity of paths should follow for free — perhaps as a limiting consequence of the Gaussian increments shrinking with $t - s$. This is **not** the case, and the reason is structural rather than technical.
+
+**(W1)–(W3) only constrain finite-dimensional marginals.** Each of the three conditions is a statement about the joint law of finitely many random variables $W_{t_1}, \dots, W_{t_n}$ — a starting value, the law of an increment $W_t - W_s$, the independence of disjoint increments. The Gaussian-process viewpoint (Definition 0.1) is, by design, finite-dimensional: a process is specified by the family of joint laws on every finite tuple of times.
+
+**(W4) is a path-level condition that consults uncountably many times simultaneously.** Continuity at $t_0$ requires $\|W_t - W_{t_0}\| < \varepsilon$ for *all* $t$ in some neighbourhood of $t_0$, and continuity on $I$ quantifies this over every $t_0 \in I$. There is no way to rephrase "$t \mapsto W_t(\omega)$ is continuous" as a condition on countably many coordinates — between any two times $t_i, t_j$ on a finite grid lies a continuum of unconsulted instants whose joint behaviour is left free by (W1)–(W3).
+
+**The gap is exactly countable vs. uncountable.** Countable families of finite-dimensional constraints can be combined via σ-additivity (the third Kolmogorov axiom), so any property determined by countably many coordinates is reachable from finite-dimensional data. Uncountable families are not, and the $\sigma$-additivity argument that secures the countable case provably fails for uncountable unions (cf. the version-vs-indistinguishability example: each slice $\lbrace t \rbrace$ is null in $\Omega$, yet the union over $t \in I$ has full measure).
+
+**Consequence: finite-dimensional distributions do not determine path behaviour.** Two processes with identical marginals — hence equally good as "centred Gaussian processes with covariance $\min(s,t)$" — can have radically different paths. The canonical illustration is
+
+$$
+\widetilde{W}_t := W_t + \mathbf{1}_{\lbrace t = T \rbrace}, \qquad T \sim \mathrm{Unif}([0,T]) \text{ indep.\ of } W,
+$$
+
+which satisfies (W1)–(W3) since $\mathbb{P}(t = T) = 0$ at every fixed $t$, yet whose every sample path has a discontinuity at the random instant $T(\omega)$. So (W1)–(W3) cannot single out the continuous representative.
+
+**The same obstruction at the σ-algebra level.** The existence step (Lemma 0.2) realises the process on the canonical path space $\mathbb{R}^I$ with the cylinder σ-algebra $\mathcal{A}$. Every $A \in \mathcal{A}$ depends on only countably many coordinates, so the event
+
+$$
+\bigl\lbrace \omega \in \mathbb{R}^I : t \mapsto \omega(t) \text{ is continuous on } I \bigr\rbrace
+$$
+
+is **not** in $\mathcal{A}$ when $I$ is uncountable. Kolmogorov's extension theorem cannot even *assign a probability* to (W4), let alone make it $1$.
+
+**Upshot.** (W4) is a genuinely additional requirement — not a derivable corollary of the Gaussian-process specification. Securing it requires a separate ingredient: a quantitative regularity input on increments (the moment bound (0.1)) feeding into Kolmogorov's continuity theorem, which produces a *modification* of the extension-theorem process whose paths are continuous. The two-stage strategy below is therefore forced by the structure of the problem, not a matter of pedagogical taste.
 
 </div>
 
@@ -2850,4 +2881,1050 @@ By integrating (1.7) numerically (e.g. via the Euler–Maruyama scheme), the pat
 })();
 </script>
 
+</div>
+
+## 2 Brownian Motion and Transition Semigroups
+
+Having established the pathwise and distributional properties of one-dimensional Brownian motion (Chapter 0), we now extend the framework to $\mathbb{R}^d$. As generative diffusion models operate by systematically perturbing high-dimensional data distributions via *multivariate* noise, we need to understand the macroscopic spatial evolution of such systems. To rigorously analyse this probability flow — and ultimately derive the score function required for time-reversal — we must identify the foundational analytical object governing the forward process: the **transition density**.
+
+### 2.1 Multivariate Brownian Motion
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.1 (Multidimensional Standard Brownian Motion)</span></p>
+
+Let $\mathbb{F} = (\mathcal{F}_t)\_{t \ge 0}$ be a filtration. A $d$-dimensional stochastic process $B := (B_t)\_{t \ge 0}$ taking values in $\mathbb{R}^d$ is called a **$d$-dimensional (standard) $\mathbb{F}$-Brownian motion** if it is of the form
+
+$$
+B_t = \bigl(B_t^{(1)}, B_t^{(2)}, \dots, B_t^{(d)}\bigr)^{\!\top} \quad \text{for all } t \ge 0,
+$$
+
+where the coordinate processes $B^{(1)}, \dots, B^{(d)}$ are independent one-dimensional standard $\mathbb{F}$-Brownian motions.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Immediate Consequences and Renewal Property)</span></p>
+
+* **Multivariate increments.** As an immediate consequence of component-wise independence, the spatial increments are independent of the past and multivariate normal: for any $s < t$,
+
+  $$
+  B_t - B_s \sim \mathcal{N}\bigl(0,\ (t-s)\, I_d\bigr),
+  $$
+
+  where $I_d$ denotes the $d \times d$ identity matrix.
+
+* **Renewal property (splitting the path).** A crucial conceptual implication of stationary, independent increments is the ability to *split* the Brownian path. Fix any deterministic time $s \ge 0$ and define the post-$s$ process
+
+  $$
+  \widetilde{B}_t := B_{s+t} - B_s, \qquad t \ge 0.
+  $$
+
+  Then $\widetilde{B}$ is again a standard $d$-dimensional Brownian motion, entirely *independent of the history* $\mathcal{F}_s$. Informally, the process "starts afresh" at any given time $s$.
+
+* **Why this matters for diffusion models.** This renewal feature is what allows the forward corruption process to be implemented as a chain of identically distributed noise injections — the basic algorithmic primitive behind training a score network.
+
+</div>
+
+To formalise this powerful renewal behaviour into the Markov property, we must introduce notation that "restarts" the process at potentially non-zero spatial locations. For any fixed $x \in \mathbb{R}^d$, we define the **shifted probability measure** $\mathbb{P}^x_B$ associated with the Brownian motion $B$ by
+
+$$
+\mathbb{P}^x_B(A) := \mathbb{P}(B + x \in A).
+$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">($\mathbb{P}^x_B$ — Brownian motion started at $x$)</span></p>
+
+* Under $\mathbb{P}^x_B$, the process behaves *exactly* like a standard Brownian motion that has been spatially shifted to start at $x \in \mathbb{R}^d$ instead of the origin.
+* We denote the corresponding expectation operator by $\mathbb{E}_x$. When $x = 0$, we recover the standard measure: $\mathbb{P}_0 = \mathbb{P}$ and $\mathbb{E}_0 = \mathbb{E}$.
+* This notation is the multivariate analogue of the "fresh-start" measures encountered in §0.5 (Definition 0.14, Interpretation of $\mathbf{P}^a_W$); it is the standard device for stating the strong Markov property in $\mathbb{R}^d$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">2.2 (Markov Property)</span></p>
+
+Let $B$ be a $d$-dimensional standard $\mathbb{F}$-Brownian motion. Then, for any bounded measurable functional $\Phi : C([0,\infty), \mathbb{R}^d) \to \mathbb{R}$, it holds that
+
+$$
+\mathbb{E}\bigl[\Phi(B_{s+\cdot})\,\big|\, \mathcal{F}_s\bigr] = \int \Phi(w)\, \mathrm{d}\mathbb{P}^{B_s}_B(w), \qquad \mathbb{P}\text{-a.s., for all } s \ge 0.
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Markov Property in $\mathbb{R}^d$)</span></p>
+
+* Conditionally on $\mathcal{F}_s$, the future path of the process behaves exactly like a fresh Brownian motion *originating from the random current state* $B_s$.
+* For a functional depending only on a single future time $s + t$, this seamlessly simplifies to the familiar form
+
+  $$
+  \mathbb{E}[\,f(B_{s+t}) \mid \mathcal{F}_s\,] = \mathbb{E}_{B_s}[\,f(B_t)\,].
+  $$
+
+* This is a *measure-theoretic strengthening* of the elementary Markov property of §0.5 (Proposition 0.15): we now condition not just on a value, but on the entire history $\sigma$-algebra $\mathcal{F}_s$.
+
+</div>
+
+This property allows us to systematically construct the finite-dimensional distributions of the process by chaining together independent transitions.
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Three-Time Marginal via Iterated Conditioning)</span></p>
+
+Let $0 \le s < t < u$ and let $\varphi, \psi, \chi : \mathbb{R}^d \to \mathbb{R}$ be bounded measurable test functions. Iteratively conditioning on the intermediate times and exploiting the Markov property yields
+
+$$
+\begin{aligned}
+\mathbb{E}_0\bigl[\varphi(B_s)\psi(B_t)\chi(B_u)\bigr]
+&= \mathbb{E}_0\bigl[\varphi(B_s)\psi(B_t)\, \mathbb{E}_0[\chi(B_u) \mid \mathcal{F}_t]\bigr] \\
+&= \mathbb{E}_0\bigl[\varphi(B_s)\psi(B_t)\, \mathbb{E}_{B_t}[\chi(B_{u-t})]\bigr] \\
+&= \mathbb{E}_0\Bigl[\varphi(B_s)\, \mathbb{E}_{B_s}\bigl[\psi(B_{t-s})\, \mathbb{E}_{B_{t-s}}[\chi(B_{u-t})]\bigr]\Bigr].
+\end{aligned}
+$$
+
+Rewriting these nested expectations as spatial integrals gives the fundamental identity for the finite-dimensional distributions,
+
+$$
+\iiint_{\mathbb{R}^{3d}} \varphi(x)\psi(y)\chi(z)\, \mathbb{P}_0\bigl(B_s \in \mathrm{d}x,\, B_t \in \mathrm{d}y,\, B_u \in \mathrm{d}z\bigr)
+= \int_{\mathbb{R}^d}\!\!\!\varphi(x)\!\left[\int_{\mathbb{R}^d}\!\!\!\psi(y)\!\left(\int_{\mathbb{R}^d}\!\!\!\chi(z)\, \mathbb{P}_y(B_{u-t} \in \mathrm{d}z)\right)\!\mathbb{P}_x(B_{t-s} \in \mathrm{d}y)\right]\!\mathbb{P}_0(B_s \in \mathrm{d}x).
+$$
+
+* The joint distribution over any sequence of times is *completely determined* by the isolated, pairwise transition probabilities $\mathbb{P}_x(B_{\Delta t} \in \mathrm{d}y)$.
+* In diffusion models, this is precisely why the entire forward trajectory factorises into a computationally tractable Markov chain.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.3 (Chapman–Kolmogorov Equations)</span></p>
+
+For any $s, t > 0$, $x \in \mathbb{R}^d$, and Borel set $A \in \mathcal{B}(\mathbb{R}^d)$, the transition probabilities satisfy
+
+$$
+\mathbb{P}_x(B_{s+t} \in A) = \int_{\mathbb{R}^d} \mathbb{P}_z(B_t \in A)\, \mathbb{P}_x(B_s \in \mathrm{d}z).
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Consistency Across Time)</span></p>
+
+The probability of moving from $x$ to a set $A$ over a time interval $s + t$ must account for *all* possible intermediate states $z$ at time $s$. Chapman–Kolmogorov is the mathematical statement that "splitting time" is consistent: marginalising over the bridge state $z$ at time $s$ recovers the direct transition over $s+t$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $A \in \mathcal{B}(\mathbb{R}^d)$ and consider the indicator $\mathbf{1}_A$. Taking the expectation under $\mathbb{P}_x$ and conditioning on the intermediate time $s$, the tower property and the Markov property (Proposition 2.2) yield
+
+$$
+\begin{aligned}
+\mathbb{P}_x(B_{s+t} \in A)
+&= \mathbb{E}_x\bigl[\mathbf{1}_A(B_{s+t})\bigr]
+= \mathbb{E}_x\bigl[\mathbb{E}_x[\mathbf{1}_A(B_{s+t}) \mid \mathcal{F}_s]\bigr] \\
+&= \mathbb{E}_x\bigl[\mathbb{P}_{B_s}(B_t \in A)\bigr]
+= \int_{\mathbb{R}^d} \mathbb{P}_z(B_t \in A)\, \mathbb{P}_x(B_s \in \mathrm{d}z). \qquad\square
+\end{aligned}
+$$
+
+</details>
+</div>
+
+To formalise this transition mechanism analytically and make it computationally useful, we introduce the explicit transition density of the process.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.4 (Gaussian Transition Density)</span></p>
+
+For any $t > 0$ and $x, y \in \mathbb{R}^d$, the **transition density** of the $d$-dimensional standard Brownian motion is
+
+$$
+p_t(x, y) := \frac{1}{(2\pi t)^{d/2}} \exp\!\left(-\frac{\lvert x - y \rvert^2}{2t}\right).
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Density Form of Chapman–Kolmogorov)</span></p>
+
+* The function $p_t(x, y)$ is the Lebesgue density of $B_t$ under $\mathbb{P}_x$, so the transition measure is
+
+  $$
+  \mathbb{P}_x(B_t \in A) = \int_A p_t(x, y)\, \mathrm{d}y.
+  $$
+
+* Substituting this density representation into Theorem 2.3, we instantly obtain the algebraic counterpart of Chapman–Kolmogorov,
+
+  $$
+  p_{s+t}(x, y) = \int_{\mathbb{R}^d} p_s(x, z)\, p_t(z, y)\, \mathrm{d}z.
+  $$
+
+* Convolving two Gaussian densities yields another Gaussian whose variance is the sum of the variances — the familiar accumulation of variance under independent Brownian increments.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Bridge</span><span class="math-callout__name">(From Pathwise to Operator-Theoretic Viewpoint)</span></p>
+
+Thus far our focus has been *microscopic and pathwise*: the irregularities, infinite variation, and continuity of $t \mapsto B_t(\omega)$. To analyse the *macroscopic* evolution of the process, we shift perspective from classical probability to functional analysis. Because Brownian motion is memoryless, time-evolution behaves *algebraically like operator composition*. We therefore abstract away the noise and ask:
+
+> If we start at position $x$, what is the expected value of an observable $u$ at time $t$?
+
+By translating "time" into the application of a linear operator $P_t$ that maps $u$ to this new expected value, we establish an operator-theoretic approach. This perspective ultimately connects Brownian motion to the rigorous PDE theory underlying generative diffusion models.
+
+</div>
+
+### 2.2 The Transition Semigroup
+
+To formalise this intuition, we associate a family of linear operators with a given Brownian motion. For $t \ge 0$, define the **transition operator** $P_t$ acting on a function $u$ by
+
+$$
+P_t u(x) := \mathbb{E}_x[u(B_t)], \qquad x \in \mathbb{R}^d. \tag{2.1}
+$$
+
+Throughout this chapter, we work under the standing assumption that $(B_t)\_{t \ge 0}$ is a $d$-dimensional Brownian motion adapted to a *right-continuous* filtration $(\mathcal{F}_t)\_{t \ge 0}$, meaning $\mathcal{F}_t = \mathcal{F}_{t+}$ for all $t \ge 0$.
+
+In functional analysis, an *operator semigroup* $(P_t)\_{t \ge 0}$ on a Banach space $(\mathbf{B}, \lVert \cdot \rVert)$ is a family of linear operators $P_t : \mathbf{B} \to \mathbf{B}$, $t \ge 0$, satisfying the two algebraic conditions
+
+$$
+P_t P_s = P_{t+s} \quad \text{and} \quad P_0 = \mathrm{id}. \tag{2.2}
+$$
+
+In the context of stochastic processes we work predominantly with two specific Banach spaces:
+
+* $\mathcal{B}_b(\mathbb{R}^d)$, the space of bounded Borel measurable functions $f : \mathbb{R}^d \to \mathbb{R}$ equipped with the uniform norm $\lVert f \rVert_\infty$;
+* $C_\infty(\mathbb{R}^d)$, the space of continuous functions vanishing at infinity, similarly equipped with the uniform norm.
+
+Unless otherwise stated, we abbreviate $\mathcal{B}_b = \mathcal{B}_b(\mathbb{R}^d)$ and $C_\infty = C_\infty(\mathbb{R}^d)$.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.5 (Brownian Transition Operators Form a Semigroup)</span></p>
+
+Let $(B_t)\_{t \ge 0}$ be a $d$-dimensional Brownian motion. Then the family $(P_t)\_{t \ge 0}$ defined in (2.1) is a semigroup of operators on $\mathcal{B}_b(\mathbb{R}^d)$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+The linearity of $P_t$ follows from linearity of expectation. Expressing the expectation via the explicit Gaussian density,
+
+$$
+P_t u(x) = \int_{\mathbb{R}^d} u(y)\, \mathbb{P}_x(B_t \in \mathrm{d}y) = \frac{1}{(2\pi t)^{d/2}} \int_{\mathbb{R}^d} u(y)\, e^{-\lvert x - y \rvert^2 / (2t)}\, \mathrm{d}y.
+$$
+
+This integral representation is a convolution with a smooth Gaussian kernel, and so $P_t u$ is again bounded and Borel measurable: $P_t : \mathcal{B}_b \to \mathcal{B}_b$. The semigroup property (2.2) is a direct implication of the Markov property: for $s, t \ge 0$ and $u \in \mathcal{B}_b(\mathbb{R}^d)$, the tower property of conditional expectation gives
+
+$$
+\begin{aligned}
+P_{t+s} u(x)
+&= \mathbb{E}_x[u(B_{t+s})]
+= \mathbb{E}_x\bigl[\mathbb{E}_x[u(B_{t+s}) \mid \mathcal{F}_s]\bigr] \\
+&= \mathbb{E}_x[\mathbb{E}_{B_s}[u(B_t)]]
+= \mathbb{E}_x[P_t u(B_s)]
+= P_s(P_t u)(x).
+\end{aligned}
+$$
+
+Thus $P_{t+s} = P_s P_t$, completing the proof. $\square$
+
+</details>
+</div>
+
+To further characterise the semigroup, we require a basic continuity property of the underlying Brownian paths.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.6 (Uniform Stochastic Continuity)</span></p>
+
+A $d$-dimensional Brownian motion $(B_t)\_{t \ge 0}$ is **uniformly stochastically continuous**: for every $\delta > 0$,
+
+$$
+\lim_{t \to 0} \sup_{x \in \mathbb{R}^d} \mathbb{P}_x\bigl(\lvert B_t - x \rvert > \delta\bigr) = 0.
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+By spatial translation invariance and Chebyshev's inequality,
+
+$$
+\mathbb{P}_x(\lvert B_t - x \rvert > \delta)
+= \mathbb{P}_0(\lvert B_t \rvert > \delta)
+\le \frac{\mathbb{E}_0[\lvert B_t \rvert^2]}{\delta^2}
+= \frac{d \cdot t}{\delta^2}.
+$$
+
+Sending $t \to 0$ yields the claim. $\square$
+
+</details>
+</div>
+
+We are now in a position to investigate the functional-analytic properties of the Brownian transition semigroup.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">2.7 (Analytical Properties of the Brownian Semigroup)</span></p>
+
+Let $(P_t)\_{t \ge 0}$ be the transition semigroup of a $d$-dimensional Brownian motion. Then, for all $t > 0$:
+
+a) $P_t \mathbf{1} = \mathbf{1}$ (**conservativity**);
+
+b) $\lVert P_t u \rVert_\infty \le \lVert u \rVert_\infty$ (**contraction** on $\mathcal{B}_b$);
+
+c) $u \ge 0 \implies P_t u \ge 0$ (**positivity preserving**);
+
+d) $0 \le u \le 1 \implies 0 \le P_t u \le 1$ (**sub-Markovian**);
+
+e) $u \in C_\infty \implies P_t u \in C_\infty$ (**Feller property**);
+
+f) $\lim_{t \to 0} \lVert P_t u - u \rVert_\infty = 0$ for all $u \in C_\infty$ (**strong continuity** on $C_\infty$);
+
+g) $u \in \mathcal{B}_b \implies P_t u \in C_b(\mathbb{R}^d)$ (**strong Feller property**).
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.8 (Semigroup Classification)</span></p>
+
+Let $(P_t)\_{t \ge 0}$ be a general operator semigroup. Depending on which properties from Proposition 2.7 it satisfies, it is classified as follows:
+
+| Semigroup classification | Required properties |
+| --- | --- |
+| **Markov semigroup** | a), b), c), d) |
+| **sub-Markov semigroup** | b), c), d) |
+| **Feller semigroup** | b), c), d), e), f) |
+| **strong Feller semigroup** | b), c), d), g) |
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Probabilistic and Analytical Significance)</span></p>
+
+Each of these classifications carries a probabilistic and analytical meaning that determines the macroscopic behaviour of the underlying process:
+
+* **Markov vs. sub-Markov.** A *Markov* semigroup is **conservative** ($P_t \mathbf{1} = \mathbf{1}$): probability mass is preserved over time and the process never "dies" or escapes the state space. A *sub-Markov* semigroup drops conservativity ($P_t \mathbf{1} \le \mathbf{1}$), which models processes that can be absorbed, killed, or pushed to infinity in finite time — the "missing" mass represents the likelihood that the process has terminated.
+
+* **Feller semigroup.** This is the foundational class for rigorously constructing well-behaved Markov processes. The Feller property (e) and strong continuity (f) ensure that *continuous* initial conditions yield continuous spatial evolutions vanishing at infinity. By the Hille–Yosida theorem, any Feller semigroup is uniquely generated by a closed, densely defined operator (the **infinitesimal generator**, §2.4), which guarantees the existence of a corresponding strong Markov process with right-continuous paths possessing left limits (càdlàg).
+
+* **Strong Feller semigroup.** The strong Feller property is a *very powerful regularisation effect*: even if we begin with a highly discontinuous, bounded measurable observable $u \in \mathcal{B}_b$, applying the semigroup $P_t$ *instantly* (for any $t > 0$) smooths it into a continuous function. For Brownian motion, this instantaneous smoothing is driven directly by the convolution with the Gaussian transition density.
+
+* **Connection to diffusion models.** The strong Feller property is mathematically central for generative diffusion. When high-dimensional data (such as a manifold of natural images) is corrupted by forward Brownian motion, the highly singular initial data distribution is *instantly smoothed into a continuous, strictly positive density*. This guaranteed regularisation is a prerequisite for ensuring that the score field $\nabla_x \log p_t(x)$ is well-defined and differentiable everywhere in the state space for $t > 0$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 2.7</summary>
+
+We address each property sequentially.
+
+**a)** For conservativity, $P_t \mathbf{1}(x) = \mathbb{E}_x[\mathbf{1}\lbrace B_t \in \mathbb{R}^d\rbrace] = \mathbb{P}_x(B_t \in \mathbb{R}^d) = 1$, so probability mass is not lost.
+
+**b)** $\lvert P_t u(x) \rvert \le \mathbb{E}_x[\lvert u(B_t) \rvert] \le \lVert u \rVert_\infty \mathbb{E}_x[1] = \lVert u \rVert_\infty$.
+
+**c)** If $u \ge 0$, then $P_t u(x) = \mathbb{E}_x[u(B_t)] \ge 0$ trivially.
+
+**d)** Combining (b) and (c).
+
+**e)** Write $P_t u(x) = \mathbb{E}_x[u(B_t)] = \mathbb{E}_0[u(B_t + x)]$. Since $\lvert u(B_t + x) \rvert \le \lVert u \rVert_\infty$, dominated convergence applies. As $x \to y$, continuity of $u$ gives $\lim_{x \to y} \mathbb{E}_0[u(B_t + x)] = \mathbb{E}_0[u(B_t + y)]$. Similarly, as $\lvert x \rvert \to \infty$, $u(B_t + x) \to 0$ almost surely, yielding $\lim_{\lvert x \rvert \to \infty} P_t u(x) = 0$. Thus $P_t u \in C_\infty$.
+
+**f)** Fix $\varepsilon > 0$. Since $u \in C_\infty$ is uniformly continuous, there exists $\delta > 0$ such that $\lvert u(x) - u(y) \rvert < \varepsilon$ whenever $\lvert x - y \rvert < \delta$. Splitting the expectation,
+
+$$
+\begin{aligned}
+\lVert P_t u - u \rVert_\infty
+&\le \sup_{x} \mathbb{E}_x[\lvert u(B_t) - u(x) \rvert] \\
+&\le \sup_{x}\! \left(\int_{\lbrace \lvert B_t - x \rvert < \delta \rbrace}\!\lvert u(B_t) - u(x) \rvert\, \mathrm{d}\mathbb{P}_x + \int_{\lbrace \lvert B_t - x \rvert \ge \delta \rbrace}\!\lvert u(B_t) - u(x) \rvert\, \mathrm{d}\mathbb{P}_x \right) \\
+&\le \varepsilon + 2\lVert u \rVert_\infty \sup_{x} \mathbb{P}_x(\lvert B_t - x \rvert \ge \delta).
+\end{aligned}
+$$
+
+By Lemma 2.6 the second term vanishes as $t \to 0$. Since $\varepsilon$ was arbitrary, strong continuity holds.
+
+**g)** Let $R > 0$ and consider $x, z \in B(0, R)$. For $u \in \mathcal{B}_b$, $P_t u$ is the convolution with the Gaussian density. For $\lvert y \rvert \ge 2R$ we have the geometric bound $\lvert z - y \rvert^2 \ge (\lvert y \rvert - \lvert z \rvert)^2 \ge \tfrac{1}{4} \lvert y \rvert^2$. Thus the integrand is dominated by
+
+$$
+\lvert u(y) \rvert\, e^{-\lvert z - y \rvert^2 / (2t)}
+\le \lVert u \rVert_\infty \!\left(\mathbf{1}_{B(0,2R)}(y) + e^{-\lvert y \rvert^2 / (8t)} \mathbf{1}_{B(0,2R)^c}(y)\right).
+$$
+
+This dominating function is independent of $z$ and integrable, so dominated convergence pulls the limit $z \to x$ inside the integral, proving $P_t u \in C_b(\mathbb{R}^d)$. $\square$
+
+</details>
+</div>
+
+The semigroup notation is not merely abstract; it offers an algebraic framework to express the finite-dimensional distributions of a Markov process. For $s < t$ and observables $f, g \in \mathcal{B}_b(\mathbb{R}^d)$, iterated tower property gives
+
+$$
+\mathbb{E}_x\bigl[f(B_s) g(B_t)\bigr]
+= \mathbb{E}_x\bigl[f(B_s) \mathbb{E}_{B_s}[g(B_{t-s})]\bigr]
+= \mathbb{E}_x\bigl[f(B_s) (P_{t-s} g)(B_s)\bigr]
+= P_s\bigl[\,f \cdot P_{t-s} g\,\bigr](x).
+$$
+
+Iterating over an arbitrary number of time steps yields the following theorem, which fully characterises the finite-dimensional distributions of Brownian motion in *purely operator-theoretic terms*.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.9 (Finite-Dimensional Distributions via the Semigroup)</span></p>
+
+Let $(B_t)\_{t \ge 0}$ be a $d$-dimensional Brownian motion evaluated at discrete times $0 = t_0 < t_1 < \dots < t_n$. For Borel sets $C_1, \dots, C_n \in \mathcal{B}(\mathbb{R}^d)$ and starting state $x \in \mathbb{R}^d$,
+
+$$
+\mathbb{P}_x\bigl(B_{t_1} \in C_1, \dots, B_{t_n} \in C_n\bigr)
+= P_{t_1}\!\Bigl[\mathbf{1}_{C_1} P_{t_2 - t_1}\!\bigl[\dots P_{t_n - t_{n-1}}[\mathbf{1}_{C_n}]\bigr]\Bigr](x).
+$$
+
+</div>
+
+### 2.3 From Semigroups to Processes
+
+In §2.2 we observed how a given Brownian motion $(B_t)\_{t \ge 0}$ naturally induces a transition semigroup $(P_t)\_{t \ge 0}$. We now address the inverse problem:
+
+> Given a family of operators satisfying certain analytical properties, can we construct a corresponding Markov process?
+
+This transition from analytical description to stochastic process is facilitated by the concept of a **transition function** (or probability kernel): the probability of moving from a state $x$ to a set $A$ in time $t$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.10 (Transition Function)</span></p>
+
+A function $p_t(x, A)$ with $t > 0$, $x \in \mathbb{R}^d$, $A \in \mathcal{B}(\mathbb{R}^d)$, is called a **transition function** if:
+
+(i) For fixed $t$ and $x$, the map $A \mapsto p_t(x, A)$ is a probability measure on $\mathcal{B}(\mathbb{R}^d)$.
+
+(ii) For fixed $t$ and $A$, the map $x \mapsto p_t(x, A)$ is a Borel measurable function.
+
+(iii) The family satisfies the **Chapman–Kolmogorov equations**:
+
+$$
+p_{s+t}(x, A) = \int_{\mathbb{R}^d} p_s(y, A)\, p_t(x, \mathrm{d}y) \quad \text{for all } s, t > 0. \tag{2.3}
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Consistency and the Diffusion-Model Reading)</span></p>
+
+* **Consistency.** Property (iii) is a *consistency* condition: a direct jump from $x$ to $A$ in time $s + t$ is the same as jumping to some intermediate point $y$ in time $t$ and then from $y$ to $A$ in time $s$, integrated over all possible intermediate points $y$.
+* **In diffusion models.** $p_t(x_0, A)$ corresponds to the forward diffusion kernel $q(x_t \mid x_0)$, and the Chapman–Kolmogorov property is precisely what allows us to define the diffusion in a chain-like manner ($x_0 \to x_s \to x_{s+t}$).
+
+</div>
+
+**Existence of the process.** The existence of a Markov process $(X_t)\_{t \ge 0}$ for a given transition function is guaranteed by Kolmogorov's extension theorem. However, a general such process may exhibit very irregular sample paths. To ensure path regularity, we focus on a specifically well-behaved class.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.11 (Feller Process)</span></p>
+
+A Markov process $(X_t)\_{t \ge 0}$ is called a **Feller process** if its associated transition semigroup $(P_t)\_{t \ge 0}$, defined by $P_t u(x) := \int u(y)\, p_t(x, \mathrm{d}y)$, is a Feller semigroup on $C_\infty(\mathbb{R}^d)$, that is,
+
+(i) $P_t : C_\infty \to C_\infty$ for all $t \ge 0$ (Feller property);
+
+(ii) $\lim_{t \to 0} \lVert P_t u - u \rVert_\infty = 0$ for all $u \in C_\infty$ (strong continuity).
+
+</div>
+
+One of the most profound results in the theory of Markov processes connects the analytical Feller properties to the topological properties — i.e. the "look" — of the random paths.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">2.12 (Path Properties of Feller Processes)</span></p>
+
+Let $(P_t)\_{t \ge 0}$ be a Feller semigroup. Then there exists a Markov process $(X_t)\_{t \ge 0}$ such that
+
+1. for every $x \in \mathbb{R}^d$, $X_0 = x$ almost surely under $\mathbb{P}_x$;
+2. the process $(X_t)\_{t \ge 0}$ possesses a **càdlàg** version, i.e., for almost all $\omega$, the map $t \mapsto X_t(\omega)$ is right-continuous and possesses left limits for all $t \ge 0$;
+3. $(X_t)\_{t \ge 0}$ satisfies the **strong Markov property** with respect to the right-continuous filtration $(\mathcal{F}_{t+})\_{t \ge 0}$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Why this Theorem is so Central)</span></p>
+
+* **BM is the prototype.** As proved in Proposition 2.7, the Brownian semigroup satisfies the Feller properties. Brownian motion already has continuous paths, but Feller theory provides a *more general framework* that includes processes with jumps (such as Lévy processes), provided they satisfy the càdlàg property.
+* **In denoising diffusion models.** The Feller property ensures that if we start with a continuous data distribution, the diffused versions remain continuous and analytically manageable. This regularity is exactly *why* a reverse-time score function $\nabla \log p_t(x)$ can be learned reliably.
+
+</div>
+
+### 2.4 The Generator
+
+We begin with a simple observation from deterministic calculus. Let $\varphi : [0, \infty) \to \mathbb{R}$ be continuous and satisfy the functional equation $\varphi(t) \varphi(s) = \varphi(t + s)$ with $\varphi(0) = 1$. Then there exists a unique $a \in \mathbb{R}$ with $\varphi(t) = e^{a t}$, and we recover this parameter via the derivative at zero,
+
+$$
+a = \left.\frac{\mathrm{d}}{\mathrm{d}t}\varphi(t)\right|_{t=0} = \lim_{t \to 0} \frac{\varphi(t) - 1}{t}.
+$$
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Heuristic for the Generator)</span></p>
+
+Since a strongly continuous semigroup $(P_t)\_{t \ge 0}$ on a Banach space satisfies the *exact same* algebraic functional equation $P_t P_s u = P_{t+s} u$, it is mathematically reasonable to guess that, in an appropriate sense, $P_t u = e^{tA} u$ for some operator $A$ acting on $\mathbf{B}$. This operator $A$ acts as the *"derivative" of the semigroup at $t = 0$*.
+
+</div>
+
+To keep things rigorous, we restrict attention to Feller semigroups.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">2.13 (Feller Generator)</span></p>
+
+Let $(P_t)\_{t \ge 0}$ be a Feller semigroup on $C_\infty(\mathbb{R}^d)$. The **(infinitesimal) generator** $A$ of $(P_t)\_{t \ge 0}$ is
+
+$$
+A u := \lim_{t \to 0} \frac{P_t u - u}{t}, \qquad \text{(limit in } (C_\infty(\mathbb{R}^d), \lVert \cdot \rVert_\infty)), \tag{2.4}
+$$
+
+with explicit domain
+
+$$
+\mathcal{D}(A) := \left\lbrace u \in C_\infty(\mathbb{R}^d) \;\middle|\; \exists\, g \in C_\infty(\mathbb{R}^d): \lim_{t \to 0} \left\lVert \tfrac{P_t u - u}{t} - g \right\rVert_\infty = 0 \right\rbrace. \tag{2.5}
+$$
+
+This defines a linear operator $A : \mathcal{D}(A) \to C_\infty(\mathbb{R}^d)$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Intuition</span><span class="math-callout__name">(What the Generator Encodes)</span></p>
+
+If $P_t$ tells us *where* the process expects to be in the future, then $A$ evaluates *in which direction and how fast* the expectation is moving exactly at the present moment $t = 0$. The semigroup is the "global flow"; the generator is the "local vector field" that drives it.
+
+</div>
+
+For Brownian motion, this abstract generator reduces to a simple differential operator. The following example (and its proof) is central to all that follows.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.14 (Generator of Brownian Motion)</span></p>
+
+Let $(B_t)\_{t \ge 0}$ with $B_t = (B_t^{(1)}, \dots, B_t^{(d)})^{\!\top}$ be a $d$-dimensional Brownian motion, and let $P_t u(x) := \mathbb{E}_x[u(B_t)]$ be the associated transition semigroup. Let $(A, \mathcal{D}(A))$ denote its generator. Then $C_\infty^2(\mathbb{R}^d) \subset \mathcal{D}(A)$, and the operator acts as
+
+$$
+A\bigr|_{C_\infty^2(\mathbb{R}^d)} = \tfrac{1}{2} \Delta = \tfrac{1}{2} \sum_{j=1}^d \partial_j^2,
+$$
+
+where $\partial_j := \partial / \partial x_j$ and the function space is
+
+$$
+C_\infty^2(\mathbb{R}^d) := \bigl\lbrace u \in C_\infty(\mathbb{R}^d) \,\big|\, \partial_j u, \partial_j \partial_k u \in C_\infty(\mathbb{R}^d) \text{ for all } j, k = 1, \dots, d \bigr\rbrace.
+$$
+
+In fact, $\mathcal{D}(A) = C_\infty^2(\mathbb{R})$ and $A = \tfrac{1}{2}\Delta$ if $d = 1$. For $d > 1$, $\mathcal{D}(A) \subsetneq C_\infty^2(\mathbb{R}^d)$, and in general
+
+$$
+\mathcal{D}(A) = \lbrace u \in L^2(\mathbb{R}^d) \,\mid\, u, \Delta u \in C_\infty(\mathbb{R}^d) \rbrace, \tag{2.6}
+$$
+
+where $\Delta u$ is understood in the sense of distributions.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Let $u \in C_\infty^2(\mathbb{R}^d)$. By Taylor's formula, for some random intermediate point $\xi_t = \xi(x, t, \omega) \in [x, x + B_t(\omega)]$ we have
+
+$$
+\begin{aligned}
+\left\lvert \frac{\mathbb{E}[u(B_t + x) - u(x)]}{t} - \tfrac{1}{2} \Delta u(x) \right\rvert
+&= \left\lvert \mathbb{E}\!\left[\sum_{j=1}^d \partial_j u(x) \frac{B_t^{(j)}}{t} + \frac{1}{2t} \sum_{j,k=1}^d \bigl(\partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x)\bigr) B_t^{(j)} B_t^{(k)}\right] \right\rvert \\
+&= \left\lvert \frac{1}{2t} \sum_{j,k=1}^d \mathbb{E}\!\left[\bigl(\partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x)\bigr) B_t^{(j)} B_t^{(k)}\right] \right\rvert.
+\end{aligned}
+$$
+
+The last equality uses the moments of Brownian motion: the linear term vanishes because increments are centred ($\mathbb{E}[B_t^{(j)}] = 0$), and the subtracted Laplacian cancels with the second-order expectation since $\mathbb{E}[B_t^{(j)} B_t^{(k)}] = t\, \delta_{jk}$. From the integral form of the Taylor remainder,
+
+$$
+\tfrac{1}{2} \partial_j \partial_k u(\xi_t) = \int_0^1 \partial_j \partial_k u(x + r B_t)(1 - r)\, \mathrm{d}r,
+$$
+
+we see that $\omega \mapsto \partial_j \partial_k u(\xi_t(\omega))$ is measurable. Separating the spatial variations from the noise via Cauchy–Schwarz (twice — first to the sum, then to the expectation),
+
+$$
+\begin{aligned}
+\left\lvert \frac{1}{2t} \sum_{j,k=1}^d \mathbb{E}\!\left[\bigl(\partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x)\bigr) B_t^{(j)} B_t^{(k)}\right] \right\rvert
+&\le \frac{1}{2t} \mathbb{E}\!\left[\Bigl(\sum_{j,k=1}^d \lvert \partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x) \rvert^2\Bigr)^{\!1/2} \Bigl(\sum_{j,k=1}^d (B_t^{(j)} B_t^{(k)})^2\Bigr)^{\!1/2}\right] \\
+&\le \frac{1}{2t} \Bigl(\mathbb{E}\!\left[\sum_{j,k=1}^d \lvert \partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x) \rvert^2\right]\Bigr)^{\!1/2} \bigl(\mathbb{E}[\lvert B_t \rvert^4]\bigr)^{1/2}.
+\end{aligned}
+$$
+
+Now invoke Brownian scaling, $\mathbb{E}[\lvert B_t \rvert^4] = t^2\, \mathbb{E}[\lvert B_1 \rvert^4] < \infty$. Furthermore, the spatial differences are globally bounded by $\lvert \partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x) \rvert^2 \le 4 \lVert \partial_j \partial_k u \rVert_\infty^2$. Since $u \in C_\infty^2$, second derivatives are uniformly continuous; as $t \to 0$, $B_t \to 0$ a.s., causing $\xi_t \to x$. By dominated convergence,
+
+$$
+\limsup_{t \to 0} \sup_{x \in \mathbb{R}^d} \left\lvert \frac{\mathbb{E}[u(B_t + x) - u(x)]}{t} - \tfrac{1}{2} \sum_{j=1}^d \partial_j^2 u(x) \right\rvert = 0.
+$$
+
+This shows $C_\infty^2(\mathbb{R}^d) \subset \mathcal{D}(A)$ and $A = \tfrac{1}{2}\Delta$ on $C_\infty^2(\mathbb{R}^d)$. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Brownian Noise = Laplacian Smoothing)</span></p>
+
+The proof above highlights a profound mechanism: *pure, mean-zero Gaussian noise injected over time locally acts exactly like the Laplacian operator $\tfrac{1}{2}\Delta$*.
+
+* In score-based diffusion models, this is the very reason adding Brownian noise inherently smoothens the data manifold *according to the heat equation* $\partial_t p = \tfrac{1}{2} \Delta p$.
+* The Laplacian measures *local curvature*: where probability mass forms a sharp peak ($\Delta p < 0$), the generator diffuses it outwards; where it forms a valley ($\Delta p > 0$), probability mass flows in.
+* This deterministic, geometric smoothing is precisely what makes the score function $\nabla_x \log p_t(x)$ tractable and computable.
+
+</div>
+
+A straightforward extension of the previous computation handles affine transformations of Brownian motion.
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.15 (Generator of Brownian Motion with Drift)</span></p>
+
+Let $X_t = C B_t + b t$, where $C \in \mathbb{R}^{d \times d}$ is a constant matrix and $b \in \mathbb{R}^d$ a constant vector. Then the generator $A$ associated with $(X_t)\_{t \ge 0}$ acts on $u \in C_\infty^2(\mathbb{R}^d)$ as
+
+$$
+A u(x) = b \cdot \nabla u(x) + \tfrac{1}{2}\, \mathrm{Tr}\bigl(C C^{\!\top} D^2 u(x)\bigr),
+$$
+
+or in coordinate notation,
+
+$$
+A u(x) = \sum_{i=1}^d b_i \partial_i u(x) + \tfrac{1}{2} \sum_{i,j=1}^d (C C^{\!\top})\_{ij}\, \partial_i \partial_j u(x).
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(SDE Generator → Diffusion Models)</span></p>
+
+This example is of paramount importance for modern generative AI:
+
+* The process $X_t = C B_t + b t$ represents a Brownian motion with constant **drift $b$** and **diffusion matrix $C$**.
+* In score-based generative modelling, the forward corruption process is formulated precisely as an SDE of the form $\mathrm{d}x = f(x, t)\, \mathrm{d}t + g(t)\, \mathrm{d}B_t$.
+* The generator explicitly reveals how the deterministic drift $(b \cdot \nabla u)$ *translates probability mass*, while the diffusion term $\tfrac{1}{2}\,\mathrm{Tr}(C C^{\!\top} D^2 u)$ *smooths it out*.
+
+</div>
+
+Since every Feller semigroup $(P_t)\_{t \ge 0}$ is given by a family of measurable kernels, we can define linear operators of the form
+
+$$
+L = \int_0^t P_s\, \mathrm{d}s
+$$
+
+acting on $u \in \mathcal{B}_b(\mathbb{R}^d)$ via
+
+$$
+L u(x) := \int_0^t \!\!\left(\int u(y)\, p_s(x, \mathrm{d}y)\right)\!\mathrm{d}s.
+$$
+
+Integrating the semigroup over time acts as a profound *"smoothing"* operation. As we will see, this integral operator allows us to take non-smooth functions and map them directly into the domain $\mathcal{D}(A)$ of the generator.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.16 (Generator–Semigroup Relationship)</span></p>
+
+Let $(P_t)\_{t \ge 0}$ be a Feller semigroup with generator $(A, \mathcal{D}(A))$.
+
+a) For all $u \in \mathcal{D}(A)$ and $t > 0$, $P_t u \in \mathcal{D}(A)$. Moreover, the operator and the semigroup *commute*:
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}t} P_t u = A P_t u = P_t A u, \qquad \forall u \in \mathcal{D}(A),\ t > 0.
+$$
+
+b) For all $u \in C_\infty(\mathbb{R}^d)$, the time-integral $\int_0^t P_s u\, \mathrm{d}s$ belongs to $\mathcal{D}(A)$, and
+
+$$
+P_t u - u = A \int_0^t P_s u\, \mathrm{d}s, \qquad \forall u \in C_\infty(\mathbb{R}^d),\ t > 0.
+$$
+
+If additionally $u \in \mathcal{D}(A)$, then
+
+$$
+P_t u - u = \int_0^t A P_s u\, \mathrm{d}s = \int_0^t P_s A u\, \mathrm{d}s, \qquad \forall u \in \mathcal{D}(A),\ t > 0.
+$$
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Three Lenses on Lemma 2.16)</span></p>
+
+* **Kolmogorov's backward equation.** Part (a) says the expected value $v(t, x) := P_t u(x)$ is the unique solution to the PDE $\partial_t v = A v$. In the context of Brownian motion where $A = \tfrac{1}{2}\Delta$, this is simply the *heat equation*.
+* **Reverse flow in generative modelling.** If $P_t$ describes the forward "blurring" of an image, the generator $A$ provides the *local rule* for how that blurring happens at every point in space and time — exactly the object whose adjoint we numerically integrate to denoise.
+* **Operator-theoretic FTC.** Part (b) is the operator-theoretic version of the *fundamental theorem of calculus*: the total change in the observable ($P_t u - u$) is the accumulated effect of the generator acting along the path of the semigroup.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Lemma 2.16</summary>
+
+**a)** Let $0 < \varepsilon < t$ and $u \in \mathcal{D}(A)$. The semigroup and contraction properties give
+
+$$
+\left\lVert \frac{P_\varepsilon P_t u - P_t u}{\varepsilon} - P_t A u \right\rVert_\infty
+= \left\lVert \frac{P_{t+\varepsilon} u - P_t u}{\varepsilon} - P_t A u \right\rVert_\infty
+= \left\lVert P_t\!\left(\frac{P_\varepsilon u - u}{\varepsilon} - A u\right) \right\rVert_\infty
+\le \left\lVert \frac{P_\varepsilon u - u}{\varepsilon} - A u \right\rVert_\infty \xrightarrow{\varepsilon \to 0} 0.
+$$
+
+By definition of the generator, $P_t u \in \mathcal{D}(A)$ and $\mathrm{d}^+/\mathrm{d}t\, P_t u = A P_t u = P_t A u$. The left-sided derivative is handled symmetrically via strong continuity:
+
+$$
+\left\lVert \frac{P_t u - P_{t-\varepsilon} u}{\varepsilon} - P_t A u \right\rVert_\infty
+\le \left\lVert P_{t-\varepsilon}\!\left(\frac{P_\varepsilon u - u}{\varepsilon} - A u\right) \right\rVert_\infty + \lVert P_{t-\varepsilon} A u - P_t A u \rVert_\infty \xrightarrow{\varepsilon \to 0} 0.
+$$
+
+**b)** Initially consider $u \in \mathcal{B}_b(\mathbb{R}^d)$ and $t, \varepsilon > 0$. Starting in this broader space emphasises that interchanging the transition operator $P_\varepsilon$ and the time integral relies purely on Fubini's theorem for non-negative kernels and does not yet require the continuity of $u$. By Fubini,
+
+$$
+P_\varepsilon\!\left(\int_0^t P_s u\, \mathrm{d}s\right)
+= \int\!\int_0^t \!\int u(y)\, p_s(z, \mathrm{d}y)\, \mathrm{d}s\, p_\varepsilon(x, \mathrm{d}z)
+= \int_0^t P_\varepsilon P_s u(x)\, \mathrm{d}s.
+$$
+
+The difference quotient becomes
+
+$$
+\frac{P_\varepsilon - \mathrm{id}}{\varepsilon} \int_0^t P_s u(x)\, \mathrm{d}s
+= \frac{1}{\varepsilon}\!\left(\int_t^{t + \varepsilon} P_s u(x)\, \mathrm{d}s - \int_0^\varepsilon P_s u(x)\, \mathrm{d}s\right),
+$$
+
+obtained via the change of variables $r = s + \varepsilon$. Now require $u \in C_\infty(\mathbb{R}^d)$ to invoke strong continuity: for $r \ge 0$,
+
+$$
+\left\lvert \frac{1}{\varepsilon} \int_r^{r+\varepsilon} P_s u\, \mathrm{d}s - P_r u \right\rvert
+\le \frac{1}{\varepsilon} \int_r^{r+\varepsilon} \lvert P_s u - P_r u \rvert\, \mathrm{d}s
+\le \sup_{r \le s \le r + \varepsilon} \lVert P_s u - P_r u \rVert_\infty \xrightarrow{\varepsilon \to 0} 0.
+$$
+
+Hence the difference quotient converges, so $\int_0^t P_s u\, \mathrm{d}s \in \mathcal{D}(A)$ and the first claim holds. If $u \in \mathcal{D}(A)$, applying part (a) twice lets us pull the generator inside the integral:
+
+$$
+\int_0^t P_s A u\, \mathrm{d}s = \int_0^t A P_s u\, \mathrm{d}s = \int_0^t \frac{\mathrm{d}}{\mathrm{d}s} P_s u\, \mathrm{d}s = P_t u - u = A\!\left(\int_0^t P_s u\, \mathrm{d}s\right). \qquad\square
+$$
+
+</details>
+</div>
+
+We have shown that the generator acts as the infinitesimal derivative of the transition semigroup. The natural follow-up question is:
+
+> Does this infinitesimal operator encode enough information to *uniquely reconstruct* the global flow of the entire semigroup?
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Corollary</span><span class="math-callout__name">2.17 (Generator Encodes the Semigroup)</span></p>
+
+Let $(P_t)\_{t \ge 0}$ be a Feller semigroup with generator $(A, \mathcal{D}(A))$.
+
+a) $\mathcal{D}(A)$ is a *dense* subset of $C_\infty(\mathbb{R}^d)$.
+
+b) $(A, \mathcal{D}(A))$ is a *closed* operator: if $(u_n)\_{n \ge 1} \subset \mathcal{D}(A)$ satisfies $u_n \to u$ in $C_\infty$ and $(A u_n)$ converges uniformly, then $u \in \mathcal{D}(A)$ and $A u = \lim_n A u_n$.
+
+c) If $(T_t)\_{t \ge 0}$ is another Feller semigroup with the same generator $(A, \mathcal{D}(A))$, then $P_t = T_t$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Three Take-Aways)</span></p>
+
+* **Density** ensures the generator is defined on a space large enough to approximate any continuous function.
+* **Closedness** guarantees that limit operations (e.g. integrating over time) do not accidentally fall out of the generator's domain.
+* **Uniqueness.** The generator acts as a *unique mathematical fingerprint*: two Feller processes sharing the same generator have the *exact same* transition probabilities.
+* **Diffusion-model implication.** In score-based diffusion, we define the data corruption via a forward SDE (e.g. $\mathrm{d}X = f(X, t)\, \mathrm{d}t + g(t)\, \mathrm{d}B_t$); this SDE explicitly defines an infinitesimal generator. Corollary 2.17 guarantees that this *local formulation uniquely and unambiguously defines the macroscopic transition kernels* $q(x_t \mid x_0)$ used during training.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Corollary 2.17</summary>
+
+**a)** Let $u \in C_\infty(\mathbb{R}^d)$. By Lemma 2.16, the time-averaged function
+
+$$
+u_\varepsilon := \frac{1}{\varepsilon} \int_0^\varepsilon P_s u\, \mathrm{d}s
+$$
+
+belongs to $\mathcal{D}(A)$. By an argument identical to the strong continuity proof, $\lim_{\varepsilon \to 0} \lVert u_\varepsilon - u \rVert_\infty = 0$. Hence any function in $C_\infty$ can be approximated by elements of $\mathcal{D}(A)$, so $\mathcal{D}(A)$ is dense.
+
+**b)** Let $(u_n)\_{n \ge 1} \subset \mathcal{D}(A)$ with $u_n \to u$ and $A u_n \to w$ uniformly. By Lemma 2.16 (b) and dominated convergence, we may pass the limit through the integral,
+
+$$
+P_t u(x) - u(x) = \lim_{n \to \infty} \bigl(P_t u_n(x) - u_n(x)\bigr) = \lim_{n \to \infty} \int_0^t P_s A u_n(x)\, \mathrm{d}s = \int_0^t P_s w(x)\, \mathrm{d}s.
+$$
+
+Dividing by $t$ and sending $t \downarrow 0$, the continuity of the semigroup yields
+
+$$
+\lim_{t \to 0} \frac{P_t u(x) - u(x)}{t} = \lim_{t \to 0} \frac{1}{t} \int_0^t P_s w(x)\, \mathrm{d}s = w(x).
+$$
+
+Thus $u \in \mathcal{D}(A)$ and $A u = w$, proving closedness.
+
+**c)** Let $0 < s < t$ and assume $0 < \lvert h \rvert < \min\lbrace t-s, s\rbrace$. We evaluate the difference quotient of $P_{t-s} T_s$ applied to $u \in \mathcal{D}(A)$. Using a product-rule style decomposition,
+
+$$
+\frac{P_{t-s} T_s u - P_{t-s+h} T_{s-h} u}{h} = \frac{P_{t-s} - P_{t-s+h}}{h} T_s u + P_{t-s+h}\, \frac{T_s u - T_{s-h} u}{h}.
+$$
+
+Sending $h \to 0$ via Lemma 2.16 (a) gives
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}s} P_{t-s} T_s u = -P_{t-s} A T_s u + P_{t-s} A T_s u = 0.
+$$
+
+So the composition is constant in $s \in [0, t]$, and integrating yields
+
+$$
+0 = \int_0^t \frac{\mathrm{d}}{\mathrm{d}s} P_{t-s} T_s u\, \mathrm{d}s = P_{t-s} T_s u(x)\bigl|_{s=0}^{s=t} = T_t u(x) - P_t u(x).
+$$
+
+Therefore $T_t u = P_t u$ for $u \in \mathcal{D}(A)$. Since $\mathcal{D}(A)$ is dense in $C_\infty$ (part a), approximate any $u \in C_\infty$ by $(u_j) \subset \mathcal{D}(A)$ and pass to the limit: $T_t u = \lim_j T_t u_j = \lim_j P_t u_j = P_t u$. $\square$
+
+</details>
+</div>
+
+## 3 Diffusions
+
+*Diffusion* is a physical phenomenon describing the tendency of two (or more) substances — e.g. gases or liquids — to reach equilibrium. When particles of one type ($B$) move into another substance ($S$), their movement is influenced by various temporal and spatial inhomogeneities. Since the particles are physical objects, it is reasonable to assume their trajectories are continuous (in fact, differentiable). Diffusion phenomena are governed by **Fick's law**. Let $p = p(t, x)$ denote the concentration of the $B$-particles at $(t, x)$, and $J = J(t, x)$ the particle flux:
+
+$$
+J = -D\, \frac{\partial p}{\partial x}, \qquad \frac{\partial p}{\partial t} = -\frac{\partial J}{\partial x},
+$$
+
+where $D$ is the **diffusion constant** depending on the geometry and properties of the substances. In 1905 Einstein considered the particle motion observed by Brown and showed that, under temporal and spatial homogeneity, it can be described as a diffusion phenomenon yielding the Gaussian density,
+
+$$
+\frac{\partial p(t,x)}{\partial t} = D\, \frac{\partial^2 p(t,x)}{\partial x^2} \quad \implies \quad p(t, x) = \frac{1}{\sqrt{4\pi D t}}\, e^{-x^2 / (4 D t)}.
+$$
+
+The diffusion coefficient $D = \frac{R T}{N \cdot 6 \pi k P}$ depends on physical constants (absolute temperature $T$, universal gas constant $R$, Avogadro's number $N$, friction coefficient $k$, particle radius $P$). If the diffusion coefficient depends on time and space, $D = D(t, x)$, Fick's law leads to
+
+$$
+\frac{\partial p(t,x)}{\partial t} = D(t, x)\, \frac{\partial^2 p(t, x)}{\partial x^2} + \frac{\partial D(t, x)}{\partial x}\, \frac{\partial p(t, x)}{\partial x}.
+$$
+
+In a *mathematical model* of diffusion we adopt a microscopic point of view and describe the random position of particles by a stochastic process $(X_t)\_{t \ge 0}$. In view of the physical discussion, it is reasonable to require this stochastic process to:
+
+1. have **continuous trajectories** $t \mapsto X_t(\omega)$;
+2. have a **generator which is a second-order differential operator**.
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Connection</span><span class="math-callout__name">(Why Diffusion Processes Are Built for Score-Based Generative AI)</span></p>
+
+* In score-based diffusion models, the data distribution (e.g. a manifold of natural images) acts as the *initial concentration*.
+* We construct a microscopic stochastic process $(X_t)\_{t \ge 0}$ to artificially diffuse this distribution into pure noise.
+* The two requirements above (continuous paths + second-order generator) ensure the transition probabilities are governed by *tractable PDEs*, and this is precisely what allows us to formulate and learn the **reverse-time score function**.
+
+</div>
+
+Our motivation stems from Example 2.15. The classical $d$-dimensional Brownian motion with drift, $X_t = C B_t + b t$, is the prototypical example of a diffusion process. Its generator takes the form
+
+$$
+A u(x) = \tfrac{1}{2} \sum_{i,j=1}^d a_{ij}\, \partial_i \partial_j u(x) + \sum_{i=1}^d b_i\, \partial_i u(x),
+$$
+
+where $(a_{ij}) = C C^{\!\top}$. Thus the generator involves *both first- and second-order* derivatives with constant coefficients, with the second-order part encoding the covariance structure of the noise. In general, a diffusion process can be thought of as a Markov process that *behaves locally like a Brownian motion with drift and diffusion coefficients that may depend on the current position*.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">3.1 (Diffusion Process)</span></p>
+
+A **diffusion process** $(X_t)\_{t \ge 0}$ is a Feller process with values in $\mathbb{R}^d$, continuous trajectories, and an infinitesimal generator $(A, \mathcal{D}(A))$ such that $C_c^\infty(\mathbb{R}^d) \subset \mathcal{D}(A)$ and for $u \in C_c^\infty(\mathbb{R}^d)$,
+
+$$
+A u(x) = L(x, D) u(x) := \tfrac{1}{2} \sum_{i,j=1}^d a_{ij}(x)\, \frac{\partial^2 u(x)}{\partial x_i \partial x_j} + \sum_{j=1}^d b_j(x)\, \frac{\partial u(x)}{\partial x_j}. \tag{3.1}
+$$
+
+The symmetric, positive semidefinite matrix $a(x) = (a_{ij}(x))\_{i,j=1}^d \in \mathbb{R}^{d \times d}$ is called the **diffusion matrix**, and $b(x) = (b_1(x), \dots, b_d(x))^{\!\top} \in \mathbb{R}^d$ is called the **drift vector**.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">3.2 (Continuity of Coefficients)</span></p>
+
+Since $(X_t)\_{t \ge 0}$ is a Feller process, $A$ maps $C_c^\infty(\mathbb{R}^d)$ into $C_\infty(\mathbb{R}^d)$. Therefore the coefficient functions $a(\cdot)$ and $b(\cdot)$ have to be *continuous*.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">3.3 (Time-Inhomogeneous Diffusions)</span></p>
+
+Sometimes one considers processes for which the diffusion matrix and drift vector depend not only on the spatial variable $x$ but also explicitly on time $t$. In such cases we speak of a **time-inhomogeneous diffusion process** $(X_t)\_{t \ge 0}$, governed by a family of second-order differential operators
+
+$$
+L(t, x, D_x) = \tfrac{1}{2} \sum_{i,j=1}^d a_{ij}(t, x)\, \frac{\partial^2}{\partial x_i \partial x_j} + \sum_{j=1}^d b_j(t, x)\, \frac{\partial}{\partial x_j},
+$$
+
+where $a_{ij}(t, x)$ and $b_j(t, x)$ are continuous in both variables.
+
+* **Importance for generative modelling.** Forward corruption processes in generative modelling are time-inhomogeneous, since they rely on time-dependent variance schedules $\beta(t)$ to systematically degrade the data structure (cf. §1.2).
+* **Space-time embedding.** This situation can be incorporated into the framework of Definition 3.1 by considering the associated *space-time process* $(t, X_t)\_{t \ge 0}$ taking values in $\mathbb{R}^{1+d}$. This is itself a diffusion in the extended space, with infinitesimal generator $\widetilde{A}$ acting on $u \in C_c^\infty(\mathbb{R}^{1+d})$ via
+
+  $$
+  \widetilde{A} u(t, x) = \partial_t u(t, x) + L(t, x, D_x) u(t, x).
+  $$
+
+* **Notation.** It is convenient to use the notation $p((t, x), (s, y))$ to emphasise the dependence of transition probabilities on the full space-time points.
+
+</div>
+
+### 3.1 Kolmogorov's Theory
+
+Kolmogorov's seminal paper *"Über die analytischen Methoden der Wahrscheinlichkeitsrechnung"* (1931) marks the beginning of the mathematically rigorous theory of stochastic processes in continuous time. In sections 13 and 14 of this paper, Kolmogorov develops the analytical foundations of diffusion processes; we now follow his ideas.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">3.4 (Kolmogorov 1933)</span></p>
+
+Let $(X_t)\_{t \ge 0}$ with $X_t = (X_t^1, \dots, X_t^d)^{\!\top}$ be a Feller process taking values in $\mathbb{R}^d$. Assume that for all $\delta > 0$ and $i, j = 1, \dots, d$, the following limits hold uniformly in $x \in \mathbb{R}^d$:
+
+$$
+\lim_{t \to 0} \frac{1}{t} \sup_{x \in \mathbb{R}^d} \mathbb{P}_x(\lvert X_t - x \rvert > \delta) = 0, \tag{3.2}
+$$
+
+$$
+\lim_{t \to 0} \frac{1}{t}\, \mathbb{E}_x\!\left[(X_t^j - x^j)\, \mathbf{1}_{\lbrace \lvert X_t - x \rvert \le \delta \rbrace}\right] = b_j(x), \tag{3.3}
+$$
+
+$$
+\lim_{t \to 0} \frac{1}{t}\, \mathbb{E}_x\!\left[(X_t^i - x^i)(X_t^j - x^j)\, \mathbf{1}_{\lbrace \lvert X_t - x \rvert \le \delta \rbrace}\right] = a_{ij}(x). \tag{3.4}
+$$
+
+Then $(X_t)\_{t \ge 0}$ is a diffusion process in the sense of Definition 3.1.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(What Kolmogorov's Conditions Mean)</span></p>
+
+* Condition **(3.2)** is a *non-explosion / continuity condition*: small spatial jumps occur with probability vanishing faster than $t$. Via the Dynkin–Kinney criterion, this guarantees the continuity of trajectories.
+* Condition **(3.3)** identifies the *infinitesimal mean* of displacements (the drift $b(x)$).
+* Condition **(3.4)** identifies the *infinitesimal covariance matrix* of displacements (the diffusion matrix $a(x)$).
+* Together, these three conditions show that the *first two moments of small increments* completely determine the local generator of a continuous-path Feller process.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof</summary>
+
+Condition (3.2) guarantees the continuity of trajectories via the Dynkin–Kinney criterion (omitted technical step). We demonstrate that $C_c^\infty(\mathbb{R}^d) \subset \mathcal{D}(A)$ and that $A$ restricted to $C_c^\infty(\mathbb{R}^d)$ is the differential operator from Definition 3.1.
+
+Let $u \in C_c^\infty(\mathbb{R}^d)$. Since the second derivatives $\partial_i \partial_j u$ are uniformly continuous, for every $\varepsilon > 0$ there exists $\delta > 0$ such that
+
+$$
+\max_{1 \le i, j \le d} \sup_{\lvert x - y \rvert \le \delta} \lvert \partial_i \partial_j u(x) - \partial_i \partial_j u(y) \rvert \le \varepsilon.
+$$
+
+Fix $\varepsilon > 0$, choose $\delta > 0$ accordingly, and define the transition semigroup $T_t u(x) := \mathbb{E}_x[u(X_t)]$ along with the local neighbourhood event $\Omega_\delta := \lbrace \lvert X_t - x \rvert \le \delta \rbrace$. Decompose the difference quotient:
+
+$$
+\frac{T_t u(x) - u(x)}{t} = \frac{1}{t} \mathbb{E}_x\!\left[(u(X_t) - u(x))\, \mathbf{1}_{\Omega_\delta}\right] + \frac{1}{t} \mathbb{E}_x\!\left[(u(X_t) - u(x))\, \mathbf{1}_{\Omega_\delta^c}\right] := J + J'.
+$$
+
+The far-field term $J'$ is bounded using condition (3.2),
+
+$$
+\lvert J' \rvert \le \frac{2 \lVert u \rVert_\infty}{t}\, \mathbb{P}_x(\lvert X_t - x \rvert > \delta) \xrightarrow{t \to 0} 0.
+$$
+
+For $J$, apply Taylor's theorem: there exists $\theta \in (0, 1)$ such that, for the intermediate point $\Theta = (1 - \theta)x + \theta X_t$,
+
+$$
+u(X_t) - u(x) = \sum_{j=1}^d (X_t^j - x^j) \partial_j u(x) + \tfrac{1}{2} \sum_{j,k=1}^d (X_t^j - x^j)(X_t^k - x^k) \partial_j \partial_k u(x) + R_t,
+$$
+
+with remainder
+
+$$
+R_t = \tfrac{1}{2} \sum_{j,k=1}^d (X_t^j - x^j)(X_t^k - x^k)\bigl(\partial_j \partial_k u(\Theta) - \partial_j \partial_k u(x)\bigr).
+$$
+
+Partitioning $J$ into the corresponding terms $J_1, J_2, J_3$, the uniform continuity of second derivatives and the inequality $2 \lvert ab \rvert \le a^2 + b^2$ bound the remainder term:
+
+$$
+\frac{1}{t} \mathbb{E}_x[\lvert J_3 \rvert\, \mathbf{1}_{\Omega_\delta}]
+\le \frac{\varepsilon}{2t} \sum_{i,j=1}^d \mathbb{E}_x\!\left[(X_t^i - x^i)(X_t^j - x^j)\, \mathbf{1}_{\Omega_\delta}\right]
+\xrightarrow[t \to 0]{(3.4)} \frac{\varepsilon}{2} \sum_{j=1}^d a_{jj}(x).
+$$
+
+Applying conditions (3.4) and (3.3) to the second- and first-order terms,
+
+$$
+\frac{1}{t} \mathbb{E}_x[J_2\, \mathbf{1}_{\Omega_\delta}] \xrightarrow{t \to 0} \tfrac{1}{2} \sum_{j,k=1}^d a_{jk}(x)\, \partial_j \partial_k u(x), \qquad \frac{1}{t} \mathbb{E}_x[J_1\, \mathbf{1}_{\Omega_\delta}] \xrightarrow{t \to 0} \sum_{j=1}^d b_j(x)\, \partial_j u(x).
+$$
+
+Since $\varepsilon > 0$ was arbitrary, the remainder vanishes in the limit, and the limit converges to $L(x, D) u(x)$. $\square$
+
+</details>
+</div>
+
+If the process $(X_t)\_{t \ge 0}$ admits a transition density, $\mathbb{P}_x(X_t \in A) = \int_A p(t, x, y)\, \mathrm{d}y$ for $t > 0$, the dynamics can be formulated as a **Cauchy problem**. Depending on whether one perturbs the *start* or the *end* of the time interval, this leads to *Kolmogorov's first and second differential equations*.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">3.5 (Backward Kolmogorov Equation, 1931)</span></p>
+
+Let $(X_t)\_{t \ge 0}$ be a diffusion process with generator $(A, \mathcal{D}(A))$ whose restriction to $C_c^\infty(\mathbb{R}^d)$ is given by Definition 3.1, with bounded drift $b \in C_b(\mathbb{R}^d, \mathbb{R}^d)$ and bounded diffusion matrix $a \in C_b(\mathbb{R}^d, \mathbb{R}^{d \times d})$. Assume that $(X_t)\_{t \ge 0}$ admits a transition density $p(t, x, y)$, $t > 0$, $x, y \in \mathbb{R}^d$, satisfying
+
+$$
+p,\, \frac{\partial p}{\partial t},\, \frac{\partial p}{\partial x_j},\, \frac{\partial^2 p}{\partial x_j \partial x_k} \in C\bigl((0, \infty) \times \mathbb{R}^d \times \mathbb{R}^d\bigr) \quad \text{for all } j, k,
+$$
+
+as well as
+
+$$
+p(t, \cdot, \cdot),\, \frac{\partial p(t, \cdot, \cdot)}{\partial x_j},\, \frac{\partial^2 p(t, \cdot, \cdot)}{\partial x_j \partial x_k} \in C_\infty(\mathbb{R}^d \times \mathbb{R}^d) \quad \text{for all } t > 0.
+$$
+
+Then the transition density satisfies the **backward Kolmogorov equation**,
+
+$$
+\frac{\partial p(t, x, y)}{\partial t} = L(x, D_x)\, p(t, x, y), \quad \text{for all } t > 0,\ x, y \in \mathbb{R}^d,
+$$
+
+where $L(x, D_x)$ is the differential operator associated with the generator $A$.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Interpretation</span><span class="math-callout__name">(Why "Backward"?)</span></p>
+
+* The equation describes the evolution of the transition density with respect to the *initial spatial variable* $x$.
+* If we fix a target state $y$ in the future and step infinitesimally backward in time, this PDE governs how the probability of reaching that target changes depending on *where the process started*.
+* The differential operator $L(x, D_x)$ acts *exclusively on the starting coordinates* $x$, treating the target coordinates $y$ as fixed parameters.
+* **Generative-modelling reading.** Backward Kolmogorov is the PDE governing how an observable's expectation evolves under forward diffusion — a sister equation to the Fokker–Planck (forward) equation that governs how the *density itself* evolves with respect to the terminal coordinate $y$.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 3.5</summary>
+
+Denote by $L(x, D_x)$ the second-order differential operator. By assumption, $A = L(x, D_x)$ on $C_c^\infty(\mathbb{R}^d)$. Since $p(t, x, y)$ is the transition density, the transition semigroup is
+
+$$
+T_t u(x) = \int_{\mathbb{R}^d} p(t, x, y)\, u(y)\, \mathrm{d}y.
+$$
+
+Using dominated convergence, the analytical conditions on $p(t, x, y)$ ensure that $T_t$ maps $C_c^\infty(\mathbb{R}^d)$ into $C_\infty^2(\mathbb{R}^d)$. Since the drift and diffusion coefficients are bounded, the global estimate
+
+$$
+\lVert A u \rVert_\infty \le \kappa\, \lVert u \rVert_{(2)}, \qquad \lVert u \rVert_{(2)} := \lVert u \rVert_\infty + \sum_{j=1}^d \lVert \partial_j u \rVert_\infty + \sum_{j,k=1}^d \lVert \partial_j \partial_k u \rVert_\infty,
+$$
+
+holds for $u \in C_\infty^2(\mathbb{R}^d)$, with $\kappa = \kappa(b, a)$. Since $C_c^\infty(\mathbb{R}^d) \subset \mathcal{D}(A)$ and $(A, \mathcal{D}(A))$ is closed (Corollary 2.17 (b)), the larger space $C_\infty^2(\mathbb{R}^d)$ is also contained in $\mathcal{D}(A)$, and the generator coincides with $L(x, D_x)$ there:
+
+$$
+A\bigr|_{C_\infty^2(\mathbb{R}^d)} = L(x, D_x)\bigr|_{C_\infty^2(\mathbb{R}^d)}.
+$$
+
+Therefore Lemma 2.16 implies the time derivative of the semigroup is generated by $A$:
+
+$$
+\frac{\mathrm{d}}{\mathrm{d}t} T_t u = A T_t u = L(\cdot, D) T_t u.
+$$
+
+Expanding via the integral representation,
+
+$$
+\frac{\partial}{\partial t} \int_{\mathbb{R}^d} p(t, x, y)\, u(y)\, \mathrm{d}y = L(x, D_x) \int_{\mathbb{R}^d} p(t, x, y)\, u(y)\, \mathrm{d}y = \int_{\mathbb{R}^d} L(x, D_x)\, p(t, x, y)\, u(y)\, \mathrm{d}y,
+$$
+
+for all $u \in C_c^\infty(\mathbb{R}^d)$. The last equality follows from the smoothness assumptions on $p$, which permit the differentiation–integration interchange via the differentiation lemma for parameter-dependent integrals. Rearranging,
+
+$$
+\int_{\mathbb{R}^d}\!\!\left(\frac{\partial p(t, x, y)}{\partial t} - L(x, D_x) p(t, x, y)\right)\!u(y)\, \mathrm{d}y = 0 \quad \text{for all } u \in C_c^\infty(\mathbb{R}^d).
+$$
+
+By the fundamental lemma of the calculus of variations, since this integral vanishes for any smooth test function with compact support, the continuous integrand must vanish identically, proving the claim. $\square$
+
+</details>
 </div>

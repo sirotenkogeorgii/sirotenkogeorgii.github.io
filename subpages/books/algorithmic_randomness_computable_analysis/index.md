@@ -4,13 +4,13 @@ layout: default
 noindex: true
 ---
 
-**Table of Contents**
-- TOC
-{:toc}
-
 # Algorithmic Randomness and Computable Analysis
 
 *Lecture notes by Ivan Titov, Summer 2026.*
+
+**Table of Contents**
+- TOC
+{:toc}
 
 ## Notation
 
@@ -19,13 +19,19 @@ Before we can talk about randomness in any precise sense, we need a vocabulary f
 <div class="math-callout math-callout--info" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Notation</span><span class="math-callout__name">(Words and Sequences)</span></p>
 
-A **(binary) word** $w \in \lbrace 0, 1 \rbrace^{\ast}$ is a finite sequence of bits. The length of a word $w$ is denoted $l(w)$. The binary representation of a natural number $n$ is the binary word $\mathrm{bin}(n)$; its length satisfies $l(\mathrm{bin}(n)) = \lfloor \log_2 n \rfloor + 1 = \log(n) + O(1)$.
+A **(binary) word** $w \in \lbrace 0, 1 \rbrace^{\ast}$ is a finite sequence of bits. The length of a word $w$ is denoted $l(w)$. The binary representation of a natural number $n$ is the binary word $\mathrm{bin}(n)$; its length satisfies 
+
+$$l(\mathrm{bin}(n)) = \lfloor \log_2 n \rfloor + 1 = \log(n) + O(1)$$
 
 For an infinite sequence $A = a_0 a_1 a_2 \dots$, the **prefix** of $A$ of length $n$ is
 
 $$A \upharpoonright n := a_0 \dots a_{n-1}.$$
 
-We use $w_0 := \lambda,\ w_1 := 0,\ w_2 := 1,\ w_3 := 00,\ w_4 := 01,\ w_5 := 10,\ w_6 := 11,\ w_7 := 000,\ \dots$ to denote, by default, the **length-lexicographical enumeration** of all binary words.
+We use 
+
+$$w_0 := \lambda,\ w_1 := 0,\ w_2 := 1,\ w_3 := 00,\ w_4 := 01,\ w_5 := 10,\ w_6 := 11,\ w_7 := 000,\ \dots$$
+
+to denote, by default, the **length-lexicographical enumeration** of all binary words.
 
 </div>
 
@@ -131,7 +137,7 @@ These correspond to the dyadic intervals $[0.\sigma,\ 0.\sigma + 2^{-l(\sigma)}]
 
 $$\lambda([\![\sigma]\!]) = 2^{-l(\sigma)}.$$
 
-In Cantor space, **open sets** are (finite or countably infinite) unions of pairwise disjoint basic open sets $[\![\sigma_i]\!]$:
+In Cantor space, **open sets** are (finite or countably infinite) unions of pairwise disjoint basic open sets $[[\sigma_i]]$:
 
 $$S = ([\![\sigma_0]\!], [\![\sigma_1]\!], \dots), \qquad \lambda(S) = \sum_i \lambda([\![\sigma_i]\!]) = \sum_i 2^{-l(\sigma_i)}.$$
 
@@ -527,7 +533,7 @@ $$C(X \upharpoonright n) \le n - \log(n) + O(1).$$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(1.5 — Martin-Löf test)</span></p>
 
-A **Martin-Löf test** $\mathcal{M} = (M_0, M_1, \dots)$ is a uniformly enumerable family of open sets $M_i = ([\![\sigma_0^i]\!], [\![\sigma_1^i]\!], \dots)$ called **layers**, such that for every $i$ the layer $M_i$ has Lebesgue measure at most $2^{-i}$:
+A **Martin-Löf test** $\mathcal{M} = (M_0, M_1, \dots)$ is a uniformly enumerable family of open sets $M_i = ([[\sigma_0^i]], [[\sigma_1^i]], \dots)$ called **layers**, such that for every $i$ the layer $M_i$ has Lebesgue measure at most $2^{-i}$:
 
 $$\mu(M_i) = \sum_j \lambda([\![\sigma_j^i]\!]) = \sum_j 2^{-l(\sigma_j^i)} \le 2^{-i}. \tag{2}$$
 
