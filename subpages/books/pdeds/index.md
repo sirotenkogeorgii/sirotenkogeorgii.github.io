@@ -2651,6 +2651,401 @@ Inspect the proofs of Theorems 3, 5, 6, 8 and Lemma 9 and check which statements
 
 </div>
 
+## Chapter 2: Optimal Transport
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Motivation</span><span class="math-callout__name">(Why optimal transport, here and now)</span></p>
+
+The theory of optimal transportation — nowadays simply **optimal transport** — goes back to **Monge** (1780s), who asked how to move a pile of rubble to an excavation while doing the least amount of work. We will see that, as Monge formulated it, this is a highly **non-linear and hard** problem. In the 1940s, **Kantorovich** found a striking way to *relax* the problem to a **linear program**, and we will see today that this linear problem has a natural **dual**. Both the relaxed primal and its dual are far more tractable than Monge's original formulation. Later in the course, we will see yet another interpretation due to **Benamou and Brenier**, who reveal a **dynamic** (i.e., time-dependent) interpretation of optimal transport in the spirit of continuum mechanics, in which one minimises an action functional. There is still plenty of active research on the subject; this chapter is a *soft* introduction.
+
+This chapter also picks up the thread left dangling at the end of §1.10. Once we are willing to change the geometry on the space we run gradient flows in — e.g. from $\mathbb R^N$ with the Euclidean inner product to the **Wasserstein space** $(\mathcal P_2(\mathbb R^d),W_2)$ — the cost of moving mass around becomes the very metric in which the gradient flow lives. Optimal transport is the bridge.
+
+</div>
+
+### 2.1 Monge's problem
+
+Given a pile of rubble, we want to move it to a prescribed location and shape, minimising the total work. In rigorous terms, we are given two non-negative measures $\mu$ and $\nu$ on Euclidean space $\mathbb R^d$ together with a **cost** function $c=c(x,y)$, and we look for a map $T:\mathbb R^d\to\mathbb R^d$ that transports the mass distributed according to $\mu$ to the mass distributed according to $\nu$, while making the total cost $\int c(x,T(x))\,d\mu(x)$ as small as possible.
+
+The transportation constraint on $T$ is encoded by the **push-forward** of $\mu$ under $T$:
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Push-forward measure)</span></p>
+
+Let $\mu$ be a non-negative measure on $\mathbb R^d$ and $T:\mathbb R^d\to\mathbb R^d$ a (Borel-)measurable map. The **push-forward** $T_\#\mu$ is the measure on $\mathbb R^d$ defined by
+
+$$
+T_\#\mu(A) := \mu\bigl(T^{-1}(A)\bigr) \qquad\text{for every Borel set } A\subset\mathbb R^d,
+$$
+
+or, equivalently, by the change-of-variables identity
+
+$$
+\int_{\mathbb R^d} \zeta(y)\,d(T_\#\mu)(y) \;=\; \int_{\mathbb R^d} \zeta(T(x))\,d\mu(x) \qquad\text{for every } \zeta\in C_b(\mathbb R^d).
+$$
+
+The constraint **$T_\#\mu = \nu$** therefore means: for every continuous test function $\zeta$,
+
+$$
+\int_{\mathbb R^d}\zeta(T(x))\,d\mu(x) \;=\; \int_{\mathbb R^d}\zeta(y)\,d\nu(y). \tag{*}
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(How to read $T_\#\mu = \nu$ — three equivalent pictures)</span></p>
+
+The push-forward identity is one of those notations whose meaning crystallises only after seeing it three different ways. It is worth pinning down all three, because each will be the right one in different proofs.
+
+* **Set-theoretic.** "The mass that $\nu$ assigns to a target region $A$ equals the mass that $\mu$ assigned to the *pre-image* $T^{-1}(A)$." This is the literal definition $\nu(A)=\mu(T^{-1}(A))$. It says the map $T$ moves *all* of $\mu$ — no mass is lost or created — and the way mass piles up on the target side is governed entirely by where $T$ sends things.
+* **Test-function / weak.** Equation (*) is the dual statement: integrating any continuous $\zeta$ against $T_\#\mu$ is the same as integrating $\zeta\circ T$ against $\mu$. This is the form one uses in proofs because it works even when $T$ is far from a diffeomorphism (so set-theoretic intuition fails).
+* **Probabilistic.** If $X\sim\mu$ is a random variable, then $T(X)\sim T_\#\mu$. The push-forward is just the **law of $T(X)$**. Asking $T_\#\mu=\nu$ is asking: "*find a map $T$ that takes a $\mu$-distributed sample to a $\nu$-distributed sample, deterministically*."
+
+In all three readings, mass is conserved exactly: $T_\#\mu(\mathbb R^d) = \mu(\mathbb R^d)$.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Monge's problem)</span></p>
+
+Given measures $\mu,\nu$ on $\mathbb R^d$ with the same total mass and a cost function $c:\mathbb R^d\times\mathbb R^d\to[0,+\infty]$, **Monge's problem** is
+
+$$
+\min_{T:\mathbb R^d\to\mathbb R^d} \int_{\mathbb R^d} c(x,T(x))\,d\mu(x) \qquad\text{subject to } T_\#\mu=\nu. \tag{2.1}
+$$
+
+The infimum is taken over all (measurable) maps $T$ whose push-forward equals $\nu$.
+
+</div>
+
+This problem is incredibly **hard** because the constraint $T_\#\mu=\nu$ is highly **non-linear** in $T$. The next two examples make this concrete.
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_monge_pushforward.png' | relative_url }}" alt="Two-panel figure: left shows source density mu (blue) and target density nu (red, bimodal) with grey arrows from sample points x to T(x) sketching the deterministic transport map; right shows the change-of-variables identity by transporting three coloured mass-blocks from a Gaussian source under a smooth monotone T, with the destination blocks visibly stretched/compressed according to det DT" loading="lazy">
+  <figcaption>Monge's problem in pictures. <strong>Left.</strong> A deterministic map $T$ sends each source point $x$ to a single destination $T(x)$, deforming the source density $\mu$ (blue) into the target density $\nu$ (red); the greying arrows show several individual source–target pairs. <strong>Right.</strong> The Jacobian rule $f(x)=g(T(x))\,\det DT(x)$ visualised: three sample mass-blocks of equal $\mu$-mass are transported to destination blocks whose width is dilated or contracted by $1/\det DT$, so densities scale inversely to local volume change. Mass is conserved exactly; only the geometry of "where it lives" is rearranged.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Absolutely continuous case — the Monge–Ampère equation)</span></p>
+
+If $\mu$ and $\nu$ are both absolutely continuous with respect to Lebesgue measure with densities $f$ and $g$, i.e. $d\mu = f\,dx$ and $d\nu = g\,dy$, and $T$ is a $C^1$-diffeomorphism, then the change-of-variables formula turns $T_\#\mu=\nu$ into the **pointwise** identity
+
+$$
+f(x) \;=\; g(T(x))\,\det DT(x). \tag{2.2 — Jacobian eq.}
+$$
+
+A priori, it is not even clear that *any* map $T$ exists satisfying this constraint. When the cost is quadratic (so that $T=\nabla\varphi$ for a convex $\varphi$, by Brenier's theorem ahead), (2.2) becomes the celebrated **Monge–Ampère equation**
+
+$$
+\det D^2\varphi(x) \;=\; \frac{f(x)}{g(\nabla\varphi(x))},
+$$
+
+a fully non-linear second-order PDE — one of the reasons optimal transport is so connected to PDE theory.
+
+</div>
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(No transport map exists in general)</span></p>
+
+Let $d=1$ and consider the discrete measures
+
+$$
+\mu = \delta_0, \qquad \nu = \tfrac12\delta_{-1} + \tfrac12\delta_{+1}.
+$$
+
+There is **no** map $T:\mathbb R\to\mathbb R$ with $T_\#\mu=\nu$.
+
+Indeed, since $\mu$ is concentrated at the single point $0$, the push-forward $T_\#\mu$ must be $\delta_{T(0)}$ — a Dirac mass at one point. But $\nu$ puts mass at *two* points, so no single-valued map can match it.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The structural failure mode of Monge — and the cure that follows)</span></p>
+
+Example 2 is not a pathological corner case; it is the *typical* obstruction to Monge's problem and the precise reason Kantorovich's relaxation will be needed in the next section.
+
+* **What goes wrong.** A map $T$ assigns *one* destination to *each* source point $x$. So if $\mu$ has an atom at $x_0$ — concentrating a finite chunk of mass at a single point — that whole chunk is forced to land at the single destination $T(x_0)$. There is no room to **split** mass.
+* **What $\nu$ may demand.** A target measure with mass spread across multiple points (as in Example 2) requires the chunk at $x_0$ to be split. Maps simply cannot do this.
+* **General principle.** Every time Monge's constraint $T_\#\mu=\nu$ is feasible, $\nu$ is in some sense "no more diffuse than $\mu$" — the source must already be at least as spread out as the target. When $\mu$ is more atomic, the problem is empty and the infimum in (2.1) is $+\infty$ by convention.
+* **The cure.** Kantorovich's idea (next section) is precisely to *allow splitting*: instead of a deterministic destination $T(x)$ for each source point, one keeps a **joint distribution** $\pi(x,y)$ describing how much mass moves from $x$ to $y$. This restores feasibility (since the product measure $\mu\otimes\nu$ is always feasible), and turns the non-linear problem (2.1) into a linear one.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_no_map_vs_split.png' | relative_url }}" alt="Two-panel figure contrasting Monge's failure with Kantorovich's success on the same atomic data. Left panel shows mu = delta_0 as a single blue spike at 0 of height 1 and nu = (1/2)(delta_-1 + delta_+1) as two red spikes of height 0.5 at -1 and +1; two grey curved arrows from 0 to -1 and 0 to +1 are crossed out by a red 'no map can split delta_0' callout. Right panel shows the same source and target with two thick green arrows of weight 1/2 each, splitting the Dirac mass at 0 between the two targets, with a green box stating pi = (1/2) delta_(0,-1) + (1/2) delta_(0,+1) is in Pi(mu,nu)" loading="lazy">
+  <figcaption>The structural failure of Monge and Kantorovich's cure. <strong>Left.</strong> For $\mu=\delta_0$ and $\nu=\tfrac12\delta_{-1}+\tfrac12\delta_{+1}$, no map $T$ can satisfy $T_\#\mu=\nu$: the push-forward of an atom is itself an atom, so $T_\#\delta_0=\delta_{T(0)}$ — a single Dirac, not a sum of two. <strong>Right.</strong> A Kantorovich coupling can split the source atom: the plan $\pi=\tfrac12\delta_{(0,-1)}+\tfrac12\delta_{(0,+1)}$ has the right marginals $(\mu,\nu)$ even though it is not concentrated on the graph of any function. Replacing "graphs of maps" by "couplings on $\mathbb R^d\times\mathbb R^d$" is precisely what restores feasibility.</figcaption>
+</figure>
+
+### 2.2 Kantorovich's formulation
+
+In the 1940s, Kantorovich found a **relaxation** of Monge's problem that can be viewed as a **linear program**, with a tractable natural **dual**. Both are far easier to study than Monge's original formulation.
+
+The idea is simple: instead of insisting that all mass at a single point $x$ travel to a single destination, allow it to be **split** across several destinations. The transport behaviour is now recorded by a **plan** $\pi(x,y)$ specifying, for each pair $(x,y)$, how much mass moves from $x$ to $y$.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Transference plan / coupling)</span></p>
+
+Given two probability measures $\mu,\nu$ on $\mathbb R^d$, a **transference plan** (or **coupling**) of $\mu$ and $\nu$ is a non-negative Borel measure $\pi$ on the product space $\mathbb R^d\times\mathbb R^d$ whose **marginals** are $\mu$ and $\nu$:
+
+$$
+\int_{\mathbb R^d\times\mathbb R^d}\varphi(x)\,d\pi(x,y) = \int_{\mathbb R^d}\varphi(x)\,d\mu(x) \;\;\text{and}\;\; \int_{\mathbb R^d\times\mathbb R^d}\psi(y)\,d\pi(x,y) = \int_{\mathbb R^d}\psi(y)\,d\nu(y)
+$$
+
+for all bounded continuous test functions $\varphi,\psi$. We write $\pi\in\Pi(\mu,\nu)$ for the set of all such plans.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Plans generalise maps)</span></p>
+
+Every Monge-style transport map $T$ with $T_\#\mu=\nu$ induces a plan
+
+$$
+\pi_T := (\mathrm{id},T)_\\#\mu, \qquad\text{i.e.}\quad \int F(x,y)\,d\pi_T(x,y) = \int F(x,T(x))\,d\mu(x),
+$$
+
+which is concentrated on the **graph** $\{(x,T(x))\}\subset\mathbb R^d\times\mathbb R^d$. The marginals of $\pi_T$ are exactly $\mu$ and $\nu$, so $\pi_T\in\Pi(\mu,\nu)$. In this sense the Kantorovich problem **contains** Monge's problem: the feasible set is enlarged from "graphs of maps" to "all couplings".
+
+The enlargement is strict whenever splitting is needed (e.g. $\mu=\delta_0$, $\nu=\tfrac12\delta_{-1}+\tfrac12\delta_{+1}$ from Example 2 above): the plan $\pi=\tfrac12(\delta_0\otimes\delta_{-1}+\delta_0\otimes\delta_{+1})$ is feasible, even though no map is.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_kantorovich_plan_marginals.png' | relative_url }}" alt="Two-panel joint-space figure with shared marginals on the axes. Left panel shows a Monge plan supported on the graph y = T(x): a thin diagonal-like curve in the (x,y)-plane, coloured by the mu-density along it, with the source marginal mu (blue) on the top strip and the target marginal nu (red) on the right strip. Right panel shows a more diffuse Kantorovich coupling: a 2D pink-purple cloud spread across two diagonal branches, with the same blue mu marginal on top and red nu marginal on the right, illustrating that many distinct couplings share the same prescribed marginals" loading="lazy">
+  <figcaption>Couplings live on the product space, with prescribed marginals. <strong>Left.</strong> The Monge plan $\pi=(\mathrm{id},T)_\#\mu$ is concentrated on the *graph* $\{(x,T(x))\}\subset\mathbb R\times\mathbb R$ (a singular measure on a 1-dimensional curve); the colour intensity along the graph is the source density $\mu$. <strong>Right.</strong> A non-deterministic coupling spreads mass over a 2D region while keeping the same marginal projections $\mu$ (top, blue) and $\nu$ (right, red). Both are valid elements of $\Pi(\mu,\nu)$; the Kantorovich relaxation enlarges the feasible set from "1D curves" to "all positive measures with the right marginals", which is why it is automatically convex and well-posed.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Kantorovich's primal problem)</span></p>
+
+For $\mu,\nu$ probability measures on $\mathbb R^d$ and $c:\mathbb R^d\times\mathbb R^d\to[0,+\infty]$ a cost function, **Kantorovich's primal problem** is
+
+$$
+\min_{\pi\in\Pi(\mu,\nu)} I(\pi), \qquad I(\pi) := \int_{\mathbb R^d\times\mathbb R^d} c(x,y)\,d\pi(x,y). \tag{2.2}
+$$
+
+</div>
+
+This is a **linear** problem: both the objective $\pi\mapsto I(\pi)$ and the marginal constraints are linear in $\pi$. Like every linear program, it has a natural **dual**.
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Kantorovich's dual problem)</span></p>
+
+The **dual problem** of (2.2) is
+
+$$
+\sup_{\varphi+\psi\le c}\;J(\varphi,\psi), \qquad J(\varphi,\psi) := \int_{\mathbb R^d}\varphi(x)\,d\mu(x) + \int_{\mathbb R^d}\psi(y)\,d\nu(y), \tag{2.3}
+$$
+
+where the supremum is over all pairs of bounded continuous functions $(\varphi,\psi)$ with $\varphi(x)+\psi(y)\le c(x,y)$ for all $x,y\in\mathbb R^d$.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 10</span><span class="math-callout__name">(Kantorovich duality)</span></p>
+
+Let $\mu,\nu$ be two probability measures on $\mathbb R^d$ and $c:\mathbb R^d\times\mathbb R^d\to[0,+\infty]$ a lower semi-continuous cost function. Then
+
+$$
+\min_{\pi\in\Pi(\mu,\nu)} I(\pi) \;=\; \sup_{\varphi+\psi\le c} J(\varphi,\psi),
+$$
+
+where the supremum on the right is over all bounded continuous $(\varphi,\psi)$ with $\varphi(x)+\psi(y)\le c(x,y)$ for all $x,y\in\mathbb R^d$. Moreover, the minimum on the left is **attained** by some $\pi_\ast\in\Pi(\mu,\nu)$.
+
+</div>
+
+For now, we only prove the easy direction — the inequality "$\ge$". The other direction follows from the **minimax theorem**, a general result in convex analysis that we postpone.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 11</span><span class="math-callout__name">(Kantorovich duality, easy direction)</span></p>
+
+Under the assumptions of Theorem 10,
+
+$$
+\min_{\pi\in\Pi(\mu,\nu)} I(\pi) \;\ge\; \sup_{\varphi+\psi\le c} J(\varphi,\psi).
+$$
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 11 — turning constraints into a penalty</summary>
+
+The trick is to rewrite the marginal constraint on $\pi$ as a $\sup$ over test pairs $(\varphi,\psi)$, so that swapping that $\sup$ with the $\inf$ over $\pi$ produces the dual. Concretely:
+
+**Step 1: a constraint-as-sup identity.** For any $\pi\ge 0$,
+
+$$
+\sup_{\varphi,\psi}\Bigl\{ \int\varphi\,d\mu + \int\psi\,d\nu - \int(\varphi(x)+\psi(y))\,d\pi(x,y)\Bigr\} \;=\; \begin{cases} 0, & \pi\in\Pi(\mu,\nu),\\ +\infty, & \text{otherwise}.\end{cases}
+$$
+
+The reason: if $\pi\in\Pi(\mu,\nu)$, every term in braces is $0$, so the supremum is $0$ (attained at $\varphi=\psi=0$). If $\pi\notin\Pi(\mu,\nu)$, the marginals of $\pi$ disagree with $\mu$ or $\nu$ on some test function, and we can scale that test function to make the bracketed quantity arbitrarily large.
+
+**Step 2: lift the constraint into the objective.** Because the bracketed expression is $0$ on the feasible set and $+\infty$ off it,
+
+$$
+\inf_{\pi\in\Pi(\mu,\nu)} I(\pi) \;=\; \inf_{\pi\ge 0}\Bigl\{ I(\pi) + \sup_{\varphi,\psi}\Bigl[\int\varphi\,d\mu+\int\psi\,d\nu - \int(\varphi+\psi)\,d\pi\Bigr]\Bigr\}.
+$$
+
+**Step 3: swap $\inf$ and $\sup$ (weakly).** In general $\inf\sup\ge\sup\inf$, so
+
+$$
+\inf_{\pi\ge 0}\Bigl\{\cdots\Bigr\} \;\ge\; \sup_{\varphi,\psi}\Bigl\{ \int\varphi\,d\mu+\int\psi\,d\nu + \inf_{\pi\ge 0}\int\bigl(c(x,y)-(\varphi(x)+\psi(y))\bigr)\,d\pi(x,y)\Bigr\}.
+$$
+
+**Step 4: evaluate the inner $\inf$ over $\pi\ge 0$.** Because $\pi$ is a free non-negative measure,
+
+$$
+\inf_{\pi\ge 0}\int\bigl(c(x,y)-(\varphi(x)+\psi(y))\bigr)\,d\pi(x,y) \;=\; \begin{cases} 0, & \varphi(x)+\psi(y)\le c(x,y) \text{ for all }x,y,\\ -\infty, & \text{otherwise}.\end{cases}
+$$
+
+(If the integrand is non-negative everywhere, the optimal $\pi$ is the zero measure. If it is negative somewhere, putting more and more mass at that point drives the integral to $-\infty$.)
+
+**Step 5: combine.** Plugging Step 4 into Step 3, only $(\varphi,\psi)$ with $\varphi+\psi\le c$ contribute (the others give $-\infty$, which the sup discards), and on that set the inner $\inf$ is $0$. Therefore
+
+$$
+\inf_{\pi\in\Pi(\mu,\nu)} I(\pi) \;\ge\; \sup_{\varphi+\psi\le c}\Bigl\{ \int\varphi\,d\mu+\int\psi\,d\nu\Bigr\} \;=\; \sup_{\varphi+\psi\le c} J(\varphi,\psi). \;\;\square
+$$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The pricing interpretation of duality)</span></p>
+
+Kantorovich's dual admits a beautiful **economic** reading that makes weak duality intuitive.
+
+* **The primal — you do it yourself.** You own a company that needs to transport goods from supplier locations distributed as $\mu$ to customer locations distributed as $\nu$, and you pay $c(x,y)$ per unit of mass to move it from $x$ to $y$. Your minimal cost is exactly the Kantorovich primal $\min_\pi I(\pi)$.
+* **The dual — outsource the job.** A logistics contractor offers to do the transport on your behalf. They quote you two prices: $\varphi(x)$ to **load** a unit of mass at location $x$, and $\psi(y)$ to **unload** a unit at location $y$. Your total bill is $\int\varphi\,d\mu+\int\psi\,d\nu = J(\varphi,\psi)$.
+* **The arbitrage constraint.** You will only accept the contract if $\varphi(x)+\psi(y)\le c(x,y)$ for every pair $(x,y)$ — otherwise you could "go around" the contractor by transporting that particular unit yourself for less. This is exactly the dual feasibility constraint.
+* **The contractor's optimization.** The contractor wants to charge as much as possible, so they maximise $J(\varphi,\psi)$ subject to the arbitrage constraint. Their best price is the dual sup.
+
+Weak duality $\min_\pi I(\pi)\ge\sup_{\varphi+\psi\le c}J(\varphi,\psi)$ is then the trivial economic fact that **outsourcing under no-arbitrage cannot be cheaper than doing the job yourself**. Strong duality (Theorem 10) is the deeper statement that *the contractor can drive their price right up to the minimum self-cost*: at the optimum, you are indifferent between doing the job and contracting it out.
+
+(In real life, of course, the contractor charges a small surcharge, which you might still pay for the convenience.)
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_duality_pricing.png' | relative_url }}" alt="Two-panel figure illustrating Kantorovich duality for the quadratic cost. Left panel: 1D slice along s = x - y, showing the cost c(s) = s^2/2 as a blue parabola and the additive envelope phi(x)+psi(y) = s - 1/2 as a green line; the green line lies entirely below the blue parabola, with a single tangency at s = 1 marked by a red dot, and the grey region between them is labelled as the duality gap (s-1)^2/2. Right panel: 2D heatmap of the gap c(x,y) - phi(x) - psi(y) on the (x,y)-plane, coloured grey-to-black (zero on a thin red line y = x - 1, growing outward); thin blue diagonal level curves of the cost are overlaid for reference" loading="lazy">
+  <figcaption>The geometry of duality for $c(x,y)=\tfrac12(x-y)^2$. <strong>Left.</strong> Take the genuine feasible pair $\varphi(x)=x-1$, $\psi(y)=-y+\tfrac12$ (a Fenchel–Young dual to $u\mapsto\tfrac12(u-1)^2+\tfrac12$). Along the slice $s:=x-y$, the cost $c=s^2/2$ (blue) and the envelope $\varphi+\psi=s-\tfrac12$ (green) satisfy $\varphi+\psi\le c$ everywhere, with the duality gap $\tfrac12(s-1)^2$ shaded grey. <strong>Right.</strong> In the full $(x,y)$-plane, the gap vanishes precisely on the line $y=x-1$ (red) — the single 1-dimensional curve along which $\varphi+\psi=c$. By complementary slackness, *the optimal coupling for any compatible $\mu,\nu$ must be supported on this very curve*: the contact set of a feasible $(\varphi,\psi)$ is the geometric locus of optimal transport pairs.</figcaption>
+</figure>
+
+We saw in Example 2 that Monge's problem can be **infeasible**. Kantorovich's problem, by contrast, is **always solvable** — this is part of Theorem 10, but worth restating with a self-contained proof.
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Proposition 12</span><span class="math-callout__name">(Existence of optimal transference plans)</span></p>
+
+Let $\mu,\nu$ be probability measures on $\mathbb R^d$ and $c:\mathbb R^d\times\mathbb R^d\to[0,+\infty]$ a lower semi-continuous cost function. Then there exists an optimal transport plan $\pi_\ast\in\Pi(\mu,\nu)$ with
+
+$$
+I(\pi_\ast) \;=\; \min_{\pi\in\Pi(\mu,\nu)} I(\pi).
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Existence proof, three-step structure)</span></p>
+
+The proof is the **direct method of the calculus of variations** — the same template that drove the existence proof for minimizing movements (§§1.4, 1.8). It always boils down to three ingredients:
+
+1. **Non-emptiness.** The feasible set $\Pi(\mu,\nu)$ is non-empty, because the **product measure** $\mu\otimes\nu$ is always a coupling (if $X\sim\mu$ and $Y\sim\nu$ are *independent*, then $(X,Y)\sim\mu\otimes\nu\in\Pi(\mu,\nu)$).
+2. **Compactness.** $\Pi(\mu,\nu)$ is **weakly compact** — a sequence of plans, all having the same prescribed marginals, is automatically *tight*, and Prokhorov's theorem extracts a weak limit. This is the "calculus of variations" half of the argument.
+3. **Lower semi-continuity.** The cost functional $I(\pi)=\int c\,d\pi$ is lower semi-continuous along weak limits — this is where the lower semi-continuity hypothesis on $c$ enters, via approximation from below by bounded continuous functions and monotone convergence.
+
+These three ingredients combine in the standard way: take any minimizing sequence; extract a weakly convergent subsequence by (2); use (3) to pass the cost $I$ through the limit; the limit is the minimizer.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details markdown="1">
+<summary>Proof of Proposition 12 — direct method</summary>
+
+**Step 1: $\Pi(\mu,\nu)$ is non-empty.** Take $\pi:=\mu\otimes\nu$, the product measure. Its marginals are obviously $\mu$ and $\nu$, so $\pi\in\Pi(\mu,\nu)$.
+
+**Step 2: $\Pi(\mu,\nu)$ is weakly compact.** Let $(\pi_n)\subset\Pi(\mu,\nu)$. We show *tightness*: for every $\varepsilon>0$, there is a compact set $K\subset\mathbb R^d\times\mathbb R^d$ with $\pi_n(K)\ge 1-\varepsilon$ uniformly in $n$.
+
+Since $\mu,\nu$ are individually tight (any single Borel probability measure on $\mathbb R^d$ is), pick compacts $K_1,K_2\subset\mathbb R^d$ with $\mu(K_1)\ge 1-\tfrac\varepsilon2$ and $\nu(K_2)\ge 1-\tfrac\varepsilon2$. Then $K:=K_1\times K_2$ is compact and
+
+$$
+\pi_n(K_1\times K_2) \;\ge\; 1 - \pi_n((\mathbb R^d\setminus K_1)\times\mathbb R^d) - \pi_n(\mathbb R^d\times(\mathbb R^d\setminus K_2)) \;=\; 1 - \mu(K_1^c) - \nu(K_2^c) \;\ge\; 1-\varepsilon,
+$$
+
+using the marginal identity $\pi_n(A\times\mathbb R^d)=\mu(A)$ and analogously for the second factor. So $(\pi_n)$ is tight.
+
+By **Prokhorov's theorem**, there is a subsequence (not relabelled) and a probability measure $\pi$ on $\mathbb R^d\times\mathbb R^d$ with $\pi_n\rightharpoonup\pi$ weakly — i.e. $\int\zeta\,d\pi_n\to\int\zeta\,d\pi$ for every $\zeta\in C_b(\mathbb R^d\times\mathbb R^d)$.
+
+It remains to check that $\pi$ has the right marginals. For any $\varphi\in C_b(\mathbb R^d)$, the function $(x,y)\mapsto\varphi(x)$ is in $C_b(\mathbb R^d\times\mathbb R^d)$, so
+
+$$
+\int\varphi(x)\,d\pi(x,y) \;=\; \lim_{n\to\infty}\int\varphi(x)\,d\pi_n(x,y) \;=\; \lim_{n\to\infty}\int\varphi\,d\mu \;=\; \int\varphi\,d\mu,
+$$
+
+and analogously for $\psi(y)$ and $\nu$. Hence $\pi\in\Pi(\mu,\nu)$, proving weak compactness.
+
+**Step 3: $I$ is lower semi-continuous.** Let $\pi_n\rightharpoonup\pi$ in $\Pi(\mu,\nu)$. Since $c\ge 0$ is l.s.c. on $\mathbb R^d\times\mathbb R^d$, write $c$ as the pointwise increasing limit of bounded continuous $c_k:\mathbb R^d\times\mathbb R^d\to[0,\infty)$ with $c_k\nearrow c$. (Such an approximation exists by the standard "$c_k(z)=\inf_{w}\{c(w)+k\|z-w\|\}\wedge k$" construction.) Then
+
+$$
+\liminf_{n\to\infty}I(\pi_n) \;=\; \liminf_{n\to\infty}\int\Bigl(\lim_{k\to\infty}c_k\Bigr)\,d\pi_n \;\ge\; \limsup_{k\to\infty}\liminf_{n\to\infty}\int c_k\,d\pi_n \;=\; \lim_{k\to\infty}\int c_k\,d\pi \;=\; \int c\,d\pi,
+$$
+
+where the second step uses $c\ge c_k$ and the limsup-liminf inequality, the third step uses weak convergence of $\pi_n$ together with $c_k\in C_b$, and the last uses **monotone convergence** (since $c_k\nearrow c$ pointwise and $c\ge 0$). So $I(\pi)\le\liminf_n I(\pi_n)$.
+
+**Step 4: combine.** Take a minimizing sequence $(\pi_n)\subset\Pi(\mu,\nu)$ with $I(\pi_n)\to\min_{\pi\in\Pi(\mu,\nu)}I(\pi)$ — well-defined because $\Pi(\mu,\nu)\neq\emptyset$. By Step 2, extract a weak limit $\pi_\ast\in\Pi(\mu,\nu)$. By Step 3,
+
+$$
+I(\pi_\ast) \;\le\; \liminf_{n\to\infty}I(\pi_n) \;=\; \min_{\pi\in\Pi(\mu,\nu)}I(\pi),
+$$
+
+so the inequality is in fact an equality and $\pi_\ast$ is optimal. $\square$
+
+</details>
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why tightness is "free" for couplings)</span></p>
+
+The key compactness argument in Step 2 is striking precisely because it is **so easy**: tightness of *individual* probability measures on $\mathbb R^d$ — a non-trivial property in general — is *automatic* for couplings, because the marginal constraints lock in the support of $\pi_n$ from both sides. No quantitative bound on the cost is needed; the bound on the *marginals* alone is enough to keep mass from escaping to infinity.
+
+This is the structural reason Kantorovich's relaxation is so much more tractable than Monge's: the feasible set $\Pi(\mu,\nu)$ is **automatically** a weakly compact convex set, so the existence theory is essentially trivial. All the analytic difficulty is shifted into *characterising* the optimum (which map, when does the plan come from a map, etc.) — that is the content of Brenier's theorem ahead.
+
+</div>
+
+### 2.3 Brenier's theorem
+
+We have seen that Monge's problem is very hard — it can even be infeasible — while Kantorovich's relaxation is much more tractable, with a clean dual and an automatic existence theorem. **Brenier's theorem** is the bridge back: in the very relevant case of the **quadratic cost**
+
+$$
+c(x,y) \;=\; \tfrac12\|x-y\|^2 \qquad\text{(the prefactor }\tfrac12\text{ is purely cosmetic)},
+$$
+
+the optimal Kantorovich plan is in fact concentrated on the graph of a **transport map** — and that map is the **gradient of a convex function**.
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem 13</span><span class="math-callout__name">(Brenier — to be stated and proved in the next part)</span></p>
+
+*[Statement to follow in the next part of the manuscript.]*
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/books/pdeds/ot_brenier_preview.png' | relative_url }}" alt="Three-panel preview of Brenier's theorem in 1D. Panel (a) shows a smooth convex potential phi(x) (purple) with a dashed grey tangent line at x=-0.8 illustrating the supporting hyperplane characterisation of convexity. Panel (b) shows its derivative T(x) = phi'(x) (teal), a non-decreasing curve that is steep where phi is curved and flat where phi is nearly linear; orange step-arrows on two pairs (x_1 < x_2) demonstrate that T(x_1) <= T(x_2). Panel (c) shows source density mu (blue, single Gaussian centred at 0) and target density nu (red, bimodal mixture); curved grey arrows from sample x to T(x) show how the unimodal source is rearranged into a bimodal target by following the monotone gradient" loading="lazy">
+  <figcaption>Brenier's theorem in pictures (1D preview). <strong>(a)</strong> A convex potential $\varphi$. Convexity is exactly the existence at every $x$ of a supporting tangent line lying entirely below the graph (dashed grey). <strong>(b)</strong> Its derivative $T=\varphi'$ is automatically *monotone non-decreasing*: $x_1\le x_2$ implies $T(x_1)\le T(x_2)$ (orange step-arrows). <strong>(c)</strong> The map $T=\varphi'$ pushes the source density $f$ (blue) onto the target density $g$ (red): each source point $x$ is sent to the unique $T(x)$ such that the cumulative source mass to the left of $x$ equals the cumulative target mass to the left of $T(x)$ (the **monotone rearrangement** / quantile transform). Brenier's theorem says this is the unique optimal map for the quadratic cost $c(x,y)=\tfrac12\|x-y\|^2$ — and the analogous statement holds in any dimension, with $T=\nabla\varphi$ for a convex $\varphi:\mathbb R^d\to\mathbb R$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(What to expect from Brenier — a preview)</span></p>
+
+Brenier's theorem is the optimal-transport analogue of "Riesz representation" for the quadratic cost: it identifies a *canonical object* underlying every optimal coupling.
+
+* **Existence of a map.** When $\mu$ is absolutely continuous (no atoms) and $c=\tfrac12\|x-y\|^2$, the optimal Kantorovich plan $\pi_\ast$ is concentrated on the graph of a map $T$ — i.e. $\pi_\ast=(\mathrm{id},T)_\\#\mu$ — so the relaxation is *not* strict for nice $\mu$.
+* **Convex potential.** Moreover, $T=\nabla\varphi$ for some convex function $\varphi:\mathbb R^d\to\mathbb R$. The map is a **gradient**, hence (in particular) **monotone**: $\langle T(x_1)-T(x_2),x_1-x_2\rangle\ge 0$.
+* **Why convexity?** Heuristically, "optimal" under the cost $\tfrac12\|x-y\|^2$ means "minimising mean-squared displacement subject to the marginal constraint", and by a cyclic-monotonicity argument the support of $\pi_\ast$ has to be **monotone** in the sense above. The extension theorem (Rockafellar) then says monotone sets are contained in subdifferentials of convex functions.
+* **Connection to PDE.** Combining $T=\nabla\varphi$ with the Jacobian equation (2.2) yields the **Monge–Ampère equation** $\det D^2\varphi=f/(g\circ\nabla\varphi)$ — which is the entry point to the regularity theory of optimal transport (Caffarelli, Figalli, …) and the analytic foundation for Wasserstein gradient flows.
+
+The next part of the manuscript will state the theorem rigorously and walk through its proof.
+
+</div>
+
 ## Appendix A: Desingularizing Functions and the Kurdyka–Łojasiewicz Framework {#appendix-a}
 
 In §1.6, the proof of long-term asymptotics via Łojasiewicz uses an unusual move: rather than tracking the excess energy $\mathcal E(t):=E(x(t))-E_\infty$ along the gradient flow, it tracks the **concave power** $\mathcal E^{1-\theta}(t)$. Why this exact exponent, and not $\mathcal E$ itself, or $\sqrt{\mathcal E}$, or anything else? The answer is *not* a technicality — it points to a deep recurring template in analysis, often called **desingularization** or the **Kurdyka–Łojasiewicz (KL) framework**.

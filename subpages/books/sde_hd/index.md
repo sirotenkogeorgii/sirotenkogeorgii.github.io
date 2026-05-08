@@ -2985,10 +2985,13 @@ Rewriting these nested expectations as spatial integrals gives the fundamental i
 
 $$
 \iiint_{\mathbb{R}^{3d}} \varphi(x)\psi(y)\chi(z)\, \mathbb{P}_0\bigl(B_s \in \mathrm{d}x,\, B_t \in \mathrm{d}y,\, B_u \in \mathrm{d}z\bigr)
+$$
+
+$$
 = \int_{\mathbb{R}^d}\!\!\!\varphi(x)\!\left[\int_{\mathbb{R}^d}\!\!\!\psi(y)\!\left(\int_{\mathbb{R}^d}\!\!\!\chi(z)\, \mathbb{P}_y(B_{u-t} \in \mathrm{d}z)\right)\!\mathbb{P}_x(B_{t-s} \in \mathrm{d}y)\right]\!\mathbb{P}_0(B_s \in \mathrm{d}x).
 $$
 
-* The joint distribution over any sequence of times is *completely determined* by the isolated, pairwise transition probabilities $\mathbb{P}_x(B_{\Delta t} \in \mathrm{d}y)$.
+* The joint distribution over any sequence of times is *completely determined* by the isolated, pairwise transition probabilities $\mathbb{P}\_x(B_{\Delta t} \in \mathrm{d}y)$.
 * In diffusion models, this is precisely why the entire forward trajectory factorises into a computationally tractable Markov chain.
 
 </div>
@@ -3081,7 +3084,7 @@ $$
 P_t u(x) := \mathbb{E}_x[u(B_t)], \qquad x \in \mathbb{R}^d. \tag{2.1}
 $$
 
-Throughout this chapter, we work under the standing assumption that $(B_t)\_{t \ge 0}$ is a $d$-dimensional Brownian motion adapted to a *right-continuous* filtration $(\mathcal{F}_t)\_{t \ge 0}$, meaning $\mathcal{F}_t = \mathcal{F}_{t+}$ for all $t \ge 0$.
+Throughout this chapter, we work under the standing assumption that $(B_t)\_{t \ge 0}$ is a $d$-dimensional Brownian motion adapted to a *right-continuous* filtration $(\mathcal{F}\_t)\_{t \ge 0}$, meaning $\mathcal{F}\_t = \mathcal{F}\_{t+}$ for all $t \ge 0$.
 
 In functional analysis, an *operator semigroup* $(P_t)\_{t \ge 0}$ on a Banach space $(\mathbf{B}, \lVert \cdot \rVert)$ is a family of linear operators $P_t : \mathbf{B} \to \mathbf{B}$, $t \ge 0$, satisfying the two algebraic conditions
 
@@ -3091,15 +3094,15 @@ $$
 
 In the context of stochastic processes we work predominantly with two specific Banach spaces:
 
-* $\mathcal{B}_b(\mathbb{R}^d)$, the space of bounded Borel measurable functions $f : \mathbb{R}^d \to \mathbb{R}$ equipped with the uniform norm $\lVert f \rVert_\infty$;
+* $\mathcal{B}\_b(\mathbb{R}^d)$, the space of bounded Borel measurable functions $f : \mathbb{R}^d \to \mathbb{R}$ equipped with the uniform norm $\lVert f \rVert_\infty$;
 * $C_\infty(\mathbb{R}^d)$, the space of continuous functions vanishing at infinity, similarly equipped with the uniform norm.
 
-Unless otherwise stated, we abbreviate $\mathcal{B}_b = \mathcal{B}_b(\mathbb{R}^d)$ and $C_\infty = C_\infty(\mathbb{R}^d)$.
+Unless otherwise stated, we abbreviate $\mathcal{B}\_b = \mathcal{B}_b(\mathbb{R}^d)$ and $C_\infty = C_\infty(\mathbb{R}^d)$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma</span><span class="math-callout__name">2.5 (Brownian Transition Operators Form a Semigroup)</span></p>
 
-Let $(B_t)\_{t \ge 0}$ be a $d$-dimensional Brownian motion. Then the family $(P_t)\_{t \ge 0}$ defined in (2.1) is a semigroup of operators on $\mathcal{B}_b(\mathbb{R}^d)$.
+Let $(B_t)\_{t \ge 0}$ be a $d$-dimensional Brownian motion. Then the family $(P_t)\_{t \ge 0}$ defined in (2.1) is a semigroup of operators on $\mathcal{B}\_b(\mathbb{R}^d)$.
 
 </div>
 
@@ -3220,15 +3223,15 @@ Each of these classifications carries a probabilistic and analytical meaning tha
 
 We address each property sequentially.
 
-**a)** For conservativity, $P_t \mathbf{1}(x) = \mathbb{E}_x[\mathbf{1}\lbrace B_t \in \mathbb{R}^d\rbrace] = \mathbb{P}_x(B_t \in \mathbb{R}^d) = 1$, so probability mass is not lost.
+**a)** For conservativity, $P_t \mathbf{1}(x) = \mathbb{E}\_x[\mathbf{1}\lbrace B_t \in \mathbb{R}^d\rbrace] = \mathbb{P}\_x(B_t \in \mathbb{R}^d) = 1$, so probability mass is not lost.
 
-**b)** $\lvert P_t u(x) \rvert \le \mathbb{E}_x[\lvert u(B_t) \rvert] \le \lVert u \rVert_\infty \mathbb{E}_x[1] = \lVert u \rVert_\infty$.
+**b)** $\lvert P_t u(x) \rvert \le \mathbb{E}\_x[\lvert u(B_t) \rvert] \le \lVert u \rVert_\infty \mathbb{E}\_x[1] = \lVert u \rVert_\infty$.
 
-**c)** If $u \ge 0$, then $P_t u(x) = \mathbb{E}_x[u(B_t)] \ge 0$ trivially.
+**c)** If $u \ge 0$, then $P_t u(x) = \mathbb{E}\_x[u(B_t)] \ge 0$ trivially.
 
 **d)** Combining (b) and (c).
 
-**e)** Write $P_t u(x) = \mathbb{E}_x[u(B_t)] = \mathbb{E}_0[u(B_t + x)]$. Since $\lvert u(B_t + x) \rvert \le \lVert u \rVert_\infty$, dominated convergence applies. As $x \to y$, continuity of $u$ gives $\lim_{x \to y} \mathbb{E}_0[u(B_t + x)] = \mathbb{E}_0[u(B_t + y)]$. Similarly, as $\lvert x \rvert \to \infty$, $u(B_t + x) \to 0$ almost surely, yielding $\lim_{\lvert x \rvert \to \infty} P_t u(x) = 0$. Thus $P_t u \in C_\infty$.
+**e)** Write $P_t u(x) = \mathbb{E}\_x[u(B_t)] = \mathbb{E}\_0[u(B_t + x)]$. Since $\lvert u(B_t + x) \rvert \le \lVert u \rVert_\infty$, dominated convergence applies. As $x \to y$, continuity of $u$ gives $\lim_{x \to y} \mathbb{E}\_0[u(B_t + x)] = \mathbb{E}\_0[u(B_t + y)]$. Similarly, as $\lvert x \rvert \to \infty$, $u(B_t + x) \to 0$ almost surely, yielding $\lim_{\lvert x \rvert \to \infty} P_t u(x) = 0$. Thus $P_t u \in C_\infty$.
 
 **f)** Fix $\varepsilon > 0$. Since $u \in C_\infty$ is uniformly continuous, there exists $\delta > 0$ such that $\lvert u(x) - u(y) \rvert < \varepsilon$ whenever $\lvert x - y \rvert < \delta$. Splitting the expectation,
 
@@ -3243,7 +3246,7 @@ $$
 
 By Lemma 2.6 the second term vanishes as $t \to 0$. Since $\varepsilon$ was arbitrary, strong continuity holds.
 
-**g)** Let $R > 0$ and consider $x, z \in B(0, R)$. For $u \in \mathcal{B}_b$, $P_t u$ is the convolution with the Gaussian density. For $\lvert y \rvert \ge 2R$ we have the geometric bound $\lvert z - y \rvert^2 \ge (\lvert y \rvert - \lvert z \rvert)^2 \ge \tfrac{1}{4} \lvert y \rvert^2$. Thus the integrand is dominated by
+**g)** Let $R > 0$ and consider $x, z \in B(0, R)$. For $u \in \mathcal{B}\_b$, $P_t u$ is the convolution with the Gaussian density. For $\lvert y \rvert \ge 2R$ we have the geometric bound $\lvert z - y \rvert^2 \ge (\lvert y \rvert - \lvert z \rvert)^2 \ge \tfrac{1}{4} \lvert y \rvert^2$. Thus the integrand is dominated by
 
 $$
 \lvert u(y) \rvert\, e^{-\lvert z - y \rvert^2 / (2t)}
@@ -3393,7 +3396,7 @@ For Brownian motion, this abstract generator reduces to a simple differential op
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">2.14 (Generator of Brownian Motion)</span></p>
 
-Let $(B_t)\_{t \ge 0}$ with $B_t = (B_t^{(1)}, \dots, B_t^{(d)})^{\!\top}$ be a $d$-dimensional Brownian motion, and let $P_t u(x) := \mathbb{E}_x[u(B_t)]$ be the associated transition semigroup. Let $(A, \mathcal{D}(A))$ denote its generator. Then $C_\infty^2(\mathbb{R}^d) \subset \mathcal{D}(A)$, and the operator acts as
+Let $(B_t)\_{t \ge 0}$ with $B_t = (B_t^{(1)}, \dots, B_t^{(d)})^{\top}$ be a $d$-dimensional Brownian motion, and let $P_t u(x) := \mathbb{E}\_x[u(B_t)]$ be the associated transition semigroup. Let $(A, \mathcal{D}(A))$ denote its generator. Then $C_\infty^2(\mathbb{R}^d) \subset \mathcal{D}(A)$, and the operator acts as
 
 $$
 A\bigr|_{C_\infty^2(\mathbb{R}^d)} = \tfrac{1}{2} \Delta = \tfrac{1}{2} \sum_{j=1}^d \partial_j^2,
@@ -3445,7 +3448,11 @@ $$
 \end{aligned}
 $$
 
-Now invoke Brownian scaling, $\mathbb{E}[\lvert B_t \rvert^4] = t^2\, \mathbb{E}[\lvert B_1 \rvert^4] < \infty$. Furthermore, the spatial differences are globally bounded by $\lvert \partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x) \rvert^2 \le 4 \lVert \partial_j \partial_k u \rVert_\infty^2$. Since $u \in C_\infty^2$, second derivatives are uniformly continuous; as $t \to 0$, $B_t \to 0$ a.s., causing $\xi_t \to x$. By dominated convergence,
+Now invoke Brownian scaling, $\mathbb{E}[\lvert B_t \rvert^4] = t^2\, \mathbb{E}[\lvert B_1 \rvert^4] < \infty$. Furthermore, the spatial differences are globally bounded by 
+
+$$\lvert \partial_j \partial_k u(\xi_t) - \partial_j \partial_k u(x) \rvert^2 \le 4 \lVert \partial_j \partial_k u \rVert_\infty^2$$
+
+Since $u \in C_\infty^2$, second derivatives are uniformly continuous; as $t \to 0$, $B_t \to 0$ a.s., causing $\xi_t \to x$. By dominated convergence,
 
 $$
 \limsup_{t \to 0} \sup_{x \in \mathbb{R}^d} \left\lvert \frac{\mathbb{E}[u(B_t + x) - u(x)]}{t} - \tfrac{1}{2} \sum_{j=1}^d \partial_j^2 u(x) \right\rvert = 0.
@@ -3493,7 +3500,7 @@ This example is of paramount importance for modern generative AI:
 
 * The process $X_t = C B_t + b t$ represents a Brownian motion with constant **drift $b$** and **diffusion matrix $C$**.
 * In score-based generative modelling, the forward corruption process is formulated precisely as an SDE of the form $\mathrm{d}x = f(x, t)\, \mathrm{d}t + g(t)\, \mathrm{d}B_t$.
-* The generator explicitly reveals how the deterministic drift $(b \cdot \nabla u)$ *translates probability mass*, while the diffusion term $\tfrac{1}{2}\,\mathrm{Tr}(C C^{\!\top} D^2 u)$ *smooths it out*.
+* The generator explicitly reveals how the deterministic drift $(b \cdot \nabla u)$ *translates probability mass*, while the diffusion term $\tfrac{1}{2}\,\mathrm{Tr}(C C^{\top} D^2 u)$ *smooths it out*.
 
 </div>
 
@@ -3565,7 +3572,7 @@ $$
 \le \left\lVert P_{t-\varepsilon}\!\left(\frac{P_\varepsilon u - u}{\varepsilon} - A u\right) \right\rVert_\infty + \lVert P_{t-\varepsilon} A u - P_t A u \rVert_\infty \xrightarrow{\varepsilon \to 0} 0.
 $$
 
-**b)** Initially consider $u \in \mathcal{B}_b(\mathbb{R}^d)$ and $t, \varepsilon > 0$. Starting in this broader space emphasises that interchanging the transition operator $P_\varepsilon$ and the time integral relies purely on Fubini's theorem for non-negative kernels and does not yet require the continuity of $u$. By Fubini,
+**b)** Initially consider $u \in \mathcal{B}\_b(\mathbb{R}^d)$ and $t, \varepsilon > 0$. Starting in this broader space emphasises that interchanging the transition operator $P_\varepsilon$ and the time integral relies purely on Fubini's theorem for non-negative kernels and does not yet require the continuity of $u$. By Fubini,
 
 $$
 P_\varepsilon\!\left(\int_0^t P_s u\, \mathrm{d}s\right)
@@ -3713,7 +3720,7 @@ $$
 A u(x) = \tfrac{1}{2} \sum_{i,j=1}^d a_{ij}\, \partial_i \partial_j u(x) + \sum_{i=1}^d b_i\, \partial_i u(x),
 $$
 
-where $(a_{ij}) = C C^{\!\top}$. Thus the generator involves *both first- and second-order* derivatives with constant coefficients, with the second-order part encoding the covariance structure of the noise. In general, a diffusion process can be thought of as a Markov process that *behaves locally like a Brownian motion with drift and diffusion coefficients that may depend on the current position*.
+where $(a_{ij}) = C C^{\top}$. Thus the generator involves *both first- and second-order* derivatives with constant coefficients, with the second-order part encoding the covariance structure of the noise. In general, a diffusion process can be thought of as a Markov process that *behaves locally like a Brownian motion with drift and diffusion coefficients that may depend on the current position*.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">3.1 (Diffusion Process)</span></p>
