@@ -2671,19 +2671,19 @@ The transportation constraint on $T$ is encoded by the **push-forward** of $\mu$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Push-forward measure)</span></p>
 
-Let $\mu$ be a non-negative measure on $\mathbb R^d$ and $T:\mathbb R^d\to\mathbb R^d$ a (Borel-)measurable map. The **push-forward** $T_\#\mu$ is the measure on $\mathbb R^d$ defined by
+Let $\mu$ be a non-negative measure on $\mathbb R^d$ and $T:\mathbb R^d\to\mathbb R^d$ a (Borel-)measurable map. The **push-forward** $T_{\sharp}\mu$ is the measure on $\mathbb R^d$ defined by
 
 $$
-T_\#\mu(A) := \mu\bigl(T^{-1}(A)\bigr) \qquad\text{for every Borel set } A\subset\mathbb R^d,
+T_{\sharp}\mu(A) := \mu\bigl(T^{-1}(A)\bigr) \qquad\text{for every Borel set } A\subset\mathbb R^d,
 $$
 
 or, equivalently, by the change-of-variables identity
 
 $$
-\int_{\mathbb R^d} \zeta(y)\,d(T_\#\mu)(y) \;=\; \int_{\mathbb R^d} \zeta(T(x))\,d\mu(x) \qquad\text{for every } \zeta\in C_b(\mathbb R^d).
+\int_{\mathbb R^d} \zeta(y)\,d(T_{\sharp}\mu)(y) \;=\; \int_{\mathbb R^d} \zeta(T(x))\,d\mu(x) \qquad\text{for every } \zeta\in C_b(\mathbb R^d).
 $$
 
-The constraint **$T_\#\mu = \nu$** therefore means: for every continuous test function $\zeta$,
+The constraint **$T_{\sharp}\mu = \nu$** therefore means: for every continuous test function $\zeta$,
 
 $$
 \int_{\mathbb R^d}\zeta(T(x))\,d\mu(x) \;=\; \int_{\mathbb R^d}\zeta(y)\,d\nu(y). \tag{*}
@@ -2692,15 +2692,15 @@ $$
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
-  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(How to read $T_\#\mu = \nu$ — three equivalent pictures)</span></p>
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(How to read $T_{\sharp}\mu = \nu$ — three equivalent pictures)</span></p>
 
 The push-forward identity is one of those notations whose meaning crystallises only after seeing it three different ways. It is worth pinning down all three, because each will be the right one in different proofs.
 
 * **Set-theoretic.** "The mass that $\nu$ assigns to a target region $A$ equals the mass that $\mu$ assigned to the *pre-image* $T^{-1}(A)$." This is the literal definition $\nu(A)=\mu(T^{-1}(A))$. It says the map $T$ moves *all* of $\mu$ — no mass is lost or created — and the way mass piles up on the target side is governed entirely by where $T$ sends things.
-* **Test-function / weak.** Equation (*) is the dual statement: integrating any continuous $\zeta$ against $T_\#\mu$ is the same as integrating $\zeta\circ T$ against $\mu$. This is the form one uses in proofs because it works even when $T$ is far from a diffeomorphism (so set-theoretic intuition fails).
-* **Probabilistic.** If $X\sim\mu$ is a random variable, then $T(X)\sim T_\#\mu$. The push-forward is just the **law of $T(X)$**. Asking $T_\#\mu=\nu$ is asking: "*find a map $T$ that takes a $\mu$-distributed sample to a $\nu$-distributed sample, deterministically*."
+* **Test-function / weak.** Equation (*) is the dual statement: integrating any continuous $\zeta$ against $T_{\sharp}\mu$ is the same as integrating $\zeta\circ T$ against $\mu$. This is the form one uses in proofs because it works even when $T$ is far from a diffeomorphism (so set-theoretic intuition fails).
+* **Probabilistic.** If $X\sim\mu$ is a random variable, then $T(X)\sim T_{\sharp}\mu$. The push-forward is just the **law of $T(X)$**. Asking $T_{\sharp}\mu=\nu$ is asking: "*find a map $T$ that takes a $\mu$-distributed sample to a $\nu$-distributed sample, deterministically*."
 
-In all three readings, mass is conserved exactly: $T_\#\mu(\mathbb R^d) = \mu(\mathbb R^d)$.
+In all three readings, mass is conserved exactly: $T_{\sharp}\mu(\mathbb R^d) = \mu(\mathbb R^d)$.
 
 </div>
 
@@ -2710,14 +2710,14 @@ In all three readings, mass is conserved exactly: $T_\#\mu(\mathbb R^d) = \mu(\m
 Given measures $\mu,\nu$ on $\mathbb R^d$ with the same total mass and a cost function $c:\mathbb R^d\times\mathbb R^d\to[0,+\infty]$, **Monge's problem** is
 
 $$
-\min_{T:\mathbb R^d\to\mathbb R^d} \int_{\mathbb R^d} c(x,T(x))\,d\mu(x) \qquad\text{subject to } T_\#\mu=\nu. \tag{2.1}
+\min_{T:\mathbb R^d\to\mathbb R^d} \int_{\mathbb R^d} c(x,T(x))\,d\mu(x) \qquad\text{subject to } T_{\sharp}\mu=\nu. \tag{2.1}
 $$
 
 The infimum is taken over all (measurable) maps $T$ whose push-forward equals $\nu$.
 
 </div>
 
-This problem is incredibly **hard** because the constraint $T_\#\mu=\nu$ is highly **non-linear** in $T$. The next two examples make this concrete.
+This problem is incredibly **hard** because the constraint $T_\sharp\mu=\nu$ is highly **non-linear** in $T$. The next two examples make this concrete.
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/ot_monge_pushforward.png' | relative_url }}" alt="Two-panel figure: left shows source density mu (blue) and target density nu (red, bimodal) with grey arrows from sample points x to T(x) sketching the deterministic transport map; right shows the change-of-variables identity by transporting three coloured mass-blocks from a Gaussian source under a smooth monotone T, with the destination blocks visibly stretched/compressed according to det DT" loading="lazy">
@@ -2727,7 +2727,7 @@ This problem is incredibly **hard** because the constraint $T_\#\mu=\nu$ is high
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Absolutely continuous case — the Monge–Ampère equation)</span></p>
 
-If $\mu$ and $\nu$ are both absolutely continuous with respect to Lebesgue measure with densities $f$ and $g$, i.e. $d\mu = f\,dx$ and $d\nu = g\,dy$, and $T$ is a $C^1$-diffeomorphism, then the change-of-variables formula turns $T_\#\mu=\nu$ into the **pointwise** identity
+If $\mu$ and $\nu$ are both absolutely continuous with respect to Lebesgue measure with densities $f$ and $g$, i.e. $d\mu = f\,dx$ and $d\nu = g\,dy$, and $T$ is a $C^1$-diffeomorphism, then the change-of-variables formula turns $T_\sharp\mu=\nu$ into the **pointwise** identity
 
 $$
 f(x) \;=\; g(T(x))\,\det DT(x). \tag{2.2 — Jacobian eq.}
@@ -2752,9 +2752,9 @@ $$
 \mu = \delta_0, \qquad \nu = \tfrac12\delta_{-1} + \tfrac12\delta_{+1}.
 $$
 
-There is **no** map $T:\mathbb R\to\mathbb R$ with $T_\#\mu=\nu$.
+There is **no** map $T:\mathbb R\to\mathbb R$ with $T_\sharp\mu=\nu$.
 
-Indeed, since $\mu$ is concentrated at the single point $0$, the push-forward $T_\#\mu$ must be $\delta_{T(0)}$ — a Dirac mass at one point. But $\nu$ puts mass at *two* points, so no single-valued map can match it.
+Indeed, since $\mu$ is concentrated at the single point $0$, the push-forward $T_\sharp\mu$ must be $\delta_{T(0)}$ — a Dirac mass at one point. But $\nu$ puts mass at *two* points, so no single-valued map can match it.
 
 </div>
 
@@ -2765,14 +2765,14 @@ Example 2 is not a pathological corner case; it is the *typical* obstruction to 
 
 * **What goes wrong.** A map $T$ assigns *one* destination to *each* source point $x$. So if $\mu$ has an atom at $x_0$ — concentrating a finite chunk of mass at a single point — that whole chunk is forced to land at the single destination $T(x_0)$. There is no room to **split** mass.
 * **What $\nu$ may demand.** A target measure with mass spread across multiple points (as in Example 2) requires the chunk at $x_0$ to be split. Maps simply cannot do this.
-* **General principle.** Every time Monge's constraint $T_\#\mu=\nu$ is feasible, $\nu$ is in some sense "no more diffuse than $\mu$" — the source must already be at least as spread out as the target. When $\mu$ is more atomic, the problem is empty and the infimum in (2.1) is $+\infty$ by convention.
+* **General principle.** Every time Monge's constraint $T_\sharp\mu=\nu$ is feasible, $\nu$ is in some sense "no more diffuse than $\mu$" — the source must already be at least as spread out as the target. When $\mu$ is more atomic, the problem is empty and the infimum in (2.1) is $+\infty$ by convention.
 * **The cure.** Kantorovich's idea (next section) is precisely to *allow splitting*: instead of a deterministic destination $T(x)$ for each source point, one keeps a **joint distribution** $\pi(x,y)$ describing how much mass moves from $x$ to $y$. This restores feasibility (since the product measure $\mu\otimes\nu$ is always feasible), and turns the non-linear problem (2.1) into a linear one.
 
 </div>
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/ot_no_map_vs_split.png' | relative_url }}" alt="Two-panel figure contrasting Monge's failure with Kantorovich's success on the same atomic data. Left panel shows mu = delta_0 as a single blue spike at 0 of height 1 and nu = (1/2)(delta_-1 + delta_+1) as two red spikes of height 0.5 at -1 and +1; two grey curved arrows from 0 to -1 and 0 to +1 are crossed out by a red 'no map can split delta_0' callout. Right panel shows the same source and target with two thick green arrows of weight 1/2 each, splitting the Dirac mass at 0 between the two targets, with a green box stating pi = (1/2) delta_(0,-1) + (1/2) delta_(0,+1) is in Pi(mu,nu)" loading="lazy">
-  <figcaption>The structural failure of Monge and Kantorovich's cure. <strong>Left.</strong> For $\mu=\delta_0$ and $\nu=\tfrac12\delta_{-1}+\tfrac12\delta_{+1}$, no map $T$ can satisfy $T_\#\mu=\nu$: the push-forward of an atom is itself an atom, so $T_\#\delta_0=\delta_{T(0)}$ — a single Dirac, not a sum of two. <strong>Right.</strong> A Kantorovich coupling can split the source atom: the plan $\pi=\tfrac12\delta_{(0,-1)}+\tfrac12\delta_{(0,+1)}$ has the right marginals $(\mu,\nu)$ even though it is not concentrated on the graph of any function. Replacing "graphs of maps" by "couplings on $\mathbb R^d\times\mathbb R^d$" is precisely what restores feasibility.</figcaption>
+  <figcaption>The structural failure of Monge and Kantorovich's cure. <strong>Left.</strong> For $\mu=\delta_0$ and $\nu=\tfrac12\delta_{-1}+\tfrac12\delta_{+1}$, no map $T$ can satisfy $T_{\sharp}\mu=\nu$: the push-forward of an atom is itself an atom, so $T_{\sharp}\delta_0=\delta_{T(0)}$ — a single Dirac, not a sum of two. <strong>Right.</strong> A Kantorovich coupling can split the source atom: the plan $\pi=\tfrac12\delta_{(0,-1)}+\tfrac12\delta_{(0,+1)}$ has the right marginals $(\mu,\nu)$ even though it is not concentrated on the graph of any function. Replacing "graphs of maps" by "couplings on $\mathbb R^d\times\mathbb R^d$" is precisely what restores feasibility.</figcaption>
 </figure>
 
 ### 2.2 Kantorovich's formulation
@@ -2797,10 +2797,10 @@ for all bounded continuous test functions $\varphi,\psi$. We write $\pi\in\Pi(\m
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Plans generalise maps)</span></p>
 
-Every Monge-style transport map $T$ with $T_\#\mu=\nu$ induces a plan
+Every Monge-style transport map $T$ with $T_\sharp\mu=\nu$ induces a plan
 
 $$
-\pi_T := (\mathrm{id},T)_\\#\mu, \qquad\text{i.e.}\quad \int F(x,y)\,d\pi_T(x,y) = \int F(x,T(x))\,d\mu(x),
+\pi_T := (\mathrm{id},T)_\sharp\mu, \qquad\text{i.e.}\quad \int F(x,y)\,d\pi_T(x,y) = \int F(x,T(x))\,d\mu(x),
 $$
 
 which is concentrated on the **graph** $\{(x,T(x))\}\subset\mathbb R^d\times\mathbb R^d$. The marginals of $\pi_T$ are exactly $\mu$ and $\nu$, so $\pi_T\in\Pi(\mu,\nu)$. In this sense the Kantorovich problem **contains** Monge's problem: the feasible set is enlarged from "graphs of maps" to "all couplings".
@@ -2811,7 +2811,7 @@ The enlargement is strict whenever splitting is needed (e.g. $\mu=\delta_0$, $\n
 
 <figure>
   <img src="{{ '/assets/images/notes/books/pdeds/ot_kantorovich_plan_marginals.png' | relative_url }}" alt="Two-panel joint-space figure with shared marginals on the axes. Left panel shows a Monge plan supported on the graph y = T(x): a thin diagonal-like curve in the (x,y)-plane, coloured by the mu-density along it, with the source marginal mu (blue) on the top strip and the target marginal nu (red) on the right strip. Right panel shows a more diffuse Kantorovich coupling: a 2D pink-purple cloud spread across two diagonal branches, with the same blue mu marginal on top and red nu marginal on the right, illustrating that many distinct couplings share the same prescribed marginals" loading="lazy">
-  <figcaption>Couplings live on the product space, with prescribed marginals. <strong>Left.</strong> The Monge plan $\pi=(\mathrm{id},T)_\#\mu$ is concentrated on the *graph* $\{(x,T(x))\}\subset\mathbb R\times\mathbb R$ (a singular measure on a 1-dimensional curve); the colour intensity along the graph is the source density $\mu$. <strong>Right.</strong> A non-deterministic coupling spreads mass over a 2D region while keeping the same marginal projections $\mu$ (top, blue) and $\nu$ (right, red). Both are valid elements of $\Pi(\mu,\nu)$; the Kantorovich relaxation enlarges the feasible set from "1D curves" to "all positive measures with the right marginals", which is why it is automatically convex and well-posed.</figcaption>
+  <figcaption>Couplings live on the product space, with prescribed marginals. <strong>Left.</strong> The Monge plan $\pi=(\mathrm{id},T)_{\sharp}\mu$ is concentrated on the *graph* $\{(x,T(x))\}\subset\mathbb R\times\mathbb R$ (a singular measure on a 1-dimensional curve); the colour intensity along the graph is the source density $\mu$. <strong>Right.</strong> A non-deterministic coupling spreads mass over a 2D region while keeping the same marginal projections $\mu$ (top, blue) and $\nu$ (right, red). Both are valid elements of $\Pi(\mu,\nu)$; the Kantorovich relaxation enlarges the feasible set from "1D curves" to "all positive measures with the right marginals", which is why it is automatically convex and well-posed.</figcaption>
 </figure>
 
 <div class="math-callout math-callout--definition" markdown="1">

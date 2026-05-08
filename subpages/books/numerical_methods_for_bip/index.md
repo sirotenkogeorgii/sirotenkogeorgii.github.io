@@ -20,11 +20,11 @@ tags:
   }
 </style>
 
+# Numerical Methods for Bayesian Inverse Problems
+
 **Table of Contents**
 - TOC
 {:toc}
-
-# Numerical Methods for Bayesian Inverse Problems
 
 ## Chapter 1: Introduction
 
@@ -473,9 +473,9 @@ An element $x \in X$ is called
 
 $$\lVert Ax - y \rVert_Y = \min_{z \in X} \lVert Az - y \rVert_Y,$$
 
-* **minimum-norm** (or $(X,Y)$-best approximate) **solution** of $Ax = y$, if $x$ is least-squares solution and
-
-$$\lVert x \rVert_X = \min \lbrace \lVert z \rVert_X : z \text{ is least squares solution of } Az = y \rbrace.$$
+* **minimum-norm** (or $(X,Y)$-best approximate) **solution** of $Ax = y$, if 
+  * $x$ is least-squares solution and
+  * $\lVert x \rVert_X = \min \lbrace \lVert z \rVert_X : z \text{ is least squares solution of } Az = y \rbrace.$
 
 </div>
 
@@ -498,10 +498,10 @@ $$\mathcal{N}(A^\dagger) = \mathcal{R}(A)^\perp.$$
 
 </div>
 
-<figure>
+<!-- <figure>
   <img src="{{ '/assets/images/notes/books/numerical_methods_for_bip/pseudo_four_subspaces.png' | relative_url }}" alt="Decomposition X = N(A)^perp + N(A) and Y = R(A) + R(A)^perp; the restriction Ã: N(A)^perp → R(A) is a bijection inverted by A†, which is zero on R(A)^perp" loading="lazy">
-  <figcaption>The geometry behind Definition 2.2.2 (rank-1 example $A=\begin{pmatrix}1&1\\\\0&0\end{pmatrix}$). Every $x \in X$ splits as $x = x_\perp + x_N$ with $x_\perp \in \mathcal{N}(A)^\perp$ and $x_N \in \mathcal{N}(A)$, and every $y \in Y$ splits along $\mathcal{R}(A) \oplus \mathcal{R}(A)^\perp$. The restriction $\tilde{A} : \mathcal{N}(A)^\perp \to \mathcal{R}(A)$ is bijective; $A^\dagger$ extends $\tilde{A}^{-1}$ by zero on $\mathcal{R}(A)^\perp$.</figcaption>
-</figure>
+  <figcaption>The geometry behind Definition 2.2.2 (rank-1 example $A=\begin{pmatrix}1&1\\0&0\end{pmatrix}$). Every $x \in X$ splits as $x = x_\perp + x_N$ with $x_\perp \in \mathcal{N}(A)^\perp$ and $x_N \in \mathcal{N}(A)$, and every $y \in Y$ splits along $\mathcal{R}(A) \oplus \mathcal{R}(A)^\perp$. The restriction $\tilde{A} : \mathcal{N}(A)^\perp \to \mathcal{R}(A)$ is bijective; $A^\dagger$ extends $\tilde{A}^{-1}$ by zero on $\mathcal{R}(A)^\perp$.</figcaption>
+</figure> -->
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Moore-Penrose Equations)</span></p>
@@ -2197,7 +2197,7 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space and $X : \Omega \
 
 1. $\omega \mapsto \kappa_{X\mid\mathcal{F}}(\omega, B)$ is $\mathcal{F}$-measurable for each $B \in \mathcal{B}(V)$,
 2. $B \mapsto \kappa_{X\mid\mathcal{F}}(\omega, B)$ is a probability measure on $(V, \mathcal{B}(V))$ for each $\omega \in \Omega$,
-3. for every $B \in \mathcal{B}(V)$ holds $\kappa_{X\mid\mathcal{F}}(\omega, B) = \mathbb{P}[X \in B\mid\mathcal{F}](\omega)$ $\mathbb{P}$-a.e., or equivalently
+3. for every $B \in \mathcal{B}(V)$ holds $\kappa_{X\mid\mathcal{F}}(\omega, B) = \mathbb{P}[X \in B\mid\mathcal{F}] (\omega)$ $\mathbb{P}$-a.e., or equivalently
 
 $$\mathbb{P}[A \cap [X \in B]] = \int_\Omega \kappa_{X|\mathcal{F}}(\omega, B) \mathbb{1}_A(\omega) \, \mathrm{d}\mathbb{P}(\omega) \qquad \forall A \in \mathcal{F},\ B \in \mathcal{B}(V),$$
 
@@ -4020,8 +4020,9 @@ with iid samples $S_j \sim \eta$. This optimization problem is in general noncon
 
 **Input:** $f_\eta$, $\pi_{X,Y}$, $n$
 
-$$\tilde{T} \leftarrow \operatorname{argmin}_{T \in \mathcal{T}} \mathbb{E}_{x \sim \eta}[\log(f_\eta) - \log(\pi_{X,Y}(T(x), y)) - \log(\det \mathrm{d}T(x))]$
-$S_j \sim \eta$ iid for $j = 1, \ldots, n$$
+$$\tilde{T} \leftarrow \operatorname{argmin}_{T \in \mathcal{T}} \mathbb{E}_{x \sim \eta}[\log(f_\eta) - \log(\pi_{X,Y}(T(x), y)) - \log(\det \mathrm{d}T(x))]$$
+
+$S_j \sim \eta$ iid for $j = 1, \ldots, n$
 
 **return** $\frac{1}{n} \sum_{j=1}^{n} \tilde{T}(S_j)$
 
