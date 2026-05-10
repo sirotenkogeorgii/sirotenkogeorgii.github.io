@@ -41,3 +41,5 @@ date: 2024-10-20
 - [Calculus of Variations (Fomin)](/subpages/books/calculus_of_variations_fomin/)
 - [ARCA HD](/subpages/books/algorithmic_randomness_computable_analysis/)
 - [Brezis](/subpages/books/brezis_funcan_sobolev_pde/)
+- [The Variational Principles of Mechanics](/subpages/books/the_variational_principles_of_mechanics/)
+- [Lecture notes on variational methods based on John Ball's MIGSAA 2019 course](/subpages/books/variational_methods/lectures_paper/)
