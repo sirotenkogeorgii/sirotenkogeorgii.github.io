@@ -64,7 +64,7 @@ If $1 \le p < \infty$ then the dual space $L^p(E)^\ast$ (the Banach space of all
 
 $$\langle T, u \rangle = \int_E u \varphi \, dx \quad \text{for all } u \in L^p(E),$$
 
-and the mapping $T \mapsto \varphi_T$ is an isometric isomorphism of $L^p(E)^\ast$ onto $L^{p'}(E)$ (i.e. it is 1-1, onto and $\|T\|_{L^p(E)^\ast} = \|\varphi_T\|_{L^{p'}(E)}$). From this it follows easily that if $1 < p < \infty$ then $L^p(E)$ is **reflexive**.
+and the mapping $T \mapsto \varphi_T$ is an isometric isomorphism of $L^p(E)^\ast$ onto $L^{p'}(E)$ (i.e. it is 1-1, onto and $\|T\|\_{L^p(E)^\ast} = \|\varphi_T\|\_{L^{p'}(E)}$). From this it follows easily that if $1 < p < \infty$ then $L^p(E)$ is **reflexive**.
 
 If $1 \le p < \infty$ then $L^p(\Omega)$ is **separable** (that is, contains a countable dense subset). But if $\mathcal{L}^n(E) > 0$ then $L^\infty(E)$ is not separable.
 
@@ -90,11 +90,11 @@ $$\varphi(x) = \begin{cases} \exp\left(\frac{1}{|x|^2 - 1}\right) & \text{if } |
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Mollifier)</span></p>
 
-Let $\rho \in C_0^\infty(\mathbb{R}^n)$ satisfy $\rho \ge 0$, $\rho(x) = 0$ if $|x| \ge 1$, and $\int_{\mathbb{R}^n} \rho \, dx = 1$. For $\varepsilon > 0$ define
+Let $\rho \in C_0^\infty(\mathbb{R}^n)$ satisfy $\rho \ge 0$, $\rho(x) = 0$ if $\|x\| \ge 1$, and $\int_{\mathbb{R}^n} \rho \, dx = 1$. For $\varepsilon > 0$ define
 
 $$\rho_\varepsilon(x) = \varepsilon^{-n} \rho\!\left(\frac{x}{\varepsilon}\right).$$
 
-The function $\rho_\varepsilon$ is called a **mollifier**. It satisfies $\rho_\varepsilon \ge 0$, $\rho_\varepsilon(x) = 0$ if $|x| \ge \varepsilon$, and $\int_{\mathbb{R}^n} \rho_\varepsilon(x) \, dx = 1$, so that $\rho_\varepsilon$ approximates the delta function as $\varepsilon \to 0$.
+The function $\rho_\varepsilon$ is called a **mollifier**. It satisfies $\rho_\varepsilon \ge 0$, $\rho_\varepsilon(x) = 0$ if $\|x\| \ge \varepsilon$, and $\int_{\mathbb{R}^n} \rho_\varepsilon(x) \, dx = 1$, so that $\rho_\varepsilon$ approximates the delta function as $\varepsilon \to 0$.
 
 The **convolution** with $u$ is defined as
 
@@ -264,7 +264,7 @@ It is convenient to have a compact notation for expressing mixed partial derivat
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Multi-Index)</span></p>
 
-A **multi-index** $\alpha$ is an $n$-tuple $\alpha = (\alpha_1, \ldots, \alpha_n)$ of nonnegative integers $\alpha_i$, and we write $|\alpha| = \alpha_1 + \cdots + \alpha_n$.
+A **multi-index** $\alpha$ is an $n$-tuple $\alpha = (\alpha_1, \ldots, \alpha_n)$ of nonnegative integers $\alpha_i$, and we write $\|\alpha\| = \alpha_1 + \cdots + \alpha_n$.
 
 Let $\Omega \subset \mathbb{R}^n$ be open and $u : \Omega \to \mathbb{R}$ be smooth. Then we define
 
@@ -282,14 +282,14 @@ Let $\Omega \subset \mathbb{R}^n$ be open with boundary $\partial\Omega$, and le
 
 $$\int_\Omega v \frac{\partial \varphi}{\partial x_j} \, dx = -\int_\Omega \frac{\partial v}{\partial x_j} \varphi \, dx.$$
 
-This can be thought of as the formula for **integration by parts** in $n$ dimensions. More generally, if $\alpha = (\alpha_1, \ldots, \alpha_n)$ is a multi-index and $u \in C^{|\alpha|}(\Omega)$, applying the above $\alpha_j$ times for each $j$ we deduce
+This can be thought of as the formula for **integration by parts** in $n$ dimensions. More generally, if $\alpha = (\alpha_1, \ldots, \alpha_n)$ is a multi-index and $u \in C^{\|\alpha\|}(\Omega)$, applying the above $\alpha_j$ times for each $j$ we deduce
 
 $$\int_\Omega u D^\alpha \varphi \, dx = (-1)^{|\alpha|} \int_\Omega D^\alpha u \cdot \varphi \, dx.$$
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Weak Derivative)</span></p>
 
-Define $L^1_{\mathrm{loc}}(\Omega) = \lbrace u : \Omega \to \mathbb{R} : u|_E \in L^1(E) \text{ for all bounded open } E \text{ with } \bar{E} \subset \Omega \rbrace$.
+Define $L^1_{\mathrm{loc}}(\Omega) = \lbrace u : \Omega \to \mathbb{R} : u\|\_E \in L^1(E) \text{ for all bounded open } E \text{ with } \bar{E} \subset \Omega \rbrace$.
 
 Let $u \in L^1_{\mathrm{loc}}(\Omega)$ and $\alpha$ be a multi-index. A function $v \in L^1_{\mathrm{loc}}(\Omega)$ is said to be an **$\alpha^{\text{th}}$ weak derivative** of $u$ if
 
@@ -328,7 +328,7 @@ for all $x \in E$. But $\rho_\varepsilon \ast w \to w$ in $L^1(E)$ as $\varepsil
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Sobolev Space)</span></p>
 
-Let $m$ be a non-negative integer and let $1 \le p \le \infty$. The **Sobolev space** $W^{m,p}(\Omega)$ is the linear space of functions $u \in L^p(\Omega)$ such that for each $\alpha$, $0 \le |\alpha| \le m$, the weak derivative $D^\alpha u$ exists and belongs to $L^p(\Omega)$. We norm $W^{m,p}(\Omega)$ by
+Let $m$ be a non-negative integer and let $1 \le p \le \infty$. The **Sobolev space** $W^{m,p}(\Omega)$ is the linear space of functions $u \in L^p(\Omega)$ such that for each $\alpha$, $0 \le \|\alpha\| \le m$, the weak derivative $D^\alpha u$ exists and belongs to $L^p(\Omega)$. We norm $W^{m,p}(\Omega)$ by
 
 $$\|u\|_{m,p} = \begin{cases} \left( \sum_{0 \le |\alpha| \le m} \|D^\alpha u\|_p^p \right)^{1/p} & \text{if } 1 \le p < \infty \\ \max_{0 \le |\alpha| \le m} \|D^\alpha u\|_\infty & \text{if } p = \infty. \end{cases}$$
 
@@ -377,7 +377,7 @@ $W^{m,p}(\Omega)$ is separable if $1 \le p < \infty$ and is reflexive if $1 < p 
 
 #### 1.7.1 Smooth Functions
 
-Let $u \in C^m(\Omega)$ with $\|u\|_{m,p} < \infty$. Then by the integration by parts formula the weak derivatives $D^\alpha u$ for $0 \le |\alpha| \le m$ equal the usual ones, and hence $u \in W^{m,p}(\Omega)$. In particular, if $\Omega$ is bounded and $u \in C^\infty(\mathbb{R}^n)$ then $u|_\Omega \in W^{m,p}(\Omega)$ for all $m, p$.
+Let $u \in C^m(\Omega)$ with $\|u\|_{m,p} < \infty$. Then by the integration by parts formula the weak derivatives $D^\alpha u$ for $0 \le \|\alpha\| \le m$ equal the usual ones, and hence $u \in W^{m,p}(\Omega)$. In particular, if $\Omega$ is bounded and $u \in C^\infty(\mathbb{R}^n)$ then $u|_\Omega \in W^{m,p}(\Omega)$ for all $m, p$.
 
 #### 1.7.2 Piecewise Affine Functions
 
@@ -432,9 +432,9 @@ so that $\int_{-1}^1 H \frac{d\varphi}{dx} \, dx = \int_0^1 \frac{d\varphi}{dx} 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">($\ln|x|$ on the Unit Ball)</span></p>
 
-Let $n > 1$, $B = \lbrace x \in \mathbb{R}^n : |x| < 1 \rbrace$. For $x \ne 0$ define $u(x) = \ln r$, $r = |x|$. We show that $u \in W^{1,p}(B)$ if and only if $1 \le p < n$.
+Let $n > 1$, $B = \lbrace x \in \mathbb{R}^n : \|x\| < 1 \rbrace$. For $x \ne 0$ define $u(x) = \ln r$, $r = \|x\|$. We show that $u \in W^{1,p}(B)$ if and only if $1 \le p < n$.
 
-**Formal calculation.** For $r > 0$, $u$ is smooth and $\frac{\partial u}{\partial x_i} = \frac{1}{r} \frac{\partial r}{\partial x_i} = \frac{x_i}{r^2}$. Hence $|\nabla u|^2 = \frac{1}{r^2}$ and so
+**Formal calculation.** For $r > 0$, $u$ is smooth and $\frac{\partial u}{\partial x_i} = \frac{1}{r} \frac{\partial r}{\partial x_i} = \frac{x_i}{r^2}$. Hence $\|\nabla u\|^2 = \frac{1}{r^2}$ and so
 
 $$\int_B (|u|^p + |\nabla u|^p) \, dx = \omega_{n-1} \int_0^1 r^{n-1}(|\log r|^p + r^{-p}) \, dr,$$
 
@@ -449,7 +449,7 @@ The weak derivatives are $\frac{\partial u}{\partial x_i} = \frac{x_i}{r^2}$, wh
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mollification in Sobolev Spaces)</span></p>
 
-Let $u \in W^{m,p}(\Omega)$. Let $E \subset \Omega$ be open with $\varepsilon_0 := \mathrm{dist}(E, \partial\Omega) > 0$. Let $\rho_\varepsilon$ be a mollifier. Then if $0 < \varepsilon \le \varepsilon_0$ the mollified function $(\rho_\varepsilon \ast u)(x) = \int_\Omega \rho_\varepsilon(x - y) u(y) \, dy$ is well-defined for all $x \in E$. If $|\alpha| \le m$ then for $x \in E$
+Let $u \in W^{m,p}(\Omega)$. Let $E \subset \Omega$ be open with $\varepsilon_0 := \mathrm{dist}(E, \partial\Omega) > 0$. Let $\rho_\varepsilon$ be a mollifier. Then if $0 < \varepsilon \le \varepsilon_0$ the mollified function $(\rho_\varepsilon \ast u)(x) = \int_\Omega \rho_\varepsilon(x - y) u(y) \, dy$ is well-defined for all $x \in E$. If $\|\alpha\| \le m$ then for $x \in E$
 
 $$D^\alpha(\rho_\varepsilon \ast u)(x) = (\rho_\varepsilon \ast D^\alpha u)(x),$$
 
@@ -501,7 +501,7 @@ Let $\Omega$ have $C^0$ boundary, and let $1 \le p < \infty$. Then the set of re
 
 Let $\Omega \subset \mathbb{R}^n$ have Lipschitz boundary. How can we define the boundary values of a function $u \in W^{1,p}(\Omega)$? This is not a trivial matter even if $\partial\Omega$ is smooth, since (a) $u$ is in principle defined only in $\Omega$, (b) even if $u$ could be extended to a function $\tilde{u} \in W^{1,p}(\mathbb{R}^n)$ the values of $\tilde{u}$ on $\partial\Omega$ appear to have no meaning since $\mathcal{L}^n(\partial\Omega) = 0$ and $\tilde{u}$ may be altered at will on sets of $\mathcal{L}^n$ measure zero.
 
-If $\Omega$ has Lipschitz boundary we can define $L^p(\partial\Omega)$ as the space of (equivalence classes of) $\mathcal{H}^{n-1}$ measurable functions $u : \partial\Omega \to \mathbb{R}$ such that $\|u\|_{L^p(\partial\Omega)} < \infty$.
+If $\Omega$ has Lipschitz boundary we can define $L^p(\partial\Omega)$ as the space of (equivalence classes of) $\mathcal{H}^{n-1}$ measurable functions $u : \partial\Omega \to \mathbb{R}$ such that $\|u\|\_{L^p(\partial\Omega)} < \infty$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 13</span><span class="math-callout__name">(Trace Inequality)</span></p>
@@ -514,7 +514,7 @@ for all $u \in C^1(\bar{\Omega})$.
 
 </div>
 
-If $u \in W^{1,p}(\Omega)$ there exists a sequence $u^{(j)} \in C^1(\bar{\Omega})$ with $u^{(j)} \to u$ in $W^{1,p}(\Omega)$. Hence $u^{(j)}$ is a Cauchy sequence in $W^{1,p}(\Omega)$, and by the theorem is also a Cauchy sequence in $L^p(\partial\Omega)$. Hence $u^{(j)}|_{\partial\Omega} \to \operatorname{tr} u$ in $L^p(\partial\Omega)$ for some function $\operatorname{tr} u$, the **trace** of $u$ on $\partial\Omega$. The mapping $\operatorname{tr} : W^{1,p}(\Omega) \to L^p(\partial\Omega)$ is a bounded linear operator.
+If $u \in W^{1,p}(\Omega)$ there exists a sequence $u^{(j)} \in C^1(\bar{\Omega})$ with $u^{(j)} \to u$ in $W^{1,p}(\Omega)$. Hence $u^{(j)}$ is a Cauchy sequence in $W^{1,p}(\Omega)$, and by the theorem is also a Cauchy sequence in $L^p(\partial\Omega)$. Hence $u^{(j)}\|\_{\partial\Omega} \to \operatorname{tr} u$ in $L^p(\partial\Omega)$ for some function $\operatorname{tr} u$, the **trace** of $u$ on $\partial\Omega$. The mapping $\operatorname{tr} : W^{1,p}(\Omega) \to L^p(\partial\Omega)$ is a bounded linear operator.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">($W_0^{m,p}(\Omega)$)</span></p>
@@ -560,7 +560,7 @@ Let $\Omega \subset \mathbb{R}^n$ be bounded and open with Lipschitz boundary. T
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 1.3</span><span class="math-callout__name">(1D Sobolev Embedding)</span></p>
 
-Let $n = 1$, $-\infty < a < b < \infty$. Then $W^{1,1}(a,b)$ is continuously embedded in $C([a,b])$, i.e. each equivalence class $v$ of functions in $W^{1,1}(a,b)$ has a representative $\tau v \in C([a,b])$ and there is a constant $K > 0$ such that $\|\tau v\|_{C([a,b])} \le K \|v\|_{1,1}$.
+Let $n = 1$, $-\infty < a < b < \infty$. Then $W^{1,1}(a,b)$ is continuously embedded in $C([a,b])$, i.e. each equivalence class $v$ of functions in $W^{1,1}(a,b)$ has a representative $\tau v \in C([a,b])$ and there is a constant $K > 0$ such that $\|\tau v\|\_{C([a,b])} \le K \|v\|\_{1,1}$.
 
 Note that the argument also shows that the continuous representative of $v$ satisfies the fundamental theorem of calculus: $v(y) = v(x) + \int_x^y v'(t) \, dt$ for all $x, y \in [a,b]$, so that $v$ is absolutely continuous.
 
@@ -691,7 +691,7 @@ The minimum is not attained. Taking a minimizing sequence $u^{(j)}$ with slope $
 
 $$I(u) = \int_0^1 (|u_x| + (u - 1)^2) \, dx, \quad u(0) = 0, \, u(1) = 1.$$
 
-Then $I(u) \ge \left| \int_0^1 u_x \, dx \right| + \int_0^1 (u-1)^2 \, dx = 1 + \int_0^1 (u-1)^2 \, dx$. Taking $u^{(j)}$ as in Example 2.2, $I(u^{(j)}) = \int_0^{1/j} [j + (jx - 1)^2] \, dx \to 1$ as $j \to \infty$. Thus $\inf I = 1$ and is not attained.
+Then $I(u) \ge \left\| \int_0^1 u_x \, dx \right\| + \int_0^1 (u-1)^2 \, dx = 1 + \int_0^1 (u-1)^2 \, dx$. Taking $u^{(j)}$ as in Example 2.2, $I(u^{(j)}) = \int_0^{1/j} [j + (jx - 1)^2] \, dx \to 1$ as $j \to \infty$. Thus $\inf I = 1$ and is not attained.
 
 </div>
 
@@ -732,7 +732,7 @@ Let $f = f(x, u, p)$ be convex in $p$ for each $x, u$ and suppose that
 
 $$f(x, u, p) \ge \Phi(p) \quad \text{for all } x, u$$
 
-for some continuous $\Phi$ with $\frac{\Phi(p)}{|p|} \to \infty$ as $|p| \to \infty$. Let
+for some continuous $\Phi$ with $\frac{\Phi(p)}{\|p\|} \to \infty$ as $\|p\| \to \infty$. Let
 
 $$\mathcal{A} = \lbrace v \in W^{1,1}(a,b) : v(a) = \alpha,\, v(b) = \beta \rbrace$$
 
@@ -782,7 +782,7 @@ Thus $u$ is a weak (resp. strong) local minimizer if it is a local minimizer wit
 
 ### 2.3 Necessary Conditions for Local Minimizers
 
-We now assume for simplicity that $f = f(x, u, p)$ is $C^3$ in its arguments $x, u, p$. Let $u \in \mathcal{A} \cap W^{1,\infty}(a,b)$ be a weak local minimizer. If $\varphi \in C_0^\infty(a,b)$ then $I(u + \tau\varphi)$ has a local minimum at $\tau = 0$, so that $\frac{d}{d\tau} I(u + \tau\varphi)|_{\tau=0} = 0$, provided this derivative exists.
+We now assume for simplicity that $f = f(x, u, p)$ is $C^3$ in its arguments $x, u, p$. Let $u \in \mathcal{A} \cap W^{1,\infty}(a,b)$ be a weak local minimizer. If $\varphi \in C_0^\infty(a,b)$ then $I(u + \tau\varphi)$ has a local minimum at $\tau = 0$, so that $\frac{d}{d\tau} I(u + \tau\varphi)\|\_{\tau=0} = 0$, provided this derivative exists.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Euler–Lagrange Equations)</span></p>
@@ -803,7 +803,7 @@ $$\int_a^b [f_{uu} \varphi^2 + 2f_{up} \varphi \varphi_x + f_{pp} \varphi_x^2] \
 
 </div>
 
-Now let $u \in \mathcal{A} \cap W^{1,\infty}(a,b)$ be a **strong** local minimizer. For $\varphi \in C_0^\infty(a,b)$ and $|\tau|$ small enough there is a unique smooth increasing solution $z_\tau(x)$ to $z + \tau\varphi(z) = x$ for $x \in [a,b]$. Define the **inner variation** $u_\tau(x) = u(z_\tau(x))$, which rearranges the values of $u$.
+Now let $u \in \mathcal{A} \cap W^{1,\infty}(a,b)$ be a **strong** local minimizer. For $\varphi \in C_0^\infty(a,b)$ and $\|\tau\|$ small enough there is a unique smooth increasing solution $z_\tau(x)$ to $z + \tau\varphi(z) = x$ for $x \in [a,b]$. Define the **inner variation** $u_\tau(x) = u(z_\tau(x))$, which rearranges the values of $u$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition</span><span class="math-callout__name">(Du Bois-Reymond Equation)</span></p>
@@ -840,7 +840,9 @@ That is, the tangent at $u_x(x)$ to the graph of $f(x, u(x), \cdot)$ does not li
 
 </div>
 
-This is derived by considering the localized variation $u_\varepsilon(x_0, x) = u(x) + \varepsilon \psi\!\left(\frac{x - x_0}{\varepsilon}\right)$ for $\psi \in W_0^{1,\infty}(-1,1)$, $\varphi \ge 0$, integrating and passing to the limit $\varepsilon \to 0$ to obtain (in 1D) quasiconvexity: $\int_{-1}^1 f(x, u(x), u_x(x) + \psi_y(y)) \, dy \ge \int_{-1}^1 f(x, u(x), u_x(x)) \, dy$.
+This is derived by considering the localized variation $u_\varepsilon(x_0, x) = u(x) + \varepsilon \psi\!\left(\frac{x - x_0}{\varepsilon}\right)$ for $\psi \in W_0^{1,\infty}(-1,1)$, $\varphi \ge 0$, integrating and passing to the limit $\varepsilon \to 0$ to obtain (in 1D) quasiconvexity: 
+
+$$\int_{-1}^1 f(x, u(x), u_x(x) + \psi_y(y)) \, dy \ge \int_{-1}^1 f(x, u(x), u_x(x)) \, dy$$
 
 ### 2.4 Sufficient Conditions for Local Minimizers
 
@@ -890,7 +892,7 @@ We say that $u \in \mathcal{A} \cap C^1([a,b])$ satisfies the **strengthened Wei
 
 $$f(x, v, p) \ge f(x, v, q) + (p - q) f_p(x, v, q)$$
 
-whenever $|v - u(x)| < \delta$, $|q - u_x(x)| < \delta$.
+whenever $\|v - u(x)\| < \delta$, $\|q - u_x(x)\| < \delta$.
 
 </div>
 
@@ -920,7 +922,11 @@ where $p(x,v)$ is the slope function of the field. Thus $I(v) \ge I(u)$ by the s
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Null Lagrangians)</span></p>
 
-The key computation in the proof of Theorem 25 can be interpreted as showing that $L(x, v, v_x) = f(x, v, p(x,v)) + f_p(x, v, p(x,v))(v_x - p(x,v))$ is a **null Lagrangian**, i.e. the corresponding Euler–Lagrange equation reduces to $0 = 0$.
+The key computation in the proof of Theorem 25 can be interpreted as showing that
+
+$$L(x, v, v_x) = f(x, v, p(x,v)) + f_p(x, v, p(x,v))(v_x - p(x,v))$$
+
+is a **null Lagrangian**, i.e. the corresponding Euler–Lagrange equation reduces to $0 = 0$.
 
 </div>
 
@@ -963,7 +969,7 @@ $$I(u) = \int_{-1}^1 [(u^5 - x^3)^2 u_x^{20} + \varepsilon u_x^2] \, dx,$$
 
 where $\varepsilon > 0$ is sufficiently small, and $\mathcal{A} = \lbrace v \in W^{1,1}(-1,1) : v(-1) = -1, v(1) = 1 \rbrace$. Note that $f(x, u, p) = (u^5 - x^3)^2 p^{20} + \varepsilon p^2$ is a polynomial with $f_{pp} \ge 2\varepsilon > 0$, and that $f$ has superlinear growth in $p$, so that $f$ satisfies the hypotheses of Theorem 23. Hence there exists an absolute minimizer $u^\ast$.
 
-We claim that if $u \in \mathcal{A} \cap W^{1,\infty}(-1,1)$ then $I(u) \ge \frac{2^{14}}{3^{20}}$. But choosing $u = |x|^{3/5} \operatorname{sign} x$ we have $\inf_{\mathcal{A}} I \le 2\varepsilon \cdot \frac{9}{5}$. Hence if $\varepsilon < \varepsilon_0 := \frac{5}{18} \cdot \frac{2^{14}}{3^{20}}$ we have
+We claim that if $u \in \mathcal{A} \cap W^{1,\infty}(-1,1)$ then $I(u) \ge \frac{2^{14}}{3^{20}}$. But choosing $u = \|x\|^{3/5} \operatorname{sign} x$ we have $\inf_{\mathcal{A}} I \le 2\varepsilon \cdot \frac{9}{5}$. Hence if $\varepsilon < \varepsilon_0 := \frac{5}{18} \cdot \frac{2^{14}}{3^{20}}$ we have
 
 $$\inf_{\mathcal{A} \cap W^{1,\infty}} I > \inf_{\mathcal{A}} I \quad !!!$$
 
@@ -974,7 +980,7 @@ This is the **Lavrentiev phenomenon**: the infimum can be different in different
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Properties of the Lavrentiev Minimizer)</span></p>
 
-The global minimizer $u^\ast$ satisfies $u^\ast(0) = 0$ and $f_p(x, u^\ast, u_x^\ast)$ is unbounded in the neighbourhood of $x = 0$. In particular (IEL) **does not hold**. Indeed if $u^\ast(0) \ne 0$ we get $I(u^\ast) \ge \frac{2^{14}}{3^{20}} > I(u^\ast)$, a contradiction. Hence $u_x^\ast$ is unbounded near 0 and so is $|f_p| = |20(u^5 - x^3)^2 u_x^{\ast 19} + 2\varepsilon u_x^\ast| \ge 2\varepsilon |u_x^\ast|$.
+The global minimizer $u^\ast$ satisfies $u^\ast(0) = 0$ and $f_p(x, u^\ast, u_x^\ast)$ is unbounded in the neighbourhood of $x = 0$. In particular (IEL) **does not hold**. Indeed if $u^\ast(0) \ne 0$ we get $I(u^\ast) \ge \frac{2^{14}}{3^{20}} > I(u^\ast)$, a contradiction. Hence $u_x^\ast$ is unbounded near 0 and so is $\|f_p\| = \|20(u^5 - x^3)^2 u_x^{\ast 19} + 2\varepsilon u_x^\ast\| \ge 2\varepsilon \|u_x^\ast\|$.
 
 </div>
 
@@ -985,7 +991,7 @@ Let $f$ be $C^3$ with $f_{pp} > 0$. If $u \in \mathcal{A}$ is a strong local min
 
 $$u'(x) := \lim_{h \to 0} \frac{u(x+h) - u(x)}{h}$$
 
-exists for all $x \in [a,b]$ as an element of $\bar{\mathbb{R}}$ (one-sided limits if $x = a$ or $x = b$), and $u' : [a,b] \to \bar{\mathbb{R}}$ is continuous with $E = \lbrace x \in [a,b] : |u'(x)| = \infty \rbrace$.
+exists for all $x \in [a,b]$ as an element of $\bar{\mathbb{R}}$ (one-sided limits if $x = a$ or $x = b$), and $u' : [a,b] \to \bar{\mathbb{R}}$ is continuous with $E = \lbrace x \in [a,b] : \|u'(x)\| = \infty \rbrace$.
 
 </div>
 
