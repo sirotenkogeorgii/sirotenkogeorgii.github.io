@@ -64,7 +64,7 @@ For every matrix $A \in \mathbb{R}^{n \times n}$ there exists an orthogonal $Q \
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Schur Decomposition, Real Variant II)</span></p>
 
-For every matrix $A \in \mathbb{R}^{n \times n}$ there exists a regular $S \in \mathbb{R}^{n \times n}$ and a block upper triangular $T \in \mathbb{R}^{n \times n}$ such that $A = STS^{-1}$. The blocks of $T$ are of size $1$ or $2$, where blocks of size $2$ have the form $\begin{pmatrix} a & b \\ -b & a \end{pmatrix}$ and contain complex conjugate eigenvalues $a \pm ib$.
+For every matrix $A \in \mathbb{R}^{n \times n}$ there exists a regular $S \in \mathbb{R}^{n \times n}$ and a block upper triangular $T \in \mathbb{R}^{n \times n}$ such that $A = STS^{-1}$. The blocks of $T$ are of size $1$ or $2$, where blocks of size $2$ have the form $\begin{pmatrix} a & b \\\ -b & a \end{pmatrix}$ and contain complex conjugate eigenvalues $a \pm ib$.
 
 </div>
 
@@ -218,11 +218,14 @@ and orthogonal matrices $U \in \mathbb{R}^{m \times m}$, $V \in \mathbb{R}^{n \t
 
 $$A = U \Sigma V^\top$$
 
-</div>
-
 The diagonal entries $\sigma_1, \ldots, \sigma_q$ of $\Sigma$ are called the **singular values** of $A$, denoted $\sigma_1, \ldots, \sigma_q$. The number of positive singular values equals $r = \operatorname{rank}(A)$, where $\sigma_r > 0$ and $\sigma_{r+1} = 0$.
 
-The **reduced form** of the SVD: Decompose $U = (U_1 \mid U_2)$, $V = (V_1 \mid V_2)$, and $S \coloneqq \operatorname{diag}(\sigma_1, \ldots, \sigma_r)$. Then
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span>(Reduced form of SVD)</p>
+
+The **reduced form of the SVD**: Decompose $U = (U_1 \mid U_2)$, $V = (V_1 \mid V_2)$, and $S \coloneqq \operatorname{diag}(\sigma_1, \ldots, \sigma_r)$. Then
 
 $$
 A = U \Sigma V^\top = \begin{pmatrix} U_1 & U_2 \end{pmatrix} \begin{pmatrix} S & 0 \\ 0 & 0 \end{pmatrix} \begin{pmatrix} V_1^\top \\ V_2^\top \end{pmatrix} = U_1 S V_1^\top.
@@ -230,12 +233,14 @@ $$
 
 The reduced SVD uses only a portion of the full SVD but contains the essential information, since the full SVD can be reconstructed by completing $U$, $V$ to orthogonal matrices.
 
+</div>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Relationship Between Singular Values and Eigenvalues I)</span></p>
 
 Let $A \in \mathbb{R}^{m \times n}$, $r = \operatorname{rank}(A)$, and let $A^\top A$ have eigenvalues 
 
-$\lambda_1 \geq \ldots \geq \lambda_n$
+$$\lambda_1 \geq \ldots \geq \lambda_n$$
 
 Then the positive singular values of $A$ are 
 
@@ -344,13 +349,13 @@ are $\sigma_1, \ldots, \sigma_r, -\sigma_r, \ldots, -\sigma_1$.
 <details markdown="1">
 <summary>Proof</summary>
 
-**"$\Leftarrow$":** Let $\lambda$ be an eigenvalue and $(y^\top, x^\top)^\top$ the corresponding eigenvector of $\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix}$, i.e.,
+**"$\Leftarrow$":** Let $\lambda$ be an eigenvalue and $(y^\top, x^\top)^\top$ the corresponding eigenvector of $\begin{pmatrix} 0 & A \\\ A^\top & 0 \end{pmatrix}$, i.e.,
 
 $$
 \begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix} \begin{pmatrix} y \\ x \end{pmatrix} = \lambda \begin{pmatrix} y \\ x \end{pmatrix}.
 $$
 
-This gives two equations: $A^\top y = \lambda x$ and $Ax = \lambda y$. Thus $A^\top A x = A^\top(\lambda y) = \lambda^2 x$. By Theorem 3.2, $\sigma \coloneqq \sqrt{\lambda^2} = |\lambda|$ is a singular value of $A$.
+This gives two equations: $A^\top y = \lambda x$ and $Ax = \lambda y$. Thus $A^\top A x = A^\top(\lambda y) = \lambda^2 x$. By Theorem 3.2, $\sigma \coloneqq \sqrt{\lambda^2} = \|\lambda\|$ is a singular value of $A$.
 
 **"$\Rightarrow$":** Let $\sigma$ be a singular value of $A$. By Theorem 3.2, $A^\top A x = \sigma^2 x$ for some $x \neq 0$. Set $y \coloneqq \frac{1}{\sigma} Ax$. Then $Ax = \sigma y$ and $A^\top y = \sigma x$, so
 
@@ -393,7 +398,7 @@ $$
 <details markdown="1">
 <summary>Proof</summary>
 
-Applying the Rayleigh--Ritz theorem to the matrix $\begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix}$:
+Applying the Rayleigh--Ritz theorem to the matrix $\begin{pmatrix} 0 & A \\\ A^\top & 0 \end{pmatrix}$:
 
 $$
 \sigma_1(A) = \max_{\lVert(x,y)\rVert_2 = 1} \begin{pmatrix} x^\top & y^\top \end{pmatrix} \begin{pmatrix} 0 & A \\ A^\top & 0 \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = 2 \max_{\lVert(x,y)\rVert_2 = 1} x^\top A y.
@@ -454,7 +459,10 @@ Let $A = U\Sigma V^\top = U_1 S V_1^\top$ be the SVD of $A \in \mathbb{R}^{m \ti
 <details markdown="1">
 <summary>Proof</summary>
 
-1. By Theorem 3.11, $\mathcal{S}(A) = \mathcal{S}(U_1)$. The columns of $U_1$ are linearly independent, so the projection matrix has the well-known form $U_1(U_1^\top U_1)^{-1} U_1^\top = U_1 (I_r)^{-1} U_1^\top = U_1 U_1^\top$.
+1. By Theorem 3.11, $\mathcal{S}(A) = \mathcal{S}(U_1)$. The columns of $U_1$ are linearly independent, so the projection matrix has the well-known form 
+   
+   $$U_1(U_1^\top U_1)^{-1} U_1^\top = U_1 U_1^\top$$
+   
 2. Follows from $\mathcal{R}(A) = \mathcal{S}(A^\top)$.
 
 </details>
@@ -468,7 +476,7 @@ The ratio $\frac{\sigma_1}{\sigma_n} \geq 1$ is called the **condition number** 
 
 #### SVD and Numerical Rank
 
-The rank of $A$ equals the number of positive singular values. However, for computational purposes, very small positive numbers are treated as effectively zero. Given $\varepsilon > 0$, the **numerical rank** of $A$ is $\max\lbrace s \colon \sigma_s > \varepsilon \rbrace$, counting singular values larger than $\varepsilon$ while treating the rest as zero. For example, **Matlab** / **Octave** use $\varepsilon \coloneqq \max\lbrace m, n \rbrace \cdot \sigma_1 \cdot eps$, where $eps \approx 2 \cdot 10^{-16}$ is the machine precision.
+**The rank of $A$ equals the number of positive singular values.** However, for computational purposes, very small positive numbers are treated as effectively zero. Given $\varepsilon > 0$, the **numerical rank** of $A$ is $\max\lbrace s \colon \sigma_s > \varepsilon \rbrace$, counting singular values larger than $\varepsilon$ while treating the rest as zero. For example, **Matlab** / **Octave** use $\varepsilon \coloneqq \max\lbrace m, n \rbrace \cdot \sigma_1 \cdot eps$, where $eps \approx 2 \cdot 10^{-16}$ is the machine precision.
 
 #### SVD and Low-Rank Approximation
 

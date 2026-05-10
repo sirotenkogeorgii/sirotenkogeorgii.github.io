@@ -13,6 +13,10 @@ tags:
 
 These notes follow the lecture notes by John Ball (January 2019) for the MIGSAA course on variational methods.
 
+**Table of Contents**
+- TOC
+{:toc}
+
 ## 1. A User's Guide to Sobolev Spaces
 
 In order to give an unambiguous definition of what is meant by a solution of a system of partial differential equations, appropriate function spaces must be defined. The most important of these spaces for variational methods are the **Sobolev spaces**, based on the classical $L^p$ spaces of functions whose $p$-th powers are integrable.
@@ -127,11 +131,11 @@ $$\frac{\partial(h \ast u)}{\partial x_i}(x) = \int_{\mathbb{R}^n} \frac{\partia
 <details class="accordion" markdown="1">
 <summary>Proof of Lemma 2</summary>
 
-By definition $(h \ast u)(x_j) = \int_{\mathbb{R}^n} h(x_j - y) u(y) \, dy$. The integrand vanishes for all $j$ for $y$ outside some bounded set, and is bounded in absolute value by $\mathrm{const.} |u(y)|$. Hence by the dominated convergence theorem $(h \ast u)(x_j) \to (h \ast u)(x)$ and so $h \ast u$ is continuous. For $x \in \Omega$ and $|t| \le 1$:
+By definition $(h \ast u)(x_j) = \int_{\mathbb{R}^n} h(x_j - y) u(y) \, dy$. The integrand vanishes for all $j$ for $y$ outside some bounded set, and is bounded in absolute value by $\mathrm{const.} \|u(y)\|$. Hence by the dominated convergence theorem $(h \ast u)(x_j) \to (h \ast u)(x)$ and so $h \ast u$ is continuous. For $x \in \Omega$ and $\|t\| \le 1$:
 
 $$\frac{(h \ast v)(x + te_i) - (h \ast v)(x)}{t} = \int_{\mathbb{R}^n} \left( \frac{h(x + te_i - y) - h(x - y)}{t} \right) v(y) \, dy.$$
 
-Since $h \in C_0^\infty(\mathbb{R}^n)$ the integrand is bounded by $\mathrm{const.} |v(y)|$ and is zero for $y$ outside some bounded set. Hence by the dominated convergence theorem $\partial(h \ast v)/\partial x_i$ exists and is given by the formula above. By the first part of the argument applied to the kernel $\partial h / \partial x_i$ we see that each $\partial(h \ast v)/\partial x_i$ is continuous and so by a standard result $h \ast v$ is continuously differentiable.
+Since $h \in C_0^\infty(\mathbb{R}^n)$ the integrand is bounded by $\mathrm{const.} \|v(y)\|$ and is zero for $y$ outside some bounded set. Hence by the dominated convergence theorem $\partial(h \ast v)/\partial x_i$ exists and is given by the formula above. By the first part of the argument applied to the kernel $\partial h / \partial x_i$ we see that each $\partial(h \ast v)/\partial x_i$ is continuous and so by a standard result $h \ast v$ is continuously differentiable.
 
 </details>
 
@@ -152,7 +156,7 @@ $$\int_\Omega |\rho_\varepsilon \ast u|^p \, dx \le \int_{\mathbb{R}^n} |u(y)|^p
 
 $$\int_\Omega |(\rho_\varepsilon \ast w)(x) - w(x)|^p \, dx \le \kappa(\varepsilon)^p \mathcal{L}^n(N_\varepsilon),$$
 
-where $\kappa(\varepsilon) := \sup_{|x - y| < \varepsilon} |w(x) - w(y)|$ and $N_\varepsilon = \lbrace x \in \mathbb{R}^n : \mathrm{dist}(x, \operatorname{supp} w) \le \varepsilon \rbrace$, it follows that $\lim_{\varepsilon \to 0} \|\rho_\varepsilon \ast w - w\|_p = 0$. Since $\|\rho_\varepsilon \ast u - u\|_p \le \|\rho_\varepsilon \ast w - w\|_p + \|\rho_\varepsilon \ast (u - w) - (u - w)\|_p$, it follows from (ii) that $\lim_{\varepsilon \to 0} \|\rho_\varepsilon \ast u - u\|_p \le 2\tau$. Since $\tau$ is arbitrary this completes the proof.
+where $\kappa(\varepsilon) := \sup_{\|x - y\| < \varepsilon} \|w(x) - w(y)\|$ and $N_\varepsilon = \lbrace x \in \mathbb{R}^n : \mathrm{dist}(x, \operatorname{supp} w) \le \varepsilon \rbrace$, it follows that $\lim_{\varepsilon \to 0} \|\rho_\varepsilon \ast w - w\|\_p = 0$. Since $\|\rho_\varepsilon \ast u - u\|\_p \le \|\rho_\varepsilon \ast w - w\|\_p + \|\rho_\varepsilon \ast (u - w) - (u - w)\|\_p$, it follows from (ii) that $\lim_{\varepsilon \to 0} \|\rho_\varepsilon \ast u - u\|\_p \le 2\tau$. Since $\tau$ is arbitrary this completes the proof.
 
 </details>
 
@@ -199,11 +203,11 @@ We first calculate $\lim_{j \to \infty} \int_r^s \theta^{(j)} \, dx$ for $0 \le 
 
 $$\int_r^s \theta^{(j)}(x) \, dx = \int_r^s \theta(jx) \, dx = \frac{1}{j} \int_{jr}^{js} \theta(\tau) \, d\tau.$$
 
-The interval $(jr, js)$ contains $N_j$ integers, where $|N_j - (js - jr)| \le 1$. Since $\theta$ is 1-periodic and $\int_0^1 \theta(\tau) \, d\tau = c$ it follows that
+The interval $(jr, js)$ contains $N_j$ integers, where $\|N_j - (js - jr)\| \le 1$. Since $\theta$ is 1-periodic and $\int_0^1 \theta(\tau) \, d\tau = c$ it follows that
 
 $$\int_{jr}^{js} \theta(\tau) \, d\tau = (js - jr)c + \epsilon_j,$$
 
-where $|\epsilon_j| \le \mathrm{constant}$. Combining, $\lim_{j \to \infty} \int_r^s \theta^{(j)} \, dx = \int_r^s c \, dx$. This holds for any step function $\varphi$. But step functions are dense in $L^1(0,1)$; given any $\varphi \in L^1(0,1)$ there exists a sequence $\varphi^{(k)}$ of step functions converging strongly to $\varphi$ in $L^1(0,1)$. Hence
+where $\|\epsilon_j\| \le \mathrm{constant}$. Combining, $\lim_{j \to \infty} \int_r^s \theta^{(j)} \, dx = \int_r^s c \, dx$. This holds for any step function $\varphi$. But step functions are dense in $L^1(0,1)$; given any $\varphi \in L^1(0,1)$ there exists a sequence $\varphi^{(k)}$ of step functions converging strongly to $\varphi$ in $L^1(0,1)$. Hence
 
 $$\left| \int_0^1 \theta^{(j)} \varphi \, dx - \int_0^1 c\varphi \, dx \right| \le \left| \int_0^1 (\theta^{(j)} - c)\varphi^{(k)} \, dx \right| + K \|\varphi^{(k)} - \varphi\|_1,$$
 
@@ -223,7 +227,7 @@ Let $X$ be a separable Banach space, and let $T^{(j)}$ be a bounded sequence in 
 <details class="accordion" markdown="1">
 <summary>Proof of Theorem 4</summary>
 
-Let $\lbrace \psi_i \rbrace_{i=1}^\infty$ be a countable dense subset of $X$. Since $|\langle T^{(j)}, \psi_1 \rangle| \le M \|\psi_1\|$, the sequence $\langle T^{(j)}, \psi_1 \rangle$ of real numbers is bounded. Hence there exists a subsequence $T^{(n_1(j))}$ of $T^{(j)}$ such that $\lim_{j \to \infty} \langle T^{(n_1(j))}, \psi_1 \rangle$ exists. Similarly, the sequence $\langle T^{(n_1(j))}, \psi_2 \rangle$ is bounded, and so there exists a subsequence $T^{(n_2(j))}$ of $T^{(n_1(j))}$ such that $\lim_{j \to \infty} \langle T^{(n_2(j))}, \psi_2 \rangle$ exists. Proceeding in this way we obtain for each $i$ a subsequence $T^{(n_i(j))}$ of $T^{(n_{i-1}(j))}$ such that $\lim_{j \to \infty} \langle T^{(n_i(j))}, \psi_i \rangle$ exists. Consider the "diagonal sequence" $T^{(n_j(j))}$. Since $\lbrace T^{(n_j(j))} \rbrace_{j=i}^\infty$ is a subsequence of $\lbrace T^{(n_i(j))} \rbrace_{j=1}^\infty$ it follows that $\lim_{j \to \infty} \langle T^{(n_i(j))}, \psi_i \rangle$ exists for each $i$.
+Let $\lbrace \psi_i \rbrace_{i=1}^\infty$ be a countable dense subset of $X$. Since $\|\langle T^{(j)}, \psi_1 \rangle\| \le M \|\psi_1\|$, the sequence $\langle T^{(j)}, \psi_1 \rangle$ of real numbers is bounded. Hence there exists a subsequence $T^{(n_1(j))}$ of $T^{(j)}$ such that $\lim_{j \to \infty} \langle T^{(n_1(j))}, \psi_1 \rangle$ exists. Similarly, the sequence $\langle T^{(n_1(j))}, \psi_2 \rangle$ is bounded, and so there exists a subsequence $T^{(n_2(j))}$ of $T^{(n_1(j))}$ such that $\lim_{j \to \infty} \langle T^{(n_2(j))}, \psi_2 \rangle$ exists. Proceeding in this way we obtain for each $i$ a subsequence $T^{(n_i(j))}$ of $T^{(n_{i-1}(j))}$ such that $\lim_{j \to \infty} \langle T^{(n_i(j))}, \psi_i \rangle$ exists. Consider the "diagonal sequence" $T^{(n_j(j))}$. Since $\lbrace T^{(n_j(j))} \rbrace_{j=i}^\infty$ is a subsequence of $\lbrace T^{(n_i(j))} \rbrace_{j=1}^\infty$ it follows that $\lim_{j \to \infty} \langle T^{(n_i(j))}, \psi_i \rangle$ exists for each $i$.
 
 Now let $\psi \in X$ be arbitrary. Given $\varepsilon > 0$ there exists $I$ with $\|\psi - \psi_I\| \le \varepsilon / (2M)$. Then
 
@@ -233,7 +237,7 @@ and hence $\langle T^{(n_k(k))}, \psi \rangle$ is a Cauchy sequence, so that
 
 $$T(\psi) \overset{\text{def}}{=} \lim_{k \to \infty} \langle T^{(n_k(k))}, \psi \rangle$$
 
-exists. Clearly $T$ is linear in $\psi$, and since $|T(\psi)| \le M \|\psi\|$ it follows that $T \in X^\ast$. Thus $T^{(j_k)} \overset{\ast}{\rightharpoonup} T$ in $X^\ast$ with $j_k = n_k(k)$.
+exists. Clearly $T$ is linear in $\psi$, and since $\|T(\psi)\| \le M \|\psi\|$ it follows that $T \in X^\ast$. Thus $T^{(j_k)} \overset{\ast}{\rightharpoonup} T$ in $X^\ast$ with $j_k = n_k(k)$.
 
 </details>
 
@@ -291,7 +295,7 @@ $$\int_\Omega u D^\alpha \varphi \, dx = (-1)^{|\alpha|} \int_\Omega D^\alpha u 
 
 Define $L^1_{\mathrm{loc}}(\Omega) = \lbrace u : \Omega \to \mathbb{R} : u\|\_E \in L^1(E) \text{ for all bounded open } E \text{ with } \bar{E} \subset \Omega \rbrace$.
 
-Let $u \in L^1_{\mathrm{loc}}(\Omega)$ and $\alpha$ be a multi-index. A function $v \in L^1_{\mathrm{loc}}(\Omega)$ is said to be an **$\alpha^{\text{th}}$ weak derivative** of $u$ if
+Let $u \in L^{1}\_{\mathrm{loc}}(\Omega)$ and $\alpha$ be a multi-index. A function $v \in L^{1}\_{\mathrm{loc}}(\Omega)$ is said to be an **$\alpha^{\text{th}}$ weak derivative** of $u$ if
 
 $$\int_\Omega u D^\alpha \varphi \, dx = (-1)^{|\alpha|} \int_\Omega v \varphi \, dx \quad \text{for all } \varphi \in C_0^\infty(\Omega),$$
 
@@ -354,7 +358,7 @@ $W^{m,p}(\Omega)$ is a Banach space.
 <details class="accordion" markdown="1">
 <summary>Proof of Theorem 8</summary>
 
-$W^{m,p}(\Omega)$ is clearly a normed linear space, and we have to show that it is complete. Let $u^{(j)}$ be a Cauchy sequence in $W^{m,p}(\Omega)$. Then $u^{(j)}$ is a Cauchy sequence in $L^p(\Omega)$, and since $L^p(\Omega)$ is complete $u^{(j)} \to u$ in $L^p(\Omega)$ as $j \to \infty$ for some $u$. Similarly, if $0 < |\alpha| \le m$ then $D^\alpha u^{(j)}$ is a Cauchy sequence in $L^p(\Omega)$ and so $D^\alpha u^{(j)} \to u_\alpha$ in $L^p(\Omega)$. But by the definition of weak derivatives
+$W^{m,p}(\Omega)$ is clearly a normed linear space, and we have to show that it is complete. Let $u^{(j)}$ be a Cauchy sequence in $W^{m,p}(\Omega)$. Then $u^{(j)}$ is a Cauchy sequence in $L^p(\Omega)$, and since $L^p(\Omega)$ is complete $u^{(j)} \to u$ in $L^p(\Omega)$ as $j \to \infty$ for some $u$. Similarly, if $0 < \|\alpha\| \le m$ then $D^\alpha u^{(j)}$ is a Cauchy sequence in $L^p(\Omega)$ and so $D^\alpha u^{(j)} \to u_\alpha$ in $L^p(\Omega)$. But by the definition of weak derivatives
 
 $$\int_\Omega u^{(j)} D^\alpha \varphi \, dx = (-1)^{|\alpha|} \int_\Omega D^\alpha u^{(j)} \cdot \varphi \, dx$$
 
@@ -377,7 +381,7 @@ $W^{m,p}(\Omega)$ is separable if $1 \le p < \infty$ and is reflexive if $1 < p 
 
 #### 1.7.1 Smooth Functions
 
-Let $u \in C^m(\Omega)$ with $\|u\|_{m,p} < \infty$. Then by the integration by parts formula the weak derivatives $D^\alpha u$ for $0 \le \|\alpha\| \le m$ equal the usual ones, and hence $u \in W^{m,p}(\Omega)$. In particular, if $\Omega$ is bounded and $u \in C^\infty(\mathbb{R}^n)$ then $u|_\Omega \in W^{m,p}(\Omega)$ for all $m, p$.
+Let $u \in C^m(\Omega)$ with $\|u\|\_{m,p} < \infty$. Then by the integration by parts formula the weak derivatives $D^\alpha u$ for $0 \le \|\alpha\| \le m$ equal the usual ones, and hence $u \in W^{m,p}(\Omega)$. In particular, if $\Omega$ is bounded and $u \in C^\infty(\mathbb{R}^n)$ then $u|_\Omega \in W^{m,p}(\Omega)$ for all $m, p$.
 
 #### 1.7.2 Piecewise Affine Functions
 
@@ -614,15 +618,15 @@ Suppose not. Then there exist $u^{(j)} \in W^{1,p}(\Omega)$ with
 
 $$1 = \int_\Omega |u^{(j)}|^p \, dx > j \left( \left| \int_\Omega u^{(j)} \, dx \right|^p + \int_\Omega |\nabla u^{(j)}|^p \, dx \right).$$
 
-Hence $u^{(j)}$ is bounded in $W^{1,p}(\Omega)$ and we can suppose that $u^{(j)} \rightharpoonup u$ in $W^{1,p}(\Omega)$. By the compactness of the embedding $W^{1,p}(\Omega) \subset L^p(\Omega)$ we have $\int_\Omega |u|^p \, dx = 1$. We now use the inequality
+Hence $u^{(j)}$ is bounded in $W^{1,p}(\Omega)$ and we can suppose that $u^{(j)} \rightharpoonup u$ in $W^{1,p}(\Omega)$. By the compactness of the embedding $W^{1,p}(\Omega) \subset L^p(\Omega)$ we have $\int_\Omega \|u\|^p \, dx = 1$. We now use the inequality
 
 $$|\mathbf{a}|^p \ge |\mathbf{b}|^p + p|\mathbf{b}|^{p-2}\mathbf{b} \cdot (\mathbf{a} - \mathbf{b}) \quad \text{for } \mathbf{a}, \mathbf{b} \in \mathbb{R}^n.$$
 
-Thus $\int_\Omega |\nabla u^{(j)}|^p \, dx \ge \int_\Omega |\nabla u|^p \, dx + p \int_\Omega |\nabla u|^{p-2} \nabla u \cdot (\nabla u^{(j)} - \nabla u) \, dx$. Hence
+Thus $\int_\Omega \|\nabla u^{(j)}\|^p \, dx \ge \int_\Omega \|\nabla u\|^p \, dx + p \int_\Omega \|\nabla u\|^{p-2} \nabla u \cdot (\nabla u^{(j)} - \nabla u) \, dx$. Hence
 
 $$0 = \lim_{j \to \infty} \left( \left| \int_\Omega u^{(j)} \, dx \right|^p + \int_\Omega |\nabla u^{(j)}|^p \, dx \right) \ge \left| \int_\Omega u \, dx \right|^p + \int_\Omega |\nabla u|^p \, dx$$
 
-(since $\nabla u^{(j)} \rightharpoonup \nabla u$ in $(L^p)^n$ and $|\nabla u|^{p-2}\nabla u \in (L^{p'})^n$). Hence $\nabla u = 0$, so $u$ is constant and thus $u = 0$. Contradiction.
+(since $\nabla u^{(j)} \rightharpoonup \nabla u$ in $(L^p)^n$ and $\|\nabla u\|^{p-2}\nabla u \in (L^{p'})^n$). Hence $\nabla u = 0$, so $u$ is constant and thus $u = 0$. Contradiction.
 
 </details>
 
@@ -661,7 +665,7 @@ $I$ does not attain an absolute minimum in $W_0^{1,1}(0,1)$.
 <details class="accordion" markdown="1">
 <summary>Proof of Theorem 21</summary>
 
-Let $u^{(j)}$ be a zigzag function so that $u_x^{(j)}(x) = \pm 1$ a.e. and $|u^{(j)}(x)| \le \frac{1}{2j}$. Then
+Let $u^{(j)}$ be a zigzag function so that $u_x^{(j)}(x) = \pm 1$ a.e. and $\|u^{(j)}(x)\| \le \frac{1}{2j}$. Then
 
 $$I(u^{(j)}) = \int_0^1 u^{(j)2} \, dx \le \frac{1}{4j^2} \to 0 \text{ as } j \to \infty.$$
 
@@ -909,7 +913,7 @@ Let $u \in \mathcal{A} \cap C^1([a,b])$ satisfy (WEL), $\delta^2 I(u) > 0$ and t
 Using $\delta^2 I(u) > 0$, the analysis of the Jacobi equation (the Euler–Lagrange equation of $\delta^2 I(u)(\varphi, \varphi)$) and conjugate points leads to the conclusion that $u$ is embedded in a **field of extremals**, that is there is a one-parameter family $U(x, \gamma)$, $\gamma \in [-\tau, \tau]$, $\tau > 0$, of solutions to the Euler–Lagrange equation for $f$ on $[a,b]$ such that:
 
 1. $u(x) = U(x, 0)$ for all $x \in [a,b]$,
-2. the field simply covers a neighbourhood of the graph of $u$, i.e. there exists $\varepsilon > 0$ such that for each $x \in [a,b]$, $v \in \mathbb{R}$, with $|v - u(x)| < \varepsilon$, there is a unique $\gamma = \gamma(x,v) \in [-\tau, \tau]$ with $U(x, \gamma) = v$.
+2. the field simply covers a neighbourhood of the graph of $u$, i.e. there exists $\varepsilon > 0$ such that for each $x \in [a,b]$, $v \in \mathbb{R}$, with $\|v - u(x)\| < \varepsilon$, there is a unique $\gamma = \gamma(x,v) \in [-\tau, \tau]$ with $U(x, \gamma) = v$.
 
 We write $p(x, v) = U_x(x, \gamma(x,v))$ and call $p(\cdot, \cdot)$ the **slope function** of the field. For $v \in \mathcal{A}$ with $\|v - u\|_\infty$ sufficiently small:
 
@@ -948,7 +952,7 @@ where $F = \frac{f_u - f_{xp} - f_{up}p}{f_{pp}}$.
 <details class="accordion" markdown="1">
 <summary>Proof of Theorem 26</summary>
 
-**Step 1.** We prove that $u \in C^1([a,b])$. Choose the continuous representative of $u$. We have $|u_x(x)| \le M < \infty$ and $f_p(x, u(x), u_x(x)) = c + \int_a^x f_u \, dy$ (IEL) for all $x \in E$, where $\mathrm{meas}\, E = b - a$. We claim that $p(x) := \lim_{z \to x,\, z \in E} u_x(z)$ exists. Suppose not. Then $u_x(x_j) \to p_1$, $u_x(y_j) \to p_2$ for sequences $x_j, y_j \in E$, $p_1 \ne p_2$, $x_j, y_j \to x$. But from (IEL) we deduce $f_p(x, u(x), p_1) = f_p(x, u(x), p_2)$. Since $f_{pp} > 0$ this is a contradiction.
+**Step 1.** We prove that $u \in C^1([a,b])$. Choose the continuous representative of $u$. We have $\|u_x(x)\| \le M < \infty$ and $f_p(x, u(x), u_x(x)) = c + \int_a^x f_u \, dy$ (IEL) for all $x \in E$, where $\mathrm{meas}\, E = b - a$. We claim that $p(x) := \lim_{z \to x,\, z \in E} u_x(z)$ exists. Suppose not. Then $u_x(x_j) \to p_1$, $u_x(y_j) \to p_2$ for sequences $x_j, y_j \in E$, $p_1 \ne p_2$, $x_j, y_j \to x$. But from (IEL) we deduce $f_p(x, u(x), p_1) = f_p(x, u(x), p_2)$. Since $f_{pp} > 0$ this is a contradiction.
 
 **Step 2.** We prove that $u \in C^2([a,b])$. For each $x \in [a,b]$:
 

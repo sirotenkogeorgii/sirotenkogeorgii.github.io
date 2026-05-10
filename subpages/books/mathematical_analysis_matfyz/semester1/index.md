@@ -801,13 +801,13 @@ A sequence $(a_n) \subset \mathbb{R}$ converges if and only if $(a_n)$ is Cauchy
 <details markdown="1">
 <summary>Proof</summary>
 
-**($\Rightarrow$)** Let $\lim a_n = a$ and let an $\varepsilon$ be given. Then there is an $n_0$ such that $n \ge n_0 \Rightarrow |a_n - a| < \varepsilon/2$. Thus
+**($\Rightarrow$)** Let $\lim a_n = a$ and let an $\varepsilon$ be given. Then there is an $n_0$ such that $n \ge n_0 \Rightarrow \|a_n - a\| < \varepsilon/2$. Thus
 
 $$m, n \ge n_0 \;\Rightarrow\; |a_m - a_n| \le |a_m - a| + |a - a_n| < \varepsilon/2 + \varepsilon/2 = \varepsilon$$
 
-and $(a_n)$ is a Cauchy sequence. (We have used that $a_m - a_n = (a_m - a) + (a - a_n)$ and the triangle inequality $|c + d| \le |c| + |d|$.)
+and $(a_n)$ is a Cauchy sequence. (We have used that $a_m - a_n = (a_m - a) + (a - a_n)$ and the triangle inequality $\|c + d\| \le \|c\| + \|d\|$.)
 
-**($\Leftarrow$)** Let $(a_n)$ be a Cauchy sequence. We know that $(a_n)$ is bounded, and therefore by the Bolzano–Weierstrass theorem it has a convergent subsequence $(a_{m_n})$ with a limit $a$. For a given $\varepsilon$ we have an $n_0$ such that $n \ge n_0 \Rightarrow |a_{m_n} - a| < \varepsilon/2$ and that $m, n \ge n_0 \Rightarrow |a_m - a_n| < \varepsilon/2$. Always $m_n \ge n$ and therefore
+**($\Leftarrow$)** Let $(a_n)$ be a Cauchy sequence. We know that $(a_n)$ is bounded, and therefore by the Bolzano–Weierstrass theorem it has a convergent subsequence $(a_{m_n})$ with a limit $a$. For a given $\varepsilon$ we have an $n_0$ such that $n \ge n_0 \Rightarrow \|a_{m_n} - a\| < \varepsilon/2$ and that $m, n \ge n_0 \Rightarrow \|a_m - a_n\| < \varepsilon/2$. Always $m_n \ge n$ and therefore
 
 $$n \ge n_0 \;\Rightarrow\; |a_n - a| \le |a_n - a_{m_n}| + |a_{m_n} - a| < \varepsilon/2 + \varepsilon/2 = \varepsilon.$$
 
