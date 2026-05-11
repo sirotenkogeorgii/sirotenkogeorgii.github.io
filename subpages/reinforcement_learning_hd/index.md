@@ -1471,3 +1471,678 @@ This is the punchline of MDP theory: once you can solve the Bellman optimality e
 **Final message.** RL on MDPs is built around a single core idea: **solve the Bellman equations exactly or approximately**. Everything that follows — dynamic programming, Monte Carlo, TD, Q-learning, policy gradients, actor-critic — is a different way of attacking those equations.
 
 </div>
+
+## Lecture 4: Dynamic Programming
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setup</span><span class="math-callout__name">(Dynamic Programming — planning with a known model)</span></p>
+
+The previous lecture ended with two punchlines:
+
+* the **Bellman expectation equations** characterise $v_\pi$ and $q_\pi$ for a fixed policy;
+* the **Bellman optimality equations** characterise $v_\ast$ and $q_\ast$, and once we have $q_\ast$ optimal control is a one-step argmax.
+
+Both are *equations*, not algorithms. Dynamic programming is the first systematic answer to the question **"how do we actually solve them?"** — under the strongest possible assumption that we have a **perfect model** of the environment in the form of the one-step dynamics $p(s', r \mid s, a)$.
+
+In this lecture there is no learning from experience yet: no sampled rewards, no exploration, no noise. The agent has access to the full transition kernel and can compute every required expectation *exactly*. We will treat DP as **planning with a model**, and the rest of the course will progressively relax this assumption — first by sampling returns (Monte Carlo), then by bootstrapping from sampled transitions (TD), and finally by combining both with function approximation.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Why DP still matters even though it is rarely run as-is)</span></p>
+
+Classical DP has two practical handicaps:
+
+* it requires a **known model** $p(s', r \mid s, a)$, which is precisely what real-world RL does *not* have;
+* it sweeps the entire state space, so its cost scales with $\lvert \mathcal{S} \rvert$ (and with $\lvert \mathcal{S} \rvert \lvert \mathcal{A} \rvert$ for $q$-style updates).
+
+But every later algorithm in this course inherits its conceptual skeleton from DP:
+
+* **prediction** = repeatedly apply a Bellman *expectation* backup;
+* **improvement** = act greedily with respect to the current value estimate;
+* **control** = interleave the two.
+
+Monte Carlo replaces the expectation by sample averages; TD replaces it by a single sampled transition; Q-learning replaces it by a sampled max backup; actor-critic replaces the greedy step by a gradient step on a parameterised policy. The structure is always the same — DP is the *clean* version, with all randomness averaged away.
+
+</div>
+
+### From Bellman Equations to Update Rules
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Setting</span><span class="math-callout__name">(Finite MDP with Known Dynamics)</span></p>
+
+From this lecture onward we assume a **finite MDP**:
+
+* finite state set $\mathcal{S}$,
+* finite action set $\mathcal{A}(s)$ at each state,
+* bounded rewards (so all expected returns are well-defined),
+* known one-step dynamics $p(s', r \mid s, a)$.
+
+The crucial consequence of "known dynamics" is that every expectation in a Bellman backup — over actions, over next states, over rewards — can be computed *exactly* as a finite sum. No sampling is needed. This is precisely what separates DP from Monte Carlo and temporal-difference methods in the next lectures.
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(DP in one sentence)</span></p>
+
+Dynamic programming solves a sequential decision problem by repeatedly:
+
+1. **estimating how good states are** (policy evaluation),
+2. **choosing better actions using those estimates** (policy improvement),
+3. **repeating until nothing changes** (iteration to a fixed point).
+
+The three primitives are **evaluation**, **improvement**, and **iteration**. The two main DP algorithms — *policy iteration* and *value iteration* — differ only in *how much* evaluation is done between improvement steps.
+
+</div>
+
+### Policy Evaluation (Prediction)
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Prediction Problem)</span></p>
+
+Given a policy $\pi$, compute its state-value function
+
+$$
+v_\pi(s) \;=\; \mathbb{E}_\pi[\, G_t \mid S_t = s \,] \qquad \text{for all } s \in \mathcal{S}.
+$$
+
+This is exactly the *prediction* problem from the previous lecture. The Bellman expectation equation supplies the recursive characterisation we need:
+
+$$
+v_\pi(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
+$$
+
+There is **one equation per state** in the unknowns $\lbrace v_\pi(s) \rbrace_{s \in \mathcal{S}}$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Two ways to read the same equation)</span></p>
+
+Looking at $v_\pi = r_\pi + \gamma P_\pi v_\pi$ (the vector form developed below), one can think of policy evaluation in two different ways:
+
+* **Algebraic.** It is a *linear system* with $\lvert \mathcal{S} \rvert$ equations and $\lvert \mathcal{S} \rvert$ unknowns. Solve it directly with linear algebra.
+* **Fixed-point.** It is the fixed-point equation $v = T_\pi v$ of the **Bellman expectation operator** $T_\pi$. Iterate $v_{k+1} = T_\pi v_k$ until it stops moving.
+
+Both viewpoints give the *same* answer; they differ only in computational strategy. Iterative methods are the ones that survive into the model-free regime, so we develop them in detail.
+
+</div>
+
+#### Iterative Policy Evaluation
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Iterative Policy Evaluation)</span></p>
+
+Initialise $v_0(s)$ arbitrarily for all $s \in \mathcal{S}$ (and $v(\text{terminal}) = 0$). Then repeatedly apply the **Bellman expectation update**:
+
+$$
+v_{k+1}(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].
+$$
+
+For discounted finite MDPs with $\gamma < 1$, the sequence $\lbrace v_k \rbrace$ converges to the true value $v_\pi$ as $k \to \infty$.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Why this is called an "expected update")</span></p>
+
+Each update uses an **expectation over all possible successor states and rewards**, weighted by the known dynamics. This is what DP terminology calls an *expected update* — in contrast to:
+
+* a **sample update**, used by Monte Carlo and TD, which replaces the sum $\sum_{s', r} p(s', r \mid s, a) \cdot$ by a single sampled transition,
+* a **max update**, used by value iteration, which replaces $\sum_a \pi(a \mid s) \cdot$ by $\max_a$.
+
+The two key features of an expected update are **bootstrapping** (using the current estimate $v_k(s')$ in place of the true $v_\pi(s')$) and **full backups** (averaging over the entire next-state distribution).
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/backup_v_pi.png' | relative_url }}" alt="One-step backup diagram: state s branches over actions then over successor states" loading="lazy">
+  <figcaption>Backup diagram for a Bellman expectation update: <em>new value of $s$ = expected immediate reward + $\gamma\,\cdot\,$ expected successor value</em>. A Bellman backup is always the same operation — one-step lookahead, then plug in the current value estimate at each leaf.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Two-array vs. in-place updates)</span></p>
+
+There are two natural ways to implement the iteration in code:
+
+* **Two-array (synchronous) update.** Keep arrays `old` and `new`. The update for $v_{k+1}(s)$ reads only from `old`; after the sweep, swap arrays. Every state in iteration $k+1$ uses values from iteration $k$.
+* **In-place (asynchronous) update.** Maintain a single array $V$ and overwrite $V(s)$ as soon as it is computed. Later states in the same sweep already see the freshly updated values of earlier states.
+
+Both versions target the **same fixed point** $v_\pi$, and both converge under the same conditions. In-place is what one would actually code — it uses half the memory and typically propagates information faster (especially if the sweep order is chosen well), because newer estimates are available immediately for downstream states.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Iterative Policy Evaluation — pseudocode)</span></p>
+
+Initialise $V(s)$ arbitrarily for all $s \in \mathcal{S}$, and $V(\text{terminal}) = 0$.
+
+Repeat:
+
+1. $\Delta \leftarrow 0$.
+2. For each state $s \in \mathcal{S}$:
+   * $v \leftarrow V(s)$,
+   * $V(s) \leftarrow \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr]$,
+   * $\Delta \leftarrow \max\bigl(\Delta,\, \lvert v - V(s)\rvert\bigr)$.
+
+until $\Delta < \theta$ for a small tolerance $\theta > 0$.
+
+**Why a tolerance stop works.** The Bellman operator is a $\gamma$-contraction on $\mathbb{R}^{\lvert \mathcal{S}\rvert}$ in the max-norm (proved later), so a sweep with maximum change $\Delta$ guarantees $\lVert V - v_\pi \rVert_\infty \le \Delta / (1 - \gamma)$. Stopping at $\Delta < \theta$ thus controls the worst-case error.
+
+</div>
+
+#### Policy Evaluation as a Linear System
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Vector Form of Policy Evaluation)</span></p>
+
+Order the $n = \lvert \mathcal{S} \rvert$ states and stack the value function into a vector $v \in \mathbb{R}^n$. Define:
+
+* **Expected one-step reward under $\pi$:**
+
+  $$
+  r_\pi(s_i) \;=\; \sum_{a} \pi(a \mid s_i) \sum_{s', r} p(s', r \mid s_i, a)\, r,
+  $$
+
+  stacked into a vector $r_\pi \in \mathbb{R}^n$.
+* **Policy-induced transition matrix:**
+
+  $$
+  (P_\pi)_{ij} \;=\; \sum_{a} \pi(a \mid s_i)\, P(s_j \mid s_i, a),
+  $$
+
+  the probability of moving from $s_i$ to $s_j$ in one step under $\pi$.
+
+The Bellman expectation equation for $\pi$ then collapses to the linear identity
+
+$$
+v_\pi \;=\; r_\pi + \gamma\, P_\pi v_\pi.
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(A fixed policy turns the MDP into a Markov chain)</span></p>
+
+Once $\pi$ is fixed, the action is no longer a decision — it is a random variable with distribution $\pi(\cdot \mid s)$. Marginalising over it leaves only a **state-to-state transition kernel** $P_\pi$, plus a state-indexed expected reward $r_\pi$. This is exactly a (reward-augmented) **Markov chain**: the MDP structure has been collapsed to its dynamics-under-$\pi$. Every later prediction algorithm — TD(0), every-visit MC, $\lambda$-returns — is, in effect, trying to compute $v_\pi$ for this chain.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Bellman Expectation Operator)</span></p>
+
+Define $T_\pi : \mathbb{R}^n \to \mathbb{R}^n$ by
+
+$$
+T_\pi v \;\doteq\; r_\pi + \gamma\, P_\pi v.
+$$
+
+$T_\pi$ is an **affine map** on value vectors. The iterative-policy-evaluation update is simply
+
+$$
+v_{k+1} \;=\; T_\pi v_k,
+$$
+
+and the true value function $v_\pi$ is the unique vector satisfying $v_\pi = T_\pi v_\pi$ — the **fixed point** of $T_\pi$.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Two equivalent solution strategies)</span></p>
+
+Rearranging the fixed-point equation:
+
+$$
+(I - \gamma P_\pi)\, v_\pi \;=\; r_\pi.
+$$
+
+For finite discounted MDPs with $\gamma < 1$, the matrix $I - \gamma P_\pi$ is invertible (its spectrum lies in $\lbrace 1 - \gamma \mu : \lvert \mu \rvert \le 1\rbrace$, none of which crosses the origin), so
+
+$$
+v_\pi \;=\; (I - \gamma P_\pi)^{-1}\, r_\pi.
+$$
+
+**Two viewpoints, one answer:**
+
+* **Linear-system view:** solve $(I - \gamma P_\pi)\, v_\pi = r_\pi$ once.
+* **Fixed-point view:** iterate $v_{k+1} = T_\pi v_k$ until convergence.
+
+**Why iteration is preferred in practice.**
+
+* A direct linear solve costs $O(\lvert \mathcal{S} \rvert^3)$, infeasible for large state spaces.
+* Transition matrices are typically **huge and very sparse**; iterative sweeps exploit sparsity cheaply.
+* Policies change repeatedly during control — re-solving a fresh linear system after each tiny policy change is wasteful.
+* Iterative Bellman updates **generalise to model-free RL**, where $P_\pi$ is unknown and $T_\pi v$ must be sample-approximated. The linear-algebra view does not.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Geometric picture)</span></p>
+
+Iterative policy evaluation is a sequence of points $v_0,\, v_1,\, v_2, \dots$ in $\mathbb{R}^{\lvert \mathcal{S} \rvert}$ obtained by repeatedly applying the same affine map $T_\pi$. Each step pulls $v_k$ closer to $v_\pi$:
+
+$$
+\lVert v_{k+1} - v_\pi \rVert_\infty \;=\; \lVert T_\pi v_k - T_\pi v_\pi \rVert_\infty \;\le\; \gamma\,\lVert v_k - v_\pi \rVert_\infty.
+$$
+
+So convergence is **geometric with rate $\gamma$** — the smaller $\gamma$, the faster the chase. This same contraction estimate underwrites the convergence of every algorithm built on top of expected backups.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/contraction_fixed_point.png' | relative_url }}" alt="A two-dimensional trace of v_0, v_1, ... shrinking towards the fixed point v_pi" loading="lazy">
+  <figcaption>Each Bellman backup is the same affine map applied to the value vector. The iterates form a contracting sequence in $\mathbb{R}^{\lvert \mathcal{S} \rvert}$ — every step shrinks the distance to the fixed point $v_\pi$ by a factor of at most $\gamma$ in the max-norm. Dashed circles indicate the successive worst-case error bounds.</figcaption>
+</figure>
+
+#### Gridworld: Evaluation in Action
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Small Gridworld under the Random Policy)</span></p>
+
+* **Non-terminal states:** $\mathcal{S} = \lbrace 1, 2, \dots, 14 \rbrace$, arranged on a $4 \times 4$ grid with two terminal corners.
+* **Actions:** $\lbrace \mathsf{up}, \mathsf{down}, \mathsf{left}, \mathsf{right}\rbrace$, with deterministic transitions; bumping into a wall leaves the state unchanged.
+* **Reward:** $R_{t+1} = -1$ on every transition, until termination.
+* **Policy:** equiprobable random, $\pi(a \mid s) = \tfrac{1}{4}$ for all $a$.
+
+Under the random policy the value $v_\pi(s)$ has a very transparent meaning:
+
+* states adjacent to a terminal have small (close to zero) magnitudes — the agent escapes quickly on average;
+* states far from a terminal accumulate more negative values — the random walk takes longer to terminate.
+
+**One Bellman equation in the corner.** For the state immediately to the right of the upper-left terminal, $\mathsf{up}$ keeps the agent in place, $\mathsf{right}$ and $\mathsf{down}$ move to neighbouring non-terminals $s_R$ and $s_D$, and $\mathsf{left}$ enters the terminal. Averaging over the four equiprobable actions:
+
+$$
+v_\pi(s) \;=\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s)] \;+\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s_R)] \;+\; \tfrac{1}{4}[-1 + \gamma\, v_\pi(s_D)] \;+\; \tfrac{1}{4}[-1 + \gamma \cdot 0].
+$$
+
+A state's value depends only on the values of states **reachable in one step** — that is the whole structural content of a Bellman equation.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(How value information propagates)</span></p>
+
+Watching the iterates $v_k$ in gridworld is a useful intuition pump:
+
+* At $k = 0$, all values are zero.
+* After one sweep, every non-terminal state picks up only the immediate step cost $-1$ (because every successor still has value zero).
+* After more sweeps, terminal-proximity information **diffuses outward** from the terminal cells through the grid.
+
+Iterative policy evaluation is, geometrically, a kind of *information diffusion* over the state graph — one bond of distance per sweep, weighted by $\gamma$.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/policy_eval_gridworld.png' | relative_url }}" alt="Iterative policy evaluation on a 4x4 gridworld at iterations k=0,1,2,3,10 and infinity, with greedy-action arrows superimposed" loading="lazy">
+  <figcaption>Iterative policy evaluation on the small $4 \times 4$ gridworld under the equiprobable random policy. Each panel shows the value estimate $v_k$ after $k$ sweeps; arrows point in the direction(s) of the greedy action(s) at every non-terminal cell. <strong>Two things to notice:</strong> (i) information about the terminals diffuses outward one bond per sweep, taking many iterations to reach $v_\pi$; (ii) the <em>greedy</em> policy with respect to $v_k$ is already optimal by $k = 3$ — long before evaluation converges. This is the intuition that justifies value iteration's "truncate after one sweep" idea.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Section Takeaway</span><span class="math-callout__name">(Policy Evaluation)</span></p>
+
+* Policy evaluation computes $v_\pi$ for a fixed policy $\pi$.
+* With a known model, the Bellman expectation equation gives an **exact** update rule.
+* Iterative policy evaluation applies that update repeatedly until convergence.
+* Equivalent linear-algebra view: solve $(I - \gamma P_\pi)\, v_\pi = r_\pi$.
+
+We can now answer *"how good is $\pi$?"* — the natural next question is **"how do we improve it?"**.
+
+</div>
+
+### Policy Improvement
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(From prediction to control)</span></p>
+
+Policy evaluation answers a passive question — **how good is $\pi$?** — and produces a value function $v_\pi$. Control asks a stronger, more useful question — **how can we make $\pi$ better?** — and produces a *new* policy $\pi'$. The key insight is that the value function $v_\pi$ is *already* enough to do this, because comparing two candidate first actions only requires a one-step lookahead and a copy of $v_\pi$ at the successor states.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(One-Step Lookahead Value)</span></p>
+
+Suppose we start in state $s$, take an action $a$ *once*, and then follow $\pi$ thereafter. The expected return of this one-step deviation is
+
+$$
+q_\pi(s, a) \;=\; \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
+$$
+
+$q_\pi(s, a)$ measures how good it is to take $a$ now and behave according to $\pi$ afterwards. Compared with following $\pi$ from the start, the only difference is the first action.
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Comparing actions — the local-improvement test)</span></p>
+
+We already know the value of following $\pi$ from state $s$: it is $v_\pi(s)$. We can compare it against the value of *deviating once* and then returning to $\pi$:
+
+* if $q_\pi(s, a) > v_\pi(s)$, taking $a$ in state $s$ is a strict one-step improvement,
+* if $q_\pi(s, a) = v_\pi(s)$ for every $a$ used by $\pi$, no local improvement exists in state $s$.
+
+The seductive question is: if a *one-step* deviation helps, does **permanently** switching to that action also help? The policy improvement theorem says yes — at every state, simultaneously.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Theorem</span><span class="math-callout__name">(Policy Improvement Theorem)</span></p>
+
+Let $\pi$ and $\pi'$ be any pair of deterministic policies. If for **every** state $s$,
+
+$$
+q_\pi(s, \pi'(s)) \;\ge\; v_\pi(s),
+$$
+
+then $\pi'$ is at least as good as $\pi$ everywhere:
+
+$$
+v_{\pi'}(s) \;\ge\; v_\pi(s) \qquad \text{for all } s \in \mathcal{S}.
+$$
+
+If the first inequality is strict in some state, $\pi'$ is strictly better there.
+
+</div>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Derivation</span><span class="math-callout__name">(Why local one-step improvement implies global improvement)</span></p>
+
+Unroll the assumption $q_\pi(s, \pi'(s)) \ge v_\pi(s)$ by repeated substitution. Starting from $S_t = s$ and using $\pi'$ to choose the *first* action, then $\pi$ thereafter, then again $\pi'$ for the second action, and so on:
+
+$$
+\pi, \pi, \pi, \dots \;\xrightarrow{\text{1 swap}}\; \pi', \pi, \pi, \dots \;\xrightarrow{\text{2 swaps}}\; \pi', \pi', \pi, \dots \;\xrightarrow{\text{}\cdots\text{}}\; \pi', \pi', \pi', \dots
+$$
+
+Each swap can only *increase* the value (by assumption). In the limit of swapping every step, the trajectory follows $\pi'$ throughout, and the limit value is $v_{\pi'}(s)$. So $v_{\pi'}(s) \ge v_\pi(s)$.
+
+The "for all $s$" assumption is essential: after the first action, the agent may land in *any* successor state, and we must be sure that using $\pi'$ from there is still safe.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Greedy Policy Improvement)</span></p>
+
+Given the value function $v_\pi$, define the **greedy policy with respect to $v_\pi$** by
+
+$$
+\pi'(s) \;\in\; \arg\max_{a}\, q_\pi(s, a) \;=\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
+$$
+
+By construction $q_\pi(s, \pi'(s)) = \max_a q_\pi(s, a) \ge q_\pi(s, \pi(s)) = v_\pi(s)$ at every state, so the improvement theorem applies: $\pi'$ is at least as good as $\pi$ everywhere, and strictly better whenever $\pi$ was not already greedy.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/greedy_improvement.png' | relative_url }}" alt="Bar chart of q-values for four actions in a state with the maximum-q action highlighted" loading="lazy">
+  <figcaption>Greedy improvement at a single state $s$. The bars are the action values $q_\pi(s, a)$ under the current policy $\pi$; the dashed line is $v_\pi(s) = \sum_a \pi(a \mid s)\, q_\pi(s, a)$ — the value of <em>following</em> $\pi$ from $s$. Switching $\pi$'s action at $s$ to the argmax (right) is a strict one-step improvement: $q_\pi(s, \pi'(s)) > v_\pi(s)$. The policy improvement theorem promises this local gain extends to a global one.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Evaluation vs. improvement — never confuse the two arrows)</span></p>
+
+The two DP primitives operate in opposite directions:
+
+* **Policy evaluation:** $\pi \longrightarrow v_\pi$ — *change values*, keep the policy fixed. Answers "how good is $\pi$?".
+* **Policy improvement:** $v_\pi \longrightarrow \pi'$ — *change the policy*, treat values as a fixed input. Answers "can we act better?".
+
+A short memory aid: **evaluation changes values; improvement changes the policy.** Every DP algorithm (and every later RL algorithm) is some interleaving of these two arrows.
+
+</div>
+
+### Policy Iteration
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Policy Iteration)</span></p>
+
+1. Initialise a policy $\pi$ arbitrarily.
+2. **Policy evaluation.** Compute $v_\pi$ (e.g. by iterative policy evaluation to tolerance $\theta$).
+3. **Policy improvement.** For every state, set
+
+   $$
+   \pi(s) \;\leftarrow\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_\pi(s')\,\bigr].
+   $$
+
+4. If the policy has not changed in any state, stop. Otherwise return to step 2.
+
+In a diagram,
+
+$$
+\pi_0 \;\xrightarrow{E}\; v_{\pi_0} \;\xrightarrow{I}\; \pi_1 \;\xrightarrow{E}\; v_{\pi_1} \;\xrightarrow{I}\; \pi_2 \;\xrightarrow{E}\; \cdots \;\xrightarrow{I}\; \pi_\ast.
+$$
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/policy_iteration_cycle.png' | relative_url }}" alt="Zig-zag of policies and value functions alternating evaluation and improvement steps, ending at the optimal policy" loading="lazy">
+  <figcaption>Policy iteration alternates two arrows: <strong>E</strong> (evaluation, blue) maps a policy to its value function; <strong>I</strong> (improvement, green) maps a value function to its greedy policy. Each <strong>I</strong>-step is monotone — $v_{\pi_{k+1}} \ge v_{\pi_k}$ pointwise — and the number of deterministic policies is finite, so the chain must terminate at $\pi_\ast$.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--proposition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Properties</span><span class="math-callout__name">(Why policy iteration converges — and in *finitely* many steps)</span></p>
+
+For a finite discounted MDP:
+
+* Each improvement step yields a policy that is at least as good as the previous one (policy improvement theorem).
+* If improvement makes any change, the new policy is **strictly** better in at least one state — so the same policy is never revisited.
+* The number of deterministic policies is finite ($\lvert \mathcal{A} \rvert^{\lvert \mathcal{S} \rvert}$ at most).
+
+Therefore the algorithm cannot keep improving forever; it must terminate in finitely many iterations with a policy $\pi$ satisfying $\pi(s) \in \arg\max_a q_\pi(s, a)$ for every $s$. That fixed-point condition is precisely the Bellman optimality equation — so the limit policy is **optimal**.
+
+In practice, policy iteration tends to need surprisingly *few* outer iterations (often single digits even on substantial problems), because each greedy step makes large jumps in policy space.
+
+</div>
+
+#### Jack's Car Rental: Policy Iteration in Action
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Jack's Car Rental — a textbook continuing MDP)</span></p>
+
+Jack manages two rental locations:
+
+* Each day customers request cars (Poisson-distributed) and return cars (Poisson-distributed).
+* Each completed rental produces \$10 revenue.
+* Cars can be moved overnight between the two locations; moving a car costs \$2.
+* Capacity: at most 20 cars per location.
+* At most 5 cars moved overnight in either direction.
+
+**State.** $s = (n_1, n_2)$, the number of cars at each location at the end of the day. So $\mathcal{S} = \lbrace 0, \dots, 20\rbrace^2$, with $\lvert \mathcal{S} \rvert = 441$.
+
+**Action.** $a \in \lbrace -5, -4, \dots, 5\rbrace$: positive $a$ moves $\lvert a \rvert$ cars from location 1 to location 2; negative $a$ moves them the other way.
+
+**Why this is a good DP illustration.** The dynamics are *known* (Poissons are tabulated and the action is deterministic in its effect on the morning count), so $p(s' \mid s, a)$ can be computed in closed form. The state space is finite but non-trivial (441 states $\times$ 11 actions $\times$ ${\sim}20{,}000$ successor terms per backup), and the problem is rich enough to have a *non-obvious* optimal policy that does not coincide with any human heuristic.
+
+Running policy iteration produces a sequence $\pi_0, \pi_1, \pi_2, \dots$ where each map shows the optimal overnight transfer as a function of $(n_1, n_2)$. The algorithm typically converges in a handful of outer iterations, and the final policy reveals a sharp staircase-shaped frontier in $(n_1, n_2)$ space dictating when to ferry cars between locations.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/jacks_car_rental.png' | relative_url }}" alt="Five policy maps over the (n1, n2) state space showing successive improvement steps, plus the converged value surface" loading="lazy">
+  <figcaption>Policy iteration on Jack's Car Rental. The five small panels show the policy $\pi_k(n_1, n_2)$ after each improvement step — red cells move cars $1 \to 2$, blue cells move them $2 \to 1$, white means "do nothing". The 3D panel on the right is the converged value surface $v_{\pi_\ast}$: highest in balanced, moderately-stocked configurations where future rentals are most likely to materialise without overflow penalties. The decision boundary in $\pi_\ast$ has a staircase shape that no simple human heuristic would discover.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(The DP method map so far)</span></p>
+
+| Method | Main question | Bellman backup |
+| :----- | :------------ | :------------- |
+| Policy evaluation | How good is $\pi$? | expectation over actions under $\pi$ |
+| Policy improvement | Can $\pi$ be improved? | greedy one-step lookahead |
+| Policy iteration | How do we alternate both? | evaluate, then improve |
+| Value iteration | Can we combine both? | max backup |
+| Asynchronous DP | Can we avoid full sweeps? | update selected states |
+
+The next algorithm — value iteration — fills in the "combine both" row by noticing that we do not actually need to *fully* evaluate a policy before improving it.
+
+</div>
+
+### Value Iteration
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Idea</span><span class="math-callout__name">(Why fully evaluating each policy is wasteful)</span></p>
+
+Policy iteration alternates evaluation and improvement, but evaluation itself can require many sweeps (it is an *inner* iterative procedure). And after a few sweeps the greedy step typically already produces the same policy as it would at full convergence — so most of the inner work is wasted. The key idea of **value iteration** is to interleave the two arrows at the finest possible granularity: do *one* sweep of evaluation, then immediately improve. Better still, *merge* the two steps into a single update that takes a max over actions instead of an average.
+
+</div>
+
+<div class="math-callout math-callout--definition" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(From Bellman Expectation to Bellman Optimality Backup)</span></p>
+
+Compare the two backups on the same value function:
+
+* **Policy evaluation backup (expectation over actions):**
+
+  $$
+  v_{k+1}(s) \;=\; \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].
+  $$
+
+* **Value iteration backup (max over actions):**
+
+  $$
+  v_{k+1}(s) \;=\; \max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, v_k(s')\,\bigr].
+  $$
+
+The two differ in **exactly one place**: averaging over $a$ by $\pi$ is replaced by taking the max over $a$. The first iterates toward $v_\pi$; the second iterates toward $v_\ast$ directly — it uses the current estimate $v_k$ as a *guess for the optimal* future value and applies a greedy one-step lookahead.
+
+</div>
+
+<div class="math-callout math-callout--theorem" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Algorithm</span><span class="math-callout__name">(Value Iteration)</span></p>
+
+Initialise $V(s)$ arbitrarily for all $s \in \mathcal{S}$, with $V(\text{terminal}) = 0$.
+
+Repeat:
+
+1. $\Delta \leftarrow 0$.
+2. For each state $s \in \mathcal{S}$:
+   * $v \leftarrow V(s)$,
+   * $V(s) \leftarrow \displaystyle \max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr]$,
+   * $\Delta \leftarrow \max\bigl(\Delta,\, \lvert v - V(s) \rvert\bigr)$.
+
+until $\Delta < \theta$.
+
+After convergence, $V \approx v_\ast$, and the **optimal greedy policy** is extracted in one final sweep:
+
+$$
+\pi^\ast(s) \;\in\; \arg\max_{a} \sum_{s', r} p(s', r \mid s, a)\bigl[\, r + \gamma\, V(s')\,\bigr].
+$$
+
+</div>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Value iteration as "truncated" policy iteration)</span></p>
+
+A clean way to think about value iteration is as **policy iteration with the evaluation step truncated to a single sweep**:
+
+* one Bellman expectation sweep $\to$ greedy improvement collapses into a single Bellman *optimality* sweep,
+* the explicit policy never has to be maintained between sweeps; it is implicit in the max.
+
+Conversely, policy iteration is value iteration with the *evaluation* step run to convergence between maxes. They are two ends of a spectrum: how much evaluation do you do per improvement? **All of it** (policy iteration), **none of it past one sweep** (value iteration), or **somewhere in between** (modified / generalised policy iteration).
+
+</div>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Policy iteration vs. value iteration — side by side)</span></p>
+
+|                  | Policy iteration                       | Value iteration                       |
+| :--------------- | :------------------------------------- | :------------------------------------ |
+| Main object      | policy $+$ value function              | value function                        |
+| Evaluation       | usually many sweeps                    | one sweep at a time                   |
+| Improvement      | explicit greedy step                   | built into the max update             |
+| Update rule      | evaluate, then improve                 | improve *while* evaluating            |
+| Typical view     | cleaner conceptually                   | often more efficient                  |
+
+**Memory aid.** Policy iteration says **evaluate, then improve**. Value iteration says **improve during every backup.**
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/pi_vs_vi_flow.png' | relative_url }}" alt="Two vertical chains: left side alternates explicit policies and value functions; right side updates only value functions until convergence" loading="lazy">
+  <figcaption>Two ways of arranging the same Bellman backups. <strong>Left (policy iteration):</strong> evaluation produces true value functions $v_{\pi_k}$ of explicit policies; improvement re-greedifies. <strong>Right (value iteration):</strong> no explicit policy is maintained — each sweep applies a max backup directly to the value vector, driving $v_k$ toward $v_\ast$. The optimal policy is extracted only at the very end by a single greedy argmax.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Common confusion — what is being computed at each level)</span></p>
+
+The biggest source of confusion is that *both* algorithms produce a sequence of value functions and a final policy, but:
+
+* In **policy iteration** the *intermediate* value functions $v_{\pi_0}, v_{\pi_1}, \dots$ are *true* values of *real* (deterministic) policies. The trace is $\pi_0 \to v_{\pi_0} \to \pi_1 \to v_{\pi_1} \to \cdots$.
+* In **value iteration** the intermediate value functions $v_0, v_1, v_2, \dots$ are *not* the values of any particular policy. They are estimates of $v_\ast$ that happen to be related to the value of the greedy policy at sweep $k$, but no explicit policy is materialised until the very end.
+
+This distinction matters for analysis (error bounds, monotonicity) and for any later algorithm that wants to use intermediate policies (e.g. on-policy methods later in the course).
+
+</div>
+
+#### Gambler's Problem: Value Iteration on a Tiny MDP
+
+<div class="math-callout math-callout--question" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Gambler's Problem)</span></p>
+
+A gambler repeatedly bets on coin flips.
+
+* **State:** current capital $s \in \lbrace 1, 2, \dots, 99 \rbrace$ (with $0$ and $100$ as terminals).
+* **Actions:** stake amount $a \in \lbrace 0, 1, \dots, \min(s,\, 100 - s) \rbrace$ — you cannot stake more than you have, and you never need to stake more than is required to reach $100$.
+* **Dynamics:** heads (probability $p_h$) increases capital by $a$; tails (probability $1 - p_h$) decreases it by $a$.
+* **Reward:** $0$ on every non-terminal transition, $+1$ if capital reaches $100$, $0$ if capital reaches $0$.
+* **Goal:** maximise the probability of reaching $100$ before reaching $0$.
+
+Because rewards are $0$ everywhere except at the winning terminal, the value function has a beautiful interpretation:
+
+$$
+v(s) \;=\; \text{probability of eventually winning from capital } s.
+$$
+
+**The MDP is exactly suited to value iteration:** the state space is one-dimensional, the dynamics are explicit, and there is no need to maintain an explicit policy during sweeps.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/gamblers_problem.png' | relative_url }}" alt="Optimal value function curve (smooth, monotonically increasing) and optimal-stake stem plot (irregular spikes at 25, 50, 75)" loading="lazy">
+  <figcaption>Value iteration on the Gambler's problem with $p_h = 0.4$. <strong>Top:</strong> the optimal value function $v_\ast(s)$, equal to the probability of eventually reaching capital $100$ starting from $s$. It is monotonically increasing and visually smooth. <strong>Bottom:</strong> the corresponding optimal policy $\pi_\ast(s)$ — wildly irregular, with characteristic spikes at $s = 25, 50, 75$ where a single all-in bet either reaches $50$ exactly or hits $100$ directly. The lesson: <em>optimal policies can be discontinuous even when the optimal value function is smooth</em>.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpreting the optimal solution)</span></p>
+
+The value function $v_\ast$ produced by value iteration is monotone in capital — more money means a higher chance of winning. The optimal policy, however, is **not** smooth at all: it has dramatic *spikes* at certain capital levels.
+
+* At some capital levels (e.g. $s = 50$ when $p_h < 1/2$), the gambler bets *everything* — a single bet can reach $100$ exactly.
+* At other levels the optimal bet is small.
+
+**Why the spikes happen.** At certain capitals, a particular stake lands the agent in a state from which winning is much more likely (often because it can reach $100$ or $50$ exactly). These states create sudden jumps in success probability, and the greedy argmax inherits those jumps — so the policy looks irregular even though the underlying value function is smooth.
+
+This is a good lesson: **the optimal *policy* can be much less regular than the optimal *value function***. Any later method that approximates the policy directly (policy gradient, actor-critic) has to be careful about parametric families flexible enough to represent such discontinuities.
+
+</div>
+
+### Generalised Picture and Section Summary
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Generalised Policy Iteration — the unifying frame)</span></p>
+
+Policy iteration and value iteration are two extreme points of the same idea:
+
+* **Generalised policy iteration (GPI)** is the umbrella term for any algorithm that maintains *some* value function $V$ and *some* policy $\pi$ and repeatedly improves them against each other — without insisting that either be exact at any intermediate step.
+* Policy iteration: bring $V$ all the way to $v_\pi$ before re-greedifying.
+* Value iteration: do exactly one Bellman optimality sweep before re-greedifying.
+* Asynchronous DP: update *some* states at *some* sweeps, in any order — as long as every state is visited infinitely often.
+
+Every algorithm in the rest of the course (Monte Carlo control, SARSA, Q-learning, actor-critic, $\dots$) is an instance of GPI; the differences are *how* the two arrows are implemented (with samples? bootstrapping? function approximation?) but the skeleton is the same.
+
+</div>
+
+<figure>
+  <img src="{{ '/assets/images/notes/rl_hd/gpi_diagram.png' | relative_url }}" alt="Two manifolds (v = v_pi and pi = greedy(v)) intersecting at the fixed point, with a zig-zag trajectory of evaluation/improvement steps approaching that intersection" loading="lazy">
+  <figcaption>The classical GPI picture: the two arrows of evaluation (blue, change $v$) and improvement (green, change $\pi$) each push the current $(v, \pi)$ pair onto a respective manifold — $v = v_\pi$ and $\pi = \mathrm{greedy}(v)$. Alternating partial moves toward each manifold produces a zig-zag that converges to their unique intersection $(\pi_\ast, v_\ast)$. Policy iteration takes <em>full</em> projections onto the evaluation line; value iteration takes <em>tiny</em> ones (one sweep); model-free RL replaces the projections by sample-based estimates. The unifying skeleton is the same.</figcaption>
+</figure>
+
+<div class="math-callout math-callout--info" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Note</span><span class="math-callout__name">(Core Takeaways — Dynamic Programming)</span></p>
+
+* **DP = planning with a known model.** With $p(s', r \mid s, a)$ in hand, every Bellman backup is a *finite, exact* expectation.
+* **Policy evaluation** = repeated Bellman *expectation* backups, converging geometrically (rate $\gamma$) to $v_\pi$. Equivalent to solving the linear system $(I - \gamma P_\pi)\, v_\pi = r_\pi$.
+* **Policy improvement** = acting greedily with respect to $v_\pi$. The improvement theorem guarantees that a *local one-step* improvement is automatically a *global* improvement.
+* **Policy iteration** alternates the two until the policy stops changing; it converges in *finitely many* outer iterations on finite MDPs.
+* **Value iteration** is policy iteration with evaluation truncated to a single max-backup sweep. It tracks $v_\ast$ directly and extracts $\pi^\ast$ at the end by a one-step argmax.
+* The unifying view is **generalised policy iteration**: every later RL algorithm replaces one of the two arrows (evaluation or improvement) with a sample-based, model-free surrogate, but the alternation structure is preserved.
+
+**Final message.** DP is the *exact* version of the picture: an oracle environment, full sweeps, expected backups. The rest of the course is a long answer to a single question — **how do we approximate the DP arrows when the model is unknown and the state space is too large to sweep?**
+
+</div>
