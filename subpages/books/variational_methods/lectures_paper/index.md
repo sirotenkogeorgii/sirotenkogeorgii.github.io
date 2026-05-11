@@ -381,7 +381,7 @@ $W^{m,p}(\Omega)$ is separable if $1 \le p < \infty$ and is reflexive if $1 < p 
 
 #### 1.7.1 Smooth Functions
 
-Let $u \in C^m(\Omega)$ with $\|u\|\_{m,p} < \infty$. Then by the integration by parts formula the weak derivatives $D^\alpha u$ for $0 \le \|\alpha\| \le m$ equal the usual ones, and hence $u \in W^{m,p}(\Omega)$. In particular, if $\Omega$ is bounded and $u \in C^\infty(\mathbb{R}^n)$ then $u|_\Omega \in W^{m,p}(\Omega)$ for all $m, p$.
+Let $u \in C^m(\Omega)$ with $\|u\|\_{m,p} < \infty$. Then by the integration by parts formula the weak derivatives $D^\alpha u$ for $0 \le \|\alpha\| \le m$ equal the usual ones, and hence $u \in W^{m,p}(\Omega)$. In particular, if $\Omega$ is bounded and $u \in C^\infty(\mathbb{R}^n)$ then $u\|\_\Omega \in W^{m,p}(\Omega)$ for all $m, p$.
 
 #### 1.7.2 Piecewise Affine Functions
 
