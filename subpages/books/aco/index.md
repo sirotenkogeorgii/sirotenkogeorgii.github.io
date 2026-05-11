@@ -6,6 +6,10 @@ date: 2025-03-10
 
 # Algorithms for Combinatorial Optimization
 
+**Table of Contents**
+- TOC
+{:toc}
+
 ## Chapter 1: What is a Combinatorial Problem?
 
 ### What is a Combinatorial Problem?
@@ -92,17 +96,17 @@ The cells are the elementary parts of the considered object. Each cell in a give
 
 The graph $\mathcal{G}$ is considered as a model of the considered target object, where the nodes represent the elementary object parts and edges stand for mutually dependencies between them.
 
-**Labels and unary costs.** A finite *set of labels* $\mathcal{Y}_u$ is associated with each node $u \in \mathcal{V}$. Our preference for each label is expressed by the *unary cost function* $\theta_u \colon \mathcal{Y}_u \to \mathbb{R}$, which is defined for each node $u \in \mathcal{V}$. The value $\theta_u(s)$ determines the *cost*, which we pay for assigning label $s \in \mathcal{Y}_u$ to the node $u$. Sometimes we will use very high costs to implicitly forbid certain labels or label pairs. The notation $\infty$ will be used to denote such high costs.
+**Labels and unary costs.** A finite *set of labels* $\mathcal{Y}\_u$ is associated with each node $u \in \mathcal{V}$. Our preference for each label is expressed by the *unary cost function* $\theta_u \colon \mathcal{Y}\_u \to \mathbb{R}$, which is defined for each node $u \in \mathcal{V}$. The value $\theta_u(s)$ determines the *cost*, which we pay for assigning label $s \in \mathcal{Y}\_u$ to the node $u$. Sometimes we will use very high costs to implicitly forbid certain labels or label pairs. The notation $\infty$ will be used to denote such high costs.
 
 Unary costs are usually defined by what is known from observation. They are often called the "data term" to emphasize that they depend on the input data or observation.
 
-**Dependence and pairwise costs.** Dependencies between labels assigned to different graph nodes are modeled with *pairwise cost functions* $\theta_{uv} \colon \mathcal{Y}_u \times \mathcal{Y}_v \to \mathbb{R}$, which are defined for each edge $uv \in \mathcal{E}$ of the graph.
+**Dependence and pairwise costs.** Dependencies between labels assigned to different graph nodes are modeled with *pairwise cost functions* $\theta_{uv} \colon \mathcal{Y}\_u \times \mathcal{Y}\_v \to \mathbb{R}$, which are defined for each edge $uv \in \mathcal{E}$ of the graph.
 
 A simple (although not always the best) way to model the compactness assumption in Example 1.10 is to assign
 
 $$\theta_{uv}(s, t) = \begin{cases} 0, & s = t \\ \alpha, & s \neq t \end{cases}$$
 
-for any pair of labels $(s, t) \in \mathcal{Y}_u \times \mathcal{Y}_v$ with some $\alpha > 0$. A simple way to model a smooth surface in depth reconstruction in Example 1.11 is to assign
+for any pair of labels $(s, t) \in \mathcal{Y}\_u \times \mathcal{Y}\_v$ with some $\alpha > 0$. A simple way to model a smooth surface in depth reconstruction in Example 1.11 is to assign
 
 $$\theta_{uv}(s, t) = \lvert s - t \rvert \,,$$
 
@@ -116,14 +120,14 @@ These examples show that pairwise costs often incorporate the prior information 
 
 Costs and cost functions are also called *potentials* and *potential functions*. We prefer the term *cost* since it is more widely used in general optimization literature.
 
-Since unary and pairwise costs are functions of discrete variables, they can be seen as vectors. Therefore we can treat the unary cost function $\theta_u$ as a *unary cost vector* $(\theta_u(s), \ s \in \mathcal{Y}_u)$. Similarly, each pairwise cost function can be considered as a *pairwise cost vector* $\theta_{uv} = (\theta_{uv}(s,t), \ (s,t) \in \mathcal{Y}_u \times \mathcal{Y}_v)$. All unary vectors stacked together form the vector of all unary costs $\theta_{\mathcal{V}} = (\theta_u, \ u \in \mathcal{V})$. The vector $\theta_{\mathcal{E}}$ of all pairwise costs is defined similarly as $(\theta_{uv}, \ uv \in \mathcal{E})$. Stacking together the latter two results in a long *cost vector* $\theta = (\theta_{\mathcal{V}}, \theta_{\mathcal{E}})$ with dimension $\mathcal{I} := \sum_{u \in \mathcal{V}} \lvert \mathcal{Y}_u \rvert + \sum_{uv \in \mathcal{E}} \lvert \mathcal{Y}_{uv} \rvert$.
+Since unary and pairwise costs are functions of discrete variables, they can be seen as vectors. Therefore we can treat the unary cost function $\theta_u$ as a *unary cost vector* $(\theta_u(s), \ s \in \mathcal{Y}\_u)$. Similarly, each pairwise cost function can be considered as a *pairwise cost vector* $\theta_{uv} = (\theta_{uv}(s,t), \ (s,t) \in \mathcal{Y}\_u \times \mathcal{Y}\_v)$. All unary vectors stacked together form the vector of all unary costs $\theta_{\mathcal{V}} = (\theta_u, \ u \in \mathcal{V})$. The vector $\theta_{\mathcal{E}}$ of all pairwise costs is defined similarly as $(\theta_{uv}, \ uv \in \mathcal{E})$. Stacking together the latter two results in a long *cost vector* $\theta = (\theta_{\mathcal{V}}, \theta_{\mathcal{E}})$ with dimension $\mathcal{I} := \sum_{u \in \mathcal{V}} \lvert \mathcal{Y}\_u \rvert + \sum_{uv \in \mathcal{E}} \lvert \mathcal{Y}\_{uv} \rvert$.
 
-**Labeling.** We will often use the notation $\mathcal{Y}_{\mathcal{A}}$ for all possible label assignments to a subset of nodes $\mathcal{A} \subseteq \mathcal{V}$. Formally, $\mathcal{Y}_{\mathcal{A}}$ stands for the Cartesian product $\prod_{u \in \mathcal{A}} \mathcal{Y}_u$. In particular, $\mathcal{Y}_{uv}$ denotes $\mathcal{Y}_u \times \mathcal{Y}_v$ and is the set of all possible pairs of labels in nodes $u$ and $v$. A vector $y \in \mathcal{Y}_{\mathcal{V}}$ of labels assigned to *all* nodes of the graph is called *labeling*. We will refer to coordinates of this vector with the node index, i.e. $y_u$ stands for the label assigned to the node $u$. One may also speak about *partial labelings*, if only a subset $\mathcal{A}$ of the nodes is labeled.
+**Labeling.** We will often use the notation $\mathcal{Y}\_{\mathcal{A}}$ for all possible label assignments to a subset of nodes $\mathcal{A} \subseteq \mathcal{V}$. Formally, $\mathcal{Y}\_{\mathcal{A}}$ stands for the Cartesian product $\prod_{u \in \mathcal{A}} \mathcal{Y}\_u$. In particular, $\mathcal{Y}\_{uv}$ denotes $\mathcal{Y}\_u \times \mathcal{Y}\_v$ and is the set of all possible pairs of labels in nodes $u$ and $v$. A vector $y \in \mathcal{Y}\_{\mathcal{V}}$ of labels assigned to *all* nodes of the graph is called *labeling*. We will refer to coordinates of this vector with the node index, i.e. $y_u$ stands for the label assigned to the node $u$. One may also speak about *partial labelings*, if only a subset $\mathcal{A}$ of the nodes is labeled.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 1.13</span><span class="math-callout__name">(Labeling problem)</span></p>
 
-The triple $(\mathcal{G}, \mathcal{Y}_{\mathcal{V}}, \theta)$ consisting of a graph $\mathcal{G}$, discrete space of all labelings $\mathcal{Y}_{\mathcal{V}}$ and a corresponding cost vector $\theta$, is called a *labeling problem*.
+The triple $(\mathcal{G}, \mathcal{Y}\_{\mathcal{V}}, \theta)$ consisting of a graph $\mathcal{G}$, discrete space of all labelings $\mathcal{Y}\_{\mathcal{V}}$ and a corresponding cost vector $\theta$, is called a *labeling problem*.
 
 </div>
 
@@ -134,9 +138,54 @@ The problem
 
 $$y^* = \arg\min_{y \in \mathcal{Y}_{\mathcal{V}}} \left[ E(y; \theta) := \sum_{u \in \mathcal{V}} \theta_u(y_u) + \sum_{uv \in \mathcal{E}} \theta_{uv}(y_u, y_v) \right]$$
 
-of finding a labeling $y^*$ with minimal total cost will be called *energy minimization* or *maximum a posteriori (MAP) inference* problem for the labeling problem $(\mathcal{G}, \mathcal{Y}_{\mathcal{V}}, \theta)$.
+of finding a labeling $y^\ast$ with minimal total cost will be called *energy minimization* or *maximum a posteriori (MAP) inference* problem for the labeling problem $(\mathcal{G}, \mathcal{Y}\_{\mathcal{V}}, \theta)$.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 250" width="100%" style="max-width: 640px; height: auto;" role="img" aria-labelledby="lblprob-title">
+  <title id="lblprob-title">A small labeling problem and one labeling y</title>
+  <g stroke="#666" stroke-width="2" fill="none">
+    <line x1="100" y1="200" x2="220" y2="200"/>
+    <line x1="260" y1="200" x2="380" y2="200"/>
+    <line x1="420" y1="200" x2="540" y2="200"/>
+    <path d="M 100 195 Q 320 100 540 195" stroke-dasharray="4 3"/>
+  </g>
+  <g font-family="serif" font-size="12" text-anchor="middle">
+    <text x="320" y="95" font-style="italic" fill="#888">long-range edge (optional)</text>
+    <rect x="60" y="35" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="80" y="50">a</text>
+    <rect x="60" y="59" width="40" height="22" fill="#ffd180" stroke="#e65100" stroke-width="1.5"/><text x="80" y="74">b</text>
+    <rect x="60" y="83" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="80" y="98">c</text>
+    <line x1="80" y1="180" x2="80" y2="108" stroke="#e65100" stroke-width="1.5"/>
+    <rect x="220" y="35" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="240" y="50">a</text>
+    <rect x="220" y="59" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="240" y="74">b</text>
+    <rect x="220" y="83" width="40" height="22" fill="#ffd180" stroke="#e65100" stroke-width="1.5"/><text x="240" y="98">c</text>
+    <line x1="240" y1="180" x2="240" y2="108" stroke="#e65100" stroke-width="1.5"/>
+    <rect x="380" y="35" width="40" height="22" fill="#ffd180" stroke="#e65100" stroke-width="1.5"/><text x="400" y="50">a</text>
+    <rect x="380" y="59" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="400" y="74">b</text>
+    <rect x="380" y="83" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="400" y="98">c</text>
+    <line x1="400" y1="180" x2="400" y2="108" stroke="#e65100" stroke-width="1.5"/>
+    <rect x="540" y="35" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="560" y="50">a</text>
+    <rect x="540" y="59" width="40" height="22" fill="#ffd180" stroke="#e65100" stroke-width="1.5"/><text x="560" y="74">b</text>
+    <rect x="540" y="83" width="40" height="22" fill="#fff" stroke="#aaa"/><text x="560" y="98">c</text>
+    <line x1="560" y1="180" x2="560" y2="108" stroke="#e65100" stroke-width="1.5"/>
+  </g>
+  <g font-family="serif" font-size="14">
+    <circle cx="80" cy="200" r="18" fill="#fff" stroke="#333" stroke-width="2"/><text x="80" y="205" text-anchor="middle">u₁</text>
+    <circle cx="240" cy="200" r="18" fill="#fff" stroke="#333" stroke-width="2"/><text x="240" y="205" text-anchor="middle">u₂</text>
+    <circle cx="400" cy="200" r="18" fill="#fff" stroke="#333" stroke-width="2"/><text x="400" y="205" text-anchor="middle">u₃</text>
+    <circle cx="560" cy="200" r="18" fill="#fff" stroke="#333" stroke-width="2"/><text x="560" y="205" text-anchor="middle">u₄</text>
+  </g>
+  <g font-family="serif" font-size="12" fill="#666">
+    <text x="10" y="74">𝒴_u</text>
+    <text x="10" y="205">𝒱</text>
+    <text x="10" y="235">edges 𝓔: solid; long-range: dashed</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A labeling problem: nodes $\mathcal{V}$ carry candidate label sets $\mathcal{Y}\_u$; edges $\mathcal{E}$ encode dependencies. A labeling $y \in \mathcal{Y}\_\mathcal{V}$ picks one label per node (highlighted), with energy $E(y;\theta)=\sum_u \theta_u(y_u)+\sum_{uv}\theta_{uv}(y_u,y_v)$.
+</figcaption>
+</figure>
 
 For the sake of notation we will sometimes use the short form
 
@@ -152,21 +201,21 @@ Problems equivalent or very closely related to energy minimization have also oth
 
 Let the graph $\mathcal{G}$ be chain-structured. In this case the set of nodes can be totally ordered, i.e. $\mathcal{V} = \lbrace 1, \ldots, n \rbrace$. The set of edges contains pairs of neighboring nodes in the chain: $\mathcal{E} = \lbrace (i, i+1) \colon i = 1, \ldots, n-1 \rbrace$.
 
-Consider a chain-structured labeling problem. An optimal labeling starts in the first (left-most) node and ends in the last (right-most) one. To select its last label optimally assume we have computed the function $F_n \colon \mathcal{Y}_n \to \mathbb{R}$ such that $F_n(s) + \theta_n(s)$ denotes the cost of the best (minimal-cost) labeling with the very last label being $s$. In other words, the value $F_n(s)$ is the cost of the labeling without the unary cost $\theta_n(s)$. Then the minimization $y_n = \arg\min_{s \in \mathcal{Y}_n}(F_n(s) + \theta_n(s))$, which can be performed by enumeration, allows us to determine the last label of an optimal labeling $y$.
+Consider a chain-structured labeling problem. An optimal labeling starts in the first (left-most) node and ends in the last (right-most) one. To select its last label optimally assume we have computed the function $F_n \colon \mathcal{Y}\_n \to \mathbb{R}$ such that $F_n(s) + \theta_n(s)$ denotes the cost of the best (minimal-cost) labeling with the very last label being $s$. In other words, the value $F_n(s)$ is the cost of the labeling without the unary cost $\theta_n(s)$. Then the minimization $y_n = \arg\min_{s \in \mathcal{Y}\_n}(F_n(s) + \theta_n(s))$, which can be performed by enumeration, allows us to determine the last label of an optimal labeling $y$.
 
-To find other labels the same considerations can be applied given that the functions $F_i \colon \mathcal{Y}_i \to \mathbb{R}$ are computed such that $F_i(s)$ equals the cost of the best partial labeling in the nodes $1, \ldots, i$ with the label $s$ assigned to the $i$-th node.
+To find other labels the same considerations can be applied given that the functions $F_i \colon \mathcal{Y}\_i \to \mathbb{R}$ are computed such that $F_i(s)$ equals the cost of the best partial labeling in the nodes $1, \ldots, i$ with the label $s$ assigned to the $i$-th node.
 
 Functions $F_i$ can be recursively computed as
 
 $$F_i(s) := \min_{t \in \mathcal{Y}_{i-1}} \left( F_{i-1}(t) + \theta_{i-1}(t) + \theta_{i-1,i}(t, s) \right) \,,$$
 
-with $F_1(s) = 0$ for all $s \in \mathcal{Y}_1$.
+with $F_1(s) = 0$ for all $s \in \mathcal{Y}\_1$.
 
 These considerations can be derived from the following recursive representation of the energy of a chain-structured labeling problem:
 
 $$\min_{y \in \mathcal{Y}_{\mathcal{V}}} E(y; \theta) = \min_{y_1, \ldots, y_n} \left( \sum_{i=1}^{n-1} \left( \theta_i(y_i) + \theta_{i,i+1}(y_i, y_{i+1}) \right) + \theta_n(y_n) \right)$$
 
-where functions $F_i \colon \mathcal{Y}_i \to \mathbb{R}$ for $i \in \mathcal{V}$ are introduced "on the fly":
+where functions $F_i \colon \mathcal{Y}\_i \to \mathbb{R}$ for $i \in \mathcal{V}$ are introduced "on the fly":
 
 $$= \min_{y_2, \ldots, y_n} \left( \underbrace{\min_{y_1 \in \mathcal{Y}_1} \left( \theta_1(y_1) + \theta_{1,2}(y_1, y_2) \right)}_{F_2(y_2)} + \sum_{i=2}^{n-1} \left( \theta_i(y_i) + \theta_{i,i+1}(y_i, y_{i+1}) \right) + \theta_n(y_n) \right)$$
 
@@ -174,20 +223,20 @@ $$= \min_{y_3, \ldots, y_n} \left( \underbrace{\min_{y_2 \in \mathcal{Y}_2} \lef
 
 $$\cdots = \min_{y_n \in \mathcal{Y}_n} \left( F_n(y_n) + \theta_n(y_n) \right) \,.$$
 
-These transformations confirm that the energy of the optimal labeling can be computed as $\min_{y \in \mathcal{Y}_{\mathcal{V}}} E(y) = \min_{s \in \mathcal{Y}_n}(F_n(s) + \theta_n(s))$ and values $F_i(s)$ can be computed recursively.
+These transformations confirm that the energy of the optimal labeling can be computed as $\min_{y \in \mathcal{Y}\_{\mathcal{V}}} E(y) = \min_{s \in \mathcal{Y}\_n}(F_n(s) + \theta_n(s))$ and values $F_i(s)$ can be computed recursively.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm 1</span><span class="math-callout__name">(Dynamic programming for chain-structured labeling problems)</span></p>
 
-**Given:** $(\mathcal{G}, \mathcal{Y}_{\mathcal{V}}, \theta)$ — a chain-structured labeling problem
+**Given:** $(\mathcal{G}, \mathcal{Y}\_{\mathcal{V}}, \theta)$ — a chain-structured labeling problem
 
-1. $F_1(s) := 0$, for all $s \in \mathcal{Y}_1$
+1. $F_1(s) := 0$, for all $s \in \mathcal{Y}\_1$
 2. **for** $i = 2$ **to** $n$ **do**
-    - $F_i(s) := \min_{t \in \mathcal{Y}_{i-1}} \left( F_{i-1}(t) + \theta_{i-1}(t) + \theta_{i-1,i}(t, s) \right)$, $\forall s \in \mathcal{Y}_i$
-    - $r_i(s) := \arg\min_{t \in \mathcal{Y}_{i-1}} \left( F_{i-1}(t) + \theta_{i-1}(t) + \theta_{i-1,i}(t, s) \right)$, $\forall s \in \mathcal{Y}_i$
+    - $F_i(s) := \min_{t \in \mathcal{Y}\_{i-1}} \left( F_{i-1}(t) + \theta_{i-1}(t) + \theta_{i-1,i}(t, s) \right)$, $\forall s \in \mathcal{Y}\_i$
+    - $r_i(s) := \arg\min_{t \in \mathcal{Y}\_{i-1}} \left( F_{i-1}(t) + \theta_{i-1}(t) + \theta_{i-1,i}(t, s) \right)$, $\forall s \in \mathcal{Y}\_i$
 3. **end for**
-4. $E^* = \min_{s \in \mathcal{Y}_n} (F_n(s) + \theta_n(s))$
-5. **return** $E^*$, $\lbrace r_i(s) \colon i = 2, \ldots, n, \ s \in \mathcal{Y}_i \rbrace$
+4. $E^\ast = \min_{s \in \mathcal{Y}\_n} (F_n(s) + \theta_n(s))$
+5. **return** $E^\ast$, $\lbrace r_i(s) \colon i = 2, \ldots, n, \ s \in \mathcal{Y}\_i \rbrace$
 
 </div>
 
@@ -195,12 +244,105 @@ Values $F_i(s)$ are often called *forward min-marginals* or *forward messages*, 
 
 Values $r_i(s)$ are pointers needed to recover the optimal labeling, when its energy is computed, as given by Algorithm 2.
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 660 320" width="100%" style="max-width: 660px; height: auto;" role="img" aria-labelledby="dp-title">
+  <title id="dp-title">Viterbi/Bellman trellis: forward pass and back-pointer recovery</title>
+  <defs>
+    <marker id="dp-arr-grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#bbb"/>
+    </marker>
+    <marker id="dp-arr-best" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e65100"/>
+    </marker>
+  </defs>
+  <!-- column headers -->
+  <g font-family="serif" font-size="13" text-anchor="middle">
+    <text x="80"  y="30">node 1</text>
+    <text x="220" y="30">node 2</text>
+    <text x="360" y="30">node 3</text>
+    <text x="500" y="30">node 4</text>
+    <text x="620" y="30">…</text>
+  </g>
+  <!-- 3 labels per column at heights 80, 160, 240 -->
+  <!-- all transitions (light grey) -->
+  <g stroke="#bbb" stroke-width="1" fill="none">
+    <line x1="98" y1="80"  x2="202" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="80"  x2="202" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="80"  x2="202" y2="240" marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="160" x2="202" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="160" x2="202" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="160" x2="202" y2="240" marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="240" x2="202" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="240" x2="202" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="98" y1="240" x2="202" y2="240" marker-end="url(#dp-arr-grey)"/>
+
+    <line x1="238" y1="80"  x2="342" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="80"  x2="342" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="80"  x2="342" y2="240" marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="160" x2="342" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="160" x2="342" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="160" x2="342" y2="240" marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="240" x2="342" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="240" x2="342" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="238" y1="240" x2="342" y2="240" marker-end="url(#dp-arr-grey)"/>
+
+    <line x1="378" y1="80"  x2="482" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="80"  x2="482" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="80"  x2="482" y2="240" marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="160" x2="482" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="160" x2="482" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="160" x2="482" y2="240" marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="240" x2="482" y2="80"  marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="240" x2="482" y2="160" marker-end="url(#dp-arr-grey)"/>
+    <line x1="378" y1="240" x2="482" y2="240" marker-end="url(#dp-arr-grey)"/>
+  </g>
+  <!-- best back-pointers (the recovered path) - in orange, drawn over -->
+  <g stroke="#e65100" stroke-width="2.5" fill="none">
+    <line x1="98"  y1="160" x2="202" y2="80"  marker-end="url(#dp-arr-best)"/>
+    <line x1="238" y1="80"  x2="342" y2="80"  marker-end="url(#dp-arr-best)"/>
+    <line x1="378" y1="80"  x2="482" y2="160" marker-end="url(#dp-arr-best)"/>
+  </g>
+  <!-- nodes (label slots) -->
+  <g font-family="serif" font-size="11" text-anchor="middle">
+    <!-- col 1 -->
+    <circle cx="80"  cy="80"  r="16" fill="#fff" stroke="#333"/><text x="80" y="84">a</text>
+    <circle cx="80"  cy="160" r="16" fill="#ffd180" stroke="#e65100" stroke-width="2"/><text x="80" y="164">b</text>
+    <circle cx="80"  cy="240" r="16" fill="#fff" stroke="#333"/><text x="80" y="244">c</text>
+    <!-- col 2 -->
+    <circle cx="220" cy="80"  r="16" fill="#ffd180" stroke="#e65100" stroke-width="2"/><text x="220" y="84">a</text>
+    <circle cx="220" cy="160" r="16" fill="#fff" stroke="#333"/><text x="220" y="164">b</text>
+    <circle cx="220" cy="240" r="16" fill="#fff" stroke="#333"/><text x="220" y="244">c</text>
+    <!-- col 3 -->
+    <circle cx="360" cy="80"  r="16" fill="#ffd180" stroke="#e65100" stroke-width="2"/><text x="360" y="84">a</text>
+    <circle cx="360" cy="160" r="16" fill="#fff" stroke="#333"/><text x="360" y="164">b</text>
+    <circle cx="360" cy="240" r="16" fill="#fff" stroke="#333"/><text x="360" y="244">c</text>
+    <!-- col 4 -->
+    <circle cx="500" cy="80"  r="16" fill="#fff" stroke="#333"/><text x="500" y="84">a</text>
+    <circle cx="500" cy="160" r="16" fill="#ffd180" stroke="#e65100" stroke-width="2"/><text x="500" y="164">b</text>
+    <circle cx="500" cy="240" r="16" fill="#fff" stroke="#333"/><text x="500" y="244">c</text>
+  </g>
+  <!-- F_i annotations under each column -->
+  <g font-family="serif" font-size="11" fill="#1565c0" text-anchor="middle">
+    <text x="80"  y="285">F₁(·)=0</text>
+    <text x="220" y="285">F₂(s)</text>
+    <text x="360" y="285">F₃(s)</text>
+    <text x="500" y="285">F₄(s)</text>
+  </g>
+  <text x="330" y="310" font-family="serif" font-size="11" fill="#666" text-anchor="middle">
+    Forward pass fills Fᵢ left→right; back-pointers rᵢ(s) recover the optimal labeling right→left.
+  </text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The Viterbi/Bellman trellis for a chain with 3 labels per node. **Forward pass:** for each label $s$ in column $i$, $F_i(s)$ is the cost of the cheapest left-prefix ending at $s$; the predecessor $r_i(s)$ achieving the min is stored. **Backward pass:** start from $\arg\min_s(F_n(s)+\theta_n(s))$ and follow $r_i$ pointers (orange edges) to recover $y^\ast$. Total work $O(L^2\lvert \mathcal{E} \rvert)$.
+</figcaption>
+</figure>
+
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm 2</span><span class="math-callout__name">(Reconstructing an optimal labeling)</span></p>
 
-**Given:** $r_i(s) \colon i = 2, \ldots, n, \ s \in \mathcal{Y}_i$
+**Given:** $r_i(s) \colon i = 2, \ldots, n, \ s \in \mathcal{Y}\_i$
 
-1. $y_n = \arg\min_{s \in \mathcal{Y}_n} (F_n(s) + \theta_n(s))$
+1. $y_n = \arg\min_{s \in \mathcal{Y}\_n} (F_n(s) + \theta_n(s))$
 2. **for** $i = n$ **to** $2$ **do**
     - $y_{i-1} = r_i(y_i)$
 3. **end for**
@@ -208,13 +350,17 @@ Values $r_i(s)$ are pointers needed to recover the optimal labeling, when its en
 
 </div>
 
-**Computation complexity.** The complexity of each minimization in line 4 of Algorithm 1 is $O(\lvert \mathcal{Y}_{i-1} \rvert)$. One has to perform $\lvert \mathcal{Y}_i \rvert$ such minimizations on each iteration. Therefore, complexity of the algorithm reads
+**Computation complexity.** The complexity of each minimization in line 4 of Algorithm 1 is $O(\lvert \mathcal{Y}\_{i-1} \rvert)$. One has to perform $\lvert \mathcal{Y}\_i \rvert$ such minimizations on each iteration. Therefore, complexity of the algorithm reads
 
 $$O\!\left(\sum_{i=2}^{n} \lvert \mathcal{Y}_{i-1} \rvert \lvert \mathcal{Y}_i \rvert\right),$$
 
 which results in $O(L^2 \lvert \mathcal{V} \rvert) = O(L^2 \lvert \mathcal{E} \rvert)$ if we assume that all nodes have an equal number $L$ of labels. This is exactly the memory, which is required to define a chain-structured labeling problem: $\lvert \mathcal{V} \rvert$ unary cost vectors of the size $L$ each plus $\lvert \mathcal{E} \rvert - 1$ pairwise costs of the size $L^2$ each. In other words, dynamic programming for chain-structured labeling problems has linear complexity with respect to the model size.
 
 The functions $F_i$ are known as *Bellman* functions, in honor of the author of dynamic programming. Besides the original name, Algorithm 1 is often referred to as the *Viterbi algorithm*.
+
+### 1.7 Bibliography and Further Reading
+
+*(No content in source.)*
 
 ## Chapter 2: (Integer) Linear Programs
 
@@ -226,15 +372,15 @@ In the optimization literature the notation
 
 $$\min_{x \in X} f(x)$$
 
-is adopted for a problem of *minimizing* a function $f \colon X \to \mathbb{R}$ on a set $X \subseteq \mathbb{R}^n$. More precisely, it means that *the optimal value* of $f$ defined as $f^* = \inf_{x \in X} f(x)$ must be found.
+is adopted for a problem of *minimizing* a function $f \colon X \to \mathbb{R}$ on a set $X \subseteq \mathbb{R}^n$. More precisely, it means that *the optimal value* of $f$ defined as $f^\ast = \inf_{x \in X} f(x)$ must be found.
 
-- If $f^* = -\infty$, that is, there exists a sequence $x^t \in X$ such that $f(x^t) \xrightarrow{t \to \infty} -\infty$, the problem is called *unbounded*.
-- When $X$ is an empty set, the problem is called *infeasible*, and the notation $f^* = \infty$ is adopted.
-- The fact that the problem is neither infeasible nor unbounded, in other words, *feasible* and *bounded*, is denoted as $-\infty < f^* < \infty$.
+- If $f^\ast = -\infty$, that is, there exists a sequence $x^t \in X$ such that $f(x^t) \xrightarrow{t \to \infty} -\infty$, the problem is called *unbounded*.
+- When $X$ is an empty set, the problem is called *infeasible*, and the notation $f^\ast = \infty$ is adopted.
+- The fact that the problem is neither infeasible nor unbounded, in other words, *feasible* and *bounded*, is denoted as $-\infty < f^\ast < \infty$.
 
-The set $X$ is called the *feasible set* and $x \in X$ is a *feasible point*. A vector $x^* \in X$ such that $f(x^*) = f^*$ is called an *(optimal) solution* or *optimal point* of the problem. In general, an optimal solution is not unique, or may not exist, even if $-\infty < f^* < \infty$.
+The set $X$ is called the *feasible set* and $x \in X$ is a *feasible point*. A vector $x^\ast \in X$ such that $f(x^\ast) = f^\ast$ is called an *(optimal) solution* or *optimal point* of the problem. In general, an optimal solution is not unique, or may not exist, even if $-\infty < f^\ast < \infty$.
 
-A feasible point $x$ such that $f(x) \approx f^*$ (denoted as $f(x) \approx f^*$) is often referred to as an *approximate solution* of the minimization problem.
+A feasible point $x$ such that $f(x) \approx f^\ast$ (denoted as $f(x) \approx f^\ast$) is often referred to as an *approximate solution* of the minimization problem.
 
 The problem of the form $\min_{x \in X} f(x)$ is referred to as a *constraint minimization* problem. The *constrained maximization* problem $\max_{x \in X} f(x)$ is defined by substituting min with max, inf with sup, and $-\infty$ with $\infty$ and the other way around. Minimization and maximization problems together are also called *optimization* problems.
 
@@ -353,8 +499,15 @@ Two relaxations are called *equivalent*, if their bounds coincide.
 
 Let $\min_{x \in X} f(x)$ be an optimization problem and $\min_{x \in X'} g(x)$ be its relaxation. If $x' \in X$ is the unique solution of the relaxed problem and $g(x') = f(x')$, then it is also the unique solution of the non-relaxed one.
 
-*Proof.* Since $x'$ is the unique relaxed solution, it holds that $f(x') = g(x') < g(x)$ for $x \in X' \setminus \lbrace x' \rbrace$. Therefore, $f(x') < g(x) \leq f(x)$ for all $x \in (X \setminus \lbrace x' \rbrace) \subseteq (X' \setminus \lbrace x' \rbrace)$, which implies that $x'$ is the unique solution of the non-relaxed problem. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.13</summary>
+
+Since $x'$ is the unique relaxed solution, it holds that $f(x') = g(x') < g(x)$ for $x \in X' \setminus \lbrace x' \rbrace$. Therefore, $f(x') < g(x) \leq f(x)$ for all $x \in (X \setminus \lbrace x' \rbrace) \subseteq (X' \setminus \lbrace x' \rbrace)$, which implies that $x'$ is the unique solution of the non-relaxed problem. $\square$
+
+</details>
 </div>
 
 ### Linear and Affine Spaces
@@ -421,8 +574,15 @@ and it is bounded. The $n$-dimensional cube is full-dimensional. Constraints $x 
 
 The set of the type $\lbrace x \in \mathbb{R}^n \colon Ax = b, \ Bx \leq d \rbrace$, where $A$ and $B$ are arbitrary matrices of a suitable dimension, is a polyhedron in $\mathbb{R}^n$.
 
-*Proof.* The equality constraints $Ax = b$ can be equivalently represented as inequalities: $\lbrace Ax \leq b, \ -Ax \leq -b \rbrace$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.17</summary>
+
+The equality constraints $Ax = b$ can be equivalently represented as inequalities: $\lbrace Ax \leq b, \ -Ax \leq -b \rbrace$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -437,8 +597,15 @@ A hyperplane $\langle \mathbf{a}, \mathbf{x} \rangle = b$ is a polyhedron, and s
 
 The intersection of two polyhedra is a polyhedron itself. Moreover, if one of the polyhedra is a polytope, the intersection is a polytope as well.
 
-*Proof.* An intersection of two polyhedra given by $Ax \leq b$ and $Bx \leq d$, respectively, is the set $\lbrace x \mid Ax \leq b, \ Bx \leq d \rbrace$ constrained by both these sets of inequalities. The second statement is trivial as the intersection is a subset of the polytope at hand. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.19</summary>
+
+An intersection of two polyhedra given by $Ax \leq b$ and $Bx \leq d$, respectively, is the set $\lbrace x \mid Ax \leq b, \ Bx \leq d \rbrace$ constrained by both these sets of inequalities. The second statement is trivial as the intersection is a subset of the polytope at hand. $\square$
+
+</details>
 </div>
 
 #### Convex Hulls and Vertices of Polyhedra
@@ -455,6 +622,52 @@ In other words, $x'$ is a vertex, if it is the unique solution of $\max_{x \in P
 </div>
 
 We will use the notation $\operatorname{vrtx}(P)$ for the set of vertices of a polyhedron $P$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 540 280" width="100%" style="max-width: 540px; height: auto;" role="img" aria-labelledby="vrtx-title">
+  <title id="vrtx-title">A vertex of a polytope as the unique maximizer of a linear functional</title>
+  <!-- Polytope (pentagon) -->
+  <polygon points="120,210 80,140 150,70 280,80 320,180" fill="#fff7ec" stroke="#333" stroke-width="2"/>
+  <!-- Vertices (dots) -->
+  <g fill="#333">
+    <circle cx="120" cy="210" r="4"/>
+    <circle cx="80" cy="140" r="4"/>
+    <circle cx="150" cy="70" r="4"/>
+    <circle cx="280" cy="80" r="4"/>
+    <circle cx="320" cy="180" r="4"/>
+  </g>
+  <!-- Highlight one vertex x' -->
+  <circle cx="280" cy="80" r="7" fill="#e65100" stroke="#fff" stroke-width="2"/>
+  <!-- direction c -->
+  <defs>
+    <marker id="arrhead-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1565c0"/>
+    </marker>
+  </defs>
+  <line x1="200" y1="240" x2="305" y2="105" stroke="#1565c0" stroke-width="2.2" marker-end="url(#arrhead-c)"/>
+  <text x="195" y="250" font-family="serif" font-style="italic" font-size="14" fill="#1565c0">c</text>
+  <!-- Level lines of <c,x> (perpendicular to c) -->
+  <g stroke="#1565c0" stroke-width="1" stroke-dasharray="3 3" opacity="0.55">
+    <line x1="80" y1="105" x2="240" y2="230"/>
+    <line x1="135" y1="60" x2="295" y2="185"/>
+    <line x1="200" y1="20" x2="360" y2="145"/>
+  </g>
+  <!-- Labels -->
+  <text x="290" y="72" font-family="serif" font-size="14" font-style="italic" fill="#e65100">x'</text>
+  <text x="180" y="160" font-family="serif" font-size="14" font-style="italic" fill="#666">P</text>
+  <!-- Right side text -->
+  <g font-family="serif" font-size="13" fill="#333">
+    <text x="370" y="80">x' is a vertex iff</text>
+    <text x="370" y="105">⟨c, x'⟩ &gt; ⟨c, x⟩</text>
+    <text x="370" y="125">for all x ∈ P, x ≠ x'.</text>
+    <text x="370" y="160" fill="#1565c0">Dashed: level sets</text>
+    <text x="370" y="178" fill="#1565c0">of ⟨c,·⟩.</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A vertex $x'$ of polytope $P$ is the **unique maximizer** of some linear functional $\langle c,\cdot\rangle$. Geometrically: a "supporting hyperplane" of $P$ touches $P$ in exactly one point.
+</figcaption>
+</figure>
 
 Note that since $\max_{x \in P} \langle c, x \rangle = -\min_{x \in P}(-\langle c, x \rangle)$, the maximization problem $\max_{x \in P} \langle c, x \rangle$ can be equivalently exchanged with $\min_{x \in P} \langle c, x \rangle$ in Definition 2.20.
 
@@ -484,6 +697,61 @@ Let us show that vectors $x^i \in \mathbb{R}^n$, $i = 1, \ldots, n$ such that $x
 Note also that $x^i \in \mathbb{R}^n$, $i = 1, \ldots, n$, are the only binary (with coordinates 0 and 1) vectors in $\Delta^n$. In other words, $\lbrace x^i \in \mathbb{R}^n \mid i = 1, \ldots, n \rbrace = \Delta^n \cap \lbrace 0,1 \rbrace^n$. This implies that $\Delta^n \cap \lbrace 0,1 \rbrace^n \subseteq \operatorname{vrtx}(\Delta^n)$. Moreover, later we will show that $\Delta^n \cap \lbrace 0,1 \rbrace^n = \operatorname{vrtx}(\Delta^n)$.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 540 240" width="100%" style="max-width: 540px; height: auto;" role="img" aria-labelledby="simplex-title">
+  <title id="simplex-title">The probability simplices Δ¹, Δ², Δ³</title>
+  <!-- Δ¹ : segment in R² between (1,0) and (0,1) -->
+  <g transform="translate(20,20)">
+    <text x="60" y="-2" font-family="serif" font-size="13" text-anchor="middle">Δ¹ ⊂ ℝ²</text>
+    <line x1="20" y1="160" x2="100" y2="160" stroke="#bbb" stroke-width="1"/>
+    <line x1="20" y1="160" x2="20" y2="80" stroke="#bbb" stroke-width="1"/>
+    <line x1="20" y1="80" x2="100" y2="160" stroke="#e65100" stroke-width="3"/>
+    <circle cx="20" cy="80" r="4" fill="#e65100"/>
+    <circle cx="100" cy="160" r="4" fill="#e65100"/>
+    <text x="6" y="78" font-family="serif" font-size="11">(0,1)</text>
+    <text x="100" y="180" font-family="serif" font-size="11" text-anchor="middle">(1,0)</text>
+    <text x="60" y="200" font-family="serif" font-size="11" text-anchor="middle" fill="#666">x₁+x₂=1, x≥0</text>
+  </g>
+  <!-- Δ² : triangle in R³ -->
+  <g transform="translate(180,20)">
+    <text x="80" y="-2" font-family="serif" font-size="13" text-anchor="middle">Δ² ⊂ ℝ³</text>
+    <!-- axes (light) -->
+    <line x1="40" y1="160" x2="150" y2="160" stroke="#bbb"/>  <!-- x1 -->
+    <line x1="40" y1="160" x2="40"  y2="60"  stroke="#bbb"/>  <!-- x3 -->
+    <line x1="40" y1="160" x2="100" y2="195" stroke="#bbb"/>  <!-- x2 -->
+    <text x="155" y="163" font-family="serif" font-size="11" fill="#666">x₁</text>
+    <text x="32" y="55" font-family="serif" font-size="11" fill="#666">x₃</text>
+    <text x="105" y="208" font-family="serif" font-size="11" fill="#666">x₂</text>
+    <!-- triangle -->
+    <polygon points="130,160 40,80 90,185" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+    <circle cx="130" cy="160" r="4" fill="#e65100"/>
+    <circle cx="40"  cy="80"  r="4" fill="#e65100"/>
+    <circle cx="90"  cy="185" r="4" fill="#e65100"/>
+    <text x="138" y="160" font-family="serif" font-size="10">(1,0,0)</text>
+    <text x="0"   y="78"  font-family="serif" font-size="10">(0,0,1)</text>
+    <text x="92"  y="200" font-family="serif" font-size="10">(0,1,0)</text>
+  </g>
+  <!-- Δ³ : tetrahedron -->
+  <g transform="translate(370,20)">
+    <text x="70" y="-2" font-family="serif" font-size="13" text-anchor="middle">Δ³ ⊂ ℝ⁴</text>
+    <polygon points="40,170 130,170 85,90" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+    <line x1="40" y1="170" x2="80" y2="130" stroke="#e65100" stroke-width="2"/>
+    <line x1="130" y1="170" x2="80" y2="130" stroke="#e65100" stroke-width="2"/>
+    <line x1="85"  y1="90"  x2="80" y2="130" stroke="#e65100" stroke-width="2" stroke-dasharray="3 3"/>
+    <g fill="#e65100">
+      <circle cx="40" cy="170" r="4"/>
+      <circle cx="130" cy="170" r="4"/>
+      <circle cx="85" cy="90" r="4"/>
+      <circle cx="80" cy="130" r="4"/>
+    </g>
+    <text x="70" y="200" font-family="serif" font-size="10" text-anchor="middle">tetrahedron, 4 vertices</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+$\Delta^n$ is the convex hull of the $n$ standard basis vectors of $\mathbb{R}^n$, so its vertices are $\Delta^n \cap \lbrace 0,1 \rbrace^n$. Geometrically: a segment for $n=2$, a triangle for $n=3$, a tetrahedron for $n=4$.
+</figcaption>
+</figure>
 
 **Faces of the polyhedron.** Face of the polyhedron $P \in \mathbb{R}^n$ is the set that can be expressed as $\arg\min_{x \in P} \langle c, x \rangle$ for some $c \in \mathbb{R}^n$. The most important types of faces are:
 
@@ -517,19 +785,35 @@ A set $X \subseteq \mathbb{R}^N$ is called *convex*, if for any finite subset $x
 
 Let $X$ be representable as the intersection of an arbitrary number of convex sets. Then $X$ is convex as well.
 
-*Proof.* Let $x$ and $z$ belong to the intersection. Then $x$ and $z$ belong to each of the sets. Consider now one of these sets. Then, for any $\alpha \in [0,1]$ the point $\hat{x} = \alpha x + (1 - \alpha)z$ belongs to this set as well due to its convexity. Since this consideration holds for any set involved in the intersection, $\hat{x}$ belongs to the intersection as well. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Lemma 2.27</summary>
+
+Let $x$ and $z$ belong to the intersection. Then $x$ and $z$ belong to each of the sets. Consider now one of these sets. Then, for any $\alpha \in [0,1]$ the point $\hat{x} = \alpha x + (1 - \alpha)z$ belongs to this set as well due to its convexity. Since this consideration holds for any set involved in the intersection, $\hat{x}$ belongs to the intersection as well. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.28</span><span class="math-callout__name">(Polyhedra are convex sets)</span></p>
 
-*Proof.* It is necessary to prove that the set $X = \lbrace x \colon Ax \leq b \rbrace$ is convex, where $A$ is a matrix and $b$ a vector of suitable dimensions. Let $p \in \Delta^n$. The proof follows from
+Every polyhedron is a convex set.
+
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.28</summary>
+
+It is necessary to prove that the set $X = \lbrace x \colon Ax \leq b \rbrace$ is convex, where $A$ is a matrix and $b$ a vector of suitable dimensions. Let $p \in \Delta^n$. The proof follows from
 
 $$A \sum_{i=1}^{n} p_i x^i = \sum_{i=1}^{n} p_i A x^i \leq \sum_{i=1}^{n} p_i b = b \sum_{i=1}^{n} p_i = b \,,$$
 
 where the inequality holds since $p_i \geq 0$, and the last equality holds due to $\sum_{i=1}^{n} p_i = 1$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -544,8 +828,15 @@ For $X \subset \mathbb{R}^n$ the set $\lbrace s \in \mathbb{R}^n \mid \exists N 
 
 Let $Z \subseteq \mathbb{R}^n$ and $X \subseteq Z$. Then $\operatorname{conv}(X) \subseteq \operatorname{conv}(Z)$.
 
-*Proof.* Any $x \in \operatorname{conv}(X)$ is representable as $\sum_{i=1}^{N} p_i x^i$ with some natural $N$, $p \in \Delta^N$ and $x^i \in X$. Since $x^i \in Z$, the point $x = \sum_{i=1}^{N} p_i x^i$ also belongs to $\operatorname{conv}(Z)$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.32</summary>
+
+Any $x \in \operatorname{conv}(X)$ is representable as $\sum_{i=1}^{N} p_i x^i$ with some natural $N$, $p \in \Delta^N$ and $x^i \in X$. Since $x^i \in Z$, the point $x = \sum_{i=1}^{N} p_i x^i$ also belongs to $\operatorname{conv}(Z)$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -574,8 +865,15 @@ Due to Lemma 2.34 the equality $\operatorname{conv}(\lbrace 0,1 \rbrace^n) = [0,
 
 Let $X$ be a convex set. Then the set $Z := \lbrace z \mid z = Ax + b, \ x \in X \rbrace$ is convex as well.
 
-*Proof.* Let $z, z' \in Z$. They are representable as $z = Ax + b$ and $z' = Ax' + b$ for some $x, x' \in X$. Consider $p \in (0,1)$ and $pz + (1-p)z' = p(Ax+b) + (1-p)(Ax'+b) = A(px + (1-p)x') + b$. Since $X$ is convex, $px + (1-p)x' \in X$ and, therefore, $pz + (1-p)z' \in Z$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Lemma 2.36</summary>
+
+Let $z, z' \in Z$. They are representable as $z = Ax + b$ and $z' = Ax' + b$ for some $x, x' \in X$. Consider $p \in (0,1)$ and $pz + (1-p)z' = p(Ax+b) + (1-p)(Ax'+b) = A(px + (1-p)x') + b$. Since $X$ is convex, $px + (1-p)x' \in X$ and, therefore, $pz + (1-p)z' \in Z$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -613,7 +911,7 @@ Let $X \subset \mathbb{R}^n$ be a finite set and $z$ be a vertex of $\operatorna
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 2.41</span></p>
 
-Let $a \in \mathbb{R}^n$ and $p^* = \arg\min_{p \in \Delta^n} \sum_{i=1}^{n} p_i a_i$. Then $p^*_j = 0$ for all $j$ such that $a_j > \min_{i=1,\ldots,n} \lbrace a_i \rbrace$.
+Let $a \in \mathbb{R}^n$ and $p^\ast = \arg\min_{p \in \Delta^n} \sum_{i=1}^{n} p_i a_i$. Then $p^\ast_j = 0$ for all $j$ such that $a_j > \min_{i=1,\ldots,n} \lbrace a_i \rbrace$.
 
 </div>
 
@@ -640,8 +938,15 @@ Since $\Delta^n = \operatorname{conv}(\Delta^n \cap \lbrace 0,1 \rbrace^n)$ (see
 
 Let $X$ be a polytope and $Z$ be a polyhedron in $\mathbb{R}^n$, and $x \in X \cap Z$. If additionally $x$ is a vertex of $X$, then $x$ is a vertex of $X \cap Z$.
 
-*Proof.* Since $x$ is a vertex of $X$, there exists $c \in \mathbb{R}^n$ such that $x$ is the unique solution of $\min_{x' \in X} \langle c, x' \rangle$. Since $x \in Z$, it holds also that it is a unique solution of $\min_{x' \in X \cap Z} \langle c, x' \rangle$ (see Proposition 2.13), and, therefore, $x$ is a vertex of $X \cap Z$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.44</summary>
+
+Since $x$ is a vertex of $X$, there exists $c \in \mathbb{R}^n$ such that $x$ is the unique solution of $\min_{x' \in X} \langle c, x' \rangle$. Since $x \in Z$, it holds also that it is a unique solution of $\min_{x' \in X \cap Z} \langle c, x' \rangle$ (see Proposition 2.13), and, therefore, $x$ is a vertex of $X \cap Z$. $\square$
+
+</details>
 </div>
 
 ### Linear Programs
@@ -666,8 +971,15 @@ For any $a \in \mathbb{R}^n$ it holds that
 
 $$\min_{i=1,\ldots,n} \lbrace a_i \rbrace = \min_{p \in \Delta^n} \sum_{i=1}^{n} p_i a_i = \min_{\mu \in \operatorname{conv}\lbrace a_i, \ i=1,\ldots,n \rbrace} \mu \,.$$
 
-*Proof.* The first equality directly follows from Lemma 2.41 and the second equality holds per definition of the convex hull. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Lemma 2.46</summary>
+
+The first equality directly follows from Lemma 2.41 and the second equality holds per definition of the convex hull. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -686,8 +998,15 @@ For any $c \in \mathbb{R}^n$ and any polytope $P$ it holds that
 
 $$\min_{x \in P} \langle c, x \rangle = \min_{x \in \operatorname{vrtx}(P)} \langle c, x \rangle \,.$$
 
-*Proof.* The statement follows directly from $P = \operatorname{conv}(\operatorname{vrtx}(P))$ (Corollary 2.39) and Corollary 2.47. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 2.48</summary>
+
+The statement follows directly from $P = \operatorname{conv}(\operatorname{vrtx}(P))$ (Corollary 2.39) and Corollary 2.47. $\square$
+
+</details>
 </div>
 
 Corollary 2.48 claims that to solve a linear program over a polytope it is sufficient to evaluate the objective on the finite set of vertices of the polytope. This does not mean that the minimum is attained in a non-vertex point of the polytope. However, it guarantees that there will always be a vertex corresponding to the minimal value of the objective. Solutions which correspond to vertices of a polytope $P$ are called *basic solutions* and can be found with the famous simplex algorithm.
@@ -706,8 +1025,15 @@ $$\arg\min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle = \operator
 
 A face of a polytope is a polytope itself.
 
-*Proof.* By definition, a face is the set representable as $\arg\min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$ for some $\mathbf{c}$. Due to Lemma 2.49 it is representable as a convex hull of a finite set of points, therefore, due to Theorem 2.38 it is a polytope. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 2.50</summary>
+
+By definition, a face is the set representable as $\arg\min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$ for some $\mathbf{c}$. Due to Lemma 2.49 it is representable as a convex hull of a finite set of points, therefore, due to Theorem 2.38 it is a polytope. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -715,8 +1041,15 @@ A face of a polytope is a polytope itself.
 
 Vertices of a polytope face are vertices of the polytope itself.
 
-*Proof.* Follows from the proof of Lemma 2.49, as the set $\hat{P} \subseteq \operatorname{vrtx}(P)$ is the subset of vertices of the face that is obtained by minimizing the cost vector $\mathbf{c}$ over $P$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 2.51</summary>
+
+Follows from the proof of Lemma 2.49, as the set $\hat{P} \subseteq \operatorname{vrtx}(P)$ is the subset of vertices of the face that is obtained by minimizing the cost vector $\mathbf{c}$ over $P$. $\square$
+
+</details>
 </div>
 
 ### Integer Linear Programs
@@ -830,13 +1163,59 @@ Note that
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.62</span><span class="math-callout__name">(Properties of LP relaxations)</span></p>
 
-Let $f^*$ and $\hat{f}$ be optimal values of the ILP problem and its LP relaxation respectively. Let also $\hat{x}$ be a solution of the LP relaxation. Then the following assertions hold:
+Let $f^\ast$ and $\hat{f}$ be optimal values of the ILP problem and its LP relaxation respectively. Let also $\hat{x}$ be a solution of the LP relaxation. Then the following assertions hold:
 
-1. $\hat{f} \leq f^*$.
+1. $\hat{f} \leq f^\ast$.
 2. If $\hat{x} \in \lbrace 0,1 \rbrace^n$, then $\hat{x}$ is a solution of the non-relaxed ILP problem.
 3. $P \cap [0,1]^n \supseteq \operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n)$, that is, the feasible set of the LP relaxation is a superset of the integer hull.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 320" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="lprelax-title">
+  <title id="lprelax-title">Three nested feasible sets: ILP ⊂ integer hull ⊂ LP relaxation</title>
+  <!-- axes -->
+  <g stroke="#bbb" stroke-width="1">
+    <line x1="40" y1="280" x2="430" y2="280"/>
+    <line x1="40" y1="280" x2="40" y2="30"/>
+  </g>
+  <g font-family="serif" font-size="11" fill="#666">
+    <text x="425" y="295">x₁</text>
+    <text x="22" y="35">x₂</text>
+  </g>
+  <!-- LP relaxation polygon P∩[0,1]^n -->
+  <polygon points="60,260 380,260 380,80 240,40 60,140" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <!-- Integer hull conv(P∩{0,1}^n) -->
+  <polygon points="80,240 360,240 360,100 240,60 80,160" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+  <!-- Integer points P∩{0,1}^n -->
+  <g fill="#333">
+    <circle cx="80"  cy="240" r="5"/>
+    <circle cx="360" cy="240" r="5"/>
+    <circle cx="360" cy="100" r="5"/>
+    <circle cx="80"  cy="160" r="5"/>
+    <circle cx="240" cy="60"  r="5"/>
+    <circle cx="160" cy="180" r="3"/>
+    <circle cx="220" cy="200" r="3"/>
+    <circle cx="280" cy="180" r="3"/>
+    <circle cx="160" cy="120" r="3"/>
+    <circle cx="220" cy="120" r="3"/>
+  </g>
+  <!-- Legend -->
+  <g font-family="serif" font-size="12">
+    <rect x="450" y="40" width="14" height="14" fill="#e3f2fd" stroke="#1565c0"/>
+    <text x="468" y="52">LP relax. P ∩ [0,1]ⁿ</text>
+    <rect x="450" y="80" width="14" height="14" fill="#fff7ec" stroke="#e65100"/>
+    <text x="468" y="92">integer hull</text>
+    <text x="468" y="106">conv(P ∩ {0,1}ⁿ)</text>
+    <circle cx="457" cy="135" r="4" fill="#333"/>
+    <text x="468" y="139">ILP feasible</text>
+    <text x="468" y="153">P ∩ {0,1}ⁿ</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The chain of inclusions $P\cap\lbrace 0,1\rbrace^n\;\subseteq\;\operatorname{conv}(P\cap\lbrace 0,1\rbrace^n)\;\subseteq\;P\cap[0,1]^n$. The LP relaxation can introduce **fractional vertices** (corners of the blue polygon not at integer points), making the LP bound looser than the integer hull would give.
+</figcaption>
+</figure>
 
 #### Vertices of the Feasible Set of the LP Relaxation
 
@@ -849,8 +1228,15 @@ For any polyhedron $P$ it holds that $P \cap \lbrace 0,1 \rbrace^n \subseteq \op
 
 In other words, all feasible vectors of an ILP are vertices of the feasible set of its LP relaxation and, therefore, can be reached as a relaxed solution.
 
-*Proof.* Consider the intersection of the polyhedron $P$ and the polytope $[0,1]^n$. According to Proposition 2.44, vertices of $[0,1]^n$ belonging to $P$ are also vertices of $P \cap [0,1]^n$. As shown in Example 2.42, any vertex of the $n$-dimensional cube $[0,1]^n$ is a vector from the set $\lbrace 0,1 \rbrace^n$ and vice versa. Therefore, any point from $P \cap \lbrace 0,1 \rbrace^n$ is a vertex of $P \cap [0,1]^n$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.63</summary>
+
+Consider the intersection of the polyhedron $P$ and the polytope $[0,1]^n$. According to Proposition 2.44, vertices of $[0,1]^n$ belonging to $P$ are also vertices of $P \cap [0,1]^n$. As shown in Example 2.42, any vertex of the $n$-dimensional cube $[0,1]^n$ is a vector from the set $\lbrace 0,1 \rbrace^n$ and vice versa. Therefore, any point from $P \cap \lbrace 0,1 \rbrace^n$ is a vertex of $P \cap [0,1]^n$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -858,8 +1244,15 @@ In other words, all feasible vectors of an ILP are vertices of the feasible set 
 
 $\operatorname{vrtx}(\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n)) \subseteq \operatorname{vrtx}(P \cap [0,1]^n)$.
 
-*Proof.* The statement follows from $\operatorname{vrtx}(\operatorname{conv}\lbrace P \cap \lbrace 0,1 \rbrace^n \rbrace) = P \cap \lbrace 0,1 \rbrace^n$ (Corollary 2.60), and the second holds due to Proposition 2.63. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 2.64</summary>
+
+The statement follows from $\operatorname{vrtx}(\operatorname{conv}\lbrace P \cap \lbrace 0,1 \rbrace^n \rbrace) = P \cap \lbrace 0,1 \rbrace^n$ (Corollary 2.60), and the second holds due to Proposition 2.63. $\square$
+
+</details>
 </div>
 
 The last proposition of the chapter states that there is no other binary vector in the feasible set of LP relaxation than those, which are feasible for the non-relaxed integer linear program:
@@ -869,11 +1262,22 @@ The last proposition of the chapter states that there is no other binary vector 
 
 For any polyhedron $P \subset \mathbb{R}^n$ it holds that $\operatorname{vrtx}(P \cap [0,1]^n) \cap \lbrace 0,1 \rbrace^n = P \cap \lbrace 0,1 \rbrace^n$.
 
-*Proof.* Let $x \in P \cap \lbrace 0,1 \rbrace^n$. Trivially $x \in \lbrace 0,1 \rbrace^n$. According to Proposition 2.63, $x \in \operatorname{vrtx}(P \cap [0,1]^n)$. Therefore, $P \cap \lbrace 0,1 \rbrace^n \subseteq \operatorname{vrtx}(P \cap [0,1]^n) \cap \lbrace 0,1 \rbrace^n$.
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 2.65</summary>
+
+Let $x \in P \cap \lbrace 0,1 \rbrace^n$. Trivially $x \in \lbrace 0,1 \rbrace^n$. According to Proposition 2.63, $x \in \operatorname{vrtx}(P \cap [0,1]^n)$. Therefore, $P \cap \lbrace 0,1 \rbrace^n \subseteq \operatorname{vrtx}(P \cap [0,1]^n) \cap \lbrace 0,1 \rbrace^n$.
 
 The other way around, let $x \in \operatorname{vrtx}(P \cap [0,1]^n) \cap \lbrace 0,1 \rbrace^n$. Trivially, $x \in \operatorname{vrtx}(P \cap [0,1]^n) \subseteq P \cap [0,1]^n$, it holds $x \in P$. Therefore, $x \in P \cap \lbrace 0,1 \rbrace^n$. $\square$
 
+</details>
 </div>
+
+### 2.7 Bibliography and Further Reading
+
+One of the best introductory textbooks about linear programming and the simplex method is written by the author of the simplex method, Georg Dantzig [3]. For fundamental results on polyhedra, linear inequalities and linear programming the monograph [4] is a classical reference. It includes also fundamental results on the polynomial solvability of integer linear programs. We refer to the textbook [5] for the Minkowski theorem and its corollary. This textbook as well as [6] can be recommended for learning the basics of combinatorial optimization and its relation to (integer) linear programming.
 
 ## Chapter 3: Linearization: From Quadratic to Linear Integer Objective
 
@@ -1080,7 +1484,7 @@ Consider the labeling problem as defined in (1.5):
 
 $$\min_{\mathbf{y} \in \mathcal{Y}_\mathcal{V}} \sum_{u \in \mathcal{V}} \theta_u(y_u) + \sum_{uv \in \mathcal{E}} \theta_{uv}(y_u, y_v) \,.$$
 
-Let $\mathcal{I}_1 := \cup_{u \in \mathcal{V}} \mathcal{Y}_u$ be the set of *all labels in all nodes* of the labeling problem. Introduce a binary vector
+Let $\mathcal{I}\_1 := \cup_{u \in \mathcal{V}} \mathcal{Y}\_u$ be the set of *all labels in all nodes* of the labeling problem. Introduce a binary vector
 
 $$\mathbb{R}^{\mathcal{I}_1} \ni \boldsymbol{\mu} = (\mu_u(s) \in \lbrace 0, 1 \rbrace \colon u \in \mathcal{V}, s \in \mathcal{Y}_u)$$
 
@@ -1092,16 +1496,16 @@ $$\text{s.t. } \sum_{s \in \mathcal{Y}_u} \mu_u(s) = 1 \,,\; u \in \mathcal{V} \
 
 Let us now linearize it with the Sherali-Adams method.
 
-- First of all note that the *uniqueness* (known also as *simplex*) *constraints* together with non-negativity of $\boldsymbol{\mu}$ imply $\mu \in [0,1]^{\mathcal{I}_1}$. Therefore, we can omit the Fortet's constraints as they will be implied by the other constraints of the linearized problem.
+- First of all note that the *uniqueness* (known also as *simplex*) *constraints* together with non-negativity of $\boldsymbol{\mu}$ imply $\mu \in [0,1]^{\mathcal{I}\_1}$. Therefore, we can omit the Fortet's constraints as they will be implied by the other constraints of the linearized problem.
 - Since the only non-trivial constraints are *uniqueness constraints*, according to Example 3.4:
   - $\mu_u(s)\mu_v(l) = 0$ for any $s \neq l$ for all $u \in \mathcal{V}$.
   - By introducing $\mu_{uv}(s,l) := \mu_u(s)\mu_v(l)$ the uniqueness constraints are turned into the marginalization constraint
 
 $$\sum_{s \in \mathcal{Y}_u} \mu_{uv}(s, l) = \mu_v(l) \,,\; u \in \mathcal{V}$$
 
-after multiplication by $\mu_v(l)$, $v \in \mathcal{V}$, $v \neq u$, $l \in \mathcal{Y}_s$.
+after multiplication by $\mu_v(l)$, $v \in \mathcal{V}$, $v \neq u$, $l \in \mathcal{Y}\_s$.
 
-- Note, however, that the only non-zero cost in the original problem are given for $\mu_{uv}(\cdot)$ for $uv \in \mathcal{E}$. Therefore, the values of $\mu_{uv} := (\mu_{uv}(s,l) \colon s \in \mathcal{Y}_u, \; l \in \mathcal{Y}_v)$ for $uv \notin \mathcal{E}$ do not influence the objective value. But do they existence additionally constrain other variables be it binary or relaxed ones? The following statement gives the negative answer to this question:
+- Note, however, that the only non-zero cost in the original problem are given for $\mu_{uv}(\cdot)$ for $uv \in \mathcal{E}$. Therefore, the values of $\mu_{uv} := (\mu_{uv}(s,l) \colon s \in \mathcal{Y}\_u, \; l \in \mathcal{Y}\_v)$ for $uv \notin \mathcal{E}$ do not influence the objective value. But do they existence additionally constrain other variables be it binary or relaxed ones? The following statement gives the negative answer to this question:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 3.5</span></p>
@@ -1116,7 +1520,13 @@ $$P_y = \left\lbrace \mathbf{x} \in P_x \mid \exists \mathbf{y} \in \mathbb{R}_{
 
 are equal, i.e. $P_x = P_y$. Moreover, when $\mathbf{x} \in P_x \cap \lbrace 0,1 \rbrace^{I \cup J}$, then the condition for $\mathbf{y}$ can be strengthened by assuming $\mathbf{y} \in \lbrace 0,1 \rbrace^{I \times J}$.
 
-*Proof.* It is sufficient to prove that for any $\mathbf{x} \in P_x$ there exists $\mathbf{y} \in \mathbb{R}_{\geq 0}^{I \times J}$ such that the additional two constrains in the definition of $P_y$ are fulfilled. Indeed, consider $y_{ij} = x_i x_j$. Then
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Lemma 3.5</summary>
+
+It is sufficient to prove that for any $\mathbf{x} \in P_x$ there exists $\mathbf{y} \in \mathbb{R}\_{\geq 0}^{I \times J}$ such that the additional two constrains in the definition of $P_y$ are fulfilled. Indeed, consider $y_{ij} = x_i x_j$. Then
 
 $$\sum_{i \in I} y_{ij} = \sum_{i \in I} x_i x_j = x_j \underbrace{\sum_{i \in I} x_i}_{\mathbf{x} \in P_x \Rightarrow \sum_{i \in I} x_i = 1} = x_j \,,$$
 
@@ -1124,6 +1534,7 @@ $$\sum_{j \in J} y_{ij} = \sum_{j \in J} x_i x_j = x_i \underbrace{\sum_{j \in J
 
 The additional constraint $\mathbf{x} \in \lbrace 0,1 \rbrace^{I \cup J}$ implies $y_{ij} = x_i x_j \in \lbrace 0,1 \rbrace$. $\square$
 
+</details>
 </div>
 
 Putting all together for the labeling problem, we obtain the following linear constraints for the linearized (lifted) labeling problem:
@@ -1136,7 +1547,7 @@ The resulting (lifted) linearized labeling problem takes the form
 
 $$\min_{\boldsymbol{\mu} \in \lbrace 0,1 \rbrace^{\mathcal{I}_1 \cup \mathcal{I}_2} \cap \mathcal{L}} \underbrace{\sum_{u \in \mathcal{V}} \sum_{s \in \mathcal{Y}_u} \theta_u(s) \mu_u(s) + \sum_{uv \in \mathcal{E}} \sum_{sl \in \mathcal{Y}_{uv}} \theta_{uv}(s,l) \mu_{uv}(s,l)}_{\langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle} \,.$$
 
-Here the set $\mathcal{I}_2 = \sum_{uv \in \mathcal{E}} \lvert \mathcal{Y}_{uv} \rvert$ stands for the total number of the lifted, or *pairwise* variables. In the following we will denote $\mathcal{I} = \mathcal{I}_1 \cup \mathcal{I}_2$. Note that $\mathcal{L} \cap [0,1]^{\mathcal{I}} = \mathcal{L}$, so the LP relaxation of the linearized problem reads
+Here the set $\mathcal{I}\_2 = \sum_{uv \in \mathcal{E}} \lvert \mathcal{Y}\_{uv} \rvert$ stands for the total number of the lifted, or *pairwise* variables. In the following we will denote $\mathcal{I} = \mathcal{I}\_1 \cup \mathcal{I}\_2$. Note that $\mathcal{L} \cap [0,1]^{\mathcal{I}} = \mathcal{L}$, so the LP relaxation of the linearized problem reads
 
 $$\min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle \,.$$
 
@@ -1164,7 +1575,7 @@ The millions of constraints and variables turn the labeling problem to the class
 Due to the ILP representation of the labeling problem, we can directly make conclusions about its own properties and the properties of its natural LP relaxation:
 
 - The integer hull of the set of feasible binary vectors $\mathcal{L} \cap \lbrace 0,1 \rbrace^{\mathcal{I}}$ is $\mathcal{M} := \operatorname{conv}(\mathcal{L} \cap \lbrace 0,1 \rbrace^{\mathcal{I}})$ and is called *marginal polytope*. As it follows from Corollary 2.60 each vertex of the marginal polytope corresponds to a labeling, and the other way around, each labeling corresponds to a vertex of $\mathcal{M}$.
-- The *local polytope relaxation* (as any other relaxation) constitutes a lower bound, i.e. $E(\mathbf{y}; \boldsymbol{\theta}) \geq \min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$ for any (in particular the optimal) labeling $\mathbf{y}$. Cases when this bound is tight, i.e. $\min_{\mathbf{y} \in \mathcal{Y}_\mathcal{V}} E(\mathbf{y}; \boldsymbol{\theta}) = \min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$, are called *LP-tight*.
+- The *local polytope relaxation* (as any other relaxation) constitutes a lower bound, i.e. $E(\mathbf{y}; \boldsymbol{\theta}) \geq \min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$ for any (in particular the optimal) labeling $\mathbf{y}$. Cases when this bound is tight, i.e. $\min_{\mathbf{y} \in \mathcal{Y}\_\mathcal{V}} E(\mathbf{y}; \boldsymbol{\theta}) = \min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$, are called *LP-tight*.
 - The marginal polytope is a subset of the local polytope, i.e. $\mathcal{M} \subseteq \mathcal{L}$. According to Corollary 2.64, moreover, $\operatorname{vrtx}(\mathcal{M}) \subseteq \operatorname{vrtx}(\mathcal{L})$ holds, that is, all vertices of the marginal polytope are also vertices of the local polytope.
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1253,8 +1664,15 @@ The epigraph of a linear function $f \colon \mathbb{R}^n \to \mathbb{R}$ is a ha
 
 For any two functions $f$ and $g$ it holds that $\operatorname{epi}(\max\lbrace f, g \rbrace) = \operatorname{epi}(f) \cap \operatorname{epi}(g)$.
 
-*Proof.* The proof follows directly from the definition of the epigraph of a function: $t \geq f(x)$ and $t \geq g(x)$ together imply $t \geq \max\lbrace f(x), g(x) \rbrace$, and the other way around. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.5</summary>
+
+The proof follows directly from the definition of the epigraph of a function: $t \geq f(x)$ and $t \geq g(x)$ together imply $t \geq \max\lbrace f(x), g(x) \rbrace$, and the other way around. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -1263,6 +1681,57 @@ For any two functions $f$ and $g$ it holds that $\operatorname{epi}(\max\lbrace 
 A function $f \colon \mathbb{R}^n \to \mathbb{R} \cup \lbrace \infty \rbrace$ is called *convex* if $\operatorname{epi} f$ is a convex set.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 620 240" width="100%" style="max-width: 620px; height: auto;" role="img" aria-labelledby="epi-title">
+  <title id="epi-title">Epigraph: convex vs non-convex function</title>
+  <!-- Convex panel -->
+  <g transform="translate(20,20)">
+    <text x="140" y="-2" font-family="serif" font-size="13" text-anchor="middle">convex f</text>
+    <!-- axes -->
+    <line x1="20" y1="180" x2="260" y2="180" stroke="#bbb"/>
+    <line x1="20" y1="20"  x2="20"  y2="180" stroke="#bbb"/>
+    <text x="265" y="183" font-family="serif" font-size="11" fill="#666">x</text>
+    <text x="6"   y="18"  font-family="serif" font-size="11" fill="#666">t</text>
+    <!-- shaded epigraph: region above the parabola, clipped to axes box -->
+    <defs><clipPath id="epi-clip-1"><rect x="20" y="20" width="240" height="160"/></clipPath></defs>
+    <g clip-path="url(#epi-clip-1)">
+      <path d="M 20 20 L 260 20 L 260 180 Q 200 30 140 30 Q 80 30 20 180 Z" fill="#e3f2fd" opacity="0.7"/>
+      <!-- the curve f(x) = (x-1)^2 -->
+      <path d="M 20 180 Q 80 30 140 30 Q 200 30 260 180" fill="none" stroke="#1565c0" stroke-width="2.5"/>
+    </g>
+    <!-- two points connected by chord (illustrating convexity) -->
+    <circle cx="60"  cy="120" r="4" fill="#e65100"/>
+    <circle cx="220" cy="120" r="4" fill="#e65100"/>
+    <line x1="60" y1="120" x2="220" y2="120" stroke="#e65100" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="140" y="155" font-family="serif" font-size="11" fill="#1565c0" text-anchor="middle">epi f</text>
+    <text x="140" y="115" font-family="serif" font-size="11" fill="#e65100" text-anchor="middle">chord ⊂ epi f</text>
+  </g>
+  <!-- Non-convex panel -->
+  <g transform="translate(320,20)">
+    <text x="140" y="-2" font-family="serif" font-size="13" text-anchor="middle">non-convex f</text>
+    <line x1="20" y1="180" x2="260" y2="180" stroke="#bbb"/>
+    <line x1="20" y1="20"  x2="20"  y2="180" stroke="#bbb"/>
+    <text x="265" y="183" font-family="serif" font-size="11" fill="#666">x</text>
+    <text x="6"   y="18"  font-family="serif" font-size="11" fill="#666">t</text>
+    <defs><clipPath id="epi-clip-2"><rect x="20" y="20" width="240" height="160"/></clipPath></defs>
+    <g clip-path="url(#epi-clip-2)">
+      <!-- shading approximating epi above a wavy curve -->
+      <path d="M 20 20 L 260 20 L 260 180 C 240 80 200 180 140 110 C 100 70 70 180 20 180 Z" fill="#fde2e2" opacity="0.7"/>
+      <!-- wavy curve -->
+      <path d="M 20 180 C 70 180 100 70 140 110 C 200 180 240 80 260 180" fill="none" stroke="#c62828" stroke-width="2.5"/>
+    </g>
+    <!-- chord that exits epigraph -->
+    <circle cx="55"  cy="135" r="4" fill="#e65100"/>
+    <circle cx="225" cy="125" r="4" fill="#e65100"/>
+    <line x1="55" y1="135" x2="225" y2="125" stroke="#e65100" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="140" y="156" font-family="serif" font-size="11" fill="#c62828" text-anchor="middle">chord leaves epi f</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+$f$ is convex iff $\operatorname{epi} f$ is a convex set, i.e. the chord between any two points of the graph lies above the graph (left). For non-convex $f$ a chord can dip below the curve, so $\operatorname{epi} f$ is not convex (right).
+</figcaption>
+</figure>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4.7</span><span class="math-callout__name">(Concave function)</span></p>
@@ -1294,8 +1763,15 @@ $$f(px + (1-p)z) \leq p f(x) + (1-p) f(z)$$
 
 holds for any $x, z \in \mathbb{R}^n$ and $p \in (0, 1)$. Here we assume that $p \cdot \infty = \infty$ for any positive $p$, $\infty + x = \infty$, $-\infty + x = -\infty$ for any $x \in \mathbb{R}$ and $-(-\infty) = \infty$.
 
-*Proof.* In case either $f(x)$ or $f(z)$ is infinite, the inequality trivially holds. Otherwise, $(x, f(x)) \in \operatorname{epi} f$ as well as $(z, f(z)) \in \operatorname{epi} f$. Since $\operatorname{epi} f$ is a convex set, if and only if it contains also $(px + (1-p)z, pf(x) + (1-p)f(z))$. By the definition of $\operatorname{epi} f$ this is equivalent to $f(px + (1-p)z) \leq pf(x) + (1-p)f(z)$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.10</summary>
+
+In case either $f(x)$ or $f(z)$ is infinite, the inequality trivially holds. Otherwise, $(x, f(x)) \in \operatorname{epi} f$ as well as $(z, f(z)) \in \operatorname{epi} f$. Since $\operatorname{epi} f$ is a convex set, if and only if it contains also $(px + (1-p)z, pf(x) + (1-p)f(z))$. By the definition of $\operatorname{epi} f$ this is equivalent to $f(px + (1-p)z) \leq pf(x) + (1-p)f(z)$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -1328,7 +1804,13 @@ holds for any natural $N$, any $N$-tuple $x^i \in \mathbb{R}^n$, $i = 1, \ldots,
 
 Let $f$ and $g$ be convex functions and $\alpha$ and $\beta$ be non-negative numbers. Then $\alpha f + \beta g$ is convex as well.
 
-*Proof.* Let $p \in [0,1]$. Then convexity of $f$ and $g$ implies the following sequence of inequalities, which proves the statement of the proposition:
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.14</summary>
+
+Let $p \in [0,1]$. Then convexity of $f$ and $g$ implies the following sequence of inequalities, which proves the statement of the proposition:
 
 $$(\alpha f + \beta g)(px + (1-p)z) = \alpha f(px + (1-p)z) + \beta g(px + (1-p)z)$$
 
@@ -1336,6 +1818,7 @@ $$\leq \alpha(pf(x) + (1-p)f(z)) + \beta(pg(x) + \beta(1-p)g(z))$$
 
 $$= p(\alpha f + \beta g)(x) + (1-p)(\alpha f + \beta g)(z) \,. \quad\square$$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
@@ -1350,7 +1833,13 @@ A function $h \colon \mathbb{R}^k \to \mathbb{R}$ is called *non-decreasing*, if
 
 Let $f(x) = h(f_1(x), \ldots, f_k(x))$ with $f_i \colon \mathbb{R}^n \to \mathbb{R}$ be convex functions, and $h \colon \mathbb{R}^k \to \mathbb{R}$ be convex and non-decreasing. Then $f$ is convex.
 
-*Proof.* The following inequality holds for any $p \in [0, 1]$ and arbitrary $x$ and $z$ due to convexity of $f_i$ and the non-decreasing property of $h$:
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.16</summary>
+
+The following inequality holds for any $p \in [0, 1]$ and arbitrary $x$ and $z$ due to convexity of $f_i$ and the non-decreasing property of $h$:
 
 $$h(f_1(px + (1-p)z), \ldots, f_k(px + (1-p)z))$$
 
@@ -1362,6 +1851,7 @@ $$ph(f_1(x), \ldots, f_k(x)) + (1-p)h(f_1(z), \ldots, f_k(z)) \,,$$
 
 that finalizes the proof. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
@@ -1369,11 +1859,18 @@ that finalizes the proof. $\square$
 
 Let $f$ be a convex function and $X \subset \mathbb{R}^n$ be a convex set. Then the function $f + \iota_X \colon \mathbb{R}^n \to \mathbb{R}$ is convex, where $\iota_X$ is defined as in (4.3).
 
-*Proof.* Consider the convex function $\hat{\iota}_X(x) := \begin{cases} -\infty, & x \in X \\ \infty, & x \notin X \end{cases}$. It is straightforward to see that $f + \iota_X = \max\lbrace f, \hat{\iota}_X \rbrace$. Due to Proposition 4.5, it holds that $\operatorname{epi}(f + \iota_X) = \operatorname{epi}(\max\lbrace f, \hat{\iota}_X \rbrace) = \operatorname{epi}(f) \cap \operatorname{epi}(\hat{\iota}_X)$ is convex as it is the intersection of convex sets (see Lemma 2.27). $\square$
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.17</summary>
+
+Consider the convex function $\hat{\iota}\_X(x) := \begin{cases} -\infty, & x \in X \\ \infty, & x \notin X \end{cases}$. It is straightforward to see that $f + \iota_X = \max\lbrace f, \hat{\iota}\_X \rbrace$. Due to Proposition 4.5, it holds that $\operatorname{epi}(f + \iota_X) = \operatorname{epi}(\max\lbrace f, \hat{\iota}\_X \rbrace) = \operatorname{epi}(f) \cap \operatorname{epi}(\hat{\iota}\_X)$ is convex as it is the intersection of convex sets (see Lemma 2.27). $\square$
+
+</details>
+</div>
 
 Note that a similar claim holds also for a *concave* function $f$ and a *convex* set $X$. In this case the function $f - \iota_X$ is concave.
-
-</div>
 
 #### 4.1.3 Local and Global Minima
 
@@ -1391,8 +1888,15 @@ Let $f \colon X \to \mathbb{R} \cup \lbrace \infty, -\infty \rbrace$ be an exten
 
 Any local minimum of a convex function is also its global minimum.
 
-*Proof.* Let $x$ be a local, but not a global minimum on $X \subseteq \mathbb{R}^n$. Therefore, there exists $z \in X$ such that $f(z) < f(x)$. Since $f$ is convex it holds that $f(px + (1-p)z) \leq pf(x) + (1-p)f(z) < f(x)$ for any $p \in (0, 1)$. For any $\epsilon > 0$ there is $p > 0$ such that $(px + (1-p)z) \in B_\epsilon$, therefore, $f(px + (1-p)z) < f(x)$ implies that $x$ is not a local minimum. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.19</summary>
+
+Let $x$ be a local, but not a global minimum on $X \subseteq \mathbb{R}^n$. Therefore, there exists $z \in X$ such that $f(z) < f(x)$. Since $f$ is convex it holds that $f(px + (1-p)z) \leq pf(x) + (1-p)f(z) < f(x)$ for any $p \in (0, 1)$. For any $\epsilon > 0$ there is $p > 0$ such that $(px + (1-p)z) \in B_\epsilon$, therefore, $f(px + (1-p)z) < f(x)$ implies that $x$ is not a local minimum. $\square$
+
+</details>
 </div>
 
 Due to Proposition 4.19, it makes sense to speak about *minima* of a convex function, without subdividing them into local and global ones.
@@ -1402,8 +1906,15 @@ Due to Proposition 4.19, it makes sense to speak about *minima* of a convex func
 
 The set of minima of a convex function is convex.
 
-*Proof.* Let $x$ and $z$ be two minima and, therefore, $f(x) = f(z)$. Then for all $p \in (0,1)$ the inequality $f(px + (1-p)z) \leq pf(x) + (1-p)f(z) = pf(x) + (1-p)f(x) = f(x)$ implies $px + (1-p)z$ is a minimum as well. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.20</summary>
+
+Let $x$ and $z$ be two minima and, therefore, $f(x) = f(z)$. Then for all $p \in (0,1)$ the inequality $f(px + (1-p)z) \leq pf(x) + (1-p)f(z) = pf(x) + (1-p)f(x) = f(x)$ implies $px + (1-p)z$ is a minimum as well. $\square$
+
+</details>
 </div>
 
 Note that the set of maxima of a concave function is *convex* as well.
@@ -1415,8 +1926,15 @@ The following important proposition essentially states that a maximum of convex 
 
 Let $Z$ be any set and let $f \colon \mathbb{R}^n \times Z \to \mathbb{R}$ be convex w.r.t. $x \in \mathbb{R}^n$ for each fixed $z \in Z$. Then the function $g(x) = \sup_{z \in Z} f(x, z)$ is convex.
 
-*Proof.* For each fixed $z$ the epigraph of $f(\cdot, z)$ is a convex set. The epigraph of the function $g$ is the intersection of the epigraphs of the functions $f(\cdot, z) \colon \mathbb{R}^n \to \mathbb{R}$ for all $z \in Z$. Therefore, according to Lemma 2.27 $\operatorname{epi}(g)$ is a convex set as an intersection of convex sets. So by Definition 4.6 $g$ is convex. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 4.21</summary>
+
+For each fixed $z$ the epigraph of $f(\cdot, z)$ is a convex set. The epigraph of the function $g$ is the intersection of the epigraphs of the functions $f(\cdot, z) \colon \mathbb{R}^n \to \mathbb{R}$ for all $z \in Z$. Therefore, according to Lemma 2.27 $\operatorname{epi}(g)$ is a convex set as an intersection of convex sets. So by Definition 4.6 $g$ is convex. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1436,6 +1954,10 @@ Let $f$ be a convex function and $X$ be a convex set. The problems of the form $
 According to Proposition 4.17, for any convex $f$ and $X$ the problem $\min_{x \in \mathbb{R}^n} (f(x) + \iota_X(x))$ is convex and equivalent to $\min_{x \in X} f(x)$. Therefore, we conclude that the set of optimal solutions of this problem is convex.
 
 Linear programs, as well as the optimization problems from Examples 2.1 and 2.3 are convex.
+
+### 4.3 Bibliography and Further Reading
+
+For a more fundamental understanding of the notion of convex functions and their subgradients we refer to the textbook [10]. In particular, it contains proofs of Proposition 4.27 and Lemma 4.32. The comprehensive source on the topic is [11].
 
 ## Chapter 5: Lagrange Duality
 
@@ -1507,8 +2029,15 @@ These kinds of relaxations are called *Lagrange* relaxations.
 
 For every $\boldsymbol{\lambda} \in \mathbb{R}$ the optimal value of the Lagrange dual does not exceed the optimal value of the primal, and they coincide if the constraint $A\mathbf{x}' = \mathbf{b}$ holds in an optimum $\mathbf{x}'$ of the dual.
 
-*Proof.* The first claim follows directly from Proposition 2.9. The second one follows from Proposition 2.9 and the fact that the objective functions of the primal and the dual coincide if $A\mathbf{x}' = \mathbf{b}$. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 5.3</summary>
+
+The first claim follows directly from Proposition 2.9. The second one follows from Proposition 2.9 and the fact that the objective functions of the primal and the dual coincide if $A\mathbf{x}' = \mathbf{b}$. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
@@ -1543,8 +2072,15 @@ The most important property of the Lagrange dual problem is its concavity w.r.t.
 
 The dual function is concave w.r.t. $\boldsymbol{\lambda}$.
 
-*Proof.* The proof follows from Corollary 4.22 and the fact that the objective of the dual is linear w.r.t. $\boldsymbol{\lambda}$, and, therefore, concave. $\square$
+</div>
 
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 5.5</summary>
+
+The proof follows from Corollary 4.22 and the fact that the objective of the dual is linear w.r.t. $\boldsymbol{\lambda}$, and, therefore, concave. $\square$
+
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1610,44 +2146,51 @@ Let $P$ be a polytope and the set $P \cap \lbrace \mathbf{x} \colon A\mathbf{x} 
 
 $$\min_{\substack{\mathbf{x} \in P \\ A\mathbf{x} = \mathbf{b}}} \langle \mathbf{c}, \mathbf{x} \rangle = \max_{\boldsymbol{\lambda}} \min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle \,.$$
 
-*Proof.* Let us first show that there exist optimal primal and dual solutions. From $P$ being a polytope it follows that the primal feasible set $P \cap \lbrace \mathbf{x} \colon A\mathbf{x} = \mathbf{b} \rbrace$ is a polytope as well (see Proposition 2.19). Therefore, the optimal primal value $p^*$ is finite and attained in one of its vertices, according to Corollary 2.48.
+</div>
 
-Let $d^*$ denote the optimal dual value. The following sequence of inequalities, which uses Proposition 5.3,
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 5.9</summary>
+
+Let us first show that there exist optimal primal and dual solutions. From $P$ being a polytope it follows that the primal feasible set $P \cap \lbrace \mathbf{x} \colon A\mathbf{x} = \mathbf{b} \rbrace$ is a polytope as well (see Proposition 2.19). Therefore, the optimal primal value $p^\ast$ is finite and attained in one of its vertices, according to Corollary 2.48.
+
+Let $d^\ast$ denote the optimal dual value. The following sequence of inequalities, which uses Proposition 5.3,
 
 $$\infty > p^* \geq d^* = \max_{\boldsymbol{\lambda}} \min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle \overset{\boldsymbol{\lambda}=0}{\geq} \min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle > -\infty$$
 
-implies that the dual optimal value $d^*$ is also finite.
+implies that the dual optimal value $d^\ast$ is also finite.
 
 Consider the dual objective
 
 $$g(\boldsymbol{\lambda}) := \min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle \overset{\text{Cor. 2.48}}{=} \min_{\mathbf{x} \in \operatorname{vrtx}(P)} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle \,,$$
 
-and the set $\hat{P}(\boldsymbol{\lambda}) := \arg\min_{\mathbf{x} \in \operatorname{vrtx}(P)} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle$. Since $P$ is non-empty, $\hat{P}(\boldsymbol{\lambda})$ is so as well. The maximal dual value $d^*$ is attained in all vectors $\boldsymbol{\lambda}$ satisfying
+and the set $\hat{P}(\boldsymbol{\lambda}) := \arg\min_{\mathbf{x} \in \operatorname{vrtx}(P)} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle$. Since $P$ is non-empty, $\hat{P}(\boldsymbol{\lambda})$ is so as well. The maximal dual value $d^\ast$ is attained in all vectors $\boldsymbol{\lambda}$ satisfying
 
 $$d^* = \langle \mathbf{c}, \mathbf{x}' \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x}' - \mathbf{b} \rangle \,,$$
 
-where $\mathbf{x}'$ is some vector from $\hat{P}(\boldsymbol{\lambda})$. The set of $\boldsymbol{\lambda}$ satisfying this is non-empty as soon as $A\mathbf{x}' - \mathbf{b} = \mathbf{0}$ implies $d^* = \langle \mathbf{c}, \mathbf{x}' \rangle$. This implication is given by the following sequence of equalities:
+where $\mathbf{x}'$ is some vector from $\hat{P}(\boldsymbol{\lambda})$. The set of $\boldsymbol{\lambda}$ satisfying this is non-empty as soon as $A\mathbf{x}' - \mathbf{b} = \mathbf{0}$ implies $d^\ast = \langle \mathbf{c}, \mathbf{x}' \rangle$. This implication is given by the following sequence of equalities:
 
 $$d^* = \max_{\boldsymbol{\lambda}} \min_{\mathbf{x} \in \operatorname{vrtx}(P)} \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x}' - \mathbf{b} \rangle$$
 
 $$\overset{A\mathbf{x}'=\mathbf{b}}{=} \max_{\boldsymbol{\lambda}} \langle \mathbf{c}, \mathbf{x}' \rangle = \langle \mathbf{c}, \mathbf{x}' \rangle \,.$$
 
-Therefore, the dual solution exists. Let $\boldsymbol{\lambda}^*$ be such a solution.
+Therefore, the dual solution exists. Let $\boldsymbol{\lambda}^\ast$ be such a solution.
 
 According to Lemma 4.32,
 
 $$\partial g(\boldsymbol{\lambda}^*) = \operatorname{conv}\lbrace A\mathbf{x}^* - \mathbf{b} \colon \mathbf{x}^* \in \hat{P}(\boldsymbol{\lambda}^*) \rbrace \overset{\text{Lem. 2.37}}{=} \lbrace A\mathbf{x}^* - \mathbf{b} \colon \mathbf{x}^* \in \operatorname{conv}(\hat{P}(\boldsymbol{\lambda}^*)) \rbrace \,.$$
 
-Since $\boldsymbol{\lambda}^*$ is a dual optimal solution, Theorem 4.35 implies that $\partial g(\boldsymbol{\lambda}^*) \ni \mathbf{0}$. In other words, there exists $\mathbf{x}^* \in \operatorname{conv}(\hat{P}(\boldsymbol{\lambda}^*))$ such that
+Since $\boldsymbol{\lambda}^\ast$ is a dual optimal solution, Theorem 4.35 implies that $\partial g(\boldsymbol{\lambda}^\ast) \ni \mathbf{0}$. In other words, there exists $\mathbf{x}^\ast \in \operatorname{conv}(\hat{P}(\boldsymbol{\lambda}^\ast))$ such that
 
 $$A\mathbf{x}^* - \mathbf{b} = \mathbf{0} \,.$$
 
-Observe that $\mathbf{x}^* \in P$, since $\hat{P}(\boldsymbol{\lambda}^*) \subseteq \operatorname{vrtx}(P)$ and, therefore, $\operatorname{conv}(\hat{P}(\boldsymbol{\lambda}^*)) \subseteq \operatorname{conv}(\operatorname{vrtx}(P)) = P$. This yields
+Observe that $\mathbf{x}^\ast \in P$, since $\hat{P}(\boldsymbol{\lambda}^\ast) \subseteq \operatorname{vrtx}(P)$ and, therefore, $\operatorname{conv}(\hat{P}(\boldsymbol{\lambda}^\ast)) \subseteq \operatorname{conv}(\operatorname{vrtx}(P)) = P$. This yields
 
 $$d^* = \langle \mathbf{c}, \mathbf{x}^* \rangle + \langle \boldsymbol{\lambda}^*, A\mathbf{x}^* - \mathbf{b} \rangle \overset{A\mathbf{x}^*-\mathbf{b}=\mathbf{0}}{=} \langle \mathbf{c}, \mathbf{x}^* \rangle \overset{\mathbf{x}^* \in P,\; A\mathbf{x}^*=\mathbf{b}}{\geq} \min_{\substack{\mathbf{x} \in P \\ A\mathbf{x}=\mathbf{b}}} \langle \mathbf{c}, \mathbf{x} \rangle = p^* \,.$$
 
-Together with $p^* \geq d^*$ this implies $p^* = d^*$. $\square$
+Together with $p^\ast \geq d^\ast$ this implies $p^\ast = d^\ast$. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1763,7 +2306,7 @@ Assume now w.l.o.g. that $c_i > 0$ and $b \geq w_i > 0$, moreover, $\frac{c_1}{w
 
 $$g(\mu) = \mu b + \sum_{i=1}^{k} (c_i - \mu w_i) = \mu(b - \sum_{i=1}^{k} w_i) + \sum_{i=1}^{k} c_i \,.$$
 
-According to Corollary 5.17 $\mu \geq 0$ is optimal, if $\mu(b - \sum_{i=1}^{k-1} w_i - w_k x_k^*) = 0$. In turn, $\mu \neq 0$ implies $b - \sum_{i=1}^{k-1} w_i - w_k x_k^* = 0$. This allows to compute $k$ as the largest one for which $\sum_{i=1}^{k-1} w_i \leq b$ and $x_k^* = (b - \sum_{i=1}^{k-1} w_i) / w_k$.
+According to Corollary 5.17 $\mu \geq 0$ is optimal, if $\mu(b - \sum_{i=1}^{k-1} w_i - w_k x_k^\ast) = 0$. In turn, $\mu \neq 0$ implies $b - \sum_{i=1}^{k-1} w_i - w_k x_k^\ast = 0$. This allows to compute $k$ as the largest one for which $\sum_{i=1}^{k-1} w_i \leq b$ and $x_k^\ast = (b - \sum_{i=1}^{k-1} w_i) / w_k$.
 
 #### 5.2.1 Primal of the Relaxed Problem for ILPs
 
@@ -1803,13 +2346,20 @@ by the feasible set only. The following statement compares these two linear prog
 
 Let $\operatorname{vrtx}(P \cap [0,1]^n) \subseteq \lbrace 0,1 \rbrace^n$, that is, all vertices of the polytope $P \cap [0,1]^n$ are defined by binary vectors. Then the primal relaxed problem is equal to the LP relaxation. Otherwise, the relaxation is tighter.
 
-*Proof.* According to Proposition 2.63, it holds that $\operatorname{vrtx}(P \cap [0,1]^n) \supseteq P \cap \lbrace 0,1 \rbrace^n$. According to Proposition 2.65, it holds $\operatorname{vrtx}(P \cap [0,1]^n) \cap \lbrace 0,1 \rbrace^n = P \cap \lbrace 0,1 \rbrace^n$. Therefore, $\operatorname{vrtx}(P \cap [0,1]^n) \subseteq \lbrace 0,1 \rbrace^n$ implies $\operatorname{vrtx}(P \cap [0,1]^n) = P \cap \lbrace 0,1 \rbrace^n$. From Corollary 2.39 it follows that $\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n) = P \cap [0,1]^n$, and, therefore, the considered Lagrange and LP relaxations are equivalent.
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 5.14</summary>
+
+According to Proposition 2.63, it holds that $\operatorname{vrtx}(P \cap [0,1]^n) \supseteq P \cap \lbrace 0,1 \rbrace^n$. According to Proposition 2.65, it holds $\operatorname{vrtx}(P \cap [0,1]^n) \cap \lbrace 0,1 \rbrace^n = P \cap \lbrace 0,1 \rbrace^n$. Therefore, $\operatorname{vrtx}(P \cap [0,1]^n) \subseteq \lbrace 0,1 \rbrace^n$ implies $\operatorname{vrtx}(P \cap [0,1]^n) = P \cap \lbrace 0,1 \rbrace^n$. From Corollary 2.39 it follows that $\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n) = P \cap [0,1]^n$, and, therefore, the considered Lagrange and LP relaxations are equivalent.
 
 In general, however, it holds that $\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n) \subseteq P \cap [0,1]^n$ (see Proposition 2.62), which implies that the Lagrange relaxation is tighter than the LP one, as their objective functions coincide. $\square$
 
-Since the primal relaxed and dual problems provide the same bound, one also says that *the Lagrange relaxation is in general tighter than the LP one*.
-
+</details>
 </div>
+
+Since the primal relaxed and dual problems provide the same bound, one also says that *the Lagrange relaxation is in general tighter than the LP one*.
 
 #### 5.2.2 Reparametrization
 
@@ -1906,7 +2456,7 @@ The corresponding Lagrange dual problem is
 
 $$\max_{\substack{\boldsymbol{\lambda} \\ \boldsymbol{\mu} \geq 0}} \left[g(\boldsymbol{\lambda}, \boldsymbol{\mu}) := \min_{\mathbf{x} \in \mathbb{R}^n} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\mu})\right] \,.$$
 
-**Certificate of optimality and stopping criteria.** Any dual feasible solution $(\boldsymbol{\lambda}, \boldsymbol{\mu})$, $\boldsymbol{\mu} \geq 0$, establishes a lower bound for the optimal value $p^*$ of the primal problem: $p^* \geq g(\boldsymbol{\lambda}, \boldsymbol{\mu})$. One says that $(\boldsymbol{\lambda}, \boldsymbol{\mu})$ provides a *proof* or *certificate* that $p^* \geq g(\boldsymbol{\lambda}, \boldsymbol{\mu})$. Should $p^* = g(\boldsymbol{\lambda}, \boldsymbol{\mu})$, one speaks about *optimality certificate*. Dual suboptimal points allow to estimate how good is the primal solution $\mathbf{x}$ without knowing $p^*$. For example, $\mathbf{x}$ is $\epsilon$-close to the optimum, if $f(\mathbf{x}) - g(\boldsymbol{\lambda}, \boldsymbol{\mu}) \leq \epsilon$ and, therefore:
+**Certificate of optimality and stopping criteria.** Any dual feasible solution $(\boldsymbol{\lambda}, \boldsymbol{\mu})$, $\boldsymbol{\mu} \geq 0$, establishes a lower bound for the optimal value $p^\ast$ of the primal problem: $p^\ast \geq g(\boldsymbol{\lambda}, \boldsymbol{\mu})$. One says that $(\boldsymbol{\lambda}, \boldsymbol{\mu})$ provides a *proof* or *certificate* that $p^\ast \geq g(\boldsymbol{\lambda}, \boldsymbol{\mu})$. Should $p^\ast = g(\boldsymbol{\lambda}, \boldsymbol{\mu})$, one speaks about *optimality certificate*. Dual suboptimal points allow to estimate how good is the primal solution $\mathbf{x}$ without knowing $p^\ast$. For example, $\mathbf{x}$ is $\epsilon$-close to the optimum, if $f(\mathbf{x}) - g(\boldsymbol{\lambda}, \boldsymbol{\mu}) \leq \epsilon$ and, therefore:
 
 $$f(\mathbf{x}) - p^* \leq f(\mathbf{x}) - g(\boldsymbol{\lambda}, \boldsymbol{\mu}) \leq \epsilon \,.$$
 
@@ -1916,7 +2466,7 @@ $$d^* - g(\boldsymbol{\lambda}, \boldsymbol{\mu}) \leq f(\mathbf{x}) - g(\boldsy
 
 This and similar conditions can be used as a stopping criteria for optimization.
 
-**Complementary slackness.** Let $\mathbf{x}^*$ and $(\boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ be primal and dual optima of the problem and primal and dual optimal values are equal. Then
+**Complementary slackness.** Let $\mathbf{x}^\ast$ and $(\boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ be primal and dual optima of the problem and primal and dual optimal values are equal. Then
 
 $$f(\mathbf{x}^*) = g(\boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$$
 
@@ -1928,8 +2478,8 @@ $$\overset{h_i(\mathbf{x}^*)=0,\; q_i(\mathbf{x}^*) \leq 0,\; \mu^*_i \geq 0}{\l
 
 The last inequality follows from feasibility of primal and dual solutions. We conclude that both inequalities hold with equality and, therefore:
 
-- $\mathbf{x}^*$ is a minimizer of $L(\mathbf{x}, \boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ over $\mathbf{x}$;
-- $\langle \boldsymbol{\mu}^*, \mathbf{q}(\mathbf{x}^*) \rangle = 0$, and since $\mu^*_i \geq 0$ and $q_i(\mathbf{x}^*) \leq 0$ it holds
+- $\mathbf{x}^\ast$ is a minimizer of $L(\mathbf{x}, \boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ over $\mathbf{x}$;
+- $\langle \boldsymbol{\mu}^\ast, \mathbf{q}(\mathbf{x}^\ast) \rangle = 0$, and since $\mu^\ast_i \geq 0$ and $q_i(\mathbf{x}^\ast) \leq 0$ it holds
 
 $$\mu^*_i \cdot q_i(\mathbf{x}^*) = 0 \,,\; i \in [m_2]$$
 
@@ -1941,7 +2491,7 @@ $$q_i(\mathbf{x}^*) < 0 \Rightarrow \mu^*_i = 0 \,.$$
 
 **Karush-Kuhn-Tucker (KKT) optimality conditions.** Now we assume that $f$, $h_i$, $i \in [m_1]$ and $q_i$, $i \in [m_2]$ and, therefore, $L$ are differentiable.
 
-**Non-convex case.** Let as above $\mathbf{x}^*$ and $(\boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ be primal and dual optima and primal and dual optimal values are equal. Since $\mathbf{x}^*$ minimizes $L(x, \boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ over $\mathbf{x}$, the gradient of $L$ must vanish:
+**Non-convex case.** Let as above $\mathbf{x}^\ast$ and $(\boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ be primal and dual optima and primal and dual optimal values are equal. Since $\mathbf{x}^\ast$ minimizes $L(x, \boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ over $\mathbf{x}$, the gradient of $L$ must vanish:
 
 $$\nabla f(\mathbf{x}^*) + \sum_{i=1}^{m_1} \lambda_i \nabla h_i(\mathbf{x}^*) + \sum_{i=1}^{m_1} \mu_i \nabla q_i(\mathbf{x}^*) = 0 \,.$$
 
@@ -1966,37 +2516,44 @@ To summarize, for *any* optimization problem with differentiable objective and c
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.16</span></p>
 
-Let the problem be convex, that is $h_i$ is affine and $f$, $q_i$ are convex, see Exercise 4.9. Let also $\hat{\mathbf{x}}$, $\hat{\boldsymbol{\lambda}}$, $\hat{\boldsymbol{\mu}}$ be any points that satisfy the KKT conditions in place of $\mathbf{x}^*$, $\boldsymbol{\lambda}^*$, $\boldsymbol{\mu}^*$.
+Let the problem be convex, that is $h_i$ is affine and $f$, $q_i$ are convex, see Exercise 4.9. Let also $\hat{\mathbf{x}}$, $\hat{\boldsymbol{\lambda}}$, $\hat{\boldsymbol{\mu}}$ be any points that satisfy the KKT conditions in place of $\mathbf{x}^\ast$, $\boldsymbol{\lambda}^\ast$, $\boldsymbol{\mu}^\ast$.
 
 Then $\hat{\mathbf{x}}$, $(\hat{\boldsymbol{\lambda}}, \hat{\boldsymbol{\mu}})$ are primal and dual optima, with zero duality gap.
 
-*Proof.* Denote
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 5.16</summary>
+
+Denote
 
 $$L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\mu}) = \iota_{\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n)}(\mathbf{x}) + \langle \mathbf{c}, \mathbf{x} \rangle + \langle \boldsymbol{\lambda}, A\mathbf{x} - \mathbf{b} \rangle + \langle \boldsymbol{\mu}, B\mathbf{x} - \mathbf{d} \rangle \,,$$
 
 where $\iota$ is defined as in (4.3). In other words, we consider the convex case with $f(\mathbf{x}) = \iota_{\operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n)}(\mathbf{x}) + \langle \mathbf{c}, \mathbf{x} \rangle$.
 
-**Sufficiency:** Condition (5.93) implies that $\mathbf{x}^*$ minimizes $L(\mathbf{x}, \boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ over $\mathbf{x}$ and applying the same transformation as in the complementary slackness proof, we obtain that $\mathbf{x}^*$ and $(\boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ are primal and dual optimal solutions.
+**Sufficiency:** Condition (5.93) implies that $\mathbf{x}^\ast$ minimizes $L(\mathbf{x}, \boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ over $\mathbf{x}$ and applying the same transformation as in the complementary slackness proof, we obtain that $\mathbf{x}^\ast$ and $(\boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ are primal and dual optimal solutions.
 
-**Necessity:** Theorem 5.11 implies that there exists an optimal primal solution $\mathbf{x}^*$ of the relaxed primal problem such that the strong duality holds. Then it follows that $\mathbf{x}^*$ is a minimizer of $L(\mathbf{x}, \boldsymbol{\lambda}^*, \boldsymbol{\mu}^*)$ and, therefore, of (5.93), over $\mathbf{x}$. Optimality of $\mathbf{x}^*$ implies its feasibility for the primal problem. Additionally, the complementary slackness holds. $\square$
+**Necessity:** Theorem 5.11 implies that there exists an optimal primal solution $\mathbf{x}^\ast$ of the relaxed primal problem such that the strong duality holds. Then it follows that $\mathbf{x}^\ast$ is a minimizer of $L(\mathbf{x}, \boldsymbol{\lambda}^\ast, \boldsymbol{\mu}^\ast)$ and, therefore, of (5.93), over $\mathbf{x}$. Optimality of $\mathbf{x}^\ast$ implies its feasibility for the primal problem. Additionally, the complementary slackness holds. $\square$
 
+</details>
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.17</span><span class="math-callout__name">(Dual optimality condition)</span></p>
 
-Vectors $\boldsymbol{\lambda}^*$ and $\boldsymbol{\mu}^* \geq 0$ are an optimum of the dual problem if and only if there exists
+Vectors $\boldsymbol{\lambda}^\ast$ and $\boldsymbol{\mu}^\ast \geq 0$ are an optimum of the dual problem if and only if there exists
 
 $$\mathbf{x}^* \in \arg\min_{\mathbf{x} \in \operatorname{conv}(P \cap \lbrace 0,1 \rbrace^n)} \left\langle \mathbf{c} + A^\top \boldsymbol{\lambda}^* + B^\top \boldsymbol{\mu}^*, \mathbf{x} \right\rangle$$
 
-such that $A\mathbf{x}^* = \mathbf{b}$, $B\mathbf{x}^* \leq \mathbf{d}$ and $\langle \boldsymbol{\mu}^*, B\mathbf{x}^* - \mathbf{d} \rangle = 0$. Such an $\mathbf{x}^*$ is a solution of the relaxed primal problem.
+such that $A\mathbf{x}^\ast = \mathbf{b}$, $B\mathbf{x}^\ast \leq \mathbf{d}$ and $\langle \boldsymbol{\mu}^\ast, B\mathbf{x}^\ast - \mathbf{d} \rangle = 0$. Such an $\mathbf{x}^\ast$ is a solution of the relaxed primal problem.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.18</span></p>
 
-If $\mathbf{x}^*$ in Corollary 5.17 is binary, i.e. $\mathbf{x}^* \in \lbrace 0, 1 \rbrace^n$, then $\mathbf{x}^*$ is a solution of the non-relaxed ILP problem. This directly follows from the fact that the primal relaxed problem is a relaxation of the ILP.
+If $\mathbf{x}^\ast$ in Corollary 5.17 is binary, i.e. $\mathbf{x}^\ast \in \lbrace 0, 1 \rbrace^n$, then $\mathbf{x}^\ast$ is a solution of the non-relaxed ILP problem. This directly follows from the fact that the primal relaxed problem is a relaxation of the ILP.
 
 </div>
 
@@ -2011,13 +2568,13 @@ where
 
 $$x^*(\mu)_i = \begin{cases} 1, & c_i - \mu w_i > 0 \\ 0, & c_i - \mu w_i < 0 \\ [0, 1], & c_i - \mu w_i = 0 \,. \end{cases}$$
 
-Note that now we separately treat the case $c_i - \mu w_i = 0$, as the relaxed primal variable $x^*(\mu)_i$ may take arbitrary value between zero and one in this case. Considering the same assumptions about $c_i$ and $w_i$ as before, we now rewrite it for $\mu = \frac{c_k}{w_k}$ as
+Note that now we separately treat the case $c_i - \mu w_i = 0$, as the relaxed primal variable $x^\ast(\mu)\_i$ may take arbitrary value between zero and one in this case. Considering the same assumptions about $c_i$ and $w_i$ as before, we now rewrite it for $\mu = \frac{c_k}{w_k}$ as
 
 $$g(\mu) = \mu b + \sum_{i=1}^{k-1} (c_i - \mu w_i) + (c_k - \mu w_k) x^*_k$$
 
 $$= \mu(b - \sum_{i=1}^{k-1} w_i - w_k x^*_k) + \sum_{i=1}^{k-1} c_i + c_k x^*_k \,.$$
 
-According to Corollary 5.17 $\mu \geq 0$ is optimal, if $\mu(b - \sum_{i=1}^{k-1} w_i - w_k x_k^*) = 0$. In turn, $\mu \neq 0$ implies $b - \sum_{i=1}^{k-1} w_i - w_k x_k^* = 0$. This allows to compute $k$ as the largest one for which $\sum_{i=1}^{k-1} w_i \leq b$ and $x_k^* = (b - \sum_{i=1}^{k-1} w_i) / w_k$.
+According to Corollary 5.17 $\mu \geq 0$ is optimal, if $\mu(b - \sum_{i=1}^{k-1} w_i - w_k x_k^\ast) = 0$. In turn, $\mu \neq 0$ implies $b - \sum_{i=1}^{k-1} w_i - w_k x_k^\ast = 0$. This allows to compute $k$ as the largest one for which $\sum_{i=1}^{k-1} w_i \leq b$ and $x_k^\ast = (b - \sum_{i=1}^{k-1} w_i) / w_k$.
 
 </div>
 
@@ -2179,11 +2736,11 @@ with the local polytope $\mathcal{L}$ defined by (3.43). Note that $\mathcal{L}$
 
 $$\mathcal{L} = \begin{cases} \boldsymbol{\mu}_u \in \Delta^{\mathcal{Y}_u}, & \forall u \in \mathcal{V} \\ \boldsymbol{\mu}_{uv} \in \Delta^{\mathcal{Y}_{uv}}, & \forall uv \in \mathcal{E} \\ \sum_{t \in \mathcal{Y}_v} \mu_{uv}(s,t) = \mu_u(s), & \forall u \in \mathcal{V},\; v \in \mathcal{N}(u),\; s \in \mathcal{Y}_u. \end{cases}$$
 
-As in Section 3.3, the notation $\boldsymbol{\mu}_u$ stands for the vector $(\mu_u(s) \colon s \in \mathcal{Y}_u)$, which encodes the selected label in the node $u$, and $\boldsymbol{\mu}_{uv} = (\mu_{uv}(s,t) \colon (s,t) \in \mathcal{Y}_{uv})$ encodes the selected label pair on the edge $uv$.
+As in Section 3.3, the notation $\boldsymbol{\mu}\_u$ stands for the vector $(\mu_u(s) \colon s \in \mathcal{Y}\_u)$, which encodes the selected label in the node $u$, and $\boldsymbol{\mu}\_{uv} = (\mu_{uv}(s,t) \colon (s,t) \in \mathcal{Y}\_{uv})$ encodes the selected label pair on the edge $uv$.
 
 Let us construct the Lagrange dual to (5.114) by relaxing the coupling constraints (the last line in (5.115)). This is done similarly to the general scheme provided in Section 5.1.
 
-Consider the linear term of the objective, which corresponds to dualizing the coupling constraints. In other words, we will specify the term $\langle \boldsymbol{\lambda}, A\mathbf{x} \rangle$ corresponding to the constraints $A\mathbf{x} = 0$, when the role of the latter is played by the coupling constraints. Since for each node $u \in \mathcal{V}$ there is one constraint for each of its labels $s \in \mathcal{Y}_u$ and each neighboring node $v \in \mathcal{N}(u)$, the role of the dual vector $\boldsymbol{\lambda}$ is played by the vector $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$ with coordinates $\phi_{u,v}(s)$, where $\mathcal{J} := \lbrace (u, v, s) \mid u \in \mathcal{V},\; v \in \mathcal{N}(u),\; s \in \mathcal{Y}_u \rbrace$. The comma between $u$ and $v$ in the lower index underlines that $\phi_{u,v}(s)$ and $\phi_{v,u}(s)$ are two different values, contrary to $\mu_{uv}(s,t)$ and $\mu_{vu}(t,s)$, where $u$ and $v$ are not separated by the comma.
+Consider the linear term of the objective, which corresponds to dualizing the coupling constraints. In other words, we will specify the term $\langle \boldsymbol{\lambda}, A\mathbf{x} \rangle$ corresponding to the constraints $A\mathbf{x} = 0$, when the role of the latter is played by the coupling constraints. Since for each node $u \in \mathcal{V}$ there is one constraint for each of its labels $s \in \mathcal{Y}\_u$ and each neighboring node $v \in \mathcal{N}(u)$, the role of the dual vector $\boldsymbol{\lambda}$ is played by the vector $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$ with coordinates $\phi_{u,v}(s)$, where $\mathcal{J} := \lbrace (u, v, s) \mid u \in \mathcal{V},\; v \in \mathcal{N}(u),\; s \in \mathcal{Y}\_u \rbrace$. The comma between $u$ and $v$ in the lower index underlines that $\phi_{u,v}(s)$ and $\phi_{v,u}(s)$ are two different values, contrary to $\mu_{uv}(s,t)$ and $\mu_{vu}(t,s)$, where $u$ and $v$ are not separated by the comma.
 
 Given the above notation, the considered linear term corresponding to the coupling constraints reads:
 
@@ -2233,7 +2790,7 @@ Consider Example 3.6, where the size of the ILP representation of the labeling p
 
 For the dual problem (5.122) it holds that:
 
-1. $\langle \boldsymbol{\theta}^\phi, \boldsymbol{\mu} \rangle = \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$ holds for any $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$ and $\boldsymbol{\mu} \in \mathcal{L}$ (in particular for $\boldsymbol{\mu} \in \mathcal{L} \cap \lbrace 0,1 \rbrace^{\mathcal{I}}$ and $\boldsymbol{\mu} \in \mathcal{M}$). This implies that for any labeling $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$ it holds that $E(\mathbf{y}; \boldsymbol{\theta}) = E(\mathbf{y}; \boldsymbol{\theta}^\phi)$ with $E$ being the energy of $\mathbf{y}$ as defined in (1.5).
+1. $\langle \boldsymbol{\theta}^\phi, \boldsymbol{\mu} \rangle = \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$ holds for any $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$ and $\boldsymbol{\mu} \in \mathcal{L}$ (in particular for $\boldsymbol{\mu} \in \mathcal{L} \cap \lbrace 0,1 \rbrace^{\mathcal{I}}$ and $\boldsymbol{\mu} \in \mathcal{M}$). This implies that for any labeling $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$ it holds that $E(\mathbf{y}; \boldsymbol{\theta}) = E(\mathbf{y}; \boldsymbol{\theta}^\phi)$ with $E$ being the energy of $\mathbf{y}$ as defined in (1.5).
 2. $\mathcal{D}(\boldsymbol{\phi})$ is a lower bound for optimal energy, i.e. $\mathcal{D}(\boldsymbol{\phi}) \leq \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$ for any $\boldsymbol{\mu} \in \mathcal{L} \cap \lbrace 0,1 \rbrace^{\mathcal{I}}$ and $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$.
 3. $\mathcal{D}$ is concave piecewise linear, and, therefore, a non-differentiable function.
 4. The primal relaxed problem corresponding to (5.122) is the local polytope relaxation, i.e. $\max_{\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}} \mathcal{D}(\boldsymbol{\phi}) = \min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$.
@@ -2247,7 +2804,7 @@ $$\mathcal{L}(\boldsymbol{\phi}) := \left\lbrace \boldsymbol{\mu} \in \mathcal{L
 
 is non-empty. In other words, there must be a relaxed labeling $\boldsymbol{\mu} \in \mathcal{L}$ with non-zero coordinates assigned only to locally optimal labels and label pairs. Such a relaxed labeling is also a solution to the local polytope relaxation $\min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$.
 
-6. **Tightness of the Lagrange dual:** Let the set $\mathcal{L}(\boldsymbol{\phi})$ defined by (5.123) contain an integer labeling, in other words, there is $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$ such that $\boldsymbol{\delta}(\mathbf{y}) \in \mathcal{L}(\boldsymbol{\phi})$. Then $\mathbf{y}$ is the solution of the (non-relaxed) energy minimization problem (1.5). In this case $\mathcal{D}(\boldsymbol{\phi}) = E(\mathbf{y}; \boldsymbol{\theta})$. We will call this case *LP-tight*, since the Lagrange dual is equivalent to the local polytope relaxation. This statement holds also in the opposite direction, that is, $\mathcal{D}(\boldsymbol{\phi}) = E(\mathbf{y}; \boldsymbol{\theta})$ if and only if there is $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$ such that $\boldsymbol{\delta}(\mathbf{y}) \in \mathcal{L}(\boldsymbol{\phi})$.
+6. **Tightness of the Lagrange dual:** Let the set $\mathcal{L}(\boldsymbol{\phi})$ defined by (5.123) contain an integer labeling, in other words, there is $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$ such that $\boldsymbol{\delta}(\mathbf{y}) \in \mathcal{L}(\boldsymbol{\phi})$. Then $\mathbf{y}$ is the solution of the (non-relaxed) energy minimization problem (1.5). In this case $\mathcal{D}(\boldsymbol{\phi}) = E(\mathbf{y}; \boldsymbol{\theta})$. We will call this case *LP-tight*, since the Lagrange dual is equivalent to the local polytope relaxation. This statement holds also in the opposite direction, that is, $\mathcal{D}(\boldsymbol{\phi}) = E(\mathbf{y}; \boldsymbol{\theta})$ if and only if there is $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$ such that $\boldsymbol{\delta}(\mathbf{y}) \in \mathcal{L}(\boldsymbol{\phi})$.
 
 </div>
 
@@ -2267,7 +2824,7 @@ is non-empty. In other words, there must be a relaxed labeling $\boldsymbol{\mu}
 
 $$\boldsymbol{\mu} \in \arg \min_{\substack{\boldsymbol{\mu}_u' \in \Delta^{\mathcal{Y}_u}, u \in \mathcal{V} \\ \boldsymbol{\mu}_{uv}' \in \Delta^{\mathcal{Y}_{uv}}, uv \in \mathcal{E}}} \langle \boldsymbol{\theta}^\phi, \boldsymbol{\mu}' \rangle \,.$$
 
-Let $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$ be a dual optimum. Then according to Corollary 5.17 there exists $\boldsymbol{\mu}$ satisfying both (5.125) and the coupling constraints. It implies $\boldsymbol{\mu} \in \mathcal{L}$. To show that $\boldsymbol{\mu} \in \mathcal{L}(\boldsymbol{\phi})$ it remains to prove that $\mu_w(s) = 0$ if $s \notin \arg \min_{s \in \mathcal{Y}_w} \theta_w^\phi(s)$.
+Let $\boldsymbol{\phi} \in \mathbb{R}^{\mathcal{J}}$ be a dual optimum. Then according to Corollary 5.17 there exists $\boldsymbol{\mu}$ satisfying both (5.125) and the coupling constraints. It implies $\boldsymbol{\mu} \in \mathcal{L}$. To show that $\boldsymbol{\mu} \in \mathcal{L}(\boldsymbol{\phi})$ it remains to prove that $\mu_w(s) = 0$ if $s \notin \arg \min_{s \in \mathcal{Y}\_w} \theta_w^\phi(s)$.
 
 6. From Item 5 it follows that $\boldsymbol{\delta}(\mathbf{y})$ is a minimizer of the local polytope relaxation. Since $\boldsymbol{\delta}(\mathbf{y}) \in \lbrace 0,1 \rbrace^{\mathcal{I}}$ it also minimizes the non-relaxed problem (5.114) and, therefore, $\mathbf{y}$ is an optimal labeling. The equality $\mathcal{D}(\boldsymbol{\phi}) = E(\mathbf{y}; \boldsymbol{\theta}) \equiv \langle \boldsymbol{\theta}, \boldsymbol{\delta}(\mathbf{y}) \rangle$ follows from (??), which holds for any $\boldsymbol{\mu} \in \mathcal{L}(\boldsymbol{\phi})$ and, therefore, for $\boldsymbol{\delta}(\mathbf{y})$.
 
@@ -2288,7 +2845,7 @@ In practice, a simpler optimality condition is often desirable, which could be c
 
 In the following, we will use two functions, which turn real-valued vectors from the primal space $\mathbb{R}^{\mathcal{I}}$ into binary ones:
 
-- For any $\mu \in \mathbb{R}$ let $\operatorname{nz}[\mu] = \lbracket \mu \neq 0 \rbracket$ be the indicator function of $\mu$ being **non-zero**. When applied to a vector $\boldsymbol{\mu} \in \mathbb{R}^n$, it acts coordinate-wise, i.e. $\operatorname{nz}[\boldsymbol{\mu}]_i = \operatorname{nz}[\mu_i]$.
+- For any $\mu \in \mathbb{R}$ let $\operatorname{nz}[\mu] = \lbracket \mu \neq 0 \rbracket$ be the indicator function of $\mu$ being **non-zero**. When applied to a vector $\boldsymbol{\mu} \in \mathbb{R}^n$, it acts coordinate-wise, i.e. $\operatorname{nz}[\boldsymbol{\mu}]\_i = \operatorname{nz}[\mu_i]$.
 
 - For $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$ let $\operatorname{mi}[\boldsymbol{\theta}]$ be defined such that locally minimal labels and label pairs (w.r.t. $\theta$) obtain the value 1 and others zero, i.e. $\operatorname{mi}[\boldsymbol{\theta}]\_w(x_w) := \lbracket \theta_w(x_w) = \min_{x_w \in \mathcal{Y}\_w} \theta_w(x_w) \rbracket$ for $w \in \mathcal{V} \cup \mathcal{E}$. Here $\operatorname{mi}$ stands for $\min$.
 
@@ -2332,7 +2889,7 @@ In other words, strict arc-consistency means that (i) for a single label in each
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5.27</span></p>
 
 1. $\boldsymbol{\mu} \in \mathcal{L}$ implies that $\operatorname{nz}[\boldsymbol{\mu}]$ is arc-consistent.
-2. For any $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$, $\boldsymbol{\delta}(\mathbf{y})$ is strictly arc-consistent.
+2. For any $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$, $\boldsymbol{\delta}(\mathbf{y})$ is strictly arc-consistent.
 3. For any $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$ the following two statements are equivalent:
    - a) $\operatorname{mi}[\boldsymbol{\theta}]$ is strictly arc-consistent;
    - b) $\operatorname{mi}[\boldsymbol{\theta}] \in \mathcal{L} \cap \lbrace 0, 1 \rbrace^{\mathcal{I}}$, i.e. $\operatorname{mi}[\boldsymbol{\theta}]$ is an integer labeling.
@@ -2373,17 +2930,17 @@ Let $\boldsymbol{\xi}$ be the arc-consistent subset of labels and label pairs th
 
 We will iteratively build a *connected* subgraph $(\mathcal{V}', \mathcal{E}')$ and assign labels to the nodes of $\mathcal{V}'$ such that if label pair $(y_u, y_v)$ is assigned to the edge $(u, v) \in \mathcal{E}'$ it holds that $\xi_u(y_u) = 1$, $\xi_v(y_v) = 1$ and $\xi_{uv}(y_u, y_v) = 1$. Our procedure finalizes when $\mathcal{V}' = \mathcal{V}$ and $\mathcal{E}' = \mathcal{E}$.
 
-The sets $\mathcal{V}'$ and $\mathcal{E}'$ are empty at the beginning of the procedure. Let $u \in \mathcal{V}$ be any vertex. Consider a label $s \in \mathcal{Y}_u$ for which $\xi_u(s) = 1$. Assign $y_u := s$ and $\mathcal{V}' := \mathcal{V}' \cup \lbrace u \rbrace$.
+The sets $\mathcal{V}'$ and $\mathcal{E}'$ are empty at the beginning of the procedure. Let $u \in \mathcal{V}$ be any vertex. Consider a label $s \in \mathcal{Y}\_u$ for which $\xi_u(s) = 1$. Assign $y_u := s$ and $\mathcal{V}' := \mathcal{V}' \cup \lbrace u \rbrace$.
 
 On each iteration a node $v \in \mathcal{V} \setminus \mathcal{V}'$ is considered, which is incident to some node of $\mathcal{V}'$. Note that any node $v \in \mathcal{V} \setminus \mathcal{V}'$ is incident to *at most* one node in $\mathcal{V}'$. Indeed, if $u'$ and $u''$ would be two nodes of $\mathcal{V}'$ incident to $v$, there would be a path $p$ between them in the graph $(\mathcal{V}', \mathcal{E}')$, since the latter is connected. Therefore, there would be a cycle $u', v, u'', p, u'$, which would mean a contradiction, as the initial graph is acyclic.
 
-Let therefore $v \in \mathcal{V} \setminus \mathcal{V}'$ be any node connected to some node $u \in \mathcal{V}'$. By definition of node-edge agreement there is a $t \in \mathcal{Y}_v$ such that $\xi_{uv}(y_u, t) = \xi_v(t) = 1$. Assign $y_v := t$ and $\mathcal{V}' := \mathcal{V}' \cup \lbrace v \rbrace$, $\mathcal{E}' := \mathcal{E}' \cup \lbrace uv \rbrace$.
+Let therefore $v \in \mathcal{V} \setminus \mathcal{V}'$ be any node connected to some node $u \in \mathcal{V}'$. By definition of node-edge agreement there is a $t \in \mathcal{Y}\_v$ such that $\xi_{uv}(y_u, t) = \xi_v(t) = 1$. Assign $y_v := t$ and $\mathcal{V}' := \mathcal{V}' \cup \lbrace v \rbrace$, $\mathcal{E}' := \mathcal{E}' \cup \lbrace uv \rbrace$.
 
 Repeat the process until $\mathcal{V}' = \mathcal{V}$ and therefore $\mathcal{E} = \mathcal{E}'$.
 
 By construction it holds that $\boldsymbol{\delta}(\mathbf{y}) \leq \boldsymbol{\xi}$ for the labeling $\mathbf{y}$, which finalizes the proof of the first two statements.
 
-For the last statement, the labeling $\mathbf{y}^*$ can be constructed with $(u, s)$ being selected at the first step of the procedure. $\square$
+For the last statement, the labeling $\mathbf{y}^\ast$ can be constructed with $(u, s)$ being selected at the first step of the procedure. $\square$
 
 </details>
 </div>
@@ -2391,7 +2948,7 @@ For the last statement, the labeling $\mathbf{y}^*$ can be constructed with $(u,
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.30</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem with the graph $\mathcal{G}$ being acyclic. Let $\mathcal{L}$ and $\mathcal{M}$ be the corresponding local and marginal polytopes. Then $\mathcal{L} = \mathcal{M}$.
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem with the graph $\mathcal{G}$ being acyclic. Let $\mathcal{L}$ and $\mathcal{M}$ be the corresponding local and marginal polytopes. Then $\mathcal{L} = \mathcal{M}$.
 
 </div>
 
@@ -2401,9 +2958,9 @@ Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \boldsymbol{\theta})$ be a labeling 
 
 Since $\mathcal{M} \subseteq \mathcal{L}$ it suffices to show that $\mathcal{L} \subseteq \mathcal{M}$. Consider a maximizer $\boldsymbol{\phi}$ of the Lagrange dual $\mathcal{D}$ defined by (5.122) for an acyclic problem with the cost vector $\boldsymbol{\theta}$. Since node-edge agreement is necessary for optimality, Proposition 5.29 implies that $\mathcal{L}(\boldsymbol{\phi})$ contains an integer labeling. In its turns, it implies (see statement 5 of Proposition 5.23) that this labeling is a solution to the local polytope relaxation of the labeling problem.
 
-In other words, Proposition 5.29 implies that for any cost vector $\boldsymbol{\theta}$ there is always an integer solution of the local polytope relaxation of the labeling problem for acyclic graphs. It implies that only for vectors $\boldsymbol{\delta}(\mathbf{y})$, $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$, corresponding to integer labelings, a cost vector $\boldsymbol{\theta}$ may exist such that $\boldsymbol{\delta}(\mathbf{y})$ is the unique solution of the relaxed problem $\min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$.
+In other words, Proposition 5.29 implies that for any cost vector $\boldsymbol{\theta}$ there is always an integer solution of the local polytope relaxation of the labeling problem for acyclic graphs. It implies that only for vectors $\boldsymbol{\delta}(\mathbf{y})$, $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$, corresponding to integer labelings, a cost vector $\boldsymbol{\theta}$ may exist such that $\boldsymbol{\delta}(\mathbf{y})$ is the unique solution of the relaxed problem $\min_{\boldsymbol{\mu} \in \mathcal{L}} \langle \boldsymbol{\theta}, \boldsymbol{\mu} \rangle$.
 
-Due to Definition 2.20 this implies $\operatorname{vrtx}(\mathcal{L}) \subseteq \lbrace \boldsymbol{\delta}(\mathbf{y}) \mid \mathbf{y} \in \mathcal{Y}_\mathcal{V} \rbrace$. Therefore,
+Due to Definition 2.20 this implies $\operatorname{vrtx}(\mathcal{L}) \subseteq \lbrace \boldsymbol{\delta}(\mathbf{y}) \mid \mathbf{y} \in \mathcal{Y}\_\mathcal{V} \rbrace$. Therefore,
 
 $$\mathcal{L} \subseteq \operatorname{conv}\lbrace \boldsymbol{\delta}(\mathbf{y}) \mid \mathbf{y} \in \mathcal{Y}_\mathcal{V} \rbrace = \mathcal{M} \subseteq \mathcal{L} \,,$$
 
@@ -2415,7 +2972,7 @@ which finalizes the proof. $\square$
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 5.31</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem with the graph $\mathcal{G}$ being acyclic. Let also $\boldsymbol{\mu}^* \in \mathcal{L}$ be a solution of the local polytope relaxation of the labeling problem. Then from $\mu_u^*(s) > 0$ for some $u \in \mathcal{V}$, $s \in \mathcal{Y}_u$ it follows that there is an optimal integer labeling $\mathbf{y}^*$ such that $y_u = s$.
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem with the graph $\mathcal{G}$ being acyclic. Let also $\boldsymbol{\mu}^\ast \in \mathcal{L}$ be a solution of the local polytope relaxation of the labeling problem. Then from $\mu_u^\ast(s) > 0$ for some $u \in \mathcal{V}$, $s \in \mathcal{Y}\_u$ it follows that there is an optimal integer labeling $\mathbf{y}^\ast$ such that $y_u = s$.
 
 </div>
 
@@ -2423,7 +2980,7 @@ Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \boldsymbol{\theta})$ be a labeling 
 <details>
 <summary>Proof of Corollary 5.31</summary>
 
-The labeling $\mathbf{y}^*$ can be constructed as in the proof of Proposition 5.29 with $(u, s)$ being selected as the first node and label. $\square$
+The labeling $\mathbf{y}^\ast$ can be constructed as in the proof of Proposition 5.29 with $(u, s)$ being selected as the first node and label. $\square$
 
 </details>
 </div>
@@ -2515,7 +3072,59 @@ $$x^{t+1} = x^t - \alpha^t \nabla f(x^t)$$
 
 for $t = 0, \ldots, \infty$ and some $\alpha^t > 0$ is called *gradient descent*. The value $\alpha^t$ is called the *step-size* of the algorithm.
 
-Let $x^* \in \arg \min_{x \in \operatorname{dom} f} f(x)$ and $f^* = f(x^*)$. The following statement specifies convergence properties of the gradient descent:
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 320" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="gd-title">
+  <title id="gd-title">Gradient descent on an elliptical bowl: small vs large step</title>
+  <defs>
+    <marker id="gd-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e65100"/>
+    </marker>
+    <marker id="gd-arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1565c0"/>
+    </marker>
+  </defs>
+  <!-- contour ellipses (centered at 280,160) -->
+  <g fill="none" stroke="#999" stroke-width="1">
+    <ellipse cx="280" cy="160" rx="220" ry="80"/>
+    <ellipse cx="280" cy="160" rx="170" ry="62"/>
+    <ellipse cx="280" cy="160" rx="120" ry="44"/>
+    <ellipse cx="280" cy="160" rx="70"  ry="26"/>
+    <ellipse cx="280" cy="160" rx="30"  ry="11"/>
+  </g>
+  <!-- optimum -->
+  <circle cx="280" cy="160" r="4" fill="#000"/>
+  <text x="288" y="160" font-family="serif" font-size="12" font-style="italic">x*</text>
+
+  <!-- Path A: well-tuned step (orange) - smooth descent -->
+  <g stroke="#e65100" stroke-width="2" fill="none">
+    <line x1="70" y1="100" x2="120" y2="115" marker-end="url(#gd-arr)"/>
+    <line x1="120" y1="115" x2="170" y2="130" marker-end="url(#gd-arr)"/>
+    <line x1="170" y1="130" x2="215" y2="145" marker-end="url(#gd-arr)"/>
+    <line x1="215" y1="145" x2="248" y2="155" marker-end="url(#gd-arr)"/>
+    <line x1="248" y1="155" x2="270" y2="158" marker-end="url(#gd-arr)"/>
+  </g>
+  <circle cx="70" cy="100" r="4" fill="#e65100"/>
+  <text x="40" y="95" font-family="serif" font-size="12" font-style="italic" fill="#e65100">x⁰</text>
+  <text x="80" y="85" font-family="serif" font-size="11" fill="#e65100">α = 1/L</text>
+
+  <!-- Path B: too large step (blue) - zig-zag -->
+  <g stroke="#1565c0" stroke-width="2" fill="none">
+    <line x1="70" y1="220" x2="180" y2="180" marker-end="url(#gd-arr2)"/>
+    <line x1="180" y1="180" x2="350" y2="220" marker-end="url(#gd-arr2)"/>
+    <line x1="350" y1="220" x2="200" y2="155" marker-end="url(#gd-arr2)"/>
+    <line x1="200" y1="155" x2="370" y2="180" marker-end="url(#gd-arr2)"/>
+    <line x1="370" y1="180" x2="240" y2="155" marker-end="url(#gd-arr2)"/>
+  </g>
+  <circle cx="70" cy="220" r="4" fill="#1565c0"/>
+  <text x="40" y="232" font-family="serif" font-size="12" font-style="italic" fill="#1565c0">x⁰</text>
+  <text x="80" y="245" font-family="serif" font-size="11" fill="#1565c0">α too large → zig-zag</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Each iterate $x^{t+1}=x^t-\alpha^t\nabla f(x^t)$ moves opposite to the gradient — perpendicular to the local level set. With $\alpha=1/L$ the iterates contract toward $x^\ast$ (orange). Too-large $\alpha$ overshoots and zig-zags between sides of the valley (blue).
+</figcaption>
+</figure>
+
+Let $x^\ast \in \arg \min_{x \in \operatorname{dom} f} f(x)$ and $f^\ast = f(x^\ast)$. The following statement specifies convergence properties of the gradient descent:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.6</span></p>
@@ -2532,18 +3141,18 @@ $$f(x^t) - f^* \leq \frac{2L \lVert x^0 - x^* \rVert}{t + 4} \,.$$
 
 Let us consider the statement of the theorem in detail. First of all, it considers a *constant* step size $\alpha := \alpha^t = \frac{1}{L}$, which is inverse-proportional to the speed of change of the gradient $\nabla f$ expressed by its Lipschitz constant. In other words, the faster the gradient changes, the smaller the step-size must be selected. Therefore, the Lipschitz constant defines the vicinity in which the considered function has "approximately the same" gradient. The larger the constant the smaller is the vicinity and, hence, the smaller the step-size.
 
-Expression (6.3) states that each step of the algorithm produces a solution estimate $x^{t+1}$ which is closer to the optimum $x^*$ than the previous estimate $x^t$.
+Expression (6.3) states that each step of the algorithm produces a solution estimate $x^{t+1}$ which is closer to the optimum $x^\ast$ than the previous estimate $x^t$.
 
 Expression (6.4) shows that the algorithm is strictly monotonous, i.e. unless $\nabla f = \bar{0}$, the objective value strictly decreases on each iteration.
 
-Expression (6.5) provides the *convergence rate* of the gradient descent algorithm. The accuracy $\epsilon = f(x^t) - f^*$ is attained after at most $O\!\left(\frac{L}{\epsilon}\right)$ iterations. This complexity is often formulated in a "dual" fashion, when one says that the algorithm requires $O\!\left(\frac{L}{\epsilon}\right)$ iterations to attain a given accuracy $\epsilon$.
+Expression (6.5) provides the *convergence rate* of the gradient descent algorithm. The accuracy $\epsilon = f(x^t) - f^\ast$ is attained after at most $O\!\left(\frac{L}{\epsilon}\right)$ iterations. This complexity is often formulated in a "dual" fashion, when one says that the algorithm requires $O\!\left(\frac{L}{\epsilon}\right)$ iterations to attain a given accuracy $\epsilon$.
 
 **Step-size selection for gradient descent.** One may object that a single Lipschitz constant $L$ can be a too rough estimation for a behavior of a function on its whole domain and, therefore, the constant step-size policy $\alpha = \frac{1}{L}$ may not work well in practice. This is indeed often the case. Consider the function $x^3$ on the interval $[0, b]$. The Lipschitz constant of its derivative $3x^2$ on this interval is bounded by the value $6b$ according to Proposition 6.2. If $b = 1$ this results in $L = 6$ and if $b = 100$ Proposition 6.2 gives $L = 600$. The step-size $\frac{1}{600}$ would lead to a much slower convergence in the vicinity of $x = 1$ than the step-size $\frac{1}{6}$. In other words, the step-size and the convergence speed depend on the domain on which the estimation of the Lipschitz constant was done. Therefore, a variable step-size quite often works better in practice.
 
 There are three typical ways to define $\alpha^t$ in (6.2):
 
 - $\alpha^t = \frac{1}{L}$ — constant step size. Requires knowing the Lipschitz constant or a good estimate of it. May be very inefficient if $\lVert \nabla f \rVert$ significantly varies over the domain of $f$.
-- $\alpha^t = \arg \min_{\alpha \in \mathbb{R}_+} f(x^t - \alpha \nabla f(x^t))$, which is the step-size that minimizes $f$ in the negative gradient direction. For efficiency of the gradient descent algorithm as a whole, a closed form solution for $\alpha^t$ is typically required, which is often not available.
+- $\alpha^t = \arg \min_{\alpha \in \mathbb{R}\_+} f(x^t - \alpha \nabla f(x^t))$, which is the step-size that minimizes $f$ in the negative gradient direction. For efficiency of the gradient descent algorithm as a whole, a closed form solution for $\alpha^t$ is typically required, which is often not available.
 - $\alpha^t$ is selected to satisfy
 
 $$f(x^{t+1}) \leq f(x^t) - \frac{\alpha^t}{2} \lVert \nabla f(x^t) \rVert^2 \,.$$
@@ -2572,14 +3181,14 @@ The update rule (6.7) is basically the same as (6.2). However, when the function
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.8</span></p>
 
-Let $f$ be convex and Lipschitz continuous in a ball $B_R(x^*) = \lbrace x \in \mathbb{R}^n \colon \lVert x^* - x \rVert \leq R \rbrace$ with Lipschitz constant $M$. Let $x^0 \in B_R(x^*)$ be the initial point and let the step-size $\alpha^t$ satisfy
+Let $f$ be convex and Lipschitz continuous in a ball $B_R(x^\ast) = \lbrace x \in \mathbb{R}^n \colon \lVert x^\ast - x \rVert \leq R \rbrace$ with Lipschitz constant $M$. Let $x^0 \in B_R(x^\ast)$ be the initial point and let the step-size $\alpha^t$ satisfy
 
 $$\alpha^t > 0, \quad \alpha^t \xrightarrow{t \to \infty} 0, \quad \text{and} \quad \sum_{t=1}^{\infty} \alpha^t = \infty \,.$$
 
 Then the following holds:
 
-- $f(x^t) - f^* \xrightarrow{t \to \infty} 0$;
-- $0 < \alpha^t < 2\frac{f(x^t) - f^*}{\lVert g^t \rVert^2}$ implies $\lVert x^{t+1} - x^* \rVert \leq \lVert x^t - x^* \rVert$;
+- $f(x^t) - f^\ast \xrightarrow{t \to \infty} 0$;
+- $0 < \alpha^t < 2\frac{f(x^t) - f^\ast}{\lVert g^t \rVert^2}$ implies $\lVert x^{t+1} - x^\ast \rVert \leq \lVert x^t - x^\ast \rVert$;
 - In particular, $\alpha^t = \frac{R}{\lVert g^t \rVert \sqrt{t+1}}$ for all $t = 1, 2, \ldots$ implies
 
 $$f(x^t) - f^* \leq \frac{MR}{\sqrt{t+1}} \,.$$
@@ -2589,7 +3198,7 @@ $$f(x^t) - f^* \leq \frac{MR}{\sqrt{t+1}} \,.$$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 6.9</span><span class="math-callout__name">(Practical step-size rules)</span></p>
 
-Since neither the constant $R$ nor the optimal value $f^*$ are typically known, a variety of different practical step-size rules are used. One of them [26, Sec. 6.3.1] is the approximation of those for (6.9):
+Since neither the constant $R$ nor the optimal value $f^\ast$ are typically known, a variety of different practical step-size rules are used. One of them [26, Sec. 6.3.1] is the approximation of those for (6.9):
 
 $$\alpha^t = \frac{\beta^t (f(x^t) - \hat{f}^t)}{\lVert g^t \rVert^2} \,,$$
 
@@ -2597,7 +3206,7 @@ where $\hat{f}^t$ is the approximation of the optimal value and $0 < \beta^t < 2
 
 In particular [26, Sec. 6.3.1] suggests two common ways to choose $\beta^t$ and $\hat{f}^t$:
 
-- The first option is assign $\hat{f}^t$ to use the best known lower bound for $f^*$. The latter can often be computed from the dual information. For example, if the primal problem is ILP, the subgradient is used to optimize its convex Lagrange dual, the best lower bound for $f^*$ can be either the best known value of the initial ILP objective, or, if available, the best known value of the primal of the Lagrange relaxation. The value of $\beta^t$ is selected then as, e.g.,
+- The first option is assign $\hat{f}^t$ to use the best known lower bound for $f^\ast$. The latter can often be computed from the dual information. For example, if the primal problem is ILP, the subgradient is used to optimize its convex Lagrange dual, the best lower bound for $f^\ast$ can be either the best known value of the initial ILP objective, or, if available, the best known value of the primal of the Lagrange relaxation. The value of $\beta^t$ is selected then as, e.g.,
 
 $$\beta^t = \frac{1 + m}{t + m} \,,$$
 
@@ -2613,7 +3222,7 @@ with $m^t$ being the best attained value so far, i.e., $m^t := \min_{0 \leq i \l
 
 $$\hat{f}^t := \max\lbrace \tilde{f}^t, m^t / (1 + \gamma^t) \rbrace$$
 
-with $\tilde{f}^t$ being the best available lower bound for $f^*$.
+with $\tilde{f}^t$ being the best available lower bound for $f^\ast$.
 
 Note that the formulas have to be respectively changed if the subgradient is used to maximize a concave function. This case is covered in [26, Sec. 6.3.1].
 
@@ -2621,9 +3230,9 @@ Note that the formulas have to be respectively changed if the subgradient is use
 
 Note the following important properties of the sub-gradient method stated by Theorem 6.8:
 
-- For a non-differentiable function $f$ the convergence is guaranteed only if the step-size $\alpha^t$ satisfies the *diminishing step-size rule* (6.8). This is due to the fact that the subgradient need not vanish in the vicinity of the minimum, contrary to the gradient, see Figure 6.2 for illustration. Since neither $f(x^t) - f^*$ nor $R$ is typically known, the claims of Theorem 6.8 can be simplified as *there exists* $\alpha^t$ such that (6.9) holds, and *there exist* $\lbrace \alpha^t \rbrace$ such that (6.10) holds. Step-sizes which decrease as $O(\frac{1}{t})$ or $O(\frac{1}{\sqrt{t}})$ are typical choices that satisfy condition (6.8).
+- For a non-differentiable function $f$ the convergence is guaranteed only if the step-size $\alpha^t$ satisfies the *diminishing step-size rule* (6.8). This is due to the fact that the subgradient need not vanish in the vicinity of the minimum, contrary to the gradient, see Figure 6.2 for illustration. Since neither $f(x^t) - f^\ast$ nor $R$ is typically known, the claims of Theorem 6.8 can be simplified as *there exists* $\alpha^t$ such that (6.9) holds, and *there exist* $\lbrace \alpha^t \rbrace$ such that (6.10) holds. Step-sizes which decrease as $O(\frac{1}{t})$ or $O(\frac{1}{\sqrt{t}})$ are typical choices that satisfy condition (6.8).
 
-- The update rule (6.7) does not guarantee the monotonic improvement of the function value if $f$ is non-differentiable. In other words, it may happen that $f(x^{t+1}) \geq f(x^t)$, even for an arbitrary small $\alpha^t$, see Figure 6.3 for illustration. It implies that minimization of $f$ in the direction of a negative subgradient does not make sense, contrary to the case when $f$ is smooth. On the other hand, the distance to the optimum $x^*$ never grows during iterations, according to (6.9).
+- The update rule (6.7) does not guarantee the monotonic improvement of the function value if $f$ is non-differentiable. In other words, it may happen that $f(x^{t+1}) \geq f(x^t)$, even for an arbitrary small $\alpha^t$, see Figure 6.3 for illustration. It implies that minimization of $f$ in the direction of a negative subgradient does not make sense, contrary to the case when $f$ is smooth. On the other hand, the distance to the optimum $x^\ast$ never grows during iterations, according to (6.9).
 
 - The convergence rate defined by (6.10) can be written as $O(\frac{1}{\sqrt{t}})$, or, alternatively, as $O(\frac{1}{\epsilon^2})$. This is significantly slower than the convergence rate $O(\frac{L}{\epsilon})$ in the smooth case. For example, to attain the precision $\epsilon = 0.1$ the subgradient algorithm must perform 100 times more iterations than to obtain the precision $\epsilon = 1$. Note that the gradient descent would require only 10 times more iterations given that the function to be optimized is smooth.
 
@@ -2631,9 +3240,9 @@ Note the following important properties of the sub-gradient method stated by The
 | --- | --- | --- |
 | Update rule | $x^{t+1} = x^t - \alpha^t \nabla f(x^t)$ | $x^{t+1} = x^t - \alpha^t g^t$, $g^t \in \partial f(x^t)$ |
 | Step-size $\alpha_t > 0$ | $\alpha^t = \frac{1}{L}$ | $\alpha^t \xrightarrow{t \to \infty} 0$, $\sum_{t=1}^{\infty} \alpha^t = \infty$ |
-| Distance to optimum | $\lVert x^{t+1} - x^* \rVert^2 \leq \lVert x^t - x^* \rVert^2 - \frac{1}{L^2} \lVert \nabla f(x^t) \rVert^2$ | $\lVert x^{t+1} - x^* \rVert \leq \lVert x^t - x^* \rVert$ |
+| Distance to optimum | $\lVert x^{t+1} - x^\ast \rVert^2 \leq \lVert x^t - x^\ast \rVert^2 - \frac{1}{L^2} \lVert \nabla f(x^t) \rVert^2$ | $\lVert x^{t+1} - x^\ast \rVert \leq \lVert x^t - x^\ast \rVert$ |
 | Monotonicity | $f(x^{t+1}) \leq f(x^t) - \frac{1}{2L} \lVert \nabla f(x^t) \rVert^2$ | — |
-| Convergence rate | $f(x^t) - f^* \leq \frac{2L \lVert x^0 - x^* \rVert}{t+4}$ | $f^t - f^* \leq \frac{MR}{\sqrt{t+1}}$ |
+| Convergence rate | $f(x^t) - f^\ast \leq \frac{2L \lVert x^0 - x^\ast \rVert}{t+4}$ | $f^t - f^\ast \leq \frac{MR}{\sqrt{t+1}}$ |
 
 ### 6.3 Coordinate Descent
 
@@ -2660,7 +3269,7 @@ Note that by definition the coordinate descent is monotonous, i.e. it holds that
 
 $$\underbrace{f(x_1^{t+1}, \ldots, x_{i-1}^{t+1}, x_i^t, x_{i+1}^t, \ldots, x_n^t)}_{f_{i-1}^t} \geq \underbrace{f(x_1^{t+1}, \ldots, x_{i-1}^{t+1}, x_i^{t+1}, x_{i+1}^t, \ldots, x_n^t)}_{f_{i-1}^{t+1}} \,,$$
 
-and therefore, the sequence $f_i^t$ is monotonously non-increasing w.r.t. $k = n \cdot t + i \to \infty$. Assuming that the minimal value of $f$ exists, i.e. $f^* > -\infty$, this implies convergence of the sequence $f_i^t$. To analyze this convergence and the convergence of the argument sequences $x_i^t$ for each $i$ as $t \to \infty$, we will require the following simple lemma:
+and therefore, the sequence $f_i^t$ is monotonously non-increasing w.r.t. $k = n \cdot t + i \to \infty$. Assuming that the minimal value of $f$ exists, i.e. $f^\ast > -\infty$, this implies convergence of the sequence $f_i^t$. To analyze this convergence and the convergence of the argument sequences $x_i^t$ for each $i$ as $t \to \infty$, we will require the following simple lemma:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 6.11</span></p>
@@ -2691,7 +3300,7 @@ Moreover, in general, the algorithm (6.15) does not even guarantee convergence t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.12</span></p>
 
-Let $f$ be continuously differentiable on $\mathbb{R}^n$. Furthermore, let for each $i$ and $x \in \mathbb{R}^n$ the minimum in (6.15) be *uniquely* attained. Then for every limit point $x^*$ of the sequence $x^t$, $t = 1, 2, \ldots$ defined by (6.15) it holds that $\nabla f(x^*) = 0$.
+Let $f$ be continuously differentiable on $\mathbb{R}^n$. Furthermore, let for each $i$ and $x \in \mathbb{R}^n$ the minimum in (6.15) be *uniquely* attained. Then for every limit point $x^\ast$ of the sequence $x^t$, $t = 1, 2, \ldots$ defined by (6.15) it holds that $\nabla f(x^\ast) = 0$.
 
 </div>
 
@@ -2723,7 +3332,7 @@ However, the most efficient existing methods for the Lagrangean dual are based o
 
 **Iterated Conditional Modes.** Iterated Conditional Modes (ICM) is one of the first and simplest algorithms for energy minimization. As we show below, it is an implementation of the coordinate descent (6.15) for the primal non-relaxed energy minimization objective $E(\mathbf{y}; \boldsymbol{\theta})$.
 
-The algorithm starts with some labeling $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$ and iteratively tries to improve it. In its elementary step it minimizes the objective w.r.t. the label of a node $u \in \mathcal{V}$, whereas the labels of other nodes are kept fixed.
+The algorithm starts with some labeling $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$ and iteratively tries to improve it. In its elementary step it minimizes the objective w.r.t. the label of a node $u \in \mathcal{V}$, whereas the labels of other nodes are kept fixed.
 
 Let the notation
 
@@ -2738,10 +3347,10 @@ $$y_u := \arg \min_{s \in \mathcal{Y}_u} E(l(\mathbf{y}, u, s); \boldsymbol{\the
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm 3</span><span class="math-callout__name">(ICM: Coordinate Descent for $E(y; \theta)$)</span></p>
 
-1. **Init:** $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$
+1. **Init:** $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$
 2. **repeat**
 3. &emsp; **for** $u \in \mathcal{V}$ **do**
-4. &emsp;&emsp; $y_u := \arg \min_{s \in \mathcal{Y}_u} E(l(\mathbf{y}, u, s); \boldsymbol{\theta})$
+4. &emsp;&emsp; $y_u := \arg \min_{s \in \mathcal{Y}\_u} E(l(\mathbf{y}, u, s); \boldsymbol{\theta})$
 5. &emsp; **end for**
 6. **until** the labeling $\mathbf{y}$ does not change anymore
 
@@ -2749,7 +3358,7 @@ $$y_u := \arg \min_{s \in \mathcal{Y}_u} E(l(\mathbf{y}, u, s); \boldsymbol{\the
 
 Algorithm 3 applies this rule to each node sequentially and iterates this procedure until the labeling $\mathbf{y}$ does not change anymore.
 
-As any coordinate descent, Algorithm 3 guarantees that the objective value of $E$ is monotonically nonincreasing. However, since $E$ as a function of $\mathbf{y}$ is neither convex nor differentiable (moreover, it is defined on a discrete set $\mathcal{Y}_\mathcal{V}$ only), Algorithm 3 does not guarantee attainment of the optimal value of $E$ and its output significantly depends on the initial labeling. In practice Algorithm 3 typically returns labelings with significantly higher energies than many other techniques.
+As any coordinate descent, Algorithm 3 guarantees that the objective value of $E$ is monotonically nonincreasing. However, since $E$ as a function of $\mathbf{y}$ is neither convex nor differentiable (moreover, it is defined on a discrete set $\mathcal{Y}\_\mathcal{V}$ only), Algorithm 3 does not guarantee attainment of the optimal value of $E$ and its output significantly depends on the initial labeling. In practice Algorithm 3 typically returns labelings with significantly higher energies than many other techniques.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.13</span></p>
@@ -2769,7 +3378,7 @@ A subgraph $(\mathcal{V}', \mathcal{E}')$ of a graph $(\mathcal{V}, \mathcal{E})
 
 </div>
 
-Let $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ be a graph defining a graphical model and $\mathcal{V}^f \subset \mathcal{V}$ be a set of nodes with fixed labels. The corresponding partial labeling will be denoted as $y^f \in \mathcal{Y}_{\mathcal{V}^f}$.
+Let $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ be a graph defining a graphical model and $\mathcal{V}^f \subset \mathcal{V}$ be a set of nodes with fixed labels. The corresponding partial labeling will be denoted as $y^f \in \mathcal{Y}\_{\mathcal{V}^f}$.
 
 Introducing $\mathcal{V}' = \mathcal{V} \setminus \mathcal{V}^f$ as complement of $\mathcal{V}^f$ we can generalize the notation defined in (6.20) such that
 
@@ -2792,12 +3401,12 @@ Recall that $\mathbf{y}^f$ is fixed. Therefore, the last expression represents t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm 4</span><span class="math-callout__name">(Block-ICM: Block-Coordinate Descent for $E(\mathbf{y}; \boldsymbol{\theta})$)</span></p>
 
-1. **Init:** $\mathbf{y} \in \mathcal{Y}_\mathcal{V}$
+1. **Init:** $\mathbf{y} \in \mathcal{Y}\_\mathcal{V}$
 2. **repeat**
 3. &emsp; Generate $\mathcal{V}' \subseteq \mathcal{V}$ such that $(\mathcal{V}', \mathcal{E}')$ induced by $\mathcal{V}'$ is acyclic
 4. &emsp; Define $\mathcal{V}^f := \mathcal{V} \setminus \mathcal{V}'$ and $\mathbf{y}^f := \mathbf{y}\rvert_{\mathcal{V}^f}$
-5. &emsp; Compute $\mathbf{y}^* := \arg \min_{\mathbf{y}' \in \mathcal{Y}_{\mathcal{V}'}} E(l(\mathbf{y}^f, \mathcal{V}^f, \mathbf{y}'); \boldsymbol{\theta})$
-6. &emsp; Re-assign the values of $\mathbf{y}$ on the coordinates of $\mathcal{V}'$: $\mathbf{y}\rvert_{\mathcal{V}'} := \mathbf{y}^*$
+5. &emsp; Compute $\mathbf{y}^\ast := \arg \min_{\mathbf{y}' \in \mathcal{Y}\_{\mathcal{V}'}} E(l(\mathbf{y}^f, \mathcal{V}^f, \mathbf{y}'); \boldsymbol{\theta})$
+6. &emsp; Re-assign the values of $\mathbf{y}$ on the coordinates of $\mathcal{V}'$: $\mathbf{y}\rvert_{\mathcal{V}'} := \mathbf{y}^\ast$
 7. **until** some stopping condition holds
 
 </div>
@@ -2820,7 +3429,7 @@ Consider its single coordinate $\frac{\partial \mathcal{D}}{\partial \phi_{u,v}(
 
 $$\mathcal{D}_{u,v}(\phi_{u,v}) := \min_{s' \in \mathcal{Y}_u} \theta_u^\phi(s') + \min_{(s', t') \in \mathcal{Y}_{uv}} \theta_{uv}^\phi(s', t') \,,$$
 
-containing exactly those two terms of $\mathcal{D}$, which depend on $\phi_{u,v}$. Other terms do not contribute to $\frac{\partial \mathcal{D}}{\partial \phi_{u,v}(s)}$, due to the linear properties of the subgradient (Proposition 4.28) and due to the fact that the subgradient of a constant function is identical to zero (since any constant function is differentiable and has gradient zero, which is also its subgradient, see Proposition 4.27). In other words, $\frac{\partial \mathcal{D}}{\partial \phi_{u,v}(s)} = \frac{\partial \mathcal{D}_{u,v}}{\partial \phi_{u,v}(s)}$.
+containing exactly those two terms of $\mathcal{D}$, which depend on $\phi_{u,v}$. Other terms do not contribute to $\frac{\partial \mathcal{D}}{\partial \phi_{u,v}(s)}$, due to the linear properties of the subgradient (Proposition 4.28) and due to the fact that the subgradient of a constant function is identical to zero (since any constant function is differentiable and has gradient zero, which is also its subgradient, see Proposition 4.27). In other words, $\frac{\partial \mathcal{D}}{\partial \phi_{u,v}(s)} = \frac{\partial \mathcal{D}\_{u,v}}{\partial \phi_{u,v}(s)}$.
 
 Recall also how $\boldsymbol{\theta}^\phi$ depends on $\boldsymbol{\phi}$:
 
@@ -2828,7 +3437,7 @@ $$\theta_u^\phi(s) := \theta_u(s) - \sum_{v \in \mathcal{N}(u)} \phi_{u,v}(s), \
 
 $$\theta_{uv}^\phi(s,t) := \theta_{uv}(s,t) + \phi_{u,v}(s) + \phi_{v,u}(t), \quad uv \in \mathcal{E},\; (s,t) \in \mathcal{Y}_{uv} \,.$$
 
-Due to the linearity of the subgradient we can compute it for each term of $\mathcal{D}_{u,v}$ separately. Subgradients of the first term $\min_{s' \in \mathcal{Y}_u} \theta_u^\phi(s')$ are by virtue of Lemma 4.32 equal to the convex hull of the vectors $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)}$ for all minimizers $s'$ of (6.28). Since the numerator is a linear and, therefore, differentiable function of $\boldsymbol{\phi}$, we can apply the standard differentiation rules, yielding $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)} = -\llbracket s = s' \rrbracket$.
+Due to the linearity of the subgradient we can compute it for each term of $\mathcal{D}\_{u,v}$ separately. Subgradients of the first term $\min_{s' \in \mathcal{Y}\_u} \theta_u^\phi(s')$ are by virtue of Lemma 4.32 equal to the convex hull of the vectors $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)}$ for all minimizers $s'$ of (6.28). Since the numerator is a linear and, therefore, differentiable function of $\boldsymbol{\phi}$, we can apply the standard differentiation rules, yielding $\frac{\partial \theta_u^\phi(s')}{\partial \phi_{u,v}(s)} = -\llbracket s = s' \rrbracket$.
 
 Similarly, subgradients of the second term in (6.26) can be computed as $\frac{\partial \theta_{uv}^\phi(s'', t'')}{\partial \phi_{u,v}(s)} = \llbracket s = s'' \rrbracket$ for each minimizer $(s'', t'')$ of the second term. Note that if $s' = s'' = s$ the subgradients of both terms cancel out.
 
@@ -2857,7 +3466,7 @@ We recommend to use the practical step-size rules, as described in Remark 6.9.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 6.15</span></p>
 
-Note that subgradients computed according to (6.31) are quite sparse. For a given node $u$ and edge $uv$ there are $\lvert \mathcal{Y}_u \rvert$ entries of the subgradient, corresponding to the $\lvert \mathcal{Y}_u \rvert$ dual variables $\phi_{u,v}(s)$, $s \in \mathcal{Y}_u$. According to (6.31) at most two coordinates of the subgradient have non-zero entries. The rest $\lvert \mathcal{Y}_u \rvert - 2$ are zero. This, in turn, implies that only a small number of coordinates of the dual vector $\boldsymbol{\phi}$ are changed on each iteration of the subgradient method. This is one of the reasons, why this algorithm converges quite slowly in practice, especially for problems with a large number of labels $\mathcal{Y}_u$.
+Note that subgradients computed according to (6.31) are quite sparse. For a given node $u$ and edge $uv$ there are $\lvert \mathcal{Y}\_u \rvert$ entries of the subgradient, corresponding to the $\lvert \mathcal{Y}\_u \rvert$ dual variables $\phi_{u,v}(s)$, $s \in \mathcal{Y}\_u$. According to (6.31) at most two coordinates of the subgradient have non-zero entries. The rest $\lvert \mathcal{Y}\_u \rvert - 2$ are zero. This, in turn, implies that only a small number of coordinates of the dual vector $\boldsymbol{\phi}$ are changed on each iteration of the subgradient method. This is one of the reasons, why this algorithm converges quite slowly in practice, especially for problems with a large number of labels $\mathcal{Y}\_u$.
 
 </div>
 
@@ -2869,7 +3478,7 @@ Till the end of this section we will concentrate on a block-coordinate ascent me
 
 **Min-sum diffusion.** To construct a block-coordinate ascent algorithm one has to first partition the coordinates into blocks. To get an efficient algorithm, the minimization with respect to each block should be efficient. Ideally, the minimum should have a closed form or be attained by a finite-step algorithm with linear complexity.
 
-One such possibility is to assume that one block consists of variables $(\phi_{u,v}(s) \colon v \in \mathcal{N}(u), s \in \mathcal{Y}_u)$ "attached" to one node of the graph. For a given edge $uv$ and label $s \in \mathcal{Y}_u$ we will refer to the set of label pairs $\lbrace (s, l),\; l \in \mathcal{Y}_v \rbrace$ as a *pencil*. Each pencil is defined by the triple $(s, u, v)$, where $u \in \mathcal{V}$, $v \in \mathcal{N}(u)$ and $s \in \mathcal{Y}_u$. Pencils $(s, u, v)$, $v \in \mathcal{N}(u)$, will be called *associated* with the label $s$ in node $u$.
+One such possibility is to assume that one block consists of variables $(\phi_{u,v}(s) \colon v \in \mathcal{N}(u), s \in \mathcal{Y}\_u)$ "attached" to one node of the graph. For a given edge $uv$ and label $s \in \mathcal{Y}\_u$ we will refer to the set of label pairs $\lbrace (s, l),\; l \in \mathcal{Y}\_v \rbrace$ as a *pencil*. Each pencil is defined by the triple $(s, u, v)$, where $u \in \mathcal{V}$, $v \in \mathcal{N}(u)$ and $s \in \mathcal{Y}\_u$. Pencils $(s, u, v)$, $v \in \mathcal{N}(u)$, will be called *associated* with the label $s$ in node $u$.
 
 **The elementary update step** of the diffusion algorithm consists of the following two operations,
 
@@ -2892,7 +3501,7 @@ $$\min_{t \in \mathcal{Y}_v} \theta_{uv}^\phi(s,t) = \min_{t \in \mathcal{Y}_{v'
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 6.16</span></p>
 
-Operations (6.33)-(6.34) maximize the Lagrange dual $\mathcal{D}$ w.r.t. the block of variables $(\phi_{u,v}(s) \colon v \in \mathcal{N}(u), s \in \mathcal{Y}_u)$.
+Operations (6.33)-(6.34) maximize the Lagrange dual $\mathcal{D}$ w.r.t. the block of variables $(\phi_{u,v}(s) \colon v \in \mathcal{N}(u), s \in \mathcal{Y}\_u)$.
 
 </div>
 
@@ -2908,7 +3517,7 @@ $$\exists y_u \in \mathcal{Y}_u\; \forall v \in \mathcal{N}(u)\; \exists y_v \in
 
 $$y_u \in \arg \min_{s \in \mathcal{Y}_u} \theta_u^\phi(s) \text{ and } (y_u, y_v) \in \arg \min_{(s,l) \in \mathcal{Y}_{uv}} \theta_{uv}^\phi(s, l) \,.$$
 
-Note that $y_u \in \arg \min_{s \in \mathcal{Y}_u} \theta_u^\phi(s)$ holds for any $y_u \in \mathcal{Y}_u$ since all labels in node $u$ have the same cost after the elementary diffusion step due to (6.35), namely cost 0. Let us, therefore, assign $y_u$ such that $(y_u, y_{v'})$ is a minimizer of $\theta_{uv'}^\phi$ for some $v' \in \mathcal{N}(u)$. Condition (6.36) implies that it then also minimizes $\theta_{uv}^\phi$ for all $v \in \mathcal{N}(u)$. This finalizes the proof. $\square$
+Note that $y_u \in \arg \min_{s \in \mathcal{Y}\_u} \theta_u^\phi(s)$ holds for any $y_u \in \mathcal{Y}\_u$ since all labels in node $u$ have the same cost after the elementary diffusion step due to (6.35), namely cost 0. Let us, therefore, assign $y_u$ such that $(y_u, y_{v'})$ is a minimizer of $\theta_{uv'}^\phi$ for some $v' \in \mathcal{N}(u)$. Condition (6.36) implies that it then also minimizes $\theta_{uv}^\phi$ for all $v \in \mathcal{N}(u)$. This finalizes the proof. $\square$
 
 </details>
 </div>
@@ -3048,7 +3657,7 @@ $$\min_{\substack{\mathbf{x} \geq 0 \\ A\mathbf{x} = \mathbf{b}}} \langle \mathb
 
 We refer to e.g., [12] for a proof.
 
-Note that given the strong duality, KKT conditions (??) together with Assumption 6.20 imply that for an optimal dual solution $\boldsymbol{\lambda}^*$ and the optimal primal solution $\mathbf{x}^* = e^{\mathbf{c}^{\boldsymbol{\lambda}^*}/T} \geq 0$ it holds $A\mathbf{x}^* = \mathbf{b}$ and, therefore, $\mathbf{x}^* \in [0, 1]$.
+Note that given the strong duality, KKT conditions (??) together with Assumption 6.20 imply that for an optimal dual solution $\boldsymbol{\lambda}^\ast$ and the optimal primal solution $\mathbf{x}^\ast = e^{\mathbf{c}^{\boldsymbol{\lambda}^\ast}/T} \geq 0$ it holds $A\mathbf{x}^\ast = \mathbf{b}$ and, therefore, $\mathbf{x}^\ast \in [0, 1]$.
 
 **Smooth approximation bounds.** Note that for any $x \in [0, 1]$ it holds $-1 \leq x \log x - x \leq 0$ and, therefore, $0 \leq -H(\mathbf{x}) \leq n$ for $\mathbf{x} \in [0, 1]^n$. In turn, due to Assumption 6.20 it implies
 
@@ -3058,7 +3667,7 @@ The same in terms of the dual function:
 
 $$g(\boldsymbol{\lambda}^*) - Tn \leq g_T(\hat{\boldsymbol{\lambda}}^*) \leq g(\boldsymbol{\lambda}^*) \,,$$
 
-where $\boldsymbol{\lambda}^*$ and $\hat{\boldsymbol{\lambda}}^*$ are maximizers of the original (??) and smoothed (??) dual problems.
+where $\boldsymbol{\lambda}^\ast$ and $\hat{\boldsymbol{\lambda}}^\ast$ are maximizers of the original (??) and smoothed (??) dual problems.
 
 Moreover, even stronger conditions hold, if the used optimization algorithm maintains $\mathbf{x}[\boldsymbol{\lambda}] \in [0, 1]^n$ on all its iterations. In this case
 
@@ -3084,14 +3693,14 @@ By plugging in (6.49) we obtain equation
 
 $$\sum_{i=1}^{n} a_{ji} x_i[\boldsymbol{\lambda}^t] e^{-a_{ji}\nu/T} = b_j$$
 
-that must be solved w.r.t. $\nu$. A unique solution to this equation together with continuous differentiability of $g_T$ would imply that the conditions of Theorem 6.12 hold and any limit point $\boldsymbol{\lambda}^*$ of the sequence $\boldsymbol{\lambda}^t$ is the optimal dual solution. The strong duality in turn implies that $\mathbf{x}[\boldsymbol{\lambda}^*]$ is the optimal primal relaxed solution.
+that must be solved w.r.t. $\nu$. A unique solution to this equation together with continuous differentiability of $g_T$ would imply that the conditions of Theorem 6.12 hold and any limit point $\boldsymbol{\lambda}^\ast$ of the sequence $\boldsymbol{\lambda}^t$ is the optimal dual solution. The strong duality in turn implies that $\mathbf{x}[\boldsymbol{\lambda}^\ast]$ is the optimal primal relaxed solution.
 
 Note that due to one-to-one correspondence between $\boldsymbol{\lambda}$ and $\mathbf{x}[\boldsymbol{\lambda}]$ the algorithm can explicitly update either the former or the latter.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 6.22</span><span class="math-callout__name">(Smooth coordinate minimization for uniqueness constraints)</span></p>
 
-Let $[A\mathbf{x}[\boldsymbol{\lambda}^{t+1}]]_j = b_j$ has a form of a uniqueness constraint
+Let $[A\mathbf{x}[\boldsymbol{\lambda}^{t+1}]]\_j = b_j$ has a form of a uniqueness constraint
 
 $$\sum_{i \in K} x_i = 1 \,.$$
 
@@ -3109,7 +3718,7 @@ $$\nu = -T \log \frac{1}{\sum_{i \in K} x_i[\boldsymbol{\lambda}^t]} = T \log \s
 
 $$= c_{i^*}^{\boldsymbol{\lambda}^t} + T \log \sum_{i \in K} e^{-(c_i^{\boldsymbol{\lambda}^t} - c_{i^*}^{\boldsymbol{\lambda}^t})/T} \,,$$
 
-where $i^* \in \arg \min_{i \in [n]} c_i^{\boldsymbol{\lambda}^t}$. This leads us to the mathematically equivalent primal and dual update rules
+where $i^\ast \in \arg \min_{i \in [n]} c_i^{\boldsymbol{\lambda}^t}$. This leads us to the mathematically equivalent primal and dual update rules
 
 $$\lambda_{j'}^{t+1} = \begin{cases} \lambda_{j'}^t, & j' \neq j \\ \lambda_j^t + c_{i^*}^{\boldsymbol{\lambda}^t} + T \log \sum_{i \in K} e^{-(c_i^{\boldsymbol{\lambda}^t} - c_{i^*}^{\boldsymbol{\lambda}^t})/T}, & j' = j \end{cases}$$
 
@@ -3119,7 +3728,7 @@ $$x_i^{t+1} = \begin{cases} x_i^t, & i \notin K \\ \frac{1}{\sum_{i \in K} x_i^t
 
 Both rules have their advantages and disadvantages: The primal update rule (6.57) is significantly ($5 - 10$ times) faster than the dual rule (6.56) because the latter contains an extensive usage of the (slow) exponentiation operations.
 
-On the negative side, the primal rule may result in division by 0, usually for low $T$, whereas the dual rule is numerically stable for any $T$ and $\boldsymbol{\lambda}$ due to the fact that $-(c_i^{\boldsymbol{\lambda}^t} - c_{i^*}^{\boldsymbol{\lambda}^t})/T < 0$, hence $e^{-(c_i^{\boldsymbol{\lambda}^t} - c_{i^*}^{\boldsymbol{\lambda}^t})/T} \in [0, 1]$ and $\sum_{i \in K} e^{-(c_i^{\boldsymbol{\lambda}^t} - c_{i^*}^{\boldsymbol{\lambda}^t})/T} \geq 1$ since $e^{-(c_{i^*}^{\boldsymbol{\lambda}^t} - c_{i^*}^{\boldsymbol{\lambda}^t})/T} = 1$.
+On the negative side, the primal rule may result in division by 0, usually for low $T$, whereas the dual rule is numerically stable for any $T$ and $\boldsymbol{\lambda}$ due to the fact that $-(c_i^{\boldsymbol{\lambda}^t} - c_{i^\ast}^{\boldsymbol{\lambda}^t})/T < 0$, hence $e^{-(c_i^{\boldsymbol{\lambda}^t} - c_{i^\ast}^{\boldsymbol{\lambda}^t})/T} \in [0, 1]$ and $\sum_{i \in K} e^{-(c_i^{\boldsymbol{\lambda}^t} - c_{i^\ast}^{\boldsymbol{\lambda}^t})/T} \geq 1$ since $e^{-(c_{i^\ast}^{\boldsymbol{\lambda}^t} - c_{i^\ast}^{\boldsymbol{\lambda}^t})/T} = 1$.
 
 #### 6.7.3 Use Case: Linear Assignment Problem
 
@@ -3163,6 +3772,14 @@ Using the primal update rule (6.49) from Example 6.22 we obtain Algorithm 5, whi
 
 #### 6.7.4 Use Case: Max-Weight Independent Set Problem
 
+### 6.8 Bibliography and Further Reading
+
+- General smoothing case: Nesterov; Beck-Teboulle.
+- Original dual BCA publication: Bregman.
+- Other methods possible: entropy optimization book; Nesterov; Beck-Teboulle.
+
+Taxonomy of smoothing methods and their relations: Amir Beck and Mark Teboulle. First-order optimization: Amir Beck.
+
 ## Chapter 7: Overview: How Off-the-Shelf ILP Solvers Work
 
 ### 7.1 Systematic Search: Branch-and-Bound
@@ -3184,6 +3801,73 @@ Consider the binary knapsack problem and the respective branching tree in Figure
 4. **Output** $S$.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 340" width="100%" style="max-width: 640px; height: auto;" role="img" aria-labelledby="bb-title">
+  <title id="bb-title">Branch-and-bound tree with pruned subtrees</title>
+  <!-- edges -->
+  <g stroke="#666" stroke-width="1.5" fill="none">
+    <line x1="320" y1="60"  x2="180" y2="130"/>
+    <line x1="320" y1="60"  x2="460" y2="130"/>
+    <line x1="180" y1="130" x2="100" y2="220"/>
+    <line x1="180" y1="130" x2="260" y2="220"/>
+    <line x1="460" y1="130" x2="400" y2="220"/>
+    <line x1="460" y1="130" x2="540" y2="220"/>
+    <line x1="100" y1="220" x2="60"  y2="300"/>
+    <line x1="100" y1="220" x2="140" y2="300"/>
+  </g>
+  <!-- edge labels -->
+  <g font-family="serif" font-size="11" fill="#555" text-anchor="middle">
+    <text x="240" y="92">x₁ = 0</text>
+    <text x="400" y="92">x₁ = 1</text>
+    <text x="120" y="180">x₂ = 0</text>
+    <text x="232" y="180">x₂ = 1</text>
+    <text x="416" y="180">x₂ = 0</text>
+    <text x="520" y="180">x₂ = 1</text>
+    <text x="62"  y="265">x₃ = 0</text>
+    <text x="142" y="265">x₃ = 1</text>
+  </g>
+  <!-- root -->
+  <g font-family="serif" font-size="11">
+    <rect x="270" y="35" width="100" height="44" rx="6" fill="#fff" stroke="#333"/>
+    <text x="320" y="52" text-anchor="middle">root (LP)</text>
+    <text x="320" y="68" text-anchor="middle" fill="#1565c0">bound = 12.4</text>
+    <!-- left child -->
+    <rect x="130" y="108" width="100" height="44" rx="6" fill="#fff" stroke="#333"/>
+    <text x="180" y="125" text-anchor="middle">x₁=0</text>
+    <text x="180" y="141" text-anchor="middle" fill="#1565c0">bound = 13.7</text>
+    <!-- right child -->
+    <rect x="410" y="108" width="100" height="44" rx="6" fill="#fff" stroke="#333"/>
+    <text x="460" y="125" text-anchor="middle">x₁=1</text>
+    <text x="460" y="141" text-anchor="middle" fill="#1565c0">bound = 14.1</text>
+    <!-- left.left -->
+    <rect x="50" y="198" width="100" height="44" rx="6" fill="#fff" stroke="#333"/>
+    <text x="100" y="215" text-anchor="middle">fractional</text>
+    <text x="100" y="231" text-anchor="middle" fill="#1565c0">bound = 15.0</text>
+    <!-- left.right: pruned by bound -->
+    <rect x="210" y="198" width="100" height="44" rx="6" fill="#fafafa" stroke="#999" stroke-dasharray="4 3"/>
+    <text x="260" y="215" text-anchor="middle" fill="#888">prune: bound</text>
+    <text x="260" y="231" text-anchor="middle" fill="#888">= 18.3 &gt; S</text>
+    <!-- right.left: integral -->
+    <rect x="350" y="198" width="100" height="44" rx="6" fill="#fff7ec" stroke="#e65100"/>
+    <text x="400" y="215" text-anchor="middle">integer ✓</text>
+    <text x="400" y="231" text-anchor="middle" fill="#e65100">S ← 16.0</text>
+    <!-- right.right: infeasible -->
+    <rect x="490" y="198" width="100" height="44" rx="6" fill="#fafafa" stroke="#999" stroke-dasharray="4 3"/>
+    <text x="540" y="215" text-anchor="middle" fill="#888">infeasible</text>
+    <text x="540" y="231" text-anchor="middle" fill="#888">prune ×</text>
+    <!-- deepest pair -->
+    <rect x="10" y="280" width="100" height="44" rx="6" fill="#fff7ec" stroke="#e65100"/>
+    <text x="60" y="297" text-anchor="middle">integer ✓</text>
+    <text x="60" y="313" text-anchor="middle" fill="#e65100">S ← 15.5</text>
+    <rect x="90" y="280" width="100" height="44" rx="6" fill="#fafafa" stroke="#999" stroke-dasharray="4 3"/>
+    <text x="140" y="297" text-anchor="middle" fill="#888">prune: ≥ S</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Branch-and-bound for a 0/1 ILP. Each node holds an LP relaxation bound; a child fixes one variable. A subtree is **pruned** when (i) its LP bound exceeds the best integer solution $S$ found so far, (ii) the LP relaxation is infeasible, or (iii) the LP solution is integer (then $S$ is updated). Orange nodes update $S$; dashed nodes are pruned.
+</figcaption>
+</figure>
 
 Remarks to existing implementations of the branch-and-bound methods:
 
@@ -3282,7 +3966,7 @@ To separate on cover inequalities rewrite (7.1) as
 
 $$\sum_{i \in C} (1 - x_i) \geq 1 \,.$$
 
-Then an LP solution $x^*$ satisfies all the cover inequalities with respect to the given knapsack if and only if
+Then an LP solution $x^\ast$ satisfies all the cover inequalities with respect to the given knapsack if and only if
 
 $$\sum_{i \in C} (1 - x_i^*) \geq 1$$
 
@@ -3309,7 +3993,7 @@ $$\max_{\mathbf{x} \in \lbrace 0,1 \rbrace^n} \langle \mathbf{c}, \mathbf{x} \ra
 
 $$\text{s.t.} \quad \langle \mathbf{a}, \mathbf{x} \rangle \leq \sum_{i=1}^{n} a_i - b$$
 
-by maximizing the profit of the items *not contained* in the knapsack under condition that their total weight is at most $\sum_{i=1}^{n} a_i - b$. Consequently, if $\mathbf{x}^*$ is the solution of the minimization knapsack, then $\mathbf{1} - \mathbf{x}^*$ is the solution of the maximization knapsack.
+by maximizing the profit of the items *not contained* in the knapsack under condition that their total weight is at most $\sum_{i=1}^{n} a_i - b$. Consequently, if $\mathbf{x}^\ast$ is the solution of the minimization knapsack, then $\mathbf{1} - \mathbf{x}^\ast$ is the solution of the maximization knapsack.
 
 </div>
 
@@ -3367,7 +4051,7 @@ The goal of domain propagation is
 
 Domain propagation procedures can be performed in all nodes of the branch-and-bound tree.
 
-Below we consider the formalization of the domain propagation. Let $\mathbf{x} \in \mathbb{R}^n$ and $A := (\mathbf{a_j})_{j \in [m]}$. Consider the constraint set
+Below we consider the formalization of the domain propagation. Let $\mathbf{x} \in \mathbb{R}^n$ and $A := (\mathbf{a_j})\_{j \in [m]}$. Consider the constraint set
 
 $$A\mathbf{x} \leq \mathbf{b}$$
 
@@ -3666,7 +4350,7 @@ The following theorem states that the fixed point is an optimum:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 7.12</span></p>
 
-Let $P$ be a polytope, $\mathbf{c} \in \mathbb{R}^n$ be a cost vector. Let $\mathbf{x} \in \text{vrtx}(P)$ and $\mathcal{N}_P(x)$ be the set of its neighboring vertices in $P$. If $\langle \mathbf{c}, \mathbf{x} \rangle \leq \langle \mathbf{c}, \mathbf{z} \rangle$ for all $\mathbf{z} \in \mathcal{N}_P(x)$ then $\mathbf{x} \in \arg \min_{\mathbf{x}' \in P} \langle \mathbf{c}, \mathbf{x}' \rangle$.
+Let $P$ be a polytope, $\mathbf{c} \in \mathbb{R}^n$ be a cost vector. Let $\mathbf{x} \in \text{vrtx}(P)$ and $\mathcal{N}\_P(x)$ be the set of its neighboring vertices in $P$. If $\langle \mathbf{c}, \mathbf{x} \rangle \leq \langle \mathbf{c}, \mathbf{z} \rangle$ for all $\mathbf{z} \in \mathcal{N}\_P(x)$ then $\mathbf{x} \in \arg \min_{\mathbf{x}' \in P} \langle \mathbf{c}, \mathbf{x}' \rangle$.
 
 </div>
 
@@ -3805,7 +4489,7 @@ $$s_4 = 6 - 3x_2 \quad : \quad s_4 \geq 0 \;\Rightarrow\; x_2 \leq 6/3 = 2$$
 
 We see that if $x_2$ increases beyond $6/3 = 2$ then $s_4$ becomes negative and if $x_2$ increases beyond $4/1 = 4$ then also $s_2$ becomes negative. To keep all variables non-negative we are allowed to set $x_2$ to the maximum value of 2. This also implies that $s_4$ gets the value 0 and leaves the basis.
 
-**The value of variable $x_i$ entering the basis** is in general defined as the minimal non-negative ratio $\text{RHS}_j / a_{ji}$ for all current basis variables $x_j$. Negative and infinite ratios are ignored as they do not restrict the value of $x_i$. However, should this ratio be negative or infinite for all basis variables, the initial problem is unbounded and the algorithm can be stopped.
+**The value of variable $x_i$ entering the basis** is in general defined as the minimal non-negative ratio $\text{RHS}\_j / a_{ji}$ for all current basis variables $x_j$. Negative and infinite ratios are ignored as they do not restrict the value of $x_i$. However, should this ratio be negative or infinite for all basis variables, the initial problem is unbounded and the algorithm can be stopped.
 
 **Pivot on $x_2$ in the fourth ($s_4$) row.** Now our goal to bring the tableau to the form (7.88), with $x_2$ being the new basis variable in place of $s_4$. First we normalize the (fourth) pivot row by dividing its elements by 3 to obtain the coefficient 1 in front of $x_2$:
 
@@ -3903,7 +4587,7 @@ All reduced costs are non-negative, so we stop.
 
 **Solution:** At this point, all coefficients in the objective function row are non-negative, indicating an optimal solution. The minimum value of the objective function $z$ is $-32$, occurring at $(x_1, x_2, x_3) = (0, 1, 3)$. One can see in Figure 7.3 that the vertex $(0, 1, 3)$ is indeed degenerate.
 
-**Degeneracy of basic solutions.** Should the decisive ratio $\text{RHS}_j / a_{ji}$ be equal to 0, the variable $x_i$ enters the basis with the zero value and one speaks about *degenerate* solution. This is precisely the case when no improvement in the objective value is attained after the basis change. It happens when the same vertex of the polytope can be defined by multiple basis solutions (but the same full solution, as in this case we just select a subset of variables with 0 value to belong to the basis). Geometrically it means a degeneracy of the polytope vertex, when it is build by an intersection of more than minimally necessary number of facets. For example, for a 3-dimensional polytope this implies more than 3 hyper-planes, see, e.g., the vertex $(2, 2, 0)$ in Figure 7.3. Special rules to avoid infinite looping are proposed for handling degenerate cases.
+**Degeneracy of basic solutions.** Should the decisive ratio $\text{RHS}\_j / a_{ji}$ be equal to 0, the variable $x_i$ enters the basis with the zero value and one speaks about *degenerate* solution. This is precisely the case when no improvement in the objective value is attained after the basis change. It happens when the same vertex of the polytope can be defined by multiple basis solutions (but the same full solution, as in this case we just select a subset of variables with 0 value to belong to the basis). Geometrically it means a degeneracy of the polytope vertex, when it is build by an intersection of more than minimally necessary number of facets. For example, for a 3-dimensional polytope this implies more than 3 hyper-planes, see, e.g., the vertex $(2, 2, 0)$ in Figure 7.3. Special rules to avoid infinite looping are proposed for handling degenerate cases.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Exercise 7.17</span></p>
@@ -3935,6 +4619,14 @@ The $j$-th coordinate $\lambda_j$ of the dual vector is the negated sum of multi
 - Removing columns (variables) is required, e.g., by fixing variable value during branching. The column with a non-basis variable can directly be removed from the simplex tableau and the RHS corrected respectively.
 - Adding columns corresponds to adding variables and is an important for *branch-and-price* algorithms that are beyond of scope of this course. Adding a column corresponding to a non-basis variable into the simplex tableau is straightforward.
 - Adding constraints is required for cutting plane and branch-and-cut algorithms. By adding a new inequality constraint one automatically adds the respective slack variable to the basis. Transformation of the added inequality to the canonical form of the simplex tableau (7.88) requires $O(m)$ operations.
+
+#### 7.4.3 Interior Point
+
+*(No content in source.)*
+
+### 7.5 Bibliography
+
+A detailed analysis of the presolve routines for the Gurobi MIP solver can be found in [71]. For the general, canonical and standard form of linear programs and the simplex algorithm see [6, Sec. 2.1]; for the simplex algorithm see also [3].
 
 ## Chapter 8: Primal Heuristics
 
@@ -3969,7 +4661,7 @@ Consider the ILP
 
 $$\min_{\substack{\mathbf{x} \in P \cap \lbrace 0,1 \rbrace^n \\ A\mathbf{x} \leqq \mathbf{b}}} \langle \mathbf{c}, \mathbf{x} \rangle \,.$$
 
-We assume that the set $P \cap \lbrace 0,1 \rbrace^n$ can be represented as a Cartesian product of $k$ subspaces, $P \cap \lbrace 0,1 \rbrace^n = \hat{P}_1 \times \hat{P}_2 \times \cdots \times \hat{P}_k$, where each $\hat{P}_l$ has a form of $P_l \cap \lbrace 0,1 \rbrace^{n_l}$, $l \in [k]$ and covers a subset of the coordinates, e.g., $n_1 + n_2 + \cdots + n_k = n$. The respective variables and cost vectors will be denoted as $\mathbf{x}^l \in P_l \cap \lbrace 0,1 \rbrace^{n_l}$ and $\mathbf{c}^l \in \mathbb{R}^{n_l}$, $l \in [k]$.
+We assume that the set $P \cap \lbrace 0,1 \rbrace^n$ can be represented as a Cartesian product of $k$ subspaces, $P \cap \lbrace 0,1 \rbrace^n = \hat{P}\_1 \times \hat{P}\_2 \times \cdots \times \hat{P}\_k$, where each $\hat{P}\_l$ has a form of $P_l \cap \lbrace 0,1 \rbrace^{n_l}$, $l \in [k]$ and covers a subset of the coordinates, e.g., $n_1 + n_2 + \cdots + n_k = n$. The respective variables and cost vectors will be denoted as $\mathbf{x}^l \in P_l \cap \lbrace 0,1 \rbrace^{n_l}$ and $\mathbf{c}^l \in \mathbb{R}^{n_l}$, $l \in [k]$.
 
 The *greedy* algorithm sequentially, for $l = 1 \ldots k$, solves
 
@@ -3977,13 +4669,13 @@ $$\mathbf{x}^l \in \operatorname*{arg\,min}_{\substack{\mathbf{x} \in P_l \cap \
 
 Here $A^l \mathbf{x} \leqq \mathbf{b}^l$, $\mathbf{x} \in \lbrace 0,1 \rbrace^{n_l}$, $l \in [k]$, be the set of constraints derived from $A\mathbf{x} \leqq \mathbf{b}$ by fixing already computed values of $\mathbf{x}^{l-}$ and taking into account feasibility of the *yet-not-processed-variables* $\mathbf{x}^{l+}$.
 
-The greedy algorithm is *well-defined*, if the resulting solution $\mathbf{x}^* := (\mathbf{x}^1, \ldots, \mathbf{x}^k)$ satisfies the initial constraints $A\mathbf{x}^* \leqq \mathbf{b}$ for any input cost vector $\mathbf{c}$.
+The greedy algorithm is *well-defined*, if the resulting solution $\mathbf{x}^\ast := (\mathbf{x}^1, \ldots, \mathbf{x}^k)$ satisfies the initial constraints $A\mathbf{x}^\ast \leqq \mathbf{b}$ for any input cost vector $\mathbf{c}$.
 
 In general, the algorithm has no optimality guarantees. The special type of problems, known as *weighted matroids*, can be solved with the algorithm exactly, though.
 
 **Case study: Labeling problem**
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem defined on a graph $\mathcal{G}$ with label sets $\mathcal{Y}_u$, $u \in \mathcal{V}$, and the cost vector $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$. W.l.o.g., we assume $\mathcal{G}$ to be connected. Let $u, v$: $uv \in \mathcal{E}$ be two neighboring nodes. The greedy algorithm starts with finding an optimal labeling in the induced subgraph defined by these nodes:
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \boldsymbol{\theta})$ be a labeling problem defined on a graph $\mathcal{G}$ with label sets $\mathcal{Y}\_u$, $u \in \mathcal{V}$, and the cost vector $\boldsymbol{\theta} \in \mathbb{R}^{\mathcal{I}}$. W.l.o.g., we assume $\mathcal{G}$ to be connected. Let $u, v$: $uv \in \mathcal{E}$ be two neighboring nodes. The greedy algorithm starts with finding an optimal labeling in the induced subgraph defined by these nodes:
 
 $$(y_u, y_v) := \operatorname*{arg\,min}_{s \in \mathcal{Y}_u, t \in \mathcal{Y}_v} \left(\theta_u(s) + \theta_v(t) + \theta_{uv}(s, t)\right) \,.$$
 
@@ -4002,7 +4694,7 @@ Selecting the two-node subgraph for initialization is necessary to make the gree
 
 If, in contrast, one would start with a single node labeling, this would result in a poor solution, e.g., in the case when all unary costs are equal to zero. To achieve this it is sufficient to perform the distribution operation (6.34) of the min-sum diffusion algorithm described in Section 6.5.4.
 
-Optimization of a pairwise costs $\boldsymbol{\theta}_{uv}$ of a single edge $uv$ is not sufficient for a robust initialization either. Such reparametrization can be obtained by executing the collection step (6.34) of the min-sum diffusion algorithm for each node.
+Optimization of a pairwise costs $\boldsymbol{\theta}\_{uv}$ of a single edge $uv$ is not sufficient for a robust initialization either. Such reparametrization can be obtained by executing the collection step (6.34) of the min-sum diffusion algorithm for each node.
 
 </div>
 
@@ -4019,7 +4711,7 @@ Consider the max-weight independent set problem as in Example 2.54 and assume al
 
 The classical greedy algorithm iteratively
 
-1. Finds a node $i$ with the highest *degree-normalized* cost $\frac{c_i}{\lvert \mathcal{N}(i) \rvert}$ in the *current* graph. Here $\mathcal{N}(i)$ is the set of neighboring nodes to $i$ in the current graph and $\lvert \mathcal{N}(i) \rvert$ is its degree. The best node $i \in \operatorname{arg\,max}_{j \in \mathcal{V}} \frac{c_j}{\lvert \mathcal{N}(j) \rvert}$ is labelled as a part of the resulting independent set.
+1. Finds a node $i$ with the highest *degree-normalized* cost $\frac{c_i}{\lvert \mathcal{N}(i) \rvert}$ in the *current* graph. Here $\mathcal{N}(i)$ is the set of neighboring nodes to $i$ in the current graph and $\lvert \mathcal{N}(i) \rvert$ is its degree. The best node $i \in \operatorname{arg\,max}\_{j \in \mathcal{V}} \frac{c_j}{\lvert \mathcal{N}(j) \rvert}$ is labelled as a part of the resulting independent set.
 2. Removes the node $i$ from the graph together will all its neighbors.
 
 The iterations proceed until the resulting graph is empty. The selected nodes form an independent set by construction.
@@ -4068,7 +4760,7 @@ The dual optimality condition (Corollary 5.17) implies that if there exists
 
 $$\mathbf{x}^* \in \operatorname*{arg\,min}_{\mathbf{x} \in P \cap \lbrace 0,1 \rbrace^n} \left\langle \mathbf{c} + A^\top \boldsymbol{\lambda}, \mathbf{x} \right\rangle$$
 
-such that $A\mathbf{x}^* = \mathbf{b}$, then $\mathbf{x}^*$ is the exact solution of the ILP (8.1). Hence, the greedy algorithm (8.2), when applied to the reparametrized costs $\mathbf{c}^\lambda = \mathbf{c} + A^\top \boldsymbol{\lambda}$ can be interpreted as an attempt to find a solution $\mathbf{x}^*$ that satisfies the above condition. According to the dual optimality condition (Corollary 5.17) this greedy algorithm finds an optimal ILP solution if the solutions $\mathbf{x}^l$ to all greedy subproblems also satisfy the unconstrained versions. We will refer to the class of algorithms above as *reparametrized greedy algorithms*.
+such that $A\mathbf{x}^\ast = \mathbf{b}$, then $\mathbf{x}^\ast$ is the exact solution of the ILP (8.1). Hence, the greedy algorithm (8.2), when applied to the reparametrized costs $\mathbf{c}^\lambda = \mathbf{c} + A^\top \boldsymbol{\lambda}$ can be interpreted as an attempt to find a solution $\mathbf{x}^\ast$ that satisfies the above condition. According to the dual optimality condition (Corollary 5.17) this greedy algorithm finds an optimal ILP solution if the solutions $\mathbf{x}^l$ to all greedy subproblems also satisfy the unconstrained versions. We will refer to the class of algorithms above as *reparametrized greedy algorithms*.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.4</span><span class="math-callout__name">(Acyclic labeling problem)</span></p>
@@ -4081,11 +4773,11 @@ Indeed, at the first step (8.3) the algorithm labels the connected subgraph $\ma
 
 $$y_u := \operatorname*{arg\,min}_{s \in \mathcal{Y}_u} \left(\theta_u^\phi(s) + \theta_{uv}^\phi(s, y_v)\right) \,.$$
 
-It holds $\theta_u^\phi(s) = 0$ for any $s \in \mathcal{Y}_u$ and $\theta_{uv}^\phi(s, y_v) \geq 0$ by construction. Therefore, it is sufficient to prove that there is $s \in \mathcal{Y}_u$ such that $\theta_{uv}^\phi(s, y_v) = 0$. The subgraph $\mathcal{G}'$ is connected, therefore there is $v' \in \mathcal{V}'$ such that $uv' \in \mathcal{E}'$. By assumption $\theta_{vv'}^\phi(y_v, y_{v'}) = 0$ and $(y_v, y_{v'})$ is locally optimal for the edge $vv'$, i.e.,
+It holds $\theta_u^\phi(s) = 0$ for any $s \in \mathcal{Y}\_u$ and $\theta_{uv}^\phi(s, y_v) \geq 0$ by construction. Therefore, it is sufficient to prove that there is $s \in \mathcal{Y}\_u$ such that $\theta_{uv}^\phi(s, y_v) = 0$. The subgraph $\mathcal{G}'$ is connected, therefore there is $v' \in \mathcal{V}'$ such that $uv' \in \mathcal{E}'$. By assumption $\theta_{vv'}^\phi(y_v, y_{v'}) = 0$ and $(y_v, y_{v'})$ is locally optimal for the edge $vv'$, i.e.,
 
 $$\min_{t \in \mathcal{Y}_{v'}} \theta_{vv'}^\phi(y_v, t) = 0 \,.$$
 
-For the "redistribution" operation of the min-sum diffusion algorithm (6.34), as well as for its fix point, it holds $\min_{t \in \mathcal{Y}_{v'}} \theta_{vv'}^\phi(y_v, t) = \min_{s \in \mathcal{Y}_u} \theta_{uv}^\phi(u, y_v)$ for any two neighbors $v'$ and $u$ of $v$, see (6.36). Taking into account (8.20), we obtain $\min_{s \in \mathcal{Y}_u} \theta_{uv}^\phi(u, y_v) = 0$, which finalizes the proof.
+For the "redistribution" operation of the min-sum diffusion algorithm (6.34), as well as for its fix point, it holds $\min_{t \in \mathcal{Y}\_{v'}} \theta_{vv'}^\phi(y_v, t) = \min_{s \in \mathcal{Y}\_u} \theta_{uv}^\phi(u, y_v)$ for any two neighbors $v'$ and $u$ of $v$, see (6.36). Taking into account (8.20), we obtain $\min_{s \in \mathcal{Y}\_u} \theta_{uv}^\phi(u, y_v) = 0$, which finalizes the proof.
 
 Note that the greedy method (8.3)-(8.4) applied to the non-reparametrized costs does not have any optimality guarantee.
 
@@ -4104,13 +4796,13 @@ The dual problem reads
 
 $$\min_{\boldsymbol{\lambda}} \left[\sum_{j=1}^{m} \lambda_j + \max_{\mathbf{x} \in \lbrace 0,1 \rbrace^{n+m}} \langle \mathbf{c}^\lambda, \mathbf{x} \rangle \right]$$
 
-We split the problem into $k = m$ subproblems, one for each clique $\bar{K}_j$, $j \in [m]$. Here $\hat{K}_j$ contains all elements of $\bar{K}_j$ but those that have been fixed in the previous iterations of the algorithm. The reparametrized greedy iteration subproblem (8.17) takes the form
+We split the problem into $k = m$ subproblems, one for each clique $\bar{K}\_j$, $j \in [m]$. Here $\hat{K}\_j$ contains all elements of $\bar{K}\_j$ but those that have been fixed in the previous iterations of the algorithm. The reparametrized greedy iteration subproblem (8.17) takes the form
 
 $$(x_i^*)_{i \in \hat{K}_j} \in \operatorname*{arg\,max}_{\mathbf{x} \in \lbrace 0,1 \rbrace^{\hat{K}_j}} \sum_{i \in \hat{K}_j} c_i^\lambda x_i$$
 
 $$\text{s.t.} \quad \sum_{i \in \hat{K}_j} x_i = 1$$
 
-Here we optimize over the non-fixed variables from $\hat{K}_j$, but take into account all (including fixed) variables in the whole clique $\bar{K}_j$ by considering the corresponding clique constraint.
+Here we optimize over the non-fixed variables from $\hat{K}\_j$, but take into account all (including fixed) variables in the whole clique $\bar{K}\_j$ by considering the corresponding clique constraint.
 
 </div>
 
@@ -4122,25 +4814,25 @@ Here we optimize over the non-fixed variables from $\hat{K}_j$, but take into ac
 3. Iterate over all cliques:
 4. **for** $j \in [m]$ **do**
 5. &emsp; Skip cliques with all fixed nodes:
-6. &emsp; **if** $\lbrace i \in \bar{K}_j \mid x_i = 1 \rbrace = \emptyset$ **then**
+6. &emsp; **if** $\lbrace i \in \bar{K}\_j \mid x_i = 1 \rbrace = \emptyset$ **then**
 7. &emsp;&emsp; Find an assignable and locally optimal node
-8. &emsp;&emsp; $i^* := \operatorname*{arg\,max}_{i \in \bar{K}_j \text{ s.t. } x_i = -1} c_i^\lambda$
-9. &emsp;&emsp; $x_{i^*} := 1$ and set it to one
+8. &emsp;&emsp; $i^\ast := \operatorname\ast{arg\,max}\_{i \in \bar{K}\_j \text{ s.t. } x_i = -1} c_i^\lambda$
+9. &emsp;&emsp; $x_{i^\ast} := 1$ and set it to one
 10. &emsp;&emsp; and all its graph neighbors to zero:
-11. &emsp;&emsp; **for** $i$: $\lbrace i^*, i \rbrace \in \mathcal{E}$ **do**
+11. &emsp;&emsp; **for** $i$: $\lbrace i^\ast, i \rbrace \in \mathcal{E}$ **do**
 12. &emsp;&emsp;&emsp; $x_i := 0$
 13. &emsp;&emsp; **end for**
 14. &emsp; **end if**
 15. **end for**
 16. Return $\mathbf{x}$
 
-Note that Algorithm 6 is well-defined and finds an optimal solution, if $\lvert \lbrace i \in \bar{K}_j : c_i^\lambda \geq 0 \rbrace \rvert = 1$ as this solution satisfies the optimality criterion (8.18).
+Note that Algorithm 6 is well-defined and finds an optimal solution, if $\lvert \lbrace i \in \bar{K}\_j : c_i^\lambda \geq 0 \rbrace \rvert = 1$ as this solution satisfies the optimality criterion (8.18).
 
 </div>
 
 **Identification of an integer solution is NP-complete**
 
-Assume the Lagrange relaxation (8.14) is tight and there is an integer $\mathbf{x}^*$ that satisfies conditions (8.15)-(8.16). It does not mean that finding this $\mathbf{x}^*$ is an easy problem. On the contrary, this problem is NP-complete in general:
+Assume the Lagrange relaxation (8.14) is tight and there is an integer $\mathbf{x}^\ast$ that satisfies conditions (8.15)-(8.16). It does not mean that finding this $\mathbf{x}^\ast$ is an easy problem. On the contrary, this problem is NP-complete in general:
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 8.6</span><span class="math-callout__name">(Subset Sum Problem)</span></p>
@@ -4164,7 +4856,7 @@ $$\left\langle \mathbf{c} + A^\top \boldsymbol{\lambda}, \mathbf{x} \right\rangl
 
 since the right-hand-side is assumed to be known as the relaxed optimal value.
 
-Due to NP-completeness, the reparametrized greedy algorithm can be seen as a computationally cheap method to find $\mathbf{x}^*$, however, without guarantee in general. To improve performance, its *randomized* versions are used, that allow to efficiently sample the search space around the optimum. We consider these algorithms in Section 8.2.3 below.
+Due to NP-completeness, the reparametrized greedy algorithm can be seen as a computationally cheap method to find $\mathbf{x}^\ast$, however, without guarantee in general. To improve performance, its *randomized* versions are used, that allow to efficiently sample the search space around the optimum. We consider these algorithms in Section 8.2.3 below.
 
 **Non-optimal dual and non-tight relaxations**
 
@@ -4179,7 +4871,7 @@ A (well-defined) reparametrized greedy algorithm typically finds progressively b
 
 **ILPs with inequalities for reparametrized greedy algorithms**
 
-The optimality condition for dual variables corresponding to inequalities $A\mathbf{x} \leq \mathbf{b}$ differs from the one for equalities (see Corollary 5.17). Namely $\boldsymbol{\lambda}$ is optimal if there is a solution $\mathbf{x}^*$ to (8.15) such that in addition to the feasibility $A\mathbf{x}^* \leq \mathbf{b}$ the complementary slackness condition
+The optimality condition for dual variables corresponding to inequalities $A\mathbf{x} \leq \mathbf{b}$ differs from the one for equalities (see Corollary 5.17). Namely $\boldsymbol{\lambda}$ is optimal if there is a solution $\mathbf{x}^\ast$ to (8.15) such that in addition to the feasibility $A\mathbf{x}^\ast \leq \mathbf{b}$ the complementary slackness condition
 
 $$\langle \boldsymbol{\lambda}, A\mathbf{x}^* - \mathbf{b} \rangle = 0$$
 
@@ -4198,7 +4890,7 @@ $$\mathbf{x}^* \in \operatorname*{arg\,min}_{\substack{\mathbf{x} \in \lbrace 0,
 
 Assume, as above, that the variables are enumerated in the decreasing order of their efficiencies $\frac{c_i}{a_i}$. Recall Example 5.19: An optimal dual value $\mu$ is equal to $\frac{c_s}{a_s}$, where $s$ is the maximal value such that $\sum_{i=1}^{s-1} a_i < b$.
 
-If $\sum_{i=1}^{s} a_i = b$, then the solution $\mathbf{x}^*$ of (8.29) has coordinates $x_i^* = \llbracket i \leq s \rrbracket$ and this is the exact solution of the problem (and the Lagrange relaxation).
+If $\sum_{i=1}^{s} a_i = b$, then the solution $\mathbf{x}^\ast$ of (8.29) has coordinates $x_i^\ast = \llbracket i \leq s \rrbracket$ and this is the exact solution of the problem (and the Lagrange relaxation).
 
 In general, however, the feasible set of (8.29) is empty.
 
@@ -4246,7 +4938,7 @@ A mapping $\mathcal{N} \colon X \to 2^X$ from a set $X$ to its powerset is calle
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 8.12</span><span class="math-callout__name">(Local Search)</span></p>
 
-Algorithm 7 is called *local search* for the lowest value of the function $f \colon X \to \mathbb{R}$ with respect to the neighborhood $\mathcal{N}$. Note that the special case of Algorithm 7, with $x^* = \operatorname{arg\,min}_{x \in \mathcal{N}(x^t)} f(x)$, is covered by this definition as well.
+Algorithm 7 is called *local search* for the lowest value of the function $f \colon X \to \mathbb{R}$ with respect to the neighborhood $\mathcal{N}$. Note that the special case of Algorithm 7, with $x^\ast = \operatorname{arg\,min}\_{x \in \mathcal{N}(x^t)} f(x)$, is covered by this definition as well.
 
 </div>
 
@@ -4255,9 +4947,9 @@ Algorithm 7 is called *local search* for the lowest value of the function $f \co
 
 1. **Input:** Initial solution $x^0 \in X$
 2. $t := 0$
-3. **while** $\exists x^* \in \mathcal{N}(x^t)$: $f(x^*) < f(x^t)$ **do**
+3. **while** $\exists x^\ast \in \mathcal{N}(x^t)$: $f(x^\ast) < f(x^t)$ **do**
 4. &emsp; $t := t + 1$
-5. &emsp; $x^t := x^*$
+5. &emsp; $x^t := x^\ast$
 6. **end while**
 7. Return $x^t$.
 
@@ -4310,7 +5002,7 @@ Consider the local polytope relaxation of the labeling problem (3.45). Let $uv \
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 8.17</span><span class="math-callout__name">(Exact Neighborhood)</span></p>
 
-Let $X$ be finite. A neighborhood $\mathcal{N}$ is called *exact*, if Algorithm 7 returns an element of $\operatorname{arg\,min}_{x \in X} f(x)$.
+Let $X$ be finite. A neighborhood $\mathcal{N}$ is called *exact*, if Algorithm 7 returns an element of $\operatorname{arg\,min}\_{x \in X} f(x)$.
 
 </div>
 
@@ -4343,23 +5035,34 @@ Let $P$ be a polytope and $\text{vrtx}(P) \in \lbrace 0,1 \rbrace^n$. Let also $
 
 </div>
 
-*Proof.* **Necessity:** Assume $\hat{\mathbf{y}} \in \text{Ad}(\hat{\mathbf{x}})$, i.e., $\hat{\mathbf{x}}$ and $\hat{\mathbf{y}}$ belong to some edge of the polytope. By the definitions of the edge, there is a cost vector $\mathbf{c}$ such the edge is the set $\operatorname{arg\,min}_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$. In particular, $\langle \mathbf{c}, \hat{\mathbf{x}} \rangle = \langle \mathbf{c}, \hat{\mathbf{y}} \rangle = c^0 := \min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$. Below we will slightly modify $\mathbf{c}$ to obtain $\mathbf{c}'$ such that the statement of the lemma holds.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Lemma 8.20</summary>
+
+**Necessity:** Assume $\hat{\mathbf{y}} \in \text{Ad}(\hat{\mathbf{x}})$, i.e., $\hat{\mathbf{x}}$ and $\hat{\mathbf{y}}$ belong to some edge of the polytope. By the definitions of the edge, there is a cost vector $\mathbf{c}$ such the edge is the set $\operatorname{arg\,min}\_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$. In particular, $\langle \mathbf{c}, \hat{\mathbf{x}} \rangle = \langle \mathbf{c}, \hat{\mathbf{y}} \rangle = c^0 := \min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$. Below we will slightly modify $\mathbf{c}$ to obtain $\mathbf{c}'$ such that the statement of the lemma holds.
 
 Define $Q := \min_{\mathbf{x} \in \text{vrtx}(P) \setminus \lbrace \hat{\mathbf{x}}, \hat{\mathbf{y}} \rbrace} [\langle \mathbf{c}, \mathbf{x} \rangle - c^0] > 0$ as the minimal difference in the objective value between the edge $\hat{\mathbf{x}} - \hat{\mathbf{y}}$ and the rest of vertices of the polytope $P$.
 
-Since $\hat{\mathbf{x}} \neq \hat{\mathbf{y}}$ there is $j \in [n]$ such that $\hat{y}_j \neq \hat{x}_j$ and only two cases are considered below are possible.
+Since $\hat{\mathbf{x}} \neq \hat{\mathbf{y}}$ there is $j \in [n]$ such that $\hat{y}\_j \neq \hat{x}\_j$ and only two cases are considered below are possible.
 
-**Case 1:** $\hat{y}_j = 1$, $\hat{x}_j = 0$. Consider vector $\mathbf{c}'$ such that $c'_j = c_j + Q/2$ and $c'_i = c_i$ for $i \in [n] \setminus \lbrace j \rbrace$. Then $\hat{\mathbf{x}}$ is the unique best and $\hat{\mathbf{y}}$ is the unique second best solution.
+**Case 1:** $\hat{y}\_j = 1$, $\hat{x}\_j = 0$. Consider vector $\mathbf{c}'$ such that $c'_j = c_j + Q/2$ and $c'_i = c_i$ for $i \in [n] \setminus \lbrace j \rbrace$. Then $\hat{\mathbf{x}}$ is the unique best and $\hat{\mathbf{y}}$ is the unique second best solution.
 
-**Case 2:** $\hat{y}_j = 0$, $\hat{x}_j = 1$. Consider vector $\mathbf{c}'$ such that $c'_j = c_j - Q/2$ and $c'_i = c_i$ for $i \in [n] \setminus \lbrace j \rbrace$. Then $\hat{\mathbf{x}}$ is the unique best and $\hat{\mathbf{y}}$ is the unique second best solution.
+**Case 2:** $\hat{y}\_j = 0$, $\hat{x}\_j = 1$. Consider vector $\mathbf{c}'$ such that $c'_j = c_j - Q/2$ and $c'_i = c_i$ for $i \in [n] \setminus \lbrace j \rbrace$. Then $\hat{\mathbf{x}}$ is the unique best and $\hat{\mathbf{y}}$ is the unique second best solution.
 
 Thus, the necessity is proven.
 
 **Sufficiency:** Assume $\hat{\mathbf{x}}$ is the unique best and $\hat{\mathbf{y}}$ is the second best solution for some cost vector $\mathbf{c}$ and $\hat{\mathbf{x}} \notin \text{Ad}(\hat{\mathbf{y}})$. Then, according to Lemma 7.13, $\hat{\mathbf{y}}$ is the local optimum of the convex optimization problem $\min_{\mathbf{x} \in P} \langle \mathbf{c}, \mathbf{x} \rangle$. However, its unique global optimum is $\hat{\mathbf{x}}$, which is a contradiction, as for convex problems all local optima are global ones (consider the convex function $\langle \mathbf{c}, \mathbf{x} \rangle + \iota_P(x)$ and apply Proposition 4.19). $\square$
 
+</details>
+</div>
+
 Now we are ready to prove Theorem 8.19:
 
-*Proof.* **Sufficiency:** For the sake of notation denote $X := P \cap \lbrace 0,1 \rbrace^n = \text{vrtx}(M)$. The neighborhood $\mathcal{N}$ is exact for any cost vector $\mathbf{c}$, by the simplex algorithm applied to
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 8.19</summary>
+
+**Sufficiency:** For the sake of notation denote $X := P \cap \lbrace 0,1 \rbrace^n = \text{vrtx}(M)$. The neighborhood $\mathcal{N}$ is exact for any cost vector $\mathbf{c}$, by the simplex algorithm applied to
 
 $$\min_{\substack{y \\ p_\mathbf{x}: \mathbf{x} \in X}} \langle \mathbf{c}, \mathbf{y} \rangle$$
 
@@ -4375,6 +5078,9 @@ Here we used the representation (2.35) of the polytope $M$ and added the constra
 
 **Necessity:** Assume $\hat{\mathbf{x}} \in \text{Ad}(\hat{\mathbf{y}})$ and $\mathcal{N}(\hat{\mathbf{y}}) \ni \hat{\mathbf{x}}$. Then, according to Lemma 8.20 applied to the polytope $M$, there is such a cost vector $\mathbf{c}$ that $\hat{\mathbf{x}}$ is the unique best solution and $\hat{\mathbf{y}}$ is the unique second best one. The respective local search, when started in this point, as $\langle \mathbf{c}, \hat{\mathbf{y}} \rangle < \langle \mathbf{c}, \mathbf{x} \rangle$ for any $\mathbf{x} \in \mathcal{N}(\hat{\mathbf{y}})$. $\square$
 
+</details>
+</div>
+
 Unfortunately, Theorem 8.19 has mainly a theoretical value, as even answering the question whether two solutions correspond to adjacent vertices of the integer hull is NP-hard in general.
 
 ### Optimal Recombination
@@ -4389,7 +5095,7 @@ A labeling problem is called *binary*, if each of its nodes contains at most two
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 8.22</span><span class="math-callout__name">(Labeling problem)</span></p>
 
-Let $(\mathcal{G}, \boldsymbol{\theta}, \mathcal{Y}_\mathcal{V})$ be a multilabel labeling problem and let $\mathbf{y}^1, \mathbf{y}^2 \in \mathcal{Y}_\mathcal{V}$ be two labelings. The optimal recombination problem consists in finding a labeling $\mathbf{z} \in \mathcal{Y}_\mathcal{V}$ with the minimal total cost such that $z_u \in \lbrace y_u^1, y_u^2 \rbrace$ for all $u \in \mathcal{V}$.
+Let $(\mathcal{G}, \boldsymbol{\theta}, \mathcal{Y}\_\mathcal{V})$ be a multilabel labeling problem and let $\mathbf{y}^1, \mathbf{y}^2 \in \mathcal{Y}\_\mathcal{V}$ be two labelings. The optimal recombination problem consists in finding a labeling $\mathbf{z} \in \mathcal{Y}\_\mathcal{V}$ with the minimal total cost such that $z_u \in \lbrace y_u^1, y_u^2 \rbrace$ for all $u \in \mathcal{V}$.
 
 This problem can be posed as a binary labeling problem $(\mathcal{G}', \boldsymbol{\theta}', \mathcal{Y}'_{v'})$ with $\mathcal{G}' = \mathcal{G}$, $\mathcal{Y}'_u = \lbrace y_u^1, y_u^2 \rbrace$ and $\theta'_u(y_u^i) = \theta_u(y_u^i)$, $\theta'_{uv}(y_u^i, y_u^j) = \theta_{uv}(y_u^i, y_u^j)$, where $i, j \in \lbrace 1, 2 \rbrace$.
 
@@ -4426,11 +5132,11 @@ $$\xi_x = \begin{cases} 0, & x \notin A \,, \\ 1, & x \in A \,. \end{cases}$$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.1</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \theta)$ be a binary graphical model, i.e. $\mathcal{Y}_\mathcal{V} = \lbrace 0,1 \rbrace^\mathcal{V}$. Then the energy function
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \theta)$ be a binary graphical model, i.e. $\mathcal{Y}\_\mathcal{V} = \lbrace 0,1 \rbrace^\mathcal{V}$. Then the energy function
 
 $$E(y) = \sum_{u \in \mathcal{V}} \theta_u(y_u) + \sum_{uv \in \mathcal{E}} \theta_{uv}(y_u, y_v)$$
 
-can be seen as a set-function w.r.t. $y$, since each labeling $y \in \mathcal{Y}_\mathcal{V}$ is a binary vector.
+can be seen as a set-function w.r.t. $y$, since each labeling $y \in \mathcal{Y}\_\mathcal{V}$ is a binary vector.
 
 </div>
 
@@ -4459,7 +5165,7 @@ where the set-function $f$ is submodular. This problem is known to be polynomial
 
 #### Submodularity on a Lattice
 
-Submodularity can also be defined for multilabel graphical model energies. To do so, we assume that the set of labels in each node is totally ordered, e.g. the relations $\leq$ and $\geq$ are naturally defined for any two labels $s, l \in \mathcal{Y}_u$, $u \in \mathcal{V}$. The set of labelings $\mathcal{Y}_\mathcal{V}$ in this case is partially ordered, where the operation $\geq$ ($\leq$) is defined point-wise, which is $y \leq y'$ for $y, y' \in \mathcal{Y}_\mathcal{V}$, if $y_u \leq y'_u$ for all $u \in \mathcal{V}$. For any two labelings $y$ and $y'$ their node-wise maximum $y \vee y'$ and minimum $y \wedge y'$ are always well-defined. Moreover, the set of labelings $\mathcal{Y}_\mathcal{V}$ is a *lattice*, since it has its *supremum* and *infimum*, i.e. the *highest* labeling $\hat{y}$ such that $\hat{y} \geq y$ for all $y \in \mathcal{Y}_\mathcal{V}$ and the *lowest* one $\check{y}$ such that $\check{y} \leq y$ for all $y \in \mathcal{Y}_\mathcal{V}$.
+Submodularity can also be defined for multilabel graphical model energies. To do so, we assume that the set of labels in each node is totally ordered, e.g. the relations $\leq$ and $\geq$ are naturally defined for any two labels $s, l \in \mathcal{Y}\_u$, $u \in \mathcal{V}$. The set of labelings $\mathcal{Y}\_\mathcal{V}$ in this case is partially ordered, where the operation $\geq$ ($\leq$) is defined point-wise, which is $y \leq y'$ for $y, y' \in \mathcal{Y}\_\mathcal{V}$, if $y_u \leq y'_u$ for all $u \in \mathcal{V}$. For any two labelings $y$ and $y'$ their node-wise maximum $y \vee y'$ and minimum $y \wedge y'$ are always well-defined. Moreover, the set of labelings $\mathcal{Y}\_\mathcal{V}$ is a *lattice*, since it has its *supremum* and *infimum*, i.e. the *highest* labeling $\hat{y}$ such that $\hat{y} \geq y$ for all $y \in \mathcal{Y}\_\mathcal{V}$ and the *lowest* one $\check{y}$ such that $\check{y} \leq y$ for all $y \in \mathcal{Y}\_\mathcal{V}$.
 
 In general, a non-empty partially ordered set $A$ equipped with operations $\vee$ and $\wedge$ is called a *lattice* if $x \wedge z$ and $x \vee z$ are defined for all $x, z \in A$.
 
@@ -4482,14 +5188,14 @@ Translated to the energy function of a graphical model with a lattice structure 
 
 $$E(y) + E(y') \geq E(y \wedge y') + E(y \vee y')$$
 
-for any two labelings $y, y' \in \mathcal{Y}_\mathcal{V}$.
+for any two labelings $y, y' \in \mathcal{Y}\_\mathcal{V}$.
 
 Although this is a valid definition, it cannot be checked explicitly in practice, as it would require evaluating the relation (9.7) for all possible pairs of labelings. Fortunately, there is no need to do so, due to the following remarkable fact:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.4</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \theta)$ be a graphical model and $E$ be its energy. Let also label sets corresponding to the nodes of the graphical model be totally ordered and operations $\vee$ and $\wedge$ be defined as above. Then $E$ is submodular if and only if all its pairwise cost functions $\theta_{uv} \colon \mathcal{Y}_u \times \mathcal{Y}_v \to \mathbb{R}$, $uv \in \mathcal{E}$, are submodular.
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \theta)$ be a graphical model and $E$ be its energy. Let also label sets corresponding to the nodes of the graphical model be totally ordered and operations $\vee$ and $\wedge$ be defined as above. Then $E$ is submodular if and only if all its pairwise cost functions $\theta_{uv} \colon \mathcal{Y}\_u \times \mathcal{Y}\_v \to \mathbb{R}$, $uv \in \mathcal{E}$, are submodular.
 
 </div>
 
@@ -4518,7 +5224,14 @@ Let $X$ be a totally ordered set. Then any function $f \colon X \to \mathbb{R}$ 
 
 </div>
 
-*Proof.* Consider any $x, x' \in X$. W.l.o.g. assume $x \leq x'$. Then $x \wedge x' = x$ and $x \vee x' = x'$. Therefore $f(x \wedge x') + f(x \vee x') = f(x) + f(x')$, which finalizes the proof. $\square$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Lemma 9.7</summary>
+
+Consider any $x, x' \in X$. W.l.o.g. assume $x \leq x'$. Then $x \wedge x' = x$ and $x \vee x' = x'$. Therefore $f(x \wedge x') + f(x \vee x') = f(x) + f(x')$, which finalizes the proof. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 9.8</span></p>
@@ -4538,7 +5251,7 @@ In particular, Lemma 9.8 implies, that adding a modular function to a submodular
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.9</span><span class="math-callout__name">(Binary problem)</span></p>
 
-In the binary case, when $\mathcal{Y}_u = \lbrace 0, 1 \rbrace$ for all $u \in \mathcal{V}$, the submodularity condition simplifies to
+In the binary case, when $\mathcal{Y}\_u = \lbrace 0, 1 \rbrace$ for all $u \in \mathcal{V}$, the submodularity condition simplifies to
 
 $$\theta_{uv}(0, 1) + \theta_{uv}(1, 0) \geq \theta_{uv}(0, 0) + \theta_{uv}(1, 1) \,.$$
 
@@ -4578,6 +5291,85 @@ $$c(S, T) := \sum_{\substack{u \in S, v \in T \\ (u,v) \in \mathcal{E}'}} c_{u,v
 
 The *min-$st$-cut* (or shortly *min-cut*) problem consists in finding a cut with minimal total weight.
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 280" width="100%" style="max-width: 560px; height: auto;" role="img" aria-labelledby="mincut-title">
+  <title id="mincut-title">A small directed graph with an st-cut</title>
+  <defs>
+    <marker id="cut-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#666"/>
+    </marker>
+    <marker id="cut-arr-cut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e65100"/>
+    </marker>
+  </defs>
+  <!-- shaded S and T regions -->
+  <path d="M 20 60 Q 70 30 200 60 Q 230 130 200 220 Q 70 240 20 220 Z" fill="#e3f2fd" opacity="0.7"/>
+  <path d="M 360 60 Q 460 30 540 60 Q 540 220 460 240 Q 380 220 360 220 Z" fill="#fff7ec" opacity="0.7"/>
+  <text x="60" y="60" font-family="serif" font-size="14" fill="#1565c0">S</text>
+  <text x="500" y="60" font-family="serif" font-size="14" fill="#e65100">T</text>
+
+  <!-- The cut (dashed) -->
+  <path d="M 280 0 Q 280 140 280 280" stroke="#e65100" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+  <text x="285" y="20" font-family="serif" font-size="12" fill="#e65100">cut (S, T)</text>
+
+  <!-- nodes -->
+  <g font-family="serif" font-size="13">
+    <!-- source s -->
+    <circle cx="80" cy="140" r="20" fill="#fff" stroke="#1565c0" stroke-width="2.5"/>
+    <text x="80" y="145" text-anchor="middle">s</text>
+    <!-- a -->
+    <circle cx="200" cy="80" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="200" y="85" text-anchor="middle">a</text>
+    <!-- b -->
+    <circle cx="200" cy="200" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="200" y="205" text-anchor="middle">b</text>
+    <!-- c -->
+    <circle cx="380" cy="80" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="380" y="85" text-anchor="middle">c</text>
+    <!-- d -->
+    <circle cx="380" cy="200" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="380" y="205" text-anchor="middle">d</text>
+    <!-- target t -->
+    <circle cx="500" cy="140" r="20" fill="#fff" stroke="#e65100" stroke-width="2.5"/>
+    <text x="500" y="145" text-anchor="middle">t</text>
+  </g>
+
+  <!-- inner edges (not crossing cut) - grey arrows -->
+  <g stroke="#666" stroke-width="1.8" fill="none">
+    <line x1="100" y1="130" x2="184" y2="92" marker-end="url(#cut-arr)"/>
+    <line x1="100" y1="155" x2="184" y2="190" marker-end="url(#cut-arr)"/>
+    <line x1="200" y1="100" x2="200" y2="178" marker-end="url(#cut-arr)"/>
+    <line x1="396" y1="92"  x2="484" y2="130" marker-end="url(#cut-arr)"/>
+    <line x1="396" y1="190" x2="484" y2="152" marker-end="url(#cut-arr)"/>
+    <line x1="380" y1="100" x2="380" y2="178" marker-end="url(#cut-arr)"/>
+  </g>
+  <!-- edges crossing the cut - orange (these contribute to c(S,T)) -->
+  <g stroke="#e65100" stroke-width="2" fill="none">
+    <line x1="218" y1="80" x2="362" y2="80" marker-end="url(#cut-arr-cut)"/>
+    <line x1="218" y1="200" x2="362" y2="200" marker-end="url(#cut-arr-cut)"/>
+  </g>
+  <!-- edge weight labels -->
+  <g font-family="serif" font-size="11" fill="#333">
+    <text x="140" y="95">2</text>
+    <text x="140" y="185">3</text>
+    <text x="210" y="145">1</text>
+    <text x="440" y="100">4</text>
+    <text x="440" y="180">2</text>
+    <text x="390" y="145">1</text>
+  </g>
+  <g font-family="serif" font-size="12" fill="#e65100" font-weight="bold">
+    <text x="280" y="73" text-anchor="middle">5</text>
+    <text x="280" y="218" text-anchor="middle">2</text>
+  </g>
+  <text x="20" y="260" font-family="serif" font-size="11" fill="#666">
+    Orange edges S→T contribute to c(S,T); reverse-direction edges do not.
+  </text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+An $st$-cut partitions $\mathcal{V}'$ into $S\ni s$ (blue) and $T\ni t$ (orange). The cut weight $c(S,T)$ sums the capacities of edges going **from $S$ to $T$ only** (orange arrows: $5+2=7$). Min-$st$-cut seeks the partition minimizing this sum; by max-flow/min-cut duality it equals the max $s\to t$ flow.
+</figcaption>
+</figure>
+
 As many combinatorial problems, min-cut can be formulated as an integer linear program, see Example 9.13. In general it is NP-hard, just like other ILPs. However, if all weights $c_{u,v}$ are non-negative, its linear programming relaxation is tight and therefore the problem is polynomially solvable. The corresponding linear programming relaxation has a special structure, which allows us to find its minimum with polynomial finite-step algorithms with the worst-case complexity $O(\lvert \mathcal{V}' \rvert^3)$. Typically, the full Lagrange dual of the problem is solved instead of the primal problem. It constitutes the *max-flow* problem, for which a number of efficient polynomial finite-step solvers exist.
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -4601,7 +5393,7 @@ The LP relaxation of (9.14)-(9.16) is obtained as usual, by convexifying the int
 
 Although the graphical form of combinatorial problems is of great importance for the development of the field, their algebraic forms have the advantage of a more compact problem representation and help to give unambiguous proofs. Along with the ILP formulation for the min-cut problem, we will consider another algebraic form, the *quadratic pseudo-boolean minimization* problem.
 
-For a binary variable $x \in \lbrace 0, 1 \rbrace$, let $\bar{x}$ denote its negation, that is, $\bar{x} = 1 - x$. Functions $f \colon \lbrace 0,1 \rbrace^n \to \mathbb{R}$ are called *pseudo-boolean*. Note that the class of pseudo-boolean functions coincides with the class of set-functions as defined in §9.1. An important example of pseudo-boolean functions $f(x)$, $x \in \lbrace 0,1 \rbrace^n$, are those representable as a *quadratic* polynomial of $x_i$ and $\bar{x}_i$. A subclass of such functions, tightly related to the min-cut problem, is defined as follows:
+For a binary variable $x \in \lbrace 0, 1 \rbrace$, let $\bar{x}$ denote its negation, that is, $\bar{x} = 1 - x$. Functions $f \colon \lbrace 0,1 \rbrace^n \to \mathbb{R}$ are called *pseudo-boolean*. Note that the class of pseudo-boolean functions coincides with the class of set-functions as defined in §9.1. An important example of pseudo-boolean functions $f(x)$, $x \in \lbrace 0,1 \rbrace^n$, are those representable as a *quadratic* polynomial of $x_i$ and $\bar{x}\_i$. A subclass of such functions, tightly related to the min-cut problem, is defined as follows:
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 9.14</span><span class="math-callout__name">(Quadratic Pseudo-Boolean Function)</span></p>
@@ -4617,14 +5409,14 @@ will be called an *oriented form*.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.15</span></p>
 
-The following quadratic pseudo-boolean functions are oriented forms: $-5 + 7x_3\bar{x}_1 + 12x_3 + \bar{x}_1$; $\quad 2\bar{x}_1 x_2 + 3\bar{x}_2 x_1 - 6x_3\bar{x}_4$.
+The following quadratic pseudo-boolean functions are oriented forms: $-5 + 7x_3\bar{x}\_1 + 12x_3 + \bar{x}\_1$; $\quad 2\bar{x}\_1 x_2 + 3\bar{x}\_2 x_1 - 6x_3\bar{x}\_4$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 9.16</span></p>
 
-The quadratic pseudo-boolean functions below are *not* oriented forms: $-5 + 7x_3 x_1 + 12x_3 + \bar{x}_1$; $\quad 2x_1 x_2 + 3\bar{x}_2 x_1 - 6x_3\bar{x}_4$.
+The quadratic pseudo-boolean functions below are *not* oriented forms: $-5 + 7x_3 x_1 + 12x_3 + \bar{x}\_1$; $\quad 2x_1 x_2 + 3\bar{x}\_2 x_1 - 6x_3\bar{x}\_4$.
 
 </div>
 
@@ -4632,11 +5424,11 @@ The quadratic pseudo-boolean functions below are *not* oriented forms: $-5 + 7x_
 
 Oriented forms are well suited for representing graph partitions like the one found in the min-cut problem. Let the coordinates of a binary vector $x \in \lbrace 0,1 \rbrace^{\mathcal{V}'}$ be the indicator variables, denoting the subset each vertex belongs to. In other words, if $u \in S$, $x_u = 0$, and, on the other hand, $x_u = 1$ is equivalent to $u \in T$. In this way, the vector $x$ represents a partition of the graph $\mathcal{G}'$.
 
-Let the monomial $c_{u,v}\bar{x}_u x_v$ correspond to the directed edge $(u, v)$ with the weight $c_{u,v}$. Then the total weight of the cut (9.13) corresponding to the vector $x$ is equal to
+Let the monomial $c_{u,v}\bar{x}\_u x_v$ correspond to the directed edge $(u, v)$ with the weight $c_{u,v}$. Then the total weight of the cut (9.13) corresponding to the vector $x$ is equal to
 
 $$\sum_{(u,v) \in \mathcal{E}'} c_{u,v} \bar{x}_u x_v \,.$$
 
-Note that since $s \in S$ and $t \in T$ it follows that $x_s = 0$ and $x_t = 1$. Therefore, $c_{s,v}\bar{x}_s x_v = c_{s,v} x_v$ and $c_{u,t}\bar{x}_u x_t = c_{u,t}\bar{x}_u$ and $c_{s,t}\bar{x}_s x_t = c_{s,t}$. It also implies that (directed) edges $(u, s)$ and $(t, u)$, $u \in \mathcal{V}$ can be ignored, since they do not belong to any cut and the corresponding monomials vanish.
+Note that since $s \in S$ and $t \in T$ it follows that $x_s = 0$ and $x_t = 1$. Therefore, $c_{s,v}\bar{x}\_s x_v = c_{s,v} x_v$ and $c_{u,t}\bar{x}\_u x_t = c_{u,t}\bar{x}\_u$ and $c_{s,t}\bar{x}\_s x_t = c_{s,t}$. It also implies that (directed) edges $(u, s)$ and $(t, u)$, $u \in \mathcal{V}$ can be ignored, since they do not belong to any cut and the corresponding monomials vanish.
 
 In conclusion, each min-cut problem can be equivalently represented as minimization of the oriented form
 
@@ -4649,9 +5441,9 @@ with the constant $c_{s,t}$ being zero if the edge $(s, t)$ does not exist. Conv
 | $\mathcal{V}'$ | $x \in \lbrace 0,1 \rbrace^{\mathcal{V}'}$ | $\mathcal{V} = \mathcal{V}' \setminus \lbrace s, t \rbrace$ |
 | $u \in S$ | $x_u = 0$ | $y_u = 0$ |
 | $u \in T$ | $x_u = 1$ | $y_u = 1$ |
-| $c_{u,v}$, $(u,v) \in \mathcal{E}'$ | $c_{u,v}\bar{x}_u x_v$ | $\theta_{uv}(0, 1) = c_{u,v}$ |
+| $c_{u,v}$, $(u,v) \in \mathcal{E}'$ | $c_{u,v}\bar{x}\_u x_v$ | $\theta_{uv}(0, 1) = c_{u,v}$ |
 | $c_{s,v}$, $(s,v) \in \mathcal{E}'$ | $c_{s,v} x_v$ | $\theta_v(1) = c_{s,v}$ |
-| $c_{u,t}$, $(u,t) \in \mathcal{E}'$ | $c_{u,t}\bar{x}_u$ | $\theta_u(0) = c_{u,t}$ |
+| $c_{u,t}$, $(u,t) \in \mathcal{E}'$ | $c_{u,t}\bar{x}\_u$ | $\theta_u(0) = c_{u,t}$ |
 | $c_{s,t}$, $(s,t) \in \mathcal{E}'$ | $c_{s,t}$ | constant |
 
 In particular, it means that a min-cut problem with non-negative weights corresponds to an oriented form with non-negative coefficients and the other way around.
@@ -4660,7 +5452,7 @@ In particular, it means that a min-cut problem with non-negative weights corresp
 
 To show a close relation between binary MAP-inference and min-cut problems, we show that the former can be equivalently seen as minimization of an oriented form. We will start with an inverse transformation by showing that an oriented form can be seen as a binary graphical model energy up to a constant term.
 
-For each monomial $c_{i,j}\bar{x}_i x_j$ add an edge between nodes $i$ and $j$ to the graph $\mathcal{G}$, should it not exist yet. Set all costs $\theta$ initially to zero. For each monomial $\alpha_i x_i$ assign $\theta_i(1) := \alpha_i$, for $\beta_i \bar{x}_i$ assign $\theta_i(0) := \beta_i$ and for $c_{i,j}\bar{x}_i x_j$ assign $\theta_{ij}(0, 1) := c_{i,j}$.
+For each monomial $c_{i,j}\bar{x}\_i x_j$ add an edge between nodes $i$ and $j$ to the graph $\mathcal{G}$, should it not exist yet. Set all costs $\theta$ initially to zero. For each monomial $\alpha_i x_i$ assign $\theta_i(1) := \alpha_i$, for $\beta_i \bar{x}\_i$ assign $\theta_i(0) := \beta_i$ and for $c_{i,j}\bar{x}\_i x_j$ assign $\theta_{ij}(0, 1) := c_{i,j}$.
 
 To specify the inverse transformation of a graphical model to an oriented form note that only pairwise factors having the structure of (9.20), that is every entry is zero except one non-zero value on the diagonal, can be given by an oriented form according to the above construction. In the following we will adopt the name *diagonal form* for such factors. It turns out that any pairwise cost function can be transformed into the diagonal form by reparametrization, given by the formulas below:
 
@@ -4718,7 +5510,7 @@ which is the set of all vectors in the local polytope such that their non-zero c
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.20</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \theta)$ be a binary graphical model. Let $\phi \in \mathbb{R}^{\mathcal{J}}$ be a reparametrization and $\theta^\phi$ be the corresponding reparametrized costs such that the corresponding arc-consistency closure is non-empty, i.e. $\text{cl}(\text{mi}[\theta^\phi]) \neq \bar{0}$. Then $\mathcal{L}(\phi) \cap \lbrace 0, \frac{1}{2}, 1 \rbrace^{\mathcal{I}} \neq \emptyset$.
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \theta)$ be a binary graphical model. Let $\phi \in \mathbb{R}^{\mathcal{J}}$ be a reparametrization and $\theta^\phi$ be the corresponding reparametrized costs such that the corresponding arc-consistency closure is non-empty, i.e. $\text{cl}(\text{mi}[\theta^\phi]) \neq \bar{0}$. Then $\mathcal{L}(\phi) \cap \lbrace 0, \frac{1}{2}, 1 \rbrace^{\mathcal{I}} \neq \emptyset$.
 
 In other words, there is a half-integral point in the local polytope, such that its non-zero coordinates correspond to locally minimal labels and label pairs of the cost vector $\theta^\phi$.
 
@@ -4733,7 +5525,14 @@ All vertices of the binary local polytope have half-integral coordinates.
 
 </div>
 
-*Proof.* Let $\theta$ be a cost vector such that the relaxed problem $\min_{\mu \in \mathcal{L}} \langle \theta, \mu \rangle$ has a unique solution. Let also $\phi$ be an optimal reparametrization, which implies that $\text{cl}(\text{mi}[\theta^\phi]) \neq \bar{0}$. According to Theorem 9.20 the relaxed solution is half-integral. Together with Definition 2.20 this proves the statement. $\square$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Corollary 9.21</summary>
+
+Let $\theta$ be a cost vector such that the relaxed problem $\min_{\mu \in \mathcal{L}} \langle \theta, \mu \rangle$ has a unique solution. Let also $\phi$ be an optimal reparametrization, which implies that $\text{cl}(\text{mi}[\theta^\phi]) \neq \bar{0}$. According to Theorem 9.20 the relaxed solution is half-integral. Together with Definition 2.20 this proves the statement. $\square$
+
+</details>
+</div>
 
 ### LP Relaxation as Min-Cut
 
@@ -4743,7 +5542,7 @@ The goal of this section is to reduce the LP relaxation of the binary MAP-infere
 
 $$\mathcal{L} = \begin{cases} \mu_u \in \Delta^{\mathcal{Y}_u}, & \forall u \in \mathcal{V} \\ \mu_{uv} \in \Delta^{\mathcal{Y}_{uv}}, & \forall uv \in \mathcal{E} \\ \sum_{t \in \mathcal{Y}_v} \mu_{uv}(s, t) = \mu_u(s), & \forall u \in \mathcal{V},\; v \in \mathcal{N}(u),\; s \in \mathcal{Y}_u \,. \end{cases}$$
 
-Let us fix the "unary" vectors $\mu_u$ for all nodes $u \in \mathcal{V}$. Let $\mathcal{L}_{uv}(\mu_u, \mu_v)$ be the set of all "pairwise" vectors $\mu_{uv}$, such that the whole vector $\mu$ belongs to $\mathcal{L}$, i.e.:
+Let us fix the "unary" vectors $\mu_u$ for all nodes $u \in \mathcal{V}$. Let $\mathcal{L}\_{uv}(\mu_u, \mu_v)$ be the set of all "pairwise" vectors $\mu_{uv}$, such that the whole vector $\mu$ belongs to $\mathcal{L}$, i.e.:
 
 $$\mathcal{L}_{uv}(\mu_u, \mu_v) = \left\lbrace \mu_{uv} \in \Delta^{\mathcal{Y}_{uv}} : \sum_{t \in \mathcal{Y}_v} \mu_{uv}(s, t) = \mu_u(s) \quad \forall s \in \mathcal{Y}_u \right\rbrace$$
 
@@ -4762,7 +5561,7 @@ The following theorem relates the first term in (9.34) to the LP relaxation of t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.22</span></p>
 
-Let $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \theta)$ be a binary MAP-inference problem and its submodular and supermodular pairwise terms be represented in the "diagonal" and "parallel" forms respectively. Let $g$ be constructed according to (9.30)-(9.33). Then it holds that
+Let $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \theta)$ be a binary MAP-inference problem and its submodular and supermodular pairwise terms be represented in the "diagonal" and "parallel" forms respectively. Let $g$ be constructed according to (9.30)-(9.33). Then it holds that
 
 $$\min_{y,z \in \lbrace 0,1 \rbrace^\mathcal{V}} g(y, z) = \min_{\mu \in \mathcal{L}} \langle \theta, \mu \rangle \,.$$
 
@@ -4774,7 +5573,7 @@ $$\mu'_u(0) = 1 - \mu'_u(1)$$
 
 $$\mu'_{uv} = \operatorname*{arg\,min}_{\mu_{uv} \in \mathcal{L}_{uv}(\mu'_u, \mu'_v) \cap \lbrace 0, \frac{1}{2}, 1 \rbrace^{\mathcal{Y}_{uv}}} \langle \theta_{uv}, \mu_{uv} \rangle \,,$$
 
-where $\mathcal{L}_{uv}$ is defined by (9.28).
+where $\mathcal{L}\_{uv}$ is defined by (9.28).
 
 </div>
 
@@ -4793,18 +5592,18 @@ Let
 
 $$\mu' \in \operatorname*{arg\,min}_{\mu \in \mathcal{L}} \langle \theta, \mu \rangle$$
 
-be a relaxed solution of the MAP-inference problem for a graphical model $(\mathcal{G}, \mathcal{Y}_\mathcal{V}, \theta)$. For any $u \in \mathcal{V}$ its coordinate $\mu'_u(s)$ is called *(weakly) persistent* or *(weakly) partially optimal*, if (i) $\mu'_u(s) \in \lbrace 0, 1 \rbrace$ and (ii) there exists an exact integer solution
+be a relaxed solution of the MAP-inference problem for a graphical model $(\mathcal{G}, \mathcal{Y}\_\mathcal{V}, \theta)$. For any $u \in \mathcal{V}$ its coordinate $\mu'_u(s)$ is called *(weakly) persistent* or *(weakly) partially optimal*, if (i) $\mu'_u(s) \in \lbrace 0, 1 \rbrace$ and (ii) there exists an exact integer solution
 
 $$\mu^* \in \operatorname*{arg\,min}_{\mu \in \mathcal{L} \cap \lbrace 0,1 \rbrace^{\mathcal{I}}} \langle \theta, \mu \rangle$$
 
-such that $\mu^*_u(s) = \mu'_u(s)$. It is *strongly persistent* if this property holds for *all* exact integer solutions $\mu^*$.
+such that $\mu^\ast_u(s) = \mu'\_u(s)$. It is *strongly persistent* if this property holds for *all* exact integer solutions $\mu^\ast$.
 
 </div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 9.24</span><span class="math-callout__name">(Persistency of a Partial Labeling)</span></p>
 
-A partial labeling $y' \in \mathcal{Y}_\mathcal{A}$ on a subset $\mathcal{A} \subseteq \mathcal{V}$ is *(weakly) partially optimal* or *(weakly) persistent* if $y' = y^*\vert_\mathcal{A}$ for some $y^* \in \operatorname{arg\,min}_{y \in \mathcal{Y}_\mathcal{V}} \langle \theta, \delta(y) \rangle$.
+A partial labeling $y' \in \mathcal{Y}\_\mathcal{A}$ on a subset $\mathcal{A} \subseteq \mathcal{V}$ is *(weakly) partially optimal* or *(weakly) persistent* if $y' = y^\ast\vert_\mathcal{A}$ for some $y^\ast \in \operatorname{arg\,min}\_{y \in \mathcal{Y}\_\mathcal{V}} \langle \theta, \delta(y) \rangle$.
 
 </div>
 
@@ -4813,7 +5612,7 @@ The following proposition formulates a sufficient persistency condition:
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 9.25</span><span class="math-callout__name">(Persistency criterion)</span></p>
 
-A partial labeling $y' \in \mathcal{Y}_\mathcal{A}$ is persistent, if for all $\tilde{y} \in \mathcal{Y}_{\mathcal{V} \setminus \mathcal{A}}$ the following holds
+A partial labeling $y' \in \mathcal{Y}\_\mathcal{A}$ is persistent, if for all $\tilde{y} \in \mathcal{Y}\_{\mathcal{V} \setminus \mathcal{A}}$ the following holds
 
 $$y' \in \operatorname*{arg\,min}_{y \in \mathcal{Y}_\mathcal{A}} E((y, \tilde{y})) \,,$$
 
@@ -4823,11 +5622,18 @@ $$(y, \tilde{y}) = \begin{cases} y_u, & u \in \mathcal{A} \,, \\ \tilde{y}_u, & 
 
 </div>
 
-*Proof.* Consider the equation
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Proposition 9.25</summary>
+
+Consider the equation
 
 $$\min_{y \in \mathcal{Y}_\mathcal{V}} E(y) = \min_{\tilde{y} \in \mathcal{Y}_{\mathcal{V} \setminus \mathcal{A}}} \min_{y \in \mathcal{Y}_\mathcal{A}} E((y, \tilde{y})) \,.$$
 
-Let $\tilde{y} \in \mathcal{Y}_{\mathcal{V} \setminus \mathcal{A}}$ be such that it leads to a minimal value on the right hand side of (9.43). Then $\tilde{y}$ is part of an optimal solution. By the assumption (9.41), $y'$ is an optimal solution to the inner minimization problem of (9.43), hence $(y', \tilde{y})$ minimizes $E$. $\square$
+Let $\tilde{y} \in \mathcal{Y}\_{\mathcal{V} \setminus \mathcal{A}}$ be such that it leads to a minimal value on the right hand side of (9.43). Then $\tilde{y}$ is part of an optimal solution. By the assumption (9.41), $y'$ is an optimal solution to the inner minimization problem of (9.43), hence $(y', \tilde{y})$ minimizes $E$. $\square$
+
+</details>
+</div>
 
 #### Persistency of the Binary Local Polytope
 
@@ -4836,25 +5642,32 @@ Let $\mathcal{I}$ be the set of indexes associated with possible labels and labe
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.26</span></p>
 
-Let $\mu' \in \operatorname{arg\,min}_{\mu \in \mathcal{L}} \langle \theta, \mu \rangle$ be a relaxed solution of a binary MAP-inference problem. Then $\mu'\vert_{\text{Int}(\mu')}$ is persistent.
+Let $\mu' \in \operatorname{arg\,min}\_{\mu \in \mathcal{L}} \langle \theta, \mu \rangle$ be a relaxed solution of a binary MAP-inference problem. Then $\mu'\vert_{\text{Int}(\mu')}$ is persistent.
 
 </div>
 
-*Proof.* The proof is illustrated in Figure 9.8. Let $\mathcal{A} := \text{Int}(\mu')$. Let also $y' \in \mathcal{X}_\mathcal{A}$ be selected such that $\delta(y') = \mu'\vert_\mathcal{A}$. The criterion of Proposition 9.25 is independent of a reparametrization of $\theta$. W.l.o.g. we will assume the latter to be (dual) optimal and such that for all $w \in \mathcal{V} \cup \mathcal{E}$ it holds that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 9.26</summary>
+
+The proof is illustrated in Figure 9.8. Let $\mathcal{A} := \text{Int}(\mu')$. Let also $y' \in \mathcal{X}\_\mathcal{A}$ be selected such that $\delta(y') = \mu'\vert_\mathcal{A}$. The criterion of Proposition 9.25 is independent of a reparametrization of $\theta$. W.l.o.g. we will assume the latter to be (dual) optimal and such that for all $w \in \mathcal{V} \cup \mathcal{E}$ it holds that
 
 $$\min_{s \in \mathcal{Y}_w} \theta_w(s) = 0 \,.$$
 
-Let us consider the persistency criterion (9.41). For a fixed $\tilde{y} \in \mathcal{Y}_{\mathcal{V} \setminus \mathcal{A}}$ it holds that
+Let us consider the persistency criterion (9.41). For a fixed $\tilde{y} \in \mathcal{Y}\_{\mathcal{V} \setminus \mathcal{A}}$ it holds that
 
 $$\operatorname*{arg\,min}_{y \in \mathcal{Y}_\mathcal{A}} E((y, \tilde{y})) = \operatorname*{arg\,min}_{y \in \mathcal{Y}_\mathcal{A}} \left(\underbrace{E_\mathcal{A}(y) + \sum_{\substack{uv \in \mathcal{E}, \\ u \in \mathcal{A}, v \in \mathcal{V} \setminus \mathcal{A}}} \theta_{uv}(y_u, \tilde{y}_v)}_{\geq 0}\right) \,,$$
 
 where the energy $E_\mathcal{A}$ is restricted to the induced subgraph of $\mathcal{A}$ and the inequality holds due to (9.44).
 
-Since $\mu'$ is primal relaxed optimal and $\theta$ is dual optimal, it holds that $E_\mathcal{A}(y') = 0$ due to the strong duality, see Proposition 5.23(4). Moreover, since the solution $\mu'$ outside $\mathcal{A}$ is non-integer, it holds that $\mu'_u(s) > 0$ for all $s \in \mathcal{Y}_u$, $u \in \mathcal{V} \setminus \mathcal{A}$. Therefore, due to the local polytope constraints, $\mu_{uv}(y'_u, y_v) > 0$ for all $u \in \mathcal{A}$, $v \in \mathcal{V} \setminus \mathcal{A}$ with $uv \in \mathcal{E}$ and $y_v \in \mathcal{Y}_v$. Statement 5 of Proposition 5.23 implies $\theta_{uv}(y'_u, \tilde{y}_v) = 0$, in particular $\theta_{uv}(y'_u, \tilde{y}_v) = 0$. Hence, we obtain
+Since $\mu'$ is primal relaxed optimal and $\theta$ is dual optimal, it holds that $E_\mathcal{A}(y') = 0$ due to the strong duality, see Proposition 5.23(4). Moreover, since the solution $\mu'$ outside $\mathcal{A}$ is non-integer, it holds that $\mu'_u(s) > 0$ for all $s \in \mathcal{Y}\_u$, $u \in \mathcal{V} \setminus \mathcal{A}$. Therefore, due to the local polytope constraints, $\mu_{uv}(y'_u, y_v) > 0$ for all $u \in \mathcal{A}$, $v \in \mathcal{V} \setminus \mathcal{A}$ with $uv \in \mathcal{E}$ and $y_v \in \mathcal{Y}\_v$. Statement 5 of Proposition 5.23 implies $\theta_{uv}(y'_u, \tilde{y}\_v) = 0$, in particular $\theta_{uv}(y'_u, \tilde{y}\_v) = 0$. Hence, we obtain
 
 $$\left(E_\mathcal{A}(y') + \sum_{\substack{uv \in \mathcal{E}_{\partial \mathcal{A}}, \\ u \in \mathcal{A}}} \theta_{uv}(y'_u, \tilde{y}_v)\right) = 0 \,.$$
 
-Comparing to (9.45) we obtain $y' \in \operatorname{arg\,min}_{y \in \mathcal{Y}_\mathcal{A}} E((y, \tilde{y}))$, which finalizes the proof. $\square$
+Comparing to (9.45) we obtain $y' \in \operatorname{arg\,min}\_{y \in \mathcal{Y}\_\mathcal{A}} E((y, \tilde{y}))$, which finalizes the proof. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 9.27</span></p>
@@ -4883,4 +5696,18 @@ Note several important differences between Algorithm ?? and fusion moves:
 
 - Fusion moves do not require any metric properties of the initial multi-label problem to be applicable, since the key computational step — the relaxed binary problem (9.48) is efficiently solvable for any costs.
 - Due to the above property there is no need to restrict the proposal labeling to a constant one. The best results are often obtained when application-specific knowledge is used for proposal generation. For example, for stereo reconstruction of smooth surfaces the labelings corresponding to such surfaces can be used as proposals.
-- Similar to $\alpha\beta$-swap, the fusion moves algorithm does not have any optimality guarantees in general, which conforms to the fact that such guarantees can not be obtained by polynomial algorithms for general graphical models. In particular, there is no guarantee that the set of nodes with integer coordinates $\text{Int}(\mu^*)$ is non-empty for the solution of any of the auxiliary problems (9.48).
+- Similar to $\alpha\beta$-swap, the fusion moves algorithm does not have any optimality guarantees in general, which conforms to the fact that such guarantees can not be obtained by polynomial algorithms for general graphical models. In particular, there is no guarantee that the set of nodes with integer coordinates $\text{Int}(\mu^\ast)$ is non-empty for the solution of any of the auxiliary problems (9.48).
+
+### 9.8 Bibliography and Further Reading
+
+Although there is a fair amount of literature on quadratic pseudo-boolean optimization and its relation to binary labeling problems and min-cut, the presentation of this chapter is quite new. Typically the proof of Theorem 9.22 is done for dual objectives, which is more practical for applications. The primal exposition, like the one in this monograph, seems to be more illustrative and intuitive. Moreover, it is more straightforwardly related to persistency. The typical proof for the persistency property is done by reducing the problem to the vertex cover problem and operating by known results in that domain. It turned out that this result can easily be proven directly, see Theorem 9.26, although similar proofs exist in the literature, e.g. [96].
+
+Related works on quadratic pseudo-boolean optimization are [82], [98], [99]. Extensions and applications of the persistency property of the binary local polytope are discussed in [100]–[102].
+
+In a recent line of research [97], [103]–[109] persistency of multi-label problems has been studied and efficient polynomial algorithms for its computation were proposed.
+
+The fusion moves were proposed and discussed in [110]–[112].
+
+## Chapter 10: Learning Costs and Parameters of Combinatorial Problems
+
+*(See slides; no script yet in the source.)*
