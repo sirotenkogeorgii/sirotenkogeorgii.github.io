@@ -37,13 +37,13 @@ A **shallow feedforward neural network** is an affine transformation applied to 
 
 $$\mathbb{R}^d \ni \boldsymbol{x} \mapsto \Phi(\boldsymbol{x}) = T_1 \circ \sigma \circ T_0(\boldsymbol{x})$$
 
-where $T_0$, $T_1$ are affine transformations. A **deep feedforward neural network** is constructed by compositions of shallow neural networks:
+where $T\_0$, $T\_1$ are affine transformations. A **deep feedforward neural network** is constructed by compositions of shallow neural networks:
 
 $$\mathbb{R}^d \ni \boldsymbol{x} \mapsto \Phi(\boldsymbol{x}) = T_{L+1} \circ \sigma \circ \cdots \circ T_1 \circ \sigma \circ T_0(\boldsymbol{x}),$$
 
 where $L \in \mathbb{N}$ is the **number of layers**.
 
-**Gradient-Based Training.** In **supervised learning**, the objective depends on a collection of input-output pairs $S = (\boldsymbol{x}_i, \boldsymbol{y}_i)_{i=1}^m$ called **training data**. The goal is to find a deep neural network $\Phi$ such that
+**Gradient-Based Training.** In **supervised learning**, the objective depends on a collection of input-output pairs $S = (\boldsymbol{x}\_i, \boldsymbol{y}\_i)\_{i=1}^m$ called **training data**. The goal is to find a deep neural network $\Phi$ such that
 
 $$\Phi(\boldsymbol{x}_i) \approx \boldsymbol{y}_i \quad \text{for all } i = 1, \ldots, m.$$
 
@@ -53,11 +53,11 @@ $$\widehat{\mathcal{R}}_S(\Phi) = \frac{1}{m} \sum_{i=1}^m \mathcal{L}(\Phi(\bol
 
 where $\mathcal{L}$ is a **loss function**. The gradient of the empirical risk can be efficiently computed using **backpropagation**, enabling optimization via (stochastic) gradient descent.
 
-**Prediction.** We assume existence of a **data distribution** $\mathcal{D}$ on $\mathbb{R}^d \times \mathbb{R}^k$ from which the sample $S$ and new data points are drawn i.i.d. The **risk** of a trained network $\Phi_*$ is
+**Prediction.** We assume existence of a **data distribution** $\mathcal{D}$ on $\mathbb{R}^d \times \mathbb{R}^k$ from which the sample $S$ and new data points are drawn i.i.d. The **risk** of a trained network $\Phi\_\ast$ is
 
 $$\mathcal{R}(\Phi_*) = \mathbb{E}_{(\boldsymbol{x}_{\text{new}}, \boldsymbol{y}_{\text{new}}) \sim \mathcal{D}}[\mathcal{L}(\Phi_*(\boldsymbol{x}_{\text{new}}), \boldsymbol{y}_{\text{new}})].$$
 
-If the risk is not much larger than the empirical risk, we say $\Phi_*$ has a small **generalization error**. If the risk is much larger, we say $\Phi_*$ **overfits** the training data.
+If the risk is not much larger than the empirical risk, we say $\Phi\_\ast$ has a small **generalization error**. If the risk is much larger, we say $\Phi\_\ast$ **overfits** the training data.
 
 ### Why Does It Work?
 
@@ -103,7 +103,7 @@ The book addresses the above questions through the following chapters:
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 2.1</span><span class="math-callout__name">(Neural Network)</span></p>
 
-Let $L \in \mathbb{N}$, $d_0, \ldots, d_{L+1} \in \mathbb{N}$, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$. A function $\Phi \colon \mathbb{R}^{d_0} \to \mathbb{R}^{d_{L+1}}$ is called a **neural network** if there exist matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$ and vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d_{\ell+1}}$, $\ell = 0, \ldots, L$, such that with
+Let $L \in \mathbb{N}$, $d\_0, \ldots, d\_{L+1} \in \mathbb{N}$, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$. A function $\Phi \colon \mathbb{R}^{d\_0} \to \mathbb{R}^{d\_{L+1}}$ is called a **neural network** if there exist matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$ and vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1}}$, $\ell = 0, \ldots, L$, such that with
 
 $$\boldsymbol{x}^{(0)} := \boldsymbol{x}$$
 
@@ -111,16 +111,16 @@ $$\boldsymbol{x}^{(\ell)} := \sigma(\boldsymbol{W}^{(\ell-1)} \boldsymbol{x}^{(\
 
 $$\boldsymbol{x}^{(L+1)} := \boldsymbol{W}^{(L)} \boldsymbol{x}^{(L)} + \boldsymbol{b}^{(L)}$$
 
-it holds that $\Phi(\boldsymbol{x}) = \boldsymbol{x}^{(L+1)}$ for all $\boldsymbol{x} \in \mathbb{R}^{d_0}$.
+it holds that $\Phi(\boldsymbol{x}) = \boldsymbol{x}^{(L+1)}$ for all $\boldsymbol{x} \in \mathbb{R}^{d\_0}$.
 
-We call $L$ the **depth**, $d_{\max} = \max_{\ell=1,\ldots,L} d_\ell$ the **width**, $\sigma$ the **activation function**, and $(\sigma; d_0, d_1, \ldots, d_{L+1})$ the **architecture** of the neural network $\Phi$. The matrices $\boldsymbol{W}^{(\ell)}$ are the **weight matrices** and $\boldsymbol{b}^{(\ell)}$ the **bias vectors** of $\Phi$.
+We call $L$ the **depth**, $d\_{\max} = \max\_{\ell=1,\ldots,L} d\_\ell$ the **width**, $\sigma$ the **activation function**, and $(\sigma; d\_0, d\_1, \ldots, d\_{L+1})$ the **architecture** of the neural network $\Phi$. The matrices $\boldsymbol{W}^{(\ell)}$ are the **weight matrices** and $\boldsymbol{b}^{(\ell)}$ the **bias vectors** of $\Phi$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 2.2</span></p>
 
-Different choices of architectures, weights, and biases can yield the same function $\Phi \colon \mathbb{R}^{d_0} \to \mathbb{R}^{d_{L+1}}$. Therefore we cannot associate a unique meaning to the depth, width, etc. based solely on the function realized by $\Phi$. When we refer to properties of a neural network, it is always understood that there exists at least one construction satisfying those properties.
+Different choices of architectures, weights, and biases can yield the same function $\Phi \colon \mathbb{R}^{d\_0} \to \mathbb{R}^{d\_{L+1}}$. Therefore we cannot associate a unique meaning to the depth, width, etc. based solely on the function realized by $\Phi$. When we refer to properties of a neural network, it is always understood that there exists at least one construction satisfying those properties.
 
 </div>
 
@@ -131,11 +131,27 @@ Key terminology:
 - **parameters**: The set of all entries of the weight matrices and bias vectors, often collected in a single vector $\boldsymbol{w} = ((\boldsymbol{W}^{(0)}, \boldsymbol{b}^{(0)}), \ldots, (\boldsymbol{W}^{(L)}, \boldsymbol{b}^{(L)}))$. These are learned during training.
 - **hyperparameters**: Settings that define the network's architecture (depth, width, activation function). They are set before training begins.
 - **weights**: Often used broadly to refer to *all* parameters, including bias vectors.
-- **model**: For a fixed architecture, every choice of parameters $\boldsymbol{w}$ defines a specific function $\boldsymbol{x} \mapsto \Phi_{\boldsymbol{w}}(\boldsymbol{x})$.
+- **model**: For a fixed architecture, every choice of parameters $\boldsymbol{w}$ defines a specific function $\boldsymbol{x} \mapsto \Phi\_{\boldsymbol{w}}(\boldsymbol{x})$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 560 220" width="100%" style="max-width: 640px; height: auto;" role="img" aria-labelledby="arch-title">
+  <title id="arch-title">Feedforward neural network architecture</title>
+  <g><line x1="60.0" y1="78.0" x2="170.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="78.0" x2="170.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="78.0" x2="170.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="78.0" x2="170.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="78.0" x2="170.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="110.0" x2="170.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="110.0" x2="170.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="110.0" x2="170.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="110.0" x2="170.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="110.0" x2="170.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="142.0" x2="170.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="142.0" x2="170.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="142.0" x2="170.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="142.0" x2="170.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="60.0" y1="142.0" x2="170.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="46.0" x2="280.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="46.0" x2="280.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="46.0" x2="280.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="46.0" x2="280.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="46.0" x2="280.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="78.0" x2="280.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="78.0" x2="280.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="78.0" x2="280.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="78.0" x2="280.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="78.0" x2="280.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="110.0" x2="280.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="110.0" x2="280.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="110.0" x2="280.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="110.0" x2="280.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="110.0" x2="280.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="142.0" x2="280.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="142.0" x2="280.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="142.0" x2="280.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="142.0" x2="280.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="142.0" x2="280.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="174.0" x2="280.0" y2="46.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="174.0" x2="280.0" y2="78.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="174.0" x2="280.0" y2="110.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="174.0" x2="280.0" y2="142.0" stroke="#ccc" stroke-width="0.6"/><line x1="170.0" y1="174.0" x2="280.0" y2="174.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="46.0" x2="390.0" y2="62.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="46.0" x2="390.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="46.0" x2="390.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="46.0" x2="390.0" y2="158.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="78.0" x2="390.0" y2="62.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="78.0" x2="390.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="78.0" x2="390.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="78.0" x2="390.0" y2="158.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="110.0" x2="390.0" y2="62.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="110.0" x2="390.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="110.0" x2="390.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="110.0" x2="390.0" y2="158.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="142.0" x2="390.0" y2="62.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="142.0" x2="390.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="142.0" x2="390.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="142.0" x2="390.0" y2="158.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="174.0" x2="390.0" y2="62.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="174.0" x2="390.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="174.0" x2="390.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="280.0" y1="174.0" x2="390.0" y2="158.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="62.0" x2="500.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="62.0" x2="500.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="94.0" x2="500.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="94.0" x2="500.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="126.0" x2="500.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="126.0" x2="500.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="158.0" x2="500.0" y2="94.0" stroke="#ccc" stroke-width="0.6"/><line x1="390.0" y1="158.0" x2="500.0" y2="126.0" stroke="#ccc" stroke-width="0.6"/></g>
+  <line x1="170.0" y1="46.0" x2="280.0" y2="110.0" stroke="#c2185b" stroke-width="1.5"/>
+  <text x="229.0" y="72.0" font-family="serif" font-size="11" font-style="italic" fill="#c2185b">W⁽²⁾ᵢⱼ</text>
+  <g><circle cx="60.0" cy="78.0" r="9" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/><circle cx="60.0" cy="110.0" r="9" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/><circle cx="60.0" cy="142.0" r="9" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/><circle cx="170.0" cy="46.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="170.0" cy="78.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="170.0" cy="110.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="170.0" cy="142.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="170.0" cy="174.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="280.0" cy="46.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="280.0" cy="78.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="280.0" cy="110.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="280.0" cy="142.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="280.0" cy="174.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="390.0" cy="62.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="390.0" cy="94.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="390.0" cy="126.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="390.0" cy="158.0" r="9" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/><circle cx="500.0" cy="94.0" r="9" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5"/><circle cx="500.0" cy="126.0" r="9" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5"/></g>
+  <g><text x="60.0" y="198" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">x</text><text x="60.0" y="214" text-anchor="middle" font-family="serif" font-size="10" fill="#888">input</text><text x="170.0" y="198" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">x⁽¹⁾</text><text x="170.0" y="214" text-anchor="middle" font-family="serif" font-size="10" fill="#888">hidden 1</text><text x="280.0" y="198" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">x⁽²⁾</text><text x="280.0" y="214" text-anchor="middle" font-family="serif" font-size="10" fill="#888">hidden 2</text><text x="390.0" y="198" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">x⁽³⁾</text><text x="390.0" y="214" text-anchor="middle" font-family="serif" font-size="10" fill="#888">hidden 3</text><text x="500.0" y="198" text-anchor="middle" font-family="serif" font-size="13" font-style="italic" fill="#333">Φ(x)</text><text x="500.0" y="214" text-anchor="middle" font-family="serif" font-size="10" fill="#888">output</text></g>
+  <text x="280.0" y="14" text-anchor="middle" font-family="serif" font-size="12" fill="#333">x⁽ℓ⁺¹⁾ = σ( W⁽ℓ⁾ x⁽ℓ⁾ + b⁽ℓ⁾ )</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A feedforward neural network with $d\_0 = 3$ inputs, three hidden layers, and $d\_{L+1} = 2$ outputs. Each edge carries a scalar weight $W\_{ij}^{(\ell)}$; each non-input node also has a bias $b\_i^{(\ell)}$. The activations propagate left-to-right via $\boldsymbol{x}^{(\ell+1)} = \sigma(\boldsymbol{W}^{(\ell)} \boldsymbol{x}^{(\ell)} + \boldsymbol{b}^{(\ell)})$.
+</figcaption>
+</figure>
+
 
 Common variations of Definition 2.1 include:
 
-- Using **different activation functions** $\sigma_\ell$ in each layer.
+- Using **different activation functions** $\sigma\_\ell$ in each layer.
 - **Residual** neural networks with "skip connections": nodes in layer $\ell$ may have $\boldsymbol{x}^{(0)}, \ldots, \boldsymbol{x}^{(\ell-1)}$ as their input.
 - **Recurrent** neural networks where information flows backward, creating loops in the flow of information.
 
@@ -144,25 +160,25 @@ Common variations of Definition 2.1 include:
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 2.3</span><span class="math-callout__name">(Operations on Neural Networks)</span></p>
 
-For two neural networks $\Phi_1$, $\Phi_2$ with architectures
+For two neural networks $\Phi\_1$, $\Phi\_2$ with architectures
 
 $$(\sigma; d_0^1, d_1^1, \ldots, d_{L_1+1}^1) \quad \text{and} \quad (\sigma; d_0^2, d_1^2, \ldots, d_{L_2+1}^2)$$
 
 respectively, it holds that:
 
-**(i) Scaling:** For all $\alpha \in \mathbb{R}$, there exists a neural network $\Phi_\alpha$ with architecture $(\sigma; d_0^1, d_1^1, \ldots, d_{L_1+1}^1)$ such that
+**(i) Scaling:** For all $\alpha \in \mathbb{R}$, there exists a neural network $\Phi\_\alpha$ with architecture $(\sigma; d\_0^1, d\_1^1, \ldots, d\_{L\_1+1}^1)$ such that
 
 $$\Phi_\alpha(\boldsymbol{x}) = \alpha \Phi_1(\boldsymbol{x}) \quad \text{for all } \boldsymbol{x} \in \mathbb{R}^{d_0^1}.$$
 
-**(ii) Parallelization:** If $d_0^1 = d_0^2 =: d_0$ and $L_1 = L_2 =: L$, then there exists a neural network $\Phi_{\text{parallel}}$ with architecture $(\sigma; d_0, d_1^1 + d_1^2, \ldots, d_{L+1}^1 + d_{L+1}^2)$ such that
+**(ii) Parallelization:** If $d\_0^1 = d\_0^2 =: d\_0$ and $L\_1 = L\_2 =: L$, then there exists a neural network $\Phi\_{\text{parallel}}$ with architecture $(\sigma; d\_0, d\_1^1 + d\_1^2, \ldots, d\_{L+1}^1 + d\_{L+1}^2)$ such that
 
 $$\Phi_{\text{parallel}}(\boldsymbol{x}) = (\Phi_1(\boldsymbol{x}), \Phi_2(\boldsymbol{x})) \quad \text{for all } \boldsymbol{x} \in \mathbb{R}^{d_0}.$$
 
-**(iii) Summation:** If $d_0^1 = d_0^2 =: d_0$, $L_1 = L_2 =: L$, and $d_{L+1}^1 = d_{L+1}^2 =: d_{L+1}$, then there exists a neural network $\Phi_{\text{sum}}$ with architecture $(\sigma; d_0, d_1^1 + d_1^2, \ldots, d_L^1 + d_L^2, d_{L+1})$ such that
+**(iii) Summation:** If $d\_0^1 = d\_0^2 =: d\_0$, $L\_1 = L\_2 =: L$, and $d\_{L+1}^1 = d\_{L+1}^2 =: d\_{L+1}$, then there exists a neural network $\Phi\_{\text{sum}}$ with architecture $(\sigma; d\_0, d\_1^1 + d\_1^2, \ldots, d\_L^1 + d\_L^2, d\_{L+1})$ such that
 
 $$\Phi_{\text{sum}}(\boldsymbol{x}) = \Phi_1(\boldsymbol{x}) + \Phi_2(\boldsymbol{x}) \quad \text{for all } \boldsymbol{x} \in \mathbb{R}^{d_0}.$$
 
-**(iv) Composition:** If $d_{L_1+1}^1 = d_0^2$, then there exists a neural network $\Phi_{\text{comp}}$ with architecture $(\sigma; d_0^1, d_1^1, \ldots, d_{L_1}^1, d_1^2, \ldots, d_{L_2+1}^2)$ such that
+**(iv) Composition:** If $d\_{L\_1+1}^1 = d\_0^2$, then there exists a neural network $\Phi\_{\text{comp}}$ with architecture $(\sigma; d\_0^1, d\_1^1, \ldots, d\_{L\_1}^1, d\_1^2, \ldots, d\_{L\_2+1}^2)$ such that
 
 $$\Phi_{\text{comp}}(\boldsymbol{x}) = \Phi_2 \circ \Phi_1(\boldsymbol{x}) \quad \text{for all } \boldsymbol{x} \in \mathbb{R}^{d_0^1}.$$
 
@@ -172,8 +188,8 @@ $$\Phi_{\text{comp}}(\boldsymbol{x}) = \Phi_2 \circ \Phi_1(\boldsymbol{x}) \quad
 
 Neural networks provide a framework to parametrize functions. In practice, further restrictions on the weights and biases are often desirable:
 
-- **weight sharing**: Specific entries of the weight matrices (or bias vectors) are constrained to be equal. Formally, $W_{k,l}^{(i)} = W_{s,t}^{(j)}$, denoted $(i,k,l) \sim (j,s,t)$. Shared weights are updated jointly during training.
-- **sparsity**: Imposing a sparsity structure on the weight matrices, i.e., setting $W_{k,l}^{(i)} = 0$ for certain $(k,l,i)$. In the graph representation, this corresponds to not connecting certain nodes.
+- **weight sharing**: Specific entries of the weight matrices (or bias vectors) are constrained to be equal. Formally, $W\_{k,l}^{(i)} = W\_{s,t}^{(j)}$, denoted $(i,k,l) \sim (j,s,t)$. Shared weights are updated jointly during training.
+- **sparsity**: Imposing a sparsity structure on the weight matrices, i.e., setting $W\_{k,l}^{(i)} = 0$ for certain $(k,l,i)$. In the graph representation, this corresponds to not connecting certain nodes.
 
 Both restrictions decrease the number of learnable parameters. The number of parameters serves as a measure of the complexity of the represented function class.
 
@@ -196,7 +212,7 @@ Activation functions are crucial as they introduce nonlinearity into the model. 
 
 $$\sigma_{\text{sig}}(x) = \frac{1}{1 + e^{-x}} \quad \text{for } x \in \mathbb{R}.$$
 
-Its output ranges between zero and one, making it interpretable as a probability. It is smooth, enabling gradient-based training. However, its derivative becomes very small as $\lvert x \rvert \to \infty$, leading to the **vanishing gradient problem**: for a network $\Phi_n(x) = \sigma \circ \cdots \circ \sigma(x + b)$ with $n$ compositions, if $\sup_{x \in \mathbb{R}} \lvert \sigma'(x) \rvert \le 1 - \delta$, then
+Its output ranges between zero and one, making it interpretable as a probability. It is smooth, enabling gradient-based training. However, its derivative becomes very small as $\lvert x \rvert \to \infty$, leading to the **vanishing gradient problem**: for a network $\Phi\_n(x) = \sigma \circ \cdots \circ \sigma(x + b)$ with $n$ compositions, if $\sup\_{x \in \mathbb{R}} \lvert \sigma'(x) \rvert \le 1 - \delta$, then
 
 $$\left\lvert \frac{\mathrm{d}}{\mathrm{d}b} \Phi_n(x) \right\rvert \le (1-\delta)^n.$$
 
@@ -206,7 +222,7 @@ The opposite effect (derivatives uniformly larger than one) leads to the **explo
 
 $$\sigma_{\text{ReLU}}(x) = \max\lbrace x, 0 \rbrace \quad \text{for } x \in \mathbb{R}.$$
 
-It is piecewise linear and computationally very efficient. Its derivative is always zero or one, so it does not suffer from the vanishing gradient problem to the same extent as the sigmoid. However, ReLU can suffer from the **dead neurons** problem: if $b < 0$, the neuron $\Phi(x) = \sigma_{\text{ReLU}}(b - \sigma_{\text{ReLU}}(x))$ satisfies $\Phi(x) = 0$ for all $x$, and $\frac{\mathrm{d}}{\mathrm{d}b}\Phi(x) = 0$, so a gradient-based method cannot further train this parameter.
+It is piecewise linear and computationally very efficient. Its derivative is always zero or one, so it does not suffer from the vanishing gradient problem to the same extent as the sigmoid. However, ReLU can suffer from the **dead neurons** problem: if $b < 0$, the neuron $\Phi(x) = \sigma\_{\text{ReLU}}(b - \sigma\_{\text{ReLU}}(x))$ satisfies $\Phi(x) = 0$ for all $x$, and $\frac{\mathrm{d}}{\mathrm{d}b}\Phi(x) = 0$, so a gradient-based method cannot further train this parameter.
 
 **SiLU (Sigmoid Linear Unit).** Also referred to as "swish", the SiLU is a smooth approximation to the ReLU:
 
@@ -218,7 +234,57 @@ Other smooth ReLU-like activations include the **Softplus** $x \mapsto \log(1 + 
 
 $$\sigma_a(x) = \max\lbrace x, ax \rbrace \quad \text{for } x \in \mathbb{R}.$$
 
-Since $\sigma_a$ does not have flat regions, the dying ReLU problem is mitigated and there is less of a vanishing gradient problem. Like the ReLU, the parametric ReLU is not differentiable at 0.
+Since $\sigma\_a$ does not have flat regions, the dying ReLU problem is mitigated and there is less of a vanishing gradient problem. Like the ReLU, the parametric ReLU is not differentiable at 0.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 720 130" width="100%" style="max-width: 780px; height: auto;" role="img" aria-labelledby="activations-title">
+  <title id="activations-title">Common activation functions</title>
+  <g>
+    <line x1="28.0" y1="18.0" x2="28.0" y2="108.0" stroke="#999" stroke-width="1"/>
+    <line x1="28.0" y1="108.0" x2="168.0" y2="108.0" stroke="#999" stroke-width="1"/>
+    <path d="M 28.0,107.8 L 31.5,107.7 L 35.0,107.6 L 38.5,107.5 L 42.0,107.3 L 45.5,107.0 L 49.0,106.7 L 52.5,106.2 L 56.0,105.6 L 59.5,104.8 L 63.0,103.7 L 66.5,102.3 L 70.0,100.5 L 73.5,98.2 L 77.0,95.2 L 80.5,91.6 L 84.0,87.2 L 87.5,82.0 L 91.0,76.1 L 94.5,69.7 L 98.0,63.0 L 101.5,56.3 L 105.0,49.9 L 108.5,44.0 L 112.0,38.8 L 115.5,34.4 L 119.0,30.8 L 122.5,27.8 L 126.0,25.5 L 129.5,23.7 L 133.0,22.3 L 136.5,21.2 L 140.0,20.4 L 143.5,19.8 L 147.0,19.3 L 150.5,19.0 L 154.0,18.7 L 157.5,18.5 L 161.0,18.4 L 164.5,18.3 L 168.0,18.2" fill="none" stroke="#1565c0" stroke-width="2"/>
+    <text x="98.0" y="124" text-anchor="middle" font-family="serif" font-size="11" fill="#333">Sigmoid</text>
+    <text x="24.0" y="26.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+    <text x="24.0" y="111.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="168.0" y="120.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">6</text>
+    <text x="36.0" y="120.0" text-anchor="start" font-family="serif" font-size="9" fill="#666">-6</text>
+  </g>
+  <g>
+    <line x1="208.0" y1="18.0" x2="208.0" y2="108.0" stroke="#999" stroke-width="1"/>
+    <line x1="208.0" y1="108.0" x2="348.0" y2="108.0" stroke="#999" stroke-width="1"/>
+    <path d="M 208.0,108.0 L 211.5,108.0 L 215.0,108.0 L 218.5,108.0 L 222.0,108.0 L 225.5,108.0 L 229.0,108.0 L 232.5,108.0 L 236.0,108.0 L 239.5,108.0 L 243.0,108.0 L 246.5,108.0 L 250.0,108.0 L 253.5,108.0 L 257.0,108.0 L 260.5,108.0 L 264.0,108.0 L 267.5,108.0 L 271.0,108.0 L 274.5,108.0 L 278.0,108.0 L 281.5,103.5 L 285.0,99.0 L 288.5,94.5 L 292.0,90.0 L 295.5,85.5 L 299.0,81.0 L 302.5,76.5 L 306.0,72.0 L 309.5,67.5 L 313.0,63.0 L 316.5,58.5 L 320.0,54.0 L 323.5,49.5 L 327.0,45.0 L 330.5,40.5 L 334.0,36.0 L 337.5,31.5 L 341.0,27.0 L 344.5,22.5 L 348.0,18.0" fill="none" stroke="#1565c0" stroke-width="2"/>
+    <text x="278.0" y="124" text-anchor="middle" font-family="serif" font-size="11" fill="#333">ReLU</text>
+    <text x="204.0" y="26.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">3</text>
+    <text x="204.0" y="111.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="348.0" y="120.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">3</text>
+    <text x="216.0" y="120.0" text-anchor="start" font-family="serif" font-size="9" fill="#666">-3</text>
+  </g>
+  <g>
+    <line x1="388.0" y1="18.0" x2="388.0" y2="108.0" stroke="#999" stroke-width="1"/>
+    <line x1="388.0" y1="93.0" x2="528.0" y2="93.0" stroke="#999" stroke-width="1"/>
+    <path d="M 388.0,104.2 L 391.5,103.7 L 395.0,103.1 L 398.5,102.6 L 402.0,102.0 L 405.5,101.4 L 409.0,100.9 L 412.5,100.3 L 416.0,99.8 L 419.5,99.2 L 423.0,98.6 L 426.5,98.1 L 430.0,97.5 L 433.5,96.9 L 437.0,96.4 L 440.5,95.8 L 444.0,95.2 L 447.5,94.7 L 451.0,94.1 L 454.5,93.6 L 458.0,93.0 L 461.5,89.2 L 465.0,85.5 L 468.5,81.8 L 472.0,78.0 L 475.5,74.2 L 479.0,70.5 L 482.5,66.8 L 486.0,63.0 L 489.5,59.2 L 493.0,55.5 L 496.5,51.7 L 500.0,48.0 L 503.5,44.2 L 507.0,40.5 L 510.5,36.8 L 514.0,33.0 L 517.5,29.2 L 521.0,25.5 L 524.5,21.8 L 528.0,18.0" fill="none" stroke="#1565c0" stroke-width="2"/>
+    <text x="458.0" y="124" text-anchor="middle" font-family="serif" font-size="11" fill="#333">Leaky ReLU</text>
+    <text x="384.0" y="26.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">3</text>
+    <text x="384.0" y="96.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="528.0" y="105.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">3</text>
+    <text x="396.0" y="105.0" text-anchor="start" font-family="serif" font-size="9" fill="#666">-3</text>
+  </g>
+  <g>
+    <line x1="568.0" y1="18.0" x2="568.0" y2="108.0" stroke="#999" stroke-width="1"/>
+    <line x1="568.0" y1="97.41176470588235" x2="708.0" y2="97.41176470588235" stroke="#999" stroke-width="1"/>
+    <path d="M 568.0,101.2 L 571.5,101.5 L 575.0,101.9 L 578.5,102.3 L 582.0,102.7 L 585.5,103.1 L 589.0,103.5 L 592.5,103.8 L 596.0,104.2 L 599.5,104.4 L 603.0,104.7 L 606.5,104.8 L 610.0,104.8 L 613.5,104.6 L 617.0,104.3 L 620.5,103.8 L 624.0,103.0 L 627.5,102.0 L 631.0,100.8 L 634.5,99.2 L 638.0,97.4 L 641.5,95.3 L 645.0,92.9 L 648.5,90.1 L 652.0,87.2 L 655.5,83.9 L 659.0,80.5 L 662.5,76.8 L 666.0,73.0 L 669.5,69.0 L 673.0,64.9 L 676.5,60.8 L 680.0,56.5 L 683.5,52.2 L 687.0,47.9 L 690.5,43.5 L 694.0,39.2 L 697.5,34.8 L 701.0,30.4 L 704.5,26.1 L 708.0,21.8" fill="none" stroke="#1565c0" stroke-width="2"/>
+    <text x="638.0" y="124" text-anchor="middle" font-family="serif" font-size="11" fill="#333">SiLU</text>
+    <text x="564.0" y="26.0" text-anchor="end" font-family="serif" font-size="9" fill="#666">3</text>
+    <text x="564.0" y="100.41176470588235" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="708.0" y="109.41176470588235" text-anchor="end" font-family="serif" font-size="9" fill="#666">3</text>
+    <text x="576.0" y="109.41176470588235" text-anchor="start" font-family="serif" font-size="9" fill="#666">-3</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The four most common activation functions. The sigmoid saturates as $\lvert x \rvert \to \infty$ (causing vanishing gradients); the ReLU is piecewise linear with a flat region on $x<0$ (source of dead neurons); the leaky ReLU avoids the flat region by giving a small slope $a$ on the negatives; the SiLU is a smooth ReLU-like function with a small negative bump.
+</figcaption>
+</figure>
+
 
 ---
 
@@ -233,7 +299,7 @@ We begin by considering the uniform approximation of continuous functions $f \co
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.1</span><span class="math-callout__name">(Compact Convergence)</span></p>
 
-Let $d \in \mathbb{N}$. A sequence of functions $f_n \colon \mathbb{R}^d \to \mathbb{R}$, $n \in \mathbb{N}$, is said to **converge compactly** to a function $f \colon \mathbb{R}^d \to \mathbb{R}$, if for every compact $K \subseteq \mathbb{R}^d$ it holds that $\lim_{n \to \infty} \sup_{\boldsymbol{x} \in K} \lvert f_n(\boldsymbol{x}) - f(\boldsymbol{x}) \rvert = 0$. In this case we write $f_n \xrightarrow{\text{cc}} f$.
+Let $d \in \mathbb{N}$. A sequence of functions $f\_n \colon \mathbb{R}^d \to \mathbb{R}$, $n \in \mathbb{N}$, is said to **converge compactly** to a function $f \colon \mathbb{R}^d \to \mathbb{R}$, if for every compact $K \subseteq \mathbb{R}^d$ it holds that $\lim\_{n \to \infty} \sup\_{\boldsymbol{x} \in K} \lvert f\_n(\boldsymbol{x}) - f(\boldsymbol{x}) \rvert = 0$. In this case we write $f\_n \xrightarrow{\text{cc}} f$.
 
 </div>
 
@@ -244,7 +310,7 @@ Throughout what follows, we always consider $C^0(\mathbb{R}^d)$ equipped with th
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.2</span><span class="math-callout__name">(Universal Approximator)</span></p>
 
-Let $d \in \mathbb{N}$. A set of functions $\mathcal{H}$ from $\mathbb{R}^d$ to $\mathbb{R}$ is a **universal approximator** (of $C^0(\mathbb{R}^d)$), if for every $\varepsilon > 0$, every compact $K \subseteq \mathbb{R}^d$, and every $f \in C^0(\mathbb{R}^d)$, there exists $g \in \mathcal{H}$ such that $\sup_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - g(\boldsymbol{x}) \rvert < \varepsilon$.
+Let $d \in \mathbb{N}$. A set of functions $\mathcal{H}$ from $\mathbb{R}^d$ to $\mathbb{R}$ is a **universal approximator** (of $C^0(\mathbb{R}^d)$), if for every $\varepsilon > 0$, every compact $K \subseteq \mathbb{R}^d$, and every $f \in C^0(\mathbb{R}^d)$, there exists $g \in \mathcal{H}$ such that $\sup\_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - g(\boldsymbol{x}) \rvert < \varepsilon$.
 
 </div>
 
@@ -275,11 +341,11 @@ Then $\mathcal{H}$ is dense in $C^0(K)$.
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 3.5</span><span class="math-callout__name">(Polynomials are a Universal Approximator)</span></p>
 
-For a multiindex $\boldsymbol{\alpha} = (\alpha_1, \ldots, \alpha_d) \in \mathbb{N}_0^d$ and a vector $\boldsymbol{x} = (x_1, \ldots, x_d) \in \mathbb{R}^d$, denote $\boldsymbol{x}^{\boldsymbol{\alpha}} := \prod_{j=1}^d x_j^{\alpha_j}$. The space of polynomials of degree at most $n$ is
+For a multiindex $\boldsymbol{\alpha} = (\alpha\_1, \ldots, \alpha\_d) \in \mathbb{N}\_0^d$ and a vector $\boldsymbol{x} = (x\_1, \ldots, x\_d) \in \mathbb{R}^d$, denote $\boldsymbol{x}^{\boldsymbol{\alpha}} := \prod\_{j=1}^d x\_j^{\alpha\_j}$. The space of polynomials of degree at most $n$ is
 
 $$\mathcal{P}_n := \text{span}\lbrace \boldsymbol{x}^{\boldsymbol{\alpha}} \mid \boldsymbol{\alpha} \in \mathbb{N}_0^d,\; \lvert\boldsymbol{\alpha}\rvert \le n \rbrace.$$
 
-The set $\mathcal{P} := \bigcup_{n \in \mathbb{N}} \mathcal{P}_n$ satisfies the assumptions of Theorem 3.4 on every compact $K \subseteq \mathbb{R}^d$, so $\mathcal{P}$ is a universal approximator of $C^0(\mathbb{R}^d)$.
+The set $\mathcal{P} := \bigcup\_{n \in \mathbb{N}} \mathcal{P}\_n$ satisfies the assumptions of Theorem 3.4 on every compact $K \subseteq \mathbb{R}^d$, so $\mathcal{P}$ is a universal approximator of $C^0(\mathbb{R}^d)$.
 
 </div>
 
@@ -294,7 +360,7 @@ Let $d$, $m$, $L$, $n \in \mathbb{N}$ and $\sigma \colon \mathbb{R} \to \mathbb{
 
 $$\mathcal{N}_d^m(\sigma; L, n) := \lbrace \Phi \colon \mathbb{R}^d \to \mathbb{R}^m \mid \Phi \text{ as in Def. 2.1},\; \text{depth}(\Phi) \le L,\; \text{width}(\Phi) \le n \rbrace.$$
 
-Furthermore, $\mathcal{N}_d^m(\sigma; L) := \bigcup_{n \in \mathbb{N}} \mathcal{N}_d^m(\sigma; L, n)$.
+Furthermore, $\mathcal{N}\_d^m(\sigma; L) := \bigcup\_{n \in \mathbb{N}} \mathcal{N}\_d^m(\sigma; L, n)$.
 
 </div>
 
@@ -307,15 +373,15 @@ This includes all practically relevant activation functions (ReLU, SiLU, Sigmoid
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.8</span><span class="math-callout__name">(Universal Approximation Theorem)</span></p>
 
-Let $d \in \mathbb{N}$ and $\sigma \in \mathcal{M}$. Then $\mathcal{N}_d^1(\sigma; 1)$ is a universal approximator of $C^0(\mathbb{R}^d)$ if and only if $\sigma$ is not a polynomial.
+Let $d \in \mathbb{N}$ and $\sigma \in \mathcal{M}$. Then $\mathcal{N}\_d^1(\sigma; 1)$ is a universal approximator of $C^0(\mathbb{R}^d)$ if and only if $\sigma$ is not a polynomial.
 
 </div>
 
 The proof strategy relies on three claims:
 
-1. If $C^0(\mathbb{R}^1) \subseteq \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$ then $C^0(\mathbb{R}^d) \subseteq \overline{\mathcal{N}_d^1(\sigma; 1)}^{\text{cc}}$.
-2. If $\sigma \in C^\infty(\mathbb{R})$ is not a polynomial then $C^0(\mathbb{R}^1) \subseteq \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$.
-3. If $\sigma \in \mathcal{M}$ is not a polynomial then there exists $\tilde{\sigma} \in C^\infty(\mathbb{R}) \cap \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$ which is not a polynomial.
+1. If $C^0(\mathbb{R}^1) \subseteq \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$ then $C^0(\mathbb{R}^d) \subseteq \overline{\mathcal{N}\_d^1(\sigma; 1)}^{\text{cc}}$.
+2. If $\sigma \in C^\infty(\mathbb{R})$ is not a polynomial then $C^0(\mathbb{R}^1) \subseteq \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$.
+3. If $\sigma \in \mathcal{M}$ is not a polynomial then there exists $\tilde{\sigma} \in C^\infty(\mathbb{R}) \cap \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$ which is not a polynomial.
 
 The key lemmas establishing these claims are:
 
@@ -330,19 +396,19 @@ is a universal approximator of $C^0(\mathbb{R}^d)$.
 
 </div>
 
-The proof uses the Hahn-Banach theorem to show that all $k$-homogeneous polynomials $\mathbb{H}_k$ belong to the closure $X := \overline{\text{span}\lbrace \boldsymbol{x} \mapsto g(\boldsymbol{w} \cdot \boldsymbol{x}) \mid \boldsymbol{w} \in \mathbb{R}^d,\; g \in \mathcal{H} \rbrace}^{\text{cc}}$. By the multinomial formula, $(\boldsymbol{w} \cdot \boldsymbol{x})^k \in \mathbb{H}_k$, and since all multivariate polynomials belong to $X$, the Stone-Weierstrass theorem concludes the proof.
+The proof uses the Hahn-Banach theorem to show that all $k$-homogeneous polynomials $\mathbb{H}\_k$ belong to the closure $X := \overline{\text{span}\lbrace \boldsymbol{x} \mapsto g(\boldsymbol{w} \cdot \boldsymbol{x}) \mid \boldsymbol{w} \in \mathbb{R}^d,\; g \in \mathcal{H} \rbrace}^{\text{cc}}$. By the multinomial formula, $(\boldsymbol{w} \cdot \boldsymbol{x})^k \in \mathbb{H}\_k$, and since all multivariate polynomials belong to $X$, the Stone-Weierstrass theorem concludes the proof.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 3.11</span><span class="math-callout__name">(Sigmoidal Activation Function)</span></p>
 
-An activation function $\sigma \colon \mathbb{R} \to \mathbb{R}$ is called **sigmoidal** if $\sigma \in C^0(\mathbb{R})$, $\lim_{x \to \infty} \sigma(x) = 1$ and $\lim_{x \to -\infty} \sigma(x) = 0$.
+An activation function $\sigma \colon \mathbb{R} \to \mathbb{R}$ is called **sigmoidal** if $\sigma \in C^0(\mathbb{R})$, $\lim\_{x \to \infty} \sigma(x) = 1$ and $\lim\_{x \to -\infty} \sigma(x) = 0$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 3.12</span><span class="math-callout__name">(Sigmoidal Universality)</span></p>
 
-Let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be monotonically increasing and sigmoidal. Then $C^0(\mathbb{R}) \subseteq \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$.
+Let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be monotonically increasing and sigmoidal. Then $C^0(\mathbb{R}) \subseteq \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$.
 
 </div>
 
@@ -351,37 +417,65 @@ Lemmas 3.10 and 3.12 together establish Theorem 3.8 in the special case where $\
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 3.13</span><span class="math-callout__name">(Smooth Non-Polynomial Universality)</span></p>
 
-If $\sigma \in C^\infty(\mathbb{R})$ and $\sigma$ is not a polynomial, then $\mathcal{N}_1^1(\sigma; 1)$ is dense in $C^0(\mathbb{R})$.
+If $\sigma \in C^\infty(\mathbb{R})$ and $\sigma$ is not a polynomial, then $\mathcal{N}\_1^1(\sigma; 1)$ is dense in $C^0(\mathbb{R})$.
 
 </div>
 
-*Proof sketch.* Let $X := \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$. Fix $b \in \mathbb{R}$ and denote $f_x(w) := \sigma(wx + b)$. By Taylor's theorem,
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Let $X := \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$. Fix $b \in \mathbb{R}$ and denote $f\_x(w) := \sigma(wx + b)$. By Taylor's theorem,
 
 $$\frac{\sigma((w+h)x + b) - \sigma(wx + b)}{h} = f_x'(w) + \frac{h}{2} x^2 \sigma''(\xi x + b).$$
 
-Since $\sigma'' \in C^0(\mathbb{R})$, letting $h \to 0$ shows $x \mapsto f_x'(w)$ belongs to $X$. By induction, $x \mapsto f_x^{(k)}(w) = x^k \sigma^{(k)}(wx + b)$ belongs to $X$ for all $k \in \mathbb{N}$. Since $\sigma$ is not a polynomial, there exist $b_k$ with $\sigma^{(k)}(b_k) \neq 0$. Choosing $w = 0$, we get $x \mapsto \sigma^{(k)}(b_k) x^k \in X$, and thus $x \mapsto x^k \in X$. The Stone-Weierstrass theorem concludes the proof.
+Since $\sigma'' \in C^0(\mathbb{R})$, letting $h \to 0$ shows $x \mapsto f\_x'(w)$ belongs to $X$. By induction, $x \mapsto f\_x^{(k)}(w) = x^k \sigma^{(k)}(wx + b)$ belongs to $X$ for all $k \in \mathbb{N}$. Since $\sigma$ is not a polynomial, there exist $b\_k$ with $\sigma^{(k)}(b\_k) \neq 0$. Choosing $w = 0$, we get $x \mapsto \sigma^{(k)}(b\_k) x^k \in X$, and thus $x \mapsto x^k \in X$. The Stone-Weierstrass theorem concludes the proof.
 
-For claim (iii) -- that every non-polynomial $\sigma \in \mathcal{M}$ has a smooth non-polynomial function in the closure of $\mathcal{N}_1^1(\sigma; 1)$ -- the argument uses convolutions:
+For claim (iii) -- that every non-polynomial $\sigma \in \mathcal{M}$ has a smooth non-polynomial function in the closure of $\mathcal{N}\_1^1(\sigma; 1)$ -- the argument uses convolutions:
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 3.14</span><span class="math-callout__name">(Convolution Closure)</span></p>
 
-Let $\sigma \in \mathcal{M}$. Then for each $\varphi \in C_c^\infty(\mathbb{R})$ it holds $\sigma * \varphi \in \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$.
+Let $\sigma \in \mathcal{M}$. Then for each $\varphi \in C\_c^\infty(\mathbb{R})$ it holds $\sigma \ast \varphi \in \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$.
 
 </div>
 
-*Proof sketch.* For $\varphi$ with $\text{supp}\,\varphi \subseteq [-a, a]$, define $f_n(x) := \frac{2a}{n} \sum_{j=0}^{n-1} \sigma(x - y_j) \varphi(y_j)$ where $y_j := -a + 2aj/n$. Each $f_n \in \mathcal{N}_1^1(\sigma; 1)$. By uniform continuity arguments, $f_n \xrightarrow{\text{cc}} \sigma * \varphi$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+For $\varphi$ with $\text{supp}\,\varphi \subseteq [-a, a]$, define $f\_n(x) := \frac{2a}{n} \sum\_{j=0}^{n-1} \sigma(x - y\_j) \varphi(y\_j)$ where $y\_j := -a + 2aj/n$. Each $f\_n \in \mathcal{N}\_1^1(\sigma; 1)$. By uniform continuity arguments, $f\_n \xrightarrow{\text{cc}} \sigma \ast \varphi$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 3.15</span></p>
 
-If $\sigma \in \mathcal{M}$ and $\sigma * \varphi$ is a polynomial for all $\varphi \in C_c^\infty(\mathbb{R})$, then $\sigma$ is a polynomial.
+If $\sigma \in \mathcal{M}$ and $\sigma \ast \varphi$ is a polynomial for all $\varphi \in C\_c^\infty(\mathbb{R})$, then $\sigma$ is a polynomial.
 
 </div>
 
-*Proof sketch.* Uses Baire's category theorem. Define $V_k := \lbrace \varphi \in C_c^\infty(a,b) \mid \sigma * \varphi \in \mathcal{P}_k \rbrace$. By assumption $\bigcup_{k} V_k = C_c^\infty(a,b)$. Baire's theorem implies some $V_{k_0}$ contains an open set, hence $V_{k_0} = C_c^\infty(a,b)$. This forces $\sigma \in \mathcal{P}_{k_0}$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
 
-*Proof of Theorem 3.8.* If $\sigma$ is a polynomial, Exercise 3.23 gives the "$\Rightarrow$" direction. For the other direction, assume $\sigma \in \mathcal{M}$ is not a polynomial. By Lemma 3.15, there exists $\varphi \in C_c^\infty(\mathbb{R})$ such that $\sigma * \varphi$ is not a polynomial. By Lemma 3.14, $\sigma * \varphi \in \overline{\mathcal{N}_1^1(\sigma; 1)}^{\text{cc}}$. By Lemma 3.13, $\mathcal{N}_1^1(\sigma; 1)$ is a universal approximator of $C^0(\mathbb{R})$. By Lemma 3.10, $\mathcal{N}_d^1(\sigma; 1)$ is a universal approximator of $C^0(\mathbb{R}^d)$.
+Uses Baire's category theorem. Define $V\_k := \lbrace \varphi \in C\_c^\infty(a,b) \mid \sigma \ast \varphi \in \mathcal{P}\_k \rbrace$. By assumption $\bigcup\_{k} V\_k = C\_c^\infty(a,b)$. Baire's theorem implies some $V\_{k\_0}$ contains an open set, hence $V\_{k\_0} = C\_c^\infty(a,b)$. This forces $\sigma \in \mathcal{P}\_{k\_0}$.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 3.8</summary>
+
+If $\sigma$ is a polynomial, Exercise 3.23 gives the "$\Rightarrow$" direction. For the other direction, assume $\sigma \in \mathcal{M}$ is not a polynomial. By Lemma 3.15, there exists $\varphi \in C\_c^\infty(\mathbb{R})$ such that $\sigma \ast \varphi$ is not a polynomial. By Lemma 3.14, $\sigma \ast \varphi \in \overline{\mathcal{N}\_1^1(\sigma; 1)}^{\text{cc}}$. By Lemma 3.13, $\mathcal{N}\_1^1(\sigma; 1)$ is a universal approximator of $C^0(\mathbb{R})$. By Lemma 3.10, $\mathcal{N}\_d^1(\sigma; 1)$ is a universal approximator of $C^0(\mathbb{R}^d)$.
+
+</details>
+</div>
 
 #### Deep Neural Networks
 
@@ -390,22 +484,36 @@ Theorem 3.8 shows the universal approximation capability of single-hidden-layer 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.16</span><span class="math-callout__name">(Identity Approximation)</span></p>
 
-Let $d$, $L \in \mathbb{N}$, let $K \subseteq \mathbb{R}^d$ be compact, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be such that there exists an open set on which $\sigma$ is differentiable and not constant. Then, for every $\varepsilon > 0$, there exists a neural network $\Phi \in \mathcal{N}_d^d(\sigma; L, d)$ such that
+Let $d$, $L \in \mathbb{N}$, let $K \subseteq \mathbb{R}^d$ be compact, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be such that there exists an open set on which $\sigma$ is differentiable and not constant. Then, for every $\varepsilon > 0$, there exists a neural network $\Phi \in \mathcal{N}\_d^d(\sigma; L, d)$ such that
 
 $$\lVert \Phi(\boldsymbol{x}) - \boldsymbol{x} \rVert_\infty < \varepsilon \quad \text{for all } \boldsymbol{x} \in K.$$
 
 </div>
 
-*Proof sketch.* Let $x^* \in \mathbb{R}$ be such that $\sigma'(x^*) = \theta \neq 0$. Define $\Phi_\lambda(\boldsymbol{x}) := \frac{\lambda}{\theta} \sigma\!\left(\frac{\boldsymbol{x}}{\lambda} + \boldsymbol{x}^*\right) - \frac{\lambda}{\theta}\sigma(\boldsymbol{x}^*)$. By the definition of the derivative, $\lvert (\Phi_\lambda(\boldsymbol{x}) - \boldsymbol{x})_i \rvert \to 0$ as $\lambda \to \infty$ uniformly for all $\boldsymbol{x} \in K$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Let $x^\ast \in \mathbb{R}$ be such that $\sigma'(x^\ast) = \theta \neq 0$. Define $\Phi\_\lambda(\boldsymbol{x}) := \frac{\lambda}{\theta} \sigma\!\left(\frac{\boldsymbol{x}}{\lambda} + \boldsymbol{x}^\ast\right) - \frac{\lambda}{\theta}\sigma(\boldsymbol{x}^\ast)$. By the definition of the derivative, $\lvert (\Phi\_\lambda(\boldsymbol{x}) - \boldsymbol{x})\_i \rvert \to 0$ as $\lambda \to \infty$ uniformly for all $\boldsymbol{x} \in K$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 3.17</span><span class="math-callout__name">(Deep Universal Approximation)</span></p>
 
-Let $d \in \mathbb{N}$, $L \in \mathbb{N}$ and $\sigma \in \mathcal{M}$. Then $\mathcal{N}_d^1(\sigma; L)$ is a universal approximator of $C^0(\mathbb{R}^d)$ if and only if $\sigma$ is not a polynomial.
+Let $d \in \mathbb{N}$, $L \in \mathbb{N}$ and $\sigma \in \mathcal{M}$. Then $\mathcal{N}\_d^1(\sigma; L)$ is a universal approximator of $C^0(\mathbb{R}^d)$ if and only if $\sigma$ is not a polynomial.
 
 </div>
 
-*Proof.* Assume $\sigma \in \mathcal{M}$ is not a polynomial, $K \subseteq \mathbb{R}^d$ compact, $f \in C^0(\mathbb{R}^d)$, $\varepsilon \in (0,1)$. For $L = 1$ this is Theorem 3.8. For $L > 1$: by Theorem 3.8, find $\Phi_{\text{shallow}} \in \mathcal{N}_d^1(\sigma; 1)$ with $\sup_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - \Phi_{\text{shallow}}(\boldsymbol{x}) \rvert < \varepsilon/2$. By compactness, $\lbrace \Phi_{\text{shallow}}(\boldsymbol{x}) \mid \boldsymbol{x} \in K \rbrace \subseteq [-n, n]$. Let $\Phi_{\text{id}} \in \mathcal{N}_1^1(\sigma; L-1)$ approximate the identity on $[-n, n]$ to within $\varepsilon/2$. Then $\Phi := \Phi_{\text{id}} \circ \Phi_{\text{shallow}} \in \mathcal{N}_d^1(\sigma; L)$ by Proposition 2.3 (iv), and $\sup_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert \le \varepsilon/2 + \varepsilon/2 = \varepsilon$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Assume $\sigma \in \mathcal{M}$ is not a polynomial, $K \subseteq \mathbb{R}^d$ compact, $f \in C^0(\mathbb{R}^d)$, $\varepsilon \in (0,1)$. For $L = 1$ this is Theorem 3.8. For $L > 1$: by Theorem 3.8, find $\Phi\_{\text{shallow}} \in \mathcal{N}\_d^1(\sigma; 1)$ with $\sup\_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - \Phi\_{\text{shallow}}(\boldsymbol{x}) \rvert < \varepsilon/2$. By compactness, $\lbrace \Phi\_{\text{shallow}}(\boldsymbol{x}) \mid \boldsymbol{x} \in K \rbrace \subseteq [-n, n]$. Let $\Phi\_{\text{id}} \in \mathcal{N}\_1^1(\sigma; L-1)$ approximate the identity on $[-n, n]$ to within $\varepsilon/2$. Then $\Phi := \Phi\_{\text{id}} \circ \Phi\_{\text{shallow}} \in \mathcal{N}\_d^1(\sigma; L)$ by Proposition 2.3 (iv), and $\sup\_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert \le \varepsilon/2 + \varepsilon/2 = \varepsilon$.
+
+</details>
+</div>
 
 #### Other Norms
 
@@ -414,7 +522,7 @@ Universal approximation results extend beyond the supremum norm:
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 3.18</span><span class="math-callout__name">($L^p$ Universal Approximation)</span></p>
 
-Let $d \in \mathbb{N}$, $L \in \mathbb{N}$, $p \in [1, \infty)$, and let $\sigma \in \mathcal{M}$ not be a polynomial. Then for every $\varepsilon > 0$, every compact $K \subseteq \mathbb{R}^d$, and every $f \in L^p(K)$ there exists $\Phi^{f,\varepsilon} \in \mathcal{N}_d^1(\sigma; L)$ such that
+Let $d \in \mathbb{N}$, $L \in \mathbb{N}$, $p \in [1, \infty)$, and let $\sigma \in \mathcal{M}$ not be a polynomial. Then for every $\varepsilon > 0$, every compact $K \subseteq \mathbb{R}^d$, and every $f \in L^p(K)$ there exists $\Phi^{f,\varepsilon} \in \mathcal{N}\_d^1(\sigma; L)$ such that
 
 $$\left( \int_K \lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert^p \, \mathrm{d}\boldsymbol{x} \right)^{1/p} \le \varepsilon.$$
 
@@ -427,20 +535,27 @@ The previous section showed that a large class of activation functions allows fo
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 3.19</span><span class="math-callout__name">(Superexpressive Activation -- 1D)</span></p>
 
-There exists a continuous activation function $\sigma \colon \mathbb{R} \to \mathbb{R}$ such that for every compact $K \subseteq \mathbb{R}$, every $\varepsilon > 0$ and every $f \in C^0(K)$ there exists $\Phi(x) = \sigma(wx + b) \in \mathcal{N}_1^1(\sigma; 1, 1)$ such that
+There exists a continuous activation function $\sigma \colon \mathbb{R} \to \mathbb{R}$ such that for every compact $K \subseteq \mathbb{R}$, every $\varepsilon > 0$ and every $f \in C^0(K)$ there exists $\Phi(x) = \sigma(wx + b) \in \mathcal{N}\_1^1(\sigma; 1, 1)$ such that
 
 $$\sup_{x \in K} \lvert f(x) - \Phi(x) \rvert < \varepsilon.$$
 
 </div>
 
-*Proof sketch.* Let $(p_i)_{i \in \mathbb{Z}}$ be an enumeration of all polynomials with rational coefficients. Define $\sigma$ so that $\sigma$ equals $p_i$ on even intervals $[2i, 2i+1]$ and is linear on odd intervals. Since rational polynomials are dense in $C^0(K)$ (Example 3.5), for any $f$ and $\varepsilon$, we can find a polynomial $p_i$ close to $f$, then use $\sigma(wx + b)$ with $w = 1/(b-a)$ and appropriate $b$ to scale the input into the interval where $\sigma$ reproduces $p_i$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Let $(p\_i)\_{i \in \mathbb{Z}}$ be an enumeration of all polynomials with rational coefficients. Define $\sigma$ so that $\sigma$ equals $p\_i$ on even intervals $[2i, 2i+1]$ and is linear on odd intervals. Since rational polynomials are dense in $C^0(K)$ (Example 3.5), for any $f$ and $\varepsilon$, we can find a polynomial $p\_i$ close to $f$, then use $\sigma(wx + b)$ with $w = 1/(b-a)$ and appropriate $b$ to scale the input into the interval where $\sigma$ reproduces $p\_i$.
 
 The key to extending this to arbitrary dimension is Kolmogorov's superposition theorem:
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 3.20</span><span class="math-callout__name">(Kolmogorov's Superposition Theorem)</span></p>
 
-For every $d \in \mathbb{N}$ there exist $2d^2 + d$ monotonically increasing functions $\varphi_{i,j} \in C^0(\mathbb{R})$, $i = 1, \ldots, d$, $j = 1, \ldots, 2d+1$, such that for every $f \in C^0([0,1]^d)$ there exist functions $f_j \in C^0(\mathbb{R})$, $j = 1, \ldots, 2d+1$ satisfying
+For every $d \in \mathbb{N}$ there exist $2d^2 + d$ monotonically increasing functions $\varphi\_{i,j} \in C^0(\mathbb{R})$, $i = 1, \ldots, d$, $j = 1, \ldots, 2d+1$, such that for every $f \in C^0([0,1]^d)$ there exist functions $f\_j \in C^0(\mathbb{R})$, $j = 1, \ldots, 2d+1$ satisfying
 
 $$f(\boldsymbol{x}) = \sum_{j=1}^{2d+1} f_j\!\left( \sum_{i=1}^d \varphi_{i,j}(x_i) \right) \quad \text{for all } \boldsymbol{x} \in [0,1]^d.$$
 
@@ -449,18 +564,25 @@ $$f(\boldsymbol{x}) = \sum_{j=1}^{2d+1} f_j\!\left( \sum_{i=1}^d \varphi_{i,j}(x
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 3.21</span><span class="math-callout__name">(Superexpressive Activation -- General)</span></p>
 
-Let $d \in \mathbb{N}$. With the activation function $\sigma$ from Proposition 3.19, for every compact $K \subseteq \mathbb{R}^d$, every $\varepsilon > 0$ and every $f \in C^0(K)$ there exists $\Phi \in \mathcal{N}_d^1(\sigma; 2, 2d^2 + d)$ (i.e. $\text{width}(\Phi) = 2d^2 + d$ and $\text{depth}(\Phi) = 2$) such that
+Let $d \in \mathbb{N}$. With the activation function $\sigma$ from Proposition 3.19, for every compact $K \subseteq \mathbb{R}^d$, every $\varepsilon > 0$ and every $f \in C^0(K)$ there exists $\Phi \in \mathcal{N}\_d^1(\sigma; 2, 2d^2 + d)$ (i.e. $\text{width}(\Phi) = 2d^2 + d$ and $\text{depth}(\Phi) = 2$) such that
 
 $$\sup_{\boldsymbol{x} \in K} \lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert < \varepsilon.$$
 
 </div>
 
-*Proof sketch.* By Kolmogorov's theorem, $f(\boldsymbol{x}) = \sum_{j=1}^{2d+1} f_j(\sum_{i=1}^d \varphi_{i,j}(x_i))$. By Proposition 3.19, each $\varphi_{i,j}$ and $f_j$ can be approximated by single neurons $\sigma(w_{i,j}x + b_{i,j})$ and $\sigma(w_j y + b_j)$ respectively. This yields a depth-2 network of width $2d^2 + d$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+By Kolmogorov's theorem, $f(\boldsymbol{x}) = \sum\_{j=1}^{2d+1} f\_j(\sum\_{i=1}^d \varphi\_{i,j}(x\_i))$. By Proposition 3.19, each $\varphi\_{i,j}$ and $f\_j$ can be approximated by single neurons $\sigma(w\_{i,j}x + b\_{i,j})$ and $\sigma(w\_j y + b\_j)$ respectively. This yields a depth-2 network of width $2d^2 + d$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Practical Relevance)</span></p>
 
-Kolmogorov's superposition theorem is intriguing as it reduces approximating $d$-dimensional functions to the one-dimensional case through compositions. However, the functions $f_j$ in the decomposition can become very complex for large $d$. Similarly, the "magic" activation function in Proposition 3.19 encodes all rational polynomials, and no practical algorithm can efficiently identify appropriate weights and biases. The results of Section 3.2 should therefore be taken with caution as their practical relevance is limited. They highlight that while universal approximation is fundamental, many aspects remain unexplored. In the following chapters, the focus shifts to practically relevant architectures with activation functions such as the ReLU.
+Kolmogorov's superposition theorem is intriguing as it reduces approximating $d$-dimensional functions to the one-dimensional case through compositions. However, the functions $f\_j$ in the decomposition can become very complex for large $d$. Similarly, the "magic" activation function in Proposition 3.19 encodes all rational polynomials, and no practical algorithm can efficiently identify appropriate weights and biases. The results of Section 3.2 should therefore be taken with caution as their practical relevance is limited. They highlight that while universal approximation is fundamental, many aspects remain unexplored. In the following chapters, the focus shifts to practically relevant architectures with activation functions such as the ReLU.
 
 </div>
 
@@ -470,7 +592,7 @@ Kolmogorov's superposition theorem is intriguing as it reduces approximating $d$
 
 In Chapter 3, we saw that sufficiently large neural networks can approximate every continuous function to arbitrary accuracy. However, those results did not specify the meaning of "sufficiently large" or what constitutes a suitable architecture. Ideally, given a function $f$ and a desired accuracy $\varepsilon > 0$, we would like a (possibly sharp) bound on the required size, depth, and width guaranteeing the existence of a neural network approximating $f$ up to error $\varepsilon$.
 
-The field of approximation theory establishes trade-offs between properties of $f$ (e.g., smoothness), the approximation accuracy, and the number of parameters needed. For example, given $k, d \in \mathbb{N}$, how many parameters are required to approximate a function $f \colon [0,1]^d \to \mathbb{R}$ with $\lVert f \rVert_{C^k([0,1]^d)} \le 1$ up to uniform error $\varepsilon$? Splines achieve this with a superposition of $O(\varepsilon^{-d/k})$ simple basis functions. In this chapter, we show that certain sigmoidal neural networks can match this performance, establishing that from an approximation-theoretic viewpoint, these neural networks are at least as expressive as superpositions of splines.
+The field of approximation theory establishes trade-offs between properties of $f$ (e.g., smoothness), the approximation accuracy, and the number of parameters needed. For example, given $k, d \in \mathbb{N}$, how many parameters are required to approximate a function $f \colon [0,1]^d \to \mathbb{R}$ with $\lVert f \rVert\_{C^k([0,1]^d)} \le 1$ up to uniform error $\varepsilon$? Splines achieve this with a superposition of $O(\varepsilon^{-d/k})$ simple basis functions. In this chapter, we show that certain sigmoidal neural networks can match this performance, establishing that from an approximation-theoretic viewpoint, these neural networks are at least as expressive as superpositions of splines.
 
 ### B-Splines and Smooth Functions
 
@@ -481,25 +603,53 @@ For $n \in \mathbb{N}$, the **univariate cardinal B-spline** of order $n \in \ma
 
 $$\mathcal{S}_n(x) := \frac{1}{(n-1)!} \sum_{\ell=0}^n (-1)^\ell \binom{n}{\ell} \sigma_{\text{ReLU}}(x - \ell)^{n-1} \quad \text{for } x \in \mathbb{R},$$
 
-where $0^0 := 0$ and $\sigma_{\text{ReLU}}$ denotes the ReLU activation function.
+where $0^0 := 0$ and $\sigma\_{\text{ReLU}}$ denotes the ReLU activation function.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 600 140" width="100%" style="max-width: 720px; height: auto;" role="img" aria-labelledby="bspline-title">
+  <title id="bspline-title">B-splines of orders 1, 2, 3</title>
+  <g>
+    <line x1="16.0" y1="116.0" x2="196.0" y2="116.0" stroke="#999" stroke-width="1"/>
+    <line x1="16.0" y1="16.0" x2="16.0" y2="116.0" stroke="#999" stroke-width="1"/>
+    <path d="M 16.0,116.0 L 18.3,116.0 L 20.5,116.0 L 22.8,116.0 L 25.0,116.0 L 27.2,116.0 L 29.5,116.0 L 31.7,116.0 L 34.0,116.0 L 36.2,116.0 L 38.5,116.0 L 40.8,116.0 L 43.0,116.0 L 45.2,116.0 L 47.5,116.0 L 49.8,116.0 L 52.0,116.0 L 54.2,116.0 L 56.5,116.0 L 58.8,116.0 L 61.0,116.0 L 63.2,116.0 L 65.5,116.0 L 67.8,116.0 L 70.0,116.0 L 72.2,116.0 L 74.5,116.0 L 76.8,116.0 L 79.0,116.0 L 81.2,116.0 L 83.5,116.0 L 85.8,116.0 L 88.0,116.0 L 90.2,116.0 L 92.5,20.8 L 94.8,20.8 L 97.0,20.8 L 99.2,20.8 L 101.5,20.8 L 103.8,20.8 L 106.0,20.8 L 108.3,20.8 L 110.5,20.8 L 112.8,20.8 L 115.0,20.8 L 117.2,20.8 L 119.5,20.8 L 121.8,116.0 L 124.0,116.0 L 126.2,116.0 L 128.5,116.0 L 130.8,116.0 L 133.0,116.0 L 135.2,116.0 L 137.5,116.0 L 139.8,116.0 L 142.0,116.0 L 144.2,116.0 L 146.5,116.0 L 148.8,116.0 L 151.0,116.0 L 153.2,116.0 L 155.5,116.0 L 157.8,116.0 L 160.0,116.0 L 162.2,116.0 L 164.5,116.0 L 166.8,116.0 L 169.0,116.0 L 171.2,116.0 L 173.5,116.0 L 175.8,116.0 L 178.0,116.0 L 180.2,116.0 L 182.5,116.0 L 184.8,116.0 L 187.0,116.0 L 189.2,116.0 L 191.5,116.0 L 193.8,116.0 L 196.0,116.0" fill="none" stroke="#1565c0" stroke-width="2"/>
+    <text x="106.0" y="135" text-anchor="middle" font-family="serif" font-size="11" fill="#333">B¹ (box / order 1)</text>
+  </g>
+  <g>
+    <line x1="216.0" y1="116.0" x2="396.0" y2="116.0" stroke="#999" stroke-width="1"/>
+    <line x1="216.0" y1="16.0" x2="216.0" y2="116.0" stroke="#999" stroke-width="1"/>
+    <path d="M 216.0,116.0 L 218.2,116.0 L 220.5,116.0 L 222.8,116.0 L 225.0,116.0 L 227.2,116.0 L 229.5,116.0 L 231.8,116.0 L 234.0,116.0 L 236.2,116.0 L 238.5,116.0 L 240.8,116.0 L 243.0,116.0 L 245.2,116.0 L 247.5,116.0 L 249.8,116.0 L 252.0,116.0 L 254.2,116.0 L 256.5,116.0 L 258.8,116.0 L 261.0,116.0 L 263.2,116.0 L 265.5,116.0 L 267.8,116.0 L 270.0,116.0 L 272.2,116.0 L 274.5,116.0 L 276.8,113.6 L 279.0,106.5 L 281.2,99.3 L 283.5,92.2 L 285.8,85.0 L 288.0,77.9 L 290.2,70.8 L 292.5,63.6 L 294.8,56.5 L 297.0,49.3 L 299.2,42.2 L 301.5,35.0 L 303.8,27.9 L 306.0,20.8 L 308.2,27.9 L 310.5,35.0 L 312.8,42.2 L 315.0,49.3 L 317.2,56.5 L 319.5,63.6 L 321.8,70.8 L 324.0,77.9 L 326.2,85.0 L 328.5,92.2 L 330.8,99.3 L 333.0,106.5 L 335.2,113.6 L 337.5,116.0 L 339.8,116.0 L 342.0,116.0 L 344.2,116.0 L 346.5,116.0 L 348.8,116.0 L 351.0,116.0 L 353.2,116.0 L 355.5,116.0 L 357.8,116.0 L 360.0,116.0 L 362.2,116.0 L 364.5,116.0 L 366.8,116.0 L 369.0,116.0 L 371.2,116.0 L 373.5,116.0 L 375.8,116.0 L 378.0,116.0 L 380.2,116.0 L 382.5,116.0 L 384.8,116.0 L 387.0,116.0 L 389.2,116.0 L 391.5,116.0 L 393.8,116.0 L 396.0,116.0" fill="none" stroke="#388e3c" stroke-width="2"/>
+    <text x="306.0" y="135" text-anchor="middle" font-family="serif" font-size="11" fill="#333">B² (hat / order 2)</text>
+  </g>
+  <g>
+    <line x1="416.0" y1="116.0" x2="596.0" y2="116.0" stroke="#999" stroke-width="1"/>
+    <line x1="416.0" y1="16.0" x2="416.0" y2="116.0" stroke="#999" stroke-width="1"/>
+    <path d="M 416.0,116.0 L 418.2,116.0 L 420.5,116.0 L 422.8,116.0 L 425.0,116.0 L 427.2,116.0 L 429.5,116.0 L 431.8,116.0 L 434.0,116.0 L 436.2,116.0 L 438.5,116.0 L 440.8,116.0 L 443.0,116.0 L 445.2,116.0 L 447.5,116.0 L 449.8,116.0 L 452.0,116.0 L 454.2,116.0 L 456.5,116.0 L 458.8,116.0 L 461.0,116.0 L 463.2,115.7 L 465.5,114.9 L 467.8,113.6 L 470.0,111.7 L 472.2,109.3 L 474.5,106.4 L 476.8,102.9 L 479.0,98.9 L 481.2,94.3 L 483.5,89.2 L 485.8,83.6 L 488.0,77.4 L 490.2,70.7 L 492.5,63.9 L 494.8,58.0 L 497.0,53.1 L 499.2,49.4 L 501.5,46.7 L 503.8,45.1 L 506.0,44.6 L 508.2,45.1 L 510.5,46.7 L 512.8,49.4 L 515.0,53.1 L 517.2,58.0 L 519.5,63.9 L 521.8,70.7 L 524.0,77.4 L 526.2,83.6 L 528.5,89.2 L 530.8,94.3 L 533.0,98.9 L 535.2,102.9 L 537.5,106.4 L 539.8,109.3 L 542.0,111.7 L 544.2,113.6 L 546.5,114.9 L 548.8,115.7 L 551.0,116.0 L 553.2,116.0 L 555.5,116.0 L 557.8,116.0 L 560.0,116.0 L 562.2,116.0 L 564.5,116.0 L 566.8,116.0 L 569.0,116.0 L 571.2,116.0 L 573.5,116.0 L 575.8,116.0 L 578.0,116.0 L 580.2,116.0 L 582.5,116.0 L 584.8,116.0 L 587.0,116.0 L 589.2,116.0 L 591.5,116.0 L 593.8,116.0 L 596.0,116.0" fill="none" stroke="#c2185b" stroke-width="2"/>
+    <text x="506.0" y="135" text-anchor="middle" font-family="serif" font-size="11" fill="#333">B³ (smooth / order 3)</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+Cardinal B-splines $\mathcal{B}^n$ of orders $1, 2, 3$. Order $n=1$ is the indicator of $[-\tfrac{1}{2}, \tfrac{1}{2}]$; each successive order is the convolution with $\mathcal{B}^1$, gaining one degree of smoothness and widening the support by one unit. Theorem 4.3 expresses smooth functions as sparse combinations of these B-splines.
+</figcaption>
+</figure>
+
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 4.2</span><span class="math-callout__name">(Multivariate B-Spline)</span></p>
 
-For $t \in \mathbb{R}$ and $n, \ell \in \mathbb{N}$ we define $\mathcal{S}_{\ell,t,n} := \mathcal{S}_n(2^\ell(\cdot - t))$. For $d \in \mathbb{N}$, $\boldsymbol{t} \in \mathbb{R}^d$, and $n, \ell \in \mathbb{N}$, the **multivariate B-spline** $\mathcal{S}_{\ell,\boldsymbol{t},n}^d$ is defined as
+For $t \in \mathbb{R}$ and $n, \ell \in \mathbb{N}$ we define $\mathcal{S}\_{\ell,t,n} := \mathcal{S}\_n(2^\ell(\cdot - t))$. For $d \in \mathbb{N}$, $\boldsymbol{t} \in \mathbb{R}^d$, and $n, \ell \in \mathbb{N}$, the **multivariate B-spline** $\mathcal{S}\_{\ell,\boldsymbol{t},n}^d$ is defined as
 
 $$\mathcal{S}_{\ell,\boldsymbol{t},n}^d(\boldsymbol{x}) := \prod_{i=1}^d \mathcal{S}_{\ell,t_i,n}(x_i) \quad \text{for } \boldsymbol{x} = (x_1, \ldots, x_d) \in \mathbb{R}^d,$$
 
-and $\mathcal{B}^n := \left\lbrace \mathcal{S}_{\ell,\boldsymbol{t},n}^d \;\middle\vert\; \ell \in \mathbb{N}, \boldsymbol{t} \in \mathbb{R}^d \right\rbrace$ is the **dictionary of B-splines** of order $n$.
+and $\mathcal{B}^n := \left\lbrace \mathcal{S}\_{\ell,\boldsymbol{t},n}^d \;\middle\vert\; \ell \in \mathbb{N}, \boldsymbol{t} \in \mathbb{R}^d \right\rbrace$ is the **dictionary of B-splines** of order $n$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 4.3</span><span class="math-callout__name">(B-Spline Approximation Rate)</span></p>
 
-Let $d$, $n$, $k \in \mathbb{N}$ such that $0 < k \le n$. Then there exists $C$ such that for every $f \in C^k([0,1]^d)$ and every $N \in \mathbb{N}$, there exist $c_i \in \mathbb{R}$ with $\lvert c_i \rvert \le C \lVert f \rVert_{L^\infty([0,1]^d)}$ and $B_i \in \mathcal{B}^n$ for $i = 1, \ldots, N$, such that
+Let $d$, $n$, $k \in \mathbb{N}$ such that $0 < k \le n$. Then there exists $C$ such that for every $f \in C^k([0,1]^d)$ and every $N \in \mathbb{N}$, there exist $c\_i \in \mathbb{R}$ with $\lvert c\_i \rvert \le C \lVert f \rVert\_{L^\infty([0,1]^d)}$ and $B\_i \in \mathcal{B}^n$ for $i = 1, \ldots, N$, such that
 
 $$\left\lVert f - \sum_{i=1}^N c_i B_i \right\rVert_{L^\infty([0,1]^d)} \le C N^{-k/d} \lVert f \rVert_{C^k([0,1]^d)}.$$
 
@@ -532,7 +682,7 @@ $$\frac{\sigma(x)}{x^q} \to 0 \quad \text{as } x \to -\infty, \qquad \frac{\sigm
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 4.6</span></p>
 
-The rectified power unit $x \mapsto \sigma_{\text{ReLU}}(x)^q$ is sigmoidal of order $q$.
+The rectified power unit $x \mapsto \sigma\_{\text{ReLU}}(x)^q$ is sigmoidal of order $q$.
 
 </div>
 
@@ -541,30 +691,44 @@ The strategy is to show that neural networks can approximate a linear combinatio
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 4.7</span><span class="math-callout__name">(Univariate B-Spline Approximation by Neural Networks)</span></p>
 
-Let $n \in \mathbb{N}$, $n \ge 2$, $K > 0$, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be sigmoidal of order $q \ge 2$. There exists a constant $C > 0$ such that for every $\varepsilon > 0$ there is a neural network $\Phi^{\mathcal{S}_n}$ with activation function $\sigma$, $\lceil \log_q(n-1) \rceil$ layers, and size $C$, such that
+Let $n \in \mathbb{N}$, $n \ge 2$, $K > 0$, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be sigmoidal of order $q \ge 2$. There exists a constant $C > 0$ such that for every $\varepsilon > 0$ there is a neural network $\Phi^{\mathcal{S}\_n}$ with activation function $\sigma$, $\lceil \log\_q(n-1) \rceil$ layers, and size $C$, such that
 
 $$\left\lVert \mathcal{S}_n - \Phi^{\mathcal{S}_n} \right\rVert_{L^\infty([-K,K])} \le \varepsilon.$$
 
 </div>
 
-*Proof sketch.* By definition, $\mathcal{S}_n$ is a linear combination of $n+1$ shifts of $\sigma_{\text{ReLU}}^{n-1}$. The key step is approximating $\sigma_{\text{ReLU}}(x)^{n-1}$ using $t := \lceil \log_q(n-1) \rceil$ compositions of $\sigma$: since $\sigma$ is sigmoidal of order $q$, the $t$-fold composition $a^{-q^t} \underbrace{\sigma \circ \sigma \circ \cdots \circ \sigma}_{t \text{ times}}(ax)$ converges to $\sigma_{\text{ReLU}}(x)^{q^t}$ as $a \to \infty$. Since $q^t \ge n-1$, one can emulate approximate derivatives of these compositions (via finite differences) to reduce the power from $q^t$ down to any $p \le q^t$, including $p = n-1$. Each spatial translation $\Phi(\cdot - t)$ is a neural network of the same architecture, and sums of neural networks of the same depth are again neural networks of the same depth (Proposition 2.3).
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+By definition, $\mathcal{S}\_n$ is a linear combination of $n+1$ shifts of $\sigma\_{\text{ReLU}}^{n-1}$. The key step is approximating $\sigma\_{\text{ReLU}}(x)^{n-1}$ using $t := \lceil \log\_q(n-1) \rceil$ compositions of $\sigma$: since $\sigma$ is sigmoidal of order $q$, the $t$-fold composition $a^{-q^t} \underbrace{\sigma \circ \sigma \circ \cdots \circ \sigma}\_{t \text{ times}}(ax)$ converges to $\sigma\_{\text{ReLU}}(x)^{q^t}$ as $a \to \infty$. Since $q^t \ge n-1$, one can emulate approximate derivatives of these compositions (via finite differences) to reduce the power from $q^t$ down to any $p \le q^t$, including $p = n-1$. Each spatial translation $\Phi(\cdot - t)$ is a neural network of the same architecture, and sums of neural networks of the same depth are again neural networks of the same depth (Proposition 2.3).
+
+</details>
+</div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 4.8</span><span class="math-callout__name">(Multivariate B-Spline Approximation by Neural Networks)</span></p>
 
 Let $n, d \in \mathbb{N}$, $n \ge 2$, $K > 0$, and let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be sigmoidal of order $q \ge 2$. Further let $\ell \in \mathbb{N}$ and $\boldsymbol{t} \in \mathbb{R}^d$.
 
-Then, there exists a constant $C > 0$ such that for every $\varepsilon > 0$ there is a neural network $\Phi^{\mathcal{S}_{\ell,\boldsymbol{t},n}^d}$ with activation function $\sigma$, $\lceil \log_2(d) \rceil + \lceil \log_q(n-1) \rceil$ layers, and size $C$, such that
+Then, there exists a constant $C > 0$ such that for every $\varepsilon > 0$ there is a neural network $\Phi^{\mathcal{S}\_{\ell,\boldsymbol{t},n}^d}$ with activation function $\sigma$, $\lceil \log\_2(d) \rceil + \lceil \log\_q(n-1) \rceil$ layers, and size $C$, such that
 
 $$\left\lVert \mathcal{S}_{\ell,\boldsymbol{t},n}^d - \Phi^{\mathcal{S}_{\ell,\boldsymbol{t},n}^d} \right\rVert_{L^\infty([-K,K]^d)} \le \varepsilon.$$
 
 </div>
 
-*Proof sketch.* Since $\mathcal{S}_{\ell,\boldsymbol{t},n}^d(\boldsymbol{x}) = \prod_{i=1}^d \mathcal{S}_{\ell,t_i,n}(x_i)$, the problem reduces to approximating each univariate factor (via Proposition 4.7) and then approximating the $d$-fold product. The product of $d$ numbers is approximated by a neural network of depth $\lceil \log_2(d) \rceil$ using the identity
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Since $\mathcal{S}\_{\ell,\boldsymbol{t},n}^d(\boldsymbol{x}) = \prod\_{i=1}^d \mathcal{S}\_{\ell,t\_i,n}(x\_i)$, the problem reduces to approximating each univariate factor (via Proposition 4.7) and then approximating the $d$-fold product. The product of $d$ numbers is approximated by a neural network of depth $\lceil \log\_2(d) \rceil$ using the identity
 
 $$x_1 x_2 = \frac{1}{2}\left((x_1 + x_2)^2 - x_1^2 - x_2^2\right)$$
 
-and the fact that $\sigma_{\text{ReLU}}(x)^2$ can be approximated by a sigmoidal network. The general $d$-fold product is handled by a divide-and-conquer strategy: split the product into $\prod_{i=1}^{\lfloor d/2 \rfloor} x_i \cdot \prod_{i=\lfloor d/2 \rfloor+1}^{d} x_i$ and recurse, requiring $\lceil \log_2(d) \rceil$ layers.
+and the fact that $\sigma\_{\text{ReLU}}(x)^2$ can be approximated by a sigmoidal network. The general $d$-fold product is handled by a divide-and-conquer strategy: split the product into $\prod\_{i=1}^{\lfloor d/2 \rfloor} x\_i \cdot \prod\_{i=\lfloor d/2 \rfloor+1}^{d} x\_i$ and recurse, requiring $\lceil \log\_2(d) \rceil$ layers.
+
+</details>
+</div>
 
 Combining Proposition 4.8 with Theorem 4.3 yields the main result:
 
@@ -573,13 +737,20 @@ Combining Proposition 4.8 with Theorem 4.3 yields the main result:
 
 Let $d$, $n$, $k \in \mathbb{N}$ such that $0 < k \le n$ and $n \ge 2$. Let $q \ge 2$ and let $\sigma$ be sigmoidal of order $q$.
 
-Then there exists $C$ such that for every $f \in C^k([0,1]^d)$ and every $N \in \mathbb{N}$ there exists a neural network $\Phi^N$ with activation function $\sigma$, $\lceil \log_2(d) \rceil + \lceil \log_q(k-1) \rceil$ layers, and size bounded by $CN$, such that
+Then there exists $C$ such that for every $f \in C^k([0,1]^d)$ and every $N \in \mathbb{N}$ there exists a neural network $\Phi^N$ with activation function $\sigma$, $\lceil \log\_2(d) \rceil + \lceil \log\_q(k-1) \rceil$ layers, and size bounded by $CN$, such that
 
 $$\left\lVert f - \Phi^N \right\rVert_{L^\infty([0,1]^d)} \le C N^{-k/d} \lVert f \rVert_{C^k([0,1]^d)}.$$
 
 </div>
 
-*Proof.* Fix $N \in \mathbb{N}$. By Theorem 4.3, there exist coefficients $\lvert c_i \rvert \le C \lVert f \rVert_{L^\infty}$ and B-splines $B_i \in \mathcal{B}^n$ such that $\lVert f - \sum_{i=1}^N c_i B_i \rVert_{L^\infty} \le C N^{-k/d} \lVert f \rVert_{C^k}$. By Proposition 4.8, for each $i = 1, \ldots, N$, there exists a neural network $\Phi^{B_i}$ with $\lceil \log_2(d) \rceil + \lceil \log_q(k-1) \rceil$ layers and a fixed size that approximates $B_i$ on $[-1,1]^d \supseteq [0,1]^d$ up to error $\varepsilon := N^{-k/d}/N$. The size of each $\Phi^{B_i}$ is independent of $i$ and $N$. By Proposition 2.3, $\Phi^N$ that uniformly approximates $\sum_{i=1}^N c_i B_i$ up to error $\varepsilon$ on $[0,1]^d$ has $\lceil \log_2(d) \rceil + \lceil \log_q(k-1) \rceil$ layers, and size linear in $N$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Fix $N \in \mathbb{N}$. By Theorem 4.3, there exist coefficients $\lvert c\_i \rvert \le C \lVert f \rVert\_{L^\infty}$ and B-splines $B\_i \in \mathcal{B}^n$ such that $\lVert f - \sum\_{i=1}^N c\_i B\_i \rVert\_{L^\infty} \le C N^{-k/d} \lVert f \rVert\_{C^k}$. By Proposition 4.8, for each $i = 1, \ldots, N$, there exists a neural network $\Phi^{B\_i}$ with $\lceil \log\_2(d) \rceil + \lceil \log\_q(k-1) \rceil$ layers and a fixed size that approximates $B\_i$ on $[-1,1]^d \supseteq [0,1]^d$ up to error $\varepsilon := N^{-k/d}/N$. The size of each $\Phi^{B\_i}$ is independent of $i$ and $N$. By Proposition 2.3, $\Phi^N$ that uniformly approximates $\sum\_{i=1}^N c\_i B\_i$ up to error $\varepsilon$ on $[0,1]^d$ has $\lceil \log\_2(d) \rceil + \lceil \log\_q(k-1) \rceil$ layers, and size linear in $N$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation of Theorem 4.9)</span></p>
@@ -592,7 +763,7 @@ Theorem 4.9 shows that neural networks with higher-order sigmoidal activation fu
 
 ## Chapter 5: ReLU Neural Networks
 
-In this chapter, we discuss feedforward neural networks using the ReLU activation function $\sigma_{\text{ReLU}}$. Due to its simplicity and the fact that it reduces the vanishing and exploding gradients phenomena, the ReLU is one of the most widely used activation functions in practice.
+In this chapter, we discuss feedforward neural networks using the ReLU activation function $\sigma\_{\text{ReLU}}$. Due to its simplicity and the fact that it reduces the vanishing and exploding gradients phenomena, the ReLU is one of the most widely used activation functions in practice.
 
 A key component of the proofs in the previous chapters was the approximation of derivatives of the activation function to emulate polynomials. Since the ReLU is piecewise linear, this trick is not applicable. This makes the analysis fundamentally different from the case of smoother activation functions. Nonetheless, even this extremely simple activation function yields a very rich class of functions possessing remarkable approximation capabilities.
 
@@ -612,30 +783,37 @@ We start with expressing the identity on $\mathbb{R}^d$ as a neural network of d
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.1</span><span class="math-callout__name">(Identity)</span></p>
 
-Let $L \in \mathbb{N}$. Then, there exists a ReLU neural network $\Phi_L^{\text{id}}$ such that $\Phi_L^{\text{id}}(\boldsymbol{x}) = \boldsymbol{x}$ for all $\boldsymbol{x} \in \mathbb{R}^d$. Moreover, $\text{depth}(\Phi_L^{\text{id}}) = L$, $\text{width}(\Phi_L^{\text{id}}) = 2d$, and $\text{size}(\Phi_L^{\text{id}}) = 2d \cdot (L+1)$.
+Let $L \in \mathbb{N}$. Then, there exists a ReLU neural network $\Phi\_L^{\text{id}}$ such that $\Phi\_L^{\text{id}}(\boldsymbol{x}) = \boldsymbol{x}$ for all $\boldsymbol{x} \in \mathbb{R}^d$. Moreover, $\text{depth}(\Phi\_L^{\text{id}}) = L$, $\text{width}(\Phi\_L^{\text{id}}) = 2d$, and $\text{size}(\Phi\_L^{\text{id}}) = 2d \cdot (L+1)$.
 
 </div>
 
-*Proof.* Writing $\boldsymbol{I}_d \in \mathbb{R}^{d \times d}$ for the identity matrix, we choose the weights
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Writing $\boldsymbol{I}\_d \in \mathbb{R}^{d \times d}$ for the identity matrix, we choose the weights
 
 $$(\boldsymbol{W}^{(0)}, \boldsymbol{b}^{(0)}), \ldots, (\boldsymbol{W}^{(L)}, \boldsymbol{b}^{(L)}) := \left(\begin{pmatrix} \boldsymbol{I}_d \\ -\boldsymbol{I}_d \end{pmatrix}, \boldsymbol{0}\right), \underbrace{(\boldsymbol{I}_{2d}, \boldsymbol{0}), \ldots, (\boldsymbol{I}_{2d}, \boldsymbol{0})}_{L-1 \text{ times}}, ((\boldsymbol{I}_d, -\boldsymbol{I}_d), \boldsymbol{0}).$$
 
-Using that $x = \sigma_{\text{ReLU}}(x) - \sigma_{\text{ReLU}}(-x)$ for all $x \in \mathbb{R}$ and $\sigma_{\text{ReLU}}(x) = x$ for all $x \ge 0$, it is obvious that the neural network $\Phi_L^{\text{id}}$ associated to the weights above satisfies the assertion of the lemma.
+Using that $x = \sigma\_{\text{ReLU}}(x) - \sigma\_{\text{ReLU}}(-x)$ for all $x \in \mathbb{R}$ and $\sigma\_{\text{ReLU}}(x) = x$ for all $x \ge 0$, it is obvious that the neural network $\Phi\_L^{\text{id}}$ associated to the weights above satisfies the assertion of the lemma.
+
+</details>
+</div>
 
 The property to exactly represent the identity is not shared by sigmoidal activation functions. It does hold for polynomial activation functions though; also see Proposition 3.16.
 
 #### 5.1.2 Composition
 
-Assume we have two neural networks $\Phi_1$, $\Phi_2$ with architectures $(\sigma_{\text{ReLU}}; d_0^1, \ldots, d_{L_1+1}^1)$ and $(\sigma_{\text{ReLU}}; d_0^2, \ldots, d_{L_2+1}^2)$ respectively. If the output dimension $d_{L_1+1}^1$ of $\Phi_1$ equals the input dimension $d_0^2$ of $\Phi_2$, we can define two types of concatenations:
+Assume we have two neural networks $\Phi\_1$, $\Phi\_2$ with architectures $(\sigma\_{\text{ReLU}}; d\_0^1, \ldots, d\_{L\_1+1}^1)$ and $(\sigma\_{\text{ReLU}}; d\_0^2, \ldots, d\_{L\_2+1}^2)$ respectively. If the output dimension $d\_{L\_1+1}^1$ of $\Phi\_1$ equals the input dimension $d\_0^2$ of $\Phi\_2$, we can define two types of concatenations:
 
-First, $\Phi_2 \circ \Phi_1$ is the neural network defined by directly composing the weight-bias tuples of $\Phi_1$ and $\Phi_2$, merging the output layer of $\Phi_1$ with the input layer of $\Phi_2$.
+First, $\Phi\_2 \circ \Phi\_1$ is the neural network defined by directly composing the weight-bias tuples of $\Phi\_1$ and $\Phi\_2$, merging the output layer of $\Phi\_1$ with the input layer of $\Phi\_2$.
 
-Second, $\Phi_2 \bullet \Phi_1$ is the neural network defined as $\Phi_2 \circ \Phi_1^{\text{id}} \circ \Phi_1$, which inserts an identity layer between the two networks by encoding the intermediate value using the ReLU identity construction.
+Second, $\Phi\_2 \bullet \Phi\_1$ is the neural network defined as $\Phi\_2 \circ \Phi\_1^{\text{id}} \circ \Phi\_1$, which inserts an identity layer between the two networks by encoding the intermediate value using the ReLU identity construction.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.2</span><span class="math-callout__name">(Composition)</span></p>
 
-Let $\Phi_1$, $\Phi_2$ be neural networks with architectures $(\sigma_{\text{ReLU}}; d_0^1, \ldots, d_{L_1+1}^1)$ and $(\sigma_{\text{ReLU}}; d_0^2, \ldots, d_{L_2+1}^2)$. Assume $d_{L_1+1}^1 = d_0^2$. Then $\Phi_2 \circ \Phi_1(\boldsymbol{x}) = \Phi_2 \bullet \Phi_1(\boldsymbol{x}) = \Phi_2(\Phi_1(\boldsymbol{x}))$ for all $\boldsymbol{x} \in \mathbb{R}^{d_0^1}$. Moreover,
+Let $\Phi\_1$, $\Phi\_2$ be neural networks with architectures $(\sigma\_{\text{ReLU}}; d\_0^1, \ldots, d\_{L\_1+1}^1)$ and $(\sigma\_{\text{ReLU}}; d\_0^2, \ldots, d\_{L\_2+1}^2)$. Assume $d\_{L\_1+1}^1 = d\_0^2$. Then $\Phi\_2 \circ \Phi\_1(\boldsymbol{x}) = \Phi\_2 \bullet \Phi\_1(\boldsymbol{x}) = \Phi\_2(\Phi\_1(\boldsymbol{x}))$ for all $\boldsymbol{x} \in \mathbb{R}^{d\_0^1}$. Moreover,
 
 $$\text{width}(\Phi_2 \circ \Phi_1) \le \max\lbrace\text{width}(\Phi_1), \text{width}(\Phi_2)\rbrace,$$
 
@@ -653,28 +831,28 @@ $$\text{size}(\Phi_2 \bullet \Phi_1) \le 2(\text{size}(\Phi_1) + \text{size}(\Ph
 
 </div>
 
-Interpreting linear transformations as neural networks of depth 0, the previous lemma is also valid in case $\Phi_1$ or $\Phi_2$ is a linear mapping.
+Interpreting linear transformations as neural networks of depth 0, the previous lemma is also valid in case $\Phi\_1$ or $\Phi\_2$ is a linear mapping.
 
 #### 5.1.3 Parallelization
 
-Let $(\Phi_i)_{i=1}^m$ be neural networks with architectures $(\sigma_{\text{ReLU}}; d_0^i, \ldots, d_{L_i+1}^i)$, respectively. We proceed to build a neural network $(\Phi_1, \ldots, \Phi_m)$ realizing the function
+Let $(\Phi\_i)\_{i=1}^m$ be neural networks with architectures $(\sigma\_{\text{ReLU}}; d\_0^i, \ldots, d\_{L\_i+1}^i)$, respectively. We proceed to build a neural network $(\Phi\_1, \ldots, \Phi\_m)$ realizing the function
 
 $$(\Phi_1, \ldots, \Phi_m) \colon \mathbb{R}^{\sum_{j=1}^m d_0^j} \to \mathbb{R}^{\sum_{j=1}^m d_{L_j+1}^j}$$
 
 $$(\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m) \mapsto (\Phi_1(\boldsymbol{x}_1), \ldots, \Phi_m(\boldsymbol{x}_m)).$$
 
-To do so we first assume $L_1 = \cdots = L_m = L$, and define $(\Phi_1, \ldots, \Phi_m)$ via block-diagonal weight matrices. For the general case where the $\Phi_j$ might have different depths, let $L_{\max} := \max_{1 \le i \le m} L_i$ and for each $j$ with $L_j < L_{\max}$ set $\widetilde{\Phi}_j := \Phi_{L_{\max} - L_j}^{\text{id}} \circ \Phi_j$ to equalize depths.
+To do so we first assume $L\_1 = \cdots = L\_m = L$, and define $(\Phi\_1, \ldots, \Phi\_m)$ via block-diagonal weight matrices. For the general case where the $\Phi\_j$ might have different depths, let $L\_{\max} := \max\_{1 \le i \le m} L\_i$ and for each $j$ with $L\_j < L\_{\max}$ set $\widetilde{\Phi}\_j := \Phi\_{L\_{\max} - L\_j}^{\text{id}} \circ \Phi\_j$ to equalize depths.
 
-If all input dimensions $d_0^1 = \cdots = d_0^m =: d_0$ are the same, we will also use **parallelization with shared inputs**, realizing $\boldsymbol{x} \mapsto (\Phi_1(\boldsymbol{x}), \ldots, \Phi_m(\boldsymbol{x}))$ from $\mathbb{R}^{d_0} \to \mathbb{R}^{d_{L_1+1}^1 + \cdots + d_{L_m+1}^m}$.
+If all input dimensions $d\_0^1 = \cdots = d\_0^m =: d\_0$ are the same, we will also use **parallelization with shared inputs**, realizing $\boldsymbol{x} \mapsto (\Phi\_1(\boldsymbol{x}), \ldots, \Phi\_m(\boldsymbol{x}))$ from $\mathbb{R}^{d\_0} \to \mathbb{R}^{d\_{L\_1+1}^1 + \cdots + d\_{L\_m+1}^m}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.3</span><span class="math-callout__name">(Parallelization)</span></p>
 
-Let $m \in \mathbb{N}$ and $(\Phi_i)_{i=1}^m$ be neural networks with architectures $(\sigma_{\text{ReLU}}; d_0^i, \ldots, d_{L_i+1}^i)$, respectively. Then the neural network $(\Phi_1, \ldots, \Phi_m)$ satisfies
+Let $m \in \mathbb{N}$ and $(\Phi\_i)\_{i=1}^m$ be neural networks with architectures $(\sigma\_{\text{ReLU}}; d\_0^i, \ldots, d\_{L\_i+1}^i)$, respectively. Then the neural network $(\Phi\_1, \ldots, \Phi\_m)$ satisfies
 
 $$(\Phi_1, \ldots, \Phi_m)(\boldsymbol{x}) = (\Phi_1(\boldsymbol{x}_1), \ldots, \Phi_m(\boldsymbol{x}_m)) \quad \text{for all } \boldsymbol{x} \in \mathbb{R}^{\sum_{j=1}^m d_0^j}.$$
 
-Moreover, with $L_{\max} := \max_{j \le m} L_j$ it holds that
+Moreover, with $L\_{\max} := \max\_{j \le m} L\_j$ it holds that
 
 $$\text{width}((\Phi_1, \ldots, \Phi_m)) \le 2\sum_{j=1}^m \text{width}(\Phi_j),$$
 
@@ -686,16 +864,16 @@ $$\text{size}((\Phi_1, \ldots, \Phi_m)) \le 2\sum_{j=1}^m \text{size}(\Phi_j) + 
 
 #### 5.1.4 Linear Combinations
 
-Let $m \in \mathbb{N}$ and let $(\Phi_i)_{i=1}^m$ be ReLU neural networks with architectures $(\sigma_{\text{ReLU}}; d_0^i, \ldots, d_{L_i+1}^i)$, respectively. Assume that $d_{L_1+1}^1 = \cdots = d_{L_m+1}^m$, i.e., all $\Phi_1, \ldots, \Phi_m$ have the same output dimension. For scalars $\alpha_j \in \mathbb{R}$, we wish to construct a ReLU neural network $\sum_{j=1}^m \alpha_j \Phi_j$ realizing the function
+Let $m \in \mathbb{N}$ and let $(\Phi\_i)\_{i=1}^m$ be ReLU neural networks with architectures $(\sigma\_{\text{ReLU}}; d\_0^i, \ldots, d\_{L\_i+1}^i)$, respectively. Assume that $d\_{L\_1+1}^1 = \cdots = d\_{L\_m+1}^m$, i.e., all $\Phi\_1, \ldots, \Phi\_m$ have the same output dimension. For scalars $\alpha\_j \in \mathbb{R}$, we wish to construct a ReLU neural network $\sum\_{j=1}^m \alpha\_j \Phi\_j$ realizing the function
 
 $$(\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m) \mapsto \sum_{j=1}^m \alpha_j \Phi_j(\boldsymbol{x}_j).$$
 
-This corresponds to the parallelization $(\Phi_1, \ldots, \Phi_m)$ composed with the linear transformation $(\boldsymbol{z}_1, \ldots, \boldsymbol{z}_m) \mapsto \sum_{j=1}^m \alpha_j \boldsymbol{z}_j$.
+This corresponds to the parallelization $(\Phi\_1, \ldots, \Phi\_m)$ composed with the linear transformation $(\boldsymbol{z}\_1, \ldots, \boldsymbol{z}\_m) \mapsto \sum\_{j=1}^m \alpha\_j \boldsymbol{z}\_j$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.4</span><span class="math-callout__name">(Linear Combinations)</span></p>
 
-Let $m \in \mathbb{N}$ and $(\Phi_i)_{i=1}^m$ be neural networks with architectures $(\sigma_{\text{ReLU}}; d_0^i, \ldots, d_{L_i+1}^i)$, respectively. Assume that $d_{L_1+1}^1 = \cdots = d_{L_m+1}^m$, let $\boldsymbol{\alpha} \in \mathbb{R}^m$ and set $L_{\max} := \max_{j \le m} L_j$. Then, there exists a neural network $\sum_{j=1}^m \alpha_j \Phi_j$ such that $\left(\sum_{j=1}^m \alpha_j \Phi_j\right)(\boldsymbol{x}) = \sum_{j=1}^m \alpha_j \Phi_j(\boldsymbol{x}_j)$ for all $\boldsymbol{x} = (\boldsymbol{x}_j)_{j=1}^m \in \mathbb{R}^{\sum_{j=1}^m d_0^j}$. Moreover,
+Let $m \in \mathbb{N}$ and $(\Phi\_i)\_{i=1}^m$ be neural networks with architectures $(\sigma\_{\text{ReLU}}; d\_0^i, \ldots, d\_{L\_i+1}^i)$, respectively. Assume that $d\_{L\_1+1}^1 = \cdots = d\_{L\_m+1}^m$, let $\boldsymbol{\alpha} \in \mathbb{R}^m$ and set $L\_{\max} := \max\_{j \le m} L\_j$. Then, there exists a neural network $\sum\_{j=1}^m \alpha\_j \Phi\_j$ such that $\left(\sum\_{j=1}^m \alpha\_j \Phi\_j\right)(\boldsymbol{x}) = \sum\_{j=1}^m \alpha\_j \Phi\_j(\boldsymbol{x}\_j)$ for all $\boldsymbol{x} = (\boldsymbol{x}\_j)\_{j=1}^m \in \mathbb{R}^{\sum\_{j=1}^m d\_0^j}$. Moreover,
 
 $$\text{width}\left(\sum_{j=1}^m \alpha_j \Phi_j\right) \le 2\sum_{j=1}^m \text{width}(\Phi_j),$$
 
@@ -712,18 +890,18 @@ In this section, we relate ReLU neural networks to a large class of functions. W
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.5</span><span class="math-callout__name">(Continuous Piecewise Linear Function)</span></p>
 
-Let $\Omega \subseteq \mathbb{R}^d$, $d \in \mathbb{N}$. We call a function $f \colon \Omega \to \mathbb{R}$ **continuous, piecewise linear (cpwl)** if $f \in C^0(\Omega)$ and there exist $n \in \mathbb{N}$ affine functions $g_j \colon \mathbb{R}^d \to \mathbb{R}$, $g_j(\boldsymbol{x}) = \boldsymbol{w}_j^\top \boldsymbol{x} + b_j$ such that for each $\boldsymbol{x} \in \Omega$ it holds that $f(\boldsymbol{x}) = g_j(\boldsymbol{x})$ for at least one $j \in \lbrace 1, \ldots, n \rbrace$. For $m > 1$ we call $f \colon \Omega \to \mathbb{R}^m$ cpwl if and only if each component of $f$ is cpwl.
+Let $\Omega \subseteq \mathbb{R}^d$, $d \in \mathbb{N}$. We call a function $f \colon \Omega \to \mathbb{R}$ **continuous, piecewise linear (cpwl)** if $f \in C^0(\Omega)$ and there exist $n \in \mathbb{N}$ affine functions $g\_j \colon \mathbb{R}^d \to \mathbb{R}$, $g\_j(\boldsymbol{x}) = \boldsymbol{w}\_j^\top \boldsymbol{x} + b\_j$ such that for each $\boldsymbol{x} \in \Omega$ it holds that $f(\boldsymbol{x}) = g\_j(\boldsymbol{x})$ for at least one $j \in \lbrace 1, \ldots, n \rbrace$. For $m > 1$ we call $f \colon \Omega \to \mathbb{R}^m$ cpwl if and only if each component of $f$ is cpwl.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.6</span></p>
 
-A "continuous piecewise linear function" as in Definition 5.5 is actually piecewise *affine*. To maintain consistency with the literature, we use the terminology cpwl. The connected domains on which $f$ is equal to one of the functions $g_j$ are called **regions** or **pieces**. If $f$ is cpwl with $q \in \mathbb{N}$ regions, then with $n \in \mathbb{N}$ denoting the number of affine functions it holds $n \le q$.
+A "continuous piecewise linear function" as in Definition 5.5 is actually piecewise *affine*. To maintain consistency with the literature, we use the terminology cpwl. The connected domains on which $f$ is equal to one of the functions $g\_j$ are called **regions** or **pieces**. If $f$ is cpwl with $q \in \mathbb{N}$ regions, then with $n \in \mathbb{N}$ denoting the number of affine functions it holds $n \le q$.
 
 </div>
 
-Note that the mapping $\boldsymbol{x} \mapsto \sigma_{\text{ReLU}}(\boldsymbol{w}^\top \boldsymbol{x} + b)$, which is a ReLU neural network with a single neuron, is cpwl (with two regions). Consequently, every ReLU neural network is a repeated composition of linear combinations of cpwl functions. It is not hard to see that the set of cpwl functions is closed under compositions and linear combinations. Hence, *every ReLU neural network is a cpwl function*. Interestingly, the reverse direction of this statement is also true, meaning that *every cpwl function can be represented by a ReLU neural network*. Therefore, we can identify the class of functions realized by arbitrary ReLU neural networks as the class of cpwl functions.
+Note that the mapping $\boldsymbol{x} \mapsto \sigma\_{\text{ReLU}}(\boldsymbol{w}^\top \boldsymbol{x} + b)$, which is a ReLU neural network with a single neuron, is cpwl (with two regions). Consequently, every ReLU neural network is a repeated composition of linear combinations of cpwl functions. It is not hard to see that the set of cpwl functions is closed under compositions and linear combinations. Hence, *every ReLU neural network is a cpwl function*. Interestingly, the reverse direction of this statement is also true, meaning that *every cpwl function can be represented by a ReLU neural network*. Therefore, we can identify the class of functions realized by arbitrary ReLU neural networks as the class of cpwl functions.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.7</span><span class="math-callout__name">(ReLU Networks Realize cpwl Functions)</span></p>
@@ -739,7 +917,7 @@ The proof of Theorem 5.7 is based on the following well-known result: every cpwl
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 5.8</span><span class="math-callout__name">(Max-Min Representation of cpwl Functions)</span></p>
 
-Let $d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$ be convex, and let $f \colon \Omega \to \mathbb{R}$ be cpwl with $n \in \mathbb{N}$ affine functions as in Definition 5.5. Then there exists $m \in \mathbb{N}$ and sets $s_j \subseteq \lbrace 1, \ldots, n \rbrace$ for $j \in \lbrace 1, \ldots, m \rbrace$, such that
+Let $d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$ be convex, and let $f \colon \Omega \to \mathbb{R}$ be cpwl with $n \in \mathbb{N}$ affine functions as in Definition 5.5. Then there exists $m \in \mathbb{N}$ and sets $s\_j \subseteq \lbrace 1, \ldots, n \rbrace$ for $j \in \lbrace 1, \ldots, m \rbrace$, such that
 
 $$f(\boldsymbol{x}) = \max_{1 \le j \le m} \min_{i \in s_j} (g_i(\boldsymbol{x})) \quad \text{for all } \boldsymbol{x} \in \Omega.$$
 
@@ -748,7 +926,7 @@ $$f(\boldsymbol{x}) = \max_{1 \le j \le m} \min_{i \in s_j} (g_i(\boldsymbol{x})
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 5.9</span></p>
 
-For any $a_1, \ldots, a_k \in \mathbb{R}$ holds $\min\lbrace -a_1, \ldots, -a_k \rbrace = -\max\lbrace a_1, \ldots, a_k \rbrace$. Thus, in the setting of Proposition 5.8, there exists $\tilde{m} \in \mathbb{N}$ and sets $\tilde{s}_j \subseteq \lbrace 1, \ldots, n \rbrace$ for $j = 1, \ldots, \tilde{m}$, such that for all $\boldsymbol{x} \in \Omega$:
+For any $a\_1, \ldots, a\_k \in \mathbb{R}$ holds $\min\lbrace -a\_1, \ldots, -a\_k \rbrace = -\max\lbrace a\_1, \ldots, a\_k \rbrace$. Thus, in the setting of Proposition 5.8, there exists $\tilde{m} \in \mathbb{N}$ and sets $\tilde{s}\_j \subseteq \lbrace 1, \ldots, n \rbrace$ for $j = 1, \ldots, \tilde{m}$, such that for all $\boldsymbol{x} \in \Omega$:
 
 $$f(\boldsymbol{x}) = \min_{1 \le j \le \tilde{m}} \left(\max_{i \in \tilde{s}_j} (g_i(\boldsymbol{x}))\right).$$
 
@@ -769,28 +947,46 @@ $$\max\lbrace x, y \rbrace = \sigma_{\text{ReLU}}(y) - \sigma_{\text{ReLU}}(-y) 
 
 </div>
 
-*Proof.* We have $\max\lbrace x, y \rbrace = y + \sigma_{\text{ReLU}}(x - y)$. Using $y = \sigma_{\text{ReLU}}(y) - \sigma_{\text{ReLU}}(-y)$, the claim for the maximum follows. For the minimum observe that $\min\lbrace x, y \rbrace = -\max\lbrace -x, -y \rbrace$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We have $\max\lbrace x, y \rbrace = y + \sigma\_{\text{ReLU}}(x - y)$. Using $y = \sigma\_{\text{ReLU}}(y) - \sigma\_{\text{ReLU}}(-y)$, the claim for the maximum follows. For the minimum observe that $\min\lbrace x, y \rbrace = -\max\lbrace -x, -y \rbrace$.
 
 The minimum of $n \ge 2$ inputs can be computed by repeatedly applying the construction of Lemma 5.10:
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.11</span><span class="math-callout__name">(n-ary Min and Max Networks)</span></p>
 
-For every $n \ge 2$ there exists a neural network $\Phi_n^{\min} \colon \mathbb{R}^n \to \mathbb{R}$ with
+For every $n \ge 2$ there exists a neural network $\Phi\_n^{\min} \colon \mathbb{R}^n \to \mathbb{R}$ with
 
 $$\text{size}(\Phi_n^{\min}) \le 16n, \quad \text{width}(\Phi_n^{\min}) \le 3n, \quad \text{depth}(\Phi_n^{\min}) \le \lceil \log_2(n) \rceil$$
 
-such that $\Phi_n^{\min}(x_1, \ldots, x_n) = \min_{1 \le j \le n} x_j$. Similarly, there exists a neural network $\Phi_n^{\max} \colon \mathbb{R}^n \to \mathbb{R}$ realizing the maximum and satisfying the same complexity bounds.
+such that $\Phi\_n^{\min}(x\_1, \ldots, x\_n) = \min\_{1 \le j \le n} x\_j$. Similarly, there exists a neural network $\Phi\_n^{\max} \colon \mathbb{R}^n \to \mathbb{R}$ realizing the maximum and satisfying the same complexity bounds.
 
 </div>
 
-*Proof sketch.* For $n = 2^k$, proceed by induction on $k$. Define $\Phi_{2^k}^{\min} := \Phi_2^{\min} \circ (\Phi_{2^{k-1}}^{\min}, \Phi_{2^{k-1}}^{\min})$, building a binary tree of pairwise minima. By Lemma 5.2 and Lemma 5.3, the depth satisfies $\text{depth}(\Phi_{2^k}^{\min}) \le k$. For general $n$, extend $\Phi_n^{\min}$ using identity networks on unused inputs. For the maximum, define $\Phi_n^{\max}(x_1, \ldots, x_n) := -\Phi_n^{\min}(-x_1, \ldots, -x_n)$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
 
-*Proof (of Theorem 5.7).* By Proposition 5.8 the neural network
+For $n = 2^k$, proceed by induction on $k$. Define $\Phi\_{2^k}^{\min} := \Phi\_2^{\min} \circ (\Phi\_{2^{k-1}}^{\min}, \Phi\_{2^{k-1}}^{\min})$, building a binary tree of pairwise minima. By Lemma 5.2 and Lemma 5.3, the depth satisfies $\text{depth}(\Phi\_{2^k}^{\min}) \le k$. For general $n$, extend $\Phi\_n^{\min}$ using identity networks on unused inputs. For the maximum, define $\Phi\_n^{\max}(x\_1, \ldots, x\_n) := -\Phi\_n^{\min}(-x\_1, \ldots, -x\_n)$.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 5.7</summary>
+
+By Proposition 5.8 the neural network
 
 $$\Phi := \Phi_m^{\max} \bullet (\Phi_{\lvert s_j \rvert}^{\min})_{j=1}^m \bullet ((\boldsymbol{w}_i^\top \boldsymbol{x} + b_i)_{i \in s_j})_{j=1}^m$$
 
-realizes the function $f$. Since the number of possibilities to choose subsets of $\lbrace 1, \ldots, n \rbrace$ equals $2^n$ we have $m \le 2^n$. Since each $s_j$ is a subset of $\lbrace 1, \ldots, n \rbrace$, the cardinality $\lvert s_j \rvert$ of $s_j$ is bounded by $n$. By Lemma 5.2, Lemma 5.3, and Lemma 5.11:
+realizes the function $f$. Since the number of possibilities to choose subsets of $\lbrace 1, \ldots, n \rbrace$ equals $2^n$ we have $m \le 2^n$. Since each $s\_j$ is a subset of $\lbrace 1, \ldots, n \rbrace$, the cardinality $\lvert s\_j \rvert$ of $s\_j$ is bounded by $n$. By Lemma 5.2, Lemma 5.3, and Lemma 5.11:
 
 $$\text{depth}(\Phi) \le 1 + \lceil \log_2(2^n) \rceil + \lceil \log_2(n) \rceil = O(n),$$
 
@@ -798,9 +994,26 @@ $$\text{width}(\Phi) \le 2\max\left\lbrace 3m, 3mn, mdn \right\rbrace = O(dn2^n)
 
 $$\text{size}(\Phi) \le 4\left(16m + 2\sum_{j=1}^m (16\lvert s_j \rvert + 2\lceil \log_2(n) \rceil) + nm(d+1)\right) = O(dn2^n).$$
 
+</details>
+</div>
+
 ### 5.3 Simplicial Pieces
 
 This section studies the case where we do not have arbitrary cpwl functions, but where the regions on which $f$ is affine are simplices. Under this condition, we can construct neural networks that scale merely *linearly* in the number of such regions, which is a serious improvement from the *exponential* dependence of the size on the number of regions that was found in Theorem 5.7.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 400 230" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="cpwl-title">
+  <title id="cpwl-title">CPWL function on a regular triangulation</title>
+  <g><polygon points="20.0,20.0 54.0,20.0 54.0,58.0" fill="rgb(255,194,130)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,20.0 54.0,58.0 20.0,58.0" fill="rgb(255,194,130)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,58.0 54.0,58.0 54.0,96.0" fill="rgb(255,172,98)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,58.0 54.0,96.0 20.0,96.0" fill="rgb(255,177,106)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,96.0 54.0,96.0 54.0,134.0" fill="rgb(255,160,83)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,96.0 54.0,134.0 20.0,134.0" fill="rgb(255,173,100)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,134.0 54.0,134.0 54.0,172.0" fill="rgb(255,167,93)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,134.0 54.0,172.0 20.0,172.0" fill="rgb(255,184,115)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,172.0 54.0,172.0 54.0,210.0" fill="rgb(255,188,121)" stroke="#666" stroke-width="0.5"/><polygon points="20.0,172.0 54.0,210.0 20.0,210.0" fill="rgb(255,204,143)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,20.0 88.0,20.0 88.0,58.0" fill="rgb(255,177,106)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,20.0 88.0,58.0 54.0,58.0" fill="rgb(255,172,98)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,58.0 88.0,58.0 88.0,96.0" fill="rgb(255,146,64)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,58.0 88.0,96.0 54.0,96.0" fill="rgb(255,146,64)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,96.0 88.0,96.0 88.0,134.0" fill="rgb(255,131,42)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,96.0 88.0,134.0 54.0,134.0" fill="rgb(255,139,54)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,134.0 88.0,134.0 88.0,172.0" fill="rgb(255,139,54)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,134.0 88.0,172.0 54.0,172.0" fill="rgb(255,155,76)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,172.0 88.0,172.0 88.0,210.0" fill="rgb(255,167,93)" stroke="#666" stroke-width="0.5"/><polygon points="54.0,172.0 88.0,210.0 54.0,210.0" fill="rgb(255,184,115)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,20.0 122.0,20.0 122.0,58.0" fill="rgb(255,173,100)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,20.0 122.0,58.0 88.0,58.0" fill="rgb(255,160,83)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,58.0 122.0,58.0 122.0,96.0" fill="rgb(255,139,54)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,58.0 122.0,96.0 88.0,96.0" fill="rgb(255,131,42)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,96.0 122.0,96.0 122.0,134.0" fill="rgb(255,122,30)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,96.0 122.0,134.0 88.0,134.0" fill="rgb(255,122,30)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,134.0 122.0,134.0 122.0,172.0" fill="rgb(255,131,42)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,134.0 122.0,172.0 88.0,172.0" fill="rgb(255,139,54)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,172.0 122.0,172.0 122.0,210.0" fill="rgb(255,160,83)" stroke="#666" stroke-width="0.5"/><polygon points="88.0,172.0 122.0,210.0 88.0,210.0" fill="rgb(255,173,100)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,20.0 156.0,20.0 156.0,58.0" fill="rgb(255,184,115)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,20.0 156.0,58.0 122.0,58.0" fill="rgb(255,167,93)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,58.0 156.0,58.0 156.0,96.0" fill="rgb(255,155,76)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,58.0 156.0,96.0 122.0,96.0" fill="rgb(255,139,54)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,96.0 156.0,96.0 156.0,134.0" fill="rgb(255,139,54)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,96.0 156.0,134.0 122.0,134.0" fill="rgb(255,131,42)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,134.0 156.0,134.0 156.0,172.0" fill="rgb(255,146,64)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,134.0 156.0,172.0 122.0,172.0" fill="rgb(255,146,64)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,172.0 156.0,172.0 156.0,210.0" fill="rgb(255,172,98)" stroke="#666" stroke-width="0.5"/><polygon points="122.0,172.0 156.0,210.0 122.0,210.0" fill="rgb(255,177,106)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,20.0 190.0,20.0 190.0,58.0" fill="rgb(255,204,143)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,20.0 190.0,58.0 156.0,58.0" fill="rgb(255,188,121)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,58.0 190.0,58.0 190.0,96.0" fill="rgb(255,184,115)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,58.0 190.0,96.0 156.0,96.0" fill="rgb(255,167,93)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,96.0 190.0,96.0 190.0,134.0" fill="rgb(255,173,100)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,96.0 190.0,134.0 156.0,134.0" fill="rgb(255,160,83)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,134.0 190.0,134.0 190.0,172.0" fill="rgb(255,177,106)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,134.0 190.0,172.0 156.0,172.0" fill="rgb(255,172,98)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,172.0 190.0,172.0 190.0,210.0" fill="rgb(255,194,130)" stroke="#666" stroke-width="0.5"/><polygon points="156.0,172.0 190.0,210.0 156.0,210.0" fill="rgb(255,194,130)" stroke="#666" stroke-width="0.5"/></g>
+  <text x="100.0" y="224" text-anchor="middle" font-family="serif" font-size="11" fill="#333">triangulation 𝒯 of Ω</text>
+  <g><polygon points="268.0,96.9 304.0,88.9 280.0,102.7" fill="rgb(255,204,143)" stroke="#555" stroke-width="0.4"/><polygon points="292.0,74.7 328.0,79.2 304.0,88.9" fill="rgb(255,184,115)" stroke="#555" stroke-width="0.4"/><polygon points="316.0,58.9 352.0,79.2 328.0,79.2" fill="rgb(255,173,100)" stroke="#555" stroke-width="0.4"/><polygon points="340.0,58.9 376.0,88.9 352.0,79.2" fill="rgb(255,177,106)" stroke="#555" stroke-width="0.4"/><polygon points="364.0,74.7 400.0,102.7 376.0,88.9" fill="rgb(255,194,130)" stroke="#555" stroke-width="0.4"/><polygon points="268.0,96.9 292.0,74.7 304.0,88.9" fill="rgb(255,188,121)" stroke="#555" stroke-width="0.4"/><polygon points="292.0,74.7 316.0,58.9 328.0,79.2" fill="rgb(255,167,93)" stroke="#555" stroke-width="0.4"/><polygon points="316.0,58.9 340.0,58.9 352.0,79.2" fill="rgb(255,160,83)" stroke="#555" stroke-width="0.4"/><polygon points="340.0,58.9 364.0,74.7 376.0,88.9" fill="rgb(255,172,98)" stroke="#555" stroke-width="0.4"/><polygon points="364.0,74.7 388.0,96.9 400.0,102.7" fill="rgb(255,194,130)" stroke="#555" stroke-width="0.4"/><polygon points="256.0,95.2 292.0,74.7 268.0,96.9" fill="rgb(255,184,115)" stroke="#555" stroke-width="0.4"/><polygon points="280.0,66.9 316.0,58.9 292.0,74.7" fill="rgb(255,155,76)" stroke="#555" stroke-width="0.4"/><polygon points="304.0,46.8 340.0,58.9 316.0,58.9" fill="rgb(255,139,54)" stroke="#555" stroke-width="0.4"/><polygon points="328.0,46.8 364.0,74.7 340.0,58.9" fill="rgb(255,146,64)" stroke="#555" stroke-width="0.4"/><polygon points="352.0,66.9 388.0,96.9 364.0,74.7" fill="rgb(255,172,98)" stroke="#555" stroke-width="0.4"/><polygon points="256.0,95.2 280.0,66.9 292.0,74.7" fill="rgb(255,167,93)" stroke="#555" stroke-width="0.4"/><polygon points="280.0,66.9 304.0,46.8 316.0,58.9" fill="rgb(255,139,54)" stroke="#555" stroke-width="0.4"/><polygon points="304.0,46.8 328.0,46.8 340.0,58.9" fill="rgb(255,131,42)" stroke="#555" stroke-width="0.4"/><polygon points="328.0,46.8 352.0,66.9 364.0,74.7" fill="rgb(255,146,64)" stroke="#555" stroke-width="0.4"/><polygon points="352.0,66.9 376.0,95.2 388.0,96.9" fill="rgb(255,177,106)" stroke="#555" stroke-width="0.4"/><polygon points="244.0,103.2 280.0,66.9 256.0,95.2" fill="rgb(255,173,100)" stroke="#555" stroke-width="0.4"/><polygon points="268.0,74.9 304.0,46.8 280.0,66.9" fill="rgb(255,139,54)" stroke="#555" stroke-width="0.4"/><polygon points="292.0,54.8 328.0,46.8 304.0,46.8" fill="rgb(255,122,30)" stroke="#555" stroke-width="0.4"/><polygon points="316.0,54.8 352.0,66.9 328.0,46.8" fill="rgb(255,131,42)" stroke="#555" stroke-width="0.4"/><polygon points="340.0,74.9 376.0,95.2 352.0,66.9" fill="rgb(255,160,83)" stroke="#555" stroke-width="0.4"/><polygon points="244.0,103.2 268.0,74.9 280.0,66.9" fill="rgb(255,160,83)" stroke="#555" stroke-width="0.4"/><polygon points="268.0,74.9 292.0,54.8 304.0,46.8" fill="rgb(255,131,42)" stroke="#555" stroke-width="0.4"/><polygon points="292.0,54.8 316.0,54.8 328.0,46.8" fill="rgb(255,122,30)" stroke="#555" stroke-width="0.4"/><polygon points="316.0,54.8 340.0,74.9 352.0,66.9" fill="rgb(255,139,54)" stroke="#555" stroke-width="0.4"/><polygon points="340.0,74.9 364.0,103.2 376.0,95.2" fill="rgb(255,173,100)" stroke="#555" stroke-width="0.4"/><polygon points="232.0,120.9 268.0,74.9 244.0,103.2" fill="rgb(255,177,106)" stroke="#555" stroke-width="0.4"/><polygon points="256.0,98.7 292.0,54.8 268.0,74.9" fill="rgb(255,146,64)" stroke="#555" stroke-width="0.4"/><polygon points="280.0,82.9 316.0,54.8 292.0,54.8" fill="rgb(255,131,42)" stroke="#555" stroke-width="0.4"/><polygon points="304.0,82.9 340.0,74.9 316.0,54.8" fill="rgb(255,139,54)" stroke="#555" stroke-width="0.4"/><polygon points="328.0,98.7 364.0,103.2 340.0,74.9" fill="rgb(255,167,93)" stroke="#555" stroke-width="0.4"/><polygon points="232.0,120.9 256.0,98.7 268.0,74.9" fill="rgb(255,172,98)" stroke="#555" stroke-width="0.4"/><polygon points="256.0,98.7 280.0,82.9 292.0,54.8" fill="rgb(255,146,64)" stroke="#555" stroke-width="0.4"/><polygon points="280.0,82.9 304.0,82.9 316.0,54.8" fill="rgb(255,139,54)" stroke="#555" stroke-width="0.4"/><polygon points="304.0,82.9 328.0,98.7 340.0,74.9" fill="rgb(255,155,76)" stroke="#555" stroke-width="0.4"/><polygon points="328.0,98.7 352.0,120.9 364.0,103.2" fill="rgb(255,184,115)" stroke="#555" stroke-width="0.4"/><polygon points="220.0,142.7 256.0,98.7 232.0,120.9" fill="rgb(255,194,130)" stroke="#555" stroke-width="0.4"/><polygon points="244.0,128.9 280.0,82.9 256.0,98.7" fill="rgb(255,172,98)" stroke="#555" stroke-width="0.4"/><polygon points="268.0,119.2 304.0,82.9 280.0,82.9" fill="rgb(255,160,83)" stroke="#555" stroke-width="0.4"/><polygon points="292.0,119.2 328.0,98.7 304.0,82.9" fill="rgb(255,167,93)" stroke="#555" stroke-width="0.4"/><polygon points="316.0,128.9 352.0,120.9 328.0,98.7" fill="rgb(255,188,121)" stroke="#555" stroke-width="0.4"/><polygon points="220.0,142.7 244.0,128.9 256.0,98.7" fill="rgb(255,194,130)" stroke="#555" stroke-width="0.4"/><polygon points="244.0,128.9 268.0,119.2 280.0,82.9" fill="rgb(255,177,106)" stroke="#555" stroke-width="0.4"/><polygon points="268.0,119.2 292.0,119.2 304.0,82.9" fill="rgb(255,173,100)" stroke="#555" stroke-width="0.4"/><polygon points="292.0,119.2 316.0,128.9 328.0,98.7" fill="rgb(255,184,115)" stroke="#555" stroke-width="0.4"/><polygon points="316.0,128.9 340.0,142.7 352.0,120.9" fill="rgb(255,204,143)" stroke="#555" stroke-width="0.4"/></g>
+  <text x="300.0" y="224" text-anchor="middle" font-family="serif" font-size="11" fill="#333">cpwl Φ over 𝒯</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A regular triangulation $\mathcal{T}$ of $\Omega = [0,1]^2$ (left) and the corresponding continuous piecewise linear function $\Phi$ defined by its values at the nodes (right). Theorem 5.7 guarantees that every such cpwl function is realized by a ReLU neural network whose size scales with the number of elements $\lvert \mathcal{T} \rvert$.
+</figcaption>
+</figure>
+
 
 #### 5.3.1 Triangulations of $\Omega$
 
@@ -811,7 +1024,7 @@ $$\text{co}(S) := \left\lbrace \sum_{j=1}^n \alpha_j \boldsymbol{x}_j \;\middle\
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.12</span><span class="math-callout__name">(Affine Independence and Simplex)</span></p>
 
-Let $n \in \mathbb{N}_0$, $d \in \mathbb{N}$ and $n \le d$. We call $\boldsymbol{x}_0, \ldots, \boldsymbol{x}_n \in \mathbb{R}^d$ **affinely independent** if and only if either $n = 0$ or $n \ge 1$ and the vectors $\boldsymbol{x}_1 - \boldsymbol{x}_0, \ldots, \boldsymbol{x}_n - \boldsymbol{x}_0$ are linearly independent. In this case, we call $\text{co}(\boldsymbol{x}_0, \ldots, \boldsymbol{x}_n) := \text{co}(\lbrace \boldsymbol{x}_0, \ldots, \boldsymbol{x}_n \rbrace)$ an **$n$-simplex**.
+Let $n \in \mathbb{N}\_0$, $d \in \mathbb{N}$ and $n \le d$. We call $\boldsymbol{x}\_0, \ldots, \boldsymbol{x}\_n \in \mathbb{R}^d$ **affinely independent** if and only if either $n = 0$ or $n \ge 1$ and the vectors $\boldsymbol{x}\_1 - \boldsymbol{x}\_0, \ldots, \boldsymbol{x}\_n - \boldsymbol{x}\_0$ are linearly independent. In this case, we call $\text{co}(\boldsymbol{x}\_0, \ldots, \boldsymbol{x}\_n) := \text{co}(\lbrace \boldsymbol{x}\_0, \ldots, \boldsymbol{x}\_n \rbrace)$ an **$n$-simplex**.
 
 </div>
 
@@ -820,11 +1033,11 @@ Let $n \in \mathbb{N}_0$, $d \in \mathbb{N}$ and $n \le d$. We call $\boldsymbol
 
 Let $d \in \mathbb{N}$, and $\Omega \subseteq \mathbb{R}^d$ be compact. Let $\mathcal{T}$ be a finite set of $d$-simplices, and for each $\tau \in \mathcal{T}$ let $V(\tau) \subseteq \Omega$ have cardinality $d + 1$ such that $\tau = \text{co}(V(\tau))$. We call $\mathcal{T}$ a **regular triangulation** of $\Omega$, if and only if
 
-(i) $\bigcup_{\tau \in \mathcal{T}} \tau = \Omega$,
+(i) $\bigcup\_{\tau \in \mathcal{T}} \tau = \Omega$,
 
 (ii) for all $\tau, \tau' \in \mathcal{T}$ it holds that $\tau \cap \tau' = \text{co}(V(\tau) \cap V(\tau'))$.
 
-We call $\boldsymbol{\eta} \in \mathcal{V} := \bigcup_{\tau \in \mathcal{T}} V(\tau)$ a **node** (or vertex) and $\tau \in \mathcal{T}$ an **element** of the triangulation.
+We call $\boldsymbol{\eta} \in \mathcal{V} := \bigcup\_{\tau \in \mathcal{T}} V(\tau)$ a **node** (or vertex) and $\tau \in \mathcal{T}$ an **element** of the triangulation.
 
 </div>
 
@@ -836,16 +1049,16 @@ corresponding to the maximal number of elements shared by a single node.
 
 #### 5.3.2 Size Bounds for Regular Triangulations
 
-Throughout this subsection, let $\mathcal{T}$ be a regular triangulation of $\Omega$, and we adhere to the notation of Definition 5.13. We will say that $f \colon \Omega \to \mathbb{R}$ is cpwl with respect to $\mathcal{T}$ if $f$ is cpwl and $f\vert_\tau$ is affine for each $\tau \in \mathcal{T}$.
+Throughout this subsection, let $\mathcal{T}$ be a regular triangulation of $\Omega$, and we adhere to the notation of Definition 5.13. We will say that $f \colon \Omega \to \mathbb{R}$ is cpwl with respect to $\mathcal{T}$ if $f$ is cpwl and $f\vert\_\tau$ is affine for each $\tau \in \mathcal{T}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.14</span><span class="math-callout__name">(Size Bounds for Regular Triangulations)</span></p>
 
-Let $d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$ be a bounded domain, and let $\mathcal{T}$ be a regular triangulation of $\Omega$. Let $f \colon \Omega \to \mathbb{R}$ be cpwl with respect to $\mathcal{T}$ and $f\vert_{\partial \Omega} = 0$. Then there exists a ReLU neural network $\Phi \colon \Omega \to \mathbb{R}$ realizing $f$, and it holds
+Let $d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$ be a bounded domain, and let $\mathcal{T}$ be a regular triangulation of $\Omega$. Let $f \colon \Omega \to \mathbb{R}$ be cpwl with respect to $\mathcal{T}$ and $f\vert\_{\partial \Omega} = 0$. Then there exists a ReLU neural network $\Phi \colon \Omega \to \mathbb{R}$ realizing $f$, and it holds
 
 $$\text{size}(\Phi) = O(\lvert \mathcal{T} \rvert), \quad \text{width}(\Phi) = O(\lvert \mathcal{T} \rvert), \quad \text{depth}(\Phi) = O(1),$$
 
-where the constants in the Landau notation depend on $d$ and $k_\mathcal{T}$.
+where the constants in the Landau notation depend on $d$ and $k\_\mathcal{T}$.
 
 </div>
 
@@ -854,15 +1067,15 @@ The proof strategy is to introduce a basis of the space of cpwl functions on $\m
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.15</span></p>
 
-Let $d \in \mathbb{N}$. Let $\tau := \text{co}(\boldsymbol{\eta}_0, \ldots, \boldsymbol{\eta}_d)$ be a $d$-simplex. For every $y_0, \ldots, y_d \in \mathbb{R}$, there exists a unique $g \in \mathcal{P}_1(\mathbb{R}^d)$ such that $g(\boldsymbol{\eta}_i) = y_i$, $i = 0, \ldots, d$.
+Let $d \in \mathbb{N}$. Let $\tau := \text{co}(\boldsymbol{\eta}\_0, \ldots, \boldsymbol{\eta}\_d)$ be a $d$-simplex. For every $y\_0, \ldots, y\_d \in \mathbb{R}$, there exists a unique $g \in \mathcal{P}\_1(\mathbb{R}^d)$ such that $g(\boldsymbol{\eta}\_i) = y\_i$, $i = 0, \ldots, d$.
 
 </div>
 
-Since $\Omega$ is the union of the simplices $\tau \in \mathcal{T}$, every cpwl function with respect to $\mathcal{T}$ is thus uniquely defined through its values at the nodes. Hence, the desired basis consists of cpwl functions $\varphi_{\boldsymbol{\eta}} \colon \Omega \to \mathbb{R}$ with respect to $\mathcal{T}$ such that
+Since $\Omega$ is the union of the simplices $\tau \in \mathcal{T}$, every cpwl function with respect to $\mathcal{T}$ is thus uniquely defined through its values at the nodes. Hence, the desired basis consists of cpwl functions $\varphi\_{\boldsymbol{\eta}} \colon \Omega \to \mathbb{R}$ with respect to $\mathcal{T}$ such that
 
 $$\varphi_{\boldsymbol{\eta}}(\boldsymbol{\mu}) = \delta_{\boldsymbol{\eta}\boldsymbol{\mu}} \quad \text{for all } \boldsymbol{\mu} \in \mathcal{V},$$
 
-where $\delta_{\boldsymbol{\eta}\boldsymbol{\mu}}$ denotes the Kronecker delta. We can then represent every cpwl function $f \colon \Omega \to \mathbb{R}$ that vanishes on the boundary $\partial \Omega$ as
+where $\delta\_{\boldsymbol{\eta}\boldsymbol{\mu}}$ denotes the Kronecker delta. We can then represent every cpwl function $f \colon \Omega \to \mathbb{R}$ that vanishes on the boundary $\partial \Omega$ as
 
 $$f(\boldsymbol{x}) = \sum_{\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}} f(\boldsymbol{\eta}) \varphi_{\boldsymbol{\eta}}(\boldsymbol{x}) \quad \text{for all } \boldsymbol{x} \in \Omega.$$
 
@@ -882,17 +1095,31 @@ $$\partial \omega(\boldsymbol{\eta}) = \bigcup_{\lbrace \tau \in \mathcal{T} \mi
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.17</span><span class="math-callout__name">(Basis Functions as ReLU Networks)</span></p>
 
-For each interior node $\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}$ there exists a unique cpwl function $\varphi_{\boldsymbol{\eta}} \colon \Omega \to \mathbb{R}$ satisfying $\varphi_{\boldsymbol{\eta}}(\boldsymbol{\mu}) = \delta_{\boldsymbol{\eta}\boldsymbol{\mu}}$. Moreover, $\varphi_{\boldsymbol{\eta}}$ can be expressed by a ReLU neural network with size, width, and depth bounds that only depend on $d$ and $k_\mathcal{T}$.
+For each interior node $\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}$ there exists a unique cpwl function $\varphi\_{\boldsymbol{\eta}} \colon \Omega \to \mathbb{R}$ satisfying $\varphi\_{\boldsymbol{\eta}}(\boldsymbol{\mu}) = \delta\_{\boldsymbol{\eta}\boldsymbol{\mu}}$. Moreover, $\varphi\_{\boldsymbol{\eta}}$ can be expressed by a ReLU neural network with size, width, and depth bounds that only depend on $d$ and $k\_\mathcal{T}$.
 
 </div>
 
-*Proof sketch.* By Lemma 5.15, on each $\tau \in \mathcal{T}$, the affine function $\varphi_{\boldsymbol{\eta}}\vert_\tau$ is uniquely defined through the values at the nodes of $\tau$. This defines a continuous function $\varphi_{\boldsymbol{\eta}} \colon \Omega \to \mathbb{R}$. Using Lemma 5.16 and the fact that $\varphi_{\boldsymbol{\eta}}(\boldsymbol{\mu}) = 0$ whenever $\boldsymbol{\mu} \neq \boldsymbol{\eta}$, we find that $\varphi_{\boldsymbol{\eta}}$ vanishes on the boundary of the patch $\omega(\boldsymbol{\eta}) \subseteq \Omega$. Hence, it is a cpwl function with at most $n := k_\mathcal{T} + 1$ affine functions. By Theorem 5.7, $\varphi_{\boldsymbol{\eta}}$ can be expressed as a ReLU neural network with the claimed size, width and depth bounds.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
 
-*Proof (of Theorem 5.14).* With $\Phi(\boldsymbol{x}) := \sum_{\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}} f(\boldsymbol{\eta}) \varphi_{\boldsymbol{\eta}}(\boldsymbol{x})$, it holds that $\Phi$ equals $f$ on all of $\Omega$. Since each element $\tau$ is the convex hull of $d+1$ nodes $\boldsymbol{\eta} \in \mathcal{V}$, the cardinality of $\mathcal{V}$ is bounded by $(d+1)\lvert \mathcal{T} \rvert$. Thus, the summation is over $O(\lvert \mathcal{T} \rvert)$ terms. Using Lemma 5.4 and Lemma 5.17 we obtain the claimed bounds on size, width, and depth of the neural network.
+By Lemma 5.15, on each $\tau \in \mathcal{T}$, the affine function $\varphi\_{\boldsymbol{\eta}}\vert\_\tau$ is uniquely defined through the values at the nodes of $\tau$. This defines a continuous function $\varphi\_{\boldsymbol{\eta}} \colon \Omega \to \mathbb{R}$. Using Lemma 5.16 and the fact that $\varphi\_{\boldsymbol{\eta}}(\boldsymbol{\mu}) = 0$ whenever $\boldsymbol{\mu} \neq \boldsymbol{\eta}$, we find that $\varphi\_{\boldsymbol{\eta}}$ vanishes on the boundary of the patch $\omega(\boldsymbol{\eta}) \subseteq \Omega$. Hence, it is a cpwl function with at most $n := k\_\mathcal{T} + 1$ affine functions. By Theorem 5.7, $\varphi\_{\boldsymbol{\eta}}$ can be expressed as a ReLU neural network with the claimed size, width and depth bounds.
+
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 5.14</summary>
+
+With $\Phi(\boldsymbol{x}) := \sum\_{\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}} f(\boldsymbol{\eta}) \varphi\_{\boldsymbol{\eta}}(\boldsymbol{x})$, it holds that $\Phi$ equals $f$ on all of $\Omega$. Since each element $\tau$ is the convex hull of $d+1$ nodes $\boldsymbol{\eta} \in \mathcal{V}$, the cardinality of $\mathcal{V}$ is bounded by $(d+1)\lvert \mathcal{T} \rvert$. Thus, the summation is over $O(\lvert \mathcal{T} \rvert)$ terms. Using Lemma 5.4 and Lemma 5.17 we obtain the claimed bounds on size, width, and depth of the neural network.
+
+</details>
+</div>
 
 #### 5.3.3 Size Bounds for Locally Convex Triangulations
 
-Assuming local convexity of the triangulation, in this section we make the dependence of the constants in Theorem 5.14 explicit in the dimension $d$ and in the maximal number of simplices $k_\mathcal{T}$ touching a node.
+Assuming local convexity of the triangulation, in this section we make the dependence of the constants in Theorem 5.14 explicit in the dimension $d$ and in the maximal number of simplices $k\_\mathcal{T}$ touching a node.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 5.18</span><span class="math-callout__name">(Locally Convex Triangulation)</span></p>
@@ -904,7 +1131,7 @@ A regular triangulation $\mathcal{T}$ is called **locally convex** if and only i
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.19</span><span class="math-callout__name">(Size Bounds for Locally Convex Triangulations)</span></p>
 
-Let $d \in \mathbb{N}$, and let $\Omega \subseteq \mathbb{R}^d$ be a bounded domain. Let $\mathcal{T}$ be a locally convex regular triangulation of $\Omega$. Let $f \colon \Omega \to \mathbb{R}$ be cpwl with respect to $\mathcal{T}$ and $f\vert_{\partial \Omega} = 0$. Then, there exists a constant $C > 0$ (independent of $d$, $f$ and $\mathcal{T}$) and there exists a neural network $\Phi^f \colon \Omega \to \mathbb{R}$ such that $\Phi^f = f$,
+Let $d \in \mathbb{N}$, and let $\Omega \subseteq \mathbb{R}^d$ be a bounded domain. Let $\mathcal{T}$ be a locally convex regular triangulation of $\Omega$. Let $f \colon \Omega \to \mathbb{R}$ be cpwl with respect to $\mathcal{T}$ and $f\vert\_{\partial \Omega} = 0$. Then, there exists a constant $C > 0$ (independent of $d$, $f$ and $\mathcal{T}$) and there exists a neural network $\Phi^f \colon \Omega \to \mathbb{R}$ such that $\Phi^f = f$,
 
 $$\text{size}(\Phi^f) \le C \cdot (1 + d^2 k_\mathcal{T} \lvert \mathcal{T} \rvert),$$
 
@@ -914,7 +1141,7 @@ $$\text{depth}(\Phi^f) \le C \cdot (1 + \log_2(k_\mathcal{T})).$$
 
 </div>
 
-The key improvement relies on an explicit construction of the basis functions $\varphi_{\boldsymbol{\eta}}$ using the convexity of the patches. If $\omega(\boldsymbol{\eta})$ is convex, then it can be written as an intersection of finitely many half-spaces:
+The key improvement relies on an explicit construction of the basis functions $\varphi\_{\boldsymbol{\eta}}$ using the convexity of the patches. If $\omega(\boldsymbol{\eta})$ is convex, then it can be written as an intersection of finitely many half-spaces:
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 5.20</span><span class="math-callout__name">(Convex Patch Characterization)</span></p>
@@ -923,7 +1150,7 @@ Let $\boldsymbol{\eta}$ be an interior node. Then a patch $\omega(\boldsymbol{\e
 
 $$\omega(\boldsymbol{\eta}) = \bigcap_{\lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace} H_+(\tau, \boldsymbol{\eta}),$$
 
-where $H_+(\tau, \boldsymbol{\eta}) := \lbrace \boldsymbol{x} \in \mathbb{R}^d \mid \boldsymbol{x} \text{ is on the same side of } H_0(\tau, \boldsymbol{\eta}) \text{ as } \boldsymbol{\eta} \rbrace \cup H_0(\tau, \boldsymbol{\eta})$ and $H_0(\tau, \boldsymbol{\eta}) := \text{aff}(V(\tau) \setminus \lbrace \boldsymbol{\eta} \rbrace)$ is the affine hyperplane passing through all nodes in $V(\tau) \setminus \lbrace \boldsymbol{\eta} \rbrace$.
+where $H\_+(\tau, \boldsymbol{\eta}) := \lbrace \boldsymbol{x} \in \mathbb{R}^d \mid \boldsymbol{x} \text{ is on the same side of } H\_0(\tau, \boldsymbol{\eta}) \text{ as } \boldsymbol{\eta} \rbrace \cup H\_0(\tau, \boldsymbol{\eta})$ and $H\_0(\tau, \boldsymbol{\eta}) := \text{aff}(V(\tau) \setminus \lbrace \boldsymbol{\eta} \rbrace)$ is the affine hyperplane passing through all nodes in $V(\tau) \setminus \lbrace \boldsymbol{\eta} \rbrace$.
 
 </div>
 
@@ -936,21 +1163,28 @@ Let $\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}$ be an interior no
 
 $$\varphi_{\boldsymbol{\eta}}(\boldsymbol{x}) = \max\left\lbrace 0, \min_{\lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace} g_{\tau, \boldsymbol{\eta}}(\boldsymbol{x}) \right\rbrace \quad \text{for all } \boldsymbol{x} \in \mathbb{R}^d,$$
 
-where for $\tau \in \mathcal{T}$ and $\boldsymbol{\eta} \in V(\tau)$, $g_{\tau, \boldsymbol{\eta}} \in \mathcal{P}_1(\mathbb{R}^d)$ is the affine function such that $g_{\tau, \boldsymbol{\eta}}(\boldsymbol{\mu}) = 1$ if $\boldsymbol{\eta} = \boldsymbol{\mu}$ and $g_{\tau, \boldsymbol{\eta}}(\boldsymbol{\mu}) = 0$ if $\boldsymbol{\eta} \neq \boldsymbol{\mu}$ for all $\boldsymbol{\mu} \in V(\tau)$.
+where for $\tau \in \mathcal{T}$ and $\boldsymbol{\eta} \in V(\tau)$, $g\_{\tau, \boldsymbol{\eta}} \in \mathcal{P}\_1(\mathbb{R}^d)$ is the affine function such that $g\_{\tau, \boldsymbol{\eta}}(\boldsymbol{\mu}) = 1$ if $\boldsymbol{\eta} = \boldsymbol{\mu}$ and $g\_{\tau, \boldsymbol{\eta}}(\boldsymbol{\mu}) = 0$ if $\boldsymbol{\eta} \neq \boldsymbol{\mu}$ for all $\boldsymbol{\mu} \in V(\tau)$.
 
 </div>
 
-*Proof (of Theorem 5.19).* For every interior node $\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}$, the cpwl basis function $\varphi_{\boldsymbol{\eta}}$ can be expressed as in Lemma 5.21, i.e.,
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 5.19</summary>
+
+For every interior node $\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}$, the cpwl basis function $\varphi\_{\boldsymbol{\eta}}$ can be expressed as in Lemma 5.21, i.e.,
 
 $$\varphi_{\boldsymbol{\eta}}(\boldsymbol{x}) = \sigma \bullet \Phi_{\lvert \lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace \rvert}^{\min} \bullet (g_{\tau, \boldsymbol{\eta}}(\boldsymbol{x}))_{\lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace},$$
 
-where $(g_{\tau, \boldsymbol{\eta}}(\boldsymbol{x}))_{\lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace}$ denotes the parallelization with shared inputs of the functions $g_{\tau, \boldsymbol{\eta}}$ for all $\tau \in \mathcal{T}$ such that $\boldsymbol{\eta} \in \tau$. With $\lvert \lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace \rvert \le k_\mathcal{T}$, we have by Lemma 5.2:
+where $(g\_{\tau, \boldsymbol{\eta}}(\boldsymbol{x}))\_{\lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace}$ denotes the parallelization with shared inputs of the functions $g\_{\tau, \boldsymbol{\eta}}$ for all $\tau \in \mathcal{T}$ such that $\boldsymbol{\eta} \in \tau$. With $\lvert \lbrace \tau \in \mathcal{T} \mid \boldsymbol{\eta} \in \tau \rbrace \rvert \le k\_\mathcal{T}$, we have by Lemma 5.2:
 
 $$\text{size}(\varphi_{\boldsymbol{\eta}}) \le 4(2 + 16k_\mathcal{T} + k_\mathcal{T} d),$$
 
 $$\text{depth}(\varphi_{\boldsymbol{\eta}}) \le 4 + \lceil \log_2(k_\mathcal{T}) \rceil, \quad \text{width}(\varphi_{\boldsymbol{\eta}}) \le \max\lbrace 1, 3k_\mathcal{T}, d \rbrace.$$
 
-Since every interior node has at least $d$ simplices touching it, we can assume $\max\lbrace k_\mathcal{T}, d \rbrace = k_\mathcal{T}$. The neural network $\Phi(\boldsymbol{x}) := \sum_{\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}} f(\boldsymbol{\eta}) \varphi_{\boldsymbol{\eta}}(\boldsymbol{x})$ realizes $f$ on all of $\Omega$. Since $\lvert \mathcal{V} \rvert$ is bounded by $(d+1)\lvert \mathcal{T} \rvert$, an application of Lemma 5.4 yields the desired bounds.
+Since every interior node has at least $d$ simplices touching it, we can assume $\max\lbrace k\_\mathcal{T}, d \rbrace = k\_\mathcal{T}$. The neural network $\Phi(\boldsymbol{x}) := \sum\_{\boldsymbol{\eta} \in \mathcal{V} \cap \mathring{\Omega}} f(\boldsymbol{\eta}) \varphi\_{\boldsymbol{\eta}}(\boldsymbol{x})$ realizes $f$ on all of $\Omega$. Since $\lvert \mathcal{V} \rvert$ is bounded by $(d+1)\lvert \mathcal{T} \rvert$, an application of Lemma 5.4 yields the desired bounds.
+
+</details>
+</div>
 
 ### 5.4 Convergence Rates for Hölder Continuous Functions
 
@@ -963,7 +1197,7 @@ Let $s \in (0, 1]$ and $\Omega \subseteq \mathbb{R}^d$. Then for $f \colon \Omeg
 
 $$\lVert f \rVert_{C^{0,s}(\Omega)} := \sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) \rvert + \sup_{\boldsymbol{x} \neq \boldsymbol{y} \in \Omega} \frac{\lvert f(\boldsymbol{x}) - f(\boldsymbol{y}) \rvert}{\lVert \boldsymbol{x} - \boldsymbol{y} \rVert_2^s},$$
 
-and we denote by $C^{0,s}(\Omega)$ the set of functions $f \in C^0(\Omega)$ for which $\lVert f \rVert_{C^{0,s}(\Omega)} < \infty$.
+and we denote by $C^{0,s}(\Omega)$ the set of functions $f \in C^0(\Omega)$ for which $\lVert f \rVert\_{C^{0,s}(\Omega)} < \infty$.
 
 </div>
 
@@ -972,7 +1206,7 @@ Hölder continuous functions can be approximated well by cpwl functions. This le
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 5.23</span><span class="math-callout__name">(Approximation of Hölder Functions by ReLU Networks)</span></p>
 
-Let $d \in \mathbb{N}$. There exists a constant $C = C(d)$ such that for every $f \in C^{0,s}([0,1]^d)$ and every $N$ there exists a ReLU neural network $\Phi_N^f$ with
+Let $d \in \mathbb{N}$. There exists a constant $C = C(d)$ such that for every $f \in C^{0,s}([0,1]^d)$ and every $N$ there exists a ReLU neural network $\Phi\_N^f$ with
 
 $$\text{size}(\Phi_N^f) \le CN, \quad \text{width}(\Phi_N^f) \le CN, \quad \text{depth}(\Phi_N^f) = C$$
 
@@ -982,20 +1216,27 @@ $$\sup_{\boldsymbol{x} \in [0,1]^d} \left\lvert f(\boldsymbol{x}) - \Phi_N^f(\bo
 
 </div>
 
-*Proof sketch.* For $M \ge 2$, consider the set of nodes $\lbrace \boldsymbol{\nu}/M \mid \boldsymbol{\nu} \in \lbrace -1, \ldots, M+1 \rbrace^d \rbrace$. These nodes suggest a partition of $[-1/M, 1 + 1/M]^d$ into $(2+M)^d$ sub-hypercubes. Each such sub-hypercube can be partitioned into $d!$ simplices, such that we obtain a regular triangulation $\mathcal{T}$ with $d!(2+M)^d$ elements on $[0,1]^d$. According to Theorem 5.14 there exists a neural network $\Phi$ that is cpwl with respect to $\mathcal{T}$ and $\Phi(\boldsymbol{\nu}/M) = f(\boldsymbol{\nu}/M)$ whenever $\boldsymbol{\nu} \in \lbrace 0, \ldots, M \rbrace^d$ and $\Phi(\boldsymbol{\nu}/M) = 0$ for all other (boundary) nodes. It holds
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+For $M \ge 2$, consider the set of nodes $\lbrace \boldsymbol{\nu}/M \mid \boldsymbol{\nu} \in \lbrace -1, \ldots, M+1 \rbrace^d \rbrace$. These nodes suggest a partition of $[-1/M, 1 + 1/M]^d$ into $(2+M)^d$ sub-hypercubes. Each such sub-hypercube can be partitioned into $d!$ simplices, such that we obtain a regular triangulation $\mathcal{T}$ with $d!(2+M)^d$ elements on $[0,1]^d$. According to Theorem 5.14 there exists a neural network $\Phi$ that is cpwl with respect to $\mathcal{T}$ and $\Phi(\boldsymbol{\nu}/M) = f(\boldsymbol{\nu}/M)$ whenever $\boldsymbol{\nu} \in \lbrace 0, \ldots, M \rbrace^d$ and $\Phi(\boldsymbol{\nu}/M) = 0$ for all other (boundary) nodes. It holds
 
 $$\text{size}(\Phi) \le C\lvert \mathcal{T} \rvert = Cd!(2+M)^d, \quad \text{depth}(\Phi) \le C.$$
 
-To bound the error: fix a point $\boldsymbol{x} \in [0,1]^d$. Then $\boldsymbol{x}$ belongs to one of the interior simplices $\tau$ of the triangulation. Two nodes of the simplex have distance at most $\varepsilon := \sqrt{d}/M$. Since $\Phi\vert_\tau$ is the linear interpolant of $f$ at the vertices $V(\tau)$, $\Phi(\boldsymbol{x})$ is a convex combination of the $(f(\boldsymbol{\eta}))_{\boldsymbol{\eta} \in V(\tau)}$. Thus
+To bound the error: fix a point $\boldsymbol{x} \in [0,1]^d$. Then $\boldsymbol{x}$ belongs to one of the interior simplices $\tau$ of the triangulation. Two nodes of the simplex have distance at most $\varepsilon := \sqrt{d}/M$. Since $\Phi\vert\_\tau$ is the linear interpolant of $f$ at the vertices $V(\tau)$, $\Phi(\boldsymbol{x})$ is a convex combination of the $(f(\boldsymbol{\eta}))\_{\boldsymbol{\eta} \in V(\tau)}$. Thus
 
 $$\lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert \le 2 \lVert f \rVert_{C^{0,s}([0,1]^d)} \varepsilon^s = 2d^{s/2} \lVert f \rVert_{C^{0,s}([0,1]^d)} M^{-s}.$$
 
-Setting $N := M^d$ yields $\lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert \le 2d^{s/2} \lVert f \rVert_{C^{0,s}([0,1]^d)} N^{-s/d}$.
+Setting $N := M^d$ yields $\lvert f(\boldsymbol{x}) - \Phi(\boldsymbol{x}) \rvert \le 2d^{s/2} \lVert f \rVert\_{C^{0,s}([0,1]^d)} N^{-s/d}$.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Lifting Approximation Theory to ReLU Networks)</span></p>
 
-The principle behind Theorem 5.23 can be applied in even more generality. Since we can represent every cpwl function on a regular triangulation with a neural network of size $O(N)$, where $N$ denotes the number of elements, most classical (e.g. finite element) approximation theory for cpwl functions can be lifted to generate statements about ReLU approximation. For instance, it is well-known that functions in the Sobolev space $H^2([0,1]^d)$ can be approximated by cpwl functions on a regular triangulation in terms of $L^2([0,1]^d)$ with the rate $2/d$. Similar as in the proof of Theorem 5.23, for every $f \in H^2([0,1]^d)$ and every $N$ there then exists a ReLU neural network $\Phi_N$ such that $\text{size}(\Phi_N) = O(N)$ and
+The principle behind Theorem 5.23 can be applied in even more generality. Since we can represent every cpwl function on a regular triangulation with a neural network of size $O(N)$, where $N$ denotes the number of elements, most classical (e.g. finite element) approximation theory for cpwl functions can be lifted to generate statements about ReLU approximation. For instance, it is well-known that functions in the Sobolev space $H^2([0,1]^d)$ can be approximated by cpwl functions on a regular triangulation in terms of $L^2([0,1]^d)$ with the rate $2/d$. Similar as in the proof of Theorem 5.23, for every $f \in H^2([0,1]^d)$ and every $N$ there then exists a ReLU neural network $\Phi\_N$ such that $\text{size}(\Phi\_N) = O(N)$ and
 
 $$\lVert f - \Phi_N \rVert_{L^2([0,1]^d)} \le C \lVert f \rVert_{H^2([0,1]^d)} N^{-2/d}.$$
 
@@ -1014,7 +1255,7 @@ Traditionally, an insightful approach to study limitations of ReLU neural networ
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 6.1</span><span class="math-callout__name">(Pieces / Linear Regions)</span></p>
 
-Let $d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$, and let $f \colon \Omega \to \mathbb{R}$ be cpwl (see Definition 5.5). We say that $f$ has $p \in \mathbb{N}$ **pieces** (or **linear regions**), if $p$ is the smallest number of connected open sets $(\Omega_i)_{i=1}^p$ such that $\bigcup_{i=1}^p \overline{\Omega}_i = \Omega$, and $f\vert_{\Omega_i}$ is an affine function for all $i = 1, \ldots, p$. We denote $\text{Pieces}(f, \Omega) := p$.
+Let $d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$, and let $f \colon \Omega \to \mathbb{R}$ be cpwl (see Definition 5.5). We say that $f$ has $p \in \mathbb{N}$ **pieces** (or **linear regions**), if $p$ is the smallest number of connected open sets $(\Omega\_i)\_{i=1}^p$ such that $\bigcup\_{i=1}^p \overline{\Omega}\_i = \Omega$, and $f\vert\_{\Omega\_i}$ is an affine function for all $i = 1, \ldots, p$. We denote $\text{Pieces}(f, \Omega) := p$.
 
 For $d = 1$ we call every point where $f$ is not differentiable a **break point** of $f$.
 
@@ -1025,7 +1266,7 @@ To get an accurate cpwl approximation of a function, the approximating function 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.2</span><span class="math-callout__name">(Lower Bound on Approximation Error)</span></p>
 
-Let $-\infty < a < b < \infty$ and $f \in C^3([a,b])$ so that $f$ is not affine. Then there exists a constant $C > 0$ depending only on $\int_a^b \sqrt{\lvert f''(x) \rvert} \, \mathrm{d}x$ so that
+Let $-\infty < a < b < \infty$ and $f \in C^3([a,b])$ so that $f$ is not affine. Then there exists a constant $C > 0$ depending only on $\int\_a^b \sqrt{\lvert f''(x) \rvert} \, \mathrm{d}x$ so that
 
 $$\lVert g - f \rVert_{L^\infty([a,b])} > C p^{-2}$$
 
@@ -1039,38 +1280,45 @@ Theorem 6.2 implies that for ReLU neural networks we need architectures allowing
 
 Neural networks are based on the composition and addition of neurons. These two operations increase the possible number of pieces in a very specific way:
 
-- **Summation:** Let $\Omega \subseteq \mathbb{R}$. The sum of two cpwl functions $f_1, f_2 \colon \Omega \to \mathbb{R}$ satisfies
+- **Summation:** Let $\Omega \subseteq \mathbb{R}$. The sum of two cpwl functions $f\_1, f\_2 \colon \Omega \to \mathbb{R}$ satisfies
 
 $$\text{Pieces}(f_1 + f_2, \Omega) \le \text{Pieces}(f_1, \Omega) + \text{Pieces}(f_2, \Omega) - 1.$$
 
-This holds because the sum is affine in every point where both $f_1$ and $f_2$ are affine. Therefore, the sum has at most as many break points as $f_1$ and $f_2$ combined. Moreover, the number of pieces of a univariate function equals the number of its break points plus one.
+This holds because the sum is affine in every point where both $f\_1$ and $f\_2$ are affine. Therefore, the sum has at most as many break points as $f\_1$ and $f\_2$ combined. Moreover, the number of pieces of a univariate function equals the number of its break points plus one.
 
-- **Composition:** Let again $\Omega \subseteq \mathbb{R}$. The composition of two functions $f_1 \colon \mathbb{R}^d \to \mathbb{R}$ and $f_2 \colon \Omega \to \mathbb{R}^d$ satisfies
+- **Composition:** Let again $\Omega \subseteq \mathbb{R}$. The composition of two functions $f\_1 \colon \mathbb{R}^d \to \mathbb{R}$ and $f\_2 \colon \Omega \to \mathbb{R}^d$ satisfies
 
 $$\text{Pieces}(f_1 \circ f_2, \Omega) \le \text{Pieces}(f_1, \mathbb{R}^d) \cdot \text{Pieces}(f_2, \Omega).$$
 
-This is because for each of the affine pieces of $f_2$ -- let us call one of those pieces $A \subseteq \mathbb{R}$ -- we have that $f_2$ is either constant or injective on $A$. If it is constant, then $f_1 \circ f_2$ is constant. If it is injective, then $\text{Pieces}(f_1 \circ f_2, A) = \text{Pieces}(f_1, f_2(A)) \le \text{Pieces}(f_1, \mathbb{R}^d)$. Since this holds for all pieces of $f_2$ we get the bound.
+This is because for each of the affine pieces of $f\_2$ -- let us call one of those pieces $A \subseteq \mathbb{R}$ -- we have that $f\_2$ is either constant or injective on $A$. If it is constant, then $f\_1 \circ f\_2$ is constant. If it is injective, then $\text{Pieces}(f\_1 \circ f\_2, A) = \text{Pieces}(f\_1, f\_2(A)) \le \text{Pieces}(f\_1, \mathbb{R}^d)$. Since this holds for all pieces of $f\_2$ we get the bound.
 
 These considerations give the following result. The ReLU activation function corresponds to $p = 2$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.3</span><span class="math-callout__name">(Upper Bound on Number of Pieces)</span></p>
 
-Let $L \in \mathbb{N}$. Let $\sigma$ be cpwl with $p$ pieces. Then, every neural network with architecture $(\sigma; 1, d_1, \ldots, d_L, 1)$ has at most $(p \cdot \text{width}(\Phi))^L$ pieces.
+Let $L \in \mathbb{N}$. Let $\sigma$ be cpwl with $p$ pieces. Then, every neural network with architecture $(\sigma; 1, d\_1, \ldots, d\_L, 1)$ has at most $(p \cdot \text{width}(\Phi))^L$ pieces.
 
 </div>
 
-*Proof.* The proof is via induction over the depth $L$. Let $L = 1$, and let $\Phi \colon \mathbb{R} \to \mathbb{R}$ be a neural network of architecture $(\sigma; 1, d_1, 1)$. Then
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The proof is via induction over the depth $L$. Let $L = 1$, and let $\Phi \colon \mathbb{R} \to \mathbb{R}$ be a neural network of architecture $(\sigma; 1, d\_1, 1)$. Then
 
 $$\Phi(x) = \sum_{k=1}^{d_1} w_k^{(1)} \sigma(w_k^{(0)} x + b_k^{(0)}) + b^{(1)} \quad \text{for } x \in \mathbb{R},$$
 
-for certain $\boldsymbol{w}^{(0)}, \boldsymbol{w}^{(1)}, \boldsymbol{b}^{(0)} \in \mathbb{R}^{d_1}$ and $b^{(1)} \in \mathbb{R}$. By the summation bound, $\text{Pieces}(\Phi) \le p \cdot \text{width}(\Phi)$.
+for certain $\boldsymbol{w}^{(0)}, \boldsymbol{w}^{(1)}, \boldsymbol{b}^{(0)} \in \mathbb{R}^{d\_1}$ and $b^{(1)} \in \mathbb{R}$. By the summation bound, $\text{Pieces}(\Phi) \le p \cdot \text{width}(\Phi)$.
 
-For the induction step, assume the statement holds for $L \in \mathbb{N}$, and let $\Phi \colon \mathbb{R} \to \mathbb{R}$ be a neural network of architecture $(\sigma; 1, d_1, \ldots, d_{L+1}, 1)$. Then, we can write
+For the induction step, assume the statement holds for $L \in \mathbb{N}$, and let $\Phi \colon \mathbb{R} \to \mathbb{R}$ be a neural network of architecture $(\sigma; 1, d\_1, \ldots, d\_{L+1}, 1)$. Then, we can write
 
 $$\Phi(x) = \sum_{j=1}^{d_{L+1}} w_j \sigma(h_j(x)) + b \quad \text{for } x \in \mathbb{R},$$
 
-for some $\boldsymbol{w} \in \mathbb{R}^{d_{L+1}}$, $b \in \mathbb{R}$, and where each $h_j$ is a neural network of architecture $(\sigma; 1, d_1, \ldots, d_L, 1)$. Using the induction hypothesis, each $\sigma \circ h_\ell$ has at most $p \cdot (p \cdot \text{width}(\Phi))^L$ affine pieces. Hence $\Phi$ has at most $\text{width}(\Phi) \cdot p \cdot (p \cdot \text{width}(\Phi))^L = (p \cdot \text{width}(\Phi))^{L+1}$ affine pieces.
+for some $\boldsymbol{w} \in \mathbb{R}^{d\_{L+1}}$, $b \in \mathbb{R}$, and where each $h\_j$ is a neural network of architecture $(\sigma; 1, d\_1, \ldots, d\_L, 1)$. Using the induction hypothesis, each $\sigma \circ h\_\ell$ has at most $p \cdot (p \cdot \text{width}(\Phi))^L$ affine pieces. Hence $\Phi$ has at most $\text{width}(\Phi) \cdot p \cdot (p \cdot \text{width}(\Phi))^L = (p \cdot \text{width}(\Phi))^{L+1}$ affine pieces.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Depth vs. Width)</span></p>
@@ -1084,7 +1332,7 @@ To understand the effect of this on the approximation problem, we apply the boun
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.4</span><span class="math-callout__name">(Lower Bound on Approximation Error via Depth)</span></p>
 
-Let $d_0 \in \mathbb{N}$ and $f \in C^3([0,1]^{d_0})$. Assume there exists a line segment $\mathfrak{s} \subseteq [0,1]^{d_0}$ of positive length such that $0 < c := \int_\mathfrak{s} \sqrt{\lvert f''(x) \rvert} \, \mathrm{d}x$. Then, there exists $C > 0$ solely depending on $c$, such that for all ReLU neural networks $\Phi \colon \mathbb{R}^{d_0} \to \mathbb{R}$ with $L$ hidden layers
+Let $d\_0 \in \mathbb{N}$ and $f \in C^3([0,1]^{d\_0})$. Assume there exists a line segment $\mathfrak{s} \subseteq [0,1]^{d\_0}$ of positive length such that $0 < c := \int\_\mathfrak{s} \sqrt{\lvert f''(x) \rvert} \, \mathrm{d}x$. Then, there exists $C > 0$ solely depending on $c$, such that for all ReLU neural networks $\Phi \colon \mathbb{R}^{d\_0} \to \mathbb{R}$ with $L$ hidden layers
 
 $$\lVert f - \Phi \rVert_{L^\infty([0,1]^{d_0})} \ge C \cdot (2\text{width}(\Phi))^{-2L}.$$
 
@@ -1094,7 +1342,7 @@ Theorem 6.4 gives a lower bound on achievable approximation rates in dependence 
 
 ### 6.2 Tightness of Upper Bounds
 
-We now construct a ReLU neural network that realizes the upper bound of Theorem 6.3. First let $h_1 \colon [0,1] \to \mathbb{R}$ be the hat function
+We now construct a ReLU neural network that realizes the upper bound of Theorem 6.3. First let $h\_1 \colon [0,1] \to \mathbb{R}$ be the hat function
 
 $$h_1(x) := \begin{cases} 2x & \text{if } x \in [0, \tfrac{1}{2}] \\ 2 - 2x & \text{if } x \in [\tfrac{1}{2}, 1]. \end{cases}$$
 
@@ -1102,11 +1350,33 @@ This function can be expressed by a ReLU neural network of depth one and with tw
 
 $$h_1(x) = \sigma_{\text{ReLU}}(2x) - \sigma_{\text{ReLU}}(4x - 2) \quad \text{for all } x \in [0,1].$$
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 280 160" width="100%" style="max-width: 360px; height: auto;" role="img" aria-labelledby="hat-title">
+  <title id="hat-title">The hat function h_1</title>
+  <line x1="36" y1="132" x2="268" y2="132" stroke="#999" stroke-width="1"/>
+  <line x1="36" y1="14" x2="36" y2="132" stroke="#999" stroke-width="1"/>
+  <path d="M 36.0,132.0 L 149.0,18.0 L 262.0,132.0" fill="none" stroke="#1565c0" stroke-width="2.2"/>
+  <line x1="149.0" y1="132" x2="149.0" y2="18" stroke="#bbb" stroke-dasharray="3 3"/>
+  <line x1="36" y1="18" x2="149.0" y2="18" stroke="#bbb" stroke-dasharray="3 3"/>
+  <text x="30" y="21" text-anchor="end" font-family="serif" font-size="10" fill="#666">1</text>
+  <text x="30" y="135" text-anchor="end" font-family="serif" font-size="10" fill="#666">0</text>
+  <text x="36" y="146" text-anchor="middle" font-family="serif" font-size="10" fill="#666">0</text>
+  <text x="149.0" y="146" text-anchor="middle" font-family="serif" font-size="10" fill="#666">½</text>
+  <text x="262" y="146" text-anchor="middle" font-family="serif" font-size="10" fill="#666">1</text>
+  <text x="149.0" y="154" text-anchor="middle" font-family="serif" font-size="12" font-style="italic" fill="#333">x</text>
+  <text x="14" y="79.0" font-family="serif" font-size="12" font-style="italic" fill="#333">h₁(x)</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The hat function $h\_1 \colon [0,1] \to [0,1]$. It is realized by a single ReLU layer with two neurons: $h\_1(x) = \sigma\_{\text{ReLU}}(2x) - \sigma\_{\text{ReLU}}(4x-2)$.
+</figcaption>
+</figure>
+
+
 We recursively set
 
 $$h_n := h_{n-1} \circ h_1 \quad \text{for all } n \ge 2,$$
 
-i.e., $h_n = h_1 \circ \cdots \circ h_1$ is the $n$-fold composition of $h_1$. Since $h_1 \colon [0,1] \to [0,1]$, we have $h_n \colon [0,1] \to [0,1]$ and
+i.e., $h\_n = h\_1 \circ \cdots \circ h\_1$ is the $n$-fold composition of $h\_1$. Since $h\_1 \colon [0,1] \to [0,1]$, we have $h\_n \colon [0,1] \to [0,1]$ and
 
 $$h_n \in \mathcal{N}_1^1(\sigma_{\text{ReLU}}; n, 2).$$
 
@@ -1121,17 +1391,70 @@ $$h_n(x) = \begin{cases} 2^n(x - i 2^{-n}) & \text{if } i \ge 0 \text{ is even a
 
 </div>
 
-*Proof.* The case $n = 1$ holds by definition. We proceed by induction, and assume the statement holds for $n$. Let $x \in [0, 1/2]$ and $i \ge 0$ even such that $x \in [i 2^{-(n+1)}, (i+1)2^{-(n+1)}]$. Then $2x \in [i 2^{-n}, (i+1)2^{-n}]$. Thus
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The case $n = 1$ holds by definition. We proceed by induction, and assume the statement holds for $n$. Let $x \in [0, 1/2]$ and $i \ge 0$ even such that $x \in [i 2^{-(n+1)}, (i+1)2^{-(n+1)}]$. Then $2x \in [i 2^{-n}, (i+1)2^{-n}]$. Thus
 
 $$h_n(h_1(x)) = h_n(2x) = 2^n(2x - i 2^{-n}) = 2^{n+1}(x - i 2^{-n+1}).$$
 
-Similarly, if $x \in [0, 1/2]$ and $i \ge 1$ odd such that $x \in [i 2^{-(n+1)}, (i+1) 2^{-(n+1)}]$, then $h_1(x) = 2x \in [i 2^{-n}, (i+1) 2^{-n}]$ and
+Similarly, if $x \in [0, 1/2]$ and $i \ge 1$ odd such that $x \in [i 2^{-(n+1)}, (i+1) 2^{-(n+1)}]$, then $h\_1(x) = 2x \in [i 2^{-n}, (i+1) 2^{-n}]$ and
 
 $$h_n(h_1(x)) = h_n(2x) = 2^n(2x - (i+1)2^{-n}) = 2^{n+1}(x - (i+1)2^{-n+1}).$$
 
-The case $x \in [1/2, 1]$ follows by observing that $h_{n+1}$ is symmetric around $1/2$.
+The case $x \in [1/2, 1]$ follows by observing that $h\_{n+1}$ is symmetric around $1/2$.
 
-The neural network $h_n$ has size $O(n)$ and is piecewise linear on at least $2^n$ pieces. This shows that the number of pieces can indeed increase exponentially in the neural network size, also see the upper bound in Theorem 6.3.
+</details>
+</div>
+
+The neural network $h\_n$ has size $O(n)$ and is piecewise linear on at least $2^n$ pieces. This shows that the number of pieces can indeed increase exponentially in the neural network size, also see the upper bound in Theorem 6.3.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 800 110" width="100%" style="max-width: 800px; height: auto;" role="img" aria-labelledby="sawtooth-title">
+  <title id="sawtooth-title">Sawtooth functions h_1 through h_4</title>
+  <g>
+    <line x1="30" y1="88" x2="194" y2="88" stroke="#999" stroke-width="1"/>
+    <line x1="30" y1="12" x2="30" y2="88" stroke="#999" stroke-width="1"/>
+    <path d="M 30.0,88.0 L 110.0,14.0 L 190.0,88.0" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+    <text x="110.0" y="105" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">h_1  (1 teeth)</text>
+    <text x="26" y="17" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+    <text x="26" y="91" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="190" y="100" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+  </g>
+  <g>
+    <line x1="230" y1="88" x2="394" y2="88" stroke="#999" stroke-width="1"/>
+    <line x1="230" y1="12" x2="230" y2="88" stroke="#999" stroke-width="1"/>
+    <path d="M 230.0,88.0 L 270.0,14.0 L 310.0,88.0 L 350.0,14.0 L 390.0,88.0" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+    <text x="310.0" y="105" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">h_2  (2 teeth)</text>
+    <text x="226" y="17" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+    <text x="226" y="91" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="390" y="100" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+  </g>
+  <g>
+    <line x1="430" y1="88" x2="594" y2="88" stroke="#999" stroke-width="1"/>
+    <line x1="430" y1="12" x2="430" y2="88" stroke="#999" stroke-width="1"/>
+    <path d="M 430.0,88.0 L 450.0,14.0 L 470.0,88.0 L 490.0,14.0 L 510.0,88.0 L 530.0,14.0 L 550.0,88.0 L 570.0,14.0 L 590.0,88.0" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+    <text x="510.0" y="105" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">h_3  (4 teeth)</text>
+    <text x="426" y="17" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+    <text x="426" y="91" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="590" y="100" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+  </g>
+  <g>
+    <line x1="630" y1="88" x2="794" y2="88" stroke="#999" stroke-width="1"/>
+    <line x1="630" y1="12" x2="630" y2="88" stroke="#999" stroke-width="1"/>
+    <path d="M 630.0,88.0 L 640.0,14.0 L 650.0,88.0 L 660.0,14.0 L 670.0,88.0 L 680.0,14.0 L 690.0,88.0 L 700.0,14.0 L 710.0,88.0 L 720.0,14.0 L 730.0,88.0 L 740.0,14.0 L 750.0,88.0 L 760.0,14.0 L 770.0,88.0 L 780.0,14.0 L 790.0,88.0" fill="none" stroke="#1565c0" stroke-width="1.8"/>
+    <text x="710.0" y="105" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="#333">h_4  (8 teeth)</text>
+    <text x="626" y="17" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+    <text x="626" y="91" text-anchor="end" font-family="serif" font-size="9" fill="#666">0</text>
+    <text x="790" y="100" text-anchor="end" font-family="serif" font-size="9" fill="#666">1</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The functions $h\_n := h\_1 \circ \cdots \circ h\_1$ ($n$-fold composition of the hat). Each composition doubles the number of teeth: depth-$n$ width-$2$ network realizes $2^{n-1}$ pieces. This is the canonical witness that depth gives exponentially more affine pieces than width can (cf. Theorem 6.3).
+</figcaption>
+</figure>
+
 
 ### 6.3 Number of Pieces in Practice
 
@@ -1139,7 +1462,7 @@ We have seen in Theorem 6.3 that deep neural networks *can* have many more piece
 
 Surprisingly, it was found that the number of pieces of randomly initialized neural networks typically does *not* depend exponentially on the depth. Both shallow and deep networks with random initialization can have essentially the same number of pieces. This means that the theoretical maximum from Theorem 6.3 is typically not achieved in practice.
 
-We recall that pieces are generated through composition of two functions $f_1$ and $f_2$, if the values of $f_2$ cross a level that is associated to a break point of $f_1$. In the case of a simple neuron of the form
+We recall that pieces are generated through composition of two functions $f\_1$ and $f\_2$, if the values of $f\_2$ cross a level that is associated to a break point of $f\_1$. In the case of a simple neuron of the form
 
 $$\boldsymbol{x} \mapsto \sigma_{\text{ReLU}}(\langle \boldsymbol{a}, h(\boldsymbol{x}) \rangle + b)$$
 
@@ -1152,7 +1475,7 @@ Let $c > 0$ and let $h \colon [0, c] \to \mathbb{R}$ be a cpwl function on $[0, 
 
 $$\lvert \lbrace x \in [0, c] \mid h(x) = y \rbrace \rvert \ge t.$$
 
-Then, $c \lVert h' \rVert_{L^\infty} \ge \lVert h' \rVert_{L^1} \ge \lvert A \rvert \cdot t$, where $\lvert A \rvert$ is the Lebesgue measure of $A$. In particular, if $h$ has at most $P \in \mathbb{N}$ pieces and $\lVert h' \rVert_{L^1} < \infty$, then for all $\delta > 0$, $t \le P$
+Then, $c \lVert h' \rVert\_{L^\infty} \ge \lVert h' \rVert\_{L^1} \ge \lvert A \rvert \cdot t$, where $\lvert A \rvert$ is the Lebesgue measure of $A$. In particular, if $h$ has at most $P \in \mathbb{N}$ pieces and $\lVert h' \rVert\_{L^1} < \infty$, then for all $\delta > 0$, $t \le P$
 
 $$\mathbb{P}\left[\lvert \lbrace x \in [0, c] \mid h(x) = U \rbrace \rvert \ge t \right] \le \frac{\lVert h' \rVert_{L^1}}{\delta t},$$
 
@@ -1165,7 +1488,7 @@ where $U$ is a uniformly distributed variable on $[-\delta/2, \delta/2]$.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 6.7</span><span class="math-callout__name">(Random-Bias Neural Network)</span></p>
 
-Let $L \in \mathbb{N}$, $(d_0, d_1, \ldots, d_L, 1) \in \mathbb{N}^{L+2}$ and $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$ for $\ell = 0, \ldots, L$. Furthermore, let $\delta > 0$ and let the bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d_{\ell+1}}$, for $\ell = 0, \ldots, L$, be random variables such that each entry of each $\boldsymbol{b}^{(\ell)}$ is independently and uniformly distributed on the interval $[-\delta/2, \delta/2]$. We call the associated ReLU neural network a **random-bias neural network**.
+Let $L \in \mathbb{N}$, $(d\_0, d\_1, \ldots, d\_L, 1) \in \mathbb{N}^{L+2}$ and $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$ for $\ell = 0, \ldots, L$. Furthermore, let $\delta > 0$ and let the bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1}}$, for $\ell = 0, \ldots, L$, be random variables such that each entry of each $\boldsymbol{b}^{(\ell)}$ is independently and uniformly distributed on the interval $[-\delta/2, \delta/2]$. We call the associated ReLU neural network a **random-bias neural network**.
 
 </div>
 
@@ -1174,9 +1497,9 @@ To apply Lemma 6.6 to a single neuron with random biases, we also need some boun
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 6.8</span><span class="math-callout__name">(Maximal Internal Derivative)</span></p>
 
-Let $L \in \mathbb{N}$, $(d_0, d_1, \ldots, d_L, 1) \in \mathbb{N}^{L+2}$, and $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$ and $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d_{\ell+1}}$ for $\ell = 0, \ldots, L$. Moreover let $\delta > 0$.
+Let $L \in \mathbb{N}$, $(d\_0, d\_1, \ldots, d\_L, 1) \in \mathbb{N}^{L+2}$, and $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$ and $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1}}$ for $\ell = 0, \ldots, L$. Moreover let $\delta > 0$.
 
-For $\ell = 1, \ldots, L+1$, $i = 1, \ldots, d_\ell$ introduce the functions
+For $\ell = 1, \ldots, L+1$, $i = 1, \ldots, d\_\ell$ introduce the functions
 
 $$\eta_{\ell, i}(\boldsymbol{x}; (\boldsymbol{W}^{(j)}, \boldsymbol{b}^{(j)})_{j=0}^{\ell-1}) = (\boldsymbol{W}^{(\ell-1)} \boldsymbol{x}^{(\ell-1)})_i \quad \text{for } \boldsymbol{x} \in \mathbb{R}^{d_0},$$
 
@@ -1193,23 +1516,27 @@ We can now formulate the main result of this section.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 6.9</span><span class="math-callout__name">(Expected Pieces of Random-Bias Networks)</span></p>
 
-Let $L \in \mathbb{N}$ and let $(d_0, d_1, \ldots, d_L, 1) \in \mathbb{N}^{L+2}$. Let $\delta \in (0, 1]$. Let $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$, for $\ell = 0, \ldots, L$, be such that $\nu\left((\boldsymbol{W}^{(\ell)})_{\ell=0}^L, \delta\right) \le C_\nu$ for a $C_\nu > 0$.
+Let $L \in \mathbb{N}$ and let $(d\_0, d\_1, \ldots, d\_L, 1) \in \mathbb{N}^{L+2}$. Let $\delta \in (0, 1]$. Let $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$, for $\ell = 0, \ldots, L$, be such that $\nu\left((\boldsymbol{W}^{(\ell)})\_{\ell=0}^L, \delta\right) \le C\_\nu$ for a $C\_\nu > 0$.
 
-For an associated random-bias neural network $\Phi$, we have that for a line segment $\mathfrak{s} \subseteq \mathbb{R}^{d_0}$ of length 1
+For an associated random-bias neural network $\Phi$, we have that for a line segment $\mathfrak{s} \subseteq \mathbb{R}^{d\_0}$ of length 1
 
 $$\mathbb{E}[\text{Pieces}(\Phi, \mathfrak{s})] \le 1 + d_1 + \frac{C_\nu}{\delta}(1 + (L-1)\ln(2\text{width}(\Phi))) \sum_{j=2}^L d_j.$$
 
 </div>
 
-*Proof sketch.* Let $\boldsymbol{b}^{(\ell)} \in [-\delta/2, \delta/2]^{d_{\ell+1}}$ for $\ell = 0, \ldots, L$ be uniformly distributed random variables. Denote $\theta_\ell \colon \mathfrak{s} \to \mathbb{R}^{d_\ell}$ the function $\boldsymbol{x} \mapsto (\eta_{\ell, i}(\boldsymbol{x}; (\boldsymbol{W}^{(j)}, \boldsymbol{b}^{(j)})_{j=0}^{\ell-1}))_{i=1}^{d_\ell}$. Let $\kappa \colon \mathfrak{s} \to [0,1]$ be an isomorphism. Since each coordinate of $\theta_\ell$ is cpwl, there are points $\boldsymbol{x}_0, \ldots, \boldsymbol{x}_{q_\ell} \in \mathfrak{s}$ such that $\theta_\ell$ is affine (as a function into $\mathbb{R}^{d_\ell}$) on each interval $[\kappa(\boldsymbol{x}_j), \kappa(\boldsymbol{x}_{j+1})]$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
 
-For $\ell = 2$, $\theta_2(\boldsymbol{x}) = \boldsymbol{W}^{(1)} \sigma_{\text{ReLU}}(\boldsymbol{W}^{(0)} \boldsymbol{x} + \boldsymbol{b}^{(0)})$. Since $\boldsymbol{W}^{(1)} \cdot + b^{(1)}$ is affine, $\theta_2$ can only be non-affine in points where $\sigma_{\text{ReLU}}(\boldsymbol{W}^{(0)} \cdot + \boldsymbol{b}^{(0)})$ is not affine. This can happen at most $d_1$ times. Hence $q_2 = d_1$.
+Let $\boldsymbol{b}^{(\ell)} \in [-\delta/2, \delta/2]^{d\_{\ell+1}}$ for $\ell = 0, \ldots, L$ be uniformly distributed random variables. Denote $\theta\_\ell \colon \mathfrak{s} \to \mathbb{R}^{d\_\ell}$ the function $\boldsymbol{x} \mapsto (\eta\_{\ell, i}(\boldsymbol{x}; (\boldsymbol{W}^{(j)}, \boldsymbol{b}^{(j)})\_{j=0}^{\ell-1}))\_{i=1}^{d\_\ell}$. Let $\kappa \colon \mathfrak{s} \to [0,1]$ be an isomorphism. Since each coordinate of $\theta\_\ell$ is cpwl, there are points $\boldsymbol{x}\_0, \ldots, \boldsymbol{x}\_{q\_\ell} \in \mathfrak{s}$ such that $\theta\_\ell$ is affine (as a function into $\mathbb{R}^{d\_\ell}$) on each interval $[\kappa(\boldsymbol{x}\_j), \kappa(\boldsymbol{x}\_{j+1})]$.
 
-For the inductive step, $\theta_{\ell+1}$ is affine in every point where $\theta_\ell$ is affine and $(\theta_\ell(\boldsymbol{x}) + \boldsymbol{b}^{(\ell-1)})_i \neq 0$ for all coordinates $i = 1, \ldots, d_\ell$. Thus
+For $\ell = 2$, $\theta\_2(\boldsymbol{x}) = \boldsymbol{W}^{(1)} \sigma\_{\text{ReLU}}(\boldsymbol{W}^{(0)} \boldsymbol{x} + \boldsymbol{b}^{(0)})$. Since $\boldsymbol{W}^{(1)} \cdot + b^{(1)}$ is affine, $\theta\_2$ can only be non-affine in points where $\sigma\_{\text{ReLU}}(\boldsymbol{W}^{(0)} \cdot + \boldsymbol{b}^{(0)})$ is not affine. This can happen at most $d\_1$ times. Hence $q\_2 = d\_1$.
+
+For the inductive step, $\theta\_{\ell+1}$ is affine in every point where $\theta\_\ell$ is affine and $(\theta\_\ell(\boldsymbol{x}) + \boldsymbol{b}^{(\ell-1)})\_i \neq 0$ for all coordinates $i = 1, \ldots, d\_\ell$. Thus
 
 $$q_{\ell+1} \le q_\ell + \sum_{j=2}^\ell \sum_{i=1}^{d_j} \lvert \lbrace \boldsymbol{x} \in \mathfrak{s} \mid \eta_{j,i}(\boldsymbol{x}) = -b_i^{(j)} \rbrace \rvert.$$
 
-By Theorem 6.3, $\text{Pieces}(\eta_{\ell, i}(\,\cdot\,; (\boldsymbol{W}^{(j)}, \boldsymbol{b}^{(j)})_{j=0}^{\ell-1}), \mathfrak{s}) \le (2\text{width}(\Phi))^{\ell-1}$. Setting $p_{k,\ell,i} := \mathbb{P}[\lvert \lbrace \boldsymbol{x} \in \mathfrak{s} \mid \eta_{\ell,i}(\boldsymbol{x}) = -b_i^{(\ell)} \rbrace \rvert \ge k]$, by Lemma 6.6: $p_{k,\ell,i} \le C_\nu / (\delta k)$ and $p_{k,\ell,i} = 0$ for $k > (2\text{width}(\Phi))^{\ell-1}$.
+By Theorem 6.3, $\text{Pieces}(\eta\_{\ell, i}(\,\cdot\,; (\boldsymbol{W}^{(j)}, \boldsymbol{b}^{(j)})\_{j=0}^{\ell-1}), \mathfrak{s}) \le (2\text{width}(\Phi))^{\ell-1}$. Setting $p\_{k,\ell,i} := \mathbb{P}[\lvert \lbrace \boldsymbol{x} \in \mathfrak{s} \mid \eta\_{\ell,i}(\boldsymbol{x}) = -b\_i^{(\ell)} \rbrace \rvert \ge k]$, by Lemma 6.6: $p\_{k,\ell,i} \le C\_\nu / (\delta k)$ and $p\_{k,\ell,i} = 0$ for $k > (2\text{width}(\Phi))^{\ell-1}$.
 
 It holds
 
@@ -1219,13 +1546,16 @@ The inner sum can be bounded by
 
 $$\sum_{k=1}^\infty p_{k,j,i} = \sum_{k=1}^{(2\text{width}(\Phi))^{L-1}} \frac{C_\nu}{\delta k} \le \frac{C_\nu}{\delta}\left(1 + \int_1^{(2\text{width}(\Phi))^{L-1}} \frac{1}{x}\,\mathrm{d}x\right) \le \frac{C_\nu}{\delta}(1 + (L-1)\ln(2\text{width}(\Phi))).$$
 
-Since $\theta_L = \Phi_{L+1}\vert_\mathfrak{s}$, it follows that $\text{Pieces}(\Phi, \mathfrak{s}) \le q_{L+1} + 1$, which yields the result.
+Since $\theta\_L = \Phi\_{L+1}\vert\_\mathfrak{s}$, it follows that $\text{Pieces}(\Phi, \mathfrak{s}) \le q\_{L+1} + 1$, which yields the result.
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 6.10</span><span class="math-callout__name">(Observations on Theorem 6.9)</span></p>
 
 - **Non-exponential dependence on depth:** Considering the bound, we see that the number of pieces scales in expectation essentially like $O(LN)$, where $N$ is the total number of neurons of the architecture. This shows that in expectation, the number of pieces is linear in the number of layers, as opposed to the exponential upper bound of Theorem 6.3.
-- **Maximal internal derivative:** Theorem 6.9 requires the weights to be chosen such that the maximal internal derivative is bounded by a certain number. However, if they are randomly initialized in such a way that with high probability the maximal internal derivative is bounded by a small number, then similar results can be shown. In practice, weights in the $\ell$th layer are often initialized according to a centered normal distribution with standard deviation $\sqrt{2/d_\ell}$ (He initialization). Due to the anti-proportionality of the variance to the width of the layers it is achieved that the internal derivatives remain bounded with high probability, independent of the width of the neural networks. This explains the observation that randomly initialized shallow and deep networks can have similar numbers of pieces.
+- **Maximal internal derivative:** Theorem 6.9 requires the weights to be chosen such that the maximal internal derivative is bounded by a certain number. However, if they are randomly initialized in such a way that with high probability the maximal internal derivative is bounded by a small number, then similar results can be shown. In practice, weights in the $\ell$th layer are often initialized according to a centered normal distribution with standard deviation $\sqrt{2/d\_\ell}$ (He initialization). Due to the anti-proportionality of the variance to the width of the layers it is achieved that the internal derivatives remain bounded with high probability, independent of the width of the neural networks. This explains the observation that randomly initialized shallow and deep networks can have similar numbers of pieces.
 
 </div>
 
@@ -1239,7 +1569,7 @@ To approximate smooth functions efficiently, one of the main tools in Chapter 4 
 
 ### 7.1 The Square Function
 
-We start with the approximation of the map $x \mapsto x^2$. The construction, first given in Yarotsky (2016), is based on the sawtooth functions $h_n$ defined in (6.2.1).
+We start with the approximation of the map $x \mapsto x^2$. The construction, first given in Yarotsky (2016), is based on the sawtooth functions $h\_n$ defined in (6.2.1).
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 7.1</span><span class="math-callout__name">(Piecewise Linear Interpolant of $x^2$)</span></p>
@@ -1248,21 +1578,28 @@ Let $n \in \mathbb{N}$. Then
 
 $$s_n(x) := x - \sum_{j=1}^{n} \frac{h_j(x)}{2^{2j}}$$
 
-is a piecewise linear function on $[0,1]$ with break points $x_{n,j} = j 2^{-n}$, $j = 0, \ldots, 2^n$. Moreover, $s_n(x_{n,k}) = x_{n,k}^2$ for all $k = 0, \ldots, 2^n$, i.e. $s_n$ is the piecewise linear interpolant of $x^2$ on $[0,1]$.
+is a piecewise linear function on $[0,1]$ with break points $x\_{n,j} = j 2^{-n}$, $j = 0, \ldots, 2^n$. Moreover, $s\_n(x\_{n,k}) = x\_{n,k}^2$ for all $k = 0, \ldots, 2^n$, i.e. $s\_n$ is the piecewise linear interpolant of $x^2$ on $[0,1]$.
 
 </div>
 
-*Proof.* The statement holds for $n = 1$. We proceed by induction. Assume the statement holds for $s_n$ and let $k \in \lbrace 0, \ldots, 2^{n+1} \rbrace$. By Lemma 6.5, $h_{n+1}(x_{n+1,k}) = 0$ whenever $k$ is even. Hence for even $k \in \lbrace 0, \ldots, 2^{n+1} \rbrace$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The statement holds for $n = 1$. We proceed by induction. Assume the statement holds for $s\_n$ and let $k \in \lbrace 0, \ldots, 2^{n+1} \rbrace$. By Lemma 6.5, $h\_{n+1}(x\_{n+1,k}) = 0$ whenever $k$ is even. Hence for even $k \in \lbrace 0, \ldots, 2^{n+1} \rbrace$
 
 $$s_{n+1}(x_{n+1,k}) = x_{n+1,k} - \sum_{j=1}^{n+1} \frac{h_j(x_{n+1,k})}{2^{2j}} = s_n(x_{n+1,k}) - \frac{h_{n+1}(x_{n+1,k})}{2^{2(n+1)}} = s_n(x_{n+1,k}) = x_{n+1,k}^2,$$
 
-where we used the induction assumption $s_n(x_{n+1,k}) = x_{n+1,k}^2$ for $x_{n+1,k} = k 2^{-(n+1)} = \frac{k}{2} 2^{-n} = x_{n,k/2}$.
+where we used the induction assumption $s\_n(x\_{n+1,k}) = x\_{n+1,k}^2$ for $x\_{n+1,k} = k 2^{-(n+1)} = \frac{k}{2} 2^{-n} = x\_{n,k/2}$.
 
-Now let $k \in \lbrace 1, \ldots, 2^{n+1} - 1 \rbrace$ be odd. Then by Lemma 6.5, $h_{n+1}(x_{n+1,k}) = 1$. Moreover, since $s_n$ is linear on $[x_{n,(k-1)/2}, x_{n,(k+1)/2}] = [x_{n+1,k-1}, x_{n+1,k+1}]$ and $x_{n+1,k}$ is the midpoint of this interval,
+Now let $k \in \lbrace 1, \ldots, 2^{n+1} - 1 \rbrace$ be odd. Then by Lemma 6.5, $h\_{n+1}(x\_{n+1,k}) = 1$. Moreover, since $s\_n$ is linear on $[x\_{n,(k-1)/2}, x\_{n,(k+1)/2}] = [x\_{n+1,k-1}, x\_{n+1,k+1}]$ and $x\_{n+1,k}$ is the midpoint of this interval,
 
 $$s_{n+1}(x_{n+1,k}) = s_n(x_{n+1,k}) - \frac{h_{n+1}(x_{n+1,k})}{2^{2(n+1)}} = \frac{1}{2}(x_{n+1,k-1}^2 + x_{n+1,k+1}^2) - \frac{1}{2^{2(n+1)}} = \frac{k^2}{2^{2(n+1)}} = x_{n+1,k}^2.$$
 
 $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 7.2</span><span class="math-callout__name">(Approximation of the Square Function)</span></p>
@@ -1271,25 +1608,32 @@ For $n \in \mathbb{N}$, it holds
 
 $$\sup_{x \in [0,1]} \lvert x^2 - s_n(x) \rvert \le 2^{-2n-1}.$$
 
-Moreover $s_n \in \mathcal{N}_1^1(\sigma_{\text{ReLU}}; n, 3)$, and $\text{size}(s_n) \le 7n$ and $\text{depth}(s_n) = n$.
+Moreover $s\_n \in \mathcal{N}\_1^1(\sigma\_{\text{ReLU}}; n, 3)$, and $\text{size}(s\_n) \le 7n$ and $\text{depth}(s\_n) = n$.
 
 </div>
 
-*Proof.* Set $e_n(x) := x^2 - s_n(x)$. Let $x$ be in the interval $[x_{n,k}, x_{n,k+1}] = [k 2^{-n}, (k+1)2^{-n}]$ of length $2^{-n}$. Since $s_n$ is the linear interpolant of $x^2$ on this interval, we have
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Set $e\_n(x) := x^2 - s\_n(x)$. Let $x$ be in the interval $[x\_{n,k}, x\_{n,k+1}] = [k 2^{-n}, (k+1)2^{-n}]$ of length $2^{-n}$. Since $s\_n$ is the linear interpolant of $x^2$ on this interval, we have
 
 $$\lvert e_n'(x) \rvert = \left\lvert 2x - \frac{x_{n,k+1}^2 - x_{n,k}^2}{2^{-n}} \right\rvert = \left\lvert 2x - \frac{2k+1}{2^n} \right\rvert \le \frac{1}{2^n}.$$
 
-Thus $e_n : [0,1] \to \mathbb{R}$ has Lipschitz constant $2^{-n}$. Since $e_n(x_{n,k}) = 0$ for all $k = 0, \ldots, 2^n$, and the length of the interval $[x_{n,k}, x_{n,k+1}]$ equals $2^{-n}$ we get
+Thus $e\_n : [0,1] \to \mathbb{R}$ has Lipschitz constant $2^{-n}$. Since $e\_n(x\_{n,k}) = 0$ for all $k = 0, \ldots, 2^n$, and the length of the interval $[x\_{n,k}, x\_{n,k+1}]$ equals $2^{-n}$ we get
 
 $$\sup_{x \in [0,1]} \lvert e_n(x) \rvert \le \frac{1}{2} 2^{-n} 2^{-n} = 2^{-2n-1}.$$
 
-Finally, to see that $s_n$ can be represented by a neural network of the claimed architecture, note that for $n \ge 2$
+Finally, to see that $s\_n$ can be represented by a neural network of the claimed architecture, note that for $n \ge 2$
 
 $$s_n(x) = x - \sum_{j=1}^{n} \frac{h_j(x)}{2^{2j}} = s_{n-1}(x) - \frac{h_n(x)}{2^{2n}} = \sigma_{\text{ReLU}} \circ s_{n-1}(x) - \frac{h_1 \circ h_{n-1}(x)}{2^{2n}}.$$
 
-Here we used that $s_{n-1}$ is the piecewise linear interpolant of $x^2$, so that $s_{n-1}(x) \ge 0$ and thus $s_{n-1}(x) = \sigma_{\text{ReLU}}(s_{n-1}(x))$ for all $x \in [0,1]$. Hence $s_n$ is of depth $n$ and width 3. $\square$
+Here we used that $s\_{n-1}$ is the piecewise linear interpolant of $x^2$, so that $s\_{n-1}(x) \ge 0$ and thus $s\_{n-1}(x) = \sigma\_{\text{ReLU}}(s\_{n-1}(x))$ for all $x \in [0,1]$. Hence $s\_n$ is of depth $n$ and width 3. $\square$
 
-In conclusion, $s_n : [0,1] \to [0,1]$ approximates the square function uniformly on $[0,1]$ with exponentially decreasing error in the neural network size. Note that due to Theorem 6.4, this would not be possible with a shallow neural network, which can at best interpolate $x^2$ on a partition of $[0,1]$ with polynomially many (w.r.t. the neural network size) pieces.
+</details>
+</div>
+
+In conclusion, $s\_n : [0,1] \to [0,1]$ approximates the square function uniformly on $[0,1]$ with exponentially decreasing error in the neural network size. Note that due to Theorem 6.4, this would not be possible with a shallow neural network, which can at best interpolate $x^2$ on a partition of $[0,1]$ with polynomially many (w.r.t. the neural network size) pieces.
 
 ### 7.2 Multiplication
 
@@ -1304,38 +1648,49 @@ We start with the multiplication of two numbers, in which case neural networks o
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 7.3</span><span class="math-callout__name">(Approximate Multiplication by ReLU Networks)</span></p>
 
-For every $\varepsilon > 0$ there exists a ReLU neural network $\Phi_\varepsilon^\times : [-1,1]^2 \to [-1,1]$ such that
+For every $\varepsilon > 0$ there exists a ReLU neural network $\Phi\_\varepsilon^\times : [-1,1]^2 \to [-1,1]$ such that
 
 $$\sup_{x,y \in [-1,1]} \lvert x \cdot y - \Phi_\varepsilon^\times(x,y) \rvert \le \varepsilon,$$
 
-and it holds $\text{size}(\Phi_\varepsilon^\times) \le C \cdot (1 + \lvert \log(\varepsilon) \rvert)$ and $\text{depth}(\Phi_\varepsilon^\times) \le C \cdot (1 + \lvert \log(\varepsilon) \rvert)$ for a constant $C > 0$ independent of $\varepsilon$. Moreover, $\Phi_\varepsilon^\times(x,y) = 0$ if $x = 0$ or $y = 0$.
+and it holds $\text{size}(\Phi\_\varepsilon^\times) \le C \cdot (1 + \lvert \log(\varepsilon) \rvert)$ and $\text{depth}(\Phi\_\varepsilon^\times) \le C \cdot (1 + \lvert \log(\varepsilon) \rvert)$ for a constant $C > 0$ independent of $\varepsilon$. Moreover, $\Phi\_\varepsilon^\times(x,y) = 0$ if $x = 0$ or $y = 0$.
 
 </div>
 
-*Proof.* With $n = \lceil \lvert \log_4(\varepsilon) \rvert \rceil$, define the neural network
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+With $n = \lceil \lvert \log\_4(\varepsilon) \rvert \rceil$, define the neural network
 
 $$\Phi_\varepsilon^\times(x,y) := s_n\!\left(\frac{\sigma_{\text{ReLU}}(x+y) + \sigma_{\text{ReLU}}(-x-y)}{2}\right) - s_n\!\left(\frac{\sigma_{\text{ReLU}}(x-y) + \sigma_{\text{ReLU}}(y-x)}{2}\right). \tag{7.2.2}$$
 
-Since $\lvert a \rvert = \sigma_{\text{ReLU}}(a) + \sigma_{\text{ReLU}}(-a)$, by (7.2.1) we have for all $x, y \in [-1,1]$
+Since $\lvert a \rvert = \sigma\_{\text{ReLU}}(a) + \sigma\_{\text{ReLU}}(-a)$, by (7.2.1) we have for all $x, y \in [-1,1]$
 
 $$\lvert x \cdot y - \Phi_\varepsilon^\times(x,y) \rvert = \left\lvert \frac{(x+y)^2 - (x-y)^2}{4} - \left(s_n\!\left(\frac{\lvert x+y \rvert}{2}\right) - s_n\!\left(\frac{\lvert x-y \rvert}{2}\right)\right) \right\rvert \le \frac{4(2^{-2n-1} + 2^{-2n-1})}{4} = 4^{-n} \le \varepsilon,$$
 
-where we used $\lvert x+y \rvert/2, \lvert x-y \rvert/2 \in [0,1]$. We have $\text{depth}(\Phi_\varepsilon^\times) = 1 + \text{depth}(s_n) = 1 + n \le 1 + \lceil \log_4(\varepsilon) \rceil$ and $\text{size}(\Phi_\varepsilon^\times) \le C + 2\text{size}(s_n) \le Cn \le C \cdot (1 - \log(\varepsilon))$ for some constant $C > 0$. $\square$
+where we used $\lvert x+y \rvert/2, \lvert x-y \rvert/2 \in [0,1]$. We have $\text{depth}(\Phi\_\varepsilon^\times) = 1 + \text{depth}(s\_n) = 1 + n \le 1 + \lceil \log\_4(\varepsilon) \rceil$ and $\text{size}(\Phi\_\varepsilon^\times) \le C + 2\text{size}(s\_n) \le Cn \le C \cdot (1 - \log(\varepsilon))$ for some constant $C > 0$. $\square$
+
+</details>
+</div>
 
 In a similar way as in Proposition 4.8 and Lemma 5.11, we can apply operations with two inputs in the form of a binary tree to extend them to an operation on arbitrary many inputs.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 7.4</span><span class="math-callout__name">(Approximate $n$-fold Multiplication)</span></p>
 
-For every $n \ge 2$ and $\varepsilon > 0$ there exists a ReLU neural network $\Phi_{n,\varepsilon}^\times : [-1,1]^n \to [-1,1]$ such that
+For every $n \ge 2$ and $\varepsilon > 0$ there exists a ReLU neural network $\Phi\_{n,\varepsilon}^\times : [-1,1]^n \to [-1,1]$ such that
 
 $$\sup_{x_j \in [-1,1]} \left\lvert \prod_{j=1}^{n} x_j - \Phi_{n,\varepsilon}^\times(x_1, \ldots, x_n) \right\rvert \le \varepsilon,$$
 
-and it holds $\text{size}(\Phi_{n,\varepsilon}^\times) \le Cn \cdot (1 + \lvert \log(\varepsilon/n) \rvert)$ and $\text{depth}(\Phi_{n,\varepsilon}^\times) \le C \log(n)(1 + \lvert \log(\varepsilon/n) \rvert)$ for a constant $C > 0$ independent of $\varepsilon$ and $n$.
+and it holds $\text{size}(\Phi\_{n,\varepsilon}^\times) \le Cn \cdot (1 + \lvert \log(\varepsilon/n) \rvert)$ and $\text{depth}(\Phi\_{n,\varepsilon}^\times) \le C \log(n)(1 + \lvert \log(\varepsilon/n) \rvert)$ for a constant $C > 0$ independent of $\varepsilon$ and $n$.
 
 </div>
 
-*Proof.* We begin with the case $n = 2^k$. For $k = 1$ let $\tilde{\Phi}_{2,\delta}^\times := \Phi_\delta^\times$. If $k \ge 2$ let
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We begin with the case $n = 2^k$. For $k = 1$ let $\tilde{\Phi}\_{2,\delta}^\times := \Phi\_\delta^\times$. If $k \ge 2$ let
 
 $$\tilde{\Phi}_{2^k,\delta}^\times := \Phi_\delta^\times \circ \left(\tilde{\Phi}_{2^{k-1},\delta}^\times, \tilde{\Phi}_{2^{k-1},\delta}^\times\right).$$
 
@@ -1343,15 +1698,18 @@ Using Lemma 7.3, this neural network has depth bounded by
 
 $$\text{depth}\!\left(\tilde{\Phi}_{2^k,\delta}^\times\right) \le k \, \text{depth}(\Phi_\delta^\times) \le Ck \cdot (1 + \lvert \log(\delta) \rvert) \le C \log(n)(1 + \lvert \log(\delta) \rvert).$$
 
-The number of occurrences of $\Phi_\delta^\times$ equals $\sum_{j=0}^{k-1} 2^j \le n$, so the size of $\tilde{\Phi}_{2^k,\delta}^\times$ can be bounded by $Cn \cdot (1 + \lvert \log(\delta) \rvert)$.
+The number of occurrences of $\Phi\_\delta^\times$ equals $\sum\_{j=0}^{k-1} 2^j \le n$, so the size of $\tilde{\Phi}\_{2^k,\delta}^\times$ can be bounded by $Cn \cdot (1 + \lvert \log(\delta) \rvert)$.
 
-To estimate the approximation error, denote with $\boldsymbol{x} = (x_j)_{j=1}^{2^k}$
+To estimate the approximation error, denote with $\boldsymbol{x} = (x\_j)\_{j=1}^{2^k}$
 
 $$e_k := \sup_{x_j \in [-1,1]} \left\lvert \prod_{j \le 2^k} x_j - \tilde{\Phi}_{2^k,\delta}^\times(\boldsymbol{x}) \right\rvert.$$
 
-Then $e_k \le \delta + 2e_{k-1} \le \cdots \le 2^k \delta = n\delta$.
+Then $e\_k \le \delta + 2e\_{k-1} \le \cdots \le 2^k \delta = n\delta$.
 
-The case for general $n \ge 2$ (not necessarily $n = 2^k$) is treated similarly as in Lemma 5.11, by replacing some $\Phi_\delta^\times$ neural networks with identity neural networks. Finally, setting $\delta := \varepsilon/n$ and $\Phi_{n,\varepsilon}^\times := \tilde{\Phi}_{n,\delta}^\times$ concludes the proof. $\square$
+The case for general $n \ge 2$ (not necessarily $n = 2^k$) is treated similarly as in Lemma 5.11, by replacing some $\Phi\_\delta^\times$ neural networks with identity neural networks. Finally, setting $\delta := \varepsilon/n$ and $\Phi\_{n,\varepsilon}^\times := \tilde{\Phi}\_{n,\delta}^\times$ concludes the proof. $\square$
+
+</details>
+</div>
 
 ### 7.3 Polynomials and Depth Separation
 
@@ -1359,20 +1717,20 @@ As a first consequence of the above observations, we consider approximating the 
 
 $$p(x) = \sum_{j=0}^{n} c_j x^j. \tag{7.3.1}$$
 
-One possibility to approximate $p$ is via the Horner scheme and the approximate multiplication $\Phi_\varepsilon^\times$ from Lemma 7.3, yielding
+One possibility to approximate $p$ is via the Horner scheme and the approximate multiplication $\Phi\_\varepsilon^\times$ from Lemma 7.3, yielding
 
 $$p(x) = c_0 + x \cdot (c_1 + x \cdot (\cdots + x \cdot c_n) \ldots) \simeq c_0 + \Phi_\varepsilon^\times(x, c_1 + \Phi_\varepsilon^\times(x, c_2 \cdots + \Phi_\varepsilon^\times(x, c_n)) \ldots).$$
 
-This scheme requires depth $O(n)$ due to the nested multiplications. An alternative is to approximate all monomials $1, x, \ldots, x^n$ with a binary tree using approximate multiplications $\Phi_\varepsilon^\times$, and combining them in the output layer. This idea leads to a network of size $O(n \log(n))$ and depth $O(\log(n))$.
+This scheme requires depth $O(n)$ due to the nested multiplications. An alternative is to approximate all monomials $1, x, \ldots, x^n$ with a binary tree using approximate multiplications $\Phi\_\varepsilon^\times$, and combining them in the output layer. This idea leads to a network of size $O(n \log(n))$ and depth $O(\log(n))$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 7.5</span><span class="math-callout__name">(Polynomial Approximation by ReLU Networks)</span></p>
 
-There exists a constant $C > 0$, such that for any $\varepsilon \in (0,1)$ and any polynomial $p$ of degree $n \ge 2$ as in (7.3.1), there exists a neural network $\Phi_\varepsilon^p$ such that
+There exists a constant $C > 0$, such that for any $\varepsilon \in (0,1)$ and any polynomial $p$ of degree $n \ge 2$ as in (7.3.1), there exists a neural network $\Phi\_\varepsilon^p$ such that
 
 $$\sup_{x \in [-1,1]} \lvert p(x) - \Phi_\varepsilon^p(x) \rvert \le C\varepsilon \sum_{j=0}^{n} \lvert c_j \rvert$$
 
-and $\text{size}(\Phi_\varepsilon^p) \le Cn \log(n/\varepsilon)$ and $\text{depth}(\Phi_\varepsilon^p) \le C \log(n/\varepsilon)$.
+and $\text{size}(\Phi\_\varepsilon^p) \le Cn \log(n/\varepsilon)$ and $\text{depth}(\Phi\_\varepsilon^p) \le C \log(n/\varepsilon)$.
 
 </div>
 
@@ -1381,29 +1739,33 @@ Lemma 7.5 shows that deep ReLU networks can approximate polynomials efficiently.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 7.6</span><span class="math-callout__name">(Depth Separation for Analytic Functions)</span></p>
 
-Let $L \in \mathbb{N}$ and let $f : [-1,1] \to \mathbb{R}$ be analytic but not linear. Then there exist constants $C$, $\beta > 0$ such that for every $\varepsilon > 0$, there exists a ReLU neural network $\Phi_{\text{deep}}$ satisfying
+Let $L \in \mathbb{N}$ and let $f : [-1,1] \to \mathbb{R}$ be analytic but not linear. Then there exist constants $C$, $\beta > 0$ such that for every $\varepsilon > 0$, there exists a ReLU neural network $\Phi\_{\text{deep}}$ satisfying
 
 $$\sup_{x \in [-1,1]} \lvert f(x) - \Phi_{\text{deep}}(x) \rvert \le C \exp\!\left(-\beta \sqrt{\text{size}(\Phi_{\text{deep}})}\right) \le \varepsilon, \tag{7.3.2}$$
 
-but for any ReLU neural network $\Phi_{\text{shallow}}$ of depth at most $L$ holds
+but for any ReLU neural network $\Phi\_{\text{shallow}}$ of depth at most $L$ holds
 
 $$\sup_{x \in [-1,1]} \lvert f(x) - \Phi_{\text{shallow}}(x) \rvert \ge C^{-1} \text{size}(\Phi_{\text{shallow}})^{-2L}. \tag{7.3.3}$$
 
 </div>
 
-*Proof.* The lower bound on (7.3.3) holds by Theorem 6.4. For the upper bound on the deep neural network, assume first that the convergence radius of the Taylor series of $f$ around $0$ is $r > 1$. Then for all $x \in [-1,1]$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The lower bound on (7.3.3) holds by Theorem 6.4. For the upper bound on the deep neural network, assume first that the convergence radius of the Taylor series of $f$ around $0$ is $r > 1$. Then for all $x \in [-1,1]$
 
 $$f(x) = \sum_{j \in \mathbb{N}_0} c_j x^j \quad \text{where} \quad c_j = \frac{f^{(j)}(0)}{j!} \quad \text{and} \quad \lvert c_j \rvert \le C_r r^{-j},$$
 
-for all $j \in \mathbb{N}_0$ and some $C_r > 0$. Hence $p_n(x) := \sum_{j=0}^{n} c_j x^j$ satisfies
+for all $j \in \mathbb{N}\_0$ and some $C\_r > 0$. Hence $p\_n(x) := \sum\_{j=0}^{n} c\_j x^j$ satisfies
 
 $$\sup_{x \in [-1,1]} \lvert f(x) - p_n(x) \rvert \le \sum_{j > n} \lvert c_j \rvert \le C_r \sum_{j > n} r^{-j} \le \frac{C_r r^{-n}}{1 - r^{-1}}.$$
 
-Let now $\Phi_\varepsilon^{p_n}$ be the network in Lemma 7.5. Then
+Let now $\Phi\_\varepsilon^{p\_n}$ be the network in Lemma 7.5. Then
 
 $$\sup_{x \in [-1,1]} \lvert f(x) - \Phi_\varepsilon^{p_n}(x) \rvert \le \tilde{C} \cdot \left(\varepsilon + \frac{r^{-n}}{1 - r^{-1}}\right),$$
 
-for some $\tilde{C} = \tilde{C}(r, C_r)$. Choosing $n = n(\varepsilon) = \lceil \log(\varepsilon) / \log(r) \rceil$, with the bounds from Lemma 7.5 we find that
+for some $\tilde{C} = \tilde{C}(r, C\_r)$. Choosing $n = n(\varepsilon) = \lceil \log(\varepsilon) / \log(r) \rceil$, with the bounds from Lemma 7.5 we find that
 
 $$\sup_{x \in [-1,1]} \lvert f(x) - \Phi_\varepsilon^{p_n}(x) \rvert \le 2\tilde{C}\varepsilon$$
 
@@ -1411,7 +1773,10 @@ and for another constant $\hat{C} = \hat{C}(r)$
 
 $$\text{size}(\Phi_\varepsilon^{p_n}) \le \hat{C} \cdot (1 + \log(\varepsilon)^2) \quad \text{and} \quad \text{depth}(\Phi_\varepsilon^{p_n}) \le \hat{C} \cdot (1 + \log(\varepsilon)).$$
 
-This implies the existence of $C$, $\beta > 0$ and $\Phi_{\text{deep}}$ as in (7.3.2). The general case, where the Taylor expansions of $f$ converge only locally, is left as Exercise 7.14. $\square$
+This implies the existence of $C$, $\beta > 0$ and $\Phi\_{\text{deep}}$ as in (7.3.2). The general case, where the Taylor expansions of $f$ converge only locally, is left as Exercise 7.14. $\square$
+
+</details>
+</div>
 
 The proposition shows that the approximation of certain (highly relevant) functions requires significantly more parameters when using shallow instead of deep architectures. Such statements are known as *depth separation* results.
 
@@ -1429,11 +1794,11 @@ We will now discuss the implications of our observations in the previous section
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 7.8</span><span class="math-callout__name">(Hölder Space $C^{k,s}$)</span></p>
 
-Let $k \in \mathbb{N}_0$, $s \in [0,1]$ and $\Omega \subseteq \mathbb{R}^d$. Then for $f : \Omega \to \mathbb{R}$
+Let $k \in \mathbb{N}\_0$, $s \in [0,1]$ and $\Omega \subseteq \mathbb{R}^d$. Then for $f : \Omega \to \mathbb{R}$
 
 $$\lVert f \rVert_{C^{k,s}(\Omega)} := \sup_{\boldsymbol{x} \in \Omega} \max_{\lbrace \boldsymbol{\alpha} \in \mathbb{N}_0^d \mid \lvert \boldsymbol{\alpha} \rvert \le k \rbrace} \lvert D^{\boldsymbol{\alpha}} f(\boldsymbol{x}) \rvert + \sup_{\boldsymbol{x} \neq \boldsymbol{y} \in \Omega} \max_{\lbrace \boldsymbol{\alpha} \in \mathbb{N}_0^d \mid \lvert \boldsymbol{\alpha} \rvert = k \rbrace} \frac{\lvert D^{\boldsymbol{\alpha}} f(\boldsymbol{x}) - D^{\boldsymbol{\alpha}} f(\boldsymbol{y}) \rvert}{\lVert \boldsymbol{x} - \boldsymbol{y} \rVert^s},$$
 
-and we denote by $C^{k,s}(\Omega)$ the set of functions $f \in C^k(\Omega)$ for which $\lVert f \rVert_{C^{k,s}(\Omega)} < \infty$.
+and we denote by $C^{k,s}(\Omega)$ the set of functions $f \in C^k(\Omega)$ for which $\lVert f \rVert\_{C^{k,s}(\Omega)} < \infty$.
 
 </div>
 
@@ -1452,7 +1817,7 @@ Let $d \in \mathbb{N}$, $k \in \mathbb{N}$, $s \in [0,1]$, $\Omega = [0,1]^d$ an
 
 $$f(\boldsymbol{x}) = \sum_{\lbrace \boldsymbol{\alpha} \in \mathbb{N}_0^d \mid 0 \le \lvert \boldsymbol{\alpha} \rvert \le k \rbrace} \frac{D^{\boldsymbol{\alpha}} f(\boldsymbol{a})}{\boldsymbol{\alpha}!} (\boldsymbol{x} - \boldsymbol{a})^{\boldsymbol{\alpha}} + R_k(\boldsymbol{x})$$
 
-where with $h := \max_{i \le d} \lvert a_i - x_i \rvert$ we have $\lvert R_k(\boldsymbol{x}) \rvert \le h^{k+s} \frac{d^{k+1/2}}{k!} \lVert f \rVert_{C^{k,s}(\Omega)}$.
+where with $h := \max\_{i \le d} \lvert a\_i - x\_i \rvert$ we have $\lvert R\_k(\boldsymbol{x}) \rvert \le h^{k+s} \frac{d^{k+1/2}}{k!} \lVert f \rVert\_{C^{k,s}(\Omega)}$.
 
 </div>
 
@@ -1461,21 +1826,28 @@ We now come to the main statement of this section. Up to logarithmic terms, it s
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 7.10</span><span class="math-callout__name">(Approximation of $C^{k,s}$ Functions by Deep ReLU Networks)</span></p>
 
-Let $d \in \mathbb{N}$, $k \in \mathbb{N}_0$, $s \in [0,1]$, and $\Omega = [0,1]^d$. Then, there exists a constant $C > 0$ such that for every $f \in C^{k,s}(\Omega)$ and every $N \ge 2$ there exists a ReLU neural network $\Phi_N^f$ such that
+Let $d \in \mathbb{N}$, $k \in \mathbb{N}\_0$, $s \in [0,1]$, and $\Omega = [0,1]^d$. Then, there exists a constant $C > 0$ such that for every $f \in C^{k,s}(\Omega)$ and every $N \ge 2$ there exists a ReLU neural network $\Phi\_N^f$ such that
 
 $$\sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - \Phi_N^f(\boldsymbol{x}) \rvert \le C \lVert f \rVert_{C^{k,s}(\Omega)} N^{-\frac{k+s}{d}}, \tag{7.4.3}$$
 
-$\text{size}(\Phi_N^f) \le CN \log(N)$ and $\text{depth}(\Phi_N^f) \le C \log(N)$.
+$\text{size}(\Phi\_N^f) \le CN \log(N)$ and $\text{depth}(\Phi\_N^f) \le C \log(N)$.
 
 </div>
 
-*Proof sketch.* The idea of the proof is to use the "partition of unity method": First we construct a partition of unity $(\varphi_{\boldsymbol{\nu}})_{\boldsymbol{\nu}}$, such that for an appropriately chosen $M \in \mathbb{N}$ each $\varphi_{\boldsymbol{\nu}}$ has support on a $O(1/M)$ neighborhood of a point $\boldsymbol{\eta} \in \Omega$. On each of these neighborhoods we use the local Taylor polynomial $p_{\boldsymbol{\nu}}$ of $f$ around $\boldsymbol{\eta}$ to approximate the function. Then $\sum_{\boldsymbol{\nu}} \varphi_{\boldsymbol{\nu}} p_{\boldsymbol{\nu}}$ gives an approximation to $f$ on $\Omega$. This approximation can be emulated by a neural network of the type $\sum_{\boldsymbol{\nu}} \Phi_\varepsilon^\times(\varphi_{\boldsymbol{\nu}}, \hat{p}_{\boldsymbol{\nu}})$, where $\hat{p}_{\boldsymbol{\nu}}$ is a neural network approximation to the polynomial $p_{\boldsymbol{\nu}}$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
 
-**Step 1.** Define $M := \lceil N^{1/d} \rceil$ and $\varepsilon := N^{-\frac{k+s}{d}}$. Consider a uniform simplicial mesh with nodes $\lbrace \boldsymbol{\nu}/M \mid \boldsymbol{\nu} \le M \rbrace$ where $\boldsymbol{\nu}/M := (\nu_1/M, \ldots, \nu_d/M)$. Let $\varphi_{\boldsymbol{\nu}}$ denote the cpwl basis function on this mesh. Then $\sum_{\boldsymbol{\nu} \le M} \varphi_{\boldsymbol{\nu}} \equiv 1$ on $\Omega$ (partition of unity), and $\text{supp}(\varphi_{\boldsymbol{\nu}}) \subseteq \lbrace \boldsymbol{x} \in \Omega \mid \lVert \boldsymbol{x} - \boldsymbol{\nu}/M \rVert_\infty \le 1/M \rbrace$. For each $\boldsymbol{\nu} \le M$ define the multivariate polynomial $p_{\boldsymbol{\nu}}(\boldsymbol{x}) := \sum_{\lvert \boldsymbol{\alpha} \rvert \le k} \frac{D^{\boldsymbol{\alpha}} f(\boldsymbol{\nu}/M)}{\boldsymbol{\alpha}!} (\boldsymbol{x} - \boldsymbol{\nu}/M)^{\boldsymbol{\alpha}}$ and its neural network approximation $\hat{p}_{\boldsymbol{\nu}}$ using $\Phi_{\lvert \boldsymbol{\alpha} \rvert, \varepsilon}^\times$. Define $\Phi_N^f := \sum_{\boldsymbol{\nu} \le M} \Phi_\varepsilon^\times(\varphi_{\boldsymbol{\nu}}, \hat{p}_{\boldsymbol{\nu}})$.
+The idea of the proof is to use the "partition of unity method": First we construct a partition of unity $(\varphi\_{\boldsymbol{\nu}})\_{\boldsymbol{\nu}}$, such that for an appropriately chosen $M \in \mathbb{N}$ each $\varphi\_{\boldsymbol{\nu}}$ has support on a $O(1/M)$ neighborhood of a point $\boldsymbol{\eta} \in \Omega$. On each of these neighborhoods we use the local Taylor polynomial $p\_{\boldsymbol{\nu}}$ of $f$ around $\boldsymbol{\eta}$ to approximate the function. Then $\sum\_{\boldsymbol{\nu}} \varphi\_{\boldsymbol{\nu}} p\_{\boldsymbol{\nu}}$ gives an approximation to $f$ on $\Omega$. This approximation can be emulated by a neural network of the type $\sum\_{\boldsymbol{\nu}} \Phi\_\varepsilon^\times(\varphi\_{\boldsymbol{\nu}}, \hat{p}\_{\boldsymbol{\nu}})$, where $\hat{p}\_{\boldsymbol{\nu}}$ is a neural network approximation to the polynomial $p\_{\boldsymbol{\nu}}$.
 
-**Step 2.** Bound the approximation error. By Lemma 7.9, $\sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - \sum_{\boldsymbol{\nu} \le M} \varphi_{\boldsymbol{\nu}}(\boldsymbol{x}) p_{\boldsymbol{\nu}}(\boldsymbol{x}) \rvert \le M^{-(k+s)}$. The error from replacing $p_{\boldsymbol{\nu}}$ with $\hat{p}_{\boldsymbol{\nu}}$ and using the approximate multiplication $\Phi_\varepsilon^\times$ contributes at most $(d+2)\varepsilon$. In total, $\sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - \Phi_N^f(\boldsymbol{x}) \rvert \le M^{-(k+s)} + \varepsilon \cdot (d+2)$, which with our choices gives the error bound (7.4.3).
+**Step 1.** Define $M := \lceil N^{1/d} \rceil$ and $\varepsilon := N^{-\frac{k+s}{d}}$. Consider a uniform simplicial mesh with nodes $\lbrace \boldsymbol{\nu}/M \mid \boldsymbol{\nu} \le M \rbrace$ where $\boldsymbol{\nu}/M := (\nu\_1/M, \ldots, \nu\_d/M)$. Let $\varphi\_{\boldsymbol{\nu}}$ denote the cpwl basis function on this mesh. Then $\sum\_{\boldsymbol{\nu} \le M} \varphi\_{\boldsymbol{\nu}} \equiv 1$ on $\Omega$ (partition of unity), and $\text{supp}(\varphi\_{\boldsymbol{\nu}}) \subseteq \lbrace \boldsymbol{x} \in \Omega \mid \lVert \boldsymbol{x} - \boldsymbol{\nu}/M \rVert\_\infty \le 1/M \rbrace$. For each $\boldsymbol{\nu} \le M$ define the multivariate polynomial $p\_{\boldsymbol{\nu}}(\boldsymbol{x}) := \sum\_{\lvert \boldsymbol{\alpha} \rvert \le k} \frac{D^{\boldsymbol{\alpha}} f(\boldsymbol{\nu}/M)}{\boldsymbol{\alpha}!} (\boldsymbol{x} - \boldsymbol{\nu}/M)^{\boldsymbol{\alpha}}$ and its neural network approximation $\hat{p}\_{\boldsymbol{\nu}}$ using $\Phi\_{\lvert \boldsymbol{\alpha} \rvert, \varepsilon}^\times$. Define $\Phi\_N^f := \sum\_{\boldsymbol{\nu} \le M} \Phi\_\varepsilon^\times(\varphi\_{\boldsymbol{\nu}}, \hat{p}\_{\boldsymbol{\nu}})$.
 
-**Step 3.** Bound the size and depth of the neural network. By Lemma 5.17, $\text{size}(\varphi_{\boldsymbol{\nu}}) \le C \cdot (1 + k_\mathcal{T})$ and $\text{depth}(\varphi_{\boldsymbol{\nu}}) \le C \cdot (1 + \log(k_\mathcal{T}))$ where $k_\mathcal{T}$ is the maximal number of simplices attached to a node in the mesh, which is independent of $M$. Using Lemma 7.3 and Proposition 7.4, $\text{depth}(\Phi_N^f) \le C \cdot (1 + \log(N))$ and $\text{size}(\Phi_N^f) \le CN \log(N)$. $\square$
+**Step 2.** Bound the approximation error. By Lemma 7.9, $\sup\_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - \sum\_{\boldsymbol{\nu} \le M} \varphi\_{\boldsymbol{\nu}}(\boldsymbol{x}) p\_{\boldsymbol{\nu}}(\boldsymbol{x}) \rvert \le M^{-(k+s)}$. The error from replacing $p\_{\boldsymbol{\nu}}$ with $\hat{p}\_{\boldsymbol{\nu}}$ and using the approximate multiplication $\Phi\_\varepsilon^\times$ contributes at most $(d+2)\varepsilon$. In total, $\sup\_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - \Phi\_N^f(\boldsymbol{x}) \rvert \le M^{-(k+s)} + \varepsilon \cdot (d+2)$, which with our choices gives the error bound (7.4.3).
+
+**Step 3.** Bound the size and depth of the neural network. By Lemma 5.17, $\text{size}(\varphi\_{\boldsymbol{\nu}}) \le C \cdot (1 + k\_\mathcal{T})$ and $\text{depth}(\varphi\_{\boldsymbol{\nu}}) \le C \cdot (1 + \log(k\_\mathcal{T}))$ where $k\_\mathcal{T}$ is the maximal number of simplices attached to a node in the mesh, which is independent of $M$. Using Lemma 7.3 and Proposition 7.4, $\text{depth}(\Phi\_N^f) \le C \cdot (1 + \log(N))$ and $\text{size}(\Phi\_N^f) \le CN \log(N)$. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Discussion of Theorem 7.10)</span></p>
@@ -1487,11 +1859,11 @@ Theorem 7.10 is similar in spirit to Yarotsky (2017); the main differences are t
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 7.11</span><span class="math-callout__name">(Affine Transformation of the Domain)</span></p>
 
-Let $L : \boldsymbol{x} \mapsto \boldsymbol{A}\boldsymbol{x} + \boldsymbol{b} : \mathbb{R}^d \to \mathbb{R}^d$ be a bijective affine transformation and set $\Omega := L([0,1]^d) \subseteq \mathbb{R}^d$. Then for a function $f \in C^{k,s}(\Omega)$, by Theorem 7.10 there exists a neural network $\Phi_N^f$ such that
+Let $L : \boldsymbol{x} \mapsto \boldsymbol{A}\boldsymbol{x} + \boldsymbol{b} : \mathbb{R}^d \to \mathbb{R}^d$ be a bijective affine transformation and set $\Omega := L([0,1]^d) \subseteq \mathbb{R}^d$. Then for a function $f \in C^{k,s}(\Omega)$, by Theorem 7.10 there exists a neural network $\Phi\_N^f$ such that
 
 $$\sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - \Phi_N^f(L^{-1}(\boldsymbol{x})) \rvert \le C \lVert f \circ L \rVert_{C^{k,s}([0,1]^d)} N^{-\frac{k+s}{d}}.$$
 
-Since $\lVert f \circ L \rVert_{C^{k,s}([0,1]^d)} \le (1 + \lVert \boldsymbol{A} \rVert^{k+s}) \lVert f \rVert_{C^{k,s}(\Omega)}$, the convergence rate $N^{-\frac{k+s}{d}}$ is achieved on every set of the type $L([0,1]^d)$ for an affine map $L$, and in particular on every hypercube $\times_{j=1}^d [a_j, b_j]$.
+Since $\lVert f \circ L \rVert\_{C^{k,s}([0,1]^d)} \le (1 + \lVert \boldsymbol{A} \rVert^{k+s}) \lVert f \rVert\_{C^{k,s}(\Omega)}$, the convergence rate $N^{-\frac{k+s}{d}}$ is achieved on every set of the type $L([0,1]^d)$ for an affine map $L$, and in particular on every hypercube $\times\_{j=1}^d [a\_j, b\_j]$.
 
 </div>
 
@@ -1513,16 +1885,16 @@ its inverse Fourier transform. Then, for $C > 0$ the Barron class is defined as
 
 $$\Gamma_C := \left\lbrace f \in C(\mathbb{R}^d) \;\middle\vert\; \exists g \in L^1(\mathbb{R}^d),\; \int_{\mathbb{R}^d} \lvert \boldsymbol{\xi} \rvert \lvert g(\boldsymbol{\xi}) \rvert \, \mathrm{d}\boldsymbol{\xi} \le C \text{ and } f = \check{g} \right\rbrace.$$
 
-We say that a function $f \in \Gamma_C$ has a finite Fourier moment, even though technically the Fourier transform of $f$ may not be well-defined, since $f$ does not need to be integrable. By the Riemann-Lebesgue Lemma, the condition $f \in C(\mathbb{R}^d)$ in the definition of $\Gamma_C$ is automatically satisfied if $g \in L^1(\mathbb{R}^d)$ as in the definition exists.
+We say that a function $f \in \Gamma\_C$ has a finite Fourier moment, even though technically the Fourier transform of $f$ may not be well-defined, since $f$ does not need to be integrable. By the Riemann-Lebesgue Lemma, the condition $f \in C(\mathbb{R}^d)$ in the definition of $\Gamma\_C$ is automatically satisfied if $g \in L^1(\mathbb{R}^d)$ as in the definition exists.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 8.1</span><span class="math-callout__name">(Dimension-Independent Approximation of Barron Functions)</span></p>
 
-Let $\sigma : \mathbb{R} \to \mathbb{R}$ be sigmoidal (see Definition 3.11) and let $f \in \Gamma_C$ for some $C > 0$. Denote by $B_1^d := \lbrace \boldsymbol{x} \in \mathbb{R}^d \mid \lVert \boldsymbol{x} \rVert \le 1 \rbrace$ the unit ball. Then, for every $c > 4C^2$ and every $N \in \mathbb{N}$ there exists a neural network $\Phi^f$ with architecture $(\sigma; d, N, 1)$ such that
+Let $\sigma : \mathbb{R} \to \mathbb{R}$ be sigmoidal (see Definition 3.11) and let $f \in \Gamma\_C$ for some $C > 0$. Denote by $B\_1^d := \lbrace \boldsymbol{x} \in \mathbb{R}^d \mid \lVert \boldsymbol{x} \rVert \le 1 \rbrace$ the unit ball. Then, for every $c > 4C^2$ and every $N \in \mathbb{N}$ there exists a neural network $\Phi^f$ with architecture $(\sigma; d, N, 1)$ such that
 
 $$\frac{1}{\lvert B_1^d \rvert} \int_{B_1^d} \left\lvert f(\boldsymbol{x}) - \Phi^f(\boldsymbol{x}) \right\rvert^2 \mathrm{d}\boldsymbol{x} \le \frac{c}{N}, \tag{8.1.1}$$
 
-where $\lvert B_1^d \rvert$ is the Lebesgue measure of $B_1^d$.
+where $\lvert B\_1^d \rvert$ is the Lebesgue measure of $B\_1^d$.
 
 </div>
 
@@ -1533,7 +1905,7 @@ The approximation rate in (8.1.1) can be slightly improved under some assumption
 
 Importantly, the dimension $d$ does not enter on the right-hand side of (8.1.1), in particular the convergence rate is not directly affected by the dimension, which is in stark contrast to the results of the previous chapters. However, it should be noted, that the constant $C$ may still have some inherent $d$-dependence.
 
-The dimension-independent approximation rate of Theorem 8.1 may seem surprising, especially when comparing to the results in Chapters 4 and 5. However, this can be explained by recognizing that the assumption of a finite Fourier moment is effectively a *dimension-dependent regularity assumption*. Indeed, the condition becomes more restrictive in higher dimensions and hence the complexity of $\Gamma_C$ does not grow with the dimension.
+The dimension-independent approximation rate of Theorem 8.1 may seem surprising, especially when comparing to the results in Chapters 4 and 5. However, this can be explained by recognizing that the assumption of a finite Fourier moment is effectively a *dimension-dependent regularity assumption*. Indeed, the condition becomes more restrictive in higher dimensions and hence the complexity of $\Gamma\_C$ does not grow with the dimension.
 
 A sufficient condition is that all derivatives of order up to $\lfloor d/2 \rfloor + 2$ are square-integrable. In other words, if $f$ belongs to the Sobolev space $H^{\lfloor d/2 \rfloor + 2}(\mathbb{R}^d)$, then $f$ is a Barron function. Importantly, the functions must become smoother, as the dimension increases.
 
@@ -1544,65 +1916,86 @@ The proof of Theorem 8.1 is based on a peculiar property of high-dimensional con
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 8.3</span><span class="math-callout__name">(Approximate Carathéodory Theorem)</span></p>
 
-Let $H$ be a Hilbert space, and let $G \subseteq H$ be such that for some $B > 0$ it holds that $\lVert g \rVert_H \le B$ for all $g \in G$. Let $f \in \overline{\text{co}}(G)$. Then, for every $N \in \mathbb{N}$ and every $c > B^2$ there exist $(g_i)_{i=1}^N \subseteq G$ such that
+Let $H$ be a Hilbert space, and let $G \subseteq H$ be such that for some $B > 0$ it holds that $\lVert g \rVert\_H \le B$ for all $g \in G$. Let $f \in \overline{\text{co}}(G)$. Then, for every $N \in \mathbb{N}$ and every $c > B^2$ there exist $(g\_i)\_{i=1}^N \subseteq G$ such that
 
 $$\left\lVert f - \frac{1}{N} \sum_{i=1}^{N} g_i \right\rVert_H^2 \le \frac{c}{N}. \tag{8.1.2}$$
 
 </div>
 
-*Proof.* Fix $\varepsilon > 0$ and $N \in \mathbb{N}$. Since $f \in \overline{\text{co}}(G)$, there exist coefficients $\alpha_1, \ldots, \alpha_m \in [0,1]$ summing to 1, and linearly independent elements $h_1, \ldots, h_m \in G$ such that $f^* := \sum_{j=1}^m \alpha_j h_j$ satisfies $\lVert f - f^* \rVert_H < \varepsilon$. We claim that there exist $g_1, \ldots, g_N$, each in $\lbrace h_1, \ldots, h_m \rbrace$, such that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Fix $\varepsilon > 0$ and $N \in \mathbb{N}$. Since $f \in \overline{\text{co}}(G)$, there exist coefficients $\alpha\_1, \ldots, \alpha\_m \in [0,1]$ summing to 1, and linearly independent elements $h\_1, \ldots, h\_m \in G$ such that $f^\ast := \sum\_{j=1}^m \alpha\_j h\_j$ satisfies $\lVert f - f^\ast \rVert\_H < \varepsilon$. We claim that there exist $g\_1, \ldots, g\_N$, each in $\lbrace h\_1, \ldots, h\_m \rbrace$, such that
 
 $$\left\lVert f^* - \frac{1}{N} \sum_{j=1}^{N} g_j \right\rVert_H^2 \le \frac{B^2}{N}.$$
 
-Let $X_i$, $i = 1, \ldots, N$, be i.i.d. $\mathbb{R}^m$-valued random variables with $\mathbb{P}[X_i = h_j] = \alpha_j$ for all $i = 1, \ldots, m$. In particular $\mathbb{E}[X_i] = \sum_{j=1}^m \alpha_j h_j = f^*$ for each $i$. Moreover,
+Let $X\_i$, $i = 1, \ldots, N$, be i.i.d. $\mathbb{R}^m$-valued random variables with $\mathbb{P}[X\_i = h\_j] = \alpha\_j$ for all $i = 1, \ldots, m$. In particular $\mathbb{E}[X\_i] = \sum\_{j=1}^m \alpha\_j h\_j = f^\ast$ for each $i$. Moreover,
 
 $$\mathbb{E}\left[\left\lVert f^* - \frac{1}{N} \sum_{j=1}^{N} X_j \right\rVert_H^2\right] = \frac{1}{N} \mathbb{E}[\lVert f^* - X_1 \rVert_H^2] = \frac{1}{N} \mathbb{E}[\lVert X_1 \rVert_H^2 - \lVert f^* \rVert_H^2] \le \frac{B^2}{N}.$$
 
-Since the expectation in (8.1.4) is bounded by $B^2/N$, there must exist at least one realization of the random variables $X_i \in \lbrace h_1, \ldots, h_m \rbrace$, denoted $g_i$, for which (8.1.3) holds. $\square$
+Since the expectation in (8.1.4) is bounded by $B^2/N$, there must exist at least one realization of the random variables $X\_i \in \lbrace h\_1, \ldots, h\_m \rbrace$, denoted $g\_i$, for which (8.1.3) holds. $\square$
+
+</details>
+</div>
 
 Lemma 8.3 provides a powerful tool: If we want to approximate a function $f$ with a superposition of $N$ elements in a set $G$, then it is sufficient to show that $f$ can be represented as an arbitrary (infinite) convex combination of elements of $G$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 8.4</span><span class="math-callout__name">(Barron Functions as Convex Combinations of Heaviside Functions)</span></p>
 
-Let $d \in \mathbb{N}$, $C > 0$ and $f \in \Gamma_C$. Then $f\vert_{B_1^d} - f(\boldsymbol{0}) \in \overline{\text{co}}(G_C)$, where the closure is taken with respect to the norm
+Let $d \in \mathbb{N}$, $C > 0$ and $f \in \Gamma\_C$. Then $f\vert\_{B\_1^d} - f(\boldsymbol{0}) \in \overline{\text{co}}(G\_C)$, where the closure is taken with respect to the norm
 
 $$\lVert g \rVert_{L^{2,\diamond}(B_1^d)} := \left(\frac{1}{\lvert B_1^d \rvert} \int_{B_1^d} \lvert g(\boldsymbol{x}) \rvert^2 \, \mathrm{d}\boldsymbol{x}\right)^{1/2},$$
 
-and $G_C := \left\lbrace B_1^d \ni \boldsymbol{x} \mapsto \gamma \cdot \mathbb{1}_{\mathbb{R}_+}(\langle \boldsymbol{a}, \boldsymbol{x} \rangle + b) \;\middle\vert\; \boldsymbol{a} \in \mathbb{R}^d, b \in \mathbb{R}, \lvert \gamma \rvert \le 2C \right\rbrace$.
+and $G\_C := \left\lbrace B\_1^d \ni \boldsymbol{x} \mapsto \gamma \cdot \mathbb{1}\_{\mathbb{R}\_+}(\langle \boldsymbol{a}, \boldsymbol{x} \rangle + b) \;\middle\vert\; \boldsymbol{a} \in \mathbb{R}^d, b \in \mathbb{R}, \lvert \gamma \rvert \le 2C \right\rbrace$.
 
 </div>
 
-*Proof.* **Step 1.** We express $f(\boldsymbol{x})$ via an integral. Since $f \in \Gamma_C$, there exists $g \in L^1(\mathbb{R}^d)$ such that for all $\boldsymbol{x} \in \mathbb{R}^d$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+**Step 1.** We express $f(\boldsymbol{x})$ via an integral. Since $f \in \Gamma\_C$, there exists $g \in L^1(\mathbb{R}^d)$ such that for all $\boldsymbol{x} \in \mathbb{R}^d$
 
 $$f(\boldsymbol{x}) - f(\boldsymbol{0}) = \int_{\mathbb{R}^d} \lvert g(\boldsymbol{\xi}) \rvert \left(\cos(\langle \boldsymbol{x}, \boldsymbol{\xi} \rangle + \kappa(\boldsymbol{\xi})) - \cos(\kappa(\boldsymbol{\xi}))\right) \mathrm{d}\boldsymbol{\xi}, \tag{8.1.6}$$
 
-where $\kappa(\boldsymbol{\xi})$ is the phase of $g(\boldsymbol{\xi})$, i.e. $g(\boldsymbol{\xi}) = \lvert g(\boldsymbol{\xi}) \rvert e^{i\kappa(\boldsymbol{\xi})}$, and the last equality follows since $f$ is real-valued. Define a measure $\mu$ on $\mathbb{R}^d$ via its Lebesgue density $\mathrm{d}\mu(\boldsymbol{\xi}) := \frac{1}{C'} \lvert \boldsymbol{\xi} \rvert \lvert g(\boldsymbol{\xi}) \rvert \, \mathrm{d}\boldsymbol{\xi}$, where $C' := \int \lvert \boldsymbol{\xi} \rvert \lvert g(\boldsymbol{\xi}) \rvert \, \mathrm{d}\boldsymbol{\xi} \le C$; this is possible since $f \in \Gamma_C$. Then (8.1.6) leads to
+where $\kappa(\boldsymbol{\xi})$ is the phase of $g(\boldsymbol{\xi})$, i.e. $g(\boldsymbol{\xi}) = \lvert g(\boldsymbol{\xi}) \rvert e^{i\kappa(\boldsymbol{\xi})}$, and the last equality follows since $f$ is real-valued. Define a measure $\mu$ on $\mathbb{R}^d$ via its Lebesgue density $\mathrm{d}\mu(\boldsymbol{\xi}) := \frac{1}{C'} \lvert \boldsymbol{\xi} \rvert \lvert g(\boldsymbol{\xi}) \rvert \, \mathrm{d}\boldsymbol{\xi}$, where $C' := \int \lvert \boldsymbol{\xi} \rvert \lvert g(\boldsymbol{\xi}) \rvert \, \mathrm{d}\boldsymbol{\xi} \le C$; this is possible since $f \in \Gamma\_C$. Then (8.1.6) leads to
 
 $$f(\boldsymbol{x}) - f(\boldsymbol{0}) = C' \int_{\mathbb{R}^d} \frac{\cos(\langle \boldsymbol{x}, \boldsymbol{\xi} \rangle + \kappa(\boldsymbol{\xi})) - \cos(\kappa(\boldsymbol{\xi}))}{\lvert \boldsymbol{\xi} \rvert} \, \mathrm{d}\mu(\boldsymbol{\xi}). \tag{8.1.7}$$
 
-**Step 2.** We show that $\boldsymbol{x} \mapsto f(\boldsymbol{x}) - f(\boldsymbol{0})$ is in the $L^{2,\diamond}(B_1^d)$ closure of convex combinations of the functions $\boldsymbol{x} \mapsto q_{\boldsymbol{x}}(\boldsymbol{\theta})$, where $\boldsymbol{\theta} \in \mathbb{R}^d$, and
+**Step 2.** We show that $\boldsymbol{x} \mapsto f(\boldsymbol{x}) - f(\boldsymbol{0})$ is in the $L^{2,\diamond}(B\_1^d)$ closure of convex combinations of the functions $\boldsymbol{x} \mapsto q\_{\boldsymbol{x}}(\boldsymbol{\theta})$, where $\boldsymbol{\theta} \in \mathbb{R}^d$, and
 
 $$q_{\boldsymbol{x}}(\boldsymbol{\theta}) := C' \frac{\cos(\lvert \boldsymbol{\theta} \rvert z + \kappa(\boldsymbol{\theta})) - \cos(\kappa(\boldsymbol{\theta}))}{\lvert \boldsymbol{\theta} \rvert}, \quad z = \langle \boldsymbol{x}, \boldsymbol{\theta}/\lvert \boldsymbol{\theta} \rvert \rangle.$$
 
-The cosine function is 1-Lipschitz. Hence for any $\boldsymbol{\xi} \in \mathbb{R}^d$ the map (8.1.8) is bounded by one. Since $\sum_{\boldsymbol{\theta} \in \frac{1}{n}\mathbb{Z}^d} \mu(I_{\boldsymbol{\theta}}) = \mu(\mathbb{R}^d) = 1$, the claim holds. Together with Step 2, this then concludes the proof.
+The cosine function is 1-Lipschitz. Hence for any $\boldsymbol{\xi} \in \mathbb{R}^d$ the map (8.1.8) is bounded by one. Since $\sum\_{\boldsymbol{\theta} \in \frac{1}{n}\mathbb{Z}^d} \mu(I\_{\boldsymbol{\theta}}) = \mu(\mathbb{R}^d) = 1$, the claim holds. Together with Step 2, this then concludes the proof.
 
-**Step 3.** We prove that $\boldsymbol{x} \mapsto q_{\boldsymbol{x}}(\boldsymbol{\theta})$ is in the $L^{2,\diamond}(B_1^d)$ closure of convex combinations of $G_C$ for every $\boldsymbol{\theta} \in \mathbb{R}^d$. Setting $z = \langle \boldsymbol{x}, \boldsymbol{\theta}/\lvert \boldsymbol{\theta} \rvert \rangle$, the result follows if the maps $h_{\boldsymbol{\theta}} : [-1,1] \to \mathbb{R}$, $z \mapsto C' \frac{\cos(\lvert \boldsymbol{\theta} \rvert z + \kappa(\boldsymbol{\theta})) - \cos(\kappa(\boldsymbol{\theta}))}{\lvert \boldsymbol{\theta} \rvert}$ can be approximated arbitrarily well by convex combinations of functions of the form $[-1,1] \ni z \mapsto \gamma \mathbb{1}_{\mathbb{R}_+}(a'z + b')$, where $a', b' \in \mathbb{R}$ and $\lvert \gamma \rvert \le 2C$. This is achieved by constructing piecewise constant approximations $g_{T,-} + g_{T,+}$ that interpolate $h_{\boldsymbol{\theta}}$ and converge uniformly as $T \to \infty$. $\square$
+**Step 3.** We prove that $\boldsymbol{x} \mapsto q\_{\boldsymbol{x}}(\boldsymbol{\theta})$ is in the $L^{2,\diamond}(B\_1^d)$ closure of convex combinations of $G\_C$ for every $\boldsymbol{\theta} \in \mathbb{R}^d$. Setting $z = \langle \boldsymbol{x}, \boldsymbol{\theta}/\lvert \boldsymbol{\theta} \rvert \rangle$, the result follows if the maps $h\_{\boldsymbol{\theta}} : [-1,1] \to \mathbb{R}$, $z \mapsto C' \frac{\cos(\lvert \boldsymbol{\theta} \rvert z + \kappa(\boldsymbol{\theta})) - \cos(\kappa(\boldsymbol{\theta}))}{\lvert \boldsymbol{\theta} \rvert}$ can be approximated arbitrarily well by convex combinations of functions of the form $[-1,1] \ni z \mapsto \gamma \mathbb{1}\_{\mathbb{R}\_+}(a'z + b')$, where $a', b' \in \mathbb{R}$ and $\lvert \gamma \rvert \le 2C$. This is achieved by constructing piecewise constant approximations $g\_{T,-} + g\_{T,+}$ that interpolate $h\_{\boldsymbol{\theta}}$ and converge uniformly as $T \to \infty$. $\square$
 
-*Proof (of Theorem 8.1).* Let $f \in \Gamma_C$. By Lemma 8.4, $f\vert_{B_1^d} - f(\boldsymbol{0}) \in \overline{\text{co}}(G_C)$, where the closure is understood with respect to the norm (8.1.5). It is not hard to see that for every $g \in G_C$ it holds that $\lVert g \rVert_{L^{2,\diamond}(B_1^d)} \le 2C$. Applying Lemma 8.3 with the Hilbert space $L^{2,\diamond}(B_1^d)$, we get that for every $N \in \mathbb{N}$ there exist $\lvert \gamma_i \rvert \le 2C$, $\boldsymbol{a}_i \in \mathbb{R}^d$, $b_i \in \mathbb{R}$, for $i = 1, \ldots, N$, so that
+</details>
+</div>
+
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 8.1</summary>
+
+Let $f \in \Gamma\_C$. By Lemma 8.4, $f\vert\_{B\_1^d} - f(\boldsymbol{0}) \in \overline{\text{co}}(G\_C)$, where the closure is understood with respect to the norm (8.1.5). It is not hard to see that for every $g \in G\_C$ it holds that $\lVert g \rVert\_{L^{2,\diamond}(B\_1^d)} \le 2C$. Applying Lemma 8.3 with the Hilbert space $L^{2,\diamond}(B\_1^d)$, we get that for every $N \in \mathbb{N}$ there exist $\lvert \gamma\_i \rvert \le 2C$, $\boldsymbol{a}\_i \in \mathbb{R}^d$, $b\_i \in \mathbb{R}$, for $i = 1, \ldots, N$, so that
 
 $$\frac{1}{\lvert B_1^d \rvert} \int_{B_1^d} \left\lvert f(\boldsymbol{x}) - f(\boldsymbol{0}) - \frac{1}{N} \sum_{i=1}^{N} \gamma_i \mathbb{1}_{\mathbb{R}_+}(\langle \boldsymbol{a}_i, \boldsymbol{x} \rangle + b_i) \right\rvert^2 \mathrm{d}\boldsymbol{x} \le \frac{4C^2}{N}.$$
 
-By Exercise 3.24, it holds that $\sigma(\lambda \cdot) \to \mathbb{1}_{\mathbb{R}_+}$ for $\lambda \to \infty$ almost everywhere. Thus, for every $\delta > 0$ there exist $\tilde{\boldsymbol{a}}_i$, $\tilde{b}_i$, $i = 1, \ldots, N$, so that
+By Exercise 3.24, it holds that $\sigma(\lambda \cdot) \to \mathbb{1}\_{\mathbb{R}\_+}$ for $\lambda \to \infty$ almost everywhere. Thus, for every $\delta > 0$ there exist $\tilde{\boldsymbol{a}}\_i$, $\tilde{b}\_i$, $i = 1, \ldots, N$, so that
 
 $$\frac{1}{\lvert B_1^d \rvert} \int_{B_1^d} \left\lvert f(\boldsymbol{x}) - f(\boldsymbol{0}) - \frac{1}{N} \sum_{i=1}^{N} \gamma_i \sigma\!\left(\langle \tilde{\boldsymbol{a}}_i, \boldsymbol{x} \rangle + \tilde{b}_i\right) \right\rvert^2 \mathrm{d}\boldsymbol{x} \le \frac{4C^2}{N} + \delta.$$
 
-The result follows by observing that $\frac{1}{N} \sum_{i=1}^{N} \gamma_i \sigma\!\left(\langle \tilde{\boldsymbol{a}}_i, \boldsymbol{x} \rangle + \tilde{b}_i\right) + f(\boldsymbol{0})$ is a neural network with architecture $(\sigma; d, N, 1)$. $\square$
+The result follows by observing that $\frac{1}{N} \sum\_{i=1}^{N} \gamma\_i \sigma\!\left(\langle \tilde{\boldsymbol{a}}\_i, \boldsymbol{x} \rangle + \tilde{b}\_i\right) + f(\boldsymbol{0})$ is a neural network with architecture $(\sigma; d, N, 1)$. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Non-Compact Parameter Set)</span></p>
 
-Another notable aspect of the approximation of Barron functions is that the absolute values of the weights other than the output weights are not bounded by a constant. To see this, we refer to (8.1.9) in the proof, where arbitrarily large $\theta$ need to be used. While $\Gamma_C$ is a compact set, the set of neural networks of the specified architecture for a fixed $N \in \mathbb{N}$ is not parameterized with a compact parameter set. In a certain sense, this is reminiscent of Proposition 3.19 and Theorem 3.20, where arbitrarily strong approximation rates were achieved by using a very complex activation function and a non-compact parameter space.
+Another notable aspect of the approximation of Barron functions is that the absolute values of the weights other than the output weights are not bounded by a constant. To see this, we refer to (8.1.9) in the proof, where arbitrarily large $\theta$ need to be used. While $\Gamma\_C$ is a compact set, the set of neural networks of the specified architecture for a fixed $N \in \mathbb{N}$ is not parameterized with a compact parameter set. In a certain sense, this is reminiscent of Proposition 3.19 and Theorem 3.20, where arbitrarily strong approximation rates were achieved by using a very complex activation function and a non-compact parameter space.
 
 </div>
 
@@ -1610,13 +2003,13 @@ Another notable aspect of the approximation of Barron functions is that the abso
 
 As a next instance of types of functions for which the curse of dimensionality can be overcome, we study functions with compositional structure. In words, this means that we study high-dimensional functions that are constructed by composing many low-dimensional functions. This point of view was proposed in Poggio et al. (2017). Note that this can be a realistic assumption in many cases, such as for sensor networks, where local information is first aggregated in smaller clusters of sensors before some information is sent to a processing unit for further evaluation.
 
-We introduce a model for compositional functions next. Consider a directed acyclic graph $\mathcal{G}$ with $M$ vertices $\eta_1, \ldots, \eta_M$ such that
+We introduce a model for compositional functions next. Consider a directed acyclic graph $\mathcal{G}$ with $M$ vertices $\eta\_1, \ldots, \eta\_M$ such that
 
-- exactly $d$ vertices, $\eta_1, \ldots, \eta_d$, have no ingoing edge,
+- exactly $d$ vertices, $\eta\_1, \ldots, \eta\_d$, have no ingoing edge,
 - each vertex has at most $m \in \mathbb{N}$ ingoing edges,
-- exactly one vertex, $\eta_M$, has no outgoing edge.
+- exactly one vertex, $\eta\_M$, has no outgoing edge.
 
-With each vertex $\eta_j$ for $j > d$ we associate a function $f_j : \mathbb{R}^{d_j} \to \mathbb{R}$. Here $d_j$ denotes the cardinality of the set $S_j$, which is defined as the set of indices $i$ corresponding to vertices $\eta_i$ for which we have an edge from $\eta_i$ to $\eta_j$. Without loss of generality, we assume that $m \ge d_j = \lvert S_j \rvert \ge 1$ for all $j > d$. Finally, we let
+With each vertex $\eta\_j$ for $j > d$ we associate a function $f\_j : \mathbb{R}^{d\_j} \to \mathbb{R}$. Here $d\_j$ denotes the cardinality of the set $S\_j$, which is defined as the set of indices $i$ corresponding to vertices $\eta\_i$ for which we have an edge from $\eta\_i$ to $\eta\_j$. Without loss of generality, we assume that $m \ge d\_j = \lvert S\_j \rvert \ge 1$ for all $j > d$. Finally, we let
 
 $$F_j := x_j \quad \text{for all } j \le d \tag{8.2.1a}$$
 
@@ -1624,18 +2017,18 @@ and
 
 $$F_j := f_j((F_i)_{i \in S_j}) \quad \text{for all } j > d. \tag{8.2.1b}$$
 
-Then $F_M(x_1, \ldots, x_d)$ is a function from $\mathbb{R}^d \to \mathbb{R}$. Assuming
+Then $F\_M(x\_1, \ldots, x\_d)$ is a function from $\mathbb{R}^d \to \mathbb{R}$. Assuming
 
 $$\lVert f_j \rVert_{C^{k,s}(\mathbb{R}^{d_j})} \le 1 \quad \text{for all } j = d+1, \ldots, M, \tag{8.2.2}$$
 
-we denote the set of all functions of the type $F_M$ by $\mathcal{F}^{k,s}(m, d, M)$.
+we denote the set of all functions of the type $F\_M$ by $\mathcal{F}^{k,s}(m, d, M)$.
 
-Clearly, for $s = 0$, $\mathcal{F}^{k,0}(m, d, M) \subseteq C^k(\mathbb{R}^d)$ since the composition of functions in $C^k$ belongs again to $C^k$. A direct application of Theorem 7.10 allows to approximate $F_M \in \mathcal{F}^k(m, d, M)$ with a neural network of size $O(N \log(N))$ and error $O(N^{-k/d})$. Since each $f_j$ depends only on $m$ variables, intuitively we expect an error convergence of type $O(N^{-k/m})$ with the constant somehow depending on the number $M$ of vertices.
+Clearly, for $s = 0$, $\mathcal{F}^{k,0}(m, d, M) \subseteq C^k(\mathbb{R}^d)$ since the composition of functions in $C^k$ belongs again to $C^k$. A direct application of Theorem 7.10 allows to approximate $F\_M \in \mathcal{F}^k(m, d, M)$ with a neural network of size $O(N \log(N))$ and error $O(N^{-k/d})$. Since each $f\_j$ depends only on $m$ variables, intuitively we expect an error convergence of type $O(N^{-k/m})$ with the constant somehow depending on the number $M$ of vertices.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 8.5</span><span class="math-callout__name">(Approximation of Compositional Functions)</span></p>
 
-Let $k$, $m$, $d$, $M \in \mathbb{N}$ and $s > 0$. Let $F_M \in \mathcal{F}^{k,s}(m, d, M)$. Then there exists a constant $C = C(m, k+s, M)$ such that for every $N \in \mathbb{N}$ there exists a ReLU neural network $\Phi^{F_M}$ such that
+Let $k$, $m$, $d$, $M \in \mathbb{N}$ and $s > 0$. Let $F\_M \in \mathcal{F}^{k,s}(m, d, M)$. Then there exists a constant $C = C(m, k+s, M)$ such that for every $N \in \mathbb{N}$ there exists a ReLU neural network $\Phi^{F\_M}$ such that
 
 $$\text{size}(\Phi^{F_M}) \le CN \log(N), \qquad \text{depth}(\Phi^{F_M}) \le C \log(N)$$
 
@@ -1645,29 +2038,36 @@ $$\sup_{\boldsymbol{x} \in [0,1]^d} \lvert F_M(\boldsymbol{x}) - \Phi^{F_M}(\bol
 
 </div>
 
-*Proof sketch.* We assume without loss of generality that the indices follow a topological ordering, i.e., $S_j \subseteq \lbrace 1, \ldots, j-1 \rbrace$ for all $j$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
 
-**Step 1.** First assume that $\hat{f}_j$ are functions such that with $0 < \varepsilon \le 1$
+We assume without loss of generality that the indices follow a topological ordering, i.e., $S\_j \subseteq \lbrace 1, \ldots, j-1 \rbrace$ for all $j$.
+
+**Step 1.** First assume that $\hat{f}\_j$ are functions such that with $0 < \varepsilon \le 1$
 
 $$\lvert f_j(\boldsymbol{x}) - \hat{f}_j(\boldsymbol{x}) \rvert \le \delta_j := \varepsilon \cdot (2m)^{-(M+1-j)} \quad \text{for all } \boldsymbol{x} \in [-2,2]^{d_j}.$$
 
-Let $\hat{F}_j$ be defined as in (8.2.1), but with all $f_j$ replaced by $\hat{f}_j$. We check the error of the approximation $\hat{F}_M$ to $F_M$ by induction over $j$ and show that for all $\boldsymbol{x} \in [-1,1]^d$
+Let $\hat{F}\_j$ be defined as in (8.2.1), but with all $f\_j$ replaced by $\hat{f}\_j$. We check the error of the approximation $\hat{F}\_M$ to $F\_M$ by induction over $j$ and show that for all $\boldsymbol{x} \in [-1,1]^d$
 
 $$\lvert F_j(\boldsymbol{x}) - \hat{F}_j(\boldsymbol{x}) \rvert \le (2m)^{-(M-j)} \varepsilon.$$
 
-Note that due to $\lVert f_j \rVert_{C^k} \le 1$ we have $\lvert F_j(\boldsymbol{x}) \rvert \le 1$ and thus $\hat{F}_j(\boldsymbol{x}) \in [-2,2]$. For $j = 1$ it holds $F_1(x_1) = \hat{F}_1(x_1) = x_1$, and thus (8.2.4) is valid for all $x_1 \in [-1,1]$. For the induction step, for all $\boldsymbol{x} \in [-1,1]^d$ by (8.2.3) and the induction hypothesis
+Note that due to $\lVert f\_j \rVert\_{C^k} \le 1$ we have $\lvert F\_j(\boldsymbol{x}) \rvert \le 1$ and thus $\hat{F}\_j(\boldsymbol{x}) \in [-2,2]$. For $j = 1$ it holds $F\_1(x\_1) = \hat{F}\_1(x\_1) = x\_1$, and thus (8.2.4) is valid for all $x\_1 \in [-1,1]$. For the induction step, for all $\boldsymbol{x} \in [-1,1]^d$ by (8.2.3) and the induction hypothesis
 
 $$\lvert F_j(\boldsymbol{x}) - \hat{F}_j(\boldsymbol{x}) \rvert \le \sum_{i \in S_j} \lvert F_i - \hat{F}_i \rvert + \delta_j \le m \cdot (2m)^{-(M-(j-1))} \varepsilon + (2m)^{-(M+1-j)} \varepsilon = (2m)^{-(M-j)} \varepsilon.$$
 
-Here we used that $\lvert \frac{d}{dx_r} f_j((x_i)_{i \in S_j}) \rvert \le 1$ for all $r \in S_j$ so that by the triangle inequality and the mean value theorem $\lvert f_j((x_i)_{i \in S_j}) - f_j((y_i)_{i \in S_j}) \rvert \le \sum_{r \in S_j} \lvert x_r - y_r \rvert$.
+Here we used that $\lvert \frac{d}{dx\_r} f\_j((x\_i)\_{i \in S\_j}) \rvert \le 1$ for all $r \in S\_j$ so that by the triangle inequality and the mean value theorem $\lvert f\_j((x\_i)\_{i \in S\_j}) - f\_j((y\_i)\_{i \in S\_j}) \rvert \le \sum\_{r \in S\_j} \lvert x\_r - y\_r \rvert$.
 
-This shows that (8.2.4) holds, and thus for all $\boldsymbol{x} \in [-1,1]^d$: $\lvert F_M(\boldsymbol{x}) - \hat{F}_M(\boldsymbol{x}) \rvert \le \varepsilon$.
+This shows that (8.2.4) holds, and thus for all $\boldsymbol{x} \in [-1,1]^d$: $\lvert F\_M(\boldsymbol{x}) - \hat{F}\_M(\boldsymbol{x}) \rvert \le \varepsilon$.
 
-**Step 2.** We sketch a construction of how to write $\hat{F}_M$ from Step 1 as a neural network $\Phi^{F_M}$ of the asserted size and depth bounds. Fix $N \in \mathbb{N}$ and let $N_j := \lceil N(2m)^{\frac{m}{k+s}(M+1-j)} \rceil$. By Theorem 7.10, since $d_j \le m$, we can find a neural network $\Phi^{f_j}$ satisfying
+**Step 2.** We sketch a construction of how to write $\hat{F}\_M$ from Step 1 as a neural network $\Phi^{F\_M}$ of the asserted size and depth bounds. Fix $N \in \mathbb{N}$ and let $N\_j := \lceil N(2m)^{\frac{m}{k+s}(M+1-j)} \rceil$. By Theorem 7.10, since $d\_j \le m$, we can find a neural network $\Phi^{f\_j}$ satisfying
 
 $$\sup_{\boldsymbol{x} \in [-2,2]^{d_j}} \lvert f_j(\boldsymbol{x}) - \Phi^{f_j}(\boldsymbol{x}) \rvert \le N_j^{-\frac{k+s}{m}} \le N^{-\frac{k+s}{m}} (2m)^{-(M+1-j)}.$$
 
-The function $\hat{F}_M$ from Step 1 then will yield error $N^{-\frac{k+s}{m}}$ by (8.2.3) and (8.2.5). We observe that $\hat{F}_M$ can be constructed inductively as a neural network $\Phi^{F_M}$ by propagating all values $\Phi^{F_1}, \ldots, \hat{\Phi}^{F_j}$ to all consecutive layers using identity neural networks and then using the outputs of $(\Phi^{F_i})_{i \in S_{j+1}}$ as input to $\Phi^{f_{j+1}}$. The depth of this neural network is bounded by $\sum_{j=1}^{M} \text{depth}(\Phi^{f_j}) = O(M \log(N))$. We have at most $\sum_{j=1}^{M} \lvert S_j \rvert \le mM$ values which need to be propagated through these $O(M \log(N))$ layers, amounting to an overhead $O(mM^2 \log(N)) = O(\log(N))$ for the identity neural networks. In all the neural network size is thus $O(N \log(N))$. $\square$
+The function $\hat{F}\_M$ from Step 1 then will yield error $N^{-\frac{k+s}{m}}$ by (8.2.3) and (8.2.5). We observe that $\hat{F}\_M$ can be constructed inductively as a neural network $\Phi^{F\_M}$ by propagating all values $\Phi^{F\_1}, \ldots, \hat{\Phi}^{F\_j}$ to all consecutive layers using identity neural networks and then using the outputs of $(\Phi^{F\_i})\_{i \in S\_{j+1}}$ as input to $\Phi^{f\_{j+1}}$. The depth of this neural network is bounded by $\sum\_{j=1}^{M} \text{depth}(\Phi^{f\_j}) = O(M \log(N))$. We have at most $\sum\_{j=1}^{M} \lvert S\_j \rvert \le mM$ values which need to be propagated through these $O(M \log(N))$ layers, amounting to an overhead $O(mM^2 \log(N)) = O(\log(N))$ for the identity neural networks. In all the neural network size is thus $O(N \log(N))$. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 8.6</span><span class="math-callout__name">(Dependence of the Constant on Graph Structure)</span></p>
@@ -1680,65 +2080,72 @@ From the proof we observe that the constant $C$ in Proposition 8.5 behaves like 
 
 Another instance in which the curse of dimension can be mitigated, is if the input to the network belongs to $\mathbb{R}^d$, but stems from an $m$-dimensional manifold $\mathcal{M} \subseteq \mathbb{R}^d$. If we only measure the approximation error on $\mathcal{M}$, then we can again show that it is $m$ rather than $d$ that determines the rate of convergence.
 
-To explain the idea, we assume in the following that $\mathcal{M}$ is a smooth, compact $m$-dimensional manifold in $\mathbb{R}^d$. Moreover, we suppose that there exists $\delta > 0$ and finitely many points $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_M \in \mathcal{M}$ such that the $\delta$-balls $B_{\delta/2}(\boldsymbol{x}_i) := \lbrace \boldsymbol{y} \in \mathbb{R}^d \mid \lVert \boldsymbol{y} - \boldsymbol{x} \rVert_2 < \delta/2 \rbrace$ for $j = 1, \ldots, M$ cover $\mathcal{M}$ (for every $\delta > 0$ such $\boldsymbol{x}_i$ exist since $\mathcal{M}$ is compact). Moreover, denoting by $T_{\boldsymbol{x}} \mathcal{M} \simeq \mathbb{R}^m$ the tangential space of $\mathcal{M}$ at $\boldsymbol{x}$, we assume $\delta > 0$ to be so small that the orthogonal projection
+To explain the idea, we assume in the following that $\mathcal{M}$ is a smooth, compact $m$-dimensional manifold in $\mathbb{R}^d$. Moreover, we suppose that there exists $\delta > 0$ and finitely many points $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_M \in \mathcal{M}$ such that the $\delta$-balls $B\_{\delta/2}(\boldsymbol{x}\_i) := \lbrace \boldsymbol{y} \in \mathbb{R}^d \mid \lVert \boldsymbol{y} - \boldsymbol{x} \rVert\_2 < \delta/2 \rbrace$ for $j = 1, \ldots, M$ cover $\mathcal{M}$ (for every $\delta > 0$ such $\boldsymbol{x}\_i$ exist since $\mathcal{M}$ is compact). Moreover, denoting by $T\_{\boldsymbol{x}} \mathcal{M} \simeq \mathbb{R}^m$ the tangential space of $\mathcal{M}$ at $\boldsymbol{x}$, we assume $\delta > 0$ to be so small that the orthogonal projection
 
 $$\pi_j : B_\delta(\boldsymbol{x}_j) \cap \mathcal{M} \to T_{\boldsymbol{x}_j} \mathcal{M}$$
 
-is injective, the set $\pi_j(B_\delta(\boldsymbol{x}_j) \cap \mathcal{M})$ has $C^\infty$ boundary, and the inverse of $\pi_j$, i.e.
+is injective, the set $\pi\_j(B\_\delta(\boldsymbol{x}\_j) \cap \mathcal{M})$ has $C^\infty$ boundary, and the inverse of $\pi\_j$, i.e.
 
 $$\pi_j^{-1} : \pi_j(B_\delta(\boldsymbol{x}_j) \cap \mathcal{M}) \to \mathcal{M}$$
 
-is $C^\infty$ (this is possible because $\mathcal{M}$ is a smooth manifold). Note that $\pi_j$ is a linear map, whereas $\pi_j^{-1}$ is in general non-linear.
+is $C^\infty$ (this is possible because $\mathcal{M}$ is a smooth manifold). Note that $\pi\_j$ is a linear map, whereas $\pi\_j^{-1}$ is in general non-linear.
 
 For a function $f : \mathcal{M} \to \mathbb{R}$ we can then write
 
 $$f(\boldsymbol{x}) = f(\pi_j^{-1}(\pi_j(\boldsymbol{x}))) = f_j(\pi_j(\boldsymbol{x})) \quad \text{for all } \boldsymbol{x} \in B_\delta(\boldsymbol{x}_j) \cap \mathcal{M}$$
 
-where $f_j := f \circ \pi_j^{-1} : \pi_j(B_\delta(\boldsymbol{x}_j) \cap \mathcal{M}) \to \mathbb{R}$. For $f : \mathcal{M} \to \mathbb{R}$, $k \in \mathbb{N}_0$, and $s \in [0,1)$ we let
+where $f\_j := f \circ \pi\_j^{-1} : \pi\_j(B\_\delta(\boldsymbol{x}\_j) \cap \mathcal{M}) \to \mathbb{R}$. For $f : \mathcal{M} \to \mathbb{R}$, $k \in \mathbb{N}\_0$, and $s \in [0,1)$ we let
 
 $$\lVert f \rVert_{C^{k,s}(\mathcal{M})} := \sup_{j=1,\ldots,M} \lVert f_j \rVert_{C^{k,s}(\pi_j(B_\delta(\boldsymbol{x}_j) \cap \mathcal{M}))}.$$
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 8.7</span><span class="math-callout__name">(Approximation on Manifolds)</span></p>
 
-Let $d$, $k \in \mathbb{N}$, $s \ge 0$, and let $\mathcal{M}$ be a smooth, compact $m$-dimensional manifold in $\mathbb{R}^d$. Then there exists a constant $C > 0$ such that for all $f \in C^{k,s}(\mathcal{M})$ and every $N \in \mathbb{N}$ there exists a ReLU neural network $\Phi_N^f$ such that $\text{size}(\Phi_N^f) \le CN \log(N)$, $\text{depth}(\Phi_N^f) \le C \log(N)$ and
+Let $d$, $k \in \mathbb{N}$, $s \ge 0$, and let $\mathcal{M}$ be a smooth, compact $m$-dimensional manifold in $\mathbb{R}^d$. Then there exists a constant $C > 0$ such that for all $f \in C^{k,s}(\mathcal{M})$ and every $N \in \mathbb{N}$ there exists a ReLU neural network $\Phi\_N^f$ such that $\text{size}(\Phi\_N^f) \le CN \log(N)$, $\text{depth}(\Phi\_N^f) \le C \log(N)$ and
 
 $$\sup_{\boldsymbol{x} \in \mathcal{M}} \lvert f(\boldsymbol{x}) - \Phi_N^f(\boldsymbol{x}) \rvert \le C \lVert f \rVert_{C^{k,s}(\mathcal{M})} N^{-\frac{k+s}{m}}.$$
 
 </div>
 
-*Proof sketch.* Since $\mathcal{M}$ is compact there exists $A > 0$ such that $\mathcal{M} \subseteq [-A, A]^d$. Similar as in the proof of Theorem 7.10, we consider a uniform mesh with nodes $\lbrace -A + 2A\frac{\boldsymbol{\nu}}{n} \mid \boldsymbol{\nu} \le n \rbrace$, and the corresponding piecewise linear basis functions forming the partition of unity $\sum_{\boldsymbol{\nu} \le n} \varphi_{\boldsymbol{\nu}} \equiv 1$ on $[-A, A]^d$. Since $\mathcal{M}$ is covered by the balls $(B_{\delta/2}(\boldsymbol{x}_j))_{j=1}^M$, fixing $n \in \mathbb{N}$ large enough, for each $\boldsymbol{\nu}$ such that $\text{supp}\,\varphi_{\boldsymbol{\nu}} \cap \mathcal{M} \neq \emptyset$ there exists $j(\boldsymbol{\nu}) \in \lbrace 1, \ldots, M \rbrace$ such that $\text{supp}\,\varphi_{\boldsymbol{\nu}} \subseteq B_\delta(\boldsymbol{x}_{j(\boldsymbol{\nu})})$ and we set $I_j := \lbrace \boldsymbol{\nu} \le n \mid j = j(\boldsymbol{\nu}) \rbrace$. Using (8.3.3) we then have for all $\boldsymbol{x} \in \mathcal{M}$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Since $\mathcal{M}$ is compact there exists $A > 0$ such that $\mathcal{M} \subseteq [-A, A]^d$. Similar as in the proof of Theorem 7.10, we consider a uniform mesh with nodes $\lbrace -A + 2A\frac{\boldsymbol{\nu}}{n} \mid \boldsymbol{\nu} \le n \rbrace$, and the corresponding piecewise linear basis functions forming the partition of unity $\sum\_{\boldsymbol{\nu} \le n} \varphi\_{\boldsymbol{\nu}} \equiv 1$ on $[-A, A]^d$. Since $\mathcal{M}$ is covered by the balls $(B\_{\delta/2}(\boldsymbol{x}\_j))\_{j=1}^M$, fixing $n \in \mathbb{N}$ large enough, for each $\boldsymbol{\nu}$ such that $\text{supp}\,\varphi\_{\boldsymbol{\nu}} \cap \mathcal{M} \neq \emptyset$ there exists $j(\boldsymbol{\nu}) \in \lbrace 1, \ldots, M \rbrace$ such that $\text{supp}\,\varphi\_{\boldsymbol{\nu}} \subseteq B\_\delta(\boldsymbol{x}\_{j(\boldsymbol{\nu})})$ and we set $I\_j := \lbrace \boldsymbol{\nu} \le n \mid j = j(\boldsymbol{\nu}) \rbrace$. Using (8.3.3) we then have for all $\boldsymbol{x} \in \mathcal{M}$
 
 $$f(\boldsymbol{x}) = \sum_{\boldsymbol{\nu} \le n} \varphi_{\boldsymbol{\nu}}(\boldsymbol{x}) f(\boldsymbol{x}) = \sum_{j=1}^{M} \sum_{\boldsymbol{\nu} \in I_j} \varphi_{\boldsymbol{\nu}}(\boldsymbol{x}) f_j(\pi_j(\boldsymbol{x})).$$
 
-Next, we approximate the functions $f_j$. Let $C_j$ be the smallest ($m$-dimensional) cube in $T_{\boldsymbol{x}_j} \mathcal{M} \simeq \mathbb{R}^m$ such that $\pi_j(B_\delta(\boldsymbol{x}_j) \cap \mathcal{M}) \subseteq C_j$. The function $f_j$ can be extended to a function on $C_j$ with $\lVert f \rVert_{C^{k,s}(C_j)} \le C \lVert f \rVert_{C^{k,s}(\pi_j(B_\delta(\boldsymbol{x}_j) \cap \mathcal{M}))}$. By Theorem 7.10 (also see Remark 7.11), there exists a neural network $\hat{f}_j : C_j \to \mathbb{R}$ such that
+Next, we approximate the functions $f\_j$. Let $C\_j$ be the smallest ($m$-dimensional) cube in $T\_{\boldsymbol{x}\_j} \mathcal{M} \simeq \mathbb{R}^m$ such that $\pi\_j(B\_\delta(\boldsymbol{x}\_j) \cap \mathcal{M}) \subseteq C\_j$. The function $f\_j$ can be extended to a function on $C\_j$ with $\lVert f \rVert\_{C^{k,s}(C\_j)} \le C \lVert f \rVert\_{C^{k,s}(\pi\_j(B\_\delta(\boldsymbol{x}\_j) \cap \mathcal{M}))}$. By Theorem 7.10 (also see Remark 7.11), there exists a neural network $\hat{f}\_j : C\_j \to \mathbb{R}$ such that
 
 $$\sup_{\boldsymbol{x} \in C_j} \lvert f_j(\boldsymbol{x}) - \hat{f}_j(\boldsymbol{x}) \rvert \le CN^{-\frac{k+s}{m}}$$
 
-and $\text{size}(\hat{f}_j) \le CN \log(N)$, $\text{depth}(\hat{f}_j) \le C \log(N)$.
+and $\text{size}(\hat{f}\_j) \le CN \log(N)$, $\text{depth}(\hat{f}\_j) \le C \log(N)$.
 
 To approximate $f$ in (8.3.4) we let with $\varepsilon := N^{-\frac{k+s}{m}}$
 
 $$\Phi_N := \sum_{j=1}^{M} \sum_{\boldsymbol{\nu} \in I_j} \Phi_\varepsilon^\times(\varphi_{\boldsymbol{\nu}}, \hat{f}_i \circ \pi_j),$$
 
-where we note that $\pi_j$ is linear and thus $\hat{f}_j \circ \pi_j$ can be expressed by a neural network. The approximation error satisfies
+where we note that $\pi\_j$ is linear and thus $\hat{f}\_j \circ \pi\_j$ can be expressed by a neural network. The approximation error satisfies
 
 $$\lvert f(\boldsymbol{x}) - \Phi_N(\boldsymbol{x}) \rvert \le CN^{-\frac{k+s}{m}} + d\varepsilon \le CN^{-\frac{k+s}{m}},$$
 
-where $C$ is a constant depending on $d$ and $\mathcal{M}$. Finally, $\text{size}(\Phi_N) = O(N \log(N))$ and $\text{depth}(\Phi_N) = O(\log(N))$. $\square$
+where $C$ is a constant depending on $d$ and $\mathcal{M}$. Finally, $\text{size}(\Phi\_N) = O(N \log(N))$ and $\text{depth}(\Phi\_N) = O(\log(N))$. $\square$
+
+</details>
+</div>
 
 ---
 
 ## Chapter 9: Interpolation
 
-The learning problem associated to minimizing the empirical risk of (1.2.3) is based on minimizing an error that results from evaluating a neural network on a *finite* set of (training) points. In contrast, all previous approximation results focused on achieving uniformly small errors across the entire domain. Finding neural networks that achieve a small training error appears to be much simpler, since, instead of $\lVert f - \Phi_n \rVert_\infty \to 0$ for a sequence of neural networks $\Phi_n$, it suffices to have $\Phi_n(\boldsymbol{x}_i) \to f(\boldsymbol{x}_i)$ for all $\boldsymbol{x}_i$ in the training set.
+The learning problem associated to minimizing the empirical risk of (1.2.3) is based on minimizing an error that results from evaluating a neural network on a *finite* set of (training) points. In contrast, all previous approximation results focused on achieving uniformly small errors across the entire domain. Finding neural networks that achieve a small training error appears to be much simpler, since, instead of $\lVert f - \Phi\_n \rVert\_\infty \to 0$ for a sequence of neural networks $\Phi\_n$, it suffices to have $\Phi\_n(\boldsymbol{x}\_i) \to f(\boldsymbol{x}\_i)$ for all $\boldsymbol{x}\_i$ in the training set.
 
 In this chapter, we study the extreme case: under which conditions is it possible to find a neural network that *coincides* with the target function $f$ at all training points. This is referred to as **interpolation**.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 9.1</span><span class="math-callout__name">(Interpolation)</span></p>
 
-Let $d, m \in \mathbb{N}$, and let $\Omega \subseteq \mathbb{R}^d$. We say that a set of functions $\mathcal{H} \subseteq \lbrace h : \Omega \to \mathbb{R} \rbrace$ **interpolates** $m$ **points in** $\Omega$, if for every $S = (\boldsymbol{x}_i, y_i)_{i=1}^m \subseteq \Omega \times \mathbb{R}$, such that $\boldsymbol{x}_i \neq \boldsymbol{x}_j$ for $i \neq j$, there exists a function $h \in \mathcal{H}$ such that $h(\boldsymbol{x}_i) = y_i$ for all $i = 1, \ldots, m$.
+Let $d, m \in \mathbb{N}$, and let $\Omega \subseteq \mathbb{R}^d$. We say that a set of functions $\mathcal{H} \subseteq \lbrace h : \Omega \to \mathbb{R} \rbrace$ **interpolates** $m$ **points in** $\Omega$, if for every $S = (\boldsymbol{x}\_i, y\_i)\_{i=1}^m \subseteq \Omega \times \mathbb{R}$, such that $\boldsymbol{x}\_i \neq \boldsymbol{x}\_j$ for $i \neq j$, there exists a function $h \in \mathcal{H}$ such that $h(\boldsymbol{x}\_i) = y\_i$ for all $i = 1, \ldots, m$.
 
 </div>
 
@@ -1762,34 +2169,41 @@ Let $\mathcal{H} := \lbrace f \in C^0([0,1]) \mid f(0) \in \mathbb{Q} \rbrace$. 
 
 Moreover, Theorem 3.8 is an asymptotic result that only states that a given function can be approximated for sufficiently large neural network architectures, but it does not state how large the architecture needs to be.
 
-Surprisingly, Theorem 3.8 can nonetheless be used to give a guarantee that a fixed-size architecture yields sets of neural networks that allow the interpolation of $m$ points. Due to its similarity to the universal approximation theorem and the fact that it uses the same assumptions, we call the following theorem the "Universal Interpolation Theorem". For its statement recall the definition of the set of allowed activation functions $\mathcal{M}$ in (3.1.1) and the class $\mathcal{N}_d^1(\sigma, 1, n)$ of shallow neural networks of width $n$ introduced in Definition 3.6.
+Surprisingly, Theorem 3.8 can nonetheless be used to give a guarantee that a fixed-size architecture yields sets of neural networks that allow the interpolation of $m$ points. Due to its similarity to the universal approximation theorem and the fact that it uses the same assumptions, we call the following theorem the "Universal Interpolation Theorem". For its statement recall the definition of the set of allowed activation functions $\mathcal{M}$ in (3.1.1) and the class $\mathcal{N}\_d^1(\sigma, 1, n)$ of shallow neural networks of width $n$ introduced in Definition 3.6.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.3</span><span class="math-callout__name">(Universal Interpolation Theorem)</span></p>
 
-Let $d, n \in \mathbb{N}$ and let $\sigma \in \mathcal{M}$ not be a polynomial. Then $\mathcal{N}_d^1(\sigma, 1, n)$ interpolates $n + 1$ points in $\mathbb{R}^d$.
+Let $d, n \in \mathbb{N}$ and let $\sigma \in \mathcal{M}$ not be a polynomial. Then $\mathcal{N}\_d^1(\sigma, 1, n)$ interpolates $n + 1$ points in $\mathbb{R}^d$.
 
 </div>
 
-*Proof.* Fix $(\boldsymbol{x}_i)_{i=1}^{n+1} \subseteq \mathbb{R}^d$ arbitrary. We will show that for any $(y_i)_{i=1}^{n+1} \subseteq \mathbb{R}$ there exist weights and biases $(\boldsymbol{w}_j)_{j=1}^n \subseteq \mathbb{R}^d$, $(b_j)_{j=1}^n$, $(v_j)_{j=1}^n \subseteq \mathbb{R}$, $c \in \mathbb{R}$ such that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Fix $(\boldsymbol{x}\_i)\_{i=1}^{n+1} \subseteq \mathbb{R}^d$ arbitrary. We will show that for any $(y\_i)\_{i=1}^{n+1} \subseteq \mathbb{R}$ there exist weights and biases $(\boldsymbol{w}\_j)\_{j=1}^n \subseteq \mathbb{R}^d$, $(b\_j)\_{j=1}^n$, $(v\_j)\_{j=1}^n \subseteq \mathbb{R}$, $c \in \mathbb{R}$ such that
 
 $$\Phi(\boldsymbol{x}_i) := \sum_{j=1}^n v_j \sigma(\boldsymbol{w}_j^\top \boldsymbol{x}_i + b_j) + c = y_i \quad \text{for all } i = 1, \ldots, n+1.$$
 
-Since $\Phi \in \mathcal{N}_d^1(\sigma, 1, n)$ this then concludes the proof. Denote
+Since $\Phi \in \mathcal{N}\_d^1(\sigma, 1, n)$ this then concludes the proof. Denote
 
 $$\boldsymbol{A} := \begin{pmatrix} 1 & \sigma(\boldsymbol{w}_1^\top \boldsymbol{x}_1 + b_1) & \cdots & \sigma(\boldsymbol{w}_n^\top \boldsymbol{x}_1 + b_n) \\ \vdots & \vdots & \ddots & \vdots \\ 1 & \sigma(\boldsymbol{w}_1^\top \boldsymbol{x}_{n+1} + b_1) & \cdots & \sigma(\boldsymbol{w}_n^\top \boldsymbol{x}_{n+1} + b_n) \end{pmatrix} \in \mathbb{R}^{(n+1) \times (n+1)}.$$
 
-Then $\boldsymbol{A}$ being regular implies that for each $(y_i)_{i=1}^{n+1}$ exist $c$ and $(v_j)_{j=1}^n$ such that the interpolation holds. Hence, it suffices to find $(\boldsymbol{w}_j)_{j=1}^n$ and $(b_j)_{j=1}^n$ such that $\boldsymbol{A}$ is regular.
+Then $\boldsymbol{A}$ being regular implies that for each $(y\_i)\_{i=1}^{n+1}$ exist $c$ and $(v\_j)\_{j=1}^n$ such that the interpolation holds. Hence, it suffices to find $(\boldsymbol{w}\_j)\_{j=1}^n$ and $(b\_j)\_{j=1}^n$ such that $\boldsymbol{A}$ is regular.
 
-We proceed by induction over $k = 0, \ldots, n$, to show that there exist $(\boldsymbol{w}_j)_{j=1}^k$ and $(b_j)_{j=1}^k$ such that the first $k + 1$ columns of $\boldsymbol{A}$ are linearly independent. The case $k = 0$ is trivial. Next let $0 < k < n$ and assume that the first $k$ columns of $\boldsymbol{A}$ are linearly independent. We wish to find $\boldsymbol{w}_k$, $b_k$ such that the first $k + 1$ columns are linearly independent. Suppose such $\boldsymbol{w}_k$, $b_k$ do not exist and denote by $Y_k \subseteq \mathbb{R}^{n+1}$ the space spanned by the first $k$ columns of $\boldsymbol{A}$. Then for all $\boldsymbol{w} \in \mathbb{R}^n$, $b \in \mathbb{R}$ the vector $(\sigma(\boldsymbol{w}^\top \boldsymbol{x}_i + b))_{i=1}^{n+1} \in \mathbb{R}^{n+1}$ must belong to $Y_k$. Fix $\boldsymbol{y} = (y_i)_{i=1}^{n+1} \in \mathbb{R}^{n+1} \setminus Y_k$. Then
+We proceed by induction over $k = 0, \ldots, n$, to show that there exist $(\boldsymbol{w}\_j)\_{j=1}^k$ and $(b\_j)\_{j=1}^k$ such that the first $k + 1$ columns of $\boldsymbol{A}$ are linearly independent. The case $k = 0$ is trivial. Next let $0 < k < n$ and assume that the first $k$ columns of $\boldsymbol{A}$ are linearly independent. We wish to find $\boldsymbol{w}\_k$, $b\_k$ such that the first $k + 1$ columns are linearly independent. Suppose such $\boldsymbol{w}\_k$, $b\_k$ do not exist and denote by $Y\_k \subseteq \mathbb{R}^{n+1}$ the space spanned by the first $k$ columns of $\boldsymbol{A}$. Then for all $\boldsymbol{w} \in \mathbb{R}^n$, $b \in \mathbb{R}$ the vector $(\sigma(\boldsymbol{w}^\top \boldsymbol{x}\_i + b))\_{i=1}^{n+1} \in \mathbb{R}^{n+1}$ must belong to $Y\_k$. Fix $\boldsymbol{y} = (y\_i)\_{i=1}^{n+1} \in \mathbb{R}^{n+1} \setminus Y\_k$. Then
 
 $$\inf_{\tilde{\Phi} \in \mathcal{N}_d^1(\sigma,1)} \lVert (\tilde{\Phi}(\boldsymbol{x}_i))_{i=1}^{n+1} - \boldsymbol{y} \rVert_2^2 \ge \inf_{\tilde{\boldsymbol{y}} \in Y_k} \lVert \tilde{\boldsymbol{y}} - \boldsymbol{y} \rVert_2^2 > 0.$$
 
-Since we can find a continuous function $f : \mathbb{R}^d \to \mathbb{R}$ such that $f(\boldsymbol{x}_i) = y_i$ for all $i = 1, \ldots, n+1$, this contradicts Theorem 3.8. $\square$
+Since we can find a continuous function $f : \mathbb{R}^d \to \mathbb{R}$ such that $f(\boldsymbol{x}\_i) = y\_i$ for all $i = 1, \ldots, n+1$, this contradicts Theorem 3.8. $\square$
+
+</details>
+</div>
 
 ### 9.2 Optimal Interpolation and Reconstruction
 
-Consider a bounded domain $\Omega \subseteq \mathbb{R}^d$, a function $f : \Omega \to \mathbb{R}$, distinct points $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m \in \Omega$, and corresponding function values $y_i := f(\boldsymbol{x}_i)$. Our objective is to approximate $f$ based solely on the data pairs $(\boldsymbol{x}_i, y_i)$, $i = 1, \ldots, m$. Under certain assumptions on $f$, ReLU neural networks can express an "optimal" reconstruction which also turns out to be an interpolant of the data.
+Consider a bounded domain $\Omega \subseteq \mathbb{R}^d$, a function $f : \Omega \to \mathbb{R}$, distinct points $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_m \in \Omega$, and corresponding function values $y\_i := f(\boldsymbol{x}\_i)$. Our objective is to approximate $f$ based solely on the data pairs $(\boldsymbol{x}\_i, y\_i)$, $i = 1, \ldots, m$. Under certain assumptions on $f$, ReLU neural networks can express an "optimal" reconstruction which also turns out to be an interpolant of the data.
 
 #### 9.2.1 Motivation
 
@@ -1799,7 +2213,7 @@ $$\text{Lip}(f) := \sup_{\boldsymbol{x} \neq \boldsymbol{y}} \frac{\lvert f(\bol
 
 of $f$ is bounded by a fixed value $M \in \mathbb{R}$. Here $\lVert \cdot \rVert$ denotes an arbitrary fixed norm on $\mathbb{R}^d$.
 
-For every function $f : \Omega \to \mathbb{R}$ satisfying $f(\boldsymbol{x}_i) = y_i$ for all $i = 1, \ldots, m$, we have
+For every function $f : \Omega \to \mathbb{R}$ satisfying $f(\boldsymbol{x}\_i) = y\_i$ for all $i = 1, \ldots, m$, we have
 
 $$\text{Lip}(f) = \sup_{\boldsymbol{x} \neq \boldsymbol{y} \in \Omega} \frac{\lvert f(\boldsymbol{x}) - f(\boldsymbol{y}) \rvert}{\lVert \boldsymbol{x} - \boldsymbol{y} \rVert} \ge \sup_{i \neq j} \frac{\lvert y_i - y_j \rvert}{\lVert \boldsymbol{x}_i - \boldsymbol{x}_j \rVert} =: \tilde{M}.$$
 
@@ -1825,7 +2239,7 @@ $$\Phi \in \operatorname{argmin}_{h : \Omega \to \mathbb{R}} \sup_{\substack{f \
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.5</span><span class="math-callout__name">(Optimal Lipschitz Interpolant)</span></p>
 
-Let $m, d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$, $f : \Omega \to \mathbb{R}$, and let $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m \in \Omega$, $y_1, \ldots, y_m \in \mathbb{R}$ satisfy (9.2.2) and (9.2.3) with $\tilde{M} \ge 0$. Further, let $M \ge \tilde{M}$.
+Let $m, d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$, $f : \Omega \to \mathbb{R}$, and let $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_m \in \Omega$, $y\_1, \ldots, y\_m \in \mathbb{R}$ satisfy (9.2.2) and (9.2.3) with $\tilde{M} \ge 0$. Further, let $M \ge \tilde{M}$.
 
 Then, Problem 9.4 has at least one solution given by
 
@@ -1835,19 +2249,23 @@ where
 
 $$f_{\text{upper}}(\boldsymbol{x}) := \min_{k=1,\ldots,m} (y_k + M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert), \qquad f_{\text{lower}}(\boldsymbol{x}) := \max_{k=1,\ldots,m} (y_k - M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert).$$
 
-Moreover, $\Phi \in \text{Lip}_M(\Omega)$ and $\Phi$ interpolates the data (i.e. satisfies (9.2.2)).
+Moreover, $\Phi \in \text{Lip}\_M(\Omega)$ and $\Phi$ interpolates the data (i.e. satisfies (9.2.2)).
 
 </div>
 
-*Proof.* First we claim that for all $h_1, h_2 \in \text{Lip}_M(\Omega)$ holds $\max\lbrace h_1, h_2 \rbrace \in \text{Lip}_M(\Omega)$ as well as $\min\lbrace h_1, h_2 \rbrace \in \text{Lip}_M(\Omega)$. Since $\min\lbrace h_1, h_2 \rbrace = -\max\lbrace -h_1, -h_2 \rbrace$, it suffices to show the claim for the maximum. We need to check that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+First we claim that for all $h\_1, h\_2 \in \text{Lip}\_M(\Omega)$ holds $\max\lbrace h\_1, h\_2 \rbrace \in \text{Lip}\_M(\Omega)$ as well as $\min\lbrace h\_1, h\_2 \rbrace \in \text{Lip}\_M(\Omega)$. Since $\min\lbrace h\_1, h\_2 \rbrace = -\max\lbrace -h\_1, -h\_2 \rbrace$, it suffices to show the claim for the maximum. We need to check that
 
 $$\frac{\lvert \max\lbrace h_1(\boldsymbol{x}), h_2(\boldsymbol{x}) \rbrace - \max\lbrace h_1(\boldsymbol{y}), h_2(\boldsymbol{y}) \rbrace \rvert}{\lVert \boldsymbol{x} - \boldsymbol{y} \rVert} \le M$$
 
-for all $\boldsymbol{x} \neq \boldsymbol{y} \in \Omega$. Fix $\boldsymbol{x} \neq \boldsymbol{y}$. Without loss of generality assume $\max\lbrace h_1(\boldsymbol{x}), h_2(\boldsymbol{x}) \rbrace \ge \max\lbrace h_1(\boldsymbol{y}), h_2(\boldsymbol{y}) \rbrace$ and $\max\lbrace h_1(\boldsymbol{x}), h_2(\boldsymbol{x}) \rbrace = h_1(\boldsymbol{x})$. If $\max\lbrace h_1(\boldsymbol{y}), h_2(\boldsymbol{y}) \rbrace = h_1(\boldsymbol{y})$ then the numerator equals $h_1(\boldsymbol{x}) - h_1(\boldsymbol{y})$ which is bounded by $M \lVert \boldsymbol{x} - \boldsymbol{y} \rVert$. If $\max\lbrace h_1(\boldsymbol{y}), h_2(\boldsymbol{y}) \rbrace = h_2(\boldsymbol{y})$, then the numerator equals $h_1(\boldsymbol{x}) - h_2(\boldsymbol{y})$ which is bounded by $h_1(\boldsymbol{x}) - h_1(\boldsymbol{y}) \le M \lVert \boldsymbol{x} - \boldsymbol{y} \rVert$. In either case the bound holds.
+for all $\boldsymbol{x} \neq \boldsymbol{y} \in \Omega$. Fix $\boldsymbol{x} \neq \boldsymbol{y}$. Without loss of generality assume $\max\lbrace h\_1(\boldsymbol{x}), h\_2(\boldsymbol{x}) \rbrace \ge \max\lbrace h\_1(\boldsymbol{y}), h\_2(\boldsymbol{y}) \rbrace$ and $\max\lbrace h\_1(\boldsymbol{x}), h\_2(\boldsymbol{x}) \rbrace = h\_1(\boldsymbol{x})$. If $\max\lbrace h\_1(\boldsymbol{y}), h\_2(\boldsymbol{y}) \rbrace = h\_1(\boldsymbol{y})$ then the numerator equals $h\_1(\boldsymbol{x}) - h\_1(\boldsymbol{y})$ which is bounded by $M \lVert \boldsymbol{x} - \boldsymbol{y} \rVert$. If $\max\lbrace h\_1(\boldsymbol{y}), h\_2(\boldsymbol{y}) \rbrace = h\_2(\boldsymbol{y})$, then the numerator equals $h\_1(\boldsymbol{x}) - h\_2(\boldsymbol{y})$ which is bounded by $h\_1(\boldsymbol{x}) - h\_1(\boldsymbol{y}) \le M \lVert \boldsymbol{x} - \boldsymbol{y} \rVert$. In either case the bound holds.
 
-Clearly, $\boldsymbol{x} \mapsto y_k - M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert \in \text{Lip}_M(\Omega)$ for each $k = 1, \ldots, m$ and thus $f_{\text{upper}}, f_{\text{lower}} \in \text{Lip}_M(\Omega)$ as well as $\Phi \in \text{Lip}_M(\Omega)$.
+Clearly, $\boldsymbol{x} \mapsto y\_k - M \lVert \boldsymbol{x} - \boldsymbol{x}\_k \rVert \in \text{Lip}\_M(\Omega)$ for each $k = 1, \ldots, m$ and thus $f\_{\text{upper}}, f\_{\text{lower}} \in \text{Lip}\_M(\Omega)$ as well as $\Phi \in \text{Lip}\_M(\Omega)$.
 
-Next we claim that for all $f \in \text{Lip}_M(\Omega)$ satisfying (9.2.2) holds
+Next we claim that for all $f \in \text{Lip}\_M(\Omega)$ satisfying (9.2.2) holds
 
 $$f_{\text{lower}}(\boldsymbol{x}) \le f(\boldsymbol{x}) \le f_{\text{upper}}(\boldsymbol{x}) \quad \text{for all } \boldsymbol{x} \in \Omega.$$
 
@@ -1859,7 +2277,7 @@ so that for all $\boldsymbol{x} \in \Omega$
 
 $$f(\boldsymbol{x}) \le \min_{k=1,\ldots,m} (y_k + M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert), \qquad f(\boldsymbol{x}) \ge \max_{k=1,\ldots,m} (y_k - M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert).$$
 
-Since $f_{\text{upper}}, f_{\text{lower}} \in \text{Lip}_M(\Omega)$ satisfy (9.2.2), we conclude that for every $h : \Omega \to \mathbb{R}$ holds
+Since $f\_{\text{upper}}, f\_{\text{lower}} \in \text{Lip}\_M(\Omega)$ satisfy (9.2.2), we conclude that for every $h : \Omega \to \mathbb{R}$ holds
 
 $$\sup_{\substack{f \in \text{Lip}_M(\Omega) \\ f \text{ satisfies } (9.2.2)}} \sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - h(\boldsymbol{x}) \rvert \ge \sup_{\boldsymbol{x} \in \Omega} \frac{\lvert f_{\text{lower}}(\boldsymbol{x}) - f_{\text{upper}}(\boldsymbol{x}) \rvert}{2}.$$
 
@@ -1869,54 +2287,64 @@ $$\sup_{\substack{f \in \text{Lip}_M(\Omega) \\ f \text{ satisfies } (9.2.2)}} \
 
 These two inequalities together imply that $\Phi$ is a solution of Problem 9.4. $\square$
 
+</details>
+</div>
+
 #### 9.2.3 Optimal ReLU Reconstructions
 
-So far everything was valid with an arbitrary norm on $\mathbb{R}^d$. For the next theorem, we restrict ourselves to the $1$-norm $\lVert \boldsymbol{x} \rVert_1 = \sum_{j=1}^d \lvert x_j \rvert$. Using the explicit formula of Theorem 9.5, we now show the remarkable result that ReLU neural networks can exactly express an optimal reconstruction (in the sense of Problem 9.4) with a neural network whose size scales linearly in the product of the dimension $d$ and the number of data points $m$. Additionally, the proof is constructive, thus allowing in principle for an explicit construction of the neural network without the need for training.
+So far everything was valid with an arbitrary norm on $\mathbb{R}^d$. For the next theorem, we restrict ourselves to the $1$-norm $\lVert \boldsymbol{x} \rVert\_1 = \sum\_{j=1}^d \lvert x\_j \rvert$. Using the explicit formula of Theorem 9.5, we now show the remarkable result that ReLU neural networks can exactly express an optimal reconstruction (in the sense of Problem 9.4) with a neural network whose size scales linearly in the product of the dimension $d$ and the number of data points $m$. Additionally, the proof is constructive, thus allowing in principle for an explicit construction of the neural network without the need for training.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 9.6</span><span class="math-callout__name">(Optimal Lipschitz Reconstruction)</span></p>
 
-Let $m, d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$, $f : \Omega \to \mathbb{R}$, and let $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m \in \Omega$, $y_1, \ldots, y_m \in \mathbb{R}$ satisfy (9.2.2) and (9.2.3) with $\tilde{M} > 0$. Further, let $M \ge \tilde{M}$ and let $\lVert \cdot \rVert = \lVert \cdot \rVert_1$ in (9.2.3) and (9.2.4).
+Let $m, d \in \mathbb{N}$, $\Omega \subseteq \mathbb{R}^d$, $f : \Omega \to \mathbb{R}$, and let $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_m \in \Omega$, $y\_1, \ldots, y\_m \in \mathbb{R}$ satisfy (9.2.2) and (9.2.3) with $\tilde{M} > 0$. Further, let $M \ge \tilde{M}$ and let $\lVert \cdot \rVert = \lVert \cdot \rVert\_1$ in (9.2.3) and (9.2.4).
 
-Then, there exists a ReLU neural network $\Phi \in \text{Lip}_M(\Omega)$ that interpolates the data (i.e. satisfies (9.2.2)) and satisfies
+Then, there exists a ReLU neural network $\Phi \in \text{Lip}\_M(\Omega)$ that interpolates the data (i.e. satisfies (9.2.2)) and satisfies
 
 $$\Phi \in \operatorname{argmin}_{h : \Omega \to \mathbb{R}} \sup_{\substack{f \in \text{Lip}_M(\Omega) \\ f \text{ satisfies } (9.2.2)}} \sup_{\boldsymbol{x} \in \Omega} \lvert f(\boldsymbol{x}) - h(\boldsymbol{x}) \rvert.$$
 
-Moreover, $\text{depth}(\Phi) = O(\log(m))$, $\text{width}(\Phi) = O(dm)$ and all weights of $\Phi$ are bounded in absolute value by $\max\lbrace M, \lVert \boldsymbol{y} \rVert_\infty \rbrace$.
+Moreover, $\text{depth}(\Phi) = O(\log(m))$, $\text{width}(\Phi) = O(dm)$ and all weights of $\Phi$ are bounded in absolute value by $\max\lbrace M, \lVert \boldsymbol{y} \rVert\_\infty \rbrace$.
 
 </div>
 
-*Proof.* We need to show that the function in (9.2.6) can be expressed as a ReLU neural network with the stated size bounds. First, there is a simple ReLU neural network that implements the $1$-norm. It holds for all $\boldsymbol{x} \in \mathbb{R}^d$ that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We need to show that the function in (9.2.6) can be expressed as a ReLU neural network with the stated size bounds. First, there is a simple ReLU neural network that implements the $1$-norm. It holds for all $\boldsymbol{x} \in \mathbb{R}^d$ that
 
 $$\lVert \boldsymbol{x} \rVert_1 = \sum_{i=1}^d (\sigma(x_i) + \sigma(-x_i)).$$
 
-Thus, there exists a ReLU neural network $\Phi^{\lVert \cdot \rVert_1}$ such that for all $\boldsymbol{x} \in \mathbb{R}^d$
+Thus, there exists a ReLU neural network $\Phi^{\lVert \cdot \rVert\_1}$ such that for all $\boldsymbol{x} \in \mathbb{R}^d$
 
 $$\text{width}(\Phi^{\lVert \cdot \rVert_1}) = 2d, \quad \text{depth}(\Phi^{\lVert \cdot \rVert_1}) = 1, \quad \Phi^{\lVert \cdot \rVert_1}(\boldsymbol{x}) = \lVert \boldsymbol{x} \rVert_1.$$
 
-As a result, there exist ReLU neural networks $\Phi_k : \mathbb{R}^d \to \mathbb{R}$, $k = 1, \ldots, m$, such that
+As a result, there exist ReLU neural networks $\Phi\_k : \mathbb{R}^d \to \mathbb{R}$, $k = 1, \ldots, m$, such that
 
 $$\text{width}(\Phi_k) = 2d, \quad \text{depth}(\Phi_k) = 1, \quad \Phi_k(\boldsymbol{x}) = y_k + M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert_1$$
 
-for all $\boldsymbol{x} \in \mathbb{R}^d$. Using the parallelization of neural networks introduced in Section 5.1.3, there exists a ReLU neural network $\Phi_{\text{all}} := (\Phi_1, \ldots, \Phi_m) : \mathbb{R}^d \to \mathbb{R}^m$ such that
+for all $\boldsymbol{x} \in \mathbb{R}^d$. Using the parallelization of neural networks introduced in Section 5.1.3, there exists a ReLU neural network $\Phi\_{\text{all}} := (\Phi\_1, \ldots, \Phi\_m) : \mathbb{R}^d \to \mathbb{R}^m$ such that
 
 $$\text{width}(\Phi_{\text{all}}) = 4md, \quad \text{depth}(\Phi_{\text{all}}) = 1$$
 
-and $\Phi_{\text{all}}(\boldsymbol{x}) = (y_k + M \lVert \boldsymbol{x} - \boldsymbol{x}_k \rVert_1)_{k=1}^m$ for all $\boldsymbol{x} \in \mathbb{R}^d$.
+and $\Phi\_{\text{all}}(\boldsymbol{x}) = (y\_k + M \lVert \boldsymbol{x} - \boldsymbol{x}\_k \rVert\_1)\_{k=1}^m$ for all $\boldsymbol{x} \in \mathbb{R}^d$.
 
-Using Lemma 5.11, we can now find a ReLU neural network $\Phi_{\text{upper}}$ such that $\Phi_{\text{upper}} = f_{\text{upper}}(\boldsymbol{x})$ for all $\boldsymbol{x} \in \Omega$, $\text{width}(\Phi_{\text{upper}}) \le \max\lbrace 16m, 4md \rbrace$, and $\text{depth}(\Phi_{\text{upper}}) \le 1 + \log(m)$.
+Using Lemma 5.11, we can now find a ReLU neural network $\Phi\_{\text{upper}}$ such that $\Phi\_{\text{upper}} = f\_{\text{upper}}(\boldsymbol{x})$ for all $\boldsymbol{x} \in \Omega$, $\text{width}(\Phi\_{\text{upper}}) \le \max\lbrace 16m, 4md \rbrace$, and $\text{depth}(\Phi\_{\text{upper}}) \le 1 + \log(m)$.
 
-Essentially the same construction yields a ReLU neural network $\Phi_{\text{lower}}$ with the respective properties. Lemma 5.4 then completes the proof. $\square$
+Essentially the same construction yields a ReLU neural network $\Phi\_{\text{lower}}$ with the respective properties. Lemma 5.4 then completes the proof. $\square$
+
+</details>
+</div>
 
 ---
 
 ## Chapter 10: Training of Neural Networks
 
-Up to this point, we have discussed the representation and approximation of certain function classes using neural networks. The second pillar of deep learning concerns the question of how to fit a neural network to given data, i.e., having fixed an architecture, how to find suitable weights and biases. This task amounts to minimizing a so-called **objective function** such as the empirical risk $\widehat{\mathcal{R}}_S$ in (1.2.3). Throughout this chapter we denote the objective function by
+Up to this point, we have discussed the representation and approximation of certain function classes using neural networks. The second pillar of deep learning concerns the question of how to fit a neural network to given data, i.e., having fixed an architecture, how to find suitable weights and biases. This task amounts to minimizing a so-called **objective function** such as the empirical risk $\widehat{\mathcal{R}}\_S$ in (1.2.3). Throughout this chapter we denote the objective function by
 
 $$f : \mathbb{R}^n \to \mathbb{R},$$
 
-and interpret it as a function of all neural network weights and biases collected in a vector in $\mathbb{R}^n$. The goal is to (approximately) determine a **minimizer**, i.e., some $\boldsymbol{w}_* \in \mathbb{R}^n$ satisfying
+and interpret it as a function of all neural network weights and biases collected in a vector in $\mathbb{R}^n$. The goal is to (approximately) determine a **minimizer**, i.e., some $\boldsymbol{w}\_\ast \in \mathbb{R}^n$ satisfying
 
 $$f(\boldsymbol{w}_*) \le f(\boldsymbol{w}) \quad \text{for all } \boldsymbol{w} \in \mathbb{R}^n.$$
 
@@ -1924,28 +2352,28 @@ Standard approaches primarily include variants of (stochastic) gradient descent.
 
 ### 10.1 Gradient Descent
 
-The general idea of gradient descent is to start with some $\boldsymbol{w}_0 \in \mathbb{R}^n$, and then apply sequential updates by moving in the direction of *steepest descent* of the objective function. Assume for the moment that $f \in C^2(\mathbb{R}^n)$, and denote the $k$th iterate by $\boldsymbol{w}_k$. Then
+The general idea of gradient descent is to start with some $\boldsymbol{w}\_0 \in \mathbb{R}^n$, and then apply sequential updates by moving in the direction of *steepest descent* of the objective function. Assume for the moment that $f \in C^2(\mathbb{R}^n)$, and denote the $k$th iterate by $\boldsymbol{w}\_k$. Then
 
 $$f(\boldsymbol{w}_k + \boldsymbol{v}) = f(\boldsymbol{w}_k) + \boldsymbol{v}^\top \nabla f(\boldsymbol{w}_k) + O(\lVert \boldsymbol{v} \rVert^2) \quad \text{for } \lVert \boldsymbol{v} \rVert^2 \to 0.$$
 
-This shows that the change in $f$ around $\boldsymbol{w}_k$ is locally described by the gradient $\nabla f(\boldsymbol{w}_k)$. For small $\boldsymbol{v}$ the contribution of the second order term is negligible, and the direction $\boldsymbol{v}$ along which the decrease of the risk is maximized equals the negative gradient $-\nabla f(\boldsymbol{w}_k)$.
+This shows that the change in $f$ around $\boldsymbol{w}\_k$ is locally described by the gradient $\nabla f(\boldsymbol{w}\_k)$. For small $\boldsymbol{v}$ the contribution of the second order term is negligible, and the direction $\boldsymbol{v}$ along which the decrease of the risk is maximized equals the negative gradient $-\nabla f(\boldsymbol{w}\_k)$.
 
-Thus, $-\nabla f(\boldsymbol{w}_k)$ is also called the direction of steepest descent. This leads to an update of the form
+Thus, $-\nabla f(\boldsymbol{w}\_k)$ is also called the direction of steepest descent. This leads to an update of the form
 
 $$\boldsymbol{w}_{k+1} := \boldsymbol{w}_k - h_k \nabla f(\boldsymbol{w}_k),$$
 
-where $h_k > 0$ is referred to as the **step size** or **learning rate**. We refer to this iterative algorithm as **gradient descent**.
+where $h\_k > 0$ is referred to as the **step size** or **learning rate**. We refer to this iterative algorithm as **gradient descent**.
 
 By the Taylor expansion it holds that
 
 $$f(\boldsymbol{w}_{k+1}) = f(\boldsymbol{w}_k) - h_k \lVert \nabla f(\boldsymbol{w}_k) \rVert^2 + O(h_k^2),$$
 
-so that if $\nabla f(\boldsymbol{w}_k) \neq \boldsymbol{0}$, a small enough step size $h_k$ ensures that the algorithm decreases the value of the objective function. In practice, tuning the learning rate $h_k$ can be a subtle issue as it should strike a balance between two dissenting requirements:
+so that if $\nabla f(\boldsymbol{w}\_k) \neq \boldsymbol{0}$, a small enough step size $h\_k$ ensures that the algorithm decreases the value of the objective function. In practice, tuning the learning rate $h\_k$ can be a subtle issue as it should strike a balance between two dissenting requirements:
 
-1. $h_k$ needs to be sufficiently small so that the second-order term is not dominating, and the update decreases the objective function.
-2. $h_k$ should be large enough to ensure significant decrease of the objective function, which facilitates faster convergence of the algorithm.
+1. $h\_k$ needs to be sufficiently small so that the second-order term is not dominating, and the update decreases the objective function.
+2. $h\_k$ should be large enough to ensure significant decrease of the objective function, which facilitates faster convergence of the algorithm.
 
-A learning rate that is too high might overshoot the minimum, while a rate that is too low results in slow convergence. Common strategies include constant learning rates ($h_k = h$ for all $k \in \mathbb{N}_0$), learning rate schedules such as decaying learning rates ($h_k \searrow 0$ as $k \to \infty$), and adaptive methods.
+A learning rate that is too high might overshoot the minimum, while a rate that is too low results in slow convergence. Common strategies include constant learning rates ($h\_k = h$ for all $k \in \mathbb{N}\_0$), learning rate schedules such as decaying learning rates ($h\_k \searrow 0$ as $k \to \infty$), and adaptive methods.
 
 #### 10.1.1 Structural Conditions and Existence of Minimizers
 
@@ -2022,22 +2450,29 @@ Let $f : \mathbb{R}^n \to \mathbb{R}$. If $f$ is
 
 </div>
 
-*Proof.* Let $f$ be convex, and assume that $\boldsymbol{w}_*$ and $\boldsymbol{v}_*$ are two minimizers of $f$. Then every convex combination $\lambda \boldsymbol{w}_* + (1 - \lambda) \boldsymbol{v}_*$, $\lambda \in [0,1]$, is also a minimizer due to (10.1.7). This shows the first claim.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
 
-Now let $f$ be $\mu$-strongly convex. Then (10.1.9) implies $f$ to be lower bounded by a convex quadratic function. Hence there exists at least one minimizer $\boldsymbol{w}_*$, and $\nabla f(\boldsymbol{w}_*) = 0$. By (10.1.9) we then have $f(\boldsymbol{v}) > f(\boldsymbol{w}_*)$ for every $\boldsymbol{v} \neq \boldsymbol{w}_*$. $\square$
+Let $f$ be convex, and assume that $\boldsymbol{w}\_\ast$ and $\boldsymbol{v}\_\ast$ are two minimizers of $f$. Then every convex combination $\lambda \boldsymbol{w}\_\ast + (1 - \lambda) \boldsymbol{v}\_\ast$, $\lambda \in [0,1]$, is also a minimizer due to (10.1.7). This shows the first claim.
+
+Now let $f$ be $\mu$-strongly convex. Then (10.1.9) implies $f$ to be lower bounded by a convex quadratic function. Hence there exists at least one minimizer $\boldsymbol{w}\_\ast$, and $\nabla f(\boldsymbol{w}\_\ast) = 0$. By (10.1.9) we then have $f(\boldsymbol{v}) > f(\boldsymbol{w}\_\ast)$ for every $\boldsymbol{v} \neq \boldsymbol{w}\_\ast$. $\square$
+
+</details>
+</div>
 
 #### 10.1.2 Convergence of Gradient Descent
 
 To analyze convergence, we focus on $\mu$-strongly convex and $L$-smooth objectives only. The following theorem establishes linear convergence of gradient descent.
 
-Recall that a sequence $e_k$ is said to **converge linearly** to $0$, if and only if there exist constants $C > 0$ and $c \in [0, 1)$ such that $e_k \le C c^k$ for all $k \in \mathbb{N}_0$. The constant $c$ is also referred to as the **rate of convergence**. Note that comparing (10.1.4a) and (10.1.9) it necessarily holds $L \ge \mu$ and therefore $\kappa := L / \mu \ge 1$. This term, known as the **condition number** of $f$, determines the rate of convergence.
+Recall that a sequence $e\_k$ is said to **converge linearly** to $0$, if and only if there exist constants $C > 0$ and $c \in [0, 1)$ such that $e\_k \le C c^k$ for all $k \in \mathbb{N}\_0$. The constant $c$ is also referred to as the **rate of convergence**. Note that comparing (10.1.4a) and (10.1.9) it necessarily holds $L \ge \mu$ and therefore $\kappa := L / \mu \ge 1$. This term, known as the **condition number** of $f$, determines the rate of convergence.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 10.7</span><span class="math-callout__name">(Convergence of Gradient Descent)</span></p>
 
-Let $n \in \mathbb{N}$ and $L \ge \mu > 0$. Let $f : \mathbb{R}^n \to \mathbb{R}$ be $L$-smooth and $\mu$-strongly convex. Further, let $h_k = h \in (0, 1/L]$ for all $k \in \mathbb{N}_0$, let $(\boldsymbol{w}_k)_{k=0}^\infty \subseteq \mathbb{R}^n$ be defined by the gradient descent update, and let $\boldsymbol{w}_*$ be the unique minimizer of $f$.
+Let $n \in \mathbb{N}$ and $L \ge \mu > 0$. Let $f : \mathbb{R}^n \to \mathbb{R}$ be $L$-smooth and $\mu$-strongly convex. Further, let $h\_k = h \in (0, 1/L]$ for all $k \in \mathbb{N}\_0$, let $(\boldsymbol{w}\_k)\_{k=0}^\infty \subseteq \mathbb{R}^n$ be defined by the gradient descent update, and let $\boldsymbol{w}\_\ast$ be the unique minimizer of $f$.
 
-Then, $f(\boldsymbol{w}_k) \to f(\boldsymbol{w}_*)$ and $\boldsymbol{w}_k \to \boldsymbol{w}_*$ converge linearly for $k \to \infty$. For the specific choice $h = 1/L$ it holds for all $k \in \mathbb{N}$
+Then, $f(\boldsymbol{w}\_k) \to f(\boldsymbol{w}\_\ast)$ and $\boldsymbol{w}\_k \to \boldsymbol{w}\_\ast$ converge linearly for $k \to \infty$. For the specific choice $h = 1/L$ it holds for all $k \in \mathbb{N}$
 
 $$\lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2 \le \left(1 - \frac{\mu}{L}\right)^k \lVert \boldsymbol{w}_0 - \boldsymbol{w}_* \rVert^2$$
 
@@ -2045,9 +2480,13 @@ $$f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*) \le \frac{L}{2} \left(1 - \frac{\mu}
 
 </div>
 
-*Proof.* It suffices to show the first bound, since the second follows directly from the first and $L$-smoothness. The case $k = 0$ is trivial, so let $k \in \mathbb{N}$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
 
-Expanding $\boldsymbol{w}_k = \boldsymbol{w}_{k-1} - h \nabla f(\boldsymbol{w}_{k-1})$ and using $\mu$-strong convexity (10.1.9)
+It suffices to show the first bound, since the second follows directly from the first and $L$-smoothness. The case $k = 0$ is trivial, so let $k \in \mathbb{N}$.
+
+Expanding $\boldsymbol{w}\_k = \boldsymbol{w}\_{k-1} - h \nabla f(\boldsymbol{w}\_{k-1})$ and using $\mu$-strong convexity (10.1.9)
 
 $$\lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2 = \lVert \boldsymbol{w}_{k-1} - \boldsymbol{w}_* \rVert^2 - 2h \langle \nabla f(\boldsymbol{w}_{k-1}), \boldsymbol{w}_{k-1} - \boldsymbol{w}_* \rangle + h^2 \lVert \nabla f(\boldsymbol{w}_{k-1}) \rVert^2$$
 
@@ -2071,10 +2510,13 @@ $$\lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2 \le (1 - \mu h) \lVert \bo
 
 This concludes the proof. $\square$
 
+</details>
+</div>
+
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 10.8</span><span class="math-callout__name">(Convex Objective Functions)</span></p>
 
-Let $f : \mathbb{R}^n \to \mathbb{R}$ be a convex and $L$-smooth function with a minimizer at $\boldsymbol{w}_*$. As shown in Lemma 10.6, the minimizer need not be unique, so we cannot expect $\boldsymbol{w}_k \to \boldsymbol{w}_*$ in general. However, the objective values still converge. Specifically, if $h_k = h \in (0, 2/L)$ for all $k \in \mathbb{N}_0$ and $(\boldsymbol{w}_k)_{k=0}^\infty \subseteq \mathbb{R}^n$ is generated by gradient descent, then
+Let $f : \mathbb{R}^n \to \mathbb{R}$ be a convex and $L$-smooth function with a minimizer at $\boldsymbol{w}\_\ast$. As shown in Lemma 10.6, the minimizer need not be unique, so we cannot expect $\boldsymbol{w}\_k \to \boldsymbol{w}\_\ast$ in general. However, the objective values still converge. Specifically, if $h\_k = h \in (0, 2/L)$ for all $k \in \mathbb{N}\_0$ and $(\boldsymbol{w}\_k)\_{k=0}^\infty \subseteq \mathbb{R}^n$ is generated by gradient descent, then
 
 $$f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*) = O(k^{-1}) \quad \text{as } k \to \infty.$$
 
@@ -2082,22 +2524,22 @@ $$f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*) = O(k^{-1}) \quad \text{as } k \to \
 
 ### 10.2 Stochastic Gradient Descent
 
-We next discuss a stochastic variant of gradient descent. The idea, which originally goes back to Robbins and Monro, is to replace the gradient $\nabla f(\boldsymbol{w}_k)$ in the gradient descent update by a random variable that we denote by $\boldsymbol{G}_k$. We interpret $\boldsymbol{G}_k$ as an approximation to $\nabla f(\boldsymbol{w}_k)$. More precisely, throughout we assume that given $\boldsymbol{w}_k$, $\boldsymbol{G}_k$ is an unbiased estimator of $\nabla f(\boldsymbol{w}_k)$ conditionally independent of $\boldsymbol{w}_0, \ldots, \boldsymbol{w}_{k-1}$, so that
+We next discuss a stochastic variant of gradient descent. The idea, which originally goes back to Robbins and Monro, is to replace the gradient $\nabla f(\boldsymbol{w}\_k)$ in the gradient descent update by a random variable that we denote by $\boldsymbol{G}\_k$. We interpret $\boldsymbol{G}\_k$ as an approximation to $\nabla f(\boldsymbol{w}\_k)$. More precisely, throughout we assume that given $\boldsymbol{w}\_k$, $\boldsymbol{G}\_k$ is an unbiased estimator of $\nabla f(\boldsymbol{w}\_k)$ conditionally independent of $\boldsymbol{w}\_0, \ldots, \boldsymbol{w}\_{k-1}$, so that
 
 $$\mathbb{E}[\boldsymbol{G}_k \mid \boldsymbol{w}_k] = \mathbb{E}[\boldsymbol{G}_k \mid \boldsymbol{w}_k, \ldots, \boldsymbol{w}_0] = \nabla f(\boldsymbol{w}_k).$$
 
-After choosing some initial value $\boldsymbol{w}_0 \in \mathbb{R}^n$, the update rule becomes
+After choosing some initial value $\boldsymbol{w}\_0 \in \mathbb{R}^n$, the update rule becomes
 
 $$\boldsymbol{w}_{k+1} := \boldsymbol{w}_k - h_k \boldsymbol{G}_k,$$
 
-where $h_k > 0$ denotes again the step size. Unlike in Section 10.1, we focus here on $k$-dependent step sizes $h_k$.
+where $h\_k > 0$ denotes again the step size. Unlike in Section 10.1, we focus here on $k$-dependent step sizes $h\_k$.
 
 #### 10.2.1 Motivation and Decreasing Learning Rates
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 10.9</span><span class="math-callout__name">(Empirical Risk Minimization)</span></p>
 
-Suppose we have a data sample $S := (\boldsymbol{x}_j, y_j)_{j=1}^m$, where $y_j \in \mathbb{R}$ is the label corresponding to the data point $\boldsymbol{x}_j \in \mathbb{R}^d$. Using the square loss, we wish to fit a neural network $\Phi(\cdot, \boldsymbol{w}) : \mathbb{R}^d \to \mathbb{R}$ depending on parameters $\boldsymbol{w} \in \mathbb{R}^n$, such that the empirical risk
+Suppose we have a data sample $S := (\boldsymbol{x}\_j, y\_j)\_{j=1}^m$, where $y\_j \in \mathbb{R}$ is the label corresponding to the data point $\boldsymbol{x}\_j \in \mathbb{R}^d$. Using the square loss, we wish to fit a neural network $\Phi(\cdot, \boldsymbol{w}) : \mathbb{R}^d \to \mathbb{R}$ depending on parameters $\boldsymbol{w} \in \mathbb{R}^n$, such that the empirical risk
 
 $$f(\boldsymbol{w}) := \widehat{\mathcal{R}}_S(\boldsymbol{w}) = \frac{1}{m} \sum_{j=1}^m (\Phi(\boldsymbol{x}_j, \boldsymbol{w}) - y_j)^2$$
 
@@ -2113,11 +2555,11 @@ $$\boldsymbol{G} := 2(\Phi(\boldsymbol{x}_j, \boldsymbol{w}) - y_j) \nabla_{\bol
 
 where $j \sim \text{uniform}(1, \ldots, m)$. Then $\mathbb{E}[\boldsymbol{G}] = \nabla f(\boldsymbol{w})$, meaning that $\boldsymbol{G}$ is an unbiased estimator of $\nabla f(\boldsymbol{w})$. Importantly, computing (a realization of) $\boldsymbol{G}$ merely requires a single gradient evaluation of the neural network.
 
-More generally, one can choose **mini-batches** of size $m_b$ (where $m_b \ll m$) and let
+More generally, one can choose **mini-batches** of size $m\_b$ (where $m\_b \ll m$) and let
 
 $$\boldsymbol{G} = \frac{2}{m_b} \sum_{j \in J} (\Phi(\boldsymbol{x}_j, \boldsymbol{w}) - y_j) \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_j, \boldsymbol{w}),$$
 
-where $J$ is a random subset of $\lbrace 1, \ldots, m \rbrace$ of cardinality $m_b$. A larger mini-batch size reduces the variance of $\boldsymbol{G}$ (thus giving a more robust estimate of the true gradient) but increases the computational cost.
+where $J$ is a random subset of $\lbrace 1, \ldots, m \rbrace$ of cardinality $m\_b$. A larger mini-batch size reduces the variance of $\boldsymbol{G}$ (thus giving a more robust estimate of the true gradient) but increases the computational cost.
 
 </div>
 
@@ -2125,22 +2567,22 @@ Using $L$-smoothness we have
 
 $$\mathbb{E}[f(\boldsymbol{w}_{k+1}) \mid \boldsymbol{w}_k] - f(\boldsymbol{w}_k) \le -h_k \lVert \nabla f(\boldsymbol{w}_k) \rVert^2 + \frac{L}{2} \mathbb{E}[\lVert h_k \boldsymbol{G}_k \rVert^2 \mid \boldsymbol{w}_k].$$
 
-For the objective function to decrease in expectation, the first term $h_k \lVert \nabla f(\boldsymbol{w}_k) \rVert^2$ should dominate the second term $\frac{L}{2} \mathbb{E}[\lVert h_k \boldsymbol{G}_k \rVert^2 \mid \boldsymbol{w}_k]$. As $\boldsymbol{w}_k$ approaches the minimum, we have $\lVert \nabla f(\boldsymbol{w}_k) \rVert \to 0$, which suggests that $\mathbb{E}[\lVert h_k \boldsymbol{G}_k \rVert^2 \mid \boldsymbol{w}_k]$ should also decrease over time.
+For the objective function to decrease in expectation, the first term $h\_k \lVert \nabla f(\boldsymbol{w}\_k) \rVert^2$ should dominate the second term $\frac{L}{2} \mathbb{E}[\lVert h\_k \boldsymbol{G}\_k \rVert^2 \mid \boldsymbol{w}\_k]$. As $\boldsymbol{w}\_k$ approaches the minimum, we have $\lVert \nabla f(\boldsymbol{w}\_k) \rVert \to 0$, which suggests that $\mathbb{E}[\lVert h\_k \boldsymbol{G}\_k \rVert^2 \mid \boldsymbol{w}\_k]$ should also decrease over time.
 
-With a *constant learning rate* $h_k = h$, the stochastic updates cause fluctuations in the optimization path. Since these fluctuations do not decrease as the algorithm approaches the minimum, the iterates will not converge. Instead they stabilize within a neighborhood of the minimum, and oscillate around it. To achieve convergence in the limit, the variance of the update vector $-h_k \boldsymbol{G}_k$ must decrease over time. This can be achieved either by reducing the variance of $\boldsymbol{G}_k$ (e.g. through larger mini-batches), or more commonly, by decreasing the step size $h_k$ as $k$ progresses.
+With a *constant learning rate* $h\_k = h$, the stochastic updates cause fluctuations in the optimization path. Since these fluctuations do not decrease as the algorithm approaches the minimum, the iterates will not converge. Instead they stabilize within a neighborhood of the minimum, and oscillate around it. To achieve convergence in the limit, the variance of the update vector $-h\_k \boldsymbol{G}\_k$ must decrease over time. This can be achieved either by reducing the variance of $\boldsymbol{G}\_k$ (e.g. through larger mini-batches), or more commonly, by decreasing the step size $h\_k$ as $k$ progresses.
 
 #### 10.2.2 Convergence of Stochastic Gradient Descent
 
-Since $\boldsymbol{w}_k$ in the SGD update is a random variable by construction, a convergence statement can only be stochastic, e.g., in expectation or with high probability. The result is stated under the assumption that bounds the second moments of the stochastic gradients $\boldsymbol{G}_k$ and ensures that they grow at most linearly with $\lVert \nabla f(\boldsymbol{w}_k) \rVert^2$. Moreover, the analysis relies on the following decreasing step sizes
+Since $\boldsymbol{w}\_k$ in the SGD update is a random variable by construction, a convergence statement can only be stochastic, e.g., in expectation or with high probability. The result is stated under the assumption that bounds the second moments of the stochastic gradients $\boldsymbol{G}\_k$ and ensures that they grow at most linearly with $\lVert \nabla f(\boldsymbol{w}\_k) \rVert^2$. Moreover, the analysis relies on the following decreasing step sizes
 
 $$h_k := \min\left(\frac{\mu}{L^2 \gamma}, \frac{1}{\mu} \frac{(k+1)^2 - k^2}{(k+1)^2}\right) \quad \text{for all } k \in \mathbb{N}_0.$$
 
-Note that $h_k = O(k^{-1})$ as $k \to \infty$.
+Note that $h\_k = O(k^{-1})$ as $k \to \infty$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 10.10</span><span class="math-callout__name">(Convergence of SGD)</span></p>
 
-Let $n \in \mathbb{N}$ and $L$, $\mu$, $\gamma > 0$. Let $f : \mathbb{R}^n \to \mathbb{R}$ be $L$-smooth and $\mu$-strongly convex. Fix $\boldsymbol{w}_0 \in \mathbb{R}^n$, let $(h_k)_{k=0}^\infty$ be as in (10.2.4) and let $(\boldsymbol{G}_k)_{k=1}^\infty$, $(\boldsymbol{w}_k)_{k=1}^\infty$ be sequences of random variables as in (10.2.1) and (10.2.2). Assume that, for some fixed $\gamma > 0$, and all $k \in \mathbb{N}$
+Let $n \in \mathbb{N}$ and $L$, $\mu$, $\gamma > 0$. Let $f : \mathbb{R}^n \to \mathbb{R}$ be $L$-smooth and $\mu$-strongly convex. Fix $\boldsymbol{w}\_0 \in \mathbb{R}^n$, let $(h\_k)\_{k=0}^\infty$ be as in (10.2.4) and let $(\boldsymbol{G}\_k)\_{k=1}^\infty$, $(\boldsymbol{w}\_k)\_{k=1}^\infty$ be sequences of random variables as in (10.2.1) and (10.2.2). Assume that, for some fixed $\gamma > 0$, and all $k \in \mathbb{N}$
 
 $$\mathbb{E}[\lVert \boldsymbol{G}_k \rVert^2 \mid \boldsymbol{w}_k] \le \gamma(1 + \lVert \nabla f(\boldsymbol{w}_k) \rVert^2).$$
 
@@ -2150,19 +2592,26 @@ $$\mathbb{E}[\lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2] \le \frac{C}{k
 
 </div>
 
-*Proof sketch.* Using the unbiasedness of $\boldsymbol{G}_k$ and $\mu$-strong convexity, one shows the recursion
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Using the unbiasedness of $\boldsymbol{G}\_k$ and $\mu$-strong convexity, one shows the recursion
 
 $$\mathbb{E}[\lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2 \mid \boldsymbol{w}_{k-1}] \le (1 - \mu h_{k-1}) \lVert \boldsymbol{w}_{k-1} - \boldsymbol{w}_* \rVert^2 + h_{k-1}^2 \gamma.$$
 
-By unrolling this recursion and using the specific choice of $h_k$ from (10.2.4), one obtains
+By unrolling this recursion and using the specific choice of $h\_k$ from (10.2.4), one obtains
 
 $$e_k \le e_0 \prod_{j=0}^{k-1} (1 - \mu h_j) + \gamma \sum_{j=0}^{k-1} h_j^2 \prod_{i=j+1}^{k-1} (1 - \mu h_i),$$
 
-where $e_k := \mathbb{E}[\lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2 \mid \boldsymbol{w}_{k-1}]$. The product terms can be bounded by $\tilde{C} j^2 / k^2$ for a constant $\tilde{C}$. This yields $e_k \le C/k$. Finally, using $L$-smoothness,
+where $e\_k := \mathbb{E}[\lVert \boldsymbol{w}\_k - \boldsymbol{w}\_\ast \rVert^2 \mid \boldsymbol{w}\_{k-1}]$. The product terms can be bounded by $\tilde{C} j^2 / k^2$ for a constant $\tilde{C}$. This yields $e\_k \le C/k$. Finally, using $L$-smoothness,
 
 $$f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*) \le \langle \nabla f(\boldsymbol{w}_*), \boldsymbol{w}_k - \boldsymbol{w}_* \rangle + \frac{L}{2} \lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2 = \frac{L}{2} \lVert \boldsymbol{w}_k - \boldsymbol{w}_* \rVert^2,$$
 
 and taking the expectation concludes the proof. $\square$
+
+</details>
+</div>
 
 ### 10.3 Acceleration
 
@@ -2174,21 +2623,21 @@ Consider the quadratic objective function in two dimensions
 
 $$f(\boldsymbol{w}) := \frac{1}{2} \boldsymbol{w}^\top \boldsymbol{D} \boldsymbol{w} \quad \text{where} \quad \boldsymbol{D} = \begin{pmatrix} \zeta_1 & 0 \\ 0 & \zeta_2 \end{pmatrix}$$
 
-with $\zeta_1 \ge \zeta_2 > 0$. Clearly, $f$ has a unique minimizer at $\boldsymbol{w}_* = \boldsymbol{0} \in \mathbb{R}^2$. Starting at some $\boldsymbol{w}_0 \in \mathbb{R}^2$, gradient descent with constant step size $h > 0$ computes the iterates
+with $\zeta\_1 \ge \zeta\_2 > 0$. Clearly, $f$ has a unique minimizer at $\boldsymbol{w}\_\ast = \boldsymbol{0} \in \mathbb{R}^2$. Starting at some $\boldsymbol{w}\_0 \in \mathbb{R}^2$, gradient descent with constant step size $h > 0$ computes the iterates
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - h \boldsymbol{D} \boldsymbol{w}_k = \begin{pmatrix} (1 - h\zeta_1)^{k+1} & 0 \\ 0 & (1 - h\zeta_2)^{k+1} \end{pmatrix} \boldsymbol{w}_0.$$
 
-The method converges for arbitrary initialization $\boldsymbol{w}_0$ if and only if $\lvert 1 - h\zeta_1 \rvert < 1$ and $\lvert 1 - h\zeta_2 \rvert < 1$. The optimal step size balancing the rate of convergence in both coordinates is
+The method converges for arbitrary initialization $\boldsymbol{w}\_0$ if and only if $\lvert 1 - h\zeta\_1 \rvert < 1$ and $\lvert 1 - h\zeta\_2 \rvert < 1$. The optimal step size balancing the rate of convergence in both coordinates is
 
 $$h_* = \operatorname{argmin}_{h > 0} \max\lbrace \lvert 1 - h\zeta_1 \rvert, \lvert 1 - h\zeta_2 \rvert \rbrace = \frac{2}{\zeta_1 + \zeta_2}.$$
 
-With $\kappa = \zeta_1 / \zeta_2$ we then obtain the convergence rate
+With $\kappa = \zeta\_1 / \zeta\_2$ we then obtain the convergence rate
 
 $$\lvert 1 - h_* \zeta_1 \rvert = \lvert 1 - h_* \zeta_2 \rvert = \frac{\zeta_1 - \zeta_2}{\zeta_1 + \zeta_2} = \frac{\kappa - 1}{\kappa + 1} \in [0, 1).$$
 
-If $\zeta_1 \gg \zeta_2$, this term is close to $1$, and thus the convergence will be slow. This is consistent with our analysis for strongly convex objective functions; the condition number of $f$ equals $\kappa = \zeta_1 / \zeta_2 \gg 1$.
+If $\zeta\_1 \gg \zeta\_2$, this term is close to $1$, and thus the convergence will be slow. This is consistent with our analysis for strongly convex objective functions; the condition number of $f$ equals $\kappa = \zeta\_1 / \zeta\_2 \gg 1$.
 
-The loss-landscape in this case looks like a ravine (the derivative is much larger in one direction than the other), and away from the floor, $\nabla f$ mainly points to the opposite side. Therefore the iterates oscillate back and forth in the first coordinate, and make little progress in the direction of the valley along the second coordinate axis. To address this problem, the heavy ball method introduces a "momentum" term which can mitigate this effect to some extent. The idea is to choose the update not just according to the gradient at the current location, but to add information from the previous steps. After initializing $\boldsymbol{w}_0$ and $\boldsymbol{w}_1 = \boldsymbol{w}_0 - \alpha \nabla f(\boldsymbol{w}_0)$, let for $k \in \mathbb{N}$
+The loss-landscape in this case looks like a ravine (the derivative is much larger in one direction than the other), and away from the floor, $\nabla f$ mainly points to the opposite side. Therefore the iterates oscillate back and forth in the first coordinate, and make little progress in the direction of the valley along the second coordinate axis. To address this problem, the heavy ball method introduces a "momentum" term which can mitigate this effect to some extent. The idea is to choose the update not just according to the gradient at the current location, but to add information from the previous steps. After initializing $\boldsymbol{w}\_0$ and $\boldsymbol{w}\_1 = \boldsymbol{w}\_0 - \alpha \nabla f(\boldsymbol{w}\_0)$, let for $k \in \mathbb{N}$
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha \nabla f(\boldsymbol{w}_k) + \beta(\boldsymbol{w}_k - \boldsymbol{w}_{k-1}).$$
 
@@ -2196,7 +2645,7 @@ This is known as Polyak's heavy ball method. Here $\alpha > 0$ and $\beta \in (0
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha \left(\sum_{j=0}^k \beta^j \nabla f(\boldsymbol{w}_{k-j})\right).$$
 
-Thus, $\boldsymbol{w}_k$ is updated using an *exponentially weighted moving average* of all past gradients. Choosing the momentum parameter $\beta$ in the interval $(0, 1)$ ensures that the influence of previous gradients on the update decays exponentially. The concrete value of $\beta$ determines the balance between the impact of recent and past gradients.
+Thus, $\boldsymbol{w}\_k$ is updated using an *exponentially weighted moving average* of all past gradients. Choosing the momentum parameter $\beta$ in the interval $(0, 1)$ ensures that the influence of previous gradients on the update decays exponentially. The concrete value of $\beta$ determines the balance between the impact of recent and past gradients.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 10.12</span><span class="math-callout__name">(ODE Interpretation)</span></p>
@@ -2219,7 +2668,7 @@ Letting $m = 0$ recovers the gradient descent update. Hence, positive mass $m > 
 
 #### 10.3.2 Nesterov Acceleration
 
-Nesterov's accelerated gradient method (NAG) builds on the heavy ball method. After initializing $\boldsymbol{w}_0$, $\boldsymbol{v}_0 \in \mathbb{R}^n$, the update is formulated for $k \ge 0$ as the two-step process
+Nesterov's accelerated gradient method (NAG) builds on the heavy ball method. After initializing $\boldsymbol{w}\_0$, $\boldsymbol{v}\_0 \in \mathbb{R}^n$, the update is formulated for $k \ge 0$ as the two-step process
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{v}_k - \alpha \nabla f(\boldsymbol{v}_k)$$
 
@@ -2229,9 +2678,9 @@ where again $\alpha > 0$ and $\beta \in (0, 1)$ are hyperparameters. Substitutin
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha \nabla f(\boldsymbol{v}_k) + \beta(\boldsymbol{w}_k - \boldsymbol{w}_{k-1}).$$
 
-Comparing with the heavy ball method, the key difference is that the gradient is not evaluated at the current position $\boldsymbol{w}_k$, but instead at the point $\boldsymbol{v}_k = \boldsymbol{w}_k + \beta(\boldsymbol{w}_k - \boldsymbol{w}_{k-1})$, which can be interpreted as an estimate of the position at the next iteration. This improves stability and robustness with respect to hyperparameter settings.
+Comparing with the heavy ball method, the key difference is that the gradient is not evaluated at the current position $\boldsymbol{w}\_k$, but instead at the point $\boldsymbol{v}\_k = \boldsymbol{w}\_k + \beta(\boldsymbol{w}\_k - \boldsymbol{w}\_{k-1})$, which can be interpreted as an estimate of the position at the next iteration. This improves stability and robustness with respect to hyperparameter settings.
 
-We now discuss the convergence of NAG for $L$-smooth and $\mu$-strongly convex objective functions $f$. To give the analysis, it is convenient to first rewrite the two-step update as a three sequence update: Let $\tau = \sqrt{\mu / L}$, $\alpha = 1/L$, and $\beta = (1 - \tau)/(1 + \tau)$. After initializing $\boldsymbol{w}_0$, $\boldsymbol{v}_0 \in \mathbb{R}^n$, the update can also be written as $\boldsymbol{u}_0 = ((1 + \tau)\boldsymbol{v}_0 - \boldsymbol{w}_0) / \tau$ and for $k \ge 0$
+We now discuss the convergence of NAG for $L$-smooth and $\mu$-strongly convex objective functions $f$. To give the analysis, it is convenient to first rewrite the two-step update as a three sequence update: Let $\tau = \sqrt{\mu / L}$, $\alpha = 1/L$, and $\beta = (1 - \tau)/(1 + \tau)$. After initializing $\boldsymbol{w}\_0$, $\boldsymbol{v}\_0 \in \mathbb{R}^n$, the update can also be written as $\boldsymbol{u}\_0 = ((1 + \tau)\boldsymbol{v}\_0 - \boldsymbol{w}\_0) / \tau$ and for $k \ge 0$
 
 $$\boldsymbol{v}_k = \frac{\tau}{1 + \tau} \boldsymbol{u}_k + \frac{1}{1 + \tau} \boldsymbol{w}_k$$
 
@@ -2242,9 +2691,9 @@ $$\boldsymbol{u}_{k+1} = \boldsymbol{u}_k + \tau \cdot (\boldsymbol{v}_k - \bold
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 10.13</span><span class="math-callout__name">(Convergence of Nesterov Acceleration)</span></p>
 
-Let $n \in \mathbb{N}$, $0 < \mu \le L$, and let $f : \mathbb{R}^n \to \mathbb{R}$ be $L$-smooth and $\mu$-strongly convex. Further, let $\boldsymbol{w}_0$, $\boldsymbol{v}_0 \in \mathbb{R}^n$ and let $\tau = \sqrt{\mu / L}$. Let $(\boldsymbol{v}_k, \boldsymbol{w}_{k+1}, \boldsymbol{u}_{k+1})_{k=0}^\infty \subseteq \mathbb{R}^n$ be defined by the three-sequence update (10.3.11a), and let $\boldsymbol{w}_*$ be the unique minimizer of $f$.
+Let $n \in \mathbb{N}$, $0 < \mu \le L$, and let $f : \mathbb{R}^n \to \mathbb{R}$ be $L$-smooth and $\mu$-strongly convex. Further, let $\boldsymbol{w}\_0$, $\boldsymbol{v}\_0 \in \mathbb{R}^n$ and let $\tau = \sqrt{\mu / L}$. Let $(\boldsymbol{v}\_k, \boldsymbol{w}\_{k+1}, \boldsymbol{u}\_{k+1})\_{k=0}^\infty \subseteq \mathbb{R}^n$ be defined by the three-sequence update (10.3.11a), and let $\boldsymbol{w}\_\ast$ be the unique minimizer of $f$.
 
-Then, for all $k \in \mathbb{N}_0$, it holds that
+Then, for all $k \in \mathbb{N}\_0$, it holds that
 
 $$\lVert \boldsymbol{u}_k - \boldsymbol{w}_* \rVert^2 \le \frac{2}{\mu} \left(1 - \sqrt{\frac{\mu}{L}}\right)^k \left(f(\boldsymbol{w}_0) - f(\boldsymbol{w}_*) + \frac{\mu}{2} \lVert \boldsymbol{u}_0 - \boldsymbol{w}_* \rVert^2\right),$$
 
@@ -2252,13 +2701,17 @@ $$f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*) \le \left(1 - \sqrt{\frac{\mu}{L}}\r
 
 </div>
 
-*Proof sketch.* Define
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof sketch</summary>
+
+Define
 
 $$e_k := (f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*)) + \frac{\mu}{2} \lVert \boldsymbol{u}_k - \boldsymbol{w}_* \rVert^2.$$
 
-With $c := 1 - \tau$, it suffices to prove that $e_{k+1} \le c \, e_k$ for all $k \in \mathbb{N}_0$.
+With $c := 1 - \tau$, it suffices to prove that $e\_{k+1} \le c \, e\_k$ for all $k \in \mathbb{N}\_0$.
 
-**Step 1.** We bound the first term in $e_{k+1}$. Using $L$-smoothness and (10.3.11b)
+**Step 1.** We bound the first term in $e\_{k+1}$. Using $L$-smoothness and (10.3.11b)
 
 $$f(\boldsymbol{w}_{k+1}) - f(\boldsymbol{v}_k) \le -\frac{1}{2L} \lVert \nabla f(\boldsymbol{v}_k) \rVert^2.$$
 
@@ -2266,11 +2719,14 @@ Thus, since $c + \tau = 1$,
 
 $$f(\boldsymbol{w}_{k+1}) - f(\boldsymbol{w}_*) \le c \cdot (f(\boldsymbol{w}_k) - f(\boldsymbol{w}_*)) + \tau \cdot (f(\boldsymbol{v}_k) - f(\boldsymbol{w}_*)) - \frac{1}{2L} \lVert \nabla f(\boldsymbol{v}_k) \rVert^2.$$
 
-**Step 2.** We bound the second term in $e_{k+1}$. By (10.3.11c) and using $\mu$-strong convexity
+**Step 2.** We bound the second term in $e\_{k+1}$. By (10.3.11c) and using $\mu$-strong convexity
 
 $$\frac{\mu}{2} \lVert \boldsymbol{u}_{k+1} - \boldsymbol{w}_* \rVert^2 \le c \frac{\mu}{2} \lVert \boldsymbol{u}_k - \boldsymbol{w}_* \rVert^2 + \tau \langle \nabla f(\boldsymbol{v}_k), \boldsymbol{v}_k - \boldsymbol{u}_k \rangle - \tau \cdot (f(\boldsymbol{v}_k) - f(\boldsymbol{w}_*)) - \frac{\tau \mu}{2}(\lVert \boldsymbol{u}_k - \boldsymbol{w}_* \rVert^2 + \lVert \boldsymbol{v}_k - \boldsymbol{u}_k \rVert^2).$$
 
-**Step 3.** Adding the bounds from Steps 1 and 2, and using (10.3.11a) which gives $\tau \cdot (\boldsymbol{v}_k - \boldsymbol{u}_k) = \boldsymbol{w}_k - \boldsymbol{v}_k$, the cross terms involving $\nabla f(\boldsymbol{v}_k)$ and the terms involving $f(\boldsymbol{v}_k) - f(\boldsymbol{w}_*)$ cancel out. Since $\tau = \sqrt{\mu / L}$, the coefficients of $\lVert \nabla f(\boldsymbol{v}_k) \rVert^2$ and $\lVert \boldsymbol{w}_k - \boldsymbol{v}_k \rVert^2$ vanish, yielding $e_{k+1} \le c \, e_k$. $\square$
+**Step 3.** Adding the bounds from Steps 1 and 2, and using (10.3.11a) which gives $\tau \cdot (\boldsymbol{v}\_k - \boldsymbol{u}\_k) = \boldsymbol{w}\_k - \boldsymbol{v}\_k$, the cross terms involving $\nabla f(\boldsymbol{v}\_k)$ and the terms involving $f(\boldsymbol{v}\_k) - f(\boldsymbol{w}\_\ast)$ cancel out. Since $\tau = \sqrt{\mu / L}$, the coefficients of $\lVert \nabla f(\boldsymbol{v}\_k) \rVert^2$ and $\lVert \boldsymbol{w}\_k - \boldsymbol{v}\_k \rVert^2$ vanish, yielding $e\_{k+1} \le c \, e\_k$. $\square$
+
+</details>
+</div>
 
 Comparing the result for gradient descent (Theorem 10.7) with NAG (Theorem 10.13), the improvement for strongly convex objectives lies in the convergence rate, which is $1 - \kappa^{-1}$ for gradient descent and $1 - \kappa^{-1/2}$ for NAG, where $\kappa = L / \mu$. For NAG the convergence rate depends only on the *square root* of the condition number $\kappa$. For ill-conditioned problems where $\kappa$ is large, we therefore expect much better performance for accelerated methods.
 
@@ -2278,7 +2734,7 @@ Comparing the result for gradient descent (Theorem 10.7) with NAG (Theorem 10.13
 
 In Section 10.3.1, we saw why plain gradient descent can be inefficient for ill-conditioned objective functions. This issue can be particularly pronounced in high-dimensional optimization problems, such as when training neural networks, where certain parameters influence the network output much more than others. A simpler and computationally efficient alternative is to scale each component of the gradient individually, corresponding to a diagonal preconditioning matrix. This allows different learning rates for different coordinates.
 
-After initializing $\boldsymbol{u}_0 = \boldsymbol{0} \in \mathbb{R}^n$, $\boldsymbol{s}_0 = \boldsymbol{0} \in \mathbb{R}^n$, and $\boldsymbol{w}_0 \in \mathbb{R}^n$, all methods discussed below are special cases of
+After initializing $\boldsymbol{u}\_0 = \boldsymbol{0} \in \mathbb{R}^n$, $\boldsymbol{s}\_0 = \boldsymbol{0} \in \mathbb{R}^n$, and $\boldsymbol{w}\_0 \in \mathbb{R}^n$, all methods discussed below are special cases of
 
 $$\boldsymbol{u}_{k+1} = \beta_1 \boldsymbol{u}_k + \beta_2 \nabla f(\boldsymbol{w}_k)$$
 
@@ -2286,7 +2742,7 @@ $$\boldsymbol{s}_{k+1} = \gamma_1 \boldsymbol{s}_k + \gamma_2 \nabla f(\boldsymb
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha_k \boldsymbol{u}_{k+1} \oslash \sqrt{\boldsymbol{s}_{k+1} + \varepsilon}$$
 
-for $k \in \mathbb{N}_0$, and certain hyperparameters $\alpha_k$, $\beta_1$, $\beta_2$, $\gamma_1$, $\gamma_2$, and $\varepsilon$. Here $\odot$ and $\oslash$ denote the componentwise (Hadamard) multiplication and division, respectively, and $\sqrt{\boldsymbol{s}_{k+1} + \varepsilon}$ is understood as the vector $(\sqrt{v_{k+1,i} + \varepsilon})_i$. Equation (10.4.1a) defines an update vector and corresponds to heavy ball momentum if $\beta_1 \in (0, 1)$. Equation (10.4.1b) defines a scaling vector $\boldsymbol{s}_{k+1}$ that is used to set a coordinate-wise learning rate of the update vector in (10.4.1c). The constant $\varepsilon > 0$ is chosen small but positive to avoid division by zero in (10.4.1c).
+for $k \in \mathbb{N}\_0$, and certain hyperparameters $\alpha\_k$, $\beta\_1$, $\beta\_2$, $\gamma\_1$, $\gamma\_2$, and $\varepsilon$. Here $\odot$ and $\oslash$ denote the componentwise (Hadamard) multiplication and division, respectively, and $\sqrt{\boldsymbol{s}\_{k+1} + \varepsilon}$ is understood as the vector $(\sqrt{v\_{k+1,i} + \varepsilon})\_i$. Equation (10.4.1a) defines an update vector and corresponds to heavy ball momentum if $\beta\_1 \in (0, 1)$. Equation (10.4.1b) defines a scaling vector $\boldsymbol{s}\_{k+1}$ that is used to set a coordinate-wise learning rate of the update vector in (10.4.1c). The constant $\varepsilon > 0$ is chosen small but positive to avoid division by zero in (10.4.1c).
 
 #### 10.4.1 Coordinate-wise Scaling
 
@@ -2297,7 +2753,7 @@ Consider an objective function $f : \mathbb{R}^n \to \mathbb{R}$, and its rescal
 
 $$f_{\boldsymbol{\zeta}}(\boldsymbol{w}) := f(\boldsymbol{w} \odot \boldsymbol{\zeta}) \quad \text{with gradient} \quad \nabla f_{\boldsymbol{\zeta}}(\boldsymbol{w}) = \boldsymbol{\zeta} \odot \nabla f(\boldsymbol{w} \odot \boldsymbol{\zeta}),$$
 
-for some $\boldsymbol{\zeta} \in (0, \infty)^n$. Gradient descent applied to $f_{\boldsymbol{\zeta}}$ performs the update $\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - h_k \boldsymbol{\zeta} \odot \nabla f(\boldsymbol{w} \odot \boldsymbol{\zeta})$. Setting $\varepsilon = 0$, the adaptive method (10.4.1) on the other hand performs the update
+for some $\boldsymbol{\zeta} \in (0, \infty)^n$. Gradient descent applied to $f\_{\boldsymbol{\zeta}}$ performs the update $\boldsymbol{w}\_{k+1} = \boldsymbol{w}\_k - h\_k \boldsymbol{\zeta} \odot \nabla f(\boldsymbol{w} \odot \boldsymbol{\zeta})$. Setting $\varepsilon = 0$, the adaptive method (10.4.1) on the other hand performs the update
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha_k \left(\beta_2 \sum_{j=0}^k \beta_1^j \nabla f(\boldsymbol{w}_{k-j} \odot \boldsymbol{\zeta})\right) \oslash \sqrt{\gamma_2 \sum_{j=0}^k \gamma_1^j \nabla f(\boldsymbol{w}_{k-j} \odot \boldsymbol{\zeta}) \odot \nabla f(\boldsymbol{w}_{k-j} \odot \boldsymbol{\zeta})}.$$
 
@@ -2317,25 +2773,25 @@ $$\boldsymbol{s}_{k+1} = \boldsymbol{s}_k + \nabla f(\boldsymbol{w}_k) \odot \na
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha \nabla f(\boldsymbol{w}_k) \oslash \sqrt{\boldsymbol{s}_{k+1} + \varepsilon}.$$
 
-Due to $\boldsymbol{s}_{k+1} = \sum_{j=0}^k \nabla f(\boldsymbol{w}_j) \odot \nabla f(\boldsymbol{w}_j)$, the algorithm scales the gradient $\nabla f(\boldsymbol{w}_k)$ in the update componentwise by the inverse square root of the sum over all past squared gradients plus $\varepsilon$. Note that the scaling factor $(s_{k+1,i} + \varepsilon)^{-1/2}$ for component $i$ will be large, if the previous gradients for that component were small, and vice versa.
+Due to $\boldsymbol{s}\_{k+1} = \sum\_{j=0}^k \nabla f(\boldsymbol{w}\_j) \odot \nabla f(\boldsymbol{w}\_j)$, the algorithm scales the gradient $\nabla f(\boldsymbol{w}\_k)$ in the update componentwise by the inverse square root of the sum over all past squared gradients plus $\varepsilon$. Note that the scaling factor $(s\_{k+1,i} + \varepsilon)^{-1/2}$ for component $i$ will be large, if the previous gradients for that component were small, and vice versa.
 
 **RMSProp.** RMSProp (Root Mean Squared Propagation) corresponds to (10.4.1) with
 
 $$\beta_1 = 0, \quad \beta_2 = 1, \quad \gamma_2 = 1 - \gamma_1 \in (0, 1), \quad \alpha_k = \alpha \quad \text{for all } k \in \mathbb{N}_0,$$
 
-effectively leaving the hyperparameters $\varepsilon > 0$, $\gamma_1 \in (0, 1)$ and $\alpha > 0$. The algorithm is thus given through
+effectively leaving the hyperparameters $\varepsilon > 0$, $\gamma\_1 \in (0, 1)$ and $\alpha > 0$. The algorithm is thus given through
 
 $$\boldsymbol{s}_{k+1} = \gamma_1 \boldsymbol{s}_k + (1 - \gamma_1) \nabla f(\boldsymbol{w}_k) \odot \nabla f(\boldsymbol{w}_k)$$
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha \nabla f(\boldsymbol{w}_k) \oslash \sqrt{\boldsymbol{s}_{k+1} + \varepsilon}.$$
 
-The scaling vector can be expressed as $\boldsymbol{s}_{k+1} = (1 - \gamma_1) \sum_{j=0}^k \gamma_1^j \nabla f(\boldsymbol{w}_{k-j}) \odot \nabla f(\boldsymbol{w}_{k-j})$ and corresponds to an exponentially weighted moving average over the past squared gradients. Unlike for AdaGrad, where past gradients accumulate indefinitely, RMSprop exponentially downweights older gradients, giving more weight to recent updates. This prevents the overly rapid decay of learning rates and slow convergence sometimes observed in AdaGrad.
+The scaling vector can be expressed as $\boldsymbol{s}\_{k+1} = (1 - \gamma\_1) \sum\_{j=0}^k \gamma\_1^j \nabla f(\boldsymbol{w}\_{k-j}) \odot \nabla f(\boldsymbol{w}\_{k-j})$ and corresponds to an exponentially weighted moving average over the past squared gradients. Unlike for AdaGrad, where past gradients accumulate indefinitely, RMSprop exponentially downweights older gradients, giving more weight to recent updates. This prevents the overly rapid decay of learning rates and slow convergence sometimes observed in AdaGrad.
 
 **Adam.** Adam (Adaptive Moment Estimation) corresponds to (10.4.1) with
 
 $$\beta_2 = 1 - \beta_1 \in (0, 1), \quad \gamma_2 = 1 - \gamma_1 \in (0, 1), \quad \alpha_k = \alpha \frac{\sqrt{1 - \gamma_1^{k+1}}}{1 - \beta_1^{k+1}}$$
 
-for some $\alpha > 0$. The default values for the remaining parameters recommended are $\varepsilon = 10^{-8}$, $\alpha = 0.001$, $\beta_1 = 0.9$ and $\gamma_1 = 0.999$. The update can be formulated as
+for some $\alpha > 0$. The default values for the remaining parameters recommended are $\varepsilon = 10^{-8}$, $\alpha = 0.001$, $\beta\_1 = 0.9$ and $\gamma\_1 = 0.999$. The update can be formulated as
 
 $$\boldsymbol{u}_{k+1} = \beta_1 \boldsymbol{u}_k + (1 - \beta_1) \nabla f(\boldsymbol{w}_k), \qquad \hat{\boldsymbol{u}}_{k+1} = \frac{\boldsymbol{u}_{k+1}}{1 - \beta_1^{k+1}}$$
 
@@ -2343,11 +2799,11 @@ $$\boldsymbol{s}_{k+1} = \gamma_1 \boldsymbol{s}_k + (1 - \gamma_1) \nabla f(\bo
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - \alpha \hat{\boldsymbol{u}}_{k+1} \oslash \sqrt{\hat{\boldsymbol{s}}_{k+1} + \varepsilon}.$$
 
-Compared to RMSProp, Adam introduces two modifications. First, due to $\beta_1 > 0$,
+Compared to RMSProp, Adam introduces two modifications. First, due to $\beta\_1 > 0$,
 
 $$\boldsymbol{u}_{k+1} = (1 - \beta_1) \sum_{j=0}^k \beta_1^j \nabla f(\boldsymbol{w}_{k-j})$$
 
-which corresponds to heavy ball momentum (cf. (10.3.6)). Second, to counteract the initialization bias from $\boldsymbol{u}_0 = \boldsymbol{0}$ and $\boldsymbol{s}_0 = \boldsymbol{0}$, Adam applies a bias correction via
+which corresponds to heavy ball momentum (cf. (10.3.6)). Second, to counteract the initialization bias from $\boldsymbol{u}\_0 = \boldsymbol{0}$ and $\boldsymbol{s}\_0 = \boldsymbol{0}$, Adam applies a bias correction via
 
 $$\hat{\boldsymbol{u}}_k = \frac{\boldsymbol{u}_k}{1 - \beta_1^k}, \quad \hat{\boldsymbol{s}}_k = \frac{\boldsymbol{s}_k}{1 - \gamma_1^k}.$$
 
@@ -2355,29 +2811,29 @@ It should be noted that there exist specific settings and convex optimization pr
 
 ### 10.5 Backpropagation
 
-We now explain how to apply gradient-based methods to the training of neural networks. Let $\Phi \in \mathcal{N}_{d_0}^{d_{L+1}}(\sigma; L, n)$ (see Definition 3.6) and assume that the activation function satisfies $\sigma \in C^1(\mathbb{R})$. As earlier, we denote the neural network parameters by
+We now explain how to apply gradient-based methods to the training of neural networks. Let $\Phi \in \mathcal{N}\_{d\_0}^{d\_{L+1}}(\sigma; L, n)$ (see Definition 3.6) and assume that the activation function satisfies $\sigma \in C^1(\mathbb{R})$. As earlier, we denote the neural network parameters by
 
 $$\boldsymbol{w} = ((\boldsymbol{W}^{(0)}, \boldsymbol{b}^{(0)}), \ldots, (\boldsymbol{W}^{(L)}, \boldsymbol{b}^{(L)}))$$
 
-with weight matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$ and bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d_{\ell+1}}$. Additionally, we fix a differentiable loss function $\mathcal{L} : \mathbb{R}^{d_{L+1}} \times \mathbb{R}^{d_{L+1}} \to \mathbb{R}$, e.g., $\mathcal{L}(\boldsymbol{w}, \tilde{\boldsymbol{w}}) = \lVert \boldsymbol{w} - \tilde{\boldsymbol{w}} \rVert^2 / 2$, and assume given data $(\boldsymbol{x}_j, \boldsymbol{y}_j)_{j=1}^m \subseteq \mathbb{R}^{d_0} \times \mathbb{R}^{d_{L+1}}$. The goal is to minimize an empirical risk of the form
+with weight matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$ and bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1}}$. Additionally, we fix a differentiable loss function $\mathcal{L} : \mathbb{R}^{d\_{L+1}} \times \mathbb{R}^{d\_{L+1}} \to \mathbb{R}$, e.g., $\mathcal{L}(\boldsymbol{w}, \tilde{\boldsymbol{w}}) = \lVert \boldsymbol{w} - \tilde{\boldsymbol{w}} \rVert^2 / 2$, and assume given data $(\boldsymbol{x}\_j, \boldsymbol{y}\_j)\_{j=1}^m \subseteq \mathbb{R}^{d\_0} \times \mathbb{R}^{d\_{L+1}}$. The goal is to minimize an empirical risk of the form
 
 $$f(\boldsymbol{w}) := \frac{1}{m} \sum_{j=1}^m \mathcal{L}(\Phi(\boldsymbol{x}_j, \boldsymbol{w}), \boldsymbol{y}_j).$$
 
-An application of the gradient step requires the computation of $\nabla f(\boldsymbol{w}) = \frac{1}{m} \sum_{j=1}^m \nabla_{\boldsymbol{w}} \mathcal{L}(\Phi(\boldsymbol{x}_j, \boldsymbol{w}), \boldsymbol{y}_j)$. For stochastic methods, we only compute the average over a (random) subbatch of the dataset. In either case, we need an algorithm to determine $\nabla_{\boldsymbol{w}} \mathcal{L}(\Phi(\boldsymbol{x}, \boldsymbol{w}), \boldsymbol{y})$, i.e. the gradients
+An application of the gradient step requires the computation of $\nabla f(\boldsymbol{w}) = \frac{1}{m} \sum\_{j=1}^m \nabla\_{\boldsymbol{w}} \mathcal{L}(\Phi(\boldsymbol{x}\_j, \boldsymbol{w}), \boldsymbol{y}\_j)$. For stochastic methods, we only compute the average over a (random) subbatch of the dataset. In either case, we need an algorithm to determine $\nabla\_{\boldsymbol{w}} \mathcal{L}(\Phi(\boldsymbol{x}, \boldsymbol{w}), \boldsymbol{y})$, i.e. the gradients
 
 $$\nabla_{\boldsymbol{b}^{(\ell)}} \mathcal{L}(\Phi(\boldsymbol{x}, \boldsymbol{w}), \boldsymbol{y}) \in \mathbb{R}^{d_{\ell+1}}, \quad \nabla_{\boldsymbol{W}^{(\ell)}} \mathcal{L}(\Phi(\boldsymbol{x}, \boldsymbol{w}), \boldsymbol{y}) \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$$
 
 for all $\ell = 0, \ldots, L$.
 
-The backpropagation algorithm provides an *efficient* way to do so, by storing intermediate values in the calculation. For fixed input $\boldsymbol{x} \in \mathbb{R}^{d_0}$ introduce the notation
+The backpropagation algorithm provides an *efficient* way to do so, by storing intermediate values in the calculation. For fixed input $\boldsymbol{x} \in \mathbb{R}^{d\_0}$ introduce the notation
 
 $$\bar{\boldsymbol{x}}^{(1)} := \boldsymbol{W}^{(0)} \boldsymbol{x} + \boldsymbol{b}^{(0)}$$
 
 $$\bar{\boldsymbol{x}}^{(\ell+1)} := \boldsymbol{W}^{(\ell)} \sigma(\bar{\boldsymbol{x}}^{(\ell)}) + \boldsymbol{b}^{(\ell)} \quad \text{for } \ell \in \lbrace 1, \ldots, L \rbrace,$$
 
-where the application of $\sigma$ to a vector is understood componentwise. With the notation of Definition 2.1, $\boldsymbol{x}^{(\ell)} = \sigma(\bar{\boldsymbol{x}}^{(\ell)}) \in \mathbb{R}^{d_\ell}$ for $\ell = 1, \ldots, L$ and $\bar{\boldsymbol{x}}^{(L+1)} = \Phi(\boldsymbol{x}, \boldsymbol{w}) \in \mathbb{R}^{d_{L+1}}$ is the output of the neural network. The $\bar{\boldsymbol{x}}^{(\ell)}$ for $\ell = 1, \ldots, L$ are sometimes also referred to as the **preactivations**.
+where the application of $\sigma$ to a vector is understood componentwise. With the notation of Definition 2.1, $\boldsymbol{x}^{(\ell)} = \sigma(\bar{\boldsymbol{x}}^{(\ell)}) \in \mathbb{R}^{d\_\ell}$ for $\ell = 1, \ldots, L$ and $\bar{\boldsymbol{x}}^{(L+1)} = \Phi(\boldsymbol{x}, \boldsymbol{w}) \in \mathbb{R}^{d\_{L+1}}$ is the output of the neural network. The $\bar{\boldsymbol{x}}^{(\ell)}$ for $\ell = 1, \ldots, L$ are sometimes also referred to as the **preactivations**.
 
-In the following, we additionally fix $\boldsymbol{y} \in \mathbb{R}^{d_{L+1}}$ and write $\mathcal{L} := \mathcal{L}(\Phi(\boldsymbol{x}, \boldsymbol{w}), \boldsymbol{y}) = \mathcal{L}(\bar{\boldsymbol{x}}^{(L+1)}, \boldsymbol{y})$. Note that $\bar{\boldsymbol{x}}^{(k)}$ depends on $(\boldsymbol{W}^{(\ell)}, \boldsymbol{b}^{(\ell)})$ only if $k > \ell$. Since $\bar{\boldsymbol{x}}^{(\ell+1)}$ is a function of $\bar{\boldsymbol{x}}^{(\ell)}$ for each $\ell$, by repeated application of the chain rule
+In the following, we additionally fix $\boldsymbol{y} \in \mathbb{R}^{d\_{L+1}}$ and write $\mathcal{L} := \mathcal{L}(\Phi(\boldsymbol{x}, \boldsymbol{w}), \boldsymbol{y}) = \mathcal{L}(\bar{\boldsymbol{x}}^{(L+1)}, \boldsymbol{y})$. Note that $\bar{\boldsymbol{x}}^{(k)}$ depends on $(\boldsymbol{W}^{(\ell)}, \boldsymbol{b}^{(\ell)})$ only if $k > \ell$. Since $\bar{\boldsymbol{x}}^{(\ell+1)}$ is a function of $\bar{\boldsymbol{x}}^{(\ell)}$ for each $\ell$, by repeated application of the chain rule
 
 $$\frac{\partial \mathcal{L}}{\partial W_{ij}^{(\ell)}} = \frac{\partial \mathcal{L}}{\partial \bar{\boldsymbol{x}}^{(L+1)}} \frac{\partial \bar{\boldsymbol{x}}^{(L+1)}}{\partial \bar{\boldsymbol{x}}^{(L)}} \cdots \frac{\partial \bar{\boldsymbol{x}}^{(\ell+2)}}{\partial \bar{\boldsymbol{x}}^{(\ell+1)}} \frac{\partial \bar{\boldsymbol{x}}^{(\ell+1)}}{\partial W_{ij}^{(\ell)}}.$$
 
@@ -2400,15 +2856,22 @@ $$\boldsymbol{\alpha}^{(\ell)} = \sigma'(\bar{\boldsymbol{x}}^{(\ell)}) \odot (\
 
 </div>
 
-*Proof.* The first equation holds by definition. For $\ell \in \lbrace 1, \ldots, L \rbrace$ by the chain rule
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The first equation holds by definition. For $\ell \in \lbrace 1, \ldots, L \rbrace$ by the chain rule
 
 $$\boldsymbol{\alpha}^{(\ell)} = \frac{\partial \mathcal{L}}{\partial \bar{\boldsymbol{x}}^{(\ell)}} = \left(\frac{\partial \bar{\boldsymbol{x}}^{(\ell+1)}}{\partial \bar{\boldsymbol{x}}^{(\ell)}}\right)^\top \frac{\partial \mathcal{L}}{\partial \bar{\boldsymbol{x}}^{(\ell+1)}} = \left(\frac{\partial \bar{\boldsymbol{x}}^{(\ell+1)}}{\partial \bar{\boldsymbol{x}}^{(\ell)}}\right)^\top \boldsymbol{\alpha}^{(\ell+1)}.$$
 
-By (10.5.3b) for $i \in \lbrace 1, \ldots, d_{\ell+1} \rbrace$, $j \in \lbrace 1, \ldots, d_\ell \rbrace$
+By (10.5.3b) for $i \in \lbrace 1, \ldots, d\_{\ell+1} \rbrace$, $j \in \lbrace 1, \ldots, d\_\ell \rbrace$
 
 $$\left(\frac{\partial \bar{\boldsymbol{x}}^{(\ell+1)}}{\partial \bar{\boldsymbol{x}}^{(\ell)}}\right)_{ij} = \frac{\partial \bar{x}_i^{(\ell+1)}}{\partial \bar{x}_j^{(\ell)}} = W_{ij}^{(\ell)} \sigma'(\bar{x}_j^{(\ell)}).$$
 
 Thus the claim follows. $\square$
+
+</details>
+</div>
 
 Putting everything together, we obtain explicit formulas for the gradients.
 
@@ -2443,13 +2906,13 @@ Lemma 10.15 and Proposition 10.16 motivate the following algorithm, in which a f
 - **for** $\ell = 1, \ldots, L$ **do** $\bar{\boldsymbol{x}}^{(\ell+1)} \leftarrow \boldsymbol{W}^{(\ell)} \sigma(\bar{\boldsymbol{x}}^{(\ell)}) + \boldsymbol{b}^{(\ell)}$
 
 **Backward pass**
-- $\boldsymbol{\alpha}^{(L+1)} \leftarrow \nabla_{\bar{\boldsymbol{x}}^{(L+1)}} \mathcal{L}(\bar{\boldsymbol{x}}^{(L+1)}, \boldsymbol{y})$
+- $\boldsymbol{\alpha}^{(L+1)} \leftarrow \nabla\_{\bar{\boldsymbol{x}}^{(L+1)}} \mathcal{L}(\bar{\boldsymbol{x}}^{(L+1)}, \boldsymbol{y})$
 - **for** $\ell = L, \ldots, 1$ **do**
-  - $\nabla_{\boldsymbol{b}^{(\ell)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(\ell+1)}$
-  - $\nabla_{\boldsymbol{W}^{(\ell)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(\ell+1)} \sigma(\bar{\boldsymbol{x}}^{(\ell)})^\top$
+  - $\nabla\_{\boldsymbol{b}^{(\ell)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(\ell+1)}$
+  - $\nabla\_{\boldsymbol{W}^{(\ell)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(\ell+1)} \sigma(\bar{\boldsymbol{x}}^{(\ell)})^\top$
   - $\boldsymbol{\alpha}^{(\ell)} \leftarrow \sigma'(\bar{\boldsymbol{x}}^{(\ell)}) \odot (\boldsymbol{W}^{(\ell)})^\top \boldsymbol{\alpha}^{(\ell+1)}$
-- $\nabla_{\boldsymbol{b}^{(0)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(1)}$
-- $\nabla_{\boldsymbol{W}^{(0)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(1)} \boldsymbol{x}^\top$
+- $\nabla\_{\boldsymbol{b}^{(0)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(1)}$
+- $\nabla\_{\boldsymbol{W}^{(0)}} \mathcal{L} \leftarrow \boldsymbol{\alpha}^{(1)} \boldsymbol{x}^\top$
 
 </div>
 
@@ -2463,7 +2926,7 @@ This chapter explores the dynamics of training (shallow) neural networks of larg
 
 $$(\boldsymbol{x}_i, y_i) \in \mathbb{R}^d \times \mathbb{R}, \quad i \in \lbrace 1, \ldots, m \rbrace,$$
 
-for distinct $\boldsymbol{x}_i$. We wish to train a model $\Phi(\boldsymbol{x}, \boldsymbol{w})$ depending on the input $\boldsymbol{x} \in \mathbb{R}^d$ and the parameters $\boldsymbol{w} \in \mathbb{R}^n$. To this end we consider either minimization of the **ridgeless** (unregularized) objective
+for distinct $\boldsymbol{x}\_i$. We wish to train a model $\Phi(\boldsymbol{x}, \boldsymbol{w})$ depending on the input $\boldsymbol{x} \in \mathbb{R}^d$ and the parameters $\boldsymbol{w} \in \mathbb{R}^n$. To this end we consider either minimization of the **ridgeless** (unregularized) objective
 
 $$f(\boldsymbol{w}) := \sum_{i=1}^m (\Phi(\boldsymbol{x}_i, \boldsymbol{w}) - y_i)^2,$$
 
@@ -2471,13 +2934,13 @@ or, for some regularization parameter $\lambda \ge 0$, of the **ridge** regulari
 
 $$f_\lambda(\boldsymbol{w}) := f(\boldsymbol{w}) + \lambda \lVert \boldsymbol{w} \rVert^2.$$
 
-The goal is to gain insight into the dynamics of $\Phi(\boldsymbol{x}, \boldsymbol{w}_k)$ as the parameter vector $\boldsymbol{w}_k$ progresses during training, and to understand the influence of regularization. We study this through so-called kernel methods, using gradient descent with constant step size.
+The goal is to gain insight into the dynamics of $\Phi(\boldsymbol{x}, \boldsymbol{w}\_k)$ as the parameter vector $\boldsymbol{w}\_k$ progresses during training, and to understand the influence of regularization. We study this through so-called kernel methods, using gradient descent with constant step size.
 
-If $\Phi(\boldsymbol{x}, \boldsymbol{w})$ depends linearly on the parameters $\boldsymbol{w}$, the objective $f_\lambda$ is convex. For typical neural network architectures, $\boldsymbol{w} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w})$ is not linear, and convergence to a global minimizer is in general not guaranteed. Recent research has shown that neural network behavior tends to linearize in $\boldsymbol{w}$ as network width increases, allowing transfer of results from the linear case to the training of neural networks.
+If $\Phi(\boldsymbol{x}, \boldsymbol{w})$ depends linearly on the parameters $\boldsymbol{w}$, the objective $f\_\lambda$ is convex. For typical neural network architectures, $\boldsymbol{w} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w})$ is not linear, and convergence to a global minimizer is in general not guaranteed. Recent research has shown that neural network behavior tends to linearize in $\boldsymbol{w}$ as network width increases, allowing transfer of results from the linear case to the training of neural networks.
 
 ### 11.1 Linear Least-Squares Regression
 
-Given data $(11.0.1a)$, we fit a linear function $\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w}) := \boldsymbol{x}^\top \boldsymbol{w}$ by minimizing $f$ or $f_\lambda$. With
+Given data $(11.0.1a)$, we fit a linear function $\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w}) := \boldsymbol{x}^\top \boldsymbol{w}$ by minimizing $f$ or $f\_\lambda$. With
 
 $$\boldsymbol{A} = \begin{pmatrix} \boldsymbol{x}_1^\top \\ \vdots \\ \boldsymbol{x}_m^\top \end{pmatrix} \in \mathbb{R}^{m \times d} \qquad \text{and} \qquad \boldsymbol{y} = \begin{pmatrix} y_1 \\ \vdots \\ y_m \end{pmatrix} \in \mathbb{R}^m$$
 
@@ -2485,7 +2948,7 @@ it holds
 
 $$f(\boldsymbol{w}) = \lVert \boldsymbol{A}\boldsymbol{w} - \boldsymbol{y} \rVert^2 \qquad \text{and} \qquad f_\lambda(\boldsymbol{w}) = f(\boldsymbol{w}) + \lambda \lVert \boldsymbol{w} \rVert^2.$$
 
-The $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m$ are referred to as the **training points** (or design points), and their span is denoted by
+The $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_m$ are referred to as the **training points** (or design points), and their span is denoted by
 
 $$\tilde{H} := \operatorname{span}\lbrace \boldsymbol{x}_1, \ldots, \boldsymbol{x}_m \rbrace \subseteq \mathbb{R}^d.$$
 
@@ -2504,14 +2967,14 @@ Therefore, additionally allowing for a bias can be treated similarly.
 
 #### 11.1.1 Existence of Minimizers
 
-We start with the ridgeless case $\lambda = 0$. The model $\Phi(\boldsymbol{x}, \boldsymbol{w}) = \boldsymbol{x}^\top \boldsymbol{w}$ is linear in both $\boldsymbol{x}$ and $\boldsymbol{w}$. If $\boldsymbol{A}$ is invertible, then $f$ has the unique minimizer $\boldsymbol{w}_* = \boldsymbol{A}^{-1}\boldsymbol{y}$. If $\operatorname{rank}(\boldsymbol{A}) < d$, then $\ker(\boldsymbol{A}) \neq \lbrace \boldsymbol{0} \rbrace$ and there exist infinitely many minimizers. To guarantee uniqueness, we consider the **minimum norm solution**
+We start with the ridgeless case $\lambda = 0$. The model $\Phi(\boldsymbol{x}, \boldsymbol{w}) = \boldsymbol{x}^\top \boldsymbol{w}$ is linear in both $\boldsymbol{x}$ and $\boldsymbol{w}$. If $\boldsymbol{A}$ is invertible, then $f$ has the unique minimizer $\boldsymbol{w}\_\ast = \boldsymbol{A}^{-1}\boldsymbol{y}$. If $\operatorname{rank}(\boldsymbol{A}) < d$, then $\ker(\boldsymbol{A}) \neq \lbrace \boldsymbol{0} \rbrace$ and there exist infinitely many minimizers. To guarantee uniqueness, we consider the **minimum norm solution**
 
 $$\boldsymbol{w}_* := \operatorname{argmin}_{\boldsymbol{w} \in M} \lVert \boldsymbol{w} \rVert, \qquad M := \lbrace \boldsymbol{w} \in \mathbb{R}^d \mid f(\boldsymbol{w}) \le f(\boldsymbol{v}) \; \forall \boldsymbol{v} \in \mathbb{R}^d \rbrace.$$
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.2</span><span class="math-callout__name">(Minimum Norm Solution)</span></p>
 
-There is a unique minimum norm solution $\boldsymbol{w}_* \in \mathbb{R}^d$. It lies in the subspace $\tilde{H}$, and is the unique minimizer of $f$ in $\tilde{H}$, i.e.
+There is a unique minimum norm solution $\boldsymbol{w}\_\ast \in \mathbb{R}^d$. It lies in the subspace $\tilde{H}$, and is the unique minimizer of $f$ in $\tilde{H}$, i.e.
 
 $$\boldsymbol{w}_* = \operatorname{argmin}_{\tilde{\boldsymbol{w}} \in \tilde{H}} f(\tilde{\boldsymbol{w}}).$$
 
@@ -2520,17 +2983,17 @@ $$\boldsymbol{w}_* = \operatorname{argmin}_{\tilde{\boldsymbol{w}} \in \tilde{H}
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.3</span><span class="math-callout__name">(Ridge Regression Minimizer)</span></p>
 
-Let $\lambda > 0$. Then, with $f_\lambda$ as above, there exists a unique minimizer
+Let $\lambda > 0$. Then, with $f\_\lambda$ as above, there exists a unique minimizer
 
 $$\boldsymbol{w}_{*,\lambda} := \operatorname{argmin}_{\boldsymbol{w} \in \mathbb{R}^d} f_\lambda(\boldsymbol{w}).$$
 
-It holds $\boldsymbol{w}_{*,\lambda} \in \tilde{H}$, and
+It holds $\boldsymbol{w}\_{\ast,\lambda} \in \tilde{H}$, and
 
 $$\lim_{\lambda \to 0} \boldsymbol{w}_{*,\lambda} = \boldsymbol{w}_*.$$
 
 </div>
 
-The minimizer is reached at $\nabla f_\lambda(\boldsymbol{w}) = 0$, which yields
+The minimizer is reached at $\nabla f\_\lambda(\boldsymbol{w}) = 0$, which yields
 
 $$\boldsymbol{w}_{*,\lambda} = (\boldsymbol{A}^\top \boldsymbol{A} + \lambda \boldsymbol{I}_d)^{-1} \boldsymbol{A}^\top \boldsymbol{y}.$$
 
@@ -2538,16 +3001,16 @@ Using the singular value decomposition $\boldsymbol{A} = \boldsymbol{U} \boldsym
 
 #### 11.1.2 Gradient Descent
 
-Consider gradient descent to minimize $f_\lambda$. Starting from $\boldsymbol{w}_0 \in \mathbb{R}^d$, the iterative update with constant step size $h > 0$ reads
+Consider gradient descent to minimize $f\_\lambda$. Starting from $\boldsymbol{w}\_0 \in \mathbb{R}^d$, the iterative update with constant step size $h > 0$ reads
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - 2h\boldsymbol{A}^\top(\boldsymbol{A}\boldsymbol{w}_k - \boldsymbol{y}) - 2h\lambda \boldsymbol{w}_k \qquad \text{for all } k \in \mathbb{N}_0.$$
 
-For $\lambda = 0$ and sufficiently small step size $h > 0$, gradient descent converges to the minimum norm solution $\boldsymbol{w}_*$ as long as $\boldsymbol{w}_0 \in \tilde{H}$ (e.g. $\boldsymbol{w}_0 = \boldsymbol{0}$).
+For $\lambda = 0$ and sufficiently small step size $h > 0$, gradient descent converges to the minimum norm solution $\boldsymbol{w}\_\ast$ as long as $\boldsymbol{w}\_0 \in \tilde{H}$ (e.g. $\boldsymbol{w}\_0 = \boldsymbol{0}$).
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 11.4</span><span class="math-callout__name">(Ridgeless Gradient Descent Convergence)</span></p>
 
-Let $\lambda = 0$ and fix $h \in (0, s_{\max}(\boldsymbol{A})^{-2})$. Let $\boldsymbol{w}_0 = \tilde{\boldsymbol{w}}_0 + \hat{\boldsymbol{w}}_0$ where $\tilde{\boldsymbol{w}}_0 \in \tilde{H}$ and $\hat{\boldsymbol{w}}_0 \in \tilde{H}^\perp$, and let $(\boldsymbol{w}_k)_{k \in \mathbb{N}}$ be defined by the gradient descent iteration. Then
+Let $\lambda = 0$ and fix $h \in (0, s\_{\max}(\boldsymbol{A})^{-2})$. Let $\boldsymbol{w}\_0 = \tilde{\boldsymbol{w}}\_0 + \hat{\boldsymbol{w}}\_0$ where $\tilde{\boldsymbol{w}}\_0 \in \tilde{H}$ and $\hat{\boldsymbol{w}}\_0 \in \tilde{H}^\perp$, and let $(\boldsymbol{w}\_k)\_{k \in \mathbb{N}}$ be defined by the gradient descent iteration. Then
 
 $$\lim_{k \to \infty} \boldsymbol{w}_k = \boldsymbol{w}_* + \hat{\boldsymbol{w}}_0.$$
 
@@ -2556,7 +3019,7 @@ $$\lim_{k \to \infty} \boldsymbol{w}_k = \boldsymbol{w}_* + \hat{\boldsymbol{w}}
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 11.5</span><span class="math-callout__name">(Ridge Gradient Descent Convergence)</span></p>
 
-Let $\lambda > 0$, and fix $h \in (0, (2\lambda + 2s_{\max}(\boldsymbol{A})^2)^{-1})$. Let $\boldsymbol{w}_0 \in \mathbb{R}^n$ and let $(\boldsymbol{w}_k)_{k \in \mathbb{N}}$ be defined by the gradient descent iteration. Then
+Let $\lambda > 0$, and fix $h \in (0, (2\lambda + 2s\_{\max}(\boldsymbol{A})^2)^{-1})$. Let $\boldsymbol{w}\_0 \in \mathbb{R}^n$ and let $(\boldsymbol{w}\_k)\_{k \in \mathbb{N}}$ be defined by the gradient descent iteration. Then
 
 $$\lim_{k \to \infty} \boldsymbol{w}_k = \boldsymbol{w}_{*,\lambda}$$
 
@@ -2566,13 +3029,13 @@ $$\lVert \boldsymbol{w}_* - \boldsymbol{w}_{*,\lambda} \rVert \le \left\lvert \f
 
 </div>
 
-By Proposition 11.5, if we use ridge regression with a small regularization parameter $\lambda > 0$, then gradient descent converges to a vector $\boldsymbol{w}_{*,\lambda}$ which is $O(\lambda)$ close to the minimal norm solution $\boldsymbol{w}_*$, regardless of the initialization $\boldsymbol{w}_0$.
+By Proposition 11.5, if we use ridge regression with a small regularization parameter $\lambda > 0$, then gradient descent converges to a vector $\boldsymbol{w}\_{\ast,\lambda}$ which is $O(\lambda)$ close to the minimal norm solution $\boldsymbol{w}\_\ast$, regardless of the initialization $\boldsymbol{w}\_0$.
 
 ### 11.2 Feature Methods and Kernel Least-Squares Regression
 
 Linear models are often too simplistic to capture the true relationship between $\boldsymbol{x}$ and $y$. Feature- and kernel-based methods address this by replacing $\boldsymbol{x} \mapsto \langle \boldsymbol{x}, \boldsymbol{w} \rangle$ with $\boldsymbol{x} \mapsto \langle \phi(\boldsymbol{x}), \boldsymbol{w} \rangle$ where $\phi : \mathbb{R}^d \to \mathbb{R}^n$ is a (typically nonlinear) map. This introduces nonlinearity in $\boldsymbol{x}$ while retaining linearity in the parameter $\boldsymbol{w} \in \mathbb{R}^n$.
 
-Let $(H, \langle \cdot, \cdot \rangle_H)$ be a Hilbert space (the **feature space**), and let $\phi : \mathbb{R}^d \to H$ denote the **feature map**. The model is
+Let $(H, \langle \cdot, \cdot \rangle\_H)$ be a Hilbert space (the **feature space**), and let $\phi : \mathbb{R}^d \to H$ denote the **feature map**. The model is
 
 $$\Phi(\boldsymbol{x}, w) := \langle \phi(\boldsymbol{x}), w \rangle_H$$
 
@@ -2583,11 +3046,11 @@ $$f(w) := \sum_{j=1}^m \big( \langle \phi(\boldsymbol{x}_j), w \rangle_H - y_j \
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 11.6</span><span class="math-callout__name">(Polynomial Features)</span></p>
 
-Let data $(x_i, y_i)_{i=1}^m \subseteq \mathbb{R} \times \mathbb{R}$ be given, and define for $x \in \mathbb{R}$
+Let data $(x\_i, y\_i)\_{i=1}^m \subseteq \mathbb{R} \times \mathbb{R}$ be given, and define for $x \in \mathbb{R}$
 
 $$\phi(x) := (1, x, \ldots, x^{n-1})^\top \in \mathbb{R}^n.$$
 
-For $\boldsymbol{w} \in \mathbb{R}^n$, the model $x \mapsto \langle \phi(x), \boldsymbol{w} \rangle = \sum_{j=0}^{n-1} w_j x^j$ can represent any polynomial of degree $n-1$.
+For $\boldsymbol{w} \in \mathbb{R}^n$, the model $x \mapsto \langle \phi(x), \boldsymbol{w} \rangle = \sum\_{j=0}^{n-1} w\_j x^j$ can represent any polynomial of degree $n-1$.
 
 </div>
 
@@ -2596,7 +3059,7 @@ For $\boldsymbol{w} \in \mathbb{R}^n$, the model $x \mapsto \langle \phi(x), \bo
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.7</span><span class="math-callout__name">(Minimum Norm Solution in Feature Space)</span></p>
 
-There is a unique minimum norm solution $w_* \in H$. It lies in the subspace $\tilde{H} := \operatorname{span}\lbrace \phi(\boldsymbol{x}_1), \ldots, \phi(\boldsymbol{x}_m) \rbrace \subseteq H$, and is the unique minimizer of $f$ in $\tilde{H}$, i.e.
+There is a unique minimum norm solution $w\_\ast \in H$. It lies in the subspace $\tilde{H} := \operatorname{span}\lbrace \phi(\boldsymbol{x}\_1), \ldots, \phi(\boldsymbol{x}\_m) \rbrace \subseteq H$, and is the unique minimizer of $f$ in $\tilde{H}$, i.e.
 
 $$w_* = \operatorname{argmin}_{\tilde{w} \in \tilde{H}} f(\tilde{w}).$$
 
@@ -2607,11 +3070,11 @@ Statements as in Theorems 11.7 and 11.8, which yield that the minimizer is attai
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.8</span><span class="math-callout__name">(Ridge Minimizer in Feature Space)</span></p>
 
-Let $\lambda > 0$. Then, with $f_\lambda$ as above, there exists a unique minimizer
+Let $\lambda > 0$. Then, with $f\_\lambda$ as above, there exists a unique minimizer
 
 $$w_{*,\lambda} := \operatorname{argmin}_{w \in H} f_\lambda(w).$$
 
-It holds $w_{*,\lambda} \in \tilde{H}$, and $\lim_{\lambda \to 0} w_{*,\lambda} = w_*$.
+It holds $w\_{\ast,\lambda} \in \tilde{H}$, and $\lim\_{\lambda \to 0} w\_{\ast,\lambda} = w\_\ast$.
 
 </div>
 
@@ -2620,7 +3083,7 @@ It holds $w_{*,\lambda} \in \tilde{H}$, and $\lim_{\lambda \to 0} w_{*,\lambda} 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 11.9</span><span class="math-callout__name">(Kernel)</span></p>
 
-A symmetric function $K : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$ is called a **kernel** if for any $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_k \in \mathbb{R}^d$, $k \in \mathbb{N}$, the **kernel matrix** $\boldsymbol{G} = (K(\boldsymbol{x}_i, \boldsymbol{x}_j))_{i,j=1}^k \in \mathbb{R}^{k \times k}$ is symmetric positive semidefinite.
+A symmetric function $K : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$ is called a **kernel** if for any $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_k \in \mathbb{R}^d$, $k \in \mathbb{N}$, the **kernel matrix** $\boldsymbol{G} = (K(\boldsymbol{x}\_i, \boldsymbol{x}\_j))\_{i,j=1}^k \in \mathbb{R}^{k \times k}$ is symmetric positive semidefinite.
 
 </div>
 
@@ -2628,9 +3091,9 @@ Given a feature map $\phi : \mathbb{R}^d \to H$, one can verify that
 
 $$K(\boldsymbol{x}, \boldsymbol{z}) := \langle \phi(\boldsymbol{x}), \phi(\boldsymbol{z}) \rangle_H \qquad \text{for all } \boldsymbol{x}, \boldsymbol{z} \in \mathbb{R}^d$$
 
-defines a kernel. The corresponding kernel matrix $\boldsymbol{G} \in \mathbb{R}^{m \times m}$ is $G_{ij} = K(\boldsymbol{x}_i, \boldsymbol{x}_j)$.
+defines a kernel. The corresponding kernel matrix $\boldsymbol{G} \in \mathbb{R}^{m \times m}$ is $G\_{ij} = K(\boldsymbol{x}\_i, \boldsymbol{x}\_j)$.
 
-The ansatz $w_* = \sum_{j=1}^m \alpha_j \phi(\boldsymbol{x}_j)$ turns the optimization into
+The ansatz $w\_\ast = \sum\_{j=1}^m \alpha\_j \phi(\boldsymbol{x}\_j)$ turns the optimization into
 
 $$\operatorname{argmin}_{\boldsymbol{\alpha} \in \mathbb{R}^m} \lVert \boldsymbol{G}\boldsymbol{\alpha} - \boldsymbol{y} \rVert^2 + \lambda \boldsymbol{\alpha}^\top \boldsymbol{G} \boldsymbol{\alpha}.$$
 
@@ -2638,39 +3101,39 @@ We refer to
 
 $$\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, w_{*,\lambda}) = \langle \phi(\boldsymbol{x}), w_{*,\lambda} \rangle_H$$
 
-as the **(ridge or ridgeless) kernel least-squares estimator**. By the above, its computation neither requires explicit knowledge of the feature map $\phi$ nor of $w_{*,\lambda} \in H$. It is sufficient to choose a kernel $K : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$ and perform all computations in finite dimensional spaces. This is known as the **kernel trick**.
+as the **(ridge or ridgeless) kernel least-squares estimator**. By the above, its computation neither requires explicit knowledge of the feature map $\phi$ nor of $w\_{\ast,\lambda} \in H$. It is sufficient to choose a kernel $K : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$ and perform all computations in finite dimensional spaces. This is known as the **kernel trick**.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm 2</span><span class="math-callout__name">(Kernel Least-Squares Regression)</span></p>
 
-**Input:** Data $(\boldsymbol{x}_i, y_i)_{i=1}^m \in \mathbb{R}^d \times \mathbb{R}$, kernel $K : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$, regularization parameter $\lambda \ge 0$, evaluation point $\boldsymbol{x} \in \mathbb{R}^d$
+**Input:** Data $(\boldsymbol{x}\_i, y\_i)\_{i=1}^m \in \mathbb{R}^d \times \mathbb{R}$, kernel $K : \mathbb{R}^d \times \mathbb{R}^d \to \mathbb{R}$, regularization parameter $\lambda \ge 0$, evaluation point $\boldsymbol{x} \in \mathbb{R}^d$
 
 **Output:** (Ridge or ridgeless) kernel least-squares estimator at $\boldsymbol{x}$
 
-1. Compute the kernel matrix $\boldsymbol{G} = (K(\boldsymbol{x}_i, \boldsymbol{x}_j))_{i,j=1}^m$
+1. Compute the kernel matrix $\boldsymbol{G} = (K(\boldsymbol{x}\_i, \boldsymbol{x}\_j))\_{i,j=1}^m$
 2. Determine a minimizer $\boldsymbol{\alpha} \in \mathbb{R}^m$ of $\lVert \boldsymbol{G}\boldsymbol{\alpha} - \boldsymbol{y} \rVert^2 + \lambda \boldsymbol{\alpha}^\top \boldsymbol{G}\boldsymbol{\alpha}$
-3. Evaluate $\Phi(\boldsymbol{x}, w_{*,\lambda}) = \sum_{j=1}^m \alpha_j K(\boldsymbol{x}, \boldsymbol{x}_j)$
+3. Evaluate $\Phi(\boldsymbol{x}, w\_{\ast,\lambda}) = \sum\_{j=1}^m \alpha\_j K(\boldsymbol{x}, \boldsymbol{x}\_j)$
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 11.10</span><span class="math-callout__name">(Mercer's Theorem)</span></p>
 
-If $\Omega \subseteq \mathbb{R}^d$ is compact and $K : \Omega \times \Omega \to \mathbb{R}$ is a continuous kernel, then Mercer's theorem implies existence of a Hilbert space $H$ and a feature map $\phi : \mathbb{R}^d \to H$ such that $K(\boldsymbol{x}, \boldsymbol{z}) = \langle \phi(\boldsymbol{x}), \phi(\boldsymbol{z}) \rangle_H$ for all $\boldsymbol{x}, \boldsymbol{z} \in \Omega$.
+If $\Omega \subseteq \mathbb{R}^d$ is compact and $K : \Omega \times \Omega \to \mathbb{R}$ is a continuous kernel, then Mercer's theorem implies existence of a Hilbert space $H$ and a feature map $\phi : \mathbb{R}^d \to H$ such that $K(\boldsymbol{x}, \boldsymbol{z}) = \langle \phi(\boldsymbol{x}), \phi(\boldsymbol{z}) \rangle\_H$ for all $\boldsymbol{x}, \boldsymbol{z} \in \Omega$.
 
 </div>
 
 #### 11.2.3 Gradient Descent
 
-In practice we may either minimize $f_\lambda$ in the Hilbert space $H$ or the finite-dimensional objective. Assuming $H = \mathbb{R}^n$ equipped with the Euclidean inner product, gradient descent with constant step size $h > 0$ reads
+In practice we may either minimize $f\_\lambda$ in the Hilbert space $H$ or the finite-dimensional objective. Assuming $H = \mathbb{R}^n$ equipped with the Euclidean inner product, gradient descent with constant step size $h > 0$ reads
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - 2h\boldsymbol{A}^\top(\boldsymbol{A}\boldsymbol{w}_k - \boldsymbol{y}) - 2h\lambda \boldsymbol{w}_k$$
 
-where now $\boldsymbol{A}$ has rows $\phi(\boldsymbol{x}_i)^\top$. For $\lambda = 0$ and sufficiently small step size, by Proposition 11.4, for $\boldsymbol{x} \in \mathbb{R}^d$
+where now $\boldsymbol{A}$ has rows $\phi(\boldsymbol{x}\_i)^\top$. For $\lambda = 0$ and sufficiently small step size, by Proposition 11.4, for $\boldsymbol{x} \in \mathbb{R}^d$
 
 $$\lim_{k \to \infty} \Phi(\boldsymbol{x}, \boldsymbol{w}_k) = \langle \phi(\boldsymbol{x}), \boldsymbol{p}_* \rangle + \langle \phi(\boldsymbol{x}), \hat{\boldsymbol{w}}_0 \rangle,$$
 
-where $\boldsymbol{w}_0 = \tilde{\boldsymbol{w}}_0 + \hat{\boldsymbol{w}}_0$ with $\tilde{\boldsymbol{w}}_0 \in \tilde{H}$ and $\hat{\boldsymbol{w}}_0 \in \tilde{H}^\perp$. For $\lambda = 0$, gradient descent thus yields the ridgeless kernel least-squares estimator plus an additional term $\langle \phi(\boldsymbol{x}), \hat{\boldsymbol{w}}_0 \rangle$ depending on initialization.
+where $\boldsymbol{w}\_0 = \tilde{\boldsymbol{w}}\_0 + \hat{\boldsymbol{w}}\_0$ with $\tilde{\boldsymbol{w}}\_0 \in \tilde{H}$ and $\hat{\boldsymbol{w}}\_0 \in \tilde{H}^\perp$. For $\lambda = 0$, gradient descent thus yields the ridgeless kernel least-squares estimator plus an additional term $\langle \phi(\boldsymbol{x}), \hat{\boldsymbol{w}}\_0 \rangle$ depending on initialization.
 
 For $\lambda > 0$ and sufficiently small step size, by Proposition 11.5
 
@@ -2680,11 +3143,11 @@ Thus, for $\lambda > 0$ gradient descent determines the ridge kernel least-squar
 
 ### 11.3 Tangent Kernel
 
-Consider a general model $\Phi(\boldsymbol{x}, \boldsymbol{w})$ with input $\boldsymbol{x} \in \mathbb{R}^d$ and parameters $\boldsymbol{w} \in \mathbb{R}^n$. The goal is to minimize the square loss objective $f(\boldsymbol{w})$ given data. If $\boldsymbol{w} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w})$ is not linear, then the objective function is in general not convex. We simplify the situation by **linearizing the model in the parameter** $\boldsymbol{w} \in \mathbb{R}^n$ around initialization: fixing $\boldsymbol{w}_0 \in \mathbb{R}^n$, let
+Consider a general model $\Phi(\boldsymbol{x}, \boldsymbol{w})$ with input $\boldsymbol{x} \in \mathbb{R}^d$ and parameters $\boldsymbol{w} \in \mathbb{R}^n$. The goal is to minimize the square loss objective $f(\boldsymbol{w})$ given data. If $\boldsymbol{w} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w})$ is not linear, then the objective function is in general not convex. We simplify the situation by **linearizing the model in the parameter** $\boldsymbol{w} \in \mathbb{R}^n$ around initialization: fixing $\boldsymbol{w}\_0 \in \mathbb{R}^n$, let
 
 $$\Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}) := \Phi(\boldsymbol{x}, \boldsymbol{w}_0) + \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0)^\top (\boldsymbol{p} - \boldsymbol{w}_0) \qquad \text{for all } \boldsymbol{w} \in \mathbb{R}^n,$$
 
-which is the first order Taylor approximation of $\Phi$ around $\boldsymbol{w}_0$. Introduce
+which is the first order Taylor approximation of $\Phi$ around $\boldsymbol{w}\_0$. Introduce
 
 $$\delta_j := y_j - \Phi(\boldsymbol{x}_i, \boldsymbol{w}_0) + \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_j, \boldsymbol{w}_0)^\top \boldsymbol{w}_0 \qquad \text{for all } j = 1, \ldots, m.$$
 
@@ -2692,11 +3155,11 @@ The square loss objective for the linearized model reads
 
 $$f^{\mathrm{lin}}(\boldsymbol{p}) := \sum_{j=1}^m (\Phi^{\mathrm{lin}}(\boldsymbol{x}_j, \boldsymbol{p}) - y_j)^2 = \sum_{j=1}^m \big( \langle \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_j, \boldsymbol{w}_0), \boldsymbol{p} \rangle - \delta_j \big)^2.$$
 
-Comparing with the kernel least-squares setting, minimizing $f^{\mathrm{lin}}$ corresponds to kernel regression with feature map $\phi(\boldsymbol{x}) = \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0) \in \mathbb{R}^n$. The corresponding kernel is
+Comparing with the kernel least-squares setting, minimizing $f^{\mathrm{lin}}$ corresponds to kernel regression with feature map $\phi(\boldsymbol{x}) = \nabla\_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}\_0) \in \mathbb{R}^n$. The corresponding kernel is
 
 $$\hat{K}_n(\boldsymbol{x}, \boldsymbol{z}) = \langle \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0), \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{z}, \boldsymbol{w}_0) \rangle.$$
 
-We refer to $\hat{K}_n$ as the empirical **tangent kernel**, as it arises from the first order Taylor approximation (the tangent) of $\Phi$ around $\boldsymbol{w}_0$. Note that $\hat{K}_n$ depends on the choice of $\boldsymbol{w}_0$.
+We refer to $\hat{K}\_n$ as the empirical **tangent kernel**, as it arises from the first order Taylor approximation (the tangent) of $\Phi$ around $\boldsymbol{w}\_0$. Note that $\hat{K}\_n$ depends on the choice of $\boldsymbol{w}\_0$.
 
 ### 11.4 Global Minimizers
 
@@ -2704,18 +3167,18 @@ Consider a general model $\Phi : \mathbb{R}^d \times \mathbb{R}^n \to \mathbb{R}
 
 $$f(\boldsymbol{w}) = \sum_{j=1}^m (\Phi(\boldsymbol{x}_j, \boldsymbol{w}) - y_j)^2.$$
 
-The key idea: if $\boldsymbol{w} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w})$ is nonlinear but sufficiently *close to its linearization* $\Phi^{\mathrm{lin}}$ within some region, the objective function behaves almost like a convex function there. If the region is *large enough* to contain both the initial value $\boldsymbol{w}_0$ and a global minimum, then gradient descent will never leave this (almost convex) basin and find a global minimizer.
+The key idea: if $\boldsymbol{w} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w})$ is nonlinear but sufficiently *close to its linearization* $\Phi^{\mathrm{lin}}$ within some region, the objective function behaves almost like a convex function there. If the region is *large enough* to contain both the initial value $\boldsymbol{w}\_0$ and a global minimum, then gradient descent will never leave this (almost convex) basin and find a global minimizer.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Assumption 11.11</span><span class="math-callout__name">(Regularity Conditions)</span></p>
 
-Let $\Phi \in C^1(\mathbb{R}^d \times \mathbb{R}^n)$ and $\boldsymbol{w}_0 \in \mathbb{R}^n$. There exist constants $r, R, U, L > 0$ and $0 < \theta_{\min} \le \theta_{\max} < \infty$ such that $\lVert \boldsymbol{x}_i \rVert \le R$ for all $i = 1, \ldots, m$, and it holds:
+Let $\Phi \in C^1(\mathbb{R}^d \times \mathbb{R}^n)$ and $\boldsymbol{w}\_0 \in \mathbb{R}^n$. There exist constants $r, R, U, L > 0$ and $0 < \theta\_{\min} \le \theta\_{\max} < \infty$ such that $\lVert \boldsymbol{x}\_i \rVert \le R$ for all $i = 1, \ldots, m$, and it holds:
 
 **(a)** The kernel matrix of the empirical tangent kernel
 
 $$(\hat{K}_n(\boldsymbol{x}_i, \boldsymbol{x}_j))_{i,j=1}^m = \big( \langle \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_i, \boldsymbol{w}_0), \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_j, \boldsymbol{w}_0) \rangle \big)_{i,j=1}^m \in \mathbb{R}^{m \times m}$$
 
-is regular and its eigenvalues belong to $[\theta_{\min}, \theta_{\max}]$.
+is regular and its eigenvalues belong to $[\theta\_{\min}, \theta\_{\max}]$.
 
 **(b)** For all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$:
 
@@ -2754,7 +3217,7 @@ The loss bound implies that gradient descent achieves zero loss in the limit. Co
 
 ### 11.5 Proximity to Trained Linearized Model
 
-The analysis in Section 11.4 was based on the observation that the linearization $\Phi^{\mathrm{lin}}$ closely mimics the behaviour of the full model $\Phi$ for parameters within distance $r$ of $\boldsymbol{w}\_0$. Theorem 11.12 states that the parameters remain within this range throughout training. This suggests that the predictions of the trained full model $\lim_{k \to \infty} \Phi(\boldsymbol{x}, \boldsymbol{w}\_k)$ are similar to those of the trained linear model $\lim_{k \to \infty} \Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}\_k)$.
+The analysis in Section 11.4 was based on the observation that the linearization $\Phi^{\mathrm{lin}}$ closely mimics the behaviour of the full model $\Phi$ for parameters within distance $r$ of $\boldsymbol{w}\_0$. Theorem 11.12 states that the parameters remain within this range throughout training. This suggests that the predictions of the trained full model $\lim\_{k \to \infty} \Phi(\boldsymbol{x}, \boldsymbol{w}\_k)$ are similar to those of the trained linear model $\lim\_{k \to \infty} \Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}\_k)$.
 
 #### 11.5.1 Evolution of Model Predictions
 
@@ -2764,20 +3227,20 @@ Define $\boldsymbol{\Phi}(\boldsymbol{X}, \boldsymbol{w}) := (\Phi(\boldsymbol{x
 
 $$\Phi(\boldsymbol{x}, \boldsymbol{w}_{k+1}) = \Phi(\boldsymbol{x}, \boldsymbol{w}_k) - 2h \boldsymbol{G}^k(\boldsymbol{x}, \boldsymbol{X})(\boldsymbol{\Phi}(\boldsymbol{X}, \boldsymbol{w}_k) - \boldsymbol{y})$$
 
-where $\boldsymbol{G}^k(\boldsymbol{x}, \boldsymbol{X}) := \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \tilde{\boldsymbol{w}}\_k)^\top \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{X}, \boldsymbol{w}\_k)^\top$ for some $\tilde{\boldsymbol{w}}\_k$ in the convex hull of $\boldsymbol{w}\_k$ and $\boldsymbol{w}\_{k+1}$.
+where $\boldsymbol{G}^k(\boldsymbol{x}, \boldsymbol{X}) := \nabla\_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \tilde{\boldsymbol{w}}\_k)^\top \nabla\_{\boldsymbol{w}} \Phi(\boldsymbol{X}, \boldsymbol{w}\_k)^\top$ for some $\tilde{\boldsymbol{w}}\_k$ in the convex hull of $\boldsymbol{w}\_k$ and $\boldsymbol{w}\_{k+1}$.
 
 **Linearized model:**
 
 $$\Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}_{k+1}) = \Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}_k) - 2h \boldsymbol{G}^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{X})(\boldsymbol{\Phi}^{\mathrm{lin}}(\boldsymbol{X}, \boldsymbol{p}_k) - \boldsymbol{y})$$
 
-where $\boldsymbol{G}^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{X}) = \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}\_0)^\top \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{X}, \boldsymbol{w}_0)^\top$.
+where $\boldsymbol{G}^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{X}) = \nabla\_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}\_0)^\top \nabla\_{\boldsymbol{w}} \Phi(\boldsymbol{X}, \boldsymbol{w}\_0)^\top$.
 
 The full dynamics are governed by the $k$-dependent kernel matrices $\boldsymbol{G}^k$. In contrast, the linear model's dynamics are entirely determined by the initial kernel matrix $\boldsymbol{G}^{\mathrm{lin}}$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 11.13</span><span class="math-callout__name">(Kernel Matrix Deviation)</span></p>
 
-Let $\boldsymbol{w}\_0 = \boldsymbol{p}\_0 \in \mathbb{R}^n$, and let Assumption 11.11 be satisfied. Let $(\boldsymbol{w}\_k)\_{k \in \mathbb{N}}$, $(\boldsymbol{p}\_k)\_{k \in \mathbb{N}}$ be generated by gradient descent with a positive step size $h < (\theta_{\min} + \theta_{\max})^{-1}$. Then for all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$:
+Let $\boldsymbol{w}\_0 = \boldsymbol{p}\_0 \in \mathbb{R}^n$, and let Assumption 11.11 be satisfied. Let $(\boldsymbol{w}\_k)\_{k \in \mathbb{N}}$, $(\boldsymbol{p}\_k)\_{k \in \mathbb{N}}$ be generated by gradient descent with a positive step size $h < (\theta\_{\min} + \theta\_{\max})^{-1}$. Then for all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$:
 
 $$\sup_{k \in \mathbb{N}} \lVert \boldsymbol{G}^k(\boldsymbol{x}, \boldsymbol{X}) - \boldsymbol{G}^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{X}) \rVert \le 2\sqrt{m} U L r$$
 
@@ -2790,7 +3253,7 @@ $$\sup_{k \in \mathbb{N}} \lVert \boldsymbol{G}^k(\boldsymbol{X}, \boldsymbol{X}
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.14</span><span class="math-callout__name">(Proximity of Full and Linearized Models)</span></p>
 
-Consider the setting of Corollary 11.13, in particular let $r$, $R$, $\theta_{\min}$, $\theta_{\max}$ be as in Assumption 11.11. Then for all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$
+Consider the setting of Corollary 11.13, in particular let $r$, $R$, $\theta\_{\min}$, $\theta\_{\max}$ be as in Assumption 11.11. Then for all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$
 
 $$\sup_{k \in \mathbb{N}} \lVert \Phi(\boldsymbol{x}, \boldsymbol{w}_k) - \Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}_k) \rVert \le \frac{4\sqrt{m} U L r}{\theta_{\min}} \left(1 + \frac{mU^2}{(h\theta_{\min})^2(\theta_{\min} + \theta_{\max})}\right) \sqrt{f(\boldsymbol{w}_0)}.$$
 
@@ -2834,7 +3297,7 @@ where $\odot$ denotes the Hadamard product.
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Assumption 11.16</span><span class="math-callout__name">(LeCun Initialization)</span></p>
 
-The distribution $\mathcal{W}$ on $\mathbb{R}$ has expectation zero, variance one, and finite moments up to order eight. The initial parameters $\boldsymbol{w}_0 = (\boldsymbol{U}_0, \boldsymbol{b}_0, \boldsymbol{v}_0, c_0)$ are randomly initialized with components
+The distribution $\mathcal{W}$ on $\mathbb{R}$ has expectation zero, variance one, and finite moments up to order eight. The initial parameters $\boldsymbol{w}\_0 = (\boldsymbol{U}\_0, \boldsymbol{b}\_0, \boldsymbol{v}\_0, c\_0)$ are randomly initialized with components
 
 $$U_{0;ij} \stackrel{\text{iid}}{\sim} \mathcal{W}\!\left(0, \tfrac{1}{d}\right), \qquad v_{0;i} \stackrel{\text{iid}}{\sim} \mathcal{W}\!\left(0, \tfrac{1}{n}\right), \qquad b_{0;i} = 0, \quad c_0 = 0$$
 
@@ -2860,11 +3323,11 @@ Scaled properly, it converges in the infinite width limit $n \to \infty$ towards
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.18</span><span class="math-callout__name">(Convergence to NTK)</span></p>
 
-Let $R < \infty$ such that $\lvert \sigma(x) \rvert \le R \cdot (1 + \lvert x \rvert)$ and $\lvert \sigma'(x) \rvert \le R \cdot (1 + \lvert x \rvert)$ for all $x \in \mathbb{R}$. For any $\boldsymbol{x}, \boldsymbol{z} \in \mathbb{R}^d$ and $u_i \stackrel{\text{iid}}{\sim} \mathcal{W}(0, 1/d)$, $i = 1, \ldots, d$, it then holds
+Let $R < \infty$ such that $\lvert \sigma(x) \rvert \le R \cdot (1 + \lvert x \rvert)$ and $\lvert \sigma'(x) \rvert \le R \cdot (1 + \lvert x \rvert)$ for all $x \in \mathbb{R}$. For any $\boldsymbol{x}, \boldsymbol{z} \in \mathbb{R}^d$ and $u\_i \stackrel{\text{iid}}{\sim} \mathcal{W}(0, 1/d)$, $i = 1, \ldots, d$, it then holds
 
 $$\lim_{n \to \infty} \frac{1}{n} \hat{K}_n(\boldsymbol{x}, \boldsymbol{z}) = \mathbb{E}[\sigma(\boldsymbol{u}^\top \boldsymbol{x}) \sigma(\boldsymbol{u}^\top \boldsymbol{z})] =: K^{\mathrm{NTK}}(\boldsymbol{x}, \boldsymbol{z})$$
 
-almost surely. Moreover, for every $\delta$, $\varepsilon > 0$ there exists $n_0(\delta, \varepsilon, R) \in \mathbb{N}$ such that for all $n \ge n_0$ and all $\boldsymbol{x}$, $\boldsymbol{z} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert, \lVert \boldsymbol{z} \rVert \le R$
+almost surely. Moreover, for every $\delta$, $\varepsilon > 0$ there exists $n\_0(\delta, \varepsilon, R) \in \mathbb{N}$ such that for all $n \ge n\_0$ and all $\boldsymbol{x}$, $\boldsymbol{z} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert, \lVert \boldsymbol{z} \rVert \le R$
 
 $$\mathbb{P}\!\left[\left\lVert \frac{1}{n} \hat{K}_n(\boldsymbol{x}, \boldsymbol{z}) - K^{\mathrm{NTK}}(\boldsymbol{x}, \boldsymbol{z}) \right\rVert < \varepsilon\right] \ge 1 - \delta.$$
 
@@ -2890,31 +3353,31 @@ We now show that the analysis in Sections 11.4--11.5 is applicable to the wide n
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Assumption 11.20</span><span class="math-callout__name">(Assumptions on Activation and Data)</span></p>
 
-There exist $1 \le R < \infty$ and $0 < \theta_{\min}^{\mathrm{NTK}} \le \theta_{\max}^{\mathrm{NTK}} < \infty$ such that:
+There exist $1 \le R < \infty$ and $0 < \theta\_{\min}^{\mathrm{NTK}} \le \theta\_{\max}^{\mathrm{NTK}} < \infty$ such that:
 
 **(a)** $\sigma : \mathbb{R} \to \mathbb{R}$ belongs to $C^1(\mathbb{R})$ and $\lvert \sigma(0) \rvert$, $\operatorname{Lip}(\sigma)$, $\operatorname{Lip}(\sigma') \le R$.
 
-**(b)** $\lVert \boldsymbol{x}_i \rVert, \lvert y_i \rvert \le R$ for all training data $(\boldsymbol{x}\_i, y_i) \in \mathbb{R}^d \times \mathbb{R}$, $i = 1, \ldots, m$.
+**(b)** $\lVert \boldsymbol{x}\_i \rVert, \lvert y\_i \rvert \le R$ for all training data $(\boldsymbol{x}\_i, y\_i) \in \mathbb{R}^d \times \mathbb{R}$, $i = 1, \ldots, m$.
 
-**(c)** The kernel matrix of the neural tangent kernel $(K^{\mathrm{NTK}}(\boldsymbol{x}\_i, \boldsymbol{x}\_j))_{i,j=1}^m \in \mathbb{R}^{m \times m}$ is regular and its eigenvalues belong to $[\theta_{\min}^{\mathrm{NTK}}, \theta_{\max}^{\mathrm{NTK}}]$.
+**(c)** The kernel matrix of the neural tangent kernel $(K^{\mathrm{NTK}}(\boldsymbol{x}\_i, \boldsymbol{x}\_j))\_{i,j=1}^m \in \mathbb{R}^{m \times m}$ is regular and its eigenvalues belong to $[\theta\_{\min}^{\mathrm{NTK}}, \theta\_{\max}^{\mathrm{NTK}}]$.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 11.21</span><span class="math-callout__name">(Eigenvalue Bounds for Empirical Tangent Kernel)</span></p>
 
-Let Assumption 11.20 be satisfied. Then for every $\delta > 0$ there exists $n_0(\delta, \theta_{\min}^{\mathrm{NTK}}, m, R) \in \mathbb{R}$ such that for all $n \ge n_0$ it holds with probability at least $1 - \delta$ that all eigenvalues of
+Let Assumption 11.20 be satisfied. Then for every $\delta > 0$ there exists $n\_0(\delta, \theta\_{\min}^{\mathrm{NTK}}, m, R) \in \mathbb{R}$ such that for all $n \ge n\_0$ it holds with probability at least $1 - \delta$ that all eigenvalues of
 
 $$(\hat{K}_n(\boldsymbol{x}_i, \boldsymbol{x}_j))_{i,j=1}^m = \big( \langle \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_i, \boldsymbol{w}_0), \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}_j, \boldsymbol{w}_0) \rangle \big)_{i,j=1}^m \in \mathbb{R}^{m \times m}$$
 
-belong to $[n\theta_{\min}^{\mathrm{NTK}}/2, \; 2n\theta_{\max}^{\mathrm{NTK}}]$.
+belong to $[n\theta\_{\min}^{\mathrm{NTK}}/2, \; 2n\theta\_{\max}^{\mathrm{NTK}}]$.
 
 </div>
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 11.22</span><span class="math-callout__name">(Random Matrix Norm Bound)</span></p>
 
-Let $\mathcal{W}(0,1)$ be as in Assumption 11.16, and let $\boldsymbol{W} \in \mathbb{R}^{n \times d}$ with $W_{ij} \stackrel{\text{iid}}{\sim} \mathcal{W}(0,1)$. Denote the fourth moment of $\mathcal{W}(0,1)$ by $\mu_4$. Then
+Let $\mathcal{W}(0,1)$ be as in Assumption 11.16, and let $\boldsymbol{W} \in \mathbb{R}^{n \times d}$ with $W\_{ij} \stackrel{\text{iid}}{\sim} \mathcal{W}(0,1)$. Denote the fourth moment of $\mathcal{W}(0,1)$ by $\mu\_4$. Then
 
 $$\mathbb{P}\!\left[\lVert \boldsymbol{W} \rVert \le \sqrt{n(d+1)}\right] \ge 1 - \frac{d\mu_4}{n}.$$
 
@@ -2923,7 +3386,7 @@ $$\mathbb{P}\!\left[\lVert \boldsymbol{W} \rVert \le \sqrt{n(d+1)}\right] \ge 1 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 11.23</span><span class="math-callout__name">(Gradient Bounds)</span></p>
 
-Let Assumption 11.20 (a) be satisfied with some constant $R$. Then there exists $M(R) > 0$ such that for all $c$, $\delta > 0$ there exists $n_0(c, d, \delta) \in \mathbb{N}$ such that for all $n \ge n_0$ it holds with probability at least $1 - \delta$ that
+Let Assumption 11.20 (a) be satisfied with some constant $R$. Then there exists $M(R) > 0$ such that for all $c$, $\delta > 0$ there exists $n\_0(c, d, \delta) \in \mathbb{N}$ such that for all $n \ge n\_0$ it holds with probability at least $1 - \delta$ that
 
 $$\lVert \nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}) \rVert \le M\sqrt{n} \qquad \text{for all } \boldsymbol{w} \in B_{cn^{-1/2}}(\boldsymbol{w}_0)$$
 
@@ -2936,7 +3399,7 @@ for all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 11.24</span><span class="math-callout__name">(Initial Error Bound)</span></p>
 
-Let Assumption 11.20 (a), (b) be satisfied. Then for every $\delta > 0$ exists $R_0(\delta, m, R) > 0$ such that for all $n \in \mathbb{N}$
+Let Assumption 11.20 (a), (b) be satisfied. Then for every $\delta > 0$ exists $R\_0(\delta, m, R) > 0$ such that for all $n \in \mathbb{N}$
 
 $$\mathbb{P}[f(\boldsymbol{w}_0) \le R_0] \ge 1 - \delta.$$
 
@@ -2947,15 +3410,15 @@ The following theorem is the main result of this section. It summarizes: with hi
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 11.25</span><span class="math-callout__name">(Main Result for Wide Networks)</span></p>
 
-Let Assumption 11.20 be satisfied, and let the parameters $\boldsymbol{w}_0$ of the width-$n$ neural network $\Phi$ be initialized according to LeCun initialization. Fix the learning rate
+Let Assumption 11.20 be satisfied, and let the parameters $\boldsymbol{w}\_0$ of the width-$n$ neural network $\Phi$ be initialized according to LeCun initialization. Fix the learning rate
 
 $$h = \frac{1}{\theta_{\min}^{\mathrm{NTK}} + 4\theta_{\max}^{\mathrm{NTK}}} \cdot \frac{1}{n},$$
 
-set $\boldsymbol{p}_0 := \boldsymbol{w}_0$ and let for all $k \in \mathbb{N}_0$
+set $\boldsymbol{p}\_0 := \boldsymbol{w}\_0$ and let for all $k \in \mathbb{N}\_0$
 
 $$\boldsymbol{w}_{k+1} = \boldsymbol{w}_k - h\nabla f(\boldsymbol{w}_k) \qquad \text{and} \qquad \boldsymbol{p}_{k+1} = \boldsymbol{p}_k - h\nabla f^{\mathrm{lin}}(\boldsymbol{p}_k).$$
 
-Then for every $\delta > 0$ there exist $C > 0$, $n_0 \in \mathbb{N}$ such that for all $n \ge n_0$ it holds with probability at least $1 - \delta$ that for all $k \in \mathbb{N}$ and all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$
+Then for every $\delta > 0$ there exist $C > 0$, $n\_0 \in \mathbb{N}$ such that for all $n \ge n\_0$ it holds with probability at least $1 - \delta$ that for all $k \in \mathbb{N}$ and all $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{x} \rVert \le R$
 
 $$\lVert \boldsymbol{w}_k - \boldsymbol{w}_0 \rVert \le \frac{C}{\sqrt{n}}$$
 
@@ -2969,7 +3432,7 @@ Note that the convergence rate does not improve as $n$ grows, since $h$ is bound
 
 #### 11.6.4 Connection to Kernel Least-Squares and Gaussian Processes
 
-Theorem 11.25 establishes that the trained neural network mirrors the behaviour of the trained linearized model. Since the prediction of the trained linearized model corresponds to the ridgeless kernel least-squares estimator plus a term depending on random initialization, we can understand both $\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w}_0)$ and the model after training as random draws of a certain distribution over functions.
+Theorem 11.25 establishes that the trained neural network mirrors the behaviour of the trained linearized model. Since the prediction of the trained linearized model corresponds to the ridgeless kernel least-squares estimator plus a term depending on random initialization, we can understand both $\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w}\_0)$ and the model after training as random draws of a certain distribution over functions.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 11.26</span><span class="math-callout__name">(Gaussian Process)</span></p>
@@ -2978,7 +3441,7 @@ Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $g : \m
 
 **(a)** for each $\boldsymbol{x} \in \mathbb{R}^d$ it holds that $\omega \mapsto g(\boldsymbol{x}, \omega)$ is a random variable,
 
-**(b)** for all $k \in \mathbb{N}$ and all $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_k \in \mathbb{R}^d$ the random variables $g(\boldsymbol{x}_1, \cdot), \ldots, g(\boldsymbol{x}_k, \cdot)$ are jointly Gaussian distributed with
+**(b)** for all $k \in \mathbb{N}$ and all $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_k \in \mathbb{R}^d$ the random variables $g(\boldsymbol{x}\_1, \cdot), \ldots, g(\boldsymbol{x}\_k, \cdot)$ are jointly Gaussian distributed with
 
 $$(g(\boldsymbol{x}_1, \omega), \ldots, g(\boldsymbol{x}_k, \omega)) \sim \mathrm{N}\!\left((\mu(\boldsymbol{x}_i))_{i=1}^k, \; (c(\boldsymbol{x}_i, \boldsymbol{x}_j))_{i,j=1}^k\right).$$
 
@@ -2989,7 +3452,7 @@ Fixing $\omega \in \Omega$, we can interpret $\boldsymbol{x} \mapsto g(\boldsymb
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 11.27</span><span class="math-callout__name">(Neural Networks Converge to Gaussian Processes)</span></p>
 
-Let $\lvert \sigma(x) \rvert \le R(1 + \lvert x \rvert)^4$ for all $x \in \mathbb{R}$. Consider depth-$n$ networks $\Phi$ as above with LeCun initialization. Let $K^{\mathrm{NTK}}$ be as in Theorem 11.18. Then for all distinct $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_k \in \mathbb{R}^d$ it holds that
+Let $\lvert \sigma(x) \rvert \le R(1 + \lvert x \rvert)^4$ for all $x \in \mathbb{R}$. Consider depth-$n$ networks $\Phi$ as above with LeCun initialization. Let $K^{\mathrm{NTK}}$ be as in Theorem 11.18. Then for all distinct $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_k \in \mathbb{R}^d$ it holds that
 
 $$\lim_{n \to \infty} (\Phi(\boldsymbol{x}_1, \boldsymbol{w}_0), \ldots, \Phi(\boldsymbol{x}_k, \boldsymbol{w}_0)) \sim \mathrm{N}\!\left(\boldsymbol{0}, \; (K^{\mathrm{NTK}}(\boldsymbol{x}_i, \boldsymbol{x}_j))_{i,j=1}^k\right)$$
 
@@ -2997,19 +3460,19 @@ with convergence in distribution.
 
 </div>
 
-Since the full and linearized models coincide in the infinite width limit (Theorem 11.25), we can infer that wide networks post-training resemble draws from a Gaussian process. In particular, after sufficient training, the mean (over random initializations) of the trained neural network $\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w}_k)$ resembles the kernel least-squares estimator with kernel $K^{\mathrm{NTK}}$:
+Since the full and linearized models coincide in the infinite width limit (Theorem 11.25), we can infer that wide networks post-training resemble draws from a Gaussian process. In particular, after sufficient training, the mean (over random initializations) of the trained neural network $\boldsymbol{x} \mapsto \Phi(\boldsymbol{x}, \boldsymbol{w}\_k)$ resembles the kernel least-squares estimator with kernel $K^{\mathrm{NTK}}$:
 
 $$\mathbb{E}\big[\Phi(\boldsymbol{x}, \boldsymbol{w}_k)\big] \simeq \mathbb{E}\big[\Phi^{\mathrm{lin}}(\boldsymbol{x}, \boldsymbol{p}_k)\big] \simeq \text{ridgeless kernel least-squares estimator with kernel } K^{\mathrm{NTK}} \text{ evaluated at } \boldsymbol{x}.$$
 
 #### 11.6.5 Role of Initialization
 
-Consider the gradient $\nabla_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0)$ with LeCun initialization. The expected squared norms in terms of the width $n$ are:
+Consider the gradient $\nabla\_{\boldsymbol{w}} \Phi(\boldsymbol{x}, \boldsymbol{w}\_0)$ with LeCun initialization. The expected squared norms in terms of the width $n$ are:
 
 $$\mathbb{E}[\lVert \nabla_{\boldsymbol{U}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0) \rVert^2] = O(1), \qquad \mathbb{E}[\lVert \nabla_{\boldsymbol{b}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0) \rVert^2] = O(1),$$
 
 $$\mathbb{E}[\lVert \nabla_{\boldsymbol{v}} \Phi(\boldsymbol{x}, \boldsymbol{w}_0) \rVert^2] = O(n), \qquad \mathbb{E}[\lVert \nabla_c \Phi(\boldsymbol{x}, \boldsymbol{w}_0) \rVert^2] = O(1).$$
 
-Due to this different scaling, gradient descent with step size $O(n^{-1})$ will primarily adjust the weights $\boldsymbol{v}$ in the output layer, while only slightly modifying the remaining parameters $\boldsymbol{U}$, $\boldsymbol{b}$, and $c$. This is reflected in the expression for the NTK computed in Theorem 11.18, which corresponds only to the contribution of $\langle \nabla_{\boldsymbol{v}} \Phi, \nabla_{\boldsymbol{v}} \Phi \rangle$.
+Due to this different scaling, gradient descent with step size $O(n^{-1})$ will primarily adjust the weights $\boldsymbol{v}$ in the output layer, while only slightly modifying the remaining parameters $\boldsymbol{U}$, $\boldsymbol{b}$, and $c$. This is reflected in the expression for the NTK computed in Theorem 11.18, which corresponds only to the contribution of $\langle \nabla\_{\boldsymbol{v}} \Phi, \nabla\_{\boldsymbol{v}} \Phi \rangle$.
 
 LeCun initialization sets the variance of the weight initialization inversely proportional to the input dimension of each layer, so that the variance of all node outputs remains stable and does not blow up as the width increases. However, it does not normalize the backward dynamics, i.e., it does not ensure that the gradients with respect to the parameters have similar variance. To balance both forward and backward dynamics, Glorot and Bengio proposed a normalized initialization, where the variance is chosen inversely proportional to the sum of the input and output dimensions of each layer.
 
@@ -3028,7 +3491,7 @@ Questions of interest include: How likely is it that we find local instead of gl
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 12.1</span><span class="math-callout__name">(Parameter Space and Realization Map)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be an activation function, and let $B > 0$. We denote the set of neural networks $\Phi$ with $L$ layers, layer widths $d_0, d_1, \ldots, d_{L+1}$, all weights bounded in modulus by $B$, and using the activation function $\sigma$ by $\mathcal{N}(\sigma; \mathcal{A}, B)$. Additionally, we define
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be an activation function, and let $B > 0$. We denote the set of neural networks $\Phi$ with $L$ layers, layer widths $d\_0, d\_1, \ldots, d\_{L+1}$, all weights bounded in modulus by $B$, and using the activation function $\sigma$ by $\mathcal{N}(\sigma; \mathcal{A}, B)$. Additionally, we define
 
 $$\mathcal{PN}(\mathcal{A}, B) := \bigtimes_{\ell=0}^L \left( [-B, B]^{d_{\ell+1} \times d_\ell} \times [-B, B]^{d_{\ell+1}} \right),$$
 
@@ -3036,36 +3499,36 @@ and the **realization map**
 
 $$R_\sigma : \mathcal{PN}(\mathcal{A}, B) \to \mathcal{N}(\sigma; \mathcal{A}, B), \qquad (\boldsymbol{W}^{(\ell)}, \boldsymbol{b}^{(\ell)})_{\ell=0}^L \mapsto \Phi,$$
 
-where $\Phi$ is the neural network with weights and biases given by $(\boldsymbol{W}^{(\ell)}, \boldsymbol{b}^{(\ell)})_{\ell=0}^L$.
+where $\Phi$ is the neural network with weights and biases given by $(\boldsymbol{W}^{(\ell)}, \boldsymbol{b}^{(\ell)})\_{\ell=0}^L$.
 
 </div>
 
-We identify $\mathcal{PN}(\mathcal{A}, B)$ with the cube $[-B, B]^{n_\mathcal{A}}$, where $n_\mathcal{A} := \sum_{\ell=0}^L d_{\ell+1}(d_\ell + 1)$ is the total number of parameters.
+We identify $\mathcal{PN}(\mathcal{A}, B)$ with the cube $[-B, B]^{n\_\mathcal{A}}$, where $n\_\mathcal{A} := \sum\_{\ell=0}^L d\_{\ell+1}(d\_\ell + 1)$ is the total number of parameters.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 12.2</span><span class="math-callout__name">(Loss Landscape)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$. Let $m \in \mathbb{N}$, and $S = (\boldsymbol{x}_i, \boldsymbol{y}_i)_{i=1}^m \in (\mathbb{R}^{d_0} \times \mathbb{R}^{d_{L+1}})^m$ be a sample and let $\mathcal{L}$ be a loss function. Then, the **loss landscape** is the graph of the function $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ defined as
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$. Let $m \in \mathbb{N}$, and $S = (\boldsymbol{x}\_i, \boldsymbol{y}\_i)\_{i=1}^m \in (\mathbb{R}^{d\_0} \times \mathbb{R}^{d\_{L+1}})^m$ be a sample and let $\mathcal{L}$ be a loss function. Then, the **loss landscape** is the graph of the function $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ defined as
 
 $$\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}} : \mathcal{PN}(\mathcal{A}; \infty) \to \mathbb{R}, \qquad \theta \mapsto \widehat{\mathcal{R}}_S(R_\sigma(\theta)).$$
 
 </div>
 
-Identifying $\mathcal{PN}(\mathcal{A}, \infty)$ with $\mathbb{R}^{n_\mathcal{A}}$, we can consider $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ as a map on $\mathbb{R}^{n_\mathcal{A}}$ and the loss landscape is a subset of $\mathbb{R}^{n_\mathcal{A}} \times \mathbb{R}$.
+Identifying $\mathcal{PN}(\mathcal{A}, \infty)$ with $\mathbb{R}^{n\_\mathcal{A}}$, we can consider $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ as a map on $\mathbb{R}^{n\_\mathcal{A}}$ and the loss landscape is a subset of $\mathbb{R}^{n\_\mathcal{A}} \times \mathbb{R}$.
 
 ### 12.1 Visualization of Loss Landscapes
 
-Visualizing loss landscapes can provide valuable insights into the effects of neural network depth, width, and activation functions. Since the loss landscape is a very high-dimensional object, we reduce its dimensionality by evaluating $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ on a two-dimensional subspace. Specifically, we choose three parameters $\mu$, $\theta_1$, $\theta_2$ and examine the function
+Visualizing loss landscapes can provide valuable insights into the effects of neural network depth, width, and activation functions. Since the loss landscape is a very high-dimensional object, we reduce its dimensionality by evaluating $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ on a two-dimensional subspace. Specifically, we choose three parameters $\mu$, $\theta\_1$, $\theta\_2$ and examine the function
 
 $$\mathbb{R}^2 \ni (\alpha_1, \alpha_2) \mapsto \Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}(\mu + \alpha_1 \theta_1 + \alpha_2 \theta_2).$$
 
-There are various natural choices for $\mu$, $\theta_1$, $\theta_2$:
+There are various natural choices for $\mu$, $\theta\_1$, $\theta\_2$:
 
-- **Random directions:** $\theta_1$, $\theta_2$ are chosen randomly, while $\mu$ is either a minimum of $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ or also chosen randomly. This simple approach can offer a quick insight into how rough the surface can be. However, random directions will very likely be orthogonal to the trajectory of the optimization procedure, and hence will likely miss the most relevant features.
+- **Random directions:** $\theta\_1$, $\theta\_2$ are chosen randomly, while $\mu$ is either a minimum of $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ or also chosen randomly. This simple approach can offer a quick insight into how rough the surface can be. However, random directions will very likely be orthogonal to the trajectory of the optimization procedure, and hence will likely miss the most relevant features.
 
-- **Principal components of learning trajectory:** If $\theta^{(1)}, \theta^{(2)}, \ldots, \theta^{(N)}$ are the parameters resulting from training by SGD, we may determine $\mu$, $\theta_1$, $\theta_2$ such that the hyperplane $\lbrace \mu + \alpha_1 \theta_1 + \alpha_2 \theta_2 \mid \alpha_1, \alpha_2 \in \mathbb{R} \rbrace$ minimizes the mean squared distance to the $\theta^{(j)}$. This is achieved by a principal component analysis.
+- **Principal components of learning trajectory:** If $\theta^{(1)}, \theta^{(2)}, \ldots, \theta^{(N)}$ are the parameters resulting from training by SGD, we may determine $\mu$, $\theta\_1$, $\theta\_2$ such that the hyperplane $\lbrace \mu + \alpha\_1 \theta\_1 + \alpha\_2 \theta\_2 \mid \alpha\_1, \alpha\_2 \in \mathbb{R} \rbrace$ minimizes the mean squared distance to the $\theta^{(j)}$. This is achieved by a principal component analysis.
 
-- **Based on critical points:** $\mu$, $\theta_1$, $\theta_2$ can be chosen to ensure the observation of multiple critical points. Running the optimization procedure three times with final parameters $\theta^{(1)}$, $\theta^{(2)}$, $\theta^{(3)}$, we can set $\mu = \theta^{(1)}$, $\theta_1 = \theta^{(2)} - \mu$, $\theta_2 = \theta^{(3)} - \mu$.
+- **Based on critical points:** $\mu$, $\theta\_1$, $\theta\_2$ can be chosen to ensure the observation of multiple critical points. Running the optimization procedure three times with final parameters $\theta^{(1)}$, $\theta^{(2)}$, $\theta^{(3)}$, we can set $\mu = \theta^{(1)}$, $\theta\_1 = \theta^{(2)} - \mu$, $\theta\_2 = \theta^{(3)} - \mu$.
 
 For very wide and shallow neural networks, the widest minima also seem to belong to the same valley. With increasing depth and smaller width the minima get steeper and more disconnected.
 
@@ -3082,11 +3545,11 @@ Hence, in general there exist multiple parameterizations realizing the same outp
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 12.3</span><span class="math-callout__name">(Spurious Valley)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$ and $\sigma : \mathbb{R} \to \mathbb{R}$. Let $m \in \mathbb{N}$, and $S = (\boldsymbol{x}_i, \boldsymbol{y}_i)_{i=1}^m \in (\mathbb{R}^{d_0} \times \mathbb{R}^{d_{L+1}})^m$ be a sample and let $\mathcal{L}$ be a loss function. For $c \in \mathbb{R}$, we define the sub-level set of $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ as
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$ and $\sigma : \mathbb{R} \to \mathbb{R}$. Let $m \in \mathbb{N}$, and $S = (\boldsymbol{x}\_i, \boldsymbol{y}\_i)\_{i=1}^m \in (\mathbb{R}^{d\_0} \times \mathbb{R}^{d\_{L+1}})^m$ be a sample and let $\mathcal{L}$ be a loss function. For $c \in \mathbb{R}$, we define the sub-level set of $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ as
 
 $$\Omega_\Lambda(c) := \lbrace \theta \in \mathcal{PN}(\mathcal{A}, \infty) \mid \Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta) \le c \rbrace.$$
 
-A path-connected component of $\Omega_\Lambda(c)$, which does not contain a global minimum of $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$, is called a **spurious valley**.
+A path-connected component of $\Omega\_\Lambda(c)$, which does not contain a global minimum of $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$, is called a **spurious valley**.
 
 </div>
 
@@ -3095,11 +3558,11 @@ The next proposition shows that spurious local minima do not exist for shallow o
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 12.4</span><span class="math-callout__name">(No Spurious Valleys for Overparameterized Shallow Networks)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, 1) \in \mathbb{N}^3$ and let $S = (\boldsymbol{x}_i, y_i)_{i=1}^m \in (\mathbb{R}^{d_0} \times \mathbb{R})^m$ be a sample such that $m \le d_1$. Furthermore, let $\sigma \in \mathcal{M}$ be not a polynomial, and let $\mathcal{L}$ be a convex loss function. Further assume that $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ has at least one global minimum. Then, $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ has no spurious valleys.
+Let $\mathcal{A} = (d\_0, d\_1, 1) \in \mathbb{N}^3$ and let $S = (\boldsymbol{x}\_i, y\_i)\_{i=1}^m \in (\mathbb{R}^{d\_0} \times \mathbb{R})^m$ be a sample such that $m \le d\_1$. Furthermore, let $\sigma \in \mathcal{M}$ be not a polynomial, and let $\mathcal{L}$ be a convex loss function. Further assume that $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ has at least one global minimum. Then, $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ has no spurious valleys.
 
 </div>
 
-The proof proceeds by showing that for any $\theta_a$ with $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta_a) > \Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta_b)$, there exists a continuous path $\alpha$ from $\theta_a$ to some $\theta_c$ such that $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}$ is monotonically decreasing along the path and $\Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta_b) \ge \Lambda_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta_c)$. The key insight is that if the matrix of hidden layer activations at the training points does not have full rank $m$, one can always find a path to a parameter with higher rank while monotonically decreasing the loss (using that $\sigma$ is not a polynomial and Theorem 9.3 on interpolation). Once the activation matrix has full rank, one can directly construct a monotonically decreasing straight path to a point with lower or equal loss.
+The proof proceeds by showing that for any $\theta\_a$ with $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta\_a) > \Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta\_b)$, there exists a continuous path $\alpha$ from $\theta\_a$ to some $\theta\_c$ such that $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}$ is monotonically decreasing along the path and $\Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta\_b) \ge \Lambda\_{\mathcal{A}, \sigma, S, \mathcal{L}}(\theta\_c)$. The key insight is that if the matrix of hidden layer activations at the training points does not have full rank $m$, one can always find a path to a parameter with higher rank while monotonically decreasing the loss (using that $\sigma$ is not a polynomial and Theorem 9.3 on interpolation). Once the activation matrix has full rank, one can directly construct a monotonically decreasing straight path to a point with lower or equal loss.
 
 ### 12.3 Saddle Points
 
@@ -3107,7 +3570,7 @@ Saddle points are critical points of the loss landscape at which the loss decrea
 
 If most of the critical points are saddle points, then, even though the loss landscape is challenging for optimization, one still has a good chance of eventually reaching the global minimum. The main observation is that, under some quite strong assumptions, *critical points in the loss landscape associated to a large loss are typically saddle points, whereas those associated to small loss correspond to minima*. This is encouraging for the prospects of optimization in deep learning, since even if we get stuck in a local minimum, it will very likely be such that the loss is close to optimal.
 
-Let $\mathcal{A} = (d_0, d_1, 1) \in \mathbb{N}^3$. For a neural network parameter $\theta \in \mathcal{PN}(\mathcal{A}, \infty)$ and activation function $\sigma$, we set $\Phi_\theta := R_\sigma(\theta)$ and define for a sample $S = (\boldsymbol{x}\_i, y_i)_{i=1}^m$ the errors
+Let $\mathcal{A} = (d\_0, d\_1, 1) \in \mathbb{N}^3$. For a neural network parameter $\theta \in \mathcal{PN}(\mathcal{A}, \infty)$ and activation function $\sigma$, we set $\Phi\_\theta := R\_\sigma(\theta)$ and define for a sample $S = (\boldsymbol{x}\_i, y\_i)\_{i=1}^m$ the errors
 
 $$e_i = \Phi_\theta(\boldsymbol{x}_i) - y_i \qquad \text{for } i = 1, \ldots, m.$$
 
@@ -3118,11 +3581,11 @@ $$\widehat{\mathcal{R}}_S(\Phi_\theta) = \frac{1}{m} \sum_{i=1}^m e_i^2.$$
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 12.5</span><span class="math-callout__name">(Hessian Decomposition)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, 1)$ and $\sigma : \mathbb{R} \to \mathbb{R}$. Then, for every $\theta \in \mathcal{PN}(\mathcal{A}, \infty)$ where $\widehat{\mathcal{R}}\_S(\Phi_\theta)$ is twice continuously differentiable with respect to the weights, it holds that
+Let $\mathcal{A} = (d\_0, d\_1, 1)$ and $\sigma : \mathbb{R} \to \mathbb{R}$. Then, for every $\theta \in \mathcal{PN}(\mathcal{A}, \infty)$ where $\widehat{\mathcal{R}}\_S(\Phi\_\theta)$ is twice continuously differentiable with respect to the weights, it holds that
 
 $$\boldsymbol{H}(\theta) = \boldsymbol{H}_0(\theta) + \boldsymbol{H}_1(\theta),$$
 
-where $\boldsymbol{H}(\theta)$ is the Hessian of $\widehat{\mathcal{R}}\_S(\Phi_\theta)$ at $\theta$, $\boldsymbol{H}\_0(\theta)$ is a positive semi-definite matrix which is independent from $(y_i)\_{i=1}^m$, and $\boldsymbol{H}\_1(\theta)$ is a symmetric matrix that for fixed $\theta$ and $(\boldsymbol{x}\_i)\_{i=1}^m$ depends linearly on $(e_i)\_{i=1}^m$.
+where $\boldsymbol{H}(\theta)$ is the Hessian of $\widehat{\mathcal{R}}\_S(\Phi\_\theta)$ at $\theta$, $\boldsymbol{H}\_0(\theta)$ is a positive semi-definite matrix which is independent from $(y\_i)\_{i=1}^m$, and $\boldsymbol{H}\_1(\theta)$ is a symmetric matrix that for fixed $\theta$ and $(\boldsymbol{x}\_i)\_{i=1}^m$ depends linearly on $(e\_i)\_{i=1}^m$.
 
 </div>
 
@@ -3130,26 +3593,26 @@ The Hessian decomposes as
 
 $$\frac{\partial^2 \widehat{\mathcal{R}}_S(\Phi_\theta)}{\partial \theta_j \partial \theta_k} = \frac{2}{m} \sum_{i=1}^m \left( \frac{\partial \Phi_\theta(\boldsymbol{x}_i)}{\partial \theta_j} \frac{\partial \Phi_\theta(\boldsymbol{x}_i)}{\partial \theta_k} \right) + \frac{2}{m} \left( \sum_{i=1}^m e_i \frac{\partial^2 \Phi_\theta(\boldsymbol{x}_i)}{\partial \theta_j \partial \theta_k} \right) =: \boldsymbol{H}_0(\theta) + \boldsymbol{H}_1(\theta).$$
 
-The term $\boldsymbol{H}\_0(\theta) = \frac{2}{m} \sum_{i=1}^m J_{i,\theta} J_{i,\theta}^\top$ is a sum of positive semi-definite matrices (where $J_{i,\theta}$ is the Jacobian of $\Phi_\theta(\boldsymbol{x}\_i)$ with respect to $\theta$), and hence is positive semi-definite. The term $\boldsymbol{H}\_1(\theta)$ is symmetric and depends linearly on the errors $(e_i)\_{i=1}^m$.
+The term $\boldsymbol{H}\_0(\theta) = \frac{2}{m} \sum\_{i=1}^m J\_{i,\theta} J\_{i,\theta}^\top$ is a sum of positive semi-definite matrices (where $J\_{i,\theta}$ is the Jacobian of $\Phi\_\theta(\boldsymbol{x}\_i)$ with respect to $\theta$), and hence is positive semi-definite. The term $\boldsymbol{H}\_1(\theta)$ is symmetric and depends linearly on the errors $(e\_i)\_{i=1}^m$.
 
 **How does this relate to saddle points?** Let $\theta$ correspond to a critical point. If $\boldsymbol{H}(\theta)$ has at least one negative eigenvalue, then $\theta$ cannot be a minimum, but instead must be either a saddle point or a maximum.
 
-Consider a fixed parameter $\theta$. Let $S^0 = (\boldsymbol{x}\_i, y_i^0)\_{i=1}^m$ be a sample with associated errors $(e_i^0)\_{i=1}^m$. Further let for $\lambda > 0$, $S^\lambda = (\boldsymbol{x}\_i, y_i^\lambda)\_{i=1}^m$ be such that the associated errors are $(e_i)\_{i=1}^m = \lambda (e_i^0)\_{i=1}^m$. The Hessian of $\widehat{\mathcal{R}}\_{S^\lambda}(\Phi_\theta)$ at $\theta$ is then $\boldsymbol{H}^\lambda(\theta)$ satisfying
+Consider a fixed parameter $\theta$. Let $S^0 = (\boldsymbol{x}\_i, y\_i^0)\_{i=1}^m$ be a sample with associated errors $(e\_i^0)\_{i=1}^m$. Further let for $\lambda > 0$, $S^\lambda = (\boldsymbol{x}\_i, y\_i^\lambda)\_{i=1}^m$ be such that the associated errors are $(e\_i)\_{i=1}^m = \lambda (e\_i^0)\_{i=1}^m$. The Hessian of $\widehat{\mathcal{R}}\_{S^\lambda}(\Phi\_\theta)$ at $\theta$ is then $\boldsymbol{H}^\lambda(\theta)$ satisfying
 
 $$\boldsymbol{H}^\lambda(\theta) = \boldsymbol{H}_0^0(\theta) + \lambda \boldsymbol{H}_1^0(\theta).$$
 
-Hence, if $\lambda$ is large, then $\boldsymbol{H}^\lambda(\theta)$ is a perturbation of an amplified version of $\boldsymbol{H}_1^0(\theta)$. If $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{H}_1^0(\theta)$ with negative eigenvalue $-\mu$, then
+Hence, if $\lambda$ is large, then $\boldsymbol{H}^\lambda(\theta)$ is a perturbation of an amplified version of $\boldsymbol{H}\_1^0(\theta)$. If $\boldsymbol{v}$ is an eigenvector of $\boldsymbol{H}\_1^0(\theta)$ with negative eigenvalue $-\mu$, then
 
 $$\boldsymbol{v}^\top \boldsymbol{H}^\lambda(\theta) \boldsymbol{v} \le (\lVert \boldsymbol{H}_0^0(\theta) \rVert - \lambda \mu) \lVert \boldsymbol{v} \rVert^2,$$
 
 which we can expect to be negative for large $\lambda$. Thus, $\boldsymbol{H}^\lambda(\theta)$ has a negative eigenvalue for large $\lambda$.
 
-On the other hand, if $\lambda$ is small, then $\boldsymbol{H}^\lambda(\theta)$ is merely a perturbation of $\boldsymbol{H}_0^0(\theta)$ and we can expect its spectrum to resemble that of $\boldsymbol{H}_0^0$ more and more.
+On the other hand, if $\lambda$ is small, then $\boldsymbol{H}^\lambda(\theta)$ is merely a perturbation of $\boldsymbol{H}\_0^0(\theta)$ and we can expect its spectrum to resemble that of $\boldsymbol{H}\_0^0$ more and more.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Interpretation)</span></p>
 
-What we see is that, the same parameter is more likely to be a saddle point for a sample that produces a high empirical risk than for a sample with small risk. Note that, since $\boldsymbol{H}_0^0(\theta)$ was only shown to be *semi*-definite, the argument above does not rule out saddle points even for very small $\lambda$. But it does show that for small $\lambda$, every negative eigenvalue would be very small.
+What we see is that, the same parameter is more likely to be a saddle point for a sample that produces a high empirical risk than for a sample with small risk. Note that, since $\boldsymbol{H}\_0^0(\theta)$ was only shown to be *semi*-definite, the argument above does not rule out saddle points even for very small $\lambda$. But it does show that for small $\lambda$, every negative eigenvalue would be very small.
 
 </div>
 
@@ -3157,7 +3620,7 @@ What we see is that, the same parameter is more likely to be a saddle point for 
 
 ## Chapter 13: Shape of Neural Network Spaces
 
-As we have seen in the previous chapter, the loss landscape of neural networks can be quite intricate and is typically not convex. The reason for this is that we take the point of view of a map from the parameterization of a neural network. Consider a convex loss function $\mathcal{L} : \mathbb{R} \times \mathbb{R} \to \mathbb{R}$ and a sample $S = (\boldsymbol{x}\_i, y_i)\_{i=1}^m \in (\mathbb{R}^d \times \mathbb{R})^m$. Then, for two neural networks $\Phi_1, \Phi_2$ and for $\alpha \in (0, 1)$ it holds that
+As we have seen in the previous chapter, the loss landscape of neural networks can be quite intricate and is typically not convex. The reason for this is that we take the point of view of a map from the parameterization of a neural network. Consider a convex loss function $\mathcal{L} : \mathbb{R} \times \mathbb{R} \to \mathbb{R}$ and a sample $S = (\boldsymbol{x}\_i, y\_i)\_{i=1}^m \in (\mathbb{R}^d \times \mathbb{R})^m$. Then, for two neural networks $\Phi\_1, \Phi\_2$ and for $\alpha \in (0, 1)$ it holds that
 
 $$\widehat{\mathcal{R}}_S(\alpha \Phi_1 + (1 - \alpha)\Phi_2) = \frac{1}{m} \sum_{i=1}^m \mathcal{L}(\alpha \Phi_1(\boldsymbol{x}_i) + (1 - \alpha)\Phi_2(\boldsymbol{x}_i), y_i) \leq \alpha \widehat{\mathcal{R}}_S(\Phi_1) + (1 - \alpha)\widehat{\mathcal{R}}_S(\Phi_2).$$
 
@@ -3165,26 +3628,33 @@ Hence, the empirical risk is convex when considered as a map depending on the ne
 
 So why do we not optimize over the sets of neural networks instead of the parameters? To understand this, we now study the set of neural networks associated with a fixed architecture as a subset of other function spaces.
 
-We start by investigating the realization map $R_\sigma$ introduced in Definition 12.1. Concretely, we show in Section 13.1 that if $\sigma$ is Lipschitz, then the set of neural networks is the image of $\mathcal{PN}(\mathcal{A}, \infty)$ under a locally Lipschitz map. We will use this fact in Section 13.2 to show that sets of neural networks are typically non-convex, and even have arbitrarily large holes. Finally, in Section 13.3, we study the extent to which there exist best approximations to arbitrary functions in the set of neural networks, and demonstrate that the lack of best approximations causes the weights of neural networks to grow infinitely during training.
+We start by investigating the realization map $R\_\sigma$ introduced in Definition 12.1. Concretely, we show in Section 13.1 that if $\sigma$ is Lipschitz, then the set of neural networks is the image of $\mathcal{PN}(\mathcal{A}, \infty)$ under a locally Lipschitz map. We will use this fact in Section 13.2 to show that sets of neural networks are typically non-convex, and even have arbitrarily large holes. Finally, in Section 13.3, we study the extent to which there exist best approximations to arbitrary functions in the set of neural networks, and demonstrate that the lack of best approximations causes the weights of neural networks to grow infinitely during training.
 
 ### 13.1 Lipschitz Parameterizations
 
-In this section, we study the realization map $R_\sigma$. The main result is the following simplified version of [207, Proposition 4].
+In this section, we study the realization map $R\_\sigma$. The main result is the following simplified version of [207, Proposition 4].
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 13.1</span><span class="math-callout__name">(Lipschitz Continuity of the Realization Map)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be $C_\sigma$-Lipschitz continuous with $C_\sigma \geq 1$, let $\lvert \sigma(x) \rvert \leq C_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B \geq 1$. Then, for all $\theta, \theta' \in \mathcal{PN}(\mathcal{A}, B)$,
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be $C\_\sigma$-Lipschitz continuous with $C\_\sigma \geq 1$, let $\lvert \sigma(x) \rvert \leq C\_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B \geq 1$. Then, for all $\theta, \theta' \in \mathcal{PN}(\mathcal{A}, B)$,
 
 $$\lVert R_\sigma(\theta) - R_\sigma(\theta') \rVert_{L^\infty([-1,1]^{d_0})} \leq (2C_\sigma B d_{\max})^L n_\mathcal{A} \lVert \theta - \theta' \rVert_\infty,$$
 
-where $d_{\max} = \max_{\ell = 0, \ldots, L+1} d_\ell$ and $n_\mathcal{A} = \sum_{\ell=0}^L d_{\ell+1}(d_\ell + 1)$.
+where $d\_{\max} = \max\_{\ell = 0, \ldots, L+1} d\_\ell$ and $n\_\mathcal{A} = \sum\_{\ell=0}^L d\_{\ell+1}(d\_\ell + 1)$.
 
 </div>
 
-*Proof.* Let $\theta, \theta' \in \mathcal{PN}(\mathcal{A}, B)$ and define $\delta := \lVert \theta - \theta' \rVert_\infty$. Repeatedly using the triangle inequality we find a sequence $(\theta_j)\_{j=0}^{n_\mathcal{A}}$ such that $\theta_0 = \theta$, $\theta_{n_\mathcal{A}} = \theta'$, $\lVert \theta_j - \theta_{j+1} \rVert_\infty \leq \delta$, and $\theta_j$ and $\theta_{j+1}$ differ in one entry only for all $j = 0, \ldots n_\mathcal{A} - 1$. We conclude that for all $\boldsymbol{x} \in [-1,1]^{d_0}$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Let $\theta, \theta' \in \mathcal{PN}(\mathcal{A}, B)$ and define $\delta := \lVert \theta - \theta' \rVert\_\infty$. Repeatedly using the triangle inequality we find a sequence $(\theta\_j)\_{j=0}^{n\_\mathcal{A}}$ such that $\theta\_0 = \theta$, $\theta\_{n\_\mathcal{A}} = \theta'$, $\lVert \theta\_j - \theta\_{j+1} \rVert\_\infty \leq \delta$, and $\theta\_j$ and $\theta\_{j+1}$ differ in one entry only for all $j = 0, \ldots n\_\mathcal{A} - 1$. We conclude that for all $\boldsymbol{x} \in [-1,1]^{d\_0}$
 
 $$\lVert R_\sigma(\theta)(\boldsymbol{x}) - R_\sigma(\theta')(\boldsymbol{x}) \rVert_\infty \leq \sum_{j=0}^{n_\mathcal{A} - 1} \lVert R_\sigma(\theta_j)(\boldsymbol{x}) - R_\sigma(\theta_{j+1})(\boldsymbol{x}) \rVert_\infty.$$
+
+</details>
+</div>
 
 To upper bound this, we now only need to understand the effect of changing one weight in a neural network by $\delta$. The proof uses two auxiliary lemmas.
 
@@ -3195,15 +3665,22 @@ Under the assumptions of Proposition 13.1, but with $B$ being allowed to be arbi
 
 $$\lVert \Phi(\boldsymbol{x}) - \Phi(\boldsymbol{x}') \rVert_\infty \leq C_\sigma^L \cdot (B d_{\max})^{L+1} \lVert \boldsymbol{x} - \boldsymbol{x}' \rVert_\infty$$
 
-for all $\boldsymbol{x}, \boldsymbol{x}' \in \mathbb{R}^{d_0}$.
+for all $\boldsymbol{x}, \boldsymbol{x}' \in \mathbb{R}^{d\_0}$.
 
 </div>
 
-*Proof.* For $L = 1$, we have $\Phi(\boldsymbol{x}) = \mathbf{W}^{(1)} \sigma(\mathbf{W}^{(0)} \boldsymbol{x} + \mathbf{b}^{(0)}) + \mathbf{b}^{(1)}$ with all entries bounded by $B$. Then
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+For $L = 1$, we have $\Phi(\boldsymbol{x}) = \mathbf{W}^{(1)} \sigma(\mathbf{W}^{(0)} \boldsymbol{x} + \mathbf{b}^{(0)}) + \mathbf{b}^{(1)}$ with all entries bounded by $B$. Then
 
 $$\lVert \Phi(\boldsymbol{x}) - \Phi(\boldsymbol{x}') \rVert_\infty \leq d_1 B \cdot C_\sigma \lVert \mathbf{W}^{(0)}(\boldsymbol{x} - \boldsymbol{x}') \rVert_\infty \leq C_\sigma \cdot (d_{\max} B)^2 \lVert \boldsymbol{x} - \boldsymbol{x}' \rVert_\infty,$$
 
-using the Lipschitz property of $\sigma$ and the fact that $\lVert \mathbf{A}\boldsymbol{x} \rVert_\infty \leq n \max_{i,j} \lvert A_{ij} \rvert \lVert \boldsymbol{x} \rVert_\infty$ for every matrix $\mathbf{A} = (A_{ij})_{i=1,j=1}^{m,n} \in \mathbb{R}^{m \times n}$. The induction step from $L$ to $L+1$ follows similarly. $\square$
+using the Lipschitz property of $\sigma$ and the fact that $\lVert \mathbf{A}\boldsymbol{x} \rVert\_\infty \leq n \max\_{i,j} \lvert A\_{ij} \rvert \lVert \boldsymbol{x} \rVert\_\infty$ for every matrix $\mathbf{A} = (A\_{ij})\_{i=1,j=1}^{m,n} \in \mathbb{R}^{m \times n}$. The induction step from $L$ to $L+1$ follows similarly. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 13.3</span></p>
@@ -3214,15 +3691,19 @@ $$\lVert \boldsymbol{x}^{(\ell)} \rVert_\infty \leq (2C_\sigma B d_{\max})^\ell 
 
 </div>
 
-*Proof.* Per the definitions of a neural network, we have that for $\ell = 1, \ldots, L + 1$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Per the definitions of a neural network, we have that for $\ell = 1, \ldots, L + 1$
 
 $$\lVert \boldsymbol{x}^{(\ell)} \rVert_\infty \leq C_\sigma B d_{\max} \lVert \boldsymbol{x}^{(\ell-1)} \rVert_\infty + B C_\sigma \leq C_\sigma B d_{\max} \cdot (1 + \lVert \boldsymbol{x}^{(\ell-1)} \rVert_\infty) \leq 2C_\sigma B d_{\max} \cdot \max\lbrace 1, \lVert \boldsymbol{x}^{(\ell-1)} \rVert_\infty \rbrace.$$
 
-Resolving the recursive estimate of $\lVert \boldsymbol{x}^{(\ell)} \rVert_\infty$ by $2C_\sigma B d_{\max} (\max\lbrace 1, \lVert \boldsymbol{x}^{(\ell-1)} \rVert_\infty \rbrace)$, we conclude that
+Resolving the recursive estimate of $\lVert \boldsymbol{x}^{(\ell)} \rVert\_\infty$ by $2C\_\sigma B d\_{\max} (\max\lbrace 1, \lVert \boldsymbol{x}^{(\ell-1)} \rVert\_\infty \rbrace)$, we conclude that
 
 $$\lVert \boldsymbol{x}^{(\ell)} \rVert_\infty \leq (2C_\sigma B d_{\max})^\ell \max\lbrace 1, \lVert \boldsymbol{x}^{(0)} \rVert_\infty \rbrace = (2C_\sigma B d_{\max})^\ell. \quad \square$$
 
-We can now proceed with the proof of Proposition 13.1. Assume that $\theta_{j+1}$ and $\theta_j$ differ only in one entry. If this entry is in the $\ell$-th layer, with $\ell < L$, it holds
+We can now proceed with the proof of Proposition 13.1. Assume that $\theta\_{j+1}$ and $\theta\_j$ differ only in one entry. If this entry is in the $\ell$-th layer, with $\ell < L$, it holds
 
 $$\lvert R_\sigma(\theta_j)(\boldsymbol{x}) - R_\sigma(\theta_{j+1})(\boldsymbol{x}) \rvert \leq C_\sigma^{L-\ell-1} (B d_{\max})^{L-\ell} \lVert \sigma(\mathbf{W}^{(\ell)} \boldsymbol{x}^{(\ell)} + \mathbf{b}^{(\ell)}) - \sigma(\overline{\mathbf{W}}^{(\ell)} \boldsymbol{x}^{(\ell)} + \overline{\mathbf{b}}^{(\ell)}) \rVert_\infty$$
 
@@ -3232,11 +3713,14 @@ $$\lvert R_\sigma(\theta_j)(\boldsymbol{x}) - R_\sigma(\theta_{j+1})(\boldsymbol
 
 For the case $\ell = L$, a similar estimate can be shown. Combining this with the telescoping sum yields the result. $\square$
 
-Using Proposition 13.1, we can now consider the set of neural networks with a fixed architecture $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ as a subset of $L^\infty([-1,1]^{d_0})$. What is more, $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is the image of $\mathcal{PN}(\mathcal{A}, \infty)$ under a **locally Lipschitz map**.
+</details>
+</div>
+
+Using Proposition 13.1, we can now consider the set of neural networks with a fixed architecture $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ as a subset of $L^\infty([-1,1]^{d\_0})$. What is more, $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is the image of $\mathcal{PN}(\mathcal{A}, \infty)$ under a **locally Lipschitz map**.
 
 ### 13.2 Convexity of Neural Network Spaces
 
-As a first step towards understanding $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ as a subset of $L^\infty([-1,1]^{d_0})$, we notice that it is star-shaped with few centers. Let us first introduce the necessary terminology.
+As a first step towards understanding $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ as a subset of $L^\infty([-1,1]^{d\_0})$, we notice that it is star-shaped with few centers. Let us first introduce the necessary terminology.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 13.4</span><span class="math-callout__name">(Center, Star-Shaped)</span></p>
@@ -3252,7 +3736,7 @@ A set is called **star-shaped** if it has at least one center.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 13.5</span><span class="math-callout__name">(Scaling Invariance)</span></p>
 
-Let $L \in \mathbb{N}$ and $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$ and $\sigma : \mathbb{R} \to \mathbb{R}$. Then $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is scaling invariant, i.e. for every $\lambda \in \mathbb{R}$ it holds that $\lambda f \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ if $f \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$, and hence $0 \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ is a center of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$.
+Let $L \in \mathbb{N}$ and $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$ and $\sigma : \mathbb{R} \to \mathbb{R}$. Then $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is scaling invariant, i.e. for every $\lambda \in \mathbb{R}$ it holds that $\lambda f \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ if $f \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$, and hence $0 \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ is a center of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$.
 
 </div>
 
@@ -3261,34 +3745,41 @@ Knowing that $\mathcal{N}(\sigma; \mathcal{A}, B)$ is star-shaped with center 0,
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 13.6</span><span class="math-callout__name">(Bound on Linearly Independent Centers)</span></p>
 
-Let $L \in \mathbb{N}$ and $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, and let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous. Then, $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ contains at most $n_\mathcal{A} = \sum_{\ell=0}^L (d_\ell + 1) d_{\ell+1}$ linearly independent centers.
+Let $L \in \mathbb{N}$ and $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, and let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous. Then, $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ contains at most $n\_\mathcal{A} = \sum\_{\ell=0}^L (d\_\ell + 1) d\_{\ell+1}$ linearly independent centers.
 
 </div>
 
-*Proof.* Assume by contradiction that there are functions $(g_i)\_{i=1}^{n_\mathcal{A}+1} \subseteq \mathcal{N}(\sigma; \mathcal{A}, \infty) \subseteq L^\infty([-1,1]^{d_0})$ that are linearly independent and centers of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
 
-By the Theorem of Hahn-Banach, there exist $(g_i')\_{i=1}^{n_\mathcal{A}+1} \subseteq (L^\infty([-1,1]^{d_0}))'$ such that $g_i'(g_j) = \delta_{ij}$ for all $i, j \in \lbrace 1, \ldots, L + 1 \rbrace$. We define
+Assume by contradiction that there are functions $(g\_i)\_{i=1}^{n\_\mathcal{A}+1} \subseteq \mathcal{N}(\sigma; \mathcal{A}, \infty) \subseteq L^\infty([-1,1]^{d\_0})$ that are linearly independent and centers of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$.
+
+By the Theorem of Hahn-Banach, there exist $(g\_i')\_{i=1}^{n\_\mathcal{A}+1} \subseteq (L^\infty([-1,1]^{d\_0}))'$ such that $g\_i'(g\_j) = \delta\_{ij}$ for all $i, j \in \lbrace 1, \ldots, L + 1 \rbrace$. We define
 
 $$T : L^\infty([-1,1]^{d_0}) \to \mathbb{R}^{n_\mathcal{A}+1}, \quad g \mapsto \begin{pmatrix} g_1'(g) \\ g_2'(g) \\ \vdots \\ g_{n_\mathcal{A}+1}'(g) \end{pmatrix}.$$
 
-Since $T$ is continuous and linear, we have that $T \circ R_\sigma$ is locally Lipschitz continuous by Proposition 13.1. Moreover, since the $(g_i)\_{i=1}^{n_\mathcal{A}+1}$ are linearly independent, we have that $T(\text{span}((g_i)\_{i=1}^{n_\mathcal{A}+1})) = \mathbb{R}^{n_\mathcal{A}+1}$.
+Since $T$ is continuous and linear, we have that $T \circ R\_\sigma$ is locally Lipschitz continuous by Proposition 13.1. Moreover, since the $(g\_i)\_{i=1}^{n\_\mathcal{A}+1}$ are linearly independent, we have that $T(\text{span}((g\_i)\_{i=1}^{n\_\mathcal{A}+1})) = \mathbb{R}^{n\_\mathcal{A}+1}$.
 
-Next, we establish that $\mathcal{N}(\sigma; \mathcal{A}, \infty) \supset V$ where $V := \text{span}((g_i)\_{i=1}^{n_\mathcal{A}+1})$. Let $g \in V$, then $g = \sum_{\ell=1}^{n_\mathcal{A}+1} a_\ell g_\ell$ for some $a_1, \ldots, a_{n_\mathcal{A}+1} \in \mathbb{R}$. We show by induction that $\widetilde{g}^{(m)} := \sum_{\ell=1}^m a_\ell g_\ell \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ for every $m \leq n_\mathcal{A} + 1$. If $a_{m+1} \neq 0$, then
+Next, we establish that $\mathcal{N}(\sigma; \mathcal{A}, \infty) \supset V$ where $V := \text{span}((g\_i)\_{i=1}^{n\_\mathcal{A}+1})$. Let $g \in V$, then $g = \sum\_{\ell=1}^{n\_\mathcal{A}+1} a\_\ell g\_\ell$ for some $a\_1, \ldots, a\_{n\_\mathcal{A}+1} \in \mathbb{R}$. We show by induction that $\widetilde{g}^{(m)} := \sum\_{\ell=1}^m a\_\ell g\_\ell \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ for every $m \leq n\_\mathcal{A} + 1$. If $a\_{m+1} \neq 0$, then
 
 $$\widetilde{g}^{(m+1)} = 2a_{m+1} \cdot \left( \frac{1}{2} g_{m+1} + \frac{1}{2a_{m+1}} \widetilde{g}^{(m)} \right).$$
 
-By the induction assumption $\widetilde{g}^{(m)} \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ and by Proposition 13.5 $\widetilde{g}^{(m)} / (a_{m+1}) \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$. Additionally, since $g_{m+1}$ is a center of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$, we have $\frac{1}{2} g_{m+1} + \frac{1}{2a_{m+1}} \widetilde{g}^{(m)} \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$. By Proposition 13.5, we conclude that $\widetilde{g}^{(m+1)} \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$.
+By the induction assumption $\widetilde{g}^{(m)} \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ and by Proposition 13.5 $\widetilde{g}^{(m)} / (a\_{m+1}) \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$. Additionally, since $g\_{m+1}$ is a center of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$, we have $\frac{1}{2} g\_{m+1} + \frac{1}{2a\_{m+1}} \widetilde{g}^{(m)} \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$. By Proposition 13.5, we conclude that $\widetilde{g}^{(m+1)} \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$.
 
-The induction shows that $g \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ and thus $V \subseteq \mathcal{N}(\sigma; \mathcal{A}, \infty)$. As a consequence, $T \circ R_\sigma(\mathcal{PN}(\mathcal{A}, \infty)) \supseteq T(V) = \mathbb{R}^{n_\mathcal{A}+1}$.
+The induction shows that $g \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ and thus $V \subseteq \mathcal{N}(\sigma; \mathcal{A}, \infty)$. As a consequence, $T \circ R\_\sigma(\mathcal{PN}(\mathcal{A}, \infty)) \supseteq T(V) = \mathbb{R}^{n\_\mathcal{A}+1}$.
 
-It is a well-known fact of basic analysis that for every $n \in \mathbb{N}$ there does not exist a surjective and locally Lipschitz continuous map from $\mathbb{R}^n$ to $\mathbb{R}^{n+1}$. We recall that $n_\mathcal{A} = \dim(\mathcal{PN}(\mathcal{A}, \infty))$. This yields the contradiction. $\square$
+It is a well-known fact of basic analysis that for every $n \in \mathbb{N}$ there does not exist a surjective and locally Lipschitz continuous map from $\mathbb{R}^n$ to $\mathbb{R}^{n+1}$. We recall that $n\_\mathcal{A} = \dim(\mathcal{PN}(\mathcal{A}, \infty))$. This yields the contradiction. $\square$
+
+</details>
+</div>
 
 For a convex set $X$, the line between all two points of $X$ is a subset of $X$. Hence, every point of a convex set is a center. This yields the following corollary.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Corollary 13.7</span><span class="math-callout__name">(Non-Convexity of Neural Network Spaces)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1})$, let, and let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous. If $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ contains more than $n_\mathcal{A} = \sum_{\ell=0}^L (d_\ell + 1) d_{\ell+1}$ linearly independent functions, then $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is **not convex**.
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1})$, let, and let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous. If $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ contains more than $n\_\mathcal{A} = \sum\_{\ell=0}^L (d\_\ell + 1) d\_{\ell+1}$ linearly independent functions, then $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is **not convex**.
 
 </div>
 
@@ -3305,7 +3796,7 @@ For $\varepsilon > 0$, we say that a subset $A$ of a normed vector space $X$ is 
 
 $$\text{co}(A) \subseteq A + B_\varepsilon(0),$$
 
-where $\text{co}(A)$ denotes the convex hull of $A$ and $B_\varepsilon(0)$ is an $\varepsilon$ ball around $0$ with respect to the norm of $X$.
+where $\text{co}(A)$ denotes the convex hull of $A$ and $B\_\varepsilon(0)$ is an $\varepsilon$ ball around $0$ with respect to the norm of $X$.
 
 </div>
 
@@ -3314,13 +3805,17 @@ Intuitively speaking, a set that is convex when one fills up all holes smaller t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 13.9</span><span class="math-callout__name">(Arbitrarily Large Holes)</span></p>
 
-Let $L \in \mathbb{N}$ and $\mathcal{A} = (d_0, d_1, \ldots, d_L, 1) \in \mathbb{N}^{L+2}$. Let $K \subseteq \mathbb{R}^{d_0}$ be compact and let $\sigma \in \mathcal{M}$, with $\mathcal{M}$ as in (3.1.1) and assume that $\sigma$ is not a polynomial. Moreover, assume that there exists an open set, where $\sigma$ is differentiable and not constant.
+Let $L \in \mathbb{N}$ and $\mathcal{A} = (d\_0, d\_1, \ldots, d\_L, 1) \in \mathbb{N}^{L+2}$. Let $K \subseteq \mathbb{R}^{d\_0}$ be compact and let $\sigma \in \mathcal{M}$, with $\mathcal{M}$ as in (3.1.1) and assume that $\sigma$ is not a polynomial. Moreover, assume that there exists an open set, where $\sigma$ is differentiable and not constant.
 
 If there exists an $\varepsilon > 0$ such that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is $\varepsilon$-convex, then $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is dense in $C(K)$.
 
 </div>
 
-*Proof.* **Step 1.** We show that $\varepsilon$-convexity implies $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ to be convex. By Proposition 13.5, we have that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is scaling invariant. This implies that $\text{co}(\mathcal{N}(\sigma; \mathcal{A}, \infty))$ is scaling invariant as well. Hence, if there exists $\varepsilon > 0$ such that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is $\varepsilon$-convex, then for every $\varepsilon' > 0$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+**Step 1.** We show that $\varepsilon$-convexity implies $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ to be convex. By Proposition 13.5, we have that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is scaling invariant. This implies that $\text{co}(\mathcal{N}(\sigma; \mathcal{A}, \infty))$ is scaling invariant as well. Hence, if there exists $\varepsilon > 0$ such that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is $\varepsilon$-convex, then for every $\varepsilon' > 0$
 
 $$\text{co}(\mathcal{N}(\sigma; \mathcal{A}, \infty)) = \frac{\varepsilon'}{\varepsilon} \text{co}(\mathcal{N}(\sigma; \mathcal{A}, \infty)) \subseteq \frac{\varepsilon'}{\varepsilon}(\mathcal{N}(\sigma; \mathcal{A}, \infty) + B_\varepsilon(0)) = \mathcal{N}(\sigma; \mathcal{A}, \infty) + B_{\varepsilon'}(0).$$
 
@@ -3330,17 +3825,20 @@ $$\text{co}(\mathcal{N}(\sigma; \mathcal{A}, \infty)) \subseteq \bigcap_{\vareps
 
 Hence, $\overline{\text{co}(\mathcal{N}(\sigma; \mathcal{A}, \infty))} \subseteq \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ and, by the well-known fact that in every metric vector space $\text{co}(\overline{A}) \subseteq \overline{\text{co}(A)}$, we conclude that $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is convex.
 
-**Step 2.** We show that $\mathcal{N}_d^1(\sigma; 1) \subseteq \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$. If $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is $\varepsilon$-convex, then by Step 1 $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is convex. The scaling invariance of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ then shows that $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is a closed linear subspace of $C(K)$.
+**Step 2.** We show that $\mathcal{N}\_d^1(\sigma; 1) \subseteq \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$. If $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is $\varepsilon$-convex, then by Step 1 $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is convex. The scaling invariance of $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ then shows that $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is a closed linear subspace of $C(K)$.
 
-Note that, by Proposition 3.16, for every $\boldsymbol{w} \in \mathbb{R}^{d_0}$ and $b \in \mathbb{R}$ there exists a function $f \in \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ such that
+Note that, by Proposition 3.16, for every $\boldsymbol{w} \in \mathbb{R}^{d\_0}$ and $b \in \mathbb{R}$ there exists a function $f \in \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ such that
 
 $$f(\boldsymbol{x}) = \sigma(\boldsymbol{w}^\top \boldsymbol{x} + b) \qquad \text{for all } \boldsymbol{x} \in K.$$
 
-By definition, every constant function is an element of $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$. Since $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is a closed vector space, this implies that for all $n \in \mathbb{N}$ and all $\boldsymbol{w}_1^{(1)}, \ldots, \boldsymbol{w}_n^{(1)} \in \mathbb{R}^{d_0}$, $w_1^{(2)}, \ldots, w_n^{(2)} \in \mathbb{R}$, $b_1^{(1)}, \ldots, b_n^{(1)} \in \mathbb{R}$, $b^{(2)} \in \mathbb{R}$
+By definition, every constant function is an element of $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$. Since $\overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$ is a closed vector space, this implies that for all $n \in \mathbb{N}$ and all $\boldsymbol{w}\_1^{(1)}, \ldots, \boldsymbol{w}\_n^{(1)} \in \mathbb{R}^{d\_0}$, $w\_1^{(2)}, \ldots, w\_n^{(2)} \in \mathbb{R}$, $b\_1^{(1)}, \ldots, b\_n^{(1)} \in \mathbb{R}$, $b^{(2)} \in \mathbb{R}$
 
 $$\boldsymbol{x} \mapsto \sum_{i=1}^n w_i^{(2)} \sigma((\boldsymbol{w}_i^{(1)})^\top \boldsymbol{x} + b_i^{(1)}) + b^{(2)} \in \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}.$$
 
-**Step 3.** From the above, we conclude that $\mathcal{N}_d^1(\sigma; 1) \subseteq \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$. In other words, the whole set of shallow neural networks of arbitrary width is contained in the closure of the set of neural networks with a fixed architecture. By Theorem 3.8, we have that $\mathcal{N}_d^1(\sigma; 1)$ is dense in $C(K)$, which yields the result. $\square$
+**Step 3.** From the above, we conclude that $\mathcal{N}\_d^1(\sigma; 1) \subseteq \overline{\mathcal{N}(\sigma; \mathcal{A}, \infty)}$. In other words, the whole set of shallow neural networks of arbitrary width is contained in the closure of the set of neural networks with a fixed architecture. By Theorem 3.8, we have that $\mathcal{N}\_d^1(\sigma; 1)$ is dense in $C(K)$, which yields the result. $\square$
+
+</details>
+</div>
 
 For any activation function of practical relevance, a set of neural networks with fixed architecture is not dense in $C(K)$. This is only the case for very strange activation functions such as the one discussed in Subsection 3.2. Hence, Theorem 13.9 shows that in general, sets of neural networks of fixed architectures have arbitrarily large holes.
 
@@ -3348,7 +3846,7 @@ For any activation function of practical relevance, a set of neural networks wit
 
 The non-convexity of the set of neural networks can have some serious consequences for the way we think of the approximation or learning problem by neural networks.
 
-Consider $\mathcal{A} = (d_0, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$ and an activation function $\sigma$. Let $H$ be a normed function space on $[-1,1]^{d_0}$ such that $\mathcal{N}(\sigma; \mathcal{A}, \infty) \subseteq H$. For $h \in H$ we would like to find a neural network $\Phi \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ such that
+Consider $\mathcal{A} = (d\_0, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$ and an activation function $\sigma$. Let $H$ be a normed function space on $[-1,1]^{d\_0}$ such that $\mathcal{N}(\sigma; \mathcal{A}, \infty) \subseteq H$. For $h \in H$ we would like to find a neural network $\Phi \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ such that
 
 $$\lVert \Phi - h \rVert_H = \inf_{\Phi^* \in \mathcal{N}(\sigma; \mathcal{A}, \infty)} \lVert \Phi^* - h \rVert_H.$$
 
@@ -3367,7 +3865,7 @@ As shown in [136], neural network spaces essentially never admit the continuous 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 13.10</span></p>
 
-Let $p \in (1, \infty)$. Every subset of $L^p([-1,1]^{d_0})$ with the unique best approximation property is convex.
+Let $p \in (1, \infty)$. Every subset of $L^p([-1,1]^{d\_0})$ with the unique best approximation property is convex.
 
 </div>
 
@@ -3376,13 +3874,17 @@ This allows to show the next proposition.
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 13.11</span><span class="math-callout__name">(No Continuous Selection)</span></p>
 
-Let $L \in \mathbb{N}$, $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous and not a polynomial, and let $p \in (1, \infty)$.
+Let $L \in \mathbb{N}$, $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous and not a polynomial, and let $p \in (1, \infty)$.
 
-Then, $\mathcal{N}(\sigma; \mathcal{A}, \infty) \subseteq L^p([-1,1]^{d_0})$ does not have the continuous selection property.
+Then, $\mathcal{N}(\sigma; \mathcal{A}, \infty) \subseteq L^p([-1,1]^{d\_0})$ does not have the continuous selection property.
 
 </div>
 
-*Proof.* We observe from Theorem 13.6 and the discussion above that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is not convex. We conclude from Theorem 13.10 that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ does not have the unique best approximation property. Moreover, if the set $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ does not have the best approximation property, then it obviously cannot have continuous selection. Thus, assume without loss of generality that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ has the best approximation property and there exists a point $h \in L^p([-1,1]^{d_0})$ and two different $\Phi_1, \Phi_2$ such that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We observe from Theorem 13.6 and the discussion above that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is not convex. We conclude from Theorem 13.10 that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ does not have the unique best approximation property. Moreover, if the set $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ does not have the best approximation property, then it obviously cannot have continuous selection. Thus, assume without loss of generality that $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ has the best approximation property and there exists a point $h \in L^p([-1,1]^{d\_0})$ and two different $\Phi\_1, \Phi\_2$ such that
 
 $$\lVert \Phi_1 - h \rVert_{L^p} = \lVert \Phi_2 - h \rVert_{L^p} = \inf_{\Phi^* \in \mathcal{N}(\sigma; \mathcal{A}, \infty)} \lVert \Phi^* - h \rVert_{L^p}.$$
 
@@ -3390,11 +3892,14 @@ Note that $h \notin \mathcal{N}(\sigma; \mathcal{A}, \infty)$. Define the contin
 
 $$[-1, 1] \ni \lambda \mapsto P(\lambda) = \begin{cases} (1 + \lambda) h - \lambda \Phi_1 & \text{for } \lambda \leq 0, \\ (1 - \lambda) h + \lambda \Phi_2 & \text{for } \lambda \geq 0. \end{cases}$$
 
-One can show that for every $\lambda < 0$, $\Phi_1$ is the unique minimizer to $P(\lambda)$ in $\mathcal{N}(\sigma; \mathcal{A}, \infty)$. The same argument holds for $\lambda > 0$ and $\Phi_2$. We conclude that for every selection function $\phi : L^p([-1,1]^{d_0}) \to \mathcal{N}(\sigma; \mathcal{A}, \infty)$ it holds that
+One can show that for every $\lambda < 0$, $\Phi\_1$ is the unique minimizer to $P(\lambda)$ in $\mathcal{N}(\sigma; \mathcal{A}, \infty)$. The same argument holds for $\lambda > 0$ and $\Phi\_2$. We conclude that for every selection function $\phi : L^p([-1,1]^{d\_0}) \to \mathcal{N}(\sigma; \mathcal{A}, \infty)$ it holds that
 
 $$\lim_{\lambda \downarrow 0} \phi(P(\lambda)) = \Phi_2 \neq \Phi_1 = \lim_{\lambda \uparrow 0} \phi(P(\lambda)).$$
 
 As a consequence, $\phi$ is not continuous, which shows the result. $\square$
+
+</details>
+</div>
 
 #### 13.3.2 Existence of Best Approximations
 
@@ -3409,22 +3914,29 @@ Then, there exists a sequence in $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ whic
 
 </div>
 
-*Proof.* For all $n \in \mathbb{N}$ let $f_n(x) = \sigma(nx + 1) - \sigma(nx)$ for all $x \in \mathbb{R}$. Then $f_n$ can be written as a neural network with architecture $(\sigma; 1, 2, 1)$, i.e. $\mathcal{A} = (1, 2, 1)$. Moreover, for $x > 0$ we observe with the fundamental theorem of calculus and integration by substitution that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+For all $n \in \mathbb{N}$ let $f\_n(x) = \sigma(nx + 1) - \sigma(nx)$ for all $x \in \mathbb{R}$. Then $f\_n$ can be written as a neural network with architecture $(\sigma; 1, 2, 1)$, i.e. $\mathcal{A} = (1, 2, 1)$. Moreover, for $x > 0$ we observe with the fundamental theorem of calculus and integration by substitution that
 
 $$f_n(x) = \int_x^{x+1/n} n\sigma'(nz) dz = \int_{nx}^{nx+1} \sigma'(z) dz.$$
 
-It is not hard to see that the right hand side converges to $\alpha$ for $n \to \infty$. Similarly, for $x < 0$, we observe that $f_n(x)$ converges to $\alpha'$ for $n \to \infty$. We conclude that
+It is not hard to see that the right hand side converges to $\alpha$ for $n \to \infty$. Similarly, for $x < 0$, we observe that $f\_n(x)$ converges to $\alpha'$ for $n \to \infty$. We conclude that
 
 $$f_n \to \alpha \mathbb{1}_{\mathbb{R}_+} + \alpha' \mathbb{1}_{\mathbb{R}_-}$$
 
-almost everywhere as $n \to \infty$. Since $\sigma$ is Lipschitz continuous, we have that $f_n$ is bounded. Therefore, we conclude that $f_n \to \alpha \mathbb{1}\_{\mathbb{R}\_{+}} + \alpha' \mathbb{1}\_{\mathbb{R}\_{-}}$ in $L^p$ for all $p \in [1, \infty)$ by the dominated convergence theorem. $\square$
+almost everywhere as $n \to \infty$. Since $\sigma$ is Lipschitz continuous, we have that $f\_n$ is bounded. Therefore, we conclude that $f\_n \to \alpha \mathbb{1}\_{\mathbb{R}\_{+}} + \alpha' \mathbb{1}\_{\mathbb{R}\_{-}}$ in $L^p$ for all $p \in [1, \infty)$ by the dominated convergence theorem. $\square$
+
+</details>
+</div>
 
 There is a straight-forward extension of Proposition 13.12 to arbitrary architectures, that will be the content of Exercises 13.16 and 13.17.
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 13.13</span></p>
 
-The proof of Proposition 13.12 does not extend to the $L^\infty$ norm. This, of course, does not mean that generally $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is a closed set in $L^\infty([-1,1]^{d_0})$. In fact, almost all activation functions used in practice still give rise to non-closed neural network sets, see [207, Theorem 3.3]. However, there is one notable exception. For the ReLU activation function, it can be shown that $\mathcal{N}(\sigma_{\text{ReLU}}; \mathcal{A}, \infty)$ is a closed set in $L^\infty([-1,1]^{d_0})$ if $\mathcal{A}$ has only one hidden layer. The closedness of deep ReLU spaces in $L^\infty$ is an open problem.
+The proof of Proposition 13.12 does not extend to the $L^\infty$ norm. This, of course, does not mean that generally $\mathcal{N}(\sigma; \mathcal{A}, \infty)$ is a closed set in $L^\infty([-1,1]^{d\_0})$. In fact, almost all activation functions used in practice still give rise to non-closed neural network sets, see [207, Theorem 3.3]. However, there is one notable exception. For the ReLU activation function, it can be shown that $\mathcal{N}(\sigma\_{\text{ReLU}}; \mathcal{A}, \infty)$ is a closed set in $L^\infty([-1,1]^{d\_0})$ if $\mathcal{A}$ has only one hidden layer. The closedness of deep ReLU spaces in $L^\infty$ is an open problem.
 
 </div>
 
@@ -3432,18 +3944,18 @@ The proof of Proposition 13.12 does not extend to the $L^\infty$ norm. This, of 
 
 Finally, we discuss one of the consequences of the non-existence of best approximations of Proposition 13.12.
 
-Consider a regression problem, where we aim to learn a function $f$ using neural networks with a fixed architecture $\mathcal{N}(\mathcal{A}; \sigma, \infty)$. As discussed in Chapters 10 and 11, we wish to produce a sequence of neural networks $(\Phi_n)_{n=1}^\infty$ such that the risk converges to $0$. If the loss $\mathcal{L}$ is the squared loss, $\mu$ is a probability measure on $[-1,1]^{d_0}$, and the data is given by $(\boldsymbol{x}, f(\boldsymbol{x}))$ for $\boldsymbol{x} \sim \mu$, then
+Consider a regression problem, where we aim to learn a function $f$ using neural networks with a fixed architecture $\mathcal{N}(\mathcal{A}; \sigma, \infty)$. As discussed in Chapters 10 and 11, we wish to produce a sequence of neural networks $(\Phi\_n)\_{n=1}^\infty$ such that the risk converges to $0$. If the loss $\mathcal{L}$ is the squared loss, $\mu$ is a probability measure on $[-1,1]^{d\_0}$, and the data is given by $(\boldsymbol{x}, f(\boldsymbol{x}))$ for $\boldsymbol{x} \sim \mu$, then
 
 $$\mathcal{R}(\Phi_n) = \lVert \Phi_n - f \rVert_{L^2([-1,1]^{d_0}, \mu)}^2 = \int_{[-1,1]^{d_0}} \lvert \Phi_n(\boldsymbol{x}) - f(\boldsymbol{x}) \rvert^2 d\mu(\boldsymbol{x}) \to 0 \quad \text{for } n \to \infty.$$
 
-According to Proposition 13.12, for a given $\mathcal{A}$ and an activation function $\sigma$, it is possible that this holds, but $f \notin \mathcal{N}(\sigma; \mathcal{A}, \infty)$. The following result shows that in this situation, the weights of $\Phi_n$ diverge.
+According to Proposition 13.12, for a given $\mathcal{A}$ and an activation function $\sigma$, it is possible that this holds, but $f \notin \mathcal{N}(\sigma; \mathcal{A}, \infty)$. The following result shows that in this situation, the weights of $\Phi\_n$ diverge.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 13.14</span><span class="math-callout__name">(Exploding Weights)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous with $C_\sigma \geq 1$, and $\lvert \sigma(x) \rvert \leq C_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $\mu$ be a measure on $[-1,1]^{d_0}$.
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma : \mathbb{R} \to \mathbb{R}$ be Lipschitz continuous with $C\_\sigma \geq 1$, and $\lvert \sigma(x) \rvert \leq C\_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $\mu$ be a measure on $[-1,1]^{d\_0}$.
 
-Assume that there exists a sequence $\Phi_n \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ and $f \in L^2([-1,1]^{d_0}, \mu) \setminus \mathcal{N}(\sigma; \mathcal{A}, \infty)$ such that
+Assume that there exists a sequence $\Phi\_n \in \mathcal{N}(\sigma; \mathcal{A}, \infty)$ and $f \in L^2([-1,1]^{d\_0}, \mu) \setminus \mathcal{N}(\sigma; \mathcal{A}, \infty)$ such that
 
 $$\lVert \Phi_n - f \rVert_{L^2([-1,1]^{d_0}, \mu)}^2 \to 0.$$
 
@@ -3453,9 +3965,16 @@ $$\limsup_{n \to \infty} \max \left\lbrace \lVert \mathbf{W}_n^{(\ell)} \rVert_\
 
 </div>
 
-*Proof.* We assume towards a contradiction that the left-hand side is finite. As a result, there exists $C > 0$ such that $\Phi_n \in \mathcal{N}(\sigma; \mathcal{A}, C)$ for all $n \in \mathbb{N}$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
 
-By Proposition 13.1, we conclude that $\mathcal{N}(\sigma; \mathcal{A}, C)$ is the image of a compact set under a continuous map and hence is itself a compact set in $L^2([-1,1]^{d_0}, \mu)$. In particular, we have that $\mathcal{N}(\sigma; \mathcal{A}, C)$ is closed. Hence, $f \in \mathcal{N}(\sigma; \mathcal{A}, C)$. This gives a contradiction. $\square$
+We assume towards a contradiction that the left-hand side is finite. As a result, there exists $C > 0$ such that $\Phi\_n \in \mathcal{N}(\sigma; \mathcal{A}, C)$ for all $n \in \mathbb{N}$.
+
+By Proposition 13.1, we conclude that $\mathcal{N}(\sigma; \mathcal{A}, C)$ is the image of a compact set under a continuous map and hence is itself a compact set in $L^2([-1,1]^{d\_0}, \mu)$. In particular, we have that $\mathcal{N}(\sigma; \mathcal{A}, C)$ is closed. Hence, $f \in \mathcal{N}(\sigma; \mathcal{A}, C)$. This gives a contradiction. $\square$
+
+</details>
+</div>
 
 Proposition 13.14 can be extended to all $f$ for which there is no best approximation in $\mathcal{N}(\sigma; \mathcal{A}, \infty)$, see Exercise 13.18. The results imply that for functions we wish to learn that lack a best approximation within a neural network set, we must expect the weights of the approximating neural networks to grow to infinity. This can be undesirable because, as we will see in the following sections on generalization, a bounded parameter space facilitates many generalization bounds.
 
@@ -3463,11 +3982,11 @@ Proposition 13.14 can be extended to all $f$ for which there is no best approxim
 
 ## Chapter 14: Generalization Properties of Deep Neural Networks
 
-As discussed in Section 1.2, we generally learn based on a finite data set. For example, given data $(x_i, y_i)\_{i=1}^m$, we try to find a network $\Phi$ that satisfies $\Phi(x_i) = y_i$ for $i = 1, \ldots, m$. The field of generalization is concerned with how well such $\Phi$ performs on *unseen* data, which refers to any $x$ outside of training data $\lbrace x_1, \ldots, x_m \rbrace$. In this chapter we discuss generalization through the use of covering numbers.
+As discussed in Section 1.2, we generally learn based on a finite data set. For example, given data $(x\_i, y\_i)\_{i=1}^m$, we try to find a network $\Phi$ that satisfies $\Phi(x\_i) = y\_i$ for $i = 1, \ldots, m$. The field of generalization is concerned with how well such $\Phi$ performs on *unseen* data, which refers to any $x$ outside of training data $\lbrace x\_1, \ldots, x\_m \rbrace$. In this chapter we discuss generalization through the use of covering numbers.
 
 ### 14.1 Learning Setup
 
-A general learning problem requires a **feature space** $X$ and a **label space** $Y$, which we assume throughout to be measurable spaces. We observe joint data pairs $(x_i, y_i)\_{i=1}^m \subseteq X \times Y$, and aim to identify a connection between the $x$ and $y$ variables. Specifically, we assume a relationship between features $x$ and labels $y$ modeled by a probability distribution $\mathcal{D}$ over $X \times Y$, that generated the observed data $(x_i, y_i)\_{i=1}^m$. While this distribution is unknown, our goal is to extract information from it, so that we can make possibly good predictions of $y$ for a given $x$. Importantly, the relationship between $x$ and $y$ need not be deterministic.
+A general learning problem requires a **feature space** $X$ and a **label space** $Y$, which we assume throughout to be measurable spaces. We observe joint data pairs $(x\_i, y\_i)\_{i=1}^m \subseteq X \times Y$, and aim to identify a connection between the $x$ and $y$ variables. Specifically, we assume a relationship between features $x$ and labels $y$ modeled by a probability distribution $\mathcal{D}$ over $X \times Y$, that generated the observed data $(x\_i, y\_i)\_{i=1}^m$. While this distribution is unknown, our goal is to extract information from it, so that we can make possibly good predictions of $y$ for a given $x$. Importantly, the relationship between $x$ and $y$ need not be deterministic.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.1</span><span class="math-callout__name">(Coffee Quality)</span></p>
@@ -3478,12 +3997,12 @@ We aim to understand the relationship between elements of $X$ and elements of $Y
 
 </div>
 
-Characterizing how good a predictor is requires a notion of discrepancy in the label space. This is the purpose of the so-called **loss function**, which is a measurable mapping $\mathcal{L} \colon Y \times Y \to \mathbb{R}_+$.
+Characterizing how good a predictor is requires a notion of discrepancy in the label space. This is the purpose of the so-called **loss function**, which is a measurable mapping $\mathcal{L} \colon Y \times Y \to \mathbb{R}\_+$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 14.2</span><span class="math-callout__name">(Population Risk)</span></p>
 
-Let $\mathcal{L} \colon Y \times Y \to \mathbb{R}_+$ be a loss function and let $\mathcal{D}$ be a distribution on $X \times Y$. For a measurable function $h \colon X \to Y$ we call
+Let $\mathcal{L} \colon Y \times Y \to \mathbb{R}\_+$ be a loss function and let $\mathcal{D}$ be a distribution on $X \times Y$. For a measurable function $h \colon X \to Y$ we call
 
 $$\mathcal{R}(h) = \mathbb{E}_{(x,y) \sim \mathcal{D}}[\mathcal{L}(h(x), y)]$$
 
@@ -3502,7 +4021,7 @@ where the infimum is taken over all measurable $h \colon X \to Y$.
 
 The choice of a loss function $\mathcal{L}$ usually depends on the application.
 
-- For a **regression problem**, i.e., a learning problem where $Y$ is a non-discrete subset of a Euclidean space, a common choice is the **square loss** $\mathcal{L}_2(\boldsymbol{y}, \boldsymbol{y}') = \lVert \boldsymbol{y} - \boldsymbol{y}' \rVert^2$.
+- For a **regression problem**, i.e., a learning problem where $Y$ is a non-discrete subset of a Euclidean space, a common choice is the **square loss** $\mathcal{L}\_2(\boldsymbol{y}, \boldsymbol{y}') = \lVert \boldsymbol{y} - \boldsymbol{y}' \rVert^2$.
 
 - For **binary classification** problems, i.e. when $Y$ is a discrete set of cardinality two, the **$0$-$1$ loss**
 
@@ -3525,7 +4044,7 @@ Finding a minimizer of the risk constitutes a considerable challenge. First, we 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 14.4</span><span class="math-callout__name">(Empirical Risk)</span></p>
 
-Let $m \in \mathbb{N}$, let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be a loss function and let $S = (x_i, y_i)_{i=1}^m \in (X \times Y)^m$ be a sample. For $h \colon X \to Y$, we call
+Let $m \in \mathbb{N}$, let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be a loss function and let $S = (x\_i, y\_i)\_{i=1}^m \in (X \times Y)^m$ be a sample. For $h \colon X \to Y$, we call
 
 $$\widehat{\mathcal{R}}_S(h) = \frac{1}{m} \sum_{i=1}^m \mathcal{L}(h(x_i), y_i)$$
 
@@ -3538,7 +4057,7 @@ If the sample $S$ is drawn i.i.d. according to $\mathcal{D}$, then we immediatel
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 14.5</span><span class="math-callout__name">(Empirical Risk Minimizer)</span></p>
 
-Let $\mathcal{H} \subseteq \lbrace h \colon X \to Y \rbrace$ be a hypothesis set. Let $m \in \mathbb{N}$, let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be a loss function and let $S = (x_i, y_i)_{i=1}^m \in (X \times Y)^m$ be a sample. We call a function $h_S$ such that
+Let $\mathcal{H} \subseteq \lbrace h \colon X \to Y \rbrace$ be a hypothesis set. Let $m \in \mathbb{N}$, let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be a loss function and let $S = (x\_i, y\_i)\_{i=1}^m \in (X \times Y)^m$ be a sample. We call a function $h\_S$ such that
 
 $$\widehat{\mathcal{R}}_S(h_S) = \inf_{h \in \mathcal{H}} \widehat{\mathcal{R}}_S(h)$$
 
@@ -3546,7 +4065,7 @@ an **empirical risk minimizer**.
 
 </div>
 
-From a generalization perspective, supervised deep learning is empirical risk minimization over sets of neural networks. Let $\mathcal{H}$ be some hypothesis set, such that an empirical risk minimizer $h_S$ exists for all $S \in (X \times Y)^m$. Moreover, let $g \in \mathcal{H}$ be arbitrary. Then
+From a generalization perspective, supervised deep learning is empirical risk minimization over sets of neural networks. Let $\mathcal{H}$ be some hypothesis set, such that an empirical risk minimizer $h\_S$ exists for all $S \in (X \times Y)^m$. Moreover, let $g \in \mathcal{H}$ be arbitrary. Then
 
 $$\mathcal{R}(h_S) - R^* \leq 2 \sup_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert + \inf_{g \in \mathcal{H}} \mathcal{R}(g) - R^* =: 2\varepsilon_{\text{gen}} + \varepsilon_{\text{approx}}.$$
 
@@ -3554,16 +4073,16 @@ Similarly, considering only the first inequality yields that
 
 $$\mathcal{R}(h_S) \leq \sup_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert + \inf_{g \in \mathcal{H}} \widehat{\mathcal{R}}_S(g) =: \varepsilon_{\text{gen}} + \varepsilon_{\text{int}}.$$
 
-How to choose $\mathcal{H}$ to reduce the **approximation error** $\varepsilon_{\text{approx}}$ or the **interpolation error** $\varepsilon_{\text{int}}$ was discussed at length in the previous chapters. The final piece is to figure out how to bound the **generalization error** $\sup_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert$.
+How to choose $\mathcal{H}$ to reduce the **approximation error** $\varepsilon\_{\text{approx}}$ or the **interpolation error** $\varepsilon\_{\text{int}}$ was discussed at length in the previous chapters. The final piece is to figure out how to bound the **generalization error** $\sup\_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}\_S(h) \rvert$.
 
 ### 14.3 Generalization Bounds
 
-We have seen that one aspect of successful learning is to bound the generalization error $\varepsilon_{\text{gen}}$.
+We have seen that one aspect of successful learning is to bound the generalization error $\varepsilon\_{\text{gen}}$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 14.6</span><span class="math-callout__name">(Generalization Bound)</span></p>
 
-Let $\mathcal{H} \subseteq \lbrace h \colon X \to Y \rbrace$ be a hypothesis set, and let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be a loss function. Let $\kappa \colon (0,1) \times \mathbb{N} \to \mathbb{R}_+$ be such that for every $\delta \in (0,1)$ it holds $\kappa(\delta, m) \to 0$ for $m \to \infty$. We call $\kappa$ a **generalization bound for $\mathcal{H}$** if for every distribution $\mathcal{D}$ on $X \times Y$, every $m \in \mathbb{N}$ and every $\delta \in (0,1)$, it holds with probability at least $1 - \delta$ over the random sample $S \sim \mathcal{D}^m$ that
+Let $\mathcal{H} \subseteq \lbrace h \colon X \to Y \rbrace$ be a hypothesis set, and let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be a loss function. Let $\kappa \colon (0,1) \times \mathbb{N} \to \mathbb{R}\_+$ be such that for every $\delta \in (0,1)$ it holds $\kappa(\delta, m) \to 0$ for $m \to \infty$. We call $\kappa$ a **generalization bound for $\mathcal{H}$** if for every distribution $\mathcal{D}$ on $X \times Y$, every $m \in \mathbb{N}$ and every $\delta \in (0,1)$, it holds with probability at least $1 - \delta$ over the random sample $S \sim \mathcal{D}^m$ that
 
 $$\sup_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert \leq \kappa(\delta, m).$$
 
@@ -3576,7 +4095,7 @@ For a generalization bound $\kappa$ it holds that
 
 $$\mathbb{P}\left[\left\lvert \mathcal{R}(h_S) - \widehat{\mathcal{R}}_S(h_S)\right\rvert \leq \varepsilon\right] \geq 1 - \delta$$
 
-as soon as $m$ is so large that $\kappa(\delta, m) \leq \varepsilon$. If there exists an empirical risk minimizer $h_S$ such that $\widehat{\mathcal{R}}_S(h_S) = 0$, then with high probability the empirical risk minimizer will also have a small risk $\mathcal{R}(h_S)$. Empirical risk minimization is often referred to as a "PAC" algorithm, which stands for *probably ($\delta$) approximately correct ($\varepsilon$)*.
+as soon as $m$ is so large that $\kappa(\delta, m) \leq \varepsilon$. If there exists an empirical risk minimizer $h\_S$ such that $\widehat{\mathcal{R}}\_S(h\_S) = 0$, then with high probability the empirical risk minimizer will also have a small risk $\mathcal{R}(h\_S)$. Empirical risk minimization is often referred to as a "PAC" algorithm, which stands for *probably ($\delta$) approximately correct ($\varepsilon$)*.
 
 </div>
 
@@ -3594,7 +4113,7 @@ To establish generalization bounds, we use stochastic tools that guarantee that 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 14.9</span><span class="math-callout__name">(Finite Hypothesis Set)</span></p>
 
-Let $\mathcal{H} \subseteq \lbrace h \colon X \mapsto Y \rbrace$ be a *finite* hypothesis set. Let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be such that $\mathcal{L}(Y \times Y) \subseteq [c_1, c_2]$ with $c_2 - c_1 = C > 0$.
+Let $\mathcal{H} \subseteq \lbrace h \colon X \mapsto Y \rbrace$ be a *finite* hypothesis set. Let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be such that $\mathcal{L}(Y \times Y) \subseteq [c\_1, c\_2]$ with $c\_2 - c\_1 = C > 0$.
 
 Then, for every $m \in \mathbb{N}$ and every distribution $\mathcal{D}$ on $X \times Y$ it holds with probability at least $1 - \delta$ over the sample $S \sim \mathcal{D}^m$ that
 
@@ -3602,11 +4121,18 @@ $$\sup_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \r
 
 </div>
 
-*Proof.* Let $\mathcal{H} = \lbrace h_1, \ldots, h_n \rbrace$. Then it holds by a union bound that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Let $\mathcal{H} = \lbrace h\_1, \ldots, h\_n \rbrace$. Then it holds by a union bound that
 
 $$\mathbb{P}\left[\exists h_i \in \mathcal{H} : \lvert \mathcal{R}(h_i) - \widehat{\mathcal{R}}_S(h_i) \rvert > \varepsilon\right] \leq \sum_{i=1}^n \mathbb{P}\left[\lvert \mathcal{R}(h_i) - \widehat{\mathcal{R}}_S(h_i) \rvert > \varepsilon\right].$$
 
-Note that $\widehat{\mathcal{R}}_S(h_i)$ is the mean of independent random variables which take their values almost surely in $[c_1, c_2]$. Additionally, $\mathcal{R}(h_i)$ is the expectation of $\widehat{\mathcal{R}}_S(h_i)$. The proof can therefore be finished by applying Hoeffding's inequality (Theorem A.24). $\square$
+Note that $\widehat{\mathcal{R}}\_S(h\_i)$ is the mean of independent random variables which take their values almost surely in $[c\_1, c\_2]$. Additionally, $\mathcal{R}(h\_i)$ is the expectation of $\widehat{\mathcal{R}}\_S(h\_i)$. The proof can therefore be finished by applying Hoeffding's inequality (Theorem A.24). $\square$
+
+</details>
+</div>
 
 ### 14.4 Generalization Bounds from Covering Numbers
 
@@ -3619,14 +4145,14 @@ Let $A$ be a relatively compact subset of a metric space $(X, d)$. For $\varepsi
 
 $$\mathcal{G}(A, \varepsilon, (X, d)) := \min\left\lbrace n \in \mathbb{N} \;\middle|\; \exists\, (x_i)_{i=1}^n \subseteq X \text{ s.t. } \bigcup_{i=1}^n B_\varepsilon(x_i) \supset A \right\rbrace,$$
 
-where $B_\varepsilon(x) = \lbrace z \in X \mid d(z, x) \leq \varepsilon \rbrace$, the **$\varepsilon$-covering number** of $A$ in $X$. In case $X$ or $d$ are clear from context, we also write $\mathcal{G}(A, \varepsilon, d)$ or $\mathcal{G}(A, \varepsilon, X)$ instead of $\mathcal{G}(A, \varepsilon, (X, d))$.
+where $B\_\varepsilon(x) = \lbrace z \in X \mid d(z, x) \leq \varepsilon \rbrace$, the **$\varepsilon$-covering number** of $A$ in $X$. In case $X$ or $d$ are clear from context, we also write $\mathcal{G}(A, \varepsilon, d)$ or $\mathcal{G}(A, \varepsilon, X)$ instead of $\mathcal{G}(A, \varepsilon, (X, d))$.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 14.11</span><span class="math-callout__name">(Generalization via Covering Numbers)</span></p>
 
-Let $C_Y, C_\mathcal{L} > 0$ and $\alpha > 0$. Let $Y \subseteq [-C_Y, C_Y]$, $X \subseteq \mathbb{R}^d$ for some $d \in \mathbb{N}$, and $\mathcal{H} \subseteq \lbrace h \colon X \to Y \rbrace$. Further, let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be $C_\mathcal{L}$-Lipschitz.
+Let $C\_Y, C\_\mathcal{L} > 0$ and $\alpha > 0$. Let $Y \subseteq [-C\_Y, C\_Y]$, $X \subseteq \mathbb{R}^d$ for some $d \in \mathbb{N}$, and $\mathcal{H} \subseteq \lbrace h \colon X \to Y \rbrace$. Further, let $\mathcal{L} \colon Y \times Y \to \mathbb{R}$ be $C\_\mathcal{L}$-Lipschitz.
 
 Then, for every distribution $\mathcal{D}$ on $X \times Y$ and every $m \in \mathbb{N}$ it holds with probability at least $1 - \delta$ over the sample $S \sim \mathcal{D}^m$ that for all $h \in \mathcal{H}$
 
@@ -3634,11 +4160,15 @@ $$\lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert \leq 4 C_Y C_\mathca
 
 </div>
 
-*Proof.* Let
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Let
 
 $$M = \mathcal{G}(\mathcal{H}, m^{-\alpha}, L^\infty(X))$$
 
-and let $\mathcal{H}_M = (h_i)_{i=1}^M \subseteq \mathcal{H}$ be such that for every $h \in \mathcal{H}$ there exists $h_i \in \mathcal{H}_M$ with $\lVert h - h_i \rVert_{L^\infty(X)} \leq 1/m^\alpha$. Fix for the moment such $h \in \mathcal{H}$ and $h_i \in \mathcal{H}_M$. By the reverse and normal triangle inequalities, we have
+and let $\mathcal{H}\_M = (h\_i)\_{i=1}^M \subseteq \mathcal{H}$ be such that for every $h \in \mathcal{H}$ there exists $h\_i \in \mathcal{H}\_M$ with $\lVert h - h\_i \rVert\_{L^\infty(X)} \leq 1/m^\alpha$. Fix for the moment such $h \in \mathcal{H}$ and $h\_i \in \mathcal{H}\_M$. By the reverse and normal triangle inequalities, we have
 
 $$\lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert - \lvert \mathcal{R}(h_i) - \widehat{\mathcal{R}}_S(h_i) \rvert \leq \lvert \mathcal{R}(h) - \mathcal{R}(h_i) \rvert + \lvert \widehat{\mathcal{R}}_S(h) - \widehat{\mathcal{R}}_S(h_i) \rvert.$$
 
@@ -3646,7 +4176,7 @@ Moreover, from the monotonicity of the expected value and the Lipschitz property
 
 $$\lvert \mathcal{R}(h) - \mathcal{R}(h_i) \rvert \leq \mathbb{E}\lvert \mathcal{L}(h(x), y) - \mathcal{L}(h_i(x), y) \rvert \leq C_\mathcal{L} \mathbb{E}\lvert h(x) - h_i(x) \rvert \leq \frac{C_\mathcal{L}}{m^\alpha}.$$
 
-A similar estimate yields $\lvert \widehat{\mathcal{R}}_S(h) - \widehat{\mathcal{R}}_S(h_i) \rvert \leq C_\mathcal{L}/m^\alpha$. We thus conclude that for every $\varepsilon > 0$
+A similar estimate yields $\lvert \widehat{\mathcal{R}}\_S(h) - \widehat{\mathcal{R}}\_S(h\_i) \rvert \leq C\_\mathcal{L}/m^\alpha$. We thus conclude that for every $\varepsilon > 0$
 
 $$\mathbb{P}_{S \sim \mathcal{D}^m}\left[\exists h \in \mathcal{H} : \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert \geq \varepsilon\right] \leq \mathbb{P}_{S \sim \mathcal{D}^m}\left[\exists h_i \in \mathcal{H}_M : \lvert \mathcal{R}(h_i) - \widehat{\mathcal{R}}_S(h_i) \rvert \geq \varepsilon - \frac{2C_\mathcal{L}}{m^\alpha}\right].$$
 
@@ -3658,11 +4188,14 @@ as long as
 
 $$\varepsilon - \frac{2C_\mathcal{L}}{m^\alpha} > C\sqrt{\frac{\log(M) + \log(2/\delta)}{2m}},$$
 
-where $C = 2\sqrt{2} C_\mathcal{L} C_Y$. The definition of $M$, together with the above estimates, give that with probability at least $1 - \delta$ it holds for all $h \in \mathcal{H}$
+where $C = 2\sqrt{2} C\_\mathcal{L} C\_Y$. The definition of $M$, together with the above estimates, give that with probability at least $1 - \delta$ it holds for all $h \in \mathcal{H}$
 
 $$\lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert \leq 2\sqrt{2} C_\mathcal{L} C_Y \sqrt{\frac{\log(\mathcal{G}(\mathcal{H}, m^{-\alpha}, L^\infty)) + \log(2/\delta)}{2m}} + \frac{2C_\mathcal{L}}{m^\alpha}.$$
 
 This concludes the proof. $\square$
+
+</details>
+</div>
 
 ### 14.5 Covering Numbers of Deep Neural Networks
 
@@ -3671,13 +4204,13 @@ We have seen in Theorem 14.11 that estimating $L^\infty$-covering numbers is cru
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Lemma 14.12</span><span class="math-callout__name">(Covering Numbers under Lipschitz Maps)</span></p>
 
-Let $X_1$, $X_2$ be two metric spaces and let $f \colon X_1 \to X_2$ be Lipschitz continuous with Lipschitz constant $C_{\text{Lip}}$. For every relatively compact $A \subseteq X_1$ it holds that for all $\varepsilon > 0$
+Let $X\_1$, $X\_2$ be two metric spaces and let $f \colon X\_1 \to X\_2$ be Lipschitz continuous with Lipschitz constant $C\_{\text{Lip}}$. For every relatively compact $A \subseteq X\_1$ it holds that for all $\varepsilon > 0$
 
 $$\mathcal{G}(f(A), C_{\text{Lip}} \varepsilon, X_2) \leq \mathcal{G}(A, \varepsilon, X_1).$$
 
 </div>
 
-Conveniently, we have already observed in Proposition 13.1, that the set of neural networks is the image of $\mathcal{PN}(\mathcal{A}, B)$ under the Lipschitz continuous realization map $R_\sigma$. It thus suffices to establish the $\varepsilon$-covering number of $\mathcal{PN}(\mathcal{A}, B)$ or equivalently of $[-B, B]^{n_\mathcal{A}}$.
+Conveniently, we have already observed in Proposition 13.1, that the set of neural networks is the image of $\mathcal{PN}(\mathcal{A}, B)$ under the Lipschitz continuous realization map $R\_\sigma$. It thus suffices to establish the $\varepsilon$-covering number of $\mathcal{PN}(\mathcal{A}, B)$ or equivalently of $[-B, B]^{n\_\mathcal{A}}$.
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 14.13</span><span class="math-callout__name">(Covering Number of Hypercubes)</span></p>
@@ -3688,20 +4221,27 @@ $$\mathcal{G}([-B, B]^q, \varepsilon, (\mathbb{R}^q, \lVert \cdot \rVert_\infty)
 
 </div>
 
-*Proof.* We start with the one-dimensional case $q = 1$. We choose $k = \lfloor B/\varepsilon \rfloor$,
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We start with the one-dimensional case $q = 1$. We choose $k = \lfloor B/\varepsilon \rfloor$,
 
 $$x_0 = -B + \varepsilon \quad \text{and} \quad x_j = x_{j-1} + 2\varepsilon \text{ for } j = 1, \ldots, k-1.$$
 
-It is clear that all points between $-B$ and $x_{k-1}$ have distance at most $\varepsilon$ to one of the $x_j$. Also, $x_{k-1} = -B + \varepsilon + 2(k-1)\varepsilon \geq B - \varepsilon$. We conclude that $\mathcal{G}([-B,B], \varepsilon, \mathbb{R}) \leq \lceil B/\varepsilon \rceil$. Set $X_k := \lbrace x_0, \ldots, x_{k-1} \rbrace$.
+It is clear that all points between $-B$ and $x\_{k-1}$ have distance at most $\varepsilon$ to one of the $x\_j$. Also, $x\_{k-1} = -B + \varepsilon + 2(k-1)\varepsilon \geq B - \varepsilon$. We conclude that $\mathcal{G}([-B,B], \varepsilon, \mathbb{R}) \leq \lceil B/\varepsilon \rceil$. Set $X\_k := \lbrace x\_0, \ldots, x\_{k-1} \rbrace$.
 
-For arbitrary $q$, we observe that for every $x \in [-B, B]^q$ there is an element in $X_k^q = \bigotimes_{k=1}^q X_k$ with $\lVert \cdot \rVert_\infty$ distance less than $\varepsilon$. Clearly, $\lvert X_k^q \rvert = \lceil B/\varepsilon \rceil^q$, which completes the proof. $\square$
+For arbitrary $q$, we observe that for every $x \in [-B, B]^q$ there is an element in $X\_k^q = \bigotimes\_{k=1}^q X\_k$ with $\lVert \cdot \rVert\_\infty$ distance less than $\varepsilon$. Clearly, $\lvert X\_k^q \rvert = \lceil B/\varepsilon \rceil^q$, which completes the proof. $\square$
 
-Having established a covering number for $[-B, B]^{n_\mathcal{A}}$ and hence $\mathcal{PN}(\mathcal{A}, B)$, we can now estimate the covering numbers of deep neural networks by combining Lemma 14.12 and Propositions 13.1 and 14.13.
+</details>
+</div>
+
+Having established a covering number for $[-B, B]^{n\_\mathcal{A}}$ and hence $\mathcal{PN}(\mathcal{A}, B)$, we can now estimate the covering numbers of deep neural networks by combining Lemma 14.12 and Propositions 13.1 and 14.13.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 14.14</span><span class="math-callout__name">(Covering Numbers of Neural Networks)</span></p>
 
-Let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be $C_\sigma$-Lipschitz continuous with $C_\sigma \geq 1$, let $\lvert \sigma(x) \rvert \leq C_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B \geq 1$. Then
+Let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be $C\_\sigma$-Lipschitz continuous with $C\_\sigma \geq 1$, let $\lvert \sigma(x) \rvert \leq C\_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B \geq 1$. Then
 
 $$\mathcal{G}(\mathcal{N}(\sigma; \mathcal{A}, B), \varepsilon, L^\infty([0,1]^{d_0})) \leq \mathcal{G}([-B,B]^{n_\mathcal{A}}, \varepsilon / (n_\mathcal{A}(2C_\sigma B d_{\max})^L), (\mathbb{R}^{n_\mathcal{A}}, \lVert \cdot \rVert_\infty)) \leq \lceil n_\mathcal{A}/\varepsilon \rceil^{n_\mathcal{A}} \lceil 2C_\sigma B d_{\max} \rceil^{n_\mathcal{A} L}.$$
 
@@ -3711,14 +4251,14 @@ We end this section by applying the above to the generalization bound of Theorem
 
 $$\mathcal{N}^*(\sigma; \mathcal{A}, B) := \left\lbrace \Phi \in \mathcal{N}(\sigma; \mathcal{A}, B) \;\middle|\; \Phi(\boldsymbol{x}) \in [-1, 1] \text{ for all } \boldsymbol{x} \in [0,1]^{d_0} \right\rbrace.$$
 
-Since $\mathcal{N}^*(\sigma; \mathcal{A}, B) \subseteq \mathcal{N}(\sigma; \mathcal{A}, B)$ we can bound the covering numbers of $\mathcal{N}^*(\sigma; \mathcal{A}, B)$ by those of $\mathcal{N}(\sigma; \mathcal{A}, B)$. This yields the following result.
+Since $\mathcal{N}^\ast(\sigma; \mathcal{A}, B) \subseteq \mathcal{N}(\sigma; \mathcal{A}, B)$ we can bound the covering numbers of $\mathcal{N}^\ast(\sigma; \mathcal{A}, B)$ by those of $\mathcal{N}(\sigma; \mathcal{A}, B)$. This yields the following result.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 14.15</span><span class="math-callout__name">(Generalization Bound for Neural Networks)</span></p>
 
-Let $C_\mathcal{L} > 0$ and let $\mathcal{L} \colon [-1,1] \times [-1,1] \to \mathbb{R}$ be $C_\mathcal{L}$-Lipschitz continuous. Further, let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be $C_\sigma$-Lipschitz continuous with $C_\sigma \geq 1$, and $\lvert \sigma(x) \rvert \leq C_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B \geq 1$.
+Let $C\_\mathcal{L} > 0$ and let $\mathcal{L} \colon [-1,1] \times [-1,1] \to \mathbb{R}$ be $C\_\mathcal{L}$-Lipschitz continuous. Further, let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be $C\_\sigma$-Lipschitz continuous with $C\_\sigma \geq 1$, and $\lvert \sigma(x) \rvert \leq C\_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B \geq 1$.
 
-Then, for every $m \in \mathbb{N}$, and every distribution $\mathcal{D}$ on $X \times [-1,1]$ it holds with probability at least $1 - \delta$ over $S \sim \mathcal{D}^m$ that for all $\Phi \in \mathcal{N}^*(\sigma; \mathcal{A}, B)$
+Then, for every $m \in \mathbb{N}$, and every distribution $\mathcal{D}$ on $X \times [-1,1]$ it holds with probability at least $1 - \delta$ over $S \sim \mathcal{D}^m$ that for all $\Phi \in \mathcal{N}^\ast(\sigma; \mathcal{A}, B)$
 
 $$\lvert \mathcal{R}(\Phi) - \widehat{\mathcal{R}}_S(\Phi) \rvert \leq 4C_\mathcal{L} \sqrt{\frac{n_\mathcal{A} \log(\lceil n_\mathcal{A} \sqrt{m} \rceil) + L n_\mathcal{A} \log(\lceil 2C_\sigma B d_{\max} \rceil) + \log(2/\delta)}{m}} + \frac{2C_\mathcal{L}}{\sqrt{m}}.$$
 
@@ -3730,23 +4270,23 @@ We recall the decomposition of the error:
 
 $$\mathcal{R}(h_S) - R^* \leq 2\varepsilon_{\text{gen}} + \varepsilon_{\text{approx}},$$
 
-where $R_*$ is the Bayes risk. We make the following observations about the approximation error $\varepsilon_{\text{approx}}$ and generalization error $\varepsilon_{\text{gen}}$ in the context of neural network based learning:
+where $R\_\ast$ is the Bayes risk. We make the following observations about the approximation error $\varepsilon\_{\text{approx}}$ and generalization error $\varepsilon\_{\text{gen}}$ in the context of neural network based learning:
 
-- *Scaling of generalization error:* By Theorem 14.15, for a hypothesis class $\mathcal{H}$ of neural networks with $n_\mathcal{A}$ weights and $L$ layers, and for sample of size $m \in \mathbb{N}$, the generalization error $\varepsilon_{\text{gen}}$ essentially scales like
+- *Scaling of generalization error:* By Theorem 14.15, for a hypothesis class $\mathcal{H}$ of neural networks with $n\_\mathcal{A}$ weights and $L$ layers, and for sample of size $m \in \mathbb{N}$, the generalization error $\varepsilon\_{\text{gen}}$ essentially scales like
 
 $$\varepsilon_{\text{gen}} = O\!\left(\sqrt{(n_\mathcal{A} \log(n_\mathcal{A} m) + L n_\mathcal{A} \log(n_\mathcal{A}))/m}\right) \quad \text{as } m \to \infty.$$
 
-- *Scaling of approximation error:* Assume there exists $h^*$ such that $\mathcal{R}(h^\ast) = R^\ast$, and let the loss function $\mathcal{L}$ be Lipschitz continuous in the first coordinate. Then
+- *Scaling of approximation error:* Assume there exists $h^\ast$ such that $\mathcal{R}(h^\ast) = R^\ast$, and let the loss function $\mathcal{L}$ be Lipschitz continuous in the first coordinate. Then
 
 $$\varepsilon_{\text{approx}} = \inf_{h \in \mathcal{H}} \mathcal{R}(h) - \mathcal{R}(h^*) \leq C \inf_{h \in \mathcal{H}} \lVert h - h^* \rVert_{L^\infty},$$
 
-for some constant $C > 0$. If we choose $\mathcal{H}$ as a set of neural networks with size $n_\mathcal{A}$ and $L$ layers, then $\inf_{h \in \mathcal{H}} \lVert h - h^* \rVert_{L^\infty}$ behaves like $n_\mathcal{A}^{-r}$ for appropriate activation functions and regularity conditions on $h^*$.
+for some constant $C > 0$. If we choose $\mathcal{H}$ as a set of neural networks with size $n\_\mathcal{A}$ and $L$ layers, then $\inf\_{h \in \mathcal{H}} \lVert h - h^\ast \rVert\_{L^\infty}$ behaves like $n\_\mathcal{A}^{-r}$ for appropriate activation functions and regularity conditions on $h^\ast$.
 
-By these considerations, we conclude that for an empirical risk minimizer $\Phi_S$ from a set of neural networks with $n_\mathcal{A}$ weights and $L$ layers, it holds that
+By these considerations, we conclude that for an empirical risk minimizer $\Phi\_S$ from a set of neural networks with $n\_\mathcal{A}$ weights and $L$ layers, it holds that
 
 $$\mathcal{R}(\Phi_S) - R^* \leq O\!\left(\sqrt{(n_\mathcal{A} \log(m) + L n_\mathcal{A} \log(n_\mathcal{A}))/m}\right) + O(n_\mathcal{A}^{-r}),$$
 
-for $m \to \infty$ and for some $r$ depending on the regularity of $h^*$. Note that enlarging the neural network set, i.e., increasing $n_\mathcal{A}$ has two effects: The term associated to approximation decreases, and the term associated to generalization increases. This trade-off is known as **approximation-complexity trade-off**.
+for $m \to \infty$ and for some $r$ depending on the regularity of $h^\ast$. Note that enlarging the neural network set, i.e., increasing $n\_\mathcal{A}$ has two effects: The term associated to approximation decreases, and the term associated to generalization increases. This trade-off is known as **approximation-complexity trade-off**.
 
 Using this notion, we can separate all models into three classes:
 
@@ -3757,7 +4297,7 @@ Using this notion, we can separate all models into three classes:
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Overparameterized Regime)</span></p>
 
-In Chapter 15, we will see that deep learning often operates in the regime where the number of parameters $n_\mathcal{A}$ exceeds the optimal trade-off point. For certain architectures used in practice, $n_\mathcal{A}$ can be so large that the theory of the approximation-complexity trade-off suggests that learning should be impossible. However, the present analysis only provides upper bounds. It does not prove that learning is impossible or even impractical in the overparameterized regime. Moreover, in Chapter 11 we have already seen indications that learning in the overparametrized regime need not necessarily lead to large generalization errors.
+In Chapter 15, we will see that deep learning often operates in the regime where the number of parameters $n\_\mathcal{A}$ exceeds the optimal trade-off point. For certain architectures used in practice, $n\_\mathcal{A}$ can be so large that the theory of the approximation-complexity trade-off suggests that learning should be impossible. However, the present analysis only provides upper bounds. It does not prove that learning is impossible or even impractical in the overparameterized regime. Moreover, in Chapter 11 we have already seen indications that learning in the overparametrized regime need not necessarily lead to large generalization errors.
 
 </div>
 
@@ -3767,7 +4307,7 @@ In addition to covering numbers, there are several other tools to analyze the ge
 
 #### 14.7.1 Definition and Examples
 
-Let $\mathcal{H}$ be a hypothesis set of functions mapping from $\mathbb{R}^d$ to $\lbrace 0, 1 \rbrace$. A set $S = \lbrace \boldsymbol{x}_1, \ldots, \boldsymbol{x}_n \rbrace \subseteq \mathbb{R}^d$ is said to be **shattered** by $\mathcal{H}$ if for every $(y_1, \ldots, y_n) \in \lbrace 0, 1 \rbrace^n$ there exists $h \in \mathcal{H}$ such that $h(\boldsymbol{x}_j) = y_j$ for all $j \in \mathbb{N}$.
+Let $\mathcal{H}$ be a hypothesis set of functions mapping from $\mathbb{R}^d$ to $\lbrace 0, 1 \rbrace$. A set $S = \lbrace \boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_n \rbrace \subseteq \mathbb{R}^d$ is said to be **shattered** by $\mathcal{H}$ if for every $(y\_1, \ldots, y\_n) \in \lbrace 0, 1 \rbrace^n$ there exists $h \in \mathcal{H}$ such that $h(\boldsymbol{x}\_j) = y\_j$ for all $j \in \mathbb{N}$.
 
 The VC dimension quantifies the complexity of a function class via the number of points that can in principle be shattered.
 
@@ -3781,24 +4321,24 @@ The **VC dimension** of $\mathcal{H}$ is the cardinality of the largest set $S \
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.17</span><span class="math-callout__name">(Intervals)</span></p>
 
-Let $\mathcal{H} = \lbrace \mathbb{1}_{[a,b]} \mid a, b \in \mathbb{R} \rbrace$. It is clear that $\text{VCdim}(\mathcal{H}) \geq 2$ since for $x_1 < x_2$ the functions
+Let $\mathcal{H} = \lbrace \mathbb{1}\_{[a,b]} \mid a, b \in \mathbb{R} \rbrace$. It is clear that $\text{VCdim}(\mathcal{H}) \geq 2$ since for $x\_1 < x\_2$ the functions
 
 $$\mathbb{1}_{[x_1-2, x_1-1]}, \quad \mathbb{1}_{[x_1-1, x_1]}, \quad \mathbb{1}_{[x_1, x_2]}, \quad \mathbb{1}_{[x_2, x_2+1]}$$
 
-are all different when restricted to $S = (x_1, x_2)$.
+are all different when restricted to $S = (x\_1, x\_2)$.
 
-On the other hand, if $x_1 < x_2 < x_3$ then, since $h^{-1}(\lbrace 1 \rbrace)$ is an interval for all $h \in \mathcal{H}$, we have that $h(x_1) = 1 = h(x_3)$ implies $h(x_2) = 1$. Hence, no set of three elements can be shattered. Therefore, $\text{VCdim}(\mathcal{H}) = 2$.
+On the other hand, if $x\_1 < x\_2 < x\_3$ then, since $h^{-1}(\lbrace 1 \rbrace)$ is an interval for all $h \in \mathcal{H}$, we have that $h(x\_1) = 1 = h(x\_3)$ implies $h(x\_2) = 1$. Hence, no set of three elements can be shattered. Therefore, $\text{VCdim}(\mathcal{H}) = 2$.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 14.18</span><span class="math-callout__name">(Half-spaces)</span></p>
 
-Let $\mathcal{H}_2 = \lbrace \mathbb{1}_{[0, \infty)}(\langle \boldsymbol{w}, \cdot \rangle + b) \mid \boldsymbol{w} \in \mathbb{R}^2, b \in \mathbb{R} \rbrace$ be a hypothesis set of rotated and shifted two-dimensional half-spaces. $\mathcal{H}_2$ shatters a set of three points. More generally, for $d \geq 2$ with
+Let $\mathcal{H}\_2 = \lbrace \mathbb{1}\_{[0, \infty)}(\langle \boldsymbol{w}, \cdot \rangle + b) \mid \boldsymbol{w} \in \mathbb{R}^2, b \in \mathbb{R} \rbrace$ be a hypothesis set of rotated and shifted two-dimensional half-spaces. $\mathcal{H}\_2$ shatters a set of three points. More generally, for $d \geq 2$ with
 
 $$\mathcal{H}_d := \lbrace \boldsymbol{x} \mapsto \mathbb{1}_{[0, \infty)}(\boldsymbol{w}^\top \boldsymbol{x} + b) \mid \boldsymbol{w} \in \mathbb{R}^d, \; b \in \mathbb{R} \rbrace$$
 
-the VC dimension of $\mathcal{H}_d$ equals $d + 1$.
+the VC dimension of $\mathcal{H}\_d$ equals $d + 1$.
 
 </div>
 
@@ -3860,11 +4400,18 @@ $$\mathbb{P}_{S \sim \mathcal{D}^m}\left[\sup_{h \in \mathcal{H}} \lvert \mathca
 
 </div>
 
-*Proof.* For a sample $S$, let $h_S \in \mathcal{H}$ be an empirical risk minimizer, i.e., $\widehat{\mathcal{R}}\_S(h_S) = \min_{h \in \mathcal{H}} \widehat{\mathcal{R}}\_S(h)$. Let $\mathcal{D}$ be the distribution of Theorem 14.21. Moreover, for $\delta > 0$, let $h_\delta \in \mathcal{H}$ be such that $\mathcal{R}(h_\delta) - \inf_{h \in \mathcal{H}} \mathcal{R}(h) < \delta$. Then, applying Theorem 14.21 with $\text{A}(S) = h_S$ it holds that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+For a sample $S$, let $h\_S \in \mathcal{H}$ be an empirical risk minimizer, i.e., $\widehat{\mathcal{R}}\_S(h\_S) = \min\_{h \in \mathcal{H}} \widehat{\mathcal{R}}\_S(h)$. Let $\mathcal{D}$ be the distribution of Theorem 14.21. Moreover, for $\delta > 0$, let $h\_\delta \in \mathcal{H}$ be such that $\mathcal{R}(h\_\delta) - \inf\_{h \in \mathcal{H}} \mathcal{R}(h) < \delta$. Then, applying Theorem 14.21 with $\text{A}(S) = h\_S$ it holds that
 
 $$2 \sup_{h \in \mathcal{H}} \lvert \mathcal{R}(h) - \widehat{\mathcal{R}}_S(h) \rvert \geq \lvert \mathcal{R}(h_S) - \widehat{\mathcal{R}}_S(h_S) \rvert + \lvert \mathcal{R}(h_\delta) - \widehat{\mathcal{R}}_S(h_\delta) \rvert \geq \mathcal{R}(h_S) - \mathcal{R}(h_\delta) > \mathcal{R}(h_S) - \inf_{h \in \mathcal{H}} \mathcal{R}(h) - \delta,$$
 
-where we used the definition of $h_S$ in the third inequality. The proof is completed by applying Theorem 14.21 and using that $\delta$ was arbitrary. $\square$
+where we used the definition of $h\_S$ in the third inequality. The proof is completed by applying Theorem 14.21 and using that $\delta$ was arbitrary. $\square$
+
+</details>
+</div>
 
 We have seen now, that we have a generalization bound scaling like $O(1/\sqrt{m})$ for $m \to \infty$ if and only if the VC dimension of the hypothesis class is finite. In more quantitative terms, we require the VC dimension of a neural network to be smaller than $m$.
 
@@ -3881,7 +4428,7 @@ $$\text{VCdim}(\mathcal{H}) \leq C \cdot (n_\mathcal{A} L \log(n_\mathcal{A}) + 
 
 </div>
 
-The bound from Theorem 14.20 is meaningful if $m \gg k$. For ReLU neural networks as in Theorem 14.23, this means $m \gg n_\mathcal{A} L \log(n_\mathcal{A}) + n_\mathcal{A} L^2$. Fixing $L = 1$ this amounts to $m \gg n_\mathcal{A} \log(n_\mathcal{A})$ for a shallow neural network with $n_\mathcal{A}$ parameters. This condition is contrary to what we assumed in Chapter 11, where it was crucial that $n_\mathcal{A} \gg m$. If the VC dimension of the neural network sets scale like $O(n_\mathcal{A} \log(n_\mathcal{A}))$, then Theorem 14.21 and Corollary 14.22 indicate that, at least for certain distributions, generalization should not be possible in this regime. We will discuss the resolution of this potential paradox in Chapter 15.
+The bound from Theorem 14.20 is meaningful if $m \gg k$. For ReLU neural networks as in Theorem 14.23, this means $m \gg n\_\mathcal{A} L \log(n\_\mathcal{A}) + n\_\mathcal{A} L^2$. Fixing $L = 1$ this amounts to $m \gg n\_\mathcal{A} \log(n\_\mathcal{A})$ for a shallow neural network with $n\_\mathcal{A}$ parameters. This condition is contrary to what we assumed in Chapter 11, where it was crucial that $n\_\mathcal{A} \gg m$. If the VC dimension of the neural network sets scale like $O(n\_\mathcal{A} \log(n\_\mathcal{A}))$, then Theorem 14.21 and Corollary 14.22 indicate that, at least for certain distributions, generalization should not be possible in this regime. We will discuss the resolution of this potential paradox in Chapter 15.
 
 ### 14.8 Lower Bounds on Achievable Approximation Rates
 
@@ -3890,7 +4437,7 @@ We conclude this chapter on the complexities and generalization bounds of neural
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 14.24</span><span class="math-callout__name">(Lower Bound on Approximation Rates)</span></p>
 
-Let $k$, $d \in \mathbb{N}$. Assume that for every $\varepsilon > 0$ there exists $L_\varepsilon \in \mathbb{N}$ and $\mathcal{A}_\varepsilon$ with $L_\varepsilon$ layers and input dimension $d$ such that
+Let $k$, $d \in \mathbb{N}$. Assume that for every $\varepsilon > 0$ there exists $L\_\varepsilon \in \mathbb{N}$ and $\mathcal{A}\_\varepsilon$ with $L\_\varepsilon$ layers and input dimension $d$ such that
 
 $$\sup_{\lVert f \rVert_{C^k([0,1]^d)} \leq 1} \inf_{\Phi \in \mathcal{N}(\sigma_{\text{ReLU}}; \mathcal{A}_\varepsilon, \infty)} \lVert f - \Phi \rVert_{C^0([0,1]^d)} < \frac{\varepsilon}{2}.$$
 
@@ -3902,19 +4449,19 @@ $$n_{\mathcal{A}_\varepsilon} L_\varepsilon \log(n_{\mathcal{A}_\varepsilon}) + 
 
 To interpret Theorem 14.24, we consider two situations:
 
-- In case the depth is allowed to increase at most logarithmically, then reaching uniform error $\varepsilon$ for all $f \in C^k([0,1]^d)$ with $\lVert f \rVert_{C^k([0,1]^d)} \leq 1$ requires
+- In case the depth is allowed to increase at most logarithmically, then reaching uniform error $\varepsilon$ for all $f \in C^k([0,1]^d)$ with $\lVert f \rVert\_{C^k([0,1]^d)} \leq 1$ requires
 
 $$n_{\mathcal{A}_\varepsilon} \log(n_{\mathcal{A}_\varepsilon}) \log(\varepsilon) + n_{\mathcal{A}_\varepsilon} \log(\varepsilon)^2 \geq C \varepsilon^{-d/k}.$$
 
-In terms of the neural network size, this (necessary) condition becomes $n_{\mathcal{A}_\varepsilon} \geq C \varepsilon^{-d/k} / \log(\varepsilon)^2$. As we have shown in Chapter 7, in particular Theorem 7.10, up to log terms this condition is also sufficient. Hence, while the constructive proof of Theorem 7.10 might have seemed rather specific, under the assumption of the depth increasing at most logarithmically, it was essentially optimal! The neural networks in this proof are shown to have size $O(\varepsilon^{-d/k})$ up to log terms.
+In terms of the neural network size, this (necessary) condition becomes $n\_{\mathcal{A}\_\varepsilon} \geq C \varepsilon^{-d/k} / \log(\varepsilon)^2$. As we have shown in Chapter 7, in particular Theorem 7.10, up to log terms this condition is also sufficient. Hence, while the constructive proof of Theorem 7.10 might have seemed rather specific, under the assumption of the depth increasing at most logarithmically, it was essentially optimal! The neural networks in this proof are shown to have size $O(\varepsilon^{-d/k})$ up to log terms.
 
-- If we allow the depth $L_\varepsilon$ to increase faster than logarithmically in $\varepsilon$, then the lower bound on the required neural network size improves. Fixing for example $\mathcal{A}_\varepsilon$ with $L_\varepsilon$ layers such that $n_{\mathcal{A}_\varepsilon} \leq W L_\varepsilon$ for some fixed $\varepsilon$ independent $W \in \mathbb{N}$, the (necessary) condition on the depth becomes
+- If we allow the depth $L\_\varepsilon$ to increase faster than logarithmically in $\varepsilon$, then the lower bound on the required neural network size improves. Fixing for example $\mathcal{A}\_\varepsilon$ with $L\_\varepsilon$ layers such that $n\_{\mathcal{A}\_\varepsilon} \leq W L\_\varepsilon$ for some fixed $\varepsilon$ independent $W \in \mathbb{N}$, the (necessary) condition on the depth becomes
 
 $$W \log(W L_\varepsilon) L_\varepsilon^2 + W L_\varepsilon^3 \geq C \varepsilon^{-d/k}$$
 
-and hence $L_\varepsilon \gtrsim \varepsilon^{-d/(3k)}$.
+and hence $L\_\varepsilon \gtrsim \varepsilon^{-d/(3k)}$.
 
-To sum up, in order to get error $\varepsilon$ uniformly for all $\lVert f \rVert_{C^k([0,1]^d)} \leq 1$, the size of a ReLU neural network is required to increase at least like $O(\varepsilon^{-d/(2k)})$ as $\varepsilon \to 0$, i.e. the best possible attainable convergence rate is $2k/d$. It has been proven that this rate is also achievable, and thus the bound is sharp. Achieving this rate requires neural network architectures that grow faster in depth than in width.
+To sum up, in order to get error $\varepsilon$ uniformly for all $\lVert f \rVert\_{C^k([0,1]^d)} \leq 1$, the size of a ReLU neural network is required to increase at least like $O(\varepsilon^{-d/(2k)})$ as $\varepsilon \to 0$, i.e. the best possible attainable convergence rate is $2k/d$. It has been proven that this rate is also achievable, and thus the bound is sharp. Achieving this rate requires neural network architectures that grow faster in depth than in width.
 
 ---
 
@@ -3928,13 +4475,36 @@ Surprisingly, successful neural network architectures do not necessarily follow 
 
 The success of deep learning in a regime not covered by traditional statistical learning theory puzzled researchers for some time. An intriguing set of experiments showed that while the risk follows the upper bound from Section 14.6 for neural network architectures that do not interpolate the data, the curve does not expand to infinity in the way that the approximation-complexity trade-off suggests. Instead, after surpassing the so-called "interpolation threshold", the risk starts to decrease again. This behavior is known as **double descent**.
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 520 220" width="100%" style="max-width: 600px; height: auto;" role="img" aria-labelledby="dd-title">
+  <title id="dd-title">Double descent</title>
+  <line x1="50.0" y1="184.0" x2="490.0" y2="184.0" stroke="#999" stroke-width="1"/>
+  <line x1="50.0" y1="184.0" x2="50.0" y2="24.0" stroke="#999" stroke-width="1"/>
+  <line x1="160.0" y1="184.0" x2="160.0" y2="24.0" stroke="#aaa" stroke-dasharray="3 3"/>
+  <text x="160.0" y="20.0" text-anchor="middle" font-family="serif" font-size="10" fill="#888">interpolation threshold</text>
+  <path d="M 50.0,148.0 L 55.5,150.5 L 61.0,152.7 L 66.5,154.5 L 72.0,156.0 L 77.5,157.2 L 83.0,158.1 L 88.5,158.6 L 94.0,158.7 L 99.5,158.6 L 105.0,158.1 L 110.5,157.2 L 116.0,156.0 L 121.5,154.5 L 127.0,152.7 L 132.5,150.5 L 138.0,148.0 L 143.5,145.1 L 149.0,141.9 L 154.5,138.4" fill="none" stroke="#1565c0" stroke-width="2.2"/>
+  <path d="M 156.7,136.8 L 156.9,131.2 L 157.0,125.6 L 157.2,120.0 L 157.4,114.4 L 157.6,108.8 L 157.7,103.1 L 157.9,97.5 L 158.1,91.9 L 158.3,86.3 L 158.4,80.7 L 158.6,75.0 L 158.8,69.4 L 159.0,63.8 L 159.1,58.2 L 159.3,52.5 L 159.5,46.9 L 159.7,41.3 L 159.8,35.7 L 160.0,30.1 L 160.0,32.4 L 160.2,24.0 L 160.3,24.0 L 160.5,24.0 L 160.7,24.0 L 160.9,24.0 L 161.0,24.0 L 161.2,24.0 L 161.4,24.0 L 161.6,24.0 L 161.7,24.0 L 161.9,24.0 L 162.1,24.0 L 162.3,24.0 L 162.4,24.0 L 162.6,24.0 L 162.8,24.0 L 163.0,24.0 L 163.1,24.0 L 163.3,24.0" fill="none" stroke="#1565c0" stroke-width="2.2"/>
+  <path d="M 165.5,24.0 L 171.0,24.0 L 176.5,24.0 L 182.0,24.0 L 187.5,36.6 L 193.0,54.7 L 198.5,68.2 L 204.0,78.7 L 209.5,87.2 L 215.0,94.0 L 220.5,99.8 L 226.0,104.6 L 231.5,108.8 L 237.0,112.4 L 242.5,115.6 L 248.0,118.4 L 253.5,120.8 L 259.0,123.1 L 264.5,125.1 L 270.0,126.9 L 275.5,128.5 L 281.0,130.0 L 286.5,131.4 L 292.0,132.6 L 297.5,133.8 L 303.0,134.9 L 308.5,135.9 L 314.0,136.8 L 319.5,137.7 L 325.0,138.5 L 330.5,139.3 L 336.0,140.0 L 341.5,140.7 L 347.0,141.3 L 352.5,141.9 L 358.0,142.5 L 363.5,143.0 L 369.0,143.5 L 374.5,144.0 L 380.0,144.5 L 385.5,144.9 L 391.0,145.3 L 396.5,145.7 L 402.0,146.1 L 407.5,146.5 L 413.0,146.8 L 418.5,147.2 L 424.0,147.5 L 429.5,147.8 L 435.0,148.1 L 440.5,148.4 L 446.0,148.6 L 451.5,148.9 L 457.0,149.2 L 462.5,149.4 L 468.0,149.7 L 473.5,149.9 L 479.0,150.1 L 484.5,150.3 L 490.0,150.5" fill="none" stroke="#1565c0" stroke-width="2.2"/>
+  <text x="105.0" y="202.0" text-anchor="middle" font-family="serif" font-size="10" fill="#666">under-parameterized</text>
+  <text x="325.0" y="202.0" text-anchor="middle" font-family="serif" font-size="10" fill="#666">over-parameterized</text>
+  <text x="260.0" y="214" text-anchor="middle" font-family="serif" font-size="11" fill="#333">model complexity (#params / #samples)</text>
+  <text x="14" y="110.0" font-family="serif" font-size="11" fill="#333" transform="rotate(-90 14,110.0)">test risk</text>
+  <text x="110.5" y="116.63157894736842" font-family="serif" font-size="10" fill="#666" font-style="italic">classical U</text>
+  <text x="303.0" y="125.05263157894738" font-family="serif" font-size="10" fill="#666" font-style="italic">second descent</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The double-descent test-risk curve. In the under-parameterized regime, the classical bias-variance U-curve applies. As model complexity approaches the interpolation threshold (just enough capacity to fit the training set exactly), test risk spikes. Beyond it, in the over-parameterized regime, increasing capacity again *decreases* test risk — the second descent that classical theory does not predict.
+</figcaption>
+</figure>
+
+
 #### 15.1.1 Least-Squares Regression Revisited
 
-To gain further insight, we consider ridgeless kernel least-squares regression as introduced in Section 11.2. Consider a data sample $(\boldsymbol{x}_j, y_j)_{j=1}^m \subseteq \mathbb{R}^d \times \mathbb{R}$ generated by some ground-truth function $f$, i.e.
+To gain further insight, we consider ridgeless kernel least-squares regression as introduced in Section 11.2. Consider a data sample $(\boldsymbol{x}\_j, y\_j)\_{j=1}^m \subseteq \mathbb{R}^d \times \mathbb{R}$ generated by some ground-truth function $f$, i.e.
 
 $$y_j = f(\boldsymbol{x}_j) \quad \text{for } j = 1, \ldots, m.$$
 
-Let $\phi_j \colon \mathbb{R}^d \to \mathbb{R}$, $j \in \mathbb{N}$, be a sequence of *ansatz functions*. For $n \in \mathbb{N}$, we wish to fit a function $\boldsymbol{x} \mapsto \sum_{i=1}^n w_i \phi_i(\boldsymbol{x})$ to the data using linear least-squares. To this end, we introduce the feature map
+Let $\phi\_j \colon \mathbb{R}^d \to \mathbb{R}$, $j \in \mathbb{N}$, be a sequence of *ansatz functions*. For $n \in \mathbb{N}$, we wish to fit a function $\boldsymbol{x} \mapsto \sum\_{i=1}^n w\_i \phi\_i(\boldsymbol{x})$ to the data using linear least-squares. To this end, we introduce the feature map
 
 $$\mathbb{R}^d \ni \boldsymbol{x} \mapsto \boldsymbol{\phi}(\boldsymbol{x}) := (\phi_1(\boldsymbol{x}), \ldots, \phi_n(\boldsymbol{x}))^\top \in \mathbb{R}^n.$$
 
@@ -3946,54 +4516,58 @@ With
 
 $$\boldsymbol{A}_n := \begin{pmatrix} \phi_1(\boldsymbol{x}_1) & \cdots & \phi_n(\boldsymbol{x}_1) \\ \vdots & \ddots & \vdots \\ \phi_1(\boldsymbol{x}_m) & \cdots & \phi_n(\boldsymbol{x}_m) \end{pmatrix} = \begin{pmatrix} \boldsymbol{\phi}(\boldsymbol{x}_1)^\top \\ \vdots \\ \boldsymbol{\phi}(\boldsymbol{x}_m)^\top \end{pmatrix} \in \mathbb{R}^{m \times n}$$
 
-and $\boldsymbol{y} = (y_1, \ldots, y_m)^\top$ it holds
+and $\boldsymbol{y} = (y\_1, \ldots, y\_m)^\top$ it holds
 
 $$\widehat{\mathcal{R}}_S(\boldsymbol{w}) = \frac{1}{m} \lVert \boldsymbol{A}_n \boldsymbol{w} - \boldsymbol{y} \rVert^2.$$
 
-As discussed in Sections 11.1--11.2, a unique minimizer of this problem only exists if $\boldsymbol{A}_n$ has rank $n$. For a minimizer $\boldsymbol{w}_n$, the fitted function reads
+As discussed in Sections 11.1--11.2, a unique minimizer of this problem only exists if $\boldsymbol{A}\_n$ has rank $n$. For a minimizer $\boldsymbol{w}\_n$, the fitted function reads
 
 $$f_n(x) := \sum_{j=1}^n w_{n,j} \phi_j(x).$$
 
-We are interested in the behavior of the $f_n$ as a function of $n$ (the number of ansatz functions/parameters of our model), and distinguish between two cases:
+We are interested in the behavior of the $f\_n$ as a function of $n$ (the number of ansatz functions/parameters of our model), and distinguish between two cases:
 
-- *Underparameterized:* If $n < m$ we have fewer parameters $n$ than training points $m$. For the least squares problem of minimizing $\widehat{\mathcal{R}}_S$, this means that there are more conditions $m$ than free parameters $n$. Thus, in general, we cannot interpolate the data, and we have $\min_{\boldsymbol{w} \in \mathbb{R}^n} \widehat{\mathcal{R}}_S(\boldsymbol{w}) > 0$.
+- *Underparameterized:* If $n < m$ we have fewer parameters $n$ than training points $m$. For the least squares problem of minimizing $\widehat{\mathcal{R}}\_S$, this means that there are more conditions $m$ than free parameters $n$. Thus, in general, we cannot interpolate the data, and we have $\min\_{\boldsymbol{w} \in \mathbb{R}^n} \widehat{\mathcal{R}}\_S(\boldsymbol{w}) > 0$.
 
-- *Overparameterized:* If $n \geq m$, then we have at least as many parameters $n$ as training points $m$. If the $\boldsymbol{x}_j$ and the $\phi_j$ are such that $\boldsymbol{A}_n \in \mathbb{R}^{m \times n}$ has full rank $m$, then there exists $\boldsymbol{w}$ such that $\widehat{\mathcal{R}}_S(\boldsymbol{w}) = 0$. If $n > m$, then $\boldsymbol{A}_n$ necessarily has a nontrivial kernel, and there exist infinitely many parameter choices $\boldsymbol{w}$ that yield zero empirical risk $\widehat{\mathcal{R}}_S$. Some of them lead to better, and some lead to worse prediction functions $f_n$.
+- *Overparameterized:* If $n \geq m$, then we have at least as many parameters $n$ as training points $m$. If the $\boldsymbol{x}\_j$ and the $\phi\_j$ are such that $\boldsymbol{A}\_n \in \mathbb{R}^{m \times n}$ has full rank $m$, then there exists $\boldsymbol{w}$ such that $\widehat{\mathcal{R}}\_S(\boldsymbol{w}) = 0$. If $n > m$, then $\boldsymbol{A}\_n$ necessarily has a nontrivial kernel, and there exist infinitely many parameter choices $\boldsymbol{w}$ that yield zero empirical risk $\widehat{\mathcal{R}}\_S$. Some of them lead to better, and some lead to worse prediction functions $f\_n$.
 
-In the overparameterized case, there exist many minimizers of $\widehat{\mathcal{R}}_S$. The training algorithm we use to compute a minimizer determines the type of prediction function $f_n$ we obtain. We argued in Chapter 11 that for suitable initialization, gradient descent converges towards the **minimal norm minimizer**
+In the overparameterized case, there exist many minimizers of $\widehat{\mathcal{R}}\_S$. The training algorithm we use to compute a minimizer determines the type of prediction function $f\_n$ we obtain. We argued in Chapter 11 that for suitable initialization, gradient descent converges towards the **minimal norm minimizer**
 
 $$\boldsymbol{w}_{n,*} = \operatorname{argmin}_{\boldsymbol{w} \in M} \lVert \boldsymbol{w} \rVert \in \mathbb{R}^n, \qquad M = \lbrace \boldsymbol{w} \in \mathbb{R}^n \mid \widehat{\mathcal{R}}_S(\boldsymbol{w}) \leq \widehat{\mathcal{R}}_S(\boldsymbol{v}) \;\forall\, \boldsymbol{v} \in \mathbb{R}^n \rbrace.$$
 
 #### 15.1.2 An Example
 
-We consider a concrete example. We plot a set of 40 ansatz functions $\phi_1, \ldots, \phi_{40}$, which are drawn from a Gaussian process. The Runge function $f$ is used with $m = 18$ equispaced training data points. We then fit a function in $\text{span}\lbrace \phi_1, \ldots, \phi_n \rbrace$ via the minimal norm minimizer. The result for different numbers of ansatz functions $n$:
+We consider a concrete example. We plot a set of 40 ansatz functions $\phi\_1, \ldots, \phi\_{40}$, which are drawn from a Gaussian process. The Runge function $f$ is used with $m = 18$ equispaced training data points. We then fit a function in $\text{span}\lbrace \phi\_1, \ldots, \phi\_n \rbrace$ via the minimal norm minimizer. The result for different numbers of ansatz functions $n$:
 
-- $n = 2$: The model can only represent functions in $\text{span}\lbrace \phi_1, \phi_2 \rbrace$. It is not yet expressive enough to give a meaningful approximation of $f$.
+- $n = 2$: The model can only represent functions in $\text{span}\lbrace \phi\_1, \phi\_2 \rbrace$. It is not yet expressive enough to give a meaningful approximation of $f$.
 
 - $n = 15$: The model has sufficient expressivity to capture the main characteristics of $f$. Since $n = 15 < 18 = m$, it is not yet able to interpolate the data. Thus it allows to strike a good balanced between the approximation and generalization error, which corresponds to the scenario discussed in Chapter 14.
 
-- $n = 18$: We are at the interpolation threshold. The model is capable of interpolating the data, and there is a unique $\boldsymbol{w}$ such that $\widehat{\mathcal{R}}_S(\boldsymbol{w}) = 0$. Yet, in between data points the behavior of the predictor $f_{18}$ seems erratic, and displays strong oscillations. This is referred to as **overfitting**, and is to be expected due to our analysis in Chapter 14; while the approximation error at the data points has improved compared to the case $n = 15$, the generalization error has gotten worse.
+- $n = 18$: We are at the interpolation threshold. The model is capable of interpolating the data, and there is a unique $\boldsymbol{w}$ such that $\widehat{\mathcal{R}}\_S(\boldsymbol{w}) = 0$. Yet, in between data points the behavior of the predictor $f\_{18}$ seems erratic, and displays strong oscillations. This is referred to as **overfitting**, and is to be expected due to our analysis in Chapter 14; while the approximation error at the data points has improved compared to the case $n = 15$, the generalization error has gotten worse.
 
-- $n = 40$: This is the overparameterized regime, where we have significantly more parameters than data points. Our prediction $f_{40}$ interpolates the data and appears to be the best overall approximation to $f$ so far, due to a "good" choice of minimizer of $\widehat{\mathcal{R}}_S$, namely the minimal norm minimizer. We also note that, while quite good, the fit is not perfect. We cannot expect significant improvement in performance by further increasing $n$, since at this point the main limiting factor is the amount of available data.
+- $n = 40$: This is the overparameterized regime, where we have significantly more parameters than data points. Our prediction $f\_{40}$ interpolates the data and appears to be the best overall approximation to $f$ so far, due to a "good" choice of minimizer of $\widehat{\mathcal{R}}\_S$, namely the minimal norm minimizer. We also note that, while quite good, the fit is not perfect. We cannot expect significant improvement in performance by further increasing $n$, since at this point the main limiting factor is the amount of available data.
 
-The $L^2$-error $\lVert f - f_n \rVert_{L^2([-1,1])}$ over $n$ exhibits the characteristic **double descent curve**, where the error initially decreases and then peaks at the interpolation threshold, which is marked by $n = m$. Afterwards, in the overparameterized regime, it starts to decrease again. The Euclidean norm of the coefficient vector $\lVert \boldsymbol{w}_{n,*} \rVert$ also peaks at the interpolation threshold.
+The $L^2$-error $\lVert f - f\_n \rVert\_{L^2([-1,1])}$ over $n$ exhibits the characteristic **double descent curve**, where the error initially decreases and then peaks at the interpolation threshold, which is marked by $n = m$. Afterwards, in the overparameterized regime, it starts to decrease again. The Euclidean norm of the coefficient vector $\lVert \boldsymbol{w}\_{n,\ast} \rVert$ also peaks at the interpolation threshold.
 
-We emphasize that the precise nature of the convergence curves depends strongly on various factors, such as the distribution and number of training points $m$, the ground truth $f$, and the choice of ansatz functions $\phi_j$. For overparametrization ($n \gg m$), the precise choice of $n$ is less critical, potentially making the algorithm more stable in this regime.
+We emphasize that the precise nature of the convergence curves depends strongly on various factors, such as the distribution and number of training points $m$, the ground truth $f$, and the choice of ansatz functions $\phi\_j$. For overparametrization ($n \gg m$), the precise choice of $n$ is less critical, potentially making the algorithm more stable in this regime.
 
 ### 15.2 Size of Weights
 
-We observed that the norm of the coefficients $\lVert \boldsymbol{w}_{n,*} \rVert$ exhibits similar behavior to the $L^2$-error, peaking at the interpolation threshold $n = 18$. In machine learning, large weights are usually undesirable, as they are associated with large derivatives or oscillatory behavior. This is evident in the example shown for $n = 18$. Assuming that the data was generated by a "smooth" function $f$, e.g. a function with moderate Lipschitz constant, these large derivatives of the prediction function could lead to poor generalization. Such a smoothness assumption about $f$ may or may not be satisfied. However, if $f$ is not smooth, there is little hope of accurately recovering $f$ from limited data (see the discussion in Section 9.2).
+We observed that the norm of the coefficients $\lVert \boldsymbol{w}\_{n,\ast} \rVert$ exhibits similar behavior to the $L^2$-error, peaking at the interpolation threshold $n = 18$. In machine learning, large weights are usually undesirable, as they are associated with large derivatives or oscillatory behavior. This is evident in the example shown for $n = 18$. Assuming that the data was generated by a "smooth" function $f$, e.g. a function with moderate Lipschitz constant, these large derivatives of the prediction function could lead to poor generalization. Such a smoothness assumption about $f$ may or may not be satisfied. However, if $f$ is not smooth, there is little hope of accurately recovering $f$ from limited data (see the discussion in Section 9.2).
 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 15.1</span><span class="math-callout__name">(Monotonicity of Minimal Norm Solutions)</span></p>
 
-Assume that $\boldsymbol{x}_1, \ldots, \boldsymbol{x}_m$ and the $(\phi_j)_{j \in \mathbb{N}}$ are such that $\boldsymbol{A}_n$ in (15.1.2) has full rank $n$ for all $n \leq m$. Given $\boldsymbol{y} \in \mathbb{R}^m$, denote by $\boldsymbol{w}_{n,*}(\boldsymbol{y})$ the vector in (15.1.5). Then
+Assume that $\boldsymbol{x}\_1, \ldots, \boldsymbol{x}\_m$ and the $(\phi\_j)\_{j \in \mathbb{N}}$ are such that $\boldsymbol{A}\_n$ in (15.1.2) has full rank $n$ for all $n \leq m$. Given $\boldsymbol{y} \in \mathbb{R}^m$, denote by $\boldsymbol{w}\_{n,\ast}(\boldsymbol{y})$ the vector in (15.1.5). Then
 
 $$n \mapsto \sup_{\lVert \boldsymbol{y} \rVert = 1} \lVert \boldsymbol{w}_{n,*}(\boldsymbol{y}) \rVert \quad \text{is monotonically} \quad \begin{cases} \text{increasing} & \text{for } n < m, \\ \text{decreasing} & \text{for } n \geq m. \end{cases}$$
 
 </div>
 
-*Proof.* We start with the case $n \geq m$. By assumption $\boldsymbol{A}_m$ has full rank $m$, and thus $\boldsymbol{A}_n$ has rank $m$ for all $n \geq m$. In particular, there exists $\boldsymbol{w}_n \in \mathbb{R}^n$ such that $\boldsymbol{A}_n \boldsymbol{w}_n = \boldsymbol{y}$. Now fix $\boldsymbol{y} \in \mathbb{R}^m$ and let $\boldsymbol{w}_n$ be any such vector. Then $\boldsymbol{w}_{n+1} := (\boldsymbol{w}_n, 0) \in \mathbb{R}^{n+1}$ satisfies $\boldsymbol{A}_{n+1} \boldsymbol{w}_{n+1} = \boldsymbol{y}$ and $\lVert \boldsymbol{w}_{n+1} \rVert = \lVert \boldsymbol{w}_n \rVert$. Thus necessarily $\lVert \boldsymbol{w}_{n+1,*} \rVert \leq \lVert \boldsymbol{w}_{n,*} \rVert$ for the minimal norm solutions. Since this holds for every $\boldsymbol{y}$, we obtain the statement for $n \geq m$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We start with the case $n \geq m$. By assumption $\boldsymbol{A}\_m$ has full rank $m$, and thus $\boldsymbol{A}\_n$ has rank $m$ for all $n \geq m$. In particular, there exists $\boldsymbol{w}\_n \in \mathbb{R}^n$ such that $\boldsymbol{A}\_n \boldsymbol{w}\_n = \boldsymbol{y}$. Now fix $\boldsymbol{y} \in \mathbb{R}^m$ and let $\boldsymbol{w}\_n$ be any such vector. Then $\boldsymbol{w}\_{n+1} := (\boldsymbol{w}\_n, 0) \in \mathbb{R}^{n+1}$ satisfies $\boldsymbol{A}\_{n+1} \boldsymbol{w}\_{n+1} = \boldsymbol{y}$ and $\lVert \boldsymbol{w}\_{n+1} \rVert = \lVert \boldsymbol{w}\_n \rVert$. Thus necessarily $\lVert \boldsymbol{w}\_{n+1,\ast} \rVert \leq \lVert \boldsymbol{w}\_{n,\ast} \rVert$ for the minimal norm solutions. Since this holds for every $\boldsymbol{y}$, we obtain the statement for $n \geq m$.
 
 Now let $n < m$. Recall that the minimal norm solution can be written through the pseudo inverse
 
@@ -4003,44 +4577,47 @@ where
 
 $$\boldsymbol{A}_n^\dagger = \boldsymbol{V}_n \begin{pmatrix} s_{n,1}^{-1} & & \\ & \ddots & \\ & & s_{n,n}^{-1} \\ & \boldsymbol{0} & \end{pmatrix} \boldsymbol{U}_n^\top \in \mathbb{R}^{n \times m}$$
 
-and $\boldsymbol{A}_n = \boldsymbol{U}_n \boldsymbol{\Sigma}_n \boldsymbol{V}_n^\top$ is the singular value decomposition. The matrix $\boldsymbol{\Sigma}_n$ contains the singular values $s_{n,1} \geq \cdots \geq s_{n,n} > 0$ of $\boldsymbol{A}_n$. Since $\boldsymbol{V}_n$ and $\boldsymbol{U}_n$ are orthogonal matrices, we have
+and $\boldsymbol{A}\_n = \boldsymbol{U}\_n \boldsymbol{\Sigma}\_n \boldsymbol{V}\_n^\top$ is the singular value decomposition. The matrix $\boldsymbol{\Sigma}\_n$ contains the singular values $s\_{n,1} \geq \cdots \geq s\_{n,n} > 0$ of $\boldsymbol{A}\_n$. Since $\boldsymbol{V}\_n$ and $\boldsymbol{U}\_n$ are orthogonal matrices, we have
 
 $$\sup_{\lVert \boldsymbol{y} \rVert = 1} \lVert \boldsymbol{w}_{n,*}(\boldsymbol{y}) \rVert = \sup_{\lVert \boldsymbol{y} \rVert = 1} \lVert \boldsymbol{A}_n^\dagger \boldsymbol{y} \rVert = s_{n,n}^{-1}.$$
 
-Finally, since the minimal singular value $s_{n,n}$ of $\boldsymbol{A}_n$ can be written as
+Finally, since the minimal singular value $s\_{n,n}$ of $\boldsymbol{A}\_n$ can be written as
 
 $$s_{n,n} = \inf_{\substack{\boldsymbol{x} \in \mathbb{R}^n \\ \lVert \boldsymbol{x} \rVert = 1}} \lVert \boldsymbol{A}_n \boldsymbol{x} \rVert \geq \inf_{\substack{\boldsymbol{x} \in \mathbb{R}^{n+1} \\ \lVert \boldsymbol{x} \rVert = 1}} \lVert \boldsymbol{A}_{n+1} \boldsymbol{x} \rVert = s_{n+1, n+1},$$
 
-we observe that $n \mapsto s_{n,n}$ is monotonically decreasing for $n \leq m$. This concludes the proof. $\square$
+we observe that $n \mapsto s\_{n,n}$ is monotonically decreasing for $n \leq m$. This concludes the proof. $\square$
+
+</details>
+</div>
 
 ### 15.3 Theoretical Justification
 
-Let us now examine one possible explanation of the double descent phenomenon for neural networks. The key assumption underlying our analysis is that large overparameterized neural networks tend to be Lipschitz continuous with a Lipschitz constant independent of the size. This is a consequence of neural networks typically having relatively small weights. To motivate this, let us consider the class of neural networks $\mathcal{N}(\sigma; \mathcal{A}, B)$ for an architecture $\mathcal{A}$ of depth $d \in \mathbb{N}$ and width $L \in \mathbb{N}$. If $\sigma$ is $C_\sigma$-Lipschitz continuous with $C_\sigma \geq 1$, such that $B \leq c_B \cdot (d C_\sigma)^{-1}$ for some $c_B > 0$, then by Lemma 13.2
+Let us now examine one possible explanation of the double descent phenomenon for neural networks. The key assumption underlying our analysis is that large overparameterized neural networks tend to be Lipschitz continuous with a Lipschitz constant independent of the size. This is a consequence of neural networks typically having relatively small weights. To motivate this, let us consider the class of neural networks $\mathcal{N}(\sigma; \mathcal{A}, B)$ for an architecture $\mathcal{A}$ of depth $d \in \mathbb{N}$ and width $L \in \mathbb{N}$. If $\sigma$ is $C\_\sigma$-Lipschitz continuous with $C\_\sigma \geq 1$, such that $B \leq c\_B \cdot (d C\_\sigma)^{-1}$ for some $c\_B > 0$, then by Lemma 13.2
 
 $$\mathcal{N}(\sigma; \mathcal{A}, B) \subseteq \text{Lip}_{c_B}(\mathbb{R}^{d_0}).$$
 
-An assumption of the type $B \leq c_B \cdot (d C_\sigma)^{-1}$, i.e. a scaling of the weights by the reciprocal $1/d$ of the width, is not unreasonable in practice: Standard initialization schemes such as LeCun or He initialization use random weights with variance scaled inverse proportional to the input dimension of each layer. Moreover, as we saw in Chapter 11, for very wide neural networks, the weights do not move significantly from their initialization during training. Additionally, many training routines use regularization terms on the weights, thereby encouraging the optimization routine to find small weights.
+An assumption of the type $B \leq c\_B \cdot (d C\_\sigma)^{-1}$, i.e. a scaling of the weights by the reciprocal $1/d$ of the width, is not unreasonable in practice: Standard initialization schemes such as LeCun or He initialization use random weights with variance scaled inverse proportional to the input dimension of each layer. Moreover, as we saw in Chapter 11, for very wide neural networks, the weights do not move significantly from their initialization during training. Additionally, many training routines use regularization terms on the weights, thereby encouraging the optimization routine to find small weights.
 
-We study the generalization capacity of Lipschitz functions through the covering-number-based learning results of Chapter 14. The set $\text{Lip}_C(\Omega)$ of $C$-Lipschitz functions on a compact $d$-dimensional Euclidean domain $\Omega$ has covering numbers bounded according to
+We study the generalization capacity of Lipschitz functions through the covering-number-based learning results of Chapter 14. The set $\text{Lip}\_C(\Omega)$ of $C$-Lipschitz functions on a compact $d$-dimensional Euclidean domain $\Omega$ has covering numbers bounded according to
 
 $$\log(\mathcal{G}(\text{Lip}_C(\Omega), \varepsilon, L^\infty)) \leq C_{\text{cov}} \cdot \left(\frac{C}{\varepsilon}\right)^d \qquad \text{for all } \varepsilon > 0$$
 
-for some constant $C_{\text{cov}}$ independent of $\varepsilon > 0$.
+for some constant $C\_{\text{cov}}$ independent of $\varepsilon > 0$.
 
 As a result of these considerations, we can identify two regimes:
 
-- *Standard regime:* For small neural network size $n_\mathcal{A}$, we consider neural networks as a set parameterized by $n_\mathcal{A}$ parameters. As we have seen before, this yields a bound on the generalization error that scales linearly with $n_\mathcal{A}$. As long as $n_\mathcal{A}$ is small in comparison to the number of samples, we can expect good generalization by Theorem 14.15.
+- *Standard regime:* For small neural network size $n\_\mathcal{A}$, we consider neural networks as a set parameterized by $n\_\mathcal{A}$ parameters. As we have seen before, this yields a bound on the generalization error that scales linearly with $n\_\mathcal{A}$. As long as $n\_\mathcal{A}$ is small in comparison to the number of samples, we can expect good generalization by Theorem 14.15.
 
-- *Overparameterized regime:* For large neural network size $n_\mathcal{A}$ and small weights, we consider neural networks as a subset of $\text{Lip}\_C(\Omega)$ for a constant $C > 0$. This set has a covering number bound that is independent of the number of parameters $n_\mathcal{A}$.
+- *Overparameterized regime:* For large neural network size $n\_\mathcal{A}$ and small weights, we consider neural networks as a subset of $\text{Lip}\_C(\Omega)$ for a constant $C > 0$. This set has a covering number bound that is independent of the number of parameters $n\_\mathcal{A}$.
 
-Choosing the better of the two generalization bounds for each regime yields the following result. Recall that $\mathcal{N}^*(\sigma; \mathcal{A}, B)$ denotes all neural networks in $\mathcal{N}(\sigma; \mathcal{A}, B)$ with a range contained in $[-1, 1]$ (see (14.5.1)).
+Choosing the better of the two generalization bounds for each regime yields the following result. Recall that $\mathcal{N}^\ast(\sigma; \mathcal{A}, B)$ denotes all neural networks in $\mathcal{N}(\sigma; \mathcal{A}, B)$ with a range contained in $[-1, 1]$ (see (14.5.1)).
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 15.2</span><span class="math-callout__name">(Generalization in Two Regimes)</span></p>
 
-Let $C$, $C_\mathcal{L} > 0$ and let $\mathcal{L} \colon [-1,1] \times [-1,1] \to \mathbb{R}$ be $C_\mathcal{L}$-Lipschitz. Further, let $\mathcal{A} = (d_0, d_1, \ldots, d_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be $C_\sigma$-Lipschitz continuous with $C_\sigma \geq 1$, and $\lvert \sigma(x) \rvert \leq C_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B > 0$.
+Let $C$, $C\_\mathcal{L} > 0$ and let $\mathcal{L} \colon [-1,1] \times [-1,1] \to \mathbb{R}$ be $C\_\mathcal{L}$-Lipschitz. Further, let $\mathcal{A} = (d\_0, d\_1, \ldots, d\_{L+1}) \in \mathbb{N}^{L+2}$, let $\sigma \colon \mathbb{R} \to \mathbb{R}$ be $C\_\sigma$-Lipschitz continuous with $C\_\sigma \geq 1$, and $\lvert \sigma(x) \rvert \leq C\_\sigma \lvert x \rvert$ for all $x \in \mathbb{R}$, and let $B > 0$.
 
-Then, there exist $c_1$, $c_2 > 0$, such that for every $m \in \mathbb{N}$ and every distribution $\mathcal{D}$ on $[-1,1]^{d_0} \times [-1,1]$ it holds with probability at least $1 - \delta$ over $S \sim \mathcal{D}^m$ that for all $\Phi \in \mathcal{N}^*(\sigma; \mathcal{A}, B) \cap \text{Lip}_C([-1,1]^{d_0})$
+Then, there exist $c\_1$, $c\_2 > 0$, such that for every $m \in \mathbb{N}$ and every distribution $\mathcal{D}$ on $[-1,1]^{d\_0} \times [-1,1]$ it holds with probability at least $1 - \delta$ over $S \sim \mathcal{D}^m$ that for all $\Phi \in \mathcal{N}^\ast(\sigma; \mathcal{A}, B) \cap \text{Lip}\_C([-1,1]^{d\_0})$
 
 $$\lvert \mathcal{R}(\Phi) - \widehat{\mathcal{R}}_S(\Phi) \rvert \leq g(\mathcal{A}, C_\sigma, B, m) + 4C_\mathcal{L} \sqrt{\frac{\log(4/\delta)}{m}},$$
 
@@ -4050,19 +4627,26 @@ $$g(\mathcal{A}, C_\sigma, B, m) = \min\left\lbrace c_1 \sqrt{\frac{n_\mathcal{A
 
 </div>
 
-*Proof.* Applying Theorem 14.11 with $\alpha = 1/(2 + d_0)$ and the covering number bound for Lipschitz functions, we obtain that with probability at least $1 - \delta/2$ it holds for all $\Phi \in \text{Lip}\_C([-1,1]^{d_0})$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Applying Theorem 14.11 with $\alpha = 1/(2 + d\_0)$ and the covering number bound for Lipschitz functions, we obtain that with probability at least $1 - \delta/2$ it holds for all $\Phi \in \text{Lip}\_C([-1,1]^{d\_0})$
 
 $$\lvert \mathcal{R}(\Phi) - \widehat{\mathcal{R}}_S(\Phi) \rvert \leq 4C_\mathcal{L} \sqrt{\frac{C_{\text{cov}} C^{d_0} (m^{d_0/(d_0+2)-1}) + \log(4/\delta)}{m}} + \frac{2C_\mathcal{L}}{m^\alpha} = \frac{(4C_\mathcal{L}\sqrt{C_{\text{cov}} C^{d_0}} + 2C_\mathcal{L})}{m^\alpha} + 4C_\mathcal{L}\sqrt{\frac{\log(4/\delta)}{m}}.$$
 
-In addition, Theorem 14.15 yields that with probability at least $1 - \delta/2$ it holds for all $\Phi \in \mathcal{N}^*(\sigma; \mathcal{A}, B)$
+In addition, Theorem 14.15 yields that with probability at least $1 - \delta/2$ it holds for all $\Phi \in \mathcal{N}^\ast(\sigma; \mathcal{A}, B)$
 
 $$\lvert \mathcal{R}(\Phi) - \widehat{\mathcal{R}}_S(\Phi) \rvert \leq 6C_\mathcal{L} \sqrt{\frac{n_\mathcal{A} \log(\lceil n_\mathcal{A} \sqrt{m} \rceil) + L n_\mathcal{A} \log(\lceil 2C_\sigma B d_{\max} \rceil)}{m}} + 4C_\mathcal{L}\sqrt{\frac{\log(4/\delta)}{m}}.$$
 
-Then, for $\Phi \in \mathcal{N}^*(\sigma; \mathcal{A}, B) \cap \text{Lip}_C([-1,1]^{d_0})$ the minimum of both upper bounds holds with probability at least $1 - \delta$. $\square$
+Then, for $\Phi \in \mathcal{N}^\ast(\sigma; \mathcal{A}, B) \cap \text{Lip}\_C([-1,1]^{d\_0})$ the minimum of both upper bounds holds with probability at least $1 - \delta$. $\square$
 
-The two regimes in Theorem 15.2 correspond to the two terms comprising the minimum in the definition of $g(\mathcal{A}, C_\sigma, B, m)$. The first term increases with $n_\mathcal{A}$ while the second is constant. In the first regime, where the first term is smaller, the generalization gap $\lvert \mathcal{R}(\Phi) - \widehat{\mathcal{R}}\_S(\Phi) \rvert$ increases with $n_\mathcal{A}$.
+</details>
+</div>
 
-In the second regime, where the second term is smaller, the generalization gap is constant with $n_\mathcal{A}$. Moreover, it is reasonable to assume that the empirical risk $\widehat{\mathcal{R}}\_S$ will decrease with increasing number of parameters $n_\mathcal{A}$.
+The two regimes in Theorem 15.2 correspond to the two terms comprising the minimum in the definition of $g(\mathcal{A}, C\_\sigma, B, m)$. The first term increases with $n\_\mathcal{A}$ while the second is constant. In the first regime, where the first term is smaller, the generalization gap $\lvert \mathcal{R}(\Phi) - \widehat{\mathcal{R}}\_S(\Phi) \rvert$ increases with $n\_\mathcal{A}$.
+
+In the second regime, where the second term is smaller, the generalization gap is constant with $n\_\mathcal{A}$. Moreover, it is reasonable to assume that the empirical risk $\widehat{\mathcal{R}}\_S$ will decrease with increasing number of parameters $n\_\mathcal{A}$.
 
 By the bound
 
@@ -4091,7 +4675,7 @@ We consider the problem of assigning a label $y \in \lbrace -1, 1 \rbrace$ to a 
 
 $$D_{\boldsymbol{x}} := \lbrace \boldsymbol{x} \in \mathbb{R}^d \mid \exists y \text{ s.t. } (\boldsymbol{x}, y) \in \text{supp}(\mathcal{D}) \rbrace$$
 
-and refer to $D_{\boldsymbol{x}}$ as the **feature support**.
+and refer to $D\_{\boldsymbol{x}}$ as the **feature support**.
 
 Throughout this chapter we denote by
 
@@ -4106,7 +4690,7 @@ We allow $g$ to take the value $0$, which corresponds to an additional label for
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.1</span></p>
 
-We wish to classify whether an image shows a panda ($y = 1$) or a wombat ($y = -1$). Consider three images $\boldsymbol{x}_1$, $\boldsymbol{x}_2$, $\boldsymbol{x}_3$. The first image $\boldsymbol{x}_1$ is a photograph of a panda. Together with a label $y$, it can be interpreted as a draw $(\boldsymbol{x}_1, y)$ from a distribution of images $\mathcal{D}$, i.e. $\boldsymbol{x}_1 \in D_{\boldsymbol{x}}$ and $g(\boldsymbol{x}_1) = 1$. The second image $\boldsymbol{x}_2$ displays noise and corresponds to nonrelevant data, so $\boldsymbol{x}_2 \in D_{\boldsymbol{x}}^c$ and $g(\boldsymbol{x}_2) = 0$. The third (perturbed) image $\boldsymbol{x}_3$ also belongs to $D_{\boldsymbol{x}}^c$, as it is not a photograph but a noise-corrupted version of $\boldsymbol{x}_1$. Nonetheless, it is *not* nonrelevant, as a human would classify it as a panda. Thus $g(\boldsymbol{x}_3) = 1$.
+We wish to classify whether an image shows a panda ($y = 1$) or a wombat ($y = -1$). Consider three images $\boldsymbol{x}\_1$, $\boldsymbol{x}\_2$, $\boldsymbol{x}\_3$. The first image $\boldsymbol{x}\_1$ is a photograph of a panda. Together with a label $y$, it can be interpreted as a draw $(\boldsymbol{x}\_1, y)$ from a distribution of images $\mathcal{D}$, i.e. $\boldsymbol{x}\_1 \in D\_{\boldsymbol{x}}$ and $g(\boldsymbol{x}\_1) = 1$. The second image $\boldsymbol{x}\_2$ displays noise and corresponds to nonrelevant data, so $\boldsymbol{x}\_2 \in D\_{\boldsymbol{x}}^c$ and $g(\boldsymbol{x}\_2) = 0$. The third (perturbed) image $\boldsymbol{x}\_3$ also belongs to $D\_{\boldsymbol{x}}^c$, as it is not a photograph but a noise-corrupted version of $\boldsymbol{x}\_1$. Nonetheless, it is *not* nonrelevant, as a human would classify it as a panda. Thus $g(\boldsymbol{x}\_3) = 1$.
 
 </div>
 
@@ -4119,9 +4703,9 @@ some trained classifier.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition 16.2</span><span class="math-callout__name">(Adversarial Example)</span></p>
 
-Let $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ be the ground-truth classifier, let $h \colon \mathbb{R}^d \to \lbrace -1, 1 \rbrace$ be a classifier, and let $\lVert \cdot \rVert_*$ be a norm on $\mathbb{R}^d$. For $\boldsymbol{x} \in \mathbb{R}^d$ and $\delta > 0$, we call $\boldsymbol{x}' \in \mathbb{R}^d$ an **adversarial example** to $\boldsymbol{x} \in \mathbb{R}^d$ with perturbation $\delta$, if and only if
+Let $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ be the ground-truth classifier, let $h \colon \mathbb{R}^d \to \lbrace -1, 1 \rbrace$ be a classifier, and let $\lVert \cdot \rVert\_\ast$ be a norm on $\mathbb{R}^d$. For $\boldsymbol{x} \in \mathbb{R}^d$ and $\delta > 0$, we call $\boldsymbol{x}' \in \mathbb{R}^d$ an **adversarial example** to $\boldsymbol{x} \in \mathbb{R}^d$ with perturbation $\delta$, if and only if
 
-1. $\lVert \boldsymbol{x}' - \boldsymbol{x} \rVert_* \leq \delta$,
+1. $\lVert \boldsymbol{x}' - \boldsymbol{x} \rVert\_\ast \leq \delta$,
 2. $g(\boldsymbol{x}) g(\boldsymbol{x}') > 0$,
 3. $h(\boldsymbol{x}) = g(\boldsymbol{x})$ and $h(\boldsymbol{x}') \neq g(\boldsymbol{x}')$.
 
@@ -4132,33 +4716,33 @@ In words, $\boldsymbol{x}'$ is an adversarial example to $\boldsymbol{x}$ with p
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 16.3</span></p>
 
-The concept of a ground-truth classifier $g$ differs from a minimizer of the Bayes risk (14.1.1) for two reasons. First, we allow for an additional label $0$ corresponding to the nonrelevant class, which does not exist for the data generating distribution $\mathcal{D}$. Second, $g$ should correctly classify points *outside of* $D_{\boldsymbol{x}}$; small perturbations of images as we find them in adversarial examples are not regular images in $D_{\boldsymbol{x}}$. Nonetheless, a human classifier can still classify these images, and $g$ models this property of human classification.
+The concept of a ground-truth classifier $g$ differs from a minimizer of the Bayes risk (14.1.1) for two reasons. First, we allow for an additional label $0$ corresponding to the nonrelevant class, which does not exist for the data generating distribution $\mathcal{D}$. Second, $g$ should correctly classify points *outside of* $D\_{\boldsymbol{x}}$; small perturbations of images as we find them in adversarial examples are not regular images in $D\_{\boldsymbol{x}}$. Nonetheless, a human classifier can still classify these images, and $g$ models this property of human classification.
 
 </div>
 
 ### 16.2 Bayes Classifier
 
-At first sight, an adversarial example seems to be no more than a misclassified sample. These exist if the model does not generalize well. To avoid edge cases, we assume that for all $\boldsymbol{x} \in D_{\boldsymbol{x}}$
+At first sight, an adversarial example seems to be no more than a misclassified sample. These exist if the model does not generalize well. To avoid edge cases, we assume that for all $\boldsymbol{x} \in D\_{\boldsymbol{x}}$
 
 $$\text{either} \quad \mathbb{P}[y = 1 \mid \boldsymbol{x}] > \mathbb{P}[y = -1 \mid \boldsymbol{x}] \quad \text{or} \quad \mathbb{P}[y = 1 \mid \boldsymbol{x}] < \mathbb{P}[y = -1 \mid \boldsymbol{x}]$$
 
-so that $g(\boldsymbol{x})$ is uniquely defined for $\boldsymbol{x} \in D_{\boldsymbol{x}}$. We say that the distribution **exhausts the domain** if $D_{\boldsymbol{x}} \cup g^{-1}(0) = \mathbb{R}^d$. This means that every point is either in the feature support $D_{\boldsymbol{x}}$ or it belongs to the nonrelevant class. Moreover, we say that $h$ is a **Bayes classifier** if
+so that $g(\boldsymbol{x})$ is uniquely defined for $\boldsymbol{x} \in D\_{\boldsymbol{x}}$. We say that the distribution **exhausts the domain** if $D\_{\boldsymbol{x}} \cup g^{-1}(0) = \mathbb{R}^d$. This means that every point is either in the feature support $D\_{\boldsymbol{x}}$ or it belongs to the nonrelevant class. Moreover, we say that $h$ is a **Bayes classifier** if
 
 $$\mathbb{P}[h(\boldsymbol{x}) \mid \boldsymbol{x}] \geq \mathbb{P}[-h(\boldsymbol{x}) \mid \boldsymbol{x}] \quad \text{for all } \boldsymbol{x} \in D_{\boldsymbol{x}}.$$
 
-By definition, the ground truth $g$ is a Bayes classifier, and the assumption above ensures that $h$ coincides with $g$ on $D_{\boldsymbol{x}}$ if $h$ is a Bayes classifier. A Bayes classifier minimizes the Bayes risk. With these two notions, we distinguish between four cases:
+By definition, the ground truth $g$ is a Bayes classifier, and the assumption above ensures that $h$ coincides with $g$ on $D\_{\boldsymbol{x}}$ if $h$ is a Bayes classifier. A Bayes classifier minimizes the Bayes risk. With these two notions, we distinguish between four cases:
 
 **(i) Bayes classifier / exhaustive distribution:** If $h$ is a Bayes classifier and the data exhausts the domain, then there are *no adversarial examples*. Every $\boldsymbol{x} \in \mathbb{R}^d$ either belongs to the nonrelevant class or is classified the same by $h$ and $g$.
 
-**(ii) Bayes classifier / non-exhaustive distribution:** If $h$ is a Bayes classifier and the distribution does not exhaust the domain, then *adversarial examples can exist*. Even though $h$ coincides with $g$ on the feature support, adversarial examples can be constructed for data points on the complement of $D_{\boldsymbol{x}} \cup g^{-1}(0)$, which is not empty.
+**(ii) Bayes classifier / non-exhaustive distribution:** If $h$ is a Bayes classifier and the distribution does not exhaust the domain, then *adversarial examples can exist*. Even though $h$ coincides with $g$ on the feature support, adversarial examples can be constructed for data points on the complement of $D\_{\boldsymbol{x}} \cup g^{-1}(0)$, which is not empty.
 
-**(iii) Not a Bayes classifier / exhaustive distribution:** The set $D_{\boldsymbol{x}}$ can be covered by the four subdomains
+**(iii) Not a Bayes classifier / exhaustive distribution:** The set $D\_{\boldsymbol{x}}$ can be covered by the four subdomains
 
 $$C_1 = h^{-1}(1) \cap g^{-1}(1), \quad F_1 = h^{-1}(-1) \cap g^{-1}(1),$$
 
 $$C_{-1} = h^{-1}(-1) \cap g^{-1}(-1), \quad F_{-1} = h^{-1}(1) \cap g^{-1}(-1).$$
 
-If $\text{dist}(C_1 \cap D_{\boldsymbol{x}}, F_1 \cap D_{\boldsymbol{x}})$ or $\text{dist}(C_{-1} \cap D_{\boldsymbol{x}}, F_{-1} \cap D_{\boldsymbol{x}})$ is smaller than $\delta$, then *adversarial examples in the feature support can exist*. However, even for classifiers with incorrect predictions, adversarial examples *do not need to exist*.
+If $\text{dist}(C\_1 \cap D\_{\boldsymbol{x}}, F\_1 \cap D\_{\boldsymbol{x}})$ or $\text{dist}(C\_{-1} \cap D\_{\boldsymbol{x}}, F\_{-1} \cap D\_{\boldsymbol{x}})$ is smaller than $\delta$, then *adversarial examples in the feature support can exist*. However, even for classifiers with incorrect predictions, adversarial examples *do not need to exist*.
 
 **(iv) Not a Bayes classifier / non-exhaustive distribution:** In this case *everything is possible*. Data points and their associated adversarial examples can appear in the feature support, and adversarial examples to elements in the feature support can be created by leaving the feature support.
 
@@ -4174,7 +4758,7 @@ Let
 
 $$\boldsymbol{x}' := \boldsymbol{x} - 2 \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert \frac{\text{sign}(\boldsymbol{w}^\top \boldsymbol{x}) \text{sign}(\boldsymbol{w})}{\lVert \boldsymbol{w} \rVert_1}$$
 
-where $\text{sign}(\boldsymbol{w})$ is understood coordinate-wise. Then $\lVert \boldsymbol{x} - \boldsymbol{x}' \rVert_\infty \leq 2 \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert / \lVert \boldsymbol{w} \rVert_1$ and $\text{sign}(\boldsymbol{w}^\top \boldsymbol{x}') \neq \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$.
+where $\text{sign}(\boldsymbol{w})$ is understood coordinate-wise. Then $\lVert \boldsymbol{x} - \boldsymbol{x}' \rVert\_\infty \leq 2 \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert / \lVert \boldsymbol{w} \rVert\_1$ and $\text{sign}(\boldsymbol{w}^\top \boldsymbol{x}') \neq \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$.
 
 For high-dimensional vectors $\boldsymbol{w}$, $\boldsymbol{x}$ chosen at random but possibly dependently such that $\boldsymbol{w}$ is uniformly distributed on a $d-1$ dimensional sphere, it holds with high probability that
 
@@ -4209,7 +4793,11 @@ Second, the term $(\boldsymbol{w}^\top \overline{\boldsymbol{w}}) / (\lVert \bol
 
 Finally, adversarial examples with small perturbation are possible if $\lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert \ll \lVert \boldsymbol{w} \rVert$, i.e. if $\boldsymbol{x}$ is close to the decision boundary of $h$.
 
-*Proof (of Theorem 16.4).* We verify that $\boldsymbol{x}'$ satisfies the conditions of Definition 16.2. Since $h(\boldsymbol{x}) g(\boldsymbol{x}) > 0$, we have
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof of Theorem 16.4</summary>
+
+We verify that $\boldsymbol{x}'$ satisfies the conditions of Definition 16.2. Since $h(\boldsymbol{x}) g(\boldsymbol{x}) > 0$, we have
 
 $$g(\boldsymbol{x}) = \text{sign}(\overline{\boldsymbol{w}}^\top \boldsymbol{x}) = \text{sign}(\boldsymbol{w}^\top \boldsymbol{x}) = h(\boldsymbol{x}) \neq 0.$$
 
@@ -4226,6 +4814,9 @@ Finally, we check that $h(\boldsymbol{x}') \neq h(\boldsymbol{x})$, i.e. $(\bold
 $$(\boldsymbol{w}^\top \boldsymbol{x})(\boldsymbol{w}^\top \boldsymbol{x}') = \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert^2 - \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert (\varepsilon + \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert) < 0.$$
 
 This completes the proof. $\square$
+
+</details>
+</div>
 
 Theorem 16.4 readily implies the following proposition for *affine* classifiers.
 
@@ -4251,9 +4842,9 @@ We now study two cases of linear classifiers which allow for different types of 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.6</span><span class="math-callout__name">(Bayes Classifier with Non-Exhaustive Distribution)</span></p>
 
-Let $\mathcal{D}$ be the uniform distribution on $\lbrace (\lambda \overline{\boldsymbol{w}}, g(\lambda \overline{\boldsymbol{w}})) \mid \lambda \in [-1, 1] \setminus \lbrace 0 \rbrace \rbrace$. The feature support equals $D_{\boldsymbol{x}} = \lbrace \lambda \overline{\boldsymbol{w}} \mid \lambda \in [-1, 1] \setminus \lbrace 0 \rbrace \rbrace \subseteq \text{span}\lbrace \overline{\boldsymbol{w}} \rbrace$.
+Let $\mathcal{D}$ be the uniform distribution on $\lbrace (\lambda \overline{\boldsymbol{w}}, g(\lambda \overline{\boldsymbol{w}})) \mid \lambda \in [-1, 1] \setminus \lbrace 0 \rbrace \rbrace$. The feature support equals $D\_{\boldsymbol{x}} = \lbrace \lambda \overline{\boldsymbol{w}} \mid \lambda \in [-1, 1] \setminus \lbrace 0 \rbrace \rbrace \subseteq \text{span}\lbrace \overline{\boldsymbol{w}} \rbrace$.
 
-Fix $\alpha \in (0, 1)$ and set $\boldsymbol{w} := \alpha \overline{\boldsymbol{w}} + (1 - \alpha) \boldsymbol{v}$ for some $\boldsymbol{v} \in \overline{\boldsymbol{w}}^\perp$ with $\lVert \boldsymbol{v} \rVert = 1$, so that $\lVert \boldsymbol{w} \rVert = 1$. Let $h(\boldsymbol{x}) := \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$. Then $h(\boldsymbol{x}) = g(\boldsymbol{x})$ for every $\boldsymbol{x} \in D_{\boldsymbol{x}}$, so $h$ is a Bayes classifier. Moreover, $\lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert \leq \alpha \lvert \overline{\boldsymbol{w}}^\top \boldsymbol{x} \rvert$, so the condition of Theorem 16.4 is satisfied. For every $\varepsilon > 0$ it holds that
+Fix $\alpha \in (0, 1)$ and set $\boldsymbol{w} := \alpha \overline{\boldsymbol{w}} + (1 - \alpha) \boldsymbol{v}$ for some $\boldsymbol{v} \in \overline{\boldsymbol{w}}^\perp$ with $\lVert \boldsymbol{v} \rVert = 1$, so that $\lVert \boldsymbol{w} \rVert = 1$. Let $h(\boldsymbol{x}) := \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$. Then $h(\boldsymbol{x}) = g(\boldsymbol{x})$ for every $\boldsymbol{x} \in D\_{\boldsymbol{x}}$, so $h$ is a Bayes classifier. Moreover, $\lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert \leq \alpha \lvert \overline{\boldsymbol{w}}^\top \boldsymbol{x} \rvert$, so the condition of Theorem 16.4 is satisfied. For every $\varepsilon > 0$ it holds that
 
 $$\delta := \frac{\varepsilon + \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert}{\lVert \boldsymbol{w} \rVert} \leq \varepsilon + \alpha.$$
 
@@ -4264,9 +4855,9 @@ Hence, for $\varepsilon < \lvert \boldsymbol{w}^\top \boldsymbol{x} \rvert$ ther
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example 16.7</span><span class="math-callout__name">(Non-Bayes Classifier with Global Feature Support)</span></p>
 
-Let $\mathcal{D}_{\boldsymbol{x}}$ be a distribution on $\mathbb{R}^d$ with positive Lebesgue density everywhere outside the decision boundary $\text{DB}_g = \lbrace \boldsymbol{x} \mid \overline{\boldsymbol{w}}^\top \boldsymbol{x} = 0 \rbrace$ of $g$. We define $\mathcal{D}$ to be the distribution of $(X, g(X))$ for $X \sim \mathcal{D}_{\boldsymbol{x}}$. Let $\boldsymbol{w} \notin \lbrace \pm \overline{\boldsymbol{w}} \rbrace$, $\lVert \boldsymbol{w} \rVert = 1$ and $h(\boldsymbol{x}) = \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$. We exclude $\boldsymbol{w} = -\overline{\boldsymbol{w}}$ because in this case every prediction of $h$ is wrong, so no adversarial examples are possible.
+Let $\mathcal{D}\_{\boldsymbol{x}}$ be a distribution on $\mathbb{R}^d$ with positive Lebesgue density everywhere outside the decision boundary $\text{DB}\_g = \lbrace \boldsymbol{x} \mid \overline{\boldsymbol{w}}^\top \boldsymbol{x} = 0 \rbrace$ of $g$. We define $\mathcal{D}$ to be the distribution of $(X, g(X))$ for $X \sim \mathcal{D}\_{\boldsymbol{x}}$. Let $\boldsymbol{w} \notin \lbrace \pm \overline{\boldsymbol{w}} \rbrace$, $\lVert \boldsymbol{w} \rVert = 1$ and $h(\boldsymbol{x}) = \text{sign}(\boldsymbol{w}^\top \boldsymbol{x})$. We exclude $\boldsymbol{w} = -\overline{\boldsymbol{w}}$ because in this case every prediction of $h$ is wrong, so no adversarial examples are possible.
 
-By construction the feature support is $D_{\boldsymbol{x}} = \mathbb{R}^d$. Moreover, $h^{-1}(\lbrace -1 \rbrace)$, $h^{-1}(\lbrace 1 \rbrace)$ and $g^{-1}(\lbrace -1 \rbrace)$, $g^{-1}(\lbrace 1 \rbrace)$ are half spaces, which implies that
+By construction the feature support is $D\_{\boldsymbol{x}} = \mathbb{R}^d$. Moreover, $h^{-1}(\lbrace -1 \rbrace)$, $h^{-1}(\lbrace 1 \rbrace)$ and $g^{-1}(\lbrace -1 \rbrace)$, $g^{-1}(\lbrace 1 \rbrace)$ are half spaces, which implies that
 
 $$\text{dist}(C_{\pm 1} \cap D_{\boldsymbol{x}}, F_{\pm 1} \cap D_{\boldsymbol{x}}) = \text{dist}(C_{\pm 1}, F_{\pm 1}) = 0.$$
 
@@ -4286,12 +4877,12 @@ i.e. the distance of $\boldsymbol{x}$ to the closest element that is classified 
 
 $$\nu_\Phi(\boldsymbol{x}) := \text{dist}(\boldsymbol{x}, A_{\Phi, \boldsymbol{x}}^c),$$
 
-where $A_{\Phi, \boldsymbol{x}}$ is the largest connected region on which $\Phi$ is affine and which contains $\boldsymbol{x}$.
+where $A\_{\Phi, \boldsymbol{x}}$ is the largest connected region on which $\Phi$ is affine and which contains $\boldsymbol{x}$.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 16.8</span><span class="math-callout__name">(Adversarial Examples for ReLU Networks)</span></p>
 
-Let $\Phi \colon \mathbb{R}^d \to \mathbb{R}$ and for $\boldsymbol{x} \in \mathbb{R}^d$ let $h(\boldsymbol{x}) = \text{sign}(\Phi(\boldsymbol{x}))$. Denote by $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ the ground-truth classifier. Let $\boldsymbol{x} \in \mathbb{R}^d$ and $\varepsilon > 0$ be such that $\nu_\Phi(\boldsymbol{x}) > 0$, $g(\boldsymbol{x}) \neq 0$, $\nabla \Phi(\boldsymbol{x}) \neq 0$ and
+Let $\Phi \colon \mathbb{R}^d \to \mathbb{R}$ and for $\boldsymbol{x} \in \mathbb{R}^d$ let $h(\boldsymbol{x}) = \text{sign}(\Phi(\boldsymbol{x}))$. Denote by $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ the ground-truth classifier. Let $\boldsymbol{x} \in \mathbb{R}^d$ and $\varepsilon > 0$ be such that $\nu\_\Phi(\boldsymbol{x}) > 0$, $g(\boldsymbol{x}) \neq 0$, $\nabla \Phi(\boldsymbol{x}) \neq 0$ and
 
 $$\mu_g(\boldsymbol{x}), \nu_\Phi(\boldsymbol{x}) > \frac{\varepsilon + \lvert \Phi(\boldsymbol{x}) \rvert}{\lVert \nabla \Phi(\boldsymbol{x}) \rVert}.$$
 
@@ -4303,21 +4894,28 @@ is an adversarial example to $\boldsymbol{x}$ with perturbation $\delta = (\vare
 
 </div>
 
-*Proof.* We show that $\boldsymbol{x}'$ satisfies the properties in Definition 16.2. By construction $\lVert \boldsymbol{x} - \boldsymbol{x}' \rVert \leq \delta$. Since $\mu_g(\boldsymbol{x}) > \delta$ it follows that $g(\boldsymbol{x}) = g(\boldsymbol{x}')$. Moreover, by assumption $g(\boldsymbol{x}) \neq 0$, and thus $g(\boldsymbol{x}) g(\boldsymbol{x}') > 0$.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
 
-It only remains to show that $h(\boldsymbol{x}') \neq h(\boldsymbol{x})$. Since $\delta < \nu_\Phi(\boldsymbol{x})$, we have that $\Phi(\boldsymbol{x}) = \nabla \Phi(\boldsymbol{x})^\top \boldsymbol{x} + b$ and $\Phi(\boldsymbol{x}') = \nabla \Phi(\boldsymbol{x})^\top \boldsymbol{x}' + b$ for some $b \in \mathbb{R}$. Therefore,
+We show that $\boldsymbol{x}'$ satisfies the properties in Definition 16.2. By construction $\lVert \boldsymbol{x} - \boldsymbol{x}' \rVert \leq \delta$. Since $\mu\_g(\boldsymbol{x}) > \delta$ it follows that $g(\boldsymbol{x}) = g(\boldsymbol{x}')$. Moreover, by assumption $g(\boldsymbol{x}) \neq 0$, and thus $g(\boldsymbol{x}) g(\boldsymbol{x}') > 0$.
+
+It only remains to show that $h(\boldsymbol{x}') \neq h(\boldsymbol{x})$. Since $\delta < \nu\_\Phi(\boldsymbol{x})$, we have that $\Phi(\boldsymbol{x}) = \nabla \Phi(\boldsymbol{x})^\top \boldsymbol{x} + b$ and $\Phi(\boldsymbol{x}') = \nabla \Phi(\boldsymbol{x})^\top \boldsymbol{x}' + b$ for some $b \in \mathbb{R}$. Therefore,
 
 $$\Phi(\boldsymbol{x}) - \Phi(\boldsymbol{x}') = \nabla \Phi(\boldsymbol{x})^\top (\boldsymbol{x} - \boldsymbol{x}') = h(\boldsymbol{x})(\varepsilon + \lvert \Phi(\boldsymbol{x}) \rvert).$$
 
 Since $h(\boldsymbol{x}) \lvert \Phi(\boldsymbol{x}) \rvert = \Phi(\boldsymbol{x})$ it follows that $\Phi(\boldsymbol{x}') = -h(\boldsymbol{x}) \varepsilon$. Hence, $h(\boldsymbol{x}') = -h(\boldsymbol{x})$, which completes the proof. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 16.9</span></p>
 
 We look at the key parameters in Theorem 16.8 to understand which factors facilitate adversarial examples:
 
-- **The geometric margin of the ground-truth classifier $\mu_g(\boldsymbol{x})$:** To make the construction possible, we need to be sufficiently far away from points that belong to a different class than $\boldsymbol{x}$ or to the nonrelevant class.
-- **The distance to the next affine piece $\nu_\Phi(\boldsymbol{x})$:** Since we are looking for an adversarial example within the same affine piece as $\boldsymbol{x}$, we need this piece to be sufficiently large.
+- **The geometric margin of the ground-truth classifier $\mu\_g(\boldsymbol{x})$:** To make the construction possible, we need to be sufficiently far away from points that belong to a different class than $\boldsymbol{x}$ or to the nonrelevant class.
+- **The distance to the next affine piece $\nu\_\Phi(\boldsymbol{x})$:** Since we are looking for an adversarial example within the same affine piece as $\boldsymbol{x}$, we need this piece to be sufficiently large.
 - **The perturbation $\delta$:** The perturbation is given by $(\varepsilon + \lvert \Phi(\boldsymbol{x}) \rvert) / \lVert \nabla \Phi(\boldsymbol{x}) \rVert$, which depends on the classification margin $\lvert \Phi(\boldsymbol{x}) \rvert$ of the ReLU classifier and its sensitivity to inputs $\lVert \nabla \Phi(\boldsymbol{x}) \rVert$. For adversarial examples to be possible, we either want a small classification margin of $\Phi$ or a high sensitivity of $\Phi$ to its inputs.
 
 </div>
@@ -4333,15 +4931,22 @@ We have repeatedly observed in the previous sections that a large value of $\lVe
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 16.10</span><span class="math-callout__name">(Lipschitz Robustness)</span></p>
 
-Let $\Phi \colon \mathbb{R}^d \to \mathbb{R}$ be $C_L$-Lipschitz with $C_L > 0$, and let $s > 0$. Let $h(\boldsymbol{x}) = \text{sign}(\Phi(\boldsymbol{x}))$ be a classifier, and let $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ be a ground-truth classifier. Moreover, let $\boldsymbol{x} \in \mathbb{R}^d$ be such that
+Let $\Phi \colon \mathbb{R}^d \to \mathbb{R}$ be $C\_L$-Lipschitz with $C\_L > 0$, and let $s > 0$. Let $h(\boldsymbol{x}) = \text{sign}(\Phi(\boldsymbol{x}))$ be a classifier, and let $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ be a ground-truth classifier. Moreover, let $\boldsymbol{x} \in \mathbb{R}^d$ be such that
 
 $$\Phi(\boldsymbol{x}) g(\boldsymbol{x}) \geq s.$$
 
-Then there does not exist an adversarial example to $\boldsymbol{x}$ of perturbation $\delta < s / C_L$.
+Then there does not exist an adversarial example to $\boldsymbol{x}$ of perturbation $\delta < s / C\_L$.
 
 </div>
 
-*Proof.* Let $\boldsymbol{x} \in \mathbb{R}^d$ satisfy the above and assume that $\lVert \boldsymbol{x}' - \boldsymbol{x} \rVert \leq \delta$. The Lipschitz continuity of $\Phi$ implies $\lvert \Phi(\boldsymbol{x}') - \Phi(\boldsymbol{x}) \rvert < s$. Since $\lvert \Phi(\boldsymbol{x}) \rvert \geq s$ we conclude that $\Phi(\boldsymbol{x}')$ has the same sign as $\Phi(\boldsymbol{x})$, which shows that $\boldsymbol{x}'$ cannot be an adversarial example to $\boldsymbol{x}$. $\square$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Let $\boldsymbol{x} \in \mathbb{R}^d$ satisfy the above and assume that $\lVert \boldsymbol{x}' - \boldsymbol{x} \rVert \leq \delta$. The Lipschitz continuity of $\Phi$ implies $\lvert \Phi(\boldsymbol{x}') - \Phi(\boldsymbol{x}) \rvert < s$. Since $\lvert \Phi(\boldsymbol{x}) \rvert \geq s$ we conclude that $\Phi(\boldsymbol{x}')$ has the same sign as $\Phi(\boldsymbol{x})$, which shows that $\boldsymbol{x}'$ cannot be an adversarial example to $\boldsymbol{x}$. $\square$
+
+</details>
+</div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark 16.11</span></p>
@@ -4355,7 +4960,7 @@ We next present a result showing that under assumptions on the training set, the
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem 16.12</span><span class="math-callout__name">(Robust Interpolation)</span></p>
 
-Let $m \in \mathbb{N}$, let $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ be a ground-truth classifier, and let $(\boldsymbol{x}_i, g(\boldsymbol{x}_i))_{i=1}^m \in (\mathbb{R}^d \times \lbrace -1, 1 \rbrace)^m$. Assume that
+Let $m \in \mathbb{N}$, let $g \colon \mathbb{R}^d \to \lbrace -1, 0, 1 \rbrace$ be a ground-truth classifier, and let $(\boldsymbol{x}\_i, g(\boldsymbol{x}\_i))\_{i=1}^m \in (\mathbb{R}^d \times \lbrace -1, 1 \rbrace)^m$. Assume that
 
 $$\sup_{i \neq j} \frac{\lvert g(\boldsymbol{x}_i) - g(\boldsymbol{x}_j) \rvert}{\lVert \boldsymbol{x}_i - \boldsymbol{x}_j \rVert} =: \widetilde{M} > 0.$$
 
@@ -4363,11 +4968,18 @@ Then there exists a ReLU neural network $\Phi$ with $\text{depth}(\Phi) = O(\log
 
 $$\text{sign}(\Phi(\boldsymbol{x}_i)) = g(\boldsymbol{x}_i)$$
 
-and there is no adversarial example of perturbation $\delta = 1/\widetilde{M}$ to $\boldsymbol{x}_i$.
+and there is no adversarial example of perturbation $\delta = 1/\widetilde{M}$ to $\boldsymbol{x}\_i$.
 
 </div>
 
-*Proof.* The result follows directly from Theorem 9.6 and Proposition 16.10. $\square$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The result follows directly from Theorem 9.6 and Proposition 16.10. $\square$
+
+</details>
+</div>
 
 #### 16.5.2 Local Regularity
 
@@ -4390,7 +5002,11 @@ where the minimum is understood to be $R$ in case the supremum is zero. Then the
 
 </div>
 
-*Proof.* Assume, towards a contradiction, that for $0 < \delta < \alpha$, there exists an adversarial example $\boldsymbol{x}'$ to $\boldsymbol{x}$ with perturbation $\delta$. If the supremum is zero, then $\Phi$ is constant on a ball of radius $R$ around $\boldsymbol{x}$, so $h(\boldsymbol{x}') = h(\boldsymbol{x})$ and $\boldsymbol{x}'$ cannot be an adversarial example.
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Assume, towards a contradiction, that for $0 < \delta < \alpha$, there exists an adversarial example $\boldsymbol{x}'$ to $\boldsymbol{x}$ with perturbation $\delta$. If the supremum is zero, then $\Phi$ is constant on a ball of radius $R$ around $\boldsymbol{x}$, so $h(\boldsymbol{x}') = h(\boldsymbol{x})$ and $\boldsymbol{x}'$ cannot be an adversarial example.
 
 Now assume the supremum is not zero. It holds by the definition of $\alpha$ for $\delta < R$ that
 
@@ -4402,7 +5018,10 @@ $$\lvert \Phi(\boldsymbol{x}') - \Phi(\boldsymbol{x}) \rvert \leq \sup_{\substac
 
 It follows that $g(\boldsymbol{x}) \Phi(\boldsymbol{x}') = g(\boldsymbol{x}) \Phi(\boldsymbol{x}) + g(\boldsymbol{x})(\Phi(\boldsymbol{x}') - \Phi(\boldsymbol{x})) \geq g(\boldsymbol{x}) \Phi(\boldsymbol{x}) - \lvert \Phi(\boldsymbol{x}') - \Phi(\boldsymbol{x}) \rvert > 0$. This rules out $\boldsymbol{x}'$ as an adversarial example. $\square$
 
-The supremum in the definition of $\alpha$ is bounded by the Lipschitz constant of $\Phi$ on $B_R(\boldsymbol{x})$. Thus Theorem 16.13 depends only on the local Lipschitz constant of $\Phi$. One criticism of this result is that the computation of $\alpha$ is potentially prohibitive. We next show a different result, for which the assumptions can immediately be checked by applying a simple algorithm.
+</details>
+</div>
+
+The supremum in the definition of $\alpha$ is bounded by the Lipschitz constant of $\Phi$ on $B\_R(\boldsymbol{x})$. Thus Theorem 16.13 depends only on the local Lipschitz constant of $\Phi$. One criticism of this result is that the computation of $\alpha$ is potentially prohibitive. We next show a different result, for which the assumptions can immediately be checked by applying a simple algorithm.
 
 For a continuous function $\Phi \colon \mathbb{R}^d \to \mathbb{R}$ and for $\boldsymbol{x} \in \mathbb{R}^d$ and $\delta > 0$ we define
 
@@ -4417,7 +5036,14 @@ Let $h \colon \mathbb{R}^d \to \lbrace -1, 1 \rbrace$ be a classifier of the for
 
 </div>
 
-*Proof.* The proof is immediate, since $z^{\delta, \max} z^{\delta, \min} > 0$ implies that all points in a $\delta$ neighborhood of $\boldsymbol{x}$ are classified the same. $\square$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+The proof is immediate, since $z^{\delta, \max} z^{\delta, \min} > 0$ implies that all points in a $\delta$ neighborhood of $\boldsymbol{x}$ are classified the same. $\square$
+
+</details>
+</div>
 
 To apply Proposition 16.14, we only have to compute $z^{\delta, \max}$ and $z^{\delta, \min}$. If $\Phi$ is a neural network, then $z^{\delta, \max}$, $z^{\delta, \min}$ can be approximated by a computation similar to a forward pass of $\Phi$. Denote by $\lvert \boldsymbol{A} \rvert$ the matrix obtained by taking the absolute value of each entry of the matrix $\boldsymbol{A}$. Additionally, we define
 
@@ -4426,11 +5052,11 @@ $$\boldsymbol{A}^+ = (\lvert \boldsymbol{A} \rvert + \boldsymbol{A}) / 2 \quad \
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Algorithm 3</span><span class="math-callout__name">(Computing $\Phi(\boldsymbol{x})$, $z^{\delta, \max}$ and $z^{\delta, \min}$)</span></p>
 
-**Input:** weight matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$ and bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d_{\ell+1}}$ for $\ell = 0, \ldots, L$ with $d_{L+1} = 1$, monotonous activation function $\sigma$, input vector $\boldsymbol{x} \in \mathbb{R}^{d_0}$, neighborhood size $\delta > 0$
+**Input:** weight matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$ and bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1}}$ for $\ell = 0, \ldots, L$ with $d\_{L+1} = 1$, monotonous activation function $\sigma$, input vector $\boldsymbol{x} \in \mathbb{R}^{d\_0}$, neighborhood size $\delta > 0$
 
 **Output:** Bounds for $z^{\delta, \max}$ and $z^{\delta, \min}$
 
-$\boldsymbol{x}^{(0)} = \boldsymbol{x}$, $\delta^{(0), \text{up}} = \delta \mathbb{1} \in \mathbb{R}^{d_0}$, $\delta^{(0), \text{low}} = \delta \mathbb{1} \in \mathbb{R}^{d_0}$
+$\boldsymbol{x}^{(0)} = \boldsymbol{x}$, $\delta^{(0), \text{up}} = \delta \mathbb{1} \in \mathbb{R}^{d\_0}$, $\delta^{(0), \text{low}} = \delta \mathbb{1} \in \mathbb{R}^{d\_0}$
 
 **for** $\ell = 0, \ldots, L-1$ **do**
 - $\boldsymbol{x}^{(\ell+1)} = \sigma(\boldsymbol{W}^{(\ell)} \boldsymbol{x}^{(\ell)} + \boldsymbol{b}^{(\ell)})$
@@ -4459,7 +5085,7 @@ Up to constants, Algorithm 3 has the same computational complexity as a forward 
 <div class="math-callout math-callout--proposition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Proposition 16.16</span><span class="math-callout__name">(Correctness of Algorithm 3)</span></p>
 
-Let $\Phi$ be a neural network with weight matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}$ and bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d_{\ell+1}}$ for $\ell = 0, \ldots, L$, and a monotonically increasing activation function $\sigma$.
+Let $\Phi$ be a neural network with weight matrices $\boldsymbol{W}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1} \times d\_\ell}$ and bias vectors $\boldsymbol{b}^{(\ell)} \in \mathbb{R}^{d\_{\ell+1}}$ for $\ell = 0, \ldots, L$, and a monotonically increasing activation function $\sigma$.
 
 Let $\boldsymbol{x} \in \mathbb{R}^d$. Then the output of Algorithm 3 satisfies
 
@@ -4467,13 +5093,20 @@ $$\boldsymbol{x}^{L+1} + \delta^{(L+1), \text{up}} > z^{\delta, \max} \quad \tex
 
 </div>
 
-*Proof.* Fix $\boldsymbol{y}$, $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{y} - \boldsymbol{x} \rVert_\infty \leq \delta$ and let $\boldsymbol{y}^{(\ell)}$, $\boldsymbol{x}^{(\ell)}$ for $\ell = 0, \ldots, L+1$ be as in Algorithm 3 applied to $\boldsymbol{y}$, $\boldsymbol{x}$, respectively. We prove by induction over $\ell = 0, \ldots, L+1$ that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Fix $\boldsymbol{y}$, $\boldsymbol{x} \in \mathbb{R}^d$ with $\lVert \boldsymbol{y} - \boldsymbol{x} \rVert\_\infty \leq \delta$ and let $\boldsymbol{y}^{(\ell)}$, $\boldsymbol{x}^{(\ell)}$ for $\ell = 0, \ldots, L+1$ be as in Algorithm 3 applied to $\boldsymbol{y}$, $\boldsymbol{x}$, respectively. We prove by induction over $\ell = 0, \ldots, L+1$ that
 
 $$\boldsymbol{y}^{(\ell)} - \boldsymbol{x}^{(\ell)} \leq \delta^{\ell, \text{up}} \quad \text{and} \quad \boldsymbol{x}^{(\ell)} - \boldsymbol{y}^{(\ell)} \leq \delta^{\ell, \text{low}},$$
 
 where the inequalities are understood entry-wise for vectors. Since $\boldsymbol{y}$ was arbitrary, this proves the result.
 
-The case $\ell = 0$ follows immediately from $\lVert \boldsymbol{y} - \boldsymbol{x} \rVert_\infty \leq \delta$. For the induction step, we use the identity $\boldsymbol{W}^{(\ell)}(\boldsymbol{y}^{(\ell)} - \boldsymbol{x}^{(\ell)}) = (\boldsymbol{W}^{(\ell)})^+(\boldsymbol{y}^{(\ell)} - \boldsymbol{x}^{(\ell)}) + (\boldsymbol{W}^{(\ell)})^-(\boldsymbol{x}^{(\ell)} - \boldsymbol{y}^{(\ell)})$ and the monotonicity of $\sigma$ to propagate the bounds through each layer. The case $\ell = L+1$ follows by the same argument, replacing $\sigma$ by the identity. $\square$
+The case $\ell = 0$ follows immediately from $\lVert \boldsymbol{y} - \boldsymbol{x} \rVert\_\infty \leq \delta$. For the induction step, we use the identity $\boldsymbol{W}^{(\ell)}(\boldsymbol{y}^{(\ell)} - \boldsymbol{x}^{(\ell)}) = (\boldsymbol{W}^{(\ell)})^+(\boldsymbol{y}^{(\ell)} - \boldsymbol{x}^{(\ell)}) + (\boldsymbol{W}^{(\ell)})^-(\boldsymbol{x}^{(\ell)} - \boldsymbol{y}^{(\ell)})$ and the monotonicity of $\sigma$ to propagate the bounds through each layer. The case $\ell = L+1$ follows by the same argument, replacing $\sigma$ by the identity. $\square$
+
+</details>
+</div>
 
 ---
 
@@ -4492,7 +5125,7 @@ A subset $\mathfrak{A} \subseteq 2^\Omega$ is called a **sigma-algebra** on $\Om
 
 1. $\Omega \in \mathfrak{A}$,
 2. $A^c \in \mathfrak{A}$ whenever $A \in \mathfrak{A}$,
-3. $\bigcup_{i \in \mathbb{N}} A_i \in \mathfrak{A}$ whenever $A_i \in \mathfrak{A}$ for all $i \in \mathbb{N}$.
+3. $\bigcup\_{i \in \mathbb{N}} A\_i \in \mathfrak{A}$ whenever $A\_i \in \mathfrak{A}$ for all $i \in \mathbb{N}$.
 
 </div>
 
@@ -4506,8 +5139,8 @@ Another key system of subsets of $\Omega$ is that of a topology.
 A subset $\mathfrak{T} \subseteq 2^\Omega$ is called a **topology** on $\Omega$ if it satisfies
 
 1. $\emptyset, \Omega \in \mathfrak{T}$,
-2. $\bigcap_{j=1}^n O_j \in \mathfrak{T}$ whenever $n \in \mathbb{N}$ and $O_1, \ldots, O_n \in \mathfrak{T}$,
-3. $\bigcup_{i \in I} O_i \in \mathfrak{T}$ whenever for an index set $I$ holds $O_i \in \mathfrak{T}$ for all $i \in I$.
+2. $\bigcap\_{j=1}^n O\_j \in \mathfrak{T}$ whenever $n \in \mathbb{N}$ and $O\_1, \ldots, O\_n \in \mathfrak{T}$,
+3. $\bigcup\_{i \in I} O\_i \in \mathfrak{T}$ whenever for an index set $I$ holds $O\_i \in \mathfrak{T}$ for all $i \in I$.
 
 If $\mathfrak{T}$ is a topology on $\Omega$, we call $(\Omega, \mathfrak{T})$ a **topological space**, and a set $O \subseteq \Omega$ is called **open** if and only if $O \in \mathfrak{T}$.
 
@@ -4523,11 +5156,11 @@ The two notions differ in that a topology allows for unions of *arbitrary* (poss
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.4</span><span class="math-callout__name">(Euclidean Topology)</span></p>
 
-Let $d \in \mathbb{N}$ and denote by $B_\varepsilon(\boldsymbol{x}) = \lbrace \boldsymbol{y} \in \mathbb{R}^d \mid \lVert \boldsymbol{y} - \boldsymbol{x} \rVert < \varepsilon \rbrace$ the set of points whose Euclidean distance to $\boldsymbol{x}$ is less than $\varepsilon$. Then for every $A \subseteq \mathbb{R}^d$, the smallest topology on $A$ containing $A \cap B_\varepsilon(\boldsymbol{x})$ for all $\varepsilon > 0$, $\boldsymbol{x} \in \mathbb{R}^d$, is called the **Euclidean topology** on $A$.
+Let $d \in \mathbb{N}$ and denote by $B\_\varepsilon(\boldsymbol{x}) = \lbrace \boldsymbol{y} \in \mathbb{R}^d \mid \lVert \boldsymbol{y} - \boldsymbol{x} \rVert < \varepsilon \rbrace$ the set of points whose Euclidean distance to $\boldsymbol{x}$ is less than $\varepsilon$. Then for every $A \subseteq \mathbb{R}^d$, the smallest topology on $A$ containing $A \cap B\_\varepsilon(\boldsymbol{x})$ for all $\varepsilon > 0$, $\boldsymbol{x} \in \mathbb{R}^d$, is called the **Euclidean topology** on $A$.
 
 </div>
 
-If $(\Omega, \mathfrak{T})$ is a topological space, then the **Borel sigma-algebra** refers to the smallest sigma-algebra on $\Omega$ containing all open sets, i.e. all elements of $\mathfrak{T}$. Throughout this book, subsets of $\mathbb{R}^d$ are always understood to be equipped with the Euclidean topology and the Borel sigma-algebra. The Borel sigma-algebra on $\mathbb{R}^d$ is denoted by $\mathfrak{B}_d$.
+If $(\Omega, \mathfrak{T})$ is a topological space, then the **Borel sigma-algebra** refers to the smallest sigma-algebra on $\Omega$ containing all open sets, i.e. all elements of $\mathfrak{T}$. Throughout this book, subsets of $\mathbb{R}^d$ are always understood to be equipped with the Euclidean topology and the Borel sigma-algebra. The Borel sigma-algebra on $\mathbb{R}^d$ is denoted by $\mathfrak{B}\_d$.
 
 We can now introduce measures.
 
@@ -4537,18 +5170,18 @@ We can now introduce measures.
 Let $(\Omega, \mathfrak{A})$ be a measurable space. A mapping $\mu \colon \mathfrak{A} \to [0, \infty]$ is called a **measure** if it satisfies
 
 1. $\mu(\emptyset) = 0$,
-2. for every sequence $(A_i)_{i \in \mathbb{N}} \subseteq \mathfrak{A}$ such that $A_i \cap A_j = \emptyset$ whenever $i \neq j$, it holds
+2. for every sequence $(A\_i)\_{i \in \mathbb{N}} \subseteq \mathfrak{A}$ such that $A\_i \cap A\_j = \emptyset$ whenever $i \neq j$, it holds
 
 $$\mu\!\left(\bigcup_{i \in \mathbb{N}} A_i\right) = \sum_{i \in \mathbb{N}} \mu(A_i).$$
 
-We say that the measure is **finite** if $\mu(\Omega) < \infty$, and it is **sigma-finite** if there exists a sequence $(A_i)_{i \in \mathbb{N}} \subseteq \mathfrak{A}$ such that $\Omega = \bigcup_{i \in \mathbb{N}} A_i$ and $\mu(A_i) < 1$ for all $i \in \mathbb{N}$. In case $\mu(\Omega) = 1$, the measure is called a **probability measure**.
+We say that the measure is **finite** if $\mu(\Omega) < \infty$, and it is **sigma-finite** if there exists a sequence $(A\_i)\_{i \in \mathbb{N}} \subseteq \mathfrak{A}$ such that $\Omega = \bigcup\_{i \in \mathbb{N}} A\_i$ and $\mu(A\_i) < 1$ for all $i \in \mathbb{N}$. In case $\mu(\Omega) = 1$, the measure is called a **probability measure**.
 
 </div>
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.6</span><span class="math-callout__name">(Lebesgue Measure)</span></p>
 
-One can show that there exists a unique measure $\lambda$ on $(\mathbb{R}^d, \mathfrak{B}_d)$, such that for all sets of the type $\times_{j=1}^d [a_i, b_i)$ with $-\infty < a_i \leq b_i < \infty$ holds
+One can show that there exists a unique measure $\lambda$ on $(\mathbb{R}^d, \mathfrak{B}\_d)$, such that for all sets of the type $\times\_{j=1}^d [a\_i, b\_i)$ with $-\infty < a\_i \leq b\_i < \infty$ holds
 
 $$\lambda(\times_{i=1}^d [a_i, b_i)) = \prod_{i=1}^d (b_i - a_i).$$
 
@@ -4567,57 +5200,57 @@ Let $(\Omega, \mathfrak{A}, \mu)$ be a measure space. A subset $N \subseteq \Ome
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.7</span><span class="math-callout__name">(Measurable Function)</span></p>
 
-Let $(\Omega_1, \mathfrak{A}_1)$ and $(\Omega_2, \mathfrak{A}_2)$ be two measurable spaces. A function $f \colon \Omega_1 \to \Omega_2$ is called **measurable** if
+Let $(\Omega\_1, \mathfrak{A}\_1)$ and $(\Omega\_2, \mathfrak{A}\_2)$ be two measurable spaces. A function $f \colon \Omega\_1 \to \Omega\_2$ is called **measurable** if
 
 $$f^{-1}(A_2) := \lbrace \omega \in \Omega_1 \mid f(\omega) \in A_2 \rbrace \in \mathfrak{A}_1 \quad \text{for all } A_2 \in \mathfrak{A}_2.$$
 
-A mapping $X \colon \Omega_1 \to \Omega_2$ is called a $\Omega_2$**-valued random variable** if it is measurable.
+A mapping $X \colon \Omega\_1 \to \Omega\_2$ is called a $\Omega\_2$**-valued random variable** if it is measurable.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark A.8</span></p>
 
-We again point out the parallels to topological spaces: A function $f \colon \Omega_1 \to \Omega_2$ between two topological spaces $(\Omega_1, \mathfrak{T}_1)$ and $(\Omega_2, \mathfrak{T}_2)$ is called **continuous** if $f^{-1}(O_2) \in \mathfrak{T}_1$ for all $O_2 \in \mathfrak{T}_2$.
+We again point out the parallels to topological spaces: A function $f \colon \Omega\_1 \to \Omega\_2$ between two topological spaces $(\Omega\_1, \mathfrak{T}\_1)$ and $(\Omega\_2, \mathfrak{T}\_2)$ is called **continuous** if $f^{-1}(O\_2) \in \mathfrak{T}\_1$ for all $O\_2 \in \mathfrak{T}\_2$.
 
 </div>
 
-Let $\Omega_1$ be a set and let $(\Omega_2, \mathfrak{A}_2)$ be a measurable space. For $X \colon \Omega_1 \to \Omega_2$, we can ask for the smallest sigma-algebra $\mathfrak{A}_X$ on $\Omega_1$ such that $X$ is measurable as a mapping from $(\Omega_1, \mathfrak{A}_X)$ to $(\Omega_2, \mathfrak{A}_2)$. Clearly, for every sigma-algebra $\mathfrak{A}_1$ on $\Omega_1$, $X$ is measurable as a mapping from $(\Omega_1, \mathfrak{A}_1)$ to $(\Omega_2, \mathfrak{A}_2)$ if and only if every $A \in \mathfrak{A}_X$ belongs to $\mathfrak{A}_1$; or in other words, $\mathfrak{A}_X$ is a sub sigma-algebra of $\mathfrak{A}_1$.
+Let $\Omega\_1$ be a set and let $(\Omega\_2, \mathfrak{A}\_2)$ be a measurable space. For $X \colon \Omega\_1 \to \Omega\_2$, we can ask for the smallest sigma-algebra $\mathfrak{A}\_X$ on $\Omega\_1$ such that $X$ is measurable as a mapping from $(\Omega\_1, \mathfrak{A}\_X)$ to $(\Omega\_2, \mathfrak{A}\_2)$. Clearly, for every sigma-algebra $\mathfrak{A}\_1$ on $\Omega\_1$, $X$ is measurable as a mapping from $(\Omega\_1, \mathfrak{A}\_1)$ to $(\Omega\_2, \mathfrak{A}\_2)$ if and only if every $A \in \mathfrak{A}\_X$ belongs to $\mathfrak{A}\_1$; or in other words, $\mathfrak{A}\_X$ is a sub sigma-algebra of $\mathfrak{A}\_1$.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.9</span><span class="math-callout__name">(Induced Sigma-Algebra)</span></p>
 
-Let $X \colon \Omega_1 \to \Omega_2$ be a random variable. Then
+Let $X \colon \Omega\_1 \to \Omega\_2$ be a random variable. Then
 
 $$\mathfrak{A}_X := \lbrace X^{-1}(A_2) \mid A_2 \in \mathfrak{A}_2 \rbrace \subseteq 2^{\Omega_1}$$
 
-is the **sigma-algebra induced by** $X$ on $\Omega_1$.
+is the **sigma-algebra induced by** $X$ on $\Omega\_1$.
 
 </div>
 
 #### A.2.2 Distribution and Expectation
 
-Now let $(\Omega_1, \mathfrak{A}_1, \mathbb{P})$ be a probability space, and let $(\Omega_2, \mathfrak{A}_2)$ be a measurable space. Then $X$ naturally induces a measure on $(\Omega_2, \mathfrak{A}_2)$ via
+Now let $(\Omega\_1, \mathfrak{A}\_1, \mathbb{P})$ be a probability space, and let $(\Omega\_2, \mathfrak{A}\_2)$ be a measurable space. Then $X$ naturally induces a measure on $(\Omega\_2, \mathfrak{A}\_2)$ via
 
 $$\mathbb{P}_X[A_2] := \mathbb{P}[X^{-1}(A_2)] \quad \text{for all } A_2 \in \mathfrak{A}_2.$$
 
-Note that due to the measurability of $X$ it holds $X^{-1}(A_2) \in \mathfrak{A}_1$, so that $\mathbb{P}_X$ is well-defined.
+Note that due to the measurability of $X$ it holds $X^{-1}(A\_2) \in \mathfrak{A}\_1$, so that $\mathbb{P}\_X$ is well-defined.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.10</span><span class="math-callout__name">(Distribution and Lebesgue Density)</span></p>
 
-The measure $\mathbb{P}_X$ is called the **distribution** of $X$. If $(\Omega_2, \mathfrak{A}_2) = (\mathbb{R}^d, \mathfrak{B}_d)$, and there exists a function $f_X \colon \mathbb{R}^d \to \mathbb{R}$ such that
+The measure $\mathbb{P}\_X$ is called the **distribution** of $X$. If $(\Omega\_2, \mathfrak{A}\_2) = (\mathbb{R}^d, \mathfrak{B}\_d)$, and there exists a function $f\_X \colon \mathbb{R}^d \to \mathbb{R}$ such that
 
 $$\mathbb{P}[A] = \int_A f_X(\boldsymbol{x})\, \mathrm{d}\boldsymbol{x} \quad \text{for all } A \in \mathfrak{B}_d,$$
 
-then $f_X$ is called the **(Lebesgue) density** of $X$.
+then $f\_X$ is called the **(Lebesgue) density** of $X$.
 
 </div>
 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark A.11</span></p>
 
-The term distribution is often used without specifying an underlying probability space and random variable. In this case, "distribution" stands interchangeably for "probability measure". For example, $\mu$ *is a distribution on* $\Omega_2$ states that $\mu$ is a probability measure on the measurable space $(\Omega_2, \mathfrak{A}_2)$. In this case, there always exists a probability space $(\Omega_1, \mathfrak{A}_1, \mathbb{P})$ and a random variable $X \colon \Omega_1 \to \Omega_2$ such that $\mathbb{P}_X = \mu$; namely $(\Omega_1, \mathfrak{A}_1, \mathbb{P}) = (\Omega_2, \mathfrak{A}_2, \mu)$ and $X(\omega) = \omega$.
+The term distribution is often used without specifying an underlying probability space and random variable. In this case, "distribution" stands interchangeably for "probability measure". For example, $\mu$ *is a distribution on* $\Omega\_2$ states that $\mu$ is a probability measure on the measurable space $(\Omega\_2, \mathfrak{A}\_2)$. In this case, there always exists a probability space $(\Omega\_1, \mathfrak{A}\_1, \mathbb{P})$ and a random variable $X \colon \Omega\_1 \to \Omega\_2$ such that $\mathbb{P}\_X = \mu$; namely $(\Omega\_1, \mathfrak{A}\_1, \mathbb{P}) = (\Omega\_2, \mathfrak{A}\_2, \mu)$ and $X(\omega) = \omega$.
 
 </div>
 
@@ -4628,7 +5261,7 @@ Some important distributions include the following.
 
 - **Bernoulli distribution**: A random variable $X \colon \Omega \to \lbrace 0, 1 \rbrace$ is Bernoulli distributed if there exists $p \in [0, 1]$ such that $\mathbb{P}[X = 1] = p$ and $\mathbb{P}[X = 0] = 1 - p$.
 
-- **Uniform distribution**: A random variable $X \colon \Omega \to \mathbb{R}^d$ is uniformly distributed on a measurable set $A \in \mathfrak{B}_d$, if its density equals
+- **Uniform distribution**: A random variable $X \colon \Omega \to \mathbb{R}^d$ is uniformly distributed on a measurable set $A \in \mathfrak{B}\_d$, if its density equals
 
 $$f_X(\boldsymbol{x}) = \frac{1}{\lvert A \rvert} \mathbb{1}_A(\boldsymbol{x})$$
 
@@ -4659,7 +5292,7 @@ is the **covariance** of $X \colon \Omega \to \mathbb{R}^d$. For $d = 1$, it is 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.13</span><span class="math-callout__name">(Convergence of Random Variables)</span></p>
 
-Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, let $X_j \colon \Omega \to \mathbb{R}^d$, $j \in \mathbb{N}$, be a sequence of random variables, and let $X \colon \Omega \to \mathbb{R}^d$ also be a random variable. The sequence is said to
+Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, let $X\_j \colon \Omega \to \mathbb{R}^d$, $j \in \mathbb{N}$, be a sequence of random variables, and let $X \colon \Omega \to \mathbb{R}^d$ also be a random variable. The sequence is said to
 
 1. **converge almost surely** to $X$, if
 
@@ -4675,21 +5308,21 @@ $$\lim_{j \to \infty} \mathbb{E}[f \circ X_j] = \mathbb{E}[f \circ X].$$
 
 </div>
 
-The notions in Definition A.13 are ordered by decreasing strength, i.e. almost sure convergence implies convergence in probability, and convergence in probability implies convergence in distribution. Since $\mathbb{E}[f \circ X] = \int_{\mathbb{R}^d} f(x)\, \mathrm{d}\mathbb{P}_X(x)$, the notion of convergence in distribution only depends on the distribution $\mathbb{P}_X$ of $X$. We thus also say that a sequence of random variables converges in distribution towards a measure $\mu$.
+The notions in Definition A.13 are ordered by decreasing strength, i.e. almost sure convergence implies convergence in probability, and convergence in probability implies convergence in distribution. Since $\mathbb{E}[f \circ X] = \int\_{\mathbb{R}^d} f(x)\, \mathrm{d}\mathbb{P}\_X(x)$, the notion of convergence in distribution only depends on the distribution $\mathbb{P}\_X$ of $X$. We thus also say that a sequence of random variables converges in distribution towards a measure $\mu$.
 
 ### A.3 Conditionals, Marginals, and Independence
 
 #### A.3.1 Joint and Marginal Distribution
 
-Let again $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d_X}$, $Y \colon \Omega \to \mathbb{R}^{d_Y}$ be two random variables. Then
+Let again $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d\_X}$, $Y \colon \Omega \to \mathbb{R}^{d\_Y}$ be two random variables. Then
 
 $$Z := (X, Y) \colon \Omega \to \mathbb{R}^{d_X + d_Y}$$
 
-is also a random variable. Its distribution $\mathbb{P}_Z$ is a measure on the measurable space $(\mathbb{R}^{d_X + d_Y}, \mathfrak{B}_{d_X + d_Y})$, and $\mathbb{P}_Z$ is referred to as the **joint distribution** of $X$ and $Y$. On the other hand, $\mathbb{P}_X$, $\mathbb{P}_Y$ are called the **marginal distributions** of $X$, $Y$. Note that
+is also a random variable. Its distribution $\mathbb{P}\_Z$ is a measure on the measurable space $(\mathbb{R}^{d\_X + d\_Y}, \mathfrak{B}\_{d\_X + d\_Y})$, and $\mathbb{P}\_Z$ is referred to as the **joint distribution** of $X$ and $Y$. On the other hand, $\mathbb{P}\_X$, $\mathbb{P}\_Y$ are called the **marginal distributions** of $X$, $Y$. Note that
 
 $$\mathbb{P}_X[A] = \mathbb{P}_Z[A \times \mathbb{R}^{d_Y}] \quad \text{for all } A \in \mathfrak{B}_{d_X},$$
 
-and similarly for $\mathbb{P}_Y$. Thus the marginals $\mathbb{P}_X$, $\mathbb{P}_Y$ can be constructed from the joint distribution $\mathbb{P}_Z$. In turn, knowledge of the marginals is not sufficient to construct the joint distribution.
+and similarly for $\mathbb{P}\_Y$. Thus the marginals $\mathbb{P}\_X$, $\mathbb{P}\_Y$ can be constructed from the joint distribution $\mathbb{P}\_Z$. In turn, knowledge of the marginals is not sufficient to construct the joint distribution.
 
 #### A.3.2 Independence
 
@@ -4702,13 +5335,13 @@ Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space. Then two events
 
 $$\mathbb{P}[A \cap B] = \mathbb{P}[A] \mathbb{P}[B].$$
 
-Two random variables $X \colon \Omega \to \mathbb{R}^{d_X}$ and $Y \colon \Omega \to \mathbb{R}^{d_Y}$ are called **independent**, if
+Two random variables $X \colon \Omega \to \mathbb{R}^{d\_X}$ and $Y \colon \Omega \to \mathbb{R}^{d\_Y}$ are called **independent**, if
 
 $$A, B \text{ are independent for all } A \in \mathfrak{A}_X,\; B \in \mathfrak{A}_Y.$$
 
 </div>
 
-Two random variables are thus independent if and only if all events in their induced sigma-algebras are independent. This turns out to be equivalent to the joint distribution $\mathbb{P}_{(X,Y)}$ being equal to the product measure $\mathbb{P}_X \otimes \mathbb{P}_Y$; the latter is characterized as the unique measure $\mu$ on $\mathbb{R}^{d_X + d_Y}$ satisfying $\mu(A \times B) = \mathbb{P}_X[A] \mathbb{P}_Y[B]$ for all $A \in \mathfrak{B}_{d_X}$, $B \in \mathfrak{B}_{d_Y}$.
+Two random variables are thus independent if and only if all events in their induced sigma-algebras are independent. This turns out to be equivalent to the joint distribution $\mathbb{P}\_{(X,Y)}$ being equal to the product measure $\mathbb{P}\_X \otimes \mathbb{P}\_Y$; the latter is characterized as the unique measure $\mu$ on $\mathbb{R}^{d\_X + d\_Y}$ satisfying $\mu(A \times B) = \mathbb{P}\_X[A] \mathbb{P}\_Y[B]$ for all $A \in \mathfrak{B}\_{d\_X}$, $B \in \mathfrak{B}\_{d\_Y}$.
 
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.15</span><span class="math-callout__name">(Independence and Dice Rolls)</span></p>
@@ -4717,15 +5350,15 @@ Let $\Omega = \lbrace 1, \ldots, 6 \rbrace$ represent the outcomes of rolling a 
 
 $$X_1(\omega) = \begin{cases} 0 & \text{if } \omega \text{ is odd} \\ 1 & \text{if } \omega \text{ is even} \end{cases} \quad X_2(\omega) = \begin{cases} 0 & \text{if } \omega \leq 3 \\ 1 & \text{if } \omega \geq 4 \end{cases} \quad X_3(\omega) = \begin{cases} 0 & \text{if } \omega \in \lbrace 1, 2 \rbrace \\ 1 & \text{if } \omega \in \lbrace 3, 4 \rbrace \\ 2 & \text{if } \omega \in \lbrace 5, 6 \rbrace \end{cases}$$
 
-$X_1$ and $X_2$ are not independent, but $X_1$ and $X_3$ are independent. This reflects the fact that, for example, knowing the outcome to be odd makes it more likely that the number belongs to $\lbrace 1, 2, 3 \rbrace$ rather than $\lbrace 4, 5, 6 \rbrace$. However, this knowledge provides no information on the three categories $\lbrace 1, 2 \rbrace$, $\lbrace 3, 4 \rbrace$, and $\lbrace 5, 6 \rbrace$.
+$X\_1$ and $X\_2$ are not independent, but $X\_1$ and $X\_3$ are independent. This reflects the fact that, for example, knowing the outcome to be odd makes it more likely that the number belongs to $\lbrace 1, 2, 3 \rbrace$ rather than $\lbrace 4, 5, 6 \rbrace$. However, this knowledge provides no information on the three categories $\lbrace 1, 2 \rbrace$, $\lbrace 3, 4 \rbrace$, and $\lbrace 5, 6 \rbrace$.
 
 </div>
 
-If $X \colon \Omega \to \mathbb{R}$, $Y \colon \Omega \to \mathbb{R}$ are two independent random variables, then due to $\mathbb{P}_{(X,Y)} = \mathbb{P}_X \otimes \mathbb{P}_Y$
+If $X \colon \Omega \to \mathbb{R}$, $Y \colon \Omega \to \mathbb{R}$ are two independent random variables, then due to $\mathbb{P}\_{(X,Y)} = \mathbb{P}\_X \otimes \mathbb{P}\_Y$
 
 $$\mathbb{E}[XY] = \int_\Omega X(\omega) Y(\omega)\, \mathrm{d}\mathbb{P}(\omega) = \int_{\mathbb{R}} x\, \mathrm{d}\mathbb{P}_X(x) \int_{\mathbb{R}} y\, \mathrm{d}\mathbb{P}_Y(y) = \mathbb{E}[X] \mathbb{E}[Y].$$
 
-Using this observation, it is easy to see that for a sequence of independent $\mathbb{R}$-valued random variables $(X_i)_{i=1}^n$ with bounded second moments, there holds **Bienaymé's identity**
+Using this observation, it is easy to see that for a sequence of independent $\mathbb{R}$-valued random variables $(X\_i)\_{i=1}^n$ with bounded second moments, there holds **Bienaymé's identity**
 
 $$\mathbb{V}\!\left[\sum_{i=1}^n X_i\right] = \sum_{i=1}^n \mathbb{V}[X_i].$$
 
@@ -4740,7 +5373,7 @@ and call $\mathbb{P}[A \mid B]$ the **conditional probability of $A$ given $B$**
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example A.16</span></p>
 
-Consider the setting of Example A.15. Let $A = \lbrace \omega \in \Omega \mid X_1(\omega) = 0 \rbrace$ be the event that the die roll was an odd number and let $B = \lbrace \omega \in \Omega \mid X_2(\omega) = 0 \rbrace$ be the event that the outcome yielded a number at most 3. Then $\mathbb{P}[B] = 1/2$, and $\mathbb{P}[A \cap B] = 1/3$. Thus
+Consider the setting of Example A.15. Let $A = \lbrace \omega \in \Omega \mid X\_1(\omega) = 0 \rbrace$ be the event that the die roll was an odd number and let $B = \lbrace \omega \in \Omega \mid X\_2(\omega) = 0 \rbrace$ be the event that the outcome yielded a number at most 3. Then $\mathbb{P}[B] = 1/2$, and $\mathbb{P}[A \cap B] = 1/3$. Thus
 
 $$\mathbb{P}[A \mid B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]} = \frac{1/3}{1/2} = \frac{2}{3}.$$
 
@@ -4760,11 +5393,11 @@ Consider the following procedure: We first draw a random number $p \in [0, 1]$ a
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.18</span><span class="math-callout__name">(Regular Conditional Distribution)</span></p>
 
-Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d_X}$ and $Y \colon \Omega \to \mathbb{R}^{d_Y}$ be two random variables. Let $\tau_{X \mid Y} \colon \mathfrak{B}_{d_X} \times \mathbb{R}^{d_Y} \to [0, 1]$ satisfy
+Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d\_X}$ and $Y \colon \Omega \to \mathbb{R}^{d\_Y}$ be two random variables. Let $\tau\_{X \mid Y} \colon \mathfrak{B}\_{d\_X} \times \mathbb{R}^{d\_Y} \to [0, 1]$ satisfy
 
-1. $y \mapsto \tau_{X \mid Y}(A, y) \colon \mathbb{R}^{d_Y} \to [0, 1]$ is measurable for every fixed $A \in \mathfrak{B}_{d_X}$,
-2. $A \mapsto \tau_{X \mid Y}(A, y)$ is a probability measure on $(\mathbb{R}^{d_X}, \mathfrak{B}_{d_X})$ for every $y \in Y(\Omega)$,
-3. for all $A \in \mathfrak{B}_{d_X}$ and all $B \in \mathfrak{B}_{d_Y}$ holds
+1. $y \mapsto \tau\_{X \mid Y}(A, y) \colon \mathbb{R}^{d\_Y} \to [0, 1]$ is measurable for every fixed $A \in \mathfrak{B}\_{d\_X}$,
+2. $A \mapsto \tau\_{X \mid Y}(A, y)$ is a probability measure on $(\mathbb{R}^{d\_X}, \mathfrak{B}\_{d\_X})$ for every $y \in Y(\Omega)$,
+3. for all $A \in \mathfrak{B}\_{d\_X}$ and all $B \in \mathfrak{B}\_{d\_Y}$ holds
 
 $$\mathbb{P}[X \in A, Y \in B] = \int_B \tau_{X \mid Y}(A, y)\, \mathbb{P}_Y(y).$$
 
@@ -4781,32 +5414,32 @@ Definition A.18 provides a mathematically rigorous way of assigning a distributi
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.19</span><span class="math-callout__name">(Existence and Uniqueness of Regular Conditional Distributions)</span></p>
 
-Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d_X}$, $Y \colon \Omega \to \mathbb{R}^{d_Y}$ be two random variables. Then there exists a regular version of the conditional distribution $\tau_1$.
+Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d\_X}$, $Y \colon \Omega \to \mathbb{R}^{d\_Y}$ be two random variables. Then there exists a regular version of the conditional distribution $\tau\_1$.
 
-Let $\tau_2$ be another regular version of the conditional distribution. Then there exists a $\mathbb{P}_Y$-null set $N \subseteq \mathbb{R}^{d_Y}$, such that for all $y \in N^c \cap Y(\Omega)$, the two probability measures $\tau_1(\cdot, y)$ and $\tau_2(\cdot, y)$ coincide.
+Let $\tau\_2$ be another regular version of the conditional distribution. Then there exists a $\mathbb{P}\_Y$-null set $N \subseteq \mathbb{R}^{d\_Y}$, such that for all $y \in N^c \cap Y(\Omega)$, the two probability measures $\tau\_1(\cdot, y)$ and $\tau\_2(\cdot, y)$ coincide.
 
 </div>
 
-In particular, conditional distributions are only well-defined in a $\mathbb{P}_Y$-almost everywhere sense.
+In particular, conditional distributions are only well-defined in a $\mathbb{P}\_Y$-almost everywhere sense.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition A.20</span><span class="math-callout__name">(Conditional Independence)</span></p>
 
-Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d_X}$, $Y \colon \Omega \to \mathbb{R}^{d_Y}$, $Z \colon \Omega \to \mathbb{R}^{d_Z}$ be three random variables. We say that $X$ and $Z$ are **conditionally independent given $Y$**, if the two distributions $X \mid Y = y$ and $Z \mid Y = y$ are independent for $\mathbb{P}_Y$-almost every $y \in Y(\Omega)$.
+Let $(\Omega, \mathfrak{A}, \mathbb{P})$ be a probability space, and let $X \colon \Omega \to \mathbb{R}^{d\_X}$, $Y \colon \Omega \to \mathbb{R}^{d\_Y}$, $Z \colon \Omega \to \mathbb{R}^{d\_Z}$ be three random variables. We say that $X$ and $Z$ are **conditionally independent given $Y$**, if the two distributions $X \mid Y = y$ and $Z \mid Y = y$ are independent for $\mathbb{P}\_Y$-almost every $y \in Y(\Omega)$.
 
 </div>
 
 ### A.4 Concentration Inequalities
 
-Let $X_i \colon \Omega \to \mathbb{R}$, $i \in \mathbb{N}$, be a sequence of random variables with finite first moments. The centered average over the first $n$ terms
+Let $X\_i \colon \Omega \to \mathbb{R}$, $i \in \mathbb{N}$, be a sequence of random variables with finite first moments. The centered average over the first $n$ terms
 
 $$S_n := \frac{1}{n} \sum_{i=1}^n (X_i - \mathbb{E}[X_i])$$
 
-is another random variable, and by linearity of the expectation it holds $\mathbb{E}[S_n] = 0$. The sequence is said to satisfy the **strong law of large numbers** if
+is another random variable, and by linearity of the expectation it holds $\mathbb{E}[S\_n] = 0$. The sequence is said to satisfy the **strong law of large numbers** if
 
 $$\mathbb{P}\!\left[\lim\sup_{n \to \infty} \lvert S_n \rvert = 0\right] = 1.$$
 
-This is the case, for example, if there exists $C < \infty$ such that $\mathbb{V}[X_i] \leq C$ for all $i \in \mathbb{N}$. Concentration inequalities provide bounds on the rate of this convergence.
+This is the case, for example, if there exists $C < \infty$ such that $\mathbb{V}[X\_i] \leq C$ for all $i \in \mathbb{N}$. Concentration inequalities provide bounds on the rate of this convergence.
 
 We start with Markov's inequality.
 
@@ -4819,11 +5452,18 @@ $$\mathbb{P}[\lvert X \rvert \geq \varepsilon] \leq \frac{\mathbb{E}[\varphi(\lv
 
 </div>
 
-*Proof.* We have
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+We have
 
 $$\mathbb{P}[\lvert X \rvert \geq \varepsilon] = \int_{X^{-1}([\varepsilon, \infty))} 1\, \mathrm{d}\mathbb{P}(\omega) \leq \int_\Omega \frac{\varphi(\lvert X(\omega) \rvert)}{\varphi(\varepsilon)}\, \mathrm{d}\mathbb{P}(\omega) = \frac{\mathbb{E}[\varphi(\lvert X \rvert)]}{\varphi(\varepsilon)},$$
 
 which gives the claim. $\square$
+
+</details>
+</div>
 
 Applying Markov's inequality with $\varphi(x) := x^2$ to the random variable $X - \mathbb{E}[X]$ directly gives Chebyshev's inequality.
 
@@ -4841,7 +5481,7 @@ From Chebyshev's inequality we obtain the next result, which is a quite general 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.23</span><span class="math-callout__name">(Concentration via Chebyshev)</span></p>
 
-Let $X_1, \ldots, X_n$ be $n \in \mathbb{N}$ independent real-valued random variables such that for some $\varsigma > 0$ holds $\mathbb{E}[\lvert X_i - \mu \rvert^2] \leq \varsigma^2$ for all $i = 1, \ldots, n$. Denote
+Let $X\_1, \ldots, X\_n$ be $n \in \mathbb{N}$ independent real-valued random variables such that for some $\varsigma > 0$ holds $\mathbb{E}[\lvert X\_i - \mu \rvert^2] \leq \varsigma^2$ for all $i = 1, \ldots, n$. Denote
 
 $$\mu := \mathbb{E}\!\left[\frac{1}{n} \sum_{j=1}^n X_j\right].$$
 
@@ -4851,33 +5491,40 @@ $$\mathbb{P}\!\left[\left\lvert \frac{1}{n} \sum_{i=1}^n X_i - \mu \right\rvert 
 
 </div>
 
-*Proof.* Let $S_n = \sum_{i=1}^n (X_i - \mathbb{E}[X_i]) / n = (\sum_{i=1}^n X_i)/n - \mu$. By Bienaymé's identity (A.3.1), it holds that
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Let $S\_n = \sum\_{i=1}^n (X\_i - \mathbb{E}[X\_i]) / n = (\sum\_{i=1}^n X\_i)/n - \mu$. By Bienaymé's identity (A.3.1), it holds that
 
 $$\mathbb{V}[S_n] = \frac{1}{n^2} \sum_{j=1}^n \mathbb{E}[(X_i - \mathbb{E}[X_i])^2] \leq \frac{\varsigma^2}{n}.$$
 
-Since $\mathbb{E}[S_n] = 0$, Chebyshev's inequality applied to $S_n$ gives the statement. $\square$
+Since $\mathbb{E}[S\_n] = 0$, Chebyshev's inequality applied to $S\_n$ gives the statement. $\square$
+
+</details>
+</div>
 
 If we have additional information about the random variables, then we can derive sharper bounds. In case of uniformly bounded random variables (rather than just bounded variance), Hoeffding's inequality shows an exponential rate of concentration around the mean.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.24</span><span class="math-callout__name">(Hoeffding's Inequality)</span></p>
 
-Let $a$, $b \in \mathbb{R}$. Let $X_1, \ldots, X_n$ be $n \in \mathbb{N}$ independent real-valued random variables such that $a \leq X_i \leq b$ almost surely for all $i = 1, \ldots, n$, and let $\mu$ be as in (A.4.2). Then, for every $\varepsilon > 0$
+Let $a$, $b \in \mathbb{R}$. Let $X\_1, \ldots, X\_n$ be $n \in \mathbb{N}$ independent real-valued random variables such that $a \leq X\_i \leq b$ almost surely for all $i = 1, \ldots, n$, and let $\mu$ be as in (A.4.2). Then, for every $\varepsilon > 0$
 
 $$\mathbb{P}\!\left[\left\lvert \frac{1}{n} \sum_{j=1}^n X_j - \mu \right\rvert > \varepsilon\right] \leq 2 e^{-\frac{2n\varepsilon^2}{(b-a)^2}}.$$
 
 </div>
 
-Finally, we recall the central limit theorem in its multivariate formulation. We say that $(X_j)_{j \in \mathbb{N}}$ is an **i.i.d. sequence of random variables**, if the random variables are (pairwise) independent and identically distributed.
+Finally, we recall the central limit theorem in its multivariate formulation. We say that $(X\_j)\_{j \in \mathbb{N}}$ is an **i.i.d. sequence of random variables**, if the random variables are (pairwise) independent and identically distributed.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem A.25</span><span class="math-callout__name">(Multivariate Central Limit Theorem)</span></p>
 
-Let $(\boldsymbol{X}_n)_{n \in \mathbb{N}}$ be an i.i.d. sequence of $\mathbb{R}^d$-valued random variables, such that $\mathbb{E}[\boldsymbol{X}_n] = \boldsymbol{0} \in \mathbb{R}^d$ and $\mathbb{E}[X_{n,i} X_{n,j}] = C_{ij}$ for all $i$, $j = 1, \ldots, d$. Let
+Let $(\boldsymbol{X}\_n)\_{n \in \mathbb{N}}$ be an i.i.d. sequence of $\mathbb{R}^d$-valued random variables, such that $\mathbb{E}[\boldsymbol{X}\_n] = \boldsymbol{0} \in \mathbb{R}^d$ and $\mathbb{E}[X\_{n,i} X\_{n,j}] = C\_{ij}$ for all $i$, $j = 1, \ldots, d$. Let
 
 $$\boldsymbol{Y}_n := \frac{\boldsymbol{X}_1 + \cdots + \boldsymbol{X}_n}{\sqrt{n}} \in \mathbb{R}^d.$$
 
-Then $\boldsymbol{Y}_n$ converges in distribution to $\mathrm{N}(\boldsymbol{0}, \boldsymbol{C})$ as $n \to \infty$.
+Then $\boldsymbol{Y}\_n$ converges in distribution to $\mathrm{N}(\boldsymbol{0}, \boldsymbol{C})$ as $n \to \infty$.
 
 </div>
 
@@ -4889,7 +5536,7 @@ This appendix provides some basic notions and results in linear algebra and func
 
 ### B.1 Singular Value Decomposition and Pseudoinverse
 
-Let $\boldsymbol{A} \in \mathbb{R}^{m \times n}$, $m, n \in \mathbb{N}$. Then the square root of the positive eigenvalues of $\boldsymbol{A}^\top \boldsymbol{A}$ (or equivalently of $\boldsymbol{A}\boldsymbol{A}^\top$) are referred to as the **singular values** of $\boldsymbol{A}$. We denote them by $s_1 \geq s_2 \cdots \geq s_r > 0$, where $r := \operatorname{rank}(\boldsymbol{A})$, so that $r \leq \min\lbrace m, n \rbrace$. Every matrix allows for a **singular value decomposition (SVD)** as stated in the next theorem. Recall that a matrix $\boldsymbol{V} \in \mathbb{R}^{n \times n}$ is called **orthogonal**, if $\boldsymbol{V}^\top \boldsymbol{V}$ is the identity.
+Let $\boldsymbol{A} \in \mathbb{R}^{m \times n}$, $m, n \in \mathbb{N}$. Then the square root of the positive eigenvalues of $\boldsymbol{A}^\top \boldsymbol{A}$ (or equivalently of $\boldsymbol{A}\boldsymbol{A}^\top$) are referred to as the **singular values** of $\boldsymbol{A}$. We denote them by $s\_1 \geq s\_2 \cdots \geq s\_r > 0$, where $r := \operatorname{rank}(\boldsymbol{A})$, so that $r \leq \min\lbrace m, n \rbrace$. Every matrix allows for a **singular value decomposition (SVD)** as stated in the next theorem. Recall that a matrix $\boldsymbol{V} \in \mathbb{R}^{n \times n}$ is called **orthogonal**, if $\boldsymbol{V}^\top \boldsymbol{V}$ is the identity.
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.1</span><span class="math-callout__name">(Singular Value Decomposition)</span></p>
@@ -4917,11 +5564,15 @@ $$\boldsymbol{A}^\dagger := \boldsymbol{V} \boldsymbol{\Sigma}^\dagger \boldsymb
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.2</span></p>
 
-Let $\boldsymbol{A} \in \mathbb{R}^{m \times n}$. Then there exists a unique minimum norm solution $\boldsymbol{w}_* \in \mathbb{R}^n$ in (B.1.2) and it holds $\boldsymbol{w}_* = \boldsymbol{A}^\dagger \boldsymbol{y}$.
+Let $\boldsymbol{A} \in \mathbb{R}^{m \times n}$. Then there exists a unique minimum norm solution $\boldsymbol{w}\_\ast \in \mathbb{R}^n$ in (B.1.2) and it holds $\boldsymbol{w}\_\ast = \boldsymbol{A}^\dagger \boldsymbol{y}$.
 
 </div>
 
-*Proof.* Denote by $\boldsymbol{\Sigma}_r \in \mathbb{R}^{r \times r}$ the upper left quadrant of $\boldsymbol{\Sigma}$. Since $\boldsymbol{U} \in \mathbb{R}^{m \times m}$ is orthogonal,
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Denote by $\boldsymbol{\Sigma}\_r \in \mathbb{R}^{r \times r}$ the upper left quadrant of $\boldsymbol{\Sigma}$. Since $\boldsymbol{U} \in \mathbb{R}^{m \times m}$ is orthogonal,
 
 $$\lVert \boldsymbol{A}\boldsymbol{w} - \boldsymbol{y} \rVert = \left\lVert \begin{pmatrix} \boldsymbol{\Sigma}_r & \boldsymbol{0} \\ \boldsymbol{0} & \boldsymbol{0} \end{pmatrix} \boldsymbol{V}^\top \boldsymbol{w} - \boldsymbol{U}^\top \boldsymbol{y} \right\rVert.$$
 
@@ -4929,11 +5580,14 @@ We can thus write $M$ in (B.1.2) as
 
 $$M = \left\lbrace \boldsymbol{w} \in \mathbb{R}^n \;\middle|\; (\boldsymbol{V}^\top \boldsymbol{w})_{i=1}^r = \boldsymbol{\Sigma}_r^{-1} (\boldsymbol{U}^\top \boldsymbol{y})_{i=1}^r \right\rbrace = \left\lbrace \boldsymbol{V}\boldsymbol{z} \;\middle|\; \boldsymbol{z} \in \mathbb{R}^n,\; (\boldsymbol{z})_{i=1}^r = \boldsymbol{\Sigma}_r^{-1} (\boldsymbol{U}^\top \boldsymbol{y})_{i=1}^r \right\rbrace$$
 
-where $(\boldsymbol{a})_{i=1}^r$ denotes the first $r$ entries of a vector $\boldsymbol{a}$, and for the last equality we used orthogonality of $\boldsymbol{V} \in \mathbb{R}^{n \times n}$. Since $\lVert \boldsymbol{V}\boldsymbol{z} \rVert = \lVert \boldsymbol{z} \rVert$, the unique minimal norm solution is obtained by setting components $r+1, \ldots, m$ of $\boldsymbol{z}$ to zero, which yields
+where $(\boldsymbol{a})\_{i=1}^r$ denotes the first $r$ entries of a vector $\boldsymbol{a}$, and for the last equality we used orthogonality of $\boldsymbol{V} \in \mathbb{R}^{n \times n}$. Since $\lVert \boldsymbol{V}\boldsymbol{z} \rVert = \lVert \boldsymbol{z} \rVert$, the unique minimal norm solution is obtained by setting components $r+1, \ldots, m$ of $\boldsymbol{z}$ to zero, which yields
 
 $$\boldsymbol{w}_* = \boldsymbol{V} \begin{pmatrix} \boldsymbol{\Sigma}_r^{-1} (\boldsymbol{U}^\top \boldsymbol{y})_{i=1}^r \\ \boldsymbol{0} \end{pmatrix} = \boldsymbol{V} \boldsymbol{\Sigma}^\dagger \boldsymbol{U}^\top \boldsymbol{y} = \boldsymbol{A}^\dagger \boldsymbol{y}$$
 
 as claimed. $\square$
+
+</details>
+</div>
 
 ### B.2 Vector Spaces
 
@@ -4965,26 +5619,26 @@ An important class of topological vector spaces consists of vector spaces that a
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.4</span><span class="math-callout__name">(Metric)</span></p>
 
-For a set $X$, we call a map $d_X \colon X \times X \to [0, \infty)$ a **metric**, if
+For a set $X$, we call a map $d\_X \colon X \times X \to [0, \infty)$ a **metric**, if
 
-1. $d_X(x, y) = 0$ if and only if $x = y$,
-2. $d_X(x, y) = d(y, x)$ for all $x, y \in X$,
-3. $d_X(x, z) \leq d_X(x, y) + d_X(y, z)$ for all $x, y, z \in X$.
+1. $d\_X(x, y) = 0$ if and only if $x = y$,
+2. $d\_X(x, y) = d(y, x)$ for all $x, y \in X$,
+3. $d\_X(x, z) \leq d\_X(x, y) + d\_X(y, z)$ for all $x, y, z \in X$.
 
-We call $(X, d_X)$ a **metric space**.
+We call $(X, d\_X)$ a **metric space**.
 
 </div>
 
-In a metric space $(X, d_X)$, we denote the **open ball** with center $x$ and radius $r > 0$ by
+In a metric space $(X, d\_X)$, we denote the **open ball** with center $x$ and radius $r > 0$ by
 
 $$B_r(x) := \lbrace y \in X \mid d_X(x, y) < r \rbrace. \tag{B.2.1}$$
 
-Every metric space is naturally equipped with a topology: A set $A \subseteq X$ is open if and only if for every $x \in A$ exists $\varepsilon > 0$ such that $B_\varepsilon(x) \subseteq A$. Therefore every metric vector space is a topological vector space.
+Every metric space is naturally equipped with a topology: A set $A \subseteq X$ is open if and only if for every $x \in A$ exists $\varepsilon > 0$ such that $B\_\varepsilon(x) \subseteq A$. Therefore every metric vector space is a topological vector space.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.5</span><span class="math-callout__name">(Complete Metric Space)</span></p>
 
-A metric space $(X, d_X)$ is called **complete**, if every Cauchy sequence with respect to $d$ converges to an element in $X$.
+A metric space $(X, d\_X)$ is called **complete**, if every Cauchy sequence with respect to $d$ converges to an element in $X$.
 
 </div>
 
@@ -4997,7 +5651,7 @@ Let $X$ be a complete metric space. Then the intersection of every countable col
 
 </div>
 
-Theorem B.6 implies that if $X = \bigcup_{i=1}^\infty V_i$ for a sequence of sets $V_i$, then at least one of the $V_i$ has to contain an open set. Indeed, assuming all $V_i$'s have empty interior implies that $V_i^c = X \setminus V_i$ is dense for all $i \in \mathbb{N}$. By De Morgan's laws, it then holds that $\emptyset = \bigcap_{i=1}^\infty V_i^c$ which contradicts Theorem B.6.
+Theorem B.6 implies that if $X = \bigcup\_{i=1}^\infty V\_i$ for a sequence of sets $V\_i$, then at least one of the $V\_i$ has to contain an open set. Indeed, assuming all $V\_i$'s have empty interior implies that $V\_i^c = X \setminus V\_i$ is dense for all $i \in \mathbb{N}$. By De Morgan's laws, it then holds that $\emptyset = \bigcap\_{i=1}^\infty V\_i^c$ which contradicts Theorem B.6.
 
 #### B.2.2 Normed Spaces
 
@@ -5006,17 +5660,17 @@ A norm is a way of assigning a length to a vector. A normed space is a vector sp
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.7</span><span class="math-callout__name">(Norm)</span></p>
 
-Let $X$ be a vector space over a field $\mathbb{K} \in \lbrace \mathbb{R}, \mathbb{C} \rbrace$. A map $\lVert \cdot \rVert_X \colon X \to [0, \infty)$ is called a **norm** if the following hold for all $x, y \in X$ and all $\alpha \in \mathbb{K}$:
+Let $X$ be a vector space over a field $\mathbb{K} \in \lbrace \mathbb{R}, \mathbb{C} \rbrace$. A map $\lVert \cdot \rVert\_X \colon X \to [0, \infty)$ is called a **norm** if the following hold for all $x, y \in X$ and all $\alpha \in \mathbb{K}$:
 
-1. **triangle inequality:** $\lVert x + y \rVert_X \leq \lVert x \rVert_X + \lVert y \rVert_X$,
-2. **absolute homogeneity:** $\lVert \alpha x \rVert_X = \lvert \alpha \rvert \lVert x \rVert_X$,
-3. **positive definiteness:** $\lVert x \rVert_X = 0$ if and only if $x = 0$.
+1. **triangle inequality:** $\lVert x + y \rVert\_X \leq \lVert x \rVert\_X + \lVert y \rVert\_X$,
+2. **absolute homogeneity:** $\lVert \alpha x \rVert\_X = \lvert \alpha \rvert \lVert x \rVert\_X$,
+3. **positive definiteness:** $\lVert x \rVert\_X = 0$ if and only if $x = 0$.
 
-We call $(X, \lVert \cdot \rVert_X)$ a **normed space**.
+We call $(X, \lVert \cdot \rVert\_X)$ a **normed space**.
 
 </div>
 
-Every norm induces a metric $d_X$ and hence a topology via $d_X(x, y) := \lVert x - y \rVert_X$. In particular, every normed vector space is a topological vector space with respect to this topology.
+Every norm induces a metric $d\_X$ and hence a topology via $d\_X(x, y) := \lVert x - y \rVert\_X$. In particular, every normed vector space is a topological vector space with respect to this topology.
 
 #### B.2.3 Banach Spaces
 
@@ -5052,28 +5706,28 @@ With this norm, $L^\infty(\Omega, \mu)$ is a Banach space. If $\Omega = \mathbb{
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.9</span><span class="math-callout__name">(Dual Space)</span></p>
 
-Let $(X, \lVert \cdot \rVert_X)$ be a normed vector space over $\mathbb{K} \in \lbrace \mathbb{R}, \mathbb{C} \rbrace$. Linear maps from $X \to \mathbb{K}$ are called **linear functionals**. The vector space of all continuous linear functionals on $X$ is called the **(topological) dual space** of $X$ and is denoted by $X'$.
+Let $(X, \lVert \cdot \rVert\_X)$ be a normed vector space over $\mathbb{K} \in \lbrace \mathbb{R}, \mathbb{C} \rbrace$. Linear maps from $X \to \mathbb{K}$ are called **linear functionals**. The vector space of all continuous linear functionals on $X$ is called the **(topological) dual space** of $X$ and is denoted by $X'$.
 
 Together with the natural addition and scalar multiplication, $X'$ is a vector space. We equip $X'$ with the norm
 
 $$\lVert f \rVert_{X'} := \sup_{\substack{x \in X \\ \lVert x \rVert_X = 1}} \lvert f(x) \rvert.$$
 
-The space $(X', \lVert \cdot \rVert_{X'})$ is always a Banach space, even if $(X, \lVert \cdot \rVert_X)$ is not complete.
+The space $(X', \lVert \cdot \rVert\_{X'})$ is always a Banach space, even if $(X, \lVert \cdot \rVert\_X)$ is not complete.
 
 </div>
 
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.10</span><span class="math-callout__name">(Geometric Hahn-Banach, Subspace Version)</span></p>
 
-Let $M$ be a subspace of a Banach space $X$ and let $x_0 \in X$. If $x_0$ is not in the closure of $M$, then there exists $f \in X'$ such that $f(x_0) = 1$ and $f(x) = 0$ for every $x \in M$.
+Let $M$ be a subspace of a Banach space $X$ and let $x\_0 \in X$. If $x\_0$ is not in the closure of $M$, then there exists $f \in X'$ such that $f(x\_0) = 1$ and $f(x) = 0$ for every $x \in M$.
 
 </div>
 
-An immediate consequence of Theorem B.10 is the existence of a **dual basis**. Let $X$ be a Banach space and let $(x_i)_{i \in \mathbb{N}} \subseteq X$ be such that for all $i \in \mathbb{N}$
+An immediate consequence of Theorem B.10 is the existence of a **dual basis**. Let $X$ be a Banach space and let $(x\_i)\_{i \in \mathbb{N}} \subseteq X$ be such that for all $i \in \mathbb{N}$
 
 $$x_i \notin \overline{\operatorname{span}\lbrace x_j \mid j \in \mathbb{N},\; j \neq i \rbrace}.$$
 
-Then, for every $i \in \mathbb{N}$, there exists $f_i \in X'$ such that $f_i(x_j) = 0$ if $i \neq j$ and $f_i(x_i) = 1$.
+Then, for every $i \in \mathbb{N}$, there exists $f\_i \in X'$ such that $f\_i(x\_j) = 0$ if $i \neq j$ and $f\_i(x\_i) = 1$.
 
 #### B.2.4 Hilbert Spaces
 
@@ -5082,11 +5736,11 @@ Often, we require more structure than that provided by normed spaces. An inner p
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.11</span><span class="math-callout__name">(Inner Product)</span></p>
 
-Let $X$ be a real vector space. A map $\langle \cdot, \cdot \rangle_X \colon X \times X \to \mathbb{R}$ is called an **inner product** on $X$ if the following hold for all $x, y, z \in X$ and all $\alpha, \beta \in \mathbb{R}$:
+Let $X$ be a real vector space. A map $\langle \cdot, \cdot \rangle\_X \colon X \times X \to \mathbb{R}$ is called an **inner product** on $X$ if the following hold for all $x, y, z \in X$ and all $\alpha, \beta \in \mathbb{R}$:
 
-1. **linearity:** $\langle \alpha x + \beta y, z \rangle_X = \alpha \langle x, z \rangle_X + \beta \langle y, z \rangle_X$,
-2. **symmetry:** $\langle x, y \rangle_X = \langle y, x \rangle_X$,
-3. **positive definiteness:** $\langle x, x \rangle_X > 0$ for all $x \neq 0$.
+1. **linearity:** $\langle \alpha x + \beta y, z \rangle\_X = \alpha \langle x, z \rangle\_X + \beta \langle y, z \rangle\_X$,
+2. **symmetry:** $\langle x, y \rangle\_X = \langle y, x \rangle\_X$,
+3. **positive definiteness:** $\langle x, x \rangle\_X > 0$ for all $x \neq 0$.
 
 </div>
 
@@ -5108,7 +5762,7 @@ On inner product spaces the Cauchy-Schwarz inequality holds.
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.13</span><span class="math-callout__name">(Cauchy-Schwarz Inequality)</span></p>
 
-Let $X$ be a vector space with inner product $\langle \cdot, \cdot \rangle_X$. Then it holds for all $x, y \in X$
+Let $X$ be a vector space with inner product $\langle \cdot, \cdot \rangle\_X$. Then it holds for all $x, y \in X$
 
 $$\lvert \langle x, y \rangle_X \rvert \leq \sqrt{\langle x, x \rangle_X\, \langle y, y \rangle_X}.$$
 
@@ -5116,17 +5770,24 @@ Moreover, equality holds if and only if $x$ and $y$ are linearly dependent.
 
 </div>
 
-*Proof.* Let $x, y \in X$. If $y = 0$ then $\langle x, y \rangle_X = 0$ and the statement is trivial. Assume $y \neq 0$, so that $\langle y, y \rangle_X > 0$. Using linearity and symmetry it holds for all $\alpha \in \mathbb{R}$
+<div class="accordion" markdown="1">
+<details>
+<summary>Proof</summary>
+
+Let $x, y \in X$. If $y = 0$ then $\langle x, y \rangle\_X = 0$ and the statement is trivial. Assume $y \neq 0$, so that $\langle y, y \rangle\_X > 0$. Using linearity and symmetry it holds for all $\alpha \in \mathbb{R}$
 
 $$0 \leq \langle x - \alpha y, x - \alpha y \rangle_X = \langle x, x \rangle_X - 2\alpha \langle x, y \rangle_X + \alpha^2 \langle y, y \rangle_X.$$
 
-Letting $\alpha := \langle x, y \rangle_X / \langle y, y \rangle_X$ we get
+Letting $\alpha := \langle x, y \rangle\_X / \langle y, y \rangle\_X$ we get
 
 $$0 \leq \langle x, x \rangle_X - 2\frac{\langle x, y \rangle_X^2}{\langle y, y \rangle_X} + \frac{\langle x, y \rangle_X^2}{\langle y, y \rangle_X} = \langle x, x \rangle_X - \frac{\langle x, y \rangle_X^2}{\langle y, y \rangle_X}.$$
 
 Rearranging terms gives the claim. $\square$
 
-Every inner product $\langle \cdot, \cdot \rangle_X$ induces a norm via
+</details>
+</div>
+
+Every inner product $\langle \cdot, \cdot \rangle\_X$ induces a norm via
 
 $$\lVert x \rVert_X := \sqrt{\langle x, x \rangle} \quad \text{for all } x \in X. \tag{B.2.3}$$
 
@@ -5134,12 +5795,12 @@ The properties of the inner product immediately yield the **polar identity**
 
 $$\lVert x + y \rVert_X^2 = \lVert x \rVert_X^2 + 2\langle x, y \rangle_X + \lVert y \rVert_X^2. \tag{B.2.4}$$
 
-The fact that (B.2.3) indeed defines a norm follows by an application of the Cauchy-Schwarz inequality to (B.2.4), which yields that $\lVert \cdot \rVert_X$ satisfies the triangle inequality.
+The fact that (B.2.3) indeed defines a norm follows by an application of the Cauchy-Schwarz inequality to (B.2.4), which yields that $\lVert \cdot \rVert\_X$ satisfies the triangle inequality.
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.14</span><span class="math-callout__name">(Hilbert Space)</span></p>
 
-Let $H$ be a real vector space with inner product $\langle \cdot, \cdot \rangle_H$. Then $(H, \langle \cdot, \cdot \rangle_H)$ is called a **Hilbert space** if and only if $H$ is complete with respect to the norm $\lVert \cdot \rVert_H$ induced by the inner product.
+Let $H$ be a real vector space with inner product $\langle \cdot, \cdot \rangle\_H$. Then $(H, \langle \cdot, \cdot \rangle\_H)$ is called a **Hilbert space** if and only if $H$ is complete with respect to the norm $\lVert \cdot \rVert\_H$ induced by the inner product.
 
 </div>
 
@@ -5154,7 +5815,7 @@ In a Hilbert space, we can compare vectors not only via their distance, measured
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition B.15</span><span class="math-callout__name">(Orthogonality)</span></p>
 
-Let $(H, \langle \cdot, \cdot \rangle_H)$ be a Hilbert space and let $f, g \in H$. We say that $f$ and $g$ are **orthogonal** if $\langle f, g \rangle_H = 0$, denoted by $f \perp g$. For $F, G \subseteq H$ we write $F \perp G$ if $f \perp g$ for all $f \in F$, $g \in G$. Finally, for $F \subseteq H$, the set $F^\perp = \lbrace g \in H \mid g \perp f\; \forall f \in F \rbrace$ is called the **orthogonal complement** of $F$ in $H$.
+Let $(H, \langle \cdot, \cdot \rangle\_H)$ be a Hilbert space and let $f, g \in H$. We say that $f$ and $g$ are **orthogonal** if $\langle f, g \rangle\_H = 0$, denoted by $f \perp g$. For $F, G \subseteq H$ we write $F \perp G$ if $f \perp g$ for all $f \in F$, $g \in G$. Finally, for $F \subseteq H$, the set $F^\perp = \lbrace g \in H \mid g \perp f\; \forall f \in F \rbrace$ is called the **orthogonal complement** of $F$ in $H$.
 
 </div>
 
@@ -5163,7 +5824,7 @@ For orthogonal vectors, the polar identity immediately implies the Pythagorean t
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.16</span><span class="math-callout__name">(Pythagorean Theorem)</span></p>
 
-Let $(H, \langle \cdot, \cdot \rangle_H)$ be a Hilbert space, $n \in \mathbb{N}$, and let $f_1, \ldots, f_n \in H$ be pairwise orthogonal vectors. Then,
+Let $(H, \langle \cdot, \cdot \rangle\_H)$ be a Hilbert space, $n \in \mathbb{N}$, and let $f\_1, \ldots, f\_n \in H$ be pairwise orthogonal vectors. Then,
 
 $$\left\lVert \sum_{i=1}^n f_i \right\rVert_H^2 = \sum_{i=1}^n \lVert f_i \rVert_H^2.$$
 
@@ -5174,7 +5835,7 @@ A final property of Hilbert spaces that we encounter in this book is the existen
 <div class="math-callout math-callout--theorem" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Theorem B.17</span><span class="math-callout__name">(Projection onto Convex Sets)</span></p>
 
-Let $(H, \langle \cdot, \cdot \rangle_H)$ be a Hilbert space and let $K \neq \emptyset$ be a closed convex subset of $H$. Then for all $h \in H$ exists a unique $k_0 \in K$ such that
+Let $(H, \langle \cdot, \cdot \rangle\_H)$ be a Hilbert space and let $K \neq \emptyset$ be a closed convex subset of $H$. Then for all $h \in H$ exists a unique $k\_0 \in K$ such that
 
 $$\lVert h - k_0 \rVert_H = \inf\lbrace \lVert h - k \rVert_H \mid k \in K \rbrace.$$
 
