@@ -140,13 +140,54 @@ $$
 
 If observations are high-dimensional (e.g., images), the agent may encode them into a low-dimensional embedding $e_{t+1} = E(o_{t+1})$, so the state update becomes $z_{t+1} = U(P(z_t, a_t), E(o_{t+1}))$.
 
-The agent needs to learn the action policy $\pi_t(z_t) = \pi(z_t; \boldsymbol{\theta}_t)$. We can update the policy parameters using a **learning algorithm**:
+The agent needs to learn the action policy $\pi_t(z_t) = \pi(z_t; \boldsymbol{\theta}\_t)$. We can update the policy parameters using a **learning algorithm**:
 
 $$
 \boldsymbol{\theta}_t = \mathcal{A}(o_{1:t}, a_{1:t}, r_{1:t}) = \mathcal{A}(\boldsymbol{\theta}_{t-1}, a_t, z_t, r_t)
 $$
 
-In general, there are three interacting stochastic processes to deal with: the environment's states $w_t$; the agent's internal states $z_t$ (beliefs about the environment); and the agent's policy parameters $\boldsymbol{\theta}_t$.
+In general, there are three interacting stochastic processes to deal with: the environment's states $w_t$; the agent's internal states $z_t$ (beliefs about the environment); and the agent's policy parameters $\boldsymbol{\theta}\_t$.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 660 320" width="100%" style="max-width: 660px; height: auto;" role="img" aria-labelledby="agentenv-title">
+  <title id="agentenv-title">Agent–environment interaction loop</title>
+  <defs>
+    <marker id="ae-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Agent box -->
+  <rect x="60" y="100" width="200" height="120" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="160" y="135" font-family="serif" font-size="16" text-anchor="middle" font-weight="bold" fill="#1565c0">Agent</text>
+  <text x="160" y="160" font-family="serif" font-size="12" text-anchor="middle" fill="#333">belief state z_t</text>
+  <text x="160" y="178" font-family="serif" font-size="12" text-anchor="middle" fill="#333">policy π(a | z; θ)</text>
+  <text x="160" y="200" font-family="serif" font-size="11" text-anchor="middle" fill="#666">learning algorithm 𝒜</text>
+
+  <!-- Environment box -->
+  <rect x="400" y="100" width="200" height="120" rx="10" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+  <text x="500" y="135" font-family="serif" font-size="16" text-anchor="middle" font-weight="bold" fill="#e65100">Environment</text>
+  <text x="500" y="160" font-family="serif" font-size="12" text-anchor="middle" fill="#333">hidden state w_t</text>
+  <text x="500" y="178" font-family="serif" font-size="12" text-anchor="middle" fill="#333">dynamics M(w, a, ε)</text>
+  <text x="500" y="200" font-family="serif" font-size="11" text-anchor="middle" fill="#666">observation O(w, ε)</text>
+
+  <!-- Action arrow (top: agent -> env) -->
+  <path d="M 260 130 Q 330 70 400 130" stroke="#333" stroke-width="2" fill="none" marker-end="url(#ae-arr)"/>
+  <text x="330" y="65" font-family="serif" font-size="13" text-anchor="middle" font-style="italic">action a_t</text>
+
+  <!-- Observation + reward arrow (bottom: env -> agent) -->
+  <path d="M 400 200 Q 330 270 260 200" stroke="#333" stroke-width="2" fill="none" marker-end="url(#ae-arr)"/>
+  <text x="330" y="285" font-family="serif" font-size="13" text-anchor="middle" font-style="italic">observation o_t+1, reward r_t</text>
+
+  <!-- Title labels above -->
+  <text x="160" y="30" font-family="serif" font-size="14" text-anchor="middle" fill="#1565c0">"the learner"</text>
+  <text x="500" y="30" font-family="serif" font-size="14" text-anchor="middle" fill="#e65100">"the world"</text>
+  <text x="160" y="48" font-family="serif" font-size="11" text-anchor="middle" fill="#666">decides what to do</text>
+  <text x="500" y="48" font-family="serif" font-size="11" text-anchor="middle" fill="#666">decides what happens</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+The agent–environment interaction loop. At each step the agent picks action $a_t$ based on its belief state $z_t$; the environment transitions $w_{t+1} = M(w_t,a_t,\epsilon_t)$ and returns an observation $o_{t+1}$ and reward $r_t$. The hidden world state $w_t$ is generally unobservable — the agent acts on its own belief $z_t$.
+</figcaption>
+</figure>
 
 ## Canonical Models
 
@@ -205,6 +246,87 @@ The field of control theory uses slightly different terminology: the environment
 </div>
 
 When both state and action sets are finite, we can represent functions as lookup tables; this is known as a **tabular representation**. We can represent the MDP as a **finite state machine**, where nodes correspond to states and edges to actions and resulting rewards/next states.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 640 300" width="100%" style="max-width: 640px; height: auto;" role="img" aria-labelledby="mdp-title">
+  <title id="mdp-title">A small MDP with stochastic transitions</title>
+  <defs>
+    <marker id="mdp-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <!-- states (large circles) -->
+  <g font-family="serif" font-size="14">
+    <circle cx="80"  cy="150" r="28" fill="#fff" stroke="#1565c0" stroke-width="2.5"/>
+    <text x="80"  y="155" text-anchor="middle">s₁</text>
+    <circle cx="320" cy="80"  r="28" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="320" y="85"  text-anchor="middle">s₂</text>
+    <circle cx="320" cy="220" r="28" fill="#fff" stroke="#333" stroke-width="2"/>
+    <text x="320" y="225" text-anchor="middle">s₃</text>
+    <circle cx="560" cy="150" r="28" fill="#fff7ec" stroke="#e65100" stroke-width="2.5"/>
+    <text x="560" y="155" text-anchor="middle">s₄</text>
+  </g>
+  <!-- action nodes (small dots) -->
+  <g fill="#333">
+    <circle cx="180" cy="120" r="5"/>
+    <circle cx="180" cy="180" r="5"/>
+    <circle cx="440" cy="80"  r="5"/>
+    <circle cx="440" cy="220" r="5"/>
+  </g>
+  <!-- action labels next to the dots -->
+  <g font-family="serif" font-size="12" fill="#333">
+    <text x="180" y="106" text-anchor="middle">a = ↑</text>
+    <text x="180" y="200" text-anchor="middle">a = ↓</text>
+    <text x="440" y="66"  text-anchor="middle">a = →</text>
+    <text x="440" y="240" text-anchor="middle">a = →</text>
+  </g>
+  <!-- s1 -> action nodes -->
+  <g stroke="#666" stroke-width="2" fill="none">
+    <line x1="105" y1="138" x2="170" y2="123" marker-end="url(#mdp-arr)"/>
+    <line x1="105" y1="162" x2="170" y2="177" marker-end="url(#mdp-arr)"/>
+  </g>
+  <!-- action up branches: prob 0.8 -> s2, prob 0.2 -> s3 -->
+  <g stroke="#666" stroke-width="1.6" fill="none" stroke-dasharray="4 3">
+    <line x1="188" y1="115" x2="293" y2="86"  marker-end="url(#mdp-arr)"/>
+    <line x1="186" y1="125" x2="293" y2="214" marker-end="url(#mdp-arr)"/>
+    <line x1="186" y1="175" x2="293" y2="86"  marker-end="url(#mdp-arr)"/>
+    <line x1="188" y1="185" x2="293" y2="214" marker-end="url(#mdp-arr)"/>
+  </g>
+  <!-- transition probability labels -->
+  <g font-family="serif" font-size="10" fill="#666">
+    <text x="240" y="98">0.8</text>
+    <text x="240" y="160">0.2</text>
+    <text x="240" y="135">0.3</text>
+    <text x="240" y="208">0.7</text>
+  </g>
+  <!-- s2,s3 -> action -> s4 -->
+  <g stroke="#666" stroke-width="2" fill="none">
+    <line x1="345" y1="80"  x2="430" y2="80"  marker-end="url(#mdp-arr)"/>
+    <line x1="345" y1="220" x2="430" y2="220" marker-end="url(#mdp-arr)"/>
+  </g>
+  <g stroke="#666" stroke-width="1.6" fill="none" stroke-dasharray="4 3">
+    <line x1="448" y1="80"  x2="534" y2="140" marker-end="url(#mdp-arr)"/>
+    <line x1="448" y1="220" x2="534" y2="160" marker-end="url(#mdp-arr)"/>
+  </g>
+  <!-- reward labels -->
+  <g font-family="serif" font-size="11" fill="#e65100">
+    <text x="487" y="105">r = +1</text>
+    <text x="487" y="200">r = +1</text>
+  </g>
+  <text x="80"  y="200" font-family="serif" font-size="11" text-anchor="middle" fill="#1565c0">start</text>
+  <text x="560" y="200" font-family="serif" font-size="11" text-anchor="middle" fill="#e65100">terminal</text>
+  <!-- legend -->
+  <g font-family="serif" font-size="11" fill="#555">
+    <line x1="20" y1="280" x2="50" y2="280" stroke="#666" stroke-width="2"/>
+    <text x="55" y="284">choice (a)</text>
+    <line x1="140" y1="280" x2="170" y2="280" stroke="#666" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="175" y="284">stochastic transition p(s' | s,a)</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+A finite-state MDP. From state $s_1$ the agent **chooses** an action (solid arrow), then the world **samples** the next state (dashed arrow with probability). Transition probabilities sum to 1 per action. Each transition produces a reward $r$ drawn from $p_R(r\mid s,a,s')$.
+</figcaption>
+</figure>
 
 Given a stochastic policy $\pi(a_t\mid s_t)$, each step is a **transition** $(s_t, a_t, r_t, s_{t+1})$. Under policy $\pi$, the probability of generating a **trajectory** of length $T$, $\boldsymbol{\tau} = (s_0, a_0, r_0, s_1, a_1, r_1, \ldots, s_T)$, is:
 
@@ -286,7 +408,17 @@ $$
 <div class="math-callout math-callout--question" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Example</span><span class="math-callout__name">(Bernoulli Bandit)</span></p>
 
-Consider a context-free **Bernoulli bandit**, where $p_R(r\mid a) = \text{Ber}(r\mid\mu_a)$, and $\mu_a = p_R(r=1\mid a) = R(a)$ is the expected reward. The only unknown parameters are $\boldsymbol{w} = \mu_{1:A}$. With a factored Beta prior $p_0(\boldsymbol{w}) = \prod_a \text{Beta}(\mu_a \mid \alpha_0^a, \beta_0^a)$, the posterior in closed form is:
+Consider a context-free **Bernoulli bandit**, where 
+
+$$p_R(r\mid a) = \text{Ber}(r\mid\mu_a)$$
+
+$$\mu_a = p_R(r=1\mid a) = R(a)$$
+
+is the expected reward. The only unknown parameters are $\boldsymbol{w} = \mu_{1:A}$. With a factored Beta prior 
+
+$$p_0(\boldsymbol{w}) = \prod_a \text{Beta}(\mu_a \mid \alpha_0^a, \beta_0^a)$$
+
+the posterior in closed form is:
 
 $$
 p(\boldsymbol{w}|\mathcal{D}_t) = \prod_a \text{Beta}(\mu_a | \alpha_0^a + N_t^0(a), \beta_0^a + N_t^1(a))
@@ -358,7 +490,7 @@ $$
 V_\pi(s) \triangleq \mathbb{E}_\pi\left[G_0 | s_0 = s\right] = \mathbb{E}_\pi\left[\sum_{t=0}^{\infty} \gamma^t r_t | s_0 = s\right]
 $$
 
-The value function for the optimal policy $\pi^*$ satisfies **Bellman's equation**:
+The value function for the optimal policy $\pi^\ast$ satisfies **Bellman's equation**:
 
 $$
 V^*(s) = \max_a R(s,a) + \gamma \mathbb{E}_{p_S(s'|s,a)}\left[V^*(s')\right]
@@ -368,6 +500,9 @@ This follows from the principle of **dynamic programming**, which computes the o
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Temporal Difference Derivation)</span></p>
+
 This can be used to derive the **Temporal Difference** (TD) learning rule:
 
 $$
@@ -375,6 +510,8 @@ V(s) \leftarrow V(s) + \eta\left[r + \gamma V(s') - V(s)\right]
 $$
 
 where $s' \sim p_S(\cdot\mid s,a)$ is the next state and $r = R(s,a)$ is the observed reward.
+
+</div>
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Q Function)</span></p>
@@ -393,6 +530,9 @@ $$
 
 </div>
 
+<div class="math-callout math-callout--remark" markdown="1">
+  <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Q Learning Derivation)</span></p>
+
 This gives rise to the **Q learning** TD update rule:
 
 $$
@@ -400,6 +540,8 @@ Q(s,a) \leftarrow r + \gamma \max_{a'} Q(s', a') - Q(s,a)
 $$
 
 The action at each step is chosen from the implicit policy $a = \arg\max_{a'} Q(s, a')$.
+
+</div>
 
 ### Policy-Based RL
 
@@ -433,11 +575,11 @@ In RL problems, the underlying transition and reward models are typically unknow
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Exploration Strategies)</span></p>
 
 * **Greedy policy:** $a_t = \arg\max_a Q(s,a)$ --- exploits current knowledge without exploration.
-* **$\epsilon$-greedy policy:** Pick the greedy action with probability $1-\epsilon$ and a random action with probability $\epsilon$. Suboptimal since it explores every action with at least probability $\epsilon/\|\mathcal{A}\|$, but can be improved by annealing $\epsilon$ to $0$.
+* **$\epsilon$-greedy policy:** Pick the greedy action with probability $1-\epsilon$ and a random action with probability $\epsilon$. Suboptimal since it explores every action with at least probability $\epsilon/\lVert \mathcal{A} \rVert$, but can be improved by annealing $\epsilon$ to $0$.
 * **$\epsilon z$-greedy policy:** With probability $1-\epsilon$ exploit, and with probability $\epsilon$ repeat the sampled action for $n \sim z()$ steps. This helps escape local minima.
 * **Boltzmann exploration:** Uses the policy 
   
-  $$\pi_\tau(a\mid s) = \frac{\exp(\hat{R}\_t(s_t, a)/\tau)}{\sum_{a'} \exp(\hat{R}\_t(s_t, a')/\tau)}$$
+  $$\pi_\tau(a\mid s) = \frac{\exp(\hat{R}_t(s_t, a)/\tau)}{\sum_{a'} \exp(\hat{R}_t(s_t, a')/\tau)}$$
   
   where $\tau > 0$ is a temperature parameter. As $\tau \to 0$, this becomes greedy; higher $\tau$ encourages more exploration.
 * **Exploration bonus:** Add an **intrinsic reward** $R^b_t(s,a)$ (large if state-action is rarely visited) to the regular reward, biasing behavior toward information-gathering.
@@ -456,11 +598,11 @@ Most of the literature assumes the reward can be defined in terms of the current
 
 #### Reward Hacking
 
-The reward function may be misspecified. An optimal agent may maximize the reward in unintended ways. In the **AI alignment** community, this is the **paperclip maximizer problem** (due to Nick Bostrom). This is an instance of **reward hacking**.
+The reward function may be misspecified. An optimal agent may maximize the reward in unintended ways. In the **AI alignment** community, this is the **paperclip maximizer problem** (due to Nick Bostrom). This is an instance of **reward hacking**. For a potential solution, based on the assistance game paradigm.
 
 #### Sparse Reward
 
-Many problems suffer from **sparse reward**, where $R(s,a) = 0$ for almost all states and actions. This requires **deep exploration** to find the rewarding states.
+Many problems suffer from **sparse reward**, where $R(s,a) = 0$ for almost all states and actions, so the agent only every gets feedback (either positive or negative) on the rare occasions when it achieves some unknown goal. This requires **deep exploration** to find the rewarding states.
 
 #### Reward Shaping
 
@@ -556,9 +698,107 @@ $$
 V'(s) = \mathcal{B}_M^\pi V(s) \triangleq \mathbb{E}_{\pi(a|s)}\left[R(s,a) + \gamma \mathbb{E}_{T(s'|s,a)}\left[V(s')\right]\right]
 $$
 
-This reduces the Bellman error. Applying the Bellman operator to a state is called a **Bellman backup**. If we iterate this process, we will converge to the optimal value function $V_*$.
+This reduces the Bellman error. Applying the Bellman operator to a state is called a **Bellman backup**. If we iterate this process, we will converge to the optimal value function $V_\ast$.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 660 320" width="100%" style="max-width: 660px; height: auto;" role="img" aria-labelledby="bellman-title">
+  <title id="bellman-title">Bellman backup diagrams for V and Q</title>
+  <defs>
+    <marker id="bb-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#666"/>
+    </marker>
+  </defs>
+  <!-- LEFT PANEL: V(s) -->
+  <g transform="translate(0,0)">
+    <text x="160" y="20" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold">V(s) backup</text>
+    <!-- root state -->
+    <circle cx="160" cy="55" r="20" fill="#fff" stroke="#1565c0" stroke-width="2.5"/>
+    <text x="160" y="60" font-family="serif" font-size="13" text-anchor="middle">s</text>
+    <!-- action dots (choice over a) -->
+    <g stroke="#666" stroke-width="1.5" fill="none">
+      <line x1="148" y1="73" x2="100" y2="120"/>
+      <line x1="160" y1="78" x2="160" y2="120"/>
+      <line x1="172" y1="73" x2="220" y2="120"/>
+    </g>
+    <g fill="#333">
+      <circle cx="100" cy="125" r="4"/>
+      <circle cx="160" cy="125" r="4"/>
+      <circle cx="220" cy="125" r="4"/>
+    </g>
+    <text x="50" y="128" font-family="serif" font-size="11" fill="#666">π(a | s)</text>
+    <text x="100" y="143" font-family="serif" font-size="11" text-anchor="middle">a₁</text>
+    <text x="160" y="143" font-family="serif" font-size="11" text-anchor="middle">a₂</text>
+    <text x="220" y="143" font-family="serif" font-size="11" text-anchor="middle">a₃</text>
+    <!-- stochastic transitions (dashed) -->
+    <g stroke="#666" stroke-width="1.2" fill="none" stroke-dasharray="3 3">
+      <line x1="95"  y1="135" x2="65"  y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="105" y1="135" x2="135" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="160" y1="135" x2="160" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="218" y1="135" x2="190" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="222" y1="135" x2="260" y2="200" marker-end="url(#bb-arr)"/>
+    </g>
+    <text x="35" y="170" font-family="serif" font-size="11" fill="#666">p(s' | s,a)</text>
+    <!-- next states -->
+    <g font-family="serif" font-size="11">
+      <circle cx="65"  cy="220" r="14" fill="#fff" stroke="#333"/><text x="65" y="225" text-anchor="middle">s'</text>
+      <circle cx="135" cy="220" r="14" fill="#fff" stroke="#333"/><text x="135" y="225" text-anchor="middle">s'</text>
+      <circle cx="160" cy="220" r="14" fill="#fff" stroke="#333"/><text x="160" y="225" text-anchor="middle">s'</text>
+      <circle cx="190" cy="220" r="14" fill="#fff" stroke="#333"/><text x="190" y="225" text-anchor="middle">s'</text>
+      <circle cx="260" cy="220" r="14" fill="#fff" stroke="#333"/><text x="260" y="225" text-anchor="middle">s'</text>
+    </g>
+    <!-- formula -->
+    <text x="160" y="270" font-family="serif" font-size="11" text-anchor="middle" fill="#1565c0">V(s) ← E_π[ R(s,a) + γ E_p[V(s')] ]</text>
+    <text x="160" y="293" font-family="serif" font-size="10" text-anchor="middle" fill="#666">average over actions, then over next states</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="330" y1="20" x2="330" y2="300" stroke="#ddd"/>
+
+  <!-- RIGHT PANEL: Q(s,a) -->
+  <g transform="translate(330,0)">
+    <text x="160" y="20" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold">Q(s,a) backup</text>
+    <!-- root state-action pair -->
+    <circle cx="160" cy="55" r="20" fill="#fff" stroke="#1565c0" stroke-width="2.5"/>
+    <text x="160" y="60" font-family="serif" font-size="11" text-anchor="middle">s,a</text>
+    <!-- stochastic transitions to next states -->
+    <g stroke="#666" stroke-width="1.2" fill="none" stroke-dasharray="3 3">
+      <line x1="148" y1="73" x2="90"  y2="115" marker-end="url(#bb-arr)"/>
+      <line x1="160" y1="78" x2="160" y2="115" marker-end="url(#bb-arr)"/>
+      <line x1="172" y1="73" x2="230" y2="115" marker-end="url(#bb-arr)"/>
+    </g>
+    <text x="20" y="105" font-family="serif" font-size="11" fill="#666">p(s' | s,a)</text>
+    <!-- next states -->
+    <g font-family="serif" font-size="11">
+      <circle cx="90"  cy="130" r="16" fill="#fff" stroke="#333"/><text x="90" y="135" text-anchor="middle">s'</text>
+      <circle cx="160" cy="130" r="16" fill="#fff" stroke="#333"/><text x="160" y="135" text-anchor="middle">s'</text>
+      <circle cx="230" cy="130" r="16" fill="#fff" stroke="#333"/><text x="230" y="135" text-anchor="middle">s'</text>
+    </g>
+    <!-- max_a' branches -->
+    <g stroke="#e65100" stroke-width="1.8" fill="none">
+      <line x1="83"  y1="145" x2="60"  y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="97"  y1="145" x2="120" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="153" y1="145" x2="130" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="167" y1="145" x2="190" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="222" y1="145" x2="200" y2="200" marker-end="url(#bb-arr)"/>
+      <line x1="237" y1="145" x2="260" y2="200" marker-end="url(#bb-arr)"/>
+    </g>
+    <text x="30" y="180" font-family="serif" font-size="11" fill="#e65100">max_a'</text>
+    <!-- next-action dots -->
+    <g fill="#e65100">
+      <circle cx="60"  cy="206" r="4"/><circle cx="120" cy="206" r="4"/>
+      <circle cx="130" cy="206" r="4"/><circle cx="190" cy="206" r="4"/>
+      <circle cx="200" cy="206" r="4"/><circle cx="260" cy="206" r="4"/>
+    </g>
+    <text x="160" y="240" font-family="serif" font-size="11" text-anchor="middle" fill="#1565c0">Q(s,a) ← R(s,a) + γ E_p[ max_a' Q(s',a') ]</text>
+    <text x="160" y="293" font-family="serif" font-size="10" text-anchor="middle" fill="#666">average over next states, then max over next action</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+**Bellman backup** as a one-step tree. For $V(s)$ the agent first averages over the policy's action distribution, then over the world's next-state distribution. For $Q^\ast(s,a)$ it averages over next states, then **maximizes** over $a'$ (the $\max$ encodes the optimal-policy assumption).
+</figcaption>
+</figure>
 
 Given the optimal value function, we can derive an optimal policy using:
 
@@ -566,7 +806,7 @@ $$
 \pi^*(s) = \arg\max_a Q^*(s,a) = \arg\max_a \left[R(s,a) + \gamma \mathbb{E}_{p_S(s'|s,a)}\left[V^*(s')\right]\right]
 $$
 
-The maximizing action is called the **greedy action** with respect to the value functions $Q^*$ or $V^*$.
+The maximizing action is called the **greedy action** with respect to the value functions $Q^\ast$ or $V^\ast$.
 
 The problem of solving for $V^\ast$, $Q^\ast$ or $\pi^\ast$ is called **policy optimization**. Solving for $V_\pi$ or $Q_\pi$ for a given policy $\pi$ is called **policy evaluation**. For policy evaluation, we have similar Bellman equations which simply replace $\max_a\lbrace\cdot\rbrace$ with $\mathbb{E}\_{\pi(a\mid s)}[\cdot]$.
 
@@ -598,13 +838,13 @@ $$
 V_{k+1}(s) = \max_a \left[R(s,a) + \gamma \sum_{s'} p(s'|s,a) V_k(s')\right]
 $$
 
-The update rule (a **Bellman backup**) is exactly the right-hand side of the Bellman optimality equation with the unknown $V^*$ replaced by the current estimate $V_k$. A fundamental property is that the update is a **contraction**:
+The update rule (a **Bellman backup**) is exactly the right-hand side of the Bellman optimality equation with the unknown $V^\ast$ replaced by the current estimate $V_k$. A fundamental property is that the update is a **contraction**:
 
 $$
 \max_s |V_{k+1}(s) - V^*(s)| \le \gamma \max_s |V_k(s) - V^*(s)|
 $$
 
-Every iteration reduces the maximum value function error by a constant factor. $V_k$ will converge to $V^*$, after which an optimal policy can be extracted using the greedy action.
+Every iteration reduces the maximum value function error by a constant factor. $V_k$ will converge to $V^\ast$, after which an optimal policy can be extracted using the greedy action.
 
 </div>
 
@@ -643,7 +883,7 @@ $$
 \pi_0 \xrightarrow{E} V_{\pi_0} \xrightarrow{I} \pi_1 \xrightarrow{E} V_{\pi_1} \cdots \xrightarrow{I} \pi^* \xrightarrow{E} V^*
 $$
 
-Since there are at most $\|\mathcal{A}\|^{\|\mathcal{S}\|}$ deterministic policies, and every iteration strictly improves the policy, the algorithm must converge after finite iterations.
+Since there are at most $\lVert \mathcal{A} \rVert^{\lVert \mathcal{S} \rVert}$ deterministic policies, and every iteration strictly improves the policy, the algorithm must converge after finite iterations.
 
 </div>
 
@@ -652,7 +892,7 @@ Since there are at most $\|\mathcal{A}\|^{\|\mathcal{S}\|}$ deterministic polici
 
 In PI, we alternate between policy evaluation (which involves multiple iterations until convergence of $V_\pi$) and policy improvement. In VI, we alternate between one iteration of policy evaluation followed by one iteration of policy improvement (the "max" operator in the update rule). We are in fact free to intermix any number of these steps in any order. The process will converge once the policy is greedy with respect to its own value function.
 
-Note that policy evaluation computes $V_\pi$ whereas value iteration computes $V^*$. In a **backup diagram**, the root node represents any state $s$, nodes at the next level represent state-action combinations, and nodes at the leaves represent the set of possible resulting next states. In PE, we average over all actions according to the policy, whereas in VI, we take the maximum over all actions.
+Note that policy evaluation computes $V_\pi$ whereas value iteration computes $V^\ast$. In a **backup diagram**, the root node represents any state $s$, nodes at the next level represent state-action combinations, and nodes at the leaves represent the set of possible resulting next states. In PE, we average over all actions according to the policy, whereas in VI, we take the maximum over all actions.
 
 </div>
 
@@ -708,11 +948,86 @@ $$
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(TD as Semi-Gradient and Bootstrapping)</span></p>
 
-TD learning in the tabular case converges to the correct value function under proper conditions. However, it may diverge when using nonlinear function approximators. The reason is that the update is a "**semi-gradient**": we only take the gradient with respect to the value function, $\nabla_{\boldsymbol{w}} V(s_t, \boldsymbol{w}_t)$, treating the target $U_t$ as constant.
+TD learning in the tabular case converges to the correct value function under proper conditions. However, it may diverge when using nonlinear function approximators. The reason is that the update is a "**semi-gradient**": we only take the gradient with respect to the value function, $\nabla_{\boldsymbol{w}} V(s_t, \boldsymbol{w}\_t)$, treating the target $U_t$ as constant.
 
 The potential divergence arises because the update does not correspond to a gradient update on any objective function, despite having a form similar to SGD. Instead, TD learning is an example of **bootstrapping**: the estimate $V_{\boldsymbol{w}}(s_t)$ is updated to approach a target $r_t + \gamma V_{\boldsymbol{w}}(s_{t+1})$ that is itself defined by the value function estimate. MC estimation avoids this issue by using complete trajectory returns, but is often much less efficient.
 
 </div>
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 660 320" width="100%" style="max-width: 660px; height: auto;" role="img" aria-labelledby="mctd-title">
+  <title id="mctd-title">Monte Carlo vs Temporal Difference updates on a trajectory</title>
+  <defs>
+    <marker id="mctd-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#666"/>
+    </marker>
+    <marker id="mctd-arr-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e65100"/>
+    </marker>
+    <marker id="mctd-arr-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1565c0"/>
+    </marker>
+  </defs>
+
+  <!-- MC PANEL -->
+  <g transform="translate(0,0)">
+    <text x="50" y="50" font-family="serif" font-size="14" font-weight="bold" fill="#e65100">Monte Carlo</text>
+    <text x="50" y="68" font-family="serif" font-size="11" fill="#666">V(s_t) ← V(s_t) + η[ G_t − V(s_t) ]</text>
+    <!-- trajectory states -->
+    <g font-family="serif" font-size="11">
+      <circle cx="50"  cy="120" r="14" fill="#fff7ec" stroke="#e65100" stroke-width="2"/><text x="50"  y="124" text-anchor="middle">s_t</text>
+      <circle cx="150" cy="120" r="14" fill="#fff" stroke="#333"/><text x="150" y="124" text-anchor="middle">s_t+1</text>
+      <circle cx="250" cy="120" r="14" fill="#fff" stroke="#333"/><text x="250" y="124" text-anchor="middle">s_t+2</text>
+      <circle cx="350" cy="120" r="14" fill="#fff" stroke="#333"/><text x="350" y="124" text-anchor="middle">…</text>
+      <circle cx="450" cy="120" r="14" fill="#fff" stroke="#333"/><text x="450" y="124" text-anchor="middle">s_T</text>
+    </g>
+    <!-- trajectory arrows -->
+    <g stroke="#666" stroke-width="1.5" fill="none">
+      <line x1="64"  y1="120" x2="136" y2="120" marker-end="url(#mctd-arr)"/>
+      <line x1="164" y1="120" x2="236" y2="120" marker-end="url(#mctd-arr)"/>
+      <line x1="264" y1="120" x2="336" y2="120" marker-end="url(#mctd-arr)"/>
+      <line x1="364" y1="120" x2="436" y2="120" marker-end="url(#mctd-arr)"/>
+    </g>
+    <!-- rewards under arrows -->
+    <g font-family="serif" font-size="10" fill="#666">
+      <text x="100" y="108" text-anchor="middle">r_t</text>
+      <text x="200" y="108" text-anchor="middle">r_t+1</text>
+      <text x="300" y="108" text-anchor="middle">r_t+2</text>
+      <text x="400" y="108" text-anchor="middle">r_T-1</text>
+    </g>
+    <!-- big return arc back from end to s_t -->
+    <path d="M 450 134 Q 250 220 50 134" stroke="#e65100" stroke-width="2.2" fill="none" marker-end="url(#mctd-arr-orange)"/>
+    <text x="250" y="200" font-family="serif" font-size="13" text-anchor="middle" fill="#e65100" font-style="italic">G_t = r_t + γ r_t+1 + … + γ^(T-t-1) r_T-1</text>
+    <text x="250" y="245" font-family="serif" font-size="11" text-anchor="middle" fill="#555">unbiased target — full trajectory return, high variance</text>
+    <text x="250" y="262" font-family="serif" font-size="11" text-anchor="middle" fill="#555">must wait until episode end</text>
+  </g>
+
+  <!-- divider line -->
+  <line x1="535" y1="40" x2="535" y2="300" stroke="#ddd"/>
+
+  <!-- TD PANEL (small) -->
+  <g transform="translate(540,0)">
+    <text x="60" y="50" font-family="serif" font-size="14" font-weight="bold" fill="#1565c0">TD(0)</text>
+    <text x="60" y="68" font-family="serif" font-size="10" fill="#666">V(s_t) ← V(s_t) + η[ r_t + γV(s_t+1) − V(s_t) ]</text>
+    <!-- 2 states -->
+    <g font-family="serif" font-size="11">
+      <circle cx="20"  cy="140" r="14" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/><text x="20"  y="144" text-anchor="middle">s_t</text>
+      <circle cx="90" cy="140" r="14" fill="#fff" stroke="#333"/><text x="90" y="144" text-anchor="middle">s_t+1</text>
+    </g>
+    <line x1="34" y1="140" x2="76" y2="140" stroke="#666" stroke-width="1.5" marker-end="url(#mctd-arr)"/>
+    <text x="55" y="128" font-family="serif" font-size="10" text-anchor="middle" fill="#666">r_t</text>
+    <!-- "bootstrap" arrow from s_t+1's V back to s_t -->
+    <path d="M 95 158 Q 55 200 20 158" stroke="#1565c0" stroke-width="2" fill="none" marker-end="url(#mctd-arr-blue)" stroke-dasharray="4 3"/>
+    <text x="60" y="217" font-family="serif" font-size="11" text-anchor="middle" fill="#1565c0">bootstrap from</text>
+    <text x="60" y="232" font-family="serif" font-size="11" text-anchor="middle" fill="#1565c0">current V(s_t+1)</text>
+    <text x="60" y="263" font-family="serif" font-size="10" text-anchor="middle" fill="#555">biased target, low variance</text>
+    <text x="60" y="278" font-family="serif" font-size="10" text-anchor="middle" fill="#555">updates online, every step</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+**Monte Carlo** waits for the actual return $G_t$ (orange arc) — unbiased but high variance and only usable in episodic tasks. **TD(0)** uses the one-step **bootstrapped target** $r_t+\gamma V(s_{t+1})$ (blue dashed arc) — biased but low variance, and updates online after every transition. $\mathrm{TD}(\lambda)$ smoothly interpolates between them.
+</figcaption>
+</figure>
 
 ### Combining TD and MC Learning Using TD($\lambda$)
 
@@ -765,7 +1080,7 @@ $$
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(SARSA)</span></p>
 
-TD learning is for policy evaluation (it computes $V^\pi$). To find an optimal policy $\pi^*$, we can use it as a building block inside generalized policy iteration. It is more convenient to work with the action-value function $Q$ and a policy $\pi$ that is greedy with respect to $Q$. The agent follows $\pi$ in every step, and upon a transition $(s, a, r, s')$ the TD update rule is:
+TD learning is for policy evaluation (it computes $V^\pi$). To find an optimal policy $\pi^\ast$, we can use it as a building block inside generalized policy iteration. It is more convenient to work with the action-value function $Q$ and a policy $\pi$ that is greedy with respect to $Q$. The agent follows $\pi$ in every step, and upon a transition $(s, a, r, s')$ the TD update rule is:
 
 $$
 Q(s,a) \leftarrow Q(s,a) + \eta\left[r + \gamma Q(s', a') - Q(s,a)\right]
@@ -800,7 +1115,7 @@ This is called **Sarsa($\lambda$)**.
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Q-Learning)</span></p>
 
-SARSA is an on-policy algorithm: it learns the Q-function for the policy it is currently using, which is typically not the optimal policy due to exploration. With a simple modification, we can convert this to an off-policy algorithm that learns $Q^*$, even if a suboptimal or exploratory policy is used to choose actions.
+SARSA is an on-policy algorithm: it learns the Q-function for the policy it is currently using, which is typically not the optimal policy due to exploration. With a simple modification, we can convert this to an off-policy algorithm that learns $Q^\ast$, even if a suboptimal or exploratory policy is used to choose actions.
 
 We modify SARSA by replacing the sampled next action $a' \sim \pi(s')$ with a greedy action $a' = \arg\max_b Q(s', b)$:
 
@@ -808,7 +1123,7 @@ $$
 Q(s,a) \leftarrow Q(s,a) + \eta\left[r + \gamma \max_{a'} Q(s', a') - Q(s,a)\right]
 $$
 
-This is the update rule of **Q-learning**. Since it is off-policy, the method can use $(s, a, r, s')$ triples coming from any data source (older versions of the policy, log data, etc.). If every state-action pair is visited infinitely often, the algorithm provably converges to $Q^*$ in the tabular case with properly decayed learning rates.
+This is the update rule of **Q-learning**. Since it is off-policy, the method can use $(s, a, r, s')$ triples coming from any data source (older versions of the policy, log data, etc.). If every state-action pair is visited infinitely often, the algorithm provably converges to $Q^\ast$ in the tabular case with properly decayed learning rates.
 
 </div>
 
@@ -876,9 +1191,90 @@ Experience replay requires the use of off-policy learning methods, since the tra
 
 </div>
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 720 360" width="100%" style="max-width: 720px; height: auto;" role="img" aria-labelledby="dqn-title">
+  <title id="dqn-title">DQN with experience replay and target network</title>
+  <defs>
+    <marker id="dqn-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Environment -->
+  <rect x="20" y="40" width="150" height="80" rx="10" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+  <text x="95" y="68" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold" fill="#e65100">Environment</text>
+  <text x="95" y="90" font-family="serif" font-size="11" text-anchor="middle">s, r</text>
+
+  <!-- Q-network (online) -->
+  <rect x="280" y="40" width="180" height="80" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="370" y="65" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold" fill="#1565c0">Q-network</text>
+  <text x="370" y="83" font-family="serif" font-size="11" text-anchor="middle">Q_w(s, a)</text>
+  <text x="370" y="103" font-family="serif" font-size="11" text-anchor="middle" fill="#666">trained, weights w</text>
+
+  <!-- ε-greedy action selection -->
+  <rect x="220" y="180" width="120" height="48" rx="8" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="280" y="200" font-family="serif" font-size="12" text-anchor="middle">ε-greedy</text>
+  <text x="280" y="218" font-family="serif" font-size="10" text-anchor="middle" fill="#666">argmax_a Q(s,a)</text>
+
+  <!-- Replay buffer -->
+  <rect x="20" y="180" width="170" height="80" rx="10" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="105" y="205" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">Replay buffer 𝒟</text>
+  <text x="105" y="224" font-family="serif" font-size="11" text-anchor="middle">{(s, a, r, s')}</text>
+  <text x="105" y="245" font-family="serif" font-size="10" text-anchor="middle" fill="#666">FIFO, size ~ 10⁶</text>
+
+  <!-- Target network -->
+  <rect x="500" y="40" width="180" height="80" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="590" y="65" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold" fill="#7b1fa2">Target network</text>
+  <text x="590" y="83" font-family="serif" font-size="11" text-anchor="middle">Q_w̄(s, a)</text>
+  <text x="590" y="103" font-family="serif" font-size="11" text-anchor="middle" fill="#666">frozen, periodically updated</text>
+
+  <!-- Loss / TD target -->
+  <rect x="350" y="265" width="280" height="60" rx="8" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="490" y="287" font-family="serif" font-size="12" text-anchor="middle">TD target  y = r + γ max_a' Q_w̄(s', a')</text>
+  <text x="490" y="308" font-family="serif" font-size="12" text-anchor="middle" fill="#1565c0">loss = (y − Q_w(s,a))²</text>
+
+  <!-- Arrows -->
+  <g stroke="#333" stroke-width="1.6" fill="none">
+    <!-- env -> action selection (state s) -->
+    <line x1="100" y1="120" x2="180" y2="160" marker-end="url(#dqn-arr)"/>
+    <!-- env -> replay (transition) -->
+    <line x1="95"  y1="125" x2="95"  y2="170" marker-end="url(#dqn-arr)"/>
+    <!-- action selection -> env (action a) -->
+    <line x1="225" y1="200" x2="115" y2="135" marker-end="url(#dqn-arr)"/>
+    <!-- Q-network -> action selection (gives Q values) -->
+    <line x1="320" y1="120" x2="280" y2="175" marker-end="url(#dqn-arr)"/>
+    <!-- replay -> minibatch sample -->
+    <line x1="190" y1="220" x2="345" y2="280" marker-end="url(#dqn-arr)"/>
+    <!-- target net -> loss -->
+    <line x1="590" y1="125" x2="565" y2="260" marker-end="url(#dqn-arr)"/>
+    <!-- Q-network -> loss -->
+    <line x1="380" y1="125" x2="430" y2="260" marker-end="url(#dqn-arr)"/>
+    <!-- loss -> Q-network (gradient update) -->
+    <path d="M 460 265 Q 360 200 360 130" stroke="#1565c0" stroke-width="2" stroke-dasharray="5 3" fill="none" marker-end="url(#dqn-arr)"/>
+  </g>
+  <!-- arrow labels -->
+  <g font-family="serif" font-size="10" fill="#555">
+    <text x="140" y="155">s</text>
+    <text x="65" y="155">(s,a,r,s')</text>
+    <text x="160" y="135">a</text>
+    <text x="265" y="148">Q_w(s,·)</text>
+    <text x="245" y="260">minibatch</text>
+    <text x="600" y="200">Q_w̄(s',·)</text>
+    <text x="402" y="200">Q_w(s,a)</text>
+    <text x="285" y="170" fill="#1565c0">grad ∇_w</text>
+  </g>
+  <!-- periodic copy arrow w -> w̄ -->
+  <path d="M 460 65 L 500 65" stroke="#7b1fa2" stroke-width="2" fill="none" stroke-dasharray="4 3" marker-end="url(#dqn-arr)"/>
+  <text x="480" y="55" font-family="serif" font-size="10" text-anchor="middle" fill="#7b1fa2">copy w̄ ← w</text>
+  <text x="480" y="32" font-family="serif" font-size="10" text-anchor="middle" fill="#7b1fa2">every C steps</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+DQN training pipeline. Each environment step appends a transition $(s,a,r,s')$ to the replay buffer $\mathcal{D}$; minibatches sampled from $\mathcal{D}$ train the online Q-network $Q_{\boldsymbol{w}}$. The TD target uses a **separate target network** $Q_{\bar{\boldsymbol{w}}}$ whose weights are copied from $Q_{\boldsymbol{w}}$ only every $C$ steps — together these two tricks tame the "deadly triad" of bootstrapping + function approximation + off-policy learning.
+</figcaption>
+</figure>
+
 #### Prioritized Experience Replay
 
-It is possible to replace the uniform sampling from the buffer with one that favors more important transition tuples. **Prioritized sweeping** iterates over all state-action pairs $(s^-, a^-)$ that can immediately transition into $s$ and increases their priority based on $\mathcal{T}(s\mid s^-, a^-) \times \|V(s) - V^{\text{old}}(s)\|$.
+It is possible to replace the uniform sampling from the buffer with one that favors more important transition tuples. **Prioritized sweeping** iterates over all state-action pairs $(s^-, a^-)$ that can immediately transition into $s$ and increases their priority based on $\mathcal{T}(s\mid s^-, a^-) \times \lVert V(s) - V^{\text{old}}(s) \rVert$.
 
 In **prioritized experience replay**, the priority of the $i$'th tuple $\tau_i$ is based on the TD error:
 
@@ -934,7 +1330,7 @@ $$
 
 * **Gradient TD methods:** Construct an objective function whose minimization leads to a good value function approximation, ensuring convergence in off-policy learning.
 * **Two time-scale methods:** Update the target value in the TD update more quickly than the value function itself.
-* **Layer norm:** Nonlinear TD learning can be made to converge even in the off-policy setting if three conditions on the critic ($Q$ network) are satisfied: the final layer weights are bounded (e.g., using $\ell_2$ normalization or AdamW), the penultimate layer is sufficiently wide, and the input to the critic has bounded norm (e.g., using LayerNorm or RMSNorm). Since $\|\text{LayerNorm}(f(s,a;\boldsymbol{\theta}))\| \le 1$, the magnitude of the output is always bounded, preventing catastrophic overestimation.
+* **Layer norm:** Nonlinear TD learning can be made to converge even in the off-policy setting if three conditions on the critic ($Q$ network) are satisfied: the final layer weights are bounded (e.g., using $\ell_2$ normalization or AdamW), the penultimate layer is sufficiently wide, and the input to the critic has bounded norm (e.g., using LayerNorm or RMSNorm). Since $\lVert \text{LayerNorm}(f(s,a;\boldsymbol{\theta})) \rVert \le 1$, the magnitude of the output is always bounded, preventing catastrophic overestimation.
 
 ### Maximization Bias
 
@@ -995,7 +1391,7 @@ Q learning is not directly applicable to continuous actions due to the need to c
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Dueling DQN)</span></p>
 
-**Dueling DQN** learns a value function and an advantage function, and derives the Q function rather than learning it directly. This is helpful when there are many actions with similar Q-values. We define a network with $\|\mathcal{A}\|+1$ output heads, computing $A_{\boldsymbol{w}}(\boldsymbol{s}, a)$ for each action $a$ and $V_{\boldsymbol{w}}(\boldsymbol{s})$. The naive composition $Q_{\boldsymbol{w}}(\boldsymbol{s},a) = V_{\boldsymbol{w}}(\boldsymbol{s}) + A_{\boldsymbol{w}}(\boldsymbol{s},a)$ ignores the constraint $\mathbb{E}\_{\pi(a\mid s)}[A^\pi(s,a)] = 0$. To satisfy this, we subtract off $\max_a A(\boldsymbol{s},a)$ from the advantage head:
+**Dueling DQN** learns a value function and an advantage function, and derives the Q function rather than learning it directly. This is helpful when there are many actions with similar Q-values. We define a network with $\lVert \mathcal{A} \rVert+1$ output heads, computing $A_{\boldsymbol{w}}(\boldsymbol{s}, a)$ for each action $a$ and $V_{\boldsymbol{w}}(\boldsymbol{s})$. The naive composition $Q_{\boldsymbol{w}}(\boldsymbol{s},a) = V_{\boldsymbol{w}}(\boldsymbol{s}) + A_{\boldsymbol{w}}(\boldsymbol{s},a)$ ignores the constraint $\mathbb{E}\_{\pi(a\mid s)}[A^\pi(s,a)] = 0$. To satisfy this, we subtract off $\max_a A(\boldsymbol{s},a)$ from the advantage head:
 
 $$
 Q_{\boldsymbol{w}}(\boldsymbol{s},a) = V_{\boldsymbol{w}}(\boldsymbol{s}) + A_{\boldsymbol{w}}(\boldsymbol{s},a) - \max_{a'} A_{\boldsymbol{w}}(\boldsymbol{s}, a')
@@ -1227,6 +1623,72 @@ An **actor-critic** method uses the policy gradient method, but the expected ret
 
 </div>
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 680 340" width="100%" style="max-width: 680px; height: auto;" role="img" aria-labelledby="ac-title">
+  <title id="ac-title">Actor–critic architecture</title>
+  <defs>
+    <marker id="ac-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+  <!-- Environment -->
+  <rect x="450" y="120" width="200" height="100" rx="10" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+  <text x="550" y="148" font-family="serif" font-size="15" text-anchor="middle" font-weight="bold" fill="#e65100">Environment</text>
+  <text x="550" y="170" font-family="serif" font-size="11" text-anchor="middle">state s_t, reward r_t</text>
+
+  <!-- Actor (policy) -->
+  <rect x="40" y="40" width="220" height="100" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="150" y="68" font-family="serif" font-size="15" text-anchor="middle" font-weight="bold" fill="#1565c0">Actor</text>
+  <text x="150" y="89" font-family="serif" font-size="12" text-anchor="middle">π_θ(a | s)</text>
+  <text x="150" y="108" font-family="serif" font-size="11" text-anchor="middle" fill="#666">policy network, params θ</text>
+  <text x="150" y="125" font-family="serif" font-size="11" text-anchor="middle" fill="#666">picks action a_t</text>
+
+  <!-- Critic (value) -->
+  <rect x="40" y="200" width="220" height="100" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="150" y="228" font-family="serif" font-size="15" text-anchor="middle" font-weight="bold" fill="#7b1fa2">Critic</text>
+  <text x="150" y="249" font-family="serif" font-size="12" text-anchor="middle">V_w(s)   or   Q_w(s,a)</text>
+  <text x="150" y="268" font-family="serif" font-size="11" text-anchor="middle" fill="#666">value network, params w</text>
+  <text x="150" y="285" font-family="serif" font-size="11" text-anchor="middle" fill="#666">scores actor's choices</text>
+
+  <!-- TD error / advantage box -->
+  <rect x="300" y="160" width="120" height="60" rx="8" fill="#fff" stroke="#333"/>
+  <text x="360" y="180" font-family="serif" font-size="11" text-anchor="middle">TD error</text>
+  <text x="360" y="200" font-family="serif" font-size="11" text-anchor="middle">δ_t = r_t + γV(s_t+1)</text>
+  <text x="360" y="215" font-family="serif" font-size="11" text-anchor="middle">       − V(s_t)</text>
+
+  <!-- arrows -->
+  <g stroke="#333" stroke-width="1.6" fill="none">
+    <!-- env -> actor: state -->
+    <path d="M 450 140 Q 380 100 270 90" marker-end="url(#ac-arr)"/>
+    <!-- actor -> env: action -->
+    <path d="M 270 110 Q 380 160 450 175" marker-end="url(#ac-arr)"/>
+    <!-- env -> critic: state, reward -->
+    <path d="M 450 200 Q 380 250 270 250" marker-end="url(#ac-arr)"/>
+    <!-- critic -> TD box -->
+    <line x1="265" y1="225" x2="295" y2="200" marker-end="url(#ac-arr)"/>
+    <!-- TD box -> actor (policy gradient signal, dashed) -->
+    <path d="M 360 160 Q 360 100 260 90" stroke="#1565c0" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ac-arr)"/>
+    <!-- TD box -> critic (value update, dashed) -->
+    <path d="M 340 220 Q 305 245 265 240" stroke="#7b1fa2" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#ac-arr)"/>
+  </g>
+  <!-- labels -->
+  <g font-family="serif" font-size="10" fill="#555">
+    <text x="378" y="78">s_t</text>
+    <text x="388" y="138">a_t</text>
+    <text x="378" y="270">r_t, s_t+1</text>
+  </g>
+  <text x="270" y="60" font-family="serif" font-size="11" fill="#1565c0">∇_θ J = E[ δ · ∇_θ log π ]</text>
+  <text x="280" y="300" font-family="serif" font-size="11" fill="#7b1fa2">∇_w loss = δ · ∇_w V</text>
+
+  <!-- caption labels -->
+  <text x="150" y="25" font-family="serif" font-size="11" text-anchor="middle" fill="#666">"chooses what to do"</text>
+  <text x="150" y="320" font-family="serif" font-size="11" text-anchor="middle" fill="#666">"says how good it was"</text>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+**Actor–critic.** The actor parameterises the policy $\pi_{\boldsymbol{\theta}}(a\mid s)$ and chooses $a_t$; the critic learns a value $V_{\boldsymbol{w}}$ (or $Q_{\boldsymbol{w}}$) and produces a low-variance learning signal — the **TD error** $\delta_t$. The actor uses $\delta_t$ as an advantage estimate ($\nabla_{\boldsymbol{\theta}} J = \mathbb{E}[\delta_t \nabla_{\boldsymbol{\theta}}\log\pi_{\boldsymbol{\theta}}]$); the critic uses $\delta_t$ to update its own parameters.
+</figcaption>
+</figure>
+
 ### Advantage Actor Critic (A2C)
 
 <div class="math-callout math-callout--theorem" markdown="1">
@@ -1310,7 +1772,7 @@ An alternative is to alternate between updating the policy and the value functio
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Natural Gradient Descent)</span></p>
 
-**Natural gradient descent** (NGD) is a second-order method for optimizing the parameters of probability distributions such as policies $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}\mid \boldsymbol{s})$. Standard SGD uses a **proximal update**: $\boldsymbol{\theta}\_{k+1} = \arg\min_{\boldsymbol{\theta}} \hat{\mathcal{L}}\_k(\boldsymbol{\theta})$ s.t. $\lVert\boldsymbol{\theta} - \boldsymbol{\theta}_k\rVert_2^2 \le \epsilon$. However, Euclidean distance in parameter space does not make sense for probabilistic models (changes in $\mu$ matter more when $\sigma$ is small).
+**Natural gradient descent** (NGD) is a second-order method for optimizing the parameters of probability distributions such as policies $\pi_{\boldsymbol{\theta}}(\boldsymbol{a}\mid \boldsymbol{s})$. Standard SGD uses a **proximal update**: $\boldsymbol{\theta}\_{k+1} = \arg\min_{\boldsymbol{\theta}} \hat{\mathcal{L}}\_k(\boldsymbol{\theta})$ s.t. $\lVert\boldsymbol{\theta} - \boldsymbol{\theta}\_k\rVert_2^2 \le \epsilon$. However, Euclidean distance in parameter space does not make sense for probabilistic models (changes in $\mu$ matter more when $\sigma$ is small).
 
 The key idea of NGD is to measure distance between distributions using the **KL divergence**, approximated by the **Fisher information matrix** (FIM):
 
@@ -1318,7 +1780,7 @@ $$
 D_{KL}(p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x}) \| p_{\boldsymbol{\theta}+\boldsymbol{\delta}}(\boldsymbol{y}|\boldsymbol{x})) \approx \frac{1}{2} \boldsymbol{\delta}^\top \mathbf{F}_{\boldsymbol{x}} \boldsymbol{\delta}
 $$
 
-where $\mathbf{F}\_{\boldsymbol{x}}(\boldsymbol{\theta}) = \mathbb{E}\_{p_{\boldsymbol{\theta}}(\boldsymbol{y}|\boldsymbol{x})}\left[(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid \boldsymbol{x}))(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid\boldsymbol{x}))^\top\right]$.
+where $\mathbf{F}\_{\boldsymbol{x}}(\boldsymbol{\theta}) = \mathbb{E}\_{p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid\boldsymbol{x})}\left[(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid \boldsymbol{x}))(\nabla \log p_{\boldsymbol{\theta}}(\boldsymbol{y}\mid\boldsymbol{x}))^\top\right]$.
 
 Replacing the Euclidean constraint with $\boldsymbol{\delta}^\top \mathbf{F}\_k \boldsymbol{\delta} \le \epsilon$ and solving gives the **natural gradient** update:
 
@@ -1328,7 +1790,7 @@ $$
 
 This is equivalent to a preconditioned gradient update using the inverse FIM. The adaptive learning rate is $\eta_k = \sqrt{\frac{\epsilon}{\boldsymbol{g}\_k^\top \mathbf{F}\_k^{-1} \boldsymbol{g}\_k}}$.
 
-The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsymbol{\theta}) \approx \frac{1}{\|\mathcal{D}\|} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in \mathcal{D}} \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta}) \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta})^\top$.
+The FIM can be approximated using the **empirical Fisher**: $\mathbf{F}(\boldsymbol{\theta}) \approx \frac{1}{\lVert \mathcal{D} \rVert} \sum_{(\boldsymbol{x},\boldsymbol{y}) \in \mathcal{D}} \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta}) \nabla \log p(\boldsymbol{y}\mid \boldsymbol{x}, \boldsymbol{\theta})^\top$.
 
 </div>
 
@@ -1417,7 +1879,7 @@ $$
 \boldsymbol{\theta}\_{t+1} = \boldsymbol{\theta}_t + \mathcal{F}^{-1} \mathbb{E}_{\boldsymbol{s} \sim \mathcal{D}, \boldsymbol{a} \sim \pi_{\boldsymbol{\theta}}(\cdot|\boldsymbol{s})}\left[\nabla_{\boldsymbol{\theta}} \left(\nabla_{\boldsymbol{a}} \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}|\boldsymbol{s})^\top\right) \nabla_{\boldsymbol{a}} Q^{\pi_{\boldsymbol{\theta}}}(\boldsymbol{s}, \boldsymbol{a})\right]
 $$
 
-where $\mathcal{F}$ is the Fisher information matrix. If we ignore the FIM preconditioner, WPO reduces to the DPG theorem except that $\nabla_{\boldsymbol{\theta}} \mu_{\boldsymbol{\theta}}(\boldsymbol{s})$ is replaced by $\nabla_{\boldsymbol{\theta}}(\nabla_{\boldsymbol{a}} \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}|\boldsymbol{s}))^\top$, capturing the change in **probability flow** over the action space. The FIM preconditioner keeps the update closer to the true gradient flow and avoids numerical issues when the policy converges to a deterministic one.
+where $\mathcal{F}$ is the Fisher information matrix. If we ignore the FIM preconditioner, WPO reduces to the DPG theorem except that $\nabla_{\boldsymbol{\theta}} \mu_{\boldsymbol{\theta}}(\boldsymbol{s})$ is replaced by $\nabla_{\boldsymbol{\theta}}(\nabla_{\boldsymbol{a}} \log \pi_{\boldsymbol{\theta}}(\boldsymbol{a}\mid\boldsymbol{s}))^\top$, capturing the change in **probability flow** over the action space. The FIM preconditioner keeps the update closer to the true gradient flow and avoids numerical issues when the policy converges to a deterministic one.
 
 ## Policy Improvement Methods
 
@@ -1434,7 +1896,7 @@ $$
 J(\pi) - J(\pi_k) \ge \frac{1}{1-\gamma} \underbrace{\mathbb{E}_{p_{\pi_k}^\gamma(s) \pi_k(a|s)}\left[\frac{\pi(a|s)}{\pi_k(a|s)} A^{\pi_k}(s,a)\right]}_{L(\pi, \pi_k)} - \frac{2\gamma C^{\pi, \pi_k}}{(1-\gamma)^2} \mathbb{E}_{p_{\pi_k}^\gamma(s)}\left[\text{TV}(\pi(\cdot|s), \pi_k(\cdot|s))\right]
 $$
 
-where $C^{\pi, \pi_k} = \max_s \|\mathbb{E}\_{\pi(a\mid s)}[A^{\pi_k}(s,a)]\|$, $L(\pi, \pi_k)$ is a surrogate objective, and the second term is a penalty based on the total variation distance $\text{TV}(p,q) = \frac{1}{2}\|\boldsymbol{p} - \boldsymbol{q}\|_1$.
+where $C^{\pi, \pi_k} = \max_s \lVert \mathbb{E}\_{\pi(a\mid s)}[A^{\pi_k}(s,a)] \rVert$, $L(\pi, \pi_k)$ is a surrogate objective, and the second term is a penalty based on the total variation distance $\text{TV}(p,q) = \frac{1}{2}\lVert \boldsymbol{p} - \boldsymbol{q} \rVert_1$.
 
 If we can optimize this lower bound (or a stochastic approximation), we can guarantee monotonic policy improvement (in expectation) at each step.
 
@@ -1465,7 +1927,7 @@ $$
 \mathbb{E}_{p_{\pi_k}^\gamma(s)}[D_{KL}(\pi_k \| \pi)(s)] \approx \frac{1}{2}(\boldsymbol{\theta} - \boldsymbol{\theta}_k)^\top \mathbf{F}_k (\boldsymbol{\theta} - \boldsymbol{\theta}_k)
 $$
 
-Then the update is $\boldsymbol{\theta}\_{k+1} = \boldsymbol{\theta}\_k + \eta_k \boldsymbol{v}_k$ where $\boldsymbol{v}\_k = \mathbf{F}\_k^{-1} \boldsymbol{g}\_k$ is the natural gradient, and $\eta_k = \sqrt{\frac{2\delta}{\boldsymbol{v}\_k^\top \mathbf{F}\_k \boldsymbol{v}\_k}}$. We use a backtracking line search to ensure the trust region is satisfied.
+Then the update is $\boldsymbol{\theta}\_{k+1} = \boldsymbol{\theta}\_k + \eta_k \boldsymbol{v}\_k$ where $\boldsymbol{v}\_k = \mathbf{F}\_k^{-1} \boldsymbol{g}\_k$ is the natural gradient, and $\eta_k = \sqrt{\frac{2\delta}{\boldsymbol{v}\_k^\top \mathbf{F}\_k \boldsymbol{v}\_k}}$. We use a backtracking line search to ensure the trust region is satisfied.
 
 </div>
 
@@ -1486,7 +1948,7 @@ where $g(\epsilon, A) = \begin{cases} (1+\epsilon)A & \text{if } A \ge 0 \\ (1-\
 
 If $A > 0$ (action better than expected), we want to increase $\rho$, but $\text{clip}(\rho)A$ restricts the increase to at most $(1+\epsilon)A$. If $A < 0$ (action worse than expected), we want to decrease $\rho$, but the clip restricts the decrease to at most $(1-\epsilon)A$. This prevents the new policy from straying too far from the old one.
 
-PPO pseudocode with GAE is essentially identical to the AC code, except the policy loss uses $\min(\rho_t A_t, \tilde{\rho}\_t A_t)$ instead of $A_t \log \pi_\phi(a_t|s_t)$, and we perform multiple policy updates per rollout for increased sample efficiency.
+PPO pseudocode with GAE is essentially identical to the AC code, except the policy loss uses $\min(\rho_t A_t, \tilde{\rho}\_t A_t)$ instead of $A_t \log \pi_\phi(a_t\mids_t)$, and we perform multiple policy updates per rollout for increased sample efficiency.
 
 </div>
 
@@ -1508,7 +1970,7 @@ PPO relies on computing the likelihood of a candidate action, which is difficult
 
 VMPO adopts an EM-type approach:
 
-**E step:** Compute a non-parametric target distribution $\psi_{k+1}(s,a) = p_{\pi_k}^\gamma(s) \pi_k(a|s) w(s,a)$ where
+**E step:** Compute a non-parametric target distribution $\psi_{k+1}(s,a) = p_{\pi_k}^\gamma(s) \pi_k(a\mids) w(s,a)$ where
 
 $$
 w(s,a) = \frac{\exp(A^{\pi_k}(s,a)/\lambda^*)}{ Z(\lambda^*)}, \quad \lambda^* = \arg\min_{\lambda \ge 0} \lambda \delta + \lambda \log Z(\lambda)
@@ -1745,7 +2207,7 @@ $$
 \eta J(\pi_p, \pi_q) = \sum_{t=1}^{T} \mathbb{E}_q\left[R(s_t, a_t) - \eta H(\pi_q(\cdot|s_t))\right]
 $$
 
-where $-H(q) = D_{KL}(q \|\| \text{unif})$ is the negative entropy function. This is called the **maximum entropy RL** objective. It differs from the standard RL objective by the addition of the entropy regularizer on the policy, which provides a lower bound on the sum of expected rewards.
+where $-H(q) = D_{KL}(q \lVert  \rVert \text{unif})$ is the negative entropy function. This is called the **maximum entropy RL** objective. It differs from the standard RL objective by the addition of the entropy regularizer on the policy, which provides a lower bound on the sum of expected rewards.
 
 </div>
 
@@ -1933,7 +2395,7 @@ In **receding horizon control** (RHC), we plan from the current state $s_t$ to a
 
 #### Forward Search
 
-In **forward search**, we examine all possible transitions up to depth $d$ by starting from the current state and considering all possible actions, then all possible next states, etc. The resulting **search tree** has the reward associated with each edge. At the leaves, we compute the remaining reward-to-go using a value function $V(s)$. This takes $O((\|\mathcal{S}\| \times \|\mathcal{A}\|)^d)$ time.
+In **forward search**, we examine all possible transitions up to depth $d$ by starting from the current state and considering all possible actions, then all possible next states, etc. The resulting **search tree** has the reward associated with each edge. At the leaves, we compute the remaining reward-to-go using a value function $V(s)$. This takes $O((\lVert \mathcal{S} \rVert \times \lVert \mathcal{A} \rVert)^d)$ time.
 
 #### Branch and Bound
 
@@ -1941,7 +2403,7 @@ In **branch and bound**, we prune suboptimal paths using a lower bound on the va
 
 #### Sparse Sampling
 
-**Sparse sampling** speeds up forward search by sampling a subset of $m$ possible next states for each action, giving complexity $O((m \times \|\mathcal{A}\|)^d)$, which is independent of $\|\mathcal{S}\|$.
+**Sparse sampling** speeds up forward search by sampling a subset of $m$ possible next states for each action, giving complexity $O((m \times \lVert \mathcal{A} \rVert)^d)$, which is independent of $\lVert \mathcal{S} \rVert$.
 
 #### Heuristic Search
 
@@ -1970,6 +2432,133 @@ where $N(s) = \sum_a N(s,a)$ is the total visit count to $s$, and $c$ is an expl
 
 </div>
 
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 700 360" width="100%" style="max-width: 700px; height: auto;" role="img" aria-labelledby="mcts-title">
+  <title id="mcts-title">One MCTS iteration: select, expand, simulate, backup</title>
+  <defs>
+    <marker id="mcts-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#666"/>
+    </marker>
+    <marker id="mcts-arr-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e65100"/>
+    </marker>
+  </defs>
+
+  <!-- 4 panels horizontally, each ~170 wide -->
+  <!-- PANEL 1: SELECT -->
+  <g transform="translate(0,0)">
+    <text x="85" y="20" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">1. Select (UCT)</text>
+    <!-- root -->
+    <circle cx="85" cy="60" r="15" fill="#1565c0" stroke="#1565c0"/>
+    <text x="85" y="64" font-family="serif" font-size="11" text-anchor="middle" fill="#fff">s_t</text>
+    <!-- 3 children, middle gets bold highlight -->
+    <circle cx="40"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="85"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="130" cy="130" r="12" fill="#1565c0"/>
+    <!-- selected path bolded (middle) -->
+    <line x1="85" y1="75" x2="40" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="85" y2="118" stroke="#e65100" stroke-width="2.5"/>
+    <line x1="85" y1="75" x2="130" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <!-- grandchildren under middle -->
+    <circle cx="60" cy="195" r="10" fill="#1565c0"/>
+    <circle cx="110" cy="195" r="10" fill="#e65100"/>
+    <line x1="85" y1="142" x2="60" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="142" x2="110" y2="185" stroke="#e65100" stroke-width="2.5"/>
+    <text x="85" y="240" font-family="serif" font-size="10" text-anchor="middle" fill="#555">descend along</text>
+    <text x="85" y="254" font-family="serif" font-size="10" text-anchor="middle" fill="#555">UCT-best edges</text>
+    <text x="85" y="270" font-family="serif" font-size="9" text-anchor="middle" fill="#666" font-style="italic">argmax_a Q + c√(logN/N(s,a))</text>
+  </g>
+
+  <line x1="170" y1="20" x2="170" y2="340" stroke="#ddd"/>
+
+  <!-- PANEL 2: EXPAND -->
+  <g transform="translate(175,0)">
+    <text x="85" y="20" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">2. Expand</text>
+    <circle cx="85" cy="60" r="15" fill="#1565c0"/>
+    <text x="85" y="64" font-family="serif" font-size="11" text-anchor="middle" fill="#fff">s_t</text>
+    <circle cx="40"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="85"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="130" cy="130" r="12" fill="#1565c0"/>
+    <line x1="85" y1="75" x2="40" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="85" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="130" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <circle cx="60" cy="195" r="10" fill="#1565c0"/>
+    <circle cx="110" cy="195" r="10" fill="#1565c0"/>
+    <line x1="85" y1="142" x2="60" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="142" x2="110" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <!-- new leaf added -->
+    <circle cx="110" cy="240" r="11" fill="#fff" stroke="#e65100" stroke-width="2.5"/>
+    <text x="110" y="244" font-family="serif" font-size="10" text-anchor="middle" fill="#e65100">new</text>
+    <line x1="110" y1="205" x2="110" y2="229" stroke="#e65100" stroke-width="2"/>
+    <text x="85" y="285" font-family="serif" font-size="10" text-anchor="middle" fill="#555">add one new child</text>
+    <text x="85" y="298" font-family="serif" font-size="10" text-anchor="middle" fill="#555">to the tree</text>
+  </g>
+
+  <line x1="345" y1="20" x2="345" y2="340" stroke="#ddd"/>
+
+  <!-- PANEL 3: SIMULATE -->
+  <g transform="translate(350,0)">
+    <text x="85" y="20" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">3. Simulate</text>
+    <circle cx="85" cy="60" r="15" fill="#1565c0"/>
+    <text x="85" y="64" font-family="serif" font-size="11" text-anchor="middle" fill="#fff">s_t</text>
+    <circle cx="40"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="85"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="130" cy="130" r="12" fill="#1565c0"/>
+    <line x1="85" y1="75" x2="40" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="85" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="130" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <circle cx="60" cy="195" r="10" fill="#1565c0"/>
+    <circle cx="110" cy="195" r="10" fill="#1565c0"/>
+    <line x1="85" y1="142" x2="60" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="142" x2="110" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <circle cx="110" cy="240" r="11" fill="#fff" stroke="#e65100" stroke-width="2"/>
+    <line x1="110" y1="205" x2="110" y2="229" stroke="#bbb" stroke-width="1.2"/>
+    <!-- rollout: dotted random path -->
+    <g stroke="#666" stroke-width="1.5" fill="none" stroke-dasharray="2 2">
+      <line x1="110" y1="252" x2="135" y2="285"/>
+      <line x1="135" y1="285" x2="105" y2="310"/>
+      <line x1="105" y1="310" x2="140" y2="335"/>
+    </g>
+    <text x="155" y="290" font-family="serif" font-size="10" fill="#666">rollout</text>
+    <text x="155" y="303" font-family="serif" font-size="10" fill="#666">policy</text>
+    <text x="155" y="335" font-family="serif" font-size="13" font-weight="bold" fill="#e65100">u</text>
+    <text x="85" y="358" font-family="serif" font-size="10" text-anchor="middle" fill="#555">rollout → return u</text>
+  </g>
+
+  <line x1="520" y1="20" x2="520" y2="340" stroke="#ddd"/>
+
+  <!-- PANEL 4: BACKUP -->
+  <g transform="translate(525,0)">
+    <text x="85" y="20" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">4. Backup</text>
+    <circle cx="85" cy="60" r="15" fill="#1565c0"/>
+    <text x="85" y="64" font-family="serif" font-size="11" text-anchor="middle" fill="#fff">s_t</text>
+    <circle cx="40"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="85"  cy="130" r="12" fill="#1565c0"/>
+    <circle cx="130" cy="130" r="12" fill="#1565c0"/>
+    <line x1="85" y1="75" x2="40" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="85" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="75" x2="130" y2="118" stroke="#bbb" stroke-width="1.2"/>
+    <circle cx="60" cy="195" r="10" fill="#1565c0"/>
+    <circle cx="110" cy="195" r="10" fill="#1565c0"/>
+    <line x1="85" y1="142" x2="60" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <line x1="85" y1="142" x2="110" y2="185" stroke="#bbb" stroke-width="1.2"/>
+    <circle cx="110" cy="240" r="11" fill="#fff" stroke="#e65100" stroke-width="2"/>
+    <!-- backup arrows up the path -->
+    <g stroke="#e65100" stroke-width="2.5" fill="none">
+      <line x1="110" y1="230" x2="110" y2="208" marker-end="url(#mcts-arr-orange)"/>
+      <line x1="110" y1="185" x2="90" y2="145" marker-end="url(#mcts-arr-orange)"/>
+      <line x1="85" y1="118" x2="85" y2="80" marker-end="url(#mcts-arr-orange)"/>
+    </g>
+    <text x="85" y="290" font-family="serif" font-size="10" text-anchor="middle" fill="#555">update Q(s,a), N(s,a)</text>
+    <text x="85" y="304" font-family="serif" font-size="10" text-anchor="middle" fill="#555">along the path</text>
+    <text x="85" y="320" font-family="serif" font-size="9" text-anchor="middle" fill="#666" font-style="italic">Q ← Q + (u − Q)/N</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+One MCTS iteration. **Select** descends the explored subtree following UCT (balancing $Q$ and exploration bonus $c\sqrt{\log N(s)/N(s,a)}$); **Expand** adds one new leaf; **Simulate** runs a rollout (random or learned) to get a return $u$; **Backup** propagates $u$ back to the root, updating $N$ and $Q$ on every edge traversed. Repeat $m$ times, then pick $\arg\max_a N(s_t,a)$ as the real action.
+</figcaption>
+</figure>
+
 #### MCTS for 2-Player Zero-Sum Games: AlphaGo, AlphaGoZero, and AlphaZero
 
 <div class="math-callout math-callout--question" markdown="1">
@@ -1977,7 +2566,7 @@ where $N(s) = \sum_a N(s,a)$ is the total visit count to $s$, and $c$ is an expl
 
 MCTS can be applied to games. In two-player, zero-sum symmetric games, the agent models the opponent using its own policy with roles reversed (**self-play**).
 
-**AlphaGo** used MCTS (with self-play) combined with a neural network computing $(v_s, \boldsymbol{\pi}^s) = f(s; \boldsymbol{\theta})$, where $v_s$ is the expected game outcome and $\boldsymbol{\pi}_s$ is the policy. It was the first AI to beat a human grandmaster at Go. **AlphaGoZero** was trained entirely using RL and self-play (no human data) and significantly outperformed AlphaGo. **AlphaZero** generalized this to play expert-level Go, chess, and shogi without any domain knowledge.
+**AlphaGo** used MCTS (with self-play) combined with a neural network computing $(v_s, \boldsymbol{\pi}^s) = f(s; \boldsymbol{\theta})$, where $v_s$ is the expected game outcome and $\boldsymbol{\pi}\_s$ is the policy. It was the first AI to beat a human grandmaster at Go. **AlphaGoZero** was trained entirely using RL and self-play (no human data) and significantly outperformed AlphaGo. **AlphaZero** generalized this to play expert-level Go, chess, and shogi without any domain knowledge.
 
 The policy/value network is trained by optimizing the actor-critic loss:
 
@@ -2006,11 +2595,11 @@ MuZero was applied to Go, Chess, Shogi, and Atari.
 
 **Stochastic MuZero** extends MuZero to stochastic environments (e.g., 2048 and Backgammon). **Sampled MuZero** allows for large and/or continuous action spaces. **Gumbel MuZero** proposes a better policy improvement algorithm based on sampling actions without replacement. **MuZero Unplugged** applies the **Reanalyse** algorithm (MCTS-based policy and value improvement) to offline trajectories with a learned world model.
 
-**Efficient Zero** extends MuZero by adding a self-prediction loss $(\boldsymbol{z}_{t+1} - M_w^s(\boldsymbol{z}_t, a_t))^2$ to help train the world model, and replaces the empirical sum of rewards with an LSTM model that predicts the value prefix. **Efficient Zero V2** extends this to work with continuous actions using sampling-based Gumbel search.
+**Efficient Zero** extends MuZero by adding a self-prediction loss $(\boldsymbol{z}\_{t+1} - M_w^s(\boldsymbol{z}\_t, a_t))^2$ to help train the world model, and replaces the empirical sum of rewards with an LSTM model that predicts the value prefix. **Efficient Zero V2** extends this to work with continuous actions using sampling-based Gumbel search.
 
 #### MCTS in Belief Space
 
-**BetaZero** performs MCTS in belief space. The current state is represented by a belief state $b_t$, which is passed to the network to generate an initial policy proposal $\pi_{\boldsymbol{\theta}}(a|b)$ and value function $v_{\boldsymbol{\theta}}(b)$. Rollouts expand nodes by sampling hidden states $s \sim b$, next hidden states $s' \sim T(s'|s,a)$, observations $o \sim O(s')$, rewards $r \sim R(s,a,s')$, and new belief states $b' = \text{Update}(b,a,o)$ using e.g. a particle filter.
+**BetaZero** performs MCTS in belief space. The current state is represented by a belief state $b_t$, which is passed to the network to generate an initial policy proposal $\pi_{\boldsymbol{\theta}}(a\midb)$ and value function $v_{\boldsymbol{\theta}}(b)$. Rollouts expand nodes by sampling hidden states $s \sim b$, next hidden states $s' \sim T(s'\mids,a)$, observations $o \sim O(s')$, rewards $r \sim R(s,a,s')$, and new belief states $b' = \text{Update}(b,a,o)$ using e.g. a particle filter.
 
 ### Sequential Monte Carlo (SMC) for Online Planning
 
@@ -2040,7 +2629,7 @@ $$
 \boldsymbol{a}_{t:t+d}^* = \arg\max_{\boldsymbol{a}_{t:t+d}} \mathbb{E}_{s_{t+1:t+d} \sim \mathcal{T}(\cdot|s_t, \boldsymbol{a}_{t:t+d})}\left[\sum_{h=0}^{d} R(s_{t+h}, a_{t+h}) + \hat{V}(s_{t+d+1})\right]
 $$
 
-where $\mathcal{T}$ is the dynamics model. It then returns $a_t^*$ as the best action, takes a step, and replans. The future actions are chosen without knowing the future states ("open loop"). This can be suboptimal in stochastic environments but is fast and popular for continuous control with deterministic dynamics.
+where $\mathcal{T}$ is the dynamics model. It then returns $a_t^\ast$ as the best action, takes a step, and replans. The future actions are chosen without knowing the future states ("open loop"). This can be suboptimal in stochastic environments but is fast and popular for continuous control with deterministic dynamics.
 
 </div>
 
@@ -2088,7 +2677,7 @@ Decision-time planning can be slow. We can amortize the planning process into a 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(MBRL as a Game)</span></p>
 
-We define the value of a policy $\pi$ when rolled out in some model $M'$ as $J(\pi, M') = \mathbb{E}\_{M', \pi}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t)\right]$. The loss of a model $\hat{M}$ given a state-action distribution $\mu(s,a)$ is $\ell(\hat{M}, \mu) = \mathbb{E}\_{(s,a) \sim \mu}\left[D_{KL}(M_\text{env}(\cdot|s,a) \|\| \hat{M}(\cdot\mid s,a))\right]$.
+We define the value of a policy $\pi$ when rolled out in some model $M'$ as $J(\pi, M') = \mathbb{E}\_{M', \pi}\left[\sum_{t=0}^{\infty} \gamma^t R(s_t)\right]$. The loss of a model $\hat{M}$ given a state-action distribution $\mu(s,a)$ is $\ell(\hat{M}, \mu) = \mathbb{E}\_{(s,a) \sim \mu}\left[D_{KL}(M_\text{env}(\cdot\mids,a) \lVert  \rVert \hat{M}(\cdot\mid s,a))\right]$.
 
 MBRL can be defined as a two-player general-sum game:
 
@@ -2125,6 +2714,89 @@ At each step: (1) collect new data from the environment and add to a real replay
 **Tabular Dyna** (Dyna-Q) assumes a deterministic tabular world model $s' = M(s,a)$. Sampling a single step from a previously visited state is then equivalent to experience replay (we can think of ER as a kind of non-parametric world model).
 
 **Dyna with function approximation** extends this using the MBRL agent code, training the policy on both real and imaginary data. **MBPO** (model-based policy optimization) uses Dyna with the off-policy SAC method and an **ensemble of DNNs** for the world model (from the **PETS** approach). One should gradually increase the fraction of real data to avoid suboptimal performance due to model limitations.
+
+<figure style="margin: 1.5em auto; text-align: center;">
+<svg viewBox="0 0 720 360" width="100%" style="max-width: 720px; height: auto;" role="img" aria-labelledby="dyna-title">
+  <title id="dyna-title">The Dyna loop: real and imagined experience both train the policy</title>
+  <defs>
+    <marker id="dyna-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Real environment -->
+  <rect x="20"  y="40"  width="170" height="70" rx="10" fill="#fff7ec" stroke="#e65100" stroke-width="2"/>
+  <text x="105" y="68" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold" fill="#e65100">Real environment</text>
+  <text x="105" y="88" font-family="serif" font-size="11" text-anchor="middle" fill="#666">slow, expensive</text>
+
+  <!-- Real replay buffer -->
+  <rect x="20"  y="170" width="170" height="70" rx="10" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="105" y="195" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">Real buffer 𝒟</text>
+  <text x="105" y="215" font-family="serif" font-size="11" text-anchor="middle">(s, a, r, s')</text>
+
+  <!-- World model (learned) -->
+  <rect x="270" y="40"  width="180" height="70" rx="10" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="360" y="68" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold" fill="#7b1fa2">World model M_φ</text>
+  <text x="360" y="88" font-family="serif" font-size="11" text-anchor="middle" fill="#666">predicts (s', r) ~ M_φ(s, a)</text>
+
+  <!-- Imaginary buffer -->
+  <rect x="270" y="170" width="180" height="70" rx="10" fill="#fff" stroke="#333" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="360" y="195" font-family="serif" font-size="13" text-anchor="middle" font-weight="bold">Imaginary buffer 𝒟̂</text>
+  <text x="360" y="215" font-family="serif" font-size="11" text-anchor="middle" fill="#666">model rollouts</text>
+
+  <!-- Policy / Value learner -->
+  <rect x="530" y="100" width="170" height="100" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+  <text x="615" y="125" font-family="serif" font-size="14" text-anchor="middle" font-weight="bold" fill="#1565c0">Agent</text>
+  <text x="615" y="148" font-family="serif" font-size="11" text-anchor="middle">policy π_θ</text>
+  <text x="615" y="167" font-family="serif" font-size="11" text-anchor="middle">value Q_w</text>
+  <text x="615" y="187" font-family="serif" font-size="10" text-anchor="middle" fill="#666">trains on 𝒟 ∪ 𝒟̂</text>
+
+  <!-- arrows -->
+  <g stroke="#333" stroke-width="1.6" fill="none">
+    <!-- env -> real buffer -->
+    <line x1="105" y1="112" x2="105" y2="166" marker-end="url(#dyna-arr)"/>
+    <!-- env -> agent (policy executes there) -->
+    <path d="M 190 75 Q 350 60 528 130" stroke-dasharray="0" marker-end="url(#dyna-arr)"/>
+    <!-- agent -> env (action) -->
+    <path d="M 528 150 Q 350 130 190 95" marker-end="url(#dyna-arr)"/>
+    <!-- real buffer -> world model (training data) -->
+    <path d="M 165 170 Q 220 140 275 95" marker-end="url(#dyna-arr)"/>
+    <!-- world model -> imaginary buffer (rollouts) -->
+    <line x1="360" y1="115" x2="360" y2="166" marker-end="url(#dyna-arr)"/>
+    <!-- real buffer -> agent -->
+    <path d="M 195 195 Q 380 280 528 165" marker-end="url(#dyna-arr)"/>
+    <!-- imaginary buffer -> agent -->
+    <line x1="450" y1="200" x2="530" y2="175" marker-end="url(#dyna-arr)"/>
+    <!-- agent -> world model (to roll out imagined trajectories) -->
+    <path d="M 530 115 Q 480 80 455 90" stroke="#7b1fa2" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#dyna-arr)"/>
+  </g>
+  <!-- arrow labels -->
+  <g font-family="serif" font-size="10" fill="#555">
+    <text x="115" y="140">real (s,a,r,s')</text>
+    <text x="340" y="60">obs / reward</text>
+    <text x="340" y="105">action</text>
+    <text x="200" y="125" fill="#7b1fa2">train M_φ</text>
+    <text x="365" y="148" fill="#7b1fa2">imagine (s,â,r̂,ŝ')</text>
+    <text x="350" y="240" fill="#e65100">real updates</text>
+    <text x="470" y="195" fill="#7b1fa2">imagined updates</text>
+    <text x="475" y="75" fill="#7b1fa2">π_θ for rollouts</text>
+  </g>
+
+  <!-- legend at bottom -->
+  <g font-family="serif" font-size="11" fill="#333">
+    <text x="20" y="290" font-weight="bold">Three sources of agent updates:</text>
+    <circle cx="35" cy="310" r="5" fill="#fff" stroke="#e65100" stroke-width="2"/>
+    <text x="50" y="314">(1) on-policy real interaction</text>
+    <circle cx="35" cy="328" r="5" fill="#fff" stroke="#333" stroke-width="1.5"/>
+    <text x="50" y="332">(2) off-policy real replay 𝒟</text>
+    <circle cx="35" cy="346" r="5" fill="#fff" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="50" y="350">(3) imagined rollouts from M_φ</text>
+  </g>
+</svg>
+<figcaption markdown="1" style="font-style: italic; font-size: 0.9em; margin-top: 0.4em; color: #555;">
+**Dyna.** Real transitions enter the buffer $\mathcal{D}$ and also train the world model $M_\phi$. The model then generates **imagined** transitions $\hat{\mathcal{D}}$ via rollouts of the current policy. The agent's policy and value function are updated on both $\mathcal{D}$ and $\hat{\mathcal{D}}$ — getting the **sample efficiency** of model-based RL while staying robust to model error through the real-data fraction.
+</figcaption>
+</figure>
 
 ## World Models
 
@@ -2170,7 +2842,7 @@ $$
 
 where $p(\boldsymbol{o}\_t\mid\boldsymbol{z}\_t) = D(\boldsymbol{o}\_t\mid\boldsymbol{z}\_t)$ is the decoder or likelihood function, $\mathcal{M}(\boldsymbol{z}'\mid\boldsymbol{z}, \boldsymbol{a})$ is the dynamics in latent space, and $\pi(\boldsymbol{a}\_t\mid\boldsymbol{z}\_t)$ is the policy in latent space.
 
-The world model is usually trained by maximizing the marginal likelihood of the observed outputs given an action sequence. Computing the marginal likelihood requires marginalizing over the hidden variables $\boldsymbol{z}_{t+1:T}$. To make this computationally tractable, it is common to use amortized variational inference, in which we train an encoder network $p(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t) = E(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t)$ to approximate the posterior over the latents.
+The world model is usually trained by maximizing the marginal likelihood of the observed outputs given an action sequence. Computing the marginal likelihood requires marginalizing over the hidden variables $\boldsymbol{z}\_{t+1:T}$. To make this computationally tractable, it is common to use amortized variational inference, in which we train an encoder network $p(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t) = E(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t)$ to approximate the posterior over the latents.
 
 #### Example: Dreamer
 
@@ -2286,7 +2958,7 @@ $$
 \exists R \;\text{s.t.}\; \mathbb{E}_{R^*}[r|\boldsymbol{h}, a] = \mathbb{E}_R[r|\phi(\boldsymbol{h}), a] \;\forall \boldsymbol{h}, a
 $$
 
-A representation that satisfies ZP and RP is enough to satisfy value equivalence (sufficiency for $Q^*$).
+A representation that satisfies ZP and RP is enough to satisfy value equivalence (sufficiency for $Q^\ast$).
 
 #### Value Prediction
 
@@ -2295,7 +2967,7 @@ A representation that satisfies ZP and RP is enough to satisfy value equivalence
 
 Let $\boldsymbol{h}\_t = (\boldsymbol{h}\_{t-1}, \boldsymbol{a}\_{t-1}, r_{t-1}, \boldsymbol{o}\_t)$ be all the visible data (history) at time $t$, and let $\boldsymbol{z}\_t = \phi(\boldsymbol{h}\_t)$ be a latent representation (compressed encoding) of this history, where $\phi$ is called an encoder or a **state abstraction** function. We train the policy $\boldsymbol{a}\_t = \pi(\boldsymbol{z}\_t)$ in the usual way.
 
-An optimal representation $\boldsymbol{z}\_t = \phi(\boldsymbol{h}\_t)$ is a sufficient statistic for the optimal action-value function $Q^*$. It satisfies the **value equivalence** principle: two states $s_1$ and $s_2$ are value equivalent (given a policy) if $V^\pi(s_1) = V^\pi(s_2)$. In particular, if the representation is optimal, it will satisfy value equivalence w.r.t. the optimal policy, i.e., if $\phi(\boldsymbol{h}\_i) = \phi(\boldsymbol{h}\_j)$ then $Q^*(\boldsymbol{h}\_i, a) = Q^*(\boldsymbol{h}\_j, a)$.
+An optimal representation $\boldsymbol{z}\_t = \phi(\boldsymbol{h}\_t)$ is a sufficient statistic for the optimal action-value function $Q^\ast$. It satisfies the **value equivalence** principle: two states $s_1$ and $s_2$ are value equivalent (given a policy) if $V^\pi(s_1) = V^\pi(s_2)$. In particular, if the representation is optimal, it will satisfy value equivalence w.r.t. the optimal policy, i.e., if $\phi(\boldsymbol{h}\_i) = \phi(\boldsymbol{h}\_j)$ then $Q^\ast(\boldsymbol{h}\_i, a) = Q^\ast(\boldsymbol{h}\_j, a)$.
 
 We can train such a representation function by using its output $\boldsymbol{z} = \phi(\boldsymbol{h})$ as input to the Q function or to the policy. (We call such a loss **VP**, for value prediction.)
 
@@ -2304,7 +2976,7 @@ We can train such a representation function by using its output $\boldsymbol{z} 
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Bisimulation)</span></p>
 
-There is a stronger property than value equivalence called **bisimulation**: two states $s_1$ and $s_2$ are bisimilar if $P(s'|s_1, a) \approx P(s'|s_2, a)$ and $R(s_1, a) = R(s_2, a)$. From this, we can derive a continuous measure called the **bisimulation metric**. This has the advantage (compared to value equivalence) of being policy independent, but the disadvantage that it can be harder to compute. Recent progress on computationally efficient methods includes **MICo** and **KSMe**.
+There is a stronger property than value equivalence called **bisimulation**: two states $s_1$ and $s_2$ are bisimilar if $P(s'\lvert s_1, a) \approx P(s' \rverts_2, a)$ and $R(s_1, a) = R(s_2, a)$. From this, we can derive a continuous measure called the **bisimulation metric**. This has the advantage (compared to value equivalence) of being policy independent, but the disadvantage that it can be harder to compute. Recent progress on computationally efficient methods includes **MICo** and **KSMe**.
 
 </div>
 
@@ -2362,7 +3034,7 @@ $$
 J(\boldsymbol{\phi}) = E_{\boldsymbol{o}_t, \boldsymbol{a}_t, \boldsymbol{o}_{t+1}, \epsilon_t} \left( \|\boldsymbol{z}_{t+1} - \hat{\boldsymbol{z}}_{t+1}\|_2^2 - \lambda I(\boldsymbol{z}_t) - \lambda I(\boldsymbol{z}_{t+1}) \right)
 $$
 
-where $\boldsymbol{z}_t = E(\boldsymbol{o}_t; \boldsymbol{\phi})$, $\boldsymbol{z}_{t+1} = E(\boldsymbol{o}_{t+1}; \boldsymbol{\phi})$, $\hat{\boldsymbol{z}}_{t+1} = \mathcal{M}(\boldsymbol{z}_t, \boldsymbol{a}_t, \epsilon_t; \boldsymbol{\theta})$.
+where $\boldsymbol{z}\_t = E(\boldsymbol{o}\_t; \boldsymbol{\phi})$, $\boldsymbol{z}\_{t+1} = E(\boldsymbol{o}\_{t+1}; \boldsymbol{\phi})$, $\hat{\boldsymbol{z}}\_{t+1} = \mathcal{M}(\boldsymbol{z}\_t, \boldsymbol{a}\_t, \epsilon_t; \boldsymbol{\theta})$.
 
 Various methods have been proposed to approximate the information content $I(\boldsymbol{z}\_t)$, mostly based on some function of the outer product matrix $\sum_t \boldsymbol{z}\_t \boldsymbol{z}\_t^\top$, which captures second-order moments.
 
@@ -2437,12 +3109,12 @@ In the case where the observations are high-dimensional (such as images), it is 
 
 **TD-MPC2** is an extension of **TD-MPC** that learns the following functions:
 
-* Encoder: $\boldsymbol{e}_t = E(\boldsymbol{o}_t)$
-* Latent dynamics (for rollouts): $\boldsymbol{z}_t' = \mathcal{M}(\boldsymbol{z}_{t-1}, \boldsymbol{a}_t)$
-* Latent update (after each observation): $\boldsymbol{z}_t = \mathcal{U}(\boldsymbol{z}_{t-1}, \boldsymbol{e}_t, \boldsymbol{a}_t) = \boldsymbol{e}_t$
-* Reward: $\hat{r}_t = R(\boldsymbol{z}_t, \boldsymbol{a}_t)$
-* Value: $\hat{q}_t = Q(\boldsymbol{z}_t, \boldsymbol{a}_t)$
-* Policy prior: $\hat{\boldsymbol{a}}_t = \pi_{\text{prior}}(\boldsymbol{z}_{t-1})$
+* Encoder: $\boldsymbol{e}\_t = E(\boldsymbol{o}\_t)$
+* Latent dynamics (for rollouts): $\boldsymbol{z}\_t' = \mathcal{M}(\boldsymbol{z}\_{t-1}, \boldsymbol{a}\_t)$
+* Latent update (after each observation): $\boldsymbol{z}\_t = \mathcal{U}(\boldsymbol{z}\_{t-1}, \boldsymbol{e}\_t, \boldsymbol{a}\_t) = \boldsymbol{e}\_t$
+* Reward: $\hat{r}\_t = R(\boldsymbol{z}\_t, \boldsymbol{a}\_t)$
+* Value: $\hat{q}\_t = Q(\boldsymbol{z}\_t, \boldsymbol{a}\_t)$
+* Policy prior: $\hat{\boldsymbol{a}}\_t = \pi_{\text{prior}}(\boldsymbol{z}\_{t-1})$
 
 The model is trained using the following VP+ZP loss applied to trajectories sampled from the replay buffer:
 
@@ -2507,7 +3179,7 @@ The model-as-leader approach (which trains a new policy in imagination at each i
 
 In MBRL, we have to rollout imaginary trajectories to use for training the policy. It makes intuitive sense to start from a previously visited real-world state, since the model will likely be reliable there. We should start rollouts from different points along each real trajectory, to ensure good state coverage. However, if we roll out too far from a previously seen state, the trajectories are likely to become less realistic, due to **compounding errors** from the model.
 
-The **MBPO** method uses short rollouts (inside Dyna) to prevent compounding error. Another approach is to learn a trajectory-level dynamics model instead of a single-step model, e.g., using diffusion to train $p(s_{t+1:t+H}|s_t, a_{t:t+H-1})$, and using this inside an MPC loop.
+The **MBPO** method uses short rollouts (inside Dyna) to prevent compounding error. Another approach is to learn a trajectory-level dynamics model instead of a single-step model, e.g., using diffusion to train $p(s_{t+1:t+H}\mid s_t, a_{t:t+H-1})$, and using this inside an MPC loop.
 
 If the model is able to predict a reliable distribution over future states, then we can leverage this uncertainty estimate to compute an estimate of the expected reward. For example, **PILCO** uses Gaussian processes as the world model and analytically derives the expected reward over trajectories as a function of policy parameters. One can also combine the MPO algorithm for continuous control with **uncertainty sets** on the dynamics to learn a policy that optimizes for a worst-case expected return objective.
 
@@ -2516,15 +3188,15 @@ If the model is able to predict a reliable distribution over future states, then
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Mismatched No More)</span></p>
 
-The **Mismatched No More** (MNM) method solves the objective mismatch problem. They define an optimality variable $p(O=1|\tau) = R(\tau) = \sum_{t=1}^{\infty} \gamma^t R(s_t, a_t)$. This gives rise to the following variational lower bound on the log probability of optimality:
+The **Mismatched No More** (MNM) method solves the objective mismatch problem. They define an optimality variable $p(O=1\mid \tau) = R(\tau) = \sum_{t=1}^{\infty} \gamma^t R(s_t, a_t)$. This gives rise to the following variational lower bound on the log probability of optimality:
 
 $$
 \log p(O=1) \ge \mathbb{E}_{Q(\tau)} [\log R(\tau) + \log P(\tau) - \log Q(\tau)]
 $$
 
-where $P(\tau)$ is the distribution over trajectories induced by policy applied to the true world model, $P(\tau) = \mu(s_0) \prod_{t=0}^{\infty} M(s_{t+1}|s_t, a_t) \pi(a_t|s_t)$, and $Q(\tau)$ is the distribution over trajectories using the estimated world model, $Q(\tau) = \mu(s_0) \prod_{t=0}^{\infty} \hat{M}(s_{t+1}|s_t, a_t) \pi(a_t|s_t)$. They then maximize this bound w.r.t. $\pi$ and $\hat{M}$.
+where $P(\tau)$ is the distribution over trajectories induced by policy applied to the true world model, $P(\tau) = \mu(s_0) \prod_{t=0}^{\infty} M(s_{t+1}\mid s_t, a_t) \pi(a_t\mid s_t)$, and $Q(\tau)$ is the distribution over trajectories using the estimated world model, $Q(\tau) = \mu(s_0) \prod_{t=0}^{\infty} \hat{M}(s_{t+1}\mid s_t, a_t) \pi(a_t\mid s_t)$. They then maximize this bound w.r.t. $\pi$ and $\hat{M}$.
 
-The method is extended in **Aligned Latent Models** by learning a latent encoder $\hat{E}(\boldsymbol{z}_t|\boldsymbol{o}_t)$ as well as latent dynamics $\hat{M}(\boldsymbol{z}_{t+1}|\boldsymbol{z}_t, a_t)$, similar to other self-predictive methods.
+The method is extended in **Aligned Latent Models** by learning a latent encoder $\hat{E}(\boldsymbol{z}\_t\mid\boldsymbol{o}\_t)$ as well as latent dynamics $\hat{M}(\boldsymbol{z}\_{t+1}\mid\boldsymbol{z}\_t, a_t)$, similar to other self-predictive methods.
 
 </div>
 
@@ -2603,7 +3275,7 @@ $$
 M^\pi(s, \bar{s}) \leftarrow M^\pi(s, \bar{s}) + \eta \underbrace{\left(\mathbb{I}(s' = \bar{s}) + \gamma M^\pi(s', \bar{s}) - M^\pi(s, \bar{s})\right)}_{\delta}
 $$
 
-where $s'$ is the next state sampled from $T(s'|s, a)$. Compare this to the value-function TD update: $V^\pi(s) \leftarrow V^\pi(s) + \eta \underbrace{(R(s') + \gamma V^\pi(s') - V^\pi(s))}_{\delta}$.
+where $s'$ is the next state sampled from $T(s'\mids, a)$. Compare this to the value-function TD update: $V^\pi(s) \leftarrow V^\pi(s) + \eta \underbrace{(R(s') + \gamma V^\pi(s') - V^\pi(s))}\_{\delta}$.
 
 With an SR, we can easily compute the value function for any reward function (given a fixed policy):
 
@@ -2629,7 +3301,7 @@ $$
 M^\pi(s, a, \bar{s}) \leftarrow M^\pi(s, a, \bar{s}) + \eta \underbrace{\left(\mathbb{I}(s' = \bar{s}) + \gamma M^\pi(s', a', \bar{s}) - M^\pi(s, a, \bar{s})\right)}_{\delta}
 $$
 
-where $s'$ is the next state sampled from $T(s'|s, a)$ and $a'$ is the next action sampled from $\pi(s')$. Compare this to the (on-policy) SARSA update: $Q^\pi(s,a) \leftarrow Q^\pi(s,a) + \eta \underbrace{(R(s') + \gamma Q^\pi(s', a') - Q^\pi(s,a))}_{\delta}$.
+where $s'$ is the next state sampled from $T(s'\mids, a)$ and $a'$ is the next action sampled from $\pi(s')$. Compare this to the (on-policy) SARSA update: $Q^\pi(s,a) \leftarrow Q^\pi(s,a) + \eta \underbrace{(R(s') + \gamma Q^\pi(s', a') - Q^\pi(s,a))}\_{\delta}$.
 
 From an SR, we can compute the state-action value function for any reward function:
 
@@ -2705,13 +3377,13 @@ This allows us to define multiple $Q$ functions (and hence policies) just by cha
 
 So far, we have discussed how to compute the value function for a new reward function but using the SFs from an existing known policy. **Generalized Policy Improvement** or **GPI** discusses how to create a new policy that is better than an existing set of policies.
 
-Suppose we have learned a set of $N$ (potentially optimal) policies $\pi_i$ and their corresponding SFs $\boldsymbol{\psi}^{\pi_i}$ for maximizing rewards defined by $\boldsymbol{w}_i$. When presented with a new task $\boldsymbol{w}_{\text{new}}$, we can compute a new policy using GPI as follows:
+Suppose we have learned a set of $N$ (potentially optimal) policies $\pi_i$ and their corresponding SFs $\boldsymbol{\psi}^{\pi_i}$ for maximizing rewards defined by $\boldsymbol{w}\_i$. When presented with a new task $\boldsymbol{w}\_{\text{new}}$, we can compute a new policy using GPI as follows:
 
 $$
 a^*(s; \boldsymbol{w}_{\text{new}}) = \text{argmax}_a \max_i Q^{\pi_i}(s, a, \boldsymbol{w}_{\text{new}}) = \text{argmax}_a \max_i \boldsymbol{\psi}^{\pi_i}(s, a)^\top \boldsymbol{w}_{\text{new}}
 $$
 
-If $\boldsymbol{w}_{\text{new}}$ is in the span of the training tasks (i.e., there exist weights $\alpha_i$ such that $\boldsymbol{w}_{\text{new}} = \sum_i \alpha_i \boldsymbol{w}_i$), then the GPI theorem states that $\pi(a|s) = \mathbb{I}(a = a^*(s, \boldsymbol{w}_{\text{new}}))$ will perform at least as well as any of the existing policies.
+If $\boldsymbol{w}\_{\text{new}}$ is in the span of the training tasks (i.e., there exist weights $\alpha_i$ such that $\boldsymbol{w}\_{\text{new}} = \sum_i \alpha_i \boldsymbol{w}\_i$), then the GPI theorem states that $\pi(a\mids) = \mathbb{I}(a = a^\ast(s, \boldsymbol{w}\_{\text{new}}))$ will perform at least as well as any of the existing policies.
 
 </div>
 
@@ -2719,13 +3391,13 @@ Note that GPI is a model-free approach to computing a new policy, based on an ex
 
 #### Option Keyboard
 
-One limitation of GPI is that it requires that the reward function, and the resulting policy, be defined in terms of a fixed weight vector $\boldsymbol{w}_{\text{new}}$, where the preference over features is constant over time. However, for some tasks we might want to initially avoid a feature or state and then later move towards it. To solve this, the **option keyboard** was introduced, in which the weight vector for a task can be computed dynamically in a state-dependent way, using $\boldsymbol{w}_s = g(s, \boldsymbol{w}_{\text{new}})$. Actions can then be chosen as:
+One limitation of GPI is that it requires that the reward function, and the resulting policy, be defined in terms of a fixed weight vector $\boldsymbol{w}\_{\text{new}}$, where the preference over features is constant over time. However, for some tasks we might want to initially avoid a feature or state and then later move towards it. To solve this, the **option keyboard** was introduced, in which the weight vector for a task can be computed dynamically in a state-dependent way, using $\boldsymbol{w}\_s = g(s, \boldsymbol{w}\_{\text{new}})$. Actions can then be chosen as:
 
 $$
 a^*(s; \boldsymbol{w}_{\text{new}}) = \text{argmax}_a \max_i \boldsymbol{\psi}^{\pi_i}(s, a)^\top \boldsymbol{w}_s
 $$
 
-Thus $\boldsymbol{w}_s$ induces a set of policies that are active for a period of time, similar to playing a chord on a piano.
+Thus $\boldsymbol{w}\_s$ induces a set of policies that are active for a period of time, similar to playing a chord on a piano.
 
 #### Learning SFs
 
@@ -2735,7 +3407,7 @@ $$
 \mathcal{L}_r = \|r - \boldsymbol{\phi}_\theta(s)^\top \boldsymbol{w}\|_2^2
 $$
 
-Once the cumulant function is known, we have to learn the corresponding SF. The standard approach learns a different SF for every policy, which is limiting. **Universal Successor Feature Approximators** (USFAs) take as input a policy encoding $\boldsymbol{z}_w$, representing a policy $\pi_w$ (typically we set $\boldsymbol{z}_w = \boldsymbol{w}$):
+Once the cumulant function is known, we have to learn the corresponding SF. The standard approach learns a different SF for every policy, which is limiting. **Universal Successor Feature Approximators** (USFAs) take as input a policy encoding $\boldsymbol{z}\_w$, representing a policy $\pi_w$ (typically we set $\boldsymbol{z}\_w = \boldsymbol{w}$):
 
 $$
 \boldsymbol{\psi}^{\pi_w}(s, a) = \boldsymbol{\psi}_\theta(s, a, \boldsymbol{z}_w)
@@ -2747,7 +3419,7 @@ $$
 a^*(s; \boldsymbol{w}_{\text{new}}) = \text{argmax}_a \max_{\boldsymbol{z}_w} \boldsymbol{\psi}_\theta(s, a, \boldsymbol{z}_w)^\top \boldsymbol{w}_{\text{new}}
 $$
 
-so we replace the discrete over a finite number of policies, $\max_i$, with a continuous optimization problem $\max_{\boldsymbol{z}_w}$, to be solved per state.
+so we replace the discrete over a finite number of policies, $\max_i$, with a continuous optimization problem $\max_{\boldsymbol{z}\_w}$, to be solved per state.
 
 If we want to learn the policies and SFs at the same time, we can optimize the following losses in parallel:
 
@@ -2759,7 +3431,7 @@ $$
 \mathcal{L}_\psi = \|\boldsymbol{\psi}_\theta(s, a, \boldsymbol{z}_w) - \boldsymbol{y}_\psi\|, \quad \boldsymbol{y}_\psi = \boldsymbol{\phi}(s') + \gamma \boldsymbol{\psi}_\theta(s', a^*, \boldsymbol{z}_w)
 $$
 
-where $a^* = \text{argmax}_{a'} \boldsymbol{\psi}_\theta(s', a', \boldsymbol{z}_w)^\top \boldsymbol{w}$. The **Successor Features Keyboard** can learn the policy, the SFs, and the task encoding $\boldsymbol{z}_w$ all simultaneously.
+where $a^\ast = \text{argmax}\_{a'} \boldsymbol{\psi}\_\theta(s', a', \boldsymbol{z}\_w)^\top \boldsymbol{w}$. The **Successor Features Keyboard** can learn the policy, the SFs, and the task encoding $\boldsymbol{z}\_w$ all simultaneously.
 
 #### Choosing the Tasks
 
@@ -2772,15 +3444,15 @@ A key advantage of SFs is that they provide a way to compute a value function an
 
 The **successor model** (also called a $\gamma$-model, or **geometric horizon model**) is a probabilistic extension of SR. Rather than just working with expectations, we can simulate future state trajectories by sampling. This allows us to generalize SR to work with continuous states and actions.
 
-The basic idea is to define the cumulant as the $k$-step conditional distribution $C(s_{k+1}) = P(s_{k+1} = \bar{s} | s_0 = s, \pi)$. (Compare this to the SR cumulant, which is $C(s_{k+1}) = \mathbb{I}(s_{k+1} = \bar{s})$.) The **successor measure** (SM) is then defined as
+The basic idea is to define the cumulant as the $k$-step conditional distribution $C(s_{k+1}) = P(s_{k+1} = \bar{s} \mid s_0 = s, \pi)$. (Compare this to the SR cumulant, which is $C(s_{k+1}) = \mathbb{I}(s_{k+1} = \bar{s})$.) The **successor measure** (SM) is then defined as
 
 $$
 \boldsymbol{\mu}^\pi(\bar{s}|s) = (1-\gamma) \sum_{t=0}^{\infty} \gamma^t P(s_{t+1} = \bar{s} | s_0 = s)
 $$
 
-where the $1-\gamma$ term ensures that $\boldsymbol{\mu}^\pi$ integrates to 1. (Recall that $\sum_{t=0}^{\infty} \gamma^t = \frac{1}{1-\gamma}$ for $\gamma < 1$.) In the tabular setting, the SM is just the normalized SR, since $\boldsymbol{\mu}^\pi(\bar{s}|s) = (1-\gamma) M^\pi(s, \bar{s})$.
+where the $1-\gamma$ term ensures that $\boldsymbol{\mu}^\pi$ integrates to 1. (Recall that $\sum_{t=0}^{\infty} \gamma^t = \frac{1}{1-\gamma}$ for $\gamma < 1$.) In the tabular setting, the SM is just the normalized SR, since $\boldsymbol{\mu}^\pi(\bar{s}\mids) = (1-\gamma) M^\pi(s, \bar{s})$.
 
-$\boldsymbol{\mu}^\pi(\bar{s}|s)$ tells us the probability that $\bar{s}$ can be reached from $s$ within a horizon determined by $\gamma$ when following $\pi$, even though we don't know exactly when we will reach $\bar{s}$.
+$\boldsymbol{\mu}^\pi(\bar{s}\mids)$ tells us the probability that $\bar{s}$ can be reached from $s$ within a horizon determined by $\gamma$ when following $\pi$, even though we don't know exactly when we will reach $\bar{s}$.
 
 </div>
 
@@ -2821,19 +3493,19 @@ $$
 
 #### Learning SMs
 
-Although we can learn SMs using the TD update, this requires evaluating $T(s'|s, a)$ to compute the target update $\delta$, and this one-step transition model is typically unknown. Instead, since $\boldsymbol{\mu}^\pi$ is a conditional density model, we can optimize the cross-entropy TD loss:
+Although we can learn SMs using the TD update, this requires evaluating $T(s'\mids, a)$ to compute the target update $\delta$, and this one-step transition model is typically unknown. Instead, since $\boldsymbol{\mu}^\pi$ is a conditional density model, we can optimize the cross-entropy TD loss:
 
 $$
 \mathcal{L}_\mu = \mathbb{E}_{(s,a) \sim p(s,a), \bar{s} \sim (T^\pi \boldsymbol{\mu}^\pi)(\cdot|s,a)} \left[\log \boldsymbol{\mu}_\theta(\bar{s}|s, a)\right]
 $$
 
-where $(T^\pi \boldsymbol{\mu}^\pi)(\cdot|s, a)$ is the Bellman operator applied to $\boldsymbol{\mu}^\pi$ and then evaluated at $(s, a)$:
+where $(T^\pi \boldsymbol{\mu}^\pi)(\cdot\mids, a)$ is the Bellman operator applied to $\boldsymbol{\mu}^\pi$ and then evaluated at $(s, a)$:
 
 $$
 (T^\pi \boldsymbol{\mu}^\pi)(\bar{s}|s, a) = (1-\gamma) T(s'|s, a) + \gamma \sum_{s'} T(\bar{s}|s, a) \sum_{a'} \pi(a'|s') \boldsymbol{\mu}^\pi(\bar{s}|s', a')
 $$
 
-We can sample from this as follows: first sample $s' \sim T(s'|s, a)$ from the environment (or an offline replay buffer), and then with probability $1-\gamma$ set $\bar{s} = s'$ and terminate. Otherwise sample $a' \sim \pi(a'|s')$ and then create a bootstrap sample from the SM using $\bar{s} \sim \boldsymbol{\mu}^\pi(\bar{s}|s', a')$.
+We can sample from this as follows: first sample $s' \sim T(s'\mids, a)$ from the environment (or an offline replay buffer), and then with probability $1-\gamma$ set $\bar{s} = s'$ and terminate. Otherwise sample $a' \sim \pi(a'\mids')$ and then create a bootstrap sample from the SM using $\bar{s} \sim \boldsymbol{\mu}^\pi(\bar{s}\mids', a')$.
 
 There are many possible density models we can use for $\boldsymbol{\mu}^\pi$: VAEs, autoregressive transformers applied to discrete latent tokens (learned using VQ-VAE or a non-reconstructive self-supervised loss, called **Video Occupancy Models**), and diffusion (flow matching).
 
@@ -2846,7 +3518,7 @@ An alternative approach to learning SMs that avoids fitting a normalized density
 
 **Geometric policy composition** (GPC) is a way to learn a new policy by sequencing together a set of $N$ policies, as opposed to taking $N$ primitive actions in a row. This can be thought of as a **jumpy model**, since it predicts multiple steps into the future, instead of one step at a time.
 
-In more detail, in GPC, the agent picks a sequence of $n$ policies $\pi_i$ for $i = 1 : n$, and then samples states according to their corresponding SMs: starting with $(s_0, a_0)$, we sample $s_1 \sim \boldsymbol{\mu}_{\gamma'}^{\pi_1}(\cdot|s_0, a_0)$, then $a_1 \sim \pi_1(\cdot|s_1)$, then $s_2 \sim \boldsymbol{\mu}_{\gamma'}^{\pi_2}(\cdot|s_1, a_1)$, etc. Finally we sample $s_n \sim \boldsymbol{\mu}_{\gamma'}^{\pi_n}(\cdot|s_{n-1}, a_{n-1})$, where $\gamma' > \gamma$ represents a longer horizon SM. The reward estimates computed along this sampled path can then be combined to compute the value of each candidate policy sequence.
+In more detail, in GPC, the agent picks a sequence of $n$ policies $\pi_i$ for $i = 1 : n$, and then samples states according to their corresponding SMs: starting with $(s_0, a_0)$, we sample $s_1 \sim \boldsymbol{\mu}\_{\gamma'}^{\pi_1}(\cdot\mids_0, a_0)$, then $a_1 \sim \pi_1(\cdot\mids_1)$, then $s_2 \sim \boldsymbol{\mu}\_{\gamma'}^{\pi_2}(\cdot\mids_1, a_1)$, etc. Finally we sample $s_n \sim \boldsymbol{\mu}\_{\gamma'}^{\pi_n}(\cdot\mids_{n-1}, a_{n-1})$, where $\gamma' > \gamma$ represents a longer horizon SM. The reward estimates computed along this sampled path can then be combined to compute the value of each candidate policy sequence.
 
 </div>
 
@@ -2884,7 +3556,7 @@ Multi-agent environments are often called **games**, even if they represent "rea
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Normal-Form Game)</span></p>
 
-A **normal-form game** defines a single interaction between $n \ge 2$ agents. We have a finite set of agents $\mathcal{I} = \lbrace 1, \ldots, n \rbrace$. For each agent $i \in \mathcal{I}$ we have a finite set of actions $\mathcal{A}_i$ and a reward function $\mathcal{R}_i : \mathcal{A}_{1:n} \to \mathbb{R}$, where $\mathcal{A}_{1:n} = \mathcal{A}_1 \times \cdots \times \mathcal{A}_n$. Each agent samples an action $a_i \in \mathcal{A}_i$ with probability $\pi_i(a_i)$, then the resulting **joint action** $\boldsymbol{a} = (a_1, \ldots, a_n)$ is taken and the reward $\boldsymbol{r} = (r_1, \ldots, r_m)$ is given to each player, where $r_i = \mathcal{R}_i(\boldsymbol{a})$.
+A **normal-form game** defines a single interaction between $n \ge 2$ agents. We have a finite set of agents $\mathcal{I} = \lbrace 1, \ldots, n \rbrace$. For each agent $i \in \mathcal{I}$ we have a finite set of actions $\mathcal{A}\_i$ and a reward function $\mathcal{R}\_i : \mathcal{A}\_{1:n} \to \mathbb{R}$, where $\mathcal{A}\_{1:n} = \mathcal{A}\_1 \times \cdots \times \mathcal{A}\_n$. Each agent samples an action $a_i \in \mathcal{A}\_i$ with probability $\pi_i(a_i)$, then the resulting **joint action** $\boldsymbol{a} = (a_1, \ldots, a_n)$ is taken and the reward $\boldsymbol{r} = (r_1, \ldots, r_m)$ is given to each player, where $r_i = \mathcal{R}\_i(\boldsymbol{a})$.
 
 </div>
 
@@ -2893,8 +3565,8 @@ A **normal-form game** defines a single interaction between $n \ge 2$ agents. We
 
 Games can be classified based on the type of rewards they contain:
 
-* In **zero-sum games**, we have $\sum_i \mathcal{R}_i(\boldsymbol{a}) = 0$ for all $\boldsymbol{a}$. (For a two-player zero-sum game, **2p0s**, we must have $R_1(\boldsymbol{a}) = -R_2(\boldsymbol{a})$.)
-* In **common-payoff games** (aka common-reward games), we have $\mathcal{R}_i(\boldsymbol{a}) = \mathcal{R}_j(\boldsymbol{a})$ for all $\boldsymbol{a}$.
+* In **zero-sum games**, we have $\sum_i \mathcal{R}\_i(\boldsymbol{a}) = 0$ for all $\boldsymbol{a}$. (For a two-player zero-sum game, **2p0s**, we must have $R_1(\boldsymbol{a}) = -R_2(\boldsymbol{a})$.)
+* In **common-payoff games** (aka common-reward games), we have $\mathcal{R}\_i(\boldsymbol{a}) = \mathcal{R}\_j(\boldsymbol{a})$ for all $\boldsymbol{a}$.
 * In **general-sum games**, there are no restrictions on the rewards.
 
 In zero-sum games, agents must compete. In common-reward games, agents generally must cooperate (although the **credit assignment** problem --- disentangling each agent's contribution --- can be challenging). In general-sum games, there can be a mix of cooperation and competition.
@@ -2907,18 +3579,18 @@ Normal-form games with 2 agents are called **matrix games** because they can be 
 * **Battle of the sexes**: a **coordination game** where both players prefer to do the same activity but have different individual preferences.
 * **Prisoner's dilemma**: a general-sum game where both players have an incentive to defect, even though they would be better off if they both cooperated.
 
-A **repeated matrix game** is the multi-agent analog of a multi-armed bandit problem. The policy has the form $\pi_i(a_t^i|\boldsymbol{h}_t)$, where $\boldsymbol{h}_t = (\boldsymbol{a}_0, \ldots, \boldsymbol{a}_{t-1})$ is the history of joint-actions. For example, in the **tit-for-tat** strategy in the prisoner's dilemma, the policy for agent $i$ at step $t$ is to do the same action that agent $-i$ did at step $t-1$, which can lead to the evolution of cooperative behavior, even in selfish agents.
+A **repeated matrix game** is the multi-agent analog of a multi-armed bandit problem. The policy has the form $\pi_i(a_t^i\mid\boldsymbol{h}\_t)$, where $\boldsymbol{h}\_t = (\boldsymbol{a}\_0, \ldots, \boldsymbol{a}\_{t-1})$ is the history of joint-actions. For example, in the **tit-for-tat** strategy in the prisoner's dilemma, the policy for agent $i$ at step $t$ is to do the same action that agent $-i$ did at step $t-1$, which can lead to the evolution of cooperative behavior, even in selfish agents.
 
 ### Stochastic Games
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Stochastic Game)</span></p>
 
-A **stochastic game** is a multi-agent version of an MDP. It is defined by a finite set of agents $\mathcal{I} = \lbrace 1, \ldots, n \rbrace$; a finite set of states $\mathcal{S}$, of which a subset $\overline{\mathcal{S}} \subset \mathcal{S}$ are terminal; a finite action set $\mathcal{A}_i$ for each agent $i \in \mathcal{I}$; a reward function $\mathcal{R}_i(s, a, s')$ for each agent $i$; a state transition distribution $\mathcal{T}(s_{t+1}|s_{1:t}, \boldsymbol{a}_t) \in [0, 1]$; and an initial state distribution $\mu(s_0) \in [0, 1]$.
+A **stochastic game** is a multi-agent version of an MDP. It is defined by a finite set of agents $\mathcal{I} = \lbrace 1, \ldots, n \rbrace$; a finite set of states $\mathcal{S}$, of which a subset $\overline{\mathcal{S}} \subset \mathcal{S}$ are terminal; a finite action set $\mathcal{A}\_i$ for each agent $i \in \mathcal{I}$; a reward function $\mathcal{R}\_i(s, a, s')$ for each agent $i$; a state transition distribution $\mathcal{T}(s_{t+1}\mids_{1:t}, \boldsymbol{a}\_t) \in [0, 1]$; and an initial state distribution $\mu(s_0) \in [0, 1]$.
 
-Typically the transition distribution is Markovian, i.e., $\mathcal{T}(s_{t+1}|s_{1:t}, \boldsymbol{a}_t) = \mathcal{T}(s_{t+1}|s_t, \boldsymbol{a}_t)$, in which case this is called a **Markov game**.
+Typically the transition distribution is Markovian, i.e., $\mathcal{T}(s_{t+1}\lvert s_{1:t}, \boldsymbol{a}\_t) = \mathcal{T}(s_{t+1} \rverts_t, \boldsymbol{a}\_t)$, in which case this is called a **Markov game**.
 
-The policy for each agent has the form $\pi_i(a_t^i|\boldsymbol{h}_t)$ where $\boldsymbol{h}_t = (s_0, \boldsymbol{a}_1, \ldots, s_t)$ is the state-action history. The overall **joint policy** is denoted by $\boldsymbol{\pi} = (\pi_1, \ldots, \pi_n)$; if the agents make their decisions independently:
+The policy for each agent has the form $\pi_i(a_t^i\mid\boldsymbol{h}\_t)$ where $\boldsymbol{h}\_t = (s_0, \boldsymbol{a}\_1, \ldots, s_t)$ is the state-action history. The overall **joint policy** is denoted by $\boldsymbol{\pi} = (\pi_1, \ldots, \pi_n)$; if the agents make their decisions independently:
 
 $$
 \pi(\boldsymbol{a}_t|\boldsymbol{h}_t) = \prod_i \pi_i(a_t^i|\boldsymbol{h}_t)
@@ -2932,14 +3604,14 @@ $$
 \mathcal{T}_i(s_{t+1}|s_t, a_t^i) = \sum_{\boldsymbol{a}_t^{-i}} \mathcal{T}(s_{t+1}|s_t, (a_t^i, \boldsymbol{a}_t^{-i})) \prod_{j \ne i} \pi_j(a_t^j|s_t)
 $$
 
-Thus $\mathcal{T}_i$ depends on the policies of the other players, which are often changing, which makes these local/agent-centric transition matrices non-stationary.
+Thus $\mathcal{T}\_i$ depends on the policies of the other players, which are often changing, which makes these local/agent-centric transition matrices non-stationary.
 
 ### Partially Observed Stochastic Games (POSG)
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(POSG)</span></p>
 
-A **Partially Observed Stochastic Game** or **POSG** is a multi-agent version of a POMDP. We augment the stochastic game with the observation distributions $\mathcal{O}_i(o_{i+1}^i|s_{t+1}, \boldsymbol{a}_t) \in [0, 1]$ for each agent $i$. Let $\boldsymbol{o}_t = (o_t^1, \ldots, o_t^n)$ be the **joint observation** generated by the product distribution $\mathcal{O}_{1:n}(\boldsymbol{o}_t|s_t, \boldsymbol{a}_{t-1})$. The policy for each agent has the form $\pi_i(a_t^i|\boldsymbol{h}_t^i)$ where $\boldsymbol{h}_t^i = (o_0^i, a_0^i, o_1^i, a_1^i, \ldots, o_t^i)$ is the **action observation history** for agent $i$.
+A **Partially Observed Stochastic Game** or **POSG** is a multi-agent version of a POMDP. We augment the stochastic game with the observation distributions $\mathcal{O}\_i(o_{i+1}^i\mids_{t+1}, \boldsymbol{a}\_t) \in [0, 1]$ for each agent $i$. Let $\boldsymbol{o}\_t = (o_t^1, \ldots, o_t^n)$ be the **joint observation** generated by the product distribution $\mathcal{O}\_{1:n}(\boldsymbol{o}\_t\mids_t, \boldsymbol{a}\_{t-1})$. The policy for each agent has the form $\pi_i(a_t^i\mid\boldsymbol{h}\_t^i)$ where $\boldsymbol{h}\_t^i = (o_0^i, a_0^i, o_1^i, a_1^i, \ldots, o_t^i)$ is the **action observation history** for agent $i$.
 
 A **Decentralized POMDP** or **Dec-POMDP** is a special case of a POSG where the reward function is the same for all agents (thus it can only capture cooperative behavior).
 
@@ -2951,7 +3623,7 @@ $$
 p_i(o_{t+1}^i|\boldsymbol{h}_t^i, a_t^i) = \sum_{s_{t+1}} \sum_{\boldsymbol{a}_t^{-i}} \hat{\mathcal{O}}_i(o_{t+1}^i|s_{t+1}, \boldsymbol{a}_t) p_i(\boldsymbol{a}_t^{-i}|\boldsymbol{h}_t^i) p_i(s_{t+1}|\boldsymbol{h}_t^i, \boldsymbol{a}_t)
 $$
 
-where $p_i(\boldsymbol{a}_t^{-i}|\boldsymbol{h}_t^i) = \prod_{j \ne i} \hat{\pi}_j^i(a_t^j|\boldsymbol{h}_t^i)$ uses $i$'s estimate of $j$'s policy, and $b_i(s_t|\boldsymbol{h}_t^i)$ is $i$'s **belief state** (posterior distribution over the underlying latent state). The agent can either learn a policy given this "collapsed" representation, or explicitly try to learn the true joint world model $\mathcal{T}$, local observation model $\mathcal{O}_i$, and other agent policies $\pi_j^i$, so it can reason about the other agents.
+where $p_i(\boldsymbol{a}\_t^{-i}\lvert \boldsymbol{h}\_t^i) = \prod_{j \ne i} \hat{\pi}\_j^i(a_t^j \rvert\boldsymbol{h}\_t^i)$ uses $i$'s estimate of $j$'s policy, and $b_i(s_t\mid\boldsymbol{h}\_t^i)$ is $i$'s **belief state** (posterior distribution over the underlying latent state). The agent can either learn a policy given this "collapsed" representation, or explicitly try to learn the true joint world model $\mathcal{T}$, local observation model $\mathcal{O}\_i$, and other agent policies $\pi_j^i$, so it can reason about the other agents.
 
 #### Factored Observation Stochastic Games (FOSG)
 
@@ -3006,7 +3678,7 @@ $$
 Q_i^\pi(\hat{\boldsymbol{h}}, \boldsymbol{a}) = \sum_{s'} \mathcal{T}(s'|s(\hat{\boldsymbol{h}}), \boldsymbol{a}) \left[\mathcal{R}_u(s(\hat{\boldsymbol{h}}), \boldsymbol{a}, s') + \gamma \sum_{\boldsymbol{o}'} \mathcal{O}_{1:n}(\boldsymbol{o}'|\boldsymbol{a}, s') V_i^\pi((\hat{\boldsymbol{h}}, \boldsymbol{a}, s', \boldsymbol{o}'))\right]
 $$
 
-The **best response policy** for agent $i$ is the one that maximizes the expected return for agent $i$ against a given set of policies for all the other agents, $\boldsymbol{\pi}_{-i} = (\pi_1, \ldots, \pi_{i-1}, \pi_{i+1}, \ldots, \pi_n)$:
+The **best response policy** for agent $i$ is the one that maximizes the expected return for agent $i$ against a given set of policies for all the other agents, $\boldsymbol{\pi}\_{-i} = (\pi_1, \ldots, \pi_{i-1}, \pi_{i+1}, \ldots, \pi_n)$:
 
 $$
 \text{BR}_i(\boldsymbol{\pi}_{-i}) = \text{argmax}_{\pi_i} U_i((\pi_i, \boldsymbol{\pi}_{-i}))
@@ -3086,7 +3758,7 @@ $$
 \text{NashConv}(\boldsymbol{\pi}) = \sum_i \delta_i(\boldsymbol{\pi})
 $$
 
-where $\delta_i(\boldsymbol{\pi}) = u_i(\pi_i^b, \boldsymbol{\pi}_{-i}) - u_i(\boldsymbol{\pi}), \; \pi_i^b \in \text{BR}(\boldsymbol{\pi}_{-i})$ is the amount of incentive that $i$ has to deviate to one of its best responses.
+where $\delta_i(\boldsymbol{\pi}) = u_i(\pi_i^b, \boldsymbol{\pi}\_{-i}) - u_i(\boldsymbol{\pi}), \; \pi_i^b \in \text{BR}(\boldsymbol{\pi}\_{-i})$ is the amount of incentive that $i$ has to deviate to one of its best responses.
 
 ### Entropy Regularized Nash Equilibria (Quantal Response Equilibria)
 
@@ -3110,7 +3782,7 @@ For two-player zero-sum NFGs, a policy is a QRE if each player's policy is soft 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Correlated Equilibrium)</span></p>
 
-A Nash equilibrium assumes the policies are independent, which can limit the expected returns. A **correlated equilibrium** (CE) allows for correlated policies. Specifically, we assume there is a central policy $\boldsymbol{\pi}_c$ that defines a distribution over joint actions. Agents can follow this recommended policy, or can choose to deviate from it by using an action modifier $\xi_i : \mathcal{A}_i \to \mathcal{A}_i$. We then say that $\boldsymbol{\pi}_c$ is a CE if for all $i$ and $\xi_i$ we have
+A Nash equilibrium assumes the policies are independent, which can limit the expected returns. A **correlated equilibrium** (CE) allows for correlated policies. Specifically, we assume there is a central policy $\boldsymbol{\pi}\_c$ that defines a distribution over joint actions. Agents can follow this recommended policy, or can choose to deviate from it by using an action modifier $\xi_i : \mathcal{A}\_i \to \mathcal{A}\_i$. We then say that $\boldsymbol{\pi}\_c$ is a CE if for all $i$ and $\xi_i$ we have
 
 $$
 \sum_{\boldsymbol{a}} \boldsymbol{\pi}_c(\boldsymbol{a}) \mathcal{R}_i((\xi_i(a^i), \boldsymbol{a}^{-i})) \le \sum_{\boldsymbol{a}} \boldsymbol{\pi}_c(\boldsymbol{a}) \mathcal{R}_i(\boldsymbol{a})
@@ -3130,7 +3802,7 @@ In the **Chicken game**, two agents are driving towards each other. Each can eit
 | **S** | 0, 0 | 7, 2 |
 | **L** | 2, 7 | 6, 6 |
 
-There are 3 uncorrelated NEs: $\boldsymbol{\pi} = (1, 0)$ with return $(7, 2)$; $\boldsymbol{\pi} = (0, 1)$ with return $(2, 7)$; and $\boldsymbol{\pi} = (\frac{1}{2}, \frac{1}{2})$ with return $(4.66, 4.66)$. There is 1 CE, namely $\boldsymbol{\pi}_c(L,L) = \boldsymbol{\pi}_c(S,L) = \boldsymbol{\pi}_c(L,S) = \frac{1}{3}$ and $\boldsymbol{\pi}_c(S,S) = 0$. The central policy has an expected return of $7 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} + 6 \cdot \frac{1}{3} = 5$, which is higher than the mixed NE of 4.66. This is because it avoids the deadly joint (S,S) action.
+There are 3 uncorrelated NEs: $\boldsymbol{\pi} = (1, 0)$ with return $(7, 2)$; $\boldsymbol{\pi} = (0, 1)$ with return $(2, 7)$; and $\boldsymbol{\pi} = (\frac{1}{2}, \frac{1}{2})$ with return $(4.66, 4.66)$. There is 1 CE, namely $\boldsymbol{\pi}\_c(L,L) = \boldsymbol{\pi}\_c(S,L) = \boldsymbol{\pi}\_c(L,S) = \frac{1}{3}$ and $\boldsymbol{\pi}\_c(S,S) = 0$. The central policy has an expected return of $7 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} + 6 \cdot \frac{1}{3} = 5$, which is higher than the mixed NE of 4.66. This is because it avoids the deadly joint (S,S) action.
 
 </div>
 
@@ -3164,7 +3836,7 @@ $$
 W(\boldsymbol{\pi}) = \sum_i U_i(\boldsymbol{\pi})
 $$
 
-A joint policy is welfare-optimal if $\boldsymbol{\pi} \in \text{argmax}_{\boldsymbol{\pi}'} W(\boldsymbol{\pi}')$. One can show that welfare optimality implies Pareto optimality, but not (in general) vice versa.
+A joint policy is welfare-optimal if $\boldsymbol{\pi} \in \text{argmax}\_{\boldsymbol{\pi}'} W(\boldsymbol{\pi}')$. One can show that welfare optimality implies Pareto optimality, but not (in general) vice versa.
 
 Similarly, we define **fairness optimality** as
 
@@ -3172,7 +3844,7 @@ $$
 F(\boldsymbol{\pi}) = \prod_i U_i(\boldsymbol{\pi})
 $$
 
-A joint policy is fairness-optimal if $\boldsymbol{\pi} \in \text{argmax}_{\boldsymbol{\pi}'} F(\boldsymbol{\pi}')$.
+A joint policy is fairness-optimal if $\boldsymbol{\pi} \in \text{argmax}\_{\boldsymbol{\pi}'} F(\boldsymbol{\pi}')$.
 
 </div>
 
@@ -3193,7 +3865,7 @@ $$
 \text{Regret}_i^E = \max_{\pi^i} \sum_{e=1}^{E} [U_i((\pi^i, \boldsymbol{\pi}_e^{-i})) - U_i(\boldsymbol{\pi}_e)]
 $$
 
-An agent is said to have **no-regret** if $\forall i. \; \lim_{E \to \infty} \frac{1}{E} \text{Regret}_i^E \le 0$.
+An agent is said to have **no-regret** if $\forall i. \; \lim_{E \to \infty} \frac{1}{E} \text{Regret}\_i^E \le 0$.
 
 </div>
 
@@ -3237,7 +3909,7 @@ The concept is useful for analysing **setter-solver** problems, which arise in u
 
 ### Centralized Learning
 
-The simplest way to solve a MARL problem is to reduce it to a single agent RL (SARL) problem. In **centralized learning**, we learn a single joint policy over the joint action space. This requires that we can transform the joint reward $\boldsymbol{r}_t = (r_t^1, \ldots, r_t^n)$ into a scalar $r_t$. This is easy to do in common-reward games, but for general-sum games, it may be impossible to define a single scalar reward across all agents, and the method may not scale well with the number of agents.
+The simplest way to solve a MARL problem is to reduce it to a single agent RL (SARL) problem. In **centralized learning**, we learn a single joint policy over the joint action space. This requires that we can transform the joint reward $\boldsymbol{r}\_t = (r_t^1, \ldots, r_t^n)$ into a scalar $r_t$. This is easy to do in common-reward games, but for general-sum games, it may be impossible to define a single scalar reward across all agents, and the method may not scale well with the number of agents.
 
 ### Independent Learning
 
@@ -3248,10 +3920,10 @@ In **independent learning**, each agent treats all other agents as part of the e
 
 **Independent Q Learning** (IQL) runs DQN for each agent independently:
 
-1. Initialize $n$ value networks with random parameters $\theta_1, \ldots, \theta_n$; initialize $n$ target networks $\bar{\theta}_i = \theta_i$; initialize a replay buffer $D_i$ for each agent.
-2. For each time step $t$: Collect observations $o_t^1, \ldots, o_t^n$; for each agent $i$, with probability $\epsilon$ choose random action, otherwise $a_t^i \in \text{argmax}_{a_i} Q(h_t^i, a_i; \theta_i)$.
+1. Initialize $n$ value networks with random parameters $\theta_1, \ldots, \theta_n$; initialize $n$ target networks $\bar{\theta}\_i = \theta_i$; initialize a replay buffer $D_i$ for each agent.
+2. For each time step $t$: Collect observations $o_t^1, \ldots, o_t^n$; for each agent $i$, with probability $\epsilon$ choose random action, otherwise $a_t^i \in \text{argmax}\_{a_i} Q(h_t^i, a_i; \theta_i)$.
 3. Apply joint actions; collect rewards $r_t^1, \ldots, r_t^n$ and next observations.
-4. For each agent $i$: store transition in $D_i$; sample mini-batch; compute targets $y_k^i = r_k^i + \gamma \max_{a_i'} Q(h_{k+1}^i, a_i'; \bar{\theta}_i)$ (or $y_k^i = r_k^i$ if terminal); minimize loss $\mathcal{L}(\theta_i) = \frac{1}{B}\sum_{k=1}^{B}(y_k^i - Q(h_k^i, a_k^i; \theta_i))^2$; periodically update $\bar{\theta}_i$.
+4. For each agent $i$: store transition in $D_i$; sample mini-batch; compute targets $y_k^i = r_k^i + \gamma \max_{a_i'} Q(h_{k+1}^i, a_i'; \bar{\theta}\_i)$ (or $y_k^i = r_k^i$ if terminal); minimize loss $\mathcal{L}(\theta_i) = \frac{1}{B}\sum_{k=1}^{B}(y_k^i - Q(h_k^i, a_k^i; \theta_i))^2$; periodically update $\bar{\theta}\_i$.
 
 </div>
 
@@ -3263,7 +3935,7 @@ $$
 \nabla_\theta J(\boldsymbol{\theta}_{1:n}) \propto \mathbb{E}_{\hat{\boldsymbol{h}} \sim p(\hat{\boldsymbol{h}}|\pi), a^i \sim \pi_i, \boldsymbol{a}^{-i} \sim \boldsymbol{\pi}^{-i}} \left[Q_i^\pi(\hat{\boldsymbol{h}}, (a^i, \boldsymbol{a}^{-i})) \nabla_{\theta_i} \log \pi(a_i | h_i = \sigma_i(\hat{\boldsymbol{h}}); \theta_i)\right]
 $$
 
-In practice, we use the advantage $\text{Adv}_i^\pi(\hat{\boldsymbol{h}}, \boldsymbol{a}) = Q_i^\pi(\hat{\boldsymbol{h}}, (a^i, \boldsymbol{a}^{-i})) - V_i^\pi(\hat{\boldsymbol{h}})$ as the baseline to reduce variance. This can be used inside a multi-agent version of A2C (known as **MAA2C**). An independent version of PPO is known as **IPPO**.
+In practice, we use the advantage $\text{Adv}\_i^\pi(\hat{\boldsymbol{h}}, \boldsymbol{a}) = Q_i^\pi(\hat{\boldsymbol{h}}, (a^i, \boldsymbol{a}^{-i})) - V_i^\pi(\hat{\boldsymbol{h}})$ as the baseline to reduce variance. This can be used inside a multi-agent version of A2C (known as **MAA2C**). An independent version of PPO is known as **IPPO**.
 
 #### Learning Dynamics of Multi-Agent Policy Gradient Methods
 
@@ -3301,7 +3973,7 @@ where $A^\ast(\boldsymbol{h}, c; \boldsymbol{\theta}) = \text{argmax}\_{\boldsym
 
 #### Value Decomposition Network (VDN)
 
-The **VDN** method assumes a linear decomposition: $Q(\boldsymbol{h}_t, c_t, \boldsymbol{a}_t; \boldsymbol{\theta}) = \sum_i Q(h_t^i, a_t^i; \boldsymbol{\theta}_i)$. This clearly satisfies IGM.
+The **VDN** method assumes a linear decomposition: $Q(\boldsymbol{h}\_t, c_t, \boldsymbol{a}\_t; \boldsymbol{\theta}) = \sum_i Q(h_t^i, a_t^i; \boldsymbol{\theta}\_i)$. This clearly satisfies IGM.
 
 #### QMIX
 
@@ -3410,7 +4082,7 @@ $$
 \pi_i^{k+1}(\boldsymbol{h}^i, a^i) = \begin{cases} \frac{R_i^{k,+}(\boldsymbol{h}^i, a^i)}{\sum_{a \in \mathcal{A}_i(\boldsymbol{h}^i)} R_i^{k,+}(\boldsymbol{h}^i, a)} & \text{if denominator is positive} \\ \frac{1}{|\mathcal{A}_i(\boldsymbol{h}^i)|} & \text{otherwise} \end{cases}
 $$
 
-where $x^{+} = \max(x, 0)$. This converges to an $\epsilon$-Nash equilibrium where $\epsilon = O(\max_i \|\mathcal{H}_i\| \sqrt{\|\mathcal{A}_i\|} / \sqrt{t})$.
+where $x^{+} = \max(x, 0)$. This converges to an $\epsilon$-Nash equilibrium where $\epsilon = O(\max_i \lVert \mathcal{H}\_i \rVert \sqrt{\lVert \mathcal{A}\_i \rVert} / \sqrt{t})$.
 
 </div>
 
@@ -3573,7 +4245,7 @@ Rather than just relying on prompting, we can explicitly train a model to think 
 
 This approach was recently demonstrated by the **DeepSeek-R1-Zero** system (released January 2025). They started with a strong LLM base model (**DeepSeek-V3-Base**), pre-trained on a large variety of data (including Chains of Thought). They then used a variant of PPO, known as **GRPO**, to do RLFT, using a set of math and coding benchmarks where the ground truth answer is known. The closed-source models **ChatGPT-o1** and **ChatGPT-o3** from OpenAI and the **Gemini 2.0 Flash Thinking** model from Google Deepmind are believed to follow similar principles.
 
-We can view training a thinking model as equivalent to maximizing the marginal likelihood $p(y|x) = \sum_z p(y, z|x)$, where $z$ are the latent thoughts.
+We can view training a thinking model as equivalent to maximizing the marginal likelihood $p(y\lvert x) = \sum_z p(y, z \rvertx)$, where $z$ are the latent thoughts.
 
 </div>
 
@@ -3601,7 +4273,7 @@ $$
 J(\boldsymbol{\theta}) = \mathbb{E}_{s \sim \mathcal{D}, \boldsymbol{a} \sim \pi_\theta(\boldsymbol{a}|s)} [R(s, \boldsymbol{a})]
 $$
 
-where $\pi_\theta(\boldsymbol{a}\mid s) = \prod_{t=1}^{T} \pi_\theta(a_t\mid \boldsymbol{a}\_{1:t-1}, s)$ and $T = \|\boldsymbol{a}\|$ is the length of the generated output (terminated by generating an $\langle\text{eos}\rangle$ token).
+where $\pi_\theta(\boldsymbol{a}\mid s) = \prod_{t=1}^{T} \pi_\theta(a_t\mid \boldsymbol{a}\_{1:t-1}, s)$ and $T = \lVert \boldsymbol{a} \rVert$ is the length of the generated output (terminated by generating an $\langle\text{eos}\rangle$ token).
 
 We can convert this into an MDP by defining the deterministic state transition $p(s_t\mid s_{t-1}, a_t) = \delta(s_t = \text{concat}(s_{t-1}, a_t))$, with initial distribution $\delta(s_0 = s)$. Thus the state $s_t$ is just the set of tokens from the initial prompt $s$ plus the generated tokens up until time $t$. The reward is sparse:
 
@@ -3738,7 +4410,7 @@ $$
 \pi^*(y|x) \propto e^{\frac{1}{\beta}R(x,y)} \pi_{\text{ref}}(y|x)
 $$
 
-This is the optimal solution to the KL-regularized RL problem: $\max_{\pi(\cdot|x)} \mathbb{E}_{\pi(y|x)} R(x,y) - \beta D_{\text{KL}}(\pi(\cdot|x) \| \pi_{\text{ref}}(\cdot|x))$.
+This is the optimal solution to the KL-regularized RL problem: $\max_{\pi(\cdot\lvert x)} \mathbb{E}\_{\pi(y \rvertx)} R(x,y) - \beta D_{\text{KL}}(\pi(\cdot\midx) \| \pi_{\text{ref}}(\cdot\midx))$.
 
 Note that if we set $\beta = 1$ and define $R(x,y) = \log(\pi_{\text{ref}}(y\mid x)^{\alpha-1})$, the optimal solution becomes the **tempered distribution** or **power distribution**: $\pi^\ast(y\mid x) = \pi_{\text{ref}}(y\mid x)^\alpha$, which can be flatter if $\alpha < 1$ or sharper if $\alpha > 1$.
 
@@ -3752,7 +4424,7 @@ The posterior sampling approach provides another kind of scaling law, known as *
 
 #### RLFT as Amortized Posterior Sampling
 
-The disadvantage of decision-time planning (online posterior sampling) is that it can be slow. Hence it can be desirable to "amortize" the cost by fine-tuning the base LLM so it matches the tilted posterior. We can do this by minimizing $J(\boldsymbol{\theta}) = D_{\text{KL}}(\pi_\theta \| \pi^*)$. This is equivalent to maximizing the ELBO:
+The disadvantage of decision-time planning (online posterior sampling) is that it can be slow. Hence it can be desirable to "amortize" the cost by fine-tuning the base LLM so it matches the tilted posterior. We can do this by minimizing $J(\boldsymbol{\theta}) = D_{\text{KL}}(\pi_\theta \| \pi^\ast)$. This is equivalent to maximizing the ELBO:
 
 $$
 J'(\boldsymbol{\theta}) = \mathbb{E}_{\pi_\theta(y)} [\log \Phi(y)] - D_{\text{KL}}(\pi_\theta(y) \| \pi_{\text{ref}}(y)) \propto \mathbb{E}_{\pi_\theta(y)} [R(y)] - \beta D_{\text{KL}}(\pi_\theta(y) \| \pi_{\text{ref}}(y))
@@ -3760,7 +4432,7 @@ $$
 
 which is exactly the KL-regularized RL objective used in DPO.
 
-The advantage of this probabilistic (distribution matching) perspective over the RL (reward maximizing) perspective is that it suggests natural alternatives, such as optimizing the inclusive or forwards KL, $D_{\text{KL}}(\pi^* \| \pi_\theta)$, which is "mode covering" rather than "mode seeking". This can prevent "catastrophic forgetting", in which the tuned policy loses diversity as well as some of its original capabilities. (This is similar to the advantage of **reweighted wake sleep** training compared to amortized VI training for latent variable models.)
+The advantage of this probabilistic (distribution matching) perspective over the RL (reward maximizing) perspective is that it suggests natural alternatives, such as optimizing the inclusive or forwards KL, $D_{\text{KL}}(\pi^\ast \| \pi_\theta)$, which is "mode covering" rather than "mode seeking". This can prevent "catastrophic forgetting", in which the tuned policy loses diversity as well as some of its original capabilities. (This is similar to the advantage of **reweighted wake sleep** training compared to amortized VI training for latent variable models.)
 
 Note, however, that these offline approaches to LLM finetuning have the disadvantage, compared to the online (decision-time) approach to inference, that they cannot easily handle hard constraints, since they only train policies that respect the constraints on average.
 
@@ -3837,7 +4509,7 @@ The **AlphaProof** system uses an LLM (called the "formalizer network") to trans
 
 #### VLMs for Parsing Images into Structured Data
 
-If the observations are images, it is traditional to use a CNN to process the input, so $\boldsymbol{s}_t \in \mathbb{R}^N$ would be an embedding vector. However, we could alternatively use a VLM to compute a structured representation, where $\boldsymbol{s}_t$ might be a set of tokens describing the scene at a high level, or potentially a JSON dictionary. We can then pass this symbolic representation to the policy function. We can also fine tune the VLM with RL.
+If the observations are images, it is traditional to use a CNN to process the input, so $\boldsymbol{s}\_t \in \mathbb{R}^N$ would be an embedding vector. However, we could alternatively use a VLM to compute a structured representation, where $\boldsymbol{s}\_t$ might be a set of tokens describing the scene at a high level, or potentially a JSON dictionary. We can then pass this symbolic representation to the policy function. We can also fine tune the VLM with RL.
 
 #### Active Control of LLM Sensor/Preprocessor
 
@@ -3860,11 +4532,11 @@ Several approaches exist for using LLMs to design rewards:
 
 ### LLMs for World Models
 
-We can use LLMs to create world models of the form $p(s'|s, a)$. We can either do this by treating the LLM itself as a WM (which is then updated using in-context learning), or asking the LLM to generate another artefact, such as some python code, that represents the WM. The advantage of the latter approach is that the resulting WM will be much faster to run, and may be more interpretable.
+We can use LLMs to create world models of the form $p(s'\mids, a)$. We can either do this by treating the LLM itself as a WM (which is then updated using in-context learning), or asking the LLM to generate another artefact, such as some python code, that represents the WM. The advantage of the latter approach is that the resulting WM will be much faster to run, and may be more interpretable.
 
 #### LLMs as World Models
 
-In principle it is possible to treat a pre-trained LLM (or other kind of foundation model) as an implicit model of the form $p(s'|s, a)$ by sampling responses to a suitable prompt, which encodes $s$ and $a$. This rarely works out of the box, but it can be made to work by suitable pre-training.
+In principle it is possible to treat a pre-trained LLM (or other kind of foundation model) as an implicit model of the form $p(s'\mids, a)$ by sampling responses to a suitable prompt, which encodes $s$ and $a$. This rarely works out of the box, but it can be made to work by suitable pre-training.
 
 For example, **UniSim** is an action-conditioned video diffusion model trained on large amounts of robotics and visual navigation data. Combined with a VLM reward model, this can be used for decision-time planning: sample a candidate action sequence, generate the corresponding images, feed them to the reward model, score the rollouts, and then pick the best action from this set. This is just standard model-predictive control in image space with a diffusion WM and a random shooting planning algorithm.
 
@@ -3873,10 +4545,10 @@ For example, **UniSim** is an action-conditioned video diffusion model trained o
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Code World Models)</span></p>
 
-Calling the LLM at every step to sample from the WM $p(s'|s, a)$ is very slow, so an alternative is to use the LLM to generate code that represents the world model. This is called a **code world model** (CWM).
+Calling the LLM at every step to sample from the WM $p(s'\mids, a)$ is very slow, so an alternative is to use the LLM to generate code that represents the world model. This is called a **code world model** (CWM).
 
-* **GIF-MCTS** (Generate, Improve and Fix with Monte Carlo Tree Search) learns CWMs given a natural language description of the task, and a fixed offline dataset of trajectories. The method maintains a representation of the posterior over the WM, $M = p(s'|s, a)$, as a tree of partial programs. At each step, a node is chosen from the tree using the UCT formula, then expanded in one of three ways: (G) the LLM generates code to solve the task; (I) the LLM improves the current code so it passes more unit tests; (F) the LLM fixes execution bugs in the current code.
-* **WorldCoder** learns a CWM in an online fashion by interacting with the environment and prompting an LLM. It maintains a sample-based representation of the posterior of $p(M|\mathcal{D}(1:t))$, where the weight for each sampled program $\rho$ is represented by a Beta distribution. At each step, it samples one of these models from this weighted posterior, and then uses it inside of a planning algorithm, similar to Thompson sampling. The agent then executes this in the environment, and passes back failed predictions to the LLM, asking it to improve the WM, or to fix bugs if it does not run. This refinement step is similar to the I and F steps of GIF-MCTS.
+* **GIF-MCTS** (Generate, Improve and Fix with Monte Carlo Tree Search) learns CWMs given a natural language description of the task, and a fixed offline dataset of trajectories. The method maintains a representation of the posterior over the WM, $M = p(s'\mids, a)$, as a tree of partial programs. At each step, a node is chosen from the tree using the UCT formula, then expanded in one of three ways: (G) the LLM generates code to solve the task; (I) the LLM improves the current code so it passes more unit tests; (F) the LLM fixes execution bugs in the current code.
+* **WorldCoder** learns a CWM in an online fashion by interacting with the environment and prompting an LLM. It maintains a sample-based representation of the posterior of $p(M\mid\mathcal{D}(1:t))$, where the weight for each sampled program $\rho$ is represented by a Beta distribution. At each step, it samples one of these models from this weighted posterior, and then uses it inside of a planning algorithm, similar to Thompson sampling. The agent then executes this in the environment, and passes back failed predictions to the LLM, asking it to improve the WM, or to fix bugs if it does not run. This refinement step is similar to the I and F steps of GIF-MCTS.
 * **FunSearch** (recently rebranded as **AlphaEvolve**) uses the LLM as a mutation operator inside of an evolutionary search algorithm, where the goal is to search over program space to find code that minimizes some objective, such as prediction errors on a given dataset.
 
 </div>
@@ -3891,9 +4563,9 @@ We can use LLMs for creating policies. We can either do this by treating the LLM
 
 #### LLMs for Generating Actions
 
-We can sample an action from a policy $\pi(a_t|o_t, h_{t-1})$ by using an LLM, where the input context contains the past data $(o_t, h_{t-1})$, and then output token is interpreted as the action. For this to work, the model must be pre-trained on state-action sequences using behavior cloning. See e.g., **Gato**, **RT-2**, and **RoboCat**.
+We can sample an action from a policy $\pi(a_t\mido_t, h_{t-1})$ by using an LLM, where the input context contains the past data $(o_t, h_{t-1})$, and then output token is interpreted as the action. For this to work, the model must be pre-trained on state-action sequences using behavior cloning. See e.g., **Gato**, **RT-2**, and **RoboCat**.
 
-An alternative approach is to enumerate all possible discrete actions, and use the LLM to score them in terms of their likelihoods given the goal, and their suitability given a learned value function applied to the current state: $\pi(a_t = k|g, p_t, o_t, h_t) \propto \text{LLM}(w_k|g_t, p_t, h_t) V_k(o_t)$, where $g_t$ is the current goal, $w_k$ is a text description of action $k$, and $V_k$ is the value function for action $k$. This is the approach used in the robotics **SayCan** approach, where the primitive actions $a_k$ are separately trained goal-conditioned policies.
+An alternative approach is to enumerate all possible discrete actions, and use the LLM to score them in terms of their likelihoods given the goal, and their suitability given a learned value function applied to the current state: $\pi(a_t = k\lvert g, p_t, o_t, h_t) \propto \text{LLM}(w_k \rvertg_t, p_t, h_t) V_k(o_t)$, where $g_t$ is the current goal, $w_k$ is a text description of action $k$, and $V_k$ is the value function for action $k$. This is the approach used in the robotics **SayCan** approach, where the primitive actions $a_k$ are separately trained goal-conditioned policies.
 
 Alternatively, we can use a general purpose pre-trained LLM, combined with a suitable prompt chosen by the human, to request the LLM to generate the right kind of output. This approach is used by the **ReAct** paper which works by prompting the LLM to do some Chain of Thought reasoning before acting. This approach can be extended by giving feedback on earlier actions, a technique called **Reflexion**. We can also prompt the LLM to first retrieve relevant past examples from an external "memory", rather than explicitly storing the entire history $h_t$ in the context (this is called **retrieval augmented generation** or **RAG**).
 
@@ -3920,7 +4592,7 @@ Large LLMs have shown a surprising property, known as **In-Context Learning** or
 <div class="math-callout math-callout--remark" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Remark</span><span class="math-callout__name">(Computational Complexity of Transformer Policies)</span></p>
 
-Most LLMs are based on transformers. These work well, but can be very slow, particularly for long trajectories and/or settings in which each observation takes many tokens to encode (e.g., an image). LLM policies are non-Markovian models of the form $p(a_t|o_{1:t}, a_{1:t-1})$ which need $O(t)$ time at step $t$ to generate an action, so generating a trajectory of length $T$ takes $O(T^2)$ time and $O(T)$ memory. This is problematic for **lifelong learning agents**, as well as problems with real-time constraints.
+Most LLMs are based on transformers. These work well, but can be very slow, particularly for long trajectories and/or settings in which each observation takes many tokens to encode (e.g., an image). LLM policies are non-Markovian models of the form $p(a_t\mido_{1:t}, a_{1:t-1})$ which need $O(t)$ time at step $t$ to generate an action, so generating a trajectory of length $T$ takes $O(T^2)$ time and $O(T)$ memory. This is problematic for **lifelong learning agents**, as well as problems with real-time constraints.
 
 **Time-to-first-token** (TTFT) latency --- the time to generate the first output token $y_1$ given $x_{1:N}$ (the **prefill phase**) --- grows as $O(N^2)$ due to the use of full cross attention on $x$.
 
@@ -3949,7 +4621,7 @@ In addition to the algorithmic issues discussed above, RL for LLMs (which are ve
 
 We can implement a multi-step LLM agent using policy gradient descent with the Tinker library, which performs asynchronous rollouts (sampling) and gradient-based computation in the cloud. At each step of policy updating, it rolls out some episodes, computes the advantages, converts the data into a format suitable for Tinker, computes the gradient of the loss, and then updates the parameters.
 
-Each step of a trajectory contains a sequence of $N_s$ tokens representing the state $\boldsymbol{s}_t^e$, and a sequence of $N_a$ tokens representing the action $\boldsymbol{a}_t^e$. The importance sampling loss is given by
+Each step of a trajectory contains a sequence of $N_s$ tokens representing the state $\boldsymbol{s}\_t^e$, and a sequence of $N_a$ tokens representing the action $\boldsymbol{a}\_t^e$. The importance sampling loss is given by
 
 $$
 \mathcal{L}(\boldsymbol{\theta}) \approx -\frac{1}{N} \sum_{n=1}^{N} \frac{\pi_\theta(\boldsymbol{a}^n|\boldsymbol{s}^n)}{q(\boldsymbol{a}^n|\boldsymbol{s}^n)} A(\boldsymbol{s}^n, \boldsymbol{a}^n)
@@ -4000,13 +4672,13 @@ In practice it is important to log various metrics to monitor the training proce
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Regret in MDPs)</span></p>
 
-In the MDP case, the **regret** of a policy $\pi$ is defined as the difference between its expected return and the expected return of an optimal policy $\pi^*$:
+In the MDP case, the **regret** of a policy $\pi$ is defined as the difference between its expected return and the expected return of an optimal policy $\pi^\ast$:
 
 $$
 \text{Regret}_T(\pi; M, \Pi) = \mathbb{E}_{s_t \sim M(\cdot|s_{t-1}, a_t), a_t \sim \pi(\cdot|s_t), a_t^* \sim \pi^*(\cdot|s_t)} \left[\sum_{t=1}^{T} (r_t(s_t, a_t^*) - r_t(s_t, a_t))\right]
 $$
 
-where $\pi^* = \text{argmax}_{\pi \in \Pi} \mathbb{E}_{s_0 \sim M} [V^\pi(s_0|M)]$ is the **best policy in hindsight**.
+where $\pi^\ast = \text{argmax}\_{\pi \in \Pi} \mathbb{E}\_{s_0 \sim M} [V^\pi(s_0\midM)]$ is the **best policy in hindsight**.
 
 Since the true MDP $M$ is usually unknown, we can define the **maximum regret** of a policy as its worst case regret w.r.t. some class of models $\mathcal{M}$:
 
@@ -4026,13 +4698,13 @@ In the case of a tabular episodic MDP, the optimal minimax regret is $O(\sqrt{HS
 
 ### Regret for Non-Stationary MDPs
 
-When the world can change, there may be no single optimal policy $\pi^*$ we can compare to. Instead, the **dynamic regret** (aka **adaptive regret**) compares to a sequence of optimal policies:
+When the world can change, there may be no single optimal policy $\pi^\ast$ we can compare to. Instead, the **dynamic regret** (aka **adaptive regret**) compares to a sequence of optimal policies:
 
 $$
 \text{DynamicRegret}_T(\pi_{1:T}|M_{1:T}, \Pi) = \mathbb{E}\left[\sum_{t=1}^{T} (r(s_t, a_t^*) - r(s_t, a_t))\right]
 $$
 
-where $\pi_t^* = \text{argmax}_{\pi \in \Pi} V^\pi(s_t|M_t)$ is the optimal policy at that moment in time. To compute bounds on the optimal dynamic regret, we need assumptions about how often and how much the world changes. This is called a **variational budget**:
+where $\pi_t^\ast = \text{argmax}\_{\pi \in \Pi} V^\pi(s_t\midM_t)$ is the optimal policy at that moment in time. To compute bounds on the optimal dynamic regret, we need assumptions about how often and how much the world changes. This is called a **variational budget**:
 
 $$
 \text{VB}_T = \sum_{t=2}^{T} \text{dist}(\mathcal{M}_t, \mathcal{M}_{t-1})
@@ -4082,7 +4754,7 @@ $$
 Q^*(b, a) = \frac{w_a + 1}{w_a + l_a + 2}(1 + V^*(\cdots, w_a + 1, l_a, \cdots)) + \left(1 - \frac{w_a + 1}{w_a + l_a + 2}\right) V^*(\cdots, w_a, l_a + 1, \cdots)
 $$
 
-In the finite horizon case with $h$ steps, we can compute $Q^*$ using dynamic programming. Unfortunately, the number of belief states is $O(h^{2n})$, rendering it intractable. For the infinite horizon discounted case, the problem can be solved efficiently using **Gittins indices**. However, these optimal methods do not extend to contextual bandits.
+In the finite horizon case with $h$ steps, we can compute $Q^\ast$ using dynamic programming. Unfortunately, the number of belief states is $O(h^{2n})$, rendering it intractable. For the infinite horizon discounted case, the problem can be solved efficiently using **Gittins indices**. However, these optimal methods do not extend to contextual bandits.
 
 #### MDP Case (Bayes-Adaptive MDPs)
 
@@ -4111,20 +4783,20 @@ Unfortunately, this is computationally intractable to solve exactly.
 
 </div>
 
-As a more computationally efficient alternative, it is also possible to maintain a posterior over policies or $Q$ functions instead of over world models: **bootstrap DQN** for a simple implementation, **epistemic neural networks** for an implementation based on epistemic neural networks, and **epistemic value estimation** for an implementation based on Laplace approximation. Another approach is to use successor features, where the $Q$ function is assumed to have the form $Q^\pi(s, a) = \boldsymbol{\psi}^\pi(s, a)^\top \boldsymbol{w}$. **Successor Uncertainties** models the uncertainty over $\boldsymbol{w}$ as a Gaussian, $p(\boldsymbol{w}) = \mathcal{N}(\boldsymbol{\mu}_w, \boldsymbol{\Sigma}_w)$.
+As a more computationally efficient alternative, it is also possible to maintain a posterior over policies or $Q$ functions instead of over world models: **bootstrap DQN** for a simple implementation, **epistemic neural networks** for an implementation based on epistemic neural networks, and **epistemic value estimation** for an implementation based on Laplace approximation. Another approach is to use successor features, where the $Q$ function is assumed to have the form $Q^\pi(s, a) = \boldsymbol{\psi}^\pi(s, a)^\top \boldsymbol{w}$. **Successor Uncertainties** models the uncertainty over $\boldsymbol{w}$ as a Gaussian, $p(\boldsymbol{w}) = \mathcal{N}(\boldsymbol{\mu}\_w, \boldsymbol{\Sigma}\_w)$.
 
 ### Thompson Sampling
 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Thompson Sampling)</span></p>
 
-**Thompson sampling** (also called **probability matching**) is a common approximation to the fully Bayesian approach. In the bandit case, we define the policy at step $t$ to be $\pi_t(a|s_t, \boldsymbol{h}_t) = p_a$, where $p_a$ is the probability that $a$ is the optimal action:
+**Thompson sampling** (also called **probability matching**) is a common approximation to the fully Bayesian approach. In the bandit case, we define the policy at step $t$ to be $\pi_t(a\mids_t, \boldsymbol{h}\_t) = p_a$, where $p_a$ is the probability that $a$ is the optimal action:
 
 $$
 p_a = \Pr(a = a_*|s_t, \boldsymbol{h}_t) = \int \mathbb{I}\left(a = \text{argmax}_{a'} R(s_t, a'; \boldsymbol{\theta})\right) p(\boldsymbol{\theta}|\boldsymbol{h}_t) d\boldsymbol{\theta}
 $$
 
-To implement this, we can use a single Monte Carlo sample $\tilde{\theta}_t \sim p(\boldsymbol{\theta}|\boldsymbol{h}_t)$. We then plug in this parameter into our reward model, and greedily pick the best action:
+To implement this, we can use a single Monte Carlo sample $\tilde{\theta}\_t \sim p(\boldsymbol{\theta}\mid\boldsymbol{h}\_t)$. We then plug in this parameter into our reward model, and greedily pick the best action:
 
 $$
 a_t = \text{argmax}_{a'} R(s_t, a'; \tilde{\boldsymbol{\theta}}_t)
@@ -4143,19 +4815,19 @@ In the (episodic) MDP case, we can generalize Thompson sampling by maintaining a
 
 The optimal solution to explore-exploit is intractable. An intuitively sensible approach is based on the principle known as **"optimism in the face of uncertainty"** (OFU). The principle selects actions greedily, but based on optimistic estimates of their rewards (this approach is optimal in the regret minimization sense, as proved in the **R-Max** paper).
 
-The most common implementation is based on the notion of an **upper confidence bound** or **UCB**. The agent maintains an optimistic reward function estimate $\tilde{R}_t$, so that $\tilde{R}_t(s_t, a) \ge R(s_t, a)$ for all $a$ with high probability, and then chooses the greedy action accordingly:
+The most common implementation is based on the notion of an **upper confidence bound** or **UCB**. The agent maintains an optimistic reward function estimate $\tilde{R}\_t$, so that $\tilde{R}\_t(s_t, a) \ge R(s_t, a)$ for all $a$ with high probability, and then chooses the greedy action accordingly:
 
 $$
 a_t = \text{argmax}_a \tilde{R}_t(s_t, a)
 $$
 
-UCB can be viewed as a form of **exploration bonus**, where the optimistic estimate encourages exploration. Typically, the amount of optimism, $\tilde{R}_t - R$, decreases over time so that the agent gradually reduces exploration.
+UCB can be viewed as a form of **exploration bonus**, where the optimistic estimate encourages exploration. Typically, the amount of optimism, $\tilde{R}\_t - R$, decreases over time so that the agent gradually reduces exploration.
 
 </div>
 
 #### Bandit Case: Frequentist Approach
 
-A frequentist approach to computing a confidence bound can be based on a **concentration inequality** to derive a high-probability upper bound of the estimation error: $|\hat{R}_t(s, a) - R_t(s, a)| \le \delta_t(s, a)$. For a Bernoulli bandit, the MLE is $\hat{\mu}_t(a) = \frac{N_t^1(a)}{N_t(a)}$, and the **Chernoff-Hoeffding inequality** leads to $\delta_t(a) = c/\sqrt{N_t(a)}$ for some constant $c$, so
+A frequentist approach to computing a confidence bound can be based on a **concentration inequality** to derive a high-probability upper bound of the estimation error: $\lvert \hat{R}\_t(s, a) - R_t(s, a) \rvert \le \delta_t(s, a)$. For a Bernoulli bandit, the MLE is $\hat{\mu}\_t(a) = \frac{N_t^1(a)}{N_t(a)}$, and the **Chernoff-Hoeffding inequality** leads to $\delta_t(a) = c/\sqrt{N_t(a)}$ for some constant $c$, so
 
 $$
 \tilde{R}_t(a) = \hat{\mu}_t(a) + \frac{c}{\sqrt{N_t(a)}}
@@ -4163,7 +4835,7 @@ $$
 
 #### Bandit Case: Bayesian Approach
 
-We can also derive an upper confidence about using Bayesian inference. The posterior mean is $\hat{\mu}_t(a) = \mathbb{E}[\mu(a)|\boldsymbol{h}_t]$ and the posterior standard deviation is approximately $\hat{\sigma}_t(a) \approx \sqrt{\hat{\mu}_t(a)(1-\hat{\mu}_t(a))/N_t(a)}$. We then define the optimistic reward estimate as
+We can also derive an upper confidence about using Bayesian inference. The posterior mean is $\hat{\mu}\_t(a) = \mathbb{E}[\mu(a)\mid\boldsymbol{h}\_t]$ and the posterior standard deviation is approximately $\hat{\sigma}\_t(a) \approx \sqrt{\hat{\mu}\_t(a)(1-\hat{\mu}\_t(a))/N_t(a)}$. We then define the optimistic reward estimate as
 
 $$
 \tilde{R}_t(a) = \hat{\mu}_t(a) + c\hat{\sigma}_t(a)
@@ -4186,7 +4858,7 @@ The more sophisticated **UCRL2** algorithm computes confidence intervals on all 
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(Distributional RL)</span></p>
 
-The **distributional RL** approach predicts the distribution of (discounted) returns, not just the expected return. Let $Z_t^\pi = \sum_{k=0}^{T-t} \gamma^k R(s_{t+k}, a_{t+k})$ be a random variable representing the (discounted) reward-to-go from step $t$. The standard value function is the expectation of this variable: $V^\pi(s) = \mathbb{E}[Z_0^\pi|s_0 = s]$. In DRL, we instead attempt to learn the full distribution, $p(Z_0^\pi|s_0 = s)$, when training the critic. We then compute the expectation of this distribution when training the actor.
+The **distributional RL** approach predicts the distribution of (discounted) returns, not just the expected return. Let $Z_t^\pi = \sum_{k=0}^{T-t} \gamma^k R(s_{t+k}, a_{t+k})$ be a random variable representing the (discounted) reward-to-go from step $t$. The standard value function is the expectation of this variable: $V^\pi(s) = \mathbb{E}[Z_0^\pi\mids_0 = s]$. In DRL, we instead attempt to learn the full distribution, $p(Z_0^\pi\mids_0 = s)$, when training the critic. We then compute the expectation of this distribution when training the actor.
 
 </div>
 
@@ -4223,11 +4895,11 @@ When the extrinsic reward is sparse, or does not exist at all ("unsupervised RL"
 
 #### Exploration Bonuses
 
-One simple approach is to create an intrinsic **exploration bonus** $R_t^i(s_t)$ which is high when the agent visits novel states. For tabular environments, we can just count the number of visits to each state, $N_t(s)$, and define $R_t^i(s) = 1/N_t(s)$ or $R_t^i(s) = 1/\sqrt{N_t(s)}$, which is similar to the UCB heuristic used in bandits. We can extend exploration bonuses to high-dimensional states (e.g., images) using density models. Alternatively, we can use the $\ell_1$ norm of the successor feature representation as an alternative to the visitation count: $R^i(s) = 1/\|\boldsymbol{\psi}^\pi(s)\|_1$. This can be combined with **predecessor** representations, which encode retrospective information about the previous state, encouraging exploration towards bottleneck states.
+One simple approach is to create an intrinsic **exploration bonus** $R_t^i(s_t)$ which is high when the agent visits novel states. For tabular environments, we can just count the number of visits to each state, $N_t(s)$, and define $R_t^i(s) = 1/N_t(s)$ or $R_t^i(s) = 1/\sqrt{N_t(s)}$, which is similar to the UCB heuristic used in bandits. We can extend exploration bonuses to high-dimensional states (e.g., images) using density models. Alternatively, we can use the $\ell_1$ norm of the successor feature representation as an alternative to the visitation count: $R^i(s) = 1/\lVert \boldsymbol{\psi}^\pi(s) \rVert_1$. This can be combined with **predecessor** representations, which encode retrospective information about the previous state, encouraging exploration towards bottleneck states.
 
 #### Random Network Distillation (RND)
 
-The **Random Network Distillation** or **RND** method uses a fixed random neural network feature extractor $\boldsymbol{z}\_t = f(\boldsymbol{s}\_t; \boldsymbol{\theta}^\ast)$ to define a target, and then trains a predictor $\hat{\boldsymbol{z}}\_t = f(\boldsymbol{s}\_t; \hat{\boldsymbol{\theta}}\_t)$ to predict these targets. If $s_t$ is similar to previously seen states, then the trained model will have low prediction error. We can thus define the intrinsic reward as proportional to $\|\hat{\boldsymbol{z}}\_t - \boldsymbol{z}\_t\|_2^2$. The **BYOL-Explore** method goes beyond RND by learning the target representation (for the next state), rather than using a fixed random projection, but is still based on prediction error.
+The **Random Network Distillation** or **RND** method uses a fixed random neural network feature extractor $\boldsymbol{z}\_t = f(\boldsymbol{s}\_t; \boldsymbol{\theta}^\ast)$ to define a target, and then trains a predictor $\hat{\boldsymbol{z}}\_t = f(\boldsymbol{s}\_t; \hat{\boldsymbol{\theta}}\_t)$ to predict these targets. If $s_t$ is similar to previously seen states, then the trained model will have low prediction error. We can thus define the intrinsic reward as proportional to $\lVert \hat{\boldsymbol{z}}\_t - \boldsymbol{z}\_t \rVert_2^2$. The **BYOL-Explore** method goes beyond RND by learning the target representation (for the next state), rather than using a fixed random projection, but is still based on prediction error.
 
 #### Information-Theoretic Measures
 
@@ -4237,9 +4909,9 @@ $$
 R(\boldsymbol{s}, \boldsymbol{a}, \boldsymbol{s}') = -\log q(\phi(\boldsymbol{s}')|\phi(\boldsymbol{s}), a)
 $$
 
-Another solution is to replace the cross entropy with the KL divergence, $R(\boldsymbol{s}, \boldsymbol{a}) = D_{\text{KL}}(p\|\|q) = \mathbb{H}\_{ce}(p, q) - \mathbb{H}(p)$, which goes to zero once the learned model matches the true model, even for unpredictable states. This encourages exploration towards states with epistemic uncertainty (reducible noise) but not aleatoric uncertainty (irreducible noise).
+Another solution is to replace the cross entropy with the KL divergence, $R(\boldsymbol{s}, \boldsymbol{a}) = D_{\text{KL}}(p\lVert  \rVertq) = \mathbb{H}\_{ce}(p, q) - \mathbb{H}(p)$, which goes to zero once the learned model matches the true model, even for unpredictable states. This encourages exploration towards states with epistemic uncertainty (reducible noise) but not aleatoric uncertainty (irreducible noise).
 
-A related idea is to use the **information gain** as a reward: $R_t(s_t, a_t) = D_{\text{KL}}(q(\boldsymbol{s}_t\mid\boldsymbol{h}\_t, a_t, \theta_t) \|\| q(\boldsymbol{s}\_t\mid\boldsymbol{h}\_t, a_t, \theta_{t-1}))$, where $\theta_t = \text{update}(\theta_{t-1}, h_t, a_t, s_t)$ are the new model parameters. This is closely related to the BALD (Bayesian Active Learning by Disagreement) criterion, and has the advantage of being easier to compute since it does not reference the true distribution $p$.
+A related idea is to use the **information gain** as a reward: $R_t(s_t, a_t) = D_{\text{KL}}(q(\boldsymbol{s}\_t\mid\boldsymbol{h}\_t, a_t, \theta_t) \lVert  \rVert q(\boldsymbol{s}\_t\mid\boldsymbol{h}\_t, a_t, \theta_{t-1}))$, where $\theta_t = \text{update}(\theta_{t-1}, h_t, a_t, s_t)$ are the new model parameters. This is closely related to the BALD (Bayesian Active Learning by Disagreement) criterion, and has the advantage of being easier to compute since it does not reference the true distribution $p$.
 
 ### Competence-Based Intrinsic Motivation
 
@@ -4309,7 +4981,7 @@ The problem breaks down into two parts: learning the hierarchical policy $\pi_{\
 
 ### Methods for Learning with Options
 
-**Hierarchical Q learning** learns the option policy using Q-learning by regressing towards targets that incorporate the discounted reward across the option's duration: $y_t = \sum_{t'=t}^{\tau} \gamma^{t'-t} r_{t'} + \gamma^{\tau-t} Q(s_{t+\tau}, o_{t+\tau}^*)$.
+**Hierarchical Q learning** learns the option policy using Q-learning by regressing towards targets that incorporate the discounted reward across the option's duration: $y_t = \sum_{t'=t}^{\tau} \gamma^{t'-t} r_{t'} + \gamma^{\tau-t} Q(s_{t+\tau}, o_{t+\tau}^\ast)$.
 
 In the **MAXQ** approach, the core MDP is decomposed into smaller sub-MDP components. Each sub-MDP is associated to a subtask whose policy can be learned separately. However, the resulting policy will only be recursively optimal, rather than globally optimal.
 
@@ -4363,11 +5035,11 @@ One way to define subtasks is in terms of subgoals that might be worth achieving
 
 A notable drawback of existing subgoal discovery methods is their reliance on a discrete subgoal space. **Hierarchical Self Play** (HSP) is a method for learning a continuous embedding of subgoals through an unsupervised pre-training technique called **asymmetric self-play** (a **setter-solver** pair):
 
-1. Starting from an initial state $s_0$, Alice's policy $\pi_A$ acts for $T_A$ steps, arriving at a final state $s^* = s_{T_A}$.
-2. The environment is then reset to $s_0$, and $s^*$ is assigned as a target for Bob's policy $\pi_B$.
-3. As Bob executes its policy, a learned encoder $E$ generates a low-dimensional subgoal embedding at each timestep $t$: $g_t = E(s_t^B, s^*)$.
+1. Starting from an initial state $s_0$, Alice's policy $\pi_A$ acts for $T_A$ steps, arriving at a final state $s^\ast = s_{T_A}$.
+2. The environment is then reset to $s_0$, and $s^\ast$ is assigned as a target for Bob's policy $\pi_B$.
+3. As Bob executes its policy, a learned encoder $E$ generates a low-dimensional subgoal embedding at each timestep $t$: $g_t = E(s_t^B, s^\ast)$.
 4. Bob's policy selects actions based on its current state and this subgoal embedding: $a_t^B = \pi_B(s_t^B, g_t)$.
-5. Bob has $T_B$ steps to reach the target state $s^*$. A reward of $R_B = 1$ is given for success and 0 for failure.
+5. Bob has $T_B$ steps to reach the target state $s^\ast$. A reward of $R_B = 1$ is given for success and 0 for failure.
 6. Alice receives an opposing reward, $R_A = 1 - R_B$.
 
 This setup creates a dynamic where Bob learns to reach goals set by Alice, while Alice is incentivized to discover novel states that are currently challenging for Bob.
@@ -4443,7 +5115,7 @@ $$
 \min_\pi \max_{\boldsymbol{w}} \mathbb{E}_{p_{\pi_{\text{exp}}}^\gamma(s,a)} [T_{\boldsymbol{w}}(s, a)] - \mathbb{E}_{p_\pi^\gamma(s,a)} [f^*(T_{\boldsymbol{w}}(s, a))]
 $$
 
-where $f^*$ is the convex conjugate of $f$, and $T_{\boldsymbol{w}} : \mathcal{S} \times \mathcal{A} \to \mathbb{R}$ is some function parameterized by $\boldsymbol{w}$. We can think of $\pi$ as a generator (of actions) and $T_{\boldsymbol{w}}$ as an adversarial critic that is used to compare the generated $(s, a)$ pairs to the real ones. With different choices of the convex function $f$, we can obtain many existing IL algorithms, such as **generative adversarial imitation learning** (**GAIL**) and **adversarial inverse RL** (**AIRL**).
+where $f^\ast$ is the convex conjugate of $f$, and $T_{\boldsymbol{w}} : \mathcal{S} \times \mathcal{A} \to \mathbb{R}$ is some function parameterized by $\boldsymbol{w}$. We can think of $\pi$ as a generator (of actions) and $T_{\boldsymbol{w}}$ as an adversarial critic that is used to compare the generated $(s, a)$ pairs to the real ones. With different choices of the convex function $f$, we can obtain many existing IL algorithms, such as **generative adversarial imitation learning** (**GAIL**) and **adversarial inverse RL** (**AIRL**).
 
 </div>
 
@@ -4479,13 +5151,13 @@ $$
 \bar{\pi}_{k+1}(a|s) \leftarrow \frac{1}{Z} \pi_b(a|s) \exp\left(\frac{1}{\alpha} Q_k^\pi(s, a)\right)
 $$
 
-and then project it into the required policy function class: $\pi_{k+1} \leftarrow \text{argmin}_\pi D_{\text{KL}}(\bar{\pi}_{k+1} \| \pi)$.
+and then project it into the required policy function class: $\pi_{k+1} \leftarrow \text{argmin}\_\pi D_{\text{KL}}(\bar{\pi}\_{k+1} \| \pi)$.
 
 </div>
 
 #### Behavior-Constrained Policy Gradient Methods
 
-A class of methods first learns a baseline policy $\pi(a|s)$ (using BC) and a $Q$ function (using Bellman minimization) on the offline data, and then updates the policy to pick actions that have high expected value according to $Q$ and which are also likely under the BC prior. An early example is the $Q^f$ algorithm. The **DDPG+BC** method optimizes $\max_\pi J(\pi) = \mathbb{E}\_{(s,a) \sim \mathcal{D}} [Q(s, \mu^\pi(s)) + \alpha \log \pi(a\mid s)]$. The **DQL** method optimizes a diffusion policy using $\min_\pi \mathcal{L}(\pi) = \mathcal{L}\_{\text{diffusion}}(\pi) - \alpha \mathbb{E}\_{s \sim D, a \sim \pi(\cdot\mid s)} [Q(s, a)]$.
+A class of methods first learns a baseline policy $\pi(a\mids)$ (using BC) and a $Q$ function (using Bellman minimization) on the offline data, and then updates the policy to pick actions that have high expected value according to $Q$ and which are also likely under the BC prior. An early example is the $Q^f$ algorithm. The **DDPG+BC** method optimizes $\max_\pi J(\pi) = \mathbb{E}\_{(s,a) \sim \mathcal{D}} [Q(s, \mu^\pi(s)) + \alpha \log \pi(a\mid s)]$. The **DQL** method optimizes a diffusion policy using $\min_\pi \mathcal{L}(\pi) = \mathcal{L}\_{\text{diffusion}}(\pi) - \alpha \mathbb{E}\_{s \sim D, a \sim \pi(\cdot\mid s)} [Q(s, a)]$.
 
 #### Uncertainty Penalties
 
@@ -4512,9 +5184,9 @@ $$
 \mathcal{C}(\mathcal{B}, \boldsymbol{w}) = \mathbb{E}_{s \sim \mathcal{D}} \left[\mathbb{E}_{a \sim \mu(\cdot|s)} [Q_{\boldsymbol{w}}(s, a)] - \mathbb{E}_{a \sim \pi_b(\cdot|s)} [Q_{\boldsymbol{w}}(s, a)]\right] + R(\mu)
 $$
 
-where $\mu$ is the new policy derived from $Q$, and $R(\mu) = -D_{\text{KL}}(\mu \|\| \rho)$ is the action prior. Since we are minimizing $\mathcal{C}$ (in addition to $\mathcal{E}$), we see that we are simultaneously maximizing the Q values for actions that are drawn from the behavior policy while minimizing the Q values for actions sampled from $\mu$. This is to combat the optimism bias of Q-learning (hence the term "conservative").
+where $\mu$ is the new policy derived from $Q$, and $R(\mu) = -D_{\text{KL}}(\mu \lVert  \rVert \rho)$ is the action prior. Since we are minimizing $\mathcal{C}$ (in addition to $\mathcal{E}$), we see that we are simultaneously maximizing the Q values for actions that are drawn from the behavior policy while minimizing the Q values for actions sampled from $\mu$. This is to combat the optimism bias of Q-learning (hence the term "conservative").
 
-The optimal solution has the form $\mu(a\mid s) = \frac{1}{Z}\rho(a\mid s)\exp(Q(s, a))$. If we set $\rho(a|s)$ to be the previous policy, we can approximate the first term in the penalty using importance sampling. Alternatively, if $\rho(a\mid s)$ is uniform (as in maxent RL), we should replace the value function with the soft value function: $\mathbb{E}_a[Q_{\text{soft}}(s, a)] = V_{\text{soft}}(s) = \log \sum_a \exp(Q(s, a))$.
+The optimal solution has the form $\mu(a\mid s) = \frac{1}{Z}\rho(a\mid s)\exp(Q(s, a))$. If we set $\rho(a\mids)$ to be the previous policy, we can approximate the first term in the penalty using importance sampling. Alternatively, if $\rho(a\mid s)$ is uniform (as in maxent RL), we should replace the value function with the soft value function: $\mathbb{E}\_a[Q_{\text{soft}}(s, a)] = V_{\text{soft}}(s) = \log \sum_a \exp(Q(s, a))$.
 
 </div>
 
@@ -4528,7 +5200,7 @@ In model-based offline RL, we can train a dynamics model given a fixed dataset, 
 * The **MOREL** algorithm modifies the MDP so that the agent enters an absorbing state with a low reward when the model uncertainty $u(s, a)$ is sufficiently large.
 * The **MOPO** algorithm defines a conservative reward using $\bar{R}(s, a) = R(s, a) - \lambda u(s, a)$.
 
-In both cases, it is possible to prove that the model-based estimate of the policy's performance under the modified reward or dynamics is a lower bound of the performance of the policy's true performance in the real MDP, provided that the uncertainty function $u$ is an error oracle, which means that it satisfies $D(M_\theta(s'|s, a), M^*(s'|s, a)) \le u(s, a)$, where $M^*$ is the true dynamics and $M_\theta$ is the estimated dynamics.
+In both cases, it is possible to prove that the model-based estimate of the policy's performance under the modified reward or dynamics is a lower bound of the performance of the policy's true performance in the real MDP, provided that the uncertainty function $u$ is an error oracle, which means that it satisfies $D(M_\theta(s'\lvert s, a), M^\ast(s' \rverts, a)) \le u(s, a)$, where $M^\ast$ is the true dynamics and $M_\theta$ is the estimated dynamics.
 
 </div>
 
@@ -4572,7 +5244,7 @@ The key idea is to not train passively on expert trajectories as in BC, but to t
 <div class="math-callout math-callout--definition" markdown="1">
   <p class="math-callout__title"><span class="math-callout__label">Definition</span><span class="math-callout__name">(AIXI)</span></p>
 
-The term **"general RL"** refers to the setup in which an agent receives a stream of observations $o_1, o_2, \ldots$ and rewards $r_1, r_2, \ldots$, and performs a sequence of actions $a_1, a_2, \ldots$, but where we do not make any Markovian (or even stationarity) assumptions about the environment. Instead, we assume that the environment is a computable function or program $p^*$, which generated the observations $o_{1:t}$ and $r_{1:t}$ seen so far in response to the actions taken, $a_{1:t-1}$. If we use the receeding horizon control strategy, the optimal action at each step is the one that maximizes the posterior expected reward-to-go (out to some horizon $m$ steps into the future). If we assume the agent represents the unknown environment as a program $p \in \mathcal{M}$, then the optimal action is given by the following **expectimax** formula:
+The term **"general RL"** refers to the setup in which an agent receives a stream of observations $o_1, o_2, \ldots$ and rewards $r_1, r_2, \ldots$, and performs a sequence of actions $a_1, a_2, \ldots$, but where we do not make any Markovian (or even stationarity) assumptions about the environment. Instead, we assume that the environment is a computable function or program $p^\ast$, which generated the observations $o_{1:t}$ and $r_{1:t}$ seen so far in response to the actions taken, $a_{1:t-1}$. If we use the receeding horizon control strategy, the optimal action at each step is the one that maximizes the posterior expected reward-to-go (out to some horizon $m$ steps into the future). If we assume the agent represents the unknown environment as a program $p \in \mathcal{M}$, then the optimal action is given by the following **expectimax** formula:
 
 $$
 a_t = \text{argmax}_{a_t} \sum_{o_t, r_t} \cdots \max_{a_m} \sum_{o_m, r_m} [r_t + \cdots + r_m] \sum_{p: U(p, \boldsymbol{a}_{1:m}) = (o_1 r_1 \cdots o_m r_m)} \Pr(p)
